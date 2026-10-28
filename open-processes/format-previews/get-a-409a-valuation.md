@@ -1,0 +1,252 @@
+<!-- Layout preview derived from open-processes/get-a-409a-valuation.json and its committed page. -->
+
+# Get a 409A valuation
+
+> **Format preview.** This page reorganizes the existing record for review.
+
+[Overview](#overview) · [Before you start](#before-you-start) · [Geography](#geography) · [Steps](#steps-at-a-glance) · [Outputs](#outputs)
+
+## Overview
+
+Commission a 409A valuation to establish fair market value for stock options.
+
+| Field | Value |
+| --- | --- |
+| Kind | process |
+| Phase | fundraising |
+| Cadence | annual |
+| Geo scope | us |
+| Complexity | moderate |
+| Reversibility | reversible |
+| Active work | ~2 h |
+| Elapsed including waits | ~10.1 d |
+| Agent support | partial |
+
+Can initiate through Carta API and provide company financials. Valuation itself is done by third-party appraiser.
+
+## Before you start
+
+Required artifacts:
+
+- Financial statements — from [Bookkeeping close](../pages/bookkeeping-close.md)
+- Cap table record — from [Set up cap table](../pages/set-up-cap-table.md)
+
+| Information to gather | Required by the record |
+| --- | --- |
+| last funding round | Optional |
+
+## Geography
+
+Country rows describe the guidance recorded here. Local notes and step alternatives do not establish a complete country-specific workflow.
+
+| Country | Recorded guidance | Steps with local alternatives or resolutions |
+| --- | --- | --- |
+| [India](#geo-in) | Local analog note; step alternative | [3](#step-3) |
+| [United Kingdom](#geo-uk) | Local analog note; step alternative | [3](#step-3) |
+| [Germany](#geo-de) | Marked not applicable | — |
+| [France](#geo-fr) | Marked not applicable | — |
+| [Portugal](#geo-pt) | Marked not applicable | — |
+| [Canada](#geo-ca) | Marked not applicable | — |
+| [New Zealand](#geo-nz) | Marked not applicable | — |
+| [Singapore](#geo-sg) | Marked not applicable | — |
+| [Australia](#geo-au) | Local analog note | — |
+| [South Korea](#geo-kr) | Marked not applicable | — |
+| [Hong Kong](#geo-hk) | Marked not applicable | — |
+| [Estonia](#geo-ee) | Marked not applicable | — |
+
+## Steps at a glance
+
+Use the recorded prerequisites and conditions below to follow the path. Row order is for navigation.
+
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- |
+| [1. Compile financial statements](#step-1) | Agent | ~10 min | Entry step |
+| [2. Gather cap table snapshot](#step-2) | Agent | ~5 min | Entry step |
+| [3. Initiate 409A on Carta](#step-3) | Form / portal; approval required | ~15 min | [Step 1](#step-1); [Step 2](#step-2) |
+| [4. Answer valuation questionnaire](#step-4) | Human | ~1 h | [Step 3](#step-3) |
+| [5. Wait for valuation report (2-3 weeks)](#step-5) | Human; includes waiting | ~10 d | [Step 4](#step-4) |
+| [6. Review and accept valuation](#step-6) | Human; approval required | ~30 min | [Step 5](#step-5) |
+
+## Step details
+
+<a id="step-1"></a>
+
+### 1. Compile financial statements
+
+agent-runnable · ~10 min
+
+*Entry step — no prerequisite step.*
+
+Gather the financial statements relevant to the valuation date, with entity, accounting basis and periods identified. Include recent actuals and forecasts, keeping management assumptions distinct from historical results. Reconcile differences from the ledger or board reports and label provisional figures so the analyst understands the financial position being valued.
+
+- Canonical vendor: QuickBooks
+
+<a id="step-2"></a>
+
+### 2. Gather cap table snapshot
+
+agent-runnable · ~5 min
+
+*Entry step — no prerequisite step.*
+
+Export capitalization at the proposed valuation date, including share classes, issued holdings, option reserve, grants and convertibles. Tie balances to executed records and include financing terms and side letters that affect rights. Explain pending transactions and differences from earlier exports so the valuation analyst works from a stable, reconciled ownership picture.
+
+- Canonical vendor: Carta
+
+<a id="step-3"></a>
+
+### 3. Initiate 409A on Carta
+
+manual form/portal · ~15 min · human approval required
+
+| Option | Applies when |
+| --- | --- |
+| Default — Initiate 409A on Carta | Recorded default |
+| UK - EMI valuation with HMRC | Pricing options in the United Kingdom |
+| India - registered-valuer report | Pricing shares/ESOPs in India |
+
+*Follows steps 1 and 2 — both are required first.*
+
+Choose the valuation engagement for the issuer, security and intended transaction under the applicable country’s route. Establish the valuation date, report purpose, data requirements, fee and expected deliverable with the provider and finance. The company representative commissioning the work agrees its scope and terms.
+
+- Canonical vendor: Carta
+- Sources: [26 CFR 1.409A-1](https://www.ecfr.gov/current/title-26/chapter-I/subchapter-A/part-1/section-1.409A-1)
+
+Options:
+  - **Default — Initiate 409A on Carta** — manual form/portal · ~15 min · human approval required
+
+    Scope a US option-valuation engagement around the stock class, valuation date and planned grants. Determine what financial, operating and capitalization information the provider needs and how the company expects to use the report. Finance commissions the agreed work and supplies the relevant private records, with questions about regulatory reliance resolved by the appropriate adviser.
+  - **UK - EMI valuation with HMRC**
+
+    When: Pricing options in the United Kingdom
+
+    For a UK EMI grant, establish the shares and rights being valued and calculate the proposed actual and unrestricted market values for HMRC’s VAL231 process. The authorized company representative submits the supported valuation request. Use HMRC’s response to plan the grant within its stated validity and conditions, checking changes in company circumstances that could affect value.
+
+    - Do it yourself: [HMRC - employment related securities](https://www.gov.uk/government/collections/employment-related-securities)
+    - Sources: [HMRC share scheme valuations](https://www.gov.uk/guidance/get-a-share-scheme-valuation-from-hmrc) · [HMRC SVM110050](https://www.gov.uk/hmrc-internal-manuals/shares-and-assets-valuation-manual/svm110050)
+  - **India - registered-valuer report** — human
+
+    When: Pricing shares/ESOPs in India
+
+    Describe the Indian transaction, instrument, parties and tax residences to local counsel and the tax adviser. Establish which valuation rules and professional qualifications apply, then commission the relevant report. Reconcile financial inputs and capital rights with the valuer and state the report’s purpose, valuation date and basis for use in this transaction.
+
+    - Do it yourself: [IBBI - registered valuers](https://ibbi.gov.in/)
+    - Sources: [India Companies Act 2013](https://www.indiacode.nic.in/ViewFileUploaded?file=the_companies_act%2C_2013_no._18_of_2013_date_29.08.2013.pdf&path=AC_CG_61_1375_00003_00003_1594717497353%2Factfile%2F)
+
+<a id="step-4"></a>
+
+### 4. Answer valuation questionnaire
+
+human · ~1 h
+
+Answer the valuation questionnaire using company records and input from the people responsible for forecasts, financing and operations. Explain unusual revenue, customer concentration, material contracts, pending transactions and significant risks where requested. Identify estimates and unanswered questions clearly, then resolve the analyst’s follow-ups against the same information set.
+
+<a id="step-5"></a>
+
+### 5. Wait for valuation report (2-3 weeks)
+
+human · ~10 d · async wait
+
+Track the report against the provider’s agreed delivery date and respond to outstanding questions. Tell the adviser about material financing, forecast or operating changes arising during the engagement so they can assess their effect. Update grant planning if delivery changes. When the report arrives, move it into substantive review with any unresolved questions attached.
+
+- Canonical vendor: Carta
+- Cross-arena market: [workflow-automation](../../open-rankings/workflow-automation)
+
+<a id="step-6"></a>
+
+### 6. Review and accept valuation
+
+human · ~30 min · human approval required
+
+Check the report’s entity, stock class, date and capitalization against the information supplied. Ask the adviser to resolve errors, explain important assumptions and account for differences from earlier valuations. Assess any limits on using the result for planned grants. The company’s valuation owner accepts the final report for its agreed purpose, with unresolved reliance questions taken to tax counsel.
+
+- Verify: The signed 409A report states the FMV and the valuation date — the IRC 409A safe harbor runs 12 months from that date or until a material event.
+- Produces: 409A valuation report
+- Sources: [26 CFR 1.409A-1](https://www.ecfr.gov/current/title-26/chapter-I/subchapter-A/part-1/section-1.409A-1)
+
+## Country details
+
+<a id="geo-in"></a>
+
+### India
+
+- No 409A, but pricing is still regulated: share issues need a report from an IBBI-registered valuer (Companies Act) or merchant banker (Income-tax Rule 11UA), and ESOP perquisite tax at exercise runs off fair market value. ([IBBI — registered valuers](https://ibbi.gov.in/))
+
+<a id="geo-uk"></a>
+
+### United Kingdom
+
+- The analog is agreeing an EMI valuation with HMRC's Shares and Assets Valuation team (the VAL231 process, now run through HMRC's ERS guidance): it fixes actual and unrestricted market value for 90 days, so grant options inside that window. ([HMRC — employment related securities](https://www.gov.uk/government/collections/employment-related-securities))
+
+<a id="geo-de"></a>
+
+### Germany
+
+- Not applicable: No 409A equivalent: there is no statutory safe-harbor appraisal for option strike prices. German ESOP/VSOP pricing is a company-and-tax-advisor judgment, and the statutory lever that actually matters is §19a EStG's deferred ('dry income') taxation for startup employee equity. ([EStG §19a — startup equity taxation](https://www.gesetze-im-internet.de/estg/__19a.html))
+
+<a id="geo-fr"></a>
+
+### France
+
+- Not applicable: No 409A equivalent: BSPCE strike prices are set by the issuing company with no statutory appraisal or safe harbor — the tax administration's BOFiP doctrine governs eligibility and taxation, so price prudently off the last round with your advisors and document the reasoning. ([BOFiP — official tax doctrine (BSPCE)](https://bofip.impots.gouv.fr/))
+
+<a id="geo-pt"></a>
+
+### Portugal
+
+- Not applicable: No 409A ritual: there is no statutory safe-harbor appraisal for option strike prices — plans are priced by the company and its advisors, and the 2023 Startup Law (Lei 21/2023) regime defers qualifying option taxation to liquidity instead. ([Lei 21/2023 (startup law) — DRE](https://diariodarepublica.pt/dr/detalhe/lei/21-2023-213498830))
+
+<a id="geo-ca"></a>
+
+### Canada
+
+- Not applicable: No 409A equivalent: CRA publishes no appraisal safe harbor for option pricing — CCPC option rules defer the employee's tax to sale regardless, so the annual-valuation ritual has no Canadian counterpart. ([CRA — security options](https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/payroll/benefits-allowances/security-options.html))
+
+<a id="geo-nz"></a>
+
+### New Zealand
+
+- Not applicable: No safe-harbor appraisal ritual exists to schedule: there is no NZ 409A equivalent, and employee share scheme taxation runs on Inland Revenue's own rules rather than on a periodic valuation. ([Employee share schemes — Inland Revenue](https://www.ird.govt.nz/employing-staff/deductions-from-other-payments/employee-share-schemes))
+
+<a id="geo-sg"></a>
+
+### Singapore
+
+- Not applicable: No 409A-style appraisal ritual exists: IRAS publishes no valuation safe harbor, ESOP/ESOW gains are taxed at exercise or vesting, and boards set exercise prices without a statutory valuation to lean on. ([IRAS — gains from stock options](https://www.iras.gov.sg/taxes/individual-income-tax/basics-of-individual-income-tax/what-is-taxable-what-is-not/employment-income/gains-from-the-exercise-of-stock-options))
+
+<a id="geo-au"></a>
+
+### Australia
+
+- No 409A appraisal ritual, but pricing still gates the tax outcome: the ESS start-up concession requires option strike prices at or above the share's market value (law rule [au.ess-startup-concession](../../open-law/AU/au-ess-startup-concession.json)), with ATO safe-harbour valuation methods for unlisted companies playing the defensible-valuation role. ([ITAA 1997 Division 83A](https://www.legislation.gov.au/C2004A05138/latest/text))
+
+<a id="geo-kr"></a>
+
+### South Korea
+
+- Not applicable: No 409A appraisal ritual exists: stock options run under Commercial Act Article 340-2 and the venture-company option rules with their own pricing constraints, without a safe-harbor FMV appraisal industry. ([Commercial Act Article 340-2 (law.go.kr)](https://www.law.go.kr/%EB%B2%95%EB%A0%B9/%EC%83%81%EB%B2%95/%EC%A0%9C340%EC%A1%B0%EC%9D%982))
+
+<a id="geo-hk"></a>
+
+### Hong Kong
+
+- Not applicable: No 409A-style appraisal ritual exists: share-based benefits are assessed to salaries tax at exercise or vesting under the Inland Revenue Department's employee share-based benefits practice (DIPN 38), and boards set exercise prices without a statutory valuation safe harbor. ([IRD — DIPN 38 (share-based benefits)](https://www.ird.gov.hk/eng/pdf/dipn38.pdf))
+
+<a id="geo-ee"></a>
+
+### Estonia
+
+- Not applicable: No 409A appraisal ritual exists: option taxation runs under the Income Tax Act's fringe-benefit rules, where an exercise at least three years after grant is outside fringe-benefit tax (§ 48(5³)), without a safe-harbor FMV appraisal industry. ([Income and social taxes (e-MTA)](https://www.emta.ee/en/business-client/taxes-and-payment/income-and-social-taxes))
+
+## Outputs
+
+- 409A valuation report
+
+## Related records
+
+- Part of the chain [Raise the follow-on round](../pages/go-fundraise-follow-on.md)
+- Runs as a step of [Take a down round or recap](../pages/take-a-down-round-or-recap.md)
+
+---
+
+Source record: [`open-processes/get-a-409a-valuation.json`](../get-a-409a-valuation.json) · [Current format](../pages/get-a-409a-valuation.md)

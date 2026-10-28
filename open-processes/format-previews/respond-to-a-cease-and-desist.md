@@ -1,0 +1,231 @@
+<!-- Layout preview derived from open-processes/respond-to-a-cease-and-desist.json and its committed page. -->
+
+# Respond to a cease-and-desist
+
+> **Format preview.** This page reorganizes the existing record for review.
+
+[Overview](#overview) · [Before you start](#before-you-start) · [Geography](#geography) · [Steps](#steps-at-a-glance)
+
+## Overview
+
+**Trigger:** A cease-and-desist letter claiming trademark or IP infringement arrives by mail or email.
+
+A cease-and-desist is a demand, not a court order, but ignoring one is how lawsuits start. Note what they are claiming and the deadline in the letter. There is no statutory response deadline; the letter, and any lawsuit that follows, sets the pace. Preserve your evidence before anything changes. Get IP counsel involved before you reply, admit anything, or sign anything. Your options are three: comply (stop or rebrand), negotiate (coexistence or license), or contest. Educational guidance, not legal advice. The active work is a few founder-hours; the other side's reply time is out of your hands.
+
+| Field | Value |
+| --- | --- |
+| Kind | situation |
+| Phase | legal |
+| Cadence | event-driven |
+| Geo scope | global |
+| Complexity | complex |
+| Reversibility | hard to undo |
+| Urgency | act within days |
+| Active work | ~6.3 h |
+| Elapsed including waits | ~7.3 d |
+| Agent support | manual guide |
+
+Assessing the exposure, choosing the strategy, and writing the response letter are work for counsel and the founder; that is legal judgment, not API calls. An agent can preserve the evidence file and pull the claimed mark's register record; it cannot answer a legal demand for you.
+
+## Before you start
+
+| Information to gather | Required by the record |
+| --- | --- |
+| the cease-and-desist letter and its stated deadline | Yes |
+| your first-use dates and usage evidence | Yes |
+
+## Geography
+
+Country rows describe the guidance recorded here. Local notes and step alternatives do not establish a complete country-specific workflow.
+
+| Country | Recorded guidance | Steps with local alternatives or resolutions |
+| --- | --- | --- |
+| [United States](#geo-us) | step resolution | [3](#step-3) |
+| [India](#geo-in) | Local analog note; step resolution | [3](#step-3) |
+| [United Kingdom](#geo-uk) | Local analog note | — |
+| [Germany](#geo-de) | Local analog note | — |
+| [France](#geo-fr) | Local analog note | — |
+| [Portugal](#geo-pt) | Local analog note; step resolution | [3](#step-3) |
+| [Canada](#geo-ca) | Local analog note; step resolution | [3](#step-3) |
+| [Singapore](#geo-sg) | Local analog note | — |
+| [Australia](#geo-au) | Local analog note; step resolution | [3](#step-3) |
+| [South Korea](#geo-kr) | Local analog note | — |
+| [Hong Kong](#geo-hk) | Local analog note | — |
+| [Estonia](#geo-ee) | Local analog note | — |
+
+## Steps at a glance
+
+Use the recorded prerequisites and conditions below to follow the path. Row order is for navigation.
+
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- |
+| [1. Read the letter calmly: who sent it, the exact claims, and its stated response deadline](#step-1) | Human | ~30 min | Entry step |
+| [2. Preserve the evidence: archive the letter, your first-use dates, sales records, and screenshots](#step-2) | Agent | ~25 min | [Step 1](#step-1) |
+| [3. Look up the claimed mark on the trademark register the letter relies on: registration status, goods and services, filing dates](#step-3) | Agent | ~20 min | [Step 2](#step-2) |
+| [4. Choose counsel for the response (IP/trademark litigation)](#step-4) | Human | ~1 h | [Step 3](#step-3) |
+| [5. Sign the counsel engagement letter](#step-5) | Human; signature required | ~15 min | [Step 4](#step-4) |
+| [6. Assess with counsel: their mark's strength, your actual use, and the options — comply, negotiate, or contest](#step-6) | Human | ~1.5 h | [Step 5](#step-5) |
+| [7. Draft the response (or the rebrand/coexistence plan counsel recommends)](#step-7) | Human | ~2 h | [Step 6](#step-6) |
+| [8. Send the response before the letter's stated deadline](#step-8) | Human | ~15 min | [Step 7](#step-7) |
+| [9. Wait for the counterparty's reply and calendar the follow-through](#step-9) | Human; includes waiting | ~7 d | [Step 8](#step-8) |
+
+## Step details
+
+<a id="step-1"></a>
+
+### 1. Read the letter calmly: who sent it, the exact claims, and its stated response deadline
+
+human · ~30 min
+
+- Do it yourself: [USPTO: about trademark infringement](https://www.uspto.gov/page/about-trademark-infringement)
+
+<a id="step-2"></a>
+
+### 2. Preserve the evidence: archive the letter, your first-use dates, sales records, and screenshots
+
+agent-runnable · ~25 min
+
+
+
+<a id="step-3"></a>
+
+### 3. Look up the claimed mark on the trademark register the letter relies on: registration status, goods and services, filing dates
+
+agent-runnable · ~20 min
+
+
+
+<a id="step-4"></a>
+
+### 4. Choose counsel for the response (IP/trademark litigation)
+
+human · ~1 h
+
+- Vendor options: Cooley, Fenwick, Orrick, Gunderson Dettmer
+- Ranked market: [startup-law-firms](../../open-rankings/startup-law-firms)
+
+<a id="step-5"></a>
+
+### 5. Sign the counsel engagement letter
+
+human (legally required signature) · ~15 min · hard to undo
+
+
+
+<a id="step-6"></a>
+
+### 6. Assess with counsel: their mark's strength, your actual use, and the options — comply, negotiate, or contest
+
+human · ~1.5 h
+
+
+
+<a id="step-7"></a>
+
+### 7. Draft the response (or the rebrand/coexistence plan counsel recommends)
+
+human · ~2 h
+
+
+
+<a id="step-8"></a>
+
+### 8. Send the response before the letter's stated deadline
+
+human · ~15 min · hard to undo
+
+
+
+<a id="step-9"></a>
+
+### 9. Wait for the counterparty's reply and calendar the follow-through
+
+human · ~7 d · async wait
+
+
+
+## Country details
+
+<a id="geo-us"></a>
+
+### United States
+
+- Step 3: Pull the claimed mark's record on USPTO TSDR ([USPTO TSDR status lookup](https://tsdr.uspto.gov/))
+
+<a id="geo-in"></a>
+
+### India
+
+- A C&D under the Trade Marks Act 1999 works like the US letter — and Section 142 provides a remedy against groundless threats, which a reasoned reply can invoke. Pull the claimed mark's record on the registry before answering, with counsel. ([IP India (trade marks registry)](https://ipindia.gov.in/))
+- Step 3: Pull the claimed mark's record on the IP India registry before answering ([IP India (trade marks registry)](https://ipindia.gov.in/))
+
+<a id="geo-uk"></a>
+
+### United Kingdom
+
+- A C&D usually arrives as a letter before claim under the IP pre-action regime — and the UK's unjustified-threats rules (Intellectual Property (Unjustified Threats) Act 2017) cut both ways: a groundless infringement threat can itself be actionable, which disciplines both the letter you received and any reply you send. IP counsel before answering, same as the US flow. ([Unjustified Threats Act 2017](https://www.legislation.gov.uk/ukpga/2017/14/contents))
+
+<a id="geo-de"></a>
+
+### Germany
+
+- The German form is the Abmahnung with a strafbewehrte Unterlassungserklärung attached: signing that cease-and-desist declaration creates a contract with penalties for every future breach, so never sign it unreviewed. Short stated deadlines are normal and an einstweilige Verfügung (preliminary injunction) can follow quickly — counsel first. ([DPMA — Marken (trademarks)](https://www.dpma.de/marken/index.html))
+
+<a id="geo-fr"></a>
+
+### France
+
+- A mise en demeure letter typically precedes a contrefaçon action; preserve your evidence and answer through IP counsel — once litigation starts, saisie-contrefaçon evidence seizures move quickly, so the calm, reasoned reply matters as much as in the US. ([INPI (French IP office)](https://www.inpi.fr/))
+
+<a id="geo-pt"></a>
+
+### Portugal
+
+- The letter arrives as a carta de interpelação before an infringement action in the specialised IP court — capture its own stated deadline, verify the sender's INPI registrations, and answer through counsel; never ignore it. ([INPI — marcas e patentes](https://inpi.justica.gov.pt/))
+- Step 3: Verify the sender's INPI registrations and capture the letter's own stated deadline ([INPI — marcas e patentes](https://inpi.justica.gov.pt/))
+
+<a id="geo-ca"></a>
+
+### Canada
+
+- Canadian C&Ds work like US ones — a demand with its own deadline, not an order, and no unjustified-threats statute tempers them — so verify the sender's CIPO registrations and respond through counsel before the stated date. ([CIPO — trademarks](https://ised-isde.canada.ca/site/canadian-intellectual-property-office/en))
+- Step 3: Verify the sender's CIPO registrations before the stated date ([CIPO — trademarks](https://ised-isde.canada.ca/site/canadian-intellectual-property-office/en))
+
+<a id="geo-sg"></a>
+
+### Singapore
+
+- A C&D usually lands as a letter of demand, and Singapore's IP statutes carry groundless-threat provisions (Trade Marks Act 1998 s 35) that cut both ways — an overreaching infringement threat is itself actionable, so route the response through counsel. ([Trade Marks Act 1998 s 35 (SSO)](https://sso.agc.gov.sg/Act/TMA1998?ProvIds=pr35-))
+
+<a id="geo-au"></a>
+
+### Australia
+
+- A C&D usually arrives as a letter of demand, and Australian IP statutes carry unjustified-threats actions (trade marks, patents, designs), so a groundless infringement threat can itself be actionable — get IP counsel before answering, same as the US flow. ([IP Australia — infringement accusations](https://www.ipaustralia.gov.au/manage-my-ip/how-to-respond-to-accusations-of-ip-infringement))
+- Step 3: Verify the sender's registrations on the Australian Trade Mark Search before the stated date ([Australian trade mark search](https://www.ipaustralia.gov.au/trade-marks/search-existing-trade-marks))
+
+<a id="geo-kr"></a>
+
+### South Korea
+
+- Demand letters arrive as content-proof mail (내용증명) through Korea Post, which fixes the content and date of what was said; replies commonly go back the same way before anyone files. ([Korea Post (content-proof mail)](https://www.epost.go.kr/))
+
+<a id="geo-hk"></a>
+
+### Hong Kong
+
+- A C&D usually lands as a solicitor's letter of demand, and Hong Kong trade marks law carries groundless-threats relief (Trade Marks Ordinance section 26) that cuts both ways — an overreaching infringement threat is itself actionable, so route the response through counsel. ([Trade Marks Ordinance s 26 (e-Legislation)](https://www.elegislation.gov.hk/hk/cap559!en/s26))
+
+<a id="geo-ee"></a>
+
+### Estonia
+
+- A demand letter is a pre-suit claim under the Law of Obligations Act: it sets its own deadline, replies usually go through counsel, and an unanswered claim ripens into a court action filed through the courts' e-File system. ([Estonian courts (e-File)](https://www.kohus.ee/en))
+
+## Related records
+
+- Runs as a step of [Respond to a patent demand letter](../pages/respond-to-a-patent-demand-letter.md)
+
+---
+
+Source record: [`open-processes/respond-to-a-cease-and-desist.json`](../respond-to-a-cease-and-desist.json) · [Current format](../pages/respond-to-a-cease-and-desist.md)

@@ -1,0 +1,248 @@
+<!-- Layout preview derived from open-processes/respond-to-a-data-breach.json and its committed page. -->
+
+# Respond to a data breach
+
+> **Format preview.** This page reorganizes the existing record for review.
+
+[Overview](#overview) · [Before you start](#before-you-start) · [Geography](#geography) · [Steps](#steps-at-a-glance)
+
+## Overview
+
+**Trigger:** You discover unauthorized access to customer or company data: a breach is live or just happened.
+
+In the first hours, contain the breach and preserve the evidence. In the first days, get counsel and count deadlines. Every US state has its own breach-notification law (the NCSL survey maps them), some with deadlines in days: California now sets a hard clock (law rule [us-ca.breach-notification-timing](../../open-law/US-CA/us-ca-breach-notification-timing.json), residents within 30 calendar days of discovery). Which laws apply depends on where the affected people live, not where your company is. You cannot unsend a notification, so work out the scope first, then notify whoever the statutes require, with counsel. The geo notes cover the non-US equivalents: the UK GDPR's 72-hour ICO deadline, Germany's Article 33 state authorities, India's six-hour CERT-In directions, New Zealand's serious-harm notification to the Privacy Commissioner (law rule [nz.privacy-breach-notification](../../open-law/NZ/nz-privacy-breach-notification.json)), and Australia's notifiable data breaches scheme (law rule [au.notifiable-data-breaches](../../open-law/AU/au-notifiable-data-breaches.json): assess within 30 days, then notify the OAIC and affected individuals as soon as practicable). Educational guidance, not legal advice. These deadlines are statutes; verify each against the relevant state's law with counsel.
+
+| Field | Value |
+| --- | --- |
+| Kind | situation |
+| Phase | compliance |
+| Cadence | event-driven |
+| Geo scope | global |
+| Complexity | very complex |
+| Reversibility | irreversible |
+| Urgency | act within hours |
+| Active work | ~12 h |
+| Elapsed including waits | ~12 h |
+| Agent support | manual guide |
+
+Containment calls, counsel, statute mapping, and the notifications themselves are human judgment with legal weight. An agent can preserve the forensic evidence and assemble the incident timeline; it cannot decide who must be told what, where.
+
+## Before you start
+
+| Information to gather | Required by the record |
+| --- | --- |
+| what systems and data were touched, and when | Yes |
+| where your affected users live (states/countries) | Yes |
+
+## Geography
+
+Country rows describe the guidance recorded here. Local notes and step alternatives do not establish a complete country-specific workflow.
+
+| Country | Recorded guidance | Steps with local alternatives or resolutions |
+| --- | --- | --- |
+| [United States](#geo-us) | step resolution | [5](#step-5), [6](#step-6), [7](#step-7) |
+| [India](#geo-in) | Local analog note; step resolution | [5](#step-5), [6](#step-6) |
+| [United Kingdom](#geo-uk) | Local analog note; step resolution | [5](#step-5), [6](#step-6) |
+| [Germany](#geo-de) | Local analog note; step resolution | [5](#step-5), [6](#step-6) |
+| [France](#geo-fr) | Local analog note; step resolution | [5](#step-5), [6](#step-6) |
+| [Portugal](#geo-pt) | Local analog note; step resolution | [5](#step-5), [6](#step-6), [7](#step-7) |
+| [Canada](#geo-ca) | Local analog note; step resolution | [5](#step-5), [6](#step-6), [7](#step-7) |
+| [New Zealand](#geo-nz) | Local analog note | — |
+| [Singapore](#geo-sg) | Local analog note; step resolution | [5](#step-5), [6](#step-6) |
+| [Australia](#geo-au) | Local analog note; step resolution | [5](#step-5), [6](#step-6), [7](#step-7) |
+| [South Korea](#geo-kr) | Local analog note; step resolution | [5](#step-5), [6](#step-6) |
+| [Hong Kong](#geo-hk) | Local analog note; step resolution | [5](#step-5), [6](#step-6) |
+| [Estonia](#geo-ee) | Local analog note; step resolution | [5](#step-5), [6](#step-6) |
+
+## Steps at a glance
+
+Use the recorded prerequisites and conditions below to follow the path. Row order is for navigation.
+
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- |
+| [1. Contain the breach: revoke compromised credentials, rotate keys, isolate affected systems](#step-1) | Human | ~2 h | Entry step |
+| [2. Preserve the forensic evidence: logs, disk images, access records — nothing gets wiped](#step-2) | Agent | ~1 h | [Step 1](#step-1) |
+| [3. Assemble the incident timeline and scope: what data, whose, how many records](#step-3) | Agent | ~1.5 h | [Step 2](#step-2) |
+| [4. Engage breach counsel (and your cyber-insurance carrier's hotline if you're covered)](#step-4) | Human | ~1 h | [Step 3](#step-3) |
+| [5. Map the notification clocks: every jurisdiction where affected people live can have its own breach statute — some clocks run in hours or days](#step-5) | Human | ~1.5 h | [Step 4](#step-4) |
+| [6. File the regulator notifications the statutes require](#step-6) | Form / portal | ~1.5 h | [Step 5](#step-5) |
+| [7. Notify the affected individuals per the controlling statutes (content requirements differ by jurisdiction)](#step-7) | Human | ~2 h | [Step 6](#step-6) |
+| [8. Run the post-incident review and the remediation plan](#step-8) | Human | ~1.5 h | [Step 7](#step-7) |
+
+## Step details
+
+<a id="step-1"></a>
+
+### 1. Contain the breach: revoke compromised credentials, rotate keys, isolate affected systems
+
+human · ~2 h
+
+
+
+<a id="step-2"></a>
+
+### 2. Preserve the forensic evidence: logs, disk images, access records — nothing gets wiped
+
+agent-runnable · ~1 h
+
+
+
+<a id="step-3"></a>
+
+### 3. Assemble the incident timeline and scope: what data, whose, how many records
+
+agent-runnable · ~1.5 h
+
+
+
+<a id="step-4"></a>
+
+### 4. Engage breach counsel (and your cyber-insurance carrier's hotline if you're covered)
+
+human · ~1 h
+
+- Vendor options: Cooley, Orrick, Fenwick, Gunderson Dettmer
+- Ranked market: [startup-law-firms](../../open-rankings/startup-law-firms)
+
+<a id="step-5"></a>
+
+### 5. Map the notification clocks: every jurisdiction where affected people live can have its own breach statute — some clocks run in hours or days
+
+human · ~1.5 h
+
+- Do it yourself: [NCSL: state security-breach notification laws](https://www.ncsl.org/technology-and-communication/security-breach-notification-laws)
+
+<a id="step-6"></a>
+
+### 6. File the regulator notifications the statutes require
+
+manual form/portal · ~1.5 h · irreversible
+
+- Do it yourself: [California AG: data breach reporting](https://oag.ca.gov/privacy/databreach/reporting)
+
+<a id="step-7"></a>
+
+### 7. Notify the affected individuals per the controlling statutes (content requirements differ by jurisdiction)
+
+human · ~2 h · irreversible
+
+- Do it yourself: [FTC: data breach response guide](https://www.ftc.gov/business-guidance/resources/data-breach-response-guide-business)
+
+<a id="step-8"></a>
+
+### 8. Run the post-incident review and the remediation plan
+
+human · ~1.5 h
+
+
+
+## Country details
+
+<a id="geo-us"></a>
+
+### United States
+
+- Step 5: Every US state where affected residents live has its own breach statute — some clocks run in days, and California requires resident notice within 30 calendar days of discovery (law rule us-ca.breach-notification-timing) ([NCSL — breach notification laws](https://www.ncsl.org/technology-and-communication/security-breach-notification-laws))
+- Step 6: The filing points are the state attorneys general — e.g. California's breach-reporting portal ([California AG: data breach reporting](https://oag.ca.gov/privacy/databreach/reporting))
+- Step 7: Content requirements differ by state; the FTC's breach-response guide maps the individual-notice overlay ([FTC: data breach response guide](https://www.ftc.gov/business-guidance/resources/data-breach-response-guide-business))
+
+<a id="geo-in"></a>
+
+### India
+
+- India's CERT-In directions require reporting covered cyber incidents within six hours of noticing — far tighter than any US state clock — and the DPDP Act adds personal-data-breach duties toward the Data Protection Board. ([CERT-In (India incident reporting)](https://www.cert-in.org.in/))
+- Step 5: CERT-In directions require reporting covered cyber incidents within six hours of noticing, and the DPDP Act adds personal-data-breach duties ([CERT-In (India incident reporting)](https://www.cert-in.org.in/))
+- Step 6: Report covered incidents to CERT-In, with the DPDP Act's duties toward the Data Protection Board beside it ([CERT-In (India incident reporting)](https://www.cert-in.org.in/))
+
+<a id="geo-uk"></a>
+
+### United Kingdom
+
+- Under UK GDPR a notifiable personal-data breach must be reported to the ICO without undue delay and within 72 hours of awareness — the ICO's self-assessment and reporting flow is the canonical route. ([ICO: report a breach](https://ico.org.uk/for-organisations/report-a-breach/))
+- Step 5: Under UK GDPR a notifiable personal-data breach must be reported to the ICO without undue delay and within 72 hours of awareness ([ICO: report a breach](https://ico.org.uk/for-organisations/report-a-breach/))
+- Step 6: The ICO's self-assessment and reporting flow is the canonical route ([ICO: report a breach](https://ico.org.uk/for-organisations/report-a-breach/))
+
+<a id="geo-de"></a>
+
+### Germany
+
+- In Germany GDPR Article 33 applies — report to the competent state data-protection authority within 72 hours of awareness; the federal BfDI fronts the supervisory landscape and routes to the Länder authorities. ([BfDI (German data-protection authorities)](https://www.bfdi.bund.de/EN/Home/home_node.html))
+- Step 5: GDPR Article 33 runs the clock: 72 hours of awareness to report to the competent state data-protection authority ([BfDI (German data-protection authorities)](https://www.bfdi.bund.de/EN/Home/home_node.html))
+- Step 6: Report to the competent state data-protection authority; the federal BfDI fronts the supervisory landscape and routes to the Länder authorities ([BfDI (German data-protection authorities)](https://www.bfdi.bund.de/EN/Home/home_node.html))
+
+<a id="geo-fr"></a>
+
+### France
+
+- GDPR Article 33 in France runs through the CNIL: notify within 72 hours of awareness via the CNIL's online breach-notification teleservice (a two-stage notification is allowed while facts are incomplete), and inform the affected people where the risk to them is high. ([CNIL — notify a data breach](https://www.cnil.fr/fr/notifier-une-violation-de-donnees-personnelles))
+- Step 5: GDPR Article 33 via the CNIL: 72 hours of awareness, with a two-stage notification allowed while facts are incomplete ([CNIL — notify a data breach](https://www.cnil.fr/fr/notifier-une-violation-de-donnees-personnelles))
+- Step 6: Notify via the CNIL's online breach-notification teleservice ([CNIL — notify a data breach](https://www.cnil.fr/fr/notifier-une-violation-de-donnees-personnelles))
+
+<a id="geo-pt"></a>
+
+### Portugal
+
+- GDPR Article 33 applies directly: report a notifiable personal-data breach to the CNPD within 72 hours of awareness and notify affected individuals when the risk is high — the CNPD fronts the national reporting flow. ([CNPD — report a breach](https://www.cnpd.pt/))
+- Step 5: GDPR Article 33 applies directly: report a notifiable personal-data breach to the CNPD within 72 hours of awareness ([CNPD — report a breach](https://www.cnpd.pt/))
+- Step 6: The CNPD fronts the national notification route ([CNPD — report a breach](https://www.cnpd.pt/))
+- Step 7: Notify affected individuals when the risk is high ([CNPD — report a breach](https://www.cnpd.pt/))
+
+<a id="geo-ca"></a>
+
+### Canada
+
+- Under PIPEDA, report breaches posing a real risk of significant harm to the Privacy Commissioner, notify affected individuals, and keep records of every breach for 24 months — Quebec's private-sector law adds its own CAI reporting track. ([OPC — respond to a privacy breach](https://www.priv.gc.ca/en/privacy-topics/privacy-for-businesses/privacy-breaches-at-your-business/gd_pb_201810/))
+- Step 5: Under PIPEDA the trigger is a real risk of significant harm, with records of every breach kept for 24 months ([OPC — respond to a privacy breach](https://www.priv.gc.ca/en/privacy-topics/privacy-for-businesses/privacy-breaches-at-your-business/gd_pb_201810/))
+- Step 6: Report qualifying breaches to the Privacy Commissioner under PIPEDA ([OPC — respond to a privacy breach](https://www.priv.gc.ca/en/privacy-topics/privacy-for-businesses/privacy-breaches-at-your-business/gd_pb_201810/))
+- Step 7: Notify affected individuals of breaches posing a real risk of significant harm; Quebec's private-sector law adds its own CAI reporting track ([OPC — respond to a privacy breach](https://www.priv.gc.ca/en/privacy-topics/privacy-for-businesses/privacy-breaches-at-your-business/gd_pb_201810/))
+
+<a id="geo-nz"></a>
+
+### New Zealand
+
+- A breach that has caused, or is likely to cause, anyone serious harm must be notified to the Privacy Commissioner and affected people as soon as practicable (Privacy Act 2020) — the Commissioner's NotifyUs tool is the channel, ideally within 72 hours. ([NotifyUs — Privacy Commissioner](https://www.privacy.org.nz/responsibilities/privacy-breaches/notify-us/))
+
+<a id="geo-sg"></a>
+
+### Singapore
+
+- The PDPA clock is concrete: assess suspected breaches expeditiously, notify the PDPC no later than 3 calendar days after assessing a breach notifiable (law rule [sg.pdpa-breach-notification](../../open-law/SG/sg-pdpa-breach-notification.json)), then notify affected individuals of significant-harm breaches. ([Personal Data Protection Act 2012 (SSO)](https://sso.agc.gov.sg/Act/PDPA2012))
+- Step 5: The PDPA clock: assess expeditiously, then no later than 3 calendar days from assessing a breach notifiable (law rule sg.pdpa-breach-notification) ([Personal Data Protection Act 2012 (SSO)](https://sso.agc.gov.sg/Act/PDPA2012))
+- Step 6: Notify the PDPC of a notifiable breach within 3 calendar days of the assessment (law rule sg.pdpa-breach-notification) ([Personal Data Protection Act 2012 (SSO)](https://sso.agc.gov.sg/Act/PDPA2012))
+
+<a id="geo-au"></a>
+
+### Australia
+
+- The Privacy Act's notifiable data breaches scheme (law rule [au.notifiable-data-breaches](../../open-law/AU/au-notifiable-data-breaches.json)): assess a suspected eligible breach within 30 days, then give the OAIC a statement and notify affected individuals as soon as practicable — the OAIC's online NDB form is the channel. Small business operators under the $3 million turnover threshold are generally outside the scheme. ([OAIC: report a data breach](https://www.oaic.gov.au/privacy/notifiable-data-breaches/report-a-data-breach))
+- Step 5: The Privacy Act's notifiable data breaches scheme: take all reasonable steps to assess a suspected eligible breach within 30 days (law rule au.notifiable-data-breaches) ([OAIC: report a data breach](https://www.oaic.gov.au/privacy/notifiable-data-breaches/report-a-data-breach))
+- Step 6: Give the OAIC the eligible-data-breach statement as soon as practicable, through its online NDB form ([OAIC: report a data breach](https://www.oaic.gov.au/privacy/notifiable-data-breaches/report-a-data-breach))
+- Step 7: Notify the statement's contents to the affected or at-risk individuals as soon as practicable, or publish it where individual notice is impracticable ([OAIC: report a data breach](https://www.oaic.gov.au/privacy/notifiable-data-breaches/report-a-data-breach))
+
+<a id="geo-kr"></a>
+
+### South Korea
+
+- PIPA runs two 72-hour clocks: notify affected data subjects, and report leaks touching 1,000 or more subjects, sensitive data, or unlawful access to the PIPC or KISA (Act Article 34; Decree Articles 39 and 40). ([Personal information portal (PIPC)](https://www.privacy.go.kr/))
+- Step 5: Two 72-hour clocks: data-subject notification and the PIPC/KISA report PIPA Article 34 with Decree Articles 39 and 40 sets data-subject notification within 72 hours, and a 72-hour regulator report where the leak touches 1,000 or more subjects, sensitive or unique identification data, or unlawful external access (law rule [kr.pipa-breach-notification](../../open-law/KR/kr-pipa-breach-notification.json)). ([Personal information portal (PIPC)](https://www.privacy.go.kr/))
+- Step 6: Report to the PIPC or KISA through the privacy portal The report carries the same particulars as the subject notice; where details are not yet confirmed, report what is known first and supplement immediately as facts land (Decree Article 40(2); law rule [kr.pipa-breach-notification](../../open-law/KR/kr-pipa-breach-notification.json)). ([Personal information portal (PIPC)](https://www.privacy.go.kr/))
+
+<a id="geo-hk"></a>
+
+### Hong Kong
+
+- No statutory breach-notification clock runs: notifying the Privacy Commissioner is a recommended practice, not a duty (law rule [hk.pdpo-breach-notification-voluntary](../../open-law/HK/hk-pdpo-breach-notification-voluntary.json)), made through the PCPD's e-Data Breach Notification — while DPP 4's security obligation is what the breach itself puts in question. ([PCPD — data breach notification](https://www.pcpd.org.hk/english/enforcement/data_breach_notification/dbn.html))
+- Step 5: No statutory clock runs: notifying the PCPD is recommended practice, not a duty (law rule hk.pdpo-breach-notification-voluntary) The PDPO contains no general breach-notification requirement; the PCPD's June 2023 guidance recommends notifying affected data subjects, the PCPD and other relevant parties as soon as practicable, and sector rules (HKMA guidelines, listing obligations) can still compel reports. ([PCPD — data breach notification](https://www.pcpd.org.hk/english/enforcement/data_breach_notification/dbn.html))
+- Step 6: A voluntary notification goes to the PCPD through the e-Data Breach Notification channel Submit the e-DBN with the breach description, affected data and remediation; notification is recommended practice under law rule [hk.pdpo-breach-notification-voluntary](../../open-law/HK/hk-pdpo-breach-notification-voluntary.json) rather than a statutory filing. ([PCPD — data breach notification](https://www.pcpd.org.hk/english/enforcement/data_breach_notification/dbn.html))
+
+<a id="geo-ee"></a>
+
+### Estonia
+
+- GDPR applies directly: the 72-hour authority notification goes to the Data Protection Inspectorate (AKI), and data subjects are told without undue delay where the risk is high (EU rules eu.gdpr-breach-notification-authority, eu.gdpr-breach-communication-data-subjects); the national layer names AKI as the supervisor (law rule [ee.personal-data-protection-national-layer](../../open-law/EE/ee-personal-data-protection-national-layer.json)). ([Data Protection Inspectorate (AKI)](https://www.aki.ee/en))
+- Step 5: One 72-hour clock, straight from GDPR Article 33, to the AKI GDPR applies directly: report a notifiable breach to the Data Protection Inspectorate within 72 hours of awareness (EU rule eu.gdpr-breach-notification-authority), and tell affected data subjects without undue delay where the risk is high; the national layer names AKI as the supervisor (law rule [ee.personal-data-protection-national-layer](../../open-law/EE/ee-personal-data-protection-national-layer.json)). ([Data Protection Inspectorate (AKI)](https://www.aki.ee/en))
+- Step 6: Report to the Data Protection Inspectorate (AKI) The Data Protection Inspectorate fronts the national notification route for the GDPR Article 33 report; where details are not yet confirmed, notify in phases as the regulation allows. ([Data Protection Inspectorate (AKI)](https://www.aki.ee/en))
+
+---
+
+Source record: [`open-processes/respond-to-a-data-breach.json`](../respond-to-a-data-breach.json) · [Current format](../pages/respond-to-a-data-breach.md)

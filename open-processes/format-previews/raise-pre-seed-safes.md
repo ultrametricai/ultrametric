@@ -1,0 +1,351 @@
+<!-- Layout preview derived from open-processes/raise-pre-seed-safes.json and its committed page. -->
+
+# Raise pre-seed (SAFEs)
+
+> **Format preview.** This page reorganizes the existing record for review.
+
+[Overview](#overview) · [Before you start](#before-you-start) · [Geography](#geography) · [Steps](#steps-at-a-glance) · [Outputs](#outputs)
+
+## Overview
+
+Execute a pre-seed fundraise on the jurisdiction's standard convertible instrument — the Y Combinator SAFE by default — including document preparation, investor outreach, and closing.
+
+| Field | Value |
+| --- | --- |
+| Kind | process |
+| Phase | fundraising |
+| Cadence | event-driven |
+| Geo scope | global |
+| Complexity | very complex |
+| Reversibility | irreversible |
+| Active work | ~2.1 h |
+| Elapsed including waits | ~3.4 d |
+| Agent support | partial |
+
+System can draft the instruments, track investor pipeline, send follow-ups, and manage documents. Negotiations and meetings are person-routed.
+
+## Before you start
+
+Required artifacts:
+
+- Cap table record — from [Set up cap table](../pages/set-up-cap-table.md)
+- Business bank account — from [Open bank account](../pages/open-bank-account.md)
+
+| Information to gather | Required by the record |
+| --- | --- |
+| fundraise target amount | Yes |
+| fundraise valuation cap | Yes |
+| fundraise safe type | Yes |
+| company pitch deck | Yes |
+
+## Geography
+
+Country rows describe the guidance recorded here. Local notes and step alternatives do not establish a complete country-specific workflow.
+
+| Country | Recorded guidance | Steps with local alternatives or resolutions |
+| --- | --- | --- |
+| [United States](#geo-us) | step resolution | [5](#step-5), [8](#step-8) |
+| [India](#geo-in) | Local analog note; step alternative | [1](#step-1) |
+| [United Kingdom](#geo-uk) | Local analog note; step alternative | [1](#step-1) |
+| [Germany](#geo-de) | Local analog note; step alternative | [1](#step-1) |
+| [France](#geo-fr) | Local analog note; step alternative | [1](#step-1) |
+| [Portugal](#geo-pt) | Local analog note | — |
+| [Canada](#geo-ca) | Local analog note; step resolution | [8](#step-8) |
+| [Singapore](#geo-sg) | Local analog note | — |
+| [Australia](#geo-au) | Local analog note | — |
+| [South Korea](#geo-kr) | Local analog note | — |
+| [Hong Kong](#geo-hk) | Local analog note | — |
+| [Estonia](#geo-ee) | Local analog note | — |
+
+## Steps at a glance
+
+Use the recorded prerequisites and conditions below to follow the path. Row order is for navigation.
+
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- |
+| [1. Prepare the fundraising instrument documents](#step-1) | Agent; approval required | ~30 min | Entry step |
+| [2. Create investor pipeline tracker](#step-2) | Agent | ~10 min | Entry step |
+| [3. Draft outreach emails](#step-3) | Agent; approval required | ~20 min | [Step 2](#step-2) |
+| [4. Conduct investor meetings](#step-4) | Human; includes waiting | ~3.3 d | [Step 3](#step-3) |
+| [5. Send the investment documents for signature](#step-5) | Agent; approval required | ~10 min | [Step 1](#step-1); [Step 4](#step-4) |
+| [6. Verify wire transfers received](#step-6) | Agent | ~5 min | [Step 5](#step-5) |
+| [7. Update cap table](#step-7) | Agent; approval required | ~15 min | [Step 6](#step-6) |
+| [8. Make the securities notice filing the offering rules require](#step-8) | Form / portal; approval required | ~30 min | [Step 7](#step-7) |
+| [9. Send closing confirmation](#step-9) | Agent; approval required | ~5 min | [Step 8](#step-8) |
+
+## Step details
+
+<a id="step-1"></a>
+
+### 1. Prepare the fundraising instrument documents
+
+agent-runnable · ~30 min · human approval required
+
+| Option | Applies when |
+| --- | --- |
+| Default — Prepare SAFE documents | Recorded default |
+| India - iSAFE / CCPS instruments | Raising the pre-seed in India |
+| UK - ASA + SEIS/EIS assurance | Raising the pre-seed in the United Kingdom |
+| Germany - Wandeldarlehen | Raising the pre-seed in Germany |
+| France - BSA-AIR | Raising the pre-seed in France |
+
+*Entry step — no prerequisite step.*
+
+Identify the issuer’s jurisdiction, investors, target amount and proposed economics, then draft the appropriate fundraising instrument and term summary. Model ownership outcomes and identify side letters or conversion rights that change them. Flag unresolved legal terms and offering-route questions for counsel, keeping unagreed terms visible so the founders can negotiate and the closing work follows the chosen jurisdiction.
+
+- Canonical vendor: Clerky
+- Sources: [Y Combinator SAFE documents](https://www.ycombinator.com/safe/)
+
+Options:
+  - **Default — Prepare SAFE documents** — agent-runnable · ~30 min · human approval required
+
+    Use the selected SAFE form’s exact version and definitions to enter investor identity, purchase amount and agreed terms. Check caps, discounts or MFN provisions against the deal and any side letter, and model the dilution. Show deviations from the source form clearly for founder and counsel review before the document moves into execution.
+  - **India - iSAFE / CCPS instruments** — manual form/portal
+
+    When: Raising the pre-seed in India
+
+    Describe the Indian issuer, investor residency, proposed investment and conversion economics for local counsel. Work through which security, valuation, approvals and foreign-investment requirements fit the deal before finalizing an iSAFE or CCPS package. Draft the terms and ownership scenarios with unresolved clauses visible, including the basis for any claimed transaction or investor eligibility.
+
+    - Do it yourself: [Startup India (DPIIT recognition)](https://www.startupindia.gov.in/)
+    - Sources: [India Companies Act section 42](https://www.indiacode.nic.in/show-data?abv=CEN&actid=AC_CEN_22_29_00008_201318_1517807327856&orderno=44&orgactid=undefined&sectionId=1232&sectionno=42&statehandle=123456789%2F1362) · [India Companies Act 2013](https://www.indiacode.nic.in/ViewFileUploaded?file=the_companies_act%2C_2013_no._18_of_2013_date_29.08.2013.pdf&path=AC_CG_61_1375_00003_00003_1594717497353%2Factfile%2F)
+  - **UK - ASA + SEIS/EIS assurance** — manual form/portal
+
+    When: Raising the pre-seed in the United Kingdom
+
+    For a UK ASA, work through the share-issue trigger, longstop, investor rights and intended SEIS or EIS treatment with counsel. HMRC advance assurance is optional; if sought, apply before entering the ASA and include its terms. Set out when funding and share issuance occur under the agreement, keeping company eligibility separate from each investor’s tax position.
+
+    - Do it yourself: [HMRC - apply to use SEIS](https://www.gov.uk/guidance/venture-capital-schemes-apply-to-use-the-seed-enterprise-investment-scheme)
+    - Sources: [HMRC VCM33025](https://www.gov.uk/hmrc-internal-manuals/venture-capital-schemes-manual/vcm33025) · [HMRC VCM12025](https://www.gov.uk/hmrc-internal-manuals/venture-capital-schemes-manual/vcm12025)
+  - **Germany - Wandeldarlehen** — manual form/portal
+
+    When: Raising the pre-seed in Germany
+
+    Draft the German convertible-loan terms: principal, interest, maturity, conversion events, valuation mechanics and investor identities. Model conversion outcomes and ask local counsel to determine the form and approvals required by the actual clauses, including future capital measures. Resolve those issues before execution. Treat any proposed grant application separately, with its own verified programme and transaction eligibility.
+
+    - Do it yourself: [BAFA - INVEST grant for angels](https://www.bafa.de/DE/Wirtschaft/Beratung_Finanzierung/Invest/invest_node.html)
+  - **France - BSA-AIR** — manual form/portal
+
+    When: Raising the pre-seed in France
+
+    For a proposed French BSA-AIR, assemble the company form, capital documents, investor details and negotiated investment and conversion terms. Show how future financing or other triggers change allocation, then resolve issuance and approval requirements with local counsel. Draft the agreement against that analysis. Track co-investment discussions separately until their actual commitments are documented.
+
+    - Do it yourself: [Bpifrance Creation (state investment bank)](https://bpifrance-creation.fr/)
+
+<a id="step-2"></a>
+
+### 2. Create investor pipeline tracker
+
+agent-runnable · ~10 min
+
+*Entry step — no prerequisite step.*
+
+Build the investor pipeline with investment focus, contact source, relationship owner, status and next action. Deduplicate related contacts and distinguish a possible introduction from a meeting or investment commitment. Link the relevant pitch materials and keep sensitive notes private. The tracker should show who follows up with each investor and what is needed to move the conversation forward.
+
+- Canonical vendor: Notion
+- Cross-arena options: Attio, HubSpot (crm)
+
+<a id="step-3"></a>
+
+### 3. Draft outreach emails
+
+agent-runnable · ~20 min · human approval required
+
+| Option | Applies when |
+| --- | --- |
+| Default — Draft outreach emails | Recorded default |
+| Warm-intro outreach | You have an existing network into the target investors - warm intros convert best |
+| Platform round (RUV/syndicate) | Raising from many angels via a platform vehicle rather than direct outreach |
+
+Choose direct outreach, introductions or a platform route based on investor fit, available relationships and the offering approach. Draft a concise account of the company, supported progress, proposed raise and requested next step. Tailor the information to the audience and leave a message the founder can send, with any unresolved claim or disclosure question visible.
+
+- Canonical vendor: Gmail
+- Vendor options: ChatGPT, Claude, Gemini, Grok
+- Ranked market: [ai-assistants](../../open-rankings/ai-assistants)
+
+Options:
+  - **Default — Draft outreach emails** — agent-runnable · ~20 min · human approval required
+
+    Write to the investor’s stated focus or a confirmed reason they may be interested. Explain the product, support progress claims with a few concrete figures, and make a clear request for a conversation. Use materials suitable for that audience and remove confidential customer or financial information outside the intended disclosure. The founder should be able to send the draft without reconstructing the pitch.
+  - **Warm-intro outreach** — human
+
+    When: You have an existing network into the target investors - warm intros convert best
+
+    Use a real connection who can explain why the company fits the investor. Map the relationship, write a short forwardable introduction and ask the connector to check both sides’ interest before joining them. Give the founder enough context to follow up naturally. A warm path is an introduction opportunity; investment interest still needs to be established through the conversation.
+
+    - **Map mutual connections to the investor target list** — agent-runnable · ~30 min
+
+      Compare the investor target list with the founders’ actual professional relationships. Identify who knows each investor, how current the connection is and why the investor may fit. Check uncertain links with the relationship owner. Prioritize the strongest introductions and give each connector a specific reason for the request.
+
+      - Vendor options: HubSpot, Attio
+      - Ranked market: [crm](../../open-rankings/crm)
+
+    - **Draft the forwardable blurb** — agent-runnable · ~15 min
+
+      Write a short paragraph the connector can forward unchanged: what the company does, whom it serves, a few supportable progress points and why this investor’s time would be useful. Include a deck link when suitable for that audience. Check the numbers with the founder and tailor the request so the connector can introduce the company without composing a new pitch.
+
+      - Vendor options: ChatGPT, Claude, Gemini, Grok
+      - Ranked market: [ai-assistants](../../open-rankings/ai-assistants)
+
+    - **Ask connectors for double-opt-in intros** — human · ~2 h · async wait
+
+      The founder asks the chosen connector for an introduction using the investor-fit explanation and forwardable blurb. Ask the connector to establish the investor’s interest before joining both parties in a thread. When the introduction arrives, follow up using the context actually provided and update the pipeline with the response and next action.
+  - **Platform round (RUV/syndicate)** — manual form/portal
+
+    When: Raising from many angels via a platform vehicle rather than direct outreach
+
+    Compare a syndicate or pooled vehicle with direct investments on structure, fees, eligibility, decision rights and reporting obligations. Establish with counsel and the platform who handles onboarding, documents, compliance and closing. Build the investor materials around those responsibilities and reconcile commitments, receipts and the company’s ownership entry to the executed records.
+
+    - Vendor options: AngelList
+
+<a id="step-4"></a>
+
+### 4. Conduct investor meetings
+
+human · ~3.3 d · async wait
+
+Prepare for the meeting around the investor’s focus, the company’s progress and the funding sought. Decide which founder will cover the product, financial needs and proposed terms, and what the team needs to learn from the investor. Afterwards, capture actual feedback, diligence requests and next steps. Treat a new economic proposal as a negotiation until the relevant terms are agreed.
+
+<a id="step-5"></a>
+
+### 5. Send the investment documents for signature
+
+agent-runnable · ~10 min · human approval required · hard to undo
+
+*Follows steps 1 and 4 — both are required first.*
+
+Send the finalized instrument and any side letter to the correct investor and authorized company signatory. Match the packet to the agreed investor identity, amount and economic terms; route requested changes back into negotiation before execution. Track both signatures and archive the executed agreement. Keep signature and funding statuses distinct so sending or signing a document does not create an assumed cash receipt.
+
+- Produces: Executed SAFEs
+- Canonical vendor: DocuSign
+
+<a id="step-6"></a>
+
+### 6. Verify wire transfers received
+
+agent-runnable · ~5 min · irreversible
+
+Match incoming bank credits to the executed investment documents by investor, amount and currency. Investigate shortfalls, fees, third-party senders and missing references before marking an investment funded. Where an exception could affect the close, resolve it with finance and counsel. Link the bank receipt to the investment record and follow up on the investors whose funds remain outstanding.
+
+- Canonical vendor: Mercury
+
+<a id="step-7"></a>
+
+### 7. Update cap table
+
+agent-runnable · ~15 min · human approval required
+
+Update the equity records from executed, funded instruments using the investor’s legal name, amount, instrument version and side-letter rights. Record convertibles in their proper category and distinguish modeled conversion from issued shares. The authorized equity administrator reconciles the update to bank receipts and agreements, preserving the previous export so any difference in ownership or outstanding instruments can be explained.
+
+- Canonical vendor: Carta
+
+<a id="step-8"></a>
+
+### 8. Make the securities notice filing the offering rules require
+
+manual form/portal · ~30 min · human approval required · hard to undo
+
+Where the offering rules require a notice filing, gather the issuer, related persons, exemption, offering and investor information. Confirm the first-sale date and deadline with counsel; first sale may precede a wire receipt. The authorized filer submits the reviewed notice through the required channel and checks its resulting status. Keep the filed copy and receipt, and track separate state or provincial notices where applicable.
+
+- Verify: The accepted notice appears in the filing authority's public register or acknowledgment channel; retain the filed copy and receipt.
+- Cost: free (free, as of 2026-10-01, [www.sec.gov](https://www.sec.gov/info/smallbus/secg/formdguide.htm)). The SEC charges no filing fee for a Form D notice or amendment; most states charge their own blue-sky notice-filing fees.
+- Canonical vendor: SEC
+- Do it yourself: [SEC EDGAR online forms](https://www.onlineforms.edgarfiling.sec.gov/)
+- Sources: [SEC Filing a Form D Notice](https://www.sec.gov/resources-small-businesses/exempt-offerings/filing-form-d-notice)
+
+<a id="step-9"></a>
+
+### 9. Send closing confirmation
+
+agent-runnable · ~5 min · human approval required
+
+Send each investor a closing confirmation based on reconciled signatures and funds received. The authorized company sender states the amount, instrument and document access, identifying any remaining closing item accurately. Give finance and the equity administrator the same final information, and keep each investor’s message limited to their own transaction details.
+
+- Canonical vendor: Gmail
+
+## Country details
+
+<a id="geo-us"></a>
+
+### United States
+
+- Step 5: The packet is the finalized YC SAFE (cap, discount, or MFN variant) and any side letter ([Y Combinator SAFE documents](https://www.ycombinator.com/safe/))
+- Step 8: File Form D through the company's EDGAR account within the first-sale deadline, and track the state blue-sky notices beside it ([SEC Filing a Form D Notice](https://www.sec.gov/resources-small-businesses/exempt-offerings/filing-form-d-notice))
+
+<a id="geo-in"></a>
+
+### India
+
+- Pre-seed runs on CCPS/CCD instruments or the iSAFE (a practitioner adaptation of the SAFE onto compulsorily convertible preference shares); DPIIT Startup-India recognition unlocks the startup tax benefits, and the old 'angel tax' on premium issues was abolished from FY 2025-26. ([Startup India (DPIIT recognition)](https://www.startupindia.gov.in/))
+
+<a id="geo-uk"></a>
+
+### United Kingdom
+
+- The SAFE analog is the ASA (advanced subscription agreement) or convertible loan note — but the round is really driven by SEIS/EIS tax relief: get HMRC advance assurance first, and keep ASA longstop dates inside the 6-month S/EIS window. ([HMRC — apply to use SEIS](https://www.gov.uk/guidance/venture-capital-schemes-apply-to-use-the-seed-enterprise-investment-scheme))
+
+<a id="geo-de"></a>
+
+### Germany
+
+- Pre-seed runs on the Wandeldarlehen (convertible loan) — kept notarization-free in most setups — and business angels claim the federal INVEST grant on qualifying equity tickets via BAFA. ([BAFA — INVEST grant for angels](https://www.bafa.de/DE/Wirtschaft/Beratung_Finanzierung/Invest/invest_node.html))
+
+<a id="geo-fr"></a>
+
+### France
+
+- The SAFE analog is the BSA-AIR (bon de souscription d'actions — accord d'investissement rapide), a practitioner-standard warrant instrument; Bpifrance, the state investment bank, co-invests and its Création portal is the canonical guide. ([Bpifrance Création (state investment bank)](https://bpifrance-creation.fr/))
+
+<a id="geo-pt"></a>
+
+### Portugal
+
+- Pre-seed runs on convertible loan notes rather than SAFEs, and the angel-side incentive is the Programa Semente deduction (CIRS art. 43.º-A) individual investors claim in their tax return for qualifying startup tickets. ([CIRS (DRE) — Programa Semente](https://diariodarepublica.pt/dr/legislacao-consolidada/decreto-lei/1988-34570075))
+
+<a id="geo-ca"></a>
+
+### Canada
+
+- SAFEs are used in Canadian pre-seeds, but securities law is provincial: issuances ride NI 45-106 prospectus exemptions (accredited investor, friends-and-family) with a report of exempt distribution filed after closing. ([NI 45-106 — prospectus exemptions (OSC)](https://www.osc.ca/en/securities-law/instruments-rules-policies/4/45-106))
+- Step 8: Issuances ride NI 45-106 prospectus exemptions, with a report of exempt distribution filed after closing ([NI 45-106 — prospectus exemptions (OSC)](https://www.osc.ca/en/securities-law/instruments-rules-policies/4/45-106))
+
+<a id="geo-sg"></a>
+
+### Singapore
+
+- Pre-seed convertibles are normal — YC publishes a Singapore-law SAFE — with no SEIS/EIS-style relief clock driving the round; remember the eventual conversion is an ACRA-filed allotment, effective only when the register updates. ([YC SAFE documents (Singapore variant)](https://www.ycombinator.com/documents))
+
+<a id="geo-au"></a>
+
+### Australia
+
+- SAFEs and convertible notes are standard pre-seed paper here too; the tax driver is ESIC status — investors in a qualifying early stage innovation company get a 20% carry-forward tax offset and modified CGT treatment (ITAA 1997 Subdiv 360-A), so founders self-assess the early-stage and innovation tests before the round. ([ITAA 1997 Subdiv 360-A (ESIC)](https://www.legislation.gov.au/C2004A05138/latest/text))
+
+<a id="geo-kr"></a>
+
+### South Korea
+
+- The SAFE has a statutory form here: the conditional equity investment contract (조건부지분인수계약) is a recognized venture-investment type under the Venture Investment Promotion Act. ([Venture Investment Promotion Act Article 2 (law.go.kr)](https://www.law.go.kr/%EB%B2%95%EB%A0%B9/%EB%B2%A4%EC%B2%98%ED%88%AC%EC%9E%90%EC%B4%89%EC%A7%84%EC%97%90%EA%B4%80%ED%95%9C%EB%B2%95%EB%A5%A0/%EC%A0%9C2%EC%A1%B0))
+
+<a id="geo-hk"></a>
+
+### Hong Kong
+
+- Pre-seed convertibles are contractual — no statutory SAFE form and no SEIS-style relief clock — and the eventual conversion is an allotment with the return delivered to the Companies Registry within one month (Companies Ordinance section 142). ([Companies Ordinance s 142 — return of allotment](https://www.elegislation.gov.hk/hk/cap622!en/s142))
+
+<a id="geo-ee"></a>
+
+### Estonia
+
+- The local instrument is the convertible loan: Estonian rounds paper convertibles as loan agreements that convert at the priced round's share-capital increase, with the commercial-register entry creating the shares. ([e-Business Register](https://ariregister.rik.ee/eng))
+
+## Outputs
+
+- Executed SAFEs
+
+## Related records
+
+- Part of the chain [Raise a seed round](../pages/raise-a-seed-round.md)
+
+---
+
+Source record: [`open-processes/raise-pre-seed-safes.json`](../raise-pre-seed-safes.json) · [Current format](../pages/raise-pre-seed-safes.md)
