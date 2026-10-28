@@ -23,6 +23,8 @@ Create a workspace account for a new hire (email, drive, groups).
 
 Workspace directory APIs expose user provisioning — an agent can create the account; access grants stay approval-gated.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -90,8 +92,6 @@ human · ~5 min
 
 Give the employee the activation route and support contact. They sign in, replace any temporary credential and enroll the authentication methods required by company policy, keeping passwords and recovery secrets private. Check that the intended workspace is accessible and that the employee understands the recovery process. Route enrollment or device failures to the administrator who can resolve them.
 
-
-<a id="artifacts"></a>
 
 ## Related records
 

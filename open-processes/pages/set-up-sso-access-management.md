@@ -23,6 +23,8 @@ Set up Okta/Google SSO across all company tools with role-based access, MFA, and
 
 Okta API supports user/app management. Individual app SSO configuration varies in automation support.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -138,8 +140,6 @@ Give staff the new sign-in instructions, enrollment steps and support route. Coo
 - Cross-arena market: [workflow-automation](../../open-rankings/workflow-automation)
 - Sources: [NIST SP 800-53 Rev. 5](https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final)
 
-
-<a id="artifacts"></a>
 
 ## Outputs
 

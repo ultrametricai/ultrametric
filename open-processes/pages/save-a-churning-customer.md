@@ -31,6 +31,8 @@ Stripe/HubSpot APIs provide data. Email automatable. Actual save conversation is
 - A supported remedy or cancellation package with exact terms, authority and effective date.
 - Verified billing/support results for actions performed, with promises and remaining follow-up identified separately.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -169,8 +171,6 @@ Update the CRM with the customer's stated reason, decision, agreed remedy and ve
 
 - Canonical vendor: HubSpot
 
-
-<a id="artifacts"></a>
 
 ## Related records
 

@@ -23,6 +23,8 @@ Claim the research-and-development credit your tax jurisdiction offers: scope th
 
 The qualifying-expenditure data pulls from payroll and accounting are automatable and a study provider drives the claim forms; the eligibility judgment, study review, and the return filing itself stay human.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -242,8 +244,6 @@ Where the regime lets the credit offset payroll or wage taxes, apply the electio
 ### Estonia
 
 - Step 5: Not applicable: No profits return exists for an R&D credit to ride Corporate income tax is charged only when profit is distributed (law rule [ee.corporate-tax-distributed-profits](../../open-law/EE/ee-corporate-tax-distributed-profits.json)), so there is no annual profits return and no R&D tax-credit regime attached to one. ([Income and social taxes (e-MTA)](https://www.emta.ee/en/business-client/taxes-and-payment/income-and-social-taxes))
-
-<a id="artifacts"></a>
 
 ## Related records
 

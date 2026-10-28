@@ -382,7 +382,7 @@ function followsLine(part: Part, position: number, walk: WalkContext, ctx: PageC
   const bySource = new Map<string, string[]>()
   for (const l of into) {
     const option = l.option ? partById.get(l.from)?.options.find((o) => o.id === l.option)?.title ?? l.option : null
-    const condition = option ? `option "${trimEnd(linkLawRules(option, ctx))}"` : l.when ? `when ${trimEnd(linkLawRules(l.when, ctx))}` : null
+    const condition = [option ? `option "${trimEnd(linkLawRules(option, ctx))}"` : '', l.when ? `when ${trimEnd(linkLawRules(l.when, ctx))}` : ''].filter(Boolean).join(' and ')
     bySource.set(l.from, [...(bySource.get(l.from) ?? []), ...(condition ? [condition] : [])])
   }
   const descriptions = [...bySource.entries()]
@@ -489,9 +489,10 @@ function partBlock(part: Part, position: number, walk: WalkContext, ctx: PageCon
   // the matching "Follows" line.
   const outgoing = walk.links.filter((l) => l.from === part.id)
   for (const link of outgoing.filter((l) => l.option || l.when)) {
-    const condition = link.option
+    const option = link.option
       ? part.options.find((o) => o.id === link.option)?.title ?? link.option
-      : link.when ?? ''
+      : null
+    const condition = [option, link.when].filter(Boolean).join(' and ')
     bullets.push(`If "${trimEnd(condition)}": continue at step ${walk.numberOf.get(link.to)}`)
   }
   const unconditional = outgoing.filter((l) => !l.option && !l.when)
@@ -629,7 +630,7 @@ function stepsOverview(walk: WalkContext, ctx: PageContext): string[] {
     const into = walk.links.filter((l) => l.to === p.id)
     const dependencies = into.map((l) => {
       const option = l.option ? walk.partById.get(l.from)?.options.find((o) => o.id === l.option)?.title ?? l.option : null
-      const condition = option ?? l.when
+      const condition = [option, l.when].filter(Boolean).join(' and ')
       return `[Step ${walk.numberOf.get(l.from)}](#step-${walk.numberOf.get(l.from)})${condition ? ` (${linkLawRules(condition, ctx)})` : ''}`
     })
     const join = into.length > 1 ? (requiredJoin(into, walk.gated) ? 'All: ' : 'Alternatives: ') : ''
@@ -708,6 +709,7 @@ export function renderProcessPage(source: CatalogProcess, ctx: PageContext): str
   }
 
   if (requires.length || namedInputs.length) {
+    if (requires.length) lines.push('<a id="artifacts"></a>', '')
     lines.push('## Before you start', '')
     if (requires.length) lines.push('Required artifacts:', '', ...requires.map((id) => `- ${artifactLink(id, ctx)}`), '')
     if (namedInputs.length) lines.push('| Information to gather | Required by the record |', '| --- | --- |',
@@ -747,11 +749,9 @@ export function renderProcessPage(source: CatalogProcess, ctx: PageContext): str
   if (country.length > 0) lines.push('<a id="by-country"></a>', '', ...country.map((l) => l === '## By country' ? '## Country details' : l), '')
 
   if (produces.length > 0) {
-    lines.push('<a id="artifacts"></a>', '', '## Outputs', '')
+    if (requires.length === 0) lines.push('<a id="artifacts"></a>', '')
+    lines.push('## Outputs', '')
     lines.push(...produces.map((id) => `- ${ctx.artifacts.get(id)?.label ?? id}`), '')
-  } else if (requires.length > 0) {
-    // Preserve the previous artifacts fragment for pages that only require artifacts.
-    lines.push('<a id="artifacts"></a>', '')
   }
 
   const chains = ctx.chainsByTask.get(record.id) ?? []

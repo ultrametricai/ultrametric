@@ -23,6 +23,8 @@ Create a tracker issue from a task or bug report.
 
 Issue creation is a core tracker API (GraphQL + MCP) — a one-call agent step.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -76,8 +78,6 @@ Link the specification, reproduction, customer request, or decision that an assi
 
 - Canonical vendor: Linear
 
-
-<a id="artifacts"></a>
 
 ---
 

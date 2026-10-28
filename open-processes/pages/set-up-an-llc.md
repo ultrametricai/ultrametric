@@ -23,6 +23,8 @@ Form an LLC: name check, Articles of Organization with a registered agent, a sig
 
 Formation services drive the state filing but expose limited APIs. The agent checks the name, drafts the operating agreement, and pre-fills every form; the state portal, the IRS EIN wizard, and member signatures stay manual.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -319,8 +321,6 @@ For a US LLC, assess employee locations, operations and sales for state tax acco
 ### Estonia
 
 - The osaühing (OÜ) is itself the default startup entity: limited liability, no minimum capital beyond one cent per share, formed through the e-Business Register (law rules [ee.private-limited-company-registration](../../open-law/EE/ee-private-limited-company-registration.json), [ee.osauhing-no-minimum-capital](../../open-law/EE/ee-osauhing-no-minimum-capital.json)). ([e-Business Register](https://ariregister.rik.ee/eng))
-
-<a id="artifacts"></a>
 
 ## Outputs
 

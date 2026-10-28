@@ -23,6 +23,8 @@ Form a charitable organization: define the mission, choose the legal structure, 
 
 Regulator and tax-authority applications are portal forms with human declarations. The system drafts documents, pre-fills applications, and tracks the deadlines and renewals.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -220,8 +222,6 @@ Put every recurring obligation on a calendar with owners before the first year e
 - Step 7: Register the charity with the Charity Commission when the duty arises, then apply to HMRC for recognition as a charity for tax purposes Registration is a duty once gross income exceeds £5,000, and a CIO registers regardless because registration creates it (law rules [uk.charity-registration-duty](../../open-law/UK/uk-charity-registration-duty.json), [uk.cio-registration-effect](../../open-law/UK/uk-cio-registration-effect.json)). HMRC recognition is the separate application that unlocks the tax reliefs and Gift Aid. ([HMRC — charity recognition](https://www.gov.uk/charity-recognition-hmrc))
 - Step 8: No single national pre-solicitation registration exists; organisations fundraising in England, Wales or Northern Ireland can apply to register with the Fundraising Regulator, whose code sets the fundraising standards ([Fundraising Regulator](https://www.fundraisingregulator.org.uk/))
 - Step 9: Send the Charity Commission annual return and accounts on its income-banded requirements; a charitable company also files accounts and the confirmation statement at Companies House ([GOV.UK — charity annual return](https://www.gov.uk/guidance/prepare-a-charity-annual-return))
-
-<a id="artifacts"></a>
 
 ---
 

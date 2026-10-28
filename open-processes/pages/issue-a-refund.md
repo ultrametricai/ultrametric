@@ -23,6 +23,8 @@ Refund a customer charge, behind an approval gate.
 
 Refunds are a single API call — an agent can issue one behind an approval gate.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -81,8 +83,6 @@ Tell the customer the refund amount, currency and actual status through the supp
 - Cross-arena market: [email](../../open-rankings/email)
 - Sources: [Stripe refunds documentation](https://docs.stripe.com/refunds)
 
-
-<a id="artifacts"></a>
 
 ## Related records
 

@@ -23,6 +23,8 @@ Turn users into a channel: design the incentive, mint promo codes, announce to e
 
 Promo codes, announcement emails, and conversion tracking are API work behind a send approval. Incentive design is a judgment call.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -92,8 +94,6 @@ Trace each referral from link or code to signup, qualifying action and reward. R
 - Vendor options: PostHog, Amplitude
 - Ranked market: [product-analytics](../../open-rankings/product-analytics)
 
-
-<a id="artifacts"></a>
 
 ## Related records
 

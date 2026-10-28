@@ -23,6 +23,8 @@ Turn last year’s actuals into next year’s operating plan: pull the numbers, 
 
 Pulling actuals and drafting the model are automatable; the department trade-offs and the board vote are judgment, and the board consent is a signed corporate act.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -116,8 +118,6 @@ Prepare the budget consent under the company’s governing documents, identifyin
 
 - Produces: Board-approved annual budget
 
-
-<a id="artifacts"></a>
 
 ## Outputs
 

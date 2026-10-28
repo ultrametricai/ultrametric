@@ -23,6 +23,8 @@ Implement quarterly OKR framework with company, team, and individual objectives 
 
 Linear/Notion APIs support project and page creation. OKR definition and alignment need human facilitation.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -108,8 +110,6 @@ Prepare the kickoff around the agreed company and team objectives, the planning 
 
 - Canonical vendor: Slack
 
-
-<a id="artifacts"></a>
 
 ---
 

@@ -23,6 +23,8 @@ Configure expense reporting, approval workflows, corporate card policies, and re
 
 Brex/Ramp APIs fully support card limits, policies, and approval workflows.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -113,8 +115,6 @@ agent-runnable · ~10 min · human approval required
 
 Publish the expense policy with its categories, limits, receipt requirements and exception process, using examples of common purchases. Explain submission, review and how employees resolve rejected items. Match the document to the live system settings with the policy owner before sharing it through the employee channel, and make the current policy and contact easy to find.
 
-
-<a id="artifacts"></a>
 
 ---
 

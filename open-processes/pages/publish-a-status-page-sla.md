@@ -23,6 +23,8 @@ Give customers a public uptime commitment: stand up the status page on your doma
 
 Status pages, monitors, and DNS are fully API-driven; the SLA’s credit terms need counsel before they go into contracts.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -123,8 +125,6 @@ agent-runnable · ~15 min · hard to undo
 
 Publish the version cleared by the legal and commercial owners in the intended contract templates and public pages. Check document references, download links and version identifiers. Have the legal owner determine how existing customers are affected before changing their terms; a website edit alone does not implement that process. Give sales and support the applicable version and claim instructions, and verify that the live materials agree.
 
-
-<a id="artifacts"></a>
 
 ## Outputs
 

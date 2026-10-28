@@ -23,6 +23,8 @@ Apply to a Y Combinator batch: create the application account, draft the written
 
 The written answers and the founder video are founder work by YC's own design, and submission happens inside YC's application portal (no API). An agent can review drafts against YC's published application advice; it cannot apply for you.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -121,8 +123,6 @@ Check the application account and submission email for status changes or request
 
 - Sources: [Y Combinator application](https://www.ycombinator.com/apply)
 
-
-<a id="artifacts"></a>
 
 ---
 

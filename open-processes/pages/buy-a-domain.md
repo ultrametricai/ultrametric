@@ -23,6 +23,8 @@ Purchase a domain end-to-end: pay via Stripe, register at Name.com, auto-connect
 
 Registrar, payment, and DNS APIs cover the whole purchase — quote, register, and provision run end to end.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -90,8 +92,6 @@ Inspect the existing DNS zone, then use the website host's current instructions 
 - Produces: DNS control
 - Canonical vendor: Cloudflare
 
-
-<a id="artifacts"></a>
 
 ## Outputs
 

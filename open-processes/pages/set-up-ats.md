@@ -23,6 +23,8 @@ Configure ATS for hiring pipeline, create job postings, and set up interview wor
 
 ATS platforms have APIs for job/candidate management. Initial configuration and interview design need human input.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -115,8 +117,6 @@ Connect the published roles to the company’s careers page using the ATS and we
 
 - Canonical vendor: Lever
 
-
-<a id="artifacts"></a>
 
 ## Outputs
 

@@ -23,6 +23,8 @@ Create a project with its initial tasks in the team’s tracker.
 
 Project and task creation are core tracker APIs — a one-call agent step.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -76,8 +78,6 @@ Agree an accountable owner for each task with the team doing the work. Work back
 
 - Canonical vendor: Asana
 
-
-<a id="artifacts"></a>
 
 ---
 

@@ -23,6 +23,8 @@ Take payments: pick a processor, activate the account, integrate the API, and co
 
 Account activation and KYC are processor-hosted forms; the integration, test charge, and payout checks run on the API.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -120,8 +122,6 @@ Exercise success, decline, authentication, refunds and delayed outcomes in the p
 - Canonical vendor: Stripe
 - Sources: [Stripe testing documentation](https://docs.stripe.com/testing)
 
-
-<a id="artifacts"></a>
 
 ## Outputs
 

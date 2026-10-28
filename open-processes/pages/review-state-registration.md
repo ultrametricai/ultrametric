@@ -23,6 +23,8 @@ Check whether you need to register in states where you have employees or offices
 
 An agent can map employee locations to registration duties; the foreign-qualification filings themselves are state-portal form work.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -174,8 +176,6 @@ Use the reviewed state-registration plan to assemble the application, home-state
 ### Estonia
 
 - Not applicable: There is no foreign-qualification concept inside the country: one commercial-register entry covers nationwide operation. ([e-Business Register](https://ariregister.rik.ee/eng))
-
-<a id="artifacts"></a>
 
 ## Outputs
 

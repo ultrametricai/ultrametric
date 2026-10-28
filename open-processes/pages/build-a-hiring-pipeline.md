@@ -23,6 +23,8 @@ Configure multi-role hiring with structured interviews, scorecards, offer approv
 
 Lever/Ashby APIs support pipeline and candidate management. Interview design and evaluation criteria need human input.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -155,8 +157,6 @@ Define the reporting purpose before choosing demographic fields. Ask the people 
 - Canonical vendor: Lever
 - Sources: [EEOC: Recruiting, hiring or promoting employees](https://www.eeoc.gov/employers/small-business/3-im-recruiting-hiring-or-promoting-employees)
 
-
-<a id="artifacts"></a>
 
 ## Related records
 

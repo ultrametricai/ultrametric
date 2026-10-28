@@ -23,6 +23,8 @@ Keep the corporate record clean: schedule the board cadence, prep the minutes te
 
 Scheduling, templates, signature routing, and filing are automatable. The minutes themselves record human deliberation in the room.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -135,8 +137,6 @@ File the approved minutes, approval or signature evidence and referenced exhibit
 ### Singapore
 
 - No statutory meeting cadence for private companies — written resolutions are routine — but minutes and resolutions must be kept, and the fixed rhythm is the AGM (or its dispensation) plus the annual return declared to ACRA each year (law rule [sg.agm-deadline](../../open-law/SG/sg-agm-deadline.json)). ([ACRA — AGM due dates](https://www.acra.gov.sg/manage/companies/legal-requirements-common-offences/holding-annual-general-meetings/due-dates-requirements/))
-
-<a id="artifacts"></a>
 
 ## Outputs
 

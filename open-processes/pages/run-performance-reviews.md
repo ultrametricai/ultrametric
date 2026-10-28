@@ -23,6 +23,8 @@ Set up quarterly performance review cycle with self-assessments, manager reviews
 
 BambooHR/Lattice APIs handle review creation and tracking. Review content and calibration require human judgment.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -124,8 +126,6 @@ Hold a private review conversation using the completed assessment and its suppor
 
 - Canonical vendor: Slack
 
-
-<a id="artifacts"></a>
 
 ## Related records
 

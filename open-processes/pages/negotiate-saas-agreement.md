@@ -23,6 +23,8 @@ Create a standard SaaS subscription agreement, terms of service, and privacy pol
 
 System can draft initial templates using company context. Legal review and customer-specific negotiations are person-routed.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -136,8 +138,6 @@ Release the approved public documents at the intended signup, checkout and accou
 ### Germany
 
 - German AGB law subjects standard terms to content control EVEN B2B (§§ 305-310 BGB): liability caps and auto-renewal clauses that are routine in US SaaS paper are regularly void here — localize the template, don't just translate it. ([§ 305 BGB — standard terms control](https://www.gesetze-im-internet.de/bgb/__305.html))
-
-<a id="artifacts"></a>
 
 ## Outputs
 

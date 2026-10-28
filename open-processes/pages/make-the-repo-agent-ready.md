@@ -31,6 +31,8 @@ This is the one process agents run on themselves end-to-end — audit, docs, ski
 - A bounded, authorized task with an observed before/after result, meaningful checks and a reviewable patch.
 - A fresh-directory replay and an explicit record of supported tasks, unresolved setup and external permissions.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -158,8 +160,6 @@ Review what the trial actually accessed and changed. Decide which routine tasks 
 
 - Sources: [MCP authorization security considerations](https://modelcontextprotocol.io/specification/2026-07-28/basic/authorization/security-considerations) · [GitHub Actions secure use reference](https://docs.github.com/en/actions/reference/security/secure-use)
 
-
-<a id="artifacts"></a>
 
 ## Related records
 

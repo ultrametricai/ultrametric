@@ -23,6 +23,8 @@ Search domains and check availability across TLDs.
 
 Domain and social-handle availability are public search APIs — fully agent-runnable.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -78,8 +80,6 @@ Compare each shortlisted domain's registrar, registration term, initial price, r
 - Produces: Domain shortlist
 - Sources: [Information for Domain Name Registrants](https://www.icann.org/registrants) · [Domain Name Renewals and Expiration](https://www.icann.org/resources/pages/domain-name-renewal-expiration-faqs-2018-12-07-en)
 
-
-<a id="artifacts"></a>
 
 ## Outputs
 

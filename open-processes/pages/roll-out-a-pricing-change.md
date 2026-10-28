@@ -31,6 +31,8 @@ Plan modeling, the billing migration, and the comms are automatable over billing
 - Reproducible revenue scenarios and account-level billing previews, with provider assumptions identified.
 - A reconciled execution ledger and customer notices for actions actually performed, or an explicit prepared-only handoff.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -168,8 +170,6 @@ Compare the execution ledger with actual invoices over the stated observation wi
 
 - Canonical vendor: Stripe
 
-
-<a id="artifacts"></a>
 
 ## Related records
 

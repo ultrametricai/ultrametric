@@ -23,6 +23,8 @@ The LLC is about to raise or grant options, so it becomes a Delaware C-Corp: ass
 
 The go/no-go call and counsel review are human judgment, member and founder signatures are legally required acts, and Delaware's conversion filing is portal/mail work with no API — the system preps documents and tracks progress but cannot file.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -278,8 +280,6 @@ Use the accepted conversion records and tax conclusions to identify changes need
 ### Estonia
 
 - There is no LLC/C-Corp split: an osaühing transforms into an aktsiaselts (and back) under the Commercial Code's transformation chapter (§ 478 and following), with the change entered in the commercial register. ([e-Business Register](https://ariregister.rik.ee/eng))
-
-<a id="artifacts"></a>
 
 ## Outputs
 

@@ -23,6 +23,8 @@ Create a subscription product and price for recurring billing.
 
 Products and prices are first-class API objects — an agent creates both in one pass.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -78,8 +80,6 @@ Use a fictional customer to complete the intended purchase flow in the billing s
 - Canonical vendor: Stripe Billing
 - Sources: [Test your Billing integration](https://docs.stripe.com/billing/testing)
 
-
-<a id="artifacts"></a>
 
 ## Related records
 

@@ -23,6 +23,8 @@ Create a vendor security assessment workflow for SOC 2 compliance — questionna
 
 Vanta API supports vendor tracking. Security questionnaire review requires human judgment.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -110,8 +112,6 @@ Enter the vendor, assessed service, evidence period, conclusions and decision co
 - Canonical vendor: Vanta
 - Sources: [NIST SP 800-53 Rev. 5](https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final)
 
-
-<a id="artifacts"></a>
 
 ---
 

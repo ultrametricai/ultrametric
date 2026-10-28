@@ -23,6 +23,8 @@ Apply for an Employer Identification Number (EIN) from the IRS for the newly inc
 
 IRS EIN application is a web form with no API. System provides step-by-step guidance and pre-fills company data.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -183,8 +185,6 @@ Save the IRS confirmation letter in the restricted company tax records. Check it
 ### Estonia
 
 - Absorbed: The tax identity arrives with formation: the registry code (registrikood) is assigned on entry in the commercial register and identifies the company to the Tax and Customs Board; a separate VAT number comes only with VAT registration (law rule [ee.vat-registration-threshold](../../open-law/EE/ee-vat-registration-threshold.json)). ([e-Business Register](https://ariregister.rik.ee/eng))
-
-<a id="artifacts"></a>
 
 ## Outputs
 

@@ -23,6 +23,8 @@ Draft and send an email from the company account, behind an approval gate.
 
 Email APIs expose drafting and sending — an agent drafts, a human approves the send.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -75,8 +77,6 @@ agent-runnable · ~1 min · async wait
 
 Check the sent-message thread in the authorized mailbox for a response. Summarize what the respondent asks for, any deadline they state, and the decision or work now needed, with a direct link to the reply. Route it to the person responsible for the conversation. If there is no reply, report the latest check and whether the agreed follow-up date has arrived; draft a reminder only when it is due.
 
-
-<a id="artifacts"></a>
 
 ---
 

@@ -23,6 +23,8 @@ Configure subscription plans, pricing, and a customer portal for SaaS billing. S
 
 Stripe API fully supports product, pricing, subscription, and portal management.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -160,8 +162,6 @@ Translate the failed-payment policy into customer notices, retry settings, suppo
 - Canonical vendor: Stripe
 - Sources: [Automate payment retries](https://docs.stripe.com/billing/revenue-recovery/smart-retries)
 
-
-<a id="artifacts"></a>
 
 ## Outputs
 

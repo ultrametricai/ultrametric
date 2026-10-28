@@ -23,6 +23,8 @@ Register domain, configure DNS, set up SSL, point to hosting.
 
 Namecheap and Cloudflare APIs fully support domain/DNS operations. SSL auto-provisioned.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -131,8 +133,6 @@ Open the site over HTTPS on every supported hostname, including redirect sources
 - Canonical vendor: Cloudflare
 - Sources: [Working with SSL certificates](https://vercel.com/docs/domains/working-with-ssl)
 
-
-<a id="artifacts"></a>
 
 ## Related records
 

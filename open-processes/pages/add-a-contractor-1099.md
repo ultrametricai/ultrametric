@@ -23,6 +23,8 @@ Onboard a 1099 contractor in payroll so they can be paid and 1099’d at year-en
 
 Payroll APIs expose contractor onboarding — an agent can add the contractor; the contractor completes their own tax info.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -221,8 +223,6 @@ Reconcile the payee profile with the contract, accepted tax documents and verifi
 ### Estonia
 
 - There is no 1099 run: fees paid to natural persons for services are withheld and declared on the monthly TSD through e-MTA, and payments to a registered self-employed person (FIE) are the recipient's own business income. ([Income and social taxes (e-MTA)](https://www.emta.ee/en/business-client/taxes-and-payment/income-and-social-taxes))
-
-<a id="artifacts"></a>
 
 ## Outputs
 

@@ -23,6 +23,8 @@ Ship the mobile app: enroll in the Apple Developer Program and Play Console, pre
 
 Build and submission tooling is scriptable end-to-end; Apple’s enrollment identity checks and the review queue are the third party’s clock, and rejection responses are judgment.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -138,8 +140,6 @@ Release the version and audience covered by the mobile release owner's authoriza
 - Canonical vendor: Sentry
 - Sources: [Publish your app on Google Play](https://support.google.com/googleplay/android-developer/answer/9859751?hl=en) · [Set up Sentry releases](https://docs.sentry.io/product/releases/setup/)
 
-
-<a id="artifacts"></a>
 
 ---
 

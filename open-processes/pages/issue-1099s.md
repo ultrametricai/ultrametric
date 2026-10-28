@@ -23,6 +23,8 @@ Generate and file 1099-NEC forms for all contractors paid over $600 in the tax y
 
 Gusto can auto-generate 1099s for contractors on their platform. System compiles data and tracks filing deadlines.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -206,8 +208,6 @@ File the reviewed batch using the method required for the year and number of ret
 ### Estonia
 
 - No January information-return batch exists: payments to natural persons are withheld and declared month by month on the TSD, so the reporting is continuous rather than a year-end form run. ([Income and social taxes (e-MTA)](https://www.emta.ee/en/business-client/taxes-and-payment/income-and-social-taxes))
-
-<a id="artifacts"></a>
 
 ## Related records
 

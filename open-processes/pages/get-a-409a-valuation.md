@@ -23,6 +23,8 @@ Commission a 409A valuation to establish fair market value for stock options.
 
 Can initiate through Carta API and provide company financials. Valuation itself is done by third-party appraiser.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -247,8 +249,6 @@ Check the report’s entity, stock class, date and capitalization against the in
 ### Estonia
 
 - Not applicable: No 409A appraisal ritual exists: option taxation runs under the Income Tax Act's fringe-benefit rules, where an exercise at least three years after grant is outside fringe-benefit tax (§ 48(5³)), without a safe-harbor FMV appraisal industry. ([Income and social taxes (e-MTA)](https://www.emta.ee/en/business-client/taxes-and-payment/income-and-social-taxes))
-
-<a id="artifacts"></a>
 
 ## Outputs
 

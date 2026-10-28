@@ -23,6 +23,8 @@ Configure the company email, calendar, and docs suite for the team, including ad
 
 Google Admin API supports user/group management. Initial domain setup and billing are manual.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -135,8 +137,6 @@ Review administrator roles, sign-in protection, recovery methods, and external-s
 - Canonical vendor: Gmail
 - Sources: [CISA: Secure Your Business](https://www.cisa.gov/audiences/small-and-medium-businesses/secure-your-business)
 
-
-<a id="artifacts"></a>
 
 ## Outputs
 

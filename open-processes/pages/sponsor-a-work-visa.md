@@ -23,6 +23,8 @@ Keep the hire you can’t legally employ yet: pick the visa route with immigrati
 
 Immigration counsel drives strategy and the filings; the agent assembles the evidence binder and tracks the case. The government portals, the signed petition, and the adjudication wait are irreducibly manual.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -267,8 +269,6 @@ Have counsel and the people lead confirm when the person may work for this emplo
 ### Estonia
 
 - Non-EU hires run on Police and Border Guard Board tracks: short-term employment registration or a residence permit for employment, with the startup-visa track easing both for startup founders and employees; EU citizens simply register their residence. ([Work in Estonia](https://workinestonia.com/))
-
-<a id="artifacts"></a>
 
 ---
 

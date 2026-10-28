@@ -23,6 +23,8 @@ The first VP hire runs nothing like a normal loop: scorecard and comp band with 
 
 Search, interviews, references, and the board’s comp approval are human end-to-end; the agent preps the scorecard, comp benchmarks, and the grant paperwork around them.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -157,8 +159,6 @@ Confirm acceptance of the final offer and any separately required documents, the
 
 - Produces: Signed offer / employment agreement
 
-
-<a id="artifacts"></a>
 
 ## Outputs
 

@@ -23,6 +23,8 @@ The release ritual: draft the changelog from merged PRs, tag the release behind 
 
 Changelogs, tags, and release notes are pure API work. Deciding to roll back is a human call.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -113,8 +115,6 @@ Identify the last working version and compare rollback with the incident's recov
 
 - Sources: [Managing deployment environments](https://docs.github.com/actions/deployment/environments) · [Google SRE postmortem culture](https://sre.google/sre-book/postmortem-culture/)
 
-
-<a id="artifacts"></a>
 
 ## Related records
 

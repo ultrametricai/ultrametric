@@ -23,6 +23,8 @@ File a trademark application for the company name and/or logo with the trademark
 
 The trademark offices have no usable filing API. System provides guidance, drafts descriptions, and tracks deadlines, but filing is manual.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -277,8 +279,6 @@ Monitor the official status and correspondence for the application number. Recor
 ### Estonia
 
 - Trademarks are filed with the Estonian Patent Office (Patendiamet) through its e-services; an EU trade mark at the EUIPO is the common startup route, since one filing covers Estonia with the rest of the EU. ([Estonian Patent Office (Patendiamet)](https://www.epa.ee/en))
-
-<a id="artifacts"></a>
 
 ## Outputs
 

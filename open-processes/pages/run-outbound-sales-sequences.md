@@ -31,6 +31,8 @@ List building, sequencing, and scheduling run through CRM APIs behind a human se
 - A reviewable draft sequence and tested reply, bounce, opt-out and booking behavior.
 - Delivery and CRM progression evidence for authorized execution, or an explicit no-send launch handoff.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -167,8 +169,6 @@ When: The prospect has accepted and attended the qualification conversation.
 
 Explore the prospect's workflow, desired outcome, stakeholders, constraints and decision process from their stated problem. Explain verified capabilities and escalate new commitments to the responsible owner. Record the prospect's answers, evidence for qualification and agreed next step, separating facts from the salesperson's interpretation.
 
-
-<a id="artifacts"></a>
 
 ## Related records
 

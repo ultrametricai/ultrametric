@@ -23,6 +23,8 @@ Review and pay all outstanding vendor invoices via wire transfer.
 
 Mercury API supports wire creation. System looks up vendors, verifies balances, executes payments with approval gates.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -96,8 +98,6 @@ Post the payment-run result to the designated private team channel: total releas
 
 - Canonical vendor: Slack
 
-
-<a id="artifacts"></a>
 
 ## Related records
 

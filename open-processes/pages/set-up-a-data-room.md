@@ -23,6 +23,8 @@ Stand up the diligence data room investors expect: charter docs, cap table, fina
 
 Document collection and permissions are API work; the hosting choice and diligence answers stay with the founder.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -90,8 +92,6 @@ human · ~1 h
 
 Route each diligence question to the person responsible for its subject, with the relevant document and requested response date. Recheck facts and disclosure scope before reusing an earlier answer. Share the resolved response through the agreed channel, updating supporting documents where necessary. Keep unresolved questions visible until the reviewer accepts the answer or identifies what is still missing.
 
-
-<a id="artifacts"></a>
 
 ## Outputs
 

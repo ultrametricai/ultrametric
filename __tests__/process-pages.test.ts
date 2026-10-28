@@ -93,6 +93,25 @@ describe('open-processes/pages', () => {
     expect(page).toContain('## Outputs')
     expect(page).toContain('https://www.irs.gov/')
   })
+
+  it('retains the option and the additional condition on every conditional connection', () => {
+    const source = ctx.sources.find((s) => s.slug === 'validate-the-idea')!
+    const page = renderProcessPage(source, ctx)
+    const overview = page.split('## Step details')[0]
+    for (const connection of source.record.links.filter((l) => l.option && l.when)) {
+      const option = source.record.parts.find((p) => p.id === connection.from)!.options.find((o) => o.id === connection.option)!
+      expect(overview).toContain(`${option.title} and ${connection.when}`)
+      expect(page.split('## Step details')[1]).toContain(`${option.title} and ${connection.when?.replace(/\.\s*$/, '')}`)
+    }
+  })
+
+  it('legacy artifact fragments reach required artifacts before the instructions', () => {
+    const source = ctx.sources.find((s) => s.slug === 'track-runway')!
+    const page = renderProcessPage(source, ctx)
+    expect(page).toContain('<a id="artifacts"></a>\n\n## Before you start')
+    expect(page.indexOf('<a id="artifacts"></a>')).toBeLessThan(page.indexOf('## Step details'))
+    expect(page).toContain('[Open bank account](open-bank-account.md)')
+  })
 })
 
 describe('process-pages validators (failure modes)', () => {

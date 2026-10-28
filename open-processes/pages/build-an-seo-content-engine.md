@@ -23,6 +23,8 @@ A repeatable content loop: research keywords, draft with an agent, human-edit, p
 
 Drafting, publishing, and sitemap submission are agent-runnable. Editorial review before publishing at scale is a human gate.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -127,8 +129,6 @@ Review the content program's pages, queries and conversions over a consistent re
 - Vendor options: PostHog, Google Search Console
 - Ranked market: [product-analytics](../../open-rankings/product-analytics)
 
-
-<a id="artifacts"></a>
 
 ---
 

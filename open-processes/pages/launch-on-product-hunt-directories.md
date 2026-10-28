@@ -23,6 +23,8 @@ The launch-day play: prep assets and copy, submit to Product Hunt and startup di
 
 Asset prep and analytics are agent work. The submission portals have no launch APIs, and rallying your network on the day is human.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -140,8 +142,6 @@ Compare launch traffic and signups with a defined pre-launch baseline. Check ref
 - Vendor options: PostHog, Amplitude, Mixpanel
 - Ranked market: [product-analytics](../../open-rankings/product-analytics)
 
-
-<a id="artifacts"></a>
 
 ## Related records
 

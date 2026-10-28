@@ -23,6 +23,8 @@ Generate monthly board update with financial metrics, burn rate, runway, and key
 
 All data sources (Mercury, QBO, Stripe) have APIs. System compiles metrics, calculates burn/runway, formats report.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -140,8 +142,6 @@ Send the final report through the company’s board distribution channel to the 
 
 - Canonical vendor: Gmail
 
-
-<a id="artifacts"></a>
 
 ## Related records
 

@@ -23,6 +23,8 @@ Get every laptop under management before the auditor asks: enroll in Apple Busin
 
 Policy configuration and compliance reporting run over the MDM’s API; Apple Business Manager’s business verification and per-device enrollment acceptance are manual.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -126,8 +128,6 @@ Identify the device controls and assessment period the compliance team needs to 
 
 - Canonical vendor: Vanta
 
-
-<a id="artifacts"></a>
 
 ## Outputs
 

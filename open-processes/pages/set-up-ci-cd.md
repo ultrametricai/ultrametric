@@ -23,6 +23,8 @@ Configure GitHub Actions CI/CD with testing, linting, and auto-deploy to Vercel.
 
 GitHub and Vercel have comprehensive APIs. Full automation of workflow creation and deployment configuration.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -126,8 +128,6 @@ Take a small change from branch to pull request, successful checks and preview d
 - Canonical vendor: GitHub
 - Sources: [About protected branches](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches) · [Managing deployment environments](https://docs.github.com/actions/deployment/environments)
 
-
-<a id="artifacts"></a>
 
 ## Outputs
 

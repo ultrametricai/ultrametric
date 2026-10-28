@@ -23,6 +23,8 @@ Draft and publish comprehensive employee handbook covering policies, PTO, conduc
 
 AI can draft sections from templates. Legal review and company-specific policies need human input.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -173,8 +175,6 @@ Tell employees where the handbook lives, which changes affect them and when thos
 ### Estonia
 
 - The handbook is optional policy with a statutory seed: the mandatory written core is the working-conditions document riding the employment contract (law rule [ee.employment-contract-written-form](../../open-law/EE/ee-employment-contract-written-form.json)), and Estonian handbooks are slim internal-rules documents layered on top of it. ([Labour Inspectorate (Tööinspektsioon)](https://www.ti.ee/en))
-
-<a id="artifacts"></a>
 
 ## Outputs
 

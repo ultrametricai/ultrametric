@@ -23,6 +23,8 @@ Open a business bank account to separate personal and company finances — the f
 
 The application and KYC upload are online forms (no public API); approval is a bank-side wait. Once open, the account connects to the books over the bank API.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -206,8 +208,6 @@ Have the bank-account administrator authorize the supported accounting connectio
 ### Estonia
 
 - Accounts open at Estonian and EU banks or e-money institutions against the commercial-register data; for remote e-resident founders the programme lists the banking and fintech options, and a fully remote opening is commonly a fintech account. ([e-Residency programme](https://www.e-resident.gov.ee/))
-
-<a id="artifacts"></a>
 
 ## Outputs
 

@@ -23,6 +23,8 @@ Monitor trademark conflicts and social-handle availability for the brand, on a s
 
 Trademark and handle checks run over search APIs — an agent can schedule the recurring monitor.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -185,8 +187,6 @@ Configure the agreed marks, platforms and review schedule, routing alerts to the
 ### Estonia
 
 - Check marks against the Estonian Patent Office databases and the EUIPO register before committing to a name or handle; both publish free search services. ([Estonian Patent Office (Patendiamet)](https://www.epa.ee/en))
-
-<a id="artifacts"></a>
 
 ---
 

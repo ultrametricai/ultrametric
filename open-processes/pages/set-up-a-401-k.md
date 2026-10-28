@@ -23,6 +23,8 @@ Stand up the retirement plan (now state-mandated in California and a dozen other
 
 Modern 401(k) providers onboard online and sync payroll automatically; the match decision and the plan adoption signature stay with the founder.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -217,8 +219,6 @@ Match the first payroll’s deductions and employer contributions to amounts rec
 ### Estonia
 
 - Absorbed: Retirement savings ride the state system: the second-pillar funded pension is withheld with the monthly TSD as part of payroll, so no company plan is set up or administered. ([Pensionikeskus (funded pension)](https://www.pensionikeskus.ee/en/))
-
-<a id="artifacts"></a>
 
 ## Outputs
 

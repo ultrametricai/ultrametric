@@ -31,6 +31,8 @@ Timeline assembly, doc drafting, action filing, and the status-page post are API
 - A causal analysis separating demonstrated causes from hypotheses and a testable corrective-action backlog.
 - Recorded review decisions and authorized communications when performed, with proposed work and pending approvals kept distinct.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -143,8 +145,6 @@ Write the public account from the reviewed incident facts: affected service, use
 - Canonical vendor: Better Stack
 - Sources: [Google SRE postmortem culture](https://sre.google/sre-book/postmortem-culture/)
 
-
-<a id="artifacts"></a>
 
 ## Related records
 

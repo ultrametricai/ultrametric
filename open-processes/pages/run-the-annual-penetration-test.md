@@ -23,6 +23,8 @@ The pen test customers and SOC 2 auditors expect every year: scope it, sign the 
 
 Scoping prep, environment provisioning, finding triage, and remediation are automatable; the testing window belongs to the firm and the authorization signature to you.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -153,8 +155,6 @@ Send remediation evidence to the testing firm and arrange retesting of the affec
 ### India
 
 - Security testing here runs through CERT-In's empanelled auditor list, and CERT-In's 2022 directions add real teeth: covered incidents must be reported within six hours — a sharper regime than most customers' annual-pentest ask. ([CERT-In (empanelled auditors)](https://www.cert-in.org.in/))
-
-<a id="artifacts"></a>
 
 ## Outputs
 

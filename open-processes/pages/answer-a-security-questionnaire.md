@@ -31,6 +31,8 @@ Answer drafting from your policy corpus is highly automatable; the risky answers
 - An answer-to-evidence map with qualified, unknown, conflicting and out-of-scope answers identified.
 - A reviewer queue and attachment permissions, followed by the exact submitted copy and receipt only if submission occurs.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -132,8 +134,6 @@ Add the submitted answers to the knowledge base with the customer, service scope
 
 Store reusable approved answers with their service scope, approver, approval date and evidence version. Keep customer-specific concessions separate. When evidence changes, mark affected reusable answers for review and identify dependent drafts; a previously approved answer does not automatically authorize a new disclosure.
 
-
-<a id="artifacts"></a>
 
 ## Related records
 

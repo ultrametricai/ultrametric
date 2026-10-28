@@ -31,6 +31,8 @@ With a bank (Mercury, Brex, Relay) or accounting tool (QuickBooks, Xero, Pilot) 
 - An editable monthly cash forecast with base and downside assumptions and the first period below the chosen cash threshold.
 - A source and assumption ledger that explains unresolved differences and the decisions that change the forecast.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -105,8 +107,6 @@ Choose a forecast horizon that covers the pending decision and known commitments
 - Cross-arena options: ChatGPT, Claude, Gemini (ai-assistants)
 - UM's runway module supplies a source-cited default-alive calculation and hiring scenarios. Check its month-zero convention and growth assumptions against the company's ledger before reuse. The module can stop at the first profitable month; retain the full requested cash calendar separately, including later commitments and irregular collections. The lore registry records competing views: pg-default-alive and sarasvathy-affordable-loss versus hoffman-speed-over-efficiency. Use those claims to make the owner's risk assumptions explicit. Mercury's documentation probes and MCP documentation are routes to investigate; they do not establish access to this company's balances.
 
-
-<a id="artifacts"></a>
 
 ## Related records
 

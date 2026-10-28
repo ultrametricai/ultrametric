@@ -23,6 +23,8 @@ Employ someone in a country where you have no entity: an employer-of-record hire
 
 EOR platforms quote, contract, and run country payroll through APIs; the country/cost decision and the candidate’s employment signature stay human.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -131,8 +133,6 @@ Use the employee’s duties, manager and start clearance to identify required sy
 
 - Canonical vendor: Google Workspace
 
-
-<a id="artifacts"></a>
 
 ## Related records
 

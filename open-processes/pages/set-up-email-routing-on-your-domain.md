@@ -23,6 +23,8 @@ Configure email routing on the company domain so aliases forward to real inboxes
 
 DNS providers expose email-routing configuration over their APIs — an agent wires the aliases.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -90,8 +92,6 @@ agent-runnable · ~2 min
 
 Send a message from an outside mailbox to each alias and check the destination, arrival time, and spam folder. Reply from the intended responder and confirm the sender identity the recipient sees. Try an invalid address to check failure handling, and inspect any duplicate delivery or forwarding loop. Note the result per alias so the mail administrator can fix the specific route that failed before the addresses are used by customers.
 
-
-<a id="artifacts"></a>
 
 ## Related records
 

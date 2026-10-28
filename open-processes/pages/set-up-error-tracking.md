@@ -23,6 +23,8 @@ Configure error monitoring, alerting, and release tracking. Sentry is the canoni
 
 Sentry has a full API for project/alert configuration. SDK integration is code-level.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -128,8 +130,6 @@ Follow the SDK instructions for the application's actual framework and runtime v
 - Cross-arena market: [ai-coding](../../open-rankings/ai-coding)
 - Sources: [Sentry sensitive data scrubbing](https://docs.sentry.io/platforms/javascript/data-management/sensitive-data/) · [Set up Sentry releases](https://docs.sentry.io/product/releases/setup/)
 
-
-<a id="artifacts"></a>
 
 ## Outputs
 

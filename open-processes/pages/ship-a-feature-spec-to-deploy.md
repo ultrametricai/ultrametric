@@ -23,6 +23,8 @@ The whole software-making loop: spec it, track it, implement with a coding agent
 
 Agents can draft the spec, cut the issue, implement, open the PR, and deploy through CI. Human code review and the merge decision gate the loop.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -184,8 +186,6 @@ Confirm the intended revision is live, then exercise the feature's main journey 
 - Ranked market: [error-tracking](../../open-rankings/error-tracking)
 - Sources: [Set up Sentry releases](https://docs.sentry.io/product/releases/setup/) · [Google SRE implementing SLOs](https://sre.google/workbook/implementing-slos/)
 
-
-<a id="artifacts"></a>
 
 ## Related records
 

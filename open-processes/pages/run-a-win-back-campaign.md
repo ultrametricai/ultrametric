@@ -23,6 +23,8 @@ Re-engage the customers who churned months ago: build the churned cohort, split 
 
 Cohort building, sequence drafting, and the sends are fully API-driven; the discount budget is a founder approval.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -123,8 +125,6 @@ Match recipients to billing reactivations and resumed product use, keeping repli
 
 - Canonical vendor: HubSpot
 
-
-<a id="artifacts"></a>
 
 ## Related records
 

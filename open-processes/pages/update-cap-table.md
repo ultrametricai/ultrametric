@@ -23,6 +23,8 @@ Keep the cap table current after new SAFEs, grants, or transfers — reconciled 
 
 Carta integration planned. Requires reviewing and reconciling existing cap table data.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -104,8 +106,6 @@ The authorized directors or other required decision-makers review and sign the f
 
 - Step 3: Draft the board consent for the changes A Delaware board or committee acts without a meeting only by unanimous written consent (law rule [us-de.board-action-by-written-consent](../../open-law/US-DE/us-de-board-action-by-written-consent.json)).
 - Step 4: The board signs the written consent
-
-<a id="artifacts"></a>
 
 ## Related records
 

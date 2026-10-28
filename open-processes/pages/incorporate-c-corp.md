@@ -23,6 +23,8 @@ Set up a new Delaware C-Corporation with standard startup structure including by
 
 Clerky/Stripe Atlas have limited APIs. System guides through the process, pre-fills known data, tracks progress, but cannot automate the filing itself.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -513,8 +515,6 @@ A corporation doing business in Washington registers with the Secretary of State
 ### Estonia
 
 - Incorporate as an osaühing (OÜ) through the e-Business Register: a digitally signed petition, no minimum capital beyond one cent per share, and expedited review by the next working day (law rules [ee.private-limited-company-registration](../../open-law/EE/ee-private-limited-company-registration.json), [ee.osauhing-no-minimum-capital](../../open-law/EE/ee-osauhing-no-minimum-capital.json)); e-residents can file fully online (law rule [ee.e-residency-digital-identity](../../open-law/EE/ee-e-residency-digital-identity.json)). ([e-Business Register](https://ariregister.rik.ee/eng))
-
-<a id="artifacts"></a>
 
 ## Outputs
 

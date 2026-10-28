@@ -23,6 +23,8 @@ Research and enroll company in health insurance, dental, vision, 401k, and other
 
 Gusto handles benefits enrollment. Plan selection and broker negotiation require human decisions.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -236,8 +238,6 @@ Employees review the official materials and enter their own elections, dependent
 ### Estonia
 
 - Absorbed: The statutory benefits stack arrives with payroll: social tax at 33% funds health insurance and pensions, and coverage follows the employment-register entry (law rules [ee.social-tax-rate-and-monthly-return](../../open-law/EE/ee-social-tax-rate-and-monthly-return.json), [ee.employment-register-before-work](../../open-law/EE/ee-employment-register-before-work.json)); nothing is procured plan by plan. ([Health Insurance Fund (Tervisekassa)](https://www.tervisekassa.ee/en))
-
-<a id="artifacts"></a>
 
 ## Outputs
 

@@ -23,6 +23,8 @@ Put the founding team on paper: agree the split and vesting, generate founder ag
 
 Document generation, signature routing, and cap table entry are automatable. The equity conversation itself and any transfer-date tax election stay human.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -313,8 +315,6 @@ For each founder making an election, confirm the property-transfer date and the 
 ### Estonia
 
 - The split lives in a shareholders' agreement beside the articles: vesting is drafted as call-option and transfer clauses, third-party transfers carry the default one-month pre-emption right, and the articles can gate transfers on consent (Commercial Code § 149). ([e-Business Register](https://ariregister.rik.ee/eng))
-
-<a id="artifacts"></a>
 
 ## Outputs
 

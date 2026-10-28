@@ -23,6 +23,8 @@ Obtain quotes for D&O, E&O, general liability, and cyber insurance.
 
 Insurance quoting platforms lack APIs. System guides through requirements, compiles company data, tracks quotes.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -164,8 +166,6 @@ The authorized buyer approves the insurer, terms, premium and effective date aft
 ### Hong Kong
 
 - One line is compulsory from day one: employees' compensation insurance for every employee (Employees' Compensation Ordinance section 40), in force before anyone starts work — D&O and cyber stay optional buys. ([Labour Department — Employees' Compensation Ordinance](https://www.labour.gov.hk/eng/legislat/content1.htm))
-
-<a id="artifacts"></a>
 
 ## Outputs
 

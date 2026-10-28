@@ -23,6 +23,8 @@ The report enterprise buyers actually ask for: after the Type I snapshot, run co
 
 Compliance platforms run the continuous monitoring and evidence collection through the window; the scoping, the signed management assertion, and the auditor’s fieldwork stay human.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -149,8 +151,6 @@ Check the issued report’s entity, service, period, opinion and exceptions. Bef
 - Canonical vendor: Vanta
 - Sources: [AICPA SOC suite](https://www.aicpa-cima.com/resources/landing/system-and-organization-controls-soc-suite-of-services)
 
-
-<a id="artifacts"></a>
 
 ## Outputs
 

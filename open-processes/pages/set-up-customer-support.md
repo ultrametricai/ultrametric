@@ -23,6 +23,8 @@ Configure customer messaging, a help center, and ticket management. Intercom is 
 
 Intercom has comprehensive API for messaging and contact management. Initial setup and article creation need human input.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -134,8 +136,6 @@ Map named teammates to the support tasks they need, then choose administrator, a
 
 - Canonical vendor: Intercom
 
-
-<a id="artifacts"></a>
 
 ## Outputs
 

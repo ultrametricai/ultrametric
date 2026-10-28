@@ -23,6 +23,8 @@ Set up PagerDuty with on-call schedules, escalation policies, incident workflows
 
 PagerDuty API fully supports schedules, escalation policies, and service configuration.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -135,8 +137,6 @@ Draft a template for impact, detection, a linked timeline, contributing conditio
 - Canonical vendor: Notion
 - Sources: [Google SRE postmortem culture](https://sre.google/sre-book/postmortem-culture/)
 
-
-<a id="artifacts"></a>
 
 ## Outputs
 

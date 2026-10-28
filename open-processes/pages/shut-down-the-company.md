@@ -23,6 +23,8 @@ Wind down and dissolve the corporation: board and stockholder dissolution consen
 
 The agent drafts the consents, runs the final payroll, cancels vendors, and prepares every filing; the dissolution consents and return jurats need real signatures, and the Delaware, IRS, and bank-closure steps are portal or mail work.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -355,8 +357,6 @@ Preserve corporate decisions, ownership, contracts, employment, tax and financia
 ### Estonia
 
 - Winding down runs through the commercial register: the shareholders resolve dissolution, liquidation is entered and run, and the company is deleted after creditor protection, with tax deregistration through e-MTA alongside. ([e-Business Register](https://ariregister.rik.ee/eng))
-
-<a id="artifacts"></a>
 
 ## Outputs
 

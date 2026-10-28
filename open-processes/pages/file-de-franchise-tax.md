@@ -23,6 +23,8 @@ File the annual Delaware franchise tax and annual report.
 
 Delaware franchise tax portal has no API. System calculates the tax, pre-fills data, provides step-by-step guidance.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -260,8 +262,6 @@ Texas has no corporate income tax, but every taxable entity formed or doing busi
 ### Estonia
 
 - Not applicable: No franchise tax exists: there is no annual state fee for staying incorporated. The recurring commercial-register obligation is the annual report, due six months after the financial year ends (law rule [ee.annual-report-deadline](../../open-law/EE/ee-annual-report-deadline.json)). ([e-Business Register](https://ariregister.rik.ee/eng))
-
-<a id="artifacts"></a>
 
 ## Related records
 

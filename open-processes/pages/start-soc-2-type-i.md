@@ -23,6 +23,8 @@ Begin SOC 2 Type I compliance journey using Vanta, set up policies, and begin ev
 
 Vanta API supports test monitoring and evidence collection. Policy creation and auditor engagement need human input.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -243,8 +245,6 @@ Supply evidence for the auditor’s agreed scope and dates, explaining missing r
 ### Singapore
 
 - Local buyers and government work lean on CSA's Cyber Essentials and Cyber Trust marks more than SOC 2 — SOC 2 still travels for US-facing sales, so startups selling both ways often run both. ([CSA — Cyber Essentials mark](https://www.csa.gov.sg/our-programmes/support-for-enterprises/sg-cyber-safe-programme/cybersecurity-certification-for-organisations/cyber-essentials/))
-
-<a id="artifacts"></a>
 
 ## Outputs
 

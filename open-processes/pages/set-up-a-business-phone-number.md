@@ -23,6 +23,8 @@ Get the company a phone number that is not a founder's cell: choose the provider
 
 Number search, purchase, and routing configuration are API surfaces at the programmable providers; the identity and messaging registrations are review queues fed with human-supplied business details.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -185,8 +187,6 @@ Update every place that holds the company's contact phone: the website and conta
 
 - Step 4: Register the A2P 10DLC brand and campaign before texting from a 10-digit local number, and complete toll-free verification before SMS on a toll-free number US carriers require application-to-person traffic on 10-digit local numbers to be registered — unregistered traffic is filtered and carries extra carrier fees — and a toll-free number cannot send SMS to the US or Canada until its verification is approved. ([A2P 10DLC compliance docs](https://www.twilio.com/docs/messaging/compliance/a2p-10dlc))
 - Step 6: Put the number on the US paperwork that asks for an employer phone: bank and processor KYC profiles, and the written notice New York employers give at hire, which must state the employer's telephone number (law rule us-ny.wage-notice-at-hire) ([NY Labor Law § 195](https://www.nysenate.gov/legislation/laws/LAB/195))
-
-<a id="artifacts"></a>
 
 ## Outputs
 

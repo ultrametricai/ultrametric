@@ -23,6 +23,8 @@ Choose accounting software and configure the chart of accounts so the books can 
 
 Choosing and configuring the software is guided form work; connecting bank and card feeds runs on the accounting APIs.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -173,8 +175,6 @@ List bank and card accounts by accounting entity and agree the import start date
 ### Singapore
 
 - Statutory financial statements follow SFRS, most startups fit the small-company audit exemption, and the accounts feed the ACRA annual return (XBRL where required) plus the IRAS return — pick software that maps to SFRS. ([ACRA — preparing financial statements](https://www.acra.gov.sg/manage/companies/legal-requirements-common-offences/preparing-financial-statements/))
-
-<a id="artifacts"></a>
 
 ## Outputs
 

@@ -23,6 +23,8 @@ Configure transactional email — password resets, receipts, notifications. Send
 
 SendGrid API fully supports template and sending configuration. Domain verification automatable.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -117,8 +119,6 @@ Trigger each email type from a controlled application flow to authorized test re
 - Vendor options: SendGrid
 - Ranked market: [email-apis](../../open-rankings/email-apis)
 
-
-<a id="artifacts"></a>
 
 ## Outputs
 

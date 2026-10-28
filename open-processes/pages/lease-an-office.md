@@ -23,6 +23,8 @@ From “we need a room” to keys: size the space and budget, tour with a broker
 
 Touring, negotiation, and the lease signature are human end-to-end; the agent models the all-in cost, compares proposals, and handles the deposit wire and COI.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -191,8 +193,6 @@ Plan internet, utilities, keys or badges, and installer access around the posses
 ### Singapore
 
 - Leases attract stamp duty (lease duty) paid to IRAS through e-Stamping, and there is no security-of-tenure regime — term, renewal and reinstatement live entirely in the lease you sign. ([IRAS — stamp duty for property](https://www.iras.gov.sg/taxes/stamp-duty/for-property))
-
-<a id="artifacts"></a>
 
 ## Outputs
 

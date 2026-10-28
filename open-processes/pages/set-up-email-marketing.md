@@ -23,6 +23,8 @@ Configure email marketing with an audience, templates, and welcome automation. M
 
 Mailchimp API fully supports audience, campaign, and automation management.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -139,8 +141,6 @@ Ask only for the information the email program needs and explain what subscriber
 - Canonical vendor: Mailchimp
 - Sources: [CAN-SPAM Act: A Compliance Guide for Business](https://www.ftc.gov/business-guidance/resources/can-spam-act-compliance-guide-business)
 
-
-<a id="artifacts"></a>
 
 ## Outputs
 

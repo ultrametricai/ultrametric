@@ -31,6 +31,8 @@ A vibe-coding agent generates and deploys the site end to end; the founder revie
 - Evidence for navigation and the primary visitor action, including failure states and data destinations.
 - The release identifier and live checks if published, or explicit remaining publication requirements.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -116,8 +118,6 @@ Verify the live domain, release identifier and primary action independently afte
 - Ranked market: [edge-platforms](../../open-rankings/edge-platforms)
 - Cross-arena market: [vibe-coding](../../open-rankings/vibe-coding)
 
-
-<a id="artifacts"></a>
 
 ## Outputs
 

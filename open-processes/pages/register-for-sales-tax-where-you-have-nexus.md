@@ -23,6 +23,8 @@ Once revenue crosses state thresholds you owe sales tax where your customers are
 
 Tax platforms watch nexus thresholds, calculate at checkout, and file returns over their APIs; the state registration portals are manual form work and the exposure review is a judgment call.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -257,8 +259,6 @@ Use issued accounts and agency-assigned frequencies to schedule returns, includi
 ### Estonia
 
 - There is no multi-state nexus question: one national VAT registration covers the country, due within three working days of crossing the 40,000-euro threshold (law rule [ee.vat-registration-threshold](../../open-law/EE/ee-vat-registration-threshold.json)), with the EU OSS available in e-MTA for cross-border B2C supply. ([VAT registration (e-MTA)](https://www.emta.ee/en/business-client/taxes-and-payment/value-added-tax/registration-vat-payer))
-
-<a id="artifacts"></a>
 
 ## Outputs
 

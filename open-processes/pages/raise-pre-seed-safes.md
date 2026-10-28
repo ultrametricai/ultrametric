@@ -23,6 +23,8 @@ Execute a pre-seed fundraise on the jurisdiction's standard convertible instrume
 
 System can draft the instruments, track investor pipeline, send follow-ups, and manage documents. Negotiations and meetings are person-routed.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -350,8 +352,6 @@ Send each investor a closing confirmation based on reconciled signatures and fun
 ### Estonia
 
 - The local instrument is the convertible loan: Estonian rounds paper convertibles as loan agreements that convert at the priced round's share-capital increase, with the commercial-register entry creating the shares. ([e-Business Register](https://ariregister.rik.ee/eng))
-
-<a id="artifacts"></a>
 
 ## Outputs
 

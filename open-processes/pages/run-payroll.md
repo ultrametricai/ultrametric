@@ -23,6 +23,8 @@ Process the regular monthly payroll run through Gusto.
 
 Gusto API fully supports payroll. System verifies hours, checks for changes, previews, and submits with approval.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -107,8 +109,6 @@ Match the provider’s funding record to the bank debit by run, amount and settl
 
 - Canonical vendor: Mercury
 
-
-<a id="artifacts"></a>
 
 ## Related records
 

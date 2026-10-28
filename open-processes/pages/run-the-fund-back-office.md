@@ -23,6 +23,8 @@ The running fund's money loop: capital calls issued and the wires verified, the 
 
 The capital-call notices, wire checks, fee transfer, and ledger booking run over APIs with GP approval gates; the only human part is waiting on the LPs' wires.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -110,8 +112,6 @@ Book the investment from executed transaction documents, funding evidence and th
 - Canonical vendor: Carta
 - Vendor options: Carta, AngelList, Juniper Square
 
-
-<a id="artifacts"></a>
 
 ## Related records
 

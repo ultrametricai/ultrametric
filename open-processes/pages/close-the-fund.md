@@ -23,6 +23,8 @@ Run the fund's closing: subscription documents out to the LPs, LP signatures col
 
 The agent drafts the subscription documents and the A&R LPA and routes everything for e-signature; the LP and GP signatures are legally human, and the close itself is the GP's call.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -213,8 +215,6 @@ Establish that subscriptions, approvals, executed documents and investor accepta
 ### Estonia
 
 - Venture funds commonly close as Estonian limited partnerships (usaldusühing) entered in the commercial register, with the manager's registration or authorisation under the investment-funds rules supervised by Finantsinspektsioon. ([e-Business Register](https://ariregister.rik.ee/eng))
-
-<a id="artifacts"></a>
 
 ## Outputs
 

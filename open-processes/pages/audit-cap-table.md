@@ -23,6 +23,8 @@ Audit the cap table before a raise: verify ownership, board consents, and invest
 
 Verifying ownership and consents is judgment work with attorney sign-off; document gathering runs on the cap-table APIs.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -92,8 +94,6 @@ human · ~1 h · async wait · human approval required
 
 Give the attorney the reconciled cap table, supporting documents and unresolved findings. Obtain a conclusion stating the review’s scope, accepted corrections and legal work still required. Apply supported record corrections through the equity administrator and keep outstanding exceptions visible when sharing the audited table, so readers understand what the legal review actually covered.
 
-
-<a id="artifacts"></a>
 
 ## Related records
 

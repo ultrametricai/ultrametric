@@ -23,6 +23,8 @@ Complete monthly bookkeeping including categorization, reconciliation, and finan
 
 QuickBooks API and official Intuit MCP server enable transaction categorization, bank auto-matching for reconciliation, and reports. Final review and approval stay human.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -147,8 +149,6 @@ The accountant reviews reconciliations, draft statements, supporting schedules a
 - Vendor options: Pilot, QuickBooks
 - Ranked market: [accounting](../../open-rankings/accounting)
 
-
-<a id="artifacts"></a>
 
 ## Outputs
 

@@ -23,6 +23,8 @@ Move money out of the company bank account — create a wire or ACH payment behi
 
 The banking APIs expose payments (wires/ACH) — an agent prepares and creates the payment; a human approver releases it before money moves.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -104,8 +106,6 @@ Match the bank’s completed payment to the obligation using the debit and trans
 
 - Canonical vendor: Mercury
 
-
-<a id="artifacts"></a>
 
 ---
 

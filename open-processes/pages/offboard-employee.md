@@ -23,6 +23,8 @@ Process an employee departure including final paycheck, benefits termination, ac
 
 Gusto handles final paycheck and benefits termination. Account deactivation across systems partially automatable. Equity exercise window needs person-routing.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -290,8 +292,6 @@ Compare the asset register with the employee’s actual equipment, security keys
 ### Estonia
 
 - Offboarding is deadline-driven: every claim from the employment relationship falls due when the contract ends (Employment Contracts Act § 84), and the termination is registered in the employment register within ten days (law rule [ee.employment-register-before-work](../../open-law/EE/ee-employment-register-before-work.json)). ([Employment register (e-MTA)](https://www.emta.ee/en/business-client/registration-business/employment-register))
-
-<a id="artifacts"></a>
 
 ## Related records
 

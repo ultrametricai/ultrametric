@@ -23,6 +23,8 @@ When the priced round closes, every outstanding SAFE converts to preferred stock
 
 Cap-table platforms pull the SAFEs, model the conversion, and issue the shares over their APIs; the side-letter judgment, the counsel check, and the lead-investor review of the pro-forma stay human.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -213,8 +215,6 @@ The company’s authorized equity contact sends each holder their completed conv
 ### Estonia
 
 - Convertibles land as a share-capital increase: the shareholders resolve the increase, the new shares are taken up, and the change is entered in the commercial register before the equity exists. ([e-Business Register](https://ariregister.rik.ee/eng))
-
-<a id="artifacts"></a>
 
 ## Related records
 

@@ -23,6 +23,8 @@ Create and send an invoice to a customer for services rendered. Stripe is the ca
 
 Stripe Invoicing API fully supports create, send, and track.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -204,8 +206,6 @@ Match receipts to the invoice by customer, reference, amount and currency, accou
 ### Estonia
 
 - Invoices follow the Accounting Act's source-document rules, and since July 2025 a buyer registered as an e-invoice recipient in the commercial register can require a machine-readable e-invoice to the European standard (Accounting Act § 7¹). ([e-Business Register](https://ariregister.rik.ee/eng))
-
-<a id="artifacts"></a>
 
 ## Related records
 

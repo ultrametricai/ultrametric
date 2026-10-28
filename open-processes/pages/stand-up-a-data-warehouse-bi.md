@@ -23,6 +23,8 @@ Configure Snowflake/BigQuery with data pipelines from production systems and Met
 
 Snowflake/Segment APIs support configuration. Data modeling and dashboard design need human decisions.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -166,8 +168,6 @@ Select metrics tied to the executive team's recurring decisions, with a definiti
 
 - Sources: [Metabase permissions overview](https://www.metabase.com/docs/latest/permissions/start)
 
-
-<a id="artifacts"></a>
 
 ## Outputs
 

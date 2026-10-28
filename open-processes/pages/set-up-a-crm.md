@@ -23,6 +23,8 @@ Configure the CRM with a custom pipeline, properties, and email templates. HubSp
 
 HubSpot has a comprehensive API. Full pipeline, property, and template management via API.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -133,8 +135,6 @@ Map the contact export's stable identifiers, fields, ownership and communication
 - Canonical vendor: HubSpot
 - Sources: [Understand the import tool](https://knowledge.hubspot.com/import-and-export/understand-the-import-tool)
 
-
-<a id="artifacts"></a>
 
 ## Outputs
 

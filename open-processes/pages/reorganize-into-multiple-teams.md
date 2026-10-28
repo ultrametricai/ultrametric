@@ -23,6 +23,8 @@ Configure Linear/Jira with multiple teams, cross-team dependencies, roadmap view
 
 Linear GraphQL API fully supports teams, projects, cycles, and labels. Complete setup automatable.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -128,8 +130,6 @@ Document the new operating model in the team's wiki, using Notion if selected. E
 
 - Canonical vendor: Notion
 
-
-<a id="artifacts"></a>
 
 ---
 

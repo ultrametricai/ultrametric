@@ -23,6 +23,8 @@ Pressure-test the idea before building: draft the problem hypothesis, pick the v
 
 An agent can draft the hypothesis, propose the method that fits the starting situation, build the test assets, and analyze response data. Customer interviews, manual delivery, and the go/no-go decision are judgment work.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -42,8 +44,8 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | [1. Draft problem hypothesis and target customer](#step-1) | agent-runnable | ~15 min | Entry step |
 | [2. Capture the hypothesis doc in Notion](#step-2) | agent-runnable | ~5 min | [Step 1](#step-1) |
 | [3. Choose the validation method](#step-3) | agent-runnable | ~10 min | [Step 2](#step-2) |
-| [4. Instrument signup analytics](#step-4) | agent-runnable | ~10 min | Alternatives: [Step 3](#step-3) (Lean MVP launch); [Step 3](#step-3) (Pre-sale commitment test); [Step 3](#step-3) (Waitlist + ad-spend test) |
-| [5. Run customer interviews](#step-5) | human; includes waiting | ~8 h | Alternatives: [Step 3](#step-3) (Problem-interview sprint); [Step 3](#step-3) (Concierge / manual MVP); [Step 3](#step-3) (Product/market-fit survey); [Step 4](#step-4) |
+| [4. Instrument signup analytics](#step-4) | agent-runnable | ~10 min | Alternatives: [Step 3](#step-3) (Lean MVP launch and The MVP has a digital signup or payment path to instrument.); [Step 3](#step-3) (Pre-sale commitment test and The preorder page and checkout need conversion instrumentation.); [Step 3](#step-3) (Waitlist + ad-spend test and The waitlist page needs click-to-signup instrumentation.) |
+| [5. Run customer interviews](#step-5) | human; includes waiting | ~8 h | Alternatives: [Step 3](#step-3) (Problem-interview sprint and Interview evidence replaces digital conversion instrumentation.); [Step 3](#step-3) (Concierge / manual MVP and Manual-delivery records replace digital conversion instrumentation.); [Step 3](#step-3) (Product/market-fit survey and The product's existing analytics already measure usage; interviews probe the survey segments.); [Step 4](#step-4) |
 | [6. Analyze signups and interview notes](#step-6) | agent-runnable | ~15 min | [Step 5](#step-5) |
 | [7. Go/no-go decision](#step-7) | human | ~30 min | [Step 6](#step-6) |
 
@@ -92,12 +94,12 @@ agent-runnable · ~10 min
 
 Match the method to the founder's starting situation instead of defaulting to a favorite technique. The deciding facts: whether anything usable exists yet, whether target users are reachable and how desperate their problem is, whether the product carries a price a customer can commit to before it is built, and whether live usage data already exists. Prove the value hypothesis before spending anything on growth (lore rule griffin-value-before-growth), and run the smallest build-measure-learn loop that can answer the hypothesis's most threatening open question (lore rule ries-build-measure-learn). Record why the chosen method fits the situation, so a negative result reads on the idea rather than on the method.
 
-- If "Lean MVP launch": continue at step 4
-- If "Pre-sale commitment test": continue at step 4
-- If "Waitlist + ad-spend test": continue at step 4
-- If "Problem-interview sprint": continue at step 5
-- If "Concierge / manual MVP": continue at step 5
-- If "Product/market-fit survey": continue at step 5
+- If "Lean MVP launch and The MVP has a digital signup or payment path to instrument": continue at step 4
+- If "Pre-sale commitment test and The preorder page and checkout need conversion instrumentation": continue at step 4
+- If "Waitlist + ad-spend test and The waitlist page needs click-to-signup instrumentation": continue at step 4
+- If "Problem-interview sprint and Interview evidence replaces digital conversion instrumentation": continue at step 5
+- If "Concierge / manual MVP and Manual-delivery records replace digital conversion instrumentation": continue at step 5
+- If "Product/market-fit survey and The product's existing analytics already measure usage; interviews probe the survey segments": continue at step 5
 
 Options:
   - **Problem-interview sprint** — human
@@ -261,7 +263,7 @@ Options:
 agent-runnable · ~10 min
 
 
-*Follows step 3 (option "Lean MVP launch" or option "Pre-sale commitment test" or option "Waitlist + ad-spend test").*
+*Follows step 3 (option "Lean MVP launch" and when The MVP has a digital signup or payment path to instrument or option "Pre-sale commitment test" and when The preorder page and checkout need conversion instrumentation or option "Waitlist + ad-spend test" and when The waitlist page needs click-to-signup instrumentation).*
 
 For an experiment with a digital signup or payment path, define the events needed to measure the response and exactly what triggers each event. Configure the chosen analytics within the company's agreed data and privacy limits. Make a test submission and inspect the recorded events, removing test traffic from results and noting tracking gaps. Interview-only tests and manual pilots can use their research or delivery records; add digital tracking only if it answers a question the experiment actually has.
 
@@ -276,7 +278,7 @@ For an experiment with a digital signup or payment path, define the events neede
 human · ~8 h · async wait
 
 
-*Follows step 3 (option "Problem-interview sprint" or option "Concierge / manual MVP" or option "Product/market-fit survey") or step 4.*
+*Follows step 3 (option "Problem-interview sprint" and when Interview evidence replaces digital conversion instrumentation or option "Concierge / manual MVP" and when Manual-delivery records replace digital conversion instrumentation or option "Product/market-fit survey" and when The product's existing analytics already measure usage; interviews probe the survey segments) or step 4.*
 
 Explore what the experiment's responses mean by talking with people who match the target customer. Ask about the problem, their current solution, and what would need to change for them to adopt the proposed offer. Reuse evidence from an interview sprint if that route already answered these questions, and recruit only for the gaps. Summarize what the conversations explain about observed behavior, keeping stated interest separate from a purchase or use decision.
 
@@ -301,8 +303,6 @@ human · ~30 min
 
 Decide whether to continue, change the hypothesis, run a narrower test, or stop, using the original criteria and the findings together. Commit only what the company can afford to lose at each step when sizing the next test (lore rule sarasvathy-affordable-loss), and budget for validation taking longer than expected rather than spending on growth before fit (lore rule griffin-premature-scaling). Explain what changed the founder's view and what the next commitment of time or money is intended to learn. Assign any promised customer follow-up and outstanding refunds before closing the test. Keep the decision with the experiment record so the next round begins from what the team has learned.
 
-
-<a id="artifacts"></a>
 
 ## Related records
 

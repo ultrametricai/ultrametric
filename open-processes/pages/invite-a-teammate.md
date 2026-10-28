@@ -23,6 +23,8 @@ Invite a new member to the organization and set their access level.
 
 Member invites and access levels are workspace admin APIs — a one-call agent step.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -76,8 +78,6 @@ Add the teammate to the channels and resources needed for their role, checking r
 
 - Canonical vendor: Slack
 
-
-<a id="artifacts"></a>
 
 ---
 

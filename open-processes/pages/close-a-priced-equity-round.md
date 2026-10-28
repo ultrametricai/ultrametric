@@ -23,6 +23,8 @@ Close a priced round (seed or Series A): term sheet, diligence, definitive docum
 
 The term sheet, diligence, and approvals are human; the paperwork routing, signatures, share issuance, and cap-table updates run on APIs.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -314,8 +316,6 @@ Update the equity system for the completed financing, converted instruments, iss
 ### Estonia
 
 - A priced round is a share-capital increase: the shareholders resolve it, the new shares are subscribed and paid, and the increase is entered in the commercial register before the new equity exists. ([e-Business Register](https://ariregister.rik.ee/eng))
-
-<a id="artifacts"></a>
 
 ## Outputs
 

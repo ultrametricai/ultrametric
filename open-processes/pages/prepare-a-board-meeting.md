@@ -23,6 +23,8 @@ Compile board deck with financials, metrics, product updates, hiring plan, and a
 
 Data pull from Mercury/QBO/Stripe automatable. Narrative, strategy, and asks need founder input.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -152,8 +154,6 @@ The designated board sender distributes meeting details, the agenda and packet l
 
 - Canonical vendor: Gmail
 
-
-<a id="artifacts"></a>
 
 ## Related records
 

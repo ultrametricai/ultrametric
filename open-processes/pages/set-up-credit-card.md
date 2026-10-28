@@ -23,6 +23,8 @@ Get a corporate card for company spend — compare issuers, apply online, and sy
 
 Card applications are fully online with the startup issuers; transaction sync runs on their APIs.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -80,8 +82,6 @@ agent-runnable · ~3 min
 
 Connect the card account to the correct accounting entity through the authorized administrator. Choose an import date and match existing transactions to prevent duplicates. Map balances, repayments, fees and receipts, then reconcile a statement end to end. Assign responsibility for missing receipts and failed syncs so the connection supports ongoing bookkeeping.
 
-
-<a id="artifacts"></a>
 
 ## Outputs
 

@@ -23,6 +23,8 @@ Stand up the privacy paperwork customers ask for: generate the privacy policy an
 
 Policy generation, site publishing, and DPA signature routing are automatable. Counsel review is judgment work you should not skip.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -211,8 +213,6 @@ Reconcile the subprocessor list with engineering and procurement records. For ea
 ### Singapore
 
 - The PDPA is the regime: notify purposes and take consent, designate a data protection officer and publish their contact, and build the breach-assessment muscle the notification duty assumes (law rule [sg.pdpa-breach-notification](../../open-law/SG/sg-pdpa-breach-notification.json)) — the PDPC is the regulator. ([Personal Data Protection Act 2012 (SSO)](https://sso.agc.gov.sg/Act/PDPA2012))
-
-<a id="artifacts"></a>
 
 ## Outputs
 

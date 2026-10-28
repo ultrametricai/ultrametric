@@ -23,6 +23,8 @@ Grant stock options to team members including board approval, option agreements,
 
 Carta API can record grants. Board consent and option agreements need human review. System drafts materials and tracks.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -225,8 +227,6 @@ Enter the completed grant in the equity system from its effective authorization 
 ### Estonia
 
 - Options are contractual rather than a statutory scheme: grants are papered under the option agreement, and the Income Tax Act's fringe-benefit rules govern taxation, with an exercise at least three years after grant outside fringe-benefit tax (§ 48(5³)). ([Income and social taxes (e-MTA)](https://www.emta.ee/en/business-client/taxes-and-payment/income-and-social-taxes))
-
-<a id="artifacts"></a>
 
 ## Outputs
 

@@ -23,6 +23,8 @@ Install an AI code reviewer on the code hosting org, scope its repository access
 
 The reviewer installs as a code-host app behind an OAuth consent a human must grant. The config file and the test pull request are agent-runnable; the merge-gate policy call stays human.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -103,8 +105,6 @@ human · ~5 min
 
 Decide with the team whether the reviewer runs as a required check that blocks merging or as advisory comments. A blocking gate enforces attention but adds friction and false-positive risk while the config is young; advisory mode builds trust first. Revisit the choice once the team has seen a few weeks of findings.
 
-
-<a id="artifacts"></a>
 
 ## Outputs
 

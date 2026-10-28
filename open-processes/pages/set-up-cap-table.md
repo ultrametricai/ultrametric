@@ -23,6 +23,8 @@ Track every investment on a real cap table from day one — even informal rounds
 
 Carta integration is planned. Cap table setup requires manual data entry or document upload.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -162,8 +164,6 @@ Trace the opening cap table to the charter, issuance approvals, agreements, cons
 ### Singapore
 
 - For a private company the authoritative register of members is ACRA's electronic register — allotments take effect only when ACRA updates it (law rule [sg.allotment-return-constitutive](../../open-law/SG/sg-allotment-return-constitutive.json)), and transfers the same (law rule [sg.share-transfer-constitutive](../../open-law/SG/sg-share-transfer-constitutive.json)) — so cap-table software mirrors Bizfile, not the other way round. ([Bizfile (ACRA register of members)](https://www.bizfile.gov.sg/))
-
-<a id="artifacts"></a>
 
 ## Outputs
 

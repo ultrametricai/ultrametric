@@ -23,6 +23,8 @@ Configure product analytics with event tracking, funnels, and session recording.
 
 PostHog's public REST API (live OpenAPI spec, official MCP server) covers project creation and event/dashboard management. Initial instrumentation is a code change — a coding agent can make it, a human reviews the diff.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -137,8 +139,6 @@ Choose the question a replay should answer and the screens needed to answer it. 
 - Canonical vendor: PostHog
 - Sources: [PostHog session replay privacy controls](https://posthog.com/docs/session-replay/privacy) · [PostHog product analytics privacy controls](https://posthog.com/docs/product-analytics/privacy)
 
-
-<a id="artifacts"></a>
 
 ## Outputs
 

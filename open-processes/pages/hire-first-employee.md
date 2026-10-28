@@ -23,6 +23,8 @@ Complete the full hiring process including offer letter, onboarding, payroll set
 
 Gusto's Embedded Payroll API supports onboarding, pay schedules, and payroll; Carta's API drafts option grants for board approval. Offer letter drafting automatable. Background checks and benefits selection require human interaction.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -356,8 +358,6 @@ Prepare the proposed award from the offer, current equity plan and grant workflo
 
 - First-hire formalities: a written employment contract carrying the § 5 working-conditions catalog (law rule [ee.employment-contract-written-form](../../open-law/EE/ee-employment-contract-written-form.json)) and an employment-register entry before work starts (law rule [ee.employment-register-before-work](../../open-law/EE/ee-employment-register-before-work.json)); the payroll taxes then ride the monthly TSD. ([Employment register (e-MTA)](https://www.emta.ee/en/business-client/registration-business/employment-register))
 - Step 6: Written contract plus an employment-register entry before work starts Put the § 5 working-conditions catalog in the written contract (law rule [ee.employment-contract-written-form](../../open-law/EE/ee-employment-contract-written-form.json)) and enter the hire in the employment register at the latest by the moment work begins (law rule [ee.employment-register-before-work](../../open-law/EE/ee-employment-register-before-work.json)); withholding then rides the monthly TSD. ([Employment register (e-MTA)](https://www.emta.ee/en/business-client/registration-business/employment-register))
-
-<a id="artifacts"></a>
 
 ## Outputs
 

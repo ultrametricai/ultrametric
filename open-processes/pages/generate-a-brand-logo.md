@@ -39,6 +39,8 @@ Image-generation APIs produce the candidates; the founder picks the primary logo
 - Coherent icon and wordmark arrangements, suitable color and monochrome versions, and a mark that remains recognizable at the sizes needed.
 - Usable artwork with a short explanation of its design choices and any unresolved limitations.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -146,8 +148,6 @@ Show the actual artwork and a short account of why it fits, how to use each vari
 
 - Produces: Brand logo
 
-
-<a id="artifacts"></a>
 
 ## Outputs
 

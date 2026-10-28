@@ -23,6 +23,8 @@ Prepare the annual federal corporate tax return (Form 1120) and file with the IR
 
 Tax filing requires a CPA. System compiles financial data, tracks deadlines, coordinates with accountant.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -261,8 +263,6 @@ File the submitted return, schedules, elections, signature authorization, accept
 ### Estonia
 
 - The yearly ritual splits in two: income tax is charged only when profit is distributed and rides the monthly TSD (law rule [ee.corporate-tax-distributed-profits](../../open-law/EE/ee-corporate-tax-distributed-profits.json)), while the annual report to the commercial register, due in six months, is the yearly compliance document (law rule [ee.annual-report-deadline](../../open-law/EE/ee-annual-report-deadline.json)). ([Income and social taxes (e-MTA)](https://www.emta.ee/en/business-client/taxes-and-payment/income-and-social-taxes))
-
-<a id="artifacts"></a>
 
 ## Outputs
 

@@ -23,6 +23,8 @@ Register for state income tax, sales tax, and employment tax in operating states
 
 State tax portals have no APIs. System provides state-specific checklists and pre-fills company data.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -258,8 +260,6 @@ Washington levies no corporate income tax; most businesses instead owe the busin
 ### Estonia
 
 - Not applicable: No state or municipal tax registration exists: the registry code works with the Tax and Customs Board from day one and national taxes run through e-MTA; the one recurring local levy, land tax, is assessed on landowners without a company-side registration. ([Income and social taxes (e-MTA)](https://www.emta.ee/en/business-client/taxes-and-payment/income-and-social-taxes))
-
-<a id="artifacts"></a>
 
 ## Outputs
 

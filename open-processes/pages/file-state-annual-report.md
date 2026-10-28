@@ -23,6 +23,8 @@ File the annual report and keep the company in good standing with your state of 
 
 State filing portals have no API — the filing is manual form work; gathering the details and saving the receipt are agent steps.
 
+<a id="artifacts"></a>
+
 ## Before you start
 
 Required artifacts:
@@ -291,8 +293,6 @@ Florida profit corporations file the Sunbiz annual report between January 1 and 
 ### Estonia
 
 - The annual report (majandusaasta aruanne) goes to the commercial register within six months after the financial year ends (law rule [ee.annual-report-deadline](../../open-law/EE/ee-annual-report-deadline.json)), prepared and filed through the e-Business Register. ([e-Business Register](https://ariregister.rik.ee/eng))
-
-<a id="artifacts"></a>
 
 ## Related records
 
