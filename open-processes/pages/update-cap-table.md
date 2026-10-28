@@ -3,6 +3,10 @@
 
 # Update cap table
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Geography](#geography) · [Steps](#steps-at-a-glance)
+
+## Overview
+
 Keep the cap table current after new SAFEs, grants, or transfers — reconciled and properly approved.
 
 | Field | Value |
@@ -19,34 +23,89 @@ Keep the cap table current after new SAFEs, grants, or transfers — reconciled 
 
 Carta integration planned. Requires reviewing and reconciling existing cap table data.
 
-## Steps
+<a id="artifacts"></a>
 
-1. **Export current cap table** — agent-runnable · ~5 min
+## Before you start
 
-   Export the cap table and transaction history at a stated date before making updates. Include the security classes and fully diluted assumptions needed for a meaningful comparison, separating pending drafts from completed transactions. Keep this baseline so the equity administrator can identify the individual holdings and totals changed by the reconciliation.
-2. **Reconcile recent transactions** — human · ~30 min
+Required artifacts:
 
-   Match recent grants, exercises, financings, transfers and cancellations to executed records and existing entries. Identify missing data, inconsistent terms and actions lacking legal authority separately. Show the proposed corrections with dates, holders, securities and quantities. The authorized equity administrator can correct supported records, while missing authority or conflicting terms go to counsel before ownership changes are recorded.
-3. **Draft the corporate approval the changes require** — agent-runnable · ~5 min
+- Cap table record — from [Set up cap table](set-up-cap-table.md)
+- Executed SAFEs — from [Raise pre-seed funding](raise-pre-seed-safes.md)
 
-   Use the reconciled transactions to identify with counsel which actions need a corporate decision. Draft the consent for those specific recipients, quantities and terms, checking plan or charter capacity and the required decision-makers. Explain any earlier defect explicitly so the proposed action addresses it through the appropriate process.
-4. **The required decision-makers sign the approval** — human (legally required signature) · ~10 min · async wait · human approval required
+| Information to gather | Required by the record |
+| --- | --- |
+| cap_table | Yes |
 
-   The authorized directors or other required decision-makers review and sign the final consent with its transaction schedule. Match revisions to both the resolution and proposed equity entries, and establish when the approval becomes effective. Give the equity administrator the specific authorized changes for entry and reconciliation.
+## Geography
 
-## By country
+Country rows describe the guidance recorded here. Local notes and step alternatives do not establish a complete country-specific workflow.
+
+| Country | Recorded guidance | Steps with local alternatives or resolutions |
+| --- | --- | --- |
+| [United States](#geo-us) | step resolution | [3](#step-3), [4](#step-4) |
+
+## Steps at a glance
+
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
+
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Export current cap table](#step-1) | agent-runnable | ~5 min | Entry step |
+| [2. Reconcile recent transactions](#step-2) | human | ~30 min | [Step 1](#step-1) |
+| [3. Draft the corporate approval the changes require](#step-3) | agent-runnable | ~5 min | [Step 2](#step-2) |
+| [4. The required decision-makers sign the approval](#step-4) | human; approval required; signature required; includes waiting | ~10 min | [Step 3](#step-3) |
+
+<a id="steps"></a>
+
+## Step details
+
+<a id="step-1"></a>
+
+### 1. Export current cap table
+
+agent-runnable · ~5 min
+
+
+Export the cap table and transaction history at a stated date before making updates. Include the security classes and fully diluted assumptions needed for a meaningful comparison, separating pending drafts from completed transactions. Keep this baseline so the equity administrator can identify the individual holdings and totals changed by the reconciliation.
+
+<a id="step-2"></a>
+
+### 2. Reconcile recent transactions
+
+human · ~30 min
+
+
+Match recent grants, exercises, financings, transfers and cancellations to executed records and existing entries. Identify missing data, inconsistent terms and actions lacking legal authority separately. Show the proposed corrections with dates, holders, securities and quantities. The authorized equity administrator can correct supported records, while missing authority or conflicting terms go to counsel before ownership changes are recorded.
+
+<a id="step-3"></a>
+
+### 3. Draft the corporate approval the changes require
+
+agent-runnable · ~5 min
+
+
+Use the reconciled transactions to identify with counsel which actions need a corporate decision. Draft the consent for those specific recipients, quantities and terms, checking plan or charter capacity and the required decision-makers. Explain any earlier defect explicitly so the proposed action addresses it through the appropriate process.
+
+<a id="step-4"></a>
+
+### 4. The required decision-makers sign the approval
+
+human (legally required signature) · ~10 min · async wait · human approval required
+
+
+The authorized directors or other required decision-makers review and sign the final consent with its transaction schedule. Match revisions to both the resolution and proposed equity entries, and establish when the approval becomes effective. Give the equity administrator the specific authorized changes for entry and reconciliation.
+
+
+<a id="by-country"></a>
+
+## Country details
+
+<a id="geo-us"></a>
 
 ### United States
 
 - Step 3: Draft the board consent for the changes A Delaware board or committee acts without a meeting only by unanimous written consent (law rule [us-de.board-action-by-written-consent](../../open-law/US-DE/us-de-board-action-by-written-consent.json)).
 - Step 4: The board signs the written consent
-
-## Artifacts
-
-Requires:
-
-- Cap table record — from [Set up cap table](set-up-cap-table.md)
-- Executed SAFEs — from [Raise pre-seed funding](raise-pre-seed-safes.md)
 
 ## Related records
 

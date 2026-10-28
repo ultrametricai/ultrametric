@@ -3,6 +3,10 @@
 
 # Hire abroad via an EOR
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Steps](#steps-at-a-glance)
+
+## Overview
+
 Employ someone in a country where you have no entity: an employer-of-record hires them locally on your behalf — quote the country cost, generate the compliant contract, run the checks, and stand up local payroll and benefits. Contractors abroad live in Hire intl contractor; full foreign subsidiaries are a post-Series-B problem.
 
 | Field | Value |
@@ -19,54 +23,116 @@ Employ someone in a country where you have no entity: an employer-of-record hire
 
 EOR platforms quote, contract, and run country payroll through APIs; the country/cost decision and the candidate’s employment signature stay human.
 
-## Steps
+<a id="artifacts"></a>
 
-1. **Choose the EOR and check country employment costs** — human · ~30 min
+## Before you start
 
-   Compare employment routes using the worker’s country, role, compensation and the company’s local presence. Get country-specific proposals showing the legal employer, employment costs, deposits, benefits, termination support and remaining company duties. Review suitability with the people and finance leads and local adviser before choosing EOR or direct employment. Settle who owns contracts, payroll inputs and employee questions under the chosen arrangement.
-
-   - Vendor options: Deel, Rippling, Remote, Justworks
-
-   Options:
-     - **Default — Choose the EOR and check country employment costs** — human · ~30 min
-
-       Compare the EOR’s proposal for the specific worker and country: legal employer, employment obligations, full cost, company duties and support contacts. Resolve suitability with local advice before engaging the provider or issuing terms. Agree who supplies payroll inputs, answers employee questions and handles changes or termination. Check outstanding conditions before sharing candidate information through the onboarding process.
-     - **Own entity - direct local payroll** — manual form/portal
-
-       When: You already have a local entity in the hiring country - skip the EOR margin
-
-       Assess whether the local entity is ready to employ this person directly. Identify registrations, employment documents, benefits, reporting and ongoing administration with local advisers and payroll. Compare the complete workload and cost with the EOR proposal before choosing the route. An existing entity does not by itself establish employer readiness or make direct employment the cheaper arrangement.
-
-       - Vendor options: Deel, Rippling
-2. **Generate the quote and locally compliant contract** — agent-runnable · ~20 min
-
-   Request the country-specific quote and draft using the agreed role and compensation details. Reconcile salary, statutory costs, benefits, fees, deposits and currency assumptions, then review the proposed employment terms with the people lead and local adviser. Resolve discrepancies between the commercial quote and candidate-facing agreement before committing to either. Share candidate information only through the authorized onboarding channel.
-
-   - Canonical vendor: Deel
-3. **Candidate signs the employment agreement with the EOR** — human (legally required signature) · ~1 d · async wait · hard to undo
-
-   Make sure the candidate knows which entity will employ them and has the reviewed terms and a contact for questions. Release the approved version through the EOR’s signing process, then check execution by the candidate and employer, effective date and unfinished conditions. Give onboarding the settled start details; right-to-work clearance and payroll readiness remain separate checks.
-4. **Right-to-work and background checks** — manual form/portal · ~2 d · async wait
-
-   Ask the EOR specialist which right-to-work and screening checks are lawful and required for this country and role. Agree the consent, evidence-collection, review and dispute process before ordering checks, with the people lead authorizing their scope. Keep sensitive reports with the authorized reviewers and share only necessary status updates. Resolve any start-blocking condition before clearing the employee to begin.
-
-   - Canonical vendor: Deel
-5. **Set up country payroll, benefits, and equipment** — manual form/portal · ~30 min
-
-   Compare the executed employment terms with the EOR’s payroll and benefits setup: pay currency, funding schedule, coverage dates and local support. Resolve incomplete employee onboarding that could delay pay. Coordinate equipment delivery, ownership and support, using the normal purchasing process. Give the employee and manager a start-readiness view showing what is ready and who is handling anything still missing.
-
-   - Canonical vendor: Deel
-6. **Provision workspace and system access** — agent-runnable · ~15 min
-
-   Use the employee’s duties, manager and start clearance to identify required systems, groups and device controls. Obtain the relevant system-owner access decisions and provision the verified company identity. Have the employee complete authentication setup and check essential work resources. Assign company and EOR contacts for future access changes and offboarding.
-
-   - Canonical vendor: Google Workspace
-
-## Artifacts
-
-Requires:
+Required artifacts:
 
 - Company email workspace — from [Set up company email & docs](set-up-company-email-docs.md)
+
+| Information to gather | Required by the record |
+| --- | --- |
+| country and compensation | Yes |
+
+## Steps at a glance
+
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
+
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Choose the EOR and check country employment costs](#step-1) | human | ~30 min | Entry step |
+| [2. Generate the quote and locally compliant contract](#step-2) | agent-runnable | ~20 min | [Step 1](#step-1) |
+| [3. Candidate signs the employment agreement with the EOR](#step-3) | human; signature required; includes waiting | ~1 d | [Step 2](#step-2) |
+| [4. Right-to-work and background checks](#step-4) | manual form/portal; includes waiting | ~2 d | [Step 3](#step-3) |
+| [5. Set up country payroll, benefits, and equipment](#step-5) | manual form/portal | ~30 min | [Step 4](#step-4) |
+| [6. Provision workspace and system access](#step-6) | agent-runnable | ~15 min | [Step 5](#step-5) |
+
+<a id="steps"></a>
+
+## Step details
+
+<a id="step-1"></a>
+
+### 1. Choose the EOR and check country employment costs
+
+human · ~30 min
+
+| Option | Applies when |
+| --- | --- |
+| Default — Choose the EOR and check country employment costs | Recorded default |
+| Own entity - direct local payroll | You already have a local entity in the hiring country - skip the EOR margin |
+
+
+Compare employment routes using the worker’s country, role, compensation and the company’s local presence. Get country-specific proposals showing the legal employer, employment costs, deposits, benefits, termination support and remaining company duties. Review suitability with the people and finance leads and local adviser before choosing EOR or direct employment. Settle who owns contracts, payroll inputs and employee questions under the chosen arrangement.
+
+- Vendor options: Deel, Rippling, Remote, Justworks
+
+Options:
+  - **Default — Choose the EOR and check country employment costs** — human · ~30 min
+
+    Compare the EOR’s proposal for the specific worker and country: legal employer, employment obligations, full cost, company duties and support contacts. Resolve suitability with local advice before engaging the provider or issuing terms. Agree who supplies payroll inputs, answers employee questions and handles changes or termination. Check outstanding conditions before sharing candidate information through the onboarding process.
+  - **Own entity - direct local payroll** — manual form/portal
+
+    When: You already have a local entity in the hiring country - skip the EOR margin
+
+    Assess whether the local entity is ready to employ this person directly. Identify registrations, employment documents, benefits, reporting and ongoing administration with local advisers and payroll. Compare the complete workload and cost with the EOR proposal before choosing the route. An existing entity does not by itself establish employer readiness or make direct employment the cheaper arrangement.
+
+    - Vendor options: Deel, Rippling
+
+<a id="step-2"></a>
+
+### 2. Generate the quote and locally compliant contract
+
+agent-runnable · ~20 min
+
+
+Request the country-specific quote and draft using the agreed role and compensation details. Reconcile salary, statutory costs, benefits, fees, deposits and currency assumptions, then review the proposed employment terms with the people lead and local adviser. Resolve discrepancies between the commercial quote and candidate-facing agreement before committing to either. Share candidate information only through the authorized onboarding channel.
+
+- Canonical vendor: Deel
+
+<a id="step-3"></a>
+
+### 3. Candidate signs the employment agreement with the EOR
+
+human (legally required signature) · ~1 d · async wait · hard to undo
+
+
+Make sure the candidate knows which entity will employ them and has the reviewed terms and a contact for questions. Release the approved version through the EOR’s signing process, then check execution by the candidate and employer, effective date and unfinished conditions. Give onboarding the settled start details; right-to-work clearance and payroll readiness remain separate checks.
+
+<a id="step-4"></a>
+
+### 4. Right-to-work and background checks
+
+manual form/portal · ~2 d · async wait
+
+
+Ask the EOR specialist which right-to-work and screening checks are lawful and required for this country and role. Agree the consent, evidence-collection, review and dispute process before ordering checks, with the people lead authorizing their scope. Keep sensitive reports with the authorized reviewers and share only necessary status updates. Resolve any start-blocking condition before clearing the employee to begin.
+
+- Canonical vendor: Deel
+
+<a id="step-5"></a>
+
+### 5. Set up country payroll, benefits, and equipment
+
+manual form/portal · ~30 min
+
+
+Compare the executed employment terms with the EOR’s payroll and benefits setup: pay currency, funding schedule, coverage dates and local support. Resolve incomplete employee onboarding that could delay pay. Coordinate equipment delivery, ownership and support, using the normal purchasing process. Give the employee and manager a start-readiness view showing what is ready and who is handling anything still missing.
+
+- Canonical vendor: Deel
+
+<a id="step-6"></a>
+
+### 6. Provision workspace and system access
+
+agent-runnable · ~15 min
+
+
+Use the employee’s duties, manager and start clearance to identify required systems, groups and device controls. Obtain the relevant system-owner access decisions and provision the verified company identity. Have the employee complete authentication setup and check essential work resources. Assign company and EOR contacts for future access changes and offboarding.
+
+- Canonical vendor: Google Workspace
+
 
 ## Related records
 

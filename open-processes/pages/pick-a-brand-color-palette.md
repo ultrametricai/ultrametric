@@ -3,6 +3,10 @@
 
 # Pick a brand color palette
 
+[Overview](#overview) · [Steps](#steps-at-a-glance) · [Outputs](#outputs)
+
+## Overview
+
 Reuse brand colors, prepare semantic tokens, and check the contrast and rendered uses needed for the request.
 
 Produce semantic color tokens and a small preview for the requested uses. Keep draft values, a user selection, saved files and deployed changes distinct.
@@ -32,68 +36,105 @@ Palette generation, accessibility checks, and token setup are agent-runnable; th
 - A palette expressed as semantic color roles, with a documented selection or an explicit pending choice.
 - Contrast findings and a saved preview or explicit untested uses, with draft files distinguished from deployed changes.
 
-## Steps
+## Steps at a glance
 
-1. **Prepare or reuse semantic color roles** — agent-runnable · ~2 min
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
 
-   Start with these semantic roles, using the existing token names when available:
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Prepare or reuse semantic color roles](#step-1) | agent-runnable | ~2 min | Entry step |
+| [2. Pick the palette direction](#step-2) | human | ~5 min | [Step 1](#step-1) |
+| [3. Check contrast and accessibility (WCAG)](#step-3) | agent-runnable | ~2 min | [Step 2](#step-2) |
+| [4. Preview, save, and verify the palette](#step-4) | agent-runnable | ~3 min | [Step 3](#step-3) |
 
-   | Role | Use |
-   | --- | --- |
-   | background, surface | Page and content surfaces |
-   | text, muted | Primary and secondary text |
-   | primary, on-primary | Main action background and its text |
-   | border, focus | Required control boundaries and focus indicators |
+<a id="steps"></a>
 
-   Keep a required brand accent separately if it cannot serve these roles. Add error, success, warning and chart colors only when the intended UI needs them. A decorative accent need not be the button background. Add print specifications only for a known print use.
+## Step details
 
-   If alternatives are needed, show up to three directions with a short reason and actual UI preview. Do not generate alternatives solely to reach three. For an established palette, show the proposed role changes and their reason.
+<a id="step-1"></a>
 
-   - Cross-arena options: ChatGPT, Claude (ai-assistants)
-2. **Pick the palette direction** — human · ~5 min
+### 1. Prepare or reuse semantic color roles
 
-   Reuse an existing selection or delegated authority. Otherwise show a recommendation and leave selection open until a choice is established. Draft calculation, preview and saving can proceed while selection is open.
-3. **Check contrast and accessibility (WCAG)** — agent-runnable · ~2 min
+agent-runnable · ~2 min
 
-   For WCAG 2.2 AA, [normal text needs 4.5:1](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html); qualifying large text needs 3:1. Use actual size and weight, not a design label. Required control boundaries and meaningful graphics need 3:1 under [non-text contrast](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html), including the relevant adjacent colors. Status and meaning must use [more than color alone](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html).
 
-   Use a documented contrast checker or calculate opaque sRGB pairs with this Python function:
+Start with these semantic roles, using the existing token names when available:
 
-   ```python
-   def contrast(foreground, background):
-       def luminance(hex_color):
-           rgb = [int(hex_color[i:i + 2], 16) / 255 for i in (1, 3, 5)]
-           linear = [v / 12.92 if v <= 0.04045 else ((v + 0.055) / 1.055) ** 2.4 for v in rgb]
-           return sum(v * weight for v, weight in zip(linear, (0.2126, 0.7152, 0.0722)))
-       a, b = luminance(foreground), luminance(background)
-       return (max(a, b) + 0.05) / (min(a, b) + 0.05)
-   ```
+| Role | Use |
+| --- | --- |
+| background, surface | Page and content surfaces |
+| text, muted | Primary and secondary text |
+| primary, on-primary | Main action background and its text |
+| border, focus | Required control boundaries and focus indicators |
 
-   Inputs are `#RRGGBB` values. For opacity, gradients or images, first resolve the actual composited colors at the intended use; this function alone does not validate those backgrounds. Compare the unrounded ratio with the target. Record foreground, background, role, target, ratio, text size/weight when relevant, and calculation reference.
+Keep a required brand accent separately if it cannot serve these roles. Add error, success, warning and chart colors only when the intended UI needs them. A decorative accent need not be the button background. Add print specifications only for a known print use.
 
-   For example, white on `#22C55E` is about 2.28:1 and fails normal-text AA. White on `#15803D` is about 5.02:1. Keep the bright color as an accent with a suitable foreground instead of silently waiving the requirement. A passing pair does not establish complete WCAG conformance.
+If alternatives are needed, show up to three directions with a short reason and actual UI preview. Do not generate alternatives solely to reach three. For an established palette, show the proposed role changes and their reason.
 
-   - Sources: [WCAG text contrast](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html) · [WCAG non-text contrast](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html) · [WCAG use of color](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html)
-4. **Preview, save, and verify the palette** — agent-runnable · ~3 min
+- Cross-arena options: ChatGPT, Claude (ai-assistants)
 
-   Start with a representative text block, primary button, focused input and one relevant status on the intended surface. Inspect at realistic sizes. Check hover/focus styling and non-color cues. Add a chart, dark mode or other component only when required by the request. Use labels, symbols, patterns or underlines where hue alone would carry meaning.
+<a id="step-2"></a>
 
-   Save draft tokens in the existing design-token source or design tool. If none exists, create a clearly named local CSS-variable or token-JSON file and a small preview. Draft calculation, preview and saving can proceed while selection is open; do not record an agent proposal as a user selection.
+### 2. Pick the palette direction
 
-   Read back the saved values and inspect the rendered sample. Record the actual file/component reference. If no renderer is available, keep the calculations and token draft, set rendering to `not-tested`, and name the untested uses. If a save fails, retain the selection and draft values. Retry a transient storage failure only within the existing authorization. If the destination is unavailable or approval is denied, report the unsaved state and continue with a permitted local draft. Do not ask the user to choose colors again to recover storage.
+human · ~5 min
 
-   Show the semantic role/value table, key contrast findings, allowed and restricted uses, preview reference and saved state.
 
-   A first draft is useful when roles and remaining checks are explicit. A verified-use claim needs calculated pairs and the relevant rendered inspection. A local token file does not update a website, logo or social asset. Apply or deploy values only within the user's authorized scope and verify the target separately.
+Reuse an existing selection or delegated authority. Otherwise show a recommendation and leave selection open until a choice is established. Draft calculation, preview and saving can proceed while selection is open.
 
-   - Produces: Brand color palette
-   - Vendor options: Figma, Canva
-   - Ranked market: [design-tools](../../open-rankings/design-tools)
-   - Cross-arena market: [vibe-coding](../../open-rankings/vibe-coding)
+<a id="step-3"></a>
 
-## Artifacts
+### 3. Check contrast and accessibility (WCAG)
 
-Produces:
+agent-runnable · ~2 min
+
+
+For WCAG 2.2 AA, [normal text needs 4.5:1](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html); qualifying large text needs 3:1. Use actual size and weight, not a design label. Required control boundaries and meaningful graphics need 3:1 under [non-text contrast](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html), including the relevant adjacent colors. Status and meaning must use [more than color alone](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html).
+
+Use a documented contrast checker or calculate opaque sRGB pairs with this Python function:
+
+```python
+def contrast(foreground, background):
+    def luminance(hex_color):
+        rgb = [int(hex_color[i:i + 2], 16) / 255 for i in (1, 3, 5)]
+        linear = [v / 12.92 if v <= 0.04045 else ((v + 0.055) / 1.055) ** 2.4 for v in rgb]
+        return sum(v * weight for v, weight in zip(linear, (0.2126, 0.7152, 0.0722)))
+    a, b = luminance(foreground), luminance(background)
+    return (max(a, b) + 0.05) / (min(a, b) + 0.05)
+```
+
+Inputs are `#RRGGBB` values. For opacity, gradients or images, first resolve the actual composited colors at the intended use; this function alone does not validate those backgrounds. Compare the unrounded ratio with the target. Record foreground, background, role, target, ratio, text size/weight when relevant, and calculation reference.
+
+For example, white on `#22C55E` is about 2.28:1 and fails normal-text AA. White on `#15803D` is about 5.02:1. Keep the bright color as an accent with a suitable foreground instead of silently waiving the requirement. A passing pair does not establish complete WCAG conformance.
+
+- Sources: [WCAG text contrast](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html) · [WCAG non-text contrast](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html) · [WCAG use of color](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html)
+
+<a id="step-4"></a>
+
+### 4. Preview, save, and verify the palette
+
+agent-runnable · ~3 min
+
+
+Start with a representative text block, primary button, focused input and one relevant status on the intended surface. Inspect at realistic sizes. Check hover/focus styling and non-color cues. Add a chart, dark mode or other component only when required by the request. Use labels, symbols, patterns or underlines where hue alone would carry meaning.
+
+Save draft tokens in the existing design-token source or design tool. If none exists, create a clearly named local CSS-variable or token-JSON file and a small preview. Draft calculation, preview and saving can proceed while selection is open; do not record an agent proposal as a user selection.
+
+Read back the saved values and inspect the rendered sample. Record the actual file/component reference. If no renderer is available, keep the calculations and token draft, set rendering to `not-tested`, and name the untested uses. If a save fails, retain the selection and draft values. Retry a transient storage failure only within the existing authorization. If the destination is unavailable or approval is denied, report the unsaved state and continue with a permitted local draft. Do not ask the user to choose colors again to recover storage.
+
+Show the semantic role/value table, key contrast findings, allowed and restricted uses, preview reference and saved state.
+
+A first draft is useful when roles and remaining checks are explicit. A verified-use claim needs calculated pairs and the relevant rendered inspection. A local token file does not update a website, logo or social asset. Apply or deploy values only within the user's authorized scope and verify the target separately.
+
+- Produces: Brand color palette
+- Vendor options: Figma, Canva
+- Ranked market: [design-tools](../../open-rankings/design-tools)
+- Cross-arena market: [vibe-coding](../../open-rankings/vibe-coding)
+
+
+<a id="artifacts"></a>
+
+## Outputs
 
 - Brand color palette
 

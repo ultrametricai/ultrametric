@@ -3,6 +3,10 @@
 
 # Recover from a frozen bank account or bank failure
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Geography](#geography) · [Steps](#steps-at-a-glance)
+
+## Overview
+
 **Trigger:** Your operating account is frozen by the bank's compliance review, or the bank itself fails.
 
 Frozen account or failed bank, the problem is the same: payroll has to go out, in every country. Confirm what happened. Work out how much is covered by deposit insurance (US: FDIC covers $250,000 per depositor, per bank, per ownership category; the UK, German, French, and Indian caps are in the geo notes). Open a second operating account so the payments that cannot bounce don't. Then the paths split. A compliance freeze is a documents conversation with the bank: KYC and beneficial ownership. A bank failure is a receivership you track and file claims against for the uninsured balance (in the US, with the FDIC). Moving banking rails mid-crisis can be undone, but at real cost.
@@ -22,41 +26,137 @@ Frozen account or failed bank, the problem is the same: payroll has to go out, i
 
 Opening the backup account is KYC-gated, the freeze conversation is with the bank's compliance team, and the FDIC claim is theirs to process. An agent can size the insurance exposure from your balances; it cannot unfreeze an account.
 
-## Steps
+## Before you start
 
-1. **Confirm what happened: a compliance freeze notice from the bank, or the bank itself failing (US: the FDIC failed-bank list; your country's resolution authority otherwise)** — human · ~30 min
+| Information to gather | Required by the record |
+| --- | --- |
+| which bank, which accounts, and current balances | Yes |
+| the next payroll date and critical payment schedule | Yes |
 
-   - Do it yourself: [FDIC failed bank list](https://www.fdic.gov/bank-failures/failed-bank-list)
-2. **Size the exposure: balances against your deposit-protection limit (US: FDIC's $250,000 per depositor, per bank, per ownership category — other schemes in the geo notes)** — agent-runnable · ~20 min
+## Geography
 
-   - Do it yourself: [FDIC deposit insurance](https://www.fdic.gov/deposit-insurance)
-3. **Triage the next payroll run and the payments that cannot bounce** — human · ~45 min
-4. **Open a backup operating account at a second bank** — manual form/portal · ~1 h
+Country rows describe the guidance recorded here. Local notes and step alternatives do not establish a complete country-specific workflow.
 
-   - Vendor options: Mercury, Brex, Relay, Wise Business
-   - Ranked market: [startup-banking](../../open-rankings/startup-banking)
-5. **Re-point the rails: processor payouts in, payroll and vendor payments out** — human · ~1.5 h · hard to undo
-6. **If it's a compliance freeze: ask what triggered the review and supply the KYC/UBO documents the bank asks for** — human · ~1 h
-7. **If the bank failed: track the receivership (US: the FDIC's) and file the claim for uninsured balances** — manual form/portal · ~45 min
-8. **Wait for the freeze review or the receivership distributions** — human · ~7 d · async wait
+| Country | Recorded guidance | Steps with local alternatives or resolutions |
+| --- | --- | --- |
+| [India](#geo-in) | Local analog note | — |
+| [United Kingdom](#geo-uk) | Local analog note | — |
+| [Germany](#geo-de) | Local analog note | — |
+| [France](#geo-fr) | Local analog note | — |
+| [Singapore](#geo-sg) | Local analog note | — |
 
-## By country
+## Steps at a glance
+
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
+
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Confirm what happened: a compliance freeze notice from the bank, or the bank itself failing (US: the FDIC failed-bank list; your country's resolution authority otherwise)](#step-1) | human | ~30 min | Entry step |
+| [2. Size the exposure: balances against your deposit-protection limit (US: FDIC's $250,000 per depositor, per bank, per ownership category — other schemes in the geo notes)](#step-2) | agent-runnable | ~20 min | [Step 1](#step-1) |
+| [3. Triage the next payroll run and the payments that cannot bounce](#step-3) | human | ~45 min | [Step 2](#step-2) |
+| [4. Open a backup operating account at a second bank](#step-4) | manual form/portal | ~1 h | [Step 3](#step-3) |
+| [5. Re-point the rails: processor payouts in, payroll and vendor payments out](#step-5) | human | ~1.5 h | [Step 4](#step-4) |
+| [6. If it's a compliance freeze: ask what triggered the review and supply the KYC/UBO documents the bank asks for](#step-6) | human | ~1 h | [Step 5](#step-5) |
+| [7. If the bank failed: track the receivership (US: the FDIC's) and file the claim for uninsured balances](#step-7) | manual form/portal | ~45 min | [Step 6](#step-6) |
+| [8. Wait for the freeze review or the receivership distributions](#step-8) | human; includes waiting | ~7 d | [Step 7](#step-7) |
+
+<a id="steps"></a>
+
+## Step details
+
+<a id="step-1"></a>
+
+### 1. Confirm what happened: a compliance freeze notice from the bank, or the bank itself failing (US: the FDIC failed-bank list; your country's resolution authority otherwise)
+
+human · ~30 min
+
+
+- Do it yourself: [FDIC failed bank list](https://www.fdic.gov/bank-failures/failed-bank-list)
+
+<a id="step-2"></a>
+
+### 2. Size the exposure: balances against your deposit-protection limit (US: FDIC's $250,000 per depositor, per bank, per ownership category — other schemes in the geo notes)
+
+agent-runnable · ~20 min
+
+
+- Do it yourself: [FDIC deposit insurance](https://www.fdic.gov/deposit-insurance)
+
+<a id="step-3"></a>
+
+### 3. Triage the next payroll run and the payments that cannot bounce
+
+human · ~45 min
+
+
+<a id="step-4"></a>
+
+### 4. Open a backup operating account at a second bank
+
+manual form/portal · ~1 h
+
+
+- Vendor options: Mercury, Brex, Relay, Wise Business
+- Ranked market: [startup-banking](../../open-rankings/startup-banking)
+
+<a id="step-5"></a>
+
+### 5. Re-point the rails: processor payouts in, payroll and vendor payments out
+
+human · ~1.5 h · hard to undo
+
+
+<a id="step-6"></a>
+
+### 6. If it's a compliance freeze: ask what triggered the review and supply the KYC/UBO documents the bank asks for
+
+human · ~1 h
+
+
+<a id="step-7"></a>
+
+### 7. If the bank failed: track the receivership (US: the FDIC's) and file the claim for uninsured balances
+
+manual form/portal · ~45 min
+
+
+<a id="step-8"></a>
+
+### 8. Wait for the freeze review or the receivership distributions
+
+human · ~7 d · async wait
+
+
+
+<a id="by-country"></a>
+
+## Country details
+
+<a id="geo-in"></a>
 
 ### India
 
 - DICGC insurance covers ₹5 lakh per depositor per bank (principal plus interest), and RBI moratoria on stressed banks have historically capped withdrawals for months — which makes the second-account triage even more important than in the US. ([DICGC deposit insurance](https://www.dicgc.org.in/))
 
+<a id="geo-uk"></a>
+
 ### United Kingdom
 
 - If a UK-authorised bank fails, the FSCS protects £85,000 per depositor per bank and aims to pay most depositors within days; a compliance freeze is the same KYC/UBO documents conversation with the bank — and standing up a second operating account for payroll is the same first move. ([FSCS deposit protection](https://www.fscs.org.uk/))
+
+<a id="geo-de"></a>
 
 ### Germany
 
 - The statutory Entschädigungseinrichtung deutscher Banken (EdB) compensates €100,000 per depositor per bank (the EU deposit-guarantee floor) and contacts depositors after a failure; compliance freezes are worked out with the bank's own team under BaFin supervision. ([EdB — German deposit protection](https://www.edb-banken.de/))
 
+<a id="geo-fr"></a>
+
 ### France
 
 - The FGDR guarantees €100,000 per depositor per bank and targets compensation within seven working days of a failure; a gel du compte lifts on the bank's KYC questions being answered, not on a form — the backup-account move is identical. ([FGDR deposit guarantee](https://www.garantiedesdepots.fr/))
+
+<a id="geo-sg"></a>
 
 ### Singapore
 

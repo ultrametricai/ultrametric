@@ -382,7 +382,7 @@ function followsLine(part: Part, position: number, walk: WalkContext, ctx: PageC
   const bySource = new Map<string, string[]>()
   for (const l of into) {
     const option = l.option ? partById.get(l.from)?.options.find((o) => o.id === l.option)?.title ?? l.option : null
-    const condition = option ? `option "${trimEnd(linkLawRules(option, ctx))}"` : l.when ? `when ${trimEnd(linkLawRules(l.when, ctx))}` : null
+    const condition = [option ? `option "${trimEnd(linkLawRules(option, ctx))}"` : '', l.when ? `when ${trimEnd(linkLawRules(l.when, ctx))}` : ''].filter(Boolean).join(' and ')
     bySource.set(l.from, [...(bySource.get(l.from) ?? []), ...(condition ? [condition] : [])])
   }
   const descriptions = [...bySource.entries()]
@@ -455,7 +455,12 @@ function partBlock(part: Part, position: number, walk: WalkContext, ctx: PageCon
   const meta: Meta = { ...part.metadata, ...defaultOption?.metadata }
   const markers = stepMarkers(meta)
   const headTitle = part.title ?? (refTarget ? `Run ${ctx.titleById.get(refTarget) ?? refTarget}` : part.id)
-  lines.push(`${index}. **${headTitle}**${markers.length > 0 ? ` — ${markers.join(' · ')}` : ''}`)
+  lines.push(`<a id="step-${index}"></a>`, '', `### ${index}. ${headTitle}`, '')
+  if (markers.length > 0) lines.push(markers.join(' · '), '')
+  if (part.options.length > 1) {
+    lines.push('| Option | Applies when |', '| --- | --- |',
+      ...part.options.map((o) => `| ${cell(linkLawRules(o.title, ctx))} | ${cell(linkLawRules(o.when ?? (o.id === 'default' ? 'Recorded default' : 'No condition recorded'), ctx))} |`), '')
+  }
   const detail: string[] = []
   if (follows) detail.push(`*${follows}*`)
   if (part.when) detail.push(`When: ${linkLawRules(part.when, ctx)}`)
@@ -484,9 +489,10 @@ function partBlock(part: Part, position: number, walk: WalkContext, ctx: PageCon
   // the matching "Follows" line.
   const outgoing = walk.links.filter((l) => l.from === part.id)
   for (const link of outgoing.filter((l) => l.option || l.when)) {
-    const condition = link.option
+    const option = link.option
       ? part.options.find((o) => o.id === link.option)?.title ?? link.option
-      : link.when ?? ''
+      : null
+    const condition = [option, link.when].filter(Boolean).join(' and ')
     bullets.push(`If "${trimEnd(condition)}": continue at step ${walk.numberOf.get(link.to)}`)
   }
   const unconditional = outgoing.filter((l) => !l.option && !l.when)
@@ -515,13 +521,14 @@ function partBlock(part: Part, position: number, walk: WalkContext, ctx: PageCon
   }
   const terminal = walk.links.length > 0 && outgoing.length === 0 && position < walk.ordered.length - 1
   if (detail.length > 0 || bullets.length > 0 || optionLines.length > 0 || terminal) {
-    for (const d of detail) lines.push('', `   ${indented(d, '   ')}`)
-    if (bullets.length > 0) lines.push('', ...bullets.map((b) => `   - ${indented(b, '     ')}`))
+    for (const d of detail) lines.push('', d)
+    if (bullets.length > 0) lines.push('', ...bullets.map((b) => `- ${indented(b, '  ')}`))
     if (optionLines.length > 0) {
-      lines.push('', ...optionLines.map((l) => (l === '' ? '' : `   ${l}`)))
+      lines.push('', ...optionLines)
     }
-    if (terminal) lines.push('', '   *This path ends here.*')
+    if (terminal) lines.push('', '*This path ends here.*')
   }
+  lines.push('')
   return lines
 }
 
@@ -539,11 +546,12 @@ function countrySection(record: { parts: Part[]; metadata: Meta }, ctx: PageCont
   })
   if (notes.length === 0 && resolutions.length === 0) return []
   const lines: string[] = ['## By country']
-  for (const country of COUNTRY_ORDER) {
+  const countries = [...new Set([...notes.map((n) => n.country), ...resolutions.map((r) => r.entry.country)])]
+  for (const country of [...COUNTRY_ORDER, ...countries.filter((c) => !COUNTRY_ORDER.includes(c))]) {
     const note = notes.find((n) => n.country === country)
     const steps = resolutions.filter((r) => r.entry.country === country)
     if (!note && steps.length === 0) continue
-    lines.push('', `### ${countryLabel(country)}`, '')
+    lines.push('', `<a id="geo-${country.toLowerCase()}"></a>`, '', `### ${countryLabel(country)}`, '')
     if (note) {
       const prefix = GEO_KIND_LABELS[note.kind] ?? ''
       const link = note.actionUrl ? ` ([${linkText(note.actionLabel ?? hostname(note.actionUrl))}](${note.actionUrl}))` : ''
@@ -565,9 +573,86 @@ function countrySection(record: { parts: Part[]; metadata: Meta }, ctx: PageCont
 // Whole-page render
 // ---------------------------------------------------------------------------
 
+function artifactLink(id: string, ctx: PageContext): string {
+  const artifact = ctx.artifacts.get(id)
+  const producer = artifact?.producedBy ? ctx.slugById.get(artifact.producedBy) : null
+  const title = artifact?.producedBy ? ctx.titleById.get(artifact.producedBy) : null
+  return `${artifact?.label ?? id}${producer && title ? ` — from [${linkText(title)}](${producer}.md)` : ''}`
+}
+
+function geographyOverview(ordered: Part[], metadata: Meta): string[] {
+  const notes = (Array.isArray(metadata.geoNotes) ? metadata.geoNotes : []) as GeoEntry[]
+  const resolutions = (p: Part) => (Array.isArray(p.metadata.geoResolutions) ? p.metadata.geoResolutions : []) as GeoEntry[]
+  const countriesFor = (p: Part) => p.options.flatMap((o) => {
+    const context = o.metadata.context as { countries?: string[] } | undefined
+    return Array.isArray(context?.countries) ? context.countries : []
+  })
+  const countries = [...new Set([...notes.map((n) => n.country), ...ordered.flatMap((p) => [...resolutions(p).map((r) => r.country), ...countriesFor(p)])])]
+  const states = ordered.filter((p) => Array.isArray(p.metadata.jurisdictions) && p.metadata.jurisdictions.length > 0)
+  if (countries.length === 0 && states.length === 0) return []
+  const lines = ['## Geography', '',
+    'Country rows describe the guidance recorded here. Local notes and step alternatives do not establish a complete country-specific workflow.', '']
+  if (countries.length > 0) {
+    lines.push('| Country | Recorded guidance | Steps with local alternatives or resolutions |', '| --- | --- | --- |')
+    for (const country of [...COUNTRY_ORDER, ...countries.filter((c) => !COUNTRY_ORDER.includes(c))].filter((c) => countries.includes(c))) {
+      const note = notes.find((n) => n.country === country)
+      const kinds: string[] = []
+      if (note) kinds.push(({ analog: 'Local analog note', absorbed: 'Handled within another local process', 'not-applicable': 'Marked not applicable' } as Record<string, string>)[note.kind] ?? 'Country note')
+      if (ordered.some((p) => resolutions(p).some((r) => r.country === country))) kinds.push('step resolution')
+      if (ordered.some((p) => countriesFor(p).includes(country))) kinds.push('step alternative')
+      const steps = ordered.flatMap((p, i) => resolutions(p).some((r) => r.country === country) || countriesFor(p).includes(country) ? [`[${i + 1}](#step-${i + 1})`] : [])
+      // Countries with only an option have no country note to jump to; link to the step.
+      const hasDetails = Boolean(note) || ordered.some((p) => resolutions(p).some((r) => r.country === country))
+      const name = hasDetails ? `[${countryLabel(country)}](#geo-${country.toLowerCase()})` : countryLabel(country)
+      lines.push(`| ${cell(name)} | ${kinds.join('; ')} | ${steps.join(', ') || '—'} |`)
+    }
+    lines.push('')
+  }
+  if (states.length > 0) {
+    lines.push('### State conditions', '', '| Step | Applies when operating in |', '| --- | --- |')
+    for (const p of states) {
+      const index = ordered.indexOf(p) + 1
+      const jurisdictions = p.metadata.jurisdictions as string[]
+      lines.push(`| [${index}. ${cell(p.title ?? p.id)}](#step-${index}) | ${cell(jurisdictions.map((j) => JURISDICTION_META[j as Jurisdiction]?.noun ?? j).join(', '))} |`)
+    }
+    lines.push('')
+  }
+  return lines
+}
+
+function stepsOverview(walk: WalkContext, ctx: PageContext): string[] {
+  const lines = ['## Steps at a glance', '',
+    'Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.', '',
+    '| Step | Handled by | Time estimate | Incoming dependencies |', '| --- | --- | --- | --- |']
+  for (const [i, p] of walk.ordered.entries()) {
+    const m: Meta = { ...p.metadata, ...p.options.find((o) => o.id === 'default')?.metadata }
+    const markers = [m.approvalRequired === true ? 'approval required' : '', m.legalSignature === true ? 'signature required' : '', m.async === true ? 'includes waiting' : ''].filter(Boolean)
+    const route = str(m, 'route')
+    const owner = route ? ROUTE_LABELS[route] ?? route : 'Not recorded'
+    const into = walk.links.filter((l) => l.to === p.id)
+    const dependencies = into.map((l) => {
+      const option = l.option ? walk.partById.get(l.from)?.options.find((o) => o.id === l.option)?.title ?? l.option : null
+      const condition = [option, l.when].filter(Boolean).join(' and ')
+      return `[Step ${walk.numberOf.get(l.from)}](#step-${walk.numberOf.get(l.from)})${condition ? ` (${linkLawRules(condition, ctx)})` : ''}`
+    })
+    const join = into.length > 1 ? (requiredJoin(into, walk.gated) ? 'All: ' : 'Alternatives: ') : ''
+    const starts = dependencies.length ? join + dependencies.join('; ') : 'Entry step'
+    const minutes = num(m, 'estimatedMinutes')
+    const title = p.title ?? (p.ref ? ctx.titleById.get(p.ref) : null) ?? p.id
+    lines.push(`| [${i + 1}. ${cell(linkText(title))}](#step-${i + 1}) | ${cell([owner, ...markers].join('; '))} | ${minutes === null ? 'Not recorded' : `~${formatMinutes(minutes)}`} | ${cell(starts)} |`)
+  }
+  return [...lines, '']
+}
+
 export function renderProcessPage(source: CatalogProcess, ctx: PageContext): string {
   const { record, slug, taskIds } = source
   const m = record.metadata as Meta
+  const ordered = walkOrder(record.parts, record.links)
+  const geography = geographyOverview(ordered, m)
+  const requires = (Array.isArray(m.requires) ? m.requires : []) as string[]
+  const inputs = (Array.isArray(m.contextNeeded) ? m.contextNeeded : []) as Array<{ query?: string; required?: boolean }>
+  const namedInputs = inputs.filter((input) => typeof input.query === 'string')
+  const produces = (Array.isArray(m.produces) ? m.produces : []) as string[]
   const lines: string[] = []
   lines.push(
     `<!-- Generated by scripts/generate-process-pages.ts from open-processes/${slug}.json — do not hand-edit.`,
@@ -576,6 +661,13 @@ export function renderProcessPage(source: CatalogProcess, ctx: PageContext): str
     `# ${record.title}`,
     '',
   )
+  const nav = ['[Overview](#overview)']
+  if (requires.length || namedInputs.length) nav.push('[Before you start](#before-you-start)')
+  if (geography.length) nav.push('[Geography](#geography)')
+  if (taskIds) nav.push('[Process sequence](#process-sequence)')
+  else if (ordered.length) nav.push('[Steps](#steps-at-a-glance)')
+  if (produces.length) nav.push('[Outputs](#outputs)')
+  lines.push(nav.join(' · '), '', '## Overview', '')
   const trigger = str(m, 'trigger')
   if (trigger) lines.push(`**Trigger:** ${linkLawRules(trigger, ctx)}`, '')
   if (record.summary) lines.push(linkLawRules(record.summary, ctx), '')
@@ -618,16 +710,28 @@ export function renderProcessPage(source: CatalogProcess, ctx: PageContext): str
     lines.push('## Outcomes', '', ...record.outcomes.map((o) => `- ${indented(linkLawRules(o, ctx), '  ')}`), '')
   }
 
+  if (requires.length || namedInputs.length) {
+    if (requires.length) lines.push('<a id="artifacts"></a>', '')
+    lines.push('## Before you start', '')
+    if (requires.length) lines.push('Required artifacts:', '', ...requires.map((id) => `- ${artifactLink(id, ctx)}`), '')
+    if (namedInputs.length) lines.push('| Information to gather | Required by the record |', '| --- | --- |',
+      ...namedInputs.map((input) => `| ${cell(input.query!)} | ${input.required === true ? 'Yes' : input.required === false ? 'Optional' : 'Not specified'} |`), '')
+  }
+  lines.push(...geography)
+
   if (taskIds) {
-    lines.push('## Processes in order', '')
+    lines.push('<a id="processes-in-order"></a>', '', '## Process sequence', '',
+      'Run the linked processes in the recorded chain order. Each process defines its own internal dependencies.', '',
+      '| Order | Process | Requires | Produces |', '| --- | --- | --- | --- |')
     taskIds.forEach((id, i) => {
       const chainSlug = ctx.slugById.get(id)
       const title = ctx.titleById.get(id) ?? id
-      lines.push(`${i + 1}. ${chainSlug ? `[${linkText(title)}](${chainSlug}.md)` : title}`)
+      const target = ctx.sources.find((s) => s.record.id === id)
+      const list = (key: string) => (Array.isArray(target?.record.metadata[key]) ? target.record.metadata[key] as string[] : []).map((a) => ctx.artifacts.get(a)?.label ?? a).join('; ') || 'Not recorded'
+      lines.push(`| ${i + 1} | ${cell(chainSlug ? `[${linkText(title)}](${chainSlug}.md)` : title)} | ${cell(list('requires'))} | ${cell(list('produces'))} |`)
     })
     lines.push('')
   }
-  const ordered = walkOrder(record.parts, record.links)
   if (!taskIds && ordered.length > 0) {
     const walk: WalkContext = {
       links: record.links,
@@ -636,7 +740,7 @@ export function renderProcessPage(source: CatalogProcess, ctx: PageContext): str
       partById: new Map(record.parts.map((p) => [p.id, p])),
       gated: branchGated(ordered, record.links),
     }
-    lines.push('## Steps', '')
+    lines.push(...stepsOverview(walk, ctx), '<a id="steps"></a>', '', '## Step details', '')
     ordered.forEach((part, i) => {
       lines.push(...partBlock(part, i, walk, ctx))
     })
@@ -644,29 +748,12 @@ export function renderProcessPage(source: CatalogProcess, ctx: PageContext): str
   }
 
   const country = countrySection({ parts: ordered, metadata: m }, ctx)
-  if (country.length > 0) lines.push(...country, '')
+  if (country.length > 0) lines.push('<a id="by-country"></a>', '', ...country.map((l) => l === '## By country' ? '## Country details' : l), '')
 
-  const produces = (Array.isArray(m.produces) ? m.produces : []) as string[]
-  const requires = (Array.isArray(m.requires) ? m.requires : []) as string[]
-  if (produces.length > 0 || requires.length > 0) {
-    lines.push('## Artifacts', '')
-    if (produces.length > 0) {
-      lines.push('Produces:', '', ...produces.map((id) => `- ${ctx.artifacts.get(id)?.label ?? id}`), '')
-    }
-    if (requires.length > 0) {
-      lines.push(
-        'Requires:',
-        '',
-        ...requires.map((id) => {
-          const artifact = ctx.artifacts.get(id)
-          const producer = artifact?.producedBy ? ctx.slugById.get(artifact.producedBy) : null
-          const producerTitle = artifact?.producedBy ? ctx.titleById.get(artifact.producedBy) : null
-          const from = producer && producerTitle ? ` — from [${linkText(producerTitle)}](${producer}.md)` : ''
-          return `- ${artifact?.label ?? id}${from}`
-        }),
-        '',
-      )
-    }
+  if (produces.length > 0) {
+    if (requires.length === 0) lines.push('<a id="artifacts"></a>', '')
+    lines.push('## Outputs', '')
+    lines.push(...produces.map((id) => `- ${ctx.artifacts.get(id)?.label ?? id}`), '')
   }
 
   const chains = ctx.chainsByTask.get(record.id) ?? []

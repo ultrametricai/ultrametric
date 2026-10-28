@@ -3,6 +3,10 @@
 
 # Open bank account
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Geography](#geography) · [Steps](#steps-at-a-glance) · [Outputs](#outputs)
+
+## Overview
+
 Open a business bank account to separate personal and company finances — the first finance move for a company in any country. The US startup banks run fully-online applications with day-or-two approvals (the default flow below); the per-country rails and providers ride in the geo notes. KYC on the founders is universal; the tax ID the bank asks for is the local one (US: the EIN).
 
 | Field | Value |
@@ -19,52 +23,134 @@ Open a business bank account to separate personal and company finances — the f
 
 The application and KYC upload are online forms (no public API); approval is a bank-side wait. Once open, the account connects to the books over the bank API.
 
-## Steps
+<a id="artifacts"></a>
 
-1. **Choose a bank** — human · ~10 min
+## Before you start
 
-   Compare institutions eligible for the company’s entity type, jurisdiction, owners and activity. Examine currencies, payment rails, approval controls, accounting connections, fees and support. Identify the legal account provider and how funds are held or protected under the offered arrangement. Use current eligibility and account terms to narrow the choice before starting an application.
+Required artifacts:
 
-   - Vendor options: Mercury, Brex, Relay
-   - Ranked market: [startup-banking](../../open-rankings/startup-banking)
-   - Sources: [FDIC Understanding Deposit Insurance](https://www.fdic.gov/resources/deposit-insurance/understanding-deposit-insurance)
+- EIN assignment letter — from [Obtain the company tax identifiers](get-ein.md)
+- Certificate of Incorporation — from [Incorporate the company](incorporate-c-corp.md)
 
-   Options:
-     - **Default — Choose a bank** — human · ~10 min
+| Information to gather | Required by the record |
+| --- | --- |
+| EIN | Yes |
 
-       Verify the institution’s eligibility requirements and the legal entity offering the account. Compare payment capabilities, access controls, fees, service limits and applicable deposit protection with the company’s operating needs. Check significant claims against the actual account terms, then select the account to take into onboarding.
-     - **UK/EU - multi-currency account**
+## Geography
 
-       When: The company is incorporated in the UK or EU - the US neobanks don't onboard it
+Country rows describe the guidance recorded here. Local notes and step alternatives do not establish a complete country-specific workflow.
 
-       For a UK or EU company, compare providers supporting its ownership and business profile. Check available currencies and account details, regulatory status, how balances are held, conversion costs and payment permissions. Match those terms to expected collections and spending, identifying restrictions that would affect operations before choosing the multi-currency account.
+| Country | Recorded guidance | Steps with local alternatives or resolutions |
+| --- | --- | --- |
+| [United States](#geo-us) | step resolution | [2](#step-2), [3](#step-3), [4](#step-4) |
+| [India](#geo-in) | Local analog note; step resolution | [2](#step-2), [3](#step-3) |
+| [United Kingdom](#geo-uk) | Local analog note; step alternative | [1](#step-1) |
+| [Germany](#geo-de) | Local analog note; step resolution; step alternative | [1](#step-1), [3](#step-3) |
+| [France](#geo-fr) | Local analog note; step alternative | [1](#step-1) |
+| [Singapore](#geo-sg) | Local analog note | — |
+| [South Korea](#geo-kr) | Local analog note | — |
+| [Hong Kong](#geo-hk) | Local analog note | — |
+| [Estonia](#geo-ee) | Local analog note | — |
 
-       - Canonical vendor: Wise Business
-       - Vendor options: Wise Business, Airwallex
-2. **Complete the online application (company details, tax ID, and founders)** — manual form/portal · ~15 min
+## Steps at a glance
 
-   Complete the bank application from the formation records and company profile, checking name, addresses, applicable tax identifier, ownership and signers. Resolve inconsistencies or eligibility questions with the company officer responsible for the account. That authorized applicant submits the information and attestations and handles any further documents the bank requests.
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
 
-   - Vendor options: Mercury, Brex, Relay
-   - Ranked market: [startup-banking](../../open-rankings/startup-banking)
-3. **Upload founder ID and formation documents (KYC)** — manual form/portal · ~10 min
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Choose a bank](#step-1) | human | ~10 min | Entry step |
+| [2. Complete the online application (company details, tax ID, and founders)](#step-2) | manual form/portal | ~15 min | [Step 1](#step-1) |
+| [3. Upload founder ID and formation documents (KYC)](#step-3) | manual form/portal | ~10 min | [Step 2](#step-2) |
+| [4. Wait for the bank to open the account](#step-4) | human; includes waiting | ~2 d | [Step 3](#step-3) |
+| [5. Connect the bank feed to the books](#step-5) | agent-runnable | ~3 min | [Step 4](#step-4) |
 
-   Collect the identity and formation documents the bank actually requests, checking legibility, validity and consistency with the application. The authorized applicant submits them through the bank’s verified secure channel with the relevant individuals’ permission. Resolve rejected or incomplete documents and limit unnecessary copies of personal identity material.
-4. **Wait for the bank to open the account** — human · ~2 d · async wait
+<a id="steps"></a>
 
-   Follow the application in the bank’s official channel, respond to outstanding questions and use the bank’s current processing estimate. Once approved, check the account name, payment features, access and any conditions before using it. The account administrator should know what is operational and what still needs activation.
+## Step details
 
-   - Verify: The dashboard shows account and routing numbers and a small inbound test transfer clears.
-   - Produces: Business bank account
-   - Cross-arena market: [workflow-automation](../../open-rankings/workflow-automation)
-5. **Connect the bank feed to the books** — agent-runnable · ~3 min
+<a id="step-1"></a>
 
-   Have the bank-account administrator authorize the supported accounting connection for the intended accounts. Map each feed to the correct ledger account and choose an import date that avoids duplicating existing entries. Compare a sample with the statement and reconcile the first import. Establish who handles failed syncs or access changes before relying on the feed at close.
+### 1. Choose a bank
 
-   - Verify: Transactions from the account appear in the books feed within a day.
-   - Canonical vendor: Mercury
+human · ~10 min
 
-## By country
+| Option | Applies when |
+| --- | --- |
+| Default — Choose a bank | Recorded default |
+| UK/EU - multi-currency account | The company is incorporated in the UK or EU - the US neobanks don't onboard it |
+
+
+Compare institutions eligible for the company’s entity type, jurisdiction, owners and activity. Examine currencies, payment rails, approval controls, accounting connections, fees and support. Identify the legal account provider and how funds are held or protected under the offered arrangement. Use current eligibility and account terms to narrow the choice before starting an application.
+
+- Vendor options: Mercury, Brex, Relay
+- Ranked market: [startup-banking](../../open-rankings/startup-banking)
+- Sources: [FDIC Understanding Deposit Insurance](https://www.fdic.gov/resources/deposit-insurance/understanding-deposit-insurance)
+
+Options:
+  - **Default — Choose a bank** — human · ~10 min
+
+    Verify the institution’s eligibility requirements and the legal entity offering the account. Compare payment capabilities, access controls, fees, service limits and applicable deposit protection with the company’s operating needs. Check significant claims against the actual account terms, then select the account to take into onboarding.
+  - **UK/EU - multi-currency account**
+
+    When: The company is incorporated in the UK or EU - the US neobanks don't onboard it
+
+    For a UK or EU company, compare providers supporting its ownership and business profile. Check available currencies and account details, regulatory status, how balances are held, conversion costs and payment permissions. Match those terms to expected collections and spending, identifying restrictions that would affect operations before choosing the multi-currency account.
+
+    - Canonical vendor: Wise Business
+    - Vendor options: Wise Business, Airwallex
+
+<a id="step-2"></a>
+
+### 2. Complete the online application (company details, tax ID, and founders)
+
+manual form/portal · ~15 min
+
+
+Complete the bank application from the formation records and company profile, checking name, addresses, applicable tax identifier, ownership and signers. Resolve inconsistencies or eligibility questions with the company officer responsible for the account. That authorized applicant submits the information and attestations and handles any further documents the bank requests.
+
+- Vendor options: Mercury, Brex, Relay
+- Ranked market: [startup-banking](../../open-rankings/startup-banking)
+
+<a id="step-3"></a>
+
+### 3. Upload founder ID and formation documents (KYC)
+
+manual form/portal · ~10 min
+
+
+Collect the identity and formation documents the bank actually requests, checking legibility, validity and consistency with the application. The authorized applicant submits them through the bank’s verified secure channel with the relevant individuals’ permission. Resolve rejected or incomplete documents and limit unnecessary copies of personal identity material.
+
+<a id="step-4"></a>
+
+### 4. Wait for the bank to open the account
+
+human · ~2 d · async wait
+
+
+Follow the application in the bank’s official channel, respond to outstanding questions and use the bank’s current processing estimate. Once approved, check the account name, payment features, access and any conditions before using it. The account administrator should know what is operational and what still needs activation.
+
+- Verify: The dashboard shows account and routing numbers and a small inbound test transfer clears.
+- Produces: Business bank account
+- Cross-arena market: [workflow-automation](../../open-rankings/workflow-automation)
+
+<a id="step-5"></a>
+
+### 5. Connect the bank feed to the books
+
+agent-runnable · ~3 min
+
+
+Have the bank-account administrator authorize the supported accounting connection for the intended accounts. Map each feed to the correct ledger account and choose an import date that avoids duplicating existing entries. Compare a sample with the statement and reconcile the first import. Establish who handles failed syncs or access changes before relying on the feed at close.
+
+- Verify: Transactions from the account appear in the books feed within a day.
+- Canonical vendor: Mercury
+
+
+<a id="by-country"></a>
+
+## Country details
+
+<a id="geo-us"></a>
 
 ### United States
 
@@ -72,51 +158,60 @@ The application and KYC upload are online forms (no public API); approval is a b
 - Step 3: KYC runs on founder government ID and the formation documents, uploaded in the bank's online flow
 - Step 4: The US startup banks approve fully-online applications in a day or two
 
+<a id="geo-in"></a>
+
 ### India
 
 - The real path is a current account with an Indian bank once incorporation documents and PAN exist — the geo spike found Airwallex doesn't onboard Indian-registered businesses and Wise's India business offering is receive-from-abroad only, so domestic banking is bank-first, KYC in person or video. ([ICICI Bank — business current account](https://www.icicibank.com/business-banking/current-account))
 - Step 2: The current-account application starts once incorporation documents and PAN exist; domestic banking is bank-first ([ICICI Bank — business current account](https://www.icicibank.com/business-banking/current-account))
 - Step 3: KYC runs in person or by video with the bank ([ICICI Bank — business current account](https://www.icicibank.com/business-banking/current-account))
 
+<a id="geo-uk"></a>
+
 ### United Kingdom
 
 - Open a UK business account once (or while) the company registers at Companies House — Wise Business and Airwallex both fully serve UK-registered companies per the committed geo spike, and challenger/high-street onboarding is the same KYC/UBO conversation as the US flow. ([Wise Business (UK)](https://wise.com/gb/business/))
+
+<a id="geo-de"></a>
 
 ### Germany
 
 - German companies are served through the EEA fintech rails — Wise (via Wise Europe) and Airwallex's Europe entity both onboard German entities with local IBANs, per the committed geo spike — alongside the traditional Hausbank route; expect the notarized formation documents in the KYC pack. ([Wise Business (Germany)](https://wise.com/de/business/))
 - Step 3: Expect the notarized formation documents in the KYC pack ([Wise Business (Germany)](https://wise.com/de/business/))
 
+<a id="geo-fr"></a>
+
 ### France
 
 - French companies open on the same EEA rails (Wise Europe, Airwallex Europe — both judged available) or with the Paris-native Qonto, whose onboarding is built around French formalities — a new SAS's dépôt de capital commonly happens at the same provider that becomes the operating account. ([Qonto (France)](https://qonto.com/fr))
+
+<a id="geo-sg"></a>
 
 ### Singapore
 
 - Banks onboard against the ACRA record — UEN, business profile, directors and shareholders — with resident-director KYC standard; open the account once the company registers, and expect extra diligence where founders are offshore. ([Bizfile (ACRA business profile)](https://www.bizfile.gov.sg/))
 
+<a id="geo-kr"></a>
+
 ### South Korea
 
 - Corporate accounts open at commercial banks against the registry certificate (등기사항전부증명서) and the business registration certificate; the Korea Federation of Banks lists the field. ([Korea Federation of Banks](https://www.kfb.or.kr/))
+
+<a id="geo-hk"></a>
 
 ### Hong Kong
 
 - Banks onboard against the registry record — certificate of incorporation, business registration certificate, directors and the significant-controllers picture — with the HKMA's account-opening pages setting the review expectations, and extra diligence where founders are offshore. ([HKMA — account opening](https://www.hkma.gov.hk/eng/smart-consumers/account-opening/))
 
+<a id="geo-ee"></a>
+
 ### Estonia
 
 - Accounts open at Estonian and EU banks or e-money institutions against the commercial-register data; for remote e-resident founders the programme lists the banking and fintech options, and a fully remote opening is commonly a fintech account. ([e-Residency programme](https://www.e-resident.gov.ee/))
 
-## Artifacts
-
-Produces:
+## Outputs
 
 - Business bank account
-
-Requires:
-
-- EIN assignment letter — from [Obtain the company tax identifiers](get-ein.md)
-- Certificate of Incorporation — from [Incorporate the company](incorporate-c-corp.md)
 
 ## Related records
 

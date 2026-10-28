@@ -57,7 +57,7 @@ The [full index of ranked markets](https://ultrametric.ai/arenas) is live, and t
 
 ## Open processes
 
-The founder [processes](open-processes/) are written step by step. Each step has an [execution assessment](open-processes/execution.md), is timed, and marked by how hard it is to undo. The vendors that can run a step are
+The founder processes are written step by step. Read the process, situation, and chain guides directly in the repo through the [full index](open-processes/README.md). Each step has an [execution assessment](open-processes/execution.md), is timed, and marked by how hard it is to undo. The vendors that can run a step are
 listed on it, with their judged scores. See it live at
 [ultrametric.ai/processes](https://ultrametric.ai/processes).
 
@@ -65,9 +65,9 @@ listed on it, with their judged scores. See it live at
 
 ### Examples
 
-- [Incorporate C-Corp](https://ultrametric.ai/processes/incorporate-c-corp) — set up a Delaware C-corp, filing to signed 83(b)
-- [Get a 409A valuation](https://ultrametric.ai/processes/get-a-409a-valuation) — establish the fair market value for stock options
-- [Set up mailing address](https://ultrametric.ai/processes/set-up-mailing-address) — a business mailing address for legal and banking purposes
+- [Incorporate C-Corp](open-processes/pages/incorporate-c-corp.md) — set up a Delaware C-corp, filing to signed 83(b)
+- [Get a 409A valuation](open-processes/pages/get-a-409a-valuation.md) — establish the fair market value for stock options
+- [Set up mailing address](open-processes/pages/set-up-mailing-address.md) — a business mailing address for legal and banking purposes
 
 [![The Incorporate C-Corp process: the step diagram, steps with ranked vendor options](assets/readme/process-page.png)](https://ultrametric.ai/processes/incorporate-c-corp)
 
@@ -190,8 +190,8 @@ the UK, India, Germany, France, Portugal, Canada, and New Zealand have country a
 filing links. Adding your country is a pull request that the data checks validate
 automatically.
 
-- [Get EIN](https://ultrametric.ai/processes/get-ein) — in the UK, France, Portugal, and Canada the tax ID arrives automatically with incorporation; in Germany it is its own filing with the tax office
-- [Set up an LLC](https://ultrametric.ai/processes/set-up-an-llc) — the analog shifts by country (LLP in the UK and India, UG in Germany, SARL in France) and Canada and New Zealand have no LLC at all
+- [Get EIN](open-processes/pages/get-ein.md) — in the UK, France, Portugal, and Canada the tax ID arrives automatically with incorporation; in Germany it is its own filing with the tax office
+- [Set up an LLC](open-processes/pages/set-up-an-llc.md) — the analog shifts by country (LLP in the UK and India, UG in Germany, SARL in France) and Canada and New Zealand have no LLC at all
 
 ## Open lore
 
@@ -255,7 +255,7 @@ it and the processes it governs, graded mapped, partial, or unmapped.
 One rule, followed through the repo. The distilled law states the thirty-day window
 ([Formation and housekeeping](open-law/LAWS.md#formation-and-housekeeping)); its rule
 [`us-fed.83b-filing-period`](open-law/US-FED/us-fed-83b-filing-period.json) pins the IRS
-procedure; the [Incorporate C-Corp](https://ultrametric.ai/processes/incorporate-c-corp)
+procedure; the [Incorporate C-Corp](open-processes/pages/incorporate-c-corp.md)
 process signs and files the election as explicit steps, with the jurisdiction-scoped
 workflow [`equity.us-de.83b-election`](open-processes/equity/us-de/83b-election.json)
 requiring a named human approval on the filing; and the
@@ -299,7 +299,7 @@ behind the decisions. Two stages as examples:
 
 ### Stage: Formation
 
-- Process: [Incorporate C-Corp](https://ultrametric.ai/processes/incorporate-c-corp) — filing to signed 83(b)
+- Process: [Incorporate C-Corp](open-processes/pages/incorporate-c-corp.md) — filing to signed 83(b)
 - Vendors: [startup legal & incorporation](https://ultrametric.ai/arena/legal-ops) and [startup banking](https://ultrametric.ai/arena/startup-banking)
 - Modules: [cap table](open-modules/README.md#cap-table) and [83(b) election math](open-modules/README.md#83b-election-math)
 - Artifacts: the certificate of incorporation and EIN letter in the [registry](open-artifacts/registry.json), establishing the incorporation-date and EIN [fields](open-artifacts/fields.json)
@@ -308,7 +308,7 @@ behind the decisions. Two stages as examples:
 
 ### Stage: Growth
 
-- Processes: [set up email marketing](https://ultrametric.ai/processes/set-up-email-marketing) and [build an SEO & content engine](https://ultrametric.ai/processes/build-an-seo-content-engine)
+- Processes: [set up email marketing](open-processes/pages/set-up-email-marketing.md) and [build an SEO & content engine](open-processes/pages/build-an-seo-content-engine.md)
 - Vendors: [email marketing](https://ultrametric.ai/arena/email-marketing) and [CRM](https://ultrametric.ai/arena/crm)
 - Module: [runway & burn](open-modules/README.md#runway--burn) — default-alive trajectories as spend scales
 - Artifacts: the marketing email audience and subscription billing in the [registry](open-artifacts/registry.json)

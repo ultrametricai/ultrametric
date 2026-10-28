@@ -3,6 +3,10 @@
 
 # Respond to a trademark office action
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Geography](#geography) · [Steps](#steps-at-a-glance)
+
+## Overview
+
 **Trigger:** The trademark examiner issues an office action against your application: refusals or requirements with a response deadline.
 
 An office action is a letter from the trademark examiner, not a rejection of your company. It raises refusals (likelihood of confusion, descriptiveness) or requirements, and each needs an answer by the deadline the office sets. In the US that is three months from the issue date plus one paid three-month extension; Madrid Section 66(a) filings get six months and no extension (law rule [us-fed.trademark-office-action-response](../../open-law/US-FED/us-fed-trademark-office-action-response.json), USPTO guidance cited). Miss the deadline and the application abandons. Pull the cited marks from the register. Decide: argue, amend, or hire counsel. File the signed response through the office's channel. This is what happens when the filing from 'File trademark' comes back with questions. Educational guidance, not legal advice.
@@ -22,32 +26,121 @@ An office action is a letter from the trademark examiner, not a rejection of you
 
 Likelihood-of-confusion arguments are legal craft and the TEAS filing carries the applicant's or attorney's signature. An agent can pull the cited marks' TSDR records; the response is human work.
 
-## Steps
+## Before you start
 
-1. **Read the office action: substantive refusals (likelihood of confusion, descriptiveness) vs procedural requirements** — human · ~45 min
+| Information to gather | Required by the record |
+| --- | --- |
+| the office action (serial number, issue date, refusal grounds) | Yes |
 
-   - Do it yourself: [USPTO: responding to office actions](https://www.uspto.gov/trademarks/maintain/responding-office-actions)
-2. **Calendar the response deadline the office action states** — human · ~10 min
-3. **Pull the examiner's cited marks from the register and check their live status** — agent-runnable · ~45 min
+## Geography
 
-   - Do it yourself: [USPTO TSDR status lookup](https://tsdr.uspto.gov/)
-4. **Decide the response: argue, amend the application, or bring in trademark counsel** — human · ~1 h
+Country rows describe the guidance recorded here. Local notes and step alternatives do not establish a complete country-specific workflow.
 
-   - Vendor options: Cooley, Orrick, Fenwick, Gunderson Dettmer
-   - Ranked market: [startup-law-firms](../../open-rankings/startup-law-firms)
-5. **Draft the response and its evidence** — human · ~1.5 h
-6. **Sign and file the response through the trademark office's channel before the deadline** — human (legally required signature) · ~20 min · hard to undo
+| Country | Recorded guidance | Steps with local alternatives or resolutions |
+| --- | --- | --- |
+| [United States](#geo-us) | step resolution | [2](#step-2), [3](#step-3), [6](#step-6) |
+| [India](#geo-in) | Local analog note; step resolution | [2](#step-2), [3](#step-3), [6](#step-6) |
+| [United Kingdom](#geo-uk) | Local analog note; step resolution | [2](#step-2), [3](#step-3) |
+| [Germany](#geo-de) | Local analog note; step resolution | [2](#step-2), [6](#step-6) |
+| [France](#geo-fr) | Local analog note; step resolution | [2](#step-2), [3](#step-3), [6](#step-6) |
+| [Portugal](#geo-pt) | Local analog note; step resolution | [2](#step-2), [6](#step-6) |
+| [Canada](#geo-ca) | Local analog note; step resolution | [2](#step-2), [6](#step-6) |
+| [Singapore](#geo-sg) | Local analog note; step resolution | [2](#step-2) |
+| [Australia](#geo-au) | Local analog note; step resolution | [2](#step-2) |
+| [South Korea](#geo-kr) | Local analog note | — |
+| [Hong Kong](#geo-hk) | Local analog note | — |
+| [Estonia](#geo-ee) | Local analog note | — |
 
-   - Do it yourself: [USPTO TEAS filing portal](https://teas.uspto.gov/)
-7. **Wait for the examiner: approval, a final action, or new issues** — human · ~30 d · async wait
+## Steps at a glance
 
-## By country
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
+
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Read the office action: substantive refusals (likelihood of confusion, descriptiveness) vs procedural requirements](#step-1) | human | ~45 min | Entry step |
+| [2. Calendar the response deadline the office action states](#step-2) | human | ~10 min | [Step 1](#step-1) |
+| [3. Pull the examiner's cited marks from the register and check their live status](#step-3) | agent-runnable | ~45 min | [Step 2](#step-2) |
+| [4. Decide the response: argue, amend the application, or bring in trademark counsel](#step-4) | human | ~1 h | [Step 3](#step-3) |
+| [5. Draft the response and its evidence](#step-5) | human | ~1.5 h | [Step 4](#step-4) |
+| [6. Sign and file the response through the trademark office's channel before the deadline](#step-6) | human; signature required | ~20 min | [Step 5](#step-5) |
+| [7. Wait for the examiner: approval, a final action, or new issues](#step-7) | human; includes waiting | ~30 d | [Step 6](#step-6) |
+
+<a id="steps"></a>
+
+## Step details
+
+<a id="step-1"></a>
+
+### 1. Read the office action: substantive refusals (likelihood of confusion, descriptiveness) vs procedural requirements
+
+human · ~45 min
+
+
+- Do it yourself: [USPTO: responding to office actions](https://www.uspto.gov/trademarks/maintain/responding-office-actions)
+
+<a id="step-2"></a>
+
+### 2. Calendar the response deadline the office action states
+
+human · ~10 min
+
+
+<a id="step-3"></a>
+
+### 3. Pull the examiner's cited marks from the register and check their live status
+
+agent-runnable · ~45 min
+
+
+- Do it yourself: [USPTO TSDR status lookup](https://tsdr.uspto.gov/)
+
+<a id="step-4"></a>
+
+### 4. Decide the response: argue, amend the application, or bring in trademark counsel
+
+human · ~1 h
+
+
+- Vendor options: Cooley, Orrick, Fenwick, Gunderson Dettmer
+- Ranked market: [startup-law-firms](../../open-rankings/startup-law-firms)
+
+<a id="step-5"></a>
+
+### 5. Draft the response and its evidence
+
+human · ~1.5 h
+
+
+<a id="step-6"></a>
+
+### 6. Sign and file the response through the trademark office's channel before the deadline
+
+human (legally required signature) · ~20 min · hard to undo
+
+
+- Do it yourself: [USPTO TEAS filing portal](https://teas.uspto.gov/)
+
+<a id="step-7"></a>
+
+### 7. Wait for the examiner: approval, a final action, or new issues
+
+human · ~30 d · async wait
+
+
+
+<a id="by-country"></a>
+
+## Country details
+
+<a id="geo-us"></a>
 
 ### United States
 
 - Step 2: 3 months from the issue date with one 3-month paid extension; Madrid §66(a) filings get 6 months and no extension (law rule us-fed.trademark-office-action-response) ([USPTO: responding to office actions](https://www.uspto.gov/trademarks/maintain/responding-office-actions))
 - Step 3: TSDR is the status lookup for the cited registrations and applications ([USPTO TSDR status lookup](https://tsdr.uspto.gov/))
 - Step 6: File the signed response in TEAS ([USPTO TEAS filing portal](https://teas.uspto.gov/))
+
+<a id="geo-in"></a>
 
 ### India
 
@@ -56,17 +149,23 @@ Likelihood-of-confusion arguments are legal craft and the TEAS filing carries th
 - Step 3: The report and the application status live on the registry's online search ([India TM registry (status & examination reports)](https://tmrsearch.ipindia.gov.in/))
 - Step 6: Responses to the examination report go through an agent or attorney ([India TM registry (status & examination reports)](https://tmrsearch.ipindia.gov.in/))
 
+<a id="geo-uk"></a>
+
 ### United Kingdom
 
 - The UKIPO issues an examination report with a two-month response window — objections commonly on distinctiveness, plus notifications of earlier marks surfaced in the search (the UK notifies rather than refuses on relative grounds). Respond, amend, or let it lapse. ([UKIPO — register a trade mark](https://www.gov.uk/how-to-register-a-trade-mark))
 - Step 2: The UKIPO examination report carries a two-month response window ([UKIPO — register a trade mark](https://www.gov.uk/how-to-register-a-trade-mark))
 - Step 3: The examination report lists earlier marks surfaced in the search; the UK notifies rather than refuses on relative grounds ([UKIPO — register a trade mark](https://www.gov.uk/how-to-register-a-trade-mark))
 
+<a id="geo-de"></a>
+
 ### Germany
 
 - A DPMA Beanstandung names the defect (absolute grounds, classification, formalities) with its own stated response deadline; relative grounds arrive later as oppositions after publication — answer through the DPMA's procedures or counsel, inside the stated window. ([DPMA — Marken (trademarks)](https://www.dpma.de/marken/index.html))
 - Step 2: A DPMA Beanstandung states its own response deadline; relative grounds arrive later as oppositions after publication ([DPMA — Marken (trademarks)](https://www.dpma.de/marken/index.html))
 - Step 6: Answer through the DPMA's procedures or counsel, inside the stated window ([DPMA — Marken (trademarks)](https://www.dpma.de/marken/index.html))
+
+<a id="geo-fr"></a>
 
 ### France
 
@@ -75,11 +174,15 @@ Likelihood-of-confusion arguments are legal craft and the TEAS filing carries th
 - Step 3: The file's status and the cited records live on the INPI e-procedures portal ([INPI e-procedures (marques)](https://procedures.inpi.fr/))
 - Step 6: Answer through the INPI e-procedures portal ([INPI e-procedures (marques)](https://procedures.inpi.fr/))
 
+<a id="geo-pt"></a>
+
 ### Portugal
 
 - INPI raises refusals and irregularities with its own stated response deadline, and published applications face a two-month opposition window — answer through INPI's online services, with counsel for substantive refusals. ([INPI — marcas](https://inpi.justica.gov.pt/))
 - Step 2: INPI refusals and irregularities state their own response deadline; published applications face a two-month opposition window ([INPI — marcas](https://inpi.justica.gov.pt/))
 - Step 6: Answer through INPI's online services, with counsel for substantive refusals ([INPI — marcas](https://inpi.justica.gov.pt/))
+
+<a id="geo-ca"></a>
 
 ### Canada
 
@@ -87,23 +190,33 @@ Likelihood-of-confusion arguments are legal craft and the TEAS filing carries th
 - Step 2: A CIPO examiner's report states its own response deadline; answer every ground or the application lapses ([CIPO — trademarks](https://ised-isde.canada.ca/site/canadian-intellectual-property-office/en))
 - Step 6: Answer every ground through CIPO's online channel ([CIPO — trademarks](https://ised-isde.canada.ca/site/canadian-intellectual-property-office/en))
 
+<a id="geo-sg"></a>
+
 ### Singapore
 
 - IPOS examination reports set a 4-month response window (extendable) — answer through the IPOS Digital Hub with arguments, amendments or evidence, or the application lapses. ([IPOS — trade mark registration process](https://www.ipos.gov.sg/about-ip/trade-marks/how-to-register/))
 - Step 2: Respond to the IPOS examination report within its 4-month window (extendable) through the IPOS Digital Hub ([IPOS — trade mark registration process](https://www.ipos.gov.sg/about-ip/trade-marks/how-to-register/))
+
+<a id="geo-au"></a>
 
 ### Australia
 
 - IP Australia's version is the adverse examination report: 15 months to respond and reach acceptance (paid extensions beyond that), with objections commonly on distinctiveness or earlier conflicting marks. Respond, amend, or let it lapse. ([Respond to an examination report](https://www.ipaustralia.gov.au/trade-marks/how-to-respond-to-an-examination-report))
 - Step 2: IP Australia's adverse examination report runs a 15-month clock to reach acceptance, with paid extensions beyond it ([Respond to an examination report](https://www.ipaustralia.gov.au/trade-marks/how-to-respond-to-an-examination-report))
 
+<a id="geo-kr"></a>
+
 ### South Korea
 
 - KIPO examiners issue a notification of grounds for rejection with a set response window; arguments and amendments are filed through 특허로 (Patent-RO), KIPO’s e-filing system. ([특허로 (KIPO e-filing)](https://www.patent.go.kr/))
 
+<a id="geo-hk"></a>
+
 ### Hong Kong
 
 - Trade Marks Registry examination opinions set a 6-month window to file written representations or amendments establishing that the registration requirements are met (Trade Marks Rules rule 13). ([IPD — apply for a trade mark](https://www.ipd.gov.hk/en/trade-marks/apply-for-a-trade-mark/index.html))
+
+<a id="geo-ee"></a>
 
 ### Estonia
 

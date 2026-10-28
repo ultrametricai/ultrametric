@@ -3,6 +3,10 @@
 
 # Cure a venture-debt covenant default
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Steps](#steps-at-a-glance)
+
+## Overview
+
 **Trigger:** Your venture-debt lender flags a covenant breach, or your own numbers show one: a financial covenant missed, a MAC clause in play, or a milestone default.
 
 Read the loan agreement before the lender call. Know which covenant tripped, the cure period, the cross-default clauses, and what the material-adverse-change clause actually permits; MAC language reads broadly on paper, and what yours allows is a counsel question, not a vibe. Recompute the covenant math from the books so you confirm the breach, its size, and the date it became reportable; the agreement's definitions control, and they can differ from your accounting lines. Give the lender the notice the agreement requires, on its clock; a surprised lender treats a waivable breach as a trust problem. The standard currency for a waiver or forbearance is a fee, a covenant reset, warrants, or tighter reporting. Brief the board with counsel present: near insolvency, how directors' duties are read changes, and that read belongs to counsel. Re-run the runway with the facility callable, and keep lender reporting current through the cure. Nothing here is legal or financial advice. The waiver decision runs on the lender's schedule.
@@ -22,29 +26,101 @@ Read the loan agreement before the lender call. Know which covenant tripped, the
 
 The lender conversation, the waiver negotiation, and the board session are human work; an agent can extract the covenant terms, recompute the test from the books, and keep the runway scenarios current.
 
-## Steps
+## Before you start
 
-1. **Read the loan agreement cold: the covenant that tripped, the cure period, cross-default clauses, and what the material-adverse-change clause actually permits** — human · ~45 min
-2. **Recompute the covenant test from the books: confirm the breach is real, its size, and the date it became reportable** — agent-runnable · ~45 min
+| Information to gather | Required by the record |
+| --- | --- |
+| the loan agreement (covenants, cure periods, notice duties, MAC and cross-default clauses) | Yes |
+| current financials for the covenant test: cash, burn, and the measures the covenants name | Yes |
 
-   - Vendor options: QuickBooks, Xero
-   - Ranked market: [accounting](../../open-rankings/accounting)
-3. **Give the lender the notice the agreement requires, on the agreement's clock** — human · ~30 min · hard to undo
+## Steps at a glance
 
-   - Next: steps 4 and 5 — all follow this step
-4. **Negotiate the waiver or forbearance: a fee, a covenant reset, warrants, or tighter reporting are the standard currency** — human · ~1.5 h · hard to undo
-5. **Brief the board with counsel present: near insolvency, how directors' duties are read changes, and that read belongs to counsel, not a playbook** — human · ~45 min
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
 
-   *Follows step 3.*
-6. **Re-run the runway with the facility callable: scenarios with and without the debt, and the cash-out date each implies** — agent-runnable · ~30 min
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Read the loan agreement cold: the covenant that tripped, the cure period, cross-default clauses, and what the material-adverse-change clause actually permits](#step-1) | human | ~45 min | Entry step |
+| [2. Recompute the covenant test from the books: confirm the breach is real, its size, and the date it became reportable](#step-2) | agent-runnable | ~45 min | [Step 1](#step-1) |
+| [3. Give the lender the notice the agreement requires, on the agreement's clock](#step-3) | human | ~30 min | [Step 2](#step-2) |
+| [4. Negotiate the waiver or forbearance: a fee, a covenant reset, warrants, or tighter reporting are the standard currency](#step-4) | human | ~1.5 h | [Step 3](#step-3) |
+| [5. Brief the board with counsel present: near insolvency, how directors' duties are read changes, and that read belongs to counsel, not a playbook](#step-5) | human | ~45 min | [Step 3](#step-3) |
+| [6. Re-run the runway with the facility callable: scenarios with and without the debt, and the cash-out date each implies](#step-6) | agent-runnable | ~30 min | [Step 5](#step-5) |
+| [7. Keep the reporting current through the cure: the lender reads the same financial package the board does](#step-7) | human | ~30 min | [Step 6](#step-6) |
+| [8. Wait out the lender's waiver decision; document every call and keep the covenants tested monthly meanwhile](#step-8) | human; includes waiting | ~14 d | All: [Step 4](#step-4); [Step 7](#step-7) |
 
-   - Runs the process [Track runway](track-runway.md)
-7. **Keep the reporting current through the cure: the lender reads the same financial package the board does** — human · ~30 min
+<a id="steps"></a>
 
-   - Runs the process [Send the board financial report](send-the-board-financial-report.md)
-8. **Wait out the lender's waiver decision; document every call and keep the covenants tested monthly meanwhile** — human · ~14 d · async wait
+## Step details
 
-   *Follows steps 4 and 7 — both are required first.*
+<a id="step-1"></a>
+
+### 1. Read the loan agreement cold: the covenant that tripped, the cure period, cross-default clauses, and what the material-adverse-change clause actually permits
+
+human · ~45 min
+
+
+<a id="step-2"></a>
+
+### 2. Recompute the covenant test from the books: confirm the breach is real, its size, and the date it became reportable
+
+agent-runnable · ~45 min
+
+
+- Vendor options: QuickBooks, Xero
+- Ranked market: [accounting](../../open-rankings/accounting)
+
+<a id="step-3"></a>
+
+### 3. Give the lender the notice the agreement requires, on the agreement's clock
+
+human · ~30 min · hard to undo
+
+
+- Next: steps 4 and 5 — all follow this step
+
+<a id="step-4"></a>
+
+### 4. Negotiate the waiver or forbearance: a fee, a covenant reset, warrants, or tighter reporting are the standard currency
+
+human · ~1.5 h · hard to undo
+
+
+<a id="step-5"></a>
+
+### 5. Brief the board with counsel present: near insolvency, how directors' duties are read changes, and that read belongs to counsel, not a playbook
+
+human · ~45 min
+
+
+*Follows step 3.*
+
+<a id="step-6"></a>
+
+### 6. Re-run the runway with the facility callable: scenarios with and without the debt, and the cash-out date each implies
+
+agent-runnable · ~30 min
+
+
+- Runs the process [Track runway](track-runway.md)
+
+<a id="step-7"></a>
+
+### 7. Keep the reporting current through the cure: the lender reads the same financial package the board does
+
+human · ~30 min
+
+
+- Runs the process [Send the board financial report](send-the-board-financial-report.md)
+
+<a id="step-8"></a>
+
+### 8. Wait out the lender's waiver decision; document every call and keep the covenants tested monthly meanwhile
+
+human · ~14 d · async wait
+
+
+*Follows steps 4 and 7 — both are required first.*
+
 
 ---
 

@@ -3,6 +3,10 @@
 
 # Hire intl contractor
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Steps](#steps-at-a-glance)
+
+## Overview
+
 Engage an international contractor with proper agreements, compliance, and payment setup via Deel.
 
 | Field | Value |
@@ -19,40 +23,99 @@ Engage an international contractor with proper agreements, compliance, and payme
 
 Deel has API for contract and payment management. Compliance review needs human oversight.
 
-## Steps
+## Before you start
 
-1. **Determine contractor classification** — agent-runnable · ~5 min
+| Information to gather | Required by the record |
+| --- | --- |
+| contractor country | Yes |
+| contractor rate | Yes |
+| contractor scope of work | Yes |
 
-   Describe the proposed services and actual working arrangement: countries involved, engaging entity, supervision, schedule, equipment and degree of independence. Give those facts to the relevant local employment and tax advisers before selecting a contractor label. If the relationship calls for employment, return to a direct-hire or EOR decision. Keep the classification rationale with the engagement so later changes in working practice trigger reassessment.
+## Steps at a glance
 
-   - Sources: [IRS: Independent contractor or employee](https://www.irs.gov/businesses/small-businesses-self-employed/independent-contractor-self-employed-or-employee)
-2. **Draft contractor agreement** — agent-runnable · ~10 min · human approval required
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
 
-   Draft the engagement around specific deliverables, acceptance criteria, fees, currency, invoicing and expenses. Use the applicable agreement template and identify both legal parties, ownership of work product, confidentiality, data access and the change or termination process. Check that the wording matches how the contractor will actually work. Send unresolved commercial choices and unusual terms to the business owner and counsel.
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Determine contractor classification](#step-1) | agent-runnable | ~5 min | Entry step |
+| [2. Draft contractor agreement](#step-2) | agent-runnable; approval required | ~10 min | [Step 1](#step-1) |
+| [3. Review agreement with counsel](#step-3) | human; includes waiting | ~2 d | [Step 2](#step-2) |
+| [4. Send for signature](#step-4) | agent-runnable; approval required | ~2 min | [Step 3](#step-3) |
+| [5. Set up payment schedule](#step-5) | manual form/portal; approval required | ~5 min | [Step 4](#step-4) |
+| [6. Contractor completes tax info](#step-6) | human; signature required; includes waiting | ~3 d | [Step 5](#step-5) |
 
-   - Canonical vendor: Deel
-   - Cross-arena options: ChatGPT, Claude, Gemini (ai-assistants)
-3. **Review agreement with counsel** — human · ~2 d · async wait
+<a id="steps"></a>
 
-   Give counsel the agreement, statement of work, classification assessment and countries involved. Highlight negotiated changes, access to customer data, IP expectations and differences between contract wording and daily working practice. Resolve legal questions with counsel and commercial tradeoffs with the business owner. The signing package should reflect those decisions, including any conditions that must be met before work starts.
-4. **Send for signature** — agent-runnable · ~2 min · human approval required
+## Step details
 
-   Verify the final agreement, legal parties, signer authority and recipient addresses. After the business owner clears the terms, send the package for signature and follow up on unanswered questions. If either party changes the document, return those changes for review. Hand the executed agreement and any outstanding conditions to the service and payment owners so work and invoicing follow the same terms.
+<a id="step-1"></a>
 
-   - Canonical vendor: Deel
-5. **Set up payment schedule** — manual form/portal · ~5 min · human approval required
+### 1. Determine contractor classification
 
-   Translate the signed fee terms into invoice dates or milestones, acceptance evidence and a payment schedule. Agree who confirms delivery, approves invoices and answers payment questions. Check currency, recipient details, transfer method and responsibility for fees with finance, including cross-border requirements. Give the contractor clear invoice instructions; scheduling the arrangement does not authorize an individual transfer.
+agent-runnable · ~5 min
 
-   - Canonical vendor: Deel
-6. **Contractor completes tax info** — human (legally required signature) · ~3 d · async wait
 
-   Ask finance which tax documentation applies to the payee’s legal form, residence and place of work. Have the contractor supply their own declarations through a secure channel, then resolve missing fields or inconsistent identity information. Finance determines the withholding and reporting treatment from the accepted documents and facts. Use the documentation route appropriate to a foreign payee’s tax status.
+Describe the proposed services and actual working arrangement: countries involved, engaging entity, supervision, schedule, equipment and degree of independence. Give those facts to the relevant local employment and tax advisers before selecting a contractor label. If the relationship calls for employment, return to a direct-hire or EOR decision. Keep the classification rationale with the engagement so later changes in working practice trigger reassessment.
 
-   - Verify: A completed W-8BEN (or W-8BEN-E for entities) is on file before the first payment goes out. ([www.irs.gov](https://www.irs.gov/forms-pubs/about-form-w-8-ben))
-   - Canonical vendor: Deel
-   - Cross-arena market: [workflow-automation](../../open-rankings/workflow-automation)
-   - Sources: [IRS: Forms and associated taxes for independent contractors](https://www.irs.gov/businesses/small-businesses-self-employed/forms-and-associated-taxes-for-independent-contractors)
+- Sources: [IRS: Independent contractor or employee](https://www.irs.gov/businesses/small-businesses-self-employed/independent-contractor-self-employed-or-employee)
+
+<a id="step-2"></a>
+
+### 2. Draft contractor agreement
+
+agent-runnable · ~10 min · human approval required
+
+
+Draft the engagement around specific deliverables, acceptance criteria, fees, currency, invoicing and expenses. Use the applicable agreement template and identify both legal parties, ownership of work product, confidentiality, data access and the change or termination process. Check that the wording matches how the contractor will actually work. Send unresolved commercial choices and unusual terms to the business owner and counsel.
+
+- Canonical vendor: Deel
+- Cross-arena options: ChatGPT, Claude, Gemini (ai-assistants)
+
+<a id="step-3"></a>
+
+### 3. Review agreement with counsel
+
+human · ~2 d · async wait
+
+
+Give counsel the agreement, statement of work, classification assessment and countries involved. Highlight negotiated changes, access to customer data, IP expectations and differences between contract wording and daily working practice. Resolve legal questions with counsel and commercial tradeoffs with the business owner. The signing package should reflect those decisions, including any conditions that must be met before work starts.
+
+<a id="step-4"></a>
+
+### 4. Send for signature
+
+agent-runnable · ~2 min · human approval required
+
+
+Verify the final agreement, legal parties, signer authority and recipient addresses. After the business owner clears the terms, send the package for signature and follow up on unanswered questions. If either party changes the document, return those changes for review. Hand the executed agreement and any outstanding conditions to the service and payment owners so work and invoicing follow the same terms.
+
+- Canonical vendor: Deel
+
+<a id="step-5"></a>
+
+### 5. Set up payment schedule
+
+manual form/portal · ~5 min · human approval required
+
+
+Translate the signed fee terms into invoice dates or milestones, acceptance evidence and a payment schedule. Agree who confirms delivery, approves invoices and answers payment questions. Check currency, recipient details, transfer method and responsibility for fees with finance, including cross-border requirements. Give the contractor clear invoice instructions; scheduling the arrangement does not authorize an individual transfer.
+
+- Canonical vendor: Deel
+
+<a id="step-6"></a>
+
+### 6. Contractor completes tax info
+
+human (legally required signature) · ~3 d · async wait
+
+
+Ask finance which tax documentation applies to the payee’s legal form, residence and place of work. Have the contractor supply their own declarations through a secure channel, then resolve missing fields or inconsistent identity information. Finance determines the withholding and reporting treatment from the accepted documents and facts. Use the documentation route appropriate to a foreign payee’s tax status.
+
+- Verify: A completed W-8BEN (or W-8BEN-E for entities) is on file before the first payment goes out. ([www.irs.gov](https://www.irs.gov/forms-pubs/about-form-w-8-ben))
+- Canonical vendor: Deel
+- Cross-arena market: [workflow-automation](../../open-rankings/workflow-automation)
+- Sources: [IRS: Forms and associated taxes for independent contractors](https://www.irs.gov/businesses/small-businesses-self-employed/forms-and-associated-taxes-for-independent-contractors)
+
 
 ## Related records
 

@@ -3,6 +3,10 @@
 
 # Incorporate the company
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Geography](#geography) · [Steps](#steps-at-a-glance) · [Outputs](#outputs)
+
+## Overview
+
 Form a company in the selected jurisdiction: check the name, submit the local formation filing, adopt governing documents and issue founder equity. Apply the local tax-election rules where an election exists.
 
 | Field | Value |
@@ -19,229 +23,411 @@ Form a company in the selected jurisdiction: check the name, submit the local fo
 
 Clerky/Stripe Atlas have limited APIs. System guides through the process, pre-fills known data, tracks progress, but cannot automate the filing itself.
 
-## Steps
+<a id="artifacts"></a>
 
-1. **Choose formation service** — human · ~10 min
+## Before you start
 
-   *Entry step — no prerequisite step.*
+Required artifacts:
 
-   Compare services against the remaining formation work: Delaware incorporation, registered-agent service, bylaws and initial resolutions, founder stock documents, and handling of an 83(b) election where applicable. Check which items the proposed package includes, which require separate purchases, and what recurring charges follow setup. Distinguish document preparation from actual filing, and confirm how completed records will be delivered. Finish with a selected provider and package, plus a clear list of work that someone else must complete.
+- Company name — from [Generate a company name](generate-a-company-name.md)
+- Registered agent — from [Set up registered agent](set-up-registered-agent.md)
 
-   - Vendor options: Clerky, Stripe Atlas, Firstbase, LegalZoom, Northwest Registered Agent, Doola
-   - Sources: [Delaware formation requirements](https://corp.delaware.gov/howtoform/) · [Clerky package contents and pricing](https://www.clerky.com/pricing) · [Stripe Atlas formation package](https://stripe.com/atlas)
+| Information to gather | Required by the record |
+| --- | --- |
+| founder legal names | Yes |
+| founder addresses | Yes |
+| company desired name | Yes |
+| equity split | Yes |
+| equity vesting schedule | Yes |
+| equity authorized shares | Optional |
 
-   Options:
-     - **Form through Clerky**
+## Geography
 
-       When: Forming through Clerky rather than Stripe Atlas — pay-per-document pricing
+Country rows describe the guidance recorded here. Local notes and step alternatives do not establish a complete country-specific workflow.
 
-       Compare Clerky’s pay-per-use incorporation with its Company Lifetime Package against the paperwork you expect to need after formation. Both include expedited Delaware filing and the first year of registered-agent service; post-incorporation setup is a separate purchase under pay-per-use. Check the current package terms, excluded third-party charges and later registered-agent costs before choosing. Record the selected package and identify who will handle any work outside it, including the actual submission of an 83(b) election where applicable.
+| Country | Recorded guidance | Steps with local alternatives or resolutions |
+| --- | --- | --- |
+| [United States](#geo-us) | step resolution; step alternative | [1](#step-1), [2](#step-2), [3](#step-3), [4](#step-4), [5](#step-5), [7](#step-7), [8](#step-8), [9](#step-9), [10](#step-10) |
+| [India](#geo-in) | Local analog note; step resolution; step alternative | [2](#step-2), [3](#step-3), [10](#step-10) |
+| [United Kingdom](#geo-uk) | Local analog note; step resolution; step alternative | [2](#step-2), [3](#step-3), [9](#step-9), [10](#step-10) |
+| [Germany](#geo-de) | Local analog note; step resolution; step alternative | [2](#step-2), [3](#step-3), [10](#step-10) |
+| [France](#geo-fr) | Local analog note; step resolution; step alternative | [2](#step-2), [3](#step-3), [10](#step-10) |
+| [Portugal](#geo-pt) | Local analog note; step resolution | [3](#step-3), [10](#step-10) |
+| [Canada](#geo-ca) | Local analog note; step resolution | [3](#step-3), [10](#step-10) |
+| [New Zealand](#geo-nz) | Local analog note; step resolution | [3](#step-3) |
+| [Singapore](#geo-sg) | Local analog note; step resolution | [3](#step-3) |
+| [Australia](#geo-au) | Local analog note; step resolution | [3](#step-3) |
+| [South Korea](#geo-kr) | Local analog note; step resolution | [3](#step-3) |
+| [Hong Kong](#geo-hk) | Local analog note; step resolution | [3](#step-3) |
+| [Estonia](#geo-ee) | Local analog note; step resolution | [3](#step-3) |
 
-       Cost: $427 (typical vendor price, as of 2026-10-01, [www.clerky.com](https://www.clerky.com/pricing)). Pay-per-use incorporation (includes expedited Delaware filing fees and the first-year registered agent); the $819 Company Lifetime Package adds unlimited standard post-incorporation paperwork products, and post-incorporation setup is $299 separately on pay-per-use.
+### State conditions
 
-       - Canonical vendor: Clerky
-       - Do it yourself: [Clerky pricing](https://www.clerky.com/pricing)
-2. **Check name availability** — agent-runnable · ~2 min
+| Step | Applies when operating in |
+| --- | --- |
+| [11. File the Statement and Designation by Foreign Corporation with the CA SOS](#step-11) | CA |
+| [12. Appoint a registered agent in each state where you operate](#step-12) | multi-state |
+| [13. File the New York Application for Authority ($225)](#step-13) | NY |
+| [14. File the Texas application for registration (Form 301, $750)](#step-14) | TX |
+| [15. File the Florida foreign qualification (form CR2E007, $70)](#step-15) | FL |
+| [16. File the Washington foreign registration statement ($180)](#step-16) | WA |
 
-   Have the exact proposed legal name, including its corporate ending, and a few alternatives ready. Obtain an availability result from Delaware’s dedicated name checker or through your formation provider, and record the spelling and date checked. Resolve an unavailable name before preparing the filing. If filing will happen later, decide whether to reserve the name; checking availability alone does not reserve it. Hand off the checked name and any reservation confirmation for use in the Certificate of Incorporation.
+## Steps at a glance
 
-   - Verify: Retain the official confirmation or accepted documents required for this step in the selected jurisdiction; reconcile them with the approved company records.
-   - Do it yourself: [Delaware name search](https://icis.corp.delaware.gov/ecorp/entitysearch/namesearch.aspx)
-   - Sources: [Delaware name availability checker](https://icis.corp.delaware.gov/Ecorp/NameReserv/NameReservation.aspx) · [Delaware formation requirements](https://corp.delaware.gov/howtoform/) · [Delaware incorporation and bylaws law](https://delcode.delaware.gov/title8/c001/sc01/index.html)
-3. **Submit incorporation filing** — manual form/portal · ~30 min · human approval required · hard to undo
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
 
-   Choose the jurisdiction and legal form before preparing the filing. Those choices determine the formation documents, signatories and registration authority. Confirm that your formation provider supports the selected route and agree who will prepare, approve and submit the application. Use the instructions for that route to assemble the filing; each regional alternative here describes its own registration step, without establishing that the other formation steps apply in that jurisdiction.
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Choose formation service](#step-1) | human | ~10 min | Entry step |
+| [2. Check name availability](#step-2) | agent-runnable | ~2 min | [Step 1](#step-1) |
+| [3. Submit incorporation filing](#step-3) | manual form/portal; approval required | ~30 min | [Step 2](#step-2) |
+| [4. Receive the accepted formation documents](#step-4) | human; includes waiting | ~2 d | [Step 3](#step-3) |
+| [5. Prepare the governing documents and initial resolutions](#step-5) | manual form/portal; approval required | ~15 min | [Step 4](#step-4) |
+| [6. Sign the governing documents and initial corporate approvals](#step-6) | human; signature required | ~5 min | [Step 5](#step-5) |
+| [7. Prepare the founder equity issuance](#step-7) | manual form/portal; approval required | ~10 min | [Step 6](#step-6) |
+| [8. Founders sign the equity subscription or purchase agreements](#step-8) | human; signature required | ~5 min | [Step 7](#step-7) |
+| [9. Sign any tax election the jurisdiction requires on the founder stock issuance](#step-9) | human; signature required | ~5 min | [Step 8](#step-8) |
+| [10. File the tax election the jurisdiction requires on the stock issuance, where one exists](#step-10) | manual form/portal; includes waiting | ~15 min | [Step 9](#step-9) |
+| [11. File the Statement and Designation by Foreign Corporation with the CA SOS](#step-11) | manual form/portal | ~30 min | Entry step |
+| [12. Appoint a registered agent in each state where you operate](#step-12) | human | ~15 min | Entry step |
+| [13. File the New York Application for Authority ($225)](#step-13) | manual form/portal | ~30 min | Entry step |
+| [14. File the Texas application for registration (Form 301, $750)](#step-14) | manual form/portal | ~30 min | Entry step |
+| [15. File the Florida foreign qualification (form CR2E007, $70)](#step-15) | manual form/portal | ~30 min | Entry step |
+| [16. File the Washington foreign registration statement ($180)](#step-16) | manual form/portal | ~30 min | Entry step |
 
-   - Verify: Retain the submission confirmation for follow-up, then confirm acceptance from the returned Certificate of Incorporation bearing Delaware’s Filed endorsement. A general entity-search result is not a certificate of good standing. ([corp.delaware.gov](https://corp.delaware.gov/howtoform/))
-   - Cost: $109 (government fee, as of 2026-10-01, [corpfiles.delaware.gov](https://corpfiles.delaware.gov/Fee_Schedule/AugustFee2026.pdf)). Minimum state filing fee for a one-page, minimum-stock Certificate of Incorporation — the schedule marks it 'varies based on stock'. Expedited options on the same schedule, per document: $50 24-hour, $100 same-day, $500 2-hour (Priority 2), $1,000 1-hour (Priority 1).
-   - Canonical vendor: Clerky
-   - Do it yourself: [Delaware Division of Corporations](https://corp.delaware.gov/howtoform/)
-   - Sources: [Companies House registration](https://www.gov.uk/limited-company-formation/register-your-company) · [Delaware incorporation and bylaws law](https://delcode.delaware.gov/title8/c001/sc01/index.html) · [Delaware stock authorization and issuance](https://delcode.delaware.gov/title8/c001/sc05/index.html)
+<a id="steps"></a>
 
-   Options:
-     - **United States — Delaware Division of Corporations** — manual form/portal · ~30 min · human approval required · hard to undo
+## Step details
 
-       Review the draft Certificate of Incorporation against the agreed formation details and Delaware’s required contents: legal name, registered agent and Delaware office, business purpose, authorized shares and par value or no-par designation, incorporator details, and any required class terms or initial-director details. Confirm the intended share authorization; allocating stock to founders happens separately. Approve the final certificate, arrange for the incorporator’s signature and submission through the chosen provider, and confirm the required fee arrangements. Retain submission evidence for follow-up and receipt of the filed certificate.
-     - **India - MCA SPICe+ filing**
+<a id="step-1"></a>
 
-       When: Incorporating in India
+### 1. Choose formation service
 
-       Start from the agreed company type, proposed or approved name, and business-activity classification for SPICe+. Review MCA’s name and trademark alerts, then keep the company details consistent across Part A, Part B and the required linked forms. Use the current MCA instructions to confirm the documents and digital signatures needed for your application. Submit the required signed forms as a complete filing, retain the application reference, and monitor the filing dashboard for queries or resubmission requests. Name reservation alone does not complete incorporation.
+human · ~10 min
 
-       - Do it yourself: [India NSWS (MCA SPICe+ incorporation)](https://www.nsws.gov.in/)
-       - Sources: [MCA SPICe+ name and company information](https://www.mca.gov.in/content/mca/global/en/mca/e-filing/incorporation-change-services/spice.html) · [MCA SPICe+ filing dashboard requirements](https://www.mca.gov.in/content/mca/global/spicedashboard.html)
-     - **UK - Companies House filing**
 
-       When: Incorporating in the United Kingdom
+*Entry step — no prerequisite step.*
 
-       Gather the company name, registered office and email address, director and people-with-significant-control details, business activity code, and documents for the chosen company type. Check the share and shareholder information for a company limited by shares, or the guarantor information for one limited by guarantee. Confirm the applicable identity-verification requirements and personal codes before submitting through Companies House or the selected formation agent. Retain the application confirmation and follow up on acceptance; the resulting certificate records the company number and formation date.
+Compare services against the remaining formation work: Delaware incorporation, registered-agent service, bylaws and initial resolutions, founder stock documents, and handling of an 83(b) election where applicable. Check which items the proposed package includes, which require separate purchases, and what recurring charges follow setup. Distinguish document preparation from actual filing, and confirm how completed records will be delivered. Finish with a selected provider and package, plus a clear list of work that someone else must complete.
 
-       Cost: published amount varies (government fee, as of 2026-10-01, [www.gov.uk](https://www.gov.uk/limited-company-formation/register-your-company)). £100 Companies House fee for the online incorporation (£124 by post) — published in GBP only, so no USD figure is claimed; online registrations usually complete within 24 hours.
+- Vendor options: Clerky, Stripe Atlas, Firstbase, LegalZoom, Northwest Registered Agent, Doola
+- Sources: [Delaware formation requirements](https://corp.delaware.gov/howtoform/) · [Clerky package contents and pricing](https://www.clerky.com/pricing) · [Stripe Atlas formation package](https://stripe.com/atlas)
 
-       - Do it yourself: [Companies House - set up a limited company](https://www.gov.uk/limited-company-formation)
-       - Sources: [Companies House registration](https://www.gov.uk/limited-company-formation/register-your-company) · [UK company formation requirements](https://www.gov.uk/limited-company-formation/print)
-     - **Germany - notarized GmbH/UG formation** — human
+Options:
+  - **Form through Clerky**
 
-       When: Incorporating in Germany
+    When: Forming through Clerky rather than Stripe Atlas — pay-per-document pricing
 
-       Agree with the notary whether you are forming a GmbH or a UG and whether the formation can use the applicable video procedure. The route includes preparing and notarizing the formation documents, satisfying the capital-contribution requirements, and applying for entry in the Handelsregister. Keep the chosen legal form, shareholder contributions and management details consistent throughout. Completion depends on the register entry, not merely the notarization appointment. Use the following four steps to track that sequence with the notary.
+    Compare Clerky’s pay-per-use incorporation with its Company Lifetime Package against the paperwork you expect to need after formation. Both include expedited Delaware filing and the first year of registered-agent service; post-incorporation setup is a separate purchase under pay-per-use. Check the current package terms, excluded third-party charges and later registered-agent costs before choosing. Record the selected package and identify who will handle any work outside it, including the actual submission of an 83(b) election where applicable.
 
-       Cost: published amount varies (government fee, as of 2026-10-01, [www.gesetze-im-internet.de](https://www.gesetze-im-internet.de/gnotkg/)). Notary fees are statutory under GNotKG — value-based (Geschäftswert) via the Kostenverzeichnis (Annex 1 to § 3(2)) — plus Handelsregister fees; the amount scales with share capital, so no single sticker price exists.
+    Cost: $427 (typical vendor price, as of 2026-10-01, [www.clerky.com](https://www.clerky.com/pricing)). Pay-per-use incorporation (includes expedited Delaware filing fees and the first-year registered agent); the $819 Company Lifetime Package adds unlimited standard post-incorporation paperwork products, and post-incorporation setup is $299 separately on pay-per-use.
 
-       - Vendor options: Beglaubigt.de
-       - Do it yourself: [Handelsregister (commercial register)](https://www.handelsregister.de/)
-       - Sources: [GmbHG section 2: Notarial formation](https://www.gesetze-im-internet.de/gmbhg/__2.html) · [GmbHG section 5a: UG capital requirements](https://www.gesetze-im-internet.de/gmbhg/__5a.html) · [GmbHG section 7: Capital and registration requirements](https://www.gesetze-im-internet.de/gmbhg/__7.html) · [GmbHG section 11: Legal status before registration](https://www.gesetze-im-internet.de/gmbhg/__11.html)
+    - Canonical vendor: Clerky
+    - Do it yourself: [Clerky pricing](https://www.clerky.com/pricing)
 
-       - **Prepare the formation deed with the notary** — manual form/portal · ~1 h
+<a id="step-2"></a>
 
-         Give the notary the proposed company name, German registered office, business purpose, intended share capital, each shareholder’s subscription and the proposed managing directors. Confirm whether the articles need provisions beyond the simplified model procedure and identify any non-cash contributions before drafting. Review the resulting documents against those decisions, including the allocation and nominal value of the shares. Finish with an agreed draft and a clear list of the people or authorized representatives needed for notarization.
+### 2. Check name availability
 
-         - Vendor options: Beglaubigt.de
-         - Sources: [GmbHG section 2: Notarial formation](https://www.gesetze-im-internet.de/gmbhg/__2.html) · [GmbHG section 3: Formation document contents](https://www.gesetze-im-internet.de/gmbhg/__3.html) · [German limited liability company law](https://www.gesetze-im-internet.de/englisch_gmbhg/englisch_gmbhg.html)
+agent-runnable · ~2 min
 
-       - **Notarization appointment (in person or by video)** — human (legally required signature) · ~1 h
 
-         Confirm the appointment format with the notary and supply the identity and representation documents the notary requests. Video notarization is available only where its legal and technical requirements are met; arrange an in-person appointment otherwise. Review the final formation documents and resolve differences from the agreed draft before completing the required signatures. Retain the notarized documents and the notary’s instructions for capital payment and registration. The appointment completes notarization; entry in the Handelsregister is still a separate milestone.
+Have the exact proposed legal name, including its corporate ending, and a few alternatives ready. Obtain an availability result from Delaware’s dedicated name checker or through your formation provider, and record the spelling and date checked. Resolve an unavailable name before preparing the filing. If filing will happen later, decide whether to reserve the name; checking availability alone does not reserve it. Hand off the checked name and any reservation confirmation for use in the Certificate of Incorporation.
 
-         - Sources: [GmbHG section 2: Notarial formation](https://www.gesetze-im-internet.de/gmbhg/__2.html) · [GmbHG section 11: Legal status before registration](https://www.gesetze-im-internet.de/gmbhg/__11.html)
+- Verify: Retain the official confirmation or accepted documents required for this step in the selected jurisdiction; reconcile them with the approved company records.
+- Do it yourself: [Delaware name search](https://icis.corp.delaware.gov/ecorp/entitysearch/namesearch.aspx)
+- Sources: [Delaware name availability checker](https://icis.corp.delaware.gov/Ecorp/NameReserv/NameReservation.aspx) · [Delaware formation requirements](https://corp.delaware.gov/howtoform/) · [Delaware incorporation and bylaws law](https://delcode.delaware.gov/title8/c001/sc01/index.html)
 
-       - **Pay in the share capital** — manual form/portal · ~30 min
+<a id="step-3"></a>
 
-         Confirm the payment instructions and registration threshold for the chosen legal form with the notary. For a cash-funded GmbH, at least one quarter of each cash share must be paid and the statutory minimum total reached before registration is requested; a UG requires its entire share capital and cannot use contributions in kind. Arrange the required contributions, retain evidence linking each payment to the shareholder and subscription, and provide it for the registration application. Do not apply a GmbH payment threshold to a UG.
+### 3. Submit incorporation filing
 
-         - Sources: [GmbHG section 5a: UG capital requirements](https://www.gesetze-im-internet.de/gmbhg/__5a.html) · [GmbHG section 7: Capital and registration requirements](https://www.gesetze-im-internet.de/gmbhg/__7.html)
+manual form/portal · ~30 min · human approval required · hard to undo
 
-       - **Wait for registration in the Handelsregister** — human · ~7 d · async wait
+| Option | Applies when |
+| --- | --- |
+| United States — Delaware Division of Corporations | Recorded default |
+| India - MCA SPICe+ filing | Incorporating in India |
+| UK - Companies House filing | Incorporating in the United Kingdom |
+| Germany - notarized GmbH/UG formation | Incorporating in Germany |
+| France - INPI guichet unique filing | Incorporating in France |
 
-         Confirm with the notary that the registration application and required supporting documents have been submitted, and respond to any questions or corrections raised during review. When the entry is made, obtain the register details and check the company name, registered office, share capital, managing directors and representation arrangements against the approved documents. Retain the register evidence with the formation records. The GmbH or UG exists as such on registration; a submitted application alone does not establish that this step is complete.
 
-         - Sources: [German limited liability company law](https://www.gesetze-im-internet.de/englisch_gmbhg/englisch_gmbhg.html) · [GmbHG section 10: Commercial register contents](https://www.gesetze-im-internet.de/gmbhg/__10.html) · [GmbHG section 11: Legal status before registration](https://www.gesetze-im-internet.de/gmbhg/__11.html)
-     - **France - INPI guichet unique filing**
+Choose the jurisdiction and legal form before preparing the filing. Those choices determine the formation documents, signatories and registration authority. Confirm that your formation provider supports the selected route and agree who will prepare, approve and submit the application. Use the instructions for that route to assemble the filing; each regional alternative here describes its own registration step, without establishing that the other formation steps apply in that jurisdiction.
 
-       When: Incorporating in France
+- Verify: Retain the submission confirmation for follow-up, then confirm acceptance from the returned Certificate of Incorporation bearing Delaware’s Filed endorsement. A general entity-search result is not a certificate of good standing. ([corp.delaware.gov](https://corp.delaware.gov/howtoform/))
+- Cost: $109 (government fee, as of 2026-10-01, [corpfiles.delaware.gov](https://corpfiles.delaware.gov/Fee_Schedule/AugustFee2026.pdf)). Minimum state filing fee for a one-page, minimum-stock Certificate of Incorporation — the schedule marks it 'varies based on stock'. Expedited options on the same schedule, per document: $50 24-hour, $100 same-day, $500 2-hour (Priority 2), $1,000 1-hour (Priority 1).
+- Canonical vendor: Clerky
+- Do it yourself: [Delaware Division of Corporations](https://corp.delaware.gov/howtoform/)
+- Sources: [Companies House registration](https://www.gov.uk/limited-company-formation/register-your-company) · [Delaware incorporation and bylaws law](https://delcode.delaware.gov/title8/c001/sc01/index.html) · [Delaware stock authorization and issuance](https://delcode.delaware.gov/title8/c001/sc05/index.html)
 
-       For a SAS or SASU, assemble the signed statutes, capital-deposit evidence, legal-notice publication evidence, and the company-address and management documents required for the chosen structure. Prepare the beneficial-owner information and check the application’s activity and tax selections against the company’s actual circumstances. Use the Guichet unique’s requested-document list to complete the filing, then review, sign and pay for the submission. Retain the receipt and monitor requests for corrections. Submission evidence is a handoff to registration review, not confirmation that registration has finished.
+Options:
+  - **United States — Delaware Division of Corporations** — manual form/portal · ~30 min · human approval required · hard to undo
 
-       - Do it yourself: [INPI guichet unique](https://procedures.inpi.fr/)
-       - Sources: [French company registration requirements](https://entreprendre.service-public.gouv.fr/vosdroits/F35934) · [INPI SASU filing and follow-up](https://www.inpi.fr/realiser-demarches/formalites-dentreprises/creer-sa-societe-par-actions-simplifiee-unipersonnelle-sasu)
-4. **Receive the accepted formation documents** — human · ~2 d · async wait
+    Review the draft Certificate of Incorporation against the agreed formation details and Delaware’s required contents: legal name, registered agent and Delaware office, business purpose, authorized shares and par value or no-par designation, incorporator details, and any required class terms or initial-director details. Confirm the intended share authorization; allocating stock to founders happens separately. Approve the final certificate, arrange for the incorporator’s signature and submission through the chosen provider, and confirm the required fee arrangements. Retain submission evidence for follow-up and receipt of the filed certificate.
+  - **India - MCA SPICe+ filing**
 
-   Collect the Certificate of Incorporation bearing Delaware’s “Filed” endorsement from your formation provider. Compare the returned document with the version approved for filing, and record the filing date and any later effective date specified in the certificate. Resolve discrepancies before relying on the document. Store the complete filed copy for subsequent company setup. If a bank or another recipient requests a certified copy or evidence of good standing, confirm its requirements before ordering additional documents.
+    When: Incorporating in India
 
-   - Verify: Retain the official confirmation or accepted documents required for this step in the selected jurisdiction; reconcile them with the approved company records.
-   - Produces: Certificate of Incorporation
-   - Cross-arena market: [workflow-automation](../../open-rankings/workflow-automation)
-   - Sources: [Delaware incorporation and bylaws law](https://delcode.delaware.gov/title8/c001/sc01/index.html) · [Delaware formation requirements](https://corp.delaware.gov/howtoform/)
-5. **Prepare the governing documents and initial resolutions** — manual form/portal · ~15 min · human approval required
+    Start from the agreed company type, proposed or approved name, and business-activity classification for SPICe+. Review MCA’s name and trademark alerts, then keep the company details consistent across Part A, Part B and the required linked forms. Use the current MCA instructions to confirm the documents and digital signatures needed for your application. Submit the required signed forms as a complete filing, retain the application reference, and monitor the filing dashboard for queries or resubmission requests. Name reservation alone does not complete incorporation.
 
-   Prepare the governing documents and initial approvals required by the selected entity form and jurisdiction. Have local counsel confirm the documents and decision-makers before signing.
+    - Do it yourself: [India NSWS (MCA SPICe+ incorporation)](https://www.nsws.gov.in/)
+    - Sources: [MCA SPICe+ name and company information](https://www.mca.gov.in/content/mca/global/en/mca/e-filing/incorporation-change-services/spice.html) · [MCA SPICe+ filing dashboard requirements](https://www.mca.gov.in/content/mca/global/spicedashboard.html)
+  - **UK - Companies House filing**
 
-   - Canonical vendor: Clerky
-   - Sources: [Delaware directors, officers and consents](https://delcode.delaware.gov/title8/c001/sc04/index.html) · [Delaware incorporation and bylaws law](https://delcode.delaware.gov/title8/c001/sc01/index.html) · [Delaware formation document package](https://www.cooleygo.com/documents/incorporation-package-delaware/)
-6. **Sign the governing documents and initial corporate approvals** — human (legally required signature) · ~5 min
+    When: Incorporating in the United Kingdom
 
-   Review the final bylaws and organizational consents together so the company name, directors, officer appointments and referenced documents agree. Confirm who has authority to adopt the bylaws and which people must approve each consent. For a unanimous written board consent, obtain every director’s consent through the permitted signing process. Save the adopted bylaws and completed consents in the company records, with their effective dates. This step is complete when the required approvals are documented, rather than when draft documents have merely been generated.
+    Gather the company name, registered office and email address, director and people-with-significant-control details, business activity code, and documents for the chosen company type. Check the share and shareholder information for a company limited by shares, or the guarantor information for one limited by guarantee. Confirm the applicable identity-verification requirements and personal codes before submitting through Companies House or the selected formation agent. Retain the application confirmation and follow up on acceptance; the resulting certificate records the company number and formation date.
 
-   - Produces: Bylaws & initial board consent
-   - Sources: [Delaware incorporation and bylaws law](https://delcode.delaware.gov/title8/c001/sc01/index.html) · [Delaware directors, officers and consents](https://delcode.delaware.gov/title8/c001/sc04/index.html) · [Delaware formation document package](https://www.cooleygo.com/documents/incorporation-package-delaware/)
-7. **Prepare the founder equity issuance** — manual form/portal · ~10 min · human approval required
+    Cost: published amount varies (government fee, as of 2026-10-01, [www.gov.uk](https://www.gov.uk/limited-company-formation/register-your-company)). £100 Companies House fee for the online incorporation (£124 by post) — published in GBP only, so no USD figure is claimed; online registrations usually complete within 24 hours.
 
-   Prepare the founder equity issuance for the selected entity form, approvals and agreed ownership. Confirm subscription or purchase terms with local counsel before execution.
+    - Do it yourself: [Companies House - set up a limited company](https://www.gov.uk/limited-company-formation)
+    - Sources: [Companies House registration](https://www.gov.uk/limited-company-formation/register-your-company) · [UK company formation requirements](https://www.gov.uk/limited-company-formation/print)
+  - **Germany - notarized GmbH/UG formation** — human
 
-   - Canonical vendor: Clerky
-   - Sources: [Delaware stock authorization and issuance](https://delcode.delaware.gov/title8/c001/sc05/index.html) · [Delaware formation document package](https://www.cooleygo.com/documents/incorporation-package-delaware/)
-8. **Founders sign the equity subscription or purchase agreements** — human (legally required signature) · ~5 min · irreversible
+    When: Incorporating in Germany
 
-   Have each founder review and sign the final stock purchase agreement, and obtain the company’s required execution. Confirm that the agreed payment or other consideration is delivered and that the issuance follows the applicable approval. Give the completed agreements and transaction evidence to the person maintaining the stock ledger so its entries match the actual issuance. Establish the actual stock-transfer date from the completed transaction; the incorporation date or a signature date alone should not be substituted when calculating a transfer-date tax-election deadline.
+    Agree with the notary whether you are forming a GmbH or a UG and whether the formation can use the applicable video procedure. The route includes preparing and notarizing the formation documents, satisfying the capital-contribution requirements, and applying for entry in the Handelsregister. Keep the chosen legal form, shareholder contributions and management details consistent throughout. Completion depends on the register entry, not merely the notarization appointment. Use the following four steps to track that sequence with the notary.
 
-   - Verify: Retain the official confirmation or accepted documents required for this step in the selected jurisdiction; reconcile them with the approved company records.
-   - Produces: Founder stock issuance
-   - Sources: [Delaware stock authorization and issuance](https://delcode.delaware.gov/title8/c001/sc05/index.html) · [IRS 83(b) election and filing instructions](https://www.irs.gov/pub/irs-pdf/f15620.pdf) · [Delaware formation document package](https://www.cooleygo.com/documents/incorporation-package-delaware/) · [Delaware stock ledger and company records](https://delcode.delaware.gov/title8/c001/sc07/index.html)
-9. **Sign any tax election the jurisdiction requires on the founder stock issuance** — human (legally required signature) · ~5 min
+    Cost: published amount varies (government fee, as of 2026-10-01, [www.gesetze-im-internet.de](https://www.gesetze-im-internet.de/gnotkg/)). Notary fees are statutory under GNotKG — value-based (Geschäftswert) via the Kostenverzeichnis (Annex 1 to § 3(2)) — plus Handelsregister fees; the amount scales with share capital, so no single sticker price exists.
 
-   If a transfer-date tax election has been chosen for an eligible stock transfer, review the completed election against the stock documents before signing. Check the taxpayer’s name, identification number and address, the property and quantity transferred, actual transfer date, tax year, restrictions, fair market value and amount paid. Resolve missing or inconsistent values rather than assuming that a template is correct. The taxpayer signs the final election and retains a copy for the filing step; signing alone does not submit it to the tax authority.
+    - Vendor options: Beglaubigt.de
+    - Do it yourself: [Handelsregister (commercial register)](https://www.handelsregister.de/)
+    - Sources: [GmbHG section 2: Notarial formation](https://www.gesetze-im-internet.de/gmbhg/__2.html) · [GmbHG section 5a: UG capital requirements](https://www.gesetze-im-internet.de/gmbhg/__5a.html) · [GmbHG section 7: Capital and registration requirements](https://www.gesetze-im-internet.de/gmbhg/__7.html) · [GmbHG section 11: Legal status before registration](https://www.gesetze-im-internet.de/gmbhg/__11.html)
 
-   - Sources: [IRS 83(b) election and filing instructions](https://www.irs.gov/pub/irs-pdf/f15620.pdf)
-10. **File the tax election the jurisdiction requires on the stock issuance, where one exists** — manual form/portal · ~15 min · async wait · irreversible
+    - **Prepare the formation deed with the notary** — manual form/portal · ~1 h
 
-   For an eligible stock transfer where a transfer-date tax election has been chosen, confirm the actual transfer date and the filing deadline, including any weekend and legal-holiday rule. Identify whether a service is handling this election or you must arrange submission yourself. Track the filing against that deadline and retain the signed election with evidence of timely submission. Provide the required copies to the company and any different transferee. A signed form or a provider selection alone is not evidence that filing occurred.
+      Give the notary the proposed company name, German registered office, business purpose, intended share capital, each shareholder’s subscription and the proposed managing directors. Confirm whether the articles need provisions beyond the simplified model procedure and identify any non-cash contributions before drafting. Review the resulting documents against those decisions, including the allocation and nominal value of the shares. Finish with an agreed draft and a clear list of the people or authorized representatives needed for notarization.
 
-   - Verify: Retain the official confirmation or accepted documents required for this step in the selected jurisdiction; reconcile them with the approved company records.
-   - Produces: Filed 83(b) election
-   - Canonical vendor: IRS
-   - Do it yourself: [IRS Form 15620 (83(b) election)](https://www.irs.gov/pub/irs-pdf/f15620.pdf)
-   - Sources: [Stripe Atlas filing evidence and tracking](https://support.stripe.com/questions/atlas-filing-your-83%28b%29-election-using-auto-83%28b%29) · [Stripe Atlas 83(b) election scope](https://docs.stripe.com/atlas/83b-election) · [Clerky package contents and pricing](https://www.clerky.com/pricing)
+      - Vendor options: Beglaubigt.de
+      - Sources: [GmbHG section 2: Notarial formation](https://www.gesetze-im-internet.de/gmbhg/__2.html) · [GmbHG section 3: Formation document contents](https://www.gesetze-im-internet.de/gmbhg/__3.html) · [German limited liability company law](https://www.gesetze-im-internet.de/englisch_gmbhg/englisch_gmbhg.html)
 
-   *This path ends here.*
-11. **File the Statement and Designation by Foreign Corporation with the CA SOS** — manual form/portal · ~30 min · hard to undo · only when operating in CA
+    - **Notarization appointment (in person or by video)** — human (legally required signature) · ~1 h
 
-   *Entry step — no prerequisite step.*
+      Confirm the appointment format with the notary and supply the identity and representation documents the notary requests. Video notarization is available only where its legal and technical requirements are met; arrange an in-person appointment otherwise. Review the final formation documents and resolve differences from the agreed draft before completing the required signatures. Retain the notarized documents and the notary’s instructions for capital payment and registration. The appointment completes notarization; entry in the Handelsregister is still a separate milestone.
 
-   If the corporation needs to qualify to do business in California, assemble its exact legal name, formation jurisdiction, principal office addresses and California agent-for-service-of-process details. Obtain the current certificate of good standing required from the jurisdiction where it was formed, and check that the names and jurisdiction agree across the documents. Have an authorized corporate officer approve and sign the Statement and Designation, then submit it through California’s filing service with the required fee. Retain the accepted filing and registration details for the company records.
+      - Sources: [GmbHG section 2: Notarial formation](https://www.gesetze-im-internet.de/gmbhg/__2.html) · [GmbHG section 11: Legal status before registration](https://www.gesetze-im-internet.de/gmbhg/__11.html)
 
-   - Cost: $100 (government fee, as of 2026-10-01, [www.sos.ca.gov](https://www.sos.ca.gov/business-programs/business-entities/forms/corporations-foreign-out-state-or-out-country)). Statement and Designation by Foreign Corporation (stock corporation) filing fee; filed through bizfile Online. Conditional step — excluded from the default-flow fee headline by construction.
-   - Canonical vendor: California Secretary of State
-   - Do it yourself: [CA SOS foreign qualification (filed via bizfile Online)](https://www.sos.ca.gov/business-programs/business-entities/forms/corporations-foreign-out-state-or-out-country)
-   - Sources: [California Statement and Designation form](https://bpd.cdn.sos.ca.gov/corp/pdf/foreign/s&dc-sn.pdf)
+    - **Pay in the share capital** — manual form/portal · ~30 min
 
-   *This path ends here.*
-12. **Appoint a registered agent in each state where you operate** — human · ~15 min · only when operating multi-state
+      Confirm the payment instructions and registration threshold for the chosen legal form with the notary. For a cash-funded GmbH, at least one quarter of each cash share must be paid and the statutory minimum total reached before registration is requested; a UG requires its entire share capital and cannot use contributions in kind. Arrange the required contributions, retain evidence linking each payment to the shareholder and subscription, and provide it for the registration application. Do not apply a GmbH payment threshold to a UG.
 
-   *Entry step — no prerequisite step.*
+      - Sources: [GmbHG section 5a: UG capital requirements](https://www.gesetze-im-internet.de/gmbhg/__5a.html) · [GmbHG section 7: Capital and registration requirements](https://www.gesetze-im-internet.de/gmbhg/__7.html)
 
-   First identify the states in which the corporation must register or qualify; having customers in a state does not by itself settle that question. For each applicable state, check its agent-for-service-of-process requirements and confirm that the chosen agent can receive official notices there. Agree how notices reach the company and who monitors them, then use the agent’s correct details in the relevant state filing. Keep a state-by-state record of appointments, contact details and renewal arrangements so notices are not lost when people or providers change.
+    - **Wait for registration in the Handelsregister** — human · ~7 d · async wait
 
-   - Sources: [SBA state registration and registered agents](https://www.sba.gov/counseling/launch-your-business/)
+      Confirm with the notary that the registration application and required supporting documents have been submitted, and respond to any questions or corrections raised during review. When the entry is made, obtain the register details and check the company name, registered office, share capital, managing directors and representation arrangements against the approved documents. Retain the register evidence with the formation records. The GmbH or UG exists as such on registration; a submitted application alone does not establish that this step is complete.
 
-   *This path ends here.*
-13. **File the New York Application for Authority ($225)** — manual form/portal · ~30 min · hard to undo · only when operating in NY
+      - Sources: [German limited liability company law](https://www.gesetze-im-internet.de/englisch_gmbhg/englisch_gmbhg.html) · [GmbHG section 10: Commercial register contents](https://www.gesetze-im-internet.de/gmbhg/__10.html) · [GmbHG section 11: Legal status before registration](https://www.gesetze-im-internet.de/gmbhg/__11.html)
+  - **France - INPI guichet unique filing**
 
-   *Entry step — no prerequisite step.*
+    When: Incorporating in France
 
-   If the corporation does business in New York, qualify by filing the Application for Authority under Business Corporation Law § 1304 with the Department of State: the $225 fee, a certificate of existence from the home jurisdiction dated within one year, and — if business began before filing — the consent of the State Tax Commission (law rule [us-ny.foreign-qualification](../../open-law/US-NY/us-ny-foreign-qualification.json)). The application designates the Secretary of State as agent for service of process, so keep the forwarding address current. Retain the filing receipt with the company records.
+    For a SAS or SASU, assemble the signed statutes, capital-deposit evidence, legal-notice publication evidence, and the company-address and management documents required for the chosen structure. Prepare the beneficial-owner information and check the application’s activity and tax selections against the company’s actual circumstances. Use the Guichet unique’s requested-document list to complete the filing, then review, sign and pay for the submission. Retain the receipt and monitor requests for corrections. Submission evidence is a handoff to registration review, not confirmation that registration has finished.
 
-   - Cost: $225 (government fee, as of 2026-10-22, [dos.ny.gov](https://dos.ny.gov/application-authority-foreign-business-corporation)). Application for Authority (foreign business corporation) filing fee. Conditional step — excluded from the default-flow fee headline by construction.
-   - Canonical vendor: New York Department of State
-   - Do it yourself: [NY DOS — Application for Authority](https://dos.ny.gov/application-authority-foreign-business-corporation)
-   - Sources: [NY DOS fee schedules](https://dos.ny.gov/fee-schedules)
+    - Do it yourself: [INPI guichet unique](https://procedures.inpi.fr/)
+    - Sources: [French company registration requirements](https://entreprendre.service-public.gouv.fr/vosdroits/F35934) · [INPI SASU filing and follow-up](https://www.inpi.fr/realiser-demarches/formalites-dentreprises/creer-sa-societe-par-actions-simplifiee-unipersonnelle-sasu)
 
-   *This path ends here.*
-14. **File the Texas application for registration (Form 301, $750)** — manual form/portal · ~30 min · hard to undo · only when operating in TX
+<a id="step-4"></a>
 
-   *Entry step — no prerequisite step.*
+### 4. Receive the accepted formation documents
 
-   A corporation transacting business in Texas registers with the Secretary of State on Form 301 (Application for Registration of a Foreign For-Profit Corporation) for a $750 fee, naming a Texas registered agent who has consented (law rule [us-tx.foreign-registration](../../open-law/US-TX/us-tx-foreign-registration.json)). An unregistered entity cannot maintain suit in Texas courts and owes late filing fees when registration comes more than 90 days after first transacting business, so settle the doing-business question with counsel early. Keep the filed registration with the company records.
+human · ~2 d · async wait
 
-   - Cost: $750 (government fee, as of 2026-10-22, [www.sos.state.tx.us](https://www.sos.state.tx.us/corp/forms/301_boc.pdf)). Form 301 filing fee as printed on the form. Conditional step — excluded from the default-flow fee headline by construction.
-   - Canonical vendor: Texas Secretary of State
-   - Do it yourself: [TX SOS — foreign entity registration](https://www.sos.state.tx.us/corp/foreign_outofstate.shtml)
-   - Sources: [TX SOS business organizations forms](https://www.sos.state.tx.us/corp/forms_boc.shtml)
 
-   *This path ends here.*
-15. **File the Florida foreign qualification (form CR2E007, $70)** — manual form/portal · ~30 min · hard to undo · only when operating in FL
+Collect the Certificate of Incorporation bearing Delaware’s “Filed” endorsement from your formation provider. Compare the returned document with the version approved for filing, and record the filing date and any later effective date specified in the certificate. Resolve discrepancies before relying on the document. Store the complete filed copy for subsequent company setup. If a bank or another recipient requests a certified copy or evidence of good standing, confirm its requirements before ordering additional documents.
 
-   *Entry step — no prerequisite step.*
+- Verify: Retain the official confirmation or accepted documents required for this step in the selected jurisdiction; reconcile them with the approved company records.
+- Produces: Certificate of Incorporation
+- Cross-arena market: [workflow-automation](../../open-rankings/workflow-automation)
+- Sources: [Delaware incorporation and bylaws law](https://delcode.delaware.gov/title8/c001/sc01/index.html) · [Delaware formation requirements](https://corp.delaware.gov/howtoform/)
 
-   A corporation transacting business in Florida registers with the Division of Corporations on the Application by Foreign Corporation for Authorization to Transact Business: the $70 fee ($35 filing plus $35 registered-agent designation), a certificate of existence from the home jurisdiction no more than 90 days old, and a Florida registered agent who signs the acceptance on the form (law rule [us-fl.foreign-qualification](../../open-law/US-FL/us-fl-foreign-qualification.json)). The first Sunbiz annual report then comes due the following January 1 – May 1 window. Retain the acknowledgment letter with the company records.
+<a id="step-5"></a>
 
-   - Cost: $70 (government fee, as of 2026-10-22, [dos.fl.gov](https://dos.fl.gov/sunbiz/forms/fees/)). Foreign corporation registration: $35 filing fee plus $35 registered agent designation. Conditional step — excluded from the default-flow fee headline by construction.
-   - Canonical vendor: Florida Division of Corporations (Sunbiz)
-   - Do it yourself: [FL Division of Corporations forms (foreign qualification)](https://dos.fl.gov/sunbiz/forms/corporations/)
-   - Sources: [FL Division of Corporations fees](https://dos.fl.gov/sunbiz/forms/fees/)
+### 5. Prepare the governing documents and initial resolutions
 
-   *This path ends here.*
-16. **File the Washington foreign registration statement ($180)** — manual form/portal · ~30 min · hard to undo · only when operating in WA
+manual form/portal · ~15 min · human approval required
 
-   *Entry step — no prerequisite step.*
 
-   A corporation doing business in Washington registers with the Secretary of State through the Corporations and Charities Filing System: the $180 filing fee (plus an online processing fee), a certificate of existence from the home jurisdiction issued no more than 60 days before submission, and registered-agent and principal-office details including the required email addresses (law rule [us-wa.foreign-registration](../../open-law/US-WA/us-wa-foreign-registration.json)). Registration with the Secretary of State is separate from the Department of Revenue business license. Retain the filed statement with the company records.
+Prepare the governing documents and initial approvals required by the selected entity form and jurisdiction. Have local counsel confirm the documents and decision-makers before signing.
 
-   - Cost: $180 (government fee, as of 2026-10-22, [www.sos.wa.gov](https://www.sos.wa.gov/corporations-charities/business-entities/online-filing-instructions/register-foreign-non-wa-profit-corporation-online)). Foreign Registration Statement filing fee, before the online processing fee. Conditional step — excluded from the default-flow fee headline by construction.
-   - Canonical vendor: Washington Secretary of State
-   - Do it yourself: [WA SOS — register a foreign profit corporation](https://www.sos.wa.gov/corporations-charities/business-entities/online-filing-instructions/register-foreign-non-wa-profit-corporation-online)
-   - Sources: [WA SOS — register a foreign (non-WA) business](https://www.sos.wa.gov/corporations-charities/business-entities/start-or-register-business/register-foreign-non-wa-business)
+- Canonical vendor: Clerky
+- Sources: [Delaware directors, officers and consents](https://delcode.delaware.gov/title8/c001/sc04/index.html) · [Delaware incorporation and bylaws law](https://delcode.delaware.gov/title8/c001/sc01/index.html) · [Delaware formation document package](https://www.cooleygo.com/documents/incorporation-package-delaware/)
 
-## By country
+<a id="step-6"></a>
+
+### 6. Sign the governing documents and initial corporate approvals
+
+human (legally required signature) · ~5 min
+
+
+Review the final bylaws and organizational consents together so the company name, directors, officer appointments and referenced documents agree. Confirm who has authority to adopt the bylaws and which people must approve each consent. For a unanimous written board consent, obtain every director’s consent through the permitted signing process. Save the adopted bylaws and completed consents in the company records, with their effective dates. This step is complete when the required approvals are documented, rather than when draft documents have merely been generated.
+
+- Produces: Bylaws & initial board consent
+- Sources: [Delaware incorporation and bylaws law](https://delcode.delaware.gov/title8/c001/sc01/index.html) · [Delaware directors, officers and consents](https://delcode.delaware.gov/title8/c001/sc04/index.html) · [Delaware formation document package](https://www.cooleygo.com/documents/incorporation-package-delaware/)
+
+<a id="step-7"></a>
+
+### 7. Prepare the founder equity issuance
+
+manual form/portal · ~10 min · human approval required
+
+
+Prepare the founder equity issuance for the selected entity form, approvals and agreed ownership. Confirm subscription or purchase terms with local counsel before execution.
+
+- Canonical vendor: Clerky
+- Sources: [Delaware stock authorization and issuance](https://delcode.delaware.gov/title8/c001/sc05/index.html) · [Delaware formation document package](https://www.cooleygo.com/documents/incorporation-package-delaware/)
+
+<a id="step-8"></a>
+
+### 8. Founders sign the equity subscription or purchase agreements
+
+human (legally required signature) · ~5 min · irreversible
+
+
+Have each founder review and sign the final stock purchase agreement, and obtain the company’s required execution. Confirm that the agreed payment or other consideration is delivered and that the issuance follows the applicable approval. Give the completed agreements and transaction evidence to the person maintaining the stock ledger so its entries match the actual issuance. Establish the actual stock-transfer date from the completed transaction; the incorporation date or a signature date alone should not be substituted when calculating a transfer-date tax-election deadline.
+
+- Verify: Retain the official confirmation or accepted documents required for this step in the selected jurisdiction; reconcile them with the approved company records.
+- Produces: Founder stock issuance
+- Sources: [Delaware stock authorization and issuance](https://delcode.delaware.gov/title8/c001/sc05/index.html) · [IRS 83(b) election and filing instructions](https://www.irs.gov/pub/irs-pdf/f15620.pdf) · [Delaware formation document package](https://www.cooleygo.com/documents/incorporation-package-delaware/) · [Delaware stock ledger and company records](https://delcode.delaware.gov/title8/c001/sc07/index.html)
+
+<a id="step-9"></a>
+
+### 9. Sign any tax election the jurisdiction requires on the founder stock issuance
+
+human (legally required signature) · ~5 min
+
+
+If a transfer-date tax election has been chosen for an eligible stock transfer, review the completed election against the stock documents before signing. Check the taxpayer’s name, identification number and address, the property and quantity transferred, actual transfer date, tax year, restrictions, fair market value and amount paid. Resolve missing or inconsistent values rather than assuming that a template is correct. The taxpayer signs the final election and retains a copy for the filing step; signing alone does not submit it to the tax authority.
+
+- Sources: [IRS 83(b) election and filing instructions](https://www.irs.gov/pub/irs-pdf/f15620.pdf)
+
+<a id="step-10"></a>
+
+### 10. File the tax election the jurisdiction requires on the stock issuance, where one exists
+
+manual form/portal · ~15 min · async wait · irreversible
+
+
+For an eligible stock transfer where a transfer-date tax election has been chosen, confirm the actual transfer date and the filing deadline, including any weekend and legal-holiday rule. Identify whether a service is handling this election or you must arrange submission yourself. Track the filing against that deadline and retain the signed election with evidence of timely submission. Provide the required copies to the company and any different transferee. A signed form or a provider selection alone is not evidence that filing occurred.
+
+- Verify: Retain the official confirmation or accepted documents required for this step in the selected jurisdiction; reconcile them with the approved company records.
+- Produces: Filed 83(b) election
+- Canonical vendor: IRS
+- Do it yourself: [IRS Form 15620 (83(b) election)](https://www.irs.gov/pub/irs-pdf/f15620.pdf)
+- Sources: [Stripe Atlas filing evidence and tracking](https://support.stripe.com/questions/atlas-filing-your-83%28b%29-election-using-auto-83%28b%29) · [Stripe Atlas 83(b) election scope](https://docs.stripe.com/atlas/83b-election) · [Clerky package contents and pricing](https://www.clerky.com/pricing)
+
+*This path ends here.*
+
+<a id="step-11"></a>
+
+### 11. File the Statement and Designation by Foreign Corporation with the CA SOS
+
+manual form/portal · ~30 min · hard to undo · only when operating in CA
+
+
+*Entry step — no prerequisite step.*
+
+If the corporation needs to qualify to do business in California, assemble its exact legal name, formation jurisdiction, principal office addresses and California agent-for-service-of-process details. Obtain the current certificate of good standing required from the jurisdiction where it was formed, and check that the names and jurisdiction agree across the documents. Have an authorized corporate officer approve and sign the Statement and Designation, then submit it through California’s filing service with the required fee. Retain the accepted filing and registration details for the company records.
+
+- Cost: $100 (government fee, as of 2026-10-01, [www.sos.ca.gov](https://www.sos.ca.gov/business-programs/business-entities/forms/corporations-foreign-out-state-or-out-country)). Statement and Designation by Foreign Corporation (stock corporation) filing fee; filed through bizfile Online. Conditional step — excluded from the default-flow fee headline by construction.
+- Canonical vendor: California Secretary of State
+- Do it yourself: [CA SOS foreign qualification (filed via bizfile Online)](https://www.sos.ca.gov/business-programs/business-entities/forms/corporations-foreign-out-state-or-out-country)
+- Sources: [California Statement and Designation form](https://bpd.cdn.sos.ca.gov/corp/pdf/foreign/s&dc-sn.pdf)
+
+*This path ends here.*
+
+<a id="step-12"></a>
+
+### 12. Appoint a registered agent in each state where you operate
+
+human · ~15 min · only when operating multi-state
+
+
+*Entry step — no prerequisite step.*
+
+First identify the states in which the corporation must register or qualify; having customers in a state does not by itself settle that question. For each applicable state, check its agent-for-service-of-process requirements and confirm that the chosen agent can receive official notices there. Agree how notices reach the company and who monitors them, then use the agent’s correct details in the relevant state filing. Keep a state-by-state record of appointments, contact details and renewal arrangements so notices are not lost when people or providers change.
+
+- Sources: [SBA state registration and registered agents](https://www.sba.gov/counseling/launch-your-business/)
+
+*This path ends here.*
+
+<a id="step-13"></a>
+
+### 13. File the New York Application for Authority ($225)
+
+manual form/portal · ~30 min · hard to undo · only when operating in NY
+
+
+*Entry step — no prerequisite step.*
+
+If the corporation does business in New York, qualify by filing the Application for Authority under Business Corporation Law § 1304 with the Department of State: the $225 fee, a certificate of existence from the home jurisdiction dated within one year, and — if business began before filing — the consent of the State Tax Commission (law rule [us-ny.foreign-qualification](../../open-law/US-NY/us-ny-foreign-qualification.json)). The application designates the Secretary of State as agent for service of process, so keep the forwarding address current. Retain the filing receipt with the company records.
+
+- Cost: $225 (government fee, as of 2026-10-22, [dos.ny.gov](https://dos.ny.gov/application-authority-foreign-business-corporation)). Application for Authority (foreign business corporation) filing fee. Conditional step — excluded from the default-flow fee headline by construction.
+- Canonical vendor: New York Department of State
+- Do it yourself: [NY DOS — Application for Authority](https://dos.ny.gov/application-authority-foreign-business-corporation)
+- Sources: [NY DOS fee schedules](https://dos.ny.gov/fee-schedules)
+
+*This path ends here.*
+
+<a id="step-14"></a>
+
+### 14. File the Texas application for registration (Form 301, $750)
+
+manual form/portal · ~30 min · hard to undo · only when operating in TX
+
+
+*Entry step — no prerequisite step.*
+
+A corporation transacting business in Texas registers with the Secretary of State on Form 301 (Application for Registration of a Foreign For-Profit Corporation) for a $750 fee, naming a Texas registered agent who has consented (law rule [us-tx.foreign-registration](../../open-law/US-TX/us-tx-foreign-registration.json)). An unregistered entity cannot maintain suit in Texas courts and owes late filing fees when registration comes more than 90 days after first transacting business, so settle the doing-business question with counsel early. Keep the filed registration with the company records.
+
+- Cost: $750 (government fee, as of 2026-10-22, [www.sos.state.tx.us](https://www.sos.state.tx.us/corp/forms/301_boc.pdf)). Form 301 filing fee as printed on the form. Conditional step — excluded from the default-flow fee headline by construction.
+- Canonical vendor: Texas Secretary of State
+- Do it yourself: [TX SOS — foreign entity registration](https://www.sos.state.tx.us/corp/foreign_outofstate.shtml)
+- Sources: [TX SOS business organizations forms](https://www.sos.state.tx.us/corp/forms_boc.shtml)
+
+*This path ends here.*
+
+<a id="step-15"></a>
+
+### 15. File the Florida foreign qualification (form CR2E007, $70)
+
+manual form/portal · ~30 min · hard to undo · only when operating in FL
+
+
+*Entry step — no prerequisite step.*
+
+A corporation transacting business in Florida registers with the Division of Corporations on the Application by Foreign Corporation for Authorization to Transact Business: the $70 fee ($35 filing plus $35 registered-agent designation), a certificate of existence from the home jurisdiction no more than 90 days old, and a Florida registered agent who signs the acceptance on the form (law rule [us-fl.foreign-qualification](../../open-law/US-FL/us-fl-foreign-qualification.json)). The first Sunbiz annual report then comes due the following January 1 – May 1 window. Retain the acknowledgment letter with the company records.
+
+- Cost: $70 (government fee, as of 2026-10-22, [dos.fl.gov](https://dos.fl.gov/sunbiz/forms/fees/)). Foreign corporation registration: $35 filing fee plus $35 registered agent designation. Conditional step — excluded from the default-flow fee headline by construction.
+- Canonical vendor: Florida Division of Corporations (Sunbiz)
+- Do it yourself: [FL Division of Corporations forms (foreign qualification)](https://dos.fl.gov/sunbiz/forms/corporations/)
+- Sources: [FL Division of Corporations fees](https://dos.fl.gov/sunbiz/forms/fees/)
+
+*This path ends here.*
+
+<a id="step-16"></a>
+
+### 16. File the Washington foreign registration statement ($180)
+
+manual form/portal · ~30 min · hard to undo · only when operating in WA
+
+
+*Entry step — no prerequisite step.*
+
+A corporation doing business in Washington registers with the Secretary of State through the Corporations and Charities Filing System: the $180 filing fee (plus an online processing fee), a certificate of existence from the home jurisdiction issued no more than 60 days before submission, and registered-agent and principal-office details including the required email addresses (law rule [us-wa.foreign-registration](../../open-law/US-WA/us-wa-foreign-registration.json)). Registration with the Secretary of State is separate from the Department of Revenue business license. Retain the filed statement with the company records.
+
+- Cost: $180 (government fee, as of 2026-10-22, [www.sos.wa.gov](https://www.sos.wa.gov/corporations-charities/business-entities/online-filing-instructions/register-foreign-non-wa-profit-corporation-online)). Foreign Registration Statement filing fee, before the online processing fee. Conditional step — excluded from the default-flow fee headline by construction.
+- Canonical vendor: Washington Secretary of State
+- Do it yourself: [WA SOS — register a foreign profit corporation](https://www.sos.wa.gov/corporations-charities/business-entities/online-filing-instructions/register-foreign-non-wa-profit-corporation-online)
+- Sources: [WA SOS — register a foreign (non-WA) business](https://www.sos.wa.gov/corporations-charities/business-entities/start-or-register-business/register-foreign-non-wa-business)
+
+
+<a id="by-country"></a>
+
+## Country details
+
+<a id="geo-us"></a>
 
 ### United States
 
@@ -262,12 +448,16 @@ Clerky/Stripe Atlas have limited APIs. System guides through the process, pre-fi
   - Cost: $5.55 (government fee, as of 2026-10-01, [pe.usps.com](https://pe.usps.com/text/dmm300/Notice123.htm)). USPS Certified Mail fee (Notice 123, prices effective 2026-07-12), plus First-Class postage ($0.82 stamped 1 oz letter) and optional return receipt ($2.91 electronic / $4.65 mail). The IRS charges nothing for the election itself.
   - Verify: Online submissions through the taxpayer's IRS Online Account produce their own confirmation — retain it. For the mail rail, retain the USPS certified-mail receipt and a date-stamped copy of the election — the IRS sends no acknowledgment, so proof of timely mailing within the 30-day window (law rule us-fed.83b-filing-period) IS the record; if the IRS returns a stamped copy, retain it as the strongest evidence. ([www.irs.gov](https://www.irs.gov/pub/irs-pdf/f15620.pdf))
 
+<a id="geo-in"></a>
+
 ### India
 
 - Incorporate through MCA's SPICe+ integrated form — a single filing covers name reservation, incorporation, PAN, TAN, EPFO/ESIC and optional GST; the government's National Single Window System fronts the process. ([India NSWS (MCA SPICe+ incorporation)](https://www.nsws.gov.in/))
 - Step 2: Check the proposed company name through the incorporation route Incorporate through MCA's SPICe+ integrated form — a single filing covers name reservation, incorporation, PAN, TAN, EPFO/ESIC and optional GST; the government's National Single Window System fronts the process. ([India NSWS (MCA SPICe+ incorporation)](https://www.nsws.gov.in/))
 - Step 3: India - MCA SPICe+ filing Start from the agreed company type, proposed or approved name, and business-activity classification for SPICe+. Review MCA’s name and trademark alerts, then keep the company details consistent across Part A, Part B and the required linked forms. Use the current MCA instructions to confirm the documents and digital signatures needed for your application. Submit the required signed forms as a complete filing, retain the application reference, and monitor the filing dashboard for queries or resubmission requests. Name reservation alone does not complete incorporation. ([India NSWS (MCA SPICe+ incorporation)](https://www.nsws.gov.in/))
 - Step 10: Not applicable: No 83(b)-style election exists: founder vesting is contractual, and share awards are taxed as a perquisite under their own rules ([Income Tax e-filing portal](https://www.incometax.gov.in/iec/foportal/))
+
+<a id="geo-uk"></a>
 
 ### United Kingdom
 
@@ -277,12 +467,16 @@ Clerky/Stripe Atlas have limited APIs. System guides through the process, pre-fi
 - Step 9: Sign the joint section 431 ITEPA election to be taxed on the unrestricted value of restricted shares Made jointly with the company within 14 days of acquisition; HMRC's employment-related securities guidance covers it. ([HMRC — employment related securities](https://www.gov.uk/government/collections/employment-related-securities))
 - Step 10: Complete the joint section 431 election within 14 days of acquisition The UK cousin is the joint section 431 ITEPA election to be taxed on the unrestricted value of restricted shares; HMRC's employment-related securities guidance covers it. ([HMRC — employment related securities](https://www.gov.uk/government/collections/employment-related-securities))
 
+<a id="geo-de"></a>
+
 ### Germany
 
 - Form a GmbH (or UG) with a notarized deed — since 2022 the notarial formation can happen by video — and the company exists on registration in the Handelsregister; expect days to weeks, not hours. ([Handelsregister (commercial register)](https://www.handelsregister.de/))
 - Step 2: Check the proposed name before the notarized formation Form a GmbH (or UG) with a notarized deed — since 2022 the notarial formation can happen by video — and the company exists on registration in the Handelsregister; expect days to weeks, not hours. ([Handelsregister (commercial register)](https://www.handelsregister.de/))
 - Step 3: Germany - notarized GmbH/UG formation Agree with the notary whether you are forming a GmbH or a UG and whether the formation can use the applicable video procedure. The route includes preparing and notarizing the formation documents, satisfying the capital-contribution requirements, and applying for entry in the Handelsregister. Keep the chosen legal form, shareholder contributions and management details consistent throughout. Completion depends on the register entry, not merely the notarization appointment. Use the following four steps to track that sequence with the notary. ([Handelsregister (commercial register)](https://www.handelsregister.de/))
 - Step 10: Not applicable: No acceleration election exists; the statutory lever for startup equity is § 19a EStG's deferred taxation, not a filing-deadline race ([EStG § 19a — startup equity taxation](https://www.gesetze-im-internet.de/estg/__19a.html))
+
+<a id="geo-fr"></a>
 
 ### France
 
@@ -291,11 +485,15 @@ Clerky/Stripe Atlas have limited APIs. System guides through the process, pre-fi
 - Step 3: France - INPI guichet unique filing For a SAS or SASU, assemble the signed statutes, capital-deposit evidence, legal-notice publication evidence, and the company-address and management documents required for the chosen structure. Prepare the beneficial-owner information and check the application’s activity and tax selections against the company’s actual circumstances. Use the Guichet unique’s requested-document list to complete the filing, then review, sign and pay for the submission. Retain the receipt and monitor requests for corrections. Submission evidence is a handoff to registration review, not confirmation that registration has finished. ([INPI guichet unique](https://procedures.inpi.fr/))
 - Step 10: Not applicable: No equivalent election: founder and employee equity are taxed under the regimes the BOFiP doctrine governs, with no filing deadline to race ([BOFiP — official tax doctrine](https://bofip.impots.gouv.fr/))
 
+<a id="geo-pt"></a>
+
 ### Portugal
 
 - Incorporate a Lda or SA through Empresa Online — the registry's own online channel — and the NIPC (which doubles as the company's tax number) arrives with the registration; the in-person Empresa na Hora desks do it same-day. ([Empresa Online — registo comercial](https://www.gov.pt/guias/empresa-online-servicos-do-registo-comercial))
 - Step 3: Incorporate a Lda or SA through Empresa Online — the registry's own online channel — and the NIPC (which doubles as the company's tax number) arrives with the registration; the in-person Empresa na Hora desks do it same-day. ([Empresa Online — registo comercial](https://www.gov.pt/guias/empresa-online-servicos-do-registo-comercial))
 - Step 10: Not applicable: No 83(b) concept to race: vesting is drafted as quota call-option/clawback clauses, and the 2023 startup law defers qualifying option taxation to liquidity ([Lei 21/2023 (startup law) — DRE](https://diariodarepublica.pt/dr/detalhe/lei/21-2023-213498830))
+
+<a id="geo-ca"></a>
 
 ### Canada
 
@@ -303,49 +501,54 @@ Clerky/Stripe Atlas have limited APIs. System guides through the process, pre-fi
 - Step 3: Incorporate federally under the CBCA through Corporations Canada's online filing (often same-day) — but 25% of directors must be resident Canadians, so non-resident founders often incorporate provincially instead (British Columbia has no residency rule). ([Corporations Canada — incorporate](https://ised-isde.canada.ca/site/corporations-canada/en/federal-incorporation))
 - Step 10: Not applicable: No election deadline to beat: founder shares are issued at nominal value with CCPC tax deferral ([CRA — security options](https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/payroll/benefits-allowances/security-options.html))
 
+<a id="geo-nz"></a>
+
 ### New Zealand
 
 - Register a limited company online with the Companies Office: reserve the name ($10 plus GST, then 20 working days to complete), file director and shareholder consents, and keep at least one director living in NZ — or in Australia as a director of an Australian company. IRD and GST registration can ride in the same application. ([Incorporate a company — Companies Office](https://companies-register.companiesoffice.govt.nz/help-centre/starting-a-company/incorporating-a-company/))
 - Step 3: Register a limited company online with the Companies Office: reserve the name ($10 plus GST, then 20 working days to complete), file director and shareholder consents, and keep at least one director living in NZ — or in Australia as a director of an Australian company. IRD and GST registration can ride in the same application. ([Incorporate a company — Companies Office](https://companies-register.companiesoffice.govt.nz/help-centre/starting-a-company/incorporating-a-company/))
+
+<a id="geo-sg"></a>
 
 ### Singapore
 
 - Register a Pte Ltd (private company limited by shares) with ACRA through Bizfile — name reservation, then a $300 registration usually approved soon after payment — with a locally resident director, a Singapore registered office, and a company secretary within 6 months (law rule [sg.company-registration-application](../../open-law/SG/sg-company-registration-application.json)). ([ACRA — registering a local company](https://www.acra.gov.sg/register/business/registering-different-business-structures/local-company/))
 - Step 3: Register a Pte Ltd (private company limited by shares) with ACRA through Bizfile — name reservation, then a $300 registration usually approved soon after payment — with a locally resident director, a Singapore registered office, and a company secretary within 6 months (law rule sg.company-registration-application). ([ACRA — registering a local company](https://www.acra.gov.sg/register/business/registering-different-business-structures/local-company/))
 
+<a id="geo-au"></a>
+
 ### Australia
 
 - Register a Pty Ltd with ASIC: the s 117 application (usually through the online Business Registration Service) returns an ACN and a certificate of registration, and the company exists from the day of registration — at least one director must ordinarily reside in Australia, and every director needs a director ID before appointment. ([ASIC — register a company](https://asic.gov.au/for-business/registering-a-company/))
 - Step 3: Register a Pty Ltd with ASIC: the s 117 application (usually through the online Business Registration Service) returns an ACN and a certificate of registration, and the company exists from the day of registration — at least one director must ordinarily reside in Australia, and every director needs a director ID before appointment. ([ASIC — register a company](https://asic.gov.au/for-business/registering-a-company/))
+
+<a id="geo-kr"></a>
 
 ### South Korea
 
 - Incorporate as a chusik hoesa (주식회사): articles notarized unless the sub-KRW-1-billion promoter-only exemption applies, no statutory minimum capital, then the incorporation registration at the court registry within two weeks; the StartBiz one-stop system files it online. ([StartBiz online incorporation](https://www.startbiz.go.kr/))
 - Step 3: Incorporate as a chusik hoesa (주식회사): articles notarized unless the sub-KRW-1-billion promoter-only exemption applies, no statutory minimum capital, then the incorporation registration at the court registry within two weeks; the StartBiz one-stop system files it online. ([StartBiz online incorporation](https://www.startbiz.go.kr/))
 
+<a id="geo-hk"></a>
+
 ### Hong Kong
 
 - Incorporate a private company limited by shares with the Companies Registry — Form NNC1, the articles and the IRBR1 notice through the e-Services Portal, with the certificate of incorporation and the business registration certificate issuing together (law rule [hk.company-registration-application](../../open-law/HK/hk-company-registration-application.json)) — around the statutory shape of at least one natural-person director, a Hong Kong registered office and a company secretary. ([Companies Registry — register a new company](https://www.cr.gov.hk/en/services/register-company.htm))
 - Step 3: Incorporate a private company limited by shares with the Companies Registry — Form NNC1, the articles and the IRBR1 notice through the e-Services Portal, with the certificate of incorporation and the business registration certificate issuing together (law rule hk.company-registration-application) — around the statutory shape of at least one natural-person director, a Hong Kong registered office and a company secretary. ([Companies Registry — register a new company](https://www.cr.gov.hk/en/services/register-company.htm))
+
+<a id="geo-ee"></a>
 
 ### Estonia
 
 - Incorporate as an osaühing (OÜ) through the e-Business Register: a digitally signed petition, no minimum capital beyond one cent per share, and expedited review by the next working day (law rules [ee.private-limited-company-registration](../../open-law/EE/ee-private-limited-company-registration.json), [ee.osauhing-no-minimum-capital](../../open-law/EE/ee-osauhing-no-minimum-capital.json)); e-residents can file fully online (law rule [ee.e-residency-digital-identity](../../open-law/EE/ee-e-residency-digital-identity.json)). ([e-Business Register](https://ariregister.rik.ee/eng))
 - Step 3: Incorporate as an osaühing (OÜ) through the e-Business Register: a digitally signed petition, no minimum capital beyond one cent per share, and expedited review by the next working day (law rules ee.private-limited-company-registration, ee.osauhing-no-minimum-capital); e-residents can file fully online (law rule ee.e-residency-digital-identity). ([e-Business Register](https://ariregister.rik.ee/eng))
 
-## Artifacts
-
-Produces:
+## Outputs
 
 - Certificate of Incorporation
 - Bylaws & initial board consent
 - Founder stock issuance
 - Filed 83(b) election
-
-Requires:
-
-- Company name — from [Generate a company name](generate-a-company-name.md)
-- Registered agent — from [Set up registered agent](set-up-registered-agent.md)
 
 ## Related records
 

@@ -3,6 +3,10 @@
 
 # Lease an office
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Geography](#geography) · [Steps](#steps-at-a-glance) · [Outputs](#outputs)
+
+## Overview
+
 From “we need a room” to keys: size the space and budget, tour with a broker, negotiate the LOI, survive the lease review, sign (often with a guarantee), then wire the deposit, get the landlord a COI, and turn on internet and access.
 
 | Field | Value |
@@ -19,83 +23,180 @@ From “we need a room” to keys: size the space and budget, tour with a broker
 
 Touring, negotiation, and the lease signature are human end-to-end; the agent models the all-in cost, compares proposals, and handles the deposit wire and COI.
 
-## Steps
+<a id="artifacts"></a>
 
-1. **Define headcount, budget, and space needs** — human · ~45 min
+## Before you start
 
-   Describe expected attendance, desk and meeting needs, location constraints, accessibility needs, and when the team would use the space. Set an affordable total commitment with finance, including setup and ongoing costs. Compare a lease with flexible or shared space if attendance or growth is uncertain. Give the broker a focused search brief with must-haves, acceptable compromises, budget boundaries, and assumptions that could change the space requirement.
-2. **Tour spaces with a broker** — human · ~3 d · async wait
+Required artifacts:
 
-   Confirm the broker's role, fees, and representation, then use the space brief to select tours. Compare layouts, access, noise, connectivity, building services, and the work required before moving in. Ask about items the tour cannot establish, such as service availability or restrictions on use, and distinguish the landlord's statements from documents already received. Return a shortlist with the practical tradeoffs and the unanswered questions that could change the choice.
-3. **Compare proposals and model the all-in cost** — agent-runnable · ~45 min
+- Insurance policies — from [Get insurance quotes](get-insurance-quotes.md)
+- Business bank account — from [Open bank account](open-bank-account.md)
 
-   Compare written proposals over the same occupancy period. Include quoted rent and increases, operating charges, deposits, incentives, fit-out, moving, utilities, and likely exit costs, separating contract amounts from estimates. Show when cash is needed as well as the total cost. Test the model against a smaller team or earlier departure, and use the result to identify the terms finance needs clarified or renegotiated before a preferred space is selected.
+| Information to gather | Required by the record |
+| --- | --- |
+| headcount plan | Yes |
+| monthly budget | Yes |
 
-   - Cross-arena options: ChatGPT, Claude (ai-assistants)
-4. **Negotiate the LOI (rent, TI, term, exit)** — human · ~2 h
+## Geography
 
-   Use the preferred proposal and budget limits to set the company's position on rent, improvements, commencement, term, renewal, and exit flexibility. Have counsel review the letter of intent before it is sent or signed, especially provisions that may create obligations. Negotiate within the company decision-maker's agreed limits and escalate material concessions. Hand the agreed commercial terms and remaining disputes to counsel for the lease, keeping the latest proposal easy to identify.
+Country rows describe the guidance recorded here. Local notes and step alternatives do not establish a complete country-specific workflow.
 
-   - Sources: [Western Australia SBDC: Negotiating a lease](https://www.smallbusiness.wa.gov.au/business-premises/negotiating-a-lease)
-5. **Counsel reviews the lease** — human · ~2 d · async wait
+| Country | Recorded guidance | Steps with local alternatives or resolutions |
+| --- | --- | --- |
+| [United Kingdom](#geo-uk) | Local analog note | — |
+| [France](#geo-fr) | Local analog note | — |
+| [Singapore](#geo-sg) | Local analog note | — |
 
-   Give local real-estate counsel the lease, exhibits, letter of intent, building rules, and planned use of the space. Ask them to identify obligations and risks that matter to the business, including guarantees, repairs, permitted use, insurance, renewal, assignment, and termination. Resolve proposed changes with the landlord and have the company decision-maker accept any remaining material risks. The signing version should include every negotiated change and referenced exhibit.
+## Steps at a glance
 
-   - Sources: [Western Australia SBDC: Understanding commercial leases](https://www.smallbusiness.wa.gov.au/business-premises/understanding-commercial-leases)
-6. **Sign the lease and any guarantee** — human (legally required signature) · ~10 min · hard to undo
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
 
-   Compare the signature package with counsel's final version, including exhibits, guarantees, and the capacity in which each person signs. Confirm company signing authority and obtain each guarantor's separate agreement to their personal obligations. Execute through the required local process and obtain the completed counterpart. Give finance and the move owner the effective lease, payment obligations, possession conditions, and important notice dates so the signed terms become the operating plan.
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Define headcount, budget, and space needs](#step-1) | human | ~45 min | Entry step |
+| [2. Tour spaces with a broker](#step-2) | human; includes waiting | ~3 d | [Step 1](#step-1) |
+| [3. Compare proposals and model the all-in cost](#step-3) | agent-runnable | ~45 min | [Step 2](#step-2) |
+| [4. Negotiate the LOI (rent, TI, term, exit)](#step-4) | human | ~2 h | [Step 3](#step-3) |
+| [5. Counsel reviews the lease](#step-5) | human; includes waiting | ~2 d | [Step 4](#step-4) |
+| [6. Sign the lease and any guarantee](#step-6) | human; signature required | ~10 min | [Step 5](#step-5) |
+| [7. Wire the security deposit](#step-7) | agent-runnable | ~10 min | [Step 6](#step-6) |
+| [8. Get the landlord a certificate of insurance](#step-8) | manual form/portal | ~20 min | [Step 6](#step-6) |
+| [9. Set up internet, utilities, and access](#step-9) | manual form/portal | ~1 h | [Step 6](#step-6) |
 
-   - Produces: Office lease
-   - Next: steps 7, 8 and 9 — all follow this step
-7. **Wire the security deposit** — agent-runnable · ~10 min · hard to undo
+<a id="steps"></a>
 
-   Match the deposit amount, payment condition, and reference to the executed lease. Independently verify the landlord's beneficiary instructions through a trusted contact, especially if bank details have changed. The authorized finance approver must approve the specific transfer before release. Reconcile the bank result with the landlord's acknowledgment and record the deposit in the company's accounts; investigate any shortfall, return, or discrepancy before assuming the payment condition is satisfied.
+## Step details
 
-   - Verify: The bank provides the wire's Fed reference number and the landlord confirms receipt of the deposit.
-   - Canonical vendor: Mercury
+<a id="step-1"></a>
 
-   *This path ends here.*
-8. **Get the landlord a certificate of insurance** — manual form/portal · ~20 min
+### 1. Define headcount, budget, and space needs
 
-   *Follows step 6.*
+human · ~45 min
 
-   Send the insurance broker the lease's coverage requirements and the landlord's requested certificate details. Ask the broker to identify whether the existing policy and endorsements meet those requirements, and price any necessary changes for the company's decision. Obtain the resulting certificate and send it through the landlord's required channel. Resolve outstanding coverage questions with the broker, and put renewal or replacement-certificate dates into the premises administration schedule.
 
-   - Verify: The landlord accepts the certificate of insurance naming them as additional insured, per the lease's insurance clause.
-   - Canonical vendor: Embroker
+Describe expected attendance, desk and meeting needs, location constraints, accessibility needs, and when the team would use the space. Set an affordable total commitment with finance, including setup and ongoing costs. Compare a lease with flexible or shared space if attendance or growth is uncertain. Give the broker a focused search brief with must-haves, acceptable compromises, budget boundaries, and assumptions that could change the space requirement.
 
-   *This path ends here.*
-9. **Set up internet, utilities, and access** — manual form/portal · ~1 h
+<a id="step-2"></a>
 
-   *Follows step 6.*
+### 2. Tour spaces with a broker
 
-   Plan internet, utilities, keys or badges, and installer access around the possession date and building rules. Check service availability before placing orders and get approval for new contracts or recurring charges. Coordinate the landlord, providers, and move owner so installation can occur when the space is accessible. Before the team moves in, check connectivity and entry, distribute access instructions, and make unresolved service issues visible to the person running the move.
+human · ~3 d · async wait
 
-## By country
+
+Confirm the broker's role, fees, and representation, then use the space brief to select tours. Compare layouts, access, noise, connectivity, building services, and the work required before moving in. Ask about items the tour cannot establish, such as service availability or restrictions on use, and distinguish the landlord's statements from documents already received. Return a shortlist with the practical tradeoffs and the unanswered questions that could change the choice.
+
+<a id="step-3"></a>
+
+### 3. Compare proposals and model the all-in cost
+
+agent-runnable · ~45 min
+
+
+Compare written proposals over the same occupancy period. Include quoted rent and increases, operating charges, deposits, incentives, fit-out, moving, utilities, and likely exit costs, separating contract amounts from estimates. Show when cash is needed as well as the total cost. Test the model against a smaller team or earlier departure, and use the result to identify the terms finance needs clarified or renegotiated before a preferred space is selected.
+
+- Cross-arena options: ChatGPT, Claude (ai-assistants)
+
+<a id="step-4"></a>
+
+### 4. Negotiate the LOI (rent, TI, term, exit)
+
+human · ~2 h
+
+
+Use the preferred proposal and budget limits to set the company's position on rent, improvements, commencement, term, renewal, and exit flexibility. Have counsel review the letter of intent before it is sent or signed, especially provisions that may create obligations. Negotiate within the company decision-maker's agreed limits and escalate material concessions. Hand the agreed commercial terms and remaining disputes to counsel for the lease, keeping the latest proposal easy to identify.
+
+- Sources: [Western Australia SBDC: Negotiating a lease](https://www.smallbusiness.wa.gov.au/business-premises/negotiating-a-lease)
+
+<a id="step-5"></a>
+
+### 5. Counsel reviews the lease
+
+human · ~2 d · async wait
+
+
+Give local real-estate counsel the lease, exhibits, letter of intent, building rules, and planned use of the space. Ask them to identify obligations and risks that matter to the business, including guarantees, repairs, permitted use, insurance, renewal, assignment, and termination. Resolve proposed changes with the landlord and have the company decision-maker accept any remaining material risks. The signing version should include every negotiated change and referenced exhibit.
+
+- Sources: [Western Australia SBDC: Understanding commercial leases](https://www.smallbusiness.wa.gov.au/business-premises/understanding-commercial-leases)
+
+<a id="step-6"></a>
+
+### 6. Sign the lease and any guarantee
+
+human (legally required signature) · ~10 min · hard to undo
+
+
+Compare the signature package with counsel's final version, including exhibits, guarantees, and the capacity in which each person signs. Confirm company signing authority and obtain each guarantor's separate agreement to their personal obligations. Execute through the required local process and obtain the completed counterpart. Give finance and the move owner the effective lease, payment obligations, possession conditions, and important notice dates so the signed terms become the operating plan.
+
+- Produces: Office lease
+- Next: steps 7, 8 and 9 — all follow this step
+
+<a id="step-7"></a>
+
+### 7. Wire the security deposit
+
+agent-runnable · ~10 min · hard to undo
+
+
+Match the deposit amount, payment condition, and reference to the executed lease. Independently verify the landlord's beneficiary instructions through a trusted contact, especially if bank details have changed. The authorized finance approver must approve the specific transfer before release. Reconcile the bank result with the landlord's acknowledgment and record the deposit in the company's accounts; investigate any shortfall, return, or discrepancy before assuming the payment condition is satisfied.
+
+- Verify: The bank provides the wire's Fed reference number and the landlord confirms receipt of the deposit.
+- Canonical vendor: Mercury
+
+*This path ends here.*
+
+<a id="step-8"></a>
+
+### 8. Get the landlord a certificate of insurance
+
+manual form/portal · ~20 min
+
+
+*Follows step 6.*
+
+Send the insurance broker the lease's coverage requirements and the landlord's requested certificate details. Ask the broker to identify whether the existing policy and endorsements meet those requirements, and price any necessary changes for the company's decision. Obtain the resulting certificate and send it through the landlord's required channel. Resolve outstanding coverage questions with the broker, and put renewal or replacement-certificate dates into the premises administration schedule.
+
+- Verify: The landlord accepts the certificate of insurance naming them as additional insured, per the lease's insurance clause.
+- Canonical vendor: Embroker
+
+*This path ends here.*
+
+<a id="step-9"></a>
+
+### 9. Set up internet, utilities, and access
+
+manual form/portal · ~1 h
+
+
+*Follows step 6.*
+
+Plan internet, utilities, keys or badges, and installer access around the possession date and building rules. Check service availability before placing orders and get approval for new contracts or recurring charges. Coordinate the landlord, providers, and move owner so installation can occur when the space is accessible. Before the team moves in, check connectivity and entry, distribute access instructions, and make unresolved service issues visible to the person running the move.
+
+
+<a id="by-country"></a>
+
+## Country details
+
+<a id="geo-uk"></a>
 
 ### United Kingdom
 
 - Commercial leases can trigger SDLT on the lease's net present value — a filing US startups don't expect — and watch whether the lease is inside the Landlord & Tenant Act 1954 security-of-tenure regime. ([Stamp Duty Land Tax](https://www.gov.uk/stamp-duty-land-tax))
 
+<a id="geo-fr"></a>
+
 ### France
 
 - The default is the bail commercial '3-6-9': a nine-year lease the TENANT can break every three years, with statutory renewal rights — startups wanting flexibility negotiate a bail dérogatoire (≤ 3 years) instead. ([Bail commercial (3-6-9)](https://entreprendre.service-public.fr/vosdroits/F23927))
+
+<a id="geo-sg"></a>
 
 ### Singapore
 
 - Leases attract stamp duty (lease duty) paid to IRAS through e-Stamping, and there is no security-of-tenure regime — term, renewal and reinstatement live entirely in the lease you sign. ([IRAS — stamp duty for property](https://www.iras.gov.sg/taxes/stamp-duty/for-property))
 
-## Artifacts
-
-Produces:
+## Outputs
 
 - Office lease
-
-Requires:
-
-- Insurance policies — from [Get insurance quotes](get-insurance-quotes.md)
-- Business bank account — from [Open bank account](open-bank-account.md)
 
 ---
 

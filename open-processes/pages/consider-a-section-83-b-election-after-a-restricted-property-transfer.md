@@ -3,6 +3,10 @@
 
 # Consider a section 83(b) election after a restricted-property transfer
 
+[Overview](#overview) · [Steps](#steps-at-a-glance)
+
+## Overview
+
 **Trigger:** The actual date substantially nonvested property was transferred to a service provider; do not substitute vesting start, board consent, or document-signing date without review.
 
 A time-sensitive planning workflow for a US service provider who received substantially nonvested property for services from a Delaware corporation. The recipient, not the public repository, decides whether to elect and files it.
@@ -19,34 +23,78 @@ A time-sensitive planning workflow for a US service provider who received substa
 - Filed election and proof if chosen
 - Private copies and delivery record
 
-## Steps
+## Steps at a glance
 
-1. **Identify actual transferred property, transfer evidence, consideration paid, restrictions, recipient, and dates in a private record.** — mode: read only
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
 
-   Use executed equity documents, payment evidence and company records to establish what property transferred, to whom, for what consideration and subject to which restrictions. Resolve conflicting dates; incorporation, signature and vesting commencement do not automatically establish the transfer date. Give the recipient and adviser a factual transfer record with any remaining uncertainty explicit, keeping sensitive evidence in the recipient’s private tax file.
-2. **Have the recipient and tax counsel assess eligibility, tax consequences, whether to elect, and the official filing deadline; flag the short window immediately.** — mode: prepare draft
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Identify actual transferred property, transfer evidence, consideration paid, restrictions, recipient, and dates in a private record.](#step-1) | Not recorded | Not recorded | Entry step |
+| [2. Have the recipient and tax counsel assess eligibility, tax consequences, whether to elect, and the official filing deadline; flag the short window immediately.](#step-2) | Not recorded | Not recorded | [Step 1](#step-1) |
+| [3. If the recipient elects, prepare current Form 15620 or a compliant statement; verify content, signature, address, and copies.](#step-3) | Not recorded | Not recorded | [Step 2](#step-2) (The eligible recipient affirmatively chooses the election after tax review.) |
+| [4. Recipient sends the signed election using the currently confirmed IRS filing method and preserves proof of timely filing.](#step-4) | Not recorded | Not recorded | [Step 3](#step-3) |
+| [5. Send required copies to the service recipient and, when applicable, a different property transferee; retain private delivery proof.](#step-5) | Not recorded | Not recorded | [Step 4](#step-4) |
 
-   Ask the recipient’s tax adviser to assess eligibility, current tax cost, forfeiture consequences and whether an election suits the recipient’s circumstances. Use the documented transfer, restrictions, value and amount paid. Check the deadline immediately: IRS instructions specify thirty days after transfer, with the stated weekend and holiday adjustment. The recipient decides whether to elect with a clear understanding of the consequences and available filing window.
+<a id="steps"></a>
 
-   - Sources: [IRS Form 15620 and instructions](https://www.irs.gov/pub/irs-pdf/f15620.pdf)
-   - If "The eligible recipient affirmatively chooses the election after tax review": continue at step 3
-3. **If the recipient elects, prepare current Form 15620 or a compliant statement; verify content, signature, address, and copies.** — mode: prepare draft
+## Step details
 
-   *Follows step 2 (when The eligible recipient affirmatively chooses the election after tax review).*
+<a id="step-1"></a>
 
-   If the recipient elects, complete current Form 15620 or a compliant statement using the taxpayer details, property, transfer date, taxable year, restrictions, value and consideration. Check quantities and arithmetic against the equity records. The recipient reviews and signs the election; the filing copy should be ready for the verified IRS destination, with the required recipients’ copies and the filing deadline identified.
+### 1. Identify actual transferred property, transfer evidence, consideration paid, restrictions, recipient, and dates in a private record.
 
-   - Sources: [IRS Form 15620 and instructions](https://www.irs.gov/pub/irs-pdf/f15620.pdf)
-4. **Recipient sends the signed election using the currently confirmed IRS filing method and preserves proof of timely filing.** — mode: external effect
+mode: read only
 
-   The recipient or their specifically authorized filer submits the signed election using the current IRS instructions and verified destination. Keep the filed version with evidence of timely dispatch or other accepted filing, and follow delivery failures promptly with the tax adviser. The recipient’s file should establish what was filed, where and when; a prepared form or completed provider task alone does not establish submission.
 
-   - Sources: [IRS Form 15620 and instructions](https://www.irs.gov/pub/irs-pdf/f15620.pdf)
-5. **Send required copies to the service recipient and, when applicable, a different property transferee; retain private delivery proof.** — mode: external effect
+Use executed equity documents, payment evidence and company records to establish what property transferred, to whom, for what consideration and subject to which restrictions. Resolve conflicting dates; incorporation, signature and vesting commencement do not automatically establish the transfer date. Give the recipient and adviser a factual transfer record with any remaining uncertainty explicit, keeping sensitive evidence in the recipient’s private tax file.
 
-   Send the filed election’s required copies to the person for whom the services were performed and, if different, the property transferee. The recipient or their authorized filer should use verified contacts and a secure delivery method for this tax information. Keep delivery evidence with the election and resolve failed deliveries so the required recipients receive the same filed version.
+<a id="step-2"></a>
 
-   - Sources: [IRS Form 15620 and instructions](https://www.irs.gov/pub/irs-pdf/f15620.pdf)
+### 2. Have the recipient and tax counsel assess eligibility, tax consequences, whether to elect, and the official filing deadline; flag the short window immediately.
+
+mode: prepare draft
+
+
+Ask the recipient’s tax adviser to assess eligibility, current tax cost, forfeiture consequences and whether an election suits the recipient’s circumstances. Use the documented transfer, restrictions, value and amount paid. Check the deadline immediately: IRS instructions specify thirty days after transfer, with the stated weekend and holiday adjustment. The recipient decides whether to elect with a clear understanding of the consequences and available filing window.
+
+- Sources: [IRS Form 15620 and instructions](https://www.irs.gov/pub/irs-pdf/f15620.pdf)
+- If "The eligible recipient affirmatively chooses the election after tax review": continue at step 3
+
+<a id="step-3"></a>
+
+### 3. If the recipient elects, prepare current Form 15620 or a compliant statement; verify content, signature, address, and copies.
+
+mode: prepare draft
+
+
+*Follows step 2 (when The eligible recipient affirmatively chooses the election after tax review).*
+
+If the recipient elects, complete current Form 15620 or a compliant statement using the taxpayer details, property, transfer date, taxable year, restrictions, value and consideration. Check quantities and arithmetic against the equity records. The recipient reviews and signs the election; the filing copy should be ready for the verified IRS destination, with the required recipients’ copies and the filing deadline identified.
+
+- Sources: [IRS Form 15620 and instructions](https://www.irs.gov/pub/irs-pdf/f15620.pdf)
+
+<a id="step-4"></a>
+
+### 4. Recipient sends the signed election using the currently confirmed IRS filing method and preserves proof of timely filing.
+
+mode: external effect
+
+
+The recipient or their specifically authorized filer submits the signed election using the current IRS instructions and verified destination. Keep the filed version with evidence of timely dispatch or other accepted filing, and follow delivery failures promptly with the tax adviser. The recipient’s file should establish what was filed, where and when; a prepared form or completed provider task alone does not establish submission.
+
+- Sources: [IRS Form 15620 and instructions](https://www.irs.gov/pub/irs-pdf/f15620.pdf)
+
+<a id="step-5"></a>
+
+### 5. Send required copies to the service recipient and, when applicable, a different property transferee; retain private delivery proof.
+
+mode: external effect
+
+
+Send the filed election’s required copies to the person for whom the services were performed and, if different, the property transferee. The recipient or their authorized filer should use verified contacts and a secure delivery method for this tax information. Keep delivery evidence with the election and resolve failed deliveries so the required recipients receive the same filed version.
+
+- Sources: [IRS Form 15620 and instructions](https://www.irs.gov/pub/irs-pdf/f15620.pdf)
+
 
 ---
 

@@ -3,6 +3,10 @@
 
 # Write the employee handbook
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Geography](#geography) · [Steps](#steps-at-a-glance) · [Outputs](#outputs)
+
+## Overview
+
 Draft and publish comprehensive employee handbook covering policies, PTO, conduct, remote work, and equity.
 
 | Field | Value |
@@ -19,77 +23,162 @@ Draft and publish comprehensive employee handbook covering policies, PTO, conduc
 
 AI can draft sections from templates. Legal review and company-specific policies need human input.
 
-## Steps
+<a id="artifacts"></a>
 
-1. **Draft handbook sections** — agent-runnable · ~2 h
+## Before you start
 
-   Outline the policies employees need using existing employment terms and actual company practices. Cover working arrangements, leave, conduct, reporting concerns, security and everyday operating expectations at the right level of detail. Flag undecided policies and provisions needing local review. Use placeholders for proposed benefits or procedures until the responsible team settles them.
+Required artifacts:
 
-   - Vendor options: ChatGPT, Claude, Gemini, Grok
-   - Ranked market: [ai-assistants](../../open-rankings/ai-assistants)
-2. **Customize policies for company** — human · ~4 h · human approval required
+- Team wiki — from [Set up a team wiki](set-up-a-team-wiki.md)
+- Team chat workspace — from [Set up team chat](set-up-team-chat.md)
 
-   Work through each draft policy with the person who will administer it. Resolve differences between written leave, remote-work, expense or conduct rules and actual practice. Make contacts and escalation paths specific, and identify where country or worker-group versions are needed. Track substantive changes so the legal reviewer can see the policies the company intends to operate.
-3. **Legal review** — human · ~2 d · async wait · human approval required
+| Information to gather | Required by the record |
+| --- | --- |
+| company info | Yes |
+| PTO policy | Yes |
+| remote work policy | Yes |
 
-   Give counsel the draft, worker locations, relevant employment documents and substantive policy changes. Ask for the required local provisions, consultation or notice steps and conflicts with existing terms. Resolve legal questions with counsel and business choices with the people lead before release. Identify any excluded country or unresolved policy so a reviewed handbook version is not assumed to cover every employee automatically.
-4. **Publish to Notion** — agent-runnable · ~15 min · human approval required
+## Geography
 
-   Publish the reviewed handbook in the employee knowledge space with a clear owner, effective version and question route. Check that employees can reach the live document and that drafts or legal advice remain restricted. Preserve earlier versions so the company can identify the policy that applied at a particular time. Link country or worker-group addenda where employees would expect to find them.
+Country rows describe the guidance recorded here. Local notes and step alternatives do not establish a complete country-specific workflow.
 
-   - Produces: Employee handbook
-   - Canonical vendor: Notion
-5. **Send announcement to team** — agent-runnable · ~5 min · human approval required
+| Country | Recorded guidance | Steps with local alternatives or resolutions |
+| --- | --- | --- |
+| [India](#geo-in) | Local analog note | — |
+| [United Kingdom](#geo-uk) | Local analog note | — |
+| [Germany](#geo-de) | Local analog note | — |
+| [France](#geo-fr) | Local analog note | — |
+| [Singapore](#geo-sg) | Local analog note | — |
+| [South Korea](#geo-kr) | Local analog note | — |
+| [Hong Kong](#geo-hk) | Local analog note | — |
+| [Estonia](#geo-ee) | Local analog note | — |
 
-   Tell employees where the handbook lives, which changes affect them and when those changes apply. Explain any acknowledgement process and provide a contact for questions. Check the published link before distribution and arrange accessible or translated material where needed. Route substantive questions to the relevant policy owner and follow up through the company’s actual acknowledgement process.
+## Steps at a glance
 
-   - Canonical vendor: Gmail
-   - Cross-arena options: Slack (team-chat)
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
 
-## By country
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Draft handbook sections](#step-1) | agent-runnable | ~2 h | Entry step |
+| [2. Customize policies for company](#step-2) | human; approval required | ~4 h | [Step 1](#step-1) |
+| [3. Legal review](#step-3) | human; approval required; includes waiting | ~2 d | [Step 2](#step-2) |
+| [4. Publish to Notion](#step-4) | agent-runnable; approval required | ~15 min | [Step 3](#step-3) |
+| [5. Send announcement to team](#step-5) | agent-runnable; approval required | ~5 min | [Step 4](#step-4) |
+
+<a id="steps"></a>
+
+## Step details
+
+<a id="step-1"></a>
+
+### 1. Draft handbook sections
+
+agent-runnable · ~2 h
+
+
+Outline the policies employees need using existing employment terms and actual company practices. Cover working arrangements, leave, conduct, reporting concerns, security and everyday operating expectations at the right level of detail. Flag undecided policies and provisions needing local review. Use placeholders for proposed benefits or procedures until the responsible team settles them.
+
+- Vendor options: ChatGPT, Claude, Gemini, Grok
+- Ranked market: [ai-assistants](../../open-rankings/ai-assistants)
+
+<a id="step-2"></a>
+
+### 2. Customize policies for company
+
+human · ~4 h · human approval required
+
+
+Work through each draft policy with the person who will administer it. Resolve differences between written leave, remote-work, expense or conduct rules and actual practice. Make contacts and escalation paths specific, and identify where country or worker-group versions are needed. Track substantive changes so the legal reviewer can see the policies the company intends to operate.
+
+<a id="step-3"></a>
+
+### 3. Legal review
+
+human · ~2 d · async wait · human approval required
+
+
+Give counsel the draft, worker locations, relevant employment documents and substantive policy changes. Ask for the required local provisions, consultation or notice steps and conflicts with existing terms. Resolve legal questions with counsel and business choices with the people lead before release. Identify any excluded country or unresolved policy so a reviewed handbook version is not assumed to cover every employee automatically.
+
+<a id="step-4"></a>
+
+### 4. Publish to Notion
+
+agent-runnable · ~15 min · human approval required
+
+
+Publish the reviewed handbook in the employee knowledge space with a clear owner, effective version and question route. Check that employees can reach the live document and that drafts or legal advice remain restricted. Preserve earlier versions so the company can identify the policy that applied at a particular time. Link country or worker-group addenda where employees would expect to find them.
+
+- Produces: Employee handbook
+- Canonical vendor: Notion
+
+<a id="step-5"></a>
+
+### 5. Send announcement to team
+
+agent-runnable · ~5 min · human approval required
+
+
+Tell employees where the handbook lives, which changes affect them and when those changes apply. Explain any acknowledgement process and provide a contact for questions. Check the published link before distribution and arrange accessible or translated material where needed. Route substantive questions to the relevant policy owner and follow up through the company’s actual acknowledgement process.
+
+- Canonical vendor: Gmail
+- Cross-arena options: Slack (team-chat)
+
+
+<a id="by-country"></a>
+
+## Country details
+
+<a id="geo-in"></a>
 
 ### India
 
 - The statutory cousin is standing orders under the Industrial Employment (Standing Orders) Act — certified workplace rules once headcount crosses the state threshold; below it, a well-drafted HR policy plus state shops-and-establishments rules carry the load. ([Ministry of Labour & Employment](https://labour.gov.in/))
 
+<a id="geo-uk"></a>
+
 ### United Kingdom
 
 - A written statement of particulars is a DAY-ONE legal right for every employee — the handbook builds on it, and disciplinary/grievance procedures should track the Acas code that tribunals measure employers against. ([Employment contracts & written particulars](https://www.gov.uk/employment-contracts-and-conditions))
+
+<a id="geo-de"></a>
 
 ### Germany
 
 - The Nachweisgesetz requires the essential terms of employment in writing (tightened in 2022, with fines); from five employees a works council (Betriebsrat) can be elected, and many 'handbook' topics become co-determination matters. ([NachwG — written particulars law](https://www.gesetze-im-internet.de/nachwg/))
 
+<a id="geo-fr"></a>
+
 ### France
 
 - At 50+ employees a règlement intérieur is mandatory — a formal document covering discipline, health/safety and harassment, filed with the labour inspectorate and the prud'hommes — and it must be in French. ([Règlement intérieur](https://entreprendre.service-public.fr/vosdroits/F1905))
+
+<a id="geo-sg"></a>
 
 ### Singapore
 
 - The written key employment terms (issued within 14 days of start) are the statutory baseline the handbook builds on — align disciplinary and grievance procedures with the Tripartite guidelines TAFEP measures employers against. ([MOM — key employment terms](https://www.mom.gov.sg/employment-practices/contract-of-service/key-employment-terms))
 
+<a id="geo-kr"></a>
+
 ### South Korea
 
 - The handbook has a statutory core: employers with 10 or more workers prepare rules of employment (취업규칙) covering the Labor Standards Act Article 93 catalog and file them with the Ministry of Employment and Labor; changes are filed the same way. ([Ministry of Employment and Labor](https://www.moel.go.kr/))
+
+<a id="geo-hk"></a>
 
 ### Hong Kong
 
 - No statutory handbook or filing exists: the Employment Ordinance's continuous-contract entitlements (law rule [hk.employment-ordinance-continuous-contract](../../open-law/HK/hk-employment-ordinance-continuous-contract.json)) are the floor the handbook writes down, and the Labour Department's Concise Guide is the reference employers align with. ([Labour Department — Concise Guide to the EO](https://www.labour.gov.hk/eng/public/ConciseGuide.htm))
 
+<a id="geo-ee"></a>
+
 ### Estonia
 
 - The handbook is optional policy with a statutory seed: the mandatory written core is the working-conditions document riding the employment contract (law rule [ee.employment-contract-written-form](../../open-law/EE/ee-employment-contract-written-form.json)), and Estonian handbooks are slim internal-rules documents layered on top of it. ([Labour Inspectorate (Tööinspektsioon)](https://www.ti.ee/en))
 
-## Artifacts
-
-Produces:
+## Outputs
 
 - Employee handbook
-
-Requires:
-
-- Team wiki — from [Set up a team wiki](set-up-a-team-wiki.md)
-- Team chat workspace — from [Set up team chat](set-up-team-chat.md)
 
 ## Related records
 

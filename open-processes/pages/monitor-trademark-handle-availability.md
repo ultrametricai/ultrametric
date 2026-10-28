@@ -3,6 +3,10 @@
 
 # Monitor trademark / handle availability
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Geography](#geography) · [Steps](#steps-at-a-glance)
+
+## Overview
+
 Monitor trademark conflicts and social-handle availability for the brand, on a schedule.
 
 | Field | Value |
@@ -19,31 +23,94 @@ Monitor trademark conflicts and social-handle availability for the brand, on a s
 
 Trademark and handle checks run over search APIs — an agent can schedule the recurring monitor.
 
-## Steps
+<a id="artifacts"></a>
 
-1. **Run the trademark register search and social-handle checks** — agent-runnable · ~3 min
+## Before you start
 
-   Search the relevant brand names and variants in the official trademark tools and check the requested social handles. Record potentially conflicting marks and the terms searched so counsel can assess coverage. Handle availability and trademark clearance are separate findings. Present the available handles and flagged marks without reserving accounts, contacting owners or treating a clean exact-name search as legal clearance.
+Required artifacts:
 
-   - Do it yourself: [USPTO trademark search](https://www.uspto.gov/trademarks)
-2. **Choose a trademark watch service (or counsel) for conflicts** — human · ~5 min
+- Company name — from [Generate a company name](generate-a-company-name.md)
 
-   Define the marks, territories, classes and conflicts the watch needs to cover. Compare a specialist service and counsel-led review on coverage, alert quality, cost and how matches are evaluated. Choose the service and obtain the company’s approval for the engagement. Set a named recipient for alerts and an escalation route for potential conflicts before monitoring begins.
+## Geography
 
-   - Vendor options: Markify, Corsearch
-   - Sources: [USPTO trademark tools](https://www.uspto.gov/trademarks)
-3. **Schedule the recurring monitor and alerting** — agent-runnable · ~2 min
+Country rows describe the guidance recorded here. Local notes and step alternatives do not establish a complete country-specific workflow.
 
-   Configure the agreed marks, platforms and review schedule, routing alerts to the brand or legal contact. Include enough source context to inspect the match and distinguish duplicates. Test notification delivery and decide how unavailable sources are flagged. Review actual alerts before any opposition, outreach or purchase is considered; those actions need their own authorized decision.
+| Country | Recorded guidance | Steps with local alternatives or resolutions |
+| --- | --- | --- |
+| [United States](#geo-us) | step resolution | [1](#step-1), [3](#step-3) |
+| [India](#geo-in) | Local analog note; step resolution | [1](#step-1), [3](#step-3) |
+| [United Kingdom](#geo-uk) | Local analog note; step resolution | [1](#step-1), [3](#step-3) |
+| [Germany](#geo-de) | Local analog note; step resolution | [1](#step-1), [3](#step-3) |
+| [France](#geo-fr) | Local analog note; step resolution | [1](#step-1), [3](#step-3) |
+| [Portugal](#geo-pt) | Local analog note; step resolution | [1](#step-1), [3](#step-3) |
+| [Canada](#geo-ca) | Local analog note; step resolution | [1](#step-1), [3](#step-3) |
+| [Singapore](#geo-sg) | Local analog note | — |
+| [Australia](#geo-au) | Local analog note | — |
+| [South Korea](#geo-kr) | Local analog note | — |
+| [Hong Kong](#geo-hk) | Local analog note | — |
+| [Estonia](#geo-ee) | Local analog note | — |
 
-   - Sources: [USPTO trademark tools](https://www.uspto.gov/trademarks)
+## Steps at a glance
 
-## By country
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
+
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Run the trademark register search and social-handle checks](#step-1) | agent-runnable | ~3 min | Entry step |
+| [2. Choose a trademark watch service (or counsel) for conflicts](#step-2) | human | ~5 min | [Step 1](#step-1) |
+| [3. Schedule the recurring monitor and alerting](#step-3) | agent-runnable | ~2 min | [Step 2](#step-2) |
+
+<a id="steps"></a>
+
+## Step details
+
+<a id="step-1"></a>
+
+### 1. Run the trademark register search and social-handle checks
+
+agent-runnable · ~3 min
+
+
+Search the relevant brand names and variants in the official trademark tools and check the requested social handles. Record potentially conflicting marks and the terms searched so counsel can assess coverage. Handle availability and trademark clearance are separate findings. Present the available handles and flagged marks without reserving accounts, contacting owners or treating a clean exact-name search as legal clearance.
+
+- Do it yourself: [USPTO trademark search](https://www.uspto.gov/trademarks)
+
+<a id="step-2"></a>
+
+### 2. Choose a trademark watch service (or counsel) for conflicts
+
+human · ~5 min
+
+
+Define the marks, territories, classes and conflicts the watch needs to cover. Compare a specialist service and counsel-led review on coverage, alert quality, cost and how matches are evaluated. Choose the service and obtain the company’s approval for the engagement. Set a named recipient for alerts and an escalation route for potential conflicts before monitoring begins.
+
+- Vendor options: Markify, Corsearch
+- Sources: [USPTO trademark tools](https://www.uspto.gov/trademarks)
+
+<a id="step-3"></a>
+
+### 3. Schedule the recurring monitor and alerting
+
+agent-runnable · ~2 min
+
+
+Configure the agreed marks, platforms and review schedule, routing alerts to the brand or legal contact. Include enough source context to inspect the match and distinguish duplicates. Test notification delivery and decide how unavailable sources are flagged. Review actual alerts before any opposition, outreach or purchase is considered; those actions need their own authorized decision.
+
+- Sources: [USPTO trademark tools](https://www.uspto.gov/trademarks)
+
+
+<a id="by-country"></a>
+
+## Country details
+
+<a id="geo-us"></a>
 
 ### United States
 
 - Step 1: The federal register search runs in the USPTO trademark tools ([USPTO trademark search](https://www.uspto.gov/trademarks))
 - Step 3: Schedule the recurring checks against the USPTO trademark tools ([USPTO trademark tools](https://www.uspto.gov/trademarks))
+
+<a id="geo-in"></a>
 
 ### India
 
@@ -51,11 +118,15 @@ Trademark and handle checks run over search APIs — an agent can schedule the r
 - Step 1: Search the registry's public search portal; conflicting applications publish in the weekly Trade Marks Journal ([IP India — trade mark public search](https://tmrsearch.ipindia.gov.in/tmrpublicsearch/))
 - Step 3: Watch the weekly Trade Marks Journal; oppositions run for 4 months from publication of a conflicting application ([IP India — trade mark public search](https://tmrsearch.ipindia.gov.in/tmrpublicsearch/))
 
+<a id="geo-uk"></a>
+
 ### United Kingdom
 
 - The UK IPO notifies owners of earlier UK marks when a similar application publishes, but acting is on you: a 2-month opposition window (extendable by one) from publication in the journal. ([UK IPO — search for a trade mark](https://www.gov.uk/search-for-trademark))
 - Step 1: Search the UK IPO register ([UK IPO — search for a trade mark](https://www.gov.uk/search-for-trademark))
 - Step 3: The UK IPO notifies owners of earlier UK marks on publication, but acting is on you: a 2-month opposition window (extendable by one) from the journal ([UK IPO — search for a trade mark](https://www.gov.uk/search-for-trademark))
+
+<a id="geo-de"></a>
 
 ### Germany
 
@@ -63,11 +134,15 @@ Trademark and handle checks run over search APIs — an agent can schedule the r
 - Step 1: Search DPMAregister (register and journal) ([DPMAregister (register & journal)](https://register.dpma.de/))
 - Step 3: The DPMA does not notify earlier owners; watch DPMAregister, with a 3-month opposition window after publication ([DPMAregister (register & journal)](https://register.dpma.de/))
 
+<a id="geo-fr"></a>
+
 ### France
 
 - The INPI does not police conflicts for you: monitor the Bulletin officiel de la propriété industrielle via INPI's databases and oppose within 2 months of a conflicting publication. ([INPI — marques](https://www.inpi.fr/))
 - Step 1: Search INPI's databases and the Bulletin officiel de la propriété industrielle ([INPI — marques](https://www.inpi.fr/))
 - Step 3: Monitor the bulletin via INPI's databases and oppose within 2 months of a conflicting publication ([INPI — marques](https://www.inpi.fr/))
+
+<a id="geo-pt"></a>
 
 ### Portugal
 
@@ -75,37 +150,43 @@ Trademark and handle checks run over search APIs — an agent can schedule the r
 - Step 1: Search INPI's register; applications publish in its bulletin ([INPI — marcas](https://inpi.justica.gov.pt/))
 - Step 3: Watch INPI's bulletin for conflicting marks, with a two-month opposition window from publication ([INPI — marcas](https://inpi.justica.gov.pt/))
 
+<a id="geo-ca"></a>
+
 ### Canada
 
 - Watch the Canadian Trademarks Database for conflicting filings — CIPO does not police your mark for you — and oppositions run on a two-month window from advertisement in the Trademarks Journal. ([Canadian Trademarks Database](https://ised-isde.canada.ca/cipo/trademark-search/srch))
 - Step 1: Search the Canadian Trademarks Database ([Canadian Trademarks Database](https://ised-isde.canada.ca/cipo/trademark-search/srch))
 - Step 3: Watch the Trademarks Journal; oppositions run on a two-month window from advertisement ([Canadian Trademarks Database](https://ised-isde.canada.ca/cipo/trademark-search/srch))
 
+<a id="geo-sg"></a>
+
 ### Singapore
 
 - Accepted applications publish in IPOS's Trade Marks Journal with a 2-month opposition window — watching the journal is on you or your agent, and opposing in the window is far cheaper than cancelling later. ([IPOS — trade mark registration process](https://www.ipos.gov.sg/about-ip/trade-marks/how-to-register/))
+
+<a id="geo-au"></a>
 
 ### Australia
 
 - Search the Australian Trade Mark Search (or the TM Checker pre-check) before committing; accepted applications publish for a two-month opposition window, and watching for close marks stays on you. ([Australian trade mark search](https://www.ipaustralia.gov.au/trade-marks/search-existing-trade-marks))
 
+<a id="geo-kr"></a>
+
 ### South Korea
 
 - Check marks against the KIPO register through KIPRIS, the official free search service, before committing to a name or handle. ([KIPRIS trademark search](https://www.kipris.or.kr/))
+
+<a id="geo-hk"></a>
 
 ### Hong Kong
 
 - Search the Hong Kong trade mark register through the Intellectual Property Department's online search before committing to a name, and watch published applications: the opposition window is 3 months from publication (Trade Marks Rules rule 16). ([IPD — search for a trade mark](https://www.ipd.gov.hk/en/trade-marks/search-for-a-trade-mark/index.html))
 
+<a id="geo-ee"></a>
+
 ### Estonia
 
 - Check marks against the Estonian Patent Office databases and the EUIPO register before committing to a name or handle; both publish free search services. ([Estonian Patent Office (Patendiamet)](https://www.epa.ee/en))
-
-## Artifacts
-
-Requires:
-
-- Company name — from [Generate a company name](generate-a-company-name.md)
 
 ---
 

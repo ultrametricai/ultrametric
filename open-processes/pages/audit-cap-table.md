@@ -3,6 +3,10 @@
 
 # Audit cap table
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Steps](#steps-at-a-glance)
+
+## Overview
+
 Audit the cap table before a raise: verify ownership, board consents, and investor rights are documented.
 
 | Field | Value |
@@ -19,34 +23,77 @@ Audit the cap table before a raise: verify ownership, board consents, and invest
 
 Verifying ownership and consents is judgment work with attorney sign-off; document gathering runs on the cap-table APIs.
 
-## Steps
+<a id="artifacts"></a>
 
-1. **Gather all investor documents** — agent-runnable · ~15 min
+## Before you start
 
-   Collect the executed documents supporting outstanding securities and investor rights, including subscriptions, SAFEs, amendments, side letters, grants, transfers and cancellations. Reconcile the collection to the cap table and financing receipts to locate missing evidence. Distinguish signed records from drafts and request absent documents from the responsible person so the audit covers every recorded position.
-
-   - Next: steps 2 and 3 — all follow this step
-2. **Verify cap table accuracy** — human · ~1 h
-
-   Trace each holding and convertible balance to its supporting document and effective transaction. Recalculate class totals, reserve use and fully diluted views using the documented definitions, then compare with the equity platform and legal records. For each discrepancy, identify the affected position, evidence and proposed correction before changing the live data.
-3. **Review board consents** — human · ~30 min
-
-   *Follows step 1.*
-
-   Match issuances, grants and other relevant equity actions to their corporate approvals. Have counsel assess authority, signatories, effective timing and terms under the governing documents. Distinguish a missing uploaded consent from an action that lacked authorization, and establish the appropriate remedy for each defect without backdating or fabricating the record.
-4. **Attorney sign-off** — human · ~1 h · async wait · human approval required
-
-   *Follows steps 2 and 3 — both are required first.*
-
-   Give the attorney the reconciled cap table, supporting documents and unresolved findings. Obtain a conclusion stating the review’s scope, accepted corrections and legal work still required. Apply supported record corrections through the equity administrator and keep outstanding exceptions visible when sharing the audited table, so readers understand what the legal review actually covered.
-
-## Artifacts
-
-Requires:
+Required artifacts:
 
 - Cap table record — from [Set up cap table](set-up-cap-table.md)
 - Founder agreement & IP assignment — from [Sign the founder agreement & split equity](sign-the-founder-agreement-split-equity.md)
 - Executed SAFEs — from [Raise pre-seed funding](raise-pre-seed-safes.md)
+
+| Information to gather | Required by the record |
+| --- | --- |
+| cap_table | Yes |
+
+## Steps at a glance
+
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
+
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Gather all investor documents](#step-1) | agent-runnable | ~15 min | Entry step |
+| [2. Verify cap table accuracy](#step-2) | human | ~1 h | [Step 1](#step-1) |
+| [3. Review board consents](#step-3) | human | ~30 min | [Step 1](#step-1) |
+| [4. Attorney sign-off](#step-4) | human; approval required; includes waiting | ~1 h | All: [Step 2](#step-2); [Step 3](#step-3) |
+
+<a id="steps"></a>
+
+## Step details
+
+<a id="step-1"></a>
+
+### 1. Gather all investor documents
+
+agent-runnable · ~15 min
+
+
+Collect the executed documents supporting outstanding securities and investor rights, including subscriptions, SAFEs, amendments, side letters, grants, transfers and cancellations. Reconcile the collection to the cap table and financing receipts to locate missing evidence. Distinguish signed records from drafts and request absent documents from the responsible person so the audit covers every recorded position.
+
+- Next: steps 2 and 3 — all follow this step
+
+<a id="step-2"></a>
+
+### 2. Verify cap table accuracy
+
+human · ~1 h
+
+
+Trace each holding and convertible balance to its supporting document and effective transaction. Recalculate class totals, reserve use and fully diluted views using the documented definitions, then compare with the equity platform and legal records. For each discrepancy, identify the affected position, evidence and proposed correction before changing the live data.
+
+<a id="step-3"></a>
+
+### 3. Review board consents
+
+human · ~30 min
+
+
+*Follows step 1.*
+
+Match issuances, grants and other relevant equity actions to their corporate approvals. Have counsel assess authority, signatories, effective timing and terms under the governing documents. Distinguish a missing uploaded consent from an action that lacked authorization, and establish the appropriate remedy for each defect without backdating or fabricating the record.
+
+<a id="step-4"></a>
+
+### 4. Attorney sign-off
+
+human · ~1 h · async wait · human approval required
+
+
+*Follows steps 2 and 3 — both are required first.*
+
+Give the attorney the reconciled cap table, supporting documents and unresolved findings. Obtain a conclusion stating the review’s scope, accepted corrections and legal work still required. Apply supported record corrections through the equity administrator and keep outstanding exceptions visible when sharing the audited table, so readers understand what the legal review actually covered.
+
 
 ## Related records
 

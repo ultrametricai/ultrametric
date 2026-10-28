@@ -3,6 +3,10 @@
 
 # Avert a missed payroll
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Geography](#geography) · [Steps](#steps-at-a-glance)
+
+## Overview
+
 **Trigger:** The cash forecast says the next payroll will not clear: you are weeks from out of cash, or the provider's funding debit just failed.
 
 Payroll is a hard deadline: providers debit funds days before payday, and wages for hours worked are owed in full. An employer who misses the FLSA minimum-wage or overtime floor owes the unpaid wages plus an equal amount as liquidated damages (law rule [us-fed.flsa-unpaid-wages-liability](../../open-law/US-FED/us-fed-flsa-unpaid-wages-liability.json)), state wage statutes add penalties of their own, and if anyone is let go the final-pay clocks run from the termination itself (in California, immediately: law rule [us-ca.final-wages-timing](../../open-law/US-CA/us-ca-final-wages-timing.json)). So face the number first: true cash against the payroll funding deadline. Then work the options in order: written deferral consents only where they are lawful at all (deferrals cannot dip below the statutory floors, law rule [us-fed.flsa-minimum-wage-overtime](../../open-law/US-FED/us-fed-flsa-minimum-wage-overtime.json)), an officer loan papered as a real note, an insider bridge on SAFEs, and the emergency cost plan. Decide the fork while payroll can still be paid: bridge, cut to default-alive, or an orderly wind-down that pays final wages on time. Tell the board before payday and the team before the rumor. Educational guidance, not legal advice; the exposure sits in the wage statutes, so verify them at the primary source.
@@ -24,52 +28,136 @@ The deferral conversations, the bridge, and the fork decision are founder and co
 
 - Law rules: [us-fed.flsa-unpaid-wages-liability](../../open-law/US-FED/us-fed-flsa-unpaid-wages-liability.json), [us-fed.flsa-minimum-wage-overtime](../../open-law/US-FED/us-fed-flsa-minimum-wage-overtime.json), [us-ca.final-wages-timing](../../open-law/US-CA/us-ca-final-wages-timing.json)
 
-## Steps
+## Before you start
 
-1. **Face the number: true cash against the payroll funding deadline, which lands days before payday when the provider debits** — agent-runnable · ~45 min
+| Information to gather | Required by the record |
+| --- | --- |
+| current cash, burn, and the payroll calendar with the provider's funding-debit date | Yes |
+| the payroll register for the at-risk run: who is owed what, exempt and nonexempt | Yes |
 
-   - Vendor options: Gusto, Rippling
-   - Ranked market: [payroll](../../open-rankings/payroll)
-2. **Size the wage exposure before choosing a path: pay for hours worked is owed in full, and missing it compounds** — agent-runnable · ~30 min
+## Geography
 
-   An employer who violates the FLSA minimum-wage or overtime provisions owes the unpaid wages and an additional equal amount as liquidated damages (law rule [us-fed.flsa-unpaid-wages-liability](../../open-law/US-FED/us-fed-flsa-unpaid-wages-liability.json)). State wage statutes add penalties on top, and if anyone is terminated the final-pay clocks run from the termination itself (law rule [us-ca.final-wages-timing](../../open-law/US-CA/us-ca-final-wages-timing.json) in California).
+Country rows describe the guidance recorded here. Local notes and step alternatives do not establish a complete country-specific workflow.
 
-   - Do it yourself: [29 U.S.C. § 216 — FLSA remedies](https://www.law.cornell.edu/uscode/text/29/216)
-   - Next: steps 3, 4 and 5 — all follow this step
-3. **Ask for written deferral consents only where they are lawful: consent does not erase the statutory floors for hours worked** — human · ~45 min
+| Country | Recorded guidance | Steps with local alternatives or resolutions |
+| --- | --- | --- |
+| [United States](#geo-us) | step resolution | [2](#step-2) |
 
-   A deferral below the FLSA minimum wage or overtime floor stays a violation with or without consent, and exempt employees have a salary basis that a partial payment can break (law rule [us-fed.flsa-minimum-wage-overtime](../../open-law/US-FED/us-fed-flsa-minimum-wage-overtime.json)). Deferrals that survive that screen get documented in writing, per person, with the repayment date.
-4. **Fund the gap if the math works: an officer loan papered as a real note, or an insider bridge on SAFEs** — human · ~1 h · hard to undo
+## Steps at a glance
 
-   *Follows step 2.*
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
 
-   - Do it yourself: [YC SAFE documents](https://www.ycombinator.com/documents)
-5. **Draft the emergency cost plan: vendor cuts, founder salary, anything that moves the zero-cash date without touching owed wages** — agent-runnable · ~1 h
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Face the number: true cash against the payroll funding deadline, which lands days before payday when the provider debits](#step-1) | agent-runnable | ~45 min | Entry step |
+| [2. Size the wage exposure before choosing a path: pay for hours worked is owed in full, and missing it compounds](#step-2) | agent-runnable | ~30 min | [Step 1](#step-1) |
+| [3. Ask for written deferral consents only where they are lawful: consent does not erase the statutory floors for hours worked](#step-3) | human | ~45 min | [Step 2](#step-2) |
+| [4. Fund the gap if the math works: an officer loan papered as a real note, or an insider bridge on SAFEs](#step-4) | human | ~1 h | [Step 2](#step-2) |
+| [5. Draft the emergency cost plan: vendor cuts, founder salary, anything that moves the zero-cash date without touching owed wages](#step-5) | agent-runnable | ~1 h | [Step 2](#step-2) |
+| [6. Decide the fork while payroll can still be paid: bridge, cut to default-alive, or an orderly wind-down](#step-6) | human | ~1 h | All: [Step 3](#step-3); [Step 4](#step-4); [Step 5](#step-5) |
+| [7. If the answer is wind down, start the shutdown while final wages can still be paid on time](#step-7) | human | ~30 min | [Step 6](#step-6) (the fork decision is an orderly wind-down) |
+| [8. Tell the board before payday and the team before the rumor: board first, then managers, then everyone affected](#step-8) | human | ~45 min | [Step 6](#step-6) |
 
-   *Follows step 2.*
+<a id="steps"></a>
 
-   - Vendor options: QuickBooks, Xero
-   - Ranked market: [accounting](../../open-rankings/accounting)
-6. **Decide the fork while payroll can still be paid: bridge, cut to default-alive, or an orderly wind-down** — human · ~1 h · hard to undo
+## Step details
 
-   *Follows steps 3, 4 and 5 — all are required first.*
+<a id="step-1"></a>
 
-   - If "the fork decision is an orderly wind-down": continue at step 7
-   - Next: continue at step 8
-7. **If the answer is wind down, start the shutdown while final wages can still be paid on time** — human · ~30 min · hard to undo
+### 1. Face the number: true cash against the payroll funding deadline, which lands days before payday when the provider debits
 
-   *Follows step 6 (when the fork decision is an orderly wind-down).*
+agent-runnable · ~45 min
 
-   When: the fork decision is an orderly wind-down
 
-   - Runs the process [Shut down the company](shut-down-the-company.md)
+- Vendor options: Gusto, Rippling
+- Ranked market: [payroll](../../open-rankings/payroll)
 
-   *This path ends here.*
-8. **Tell the board before payday and the team before the rumor: board first, then managers, then everyone affected** — human · ~45 min · hard to undo
+<a id="step-2"></a>
 
-   *Follows step 6.*
+### 2. Size the wage exposure before choosing a path: pay for hours worked is owed in full, and missing it compounds
 
-## By country
+agent-runnable · ~30 min
+
+
+An employer who violates the FLSA minimum-wage or overtime provisions owes the unpaid wages and an additional equal amount as liquidated damages (law rule [us-fed.flsa-unpaid-wages-liability](../../open-law/US-FED/us-fed-flsa-unpaid-wages-liability.json)). State wage statutes add penalties on top, and if anyone is terminated the final-pay clocks run from the termination itself (law rule [us-ca.final-wages-timing](../../open-law/US-CA/us-ca-final-wages-timing.json) in California).
+
+- Do it yourself: [29 U.S.C. § 216 — FLSA remedies](https://www.law.cornell.edu/uscode/text/29/216)
+- Next: steps 3, 4 and 5 — all follow this step
+
+<a id="step-3"></a>
+
+### 3. Ask for written deferral consents only where they are lawful: consent does not erase the statutory floors for hours worked
+
+human · ~45 min
+
+
+A deferral below the FLSA minimum wage or overtime floor stays a violation with or without consent, and exempt employees have a salary basis that a partial payment can break (law rule [us-fed.flsa-minimum-wage-overtime](../../open-law/US-FED/us-fed-flsa-minimum-wage-overtime.json)). Deferrals that survive that screen get documented in writing, per person, with the repayment date.
+
+<a id="step-4"></a>
+
+### 4. Fund the gap if the math works: an officer loan papered as a real note, or an insider bridge on SAFEs
+
+human · ~1 h · hard to undo
+
+
+*Follows step 2.*
+
+- Do it yourself: [YC SAFE documents](https://www.ycombinator.com/documents)
+
+<a id="step-5"></a>
+
+### 5. Draft the emergency cost plan: vendor cuts, founder salary, anything that moves the zero-cash date without touching owed wages
+
+agent-runnable · ~1 h
+
+
+*Follows step 2.*
+
+- Vendor options: QuickBooks, Xero
+- Ranked market: [accounting](../../open-rankings/accounting)
+
+<a id="step-6"></a>
+
+### 6. Decide the fork while payroll can still be paid: bridge, cut to default-alive, or an orderly wind-down
+
+human · ~1 h · hard to undo
+
+
+*Follows steps 3, 4 and 5 — all are required first.*
+
+- If "the fork decision is an orderly wind-down": continue at step 7
+- Next: continue at step 8
+
+<a id="step-7"></a>
+
+### 7. If the answer is wind down, start the shutdown while final wages can still be paid on time
+
+human · ~30 min · hard to undo
+
+
+*Follows step 6 (when the fork decision is an orderly wind-down).*
+
+When: the fork decision is an orderly wind-down
+
+- Runs the process [Shut down the company](shut-down-the-company.md)
+
+*This path ends here.*
+
+<a id="step-8"></a>
+
+### 8. Tell the board before payday and the team before the rumor: board first, then managers, then everyone affected
+
+human · ~45 min · hard to undo
+
+
+*Follows step 6.*
+
+
+<a id="by-country"></a>
+
+## Country details
+
+<a id="geo-us"></a>
 
 ### United States
 

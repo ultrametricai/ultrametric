@@ -3,6 +3,10 @@
 
 # Sponsor a work visa
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Geography](#geography) · [Steps](#steps-at-a-glance)
+
+## Overview
+
 Keep the hire you can’t legally employ yet: pick the visa route with immigration counsel, build the evidence binder, make the labor-market filing the route requires, sign and file the sponsorship petition with the immigration authority, and wait out adjudication. In the US that is the H-1B/O-1/TN strategy call, the LCA with the DOL, and the I-129 petition with USCIS.
 
 | Field | Value |
@@ -19,59 +23,160 @@ Keep the hire you can’t legally employ yet: pick the visa route with immigrati
 
 Immigration counsel drives strategy and the filings; the agent assembles the evidence binder and tracks the case. The government portals, the signed petition, and the adjudication wait are irreducibly manual.
 
-## Steps
+<a id="artifacts"></a>
 
-1. **Pick the visa strategy with immigration counsel** — human · ~1 h
+## Before you start
 
-   Give immigration counsel the role, work locations, employing entity, qualifications, immigration history and desired start date. Compare feasible classifications and their evidence, timing, filing and cost implications, including current policy changes. Agree the strategy before collecting route-specific documents. Establish which of the filing steps below apply to the chosen route and identify any separate consular or admission work needed for the person to start.
+Required artifacts:
 
-   - Vendor options: Alma, Lighthouse, Founder Law, Deel Immigration
-   - Ranked market: [startup-immigration](../../open-rankings/startup-immigration)
-   - Sources: [USCIS: H-1B specialty occupations](https://www.uscis.gov/working-in-the-united-states/h-1b-specialty-occupations) · [USCIS: Instructions for Form I-129](https://www.uscis.gov/sites/default/files/document/forms/i-129instr.pdf)
-2. **Assemble the evidence binder (degrees, press, comp data)** — agent-runnable · ~1.5 h
+- Payroll account — from [Set up payroll](set-up-payroll.md)
 
-   Organize the evidence around counsel’s checklist for the chosen classification. Collect the requested employer, role and candidate documents, identifying translations, evaluations or explanations still needed. Reconcile names, dates and employment facts across the packet, and distinguish supporting evidence from unverified claims. Give counsel an indexed binder and the specific gaps so the petition can be prepared from accurate facts.
+| Information to gather | Required by the record |
+| --- | --- |
+| candidate credentials and history | Yes |
+| role and wage level | Yes |
 
-   - Cross-arena options: Claude, ChatGPT (ai-assistants)
-   - Sources: [USCIS: Instructions for Form I-129](https://www.uscis.gov/sites/default/files/document/forms/i-129instr.pdf)
-3. **Make the labor-market filing the route requires** — manual form/portal · ~30 min · hard to undo
+## Geography
 
-   If the selected route requires a labor-market attestation or test, reconcile the job, wage, worksites and employment period with counsel. The employer’s authorized representative must understand and approve the required attestations before submission. Address the related notice and employer obligations identified for the case, then track the application in the authorized channel. Send the certified document or correction request to counsel for the next filing decision.
+Country rows describe the guidance recorded here. Local notes and step alternatives do not establish a complete country-specific workflow.
 
-   - Verify: The LCA returns status Certified in the FLAG portal (ETA-9035) — required before the petition can be filed. ([flag.dol.gov](https://flag.dol.gov/))
-   - Do it yourself: [DOL FLAG portal (LCA)](https://flag.dol.gov/)
-   - Sources: [DOL: H-1B, H-1B1 and E-3 professional workers](https://www.dol.gov/agencies/eta/foreign-labor/programs/h-1b)
-4. **Wait for the labor-market certification** — human · ~7 d · async wait
+| Country | Recorded guidance | Steps with local alternatives or resolutions |
+| --- | --- | --- |
+| [United States](#geo-us) | step resolution | [1](#step-1), [3](#step-3), [4](#step-4), [5](#step-5), [6](#step-6), [7](#step-7), [8](#step-8) |
+| [India](#geo-in) | Local analog note; step resolution | [1](#step-1), [6](#step-6), [8](#step-8) |
+| [United Kingdom](#geo-uk) | Local analog note; step resolution | [1](#step-1), [6](#step-6) |
+| [Germany](#geo-de) | Local analog note; step resolution | [1](#step-1) |
+| [France](#geo-fr) | Local analog note; step resolution | [1](#step-1), [6](#step-6) |
+| [Portugal](#geo-pt) | Local analog note; step resolution | [1](#step-1), [6](#step-6) |
+| [Canada](#geo-ca) | Local analog note; step resolution | [1](#step-1), [3](#step-3), [4](#step-4), [6](#step-6) |
+| [Singapore](#geo-sg) | Local analog note; step resolution | [1](#step-1) |
+| [Australia](#geo-au) | Local analog note; step resolution | [1](#step-1) |
+| [South Korea](#geo-kr) | Local analog note | — |
+| [Hong Kong](#geo-hk) | Local analog note | — |
+| [Estonia](#geo-ee) | Local analog note | — |
 
-   Check the submitted case through the employer’s or counsel’s authorized account. Send returned applications or factual discrepancies to counsel before resubmission. When certified, compare the document with the proposed petition and update the hiring plan from the actual result. A planning estimate or elapsed time does not establish certification or permission to work.
+## Steps at a glance
 
-   - Sources: [DOL: H-1B, H-1B1 and E-3 professional workers](https://www.dol.gov/agencies/eta/foreign-labor/programs/h-1b)
-5. **Sign the sponsorship petition** — human (legally required signature) · ~10 min
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
 
-   Present the completed petition and employer declarations to the authorized company signatory with counsel’s explanation of the attestations. Resolve differences in the person, role, worksite, classification or requested dates before signing. The signatory reviews and signs the actual filing version. Return the signed package to counsel with any outstanding filing conditions clearly identified.
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Pick the visa strategy with immigration counsel](#step-1) | human | ~1 h | Entry step |
+| [2. Assemble the evidence binder (degrees, press, comp data)](#step-2) | agent-runnable | ~1.5 h | [Step 1](#step-1) |
+| [3. Make the labor-market filing the route requires](#step-3) | manual form/portal | ~30 min | [Step 2](#step-2) |
+| [4. Wait for the labor-market certification](#step-4) | human; includes waiting | ~7 d | [Step 3](#step-3) |
+| [5. Sign the sponsorship petition](#step-5) | human; signature required | ~10 min | [Step 4](#step-4) |
+| [6. File the petition with the immigration authority](#step-6) | manual form/portal | ~45 min | [Step 5](#step-5) |
+| [7. Immigration-authority adjudication](#step-7) | human; includes waiting | ~15 d | [Step 6](#step-6) |
+| [8. Update payroll and right-to-work records on approval](#step-8) | agent-runnable | ~15 min | [Step 7](#step-7) |
 
-   - Sources: [USCIS: Instructions for Form I-129](https://www.uscis.gov/sites/default/files/document/forms/i-129instr.pdf)
-6. **File the petition with the immigration authority** — manual form/portal · ~45 min · hard to undo
+<a id="steps"></a>
 
-   Have counsel check the filing route, form edition, evidence, applicable fees and processing request for the selected classification. Obtain the employer’s authorization for that package and payment, then submit through the confirmed channel. Check delivery or receipt status and resolve a rejection before resubmitting. Give the hiring owner the actual case status and any effect on the start plan.
+## Step details
 
-   - Verify: USCIS issues a Form I-797C receipt notice with a case number, and the case appears in USCIS case status.
-   - Cost: published amount varies (government fee, as of 2026-10-01, [www.uscis.gov](https://www.uscis.gov/g-1055)). The I-129 filing fee varies by classification and petitioner size, with additional mandatory fees (fraud prevention, ACWIA, asylum program) — see the published USCIS fee schedule.
-   - Do it yourself: [USCIS Form I-129](https://www.uscis.gov/i-129)
-   - Sources: [USCIS: Instructions for Form I-129](https://www.uscis.gov/sites/default/files/document/forms/i-129instr.pdf) · [USCIS: H-1B specialty occupations](https://www.uscis.gov/working-in-the-united-states/h-1b-specialty-occupations)
-7. **Immigration-authority adjudication** — human · ~15 d · async wait
+<a id="step-1"></a>
 
-   Track agency notices and response dates from the actual case correspondence. Gather requested facts for counsel and obtain the employer’s approval for a substantive response or strategy change. When a decision arrives, ask counsel what it permits, its validity and any consular, admission or status steps still required. Update the candidate’s start plan from that interpretation, including steps still required after petition approval.
+### 1. Pick the visa strategy with immigration counsel
 
-   - Sources: [USCIS: H-1B specialty occupations](https://www.uscis.gov/working-in-the-united-states/h-1b-specialty-occupations)
-8. **Update payroll and right-to-work records on approval** — agent-runnable · ~15 min
+human · ~1 h
 
-   Have counsel and the people lead confirm when the person may work for this employer from the applicable approval, status and admission documents. The authorized representative completes the verification or reverification the jurisdiction requires while respecting employee document choice. Payroll records the cleared start or status change. Keep immigration and identity documents restricted, and assign any future reverification identified by the review.
 
-   - Canonical vendor: Gusto
-   - Sources: [USCIS: Completing Section 2](https://www.uscis.gov/i-9-central/completing-form-i-9/completing-section-2-employer-review-and-attestation) · [USCIS: H-1B specialty occupations](https://www.uscis.gov/working-in-the-united-states/h-1b-specialty-occupations) · [USCIS: Completing Supplement B, Reverification and Rehires](https://www.uscis.gov/i-9-central/completing-form-i-9/completing-supplement-b-reverification-and-rehires-formerly-section-3)
+Give immigration counsel the role, work locations, employing entity, qualifications, immigration history and desired start date. Compare feasible classifications and their evidence, timing, filing and cost implications, including current policy changes. Agree the strategy before collecting route-specific documents. Establish which of the filing steps below apply to the chosen route and identify any separate consular or admission work needed for the person to start.
 
-## By country
+- Vendor options: Alma, Lighthouse, Founder Law, Deel Immigration
+- Ranked market: [startup-immigration](../../open-rankings/startup-immigration)
+- Sources: [USCIS: H-1B specialty occupations](https://www.uscis.gov/working-in-the-united-states/h-1b-specialty-occupations) · [USCIS: Instructions for Form I-129](https://www.uscis.gov/sites/default/files/document/forms/i-129instr.pdf)
+
+<a id="step-2"></a>
+
+### 2. Assemble the evidence binder (degrees, press, comp data)
+
+agent-runnable · ~1.5 h
+
+
+Organize the evidence around counsel’s checklist for the chosen classification. Collect the requested employer, role and candidate documents, identifying translations, evaluations or explanations still needed. Reconcile names, dates and employment facts across the packet, and distinguish supporting evidence from unverified claims. Give counsel an indexed binder and the specific gaps so the petition can be prepared from accurate facts.
+
+- Cross-arena options: Claude, ChatGPT (ai-assistants)
+- Sources: [USCIS: Instructions for Form I-129](https://www.uscis.gov/sites/default/files/document/forms/i-129instr.pdf)
+
+<a id="step-3"></a>
+
+### 3. Make the labor-market filing the route requires
+
+manual form/portal · ~30 min · hard to undo
+
+
+If the selected route requires a labor-market attestation or test, reconcile the job, wage, worksites and employment period with counsel. The employer’s authorized representative must understand and approve the required attestations before submission. Address the related notice and employer obligations identified for the case, then track the application in the authorized channel. Send the certified document or correction request to counsel for the next filing decision.
+
+- Verify: The LCA returns status Certified in the FLAG portal (ETA-9035) — required before the petition can be filed. ([flag.dol.gov](https://flag.dol.gov/))
+- Do it yourself: [DOL FLAG portal (LCA)](https://flag.dol.gov/)
+- Sources: [DOL: H-1B, H-1B1 and E-3 professional workers](https://www.dol.gov/agencies/eta/foreign-labor/programs/h-1b)
+
+<a id="step-4"></a>
+
+### 4. Wait for the labor-market certification
+
+human · ~7 d · async wait
+
+
+Check the submitted case through the employer’s or counsel’s authorized account. Send returned applications or factual discrepancies to counsel before resubmission. When certified, compare the document with the proposed petition and update the hiring plan from the actual result. A planning estimate or elapsed time does not establish certification or permission to work.
+
+- Sources: [DOL: H-1B, H-1B1 and E-3 professional workers](https://www.dol.gov/agencies/eta/foreign-labor/programs/h-1b)
+
+<a id="step-5"></a>
+
+### 5. Sign the sponsorship petition
+
+human (legally required signature) · ~10 min
+
+
+Present the completed petition and employer declarations to the authorized company signatory with counsel’s explanation of the attestations. Resolve differences in the person, role, worksite, classification or requested dates before signing. The signatory reviews and signs the actual filing version. Return the signed package to counsel with any outstanding filing conditions clearly identified.
+
+- Sources: [USCIS: Instructions for Form I-129](https://www.uscis.gov/sites/default/files/document/forms/i-129instr.pdf)
+
+<a id="step-6"></a>
+
+### 6. File the petition with the immigration authority
+
+manual form/portal · ~45 min · hard to undo
+
+
+Have counsel check the filing route, form edition, evidence, applicable fees and processing request for the selected classification. Obtain the employer’s authorization for that package and payment, then submit through the confirmed channel. Check delivery or receipt status and resolve a rejection before resubmitting. Give the hiring owner the actual case status and any effect on the start plan.
+
+- Verify: USCIS issues a Form I-797C receipt notice with a case number, and the case appears in USCIS case status.
+- Cost: published amount varies (government fee, as of 2026-10-01, [www.uscis.gov](https://www.uscis.gov/g-1055)). The I-129 filing fee varies by classification and petitioner size, with additional mandatory fees (fraud prevention, ACWIA, asylum program) — see the published USCIS fee schedule.
+- Do it yourself: [USCIS Form I-129](https://www.uscis.gov/i-129)
+- Sources: [USCIS: Instructions for Form I-129](https://www.uscis.gov/sites/default/files/document/forms/i-129instr.pdf) · [USCIS: H-1B specialty occupations](https://www.uscis.gov/working-in-the-united-states/h-1b-specialty-occupations)
+
+<a id="step-7"></a>
+
+### 7. Immigration-authority adjudication
+
+human · ~15 d · async wait
+
+
+Track agency notices and response dates from the actual case correspondence. Gather requested facts for counsel and obtain the employer’s approval for a substantive response or strategy change. When a decision arrives, ask counsel what it permits, its validity and any consular, admission or status steps still required. Update the candidate’s start plan from that interpretation, including steps still required after petition approval.
+
+- Sources: [USCIS: H-1B specialty occupations](https://www.uscis.gov/working-in-the-united-states/h-1b-specialty-occupations)
+
+<a id="step-8"></a>
+
+### 8. Update payroll and right-to-work records on approval
+
+agent-runnable · ~15 min
+
+
+Have counsel and the people lead confirm when the person may work for this employer from the applicable approval, status and admission documents. The authorized representative completes the verification or reverification the jurisdiction requires while respecting employee document choice. Payroll records the cleared start or status change. Keep immigration and identity documents restricted, and assign any future reverification identified by the review.
+
+- Canonical vendor: Gusto
+- Sources: [USCIS: Completing Section 2](https://www.uscis.gov/i-9-central/completing-form-i-9/completing-section-2-employer-review-and-attestation) · [USCIS: H-1B specialty occupations](https://www.uscis.gov/working-in-the-united-states/h-1b-specialty-occupations) · [USCIS: Completing Supplement B, Reverification and Rehires](https://www.uscis.gov/i-9-central/completing-form-i-9/completing-supplement-b-reverification-and-rehires-formerly-section-3)
+
+
+<a id="by-country"></a>
+
+## Country details
+
+<a id="geo-us"></a>
 
 ### United States
 
@@ -83,6 +188,8 @@ Immigration counsel drives strategy and the filings; the agent assembles the evi
 - Step 7: USCIS adjudicates the petition; track notices and RFEs in the case status, and plan any consular or admission steps after approval ([USCIS: H-1B specialty occupations](https://www.uscis.gov/working-in-the-united-states/h-1b-specialty-occupations))
 - Step 8: The authorized I-9 representative completes Section 2 verification or the Supplement B reverification ([USCIS: Completing Section 2](https://www.uscis.gov/i-9-central/completing-form-i-9/completing-section-2-employer-review-and-attestation))
 
+<a id="geo-in"></a>
+
 ### India
 
 - Foreign hires come in on an Employment Visa issued by Indian missions — salary floor around US$25,000, role must not be routinely fillable locally — with post-arrival FRRO registration for long stays; there is no sponsor-licence system. ([Bureau of Immigration (Employment Visa)](https://boi.gov.in/))
@@ -90,16 +197,22 @@ Immigration counsel drives strategy and the filings; the agent assembles the evi
 - Step 6: The Employment Visa application goes to the Indian mission; there is no employer petition to file ([Bureau of Immigration (Employment Visa)](https://boi.gov.in/))
 - Step 8: Long-stay Employment Visa holders register with the FRRO after arrival ([Bureau of Immigration (Employment Visa)](https://boi.gov.in/))
 
+<a id="geo-uk"></a>
+
 ### United Kingdom
 
 - The company first gets a sponsor licence from the Home Office, then issues Certificates of Sponsorship for Skilled Worker visas — salary-threshold based, with no H-1B-style annual lottery. ([Sponsor licence (Skilled Worker)](https://www.gov.uk/uk-visa-sponsorship-employers))
 - Step 1: The route is a Home Office sponsor licence plus Certificates of Sponsorship for Skilled Worker visas — salary-threshold based, no lottery ([Sponsor licence (Skilled Worker)](https://www.gov.uk/uk-visa-sponsorship-employers))
 - Step 6: Issue the Certificate of Sponsorship under the sponsor licence; the candidate applies on it for the Skilled Worker visa ([Sponsor licence (Skilled Worker)](https://www.gov.uk/uk-visa-sponsorship-employers))
 
+<a id="geo-de"></a>
+
 ### Germany
 
 - Hiring non-EU talent runs on the EU Blue Card and Skilled Immigration Act routes — salary-threshold based, no lottery, with the government's Make it in Germany portal as the canonical guide. ([Make it in Germany (EU Blue Card)](https://www.make-it-in-germany.com/en/))
 - Step 1: Non-EU hiring runs on the EU Blue Card and Skilled Immigration Act routes — salary-threshold based, no lottery ([Make it in Germany (EU Blue Card)](https://www.make-it-in-germany.com/en/))
+
+<a id="geo-fr"></a>
 
 ### France
 
@@ -107,11 +220,15 @@ Immigration counsel drives strategy and the filings; the agent assembles the evi
 - Step 1: The startup route is the 'talent' residence card (French Tech Visa) for employees of state-recognised innovative companies, on a salary threshold of about twice the SMIC ([French Tech Visa for Employees (talent card)](https://demarche.numerique.gouv.fr/commencer/passeport-talent-entreprise-innovante))
 - Step 6: The talent-card attestation request runs on the official démarches portal ([French Tech Visa for Employees (talent card)](https://demarche.numerique.gouv.fr/commencer/passeport-talent-entreprise-innovante))
 
+<a id="geo-pt"></a>
+
 ### Portugal
 
 - Hiring non-EU talent runs through AIMA (which absorbed SEF in 2023): residence visas and permits for highly qualified activity plus the EU Blue Card — salary-threshold based, with no lottery. ([AIMA — residence permits](https://aima.gov.pt/))
 - Step 1: AIMA issues residence visas and permits for highly qualified activity plus the EU Blue Card — salary-threshold based, no lottery ([AIMA — residence permits](https://aima.gov.pt/))
 - Step 6: The residence visa or permit application runs through AIMA ([AIMA — residence permits](https://aima.gov.pt/))
+
+<a id="geo-ca"></a>
 
 ### Canada
 
@@ -121,33 +238,37 @@ Immigration counsel drives strategy and the filings; the agent assembles the evi
 - Step 4: The Global Talent Stream carries a two-week processing standard ([ESDC — Global Talent Stream](https://www.canada.ca/en/employment-social-development/services/foreign-workers/global-talent.html))
 - Step 6: The work-permit application follows the certified LMIA ([ESDC — Global Talent Stream](https://www.canada.ca/en/employment-social-development/services/foreign-workers/global-talent.html))
 
+<a id="geo-sg"></a>
+
 ### Singapore
 
 - No sponsor-licence step and no lottery: the company applies for the Employment Pass directly — advertise on MyCareersFuture first, meet the $5,600 qualifying salary, then pass COMPASS (law rule [sg.employment-pass-qualifying-salary](../../open-law/SG/sg-employment-pass-qualifying-salary.json)); founders can use the EntrePass instead. ([MOM — Employment Pass](https://www.mom.gov.sg/passes-and-permits/employment-pass))
 - Step 1: Apply for the Employment Pass directly on MOM's portal — advertise on MyCareersFuture first, meet the $5,600 qualifying salary, then pass COMPASS (law rule sg.employment-pass-qualifying-salary); founders can use the EntrePass route ([MOM — Employment Pass](https://www.mom.gov.sg/passes-and-permits/employment-pass))
+
+<a id="geo-au"></a>
 
 ### Australia
 
 - The company becomes a standard business sponsor with the Department of Home Affairs, nominates the role, and the hire applies for a Skills in Demand (subclass 482) visa — income-threshold based, with no H-1B-style annual lottery. ([Sponsor a skilled worker](https://immi.homeaffairs.gov.au/visas/employing-and-sponsoring-someone/sponsoring-workers))
 - Step 1: The route is standard business sponsorship with Home Affairs plus a nomination for a Skills in Demand (subclass 482) visa — income-threshold based, no lottery ([Sponsor a skilled worker](https://immi.homeaffairs.gov.au/visas/employing-and-sponsoring-someone/sponsoring-workers))
 
+<a id="geo-kr"></a>
+
 ### South Korea
 
 - Foreign hires run on sojourn statuses (typically E-7 for specialty workers, D-8 for investor-executives of a foreign-invested company), applied for and extended through HiKorea. ([HiKorea (immigration e-government)](https://www.hikorea.go.kr/))
+
+<a id="geo-hk"></a>
 
 ### Hong Kong
 
 - No sponsor licence and no lottery: the company sponsors the General Employment Policy work visa directly with the Immigration Department — quota-free and non-sector-specific, with approval riding on the job, the pay and the sponsor's substance. ([Immigration Department — GEP](https://www.immd.gov.hk/eng/services/visas/GEP.html))
 
+<a id="geo-ee"></a>
+
 ### Estonia
 
 - Non-EU hires run on Police and Border Guard Board tracks: short-term employment registration or a residence permit for employment, with the startup-visa track easing both for startup founders and employees; EU citizens simply register their residence. ([Work in Estonia](https://workinestonia.com/))
-
-## Artifacts
-
-Requires:
-
-- Payroll account — from [Set up payroll](set-up-payroll.md)
 
 ---
 

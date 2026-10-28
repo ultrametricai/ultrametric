@@ -3,6 +3,10 @@
 
 # Change the company legal form
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Geography](#geography) · [Steps](#steps-at-a-glance) · [Outputs](#outputs)
+
+## Overview
+
 Assess and carry out a change of legal form, incorporation of an existing business or business transfer under local law. Confirm entity continuity, tax treatment, approvals and equity consequences with local counsel before execution.
 
 | Field | Value |
@@ -19,65 +23,192 @@ Assess and carry out a change of legal form, incorporation of an existing busine
 
 The go/no-go call and counsel review are human judgment, member and founder signatures are legally required acts, and Delaware's conversion filing is portal/mail work with no API — the system preps documents and tracks progress but cannot file.
 
-## Steps
+<a id="artifacts"></a>
 
-1. **Assess whether and when to convert** — human · ~30 min
+## Before you start
 
-   Compare the LLC’s current state, ownership, tax classification, assets and contracts with the proposed corporate structure and financing plans. Identify why conversion is useful now and what would change for each owner. Bring tax, legal and timing questions to the advisers before deciding on the transaction. Establish the available legal route and tax treatment for this transaction.
-2. **Get tax and legal advice on the conversion** — human · ~2 d · async wait
+Required artifacts:
 
-   Review the operating agreement, ownership ledger, returns, balance sheet, material contracts and planned financing with legal and tax advisers. Resolve the available conversion route, required approvals, ownership exchange, asset treatment, tax effects and filing sequence for the states involved. Identify questions that prevent document preparation or filing, and agree who will resolve them.
-3. **Prepare the legal-form change and governing documents** — manual form/portal · ~30 min · human approval required
+- LLC Certificate of Formation — from [Set up an LLC](set-up-an-llc.md)
+- LLC operating agreement — from [Set up an LLC](set-up-an-llc.md)
+- Business bank account — from [Open bank account](open-bank-account.md)
+- Payroll account — from [Set up payroll](set-up-payroll.md)
+- State tax accounts — from [Register state taxes](register-state-taxes.md)
 
-   Prepare the legal-form change, incorporation or business-transfer documents selected by local counsel. Confirm whether the entity continues or a new entity receives the business, and identify the approvals, registrations and tax work before signing.
+| Information to gather | Required by the record |
+| --- | --- |
+| fundraising timeline | Yes |
+| LLC members and ownership split | Yes |
 
-   - Canonical vendor: Clerky
-   - Vendor options: Clerky, LegalZoom
-4. **Owners sign the legal-form change approvals** — human (legally required signature) · ~10 min
+## Geography
 
-   Present the final conversion plan with the ownership changes, effective timing and remaining conditions. Confirm the approvals required by the LLC agreement and applicable law, then obtain them from the actual members or other holders. Check capacities, voting interests and document versions. Missing or qualified approvals must be resolved before the filer relies on the conversion as authorized.
-5. **Submit the legal-form change or business-transfer filings** — manual form/portal · ~20 min · human approval required · hard to undo
+Country rows describe the guidance recorded here. Local notes and step alternatives do not establish a complete country-specific workflow.
 
-   Submit only the filings required for the approved local transaction. Confirm the responsible signatories, identity continuity, effective sequence and tax treatment with local counsel. Retain acceptance evidence before treating the transaction as complete.
+| Country | Recorded guidance | Steps with local alternatives or resolutions |
+| --- | --- | --- |
+| [United States](#geo-us) | step resolution | [5](#step-5), [9](#step-9), [10](#step-10) |
+| [India](#geo-in) | Local analog note; step resolution | [5](#step-5), [10](#step-10) |
+| [United Kingdom](#geo-uk) | Local analog note; step resolution | [5](#step-5), [9](#step-9), [10](#step-10) |
+| [Germany](#geo-de) | Local analog note; step resolution | [5](#step-5), [10](#step-10) |
+| [France](#geo-fr) | Local analog note; step resolution | [5](#step-5), [10](#step-10) |
+| [Portugal](#geo-pt) | Local analog note; step resolution | [5](#step-5), [10](#step-10) |
+| [Canada](#geo-ca) | Local analog note; step resolution | [5](#step-5), [10](#step-10) |
+| [New Zealand](#geo-nz) | Marked not applicable; step resolution | [5](#step-5) |
+| [Singapore](#geo-sg) | Local analog note; step resolution | [5](#step-5) |
+| [Australia](#geo-au) | Local analog note; step resolution | [5](#step-5) |
+| [South Korea](#geo-kr) | Local analog note; step resolution | [5](#step-5) |
+| [Hong Kong](#geo-hk) | Local analog note; step resolution | [5](#step-5) |
+| [Estonia](#geo-ee) | Local analog note; step resolution | [5](#step-5) |
 
-   - Verify: Retain the official confirmation or accepted documents required for this step in the selected jurisdiction; reconcile them with the approved company records.
-   - Canonical vendor: Clerky
-   - Do it yourself: [Delaware Division of Corporations](https://corp.delaware.gov/howtoform/)
-   - Sources: [Delaware General Corporation Law](https://delcode.delaware.gov/title8/c001/sc12/index.html)
-6. **Receive the accepted legal-form change documents** — human · ~2 d · async wait
+## Steps at a glance
 
-   Obtain the accepted conversion and incorporation records from the relevant registries. Compare entity identity, filing dates and effective times with the transaction plan and resolve discrepancies with counsel. Use those verified details for equity, bank and tax changes. Keep applications marked pending until acceptance is established, with the issued records available in the corporate archive.
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
 
-   - Produces: Certificate of Incorporation
-7. **Adopt the governing documents and record the resulting equity** — manual form/portal · ~20 min · human approval required
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Assess whether and when to convert](#step-1) | human | ~30 min | Entry step |
+| [2. Get tax and legal advice on the conversion](#step-2) | human; includes waiting | ~2 d | [Step 1](#step-1) |
+| [3. Prepare the legal-form change and governing documents](#step-3) | manual form/portal; approval required | ~30 min | [Step 2](#step-2) |
+| [4. Owners sign the legal-form change approvals](#step-4) | human; signature required | ~10 min | [Step 3](#step-3) |
+| [5. Submit the legal-form change or business-transfer filings](#step-5) | manual form/portal; approval required | ~20 min | [Step 4](#step-4) |
+| [6. Receive the accepted legal-form change documents](#step-6) | human; includes waiting | ~2 d | [Step 5](#step-5) |
+| [7. Adopt the governing documents and record the resulting equity](#step-7) | manual form/portal; approval required | ~20 min | [Step 6](#step-6) |
+| [8. Owners sign the required equity agreements](#step-8) | human; signature required | ~5 min | [Step 7](#step-7) |
+| [9. Sign any tax election the jurisdiction requires on the founder stock issuance](#step-9) | human; signature required | ~5 min | [Step 8](#step-8) |
+| [10. File the tax election the jurisdiction requires on the stock issuance, where one exists](#step-10) | manual form/portal; includes waiting | ~15 min | [Step 9](#step-9) |
+| [11. Update bank, payroll and business registrations](#step-11) | manual form/portal | ~30 min | [Step 10](#step-10) |
 
-   Adopt the required governing documents and record the equity resulting from the approved transaction. Follow local counsel’s issuance, subscription and registration sequence.
+<a id="steps"></a>
 
-   - Produces: Bylaws & initial board consent
-   - Canonical vendor: Clerky
-8. **Owners sign the required equity agreements** — human (legally required signature) · ~5 min · irreversible
+## Step details
 
-   Check each founder’s purchase or exchange agreement against the conversion plan and corporate approvals: class, share count, price or consideration, vesting, restrictions and interests replaced. Resolve conflicting terms before the parties sign. Keep executed agreements and consideration or transfer evidence together. Record the actual transaction date accurately for later tax review.
+<a id="step-1"></a>
 
-   - Produces: Founder stock issuance
-9. **Sign any tax election the jurisdiction requires on the founder stock issuance** — human (legally required signature) · ~5 min
+### 1. Assess whether and when to convert
 
-   Review whether the equity issued or transferred in the legal-form change calls for a tax election under the applicable jurisdiction. Confirm the actual transfer and restrictions with the transaction documents and local tax adviser. Where an election is chosen, prepare the required particulars and obtain the authorized signatures before the applicable filing or retention step. Keep the signed version with the conversion records.
+human · ~30 min
 
-   - Sources: [IRS Form 15620](https://www.irs.gov/pub/irs-pdf/f15620.pdf)
-10. **File the tax election the jurisdiction requires on the stock issuance, where one exists** — manual form/portal · ~15 min · async wait · irreversible
 
-   Follow the tax-election treatment confirmed for the equity resulting from this transaction. Where a filing is required, submit the signed election through the permitted local route within its applicable window and retain delivery evidence. Where there is no corresponding election, record that determination with the adviser’s basis. Keep the election status separate from registry acceptance of the legal-form change.
+Compare the LLC’s current state, ownership, tax classification, assets and contracts with the proposed corporate structure and financing plans. Identify why conversion is useful now and what would change for each owner. Bring tax, legal and timing questions to the advisers before deciding on the transaction. Establish the available legal route and tax treatment for this transaction.
 
-   - Verify: Retain the official confirmation or accepted documents required for this step in the selected jurisdiction; reconcile them with the approved company records.
-   - Produces: Filed 83(b) election
-   - Canonical vendor: IRS
-   - Do it yourself: [IRS Form 15620 (83(b) election)](https://www.irs.gov/pub/irs-pdf/f15620.pdf)
-11. **Update bank, payroll and business registrations** — manual form/portal · ~30 min · hard to undo
+<a id="step-2"></a>
 
-   Update the affected bank, payroll, tax and business records using the accepted transaction documents and any changed entity details or identifiers.
+### 2. Get tax and legal advice on the conversion
 
-## By country
+human · ~2 d · async wait
+
+
+Review the operating agreement, ownership ledger, returns, balance sheet, material contracts and planned financing with legal and tax advisers. Resolve the available conversion route, required approvals, ownership exchange, asset treatment, tax effects and filing sequence for the states involved. Identify questions that prevent document preparation or filing, and agree who will resolve them.
+
+<a id="step-3"></a>
+
+### 3. Prepare the legal-form change and governing documents
+
+manual form/portal · ~30 min · human approval required
+
+
+Prepare the legal-form change, incorporation or business-transfer documents selected by local counsel. Confirm whether the entity continues or a new entity receives the business, and identify the approvals, registrations and tax work before signing.
+
+- Canonical vendor: Clerky
+- Vendor options: Clerky, LegalZoom
+
+<a id="step-4"></a>
+
+### 4. Owners sign the legal-form change approvals
+
+human (legally required signature) · ~10 min
+
+
+Present the final conversion plan with the ownership changes, effective timing and remaining conditions. Confirm the approvals required by the LLC agreement and applicable law, then obtain them from the actual members or other holders. Check capacities, voting interests and document versions. Missing or qualified approvals must be resolved before the filer relies on the conversion as authorized.
+
+<a id="step-5"></a>
+
+### 5. Submit the legal-form change or business-transfer filings
+
+manual form/portal · ~20 min · human approval required · hard to undo
+
+
+Submit only the filings required for the approved local transaction. Confirm the responsible signatories, identity continuity, effective sequence and tax treatment with local counsel. Retain acceptance evidence before treating the transaction as complete.
+
+- Verify: Retain the official confirmation or accepted documents required for this step in the selected jurisdiction; reconcile them with the approved company records.
+- Canonical vendor: Clerky
+- Do it yourself: [Delaware Division of Corporations](https://corp.delaware.gov/howtoform/)
+- Sources: [Delaware General Corporation Law](https://delcode.delaware.gov/title8/c001/sc12/index.html)
+
+<a id="step-6"></a>
+
+### 6. Receive the accepted legal-form change documents
+
+human · ~2 d · async wait
+
+
+Obtain the accepted conversion and incorporation records from the relevant registries. Compare entity identity, filing dates and effective times with the transaction plan and resolve discrepancies with counsel. Use those verified details for equity, bank and tax changes. Keep applications marked pending until acceptance is established, with the issued records available in the corporate archive.
+
+- Produces: Certificate of Incorporation
+
+<a id="step-7"></a>
+
+### 7. Adopt the governing documents and record the resulting equity
+
+manual form/portal · ~20 min · human approval required
+
+
+Adopt the required governing documents and record the equity resulting from the approved transaction. Follow local counsel’s issuance, subscription and registration sequence.
+
+- Produces: Bylaws & initial board consent
+- Canonical vendor: Clerky
+
+<a id="step-8"></a>
+
+### 8. Owners sign the required equity agreements
+
+human (legally required signature) · ~5 min · irreversible
+
+
+Check each founder’s purchase or exchange agreement against the conversion plan and corporate approvals: class, share count, price or consideration, vesting, restrictions and interests replaced. Resolve conflicting terms before the parties sign. Keep executed agreements and consideration or transfer evidence together. Record the actual transaction date accurately for later tax review.
+
+- Produces: Founder stock issuance
+
+<a id="step-9"></a>
+
+### 9. Sign any tax election the jurisdiction requires on the founder stock issuance
+
+human (legally required signature) · ~5 min
+
+
+Review whether the equity issued or transferred in the legal-form change calls for a tax election under the applicable jurisdiction. Confirm the actual transfer and restrictions with the transaction documents and local tax adviser. Where an election is chosen, prepare the required particulars and obtain the authorized signatures before the applicable filing or retention step. Keep the signed version with the conversion records.
+
+- Sources: [IRS Form 15620](https://www.irs.gov/pub/irs-pdf/f15620.pdf)
+
+<a id="step-10"></a>
+
+### 10. File the tax election the jurisdiction requires on the stock issuance, where one exists
+
+manual form/portal · ~15 min · async wait · irreversible
+
+
+Follow the tax-election treatment confirmed for the equity resulting from this transaction. Where a filing is required, submit the signed election through the permitted local route within its applicable window and retain delivery evidence. Where there is no corresponding election, record that determination with the adviser’s basis. Keep the election status separate from registry acceptance of the legal-form change.
+
+- Verify: Retain the official confirmation or accepted documents required for this step in the selected jurisdiction; reconcile them with the approved company records.
+- Produces: Filed 83(b) election
+- Canonical vendor: IRS
+- Do it yourself: [IRS Form 15620 (83(b) election)](https://www.irs.gov/pub/irs-pdf/f15620.pdf)
+
+<a id="step-11"></a>
+
+### 11. Update bank, payroll and business registrations
+
+manual form/portal · ~30 min · hard to undo
+
+
+Update the affected bank, payroll, tax and business records using the accepted transaction documents and any changed entity details or identifiers.
+
+
+<a id="by-country"></a>
+
+## Country details
+
+<a id="geo-us"></a>
 
 ### United States
 
@@ -89,11 +220,15 @@ The go/no-go call and counsel review are human judgment, member and founder sign
   - Cost: free (free, as of 2026-10-01, [www.irs.gov](https://www.irs.gov/pub/irs-pdf/f15620.pdf)). No IRS filing fee for an 83(b) election — the cost is certified-mail postage.
   - Verify: Online submissions in the taxpayer's IRS Online Account confirm on submit — retain the confirmation. For the mail rail, retain the date-stamped copy and the USPS certified-mail receipt — the IRS sends no confirmation; your proof of mailing within the 30-day window is the record. ([www.irs.gov](https://www.irs.gov/pub/irs-pdf/f15620.pdf))
 
+<a id="geo-in"></a>
+
 ### India
 
 - The analog is converting an LLP into a private limited company under Companies Act s.366 (form URC-1, plus fresh incorporation paperwork) — an MCA process fronted by NSWS since mca.gov.in blocks automated access; it is slow and tax-sensitive, so many simply incorporate fresh. ([NSWS (MCA conversion filings)](https://www.nsws.gov.in/))
 - Step 5: The analog is converting an LLP into a private limited company under Companies Act s.366 (form URC-1, plus fresh incorporation paperwork) — an MCA process fronted by NSWS since mca.gov.in blocks automated access; it is slow and tax-sensitive, so many simply incorporate fresh. ([NSWS (MCA conversion filings)](https://www.nsws.gov.in/))
 - Step 10: Not applicable: No 83(b)-style election exists: founder vesting is contractual, and share awards are taxed as a perquisite under their own rules ([Income Tax e-filing portal](https://www.incometax.gov.in/iec/foportal/))
+
+<a id="geo-uk"></a>
 
 ### United Kingdom
 
@@ -102,11 +237,15 @@ The go/no-go call and counsel review are human judgment, member and founder sign
 - Step 9: Sign the joint section 431 ITEPA election to be taxed on the unrestricted value of restricted shares Made jointly with the company within 14 days of acquisition; HMRC's employment-related securities guidance covers it. ([HMRC — employment related securities](https://www.gov.uk/government/collections/employment-related-securities))
 - Step 10: Complete the joint section 431 election within 14 days of acquisition The UK cousin is the joint section 431 ITEPA election to be taxed on the unrestricted value of restricted shares; HMRC's employment-related securities guidance covers it. ([HMRC — employment related securities](https://www.gov.uk/government/collections/employment-related-securities))
 
+<a id="geo-de"></a>
+
 ### Germany
 
 - Changing legal form is a statutory Formwechsel under the Umwandlungsgesetz (e.g. UG to GmbH, or GbR into GmbH) — notarized, registered in the Handelsregister, and usually tax-neutral if done under the UmwStG. ([UmwG (conversion law) — full text](https://www.gesetze-im-internet.de/umwg_1995/))
 - Step 5: Changing legal form is a statutory Formwechsel under the Umwandlungsgesetz (e.g. UG to GmbH, or GbR into GmbH) — notarized, registered in the Handelsregister, and usually tax-neutral if done under the UmwStG. ([UmwG (conversion law) — full text](https://www.gesetze-im-internet.de/umwg_1995/))
 - Step 10: Not applicable: No acceleration election exists; the statutory lever for startup equity is § 19a EStG's deferred taxation, not a filing-deadline race ([EStG § 19a — startup equity taxation](https://www.gesetze-im-internet.de/estg/__19a.html))
+
+<a id="geo-fr"></a>
 
 ### France
 
@@ -114,11 +253,15 @@ The go/no-go call and counsel review are human judgment, member and founder sign
 - Step 5: The classic pre-fundraise move is transforming a SARL into a SAS: an extraordinary shareholders' decision, a commissaire report, amended statuts, then the transformation filed through the guichet unique. ([INPI guichet unique (transformation)](https://procedures.inpi.fr/))
 - Step 10: Not applicable: No equivalent election: founder and employee equity are taxed under the regimes the BOFiP doctrine governs, with no filing deadline to race ([BOFiP — official tax doctrine](https://bofip.impots.gouv.fr/))
 
+<a id="geo-pt"></a>
+
 ### Portugal
 
 - The move is a statutory transformação de sociedade under the Código das Sociedades Comerciais (e.g. Lda to SA ahead of institutional money) — shareholder-resolved, registered at the commercial registry, with the company's legal identity continuing. ([Código das Sociedades Comerciais (DRE)](https://diariodarepublica.pt/dr/legislacao-consolidada/decreto-lei/1986-34443975))
 - Step 5: The move is a statutory transformação de sociedade under the Código das Sociedades Comerciais (e.g. Lda to SA ahead of institutional money) — shareholder-resolved, registered at the commercial registry, with the company's legal identity continuing. ([Código das Sociedades Comerciais (DRE)](https://diariodarepublica.pt/dr/legislacao-consolidada/decreto-lei/1986-34443975))
 - Step 10: Not applicable: No 83(b) concept to race: vesting is drafted as quota call-option/clawback clauses, and the 2023 startup law defers qualifying option taxation to liquidity ([Lei 21/2023 (startup law) — DRE](https://diariodarepublica.pt/dr/detalhe/lei/21-2023-213498830))
+
+<a id="geo-ca"></a>
 
 ### Canada
 
@@ -126,52 +269,54 @@ The go/no-go call and counsel review are human judgment, member and founder sign
 - Step 5: With no LLC to convert, the analog is incorporating an existing unincorporated business: a section 85 rollover transfers the assets into a corporation in exchange for shares with the capital gain deferred by joint election. ([Income Tax Act s. 85 — rollover](https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-85.html))
 - Step 10: Not applicable: No election deadline to beat: founder shares are issued at nominal value with CCPC tax deferral ([CRA — security options](https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/payroll/benefits-allowances/security-options.html))
 
+<a id="geo-nz"></a>
+
 ### New Zealand
 
 - Not applicable: There is no US-style LLC to convert: NZ businesses already run as limited companies, and a company incorporated elsewhere can transfer its incorporation onto the NZ register instead of converting between entity forms. ([Transfer incorporation to NZ — Companies Register](https://companies-register.companiesoffice.govt.nz/help-centre/managing-an-overseas-company-in-nz/how-to-transfer-incorporation-to-nz/))
 - Step 5: Not applicable: There is no US-style LLC to convert: NZ businesses already run as limited companies, and a company incorporated elsewhere can transfer its incorporation onto the NZ register instead of converting between entity forms. ([Transfer incorporation to NZ — Companies Register](https://companies-register.companiesoffice.govt.nz/help-centre/managing-an-overseas-company-in-nz/how-to-transfer-incorporation-to-nz/))
+
+<a id="geo-sg"></a>
 
 ### Singapore
 
 - No statutory conversion filing: the move is incorporating a Pte Ltd with ACRA and transferring the business into it (the common path for sole proprietorships and LLPs too) — plan the asset transfer, contract novations and GST continuity yourself. ([ACRA — registering a local company](https://www.acra.gov.sg/register/business/registering-different-business-structures/local-company/))
 - Step 5: No statutory conversion filing: the move is incorporating a Pte Ltd with ACRA and transferring the business into it (the common path for sole proprietorships and LLPs too) — plan the asset transfer, contract novations and GST continuity yourself. ([ACRA — registering a local company](https://www.acra.gov.sg/register/business/registering-different-business-structures/local-company/))
 
+<a id="geo-au"></a>
+
 ### Australia
 
 - The analog move is incorporating an existing sole trade or partnership into a Pty Ltd: the change-of-structure pathway covers the re-registrations, and CGT rollovers can defer the tax when the business's assets move into the company in exchange for shares. ([Change your business structure](https://business.gov.au/planning/business-structures-and-types/restructuring/change-your-business-structure))
 - Step 5: The analog move is incorporating an existing sole trade or partnership into a Pty Ltd: the change-of-structure pathway covers the re-registrations, and CGT rollovers can defer the tax when the business's assets move into the company in exchange for shares. ([Change your business structure](https://business.gov.au/planning/business-structures-and-types/restructuring/change-your-business-structure))
+
+<a id="geo-kr"></a>
 
 ### South Korea
 
 - Entity conversion (조직변경) is a Commercial Act process: a yuhan hoesa converts into a chusik hoesa (and the reverse) by unanimous member resolution with the change registered at the court registry (Articles 604 and following). ([Commercial Act Article 604 (law.go.kr)](https://www.law.go.kr/%EB%B2%95%EB%A0%B9/%EC%83%81%EB%B2%95/%EC%A0%9C604%EC%A1%B0))
 - Step 5: Entity conversion (조직변경) is a Commercial Act process: a yuhan hoesa converts into a chusik hoesa (and the reverse) by unanimous member resolution with the change registered at the court registry (Articles 604 and following). ([Commercial Act Article 604 (law.go.kr)](https://www.law.go.kr/%EB%B2%95%EB%A0%B9/%EC%83%81%EB%B2%95/%EC%A0%9C604%EC%A1%B0))
 
+<a id="geo-hk"></a>
+
 ### Hong Kong
 
 - No statutory conversion filing exists (and no LLC to convert): the move is incorporating a private company limited by shares with the Companies Registry and transferring the business into it — plan the asset transfer, contract novations and any stamp duty yourself. ([Companies Registry — register a new company](https://www.cr.gov.hk/en/services/register-company.htm))
 - Step 5: No statutory conversion filing exists (and no LLC to convert): the move is incorporating a private company limited by shares with the Companies Registry and transferring the business into it — plan the asset transfer, contract novations and any stamp duty yourself. ([Companies Registry — register a new company](https://www.cr.gov.hk/en/services/register-company.htm))
+
+<a id="geo-ee"></a>
 
 ### Estonia
 
 - There is no LLC/C-Corp split: an osaühing transforms into an aktsiaselts (and back) under the Commercial Code's transformation chapter (§ 478 and following), with the change entered in the commercial register. ([e-Business Register](https://ariregister.rik.ee/eng))
 - Step 5: There is no LLC/C-Corp split: an osaühing transforms into an aktsiaselts (and back) under the Commercial Code's transformation chapter (§ 478 and following), with the change entered in the commercial register. ([e-Business Register](https://ariregister.rik.ee/eng))
 
-## Artifacts
-
-Produces:
+## Outputs
 
 - Certificate of Incorporation
 - Bylaws & initial board consent
 - Founder stock issuance
 - Filed 83(b) election
-
-Requires:
-
-- LLC Certificate of Formation — from [Set up an LLC](set-up-an-llc.md)
-- LLC operating agreement — from [Set up an LLC](set-up-an-llc.md)
-- Business bank account — from [Open bank account](open-bank-account.md)
-- Payroll account — from [Set up payroll](set-up-payroll.md)
-- State tax accounts — from [Register state taxes](register-state-taxes.md)
 
 ---
 

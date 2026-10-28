@@ -3,6 +3,10 @@
 
 # Review state registration
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Geography](#geography) · [Steps](#steps-at-a-glance) · [Outputs](#outputs)
+
+## Overview
+
 Check whether you need to register in states where you have employees or offices, and file the foreign qualifications that apply. California draws the line at transacting intrastate business and the $800 minimum tax follows qualification (law rule [us-ca.foreign-qualification](../../open-law/US-CA/us-ca-foreign-qualification.json)); Texas adds late filing fees when registration comes more than 90 days after first transacting business (law rule [us-tx.foreign-registration](../../open-law/US-TX/us-tx-foreign-registration.json)).
 
 | Field | Value |
@@ -19,86 +23,163 @@ Check whether you need to register in states where you have employees or offices
 
 An agent can map employee locations to registration duties; the foreign-qualification filings themselves are state-portal form work.
 
-## Steps
+<a id="artifacts"></a>
 
-1. **List employee locations** — agent-runnable · ~5 min
+## Before you start
 
-   Reconcile where employees and contractors actually work with HR, payroll and managers. Capture state, start date, arrangement and expected moves without unnecessary personal details. Add offices, facilities and other business presence separately. Resolve uncertain locations before using the list for corporate-registration or tax analysis, and establish how future moves reach the team maintaining it.
+Required artifacts:
 
-   - Sources: [SBA register your business](https://legacy.sba.gov/business-guide/launch-your-business/register-your-business)
-2. **Check foreign qualification needs** — agent-runnable · ~10 min
+- Certificate of Incorporation — from [Incorporate the company](incorporate-c-corp.md)
 
-   Review the location facts, entity form and activities in each state against its foreign-qualification rules and exemptions. Document the basis for filing, not filing or obtaining more facts. Resolve ambiguous cases with counsel before the company commits to a registration. Payroll, tax and licensing questions need separate treatment because their tests may differ.
+## Geography
 
-   - Sources: [SBA register your business](https://legacy.sba.gov/business-guide/launch-your-business/register-your-business)
-3. **File foreign qualifications on the state portals** — manual form/portal · ~30 min · async wait · human approval required · hard to undo
+Country rows describe the guidance recorded here. Local notes and step alternatives do not establish a complete country-specific workflow.
 
-   Use the reviewed state-registration plan to assemble the application, home-state documents and local agent details. Check the destination’s current requirements, including signer authority and any certificate validity limit. Use the entity’s required signer and authorized filing process for submission and fees. Respond to corrections until accepted, then capture the issued entity number and ongoing state obligations.
+| Country | Recorded guidance | Steps with local alternatives or resolutions |
+| --- | --- | --- |
+| [India](#geo-in) | Local analog note | — |
+| [United Kingdom](#geo-uk) | Marked not applicable | — |
+| [Germany](#geo-de) | Local analog note | — |
+| [France](#geo-fr) | Local analog note | — |
+| [Portugal](#geo-pt) | Marked not applicable | — |
+| [Canada](#geo-ca) | Local analog note | — |
+| [New Zealand](#geo-nz) | Marked not applicable | — |
+| [Singapore](#geo-sg) | Marked not applicable | — |
+| [Australia](#geo-au) | Marked not applicable | — |
+| [South Korea](#geo-kr) | Marked not applicable | — |
+| [Hong Kong](#geo-hk) | Marked not applicable | — |
+| [Estonia](#geo-ee) | Marked not applicable | — |
 
-   - Verify: The entity appears in each state's business search with a foreign-qualification registration number.
-   - Produces: Foreign qualifications
-   - Vendor options: LegalZoom, Northwest Registered Agent, Harbor Compliance
-   - Sources: [SBA register your business](https://legacy.sba.gov/business-guide/launch-your-business/register-your-business)
+## Steps at a glance
 
-## By country
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
+
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. List employee locations](#step-1) | agent-runnable | ~5 min | Entry step |
+| [2. Check foreign qualification needs](#step-2) | agent-runnable | ~10 min | [Step 1](#step-1) |
+| [3. File foreign qualifications on the state portals](#step-3) | manual form/portal; approval required; includes waiting | ~30 min | [Step 2](#step-2) |
+
+<a id="steps"></a>
+
+## Step details
+
+<a id="step-1"></a>
+
+### 1. List employee locations
+
+agent-runnable · ~5 min
+
+
+Reconcile where employees and contractors actually work with HR, payroll and managers. Capture state, start date, arrangement and expected moves without unnecessary personal details. Add offices, facilities and other business presence separately. Resolve uncertain locations before using the list for corporate-registration or tax analysis, and establish how future moves reach the team maintaining it.
+
+- Sources: [SBA register your business](https://legacy.sba.gov/business-guide/launch-your-business/register-your-business)
+
+<a id="step-2"></a>
+
+### 2. Check foreign qualification needs
+
+agent-runnable · ~10 min
+
+
+Review the location facts, entity form and activities in each state against its foreign-qualification rules and exemptions. Document the basis for filing, not filing or obtaining more facts. Resolve ambiguous cases with counsel before the company commits to a registration. Payroll, tax and licensing questions need separate treatment because their tests may differ.
+
+- Sources: [SBA register your business](https://legacy.sba.gov/business-guide/launch-your-business/register-your-business)
+
+<a id="step-3"></a>
+
+### 3. File foreign qualifications on the state portals
+
+manual form/portal · ~30 min · async wait · human approval required · hard to undo
+
+
+Use the reviewed state-registration plan to assemble the application, home-state documents and local agent details. Check the destination’s current requirements, including signer authority and any certificate validity limit. Use the entity’s required signer and authorized filing process for submission and fees. Respond to corrections until accepted, then capture the issued entity number and ongoing state obligations.
+
+- Verify: The entity appears in each state's business search with a foreign-qualification registration number.
+- Produces: Foreign qualifications
+- Vendor options: LegalZoom, Northwest Registered Agent, Harbor Compliance
+- Sources: [SBA register your business](https://legacy.sba.gov/business-guide/launch-your-business/register-your-business)
+
+
+<a id="by-country"></a>
+
+## Country details
+
+<a id="geo-in"></a>
 
 ### India
 
 - The federal texture is real: employees or premises in a new state typically mean a fresh GST registration for that state, plus state professional tax and a shops-and-establishments registration — India's version of foreign qualification. ([GST portal (multi-state footprint)](https://www.gst.gov.in/))
 
+<a id="geo-uk"></a>
+
 ### United Kingdom
 
 - Not applicable: Inside the UK there is nothing to qualify for; the concept appears at the border — a foreign company opening a UK establishment registers it at Companies House with form OS IN01 within a month. ([Register a UK establishment (OS IN01)](https://www.gov.uk/government/publications/register-a-uk-establishment-of-an-overseas-company-os-in01))
+
+<a id="geo-de"></a>
 
 ### Germany
 
 - The analog is municipal: each additional Betriebsstätte (office/branch) needs its own Gewerbeanmeldung with that municipality, and Gewerbesteuer is then apportioned across them — the ministry's founders portal covers the mechanics. ([BMWK founders portal (per-municipality registration)](https://www.existenzgruender.de/))
 
+<a id="geo-fr"></a>
+
 ### France
 
 - A new office is an établissement secondaire: declared through the guichet unique, which issues a per-establishment SIRET — a formality rather than a qualification battle. ([INPI guichet unique (secondary establishment)](https://procedures.inpi.fr/))
+
+<a id="geo-pt"></a>
 
 ### Portugal
 
 - Not applicable: No sub-national layer to qualify into: one commercial registry and one tax registration cover the whole country — the concept only appears at the border, where a foreign company opening a Portuguese branch registers a representação permanente. ([Empresa Online — registo comercial](https://www.gov.pt/guias/empresa-online-servicos-do-registo-comercial))
 
+<a id="geo-ca"></a>
+
 ### Canada
 
 - The concept genuinely exists: carrying on business in a province means extra-provincial registration there — a federal corporation still registers in each province where it operates (some provinces have joint-registration agreements). ([Register in a province or territory](https://ised-isde.canada.ca/site/corporations-canada/en/register-federal-corporation-province-or-territory))
+
+<a id="geo-nz"></a>
 
 ### New Zealand
 
 - Not applicable: Inside NZ there is nothing to foreign-qualify for; the concept appears at the border — a company incorporated elsewhere that does business in NZ registers on the Companies Office Overseas Register. ([Registering an overseas company — Companies Register](https://companies-register.companiesoffice.govt.nz/help-centre/managing-an-overseas-company-in-nz/registering-your-company-to-do-business-in-nz/))
 
+<a id="geo-sg"></a>
+
 ### Singapore
 
 - Not applicable: Inside Singapore there is nothing to qualify for; the concept appears at the border — a foreign company establishing a place of business in Singapore registers as a foreign company with ACRA and takes on its own annual filing duties. ([ACRA — foreign company filings](https://www.acra.gov.sg/manage/companies/legal-requirements-common-offences/annual-filing-for-foreign-companies/))
+
+<a id="geo-au"></a>
 
 ### Australia
 
 - Not applicable: One ASIC registration covers the whole country, so there is no inter-state qualification to review; the concept appears at the border, where a foreign company carrying on business in Australia registers with ASIC first. The real per-state check is payroll tax, which has its own thresholds. ([Register a foreign company](https://asic.gov.au/for-business-and-companies/foreign-companies/register-a-foreign-company-in-australia))
 
+<a id="geo-kr"></a>
+
 ### South Korea
 
 - Not applicable: There is no foreign-qualification concept between regions: one incorporation registration covers nationwide operation, with branch offices registered at the registry where needed. ([Internet Registry Office (IROS)](https://www.iros.go.kr/))
+
+<a id="geo-hk"></a>
 
 ### Hong Kong
 
 - Not applicable: Inside Hong Kong there is nothing to qualify for — one incorporation covers the territory; the concept appears at the border, where a non-Hong Kong company establishing a place of business must register with the Companies Registry within one month (Companies Ordinance section 776). ([Companies Ordinance s 776 (e-Legislation)](https://www.elegislation.gov.hk/hk/cap622!en/s776))
 
+<a id="geo-ee"></a>
+
 ### Estonia
 
 - Not applicable: There is no foreign-qualification concept inside the country: one commercial-register entry covers nationwide operation. ([e-Business Register](https://ariregister.rik.ee/eng))
 
-## Artifacts
-
-Produces:
+## Outputs
 
 - Foreign qualifications
-
-Requires:
-
-- Certificate of Incorporation — from [Incorporate the company](incorporate-c-corp.md)
 
 ---
 

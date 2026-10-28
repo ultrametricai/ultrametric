@@ -3,17 +3,27 @@
 
 # Raise a seed round
 
+[Overview](#overview) · [Process sequence](#process-sequence)
+
+## Overview
+
 Data room standing, SAFEs signed, wires verified, cap table made true.
 
 | Field | Value |
 | --- | --- |
 | Kind | chain |
 
-## Processes in order
+<a id="processes-in-order"></a>
 
-1. [Set up a data room](set-up-a-data-room.md)
-2. [Raise pre-seed funding](raise-pre-seed-safes.md)
-3. [Update cap table](update-cap-table.md)
+## Process sequence
+
+Run the linked processes in the recorded chain order. Each process defines its own internal dependencies.
+
+| Order | Process | Requires | Produces |
+| --- | --- | --- | --- |
+| 1 | [Set up a data room](set-up-a-data-room.md) | Document storage; Certificate of Incorporation; Bylaws & initial board consent; Cap table record; Financial statements; IP assignments (PIIA) | Diligence data room |
+| 2 | [Raise pre-seed funding](raise-pre-seed-safes.md) | Cap table record; Business bank account | Executed SAFEs |
+| 3 | [Update cap table](update-cap-table.md) | Cap table record; Executed SAFEs | Not recorded |
 
 ---
 

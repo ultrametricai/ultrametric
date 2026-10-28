@@ -3,18 +3,28 @@
 
 # Tax season
 
+[Overview](#overview) · [Process sequence](#process-sequence)
+
+## Overview
+
 1099s out in January, Delaware franchise tax by March 1, the R&D credit claimed, the 1120 filed.
 
 | Field | Value |
 | --- | --- |
 | Kind | chain |
 
-## Processes in order
+<a id="processes-in-order"></a>
 
-1. [Issue 1099s](issue-1099s.md)
-2. [File DE franchise tax](file-de-franchise-tax.md)
-3. [Claim the R&D tax credit](claim-the-r-d-tax-credit.md)
-4. [File the company income tax return](file-federal-tax-return.md)
+## Process sequence
+
+Run the linked processes in the recorded chain order. Each process defines its own internal dependencies.
+
+| Order | Process | Requires | Produces |
+| --- | --- | --- | --- |
+| 1 | [Issue 1099s](issue-1099s.md) | Payroll account; Contractor record (W-9 on file) | Not recorded |
+| 2 | [File DE franchise tax](file-de-franchise-tax.md) | Certificate of Incorporation; Cap table record | Not recorded |
+| 3 | [Claim the R&D tax credit](claim-the-r-d-tax-credit.md) | Payroll account; Federal tax return | Not recorded |
+| 4 | [File the company income tax return](file-federal-tax-return.md) | EIN assignment letter; Accounting ledger; Financial statements | Federal tax return |
 
 ---
 

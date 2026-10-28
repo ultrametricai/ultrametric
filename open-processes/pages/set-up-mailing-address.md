@@ -3,6 +3,10 @@
 
 # Set up mailing address
 
+[Overview](#overview) · [Geography](#geography) · [Steps](#steps-at-a-glance) · [Outputs](#outputs)
+
+## Overview
+
 Get a business mailing address for legal and banking purposes — sign up with a virtual mailbox and complete the mail-handling authorization the postal rules require (in the US, the notarized USPS Form 1583).
 
 | Field | Value |
@@ -19,35 +23,102 @@ Get a business mailing address for legal and banking purposes — sign up with a
 
 Signup is an online form; USPS Form 1583 needs a notarized founder signature — genuinely human.
 
-## Steps
+## Geography
 
-1. **Choose mailing address provider** — human · ~10 min
+Country rows describe the guidance recorded here. Local notes and step alternatives do not establish a complete country-specific workflow.
 
-   Decide whether the address must support forwarding, scanning, parcels or specific bank or agency uses. Check that those institutions accept the proposed address type, then compare privacy controls, handling limits, location and charges. Choose who may access scanned mail and approve a suitable plan. An address useful for correspondence may still be unsuitable for another required address field.
+| Country | Recorded guidance | Steps with local alternatives or resolutions |
+| --- | --- | --- |
+| [United States](#geo-us) | step resolution | [3](#step-3), [4](#step-4), [5](#step-5) |
+| [India](#geo-in) | Local analog note; step resolution | [5](#step-5) |
+| [United Kingdom](#geo-uk) | Local analog note; step resolution | [5](#step-5) |
+| [Germany](#geo-de) | Local analog note; step resolution | [5](#step-5) |
+| [France](#geo-fr) | Local analog note; step resolution | [5](#step-5) |
+| [Portugal](#geo-pt) | Local analog note; step resolution | [5](#step-5) |
+| [Canada](#geo-ca) | Local analog note; step resolution | [5](#step-5) |
+| [Singapore](#geo-sg) | Local analog note | — |
+| [Australia](#geo-au) | Local analog note | — |
+| [South Korea](#geo-kr) | Local analog note | — |
+| [Hong Kong](#geo-hk) | Local analog note | — |
+| [Estonia](#geo-ee) | Local analog note | — |
 
-   - Vendor options: Stable, Earth Class Mail, VirtualPostMail
-   - Ranked market: [virtual-mailboxes](../../open-rankings/virtual-mailboxes)
-2. **Sign up and pick an address plan** — manual form/portal · ~10 min
+## Steps at a glance
 
-   Select the location and plan based on expected scanning, forwarding and storage. Review cancellation terms and register the company and authorized recipients accurately. The account holder approves the subscription and required identity disclosures. Configure access and urgent-notice routing, and use the provider’s exact address format once its onboarding requirements are complete and service is active.
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
 
-   - Produces: Business mailing address
-3. **Fill out the provider's mail-handling authorization** — human · ~10 min
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Choose mailing address provider](#step-1) | human | ~10 min | Entry step |
+| [2. Sign up and pick an address plan](#step-2) | manual form/portal | ~10 min | [Step 1](#step-1) |
+| [3. Fill out the provider's mail-handling authorization](#step-3) | human | ~10 min | [Step 2](#step-2) |
+| [4. Sign the mail authorization with the witnessing the rules require](#step-4) | human; signature required | ~10 min | [Step 3](#step-3) |
+| [5. Update the address on file (bank, tax authority, vendors)](#step-5) | agent-runnable | ~1 min | [Step 4](#step-4) |
 
-   Complete the authorization the postal rules require with the applicant, company, address and authorized recipients. Follow the accepted identity and address-document requirements through the provider’s secure process. Resolve inaccurate or missing fields before the applicant completes the live signature-witnessing step. Keep the identity documents and prepared application private.
+<a id="steps"></a>
 
-   - Sources: [USPS Form 1583](https://about.usps.com/forms/ps1583.pdf)
-4. **Sign the mail authorization with the witnessing the rules require** — human (legally required signature) · ~10 min
+## Step details
 
-   Use the witnessing route the provider and the applicable postal rules support. The applicant completes that process with the required IDs. Resolve any provider rejection before treating the mail authorization as active.
+<a id="step-1"></a>
 
-   - Verify: The provider accepts the completed mail-handling authorization and activates the address; retain the executed form, which the provider keeps on file.
-   - Sources: [USPS Form 1583](https://about.usps.com/forms/ps1583.pdf)
-5. **Update the address on file (bank, tax authority, vendors)** — agent-runnable · ~1 min · hard to undo
+### 1. Choose mailing address provider
 
-   Identify where the old address appears and distinguish mailing, physical, registered-office and tax fields. Check each institution’s accepted address types and update method. Authorized account holders submit the changes and verify important notices reach the new destination. Maintain old-mailbox access or forwarding during the transition, and resolve any institution that rejects the new address type.
+human · ~10 min
 
-## By country
+
+Decide whether the address must support forwarding, scanning, parcels or specific bank or agency uses. Check that those institutions accept the proposed address type, then compare privacy controls, handling limits, location and charges. Choose who may access scanned mail and approve a suitable plan. An address useful for correspondence may still be unsuitable for another required address field.
+
+- Vendor options: Stable, Earth Class Mail, VirtualPostMail
+- Ranked market: [virtual-mailboxes](../../open-rankings/virtual-mailboxes)
+
+<a id="step-2"></a>
+
+### 2. Sign up and pick an address plan
+
+manual form/portal · ~10 min
+
+
+Select the location and plan based on expected scanning, forwarding and storage. Review cancellation terms and register the company and authorized recipients accurately. The account holder approves the subscription and required identity disclosures. Configure access and urgent-notice routing, and use the provider’s exact address format once its onboarding requirements are complete and service is active.
+
+- Produces: Business mailing address
+
+<a id="step-3"></a>
+
+### 3. Fill out the provider's mail-handling authorization
+
+human · ~10 min
+
+
+Complete the authorization the postal rules require with the applicant, company, address and authorized recipients. Follow the accepted identity and address-document requirements through the provider’s secure process. Resolve inaccurate or missing fields before the applicant completes the live signature-witnessing step. Keep the identity documents and prepared application private.
+
+- Sources: [USPS Form 1583](https://about.usps.com/forms/ps1583.pdf)
+
+<a id="step-4"></a>
+
+### 4. Sign the mail authorization with the witnessing the rules require
+
+human (legally required signature) · ~10 min
+
+
+Use the witnessing route the provider and the applicable postal rules support. The applicant completes that process with the required IDs. Resolve any provider rejection before treating the mail authorization as active.
+
+- Verify: The provider accepts the completed mail-handling authorization and activates the address; retain the executed form, which the provider keeps on file.
+- Sources: [USPS Form 1583](https://about.usps.com/forms/ps1583.pdf)
+
+<a id="step-5"></a>
+
+### 5. Update the address on file (bank, tax authority, vendors)
+
+agent-runnable · ~1 min · hard to undo
+
+
+Identify where the old address appears and distinguish mailing, physical, registered-office and tax fields. Check each institution’s accepted address types and update method. Authorized account holders submit the changes and verify important notices reach the new destination. Maintain old-mailbox access or forwarding during the transition, and resolve any institution that rejects the new address type.
+
+
+<a id="by-country"></a>
+
+## Country details
+
+<a id="geo-us"></a>
 
 ### United States
 
@@ -55,59 +126,81 @@ Signup is an online form; USPS Form 1583 needs a notarized founder signature —
 - Step 4: Form 1583 permits signature or confirmation before the agent or authorized employee, or acknowledgement before a qualifying notary, with the specified physical or live virtual presence ([USPS Form 1583](https://about.usps.com/forms/ps1583.pdf))
 - Step 5: Update the address with the bank, the IRS, and vendors, distinguishing mailing, physical, and registered-agent fields
 
+<a id="geo-in"></a>
+
 ### India
 
 - The registered office is declared to the MCA (INC-22, within 30 days of incorporation where not declared at filing) and every change files back to the RoC; virtual-office addresses are widely used — including per-state for GST registrations, each state wanting its own proof-of-address set. ([India NSWS (MCA filings)](https://www.nsws.gov.in/))
 - Step 5: Registered-office changes file back to the RoC (INC-22), and each state's GST registration wants its own proof-of-address set ([India NSWS (MCA filings)](https://www.nsws.gov.in/))
+
+<a id="geo-uk"></a>
 
 ### United Kingdom
 
 - Virtual-office addresses are a normal, legal registered-office choice — but post-ECCT the address must be one where documents actually come to the company's attention, and Companies House now also requires a registered email address. ([Companies House — registered office rules](https://www.gov.uk/limited-company-formation/company-address))
 - Step 5: A registered-office change files at Companies House; post-ECCT the address must be one where documents actually come to the company's attention, and a registered email address is required too ([Companies House — registered office rules](https://www.gov.uk/limited-company-formation/company-address))
 
+<a id="geo-de"></a>
+
 ### Germany
 
 - The company's inländische Geschäftsanschrift lives in the Handelsregister and the website's Impressum needs a ladungsfähige Anschrift — a business-center address is fine if post genuinely reaches you; address changes go through the notary to the register, so pick one that will last. ([Handelsregister (business address)](https://www.handelsregister.de/))
 - Step 5: Changes to the inländische Geschäftsanschrift go through the notary to the Handelsregister, and the Impressum needs a ladungsfähige Anschrift ([Handelsregister (business address)](https://www.handelsregister.de/))
+
+<a id="geo-fr"></a>
 
 ### France
 
 - Domiciliation is its own regulated service in France: a société de domiciliation (agréée by the préfecture) contracts to host your siège social, and the address flows through the INPI guichet unique onto the RCS — the service-public page is the canonical map of what qualifies. ([Domiciliation d'entreprise (service-public)](https://entreprendre.service-public.fr/vosdroits/F2160))
 - Step 5: The siège social flows through the INPI guichet unique onto the RCS ([Domiciliation d'entreprise (service-public)](https://entreprendre.service-public.fr/vosdroits/F2160))
 
+<a id="geo-pt"></a>
+
 ### Portugal
 
 - The sede registered in the commercial registry is where official mail and service arrive — a business-center or virtual-office address is legitimate if post genuinely reaches the company, and changes are filed online. ([Empresa Online — registry filings](https://www.gov.pt/guias/empresa-online-servicos-do-registo-comercial))
 - Step 5: Changes to the sede in the commercial registry are filed online ([Empresa Online — registry filings](https://www.gov.pt/guias/empresa-online-servicos-do-registo-comercial))
+
+<a id="geo-ca"></a>
 
 ### Canada
 
 - The registered office must be a street address in the incorporating jurisdiction where documents can be served — virtual-office providers are a normal choice as long as mail reliably reaches the company, with changes filed online. ([Corporations Canada](https://ised-isde.canada.ca/site/corporations-canada/en))
 - Step 5: Registered-office changes file online in the incorporating jurisdiction ([Corporations Canada](https://ised-isde.canada.ca/site/corporations-canada/en))
 
+<a id="geo-sg"></a>
+
 ### Singapore
 
 - The registered office must be a Singapore address open and accessible to the public during normal business hours each business day (law rule [sg.registered-office-requirement](../../open-law/SG/sg-registered-office-requirement.json)) — a corporate service provider's registered-office service is the standard startup answer. ([ACRA — registered office requirements](https://www.acra.gov.sg/register/business/registering-different-business-structures/local-company/registering-via-bizfile/))
+
+<a id="geo-au"></a>
 
 ### Australia
 
 - The registered office must be an Australian address where communications reliably reach the company, with the occupier's consent recorded when the company is not the occupier — service providers' registered-office addresses are a normal choice, and changes are notified to ASIC within 28 days. ([ASIC — company addresses](https://asic.gov.au/for-business-and-companies/companies/changes-to-company-details/change-a-company-address))
 
+<a id="geo-kr"></a>
+
 ### South Korea
 
 - The company’s official address is the seat of the principal office in the articles and the registry; moving it is a registrable change on the two-week clock (Commercial Act Article 183). ([Internet Registry Office (IROS)](https://www.iros.go.kr/))
+
+<a id="geo-hk"></a>
 
 ### Hong Kong
 
 - The registered office must be in Hong Kong and able to receive all communications and notices (law rule [hk.registered-office-requirement](../../open-law/HK/hk-registered-office-requirement.json)); it is stated on the incorporation form, changes file within 15 days, and a corporate service provider's registered-office service is the standard startup answer. ([Companies Ordinance s 658 (e-Legislation)](https://www.elegislation.gov.hk/hk/cap622!en/s658))
 
+<a id="geo-ee"></a>
+
 ### Estonia
 
 - The company's official address lives in the commercial register and changes through the e-Business Register; a company with a foreign address must keep an Estonian contact person for service of documents (law rule [ee.management-board-contact-person](../../open-law/EE/ee-management-board-contact-person.json)). ([e-Business Register](https://ariregister.rik.ee/eng))
 
-## Artifacts
+<a id="artifacts"></a>
 
-Produces:
+## Outputs
 
 - Business mailing address
 

@@ -3,6 +3,10 @@
 
 # Send NDA
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Steps](#steps-at-a-glance) · [Outputs](#outputs)
+
+## Overview
+
 Prepare a mutual NDA for a potential partner or vendor and send for signature.
 
 | Field | Value |
@@ -19,36 +23,88 @@ Prepare a mutual NDA for a potential partner or vendor and send for signature.
 
 System generates NDA from template, populates company data, and sends via DocuSign API. Fully automatable with approval gate.
 
-## Steps
+## Before you start
 
-1. **Generate NDA from template** — agent-runnable · ~1 min
+| Information to gather | Required by the record |
+| --- | --- |
+| legal name | Yes |
+| counterparty name | Yes |
+| counterparty email | Yes |
 
-   Choose the NDA template that fits the disclosure: parties, purpose and whether information flows one way or both. Populate the legal entities and identify changes needed to scope, permitted recipients or duration. Keep unresolved business and legal choices visible in the draft, with a redline showing departures from the company’s usual terms.
+## Steps at a glance
 
-   - Cross-arena options: ChatGPT, Claude, Gemini (ai-assistants)
-2. **Review NDA terms** — human · ~10 min · human approval required
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
 
-   Check the NDA against the planned discussion: confidential-information scope and exclusions, permitted use, recipient access, compelled disclosure and return or destruction duties. Escalate unfamiliar restrictions or rights beyond confidentiality to counsel. Agree acceptable changes with the business owner and identify the signer, then preserve the final negotiated version for execution.
-3. **Send for e-signature** — agent-runnable · ~2 min · human approval required · hard to undo
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Generate NDA from template](#step-1) | agent-runnable | ~1 min | Entry step |
+| [2. Review NDA terms](#step-2) | human; approval required | ~10 min | [Step 1](#step-1) |
+| [3. Send for e-signature](#step-3) | agent-runnable; approval required | ~2 min | [Step 2](#step-2) |
+| [4. Track signature status](#step-4) | agent-runnable; includes waiting | ~1 min | [Step 3](#step-3) |
+| [5. File executed copy](#step-5) | agent-runnable | ~1 min | [Step 4](#step-4) |
 
-   Prepare the approved NDA for the verified entities and signers, with the correct capacities, attachments and signature order. Send that version through the company’s agreed contract-signing process. Track its signature request and return proposed changes for review before signatures are collected on a revised version.
+<a id="steps"></a>
 
-   - Canonical vendor: DocuSign
-4. **Track signature status** — agent-runnable · ~1 min · async wait
+## Step details
 
-   Check for delivery failures, unsigned parties, declined requests and proposed edits. Verify that completed signatures belong to the intended signers on the same approved version. Follow up through the contract owner as needed. Confirm the agreement’s effective status for the planned disclosure before the team shares the covered information.
+<a id="step-1"></a>
 
-   - Canonical vendor: DocuSign
-5. **File executed copy** — agent-runnable · ~1 min
+### 1. Generate NDA from template
 
-   File the executed NDA and signature evidence with the relevant relationship or deal. Record the covered parties, purpose, effective date and notice or return obligations the team needs to follow. Keep amendments linked and superseded drafts distinct so future users can identify the agreement that governs their disclosure.
+agent-runnable · ~1 min
 
-   - Produces: Executed NDA
-   - Canonical vendor: Google Drive
 
-## Artifacts
+Choose the NDA template that fits the disclosure: parties, purpose and whether information flows one way or both. Populate the legal entities and identify changes needed to scope, permitted recipients or duration. Keep unresolved business and legal choices visible in the draft, with a redline showing departures from the company’s usual terms.
 
-Produces:
+- Cross-arena options: ChatGPT, Claude, Gemini (ai-assistants)
+
+<a id="step-2"></a>
+
+### 2. Review NDA terms
+
+human · ~10 min · human approval required
+
+
+Check the NDA against the planned discussion: confidential-information scope and exclusions, permitted use, recipient access, compelled disclosure and return or destruction duties. Escalate unfamiliar restrictions or rights beyond confidentiality to counsel. Agree acceptable changes with the business owner and identify the signer, then preserve the final negotiated version for execution.
+
+<a id="step-3"></a>
+
+### 3. Send for e-signature
+
+agent-runnable · ~2 min · human approval required · hard to undo
+
+
+Prepare the approved NDA for the verified entities and signers, with the correct capacities, attachments and signature order. Send that version through the company’s agreed contract-signing process. Track its signature request and return proposed changes for review before signatures are collected on a revised version.
+
+- Canonical vendor: DocuSign
+
+<a id="step-4"></a>
+
+### 4. Track signature status
+
+agent-runnable · ~1 min · async wait
+
+
+Check for delivery failures, unsigned parties, declined requests and proposed edits. Verify that completed signatures belong to the intended signers on the same approved version. Follow up through the contract owner as needed. Confirm the agreement’s effective status for the planned disclosure before the team shares the covered information.
+
+- Canonical vendor: DocuSign
+
+<a id="step-5"></a>
+
+### 5. File executed copy
+
+agent-runnable · ~1 min
+
+
+File the executed NDA and signature evidence with the relevant relationship or deal. Record the covered parties, purpose, effective date and notice or return obligations the team needs to follow. Keep amendments linked and superseded drafts distinct so future users can identify the agreement that governs their disclosure.
+
+- Produces: Executed NDA
+- Canonical vendor: Google Drive
+
+
+<a id="artifacts"></a>
+
+## Outputs
 
 - Executed NDA
 

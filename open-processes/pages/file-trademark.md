@@ -3,6 +3,10 @@
 
 # File trademark
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Geography](#geography) · [Steps](#steps-at-a-glance) · [Outputs](#outputs)
+
+## Overview
+
 File a trademark application for the company name and/or logo with the trademark office — the USPTO by default, with the national-office routes on the filing decision.
 
 | Field | Value |
@@ -19,92 +23,192 @@ File a trademark application for the company name and/or logo with the trademark
 
 The trademark offices have no usable filing API. System provides guidance, drafts descriptions, and tracks deadlines, but filing is manual.
 
-## Steps
+<a id="artifacts"></a>
 
-1. **Conduct trademark search** — agent-runnable · ~15 min
+## Before you start
 
-   Define the mark, goods or services and territories, then search for identical and similar wording or designs using the relevant trademark-office tools. Capture potentially relevant marks, owners, status and goods or services, along with the search terms. Send the clearance questions to the legal reviewer. An available domain or empty exact-name search does not clear the mark.
+Required artifacts:
 
-   - Cross-arena options: ChatGPT, Claude, Gemini (ai-assistants)
-   - Do it yourself: [USPTO trademark search](https://tmsearch.uspto.gov/search/search-information)
-   - Sources: [USPTO trademark process](https://www.uspto.gov/trademarks/basics/trademark-process) · [USPTO trademark tools](https://www.uspto.gov/trademarks)
-2. **Determine filing classes** — agent-runnable · ~10 min
+- Company name — from [Generate a company name](generate-a-company-name.md)
+- Brand logo — from [Generate a brand logo](generate-a-brand-logo.md)
 
-   Describe what customers buy under the mark and any concrete planned offerings. Map these to the selected office’s classification tools and proposed wording. Review uncertain classes and the resulting fees and coverage with the filing adviser. Specify the goods and services for which protection is sought.
+| Information to gather | Required by the record |
+| --- | --- |
+| trademark mark type | Yes |
+| trademark nice classes | Yes |
+| company goods services description | Yes |
 
-   - Sources: [USPTO trademark process](https://www.uspto.gov/trademarks/basics/trademark-process) · [USPTO trademark tools](https://www.uspto.gov/trademarks)
-3. **Draft goods/services description** — agent-runnable · ~15 min · human approval required
+## Geography
 
-   Draft the identification using the actual offering and the office’s accepted terminology. Match it to the intended filing basis and flag uncertain scope or classifications for the adviser. Check product facts with the people who know the service and retain relevant use evidence or development plans. Avoid claiming unrelated products merely to broaden the wording.
+Country rows describe the guidance recorded here. Local notes and step alternatives do not establish a complete country-specific workflow.
 
-   - Cross-arena options: ChatGPT, Claude, Gemini (ai-assistants)
-   - Sources: [USPTO trademark process](https://www.uspto.gov/trademarks/basics/trademark-process) · [USPTO trademark tools](https://www.uspto.gov/trademarks)
-4. **Review with IP attorney** — human · ~2 d · async wait
+| Country | Recorded guidance | Steps with local alternatives or resolutions |
+| --- | --- | --- |
+| [United States](#geo-us) | step resolution; step alternative | [1](#step-1), [5](#step-5), [6](#step-6) |
+| [India](#geo-in) | Local analog note; step resolution; step alternative | [1](#step-1), [5](#step-5), [6](#step-6) |
+| [United Kingdom](#geo-uk) | Local analog note; step resolution; step alternative | [1](#step-1), [5](#step-5) |
+| [Germany](#geo-de) | Local analog note; step resolution; step alternative | [1](#step-1), [5](#step-5) |
+| [France](#geo-fr) | Local analog note; step resolution; step alternative | [1](#step-1), [5](#step-5) |
+| [Portugal](#geo-pt) | Local analog note; step resolution | [1](#step-1), [5](#step-5) |
+| [Canada](#geo-ca) | Local analog note; step resolution | [1](#step-1), [5](#step-5), [6](#step-6) |
+| [New Zealand](#geo-nz) | Local analog note; step resolution | [5](#step-5) |
+| [Singapore](#geo-sg) | Local analog note; step resolution | [5](#step-5) |
+| [Australia](#geo-au) | Local analog note; step resolution | [5](#step-5) |
+| [South Korea](#geo-kr) | Local analog note; step resolution | [5](#step-5) |
+| [Hong Kong](#geo-hk) | Local analog note; step resolution | [5](#step-5) |
+| [Estonia](#geo-ee) | Local analog note; step resolution | [5](#step-5) |
 
-   Review the search results, owner, mark representation, territories, goods/services wording and filing-basis evidence with trademark counsel. Resolve clearance risks, ownership questions, representation requirements and the filing strategy. The applicant can then decide whether to proceed with the identified risks and costs. Registration remains subject to the office’s examination and any further proceedings.
+## Steps at a glance
 
-   - Cost: published amount varies (typical vendor price, as of 2026-10-01, [www.uspto.gov](https://www.uspto.gov/trademarks/basics/why-hire-private-trademark-attorney)). Attorney fees vary — no published sticker price exists.
-   - Sources: [USPTO trademark process](https://www.uspto.gov/trademarks/basics/trademark-process) · [USPTO trademark tools](https://www.uspto.gov/trademarks)
-5. **File the application with the trademark office** — manual form/portal · ~30 min · human approval required · hard to undo
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
 
-   Use the office selected in the filing strategy and prepare the approved owner, mark, goods/services, filing basis and evidence in that office’s current service. The applicant or authorized representative reviews the declarations, signs and authorizes submission and payment. Keep the filed application, receipt and application number for monitoring. Each option below uses its office’s own procedure.
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Conduct trademark search](#step-1) | agent-runnable | ~15 min | Entry step |
+| [2. Determine filing classes](#step-2) | agent-runnable | ~10 min | [Step 1](#step-1) |
+| [3. Draft goods/services description](#step-3) | agent-runnable; approval required | ~15 min | [Step 2](#step-2) |
+| [4. Review with IP attorney](#step-4) | human; includes waiting | ~2 d | [Step 3](#step-3) |
+| [5. File the application with the trademark office](#step-5) | manual form/portal; approval required | ~30 min | [Step 4](#step-4) |
+| [6. Track application status](#step-6) | agent-runnable; includes waiting | ~2 min | [Step 5](#step-5) |
 
-   - Verify: TSDR shows the application's serial number and status — newly filed applications appear within a few days. ([tsdr.uspto.gov](https://tsdr.uspto.gov/))
-   - Cost: $350 (government fee, as of 2026-10-01, [www.uspto.gov](https://www.uspto.gov/learning-and-resources/fees-and-payment/uspto-fee-schedule)). USPTO base application fee, per class of goods/services (fee code 7017); surcharges apply for custom identifications or insufficient information.
-   - Produces: Trademark application
-   - Canonical vendor: USPTO
-   - Do it yourself: [USPTO trademark application](https://www.uspto.gov/trademarks/apply)
-   - Sources: [USPTO trademark process](https://www.uspto.gov/trademarks/basics/trademark-process) · [USPTO trademark tools](https://www.uspto.gov/trademarks)
+<a id="steps"></a>
 
-   Options:
-     - **United States — USPTO trademark application** — manual form/portal · ~30 min · human approval required · hard to undo
+## Step details
 
-       Submit the reviewed US owner, mark, filing basis, goods/services and evidence through the current USPTO filing service. The applicant or authorized representative must approve the declarations, signature and fees. Save the filed copy and serial number and monitor official correspondence. The receipt records submission; the examination and any further requirements continue afterward.
-     - **India - CGPDTM e-filing**
+<a id="step-1"></a>
 
-       When: Filing the mark in India
+### 1. Conduct trademark search
 
-       Use the approved Indian owner, mark representation, goods/services and supporting evidence in the current IP India filing route. Confirm account and signature requirements from the official instructions. The authorized filer approves the application and fee, then retains the acknowledgement and application number. Monitor the Indian matter through IP India correspondence and status tools.
+agent-runnable · ~15 min
 
-       - Do it yourself: [Intellectual Property India e-filing](https://ipindiaonline.gov.in/)
-       - Sources: [IP India trademark e-filing](https://ipindiaonline.gov.in/trademarkefiling/user/frmloginNew.aspx)
-     - **UK - UK IPO filing**
 
-       When: Filing the mark in the United Kingdom
+Define the mark, goods or services and territories, then search for identical and similar wording or designs using the relevant trademark-office tools. Capture potentially relevant marks, owners, status and goods or services, along with the search terms. Send the clearance questions to the legal reviewer. An available domain or empty exact-name search does not clear the mark.
 
-       Prepare the intended owner, mark and goods/services for the UK IPO route. Review classes, the current fee and any special application choice before the authorized applicant submits. Keep the acknowledgement and monitor official communications. Record the territory sought and establish a separate filing strategy for requested protection outside the UK.
+- Cross-arena options: ChatGPT, Claude, Gemini (ai-assistants)
+- Do it yourself: [USPTO trademark search](https://tmsearch.uspto.gov/search/search-information)
+- Sources: [USPTO trademark process](https://www.uspto.gov/trademarks/basics/trademark-process) · [USPTO trademark tools](https://www.uspto.gov/trademarks)
 
-       - Do it yourself: [UK IPO - register a trade mark](https://www.gov.uk/how-to-register-a-trade-mark)
-       - Sources: [UK IPO trademark application](https://www.gov.uk/how-to-register-a-trade-mark/start-your-application)
-     - **Germany - DPMA (or EUIPO) filing**
+<a id="step-2"></a>
 
-       When: Filing the mark in Germany
+### 2. Determine filing classes
 
-       Confirm whether the strategy calls for a German national mark or a separate EU route. For the national application, use DPMA’s current service with the reviewed owner, representation and goods/services. The authorized filer approves declarations and fees before submission. Track the DPMA reference number; any EU application remains a separate matter with its own advice and filing evidence.
+agent-runnable · ~10 min
 
-       - Do it yourself: [DPMA trade mark filing](https://www.dpma.de/marken/index.html)
-       - Sources: [DPMA trademark application](https://www.dpma.de/english/trade_marks/application/index.html)
-     - **France - INPI (or EUIPO) filing**
 
-       When: Filing the mark in France
+Describe what customers buy under the mark and any concrete planned offerings. Map these to the selected office’s classification tools and proposed wording. Review uncertain classes and the resulting fees and coverage with the filing adviser. Specify the goods and services for which protection is sought.
 
-       Prepare the applicant, mark and goods/services in INPI’s trademark portal. Review the complete summary and coverage before the authorized filer validates and pays, then retain the acknowledgement and national filing number. Monitor INPI correspondence for the matter. Broader EU protection needs a separate strategy; this trademark filing is also distinct from INPI company-formation formalities.
+- Sources: [USPTO trademark process](https://www.uspto.gov/trademarks/basics/trademark-process) · [USPTO trademark tools](https://www.uspto.gov/trademarks)
 
-       - Do it yourself: [INPI - depot de marque](https://www.inpi.fr/comprendre-la-propriete-intellectuelle/la-marque)
-       - Sources: [INPI trademark filing](https://www.inpi.fr/realiser-demarches/propriete-intellectuelle/deposer-sa-marque)
-6. **Track application status** — agent-runnable · ~2 min · async wait
+<a id="step-3"></a>
 
-   Monitor the official status and correspondence for the application number. Record response deadlines and send substantive office actions or oppositions to counsel promptly. Keep the office’s contact information current and preserve responses and filing receipts. When registration or another disposition occurs, hand any maintenance or further action to its responsible person.
+### 3. Draft goods/services description
 
-   - Sources: [USPTO trademark process](https://www.uspto.gov/trademarks/basics/trademark-process) · [USPTO trademark tools](https://www.uspto.gov/trademarks)
+agent-runnable · ~15 min · human approval required
 
-## By country
+
+Draft the identification using the actual offering and the office’s accepted terminology. Match it to the intended filing basis and flag uncertain scope or classifications for the adviser. Check product facts with the people who know the service and retain relevant use evidence or development plans. Avoid claiming unrelated products merely to broaden the wording.
+
+- Cross-arena options: ChatGPT, Claude, Gemini (ai-assistants)
+- Sources: [USPTO trademark process](https://www.uspto.gov/trademarks/basics/trademark-process) · [USPTO trademark tools](https://www.uspto.gov/trademarks)
+
+<a id="step-4"></a>
+
+### 4. Review with IP attorney
+
+human · ~2 d · async wait
+
+
+Review the search results, owner, mark representation, territories, goods/services wording and filing-basis evidence with trademark counsel. Resolve clearance risks, ownership questions, representation requirements and the filing strategy. The applicant can then decide whether to proceed with the identified risks and costs. Registration remains subject to the office’s examination and any further proceedings.
+
+- Cost: published amount varies (typical vendor price, as of 2026-10-01, [www.uspto.gov](https://www.uspto.gov/trademarks/basics/why-hire-private-trademark-attorney)). Attorney fees vary — no published sticker price exists.
+- Sources: [USPTO trademark process](https://www.uspto.gov/trademarks/basics/trademark-process) · [USPTO trademark tools](https://www.uspto.gov/trademarks)
+
+<a id="step-5"></a>
+
+### 5. File the application with the trademark office
+
+manual form/portal · ~30 min · human approval required · hard to undo
+
+| Option | Applies when |
+| --- | --- |
+| United States — USPTO trademark application | Recorded default |
+| India - CGPDTM e-filing | Filing the mark in India |
+| UK - UK IPO filing | Filing the mark in the United Kingdom |
+| Germany - DPMA (or EUIPO) filing | Filing the mark in Germany |
+| France - INPI (or EUIPO) filing | Filing the mark in France |
+
+
+Use the office selected in the filing strategy and prepare the approved owner, mark, goods/services, filing basis and evidence in that office’s current service. The applicant or authorized representative reviews the declarations, signs and authorizes submission and payment. Keep the filed application, receipt and application number for monitoring. Each option below uses its office’s own procedure.
+
+- Verify: TSDR shows the application's serial number and status — newly filed applications appear within a few days. ([tsdr.uspto.gov](https://tsdr.uspto.gov/))
+- Cost: $350 (government fee, as of 2026-10-01, [www.uspto.gov](https://www.uspto.gov/learning-and-resources/fees-and-payment/uspto-fee-schedule)). USPTO base application fee, per class of goods/services (fee code 7017); surcharges apply for custom identifications or insufficient information.
+- Produces: Trademark application
+- Canonical vendor: USPTO
+- Do it yourself: [USPTO trademark application](https://www.uspto.gov/trademarks/apply)
+- Sources: [USPTO trademark process](https://www.uspto.gov/trademarks/basics/trademark-process) · [USPTO trademark tools](https://www.uspto.gov/trademarks)
+
+Options:
+  - **United States — USPTO trademark application** — manual form/portal · ~30 min · human approval required · hard to undo
+
+    Submit the reviewed US owner, mark, filing basis, goods/services and evidence through the current USPTO filing service. The applicant or authorized representative must approve the declarations, signature and fees. Save the filed copy and serial number and monitor official correspondence. The receipt records submission; the examination and any further requirements continue afterward.
+  - **India - CGPDTM e-filing**
+
+    When: Filing the mark in India
+
+    Use the approved Indian owner, mark representation, goods/services and supporting evidence in the current IP India filing route. Confirm account and signature requirements from the official instructions. The authorized filer approves the application and fee, then retains the acknowledgement and application number. Monitor the Indian matter through IP India correspondence and status tools.
+
+    - Do it yourself: [Intellectual Property India e-filing](https://ipindiaonline.gov.in/)
+    - Sources: [IP India trademark e-filing](https://ipindiaonline.gov.in/trademarkefiling/user/frmloginNew.aspx)
+  - **UK - UK IPO filing**
+
+    When: Filing the mark in the United Kingdom
+
+    Prepare the intended owner, mark and goods/services for the UK IPO route. Review classes, the current fee and any special application choice before the authorized applicant submits. Keep the acknowledgement and monitor official communications. Record the territory sought and establish a separate filing strategy for requested protection outside the UK.
+
+    - Do it yourself: [UK IPO - register a trade mark](https://www.gov.uk/how-to-register-a-trade-mark)
+    - Sources: [UK IPO trademark application](https://www.gov.uk/how-to-register-a-trade-mark/start-your-application)
+  - **Germany - DPMA (or EUIPO) filing**
+
+    When: Filing the mark in Germany
+
+    Confirm whether the strategy calls for a German national mark or a separate EU route. For the national application, use DPMA’s current service with the reviewed owner, representation and goods/services. The authorized filer approves declarations and fees before submission. Track the DPMA reference number; any EU application remains a separate matter with its own advice and filing evidence.
+
+    - Do it yourself: [DPMA trade mark filing](https://www.dpma.de/marken/index.html)
+    - Sources: [DPMA trademark application](https://www.dpma.de/english/trade_marks/application/index.html)
+  - **France - INPI (or EUIPO) filing**
+
+    When: Filing the mark in France
+
+    Prepare the applicant, mark and goods/services in INPI’s trademark portal. Review the complete summary and coverage before the authorized filer validates and pays, then retain the acknowledgement and national filing number. Monitor INPI correspondence for the matter. Broader EU protection needs a separate strategy; this trademark filing is also distinct from INPI company-formation formalities.
+
+    - Do it yourself: [INPI - depot de marque](https://www.inpi.fr/comprendre-la-propriete-intellectuelle/la-marque)
+    - Sources: [INPI trademark filing](https://www.inpi.fr/realiser-demarches/propriete-intellectuelle/deposer-sa-marque)
+
+<a id="step-6"></a>
+
+### 6. Track application status
+
+agent-runnable · ~2 min · async wait
+
+
+Monitor the official status and correspondence for the application number. Record response deadlines and send substantive office actions or oppositions to counsel promptly. Keep the office’s contact information current and preserve responses and filing receipts. When registration or another disposition occurs, hand any maintenance or further action to its responsible person.
+
+- Sources: [USPTO trademark process](https://www.uspto.gov/trademarks/basics/trademark-process) · [USPTO trademark tools](https://www.uspto.gov/trademarks)
+
+
+<a id="by-country"></a>
+
+## Country details
+
+<a id="geo-us"></a>
 
 ### United States
 
 - Step 1: Conduct trademark search Define the mark, goods or services and territories, then search for identical and similar wording or designs using the relevant trademark-office tools. Capture potentially relevant marks, owners, status and goods or services, along with the search terms. Send the clearance questions to the legal reviewer. An available domain or empty exact-name search does not clear the mark. ([USPTO trademark search](https://tmsearch.uspto.gov/search/search-information))
 - Step 5: USPTO trademark application Submit the reviewed US owner, mark, filing basis, goods/services and evidence through the current USPTO filing service. The applicant or authorized representative must approve the declarations, signature and fees. Save the filed copy and serial number and monitor official correspondence. The receipt records submission; the examination and any further requirements continue afterward. ([USPTO trademark application](https://www.uspto.gov/trademarks/apply))
 - Step 6: TSDR shows the application's serial number, status, and correspondence ([USPTO TSDR status lookup](https://tsdr.uspto.gov/))
+
+<a id="geo-in"></a>
 
 ### India
 
@@ -113,11 +217,15 @@ The trademark offices have no usable filing API. System provides guidance, draft
 - Step 5: India - CGPDTM e-filing Use the approved Indian owner, mark representation, goods/services and supporting evidence in the current IP India filing route. Confirm account and signature requirements from the official instructions. The authorized filer approves the application and fee, then retains the acknowledgement and application number. Monitor the Indian matter through IP India correspondence and status tools. ([Intellectual Property India e-filing](https://ipindiaonline.gov.in/))
 - Step 6: The application status lives on IP India's public search and e-filing portals ([Intellectual Property India e-filing](https://ipindiaonline.gov.in/))
 
+<a id="geo-uk"></a>
+
 ### United Kingdom
 
 - UK marks are filed online with the UK IPO (from £170); since Brexit an EUIPO registration no longer covers the UK, so UK + EU protection means two filings. ([UK IPO — register a trade mark](https://www.gov.uk/how-to-register-a-trade-mark))
 - Step 1: Search the UK IPO trademark registers UK marks are filed online with the UK IPO (from £170); since Brexit an EUIPO registration no longer covers the UK, so UK + EU protection means two filings. ([UK IPO — register a trade mark](https://www.gov.uk/how-to-register-a-trade-mark))
 - Step 5: UK - UK IPO filing Prepare the intended owner, mark and goods/services for the UK IPO route. Review classes, the current fee and any special application choice before the authorized applicant submits. Keep the acknowledgement and monitor official communications. Record the territory sought and establish a separate filing strategy for requested protection outside the UK. ([UK IPO - register a trade mark](https://www.gov.uk/how-to-register-a-trade-mark))
+
+<a id="geo-de"></a>
 
 ### Germany
 
@@ -125,17 +233,23 @@ The trademark offices have no usable filing API. System provides guidance, draft
 - Step 1: Search national and EU trademark registers for the intended territory National marks are filed with the DPMA (DPMAdirekt online filing); the EU-wide alternative is a single EUIPO application covering all 27 member states. ([DPMA trade mark filing](https://www.dpma.de/marken/index.html))
 - Step 5: Germany - DPMA (or EUIPO) filing Confirm whether the strategy calls for a German national mark or a separate EU route. For the national application, use DPMA’s current service with the reviewed owner, representation and goods/services. The authorized filer approves declarations and fees before submission. Track the DPMA reference number; any EU application remains a separate matter with its own advice and filing evidence. ([DPMA trade mark filing](https://www.dpma.de/marken/index.html))
 
+<a id="geo-fr"></a>
+
 ### France
 
 - French marks are filed online with the INPI; as in Germany, an EUIPO application is the single-filing route to EU-wide protection. ([INPI — dépôt de marque](https://www.inpi.fr/comprendre-la-propriete-intellectuelle/la-marque))
 - Step 1: Search national and EU trademark registers for the intended territory French marks are filed online with the INPI; as in Germany, an EUIPO application is the single-filing route to EU-wide protection. ([INPI — dépôt de marque](https://www.inpi.fr/comprendre-la-propriete-intellectuelle/la-marque))
 - Step 5: France - INPI (or EUIPO) filing Prepare the applicant, mark and goods/services in INPI’s trademark portal. Review the complete summary and coverage before the authorized filer validates and pays, then retain the acknowledgement and national filing number. Monitor INPI correspondence for the matter. Broader EU protection needs a separate strategy; this trademark filing is also distinct from INPI company-formation formalities. ([INPI - depot de marque](https://www.inpi.fr/comprendre-la-propriete-intellectuelle/la-marque))
 
+<a id="geo-pt"></a>
+
 ### Portugal
 
 - National marks are filed online with INPI (Instituto Nacional da Propriedade Industrial); the EU-wide alternative is a single EUIPO application covering all 27 member states, so PT + EU protection is usually one EUIPO filing. ([INPI — registo de marca](https://inpi.justica.gov.pt/))
 - Step 1: Search national and EU trademark registers for the intended territory National marks are filed online with INPI (Instituto Nacional da Propriedade Industrial); the EU-wide alternative is a single EUIPO application covering all 27 member states, so PT + EU protection is usually one EUIPO filing. ([INPI — registo de marca](https://inpi.justica.gov.pt/))
 - Step 5: National marks are filed online with INPI (Instituto Nacional da Propriedade Industrial); the EU-wide alternative is a single EUIPO application covering all 27 member states, so PT + EU protection is usually one EUIPO filing. ([INPI — registo de marca](https://inpi.justica.gov.pt/))
+
+<a id="geo-ca"></a>
 
 ### Canada
 
@@ -144,46 +258,51 @@ The trademark offices have no usable filing API. System provides guidance, draft
 - Step 5: File with CIPO (online, Nice-classified, with Madrid Protocol available for international extension) — and budget for the queue: CIPO examination waits run years, so file early. ([CIPO — trademarks](https://ised-isde.canada.ca/site/canadian-intellectual-property-office/en))
 - Step 6: Track the CIPO application and budget for the queue: examination waits run years ([CIPO — trademarks](https://ised-isde.canada.ca/site/canadian-intellectual-property-office/en))
 
+<a id="geo-nz"></a>
+
 ### New Zealand
 
 - File online with IPONZ: $100 per class (excluding GST), examination follows, registration takes a minimum of about 6 months, and a registration lasts 10 years before renewal. ([Trade marks — IPONZ](https://www.iponz.govt.nz/about-ip/trade-marks/))
 - Step 5: File online with IPONZ: $100 per class (excluding GST), examination follows, registration takes a minimum of about 6 months, and a registration lasts 10 years before renewal. ([Trade marks — IPONZ](https://www.iponz.govt.nz/about-ip/trade-marks/))
+
+<a id="geo-sg"></a>
 
 ### Singapore
 
 - Marks are filed with IPOS through the Digital Hub — S$280 per class online where the goods and services come entirely from IPOS's classification database — and accepted applications publish in the Trade Marks Journal with a 2-month opposition window. ([IPOS — how to register a trade mark](https://www.ipos.gov.sg/about-ip/trade-marks/how-to-register/))
 - Step 5: Marks are filed with IPOS through the Digital Hub — S$280 per class online where the goods and services come entirely from IPOS's classification database — and accepted applications publish in the Trade Marks Journal with a 2-month opposition window. ([IPOS — how to register a trade mark](https://www.ipos.gov.sg/about-ip/trade-marks/how-to-register/))
 
+<a id="geo-au"></a>
+
 ### Australia
 
 - Australian marks are filed online with IP Australia per class (TM Headstart gives a pre-assessment first); an adverse examination report leaves 15 months to resolve objections before the application lapses. ([IP Australia — trade marks](https://www.ipaustralia.gov.au/trade-marks))
 - Step 5: Australian marks are filed online with IP Australia per class (TM Headstart gives a pre-assessment first); an adverse examination report leaves 15 months to resolve objections before the application lapses. ([IP Australia — trade marks](https://www.ipaustralia.gov.au/trade-marks))
+
+<a id="geo-kr"></a>
 
 ### South Korea
 
 - Trademarks are filed with KIPO through the 특허로 e-filing system, with KIPRIS as the official pre-filing search. ([특허로 (KIPO e-filing)](https://www.patent.go.kr/))
 - Step 5: Trademarks are filed with KIPO through the 특허로 e-filing system, with KIPRIS as the official pre-filing search. ([특허로 (KIPO e-filing)](https://www.patent.go.kr/))
 
+<a id="geo-hk"></a>
+
 ### Hong Kong
 
 - Marks are filed with the Trade Marks Registry at the Intellectual Property Department under the Trade Marks Ordinance (Cap. 559), and published applications carry a 3-month opposition window from publication (Trade Marks Rules rule 16). ([IPD — apply for a trade mark](https://www.ipd.gov.hk/en/trade-marks/apply-for-a-trade-mark/index.html))
 - Step 5: Marks are filed with the Trade Marks Registry at the Intellectual Property Department under the Trade Marks Ordinance (Cap. 559), and published applications carry a 3-month opposition window from publication (Trade Marks Rules rule 16). ([IPD — apply for a trade mark](https://www.ipd.gov.hk/en/trade-marks/apply-for-a-trade-mark/index.html))
+
+<a id="geo-ee"></a>
 
 ### Estonia
 
 - Trademarks are filed with the Estonian Patent Office (Patendiamet) through its e-services; an EU trade mark at the EUIPO is the common startup route, since one filing covers Estonia with the rest of the EU. ([Estonian Patent Office (Patendiamet)](https://www.epa.ee/en))
 - Step 5: Trademarks are filed with the Estonian Patent Office (Patendiamet) through its e-services; an EU trade mark at the EUIPO is the common startup route, since one filing covers Estonia with the rest of the EU. ([Estonian Patent Office (Patendiamet)](https://www.epa.ee/en))
 
-## Artifacts
-
-Produces:
+## Outputs
 
 - Trademark application
-
-Requires:
-
-- Company name — from [Generate a company name](generate-a-company-name.md)
-- Brand logo — from [Generate a brand logo](generate-a-brand-logo.md)
 
 ## Related records
 

@@ -3,6 +3,10 @@
 
 # Run the fund back office
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Steps](#steps-at-a-glance)
+
+## Overview
+
 The running fund's money loop: capital calls issued and the wires verified, the management fee charged, and each investment booked on the fund ledger.
 
 | Field | Value |
@@ -19,44 +23,95 @@ The running fund's money loop: capital calls issued and the wires verified, the 
 
 The capital-call notices, wire checks, fee transfer, and ledger booking run over APIs with GP approval gates; the only human part is waiting on the LPs' wires.
 
-## Steps
+<a id="artifacts"></a>
 
-1. **Issue a capital call notice to the LPs** — agent-runnable · ~30 min · human approval required · hard to undo
+## Before you start
 
-   Calculate the capital call from the fund agreement, purpose and commitment schedule, applying side letters, exclusions and the relevant due date. Verify the fund’s payment instructions. The authorized GP approves the call amounts and notices before they are issued to investors. Track the resulting obligations against receipts and remaining unfunded commitments.
-
-   - Canonical vendor: Carta
-   - Vendor options: Carta, AngelList, Juniper Square, Sydecar
-2. **LPs send the capital call wires** — human · ~3 d · async wait
-
-   Send investors the GP-authorized call and a trusted way to verify the fund’s payment instructions. Resolve administrative questions through the fund contact and refer changes in amount or timing to the GP. Each investor’s authorized payer releases its own wire. Track remittance information while keeping promised payments distinct from funds actually received.
-
-   - Cross-arena market: [workflow-automation](../../open-rankings/workflow-automation)
-3. **Verify the capital call wires received** — agent-runnable · ~10 min
-
-   Match bank credits to capital calls by investor, amount, currency and reference. Resolve fees, shortfalls, unexpected senders and excess payments with the administrator before allocating receipts. Update capital accounts and unfunded commitments from the reconciled amounts, and give the GP the unpaid or ambiguous items requiring action.
-
-   - Canonical vendor: Mercury
-   - Vendor options: Mercury, Brex
-   - Ranked market: [startup-banking](../../open-rankings/startup-banking)
-4. **Charge the management fee** — agent-runnable · ~10 min · human approval required · hard to undo
-
-   Calculate the management fee from the executed fund documents and side letters using the applicable base, rate, period, offsets, waivers and step-downs. Reconcile it to earlier fees. The GP or designated approver authorizes the charge or payment, after which finance posts the transaction to the correct fund and recipient entities with the calculation attached.
-
-   - Canonical vendor: Mercury
-5. **Book the investment on the fund ledger** — agent-runnable · ~20 min · human approval required
-
-   Book the investment from executed transaction documents, funding evidence and the approved allocation. Identify the portfolio company, security, cost, currency and effective date, applying the administrator’s treatment of fees. Reconcile cash and holdings, keeping subsequent valuation adjustments separate from original cost so investor reporting can trace the position and its movements.
-
-   - Canonical vendor: Carta
-   - Vendor options: Carta, AngelList, Juniper Square
-
-## Artifacts
-
-Requires:
+Required artifacts:
 
 - Fund closing — from [Close the fund](close-the-fund.md)
 - Fund bank account — from [Form a VC fund](form-a-vc-fund.md)
+
+| Information to gather | Required by the record |
+| --- | --- |
+| capital call amount and schedule | Yes |
+| management fee terms | Yes |
+
+## Steps at a glance
+
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
+
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Issue a capital call notice to the LPs](#step-1) | agent-runnable; approval required | ~30 min | Entry step |
+| [2. LPs send the capital call wires](#step-2) | human; includes waiting | ~3 d | [Step 1](#step-1) |
+| [3. Verify the capital call wires received](#step-3) | agent-runnable | ~10 min | [Step 2](#step-2) |
+| [4. Charge the management fee](#step-4) | agent-runnable; approval required | ~10 min | [Step 3](#step-3) |
+| [5. Book the investment on the fund ledger](#step-5) | agent-runnable; approval required | ~20 min | [Step 4](#step-4) |
+
+<a id="steps"></a>
+
+## Step details
+
+<a id="step-1"></a>
+
+### 1. Issue a capital call notice to the LPs
+
+agent-runnable · ~30 min · human approval required · hard to undo
+
+
+Calculate the capital call from the fund agreement, purpose and commitment schedule, applying side letters, exclusions and the relevant due date. Verify the fund’s payment instructions. The authorized GP approves the call amounts and notices before they are issued to investors. Track the resulting obligations against receipts and remaining unfunded commitments.
+
+- Canonical vendor: Carta
+- Vendor options: Carta, AngelList, Juniper Square, Sydecar
+
+<a id="step-2"></a>
+
+### 2. LPs send the capital call wires
+
+human · ~3 d · async wait
+
+
+Send investors the GP-authorized call and a trusted way to verify the fund’s payment instructions. Resolve administrative questions through the fund contact and refer changes in amount or timing to the GP. Each investor’s authorized payer releases its own wire. Track remittance information while keeping promised payments distinct from funds actually received.
+
+- Cross-arena market: [workflow-automation](../../open-rankings/workflow-automation)
+
+<a id="step-3"></a>
+
+### 3. Verify the capital call wires received
+
+agent-runnable · ~10 min
+
+
+Match bank credits to capital calls by investor, amount, currency and reference. Resolve fees, shortfalls, unexpected senders and excess payments with the administrator before allocating receipts. Update capital accounts and unfunded commitments from the reconciled amounts, and give the GP the unpaid or ambiguous items requiring action.
+
+- Canonical vendor: Mercury
+- Vendor options: Mercury, Brex
+- Ranked market: [startup-banking](../../open-rankings/startup-banking)
+
+<a id="step-4"></a>
+
+### 4. Charge the management fee
+
+agent-runnable · ~10 min · human approval required · hard to undo
+
+
+Calculate the management fee from the executed fund documents and side letters using the applicable base, rate, period, offsets, waivers and step-downs. Reconcile it to earlier fees. The GP or designated approver authorizes the charge or payment, after which finance posts the transaction to the correct fund and recipient entities with the calculation attached.
+
+- Canonical vendor: Mercury
+
+<a id="step-5"></a>
+
+### 5. Book the investment on the fund ledger
+
+agent-runnable · ~20 min · human approval required
+
+
+Book the investment from executed transaction documents, funding evidence and the approved allocation. Identify the portfolio company, security, cost, currency and effective date, applying the administrator’s treatment of fees. Reconcile cash and holdings, keeping subsequent valuation adjustments separate from original cost so investor reporting can trace the position and its movements.
+
+- Canonical vendor: Carta
+- Vendor options: Carta, AngelList, Juniper Square
+
 
 ## Related records
 

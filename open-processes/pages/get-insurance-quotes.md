@@ -3,6 +3,10 @@
 
 # Get insurance quotes
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Geography](#geography) · [Steps](#steps-at-a-glance) · [Outputs](#outputs)
+
+## Overview
+
 Obtain quotes for D&O, E&O, general liability, and cyber insurance.
 
 | Field | Value |
@@ -19,74 +23,153 @@ Obtain quotes for D&O, E&O, general liability, and cyber insurance.
 
 Insurance quoting platforms lack APIs. System guides through requirements, compiles company data, tracks quotes.
 
-## Steps
+<a id="artifacts"></a>
 
-1. **Determine required coverage types** — agent-runnable · ~5 min
+## Before you start
 
-   Assess exposures from the company’s people, locations, product, customer contracts and assets. Distinguish coverage required by applicable rules or contracts from protection chosen for business risks. Discuss gaps and exclusions with a licensed broker, then decide which coverage types and limits to seek. Quotes should address the same exposures so the later comparison is meaningful.
+Required artifacts:
 
-   - Sources: [SBA business insurance](https://www.sba.gov/business-guide/launch-your-business/get-business-insurance?directory=true)
-2. **Compile company info for application** — agent-runnable · ~5 min
+- EIN assignment letter — from [Obtain the company tax identifiers](get-ein.md)
+- Business mailing address — from [Set up mailing address](set-up-mailing-address.md)
 
-   Gather the business description, revenue, payroll, locations, claims history and operational facts requested by insurers. Check the period and entities covered by each question. Resolve unknown security or historical facts with the people who can verify them. The authorized applicant reviews material representations before the completed application is sent.
+| Information to gather | Required by the record |
+| --- | --- |
+| revenue | Yes |
+| industry | Yes |
 
-   - Sources: [SBA business insurance](https://www.sba.gov/business-guide/launch-your-business/get-business-insurance?directory=true)
-3. **Submit applications to brokers** — manual form/portal · ~30 min · human approval required
+## Geography
 
-   Send the applicant-approved answers and requested coverage to the selected brokers through their verified secure channels. Keep the exact submission for comparison with later questions and quotes. Track which markets receive it, and correct inconsistent information across submissions. Give underwriting clarification requests to the person who knows the facts before an answer is returned.
+Country rows describe the guidance recorded here. Local notes and step alternatives do not establish a complete country-specific workflow.
 
-   - Canonical vendor: Embroker
-   - Sources: [SBA business insurance](https://www.sba.gov/business-guide/launch-your-business/get-business-insurance?directory=true)
-4. **Wait for quotes (3-5 days)** — human · ~3 d · async wait
+| Country | Recorded guidance | Steps with local alternatives or resolutions |
+| --- | --- | --- |
+| [United Kingdom](#geo-uk) | Local analog note | — |
+| [Germany](#geo-de) | Local analog note | — |
+| [Singapore](#geo-sg) | Local analog note | — |
+| [Hong Kong](#geo-hk) | Local analog note | — |
 
-   Follow up on outstanding underwriting questions and expected quote dates with the broker. Keep estimates current as markets respond, decline or ask for more information. Resolve material application changes with the applicant before sending them. Move to comparison when the buyer has enough written offers to assess coverage and understands which markets or terms are still pending.
+## Steps at a glance
 
-   - Canonical vendor: Embroker
-   - Cross-arena market: [workflow-automation](../../open-rankings/workflow-automation)
-   - Sources: [SBA business insurance](https://www.sba.gov/business-guide/launch-your-business/get-business-insurance?directory=true)
-5. **Compare quotes and recommend** — agent-runnable · ~10 min
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
 
-   Compare quotes for the same entities, activities, limits and start date. Examine retentions, exclusions, defense terms, endorsements and claims conditions with the broker, including gaps against customer requirements. Present the buyer with the meaningful tradeoffs and unresolved wording. A cheaper premium should be understood alongside what coverage and conditions change.
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Determine required coverage types](#step-1) | agent-runnable | ~5 min | Entry step |
+| [2. Compile company info for application](#step-2) | agent-runnable | ~5 min | [Step 1](#step-1) |
+| [3. Submit applications to brokers](#step-3) | manual form/portal; approval required | ~30 min | [Step 2](#step-2) |
+| [4. Wait for quotes (3-5 days)](#step-4) | human; includes waiting | ~3 d | [Step 3](#step-3) |
+| [5. Compare quotes and recommend](#step-5) | agent-runnable | ~10 min | [Step 4](#step-4) |
+| [6. Select and bind coverage](#step-6) | human; approval required | ~15 min | [Step 5](#step-5) |
 
-   - Cross-arena options: ChatGPT, Claude, Gemini (ai-assistants)
-   - Sources: [SBA business insurance](https://www.sba.gov/business-guide/launch-your-business/get-business-insurance?directory=true)
-6. **Select and bind coverage** — human · ~15 min · human approval required · hard to undo
+<a id="steps"></a>
 
-   The authorized buyer approves the insurer, terms, premium and effective date after outstanding conditions are resolved. Send the binding instruction and arrange the approved payment. Obtain written coverage confirmation, then compare the issued policy with the quote and endorsements. Keep discrepancies open with the broker until the company has the coverage it agreed to buy.
+## Step details
 
-   - Verify: The carrier issues the policy and a certificate of insurance (COI) you can hand to counterparties.
-   - Produces: Insurance policies
-   - Canonical vendor: Embroker
-   - Sources: [SBA business insurance](https://www.sba.gov/business-guide/launch-your-business/get-business-insurance?directory=true)
+<a id="step-1"></a>
 
-## By country
+### 1. Determine required coverage types
+
+agent-runnable · ~5 min
+
+
+Assess exposures from the company’s people, locations, product, customer contracts and assets. Distinguish coverage required by applicable rules or contracts from protection chosen for business risks. Discuss gaps and exclusions with a licensed broker, then decide which coverage types and limits to seek. Quotes should address the same exposures so the later comparison is meaningful.
+
+- Sources: [SBA business insurance](https://www.sba.gov/business-guide/launch-your-business/get-business-insurance?directory=true)
+
+<a id="step-2"></a>
+
+### 2. Compile company info for application
+
+agent-runnable · ~5 min
+
+
+Gather the business description, revenue, payroll, locations, claims history and operational facts requested by insurers. Check the period and entities covered by each question. Resolve unknown security or historical facts with the people who can verify them. The authorized applicant reviews material representations before the completed application is sent.
+
+- Sources: [SBA business insurance](https://www.sba.gov/business-guide/launch-your-business/get-business-insurance?directory=true)
+
+<a id="step-3"></a>
+
+### 3. Submit applications to brokers
+
+manual form/portal · ~30 min · human approval required
+
+
+Send the applicant-approved answers and requested coverage to the selected brokers through their verified secure channels. Keep the exact submission for comparison with later questions and quotes. Track which markets receive it, and correct inconsistent information across submissions. Give underwriting clarification requests to the person who knows the facts before an answer is returned.
+
+- Canonical vendor: Embroker
+- Sources: [SBA business insurance](https://www.sba.gov/business-guide/launch-your-business/get-business-insurance?directory=true)
+
+<a id="step-4"></a>
+
+### 4. Wait for quotes (3-5 days)
+
+human · ~3 d · async wait
+
+
+Follow up on outstanding underwriting questions and expected quote dates with the broker. Keep estimates current as markets respond, decline or ask for more information. Resolve material application changes with the applicant before sending them. Move to comparison when the buyer has enough written offers to assess coverage and understands which markets or terms are still pending.
+
+- Canonical vendor: Embroker
+- Cross-arena market: [workflow-automation](../../open-rankings/workflow-automation)
+- Sources: [SBA business insurance](https://www.sba.gov/business-guide/launch-your-business/get-business-insurance?directory=true)
+
+<a id="step-5"></a>
+
+### 5. Compare quotes and recommend
+
+agent-runnable · ~10 min
+
+
+Compare quotes for the same entities, activities, limits and start date. Examine retentions, exclusions, defense terms, endorsements and claims conditions with the broker, including gaps against customer requirements. Present the buyer with the meaningful tradeoffs and unresolved wording. A cheaper premium should be understood alongside what coverage and conditions change.
+
+- Cross-arena options: ChatGPT, Claude, Gemini (ai-assistants)
+- Sources: [SBA business insurance](https://www.sba.gov/business-guide/launch-your-business/get-business-insurance?directory=true)
+
+<a id="step-6"></a>
+
+### 6. Select and bind coverage
+
+human · ~15 min · human approval required · hard to undo
+
+
+The authorized buyer approves the insurer, terms, premium and effective date after outstanding conditions are resolved. Send the binding instruction and arrange the approved payment. Obtain written coverage confirmation, then compare the issued policy with the quote and endorsements. Keep discrepancies open with the broker until the company has the coverage it agreed to buy.
+
+- Verify: The carrier issues the policy and a certificate of insurance (COI) you can hand to counterparties.
+- Produces: Insurance policies
+- Canonical vendor: Embroker
+- Sources: [SBA business insurance](https://www.sba.gov/business-guide/launch-your-business/get-business-insurance?directory=true)
+
+
+<a id="by-country"></a>
+
+## Country details
+
+<a id="geo-uk"></a>
 
 ### United Kingdom
 
 - One line is compulsory: employers' liability insurance (≥ £5m from an authorised insurer) from the day you employ anyone, with fines of up to £2,500 per uninsured day — D&O/cyber remain optional buys. ([Employers' liability insurance (mandatory)](https://www.gov.uk/employers-liability-insurance))
 
+<a id="geo-de"></a>
+
 ### Germany
 
 - Workplace-accident cover is not shopped for: statutory accident insurance via the sector's Berufsgenossenschaft (DGUV system) is automatic and mandatory — the commercial quotes are for D&O, cyber and Betriebshaftpflicht. ([DGUV — statutory accident insurance](https://www.dguv.de/))
+
+<a id="geo-sg"></a>
 
 ### Singapore
 
 - One line is compulsory: work injury compensation insurance for all employees doing manual work and all earning $2,600 or less a month, bought from an MOM-designated insurer — D&O and cyber stay optional buys. ([MOM — work injury compensation insurance](https://www.mom.gov.sg/workplace-safety-and-health/work-injury-compensation/work-injury-compensation-insurance))
 
+<a id="geo-hk"></a>
+
 ### Hong Kong
 
 - One line is compulsory from day one: employees' compensation insurance for every employee (Employees' Compensation Ordinance section 40), in force before anyone starts work — D&O and cyber stay optional buys. ([Labour Department — Employees' Compensation Ordinance](https://www.labour.gov.hk/eng/legislat/content1.htm))
 
-## Artifacts
-
-Produces:
+## Outputs
 
 - Insurance policies
-
-Requires:
-
-- EIN assignment letter — from [Obtain the company tax identifiers](get-ein.md)
-- Business mailing address — from [Set up mailing address](set-up-mailing-address.md)
 
 ---
 

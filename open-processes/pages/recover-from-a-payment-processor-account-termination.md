@@ -3,6 +3,10 @@
 
 # Recover from a payment-processor account termination
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Steps](#steps-at-a-glance)
+
+## Overview
+
 **Trigger:** Your payment processor emails that your account is terminated or restricted; payouts pause and a final processing date is set.
 
 Your processor is terminating the account. Read the notice: the stated reason, the final processing date, the reserve terms. Processors commonly hold funds against future disputes for a stated period after termination; Stripe's services agreement is public and explains its reserve mechanics, so read yours. Then do three things at once. Export every record while you still have API access. Appeal through the processor's review channel with real evidence. Start underwriting at a backup processor now; onboarding takes days. Moving card data between PCI-compliant processors at the PAN level is a real, supported path, not a workaround. If payouts or renewals will wobble, tell your customers. How long the reserve is held is the processor's call; treat it as a wait.
@@ -22,41 +26,113 @@ Your processor is terminating the account. Read the notice: the stated reason, t
 
 Data export and the checkout re-point are real API work while access lasts; the appeal, the underwriting conversation at the next processor, and the reserve hold are up to the processors and their timelines.
 
-## Steps
+## Before you start
 
-1. **Read the termination notice: the stated reason, the final processing date, and the reserve/payout-hold terms your services agreement sets** — human · ~30 min
+| Information to gather | Required by the record |
+| --- | --- |
+| the termination notice (reason, final processing date, reserve terms) | Yes |
+| what runs on the processor: subscriptions, payout cadence, integrations | Yes |
 
-   - Do it yourself: [Stripe Services Agreement (termination & reserves)](https://stripe.com/legal/ssa)
-   - Next: steps 2, 3 and 4 — all follow this step
-2. **Export everything while API access lasts: charges, customers, subscription state, dispute history, payout records** — agent-runnable · ~1 h
+## Steps at a glance
 
-   - Canonical vendor: Stripe
-   - Do it yourself: [Stripe: reports & data exports](https://docs.stripe.com/stripe-reports)
-3. **File the appeal through the processor's own review channel, with evidence: business model, fulfillment proof, dispute history** — human · ~1 h
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
 
-   *Follows step 1.*
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Read the termination notice: the stated reason, the final processing date, and the reserve/payout-hold terms your services agreement sets](#step-1) | human | ~30 min | Entry step |
+| [2. Export everything while API access lasts: charges, customers, subscription state, dispute history, payout records](#step-2) | agent-runnable | ~1 h | [Step 1](#step-1) |
+| [3. File the appeal through the processor's own review channel, with evidence: business model, fulfillment proof, dispute history](#step-3) | human | ~1 h | [Step 1](#step-1) |
+| [4. Choose the backup processor and start its underwriting now — onboarding/KYC runs in days, not hours](#step-4) | human | ~1 h | [Step 1](#step-1) |
+| [5. Request the PAN-level card-data migration to the new processor (a PCI-compliant processor-to-processor transfer)](#step-5) | manual form/portal | ~45 min | All: [Step 2](#step-2); [Step 4](#step-4) |
+| [6. Re-point checkout, billing, and webhooks to the new processor behind a flag, and reconcile the first live charges](#step-6) | agent-runnable | ~2 h | [Step 5](#step-5) |
+| [7. Tell affected customers honestly if payouts, refunds, or renewals will wobble during the cutover](#step-7) | human | ~45 min | [Step 6](#step-6) |
+| [8. Wait out the appeal decision and the reserve release — both run on the processor's stated schedule](#step-8) | human; includes waiting | ~30 d | All: [Step 3](#step-3); [Step 7](#step-7) |
 
-   - Do it yourself: [Stripe support (account reviews)](https://support.stripe.com/)
-4. **Choose the backup processor and start its underwriting now — onboarding/KYC runs in days, not hours** — human · ~1 h
+<a id="steps"></a>
 
-   *Follows step 1.*
+## Step details
 
-   - Vendor options: Paddle, Paypal, Square
-   - Ranked market: [payments](../../open-rankings/payments)
-5. **Request the PAN-level card-data migration to the new processor (a PCI-compliant processor-to-processor transfer)** — manual form/portal · ~45 min
+<a id="step-1"></a>
 
-   *Follows steps 2 and 4 — both are required first.*
+### 1. Read the termination notice: the stated reason, the final processing date, and the reserve/payout-hold terms your services agreement sets
 
-   - Canonical vendor: Stripe
-   - Do it yourself: [Stripe: payments data migrations](https://docs.stripe.com/get-started/data-migrations)
-6. **Re-point checkout, billing, and webhooks to the new processor behind a flag, and reconcile the first live charges** — agent-runnable · ~2 h
+human · ~30 min
 
-   - Vendor options: Paddle, Paypal, Square
-   - Ranked market: [payments](../../open-rankings/payments)
-7. **Tell affected customers honestly if payouts, refunds, or renewals will wobble during the cutover** — human · ~45 min · hard to undo
-8. **Wait out the appeal decision and the reserve release — both run on the processor's stated schedule** — human · ~30 d · async wait
 
-   *Follows steps 3 and 7 — both are required first.*
+- Do it yourself: [Stripe Services Agreement (termination & reserves)](https://stripe.com/legal/ssa)
+- Next: steps 2, 3 and 4 — all follow this step
+
+<a id="step-2"></a>
+
+### 2. Export everything while API access lasts: charges, customers, subscription state, dispute history, payout records
+
+agent-runnable · ~1 h
+
+
+- Canonical vendor: Stripe
+- Do it yourself: [Stripe: reports & data exports](https://docs.stripe.com/stripe-reports)
+
+<a id="step-3"></a>
+
+### 3. File the appeal through the processor's own review channel, with evidence: business model, fulfillment proof, dispute history
+
+human · ~1 h
+
+
+*Follows step 1.*
+
+- Do it yourself: [Stripe support (account reviews)](https://support.stripe.com/)
+
+<a id="step-4"></a>
+
+### 4. Choose the backup processor and start its underwriting now — onboarding/KYC runs in days, not hours
+
+human · ~1 h
+
+
+*Follows step 1.*
+
+- Vendor options: Paddle, Paypal, Square
+- Ranked market: [payments](../../open-rankings/payments)
+
+<a id="step-5"></a>
+
+### 5. Request the PAN-level card-data migration to the new processor (a PCI-compliant processor-to-processor transfer)
+
+manual form/portal · ~45 min
+
+
+*Follows steps 2 and 4 — both are required first.*
+
+- Canonical vendor: Stripe
+- Do it yourself: [Stripe: payments data migrations](https://docs.stripe.com/get-started/data-migrations)
+
+<a id="step-6"></a>
+
+### 6. Re-point checkout, billing, and webhooks to the new processor behind a flag, and reconcile the first live charges
+
+agent-runnable · ~2 h
+
+
+- Vendor options: Paddle, Paypal, Square
+- Ranked market: [payments](../../open-rankings/payments)
+
+<a id="step-7"></a>
+
+### 7. Tell affected customers honestly if payouts, refunds, or renewals will wobble during the cutover
+
+human · ~45 min · hard to undo
+
+
+<a id="step-8"></a>
+
+### 8. Wait out the appeal decision and the reserve release — both run on the processor's stated schedule
+
+human · ~30 d · async wait
+
+
+*Follows steps 3 and 7 — both are required first.*
+
 
 ---
 

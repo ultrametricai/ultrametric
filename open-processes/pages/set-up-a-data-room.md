@@ -3,6 +3,10 @@
 
 # Set up a data room
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Steps](#steps-at-a-glance) · [Outputs](#outputs)
+
+## Overview
+
 Stand up the diligence data room investors expect: charter docs, cap table, financials, and key contracts — organized, permissioned, and kept current.
 
 | Field | Value |
@@ -19,33 +23,11 @@ Stand up the diligence data room investors expect: charter docs, cap table, fina
 
 Document collection and permissions are API work; the hosting choice and diligence answers stay with the founder.
 
-## Steps
+<a id="artifacts"></a>
 
-1. **Choose where to host the data room** — human · ~10 min
+## Before you start
 
-   Compare data-room tools for the intended reviewers, document sensitivity and diligence process. Examine folder permissions, revocation, access history, download controls and exportability, along with cost and maintenance effort. Select a host and access model the room’s owner can operate, noting any important controls the chosen service lacks.
-
-   - Vendor options: Notion, Google Drive, Dropbox
-   - Ranked market: [cloud-storage](../../open-rankings/cloud-storage)
-2. **Assemble the core documents (charter, cap table, financials, contracts)** — agent-runnable · ~30 min
-
-   Gather the corporate, ownership, financial and commercial records needed for the intended diligence. Use executed or final versions, reconcile the cap table and reporting periods, and identify missing or unsigned documents. Organize them so reviewers can find the evidence behind a claim. Resolve sensitive disclosures or redactions with the relevant owner before adding them to the shared room.
-3. **Set access controls and share links** — agent-runnable · ~10 min
-
-   The data-room owner grants each approved investor or adviser access to the documents needed for their diligence. Configure named access, expiry and download controls where supported, and test what that audience can actually see before sending links. Keep ownership of access changes clear so permissions can be narrowed or revoked as the relationship changes.
-
-   - Produces: Diligence data room
-4. **Answer diligence follow-ups as they land** — human · ~1 h
-
-   Route each diligence question to the person responsible for its subject, with the relevant document and requested response date. Recheck facts and disclosure scope before reusing an earlier answer. Share the resolved response through the agreed channel, updating supporting documents where necessary. Keep unresolved questions visible until the reviewer accepts the answer or identifies what is still missing.
-
-## Artifacts
-
-Produces:
-
-- Diligence data room
-
-Requires:
+Required artifacts:
 
 - Document storage — from [Set up doc storage](set-up-doc-storage.md)
 - Certificate of Incorporation — from [Incorporate the company](incorporate-c-corp.md)
@@ -53,6 +35,67 @@ Requires:
 - Cap table record — from [Set up cap table](set-up-cap-table.md)
 - Financial statements — from [Bookkeeping close](bookkeeping-close.md)
 - IP assignments (PIIA) — from [Get IP assignments signed](get-ip-assignments-signed.md)
+
+## Steps at a glance
+
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
+
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Choose where to host the data room](#step-1) | human | ~10 min | Entry step |
+| [2. Assemble the core documents (charter, cap table, financials, contracts)](#step-2) | agent-runnable | ~30 min | [Step 1](#step-1) |
+| [3. Set access controls and share links](#step-3) | agent-runnable | ~10 min | [Step 2](#step-2) |
+| [4. Answer diligence follow-ups as they land](#step-4) | human | ~1 h | [Step 3](#step-3) |
+
+<a id="steps"></a>
+
+## Step details
+
+<a id="step-1"></a>
+
+### 1. Choose where to host the data room
+
+human · ~10 min
+
+
+Compare data-room tools for the intended reviewers, document sensitivity and diligence process. Examine folder permissions, revocation, access history, download controls and exportability, along with cost and maintenance effort. Select a host and access model the room’s owner can operate, noting any important controls the chosen service lacks.
+
+- Vendor options: Notion, Google Drive, Dropbox
+- Ranked market: [cloud-storage](../../open-rankings/cloud-storage)
+
+<a id="step-2"></a>
+
+### 2. Assemble the core documents (charter, cap table, financials, contracts)
+
+agent-runnable · ~30 min
+
+
+Gather the corporate, ownership, financial and commercial records needed for the intended diligence. Use executed or final versions, reconcile the cap table and reporting periods, and identify missing or unsigned documents. Organize them so reviewers can find the evidence behind a claim. Resolve sensitive disclosures or redactions with the relevant owner before adding them to the shared room.
+
+<a id="step-3"></a>
+
+### 3. Set access controls and share links
+
+agent-runnable · ~10 min
+
+
+The data-room owner grants each approved investor or adviser access to the documents needed for their diligence. Configure named access, expiry and download controls where supported, and test what that audience can actually see before sending links. Keep ownership of access changes clear so permissions can be narrowed or revoked as the relationship changes.
+
+- Produces: Diligence data room
+
+<a id="step-4"></a>
+
+### 4. Answer diligence follow-ups as they land
+
+human · ~1 h
+
+
+Route each diligence question to the person responsible for its subject, with the relevant document and requested response date. Recheck facts and disclosure scope before reusing an earlier answer. Share the resolved response through the agreed channel, updating supporting documents where necessary. Keep unresolved questions visible until the reviewer accepts the answer or identifies what is still missing.
+
+
+## Outputs
+
+- Diligence data room
 
 ## Related records
 

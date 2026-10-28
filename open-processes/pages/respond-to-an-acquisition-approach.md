@@ -3,6 +3,10 @@
 
 # Respond to an acquisition approach
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Steps](#steps-at-a-glance)
+
+## Overview
+
 **Trigger:** An acquirer reaches out: a corp-dev email, a partner-meeting invitation, or a direct offer to buy the company.
 
 Most corporate-development interest is market research; a real offer carries urgency and an expiration (lore rule kan-real-offer-test). Qualify the approach before the company feels it, and decide whether you have a concrete reason to sell at all (lore rule gil-legitimate-reasons-to-sell). If the conversation continues, the NDA comes before any data or team access (lore rule kan-nda-before-term-sheet), and the board hears about it before any exclusivity: a no-shop binds the company, and once the term sheet is signed you cannot shop the deal and unsettled points default to the acquirer (lore rule kan-leverage-ends-at-term-sheet). Decide who runs the process: M&A counsel always, a banker when the stage and the multiple justify the fee (lore rule dixon-banker-only-late-stage). Stand up a clean data room, research how this acquirer has behaved between LOI and close (lore rule dixon-research-loi-conduct), and prepare the leak playbook before there is anything to leak. Editorial guidance from the startup lore and the standard documents; nothing here is legal or financial advice.
@@ -22,34 +26,99 @@ Most corporate-development interest is market research; a real offer carries urg
 
 Qualifying the approach, the board conversation, and the negotiation are founder work; an agent can assemble the data room, build the acquirer-conduct research file, and draft the need-to-know communication plan.
 
-## Steps
+## Before you start
 
-1. **Qualify the approach: a real offer carries urgency and an expiration; corp-dev coffee without a clock is market research** — human · ~30 min
+| Information to gather | Required by the record |
+| --- | --- |
+| the approach itself: who reached out, what they asked for, any deadline attached | Yes |
+| whether the board knows, and any existing NDA or exclusivity with this party | Yes |
 
-   Treat the approach as real only when it carries an expiration date or a term sheet promised within days, with the acquirer applying the time pressure (lore rule kan-real-offer-test). Acquisitions happen when an internal champion wants to own you (lore rule kan-companies-are-bought-not-sold), so identify who the champion is before investing the company's attention. Engage at all only with a concrete reason to sell (lore rule gil-legitimate-reasons-to-sell).
+## Steps at a glance
 
-   - If "the approach is real and the founder chooses to explore a sale": continue at step 2
-2. **Sign the NDA before anything moves: no data, no architecture walkthroughs, no team interviews until it is signed** — human · ~30 min
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
 
-   *Follows step 1 (when the approach is real and the founder chooses to explore a sale).*
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Qualify the approach: a real offer carries urgency and an expiration; corp-dev coffee without a clock is market research](#step-1) | human | ~30 min | Entry step |
+| [2. Sign the NDA before anything moves: no data, no architecture walkthroughs, no team interviews until it is signed](#step-2) | human | ~30 min | [Step 1](#step-1) (the approach is real and the founder chooses to explore a sale) |
+| [3. Tell the board before any exclusivity: a no-shop binds the company, and agreeing to one is a board-level decision](#step-3) | human | ~30 min | [Step 2](#step-2) |
+| [4. Decide who runs the deal: M&A counsel always; a banker when the stage and the multiple justify the fee](#step-4) | human | ~45 min | [Step 3](#step-3) |
+| [5. Stand up the deal data room with clean permissions, so diligence answers come from one controlled place](#step-5) | agent-runnable | ~45 min | [Step 4](#step-4) |
+| [6. Negotiate the big points before the term sheet: price, structure, and the non-price deal-killers](#step-6) | human | ~1.5 h | [Step 5](#step-5) |
+| [7. Prepare the leak playbook now: the need-to-know list, the pre-agreed line with the acquirer, and what employees hear if it breaks](#step-7) | human | ~30 min | [Step 6](#step-6) |
 
-   When: the approach is real and the founder chooses to explore a sale
+<a id="steps"></a>
 
-   Once committed to exploring a sale, share data freely under an NDA so red flags surface before the term sheet, and refuse acquirer interviews of your team until it is signed (lore rule kan-nda-before-term-sheet). The NDA is the gate between a conversation and a diligence process. If qualification said no, the response is a polite decline and the process ends; everything from here runs only on a real offer the founder chose to explore.
-3. **Tell the board before any exclusivity: a no-shop binds the company, and agreeing to one is a board-level decision** — human · ~30 min
-4. **Decide who runs the deal: M&A counsel always; a banker when the stage and the multiple justify the fee** — human · ~45 min
+## Step details
 
-   Use a banker only when the company is late stage and selling on a multiple of profits or revenue; earlier than that, the founder runs the process with counsel (lore rule dixon-banker-only-late-stage).
+<a id="step-1"></a>
 
-   - Vendor options: Cooley, Fenwick, Gunderson Dettmer
-   - Ranked market: [startup-law-firms](../../open-rankings/startup-law-firms)
-5. **Stand up the deal data room with clean permissions, so diligence answers come from one controlled place** — agent-runnable · ~45 min
+### 1. Qualify the approach: a real offer carries urgency and an expiration; corp-dev coffee without a clock is market research
 
-   - Runs the process [Set up a data room](set-up-a-data-room.md)
-6. **Negotiate the big points before the term sheet: price, structure, and the non-price deal-killers** — human · ~1.5 h · hard to undo
+human · ~30 min
 
-   Negotiate the business and legal points before signing and push for the shortest closing you can get; after signing you cannot shop the deal and unsettled points default to the acquirer (lore rule kan-leverage-ends-at-term-sheet). Learn the non-price deal-killer terms first (lore rule dixon-deal-killer-terms), and research how this acquirer has behaved between LOI and close before you sign anything (lore rule dixon-research-loi-conduct).
-7. **Prepare the leak playbook now: the need-to-know list, the pre-agreed line with the acquirer, and what employees hear if it breaks** — human · ~30 min · hard to undo
+
+Treat the approach as real only when it carries an expiration date or a term sheet promised within days, with the acquirer applying the time pressure (lore rule kan-real-offer-test). Acquisitions happen when an internal champion wants to own you (lore rule kan-companies-are-bought-not-sold), so identify who the champion is before investing the company's attention. Engage at all only with a concrete reason to sell (lore rule gil-legitimate-reasons-to-sell).
+
+- If "the approach is real and the founder chooses to explore a sale": continue at step 2
+
+<a id="step-2"></a>
+
+### 2. Sign the NDA before anything moves: no data, no architecture walkthroughs, no team interviews until it is signed
+
+human · ~30 min
+
+
+*Follows step 1 (when the approach is real and the founder chooses to explore a sale).*
+
+When: the approach is real and the founder chooses to explore a sale
+
+Once committed to exploring a sale, share data freely under an NDA so red flags surface before the term sheet, and refuse acquirer interviews of your team until it is signed (lore rule kan-nda-before-term-sheet). The NDA is the gate between a conversation and a diligence process. If qualification said no, the response is a polite decline and the process ends; everything from here runs only on a real offer the founder chose to explore.
+
+<a id="step-3"></a>
+
+### 3. Tell the board before any exclusivity: a no-shop binds the company, and agreeing to one is a board-level decision
+
+human · ~30 min
+
+
+<a id="step-4"></a>
+
+### 4. Decide who runs the deal: M&A counsel always; a banker when the stage and the multiple justify the fee
+
+human · ~45 min
+
+
+Use a banker only when the company is late stage and selling on a multiple of profits or revenue; earlier than that, the founder runs the process with counsel (lore rule dixon-banker-only-late-stage).
+
+- Vendor options: Cooley, Fenwick, Gunderson Dettmer
+- Ranked market: [startup-law-firms](../../open-rankings/startup-law-firms)
+
+<a id="step-5"></a>
+
+### 5. Stand up the deal data room with clean permissions, so diligence answers come from one controlled place
+
+agent-runnable · ~45 min
+
+
+- Runs the process [Set up a data room](set-up-a-data-room.md)
+
+<a id="step-6"></a>
+
+### 6. Negotiate the big points before the term sheet: price, structure, and the non-price deal-killers
+
+human · ~1.5 h · hard to undo
+
+
+Negotiate the business and legal points before signing and push for the shortest closing you can get; after signing you cannot shop the deal and unsettled points default to the acquirer (lore rule kan-leverage-ends-at-term-sheet). Learn the non-price deal-killer terms first (lore rule dixon-deal-killer-terms), and research how this acquirer has behaved between LOI and close before you sign anything (lore rule dixon-research-loi-conduct).
+
+<a id="step-7"></a>
+
+### 7. Prepare the leak playbook now: the need-to-know list, the pre-agreed line with the acquirer, and what employees hear if it breaks
+
+human · ~30 min · hard to undo
+
+
 
 ---
 

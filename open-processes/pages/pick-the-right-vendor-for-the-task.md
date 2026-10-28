@@ -3,6 +3,10 @@
 
 # Pick the right vendor for the task
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Steps](#steps-at-a-glance) · [Outputs](#outputs)
+
+## Overview
+
 Pick software for a function given YOUR context: define requirements, research and shortlist the market, compare candidates on judged evidence against the stack you already run, trial the finalists agentically, then security review, negotiation, and a signed agreement. Rollout hands off to the Connect a vendor or MCP server process.
 
 Agree whether this run ends with a purchasing decision or includes already authorized contracting and rollout. Reuse the company buying brief and existing stack before asking for new facts. A decision-ready result contains requirement-level evidence, trial outputs, costs and unresolved questions; it may recommend retaining the incumbent or selecting no candidate. Mark unrun trials and unavailable access explicitly. A selected vendor is not contracted or installed until the corresponding agreement and rollout evidence exist. Keep the exact approved scope and remaining owner actions with the decision.
@@ -27,73 +31,154 @@ Requirements, market research, evidence comparison, and agentic trials run end-t
 - A reproducible trial record with outputs, failures, manual interventions and plan/access limits.
 - A purchasing decision or explicit unresolved decision, with any contracting and rollout work reported separately.
 
-## Steps
+## Before you start
 
-1. **Define requirements and constraints** — agent-runnable · ~20 min
+| Information to gather | Required by the record |
+| --- | --- |
+| function you are buying for | Yes |
+| budget and seat count | Yes |
+| current tool stack | Yes |
+| security and compliance requirements | Optional |
 
-   Describe the job the company needs the software to perform, who will use it, and the current tools or manual process it would replace. Gather budget, expected usage, integration, export, security, and data-location requirements from their owners. Separate essential constraints from preferences and define how a successful trial will be judged. Record agreed priorities and flag unresolved tradeoffs for the purchasing owner; reversible desk research can proceed while those choices remain open.
+## Steps at a glance
 
-   Name the purchasing owner and record each essential requirement with its acceptance check. Include the incumbent and the cost of changing workflows. Establish the data and permission scope allowed for trials; absent trial access is a constraint, not evidence that the product fails.
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
 
-   For a formation, tax or other regulated service, include the relevant jurisdiction, entity type, service scope and deadline in the brief. Check provider eligibility and exclusions from current evidence or a qualified reviewer. Unresolved coverage becomes a disqualifier or question for the provider; a vendor listing or attractive price does not resolve it.
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Define requirements and constraints](#step-1) | agent-runnable | ~20 min | Entry step |
+| [2. Research the market and shortlist](#step-2) | agent-runnable | ~30 min | [Step 1](#step-1) |
+| [3. Compare on evidence and rank against your stack](#step-3) | agent-runnable | ~20 min | [Step 2](#step-2) |
+| [4. Trial top candidates agentically](#step-4) | agent-runnable | ~1 h | [Step 3](#step-3) |
+| [5. Security and data review](#step-5) | human; approval required | ~45 min | [Step 4](#step-4) |
+| [6. Negotiate pricing and terms](#step-6) | human; approval required | ~1 h | [Step 5](#step-5) |
+| [7. Prepare the agreement for signature](#step-7) | agent-runnable; approval required | ~10 min | [Step 6](#step-6) |
+| [8. Sign the agreement](#step-8) | human; signature required | ~5 min | [Step 7](#step-7) |
+| [9. Connect and roll out to the team](#step-9) | agent-runnable | ~15 min | [Step 8](#step-8) |
 
-   Before broad market research, save a compact buying brief and an evidence matrix with one row per essential requirement. Mark unverified entries unknown. Keep these artifacts usable even if the run pauses before a recommendation; a conversation-only plan does not preserve the working comparison.
+<a id="steps"></a>
 
-   - Vendor options: ChatGPT, Claude, Gemini, Grok
-   - Ranked market: [ai-assistants](../../open-rankings/ai-assistants)
-2. **Research the market and shortlist** — agent-runnable · ~30 min
+## Step details
 
-   Search the market against the current buying brief, starting with current product documentation, pricing, and support information. Include relevant tools the company already owns and record why each candidate enters or leaves the shortlist. Verify consequential claims with direct documentation or a trial, distinguishing unavailable facts from negative findings. Present the purchasing owner with a manageable set of candidates, source links and checked dates, and the questions that need vendor clarification before comparison.
+<a id="step-1"></a>
 
-   Update the saved evidence matrix as sources are checked, retaining candidate, plan, link, date and unresolved verification. Bound repeated searches that no longer resolve the decision: save the current tradeoffs and the exact remaining checks, with a provisional or trial-only recommendation where necessary. Do not turn an unknown price, relationship or export capability into a passed requirement to finish the shortlist.
+### 1. Define requirements and constraints
 
-   - Vendor options: ChatGPT, Claude, Gemini, Grok
-   - Ranked market: [ai-assistants](../../open-rankings/ai-assistants)
-   - Cross-arena market: [ai-research-agents](../../open-rankings/ai-research-agents)
-3. **Compare on evidence and rank against your stack** — agent-runnable · ~20 min
+agent-runnable · ~20 min
 
-   Compare candidates against the buying brief using current evidence, proposed plans, and the integrations the company needs. Show strengths, missing requirements, switching effort, and expected cost. Keep unknowns distinguishable from failed requirements. If using scores, make the criteria and calculations reproducible without altering published vendor rankings. Recommend a shortlist with the important tradeoffs, then turn consequential uncertainties into trial tasks or focused questions for the vendor.
 
-   Retain a comparison row for every essential requirement, identifying the candidate, plan, evidence location and observation date. Use unknown when a consequential fact is missing. Where plausible alternatives exist, compare more than one against the same task; do not manufacture alternatives to fill a table.
+Describe the job the company needs the software to perform, who will use it, and the current tools or manual process it would replace. Gather budget, expected usage, integration, export, security, and data-location requirements from their owners. Separate essential constraints from preferences and define how a successful trial will be judged. Record agreed priorities and flag unresolved tradeoffs for the purchasing owner; reversible desk research can proceed while those choices remain open.
 
-   Calculate cost over the company’s decision horizon using actual seats/usage, mandatory feature add-ons, migration effort, minimum commitments and renewal terms. Distinguish monthly billing from a monthly cancellation right. When a corrected quote or retest changes the recommendation, update the comparison, recommendation and handoff together; retain previous evidence with its superseded scope. A cheaper option that fails an essential requirement remains ineligible.
+Name the purchasing owner and record each essential requirement with its acceptance check. Include the incumbent and the cost of changing workflows. Establish the data and permission scope allowed for trials; absent trial access is a constraint, not evidence that the product fails.
 
-   - Vendor options: Ultrametric (ours)
-   - Start with UM's arena stories and requirement-level verdicts, then follow their evidenceIds to dated evidence. Match the company's job, plan, constraints and incumbent before interpreting an overall rank. The CRM openness-full-export verdict for HubSpot, for example, records gaps in complete export coverage; its contacts API evidence cannot establish a restorable company archive. A verdict's missing evidence becomes a focused trial or provider question, not a claim that the product lacks the feature. Keep documentation claims, recorded probes and completed task trials distinct. Refresh consequential price, eligibility and capability facts from primary sources and preserve the UM evidence that changed the decision.
-4. **Trial top candidates agentically** — agent-runnable · ~1 h
+For a formation, tax or other regulated service, include the relevant jurisdiction, entity type, service scope and deadline in the brief. Check provider eligibility and exclusions from current evidence or a qualified reviewer. Unresolved coverage becomes a disqualifier or question for the provider; a vendor listing or attractive price does not resolve it.
 
-   Turn the essential requirements into representative tasks with observable acceptance checks. Set up trial accounts using data cleared for that service, with approval for charges, sensitive access, or external actions. Have the agent perform the tasks through the available interface and inspect the outputs, including failures and manual intervention. Compare results across candidates and note plan limits or missing features that would change the purchase decision.
+Before broad market research, save a compact buying brief and an evidence matrix with one row per essential requirement. Mark unverified entries unknown. Keep these artifacts usable even if the run pauses before a recommendation; a conversation-only plan does not preserve the working comparison.
 
-   Save the exact trial input, interface and environment, operation attempted, expected result and observed artifact for each candidate. Include a relevant failure or recovery case, such as a truncated export or lost response, and check a recovered artifact for missing records and relationships. A successful API call or screenshot alone does not establish that the task worked. Stop before new grants, charges or external effects outside the trial authority. An unavailable trial remains untested; retain the prepared test for the owner.
+- Vendor options: ChatGPT, Claude, Gemini, Grok
+- Ranked market: [ai-assistants](../../open-rankings/ai-assistants)
 
-   Begin with synthetic data and minimum access. Complete the relevant data review before introducing sensitive company data, even if the full security review is scheduled later. For a write-capable workflow, test an allowed operation, denied out-of-scope access, and a retry or recovery that could duplicate or lose work. Preserve negative findings; a later passing test supersedes only the behavior and configuration it actually retested. Update the final recommendation from the trial findings and commercial/security review. A failed essential requirement must change eligibility or remain an explicit unresolved condition; a pre-trial ranking is not the final decision.
+<a id="step-2"></a>
 
-   - Cross-arena market: [browser-agents](../../open-rankings/browser-agents)
-5. **Security and data review** — human · ~45 min · human approval required
+### 2. Research the market and shortlist
 
-   Give security and privacy reviewers the intended data flows, permissions, vendor responses, and relevant assessment reports. Examine retention, deletion, access administration, subprocessors, and incident handling for this specific use. Resolve missing evidence with the vendor and record any required configuration or contractual condition. The designated reviewers decide whether the proposed use can proceed, needs changes, or is unsuitable before sensitive company data or a binding contract commits the business.
-6. **Negotiate pricing and terms** — human · ~1 h · human approval required
+agent-runnable · ~30 min
 
-   Use expected usage, trial results, budget, and security conditions to set a negotiation position. Compare the whole commercial proposal, including plan limits, renewal, price changes, support, and exit or migration terms. Negotiate within the purchasing owner's mandate and take legal terms to counsel. Keep concessions and unresolved points in the proposal, then obtain approval for the final total commitment and material exceptions before preparing the signature package.
-7. **Prepare the agreement for signature** — agent-runnable · ~10 min · human approval required
 
-   Assemble the final order form, agreement, and applicable data-protection or security schedules. Check entities, prices, dates, renewal terms, and negotiated changes across the package, including attachments incorporated by reference. Resolve inconsistencies with the purchasing and legal owners before they clear the signing version. Identify the authorized signer and verified recipients, then prepare the signature request with that exact package and any conditions still required for execution.
+Search the market against the current buying brief, starting with current product documentation, pricing, and support information. Include relevant tools the company already owns and record why each candidate enters or leaves the shortlist. Verify consequential claims with direct documentation or a trial, distinguishing unavailable facts from negative findings. Present the purchasing owner with a manageable set of candidates, source links and checked dates, and the questions that need vendor clarification before comparison.
 
-   - Canonical vendor: DocuSign
-8. **Sign the agreement** — human (legally required signature) · ~5 min · hard to undo
+Update the saved evidence matrix as sources are checked, retaining candidate, plan, link, date and unresolved verification. Bound repeated searches that no longer resolve the decision: save the current tradeoffs and the exact remaining checks, with a provisional or trial-only recommendation where necessary. Do not turn an unknown price, relationship or export capability into a passed requirement to finish the shortlist.
 
-   Present the final package to the authorized company signer with the financial commitment, renewal terms, and accepted exceptions identified. Confirm that the attachments match the reviewed version, then complete execution through the agreed method and obtain the fully signed agreement. Give billing, renewal, and service obligations to their operational owners, using the effective terms to determine when account activation and rollout can begin.
+- Vendor options: ChatGPT, Claude, Gemini, Grok
+- Ranked market: [ai-assistants](../../open-rankings/ai-assistants)
+- Cross-arena market: [ai-research-agents](../../open-rankings/ai-research-agents)
 
-   - Produces: Vendor contract
-9. **Connect and roll out to the team** — agent-runnable · ~15 min
+<a id="step-3"></a>
 
-   Plan the rollout around a small initial user group, necessary integrations, data migration, training, and the tasks users must be able to complete. Use the connection process for native integrations or MCP servers and arrange the required access with their owners. Try a representative workflow with the initial users, fix blockers, then expand access. Agree when the old workflow can be retired and who handles support or migration problems during the transition.
+### 3. Compare on evidence and rank against your stack
 
-   Verify the initial users can complete the agreed business task with the intended account and access. Retain the resulting record or artifact and unresolved rollout issues. Until that check passes, keep the old workflow available and report the handoff as pending rather than calling the purchase operational.
+agent-runnable · ~20 min
 
-## Artifacts
 
-Produces:
+Compare candidates against the buying brief using current evidence, proposed plans, and the integrations the company needs. Show strengths, missing requirements, switching effort, and expected cost. Keep unknowns distinguishable from failed requirements. If using scores, make the criteria and calculations reproducible without altering published vendor rankings. Recommend a shortlist with the important tradeoffs, then turn consequential uncertainties into trial tasks or focused questions for the vendor.
+
+Retain a comparison row for every essential requirement, identifying the candidate, plan, evidence location and observation date. Use unknown when a consequential fact is missing. Where plausible alternatives exist, compare more than one against the same task; do not manufacture alternatives to fill a table.
+
+Calculate cost over the company’s decision horizon using actual seats/usage, mandatory feature add-ons, migration effort, minimum commitments and renewal terms. Distinguish monthly billing from a monthly cancellation right. When a corrected quote or retest changes the recommendation, update the comparison, recommendation and handoff together; retain previous evidence with its superseded scope. A cheaper option that fails an essential requirement remains ineligible.
+
+- Vendor options: Ultrametric (ours)
+- Start with UM's arena stories and requirement-level verdicts, then follow their evidenceIds to dated evidence. Match the company's job, plan, constraints and incumbent before interpreting an overall rank. The CRM openness-full-export verdict for HubSpot, for example, records gaps in complete export coverage; its contacts API evidence cannot establish a restorable company archive. A verdict's missing evidence becomes a focused trial or provider question, not a claim that the product lacks the feature. Keep documentation claims, recorded probes and completed task trials distinct. Refresh consequential price, eligibility and capability facts from primary sources and preserve the UM evidence that changed the decision.
+
+<a id="step-4"></a>
+
+### 4. Trial top candidates agentically
+
+agent-runnable · ~1 h
+
+
+Turn the essential requirements into representative tasks with observable acceptance checks. Set up trial accounts using data cleared for that service, with approval for charges, sensitive access, or external actions. Have the agent perform the tasks through the available interface and inspect the outputs, including failures and manual intervention. Compare results across candidates and note plan limits or missing features that would change the purchase decision.
+
+Save the exact trial input, interface and environment, operation attempted, expected result and observed artifact for each candidate. Include a relevant failure or recovery case, such as a truncated export or lost response, and check a recovered artifact for missing records and relationships. A successful API call or screenshot alone does not establish that the task worked. Stop before new grants, charges or external effects outside the trial authority. An unavailable trial remains untested; retain the prepared test for the owner.
+
+Begin with synthetic data and minimum access. Complete the relevant data review before introducing sensitive company data, even if the full security review is scheduled later. For a write-capable workflow, test an allowed operation, denied out-of-scope access, and a retry or recovery that could duplicate or lose work. Preserve negative findings; a later passing test supersedes only the behavior and configuration it actually retested. Update the final recommendation from the trial findings and commercial/security review. A failed essential requirement must change eligibility or remain an explicit unresolved condition; a pre-trial ranking is not the final decision.
+
+- Cross-arena market: [browser-agents](../../open-rankings/browser-agents)
+
+<a id="step-5"></a>
+
+### 5. Security and data review
+
+human · ~45 min · human approval required
+
+
+Give security and privacy reviewers the intended data flows, permissions, vendor responses, and relevant assessment reports. Examine retention, deletion, access administration, subprocessors, and incident handling for this specific use. Resolve missing evidence with the vendor and record any required configuration or contractual condition. The designated reviewers decide whether the proposed use can proceed, needs changes, or is unsuitable before sensitive company data or a binding contract commits the business.
+
+<a id="step-6"></a>
+
+### 6. Negotiate pricing and terms
+
+human · ~1 h · human approval required
+
+
+Use expected usage, trial results, budget, and security conditions to set a negotiation position. Compare the whole commercial proposal, including plan limits, renewal, price changes, support, and exit or migration terms. Negotiate within the purchasing owner's mandate and take legal terms to counsel. Keep concessions and unresolved points in the proposal, then obtain approval for the final total commitment and material exceptions before preparing the signature package.
+
+<a id="step-7"></a>
+
+### 7. Prepare the agreement for signature
+
+agent-runnable · ~10 min · human approval required
+
+
+Assemble the final order form, agreement, and applicable data-protection or security schedules. Check entities, prices, dates, renewal terms, and negotiated changes across the package, including attachments incorporated by reference. Resolve inconsistencies with the purchasing and legal owners before they clear the signing version. Identify the authorized signer and verified recipients, then prepare the signature request with that exact package and any conditions still required for execution.
+
+- Canonical vendor: DocuSign
+
+<a id="step-8"></a>
+
+### 8. Sign the agreement
+
+human (legally required signature) · ~5 min · hard to undo
+
+
+Present the final package to the authorized company signer with the financial commitment, renewal terms, and accepted exceptions identified. Confirm that the attachments match the reviewed version, then complete execution through the agreed method and obtain the fully signed agreement. Give billing, renewal, and service obligations to their operational owners, using the effective terms to determine when account activation and rollout can begin.
+
+- Produces: Vendor contract
+
+<a id="step-9"></a>
+
+### 9. Connect and roll out to the team
+
+agent-runnable · ~15 min
+
+
+Plan the rollout around a small initial user group, necessary integrations, data migration, training, and the tasks users must be able to complete. Use the connection process for native integrations or MCP servers and arrange the required access with their owners. Try a representative workflow with the initial users, fix blockers, then expand access. Agree when the old workflow can be retired and who handles support or migration problems during the transition.
+
+Verify the initial users can complete the agreed business task with the intended account and access. Retain the resulting record or artifact and unresolved rollout issues. Until that check passes, keep the old workflow available and report the handoff as pending rather than calling the purchase operational.
+
+
+<a id="artifacts"></a>
+
+## Outputs
 
 - Vendor contract
 

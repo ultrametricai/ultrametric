@@ -3,6 +3,10 @@
 
 # Claim the R&D tax credit
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Geography](#geography) · [Steps](#steps-at-a-glance)
+
+## Overview
+
 Claim the research-and-development credit your tax jurisdiction offers: scope the qualifying expenditure, run the study, attach the claim to the tax return, and apply any payroll offset the regime allows. In the US the claim is Form 6765 with the Form 8974 payroll-tax offset, worth up to $500k a year for pre-revenue startups.
 
 | Field | Value |
@@ -19,49 +23,137 @@ Claim the research-and-development credit your tax jurisdiction offers: scope th
 
 The qualifying-expenditure data pulls from payroll and accounting are automatable and a study provider drives the claim forms; the eligibility judgment, study review, and the return filing itself stay human.
 
-## Steps
+<a id="artifacts"></a>
 
-1. **Confirm eligibility and pick a study provider** — human · ~30 min
+## Before you start
 
-   Describe the projects, research activities, entity structure, tax year and prior credit claims for the tax adviser’s initial assessment. Compare study providers on methodology, substantiation, review responsibility and fees. Identify eligibility questions and possible elections before commissioning the study. Startup status or product development alone does not establish qualifying research or an available credit.
+Required artifacts:
 
-   - Vendor options: Pilot, Fondo, Neo.Tax
-   - Sources: [IRS Form 6765 instructions](https://www.irs.gov/instructions/i6765)
-2. **Pull payroll and qualifying-expenditure data for the study** — agent-runnable · ~20 min
+- Payroll account — from [Set up payroll](set-up-payroll.md)
+- Federal tax return — from [File the company income tax return](file-federal-tax-return.md)
 
-   Tie requested payroll, time allocations, contractor agreements, supply costs and technical records to the relevant business components and period. Distinguish documented activity from estimates needing explanation, and reconcile expenses to the books. Ask the people who performed or recorded the work to resolve gaps. Give the study team traceable activity and expense evidence for evaluating which costs qualify.
+| Information to gather | Required by the record |
+| --- | --- |
+| engineering payroll share | Yes |
+| prior-year gross receipts | Yes |
 
-   - Canonical vendor: Gusto
-   - Vendor options: Gusto, Rippling
-   - Ranked market: [payroll](../../open-rankings/payroll)
-   - Sources: [IRS Form 6765 instructions](https://www.irs.gov/instructions/i6765)
-3. **Provider computes the credit and drafts the claim forms** — human · ~3 d · async wait
+## Geography
 
-   Reconcile the technical study, qualified-expense analysis and credit calculation for the filing year. Ask the provider to explain exclusions, the chosen method, group issues and proposed elections. Check the draft claim forms and schedules against that analysis and the books. Resolve unsupported assumptions or inconsistent amounts before the claim enters the return-review process.
+Country rows describe the guidance recorded here. Local notes and step alternatives do not establish a complete country-specific workflow.
 
-   - Sources: [IRS Form 6765 instructions](https://www.irs.gov/instructions/i6765)
-4. **Review the study and credit amount** — human · ~45 min
+| Country | Recorded guidance | Steps with local alternatives or resolutions |
+| --- | --- | --- |
+| [United States](#geo-us) | step resolution | [2](#step-2), [3](#step-3), [5](#step-5), [6](#step-6) |
+| [India](#geo-in) | Local analog note; step resolution | [5](#step-5) |
+| [United Kingdom](#geo-uk) | Local analog note; step resolution | [3](#step-3), [5](#step-5) |
+| [Germany](#geo-de) | Local analog note; step resolution | [2](#step-2), [3](#step-3), [5](#step-5) |
+| [France](#geo-fr) | Local analog note; step resolution | [3](#step-3), [5](#step-5) |
+| [Portugal](#geo-pt) | Local analog note; step resolution | [3](#step-3), [5](#step-5) |
+| [Canada](#geo-ca) | Local analog note; step resolution | [2](#step-2), [3](#step-3), [5](#step-5) |
+| [Singapore](#geo-sg) | Local analog note; step resolution | [5](#step-5) |
+| [Australia](#geo-au) | Local analog note; step resolution | [5](#step-5) |
+| [South Korea](#geo-kr) | Local analog note; step resolution | [5](#step-5) |
+| [Hong Kong](#geo-hk) | Local analog note; step resolution | [5](#step-5) |
+| [Estonia](#geo-ee) | step resolution | [5](#step-5) |
 
-   Verify the study’s technical descriptions, expense allocations and exclusions with the people who know the work and records. Review the method, substantiation and proposed elections with the tax adviser, including any payroll-credit treatment. Resolve discrepancies and retain the reviewed calculation with its supporting evidence before the claim is authorized through the company’s tax-filing process.
+## Steps at a glance
 
-   - Sources: [IRS Form 6765 instructions](https://www.irs.gov/instructions/i6765)
-5. **File the credit claim with the tax return** — manual form/portal · ~20 min · hard to undo
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
 
-   Reconcile the claim forms and required schedules with the supporting calculations, research records and filing-year instructions. If the company is making an election the regime offers, make it on the return the rules require. Resolve the intended treatment before submission and complete the signature and filing requirements for that entity’s return. Preserve the filed claim and acceptance evidence so any later offset application uses the elected amount and actual filing date.
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Confirm eligibility and pick a study provider](#step-1) | human | ~30 min | Entry step |
+| [2. Pull payroll and qualifying-expenditure data for the study](#step-2) | agent-runnable | ~20 min | [Step 1](#step-1) |
+| [3. Provider computes the credit and drafts the claim forms](#step-3) | human; includes waiting | ~3 d | [Step 2](#step-2) |
+| [4. Review the study and credit amount](#step-4) | human | ~45 min | [Step 3](#step-3) |
+| [5. File the credit claim with the tax return](#step-5) | manual form/portal | ~20 min | [Step 4](#step-4) |
+| [6. Apply any payroll offset the regime offers](#step-6) | manual form/portal | ~20 min | [Step 5](#step-5) |
 
-   - Canonical vendor: IRS
-   - Do it yourself: [IRS Form 6765 (R&D credit)](https://www.irs.gov/pub/irs-pdf/f6765.pdf)
-   - Sources: [IRS Form 6765 instructions](https://www.irs.gov/instructions/i6765)
-6. **Apply any payroll offset the regime offers** — manual form/portal · ~20 min · hard to undo
+<a id="steps"></a>
 
-   Where the regime lets the credit offset payroll or wage taxes, apply the election through the company’s existing payroll-filing process using the filed claim, the elected amount, and the actual filing date. Reconcile the credit used and the remaining carryforward each period, and keep the filed election evidence with the payroll records.
+## Step details
 
-   - Verify: The elected credit shows on the payroll or wage-tax returns and the payroll provider shows it offsetting employer tax on subsequent runs (in the US, Form 8974 carries it onto the employment-tax return). ([www.irs.gov](https://www.irs.gov/forms-pubs/about-form-8974))
-   - Canonical vendor: Gusto
-   - Do it yourself: [IRS Form 8974 (payroll offset)](https://www.irs.gov/forms-pubs/about-form-8974)
-   - Sources: [IRS Form 6765 instructions](https://www.irs.gov/instructions/i6765) · [IRS Form 8974 instructions](https://www.irs.gov/instructions/i8974)
+<a id="step-1"></a>
 
-## By country
+### 1. Confirm eligibility and pick a study provider
+
+human · ~30 min
+
+
+Describe the projects, research activities, entity structure, tax year and prior credit claims for the tax adviser’s initial assessment. Compare study providers on methodology, substantiation, review responsibility and fees. Identify eligibility questions and possible elections before commissioning the study. Startup status or product development alone does not establish qualifying research or an available credit.
+
+- Vendor options: Pilot, Fondo, Neo.Tax
+- Sources: [IRS Form 6765 instructions](https://www.irs.gov/instructions/i6765)
+
+<a id="step-2"></a>
+
+### 2. Pull payroll and qualifying-expenditure data for the study
+
+agent-runnable · ~20 min
+
+
+Tie requested payroll, time allocations, contractor agreements, supply costs and technical records to the relevant business components and period. Distinguish documented activity from estimates needing explanation, and reconcile expenses to the books. Ask the people who performed or recorded the work to resolve gaps. Give the study team traceable activity and expense evidence for evaluating which costs qualify.
+
+- Canonical vendor: Gusto
+- Vendor options: Gusto, Rippling
+- Ranked market: [payroll](../../open-rankings/payroll)
+- Sources: [IRS Form 6765 instructions](https://www.irs.gov/instructions/i6765)
+
+<a id="step-3"></a>
+
+### 3. Provider computes the credit and drafts the claim forms
+
+human · ~3 d · async wait
+
+
+Reconcile the technical study, qualified-expense analysis and credit calculation for the filing year. Ask the provider to explain exclusions, the chosen method, group issues and proposed elections. Check the draft claim forms and schedules against that analysis and the books. Resolve unsupported assumptions or inconsistent amounts before the claim enters the return-review process.
+
+- Sources: [IRS Form 6765 instructions](https://www.irs.gov/instructions/i6765)
+
+<a id="step-4"></a>
+
+### 4. Review the study and credit amount
+
+human · ~45 min
+
+
+Verify the study’s technical descriptions, expense allocations and exclusions with the people who know the work and records. Review the method, substantiation and proposed elections with the tax adviser, including any payroll-credit treatment. Resolve discrepancies and retain the reviewed calculation with its supporting evidence before the claim is authorized through the company’s tax-filing process.
+
+- Sources: [IRS Form 6765 instructions](https://www.irs.gov/instructions/i6765)
+
+<a id="step-5"></a>
+
+### 5. File the credit claim with the tax return
+
+manual form/portal · ~20 min · hard to undo
+
+
+Reconcile the claim forms and required schedules with the supporting calculations, research records and filing-year instructions. If the company is making an election the regime offers, make it on the return the rules require. Resolve the intended treatment before submission and complete the signature and filing requirements for that entity’s return. Preserve the filed claim and acceptance evidence so any later offset application uses the elected amount and actual filing date.
+
+- Canonical vendor: IRS
+- Do it yourself: [IRS Form 6765 (R&D credit)](https://www.irs.gov/pub/irs-pdf/f6765.pdf)
+- Sources: [IRS Form 6765 instructions](https://www.irs.gov/instructions/i6765)
+
+<a id="step-6"></a>
+
+### 6. Apply any payroll offset the regime offers
+
+manual form/portal · ~20 min · hard to undo
+
+
+Where the regime lets the credit offset payroll or wage taxes, apply the election through the company’s existing payroll-filing process using the filed claim, the elected amount, and the actual filing date. Reconcile the credit used and the remaining carryforward each period, and keep the filed election evidence with the payroll records.
+
+- Verify: The elected credit shows on the payroll or wage-tax returns and the payroll provider shows it offsetting employer tax on subsequent runs (in the US, Form 8974 carries it onto the employment-tax return). ([www.irs.gov](https://www.irs.gov/forms-pubs/about-form-8974))
+- Canonical vendor: Gusto
+- Do it yourself: [IRS Form 8974 (payroll offset)](https://www.irs.gov/forms-pubs/about-form-8974)
+- Sources: [IRS Form 6765 instructions](https://www.irs.gov/instructions/i6765) · [IRS Form 8974 instructions](https://www.irs.gov/instructions/i8974)
+
+
+<a id="by-country"></a>
+
+## Country details
+
+<a id="geo-us"></a>
 
 ### United States
 
@@ -70,16 +162,22 @@ The qualifying-expenditure data pulls from payroll and accounting are automatabl
 - Step 5: Attach Form 6765 to the federal income-tax return; an eligible payroll-credit election must be made on a timely original return ([IRS Form 6765 (R&D credit)](https://www.irs.gov/pub/irs-pdf/f6765.pdf))
 - Step 6: Calculate the usable credit on Form 8974 and attach it to the employment-tax return: Form 941 filers start with the first quarter beginning after the income-tax return was filed; Form 943/944 filers follow the annual instructions ([IRS Form 8974 (payroll offset)](https://www.irs.gov/forms-pubs/about-form-8974))
 
+<a id="geo-in"></a>
+
 ### India
 
 - No US-style credit since the 200% weighted deduction lapsed: R&D spend now deducts at 100%, and DSIR recognition of an in-house R&D unit is the gateway to the remaining incentives (customs/GST concessions, government R&D schemes). ([DSIR — in-house R&D recognition](https://dsir.gov.in/))
 - Step 5: Not applicable: No credit claim to file since the 200% weighted deduction lapsed: R&D spend deducts at 100%, and DSIR recognition gates the remaining incentives ([DSIR — in-house R&D recognition](https://dsir.gov.in/))
+
+<a id="geo-uk"></a>
 
 ### United Kingdom
 
 - The UK analog is R&D tax relief claimed on the CT600 — a merged SME/RDEC scheme for accounting periods from April 2024, with a mandatory additional-information form before the claim. ([Corporation Tax R&D relief](https://www.gov.uk/guidance/corporation-tax-research-and-development-rd-relief))
 - Step 3: The merged SME/RDEC relief is claimed on the CT600, with a mandatory additional-information form before the claim ([Corporation Tax R&D relief](https://www.gov.uk/guidance/corporation-tax-research-and-development-rd-relief))
 - Step 5: File the relief on the CT600 after the mandatory additional-information form ([Corporation Tax R&D relief](https://www.gov.uk/guidance/corporation-tax-research-and-development-rd-relief))
+
+<a id="geo-de"></a>
 
 ### Germany
 
@@ -88,17 +186,23 @@ The qualifying-expenditure data pulls from payroll and accounting are automatabl
 - Step 3: Two steps: the BSFZ project certificate first, then the allowance claim prepared for the tax return via ELSTER ([BSFZ — Forschungszulage certification](https://www.bescheinigung-forschungszulage.de/))
 - Step 5: Claim the Forschungszulage with the tax return via ELSTER, on the BSFZ certificate ([BSFZ — Forschungszulage certification](https://www.bescheinigung-forschungszulage.de/))
 
+<a id="geo-fr"></a>
+
 ### France
 
 - France's CIR refunds 30% of qualifying R&D spend (with the CII for innovation on top), claimed with the corporate tax return — one of the most generous schemes in Europe. ([Crédit d'impôt recherche (CIR)](https://entreprendre.service-public.fr/vosdroits/F23533))
 - Step 3: The CIR (30% of qualifying spend, plus the CII for innovation) is computed for the corporate tax return ([Crédit d'impôt recherche (CIR)](https://entreprendre.service-public.fr/vosdroits/F23533))
 - Step 5: Claim the CIR with the corporate tax return ([Crédit d'impôt recherche (CIR)](https://entreprendre.service-public.fr/vosdroits/F23533))
 
+<a id="geo-pt"></a>
+
 ### Portugal
 
 - The analog is SIFIDE II: a corporate-tax credit for R&D expenditure claimed with the Modelo 22, with the qualifying R&D certified by ANI (Agência Nacional de Inovação) on an annual application. ([ANI — SIFIDE II](https://ani.pt/sifide-sistema-de-incentivos-fiscais-a-ied-empresarial/))
 - Step 3: SIFIDE II rests on ANI's annual certification of the qualifying R&D; the credit is computed for the Modelo 22 ([ANI — SIFIDE II](https://ani.pt/sifide-sistema-de-incentivos-fiscais-a-ied-empresarial/))
 - Step 5: Claim SIFIDE II with the Modelo 22, on ANI's certification ([ANI — SIFIDE II](https://ani.pt/sifide-sistema-de-incentivos-fiscais-a-ied-empresarial/))
+
+<a id="geo-ca"></a>
 
 ### Canada
 
@@ -107,36 +211,39 @@ The qualifying-expenditure data pulls from payroll and accounting are automatabl
 - Step 3: SR&ED is computed on prescribed forms for the T2, with CCPCs earning the enhanced refundable rate ([CRA — SR&ED program](https://www.canada.ca/en/revenue-agency/services/scientific-research-experimental-development-tax-incentive-program.html))
 - Step 5: Claim SR&ED with the T2 on prescribed forms ([CRA — SR&ED program](https://www.canada.ca/en/revenue-agency/services/scientific-research-experimental-development-tax-incentive-program.html))
 
+<a id="geo-sg"></a>
+
 ### Singapore
 
 - The analog is the Enterprise Innovation Scheme: 400% tax deductions on up to $400,000 of qualifying Singapore R&D per YA (2024-2028), claimed in the corporate tax return by the 30 Nov filing deadline, with a cash-payout conversion option for smaller spenders. ([IRAS — Enterprise Innovation Scheme](https://www.iras.gov.sg/schemes/disbursement-schemes/enterprise-innovation-scheme-(eis)))
 - Step 5: Claim the Enterprise Innovation Scheme enhanced deductions (400% on up to $400,000 of qualifying Singapore R&D, YA 2024-2028) in the Form C-S/C by the 30 November filing deadline ([IRAS — Enterprise Innovation Scheme](https://www.iras.gov.sg/schemes/disbursement-schemes/enterprise-innovation-scheme-(eis)))
+
+<a id="geo-au"></a>
 
 ### Australia
 
 - The analog is the R&D Tax Incentive: register the year's R&D activities with the Department of Industry, Science and Resources through the R&DTI portal, then claim the offset in the company tax return's R&D schedule. ([R&D Tax Incentive](https://business.gov.au/grants-and-programs/research-and-development-tax-incentive))
 - Step 5: Register the year's R&D activities on the R&DTI portal, then claim the offset in the company tax return's R&D schedule ([R&D Tax Incentive](https://business.gov.au/grants-and-programs/research-and-development-tax-incentive))
 
+<a id="geo-kr"></a>
+
 ### South Korea
 
 - The R&D tax credit (연구·인력개발비 세액공제, Restriction of Special Taxation Act Article 10) is claimed on the corporate tax return filed through Hometax. ([Hometax (NTS e-filing)](https://www.hometax.go.kr/))
 - Step 5: Claim the R&D credit on the corporate tax return through Hometax The research and manpower development credit under Restriction of Special Taxation Act Article 10 rides the corporate tax return, due within three months of the end of the business-year month (law rule [kr.corporate-tax-return-deadline](../../open-law/KR/kr-corporate-tax-return-deadline.json)). ([Hometax (NTS e-filing)](https://www.hometax.go.kr/))
+
+<a id="geo-hk"></a>
 
 ### Hong Kong
 
 - The analog is the enhanced R&D deduction rather than a credit: qualifying Type B expenditure deducts at 300% on the first HK$2,000,000 and 200% above it (Inland Revenue Ordinance Schedule 45), claimed in the profits tax return. ([IRO Schedule 45 — R&D deductions (e-Legislation)](https://www.elegislation.gov.hk/hk/cap112!en/sch45))
 - Step 5: The enhanced R&D deduction is claimed in the profits tax return: 300% on the first HK$2,000,000 of qualifying Type B expenditure and 200% above it Inland Revenue Ordinance Schedule 45 defines qualifying R&D activities and splits Type A (100% deduction) from Type B (300%/200%) expenditures; the claim rides the profits tax return rather than a separate credit filing. ([IRO Schedule 45 (e-Legislation)](https://www.elegislation.gov.hk/hk/cap112!en/sch45))
 
+<a id="geo-ee"></a>
+
 ### Estonia
 
 - Step 5: Not applicable: No profits return exists for an R&D credit to ride Corporate income tax is charged only when profit is distributed (law rule [ee.corporate-tax-distributed-profits](../../open-law/EE/ee-corporate-tax-distributed-profits.json)), so there is no annual profits return and no R&D tax-credit regime attached to one. ([Income and social taxes (e-MTA)](https://www.emta.ee/en/business-client/taxes-and-payment/income-and-social-taxes))
-
-## Artifacts
-
-Requires:
-
-- Payroll account — from [Set up payroll](set-up-payroll.md)
-- Federal tax return — from [File the company income tax return](file-federal-tax-return.md)
 
 ## Related records
 
