@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { GEO_COUNTRIES } from '../geoPreference'
 import { executionSchema, validateExecution } from '../execution'
 
 const text = z.string().min(1).regex(/\S/)
@@ -60,8 +61,12 @@ const partSchema: z.ZodType<Part> = z.lazy(() => z.strictObject({
   when: text.nullable(), ref: id.nullable(), options: z.array(optionSchema), references: z.array(reference),
   notes: z.array(note), metadata: stepMetadata,
 }))
+const routeSlug = z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)
+export const countryViewSchema = z.strictObject({ country: z.enum(GEO_COUNTRIES), title: text, slug: routeSlug })
+
 export const sharedRecordSchema = z.strictObject({
   schemaVersion: z.literal(1), id, kind: z.enum(['situation', 'process']), title: text, summary: z.string(),
+  globalSlug: routeSlug.optional(), countryViews: z.array(countryViewSchema).min(1).optional(),
   outcomes: z.array(text), guidance: text.nullable(), when: text.nullable().optional(), aliases: z.array(id).optional(),
   entrySteps: z.array(id).min(1).optional(), taskIds: z.array(id).min(1).optional(),
   parts: z.array(partSchema), links: z.array(connectionSchema), references: z.array(reference),
