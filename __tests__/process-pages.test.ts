@@ -24,6 +24,17 @@ describe('open-processes/pages', () => {
     }
   })
 
+  it('keeps local fees and completion checks in their named country section', () => {
+    const source = ctx.sources.find((s) => s.record.id === 'form_001')!
+    const page = renderProcessPage(source, ctx)
+    const country = page.slice(page.indexOf('### United States'), page.indexOf('### United Kingdom'))
+    expect(country).toContain('$500')
+    expect(country).toContain('Verify:')
+    const uk = page.slice(page.indexOf('### United Kingdom'), page.indexOf('### Germany'))
+    expect(uk).toContain('Companies House')
+    expect(uk).not.toContain('$500')
+  })
+
   it('every page carries the generated-file header naming its source record', () => {
     for (const [name, content] of committedPages()) {
       const slug = name.slice(0, -3)

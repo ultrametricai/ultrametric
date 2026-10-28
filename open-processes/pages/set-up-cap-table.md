@@ -92,7 +92,7 @@ Produces:
 
 Requires:
 
-- Founder stock issuance — from [Incorporate C-Corp](incorporate-c-corp.md)
+- Founder stock issuance — from [Incorporate the company](incorporate-c-corp.md)
 
 ## Related records
 

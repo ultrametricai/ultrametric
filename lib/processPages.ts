@@ -224,7 +224,7 @@ function stepMarkers(m: Meta): string[] {
 
 interface CostMeta { usd: number | null; kind: string; source: string; asOf: string; note?: string }
 interface VerifyMeta { how: string; url?: string }
-interface GeoEntry { country: string; kind: string; label?: string; summary?: string; guidance?: string; actionUrl?: string; actionLabel?: string }
+interface GeoEntry { country: string; kind: string; label?: string; summary?: string; guidance?: string; actionUrl?: string; actionLabel?: string; cost?: CostMeta; verify?: VerifyMeta }
 
 function costLine(cost: CostMeta): string {
   const kind = COST_KIND_LABELS[cost.kind] ?? cost.kind
@@ -554,6 +554,8 @@ function countrySection(record: { parts: Part[]; metadata: Meta }, ctx: PageCont
       const guidance = entry.guidance ? ` ${linkLawRules(entry.guidance, ctx)}` : ''
       const link = entry.actionUrl ? ` ([${linkText(entry.actionLabel ?? hostname(entry.actionUrl))}](${entry.actionUrl}))` : ''
       lines.push(`- ${indented(`${step}: ${prefix}${entry.label ?? ''}${guidance}${link}`, '  ')}`)
+      if (entry.cost) lines.push(`  - ${indented(costLine(entry.cost), '    ')}`)
+      if (entry.verify) lines.push(`  - ${indented(verifyLine(entry.verify), '    ')}`)
     }
   }
   return lines

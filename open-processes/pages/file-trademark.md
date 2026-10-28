@@ -57,7 +57,7 @@ The trademark offices have no usable filing API. System provides guidance, draft
    - Sources: [USPTO trademark process](https://www.uspto.gov/trademarks/basics/trademark-process) · [USPTO trademark tools](https://www.uspto.gov/trademarks)
 
    Options:
-     - **Default — USPTO trademark application** — manual form/portal · ~30 min · human approval required · hard to undo
+     - **United States — USPTO trademark application** — manual form/portal · ~30 min · human approval required · hard to undo
 
        Submit the reviewed US owner, mark, filing basis, goods/services and evidence through the current USPTO filing service. The applicant or authorized representative must approve the declarations, signature and fees. Save the filed copy and serial number and monitor official correspondence. The receipt records submission; the examination and any further requirements continue afterward.
      - **India - CGPDTM e-filing**
@@ -102,57 +102,77 @@ The trademark offices have no usable filing API. System provides guidance, draft
 
 ### United States
 
+- Step 1: Conduct trademark search Define the mark, goods or services and territories, then search for identical and similar wording or designs using the relevant trademark-office tools. Capture potentially relevant marks, owners, status and goods or services, along with the search terms. Send the clearance questions to the legal reviewer. An available domain or empty exact-name search does not clear the mark. ([USPTO trademark search](https://tmsearch.uspto.gov/search/search-information))
+- Step 5: USPTO trademark application Submit the reviewed US owner, mark, filing basis, goods/services and evidence through the current USPTO filing service. The applicant or authorized representative must approve the declarations, signature and fees. Save the filed copy and serial number and monitor official correspondence. The receipt records submission; the examination and any further requirements continue afterward. ([USPTO trademark application](https://www.uspto.gov/trademarks/apply))
 - Step 6: TSDR shows the application's serial number, status, and correspondence ([USPTO TSDR status lookup](https://tsdr.uspto.gov/))
 
 ### India
 
 - Trade marks are filed with the Controller General (CGPDTM) through the IP India e-filing portal; public search runs on the separate tmrsearch portal. ([Intellectual Property India e-filing](https://ipindiaonline.gov.in/))
+- Step 1: Search the IP India trademark registers Trade marks are filed with the Controller General (CGPDTM) through the IP India e-filing portal; public search runs on the separate tmrsearch portal. ([Intellectual Property India e-filing](https://ipindiaonline.gov.in/))
+- Step 5: India - CGPDTM e-filing Use the approved Indian owner, mark representation, goods/services and supporting evidence in the current IP India filing route. Confirm account and signature requirements from the official instructions. The authorized filer approves the application and fee, then retains the acknowledgement and application number. Monitor the Indian matter through IP India correspondence and status tools. ([Intellectual Property India e-filing](https://ipindiaonline.gov.in/))
 - Step 6: The application status lives on IP India's public search and e-filing portals ([Intellectual Property India e-filing](https://ipindiaonline.gov.in/))
 
 ### United Kingdom
 
 - UK marks are filed online with the UK IPO (from £170); since Brexit an EUIPO registration no longer covers the UK, so UK + EU protection means two filings. ([UK IPO — register a trade mark](https://www.gov.uk/how-to-register-a-trade-mark))
+- Step 1: Search the UK IPO trademark registers UK marks are filed online with the UK IPO (from £170); since Brexit an EUIPO registration no longer covers the UK, so UK + EU protection means two filings. ([UK IPO — register a trade mark](https://www.gov.uk/how-to-register-a-trade-mark))
+- Step 5: UK - UK IPO filing Prepare the intended owner, mark and goods/services for the UK IPO route. Review classes, the current fee and any special application choice before the authorized applicant submits. Keep the acknowledgement and monitor official communications. Record the territory sought and establish a separate filing strategy for requested protection outside the UK. ([UK IPO - register a trade mark](https://www.gov.uk/how-to-register-a-trade-mark))
 
 ### Germany
 
 - National marks are filed with the DPMA (DPMAdirekt online filing); the EU-wide alternative is a single EUIPO application covering all 27 member states. ([DPMA trade mark filing](https://www.dpma.de/marken/index.html))
+- Step 1: Search national and EU trademark registers for the intended territory National marks are filed with the DPMA (DPMAdirekt online filing); the EU-wide alternative is a single EUIPO application covering all 27 member states. ([DPMA trade mark filing](https://www.dpma.de/marken/index.html))
+- Step 5: Germany - DPMA (or EUIPO) filing Confirm whether the strategy calls for a German national mark or a separate EU route. For the national application, use DPMA’s current service with the reviewed owner, representation and goods/services. The authorized filer approves declarations and fees before submission. Track the DPMA reference number; any EU application remains a separate matter with its own advice and filing evidence. ([DPMA trade mark filing](https://www.dpma.de/marken/index.html))
 
 ### France
 
 - French marks are filed online with the INPI; as in Germany, an EUIPO application is the single-filing route to EU-wide protection. ([INPI — dépôt de marque](https://www.inpi.fr/comprendre-la-propriete-intellectuelle/la-marque))
+- Step 1: Search national and EU trademark registers for the intended territory French marks are filed online with the INPI; as in Germany, an EUIPO application is the single-filing route to EU-wide protection. ([INPI — dépôt de marque](https://www.inpi.fr/comprendre-la-propriete-intellectuelle/la-marque))
+- Step 5: France - INPI (or EUIPO) filing Prepare the applicant, mark and goods/services in INPI’s trademark portal. Review the complete summary and coverage before the authorized filer validates and pays, then retain the acknowledgement and national filing number. Monitor INPI correspondence for the matter. Broader EU protection needs a separate strategy; this trademark filing is also distinct from INPI company-formation formalities. ([INPI - depot de marque](https://www.inpi.fr/comprendre-la-propriete-intellectuelle/la-marque))
 
 ### Portugal
 
 - National marks are filed online with INPI (Instituto Nacional da Propriedade Industrial); the EU-wide alternative is a single EUIPO application covering all 27 member states, so PT + EU protection is usually one EUIPO filing. ([INPI — registo de marca](https://inpi.justica.gov.pt/))
+- Step 1: Search national and EU trademark registers for the intended territory National marks are filed online with INPI (Instituto Nacional da Propriedade Industrial); the EU-wide alternative is a single EUIPO application covering all 27 member states, so PT + EU protection is usually one EUIPO filing. ([INPI — registo de marca](https://inpi.justica.gov.pt/))
+- Step 5: National marks are filed online with INPI (Instituto Nacional da Propriedade Industrial); the EU-wide alternative is a single EUIPO application covering all 27 member states, so PT + EU protection is usually one EUIPO filing. ([INPI — registo de marca](https://inpi.justica.gov.pt/))
 
 ### Canada
 
 - File with CIPO (online, Nice-classified, with Madrid Protocol available for international extension) — and budget for the queue: CIPO examination waits run years, so file early. ([CIPO — trademarks](https://ised-isde.canada.ca/site/canadian-intellectual-property-office/en))
+- Step 1: Search the CIPO trademark registers File with CIPO (online, Nice-classified, with Madrid Protocol available for international extension) — and budget for the queue: CIPO examination waits run years, so file early. ([CIPO — trademarks](https://ised-isde.canada.ca/site/canadian-intellectual-property-office/en))
+- Step 5: File with CIPO (online, Nice-classified, with Madrid Protocol available for international extension) — and budget for the queue: CIPO examination waits run years, so file early. ([CIPO — trademarks](https://ised-isde.canada.ca/site/canadian-intellectual-property-office/en))
 - Step 6: Track the CIPO application and budget for the queue: examination waits run years ([CIPO — trademarks](https://ised-isde.canada.ca/site/canadian-intellectual-property-office/en))
 
 ### New Zealand
 
 - File online with IPONZ: $100 per class (excluding GST), examination follows, registration takes a minimum of about 6 months, and a registration lasts 10 years before renewal. ([Trade marks — IPONZ](https://www.iponz.govt.nz/about-ip/trade-marks/))
+- Step 5: File online with IPONZ: $100 per class (excluding GST), examination follows, registration takes a minimum of about 6 months, and a registration lasts 10 years before renewal. ([Trade marks — IPONZ](https://www.iponz.govt.nz/about-ip/trade-marks/))
 
 ### Singapore
 
 - Marks are filed with IPOS through the Digital Hub — S$280 per class online where the goods and services come entirely from IPOS's classification database — and accepted applications publish in the Trade Marks Journal with a 2-month opposition window. ([IPOS — how to register a trade mark](https://www.ipos.gov.sg/about-ip/trade-marks/how-to-register/))
+- Step 5: Marks are filed with IPOS through the Digital Hub — S$280 per class online where the goods and services come entirely from IPOS's classification database — and accepted applications publish in the Trade Marks Journal with a 2-month opposition window. ([IPOS — how to register a trade mark](https://www.ipos.gov.sg/about-ip/trade-marks/how-to-register/))
 
 ### Australia
 
 - Australian marks are filed online with IP Australia per class (TM Headstart gives a pre-assessment first); an adverse examination report leaves 15 months to resolve objections before the application lapses. ([IP Australia — trade marks](https://www.ipaustralia.gov.au/trade-marks))
+- Step 5: Australian marks are filed online with IP Australia per class (TM Headstart gives a pre-assessment first); an adverse examination report leaves 15 months to resolve objections before the application lapses. ([IP Australia — trade marks](https://www.ipaustralia.gov.au/trade-marks))
 
 ### South Korea
 
 - Trademarks are filed with KIPO through the 특허로 e-filing system, with KIPRIS as the official pre-filing search. ([특허로 (KIPO e-filing)](https://www.patent.go.kr/))
+- Step 5: Trademarks are filed with KIPO through the 특허로 e-filing system, with KIPRIS as the official pre-filing search. ([특허로 (KIPO e-filing)](https://www.patent.go.kr/))
 
 ### Hong Kong
 
 - Marks are filed with the Trade Marks Registry at the Intellectual Property Department under the Trade Marks Ordinance (Cap. 559), and published applications carry a 3-month opposition window from publication (Trade Marks Rules rule 16). ([IPD — apply for a trade mark](https://www.ipd.gov.hk/en/trade-marks/apply-for-a-trade-mark/index.html))
+- Step 5: Marks are filed with the Trade Marks Registry at the Intellectual Property Department under the Trade Marks Ordinance (Cap. 559), and published applications carry a 3-month opposition window from publication (Trade Marks Rules rule 16). ([IPD — apply for a trade mark](https://www.ipd.gov.hk/en/trade-marks/apply-for-a-trade-mark/index.html))
 
 ### Estonia
 
 - Trademarks are filed with the Estonian Patent Office (Patendiamet) through its e-services; an EU trade mark at the EUIPO is the common startup route, since one filing covers Estonia with the rest of the EU. ([Estonian Patent Office (Patendiamet)](https://www.epa.ee/en))
+- Step 5: Trademarks are filed with the Estonian Patent Office (Patendiamet) through its e-services; an EU trade mark at the EUIPO is the common startup route, since one filing covers Estonia with the rest of the EU. ([Estonian Patent Office (Patendiamet)](https://www.epa.ee/en))
 
 ## Artifacts
 

@@ -5,14 +5,14 @@
 
 **Trigger:** An employee reports harassment: by complaint, by email, or in a conversation that just became one.
 
-How you respond becomes the company's defense. Make it prompt, thorough, documented. Retaliation is separately unlawful, so draw the no-retaliation line on day one (the EEOC's published employer guidance is the reference). Take the complaint seriously without judging or promising outcomes. Put interim measures in place that protect the complainant rather than punish them. Pick an investigator without conflicts; for anything senior, outside counsel or an external HR investigator. Run the investigation properly. Decide proportionately, up to termination, and document the reasoning. Close the loop with the complainant. Then watch for retaliation for months; that is where companies lose. An EEOC charge may still come; the file you built is what answers it. Educational guidance, not legal advice.
+Receive and document the complaint, protect the people involved, use the applicable local investigation and grievance procedure, decide and record the outcome, and follow up on retaliation concerns.
 
 | Field | Value |
 | --- | --- |
 | Kind | situation |
 | Phase | hr |
 | Cadence | event-driven |
-| Geo scope | us |
+| Geo scope | global |
 | Complexity | complex |
 | Reversibility | hard to undo |
 | Urgency | act within days |
@@ -24,68 +24,86 @@ The investigation, the proportionate-action judgment, and every conversation in 
 
 ## Steps
 
-1. **Take it seriously at receipt: acknowledge, no judgments, no promises — and the no-retaliation line drawn on day one (retaliation is separately unlawful)** — human · ~30 min
+1. **Acknowledge the complaint and establish the applicable protection and investigation procedure** — human · ~30 min
+
+   Acknowledge receipt without judging or promising an outcome. Protect confidentiality and against retaliation, establish the applicable workplace and jurisdiction, and identify the required complaint body or investigator. Use the local procedure and obtain appropriate legal or HR review.
 
    - Do it yourself: [EEOC: harassment (employer obligations)](https://www.eeoc.gov/harassment)
-2. **Interim measures while you investigate — schedule or reporting-line separation chosen to protect the complainant, never to punish them** — human · ~45 min
+2. **Put protective interim measures in place during the investigation** — human · ~45 min
 3. **Choose the investigator: trained and unconflicted internally, or outside counsel / an external HR investigator for anything senior** — human · ~45 min
 
    - Vendor options: Cooley, Orrick, Fenwick, Gunderson Dettmer
    - Ranked market: [startup-law-firms](../../open-rankings/startup-law-firms)
-4. **Run the investigation: interviews, documents, contemporaneous notes — prompt, thorough, documented** — human · ~3 h
+4. **Investigate under the applicable procedure and document the evidence** — human · ~3 h
 5. **Preserve the file: the complaint, interview notes, decisions and their reasons — the file is the company's defense** — agent-runnable · ~30 min
 6. **Decide and act proportionately — up to termination — with the reasoning documented** — human · ~1 h · hard to undo
 7. **Close the loop with the complainant (the outcome, not necessarily the details) — and actively watch for retaliation for months** — human · ~30 min
 
 ## By country
 
+### United States
+
+- Step 1: Take it seriously at receipt: acknowledge, no judgments, no promises — and the no-retaliation line drawn on day one (retaliation is separately unlawful) How you respond becomes the company's defense. Make it prompt, thorough, documented. Retaliation is separately unlawful, so draw the no-retaliation line on day one (the EEOC's published employer guidance is the reference). Take the complaint seriously without judging or promising outcomes. Put interim measures in place that protect the complainant rather than punish them. Pick an investigator without conflicts; for anything senior, outside counsel or an external HR investigator. Run the investigation properly. Decide proportionately, up to termination, and document the reasoning. Close the loop with the complainant. Then watch for retaliation for months; that is where companies lose. An EEOC charge may still come; the file you built is what answers it. Educational guidance, not legal advice.  ([EEOC: harassment (employer obligations)](https://www.eeoc.gov/harassment))
+
 ### India
 
 - The POSH Act 2013 is statutory machinery, not policy: every workplace with 10+ employees must constitute an Internal Committee, complaints go to the IC, and the inquiry runs on a 90-day clock with annual reporting — the ministry for women and child development administers the regime. ([Ministry of WCD (POSH Act)](https://wcd.gov.in/))
+- Step 1: The POSH Act 2013 is statutory machinery, not policy: every workplace with 10+ employees must constitute an Internal Committee, complaints go to the IC, and the inquiry runs on a 90-day clock with annual reporting — the ministry for women and child development administers the regime. The POSH Act 2013 is statutory machinery, not policy: every workplace with 10+ employees must constitute an Internal Committee, complaints go to the IC, and the inquiry runs on a 90-day clock with annual reporting — the ministry for women and child development administers the regime. The existing official source was unavailable to automated retrieval during this update; confirm the current local procedure with the appropriate adviser.
 
 ### United Kingdom
 
 - The ACAS Code of Practice governs grievance handling — a fair procedure (investigation, hearing, appeal) is what tribunals expect, and compensation uplifts of up to 25% apply for unreasonably ignoring the Code. ([ACAS Code of Practice (grievances)](https://www.acas.org.uk/acas-code-of-practice-on-disciplinary-and-grievance-procedures))
+- Step 1: The ACAS Code of Practice governs grievance handling — a fair procedure (investigation, hearing, appeal) is what tribunals expect, and compensation uplifts of up to 25% apply for unreasonably ignoring the Code. ([ACAS Code of Practice (grievances)](https://www.acas.org.uk/acas-code-of-practice-on-disciplinary-and-grievance-procedures))
 
 ### Germany
 
 - The AGG gives employees a statutory complaint right (§13) and obliges the employer to act against harassment (§12, up to dismissal of the harasser) — a named complaints body (Beschwerdestelle) is expected in every company. ([AGG §13 — complaint right](https://www.gesetze-im-internet.de/agg/__13.html))
+- Step 1: The AGG gives employees a statutory complaint right (§13) and obliges the employer to act against harassment (§12, up to dismissal of the harasser) — a named complaints body (Beschwerdestelle) is expected in every company. ([AGG §13 — complaint right](https://www.gesetze-im-internet.de/agg/__13.html))
 
 ### France
 
 - The Code du travail obliges the employer to prevent and act on harcèlement moral and sexuel; companies of 250+ must designate a référent, the CSE has its own alert rights, and the employer's inaction is itself actionable. ([service-public — harassment at work](https://www.service-public.fr/particuliers/vosdroits/F2354))
+- Step 1: The Code du travail obliges the employer to prevent and act on harcèlement moral and sexuel; companies of 250+ must designate a référent, the CSE has its own alert rights, and the employer's inaction is itself actionable. ([service-public — harassment at work](https://www.service-public.fr/particuliers/vosdroits/F2354))
 
 ### Portugal
 
 - The Código do Trabalho bans harassment outright and companies with seven or more employees must adopt a code of good conduct — investigate promptly and document; complaints can escalate to ACT and assédio carries counter-ordinance fines. ([Código do Trabalho (DRE)](https://diariodarepublica.pt/dr/legislacao-consolidada/lei/2009-34546475))
+- Step 1: The Código do Trabalho bans harassment outright and companies with seven or more employees must adopt a code of good conduct — investigate promptly and document; complaints can escalate to ACT and assédio carries counter-ordinance fines. ([Código do Trabalho (DRE)](https://diariodarepublica.pt/dr/legislacao-consolidada/lei/2009-34546475))
 
 ### Canada
 
 - Provincial OHS statutes impose written harassment programs and investigation duties (Ontario's OHSA is the model); federally regulated employers follow the Work Place Harassment and Violence Prevention Regulations with trained investigators. ([ESDC — harassment and violence prevention](https://www.canada.ca/en/employment-social-development/programs/workplace-health-safety/harassment-violence-prevention.html))
+- Step 1: Provincial OHS statutes impose written harassment programs and investigation duties (Ontario's OHSA is the model); federally regulated employers follow the Work Place Harassment and Violence Prevention Regulations with trained investigators. ([ESDC — harassment and violence prevention](https://www.canada.ca/en/employment-social-development/programs/workplace-health-safety/harassment-violence-prevention.html))
 
 ### New Zealand
 
 - Employment New Zealand's resolving-problems pathway governs: deal with bullying and harassment through a fair internal process, use the free mediation service early, and treat a formal personal grievance as the escalation path. ([Resolving problems — Employment New Zealand](https://www.employment.govt.nz/resolving-problems))
+- Step 1: Employment New Zealand's resolving-problems pathway governs: deal with bullying and harassment through a fair internal process, use the free mediation service early, and treat a formal personal grievance as the escalation path. ([Resolving problems — Employment New Zealand](https://www.employment.govt.nz/resolving-problems))
 
 ### Singapore
 
 - TAFEP and the Tripartite guidelines set the grievance-handling expectations — a documented, impartial inquiry with protection against retaliation — and harassment itself is separately actionable under the Protection from Harassment Act. ([TAFEP (fair employment practices)](https://www.tal.sg/tafep))
+- Step 1: TAFEP and the Tripartite guidelines set the grievance-handling expectations — a documented, impartial inquiry with protection against retaliation — and harassment itself is separately actionable under the Protection from Harassment Act. ([TAFEP (fair employment practices)](https://www.tal.sg/tafep))
 
 ### Australia
 
 - Employers carry a positive duty under the Sex Discrimination Act to prevent workplace sexual harassment, and the Fair Work Commission can make stop-sexual-harassment orders — run a fair, documented investigation and act on what it finds. ([Fair Work Commission — sexual harassment](https://www.fwc.gov.au/issues-we-help/sexual-harassment))
+- Step 1: Employers carry a positive duty under the Sex Discrimination Act to prevent workplace sexual harassment, and the Fair Work Commission can make stop-sexual-harassment orders — run a fair, documented investigation and act on what it finds. Employers carry a positive duty under the Sex Discrimination Act to prevent workplace sexual harassment, and the Fair Work Commission can make stop-sexual-harassment orders — run a fair, documented investigation and act on what it finds. The existing official source was unavailable to automated retrieval during this update; confirm the current local procedure with the appropriate adviser.
 
 ### South Korea
 
 - Workplace harassment (직장 내 괴롭힘) is a statutory category under Labor Standards Act Articles 76-2 and 76-3: on a report the employer investigates, protects the complainant, and acts on confirmed harassment, with the Ministry of Employment and Labor taking complaints. ([Ministry of Employment and Labor](https://www.moel.go.kr/))
+- Step 1: Workplace harassment (직장 내 괴롭힘) is a statutory category under Labor Standards Act Articles 76-2 and 76-3: on a report the employer investigates, protects the complainant, and acts on confirmed harassment, with the Ministry of Employment and Labor taking complaints. ([Ministry of Employment and Labor](https://www.moel.go.kr/))
 
 ### Hong Kong
 
 - Sexual harassment at work is unlawful under the Sex Discrimination Ordinance (Cap. 480), with the Equal Opportunities Commission as the statutory enforcement body — a documented, impartial inquiry with protection against retaliation is the defensible employer response. ([Sex Discrimination Ordinance (e-Legislation)](https://www.elegislation.gov.hk/hk/cap480!en/s2))
+- Step 1: Sexual harassment at work is unlawful under the Sex Discrimination Ordinance (Cap. 480), with the Equal Opportunities Commission as the statutory enforcement body — a documented, impartial inquiry with protection against retaliation is the defensible employer response. ([Sex Discrimination Ordinance (e-Legislation)](https://www.elegislation.gov.hk/hk/cap480!en/s2))
 
 ### Estonia
 
 - The employer's duties run through the working-environment rules: psychosocial hazards must be prevented and investigated, the Labour Inspectorate supervises, and individual disputes go to the labour dispute committee (töövaidluskomisjon) or court. ([Labour Inspectorate (Tööinspektsioon)](https://www.ti.ee/en))
+- Step 1: The employer's duties run through the working-environment rules: psychosocial hazards must be prevented and investigated, the Labour Inspectorate supervises, and individual disputes go to the labour dispute committee (töövaidluskomisjon) or court. ([Labour Inspectorate (Tööinspektsioon)](https://www.ti.ee/en))
 
 ---
 

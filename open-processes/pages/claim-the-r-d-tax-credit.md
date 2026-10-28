@@ -136,7 +136,7 @@ The qualifying-expenditure data pulls from payroll and accounting are automatabl
 Requires:
 
 - Payroll account — from [Set up payroll](set-up-payroll.md)
-- Federal tax return — from [File federal tax return](file-federal-tax-return.md)
+- Federal tax return — from [File the company income tax return](file-federal-tax-return.md)
 
 ## Related records
 

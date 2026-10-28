@@ -75,7 +75,7 @@ Produces:
 
 Requires:
 
-- EIN assignment letter — from [Get EIN](get-ein.md)
+- EIN assignment letter — from [Obtain the company tax identifiers](get-ein.md)
 - Business bank account — from [Open bank account](open-bank-account.md)
 
 ## Related records

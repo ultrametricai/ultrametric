@@ -93,11 +93,13 @@ describe('phase → area display map (lib/processRows.ts)', () => {
         expect(r.geoNotesByCountry, r.slug).toEqual(expected)
       }
     }
-    // The founder's example rides all the way to the row: the EIN row says IN is absorbed.
-    const ein = rows.find((r) => r.slug === 'get-ein')!
-    expect(ein.geoScope).toBe('us')
-    expect(ein.geoNotesByCountry.IN?.kind).toBe('absorbed')
-    expect(ein.geoNotesByCountry.DE?.kind).toBe('analog')
+    // The tax identifier abstraction is global; the LLC remains a US-scoped entity process.
+    const taxId = rows.find((r) => r.slug === 'obtain-the-company-tax-identifiers')!
+    expect(taxId.geoScope).toBe('global')
+    expect(taxId.geoNotesByCountry).toEqual({})
+    const llc = rows.find((r) => r.slug === 'set-up-an-llc')!
+    expect(llc.geoScope).toBe('us')
+    expect(llc.geoNotesByCountry.CA?.kind).toBe('not-applicable')
   })
 })
 

@@ -14,7 +14,7 @@ The corporate record kept clean: the deck prepped from live numbers, the meeting
 1. [Prepare a board meeting](prepare-a-board-meeting.md)
 2. [Keep board minutes on cadence](keep-board-minutes-on-cadence.md)
 3. [Set the annual budget & get board approval](set-the-annual-budget-get-board-approval.md)
-4. [File state annual report](file-state-annual-report.md)
+4. [File the recurring company registry return](file-state-annual-report.md)
 
 ---
 

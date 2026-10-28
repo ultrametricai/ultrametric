@@ -58,7 +58,7 @@ State tax portals have no APIs. System provides state-specific checklists and pr
 
    Assess each additional state using actual sales, business presence, product treatment and relevant dates. Identify the state rule and measurement period behind the proposed registration. Resolve whether and when to register with the tax adviser before an application is filed. Connect the issued account to billing and return preparation; a platform already collecting elsewhere does not establish this state’s treatment.
 
-   - Runs the process [Register for sales tax where you have nexus](register-for-sales-tax-where-you-have-nexus.md)
+   - Runs the process [Register for sales tax, VAT or GST](register-for-sales-tax-where-you-have-nexus.md)
 
    *This path ends here.*
 6. **Assess New York Article 9-A nexus and file Form CT-3** — manual form/portal · ~30 min · hard to undo · only when operating in NY
@@ -140,7 +140,7 @@ Produces:
 
 Requires:
 
-- EIN assignment letter — from [Get EIN](get-ein.md)
+- EIN assignment letter — from [Obtain the company tax identifiers](get-ein.md)
 
 ---
 

@@ -152,7 +152,7 @@ describe('process manifests over the real corpus', () => {
 
   it('resolves incorporate-c-corp with kinds, gates, and vendor options intact', () => {
     const manifest = processManifestBySlug('incorporate-c-corp', DATA_DIR)!
-    expect(manifest.process.title).toBe('Incorporate C-Corp')
+    expect(manifest.process.title).toBe('Incorporate the company')
     expect(manifest.process.phase).toBe('formation')
     const byId = new Map(manifest.steps.map((s) => [s.id, s]))
     expect(byId.get('n3')!.kind).toBe('api')
@@ -188,7 +188,7 @@ describe('chain manifests', () => {
     expect(manifest.chain.manifestUrl).toBe(chainManifestUrl('company-launch'))
     expect(manifest.processes.length).toBe(chain.taskIds.length)
     // Run order preserved, and each embedded process carries its own standalone manifest URL.
-    expect(manifest.processes[0].process.slug).toBe('incorporate-c-corp')
+    expect(manifest.processes[0].process.slug).toBe('incorporate-the-company')
     for (const p of manifest.processes) {
       expect(p.manifestUrl).toBe(processManifestUrl(p.process.slug))
       expect(p.steps.length).toBeGreaterThan(0)

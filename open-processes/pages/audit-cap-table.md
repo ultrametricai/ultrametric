@@ -46,7 +46,7 @@ Requires:
 
 - Cap table record — from [Set up cap table](set-up-cap-table.md)
 - Founder agreement & IP assignment — from [Sign the founder agreement & split equity](sign-the-founder-agreement-split-equity.md)
-- Executed SAFEs — from [Raise pre-seed (SAFEs)](raise-pre-seed-safes.md)
+- Executed SAFEs — from [Raise pre-seed funding](raise-pre-seed-safes.md)
 
 ## Related records
 

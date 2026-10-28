@@ -48,7 +48,7 @@ Carta API can record grants. Board consent and option agreements need human revi
    The equity administrator sends the final agreement and governing plan to the intended recipient for signature. Give the recipient a contact for questions and route requested changes back through the grant’s legal and corporate decision process. Track execution against the agreement’s requirements and link the completed signature record to the grant, distinguishing a sent invitation from acceptance.
 
    - Canonical vendor: DocuSign
-6. **Record grant on Carta** — agent-runnable · ~5 min · human approval required
+6. **Record the grant in the equity register** — agent-runnable · ~5 min · human approval required
 
    Enter the completed grant in the equity system from its effective authorization and executed documents. Match recipient, quantity, exercise price, grant date, vesting and plan allocation, then reconcile remaining capacity. The authorized equity administrator links the consent, agreement and valuation reference to the entry and resolves discrepancies between the system and the legal records.
 

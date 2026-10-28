@@ -115,8 +115,8 @@ Produces:
 
 Requires:
 
-- EIN assignment letter — from [Get EIN](get-ein.md)
-- Certificate of Incorporation — from [Incorporate C-Corp](incorporate-c-corp.md)
+- EIN assignment letter — from [Obtain the company tax identifiers](get-ein.md)
+- Certificate of Incorporation — from [Incorporate the company](incorporate-c-corp.md)
 
 ## Related records
 
