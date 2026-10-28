@@ -12,7 +12,7 @@ Data room standing, SAFEs signed, wires verified, cap table made true.
 ## Processes in order
 
 1. [Set up a data room](set-up-a-data-room.md)
-2. [Raise pre-seed (SAFEs)](raise-pre-seed-safes.md)
+2. [Raise pre-seed funding](raise-pre-seed-safes.md)
 3. [Update cap table](update-cap-table.md)
 
 ---

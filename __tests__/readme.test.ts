@@ -451,7 +451,7 @@ describe('README.md anchors and links', () => {
 })
 
 describe('README.md examples pin to the committed records', () => {
-  type CorpusRec = { id: string; title: string }
+  type CorpusRec = { id: string; title: string; slugAliases?: Array<{ slug: string }> }
   const corpus: CorpusRec[] = loadProcesses(path.join(ROOT, 'open-rankings'))
   // Mirrors lib/processes.ts processSlug.
   const slug = (title: string) => title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')
@@ -462,7 +462,8 @@ describe('README.md examples pin to the committed records', () => {
     for (const id of ['form_001', 'fund_003', 'qs_044']) {
       const rec = corpus.find((t) => t.id === id)
       expect(rec, `corpus record ${id} missing`).toBeDefined()
-      expect(readme).toContain(`https://ultrametric.ai/processes/${slug(rec!.title)}`)
+      const slugs = [slug(rec!.title), ...(rec!.slugAliases ?? []).map(alias => alias.slug)]
+      expect(slugs.some(value => readme.includes(`https://ultrametric.ai/processes/${value}`)), id).toBe(true)
     }
   })
 })

@@ -11,8 +11,8 @@ Incorporate, get the EIN, put the founders and cap table on paper, open the bank
 
 ## Processes in order
 
-1. [Incorporate C-Corp](incorporate-c-corp.md)
-2. [Get EIN](get-ein.md)
+1. [Incorporate the company](incorporate-c-corp.md)
+2. [Obtain the company tax identifiers](get-ein.md)
 3. [Set up cap table](set-up-cap-table.md)
 4. [Sign the founder agreement & split equity](sign-the-founder-agreement-split-equity.md)
 5. [Open bank account](open-bank-account.md)

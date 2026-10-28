@@ -110,6 +110,6 @@ describe('artifact chips (the Needs/Produces header rows)', () => {
     const ein = artifactChipRows(llc).produces.find((c) => c.id === 'ein')!
     expect(ein.producedHere).toBe(false)
     expect(ein.producerId).toBe('form_002')
-    expect(ein.producerHref).toBe('/processes/get-ein')
+    expect(ein.producerHref).toBe('/processes/obtain-the-company-tax-identifiers')
   })
 })

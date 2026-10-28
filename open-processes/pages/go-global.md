@@ -12,7 +12,7 @@ The workforce beyond your borders, without new entities: the international contr
 ## Processes in order
 
 1. [Hire intl contractor](hire-intl-contractor.md)
-2. [Add a contractor (1099)](add-a-contractor-1099.md)
+2. [Onboard a contractor](add-a-contractor-1099.md)
 3. [Hire abroad via an EOR](hire-abroad-via-an-eor.md)
 
 ---

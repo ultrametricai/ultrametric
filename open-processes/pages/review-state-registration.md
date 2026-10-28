@@ -98,7 +98,7 @@ Produces:
 
 Requires:
 
-- Certificate of Incorporation — from [Incorporate C-Corp](incorporate-c-corp.md)
+- Certificate of Incorporation — from [Incorporate the company](incorporate-c-corp.md)
 
 ---
 

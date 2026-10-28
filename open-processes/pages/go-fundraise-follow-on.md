@@ -14,7 +14,7 @@ Cap table audited, data room fresh, the priced round closed, SAFEs converted, th
 1. [Audit cap table](audit-cap-table.md)
 2. [Set up a data room](set-up-a-data-room.md)
 3. [Close a priced equity round](close-a-priced-equity-round.md)
-4. [Convert SAFEs at the priced round](convert-safes-at-the-priced-round.md)
+4. [Convert fundraising instruments at the priced round](convert-safes-at-the-priced-round.md)
 5. [Get a 409A valuation](get-a-409a-valuation.md)
 6. [Update cap table](update-cap-table.md)
 

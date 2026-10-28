@@ -3,14 +3,14 @@
 
 # Set up benefits
 
-Research and enroll company in health insurance, dental, vision, 401k, and other benefits.
+Identify statutory coverage, employer benefit obligations and optional benefits for the workforce. Arrange any required or approved plans, configure payroll handling and complete enrollment where needed.
 
 | Field | Value |
 | --- | --- |
 | Kind | process |
 | Phase | hr |
 | Cadence | once |
-| Geo scope | us |
+| Geo scope | global |
 | Complexity | complex |
 | Reversibility | hard to undo |
 | Active work | ~3.7 h |
@@ -21,9 +21,9 @@ Gusto handles benefits enrollment. Plan selection and broker negotiation require
 
 ## Steps
 
-1. **Research benefits options** — agent-runnable · ~1 h
+1. **Assess statutory benefits and optional employee benefits** — agent-runnable · ~1 h
 
-   Define the workforce, work locations, benefits goals and employer budget. Compare possible structures with the benefits adviser, including employee costs, administration and existing coverage or contract commitments. Gather only the workforce information needed for that assessment through private channels. Bring the decision makers the meaningful tradeoffs and unknowns before requesting specific plans or promising coverage.
+   Identify the employer and worker locations, statutory benefits already administered through payroll, mandatory employer arrangements and optional benefits. Confirm the applicable obligations before comparing supplemental plans.
 
    - Cross-arena options: ChatGPT, Claude, Gemini (ai-assistants)
    - Sources: [DOL: Health plans](https://www.dol.gov/index.php/agencies/ebsa/employers-and-advisers/plan-administration-and-compliance/health-plans)
@@ -50,20 +50,20 @@ Gusto handles benefits enrollment. Plan selection and broker negotiation require
    Compare the quoted plan documents with employee needs, provider access, deductibles, exclusions and contribution costs. Clarify price assumptions, renewal terms and administrative work with the adviser. Take material tradeoffs to the benefits and budget decision makers before committing to the chosen arrangement. Resolve implementation conditions before communicating enrollment dates or coverage promises.
 
    - Sources: [DOL: Health plans](https://www.dol.gov/index.php/agencies/ebsa/employers-and-advisers/plan-administration-and-compliance/health-plans)
-4. **Configure benefits in Gusto** — agent-runnable · ~30 min · human approval required
+4. **Configure the selected benefits in the payroll or benefits system** — agent-runnable · ~30 min · human approval required
 
-   Configure the selected plans using their actual eligibility, contribution and coverage-start rules. Reconcile employee classes and deduction codes with payroll and the benefits administrator. Check representative enrollment outcomes against the plan documents and resolve discrepancies before activation. After elections begin, compare system records with accepted carrier or administrator enrollment so a saved setting is not mistaken for active coverage.
+   Configure only the required or approved benefits, contributions and eligibility in the supported local system. Confirm enrollment and payroll handling with the provider before the first deductions.
 
    - Produces: Benefits plan
    - Canonical vendor: Gusto
    - Sources: [DOL: Health plans](https://www.dol.gov/index.php/agencies/ebsa/employers-and-advisers/plan-administration-and-compliance/health-plans)
-5. **Announce to team and open enrollment** — agent-runnable · ~10 min · human approval required
+5. **Explain benefits and any required enrollment to the team** — agent-runnable · ~10 min · human approval required
 
    Explain the approved plans, employee costs, enrollment dates and support options using the plan materials. Check the audience and required notices with the benefits administrator, then give employees a working enrollment route. Clarify how they make elections or record waivers and where dependent or health information belongs. Address access problems early enough for employees to make their choices.
 
    - Canonical vendor: Gusto
    - Sources: [DOL: Health plans](https://www.dol.gov/index.php/agencies/ebsa/employers-and-advisers/plan-administration-and-compliance/health-plans)
-6. **Employees enroll** — human · ~5 d · async wait
+6. **Complete enrollment where required** — human · ~5 d · async wait
 
    Employees review the official materials and enter their own elections, dependent information or waivers in the enrollment system. Help with access and process questions without choosing coverage for them. Reconcile accepted elections with administrator or carrier confirmations and payroll deductions, following up on rejected or missing records. Give employees a way to check their own coverage result.
 
@@ -73,53 +73,69 @@ Gusto handles benefits enrollment. Plan selection and broker negotiation require
 
 ## By country
 
+### United States
+
+- Step 1: Research benefits options Research and enroll company in health insurance, dental, vision, 401k, and other benefits. Define the workforce, work locations, benefits goals and employer budget. Compare possible structures with the benefits adviser, including employee costs, administration and existing coverage or contract commitments. Gather only the workforce information needed for that assessment through private channels. Bring the decision makers the meaningful tradeoffs and unknowns before requesting specific plans or promising coverage.
+
 ### India
 
 - The statutory floor is ESI health cover for lower-wage employees, EPF retirement, and gratuity; on top, a group mediclaim policy is the standard startup benefit — group health cover for employees has been an IRDAI expectation since 2020. ([Ministry of Labour & Employment](https://labour.gov.in/))
+- Step 1: The statutory floor is ESI health cover for lower-wage employees, EPF retirement, and gratuity; on top, a group mediclaim policy is the standard startup benefit — group health cover for employees has been an IRDAI expectation since 2020. ([Ministry of Labour & Employment](https://labour.gov.in/))
 
 ### United Kingdom
 
 - The NHS makes health insurance a perk rather than table stakes; the mandatory piece is pension auto-enrolment, and any private medical or similar benefit is a taxable benefit-in-kind reported to HMRC (P11D or payrolling). ([Expenses and benefits for employers](https://www.gov.uk/employer-reporting-expenses-benefits))
+- Step 1: The NHS makes health insurance a perk rather than table stakes; the mandatory piece is pension auto-enrolment, and any private medical or similar benefit is a taxable benefit-in-kind reported to HMRC (P11D or payrolling). ([Expenses and benefits for employers](https://www.gov.uk/employer-reporting-expenses-benefits))
 
 ### Germany
 
 - Absorbed: Health, pension, care and unemployment insurance are statutory and ride payroll — there is no benefits enrollment project; the discretionary layer is a bAV pension offer (mandatory to offer) and perks like the Deutschlandticket or company fitness. ([Deutsche Rentenversicherung](https://www.deutsche-rentenversicherung.de/))
+- Step 1: Absorbed: Health, pension, care and unemployment insurance are statutory and ride payroll — there is no benefits enrollment project; the discretionary layer is a bAV pension offer (mandatory to offer) and perks like the Deutschlandticket or company fitness. ([Deutsche Rentenversicherung](https://www.deutsche-rentenversicherung.de/))
 
 ### France
 
 - Every employer must provide a mutuelle — complementary health insurance at least 50% employer-funded — plus prévoyance cover for cadres; both plug into payroll's DSN rather than an open-enrollment season. ([Mandatory complementary health cover (mutuelle)](https://entreprendre.service-public.fr/vosdroits/F33754))
+- Step 1: Every employer must provide a mutuelle — complementary health insurance at least 50% employer-funded — plus prévoyance cover for cadres; both plug into payroll's DSN rather than an open-enrollment season. ([Mandatory complementary health cover (mutuelle)](https://entreprendre.service-public.fr/vosdroits/F33754))
 
 ### Portugal
 
 - Absorbed: Statutory social security (pensions, sickness, unemployment) rides payroll and the SNS provides universal healthcare — there is no benefits-enrollment project; the common extras are meal allowance and private health insurance as perks. ([Segurança Social — empregadores](https://www.seg-social.pt/empregadores))
+- Step 1: Absorbed: Statutory social security (pensions, sickness, unemployment) rides payroll and the SNS provides universal healthcare — there is no benefits-enrollment project; the common extras are meal allowance and private health insurance as perks. ([Segurança Social — empregadores](https://www.seg-social.pt/empregadores))
 
 ### Canada
 
 - Provincial medicare covers care, so the real project is the extended-health layer: group benefits (dental, vision, drugs, disability) through an insurer, with CRA's taxable-benefit rules deciding what lands on the T4. ([CRA — benefits and allowances](https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/payroll/benefits-allowances.html))
+- Step 1: Provincial medicare covers care, so the real project is the extended-health layer: group benefits (dental, vision, drugs, disability) through an insurer, with CRA's taxable-benefit rules deciding what lands on the T4. ([CRA — benefits and allowances](https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/payroll/benefits-allowances.html))
 
 ### New Zealand
 
 - Public healthcare keeps health insurance a perk rather than table stakes; the mandatory benefit is KiwiSaver — auto-enrolment for eligible new employees plus the compulsory employer contribution of at least 3.5% of gross pay. ([Employer contributions to KiwiSaver — Inland Revenue](https://www.ird.govt.nz/kiwisaver/kiwisaver-employers/contributions-and-deductions/employer-contributions-to-kiwisaver-and-complying-funds))
+- Step 1: Public healthcare keeps health insurance a perk rather than table stakes; the mandatory benefit is KiwiSaver — auto-enrolment for eligible new employees plus the compulsory employer contribution of at least 3.5% of gross pay. ([Employer contributions to KiwiSaver — Inland Revenue](https://www.ird.govt.nz/kiwisaver/kiwisaver-employers/contributions-and-deductions/employer-contributions-to-kiwisaver-and-complying-funds))
 
 ### Singapore
 
 - CPF is the mandatory piece — employer contributions fund retirement and MediSave — and public healthcare blunts the health-insurance arms race; private medical and similar benefits sit on top as perks, taxed per IRAS's benefit rules. ([CPF — contribution rates](https://www.cpf.gov.sg/employer/employer-obligations/how-much-cpf-contributions-to-pay))
+- Step 1: CPF is the mandatory piece — employer contributions fund retirement and MediSave — and public healthcare blunts the health-insurance arms race; private medical and similar benefits sit on top as perks, taxed per IRAS's benefit rules. ([CPF — contribution rates](https://www.cpf.gov.sg/employer/employer-obligations/how-much-cpf-contributions-to-pay))
 
 ### Australia
 
 - Medicare makes private health cover a perk rather than table stakes; the mandatory piece is the 12% superannuation guarantee, and salary-packaged benefits attract fringe benefits tax, registered and reported to the ATO. ([Register for FBT](https://business.gov.au/registrations/register-for-taxes/register-for-fringe-benefits-tax-fbt))
+- Step 1: Medicare makes private health cover a perk rather than table stakes; the mandatory piece is the 12% superannuation guarantee, and salary-packaged benefits attract fringe benefits tax, registered and reported to the ATO. ([Register for FBT](https://business.gov.au/registrations/register-for-taxes/register-for-fringe-benefits-tax-fbt))
 
 ### South Korea
 
 - The statutory benefits stack is the four social insurances (national pension, health, employment, industrial accident), registered once as an employer and run on monthly premiums; the shared portal files all four together. ([Four social insurances portal (4대사회보험)](https://www.4insure.or.kr/))
+- Step 1: The statutory benefits stack is the four social insurances (national pension, health, employment, industrial accident), registered once as an employer and run on monthly premiums; the shared portal files all four together. ([Four social insurances portal (4대사회보험)](https://www.4insure.or.kr/))
 
 ### Hong Kong
 
 - The statutory stack is lean: MPF employer contributions each wage period, compulsory employees' compensation insurance, and the Employment Ordinance's continuous-contract entitlements (rest days, annual leave, sickness allowance) — private medical sits on top as a perk. ([Labour Department — Employment Ordinance guide](https://www.labour.gov.hk/eng/legislat/content2.htm))
+- Step 1: The statutory stack is lean: MPF employer contributions each wage period, compulsory employees' compensation insurance, and the Employment Ordinance's continuous-contract entitlements (rest days, annual leave, sickness allowance) — private medical sits on top as a perk. ([Labour Department — Employment Ordinance guide](https://www.labour.gov.hk/eng/legislat/content2.htm))
 
 ### Estonia
 
 - Absorbed: The statutory benefits stack arrives with payroll: social tax at 33% funds health insurance and pensions, and coverage follows the employment-register entry (law rules [ee.social-tax-rate-and-monthly-return](../../open-law/EE/ee-social-tax-rate-and-monthly-return.json), [ee.employment-register-before-work](../../open-law/EE/ee-employment-register-before-work.json)); nothing is procured plan by plan. ([Health Insurance Fund (Tervisekassa)](https://www.tervisekassa.ee/en))
+- Step 1: Absorbed: The statutory benefits stack arrives with payroll: social tax at 33% funds health insurance and pensions, and coverage follows the employment-register entry (law rules ee.social-tax-rate-and-monthly-return, ee.employment-register-before-work); nothing is procured plan by plan. ([Health Insurance Fund (Tervisekassa)](https://www.tervisekassa.ee/en))
 
 ## Artifacts
 

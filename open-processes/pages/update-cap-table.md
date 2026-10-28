@@ -46,7 +46,7 @@ Carta integration planned. Requires reviewing and reconciling existing cap table
 Requires:
 
 - Cap table record — from [Set up cap table](set-up-cap-table.md)
-- Executed SAFEs — from [Raise pre-seed (SAFEs)](raise-pre-seed-safes.md)
+- Executed SAFEs — from [Raise pre-seed funding](raise-pre-seed-safes.md)
 
 ## Related records
 

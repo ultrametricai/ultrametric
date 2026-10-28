@@ -107,7 +107,7 @@ Gusto can auto-generate 1099s for contractors on their platform. System compiles
 Requires:
 
 - Payroll account — from [Set up payroll](set-up-payroll.md)
-- Contractor record (W-9 on file) — from [Add a contractor (1099)](add-a-contractor-1099.md)
+- Contractor record (W-9 on file) — from [Onboard a contractor](add-a-contractor-1099.md)
 
 ## Related records
 

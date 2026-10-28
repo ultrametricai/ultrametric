@@ -85,7 +85,7 @@ Produces:
 
 Requires:
 
-- EIN assignment letter — from [Get EIN](get-ein.md)
+- EIN assignment letter — from [Obtain the company tax identifiers](get-ein.md)
 - Business mailing address — from [Set up mailing address](set-up-mailing-address.md)
 
 ---

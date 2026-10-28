@@ -14,7 +14,7 @@
 1. [Issue 1099s](issue-1099s.md)
 2. [File DE franchise tax](file-de-franchise-tax.md)
 3. [Claim the R&D tax credit](claim-the-r-d-tax-credit.md)
-4. [File federal tax return](file-federal-tax-return.md)
+4. [File the company income tax return](file-federal-tax-return.md)
 
 ---
 
