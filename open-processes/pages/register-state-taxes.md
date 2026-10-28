@@ -78,6 +78,7 @@ State tax portals have no APIs. System provides state-specific checklists and pr
 
    Washington levies no corporate income tax; most businesses instead owe the business and occupation (B&O) tax on gross receipts, at a rate set by the activity's classification, with no deduction for costs (law rule [us-wa.business-occupation-tax](../../open-law/US-WA/us-wa-business-occupation-tax.json)). Register through the state business license application, which opens the Department of Revenue account, then report on the excise tax return through My DOR on the assigned filing frequency. Check the small business B&O credit and any city B&O obligations with the tax adviser.
 
+   - Canonical vendor: Washington Department of Revenue
    - Do it yourself: [WA DOR — business & occupation tax](https://dor.wa.gov/taxes-rates/business-occupation-tax)
    - Sources: [WA DOR — apply for a business license](https://dor.wa.gov/open-business/apply-business-license)
 
