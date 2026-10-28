@@ -155,6 +155,8 @@ System can draft the instruments, track investor pipeline, send follow-ups, and 
 
 - Step 5: The packet is the finalized YC SAFE (cap, discount, or MFN variant) and any side letter ([Y Combinator SAFE documents](https://www.ycombinator.com/safe/))
 - Step 8: File Form D through the company's EDGAR account within the first-sale deadline, and track the state blue-sky notices beside it US completion check: The accepted notice appears in the filing authority's public register or acknowledgment channel; retain the filed copy and receipt. ([SEC Filing a Form D Notice](https://www.sec.gov/resources-small-businesses/exempt-offerings/filing-form-d-notice))
+  - Cost: free (free, as of 2026-10-01, [www.sec.gov](https://www.sec.gov/info/smallbus/secg/formdguide.htm)). The SEC charges no filing fee for a Form D notice or amendment; most states charge their own blue-sky notice-filing fees.
+  - Verify: The accepted notice appears in the filing authority's public register or acknowledgment channel; retain the filed copy and receipt.
 
 ### India
 
