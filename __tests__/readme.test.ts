@@ -249,7 +249,7 @@ describe('README.md structure (founder round 2, 2026-10-12)', () => {
       const at = readme.indexOf(sub)
       expect(at).toBeGreaterThan(-1)
       const body = readme.slice(at, readme.indexOf('\n#', at + sub.length))
-      expect(body, `${sub} carries no bulleted example links`).toMatch(/\n- \[[^\]]+\]\(https:\/\/ultrametric\.ai\/processes\//)
+      expect(body, `${sub} carries no bulleted example links`).toMatch(/\n- \[[^\]]+\]\(open-processes\/pages\//)
     }
   })
 
@@ -458,11 +458,13 @@ describe('README.md examples pin to the committed records', () => {
 
   it('the three example links resolve to real processes via their derived slugs', () => {
     // Founder round 4: the formal picks — Incorporate C-Corp, Get a 409A valuation,
-    // Set up mailing address (all three verified 200 on the live site, 2026-10-12).
+    // Set up mailing address. Readable-guide rollout: examples resolve inside the repo.
     for (const id of ['form_001', 'fund_003', 'qs_044']) {
       const rec = corpus.find((t) => t.id === id)
       expect(rec, `corpus record ${id} missing`).toBeDefined()
-      expect(readme).toContain(`https://ultrametric.ai/processes/${slug(rec!.title)}`)
+      const guide = `open-processes/pages/${slug(rec!.title)}.md`
+      expect(readme).toContain(`](${guide})`)
+      expect(fs.existsSync(path.join(ROOT, guide)), guide).toBe(true)
     }
   })
 })
