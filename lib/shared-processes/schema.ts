@@ -106,6 +106,18 @@ export function validateCatalog(input: unknown): SharedRecord[] {
   const records = z.array(sharedRecordSchema).parse(input)
   const byId = new Map(records.map(record => [record.id, record]))
   if (byId.size !== records.length) throw new Error('Duplicate record ID')
+  const routeOwners = new Map(records.map(record => [record.id, record.id]))
+  for (const record of records) {
+    const views = record.countryViews ?? []
+    if (Boolean(record.globalSlug) !== Boolean(views.length)) throw new Error(`${record.id}: globalSlug and countryViews must be authored together`)
+    if (new Set(views.map(view => view.country)).size !== views.length) throw new Error(`${record.id}: duplicate country view`)
+    if (new Set(views.map(view => view.slug)).size !== views.length || views.some(view => view.slug === record.globalSlug)) throw new Error(`${record.id}: duplicate country route`)
+    for (const key of new Set([...(record.aliases ?? []), ...(record.globalSlug ? [record.globalSlug] : []), ...views.map(view => view.slug)])) {
+      const owner = routeOwners.get(key)
+      if (owner && owner !== record.id) throw new Error(`Country route collision: ${key}`)
+      routeOwners.set(key, record.id)
+    }
+  }
   const aliases = new Set(byId.keys())
   const references = new Map<string, string[]>()
   for (const record of records) {
