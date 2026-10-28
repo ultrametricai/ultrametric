@@ -139,8 +139,7 @@ System can draft the instruments, track investor pipeline, send follow-ups, and 
 
    Where the offering rules require a notice filing, gather the issuer, related persons, exemption, offering and investor information. Confirm the first-sale date and deadline with counsel; first sale may precede a wire receipt. The authorized filer submits the reviewed notice through the required channel and checks its resulting status. Keep the filed copy and receipt, and track separate state or provincial notices where applicable.
 
-   - Verify: The accepted notice appears in the filing authority's public register or acknowledgment channel; retain the filed copy and receipt.
-   - Cost: free (free, as of 2026-10-01, [www.sec.gov](https://www.sec.gov/info/smallbus/secg/formdguide.htm)). The SEC charges no filing fee for a Form D notice or amendment; most states charge their own blue-sky notice-filing fees.
+   - Verify: Retain the official confirmation or accepted documents required for this step in the selected jurisdiction; reconcile them with the approved company records.
    - Canonical vendor: SEC
    - Do it yourself: [SEC EDGAR online forms](https://www.onlineforms.edgarfiling.sec.gov/)
    - Sources: [SEC Filing a Form D Notice](https://www.sec.gov/resources-small-businesses/exempt-offerings/filing-form-d-notice)
@@ -155,7 +154,7 @@ System can draft the instruments, track investor pipeline, send follow-ups, and 
 ### United States
 
 - Step 5: The packet is the finalized YC SAFE (cap, discount, or MFN variant) and any side letter ([Y Combinator SAFE documents](https://www.ycombinator.com/safe/))
-- Step 8: File Form D through the company's EDGAR account within the first-sale deadline, and track the state blue-sky notices beside it ([SEC Filing a Form D Notice](https://www.sec.gov/resources-small-businesses/exempt-offerings/filing-form-d-notice))
+- Step 8: File Form D through the company's EDGAR account within the first-sale deadline, and track the state blue-sky notices beside it US completion check: The accepted notice appears in the filing authority's public register or acknowledgment channel; retain the filed copy and receipt. US cost: 0 USD (2026-10-01). The SEC charges no filing fee for a Form D notice or amendment; most states charge their own blue-sky notice-filing fees. Source: https://www.sec.gov/info/smallbus/secg/formdguide.htm ([SEC Filing a Form D Notice](https://www.sec.gov/resources-small-businesses/exempt-offerings/filing-form-d-notice))
 
 ### India
 

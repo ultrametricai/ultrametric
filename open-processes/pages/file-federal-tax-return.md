@@ -62,14 +62,14 @@ Tax filing requires a CPA. System compiles financial data, tracks deadlines, coo
 
    Use the selected tax authority’s filing procedure for the approved return. The authorized filer submits it and retains the filing acknowledgement and any follow-up requirements.
 
-   - Verify: The IRS e-file acceptance acknowledgment comes back through the CPA — retain it with the signed copy of the return.
+   - Verify: Retain the official confirmation or accepted documents required for this step in the selected jurisdiction; reconcile them with the approved company records.
    - Produces: Federal tax return
    - Canonical vendor: IRS
 7. **Pay any company tax due** — manual form/portal · ~10 min · human approval required · hard to undo
 
    Confirm the amount, payment reference, authority and deadline with the tax adviser. Obtain authorization for payment through the authority’s supported method and retain the receipt.
 
-   - Verify: IRS Direct Pay or EFTPS issues a payment confirmation number and the payment posts to the business tax account. ([www.irs.gov](https://www.irs.gov/payments))
+   - Verify: Retain the official confirmation or accepted documents required for this step in the selected jurisdiction; reconcile them with the approved company records.
    - Canonical vendor: IRS
    - Do it yourself: [IRS payments](https://www.irs.gov/payments)
 8. **File copy in records** — agent-runnable · ~2 min · support work
@@ -84,8 +84,8 @@ Tax filing requires a CPA. System compiles financial data, tracks deadlines, coo
 ### United States
 
 - Step 5: Officer signs the e-file authorization (Form 8879-CORP) Prepare the annual federal corporate tax return (Form 1120) and file with the IRS. For a return using Form 8879-CORP, the authorized corporate officer reviews the complete electronic return before signing. Verify the corporation, year, required return figures and any electronic-withdrawal consent against the reviewed draft. Resolve changes with the electronic return originator, then sign and return the authorization securely. Keep it associated with the return it authorizes.
-- Step 6: CPA files return with IRS Confirm the preparer has the approved return and required signature authorization before transmission. Obtain the filing acknowledgement and distinguish acceptance from rejection. Resolve rejected submissions promptly, reviewing material corrections before retransmission. Preserve the filed return and acceptance, and check any separately required forms or attachments the preparer identified.
-- Step 7: Pay any tax due Reconcile the balance due with credits, estimated payments and any electronic withdrawal already authorized. Verify taxpayer, period, payment type, amount and due date with the preparer. Use the company’s payment-approval process and check settlement. Match any debit included with filing before paying again, and resolve failed or missing payments against the tax account. ([IRS payments](https://www.irs.gov/payments))
+- Step 6: CPA files return with IRS Confirm the preparer has the approved return and required signature authorization before transmission. Obtain the filing acknowledgement and distinguish acceptance from rejection. Resolve rejected submissions promptly, reviewing material corrections before retransmission. Preserve the filed return and acceptance, and check any separately required forms or attachments the preparer identified. US completion check: The IRS e-file acceptance acknowledgment comes back through the CPA — retain it with the signed copy of the return.
+- Step 7: Pay any tax due Reconcile the balance due with credits, estimated payments and any electronic withdrawal already authorized. Verify taxpayer, period, payment type, amount and due date with the preparer. Use the company’s payment-approval process and check settlement. Match any debit included with filing before paying again, and resolve failed or missing payments against the tax account. US completion check: IRS Direct Pay or EFTPS issues a payment confirmation number and the payment posts to the business tax account. Source: https://www.irs.gov/payments ([IRS payments](https://www.irs.gov/payments))
 
 ### India
 

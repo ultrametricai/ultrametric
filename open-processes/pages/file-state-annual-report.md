@@ -30,7 +30,7 @@ State filing portals have no API — the filing is manual form work; gathering t
 
    Confirm the entity, registry, reporting period and required filing. Prepare the reviewed company details or accounts, obtain authorization to submit, and retain the accepted filing. Use the jurisdiction’s own filing cycle and route.
 
-   - Verify: The state portal shows the report filed and the entity in good standing for the year.
+   - Verify: Retain the official confirmation or accepted documents required for this step in the selected jurisdiction; reconcile them with the approved company records.
    - Vendor options: Northwest Registered Agent, LegalZoom, Harbor Compliance
 3. **Save the confirmation receipt** — agent-runnable · ~2 min
 
@@ -104,7 +104,7 @@ State filing portals have no API — the filing is manual form work; gathering t
 
 ### United States
 
-- Step 2: File the annual report on the state portal File the annual report and keep the company in good standing with your state of incorporation. The ritual differs by state: California's Statement of Information is due within 90 days of registration and annually after (law rule [us-ca.statement-of-information](../../open-law/US-CA/us-ca-statement-of-information.json)), Nevada's annual list lands by the end of the anniversary month alongside the $500 business-license renewal (law rule [us-nv.annual-list-business-license](../../open-law/US-NV/us-nv-annual-list-business-license.json)), and Texas ties standing to the May 15 franchise tax report (law rule [us-tx.franchise-tax-report](../../open-law/US-TX/us-tx-franchise-tax-report.json)). Select the correct entity, report and period in the official portal. Compare prefilled information with current company records and identify changes requiring a separate filing. The authorized filer reviews the declaration and approves submission and fees. Preserve the submitted report and check whether it was accepted or needs correction.
+- Step 2: File the annual report on the state portal File the annual report and keep the company in good standing with your state of incorporation. The ritual differs by state: California's Statement of Information is due within 90 days of registration and annually after (law rule [us-ca.statement-of-information](../../open-law/US-CA/us-ca-statement-of-information.json)), Nevada's annual list lands by the end of the anniversary month alongside the $500 business-license renewal (law rule [us-nv.annual-list-business-license](../../open-law/US-NV/us-nv-annual-list-business-license.json)), and Texas ties standing to the May 15 franchise tax report (law rule [us-tx.franchise-tax-report](../../open-law/US-TX/us-tx-franchise-tax-report.json)). Select the correct entity, report and period in the official portal. Compare prefilled information with current company records and identify changes requiring a separate filing. The authorized filer reviews the declaration and approves submission and fees. Preserve the submitted report and check whether it was accepted or needs correction. US completion check: The state portal shows the report filed and the entity in good standing for the year.
 
 ### India
 
