@@ -133,6 +133,13 @@ Release the approved public documents at the intended signup, checkout and accou
 
 ## Country details
 
+<a id="geo-us"></a>
+
+### United States
+
+Create a standard SaaS subscription agreement, terms of service, and privacy policy.
+
+
 <a id="geo-de"></a>
 
 ### Germany

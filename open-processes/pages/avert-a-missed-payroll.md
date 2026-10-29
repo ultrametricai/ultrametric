@@ -9,7 +9,7 @@
 
 **Trigger:** The cash forecast says the next payroll will not clear: you are weeks from out of cash, or the provider's funding debit just failed.
 
-Payroll is a hard deadline: providers debit funds days before payday, and wages for hours worked are owed in full. An employer who misses the FLSA minimum-wage or overtime floor owes the unpaid wages plus an equal amount as liquidated damages (law rule [us-fed.flsa-unpaid-wages-liability](../../open-law/US-FED/us-fed-flsa-unpaid-wages-liability.json)), state wage statutes add penalties of their own, and if anyone is let go the final-pay clocks run from the termination itself (in California, immediately: law rule [us-ca.final-wages-timing](../../open-law/US-CA/us-ca-final-wages-timing.json)). So face the number first: true cash against the payroll funding deadline. Then work the options in order: written deferral consents only where they are lawful at all (deferrals cannot dip below the statutory floors, law rule [us-fed.flsa-minimum-wage-overtime](../../open-law/US-FED/us-fed-flsa-minimum-wage-overtime.json)), an officer loan papered as a real note, an insider bridge on SAFEs, and the emergency cost plan. Decide the fork while payroll can still be paid: bridge, cut to default-alive, or an orderly wind-down that pays final wages on time. Tell the board before payday and the team before the rumor. Educational guidance, not legal advice; the exposure sits in the wage statutes, so verify them at the primary source.
+Compare available cash with the payroll funding deadline, assess wage obligations with local advice and document lawful funding or cost options. Obtain the responsible decision-makers’ approval and communicate the chosen plan before affected payments are due.
 
 | Field | Value |
 | --- | --- |
@@ -41,7 +41,7 @@ Country rows describe the guidance recorded here. Local notes and step alternati
 
 | Country | Recorded guidance | Steps with local alternatives or resolutions |
 | --- | --- | --- |
-| [United States](#geo-us) | step resolution | [2](#step-2) |
+| [United States](#geo-us) | step resolution | [2](#step-2), [3](#step-3) |
 
 ## Steps at a glance
 
@@ -79,7 +79,7 @@ agent-runnable · ~45 min
 agent-runnable · ~30 min
 
 
-An employer who violates the FLSA minimum-wage or overtime provisions owes the unpaid wages and an additional equal amount as liquidated damages (law rule [us-fed.flsa-unpaid-wages-liability](../../open-law/US-FED/us-fed-flsa-unpaid-wages-liability.json)). State wage statutes add penalties on top, and if anyone is terminated the final-pay clocks run from the termination itself (law rule [us-ca.final-wages-timing](../../open-law/US-CA/us-ca-final-wages-timing.json) in California).
+Assess wage obligations, penalties and final-pay exposure with employment counsel for each affected work location before choosing a funding or cost plan.
 
 - Do it yourself: [29 U.S.C. § 216 — FLSA remedies](https://www.law.cornell.edu/uscode/text/29/216)
 - Next: steps 3, 4 and 5 — all follow this step
@@ -91,7 +91,7 @@ An employer who violates the FLSA minimum-wage or overtime provisions owes the u
 human · ~45 min
 
 
-A deferral below the FLSA minimum wage or overtime floor stays a violation with or without consent, and exempt employees have a salary basis that a partial payment can break (law rule [us-fed.flsa-minimum-wage-overtime](../../open-law/US-FED/us-fed-flsa-minimum-wage-overtime.json)). Deferrals that survive that screen get documented in writing, per person, with the repayment date.
+Ask counsel whether a proposed deferral is lawful for the affected employee and work location. Obtain any required written consent and repayment terms; do not treat consent as a substitute for mandatory wage rules.
 
 <a id="step-4"></a>
 
@@ -161,7 +161,10 @@ human · ~45 min · hard to undo
 
 ### United States
 
-- Step 2: Exposure runs through the FLSA (unpaid wages plus equal liquidated damages, law rule us-fed.flsa-unpaid-wages-liability) and the state wage statutes, with final-pay clocks like California's (law rule us-ca.final-wages-timing) ([29 U.S.C. § 216(b)](https://www.law.cornell.edu/uscode/text/29/216))
+Payroll is a hard deadline: providers debit funds days before payday, and wages for hours worked are owed in full. An employer who misses the FLSA minimum-wage or overtime floor owes the unpaid wages plus an equal amount as liquidated damages (law rule [us-fed.flsa-unpaid-wages-liability](../../open-law/US-FED/us-fed-flsa-unpaid-wages-liability.json)), state wage statutes add penalties of their own, and if anyone is let go the final-pay clocks run from the termination itself (in California, immediately: law rule [us-ca.final-wages-timing](../../open-law/US-CA/us-ca-final-wages-timing.json)). So face the number first: true cash against the payroll funding deadline. Then work the options in order: written deferral consents only where they are lawful at all (deferrals cannot dip below the statutory floors, law rule [us-fed.flsa-minimum-wage-overtime](../../open-law/US-FED/us-fed-flsa-minimum-wage-overtime.json)), an officer loan papered as a real note, an insider bridge on SAFEs, and the emergency cost plan. Decide the fork while payroll can still be paid: bridge, cut to default-alive, or an orderly wind-down that pays final wages on time. Tell the board before payday and the team before the rumor. Educational guidance, not legal advice; the exposure sits in the wage statutes, so verify them at the primary source.
+
+- Step 2: Exposure runs through the FLSA (unpaid wages plus equal liquidated damages, law rule us-fed.flsa-unpaid-wages-liability) and the state wage statutes, with final-pay clocks like California's (law rule us-ca.final-wages-timing) An employer who violates the FLSA minimum-wage or overtime provisions owes the unpaid wages and an additional equal amount as liquidated damages (law rule [us-fed.flsa-unpaid-wages-liability](../../open-law/US-FED/us-fed-flsa-unpaid-wages-liability.json)). State wage statutes add penalties on top, and if anyone is terminated the final-pay clocks run from the termination itself (law rule [us-ca.final-wages-timing](../../open-law/US-CA/us-ca-final-wages-timing.json) in California). ([29 U.S.C. § 216(b)](https://www.law.cornell.edu/uscode/text/29/216))
+- Step 3: Ask for written deferral consents only where they are lawful: consent does not erase the statutory floors for hours worked A deferral below the FLSA minimum wage or overtime floor stays a violation with or without consent, and exempt employees have a salary basis that a partial payment can break (law rule [us-fed.flsa-minimum-wage-overtime](../../open-law/US-FED/us-fed-flsa-minimum-wage-overtime.json)). Deferrals that survive that screen get documented in writing, per person, with the repayment date.
 
 ---
 
