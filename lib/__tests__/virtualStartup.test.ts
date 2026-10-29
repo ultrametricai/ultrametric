@@ -895,6 +895,13 @@ describe('cadence sweep + event-driven examples (richer rhythm, 2026-09-25)', ()
 
   it('accounts for calendar-recurring tasks through simulation gates or explicit scope exclusions', () => {
     const covered = new Set(candidates.map((c) => c.taskId))
+    for (const [id, why] of Object.entries(YEAR_SWEEP_EXCLUSIONS)) {
+      const task = corpusById.get(id)
+      expect(task, id).toBeDefined()
+      expect(RUNS_PER_YEAR[task!.cadence], id).not.toBeNull()
+      expect(covered.has(id), id).toBe(false)
+      expect(why.length, id).toBeGreaterThan(20)
+    }
     for (const t of corpusById.values()) {
       if (RUNS_PER_YEAR[t.cadence] === null) continue
       if (YEAR_SWEEP_EXCLUSIONS[t.id]) {
