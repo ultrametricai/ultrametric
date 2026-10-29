@@ -4,6 +4,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { z } from 'zod'
 import { GEO_COUNTRIES } from '../lib/geoPreference'
+import { loadProcessCatalog } from '../lib/shared-processes/catalog'
 
 // coverage/index.json is the cross-area rollup: one entry per top-level content area, each
 // pointing at the file where that area tracks its own gaps in detail. These gates stop the
@@ -120,5 +121,83 @@ describe('coverage/index.json', () => {
     for (const area of index.areas) {
       expect(Object.keys(index.maturity_grades), `${area.id} uses an undefined grade`).toContain(area.maturity)
     }
+  })
+})
+
+describe('startup task inventory and operational expansion', () => {
+  const read = (file: string) => JSON.parse(fs.readFileSync(path.join(ROOT, file), 'utf8'))
+  const inventory = read('coverage/startup-task-inventory.json') as {
+    sources: string
+    measurement: string
+    domains: Array<{ id: string; name: string }>
+    needs: Array<{ id: string; domain: string; status: string; processIds: string[]; sourceIds: string[] }>
+    specialistBoundaries: Array<{ id: string; scope: string; entryProcessIds: string[]; status: string }>
+  }
+  const sources = read(inventory.sources) as { sources: Array<{ id: string; url: string; checkedOn: string }> }
+  const audit = read('coverage/startup-expansion-audit.json') as { newProcessIds: string[]; fixture: string }
+  const fixtures = read(audit.fixture) as { fictional: boolean; cases: Array<{ company: string; expectedProcessId: string; expectedOutcome: string; externalActionsAuthorized: boolean }> }
+  const catalog = loadProcessCatalog().processes
+  const records = new Map(catalog.map((p) => [p.record.id, p.record]))
+
+  it('validates the inventory, source register, audit and fictional cases against their published schemas', () => {
+    for (const [data, name] of [[inventory, 'startup-task-inventory'], [sources, 'startup-process-sources'], [audit, 'startup-expansion-audit'], [fixtures, 'startup-lifecycle-fixtures']] as const) {
+      expect(z.fromJSONSchema(read(`schemas/${name}.schema.json`)).parse(data)).toEqual(data)
+    }
+  })
+
+  it('resolves needs and source identities, retains explicit gaps and separates specialist boundaries', () => {
+    expect(new Set(inventory.needs.map((n) => n.id)).size).toBe(inventory.needs.length)
+    expect(new Set(inventory.domains.map((d) => d.id)).size).toBe(inventory.domains.length)
+    const domains = new Set(inventory.domains.map((d) => d.id))
+    const sourceIds = new Set(sources.sources.map((s) => s.id))
+    expect(sourceIds.size).toBe(sources.sources.length)
+    for (const need of inventory.needs) {
+      expect(domains.has(need.domain), need.id).toBe(true)
+      expect(need.status === 'guide-present', need.id).toBe(need.processIds.length > 0)
+      for (const id of need.processIds) expect(records.has(id), `${need.id}: ${id}`).toBe(true)
+      for (const id of need.sourceIds) expect(sourceIds.has(id), `${need.id}: ${id}`).toBe(true)
+    }
+    const mapped = new Set(inventory.needs.flatMap((n) => n.processIds))
+    for (const process of catalog.filter((p) => !p.taskIds)) expect(mapped.has(process.record.id), process.slug).toBe(true)
+    for (const boundary of inventory.specialistBoundaries) {
+      expect(boundary.status).not.toBe('covered')
+      for (const id of boundary.entryProcessIds) expect(records.has(id), id).toBe(true)
+    }
+    expect(inventory.measurement).toContain('does not establish universal completeness')
+  })
+
+  it('new guides have distinct outcomes, scoped applicability, sourced instructions and human gates', () => {
+    expect(new Set(audit.newProcessIds).size).toBe(audit.newProcessIds.length)
+    for (const id of audit.newProcessIds) {
+      const record = records.get(id)!
+      expect(record, id).toBeDefined()
+      expect(record.when, id).toBeTruthy()
+      expect(record.outcomes.length, id).toBeGreaterThan(0)
+      expect(record.parts.length, id).toBeGreaterThanOrEqual(5)
+      expect(record.references.some((r) => r.kind === 'url'), id).toBe(true)
+      expect(record.metadata.editorial).toMatchObject({ status: 'draft' })
+      expect(record.notes.some((n) => n.text.includes('No case-specific legal review')), id).toBe(true)
+      expect(record.metadata.provenRuns, id).toBeUndefined()
+      for (const part of record.parts) {
+        expect(part.guidance?.length, `${id}/${part.id}`).toBeGreaterThan(100)
+        expect(part.metadata.execution).not.toMatchObject({ automationEvidence: { status: 'observed' } })
+        if (part.metadata.route !== 'agent') expect(part.metadata.approvalRequired, `${id}/${part.id}`).toBe(true)
+      }
+      expect(record.parts.at(-1)?.metadata.verify, id).toMatchObject({ how: record.outcomes[0] })
+    }
+  })
+
+  it('fictional applicability cases cover the additions without authorizing external work', () => {
+    expect(fixtures.fictional).toBe(true)
+    expect(new Set(fixtures.cases.map((c) => c.expectedProcessId))).toEqual(new Set(audit.newProcessIds))
+    for (const example of fixtures.cases) {
+      expect(example.company).toContain('Fictional')
+      expect(example.externalActionsAuthorized).toBe(false)
+      expect(records.get(example.expectedProcessId)?.outcomes).toContain(example.expectedOutcome)
+    }
+  })
+
+  it('the readable coverage map is regenerated from the current inventory and canonical titles', () => {
+    expect(() => execFileSync(process.execPath, ['scripts/generate-startup-coverage.mjs', '--check'], { cwd: ROOT })).not.toThrow()
   })
 })
