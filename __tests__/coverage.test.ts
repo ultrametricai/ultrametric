@@ -135,7 +135,7 @@ describe('startup task inventory and operational expansion', () => {
   }
   const sources = read(inventory.sources) as { sources: Array<{ id: string; url: string; checkedOn: string }> }
   const audit = read('coverage/startup-expansion-audit.json') as { newProcessIds: string[]; fixture: string }
-  const fixtures = read(audit.fixture) as { fictional: boolean; cases: Array<{ company: string; expectedProcessId: string; expectedOutcome: string; externalActionsAuthorized: boolean }> }
+  const fixtures = read(audit.fixture) as { fictional: boolean; cases: Array<{ company: string; expectedProcessId: string; expectedOutcome: string; externalActionsAuthorized: boolean; gateChecks: Array<{ id: string; stepId: string; facts: { triggerConfirmed: boolean; requiredLocationsKnown: boolean; expertReviewComplete: boolean; approval: { role: string; scope: string } | null }; expectedDecision: string }> }> }
   const catalog = loadProcessCatalog().processes
   const records = new Map(catalog.map((p) => [p.record.id, p.record]))
 
@@ -187,13 +187,33 @@ describe('startup task inventory and operational expansion', () => {
     }
   })
 
-  it('fictional applicability cases cover the additions without authorizing external work', () => {
+  it('fictional examples cover the additions and exercise context, scope, review and approval stops', () => {
     expect(fixtures.fictional).toBe(true)
     expect(new Set(fixtures.cases.map((c) => c.expectedProcessId))).toEqual(new Set(audit.newProcessIds))
     for (const example of fixtures.cases) {
       expect(example.company).toContain('Fictional')
       expect(example.externalActionsAuthorized).toBe(false)
-      expect(records.get(example.expectedProcessId)?.outcomes).toContain(example.expectedOutcome)
+      const record = records.get(example.expectedProcessId)!
+      expect(record.outcomes).toContain(example.expectedOutcome)
+      // These are editorial gate fixtures, not prose matching or an external-action executor.
+      expect(new Set(example.gateChecks.map((g) => g.expectedDecision))).toEqual(new Set([
+        'out-of-scope', 'needs-context', 'needs-approval', 'needs-review', 'ready-for-human',
+      ]))
+      for (const gate of example.gateChecks) {
+        const step = record.parts.find((p) => p.id === gate.stepId)!
+        expect(step, `${example.expectedProcessId}/${gate.stepId}`).toBeDefined()
+        expect(step.metadata.approvalRequired).toBe(true)
+        expect(step.metadata.execution).toMatchObject({ reviewRequired: true })
+        const { facts } = gate
+        const approval = step.metadata.approval as { role: string; scope: string } | undefined
+        const decision = !facts.triggerConfirmed ? 'out-of-scope'
+          : !facts.requiredLocationsKnown ? 'needs-context'
+          : !facts.approval || facts.approval.role !== approval?.role || facts.approval.scope !== approval?.scope ? 'needs-approval'
+          : !facts.expertReviewComplete ? 'needs-review' : 'ready-for-human'
+        expect(decision, `${example.expectedProcessId}/${gate.id}`).toBe(gate.expectedDecision)
+        // Even a ready step is work for the accountable person, not delegated authority.
+        expect(step.metadata.route).not.toBe('agent')
+      }
     }
   })
 

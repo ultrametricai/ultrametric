@@ -622,6 +622,6 @@ describe('execution assessments', () => {
   it('includes scoped approvals in the execution audit', () => {
     const report = JSON.parse(execFileSync(process.execPath, ['--import', 'tsx', 'scripts/shared-processes/execution-audit.ts'], { encoding: 'utf8' }))
     // Lifecycle expansion adds 175 scoped human approvals (2026-10-29).
-    expect(report.explicitApprovals).toBe(434)
+    expect(report.explicitApprovals).toBe(435)
   })
 })

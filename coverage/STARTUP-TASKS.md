@@ -286,4 +286,4 @@ Source jurisdiction describes the cited material. A source from one country does
 | [GOV.UK running a limited company](https://www.gov.uk/running-a-limited-company) | UK | 2026-10-29 |
 | [SEC going public](https://www.sec.gov/resources-small-businesses/going-public) | US | 2026-10-29 |
 
-[Expansion audit](startup-expansion-audit.json) · [Fictional applicability cases](fixtures/startup-lifecycle-coverage.json) · [Full guide index](../open-processes/README.md#record-pages)
+[Expansion audit](startup-expansion-audit.json) · [Fictional examples and approval gates](fixtures/startup-lifecycle-coverage.json) · [Full guide index](../open-processes/README.md#record-pages)

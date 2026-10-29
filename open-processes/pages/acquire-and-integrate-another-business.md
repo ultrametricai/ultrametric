@@ -51,7 +51,7 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | [3. Conduct a controlled diligence and integration assessment](#step-3) | agent-runnable | Not recorded | [Step 2](#step-2) |
 | [4. Approve terms, conditions and integration governance](#step-4) | human; approval required | Not recorded | [Step 3](#step-3) |
 | [5. Complete closing through the reviewed process](#step-5) | human; approval required | Not recorded | [Step 4](#step-4) |
-| [6. Execute and measure the approved integration plan](#step-6) | agent-runnable | Not recorded | [Step 5](#step-5) |
+| [6. Execute and measure the approved integration plan](#step-6) | human; approval required | Not recorded | [Step 5](#step-5) |
 
 <a id="steps"></a>
 
@@ -116,7 +116,7 @@ Authorized advisers and operators verify approvals, settlement instructions and 
 
 ### 6. Execute and measure the approved integration plan
 
-agent-runnable
+human · human approval required · hard to undo
 
 
 Reconcile acquired assets and obligations, phase access and data migrations safely and track customer and employee commitments. Review actual outcomes against the thesis and maintain owners for unresolved liabilities.

@@ -40,7 +40,7 @@ lines.push('', 'The regulated-market entry guide provides a scoping and approval
   'Source jurisdiction describes the cited material. A source from one country does not establish requirements elsewhere. The source register records page checks; the guides identify professional decisions separately.', '',
   '| Source | Context | Checked |', '| --- | --- | --- |',
   ...sources.map((source) => `| [${cell(source.title)}](${source.url}) | ${cell(source.jurisdictionOrContext)} | ${source.checkedOn} |`), '',
-  '[Expansion audit](startup-expansion-audit.json) · [Fictional applicability cases](fixtures/startup-lifecycle-coverage.json) · [Full guide index](../open-processes/README.md#record-pages)', '')
+  '[Expansion audit](startup-expansion-audit.json) · [Fictional examples and approval gates](fixtures/startup-lifecycle-coverage.json) · [Full guide index](../open-processes/README.md#record-pages)', '')
 const output = lines.join('\n')
 const file = path.join(root, 'coverage/STARTUP-TASKS.md')
 if (process.argv.includes('--check')) {

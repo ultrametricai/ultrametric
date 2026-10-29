@@ -48,7 +48,7 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | --- | --- | --- | --- |
 | [1. Build the asset and custody register](#step-1) | agent-runnable | Not recorded | Entry step |
 | [2. Approve purchasing and handling responsibilities](#step-2) | human; approval required | Not recorded | [Step 1](#step-1) |
-| [3. Record approved assignment and configuration](#step-3) | manual form/portal; approval required | Not recorded | [Step 2](#step-2) |
+| [3. Record approved assignment and configuration](#step-3) | human; approval required | Not recorded | [Step 2](#step-2) |
 | [4. Reconcile physical holdings and changes](#step-4) | human; approval required | Not recorded | [Step 3](#step-3) |
 | [5. Authorize return, reuse or disposal](#step-5) | human; approval required | Not recorded | [Step 4](#step-4) |
 
@@ -82,7 +82,7 @@ The accountable owners confirm assignment, physical security, maintenance, insur
 
 ### 3. Record approved assignment and configuration
 
-manual form/portal · human approval required · hard to undo
+human · human approval required · hard to undo
 
 
 Authorized operators tag assets, issue equipment and link it to the relevant access or device-management controls. Verify receipt and document exceptions without exposing credentials in the asset record.
