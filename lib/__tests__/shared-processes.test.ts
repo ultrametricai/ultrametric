@@ -118,6 +118,7 @@ describe('country entry points', () => {
     const slugs = new Set<string>()
     for (const record of pilots) {
       const views = processCountryEntries(record, record.id)
+      expect(views.filter(view => view.country !== 'GLOBAL').map(view => view.country).sort()).toEqual([...new Set(['US', ...countrySources(record)])].sort())
       expect(views[0].country).toBe('GLOBAL')
       expect(views.find(view => view.country === 'US')).toBeDefined()
       for (const view of views) {
@@ -158,5 +159,14 @@ describe('country entry points', () => {
     expect(uk.verify.how).toContain('HMRC')
     expect(uk.cost.usd).toBe(0)
     expect(us.cost.usd).toBe(600)
+  })
+
+  it('retains country-specific privacy clocks and the bank-failure branch condition', () => {
+    const records = loadSharedProcesses()
+    const dsar = records.find(record => record.id === 'sit_015')!
+    expect(dsar.countryViews!.find(view => view.country === 'US')!.summary).not.toMatch(/GDPR|one month|two.month/)
+    expect(dsar.countryViews!.find(view => view.country === 'UK')!.summary).toContain('eu.gdpr-dsar-response-deadline')
+    expect(dsar.parts.find(part => part.id === 'n1')!.title).not.toMatch(/45|one month/)
+    expect(records.find(record => record.id === 'sit_005')!.parts.find(part => part.id === 'n7')!.title).toMatch(/^If the bank failed:/)
   })
 })

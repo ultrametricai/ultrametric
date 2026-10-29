@@ -464,8 +464,8 @@ describe('corpus', () => {
       ['sit_021', 'US-FED', 'us-fed.osha-severe-injury-reporting'],
     ] as const) {
       const record = readSharedCatalog().find(record => record.id === sid)
-      const localSummary = record?.countryViews?.find(view => view.country === 'US')?.summary
-      expect(localSummary ?? byId(sid).description, `${sid} cites its law rule in the applicable country summary`).toContain(ruleId)
+      const summaries = [byId(sid).description, ...(record?.countryViews ?? []).map(view => view.summary ?? '')].join('\n')
+      expect(summaries, `${sid} cites its law rule in the applicable country summary`).toContain(ruleId)
       const file = path.join(__dirname, '..', '..', 'open-law', dir, `${ruleId.replace(/\./g, '-')}.json`)
       expect(fs.existsSync(file), `${ruleId} card committed at ${file}`).toBe(true)
       expect(JSON.parse(fs.readFileSync(file, 'utf8')).id).toBe(ruleId)

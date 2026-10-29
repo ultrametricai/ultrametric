@@ -58,7 +58,7 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | [4. Open a backup operating account at a second bank](#step-4) | manual form/portal | ~1 h | [Step 3](#step-3) |
 | [5. Re-point the rails: processor payouts in, payroll and vendor payments out](#step-5) | human | ~1.5 h | [Step 4](#step-4) |
 | [6. If it's a compliance freeze: ask what triggered the review and supply the KYC/UBO documents the bank asks for](#step-6) | human | ~1 h | [Step 5](#step-5) |
-| [7. Track the bank resolution and file claims for uninsured balances](#step-7) | manual form/portal | ~45 min | [Step 6](#step-6) |
+| [7. If the bank failed: track the bank resolution and file claims for uninsured balances](#step-7) | manual form/portal | ~45 min | [Step 6](#step-6) |
 | [8. Wait for the freeze review or the receivership distributions](#step-8) | human; includes waiting | ~7 d | [Step 7](#step-7) |
 
 <a id="steps"></a>
@@ -116,7 +116,7 @@ human · ~1 h
 
 <a id="step-7"></a>
 
-### 7. Track the bank resolution and file claims for uninsured balances
+### 7. If the bank failed: track the bank resolution and file claims for uninsured balances
 
 manual form/portal · ~45 min
 

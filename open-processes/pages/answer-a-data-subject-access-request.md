@@ -9,7 +9,7 @@
 
 **Trigger:** Someone exercises their data rights: a GDPR subject access request or CCPA request to know/delete lands in any inbox.
 
-A DSAR looks like an ordinary email. It is a legal request with a statutory deadline. Under GDPR, respond without undue delay and within one month of receipt. You can extend two more months for complex or numerous requests, but only if you tell the requester within the first month (Art. 12(3), law rule [eu.gdpr-dsar-response-deadline](../../open-law/EU/eu-gdpr-dsar-response-deadline.json), EUR-Lex cited). The CCPA gives you 45 days, per the California AG's own page. Verify the requester's identity proportionately. Inventory everything you hold on them: product database, analytics, support desk, email tools, payment processor. Have counsel check the exemptions before anything goes out. An over-disclosure cannot be taken back, which is why sending is the irreversible step. Where the request is, or includes, deletion (GDPR Art. 17 erasure, CCPA request to delete), the same clock applies: execute the erasure across systems and processors, apply the statutory exceptions, and confirm what was deleted. Educational guidance, not legal advice; the controlling deadline is the statute's, verified at the primary source.
+Record the personal-data request, identify the applicable privacy regime and deadline, verify identity proportionately, locate relevant records and review exemptions. Deliver the authorized response securely; where deletion is requested, apply the relevant exceptions, complete the required actions and retain the response record.
 
 | Field | Value |
 | --- | --- |
@@ -39,7 +39,8 @@ Country rows describe the guidance recorded here. Local notes and step alternati
 
 | Country | Recorded guidance | Steps with local alternatives or resolutions |
 | --- | --- | --- |
-| [United Kingdom](#geo-uk) | Local analog note | — |
+| [United States](#geo-us) | step resolution | [1](#step-1), [5](#step-5), [7](#step-7) |
+| [United Kingdom](#geo-uk) | Local analog note; step resolution | [1](#step-1), [5](#step-5), [7](#step-7) |
 | [Singapore](#geo-sg) | Local analog note | — |
 | [Hong Kong](#geo-hk) | Local analog note | — |
 
@@ -49,13 +50,13 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
-| [1. Log the request and start the clock: one month under GDPR Art. 12(3), 45 days under CCPA — the extension needs notice inside month one](#step-1) | human | ~20 min | Entry step |
+| [1. Log the request and verify the applicable response deadline and extension requirements](#step-1) | human | ~20 min | Entry step |
 | [2. Verify the requester's identity proportionately — enough to stop impersonation, never a data grab of its own](#step-2) | human | ~30 min | [Step 1](#step-1) |
 | [3. Inventory where this person's data lives: product DB, analytics, support desk, email tools, payment processor](#step-3) | agent-runnable | ~1 h | [Step 2](#step-2) |
 | [4. Assemble the export and draft the response: what you hold, purposes, recipients, retention, sources](#step-4) | agent-runnable | ~1.5 h | [Step 3](#step-3) (The request seeks access: a copy of the data and the processing details (a request to know).) |
-| [5. Execute the deletion where the request asks for erasure: delete or de-identify across your systems and processors, apply the statutory exceptions (GDPR Art. 17(3), CCPA §1798.105(d)), and record what was deleted and what was retained and why](#step-5) | agent-runnable | ~1.5 h | [Step 3](#step-3) (The request is, or includes, deletion: a GDPR Art. 17 erasure request or a CCPA request to delete.) |
+| [5. Complete requested deletion where required, apply the applicable exceptions and record what was deleted or retained](#step-5) | agent-runnable | ~1.5 h | [Step 3](#step-3) (The request is, or includes, deletion: a GDPR Art. 17 erasure request or a CCPA request to delete.) |
 | [6. Review the exemptions with privacy counsel where it's close: third-party data, privilege, trade secrets](#step-6) | human | ~1 h | Alternatives: [Step 4](#step-4); [Step 5](#step-5) |
-| [7. Deliver securely by the deadline and record what was sent (or send the extension notice inside month one)](#step-7) | manual form/portal | ~30 min | [Step 6](#step-6) |
+| [7. Deliver the authorized response securely by the applicable deadline and retain delivery evidence](#step-7) | manual form/portal | ~30 min | [Step 6](#step-6) |
 | [8. Fix the intake: a records-of-processing map and a standing DSAR runbook so the next one is routine](#step-8) | agent-runnable | ~45 min | [Step 7](#step-7) |
 
 <a id="steps"></a>
@@ -64,12 +65,12 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 
 <a id="step-1"></a>
 
-### 1. Log the request and start the clock: one month under GDPR Art. 12(3), 45 days under CCPA — the extension needs notice inside month one
+### 1. Log the request and verify the applicable response deadline and extension requirements
 
 human · ~20 min
 
 
-- Do it yourself: [GDPR (EUR-Lex, Art. 12)](https://eur-lex.europa.eu/eli/reg/2016/679/oj)
+- Sources: [GDPR (EUR-Lex, Art. 12)](https://eur-lex.europa.eu/eli/reg/2016/679/oj)
 
 <a id="step-2"></a>
 
@@ -101,14 +102,14 @@ agent-runnable · ~1.5 h
 
 <a id="step-5"></a>
 
-### 5. Execute the deletion where the request asks for erasure: delete or de-identify across your systems and processors, apply the statutory exceptions (GDPR Art. 17(3), CCPA §1798.105(d)), and record what was deleted and what was retained and why
+### 5. Complete requested deletion where required, apply the applicable exceptions and record what was deleted or retained
 
 agent-runnable · ~1.5 h · irreversible
 
 
 *Follows step 3 (when The request is, or includes, deletion: a GDPR Art. 17 erasure request or a CCPA request to delete).*
 
-- Do it yourself: [GDPR (EUR-Lex, Art. 17)](https://eur-lex.europa.eu/eli/reg/2016/679/oj)
+- Sources: [GDPR (EUR-Lex, Art. 17)](https://eur-lex.europa.eu/eli/reg/2016/679/oj) · [California AG: CCPA (right to delete)](https://oag.ca.gov/privacy/ccpa)
 
 <a id="step-6"></a>
 
@@ -124,12 +125,12 @@ human · ~1 h
 
 <a id="step-7"></a>
 
-### 7. Deliver securely by the deadline and record what was sent (or send the extension notice inside month one)
+### 7. Deliver the authorized response securely by the applicable deadline and retain delivery evidence
 
 manual form/portal · ~30 min · irreversible
 
 
-- Do it yourself: [California AG: CCPA (45-day clock)](https://oag.ca.gov/privacy/ccpa)
+- Sources: [California AG: CCPA (45-day clock)](https://oag.ca.gov/privacy/ccpa)
 
 <a id="step-8"></a>
 
@@ -147,14 +148,22 @@ agent-runnable · ~45 min
 
 ### United States
 
-A DSAR looks like an ordinary email. It is a legal request with a statutory deadline. Under GDPR, respond without undue delay and within one month of receipt. You can extend two more months for complex or numerous requests, but only if you tell the requester within the first month (Art. 12(3), law rule [eu.gdpr-dsar-response-deadline](../../open-law/EU/eu-gdpr-dsar-response-deadline.json), EUR-Lex cited). The CCPA gives you 45 days, per the California AG's own page. Verify the requester's identity proportionately. Inventory everything you hold on them: product database, analytics, support desk, email tools, payment processor. Have counsel check the exemptions before anything goes out. An over-disclosure cannot be taken back, which is why sending is the irreversible step. Where the request is, or includes, deletion (GDPR Art. 17 erasure, CCPA request to delete), the same clock applies: execute the erasure across systems and processors, apply the statutory exceptions, and confirm what was deleted. Educational guidance, not legal advice; the controlling deadline is the statute's, verified at the primary source.
+Identify which US privacy law covers the request. For CCPA-covered requests, the California Attorney General’s guidance gives a 45-day response period. Verify identity, assess exemptions and complete the required access or deletion response under the applicable rules.
 
+- Step 1: Where CCPA applies, use its response period and notice requirements ([California Attorney General — CCPA](https://oag.ca.gov/privacy/ccpa))
+- Step 5: Apply CCPA deletion requirements and exceptions where they govern the request ([California Attorney General — CCPA](https://oag.ca.gov/privacy/ccpa))
+- Step 7: Deliver the CCPA response or a permitted extension notice within the applicable period ([California Attorney General — CCPA](https://oag.ca.gov/privacy/ccpa))
 
 <a id="geo-uk"></a>
 
 ### United Kingdom
 
+Under GDPR, respond without undue delay and within one month of receipt. Complex or numerous requests may allow a two-month extension with notice within the first month (law rule [eu.gdpr-dsar-response-deadline](../../open-law/EU/eu-gdpr-dsar-response-deadline.json)). Verify identity proportionately, assess exemptions and securely deliver the response or complete any applicable erasure.
+
 - UK GDPR's subject access request runs on the same one-month clock with the same two-month extension — the ICO's right-of-access guidance is the canonical employer-side playbook, including the identity-check and exemptions reality. ([ICO: right of access (SARs)](https://ico.org.uk/for-organisations/uk-gdpr-guidance-and-resources/individual-rights/individual-rights/right-of-access/))
+- Step 1: Under GDPR, respond within one month or notify a permitted extension within that month ([ICO — right of access](https://ico.org.uk/for-organisations/uk-gdpr-guidance-and-resources/individual-rights/individual-rights/right-of-access/))
+- Step 5: Apply GDPR erasure requirements and Article 17 exceptions where they govern the request ([ICO — right of access](https://ico.org.uk/for-organisations/uk-gdpr-guidance-and-resources/individual-rights/individual-rights/right-of-access/))
+- Step 7: Deliver the GDPR response or the required extension notice within the applicable period ([ICO — right of access](https://ico.org.uk/for-organisations/uk-gdpr-guidance-and-resources/individual-rights/individual-rights/right-of-access/))
 
 <a id="geo-sg"></a>
 
