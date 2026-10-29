@@ -57,7 +57,7 @@ The [full index of ranked markets](https://ultrametric.ai/arenas) is live, and t
 
 ## Open processes
 
-The founder processes are written step by step. Read the process, situation, and chain guides directly in the repo through the [full index](open-processes/README.md). Each step has an [execution assessment](open-processes/execution.md), is timed, and marked by how hard it is to undo. The vendors that can run a step are
+The founder processes are written step by step. Read the process, situation, and chain guides directly in the repo through the [full index](open-processes/README.md). The [startup task inventory](coverage/STARTUP-TASKS.md) groups common and conditional work across the company lifecycle. Each step has an [execution assessment](open-processes/execution.md), is timed, and marked by how hard it is to undo. The vendors that can run a step are
 listed on it, with their judged scores. See it live at
 [ultrametric.ai/processes](https://ultrametric.ai/processes).
 
@@ -231,8 +231,7 @@ linked as a tension: Horowitz's case for the fat startup (in a big market, outsp
 beats running lean) against Ries's lean loop, and Kan's sell-from-strength against Cohen's
 rich-versus-king. The acquisition stories (WhatsApp, Twitch, MySpace) are in
 [`open-lore/LORE.md`](open-lore/LORE.md) with lessons and sources, and the waterfall
-module computes who gets what at any price. The acquisition playbook process is a known,
-open gap.
+module computes who gets what at any price. The [acquisition guide](open-processes/pages/sell-the-company-through-an-acquisition.md) covers the operational path from sale preparation through closing and post-close obligations, with qualified advisers owning the transaction decisions.
 
 ## Open law
 
