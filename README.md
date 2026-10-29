@@ -63,6 +63,11 @@ listed on it, with their judged scores. See it live at
 
 [![The founder processes on ultrametric.ai, ranked on the founder timeline, with area and agentic share](assets/readme/processes-index.png)](https://ultrametric.ai/processes)
 
+[![Set up email marketing: context, workspace and audience, templates, welcome automation, signup forms, verification and saved company context](open-processes/assets/email-marketing-example.svg)](open-processes/examples/email-marketing.md)
+
+[Walk through the email-marketing example](open-processes/examples/email-marketing.md),
+including the process routes, human approvals and checks before activation.
+
 ### Examples
 
 - [Incorporate C-Corp](open-processes/pages/incorporate-c-corp.md) — set up a Delaware C-corp, filing to signed 83(b)
