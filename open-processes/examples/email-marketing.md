@@ -46,9 +46,10 @@ and regional requirements must be resolved for the actual company using the proc
 sources and any required review.
 
 The [diagram](../assets/email-marketing-example.svg) is an editable SVG with
-native text and a description for assistive technology. The dashed return path animates
-where supported and respects reduced-motion preferences. Its palette follows the
-repository's [banner](../../assets/banner.svg). The connected stages and feedback loop
+native text and a description for assistive technology. Typography, zinc surfaces and borders, gray connectors, and the agent/manual-form
+badges follow the live [email-marketing process page](https://ultrametric.ai/processes/set-up-email-marketing).
+The SVG specifies the site's Inter font with Arial and Helvetica fallbacks for viewers
+that do not have Inter installed. The dashed return path marks saved context. The connected stages and feedback loop
 were inspired by [RP1's architecture presentation](https://github.com/Roboparty/RP1#architecture);
 the diagram and wording here are original.
 
