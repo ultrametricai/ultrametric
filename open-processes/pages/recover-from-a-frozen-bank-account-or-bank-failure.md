@@ -139,8 +139,8 @@ human · ~7 d · async wait
 
 Frozen account or failed bank, the problem is the same: payroll has to go out, in every country. Confirm what happened. Work out how much is covered by deposit insurance (US: FDIC covers $250,000 per depositor, per bank, per ownership category; the UK, German, French, and Indian caps are in the geo notes). Open a second operating account so the payments that cannot bounce don't. Then the paths split. A compliance freeze is a documents conversation with the bank: KYC and beneficial ownership. A bank failure is a receivership you track and file claims against for the uninsured balance (in the US, with the FDIC). Moving banking rails mid-crisis can be undone, but at real cost.
 
-- Step 1: Confirm what happened: a compliance freeze notice from the bank, or the bank itself failing (US: the FDIC failed-bank list; your country's resolution authority otherwise)
-- Step 2: Size the exposure: balances against your deposit-protection limit (US: FDIC's $250,000 per depositor, per bank, per ownership category — other schemes in the geo notes)
+- Step 1: Confirm what happened: a compliance freeze notice from the bank, or the bank itself failing (US: the FDIC failed-bank list; your country's resolution authority otherwise) ([FDIC failed bank list](https://www.fdic.gov/bank-failures/failed-bank-list))
+- Step 2: Size the exposure: balances against your deposit-protection limit (US: FDIC's $250,000 per depositor, per bank, per ownership category — other schemes in the geo notes) ([FDIC deposit insurance](https://www.fdic.gov/deposit-insurance))
 - Step 7: If the bank failed: track the receivership (US: the FDIC's) and file the claim for uninsured balances
 
 <a id="geo-in"></a>
