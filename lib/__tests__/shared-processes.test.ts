@@ -97,12 +97,24 @@ describe('shared process definitions', () => {
   })
 })
 
-describe('staged country entry points', () => {
-  it('authors ten pilots with distinct global and local URLs and preserves their stable IDs', async () => {
+describe('country entry points', () => {
+  function countrySources(record: SharedRecord) {
+    const countries = new Set((record.metadata.geoNotes as Array<{ country: string }> | undefined)?.map(note => note.country))
+    function visit(parts: Part[]) {
+      for (const part of parts) {
+        for (const row of (part.metadata.geoResolutions ?? []) as Array<{ country: string }>) countries.add(row.country)
+        for (const option of part.options) visit(option.parts)
+      }
+    }
+    visit(record.parts)
+    return countries
+  }
+  it('covers every global operational process with authored country guidance and preserves stable IDs', async () => {
     const { processCountryEntries } = await import('../shared-processes/country-views')
     const records = loadSharedProcesses()
     const pilots = records.filter(record => record.countryViews?.length)
-    expect(pilots).toHaveLength(10)
+    const eligible = records.filter(record => record.metadata.phase && record.metadata.geoScope === 'global' && countrySources(record).size)
+    expect(pilots.map(record => record.id).sort()).toEqual(eligible.map(record => record.id).sort())
     const slugs = new Set<string>()
     for (const record of pilots) {
       const views = processCountryEntries(record, record.id)
@@ -113,7 +125,7 @@ describe('staged country entry points', () => {
         slugs.add(view.slug)
         expect(view.title.trim().length).toBeGreaterThan(3)
         if (view.country !== 'US' && view.country !== 'GLOBAL') {
-          expect((record.metadata.geoNotes as Array<{ country: string }>).some(note => note.country === view.country)).toBe(true)
+          expect(countrySources(record).has(view.country), `${record.id}/${view.country}`).toBe(true)
         }
       }
     }
@@ -125,7 +137,7 @@ describe('staged country entry points', () => {
     expect(ein.globalSlug).toBe('obtain-the-company-tax-identifiers')
   })
 
-  it('keeps country-specific completion checks and fees out of shared pilot metadata', () => {
+  it('keeps country-specific completion checks and fees out of shared metadata', () => {
     for (const record of loadSharedProcesses().filter(record => record.countryViews?.length)) {
       for (const part of record.parts.filter(part => !part.metadata.jurisdictions)) {
         const verification = part.metadata.verify as { how: string; url?: string } | undefined

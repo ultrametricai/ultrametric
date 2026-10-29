@@ -149,6 +149,8 @@ human · ~7 d · async wait
 
 ### United States
 
+A cease-and-desist is a demand, not a court order, but ignoring one is how lawsuits start. Note what they are claiming and the deadline in the letter. There is no statutory response deadline; the letter, and any lawsuit that follows, sets the pace. Preserve your evidence before anything changes. Get IP counsel involved before you reply, admit anything, or sign anything. Your options are three: comply (stop or rebrand), negotiate (coexistence or license), or contest. Educational guidance, not legal advice. The active work is a few founder-hours; the other side's reply time is out of your hands.
+
 - Step 3: Pull the claimed mark's record on USPTO TSDR ([USPTO TSDR status lookup](https://tsdr.uspto.gov/))
 
 <a id="geo-in"></a>

@@ -143,6 +143,13 @@ agent-runnable · ~45 min
 
 ## Country details
 
+<a id="geo-us"></a>
+
+### United States
+
+A DSAR looks like an ordinary email. It is a legal request with a statutory deadline. Under GDPR, respond without undue delay and within one month of receipt. You can extend two more months for complex or numerous requests, but only if you tell the requester within the first month (Art. 12(3), law rule [eu.gdpr-dsar-response-deadline](../../open-law/EU/eu-gdpr-dsar-response-deadline.json), EUR-Lex cited). The CCPA gives you 45 days, per the California AG's own page. Verify the requester's identity proportionately. Inventory everything you hold on them: product database, analytics, support desk, email tools, payment processor. Have counsel check the exemptions before anything goes out. An over-disclosure cannot be taken back, which is why sending is the irreversible step. Where the request is, or includes, deletion (GDPR Art. 17 erasure, CCPA request to delete), the same clock applies: execute the erasure across systems and processors, apply the statutory exceptions, and confirm what was deleted. Educational guidance, not legal advice; the controlling deadline is the statute's, verified at the primary source.
+
+
 <a id="geo-uk"></a>
 
 ### United Kingdom
