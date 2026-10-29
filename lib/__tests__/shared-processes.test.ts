@@ -146,4 +146,17 @@ describe('country entry points', () => {
       }
     }
   })
+
+  it('keeps US nonprofit determination checks separate from UK registration and recognition', () => {
+    const record = loadSharedProcesses().find(record => record.id === 'set-up-a-non-profit')!
+    const rows = record.parts.find(part => part.id === 'n7')!.metadata.geoResolutions as Array<{ country: string; verify: { how: string; url: string }; cost: { usd: number; note: string } }>
+    const us = rows.find(row => row.country === 'US')!
+    const uk = rows.find(row => row.country === 'UK')!
+    expect(us.verify.url).toContain('irs.gov')
+    expect(us.verify.how + us.cost.note).not.toMatch(/HMRC|Charity Commission|UK/)
+    expect(uk.verify.url).toContain('charitycommission.gov.uk')
+    expect(uk.verify.how).toContain('HMRC')
+    expect(uk.cost.usd).toBe(0)
+    expect(us.cost.usd).toBe(600)
+  })
 })
