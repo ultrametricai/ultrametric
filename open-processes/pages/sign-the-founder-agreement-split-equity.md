@@ -220,7 +220,6 @@ manual form/portal · ~20 min · async wait · irreversible
 For each founder making an election, confirm the property-transfer date and the filing deadline with the tax adviser; the windows are short and fixed. The taxpayer authorizes the reviewed submission and confirms who sends it. Track the signed election, dispatch or other accepted filing evidence, and required copies. Investigate missing submission evidence promptly with the sender and tax adviser.
 
 - Verify: The signed election and the submission evidence the jurisdiction's filing route produces are retained before the deadline; where the tax authority sends no acknowledgment, the dispatch record is the proof of timely filing.
-- Cost: free (free, as of 2026-10-01, [www.irs.gov](https://www.irs.gov/pub/irs-pdf/f15620.pdf)). No IRS filing fee for an 83(b) election — the cost is certified-mail postage.
 - Produces: Filed 83(b) election
 - Canonical vendor: IRS
 - Do it yourself: [IRS Form 15620 (83(b) election)](https://www.irs.gov/pub/irs-pdf/f15620.pdf)
@@ -234,8 +233,11 @@ For each founder making an election, confirm the property-transfer date and the 
 
 ### United States
 
+Put the founding team on paper: agree the split and vesting, generate founder agreements with IP assignment, sign, record on the cap table, and file any tax election the founders' jurisdiction requires on the stock transfer in time.
+
 - Step 6: Sign the section 83(b) election — IRS Form 15620 or a compliant written statement — checked against the stock purchase records Form 15620 or a compliant written statement may make the election, with copies to the company and, if different, the property transferee (law rule [us-fed.83b-form-and-copies](../../open-law/US-FED/us-fed-83b-form-and-copies.json)). ([IRS Form 15620 (83(b) election)](https://www.irs.gov/pub/irs-pdf/f15620.pdf))
 - Step 7: File the 83(b) election with the IRS within 30 days of the stock transfer The Form 15620 instructions require filing no later than 30 days after the property transfer, with a next-business-day postmark rule when day 30 falls on a weekend or legal holiday (law rule [us-fed.83b-filing-period](../../open-law/US-FED/us-fed-83b-filing-period.json)). Online submissions confirm in the founder's IRS Online Account; on the mail rail the date-stamped copy and the certified-mail receipt are the proof of timely filing. ([IRS Form 15620 (83(b) election)](https://www.irs.gov/pub/irs-pdf/f15620.pdf))
+  - Cost: free (free, as of 2026-10-01, [www.irs.gov](https://www.irs.gov/pub/irs-pdf/f15620.pdf)). No IRS filing fee for an 83(b) election — the cost is certified-mail postage.
 
 <a id="geo-in"></a>
 

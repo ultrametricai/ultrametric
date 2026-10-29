@@ -137,7 +137,7 @@ Use the employee’s duties, manager and start clearance to identify required sy
 ## Related records
 
 - Part of the chain [Go global](go-global.md)
-- Runs as a step of [Handle an employee's visa denial or RFE](handle-an-employee-s-visa-denial-or-rfe.md)
+- Runs as a step of [Respond to an employee work-authorization refusal or evidence request](handle-an-employee-s-visa-denial-or-rfe.md)
 
 ---
 

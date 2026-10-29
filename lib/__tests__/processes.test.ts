@@ -1,6 +1,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { describe, expect, it } from 'vitest'
+import { readSharedCatalog } from '../shared-processes/reader'
 import { isPopulated, loadCategories, loadCategory } from '@/lib/data'
 import {
   buildSimSteps, CADENCE_META, CADENCE_ORDER, cadenceRank, chainTasks, computeCeiling,
@@ -462,7 +463,9 @@ describe('corpus', () => {
       ['sit_015', 'EU', 'eu.gdpr-dsar-response-deadline'],
       ['sit_021', 'US-FED', 'us-fed.osha-severe-injury-reporting'],
     ] as const) {
-      expect(byId(sid).description, `${sid} cites its law rule`).toContain(ruleId)
+      const record = readSharedCatalog().find(record => record.id === sid)
+      const summaries = [byId(sid).description, ...(record?.countryViews ?? []).map(view => view.summary ?? '')].join('\n')
+      expect(summaries, `${sid} cites its law rule in the applicable country summary`).toContain(ruleId)
       const file = path.join(__dirname, '..', '..', 'open-law', dir, `${ruleId.replace(/\./g, '-')}.json`)
       expect(fs.existsSync(file), `${ruleId} card committed at ${file}`).toBe(true)
       expect(JSON.parse(fs.readFileSync(file, 'utf8')).id).toBe(ruleId)

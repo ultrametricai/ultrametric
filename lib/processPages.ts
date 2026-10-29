@@ -1,7 +1,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { loadProcessCatalog, type CatalogProcess } from './shared-processes/catalog'
-import type { Connection, Option, Part, Reference } from './shared-processes/schema'
+import type { Connection, Option, Part, Reference, SharedRecord } from './shared-processes/schema'
 import { formatMinutes, REVERSIBILITY_META, URGENCY_META } from './processSim'
 import { JURISDICTION_META, type Jurisdiction } from './jurisdictions'
 import { GEO_COUNTRY_META, GEO_NOTE_COUNTRIES } from './processes'
@@ -537,21 +537,23 @@ function partBlock(part: Part, position: number, walk: WalkContext, ctx: PageCon
 // country in the committed country order (US first, then the geoNotes roster).
 // ---------------------------------------------------------------------------
 
-function countrySection(record: { parts: Part[]; metadata: Meta }, ctx: PageContext): string[] {
+function countrySection(record: { parts: Part[]; metadata: Meta; countryViews?: SharedRecord['countryViews'] }, ctx: PageContext): string[] {
   const notes = (Array.isArray(record.metadata.geoNotes) ? record.metadata.geoNotes : []) as GeoEntry[]
   const resolutions: Array<{ step: string; entry: GeoEntry }> = []
   record.parts.forEach((part, i) => {
     const stepEntries = (Array.isArray(part.metadata.geoResolutions) ? part.metadata.geoResolutions : []) as GeoEntry[]
     for (const entry of stepEntries) resolutions.push({ step: `Step ${i + 1}`, entry })
   })
-  if (notes.length === 0 && resolutions.length === 0) return []
+  if (notes.length === 0 && resolutions.length === 0 && !record.countryViews?.length) return []
   const lines: string[] = ['## By country']
   const countries = [...new Set([...notes.map((n) => n.country), ...resolutions.map((r) => r.entry.country)])]
   for (const country of [...COUNTRY_ORDER, ...countries.filter((c) => !COUNTRY_ORDER.includes(c))]) {
     const note = notes.find((n) => n.country === country)
     const steps = resolutions.filter((r) => r.entry.country === country)
-    if (!note && steps.length === 0) continue
+    const summary = record.countryViews?.find(view => view.country === country)?.summary
+    if (!note && steps.length === 0 && !summary) continue
     lines.push('', `<a id="geo-${country.toLowerCase()}"></a>`, '', `### ${countryLabel(country)}`, '')
+    if (summary) lines.push(linkLawRules(summary, ctx), '')
     if (note) {
       const prefix = GEO_KIND_LABELS[note.kind] ?? ''
       const link = note.actionUrl ? ` ([${linkText(note.actionLabel ?? hostname(note.actionUrl))}](${note.actionUrl}))` : ''
@@ -747,7 +749,7 @@ export function renderProcessPage(source: CatalogProcess, ctx: PageContext): str
     lines.push('')
   }
 
-  const country = countrySection({ parts: ordered, metadata: m }, ctx)
+  const country = countrySection({ parts: ordered, metadata: m, countryViews: record.countryViews }, ctx)
   if (country.length > 0) lines.push('<a id="by-country"></a>', '', ...country.map((l) => l === '## By country' ? '## Country details' : l), '')
 
   if (produces.length > 0) {

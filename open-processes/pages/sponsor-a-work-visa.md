@@ -7,7 +7,7 @@
 
 ## Overview
 
-Keep the hire you can’t legally employ yet: pick the visa route with immigration counsel, build the evidence binder, make the labor-market filing the route requires, sign and file the sponsorship petition with the immigration authority, and wait out adjudication. In the US that is the H-1B/O-1/TN strategy call, the LCA with the DOL, and the I-129 petition with USCIS.
+Choose the work-authorization route with immigration counsel, prepare the employer and employee evidence, complete any labor-market or sponsorship requirements and submit the authorized application. Track decisions and update employment and right-to-work records when the route permits work.
 
 | Field | Value |
 | --- | --- |
@@ -143,8 +143,7 @@ manual form/portal · ~45 min · hard to undo
 
 Have counsel check the filing route, form edition, evidence, applicable fees and processing request for the selected classification. Obtain the employer’s authorization for that package and payment, then submit through the confirmed channel. Check delivery or receipt status and resolve a rejection before resubmitting. Give the hiring owner the actual case status and any effect on the start plan.
 
-- Verify: USCIS issues a Form I-797C receipt notice with a case number, and the case appears in USCIS case status.
-- Cost: published amount varies (government fee, as of 2026-10-01, [www.uscis.gov](https://www.uscis.gov/g-1055)). The I-129 filing fee varies by classification and petitioner size, with additional mandatory fees (fraud prevention, ACWIA, asylum program) — see the published USCIS fee schedule.
+- Verify: Retain the applicable authority’s confirmation and reconcile it with the approved submission and company records.
 - Do it yourself: [USCIS Form I-129](https://www.uscis.gov/i-129)
 - Sources: [USCIS: Instructions for Form I-129](https://www.uscis.gov/sites/default/files/document/forms/i-129instr.pdf) · [USCIS: H-1B specialty occupations](https://www.uscis.gov/working-in-the-united-states/h-1b-specialty-occupations)
 
@@ -180,11 +179,15 @@ Have counsel and the people lead confirm when the person may work for this emplo
 
 ### United States
 
+Keep the hire you can’t legally employ yet: pick the visa route with immigration counsel, build the evidence binder, make the labor-market filing the route requires, sign and file the sponsorship petition with the immigration authority, and wait out adjudication. In the US that is the H-1B/O-1/TN strategy call, the LCA with the DOL, and the I-129 petition with USCIS.
+
 - Step 1: The classification call is between H-1B (lottery-gated specialty occupation), O-1, TN and the other I-129 classes ([USCIS: H-1B specialty occupations](https://www.uscis.gov/working-in-the-united-states/h-1b-specialty-occupations))
 - Step 3: File the LCA (ETA-9035) with the Department of Labor in the FLAG portal; certification is required before the I-129 can be filed ([DOL FLAG portal (LCA)](https://flag.dol.gov/))
 - Step 4: The LCA certifies in about 7 business days; track the ETA-9035 status in FLAG ([DOL FLAG portal (LCA)](https://flag.dol.gov/))
 - Step 5: The signature goes on Form I-129 and the employer declarations ([USCIS: Instructions for Form I-129](https://www.uscis.gov/sites/default/files/document/forms/i-129instr.pdf))
 - Step 6: File the I-129 with USCIS; the I-797C receipt notice carries the case number ([USCIS Form I-129](https://www.uscis.gov/i-129))
+  - Cost: published amount varies (government fee, as of 2026-10-01, [www.uscis.gov](https://www.uscis.gov/g-1055)). The I-129 filing fee varies by classification and petitioner size, with additional mandatory fees (fraud prevention, ACWIA, asylum program) — see the published USCIS fee schedule.
+  - Verify: USCIS issues a Form I-797C receipt notice with a case number, and the case appears in USCIS case status.
 - Step 7: USCIS adjudicates the petition; track notices and RFEs in the case status, and plan any consular or admission steps after approval ([USCIS: H-1B specialty occupations](https://www.uscis.gov/working-in-the-united-states/h-1b-specialty-occupations))
 - Step 8: The authorized I-9 representative completes Section 2 verification or the Supplement B reverification ([USCIS: Completing Section 2](https://www.uscis.gov/i-9-central/completing-form-i-9/completing-section-2-employer-review-and-attestation))
 

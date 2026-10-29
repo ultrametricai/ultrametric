@@ -222,6 +222,13 @@ Supply evidence for the auditor’s agreed scope and dates, explaining missing r
 
 ## Country details
 
+<a id="geo-us"></a>
+
+### United States
+
+Begin SOC 2 Type I compliance journey using Vanta, set up policies, and begin evidence collection.
+
+
 <a id="geo-uk"></a>
 
 ### United Kingdom

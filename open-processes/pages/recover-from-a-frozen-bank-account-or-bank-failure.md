@@ -9,7 +9,7 @@
 
 **Trigger:** Your operating account is frozen by the bank's compliance review, or the bank itself fails.
 
-Frozen account or failed bank, the problem is the same: payroll has to go out, in every country. Confirm what happened. Work out how much is covered by deposit insurance (US: FDIC covers $250,000 per depositor, per bank, per ownership category; the UK, German, French, and Indian caps are in the geo notes). Open a second operating account so the payments that cannot bounce don't. Then the paths split. A compliance freeze is a documents conversation with the bank: KYC and beneficial ownership. A bank failure is a receivership you track and file claims against for the uninsured balance (in the US, with the FDIC). Moving banking rails mid-crisis can be undone, but at real cost.
+Confirm whether the account is frozen or the bank has failed, assess exposure under the applicable deposit-protection scheme, and arrange continuity for essential payments. Work through the bank’s compliance process or the relevant resolution authority and retain evidence of any claims.
 
 | Field | Value |
 | --- | --- |
@@ -39,6 +39,7 @@ Country rows describe the guidance recorded here. Local notes and step alternati
 
 | Country | Recorded guidance | Steps with local alternatives or resolutions |
 | --- | --- | --- |
+| [United States](#geo-us) | step resolution | [1](#step-1), [2](#step-2), [7](#step-7) |
 | [India](#geo-in) | Local analog note | — |
 | [United Kingdom](#geo-uk) | Local analog note | — |
 | [Germany](#geo-de) | Local analog note | — |
@@ -51,13 +52,13 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
-| [1. Confirm what happened: a compliance freeze notice from the bank, or the bank itself failing (US: the FDIC failed-bank list; your country's resolution authority otherwise)](#step-1) | human | ~30 min | Entry step |
-| [2. Size the exposure: balances against your deposit-protection limit (US: FDIC's $250,000 per depositor, per bank, per ownership category — other schemes in the geo notes)](#step-2) | agent-runnable | ~20 min | [Step 1](#step-1) |
+| [1. Confirm whether the account is frozen or the bank has failed](#step-1) | human | ~30 min | Entry step |
+| [2. Assess balances against the applicable deposit-protection limit](#step-2) | agent-runnable | ~20 min | [Step 1](#step-1) |
 | [3. Triage the next payroll run and the payments that cannot bounce](#step-3) | human | ~45 min | [Step 2](#step-2) |
 | [4. Open a backup operating account at a second bank](#step-4) | manual form/portal | ~1 h | [Step 3](#step-3) |
 | [5. Re-point the rails: processor payouts in, payroll and vendor payments out](#step-5) | human | ~1.5 h | [Step 4](#step-4) |
 | [6. If it's a compliance freeze: ask what triggered the review and supply the KYC/UBO documents the bank asks for](#step-6) | human | ~1 h | [Step 5](#step-5) |
-| [7. If the bank failed: track the receivership (US: the FDIC's) and file the claim for uninsured balances](#step-7) | manual form/portal | ~45 min | [Step 6](#step-6) |
+| [7. If the bank failed: track the bank resolution and file claims for uninsured balances](#step-7) | manual form/portal | ~45 min | [Step 6](#step-6) |
 | [8. Wait for the freeze review or the receivership distributions](#step-8) | human; includes waiting | ~7 d | [Step 7](#step-7) |
 
 <a id="steps"></a>
@@ -66,7 +67,7 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 
 <a id="step-1"></a>
 
-### 1. Confirm what happened: a compliance freeze notice from the bank, or the bank itself failing (US: the FDIC failed-bank list; your country's resolution authority otherwise)
+### 1. Confirm whether the account is frozen or the bank has failed
 
 human · ~30 min
 
@@ -75,7 +76,7 @@ human · ~30 min
 
 <a id="step-2"></a>
 
-### 2. Size the exposure: balances against your deposit-protection limit (US: FDIC's $250,000 per depositor, per bank, per ownership category — other schemes in the geo notes)
+### 2. Assess balances against the applicable deposit-protection limit
 
 agent-runnable · ~20 min
 
@@ -115,7 +116,7 @@ human · ~1 h
 
 <a id="step-7"></a>
 
-### 7. If the bank failed: track the receivership (US: the FDIC's) and file the claim for uninsured balances
+### 7. If the bank failed: track the bank resolution and file claims for uninsured balances
 
 manual form/portal · ~45 min
 
@@ -131,6 +132,16 @@ human · ~7 d · async wait
 <a id="by-country"></a>
 
 ## Country details
+
+<a id="geo-us"></a>
+
+### United States
+
+Frozen account or failed bank, the problem is the same: payroll has to go out, in every country. Confirm what happened. Work out how much is covered by deposit insurance (US: FDIC covers $250,000 per depositor, per bank, per ownership category; the UK, German, French, and Indian caps are in the geo notes). Open a second operating account so the payments that cannot bounce don't. Then the paths split. A compliance freeze is a documents conversation with the bank: KYC and beneficial ownership. A bank failure is a receivership you track and file claims against for the uninsured balance (in the US, with the FDIC). Moving banking rails mid-crisis can be undone, but at real cost.
+
+- Step 1: Confirm what happened: a compliance freeze notice from the bank, or the bank itself failing (US: the FDIC failed-bank list; your country's resolution authority otherwise) ([FDIC failed bank list](https://www.fdic.gov/bank-failures/failed-bank-list))
+- Step 2: Size the exposure: balances against your deposit-protection limit (US: FDIC's $250,000 per depositor, per bank, per ownership category — other schemes in the geo notes) ([FDIC deposit insurance](https://www.fdic.gov/deposit-insurance))
+- Step 7: If the bank failed: track the receivership (US: the FDIC's) and file the claim for uninsured balances
 
 <a id="geo-in"></a>
 

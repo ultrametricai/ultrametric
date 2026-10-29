@@ -176,6 +176,13 @@ Plan internet, utilities, keys or badges, and installer access around the posses
 
 ## Country details
 
+<a id="geo-us"></a>
+
+### United States
+
+From “we need a room” to keys: size the space and budget, tour with a broker, negotiate the LOI, survive the lease review, sign (often with a guarantee), then wire the deposit, get the landlord a COI, and turn on internet and access.
+
+
 <a id="geo-uk"></a>
 
 ### United Kingdom

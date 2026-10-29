@@ -97,15 +97,28 @@ describe('shared process definitions', () => {
   })
 })
 
-describe('staged country entry points', () => {
-  it('authors ten pilots with distinct global and local URLs and preserves their stable IDs', async () => {
+describe('country entry points', () => {
+  function countrySources(record: SharedRecord) {
+    const countries = new Set((record.metadata.geoNotes as Array<{ country: string }> | undefined)?.map(note => note.country))
+    function visit(parts: Part[]) {
+      for (const part of parts) {
+        for (const row of (part.metadata.geoResolutions ?? []) as Array<{ country: string }>) countries.add(row.country)
+        for (const option of part.options) visit(option.parts)
+      }
+    }
+    visit(record.parts)
+    return countries
+  }
+  it('covers every global operational process with authored country guidance and preserves stable IDs', async () => {
     const { processCountryEntries } = await import('../shared-processes/country-views')
     const records = loadSharedProcesses()
     const pilots = records.filter(record => record.countryViews?.length)
-    expect(pilots).toHaveLength(10)
+    const eligible = records.filter(record => record.metadata.phase && record.metadata.geoScope === 'global' && countrySources(record).size)
+    expect(pilots.map(record => record.id).sort()).toEqual(eligible.map(record => record.id).sort())
     const slugs = new Set<string>()
     for (const record of pilots) {
       const views = processCountryEntries(record, record.id)
+      expect(views.filter(view => view.country !== 'GLOBAL').map(view => view.country).sort()).toEqual([...new Set(['US', ...countrySources(record)])].sort())
       expect(views[0].country).toBe('GLOBAL')
       expect(views.find(view => view.country === 'US')).toBeDefined()
       for (const view of views) {
@@ -113,7 +126,7 @@ describe('staged country entry points', () => {
         slugs.add(view.slug)
         expect(view.title.trim().length).toBeGreaterThan(3)
         if (view.country !== 'US' && view.country !== 'GLOBAL') {
-          expect((record.metadata.geoNotes as Array<{ country: string }>).some(note => note.country === view.country)).toBe(true)
+          expect(countrySources(record).has(view.country), `${record.id}/${view.country}`).toBe(true)
         }
       }
     }
@@ -125,7 +138,7 @@ describe('staged country entry points', () => {
     expect(ein.globalSlug).toBe('obtain-the-company-tax-identifiers')
   })
 
-  it('keeps country-specific completion checks and fees out of shared pilot metadata', () => {
+  it('keeps country-specific completion checks and fees out of shared metadata', () => {
     for (const record of loadSharedProcesses().filter(record => record.countryViews?.length)) {
       for (const part of record.parts.filter(part => !part.metadata.jurisdictions)) {
         const verification = part.metadata.verify as { how: string; url?: string } | undefined
@@ -133,5 +146,27 @@ describe('staged country entry points', () => {
         expect(part.metadata.cost, `${record.id}/${part.id} fee stays in the US resolution`).toBeUndefined()
       }
     }
+  })
+
+  it('keeps US nonprofit determination checks separate from UK registration and recognition', () => {
+    const record = loadSharedProcesses().find(record => record.id === 'set-up-a-non-profit')!
+    const rows = record.parts.find(part => part.id === 'n7')!.metadata.geoResolutions as Array<{ country: string; verify: { how: string; url: string }; cost: { usd: number; note: string } }>
+    const us = rows.find(row => row.country === 'US')!
+    const uk = rows.find(row => row.country === 'UK')!
+    expect(us.verify.url).toContain('irs.gov')
+    expect(us.verify.how + us.cost.note).not.toMatch(/HMRC|Charity Commission|UK/)
+    expect(uk.verify.url).toContain('charitycommission.gov.uk')
+    expect(uk.verify.how).toContain('HMRC')
+    expect(uk.cost.usd).toBe(0)
+    expect(us.cost.usd).toBe(600)
+  })
+
+  it('retains country-specific privacy clocks and the bank-failure branch condition', () => {
+    const records = loadSharedProcesses()
+    const dsar = records.find(record => record.id === 'sit_015')!
+    expect(dsar.countryViews!.find(view => view.country === 'US')!.summary).not.toMatch(/GDPR|one month|two.month/)
+    expect(dsar.countryViews!.find(view => view.country === 'UK')!.summary).toContain('eu.gdpr-dsar-response-deadline')
+    expect(dsar.parts.find(part => part.id === 'n1')!.title).not.toMatch(/45|one month/)
+    expect(records.find(record => record.id === 'sit_005')!.parts.find(part => part.id === 'n7')!.title).toMatch(/^If the bank failed:/)
   })
 })

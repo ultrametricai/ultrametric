@@ -41,7 +41,7 @@ Country rows describe the guidance recorded here. Local notes and step alternati
 
 | Country | Recorded guidance | Steps with local alternatives or resolutions |
 | --- | --- | --- |
-| [United States](#geo-us) | step resolution | [4](#step-4), [6](#step-6) |
+| [United States](#geo-us) | step resolution | [2](#step-2), [4](#step-4), [6](#step-6) |
 
 ## Steps at a glance
 
@@ -101,7 +101,7 @@ manual form/portal · ~10 min
 | Port an existing number | The company already has a number customers know |
 
 
-Choose the number the company will publish. Check the exact number's voice and messaging capability before buying — not every number supports SMS — and confirm the monthly and usage charges on the provider's published pricing. Where the destination country requires identity or address documentation before a number there can be purchased, complete the next step's business-identity bundle first and come back; US numbers purchase immediately. If the company already has a number people know, port it instead of buying a new one; the port branch has its own paperwork and timing.
+Choose the number the company will publish. Check the exact number's voice and messaging capability before buying — not every number supports SMS — and confirm the monthly and usage charges on the provider's published pricing. Where the destination country requires identity or address documentation before a number there can be purchased, complete the next step's business-identity bundle first and come back. If the company already has a number people know, port it instead of buying a new one; the port branch has its own paperwork and timing.
 
 - Sources: [Twilio docs: Phone numbers](https://www.twilio.com/docs/phone-numbers)
 
@@ -185,6 +185,9 @@ Update every place that holds the company's contact phone: the website and conta
 
 ### United States
 
+Get the company a phone number that is not a founder's cell: choose the provider type, pick or port the number, complete the identity and messaging registrations the destination country requires, configure routing and voicemail, and record the number everywhere the company contact phone lives.
+
+- Step 2: Pick the number Choose the number the company will publish. Check the exact number's voice and messaging capability before buying — not every number supports SMS — and confirm the monthly and usage charges on the provider's published pricing. Where the destination country requires identity or address documentation before a number there can be purchased, complete the next step's business-identity bundle first and come back; US numbers purchase immediately. If the company already has a number people know, port it instead of buying a new one; the port branch has its own paperwork and timing.
 - Step 4: Register the A2P 10DLC brand and campaign before texting from a 10-digit local number, and complete toll-free verification before SMS on a toll-free number US carriers require application-to-person traffic on 10-digit local numbers to be registered — unregistered traffic is filtered and carries extra carrier fees — and a toll-free number cannot send SMS to the US or Canada until its verification is approved. ([A2P 10DLC compliance docs](https://www.twilio.com/docs/messaging/compliance/a2p-10dlc))
 - Step 6: Put the number on the US paperwork that asks for an employer phone: bank and processor KYC profiles, and the written notice New York employers give at hire, which must state the employer's telephone number (law rule us-ny.wage-notice-at-hire) ([NY Labor Law § 195](https://www.nysenate.gov/legislation/laws/LAB/195))
 

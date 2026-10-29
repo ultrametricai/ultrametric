@@ -7,7 +7,7 @@
 
 ## Overview
 
-Get a business mailing address for legal and banking purposes — sign up with a virtual mailbox and complete the mail-handling authorization the postal rules require (in the US, the notarized USPS Form 1583).
+Choose a business address suitable for the company’s legal, banking and mail-handling needs. Complete the applicable address and mail-receipt authorizations, verify that correspondence reaches the company and update the relevant records.
 
 | Field | Value |
 | --- | --- |
@@ -121,6 +121,8 @@ Identify where the old address appears and distinguish mailing, physical, regist
 <a id="geo-us"></a>
 
 ### United States
+
+Get a business mailing address for legal and banking purposes — sign up with a virtual mailbox and complete the mail-handling authorization the postal rules require (in the US, the notarized USPS Form 1583).
 
 - Step 3: The authorization is the current USPS Form 1583; the CMRA keeps it on file ([USPS Form 1583](https://about.usps.com/forms/ps1583.pdf))
 - Step 4: Form 1583 permits signature or confirmation before the agent or authorized employee, or acknowledgement before a qualifying notary, with the specified physical or live virtual presence ([USPS Form 1583](https://about.usps.com/forms/ps1583.pdf))

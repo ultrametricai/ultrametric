@@ -9,7 +9,7 @@
 
 **Trigger:** The only real term sheet prices the company below the last round, or the insiders propose a recapitalization as the condition of new money.
 
-A down round is a financing with extra process duties, and a recap is a down round with teeth. Confirm the alternative first: real runway, real other offers, insider appetite. A priced round below the last valuation still beats a dead company. Then run the board process like it will be read later, because in a conflicted financing it will: conflicts named, disinterested directors approving where insiders lead the round, the deliberation in the minutes, and written consents only on every director's consent where the board acts without a meeting (law rule [us-de.board-action-by-written-consent](../../open-law/US-DE/us-de-board-action-by-written-consent.json) in Delaware). Model the anti-dilution adjustment before signing: most charters carry broad-based weighted-average and a full ratchet is the exception, and the open anti-dilution module computes the NVCA weighted-average formula from your own numbers. Pay-to-play and pull-ups move the pain onto non-participating investors; employees feel it through the preference stack and stale strike prices, so refresh the 409A after the close and tell the team what actually changed. Educational guidance, not legal advice.
+Assess the financing alternatives, document conflicts and obtain the corporate approvals required for the proposed round or recapitalization. Model the revised rights and dilution from the governing documents, update any affected equity valuations and explain the outcome to employees and investors.
 
 | Field | Value |
 | --- | --- |
@@ -41,7 +41,7 @@ Country rows describe the guidance recorded here. Local notes and step alternati
 
 | Country | Recorded guidance | Steps with local alternatives or resolutions |
 | --- | --- | --- |
-| [United States](#geo-us) | step resolution | [2](#step-2) |
+| [United States](#geo-us) | step resolution | [2](#step-2), [5](#step-5), [6](#step-6) |
 
 ## Steps at a glance
 
@@ -53,8 +53,8 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | [2. Run the board process for a conflicted financing: conflicts named, disinterested approval where insiders lead, the deliberation in the minutes](#step-2) | human | ~1.5 h | [Step 1](#step-1) |
 | [3. Model the conversion-price adjustment before signing: weighted-average or ratchet, from the charter's own formula](#step-3) | agent-runnable | ~45 min | [Step 2](#step-2) |
 | [4. Negotiate the recap terms with eyes open: pay-to-play, pull-ups, the option-pool refresh, and who converts to common](#step-4) | human | ~1.5 h | [Step 3](#step-3) |
-| [5. Refresh the 409A after the close: the old strike prices are stale the day the repriced round lands](#step-5) | manual form/portal | ~30 min | [Step 4](#step-4) |
-| [6. Tell employees what changed: the preference stack, their options against the new 409A, and why the company is still alive](#step-6) | human | ~45 min | [Step 5](#step-5) |
+| [5. Review the equity valuation and affected exercise prices after the close](#step-5) | manual form/portal | ~30 min | [Step 4](#step-4) |
+| [6. Explain the revised preference stack and equity arrangements to employees](#step-6) | human | ~45 min | [Step 5](#step-5) |
 
 <a id="steps"></a>
 
@@ -74,7 +74,7 @@ human · ~1 h
 human · ~1.5 h · hard to undo
 
 
-Down rounds led by existing investors are the textbook conflicted financing, so the process is the protection: name the conflicts, let disinterested directors carry the approval where possible, document the alternatives considered, and give stockholder approvals their own clean record where the charter amendment for the new preferred requires them. Where the board acts without a meeting, Delaware requires every director's written consent (law rule [us-de.board-action-by-written-consent](../../open-law/US-DE/us-de-board-action-by-written-consent.json)).
+Identify conflicts, review the governing documents and local approval requirements, and document the alternatives and decision-makers’ deliberations. Obtain the required board and shareholder approvals through counsel’s selected procedure.
 
 - Do it yourself: [8 Del. C. ch. 1, subch. IV — directors and officers](https://delcode.delaware.gov/title8/c001/sc04/)
 
@@ -100,7 +100,7 @@ human · ~1.5 h · hard to undo
 
 <a id="step-5"></a>
 
-### 5. Refresh the 409A after the close: the old strike prices are stale the day the repriced round lands
+### 5. Review the equity valuation and affected exercise prices after the close
 
 manual form/portal · ~30 min
 
@@ -109,7 +109,7 @@ manual form/portal · ~30 min
 
 <a id="step-6"></a>
 
-### 6. Tell employees what changed: the preference stack, their options against the new 409A, and why the company is still alive
+### 6. Explain the revised preference stack and equity arrangements to employees
 
 human · ~45 min · hard to undo
 
@@ -123,7 +123,11 @@ human · ~45 min · hard to undo
 
 ### United States
 
-- Step 2: Delaware board mechanics: a meeting with minutes, or action without a meeting only on every director's written consent (law rule us-de.board-action-by-written-consent), with stockholder approval where the charter amendment requires it ([8 Del. C. § 141](https://delcode.delaware.gov/title8/c001/sc04/))
+A down round is a financing with extra process duties, and a recap is a down round with teeth. Confirm the alternative first: real runway, real other offers, insider appetite. A priced round below the last valuation still beats a dead company. Then run the board process like it will be read later, because in a conflicted financing it will: conflicts named, disinterested directors approving where insiders lead the round, the deliberation in the minutes, and written consents only on every director's consent where the board acts without a meeting (law rule [us-de.board-action-by-written-consent](../../open-law/US-DE/us-de-board-action-by-written-consent.json) in Delaware). Model the anti-dilution adjustment before signing: most charters carry broad-based weighted-average and a full ratchet is the exception, and the open anti-dilution module computes the NVCA weighted-average formula from your own numbers. Pay-to-play and pull-ups move the pain onto non-participating investors; employees feel it through the preference stack and stale strike prices, so refresh the 409A after the close and tell the team what actually changed. Educational guidance, not legal advice.
+
+- Step 2: Delaware board mechanics: a meeting with minutes, or action without a meeting only on every director's written consent (law rule us-de.board-action-by-written-consent), with stockholder approval where the charter amendment requires it Down rounds led by existing investors are the textbook conflicted financing, so the process is the protection: name the conflicts, let disinterested directors carry the approval where possible, document the alternatives considered, and give stockholder approvals their own clean record where the charter amendment for the new preferred requires them. Where the board acts without a meeting, Delaware requires every director's written consent (law rule [us-de.board-action-by-written-consent](../../open-law/US-DE/us-de-board-action-by-written-consent.json)). ([8 Del. C. § 141](https://delcode.delaware.gov/title8/c001/sc04/))
+- Step 5: Refresh the 409A after the close: the old strike prices are stale the day the repriced round lands
+- Step 6: Tell employees what changed: the preference stack, their options against the new 409A, and why the company is still alive
 
 ---
 

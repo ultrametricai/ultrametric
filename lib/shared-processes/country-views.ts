@@ -1,7 +1,7 @@
 import type { SharedRecord } from './schema'
 
 export type ProcessCountry = 'GLOBAL' | NonNullable<SharedRecord['countryViews']>[number]['country']
-export interface ProcessCountryEntry { country: ProcessCountry; title: string; slug: string }
+export interface ProcessCountryEntry { country: ProcessCountry; title: string; slug: string; summary?: string }
 
 /** Only explicitly authored entries participate in the staged rollout. */
 export function processCountryEntries(record: SharedRecord, sourceSlug: string): ProcessCountryEntry[] {
