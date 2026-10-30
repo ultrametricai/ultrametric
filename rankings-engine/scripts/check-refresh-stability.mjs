@@ -20,19 +20,19 @@ function read(ref, path) {
   // Missing files and invalid JSON fail closed rather than hiding a comparison gap.
   return JSON.parse(git('show', `${ref}:${path}`))
 }
-export function check(baseRef) {
-  const base = git('merge-base', baseRef, 'HEAD')
-  const files = git('diff', '--name-only', base, 'HEAD', '--', 'open-rankings').split('\n')
+export function check(baseRef, headRef = 'HEAD') {
+  const base = git('merge-base', baseRef, headRef)
+  const files = git('diff', '--name-only', base, headRef, '--', 'open-rankings').split('\n')
   let failures = 0
   for (const file of files.filter(file => /^open-rankings\/[^/]+\/verdicts\.json$/.test(file))) {
     const before = read(base, file)
-    const after = read('HEAD', file)
+    const after = read(headRef, file)
     const arena = file.split('/')[1]
     const oldPacks = {}, newPacks = {}
     for (const product of new Set(before.map(row => row.productId))) {
       const path = `open-rankings/${arena}/evidence/${product}.json`
       oldPacks[product] = read(base, path)
-      newPacks[product] = read('HEAD', path)
+      newPacks[product] = read(headRef, path)
     }
     for (const row of unsupportedFlips(before, after, oldPacks, newPacks)) {
       console.error(`${arena}/${row.productId}/${row.storyId}: grade changed without a new cited evidence ID`)
@@ -43,5 +43,5 @@ export function check(baseRef) {
   console.log('Refresh stability passed')
 }
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
-  check(process.argv[2] ?? 'origin/main')
+  check(process.argv[2] ?? 'origin/main', process.argv[3] ?? 'HEAD')
 }
