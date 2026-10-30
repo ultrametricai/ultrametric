@@ -83,9 +83,13 @@ jobs:
               current = api(f'repos/{repo}/pulls/{number}')
               if current['head']['sha'] != sha or current['state'] != 'open':
                   continue
+              checks = api(f'repos/{repo}/commits/{sha}/check-runs?check_name=Greptile%20Review&per_page=100')
+              reviewed = any(check['app']['id'] == 867647 and check['status'] == 'completed'
+                             and check['conclusion'] == 'success' for check in checks['check_runs'])
               api(f'repos/{repo}/statuses/{sha}', {
-                  'state': 'failure' if blocked else 'success',
+                  'state': ('failure' if blocked else 'success') if reviewed else 'pending',
                   'context': 'review-findings',
-                  'description': f'{blocked} unresolved Greptile findings; Foreloop excluded',
+                  'description': (f'{blocked} unresolved Greptile findings; Foreloop excluded'
+                                  if reviewed else 'Waiting for Greptile on this revision; Foreloop excluded'),
                   'target_url': f"{os.environ['SERVER_URL']}/{repo}/actions/runs/{os.environ['RUN_ID']}"})
               print(f'#{number}: {blocked} unresolved Greptile findings')
