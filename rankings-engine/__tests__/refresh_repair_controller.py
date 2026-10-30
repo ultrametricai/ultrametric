@@ -124,7 +124,7 @@ class DispatcherTests(unittest.TestCase):
         command.assert_called_once_with(['gh','workflow','run','ci.yml','--repo','owner/repo','--ref',BRANCH])
 
     def test_waiting_resumes_do_not_consume_failed_worker_budget(self):
-        history=[{'display_title':f'Repair refresh #536 @{SHA}','status':'completed','conclusion':'success'} for _ in range(4)]
+        history=[{'display_title':f'Repair refresh #536 @{SHA} [support-loss-v2]','status':'completed','conclusion':'success'} for _ in range(4)]
         self.request(history).assert_called_once()
 
     def test_parent_worker_prevents_a_second_worker_for_the_same_pr(self):
@@ -132,7 +132,7 @@ class DispatcherTests(unittest.TestCase):
         self.request(history).assert_not_called()
 
     def test_three_failed_workers_stop_dispatching_that_head(self):
-        history=[{'display_title':f'Repair refresh #536 @{SHA}','status':'completed','conclusion':'failure'} for _ in range(3)]
+        history=[{'display_title':f'Repair refresh #536 @{SHA} [support-loss-v2]','status':'completed','conclusion':'failure'} for _ in range(3)]
         self.request(history).assert_not_called()
 
 
