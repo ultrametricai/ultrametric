@@ -3,6 +3,9 @@ name: Refresh auto-merge recovery
 # Bot-created PRs and bot merges do not trigger normal PR/push workflows.
 # The timer recovers missed dispatches and refreshes bases after another PR lands.
 on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
   push:
     branches: [main]
   schedule:
@@ -42,6 +45,49 @@ jobs:
               return json.loads(result.stdout) if result.stdout.strip() else None
           prs = json.loads(subprocess.check_output(
               ['gh', 'api', '--paginate', '--slurp', f'repos/{repo}/pulls?state=open&per_page=100'], text=True))
+          def request_repair(pr, sha):
+              if not pr['head']['ref'].startswith('story-runner/'):
+                  return
+              title = f"Repair refresh #{pr['number']} @{sha}"
+              history = api('actions/workflows/refresh-repair.yml/runs?per_page=100')['workflow_runs']
+              # Retry failed workers at most three times; waiting resumes are read-only.
+              # Published repairs create a new
+              # head. The worker also caps the total published repair commits at three.
+              previous = [run for run in history if run['display_title'] == title]
+              if any(run['status'] != 'completed' and run['display_title'].startswith(f"Repair refresh #{pr['number']} @") for run in history):
+                  return
+              if sum(run['conclusion'] in ['failure','timed_out','cancelled'] for run in previous) >= 3:
+                  return
+              if sum(run['status'] != 'completed' for run in history) >= 2:
+                  return # bound concurrent repair workers and model spend
+              subprocess.run(['gh', 'workflow', 'run', 'refresh-repair.yml', '--repo', repo,
+                              '--ref', 'main', '--field', f"pr={pr['number']}",
+                              '--field', f'head={sha}'], check=True)
+
+          def has_findings(number):
+              query = """query($owner:String!,$name:String!,$number:Int!,$cursor:String) {
+                repository(owner:$owner,name:$name) { pullRequest(number:$number) {
+                  reviewThreads(first:100,after:$cursor) {pageInfo {hasNextPage endCursor}
+                    nodes {isResolved path comments(first:1){nodes{author{login}}}}}
+                }}}"""
+              owner, name = repo.split('/')
+              cursor = None
+              while True:
+                  result = subprocess.run(['gh', 'api', 'graphql', '--method', 'POST', '--input', '-'],
+                      input=json.dumps({'query':query,'variables':{'owner':owner,'name':name,'number':number,'cursor':cursor}}),
+                      text=True,capture_output=True,check=True)
+                  data = json.loads(result.stdout)
+                  if data.get('errors'):
+                      raise RuntimeError(data['errors'])
+                  threads = data['data']['repository']['pullRequest']['reviewThreads']
+                  if any(not t['isResolved'] and t['path'].endswith('/verdicts.json') and
+                         any((c.get('author') or {}).get('login') in ['greptile-apps','greptile-apps[bot]','greptileai']
+                             for c in t['comments']['nodes']) for t in threads['nodes']):
+                      return True
+                  if not threads['pageInfo']['hasNextPage']:
+                      return False
+                  cursor = threads['pageInfo']['endCursor']
+
           errors = []
           for pr in [pr for page in prs for pr in page]:
               branch = pr['head']['ref']
@@ -76,6 +122,9 @@ jobs:
                                       '--body', '@greptileai review'], check=True)
                   subprocess.run(['gh', 'workflow', 'run', 'review-findings.yml', '--repo', repo,
                                   '--ref', 'main', '--field', f'pr={number}'], check=True)
+                  if (any(run['status'] == 'completed' and run['conclusion'] == 'failure' for run in runs['workflow_runs'])
+                      or (branch.startswith('story-runner/') and has_findings(number))):
+                      request_repair(pr, sha)
                   if not pr['auto_merge']:
                       subprocess.run(['gh', 'pr', 'merge', str(number), '--repo', repo,
                                       '--auto', '--merge', '--match-head-commit', sha], check=True)
@@ -83,6 +132,11 @@ jobs:
               except (subprocess.CalledProcessError, RuntimeError) as error:
                   # Conflicts and setup failures stay visible; process independent PRs too.
                   detail = getattr(error, 'stderr', None) or str(error)
+                  if 'merge conflict between base and head' in detail:
+                      try:
+                          request_repair(pr, sha)
+                      except (subprocess.CalledProcessError, RuntimeError) as repair_error:
+                          print(f'::warning::#{number}: repair dispatch failed: {repair_error}', flush=True)
                   print(f'::warning::#{number}: {detail}', flush=True)
                   errors.append(number)
           if errors:

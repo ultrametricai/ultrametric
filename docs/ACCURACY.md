@@ -110,6 +110,41 @@ score built entirely from zero-evidence none/na cells renders italic *untested*,
 4. **Contest / vendor-response issues** — external correction channels; vendor responses enter
    the evidence pool but never change a verdict by themselves.
 
+## Repair and recheck
+
+The recovery controller dispatches `refresh-repair.yml` for failing generated story-runner
+PRs, unresolved Greptile findings on verdict cells, and merge conflicts. CI completion also
+wakes recovery. Foreloop remains outside this loop.
+
+The worker executes the current main branch only. It fetches the proposed branch as data,
+accepts changes only in its arena and declared generated projections, and rejects code,
+workflow, symlink, and cross-arena source edits. Concurrent canonical source edits remain
+blocked; generated rankings, graphs, reviews, intervals, predictions, and history are rebuilt
+from merged inputs. Append-only uptime observations are combined without rewriting history.
+
+Evidence content changes receive distinct deterministic IDs before future judgments;
+repeated extraction of the same content retains the same identity. Timestamp-only updates
+create no new evidence. Repairs reconcile older PRs that reused an ID for changed text and
+remap their citations. A cache may migrate across label-only changes only after its original
+payload hash and exact original judgment are verified.
+
+Unsupported grade churn restores the previously published judgment when its cited content
+is unchanged and its rules remain valid. Changed or missing source content requires a
+scoped re-judge, within the worker's cell budget. Reviewed cells may use the configured judge to reconsider the evidence and audit
+the reported concern. Review text is diagnostic context, never evidence. Missing evidence,
+unknown citations, rubric violations, and affiliated-product review needs stay blocked.
+
+Every repair runs the repository gates before a non-force push, launches CI and a fresh
+Greptile review, and checks the new head again. An old thread may close only for an audited
+cell after CI and independent review pass, with no new verdict-matrix findings. All other
+threads remain open. A changed head discards the repair. Attempts are bounded to three
+published repair commits, three failed-worker retries per head, and two concurrent workers. Pending checks resume
+the saved audit for the same published head, without another judgment or repair commit.
+Only artifacts from the trusted main repair workflow with matching PR, head, run, and base
+bindings can resume. Audits are bound to the exact review discussion; edited findings or
+new replies require another assessment. Foreloop replies are excluded from that context. Failed stages are appended to the retained report.
+Reports are retained as workflow artifacts; exhausted or ambiguous repairs require review.
+
 ## Invariants
 
 - Keyless loops never touch verdicts. Only the keyed judge (story-runner, contest-check) can.

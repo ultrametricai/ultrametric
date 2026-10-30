@@ -104,6 +104,10 @@ jobs:
           # taxonomy changes stay a deliberate, human-triggered act.
           for stage in crawl extract collect-community probe judge claims popularity derive; do
             echo "::group::$stage"
+            if [ "$stage" = "judge" ]; then
+              # Keep changed source content distinct, including same-ID extraction refreshes.
+              pnpm exec tsx rankings-engine/scripts/normalize-refresh-evidence.ts "$CATEGORY"
+            fi
             pnpm tsx rankings-engine/cli.ts "$stage" --category "$CATEGORY"
             echo "::endgroup::"
           done
