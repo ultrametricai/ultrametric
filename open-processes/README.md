@@ -645,13 +645,39 @@ registry pointers and traversal of conditional and nested vendor references.
 
 ## The Incorporate C-Corp step graph
 
-The diagram is `form_001` (Incorporate C-Corp) from canonical `incorporate-c-corp.json`:
-`scripts/generate-process-diagram.mjs` draws the unfiltered operational projection's `dag.nodes` and
-`dag.edges`, nothing invented, and is re-run when the definition changes. Glyphs: 🤖 `agent` ·
-📝 `form` (manual web form) · 🧑 `person` · ✍ a `person` step with `legalSignature`
-(legally required human signature). Presentation adoption of execution assessments is deferred.
+The diagram is generated from [`incorporate-c-corp.json`](incorporate-c-corp.json).
+Arrows preserve the authored dependencies; disconnected jurisdiction-specific steps
+appear separately. The [guide](pages/incorporate-c-corp.md) includes country applicability,
+step options, verification and recovery guidance.
 
 <p align="center"><img src="assets/incorporate-c-corp.svg" alt="Incorporate C-Corp step graph" width="700"></p>
+
+## Get a 409A valuation step graph
+
+The [guide](pages/get-a-409a-valuation.md) and
+[source record](get-a-409a-valuation.json) show financial statements and a cap-table
+snapshot feeding the valuation request. The graph preserves both inputs before the
+questionnaire, report and acceptance steps.
+
+[![Get a 409A valuation step graph](assets/get-a-409a-valuation.svg)](pages/get-a-409a-valuation.md)
+
+## Set up mailing address step graph
+
+The [guide](pages/set-up-mailing-address.md) and
+[source record](set-up-mailing-address.json) cover provider selection, signup,
+mail authorization, witnessing and address updates. Consult the guide for the
+requirements that apply to the selected country and address type.
+
+[![Set up mailing address step graph](assets/set-up-mailing-address.svg)](pages/set-up-mailing-address.md)
+
+Regenerate the README examples with `node scripts/generate-process-diagram.mjs --examples`.
+The renderer reads canonical definitions through their operational projection. It uses
+Ultrametric's site typography stack, zinc surfaces and borders, gray connectors, and
+execution colors. Native SVG text uses Inter with Arial and Helvetica fallbacks.
+Execution labels use the authored assessment, or remain unclassified when it is missing;
+explicit approval and signature markers are shown separately. Open the linked guide for
+step options and full approval scope. A displayed agent capability does not authorize
+an external action. No process definition is changed by rendering its diagram.
 
 ## How the site consumes this directory
 
