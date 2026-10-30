@@ -20,14 +20,14 @@
     "productId": "bun",
     "storyId": "agentic-agent-docs",
     "verdict": "full",
-    "quality": 8,
+    "quality": 9,
     "confidence": "high",
-    "rationale": "A live probe confirms Bun serves an llms.txt at bun.com/llms.txt (HTTP 200) that indexes its docs as Markdown links. Its docs are also served as raw Markdown (bun.com/docs.md, plus per-page .md URLs such as /docs/pm/cli/add.md), so an agent can be pointed straight at machine-readable docs. missing for 10: no evidence of a full-content llms-full.txt variant, no first-party documentation describing or promoting agent-oriented docs usage.",
+    "rationale": "Hands-on probes confirm a live, structured llms.txt at bun.com/llms.txt that links to markdown doc pages, and a markdown docs root at bun.com/docs.md. Individual doc pages are also served as .md URLs (e.g. pm/cli/add.md, pm/cli/install.md), so an agent can ingest them directly. Missing for 10: independent or community corroboration of agents actually using these docs, and evidence of agent-specific guidance (e.g. llms-full.txt or agent usage instructions).",
     "evidenceIds": [
       "bun-probe-1",
       "bun-probe-2",
       "bun-docs-40",
-      "bun-docs-41"
+      "bun-docs-53"
     ]
   },
   {
@@ -123,17 +123,29 @@
       "bun-docs-6",
       "bun-probe-1",
       "bun-probe-2",
-      "bun-comm-3"
+      "bun-comm-3-refresh-1841e084b804077c"
     ]
   },
   {
     "productId": "bun",
     "storyId": "agentic-public-api",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "A package manager could reasonably ship a programmatic or HTTP API, so the axis applies. The evidence documents only the CLI (`bun install`, `bun add`, `bun pm`, and so on) plus agent-readable docs (llms.txt, docs.md). Neither is a public API for driving the package manager, and the OpenAPI probe returned 404 on every candidate path.",
-    "evidenceIds": []
+    "rationale": "Bun's package manager can be driven programmatically only through its extensively documented, scriptable CLI. That CLI covers install, add, remove, update, audit, pm subcommands, publish, outdated, why and info, and offers non-interactive flags like --frozen-lockfile and --filter. Machine-readable docs are available via llms.txt and docs.md. No programmatic or HTTP API surface is evidenced, and probes for an OpenAPI spec all returned 404. missing for 10: a documented programmatic (library/JS or HTTP) API for package-management operations, a machine-readable API spec, and independent corroboration of driving it as an API rather than a CLI.",
+    "evidenceIds": [
+      "bun-probe-4",
+      "bun-probe-3",
+      "bun-probe-1",
+      "bun-probe-2",
+      "bun-docs-26",
+      "bun-docs-40",
+      "bun-docs-41",
+      "bun-docs-42",
+      "bun-docs-35",
+      "bun-docs-49",
+      "bun-docs-6"
+    ]
   },
   {
     "productId": "bun",
@@ -156,10 +168,10 @@
   {
     "productId": "bun",
     "storyId": "agentic-webhooks",
-    "verdict": "none",
+    "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Webhook subscriptions are a fair question for a package manager, since a package-manager ecosystem could offer registrable event callbacks such as package-publish hooks. However, Bun's evidence covers only local CLI install, lockfile, workspace, audit and publish features. There is no documented outbound HTTP callback or event-subscription mechanism, and the probes found no API surface (OpenAPI paths return 404).",
+    "rationale": "Bun's package manager is a local CLI that installs, audits and publishes dependencies, not a hosted service that emits events, so webhook event subscriptions are a category error for this product type. Nothing in the evidence pack suggests it ships any webhook or event-subscription capability that would make the axis apply.",
     "evidenceIds": []
   },
   {
@@ -183,10 +195,10 @@
   {
     "productId": "bun",
     "storyId": "api-sandbox",
-    "verdict": "na",
+    "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A sandbox or test-mode environment that keeps production data separate is a capability of data-holding services and APIs. A package manager like Bun holds no production data, so this story is a category error for the product type. Nothing in the evidence shows Bun shipping such an environment: offline installs, `bun pm pack` and production-mode installs are unrelated features.",
+    "rationale": "A package manager could plausibly offer a sandbox, such as a test registry or dry-run publishing target, so the axis applies. However, nothing in the evidence describes a sandbox or test environment separate from production. The offline/no-network install mode and production-mode installs concern dependency resolution, not isolated testing against non-production data.",
     "evidenceIds": []
   },
   {
@@ -229,11 +241,15 @@
   {
     "productId": "bun",
     "storyId": "automation-rules-engine",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Event-triggered automation is a fair question for a package manager, for example install lifecycle hooks, so the axis applies. However, the evidence never documents a user-defined rule or hook system that fires actions on events. The only nearby items are adjacent controls: `trustedDependencies`, an allow-list that permits dependency lifecycle scripts; default blocking of `postinstall`; `--concurrent-scripts`; and built-in automatic lockfile migration. None of these is a rule-definition capability, so none earns credit.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The only event-triggered automation in the evidence is install lifecycle scripts (e.g. `postinstall`). Bun blocks these for dependencies by default and lets users opt packages in through `trustedDependencies` in package.json, which amounts to a narrow, install-event hook rather than a general rule system. missing for 10: a general mechanism for defining event-to-action rules, events beyond install lifecycle hooks, documentation of root-project script hooks, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "bun-docs-4",
+      "bun-docs-19",
+      "bun-docs-53"
+    ]
   },
   {
     "productId": "bun",
@@ -306,30 +322,31 @@
   {
     "productId": "bun",
     "storyId": "fast-ci-installs",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Bun documents a global install cache whose path can be redirected with `BUN_INSTALL_CACHE_DIR`, which makes it cacheable in CI. It also documents a no-network install mode in which an uncached dependency is an error, plus `--frozen-lockfile` for reproducible CI installs and a claimed speedup of up to 25x over npm. missing for 10: an explicit CI cache-restore recipe (e.g. a CI cache key/restore example), independent or hands-on corroboration of CI install speed and offline behavior.",
+    "rationale": "The reviewer concern is valid. Bun documents fast installs (up to 25x, plus benchmark figures), a global cache whose location can be changed with `BUN_INSTALL_CACHE_DIR`, hardlinking from that cache, `--frozen-lockfile` for reproducible installs, and an offline mode that never touches the network and errors on uncached dependencies. However, the cache docs only say where the cache lives; nothing in the pack shows a documented CI cache-restore setup, so users must build that step themselves. missing for 10: a documented CI cache-restore recipe or workflow, independent or hands-on corroboration of CI install speed and offline behavior.",
     "evidenceIds": [
-      "bun-docs-64",
-      "bun-docs-12",
-      "bun-docs-5",
-      "bun-docs-20",
-      "bun-docs-35",
       "bun-docs-1",
       "bun-docs-29",
-      "bun-docs-25"
+      "bun-docs-64",
+      "bun-docs-12",
+      "bun-docs-25",
+      "bun-docs-35",
+      "bun-docs-5",
+      "bun-docs-20"
     ]
   },
   {
     "productId": "bun",
     "storyId": "frozen-lockfile-enforcement",
-    "verdict": "partial",
-    "quality": 6,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Bun documents a `--frozen-lockfile` flag for reproducible installs: it installs the exact versions in the lockfile and does not update it (bun-docs-35). That is the frozen-lockfile mode the story asks for. However, the evidence never says the install fails or errors when package.json and bun.lock disagree. The fail-on-mismatch behavior is only implied. missing for 10: explicit documentation that the install exits with an error on manifest/lockfile mismatch, a config-file or CI default to enforce the mode, independent or hands-on corroboration.",
+    "rationale": "Bun documents a `--frozen-lockfile` flag for reproducible installs that installs the exact versions in `bun.lock` and does not update the lockfile, which is the core of a frozen-lockfile mode. The docs excerpt does not explicitly say the install fails when `package.json` and the lockfile disagree; that behavior is only implied. missing for 10: explicit documentation that install errors on manifest/lockfile mismatch, a way to enforce frozen mode by default (e.g. a config setting or CI auto-detection), independent or hands-on corroboration.",
     "evidenceIds": [
-      "bun-docs-35"
+      "bun-docs-35",
+      "bun-docs-38"
     ]
   },
   {
@@ -359,7 +376,7 @@
       "bun-docs-18",
       "bun-docs-30",
       "bun-docs-53",
-      "bun-comm-3"
+      "bun-comm-3-refresh-1841e084b804077c"
     ]
   },
   {
@@ -416,7 +433,7 @@
       "bun-docs-55",
       "bun-docs-26",
       "bun-docs-36",
-      "bun-comm-3",
+      "bun-comm-3-refresh-1841e084b804077c",
       "bun-comm-13"
     ]
   },
@@ -486,7 +503,7 @@
       "bun-docs-31",
       "bun-docs-17",
       "bun-docs-26",
-      "bun-comm-3"
+      "bun-comm-3-refresh-1841e084b804077c"
     ]
   },
   {
@@ -510,7 +527,7 @@
       "bun-docs-26",
       "bun-docs-5",
       "bun-docs-64",
-      "bun-comm-3"
+      "bun-comm-3-refresh-1841e084b804077c"
     ]
   },
   {
@@ -543,7 +560,7 @@
       "bun-docs-5",
       "bun-docs-19",
       "bun-docs-4",
-      "bun-comm-4"
+      "bun-comm-4-refresh-36a5f2c0b9eeec41"
     ]
   },
   {
@@ -618,8 +635,8 @@
       "bun-docs-3",
       "bun-docs-19",
       "bun-docs-4",
-      "bun-comm-3",
-      "bun-comm-4",
+      "bun-comm-3-refresh-1841e084b804077c",
+      "bun-comm-4-refresh-36a5f2c0b9eeec41",
       "bun-comm-13"
     ]
   },
@@ -662,7 +679,7 @@
       "bun-docs-17",
       "bun-docs-19",
       "bun-docs-4",
-      "bun-comm-3",
+      "bun-comm-3-refresh-1841e084b804077c",
       "bun-comm-13"
     ]
   },
@@ -754,20 +771,26 @@
   {
     "productId": "homebrew",
     "storyId": "agentic-ai-insights",
-    "verdict": "none",
+    "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A package manager could plausibly offer AI-generated suggestions about a user's installed packages or environment, so this axis applies. However, nothing in the evidence documents any AI-generated insights or suggestions inside Homebrew. Its anonymous aggregate analytics and substring/regex search are adjacent features, not AI insights, and earn no credit.",
+    "rationale": "Homebrew is a CLI package manager for installing and managing software. Generating AI insights and suggestions from a user's own data is a data-analytics or SaaS capability outside its product category, and nothing in the evidence shows it ships anything like this. The only data-related feature is anonymous aggregate usage analytics, which users can turn off; that is telemetry, not AI-generated insight for the user.",
     "evidenceIds": []
   },
   {
     "productId": "homebrew",
     "storyId": "agentic-autonomous-automation",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Homebrew is a package manager that could plausibly ship background automation (e.g., scheduled updates), so the axis applies. The evidence shows only non-interactive building blocks: NONINTERACTIVE installs, MDM workflows, and an as-console-user command meant to be invoked from external scheduled jobs. The scheduling itself relies on host-platform tooling, and no Homebrew-native capability to set up autonomous background automations is documented. The 'start any services' mention concerns running installed software, which is an adjacent feature, not user-defined automations.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Homebrew documents unattended, scriptable operation: `NONINTERACTIVE=1` installs, a `.pkg` installer for unattended MDM installs, Jamf/Munki workflows where brew runs as root, and idempotent `brew bundle check || brew bundle install` patterns. These let external schedulers or management tools drive it without a person present, but the evidence shows no built-in way to schedule or run automations in the background. Missing for 10: native scheduling or background automation (e.g., auto-update or recurring jobs), any agent-oriented automation features, and independent or hands-on corroboration of autonomous background use.",
+    "evidenceIds": [
+      "homebrew-docs-35",
+      "homebrew-docs-24",
+      "homebrew-docs-10",
+      "homebrew-docs-26",
+      "homebrew-docs-14"
+    ]
   },
   {
     "productId": "homebrew",
@@ -795,7 +818,7 @@
       "homebrew-docs-64",
       "homebrew-docs-70",
       "homebrew-probe-3",
-      "homebrew-comm-17"
+      "homebrew-comm-17-refresh-fb7683e8f0d8c5b3"
     ]
   },
   {
@@ -841,7 +864,7 @@
       "homebrew-docs-65",
       "homebrew-docs-68",
       "homebrew-docs-27",
-      "homebrew-comm-11",
+      "homebrew-comm-11-refresh-16adc0de9acff187",
       "homebrew-probe-1"
     ]
   },
@@ -861,10 +884,10 @@
   {
     "productId": "homebrew",
     "storyId": "agentic-scoped-keys",
-    "verdict": "na",
+    "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Homebrew is a local package manager. Its only API in the evidence is a public, read-only formulae JSON listing, with no user accounts or authenticated service from which agent credentials could be issued, so scoped API credential issuance is outside its category. The evidence on non-admin installs, HOMEBREW_NO_SUDO and as-console-user covers OS privilege handling, not API credentials, and cannot be credited here.",
+    "rationale": "The axis applies: package managers with registries can plausibly offer scoped publish or access tokens, so a buyer comparing them could fairly ask this. Nothing in the evidence shows Homebrew issuing any API credentials, scoped or otherwise. The docs cover only local CLI behaviour (no sudo after install, the tap trust feature, MDM run-as-console-user), and probes found no OpenAPI spec.",
     "evidenceIds": []
   },
   {
@@ -949,8 +972,8 @@
       "homebrew-docs-34",
       "homebrew-docs-7",
       "homebrew-docs-46",
-      "homebrew-comm-2",
-      "homebrew-comm-11"
+      "homebrew-comm-2-refresh-d901d985a16e8676",
+      "homebrew-comm-11-refresh-16adc0de9acff187"
     ]
   },
   {
@@ -984,8 +1007,8 @@
       "homebrew-docs-64",
       "homebrew-docs-14",
       "homebrew-docs-65",
-      "homebrew-comm-14",
-      "homebrew-comm-8"
+      "homebrew-comm-14-refresh-21f3703ecca8f360",
+      "homebrew-comm-8-refresh-296a4237ca45a378"
     ]
   },
   {
@@ -1032,7 +1055,7 @@
       "homebrew-docs-66",
       "homebrew-docs-3",
       "homebrew-docs-13",
-      "homebrew-comm-10"
+      "homebrew-comm-10-refresh-e2f21cfef00a17d3"
     ]
   },
   {
@@ -1056,11 +1079,16 @@
   {
     "productId": "homebrew",
     "storyId": "incumbent-interface-compat",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Nothing in the evidence shows Homebrew offering compatibility commands, command aliases, or interface conventions that mirror an incumbent tool such as MacPorts, apt or Nix. The Brewfile is described as working 'like' a package.json or Gemfile, but that is an analogy of concept, not command compatibility. The 'edit aliases' feature lets users define their own shortcuts, which is a user-side workaround rather than built-in familiarity. Community comments that brew feels simpler than MacPorts are about general ease of use, not about carrying over familiar commands.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The only evidence of familiar conventions is `brew bundle`. It is described as a 'Bundler for non-Ruby dependencies', mirrors Bundler-style verbs (`bundle install`, `check`, `exec`), and positions the Brewfile as working like a `package.json`, `Gemfile` or `requirements.txt`. That gives switchers from those ecosystems a recognizable workflow, but nothing shows command or interface compatibility with an incumbent system package manager. Missing for 10: command aliases or compatibility with incumbent managers such as apt or MacPorts, migration or import tooling from another manager, a documented switcher guide mapping old commands to brew equivalents, and hands-on confirmation from switchers that the conventions feel familiar.",
+    "evidenceIds": [
+      "homebrew-docs-1",
+      "homebrew-docs-3",
+      "homebrew-docs-14",
+      "homebrew-docs-33"
+    ]
   },
   {
     "productId": "homebrew",
@@ -1174,7 +1202,7 @@
       "homebrew-docs-19",
       "homebrew-docs-57",
       "homebrew-docs-58",
-      "homebrew-comm-16"
+      "homebrew-comm-16-refresh-2590124da856ca33"
     ]
   },
   {
@@ -1190,7 +1218,7 @@
       "homebrew-docs-14",
       "homebrew-docs-64",
       "homebrew-docs-69",
-      "homebrew-comm-8"
+      "homebrew-comm-8-refresh-296a4237ca45a378"
     ]
   },
   {
@@ -1207,7 +1235,7 @@
       "homebrew-docs-57",
       "homebrew-docs-58",
       "homebrew-docs-23",
-      "homebrew-comm-18"
+      "homebrew-comm-18-refresh-8b928f45ce87770f"
     ]
   },
   {
@@ -1222,20 +1250,31 @@
   {
     "productId": "homebrew",
     "storyId": "privacy-no-training",
-    "verdict": "na",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Homebrew is a local package manager. It hosts no user content and offers no AI features, so an opt-out from AI model training is outside its product category. Its documented `brew analytics off` switch controls anonymous usage analytics, an adjacent control that does not address AI training.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Homebrew collects anonymous aggregate usage analytics and documents `brew analytics off` to turn them off. Disabling collection indirectly keeps that usage data from being used for anything, AI training included. However, nothing in the evidence addresses AI model training or data-use policy, so this is only a glancing, indirect fit. Missing for 10: any documented policy on AI/model training use of user data, an explicit training opt-out, independent corroboration of data-handling practices.",
+    "evidenceIds": [
+      "homebrew-docs-9",
+      "homebrew-docs-15",
+      "homebrew-docs-36",
+      "homebrew-docs-42"
+    ]
   },
   {
     "productId": "homebrew",
     "storyId": "privacy-retention-controls",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "Homebrew collects anonymous aggregate analytics, so asking whether users can control retention or deletion of that data is a fair privacy question for this product. The pack documents only an opt-out of analytics collection (`brew analytics off`), which is an adjacent control, not control over how long data is kept or whether it is deleted. Removing taps or local packages is local file management, not control of user data the vendor holds.",
-    "evidenceIds": []
+    "rationale": "Homebrew documents user control over its data collection: `brew analytics` controls its anonymous aggregate behaviour analytics, and `brew analytics off` turns them off. That governs collection, not how long collected data is kept or how to delete it. The only deletion evidence is local: `brew untap` deletes local tap repositories, which is not user-data deletion. Missing for 10: documented retention periods for analytics data, a way to request deletion of already-collected data, and any independent corroboration of the privacy posture.",
+    "evidenceIds": [
+      "homebrew-docs-9",
+      "homebrew-docs-15",
+      "homebrew-docs-36",
+      "homebrew-docs-42",
+      "homebrew-docs-34"
+    ]
   },
   {
     "productId": "homebrew",
@@ -1266,7 +1305,7 @@
       "homebrew-docs-58",
       "homebrew-docs-61",
       "homebrew-docs-63",
-      "homebrew-comm-16"
+      "homebrew-comm-16-refresh-2590124da856ca33"
     ]
   },
   {
@@ -1292,13 +1331,13 @@
       "homebrew-docs-5",
       "homebrew-docs-70",
       "homebrew-docs-11",
-      "homebrew-comm-19",
-      "homebrew-comm-15",
-      "homebrew-comm-5",
-      "homebrew-comm-3",
-      "homebrew-comm-4",
-      "homebrew-comm-8",
-      "homebrew-comm-12"
+      "homebrew-comm-19-refresh-40d5b11b308481aa",
+      "homebrew-comm-15-refresh-039305a926d4b7df",
+      "homebrew-comm-5-refresh-2a42ee9aa21f5e4d",
+      "homebrew-comm-3-refresh-ebd435ad41ebe740",
+      "homebrew-comm-4-refresh-595189d1f1af2ce0",
+      "homebrew-comm-8-refresh-296a4237ca45a378",
+      "homebrew-comm-12-refresh-2c3711a4db4ddde7"
     ]
   },
   {
@@ -1315,9 +1354,9 @@
       "homebrew-docs-67",
       "homebrew-docs-26",
       "homebrew-docs-39",
-      "homebrew-comm-12",
-      "homebrew-comm-8",
-      "homebrew-comm-9"
+      "homebrew-comm-12-refresh-2c3711a4db4ddde7",
+      "homebrew-comm-8-refresh-296a4237ca45a378",
+      "homebrew-comm-9-refresh-238bd89b7471a2ca"
     ]
   },
   {
@@ -1346,7 +1385,7 @@
       "homebrew-docs-66",
       "homebrew-docs-14",
       "homebrew-docs-30",
-      "homebrew-comm-15"
+      "homebrew-comm-15-refresh-039305a926d4b7df"
     ]
   },
   {
@@ -1359,7 +1398,7 @@
     "evidenceIds": [
       "homebrew-docs-61",
       "homebrew-docs-16",
-      "homebrew-comm-3"
+      "homebrew-comm-3-refresh-ebd435ad41ebe740"
     ]
   },
   {
@@ -1378,7 +1417,7 @@
       "homebrew-docs-34",
       "homebrew-docs-58",
       "homebrew-docs-62",
-      "homebrew-comm-16"
+      "homebrew-comm-16-refresh-2590124da856ca33"
     ]
   },
   {
@@ -1415,8 +1454,8 @@
       "mise-docs-12",
       "mise-docs-23",
       "mise-docs-90",
-      "mise-comm-3",
-      "mise-comm-4"
+      "mise-comm-3-refresh-65247237d24f80f3",
+      "mise-comm-4-refresh-755e8a94af772fcf"
     ]
   },
   {
@@ -1427,7 +1466,7 @@
     "confidence": "high",
     "rationale": "A live probe confirms mise publishes an llms.txt at https://mise.jdx.dev/llms.txt (HTTP 200), with structured, curated content ('Start here' section linking Getting started, etc.). That is exactly what an agent can be pointed at. However, per-page markdown variants are not served: getting-started.html.md returned 404. Missing for 10: per-page .md doc variants (probe 404), evidence of an llms-full.txt or deeper agent-specific doc guidance, and independent or hands-on corroboration of agent use of these docs.",
     "evidenceIds": [
-      "mise-probe-1",
+      "mise-probe-1-refresh-5213a45afc44be7a",
       "mise-probe-2"
     ]
   },
@@ -1450,8 +1489,8 @@
     "evidenceIds": [
       "mise-docs-9",
       "mise-docs-30",
-      "mise-comm-4",
-      "mise-comm-3"
+      "mise-comm-4-refresh-755e8a94af772fcf",
+      "mise-comm-3-refresh-65247237d24f80f3"
     ]
   },
   {
@@ -1482,7 +1521,7 @@
       "mise-docs-67",
       "mise-docs-101",
       "mise-docs-111",
-      "mise-comm-17"
+      "mise-comm-17-refresh-aa66dba8f81c0575"
     ]
   },
   {
@@ -1527,7 +1566,7 @@
     "rationale": "mise is itself an official CLI with a full command reference at /cli/, covering exec, use, run, bootstrap and more. It has automation-friendly features such as `-C/--cd`, `--dry-run` previews, `--missing` exit codes, `--json` output on `mise lock`, plus an llms.txt and a `mise mcp` mode for agents. Community users corroborate daily CLI use. Missing for 10: evidence that structured/JSON output is available across commands beyond the single `mise lock --json` example.",
     "evidenceIds": [
       "mise-probe-4",
-      "mise-probe-1",
+      "mise-probe-1-refresh-5213a45afc44be7a",
       "mise-docs-101",
       "mise-docs-107",
       "mise-docs-109",
@@ -1536,8 +1575,8 @@
       "mise-docs-100",
       "mise-docs-1",
       "mise-docs-43",
-      "mise-comm-3",
-      "mise-comm-16"
+      "mise-comm-3-refresh-65247237d24f80f3",
+      "mise-comm-16-refresh-e316bbb0e039213a"
     ]
   },
   {
@@ -1597,17 +1636,11 @@
   {
     "productId": "mise",
     "storyId": "api-sandbox",
-    "verdict": "partial",
-    "quality": 4,
-    "confidence": "low",
-    "rationale": "mise documents its own environment separation through development, test, and production config overlays. It also offers optional task sandboxing that restricts what a task can read, write, or reach (off by default, Linux/macOS only), and `--dry-run` previews for bootstrap changes. Each of these is only a single thin mention, so they approximate a sandbox rather than demonstrate an isolated test environment that keeps production data safe. Missing for 10: documented isolation of test data from production data, detail on how overlays are selected and enforced, sandboxing that is on by default or cross-platform, an agent-oriented sandbox workflow, and hands-on corroboration.",
-    "evidenceIds": [
-      "mise-docs-89",
-      "mise-docs-99",
-      "mise-docs-107",
-      "mise-docs-111",
-      "mise-docs-7"
-    ]
+    "verdict": "na",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The reviewer concern is valid. The story asks for a sandbox or test environment that keeps production data separate. That axis fits a hosted service or API that holds production data; mise is a local tool, environment and task manager with no production data or API of its own (no OpenAPI found, mise-probe-3). The nearby features do not show mise shipping this capability, so they earn no credit and do not make the axis applicable. These include config overlays for dev, test and production, an off-by-default sandbox that limits what a task can access, `--dry-run` previews, and the MCP server.",
+    "evidenceIds": []
   },
   {
     "productId": "mise",
@@ -1663,8 +1696,8 @@
     "evidenceIds": [
       "mise-docs-9",
       "mise-docs-30",
-      "mise-comm-3",
-      "mise-comm-4"
+      "mise-comm-3-refresh-65247237d24f80f3",
+      "mise-comm-4-refresh-755e8a94af772fcf"
     ]
   },
   {
@@ -1783,7 +1816,7 @@
       "mise-docs-55",
       "mise-docs-112",
       "mise-docs-24",
-      "mise-comm-18",
+      "mise-comm-18-refresh-00909afc22609412",
       "mise-comm-19"
     ]
   },
@@ -1836,10 +1869,10 @@
       "mise-docs-25",
       "mise-docs-55",
       "mise-docs-112",
-      "mise-comm-18",
+      "mise-comm-18-refresh-00909afc22609412",
       "mise-comm-19",
-      "mise-comm-14",
-      "mise-comm-9"
+      "mise-comm-14-refresh-6fede985f01e45a1",
+      "mise-comm-9-refresh-2e9d259bc08b362b"
     ]
   },
   {
@@ -1854,11 +1887,20 @@
   {
     "productId": "mise",
     "storyId": "openness-api-parity",
-    "verdict": "na",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "mise is a command-line tool with no graphical UI, so asking whether an API matches the UI is a category error for this kind of product: the CLI is the only interface and is inherently scriptable. Its MCP server is an AI-facing interface for inspecting a project and running tasks, not a full API mirroring a UI, so the exception that would make this axis apply is not triggered.",
-    "evidenceIds": []
+    "rationale": "mise is a CLI-only tool with no separate GUI, so every capability is already exposed through its scriptable, documented command surface. That surface includes tools, env, tasks, config and bootstrap, with flags such as -C, --dry-run and --json. An official `mise mcp` server also gives AI assistants a programmatic interface to read tools, tasks, env and config and to run tasks. missing for 10: an explicit first-party statement of interface parity, MCP coverage of mutating operations like install/use (it only reads state and runs tasks), structured JSON output documented across commands beyond isolated examples, and independent hands-on corroboration of agent-driven use.",
+    "evidenceIds": [
+      "mise-probe-4",
+      "mise-docs-101",
+      "mise-docs-100",
+      "mise-docs-74",
+      "mise-docs-35",
+      "mise-docs-107",
+      "mise-docs-111",
+      "mise-probe-1-refresh-5213a45afc44be7a"
+    ]
   },
   {
     "productId": "mise",
@@ -1891,7 +1933,7 @@
       "mise-gh-1",
       "mise-gh-2",
       "mise-gh-3",
-      "mise-comm-17"
+      "mise-comm-17-refresh-aa66dba8f81c0575"
     ]
   },
   {
@@ -1939,7 +1981,7 @@
       "mise-docs-54",
       "mise-docs-57",
       "mise-docs-96",
-      "mise-comm-9"
+      "mise-comm-9-refresh-2e9d259bc08b362b"
     ]
   },
   {
@@ -1963,10 +2005,10 @@
   {
     "productId": "mise",
     "storyId": "privacy-retention-controls",
-    "verdict": "none",
+    "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Controlling retained data and deleting it, such as caches, installed artifacts, or any collected data, is a fair question for a locally run dev-tool manager. The evidence pack documents no retention or deletion controls. The 'set when you enter, gone when you leave' line refers to scoping environment variables to a project directory, which is a related but different behaviour and does not count toward this story.",
+    "rationale": "mise is a local CLI that manages dev tools, environment variables, and tasks. Nothing in the evidence shows it as a hosted service that collects or stores user data. Data retention and deletion controls are a privacy question for services that hold user data, so this axis does not apply to a local tool manager. The \"gone when you leave\" claim refers to how per-project environment variables are scoped, not to data retention.",
     "evidenceIds": []
   },
   {
@@ -1981,11 +2023,16 @@
   {
     "productId": "mise",
     "storyId": "private-registry-support",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Mirror and private-registry configuration is a fair axis for a tool version manager, but the evidence pack never documents pointing mise at private registries or mirrors, nor any scoped credentials for them. The per-tool `http:` URL backend and `MISE_BACKENDS_<TOOL>` overrides are adjacent features: they choose a source per tool, not a mirror or authenticated registry. The 'corporate barbed wire' comment does not describe this capability.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "mise lets you redirect where tools come from. The `http:` backend accepts arbitrary per-platform download URLs with checksums, which could point at an internal mirror, and `MISE_BACKENDS_<TOOL>` overrides which backend or plugin source a tool resolves to. Nothing in the evidence addresses authentication, scoped or otherwise. Missing for 10: any documented credential/token configuration for private registries, auth scoped per registry or host, first-class mirror/registry URL settings for backends like npm, pipx or aqua, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "mise-docs-26",
+      "mise-docs-15",
+      "mise-docs-33",
+      "mise-docs-52"
+    ]
   },
   {
     "productId": "mise",
@@ -2007,9 +2054,9 @@
       "mise-docs-115",
       "mise-docs-80",
       "mise-gh-3",
-      "mise-comm-9",
-      "mise-comm-18",
-      "mise-comm-2"
+      "mise-comm-9-refresh-2e9d259bc08b362b",
+      "mise-comm-18-refresh-00909afc22609412",
+      "mise-comm-2-refresh-5870d866e64ca035"
     ]
   },
   {
@@ -2032,8 +2079,8 @@
       "mise-docs-26",
       "mise-docs-72",
       "mise-comm-19",
-      "mise-comm-6",
-      "mise-comm-11"
+      "mise-comm-6-refresh-be706b4da5b824bc",
+      "mise-comm-11-refresh-927992bca47be82e"
     ]
   },
   {
@@ -2057,11 +2104,11 @@
       "mise-docs-70",
       "mise-docs-64",
       "mise-docs-85",
-      "mise-comm-3",
-      "mise-comm-5",
-      "mise-comm-14",
-      "mise-comm-18",
-      "mise-comm-8"
+      "mise-comm-3-refresh-65247237d24f80f3",
+      "mise-comm-5-refresh-2e3b36c3103df88c",
+      "mise-comm-14-refresh-6fede985f01e45a1",
+      "mise-comm-18-refresh-00909afc22609412",
+      "mise-comm-13"
     ]
   },
   {
@@ -2088,9 +2135,9 @@
       "mise-docs-95",
       "mise-docs-82",
       "mise-docs-23",
-      "mise-comm-3",
-      "mise-comm-4",
-      "mise-comm-5"
+      "mise-comm-3-refresh-65247237d24f80f3",
+      "mise-comm-4-refresh-755e8a94af772fcf",
+      "mise-comm-5-refresh-2e3b36c3103df88c"
     ]
   },
   {
@@ -2149,21 +2196,18 @@
       "mise-docs-95",
       "mise-docs-54",
       "mise-docs-55",
-      "mise-comm-6",
-      "mise-comm-3"
+      "mise-comm-6-refresh-be706b4da5b824bc",
+      "mise-comm-3-refresh-65247237d24f80f3"
     ]
   },
   {
     "productId": "mise",
     "storyId": "workspace-filtered-operations",
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "A community user reports using mise's own monorepo tasks feature to run shared tasks across a mixed Rust/Svelte/Terraform monorepo, and another uses mise for a multi-service monorepo. This points to mise's own task runner working across workspace packages. No first-party doc shows filtering tasks or installs to a chosen subset of packages, or selecting only change-affected packages; `mise watch` rebuilds on file changes, which is a different feature and earns no credit here. Missing for 10: documented package-subset filtering for tasks and installs, affected-by-change selection, first-party monorepo docs, hands-on corroboration of filtering.",
-    "evidenceIds": [
-      "mise-comm-13",
-      "mise-comm-8"
-    ]
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The axis applies because mise ships a task runner, and a community user mentions its \"monorepo tasks\". However, no evidence in the pack shows selecting a subset of workspace packages for installs or scripts, or running only packages affected by a change. The reviewer's concern holds: general monorepo use and an unspecified monorepo-tasks mention are adjacent features, not documented filtering, so they earn no partial credit.",
+    "evidenceIds": []
   },
   {
     "productId": "nix",
@@ -2207,10 +2251,10 @@
   {
     "productId": "nix",
     "storyId": "agentic-autonomous-automation",
-    "verdict": "none",
+    "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nix/NixOS is a package manager and declarative OS, so background automation is a fair question for it. However, no first-party evidence documents a Nix feature for setting up autonomous automations. The only nearby items are community mentions that NixOS handles systemd service configuration well and that a user enabled auto-gc. These are host-platform (systemd) or adjacent features, not the story's capability, so they earn no credit.",
+    "rationale": "Nix is a package manager and build system, and NixOS is a declarative OS built on it. User-configured autonomous agent automations running in the background are outside this product category, and nothing in the evidence shows Nix ships that kind of feature. A community mention of enabling automatic garbage collection is a housekeeping setting, not an agentic automation capability, so it does not make the axis apply.",
     "evidenceIds": []
   },
   {
@@ -2239,7 +2283,7 @@
       "nix-docs-64",
       "nix-docs-52",
       "nix-docs-10",
-      "nix-comm-6"
+      "nix-comm-6-refresh-abe8c32a83ef715c"
     ]
   },
   {
@@ -2303,10 +2347,10 @@
   {
     "productId": "nix",
     "storyId": "agentic-scoped-keys",
-    "verdict": "na",
+    "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nix is a local package manager, build tool and OS configuration system. It exposes no hosted service API, and the probe found no OpenAPI spec, so issuing scoped API credentials to an agent is outside its product category. The documented ability of non-privileged users to install software under per-user profiles is an adjacent OS permission feature, not API credential issuance, and does not make the axis apply.",
+    "rationale": "Nix is a package manager and build tool. Package-ecosystem tools can plausibly offer scoped access tokens, so this axis applies. The evidence pack does not mention API credentials, tokens, or least-privilege scoping for agents, and the OpenAPI probe found no API surface. The per-user profiles for non-privileged installs concern software installation, not credential issuance.",
     "evidenceIds": []
   },
   {
@@ -2321,10 +2365,10 @@
   {
     "productId": "nix",
     "storyId": "agentic-webhooks",
-    "verdict": "na",
+    "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nix is a local package manager and build tool that runs as a CLI and daemon on the user's machine. It is not a hosted service that emits subscribable events, so registrable outbound webhooks are a category error for this kind of product. Nothing in the evidence shows Nix shipping any webhook capability, so the axis does not apply.",
+    "rationale": "Nix is a package manager and build system with a daemon, remote builds and binary caches, so event notification is a fair axis for it. However, nothing in the evidence pack mentions webhooks, event subscriptions or build-event callbacks. The probes found no OpenAPI or API surface, so there is no evidence this capability is delivered.",
     "evidenceIds": []
   },
   {
@@ -2339,10 +2383,10 @@
   {
     "productId": "nix",
     "storyId": "api-machine-spec",
-    "verdict": "na",
+    "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nix is a locally run package manager and build tool driven by a CLI and the Nix language, not a hosted service exposing an HTTP API. A downloadable OpenAPI-style API spec is therefore a category error for this product type. The probe finding no OpenAPI paths on nix.dev is consistent with this, and nothing in the evidence shows Nix shipping a documented API that such a spec would describe.",
+    "rationale": "Nix is mainly a local CLI package manager and build tool. It does expose interfaces where a machine-readable spec is plausible, such as its binary-cache web server and its CLI, so the axis applies. However, the probe found every candidate OpenAPI/Swagger path at nix.dev returned 404, and no documentation mentions a downloadable machine-readable API spec.",
     "evidenceIds": []
   },
   {
@@ -2361,7 +2405,7 @@
       "nix-docs-50",
       "nix-docs-7",
       "nix-docs-47",
-      "nix-comm-7"
+      "nix-comm-7-refresh-42a554a474d03099"
     ]
   },
   {
@@ -2396,7 +2440,7 @@
       "nix-docs-63",
       "nix-docs-6",
       "nix-docs-62",
-      "nix-comm-10"
+      "nix-comm-10-refresh-ee632ae72d7e80da"
     ]
   },
   {
@@ -2437,11 +2481,17 @@
   {
     "productId": "nix",
     "storyId": "cli-manifest-editing",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "Dependency management is a fair axis for a package manager like Nix. The pack only shows imperative profile commands such as `nix-env --upgrade` and `--rollback`, plus `nix flake new`, `nix develop`, and `nix build`. None of these show CLI commands that add, remove, or upgrade dependencies by rewriting a project manifest (e.g. flake.nix) and its lockfile, so profile upgrades count only as an adjacent capability and earn no credit.",
-    "evidenceIds": []
+    "rationale": "Nix offers CLI commands for upgrading and rolling back packages (`nix-env --upgrade`, `nix-env --rollback`), and its operations are atomic. However, this is imperative profile management, not CLI rewriting of a declarative manifest (flake.nix, configuration.nix) and its lockfile. The evidence shows users write those specifications by hand. Missing for 10: CLI commands to add or remove dependencies in a manifest, documented lockfile update or rewrite commands (e.g. flake lock management), and independent hands-on corroboration of agent-safe dependency editing.",
+    "evidenceIds": [
+      "nix-docs-4",
+      "nix-docs-35",
+      "nix-docs-50",
+      "nix-docs-15",
+      "nix-docs-39"
+    ]
   },
   {
     "productId": "nix",
@@ -2471,7 +2521,7 @@
       "nix-docs-58",
       "nix-docs-3",
       "nix-docs-53",
-      "nix-comm-9"
+      "nix-comm-9-refresh-20105dcc1134e308"
     ]
   },
   {
@@ -2618,7 +2668,7 @@
       "nix-docs-40",
       "nix-docs-70",
       "nix-docs-36",
-      "nix-comm-9"
+      "nix-comm-9-refresh-20105dcc1134e308"
     ]
   },
   {
@@ -2665,10 +2715,10 @@
   {
     "productId": "nix",
     "storyId": "privacy-retention-controls",
-    "verdict": "na",
+    "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nix is a local package manager and build tool, not a service that collects or holds user data, so privacy-posture controls over data retention and deletion are a category error for this product type. Garbage collection of unused store packages, including auto-gc, manages local package storage. It is not privacy data-retention control, so it does not make the axis apply.",
+    "rationale": "Data-retention controls are a fair privacy question for a package manager, so the axis applies. However, the pack documents no privacy-oriented retention or deletion controls for user data, such as telemetry or analytics retention, data-deletion requests, or retention policies. The Nix store garbage collector and community-mentioned auto-gc only reclaim disk space from unused packages. That is an adjacent package-cleanup feature, not control over user-data retention, so it earns no credit.",
     "evidenceIds": []
   },
   {
@@ -2702,7 +2752,7 @@
       "nix-docs-34",
       "nix-docs-49",
       "nix-docs-57",
-      "nix-comm-2"
+      "nix-comm-2-refresh-b0bd064b62b2b2d6"
     ]
   },
   {
@@ -2717,9 +2767,9 @@
       "nix-docs-33",
       "nix-docs-36",
       "nix-docs-4",
-      "nix-comm-9",
-      "nix-comm-1",
-      "nix-comm-3",
+      "nix-comm-9-refresh-20105dcc1134e308",
+      "nix-comm-1-refresh-1c2b5cbb65226c47",
+      "nix-comm-3-refresh-2038f967c6099d8d",
       "nix-comm-14",
       "nix-comm-18"
     ]
@@ -2741,8 +2791,8 @@
       "nix-docs-57",
       "nix-docs-34",
       "nix-docs-53",
-      "nix-comm-2",
-      "nix-comm-1"
+      "nix-comm-2-refresh-b0bd064b62b2b2d6",
+      "nix-comm-1-refresh-1c2b5cbb65226c47"
     ]
   },
   {
@@ -2769,7 +2819,7 @@
       "nix-docs-59",
       "nix-docs-36",
       "nix-docs-11",
-      "nix-comm-2"
+      "nix-comm-2-refresh-b0bd064b62b2b2d6"
     ]
   },
   {
@@ -2812,8 +2862,8 @@
       "nix-docs-57",
       "nix-docs-58",
       "nix-docs-59",
-      "nix-comm-1",
-      "nix-comm-2",
+      "nix-comm-1-refresh-1c2b5cbb65226c47",
+      "nix-comm-2-refresh-b0bd064b62b2b2d6",
       "nix-comm-19"
     ]
   },
@@ -2898,8 +2948,8 @@
       "pnpm-docs-61",
       "pnpm-docs-64",
       "pnpm-probe-4",
-      "pnpm-comm-3",
-      "pnpm-comm-8"
+      "pnpm-comm-3-refresh-a01b23567d45f35e",
+      "pnpm-comm-8-refresh-847c72efd642874f"
     ]
   },
   {
@@ -2945,26 +2995,32 @@
       "pnpm-docs-21",
       "pnpm-docs-54",
       "pnpm-docs-49",
-      "pnpm-comm-3",
-      "pnpm-comm-16"
+      "pnpm-comm-3-refresh-a01b23567d45f35e",
+      "pnpm-comm-16-refresh-1ab6854306afd120"
     ]
   },
   {
     "productId": "pnpm",
     "storyId": "agentic-public-api",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "A package manager could plausibly ship a documented programmatic API, so this axis applies. The pack documents only the CLI and JSON output from `pnpm audit`; those belong to a separate CLI story and are not credited here. No documented public programmatic API or SDK is evidenced, and the OpenAPI probes all returned 404.",
-    "evidenceIds": []
+    "rationale": "pnpm has a documented official CLI with scriptable, non-interactive behaviors: dry-run resolution, automatic frozen-lockfile mode in CI, and an offline flag. An agent can drive it through this documented command surface, but the evidence shows no programmatic library or network API, and the OpenAPI probes all returned 404. missing for 10: documented programmatic/library API (e.g. a Node module interface), machine-readable API spec, independent corroboration of agent-driven usage.",
+    "evidenceIds": [
+      "pnpm-probe-4",
+      "pnpm-probe-3",
+      "pnpm-docs-9",
+      "pnpm-docs-13",
+      "pnpm-docs-10"
+    ]
   },
   {
     "productId": "pnpm",
     "storyId": "agentic-scoped-keys",
-    "verdict": "none",
+    "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "pnpm is a package-manager CLI, and a buyer comparing package managers could reasonably ask about registry token management, so the axis applies. Nothing in the evidence shows pnpm creating or scoping least-privilege credentials for an agent. Support for `${NAME}` env-var interpolation in config files is an adjacent feature and earns no credit.",
+    "rationale": "pnpm is a local package-manager CLI with no hosted API or account system of its own, so issuing scoped API credentials to an agent is outside its product category. Registry tokens belong to the registry service, not the package manager. Nothing in the evidence shows pnpm shipping any credential-issuance capability that would make this axis apply.",
     "evidenceIds": []
   },
   {
@@ -3006,11 +3062,14 @@
   {
     "productId": "pnpm",
     "storyId": "api-sandbox",
-    "verdict": "na",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "pnpm is a local package manager and CLI. It has no production data or production environment that a sandbox would need to isolate, so this story's axis is a category error for this kind of product. Features like `--dry-run` installs and `--offline` mode only limit what pnpm writes to disk or fetches. They are not a sandbox test environment, so they do not make the axis apply.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "pnpm is a package manager with no production data or hosted environment, so the closest match is its documented dry-run install mode. That mode runs full dependency resolution and reports what would change without saving any lockfile, manifest or node_modules changes. This gives an agent a safe preview mode, but it is not a true sandbox environment. Missing for 10: an isolated sandbox or test environment separate from real project state, a sandbox registry or publish target, and any hands-on or independent corroboration of agent use.",
+    "evidenceIds": [
+      "pnpm-docs-9",
+      "pnpm-docs-19"
+    ]
   },
   {
     "productId": "pnpm",
@@ -3024,17 +3083,18 @@
   {
     "productId": "pnpm",
     "storyId": "artifact-integrity-verification",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "pnpm documents verification of ECDSA registry signatures for installed packages against each registry's published keys at /-/npm/v1/keys (pnpm-docs-11, -26, -30). The `--update-checksums` flag is described as a narrow opt-in for when a registry rewrites tarballs, which implies install-time checksum checks are enforced by default (pnpm-docs-35). Frozen-lockfile mode in CI (pnpm-docs-13, -34) supports that integrity enforcement. Missing for 10: an explicit first-party description of default install-time integrity/checksum checking, evidence that signature verification runs automatically before packages execute rather than as a separate `pnpm audit` step, any provenance/attestation verification, and independent or hands-on corroboration.",
+    "rationale": "pnpm documents ECDSA registry-signature verification of installed packages against each registry's published keys, but this runs as a separate audit step on packages already installed, not as an automatic gate before they run. The `--update-checksums` opt-in implies install-time checksum verification is enforced by default, but this is only implied. Frozen lockfiles in CI and blocking install scripts by default add related protection. Missing for 10: explicit documentation of checksum/integrity enforcement at fetch time, signature verification as a pre-execution install gate rather than a post-install audit, provenance/attestation verification, and independent or hands-on corroboration.",
     "evidenceIds": [
       "pnpm-docs-11",
       "pnpm-docs-26",
       "pnpm-docs-30",
       "pnpm-docs-35",
       "pnpm-docs-13",
-      "pnpm-docs-34"
+      "pnpm-docs-34",
+      "pnpm-docs-16"
     ]
   },
   {
@@ -3049,18 +3109,21 @@
       "pnpm-docs-49",
       "pnpm-docs-7",
       "pnpm-docs-36",
-      "pnpm-comm-16",
-      "pnpm-comm-9"
+      "pnpm-comm-16-refresh-1ab6854306afd120",
+      "pnpm-comm-9-refresh-cb212c120c30a643"
     ]
   },
   {
     "productId": "pnpm",
     "storyId": "automation-rules-engine",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Event-driven automation is a fair question for a package manager, for example lifecycle scripts or install hooks, so the axis applies. However, the pack documents no user-definable event→action rules. The cited behaviors are fixed built-ins, not rules a user defines: patches reapplied on install, frozen-lockfile mode when CI is detected, version switching from the packageManager field, and install-script approval. These count as adjacent features and earn no credit.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 2,
+    "confidence": "low",
+    "rationale": "The evidence shows only narrow, fixed event-driven behaviors that users can configure. A `pn patch` is persistently reapplied on every install, and a declared `packageManager`/`devEngines.packageManager` field triggers an automatic version switch on first use. Nothing documents a general mechanism for user-defined rules that trigger arbitrary actions on events. missing for 10: user-definable event hooks or rules (e.g. install/lifecycle hooks), documentation of a general trigger/action configuration, independent or hands-on corroboration of event-driven automation.",
+    "evidenceIds": [
+      "pnpm-docs-3",
+      "pnpm-docs-22"
+    ]
   },
   {
     "productId": "pnpm",
@@ -3110,9 +3173,9 @@
       "pnpm-docs-43",
       "pnpm-docs-54",
       "pnpm-docs-10",
-      "pnpm-comm-2",
-      "pnpm-comm-16",
-      "pnpm-comm-11"
+      "pnpm-comm-2-refresh-483020f715f1835d",
+      "pnpm-comm-16-refresh-1ab6854306afd120",
+      "pnpm-comm-11-refresh-90e0ade64350d48f"
     ]
   },
   {
@@ -3127,7 +3190,7 @@
       "pnpm-docs-21",
       "pnpm-docs-4",
       "pnpm-docs-64",
-      "pnpm-comm-7"
+      "pnpm-comm-7-refresh-1757db5369a03dcd"
     ]
   },
   {
@@ -3142,8 +3205,8 @@
       "pnpm-docs-10",
       "pnpm-docs-13",
       "pnpm-docs-15",
-      "pnpm-comm-3",
-      "pnpm-comm-8",
+      "pnpm-comm-3-refresh-a01b23567d45f35e",
+      "pnpm-comm-8-refresh-847c72efd642874f",
       "pnpm-gh-1"
     ]
   },
@@ -3175,9 +3238,9 @@
       "pnpm-docs-63",
       "pnpm-docs-54",
       "pnpm-docs-40",
-      "pnpm-comm-8",
-      "pnpm-comm-10",
-      "pnpm-comm-6"
+      "pnpm-comm-8-refresh-847c72efd642874f",
+      "pnpm-comm-10-refresh-a3c7121c40b5edac",
+      "pnpm-comm-6-refresh-4ffe47f5d49c5f88"
     ]
   },
   {
@@ -3216,7 +3279,7 @@
     "rationale": "The official GitHub README claims pnpm is \"up to 2x faster than the alternatives\" and points to a benchmark section, so first-party published benchmarks exist. A community user also reports measured CI install times of 15s versus 35s. However, the pack does not contain the benchmark figures, methodology or scenarios themselves, so only the claim and its pointer are evidenced. Missing for 10: the actual benchmark numbers and methodology (e.g., cold/warm cache, lockfile scenarios), and independent reproducible benchmarks beyond a single anecdotal timing.",
     "evidenceIds": [
       "pnpm-gh-1",
-      "pnpm-comm-3"
+      "pnpm-comm-3-refresh-a01b23567d45f35e"
     ]
   },
   {
@@ -3231,10 +3294,10 @@
       "pnpm-docs-2",
       "pnpm-docs-46",
       "pnpm-docs-45",
-      "pnpm-comm-8",
-      "pnpm-comm-12",
-      "pnpm-comm-16",
-      "pnpm-comm-9"
+      "pnpm-comm-8-refresh-847c72efd642874f",
+      "pnpm-comm-12-refresh-be2a935608d8e2c0",
+      "pnpm-comm-16-refresh-1ab6854306afd120",
+      "pnpm-comm-9-refresh-cb212c120c30a643"
     ]
   },
   {
@@ -3253,10 +3316,10 @@
       "pnpm-docs-29",
       "pnpm-docs-39",
       "pnpm-docs-46",
-      "pnpm-comm-9",
-      "pnpm-comm-12",
-      "pnpm-comm-16",
-      "pnpm-comm-1"
+      "pnpm-comm-9-refresh-cb212c120c30a643",
+      "pnpm-comm-12-refresh-be2a935608d8e2c0",
+      "pnpm-comm-16-refresh-1ab6854306afd120",
+      "pnpm-comm-1-refresh-f0e2e889c09aaf2d"
     ]
   },
   {
@@ -3333,11 +3396,15 @@
   {
     "productId": "pnpm",
     "storyId": "prebuilt-binary-cache",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence shows pnpm installing packages from its content-addressable store, including offline installs. It also shows a gate on which packages may run build scripts. Neither covers serving prebuilt or compiled binary artifacts from a cache so that native builds are skipped. Store reuse and script approval are adjacent features, not this capability, so the applicable axis has no supporting evidence.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "pnpm documents installing packages from a local content-addressable store: files are hard-linked from a single store, and an offline mode uses only packages already in the store. That covers the 'install from a cache' half of the story. Nothing in the evidence shows it caches prebuilt binaries or build outputs to avoid compiling native packages from source. Missing for 10: evidence of caching or reusing prebuilt binaries or build results (skipping compilation), documentation of how native or binary packages are handled, independent corroboration.",
+    "evidenceIds": [
+      "pnpm-docs-10",
+      "pnpm-docs-15",
+      "pnpm-docs-28"
+    ]
   },
   {
     "productId": "pnpm",
@@ -3413,9 +3480,9 @@
       "pnpm-docs-11",
       "pnpm-docs-18",
       "pnpm-docs-35",
-      "pnpm-comm-8",
-      "pnpm-comm-11",
-      "pnpm-comm-6"
+      "pnpm-comm-8-refresh-847c72efd642874f",
+      "pnpm-comm-11-refresh-90e0ade64350d48f",
+      "pnpm-comm-6-refresh-4ffe47f5d49c5f88"
     ]
   },
   {
@@ -3468,9 +3535,9 @@
       "pnpm-docs-3",
       "pnpm-docs-13",
       "pnpm-docs-34",
-      "pnpm-comm-3",
-      "pnpm-comm-12",
-      "pnpm-comm-6"
+      "pnpm-comm-3-refresh-a01b23567d45f35e",
+      "pnpm-comm-12-refresh-be2a935608d8e2c0",
+      "pnpm-comm-6-refresh-4ffe47f5d49c5f88"
     ]
   },
   {
@@ -3484,7 +3551,7 @@
       "pnpm-docs-16",
       "pnpm-docs-24",
       "pnpm-docs-51",
-      "pnpm-comm-17",
+      "pnpm-comm-17-refresh-3baa377eca315f91",
       "pnpm-docs-11"
     ]
   },
@@ -3526,8 +3593,8 @@
     "rationale": "pnpm's own homepage claims first-class monorepo filtering to run tasks on just the projects you touched, which covers filtered script runs and the affected-by-change subset. Community reports confirm that recursive/parallel workspace commands replace Lerna, but the evidence is a single marketing line with no reference documentation of the filter mechanism. Missing for 10: documentation of filter syntax and change-based (git ref) selection, evidence that installs can be filtered to a package subset, hands-on corroboration of filtering specifically.",
     "evidenceIds": [
       "pnpm-docs-6",
-      "pnpm-comm-16",
-      "pnpm-comm-9",
+      "pnpm-comm-16-refresh-1ab6854306afd120",
+      "pnpm-comm-9-refresh-cb212c120c30a643",
       "pnpm-docs-47"
     ]
   },
@@ -3545,8 +3612,8 @@
       "uv-docs-42",
       "uv-docs-10",
       "uv-probe-4",
-      "uv-comm-9",
-      "uv-comm-8"
+      "uv-comm-9-refresh-4c00b4c6b04d1e66",
+      "uv-comm-8-refresh-d1902f6c51bf812e"
     ]
   },
   {
@@ -3603,8 +3670,8 @@
       "uv-docs-50",
       "uv-docs-28",
       "uv-probe-4",
-      "uv-comm-9",
-      "uv-comm-4",
+      "uv-comm-9-refresh-4c00b4c6b04d1e66",
+      "uv-comm-4-refresh-1cf57293d18df05f",
       "uv-docs-25"
     ]
   },
@@ -3651,19 +3718,24 @@
       "uv-docs-44",
       "uv-gh-3",
       "uv-docs-52",
-      "uv-comm-2",
-      "uv-comm-9",
-      "uv-comm-18"
+      "uv-comm-2-refresh-e2864eb6510ad391",
+      "uv-comm-9-refresh-4c00b4c6b04d1e66",
+      "uv-comm-18-refresh-722fe179233eaeb2"
     ]
   },
   {
     "productId": "uv",
     "storyId": "agentic-public-api",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "A package manager could plausibly ship a programmatic API, such as a library or HTTP interface, so this axis applies to uv. The evidence only documents the uv command-line interface, including JSON output from `uv version`; that belongs to the separate CLI story and does not count here. Probes found no OpenAPI or other API spec, and nothing in the pack shows a documented public API.",
-    "evidenceIds": []
+    "rationale": "uv's documented public interface is its CLI: there is an official CLI reference, the commands are scriptable, and at least one command emits machine-readable output (`uv version --output-format json`). An agent can therefore drive it programmatically by shelling out. However, no programmatic API is evidenced: no library/SDK interface, and the OpenAPI probes all returned 404. Missing for 10: a documented programmatic (library or HTTP) API, broad structured/JSON output across commands, independent evidence of agents driving uv this way.",
+    "evidenceIds": [
+      "uv-probe-4",
+      "uv-docs-28",
+      "uv-probe-3",
+      "uv-docs-10"
+    ]
   },
   {
     "productId": "uv",
@@ -3695,11 +3767,19 @@
   {
     "productId": "uv",
     "storyId": "api-interactive-docs",
-    "verdict": "na",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "uv is a local command-line Python package and project manager with no HTTP or programmatic API surface. An interactive API reference with runnable examples (Swagger-style explorer) is a web-service documentation concept, so this axis is a category error for this product type. The evidence fits that picture: the OpenAPI probes all returned 404, and the only reference material is a static CLI reference, which is a different capability.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "uv is a CLI tool with no HTTP API, so its documented CLI reference is the closest analogue to an API reference (uv-probe-4). The docs include many copy-pasteable console examples with expected output (e.g. `uv init example`, `uvx pycowsay`, `uv tool install ruff`) that users can run locally. Nothing shows an interactive explorer or in-browser runnable examples, and no OpenAPI spec exists (uv-probe-3). Missing for 10: an interactive or explorable reference interface, in-docs runnable or sandboxed examples, and independent corroboration of the reference experience.",
+    "evidenceIds": [
+      "uv-probe-4",
+      "uv-probe-3",
+      "uv-docs-15",
+      "uv-docs-16",
+      "uv-docs-19",
+      "uv-docs-20",
+      "uv-docs-21"
+    ]
   },
   {
     "productId": "uv",
@@ -3749,7 +3829,7 @@
       "uv-docs-49",
       "uv-docs-11",
       "uv-docs-77",
-      "uv-comm-11"
+      "uv-comm-11-refresh-f0b954279faf394b"
     ]
   },
   {
@@ -3773,11 +3853,19 @@
   {
     "productId": "uv",
     "storyId": "automation-versioned-workflows",
-    "verdict": "na",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "uv is a Python package and project manager. It does not host, store, or manage user 'automations', so versioning, reviewing, and rolling back automations is a category error for this kind of product. Its lockfile, version pinning, and script-dependency features concern dependency reproducibility, not automation lifecycle management. Any versioning of user scripts would come from external tools such as git, which earn no credit here.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "uv lets you pin automation environments reproducibly: `uv.lock` records exact dependency information, scripts carry inline dependency metadata that `uv add --script` updates, and tools can be run at specific versions such as `uvx ruff@0.6.0`. These are plain-text artifacts you can commit, review and revert, but uv itself offers no native history, review or rollback feature, so those steps depend on external source control. missing for 10: built-in automation version history, a review/diff workflow, a first-class rollback command, and hands-on evidence of lockfile-based rollback.",
+    "evidenceIds": [
+      "uv-docs-17",
+      "uv-docs-3",
+      "uv-docs-40",
+      "uv-docs-9",
+      "uv-docs-41",
+      "uv-docs-23",
+      "uv-gh-1"
+    ]
   },
   {
     "productId": "uv",
@@ -3796,8 +3884,8 @@
       "uv-docs-40",
       "uv-docs-17",
       "uv-probe-4",
-      "uv-comm-11",
-      "uv-comm-2"
+      "uv-comm-11-refresh-f0b954279faf394b",
+      "uv-comm-2-refresh-e2864eb6510ad391"
     ]
   },
   {
@@ -3811,7 +3899,7 @@
       "uv-docs-33",
       "uv-docs-76",
       "uv-docs-25",
-      "uv-comm-13"
+      "uv-comm-13-refresh-6a0768649b388f9d"
     ]
   },
   {
@@ -3824,10 +3912,10 @@
     "evidenceIds": [
       "uv-gh-7",
       "uv-docs-17",
-      "uv-comm-2",
+      "uv-comm-2-refresh-e2864eb6510ad391",
       "uv-gh-1",
       "uv-docs-2",
-      "uv-comm-20"
+      "uv-comm-20-refresh-dbba7b89d338cbe9"
     ]
   },
   {
@@ -3844,10 +3932,10 @@
       "uv-docs-26",
       "uv-docs-77",
       "uv-docs-69",
-      "uv-comm-2",
-      "uv-comm-15",
-      "uv-comm-7",
-      "uv-comm-10"
+      "uv-comm-2-refresh-e2864eb6510ad391",
+      "uv-comm-15-refresh-bfef7d68f68c2cbb",
+      "uv-comm-7-refresh-2df27c7682e9e8ae",
+      "uv-comm-10-refresh-1694542bba6fc097"
     ]
   },
   {
@@ -3872,9 +3960,9 @@
       "uv-docs-66",
       "uv-docs-4",
       "uv-docs-42",
-      "uv-comm-1",
-      "uv-comm-14",
-      "uv-comm-16"
+      "uv-comm-1-refresh-490650364bd9abd7",
+      "uv-comm-14-refresh-723fd2adb301eecc",
+      "uv-comm-16-refresh-769e1bb9a41c7047"
     ]
   },
   {
@@ -3914,8 +4002,8 @@
     "evidenceIds": [
       "uv-docs-69",
       "uv-docs-20",
-      "uv-comm-7",
-      "uv-comm-15"
+      "uv-comm-7-refresh-2df27c7682e9e8ae",
+      "uv-comm-15-refresh-bfef7d68f68c2cbb"
     ]
   },
   {
@@ -3930,8 +4018,8 @@
       "uv-docs-5",
       "uv-docs-31",
       "uv-docs-4",
-      "uv-comm-2",
-      "uv-comm-16"
+      "uv-comm-2-refresh-e2864eb6510ad391",
+      "uv-comm-16-refresh-769e1bb9a41c7047"
     ]
   },
   {
@@ -3966,9 +4054,9 @@
     "evidenceIds": [
       "uv-docs-2",
       "uv-docs-3",
-      "uv-comm-4",
+      "uv-comm-4-refresh-1cf57293d18df05f",
       "uv-docs-75",
-      "uv-comm-9",
+      "uv-comm-9-refresh-4c00b4c6b04d1e66",
       "uv-docs-17"
     ]
   },
@@ -3976,13 +4064,13 @@
     "productId": "uv",
     "storyId": "openness-open-license",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "low",
-    "rationale": "Several items come from the public astral-sh/uv GitHub repository, which shows the project is hosted in a publicly accessible repo, and uv-docs-52 describes it as written in Rust. However, nothing in the pack states the license terms, so the 'open license' half of the story is unproven. missing for 10: explicit evidence of an open-source license (e.g. MIT/Apache), first-party statement that the source is open, independent corroboration of the licensing.",
+    "rationale": "The evidence includes README content from a public GitHub repository (github.com/astral-sh/uv), which implies the source is publicly readable. Nothing in the pack names a license or confirms it is an open-source license. missing for 10: explicit license identification (e.g., MIT/Apache), evidence that the repository contains the full product source, independent corroboration of open licensing.",
     "evidenceIds": [
       "uv-gh-1",
       "uv-gh-2",
-      "uv-docs-52"
+      "uv-gh-3"
     ]
   },
   {
@@ -3997,8 +4085,8 @@
       "uv-gh-7",
       "uv-docs-78",
       "uv-docs-12",
-      "uv-comm-13",
-      "uv-comm-9",
+      "uv-comm-13-refresh-6a0768649b388f9d",
+      "uv-comm-9-refresh-4c00b4c6b04d1e66",
       "uv-docs-75"
     ]
   },
@@ -4006,9 +4094,9 @@
     "productId": "uv",
     "storyId": "parseable-lockfile-format",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "uv's documentation describes `uv.lock` as a cross-platform lockfile holding exact dependency information. The lockfile is updated by `uv add`, and targeted upgrades leave the rest of it intact, which implies stable, reviewable changes. The pack never shows that the file is text-based or human/agent-readable, or that its format is specified. missing for 10: evidence that uv.lock is a plain-text (e.g. TOML) format, a documented lockfile schema/format reference, evidence of diff-friendliness, independent or hands-on corroboration of agents reading/diffing it.",
+    "rationale": "The docs confirm that uv ships a project lockfile, `uv.lock`, described as a cross-platform file with exact dependency information. `uv add` and `uv lock --upgrade-package` update it while keeping the rest of the lockfile intact, which suggests targeted, diffable changes. However, the pack never says the file is text-based (e.g., TOML), human- or agent-readable, or backed by a published format spec. Missing for 10: evidence the lockfile is a plain-text format, a documented schema/format reference, and any hands-on or independent confirmation that it reads and diffs cleanly.",
     "evidenceIds": [
       "uv-docs-17",
       "uv-docs-2",
@@ -4027,9 +4115,9 @@
       "uv-docs-25",
       "uv-docs-33",
       "uv-docs-76",
-      "uv-comm-13",
-      "uv-comm-14",
-      "uv-comm-10"
+      "uv-comm-13-refresh-6a0768649b388f9d",
+      "uv-comm-14-refresh-723fd2adb301eecc",
+      "uv-comm-10-refresh-1694542bba6fc097"
     ]
   },
   {
@@ -4083,8 +4171,8 @@
     "rationale": "Community reports show uv resolving and publishing packages against an internal GitLab package registry (uv-comm-6, uv-comm-9). The docs also mention that dependencies can come from \"alternative sources\" (uv-docs-70), so pointing uv at a private registry is at least implied. Nothing in the pack documents how to configure an index or mirror, or how authentication is provided or scoped. Missing for 10: first-party docs on configuring private indexes/mirrors, documented credential handling and per-index scoped authentication, mirror/proxy configuration, independent hands-on corroboration of authenticated private-registry use.",
     "evidenceIds": [
       "uv-docs-70",
-      "uv-comm-6",
-      "uv-comm-9"
+      "uv-comm-6-refresh-6315043f95f5fea6",
+      "uv-comm-9-refresh-4c00b4c6b04d1e66"
     ]
   },
   {
@@ -4099,7 +4187,7 @@
       "uv-gh-4",
       "uv-docs-50",
       "uv-docs-6",
-      "uv-comm-18"
+      "uv-comm-18-refresh-722fe179233eaeb2"
     ]
   },
   {
@@ -4117,9 +4205,9 @@
       "uv-docs-20",
       "uv-docs-40",
       "uv-docs-70",
-      "uv-comm-9",
-      "uv-comm-13",
-      "uv-comm-19"
+      "uv-comm-9-refresh-4c00b4c6b04d1e66",
+      "uv-comm-13-refresh-6a0768649b388f9d",
+      "uv-comm-19-refresh-3b0a620c2bc6829a"
     ]
   },
   {
@@ -4136,8 +4224,8 @@
       "uv-gh-6",
       "uv-docs-50",
       "uv-docs-21",
-      "uv-comm-18",
-      "uv-comm-2",
+      "uv-comm-18-refresh-722fe179233eaeb2",
+      "uv-comm-2-refresh-e2864eb6510ad391",
       "uv-docs-4"
     ]
   },
@@ -4162,7 +4250,7 @@
       "uv-docs-2",
       "uv-docs-50",
       "uv-gh-6",
-      "uv-comm-18",
+      "uv-comm-18-refresh-722fe179233eaeb2",
       "uv-docs-16"
     ]
   },
@@ -4201,7 +4289,7 @@
       "uv-docs-23",
       "uv-gh-1",
       "uv-docs-50",
-      "uv-comm-2"
+      "uv-comm-2-refresh-e2864eb6510ad391"
     ]
   },
   {
