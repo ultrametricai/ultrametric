@@ -1,6 +1,13 @@
-import { describe, expect, it } from 'vitest'
-import { allowed, mergeData, projection, restoreChurn, rowAtLine } from '../refresh-repair'
-import type { Evidence, Verdict } from '../../lib/schemas'
+import { describe, expect, it, vi } from 'vitest'
+import fs from 'node:fs'
+import os from 'node:os'
+import path from 'node:path'
+import { execFileSync } from 'node:child_process'
+import { llmJson } from '../llm'
+import { cellHash, CELL_HASH_VERSION, PROMPT_VERSION } from '../stages/judge'
+vi.mock('../llm', async importOriginal => ({ ...await importOriginal<typeof import('../llm')>(), llmJson: vi.fn() }))
+import { allowed, mergeData, projection, restoreChurn, rowAtLine, rekeyEvidence, sourceCacheMatches, judgeRepairCell, repair } from '../refresh-repair'
+import type { Evidence, Verdict, Story } from '../../lib/schemas'
 const old: Verdict = { productId: 'vendor', storyId: 'story', verdict: 'partial', quality: 5, confidence: 'high', rationale: 'missing for 10: callback documentation', evidenceIds: ['old'] }
 const evidence = (id: string): Evidence => ({ id, tier: 'claimed-docs', url: 'https://example.invalid/docs', excerpt: 'Documented behavior', fetchedAt: '2026-10-30T00:00:00Z' })
 describe('refresh repair policy', () => {
@@ -42,5 +49,79 @@ describe('refresh repair policy', () => {
     expect(rowAtLine(text, line)?.storyId).toBe('other')
     expect(rowAtLine(text, 1)).toBeNull()
     expect(() => rowAtLine(JSON.stringify([old]), 1)).toThrow('Cannot map')
+  })
+})
+
+const story: Story = { id: 'story', title: 'Install dependencies', persona: 'developer', theme: 'core', group: 'core', weight: 2 }
+describe('changed-source identities and scoped judging', () => {
+  it('rekeys changed source content but leaves timestamps alone', () => {
+    const before = evidence('old')
+    expect(rekeyEvidence([before], [{ ...before, fetchedAt: '2026-10-31T00:00:00Z' }]).renamed).toEqual({})
+    for (const changed of [{ ...before, excerpt: 'new fact' }, { ...before, tier: 'probe' as const }, { ...before, url: 'https://example.invalid/new' }]) {
+      const result = rekeyEvidence([before], [changed])
+      expect(result.renamed.old).toMatch(/^old-refresh-[a-f0-9]{16}$/)
+      expect(result.evidence[0]).toEqual({ ...changed, id: result.renamed.old })
+      expect(rekeyEvidence([before], result.evidence).renamed).toEqual({})
+    }
+  })
+  it('keeps identities stable when the next extraction reuses its original labels', () => {
+    const changed = { ...evidence('old'), excerpt: 'new fact' }
+    const first = rekeyEvidence([evidence('old')], [changed])
+    const next = rekeyEvidence(first.evidence, [changed])
+    expect(next.evidence).toEqual(first.evidence)
+    const mainVerdict = { ...old, evidenceIds: [first.evidence[0].id] }
+    const noise = { ...mainVerdict, quality: 9 }
+    expect(restoreChurn([mainVerdict], [noise], { vendor: first.evidence }, { vendor: next.evidence }).restored).toEqual(['vendor:story'])
+  })
+  it('rejects duplicate identities and deterministic-name collisions', () => {
+    expect(() => rekeyEvidence([], [evidence('a'), evidence('a')])).toThrow('Duplicate')
+    const changed = { ...evidence('old'), excerpt: 'new fact' }
+    const renamed = rekeyEvidence([evidence('old')], [changed]).evidence[0]
+    expect(() => rekeyEvidence([evidence('old')], [changed, renamed])).toThrow('collision')
+  })
+  it('does not restore old claims whose source content changed under the same ID', () => {
+    const result = restoreChurn([old], [{ ...old, quality: 9 }], { vendor: [evidence('old')] }, { vendor: [{ ...evidence('old'), excerpt: 'different fact' }] })
+    expect(result.blocked).toEqual(['vendor:story']); expect(result.restored).toEqual([])
+  })
+  it('accepts only the exact source cache before an evidence-label migration', () => {
+    const pack = [evidence('old')]
+    const cache = { hash: cellHash(story, pack, PROMPT_VERSION), keyVersion: CELL_HASH_VERSION, verdict: old }
+    expect(sourceCacheMatches(cache, old, story, pack)).toBe(true)
+    expect(sourceCacheMatches({ ...cache, verdict: { ...old, quality: 9 } }, old, story, pack)).toBe(false)
+    expect(sourceCacheMatches(cache, old, story, [{ ...pack[0], excerpt: 'changed' }])).toBe(false)
+    expect(sourceCacheMatches({ ...cache, keyVersion: 'old' }, old, story, pack)).toBe(false)
+  })
+  it('corrects an invented model citation through the existing judge rules', async () => {
+    const fake = vi.mocked(llmJson); fake.mockReset()
+    fake.mockResolvedValueOnce({ ...old, evidenceIds: ['invented'] }).mockResolvedValueOnce(old)
+    expect(await judgeRepairCell('vendor', 'Vendor', story, [evidence('old')], 'Diagnostic context')).toEqual(old)
+    expect(fake).toHaveBeenCalledTimes(2)
+    expect(fake.mock.calls[1][0].prompt).toContain('unknown evidence id')
+  })
+  it('stops after three invalid model responses', async () => {
+    const fake = vi.mocked(llmJson); fake.mockReset(); fake.mockResolvedValue({ ...old, evidenceIds: ['invented'] })
+    await expect(judgeRepairCell('vendor', 'Vendor', story, [evidence('old')], '')).rejects.toThrow('could not pass')
+    expect(fake).toHaveBeenCalledTimes(3)
+  })
+})
+describe('trusted-main Git boundary', () => {
+  for (const kind of ['code', 'symlink']) it(`rejects ${kind} changes before executing PR code or writing repairs`, async () => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'um-repair-guard-'))
+    const previous = process.cwd()
+    const git = (...args: string[]) => execFileSync('git', args, { cwd: dir, encoding: 'utf8', stdio: 'pipe' }).trim()
+    try {
+      git('init', '-b', 'main'); git('config', 'user.name', 'Fixture'); git('config', 'user.email', 'fixture@example.invalid')
+      fs.mkdirSync(path.join(dir, 'open-rankings/fixture/evidence'), { recursive: true })
+      const file = path.join(dir, 'open-rankings/fixture/evidence/vendor.json')
+      fs.writeFileSync(file, '[]\n'); git('add', '.'); git('commit', '-m', 'trusted')
+      const main = git('rev-parse', 'HEAD')
+      if (kind === 'code') fs.writeFileSync(path.join(dir, 'package.json'), '{"scripts":{"test":"untrusted"}}')
+      else { fs.unlinkSync(file); fs.symlinkSync('/tmp/untrusted-target', file) }
+      git('add', '-A'); git('commit', '-m', 'proposed')
+      const head = git('rev-parse', 'HEAD'); git('checkout', '--detach', main)
+      process.chdir(dir)
+      await expect(repair({ head, main, arena: 'fixture', findings: [], keyed: false })).rejects.toThrow(kind === 'code' ? 'outside its arena' : 'regular data file')
+      expect(git('status', '--porcelain')).toBe('')
+    } finally { process.chdir(previous); fs.rmSync(dir, { recursive: true, force: true }) }
   })
 })

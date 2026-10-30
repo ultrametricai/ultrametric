@@ -122,9 +122,15 @@ workflow, symlink, and cross-arena source edits. Concurrent canonical source edi
 blocked; generated rankings, graphs, reviews, intervals, predictions, and history are rebuilt
 from merged inputs. Append-only uptime observations are combined without rewriting history.
 
-Unsupported grade churn restores the previously published judgment when its citations still
-exist and its rules remain valid. Its existing current-hash cache is updated with that same
-judgment. Reviewed cells may use the configured judge to reconsider the evidence and audit
+Evidence content changes receive distinct deterministic IDs before future judgments;
+repeated extraction of the same content retains the same identity. Timestamp-only updates
+create no new evidence. Repairs reconcile older PRs that reused an ID for changed text and
+remap their citations. A cache may migrate across label-only changes only after its original
+payload hash and exact original judgment are verified.
+
+Unsupported grade churn restores the previously published judgment when its cited content
+is unchanged and its rules remain valid. Changed or missing source content requires a
+scoped re-judge, within the worker's cell budget. Reviewed cells may use the configured judge to reconsider the evidence and audit
 the reported concern. Review text is diagnostic context, never evidence. Missing evidence,
 unknown citations, rubric violations, and affiliated-product review needs stay blocked.
 

@@ -151,7 +151,7 @@ def main():
     original_ids = {finding['id'] for finding in findings}
     new_findings = [finding for finding in remaining if finding['id'] not in original_ids]
     # A new finding on the verdict matrix keeps old findings open for another bounded pass.
-    if not any(finding['path'] == f'open-rankings/{arena}/verdicts.json' for finding in new_findings):
+    if not new_findings:
         live_ids = {finding['id'] for finding in remaining}
         for audit in report['audits']:
             if audit['addressed'] and audit['thread'] in original_ids and audit['thread'] in live_ids:

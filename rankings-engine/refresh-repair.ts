@@ -1,8 +1,10 @@
 import fs from 'node:fs'
 import path from 'node:path'
+import crypto from 'node:crypto'
+import { isDeepStrictEqual } from 'node:util'
 import { execFileSync } from 'node:child_process'
 import { z } from 'zod'
-import { EvidenceSchema, ProductSchema, StorySchema, VerdictSchema, type Evidence, type Verdict } from '../lib/schemas'
+import { EvidenceSchema, ProductSchema, StorySchema, VerdictSchema, type Evidence, type Verdict, type Story } from '../lib/schemas'
 import { unsupportedFlips } from './scripts/check-refresh-stability.mjs'
 import { CELL_HASH_VERSION, PROMPT_VERSION, RawVerdictSchema, SYSTEM, cellHash, judgePrompt, validateVerdictRules } from './stages/judge'
 import { llmJson } from './llm'
@@ -61,6 +63,61 @@ export function rowAtLine(text: string, line: number): Verdict | null {
   if (ranges.length !== parsed.length) throw new Error('Cannot map review lines to cells')
   return ranges.find(range => range.start <= line && line <= range.end)?.row ?? null
 }
+// A changed payload receives a new identity; timestamps alone do not create evidence.
+export function rekeyEvidence(before: Evidence[], proposed: Evidence[]): { evidence: Evidence[]; renamed: Record<string, string> } {
+  const old = new Map(before.map(item => [item.id, item]))
+  const ids = new Set(proposed.map(item => item.id))
+  if (old.size !== before.length || ids.size !== proposed.length) throw new Error('Duplicate evidence IDs require review')
+  const renamed: Record<string, string> = Object.create(null)
+  const payload = (item: Evidence) => JSON.stringify([item.tier, item.url, item.excerpt])
+  const stem = (id: string) => id.replace(/(?:-refresh-[a-f0-9]{16})+$/, '')
+  const used = new Set<string>()
+  const evidence = proposed.map(item => {
+    const previous = old.get(item.id)
+    const family = before.filter(candidate => stem(candidate.id) === stem(item.id))
+    const identical = previous && payload(previous) === payload(item) ? previous
+      : family.find(candidate => payload(candidate) === payload(item))
+    let id = item.id
+    if (identical) id = identical.id
+    else if (family.length) id = `${stem(item.id)}-refresh-${crypto.createHash('sha256').update(payload(item)).digest('hex').slice(0, 16)}`
+    if (used.has(id) || (id !== item.id && ids.has(id))) throw new Error('Evidence refresh ID collision requires review')
+    used.add(id)
+    if (id === item.id) return item
+    renamed[item.id] = id
+    return { ...item, id }
+  })
+  return { evidence, renamed }
+}
+export function normalizeArenaEvidence(arena: string, baseline = 'HEAD'): void {
+  if (!/^[a-z0-9-]+$/.test(arena)) throw new Error('Invalid arena')
+  const dir = `open-rankings/${arena}/evidence`
+  for (const name of fs.readdirSync(dir).filter(name => name.endsWith('.json'))) {
+    if (!/^[a-z0-9][a-z0-9_-]*\.json$/.test(name)) throw new Error('Unsafe evidence path')
+    const file = `${dir}/${name}`
+    if (!fs.lstatSync(file).isFile()) throw new Error('Evidence must be a regular file')
+    const previous = show(baseline, file)
+    const old = previous === null ? [] : EvidenceSchema.array().parse(JSON.parse(previous))
+    const proposed = EvidenceSchema.array().parse(JSON.parse(fs.readFileSync(file, 'utf8')))
+    write(file, rekeyEvidence(old, proposed).evidence)
+  }
+}
+export function sourceCacheMatches(cached: unknown, originalRow: Verdict | undefined, story: Story, evidence: Evidence[]): boolean {
+  const parsed = z.object({ hash: z.string(), keyVersion: z.string().optional(), verdict: VerdictSchema }).safeParse(cached)
+  return parsed.success && parsed.data.keyVersion === CELL_HASH_VERSION
+    && parsed.data.hash === cellHash(story, evidence, PROMPT_VERSION)
+    && isDeepStrictEqual(parsed.data.verdict, originalRow)
+}
+export async function judgeRepairCell(productId: string, productName: string, story: Story, evidence: Evidence[], extra: string): Promise<Verdict> {
+  let correction = ''
+  for (let attempt = 0; attempt < 3; attempt++) {
+    const raw = await llmJson({ schema: RawVerdictSchema, system: SYSTEM, prompt: judgePrompt(productName, story, evidence, extra + correction) })
+    const next = VerdictSchema.parse({ ...raw, productId, storyId: story.id })
+    const violation = validateVerdictRules(next, evidence)
+    if (!violation) return next
+    correction = `\nThe last response violated this mechanical rule: ${violation}. Correct it.`
+  }
+  throw new Error('Reviewed cell could not pass the judge rules')
+}
 export function restoreChurn(before: Verdict[], after: Verdict[], oldPacks: Record<string, Evidence[]>, packs: Record<string, Evidence[]>): { rows: Verdict[]; restored: string[]; blocked: string[] } {
   const old = new Map(before.map(row => [key(row), row]))
   const flips = new Set(unsupportedFlips(before, after, oldPacks, packs).map((row: Verdict) => key(row)))
@@ -68,8 +125,10 @@ export function restoreChurn(before: Verdict[], after: Verdict[], oldPacks: Reco
   const rows = after.map(row => {
     if (!flips.has(key(row))) return row
     const previous = old.get(key(row))!
-    const ids = new Set((packs[row.productId] ?? []).map(item => item.id))
-    if (previous.evidenceIds.some(id => !ids.has(id)) || validateVerdictRules(previous, packs[row.productId] ?? [])) {
+    const ids = new Map((packs[row.productId] ?? []).map(item => [item.id, item]))
+    const originals = new Map((oldPacks[row.productId] ?? []).map(item => [item.id, item]))
+    if (previous.evidenceIds.some(id => !ids.has(id) || !originals.has(id)
+        || ['url', 'tier', 'excerpt'].some(field => ids.get(id)![field as keyof Evidence] !== originals.get(id)![field as keyof Evidence])) || validateVerdictRules(previous, packs[row.productId] ?? [])) {
       blocked.push(key(row)); return row
     }
     restored.push(key(row)); return previous
@@ -98,23 +157,41 @@ export async function repair({ head, main, arena, findings, keyed }: { head: str
   }
   const dir = `open-rankings/${arena}`
   const before = VerdictSchema.array().parse(JSON.parse(show(main, `${dir}/verdicts.json`)!))
-  const after = VerdictSchema.array().parse(JSON.parse(fs.readFileSync(`${dir}/verdicts.json`, 'utf8')))
+  const rawAfter = VerdictSchema.array().parse(JSON.parse(fs.readFileSync(`${dir}/verdicts.json`, 'utf8')))
   const products = ProductSchema.array().parse(JSON.parse(fs.readFileSync(`${dir}/products.json`, 'utf8')))
   const stories = StorySchema.array().parse(JSON.parse(fs.readFileSync(`${dir}/stories.json`, 'utf8')))
   for (const id of [...products.map(product => product.id), ...stories.map(story => story.id)]) {
     if (!/^[a-z0-9][a-z0-9_-]*$/.test(id)) throw new Error('Unsafe product or story identifier')
   }
   const packs: Record<string, Evidence[]> = Object.create(null), oldPacks: Record<string, Evidence[]> = Object.create(null)
+  const rawPacks: Record<string, Evidence[]> = Object.create(null), renames: Record<string, Record<string, string>> = Object.create(null)
   for (const product of products) {
     const file = `${dir}/evidence/${product.id}.json`
-    packs[product.id] = EvidenceSchema.array().parse(JSON.parse(fs.readFileSync(file, 'utf8')))
+    rawPacks[product.id] = EvidenceSchema.array().parse(JSON.parse(fs.readFileSync(file, 'utf8')))
     const old = show(main, file)
     oldPacks[product.id] = old === null ? [] : EvidenceSchema.array().parse(JSON.parse(old))
+    const normalized = rekeyEvidence(oldPacks[product.id], rawPacks[product.id])
+    packs[product.id] = normalized.evidence; renames[product.id] = normalized.renamed
+    write(file, normalized.evidence)
   }
+  const after = rawAfter.map(row => ({ ...row, evidenceIds: row.evidenceIds.map(id => renames[row.productId][id] ?? id) }))
   let result = restoreChurn(before, after, oldPacks, packs)
   let rows = result.rows
   const audits: Array<{ thread: string; cell: string; addressed: boolean; reason: string }> = []
   const rejudged: string[] = []
+  const scopedJudge = async (index: number, extra: string) => {
+    const target = rows[index]
+    const product = products.find(product => product.id === target.productId)!
+    const story = stories.find(story => story.id === target.storyId)!
+    if (!keyed || product.affiliation) throw new Error(`Cell requires a keyed, non-affiliated scoped re-judge: ${key(target)}`)
+    if (!rejudged.includes(key(target)) && rejudged.length >= 20) throw new Error('Scoped re-judge budget exhausted')
+    rows[index] = await judgeRepairCell(product.id, product.name, story, packs[product.id], extra)
+    if (!rejudged.includes(key(target))) rejudged.push(key(target))
+  }
+  for (const cell of result.blocked) {
+    const index = rows.findIndex(row => key(row) === cell)
+    await scopedJudge(index, '\nPreviously cited source content changed. Re-evaluate this cell using the current evidence IDs; a changed grade must cite new supporting evidence. Never invent a citation.')
+  }
   if (findings.length > 20) throw new Error('More than 20 findings need a scoped repair')
   for (const finding of findings) {
     if (finding.path !== `${dir}/verdicts.json` || !/^[a-f0-9]{40}$/.test(finding.commit)) continue
@@ -139,20 +216,9 @@ export async function repair({ head, main, arena, findings, keyed }: { head: str
     }
     let assessment = await audit()
     if (!assessment.addressed) {
-      let verdict: Verdict | null = null
-      let correction = ''
-      for (let attempt = 0; attempt < 3; attempt++) {
-        const raw = await llmJson({ schema: RawVerdictSchema, system: SYSTEM, prompt: judgePrompt(product.name, story, evidence, extra + correction) })
-        const next = VerdictSchema.parse({ ...raw, productId: product.id, storyId: story.id })
-        const violation = validateVerdictRules(next, evidence)
-        if (!violation) { verdict = next; break }
-        correction = `\nThe last response violated this mechanical rule: ${violation}. Correct it.`
-      }
-      if (!verdict) throw new Error('Reviewed cell could not pass the judge rules')
-      rows[index] = verdict
+      await scopedJudge(index, extra)
       result = restoreChurn(before, rows, oldPacks, packs)
       rows = result.rows
-      rejudged.push(key(target))
       assessment = await audit()
     }
     audits.push({ thread: finding.id, cell: key(target), addressed: assessment.addressed, reason: assessment.reason })
@@ -168,7 +234,11 @@ export async function repair({ head, main, arena, findings, keyed }: { head: str
     const cacheFile = `rankings-engine/cache/judge/${arena}/${row.productId}/${row.storyId}.json`
     const expected = cellHash(story, packs[row.productId], PROMPT_VERSION)
     const cached = fs.existsSync(cacheFile) ? JSON.parse(fs.readFileSync(cacheFile, 'utf8')) : null
-    if (!rejudged.includes(key(row)) && (!cached || cached.hash !== expected || cached.keyVersion !== CELL_HASH_VERSION)) {
+    const sourceRow = rawAfter.find(source => key(source) === key(row))
+    // A cache can migrate across evidence-label changes only after proving its original
+    // payload hash and original judgment match. The evidence text/order is unchanged.
+    const sourceValid = sourceCacheMatches(cached, sourceRow, story, rawPacks[row.productId])
+    if (!rejudged.includes(key(row)) && !sourceValid) {
       throw new Error(`Cell needs a scoped re-judge under the current rubric: ${key(row)}`)
     }
     write(cacheFile, { ...cached, hash: expected, keyVersion: CELL_HASH_VERSION, verdict: row })
@@ -179,6 +249,6 @@ export async function repair({ head, main, arena, findings, keyed }: { head: str
     ['compute-confidence-intervals.ts', '--category', arena], ['generate-predictions.ts'], ['settle-predictions.ts'],
     ['generate-vendor-reviews.ts'], ['generate-story-graph.ts'], ['generate-step-rankings.ts'],
   ]) execFileSync('pnpm', ['exec', 'tsx', `rankings-engine/scripts/${args[0]}`, ...args.slice(1)], { stdio: 'inherit' })
-  return { arena, head, main, restored: restoreChurn(before, after, oldPacks, packs).restored, rejudged, audits,
+  return { arena, head, main, evidenceRenames: renames, restored: restoreChurn(before, after, oldPacks, packs).restored, rejudged, audits,
     unresolved: findings.filter(finding => !audits.some(audit => audit.thread === finding.id && audit.addressed)).map(finding => finding.id) }
 }
