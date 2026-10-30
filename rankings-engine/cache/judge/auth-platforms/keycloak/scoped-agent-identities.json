@@ -1,21 +1,20 @@
 {
-  "hash": "e2334a9a639ad253a94b7de3a6f12a075b9393eadc16e3659c35221082ff949d",
+  "hash": "2c90624b23af32e0e81e068c0c3dcbf2ba8f874e9364430ce8ab827368a00c0a",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Keycloak documents the client credentials grant for clients acting on their own behalf, backed by service accounts, so each agent can be registered as its own client, including via dynamic client registration or kcadm/Admin REST scripting. Permissions can be narrowed with roles and fine-grained resource-level authorization policies, and a token revocation endpoint revokes both access and refresh tokens, with introspection to check token state. missing for 10: agent-specific guidance or examples, explicit documentation of per-client scope restriction for service accounts, documented behavior showing revocation takes effect instantly for already-issued JWT access tokens, and independent hands-on corroboration.",
+    "rationale": "Keycloak's own docs cover each part of the story. Client-credentials service accounts give each client (and so each agent) its own non-human identity (kc-supp-client-credentials), and dynamic client registration and the Admin CLI/REST API let you create these per agent (keycloak-docs-39, kc-supp-kcadm). Fine-grained, resource-level and role-based authorization narrows permissions, and a token revocation endpoint handles both access and refresh tokens (kc-supp-authz-services, keycloak-docs-49, keycloak-docs-70, keycloak-docs-53). missing for 10: agent-specific guidance or framing, explicit docs on narrowing token scopes per service account, evidence that revocation is instant for self-contained access tokens without introspection (keycloak-docs-52 offers introspection as a validation path), and independent hands-on corroboration of machine-identity use.",
     "evidenceIds": [
       "kc-supp-client-credentials",
+      "keycloak-docs-39",
+      "kc-supp-kcadm",
       "kc-supp-authz-services",
-      "keycloak-docs-12",
       "keycloak-docs-49",
       "keycloak-docs-70",
       "keycloak-docs-53",
-      "keycloak-docs-52",
-      "keycloak-docs-39",
-      "kc-supp-kcadm"
+      "keycloak-docs-52"
     ],
     "productId": "keycloak",
     "storyId": "scoped-agent-identities"
