@@ -18,7 +18,7 @@
 // with zero mismatches — geo-conditional UI appears only after the reader (or their stored
 // preference) opts in, and no judged number ever moves.
 
-export const GEO_COUNTRIES = ['US', 'UK', 'IN', 'DE', 'FR', 'PT', 'CA', 'NZ', 'SG', 'AU', 'KR', 'HK', 'EE'] as const
+export const GEO_COUNTRIES = ['US', 'UK', 'IN', 'DE', 'FR', 'PT', 'CA', 'NZ', 'SG', 'AU', 'KR', 'HK', 'EE', 'NL', 'IE', 'ES', 'SE', 'CH', 'JP', 'BR', 'AE'] as const
 export type GeoCountry = (typeof GEO_COUNTRIES)[number]
 
 /** The non-default selections — everything a ?geo= param can carry. */
@@ -40,6 +40,14 @@ export const GEO_PREF_META: Record<GeoCountry, { label: string; flag: string; pr
   KR: { label: 'South Korea', flag: '🇰🇷', prose: 'South Korea' },
   HK: { label: 'Hong Kong', flag: '🇭🇰', prose: 'Hong Kong' },
   EE: { label: 'Estonia', flag: '🇪🇪', prose: 'Estonia' },
+  NL: { label: 'Netherlands', flag: '🇳🇱', prose: 'the Netherlands' },
+  IE: { label: 'Ireland', flag: '🇮🇪', prose: 'Ireland' },
+  ES: { label: 'Spain', flag: '🇪🇸', prose: 'Spain' },
+  SE: { label: 'Sweden', flag: '🇸🇪', prose: 'Sweden' },
+  CH: { label: 'Switzerland', flag: '🇨🇭', prose: 'Switzerland' },
+  JP: { label: 'Japan', flag: '🇯🇵', prose: 'Japan' },
+  BR: { label: 'Brazil', flag: '🇧🇷', prose: 'Brazil' },
+  AE: { label: 'United Arab Emirates', flag: '🇦🇪', prose: 'the United Arab Emirates' },
 }
 
 export const GEO_PARAM = 'geo'

@@ -274,7 +274,7 @@ export const ENTITY_META: Record<EntityChoice, EntityMeta> = {
 // The Entity dropdown's roster follows the geo selection; the FIRST option per country is the
 // country's default-asserted value (a geo switch with an incompatible asserted entity resets to
 // it — the component owns that rule).
-export const ENTITY_OPTIONS_BY_COUNTRY: Record<GeoCountry, EntityChoice[]> = {
+export const ENTITY_OPTIONS_BY_COUNTRY: Partial<Record<GeoCountry, EntityChoice[]>> = {
   US: ['c-corp', 'llc'],
   UK: ['ltd'],
   DE: ['gmbh', 'ug'],
@@ -291,7 +291,9 @@ export const ENTITY_OPTIONS_BY_COUNTRY: Record<GeoCountry, EntityChoice[]> = {
 }
 
 export function defaultEntityFor(country: GeoCountry): EntityChoice {
-  return ENTITY_OPTIONS_BY_COUNTRY[country][0]
+  const options = ENTITY_OPTIONS_BY_COUNTRY[country]
+  if (!options?.length) throw new Error(`${country}: process guides are available, but no startup simulation entity is authored`)
+  return options[0]
 }
 
 export interface DecisionOption {

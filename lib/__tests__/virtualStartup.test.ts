@@ -160,6 +160,7 @@ describe('decision → journey mapping (against the live corpus)', () => {
     expect(defaultEntityFor('KR')).toBe('kr-chusik-hoesa')
     expect(defaultEntityFor('HK')).toBe('hk-private-limited')
     expect(defaultEntityFor('EE')).toBe('ee-osauhing')
+    expect(() => defaultEntityFor('NL')).toThrow('no startup simulation entity is authored')
     // Every DECISIONS entity value exists in exactly one country roster, and vice versa.
     const rosterValues = Object.values(ENTITY_OPTIONS_BY_COUNTRY).flat()
     expect([...rosterValues].sort()).toEqual(entity.options.map((o) => o.value).sort())
