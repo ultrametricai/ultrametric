@@ -3,20 +3,30 @@
 
 # Build the team
 
+[Overview](#overview) · [Process sequence](#process-sequence)
+
+## Overview
+
 From one hire to a team: the ATS and hiring pipeline stood up, benefits enrolled, the handbook published, the review cycle running, the option grants approved and recorded.
 
 | Field | Value |
 | --- | --- |
 | Kind | chain |
 
-## Processes in order
+<a id="processes-in-order"></a>
 
-1. [Set up ATS](set-up-ats.md)
-2. [Build a hiring pipeline](build-a-hiring-pipeline.md)
-3. [Set up benefits](set-up-benefits.md)
-4. [Write the employee handbook](write-the-employee-handbook.md)
-5. [Run performance reviews](run-performance-reviews.md)
-6. [Issue stock options](issue-stock-options.md)
+## Process sequence
+
+Run the linked processes in the recorded chain order. Each process defines its own internal dependencies.
+
+| Order | Process | Requires | Produces |
+| --- | --- | --- | --- |
+| 1 | [Set up ATS](set-up-ats.md) | Company website | Applicant tracking system |
+| 2 | [Build a hiring pipeline](build-a-hiring-pipeline.md) | Applicant tracking system; Team chat workspace | Not recorded |
+| 3 | [Set up benefits](set-up-benefits.md) | Payroll account | Benefits plan |
+| 4 | [Write the employee handbook](write-the-employee-handbook.md) | Team wiki; Team chat workspace | Employee handbook |
+| 5 | [Run performance reviews](run-performance-reviews.md) | Signed offer / employment agreement | Not recorded |
+| 6 | [Issue employee equity awards](issue-stock-options.md) | 409A valuation report; Cap table record | Option grants |
 
 ---
 

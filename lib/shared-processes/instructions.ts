@@ -31,6 +31,14 @@ function instructionalNotes(metadata: Record<string, unknown>): Note[] {
   }
   if (metadata.geoResolutions) for (const item of z.array(z.object({ country: z.string(), kind: z.string(), label: z.string(), guidance: z.string().optional() }).passthrough()).parse(metadata.geoResolutions)) {
     add(`${item.country} resolution (${item.kind}): ${item.label}${item.guidance ? ` — ${item.guidance}` : ''}`, item.actionUrl)
+    if (item.verify) {
+      const verify = z.object({ how: z.string(), url: z.string().optional() }).parse(item.verify)
+      add(`${item.country} completion check: ${verify.how}`, verify.url)
+    }
+    if (item.cost) {
+      const cost = z.object({ usd: z.number().nullable(), source: z.string(), asOf: z.string(), note: z.string().optional() }).parse(item.cost)
+      add(`${item.country} cost: ${cost.usd === null ? 'variable' : `${cost.usd} USD`} (as of ${cost.asOf}). ${cost.note ?? ''}`, cost.source)
+    }
   }
   if (metadata.contextNeeded) for (const item of z.array(z.object({ query: z.string().optional(), required: z.boolean() })).parse(metadata.contextNeeded)) {
     if (item.query) add(`${item.required ? 'Required' : 'Optional'} context: ${item.query}`)

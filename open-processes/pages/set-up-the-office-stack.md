@@ -3,20 +3,30 @@
 
 # Set up the office stack
 
+[Overview](#overview) · [Process sequence](#process-sequence)
+
+## Overview
+
 Email and docs on the company domain, the chat, wiki, doc storage, and tracker stood up, the aliases routed to real inboxes.
 
 | Field | Value |
 | --- | --- |
 | Kind | chain |
 
-## Processes in order
+<a id="processes-in-order"></a>
 
-1. [Set up company email & docs](set-up-company-email-docs.md)
-2. [Set up team chat](set-up-team-chat.md)
-3. [Set up a team wiki](set-up-a-team-wiki.md)
-4. [Set up doc storage](set-up-doc-storage.md)
-5. [Set up a project tracker](set-up-a-project-tracker.md)
-6. [Set up email routing on your domain](set-up-email-routing-on-your-domain.md)
+## Process sequence
+
+Run the linked processes in the recorded chain order. Each process defines its own internal dependencies.
+
+| Order | Process | Requires | Produces |
+| --- | --- | --- | --- |
+| 1 | [Set up company email & docs](set-up-company-email-docs.md) | Registered domain; DNS control | Company email workspace |
+| 2 | [Set up team chat](set-up-team-chat.md) | Not recorded | Team chat workspace |
+| 3 | [Set up a team wiki](set-up-a-team-wiki.md) | Not recorded | Team wiki |
+| 4 | [Set up doc storage](set-up-doc-storage.md) | Not recorded | Document storage |
+| 5 | [Set up a project tracker](set-up-a-project-tracker.md) | Not recorded | Project tracker |
+| 6 | [Set up email routing on your domain](set-up-email-routing-on-your-domain.md) | Registered domain; DNS control; Company email workspace | Not recorded |
 
 ---
 

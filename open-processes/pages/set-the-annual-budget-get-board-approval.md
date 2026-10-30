@@ -3,6 +3,10 @@
 
 # Set the annual budget & get board approval
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Steps](#steps-at-a-glance) · [Outputs](#outputs)
+
+## Overview
+
 Turn last year’s actuals into next year’s operating plan: pull the numbers, draft the model and headcount plan, negotiate the trade-offs with department leads, and take the budget to the board for a signed consent.
 
 | Field | Value |
@@ -19,47 +23,105 @@ Turn last year’s actuals into next year’s operating plan: pull the numbers, 
 
 Pulling actuals and drafting the model are automatable; the department trade-offs and the board vote are judgment, and the board consent is a signed corporate act.
 
-## Steps
+<a id="artifacts"></a>
 
-1. **Pull the year’s actuals and runway** — agent-runnable · ~15 min
+## Before you start
 
-   Establish the budget baseline from year-to-date actuals, the remaining-year forecast, cash and current runway model. Align periods and reconcile headcount, revenue and major commitments to their schedules. Separate recurring costs from unusual items and label the rest of the year’s estimates. Department leads should begin planning from these consistent figures.
-
-   - Canonical vendor: QuickBooks
-   - Vendor options: QuickBooks, Xero, Pilot
-   - Ranked market: [accounting](../../open-rankings/accounting)
-2. **Draft the operating model and headcount plan** — agent-runnable · ~1 h
-
-   Model revenue, staffing dates, compensation, delivery costs and major purchases as monthly cash flows. Tie opening cash and headcount to actuals, and make the assumptions and formulas easy to inspect. Compare the base plan with a downside case so leadership can see which hires or spending choices change the funding requirement.
-
-   - Cross-arena options: ChatGPT, Claude (ai-assistants)
-3. **Review trade-offs with department leads** — human · ~2 h
-
-   Discuss each department’s proposed spending against the outcomes it is expected to deliver. Identify essential hires and purchases, milestone-dependent commitments and deferrable work. Resolve overlapping requests and unfunded obligations within the company’s cash constraints, then reflect the agreed trade-offs and decision triggers in the operating model.
-4. **Circulate the budget deck to the board** — agent-runnable · ~15 min
-
-   Circulate the budget deck and model to the authorized board audience with the proposed plan, cash scenarios and decisions requested. Explain why management prefers this plan and where alternatives remain open. The company’s board coordinator should check document access and collect directors’ questions for the discussion.
-
-   - Canonical vendor: Google Slides
-5. **Board reviews and discusses the plan** — human · ~2 d · async wait
-
-   Use the board discussion to settle material spending trade-offs, funding assumptions and delegated limits. Capture what directors approved, requested changes to or deferred, including conditions and follow-up decisions. Apply agreed revisions to the model and distinguish the plan discussed from the version that will receive formal approval.
-6. **Board signs the consent approving the budget** — human (legally required signature) · ~5 min
-
-   Prepare the budget consent under the company’s governing documents, identifying the final model, approval scope, spending limits and conditions. The required directors review and sign through the applicable corporate process. Link the executed resolution to the adopted budget and communicate its limits to finance so spending authority follows the actual decision.
-
-   - Produces: Board-approved annual budget
-
-## Artifacts
-
-Produces:
-
-- Board-approved annual budget
-
-Requires:
+Required artifacts:
 
 - Accounting ledger — from [Set up accounting](set-up-accounting.md)
 - Financial statements — from [Bookkeeping close](bookkeeping-close.md)
+
+| Information to gather | Required by the record |
+| --- | --- |
+| next-year hiring plan | Yes |
+| revenue targets | Yes |
+
+## Steps at a glance
+
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
+
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Pull the year’s actuals and runway](#step-1) | agent-runnable | ~15 min | Entry step |
+| [2. Draft the operating model and headcount plan](#step-2) | agent-runnable | ~1 h | [Step 1](#step-1) |
+| [3. Review trade-offs with department leads](#step-3) | human | ~2 h | [Step 2](#step-2) |
+| [4. Circulate the budget deck to the board](#step-4) | agent-runnable | ~15 min | [Step 3](#step-3) |
+| [5. Board reviews and discusses the plan](#step-5) | human; includes waiting | ~2 d | [Step 4](#step-4) |
+| [6. Board signs the consent approving the budget](#step-6) | human; signature required | ~5 min | [Step 5](#step-5) |
+
+<a id="steps"></a>
+
+## Step details
+
+<a id="step-1"></a>
+
+### 1. Pull the year’s actuals and runway
+
+agent-runnable · ~15 min
+
+
+Establish the budget baseline from year-to-date actuals, the remaining-year forecast, cash and current runway model. Align periods and reconcile headcount, revenue and major commitments to their schedules. Separate recurring costs from unusual items and label the rest of the year’s estimates. Department leads should begin planning from these consistent figures.
+
+- Canonical vendor: QuickBooks
+- Vendor options: QuickBooks, Xero, Pilot
+- Ranked market: [accounting](../../open-rankings/accounting)
+
+<a id="step-2"></a>
+
+### 2. Draft the operating model and headcount plan
+
+agent-runnable · ~1 h
+
+
+Model revenue, staffing dates, compensation, delivery costs and major purchases as monthly cash flows. Tie opening cash and headcount to actuals, and make the assumptions and formulas easy to inspect. Compare the base plan with a downside case so leadership can see which hires or spending choices change the funding requirement.
+
+- Cross-arena options: ChatGPT, Claude (ai-assistants)
+
+<a id="step-3"></a>
+
+### 3. Review trade-offs with department leads
+
+human · ~2 h
+
+
+Discuss each department’s proposed spending against the outcomes it is expected to deliver. Identify essential hires and purchases, milestone-dependent commitments and deferrable work. Resolve overlapping requests and unfunded obligations within the company’s cash constraints, then reflect the agreed trade-offs and decision triggers in the operating model.
+
+<a id="step-4"></a>
+
+### 4. Circulate the budget deck to the board
+
+agent-runnable · ~15 min
+
+
+Circulate the budget deck and model to the authorized board audience with the proposed plan, cash scenarios and decisions requested. Explain why management prefers this plan and where alternatives remain open. The company’s board coordinator should check document access and collect directors’ questions for the discussion.
+
+- Canonical vendor: Google Slides
+
+<a id="step-5"></a>
+
+### 5. Board reviews and discusses the plan
+
+human · ~2 d · async wait
+
+
+Use the board discussion to settle material spending trade-offs, funding assumptions and delegated limits. Capture what directors approved, requested changes to or deferred, including conditions and follow-up decisions. Apply agreed revisions to the model and distinguish the plan discussed from the version that will receive formal approval.
+
+<a id="step-6"></a>
+
+### 6. Board signs the consent approving the budget
+
+human (legally required signature) · ~5 min
+
+
+Prepare the budget consent under the company’s governing documents, identifying the final model, approval scope, spending limits and conditions. The required directors review and sign through the applicable corporate process. Link the executed resolution to the adopted budget and communicate its limits to finance so spending authority follows the actual decision.
+
+- Produces: Board-approved annual budget
+
+
+## Outputs
+
+- Board-approved annual budget
 
 ## Related records
 

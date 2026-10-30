@@ -132,7 +132,8 @@ describe('existing judged selection compatibility', () => {
     // Re-pinned at the situations batch-1 integration (2026-10-27): six new situations
     // (sit_028-sit_033) add arena-covered steps (payroll, accounting, equity-management,
     // startup-law-firms), whose judged candidates join the mapped step rows.
-    expect(positiveCount).toBe(3120)
+    // ComplyAdvantage's judged fraud-prevention entry adds one positive function candidate.
+    expect(positiveCount).toBe(3121)
     expect(zeroCount).toBe(291)
     // Re-pinned at the issue-closeout integration (2026-10-27): munito-ai and obsessiondb
     // join their arenas' candidate lists and the monday re-judge moved cells; counts re-probed.

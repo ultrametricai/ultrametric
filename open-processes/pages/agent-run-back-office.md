@@ -3,20 +3,30 @@
 
 # The agent-run back office
 
+[Overview](#overview) · [Process sequence](#process-sequence)
+
+## Overview
+
 The monthly money loop with the highest agent ceiling of any recurring playbook here: payroll run, vendors paid, invoices out, books closed, runway read, board updated — roughly nine steps in ten agent-routed, most reachable today over judged MCP servers and CLIs.
 
 | Field | Value |
 | --- | --- |
 | Kind | chain |
 
-## Processes in order
+<a id="processes-in-order"></a>
 
-1. [Run payroll](run-payroll.md)
-2. [Pay vendor invoices](pay-vendor-invoices.md)
-3. [Send an invoice](send-an-invoice.md)
-4. [Bookkeeping close](bookkeeping-close.md)
-5. [Track runway](track-runway.md)
-6. [Send the board financial report](send-the-board-financial-report.md)
+## Process sequence
+
+Run the linked processes in the recorded chain order. Each process defines its own internal dependencies.
+
+| Order | Process | Requires | Produces |
+| --- | --- | --- | --- |
+| 1 | [Run payroll](run-payroll.md) | Payroll account; Signed offer / employment agreement | Not recorded |
+| 2 | [Pay vendor invoices](pay-vendor-invoices.md) | Business bank account; Accounting ledger; Team chat workspace | Not recorded |
+| 3 | [Send an invoice](send-an-invoice.md) | Payment processor account | Not recorded |
+| 4 | [Bookkeeping close](bookkeeping-close.md) | Business bank account; Accounting ledger | Financial statements |
+| 5 | [Track runway](track-runway.md) | Business bank account | Not recorded |
+| 6 | [Send the board financial report](send-the-board-financial-report.md) | Business bank account; Payment processor account; Accounting ledger | Not recorded |
 
 ---
 

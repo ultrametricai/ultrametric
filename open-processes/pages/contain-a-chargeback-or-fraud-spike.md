@@ -3,6 +3,10 @@
 
 # Contain a chargeback or fraud spike
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Steps](#steps-at-a-glance)
+
+## Overview
+
 **Trigger:** Your dispute rate jumps: a chargeback wave or a card-testing/fraud spike is hitting your payments.
 
 Most of this runs through your processor's APIs. Quantify the pattern. Tighten your fraud rules. Contest the disputes worth contesting; each card network has its own process and deadlines. Refund obvious fraud before it becomes a chargeback. A refund costs less than a lost dispute, and a sent refund cannot be undone, so refunds sit behind an approval step. The card networks' monitoring programs have thresholds with real consequences; watching them with your processor is the judgment part.
@@ -22,25 +26,89 @@ Most of this runs through your processor's APIs. Quantify the pattern. Tighten y
 
 Dispute data, fraud rules, evidence submission, and refunds are real API surfaces on the judged processors, so an agent can run most of the loop. Pausing a product surface and the monitoring-program judgment stay human.
 
-## Steps
+## Before you start
 
-1. **Quantify the spike: dispute rate, affected charges, and the common pattern (BIN, geography, velocity)** — agent-runnable · ~45 min
+| Information to gather | Required by the record |
+| --- | --- |
+| processor account access and the dispute window to analyze | Yes |
 
-   - Canonical vendor: Stripe
-   - Do it yourself: [Stripe: disputes & fraud](https://docs.stripe.com/disputes)
-2. **Tighten the fraud rules: raise risk thresholds, require 3DS where it applies** — agent-runnable · ~30 min
+## Steps at a glance
 
-   - Vendor options: Stripe Radar, Sift
-   - Ranked market: [fraud-prevention](../../open-rankings/fraud-prevention)
-3. **Pause the leaking surface if the pattern demands it (a SKU, a geo, a payment method)** — human · ~30 min
-4. **Submit evidence on the disputes worth contesting — responses are per-network and deadline-bound** — agent-runnable · ~1.5 h
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
 
-   - Canonical vendor: Stripe
-5. **Refund clear fraud before it becomes a chargeback — a refund costs less than a lost dispute** — agent-runnable · ~30 min · human approval required · irreversible
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Quantify the spike: dispute rate, affected charges, and the common pattern (BIN, geography, velocity)](#step-1) | agent-runnable | ~45 min | Entry step |
+| [2. Tighten the fraud rules: raise risk thresholds, require 3DS where it applies](#step-2) | agent-runnable | ~30 min | [Step 1](#step-1) |
+| [3. Pause the leaking surface if the pattern demands it (a SKU, a geo, a payment method)](#step-3) | human | ~30 min | [Step 2](#step-2) |
+| [4. Submit evidence on the disputes worth contesting — responses are per-network and deadline-bound](#step-4) | agent-runnable | ~1.5 h | [Step 3](#step-3) |
+| [5. Refund clear fraud before it becomes a chargeback — a refund costs less than a lost dispute](#step-5) | agent-runnable; approval required | ~30 min | [Step 4](#step-4) |
+| [6. Watch the card networks' monitoring-program thresholds with your processor](#step-6) | human | ~30 min | [Step 5](#step-5) |
+| [7. Wait for the dispute outcomes and re-read the rate weekly](#step-7) | human; includes waiting | ~14 d | [Step 6](#step-6) |
 
-   - Canonical vendor: Stripe
-6. **Watch the card networks' monitoring-program thresholds with your processor** — human · ~30 min
-7. **Wait for the dispute outcomes and re-read the rate weekly** — human · ~14 d · async wait
+<a id="steps"></a>
+
+## Step details
+
+<a id="step-1"></a>
+
+### 1. Quantify the spike: dispute rate, affected charges, and the common pattern (BIN, geography, velocity)
+
+agent-runnable · ~45 min
+
+
+- Canonical vendor: Stripe
+- Do it yourself: [Stripe: disputes & fraud](https://docs.stripe.com/disputes)
+
+<a id="step-2"></a>
+
+### 2. Tighten the fraud rules: raise risk thresholds, require 3DS where it applies
+
+agent-runnable · ~30 min
+
+
+- Vendor options: Stripe Radar, Sift
+- Ranked market: [fraud-prevention](../../open-rankings/fraud-prevention)
+
+<a id="step-3"></a>
+
+### 3. Pause the leaking surface if the pattern demands it (a SKU, a geo, a payment method)
+
+human · ~30 min
+
+
+<a id="step-4"></a>
+
+### 4. Submit evidence on the disputes worth contesting — responses are per-network and deadline-bound
+
+agent-runnable · ~1.5 h
+
+
+- Canonical vendor: Stripe
+
+<a id="step-5"></a>
+
+### 5. Refund clear fraud before it becomes a chargeback — a refund costs less than a lost dispute
+
+agent-runnable · ~30 min · human approval required · irreversible
+
+
+- Canonical vendor: Stripe
+
+<a id="step-6"></a>
+
+### 6. Watch the card networks' monitoring-program thresholds with your processor
+
+human · ~30 min
+
+
+<a id="step-7"></a>
+
+### 7. Wait for the dispute outcomes and re-read the rate weekly
+
+human · ~14 d · async wait
+
+
 
 ---
 

@@ -3,6 +3,10 @@
 
 # Recover from a missed 83(b) deadline
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Geography](#geography) · [Steps](#steps-at-a-glance)
+
+## Overview
+
 **Trigger:** You discover the 83(b) election was never filed, and the 30-day window from the stock purchase has passed.
 
 The Section 83(b) window is 30 days from the property transfer, with only a weekend-and-holiday postmark allowance (law rule [us-fed.83b-filing-period](../../open-law/US-FED/us-fed-83b-filing-period.json)), and a missed window has no general relief: there is no late election, and even a timely one is revocable only with IRS consent (law rule [us-fed.83b-revocation](../../open-law/US-FED/us-fed-83b-revocation.json)). First confirm the deadline actually passed, counting from the transfer date on the signed purchase agreement. If it did, the default rule applies: each vesting date becomes a taxable event on that date's spread at ordinary rates, and the capital-gains holding period runs from vesting rather than purchase (law rule [us-fed.83b-election-effect](../../open-law/US-FED/us-fed-83b-election-effect.json), law rule [us-fed.restricted-property-holding-period](../../open-law/US-FED/us-fed-restricted-property-holding-period.json)). Containment is about the path forward, not the filing: model the tax trajectory while the fair market value is still near the purchase price, and take the restructuring questions, such as cancel-and-regrant or options in place of restricted stock, to tax counsel, because each carries its own consequences and none restores the missed election. Then wire the next grant so the 30-day window is tracked from the transfer date, not remembered. Educational guidance, not tax advice; the window and its mechanics are stated on the IRS's own form.
@@ -24,78 +28,174 @@ An agent can confirm the window from the documents, model the vesting-date tax p
 
 - Law rules: [us-fed.83b-filing-period](../../open-law/US-FED/us-fed-83b-filing-period.json), [us-fed.83b-election-effect](../../open-law/US-FED/us-fed-83b-election-effect.json), [us-fed.83b-revocation](../../open-law/US-FED/us-fed-83b-revocation.json), [us-fed.restricted-property-holding-period](../../open-law/US-FED/us-fed-restricted-property-holding-period.json), [us-fed.83b-form-and-copies](../../open-law/US-FED/us-fed-83b-form-and-copies.json), [us-fed.83b-scenario-arithmetic](../../open-law/US-FED/us-fed-83b-scenario-arithmetic.json)
 
-## Steps
+## Before you start
 
-1. **Confirm the window actually closed: the transfer date on the signed purchase agreement plus 30 days, with the weekend-and-holiday postmark rule** — agent-runnable · ~20 min
+| Information to gather | Required by the record |
+| --- | --- |
+| the stock purchase agreement (transfer date, price paid, vesting schedule) | Yes |
+| any mailing evidence for an election that may have been sent | Yes |
 
-   The election must be filed no later than 30 days after the property transfer, with a next-business-day postmark rule when day 30 falls on a weekend or legal holiday (law rule [us-fed.83b-filing-period](../../open-law/US-FED/us-fed-83b-filing-period.json)). A mailed election with a timely postmark may still be in flight; confirm what was sent and when before concluding anything.
+## Geography
 
-   - Do it yourself: [IRS Form 15620 — Section 83(b) election](https://www.irs.gov/pub/irs-pdf/f15620.pdf)
-2. **Accept the default rule honestly: each vesting date becomes a taxable event on that date's spread, and holding periods run from vesting** — human · ~30 min
+Country rows describe the guidance recorded here. Local notes and step alternatives do not establish a complete country-specific workflow.
 
-   Without the election, Section 83(a) taxes each tranche as it vests, at ordinary rates on the spread between that date's fair market value and the price paid (law rule [us-fed.83b-election-effect](../../open-law/US-FED/us-fed-83b-election-effect.json)), and the capital-gains holding period starts at vesting rather than purchase (law rule [us-fed.restricted-property-holding-period](../../open-law/US-FED/us-fed-restricted-property-holding-period.json)). There is no late election to file, and a timely election is revocable only with IRS consent (law rule [us-fed.83b-revocation](../../open-law/US-FED/us-fed-83b-revocation.json)).
+| Country | Recorded guidance | Steps with local alternatives or resolutions |
+| --- | --- | --- |
+| [India](#geo-in) | Marked not applicable | — |
+| [United Kingdom](#geo-uk) | Local analog note | — |
+| [Germany](#geo-de) | Marked not applicable | — |
+| [France](#geo-fr) | Marked not applicable | — |
+| [Portugal](#geo-pt) | Marked not applicable | — |
+| [Canada](#geo-ca) | Marked not applicable | — |
+| [New Zealand](#geo-nz) | Marked not applicable | — |
+| [Singapore](#geo-sg) | Marked not applicable | — |
+| [Australia](#geo-au) | Marked not applicable | — |
+| [South Korea](#geo-kr) | Marked not applicable | — |
+| [Hong Kong](#geo-hk) | Marked not applicable | — |
+| [Estonia](#geo-ee) | Marked not applicable | — |
 
-   - Do it yourself: [26 U.S.C. § 83 — property transferred for services](https://www.law.cornell.edu/uscode/text/26/83)
-3. **Model the tax path ahead while the spread is small: today's fair market value against the price paid, tranche by tranche** — agent-runnable · ~45 min
+## Steps at a glance
 
-   The open 83(b) module replays the with-and-without-election arithmetic from the cited scenario rules (law rule [us-fed.83b-scenario-arithmetic](../../open-law/US-FED/us-fed-83b-scenario-arithmetic.json)), so the cost of the miss and the stakes of each coming vesting date are numbers, not dread. The model informs the counsel conversation; it decides nothing.
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
 
-   - Vendor options: Carta
-   - Ranked market: [equity-management](../../open-rankings/equity-management)
-4. **Take the restructuring questions to tax counsel: cancel-and-regrant or options in place of restricted stock carry their own consequences** — human · ~1 h · hard to undo
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Confirm the window actually closed: the transfer date on the signed purchase agreement plus 30 days, with the weekend-and-holiday postmark rule](#step-1) | agent-runnable | ~20 min | Entry step |
+| [2. Accept the default rule honestly: each vesting date becomes a taxable event on that date's spread, and holding periods run from vesting](#step-2) | human | ~30 min | [Step 1](#step-1) |
+| [3. Model the tax path ahead while the spread is small: today's fair market value against the price paid, tranche by tranche](#step-3) | agent-runnable | ~45 min | [Step 2](#step-2) |
+| [4. Take the restructuring questions to tax counsel: cancel-and-regrant or options in place of restricted stock carry their own consequences](#step-4) | human | ~1 h | [Step 3](#step-3) |
+| [5. Wire the next transfer so the window is tracked, not remembered: the 30-day clock starts at the transfer, and the filing mechanics are committed](#step-5) | agent-runnable | ~30 min | [Step 4](#step-4) |
 
-   Restructuring ideas exist, and none of them is a cure: canceling and regranting restricted stock restarts vesting and raises its own tax and securities questions, early-exercisable options change the instrument rather than rewind the clock, and anything touching a prior transfer needs tax counsel before a single document moves. The honest framing is damage containment under advice, not recovery.
-5. **Wire the next transfer so the window is tracked, not remembered: the 30-day clock starts at the transfer, and the filing mechanics are committed** — agent-runnable · ~30 min
+<a id="steps"></a>
 
-   For every future restricted-property transfer, open the 30-day calendar on the transfer date and file on Form 15620 with proof of mailing (law rule [us-fed.83b-form-and-copies](../../open-law/US-FED/us-fed-83b-form-and-copies.json)). The corpus carries the full election process as its own record; run it, with the deadline on a calendar that more than one person can see.
+## Step details
 
-   - Do it yourself: [IRS Form 15620 — Section 83(b) election](https://www.irs.gov/pub/irs-pdf/f15620.pdf)
+<a id="step-1"></a>
 
-## By country
+### 1. Confirm the window actually closed: the transfer date on the signed purchase agreement plus 30 days, with the weekend-and-holiday postmark rule
+
+agent-runnable · ~20 min
+
+
+The election must be filed no later than 30 days after the property transfer, with a next-business-day postmark rule when day 30 falls on a weekend or legal holiday (law rule [us-fed.83b-filing-period](../../open-law/US-FED/us-fed-83b-filing-period.json)). A mailed election with a timely postmark may still be in flight; confirm what was sent and when before concluding anything.
+
+- Do it yourself: [IRS Form 15620 — Section 83(b) election](https://www.irs.gov/pub/irs-pdf/f15620.pdf)
+
+<a id="step-2"></a>
+
+### 2. Accept the default rule honestly: each vesting date becomes a taxable event on that date's spread, and holding periods run from vesting
+
+human · ~30 min
+
+
+Without the election, Section 83(a) taxes each tranche as it vests, at ordinary rates on the spread between that date's fair market value and the price paid (law rule [us-fed.83b-election-effect](../../open-law/US-FED/us-fed-83b-election-effect.json)), and the capital-gains holding period starts at vesting rather than purchase (law rule [us-fed.restricted-property-holding-period](../../open-law/US-FED/us-fed-restricted-property-holding-period.json)). There is no late election to file, and a timely election is revocable only with IRS consent (law rule [us-fed.83b-revocation](../../open-law/US-FED/us-fed-83b-revocation.json)).
+
+- Do it yourself: [26 U.S.C. § 83 — property transferred for services](https://www.law.cornell.edu/uscode/text/26/83)
+
+<a id="step-3"></a>
+
+### 3. Model the tax path ahead while the spread is small: today's fair market value against the price paid, tranche by tranche
+
+agent-runnable · ~45 min
+
+
+The open 83(b) module replays the with-and-without-election arithmetic from the cited scenario rules (law rule [us-fed.83b-scenario-arithmetic](../../open-law/US-FED/us-fed-83b-scenario-arithmetic.json)), so the cost of the miss and the stakes of each coming vesting date are numbers, not dread. The model informs the counsel conversation; it decides nothing.
+
+- Vendor options: Carta
+- Ranked market: [equity-management](../../open-rankings/equity-management)
+
+<a id="step-4"></a>
+
+### 4. Take the restructuring questions to tax counsel: cancel-and-regrant or options in place of restricted stock carry their own consequences
+
+human · ~1 h · hard to undo
+
+
+Restructuring ideas exist, and none of them is a cure: canceling and regranting restricted stock restarts vesting and raises its own tax and securities questions, early-exercisable options change the instrument rather than rewind the clock, and anything touching a prior transfer needs tax counsel before a single document moves. The honest framing is damage containment under advice, not recovery.
+
+<a id="step-5"></a>
+
+### 5. Wire the next transfer so the window is tracked, not remembered: the 30-day clock starts at the transfer, and the filing mechanics are committed
+
+agent-runnable · ~30 min
+
+
+For every future restricted-property transfer, open the 30-day calendar on the transfer date and file on Form 15620 with proof of mailing (law rule [us-fed.83b-form-and-copies](../../open-law/US-FED/us-fed-83b-form-and-copies.json)). The corpus carries the full election process as its own record; run it, with the deadline on a calendar that more than one person can see.
+
+- Do it yourself: [IRS Form 15620 — Section 83(b) election](https://www.irs.gov/pub/irs-pdf/f15620.pdf)
+
+
+<a id="by-country"></a>
+
+## Country details
+
+<a id="geo-in"></a>
 
 ### India
 
 - Not applicable: No transfer election exists: ESOP shares are taxed as a salary perquisite at exercise/allotment and again as capital gains at sale, on statutory timing the holder cannot elect around. ([Income Tax e-filing portal](https://www.incometax.gov.in/iec/foportal/))
 
+<a id="geo-uk"></a>
+
 ### United Kingdom
 
 - The analog election exists with a tighter clock: a section 431 election on restricted employment-related securities must be made within 14 days of acquisition (ITEPA 2003 s 431), and a missed window leaves the restricted-securities charge regime applying as shares vest out of restriction. ([ITEPA 2003 s 431](https://www.legislation.gov.uk/ukpga/2003/1/section/431))
+
+<a id="geo-de"></a>
 
 ### Germany
 
 - Not applicable: No 30-day transfer election exists to miss: employment shares are taxed as income at acquisition on the discount, and the deferral for start-up employee participations (EStG § 19a) is applied through payroll rather than elected by the holder on a filing clock. ([EStG § 19a](https://www.gesetze-im-internet.de/estg/__19a.html))
 
+<a id="geo-fr"></a>
+
 ### France
 
 - Not applicable: No 83(b)-style election exists: qualified instruments (BSPCE, actions gratuites) carry statutory taxing points of their own, so the failure mode is choosing the wrong instrument, not missing a filing window. ([impots.gouv.fr](https://www.impots.gouv.fr/))
+
+<a id="geo-pt"></a>
 
 ### Portugal
 
 - Not applicable: No 30-day election exists: equity awards are taxed under the IRS code's employment-income rules at their statutory moments (the 2023 start-up regime defers qualifying plans to sale), with no holder filing that moves the taxing point. ([Portal das Finanças](https://info.portaldasfinancas.gov.pt/))
 
+<a id="geo-ca"></a>
+
 ### Canada
 
 - Not applicable: No 83(b)-style election exists: employee security benefits are taxed under Income Tax Act section 7 at its own statutory moments (generally exercise/acquisition, with the CCPC deferral to sale), not by a post-grant filing. ([Income Tax Act s 7](https://laws-lois.justice.gc.ca/eng/acts/i-3.3/section-7.html))
+
+<a id="geo-nz"></a>
 
 ### New Zealand
 
 - Not applicable: No transfer election exists: employee share scheme benefits are taxed at the statutory share scheme taxing date (when the shares are no longer at real risk), which the holder cannot accelerate by filing. ([Inland Revenue: employee share schemes](https://www.ird.govt.nz/employee-share-schemes))
 
+<a id="geo-sg"></a>
+
 ### Singapore
 
 - Not applicable: No 30-day election exists: gains from employee share plans are taxed under IRAS's stock-plan rules at vesting/exercise (with deemed-exercise rules for departing foreign employees), on statutory timing. ([IRAS](https://www.iras.gov.sg/))
+
+<a id="geo-au"></a>
 
 ### Australia
 
 - Not applicable: No 83(b)-style election exists: ESS interests are taxed at the Division 83A statutory taxing points (upfront, or deferred to the scheme's deferred taxing point), fixed by the plan's design rather than a holder's filing. ([ITAA 1997 (Div 83A)](https://www.legislation.gov.au/C2004A05138/latest/text))
 
+<a id="geo-kr"></a>
+
 ### South Korea
 
 - Not applicable: No transfer election exists: stock-based compensation is taxed as earned income when the benefit is realized (exercise or vesting), with the venture-company deferral/exemption rules applying by statute rather than election on a 30-day clock. ([National Tax Service (Korea)](https://www.nts.go.kr/english/main.do))
 
+<a id="geo-hk"></a>
+
 ### Hong Kong
 
 - Not applicable: No election exists to miss: share awards and options are salaries-taxed at vesting or exercise under the Inland Revenue Department's share-benefit rules, and there is no capital-gains tax shaping a holding-period decision. ([IRD: salaries tax on share benefits](https://www.ird.gov.hk/eng/tax/ind_sal.htm))
+
+<a id="geo-ee"></a>
 
 ### Estonia
 

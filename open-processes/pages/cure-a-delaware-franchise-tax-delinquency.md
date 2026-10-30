@@ -3,6 +3,10 @@
 
 # Cure a Delaware franchise tax delinquency
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Geography](#geography) · [Steps](#steps-at-a-glance)
+
+## Overview
+
 **Trigger:** A Delaware delinquency notice arrives: the March 1 annual report/franchise tax was missed and good standing is gone or going.
 
 Missing the March 1 annual report and franchise tax (law rule [us-de.franchise-tax-annual-report](../../open-law/US-DE/us-de-franchise-tax-annual-report.json), 8 Del. C. §§ 502, 504) costs a $200 penalty plus 1.5% monthly interest, and the company falls out of good standing. That blocks fundraising diligence and good-standing certificates until you fix it. Fixing it is mechanical. Before paying the authorized-shares bill, recompute with the assumed-par-value method. File the overdue report, pay online, confirm standing is restored, fix your calendar. The deadline and amounts come from the statute; verify on the state's own pages.
@@ -22,68 +26,164 @@ Missing the March 1 annual report and franchise tax (law rule [us-de.franchise-t
 
 Delaware's filing and payment run through the state's own portal (no public filing API); an agent can recompute the assumed-par-value math and fix the reminder calendar.
 
-## Steps
+## Before you start
 
-1. **Read the notice: the missed March 1 filing brings a $200 penalty, 1.5%/month interest, and loss of good standing** — human · ~15 min
+| Information to gather | Required by the record |
+| --- | --- |
+| the delinquency notice and your file number | Yes |
+| issued and authorized share counts + gross assets (for the recompute) | Yes |
 
-   - Do it yourself: [Delaware franchise tax](https://corp.delaware.gov/frtax/)
-2. **Recompute the tax with the assumed-par-value method before panicking at the authorized-shares number** — agent-runnable · ~20 min
+## Geography
 
-   - Do it yourself: [Delaware franchise tax calculator](https://corp.delaware.gov/frtaxcalc/)
-3. **File the overdue annual report and pay online** — manual form/portal · ~30 min
+Country rows describe the guidance recorded here. Local notes and step alternatives do not establish a complete country-specific workflow.
 
-   - Runs the process [File DE franchise tax](file-de-franchise-tax.md)
-   - Do it yourself: [Delaware: pay franchise tax](https://corp.delaware.gov/paytaxes/)
-4. **Confirm good standing is restored on the state's entity search** — manual form/portal · ~10 min
+| Country | Recorded guidance | Steps with local alternatives or resolutions |
+| --- | --- | --- |
+| [India](#geo-in) | Local analog note | — |
+| [United Kingdom](#geo-uk) | Local analog note | — |
+| [Germany](#geo-de) | Local analog note | — |
+| [France](#geo-fr) | Local analog note | — |
+| [Portugal](#geo-pt) | Local analog note | — |
+| [Canada](#geo-ca) | Local analog note | — |
+| [New Zealand](#geo-nz) | Local analog note | — |
+| [Singapore](#geo-sg) | Local analog note | — |
+| [Australia](#geo-au) | Local analog note | — |
+| [South Korea](#geo-kr) | Marked not applicable | — |
+| [Hong Kong](#geo-hk) | Local analog note | — |
+| [Estonia](#geo-ee) | Marked not applicable | — |
 
-   - Do it yourself: [Delaware entity status search](https://icis.corp.delaware.gov/ecorp2/services/t/getcompanystatus)
-5. **Fix the root cause: calendar March 1 and confirm your registered agent's reminders reach you** — agent-runnable · ~15 min
+## Steps at a glance
 
-## By country
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
+
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Read the notice: the missed March 1 filing brings a $200 penalty, 1.5%/month interest, and loss of good standing](#step-1) | human | ~15 min | Entry step |
+| [2. Recompute the tax with the assumed-par-value method before panicking at the authorized-shares number](#step-2) | agent-runnable | ~20 min | [Step 1](#step-1) |
+| [3. File the overdue annual report and pay online](#step-3) | manual form/portal | ~30 min | [Step 2](#step-2) |
+| [4. Confirm good standing is restored on the state's entity search](#step-4) | manual form/portal | ~10 min | [Step 3](#step-3) |
+| [5. Fix the root cause: calendar March 1 and confirm your registered agent's reminders reach you](#step-5) | agent-runnable | ~15 min | [Step 4](#step-4) |
+
+<a id="steps"></a>
+
+## Step details
+
+<a id="step-1"></a>
+
+### 1. Read the notice: the missed March 1 filing brings a $200 penalty, 1.5%/month interest, and loss of good standing
+
+human · ~15 min
+
+
+- Do it yourself: [Delaware franchise tax](https://corp.delaware.gov/frtax/)
+
+<a id="step-2"></a>
+
+### 2. Recompute the tax with the assumed-par-value method before panicking at the authorized-shares number
+
+agent-runnable · ~20 min
+
+
+- Do it yourself: [Delaware franchise tax calculator](https://corp.delaware.gov/frtaxcalc/)
+
+<a id="step-3"></a>
+
+### 3. File the overdue annual report and pay online
+
+manual form/portal · ~30 min
+
+
+- Runs the process [File DE franchise tax](file-de-franchise-tax.md)
+- Do it yourself: [Delaware: pay franchise tax](https://corp.delaware.gov/paytaxes/)
+
+<a id="step-4"></a>
+
+### 4. Confirm good standing is restored on the state's entity search
+
+manual form/portal · ~10 min
+
+
+- Do it yourself: [Delaware entity status search](https://icis.corp.delaware.gov/ecorp2/services/t/getcompanystatus)
+
+<a id="step-5"></a>
+
+### 5. Fix the root cause: calendar March 1 and confirm your registered agent's reminders reach you
+
+agent-runnable · ~15 min
+
+
+
+<a id="by-country"></a>
+
+## Country details
+
+<a id="geo-in"></a>
 
 ### India
 
 - MCA's annual filings (AOC-4 accounts, MGT-7 annual return) accrue additional fees of ₹100 per day per form once late — no cap — and persistent default risks director disqualification; the cure is filing the overdue forms with the accrued fees. ([India NSWS (MCA compliance)](https://www.nsws.gov.in/))
 
+<a id="geo-uk"></a>
+
 ### United Kingdom
 
 - The analog is the overdue confirmation statement or accounts at Companies House: late accounts trigger automatic penalties (from £150, doubled when late two years running) and a long-overdue confirmation statement starts the strike-off path — cure by filing online, then fix the reminders. ([Companies House — late filing penalties](https://www.gov.uk/government/publications/late-filing-penalties))
+
+<a id="geo-de"></a>
 
 ### Germany
 
 - Miss the Offenlegung (disclosure) of annual accounts and the Bundesamt für Justiz opens Ordnungsgeld proceedings — from €2,500, repeatable, after a six-week grace notice — so the cure is filing in the Unternehmensregister before the next escalation. ([Unternehmensregister (filing portal)](https://www.unternehmensregister.de/))
 
+<a id="geo-fr"></a>
+
 ### France
 
 - The analog is the overdue dépôt des comptes annuels at the greffe: the president of the tribunal de commerce can order the filing under daily penalty (astreinte), and the cure is simply depositing the accounts through the one-stop formalities channel. ([Dépôt des comptes annuels (service-public)](https://entreprendre.service-public.fr/vosdroits/F31214))
+
+<a id="geo-pt"></a>
 
 ### Portugal
 
 - The delinquency analog is a missed IES or Modelo 22: tax-authority fines (coimas) follow and the registry record goes stale — the cure is filing the overdue declarations through the portal, with reduced fines for voluntary regularisation. ([Portal das Finanças — regularisation](https://www.portaldasfinancas.gov.pt/))
 
+<a id="geo-ca"></a>
+
 ### Canada
 
 - Miss the Corporations Canada annual return and the corporation drifts toward administrative dissolution — the cure is filing the overdue return online (and a dissolved corporation can be revived, at more cost and paperwork). ([Corporations Canada — annual return](https://ised-isde.canada.ca/site/corporations-canada/en/keep-your-corporation-good-shape/annual-return))
+
+<a id="geo-nz"></a>
 
 ### New Zealand
 
 - The analog is the overdue annual return: miss your allocated filing month and the Registrar may start removing the company from the Companies Register — filing the return (and objecting if removal has begun) is the cure. ([Complete your annual return — Companies Register](https://companies-register.companiesoffice.govt.nz/help-centre/company-annual-returns/completing-an-annual-return/))
 
+<a id="geo-sg"></a>
+
 ### Singapore
 
 - The analog is an overdue ACRA annual return: late filing draws penalties of up to $600 per return and sustained default can end in striking off — cure by filing the return and paying the penalty through Bizfile. ([ACRA — late annual return penalties](https://www.acra.gov.sg/manage/companies/legal-requirements-common-offences/filing-annual-returns-companies/penalties-enforcement-late-annual-return-filing/))
+
+<a id="geo-au"></a>
 
 ### Australia
 
 - The analog is an overdue ASIC annual review: a late review fee stacks ASIC late fees in two tiers, and prolonged non-payment ends in ASIC-initiated deregistration — cure by paying through the company portal, then fix the review-date reminders. ([ASIC late fees](https://asic.gov.au/for-business-and-companies/forms-and-fees/late-fees))
 
+<a id="geo-kr"></a>
+
 ### South Korea
 
 - Not applicable: There is no annual franchise-tax ritual to fall behind on: Korean corporate existence does not depend on an annual state fee. Local-tax arrears (registration licence tax, the corporate resident tax) are settled with the municipality through WeTax. ([WeTax (local taxes)](https://www.wetax.go.kr/))
 
+<a id="geo-hk"></a>
+
 ### Hong Kong
 
 - The analog is an overdue annual return: the NAR1 registration fee climbs on a published ladder (HK$870 within 3 months after the 42-day window, up to HK$3,480 past 9 months), late delivery is an offence, and the cure is filing the return with the higher fee. ([Companies Registry — annual return (private company)](https://www.cr.gov.hk/en/compliance/annual-return/private-company.htm))
+
+<a id="geo-ee"></a>
 
 ### Estonia
 

@@ -3,6 +3,10 @@
 
 # Issue a refund
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Steps](#steps-at-a-glance)
+
+## Overview
+
 Refund a customer charge, behind an approval gate.
 
 | Field | Value |
@@ -19,34 +23,66 @@ Refund a customer charge, behind an approval gate.
 
 Refunds are a single API call — an agent can issue one behind an approval gate.
 
-## Steps
+<a id="artifacts"></a>
 
-1. **Locate the charge and check it against the refund policy** — agent-runnable · ~2 min
+## Before you start
 
-   Locate the customer’s payment and check settled amount, currency, previous refunds and active disputes. Compare the request with the contract and refund policy, using the support history to establish the reason. Calculate the proposed full or partial refund and identify exceptions needing the refund owner’s decision before money is returned.
-
-   - Canonical vendor: Stripe
-   - Vendor options: Stripe
-   - Ranked market: [payments](../../open-rankings/payments)
-   - Sources: [Stripe refunds documentation](https://docs.stripe.com/refunds)
-2. **Issue the refund (approval)** — agent-runnable · ~1 min · human approval required · irreversible
-
-   The authorized refund owner decides the amount against the original charge, policy and any prior refund or dispute. Submit the approved refund through the provider’s supported route and follow its actual status. Pending or failed requests need investigation before retrying. Reconcile the final result to the customer balance and books, checking for duplicate reimbursement when a request’s outcome is uncertain.
-
-   - Canonical vendor: Stripe
-   - Sources: [Stripe refunds documentation](https://docs.stripe.com/refunds)
-3. **Notify the customer and log the reason** — agent-runnable · ~2 min
-
-   Tell the customer the refund amount, currency and actual status through the support or finance contact handling the case. Use a timing estimate only when the provider supports it, and explain any further action needed. Link the reason and refund reference to the customer history and accounting record, following pending or failed refunds until the outcome is clear.
-
-   - Cross-arena market: [email](../../open-rankings/email)
-   - Sources: [Stripe refunds documentation](https://docs.stripe.com/refunds)
-
-## Artifacts
-
-Requires:
+Required artifacts:
 
 - Payment processor account — from [Connect a payment processor](connect-a-payment-processor.md)
+
+## Steps at a glance
+
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
+
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Locate the charge and check it against the refund policy](#step-1) | agent-runnable | ~2 min | Entry step |
+| [2. Issue the refund (approval)](#step-2) | agent-runnable; approval required | ~1 min | [Step 1](#step-1) |
+| [3. Notify the customer and log the reason](#step-3) | agent-runnable | ~2 min | [Step 2](#step-2) |
+
+<a id="steps"></a>
+
+## Step details
+
+<a id="step-1"></a>
+
+### 1. Locate the charge and check it against the refund policy
+
+agent-runnable · ~2 min
+
+
+Locate the customer’s payment and check settled amount, currency, previous refunds and active disputes. Compare the request with the contract and refund policy, using the support history to establish the reason. Calculate the proposed full or partial refund and identify exceptions needing the refund owner’s decision before money is returned.
+
+- Canonical vendor: Stripe
+- Vendor options: Stripe
+- Ranked market: [payments](../../open-rankings/payments)
+- Sources: [Stripe refunds documentation](https://docs.stripe.com/refunds)
+
+<a id="step-2"></a>
+
+### 2. Issue the refund (approval)
+
+agent-runnable · ~1 min · human approval required · irreversible
+
+
+The authorized refund owner decides the amount against the original charge, policy and any prior refund or dispute. Submit the approved refund through the provider’s supported route and follow its actual status. Pending or failed requests need investigation before retrying. Reconcile the final result to the customer balance and books, checking for duplicate reimbursement when a request’s outcome is uncertain.
+
+- Canonical vendor: Stripe
+- Sources: [Stripe refunds documentation](https://docs.stripe.com/refunds)
+
+<a id="step-3"></a>
+
+### 3. Notify the customer and log the reason
+
+agent-runnable · ~2 min
+
+
+Tell the customer the refund amount, currency and actual status through the support or finance contact handling the case. Use a timing estimate only when the provider supports it, and explain any further action needed. Link the reason and refund reference to the customer history and accounting record, following pending or failed refunds until the outcome is clear.
+
+- Cross-arena market: [email](../../open-rankings/email)
+- Sources: [Stripe refunds documentation](https://docs.stripe.com/refunds)
+
 
 ## Related records
 

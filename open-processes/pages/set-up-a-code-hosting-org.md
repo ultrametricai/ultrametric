@@ -3,6 +3,10 @@
 
 # Set up a code hosting org
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Steps](#steps-at-a-glance) · [Outputs](#outputs)
+
+## Overview
+
 Create the code hosting organization, configure repos, branch protection, and team access. GitHub is the canonical route.
 
 | Field | Value |
@@ -19,50 +23,101 @@ Create the code hosting organization, configure repos, branch protection, and te
 
 GitHub API and MCP fully support org/repo/team management.
 
-## Steps
+## Before you start
 
-1. **Create your code hosting organization** — manual form/portal · ~5 min · human approval required
+| Information to gather | Required by the record |
+| --- | --- |
+| name | Yes |
+| engineers | Yes |
 
-   Use an existing company organization where appropriate; otherwise create one within the engineering owner's account and spending authority. Establish company-controlled billing and recovery, with more than one authorized person able to maintain administration. Set repository-creation and member access defaults before adding code. Verify that an ordinary contributor can complete the intended work with the assigned role, and test owner access separately.
+## Steps at a glance
 
-   - Produces: Code hosting organization
-   - Canonical vendor: GitHub
-   - Vendor options: GitHub
-   - Ranked market: [code-hosting](../../open-rankings/code-hosting)
-   - Sources: [Best practices for GitHub organizations](https://docs.github.com/en/organizations/collaborating-with-groups-in-organizations/best-practices-for-organizations)
-2. **Create repositories** — agent-runnable · ~5 min · human approval required
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
 
-   Create repositories for the actual code boundaries, with the visibility and ownership authorized for each. Check the initial files and imported history for secrets and private material before publishing them. Add the ignore rules and setup commands a new contributor needs, then clone into a clean location and try those commands. Fix missing tracked files or undocumented configuration before treating the repository as ready for another developer.
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Create your code hosting organization](#step-1) | manual form/portal; approval required | ~5 min | Entry step |
+| [2. Create repositories](#step-2) | agent-runnable; approval required | ~5 min | [Step 1](#step-1) |
+| [3. Configure branch protection](#step-3) | agent-runnable; approval required | ~5 min | [Step 2](#step-2) |
+| [4. Create teams and set access](#step-4) | agent-runnable; approval required | ~5 min | [Step 2](#step-2) |
+| [5. Invite team members](#step-5) | agent-runnable; approval required | ~3 min | [Step 4](#step-4) |
 
-   - Canonical vendor: GitHub
-   - Sources: [Best practices for GitHub organizations](https://docs.github.com/en/organizations/collaborating-with-groups-in-organizations/best-practices-for-organizations) · [GitHub Actions secure use reference](https://docs.github.com/en/actions/reference/security/secure-use)
-   - Next: steps 3 and 4 — all follow this step
-3. **Configure branch protection** — agent-runnable · ~5 min · human approval required
+<a id="steps"></a>
 
-   Protect the branches used for releases with the team's required reviews and checks. Inspect bypass rights as carefully as the main rule and confirm the chosen repository plan supports the controls. Apply the maintainer's agreed policy, then use test pull requests to check a failed job, a missing review and a normal approved change. Match required check names to real jobs so an accidental mismatch does not block every merge.
+## Step details
 
-   - Canonical vendor: GitHub
-   - Sources: [About protected branches](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches)
+<a id="step-1"></a>
 
-   *This path ends here.*
-4. **Create teams and set access** — agent-runnable · ~5 min · human approval required
+### 1. Create your code hosting organization
 
-   *Follows step 2.*
+manual form/portal · ~5 min · human approval required
 
-   Map contribution, administration and external collaboration to teams with the necessary repository access. Apply the repository owners' approved grants, then inspect effective access for representative members, including permissions inherited through other teams. Look for an ordinary contributor who can administer repositories or an outside collaborator who can see unrelated code. Give each team a membership owner responsible for updating grants during onboarding, role changes and departures.
 
-   - Canonical vendor: GitHub
-   - Sources: [Best practices for GitHub organizations](https://docs.github.com/en/organizations/collaborating-with-groups-in-organizations/best-practices-for-organizations)
-5. **Invite team members** — agent-runnable · ~3 min · human approval required
+Use an existing company organization where appropriate; otherwise create one within the engineering owner's account and spending authority. Establish company-controlled billing and recovery, with more than one authorized person able to maintain administration. Set repository-creation and member access defaults before adding code. Verify that an ordinary contributor can complete the intended work with the assigned role, and test owner access separately.
 
-   Match each invitation to the approved person's account, team and access duration. Reuse existing authorization for those invitations; resolve only changed recipients, roles or external access with the team owner. Track acceptance and identity mismatches, then have a new member try the expected repository and contribution path. Check their effective permissions after joining, particularly whether inherited membership grants unintended administration.
+- Produces: Code hosting organization
+- Canonical vendor: GitHub
+- Vendor options: GitHub
+- Ranked market: [code-hosting](../../open-rankings/code-hosting)
+- Sources: [Best practices for GitHub organizations](https://docs.github.com/en/organizations/collaborating-with-groups-in-organizations/best-practices-for-organizations)
 
-   - Canonical vendor: GitHub
-   - Sources: [Best practices for GitHub organizations](https://docs.github.com/en/organizations/collaborating-with-groups-in-organizations/best-practices-for-organizations)
+<a id="step-2"></a>
 
-## Artifacts
+### 2. Create repositories
 
-Produces:
+agent-runnable · ~5 min · human approval required
+
+
+Create repositories for the actual code boundaries, with the visibility and ownership authorized for each. Check the initial files and imported history for secrets and private material before publishing them. Add the ignore rules and setup commands a new contributor needs, then clone into a clean location and try those commands. Fix missing tracked files or undocumented configuration before treating the repository as ready for another developer.
+
+- Canonical vendor: GitHub
+- Sources: [Best practices for GitHub organizations](https://docs.github.com/en/organizations/collaborating-with-groups-in-organizations/best-practices-for-organizations) · [GitHub Actions secure use reference](https://docs.github.com/en/actions/reference/security/secure-use)
+- Next: steps 3 and 4 — all follow this step
+
+<a id="step-3"></a>
+
+### 3. Configure branch protection
+
+agent-runnable · ~5 min · human approval required
+
+
+Protect the branches used for releases with the team's required reviews and checks. Inspect bypass rights as carefully as the main rule and confirm the chosen repository plan supports the controls. Apply the maintainer's agreed policy, then use test pull requests to check a failed job, a missing review and a normal approved change. Match required check names to real jobs so an accidental mismatch does not block every merge.
+
+- Canonical vendor: GitHub
+- Sources: [About protected branches](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches)
+
+*This path ends here.*
+
+<a id="step-4"></a>
+
+### 4. Create teams and set access
+
+agent-runnable · ~5 min · human approval required
+
+
+*Follows step 2.*
+
+Map contribution, administration and external collaboration to teams with the necessary repository access. Apply the repository owners' approved grants, then inspect effective access for representative members, including permissions inherited through other teams. Look for an ordinary contributor who can administer repositories or an outside collaborator who can see unrelated code. Give each team a membership owner responsible for updating grants during onboarding, role changes and departures.
+
+- Canonical vendor: GitHub
+- Sources: [Best practices for GitHub organizations](https://docs.github.com/en/organizations/collaborating-with-groups-in-organizations/best-practices-for-organizations)
+
+<a id="step-5"></a>
+
+### 5. Invite team members
+
+agent-runnable · ~3 min · human approval required
+
+
+Match each invitation to the approved person's account, team and access duration. Reuse existing authorization for those invitations; resolve only changed recipients, roles or external access with the team owner. Track acceptance and identity mismatches, then have a new member try the expected repository and contribution path. Check their effective permissions after joining, particularly whether inherited membership grants unintended administration.
+
+- Canonical vendor: GitHub
+- Sources: [Best practices for GitHub organizations](https://docs.github.com/en/organizations/collaborating-with-groups-in-organizations/best-practices-for-organizations)
+
+
+<a id="artifacts"></a>
+
+## Outputs
 
 - Code hosting organization
 

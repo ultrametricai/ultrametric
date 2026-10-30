@@ -3,6 +3,10 @@
 
 # Handle a press crisis
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Steps](#steps-at-a-glance)
+
+## Overview
+
 **Trigger:** A negative story is live and spreading: press coverage, a viral thread, or a review pile-on names your company.
 
 Verify before you respond. Collect what is actually said, separate factual errors from unfavorable-but-true reporting, and timestamp the spread; the response to a wrong fact and the response to a true story are different moves. One spokesperson speaks; everyone else routes inquiries and posts nothing. For factual errors, request corrections through the outlet's own channel with the evidence attached; newsroom ethics codes commit journalists to prompt correction (the SPJ code is the reference). Any statement touching a dispute, a regulator, or a named individual goes through legal review first; the statement outlives the news cycle. Respond once, factually, in one place, and link to it everywhere else; arguing in every thread refreshes the story. Tell customers and the team the same thing you told the public. Monitoring is agent work; the judgment calls are not. Nothing here is legal advice.
@@ -22,37 +26,109 @@ Verify before you respond. Collect what is actually said, separate factual error
 
 Claim verification and monitoring run as agent work from supplied links and alert feeds; the spokesperson role, the correction requests, legal review, and the single public response are human calls.
 
-## Steps
+## Before you start
 
-1. **Verify before responding: collect the claims, separate factual errors from unfavorable-but-true reporting, and timestamp the spread** — human · ~45 min
+| Information to gather | Required by the record |
+| --- | --- |
+| links to the coverage and threads, with timestamps | Yes |
+| the facts in dispute, with the documents that prove or correct them | Yes |
 
-   - Next: steps 2 and 3 — all follow this step
-2. **Name one spokesperson; everyone else routes inquiries there and posts nothing** — human · ~15 min
+## Steps at a glance
 
-   - If "The coverage contains identified factual errors": continue at step 4
-   - Next: continue at step 5
-3. **Stand up monitoring: alerts and feeds for the story's spread, so responses track reality rather than anxiety** — agent-runnable · ~30 min
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
 
-   *Follows step 1.*
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Verify before responding: collect the claims, separate factual errors from unfavorable-but-true reporting, and timestamp the spread](#step-1) | human | ~45 min | Entry step |
+| [2. Name one spokesperson; everyone else routes inquiries there and posts nothing](#step-2) | human | ~15 min | [Step 1](#step-1) |
+| [3. Stand up monitoring: alerts and feeds for the story's spread, so responses track reality rather than anxiety](#step-3) | agent-runnable | ~30 min | [Step 1](#step-1) |
+| [4. For factual errors, request corrections through the outlet's own channel, with the evidence attached](#step-4) | human | ~45 min | [Step 2](#step-2) (The coverage contains identified factual errors) |
+| [5. Legal review before any public statement that touches a dispute, a regulator, or a named individual](#step-5) | human | ~30 min | [Step 2](#step-2) |
+| [6. Respond once, factually, in one place; link to it everywhere else rather than arguing in every thread](#step-6) | human | ~45 min | [Step 5](#step-5) |
+| [7. Tell customers and the team the same thing you told the public](#step-7) | human | ~30 min | [Step 6](#step-6) |
+| [8. Let the cycle pass: keep monitoring, correct new factual errors, and write the postmortem](#step-8) | human; includes waiting | ~7 d | Alternatives: [Step 4](#step-4); [Step 7](#step-7); [Step 3](#step-3) |
 
-   - Do it yourself: [Google Alerts](https://www.google.com/alerts)
-   - Next: continue at step 8
-4. **For factual errors, request corrections through the outlet's own channel, with the evidence attached** — human · ~45 min
+<a id="steps"></a>
 
-   *Follows step 2 (when The coverage contains identified factual errors).*
+## Step details
 
-   When: The coverage contains identified factual errors
+<a id="step-1"></a>
 
-   - Do it yourself: [SPJ Code of Ethics (accuracy and corrections)](https://www.spj.org/spj-code-of-ethics/)
-   - Next: continue at step 8
-5. **Legal review before any public statement that touches a dispute, a regulator, or a named individual** — human · ~30 min
+### 1. Verify before responding: collect the claims, separate factual errors from unfavorable-but-true reporting, and timestamp the spread
 
-   *Follows step 2.*
-6. **Respond once, factually, in one place; link to it everywhere else rather than arguing in every thread** — human · ~45 min · hard to undo
-7. **Tell customers and the team the same thing you told the public** — human · ~30 min
-8. **Let the cycle pass: keep monitoring, correct new factual errors, and write the postmortem** — human · ~7 d · async wait
+human · ~45 min
 
-   *Follows step 3 or step 4 or step 7.*
+
+- Next: steps 2 and 3 — all follow this step
+
+<a id="step-2"></a>
+
+### 2. Name one spokesperson; everyone else routes inquiries there and posts nothing
+
+human · ~15 min
+
+
+- If "The coverage contains identified factual errors": continue at step 4
+- Next: continue at step 5
+
+<a id="step-3"></a>
+
+### 3. Stand up monitoring: alerts and feeds for the story's spread, so responses track reality rather than anxiety
+
+agent-runnable · ~30 min
+
+
+*Follows step 1.*
+
+- Do it yourself: [Google Alerts](https://www.google.com/alerts)
+- Next: continue at step 8
+
+<a id="step-4"></a>
+
+### 4. For factual errors, request corrections through the outlet's own channel, with the evidence attached
+
+human · ~45 min
+
+
+*Follows step 2 (when The coverage contains identified factual errors).*
+
+When: The coverage contains identified factual errors
+
+- Do it yourself: [SPJ Code of Ethics (accuracy and corrections)](https://www.spj.org/spj-code-of-ethics/)
+- Next: continue at step 8
+
+<a id="step-5"></a>
+
+### 5. Legal review before any public statement that touches a dispute, a regulator, or a named individual
+
+human · ~30 min
+
+
+*Follows step 2.*
+
+<a id="step-6"></a>
+
+### 6. Respond once, factually, in one place; link to it everywhere else rather than arguing in every thread
+
+human · ~45 min · hard to undo
+
+
+<a id="step-7"></a>
+
+### 7. Tell customers and the team the same thing you told the public
+
+human · ~30 min
+
+
+<a id="step-8"></a>
+
+### 8. Let the cycle pass: keep monitoring, correct new factual errors, and write the postmortem
+
+human · ~7 d · async wait
+
+
+*Follows step 3 or step 4 or step 7.*
+
 
 ---
 

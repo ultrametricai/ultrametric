@@ -3,6 +3,10 @@
 
 # Set up team chat
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Steps](#steps-at-a-glance) · [Outputs](#outputs)
+
+## Overview
+
 Create the team chat workspace, configure channels, set up integrations. Slack is the canonical route.
 
 | Field | Value |
@@ -19,40 +23,84 @@ Create the team chat workspace, configure channels, set up integrations. Slack i
 
 Slack API supports channel/user management. Workspace creation is manual. MCP integration available.
 
-## Steps
+## Before you start
 
-1. **Create the team chat workspace** — manual form/portal · ~10 min · human approval required
+| Information to gather | Required by the record |
+| --- | --- |
+| members | Yes |
+| team departments | Optional |
 
-   Check for an existing company chat workspace before creating another. Set the company name, workspace address, administrator, and account-recovery contact using company-controlled identities. Choose a plan that fits the agreed seat count and required features, with the budget owner's approval for paid commitments. Establish initial membership and visibility settings, then put the workspace link in the team's onboarding material.
+## Steps at a glance
 
-   - Produces: Team chat workspace
-   - Canonical vendor: Slack
-   - Vendor options: Slack
-   - Ranked market: [team-chat](../../open-rankings/team-chat)
-2. **Create default channels** — agent-runnable · ~5 min · human approval required
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
 
-   Create a small channel set around the team's actual work: company announcements, active projects, operational questions, and any restricted discussions. Give each channel a short purpose and an owner for keeping it useful. Choose public or private visibility from the content and audience, then add a simple guide showing where a routine question, project update, or urgent issue belongs. Avoid empty channels created for hypothetical future teams.
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Create the team chat workspace](#step-1) | manual form/portal; approval required | ~10 min | Entry step |
+| [2. Create default channels](#step-2) | agent-runnable; approval required | ~5 min | [Step 1](#step-1) |
+| [3. Invite team members](#step-3) | agent-runnable; approval required | ~5 min | [Step 2](#step-2) |
+| [4. Configure notification defaults](#step-4) | agent-runnable | ~5 min | [Step 2](#step-2) |
 
-   - Canonical vendor: Slack
-   - Next: steps 3 and 4 — all follow this step
-3. **Invite team members** — agent-runnable · ~5 min · human approval required
+<a id="steps"></a>
 
-   Match the team roster to existing workspace members and prepare the remaining invitations with the correct company addresses and roles. Check guest and administrator access separately from ordinary membership. Have the workspace administrator confirm the invite list before sending, including any extra paid seats. Send newcomers the starting channels and onboarding link, and follow up on failed or unaccepted invitations with the person joining.
+## Step details
 
-   - Canonical vendor: Slack
+<a id="step-1"></a>
 
-   *This path ends here.*
-4. **Configure notification defaults** — agent-runnable · ~5 min
+### 1. Create the team chat workspace
 
-   *Follows step 2.*
+manual form/portal · ~10 min · human approval required
 
-   Agree which channels or mentions need prompt attention and which can be read during normal work, taking time zones into account. Set shared defaults where the service supports them and explain the personal settings each teammate controls. Check a representative announcement or mention with a colleague to see whether it arrives as intended. Document whom to contact and how when an urgent issue needs attention.
 
-   - Canonical vendor: Slack
+Check for an existing company chat workspace before creating another. Set the company name, workspace address, administrator, and account-recovery contact using company-controlled identities. Choose a plan that fits the agreed seat count and required features, with the budget owner's approval for paid commitments. Establish initial membership and visibility settings, then put the workspace link in the team's onboarding material.
 
-## Artifacts
+- Produces: Team chat workspace
+- Canonical vendor: Slack
+- Vendor options: Slack
+- Ranked market: [team-chat](../../open-rankings/team-chat)
 
-Produces:
+<a id="step-2"></a>
+
+### 2. Create default channels
+
+agent-runnable · ~5 min · human approval required
+
+
+Create a small channel set around the team's actual work: company announcements, active projects, operational questions, and any restricted discussions. Give each channel a short purpose and an owner for keeping it useful. Choose public or private visibility from the content and audience, then add a simple guide showing where a routine question, project update, or urgent issue belongs. Avoid empty channels created for hypothetical future teams.
+
+- Canonical vendor: Slack
+- Next: steps 3 and 4 — all follow this step
+
+<a id="step-3"></a>
+
+### 3. Invite team members
+
+agent-runnable · ~5 min · human approval required
+
+
+Match the team roster to existing workspace members and prepare the remaining invitations with the correct company addresses and roles. Check guest and administrator access separately from ordinary membership. Have the workspace administrator confirm the invite list before sending, including any extra paid seats. Send newcomers the starting channels and onboarding link, and follow up on failed or unaccepted invitations with the person joining.
+
+- Canonical vendor: Slack
+
+*This path ends here.*
+
+<a id="step-4"></a>
+
+### 4. Configure notification defaults
+
+agent-runnable · ~5 min
+
+
+*Follows step 2.*
+
+Agree which channels or mentions need prompt attention and which can be read during normal work, taking time zones into account. Set shared defaults where the service supports them and explain the personal settings each teammate controls. Check a representative announcement or mention with a colleague to see whether it arrives as intended. Document whom to contact and how when an urgent issue needs attention.
+
+- Canonical vendor: Slack
+
+
+<a id="artifacts"></a>
+
+## Outputs
 
 - Team chat workspace
 

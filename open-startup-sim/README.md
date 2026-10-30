@@ -112,3 +112,5 @@ against the live corpus, the assumption phrasing, and the permalink codec.
 Gate: `pnpm test lib/__tests__/virtualStartup.test.ts lib/__tests__/virtualStartupRun.test.ts lib/__tests__/virtualStartupLinkage.test.ts`.
 
 This area's maturity grade and known gaps are tracked in [`coverage/index.json`](../coverage/index.json).
+
+The yearly view includes common recurring controls from the startup task inventory. Conditional debt, grant, external-audit, intercompany-tax, indirect-tax-return and physical-stock work stays outside the simulated year until the profile carries the facts needed to activate it. The exclusion reasons are explicit in `YEAR_SWEEP_EXCLUSIONS` in `lib/virtualStartup.ts`.
