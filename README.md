@@ -65,9 +65,36 @@ listed on it, with their judged scores. See it live at
 
 ### Examples
 
+The diagrams are generated from the linked process definitions, preserving their step
+dependencies, execution assessments, estimates and explicit approval or signature markers.
+The guides include applicability, alternatives and verification details.
+
 - [Incorporate C-Corp](open-processes/pages/incorporate-c-corp.md) — set up a Delaware C-corp, filing to signed 83(b)
+
+<details open>
+<summary>Incorporate C-Corp: process diagram</summary>
+
+[![Incorporate C-Corp: canonical steps, dependencies and execution assessments](open-processes/assets/incorporate-c-corp.svg)](open-processes/pages/incorporate-c-corp.md)
+
+</details>
+
 - [Get a 409A valuation](open-processes/pages/get-a-409a-valuation.md) — establish the fair market value for stock options
+
+<details open>
+<summary>Get a 409A valuation: process diagram</summary>
+
+[![Get a 409A valuation: canonical steps, dependencies and execution assessments](open-processes/assets/get-a-409a-valuation.svg)](open-processes/pages/get-a-409a-valuation.md)
+
+</details>
+
 - [Set up mailing address](open-processes/pages/set-up-mailing-address.md) — a business mailing address for legal and banking purposes
+
+<details open>
+<summary>Set up mailing address: process diagram</summary>
+
+[![Set up mailing address: canonical steps, dependencies and execution assessments](open-processes/assets/set-up-mailing-address.svg)](open-processes/pages/set-up-mailing-address.md)
+
+</details>
 
 [![The Incorporate C-Corp process: the step diagram, steps with ranked vendor options](assets/readme/process-page.png)](https://ultrametric.ai/processes/incorporate-c-corp)
 
@@ -193,6 +220,11 @@ automatically.
 - [Get EIN](open-processes/pages/get-ein.md) — in the UK, France, Portugal, and Canada the tax ID arrives automatically with incorporation; in Germany it is its own filing with the tax office
 - [Set up an LLC](open-processes/pages/set-up-an-llc.md) — the analog shifts by country (LLP in the UK and India, UG in Germany, SARL in France) and Canada and New Zealand have no LLC at all
 
+[![Founder country switch: the authored country treatments for company tax identifiers and LLC setup](open-processes/assets/founder-country-switch.svg)](open-processes/pages/get-ein.md#geography)
+
+Read the country guidance for [company tax identifiers](open-processes/pages/get-ein.md#geography)
+and [LLC setup](open-processes/pages/set-up-an-llc.md#geography).
+
 ## Open lore
 
 Lore is the [advice](open-lore/) founders actually pass around and the [stories](open-lore/LORE.md)
@@ -233,6 +265,8 @@ rich-versus-king. The acquisition stories (WhatsApp, Twitch, MySpace) are in
 [`open-lore/LORE.md`](open-lore/LORE.md) with lessons and sources, and the waterfall
 module computes who gets what at any price. The [acquisition guide](open-processes/pages/sell-the-company-through-an-acquisition.md) covers the operational path from sale preparation through closing and post-close obligations, with qualified advisers owning the transaction decisions.
 
+[![Acquisition process: preparation, approvals, diligence, closing and post-close obligations](open-processes/assets/sell-the-company-through-an-acquisition.svg)](open-processes/pages/sell-the-company-through-an-acquisition.md)
+
 ## Open law
 
 Map the [law](open-law/) that applies to startups, across jurisdictions, and connect it to
@@ -261,6 +295,12 @@ requiring a named human approval on the filing; and the
 [83(b) election math module](open-modules/README.md#83b-election-math) computes
 tax-at-grant against tax-at-vesting, replaying the IRS revenue-procedure examples in
 tests.
+
+[![The 83(b) election: related law, workflow, calculation module and private outputs, with conditional filing and scoped recipient approvals](open-processes/assets/83b-election-map.svg)](open-processes/pages/consider-a-section-83-b-election-after-a-restricted-property-transfer.md)
+
+[Read the scoped 83(b) workflow](open-processes/pages/consider-a-section-83-b-election-after-a-restricted-property-transfer.md)
+for applicability, stop conditions and recipient approvals. The diagram summarizes the
+existing demonstration workflow.
 
 ## Government services and startups
 
@@ -313,6 +353,11 @@ behind the decisions. Two stages as examples:
 - Artifacts: the marketing email audience and subscription billing in the [registry](open-artifacts/registry.json)
 - Lore: the [library's](open-lore/library.json) growth and distribution readings, distilled in [growth, people and spending](open-law/LAWS.md#growth-people-and-spending)
 - Law: the [CAN-SPAM requirements](open-law/US-FED/us-fed-can-spam-requirements.json) on the sends
+
+[![Formation and Growth: the README selections of processes, vendors, modules, artifacts, lore and law](open-processes/assets/formation-and-growth-map.svg)](open-processes/README.md)
+
+Explore the [process index](open-processes/README.md), [calculation modules](open-modules/README.md)
+and [artifact guide](open-artifacts/README.md) through their linked entries.
 
 <a id="install-ultrametric"></a>
 
