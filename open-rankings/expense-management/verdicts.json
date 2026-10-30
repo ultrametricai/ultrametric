@@ -639,14 +639,13 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Brex offers an official MCP server that lets AI assistants \"manage expenses\" and review transactions, plus a transactions API for reading spend data, so an external agent can pull expense and transaction data. Policy-violation data is exposed only on travel booking objects. Brex's own built-in AI agents categorize spend and flag violations, but that is first-party automation, not an external agent pushing coding back through the API. Missing for 10: a documented filter for uncoded or uncategorized transactions, documented API/MCP write-back of categories or GL coding into a review queue, policy flags on general card transactions (not just travel bookings), and independent or hands-on corroboration.",
+    "rationale": "Brex documents an official MCP server that lets AI assistants \"manage expenses\" and review transactions, plus a Transactions API, so an external agent can pull expense and transaction data. However, the Transactions API is described as view-only. Nothing shows an external agent filtering for uncoded items or writing categories, GL coding or policy flags back for review. The AI categorization and audit features belong to Brex's own built-in agents, not to an API or MCP surface. The only policy data exposed via API is a read-only travel-booking `policy` field. Missing for 10: documented API/MCP query for uncoded transactions, documented write-back endpoints for categories, accounting codes and policy flags, a review-queue handoff for agent-proposed coding, and independent hands-on corroboration.",
     "evidenceIds": [
       "brex-docs-3",
-      "brex-docs-4",
-      "brex-docs-6",
-      "brex-docs-7",
+      "brex-docs-24",
       "brex-probe-3",
-      "brex-docs-41"
+      "brex-docs-4",
+      "brex-docs-6"
     ]
   },
   {
@@ -671,7 +670,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Brex documents AI working on account data inside the product. It suggests matching POs and drafts payments, an audit agent ranks potential policy violations by risk level, and AI assistants write memos, offer policy help and categorize spend. Missing for 10: analytical insights such as spend trends, forecasts or savings recommendations are not evidenced; there are no in-depth docs beyond marketing pages; there is no independent or hands-on corroboration.",
+    "rationale": "Brex documents in-product AI that produces suggestions and insights from the customer's own data. Brex AI suggests the matching PO and drafts payments. An audit agent flags potential expense violations and categorizes them by risk level. A review agent escalates exceptions, and AI assistants write memos and offer policy help. Missing for 10: broader analytical insights (e.g., spend trends, forecasting, savings recommendations), in-depth feature documentation beyond marketing pages, independent or hands-on corroboration.",
     "evidenceIds": [
       "brex-docs-13",
       "brex-docs-15",
@@ -687,7 +686,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Brex documents first-party autonomous agents that run in the background. An audit agent monitors expenses and categorizes violations by risk. A review agent auto-approves low-risk expenses, escalates exceptions and follows up with anyone out of compliance. AI assistants file reimbursements automatically. Admins configure the policy rules, approval routing and auto-blocking that Brex AI applies to every transaction. Missing for 10: in-depth docs on configuring or customizing the agents' behavior beyond policy rules, a general-purpose first-party automation builder (Zapier/Workato flows are third-party), and independent or hands-on corroboration that the agents work as claimed.",
+    "rationale": "Brex documents first-party autonomous background automation. Users configure spend rules, approval flows and limits, and Brex AI agents then act on their own: the audit agent monitors expenses, the review agent auto-approves low-risk items and follows up on non-compliance, and AI assistants file reimbursements automatically. Approval routing, policy enforcement and receipt matching also run automatically. The evidence is marketing-level and covers only finance-domain workflows configured through policies, not a general automation builder; Zapier, Workato and webhook recipes are external building blocks and earn no credit. Missing for 10: a general-purpose user-defined automation or workflow builder (triggers, schedules, custom actions), in-depth first-party docs on configuring and monitoring the agents, and independent or hands-on corroboration that the agents run reliably unattended.",
     "evidenceIds": [
       "brex-docs-15",
       "brex-docs-16",
@@ -696,7 +695,8 @@
       "brex-docs-8",
       "brex-docs-11",
       "brex-docs-36",
-      "brex-docs-13"
+      "brex-docs-27",
+      "brex-docs-17"
     ]
   },
   {
@@ -705,7 +705,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Brex markets built-in AI assistants and agents that take work off users' hands. Assistants write memos, fetch receipts, give policy help and file reimbursements; review and audit agents approve, escalate and categorize expenses; and Brex AI drafts bill payments. The MCP server serves external assistants, so it is not credited for this built-in story. Missing for 10: documentation of how users assign arbitrary or ad-hoc tasks to the assistant (e.g., a conversational interface), depth beyond marketing pages, and independent or hands-on corroboration.",
+    "rationale": "Brex's own marketing describes built-in AI assistants that do employees' expenses for them: writing memos, fetching receipts, offering policy help and filing reimbursements. It also describes in-product review and audit agents that auto-approve, escalate and categorize spend, and Brex AI that drafts bill payments, so tasks can be handed to native AI. The MCP server is an external-agent interface and is not credited here. Missing for 10: in-depth first-party docs on how users direct or converse with the assistant (e.g., natural-language task requests), and independent or hands-on corroboration that the assistant works as claimed.",
     "evidenceIds": [
       "brex-docs-23",
       "brex-docs-16",
@@ -741,7 +741,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Brex markets its own AI agents and assistants, so asking whether they can consume external MCP servers is a fair question for this product. The evidence only documents Brex's official MCP server, which is the server role: it exposes Brex data to outside AI assistants. Nothing shows Brex can act as an MCP client and plug in third-party MCP servers to use their tools, and server-side evidence does not transfer to this client story.",
+    "rationale": "Brex ships its own AI agents for auditing, reviewing, and expense assistance, so letting users plug external MCP servers into those agents is a fair question for this product. The pack only documents an official Brex MCP server, which lets outside AI assistants call Brex. That is the server role and does not count toward this client-side story. Nothing shows Brex's agents connecting to or consuming tools from user-supplied MCP servers.",
     "evidenceIds": []
   },
   {
@@ -750,7 +750,7 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Brex, a SaaS spend-management platform, documents an official MCP server on its developer site. A probe confirmed the page exists. The docs say it lets AI assistants manage expenses, look up users, check cards, review banking transactions and track bills through natural language. Missing for 10: documented connection/setup and authentication steps for the MCP server, an explicit tool list, independent or hands-on corroboration of agents connecting.",
+    "rationale": "Brex documents an official MCP server at developer.brex.com/docs/mcp. It lets AI assistants act directly on a Brex account: managing expenses, looking up users, checking cards, reviewing banking transactions and tracking bills. A probe independently confirmed the docs page exists. Missing for 10: details on connecting an agent (transport, auth/token setup, supported clients) and independent or hands-on corroboration of real-world use.",
     "evidenceIds": [
       "brex-docs-3",
       "brex-docs-24",
@@ -763,7 +763,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Brex documents an official MCP server that lets AI assistants act on a Brex account in natural language: managing expenses, looking up users, checking cards, reviewing banking transactions and tracking bills (brex-docs-3, brex-docs-24, brex-probe-3). Its marketing also describes AI assistants that do employees' expenses for them (brex-docs-23). missing for 10: evidence of a native in-product natural-language command interface (rather than via external AI assistants), detail on which write actions the MCP server supports, independent or hands-on corroboration.",
+    "rationale": "Brex documents an official MCP server that lets AI assistants work directly with a Brex account through natural language: managing expenses, looking up users, checking cards, reviewing banking transactions and tracking bills. A probe confirmed the MCP docs page exists. Natural-language operation runs through an external AI assistant connected to that server, and Brex's own AI-assistant marketing describes automated expense work rather than a command interface. missing for 10: a native in-product natural-language command interface, detailed docs on which write actions and scopes are available via natural language, and independent hands-on corroboration.",
     "evidenceIds": [
       "brex-docs-3",
       "brex-docs-24",
@@ -777,7 +777,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "An official CLI is a fair question for a SaaS platform with a developer API, so the axis applies. The evidence shows a REST API, an official MCP server, Postman collections and Zapier/Pipedream/Workato integrations, but nothing describes an official Brex command-line tool. None of these adjacent tools count as a CLI.",
+    "rationale": "An official CLI is a reasonable thing for a SaaS platform with a public developer API to ship, so the axis applies. The evidence pack documents REST APIs, token auth, webhooks, an official MCP server, Postman collections and Zapier/Pipedream/Workato integrations, but no first-party command-line tool. The MCP server and API are adjacent capabilities or building blocks, not a CLI, so they earn no credit.",
     "evidenceIds": []
   },
   {
@@ -809,7 +809,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Brex's own docs show admins can create named API tokens in the dashboard and choose the level of data access as scopes, so a dedicated least-privilege credential can be issued for an agent, including one using the official MCP server. The evidence covers only the core: it does not say how fine-grained the scopes are, whether tokens expire or can be revoked, or how a token ties to an agent identity. Missing for 10: documented scope granularity (read vs write per API), token expiry/rotation/revocation controls, agent-specific credential guidance for MCP, independent or hands-on corroboration.",
+    "rationale": "Brex's authentication docs say admins can create named API tokens in the dashboard and choose the level of data access as scopes. That is a first-party mechanism for issuing least-privilege credentials an agent can use, and Brex also documents an official MCP server for AI assistants. Missing for 10: detail on scope granularity, token expiry and revocation, any agent-specific credential guidance linking scoped tokens to the MCP server, and independent or hands-on corroboration.",
     "evidenceIds": [
       "brex-docs-2",
       "brex-docs-26",
@@ -822,7 +822,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Brex documents REST APIs (transactions, budgets, expenses, payments, webhooks), Postman collections, no-code integrations (Zapier, Pipedream, Workato), and an MCP server, but nothing in the evidence shows official client SDK libraries in any language. Postman collections, OpenAPI reference pages, and the MCP server are adjacent tools or developer building blocks, not official SDKs, so they earn no credit.",
+    "rationale": "The evidence documents Brex's REST APIs, Postman collections, an MCP server, and Zapier/Workato/Pipedream integrations, but nothing shows official language SDKs or client libraries. Postman collections, no-code connectors, and the MCP server are adjacent capabilities and earn no credit toward an SDK story.",
     "evidenceIds": []
   },
   {
@@ -831,10 +831,10 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "high",
-    "rationale": "Brex documents a dedicated Webhooks API: you register an endpoint URL and choose which webhook events to receive (brex-docs-35, brex-docs-1). An example event, a referral activating, is given (brex-docs-25). This is a registrable outbound HTTP callback mechanism that a programmatic consumer can subscribe to. Missing for 10: a documented catalog of event types beyond the referral example, details on signature verification and retry/delivery guarantees, and independent or hands-on corroboration.",
+    "rationale": "Brex documents a webhooks API: you register an endpoint URL through the register-webhook endpoint and choose which webhook events it receives. The docs also give an example event (a referral activating), so a programmatic consumer can subscribe to outbound HTTP callbacks. Missing for 10: a documented catalog of available event types beyond the referral example, signature verification and retry/delivery-guarantee details, and independent or hands-on corroboration.",
     "evidenceIds": [
-      "brex-docs-35",
       "brex-docs-1",
+      "brex-docs-35",
       "brex-docs-25"
     ]
   },
@@ -844,7 +844,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Brex documents AI agents that categorize spend and write expense memos (brex-docs-41, brex-docs-23). Its audit agent monitors expenses against internal processes and ranks potential violations by risk level (brex-docs-15), while a review agent auto-approves low-risk items and escalates exceptions (brex-docs-16). Receipts are fetched and automatically matched to expenses (brex-docs-23, brex-docs-7, brex-docs-27). missing for 10: explicit duplicate-expense or fraud detection (the audit agent covers policy violations only), evidence of AI reading itemized receipt content for expenses rather than just matching, independent or hands-on corroboration.",
+    "rationale": "Brex's own docs describe AI agents that categorize and review spend against policy, write memos and fetch receipts, and auto-match uploaded receipts to expenses. They also describe an audit agent that monitors expenses and ranks potential violations by risk level, so the core of the story is first-party documented. missing for 10: explicit duplicate- or fraud-detection evidence, explicit receipt OCR/line-item reading for card expenses (itemized capture is only documented for bill pay), independent or hands-on corroboration.",
     "evidenceIds": [
       "brex-docs-41",
       "brex-docs-23",
@@ -852,7 +852,8 @@
       "brex-docs-16",
       "brex-docs-7",
       "brex-docs-27",
-      "brex-docs-8"
+      "brex-docs-8",
+      "brex-docs-13"
     ]
   },
   {
@@ -875,13 +876,14 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Brex publishes per-domain API reference pages (transactions, budgets, expenses, payments, webhooks, onboarding). It also maintains an official Postman developer workspace with collections for all Brex APIs, which gives users first-party runnable requests. Nothing shows the reference itself is interactive (e.g., an in-browser try-it console), and probes found no public OpenAPI spec at standard paths. Missing for 10: evidence of an in-page interactive try-it console, runnable code samples embedded in the reference, a publicly fetchable OpenAPI spec, and independent or hands-on corroboration.",
+    "rationale": "Brex publishes an OpenAPI-based API reference covering transactions, budgets, expenses, payments, webhooks and onboarding. It also maintains an official Postman developer workspace with collections for all Brex APIs, which gives runnable requests. However, nothing shows the reference itself is interactive (no in-page 'try it' console or embedded runnable code samples), and the probe found no publicly fetchable OpenAPI spec at the standard paths. Missing for 10: in-docs interactive try-it console, runnable code examples embedded in the reference, a publicly downloadable OpenAPI spec, and independent or hands-on corroboration.",
     "evidenceIds": [
-      "brex-docs-29",
       "brex-docs-4",
       "brex-docs-5",
       "brex-docs-7",
+      "brex-docs-34",
       "brex-docs-35",
+      "brex-docs-29",
       "brex-probe-2"
     ]
   },
@@ -891,12 +893,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Brex's own Postman workspace has collections for all of its APIs, which is a machine-readable equivalent a user can import (brex-docs-29). Docs paths under /openapi/ (brex-docs-4, brex-docs-5) suggest the reference is generated from OpenAPI specs, but the probe found no downloadable OpenAPI file at any standard path (brex-probe-2). missing for 10: a documented downloadable OpenAPI/Swagger file, a spec at a standard or discoverable URL, independent confirmation that a raw spec can be retrieved.",
+    "rationale": "Brex says its developer workspace has Postman collections for all of its APIs, which is a first-party machine-readable equivalent, and its API reference lives under /openapi/ paths, implying OpenAPI-generated docs. However, the probe found no downloadable OpenAPI/Swagger file at any standard path (all 404). The llms.txt index helps AI discovery but is not an API spec. Missing for 10: a documented downloadable OpenAPI/JSON spec URL, confirmation that the Postman collections are exportable and complete, independent corroboration.",
     "evidenceIds": [
       "brex-docs-29",
       "brex-docs-4",
-      "brex-docs-5",
-      "brex-probe-2"
+      "brex-probe-2",
+      "brex-probe-1"
     ]
   },
   {
@@ -905,7 +907,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A sandbox or test environment is a fair question for a financial API platform, so the axis applies. Nothing in the evidence documents a Brex sandbox, test mode, or test credentials. The auth docs describe tokens created from the live dashboard, and the MCP server acts directly on 'your Brex account', which describes production access rather than isolated testing.",
+    "rationale": "A sandbox or test environment is a fair question for a financial API platform like Brex, so the axis applies. However, nothing in the evidence pack documents a sandbox, test mode, or non-production environment. The docs cover production token creation from the dashboard, a Postman workspace, webhooks and an MCP server, but none of these is an isolated test environment.",
     "evidenceIds": []
   },
   {
@@ -914,7 +916,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows Brex has a public API with a changelog of additive changes, but nothing describes API versioning (version identifiers, pinning, or version lifecycle) or a documented deprecation policy. A changelog is an adjacent feature and does not count toward this story.",
+    "rationale": "Brex offers a public developer API, so API versioning and deprecation policy are fair questions to ask of it. The pack shows only a changelog with additive changes, such as new filter parameters and a `policy` field on bookings. A changelog is an adjacent feature, not evidence of a versioning scheme or a documented deprecation policy, and nothing in the pack describes either.",
     "evidenceIds": []
   },
   {
@@ -923,12 +925,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Brex's product pages document multi-level approval flows routed automatically by amount, vendor, and employee role for bill pay, and expense policies that define who must approve. That covers the core multi-step chain. However, the only escalation evidence is an AI review agent that escalates policy exceptions, not one that escalates when approvers sit on requests, and delegation is never mentioned. Missing for 10: approver delegation/out-of-office reassignment, time-based escalation of stalled approvals, explicit manager→budget owner→finance chain configuration for expenses, detailed first-party docs or independent corroboration beyond marketing copy.",
+    "rationale": "Brex's marketing documents configurable multi-level approval flows routed automatically by amount, vendor and employee role (Bill Pay), and expense policies that define who must approve. The review agent's \"escalates exceptions\" refers to policy exceptions, not to approvers sitting on requests. Missing for 10: explicit manager → budget-owner → finance chain configuration for expenses/requests, approver delegation, time-based escalation or reminders for stalled approvals, in-depth docs, and independent or hands-on corroboration.",
     "evidenceIds": [
       "brex-docs-11",
       "brex-docs-8",
-      "brex-docs-38",
-      "brex-docs-16"
+      "brex-docs-16",
+      "brex-docs-38"
     ]
   },
   {
@@ -937,7 +939,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Brex documents automatic receipt matching: uploaded receipts are matched to existing expenses ([brex-docs-7], [brex-docs-27]). Marketing also says its AI assistants fetch receipts for employees ([brex-docs-23]) and that the review agent follows up with anyone out of compliance ([brex-docs-16]). However, nothing names e-receipt integrations or explains how receipts are pulled, and the follow-up behavior is only loosely tied to genuinely missing receipts. missing for 10: named e-receipt source integrations (e.g. travel/ride/merchant feeds) and how they pull receipts, explicit missing-receipt nudge logic that fires only when no receipt exists, in-depth product docs on employee-side matching beyond the API, independent or hands-on corroboration.",
+    "rationale": "Brex documents automatic receipt matching: uploaded receipts are matched to existing expenses (brex-docs-7, brex-docs-27). Its AI assistants are said to be \"fetching receipts\" for employees (brex-docs-23), and the review agent follows up with people who are out of compliance (brex-docs-16). Those last two claims are vague marketing, so the e-receipt and targeted-nudge parts of the story are only loosely implied. Missing for 10: named e-receipt integrations (e.g., email or vendor sources) that pull receipts automatically, documented missing-receipt nudges that fire only when a receipt is truly absent, and independent or hands-on confirmation of matching accuracy.",
     "evidenceIds": [
       "brex-docs-7",
       "brex-docs-27",
@@ -951,7 +953,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The only bulk-specific evidence is a set of developer-docs recipes for doing bulk work through third-party automation platforms: Pipedream for bulk virtual-card creation and Workato for bulk user creation. These loop over individual API calls in external tools, which counts as a workaround or developer building block rather than Brex's own bulk-operation capability. The AI review and audit agents that apply policy to every transaction are adjacent automation, not user-initiated bulk actions across selected items, and the pack documents no native bulk endpoint or bulk UI action.",
+    "rationale": "The evidence shows no native bulk API endpoint or in-product bulk action. The bulk mentions (bulk-creating virtual cards via Pipedream, bulk-creating users via Workato) are recipes built in third-party automation tools, and the list filters and AI auto-approval are adjacent features rather than bulk operations, so none of these earn credit.",
     "evidenceIds": []
   },
   {
@@ -977,7 +979,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Scheduling recurring jobs is a fair question for a spend-management platform, but the evidence shows no Brex-native scheduler for recurring workflows. The only recurring example is a Zapier recipe for a monthly CSV export, and the schedule there comes from Zapier, an external tool, so it earns no credit. Brex's AI agents and approval routing react to transactions as they happen and are not scheduled jobs.",
+    "rationale": "Scheduling recurring workflows is a fair question for a spend-management platform, but the evidence never documents a native Brex scheduler or recurring-job feature. The \"Monthly Export\" example runs on Zapier's scheduling, an external tool, so it earns no credit. Monthly spend limits, auto-enforced policies and continuously monitoring AI agents are adjacent features, not user-scheduled recurring jobs.",
     "evidenceIds": []
   },
   {
@@ -986,7 +988,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Brex documents automations such as spend policies, multi-level approval flows, and AI review and audit agents, so the axis applies to it. However, no evidence shows versioning, change review/diffing, or rollback of those automations or policies. The 'total transparency' claim about AI agents concerns decision visibility, not version control of automation configuration, so it does not count.",
+    "rationale": "Brex documents automations it configures itself, such as spend policies, auto-enforced controls, multi-level approval flows and AI review/audit agents. Versioning, reviewing changes to, or rolling back those automations is a fair question for this kind of product. However, the evidence never mentions version history, change review, or rollback for any automation; the API changelog covers Brex's own API releases, not user automations.",
     "evidenceIds": []
   },
   {
@@ -995,14 +997,14 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Brex's Bill Pay product covers every element of the story. Brex AI captures itemized invoice details, suggests the matching PO and drafts a payment (brex-docs-13). Multi-level approval flows route automatically by amount, vendor or role (brex-docs-11). Vendors can be paid by ACH, check or wire from any bank account or a Brex account (brex-docs-14), with vendor onboarding and a payments API backing this up (brex-docs-12, brex-docs-34). missing for 10: independent or hands-on corroboration of the AP workflow, and documentation of invoice capture beyond marketing-level claims (e.g. intake channels and accuracy).",
+    "rationale": "Brex's Bill Pay product page covers each element of the story. Brex AI captures itemized invoice details, suggests the matching PO and drafts a payment. Multi-level approval flows route automatically by amount, vendor and role. Vendors can be paid by ACH, check, wire or virtual card, with vendor onboarding and a vendor-creation API as supporting evidence. Missing for 10: independent or hands-on corroboration, and in-depth documentation of invoice intake channels and payment rails beyond marketing copy.",
     "evidenceIds": [
       "brex-docs-13",
       "brex-docs-11",
       "brex-docs-14",
       "brex-docs-12",
-      "brex-docs-34",
-      "brex-docs-38"
+      "brex-docs-38",
+      "brex-docs-34"
     ]
   },
   {
@@ -1011,10 +1013,11 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Brex documents top-line budget assignment (brex-docs-10) and a Budgets API for managing Budgets and Spend Limits (brex-docs-5). Its controls are auto-enforced: limits, blocking of out-of-policy purchases, and rules on who must approve (brex-docs-9, brex-docs-36, brex-docs-8), with multi-level approval routing in bill pay (brex-docs-11). Missing for 10: explicit documentation of allocating budgets per team or project, detail on how budgets tie to individual card limits, and independent or hands-on corroboration that enforcement works in practice.",
+    "rationale": "Brex's own docs describe the core loop of this story. Finance can assign top-line budgets (brex-docs-10) and manage Budgets and Spend Limits via the UI and API (brex-docs-5), including for entities and departments (brex-docs-45). Limits are described as auto-enforced, with out-of-policy purchases blocked (brex-docs-9, brex-docs-36), and approval routing is policy-driven and multi-level (brex-docs-8, brex-docs-11). Missing for 10: explicit project-level budget allocation, documentation that a budget directly governs card limits and approvals, and independent or hands-on confirmation that enforcement works as claimed.",
     "evidenceIds": [
       "brex-docs-5",
       "brex-docs-10",
+      "brex-docs-45",
       "brex-docs-9",
       "brex-docs-36",
       "brex-docs-8",
@@ -1025,14 +1028,16 @@
     "productId": "brex",
     "storyId": "card-policy-controls",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Brex's own product pages say it can \"automatically block out-of-policy purchases, with preset rules and limits\" and offer \"auto-enforced controls\" on spend limits. The Budgets API manages Spend Limits, and the Workato docs mention setting monthly limits for users. That covers amount limits and auto-blocking, but nothing in the pack shows restricting cards by merchant category or by specific merchant. missing for 10: documented merchant-category restrictions, specific merchant allow/block lists, explicit point-of-sale decline or card auto-lock mechanics, and independent or hands-on corroboration.",
+    "rationale": "Brex's own marketing says it can 'automatically block out-of-policy purchases, with preset rules and limits' and offers 'auto-enforced controls' on spend limits. Its Budgets API manages Spend Limits, and its global cards ship with 'built-in controls', which covers amount-based restriction and point-of-sale blocking. However, nothing in the evidence documents restricting cards by merchant category or by specific merchant, and all support is vendor marketing. Missing for 10: documented merchant-category and merchant-level card restrictions, explicit point-of-sale decline or auto-lock behavior detail, independent or hands-on corroboration.",
     "evidenceIds": [
       "brex-docs-36",
       "brex-docs-9",
       "brex-docs-5",
-      "brex-docs-32"
+      "brex-docs-43",
+      "brex-docs-32",
+      "brex-docs-45"
     ]
   },
   {
@@ -1041,17 +1046,15 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Brex documents AI agents that categorize spend instantly and assistants that write memos and fetch receipts as transactions happen, plus receipt upload with automatic expense matching. It positions this as enabling real-time close, with policy-based documentation requirements, audit and review agents, and automatic expense-data sync to Puzzle accounting. Missing for 10: explicit evidence of merchant and GL/accounting-field coding at transaction time, documented sync to mainstream ERPs beyond Puzzle, and independent or hands-on corroboration (all evidence is vendor marketing or docs).",
+    "rationale": "Brex documents real-time coding of spend: AI agents categorize spend instantly against policy, AI assistants write memos and fetch receipts, and uploaded receipts are matched to expenses automatically. It also positions this as enabling real-time close, with prepared expense data syncing to accounting. Missing for 10: explicit evidence of merchant-data capture and GL/accounting-field coding detail, in-depth first-party documentation beyond marketing claims, and independent or hands-on corroboration.",
     "evidenceIds": [
       "brex-docs-41",
       "brex-docs-23",
       "brex-docs-7",
       "brex-docs-27",
       "brex-docs-37",
-      "brex-docs-8",
-      "brex-docs-15",
-      "brex-docs-16",
-      "brex-docs-17"
+      "brex-docs-17",
+      "brex-docs-8"
     ]
   },
   {
@@ -1060,14 +1063,14 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Brex documents per-transaction policy enforcement (rules applied to every transaction, an audit agent that flags violations by risk level) and approval routing. The API exposes recorded policy-check results on booking objects, showing which travel rules were violated, and AI approvals are described as having 'total transparency.' However, nothing documents a per-expense history log of edits and approvals, or audit-grade retention and export. missing for 10: documented per-expense edit/change history, an approval-history audit log, audit-ready export or immutable retention, independent or hands-on corroboration of audit survivability.",
+    "rationale": "Brex documents the inputs an audit trail would capture: policy rules applied to every transaction, multi-level approval routing, an audit agent that flags violations, and API-exposed records of which travel policy rules a booking violated. It also claims AI agents act with 'total transparency', but no evidence describes a per-expense log of edits and approvals. missing for 10: documented per-expense audit log/history of edits, recorded approval trail with approver identities and timestamps, export or retention of audit records for external auditors, independent or hands-on corroboration.",
     "evidenceIds": [
+      "brex-docs-6",
       "brex-docs-8",
+      "brex-docs-11",
       "brex-docs-15",
       "brex-docs-16",
-      "brex-docs-41",
-      "brex-docs-6",
-      "brex-docs-11"
+      "brex-docs-41"
     ]
   },
   {
@@ -1076,17 +1079,18 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Brex documents setting rules for how employees spend, what they must document, and who approves, with Brex AI applying them to every transaction (brex-docs-8, brex-docs-41). It also offers auto-enforced limits by spend type such as stipends, travel, and procurement, plus blocking of out-of-policy purchases (brex-docs-9, brex-docs-36, brex-docs-39). A review agent auto-approves low-risk expenses and escalates exceptions (brex-docs-16, brex-docs-15), and the Budgets API supports spend limits (brex-docs-5). missing for 10: explicit documentation of role- and context-based expense policy dimensions (role-based routing is only shown for bill pay), detailed first-party docs beyond marketing pages, independent or hands-on corroboration.",
+    "rationale": "Brex's own product pages describe the full loop. Admins set rules for spending, documentation and approvers, and Brex AI applies them to every transaction (brex-docs-8, brex-docs-41). Limits can be set by spend type such as stipends, travel and procurement (brex-docs-9), and localized policies can apply to entities, individuals and departments (brex-docs-45). Out-of-policy purchases are auto-blocked (brex-docs-36), and a review agent auto-approves low-risk expenses while escalating exceptions to people (brex-docs-16). Missing for 10: in-depth documentation of how policy rules are configured (role and context conditions specifically for expenses; role-based routing is only shown for bill pay in brex-docs-11), and any independent or hands-on corroboration that auto-approval and exception routing work as marketed.",
     "evidenceIds": [
       "brex-docs-8",
       "brex-docs-9",
-      "brex-docs-36",
       "brex-docs-16",
-      "brex-docs-15",
+      "brex-docs-36",
       "brex-docs-41",
+      "brex-docs-45",
+      "brex-docs-15",
       "brex-docs-39",
-      "brex-docs-5",
-      "brex-docs-6"
+      "brex-docs-6",
+      "brex-docs-11"
     ]
   },
   {
@@ -1095,7 +1099,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Brex documents a Transactions API for transactions, accounts, and statements, and an Expenses API that includes receipt upload and matching. Dashboard-generated user tokens carry selectable data-access scopes and are passed in API headers. Missing for 10: explicit OAuth authorization flow evidence, documented receipt retrieval/download (only upload is shown), an expense-listing endpoint, and independent or hands-on corroboration.",
+    "rationale": "Brex documents a Transactions API for viewing transactions, accounts, and statements, and an Expenses API with receipt upload and automatic matching. Access uses dashboard-generated user tokens with selectable data-access scopes, and Postman collections cover all Brex APIs. Missing for 10: an evidenced OAuth authorization flow (only dashboard-created scoped tokens are documented), explicit receipt retrieval/download (only upload is shown), and independent or hands-on corroboration.",
     "evidenceIds": [
       "brex-docs-4",
       "brex-docs-7",
@@ -1109,22 +1113,28 @@
     "productId": "brex",
     "storyId": "fast-reimbursements",
     "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Brex's AI page says its assistants can file reimbursements automatically for employees (brex-docs-23). Its review agent also auto-approves low-risk expenses and requests (brex-docs-16), which implies an employee reimbursement submission and approval flow exists. The evidence never describes the payout itself; the ACH capability shown is vendor bill pay, not employee reimbursement, so it earns no credit here. missing for 10: explicit out-of-pocket expense submission flow, direct-deposit reimbursement payout, payout timing in days, submission-to-payout status tracking, independent or hands-on corroboration",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "Brex documents that AI assistants file employee reimbursements automatically (brex-docs-23) and that reimbursements are paid to local bank accounts to speed up payment (brex-docs-44). A review agent auto-approves low-risk expenses (brex-docs-16), and receipts can be uploaded and matched (brex-docs-27). However, the core out-of-pocket flow is only glancingly described, missing for 10: an explicit out-of-pocket expense submission flow, direct-deposit payout timing (reimbursed in days), status tracking from submission to payout, and independent or hands-on corroboration.",
     "evidenceIds": [
       "brex-docs-23",
-      "brex-docs-16"
+      "brex-docs-44",
+      "brex-docs-16",
+      "brex-docs-27"
     ]
   },
   {
     "productId": "brex",
     "storyId": "global-reimbursements",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "The evidence mentions reimbursements only generically: AI assistants can file reimbursements automatically. Nothing shows Brex paying employees abroad in their local currency. The 'more currencies' claim applies to vendor bill pay, the card evidence covers merchant acceptance, and 'global spend' is vague, so none of these transfer to international employee reimbursement.",
-    "evidenceIds": []
+    "rationale": "Brex's Global product page says it can pay reimbursements to and from local bank accounts, avoiding intercompany transactions, as part of its own platform (brex-docs-44). It also says budgets and spend limits can be managed in over 100 currencies (brex-docs-45), and that reimbursements are filed inside Brex (brex-docs-23). Together these support handling foreign-employee reimbursements without a separate international payments process. Missing for 10: an explicit statement that reimbursements pay out in the employee's local currency, the list of supported payout countries and currencies, API or detailed docs for international reimbursement payouts, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "brex-docs-44",
+      "brex-docs-45",
+      "brex-docs-23"
+    ]
   },
   {
     "productId": "brex",
@@ -1132,15 +1142,17 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Brex documents both physical and virtual corporate cards (brex-docs-20). Virtual cards can be created instantly or in one click (brex-docs-14, brex-docs-38), and the developer docs cover bulk-issuing virtual cards to employees and setting per-user monthly limits (brex-docs-30, brex-docs-32), with spend limits managed through the Budgets API and limit controls (brex-docs-5, brex-docs-9). A community comment praising the dynamic card generator corroborates virtual-card issuance (brex-comm-1). Missing for 10: evidence that physical cards are issued to team members within minutes, explicit documentation of a per-card (rather than per-user or budget) limit setting in the dashboard flow, and hands-on corroboration of issuance speed.",
+    "rationale": "Brex documents issuing both physical and virtual cards to employees, including in 60+ countries with built-in controls. It also documents instant or one-click virtual card creation and bulk virtual card issuance. Spend limits are documented at the individual level through the Budgets/Spend Limits API and limits for individuals and departments, with a community user praising the dynamic card generator. missing for 10: explicit evidence that each card carries its own limit (limits are described per user, budget or department), evidence that physical cards reach the team within minutes, and stronger independent hands-on corroboration.",
     "evidenceIds": [
       "brex-docs-20",
-      "brex-docs-14",
+      "brex-docs-43",
       "brex-docs-38",
+      "brex-docs-14",
       "brex-docs-30",
       "brex-docs-32",
       "brex-docs-5",
       "brex-docs-9",
+      "brex-docs-45",
       "brex-comm-1"
     ]
   },
@@ -1150,20 +1162,21 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Brex is an expense-management product, so mileage logging and per-diem claims are a fair question. However, nothing in the evidence pack mentions mileage tracking, map-based distance calculation, or per-diem rates. Adjacent features such as stipend limits, receipt upload and matching, and AI-filed reimbursements do not deliver this story.",
+    "rationale": "Brex is an expense-management product, so mileage and per-diem claims are a fair axis to judge it on. However, nothing in the evidence mentions mileage logging, map-based distance calculation, or per-diem rates. Adjacent claims about stipend limits, travel policies, and AI-filed reimbursements do not show this capability.",
     "evidenceIds": []
   },
   {
     "productId": "brex",
     "storyId": "multi-entity-currency",
     "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Brex's own API exposes a `legal_entity_id` filter on List users, which implies one account can model multiple legal entities. Bill Pay also mentions paying \"in more currencies\" and the product pitches managing \"global spend.\" These are thin, glancing mentions, and nothing documents how entities are set up or how books and reporting work. Missing for 10: documented multi-entity setup in one account, per-entity books/ledgers, consolidated cross-entity reporting, multi-currency accounting and FX handling, and independent or hands-on corroboration.",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Brex documents multi-entity, multi-currency operation: budgets and spend limits in 100+ currencies with localized policies for entities, local statement payments to avoid intercompany transactions, cards issued in 60+ countries, and a legal_entity_id dimension in the API. There is no explicit evidence of consolidated cross-entity reporting or separate per-entity books/ledgers. Missing for 10: documented consolidated reporting across entities, per-entity books/accounting sync, independent or hands-on corroboration.",
     "evidenceIds": [
+      "brex-docs-45",
+      "brex-docs-44",
+      "brex-docs-43",
       "brex-docs-19",
-      "brex-docs-33",
-      "brex-docs-14",
       "brex-docs-37"
     ]
   },
@@ -1173,22 +1186,21 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Brex documents a broad API across transactions, budgets and spend limits, expenses with receipt upload, payments and vendors, users, onboarding and webhooks, plus card issuance and an official MCP server. That covers many core UI workflows. However, nothing claims or demonstrates full UI parity, API tokens must be created in the dashboard, and several UI features have no API evidence. missing for 10: an explicit API/UI parity claim; API coverage of approval-flow and policy-rule configuration, travel booking and accounting setup; programmatic token creation; a published OpenAPI spec at a standard path (all probed paths 404); independent corroboration.",
+    "rationale": "Brex documents a broad public API covering transactions, accounts and statements, budgets and spend limits, expenses and receipt upload, vendors and payments, user listing with filters, referrals/onboarding, and webhooks. Its integration guides also show bulk virtual-card issuance, user creation and limit setting, and an official MCP server for AI assistants. However, nothing claims API parity with the UI: API tokens must be created in the dashboard, and many UI features have no evidenced API counterpart. missing for 10: an explicit API/UI parity claim or coverage map, API access to approval-flow and policy configuration, travel booking, accounting-integration setup, and AI audit/review agent controls, token provisioning without the dashboard, and independent hands-on confirmation of coverage.",
     "evidenceIds": [
+      "brex-docs-2",
+      "brex-docs-3",
       "brex-docs-4",
       "brex-docs-5",
       "brex-docs-7",
-      "brex-docs-34",
-      "brex-docs-35",
       "brex-docs-19",
       "brex-docs-28",
       "brex-docs-30",
       "brex-docs-32",
-      "brex-docs-3",
-      "brex-docs-2",
-      "brex-docs-11",
-      "brex-docs-8",
-      "brex-probe-2"
+      "brex-docs-34",
+      "brex-docs-35",
+      "brex-probe-1",
+      "brex-probe-3"
     ]
   },
   {
@@ -1197,11 +1209,10 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Brex documents its own read APIs that return core financial data, such as transactions, accounts, and statements, and an MCP server for reviewing transactions and expenses. Its developer docs also include a Zapier recipe that exports card transactions to CSV. This gives a programmatic way to extract some data, but the evidence shows no first-party, account-wide bulk export or offboarding feature, and the CSV path depends on Zapier. missing for 10: a documented complete self-serve export of all account data (expenses, receipts, bills, users, policies), open-format (CSV/JSON) bulk download in-product, offboarding/data-portability guarantees, independent corroboration of export completeness.",
+    "rationale": "Brex's own Transactions API lets you programmatically read transactions, accounts, and statements (brex-docs-4), giving a first-party path to pull core financial data out. Brex's docs also show a Zapier recipe that exports card transactions to CSV (brex-docs-31), but that relies on a third-party tool rather than a native export. Nothing documents a complete, self-serve export of all account data (expenses, receipts, bills, users, policies) in open formats for offboarding. Missing for 10: native bulk full-account export, coverage of all data types beyond transactions/statements, documented open export formats, offboarding/portability guidance, hands-on corroboration.",
     "evidenceIds": [
       "brex-docs-4",
-      "brex-docs-31",
-      "brex-docs-3"
+      "brex-docs-31"
     ]
   },
   {
@@ -1210,7 +1221,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Whether a software product's source is published under an open license is a fair question for a SaaS spend-management platform, so the axis applies. The evidence pack covers proprietary APIs, an MCP server, webhooks and product features. Nothing in it shows a public source repository or an open license for Brex's code.",
+    "rationale": "Brex is a proprietary SaaS spend-management platform. Whether its source is published under an open license is still a fair openness question for a software product, so the axis applies. Nothing in the evidence pack points to a public source repository or open license: the APIs, MCP server, webhooks and llms.txt are integration surfaces, not source access.",
     "evidenceIds": []
   },
   {
@@ -1219,7 +1230,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Brex is a hosted spend-management platform, and self-hosting is a fair question for software of this kind. However, the evidence only documents cloud-hosted access: the dashboard, APIs, an MCP server, webhooks, and integrations. Nothing indicates any self-hosted or on-premises deployment of the core product.",
+    "rationale": "Self-hosting is a fair question for a spend-management SaaS platform, so the axis applies. The evidence pack documents only hosted offerings: a dashboard, cloud APIs, webhooks and a hosted MCP server. Nothing shows a self-hosted, on-prem or open-source deployment of the core product.",
     "evidenceIds": []
   },
   {
@@ -1228,7 +1239,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data residency or region selection is a fair axis for a SaaS spend-management platform that holds financial data. Nothing in the evidence pack mentions choosing a storage region or residency: the pre-signed S3 receipt upload URL and the location_id user filters are unrelated. The axis applies but there is no evidence the product delivers it.",
+    "rationale": "Data region and residency selection is a fair question for a SaaS spend-management platform, so the axis applies. Nothing in the evidence pack documents choosing where customer data is stored. The global-entity items cover card issuance in 60+ countries, local bank payouts and multi-currency budgets, which are adjacent capabilities and not data residency.",
     "evidenceIds": []
   },
   {
@@ -1237,7 +1248,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Brex is a spend-management platform that ships AI features (audit and review agents, AI assistants, an MCP server), so whether customer data is used to train AI models is a fair privacy question for this product. The evidence pack contains nothing on AI-training data use, opt-outs, or data-usage policies, so the capability is unevidenced.",
+    "rationale": "Brex is a SaaS spend-management platform with built-in AI features (AI agents, Brex AI), so asking whether customer data can be excluded from AI model training is a fair question. However, nothing in the evidence pack mentions an AI-training opt-out, a no-training commitment, or any data-use policy for AI. The AI and MCP materials describe only functionality, not training data usage.",
     "evidenceIds": []
   },
   {
@@ -1246,7 +1257,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data retention and deletion controls are a fair question for a financial SaaS platform like Brex, but nothing in the evidence pack documents retention settings, deletion APIs, or data-purge controls. Adjacent items such as cancelling a card, exporting transactions to CSV via Zapier, and token scopes do not count as retention or deletion control.",
+    "rationale": "Controlling data retention and deletion is a fair privacy question for a financial SaaS platform like Brex, so the axis applies. The evidence pack has no documented retention settings, deletion requests, or data-purge controls, whether in the API, dashboard, or MCP server. Adjacent items such as card cancellation, token scopes, and Zapier CSV exports are not retention or deletion controls and earn no credit.",
     "evidenceIds": []
   },
   {
@@ -1255,7 +1266,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Telemetry and usage-tracking opt-out is a fair privacy question for a SaaS finance platform with AI agents and an MCP server, so the axis applies. Nothing in the evidence pack documents any telemetry, analytics, or usage-tracking opt-out control. The cited docs cover APIs, webhooks, authentication scopes, the MCP server, and product features, none of which address this story.",
+    "rationale": "Privacy controls such as opting out of telemetry or usage tracking are a fair question for a SaaS spend-management platform with web, mobile, and AI features, so the axis applies. Nothing in the evidence pack mentions telemetry, analytics opt-out, or usage-tracking controls; the docs cover APIs, webhooks, the MCP server, and spend features instead.",
     "evidenceIds": []
   },
   {
@@ -1264,12 +1275,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Brex's own developer docs show programmatic card issuance: a Pipedream guide to bulk-create virtual cards for employees, and a Workato guide covering issuing virtual cards and setting monthly user limits. Both are built on Brex's public APIs, and the Budgets API manages spend limits. Missing for 10: a documented cards endpoint reference for creating a card with a limit, locking or terminating a card via API, updating card spend controls via API, and independent hands-on corroboration.",
+    "rationale": "Brex's developer docs show programmatic card issuance: a Pipedream guide covers bulk-creating virtual cards for employees, and the Workato integration covers issuing virtual cards and setting monthly user limits. The Budgets API separately manages spend limits. However, no card-endpoint reference is shown, and locking a card or updating card controls via the API is not evidenced. Missing for 10: a documented card API endpoint reference, card lock/unlock via the API, updating per-card controls via the API, and independent hands-on corroboration.",
     "evidenceIds": [
       "brex-docs-30",
       "brex-docs-32",
       "brex-docs-5",
-      "brex-docs-29"
+      "brex-docs-2"
     ]
   },
   {
@@ -1278,11 +1289,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Brex's own marketing claims instant spend tracking against budgets (brex-docs-10) and real-time spend management (brex-docs-37), and lets users view spend in the mobile app (brex-docs-21). The transactions API exposes transaction data programmatically (brex-docs-4). However, nothing in the evidence documents a founder-facing view that breaks spend down by team, category, and merchant, and the real-time claims are marketing-level with no detail on latency. missing for 10: documented spend breakdowns by team/department, category, and merchant; concrete evidence of same-day transaction posting and visibility; independent or hands-on corroboration of real-time dashboards.",
+    "rationale": "Brex's marketing says it tracks spend instantly against budgets and manages spend in real time. It also offers department-level budgets and in-app spend viewing, and AI agents categorize spend instantly, which supports same-day visibility. However, a dashboard breaking spend down by team, category, and merchant is never explicitly documented. Missing for 10: explicit documentation of a spend view by team, category, and merchant; evidence that transactions appear the same day; independent or hands-on corroboration of real-time reporting.",
     "evidenceIds": [
       "brex-docs-10",
       "brex-docs-37",
       "brex-docs-21",
+      "brex-docs-41",
+      "brex-docs-45",
       "brex-docs-4"
     ]
   },
@@ -1305,7 +1318,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Brex Travel offers in-platform booking from global inventory with auto-enforced expense policies on the same platform (brex-docs-39). Booking objects carry a `policy` field showing whether a booking was out of policy and which travel rules it broke, so policy is evaluated per booking (brex-docs-6). A community user also confirms using Brex Travel (brex-comm-1). Missing for 10: explicit documentation that flights and hotels specifically are bookable, clarity on whether out-of-policy bookings are blocked or pre-approved at booking time rather than only flagged, and in-depth first-party travel docs.",
+    "rationale": "Brex Travel is documented as in-platform booking with 'global inventory and auto-enforced expense policies on one platform.' The API changelog adds a `policy` field to booking objects showing whether a booking was out of policy and which travel policy rules it broke, so policy is evaluated on the booking itself. A community user also reports using Brex Travel. Missing for 10: explicit confirmation that flights and hotels specifically are bookable, clarity on whether out-of-policy bookings are blocked or only flagged at booking time, and in-depth first-party travel docs.",
     "evidenceIds": [
       "brex-docs-39",
       "brex-docs-6",
@@ -1318,7 +1331,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack does not document grouping a trip's bookings, card transactions, and receipts into a single itinerary-linked report. The closest items are adjacent features: Brex Travel sharing one platform with expense policies, booking objects carrying policy flags, and automatic matching of receipts to individual expenses. None of these is trip-level report collation, so they earn no credit here.",
+    "rationale": "The evidence shows adjacent capabilities: Brex Travel bookings with policy data, automatic receipt-to-expense matching, and AI assistants that fetch receipts. None of it documents bookings, card transactions and receipts being grouped automatically into a single trip- or itinerary-linked expense report. Under the partial-credit boundary, these adjacent features do not count toward the story.",
     "evidenceIds": []
   },
   {
@@ -1327,13 +1340,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Brex documents its own virtual cards: Bill Pay can create a virtual card instantly, in one click, to pay a vendor, and cards can be issued and bulk-created via API and integrations. A community user also praises the 'dynamic credit card generator'. However, nothing explicitly shows a card locked to a single merchant or vendor, so the isolation guarantee in the story is only implied. Missing for 10: documented merchant/vendor locking for virtual cards, explicit SaaS-subscription card workflows, and evidence that a compromised card cannot be used at other merchants.",
+    "rationale": "Brex documents instant virtual card creation in Bill Pay for paying vendors by card (\"spin up virtual cards in one click\"), alongside physical and virtual corporate cards and procurement limits. A community user also praises the dynamic card generator. Nothing shows a card can be locked to a single vendor or merchant, or that SaaS subscriptions get dedicated per-vendor cards to isolate a compromise. missing for 10: documented single-vendor/merchant-locking on virtual cards, explicit SaaS subscription card workflows, and independent hands-on corroboration of vendor-isolated cards.",
     "evidenceIds": [
       "brex-docs-14",
       "brex-docs-38",
       "brex-docs-20",
-      "brex-docs-30",
-      "brex-docs-32",
+      "brex-docs-9",
       "brex-comm-1"
     ]
   },
@@ -3851,15 +3863,16 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Ramp exposes transactions to agents through the Transactions API, an OAuth-gated MCP server with transactions:read/write and accounting:read/write scopes, and the agent-mode CLI. The CLI's transactions commands include list/get/edit/missing/flag-missing/explain-missing/memo-suggestions, and the agents guide documents loading accounting and tracking categories, editing, and approving transactions, with every action landing in the audit log. Missing for 10: an explicitly documented 'uncoded transactions' filter (only missing receipts/memos is shown), an explicit agent workflow for proposing policy flags, a documented review queue for agent-proposed coding (as opposed to direct edits), and independent hands-on corroboration.",
+    "rationale": "Ramp ships an official OAuth-gated MCP server and an agent-mode CLI. Both expose transaction reads and writes: the MCP scopes include transactions:read/write and accounting:read/write, and the CLI offers transactions list/edit/missing/flag-missing/memo-suggestions. Agents can also load accounting and tracking categories and edit or approve transactions, with every write logged to the audit trail. That covers the pull → propose → push-coding loop, backed by the Transactions API and OpenAPI. Missing for 10: an explicit filter for transactions lacking GL/accounting codes (documented 'missing' covers receipts/memos), documented agent-raised policy-violation flags, a staged 'submit coding for human review' flow distinct from direct edits, and hands-on corroboration of coding write-back.",
     "evidenceIds": [
-      "ramp-docs-1",
-      "ramp-supp-cli-agent-mode",
       "ramp-supp-ai-agents-channels",
+      "ramp-supp-cli-agent-mode",
       "ramp-probe-4",
-      "ramp-docs-29",
       "ramp-supp-mcp-server",
-      "ramp-probe-6"
+      "ramp-docs-29",
+      "ramp-docs-1",
+      "ramp-probe-6",
+      "ramp-supp-agent-cards"
     ]
   },
   {
@@ -3868,7 +3881,7 @@
     "verdict": "full",
     "quality": 10,
     "confidence": "high",
-    "rationale": "A probe confirms a live llms.txt at docs.ramp.com (HTTP 200). It is a machine-readable index with explicit agent usage instructions, per-guide plain-text exports, llms-api.txt and llms-full.txt bundles, and channel-selection recommendations for agents. Further probes confirm the linked OpenAPI schema and a working unauthenticated Developer docs MCP server, so the agent-oriented docs surface is both documented and hands-on verified.",
+    "rationale": "A live probe confirms docs.ramp.com/llms.txt returns HTTP 200 as a machine-readable index. The index tells agents to fetch plain-text /llms-guides/*.txt files instead of JavaScript-shell HTML pages, and it also offers /llms-api.txt, /llms-full.txt, a canonical OpenAPI schema and automation recommendations. Further probes confirm the OpenAPI document parses with 174 paths and that an unauthenticated Developer docs MCP server answers live, giving agents both static and tool-based docs access.",
     "evidenceIds": [
       "ramp-probe-1",
       "ramp-supp-machine-docs",
@@ -3885,14 +3898,14 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Ramp documents a shipping in-product AI layer, Ramp Intelligence. It attaches policy-grounded recommended actions to every spend request, scans transactions in real time for anomalies and fraud, and auto-codes expenses and drafts memos (the CLI also exposes memo-suggestions). Together these are AI suggestions and flags generated from the user's own data. Missing for 10: in-product analytical insights such as spend trends or forecasting (documented only via external assistants over MCP), and any independent or hands-on corroboration of the quality of these suggestions.",
+    "rationale": "Ramp documents a shipping in-product AI layer, Ramp Intelligence. It attaches a policy-grounded recommended action to every spend request, scans transactions in real time for anomalies and fraud, auto-codes expenses, and fills memos and categories, so AI suggestions drawn from the customer's own data appear inside the product. Spend-trend and forecasting analysis is documented only through MCP in external assistants such as ChatGPT and Claude, so it is not credited as in-product. Missing for 10: documented in-product analytical insights (trends, forecasts) beyond per-item recommendations and flags; independent or hands-on corroboration beyond vendor marketing.",
     "evidenceIds": [
       "ramp-docs-10",
       "ramp-supp-ramp-agents-product",
       "ramp-docs-21",
       "ramp-docs-8",
-      "ramp-docs-32",
-      "ramp-supp-cli-agent-mode"
+      "ramp-docs-45",
+      "ramp-docs-32"
     ]
   },
   {
@@ -3901,17 +3914,18 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Ramp ships its own autonomous background agents that work around the clock: they flag fraud, code expenses, enforce policy, scan transactions in real time, and auto-approve in-policy spend. Users configure this through rules-based routing workflows, personalized notification workflows, and a customizable auto-approve vs. human-hold policy. For custom agents, Ramp documents long-running agent keys for background agents that run on a schedule, plus a CLI built for scripted and scheduled workflows. missing for 10: a first-party scheduler or automation builder for arbitrary user-defined automations (scheduled custom agents must be hosted and triggered by the user), and independent or hands-on corroboration that the autonomous agents and workflows behave as claimed.",
+    "rationale": "Ramp documents autonomous background behavior. Its in-product agents work \"around the clock,\" scanning transactions in real time, coding expenses, and approving when safe. It also auto-rebooks hotels on price drops and sends reminders automatically. Admins can configure rules-based workflows and auto-approve policies, and agents.ramp.com offers long-running access for background agents that run on a schedule, with the CLI positioned for scripted and scheduled workflows. missing for 10: a native general-purpose automation builder or scheduler (scheduled agents must run on the user's own runtime via CLI/API), in-depth docs on configuring custom autonomous workflows, independent or hands-on corroboration.",
     "evidenceIds": [
       "ramp-docs-21",
-      "ramp-supp-ramp-agents-product",
+      "ramp-docs-20",
+      "ramp-docs-13",
       "ramp-docs-23",
       "ramp-docs-12",
       "ramp-docs-32",
-      "ramp-docs-20",
+      "ramp-supp-ramp-agents-product",
       "ramp-supp-agents-site",
       "ramp-supp-ai-agents-channels",
-      "ramp-supp-machine-docs"
+      "ramp-supp-cli-agent-mode"
     ]
   },
   {
@@ -3920,7 +3934,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Ramp documents a built-in AI layer, Ramp Intelligence and Ramp agents. These agents autonomously code expenses, apply invoice logic, approve or escalate within policy, scan for anomalies, draft memos, and parse contracts to auto-fill procurement requests, so users can hand off defined finance workflows to in-product AI. The natural-language task delegation in the evidence goes through external assistants (ChatGPT, Claude) via MCP or the CLI, which does not count as a built-in assistant. Missing for 10: an in-product conversational assistant users can direct with arbitrary tasks, evidence of user-initiated rather than workflow-preset delegation, independent or hands-on corroboration.",
+    "rationale": "Ramp documents a built-in AI layer, Ramp Intelligence and Ramp agents. These agents autonomously code expenses, approve safe items and escalate risky ones, scan for anomalies, collect receipts and draft memos, and parse uploaded contracts to auto-fill requests. That is real in-product delegation, but it is preconfigured background automation rather than an assistant the user directs with ad hoc tasks. The MCP/CLI channels connect external assistants and do not count as a built-in assistant. Missing for 10: an in-product conversational assistant to which users can delegate arbitrary tasks, detailed docs on how users assign and configure agent tasks, independent or hands-on corroboration.",
     "evidenceIds": [
       "ramp-supp-ramp-agents-product",
       "ramp-docs-21",
@@ -3935,7 +3949,7 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "The open-source Ramp CLI is built for headless use: `--agent` emits JSON for scripting (the default when piped), `--no-input` disables prompts for CI, standalone agents log in without a browser via OAuth client credentials (RAMP_CLIENT_ID/RAMP_CLIENT_SECRET), and RAMP_PROFILE pins an identity for automation. The CLI defaults to the sandbox for safe testing, and the Developer API supports a server-to-server Client Credentials flow backed by a live, probed OpenAPI schema. missing for 10: independent or hands-on corroboration of an actual CI run, documented CI pipeline recipes (e.g. GitHub Actions examples).",
+    "rationale": "The open-source Ramp CLI is built for unattended use. It offers `--agent` JSON output (the default when piped) and `--no-input` to disable prompts for CI. Standalone agents can log in without a browser by exchanging OAuth client credentials (RAMP_CLIENT_ID/SECRET), and RAMP_PROFILE pins an identity for automation. These are backed by OAuth client-credentials server-to-server access, a sandbox environment that keeps CI runs off real money, and a live 174-path OpenAPI schema. missing for 10: independent or hands-on corroboration of the CLI actually running headlessly in a CI pipeline (probes verify only the MCP and OpenAPI endpoints).",
     "evidenceIds": [
       "ramp-supp-cli-agent-mode",
       "ramp-supp-ai-agents-channels",
@@ -3953,7 +3967,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Ramp ships its own AI agents (Ramp Intelligence), so letting users connect external MCP servers to them is a fair question for this product. However, the evidence only shows Ramp acting as an MCP server: Ramp MCP, Developer MCP and Ramp Data MCP are consumed by assistants such as Claude, ChatGPT and Cursor. Nothing shows Ramp acting as an MCP client that can register external MCP servers and use their tools, and server-side MCP evidence does not transfer to this client-side story.",
+    "rationale": "Ramp ships its own in-product AI agents (Ramp Intelligence), so letting users plug external MCP servers into it is a fair question. However, the pack only documents Ramp acting as an MCP server for outside assistants like Claude, ChatGPT and Cursor, plus a CLI. Nothing shows Ramp's agents consuming tools from user-supplied MCP servers, and the server-side evidence cannot be credited to this client-side story.",
     "evidenceIds": []
   },
   {
@@ -3962,13 +3976,13 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Ramp documents an official remote MCP server at https://mcp.ramp.com/mcp for Claude, ChatGPT, Cursor and other MCP clients, with admin role and user restrictions, demo and multi-business endpoints, and two additional servers (Developer docs and Ramp Data). Live probes confirm a spec-compliant OAuth-gated endpoint publishing granular scopes and an unauthenticated developer MCP that answers initialize. Missing for 10: bill approvals are not yet available via MCP, and there is no independent hands-on corroboration of actual tool calls beyond the auth and initialize handshakes.",
+    "rationale": "Ramp documents an official, account-scoped remote MCP server at mcp.ramp.com/mcp for Claude, ChatGPT, Cursor and other MCP clients. It has admin role and user restrictions, demo and multi-business endpoints, and example read/action prompts, plus separate Developer and Data MCP servers. Live probes confirm an OAuth-protected MCP endpoint with granular scopes and an unauthenticated docs MCP server responding to initialize. Missing for 10: independent user-reported hands-on corroboration of agent workflows, and bill approvals, which the docs say aren't yet available via MCP.",
     "evidenceIds": [
+      "ramp-docs-5",
+      "ramp-docs-6",
       "ramp-supp-mcp-server",
       "ramp-supp-three-mcp-servers",
       "ramp-supp-ai-agents-channels",
-      "ramp-docs-5",
-      "ramp-docs-6",
       "ramp-probe-2",
       "ramp-probe-4",
       "ramp-probe-5",
@@ -3982,14 +3996,14 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Ramp documents a first-party MCP server that lets users \"query Ramp data and take actions with natural language\" from ChatGPT, Claude and other assistants. The support article gives concrete natural-language prompts: \"Lock my card — I can't find it\", \"Show me our top software vendors by spend this quarter\", and drafting reminders for missing receipts. The AI Agents guide covers reads, approvals, edits, policy Q&A and purchases, and a live probe confirms the OAuth-gated server at mcp.ramp.com exposes granular read/write scopes. missing for 10: no native in-product natural-language command interface (language understanding comes from external assistants), bill approvals not yet available via MCP, no independent hands-on corroboration of natural-language operation.",
+    "rationale": "Ramp ships an official MCP server so users can \"query Ramp data and take actions with natural language\" from ChatGPT, Claude, and similar assistants. The docs give concrete prompt examples (\"Lock my card\", \"Show me our top software vendors by spend this quarter\", drafting missing-receipt reminders) and cover reads, approvals, edits, policy Q&A and purchases, with role-based admin controls. A probe confirms the server is live and OAuth-gated with granular read/write scopes. missing for 10: a native in-app natural-language command interface (the NL layer relies on external assistants), bill approvals via MCP (documented as not yet available), independent hands-on corroboration of natural-language command reliability.",
     "evidenceIds": [
       "ramp-docs-5",
       "ramp-supp-mcp-server",
+      "ramp-supp-ai-agents-channels",
+      "ramp-docs-29",
       "ramp-docs-30",
       "ramp-docs-43",
-      "ramp-docs-29",
-      "ramp-supp-ai-agents-channels",
       "ramp-probe-2",
       "ramp-probe-4"
     ]
@@ -4000,15 +4014,17 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Ramp ships an official open-source CLI (github.com/ramp-public/ramp-cli), installable via curl or brew. It is explicitly built for agents: `--agent` JSON output (the default when piped), `--no-input` for CI, browserless client-credentials agent login, human/agent profiles, and broad resource coverage. The AI Agents guide and llms.txt also position it as the channel for coding agents and scripted workflows, and it ships packaged skills such as agentic-purchase. Missing for 10: independent or hands-on corroboration that the CLI installs and runs as documented (the probe only confirms the repo is referenced).",
+    "rationale": "Ramp ships an official open-source CLI (github.com/ramp-public/ramp-cli), installable via curl script or Homebrew. It is explicitly built for agents: `--agent` JSON output (the default when piped), `--no-input` for CI, browser OAuth plus headless client-credentials agent login, human/agent profiles, 12 resource groups with approve/submit/edit actions, and packaged agent skills; Ramp's docs index points agents to it for scripted loops. missing for 10: independent or hands-on corroboration that the CLI works as documented (the probe only confirms the repo location).",
     "evidenceIds": [
-      "ramp-docs-4",
-      "ramp-probe-3",
       "ramp-supp-cli-agent-mode",
+      "ramp-probe-3",
+      "ramp-docs-4",
+      "ramp-docs-6",
       "ramp-supp-ai-agents-channels",
       "ramp-supp-machine-docs",
-      "ramp-supp-sandbox",
-      "ramp-supp-agents-site"
+      "ramp-supp-agent-cards",
+      "ramp-supp-agents-site",
+      "ramp-supp-sandbox"
     ]
   },
   {
@@ -4017,7 +4033,7 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Ramp publishes a documented Developer API. Its getting-started guide covers creating an app and access token. It uses OAuth 2.0 with client-credentials and authorization-code flows and granular resource:permission scopes. A probe confirmed a live OpenAPI schema with 174 paths, and endpoint guides cover transactions, bills, virtual cards via the Vault API, custom records and AI usage. A sandbox API base and machine-readable llms.txt and llms-api exports round out agent-friendly consumption. Missing for 10: independent or hands-on corroboration of real API calls (especially writes) beyond the schema probe; some sensitive endpoints such as the Vault API require Ramp approval.",
+    "rationale": "Ramp publishes a documented public Developer API. A live probe confirmed a 174-path OpenAPI schema, and the docs cover OAuth 2.0 client-credentials and auth-code flows with granular resource:permission scopes. Documented endpoints include transactions, bills (POST /bills), virtual cards via Vault, custom records and AI usage, plus a sandbox API base and machine-readable llms.txt/llms-api.txt references for agents. Missing for 10: independent or hands-on corroboration of actual authenticated API calls (probes only verified the schema and docs exist), and some sensitive endpoints such as the Vault API are gated behind Ramp approval.",
     "evidenceIds": [
       "ramp-docs-1",
       "ramp-docs-33",
@@ -4028,8 +4044,8 @@
       "ramp-docs-38",
       "ramp-supp-virtual-cards-vault",
       "ramp-docs-39",
-      "ramp-supp-sandbox",
-      "ramp-supp-ai-usage-tracking"
+      "ramp-supp-ai-usage-tracking",
+      "ramp-supp-sandbox"
     ]
   },
   {
@@ -4038,16 +4054,17 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Ramp documents OAuth 2.0 scopes in a `resource:permission` pattern, recommends least privilege (\"configure only the scopes your app needs\"), and supports client-credentials auth for standalone agents through `ramp agent login`. Its agent-identity model promises \"one key per agent\" tied to a human sponsor, with flexible per-agent permissions, and adds expiring sessions plus role-based MCP restrictions. A live probe confirms the MCP server is OAuth-gated and publishes granular read/write scopes. Missing for 10: independent hands-on corroboration of actually issuing a narrowly scoped per-agent key, beyond vendor docs and scope-metadata probes.",
+    "rationale": "Ramp documents OAuth 2.0 scopes in a resource:permission pattern (e.g. transactions:read, bills:write, cards:read_vault), explicitly advises configuring only needed scopes, and supports client-credentials grants. The CLI provides a dedicated `agent login` that exchanges client credentials for an agent identity, and agents.ramp.com describes one key per agent, tied to a human sponsor, with per-agent permissions. A live probe confirms the MCP server publishes granular read/write scopes, and sessions expire automatically. Missing for 10: independent hands-on corroboration of minting a narrowly scoped per-agent key end-to-end, and in-depth docs for the per-agent permission model beyond the agents.ramp.com marketing page.",
     "evidenceIds": [
       "ramp-supp-oauth-scopes",
-      "ramp-supp-agents-site",
+      "ramp-docs-2",
+      "ramp-docs-33",
       "ramp-supp-cli-agent-mode",
+      "ramp-supp-agents-site",
       "ramp-probe-4",
       "ramp-supp-mcp-server",
       "ramp-supp-agent-cards",
-      "ramp-supp-ai-usage-tracking",
-      "ramp-docs-33"
+      "ramp-supp-ai-usage-tracking"
     ]
   },
   {
@@ -4056,7 +4073,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence documents a REST Developer API with a canonical OpenAPI schema, an open-source CLI, and MCP servers, but never mentions an official language SDK or client library (e.g. Python or TypeScript packages). The OpenAPI document is a building block a developer could use to generate an SDK, and the CLI and MCP are adjacent channels, so neither earns credit for this story.",
+    "rationale": "Ramp documents a REST Developer API with a published OpenAPI schema, an official CLI, and MCP servers, but nothing in the evidence shows an official language SDK or client library. The OpenAPI schema is only a building block for generating clients, and the CLI and MCP servers belong to separate stories, so none of these earn credit for official SDKs.",
     "evidenceIds": []
   },
   {
@@ -4065,7 +4082,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Ramp's developer docs include a dedicated webhooks guide. It states that webhooks deliver real-time notifications about account events by pushing them to an endpoint you specify, which is a registrable outbound HTTP callback. The llms.txt index also recommends webhooks to agents as the channel for event triggers. Missing for 10: documented event-type catalog, registration/subscription API or UI steps, payload signing/verification and retry semantics, independent or hands-on corroboration.",
+    "rationale": "Ramp's own developer docs describe webhooks that push real-time notifications to a developer-specified endpoint whenever an event happens in the Ramp account. Its machine-readable llms.txt index also recommends webhooks to agents as the channel for event triggers. Missing for 10: details on event types catalog, registration/subscription API or UI steps, signature verification and retry semantics, independent or hands-on corroboration.",
     "evidenceIds": [
       "ramp-docs-3",
       "ramp-docs-35",
@@ -4095,7 +4112,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Ramp MCP lets employees \"get policy answers directly from their daily tools\" through assistants like ChatGPT and Claude, and the AI Agents guide lists policy Q&A among its capabilities. Missing-receipt chasing is documented in several places: the MCP prompt \"find transactions with missing receipts... draft reminder messages,\" the CLI's transactions missing / flag-missing / explain-missing commands, automatic reminders, and SMS/Slack/Teams receipt submission. The core of the story is delivered, but explaining card declines conversationally is not documented anywhere. missing for 10: evidence of conversational explanation of declines, concrete documentation of pre-spend \"can I expense this?\" answers, independent or hands-on corroboration.",
+    "rationale": "Ramp MCP lets employees \"get policy answers directly from their daily tools.\" The AI Agents guide lists policy Q&A as a capability, which covers \"can I expense this?\" before spend. Missing-receipt chasing is documented through an MCP prompt that finds transactions missing receipts and drafts reminders, CLI transactions missing/flag-missing/explain-missing commands, and automated reminders submitted via SMS, Slack or Teams. Missing for 10: any documented conversational explanation of card declines, and independent or hands-on corroboration that the policy Q&A works.",
     "evidenceIds": [
       "ramp-supp-mcp-server",
       "ramp-supp-ai-agents-channels",
@@ -4112,8 +4129,8 @@
     "storyId": "api-interactive-docs",
     "verdict": "partial",
     "quality": 4,
-    "confidence": "medium",
-    "rationale": "Ramp publishes its own API reference: a generated endpoint/schema reference (/llms-api.txt), a canonical OpenAPI document with 174 paths, and a Developer MCP server that lets AI assistants search and read the API reference live. Guides include working request examples (e.g. a working POST /bills request), and a sandbox API base exists for safe execution. However, nothing documents an interactive, in-browser API explorer with \"try it\"/runnable examples; the rendered docs are only described as JavaScript shells. Missing for 10: documented interactive try-it console in the API reference, runnable examples embedded per endpoint, independent or hands-on corroboration of an interactive reference experience.",
+    "confidence": "low",
+    "rationale": "Ramp publishes a full API reference: a canonical OpenAPI schema with 174 paths, a generated plain-text endpoint reference, and an unauthenticated Developer MCP server that serves the API reference and schemas to AI assistants. Its guides include working example requests (e.g., a working POST /bills request) that can run against the documented sandbox API base. However, nothing shows an interactive reference UI with in-browser runnable examples; the evidence only notes the rendered pages are JavaScript shells. missing for 10: documented interactive try-it console in the API reference, runnable examples embedded per endpoint, independent or hands-on corroboration of interactivity.",
     "evidenceIds": [
       "ramp-supp-machine-docs",
       "ramp-probe-6",
@@ -4129,7 +4146,7 @@
     "verdict": "full",
     "quality": 10,
     "confidence": "high",
-    "rationale": "Ramp's llms.txt index links a canonical OpenAPI schema at /openapi/developer-api.json, alongside a generated plain-text endpoint/schema reference and full exports. An independent probe confirmed the file returns HTTP 200 as a parseable OpenAPI document ('Ramp Developer API' v1) with 174 paths. The unauthenticated Developer MCP server also exposes the OpenAPI schemas, and a probe confirmed it is reachable without keys.",
+    "rationale": "Ramp publishes a canonical OpenAPI schema at /openapi/developer-api.json, linked from its machine-readable llms.txt index alongside a plain-text generated endpoint and schema reference (/llms-api.txt). A live probe confirmed it returns HTTP 200 with a parseable OpenAPI document (\"Ramp Developer API\" v1, 174 paths), and the unauthenticated Developer MCP server also exposes OpenAPI schemas to agents, with a probe verifying it is keyless.",
     "evidenceIds": [
       "ramp-supp-machine-docs",
       "ramp-probe-6",
@@ -4144,12 +4161,11 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Ramp documents a dedicated sandbox for safely building and testing \"without affecting live production data\". It has its own frontend (demo.ramp.com) and API base (demo-api.ramp.com), moves no real money, and includes a demo actions panel for simulating events. The AI-native surfaces target it directly: the CLI connects to Sandbox by default, and a demo-data MCP endpoint (demo-mcp.ramp.com/mcp) is published. Missing for 10: independent or hands-on corroboration that the sandbox and demo MCP endpoints work as documented (no probe hit them).",
+    "rationale": "Ramp documents a dedicated sandbox for building and testing without affecting live production data. It has its own frontend (demo.ramp.com) and API base (demo-api.ramp.com), no real money movement, and a demo actions panel for simulating events. The AI-native tooling targets it directly: the CLI connects to the sandbox by default, and a separate demo MCP endpoint (demo-mcp.ramp.com) serves demo data. Missing for 10: independent or hands-on corroboration that the sandbox endpoints work as documented (no probe exercised demo-api or demo-mcp).",
     "evidenceIds": [
       "ramp-supp-sandbox",
       "ramp-docs-36",
-      "ramp-supp-mcp-server",
-      "ramp-supp-cli-agent-mode"
+      "ramp-supp-mcp-server"
     ]
   },
   {
@@ -4171,10 +4187,10 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Ramp documents rules-based approval workflows that route requests to stakeholders by vendor type, spend category, or dollar amount, and workflows targeted by spend amount or team role. Spend controls are described as including approval workflows across cards, reimbursements, bills, and agent purchases. However, nothing shows explicit sequential multi-step chains such as manager then budget owner then finance. Delegation of approval authority is never mentioned. Time-based escalation when approvers sit on requests is also absent; the AI 'escalates when it's not safe' claim is a different behavior. missing for 10: explicit multi-step sequential approver chains (manager/budget owner/finance), approver delegation/out-of-office reassignment, SLA-based escalation of stalled approvals, independent or hands-on corroboration.",
+    "rationale": "Ramp documents rules-based approval workflows that route requests to the right stakeholders by vendor type, spend category, dollar amount, or team role. Its spend-controls guide describes approval workflows that apply across cards, reimbursements, bills, and agent purchases, which covers the routing core of the story. However, nothing shows explicit sequential chains (manager → budget owner → finance), approver delegation, or time-based escalation when approvers sit on requests. The AI agent's \"escalates when it's not [safe]\" is risk flagging, an adjacent feature, not approver-SLA escalation. Missing for 10: documented multi-step sequential approval chains, approver delegation/out-of-office reassignment, escalation or reminders for stalled approvals, independent or hands-on corroboration.",
     "evidenceIds": [
-      "ramp-docs-23",
       "ramp-docs-12",
+      "ramp-docs-23",
       "ramp-supp-spend-controls-agents",
       "ramp-docs-10"
     ]
@@ -4185,15 +4201,14 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Ramp documents automatic receipt capture the moment a card is swiped, with memos and categories filled in and in-policy spend auto-approved with no expense report. It also sends reminders for missing items, and its MCP and CLI tooling can find and flag transactions with missing receipts. missing for 10: explicit documentation of e-receipts pulled from named integrations (e.g., email or merchant connectors), evidence that nudges fire only for genuinely missing receipts, and independent or hands-on corroboration of matching accuracy.",
+    "rationale": "Ramp documents automatic receipt capture at swipe time, with memos and categories filled in, and receipts tied to the transaction without filing an expense report (ramp-docs-8, ramp-docs-32, ramp-docs-45). It also sends automated reminders for missing items (ramp-docs-13), and its CLI and MCP surface missing-receipt detection through transactions missing/flag-missing/explain-missing and receipt attach (ramp-supp-cli-agent-mode, ramp-docs-29). missing for 10: explicit evidence of e-receipts pulled from third-party integrations (e.g., merchant or email sources), documentation that nudges fire only when no receipt can be auto-matched, and independent or hands-on corroboration of matching accuracy.",
     "evidenceIds": [
       "ramp-docs-8",
       "ramp-docs-32",
       "ramp-docs-45",
       "ramp-docs-13",
-      "ramp-docs-29",
       "ramp-supp-cli-agent-mode",
-      "ramp-supp-ramp-agents-product"
+      "ramp-docs-29"
     ]
   },
   {
@@ -4211,13 +4226,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Ramp documents its own rules-based workflows. They route requests to stakeholders automatically by vendor type, spend category or dollar amount (ramp-docs-23), notify people based on spend amount or team role (ramp-docs-12), and auto-approve in-policy spend under a customizable human-in-the-loop policy (ramp-docs-32, ramp-supp-agents-site). These rules are limited to approval routing, notifications and spend controls rather than general event-to-action automation; webhooks are a developer building block and are not credited here. Missing for 10: a general user-defined rule builder with arbitrary event triggers and custom actions, detailed docs on rule configuration, and independent or hands-on corroboration.",
+    "rationale": "Ramp documents user-defined rules that fire automatically on spend events. Rules-based workflows route requests by vendor type, spend category or dollar amount (ramp-docs-23). Personalized workflows notify the right people based on spend amount or team role (ramp-docs-12). In-policy expenses are auto-approved (ramp-docs-32), and the agents site describes a customizable human-in-the-loop policy that auto-approves routine spend (ramp-supp-agents-site). The documented actions are narrow, though: approval routing, notifications and pre-spend blocks, not a general event-to-action rule builder. Webhooks only push events to an external endpoint, so they are a developer building block rather than in-product rules. Missing for 10: a general-purpose rule/automation builder with arbitrary trigger-to-action chains, detailed documentation of rule configuration and supported triggers/actions, and independent or hands-on corroboration.",
     "evidenceIds": [
       "ramp-docs-23",
       "ramp-docs-12",
       "ramp-docs-32",
-      "ramp-supp-agents-site",
-      "ramp-docs-9"
+      "ramp-docs-9",
+      "ramp-supp-agents-site"
     ]
   },
   {
@@ -4226,7 +4241,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nothing in the evidence shows Ramp offering its own way to define and schedule recurring jobs or workflows. The mentions of the CLI supporting 'scripted/scheduled workflows' and of keys for 'background agents that run on a schedule' assume an external scheduler, which is a user-side workaround. Recurring-budget spend programs, automatic reminders and rules-based approval routing are adjacent features, not user-defined scheduled jobs.",
+    "rationale": "The evidence pack documents no Ramp feature that lets a user define and schedule recurring jobs or workflows. The CLI being suited to 'scripted/scheduled workflows' and agent keys offering 'long-running access for background agents that run on a schedule' only enable externally scheduled automation, which is a user-side workaround. Recurring-budget templates, fund intervals, automated reminders and rules-based approval routing are adjacent features, not a scheduler.",
     "evidenceIds": []
   },
   {
@@ -4235,7 +4250,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Ramp documents rules-based workflows and an audit log of agent and API write actions, but nothing in the evidence shows versioning, change review, or rollback of the automations themselves. The audit log covers actions taken, not workflow definitions, so it is an adjacent feature and earns no credit. The axis applies to a finance-automation platform, so the lack of evidence makes this none rather than na.",
+    "rationale": "Ramp documents rules-based workflows and approval routing, and every write action lands in an audit log. However, nothing in the evidence shows version history, change review, or rollback for those workflows or automations. The audit log and the workflows:read scope are adjacent features, not versioning or rollback, so they earn no credit.",
     "evidenceIds": []
   },
   {
@@ -4244,16 +4259,16 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Ramp's own docs cover each step of the AP workflow in one platform. Invoices are captured by OCR, with line items checked through 2- and 3-way matching. Spend-control approval workflows explicitly apply to bills, and the CLI and Ramp UI support bill approval. Bills are created via POST /bills with a per-bill payment method of card, ACH, check or wire, and NetSuite and Xero bills can be completed with Ramp payments. Missing for 10: no independent or hands-on corroboration, and only thin detail on how bill approvals are routed (approver chains and rules)—bill approvals are also not yet available via MCP.",
+    "rationale": "Ramp Bill Pay documents invoice capture via OCR with line-item extraction and two/three-way matching (ramp-docs-16, ramp-docs-17). Bill approvals are supported in the UI, the CLI and the Approvals API, under approval workflows that explicitly cover bills (ramp-supp-ai-agents-channels, ramp-supp-cli-agent-mode, ramp-supp-spend-controls-agents). Payment can be set per bill by ACH, check, wire or card (ramp-docs-38), and bills can be completed with Ramp payments from NetSuite or Xero (ramp-docs-27, ramp-docs-28). Missing for 10: detailed documentation of bill-specific approval routing rules, and independent or hands-on corroboration of the end-to-end AP flow.",
     "evidenceIds": [
       "ramp-docs-16",
       "ramp-docs-17",
       "ramp-docs-38",
-      "ramp-supp-spend-controls-agents",
-      "ramp-supp-cli-agent-mode",
-      "ramp-supp-ai-agents-channels",
       "ramp-docs-27",
-      "ramp-docs-28"
+      "ramp-docs-28",
+      "ramp-supp-ai-agents-channels",
+      "ramp-supp-cli-agent-mode",
+      "ramp-supp-spend-controls-agents"
     ]
   },
   {
@@ -4281,14 +4296,16 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Ramp's spend-controls docs define funds as budgets restricted by amount, interval, allowed merchant categories, allowed merchants and countries, and these controls attach to issued cards. The marketing page says Ramp will \"enforce spend limits, and block risky merchants or categories all before spend happens,\" which covers declining out-of-policy spend before purchase. Per-vendor limits on virtual cards are also described. Missing for 10: explicit documentation of point-of-sale decline behavior, evidence of automatic card locking on policy violation (lock appears only as a manual CLI/MCP action), and independent or hands-on corroboration.",
+    "rationale": "Ramp documents funds/cards with restrictions on amount, interval, allowed merchant categories, allowed merchants and countries, and markets blocking risky merchants or categories and enforcing spend limits \"all before spend happens.\" It also documents per-vendor limits on virtual cards and card/fund locking via MCP and the CLI. The pack shows how restrictions are set but not how a block happens at the point of sale. missing for 10: explicit documentation of point-of-sale decline/authorization behavior and of automatic locking triggered by policy violations, independent or hands-on corroboration.",
     "evidenceIds": [
       "ramp-docs-41",
       "ramp-docs-9",
       "ramp-docs-7",
       "ramp-docs-31",
       "ramp-supp-spend-controls-agents",
-      "ramp-docs-11"
+      "ramp-docs-30",
+      "ramp-supp-cli-agent-mode",
+      "ramp-supp-agent-cards"
     ]
   },
   {
@@ -4297,7 +4314,7 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Ramp documents real-time coding at the moment of spend. On swipe it captures the receipt and fills in memos and categories, and receipts are 'coded to the correct GL account' and auto-approved within policy. It reminds users about missing items and syncs accounting fields and transactions to QuickBooks in real time with a built-in reconciliation tool. The CLI and MCP also expose missing-receipt/memo detection and memo suggestions, so close becomes a review of exceptions. Missing for 10: independent or hands-on corroboration of auto-coding accuracy, and in-depth first-party docs on how merchant/category/GL rules are configured (the evidence is mostly marketing-page claims).",
+    "rationale": "Ramp states that when a card is swiped it captures the receipt and fills in memos and categories, codes the spend to the correct GL account, and auto-approves it when within policy. It also chases missing receipts and memos (reminders, CLI missing/memo-suggestions) and syncs accounting fields to QuickBooks in real time, with a built-in reconciliation tool. That covers point-of-spend coding feeding a review-style close. Missing for 10: independent or hands-on corroboration of auto-coding accuracy, and in-depth first-party docs on how coding rules and categorization work (the evidence is mostly marketing-page claims).",
     "evidenceIds": [
       "ramp-docs-8",
       "ramp-docs-32",
@@ -4305,9 +4322,9 @@
       "ramp-docs-21",
       "ramp-docs-13",
       "ramp-docs-29",
+      "ramp-supp-cli-agent-mode",
       "ramp-docs-44",
       "ramp-docs-26",
-      "ramp-supp-cli-agent-mode",
       "ramp-supp-ramp-agents-product"
     ]
   },
@@ -4317,15 +4334,15 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Ramp documents a native audit log: agent and CLI/MCP actions, including approvals and edits, 'land in the Ramp audit log' and 'every write operation lands in the customer's Ramp audit log automatically.' The MCP server also exposes an audits_logs:read scope. Policy enforcement and policy-grounded approval recommendations are documented, but the evidence describes the audit log mainly in the agent context and never shows a per-expense trail combining edits, approvals and policy-check outcomes. missing for 10: documentation of per-expense audit history covering human edits, approvals and policy-check results, audit-ready export or retention guarantees for external auditors, independent corroboration.",
+    "rationale": "Ramp documents its own audit log: every write operation, including agent approvals and edits, \"lands in the customer's Ramp audit log automatically,\" and an audit_logs:read scope is exposed on the MCP server, alongside documented policy-grounded approval workflows. However, the audit-log evidence comes almost entirely from the AI-agent guides, and nothing shows a per-expense trail that ties together edit history, approval chain and policy-check results. missing for 10: per-expense audit trail documentation covering edits/approvals/policy checks together, retention or immutability guarantees, auditor-ready export, independent or hands-on corroboration of external-audit suitability.",
     "evidenceIds": [
       "ramp-supp-ai-agents-channels",
       "ramp-supp-agent-cards",
-      "ramp-supp-agents-site",
       "ramp-probe-4",
+      "ramp-supp-agents-site",
       "ramp-docs-10",
       "ramp-docs-32",
-      "ramp-docs-9"
+      "ramp-supp-spend-controls-agents"
     ]
   },
   {
@@ -4372,13 +4389,14 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Ramp documents employee reimbursements paid \"in two days or less in their local currency\" across 70+ countries, with mileage calculation. Employees can submit and request reimbursements via the CLI (reimbursements list/pending/submit) and MCP, and the sandbox models a reimbursement lifecycle through to \"paid\". Missing for 10: explicit confirmation that payout is by direct deposit/bank transfer, documented employee-facing status tracking from submission to payout, and independent or hands-on corroboration of the two-day speed.",
+    "rationale": "Ramp documents employee reimbursements paid \"in two days or less in their local currency\" across 70+ countries, with mileage auto-calculation. Employees can submit reimbursement requests via MCP and the CLI (reimbursements list/pending/submit), and the sandbox's \"mark reimbursement as paid\" action implies a paid state. Missing for 10: explicit confirmation that payout is by direct deposit/ACH to the employee's bank, a documented end-to-end status tracker from submission to payout visible to the employee, and independent or hands-on corroboration of the two-day payout.",
     "evidenceIds": [
       "ramp-docs-14",
       "ramp-docs-15",
-      "ramp-supp-cli-agent-mode",
       "ramp-supp-mcp-server",
-      "ramp-supp-sandbox"
+      "ramp-supp-cli-agent-mode",
+      "ramp-supp-sandbox",
+      "ramp-supp-ai-agents-channels"
     ]
   },
   {
@@ -4387,9 +4405,10 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Ramp's reimbursements page directly claims employees can be reimbursed in more than 70 countries and 40 currencies, paid in their local currency within two days. That is native in-product support, so no separate international payments process is needed. The evidence is a single marketing claim with no detailed docs or hands-on confirmation. Missing for 10: in-depth docs on FX handling, payout rails and setup for international reimbursements; explicit confirmation that these run in the same reimbursement workflow as domestic ones; independent or hands-on corroboration.",
+    "rationale": "Ramp's reimbursements page says employees can be reimbursed in more than 70 countries and 40 currencies, paid in two days or less in their local currency. That happens inside Ramp's native reimbursement flow, which also syncs to accounting across multiple entities, so no separate international payments process is needed. Missing for 10: detailed documentation of FX rates and fees, how employee bank details are onboarded abroad, and independent or hands-on corroboration beyond the single marketing claim.",
     "evidenceIds": [
-      "ramp-docs-14"
+      "ramp-docs-14",
+      "ramp-docs-24"
     ]
   },
   {
@@ -4398,14 +4417,13 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Ramp's docs say it can issue both physical cards (for in-person employee spend) and virtual cards, each with attached controls. Its marketing describes 'instant virtual cards' with per-vendor spending limits, and funds carry amount and interval limits (daily, monthly, total) plus merchant restrictions. missing for 10: evidence that physical cards are issued or delivered 'in minutes' (only virtual cards are described as instant), and independent or hands-on confirmation of how fast issuance and limit setup really are.",
+    "rationale": "Ramp's docs say it can issue cards and attach controls: physical cards for in-person employee spend and virtual cards for reusable payment details (ramp-docs-7). Custom virtual cards can be scoped per team (ramp-docs-11) and issued instantly with per-vendor spending limits (ramp-docs-31). Funds carry amount and interval limits, and limits are enforced before spend happens (ramp-docs-41, ramp-docs-9). Missing for 10: evidence that physical cards can be issued and delivered 'in minutes' (speed is only claimed for virtual cards), and independent or hands-on corroboration of the issuance flow.",
     "evidenceIds": [
       "ramp-docs-7",
       "ramp-docs-11",
       "ramp-docs-31",
       "ramp-docs-41",
       "ramp-docs-9",
-      "ramp-supp-spend-controls-agents",
       "ramp-supp-virtual-cards-vault"
     ]
   },
@@ -4426,15 +4444,17 @@
     "productId": "ramp",
     "storyId": "multi-entity-currency",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Ramp documents running multiple entities in a single consolidated account, with per-entity spend policies and controls [ramp-docs-42]. It also syncs transaction and reimbursement data to multiple entities in one step [ramp-docs-24], and exposes entities as a data object to agents and the API [ramp-supp-ai-agents-channels, ramp-probe-4]. Multi-currency support is evidenced only for employee reimbursements (40 currencies) [ramp-docs-14], and consolidated cross-entity reporting is not explicitly documented. Missing for 10: explicit multi-currency entity accounts and books, documented consolidated reporting across entities, and independent or hands-on corroboration.",
+    "rationale": "Ramp documents multi-entity support in a single consolidated account, with per-entity spend policies and controls, plus one-step syncing of transactions and reimbursements to multiple entities in the accounting system. Multi-currency evidence covers only reimbursements, paid in about 40 local currencies. Eligibility requires US registration with most operations and spend in the US, which limits multi-country entity setups. Missing for 10: explicit consolidated cross-entity reporting, multi-currency cards/accounts/books beyond reimbursements, details on per-entity ledgers and FX handling, and independent corroboration.",
     "evidenceIds": [
       "ramp-docs-42",
       "ramp-docs-24",
       "ramp-docs-14",
       "ramp-supp-ai-agents-channels",
-      "ramp-probe-4"
+      "ramp-probe-4",
+      "ramp-docs-46",
+      "ramp-docs-47"
     ]
   },
   {
@@ -4443,20 +4463,18 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Ramp exposes a broad programmatic surface. The probe confirms an OpenAPI spec with 174 paths, and the docs cover bills, virtual cards via the Vault API, Custom Records, spend controls/funds, and OAuth scopes. The CLI and MCP add approvals, reimbursements, transactions, travel, receipts and purchasing. However, there is no explicit UI-parity claim, and the docs name UI-only steps: creating API apps happens in the dashboard (Company → Developer), MCP access restrictions are set in the dashboard, and bill approvals are not available via MCP ('use the Ramp UI or the Blank Canvas Approvals API'). Missing for 10: a documented API/UI parity commitment, API-based app/admin configuration (developer app creation, MCP access policy), uniform bill-approval coverage across channels, and independent hands-on verification of parity.",
+    "rationale": "Ramp's programmatic surface is broad. It has a 174-path OpenAPI Developer API covering transactions, bills, virtual cards and vault, custom records, and spend controls. It also ships an agent-mode CLI spanning 12 resources (bills, cards, funds, reimbursements, travel, users, and more) and an OAuth-gated MCP server with dozens of read/write scopes. However, Ramp never claims UI parity. Its own docs admit gaps, such as bill approvals not being available via MCP. Some setup steps are UI-only: creating developer apps under Company → Developer and configuring MCP access in the dashboard. Missing for 10: a documented commitment to API/UI parity, API coverage of setup and admin configuration (app creation, MCP access restrictions), and independent verification that UI-only features are absent.",
     "evidenceIds": [
       "ramp-probe-6",
-      "ramp-supp-machine-docs",
-      "ramp-supp-ai-agents-channels",
       "ramp-supp-cli-agent-mode",
-      "ramp-supp-mcp-server",
+      "ramp-supp-ai-agents-channels",
       "ramp-probe-4",
-      "ramp-docs-33",
+      "ramp-supp-machine-docs",
       "ramp-docs-38",
       "ramp-docs-39",
       "ramp-supp-virtual-cards-vault",
-      "ramp-supp-spend-controls-agents",
-      "ramp-supp-oauth-scopes"
+      "ramp-docs-33",
+      "ramp-supp-mcp-server"
     ]
   },
   {
@@ -4465,12 +4483,13 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Ramp documents its own data-extraction paths. Admins can 'pull full spend exports' through MCP. The CLI's --agent mode outputs JSON, and a 174-path Developer API (with a public OpenAPI schema) retrieves transactions and other resources. There is no documented bulk 'export all my data' or account-exit feature, so the 'all data' and 'leave' parts of the story go unproven. Missing for 10: a documented complete account-data export covering every object type, explicit open-format bulk export files (e.g. CSV/JSON archive), offboarding/data-portability documentation, and independent or hands-on corroboration.",
+    "rationale": "Ramp documents its own data-extraction paths. Admins can \"pull full spend exports\" through Ramp MCP, and the Developer API (an OpenAPI schema with 174 paths, including transactions) returns transaction data. The open-source CLI emits JSON in agent mode, and accounting sync pushes transactions, reimbursements, bills and related records to QuickBooks, NetSuite and Xero. None of this is documented as a complete, account-wide export in a stated open format, and nothing covers offboarding. Missing for 10: a documented one-step export of all account data, explicitly stated open export formats (e.g. CSV or JSON bulk dumps), coverage beyond spend data such as receipts, attachments, audit logs and policies, account closure or offboarding guidance, and independent or hands-on corroboration.",
     "evidenceIds": [
       "ramp-supp-ai-agents-channels",
-      "ramp-supp-cli-agent-mode",
       "ramp-docs-1",
-      "ramp-probe-6"
+      "ramp-probe-6",
+      "ramp-supp-cli-agent-mode",
+      "ramp-docs-44"
     ]
   },
   {
@@ -4478,8 +4497,8 @@
     "storyId": "openness-open-license",
     "verdict": "partial",
     "quality": 3,
-    "confidence": "medium",
-    "rationale": "The only openness evidence is that Ramp's first-party CLI is described as open-source and hosted publicly at github.com/ramp-public/ramp-cli. That lets a user read source for one official client component, but nothing indicates the core Ramp platform's source is available, and the specific license is never named. Missing for 10: source availability for the core Ramp product beyond the CLI client, an identified open license (e.g., MIT/Apache), and independent confirmation of the repository's licensing terms.",
+    "confidence": "low",
+    "rationale": "The only openness evidence is that Ramp's first-party CLI is described as open-source and hosted publicly at github.com/ramp-public/ramp-cli. The core Ramp platform is a hosted SaaS with no evidence of published source, and no specific license is named even for the CLI. Missing for 10: source for the core product/platform, a named OSI-approved license, and independent confirmation of the CLI's license terms.",
     "evidenceIds": [
       "ramp-supp-cli-agent-mode",
       "ramp-probe-3"
@@ -4491,7 +4510,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Self-hosting is a fair question for spend-management software, but nothing in the evidence shows Ramp offering a self-hosted or on-prem deployment of its core product. Every environment documented, including production, the demo sandbox, and the MCP servers, is Ramp-hosted. The open-source CLI is only a client to that hosted service.",
+    "rationale": "Self-hosting is a fair openness question for a spend-management software platform, so the axis applies. However, the evidence documents only Ramp-hosted services: the hosted MCP endpoints at mcp.ramp.com, the cloud API, and the demo sandbox. The open-source Ramp CLI is a client to that hosted service, not a self-hostable core product, so it earns no credit.",
     "evidenceIds": []
   },
   {
@@ -4500,7 +4519,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Choosing a data storage region is a fair question for a SaaS finance platform like Ramp, but the evidence pack never mentions data residency or regional hosting. Related-sounding items, such as \"allowed countries\" on funds and reimbursements in 70+ countries, cover spend controls and payouts, not where data is stored, so they earn no credit.",
+    "rationale": "Data residency is a fair question for a SaaS finance platform, so the axis applies. Nothing in the evidence documents a customer-selectable storage region or residency option. The US-only eligibility requirements, multi-entity support, and fund country restrictions are adjacent topics and do not let a customer choose where data is stored.",
     "evidenceIds": []
   },
   {
@@ -4509,7 +4528,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Ramp ships in-product AI (Ramp Intelligence and Ramp agents), so whether customers can stop their data from being used to train AI models is a fair question for this product. Nothing in the evidence pack documents a training opt-out, a no-training commitment, or any data-use policy for model training. The scope controls, MCP access restrictions and audit logs cover access to data, not training use, so they earn no credit here.",
+    "rationale": "Ramp ships in-product AI (Ramp Intelligence and agents), so a training-data opt-out is a fair question for this product. However, nothing in the evidence pack documents any setting, policy, or contractual commitment that keeps customer data out of AI model training. The OAuth scopes, MCP access controls, and spend guardrails are adjacent controls and earn no credit toward this story.",
     "evidenceIds": []
   },
   {
@@ -4518,7 +4537,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data retention and deletion controls are a fair privacy question for a finance SaaS platform like Ramp. The evidence pack documents no retention settings, deletion requests, or data-purge capabilities. Adjacent items such as session expiry, OAuth scopes, audit logs and the sandbox are different controls and earn no credit.",
+    "rationale": "Data retention and deletion controls are a fair question for a SaaS finance platform holding transaction and employee data, so the axis applies. The evidence pack documents no retention settings, deletion workflows, or deletion APIs. Adjacent items such as session expiry, OAuth scopes, and audit logging are related controls, not retention or deletion capabilities, so they earn no credit.",
     "evidenceIds": []
   },
   {
@@ -4527,7 +4546,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Opting out of telemetry is a fair question for a SaaS platform that ships a CLI and MCP servers, so the axis applies. The pack has no evidence of a telemetry or usage-tracking opt-out in the Ramp product, CLI, or MCP. The AI-usage ingestion API covers customers sending their own AI spend data into Ramp, which is a different capability and earns no credit here.",
+    "rationale": "Opting out of telemetry is a fair question for a SaaS product that ships a CLI and MCP servers, but the evidence pack never documents a telemetry or usage-tracking opt-out for the Ramp app, CLI, or MCP. The AI-usage ingestion API concerns customers' own AI spend data sent into Ramp, not Ramp's telemetry about users, so it does not count toward this story.",
     "evidenceIds": []
   },
   {
@@ -4536,17 +4555,18 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Ramp documents programmatic card issuance in its Developer API. The Vault API lets a backend create a card and retrieve its PAN, CVV and expiry in one call. The cards guide covers issuing cards and attaching controls, and funds carry configurable restrictions on amount, interval, merchants, categories and countries. Locking is documented through Ramp's own CLI (`funds lock`) and MCP (\"Lock my card\"), and the cards:write, limits:write and funds:write scopes appear among Ramp's published OAuth scopes. Missing for 10: an explicit Developer API endpoint for locking a card, an explicit endpoint for updating limits or controls on an existing card, independent hands-on corroboration, and server-side PAN retrieval being gated behind Ramp approval.",
+    "rationale": "Ramp documents programmatic card issuance through its Developer API. The virtual-cards guide says 'your backend creates a card and retrieves the PAN, CVV, and expiration in one synchronous call' via the Vault API, gated by the cards:read_vault scope and Ramp approval. The cards-and-funds guide covers issuing cards and attaching controls. Funds carry amount, interval, merchant, category and country restrictions, and cards:write, limits:write and funds:write scopes exist. Locking is documented only through Ramp's own CLI (funds lock) and MCP ('Lock my card'), not as an explicit public API call. missing for 10: explicit Developer API endpoint documentation for locking and for updating card controls after issuance, independent hands-on corroboration of the card-issuance API, and the Vault card-creation flow requires Ramp approval.",
     "evidenceIds": [
-      "ramp-supp-virtual-cards-vault",
-      "ramp-docs-37",
       "ramp-docs-7",
-      "ramp-supp-spend-controls-agents",
+      "ramp-docs-37",
+      "ramp-supp-virtual-cards-vault",
       "ramp-docs-41",
+      "ramp-supp-spend-controls-agents",
+      "ramp-supp-oauth-scopes",
+      "ramp-probe-4",
       "ramp-supp-cli-agent-mode",
       "ramp-docs-30",
-      "ramp-probe-4",
-      "ramp-supp-oauth-scopes"
+      "ramp-probe-6"
     ]
   },
   {
@@ -4555,15 +4575,15 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Ramp documents real-time spend visibility as a product capability: \"watch spend in real time\" on issued cards, \"real-time visibility into SaaS spend\" with per-vendor cards, and receipts captured and categorized \"as soon as you swipe.\" Slicing by merchant, category and department is supported through MCP and agent queries (\"top software vendors by spend,\" search transactions by merchant, load departments and accounting categories). However, a founder-facing dashboard breaking spend down by team, category and merchant is only implied, not explicitly documented. missing for 10: explicit documentation of a native real-time dashboard with team/category/merchant breakdowns, independent or hands-on corroboration of same-day data freshness.",
+    "rationale": "Ramp's own docs say you can \"watch spend in real time\" on issued cards, and that receipts and categories are captured as soon as a card is swiped. Its site cites \"real-time visibility into SaaS spend.\" Slicing by merchant, department, and category is supported through transaction search, vendor queries such as top vendors by spend, and admin spend analysis via MCP, with real-time sync to accounting. missing for 10: an explicitly documented dashboard or report breaking spend down by team/category/merchant, and independent or hands-on corroboration of same-day latency.",
     "evidenceIds": [
       "ramp-docs-7",
-      "ramp-docs-31",
       "ramp-docs-8",
+      "ramp-docs-31",
       "ramp-docs-43",
+      "ramp-docs-44",
       "ramp-supp-ai-agents-channels",
-      "ramp-supp-mcp-server",
-      "ramp-docs-45"
+      "ramp-supp-mcp-server"
     ]
   },
   {
@@ -4572,7 +4592,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Ramp documents automatic receipt capture tied to card swipes, with memos and categories filled in and edits or submission possible via SMS, Slack or Teams. It also says receipts are captured and coded to the correct GL account, and the CLI exposes receipt upload/attach against transactions. However, nothing explicitly documents snapping a photo or forwarding an email for OCR-based matching to the right transaction. The 99% OCR claim refers to bill-pay invoices, not employee receipts. missing for 10: explicit photo-capture and email-forwarding channels, documented receipt OCR with automatic transaction matching, independent or hands-on corroboration.",
+    "rationale": "Ramp documents automatic receipt capture tied to card swipes, with memos and categories filled in and edits submitted via SMS, Slack, or Teams. The CLI exposes receipt upload/attach against transactions, and the homepage describes receipts captured automatically and coded to the correct GL account. However, the evidence never explicitly describes snapping a photo or forwarding an email, and the 99% OCR claim is scoped to bill-pay invoices rather than expense receipts. missing for 10: explicit photo-capture and email-forwarding receipt channels, documented OCR of expense receipts, explicit detail on auto-matching receipts to transactions, independent or hands-on corroboration.",
     "evidenceIds": [
       "ramp-docs-8",
       "ramp-docs-32",
@@ -4587,13 +4607,14 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Ramp's travel product shows policy status for every booking option, so trips aren't rejected after the fact. It also applies per diems by location and duration and monitors and rebooks hotels in-platform. The CLI documents a travel/trips resource for booking travel. missing for 10: explicit evidence of flight booking specifically, detailed docs on how policy is enforced or blocked at booking time, and independent or hands-on corroboration.",
+    "rationale": "Ramp's travel page shows policy status on every booking option, so employees aren't left wondering whether a trip will be rejected. It also shows per-diem limits adjusted by location and duration, and Ramp books hotels and automatically rebooks them when the price drops. The CLI and MCP (trips:write) separately confirm in-platform travel booking. Missing for 10: flight booking is never explicitly named, there is no detail on hard blocks versus soft warnings or approvals for out-of-policy bookings, and there is no independent or hands-on corroboration.",
     "evidenceIds": [
       "ramp-docs-18",
       "ramp-docs-19",
       "ramp-docs-20",
       "ramp-docs-4",
-      "ramp-supp-cli-agent-mode"
+      "ramp-supp-cli-agent-mode",
+      "ramp-probe-4"
     ]
   },
   {
@@ -4602,14 +4623,14 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "low",
-    "rationale": "Ramp ships a travel booking product with per diem and policy status (ramp-docs-18, ramp-docs-19). Its CLI exposes a `transactions … trips` subcommand and a `travel` resource, and its MCP server enumerates `trips:read`/`trips:write` scopes, which suggests transactions are associated with trips. Card receipts are auto-captured and memos auto-filled on swipe (ramp-docs-8, ramp-docs-32). However, no evidence explicitly describes bookings, card spend and receipts automatically assembling into a single itinerary-linked trip report. Missing for 10: documentation of automatic trip-level grouping of bookings, card charges and receipts into one report, itinerary linkage details, and independent or hands-on corroboration.",
+    "rationale": "Ramp has its own travel booking product with per diem and policy status (ramp-docs-18, ramp-docs-19) and captures card receipts automatically (ramp-docs-8, ramp-docs-32). Its CLI exposes a `transactions trips` subcommand and the MCP server publishes trips:read and trips:write scopes, which hints that transactions are associated with trips. No evidence shows bookings, card spend, and receipts automatically rolling up into a single itinerary-linked report, so only the building blocks and implied trip linkage are documented. Missing for 10: explicit documentation of automatic trip-level grouping of bookings, card transactions, and receipts; an itinerary-linked report view for employees; hands-on or independent corroboration.",
     "evidenceIds": [
       "ramp-docs-18",
       "ramp-docs-19",
-      "ramp-supp-cli-agent-mode",
-      "ramp-probe-4",
       "ramp-docs-8",
-      "ramp-docs-32"
+      "ramp-docs-32",
+      "ramp-supp-cli-agent-mode",
+      "ramp-probe-4"
     ]
   },
   {
@@ -4618,16 +4639,15 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Ramp's own materials describe issuing instant virtual cards for each software subscription with per-vendor spending limits and no shared card numbers (ramp-docs-31). Cards can be restricted to allowed merchants and categories through funds (ramp-docs-41, ramp-supp-spend-controls-agents), and Ramp points to Virtual Cards for subscriptions and recurring merchant charges (ramp-supp-agent-cards, ramp-docs-7, ramp-docs-11). Missing for 10: independent or hands-on corroboration of merchant-locked card isolation, and explicit documentation that procurement requests issue vendor-specific virtual cards rather than only routing approvals.",
+    "rationale": "Ramp's own materials describe this exact use case. Finance teams issue an instant virtual card per software subscription with per-vendor spending limits and no shared card numbers (ramp-docs-31). Funds can be restricted to allowed merchants, categories, amounts and intervals (ramp-docs-41), virtual cards are positioned for reusable subscription charges (ramp-supp-agent-cards), and they can be issued programmatically (ramp-supp-virtual-cards-vault). Missing for 10: independent or hands-on corroboration of merchant-locking in practice, and explicit documentation tying per-vendor cards to the procurement workflow rather than only SaaS.",
     "evidenceIds": [
       "ramp-docs-31",
       "ramp-docs-11",
-      "ramp-docs-7",
       "ramp-docs-41",
-      "ramp-supp-spend-controls-agents",
+      "ramp-docs-7",
       "ramp-supp-agent-cards",
       "ramp-supp-virtual-cards-vault",
-      "ramp-docs-23"
+      "ramp-supp-spend-controls-agents"
     ]
   }
 ]
