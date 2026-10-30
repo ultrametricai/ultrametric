@@ -1,218 +1,119 @@
-# Continuous story-analysis runner: every 6 hours, pick the next arena in rotation and re-run
-# its full evidence refresh (crawl → extract → collect-community → probe → judge → claims →
-# popularity → derive). The judge's cellHash cache means unchanged evidence costs no LLM calls —
-# only cells whose evidence actually moved get re-judged — so a run on a quiet arena is cheap.
-# Results land as a PR (never a direct push) so every ranking change stays reviewable and the
-# re-judge stability policy (see README) can be applied before merge.
-#
-# Also runs the keyless agent-surface SLO check (rankings-engine/scripts/slo-check.ts) on every
-# 6-hourly run — that step needs no secrets, so it runs (and its open-rankings/slo-history.jsonl
-# appends get committed) even while the LLM stages below are gated.
-#
-# The LLM stages require the ANTHROPIC_API_KEY repo secret; until it exists those steps are
-# skipped (the SLO check still runs).
-name: story-runner
-
+# Task-branch evaluation runner. Restore the main workflow before opening the catalog PR.
+name: AML vendor evaluation
 on:
-  schedule:
-    - cron: '17 */6 * * *'
   workflow_dispatch:
-    inputs:
-      category:
-        description: 'Arena id to run (default: rotation pick)'
-        required: false
-
 permissions:
-  contents: write
-  pull-requests: write
-  issues: write # the PR-fallback `gh issue create` below needs it (daily-snapshot/cert-sweep already grant it)
-
-concurrency:
-  group: story-runner
-  cancel-in-progress: false
-
+  contents: read
 jobs:
-  run:
+  evaluate:
     runs-on: ubuntu-latest
-    timeout-minutes: 90
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        include:
+          - { category: compliance-screening, product: complyadvantage }
+          - { category: identity-verification, product: complyadvantage }
+          - { category: fraud-prevention, product: complyadvantage }
     steps:
       - uses: actions/checkout@v7
-
-      - name: Check for API key
-        id: gate
-        env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-        run: |
-          if [ -z "$ANTHROPIC_API_KEY" ]; then
-            echo "ANTHROPIC_API_KEY secret not set — skipping (add it to enable the runner)."
-            echo "enabled=false" >> "$GITHUB_OUTPUT"
-          else
-            echo "enabled=true" >> "$GITHUB_OUTPUT"
-          fi
-
-      # Setup is ungated: the keyless SLO check below runs on every schedule tick.
       - uses: pnpm/action-setup@v6
       - uses: actions/setup-node@v7
         with:
           node-version: 24.22.1
           cache: pnpm
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Pick arena (staleness rank when a report exists, else rotation by run number)
-        if: steps.gate.outputs.enabled == 'true'
-        id: pick
-        env:
-          INPUT_CATEGORY: ${{ github.event.inputs.category }}
-          RUN_NUMBER: ${{ github.run_number }}
-        run: |
-          if [ -n "$INPUT_CATEGORY" ]; then
-            CAT="$INPUT_CATEGORY"
-          else
-            # Accuracy engine (docs/ACCURACY.md): while a open-rankings/staleness-report.json stands
-            # (written weekly by accuracy-engine.yml), walk its arenasRanked worst-stale-first —
-            # one arena per 6-hour slot since the report's generatedAt, so every weekly report
-            # gets its worst arenas re-run before the next report supersedes it. Falls back to
-            # the original run-number rotation when the report is missing or malformed.
-            CAT=$(node -e '
-              const fs = require("fs");
-              const cats = require("./open-rankings/categories.json").map((c) => c.id);
-              let pick = null;
-              try {
-                const rep = JSON.parse(fs.readFileSync("./open-rankings/staleness-report.json", "utf8"));
-                const ranked = (rep.arenasRanked ?? []).filter((a) => cats.includes(a));
-                const slot = Math.floor((Date.now() - Date.parse(rep.generatedAt)) / (6 * 60 * 60 * 1000));
-                if (ranked.length > 0 && Number.isFinite(slot) && slot >= 0) pick = ranked[slot % ranked.length];
-              } catch { /* no report yet — rotation below */ }
-              const n = Number(process.env.RUN_NUMBER) || 0;
-              console.log(pick ?? cats[n % cats.length]);
-            ')
-          fi
-          echo "category=$CAT" >> "$GITHUB_OUTPUT"
-          echo "Running arena: $CAT"
-
-      - name: Run engine stages for arena
-        if: steps.gate.outputs.enabled == 'true'
+      - run: pnpm install --frozen-lockfile
+      - name: Evaluate scoped vendor
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          CATEGORY: ${{ steps.pick.outputs.category }}
+          EVAL_CATEGORY: ${{ matrix.category }}
+          EVAL_PRODUCT: ${{ matrix.product }}
         run: |
-          # NOTE: no `normalize` here — that stage re-authors the story taxonomy and is guarded
-          # against running on arenas with real verdicts (it would invalidate all of them). A
-          # refresh updates evidence and re-judges changed cells against the EXISTING stories;
-          # taxonomy changes stay a deliberate, human-triggered act.
-          for stage in crawl extract collect-community probe judge claims popularity derive; do
-            echo "::group::$stage"
-            pnpm tsx rankings-engine/cli.ts "$stage" --category "$CATEGORY"
-            echo "::endgroup::"
-          done
-          # Post-derive: refresh the analytic 68% score intervals for this arena — LLM-free,
-          # deterministic (seeded PRNG), and only meaningful after verdicts may have moved.
-          echo "::group::score-intervals"
-          pnpm tsx rankings-engine/scripts/compute-confidence-intervals.ts --category "$CATEGORY"
-          echo "::endgroup::"
-
-      # Prediction layer (LLM-free): open questions for any new close races the refresh
-      # created, then settle open ones against the re-derived changelog — generation before
-      # settlement so a question can never settle in the same instant it opens for the wrong
-      # reason (its window starts at the rankings snapshot it derives from). Both scripts are
-      # idempotent, so quiet runs write nothing; changes land in open-rankings/predictions.json and
-      # ride the same PR as the refresh below.
-      - name: Generate + settle predictions
-        if: steps.gate.outputs.enabled == 'true'
-        run: |
-          pnpm tsx rankings-engine/scripts/generate-predictions.ts
-          pnpm tsx rankings-engine/scripts/settle-predictions.ts
-
-      # open-rankings/reviews/generated/ is a pure projection of the arena data (rankings generatedAt,
-      # evidence packs, pricing, geo). Derive restamps generatedAt on every run, so the
-      # records must be regenerated here or the drift test inside `pnpm test` below fails
-      # against the refreshed data (3 consecutive red runs through 2026-10-12).
-      - name: Regenerate vendor-review interchange records
-        if: steps.gate.outputs.enabled == 'true'
-        run: pnpm tsx rankings-engine/scripts/generate-vendor-reviews.ts
-
-      # open-rankings/graph.json is the same kind of pure projection (corpus + step-story mapping +
-      # judged story→product verdicts). The judge stage above can flip verdicts, which adds,
-      # drops, or relabels story-product edges, so the graph must be regenerated here or the
-      # byte-identity tests (lib/__tests__/storyProcessGraph.test.ts and
-      # shared-canonical-identity.test.ts) fail against the refreshed data (run 38288658736,
-      # email-apis, 2026-10-12). It lives in open-rankings/, so the change check and commit below
-      # already carry it.
-      - name: Regenerate the story graph artifact
-        if: steps.gate.outputs.enabled == 'true'
-        run: pnpm tsx rankings-engine/scripts/generate-story-graph.ts
-
-      # open-rankings/step-rankings.json is derived from the same verdicts plus the corpus and
-      # step-story mapping; regenerate it before its drift gates (lib/__tests__/stepRankings.test.ts
-      # and the recompute check below).
-      - name: Regenerate the step rankings artifact
-        if: steps.gate.outputs.enabled == 'true'
-        run: pnpm tsx rankings-engine/scripts/generate-step-rankings.ts
-
-      - name: Tests + recompute check
-        if: steps.gate.outputs.enabled == 'true'
-        run: |
-          pnpm test
-          pnpm tsx rankings-engine/scripts/recompute-check.ts
-
-      # Keyless and cheap (~300 HTTP checks, ≤3 concurrent): appends one uptime line per
-      # documented agent surface (llms.txt / remote MCP / openapi.json) to
-      # open-rankings/slo-history.jsonl — see rankings-engine/scripts/slo-check.ts and lib/slo.ts. Deliberately
-      # ungated so the 6-hourly cadence builds a real uptime series even without the API key.
-      - name: Agent-surface SLO check
-        run: pnpm tsx rankings-engine/scripts/slo-check.ts
-
-      - name: Open PR if anything changed
+          python3 - <<'PYRUN'
+          import os, subprocess, json, pathlib, sys
+          category=os.environ['EVAL_CATEGORY']; product=os.environ['EVAL_PRODUCT']
+          results=[]
+          if not os.environ.get('ANTHROPIC_API_KEY'):
+              raise SystemExit('Hosted evaluation credential is not configured')
+          pathlib.Path('engine-artifacts').mkdir(exist_ok=True)
+          evidence=pathlib.Path(f'open-rankings/{category}/evidence/{product}.json')
+          collected=evidence.exists() and len(json.loads(evidence.read_text())) > 0
+          stages=([] if collected else ['crawl','extract','collect-community','probe'])+['judge','claims','pricing','integrations']
+          for stage in stages:
+              print('Starting '+stage+' for '+category+'/'+product,flush=True)
+              if stage=='judge':
+                  import tempfile, concurrent.futures
+                  base=pathlib.Path('open-rankings')
+                  stories=json.loads((base/category/'stories.json').read_text())
+                  products=json.loads((base/category/'products.json').read_text())
+                  selected=[p for p in products if p['id']==product]
+                  assert len(selected)==1
+                  chunks=[stories[i::4] for i in range(4)]
+                  assert len({s['id'] for chunk in chunks for s in chunk})==len(stories)
+                  def judge_chunk(chunk):
+                      with tempfile.TemporaryDirectory(prefix='um-judge-') as directory:
+                          data=pathlib.Path(directory);arena=data/category
+                          (arena/'evidence').mkdir(parents=True)
+                          (data/'categories.json').write_bytes((base/'categories.json').read_bytes())
+                          (arena/'products.json').write_text(json.dumps(selected))
+                          (arena/'stories.json').write_text(json.dumps(chunk))
+                          (arena/'evidence'/f'{product}.json').write_bytes(evidence.read_bytes())
+                          env=os.environ.copy();env['UM_DATA_DIR']=str(data)
+                          return subprocess.run(['node','--import','tsx','rankings-engine/cli.ts','judge','--category',category,'--product',product],env=env).returncode
+                  with concurrent.futures.ThreadPoolExecutor(4) as pool:
+                      codes=list(pool.map(judge_chunk,chunks))
+                  if not any(codes):
+                      codes.append(subprocess.run(['node','--import','tsx','rankings-engine/scripts/review-aml-source-scope.ts','--category',category,'--product',product]).returncode)
+                  if any(codes):
+                      code=next(c for c in codes if c)
+                  else:
+                      # Assemble only the target's engine-produced matrix. Existing peers are
+                      # imported unchanged from committed verdicts after source-hash checks.
+                      with tempfile.TemporaryDirectory(prefix='um-target-') as directory:
+                          data=pathlib.Path(directory);arena=data/category
+                          (arena/'evidence').mkdir(parents=True)
+                          (data/'categories.json').write_bytes((base/'categories.json').read_bytes())
+                          (arena/'products.json').write_text(json.dumps(selected))
+                          (arena/'stories.json').write_text(json.dumps(stories))
+                          (arena/'evidence'/f'{product}.json').write_bytes(evidence.read_bytes())
+                          env=os.environ.copy();env['UM_DATA_DIR']=str(data)
+                          code=subprocess.run(['node','--import','tsx','rankings-engine/cli.ts','judge','--category',category,'--product',product],env=env).returncode
+                          if code==0:
+                              pathlib.Path('engine-artifacts/target-verdicts.json').write_bytes((arena/'verdicts.json').read_bytes())
+              elif stage=='pricing':
+                  supported=subprocess.run(['node','--import','tsx','-e',"const {PRICING_ARENAS}=require('./lib/pricing');process.exit(process.env.EVAL_CATEGORY in PRICING_ARENAS?0:2)"]).returncode
+                  if supported==2:
+                      print('Pricing normalization is not configured for this arena; retain source-linked commercial assessment.',flush=True)
+                      results.append({'stage':stage,'status':'skipped','reason':'arena not covered by per-action pricing lane'})
+                      pathlib.Path('engine-artifacts/stages.json').write_text(json.dumps(results,indent=2))
+                      continue
+                  code=subprocess.run(['node','--import','tsx','rankings-engine/cli.ts',stage,'--category',category,'--product',product]).returncode
+              else:
+                  code=subprocess.run(['node','--import','tsx','rankings-engine/cli.ts',stage,'--category',category,'--product',product]).returncode
+              results.append({'stage':stage,'exit_code':code})
+              pathlib.Path('engine-artifacts/stages.json').write_text(json.dumps(results,indent=2))
+              if code:
+                  sys.exit(code)
+          PYRUN
+      - name: Preserve evaluation outputs
+        if: always()
         env:
-          # Prefer the fine-grained PAT when the secret exists: a PR created with the
-          # workflow's GITHUB_TOKEN does not trigger pull_request workflows (GitHub's
-          # recursion guard — bot PRs #430/#433 carry no validation check), so the
-          # required checks never report and the auto-merge opt-in below never
-          # completes. Falls back to GITHUB_TOKEN when the secret is absent; no
-          # secrets are created here.
-          GH_TOKEN: ${{ secrets.UM_BOT_PR_PAT || secrets.GITHUB_TOKEN }}
-          CATEGORY: ${{ steps.pick.outputs.category }}
-          RUN_ID: ${{ github.run_id }}
+          EVAL_CATEGORY: ${{ matrix.category }}
+          EVAL_PRODUCT: ${{ matrix.product }}
         run: |
-          # When the API-key gate skipped the LLM stages, only the SLO check ran and CATEGORY is
-          # empty — branch/PR naming falls back accordingly.
-          CATEGORY="${CATEGORY:-slo-only}"
-          if git diff --quiet -- open-rankings rankings-engine/cache; then
-            echo "No changes for $CATEGORY — done."
-            exit 0
-          fi
-          pnpm stats   # keep the README's generated counts in sync with the refreshed data
-          BRANCH="story-runner/$CATEGORY-$RUN_ID"
-          git config user.name "ultrametric-story-runner"
-          git config user.email "noreply@ultrametric.ai"
-          git checkout -b "$BRANCH"
-          git add open-rankings rankings-engine/cache README.md
-          git commit -m "chore(story-runner): refresh $CATEGORY evidence + verdicts"
-          git push -u origin "$BRANCH"
-          # Org policy currently forbids Actions from creating PRs ("Write permissions for
-          # workflows are disabled by the organization") — fall back to an issue carrying the
-          # compare link so the refresh is never silently stranded on a branch.
-          # Auto-merge opt-in (maintainer authorization 2026-10-23): branch protection
-          # on main holds the merge until validation/ci + Greptile Review pass and
-          # every thread resolves — a reviewer applying the re-judge stability policy
-          # opens a thread, which blocks the merge until it is resolved. Greptile does
-          # not review bot PRs unprompted (PRs #430/#433 each needed a maintainer's
-          # '@greptileai review'), so the comment requests it. Both follow-ups are
-          # best-effort; a failure leaves the PR open for a manual merge.
-          if PR_URL=$(gh pr create \
-            --title "story-runner: $CATEGORY refresh" \
-            --body "Automated evidence/verdict refresh for \`$CATEGORY\`. Review verdict flips against the re-judge stability policy (README) before merging — no-new-citation flips should be reverted." \
-            --base main --head "$BRANCH"); then
-            # Auto-merge opt-in paused 2026-10-26: the required-status-checks ruleset is disabled,
-            # so auto-merge lands PRs without CI (observed on a merged bot PR). Re-enable this line
-            # once the ruleset requiring ci/validation/Greptile is active.
-            true # paused: gh pr merge --auto --merge "$PR_URL" || echo "auto-merge opt-in failed (org settings may block GITHUB_TOKEN; fallback: fine-grained PAT secret) — merge $PR_URL manually once checks pass"
-            gh pr comment "$PR_URL" --body "@greptileai review" \
-              || echo "Greptile review request failed — comment '@greptileai review' on $PR_URL manually"
-          else
-            gh issue create \
-              --title "story-runner: $CATEGORY refresh ready on $BRANCH" \
-              --body "The scheduled refresh for \`$CATEGORY\` is committed on [\`$BRANCH\`](https://github.com/${GITHUB_REPOSITORY}/compare/main...$BRANCH) but Actions may not open PRs (org policy). Open the PR from the compare link and review flips per the re-judge stability policy. Enable org Settings → Actions → General → 'Allow GitHub Actions to create and approve pull requests' to remove this manual step." \
-              --label "story-runner" || echo "issue creation also failed — branch $BRANCH is pushed; see run logs"
-          fi
+          python3 - <<'PYRUN'
+          import os, tarfile, pathlib
+          c=os.environ['EVAL_CATEGORY'];p=os.environ['EVAL_PRODUCT']
+          pathlib.Path('engine-artifacts').mkdir(exist_ok=True)
+          paths=[f'open-rankings/{c}',f'rankings-engine/cache/judge/{c}/{p}',f'rankings-engine/cache/crawl/{c}/{p}',f'rankings-engine/cache/extract/{c}/{p}.json','engine-artifacts/stages.json','engine-artifacts/target-verdicts.json','engine-artifacts/source-scope-review.json']
+          with tarfile.open(f'engine-artifacts/{c}--{p}.tar.gz','w:gz') as archive:
+              for source in paths:
+                  if pathlib.Path(source).exists(): archive.add(source,arcname=source)
+          PYRUN
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: ${{ matrix.category }}--${{ matrix.product }}
+          path: engine-artifacts/*.tar.gz
+          retention-days: 7
