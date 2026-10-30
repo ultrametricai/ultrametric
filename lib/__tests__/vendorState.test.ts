@@ -130,7 +130,10 @@ describe('vendor-state corpus', () => {
       [
         'gusto',
         'annual-report-filing',
-        ['https://gusto.com/product/business-compliance'],
+        [
+          'https://gusto.com/product/business-compliance',
+          'https://support.gusto.com/article/106732676100000/california-registration-and-tax-info',
+        ],
       ],
       [
         'rippling',
@@ -158,6 +161,37 @@ describe('vendor-state corpus', () => {
         rows.some((row) => row.sourceUrl === expectedSources[0]),
         `${productId}/${service} must retain its nationwide source`,
       ).toBe(true)
+    }
+
+    const gustoAnnualReportRows = entries.filter(
+      (entry) => entry.productId === 'gusto' && entry.service === 'annual-report-filing',
+    )
+    expect(gustoAnnualReportRows).toHaveLength(US_STATE_CODES.length)
+    expect(
+      gustoAnnualReportRows.find((entry) => entry.state === 'US-CA')?.sourceUrl,
+      'the California row must retain Gusto help evidence for the service-wide eligibility rules',
+    ).toBe(
+      'https://support.gusto.com/article/106732676100000/california-registration-and-tax-info',
+    )
+    for (const row of gustoAnnualReportRows) {
+      expect(row.note, `${row.state} must disclose the Gusto payroll prerequisite`).toMatch(
+        /requires Gusto payroll/,
+      )
+      expect(row.note, `${row.state} must disclose the supported plans`).toMatch(
+        /Solo, Simple, Plus, or Premium/,
+      )
+      expect(row.note, `${row.state} must disclose the eligible entity types`).toMatch(
+        /corporations .* and LLCs regardless of tax treatment/,
+      )
+      expect(row.note, `${row.state} must disclose the professional-entity restriction`).toMatch(
+        /professional corporations and PLLCs cannot sign up/,
+      )
+      expect(row.note, `${row.state} must disclose the other excluded categories`).toMatch(
+        /sole proprietors, general or limited partnerships, LLPs, or cannabis-related businesses/,
+      )
+      expect(row.note, `${row.state} must disclose the customer-approval boundary`).toMatch(
+        /filings needing approval are sent to the customer for review/i,
+      )
     }
 
     for (const service of [
