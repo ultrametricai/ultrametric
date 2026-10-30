@@ -34,7 +34,7 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 const checker = fileURLToPath(new URL('./check-refresh-stability.mjs', import.meta.url))
-function repositoryCase(change, nextPack, removePack = false) {
+function repositoryCase(change, nextPack, removePack = false, inspectCandidate = false) {
   const dir = mkdtempSync(join(tmpdir(), 'um-stability-'))
   const git = (...args) => execFileSync('git', args, { cwd: dir, stdio: 'pipe', encoding: 'utf8' }).trim()
   const arena = join(dir, 'open-rankings', 'fixture')
@@ -53,7 +53,9 @@ function repositoryCase(change, nextPack, removePack = false) {
     if (removePack) rmSync(join(arena, 'evidence', 'vendor.json'))
     git('add', '-A')
     git('commit', '-m', 'refresh fixture')
-    return spawnSync(process.execPath, [checker, base], { cwd: dir, encoding: 'utf8' })
+    const candidate = git('rev-parse', 'HEAD')
+    if (inspectCandidate) git('checkout', '--detach', base)
+    return spawnSync(process.execPath, [checker, base, ...(inspectCandidate ? [candidate] : [])], { cwd: dir, encoding: 'utf8' })
   } finally {
     rmSync(dir, { recursive: true, force: true })
   }
@@ -71,4 +73,10 @@ test('Git comparison fails closed when the new evidence pack is missing', () => 
   const result = repositoryCase({ verdict: 'full' }, pack.vendor, true)
   assert.notEqual(result.status, 0)
   assert.match(result.stderr, /does not exist/)
+})
+
+test('checks a candidate commit without checking out its code', () => {
+  const result = repositoryCase({ verdict: 'full' }, pack.vendor, false, true)
+  assert.notEqual(result.status, 0)
+  assert.match(result.stderr, /grade changed without a new cited evidence ID/)
 })
