@@ -155,3 +155,13 @@ jobs:
             echo "::error::All CI jobs must succeed; failure, cancellation, or skipped checks block CI."
             exit 1
           fi
+
+  # Running the metadata gate after CI also initializes its required status when
+  # Greptile produces a clean review without submitting an inline review event.
+  review-findings:
+    needs: [ci]
+    permissions:
+      checks: read
+      pull-requests: read
+      statuses: write
+    uses: ./.github/workflows/review-findings.yml
