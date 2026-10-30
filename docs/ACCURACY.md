@@ -93,7 +93,9 @@ score built entirely from zero-evidence none/na cells renders italic *untested*,
    Foreloop checks and threads are outside the merge requirements. The CI stability
    gate rejects upgrades without a cited evidence ID new to that product pack. A verified
    downgrade may instead follow changed or lost prior support; quality cannot increase and
-   applicability cannot change through that path. Review semantic findings under the re-judge stability policy before merging: a verdict flip citing NO evidence id new to the pack is re-roll noise —
+   applicability cannot change through that path. Review semantic findings under the re-judge
+   stability policy before merging: when prior cited support is unchanged, a verdict flip
+   citing NO evidence id new to the pack is re-roll noise —
    revert it (`rankings-engine/scripts/revert-churn.ts` pattern, METHODOLOGY.md). Exception: a
    labeled judge-model migration wave (e.g. 2026-09-30, sonnet-5 → opus-5-5) is exempt — under
    a judge change every flip cites no new evidence by construction, so the wave is labeled in
