@@ -22,7 +22,10 @@ def api(endpoint, data=None):
     if data is not None:
         args += ['--method', 'POST', '--input', '-']
     result = command(args, input=json.dumps(data) if data is not None else None, capture_output=True)
-    return json.loads(result.stdout) if result.stdout.strip() else None
+    value = json.loads(result.stdout) if result.stdout.strip() else None
+    if isinstance(value, dict) and value.get('errors'):
+        raise RuntimeError(value['errors'])
+    return value
 
 def current():
     return api(f'repos/{REPO}/pulls/{NUMBER}')
@@ -69,6 +72,9 @@ def threads():
 
 def main():
     pr = current()
+    if pr['state'] != 'open':
+        print('PR is already closed; no repair needed')
+        return
     match = identity(pr)
     if not match or pr['head']['sha'] != EXPECTED or not re.fullmatch('[0-9a-f]{40}', EXPECTED):
         raise RuntimeError('PR identity or expected head changed; no repair performed')
@@ -85,6 +91,12 @@ def main():
     sha, findings = threads()
     if sha != EXPECTED:
         raise RuntimeError('PR changed while collecting review context')
+    checks = api(f'repos/{REPO}/commits/{EXPECTED}/check-runs?per_page=100')['check_runs']
+    healthy = all(any(c['name'] == name and c['app']['id'] == 15368 and c['conclusion'] == 'success'
+                      for c in checks) for name in ['validation', 'ci'])
+    if not findings and healthy and output(['git', 'merge-base', trusted, EXPECTED]) == trusted:
+        print('PR is current and healthy; no repair needed')
+        return
     tmp = Path(os.environ['RUNNER_TEMP'])
     finding_file, report_file = tmp / 'refresh-findings.json', tmp / 'refresh-repair-report.json'
     finding_file.write_text(json.dumps(findings))
@@ -143,6 +155,8 @@ def main():
         live_ids = {finding['id'] for finding in remaining}
         for audit in report['audits']:
             if audit['addressed'] and audit['thread'] in original_ids and audit['thread'] in live_ids:
+                if current()['head']['sha'] != new_sha:
+                    return
                 api('graphql', {'query': 'mutation($id:ID!){resolveReviewThread(input:{threadId:$id}){thread{id isResolved}}}',
                                 'variables': {'id': audit['thread']}})
     command(['gh', 'workflow', 'run', 'review-findings.yml', '--repo', REPO, '--ref', 'main', '--field', f'pr={NUMBER}'])
