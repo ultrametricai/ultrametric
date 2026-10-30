@@ -217,6 +217,48 @@ describe('startup task inventory and operational expansion', () => {
     }
   })
 
+  it('country launch entries resolve official sources, authored views and explicit remaining gaps', () => {
+    const expansion = read('coverage/startup-country-expansion.json') as {
+      countries: Array<{ country: string; depth: string; knownGaps: string[]; formation: { sourceId: string; guidance: string }; tax: { sourceId: string; guidance: string }; permits: { sourceId: string; guidance: string } }>
+    }
+    expect(z.fromJSONSchema(read('schemas/startup-country-expansion.schema.json')).parse(expansion)).toEqual(expansion)
+    expect(new Set(expansion.countries.map(c => c.country)).size).toBe(expansion.countries.length)
+    const processIds = { formation: 'form_001', tax: 'form_002', permits: 'startup-coverage.obtain-business-licenses-and-operating-permits' }
+    for (const country of expansion.countries) {
+      expect(country.depth).toBe('launch-entry-point')
+      expect(country.knownGaps.length).toBeGreaterThan(0)
+      for (const area of ['formation', 'tax', 'permits'] as const) {
+        const source = sources.sources.find(source => source.id === country[area].sourceId)
+        expect(source, `${country.country}/${area}`).toBeDefined()
+        const record = records.get(processIds[area])!
+        expect(record.references.some(ref => ref.kind === 'url' && ref.url === source!.url)).toBe(true)
+        const view = record.countryViews?.find(view => view.country === country.country)
+        expect(view?.summary).toContain(country[area].guidance)
+        expect(view?.summary).toContain('local review')
+        const notes = record.metadata.geoNotes as Array<{ country: string; actionUrl: string }>
+        expect(notes.find(note => note.country === country.country)?.actionUrl).toBe(source!.url)
+      }
+    }
+  })
+
+  it('country links reach local sections and declined bids skip submission while money release is irreversible', () => {
+    const index = fs.readFileSync(path.join(ROOT, 'coverage/STARTUP-TASKS.md'), 'utf8')
+    const countries = read('coverage/startup-country-expansion.json').countries as Array<{ country: string }>
+    for (const { country } of countries) for (const slug of ['incorporate-c-corp', 'get-ein', 'obtain-business-licenses-and-operating-permits']) {
+      const anchor = `geo-${country.toLowerCase()}`
+      expect(index).toContain(`pages/${slug}.md#${anchor}`)
+      expect(fs.readFileSync(path.join(ROOT, `open-processes/pages/${slug}.md`), 'utf8')).toContain(`id="${anchor}"`)
+    }
+    const bid = records.get('startup-coverage.prepare-and-submit-a-public-procurement-bid')!
+    expect(bid.links.filter(link => link.from === 'n2')).toEqual([
+      { from: 'n2', to: 'n3', when: 'Bid decision approved; mandatory eligibility requirements can be met.' },
+      { from: 'n2', to: 'n6', when: 'No-bid decision approved; skip preparation and submission.' },
+    ])
+    for (const step of bid.parts.slice(2, 5)) expect(step.when).toContain('approves a bid')
+    expect(bid.parts.at(-1)?.guidance).toContain('close the opportunity without submitting')
+    expect(records.get('startup-coverage.approve-and-pay-a-shareholder-distribution')!.parts.find(part => part.id === 'n5')!.metadata.reversibility).toBe('irreversible')
+  })
+
   it('the readable coverage map is regenerated from the current inventory and canonical titles', () => {
     expect(() => execFileSync(process.execPath, ['scripts/generate-startup-coverage.mjs', '--check'], { cwd: ROOT })).not.toThrow()
   })
