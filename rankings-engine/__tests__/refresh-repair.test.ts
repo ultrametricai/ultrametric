@@ -78,6 +78,14 @@ describe('changed-source identities and scoped judging', () => {
     const noise = { ...mainVerdict, quality: 9 }
     expect(restoreChurn([mainVerdict], [noise], { vendor: first.evidence }, { vendor: next.evidence }).restored).toEqual(['vendor:story'])
   })
+  it('preserves source identity when extraction renumbers or reorders known content', () => {
+    const a = { ...evidence('a'), excerpt: 'first fact' }
+    const b = { ...evidence('b'), excerpt: 'second fact' }
+    const moved = rekeyEvidence([a,b], [{ ...b,id:'a' },{ ...a,id:'b' }])
+    expect(moved.evidence).toEqual([b,a])
+    expect(moved.renamed).toEqual({ a:'b', b:'a' })
+    expect(rekeyEvidence([a], [{ ...a,id:'brand-new-label' }]).evidence).toEqual([a])
+  })
   it('rejects duplicate identities and deterministic-name collisions', () => {
     expect(() => rekeyEvidence([], [evidence('a'), evidence('a')])).toThrow('Duplicate')
     const changed = { ...evidence('old'), excerpt: 'new fact' }
