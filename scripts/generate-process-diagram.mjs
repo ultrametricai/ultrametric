@@ -12,7 +12,7 @@ const { layerNodes } = await tsImport('../lib/dagLayers.ts', import.meta.url)
 const { EXECUTION_LABELS } = await tsImport('../lib/execution.ts', import.meta.url)
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..')
 const catalog = loadProcessCatalog(undefined, ROOT).processes
-const examples = ['incorporate-c-corp', 'get-a-409a-valuation', 'set-up-mailing-address']
+const examples = ['incorporate-c-corp', 'get-a-409a-valuation', 'set-up-mailing-address', 'sell-the-company-through-an-acquisition']
 const esc = value => String(value).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
 const W = 1280, PAD = 40, COLS = 5, CW = 216, GX = 30, CH = 174, GY = 20, ROW_GAP = 68
 
