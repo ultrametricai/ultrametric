@@ -9,6 +9,14 @@ import {
 
 const ROOT = path.resolve(__dirname, '../..')
 const DATA_DIR = path.join(ROOT, 'open-rankings')
+const US_STATE_CODES = [
+  'US-AL', 'US-AK', 'US-AZ', 'US-AR', 'US-CA', 'US-CO', 'US-CT', 'US-DE', 'US-FL',
+  'US-GA', 'US-HI', 'US-ID', 'US-IL', 'US-IN', 'US-IA', 'US-KS', 'US-KY', 'US-LA',
+  'US-ME', 'US-MD', 'US-MA', 'US-MI', 'US-MN', 'US-MS', 'US-MO', 'US-MT', 'US-NE',
+  'US-NV', 'US-NH', 'US-NJ', 'US-NM', 'US-NY', 'US-NC', 'US-ND', 'US-OH', 'US-OK',
+  'US-OR', 'US-PA', 'US-RI', 'US-SC', 'US-SD', 'US-TN', 'US-TX', 'US-UT', 'US-VT',
+  'US-VA', 'US-WA', 'US-WV', 'US-WI', 'US-WY',
+] as const
 
 // The per-state vendors foundation (2026-10-22): US-state availability EVIDENCE at
 // jurisdictions/vendor-state.json (the state sibling of vendor-geo.json), the ProductSchema
@@ -53,6 +61,13 @@ describe('vendor-state corpus', () => {
     }
   })
 
+  it('registers all 50 states for availability evidence without inferring a DC row', () => {
+    for (const state of US_STATE_CODES) {
+      expect(states.has(state), `${state} must be registered`).toBe(true)
+    }
+    expect(entries.some((entry) => entry.state === 'US-DC')).toBe(false)
+  })
+
   it('every (arenaId, productId) resolves to a real judged product in that arena', () => {
     const seen = new Map<string, Set<string>>()
     for (const e of entries) {
@@ -88,8 +103,78 @@ describe('vendor-state corpus', () => {
     // Clerky files foreign qualification directly in CA and NY only; other states go to partners.
     expect(status('clerky', 'US-CA', 'foreign-qualification')).toBe('available')
     expect(status('clerky', 'US-TX', 'foreign-qualification')).toBe('partial')
-    // Rippling registers state payroll-tax accounts through its PEO, not payroll alone.
-    expect(status('rippling', 'US-CA', 'payroll-tax-registration')).toBe('partial')
+    // Rippling's current multi-state guide now says Payroll itself handles tax registration.
+    expect(status('rippling', 'US-CA', 'payroll-tax-registration')).toBe('available')
+  })
+
+  it('has a directly sourced nationwide provider for each requested state service', () => {
+    const nationwide = [
+      [
+        'legalzoom',
+        'formation',
+        [
+          'https://www.legalzoom.com/business/business-formation/llc-overview.html',
+          'https://www.legalzoom.com/business/business-formation/delaware/llc-overview.html',
+          'https://www.legalzoom.com/business/business-formation/california/llc-overview.html',
+          'https://www.legalzoom.com/business/business-formation/new-york/llc-overview.html',
+          'https://www.legalzoom.com/business/business-formation/texas/llc-overview.html',
+          'https://www.legalzoom.com/business/business-formation/wyoming/llc-overview.html',
+          'https://www.legalzoom.com/business/business-formation/florida/llc-overview.html',
+        ],
+      ],
+      [
+        'firstbase',
+        'registered-agent',
+        ['https://www.firstbase.io/registered-agent-service'],
+      ],
+      [
+        'gusto',
+        'annual-report-filing',
+        ['https://gusto.com/product/business-compliance'],
+      ],
+      [
+        'rippling',
+        'payroll-tax-registration',
+        ['https://www.rippling.com/blog/multi-state-payroll-processing'],
+      ],
+    ] as const
+
+    for (const [productId, service, expectedSources] of nationwide) {
+      const rows = entries
+        .filter((entry) =>
+          entry.productId === productId &&
+          entry.service === service &&
+          entry.status === 'available')
+      const coveredStates = rows.map((entry) => entry.state).sort()
+      expect(coveredStates, `${productId}/${service} must cite all 50 states`).toEqual(
+        [...US_STATE_CODES].sort(),
+      )
+      for (const row of rows) {
+        expect(expectedSources, `${productId}/${service}/${row.state} source`).toContain(
+          row.sourceUrl,
+        )
+      }
+      expect(
+        rows.some((row) => row.sourceUrl === expectedSources[0]),
+        `${productId}/${service} must retain its nationwide source`,
+      ).toBe(true)
+    }
+
+    for (const service of [
+      'formation',
+      'registered-agent',
+      'annual-report-filing',
+      'payroll-tax-registration',
+    ] as const) {
+      const coveredStates = new Set(
+        entries
+          .filter((entry) => entry.service === service && entry.status === 'available')
+          .map((entry) => entry.state),
+      )
+      expect([...coveredStates].sort(), `${service} has a verified option in every state`).toEqual(
+        [...US_STATE_CODES].sort(),
+      )
+    }
   })
 })
 
@@ -183,6 +268,38 @@ describe('government-services state tags', () => {
     for (const id of ['irs', 'eftps', 'uspto', 'uscis', 'sam-gov']) {
       expect(tag(id), `${id} is federal`).toBeUndefined()
     }
+  })
+
+  it('keeps Nevada crawl exclusions while its current process links resolve to ORION', () => {
+    const nevada = products.find((product) => product.id === 'nevada-sos')
+    expect(nevada?.crawlExclude).toEqual([
+      'https://www.nvsos.gov/',
+      'https://www.nvsos.gov/sos/businesses',
+    ])
+
+    const process = JSON.parse(
+      fs.readFileSync(path.join(ROOT, 'open-processes/file-state-annual-report.json'), 'utf8'),
+    ) as {
+      parts: Array<{
+        id: string
+        guidance: string
+        references: Array<{ kind: string; role?: string; url?: string }>
+      }>
+    }
+    const nevadaStep = process.parts.find((part) => part.id === 'jnv1')
+    expect(nevadaStep?.guidance).toMatch(/ORION/)
+    expect(nevadaStep?.references).toContainEqual(expect.objectContaining({
+      kind: 'url',
+      role: 'legacy-action-link',
+      url: 'https://orion.nv.gov/portal/public/',
+    }))
+
+    const vendorRegistry = JSON.parse(
+      fs.readFileSync(path.join(ROOT, 'open-processes/vendor-registry.json'), 'utf8'),
+    ) as { vendors: Record<string, { signupUrl?: string }> }
+    expect(vendorRegistry.vendors.nevada_sos.signupUrl).toBe(
+      'https://orion.nv.gov/portal/public/',
+    )
   })
 })
 
