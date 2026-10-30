@@ -9,6 +9,8 @@
 
 Form a company in the selected jurisdiction: check the name, submit the local formation filing, adopt governing documents and issue founder equity. Apply the local tax-election rules where an election exists.
 
+> Additional country launch entry points source-checked 2026-10-30. These are draft scoping summaries. They do not establish complete local-law workflows, professional review or verified execution for those countries.
+
 | Field | Value |
 | --- | --- |
 | Kind | process |
@@ -22,6 +24,8 @@ Form a company in the selected jurisdiction: check the name, submit the local fo
 | Agent support | partial |
 
 Clerky/Stripe Atlas have limited APIs. System guides through the process, pre-fills known data, tracks progress, but cannot automate the filing itself.
+
+- Sources: [Business.gov.nl starting a business](https://business.gov.nl/starting-your-business/preparations/step-by-step-plan-how-to-start-a-business-in-the-netherlands/) · [Companies Registration Office: registering a company](https://cro.ie/Registration/Company/) · [Spain public administration: create a company](https://administracion.gob.es/tu-espacio-europeo/derechos-obligaciones/empresas/inicio-gestion-cierre/registro-cambio-cierre/crear) · [Verksamt starting a limited company](https://verksamt.se/en/setting-up/choose-business-type/limited-company) · [SECO how to register a company](https://www.kmu.admin.ch/en/how-to-register-a-company) · [JETRO setting up business](https://www.jetro.go.jp/en/invest/setting_up/) · [Brazil register an entity in CNPJ](https://www.gov.br/pt-br/servicos/inscrever-no-cnpj) · [UAE government mainland business setup](https://u.ae/en/information-and-services/business/doing-business-on-the-mainland/steps-to-start-a-business-on-the-mainland)
 
 <a id="artifacts"></a>
 
@@ -60,6 +64,14 @@ Country rows describe the guidance recorded here. Local notes and step alternati
 | [South Korea](#geo-kr) | Local analog note; step resolution | [3](#step-3) |
 | [Hong Kong](#geo-hk) | Local analog note; step resolution | [3](#step-3) |
 | [Estonia](#geo-ee) | Local analog note; step resolution | [3](#step-3) |
+| [Netherlands](#geo-nl) | Local analog note; step resolution | [3](#step-3) |
+| [Ireland](#geo-ie) | Local analog note; step resolution | [3](#step-3) |
+| [Spain](#geo-es) | Local analog note; step resolution | [3](#step-3) |
+| [Sweden](#geo-se) | Local analog note; step resolution | [3](#step-3) |
+| [Switzerland](#geo-ch) | Local analog note; step resolution | [3](#step-3) |
+| [Japan](#geo-jp) | Local analog note; step resolution | [3](#step-3) |
+| [Brazil](#geo-br) | Local analog note; step resolution | [3](#step-3) |
+| [United Arab Emirates](#geo-ae) | Local analog note; step resolution | [3](#step-3) |
 
 ### State conditions
 
@@ -159,7 +171,7 @@ Choose the jurisdiction and legal form before preparing the filing. Those choice
 - Cost: $109 (government fee, as of 2026-10-01, [corpfiles.delaware.gov](https://corpfiles.delaware.gov/Fee_Schedule/AugustFee2026.pdf)). Minimum state filing fee for a one-page, minimum-stock Certificate of Incorporation — the schedule marks it 'varies based on stock'. Expedited options on the same schedule, per document: $50 24-hour, $100 same-day, $500 2-hour (Priority 2), $1,000 1-hour (Priority 1).
 - Canonical vendor: Clerky
 - Do it yourself: [Delaware Division of Corporations](https://corp.delaware.gov/howtoform/)
-- Sources: [Companies House registration](https://www.gov.uk/limited-company-formation/register-your-company) · [Delaware incorporation and bylaws law](https://delcode.delaware.gov/title8/c001/sc01/index.html) · [Delaware stock authorization and issuance](https://delcode.delaware.gov/title8/c001/sc05/index.html)
+- Sources: [Companies House registration](https://www.gov.uk/limited-company-formation/register-your-company) · [Business.gov.nl starting a business](https://business.gov.nl/starting-your-business/preparations/step-by-step-plan-how-to-start-a-business-in-the-netherlands/) · [Companies Registration Office: registering a company](https://cro.ie/Registration/Company/) · [Spain public administration: create a company](https://administracion.gob.es/tu-espacio-europeo/derechos-obligaciones/empresas/inicio-gestion-cierre/registro-cambio-cierre/crear) · [Verksamt starting a limited company](https://verksamt.se/en/setting-up/choose-business-type/limited-company) · [SECO how to register a company](https://www.kmu.admin.ch/en/how-to-register-a-company) · [JETRO setting up business](https://www.jetro.go.jp/en/invest/setting_up/) · [Brazil register an entity in CNPJ](https://www.gov.br/pt-br/servicos/inscrever-no-cnpj) · [UAE government mainland business setup](https://u.ae/en/information-and-services/business/doing-business-on-the-mainland/steps-to-start-a-business-on-the-mainland) · [Delaware incorporation and bylaws law](https://delcode.delaware.gov/title8/c001/sc01/index.html) · [Delaware stock authorization and issuance](https://delcode.delaware.gov/title8/c001/sc05/index.html)
 
 Options:
   - **United States — Delaware Division of Corporations** — manual form/portal · ~30 min · human approval required · hard to undo
@@ -542,6 +554,78 @@ A corporation doing business in Washington registers with the Secretary of State
 
 - Incorporate as an osaühing (OÜ) through the e-Business Register: a digitally signed petition, no minimum capital beyond one cent per share, and expedited review by the next working day (law rules [ee.private-limited-company-registration](../../open-law/EE/ee-private-limited-company-registration.json), [ee.osauhing-no-minimum-capital](../../open-law/EE/ee-osauhing-no-minimum-capital.json)); e-residents can file fully online (law rule [ee.e-residency-digital-identity](../../open-law/EE/ee-e-residency-digital-identity.json)). ([e-Business Register](https://ariregister.rik.ee/eng))
 - Step 3: Incorporate as an osaühing (OÜ) through the e-Business Register: a digitally signed petition, no minimum capital beyond one cent per share, and expedited review by the next working day (law rules ee.private-limited-company-registration, ee.osauhing-no-minimum-capital); e-residents can file fully online (law rule ee.e-residency-digital-identity). ([e-Business Register](https://ariregister.rik.ee/eng))
+
+<a id="geo-nl"></a>
+
+### Netherlands
+
+Choose the appropriate legal structure and registration route using KVK and the Dutch government startup checklist. Confirm residence, business address and any notarial work for the selected entity before authorizing registration. Launch entry point only; qualified local review is required.
+
+- Choose the appropriate legal structure and registration route using KVK and the Dutch government startup checklist. Confirm residence, business address and any notarial work for the selected entity before authorizing registration. Launch entry point only; qualified local review is required. ([Business.gov.nl starting a business](https://business.gov.nl/starting-your-business/preparations/step-by-step-plan-how-to-start-a-business-in-the-netherlands/))
+- Step 3: Confirm the country-specific formation route Choose the appropriate legal structure and registration route using KVK and the Dutch government startup checklist. Confirm residence, business address and any notarial work for the selected entity before authorizing registration. Launch entry point only; qualified local review is required. ([Business.gov.nl starting a business](https://business.gov.nl/starting-your-business/preparations/step-by-step-plan-how-to-start-a-business-in-the-netherlands/))
+
+<a id="geo-ie"></a>
+
+### Ireland
+
+Select the company type and review the CRO registration methods, required steps and post-registration obligations. Use the company-specific officer, constitution and registered-office requirements rather than transplanting US formation documents. Launch entry point only; qualified local review is required.
+
+- Select the company type and review the CRO registration methods, required steps and post-registration obligations. Use the company-specific officer, constitution and registered-office requirements rather than transplanting US formation documents. Launch entry point only; qualified local review is required. ([Companies Registration Office: registering a company](https://cro.ie/Registration/Company/))
+- Step 3: Confirm the country-specific formation route Select the company type and review the CRO registration methods, required steps and post-registration obligations. Use the company-specific officer, constitution and registered-office requirements rather than transplanting US formation documents. Launch entry point only; qualified local review is required. ([Companies Registration Office: registering a company](https://cro.ie/Registration/Company/))
+
+<a id="geo-es"></a>
+
+### Spain
+
+Choose the legal form and check whether CIRCE supports its formation and startup procedures. Coordinate any required registry, notarial and social-security work for that form rather than assuming every company follows the same online path. Launch entry point only; qualified local review is required.
+
+- Choose the legal form and check whether CIRCE supports its formation and startup procedures. Coordinate any required registry, notarial and social-security work for that form rather than assuming every company follows the same online path. Launch entry point only; qualified local review is required. ([Spain public administration: create a company](https://administracion.gob.es/tu-espacio-europeo/derechos-obligaciones/empresas/inicio-gestion-cierre/registro-cambio-cierre/crear))
+- Step 3: Confirm the country-specific formation route Choose the legal form and check whether CIRCE supports its formation and startup procedures. Coordinate any required registry, notarial and social-security work for that form rather than assuming every company follows the same online path. Launch entry point only; qualified local review is required. ([Spain public administration: create a company](https://administracion.gob.es/tu-espacio-europeo/derechos-obligaciones/empresas/inicio-gestion-cierre/registro-cambio-cierre/crear))
+
+<a id="geo-se"></a>
+
+### Sweden
+
+Select the business form and follow the corresponding Verksamt registration route. For a limited company, coordinate company registration with the separate tax and employer registrations relevant to the intended operations. Launch entry point only; qualified local review is required.
+
+- Select the business form and follow the corresponding Verksamt registration route. For a limited company, coordinate company registration with the separate tax and employer registrations relevant to the intended operations. Launch entry point only; qualified local review is required. ([Verksamt starting a limited company](https://verksamt.se/en/setting-up/choose-business-type/limited-company))
+- Step 3: Confirm the country-specific formation route Select the business form and follow the corresponding Verksamt registration route. For a limited company, coordinate company registration with the separate tax and employer registrations relevant to the intended operations. Launch entry point only; qualified local review is required. ([Verksamt starting a limited company](https://verksamt.se/en/setting-up/choose-business-type/limited-company))
+
+<a id="geo-ch"></a>
+
+### Switzerland
+
+Choose the legal form and relevant cantonal commercial-register route. SECO describes EasyGov preparation and registration support; arrange any required notarial certification rather than treating an online draft as a formed company. Launch entry point only; qualified local review is required.
+
+- Choose the legal form and relevant cantonal commercial-register route. SECO describes EasyGov preparation and registration support; arrange any required notarial certification rather than treating an online draft as a formed company. Launch entry point only; qualified local review is required. ([SECO how to register a company](https://www.kmu.admin.ch/en/how-to-register-a-company))
+- Step 3: Confirm the country-specific formation route Choose the legal form and relevant cantonal commercial-register route. SECO describes EasyGov preparation and registration support; arrange any required notarial certification rather than treating an online draft as a formed company. Launch entry point only; qualified local review is required. ([SECO how to register a company](https://www.kmu.admin.ch/en/how-to-register-a-company))
+
+<a id="geo-jp"></a>
+
+### Japan
+
+Use JETRO to select the form of entry and map registration, office, tax-notice and personnel work. Have qualified local owners confirm the entity-specific documents and any investment notifications before the authorized registration. Launch entry point only; qualified local review is required.
+
+- Use JETRO to select the form of entry and map registration, office, tax-notice and personnel work. Have qualified local owners confirm the entity-specific documents and any investment notifications before the authorized registration. Launch entry point only; qualified local review is required. ([JETRO setting up business](https://www.jetro.go.jp/en/invest/setting_up/))
+- Step 3: Confirm the country-specific formation route Use JETRO to select the form of entry and map registration, office, tax-notice and personnel work. Have qualified local owners confirm the entity-specific documents and any investment notifications before the authorized registration. Launch entry point only; qualified local review is required. ([JETRO setting up business](https://www.jetro.go.jp/en/invest/setting_up/))
+
+<a id="geo-br"></a>
+
+### Brazil
+
+Use the official CNPJ service and REDESIM integration for the entity registration and legalization route. Confirm the legal form, competent registering body and local integration rather than assuming one company type or municipality procedure. Launch entry point only; qualified local review is required.
+
+- Use the official CNPJ service and REDESIM integration for the entity registration and legalization route. Confirm the legal form, competent registering body and local integration rather than assuming one company type or municipality procedure. Launch entry point only; qualified local review is required. ([Brazil register an entity in CNPJ](https://www.gov.br/pt-br/servicos/inscrever-no-cnpj))
+- Step 3: Confirm the country-specific formation route Use the official CNPJ service and REDESIM integration for the entity registration and legalization route. Confirm the legal form, competent registering body and local integration rather than assuming one company type or municipality procedure. Launch entry point only; qualified local review is required. ([Brazil register an entity in CNPJ](https://www.gov.br/pt-br/servicos/inscrever-no-cnpj))
+
+<a id="geo-ae"></a>
+
+### United Arab Emirates
+
+Select the emirate and mainland or specific free-zone route first. The linked federal guide describes mainland steps; obtain the chosen free-zone authority procedure separately rather than applying mainland steps or Dubai examples nationwide. Launch entry point only; qualified local review is required.
+
+- Select the emirate and mainland or specific free-zone route first. The linked federal guide describes mainland steps; obtain the chosen free-zone authority procedure separately rather than applying mainland steps or Dubai examples nationwide. Launch entry point only; qualified local review is required. ([UAE government mainland business setup](https://u.ae/en/information-and-services/business/doing-business-on-the-mainland/steps-to-start-a-business-on-the-mainland))
+- Step 3: Confirm the country-specific formation route Select the emirate and mainland or specific free-zone route first. The linked federal guide describes mainland steps; obtain the chosen free-zone authority procedure separately rather than applying mainland steps or Dubai examples nationwide. Launch entry point only; qualified local review is required. ([UAE government mainland business setup](https://u.ae/en/information-and-services/business/doing-business-on-the-mainland/steps-to-start-a-business-on-the-mainland))
 
 ## Outputs
 

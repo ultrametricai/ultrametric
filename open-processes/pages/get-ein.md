@@ -9,6 +9,8 @@
 
 Obtain or confirm the tax identifiers needed by the company. Some jurisdictions issue them during incorporation; others require a separate application or tax registration.
 
+> Additional country launch entry points source-checked 2026-10-30. These are draft scoping summaries. They do not establish complete local-law workflows, professional review or verified execution for those countries.
+
 | Field | Value |
 | --- | --- |
 | Kind | process |
@@ -22,6 +24,8 @@ Obtain or confirm the tax identifiers needed by the company. Some jurisdictions 
 | Agent support | manual guide |
 
 IRS EIN application is a web form with no API. System provides step-by-step guidance and pre-fills company data.
+
+- Sources: [KVK Business Register and Tax Administration](https://www.kvk.nl/en/starting/business-register-and-tax-administration/) · [Revenue registering for tax](https://www.revenue.ie/en/starting-a-business/registering-for-tax/index.aspx) · [Agencia Tributaria tax census and NIF](https://sede.agenciatributaria.gob.es/Sede/censos-nif-domicilio-fiscal/censos.html) · [Skatteverket starting and registering a business](https://www.skatteverket.se/foretag/drivaforetag/startaochregistrera.4.58d555751259e4d661680006123.html) · [Swiss Federal Tax Administration VAT registration](https://www.estv.admin.ch/en/register-for-vat) · [Japan National Tax Agency notification guidelines](https://www.nta.go.jp/english/Guidelines.htm) · [Brazil register an entity in CNPJ](https://www.gov.br/pt-br/servicos/inscrever-no-cnpj) · [UAE Federal Tax Authority corporate tax registration](https://tax.gov.ae/en/services/corporate.tax.registration.aspx)
 
 <a id="artifacts"></a>
 
@@ -57,6 +61,14 @@ Country rows describe the guidance recorded here. Local notes and step alternati
 | [South Korea](#geo-kr) | Local analog note; step resolution | [2](#step-2) |
 | [Hong Kong](#geo-hk) | Handled within another local process; step resolution | [2](#step-2) |
 | [Estonia](#geo-ee) | Handled within another local process; step resolution | [2](#step-2) |
+| [Netherlands](#geo-nl) | Local analog note; step resolution | [2](#step-2) |
+| [Ireland](#geo-ie) | Local analog note; step resolution | [2](#step-2) |
+| [Spain](#geo-es) | Local analog note; step resolution | [2](#step-2) |
+| [Sweden](#geo-se) | Local analog note; step resolution | [2](#step-2) |
+| [Switzerland](#geo-ch) | Local analog note; step resolution | [2](#step-2) |
+| [Japan](#geo-jp) | Local analog note; step resolution | [2](#step-2) |
+| [Brazil](#geo-br) | Local analog note; step resolution | [2](#step-2) |
+| [United Arab Emirates](#geo-ae) | Local analog note; step resolution | [2](#step-2) |
 
 ## Steps at a glance
 
@@ -96,7 +108,7 @@ Check the accepted formation documents for identifiers already issued. Where a s
 - Produces: EIN assignment letter
 - Canonical vendor: IRS
 - Do it yourself: [IRS EIN online application](https://www.irs.gov/businesses/small-businesses-self-employed/apply-for-an-employer-identification-number-ein-online)
-- Sources: [IRS get an EIN](https://www.irs.gov/businesses/small-businesses-self-employed/get-an-employer-identification-number)
+- Sources: [IRS get an EIN](https://www.irs.gov/businesses/small-businesses-self-employed/get-an-employer-identification-number) · [KVK Business Register and Tax Administration](https://www.kvk.nl/en/starting/business-register-and-tax-administration/) · [Revenue registering for tax](https://www.revenue.ie/en/starting-a-business/registering-for-tax/index.aspx) · [Agencia Tributaria tax census and NIF](https://sede.agenciatributaria.gob.es/Sede/censos-nif-domicilio-fiscal/censos.html) · [Skatteverket starting and registering a business](https://www.skatteverket.se/foretag/drivaforetag/startaochregistrera.4.58d555751259e4d661680006123.html) · [Swiss Federal Tax Administration VAT registration](https://www.estv.admin.ch/en/register-for-vat) · [Japan National Tax Agency notification guidelines](https://www.nta.go.jp/english/Guidelines.htm) · [Brazil register an entity in CNPJ](https://www.gov.br/pt-br/servicos/inscrever-no-cnpj) · [UAE Federal Tax Authority corporate tax registration](https://tax.gov.ae/en/services/corporate.tax.registration.aspx)
 
 <a id="step-3"></a>
 
@@ -206,6 +218,78 @@ Store the verified identifiers, issuing authority and confirmation privately. Ma
 
 - Absorbed: The tax identity arrives with formation: the registry code (registrikood) is assigned on entry in the commercial register and identifies the company to the Tax and Customs Board; a separate VAT number comes only with VAT registration (law rule [ee.vat-registration-threshold](../../open-law/EE/ee-vat-registration-threshold.json)). ([e-Business Register](https://ariregister.rik.ee/eng))
 - Step 2: Absorbed: The tax identity arrives with formation: the registry code (registrikood) is assigned on entry in the commercial register and identifies the company to the Tax and Customs Board; a separate VAT number comes only with VAT registration (law rule ee.vat-registration-threshold). ([e-Business Register](https://ariregister.rik.ee/eng))
+
+<a id="geo-nl"></a>
+
+### Netherlands
+
+Reconcile the KVK registration and tax-administration records, including any identifiers issued through formation. Confirm which registrations still need action for the entity and its activities; the company register and tax obligations are distinct. Launch entry point only; qualified local review is required.
+
+- Reconcile the KVK registration and tax-administration records, including any identifiers issued through formation. Confirm which registrations still need action for the entity and its activities; the company register and tax obligations are distinct. Launch entry point only; qualified local review is required. ([KVK Business Register and Tax Administration](https://www.kvk.nl/en/starting/business-register-and-tax-administration/))
+- Step 2: Confirm the country-specific tax-registration route Reconcile the KVK registration and tax-administration records, including any identifiers issued through formation. Confirm which registrations still need action for the entity and its activities; the company register and tax obligations are distinct. Launch entry point only; qualified local review is required. ([KVK Business Register and Tax Administration](https://www.kvk.nl/en/starting/business-register-and-tax-administration/))
+
+<a id="geo-ie"></a>
+
+### Ireland
+
+Review Revenue registration for the actual company and tax heads. Confirm the CRO number, tax representation and appropriate ROS or form route before submitting; incorporation alone does not settle all tax registration. Launch entry point only; qualified local review is required.
+
+- Review Revenue registration for the actual company and tax heads. Confirm the CRO number, tax representation and appropriate ROS or form route before submitting; incorporation alone does not settle all tax registration. Launch entry point only; qualified local review is required. ([Revenue registering for tax](https://www.revenue.ie/en/starting-a-business/registering-for-tax/index.aspx))
+- Step 2: Confirm the country-specific tax-registration route Review Revenue registration for the actual company and tax heads. Confirm the CRO number, tax representation and appropriate ROS or form route before submitting; incorporation alone does not settle all tax registration. Launch entry point only; qualified local review is required. ([Revenue registering for tax](https://www.revenue.ie/en/starting-a-business/registering-for-tax/index.aspx))
+
+<a id="geo-es"></a>
+
+### Spain
+
+Use Agencia Tributaria census guidance to confirm NIF assignment and the applicable business census declarations. Review the entity facts and representation before filing; retain confirmation of actual registration rather than relying on an application draft. Launch entry point only; qualified local review is required.
+
+- Use Agencia Tributaria census guidance to confirm NIF assignment and the applicable business census declarations. Review the entity facts and representation before filing; retain confirmation of actual registration rather than relying on an application draft. Launch entry point only; qualified local review is required. ([Agencia Tributaria tax census and NIF](https://sede.agenciatributaria.gob.es/Sede/censos-nif-domicilio-fiscal/censos.html))
+- Step 2: Confirm the country-specific tax-registration route Use Agencia Tributaria census guidance to confirm NIF assignment and the applicable business census declarations. Review the entity facts and representation before filing; retain confirmation of actual registration rather than relying on an application draft. Launch entry point only; qualified local review is required. ([Agencia Tributaria tax census and NIF](https://sede.agenciatributaria.gob.es/Sede/censos-nif-domicilio-fiscal/censos.html))
+
+<a id="geo-se"></a>
+
+### Sweden
+
+Use Skatteverket startup registration guidance to assess F-tax, VAT and employer registration for the selected business. Verify the register extract and outstanding applications; do not assume one approval covers every tax role. Launch entry point only; qualified local review is required.
+
+- Use Skatteverket startup registration guidance to assess F-tax, VAT and employer registration for the selected business. Verify the register extract and outstanding applications; do not assume one approval covers every tax role. Launch entry point only; qualified local review is required. ([Skatteverket starting and registering a business](https://www.skatteverket.se/foretag/drivaforetag/startaochregistrera.4.58d555751259e4d661680006123.html))
+- Step 2: Confirm the country-specific tax-registration route Use Skatteverket startup registration guidance to assess F-tax, VAT and employer registration for the selected business. Verify the register extract and outstanding applications; do not assume one approval covers every tax role. Launch entry point only; qualified local review is required. ([Skatteverket starting and registering a business](https://www.skatteverket.se/foretag/drivaforetag/startaochregistrera.4.58d555751259e4d661680006123.html))
+
+<a id="geo-ch"></a>
+
+### Switzerland
+
+Confirm the commercial-register and UID record, then separately assess registration with the Federal Tax Administration for VAT. The VAT service describes required company and representative evidence; it does not determine every federal and cantonal tax obligation. Launch entry point only; qualified local review is required.
+
+- Confirm the commercial-register and UID record, then separately assess registration with the Federal Tax Administration for VAT. The VAT service describes required company and representative evidence; it does not determine every federal and cantonal tax obligation. Launch entry point only; qualified local review is required. ([Swiss Federal Tax Administration VAT registration](https://www.estv.admin.ch/en/register-for-vat))
+- Step 2: Confirm the country-specific tax-registration route Confirm the commercial-register and UID record, then separately assess registration with the Federal Tax Administration for VAT. The VAT service describes required company and representative evidence; it does not determine every federal and cantonal tax obligation. Launch entry point only; qualified local review is required. ([Swiss Federal Tax Administration VAT registration](https://www.estv.admin.ch/en/register-for-vat))
+
+<a id="geo-jp"></a>
+
+### Japan
+
+Use National Tax Agency corporation-establishment guidance to identify the relevant tax notices and salary-office registration work. Confirm the entity and local-tax requirements with an adviser; English reference forms do not establish completed filing or every applicable obligation. Launch entry point only; qualified local review is required.
+
+- Use National Tax Agency corporation-establishment guidance to identify the relevant tax notices and salary-office registration work. Confirm the entity and local-tax requirements with an adviser; English reference forms do not establish completed filing or every applicable obligation. Launch entry point only; qualified local review is required. ([Japan National Tax Agency notification guidelines](https://www.nta.go.jp/english/Guidelines.htm))
+- Step 2: Confirm the country-specific tax-registration route Use National Tax Agency corporation-establishment guidance to identify the relevant tax notices and salary-office registration work. Confirm the entity and local-tax requirements with an adviser; English reference forms do not establish completed filing or every applicable obligation. Launch entry point only; qualified local review is required. ([Japan National Tax Agency notification guidelines](https://www.nta.go.jp/english/Guidelines.htm))
+
+<a id="geo-br"></a>
+
+### Brazil
+
+Confirm CNPJ registration and reconcile it with the entity record. Have the responsible accountant identify additional state, municipal and tax-regime registrations for the actual activities; a CNPJ alone is not a completed tax-compliance setup. Launch entry point only; qualified local review is required.
+
+- Confirm CNPJ registration and reconcile it with the entity record. Have the responsible accountant identify additional state, municipal and tax-regime registrations for the actual activities; a CNPJ alone is not a completed tax-compliance setup. Launch entry point only; qualified local review is required. ([Brazil register an entity in CNPJ](https://www.gov.br/pt-br/servicos/inscrever-no-cnpj))
+- Step 2: Confirm the country-specific tax-registration route Confirm CNPJ registration and reconcile it with the entity record. Have the responsible accountant identify additional state, municipal and tax-regime registrations for the actual activities; a CNPJ alone is not a completed tax-compliance setup. Launch entry point only; qualified local review is required. ([Brazil register an entity in CNPJ](https://www.gov.br/pt-br/servicos/inscrever-no-cnpj))
+
+<a id="geo-ae"></a>
+
+### United Arab Emirates
+
+Review Federal Tax Authority corporate-tax registration for the specific person and entity structure. Confirm applicable registration and deadlines with an adviser, and assess VAT separately; free-zone status does not establish a blanket tax exemption. Launch entry point only; qualified local review is required.
+
+- Review Federal Tax Authority corporate-tax registration for the specific person and entity structure. Confirm applicable registration and deadlines with an adviser, and assess VAT separately; free-zone status does not establish a blanket tax exemption. Launch entry point only; qualified local review is required. ([UAE Federal Tax Authority corporate tax registration](https://tax.gov.ae/en/services/corporate.tax.registration.aspx))
+- Step 2: Confirm the country-specific tax-registration route Review Federal Tax Authority corporate-tax registration for the specific person and entity structure. Confirm applicable registration and deadlines with an adviser, and assess VAT separately; free-zone status does not establish a blanket tax exemption. Launch entry point only; qualified local review is required. ([UAE Federal Tax Authority corporate tax registration](https://tax.gov.ae/en/services/corporate.tax.registration.aspx))
 
 ## Outputs
 
