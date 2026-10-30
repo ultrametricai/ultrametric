@@ -136,6 +136,16 @@ export const FEASIBILITY_ICONS: Record<'drivable' | 'assist' | 'policy-gate' | '
 
 export const PROCESS_ICONS: Record<string, string> = {
   // Startup lifecycle expansion, grouped by the task domain.
+  'startup-coverage.launch-an-online-storefront': pi('handshake', 'fuchsia'),
+  'startup-coverage.set-up-marketplace-seller-onboarding-and-payouts': pi('handshake', 'fuchsia'),
+  'startup-coverage.configure-metered-usage-billing': pi('handshake', 'fuchsia'),
+  'startup-coverage.scope-and-deliver-a-professional-services-engagement': pi('handshake', 'fuchsia'),
+  'startup-coverage.design-prototype-and-validate-a-physical-product': pi('warehouse', 'sky'),
+  'startup-coverage.establish-an-information-security-management-system': pi('shield-check', 'sky'),
+  'startup-coverage.prepare-and-submit-a-public-procurement-bid': pi('handshake', 'fuchsia'),
+  'startup-coverage.approve-and-pay-a-shareholder-distribution': pi('pie', 'emerald'),
+  'startup-coverage.retire-a-product-feature-or-api': pi('code', 'violet'),
+  'startup-coverage.review-revenue-recognition-and-deferred-revenue': pi('ledger', 'emerald'),
   'startup-coverage.define-the-business-model-and-unit-economics': pi('target', 'emerald'),
   'startup-coverage.obtain-business-licenses-and-operating-permits': pi('certificate', 'amber'),
   'startup-coverage.maintain-the-compliance-obligations-calendar': pi('columns', 'amber'),

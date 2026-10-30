@@ -164,9 +164,9 @@ describe('vendorGeoLookup', () => {
     const mercury = lookup.mercury
     // US never ships to the client — the default view annotates nothing.
     expect(Object.keys(mercury)).not.toContain('US')
-    // Vendor-geo-only countries (the LatAm wave) never ship either: no ?geo= selection can
-    // carry them, so their cells would be unreadable client bytes.
-    expect(Object.keys(mercury)).not.toContain('BR')
+    // Brazil can now be selected; its previously judged negative is exposed unchanged.
+    expect(mercury.BR?.status).toBe('unavailable')
+    // Mexico remains outside the process country selector.
     expect(Object.keys(mercury)).not.toContain('MX')
     // The pinned negative: Mercury really does NOT bank a UK entity.
     expect(mercury.UK?.status).toBe('unavailable')
