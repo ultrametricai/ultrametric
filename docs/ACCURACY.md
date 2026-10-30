@@ -110,6 +110,31 @@ score built entirely from zero-evidence none/na cells renders italic *untested*,
 4. **Contest / vendor-response issues** — external correction channels; vendor responses enter
    the evidence pool but never change a verdict by themselves.
 
+## Repair and recheck
+
+The recovery controller dispatches `refresh-repair.yml` for failing generated story-runner
+PRs, unresolved Greptile findings on verdict cells, and merge conflicts. CI completion also
+wakes recovery. Foreloop remains outside this loop.
+
+The worker executes the current main branch only. It fetches the proposed branch as data,
+accepts changes only in its arena and declared generated projections, and rejects code,
+workflow, symlink, and cross-arena source edits. Concurrent canonical source edits remain
+blocked; generated rankings, graphs, reviews, intervals, predictions, and history are rebuilt
+from merged inputs. Append-only uptime observations are combined without rewriting history.
+
+Unsupported grade churn restores the previously published judgment when its citations still
+exist and its rules remain valid. Its existing current-hash cache is updated with that same
+judgment. Reviewed cells may use the configured judge to reconsider the evidence and audit
+the reported concern. Review text is diagnostic context, never evidence. Missing evidence,
+unknown citations, rubric violations, and affiliated-product review needs stay blocked.
+
+Every repair runs the repository gates before a non-force push, launches CI and a fresh
+Greptile review, and checks the new head again. An old thread may close only for an audited
+cell after CI and independent review pass, with no new verdict-matrix findings. All other
+threads remain open. A changed head discards the repair. Attempts are bounded to three
+published repair commits, three worker attempts per head, and two concurrent workers.
+Reports are retained as workflow artifacts; exhausted or ambiguous repairs require review.
+
 ## Invariants
 
 - Keyless loops never touch verdicts. Only the keyed judge (story-runner, contest-check) can.
