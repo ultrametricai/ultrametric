@@ -3,7 +3,7 @@
 
 # Obtain business licenses and operating permits
 
-[Overview](#overview) · [Before you start](#before-you-start) · [Steps](#steps-at-a-glance)
+[Overview](#overview) · [Before you start](#before-you-start) · [Geography](#geography) · [Steps](#steps-at-a-glance)
 
 ## Overview
 
@@ -14,6 +14,8 @@ Start with the applicability facts and evidence listed in the first step. Resolv
 > This is an operational coordination guide. Confirm the applicable company facts, contracts and jurisdictions before acting. Qualified advisers own legal, tax, safety or regulatory determinations and any required professional work. The cited authorities describe their named jurisdictions or frameworks; their rules are not asserted for other countries. External actions require approval for the specific action.
 
 > Editorial status: operational draft. Source pages checked on 2026-10-29. No case-specific legal review, professional assurance or completed execution is claimed.
+
+> Additional country launch entry points source-checked 2026-10-30. These are draft scoping summaries. They do not establish complete local-law workflows, professional review or verified execution for those countries.
 
 | Field | Value |
 | --- | --- |
@@ -27,7 +29,7 @@ Start with the applicability facts and evidence listed in the first step. Resolv
 
 An agent can prepare and reconcile the documented inputs. Named people retain decisions, specialist judgments, physical work and authorized external actions.
 
-- Sources: [SBA launch your business](https://www.sba.gov/counseling/launch-your-business/)
+- Sources: [SBA launch your business](https://www.sba.gov/counseling/launch-your-business/) · [Business.gov.nl permits for your business](https://business.gov.nl/business-location/establishing-or-relocating-a-business/permits-for-your-business/) · [Irish Point of Single Contact](https://enterprise.gov.ie/en/what-we-do/eu-internal-market/point-of-single-contact/) · [Spain business licences and permissions](https://administracion.gob.es/tu-espacio-europeo/derechos-obligaciones/empresas/servicios/permisos) · [Verksamt find permits](https://verksamt.se/en/industry/find-permits) · [SECO setting up overview](https://www.kmu.admin.ch/en/setting-up-overview) · [JETRO setting up business](https://www.jetro.go.jp/en/invest/setting_up/) · [REDESIM registration and licensing guidance](https://www.gov.br/empresas-e-negocios/pt-br/redesim/ajuda/) · [UAE government mainland business setup](https://u.ae/en/information-and-services/business/doing-business-on-the-mainland/steps-to-start-a-business-on-the-mainland)
 
 ## Outcomes
 
@@ -39,6 +41,21 @@ An agent can prepare and reconcile the documented inputs. Named people retain de
 | --- | --- |
 | Applicability facts and intended scope for: Obtain business licenses and operating permits | Yes |
 | Relevant entities, operating locations, contracts, source records and accountable owners | Yes |
+
+## Geography
+
+Country rows describe the guidance recorded here. Local notes and step alternatives do not establish a complete country-specific workflow.
+
+| Country | Recorded guidance | Steps with local alternatives or resolutions |
+| --- | --- | --- |
+| [Netherlands](#geo-nl) | Local analog note | — |
+| [Ireland](#geo-ie) | Local analog note | — |
+| [Spain](#geo-es) | Local analog note | — |
+| [Sweden](#geo-se) | Local analog note | — |
+| [Switzerland](#geo-ch) | Local analog note | — |
+| [Japan](#geo-jp) | Local analog note | — |
+| [Brazil](#geo-br) | Local analog note | — |
+| [United Arab Emirates](#geo-ae) | Local analog note | — |
 
 ## Steps at a glance
 
@@ -112,6 +129,81 @@ Check the issued license scope, conditions, location and expiry against the inte
 - Verify: A jurisdiction-and-activity register showing issued permissions, unresolved restrictions and renewal owners.
 - Sources: [SBA launch your business](https://www.sba.gov/counseling/launch-your-business/)
 
+
+<a id="by-country"></a>
+
+## Country details
+
+<a id="geo-us"></a>
+
+### United States
+
+Review the shared operational guide against the applicable US federal, state and local activity permissions; the linked SBA source is an entry point.
+
+
+<a id="geo-nl"></a>
+
+### Netherlands
+
+Check the activity, profession and premises against sector, municipal and environment/planning permissions. Use the relevant authority route and keep restricted activities paused until required approvals are confirmed. Launch entry point only; qualified local review is required.
+
+- Check the activity, profession and premises against sector, municipal and environment/planning permissions. Use the relevant authority route and keep restricted activities paused until required approvals are confirmed. Launch entry point only; qualified local review is required. ([Business.gov.nl permits for your business](https://business.gov.nl/business-location/establishing-or-relocating-a-business/permits-for-your-business/))
+
+<a id="geo-ie"></a>
+
+### Ireland
+
+Use the Irish Point of Single Contact to identify competent authorities and licensing procedures for the proposed services. Obtain activity-specific advice for work outside the portal scope and track outstanding permissions separately from CRO registration. Launch entry point only; qualified local review is required.
+
+- Use the Irish Point of Single Contact to identify competent authorities and licensing procedures for the proposed services. Obtain activity-specific advice for work outside the portal scope and track outstanding permissions separately from CRO registration. Launch entry point only; qualified local review is required. ([Irish Point of Single Contact](https://enterprise.gov.ie/en/what-we-do/eu-internal-market/point-of-single-contact/))
+
+<a id="geo-es"></a>
+
+### Spain
+
+Identify the national, autonomous-community and municipal authorities responsible for the specific activity and location. Confirm the applicable authorization or notification route and retain its evidence before starting restricted operations. Launch entry point only; qualified local review is required.
+
+- Identify the national, autonomous-community and municipal authorities responsible for the specific activity and location. Confirm the applicable authorization or notification route and retain its evidence before starting restricted operations. Launch entry point only; qualified local review is required. ([Spain business licences and permissions](https://administracion.gob.es/tu-espacio-europeo/derechos-obligaciones/empresas/servicios/permisos))
+
+<a id="geo-se"></a>
+
+### Sweden
+
+Search Verksamt by industry, regulated profession and competent authority. Check county and municipality requirements for the premises and activities, and keep any unresolved permit conditions assigned to an owner. Launch entry point only; qualified local review is required.
+
+- Search Verksamt by industry, regulated profession and competent authority. Check county and municipality requirements for the premises and activities, and keep any unresolved permit conditions assigned to an owner. Launch entry point only; qualified local review is required. ([Verksamt find permits](https://verksamt.se/en/industry/find-permits))
+
+<a id="geo-ch"></a>
+
+### Switzerland
+
+Use SECO startup guidance to identify regulated activities and the responsible federal or cantonal authority. Verify the relevant professional or activity authorization before operating; a commercial-register entry is not evidence of sector permission. Launch entry point only; qualified local review is required.
+
+- Use SECO startup guidance to identify regulated activities and the responsible federal or cantonal authority. Verify the relevant professional or activity authorization before operating; a commercial-register entry is not evidence of sector permission. Launch entry point only; qualified local review is required. ([SECO setting up overview](https://www.kmu.admin.ch/en/setting-up-overview))
+
+<a id="geo-jp"></a>
+
+### Japan
+
+JETRO separates business establishment from business-related licences and permits. Identify the competent activity authority and permissions for the actual product or service before launch; local registration alone does not authorize a regulated activity. Launch entry point only; qualified local review is required.
+
+- JETRO separates business establishment from business-related licences and permits. Identify the competent activity authority and permissions for the actual product or service before launch; local registration alone does not authorize a regulated activity. Launch entry point only; qualified local review is required. ([JETRO setting up business](https://www.jetro.go.jp/en/invest/setting_up/))
+
+<a id="geo-br"></a>
+
+### Brazil
+
+Use REDESIM licensing guidance and the relevant local integrator to identify activity and location permissions. Track each authority decision and do not treat the CNPJ issuance itself as proof that restricted operations may start. Launch entry point only; qualified local review is required.
+
+- Use REDESIM licensing guidance and the relevant local integrator to identify activity and location permissions. Track each authority decision and do not treat the CNPJ issuance itself as proof that restricted operations may start. Launch entry point only; qualified local review is required. ([REDESIM registration and licensing guidance](https://www.gov.br/empresas-e-negocios/pt-br/redesim/ajuda/))
+
+<a id="geo-ae"></a>
+
+### United Arab Emirates
+
+Identify the competent emirate economic department or free-zone authority and the approved business activity. Confirm additional activity permissions and the issued licence scope before starting work; a mainland checklist does not authorize a free-zone operation. Launch entry point only; qualified local review is required.
+
+- Identify the competent emirate economic department or free-zone authority and the approved business activity. Confirm additional activity permissions and the issued licence scope before starting work; a mainland checklist does not authorize a free-zone operation. Launch entry point only; qualified local review is required. ([UAE government mainland business setup](https://u.ae/en/information-and-services/business/doing-business-on-the-mainland/steps-to-start-a-business-on-the-mainland))
 
 ---
 
