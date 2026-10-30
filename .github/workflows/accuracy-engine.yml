@@ -122,11 +122,11 @@ jobs:
             # (PRs #430/#433 each needed a maintainer's '@greptileai review'), so the
             # comment requests it. Both follow-ups are best-effort; a failure leaves
             # the PR open for a manual merge.
+            gh pr comment "$PR_URL" --body "@greptileai review" \
+              || echo "Greptile review request failed — comment '@greptileai review' on $PR_URL manually"
             # Explicit dispatch is allowed by GitHub's workflow recursion guard.
             gh workflow run ci.yml --ref "$BRANCH"
             gh pr merge --auto --merge "$PR_URL"
-            gh pr comment "$PR_URL" --body "@greptileai review" \
-              || echo "Greptile review request failed — comment '@greptileai review' on $PR_URL manually"
           else
             ISSUE_URL=$(gh issue create \
               --title "accuracy-engine: staleness report ready on $BRANCH" \

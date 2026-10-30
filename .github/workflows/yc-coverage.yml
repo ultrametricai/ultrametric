@@ -177,11 +177,11 @@ jobs:
             --title "yc-coverage: weekly directory lane refresh" \
             --body-file /tmp/yc-pr-body.md \
             --base main --head "$BRANCH"); then
+            gh pr comment "$PR_URL" --body "@greptileai review" \
+              || echo "Greptile review request failed — comment '@greptileai review' on $PR_URL manually"
             # Explicit dispatch is allowed by GitHub's workflow recursion guard.
             gh workflow run ci.yml --ref "$BRANCH"
             gh pr merge --auto --merge "$PR_URL"
-            gh pr comment "$PR_URL" --body "@greptileai review" \
-              || echo "Greptile review request failed — comment '@greptileai review' on $PR_URL manually"
           else
             gh issue create \
               --title "yc-coverage: lane refresh ready on $BRANCH" \
