@@ -134,11 +134,26 @@ def load_resume_report(head, trusted):
     return report
 
 
+def latest_checks(checks):
+    latest = {}
+    for check in checks:
+        key = (check['name'],check['app']['id'])
+        if key not in latest or check.get('id',0) >= latest[key].get('id',0):
+            latest[key] = check
+    return list(latest.values())
+
+
 def recheck(report, branch, new_sha):
     original_ids = set(report['originalThreads'])
     runs = api(f'repos/{REPO}/actions/workflows/ci.yml/runs?head_sha={new_sha}&per_page=100')
     if not runs['workflow_runs']:
         command(['gh', 'workflow', 'run', 'ci.yml', '--repo', REPO, '--ref', branch])
+    candidates = [run for run in runs['workflow_runs'] if run.get('event') == 'workflow_dispatch'] or runs['workflow_runs']
+    ci_active = any(run.get('status') not in ['completed',None] for run in candidates)
+    newest = max(candidates,key=lambda run:run.get('id',0)) if candidates else {}
+    if not ci_active and newest.get('conclusion') in ['cancelled','timed_out','action_required','startup_failure','stale','skipped','neutral']:
+        command(['gh','workflow','run','ci.yml','--repo',REPO,'--ref',branch])
+        raise RuntimeError('CI ended without a result; same-head CI retry requested within the failed-worker budget')
     checks = api(f'repos/{REPO}/commits/{new_sha}/check-runs?per_page=100')['check_runs']
     if not any(check['app']['id'] == 867647 for check in checks):
         command(['gh', 'pr', 'comment', str(NUMBER), '--repo', REPO, '--body', '@greptileai review'])
@@ -147,10 +162,14 @@ def recheck(report, branch, new_sha):
         pr = current()
         if pr['state'] != 'open' or pr['head']['sha'] != new_sha:
             return 'closed-or-changed'
-        checks = api(f'repos/{REPO}/commits/{new_sha}/check-runs?per_page=100')['check_runs']
+        checks = latest_checks(api(f'repos/{REPO}/commits/{new_sha}/check-runs?per_page=100')['check_runs'])
         if any(c['name'] in ['ci', 'validation'] and c['app']['id'] == 15368
                and c['status'] == 'completed' and c['conclusion'] == 'failure' for c in checks):
             return 'needs-repair'
+        if any(c['name'] == 'Greptile Review' and c['app']['id'] == 867647 and c['status'] == 'completed'
+               and c['conclusion'] != 'success' for c in checks):
+            command(['gh','pr','comment',str(NUMBER),'--repo',REPO,'--body','@greptileai review'])
+            raise RuntimeError('Independent review ended without success; retry requested within the failed-worker budget')
         required = {'ci': 15368, 'validation': 15368, 'Greptile Review': 867647}
         if all(any(c['name'] == name and c['app']['id'] == app and c['status'] == 'completed'
                    and c['conclusion'] == 'success' for c in checks) for name, app in required.items()):
@@ -201,7 +220,7 @@ def main():
     messages = output(['git', 'log', '--format=%B', f'{base}..{EXPECTED}'])
     rounds = len(re.findall(r'^Refresh-Repair-Attempt: [1-3]$', messages, re.MULTILINE))
     previous = load_resume_report(EXPECTED, trusted)
-    if previous is not None:
+    if previous is not None and previous['main'] == trusted:
         report_file = Path(os.environ['RUNNER_TEMP']) / 'refresh-repair-report.json'
         report_file.write_text(json.dumps(previous, indent=2))
         previous['phase'] = recheck(previous, branch, EXPECTED)

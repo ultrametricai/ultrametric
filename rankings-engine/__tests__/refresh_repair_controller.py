@@ -80,7 +80,7 @@ class ControllerTests(unittest.TestCase):
                 if args[:3]==['git','log','--format=%B']:return '\n'.join(f'Refresh-Repair-Attempt: {i}' for i in range(1,4))
                 if args[:2]==['git','merge-base']:return 'c'*40
                 raise AssertionError(args)
-            command=Mock(); resume=Mock(return_value={**REPORT,'publishedHead':SHA})
+            command=Mock(); resume=Mock(return_value={**REPORT,'publishedHead':SHA,'main':'b'*40})
             with patch.dict(GLOBALS, {'current':lambda:PR,'output':output,'command':command,'load_resume_report':resume,'recheck':lambda *_:'waiting-checks'}),patch.dict(os.environ,{'RUNNER_TEMP':directory}):
                 MODULE['main']()
             resume.assert_called_once()
@@ -104,6 +104,20 @@ class DispatcherTests(unittest.TestCase):
         with patch('subprocess.run',command):
             namespace['request_repair']({'number':536,'head':{'ref':BRANCH}},SHA)
         return command
+
+    def test_latest_check_replaces_an_older_cancelled_or_failed_check(self):
+        latest=MODULE['latest_checks']([{'id':1,'name':'ci','app':{'id':15368},'conclusion':'cancelled'},
+                                       {'id':2,'name':'ci','app':{'id':15368},'conclusion':'success'}])
+        self.assertEqual(latest[0]['conclusion'],'success')
+
+    def test_cancelled_ci_restarts_the_same_head_without_a_repair_commit(self):
+        def api(endpoint,data=None):
+            return {'workflow_runs':[{'id':1,'event':'workflow_dispatch','status':'completed','conclusion':'cancelled'}]}
+        command=Mock()
+        with patch.dict(GLOBALS,{'api':api,'command':command}):
+            with self.assertRaisesRegex(RuntimeError,'same-head CI retry requested'):
+                MODULE['recheck'](REPORT,BRANCH,SHA)
+        command.assert_called_once_with(['gh','workflow','run','ci.yml','--repo','owner/repo','--ref',BRANCH])
 
     def test_waiting_resumes_do_not_consume_failed_worker_budget(self):
         history=[{'display_title':f'Repair refresh #536 @{SHA}','status':'completed','conclusion':'success'} for _ in range(4)]
