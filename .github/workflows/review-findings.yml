@@ -22,6 +22,12 @@ permissions:
   pull-requests: read
   statuses: write
 
+# Serialize metadata reads and status writes so an older run cannot overwrite a
+# newer finding result on the same revision. Every queued run reads fresh state.
+concurrency:
+  group: review-findings-gate
+  cancel-in-progress: false
+
 jobs:
   findings:
     if: github.event_name != 'check_run' || github.event.check_run.app.slug == 'greptile-apps'
