@@ -62,11 +62,12 @@ describe('reversibility distribution — irreversible is rare and means it', () 
   const nodeTier = (taskId: string, nodeId: string) =>
     RAW.find((t) => t.id === taskId)?.dag.nodes.find((n) => n.id === nodeId)?.reversibility
 
-  it('keeps irreversible processes rare (3–15 of 149) and reversible the majority', () => {
+  it('keeps irreversible processes rare and reversible the majority', () => {
     const byTier = { reversible: 0, painful: 0, irreversible: 0 }
     for (const t of RAW) byTier[t.reversibility] += 1
     expect(byTier.irreversible).toBeGreaterThanOrEqual(3)
-    expect(byTier.irreversible).toBeLessThanOrEqual(15)
+    // The shareholder-distribution process adds an explicit irreversible payment release.
+    expect(byTier.irreversible).toBeLessThanOrEqual(16)
     expect(byTier.reversible).toBeGreaterThan(RAW.length / 2)
   })
 
