@@ -33,6 +33,27 @@ for (const domain of inventory.domains) {
   }
   lines.push('')
 }
+const expansion = read('coverage/startup-country-expansion.json')
+const countryRecordSlugs = { formation: 'incorporate-c-corp', tax: 'get-ein', permits: 'obtain-business-licenses-and-operating-permits' }
+lines.push('## Additional country launch guidance', '', expansion.scope, '',
+  'Each entry is an authority-linked scoping summary. Formation, tax registration and permission checks still require the actual entity, location and activity facts. Vendor availability and simulator entity coverage are separate.', '',
+  '| Country | Formation | Tax registration | Permits | Remaining local work |', '| --- | --- | --- | --- | --- |')
+for (const country of expansion.countries) {
+  const sections = ['formation', 'tax', 'permits'].map(area => {
+    const source = sources.find(source => source.id === country[area].sourceId)
+    if (!source) throw new Error(`${country.country}/${area}: missing source`)
+    return `[Guide](../open-processes/pages/${countryRecordSlugs[area]}.md#geo-${country.country.toLowerCase()}) · [Authority](${source.url})`
+  })
+  lines.push(`| ${cell(country.label)} | ${sections.join(' | ')} | ${cell(country.knownGaps.join(' '))} |`)
+}
+lines.push('', '## How coverage is measured', '',
+  'The named-needs inventory measures whether a relevant process entry point exists. The country table measures only the launch areas explicitly authored above. Neither measure establishes that every possible business activity or local obligation has an executable reviewed procedure.', '',
+  '| Dimension | Evidence required |', '| --- | --- |',
+  '| Business need | Applicable process or chain and its completion checks |',
+  '| Country and subnational location | Sourced procedure for the actual entity, activity and locations |',
+  '| Sector | Technical, safety and regulatory protocols for the specific product |',
+  '| Professional review | Named qualified review for the scenario and current requirements |',
+  '| Completion | Private approvals, receipts, records and verified outcomes from an actual run |', '')
 lines.push('## Specialist boundaries', '', '| Scope | Required next step |', '| --- | --- |')
 for (const boundary of inventory.specialistBoundaries) lines.push(`| ${cell(boundary.scope)} | ${boundary.status.replaceAll('-', ' ')} |`)
 lines.push('', 'The regulated-market entry guide provides a scoping and approval path. Detailed clinical, financial-service, aviation, defense and other sector protocols need their own qualified workstreams. Country-specific workflow coverage remains tracked in [the law-layer coverage file](../open-law/workflow-coverage.json).', '',
@@ -40,7 +61,7 @@ lines.push('', 'The regulated-market entry guide provides a scoping and approval
   'Source jurisdiction describes the cited material. A source from one country does not establish requirements elsewhere. The source register records page checks; the guides identify professional decisions separately.', '',
   '| Source | Context | Checked |', '| --- | --- | --- |',
   ...sources.map((source) => `| [${cell(source.title)}](${source.url}) | ${cell(source.jurisdictionOrContext)} | ${source.checkedOn} |`), '',
-  '[Expansion audit](startup-expansion-audit.json) · [Fictional examples and approval gates](fixtures/startup-lifecycle-coverage.json) · [Full guide index](../open-processes/README.md#record-pages)', '')
+  '[Expansion audit](startup-expansion-audit.json) · [Country expansion sources and gaps](startup-country-expansion.json) · [Fictional examples and approval gates](fixtures/startup-lifecycle-coverage.json) · [Full guide index](../open-processes/README.md#record-pages)', '')
 const output = lines.join('\n')
 const file = path.join(root, 'coverage/STARTUP-TASKS.md')
 if (process.argv.includes('--check')) {
