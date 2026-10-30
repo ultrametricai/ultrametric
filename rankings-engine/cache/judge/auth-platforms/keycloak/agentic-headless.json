@@ -1,27 +1,29 @@
 {
-  "hash": "16f6bd140d8fbfeaf7781ebe6419cf0abd281974eee1cdaeae0e73d64a5b0c00",
+  "hash": "c89f9e4b5967862220f736260a89d7064378e0f0bf7b979e1063e6fe27a5b165",
   "keyVersion": "v2",
   "verdict": {
+    "productId": "keycloak",
+    "storyId": "agentic-headless",
     "verdict": "full",
     "quality": 7,
-    "confidence": "medium",
-    "rationale": "Keycloak can be started non-interactively from a container image, with the bootstrap admin set via environment variables [keycloak-docs-2, keycloak-docs-45]. It can be administered by script through the kcadm.sh Admin CLI and the Admin REST API [kc-supp-kcadm, keycloak-docs-6], seeded via JSON realm import/export and operator-driven realm import and declarative clients [keycloak-docs-10, keycloak-docs-76, keycloak-docs-43], and gated in pipelines using health endpoints and client-credentials service accounts [keycloak-docs-17, kc-supp-client-credentials]. Hands-on reports describe friction with infrastructure-as-code: configuration lives in the database, the API is hard to keep idempotent, and slow warm-up makes it ill-suited to ephemeral runs [keycloak-comm-3, keycloak-comm-13, keycloak-comm-19]. Missing for 10: a documented CI-specific workflow guide, idempotent declarative config-as-code outside the operator, a published OpenAPI spec at the probed paths [keycloak-probe-3], and independent corroboration of smooth CI use.",
+    "confidence": "high",
+    "rationale": "Keycloak documents headless, scriptable operation: a single `docker run` with env-var bootstrap admin credentials, the kcadm.sh Admin CLI and Admin REST API for scripted administration, JSON realm import/export, operator-driven realm import and declarative client management, health endpoints for readiness checks, and client-credentials service accounts for machine access. Community reports say the Quarkus version is configurable mostly via environment variables, but also that it plays poorly with infrastructure-as-code, that API inconsistencies make idempotent Ansible automation hard, and that there is no first-party GitOps config promotion. missing for 10: first-party declarative config sync/GitOps workflow, consistent idempotent Admin API behavior, a published OpenAPI spec for automation tooling.",
     "evidenceIds": [
       "keycloak-docs-2",
-      "keycloak-docs-45",
+      "keycloak-docs-27",
       "kc-supp-kcadm",
-      "keycloak-docs-6",
+      "keycloak-docs-83",
       "keycloak-docs-10",
       "keycloak-docs-76",
       "keycloak-docs-43",
       "keycloak-docs-17",
+      "keycloak-docs-45",
       "kc-supp-client-credentials",
-      "keycloak-comm-3",
-      "keycloak-comm-13",
-      "keycloak-comm-19",
+      "keycloak-comm-6-refresh-e8019d1475720e7f",
+      "keycloak-comm-2-refresh-70abbf49cd2a6516",
+      "keycloak-comm-13-refresh-673fd2eaf5b3ec2d",
+      "keycloak-comm-17-refresh-4a59b7c2b3104dcf",
       "keycloak-probe-3"
-    ],
-    "productId": "keycloak",
-    "storyId": "agentic-headless"
+    ]
   }
 }
