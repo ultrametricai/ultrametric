@@ -1,6 +1,18 @@
-// Refreshes may change a grade only when they cite an evidence ID new to that pack.
+// Upgrades require new cited evidence. Lost prior support may justify a verified downgrade.
 import { execFileSync } from 'node:child_process'
 import { pathToFileURL } from 'node:url'
+
+export function downgradeAfterSupportLoss(old, next, before, after) {
+  const rank = { none: 0, partial: 1, full: 2 }
+  if (!Object.hasOwn(rank,old.verdict) || !Object.hasOwn(rank,next.verdict)
+      || rank[next.verdict] > rank[old.verdict] || next.quality > old.quality) return false
+  const previous = new Map(before.map(item => [item.id, item]))
+  const current = new Map(after.map(item => [item.id, item]))
+  if (next.evidenceIds.some(id => !current.has(id))
+      || (next.verdict !== 'none' && next.evidenceIds.length === 0)) return false
+  return old.evidenceIds.some(id => previous.has(id) && (!current.has(id)
+    || ['tier','url','excerpt'].some(field => previous.get(id)[field] !== current.get(id)[field])))
+}
 
 export function unsupportedFlips(before, after, oldPacks, newPacks) {
   const oldRows = new Map(before.map(row => [`${row.productId}:${row.storyId}`, row]))
@@ -10,6 +22,7 @@ export function unsupportedFlips(before, after, oldPacks, newPacks) {
     const oldIds = new Set((oldPacks[row.productId] ?? []).map(item => item.id))
     const newIds = new Set((newPacks[row.productId] ?? []).map(item => item.id))
     return !row.evidenceIds.some(id => !oldIds.has(id) && newIds.has(id))
+      && !downgradeAfterSupportLoss(old, row, oldPacks[row.productId] ?? [], newPacks[row.productId] ?? [])
   })
 }
 
