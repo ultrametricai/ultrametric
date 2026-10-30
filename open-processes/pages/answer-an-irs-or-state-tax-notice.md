@@ -9,7 +9,7 @@
 
 **Trigger:** A tax-authority notice arrives claiming a discrepancy, a balance due, or a missing filing.
 
-Most tax notices are not audits. They point at one mismatch and print a response deadline on the first page (in the US, law rule [us-fed.cp2000-response-deadline](../../open-law/US-FED/us-fed-cp2000-response-deadline.json): the CP2000 reply is due by the date listed on the notice). Read the notice code, pull that period's records, and recompute the number they claim is wrong. Then respond by the deadline: agree and pay, or contest with documentation. If the response needs a signed statement, the signature is yours, sometimes under penalty of perjury. Educational guidance, not legal advice. The deadline that matters is printed on your notice; verify it there.
+Read the tax-authority notice, identify the period and issue, verify the stated deadline, reconcile the underlying records and prepare the authorized response. Use the issuing authority’s procedure and obtain tax advice for disputed positions.
 
 | Field | Value |
 | --- | --- |
@@ -143,6 +143,8 @@ human · ~30 d · async wait
 <a id="geo-us"></a>
 
 ### United States
+
+Most tax notices are not audits. They point at one mismatch and print a response deadline on the first page (in the US, law rule [us-fed.cp2000-response-deadline](../../open-law/US-FED/us-fed-cp2000-response-deadline.json): the CP2000 reply is due by the date listed on the notice). Read the notice code, pull that period's records, and recompute the number they claim is wrong. Then respond by the deadline: agree and pay, or contest with documentation. If the response needs a signed statement, the signature is yours, sometimes under penalty of perjury. Educational guidance, not legal advice. The deadline that matters is printed on your notice; verify it there.
 
 - Step 1: The type code is the CP or LTR number printed on the notice; the IRS notice directory decodes it ([IRS: understanding your notice or letter](https://www.irs.gov/individuals/understanding-your-irs-notice-or-letter))
 - Step 4: Engage your CPA (or tax counsel if the amount or issue is material)

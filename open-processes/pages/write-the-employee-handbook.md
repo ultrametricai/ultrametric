@@ -128,6 +128,13 @@ Tell employees where the handbook lives, which changes affect them and when thos
 
 ## Country details
 
+<a id="geo-us"></a>
+
+### United States
+
+Draft and publish comprehensive employee handbook covering policies, PTO, conduct, remote work, and equity.
+
+
 <a id="geo-in"></a>
 
 ### India

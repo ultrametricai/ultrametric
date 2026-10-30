@@ -7,7 +7,7 @@
 
 ## Overview
 
-File a trademark application for the company name and/or logo with the trademark office — the USPTO by default, with the national-office routes on the filing decision.
+Choose the trademark protection needed for the company name or logo, check existing marks, prepare the application and file through the relevant trademark office. Track examination and response dates for each selected jurisdiction.
 
 | Field | Value |
 | --- | --- |
@@ -44,7 +44,7 @@ Country rows describe the guidance recorded here. Local notes and step alternati
 
 | Country | Recorded guidance | Steps with local alternatives or resolutions |
 | --- | --- | --- |
-| [United States](#geo-us) | step resolution; step alternative | [1](#step-1), [5](#step-5), [6](#step-6) |
+| [United States](#geo-us) | step resolution; step alternative | [1](#step-1), [4](#step-4), [5](#step-5), [6](#step-6) |
 | [India](#geo-in) | Local analog note; step resolution; step alternative | [1](#step-1), [5](#step-5), [6](#step-6) |
 | [United Kingdom](#geo-uk) | Local analog note; step resolution; step alternative | [1](#step-1), [5](#step-5) |
 | [Germany](#geo-de) | Local analog note; step resolution; step alternative | [1](#step-1), [5](#step-5) |
@@ -120,7 +120,6 @@ human · ~2 d · async wait
 
 Review the search results, owner, mark representation, territories, goods/services wording and filing-basis evidence with trademark counsel. Resolve clearance risks, ownership questions, representation requirements and the filing strategy. The applicant can then decide whether to proceed with the identified risks and costs. Registration remains subject to the office’s examination and any further proceedings.
 
-- Cost: published amount varies (typical vendor price, as of 2026-10-01, [www.uspto.gov](https://www.uspto.gov/trademarks/basics/why-hire-private-trademark-attorney)). Attorney fees vary — no published sticker price exists.
 - Sources: [USPTO trademark process](https://www.uspto.gov/trademarks/basics/trademark-process) · [USPTO trademark tools](https://www.uspto.gov/trademarks)
 
 <a id="step-5"></a>
@@ -204,7 +203,11 @@ Monitor the official status and correspondence for the application number. Recor
 
 ### United States
 
+File a trademark application for the company name and/or logo with the trademark office — the USPTO by default, with the national-office routes on the filing decision.
+
 - Step 1: Conduct trademark search Define the mark, goods or services and territories, then search for identical and similar wording or designs using the relevant trademark-office tools. Capture potentially relevant marks, owners, status and goods or services, along with the search terms. Send the clearance questions to the legal reviewer. An available domain or empty exact-name search does not clear the mark. ([USPTO trademark search](https://tmsearch.uspto.gov/search/search-information))
+- Step 4: Review with IP attorney
+  - Cost: published amount varies (typical vendor price, as of 2026-10-01, [www.uspto.gov](https://www.uspto.gov/trademarks/basics/why-hire-private-trademark-attorney)). Attorney fees vary — no published sticker price exists.
 - Step 5: USPTO trademark application Submit the reviewed US owner, mark, filing basis, goods/services and evidence through the current USPTO filing service. The applicant or authorized representative must approve the declarations, signature and fees. Save the filed copy and serial number and monitor official correspondence. The receipt records submission; the examination and any further requirements continue afterward. ([USPTO trademark application](https://www.uspto.gov/trademarks/apply))
 - Step 6: TSDR shows the application's serial number, status, and correspondence ([USPTO TSDR status lookup](https://tsdr.uspto.gov/))
 

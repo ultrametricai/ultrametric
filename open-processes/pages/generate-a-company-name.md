@@ -91,6 +91,8 @@ Rank the checked names by audience fit, pronunciation, distinctiveness, workable
 
 ### United States
 
+Branding: the agent generates brand-name candidates and scores each on domain availability, social handles, and trademark conflicts.
+
 - Step 2: A U.S. clearance search covers federal records and common-law use, per USPTO guidance ([Comprehensive clearance search for similar trademarks](https://www.uspto.gov/trademarks/search/comprehensive-clearance-search-similar-trademarks))
 
 <a id="artifacts"></a>

@@ -61,7 +61,7 @@ const partSchema: z.ZodType<Part> = z.lazy(() => z.strictObject({
   notes: z.array(note), metadata: stepMetadata,
 }))
 const routeSlug = z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)
-export const countryViewSchema = z.strictObject({ country: z.enum(['US', 'UK', 'IN', 'DE', 'FR', 'PT', 'CA', 'NZ', 'SG', 'AU', 'KR', 'HK', 'EE']), title: text, slug: routeSlug })
+export const countryViewSchema = z.strictObject({ country: z.enum(['US', 'UK', 'IN', 'DE', 'FR', 'PT', 'CA', 'NZ', 'SG', 'AU', 'KR', 'HK', 'EE']), title: text, slug: routeSlug, summary: text.optional() })
 
 export const sharedRecordSchema = z.strictObject({
   schemaVersion: z.literal(1), id, kind: z.enum(['situation', 'process']), title: text, summary: z.string(),
