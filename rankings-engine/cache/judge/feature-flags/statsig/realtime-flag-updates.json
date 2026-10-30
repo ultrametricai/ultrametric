@@ -1,16 +1,16 @@
 {
-  "hash": "e1c3938463f5c654f756e82f4fec8cbe4118531437e004a7d2d6ebb8da07a71e",
+  "hash": "7b1884122acd37776254e6724fbf8a9b23f42680baace2ff1f230076d6f5b260",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
-    "confidence": "medium",
-    "rationale": "Statsig's docs say feature gates toggle behavior 'in real time' and offer an 'emergency disable switch' that 'immediately' turns off a code branch (statsig-docs-1, statsig-docs-2). The founders also describe 'realtime targeted config' (statsig-comm-4). However, the pack never explains how changes reach SDKs, and docs-39 says SDKs evaluate locally from state cached at initialization, so propagation latency to already-connected SDKs is unevidenced. Missing for 10: documented streaming or polling mechanism, stated propagation latency or polling interval, explanation of how already-initialized SDKs pick up changes, and hands-on corroboration that a kill switch takes effect within seconds.",
+    "confidence": "low",
+    "rationale": "Statsig's docs claim feature gates toggle behavior 'in real time without deploying new code' and offer an 'emergency disable switch' to 'immediately turn off' a code branch, so the kill-switch intent is a documented first-party capability. However, nothing describes how changes reach SDKs. The docs only say SDKs evaluate locally after initialization and that Statsig 'handles caching, retry mechanisms, and networking'. missing for 10: documented streaming or polling mechanism, stated propagation latency (seconds), how server/client SDKs refresh cached rules, independent or hands-on confirmation that kill switches take effect quickly.",
     "evidenceIds": [
       "statsig-docs-1",
       "statsig-docs-2",
       "statsig-docs-39",
-      "statsig-comm-4"
+      "statsig-docs-55"
     ],
     "productId": "statsig",
     "storyId": "realtime-flag-updates"

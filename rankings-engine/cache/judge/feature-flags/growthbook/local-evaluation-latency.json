@@ -1,18 +1,19 @@
 {
-  "hash": "fbe3bc975c32f04f24c648ad3946b3619dda131e9652935bd4ec5fb6a99d2056",
+  "hash": "7c9103a912588057dbbc983dce7732c6eca73531546c430e460029ee35588348",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
-    "quality": 8,
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "GrowthBook's design is a single cacheable JSON definition of features, evaluated locally inside the SDKs. The SDK Connection Endpoint serves just enough flag data for SDKs to assign values, and targeting attributes stay in SDK memory and are never sent to GrowthBook. Server-side inline experiments need no third-party requests, and the GrowthBook Proxy caches SDK payloads so flags keep serving if the API is down. Missing for 10: no latency benchmarks or explicit microsecond-level evaluation claims, no server-SDK docs on cache refresh (polling/streaming), and no independent hands-on corroboration of in-process evaluation performance.",
+    "rationale": "GrowthBook SDKs download a ruleset subset from the SDK Connection Endpoint, \"just enough for the GrowthBook SDKs to assign values to users\". Targeting conditions are evaluated in the SDK against locally held attributes that are never sent to GrowthBook. Server-side inline experiments \"require no 3rd party requests\", and the Proxy caches SDK payloads and keeps serving flags if the API is down. Together this shows local evaluation with no network call per flag check. Missing for 10: explicit latency or microsecond-performance figures, server-SDK-specific docs on in-memory caching and refresh behavior, and independent hands-on corroboration.",
     "evidenceIds": [
-      "growthbook-comm-6",
       "growthbook-docs-20",
       "growthbook-docs-18",
+      "growthbook-docs-2",
       "growthbook-docs-19",
       "growthbook-docs-11",
-      "growthbook-docs-45"
+      "growthbook-docs-75",
+      "growthbook-docs-78"
     ],
     "productId": "growthbook",
     "storyId": "local-evaluation-latency"
