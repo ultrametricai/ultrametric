@@ -86,8 +86,11 @@ score built entirely from zero-evidence none/na cells renders italic *untested*,
 
 ## Human review points
 
-1. **story-runner PRs** — every refresh lands as a PR. Apply the re-judge stability policy
-   before merging: a verdict flip citing NO evidence id new to the pack is re-roll noise —
+1. **story-runner PRs** — every refresh lands as a PR and explicitly dispatches CI on its
+   branch. Auto-merge waits for validation, ci, Greptile Review, a current main base, and
+   resolved review threads. Foreloop is outside the merge requirements. The CI stability
+   gate rejects grade or quality changes without a cited evidence ID new to that product
+   pack. Review semantic findings under the re-judge stability policy before merging: a verdict flip citing NO evidence id new to the pack is re-roll noise —
    revert it (`rankings-engine/scripts/revert-churn.ts` pattern, METHODOLOGY.md). Exception: a
    labeled judge-model migration wave (e.g. 2026-09-30, sonnet-5 → opus-5-5) is exempt — under
    a judge change every flip cites no new evidence by construction, so the wave is labeled in
