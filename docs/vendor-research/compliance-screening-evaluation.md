@@ -25,7 +25,7 @@ Compliance Automation remains the comparison for customer security-control evide
 
 ## Evidence and test limits
 
-The hosted rankings engine performs the scoped crawl, extraction, community collection, keyless surface probes, judgement, claims, pricing and integration stages. Committed verdicts cite evidence; rankings and review projections are derived by the existing engine. No score or leaderboard position is assigned editorially.
+The hosted rankings engine performs the scoped crawl, extraction, community collection, keyless surface probes, judgement, claims and integration stages. The per-action pricing lane is used only for arenas it supports; commercial terms for this evaluation remain in the source-linked vendor assessment. Committed verdicts cite evidence; rankings and review projections are derived by the existing engine. No score or leaderboard position is assigned editorially.
 
 Public documentation and keyless surface checks establish inspectability and evidenced automation coverage. They do not measure sanctions-screening recall, false-positive workload, live transaction latency, vendor support quality or safety of automatic case remediation in a tenant. Generated review records describe the engine evaluation; the separate ComplyAdvantage public-document review retains its unreviewed status for hands-on use.
 

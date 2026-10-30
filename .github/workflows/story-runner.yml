@@ -72,6 +72,14 @@ jobs:
                       code=next(c for c in codes if c)
                   else:
                       code=subprocess.run(['node','--import','tsx','rankings-engine/cli.ts','judge','--category',category,'--product',product]).returncode
+              elif stage=='pricing':
+                  supported=subprocess.run(['node','--import','tsx','-e',"const {PRICING_ARENAS}=require('./lib/pricing');process.exit(process.env.EVAL_CATEGORY in PRICING_ARENAS?0:2)"]).returncode
+                  if supported==2:
+                      print('Pricing normalization is not configured for this arena; retain source-linked commercial assessment.',flush=True)
+                      results.append({'stage':stage,'status':'skipped','reason':'arena not covered by per-action pricing lane'})
+                      pathlib.Path('engine-artifacts/stages.json').write_text(json.dumps(results,indent=2))
+                      continue
+                  code=subprocess.run(['node','--import','tsx','rankings-engine/cli.ts',stage,'--category',category,'--product',product]).returncode
               else:
                   code=subprocess.run(['node','--import','tsx','rankings-engine/cli.ts',stage,'--category',category,'--product',product]).returncode
               results.append({'stage':stage,'exit_code':code})
