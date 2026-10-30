@@ -2,11 +2,11 @@
 
 # Startup task coverage
 
-Common startup lifecycle and conditional expansion, physical-product, regulated-product and exit coordination needs.
+Common startup lifecycle and conditional commerce, marketplace, consumption-billing, services, physical-product, international, regulated-product and exit coordination needs.
 
 A mapped guide is an entry point for the named need. This inventory does not establish universal completeness, country-law coverage, expert review or verified execution.
 
-Mapped guide entry points: **133 / 133 named needs**. The catalog has 199 process guides and 33 situation guides.
+Mapped guide entry points: **143 / 143 named needs**. The catalog has 209 process guides and 33 situation guides.
 
 Use each guide’s applicability, completion checks and approval requirements. Operational drafts require the stated specialist review before regulated or professional work proceeds.
 
@@ -51,6 +51,7 @@ Use each guide’s applicability, completion checks and approval requirements. O
 | Prepare for and complete an external financial audit | When an audit is required by law, a financing agreement or a voluntary stakeholder decision. | [Prepare for and complete an external financial audit](../open-processes/pages/prepare-for-and-complete-an-external-financial-audit.md) |
 | Monitor debt covenants and lender reporting | While a company has a loan, venture-debt or credit agreement with reporting or performance conditions. | [Monitor debt covenants and lender reporting](../open-processes/pages/monitor-debt-covenants-and-lender-reporting.md) |
 | Manage grant spending and reporting | After accepting a grant, subsidy or reimbursable innovation award. | [Manage grant spending and reporting](../open-processes/pages/manage-grant-spending-and-reporting.md) |
+| Review revenue recognition and deferred revenue | When customer contracts create timing, allocation or uncertainty questions beyond collecting payment. | [Review revenue recognition and deferred revenue](../open-processes/pages/review-revenue-recognition-and-deferred-revenue.md) |
 
 ## Tax operations
 
@@ -70,6 +71,7 @@ Use each guide’s applicability, completion checks and approval requirements. O
 | Exercise employee stock options | When an option holder requests an exercise or a grant approaches a relevant exercise deadline. | [Exercise employee stock options](../open-processes/pages/exercise-employee-stock-options.md) |
 | Complete a private secondary share sale | When an existing holder proposes to sell privately held company shares to another investor. | [Complete a private secondary share sale](../open-processes/pages/complete-a-private-secondary-share-sale.md) |
 | Administer an employee equity plan | As grants, vesting, exercises, departures and plan reporting recur after an equity plan is established. | [Administer an employee equity plan](../open-processes/pages/administer-an-employee-equity-plan.md) |
+| Approve and pay a shareholder distribution | When a company proposes a dividend or another distribution to its owners. | [Approve and pay a shareholder distribution](../open-processes/pages/approve-and-pay-a-shareholder-distribution.md) |
 
 ## Funding and investors
 
@@ -107,6 +109,7 @@ Use each guide’s applicability, completion checks and approval requirements. O
 | Plan and test product accessibility | When designing, purchasing or materially changing a digital product or customer journey. | [Plan and test product accessibility](../open-processes/pages/plan-and-test-product-accessibility.md) |
 | Review open-source licenses and software dependencies | Before distributing software, changing deployment models or accepting dependencies with unresolved licensing. | [Review open-source licenses and software dependencies](../open-processes/pages/review-open-source-licenses-and-software-dependencies.md) |
 | Assess and manage AI product risk | Before deploying or materially changing an AI-enabled product or internal decision workflow. | [Assess and manage AI product risk](../open-processes/pages/assess-and-manage-ai-product-risk.md) |
+| Retire a product feature or API | When a company plans to end a product, interface version or customer-facing capability. | [Retire a product feature or API](../open-processes/pages/retire-a-product-feature-or-api.md) |
 
 ## Sales and customer lifecycle
 
@@ -123,6 +126,11 @@ Use each guide’s applicability, completion checks and approval requirements. O
 | Establish a channel or commercial partnership | When another organization may refer, resell, integrate or jointly deliver the company's product. | [Establish a channel or commercial partnership](../open-processes/pages/establish-a-channel-or-commercial-partnership.md) |
 | Run a paid customer acquisition experiment | When a defined customer segment and acquisition hypothesis are ready for a limited paid test. | [Run a paid customer acquisition experiment](../open-processes/pages/run-a-paid-customer-acquisition-experiment.md) |
 | Offboard a customer and deliver an authorized data export | When a customer cancels, expires or requests an agreed service exit. | [Offboard a customer and deliver an authorized data export](../open-processes/pages/offboard-a-customer-and-deliver-an-authorized-data-export.md) |
+| Launch an online storefront | When customers will select and purchase products through an online shop. | [Launch an online storefront](../open-processes/pages/launch-an-online-storefront.md) |
+| Set up marketplace seller onboarding and payouts | When a platform connects buyers and independent sellers or service providers and allocates payments between parties. | [Set up marketplace seller onboarding and payouts](../open-processes/pages/set-up-marketplace-seller-onboarding-and-payouts.md) |
+| Configure metered usage billing | When a product charges based on measured consumption, credits or contract-specific usage commitments. | [Configure metered usage billing](../open-processes/pages/configure-metered-usage-billing.md) |
+| Scope and deliver a professional services engagement | When the company sells a defined consulting, implementation or other services project. | [Scope and deliver a professional services engagement](../open-processes/pages/scope-and-deliver-a-professional-services-engagement.md) |
+| Prepare and submit a public procurement bid | When the company is considering a government or other formal tender opportunity. | [Prepare and submit a public procurement bid](../open-processes/pages/prepare-and-submit-a-public-procurement-bid.md) |
 
 ## Privacy and security
 
@@ -139,6 +147,7 @@ Use each guide’s applicability, completion checks and approval requirements. O
 | Run security awareness training | When onboarding people or refreshing the organization's security practices. | [Run security awareness training](../open-processes/pages/run-security-awareness-training.md) |
 | Manage vulnerability remediation and patching | When a vulnerability is discovered or a routine update review becomes due. | [Manage vulnerability remediation and patching](../open-processes/pages/manage-vulnerability-remediation-and-patching.md) |
 | Run a backup restoration and disaster recovery drill | Before relying on a recovery plan and on the company's agreed exercise cadence. | [Run a backup restoration and disaster recovery drill](../open-processes/pages/run-a-backup-restoration-and-disaster-recovery-drill.md) |
+| Establish an information security management system | When the company needs an organization-wide ISMS and may seek ISO IEC 27001 certification. | [Establish an information security management system](../open-processes/pages/establish-an-information-security-management-system.md) |
 
 ## Company operations
 
@@ -171,6 +180,7 @@ Use each guide’s applicability, completion checks and approval requirements. O
 | Plan production quality and product release | Before manufacturing or releasing a physical-product batch or material design change. | [Plan production quality and product release](../open-processes/pages/plan-production-quality-and-product-release.md) |
 | Manage inventory order fulfillment and returns | When the company holds physical stock or is responsible for delivering physical customer orders. | [Manage inventory order fulfillment and returns](../open-processes/pages/manage-inventory-order-fulfillment-and-returns.md) |
 | Assess product safety concerns and coordinate a recall | When a physical product may present a safety defect or a regulator or supplier raises a concern. | [Assess product safety concerns and coordinate a recall](../open-processes/pages/assess-product-safety-concerns-and-coordinate-a-recall.md) |
+| Design prototype and validate a physical product | Before committing a physical product design to tooling, production or customer release. | [Design prototype and validate a physical product](../open-processes/pages/design-prototype-and-validate-a-physical-product.md) |
 
 ## Regulated market entry
 
@@ -233,6 +243,35 @@ Use each guide’s applicability, completion checks and approval requirements. O
 | Respond to an acquisition approach | An acquirer reaches out: a corp-dev email, a partner-meeting invitation, or a direct offer to buy the company. | [Respond to an acquisition approach](../open-processes/pages/respond-to-an-acquisition-approach.md) |
 | Respond to a government subpoena or data request | A government subpoena, court order, or warrant arrives demanding user data or company records, sometimes with a nondisclosure order attached. | [Respond to a government subpoena or data request](../open-processes/pages/respond-to-a-government-subpoena-or-data-request.md) |
 
+## Additional country launch guidance
+
+Source-backed draft launch entry points for formation, tax registration and permits. Process browsing only; no added vendor availability or startup simulation entity support.
+
+Each entry is an authority-linked scoping summary. Formation, tax registration and permission checks still require the actual entity, location and activity facts. Vendor availability and simulator entity coverage are separate.
+
+| Country | Formation | Tax registration | Permits | Remaining local work |
+| --- | --- | --- | --- | --- |
+| Netherlands | [Guide](../open-processes/pages/incorporate-c-corp.md) · [Authority](https://business.gov.nl/starting-your-business/preparations/step-by-step-plan-how-to-start-a-business-in-the-netherlands/) | [Guide](../open-processes/pages/get-ein.md) · [Authority](https://www.kvk.nl/en/starting/business-register-and-tax-administration/) | [Guide](../open-processes/pages/obtain-business-licenses-and-operating-permits.md) · [Authority](https://business.gov.nl/business-location/establishing-or-relocating-a-business/permits-for-your-business/) | Entity-specific notarial documents and tax determinations need local review. Immigration, employment, pensions, sector authorizations and municipal procedures are not fully authored here. |
+| Ireland | [Guide](../open-processes/pages/incorporate-c-corp.md) · [Authority](https://cro.ie/Registration/Company/) | [Guide](../open-processes/pages/get-ein.md) · [Authority](https://www.revenue.ie/en/starting-a-business/registering-for-tax/index.aspx) | [Guide](../open-processes/pages/obtain-business-licenses-and-operating-permits.md) · [Authority](https://enterprise.gov.ie/en/what-we-do/eu-internal-market/point-of-single-contact/) | Detailed company forms, employer obligations and VAT positions need case-specific review. The services portal does not establish complete sector, immigration or premises coverage. |
+| Spain | [Guide](../open-processes/pages/incorporate-c-corp.md) · [Authority](https://administracion.gob.es/tu-espacio-europeo/derechos-obligaciones/empresas/inicio-gestion-cierre/registro-cambio-cierre/crear) | [Guide](../open-processes/pages/get-ein.md) · [Authority](https://sede.agenciatributaria.gob.es/Sede/censos-nif-domicilio-fiscal/censos.html) | [Guide](../open-processes/pages/obtain-business-licenses-and-operating-permits.md) · [Authority](https://administracion.gob.es/tu-espacio-europeo/derechos-obligaciones/empresas/servicios/permisos) | Autonomous-community and municipal procedures require local checking. Employment, immigration, tax calculations and sector-specific rules remain separate reviewed workstreams. |
+| Sweden | [Guide](../open-processes/pages/incorporate-c-corp.md) · [Authority](https://verksamt.se/en/setting-up/choose-business-type/limited-company) | [Guide](../open-processes/pages/get-ein.md) · [Authority](https://www.skatteverket.se/foretag/drivaforetag/startaochregistrera.4.58d555751259e4d661680006123.html) | [Guide](../open-processes/pages/obtain-business-licenses-and-operating-permits.md) · [Authority](https://verksamt.se/en/industry/find-permits) | The limited-company reference does not describe all legal forms. Employment agreements, social contributions and local sector procedures need their own review. |
+| Switzerland | [Guide](../open-processes/pages/incorporate-c-corp.md) · [Authority](https://www.kmu.admin.ch/en/how-to-register-a-company) | [Guide](../open-processes/pages/get-ein.md) · [Authority](https://www.estv.admin.ch/en/register-for-vat) | [Guide](../open-processes/pages/obtain-business-licenses-and-operating-permits.md) · [Authority](https://www.kmu.admin.ch/en/setting-up-overview) | Cantonal taxes and regulatory procedures differ and need local review. Immigration, social insurance, employment and regulated-profession approvals are not fully authored here. |
+| Japan | [Guide](../open-processes/pages/incorporate-c-corp.md) · [Authority](https://www.jetro.go.jp/en/invest/setting_up/) | [Guide](../open-processes/pages/get-ein.md) · [Authority](https://www.nta.go.jp/english/Guidelines.htm) | [Guide](../open-processes/pages/obtain-business-licenses-and-operating-permits.md) · [Authority](https://www.jetro.go.jp/en/invest/setting_up/) | Investment notifications, immigration, local taxes and sector permissions require specialist determination. English reference material may not cover every current form or local procedure. |
+| Brazil | [Guide](../open-processes/pages/incorporate-c-corp.md) · [Authority](https://www.gov.br/pt-br/servicos/inscrever-no-cnpj) | [Guide](../open-processes/pages/get-ein.md) · [Authority](https://www.gov.br/pt-br/servicos/inscrever-no-cnpj) | [Guide](../open-processes/pages/obtain-business-licenses-and-operating-permits.md) · [Authority](https://www.gov.br/empresas-e-negocios/pt-br/redesim/ajuda/) | State and municipal registrations and licensing vary by activity and location. Tax-regime selection, payroll and sector-specific approvals need qualified Brazilian review. |
+| United Arab Emirates | [Guide](../open-processes/pages/incorporate-c-corp.md) · [Authority](https://u.ae/en/information-and-services/business/doing-business-on-the-mainland/steps-to-start-a-business-on-the-mainland) | [Guide](../open-processes/pages/get-ein.md) · [Authority](https://tax.gov.ae/en/services/corporate.tax.registration.aspx) | [Guide](../open-processes/pages/obtain-business-licenses-and-operating-permits.md) · [Authority](https://u.ae/en/information-and-services/business/doing-business-on-the-mainland/steps-to-start-a-business-on-the-mainland) | Free-zone and emirate-specific procedures require the actual authority guidance. Immigration, employment, VAT treatment and regulated activity permissions need separate local review. |
+
+## How coverage is measured
+
+The named-needs inventory measures whether a relevant process entry point exists. The country table measures only the launch areas explicitly authored above. Neither measure establishes that every possible business activity or local obligation has an executable reviewed procedure.
+
+| Dimension | Evidence required |
+| --- | --- |
+| Business need | Applicable process or chain and its completion checks |
+| Country and subnational location | Sourced procedure for the actual entity, activity and locations |
+| Sector | Technical, safety and regulatory protocols for the specific product |
+| Professional review | Named qualified review for the scenario and current requirements |
+| Completion | Private approvals, receipts, records and verified outcomes from an actual run |
+
 ## Specialist boundaries
 
 | Scope | Required next step |
@@ -285,5 +324,37 @@ Source jurisdiction describes the cited material. A source from one country does
 | [NIST Secure Software Development Framework](https://csrc.nist.gov/Projects/ssdf) | international | 2026-10-29 |
 | [GOV.UK running a limited company](https://www.gov.uk/running-a-limited-company) | UK | 2026-10-29 |
 | [SEC going public](https://www.sec.gov/resources-small-businesses/going-public) | US | 2026-10-29 |
+| [Shopify store launch checklist](https://help.shopify.com/en/manual/intro-to-shopify/initial-setup/new-to-shopify-checklists/general-checklist) | provider operational example | 2026-10-30 |
+| [Stripe Connect marketplace account and payment model](https://docs.stripe.com/connect) | provider operational example | 2026-10-30 |
+| [Stripe usage-based billing](https://docs.stripe.com/billing/subscriptions/usage-based) | provider operational example | 2026-10-30 |
+| [ISO/IEC 27001 public overview](https://www.iso.org/standard/27001) | international standard overview; full normative standard not reviewed | 2026-10-30 |
+| [Design Council Framework for Innovation](https://www.designcouncil.org.uk/resources/framework-for-innovation/) | design methodology | 2026-10-30 |
+| [UK government contract management principles](https://www.gov.uk/government/publications/commercial-capability-contract-management-standards/contract-management-principles) | UK public-sector practice; adapted operational coordination | 2026-10-30 |
+| [UK SME and VCSE public procurement bid pack](https://www.gov.uk/government/publications/smevcse-public-procurement-bid-pack/smevcse-bid-pack) | UK tender example; buyer-specific rules govern | 2026-10-30 |
+| [GOV.UK director information: dividends](https://www.gov.uk/guidance/director-information-hub-dividends) | UK; local distribution rules must be reviewed separately | 2026-10-30 |
+| [IFRS 15 Revenue from Contracts with Customers overview](https://www.ifrs.org/issued-standards/list-of-standards/ifrs-15-revenue-from-contracts-with-customers/) | IFRS; applicable accounting framework must be confirmed | 2026-10-30 |
+| [Business.gov.nl starting a business](https://business.gov.nl/starting-your-business/preparations/step-by-step-plan-how-to-start-a-business-in-the-netherlands/) | NL | 2026-10-30 |
+| [KVK Business Register and Tax Administration](https://www.kvk.nl/en/starting/business-register-and-tax-administration/) | NL | 2026-10-30 |
+| [Business.gov.nl permits for your business](https://business.gov.nl/business-location/establishing-or-relocating-a-business/permits-for-your-business/) | NL | 2026-10-30 |
+| [Companies Registration Office: registering a company](https://cro.ie/Registration/Company/) | IE | 2026-10-30 |
+| [Revenue registering for tax](https://www.revenue.ie/en/starting-a-business/registering-for-tax/index.aspx) | IE | 2026-10-30 |
+| [Irish Point of Single Contact](https://enterprise.gov.ie/en/what-we-do/eu-internal-market/point-of-single-contact/) | IE | 2026-10-30 |
+| [Spain public administration: create a company](https://administracion.gob.es/tu-espacio-europeo/derechos-obligaciones/empresas/inicio-gestion-cierre/registro-cambio-cierre/crear) | ES | 2026-10-30 |
+| [Agencia Tributaria tax census and NIF](https://sede.agenciatributaria.gob.es/Sede/censos-nif-domicilio-fiscal/censos.html) | ES | 2026-10-30 |
+| [Spain business licences and permissions](https://administracion.gob.es/tu-espacio-europeo/derechos-obligaciones/empresas/servicios/permisos) | ES | 2026-10-30 |
+| [Verksamt starting a limited company](https://verksamt.se/en/setting-up/choose-business-type/limited-company) | SE | 2026-10-30 |
+| [Skatteverket starting and registering a business](https://www.skatteverket.se/foretag/drivaforetag/startaochregistrera.4.58d555751259e4d661680006123.html) | SE | 2026-10-30 |
+| [Verksamt find permits](https://verksamt.se/en/industry/find-permits) | SE | 2026-10-30 |
+| [SECO how to register a company](https://www.kmu.admin.ch/en/how-to-register-a-company) | CH | 2026-10-30 |
+| [Swiss Federal Tax Administration VAT registration](https://www.estv.admin.ch/en/register-for-vat) | CH | 2026-10-30 |
+| [SECO setting up overview](https://www.kmu.admin.ch/en/setting-up-overview) | CH | 2026-10-30 |
+| [JETRO setting up business](https://www.jetro.go.jp/en/invest/setting_up/) | JP | 2026-10-30 |
+| [Japan National Tax Agency notification guidelines](https://www.nta.go.jp/english/Guidelines.htm) | JP | 2026-10-30 |
+| [Brazil register an entity in CNPJ](https://www.gov.br/pt-br/servicos/inscrever-no-cnpj) | BR | 2026-10-30 |
+| [REDESIM registration and licensing guidance](https://www.gov.br/empresas-e-negocios/pt-br/redesim/ajuda/) | BR | 2026-10-30 |
+| [UAE government mainland business setup](https://u.ae/en/information-and-services/business/doing-business-on-the-mainland/steps-to-start-a-business-on-the-mainland) | AE; mainland only | 2026-10-30 |
+| [UAE Federal Tax Authority corporate tax registration](https://tax.gov.ae/en/services/corporate.tax.registration.aspx) | AE | 2026-10-30 |
+| [Dubai government mainland and free-zone setup choices](https://www.investindubai.gov.ae/en/business-setup/company-set-up-options-in-dubai) | AE; Dubai-specific context | 2026-10-30 |
+| [Google API Improvement Proposal 185: API Versioning](https://google.aip.dev/185) | Google API design practice; illustrative, not a universal contractual policy | 2026-10-30 |
 
-[Expansion audit](startup-expansion-audit.json) · [Fictional examples and approval gates](fixtures/startup-lifecycle-coverage.json) · [Full guide index](../open-processes/README.md#record-pages)
+[Expansion audit](startup-expansion-audit.json) · [Country expansion sources and gaps](startup-country-expansion.json) · [Fictional examples and approval gates](fixtures/startup-lifecycle-coverage.json) · [Full guide index](../open-processes/README.md#record-pages)

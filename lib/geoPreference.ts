@@ -99,7 +99,7 @@ export function serializeGeoChoice(choice: GeoChoice | null): string | null {
 // corpus process carries a required geoScope (lib/processes.ts) — 🌐 the work is the same
 // everywhere, 🇺🇸 written around US federal law/agencies, 🏛 a US state is the counterparty.
 export const GEO_SCOPE_GLYPH: Record<'global' | 'us' | 'us-state', { glyph: string; label: string }> = {
-  global: { glyph: '🌐', label: 'Global process — the same steps apply everywhere' },
+  global: { glyph: '🌐', label: 'Shared process — check country-specific requirements' },
   us: { glyph: '🇺🇸', label: 'US-centric process — written around US federal law and agencies' },
   'us-state': { glyph: '🏛', label: 'US state-level process — a US state is the counterparty' },
 }

@@ -217,6 +217,30 @@ describe('startup task inventory and operational expansion', () => {
     }
   })
 
+  it('country launch entries resolve official sources, authored views and explicit remaining gaps', () => {
+    const expansion = read('coverage/startup-country-expansion.json') as {
+      countries: Array<{ country: string; depth: string; knownGaps: string[]; formation: { sourceId: string; guidance: string }; tax: { sourceId: string; guidance: string }; permits: { sourceId: string; guidance: string } }>
+    }
+    expect(z.fromJSONSchema(read('schemas/startup-country-expansion.schema.json')).parse(expansion)).toEqual(expansion)
+    expect(new Set(expansion.countries.map(c => c.country)).size).toBe(expansion.countries.length)
+    const processIds = { formation: 'form_001', tax: 'form_002', permits: 'startup-coverage.obtain-business-licenses-and-operating-permits' }
+    for (const country of expansion.countries) {
+      expect(country.depth).toBe('launch-entry-point')
+      expect(country.knownGaps.length).toBeGreaterThan(0)
+      for (const area of ['formation', 'tax', 'permits'] as const) {
+        const source = sources.sources.find(source => source.id === country[area].sourceId)
+        expect(source, `${country.country}/${area}`).toBeDefined()
+        const record = records.get(processIds[area])!
+        expect(record.references.some(ref => ref.kind === 'url' && ref.url === source!.url)).toBe(true)
+        const view = record.countryViews?.find(view => view.country === country.country)
+        expect(view?.summary).toContain(country[area].guidance)
+        expect(view?.summary).toContain('local review')
+        const notes = record.metadata.geoNotes as Array<{ country: string; actionUrl: string }>
+        expect(notes.find(note => note.country === country.country)?.actionUrl).toBe(source!.url)
+      }
+    }
+  })
+
   it('the readable coverage map is regenerated from the current inventory and canonical titles', () => {
     expect(() => execFileSync(process.execPath, ['scripts/generate-startup-coverage.mjs', '--check'], { cwd: ROOT })).not.toThrow()
   })

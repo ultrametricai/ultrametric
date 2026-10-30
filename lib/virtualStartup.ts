@@ -61,7 +61,7 @@ export type FundingChoice = 'bootstrap' | 'seed'
 // 0/1; 'marketplace'/'usage'/'ecommerce' append. Only compositions the corpus honestly supports:
 // usage runs the SAME subscription-billing task (usage is a billing mode — venue-noted);
 // marketplace and e-commerce run the get-paid spine (processor + first close) with the model
-// named — no take-rate or storefront corpus steps exist, so none are invented.
+// named. Dedicated marketplace and storefront guides are available outside this simulation.
 export type ProductChoice = 'subscriptions' | 'invoices' | 'marketplace' | 'usage' | 'ecommerce'
 export type TeamChoice = 'solo' | 'cofounders'
 // Founder iteration 2026-09-25 — five more corpus-real branches:
@@ -319,7 +319,7 @@ export interface DecisionDef {
 //   product    — the get-paid chain forked: growth_001 "Set up subscription billing" (SaaS and
 //                usage-based — usage is a billing mode, venue-noted) vs sales_002 "Send an
 //                invoice" (invoice-billed services); marketplace/e-commerce run the spine only
-//                (qs_021 + fin_002) — no take-rate/storefront corpus steps exist to run
+//                (qs_021 + fin_002) — dedicated marketplace/storefront guides are available separately, outside this simulation composition
 //   ordering   — name-first (classic) vs build-first: the ship-v1 chain runs before naming —
 //                pure reordering of committed chains, nothing added or dropped (the control
 //                left the panel 2026-09-30 — HIDDEN_DECISION_IDS; old links still replay it)
@@ -387,9 +387,9 @@ export const DECISIONS: DecisionDef[] = [
     options: [
       { value: 'subscriptions', label: 'SaaS subscriptions', detail: 'turns on revenue via "Set up subscription billing" (growth_001)' },
       { value: 'invoices', label: 'Invoice-billed services', detail: 'turns on revenue via "Send an invoice" (sales_002)' },
-      { value: 'marketplace', label: 'Marketplace (take-rate)', detail: 'the same get-paid playbook spine — payment processor (qs_021) + first close (fin_002), take-rate named; the corpus has no dedicated take-rate billing steps, so neither billing fork runs and nothing is invented' },
+      { value: 'marketplace', label: 'Marketplace (take-rate)', detail: 'Simulate marketplace payments and accounting. The seller onboarding and payouts guide is available separately.' },
       { value: 'usage', label: 'Usage-based', detail: 'the same subscription-billing chain (growth_001) — usage is a billing mode, named in the journey; identical corpus steps to SaaS subscriptions' },
-      { value: 'ecommerce', label: 'E-commerce (DTC)', detail: 'the same get-paid playbook spine — checkout via the payment processor (qs_021) + first close (fin_002); the corpus has no storefront step yet, so none is invented' },
+      { value: 'ecommerce', label: 'E-commerce (DTC)', detail: 'Simulate checkout payments and accounting. The storefront launch guide is available separately.' },
     ],
   },
   {
@@ -842,9 +842,9 @@ export function journeyPhases(choices: Choices, chains: VsChain[], opts: Journey
       : choices.product === 'usage'
         ? 'usage-based — the same subscription-billing playbook (growth_001); usage is a billing mode (model named only; identical corpus steps); the invoice path (sales_002) is skipped'
         : choices.product === 'marketplace'
-          ? 'marketplace (take-rate) — the get-paid spine only: payment processor (qs_021) + first close (fin_002); the corpus has no take-rate billing steps, so neither billing fork runs'
+          ? 'marketplace (take-rate) — simulated payments and accounting; the seller onboarding and payouts guide is available separately.'
           : choices.product === 'ecommerce'
-            ? 'e-commerce (DTC) — the get-paid spine: checkout via the payment processor (qs_021) + first close (fin_002); the corpus has no storefront step yet, so none is invented'
+            ? 'e-commerce (DTC) — simulated checkout payments and accounting; the storefront launch guide is available separately.'
             : 'services — invoicing (sales_002); subscription billing (growth_001) is skipped') + icpNote,
   )
   if (choices.hire === 'yes') push('hire', 'First hire', 'first-hire')
@@ -1205,7 +1205,7 @@ const ARTIFACT_GENERATORS: Record<string, (ctx: ArtifactCtx) => Draft[]> = {
     choices.compliance === 'hipaa'
       ? { label: 'HIPAA readiness', value: 'controls stood up on the SOC 2-lite corpus playbook · framework named: HIPAA (no dedicated HIPAA corpus steps)' }
       : choices.compliance === 'iso'
-        ? { label: 'ISO 27001 readiness', value: 'controls stood up on the SOC 2-lite corpus playbook · framework named: ISO 27001 (no dedicated ISO corpus steps)' }
+        ? { label: 'ISO 27001 readiness', value: 'controls stood up on the SOC 2-lite corpus playbook · framework named: ISO 27001 (ISMS guide available separately; not included in this simulation)' }
         : { label: 'SOC 2 Type I', value: 'observation window opened · 0 failing controls' },
   ],
   // Lease-an-office process (2026-09-30, item 5 — the 'office' workplace branch). No rng: a
