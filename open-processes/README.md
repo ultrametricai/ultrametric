@@ -48,7 +48,7 @@ regenerate. Drift gate: `__tests__/process-pages.test.ts`.
 
 <!-- process-pages:index:start (generated — scripts/generate-process-pages.ts) -->
 
-One page per canonical record: 199 processes, 33 situations, 24 chains.
+One page per canonical record: 209 processes, 33 situations, 24 chains.
 
 ### Processes
 
@@ -60,6 +60,7 @@ One page per canonical record: 199 processes, 33 situations, 24 chains.
 - [Appoint or replace directors and officers](pages/appoint-or-replace-directors-and-officers.md)
 - [Approve a remote work location change](pages/approve-a-remote-work-location-change.md)
 - [Approve a reserved corporate matter](pages/approve-a-reserved-corporate-matter.md)
+- [Approve and pay a shareholder distribution](pages/approve-and-pay-a-shareholder-distribution.md)
 - [Assess and file a patent application](pages/assess-and-file-a-patent-application.md)
 - [Assess and manage AI product risk](pages/assess-and-manage-ai-product-risk.md)
 - [Assess cross-border withholding before a payment](pages/assess-cross-border-withholding-before-a-payment.md)
@@ -80,6 +81,7 @@ One page per canonical record: 199 processes, 33 situations, 24 chains.
 - [Collect overdue invoices and resolve bad debt](pages/collect-overdue-invoices-and-resolve-bad-debt.md)
 - [Complete a private secondary share sale](pages/complete-a-private-secondary-share-sale.md)
 - [Complete SOC 2 Type II](pages/complete-soc-2-type-ii.md)
+- [Configure metered usage billing](pages/configure-metered-usage-billing.md)
 - [Connect a payment processor](pages/connect-a-payment-processor.md)
 - [Connect a vendor or MCP server](pages/connect-a-vendor-or-mcp-server.md)
 - [Consider a section 83(b) election after a restricted-property transfer](pages/consider-a-section-83-b-election-after-a-restricted-property-transfer.md)
@@ -90,9 +92,11 @@ One page per canonical record: 199 processes, 33 situations, 24 chains.
 - [Create an issue from a task](pages/create-an-issue-from-a-task.md)
 - [Cut a release](pages/cut-a-release.md)
 - [Define the business model and unit economics](pages/define-the-business-model-and-unit-economics.md)
+- [Design prototype and validate a physical product](pages/design-prototype-and-validate-a-physical-product.md)
 - [Draft and send an email](pages/draft-and-send-an-email.md)
 - [Establish a channel or commercial partnership](pages/establish-a-channel-or-commercial-partnership.md)
 - [Establish a foreign subsidiary or branch](pages/establish-a-foreign-subsidiary-or-branch.md)
+- [Establish an information security management system](pages/establish-an-information-security-management-system.md)
 - [Establish payment and purchasing approval controls](pages/establish-payment-and-purchasing-approval-controls.md)
 - [Exercise employee stock options](pages/exercise-employee-stock-options.md)
 - [File DE franchise tax](pages/file-de-franchise-tax.md)
@@ -119,6 +123,7 @@ One page per canonical record: 199 processes, 33 situations, 24 chains.
 - [Issue employee equity awards](pages/issue-stock-options.md)
 - [Keep board minutes on cadence](pages/keep-board-minutes-on-cadence.md)
 - [Launch a referral program](pages/launch-a-referral-program.md)
+- [Launch an online storefront](pages/launch-an-online-storefront.md)
 - [Launch in the app stores](pages/launch-in-the-app-stores.md)
 - [Launch on Product Hunt & directories](pages/launch-on-product-hunt-directories.md)
 - [Lease an office](pages/lease-an-office.md)
@@ -158,6 +163,7 @@ One page per canonical record: 199 processes, 33 situations, 24 chains.
 - [Plan production quality and product release](pages/plan-production-quality-and-product-release.md)
 - [Prepare a board meeting](pages/prepare-a-board-meeting.md)
 - [Prepare and file sales tax VAT or GST returns](pages/prepare-and-file-sales-tax-vat-or-gst-returns.md)
+- [Prepare and submit a public procurement bid](pages/prepare-and-submit-a-public-procurement-bid.md)
 - [Prepare for and complete an external financial audit](pages/prepare-for-and-complete-an-external-financial-audit.md)
 - [Protect trade secrets and confidential know-how](pages/protect-trade-secrets-and-confidential-know-how.md)
 - [Provision a workspace user](pages/provision-a-workspace-user.md)
@@ -170,11 +176,13 @@ One page per canonical record: 199 processes, 33 situations, 24 chains.
 - [Register state taxes](pages/register-state-taxes.md)
 - [Renew insurance and coordinate a claim](pages/renew-insurance-and-coordinate-a-claim.md)
 - [Reorganize into multiple teams](pages/reorganize-into-multiple-teams.md)
+- [Retire a product feature or API](pages/retire-a-product-feature-or-api.md)
 - [Review a cross-border personal data transfer](pages/review-a-cross-border-personal-data-transfer.md)
 - [Review beneficial ownership reporting](pages/review-beneficial-ownership-reporting.md)
 - [Review common-stock fair market value before a stock option grant](pages/review-common-stock-fair-market-value-before-a-stock-option-grant.md)
 - [Review export controls sanctions and cross-border shipments](pages/review-export-controls-sanctions-and-cross-border-shipments.md)
 - [Review open-source licenses and software dependencies](pages/review-open-source-licenses-and-software-dependencies.md)
+- [Review revenue recognition and deferred revenue](pages/review-revenue-recognition-and-deferred-revenue.md)
 - [Review state registration](pages/review-state-registration.md)
 - [Review user access and privileged accounts](pages/review-user-access-and-privileged-accounts.md)
 - [Roll out a pricing change](pages/roll-out-a-pricing-change.md)
@@ -192,6 +200,7 @@ One page per canonical record: 199 processes, 33 situations, 24 chains.
 - [Run the annual penetration test](pages/run-the-annual-penetration-test.md)
 - [Run the fund back office](pages/run-the-fund-back-office.md)
 - [Save a churning customer](pages/save-a-churning-customer.md)
+- [Scope and deliver a professional services engagement](pages/scope-and-deliver-a-professional-services-engagement.md)
 - [Secure a business loan or credit facility](pages/secure-a-business-loan-or-credit-facility.md)
 - [Sell the company through an acquisition](pages/sell-the-company-through-an-acquisition.md)
 - [Send a wire or ACH payment](pages/send-a-wire-or-ach-payment.md)
@@ -229,6 +238,7 @@ One page per canonical record: 199 processes, 33 situations, 24 chains.
 - [Set up error tracking](pages/set-up-error-tracking.md)
 - [Set up expense management](pages/set-up-expense-management.md)
 - [Set up mailing address](pages/set-up-mailing-address.md)
+- [Set up marketplace seller onboarding and payouts](pages/set-up-marketplace-seller-onboarding-and-payouts.md)
 - [Set up on-call & incident response](pages/set-up-on-call-incident-response.md)
 - [Set up payroll](pages/set-up-payroll.md)
 - [Set up product analytics](pages/set-up-product-analytics.md)
