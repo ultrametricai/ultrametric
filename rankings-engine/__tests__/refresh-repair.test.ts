@@ -31,6 +31,9 @@ describe('refresh repair policy', () => {
     for (const file of ['.github/workflows/ci.yml', 'package.json', 'open-rankings/email/../../lib/schemas.ts', 'open-rankings/email/evil.ts', 'open-rankings/payments/verdicts.json']) expect(allowed(file, 'email')).toBe(false)
     expect(projection('open-rankings/email/score-history.jsonl', 'email')).toBe(true)
     expect(projection('open-rankings/email/evidence/vendor.json', 'email')).toBe(false)
+    expect(allowed('README.md', 'email')).toBe(true)
+    expect(projection('README.md', 'email')).toBe(false)
+    expect(() => mergeData('old prose', 'main edit', 'PR edit', 'README.md')).toThrow('Concurrent')
   })
   it('does not discard concurrent canonical edits', () => {
     expect(() => mergeData('old', 'new main', 'new PR', 'evidence.json')).toThrow('Concurrent source edits')
@@ -41,6 +44,8 @@ describe('refresh repair policy', () => {
   it('unions append-only uptime while rejecting rewritten history', () => {
     expect(mergeData('a\n', 'a\nb\n', 'a\nc\n', 'open-rankings/slo-history.jsonl')).toBe('a\nb\nc\n')
     expect(() => mergeData('a\n', 'b\n', 'a\nc\n', 'open-rankings/slo-history.jsonl')).toThrow()
+    expect(() => mergeData('a\n', 'a\n', '', 'open-rankings/slo-history.jsonl')).toThrow()
+    expect(() => mergeData('a\n', 'a\n', null, 'open-rankings/slo-history.jsonl')).toThrow()
   })
   it('maps an inline review to the exact original cell', () => {
     const other = { ...old, storyId: 'other' }

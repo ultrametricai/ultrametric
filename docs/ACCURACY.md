@@ -138,7 +138,10 @@ Every repair runs the repository gates before a non-force push, launches CI and 
 Greptile review, and checks the new head again. An old thread may close only for an audited
 cell after CI and independent review pass, with no new verdict-matrix findings. All other
 threads remain open. A changed head discards the repair. Attempts are bounded to three
-published repair commits, three worker attempts per head, and two concurrent workers.
+published repair commits, three failed-worker retries per head, and two concurrent workers. Pending checks resume
+the saved audit for the same published head, without another judgment or repair commit.
+Only artifacts from the trusted main repair workflow with matching PR, head, run, and base
+bindings can resume. Failed stages are appended to the retained report.
 Reports are retained as workflow artifacts; exhausted or ambiguous repairs require review.
 
 ## Invariants

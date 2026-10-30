@@ -27,25 +27,26 @@ const key = (row: Pick<Verdict, 'productId' | 'storyId'>) => `${row.productId}:$
 
 // Only projections that are rebuilt below may resolve a three-way conflict by regeneration.
 export function projection(file: string, arena: string): boolean {
-  return ['README.md', 'open-rankings/graph.json', 'open-rankings/step-rankings.json', 'open-rankings/predictions.json',
+  return ['open-rankings/graph.json', 'open-rankings/step-rankings.json', 'open-rankings/predictions.json',
     `open-rankings/${arena}/rankings.json`, `open-rankings/${arena}/rollups.json`,
     `open-rankings/${arena}/score-intervals.json`, `open-rankings/${arena}/score-history.jsonl`].includes(file)
     || file.startsWith('open-rankings/reviews/generated/')
 }
 export function allowed(file: string, arena: string): boolean {
   if (!/^[a-z0-9-]+$/.test(arena) || file.split('/').some(part => part === '..' || part === '.')) return false
-  return projection(file, arena) || file === 'open-rankings/slo-history.jsonl'
+  return projection(file, arena) || file === 'README.md' || file === 'open-rankings/slo-history.jsonl'
     || (file.startsWith(`open-rankings/${arena}/`) && /\.(json|jsonl)$/.test(file))
     || new RegExp(`^rankings-engine/cache/[a-z0-9-]+/${arena}/[a-z0-9/_-]+\\.json$`).test(file)
 }
 export function mergeData(base: string | null, main: string | null, proposed: string | null, file: string): string | null {
-  if (main === base || main === proposed) return proposed
-  if (proposed === base) return main
-  // Uptime is append-only; exact duplicate records are retained only once.
-  if (file === 'open-rankings/slo-history.jsonl' && base !== null && main !== null && proposed !== null
-      && main.startsWith(base) && proposed.startsWith(base)) {
+  if (file === 'open-rankings/slo-history.jsonl') {
+    if (base === null || main === null || proposed === null || !main.startsWith(base) || !proposed.startsWith(base)) {
+      throw new Error('Append-only uptime history cannot be removed or rewritten')
+    }
     return [...new Set([...main.trimEnd().split('\n'), ...proposed.slice(base.length).trim().split('\n').filter(Boolean)])].join('\n') + '\n'
   }
+  if (main === base || main === proposed) return proposed
+  if (proposed === base) return main
   throw new Error(`Concurrent source edits need review: ${file}`)
 }
 export function rowAtLine(text: string, line: number): Verdict | null {
@@ -160,6 +161,12 @@ export async function repair({ head, main, arena, findings, keyed }: { head: str
   const rawAfter = VerdictSchema.array().parse(JSON.parse(fs.readFileSync(`${dir}/verdicts.json`, 'utf8')))
   const products = ProductSchema.array().parse(JSON.parse(fs.readFileSync(`${dir}/products.json`, 'utf8')))
   const stories = StorySchema.array().parse(JSON.parse(fs.readFileSync(`${dir}/stories.json`, 'utf8')))
+  if (!isDeepStrictEqual(products, ProductSchema.array().parse(JSON.parse(show(main, `${dir}/products.json`)!)))) {
+    throw new Error('Product roster edits require a dedicated reviewed change')
+  }
+  if (!isDeepStrictEqual(stories, StorySchema.array().parse(JSON.parse(show(main, `${dir}/stories.json`)!)))) {
+    throw new Error('Story taxonomy edits require a dedicated reviewed change')
+  }
   for (const id of [...products.map(product => product.id), ...stories.map(story => story.id)]) {
     if (!/^[a-z0-9][a-z0-9_-]*$/.test(id)) throw new Error('Unsafe product or story identifier')
   }
@@ -179,6 +186,7 @@ export async function repair({ head, main, arena, findings, keyed }: { head: str
   let rows = result.rows
   const audits: Array<{ thread: string; cell: string; addressed: boolean; reason: string }> = []
   const rejudged: string[] = []
+  const modelJudgments = new Map<string, Verdict>()
   const scopedJudge = async (index: number, extra: string) => {
     const target = rows[index]
     const product = products.find(product => product.id === target.productId)!
@@ -186,6 +194,7 @@ export async function repair({ head, main, arena, findings, keyed }: { head: str
     if (!keyed || product.affiliation) throw new Error(`Cell requires a keyed, non-affiliated scoped re-judge: ${key(target)}`)
     if (!rejudged.includes(key(target)) && rejudged.length >= 20) throw new Error('Scoped re-judge budget exhausted')
     rows[index] = await judgeRepairCell(product.id, product.name, story, packs[product.id], extra)
+    modelJudgments.set(key(target), rows[index])
     if (!rejudged.includes(key(target))) rejudged.push(key(target))
   }
   for (const cell of result.blocked) {
@@ -238,7 +247,9 @@ export async function repair({ head, main, arena, findings, keyed }: { head: str
     // A cache can migrate across evidence-label changes only after proving its original
     // payload hash and original judgment match. The evidence text/order is unchanged.
     const sourceValid = sourceCacheMatches(cached, sourceRow, story, rawPacks[row.productId])
-    if (!rejudged.includes(key(row)) && !sourceValid) {
+    const savedModelJudgment = modelJudgments.get(key(row))
+    const freshModel = savedModelJudgment !== undefined && isDeepStrictEqual(savedModelJudgment, row)
+    if (!freshModel && !sourceValid) {
       throw new Error(`Cell needs a scoped re-judge under the current rubric: ${key(row)}`)
     }
     write(cacheFile, { ...cached, hash: expected, keyVersion: CELL_HASH_VERSION, verdict: row })

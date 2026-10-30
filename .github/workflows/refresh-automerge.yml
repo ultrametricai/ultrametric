@@ -50,10 +50,13 @@ jobs:
                   return
               title = f"Repair refresh #{pr['number']} @{sha}"
               history = api('actions/workflows/refresh-repair.yml/runs?per_page=100')['workflow_runs']
-              # Retry a failed head at most three times; published repairs create a new
+              # Retry failed workers at most three times; waiting resumes are read-only.
+              # Published repairs create a new
               # head. The worker also caps the total published repair commits at three.
               previous = [run for run in history if run['display_title'] == title]
-              if any(run['status'] != 'completed' for run in previous) or len(previous) >= 3:
+              if any(run['status'] != 'completed' and run['display_title'].startswith(f"Repair refresh #{pr['number']} @") for run in history):
+                  return
+              if sum(run['conclusion'] in ['failure','timed_out','cancelled'] for run in previous) >= 3:
                   return
               if sum(run['status'] != 'completed' for run in history) >= 2:
                   return # bound concurrent repair workers and model spend
@@ -78,7 +81,7 @@ jobs:
                       raise RuntimeError(data['errors'])
                   threads = data['data']['repository']['pullRequest']['reviewThreads']
                   if any(not t['isResolved'] and t['path'].endswith('/verdicts.json') and
-                         any((c.get('author') or {}).get('login') in ['greptile-apps','greptile-apps[bot]']
+                         any((c.get('author') or {}).get('login') in ['greptile-apps','greptile-apps[bot]','greptileai']
                              for c in t['comments']['nodes']) for t in threads['nodes']):
                       return True
                   if not threads['pageInfo']['hasNextPage']:
