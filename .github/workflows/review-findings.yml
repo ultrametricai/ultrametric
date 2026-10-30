@@ -61,7 +61,12 @@ jobs:
             } }
           }'''
           for number in numbers:
-              cursor, blocked, sha = None, 0, None
+              initial = api(f'repos/{repo}/pulls/{number}')
+              sha = initial['head']['sha']
+              checks = api(f'repos/{repo}/commits/{sha}/check-runs?check_name=Greptile%20Review&per_page=100')
+              reviewed = any(check['app']['id'] == 867647 and check['status'] == 'completed'
+                             and check['conclusion'] == 'success' for check in checks['check_runs'])
+              cursor, blocked = None, 0
               while True:
                   result = api('graphql', {'query': query, 'variables': {
                       'owner':owner, 'name':name, 'number':number, 'cursor':cursor}})
@@ -83,9 +88,6 @@ jobs:
               current = api(f'repos/{repo}/pulls/{number}')
               if current['head']['sha'] != sha or current['state'] != 'open':
                   continue
-              checks = api(f'repos/{repo}/commits/{sha}/check-runs?check_name=Greptile%20Review&per_page=100')
-              reviewed = any(check['app']['id'] == 867647 and check['status'] == 'completed'
-                             and check['conclusion'] == 'success' for check in checks['check_runs'])
               api(f'repos/{repo}/statuses/{sha}', {
                   'state': ('failure' if blocked else 'success') if reviewed else 'pending',
                   'context': 'review-findings',
