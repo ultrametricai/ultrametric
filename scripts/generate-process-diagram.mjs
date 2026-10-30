@@ -1,11 +1,6 @@
-// Draws one committed process record as an SVG step graph for the open-processes README.
-// Reads the unfiltered operational projection of the canonical definition, preserving
-// jurisdiction-conditional nodes. Deterministic: same definition in, same bytes out.
-//
-//   node scripts/generate-process-diagram.mjs [processId] [outPath]
-//
-// Defaults: form_001 -> open-processes/assets/incorporate-c-corp.svg
-
+// Deterministic SVG views of canonical processes. No authored dependencies or steps.
+// node scripts/generate-process-diagram.mjs [processId] [outPath]
+// node scripts/generate-process-diagram.mjs --examples
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -13,91 +8,124 @@ import { tsImport } from 'tsx/esm/api'
 
 const { loadProcessCatalog } = await tsImport('../lib/shared-processes/catalog.ts', import.meta.url)
 const { projectOperational } = await tsImport('../lib/shared-processes/projection.ts', import.meta.url)
-
+const { layerNodes } = await tsImport('../lib/dagLayers.ts', import.meta.url)
+const { EXECUTION_LABELS } = await tsImport('../lib/execution.ts', import.meta.url)
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..')
-const processId = process.argv[2] ?? 'form_001'
-const outPath = path.join(ROOT, process.argv[3] ?? 'open-processes/assets/incorporate-c-corp.svg')
-
 const catalog = loadProcessCatalog(undefined, ROOT).processes
-const record = catalog.map(process => projectOperational(process, catalog)).find(record => record?.id === processId)
-if (!record) throw new Error(`process ${processId} not found in the operational catalog`)
+const examples = ['incorporate-c-corp', 'get-a-409a-valuation', 'set-up-mailing-address']
+const esc = value => String(value).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
+const W = 1280, PAD = 40, COLS = 5, CW = 216, GX = 30, CH = 174, GY = 20, ROW_GAP = 68
 
-// Route styling mirrors components/ProcessDag.tsx in the site repo.
-const STYLES = {
-  agent: { fill: '#0b2e22', stroke: '#34d399', text: '#d1fae5', glyph: '🤖' },
-  form: { fill: '#2e230b', stroke: '#fbbf24', text: '#fef3c7', glyph: '📝' },
-  person: { fill: '#0b2233', stroke: '#38bdf8', text: '#e0f2fe', glyph: '🧑' },
-  sig: { fill: '#230b33', stroke: '#a78bfa', text: '#ede9fe', glyph: '✍' },
-}
-
-const styleOf = (n) => (n.legalSignature ? STYLES.sig : (STYLES[n.route] ?? STYLES.person))
-const minutesLabel = (m) =>
-  m == null ? '' : m >= 1440 ? ` (~${Math.round(m / 1440)}d wait)` : ` (${m}m)`
-const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-
-// Chain order from the edges; nodes outside the chain are the jurisdiction-conditional group.
-const edgeFrom = new Map(record.dag.edges.map((e) => [e.from, e.to]))
-const targets = new Set(record.dag.edges.map((e) => e.to))
-const byId = new Map(record.dag.nodes.map((n) => [n.id, n]))
-const start = record.dag.nodes.find((n) => edgeFrom.has(n.id) && !targets.has(n.id))
-const chain = []
-for (let id = start?.id; id; id = edgeFrom.get(id)) chain.push(byId.get(id))
-const conditional = record.dag.nodes.filter((n) => !chain.includes(n))
-
-const W = 760
-const BOX_W = 560
-const BOX_H = 42
-const GAP = 26
-const X = (W - BOX_W) / 2
-const PAD_TOP = 16
-
-const parts = []
-let y = PAD_TOP
-const box = (n, x, w, suffix = '') => {
-  const s = styleOf(n)
-  const label = `${s.glyph} ${n.label}${minutesLabel(n.estimatedMinutes)}${suffix}`
-  // ~7.2px per character at 14px; squeeze long labels to the box instead of overflowing.
-  const fit = label.length * 7.2 > w - 16 ? ` textLength="${w - 16}" lengthAdjust="spacingAndGlyphs"` : ''
-  parts.push(
-    `<rect x="${x}" y="${y}" width="${w}" height="${BOX_H}" rx="8" fill="${s.fill}" stroke="${s.stroke}" stroke-width="1.5"/>`,
-    `<text x="${x + w / 2}" y="${y + BOX_H / 2 + 5}" text-anchor="middle" fill="${s.text}" font-family="-apple-system, 'Segoe UI', sans-serif" font-size="14"${fit}>${esc(label)}</text>`,
-  )
-  y += BOX_H
-}
-const arrow = () => {
-  parts.push(
-    `<line x1="${W / 2}" y1="${y}" x2="${W / 2}" y2="${y + GAP - 7}" stroke="#94a3b8" stroke-width="1.5"/>`,
-    `<path d="M ${W / 2 - 5} ${y + GAP - 8} L ${W / 2} ${y + GAP - 1} L ${W / 2 + 5} ${y + GAP - 8} Z" fill="#94a3b8"/>`,
-  )
-  y += GAP
-}
-
-chain.forEach((n, i) => {
-  if (i > 0) arrow()
-  box(n, X, BOX_W)
-})
-
-if (conditional.length > 0) {
-  y += 30
-  const groupTop = y
-  y += 30
-  for (const n of conditional) {
-    const tag = n.jurisdictions?.length
-      ? ` — ${n.jurisdictions.map((j) => (j === 'MULTI' ? 'multi-state' : j)).join(', ')}`
-      : ''
-    box(n, X, BOX_W, tag)
-    y += 10
+function wrap(value, limit) {
+  const lines = []
+  for (const word of String(value).split(/\s+/)) {
+    const last = lines.length - 1
+    if (last < 0 || lines[last].length + word.length + 1 > limit) lines.push(word)
+    else lines[last] += ` ${word}`
   }
-  const groupBottom = y + 4
-  parts.push(
-    `<rect x="${X - 24}" y="${groupTop}" width="${BOX_W + 48}" height="${groupBottom - groupTop}" rx="10" fill="none" stroke="#64748b" stroke-width="1" stroke-dasharray="6 4"/>`,
-    `<text x="${W / 2}" y="${groupTop + 20}" text-anchor="middle" fill="#64748b" font-family="-apple-system, 'Segoe UI', sans-serif" font-size="12" textLength="${BOX_W + 24}" lengthAdjust="spacingAndGlyphs">${esc('Jurisdiction-conditional steps (attached client-side by lib/jurisdictions.ts, never in static ranks)')}</text>`,
-  )
-  y = groupBottom
+  return lines
 }
+function minutes(value) {
+  if (value == null) return 'Time not estimated'
+  if (value >= 1440) return `~${Math.round(value / 1440)} days elapsed`
+  return `~${value} min`
+}
+function draw(item, output) {
+  const record = projectOperational(item, catalog)
+  if (!record) throw new Error(`process ${item.record.id} has no operational view`)
+  const nodes = record.dag.nodes, edges = record.dag.edges ?? []
+  // Disconnected jurisdiction-specific nodes stay separate. Being outside a chain
+  // does not make a node jurisdiction-conditional (e.g. the 409A cap-table input).
+  const connected = new Set(edges.flatMap(e => [e.from, e.to]))
+  const detached = nodes.filter(n => n.jurisdictions?.length && !connected.has(n.id))
+  const main = nodes.filter(n => !detached.includes(n))
+  const layers = layerNodes(main, edges)
+  const positions = new Map()
+  let y = 188
+  for (let base = 0; base < layers.length; base += COLS) {
+    const row = layers.slice(base, base + COLS)
+    const height = Math.max(...row.map(layer => layer.length * (CH + GY) - GY))
+    row.forEach((layer, i) => {
+      const col = Math.floor(base / COLS) % 2 ? COLS - 1 - i : i
+      const groupHeight = layer.length * (CH + GY) - GY
+      layer.forEach((n, j) => positions.set(n.id, { x: PAD + col * (CW + GX), y: y + (height - groupHeight) / 2 + j * (CH + GY), row: Math.floor(base / COLS) }))
+    })
+    y += height + ROW_GAP
+  }
+  let detachedHeading
+  if (detached.length) {
+    detachedHeading = y - 12
+    y += 26
+    detached.forEach((n, i) => positions.set(n.id, { x: PAD + (i % COLS) * (CW + GX), y: y + Math.floor(i / COLS) * (CH + GY), row: null }))
+    y += Math.ceil(detached.length / COLS) * (CH + GY)
+  }
+  const footer = y + 12, H = footer + 92
+  const pieces = []
+  const text = (x, yy, value, cls = 'body', extra = '') => pieces.push(`<text x="${x}" y="${yy}" class="${cls}" ${extra}>${esc(value)}</text>`)
+  const parts = new Map(item.record.parts.map(part => [part.id, part]))
+  text(PAD, 38, `Processes / ${item.record.metadata.phase ?? 'Process'}`, 'muted')
+  text(PAD, 82, item.record.title, 'title')
+  wrap(item.record.summary ?? '', 145).forEach((line, i) => text(PAD, 112 + i * 22, line, 'body'))
+  text(PAD, 160, 'Execution labels and estimates come from the source record. Open the linked guide for applicability, approvals and alternatives.', 'muted')
 
-const H = y + PAD_TOP
-const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(record.title)} step graph">\n${parts.join('\n')}\n</svg>\n`
-fs.mkdirSync(path.dirname(outPath), { recursive: true })
-fs.writeFileSync(outPath, svg)
-console.log(`wrote ${path.relative(ROOT, outPath)} (${chain.length} chained steps, ${conditional.length} conditional)`)
+  // Draw each authored edge once, behind the node surfaces. The next row reverses
+  // direction so a long process remains readable without introducing extra edges.
+  for (const edge of edges) {
+    const a = positions.get(edge.from), b = positions.get(edge.to)
+    if (!a || !b) throw new Error(`edge ${edge.from} → ${edge.to} has no endpoint`)
+    let d
+    if (a.row === b.row) {
+      const right = b.x > a.x
+      const sx = a.x + (right ? CW : 0), ex = b.x + (right ? 0 : CW)
+      const sy = a.y + CH / 2, ey = b.y + CH / 2, mid = (sx + ex) / 2
+      // Cubic curves give the same soft bends as the site's process connectors.
+      d = `M${sx} ${sy} C${mid} ${sy} ${mid} ${ey} ${ex} ${ey}`
+    } else {
+      const sx = a.x + CW / 2, sy = a.y + CH, ex = b.x + CW / 2, ey = b.y
+      d = `M${sx} ${sy} C${sx} ${(sy + ey) / 2} ${ex} ${(sy + ey) / 2} ${ex} ${ey}`
+    }
+    pieces.push(`<path data-from="${esc(edge.from)}" data-to="${esc(edge.to)}" d="${d}" class="edge"${edge.when ? ' stroke-dasharray="5 4"' : ''}><title>${esc(edge.when ?? `${edge.from} → ${edge.to}`)}</title></path>`)
+  }
+  if (detachedHeading) text(PAD, detachedHeading, 'Jurisdiction-specific steps · applicability in the linked guide', 'heading')
+  for (const n of nodes) {
+    const p = positions.get(n.id), part = parts.get(n.id)
+    const lines = wrap(n.label, 24)
+    const height = Math.max(CH, 62 + lines.length * 21)
+    if (height > CH) throw new Error(`step ${n.id} label needs a larger card`)
+    pieces.push(`<a href="https://github.com/ultrametricai/ultrametric/blob/main/open-processes/pages/${esc(item.slug)}.md#${esc(`step-${item.record.parts.findIndex(part => part.id === n.id) + 1}`)}"><g data-node="${esc(n.id)}">`)
+    pieces.push(`<rect x="${p.x}" y="${p.y}" width="${CW}" height="${CH}" rx="12" fill="#18181b" stroke="#3f3f46"/>`)
+    lines.forEach((line, i) => text(p.x + 16, p.y + 28 + i * 21, line, 'node-title'))
+    const category = n.execution?.category
+    const label = EXECUTION_LABELS[category] ?? 'Execution unclassified'
+    const color = category?.startsWith('agent-') ? '#6ee7b7' : category?.startsWith('human-') ? '#7dd3fc' : '#a1a1aa'
+    text(p.x + 16, p.y + CH - 41, label, 'badge', `style="fill:${color}"`)
+    if (n.legalSignature) text(p.x + 16, p.y + CH - 22, 'Signature', 'badge', 'style="fill:#c4b5fd"')
+    else if (n.approvalRequired || part?.metadata?.approvalRequired) text(p.x + 16, p.y + CH - 22, 'Ⅱ Approval', 'badge', 'style="fill:#fcd34d"')
+    text(p.x + CW - 16, p.y + CH - 22, minutes(n.estimatedMinutes), 'badge', 'text-anchor="end" style="fill:#a1a1aa"')
+    if (n.jurisdictions?.length) text(p.x + CW - 16, p.y + CH - 41, n.jurisdictions.join(' · '), 'badge', 'text-anchor="end" style="fill:#a1a1aa"')
+    pieces.push('</g></a>')
+  }
+  pieces.push(`<line x1="${PAD}" y1="${footer}" x2="${W-PAD}" y2="${footer}" stroke="#27272a"/>`)
+  text(PAD, footer + 28, `Source: open-processes/${item.slug}.json`, 'muted')
+  text(PAD, footer + 51, 'Arrows show recorded dependencies. Steps without connecting arrows have no recorded dependency.', 'muted')
+  text(PAD, footer + 74, 'Default step view. Read the guide for options, verification, recovery and country-specific guidance.', 'muted')
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(record.title)} step graph">
+<title>${esc(item.record.title)}</title>
+<desc>Generated from ${esc(item.slug)}.json. ${esc(nodes.map(n=>n.label).join('; '))}. Each arrow preserves a recorded dependency. Execution assessments and explicit signature and approval markers come from the record.</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M1 1L9 5L1 9" fill="none" stroke="#a1a1aa" stroke-width="1.5"/></marker></defs>
+<style>text{font-family:Inter,Arial,Helvetica,sans-serif;fill:#f4f4f5}.title{font-size:30px;font-weight:600}.heading{font-size:18px;font-weight:500}.node-title{font-size:16px;font-weight:500}.body{font-size:16px;fill:#a1a1aa}.muted{font-size:14px;fill:#a1a1aa}.badge{font-size:12px}.edge{fill:none;stroke:#a1a1aa;stroke-width:2;marker-end:url(#arrow)}</style>
+<rect width="${W}" height="${H}" fill="#09090b"/>
+${pieces.join('\n')}
+</svg>\n`
+  fs.mkdirSync(path.dirname(output), { recursive: true })
+  fs.writeFileSync(output, svg)
+  console.log(`wrote ${path.relative(ROOT, output)}`)
+}
+if (process.argv[2] === '--examples') {
+  for (const slug of examples) draw(catalog.find(p=>p.slug===slug), path.join(ROOT, `open-processes/assets/${slug}.svg`))
+} else {
+  const id = process.argv[2] ?? 'form_001'
+  const item = catalog.find(p=>p.record.id===id)
+  if (!item) throw new Error(`process ${id} not found in the operational catalog`)
+  draw(item, path.resolve(ROOT, process.argv[3] ?? 'open-processes/assets/incorporate-c-corp.svg'))
+}

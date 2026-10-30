@@ -25,7 +25,7 @@ itself.
   their zod sources.
 - `generate-badges.mjs` — the score-badge SVGs in `public/badges/`.
 - `generate-business-logic-serves.ts` — the Serves lines in `open-modules/README.md`.
-- `generate-process-diagram.mjs` — the step-graph SVG in the `open-processes/` README.
+- `generate-process-diagram.mjs` — canonical step-graph SVGs in the process examples; `--examples` regenerates the root README selections.
 - `generate-situations-md.ts` — the table block in `open-processes/SITUATIONS.md`.
 - `generate-timeline-inversions.ts` — `docs/TIMELINE-INVERSIONS.md`.
 

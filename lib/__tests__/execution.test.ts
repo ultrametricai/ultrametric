@@ -55,7 +55,8 @@ describe('execution assessments', () => {
   })
   it('assigns every canonical scope a category independently of automation verification and review', () => {
     const assessments = records.flatMap(record => scopes(record.parts)).flatMap(scope => scope.metadata.execution ? [scope.metadata.execution as Execution] : [])
-    expect(assessments).toHaveLength(1142)
+    // Startup lifecycle expansion, 2026-10-29: 353 additional authored step assessments.
+    expect(assessments).toHaveLength(1495)
     for (const assessment of assessments) {
       expect(EXECUTION_CATEGORIES).toContain(assessment.category)
       expect(assessment.automationEvidence).toBeDefined()
@@ -620,6 +621,7 @@ describe('execution assessments', () => {
   })
   it('includes scoped approvals in the execution audit', () => {
     const report = JSON.parse(execFileSync(process.execPath, ['--import', 'tsx', 'scripts/shared-processes/execution-audit.ts'], { encoding: 'utf8' }))
-    expect(report.explicitApprovals).toBe(259)
+    // Lifecycle expansion adds 175 scoped human approvals (2026-10-29).
+    expect(report.explicitApprovals).toBe(435)
   })
 })

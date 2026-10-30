@@ -107,6 +107,8 @@ Configure the agreed marks, platforms and review schedule, routing alerts to the
 
 ### United States
 
+Monitor trademark conflicts and social-handle availability for the brand, on a schedule.
+
 - Step 1: The federal register search runs in the USPTO trademark tools ([USPTO trademark search](https://www.uspto.gov/trademarks))
 - Step 3: Schedule the recurring checks against the USPTO trademark tools ([USPTO trademark tools](https://www.uspto.gov/trademarks))
 

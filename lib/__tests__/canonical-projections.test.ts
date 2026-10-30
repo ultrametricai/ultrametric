@@ -95,6 +95,35 @@ describe('canonical diagram generator', () => {
     expect(readFileSync('open-processes/README.md', 'utf8')).toContain('<img src="assets/incorporate-c-corp.svg" alt="Incorporate C-Corp step graph" width="700">')
   })
 
+  it('generates the README examples with every authored node and edge, including the 409A join', () => {
+    const root = fixture()
+    const result = run(root, '--examples')
+    expect(result.status, result.stderr).toBe(0)
+    for (const slug of ['incorporate-c-corp', 'get-a-409a-valuation', 'set-up-mailing-address']) {
+      const process = catalog.find(item => item.slug === slug)!
+      const projected = projectOperational(process, catalog)!
+      const asset = `open-processes/assets/${slug}.svg`
+      const svg = readFileSync(path.join(root, asset), 'utf8')
+      expect(svg).toBe(readFileSync(asset, 'utf8'))
+      expect([...svg.matchAll(/data-node="([^"]+)"/g)].map(match => match[1]).sort())
+        .toEqual(projected.dag.nodes.map(node => node.id).sort())
+      expect([...svg.matchAll(/data-from="([^"]+)" data-to="([^"]+)"/g)].map(match => `${match[1]}:${match[2]}`).sort())
+        .toEqual((projected.dag.edges ?? []).map(edge => `${edge.from}:${edge.to}`).sort())
+      if (slug === 'get-a-409a-valuation') {
+        expect(svg).toContain('data-from="n1" data-to="n3"')
+        expect(svg).toContain('data-from="n2" data-to="n3"')
+        expect(svg).not.toContain('Jurisdiction-specific steps')
+      }
+      if (slug === 'set-up-mailing-address') {
+        // The current assessment overrides the historical agent route on address updates.
+        const last = svg.slice(svg.indexOf('<g data-node="n3">')).split('</g>')[0]
+        expect(last).toContain('Human Online')
+        expect(last).not.toContain('Agent Native')
+        expect(svg).toContain('Signature')
+      }
+    }
+  })
+
   it('retains process/output arguments, escaping, and failure for an unknown process', () => {
     const root = fixture()
     const file = path.join(root, 'open-processes/generate-a-brand-logo.json')
@@ -121,7 +150,7 @@ describe('canonical catalog consumer contract', () => {
     // (the non-profit and business-phone-number processes) sit beside them.
     const retained = new Set(catalog.map(item => item.record.id))
     for (const id of importedIdentities.ids) expect(retained.has(id), `historical identity ${id}`).toBe(true)
-    expect(catalog).toHaveLength(186)
+    expect(catalog).toHaveLength(256)
     expect(catalog.filter(item => item.taskIds)).toHaveLength(24)
     const situations = catalog.filter(item => item.record.metadata.kind === 'situation')
     expect(situations).toHaveLength(33)

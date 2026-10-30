@@ -312,6 +312,8 @@ Florida employers register for reemployment tax with the Department of Revenue t
 
 ### United States
 
+Set up a payroll provider to run payroll, file employment taxes, and administer benefits.
+
 - Step 2: Sign up and configure payroll online Configure US payroll from verified employer details, relevant tax accounts, pay schedule, funding method and administrator roles. Reconcile employee work locations and pay types with the payroll specialist. Finance authorizes the funding connection, then payroll reviews the first-run preview and outstanding setup issues. Assign responsibility for returns, payments and corrections from the provider’s actual service scope and the employer’s remaining duties.
 
 <a id="geo-in"></a>

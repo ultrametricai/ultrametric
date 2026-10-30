@@ -7,7 +7,7 @@
 
 ## Overview
 
-Open a business bank account to separate personal and company finances — the first finance move for a company in any country. The US startup banks run fully-online applications with day-or-two approvals (the default flow below); the per-country rails and providers ride in the geo notes. KYC on the founders is universal; the tax ID the bank asks for is the local one (US: the EIN).
+Choose a business bank account available to the company, complete the application and identity checks, provide the required formation and tax records, and connect the approved account to the books. Confirm the institution’s actual eligibility and onboarding requirements.
 
 | Field | Value |
 | --- | --- |
@@ -153,6 +153,8 @@ Have the bank-account administrator authorize the supported accounting connectio
 <a id="geo-us"></a>
 
 ### United States
+
+Open a business bank account to separate personal and company finances — the first finance move for a company in any country. The US startup banks run fully-online applications with day-or-two approvals (the default flow below); the per-country rails and providers ride in the geo notes. KYC on the founders is universal; the tax ID the bank asks for is the local one (US: the EIN).
 
 - Step 2: The tax ID the bank asks for is the EIN, and the startup banks run the application fully online
 - Step 3: KYC runs on founder government ID and the formation documents, uploaded in the bank's online flow

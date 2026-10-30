@@ -229,7 +229,7 @@ human · ~14 d · async wait
 
 ## Related records
 
-- Runs as a step of [Handle an employee's visa denial or RFE](handle-an-employee-s-visa-denial-or-rfe.md)
+- Runs as a step of [Respond to an employee work-authorization refusal or evidence request](handle-an-employee-s-visa-denial-or-rfe.md)
 
 ---
 

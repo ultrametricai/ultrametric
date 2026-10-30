@@ -135,6 +135,8 @@ human · ~30 min
 
 ### United States
 
+Receive and document the complaint, protect the people involved, use the applicable local investigation and grievance procedure, decide and record the outcome, and follow up on retaliation concerns.
+
 - Step 1: Take it seriously at receipt: acknowledge, no judgments, no promises — and the no-retaliation line drawn on day one (retaliation is separately unlawful) How you respond becomes the company's defense. Make it prompt, thorough, documented. Retaliation is separately unlawful, so draw the no-retaliation line on day one (the EEOC's published employer guidance is the reference). Take the complaint seriously without judging or promising outcomes. Put interim measures in place that protect the complainant rather than punish them. Pick an investigator without conflicts; for anything senior, outside counsel or an external HR investigator. Run the investigation properly. Decide proportionately, up to termination, and document the reasoning. Close the loop with the complainant. Then watch for retaliation for months; that is where companies lose. An EEOC charge may still come; the file you built is what answers it. Educational guidance, not legal advice.  ([EEOC: harassment (employer obligations)](https://www.eeoc.gov/harassment))
 
 <a id="geo-in"></a>
