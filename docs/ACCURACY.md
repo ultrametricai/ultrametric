@@ -91,8 +91,11 @@ score built entirely from zero-evidence none/na cells renders italic *untested*,
    and dispatches missing CI on main pushes, twice hourly, or by manual dispatch. Auto-merge waits for validation, ci, Greptile Review, a current main base, and
    resolved Greptile review threads via the metadata-only `review-findings` gate.
    Foreloop checks and threads are outside the merge requirements. The CI stability
-   gate rejects grade or quality changes without a cited evidence ID new to that product
-   pack. Review semantic findings under the re-judge stability policy before merging: a verdict flip citing NO evidence id new to the pack is re-roll noise —
+   gate rejects upgrades without a cited evidence ID new to that product pack. A verified
+   downgrade may instead follow changed or lost prior support; quality cannot increase and
+   applicability cannot change through that path. Review semantic findings under the re-judge
+   stability policy before merging: when prior cited support is unchanged, a verdict flip
+   citing NO evidence id new to the pack is re-roll noise —
    revert it (`rankings-engine/scripts/revert-churn.ts` pattern, METHODOLOGY.md). Exception: a
    labeled judge-model migration wave (e.g. 2026-09-30, sonnet-5 → opus-5-5) is exempt — under
    a judge change every flip cites no new evidence by construction, so the wave is labeled in
@@ -105,8 +108,8 @@ score built entirely from zero-evidence none/na cells renders italic *untested*,
 3. **The work-queue issue** (labels `story-runner` + `founder-call`, Wednesdays, filed only when
    the queue is non-empty) — the ranked to-do list. Close it once the listed rankings have been
    through keyed runs (the next week's issue also closes it automatically, naming its successor);
-   flips that survive a re-judge become verdict changes with new citations, which is the only way
-   a flip may move a score.
+   score changes require new supporting citations, or a verified non-upward judgment after
+   previously cited support changes or disappears. Unchanged-support rerolls are reverted.
 4. **Contest / vendor-response issues** — external correction channels; vendor responses enter
    the evidence pool but never change a verdict by themselves.
 
@@ -129,8 +132,11 @@ remap their citations. A cache may migrate across label-only changes only after 
 payload hash and exact original judgment are verified.
 
 Unsupported grade churn restores the previously published judgment when its cited content
-is unchanged and its rules remain valid. Changed or missing source content requires a
-scoped re-judge, within the worker's cell budget. Reviewed cells may use the configured judge to reconsider the evidence and audit
+is unchanged and its rules remain valid. Changed or missing source content requires a verified current-input judgment, or a
+scoped re-judge within the worker's cell budget. Such source loss may lower full/partial
+credit toward none with no quality increase, and cannot justify an upgrade or applicability
+change. Failed-worker budgets are scoped to the deployed repair policy version, so a
+policy correction can retry heads that exhausted an older worker implementation. Reviewed cells may use the configured judge to reconsider the evidence and audit
 the reported concern. Review text is diagnostic context, never evidence. Missing evidence,
 unknown citations, rubric violations, and affiliated-product review needs stay blocked.
 

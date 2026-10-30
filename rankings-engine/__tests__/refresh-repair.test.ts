@@ -25,6 +25,11 @@ describe('refresh repair policy', () => {
     const result = restoreChurn([old], [proposed], { vendor: [evidence('old')] }, { vendor: [] })
     expect(result.blocked).toEqual(['vendor:story']); expect(result.restored).toEqual([])
   })
+  it('keeps a current-input downgrade instead of restoring an unsupported positive claim', () => {
+    const none = { ...old, verdict: 'none' as const, quality: 0, evidenceIds: [] }
+    const result = restoreChurn([old], [none], { vendor: [evidence('old')] }, { vendor: [] })
+    expect(result.rows).toEqual([none]); expect(result.blocked).toEqual([]); expect(result.restored).toEqual([])
+  })
   it('restricts writes to one arena, caches and declared projections', () => {
     expect(allowed('open-rankings/email/verdicts.json', 'email')).toBe(true)
     expect(allowed('rankings-engine/cache/judge/email/vendor/story.json', 'email')).toBe(true)
