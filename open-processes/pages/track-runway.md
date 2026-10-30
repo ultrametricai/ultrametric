@@ -3,6 +3,10 @@
 
 # Track runway
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Steps](#steps-at-a-glance)
+
+## Overview
+
 Track runway and burn — pull balances, read the monthly spend, and know the zero-cash date.
 
 Use a consistent reporting date and company/account scope. Work from supplied statements or CSVs, or an existing authorized read-only connection; if a connection needs a new grant, continue with available exports and identify the missing coverage. Return a cash schedule that another person can recalculate, with source dates, account reconciliation, currencies, exclusions and assumptions. The analysis is complete when the included balances reconcile and the monthly projection can be reproduced. Missing accounts or stale balances make the forecast provisional. This process does not move money or establish ongoing monitoring. Reconcile forecast assumptions with dated statements and approved plans. Preserve superseded assumptions and explain corrections in the forecast and decision note.
@@ -27,50 +31,82 @@ With a bank (Mercury, Brex, Relay) or accounting tool (QuickBooks, Xero, Pilot) 
 - An editable monthly cash forecast with base and downside assumptions and the first period below the chosen cash threshold.
 - A source and assumption ledger that explains unresolved differences and the decisions that change the forecast.
 
-## Steps
+<a id="artifacts"></a>
 
-1. **Fetch account balances** — agent-runnable · ~2 min
+## Before you start
 
-   *Entry step — no prerequisite step.*
-
-   Take a consistent-date snapshot of accounts included in runway. Separate unrestricted operating cash from restricted funds, investments and pending transfers, and state currency conversion assumptions. Reconcile it to the cash schedule and identify stale or inaccessible balances so the calculation uses funds the company can actually draw on.
-
-   Retain account identifiers, statement dates, opening/closing balances and the source of each value. Check duplicate records and transfer pairs before combining exports. Reconcile the included accounts individually and in total; do not substitute zero for an inaccessible balance. State the exchange-rate date and source when currencies are combined.
-
-   - Canonical vendor: Mercury
-   - Vendor options: Mercury, Brex, Relay
-   - Ranked market: [startup-banking](../../open-rankings/startup-banking)
-2. **Analyze monthly spend** — agent-runnable · ~5 min
-
-   *Entry step — no prerequisite step.*
-
-   Analyze spending and operating receipts over comparable monthly periods, separating recurring activity, unusual purchases, financing and internal transfers. Compare the pattern with upcoming payroll, vendor commitments and collection timing. Explain where historical averages would misrepresent future cash use, then use those adjustments in the forward runway estimate.
-
-   Keep a normalized transaction schedule with a stable source-row identifier and classification. Show financing, internal transfers, one-off items and restricted-fund movements separately so the operating cash calculation can be checked. Distinguish a contractual commitment from its expected payment date and a booked receivable from expected collection.
-
-   - Canonical vendor: Mercury
-   - Vendor options: Mercury, Brex, Ramp, QuickBooks, Xero
-   - Ranked market: [expense-management](../../open-rankings/expense-management)
-3. **Calculate runway** — agent-runnable · ~2 min
-
-   *Follows steps 1 and 2 — both are required first.*
-
-   Estimate runway from available cash and explicit spending and collection assumptions. A stable positive monthly cash outflow supports a simple ratio; uneven or positive cash flow calls for a month-by-month projection. Include planned hires and commitments, compare a downside case and identify the first cash constraint so management can see which assumptions require action.
-
-   Return opening cash, receipts, outflows and closing cash for each forecast period, with hires and commitments starting in their stated periods. State the cash threshold and identify the first period below it; do not infer an exact depletion day from monthly inputs. Reopen the saved artifact and recalculate both scenarios. For zero or negative net burn, explain the cash-generation assumptions instead of reporting an invalid ratio. List missing inputs that could change the result.
-
-   Choose a forecast horizon that covers the pending decision and known commitments, and state its end date. Continue across temporarily positive cash-flow months; a later hire, tax payment or renewal can still create a shortfall. Where a large payment precedes collections within a month, inspect the dated cash movements around it and report any earlier cash constraint. If dates are missing, state that month-end balances alone cannot establish liquidity throughout the month. Give the owner the assumptions that change the decision and the next review trigger, such as a missed collection or confirmed hire.
-
-   - Vendor options: QuickBooks, Xero, Pilot, Google Sheets
-   - Ranked market: [accounting](../../open-rankings/accounting)
-   - Cross-arena options: ChatGPT, Claude, Gemini (ai-assistants)
-   - UM's runway module supplies a source-cited default-alive calculation and hiring scenarios. Check its month-zero convention and growth assumptions against the company's ledger before reuse. The module can stop at the first profitable month; retain the full requested cash calendar separately, including later commitments and irregular collections. The lore registry records competing views: pg-default-alive and sarasvathy-affordable-loss versus hoffman-speed-over-efficiency. Use those claims to make the owner's risk assumptions explicit. Mercury's documentation probes and MCP documentation are routes to investigate; they do not establish access to this company's balances.
-
-## Artifacts
-
-Requires:
+Required artifacts:
 
 - Business bank account — from [Open bank account](open-bank-account.md)
+
+## Steps at a glance
+
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
+
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Fetch account balances](#step-1) | agent-runnable | ~2 min | Entry step |
+| [2. Analyze monthly spend](#step-2) | agent-runnable | ~5 min | Entry step |
+| [3. Calculate runway](#step-3) | agent-runnable | ~2 min | All: [Step 1](#step-1); [Step 2](#step-2) |
+
+<a id="steps"></a>
+
+## Step details
+
+<a id="step-1"></a>
+
+### 1. Fetch account balances
+
+agent-runnable · ~2 min
+
+
+*Entry step — no prerequisite step.*
+
+Take a consistent-date snapshot of accounts included in runway. Separate unrestricted operating cash from restricted funds, investments and pending transfers, and state currency conversion assumptions. Reconcile it to the cash schedule and identify stale or inaccessible balances so the calculation uses funds the company can actually draw on.
+
+Retain account identifiers, statement dates, opening/closing balances and the source of each value. Check duplicate records and transfer pairs before combining exports. Reconcile the included accounts individually and in total; do not substitute zero for an inaccessible balance. State the exchange-rate date and source when currencies are combined.
+
+- Canonical vendor: Mercury
+- Vendor options: Mercury, Brex, Relay
+- Ranked market: [startup-banking](../../open-rankings/startup-banking)
+
+<a id="step-2"></a>
+
+### 2. Analyze monthly spend
+
+agent-runnable · ~5 min
+
+
+*Entry step — no prerequisite step.*
+
+Analyze spending and operating receipts over comparable monthly periods, separating recurring activity, unusual purchases, financing and internal transfers. Compare the pattern with upcoming payroll, vendor commitments and collection timing. Explain where historical averages would misrepresent future cash use, then use those adjustments in the forward runway estimate.
+
+Keep a normalized transaction schedule with a stable source-row identifier and classification. Show financing, internal transfers, one-off items and restricted-fund movements separately so the operating cash calculation can be checked. Distinguish a contractual commitment from its expected payment date and a booked receivable from expected collection.
+
+- Canonical vendor: Mercury
+- Vendor options: Mercury, Brex, Ramp, QuickBooks, Xero
+- Ranked market: [expense-management](../../open-rankings/expense-management)
+
+<a id="step-3"></a>
+
+### 3. Calculate runway
+
+agent-runnable · ~2 min
+
+
+*Follows steps 1 and 2 — both are required first.*
+
+Estimate runway from available cash and explicit spending and collection assumptions. A stable positive monthly cash outflow supports a simple ratio; uneven or positive cash flow calls for a month-by-month projection. Include planned hires and commitments, compare a downside case and identify the first cash constraint so management can see which assumptions require action.
+
+Return opening cash, receipts, outflows and closing cash for each forecast period, with hires and commitments starting in their stated periods. State the cash threshold and identify the first period below it; do not infer an exact depletion day from monthly inputs. Reopen the saved artifact and recalculate both scenarios. For zero or negative net burn, explain the cash-generation assumptions instead of reporting an invalid ratio. List missing inputs that could change the result.
+
+Choose a forecast horizon that covers the pending decision and known commitments, and state its end date. Continue across temporarily positive cash-flow months; a later hire, tax payment or renewal can still create a shortfall. Where a large payment precedes collections within a month, inspect the dated cash movements around it and report any earlier cash constraint. If dates are missing, state that month-end balances alone cannot establish liquidity throughout the month. Give the owner the assumptions that change the decision and the next review trigger, such as a missed collection or confirmed hire.
+
+- Vendor options: QuickBooks, Xero, Pilot, Google Sheets
+- Ranked market: [accounting](../../open-rankings/accounting)
+- Cross-arena options: ChatGPT, Claude, Gemini (ai-assistants)
+- UM's runway module supplies a source-cited default-alive calculation and hiring scenarios. Check its month-zero convention and growth assumptions against the company's ledger before reuse. The module can stop at the first profitable month; retain the full requested cash calendar separately, including later commitments and irregular collections. The lore registry records competing views: pg-default-alive and sarasvathy-affordable-loss versus hoffman-speed-over-efficiency. Use those claims to make the owner's risk assumptions explicit. Mercury's documentation probes and MCP documentation are routes to investigate; they do not establish access to this company's balances.
+
 
 ## Related records
 

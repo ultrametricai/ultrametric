@@ -3,6 +3,10 @@
 
 # Publish privacy policy & DPA
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Geography](#geography) · [Steps](#steps-at-a-glance) · [Outputs](#outputs)
+
+## Overview
+
 Stand up the privacy paperwork customers ask for: generate the privacy policy and terms, get counsel review, publish to the site, and wire a DPA signature flow with a maintained subprocessor list.
 
 | Field | Value |
@@ -19,115 +23,207 @@ Stand up the privacy paperwork customers ask for: generate the privacy policy an
 
 Policy generation, site publishing, and DPA signature routing are automatable. Counsel review is judgment work you should not skip.
 
-## Steps
+<a id="artifacts"></a>
 
-1. **Generate privacy policy and terms** — agent-runnable · ~20 min
+## Before you start
 
-   Map personal information collected through the product, billing, support, analytics and AI features: its source, purpose, recipients, retention and user controls. Draft the privacy notice from those facts and the terms from the service’s commercial behavior. Resolve unknown behavior with the people maintaining the relevant systems. Identify legal-basis and territorial questions for the legal review.
+Required artifacts:
 
-   - Canonical vendor: Vanta
-   - Vendor options: Vanta, Termly, iubenda
-   - Cross-arena options: ChatGPT, Claude, Gemini (ai-assistants)
+- Company website — from [Generate a website](generate-a-website.md)
 
-   Options:
-     - **Default — Generate privacy policy and terms** — agent-runnable · ~20 min
+| Information to gather | Required by the record |
+| --- | --- |
+| data processing activities | Yes |
 
-       Draft from verified collection points, purposes, recipients, retention, user controls and company contact details. Keep commercial terms separate from the privacy notice so each can be reviewed against its own promises. Reuse approved language only where it still describes the product. Mark unknown facts for their system owners and unresolved legal content for the review step.
-     - **India - DPDP Act 2023**
+## Geography
 
-       When: Privacy policy for users in India
+Country rows describe the guidance recorded here. Local notes and step alternatives do not establish a complete country-specific workflow.
 
-       Map the Indian user interactions, collected data, purposes and responsible entity. For the legal review, compare those facts with the DPDP Act, published Rules, corrigendum and enforcement timeline. Separate provisions already in force from later commencement before choosing notice, consent or operational changes. Use that assessment to adapt the Indian notice; a GDPR template does not establish the applicable Indian duties.
+| Country | Recorded guidance | Steps with local alternatives or resolutions |
+| --- | --- | --- |
+| [India](#geo-in) | Local analog note; step alternative | [1](#step-1) |
+| [United Kingdom](#geo-uk) | Local analog note; step alternative | [1](#step-1) |
+| [Germany](#geo-de) | Local analog note; step alternative | [1](#step-1) |
+| [France](#geo-fr) | Local analog note; step alternative | [1](#step-1) |
+| [New Zealand](#geo-nz) | Local analog note | — |
+| [Singapore](#geo-sg) | Local analog note | — |
 
-       - Do it yourself: [MeitY (DPDP Act 2023)](https://www.meity.gov.in/)
-       - Sources: [MeitY DPDP Rules 2025](https://www.meity.gov.in/documents/act-and-policies/digital-personal-data-protection-rules-2025-gDOxUjMtQWa?pageTitle=Digital-Personal-Data-Protection-Rules-2025)
-     - **UK - UK GDPR + ICO fee** — manual form/portal
+## Steps at a glance
 
-       When: Privacy policy for users in the United Kingdom
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
 
-       Review the company’s UK processing and role when adapting the notice. Use the ICO fee guidance to assess payment requirements and exemptions separately from the notice itself. If payment is due, the authorized company representative registers and approves payment. Keep the assessment and any receipt with the UK privacy records so policy publication is not mistaken for completing the fee obligation.
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Generate privacy policy and terms](#step-1) | agent-runnable | ~20 min | Entry step |
+| [2. Review with counsel](#step-2) | human; includes waiting | ~2 h | [Step 1](#step-1) |
+| [3. Publish policies to the website](#step-3) | agent-runnable | ~10 min | [Step 2](#step-2) |
+| [4. Set up the DPA e-signature flow](#step-4) | agent-runnable | ~15 min | [Step 3](#step-3) (A customer contract needs a separately signed DPA.) |
+| [5. Maintain the subprocessor list](#step-5) | agent-runnable | ~10 min | Alternatives: [Step 3](#step-3) (No separately signed DPA is needed.); [Step 4](#step-4) |
 
-       - Do it yourself: [ICO - data protection fee](https://ico.org.uk/for-organisations/data-protection-fee/)
-     - **Germany - GDPR + BDSG specifics**
+<a id="steps"></a>
 
-       When: Privacy policy for users in Germany
+## Step details
 
-       Assess the German processing activities against GDPR and BDSG section 38 DPO triggers. Consider processing activities and the staff involved, including triggers that apply independently of headcount. Resolve the appointment decision in the legal review, then align contact details and escalation responsibilities with it. Keep the basis for the decision so changes in processing or staffing can prompt reassessment.
+<a id="step-1"></a>
 
-       - Do it yourself: [BfDI - federal data protection authority](https://www.bfdi.bund.de/)
-       - Sources: [BDSG section 38](https://www.gesetze-im-internet.de/bdsg_2018/__38.html)
-     - **France - CNIL cookie rules**
+### 1. Generate privacy policy and terms
 
-       When: Privacy policy for users in France
+agent-runnable · ~20 min
 
-       Inventory cookies, SDKs and other trackers, including what loads before a visitor makes a choice. Check their purposes and claimed exemptions against the current CNIL materials. Test acceptance, refusal and withdrawal in the actual service, then make the notice describe that behavior. Keep the tracker list and test evidence together so later analytics changes can be checked against the same consent setup.
+| Option | Applies when |
+| --- | --- |
+| Default — Generate privacy policy and terms | Recorded default |
+| India - DPDP Act 2023 | Privacy policy for users in India |
+| UK - UK GDPR + ICO fee | Privacy policy for users in the United Kingdom |
+| Germany - GDPR + BDSG specifics | Privacy policy for users in Germany |
+| France - CNIL cookie rules | Privacy policy for users in France |
 
-       - Do it yourself: [CNIL](https://www.cnil.fr/)
-       - Sources: [CNIL cookies recommendation](https://www.cnil.fr/sites/default/files/2026-01/recommandation_cookies_consolidee.pdf)
-2. **Review with counsel** — human · ~2 h · async wait
 
-   Review the drafts with counsel alongside data flows, customer types, target markets and existing contracts. Highlight sensitive data, children’s use, transfers, analytics and any mismatch between the text and product behavior. Resolve both wording changes and operational changes needed to support the promises. Identify who will implement each unresolved change before the reviewed documents are published.
-3. **Publish policies to the website** — agent-runnable · ~10 min
+Map personal information collected through the product, billing, support, analytics and AI features: its source, purpose, recipients, retention and user controls. Draft the privacy notice from those facts and the terms from the service’s commercial behavior. Resolve unknown behavior with the people maintaining the relevant systems. Identify legal-basis and territorial questions for the legal review.
 
-   Release the approved policies at their intended website and product locations. Verify footer and signup links, mobile rendering, contact details and the displayed version. Check that the live wording matches the reviewed document and that any required consent or acknowledgement flow points to it. Keep the published version available to support and preserve its release history for later questions.
+- Canonical vendor: Vanta
+- Vendor options: Vanta, Termly, iubenda
+- Cross-arena options: ChatGPT, Claude, Gemini (ai-assistants)
 
-   - Produces: Privacy policy
-   - Canonical vendor: Vercel
-   - Vendor options: Vercel, Cloudflare
-   - Ranked market: [edge-platforms](../../open-rankings/edge-platforms)
-   - Cross-arena market: [vibe-coding](../../open-rankings/vibe-coding)
-   - If "A customer contract needs a separately signed DPA": continue at step 4
-   - If "No separately signed DPA is needed": continue at step 5
-4. **Set up the DPA e-signature flow** — agent-runnable · ~15 min
+Options:
+  - **Default — Generate privacy policy and terms** — agent-runnable · ~20 min
 
-   *Follows step 3 (when A customer contract needs a separately signed DPA).*
+    Draft from verified collection points, purposes, recipients, retention, user controls and company contact details. Keep commercial terms separate from the privacy notice so each can be reviewed against its own promises. Reuse approved language only where it still describes the product. Mark unknown facts for their system owners and unresolved legal content for the review step.
+  - **India - DPDP Act 2023**
 
-   Populate the approved DPA with the correct contracting parties, service description and processing schedules. Check whether the customer contract already incorporates it and route requested changes to the legal reviewer. Send the approved agreement to verified signers in the agreed signature order. Link the executed agreement and signature evidence to the customer; an invitation or template link is still pending.
+    When: Privacy policy for users in India
 
-   - Canonical vendor: DocuSign
-5. **Maintain the subprocessor list** — agent-runnable · ~10 min
+    Map the Indian user interactions, collected data, purposes and responsible entity. For the legal review, compare those facts with the DPDP Act, published Rules, corrigendum and enforcement timeline. Separate provisions already in force from later commencement before choosing notice, consent or operational changes. Use that assessment to adapt the Indian notice; a GDPR template does not establish the applicable Indian duties.
 
-   *Follows step 3 (when No separately signed DPA is needed) or step 4.*
+    - Do it yourself: [MeitY (DPDP Act 2023)](https://www.meity.gov.in/)
+    - Sources: [MeitY DPDP Rules 2025](https://www.meity.gov.in/documents/act-and-policies/digital-personal-data-protection-rules-2025-gDOxUjMtQWa?pageTitle=Digital-Personal-Data-Protection-Rules-2025)
+  - **UK - UK GDPR + ICO fee** — manual form/portal
 
-   Reconcile the subprocessor list with engineering and procurement records. For each service, verify the legal entity, processing purpose, locations and relevant contract. Review proposed additions against customer notice or objection commitments before changing the public list. Preserve previous versions and completed notices so the privacy owner can explain which processors were disclosed and when.
+    When: Privacy policy for users in the United Kingdom
 
-   - Canonical vendor: Notion
+    Review the company’s UK processing and role when adapting the notice. Use the ICO fee guidance to assess payment requirements and exemptions separately from the notice itself. If payment is due, the authorized company representative registers and approves payment. Keep the assessment and any receipt with the UK privacy records so policy publication is not mistaken for completing the fee obligation.
 
-## By country
+    - Do it yourself: [ICO - data protection fee](https://ico.org.uk/for-organisations/data-protection-fee/)
+  - **Germany - GDPR + BDSG specifics**
+
+    When: Privacy policy for users in Germany
+
+    Assess the German processing activities against GDPR and BDSG section 38 DPO triggers. Consider processing activities and the staff involved, including triggers that apply independently of headcount. Resolve the appointment decision in the legal review, then align contact details and escalation responsibilities with it. Keep the basis for the decision so changes in processing or staffing can prompt reassessment.
+
+    - Do it yourself: [BfDI - federal data protection authority](https://www.bfdi.bund.de/)
+    - Sources: [BDSG section 38](https://www.gesetze-im-internet.de/bdsg_2018/__38.html)
+  - **France - CNIL cookie rules**
+
+    When: Privacy policy for users in France
+
+    Inventory cookies, SDKs and other trackers, including what loads before a visitor makes a choice. Check their purposes and claimed exemptions against the current CNIL materials. Test acceptance, refusal and withdrawal in the actual service, then make the notice describe that behavior. Keep the tracker list and test evidence together so later analytics changes can be checked against the same consent setup.
+
+    - Do it yourself: [CNIL](https://www.cnil.fr/)
+    - Sources: [CNIL cookies recommendation](https://www.cnil.fr/sites/default/files/2026-01/recommandation_cookies_consolidee.pdf)
+
+<a id="step-2"></a>
+
+### 2. Review with counsel
+
+human · ~2 h · async wait
+
+
+Review the drafts with counsel alongside data flows, customer types, target markets and existing contracts. Highlight sensitive data, children’s use, transfers, analytics and any mismatch between the text and product behavior. Resolve both wording changes and operational changes needed to support the promises. Identify who will implement each unresolved change before the reviewed documents are published.
+
+<a id="step-3"></a>
+
+### 3. Publish policies to the website
+
+agent-runnable · ~10 min
+
+
+Release the approved policies at their intended website and product locations. Verify footer and signup links, mobile rendering, contact details and the displayed version. Check that the live wording matches the reviewed document and that any required consent or acknowledgement flow points to it. Keep the published version available to support and preserve its release history for later questions.
+
+- Produces: Privacy policy
+- Canonical vendor: Vercel
+- Vendor options: Vercel, Cloudflare
+- Ranked market: [edge-platforms](../../open-rankings/edge-platforms)
+- Cross-arena market: [vibe-coding](../../open-rankings/vibe-coding)
+- If "A customer contract needs a separately signed DPA": continue at step 4
+- If "No separately signed DPA is needed": continue at step 5
+
+<a id="step-4"></a>
+
+### 4. Set up the DPA e-signature flow
+
+agent-runnable · ~15 min
+
+
+*Follows step 3 (when A customer contract needs a separately signed DPA).*
+
+Populate the approved DPA with the correct contracting parties, service description and processing schedules. Check whether the customer contract already incorporates it and route requested changes to the legal reviewer. Send the approved agreement to verified signers in the agreed signature order. Link the executed agreement and signature evidence to the customer; an invitation or template link is still pending.
+
+- Canonical vendor: DocuSign
+
+<a id="step-5"></a>
+
+### 5. Maintain the subprocessor list
+
+agent-runnable · ~10 min
+
+
+*Follows step 3 (when No separately signed DPA is needed) or step 4.*
+
+Reconcile the subprocessor list with engineering and procurement records. For each service, verify the legal entity, processing purpose, locations and relevant contract. Review proposed additions against customer notice or objection commitments before changing the public list. Preserve previous versions and completed notices so the privacy owner can explain which processors were disclosed and when.
+
+- Canonical vendor: Notion
+
+
+<a id="by-country"></a>
+
+## Country details
+
+<a id="geo-us"></a>
+
+### United States
+
+Stand up the privacy paperwork customers ask for: generate the privacy policy and terms, get counsel review, publish to the site, and wire a DPA signature flow with a maintained subprocessor list.
+
+
+<a id="geo-in"></a>
 
 ### India
 
 - The Digital Personal Data Protection Act 2023 is the GDPR analog: consent-first processing, notice requirements and data-fiduciary duties, with rules phasing in — privacy paper for India cites the DPDP Act, not the GDPR. ([MeitY (DPDP Act 2023)](https://www.meity.gov.in/))
 
+<a id="geo-uk"></a>
+
 ### United Kingdom
 
 - UK GDPR applies post-Brexit with the ICO as regulator — and there is a concrete registration step US startups miss: nearly every data-processing company must pay the ICO's annual data protection fee. ([ICO — data protection fee](https://ico.org.uk/for-organisations/data-protection-fee/))
+
+<a id="geo-de"></a>
 
 ### Germany
 
 - GDPR plus the BDSG: German specifics include mandatory data protection officers at lower thresholds (generally 20+ people regularly processing personal data) and enforcement by strict state DPAs alongside the federal BfDI. ([BfDI — federal data protection authority](https://www.bfdi.bund.de/))
 
+<a id="geo-fr"></a>
+
 ### France
 
 - The CNIL is Europe's most active enforcer of GDPR cookie/consent rules — its published guidelines on cookies and trackers are effectively the spec for a French-market privacy policy and consent banner. ([CNIL](https://www.cnil.fr/))
+
+<a id="geo-nz"></a>
 
 ### New Zealand
 
 - The Privacy Act 2020 and its information privacy principles apply to any business handling personal information in NZ — the Office of the Privacy Commissioner publishes the compliance guidance, and serious-harm breaches carry the NotifyUs duty. ([Office of the Privacy Commissioner](https://www.privacy.org.nz/))
 
+<a id="geo-sg"></a>
+
 ### Singapore
 
 - The PDPA is the regime: notify purposes and take consent, designate a data protection officer and publish their contact, and build the breach-assessment muscle the notification duty assumes (law rule [sg.pdpa-breach-notification](../../open-law/SG/sg-pdpa-breach-notification.json)) — the PDPC is the regulator. ([Personal Data Protection Act 2012 (SSO)](https://sso.agc.gov.sg/Act/PDPA2012))
 
-## Artifacts
-
-Produces:
+## Outputs
 
 - Privacy policy
-
-Requires:
-
-- Company website — from [Generate a website](generate-a-website.md)
 
 ## Related records
 

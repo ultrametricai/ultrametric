@@ -3,21 +3,31 @@
 
 # The MCP-native stack
 
+[Overview](#overview) · [Process sequence](#process-sequence)
+
+## Overview
+
 The stack picked for agent surfaces: code hosting, chat, tracker, wiki, CRM, errors, and analytics — at nearly every judged step the top vendor ships an official MCP server, so the agents that run your company can actually reach it.
 
 | Field | Value |
 | --- | --- |
 | Kind | chain |
 
-## Processes in order
+<a id="processes-in-order"></a>
 
-1. [Set up a code hosting org](set-up-a-code-hosting-org.md)
-2. [Set up team chat](set-up-team-chat.md)
-3. [Set up a project tracker](set-up-a-project-tracker.md)
-4. [Set up a team wiki](set-up-a-team-wiki.md)
-5. [Set up a CRM](set-up-a-crm.md)
-6. [Set up error tracking](set-up-error-tracking.md)
-7. [Set up product analytics](set-up-product-analytics.md)
+## Process sequence
+
+Run the linked processes in the recorded chain order. Each process defines its own internal dependencies.
+
+| Order | Process | Requires | Produces |
+| --- | --- | --- | --- |
+| 1 | [Set up a code hosting org](set-up-a-code-hosting-org.md) | Not recorded | Code hosting organization |
+| 2 | [Set up team chat](set-up-team-chat.md) | Not recorded | Team chat workspace |
+| 3 | [Set up a project tracker](set-up-a-project-tracker.md) | Not recorded | Project tracker |
+| 4 | [Set up a team wiki](set-up-a-team-wiki.md) | Not recorded | Team wiki |
+| 5 | [Set up a CRM](set-up-a-crm.md) | Company email workspace | CRM workspace |
+| 6 | [Set up error tracking](set-up-error-tracking.md) | Team chat workspace; Code hosting organization | Error tracking project |
+| 7 | [Set up product analytics](set-up-product-analytics.md) | Code hosting organization | Product analytics workspace |
 
 ---
 

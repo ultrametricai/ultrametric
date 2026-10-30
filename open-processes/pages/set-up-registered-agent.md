@@ -3,6 +3,10 @@
 
 # Set up registered agent
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Geography](#geography) · [Steps](#steps-at-a-glance) · [Outputs](#outputs)
+
+## Overview
+
 Every state of incorporation requires a registered agent for legal documents — pick a service and designate it online.
 
 | Field | Value |
@@ -19,157 +23,292 @@ Every state of incorporation requires a registered agent for legal documents —
 
 Registered agent services have no public signup API — the designation is an online form; provider comparison is agent work.
 
-## Steps
+## Before you start
 
-1. **Choose registered agent service** — human · ~10 min
+| Information to gather | Required by the record |
+| --- | --- |
+| incorporation_state | Yes |
 
-   *Entry step — no prerequisite step.*
+## Geography
 
-   Compare registered-agent services for the company’s formation and qualification states. Check the designation details, consent process, legal-notice handling, account access and renewal charges. Distinguish service of legal papers from ordinary mail forwarding. Choose a provider that covers the required states and gives the company a reliable path for urgent notices before approving the purchase.
+Country rows describe the guidance recorded here. Local notes and step alternatives do not establish a complete country-specific workflow.
 
-   - Vendor options: Firstbase, Stripe Atlas, LegalZoom, Northwest Registered Agent
-   - Sources: [SBA register your business](https://legacy.sba.gov/business-guide/launch-your-business/register-your-business)
-2. **Sign up online and designate the agent** — manual form/portal · ~15 min · async wait
+| Country | Recorded guidance | Steps with local alternatives or resolutions |
+| --- | --- | --- |
+| [India](#geo-in) | Handled within another local process | — |
+| [United Kingdom](#geo-uk) | Handled within another local process | — |
+| [Germany](#geo-de) | Handled within another local process | — |
+| [France](#geo-fr) | Handled within another local process | — |
+| [Portugal](#geo-pt) | Handled within another local process | — |
+| [Canada](#geo-ca) | Handled within another local process | — |
+| [New Zealand](#geo-nz) | Handled within another local process | — |
+| [Singapore](#geo-sg) | Handled within another local process | — |
+| [Australia](#geo-au) | Handled within another local process | — |
+| [South Korea](#geo-kr) | Handled within another local process | — |
+| [Hong Kong](#geo-hk) | Handled within another local process | — |
+| [Estonia](#geo-ee) | Handled within another local process | — |
 
-   Create the company account for the purchased service and obtain the exact agent name and address required in the state record. Check whether appointment or replacement needs a separate filing. Complete the designation and fees through the entity’s authorized filing process. Verify both provider activation and registry acceptance, then test notice routing to the company’s responsible contact.
+### State conditions
 
-   - Verify: The agent's name and Delaware address appear on the entity's record in the Division of Corporations entity search. ([icis.corp.delaware.gov](https://icis.corp.delaware.gov/ecorp/entitysearch/namesearch.aspx))
-   - Produces: Registered agent
-   - Sources: [SBA register your business](https://legacy.sba.gov/business-guide/launch-your-business/register-your-business)
+| Step | Applies when operating in |
+| --- | --- |
+| [3. Designate the agent in each additional registered state](#step-3) | multi-state |
+| [4. Change the Delaware registered agent (Certificate of Change, $50)](#step-4) | DE |
+| [5. Designate or change the California agent for service of process (Statement of Information)](#step-5) | CA |
+| [6. Update the New York registered agent or process address (Certificate of Change, $30)](#step-6) | NY |
+| [7. File Texas Form 401 to change the registered agent or office ($15)](#step-7) | TX |
+| [8. Appoint or change the Wyoming registered agent ($5)](#step-8) | WY |
+| [9. Change the Florida registered agent ($35)](#step-9) | FL |
 
-   *This path ends here.*
-3. **Designate the agent in each additional registered state** — manual form/portal · ~10 min · only when operating multi-state
+## Steps at a glance
 
-   *Entry step — no prerequisite step.*
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
 
-   Check the agent requirements and provider coverage in each additional registration state. Use that state’s correct agent details and appointment process, with the authorized filer approving submission. Verify the accepted designation and route notices to the appropriate company contact. A service subscription elsewhere does not establish an appointment in this state.
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Choose registered agent service](#step-1) | human | ~10 min | Entry step |
+| [2. Sign up online and designate the agent](#step-2) | manual form/portal; includes waiting | ~15 min | [Step 1](#step-1) |
+| [3. Designate the agent in each additional registered state](#step-3) | manual form/portal | ~10 min | Entry step |
+| [4. Change the Delaware registered agent (Certificate of Change, $50)](#step-4) | manual form/portal | ~15 min | Entry step |
+| [5. Designate or change the California agent for service of process (Statement of Information)](#step-5) | manual form/portal | ~15 min | Entry step |
+| [6. Update the New York registered agent or process address (Certificate of Change, $30)](#step-6) | manual form/portal | ~15 min | Entry step |
+| [7. File Texas Form 401 to change the registered agent or office ($15)](#step-7) | manual form/portal | ~15 min | Entry step |
+| [8. Appoint or change the Wyoming registered agent ($5)](#step-8) | manual form/portal | ~15 min | Entry step |
+| [9. Change the Florida registered agent ($35)](#step-9) | manual form/portal | ~15 min | Entry step |
 
-   - Sources: [SBA register your business](https://legacy.sba.gov/business-guide/launch-your-business/register-your-business)
+<a id="steps"></a>
 
-   *This path ends here.*
-4. **Change the Delaware registered agent (Certificate of Change, $50)** — manual form/portal · ~15 min · hard to undo · only when operating in DE
+## Step details
 
-   *Entry step — no prerequisite step.*
+<a id="step-1"></a>
 
-   If the Delaware agent is being replaced, have the board adopt the change resolution 8 Del. C. § 133 requires and prepare the certificate of change for the Division of Corporations, with the new agent's consent on record (law rule [us-de.registered-agent-change](../../open-law/US-DE/us-de-registered-agent-change.json)). The state filing fee is $50 on the Division's fee schedule; commercial agents usually prepare and submit the certificate as part of their onboarding. Confirm acceptance and that the entity search shows the new agent before cancelling the old service.
+### 1. Choose registered agent service
 
-   - Cost: $50 (government fee, as of 2026-10-22, [corpfiles.delaware.gov](https://corpfiles.delaware.gov/Fee_Schedule/AugustFee2026.pdf)). Domestic corporation 'Change of Agent/Office' state filing fee on the Division of Corporations fee schedule revised August 1, 2026. Conditional step — excluded from the default-flow fee headline by construction.
-   - Canonical vendor: Delaware Division of Corporations
-   - Do it yourself: [DE Division of Corporations forms](https://corp.delaware.gov/corpforms/)
-   - Sources: [Delaware registered agents information](https://corp.delaware.gov/agents/)
+human · ~10 min
 
-   *This path ends here.*
-5. **Designate or change the California agent for service of process (Statement of Information)** — manual form/portal · ~15 min · hard to undo · only when operating in CA
 
-   *Entry step — no prerequisite step.*
+*Entry step — no prerequisite step.*
 
-   California corporations name their agent for service of process in the Statement of Information (Form SI-550, $25 filing fee — law rule [us-ca.statement-of-information](../../open-law/US-CA/us-ca-statement-of-information.json)), filed through bizfile Online within 90 days of registration and annually after. To change the agent, file a new statement with the replacement agent's details; an entity may name an individual with a California street address or a registered corporate agent. Verify the updated agent appears on the entity's record in Business Search.
+Compare registered-agent services for the company’s formation and qualification states. Check the designation details, consent process, legal-notice handling, account access and renewal charges. Distinguish service of legal papers from ordinary mail forwarding. Choose a provider that covers the required states and gives the company a reliable path for urgent notices before approving the purchase.
 
-   - Canonical vendor: California Secretary of State
-   - Do it yourself: [CA SOS — agents for service of process](https://www.sos.ca.gov/business-programs/business-entities/service-process)
-   - Sources: [CA SOS — Statement of Information](https://www.sos.ca.gov/business-programs/business-entities/statements)
+- Vendor options: Firstbase, Stripe Atlas, LegalZoom, Northwest Registered Agent
+- Sources: [SBA register your business](https://legacy.sba.gov/business-guide/launch-your-business/register-your-business)
 
-   *This path ends here.*
-6. **Update the New York registered agent or process address (Certificate of Change, $30)** — manual form/portal · ~15 min · hard to undo · only when operating in NY
+<a id="step-2"></a>
 
-   *Entry step — no prerequisite step.*
+### 2. Sign up online and designate the agent
 
-   New York names the Secretary of State as every corporation's agent for service of process; a separate registered agent is optional. To change the registered agent or the address where the Secretary of State forwards process, file a Certificate of Change with the Department of State for a $30 fee — Business Corporation Law § 1309-A for a foreign corporation (the Delaware-default company qualifying in New York), § 805-A for a domestic New York corporation (law rule [us-ny.registered-agent-change](../../open-law/US-NY/us-ny-registered-agent-change.json)); some address updates can instead ride the $9 biennial statement. Keep the forwarding address current — it is where lawsuits arrive.
+manual form/portal · ~15 min · async wait
 
-   - Cost: $30 (government fee, as of 2026-10-22, [dos.ny.gov](https://dos.ny.gov/fee-schedules)). Certificate of Change under BCL § 805-A(a) / § 1309-A(b) on the Department of State fee schedule. Conditional step — excluded from the default-flow fee headline by construction.
-   - Canonical vendor: New York Department of State
-   - Do it yourself: [NY DOS — existing corporations](https://dos.ny.gov/existing-corporations-and-businesses)
-   - Sources: [NY DOS fee schedules](https://dos.ny.gov/fee-schedules)
 
-   *This path ends here.*
-7. **File Texas Form 401 to change the registered agent or office ($15)** — manual form/portal · ~15 min · hard to undo · only when operating in TX
+Create the company account for the purchased service and obtain the exact agent name and address required in the state record. Check whether appointment or replacement needs a separate filing. Complete the designation and fees through the entity’s authorized filing process. Verify both provider activation and registry acceptance, then test notice routing to the company’s responsible contact.
 
-   *Entry step — no prerequisite step.*
+- Verify: The agent's name and Delaware address appear on the entity's record in the Division of Corporations entity search. ([icis.corp.delaware.gov](https://icis.corp.delaware.gov/ecorp/entitysearch/namesearch.aspx))
+- Produces: Registered agent
+- Sources: [SBA register your business](https://legacy.sba.gov/business-guide/launch-your-business/register-your-business)
 
-   Texas entities change the registered agent or registered office by filing Form 401 (Statement of Change of Registered Office/Agent) with the Secretary of State; the fee is $15 for a for-profit entity, and the named agent must have consented, with a filed consent costing a further $15 if recorded (law rule [us-tx.registered-agent-change](../../open-law/US-TX/us-tx-registered-agent-change.json)). Submit through SOSDirect/SOSUpload or by mail, and confirm the record shows the new agent before cancelling the old one.
+*This path ends here.*
 
-   - Cost: $15 (government fee, as of 2026-10-22, [www.sos.state.tx.us](https://www.sos.state.tx.us/corp/forms/401_boc.doc)). Form 401 filing fee for a change of registered office/agent ($5 for nonprofit corporations and cooperative associations), per the form instructions. Conditional step — excluded from the default-flow fee headline by construction.
-   - Canonical vendor: Texas Secretary of State
-   - Do it yourself: [TX SOS business organizations forms (Form 401)](https://www.sos.state.tx.us/corp/forms_boc.shtml)
-   - Sources: [TX SOS registered agent FAQs](https://www.sos.state.tx.us/corp/registeredagentfaqs.shtml)
+<a id="step-3"></a>
 
-   *This path ends here.*
-8. **Appoint or change the Wyoming registered agent ($5)** — manual form/portal · ~15 min · hard to undo · only when operating in WY
+### 3. Designate the agent in each additional registered state
 
-   *Entry step — no prerequisite step.*
+manual form/portal · ~10 min · only when operating multi-state
 
-   Wyoming entities change to a new registered agent with the Secretary of State's Appointment of New Registered Agent and Office form, which carries the agent's signed Consent to Appointment and certifies compliance with W.S. 17-28-101 through 17-28-111 (law rule [us-wy.registered-agent-change](../../open-law/US-WY/us-wy-registered-agent-change.json)). The filing fee is $5, the form is mail-only, and processing can take up to 15 business days — plan agent switches ahead of any filing that depends on the new agent.
 
-   - Cost: $5 (government fee, as of 2026-10-22, [sos.wyo.gov](https://sos.wyo.gov/Forms/RA/AppointmentofNewRA.pdf)). Appointment of New Registered Agent and Office filing fee, per the form checklist. Conditional step — excluded from the default-flow fee headline by construction.
-   - Canonical vendor: Wyoming Secretary of State
-   - Do it yourself: [WY SOS registered agent forms](https://sos.wyo.gov/Forms/Default.aspx?root=RA)
-   - Sources: [WY SOS — maintaining your business](https://sos.wyo.gov/Business/MaintainBusiness.aspx)
+*Entry step — no prerequisite step.*
 
-   *This path ends here.*
-9. **Change the Florida registered agent ($35)** — manual form/portal · ~15 min · hard to undo · only when operating in FL
+Check the agent requirements and provider coverage in each additional registration state. Use that state’s correct agent details and appointment process, with the authorized filer approving submission. Verify the accepted designation and route notices to the appropriate company contact. A service subscription elsewhere does not establish an appointment in this state.
 
-   *Entry step — no prerequisite step.*
+- Sources: [SBA register your business](https://legacy.sba.gov/business-guide/launch-your-business/register-your-business)
 
-   Florida corporations change the registered agent or registered office with the Division of Corporations for a $35 fee (law rule [us-fl.registered-agent-change](../../open-law/US-FL/us-fl-registered-agent-change.json)), using the Sunbiz change filing; at registration the $35 agent-designation fee is paid alongside the $35 filing fee. The incoming agent accepts the appointment on the filing. Confirm the Sunbiz record shows the new agent before cancelling the old service.
+*This path ends here.*
 
-   - Cost: $35 (government fee, as of 2026-10-22, [dos.fl.gov](https://dos.fl.gov/sunbiz/forms/fees/)). 'Change of Registered Agent' on the Division of Corporations corporate fee schedule. Conditional step — excluded from the default-flow fee headline by construction.
-   - Canonical vendor: Florida Division of Corporations (Sunbiz)
-   - Do it yourself: [FL Division of Corporations forms (registered agent changes)](https://dos.fl.gov/sunbiz/forms/corporations/)
-   - Sources: [FL Division of Corporations fees](https://dos.fl.gov/sunbiz/forms/fees/)
+<a id="step-4"></a>
 
-## By country
+### 4. Change the Delaware registered agent (Certificate of Change, $50)
+
+manual form/portal · ~15 min · hard to undo · only when operating in DE
+
+
+*Entry step — no prerequisite step.*
+
+If the Delaware agent is being replaced, have the board adopt the change resolution 8 Del. C. § 133 requires and prepare the certificate of change for the Division of Corporations, with the new agent's consent on record (law rule [us-de.registered-agent-change](../../open-law/US-DE/us-de-registered-agent-change.json)). The state filing fee is $50 on the Division's fee schedule; commercial agents usually prepare and submit the certificate as part of their onboarding. Confirm acceptance and that the entity search shows the new agent before cancelling the old service.
+
+- Cost: $50 (government fee, as of 2026-10-22, [corpfiles.delaware.gov](https://corpfiles.delaware.gov/Fee_Schedule/AugustFee2026.pdf)). Domestic corporation 'Change of Agent/Office' state filing fee on the Division of Corporations fee schedule revised August 1, 2026. Conditional step — excluded from the default-flow fee headline by construction.
+- Canonical vendor: Delaware Division of Corporations
+- Do it yourself: [DE Division of Corporations forms](https://corp.delaware.gov/corpforms/)
+- Sources: [Delaware registered agents information](https://corp.delaware.gov/agents/)
+
+*This path ends here.*
+
+<a id="step-5"></a>
+
+### 5. Designate or change the California agent for service of process (Statement of Information)
+
+manual form/portal · ~15 min · hard to undo · only when operating in CA
+
+
+*Entry step — no prerequisite step.*
+
+California corporations name their agent for service of process in the Statement of Information (Form SI-550, $25 filing fee — law rule [us-ca.statement-of-information](../../open-law/US-CA/us-ca-statement-of-information.json)), filed through bizfile Online within 90 days of registration and annually after. To change the agent, file a new statement with the replacement agent's details; an entity may name an individual with a California street address or a registered corporate agent. Verify the updated agent appears on the entity's record in Business Search.
+
+- Canonical vendor: California Secretary of State
+- Do it yourself: [CA SOS — agents for service of process](https://www.sos.ca.gov/business-programs/business-entities/service-process)
+- Sources: [CA SOS — Statement of Information](https://www.sos.ca.gov/business-programs/business-entities/statements)
+
+*This path ends here.*
+
+<a id="step-6"></a>
+
+### 6. Update the New York registered agent or process address (Certificate of Change, $30)
+
+manual form/portal · ~15 min · hard to undo · only when operating in NY
+
+
+*Entry step — no prerequisite step.*
+
+New York names the Secretary of State as every corporation's agent for service of process; a separate registered agent is optional. To change the registered agent or the address where the Secretary of State forwards process, file a Certificate of Change with the Department of State for a $30 fee — Business Corporation Law § 1309-A for a foreign corporation (the Delaware-default company qualifying in New York), § 805-A for a domestic New York corporation (law rule [us-ny.registered-agent-change](../../open-law/US-NY/us-ny-registered-agent-change.json)); some address updates can instead ride the $9 biennial statement. Keep the forwarding address current — it is where lawsuits arrive.
+
+- Cost: $30 (government fee, as of 2026-10-22, [dos.ny.gov](https://dos.ny.gov/fee-schedules)). Certificate of Change under BCL § 805-A(a) / § 1309-A(b) on the Department of State fee schedule. Conditional step — excluded from the default-flow fee headline by construction.
+- Canonical vendor: New York Department of State
+- Do it yourself: [NY DOS — existing corporations](https://dos.ny.gov/existing-corporations-and-businesses)
+- Sources: [NY DOS fee schedules](https://dos.ny.gov/fee-schedules)
+
+*This path ends here.*
+
+<a id="step-7"></a>
+
+### 7. File Texas Form 401 to change the registered agent or office ($15)
+
+manual form/portal · ~15 min · hard to undo · only when operating in TX
+
+
+*Entry step — no prerequisite step.*
+
+Texas entities change the registered agent or registered office by filing Form 401 (Statement of Change of Registered Office/Agent) with the Secretary of State; the fee is $15 for a for-profit entity, and the named agent must have consented, with a filed consent costing a further $15 if recorded (law rule [us-tx.registered-agent-change](../../open-law/US-TX/us-tx-registered-agent-change.json)). Submit through SOSDirect/SOSUpload or by mail, and confirm the record shows the new agent before cancelling the old one.
+
+- Cost: $15 (government fee, as of 2026-10-22, [www.sos.state.tx.us](https://www.sos.state.tx.us/corp/forms/401_boc.doc)). Form 401 filing fee for a change of registered office/agent ($5 for nonprofit corporations and cooperative associations), per the form instructions. Conditional step — excluded from the default-flow fee headline by construction.
+- Canonical vendor: Texas Secretary of State
+- Do it yourself: [TX SOS business organizations forms (Form 401)](https://www.sos.state.tx.us/corp/forms_boc.shtml)
+- Sources: [TX SOS registered agent FAQs](https://www.sos.state.tx.us/corp/registeredagentfaqs.shtml)
+
+*This path ends here.*
+
+<a id="step-8"></a>
+
+### 8. Appoint or change the Wyoming registered agent ($5)
+
+manual form/portal · ~15 min · hard to undo · only when operating in WY
+
+
+*Entry step — no prerequisite step.*
+
+Wyoming entities change to a new registered agent with the Secretary of State's Appointment of New Registered Agent and Office form, which carries the agent's signed Consent to Appointment and certifies compliance with W.S. 17-28-101 through 17-28-111 (law rule [us-wy.registered-agent-change](../../open-law/US-WY/us-wy-registered-agent-change.json)). The filing fee is $5, the form is mail-only, and processing can take up to 15 business days — plan agent switches ahead of any filing that depends on the new agent.
+
+- Cost: $5 (government fee, as of 2026-10-22, [sos.wyo.gov](https://sos.wyo.gov/Forms/RA/AppointmentofNewRA.pdf)). Appointment of New Registered Agent and Office filing fee, per the form checklist. Conditional step — excluded from the default-flow fee headline by construction.
+- Canonical vendor: Wyoming Secretary of State
+- Do it yourself: [WY SOS registered agent forms](https://sos.wyo.gov/Forms/Default.aspx?root=RA)
+- Sources: [WY SOS — maintaining your business](https://sos.wyo.gov/Business/MaintainBusiness.aspx)
+
+*This path ends here.*
+
+<a id="step-9"></a>
+
+### 9. Change the Florida registered agent ($35)
+
+manual form/portal · ~15 min · hard to undo · only when operating in FL
+
+
+*Entry step — no prerequisite step.*
+
+Florida corporations change the registered agent or registered office with the Division of Corporations for a $35 fee (law rule [us-fl.registered-agent-change](../../open-law/US-FL/us-fl-registered-agent-change.json)), using the Sunbiz change filing; at registration the $35 agent-designation fee is paid alongside the $35 filing fee. The incoming agent accepts the appointment on the filing. Confirm the Sunbiz record shows the new agent before cancelling the old service.
+
+- Cost: $35 (government fee, as of 2026-10-22, [dos.fl.gov](https://dos.fl.gov/sunbiz/forms/fees/)). 'Change of Registered Agent' on the Division of Corporations corporate fee schedule. Conditional step — excluded from the default-flow fee headline by construction.
+- Canonical vendor: Florida Division of Corporations (Sunbiz)
+- Do it yourself: [FL Division of Corporations forms (registered agent changes)](https://dos.fl.gov/sunbiz/forms/corporations/)
+- Sources: [FL Division of Corporations fees](https://dos.fl.gov/sunbiz/forms/fees/)
+
+
+<a id="by-country"></a>
+
+## Country details
+
+<a id="geo-in"></a>
 
 ### India
 
 - Absorbed: No agent industry: the analog is the registered office itself — declared at (or within 30 days of) incorporation via form INC-22 to the MCA (fronted by NSWS), with the company name displayed at the premises. ([NSWS (MCA registered office — INC-22)](https://www.nsws.gov.in/))
 
+<a id="geo-uk"></a>
+
 ### United Kingdom
 
 - Absorbed: The analog is the registered office: since the 2023 ECCT Act it must be an 'appropriate address' where documents reliably reach the company (PO boxes alone are out), plus a registered email — agent-provided addresses remain fine. ([Companies House — registered office rules](https://www.gov.uk/limited-company-formation/company-address))
+
+<a id="geo-de"></a>
 
 ### Germany
 
 - Absorbed: No registered-agent concept: the GmbH registers an inländische Geschäftsanschrift (domestic business address) in the Handelsregister where service of process is valid — keep it current via the notary when you move. ([Handelsregister (business address)](https://www.handelsregister.de/))
 
+<a id="geo-fr"></a>
+
 ### France
 
 - Absorbed: The analog is the siège social declared through the guichet unique: it can be the founder's home or a domiciliation company — the latter must hold a prefectural agrément — and changing it is a formal statuts amendment. ([INPI guichet unique (siège social)](https://procedures.inpi.fr/))
+
+<a id="geo-pt"></a>
 
 ### Portugal
 
 - Absorbed: No registered-agent industry: the company's sede (registered office) is declared at formation in the commercial registry and service of process reaches the company there — keep it current with an online registry filing. ([Empresa Online — registry filings](https://www.gov.pt/guias/empresa-online-servicos-do-registo-comercial))
 
+<a id="geo-ca"></a>
+
 ### Canada
 
 - Absorbed: No registered-agent industry: the registered office address is declared in the articles filed with Corporations Canada (or the provincial registry) and must stay current — documents are served on the corporation there. ([Corporations Canada](https://ised-isde.canada.ca/site/corporations-canada/en))
+
+<a id="geo-nz"></a>
 
 ### New Zealand
 
 - Absorbed: No registered-agent industry: the registered office, address for service, and correspondence addresses are declared inside the Companies Office incorporation application and kept current on the register. ([Incorporating a company — Companies Register](https://companies-register.companiesoffice.govt.nz/help-centre/starting-a-company/incorporating-a-company/))
 
+<a id="geo-sg"></a>
+
 ### Singapore
 
 - Absorbed: No registered-agent industry: the registered office declared at incorporation and the locally resident company secretary (appointed within 6 months, law rule [sg.company-secretary-appointment](../../open-law/SG/sg-company-secretary-appointment.json)) carry the role — corporate service providers bundle both. ([ACRA — directors and key officers](https://www.acra.gov.sg/register/business/registering-different-business-structures/local-company/appointing-company-directors-other-key-officers/))
+
+<a id="geo-au"></a>
 
 ### Australia
 
 - Absorbed: No registered-agent industry: the registered office is declared on the registration application and must be an Australian address where communications reach the company, with the occupier's consent recorded if the company is not the occupier — service providers' addresses are fine, and changes are notified to ASIC within 28 days. ([ASIC — company addresses](https://asic.gov.au/for-business-and-companies/companies/changes-to-company-details/change-a-company-address))
 
+<a id="geo-kr"></a>
+
 ### South Korea
 
 - Absorbed: No registered-agent industry exists: the seat of the principal office is declared in the articles of incorporation and registered at the court registry, and official mail runs to that registered address. ([Internet Registry Office (IROS)](https://www.iros.go.kr/))
+
+<a id="geo-hk"></a>
 
 ### Hong Kong
 
 - Absorbed: No registered-agent industry exists: the Hong Kong registered office declared at incorporation (law rule [hk.registered-office-requirement](../../open-law/HK/hk-registered-office-requirement.json)) and the company secretary — Hong Kong-resident or Hong Kong-officed by statute (law rule [hk.company-secretary-requirement](../../open-law/HK/hk-company-secretary-requirement.json)) — carry the role, and licensed corporate service providers bundle both. ([Companies Registry — register a new company](https://www.cr.gov.hk/en/services/register-company.htm))
 
+<a id="geo-ee"></a>
+
 ### Estonia
 
 - Absorbed: No registered-agent industry exists: the registered address is declared at formation, and a contact person is required only where the company's address is abroad (law rule [ee.management-board-contact-person](../../open-law/EE/ee-management-board-contact-person.json)). ([e-Business Register](https://ariregister.rik.ee/eng))
 
-## Artifacts
+<a id="artifacts"></a>
 
-Produces:
+## Outputs
 
 - Registered agent
 

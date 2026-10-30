@@ -3,6 +3,10 @@
 
 # Set up a password manager
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Steps](#steps-at-a-glance) · [Outputs](#outputs)
+
+## Overview
+
 Configure a team password manager for shared credentials and secure sharing. 1Password Business is the canonical route.
 
 | Field | Value |
@@ -19,40 +23,83 @@ Configure a team password manager for shared credentials and secure sharing. 1Pa
 
 1Password has APIs for vault/user management. Account creation is manual. Post-setup management automatable.
 
-## Steps
+## Before you start
 
-1. **Create the password manager business account** — manual form/portal · ~10 min · human approval required
+| Information to gather | Required by the record |
+| --- | --- |
+| members | Yes |
 
-   Create the selected business password-manager account with a company-controlled administrator and the agreed subscription. Decide who administers it, who provides backup, and how access is recovered if an administrator is unavailable. Enable the service's supported sign-in protections. Put recovery material in a protected location available to the designated backup administrator, and explain when and how they should use it.
+## Steps at a glance
 
-   - Produces: Team password manager
-   - Canonical vendor: 1Password
-   - Vendor options: 1Password, Bitwarden, Dashlane
-   - Sources: [CISA: Require Strong Passwords](https://www.cisa.gov/audiences/small-and-medium-businesses/secure-your-business/require-strong-passwords)
-2. **Create shared vaults** — agent-runnable · ~5 min · human approval required
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
 
-   Create shared vaults around groups that genuinely need the same credentials, such as finance or infrastructure operations. Give each vault an owner and separate highly sensitive accounts from broadly shared tools. Check whether members can view, edit, export, or share items before placing credentials there. Move each existing shared credential to its intended vault and verify access with the people who use it, leaving personal accounts outside the company vaults.
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Create the password manager business account](#step-1) | manual form/portal; approval required | ~10 min | Entry step |
+| [2. Create shared vaults](#step-2) | agent-runnable; approval required | ~5 min | [Step 1](#step-1) |
+| [3. Invite team members](#step-3) | agent-runnable; approval required | ~5 min | [Step 2](#step-2) |
+| [4. Configure access groups](#step-4) | agent-runnable; approval required | ~5 min | [Step 2](#step-2) |
 
-   - Canonical vendor: 1Password
-   - Next: steps 3 and 4 — all follow this step
-3. **Invite team members** — agent-runnable · ~5 min · human approval required
+<a id="steps"></a>
 
-   Invite teammates using their verified company addresses and initial access groups. The administrator should check the recipients and permissions before sending invitations, then provide instructions for sign-in, recovery, and moving work credentials into the correct vault. Follow up on incomplete enrollment. Help each person find and update a credential for one of their authorized work accounts.
+## Step details
 
-   - Canonical vendor: 1Password
+<a id="step-1"></a>
 
-   *This path ends here.*
-4. **Configure access groups** — agent-runnable · ~5 min · human approval required
+### 1. Create the password manager business account
 
-   *Follows step 2.*
+manual form/portal · ~10 min · human approval required
 
-   Map each role to the vaults and permissions it needs, keeping administration and the ability to grant further access limited to the responsible people. Apply the group memberships and check sensitive finance and production access with their owners. Document how joining, changing roles, and leaving the company affect membership. Assign temporary access an owner and an agreed removal point.
 
-   - Canonical vendor: 1Password
+Create the selected business password-manager account with a company-controlled administrator and the agreed subscription. Decide who administers it, who provides backup, and how access is recovered if an administrator is unavailable. Enable the service's supported sign-in protections. Put recovery material in a protected location available to the designated backup administrator, and explain when and how they should use it.
 
-## Artifacts
+- Produces: Team password manager
+- Canonical vendor: 1Password
+- Vendor options: 1Password, Bitwarden, Dashlane
+- Sources: [CISA: Require Strong Passwords](https://www.cisa.gov/audiences/small-and-medium-businesses/secure-your-business/require-strong-passwords)
 
-Produces:
+<a id="step-2"></a>
+
+### 2. Create shared vaults
+
+agent-runnable · ~5 min · human approval required
+
+
+Create shared vaults around groups that genuinely need the same credentials, such as finance or infrastructure operations. Give each vault an owner and separate highly sensitive accounts from broadly shared tools. Check whether members can view, edit, export, or share items before placing credentials there. Move each existing shared credential to its intended vault and verify access with the people who use it, leaving personal accounts outside the company vaults.
+
+- Canonical vendor: 1Password
+- Next: steps 3 and 4 — all follow this step
+
+<a id="step-3"></a>
+
+### 3. Invite team members
+
+agent-runnable · ~5 min · human approval required
+
+
+Invite teammates using their verified company addresses and initial access groups. The administrator should check the recipients and permissions before sending invitations, then provide instructions for sign-in, recovery, and moving work credentials into the correct vault. Follow up on incomplete enrollment. Help each person find and update a credential for one of their authorized work accounts.
+
+- Canonical vendor: 1Password
+
+*This path ends here.*
+
+<a id="step-4"></a>
+
+### 4. Configure access groups
+
+agent-runnable · ~5 min · human approval required
+
+
+*Follows step 2.*
+
+Map each role to the vaults and permissions it needs, keeping administration and the ability to grant further access limited to the responsible people. Apply the group memberships and check sensitive finance and production access with their owners. Document how joining, changing roles, and leaving the company affect membership. Assign temporary access an owner and an agreed removal point.
+
+- Canonical vendor: 1Password
+
+
+<a id="artifacts"></a>
+
+## Outputs
 
 - Team password manager
 
