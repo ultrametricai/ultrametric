@@ -31,7 +31,9 @@ concurrency:
 
 jobs:
   findings:
-    if: github.event_name != 'check_run' || github.event.check_run.app.slug == 'greptile-apps'
+    if: >-
+      (github.event_name != 'check_run' || github.event.check_run.app.slug == 'greptile-apps') &&
+      (github.event_name != 'pull_request_review' || github.event.pull_request.head.repo.full_name == github.repository)
     runs-on: ubuntu-latest
     steps:
       # No checkout or PR-code execution, including for pull_request_target.
