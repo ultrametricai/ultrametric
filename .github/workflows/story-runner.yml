@@ -14,11 +14,6 @@ jobs:
       matrix:
         include:
           - { category: compliance-screening, product: complyadvantage }
-          - { category: compliance-screening, product: flagright }
-          - { category: compliance-screening, product: sardine }
-          - { category: compliance-screening, product: alloy }
-          - { category: compliance-screening, product: salv }
-          - { category: compliance-screening, product: hummingbird }
           - { category: identity-verification, product: complyadvantage }
           - { category: fraud-prevention, product: complyadvantage }
     steps:
@@ -71,7 +66,19 @@ jobs:
                   if any(codes):
                       code=next(c for c in codes if c)
                   else:
-                      code=subprocess.run(['node','--import','tsx','rankings-engine/cli.ts','judge','--category',category,'--product',product]).returncode
+                      # Assemble only the target's engine-produced matrix. Existing peers are
+                      # imported unchanged from committed verdicts after source-hash checks.
+                      with tempfile.TemporaryDirectory(prefix='um-target-') as directory:
+                          data=pathlib.Path(directory);arena=data/category
+                          (arena/'evidence').mkdir(parents=True)
+                          (data/'categories.json').write_bytes((base/'categories.json').read_bytes())
+                          (arena/'products.json').write_text(json.dumps(selected))
+                          (arena/'stories.json').write_text(json.dumps(stories))
+                          (arena/'evidence'/f'{product}.json').write_bytes(evidence.read_bytes())
+                          env=os.environ.copy();env['UM_DATA_DIR']=str(data)
+                          code=subprocess.run(['node','--import','tsx','rankings-engine/cli.ts','judge','--category',category,'--product',product],env=env).returncode
+                          if code==0:
+                              pathlib.Path('engine-artifacts/target-verdicts.json').write_bytes((arena/'verdicts.json').read_bytes())
               elif stage=='pricing':
                   supported=subprocess.run(['node','--import','tsx','-e',"const {PRICING_ARENAS}=require('./lib/pricing');process.exit(process.env.EVAL_CATEGORY in PRICING_ARENAS?0:2)"]).returncode
                   if supported==2:
@@ -97,7 +104,7 @@ jobs:
           import os, tarfile, pathlib
           c=os.environ['EVAL_CATEGORY'];p=os.environ['EVAL_PRODUCT']
           pathlib.Path('engine-artifacts').mkdir(exist_ok=True)
-          paths=[f'open-rankings/{c}',f'rankings-engine/cache/judge/{c}/{p}',f'rankings-engine/cache/crawl/{c}/{p}',f'rankings-engine/cache/extract/{c}/{p}.json','engine-artifacts/stages.json']
+          paths=[f'open-rankings/{c}',f'rankings-engine/cache/judge/{c}/{p}',f'rankings-engine/cache/crawl/{c}/{p}',f'rankings-engine/cache/extract/{c}/{p}.json','engine-artifacts/stages.json','engine-artifacts/target-verdicts.json']
           with tarfile.open(f'engine-artifacts/{c}--{p}.tar.gz','w:gz') as archive:
               for source in paths:
                   if pathlib.Path(source).exists(): archive.add(source,arcname=source)
