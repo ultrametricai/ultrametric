@@ -1,14 +1,15 @@
 {
-  "hash": "33c64209fb79f714acb260749edc2765cd4ef1266d2a1d767c28b1aac370b885",
+  "hash": "6d154f7de698e7bfb7448423c634b166c2e44c05970c5d7265665fb8e76adaf7",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Homebrew installs each package into its own keg inside a single shared Cellar and symlinks it into the prefix. That gives a global, machine-wide store, so one installed version serves every project that relies on it, including Brewfile-based projects. Nothing in the evidence shows this store is content-addressable: kegs are organized by package, not by content hash. Missing for 10: content-addressable (hash-keyed) storage, documented deduplication guarantees, per-project version isolation backed by a shared store, independent corroboration of disk-space savings.",
+    "rationale": "Homebrew documents that it installs each package into its own keg inside a single global Cellar and symlinks it into the prefix. Combined with project Brewfiles that install into that same system-wide prefix, this implies one stored copy per installed version shared by every project. Nothing shows the store is content-addressable (hash-keyed), and per-project deduplication is only implied by the global install model. Missing for 10: any evidence of content-addressable (hash-based) storage, explicit documentation of cross-project deduplication of identical versions, and independent or hands-on corroboration of disk savings.",
     "evidenceIds": [
       "homebrew-docs-28",
-      "homebrew-docs-1"
+      "homebrew-docs-1",
+      "homebrew-docs-30"
     ],
     "productId": "homebrew",
     "storyId": "content-addressed-store-disk-efficiency"

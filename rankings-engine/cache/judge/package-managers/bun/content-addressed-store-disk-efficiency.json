@@ -1,14 +1,16 @@
 {
-  "hash": "b022d84ce024e078057fd0f06b98b862f0ba019802fb9c51d5a07dfde439e8fb",
+  "hash": "f6e000fef78e616b8f2b71f3b989f663ffe745c4e3fa5f6e7b0f26d633691a33",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Bun's docs say every downloaded package is kept in a global cache at `~/.bun/install/cache` [bun-docs-12]. On Linux and Windows, Bun hardlinks packages from that cache into each project's `node_modules`, so a package's contents exist in only one place on disk [bun-docs-25]. Missing for 10: no documentation that the store is content-addressable (keyed by content hash rather than name/version), macOS on-disk behavior is not described in the evidence, and no independent or hands-on confirmation of cross-project disk deduplication.",
+    "rationale": "Bun's docs say every registry package is stored in a global cache at `~/.bun/install/cache` (relocatable via `BUN_INSTALL_CACHE_DIR`). On Linux and Windows, Bun hardlinks packages from that cache into each project's `node_modules`, so a package's contents exist in only one location on disk across projects. Missing for 10: macOS behavior is not documented in the evidence, the store is not explicitly described as content-addressable, and there is no independent or hands-on corroboration of disk deduplication across projects.",
     "evidenceIds": [
       "bun-docs-12",
-      "bun-docs-25"
+      "bun-docs-64",
+      "bun-docs-25",
+      "bun-docs-63"
     ],
     "productId": "bun",
     "storyId": "content-addressed-store-disk-efficiency"

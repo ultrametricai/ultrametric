@@ -1,21 +1,22 @@
 {
-  "hash": "7f0b199ca249d643c13dd6647807f131b1ec782cc3c5c732db117382696a805e",
+  "hash": "079907f9a6830f6c714112b1cceee9ae763f58effc023a2428237f7168b33aa1",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "uv records exact dependency versions in a cross-platform `uv.lock` that `uv add` updates. Upgrades are opt-in via `--upgrade-package`, which keeps the rest of the lockfile intact. Python versions are pinned per project with `uv python pin`, which CI tooling respects, and tool versions can be pinned (`uvx ruff@0.6.0`), with tool upgrades respecting install-time constraints. Missing for 10: explicit evidence of per-project tool pinning (`uv tool` environments are global/isolated; per-project tools are only implied via `uv run ruff`), documented lock-enforcement modes for install/sync, independent hands-on corroboration that pins are honored.",
+    "rationale": "uv records exact dependency versions in a cross-platform `uv.lock` and accepts version constraints in `uv add`. Its `--upgrade-package` flag upgrades only the named package and keeps the rest of the lockfile intact. Tools can be pinned with `{package}@{version}` (e.g. `uvx ruff@0.6.0`, `uv tool install`), tool upgrades respect install constraints, and `uv python pin` writes `.python-version`, which CI honors. The community report of a stale wheel version being sought is a lock-refresh annoyance, not a concrete failure of pinning. Missing for 10: tool pins are shown at global/invocation level rather than as project-scoped tool pins; no documented strict lockfile enforcement mode (e.g. failing installs that drift from the lock); only one thin independent confirmation that pins are respected in practice.",
     "evidenceIds": [
       "uv-docs-17",
-      "uv-docs-2",
+      "uv-docs-70",
       "uv-docs-9",
-      "uv-docs-39",
+      "uv-docs-2",
+      "uv-docs-41",
+      "uv-docs-73",
+      "uv-docs-23",
       "uv-gh-1",
       "uv-docs-50",
-      "uv-docs-41",
-      "uv-docs-23",
-      "uv-docs-16"
+      "uv-comm-2"
     ],
     "productId": "uv",
     "storyId": "version-pinning-per-project"

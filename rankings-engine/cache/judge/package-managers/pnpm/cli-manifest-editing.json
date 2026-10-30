@@ -1,20 +1,18 @@
 {
-  "hash": "c1c859ac2ad810596b373b0228f6edc004b91dc84a7086676cf91313d8edca36",
+  "hash": "a0322158daeaaec396aef69916a19921157f7561eafe4976e3f61533c031866b",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "The pack only indirectly supports CLI-driven dependency changes. An official CLI exists, and install has a dry-run mode that notes 'No lockfile, manifest, or node_modules changes are saved', which implies a real install does rewrite them. `pnpm audit --fix` writes overrides through the CLI, and frozen-lockfile mode in CI guards against lockfile drift. However, no evidence documents add, remove or update commands, and the catalog 'one line to upgrade' describes a manual edit to pnpm-workspace.yaml. Missing for 10: explicit documentation of add/remove/update commands that rewrite package.json and the lockfile, evidence of safe atomic rewrites, and independent or hands-on corroboration.",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "The evidence shows pnpm's own CLI rewriting the manifest and lockfile: one install mode \"only updates `pnpm-lock.yaml` and `package.json`\" without touching node_modules, `pnpm update` handles upgrades, and a dry-run reports what would change without writing anything. Lockfile repair and `pnpm audit --fix` add further managed edits. However, the pack never documents explicit add or remove commands, and `pnpm update` appears only in passing. Missing for 10: documented `pnpm add`/`pnpm remove` commands, in-depth `pnpm update` docs showing manifest and lockfile rewrites, independent or hands-on corroboration of agent-safe dependency edits.",
     "evidenceIds": [
-      "pnpm-probe-4",
+      "pnpm-docs-55",
+      "pnpm-docs-43",
       "pnpm-docs-19",
-      "pnpm-docs-9",
+      "pnpm-docs-56",
       "pnpm-docs-36",
-      "pnpm-docs-12",
-      "pnpm-docs-13",
-      "pnpm-docs-34",
-      "pnpm-docs-1"
+      "pnpm-probe-4"
     ],
     "productId": "pnpm",
     "storyId": "cli-manifest-editing"
