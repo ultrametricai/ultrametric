@@ -1,0 +1,91 @@
+name: Review findings gate
+
+# Reads review metadata only. Foreloop is deliberately excluded.
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened, ready_for_review]
+  pull_request_review:
+    types: [submitted, dismissed]
+  schedule:
+    - cron: '4,14,24,34,44,54 * * * *' # recheck resolved threads
+  check_run:
+    types: [completed]
+  workflow_dispatch:
+    inputs:
+      pr:
+        description: Pull request number
+        required: true
+        type: string
+
+permissions:
+  pull-requests: read
+  statuses: write
+
+jobs:
+  findings:
+    if: github.event_name != 'check_run' || github.event.check_run.app.slug == 'greptile-apps'
+    runs-on: ubuntu-latest
+    steps:
+      # No checkout or PR-code execution, including for pull_request_target.
+      - name: Gate unresolved Greptile findings
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          EVENT_PATH: ${{ github.event_path }}
+          SERVER_URL: ${{ github.server_url }}
+          RUN_ID: ${{ github.run_id }}
+        shell: python
+        run: |
+          import json, os, subprocess
+          repo = os.environ['REPO']
+          owner, name = repo.split('/')
+          event = json.load(open(os.environ['EVENT_PATH']))
+          pages = (json.loads(subprocess.check_output(['gh', 'api', '--paginate', '--slurp',
+                   f'repos/{repo}/pulls?state=open&per_page=100'], text=True))
+                   if os.environ.get('GITHUB_EVENT_NAME') == 'schedule' else [])
+          numbers = ([pr['number'] for page in pages for pr in page] if pages else
+                     [int(event['inputs']['pr'])] if event.get('inputs', {}).get('pr') else
+                     [event['pull_request']['number']] if event.get('pull_request') else
+                     [pr['number'] for pr in event.get('check_run', {}).get('pull_requests', [])])
+          def api(path, data=None):
+              args = ['gh', 'api', path]
+              if data is not None:
+                  args += ['--method', 'POST', '--input', '-']
+              return json.loads(subprocess.check_output(args, input=json.dumps(data) if data is not None else None, text=True))
+          query = '''query($owner:String!, $name:String!, $number:Int!, $cursor:String) {
+            repository(owner:$owner,name:$name) { pullRequest(number:$number) {
+              headRefOid reviewThreads(first:100,after:$cursor) {
+                pageInfo { hasNextPage endCursor }
+                nodes { isResolved comments(first:1) { nodes { author { login } } } }
+              }
+            } }
+          }'''
+          for number in numbers:
+              cursor, blocked, sha = None, 0, None
+              while True:
+                  result = api('graphql', {'query': query, 'variables': {
+                      'owner':owner, 'name':name, 'number':number, 'cursor':cursor}})
+                  if result.get('errors'):
+                      raise RuntimeError(result['errors'])
+                  pr = result['data']['repository']['pullRequest']
+                  if sha is not None and pr['headRefOid'] != sha:
+                      raise RuntimeError('PR head changed during review pagination; retry')
+                  sha = pr['headRefOid']
+                  threads = pr['reviewThreads']
+                  for thread in threads['nodes']:
+                      authors = {((c.get('author') or {}).get('login')) for c in thread['comments']['nodes']}
+                      if not thread['isResolved'] and authors.intersection({'greptile-apps', 'greptile-apps[bot]', 'greptileai'}):
+                          blocked += 1
+                  if not threads['pageInfo']['hasNextPage']:
+                      break
+                  cursor = threads['pageInfo']['endCursor']
+              # A delayed review event must never approve a different head.
+              current = api(f'repos/{repo}/pulls/{number}')
+              if current['head']['sha'] != sha or current['state'] != 'open':
+                  continue
+              api(f'repos/{repo}/statuses/{sha}', {
+                  'state': 'failure' if blocked else 'success',
+                  'context': 'review-findings',
+                  'description': f'{blocked} unresolved Greptile findings; Foreloop excluded',
+                  'target_url': f"{os.environ['SERVER_URL']}/{repo}/actions/runs/{os.environ['RUN_ID']}"})
+              print(f'#{number}: {blocked} unresolved Greptile findings')

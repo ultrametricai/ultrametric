@@ -89,7 +89,8 @@ score built entirely from zero-evidence none/na cells renders italic *untested*,
 1. **story-runner PRs** — every refresh lands as a PR and explicitly dispatches CI on its
    branch. The metadata-only refresh-auto-merge recovery workflow updates generated branches
    and dispatches missing CI on main pushes, twice hourly, or by manual dispatch. Auto-merge waits for validation, ci, Greptile Review, a current main base, and
-   resolved review threads. Foreloop is outside the merge requirements. The CI stability
+   resolved Greptile review threads via the metadata-only `review-findings` gate.
+   Foreloop checks and threads are outside the merge requirements. The CI stability
    gate rejects grade or quality changes without a cited evidence ID new to that product
    pack. Review semantic findings under the re-judge stability policy before merging: a verdict flip citing NO evidence id new to the pack is re-roll noise —
    revert it (`rankings-engine/scripts/revert-churn.ts` pattern, METHODOLOGY.md). Exception: a

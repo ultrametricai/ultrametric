@@ -69,6 +69,8 @@ jobs:
                   runs = api(f'actions/workflows/ci.yml/runs?head_sha={sha}&per_page=100')
                   if not runs['workflow_runs']:
                       subprocess.run(['gh', 'workflow', 'run', 'ci.yml', '--repo', repo, '--ref', branch], check=True)
+                  subprocess.run(['gh', 'workflow', 'run', 'review-findings.yml', '--repo', repo,
+                                  '--ref', 'main', '--field', f'pr={number}'], check=True)
                   if not pr['auto_merge']:
                       subprocess.run(['gh', 'pr', 'merge', str(number), '--repo', repo,
                                       '--auto', '--merge', '--match-head-commit', sha], check=True)
