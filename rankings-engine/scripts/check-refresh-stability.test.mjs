@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import { unsupportedFlips } from './check-refresh-stability.mjs'
+import { unsupportedFlips, downgradeAfterSupportLoss } from './check-refresh-stability.mjs'
 
 const old = { productId: 'vendor', storyId: 'install', verdict: 'partial', quality: 5, evidenceIds: ['a'] }
 const pack = { vendor: [{ id: 'a' }, { id: 'existing-unused' }] }
@@ -79,4 +79,26 @@ test('checks a candidate commit without checking out its code', () => {
   const result = repositoryCase({ verdict: 'full' }, pack.vendor, false, true)
   assert.notEqual(result.status, 0)
   assert.match(result.stderr, /grade changed without a new cited evidence ID/)
+})
+
+const source = { id: 'source', tier: 'claimed-docs', url: 'https://example.invalid/docs', excerpt: 'documented feature', fetchedAt: '2026-10-30' }
+const positive = { ...old, verdict: 'full', quality: 8, evidenceIds: ['source'] }
+test('lost prior support permits only non-upward judgments', () => {
+  const none = { ...positive, verdict: 'none', quality: 0, evidenceIds: [] }
+  assert.equal(downgradeAfterSupportLoss(positive, none, [source], []), true)
+  assert.equal(downgradeAfterSupportLoss(positive, none, [source], [{ ...source, excerpt: 'different content' }]), true)
+  assert.equal(downgradeAfterSupportLoss(positive, none, [source], [{ ...source, fetchedAt: 'later' }]), false)
+  assert.equal(downgradeAfterSupportLoss(positive, { ...none, verdict: 'na' }, [source], []), false)
+  assert.equal(downgradeAfterSupportLoss(positive, { ...none, verdict: 'disputed' }, [source], []), false)
+})
+test('lost support cannot justify an upgrade, higher quality, or fabricated citations', () => {
+  const partial = { ...positive, verdict: 'partial', quality: 6 }
+  assert.equal(downgradeAfterSupportLoss(partial, { ...positive, quality: 5 }, [source], []), false)
+  assert.equal(downgradeAfterSupportLoss(positive, { ...positive, quality: 9, evidenceIds: ['other'] }, [source], [{ ...source, id: 'other' }]), false)
+  assert.equal(downgradeAfterSupportLoss(positive, { ...positive, quality: 7, evidenceIds: ['invented'] }, [source], []), false)
+  assert.equal(downgradeAfterSupportLoss(positive, { ...positive, verdict: 'partial', quality: 6, evidenceIds: [] }, [source], []), false)
+})
+test('downgrade classification is shared with the refresh stability gate', () => {
+  assert.equal(unsupportedFlips([positive], [{ ...positive, verdict: 'none', quality: 0, evidenceIds: [] }], { vendor: [source] }, { vendor: [] }).length, 0)
+  assert.equal(unsupportedFlips([positive], [{ ...positive, quality: 9, evidenceIds: [] }], { vendor: [source] }, { vendor: [] }).length, 1)
 })
