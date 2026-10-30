@@ -1,21 +1,24 @@
 {
-  "hash": "a4eb1eb1d92b13ed48c9c61f65ada4634b4d0843b544400b42177b48aea2c3d4",
+  "hash": "b41e2b0135111dd7c93d195ddbedf69accf9f825e75e588c3e948b60464e8bbc",
   "keyVersion": "v2",
   "verdict": {
+    "productId": "uv",
+    "storyId": "fast-ci-installs",
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "uv documents aggressive caching that avoids re-downloading and rebuilding dependencies, plus `tool.uv.cache-keys` for cache invalidation. Its GitHub integration guide recommends the official `astral-sh/setup-uv` action, which can persist the cache across CI runs, and community reports corroborate that installs are very fast. However, the pack has no evidence of offline-capable installs, and the cache-restore guidance is a one-line mention of an optional action feature, not a detailed recipe. missing for 10: documented offline install mode (e.g. an offline flag or behavior), in-depth CI cache-restore configuration docs, independent hands-on evidence of CI cache-hit speedups.",
+    "rationale": "uv documents a CI cache setup: the official `astral-sh/setup-uv` GitHub action can persist the cache, and uv's cache docs cover aggressive caching, `tool.uv.cache-keys` and `--refresh`. The speed claim (10-100x faster than pip) is backed by community reports, though Plotly's benchmark found most of the gain disappears when uv is configured to behave like pip, and one user saw `uvx` re-download dependencies it had already fetched. The pack has no evidence of offline-capable installs. Missing for 10: documented offline install mode (e.g., an offline flag or pre-seeded cache workflow), detail on cache-restore keys and paths for CI beyond the action's optional persistence, and independent CI caching benchmarks.",
     "evidenceIds": [
       "uv-docs-10",
       "uv-docs-34",
       "uv-docs-25",
       "uv-docs-26",
-      "uv-docs-33",
-      "uv-comm-1",
-      "uv-comm-6"
-    ],
-    "productId": "uv",
-    "storyId": "fast-ci-installs"
+      "uv-docs-77",
+      "uv-docs-69",
+      "uv-comm-2-refresh-e2864eb6510ad391",
+      "uv-comm-15-refresh-bfef7d68f68c2cbb",
+      "uv-comm-7-refresh-2df27c7682e9e8ae",
+      "uv-comm-10-refresh-1694542bba6fc097"
+    ]
   }
 }

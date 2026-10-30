@@ -1,18 +1,20 @@
 {
-  "hash": "00743b92a015b2159b26b422ecc9a21e68e3e0b5ec050ace549e93d4effe5813",
+  "hash": "fe6861582887f90a8e4a3e80b94aee4be3e54db585132eff9679a30ad1a6ff29",
   "keyVersion": "v2",
   "verdict": {
+    "productId": "uv",
+    "storyId": "prebuilt-binary-cache",
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "uv's docs say it uses aggressive caching to avoid re-downloading and re-building dependencies from prior runs [uv-docs-25]. A global cache deduplicates dependencies [uv-docs-33], and the official setup-uv action can persist that cache in CI [uv-docs-10], so previously built packages are reused rather than recompiled. One user reports uvx sometimes re-downloading dependencies it had just fetched for another tool [uv-comm-4], which lowers confidence but does not contradict the documented capability. Missing for 10: explicit documentation of prebuilt-wheel selection and how built wheels are stored and reused from the cache, and independent hands-on corroboration that cache hits avoid source builds.",
+    "rationale": "uv's docs say it uses aggressive caching to avoid re-downloading and re-building dependencies already accessed in prior runs, backed by a global deduplicating cache (uv-docs-25, uv-docs-33). That directly covers installing built artifacts from cache rather than recompiling. A user report of `--no-binary` not being sticky implies binary installs are the default (uv-comm-14), and a hands-on report of fast pytorch installs supports the speed claim (uv-comm-13). One user saw uvx occasionally re-download dependencies across tools (uv-comm-10), which tempers confidence but does not contradict the build cache. Missing for 10: explicit documentation of prebuilt wheel selection and of how built-wheel caching works, and independent verification that source builds are skipped on cache hits.",
     "evidenceIds": [
       "uv-docs-25",
       "uv-docs-33",
-      "uv-docs-10",
-      "uv-comm-4"
-    ],
-    "productId": "uv",
-    "storyId": "prebuilt-binary-cache"
+      "uv-docs-76",
+      "uv-comm-13-refresh-6a0768649b388f9d",
+      "uv-comm-14-refresh-723fd2adb301eecc",
+      "uv-comm-10-refresh-1694542bba6fc097"
+    ]
   }
 }

@@ -1,19 +1,21 @@
 {
-  "hash": "e761c4197c5f29a48db77d3ea78c6f0555a38dfba60ab04101095fb11412221d",
+  "hash": "24044320bdb82b8fc57fb8a359dfd7b31019c56d27bdfab9c7cb41cd3cf8acaa",
   "keyVersion": "v2",
   "verdict": {
+    "productId": "bun",
+    "storyId": "prebuilt-binary-cache",
     "verdict": "partial",
     "quality": 4,
-    "confidence": "medium",
-    "rationale": "Bun keeps every downloaded package in a global cache at `~/.bun/install/cache` and hardlinks packages from there into projects. It also offers a cache-only mode that never touches the network and errors on a missing dependency, so cached installs are well documented. The evidence never addresses prebuilt binaries or avoiding source compilation of native modules. The only nearby fact is that Bun skips lifecycle scripts like `postinstall` by default, which is a security feature, not a prebuilt-binary mechanism. Missing for 10: documented support for prebuilt native/binary artifacts instead of source builds, any evidence on handling native addons, and independent or hands-on corroboration of cache-based install behavior.",
+    "confidence": "low",
+    "rationale": "Bun keeps its own global package cache at `~/.bun/install/cache` (configurable via `BUN_INSTALL_CACHE_DIR`), hardlinks packages from it into projects, and can run offline-only from that cache, so reinstalls reuse downloaded packages. The evidence never covers prebuilt native binaries versus compiling from source. Bun skips dependency lifecycle scripts unless the package is trusted, and a community commenter only speculates that it can run node-gyp. Missing for 10: documented support for prebuilt platform-specific binaries, explicit avoidance of native compilation, and independent or hands-on corroboration of binary installs from the cache.",
     "evidenceIds": [
       "bun-docs-12",
+      "bun-docs-64",
       "bun-docs-25",
       "bun-docs-5",
-      "bun-docs-20",
-      "bun-docs-19"
-    ],
-    "productId": "bun",
-    "storyId": "prebuilt-binary-cache"
+      "bun-docs-19",
+      "bun-docs-4",
+      "bun-comm-4-refresh-36a5f2c0b9eeec41"
+    ]
   }
 }
