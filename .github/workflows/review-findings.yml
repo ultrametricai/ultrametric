@@ -13,8 +13,8 @@ on:
   workflow_dispatch:
     inputs:
       pr:
-        description: Pull request number
-        required: true
+        description: Originating PR number (all open PRs are checked)
+        required: false
         type: string
 
 permissions:
@@ -38,7 +38,6 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPO: ${{ github.repository }}
-          EVENT_PATH: ${{ github.event_path }}
           SERVER_URL: ${{ github.server_url }}
           RUN_ID: ${{ github.run_id }}
         shell: python
@@ -46,14 +45,11 @@ jobs:
           import json, os, subprocess
           repo = os.environ['REPO']
           owner, name = repo.split('/')
-          event = json.load(open(os.environ['EVENT_PATH']))
-          pages = (json.loads(subprocess.check_output(['gh', 'api', '--paginate', '--slurp',
+          # GitHub retains only one pending run in a concurrency group. Every
+          # replacement run sweeps all PRs so a cancelled event loses no update.
+          pages = json.loads(subprocess.check_output(['gh', 'api', '--paginate', '--slurp',
                    f'repos/{repo}/pulls?state=open&per_page=100'], text=True))
-                   if os.environ.get('GITHUB_EVENT_NAME') == 'schedule' else [])
-          numbers = ([pr['number'] for page in pages for pr in page] if pages else
-                     [int(event['inputs']['pr'])] if event.get('inputs', {}).get('pr') else
-                     [event['pull_request']['number']] if event.get('pull_request') else
-                     [pr['number'] for pr in event.get('check_run', {}).get('pull_requests', [])])
+          numbers = [pr['number'] for page in pages for pr in page]
           def api(path, data=None):
               args = ['gh', 'api', path]
               if data is not None:
