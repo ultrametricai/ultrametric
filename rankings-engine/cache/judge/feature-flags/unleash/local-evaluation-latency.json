@@ -1,13 +1,20 @@
 {
-  "hash": "325e914553b0bef5b276186f20b7c0267dfe4bb787d0e8d0e0540040b60ba9c2",
+  "hash": "077ba50aa985105f223e6396c188fdac6e78b4121750a0728aae1f4b913b1541",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence shows Unleash has backend/server SDKs with backend tokens, and Unleash Edge acts as a caching read-replica layer that processes targeting data within the Edge node. None of the items documents that the server SDKs themselves cache the ruleset and evaluate flags in-process with no network call per check, nor any microsecond-latency decisions. Edge is an adjacent proxy/caching capability, not in-SDK local evaluation, so it earns no credit here.",
-    "evidenceIds": [],
     "productId": "unleash",
-    "storyId": "local-evaluation-latency"
+    "storyId": "local-evaluation-latency",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "The evidence shows backend SDKs connecting with backend tokens and an `isEnabled` check in application code. It also describes Unleash Edge as a caching read-replica layer that serves thousands of SDKs and evaluates targeting data inside the Edge node. Together these imply a cached ruleset, but no item states that server SDKs evaluate flags in-process with no network call per check. Missing for 10: explicit docs that server SDKs fetch and cache the ruleset and evaluate locally, any latency or microsecond-decision claims, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "unleash-docs-34",
+      "unleash-docs-5",
+      "unleash-docs-28",
+      "unleash-docs-35",
+      "unleash-docs-36",
+      "unleash-gh-4"
+    ]
   }
 }
