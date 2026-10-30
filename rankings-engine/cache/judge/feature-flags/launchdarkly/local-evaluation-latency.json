@@ -1,19 +1,19 @@
 {
-  "hash": "40c2101f5d1b9c546da5336fe1ce06561bbb9d23714e5820e6d69359d59f6448",
+  "hash": "430bc8ee3978ae9683e595692c543b976f1e535a3d944b0fb13ba54284490b04",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "partial",
-    "quality": 5,
-    "confidence": "medium",
-    "rationale": "Community reports say LaunchDarkly clients download all project flags on connection and then stream changes over SSE with minimal latency. That implies flags are evaluated against a locally cached ruleset rather than through a network call per check. First-party evidence only lists 13 server-side SDKs and the Relay Proxy, without describing the local evaluation mechanism. One older report of API lookup timeouts (3s SDK default) is too vague to concretely contradict local evaluation, but it lowers confidence. Missing for 10: first-party docs confirming server SDKs evaluate in-process from a cached ruleset, evidence of microsecond-level evaluation latency, and explicit confirmation that no per-flag network call occurs.",
-    "evidenceIds": [
-      "launchdarkly-comm-2",
-      "launchdarkly-comm-9",
-      "launchdarkly-docs-41",
-      "launchdarkly-docs-13",
-      "launchdarkly-comm-5"
-    ],
     "productId": "launchdarkly",
-    "storyId": "local-evaluation-latency"
+    "storyId": "local-evaluation-latency",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Multiple hands-on community reports say LaunchDarkly SDKs download the project's full flag set on connection and then stream changes over server-sent events, so flag checks add no network latency. LaunchDarkly lists 13 server-side SDKs, and its Relay Proxy fans the streaming connection out to clients. One caveat: Big Segments look up membership from Redis (then cache it) rather than evaluating purely locally. missing for 10: first-party documentation explicitly describing local in-memory evaluation in server SDKs, evidence of microsecond-level evaluation latency, documented behavior for the Big Segments exception.",
+    "evidenceIds": [
+      "launchdarkly-comm-12",
+      "launchdarkly-comm-7-refresh-4585c91e01ba9d34",
+      "launchdarkly-comm-14",
+      "launchdarkly-docs-41",
+      "launchdarkly-docs-62"
+    ]
   }
 }
