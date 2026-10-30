@@ -20,7 +20,7 @@ Start with the applicability facts and evidence listed in the first step. Resolv
 | Cadence | event-driven |
 | Geo scope | global |
 | Complexity | complex |
-| Reversibility | reversible |
+| Reversibility | irreversible |
 | Agent support | partial |
 
 An agent can prepare and reconcile the documented inputs. Named people retain decisions, specialist judgments, physical work and authorized external actions.
@@ -103,10 +103,10 @@ The authorized decision-makers approve the specific amount, recipients and condi
 
 ### 5. Execute specifically authorized payments
 
-manual form/portal · human approval required · hard to undo
+manual form/portal · human approval required · irreversible
 
 
-Authorized finance personnel independently verify recipient payment details and apply the approved payment controls. Record receipts and investigate rejected or mismatched transfers.
+Authorized finance personnel independently verify recipient payment details and apply the approved payment controls. Record receipts and investigate rejected or mismatched transfers. A released wire cannot be assumed recoverable; reconfirm the amount, recipient and authority immediately before release.
 
 - Sources: [GOV.UK director information: dividends](https://www.gov.uk/guidance/director-information-hub-dividends)
 

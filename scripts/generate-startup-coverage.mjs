@@ -42,7 +42,7 @@ for (const country of expansion.countries) {
   const sections = ['formation', 'tax', 'permits'].map(area => {
     const source = sources.find(source => source.id === country[area].sourceId)
     if (!source) throw new Error(`${country.country}/${area}: missing source`)
-    return `[Guide](../open-processes/pages/${countryRecordSlugs[area]}.md) · [Authority](${source.url})`
+    return `[Guide](../open-processes/pages/${countryRecordSlugs[area]}.md#geo-${country.country.toLowerCase()}) · [Authority](${source.url})`
   })
   lines.push(`| ${cell(country.label)} | ${sections.join(' | ')} | ${cell(country.knownGaps.join(' '))} |`)
 }

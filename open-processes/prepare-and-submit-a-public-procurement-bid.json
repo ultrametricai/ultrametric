@@ -50,7 +50,7 @@
       "id": "n2",
       "kind": "step",
       "title": "Approve a bid or no-bid decision",
-      "guidance": "The accountable owner reviews qualification, delivery capacity, commercial risk and conflicts. Obtain specialist interpretation for unfamiliar procurement rules and decline opportunities whose mandatory requirements cannot be met.",
+      "guidance": "The accountable owner reviews qualification, delivery capacity, commercial risk and conflicts. Obtain specialist interpretation for unfamiliar procurement rules and decline opportunities whose mandatory requirements cannot be met. If the decision is no-bid, skip response preparation, pricing review and submission, and go directly to the final decision record.",
       "when": null,
       "ref": null,
       "options": [],
@@ -92,7 +92,7 @@
       "kind": "step",
       "title": "Assemble the evidence and response matrix",
       "guidance": "Map each question and criterion to a specific response, supporting evidence and responsible reviewer. Mark missing certifications or references explicitly rather than making unsupported compliance claims.",
-      "when": null,
+      "when": "Only after the accountable owner approves a bid decision.",
       "ref": null,
       "options": [],
       "notes": [],
@@ -128,7 +128,7 @@
       "kind": "step",
       "title": "Review pricing commitments and declarations",
       "guidance": "Authorized commercial and technical reviewers approve delivery promises, pricing assumptions and contractual departures. Check representations and required signatures against the actual company facts.",
-      "when": null,
+      "when": "Only after the accountable owner approves a bid decision.",
       "ref": null,
       "options": [],
       "notes": [],
@@ -169,7 +169,7 @@
       "kind": "step",
       "title": "Submit the approved bid through the buyer channel",
       "guidance": "An authorized submitter uploads the approved version and retains the receipt and timestamp. Keep access credentials private and verify accepted submission status before the deadline.",
-      "when": null,
+      "when": "Only after the accountable owner approves a bid decision.",
       "ref": null,
       "options": [],
       "notes": [],
@@ -208,8 +208,8 @@
     {
       "id": "n6",
       "kind": "step",
-      "title": "Manage clarification and award decisions",
-      "guidance": "The bid owner controls responses and records evaluation outcomes. A successful bid does not authorize signing an unreviewed contract; route awards and material amendments through their required approvals.",
+      "title": "Record the decision and manage any bid follow-up",
+      "guidance": "For a no-bid decision, retain the rationale, accountable owner and any reconsideration trigger, then close the opportunity without submitting. For a submitted bid, control clarifications and evaluation follow-up; route any award or material amendment through separate contract approval.",
       "when": null,
       "ref": null,
       "options": [],
@@ -242,7 +242,7 @@
         "approvalRequired": true,
         "approval": {
           "role": "accountable process owner",
-          "scope": "Manage clarification and award decisions"
+          "scope": "Record the decision and manage any bid follow-up"
         },
         "verify": {
           "how": "An authorized compliant submission or documented no-bid decision with obligations and evaluation follow-up assigned."
@@ -257,7 +257,8 @@
     },
     {
       "from": "n2",
-      "to": "n3"
+      "to": "n3",
+      "when": "Bid decision approved; mandatory eligibility requirements can be met."
     },
     {
       "from": "n3",
@@ -270,6 +271,11 @@
     {
       "from": "n5",
       "to": "n6"
+    },
+    {
+      "from": "n2",
+      "to": "n6",
+      "when": "No-bid decision approved; skip preparation and submission."
     }
   ],
   "references": [

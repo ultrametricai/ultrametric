@@ -46,10 +46,10 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | --- | --- | --- | --- |
 | [1. Extract the tender requirements and timetable](#step-1) | agent-runnable | Not recorded | Entry step |
 | [2. Approve a bid or no-bid decision](#step-2) | human; approval required | Not recorded | [Step 1](#step-1) |
-| [3. Assemble the evidence and response matrix](#step-3) | agent-runnable | Not recorded | [Step 2](#step-2) |
+| [3. Assemble the evidence and response matrix](#step-3) | agent-runnable | Not recorded | [Step 2](#step-2) (Bid decision approved; mandatory eligibility requirements can be met.) |
 | [4. Review pricing commitments and declarations](#step-4) | human; approval required | Not recorded | [Step 3](#step-3) |
 | [5. Submit the approved bid through the buyer channel](#step-5) | manual form/portal; approval required | Not recorded | [Step 4](#step-4) |
-| [6. Manage clarification and award decisions](#step-6) | human; approval required | Not recorded | [Step 5](#step-5) |
+| [6. Record the decision and manage any bid follow-up](#step-6) | human; approval required | Not recorded | Alternatives: [Step 5](#step-5); [Step 2](#step-2) (No-bid decision approved; skip preparation and submission.) |
 
 <a id="steps"></a>
 
@@ -73,9 +73,11 @@ Read the buyer-issued documents and amendments. Record eligibility, submission c
 human · human approval required · hard to undo
 
 
-The accountable owner reviews qualification, delivery capacity, commercial risk and conflicts. Obtain specialist interpretation for unfamiliar procurement rules and decline opportunities whose mandatory requirements cannot be met.
+The accountable owner reviews qualification, delivery capacity, commercial risk and conflicts. Obtain specialist interpretation for unfamiliar procurement rules and decline opportunities whose mandatory requirements cannot be met. If the decision is no-bid, skip response preparation, pricing review and submission, and go directly to the final decision record.
 
 - Sources: [UK SME and VCSE public procurement bid pack](https://www.gov.uk/government/publications/smevcse-public-procurement-bid-pack/smevcse-bid-pack)
+- If "Bid decision approved; mandatory eligibility requirements can be met": continue at step 3
+- If "No-bid decision approved; skip preparation and submission": continue at step 6
 
 <a id="step-3"></a>
 
@@ -83,6 +85,10 @@ The accountable owner reviews qualification, delivery capacity, commercial risk 
 
 agent-runnable
 
+
+*Follows step 2 (when Bid decision approved; mandatory eligibility requirements can be met).*
+
+When: Only after the accountable owner approves a bid decision.
 
 Map each question and criterion to a specific response, supporting evidence and responsible reviewer. Mark missing certifications or references explicitly rather than making unsupported compliance claims.
 
@@ -95,6 +101,8 @@ Map each question and criterion to a specific response, supporting evidence and 
 human · human approval required · hard to undo
 
 
+When: Only after the accountable owner approves a bid decision.
+
 Authorized commercial and technical reviewers approve delivery promises, pricing assumptions and contractual departures. Check representations and required signatures against the actual company facts.
 
 - Sources: [UK SME and VCSE public procurement bid pack](https://www.gov.uk/government/publications/smevcse-public-procurement-bid-pack/smevcse-bid-pack)
@@ -106,18 +114,22 @@ Authorized commercial and technical reviewers approve delivery promises, pricing
 manual form/portal · human approval required · hard to undo
 
 
+When: Only after the accountable owner approves a bid decision.
+
 An authorized submitter uploads the approved version and retains the receipt and timestamp. Keep access credentials private and verify accepted submission status before the deadline.
 
 - Sources: [UK SME and VCSE public procurement bid pack](https://www.gov.uk/government/publications/smevcse-public-procurement-bid-pack/smevcse-bid-pack)
 
 <a id="step-6"></a>
 
-### 6. Manage clarification and award decisions
+### 6. Record the decision and manage any bid follow-up
 
 human · human approval required · hard to undo
 
 
-The bid owner controls responses and records evaluation outcomes. A successful bid does not authorize signing an unreviewed contract; route awards and material amendments through their required approvals.
+*Follows step 2 (when No-bid decision approved; skip preparation and submission) or step 5.*
+
+For a no-bid decision, retain the rationale, accountable owner and any reconsideration trigger, then close the opportunity without submitting. For a submitted bid, control clarifications and evaluation follow-up; route any award or material amendment through separate contract approval.
 
 - Verify: An authorized compliant submission or documented no-bid decision with obligations and evaluation follow-up assigned.
 - Sources: [UK SME and VCSE public procurement bid pack](https://www.gov.uk/government/publications/smevcse-public-procurement-bid-pack/smevcse-bid-pack)
