@@ -1,13 +1,18 @@
 {
-  "hash": "3d4e51b9ad1bda5a9cf4deaa2e69dcbcc117c065984467308f2796f11fde8e54",
+  "hash": "693315964ea372c71cccf4035509a98d883d0e6db73120b9ecf70510efa1edb0",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Data retention and deletion is a fair privacy-posture question even for a local IaC CLI, since state files and plans hold sensitive data. The evidence shows no documented retention or deletion controls for that data. State/plan encryption at rest is an adjacent control, and destroy mode deletes infrastructure rather than governing data retention, so neither earns credit here.",
-    "evidenceIds": [],
     "productId": "opentofu",
-    "storyId": "privacy-retention-controls"
+    "storyId": "privacy-retention-controls",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "OpenTofu is a self-run CLI, so the data it handles is state and plan files the user stores locally or in a backend of their choice. The docs show these can be encrypted at rest (AES-GCM). Destroy mode removes all remote objects and leaves an empty state, but that deletes infrastructure rather than governing data retention. Missing for 10: explicit retention policies or controls for state, plan or log data, documented deletion or purge of state history, any statement on telemetry or data collection, and independent corroboration.",
+    "evidenceIds": [
+      "opentofu-docs-9",
+      "opentofu-docs-20",
+      "opentofu-docs-19",
+      "opentofu-docs-5"
+    ]
   }
 }
