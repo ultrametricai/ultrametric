@@ -102,3 +102,18 @@ test('downgrade classification is shared with the refresh stability gate', () =>
   assert.equal(unsupportedFlips([positive], [{ ...positive, verdict: 'none', quality: 0, evidenceIds: [] }], { vendor: [source] }, { vendor: [] }).length, 0)
   assert.equal(unsupportedFlips([positive], [{ ...positive, quality: 9, evidenceIds: [] }], { vendor: [source] }, { vendor: [] }).length, 1)
 })
+
+test('support loss can lower full to partial while retaining a valid citation', () => {
+  const surviving = { ...source, id: 'surviving', excerpt: 'a remaining documented capability' }
+  const baseline = { ...positive, evidenceIds: ['source', 'surviving'] }
+  const lower = { ...baseline, verdict: 'partial', quality: 6, evidenceIds: ['surviving'] }
+  assert.equal(downgradeAfterSupportLoss(baseline, lower, [source, surviving], [surviving]), true)
+  assert.equal(downgradeAfterSupportLoss(baseline, lower, [source, surviving], [source, surviving]), false)
+})
+test('support loss can lower quality without changing the verdict', () => {
+  const surviving = { ...source, id: 'surviving', excerpt: 'a remaining documented capability' }
+  const baseline = { ...positive, evidenceIds: ['source', 'surviving'] }
+  const lower = { ...baseline, quality: 6, evidenceIds: ['surviving'] }
+  assert.equal(downgradeAfterSupportLoss(baseline, lower, [source, surviving], [surviving]), true)
+  assert.equal(downgradeAfterSupportLoss(baseline, lower, [source, surviving], [source, surviving]), false)
+})
