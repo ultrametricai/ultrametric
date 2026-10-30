@@ -3,6 +3,10 @@
 
 # Cut a release
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Steps](#steps-at-a-glance)
+
+## Overview
+
 The release ritual: draft the changelog from merged PRs, tag the release behind an approval, publish notes, watch errors after rollout, and roll back if it goes sideways.
 
 | Field | Value |
@@ -19,52 +23,98 @@ The release ritual: draft the changelog from merged PRs, tag the release behind 
 
 Changelogs, tags, and release notes are pure API work. Deciding to roll back is a human call.
 
-## Steps
+<a id="artifacts"></a>
 
-1. **Draft the changelog** — agent-runnable · ~10 min
+## Before you start
 
-   Compare the release candidate with the previous release tag and review the changes that actually remain in that range. Describe user-visible behavior and required upgrade actions, omitting reverted work and confidential issue details. Check migration instructions against the implementation. Keep links to the included changes and candidate revision so the notes can be corrected if the release contents change before publication.
-
-   - Canonical vendor: GitHub
-   - Sources: [Managing releases in a repository](https://docs.github.com/en/repositories/releasing-projects-on-github/managing-releases-in-a-repository)
-2. **Tag the release** — agent-runnable · ~5 min · human approval required
-
-   Check the versioning convention, candidate commit and release checks, and confirm the proposed tag is unused. Inspect which workflows publishing it will trigger before using the release owner's authorization. Create the tag through the agreed release process and verify that the remote tag resolves to the reviewed commit. Follow any triggered build or publication so an unexpected side effect is caught at the release boundary.
-
-   - Canonical vendor: GitHub
-   - Sources: [Managing releases in a repository](https://docs.github.com/en/repositories/releasing-projects-on-github/managing-releases-in-a-repository)
-3. **Publish release notes** — agent-runnable · ~5 min
-
-   Publish the cleared notes for the correct tag and audience through the authorized release channels. Confirm that described features are available to those users and that upgrade or migration links lead to the matching version. Check the public page after publication and give support that same reference, including any staged-rollout differences customers may see.
-
-   - Canonical vendor: GitHub
-   - Vendor options: GitHub, Notion
-   - Ranked market: [code-hosting](../../open-rankings/code-hosting)
-   - Sources: [Managing releases in a repository](https://docs.github.com/en/repositories/releasing-projects-on-github/managing-releases-in-a-repository)
-4. **Monitor errors post-release** — agent-runnable · ~30 min · async wait
-
-   Compare the new release with the prior version over the rollout's observation window. Look for new error signatures, affected journeys and changes in impact, accounting for differences in traffic. Check support and on-call reports alongside telemetry. When a release criterion is breached, give the responder links to the relevant events and deployment, with enough context to distinguish a release regression from an unrelated incident.
-
-   - Canonical vendor: Sentry
-   - Vendor options: Sentry, Datadog
-   - Ranked market: [error-tracking](../../open-rankings/error-tracking)
-   - Sources: [Set up Sentry releases](https://docs.sentry.io/product/releases/setup/) · [Google SRE implementing SLOs](https://sre.google/workbook/implementing-slos/)
-   - If "Rollback criteria are met and the authorized release owner chooses rollback as the recovery action": continue at step 5
-5. **Roll back if needed** — human · ~15 min
-
-   *Follows step 4 (when Rollback criteria are met and the authorized release owner chooses rollback as the recovery action).*
-
-   Identify the last working version and compare rollback with the incident's recovery needs. Check whether a database migration, running job or external side effect would remain after code is reverted. Carry out the release owner's chosen recovery action within its authorized scope, then repeat the affected user journey and data checks. Preserve the failure and recovery timeline for investigation, and update the service-status channel with the verified outcome.
-
-   - Sources: [Managing deployment environments](https://docs.github.com/actions/deployment/environments) · [Google SRE postmortem culture](https://sre.google/sre-book/postmortem-culture/)
-
-## Artifacts
-
-Requires:
+Required artifacts:
 
 - Code hosting organization — from [Set up a code hosting org](set-up-a-code-hosting-org.md)
 - CI/CD pipeline — from [Set up CI/CD](set-up-ci-cd.md)
 - Error tracking project — from [Set up error tracking](set-up-error-tracking.md)
+
+## Steps at a glance
+
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
+
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Draft the changelog](#step-1) | agent-runnable | ~10 min | Entry step |
+| [2. Tag the release](#step-2) | agent-runnable; approval required | ~5 min | [Step 1](#step-1) |
+| [3. Publish release notes](#step-3) | agent-runnable | ~5 min | [Step 2](#step-2) |
+| [4. Monitor errors post-release](#step-4) | agent-runnable; includes waiting | ~30 min | [Step 3](#step-3) |
+| [5. Roll back if needed](#step-5) | human | ~15 min | [Step 4](#step-4) (Rollback criteria are met and the authorized release owner chooses rollback as the recovery action.) |
+
+<a id="steps"></a>
+
+## Step details
+
+<a id="step-1"></a>
+
+### 1. Draft the changelog
+
+agent-runnable · ~10 min
+
+
+Compare the release candidate with the previous release tag and review the changes that actually remain in that range. Describe user-visible behavior and required upgrade actions, omitting reverted work and confidential issue details. Check migration instructions against the implementation. Keep links to the included changes and candidate revision so the notes can be corrected if the release contents change before publication.
+
+- Canonical vendor: GitHub
+- Sources: [Managing releases in a repository](https://docs.github.com/en/repositories/releasing-projects-on-github/managing-releases-in-a-repository)
+
+<a id="step-2"></a>
+
+### 2. Tag the release
+
+agent-runnable · ~5 min · human approval required
+
+
+Check the versioning convention, candidate commit and release checks, and confirm the proposed tag is unused. Inspect which workflows publishing it will trigger before using the release owner's authorization. Create the tag through the agreed release process and verify that the remote tag resolves to the reviewed commit. Follow any triggered build or publication so an unexpected side effect is caught at the release boundary.
+
+- Canonical vendor: GitHub
+- Sources: [Managing releases in a repository](https://docs.github.com/en/repositories/releasing-projects-on-github/managing-releases-in-a-repository)
+
+<a id="step-3"></a>
+
+### 3. Publish release notes
+
+agent-runnable · ~5 min
+
+
+Publish the cleared notes for the correct tag and audience through the authorized release channels. Confirm that described features are available to those users and that upgrade or migration links lead to the matching version. Check the public page after publication and give support that same reference, including any staged-rollout differences customers may see.
+
+- Canonical vendor: GitHub
+- Vendor options: GitHub, Notion
+- Ranked market: [code-hosting](../../open-rankings/code-hosting)
+- Sources: [Managing releases in a repository](https://docs.github.com/en/repositories/releasing-projects-on-github/managing-releases-in-a-repository)
+
+<a id="step-4"></a>
+
+### 4. Monitor errors post-release
+
+agent-runnable · ~30 min · async wait
+
+
+Compare the new release with the prior version over the rollout's observation window. Look for new error signatures, affected journeys and changes in impact, accounting for differences in traffic. Check support and on-call reports alongside telemetry. When a release criterion is breached, give the responder links to the relevant events and deployment, with enough context to distinguish a release regression from an unrelated incident.
+
+- Canonical vendor: Sentry
+- Vendor options: Sentry, Datadog
+- Ranked market: [error-tracking](../../open-rankings/error-tracking)
+- Sources: [Set up Sentry releases](https://docs.sentry.io/product/releases/setup/) · [Google SRE implementing SLOs](https://sre.google/workbook/implementing-slos/)
+- If "Rollback criteria are met and the authorized release owner chooses rollback as the recovery action": continue at step 5
+
+<a id="step-5"></a>
+
+### 5. Roll back if needed
+
+human · ~15 min
+
+
+*Follows step 4 (when Rollback criteria are met and the authorized release owner chooses rollback as the recovery action).*
+
+Identify the last working version and compare rollback with the incident's recovery needs. Check whether a database migration, running job or external side effect would remain after code is reverted. Carry out the release owner's chosen recovery action within its authorized scope, then repeat the affected user journey and data checks. Preserve the failure and recovery timeline for investigation, and update the service-status channel with the verified outcome.
+
+- Sources: [Managing deployment environments](https://docs.github.com/actions/deployment/environments) · [Google SRE postmortem culture](https://sre.google/sre-book/postmortem-culture/)
+
 
 ## Related records
 

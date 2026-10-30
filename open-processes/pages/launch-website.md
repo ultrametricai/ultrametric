@@ -3,19 +3,29 @@
 
 # Launch the website
 
+[Overview](#overview) · [Process sequence](#process-sequence)
+
+## Overview
+
 Domain checked and bought, site generated, DNS wired, analytics on.
 
 | Field | Value |
 | --- | --- |
 | Kind | chain |
 
-## Processes in order
+<a id="processes-in-order"></a>
 
-1. [Check domain availability](check-domain-availability.md)
-2. [Buy a domain](buy-a-domain.md)
-3. [Generate a website](generate-a-website.md)
-4. [Set up custom domain](set-up-custom-domain.md)
-5. [Set up product analytics](set-up-product-analytics.md)
+## Process sequence
+
+Run the linked processes in the recorded chain order. Each process defines its own internal dependencies.
+
+| Order | Process | Requires | Produces |
+| --- | --- | --- | --- |
+| 1 | [Check domain availability](check-domain-availability.md) | Company name | Domain shortlist |
+| 2 | [Buy a domain](buy-a-domain.md) | Domain shortlist | Registered domain; DNS control |
+| 3 | [Generate a website](generate-a-website.md) | Registered domain; Brand logo; Brand color palette | Company website |
+| 4 | [Set up custom domain](set-up-custom-domain.md) | Registered domain; DNS control | Not recorded |
+| 5 | [Set up product analytics](set-up-product-analytics.md) | Code hosting organization | Product analytics workspace |
 
 ---
 

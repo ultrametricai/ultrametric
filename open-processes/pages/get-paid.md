@@ -3,18 +3,28 @@
 
 # Get paid
 
+[Overview](#overview) · [Process sequence](#process-sequence)
+
+## Overview
+
 Connect payments, stand up subscriptions, send the invoice, reconcile the payout.
 
 | Field | Value |
 | --- | --- |
 | Kind | chain |
 
-## Processes in order
+<a id="processes-in-order"></a>
 
-1. [Connect a payment processor](connect-a-payment-processor.md)
-2. [Set up subscription billing](set-up-subscription-billing.md)
-3. [Send an invoice](send-an-invoice.md)
-4. [Bookkeeping close](bookkeeping-close.md)
+## Process sequence
+
+Run the linked processes in the recorded chain order. Each process defines its own internal dependencies.
+
+| Order | Process | Requires | Produces |
+| --- | --- | --- | --- |
+| 1 | [Connect a payment processor](connect-a-payment-processor.md) | EIN assignment letter; Business bank account | Payment processor account |
+| 2 | [Set up subscription billing](set-up-subscription-billing.md) | Payment processor account | Subscription billing |
+| 3 | [Send an invoice](send-an-invoice.md) | Payment processor account | Not recorded |
+| 4 | [Bookkeeping close](bookkeeping-close.md) | Business bank account; Accounting ledger | Financial statements |
 
 ---
 

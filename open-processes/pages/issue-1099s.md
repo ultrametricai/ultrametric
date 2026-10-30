@@ -3,6 +3,10 @@
 
 # Issue 1099s
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Geography](#geography) · [Steps](#steps-at-a-glance)
+
+## Overview
+
 Generate and file 1099-NEC forms for all contractors paid over $600 in the tax year.
 
 | Field | Value |
@@ -19,95 +23,191 @@ Generate and file 1099-NEC forms for all contractors paid over $600 in the tax y
 
 Gusto can auto-generate 1099s for contractors on their platform. System compiles data and tracks filing deadlines.
 
-## Steps
+<a id="artifacts"></a>
 
-1. **Pull contractor payment totals** — agent-runnable · ~5 min
+## Before you start
 
-   Reconcile payments by recipient and reporting year across the ledger, bank and payment systems. Identify refunds, duplicates, reimbursements and payment channels. Separate wages and payments potentially reported by settlement entities for the preparer’s review. Apply the actual year’s rules when deciding reportability, then match the resulting schedule to recipient tax documents.
+Required artifacts:
 
-   - Canonical vendor: Gusto
-   - Sources: [IRS 1099-MISC and 1099-NEC instructions](https://www.irs.gov/instructions/i1099mec)
-2. **Verify W-9 info on file** — agent-runnable · ~5 min
+- Payroll account — from [Set up payroll](set-up-payroll.md)
+- Contractor record (W-9 on file) — from [Onboard a contractor](add-a-contractor-1099.md)
 
-   Match potentially reportable recipients to signed tax documentation. Check legal name, taxpayer ID, address, classification and relevant exemption information. Obtain missing or inconsistent documents through the company’s secure vendor process and restrict identifier access. Keep unresolved cases for the preparer; invoice names and bank labels may differ from the correct tax recipient.
+| Information to gather | Required by the record |
+| --- | --- |
+| W-9 info | Yes |
+| payment totals | Yes |
 
-   - Canonical vendor: Gusto
-   - Sources: [IRS 1099-MISC and 1099-NEC instructions](https://www.irs.gov/instructions/i1099mec)
-3. **Generate 1099-NEC forms** — agent-runnable · ~10 min · human approval required
+## Geography
 
-   Determine the appropriate form and reportable amount from the payment schedule and recipient documents using the reporting year’s instructions. Generate draft 1099-NEC forms for that population and reconcile totals. Flag missing identifiers, exceptional payment treatment and separate state requirements before the batch is approved for filing and delivery.
+Country rows describe the guidance recorded here. Local notes and step alternatives do not establish a complete country-specific workflow.
 
-   - Canonical vendor: Gusto
-   - Sources: [IRS 1099-MISC and 1099-NEC instructions](https://www.irs.gov/instructions/i1099mec)
-4. **Review and approve 1099s** — human · ~20 min · human approval required
+| Country | Recorded guidance | Steps with local alternatives or resolutions |
+| --- | --- | --- |
+| [India](#geo-in) | Local analog note | — |
+| [United Kingdom](#geo-uk) | Marked not applicable | — |
+| [Germany](#geo-de) | Marked not applicable | — |
+| [France](#geo-fr) | Local analog note | — |
+| [Portugal](#geo-pt) | Marked not applicable | — |
+| [Canada](#geo-ca) | Local analog note | — |
+| [New Zealand](#geo-nz) | Marked not applicable | — |
+| [Singapore](#geo-sg) | Marked not applicable | — |
+| [Australia](#geo-au) | Local analog note | — |
+| [South Korea](#geo-kr) | Local analog note | — |
+| [Hong Kong](#geo-hk) | Local analog note | — |
+| [Estonia](#geo-ee) | Local analog note | — |
 
-   Check recipients, identifiers and amounts against the payment schedule and tax documents. Investigate exclusions, duplicates, corrections and payment-channel exceptions with the preparer. Verify the tax year and filing method, then approve the exact batch and recipient-delivery plan through the company’s reporting process. Any changed data should be reconciled before transmission.
+## Steps at a glance
 
-   - Sources: [IRS 1099-MISC and 1099-NEC instructions](https://www.irs.gov/instructions/i1099mec)
-5. **File with IRS and mail to contractors** — agent-runnable · ~5 min · human approval required · hard to undo
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
 
-   File the reviewed batch using the method required for the year and number of returns. Furnish recipient copies through the selected permitted delivery route, including electronic consent where needed. Check agency acceptance and delivery failures, correct rejected records and reconcile separate state submissions. Preserve evidence showing both the filed returns and the copies furnished to recipients.
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Pull contractor payment totals](#step-1) | agent-runnable | ~5 min | Entry step |
+| [2. Verify W-9 info on file](#step-2) | agent-runnable | ~5 min | [Step 1](#step-1) |
+| [3. Generate 1099-NEC forms](#step-3) | agent-runnable; approval required | ~10 min | [Step 2](#step-2) |
+| [4. Review and approve 1099s](#step-4) | human; approval required | ~20 min | [Step 3](#step-3) |
+| [5. File with IRS and mail to contractors](#step-5) | agent-runnable; approval required | ~5 min | [Step 4](#step-4) |
 
-   - Verify: IRIS (or your filing provider) shows the 1099-NEC returns accepted, and recipient copies are postmarked by January 31. ([www.irs.gov](https://www.irs.gov/filing/e-file-forms-1099-with-iris))
-   - Canonical vendor: Gusto
-   - Sources: [IRS 1099-MISC and 1099-NEC instructions](https://www.irs.gov/instructions/i1099mec)
+<a id="steps"></a>
 
-## By country
+## Step details
+
+<a id="step-1"></a>
+
+### 1. Pull contractor payment totals
+
+agent-runnable · ~5 min
+
+
+Reconcile payments by recipient and reporting year across the ledger, bank and payment systems. Identify refunds, duplicates, reimbursements and payment channels. Separate wages and payments potentially reported by settlement entities for the preparer’s review. Apply the actual year’s rules when deciding reportability, then match the resulting schedule to recipient tax documents.
+
+- Canonical vendor: Gusto
+- Sources: [IRS 1099-MISC and 1099-NEC instructions](https://www.irs.gov/instructions/i1099mec)
+
+<a id="step-2"></a>
+
+### 2. Verify W-9 info on file
+
+agent-runnable · ~5 min
+
+
+Match potentially reportable recipients to signed tax documentation. Check legal name, taxpayer ID, address, classification and relevant exemption information. Obtain missing or inconsistent documents through the company’s secure vendor process and restrict identifier access. Keep unresolved cases for the preparer; invoice names and bank labels may differ from the correct tax recipient.
+
+- Canonical vendor: Gusto
+- Sources: [IRS 1099-MISC and 1099-NEC instructions](https://www.irs.gov/instructions/i1099mec)
+
+<a id="step-3"></a>
+
+### 3. Generate 1099-NEC forms
+
+agent-runnable · ~10 min · human approval required
+
+
+Determine the appropriate form and reportable amount from the payment schedule and recipient documents using the reporting year’s instructions. Generate draft 1099-NEC forms for that population and reconcile totals. Flag missing identifiers, exceptional payment treatment and separate state requirements before the batch is approved for filing and delivery.
+
+- Canonical vendor: Gusto
+- Sources: [IRS 1099-MISC and 1099-NEC instructions](https://www.irs.gov/instructions/i1099mec)
+
+<a id="step-4"></a>
+
+### 4. Review and approve 1099s
+
+human · ~20 min · human approval required
+
+
+Check recipients, identifiers and amounts against the payment schedule and tax documents. Investigate exclusions, duplicates, corrections and payment-channel exceptions with the preparer. Verify the tax year and filing method, then approve the exact batch and recipient-delivery plan through the company’s reporting process. Any changed data should be reconciled before transmission.
+
+- Sources: [IRS 1099-MISC and 1099-NEC instructions](https://www.irs.gov/instructions/i1099mec)
+
+<a id="step-5"></a>
+
+### 5. File with IRS and mail to contractors
+
+agent-runnable · ~5 min · human approval required · hard to undo
+
+
+File the reviewed batch using the method required for the year and number of returns. Furnish recipient copies through the selected permitted delivery route, including electronic consent where needed. Check agency acceptance and delivery failures, correct rejected records and reconcile separate state submissions. Preserve evidence showing both the filed returns and the copies furnished to recipients.
+
+- Verify: IRIS (or your filing provider) shows the 1099-NEC returns accepted, and recipient copies are postmarked by January 31. ([www.irs.gov](https://www.irs.gov/filing/e-file-forms-1099-with-iris))
+- Canonical vendor: Gusto
+- Sources: [IRS 1099-MISC and 1099-NEC instructions](https://www.irs.gov/instructions/i1099mec)
+
+
+<a id="by-country"></a>
+
+## Country details
+
+<a id="geo-in"></a>
 
 ### India
 
 - Stronger than 1099s: TDS means you deduct tax at source from contractor and professional fees (s.194C/194J) before paying, deposit it monthly against your TAN, file quarterly TDS returns and issue Form 16A certificates to each payee. ([Income Tax e-filing (TDS)](https://www.incometax.gov.in/iec/foportal/))
 
+<a id="geo-uk"></a>
+
 ### United Kingdom
 
 - Not applicable: No 1099 regime — ordinary contractors self-assess. Your duty is status instead of paperwork: run off-payroll (IR35) determinations (HMRC's CEST tool) once you are a medium company, and the CIS deduction scheme applies only to construction. ([HMRC — check employment status (CEST)](https://www.gov.uk/guidance/check-employment-status-for-tax))
+
+<a id="geo-de"></a>
 
 ### Germany
 
 - Not applicable: No 1099 regime: contractors invoice you (a §14 UStG-compliant Rechnung, VAT where due) and self-report their income; the payer's duties are the invoice and bookkeeping trail (GoBD) and reverse-charge handling — no information return to the Finanzamt exists for ordinary fees. ([UStG §14 — invoice requirements](https://www.gesetze-im-internet.de/ustg_1980/__14.html))
 
+<a id="geo-fr"></a>
+
 ### France
 
 - The direct analog is the DAS2: an annual electronic declaration to the tax administration of fees, commissions and honoraria paid to third parties past €2,400 per beneficiary — with stiff penalties for skipping it. ([DAS2 — declaration of fees & commissions](https://entreprendre.service-public.gouv.fr/vosdroits/R14651))
+
+<a id="geo-pt"></a>
 
 ### Portugal
 
 - Not applicable: No 1099 regime: contractors invoice through the tax authority's own e-invoicing rails (recibos verdes / e-Fatura), so AT already sees every payment — the company's duty is keeping the invoice trail, not filing information returns. ([e-Fatura (Portal das Finanças)](https://faturas.portaldasfinancas.gov.pt/))
 
+<a id="geo-ca"></a>
+
 ### Canada
 
 - The analog is the T4A slip: fees for services paid to contractors are reported to the CRA on T4A information returns due by the end of February for the prior calendar year. ([CRA — filing information returns](https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/payroll/completing-filing-information-returns.html))
+
+<a id="geo-nz"></a>
 
 ### New Zealand
 
 - Not applicable: No 1099-style information return for ordinary contractor payments — contractors self-assess. Withholding enters only for schedular payments (specified labour-heavy work), where you deduct tax and file employment information with Inland Revenue. ([Schedular payments — Inland Revenue](https://www.ird.govt.nz/income-tax/withholding-taxes/schedular-payments))
 
+<a id="geo-sg"></a>
+
 ### Singapore
 
 - Not applicable: No 1099 regime — contractors self-assess with IRAS. The company's information reporting is for employees instead (IR8A or the Auto-Inclusion Scheme), plus withholding tax on payments to non-residents. ([IRAS — Auto-Inclusion Scheme](https://www.iras.gov.sg/taxes/individual-income-tax/employers/auto-inclusion-scheme-(ais)-for-employment-income))
+
+<a id="geo-au"></a>
 
 ### Australia
 
 - No universal 1099 regime — contractors self-assess against their ABN — but the taxable payments annual report (TPAR) is a real information return for businesses paying contractors in covered services (IT, building and construction, cleaning, couriers, road freight, security), lodged annually with the ATO. ([TAA 1953 Sch 1 (third-party reports)](https://www.legislation.gov.au/C1953A00001/latest/text))
 
+<a id="geo-kr"></a>
+
 ### South Korea
 
 - There is no 1099 form, but the function exists: payments to freelancers are withheld at source as business income and reported to the NTS on payment statements (지급명세서) through Hometax. ([Hometax (NTS e-filing)](https://www.hometax.go.kr/))
+
+<a id="geo-hk"></a>
 
 ### Hong Kong
 
 - No 1099 form, but the function exists: remuneration paid to persons other than employees (consultants, freelancers) above the form's reporting lines — fees over HK$25,000 a year — is reported to the Inland Revenue Department on Form IR56M with the annual employer's return, and no withholding runs for local payees. ([IRD — employer's returns](https://www.ird.gov.hk/eng/tax/ere.htm))
 
+<a id="geo-ee"></a>
+
 ### Estonia
 
 - No January information-return batch exists: payments to natural persons are withheld and declared month by month on the TSD, so the reporting is continuous rather than a year-end form run. ([Income and social taxes (e-MTA)](https://www.emta.ee/en/business-client/taxes-and-payment/income-and-social-taxes))
-
-## Artifacts
-
-Requires:
-
-- Payroll account — from [Set up payroll](set-up-payroll.md)
-- Contractor record (W-9 on file) — from [Add a contractor (1099)](add-a-contractor-1099.md)
 
 ## Related records
 

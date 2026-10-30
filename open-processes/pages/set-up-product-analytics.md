@@ -3,6 +3,10 @@
 
 # Set up product analytics
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Steps](#steps-at-a-glance) · [Outputs](#outputs)
+
+## Overview
+
 Configure product analytics with event tracking, funnels, and session recording. PostHog is the canonical route; the product-analytics arena ranks the alternatives.
 
 | Field | Value |
@@ -19,68 +23,126 @@ Configure product analytics with event tracking, funnels, and session recording.
 
 PostHog's public REST API (live OpenAPI spec, official MCP server) covers project creation and event/dashboard management. Initial instrumentation is a code change — a coding agent can make it, a human reviews the diff.
 
-## Steps
+<a id="artifacts"></a>
 
-1. **Create a project in your analytics platform** — agent-runnable · ~10 min · human approval required
+## Before you start
 
-   Start with the product questions the team needs to answer, then create the analytics project within its authorized account, budget and data-handling scope. Choose region, retention and access from those requirements. Decide how development traffic will be identified or separated before connecting an SDK. Check that the project receiving a test event is the one the team intends to use for reporting.
-
-   - Canonical vendor: PostHog
-   - Vendor options: PostHog, Amplitude, Mixpanel
-   - Ranked market: [product-analytics](../../open-rankings/product-analytics)
-   - Sources: [PostHog product analytics](https://posthog.com/docs/product-analytics) · [PostHog product analytics privacy controls](https://posthog.com/docs/product-analytics/privacy)
-2. **Install SDK in codebase** — agent-runnable · ~20 min · human approval required
-
-   Install the integration for the actual framework and inspect its collection defaults before enabling it. Configure only the events, identity handling and data collection authorized for the application. Test an anonymous visit, sign-in and sign-out, examining the events and identities received at each stage. Confirm that one person's session does not remain attached to another user's account after a change of user. Check payloads for sensitive fields and keep a way to disable collection.
-
-   - Verify: A test event fires and appears in the analytics project's live event stream.
-   - Produces: Product analytics workspace
-   - Cross-arena market: [ai-coding](../../open-rankings/ai-coding)
-   - Sources: [PostHog product analytics](https://posthog.com/docs/product-analytics) · [PostHog product analytics privacy controls](https://posthog.com/docs/product-analytics/privacy)
-   - Next: steps 3 and 6 — all follow this step
-3. **Define key events** — agent-runnable · ~15 min · human approval required
-
-   Define events at the point the behavior happens: a submitted form and a successfully created account answer different questions. For each event, specify its name, trigger, allowed properties and user or account identifier. Decide how retries and duplicate submissions should appear. Walk a test user through the product and compare payloads with the definitions. Keep the dictionary beside the implementation so a later event change can be distinguished from a real change in customer behavior.
-
-   - Canonical vendor: PostHog
-   - Sources: [PostHog product analytics](https://posthog.com/docs/product-analytics)
-   - Next: steps 4 and 5 — all follow this step
-4. **Create dashboards** — agent-runnable · ~15 min · human approval required
-
-   Build each chart around a decision the team will make. Name its population, unit, time window and filters, and distinguish a count of events from a count of users or accounts. Trace at least one chart back to raw events or a known test cohort. Label freshness and exclusions where they affect interpretation, then share with the intended audience under the project's access rules.
-
-   - Canonical vendor: PostHog
-   - Sources: [PostHog product analytics](https://posthog.com/docs/product-analytics)
-
-   *This path ends here.*
-5. **Set up funnels** — agent-runnable · ~10 min · human approval required
-
-   *Follows step 3.*
-
-   Choose a real journey with a clear entry and completion event. Set its order, conversion window and identity rule, then test known paths: successful completion, abandonment, repetition and a return visit. Compare the funnel with those users' underlying events. Adjust the definition if alternate valid paths are being counted as abandonment, and label the included population so later comparisons use the same cohort.
-
-   - Canonical vendor: PostHog
-   - Sources: [PostHog product analytics](https://posthog.com/docs/product-analytics)
-
-   *This path ends here.*
-6. **Enable session recording** — agent-runnable · ~5 min · human approval required
-
-   *Follows step 2.*
-
-   Choose the question a replay should answer and the screens needed to answer it. Configure masking, excluded screens, network capture, retention and viewer access within the authorized privacy scope. Enter fictional sensitive values during a test and inspect the replay and captured requests, including embedded content. If a sensitive surface cannot be masked, exclude or stop recording it using the supported controls. Enable live capture only after the test shows the intended data boundary.
-
-   - Canonical vendor: PostHog
-   - Sources: [PostHog session replay privacy controls](https://posthog.com/docs/session-replay/privacy) · [PostHog product analytics privacy controls](https://posthog.com/docs/product-analytics/privacy)
-
-## Artifacts
-
-Produces:
-
-- Product analytics workspace
-
-Requires:
+Required artifacts:
 
 - Code hosting organization — from [Set up a code hosting org](set-up-a-code-hosting-org.md)
+
+| Information to gather | Required by the record |
+| --- | --- |
+| product key events | Yes |
+| product key funnels | Yes |
+
+## Steps at a glance
+
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
+
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Create a project in your analytics platform](#step-1) | agent-runnable; approval required | ~10 min | Entry step |
+| [2. Install SDK in codebase](#step-2) | agent-runnable; approval required | ~20 min | [Step 1](#step-1) |
+| [3. Define key events](#step-3) | agent-runnable; approval required | ~15 min | [Step 2](#step-2) |
+| [4. Create dashboards](#step-4) | agent-runnable; approval required | ~15 min | [Step 3](#step-3) |
+| [5. Set up funnels](#step-5) | agent-runnable; approval required | ~10 min | [Step 3](#step-3) |
+| [6. Enable session recording](#step-6) | agent-runnable; approval required | ~5 min | [Step 2](#step-2) |
+
+<a id="steps"></a>
+
+## Step details
+
+<a id="step-1"></a>
+
+### 1. Create a project in your analytics platform
+
+agent-runnable · ~10 min · human approval required
+
+
+Start with the product questions the team needs to answer, then create the analytics project within its authorized account, budget and data-handling scope. Choose region, retention and access from those requirements. Decide how development traffic will be identified or separated before connecting an SDK. Check that the project receiving a test event is the one the team intends to use for reporting.
+
+- Canonical vendor: PostHog
+- Vendor options: PostHog, Amplitude, Mixpanel
+- Ranked market: [product-analytics](../../open-rankings/product-analytics)
+- Sources: [PostHog product analytics](https://posthog.com/docs/product-analytics) · [PostHog product analytics privacy controls](https://posthog.com/docs/product-analytics/privacy)
+
+<a id="step-2"></a>
+
+### 2. Install SDK in codebase
+
+agent-runnable · ~20 min · human approval required
+
+
+Install the integration for the actual framework and inspect its collection defaults before enabling it. Configure only the events, identity handling and data collection authorized for the application. Test an anonymous visit, sign-in and sign-out, examining the events and identities received at each stage. Confirm that one person's session does not remain attached to another user's account after a change of user. Check payloads for sensitive fields and keep a way to disable collection.
+
+- Verify: A test event fires and appears in the analytics project's live event stream.
+- Produces: Product analytics workspace
+- Cross-arena market: [ai-coding](../../open-rankings/ai-coding)
+- Sources: [PostHog product analytics](https://posthog.com/docs/product-analytics) · [PostHog product analytics privacy controls](https://posthog.com/docs/product-analytics/privacy)
+- Next: steps 3 and 6 — all follow this step
+
+<a id="step-3"></a>
+
+### 3. Define key events
+
+agent-runnable · ~15 min · human approval required
+
+
+Define events at the point the behavior happens: a submitted form and a successfully created account answer different questions. For each event, specify its name, trigger, allowed properties and user or account identifier. Decide how retries and duplicate submissions should appear. Walk a test user through the product and compare payloads with the definitions. Keep the dictionary beside the implementation so a later event change can be distinguished from a real change in customer behavior.
+
+- Canonical vendor: PostHog
+- Sources: [PostHog product analytics](https://posthog.com/docs/product-analytics)
+- Next: steps 4 and 5 — all follow this step
+
+<a id="step-4"></a>
+
+### 4. Create dashboards
+
+agent-runnable · ~15 min · human approval required
+
+
+Build each chart around a decision the team will make. Name its population, unit, time window and filters, and distinguish a count of events from a count of users or accounts. Trace at least one chart back to raw events or a known test cohort. Label freshness and exclusions where they affect interpretation, then share with the intended audience under the project's access rules.
+
+- Canonical vendor: PostHog
+- Sources: [PostHog product analytics](https://posthog.com/docs/product-analytics)
+
+*This path ends here.*
+
+<a id="step-5"></a>
+
+### 5. Set up funnels
+
+agent-runnable · ~10 min · human approval required
+
+
+*Follows step 3.*
+
+Choose a real journey with a clear entry and completion event. Set its order, conversion window and identity rule, then test known paths: successful completion, abandonment, repetition and a return visit. Compare the funnel with those users' underlying events. Adjust the definition if alternate valid paths are being counted as abandonment, and label the included population so later comparisons use the same cohort.
+
+- Canonical vendor: PostHog
+- Sources: [PostHog product analytics](https://posthog.com/docs/product-analytics)
+
+*This path ends here.*
+
+<a id="step-6"></a>
+
+### 6. Enable session recording
+
+agent-runnable · ~5 min · human approval required
+
+
+*Follows step 2.*
+
+Choose the question a replay should answer and the screens needed to answer it. Configure masking, excluded screens, network capture, retention and viewer access within the authorized privacy scope. Enter fictional sensitive values during a test and inspect the replay and captured requests, including embedded content. If a sensitive surface cannot be masked, exclude or stop recording it using the supported controls. Enable live capture only after the test shows the intended data boundary.
+
+- Canonical vendor: PostHog
+- Sources: [PostHog session replay privacy controls](https://posthog.com/docs/session-replay/privacy) · [PostHog product analytics privacy controls](https://posthog.com/docs/product-analytics/privacy)
+
+
+## Outputs
+
+- Product analytics workspace
 
 ## Related records
 

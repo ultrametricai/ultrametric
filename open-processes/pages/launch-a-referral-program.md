@@ -3,6 +3,10 @@
 
 # Launch a referral program
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Steps](#steps-at-a-glance)
+
+## Overview
+
 Turn users into a channel: design the incentive, mint promo codes, announce to existing users, and measure referral conversion.
 
 | Field | Value |
@@ -19,38 +23,77 @@ Turn users into a channel: design the incentive, mint promo codes, announce to e
 
 Promo codes, announcement emails, and conversion tracking are API work behind a send approval. Incentive design is a judgment call.
 
-## Steps
+<a id="artifacts"></a>
 
-1. **Design the referral incentive** — human · ~45 min
+## Before you start
 
-   Define eligible referrers and recipients, the qualifying action, reward and when it becomes payable. Model cost and misuse, including self-referrals, duplicate accounts, refunds and canceled purchases. Resolve market- or reward-specific legal and tax questions, then settle the incentive and budget with the commercial owner. Produce terms precise enough to configure eligibility, redemptions and measurement.
-2. **Create promo codes** — agent-runnable · ~10 min
-
-   Translate the incentive into the billing or referral tool's supported settings: eligible products or customers, value, duration and redemption limits. Preserve the identifier connecting a redemption to its referrer. Test eligible, ineligible and repeated use with fictional accounts, checking checkout totals. Activate live codes within the agreed reward budget once their behavior matches the terms.
-
-   - Canonical vendor: Stripe
-3. **Announce to existing users** — agent-runnable · ~15 min · human approval required
-
-   Explain the program's reward, eligibility, qualifying action and participation limits in the announcement. Link to full terms and a tested referral destination. Use the program owner's agreed channel and eligible audience with current communication preferences. After sending or publication, verify the live links and a controlled referral journey, and direct questions to the team that can explain the terms.
-
-   - Canonical vendor: Mailchimp
-   - Vendor options: Mailchimp, Intercom, SendGrid
-   - Ranked market: [email-marketing](../../open-rankings/email-marketing)
-4. **Track referral conversion** — agent-runnable · ~10 min
-
-   Trace each referral from link or code to signup, qualifying action and reward. Reconcile billing records and apply the program's treatment of duplicate identities, refunds and cancellations. Separate pending, earned and issued rewards; payouts or credits must stay within the authorized terms and budget. Report conversion and cost over a defined window, isolating uncertain attribution for investigation.
-
-   - Canonical vendor: PostHog
-   - Vendor options: PostHog, Amplitude
-   - Ranked market: [product-analytics](../../open-rankings/product-analytics)
-
-## Artifacts
-
-Requires:
+Required artifacts:
 
 - Payment processor account — from [Connect a payment processor](connect-a-payment-processor.md)
 - Marketing email audience — from [Set up email marketing](set-up-email-marketing.md)
 - Product analytics workspace — from [Set up product analytics](set-up-product-analytics.md)
+
+## Steps at a glance
+
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
+
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Design the referral incentive](#step-1) | human | ~45 min | Entry step |
+| [2. Create promo codes](#step-2) | agent-runnable | ~10 min | [Step 1](#step-1) |
+| [3. Announce to existing users](#step-3) | agent-runnable; approval required | ~15 min | [Step 2](#step-2) |
+| [4. Track referral conversion](#step-4) | agent-runnable | ~10 min | [Step 3](#step-3) |
+
+<a id="steps"></a>
+
+## Step details
+
+<a id="step-1"></a>
+
+### 1. Design the referral incentive
+
+human · ~45 min
+
+
+Define eligible referrers and recipients, the qualifying action, reward and when it becomes payable. Model cost and misuse, including self-referrals, duplicate accounts, refunds and canceled purchases. Resolve market- or reward-specific legal and tax questions, then settle the incentive and budget with the commercial owner. Produce terms precise enough to configure eligibility, redemptions and measurement.
+
+<a id="step-2"></a>
+
+### 2. Create promo codes
+
+agent-runnable · ~10 min
+
+
+Translate the incentive into the billing or referral tool's supported settings: eligible products or customers, value, duration and redemption limits. Preserve the identifier connecting a redemption to its referrer. Test eligible, ineligible and repeated use with fictional accounts, checking checkout totals. Activate live codes within the agreed reward budget once their behavior matches the terms.
+
+- Canonical vendor: Stripe
+
+<a id="step-3"></a>
+
+### 3. Announce to existing users
+
+agent-runnable · ~15 min · human approval required
+
+
+Explain the program's reward, eligibility, qualifying action and participation limits in the announcement. Link to full terms and a tested referral destination. Use the program owner's agreed channel and eligible audience with current communication preferences. After sending or publication, verify the live links and a controlled referral journey, and direct questions to the team that can explain the terms.
+
+- Canonical vendor: Mailchimp
+- Vendor options: Mailchimp, Intercom, SendGrid
+- Ranked market: [email-marketing](../../open-rankings/email-marketing)
+
+<a id="step-4"></a>
+
+### 4. Track referral conversion
+
+agent-runnable · ~10 min
+
+
+Trace each referral from link or code to signup, qualifying action and reward. Reconcile billing records and apply the program's treatment of duplicate identities, refunds and cancellations. Separate pending, earned and issued rewards; payouts or credits must stay within the authorized terms and budget. Report conversion and cost over a defined window, isolating uncertain attribution for investigation.
+
+- Canonical vendor: PostHog
+- Vendor options: PostHog, Amplitude
+- Ranked market: [product-analytics](../../open-rankings/product-analytics)
+
 
 ## Related records
 

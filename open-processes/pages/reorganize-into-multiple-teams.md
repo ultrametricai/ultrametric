@@ -3,6 +3,10 @@
 
 # Reorganize into multiple teams
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Steps](#steps-at-a-glance)
+
+## Overview
+
 Configure Linear/Jira with multiple teams, cross-team dependencies, roadmap views, and sprint cadences.
 
 | Field | Value |
@@ -19,54 +23,113 @@ Configure Linear/Jira with multiple teams, cross-team dependencies, roadmap view
 
 Linear GraphQL API fully supports teams, projects, cycles, and labels. Complete setup automatable.
 
-## Steps
+<a id="artifacts"></a>
 
-1. **Create teams for each department** — agent-runnable · ~10 min · human approval required
+## Before you start
 
-   Map the agreed departments and membership roster onto the tracker, identifying teams that will be retained, renamed, split, or retired. Preserve the ownership of active projects and decide where ongoing work moves before changing the structure. Create the new teams and access groups, then move work using that mapping. Give team leads a view of their resulting backlog and call out tasks that lost an owner or became inaccessible.
-
-   - Canonical vendor: Linear
-   - Next: steps 2 and 5 — all follow this step
-2. **Configure workflow states per team** — agent-runnable · ~15 min · human approval required
-
-   Map each department's intake, execution, review, and completion stages. Keep common meanings where cross-team reporting depends on them, and allow different states where the work genuinely differs. Build an old-to-new status mapping for active issues before changing workflows. Walk current tasks through the new states with their team leads, resolve ambiguous transitions, and then move the existing queue so work retains an understandable status.
-
-   - Canonical vendor: Linear
-3. **Create cross-team projects** — agent-runnable · ~10 min · human approval required
-
-   Identify outcomes that require several departments and name one accountable project owner for each. Agree the contributing teams, deliverables, dependencies, and handoff points. Link the contributing teams' existing tasks into the shared project. Give participating leads a view that shows their responsibilities and the next cross-team dependency, and resolve any deliverable that appears to have two owners or none.
-
-   - Canonical vendor: Linear
-4. **Set up sprint cycles** — agent-runnable · ~10 min · human approval required
-
-   Choose a planning cadence that fits each team's workload and release needs. Agree how it handles unplanned work, dependencies, and tasks left unfinished at the end of a cycle. Configure the supported cycle settings and put the next set of work into them. Check capacity and dates with the team lead, then document how unfinished work moves into the next cycle and affects its plan.
-
-   - Canonical vendor: Linear
-   - Next: continue at step 6
-5. **Create Slack channel integrations** — agent-runnable · ~10 min · human approval required
-
-   *Follows step 1.*
-
-   For teams using Slack, choose which tracker events warrant a channel message and where those messages belong. Check channel membership against the linked issues' visibility and review the integration's permissions with the administrators before connecting it. Trigger a representative event and inspect the message, link access, and duplicates. Adjust noisy rules before expanding the integration, and tell the channel owner how to change or disable notifications.
-
-   - Canonical vendor: Slack
-
-   *This path ends here.*
-6. **Document process in Notion** — agent-runnable · ~15 min · human approval required
-
-   *Follows step 4.*
-
-   Document the new operating model in the team's wiki, using Notion if selected. Explain team ownership, intake routes, workflow meanings, planning cadence, and cross-team handoffs, linking the tracker views people should use. Include a concrete example of a request that crosses departments and show who owns each handoff. Ask the involved leads to resolve gaps, then share the guide and identify who updates it as the organization changes.
-
-   - Canonical vendor: Notion
-
-## Artifacts
-
-Requires:
+Required artifacts:
 
 - Project tracker — from [Set up a project tracker](set-up-a-project-tracker.md)
 - Team chat workspace — from [Set up team chat](set-up-team-chat.md)
 - Team wiki — from [Set up a team wiki](set-up-a-team-wiki.md)
+
+| Information to gather | Required by the record |
+| --- | --- |
+| team structure | Yes |
+| team names and members | Yes |
+| sprint cadence | Yes |
+
+## Steps at a glance
+
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
+
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Create teams for each department](#step-1) | agent-runnable; approval required | ~10 min | Entry step |
+| [2. Configure workflow states per team](#step-2) | agent-runnable; approval required | ~15 min | [Step 1](#step-1) |
+| [3. Create cross-team projects](#step-3) | agent-runnable; approval required | ~10 min | [Step 2](#step-2) |
+| [4. Set up sprint cycles](#step-4) | agent-runnable; approval required | ~10 min | [Step 3](#step-3) |
+| [5. Create Slack channel integrations](#step-5) | agent-runnable; approval required | ~10 min | [Step 1](#step-1) |
+| [6. Document process in Notion](#step-6) | agent-runnable; approval required | ~15 min | [Step 4](#step-4) |
+
+<a id="steps"></a>
+
+## Step details
+
+<a id="step-1"></a>
+
+### 1. Create teams for each department
+
+agent-runnable · ~10 min · human approval required
+
+
+Map the agreed departments and membership roster onto the tracker, identifying teams that will be retained, renamed, split, or retired. Preserve the ownership of active projects and decide where ongoing work moves before changing the structure. Create the new teams and access groups, then move work using that mapping. Give team leads a view of their resulting backlog and call out tasks that lost an owner or became inaccessible.
+
+- Canonical vendor: Linear
+- Next: steps 2 and 5 — all follow this step
+
+<a id="step-2"></a>
+
+### 2. Configure workflow states per team
+
+agent-runnable · ~15 min · human approval required
+
+
+Map each department's intake, execution, review, and completion stages. Keep common meanings where cross-team reporting depends on them, and allow different states where the work genuinely differs. Build an old-to-new status mapping for active issues before changing workflows. Walk current tasks through the new states with their team leads, resolve ambiguous transitions, and then move the existing queue so work retains an understandable status.
+
+- Canonical vendor: Linear
+
+<a id="step-3"></a>
+
+### 3. Create cross-team projects
+
+agent-runnable · ~10 min · human approval required
+
+
+Identify outcomes that require several departments and name one accountable project owner for each. Agree the contributing teams, deliverables, dependencies, and handoff points. Link the contributing teams' existing tasks into the shared project. Give participating leads a view that shows their responsibilities and the next cross-team dependency, and resolve any deliverable that appears to have two owners or none.
+
+- Canonical vendor: Linear
+
+<a id="step-4"></a>
+
+### 4. Set up sprint cycles
+
+agent-runnable · ~10 min · human approval required
+
+
+Choose a planning cadence that fits each team's workload and release needs. Agree how it handles unplanned work, dependencies, and tasks left unfinished at the end of a cycle. Configure the supported cycle settings and put the next set of work into them. Check capacity and dates with the team lead, then document how unfinished work moves into the next cycle and affects its plan.
+
+- Canonical vendor: Linear
+- Next: continue at step 6
+
+<a id="step-5"></a>
+
+### 5. Create Slack channel integrations
+
+agent-runnable · ~10 min · human approval required
+
+
+*Follows step 1.*
+
+For teams using Slack, choose which tracker events warrant a channel message and where those messages belong. Check channel membership against the linked issues' visibility and review the integration's permissions with the administrators before connecting it. Trigger a representative event and inspect the message, link access, and duplicates. Adjust noisy rules before expanding the integration, and tell the channel owner how to change or disable notifications.
+
+- Canonical vendor: Slack
+
+*This path ends here.*
+
+<a id="step-6"></a>
+
+### 6. Document process in Notion
+
+agent-runnable · ~15 min · human approval required
+
+
+*Follows step 4.*
+
+Document the new operating model in the team's wiki, using Notion if selected. Explain team ownership, intake routes, workflow meanings, planning cadence, and cross-team handoffs, linking the tracker views people should use. Include a concrete example of a request that crosses departments and show who owns each handoff. Ask the involved leads to resolve gaps, then share the guide and identify who updates it as the organization changes.
+
+- Canonical vendor: Notion
+
 
 ---
 

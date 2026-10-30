@@ -3,18 +3,28 @@
 
 # Ship it right
 
+[Overview](#overview) · [Process sequence](#process-sequence)
+
+## Overview
+
 The shipping discipline: spec to deploy, the release tagged and noted, the pager wired, and when something breaks, a blameless postmortem with the follow-ups filed.
 
 | Field | Value |
 | --- | --- |
 | Kind | chain |
 
-## Processes in order
+<a id="processes-in-order"></a>
 
-1. [Ship a feature (spec to deploy)](ship-a-feature-spec-to-deploy.md)
-2. [Cut a release](cut-a-release.md)
-3. [Set up on-call & incident response](set-up-on-call-incident-response.md)
-4. [Run an incident postmortem](run-an-incident-postmortem.md)
+## Process sequence
+
+Run the linked processes in the recorded chain order. Each process defines its own internal dependencies.
+
+| Order | Process | Requires | Produces |
+| --- | --- | --- | --- |
+| 1 | [Ship a feature (spec to deploy)](ship-a-feature-spec-to-deploy.md) | Code hosting organization; Project tracker; CI/CD pipeline; AI code reviewer | Not recorded |
+| 2 | [Cut a release](cut-a-release.md) | Code hosting organization; CI/CD pipeline; Error tracking project | Not recorded |
+| 3 | [Set up on-call & incident response](set-up-on-call-incident-response.md) | Error tracking project; Team chat workspace | Incident platform |
+| 4 | [Run an incident postmortem](run-an-incident-postmortem.md) | Incident platform; Project tracker; Status page | Not recorded |
 
 ---
 

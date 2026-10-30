@@ -3,6 +3,10 @@
 
 # Answer a security questionnaire
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Steps](#steps-at-a-glance)
+
+## Overview
+
 The 300-row spreadsheet standing between you and the enterprise deal: triage it, pull prior answers and policies from the knowledge base, draft with AI, put the risky answers past security review, and submit in whatever portal the customer demands.
 
 Agree the customer, service scope, deadline, file format and permitted evidence before drafting. Preserve each question identifier and required field. Return the completed local artifact with answer status, evidence location/date and review owner for unresolved rows. A response package is ready for review when all rows are accounted for and consequential answers are supported or explicitly unresolved. Portal save, final submission and customer acceptance are separate states; retain their actual evidence only when those actions are authorized and performed.
@@ -27,52 +31,109 @@ Answer drafting from your policy corpus is highly automatable; the risky answers
 - An answer-to-evidence map with qualified, unknown, conflicting and out-of-scope answers identified.
 - A reviewer queue and attachment permissions, followed by the exact submitted copy and receipt only if submission occurs.
 
-## Steps
+<a id="artifacts"></a>
 
-1. **Triage the questionnaire, deadline, and deal size** — human · ~15 min
+## Before you start
 
-   Identify the customer, service, deadline, required format and commercial significance. Separate factual questions from contractual commitments, sensitive evidence requests and subjects outside the service scope. Assign the questions to security, privacy, legal or engineering as needed and agree any deadline negotiation with the account owner. Drafting can start with the answerable sections while specialist questions remain assigned.
-
-   Count and retain the input row or field identifiers. Agree how to represent supported, qualified, unknown, conflicting and out-of-scope answers in the customer format. An unanswered mandatory field remains a blocker, not a guessed answer.
-2. **Pull prior answers and policies from the knowledge base** — agent-runnable · ~15 min
-
-   Find prior approved answers, policies, architecture records and audit reports for this service. Check dates and scope before reusing them, and distinguish implemented controls from planned work. Link likely answers to current evidence or an accountable expert. Flag missing evidence and keep confidential reports within their permitted access.
-
-   Retain the evidence document/version, relevant section, date and service scope for each reused answer. When sources conflict or an approval is stale, keep both sources in the review queue. A roadmap, draft policy or report for another service does not establish an implemented control.
-
-   - Canonical vendor: Vanta
-   - Vendor options: Vanta, Conveyor
-   - Ranked market: [compliance-automation](../../open-rankings/compliance-automation)
-   - UM's Vanta evidence identifies a route to tenant documents, policies and evidence (vanta-docs-1). Its questionnaire verdicts also record gaps: the pack does not establish live-control grounding or preservation of every customer format. Use the company's actual, dated controls and policies to answer each row, and test the original-format export. Vendor capabilities and previous answers cannot establish that a company control is currently implemented. Keep missing access or conflicting policy evidence visible for the reviewer.
-3. **Draft answers from the policy corpus** — agent-runnable · ~45 min
-
-   Answer the customer’s actual questions using current evidence. Add scope or exceptions when a yes-or-no answer would mislead, and leave unsupported claims for the relevant expert. Link consequential answers to their evidence so reviewers can verify them. Keep customer-specific wording distinct from the reusable answer bank, especially when it promises a capability or future action.
-
-   Reconcile the output against every input question and required field. Check that formulas, selections and long answers survive saving and reopening. Keep the evidence map and reviewer queue alongside the customer file if its format cannot hold them. Do not turn an assurance report, intended control or support aspiration into a stronger commitment.
-
-   Match each answer to the control actually in scope: policy intent, configured control, observed operation and independently audited coverage establish different claims. If the customer permits only Yes/No, use the permitted exception channel or ask the reviewer how to disclose the qualification; keep the row unresolved until a truthful supported answer fits the format. An internal evidence citation does not authorize sharing the underlying report.
-
-   - Cross-arena options: ChatGPT, Claude, Gemini (ai-assistants)
-4. **Security review of the risky answers** — human · ~30 min
-
-   Check assertions about encryption, access, backups, incident response, testing and assurance reports against actual systems and records. Route notification, deletion, location and liability commitments to legal or privacy review. Resolve conflicting answers and record qualified wording or exceptions. The accountable reviewer approves the final answers and evidence attachments before they are represented to the customer.
-5. **Submit in the customer’s portal** — manual form/portal · ~30 min
-
-   Submit the approved responses in the verified customer portal through the agreed customer-response process. Check for truncated text, altered formatting and new mandatory attestations. Return new representations to their reviewers before submission. Save the actual submitted copy and receipt, then route follow-up questions to the responsible experts.
-
-   Confirm the portal tenant, role and upload destination before transmitting data. Determine whether typing or uploading saves remotely; a saved draft is already a disclosure. Verify the persisted fields, attachments and any truncation before the separately approved final submission. If portal access or approval is unavailable, hand over the checked local artifact and leave submission pending.
-6. **File the final answers back into the knowledge base** — agent-runnable · ~10 min
-
-   Add the submitted answers to the knowledge base with the customer, service scope and supporting evidence. Label negotiated concessions with the customer and agreement to which they apply. Mark which product or policy changes would make an answer stale, and preserve the approved submission as the record of what this customer received.
-
-   Store reusable approved answers with their service scope, approver, approval date and evidence version. Keep customer-specific concessions separate. When evidence changes, mark affected reusable answers for review and identify dependent drafts; a previously approved answer does not automatically authorize a new disclosure.
-
-## Artifacts
-
-Requires:
+Required artifacts:
 
 - Security policies — from [Start SOC 2 Type I](start-soc-2-type-i.md)
 - Privacy policy — from [Publish privacy policy & DPA](publish-privacy-policy-dpa.md)
+
+| Information to gather | Required by the record |
+| --- | --- |
+| security policies and prior questionnaires | Yes |
+
+## Steps at a glance
+
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
+
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Triage the questionnaire, deadline, and deal size](#step-1) | human | ~15 min | Entry step |
+| [2. Pull prior answers and policies from the knowledge base](#step-2) | agent-runnable | ~15 min | [Step 1](#step-1) |
+| [3. Draft answers from the policy corpus](#step-3) | agent-runnable | ~45 min | [Step 2](#step-2) |
+| [4. Security review of the risky answers](#step-4) | human | ~30 min | [Step 3](#step-3) |
+| [5. Submit in the customer’s portal](#step-5) | manual form/portal | ~30 min | [Step 4](#step-4) |
+| [6. File the final answers back into the knowledge base](#step-6) | agent-runnable | ~10 min | [Step 5](#step-5) |
+
+<a id="steps"></a>
+
+## Step details
+
+<a id="step-1"></a>
+
+### 1. Triage the questionnaire, deadline, and deal size
+
+human · ~15 min
+
+
+Identify the customer, service, deadline, required format and commercial significance. Separate factual questions from contractual commitments, sensitive evidence requests and subjects outside the service scope. Assign the questions to security, privacy, legal or engineering as needed and agree any deadline negotiation with the account owner. Drafting can start with the answerable sections while specialist questions remain assigned.
+
+Count and retain the input row or field identifiers. Agree how to represent supported, qualified, unknown, conflicting and out-of-scope answers in the customer format. An unanswered mandatory field remains a blocker, not a guessed answer.
+
+<a id="step-2"></a>
+
+### 2. Pull prior answers and policies from the knowledge base
+
+agent-runnable · ~15 min
+
+
+Find prior approved answers, policies, architecture records and audit reports for this service. Check dates and scope before reusing them, and distinguish implemented controls from planned work. Link likely answers to current evidence or an accountable expert. Flag missing evidence and keep confidential reports within their permitted access.
+
+Retain the evidence document/version, relevant section, date and service scope for each reused answer. When sources conflict or an approval is stale, keep both sources in the review queue. A roadmap, draft policy or report for another service does not establish an implemented control.
+
+- Canonical vendor: Vanta
+- Vendor options: Vanta, Conveyor
+- Ranked market: [compliance-automation](../../open-rankings/compliance-automation)
+- UM's Vanta evidence identifies a route to tenant documents, policies and evidence (vanta-docs-1). Its questionnaire verdicts also record gaps: the pack does not establish live-control grounding or preservation of every customer format. Use the company's actual, dated controls and policies to answer each row, and test the original-format export. Vendor capabilities and previous answers cannot establish that a company control is currently implemented. Keep missing access or conflicting policy evidence visible for the reviewer.
+
+<a id="step-3"></a>
+
+### 3. Draft answers from the policy corpus
+
+agent-runnable · ~45 min
+
+
+Answer the customer’s actual questions using current evidence. Add scope or exceptions when a yes-or-no answer would mislead, and leave unsupported claims for the relevant expert. Link consequential answers to their evidence so reviewers can verify them. Keep customer-specific wording distinct from the reusable answer bank, especially when it promises a capability or future action.
+
+Reconcile the output against every input question and required field. Check that formulas, selections and long answers survive saving and reopening. Keep the evidence map and reviewer queue alongside the customer file if its format cannot hold them. Do not turn an assurance report, intended control or support aspiration into a stronger commitment.
+
+Match each answer to the control actually in scope: policy intent, configured control, observed operation and independently audited coverage establish different claims. If the customer permits only Yes/No, use the permitted exception channel or ask the reviewer how to disclose the qualification; keep the row unresolved until a truthful supported answer fits the format. An internal evidence citation does not authorize sharing the underlying report.
+
+- Cross-arena options: ChatGPT, Claude, Gemini (ai-assistants)
+
+<a id="step-4"></a>
+
+### 4. Security review of the risky answers
+
+human · ~30 min
+
+
+Check assertions about encryption, access, backups, incident response, testing and assurance reports against actual systems and records. Route notification, deletion, location and liability commitments to legal or privacy review. Resolve conflicting answers and record qualified wording or exceptions. The accountable reviewer approves the final answers and evidence attachments before they are represented to the customer.
+
+<a id="step-5"></a>
+
+### 5. Submit in the customer’s portal
+
+manual form/portal · ~30 min
+
+
+Submit the approved responses in the verified customer portal through the agreed customer-response process. Check for truncated text, altered formatting and new mandatory attestations. Return new representations to their reviewers before submission. Save the actual submitted copy and receipt, then route follow-up questions to the responsible experts.
+
+Confirm the portal tenant, role and upload destination before transmitting data. Determine whether typing or uploading saves remotely; a saved draft is already a disclosure. Verify the persisted fields, attachments and any truncation before the separately approved final submission. If portal access or approval is unavailable, hand over the checked local artifact and leave submission pending.
+
+<a id="step-6"></a>
+
+### 6. File the final answers back into the knowledge base
+
+agent-runnable · ~10 min
+
+
+Add the submitted answers to the knowledge base with the customer, service scope and supporting evidence. Label negotiated concessions with the customer and agreement to which they apply. Mark which product or policy changes would make an answer stale, and preserve the approved submission as the record of what this customer received.
+
+Store reusable approved answers with their service scope, approver, approval date and evidence version. Keep customer-specific concessions separate. When evidence changes, mark affected reusable answers for review and identify dependent drafts; a previously approved answer does not automatically authorize a new disclosure.
+
 
 ## Related records
 
