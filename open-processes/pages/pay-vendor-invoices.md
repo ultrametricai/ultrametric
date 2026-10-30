@@ -3,6 +3,10 @@
 
 # Pay vendor invoices
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Steps](#steps-at-a-glance)
+
+## Overview
+
 Review and pay all outstanding vendor invoices via wire transfer.
 
 | Field | Value |
@@ -19,37 +23,81 @@ Review and pay all outstanding vendor invoices via wire transfer.
 
 Mercury API supports wire creation. System looks up vendors, verifies balances, executes payments with approval gates.
 
-## Steps
+<a id="artifacts"></a>
 
-1. **Pull the outstanding bills** — agent-runnable · ~2 min
+## Before you start
 
-   Export outstanding bills with supplier, invoice number, amount, currency, due date and approval status. Match them to purchase records, credits and recent payments to exclude duplicate, disputed or settled invoices. Resolve missing acceptance or coding with the budget owner. The payment list should show which invoices are ready to pay, which are held and the reason for each hold.
-
-   - Canonical vendor: QuickBooks
-2. **Check account balance** — agent-runnable · ~1 min
-
-   Compare each funding account’s available balance with the proposed run, fees, scheduled debits and the cash reserve finance needs to retain. Separate pending receipts and restricted funds from usable cash. If the run would exceed available funds or the agreed cash floor, finance must choose which payments to defer or how to fund the shortfall. Use balances from a stated time.
-
-   - Canonical vendor: Mercury
-3. **Create the payment run for approved bills** — agent-runnable · ~5 min · human approval required · irreversible
-
-   Create the payment run from approved bills, matching each invoice to verified beneficiary details, currency, amount and funding account. Investigate changed bank instructions and duplicate warnings. The designated finance approver authorizes the run and the permitted bank user releases it. Link payment references and actual statuses back to the bills, leaving held or failed transfers visible for reconciliation.
-
-   - Verify: Every bill in the run shows paid and the bank debit matches the run total.
-   - Canonical vendor: Mercury
-4. **Post the payment summary to the team channel** — agent-runnable · ~1 min
-
-   Post the payment-run result to the designated private team channel: total released by currency, payment date and items still needing action. The finance owner sends the update using the payment log, with an owner for each exception. Link to controlled records, keep sensitive bank and invoice details in the finance system, and distinguish released transfers from payments still processing.
-
-   - Canonical vendor: Slack
-
-## Artifacts
-
-Requires:
+Required artifacts:
 
 - Business bank account — from [Open bank account](open-bank-account.md)
 - Accounting ledger — from [Set up accounting](set-up-accounting.md)
 - Team chat workspace — from [Set up team chat](set-up-team-chat.md)
+
+| Information to gather | Required by the record |
+| --- | --- |
+| outstanding | Yes |
+| balance | Yes |
+
+## Steps at a glance
+
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
+
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Pull the outstanding bills](#step-1) | agent-runnable | ~2 min | Entry step |
+| [2. Check account balance](#step-2) | agent-runnable | ~1 min | [Step 1](#step-1) |
+| [3. Create the payment run for approved bills](#step-3) | agent-runnable; approval required | ~5 min | [Step 2](#step-2) |
+| [4. Post the payment summary to the team channel](#step-4) | agent-runnable | ~1 min | [Step 3](#step-3) |
+
+<a id="steps"></a>
+
+## Step details
+
+<a id="step-1"></a>
+
+### 1. Pull the outstanding bills
+
+agent-runnable · ~2 min
+
+
+Export outstanding bills with supplier, invoice number, amount, currency, due date and approval status. Match them to purchase records, credits and recent payments to exclude duplicate, disputed or settled invoices. Resolve missing acceptance or coding with the budget owner. The payment list should show which invoices are ready to pay, which are held and the reason for each hold.
+
+- Canonical vendor: QuickBooks
+
+<a id="step-2"></a>
+
+### 2. Check account balance
+
+agent-runnable · ~1 min
+
+
+Compare each funding account’s available balance with the proposed run, fees, scheduled debits and the cash reserve finance needs to retain. Separate pending receipts and restricted funds from usable cash. If the run would exceed available funds or the agreed cash floor, finance must choose which payments to defer or how to fund the shortfall. Use balances from a stated time.
+
+- Canonical vendor: Mercury
+
+<a id="step-3"></a>
+
+### 3. Create the payment run for approved bills
+
+agent-runnable · ~5 min · human approval required · irreversible
+
+
+Create the payment run from approved bills, matching each invoice to verified beneficiary details, currency, amount and funding account. Investigate changed bank instructions and duplicate warnings. The designated finance approver authorizes the run and the permitted bank user releases it. Link payment references and actual statuses back to the bills, leaving held or failed transfers visible for reconciliation.
+
+- Verify: Every bill in the run shows paid and the bank debit matches the run total.
+- Canonical vendor: Mercury
+
+<a id="step-4"></a>
+
+### 4. Post the payment summary to the team channel
+
+agent-runnable · ~1 min
+
+
+Post the payment-run result to the designated private team channel: total released by currency, payment date and items still needing action. The finance owner sends the update using the payment log, with an owner for each exception. Link to controlled records, keep sensitive bank and invoice details in the finance system, and distinguish released transfers from payments still processing.
+
+- Canonical vendor: Slack
+
 
 ## Related records
 

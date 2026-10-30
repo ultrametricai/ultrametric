@@ -3,6 +3,10 @@
 
 # Unstick a delayed US visa
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Geography](#geography) · [Steps](#steps-at-a-glance)
+
+## Overview
+
 **Trigger:** Your US visa is stuck (221(g) administrative processing after the interview, or a petition sitting past posted times) while the company needs you in Silicon Valley.
 
 You cannot force a stuck visa, only push. First find where it is stuck: CEAC for the consulate, the USCIS case tracker for the petition. With 221(g) administrative processing, know what you are in: no fixed timeline, no appeal. Most cases resolve; some take months. Your moves: a documented expedite request against USCIS's published criteria, Form I-907 premium processing if your petition type qualifies (law rule [us-fed.premium-processing-timeframe](../../open-law/US-FED/us-fed-premium-processing-timeframe.json): USCIS must approve, deny, issue a notice of intent to deny, or request evidence within 15 business days for the designated I-129 classes, or refund the fee; it does nothing for a consular 221(g)), immigration counsel, and a congressional inquiry with your signed privacy release. Plan B: run the company remotely while you wait. Educational guidance, not legal advice. CEAC and the USCIS tracker sit behind bot walls, so status checks are done by hand, not API.
@@ -22,78 +26,202 @@ You cannot force a stuck visa, only push. First find where it is stuck: CEAC for
 
 The status portals are captcha-gated government surfaces, the 221(g) response and expedite case are judgment calls made with counsel, and a congressional inquiry moves only on your signed privacy release. An agent can draft the expedite memo from your records; it cannot move a consulate.
 
-## Steps
+## Before you start
 
-1. **Check the consular case status on CEAC** — manual form/portal · ~10 min
+| Information to gather | Required by the record |
+| --- | --- |
+| visa class, case number, and interview/filing dates | Yes |
+| evidence for an expedite case (financial loss, emergencies) | Optional |
 
-   - Do it yourself: [CEAC visa status check](https://ceac.state.gov/CEACStatTracker/Status.aspx)
-2. **Check the petition status on the USCIS case tracker (if a petition underlies your visa)** — manual form/portal · ~10 min
+## Geography
 
-   - Do it yourself: [USCIS case status](https://egov.uscis.gov/casestatus/landing.do)
-3. **Identify the hold: 221(g) administrative processing vs a petition backlog vs a missing-document request** — human · ~30 min
+Country rows describe the guidance recorded here. Local notes and step alternatives do not establish a complete country-specific workflow.
 
-   - Do it yourself: [State Dept: administrative processing (221(g))](https://travel.state.gov/content/travel/en/us-visas/visa-information-resources/administrative-processing-information.html)
-4. **Draft the expedite case against the published USCIS criteria (severe financial loss, emergencies, government interest)** — agent-runnable · ~45 min
+| Country | Recorded guidance | Steps with local alternatives or resolutions |
+| --- | --- | --- |
+| [India](#geo-in) | Marked not applicable | — |
+| [United Kingdom](#geo-uk) | Marked not applicable | — |
+| [Germany](#geo-de) | Marked not applicable | — |
+| [France](#geo-fr) | Marked not applicable | — |
+| [Portugal](#geo-pt) | Marked not applicable | — |
+| [Canada](#geo-ca) | Marked not applicable | — |
+| [New Zealand](#geo-nz) | Marked not applicable | — |
+| [Singapore](#geo-sg) | Marked not applicable | — |
+| [Australia](#geo-au) | Marked not applicable | — |
+| [South Korea](#geo-kr) | Marked not applicable | — |
+| [Hong Kong](#geo-hk) | Marked not applicable | — |
+| [Estonia](#geo-ee) | Marked not applicable | — |
 
-   - Do it yourself: [USCIS: how to make an expedite request](https://www.uscis.gov/forms/filing-guidance/how-to-make-an-expedite-request)
-5. **File Form I-907 premium processing if your petition classification qualifies (designated I-129/I-140 classes per USCIS)** — manual form/portal · ~30 min
+## Steps at a glance
 
-   - Do it yourself: [USCIS: premium processing eligibility](https://www.uscis.gov/forms/all-forms/how-do-i-request-premium-processing)
-6. **Engage immigration counsel on the 221(g) response and the escalation paths** — human · ~1 h
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
 
-   - Vendor options: Founder Law, Alma, Siskind Susser
-   - Ranked market: [startup-immigration](../../open-rankings/startup-immigration)
-7. **Sign the privacy release and open a congressional inquiry through your district office** — human (legally required signature) · ~45 min
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Check the consular case status on CEAC](#step-1) | manual form/portal | ~10 min | Entry step |
+| [2. Check the petition status on the USCIS case tracker (if a petition underlies your visa)](#step-2) | manual form/portal | ~10 min | [Step 1](#step-1) |
+| [3. Identify the hold: 221(g) administrative processing vs a petition backlog vs a missing-document request](#step-3) | human | ~30 min | [Step 2](#step-2) |
+| [4. Draft the expedite case against the published USCIS criteria (severe financial loss, emergencies, government interest)](#step-4) | agent-runnable | ~45 min | [Step 3](#step-3) |
+| [5. File Form I-907 premium processing if your petition classification qualifies (designated I-129/I-140 classes per USCIS)](#step-5) | manual form/portal | ~30 min | [Step 4](#step-4) |
+| [6. Engage immigration counsel on the 221(g) response and the escalation paths](#step-6) | human | ~1 h | [Step 5](#step-5) |
+| [7. Sign the privacy release and open a congressional inquiry through your district office](#step-7) | human; signature required | ~45 min | [Step 6](#step-6) |
+| [8. Set the honest plan B: run the company remotely from your current country until the visa clears](#step-8) | human | ~1 h | [Step 7](#step-7) |
+| [9. Wait for consular or USCIS action, re-checking status weekly](#step-9) | human; includes waiting | ~14 d | [Step 8](#step-8) |
 
-   - Do it yourself: [Find your U.S. representative](https://www.house.gov/representatives/find-your-representative)
-8. **Set the honest plan B: run the company remotely from your current country until the visa clears** — human · ~1 h
-9. **Wait for consular or USCIS action, re-checking status weekly** — human · ~14 d · async wait
+<a id="steps"></a>
 
-## By country
+## Step details
+
+<a id="step-1"></a>
+
+### 1. Check the consular case status on CEAC
+
+manual form/portal · ~10 min
+
+
+- Do it yourself: [CEAC visa status check](https://ceac.state.gov/CEACStatTracker/Status.aspx)
+
+<a id="step-2"></a>
+
+### 2. Check the petition status on the USCIS case tracker (if a petition underlies your visa)
+
+manual form/portal · ~10 min
+
+
+- Do it yourself: [USCIS case status](https://egov.uscis.gov/casestatus/landing.do)
+
+<a id="step-3"></a>
+
+### 3. Identify the hold: 221(g) administrative processing vs a petition backlog vs a missing-document request
+
+human · ~30 min
+
+
+- Do it yourself: [State Dept: administrative processing (221(g))](https://travel.state.gov/content/travel/en/us-visas/visa-information-resources/administrative-processing-information.html)
+
+<a id="step-4"></a>
+
+### 4. Draft the expedite case against the published USCIS criteria (severe financial loss, emergencies, government interest)
+
+agent-runnable · ~45 min
+
+
+- Do it yourself: [USCIS: how to make an expedite request](https://www.uscis.gov/forms/filing-guidance/how-to-make-an-expedite-request)
+
+<a id="step-5"></a>
+
+### 5. File Form I-907 premium processing if your petition classification qualifies (designated I-129/I-140 classes per USCIS)
+
+manual form/portal · ~30 min
+
+
+- Do it yourself: [USCIS: premium processing eligibility](https://www.uscis.gov/forms/all-forms/how-do-i-request-premium-processing)
+
+<a id="step-6"></a>
+
+### 6. Engage immigration counsel on the 221(g) response and the escalation paths
+
+human · ~1 h
+
+
+- Vendor options: Founder Law, Alma, Siskind Susser
+- Ranked market: [startup-immigration](../../open-rankings/startup-immigration)
+
+<a id="step-7"></a>
+
+### 7. Sign the privacy release and open a congressional inquiry through your district office
+
+human (legally required signature) · ~45 min
+
+
+- Do it yourself: [Find your U.S. representative](https://www.house.gov/representatives/find-your-representative)
+
+<a id="step-8"></a>
+
+### 8. Set the honest plan B: run the company remotely from your current country until the visa clears
+
+human · ~1 h
+
+
+<a id="step-9"></a>
+
+### 9. Wait for consular or USCIS action, re-checking status weekly
+
+human · ~14 d · async wait
+
+
+
+<a id="by-country"></a>
+
+## Country details
+
+<a id="geo-in"></a>
 
 ### India
 
 - Not applicable: Inherently US-inbound: Indian founders face this situation at the US consulates (where 221(g) administrative processing is famously common), not in any Indian process — the escalation paths are the US ones this situation maps. ([US State Dept: administrative processing (221(g))](https://travel.state.gov/content/travel/en/us-visas/visa-information-resources/administrative-processing-information.html))
 
+<a id="geo-uk"></a>
+
 ### United Kingdom
 
 - Not applicable: Inherently US-inbound: a UK founder hits this situation in the US embassy/consulate queue, not in any UK process — the 221(g) administrative-processing reality this situation maps is the same one from London. ([US State Dept: administrative processing (221(g))](https://travel.state.gov/content/travel/en/us-visas/visa-information-resources/administrative-processing-information.html))
+
+<a id="geo-de"></a>
 
 ### Germany
 
 - Not applicable: Inherently US-inbound: a German founder encounters this situation at the US consulate (Frankfurt handles most visa classes), not in any German process — the delay machinery and its unsticking levers are the US ones mapped here. ([US State Dept: administrative processing (221(g))](https://travel.state.gov/content/travel/en/us-visas/visa-information-resources/administrative-processing-information.html))
 
+<a id="geo-fr"></a>
+
 ### France
 
 - Not applicable: Inherently US-inbound: a French founder faces this at the US embassy in Paris, not in a French process — the 221(g) wait and the expedite/inquiry levers are the US-side machinery this situation maps. ([US State Dept: administrative processing (221(g))](https://travel.state.gov/content/travel/en/us-visas/visa-information-resources/administrative-processing-information.html))
+
+<a id="geo-pt"></a>
 
 ### Portugal
 
 - Not applicable: Inherently US-inbound: a Portuguese founder hits this situation in the US embassy queue (Lisbon processes most visa classes), not in any Portuguese process — the 221(g) administrative-processing reality is the same one this situation maps. ([US State Dept: administrative processing (221(g))](https://travel.state.gov/content/travel/en/us-visas/visa-information-resources/administrative-processing-information.html))
 
+<a id="geo-ca"></a>
+
 ### Canada
 
 - Not applicable: Inherently US-inbound: a Canadian founder encounters this situation at a US consulate or port of entry (many classes are even adjudicated at the border for Canadians), not in any Canadian process — the unsticking levers are all American. ([US State Dept: administrative processing (221(g))](https://travel.state.gov/content/travel/en/us-visas/visa-information-resources/administrative-processing-information.html))
+
+<a id="geo-nz"></a>
 
 ### New Zealand
 
 - Not applicable: Inherently US-inbound: an NZ founder hits this situation in the US embassy/consulate queue, not in any NZ process — the 221(g) administrative-processing reality this situation maps is the same one from Auckland. ([US State Dept: administrative processing (221(g))](https://travel.state.gov/content/travel/en/us-visas/visa-information-resources/administrative-processing-information.html))
 
+<a id="geo-sg"></a>
+
 ### Singapore
 
 - Not applicable: Inherently US-inbound: a Singapore founder hits this situation in the US embassy queue, not in any Singapore process — the administrative-processing reality this situation maps is the same one from Singapore. ([MOM — Employment Pass (the local work-pass regime)](https://www.mom.gov.sg/passes-and-permits/employment-pass))
+
+<a id="geo-au"></a>
 
 ### Australia
 
 - Not applicable: Inherently US-inbound: an Australian founder hits this situation in the US consulate queue, not in any Australian process — the 221(g) administrative-processing reality this situation maps is the same one from Sydney or Melbourne. ([US State Dept: administrative processing (221(g))](https://travel.state.gov/content/travel/en/us-visas/visa-information-resources/administrative-processing-information.html))
 
+<a id="geo-kr"></a>
+
 ### South Korea
 
 - Not applicable: Inherently US-inbound: the situation is about USCIS and consular queues. Korean work-visa delays are a different process, worked through HiKorea and the immigration offices. ([HiKorea (immigration e-government)](https://www.hikorea.go.kr/))
 
+<a id="geo-hk"></a>
+
 ### Hong Kong
 
 - Not applicable: Inherently US-inbound: the situation is about USCIS and consular queues. Hong Kong work-visa delays are a different process, worked with the Immigration Department under the GEP and related schemes. ([Immigration Department — GEP](https://www.immd.gov.hk/eng/services/visas/GEP.html))
+
+<a id="geo-ee"></a>
 
 ### Estonia
 
@@ -101,7 +229,7 @@ The status portals are captcha-gated government surfaces, the 221(g) response an
 
 ## Related records
 
-- Runs as a step of [Handle an employee's visa denial or RFE](handle-an-employee-s-visa-denial-or-rfe.md)
+- Runs as a step of [Respond to an employee work-authorization refusal or evidence request](handle-an-employee-s-visa-denial-or-rfe.md)
 
 ---
 

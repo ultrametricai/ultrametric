@@ -3,6 +3,10 @@
 
 # Set up cap table
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Geography](#geography) · [Steps](#steps-at-a-glance) · [Outputs](#outputs)
+
+## Overview
+
 Track every investment on a real cap table from day one — even informal rounds.
 
 | Field | Value |
@@ -19,80 +23,158 @@ Track every investment on a real cap table from day one — even informal rounds
 
 Carta integration is planned. Cap table setup requires manual data entry or document upload.
 
-## Steps
+<a id="artifacts"></a>
 
-1. **Choose cap table tool** — human · ~10 min
+## Before you start
 
-   Compare cap-table tools for the company’s jurisdiction, security types and expected financing or employee-equity activity. Examine permissions, transaction history, document links, modeling and exports with the people maintaining the records. Establish which legal registers and filings need separate maintenance, then choose a system that fits those responsibilities and the existing documents.
+Required artifacts:
 
-   - Vendor options: Carta, Pulley
-   - Ranked market: [equity-management](../../open-rankings/equity-management)
-2. **Enter founding shares** — manual form/portal · ~15 min
+- Founder stock issuance — from [Incorporate the company](incorporate-c-corp.md)
 
-   Reconstruct founding ownership from executed issuances, corporate approvals, consideration evidence and applicable registers. Match each holder to share class, quantity, issue date and restrictions. Separate authorized capital, issued shares and the unallocated reserve. The equity administrator enters supported opening holdings and takes gaps or conflicting documents to counsel, using the appropriate local register or depository process.
+| Information to gather | Required by the record |
+| --- | --- |
+| incorporation_date | Yes |
 
-   - Produces: Cap table record
+## Geography
 
-   Options:
-     - **Default — Enter founding shares** — manual form/portal · ~15 min
+Country rows describe the guidance recorded here. Local notes and step alternatives do not establish a complete country-specific workflow.
 
-       Enter founding issuances from the final corporate records, matching holders, classes, quantities, consideration, issue dates and vesting or repurchase terms. Reconcile totals to the capitalization authorized and actually issued. Link entries to their documents and resolve unexplained balances before using the table for fundraising or grants.
-     - **India - dematerialised shares** — manual form/portal
+| Country | Recorded guidance | Steps with local alternatives or resolutions |
+| --- | --- | --- |
+| [India](#geo-in) | Local analog note; step alternative | [2](#step-2) |
+| [United Kingdom](#geo-uk) | Local analog note; step alternative | [2](#step-2) |
+| [Germany](#geo-de) | Local analog note; step alternative | [2](#step-2) |
+| [Singapore](#geo-sg) | Local analog note | — |
 
-       When: Recording founding shares in India
+## Steps at a glance
 
-       Have the Indian company secretary establish whether dematerialisation rules apply to the company and securities. Assemble holder identities, classes, quantities and allotment evidence for the required depository or registrar process. The responsible company officer authorizes any instructions affecting holdings. Reconcile the resulting identifiers and balances to the company’s records, keeping unresolved physical or electronic positions visible.
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
 
-       - Do it yourself: [CDSL (dematerialisation)](https://www.cdslindia.com/)
-     - **UK - register of members + PSC**
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Choose cap table tool](#step-1) | human | ~10 min | Entry step |
+| [2. Enter founding shares](#step-2) | manual form/portal | ~15 min | [Step 1](#step-1) |
+| [3. Record investments/SAFEs](#step-3) | manual form/portal | ~20 min | [Step 2](#step-2) |
+| [4. Verify cap table](#step-4) | human; approval required | ~15 min | [Step 3](#step-3) |
 
-       When: Recording founding shares in the United Kingdom
+<a id="steps"></a>
 
-       Reconcile UK founding holdings to the register of members and executed allotments, including member identities, classes, quantities and amounts paid. Assess PSC reporting separately from the relevant rights and confirmed control information. The authorized officer updates registers and submits required Companies House information, keeping the software cap table aligned with the underlying legal records.
+## Step details
 
-       - Do it yourself: [PSC register guidance](https://www.gov.uk/guidance/people-with-significant-control-pscs)
-       - Sources: [Companies Act 2006 section 113](https://www.legislation.gov.uk/ukpga/2006/46/section/113?view=plain) · [Companies House PSC guidance](https://www.gov.uk/government/publications/people-with-significant-control-summary-guidance/summary-guidance-for-companies-register-of-people-with-significant-control-pscs)
-     - **Germany - Gesellschafterliste** — human
+<a id="step-1"></a>
 
-       When: Recording founding shares in Germany
+### 1. Choose cap table tool
 
-       Compare the German GmbH’s founding ownership with formation documents and the filed shareholder list, checking identities, numbered interests, nominal amounts and participation details. Determine who must update the list under the transaction: section 40 gives duties to managing directors and, in relevant cases, an involved notary. Reconcile the working cap table to the resulting filed record.
+human · ~10 min
 
-       - Do it yourself: [s.40 GmbHG - Gesellschafterliste](https://www.gesetze-im-internet.de/gmbhg/__40.html)
-3. **Record investments/SAFEs** — manual form/portal · ~20 min
 
-   Record investments from executed agreements and funding evidence, including investor, amount, instrument version, conversion terms and side-letter rights. Keep outstanding convertibles separate from issued equity and identify modeled conversion scenarios as projections. The authorized equity administrator reconciles totals to finance’s receipts and resolves differences between the records and controlling documents.
-4. **Verify cap table** — human · ~15 min · human approval required
+Compare cap-table tools for the company’s jurisdiction, security types and expected financing or employee-equity activity. Examine permissions, transaction history, document links, modeling and exports with the people maintaining the records. Establish which legal registers and filings need separate maintenance, then choose a system that fits those responsibilities and the existing documents.
 
-   Trace the opening cap table to the charter, issuance approvals, agreements, consideration evidence and local ownership records. Reconcile class totals, option reserve, outstanding convertibles and fully diluted assumptions for omissions or double counting. Resolve unexplained differences with the equity owner and send legal defects to counsel; correcting a software entry alone cannot repair deficient corporate authority.
+- Vendor options: Carta, Pulley
+- Ranked market: [equity-management](../../open-rankings/equity-management)
 
-## By country
+<a id="step-2"></a>
+
+### 2. Enter founding shares
+
+manual form/portal · ~15 min
+
+| Option | Applies when |
+| --- | --- |
+| Default — Enter founding shares | Recorded default |
+| India - dematerialised shares | Recording founding shares in India |
+| UK - register of members + PSC | Recording founding shares in the United Kingdom |
+| Germany - Gesellschafterliste | Recording founding shares in Germany |
+
+
+Reconstruct founding ownership from executed issuances, corporate approvals, consideration evidence and applicable registers. Match each holder to share class, quantity, issue date and restrictions. Separate authorized capital, issued shares and the unallocated reserve. The equity administrator enters supported opening holdings and takes gaps or conflicting documents to counsel, using the appropriate local register or depository process.
+
+- Produces: Cap table record
+
+Options:
+  - **Default — Enter founding shares** — manual form/portal · ~15 min
+
+    Enter founding issuances from the final corporate records, matching holders, classes, quantities, consideration, issue dates and vesting or repurchase terms. Reconcile totals to the capitalization authorized and actually issued. Link entries to their documents and resolve unexplained balances before using the table for fundraising or grants.
+  - **India - dematerialised shares** — manual form/portal
+
+    When: Recording founding shares in India
+
+    Have the Indian company secretary establish whether dematerialisation rules apply to the company and securities. Assemble holder identities, classes, quantities and allotment evidence for the required depository or registrar process. The responsible company officer authorizes any instructions affecting holdings. Reconcile the resulting identifiers and balances to the company’s records, keeping unresolved physical or electronic positions visible.
+
+    - Do it yourself: [CDSL (dematerialisation)](https://www.cdslindia.com/)
+  - **UK - register of members + PSC**
+
+    When: Recording founding shares in the United Kingdom
+
+    Reconcile UK founding holdings to the register of members and executed allotments, including member identities, classes, quantities and amounts paid. Assess PSC reporting separately from the relevant rights and confirmed control information. The authorized officer updates registers and submits required Companies House information, keeping the software cap table aligned with the underlying legal records.
+
+    - Do it yourself: [PSC register guidance](https://www.gov.uk/guidance/people-with-significant-control-pscs)
+    - Sources: [Companies Act 2006 section 113](https://www.legislation.gov.uk/ukpga/2006/46/section/113?view=plain) · [Companies House PSC guidance](https://www.gov.uk/government/publications/people-with-significant-control-summary-guidance/summary-guidance-for-companies-register-of-people-with-significant-control-pscs)
+  - **Germany - Gesellschafterliste** — human
+
+    When: Recording founding shares in Germany
+
+    Compare the German GmbH’s founding ownership with formation documents and the filed shareholder list, checking identities, numbered interests, nominal amounts and participation details. Determine who must update the list under the transaction: section 40 gives duties to managing directors and, in relevant cases, an involved notary. Reconcile the working cap table to the resulting filed record.
+
+    - Do it yourself: [s.40 GmbHG - Gesellschafterliste](https://www.gesetze-im-internet.de/gmbhg/__40.html)
+
+<a id="step-3"></a>
+
+### 3. Record investments/SAFEs
+
+manual form/portal · ~20 min
+
+
+Record investments from executed agreements and funding evidence, including investor, amount, instrument version, conversion terms and side-letter rights. Keep outstanding convertibles separate from issued equity and identify modeled conversion scenarios as projections. The authorized equity administrator reconciles totals to finance’s receipts and resolves differences between the records and controlling documents.
+
+<a id="step-4"></a>
+
+### 4. Verify cap table
+
+human · ~15 min · human approval required
+
+
+Trace the opening cap table to the charter, issuance approvals, agreements, consideration evidence and local ownership records. Reconcile class totals, option reserve, outstanding convertibles and fully diluted assumptions for omissions or double counting. Resolve unexplained differences with the equity owner and send legal defects to counsel; correcting a software entry alone cannot repair deficient corporate authority.
+
+
+<a id="by-country"></a>
+
+## Country details
+
+<a id="geo-us"></a>
+
+### United States
+
+Track every investment on a real cap table from day one — even informal rounds.
+
+
+<a id="geo-in"></a>
 
 ### India
 
 - Since the 2023 MCA amendment, private companies (other than small ones) must DEMATERIALISE their shares — an ISIN via NSDL/CDSL, shares held in demat accounts, and half-yearly PAS-6 reconciliation — so the 'cap table' has an official electronic backbone. ([CDSL (dematerialisation)](https://www.cdslindia.com/))
 
+<a id="geo-uk"></a>
+
 ### United Kingdom
 
 - The legal record is the company's own register of members plus the public PSC (people with significant control) register at Companies House — cap-table software mirrors those registers, not the other way round. ([PSC register guidance](https://www.gov.uk/guidance/people-with-significant-control-pscs))
+
+<a id="geo-de"></a>
 
 ### Germany
 
 - The cap table has one authoritative form: the Gesellschafterliste filed in the Handelsregister (§ 40 GmbHG), updated by the notary after every transfer — only listed holders count as shareholders against the company. ([§ 40 GmbHG — Gesellschafterliste](https://www.gesetze-im-internet.de/gmbhg/__40.html))
 
+<a id="geo-sg"></a>
+
 ### Singapore
 
 - For a private company the authoritative register of members is ACRA's electronic register — allotments take effect only when ACRA updates it (law rule [sg.allotment-return-constitutive](../../open-law/SG/sg-allotment-return-constitutive.json)), and transfers the same (law rule [sg.share-transfer-constitutive](../../open-law/SG/sg-share-transfer-constitutive.json)) — so cap-table software mirrors Bizfile, not the other way round. ([Bizfile (ACRA register of members)](https://www.bizfile.gov.sg/))
 
-## Artifacts
-
-Produces:
+## Outputs
 
 - Cap table record
-
-Requires:
-
-- Founder stock issuance — from [Incorporate C-Corp](incorporate-c-corp.md)
 
 ## Related records
 

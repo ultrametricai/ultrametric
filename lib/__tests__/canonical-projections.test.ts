@@ -121,7 +121,7 @@ describe('canonical catalog consumer contract', () => {
     // (the non-profit and business-phone-number processes) sit beside them.
     const retained = new Set(catalog.map(item => item.record.id))
     for (const id of importedIdentities.ids) expect(retained.has(id), `historical identity ${id}`).toBe(true)
-    expect(catalog).toHaveLength(186)
+    expect(catalog).toHaveLength(256)
     expect(catalog.filter(item => item.taskIds)).toHaveLength(24)
     const situations = catalog.filter(item => item.record.metadata.kind === 'situation')
     expect(situations).toHaveLength(33)

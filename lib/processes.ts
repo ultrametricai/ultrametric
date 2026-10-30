@@ -282,6 +282,9 @@ export const GEO_RESOLUTION_COUNTRIES = ['US', ...GEO_NOTE_COUNTRIES] as const
 export type GeoResolutionCountry = (typeof GEO_RESOLUTION_COUNTRIES)[number]
 
 export const StepGeoResolutionSchema = z.object({
+  // These details apply to this country's mechanics, rather than the shared step.
+  verify: StepVerifySchema.optional(),
+  cost: StepCostSchema.optional(),
   country: z.enum(GEO_RESOLUTION_COUNTRIES),
   kind: z.enum(GEO_NOTE_KINDS),
   // The country's concrete mechanics for this abstract step — the text that was (or would have

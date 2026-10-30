@@ -3,6 +3,10 @@
 
 # Create a subscription product
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Steps](#steps-at-a-glance)
+
+## Overview
+
 Create a subscription product and price for recurring billing.
 
 | Field | Value |
@@ -19,31 +23,63 @@ Create a subscription product and price for recurring billing.
 
 Products and prices are first-class API objects — an agent creates both in one pass.
 
-## Steps
+<a id="artifacts"></a>
 
-1. **Decide the price point and billing interval** — human · ~10 min
+## Before you start
 
-   Specify the subscription's included service, charging unit, amount, currency, interval and renewal commitment. Include trial or discount terms and the reviewed tax treatment. Work through a representative checkout and renewal total to expose ambiguity. Settle the commercial choices in one pricing specification that both billing setup and customer-facing copy can follow.
-2. **Create the product and recurring price in billing** — agent-runnable · ~2 min
-
-   Create the product and recurring price in the billing service's test catalog from the pricing specification. Read back the name, unit, currency, amount and interval, then map the saved identifiers into application configuration. Resolve mismatches before releasing the catalog under billing authority and connecting the price to a live purchase path.
-
-   - Canonical vendor: Stripe Billing
-   - Vendor options: Stripe Billing, Chargebee, Recurly
-   - Ranked market: [billing-subscriptions](../../open-rankings/billing-subscriptions)
-   - Sources: [Manage products and prices](https://docs.stripe.com/products-prices/manage-prices)
-3. **Run a test subscription end-to-end** — agent-runnable · ~3 min
-
-   Use a fictional customer to complete the intended purchase flow in the billing service's test environment. Check price, invoice, confirmation and application access, then exercise renewal, payment failure and cancellation with supported test tools. Record reproducible identifiers and expected versus observed results. Resolve mismatches before enabling live purchases or real charges.
-
-   - Canonical vendor: Stripe Billing
-   - Sources: [Test your Billing integration](https://docs.stripe.com/billing/testing)
-
-## Artifacts
-
-Requires:
+Required artifacts:
 
 - Payment processor account — from [Connect a payment processor](connect-a-payment-processor.md)
+
+## Steps at a glance
+
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
+
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Decide the price point and billing interval](#step-1) | human | ~10 min | Entry step |
+| [2. Create the product and recurring price in billing](#step-2) | agent-runnable | ~2 min | [Step 1](#step-1) |
+| [3. Run a test subscription end-to-end](#step-3) | agent-runnable | ~3 min | [Step 2](#step-2) |
+
+<a id="steps"></a>
+
+## Step details
+
+<a id="step-1"></a>
+
+### 1. Decide the price point and billing interval
+
+human · ~10 min
+
+
+Specify the subscription's included service, charging unit, amount, currency, interval and renewal commitment. Include trial or discount terms and the reviewed tax treatment. Work through a representative checkout and renewal total to expose ambiguity. Settle the commercial choices in one pricing specification that both billing setup and customer-facing copy can follow.
+
+<a id="step-2"></a>
+
+### 2. Create the product and recurring price in billing
+
+agent-runnable · ~2 min
+
+
+Create the product and recurring price in the billing service's test catalog from the pricing specification. Read back the name, unit, currency, amount and interval, then map the saved identifiers into application configuration. Resolve mismatches before releasing the catalog under billing authority and connecting the price to a live purchase path.
+
+- Canonical vendor: Stripe Billing
+- Vendor options: Stripe Billing, Chargebee, Recurly
+- Ranked market: [billing-subscriptions](../../open-rankings/billing-subscriptions)
+- Sources: [Manage products and prices](https://docs.stripe.com/products-prices/manage-prices)
+
+<a id="step-3"></a>
+
+### 3. Run a test subscription end-to-end
+
+agent-runnable · ~3 min
+
+
+Use a fictional customer to complete the intended purchase flow in the billing service's test environment. Check price, invoice, confirmation and application access, then exercise renewal, payment failure and cancellation with supported test tools. Record reproducible identifiers and expected versus observed results. Resolve mismatches before enabling live purchases or real charges.
+
+- Canonical vendor: Stripe Billing
+- Sources: [Test your Billing integration](https://docs.stripe.com/billing/testing)
+
 
 ## Related records
 

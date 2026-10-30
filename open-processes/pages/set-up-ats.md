@@ -3,6 +3,10 @@
 
 # Set up ATS
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Steps](#steps-at-a-glance) · [Outputs](#outputs)
+
+## Overview
+
 Configure ATS for hiring pipeline, create job postings, and set up interview workflows.
 
 | Field | Value |
@@ -19,53 +23,104 @@ Configure ATS for hiring pipeline, create job postings, and set up interview wor
 
 ATS platforms have APIs for job/candidate management. Initial configuration and interview design need human input.
 
-## Steps
+<a id="artifacts"></a>
 
-1. **Create ATS account** — manual form/portal · ~15 min · human approval required
+## Before you start
 
-   Set up the ATS around the hiring team, planned roles and candidate-data requirements. Check the selected subscription’s access, retention and export controls before committing to it. Assign recruiting administration and connect the company’s existing identity setup where supported. Open the first requisition and check that recruiters and interviewers see the information their roles require, with sensitive candidate details restricted appropriately.
-
-   - Produces: Applicant tracking system
-   - Canonical vendor: Lever
-   - Vendor options: Lever, Greenhouse, Ashby, Workable, Recruitee
-   - Ranked market: [applicant-tracking](../../open-rankings/applicant-tracking)
-2. **Configure interview stages** — agent-runnable · ~15 min · human approval required
-
-   Define the entry condition, evaluator and decision for each interview stage. Distinguish scheduling states from assessment outcomes and make the handoff between recruiter, interviewer and hiring manager explicit. Check how a candidate moves forward, pauses, withdraws or is rejected. Resolve ambiguous stages with the hiring manager before the team starts using them.
-
-   - Canonical vendor: Lever
-3. **Create job postings** — agent-runnable · ~20 min · human approval required
-
-   Draft the posting from the approved role, reporting line, location and compensation guidance. Separate essential skills from preferences and include the application route and accommodation contact. Resolve factual questions with the hiring manager and local posting requirements with the people lead before publication. Check that the published role accepts applications into the right requisition and reaches the responsible recruiter.
-
-   - Canonical vendor: Lever
-   - Sources: [EEOC: Recruiting, hiring or promoting employees](https://www.eeoc.gov/employers/small-business/3-im-recruiting-hiring-or-promoting-employees)
-   - Next: steps 4 and 5 — all follow this step
-4. **Set up scorecard templates** — agent-runnable · ~15 min · human approval required
-
-   Build the scorecard around observable job competencies, with examples explaining the rating levels. Assign each criterion to an interviewer and leave room for evidence, concerns and unanswered questions. Walk through a sample response with the hiring manager to expose ambiguous or overlapping criteria. Use the supporting examples in the hiring debrief to explain how each rating was reached.
-
-   - Canonical vendor: Lever
-   - Sources: [EEOC: Recruiting, hiring or promoting employees](https://www.eeoc.gov/employers/small-business/3-im-recruiting-hiring-or-promoting-employees)
-
-   *This path ends here.*
-5. **Connect careers page** — manual form/portal · ~10 min · human approval required
-
-   *Follows step 3.*
-
-   Connect the published roles to the company’s careers page using the ATS and website’s supported approach. Check role titles, locations, links and the destination requisition with recruiting before the website owner releases the change. Walk through the application route on desktop and mobile, including submission acknowledgement and recruiter receipt. Assign responsibility for closing or removing filled roles from both places.
-
-   - Canonical vendor: Lever
-
-## Artifacts
-
-Produces:
-
-- Applicant tracking system
-
-Requires:
+Required artifacts:
 
 - Company website — from [Generate a website](generate-a-website.md)
+
+| Information to gather | Required by the record |
+| --- | --- |
+| hiring open roles | Yes |
+| hiring interview stages | Yes |
+
+## Steps at a glance
+
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
+
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Create ATS account](#step-1) | manual form/portal; approval required | ~15 min | Entry step |
+| [2. Configure interview stages](#step-2) | agent-runnable; approval required | ~15 min | [Step 1](#step-1) |
+| [3. Create job postings](#step-3) | agent-runnable; approval required | ~20 min | [Step 2](#step-2) |
+| [4. Set up scorecard templates](#step-4) | agent-runnable; approval required | ~15 min | [Step 3](#step-3) |
+| [5. Connect careers page](#step-5) | manual form/portal; approval required | ~10 min | [Step 3](#step-3) |
+
+<a id="steps"></a>
+
+## Step details
+
+<a id="step-1"></a>
+
+### 1. Create ATS account
+
+manual form/portal · ~15 min · human approval required
+
+
+Set up the ATS around the hiring team, planned roles and candidate-data requirements. Check the selected subscription’s access, retention and export controls before committing to it. Assign recruiting administration and connect the company’s existing identity setup where supported. Open the first requisition and check that recruiters and interviewers see the information their roles require, with sensitive candidate details restricted appropriately.
+
+- Produces: Applicant tracking system
+- Canonical vendor: Lever
+- Vendor options: Lever, Greenhouse, Ashby, Workable, Recruitee
+- Ranked market: [applicant-tracking](../../open-rankings/applicant-tracking)
+
+<a id="step-2"></a>
+
+### 2. Configure interview stages
+
+agent-runnable · ~15 min · human approval required
+
+
+Define the entry condition, evaluator and decision for each interview stage. Distinguish scheduling states from assessment outcomes and make the handoff between recruiter, interviewer and hiring manager explicit. Check how a candidate moves forward, pauses, withdraws or is rejected. Resolve ambiguous stages with the hiring manager before the team starts using them.
+
+- Canonical vendor: Lever
+
+<a id="step-3"></a>
+
+### 3. Create job postings
+
+agent-runnable · ~20 min · human approval required
+
+
+Draft the posting from the approved role, reporting line, location and compensation guidance. Separate essential skills from preferences and include the application route and accommodation contact. Resolve factual questions with the hiring manager and local posting requirements with the people lead before publication. Check that the published role accepts applications into the right requisition and reaches the responsible recruiter.
+
+- Canonical vendor: Lever
+- Sources: [EEOC: Recruiting, hiring or promoting employees](https://www.eeoc.gov/employers/small-business/3-im-recruiting-hiring-or-promoting-employees)
+- Next: steps 4 and 5 — all follow this step
+
+<a id="step-4"></a>
+
+### 4. Set up scorecard templates
+
+agent-runnable · ~15 min · human approval required
+
+
+Build the scorecard around observable job competencies, with examples explaining the rating levels. Assign each criterion to an interviewer and leave room for evidence, concerns and unanswered questions. Walk through a sample response with the hiring manager to expose ambiguous or overlapping criteria. Use the supporting examples in the hiring debrief to explain how each rating was reached.
+
+- Canonical vendor: Lever
+- Sources: [EEOC: Recruiting, hiring or promoting employees](https://www.eeoc.gov/employers/small-business/3-im-recruiting-hiring-or-promoting-employees)
+
+*This path ends here.*
+
+<a id="step-5"></a>
+
+### 5. Connect careers page
+
+manual form/portal · ~10 min · human approval required
+
+
+*Follows step 3.*
+
+Connect the published roles to the company’s careers page using the ATS and website’s supported approach. Check role titles, locations, links and the destination requisition with recruiting before the website owner releases the change. Walk through the application route on desktop and mobile, including submission acknowledgement and recruiter receipt. Assign responsibility for closing or removing filled roles from both places.
+
+- Canonical vendor: Lever
+
+
+## Outputs
+
+- Applicant tracking system
 
 ## Related records
 

@@ -3,21 +3,31 @@
 
 # Ship v1
 
+[Overview](#overview) · [Process sequence](#process-sequence)
+
+## Overview
+
 Repo up and agent-ready, cloud and CI/CD wired, AI review on every pull request, errors and analytics watched from the first deploy.
 
 | Field | Value |
 | --- | --- |
 | Kind | chain |
 
-## Processes in order
+<a id="processes-in-order"></a>
 
-1. [Set up a code hosting org](set-up-a-code-hosting-org.md)
-2. [Make the repo agent-ready](make-the-repo-agent-ready.md)
-3. [Set up cloud infrastructure](set-up-cloud-infrastructure.md)
-4. [Set up CI/CD](set-up-ci-cd.md)
-5. [Set up AI code review](set-up-ai-code-review.md)
-6. [Set up error tracking](set-up-error-tracking.md)
-7. [Set up product analytics](set-up-product-analytics.md)
+## Process sequence
+
+Run the linked processes in the recorded chain order. Each process defines its own internal dependencies.
+
+| Order | Process | Requires | Produces |
+| --- | --- | --- | --- |
+| 1 | [Set up a code hosting org](set-up-a-code-hosting-org.md) | Not recorded | Code hosting organization |
+| 2 | [Make the repo agent-ready](make-the-repo-agent-ready.md) | Code hosting organization | Not recorded |
+| 3 | [Set up cloud infrastructure](set-up-cloud-infrastructure.md) | Not recorded | Cloud infrastructure |
+| 4 | [Set up CI/CD](set-up-ci-cd.md) | Code hosting organization | CI/CD pipeline |
+| 5 | [Set up AI code review](set-up-ai-code-review.md) | Code hosting organization | AI code reviewer |
+| 6 | [Set up error tracking](set-up-error-tracking.md) | Team chat workspace; Code hosting organization | Error tracking project |
+| 7 | [Set up product analytics](set-up-product-analytics.md) | Code hosting organization | Product analytics workspace |
 
 ---
 

@@ -3,6 +3,10 @@
 
 # Absorb the loss of your biggest customer
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Steps](#steps-at-a-glance)
+
+## Overview
+
 **Trigger:** Your biggest customer gives notice: non-renewal, termination for convenience, or an acquisition that ends the account your revenue leans on.
 
 Your biggest customer is leaving. Get the real reason first; a budget cut, a lost champion, a product gap, and an acquisition are different problems with different saves. Read the agreement before the next call: notice and renewal mechanics, committed payments, and transition obligations run on the contract's clock, not yours. Size the hole: the customer's share of revenue, the runway on the new numbers, and the cost actions each scenario triggers. Make one disciplined save attempt with an executive sponsor and a concession you can honor. Tell the board and investors yourself, with the concentration number and the plan; most investor agreements carry information rights (the NVCA model documents show the standard shape), and the story travels faster than the board deck. Then replan the pipeline: the gap is a quota, and the next deals should respect a concentration ceiling so one logo cannot repeat this. Educational guidance, not legal advice.
@@ -22,38 +26,110 @@ Your biggest customer is leaving. Get the real reason first; a budget cut, a los
 
 The reason-finding, the save attempt, and the board conversation are founder work; an agent can read the agreement's notice and renewal terms, size the concentration and runway scenarios, and rebuild the pipeline targets from the CRM.
 
-## Steps
+## Before you start
 
-1. **Get the real reason from the economic buyer: a budget cut, a lost champion, a product gap, and an acquisition are different problems** — human · ~45 min
-2. **Read the agreement before the next call: notice and renewal mechanics, committed payments, termination-for-convenience terms, and transition obligations** — human · ~30 min
-3. **Size the hole: the customer's share of revenue, the runway on the new numbers, and the cost actions each scenario triggers** — agent-runnable · ~45 min
+| Information to gather | Required by the record |
+| --- | --- |
+| the customer agreement (notice, renewal, termination, and committed-payment terms) | Yes |
+| revenue by customer, plus current cash and burn | Yes |
 
-   - Vendor options: QuickBooks, Xero
-   - Ranked market: [accounting](../../open-rankings/accounting)
-   - Next: steps 4, 6 and 8 — all follow this step
-4. **Make one disciplined save attempt: an executive sponsor and a concession package you can actually honor** — human · ~1 h
+## Steps at a glance
 
-   - Runs the process [Save a churning customer](save-a-churning-customer.md)
-5. **If the save lands on changed terms, negotiate the renewal agreement properly rather than concede by email** — human · ~45 min · hard to undo
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
 
-   When: The save attempt lands on changed terms
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Get the real reason from the economic buyer: a budget cut, a lost champion, a product gap, and an acquisition are different problems](#step-1) | human | ~45 min | Entry step |
+| [2. Read the agreement before the next call: notice and renewal mechanics, committed payments, termination-for-convenience terms, and transition obligations](#step-2) | human | ~30 min | [Step 1](#step-1) |
+| [3. Size the hole: the customer's share of revenue, the runway on the new numbers, and the cost actions each scenario triggers](#step-3) | agent-runnable | ~45 min | [Step 2](#step-2) |
+| [4. Make one disciplined save attempt: an executive sponsor and a concession package you can actually honor](#step-4) | human | ~1 h | [Step 3](#step-3) |
+| [5. If the save lands on changed terms, negotiate the renewal agreement properly rather than concede by email](#step-5) | human | ~45 min | [Step 4](#step-4) |
+| [6. Tell the board and investors yourself: the concentration number, the plan, and whatever your information-rights agreements require](#step-6) | human | ~45 min | [Step 3](#step-3) |
+| [7. Start the cost actions the scenario math triggered, now rather than after two optimistic quarters](#step-7) | human | ~1 h | [Step 6](#step-6) |
+| [8. Replan the pipeline to refill the gap: coverage targets, a restarted outbound motion, and a concentration ceiling the next deals respect](#step-8) | agent-runnable | ~1 h | [Step 3](#step-3) |
 
-   - Runs the process [Negotiate SaaS agreement](negotiate-saas-agreement.md)
+<a id="steps"></a>
 
-   *This path ends here.*
-6. **Tell the board and investors yourself: the concentration number, the plan, and whatever your information-rights agreements require** — human · ~45 min · hard to undo
+## Step details
 
-   *Follows step 3.*
+<a id="step-1"></a>
 
-   - Do it yourself: [NVCA model legal documents (investor information rights)](https://nvca.org/model-legal-documents/)
-7. **Start the cost actions the scenario math triggered, now rather than after two optimistic quarters** — human · ~1 h
+### 1. Get the real reason from the economic buyer: a budget cut, a lost champion, a product gap, and an acquisition are different problems
 
-   *This path ends here.*
-8. **Replan the pipeline to refill the gap: coverage targets, a restarted outbound motion, and a concentration ceiling the next deals respect** — agent-runnable · ~1 h
+human · ~45 min
 
-   *Follows step 3.*
 
-   - Runs the process [Run outbound sales sequences](run-outbound-sales-sequences.md)
+<a id="step-2"></a>
+
+### 2. Read the agreement before the next call: notice and renewal mechanics, committed payments, termination-for-convenience terms, and transition obligations
+
+human · ~30 min
+
+
+<a id="step-3"></a>
+
+### 3. Size the hole: the customer's share of revenue, the runway on the new numbers, and the cost actions each scenario triggers
+
+agent-runnable · ~45 min
+
+
+- Vendor options: QuickBooks, Xero
+- Ranked market: [accounting](../../open-rankings/accounting)
+- Next: steps 4, 6 and 8 — all follow this step
+
+<a id="step-4"></a>
+
+### 4. Make one disciplined save attempt: an executive sponsor and a concession package you can actually honor
+
+human · ~1 h
+
+
+- Runs the process [Save a churning customer](save-a-churning-customer.md)
+
+<a id="step-5"></a>
+
+### 5. If the save lands on changed terms, negotiate the renewal agreement properly rather than concede by email
+
+human · ~45 min · hard to undo
+
+
+When: The save attempt lands on changed terms
+
+- Runs the process [Negotiate SaaS agreement](negotiate-saas-agreement.md)
+
+*This path ends here.*
+
+<a id="step-6"></a>
+
+### 6. Tell the board and investors yourself: the concentration number, the plan, and whatever your information-rights agreements require
+
+human · ~45 min · hard to undo
+
+
+*Follows step 3.*
+
+- Do it yourself: [NVCA model legal documents (investor information rights)](https://nvca.org/model-legal-documents/)
+
+<a id="step-7"></a>
+
+### 7. Start the cost actions the scenario math triggered, now rather than after two optimistic quarters
+
+human · ~1 h
+
+
+*This path ends here.*
+
+<a id="step-8"></a>
+
+### 8. Replan the pipeline to refill the gap: coverage targets, a restarted outbound motion, and a concentration ceiling the next deals respect
+
+agent-runnable · ~1 h
+
+
+*Follows step 3.*
+
+- Runs the process [Run outbound sales sequences](run-outbound-sales-sequences.md)
+
 
 ---
 

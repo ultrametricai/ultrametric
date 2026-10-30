@@ -1383,6 +1383,25 @@ export interface YearTaskSource {
 // playbook's process, not something a startup's journey activates. Keys must be disjoint from
 // unionTaskIds (journey tasks stay journey-gated); tests enforce both.
 export const YEAR_SWEEP_GATES: Record<string, VsGate> = {
+  // Common recurring controls from the lifecycle expansion. These are simulated tasks;
+  // their guide-level approval and specialist requirements still apply to real execution.
+  'startup-coverage.maintain-the-compliance-obligations-calendar': { choice: null, why: 'the operating company reviews its actual obligations' },
+  'startup-coverage.manage-the-product-roadmap': { choice: null, why: 'the product team revisits priorities and capacity' },
+  'startup-coverage.review-user-access-and-privileged-accounts': { choice: null, why: 'the company reviews access to its operating systems' },
+  'startup-coverage.manage-vulnerability-remediation-and-patching': { choice: null, why: 'the software product and operating systems need vulnerability review' },
+  'startup-coverage.run-a-backup-restoration-and-disaster-recovery-drill': { choice: null, why: 'the software company tests recovery of its critical data and services' },
+  'startup-coverage.plan-business-continuity-and-alternate-operations': { choice: null, why: 'the operating company exercises its continuity arrangements' },
+  'startup-coverage.maintain-a-personal-data-inventory': { choice: null, why: 'customer and workforce data flows need owned records' },
+  'startup-coverage.implement-data-retention-and-deletion-controls': { choice: null, why: 'the company reviews the retention and disposal of its operating records' },
+  'startup-coverage.track-company-assets-and-equipment': { choice: null, why: 'the operating company reconciles custody of its equipment' },
+  'startup-coverage.protect-trade-secrets-and-confidential-know-how': { choice: null, why: 'the company reviews protection of its confidential product and business information' },
+  'startup-coverage.plan-founder-and-key-person-succession': { choice: null, why: 'founder dependency requires a continuity review' },
+  'startup-coverage.send-an-investor-update': { choice: 'funding', value: 'seed', why: 'the funded scenario has investors to update' },
+  'startup-coverage.administer-an-employee-equity-plan': { choice: 'funding', value: 'seed', why: 'the seeded scenario includes the equity plan and option pool' },
+  'startup-coverage.set-compensation-bands-and-review-pay': { choice: 'hire', value: 'yes', why: 'employee hiring activates compensation review' },
+  'startup-coverage.plan-employee-training-and-development': { choice: 'hire', value: 'yes', why: 'the employee scenario needs a development plan' },
+  'startup-coverage.run-security-awareness-training': { choice: 'hire', value: 'yes', why: 'employees complete their own security training' },
+  'startup-coverage.manage-workplace-safety-and-emergency-readiness': { choice: 'hire', value: 'yes', why: 'the employer reviews its actual workplace and remote-work hazards' },
   // Daily loops — the operating baseline once the company runs.
   opp_008: { choice: null, why: 'operating baseline — email goes out every day' },
   opp_009: { choice: null, why: 'operating baseline — tasks become tracked issues daily' },
@@ -1406,6 +1425,20 @@ export const YEAR_SWEEP_GATES: Record<string, VsGate> = {
   qs_047: { choice: null, why: 'the state annual report is due yearly' },
   fund_003: { choice: 'funding', value: 'seed', why: 'the 409A follows the raise and its option pool' },
   qs_053: { choice: 'funding', value: 'seed', why: 'the audited cap table follows the raise' },
+}
+
+// The simulator has no decision facts for these conditional workstreams. Keep them
+// explicitly outside its year instead of asserting that every startup has a grant,
+// debt agreement, audit obligation, foreign entity or physical stock.
+export const YEAR_SWEEP_EXCLUSIONS: Record<string, string> = {
+  vc_003: 'The startup journey does not operate a venture fund.',
+  'startup-coverage.set-up-transfer-pricing-and-intercompany-agreements': 'No related foreign-entity transaction facts in the simulator profile.',
+  'startup-coverage.monitor-debt-covenants-and-lender-reporting': 'No debt facility or covenant facts in the simulator profile.',
+  'startup-coverage.prepare-for-and-complete-an-external-financial-audit': 'No statutory or contractual audit requirement in the simulator profile.',
+  'startup-coverage.manage-cash-and-treasury-reserves': 'No treasury concentration or instrument-selection facts in the simulator profile.',
+  'startup-coverage.manage-inventory-order-fulfillment-and-returns': 'The business-model choice does not establish ownership of physical stock.',
+  'startup-coverage.prepare-and-file-sales-tax-vat-or-gst-returns': 'No specific tax registration and assigned return periods in the simulator profile.',
+  'startup-coverage.manage-grant-spending-and-reporting': 'No accepted grant agreement in the simulator profile.',
 }
 
 export interface YearCandidate extends YearTaskSource {

@@ -35,7 +35,7 @@ export function buildPreviewRoutes(records: SharedRecord[]) {
 }
 
 export function findSharedRecord(records: SharedRecord[], key: string) {
-  const direct = records.find(record => record.id === key || record.aliases?.includes(key))
+  const direct = records.find(record => record.id === key || record.globalSlug === key || record.countryViews?.some(view => view.slug === key) || record.aliases?.includes(key))
   if (direct) return direct
   const routes = buildPreviewRoutes(records)
   return records.find(record => routes.get(record.id) === key)

@@ -3,6 +3,10 @@
 
 # Get IP assignments signed
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Geography](#geography) · [Steps](#steps-at-a-glance) · [Outputs](#outputs)
+
+## Overview
+
 Ensure all founders and employees have signed IP assignment agreements (PIIA).
 
 | Field | Value |
@@ -19,53 +23,136 @@ Ensure all founders and employees have signed IP assignment agreements (PIIA).
 
 System generates PIIAs from templates, tracks who has signed, sends via DocuSign. Legal review is person-routed.
 
-## Steps
+## Before you start
 
-1. **List all team members** — agent-runnable · ~1 min
+| Information to gather | Required by the record |
+| --- | --- |
+| board members | Yes |
+| legal name | Yes |
 
-   Identify everyone who contributed code, designs, inventions, content or other work, including founders, former staff, contractors and agencies. Link each contributor to engagement dates, work locations, deliverables and existing agreements. Investigate missing agreements or uncertain ownership with the relevant manager and legal reviewer. Check the rights documents for each contributor and identify gaps in the company’s chain of ownership.
+## Geography
 
-   - Canonical vendor: Gusto
-2. **Generate PIIA for each person** — agent-runnable · ~5 min
+Country rows describe the guidance recorded here. Local notes and step alternatives do not establish a complete country-specific workflow.
 
-   Draft the agreement for the contributor’s relationship, location and work, using the appropriate company template. Populate the parties and address disclosed prior inventions, earlier commitments, third-party materials and work already delivered. Keep unresolved exceptions visible. Use the terms appropriate to each employee or contractor relationship and the rights being sought.
-3. **Legal review of template** — human · ~1 d · async wait
+| Country | Recorded guidance | Steps with local alternatives or resolutions |
+| --- | --- | --- |
+| [India](#geo-in) | Local analog note | — |
+| [Germany](#geo-de) | Local analog note | — |
+| [France](#geo-fr) | Local analog note | — |
 
-   Review assignment and confidentiality terms against the contributor’s location, relationship and work dates. Give counsel existing agreements and disclosed inventions or licenses so conflicts can be resolved. Identify needed notices, exclusions, consideration or additional documents for each scenario. Keep approved template versions tied to their intended use and unresolved rights gaps assigned for follow-up.
-4. **Send PIIAs for signature** — agent-runnable · ~5 min · human approval required · hard to undo
+## Steps at a glance
 
-   Send the reviewer-approved contributor agreement and schedules to the correct signers through the company’s agreed signing process. Check company signing capacity and the exact version sent. Route questions or changes to the reviewer, especially additions to an inventions schedule. Keep the final executed version and signature evidence together.
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
 
-   - Canonical vendor: DocuSign
-5. **Track and follow up on unsigned** — agent-runnable · ~2 min · async wait
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. List all team members](#step-1) | agent-runnable | ~1 min | Entry step |
+| [2. Generate PIIA for each person](#step-2) | agent-runnable | ~5 min | [Step 1](#step-1) |
+| [3. Legal review of template](#step-3) | human; includes waiting | ~1 d | [Step 2](#step-2) |
+| [4. Send PIIAs for signature](#step-4) | agent-runnable; approval required | ~5 min | [Step 3](#step-3) |
+| [5. Track and follow up on unsigned](#step-5) | agent-runnable; includes waiting | ~2 min | [Step 4](#step-4) |
+| [6. File executed copies](#step-6) | agent-runnable | ~2 min | [Step 5](#step-5) |
 
-   Compare the contributor list with executed agreements. Follow up on missing signatures, incomplete schedules and unanswered questions, with counsel handling disputed or unreachable former-contributor cases. Keep each gap associated with the affected work. Close it only when the expected parties have signed a consistent agreement or the legal reviewer has documented another resolution.
+<a id="steps"></a>
 
-   - Canonical vendor: DocuSign
-6. **File executed copies** — agent-runnable · ~2 min
+## Step details
 
-   File executed agreements, schedules and signature evidence with the contributor’s engagement. Link amendments and covered work so a later rights review can trace the assignment. Keep superseded drafts separate and personnel details restricted. The legal custodian should be able to retrieve the operative documents and distinguish them from any unresolved rights gap.
+<a id="step-1"></a>
 
-   - Produces: IP assignments (PIIA)
-   - Canonical vendor: Google Drive
+### 1. List all team members
 
-## By country
+agent-runnable · ~1 min
+
+
+Identify everyone who contributed code, designs, inventions, content or other work, including founders, former staff, contractors and agencies. Link each contributor to engagement dates, work locations, deliverables and existing agreements. Investigate missing agreements or uncertain ownership with the relevant manager and legal reviewer. Check the rights documents for each contributor and identify gaps in the company’s chain of ownership.
+
+- Canonical vendor: Gusto
+
+<a id="step-2"></a>
+
+### 2. Generate PIIA for each person
+
+agent-runnable · ~5 min
+
+
+Draft the agreement for the contributor’s relationship, location and work, using the appropriate company template. Populate the parties and address disclosed prior inventions, earlier commitments, third-party materials and work already delivered. Keep unresolved exceptions visible. Use the terms appropriate to each employee or contractor relationship and the rights being sought.
+
+<a id="step-3"></a>
+
+### 3. Legal review of template
+
+human · ~1 d · async wait
+
+
+Review assignment and confidentiality terms against the contributor’s location, relationship and work dates. Give counsel existing agreements and disclosed inventions or licenses so conflicts can be resolved. Identify needed notices, exclusions, consideration or additional documents for each scenario. Keep approved template versions tied to their intended use and unresolved rights gaps assigned for follow-up.
+
+<a id="step-4"></a>
+
+### 4. Send PIIAs for signature
+
+agent-runnable · ~5 min · human approval required · hard to undo
+
+
+Send the reviewer-approved contributor agreement and schedules to the correct signers through the company’s agreed signing process. Check company signing capacity and the exact version sent. Route questions or changes to the reviewer, especially additions to an inventions schedule. Keep the final executed version and signature evidence together.
+
+- Canonical vendor: DocuSign
+
+<a id="step-5"></a>
+
+### 5. Track and follow up on unsigned
+
+agent-runnable · ~2 min · async wait
+
+
+Compare the contributor list with executed agreements. Follow up on missing signatures, incomplete schedules and unanswered questions, with counsel handling disputed or unreachable former-contributor cases. Keep each gap associated with the affected work. Close it only when the expected parties have signed a consistent agreement or the legal reviewer has documented another resolution.
+
+- Canonical vendor: DocuSign
+
+<a id="step-6"></a>
+
+### 6. File executed copies
+
+agent-runnable · ~2 min
+
+
+File executed agreements, schedules and signature evidence with the contributor’s engagement. Link amendments and covered work so a later rights review can trace the assignment. Keep superseded drafts separate and personnel details restricted. The legal custodian should be able to retrieve the operative documents and distinguish them from any unresolved rights gap.
+
+- Produces: IP assignments (PIIA)
+- Canonical vendor: Google Drive
+
+
+<a id="by-country"></a>
+
+## Country details
+
+<a id="geo-us"></a>
+
+### United States
+
+Ensure all founders and employees have signed IP assignment agreements (PIIA).
+
+
+<a id="geo-in"></a>
 
 ### India
 
 - Assignments must be in writing and are read narrowly: the Copyright Act (s.19) voids assignments of unspecified future works and defaults unstated terms to five years — so PIIA-style blanket clauses need Indian-law drafting, plus moral-rights waivers. ([Copyright Office India](https://copyright.gov.in/))
 
+<a id="geo-de"></a>
+
 ### Germany
 
 - A blanket PIIA cannot capture patents: the Arbeitnehmererfindungsgesetz gives employees rights in their inventions — the employer must actively claim each reported invention (deemed claimed after four months) and owes statutory compensation. ([ArbnErfG — employee inventions act](https://www.gesetze-im-internet.de/arbnerfg/))
+
+<a id="geo-fr"></a>
 
 ### France
 
 - Employee inventions follow Code de la propriété intellectuelle L611-7: 'mission' inventions belong to the employer but carry a mandatory rémunération supplémentaire, and copyright's moral rights are unwaivable — the INPI (home of the CNIS disputes commission) is the anchor. ([INPI (employee inventions)](https://www.inpi.fr/))
 
-## Artifacts
+<a id="artifacts"></a>
 
-Produces:
+## Outputs
 
 - IP assignments (PIIA)
 

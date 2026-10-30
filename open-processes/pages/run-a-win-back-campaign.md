@@ -3,6 +3,10 @@
 
 # Run a win-back campaign
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Steps](#steps-at-a-glance)
+
+## Overview
+
 Re-engage the customers who churned months ago: build the churned cohort, split it by cancel reason and value, send a win-back sequence with an offer, and track who comes back. Distinct from a churn save attempt, which fires at cancellation time for one account.
 
 | Field | Value |
@@ -19,51 +23,108 @@ Re-engage the customers who churned months ago: build the churned cohort, split 
 
 Cohort building, sequence drafting, and the sends are fully API-driven; the discount budget is a founder approval.
 
-## Steps
+<a id="artifacts"></a>
 
-1. **Build the churned-customer cohort** — agent-runnable · ~20 min
+## Before you start
 
-   Define the cancellation window and qualifying account states from billing and CRM records. Apply the campaign criteria to paused, unpaid and already reactivated accounts. Reconcile identities and suppressions, retaining selection criteria and extract time. Resolve recipient eligibility for the intended markets before enrollment, with uncertain records held outside the sendable cohort.
-
-   - Canonical vendor: Stripe
-   - Sources: [CAN-SPAM Act: A Compliance Guide for Business](https://www.ftc.gov/business-guidance/resources/can-spam-act-compliance-guide-business)
-2. **Segment by cancel reason and value** — agent-runnable · ~20 min
-
-   Group eligible former customers by recorded cancellation reason, prior usage and the chosen value measure. Keep unknown reasons unknown. Link each segment to a verified improvement, renewed onboarding or available offer that addresses its concern. Return definitions, counts and exclusions with their evidence.
-
-   - Vendor options: PostHog, Amplitude, Mixpanel
-   - Ranked market: [product-analytics](../../open-rankings/product-analytics)
-3. **Draft the win-back sequence and offer** — agent-runnable · ~30 min
-
-   Write each segment's win-back message around the improvement or offer that addresses its recorded concern. Verify the product change and explain discount eligibility, duration and subsequent pricing. Specify follow-ups and stop conditions. Resolve offer costs and regional communication requirements before launch, including eligibility for previous customers.
-
-   - Canonical vendor: Customer.io
-   - Vendor options: Customer.io, Loops, Mailchimp
-   - Ranked market: [email-marketing](../../open-rankings/email-marketing)
-   - Cross-arena options: ChatGPT, Claude (ai-assistants)
-   - Sources: [CAN-SPAM Act: A Compliance Guide for Business](https://www.ftc.gov/business-guidance/resources/can-spam-act-compliance-guide-business)
-4. **Approve the discount budget** — human · ~10 min
-
-   Present expected redemptions, discount duration, maximum permitted exposure and associated service costs for each offer. State eligibility, expiry if applicable and exceptions requiring a new decision. Have the commercial owner approve a specific budget and discount boundaries or revise the offer. Give the launch operator that decision and its assumptions so campaign limits can be checked against it.
-5. **Launch the sequence** — agent-runnable · ~10 min
-
-   Set each segment's messages and offers, then refresh account status and suppressions before enrollment. Test personalization, links, redemption limits and stop conditions with internal recipients and fictional billing data. Launch the campaign owner's agreed audience and cadence within the discount budget. Pause affected sends if replies, reactivations or delivery problems fail to update eligibility as intended.
-
-   - Canonical vendor: Customer.io
-   - Sources: [CAN-SPAM Act: A Compliance Guide for Business](https://www.ftc.gov/business-guidance/resources/can-spam-act-compliance-guide-business)
-6. **Track reactivations and log them in the CRM** — agent-runnable · ~15 min
-
-   Match recipients to billing reactivations and resumed product use, keeping replies, new subscriptions and meaningful use distinct. Reconcile discounts, refunds and later cancellations with campaign cost. Update the CRM with the offer and observed outcome without crediting the same reactivation to multiple campaigns. Report results over a stated window and identify attribution gaps that prevent a confident conclusion.
-
-   - Canonical vendor: HubSpot
-
-## Artifacts
-
-Requires:
+Required artifacts:
 
 - Subscription billing — from [Set up subscription billing](set-up-subscription-billing.md)
 - CRM workspace — from [Set up a CRM](set-up-a-crm.md)
 - Marketing email audience — from [Set up email marketing](set-up-email-marketing.md)
+
+| Information to gather | Required by the record |
+| --- | --- |
+| win-back offer budget | Yes |
+
+## Steps at a glance
+
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
+
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Build the churned-customer cohort](#step-1) | agent-runnable | ~20 min | Entry step |
+| [2. Segment by cancel reason and value](#step-2) | agent-runnable | ~20 min | [Step 1](#step-1) |
+| [3. Draft the win-back sequence and offer](#step-3) | agent-runnable | ~30 min | [Step 2](#step-2) |
+| [4. Approve the discount budget](#step-4) | human | ~10 min | [Step 3](#step-3) |
+| [5. Launch the sequence](#step-5) | agent-runnable | ~10 min | [Step 4](#step-4) |
+| [6. Track reactivations and log them in the CRM](#step-6) | agent-runnable | ~15 min | [Step 5](#step-5) |
+
+<a id="steps"></a>
+
+## Step details
+
+<a id="step-1"></a>
+
+### 1. Build the churned-customer cohort
+
+agent-runnable · ~20 min
+
+
+Define the cancellation window and qualifying account states from billing and CRM records. Apply the campaign criteria to paused, unpaid and already reactivated accounts. Reconcile identities and suppressions, retaining selection criteria and extract time. Resolve recipient eligibility for the intended markets before enrollment, with uncertain records held outside the sendable cohort.
+
+- Canonical vendor: Stripe
+- Sources: [CAN-SPAM Act: A Compliance Guide for Business](https://www.ftc.gov/business-guidance/resources/can-spam-act-compliance-guide-business)
+
+<a id="step-2"></a>
+
+### 2. Segment by cancel reason and value
+
+agent-runnable · ~20 min
+
+
+Group eligible former customers by recorded cancellation reason, prior usage and the chosen value measure. Keep unknown reasons unknown. Link each segment to a verified improvement, renewed onboarding or available offer that addresses its concern. Return definitions, counts and exclusions with their evidence.
+
+- Vendor options: PostHog, Amplitude, Mixpanel
+- Ranked market: [product-analytics](../../open-rankings/product-analytics)
+
+<a id="step-3"></a>
+
+### 3. Draft the win-back sequence and offer
+
+agent-runnable · ~30 min
+
+
+Write each segment's win-back message around the improvement or offer that addresses its recorded concern. Verify the product change and explain discount eligibility, duration and subsequent pricing. Specify follow-ups and stop conditions. Resolve offer costs and regional communication requirements before launch, including eligibility for previous customers.
+
+- Canonical vendor: Customer.io
+- Vendor options: Customer.io, Loops, Mailchimp
+- Ranked market: [email-marketing](../../open-rankings/email-marketing)
+- Cross-arena options: ChatGPT, Claude (ai-assistants)
+- Sources: [CAN-SPAM Act: A Compliance Guide for Business](https://www.ftc.gov/business-guidance/resources/can-spam-act-compliance-guide-business)
+
+<a id="step-4"></a>
+
+### 4. Approve the discount budget
+
+human · ~10 min
+
+
+Present expected redemptions, discount duration, maximum permitted exposure and associated service costs for each offer. State eligibility, expiry if applicable and exceptions requiring a new decision. Have the commercial owner approve a specific budget and discount boundaries or revise the offer. Give the launch operator that decision and its assumptions so campaign limits can be checked against it.
+
+<a id="step-5"></a>
+
+### 5. Launch the sequence
+
+agent-runnable · ~10 min
+
+
+Set each segment's messages and offers, then refresh account status and suppressions before enrollment. Test personalization, links, redemption limits and stop conditions with internal recipients and fictional billing data. Launch the campaign owner's agreed audience and cadence within the discount budget. Pause affected sends if replies, reactivations or delivery problems fail to update eligibility as intended.
+
+- Canonical vendor: Customer.io
+- Sources: [CAN-SPAM Act: A Compliance Guide for Business](https://www.ftc.gov/business-guidance/resources/can-spam-act-compliance-guide-business)
+
+<a id="step-6"></a>
+
+### 6. Track reactivations and log them in the CRM
+
+agent-runnable · ~15 min
+
+
+Match recipients to billing reactivations and resumed product use, keeping replies, new subscriptions and meaningful use distinct. Reconcile discounts, refunds and later cancellations with campaign cost. Update the CRM with the offer and observed outcome without crediting the same reactivation to multiple campaigns. Report results over a stated window and identify attribution gaps that prevent a confident conclusion.
+
+- Canonical vendor: HubSpot
+
 
 ## Related records
 
