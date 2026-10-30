@@ -71,7 +71,7 @@ The guides include applicability, alternatives and verification details.
 
 - [Incorporate C-Corp](open-processes/pages/incorporate-c-corp.md) — set up a Delaware C-corp, filing to signed 83(b)
 
-<details>
+<details open>
 <summary>Incorporate C-Corp: process diagram</summary>
 
 [![Incorporate C-Corp: canonical steps, dependencies and execution assessments](open-processes/assets/incorporate-c-corp.svg)](open-processes/pages/incorporate-c-corp.md)
@@ -80,7 +80,7 @@ The guides include applicability, alternatives and verification details.
 
 - [Get a 409A valuation](open-processes/pages/get-a-409a-valuation.md) — establish the fair market value for stock options
 
-<details>
+<details open>
 <summary>Get a 409A valuation: process diagram</summary>
 
 [![Get a 409A valuation: canonical steps, dependencies and execution assessments](open-processes/assets/get-a-409a-valuation.svg)](open-processes/pages/get-a-409a-valuation.md)
@@ -89,7 +89,7 @@ The guides include applicability, alternatives and verification details.
 
 - [Set up mailing address](open-processes/pages/set-up-mailing-address.md) — a business mailing address for legal and banking purposes
 
-<details>
+<details open>
 <summary>Set up mailing address: process diagram</summary>
 
 [![Set up mailing address: canonical steps, dependencies and execution assessments](open-processes/assets/set-up-mailing-address.svg)](open-processes/pages/set-up-mailing-address.md)
