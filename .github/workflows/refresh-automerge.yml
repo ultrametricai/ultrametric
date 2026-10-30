@@ -1,0 +1,89 @@
+name: Refresh auto-merge recovery
+
+# Bot-created PRs and bot merges do not trigger normal PR/push workflows.
+# The timer recovers missed dispatches and refreshes bases after another PR lands.
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: '37,7 * * * *'
+  workflow_dispatch:
+
+permissions:
+  checks: read # request Greptile when a recovered head has no review
+  contents: write
+  pull-requests: write
+  actions: write
+
+concurrency:
+  group: refresh-automerge-recovery
+  cancel-in-progress: false
+
+jobs:
+  recover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      # Metadata-only controller. No checkout, dependencies, or PR code execution.
+      - name: Update generated branches, dispatch missing CI, and enable auto-merge
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+        shell: python
+        run: |
+          import json, os, re, subprocess, time
+          repo = os.environ['REPO']
+          def api(path, method='GET', data=None):
+              args = ['gh', 'api', '--method', method, f'repos/{repo}/{path}']
+              if data is not None:
+                  args += ['--input', '-']
+              result = subprocess.run(args, input=json.dumps(data) if data is not None else None,
+                                      text=True, capture_output=True, check=True)
+              return json.loads(result.stdout) if result.stdout.strip() else None
+          prs = json.loads(subprocess.check_output(
+              ['gh', 'api', '--paginate', '--slurp', f'repos/{repo}/pulls?state=open&per_page=100'], text=True))
+          errors = []
+          for pr in [pr for page in prs for pr in page]:
+              branch = pr['head']['ref']
+              if (pr['draft'] or pr['base']['ref'] != 'main'
+                  or pr['head']['repo'] is None or pr['head']['repo']['full_name'] != repo
+                  or pr['user']['login'] != 'github-actions[bot]'
+                  or not re.fullmatch(r'(story-runner|accuracy-engine|vendor-radar|vendor-radar-bringup|yc-coverage)/[A-Za-z0-9_-]+', branch)):
+                  continue
+              number, sha = pr['number'], pr['head']['sha']
+              try:
+                  comparison = api(f'compare/main...{sha}')
+                  if comparison['behind_by']:
+                      api(f'pulls/{number}/update-branch', 'PUT', {'expected_head_sha': sha})
+                      for _ in range(10):
+                          time.sleep(2)
+                          current = api(f'pulls/{number}')
+                          if current['state'] != 'open':
+                              break
+                          if current['head']['sha'] != sha:
+                              sha = current['head']['sha']
+                              break
+                      else:
+                          raise RuntimeError('branch update has not completed; retry on next run')
+                      if current['state'] != 'open':
+                          continue
+                  runs = api(f'actions/workflows/ci.yml/runs?head_sha={sha}&per_page=100')
+                  if not runs['workflow_runs']:
+                      subprocess.run(['gh', 'workflow', 'run', 'ci.yml', '--repo', repo, '--ref', branch], check=True)
+                  checks = api(f'commits/{sha}/check-runs?check_name=Greptile%20Review&per_page=100')
+                  if not any(check['app']['id'] == 867647 for check in checks['check_runs']):
+                      subprocess.run(['gh', 'pr', 'comment', str(number), '--repo', repo,
+                                      '--body', '@greptileai review'], check=True)
+                  subprocess.run(['gh', 'workflow', 'run', 'review-findings.yml', '--repo', repo,
+                                  '--ref', 'main', '--field', f'pr={number}'], check=True)
+                  if not pr['auto_merge']:
+                      subprocess.run(['gh', 'pr', 'merge', str(number), '--repo', repo,
+                                      '--auto', '--merge', '--match-head-commit', sha], check=True)
+                  print(f'#{number}: CI dispatched or present; auto-merge enabled', flush=True)
+              except (subprocess.CalledProcessError, RuntimeError) as error:
+                  # Conflicts and setup failures stay visible; process independent PRs too.
+                  detail = getattr(error, 'stderr', None) or str(error)
+                  print(f'::warning::#{number}: {detail}', flush=True)
+                  errors.append(number)
+          if errors:
+              raise SystemExit(f'Refresh PRs need attention or retry: {errors}')
