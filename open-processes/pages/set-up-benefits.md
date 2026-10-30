@@ -172,6 +172,8 @@ Employees review the official materials and enter their own elections, dependent
 
 ### United States
 
+Identify statutory coverage, employer benefit obligations and optional benefits for the workforce. Arrange any required or approved plans, configure payroll handling and complete enrollment where needed.
+
 - Step 1: Research benefits options Research and enroll company in health insurance, dental, vision, 401k, and other benefits. Define the workforce, work locations, benefits goals and employer budget. Compare possible structures with the benefits adviser, including employee costs, administration and existing coverage or contract commitments. Gather only the workforce information needed for that assessment through private channels. Bring the decision makers the meaningful tradeoffs and unknowns before requesting specific plans or promising coverage.
 
 <a id="geo-in"></a>

@@ -57,7 +57,7 @@ The [full index of ranked markets](https://ultrametric.ai/arenas) is live, and t
 
 ## Open processes
 
-The founder processes are written step by step. Read the process, situation, and chain guides directly in the repo through the [full index](open-processes/README.md). Each step has an [execution assessment](open-processes/execution.md), is timed, and marked by how hard it is to undo. The vendors that can run a step are
+The founder processes are written step by step. Read the process, situation, and chain guides directly in the repo through the [full index](open-processes/README.md). The [startup task inventory](coverage/STARTUP-TASKS.md) groups common and conditional work across the company lifecycle. Each step has an [execution assessment](open-processes/execution.md), is timed, and marked by how hard it is to undo. The vendors that can run a step are
 listed on it, with their judged scores. See it live at
 [ultrametric.ai/processes](https://ultrametric.ai/processes).
 
@@ -89,13 +89,13 @@ module computes for, written from the committed module-to-process map by
 
 | Module | What it computes | Serves |
 | --- | --- | --- |
-| [Cap table](open-modules/README.md#cap-table) | Issuance, option pools, SAFE conversion, priced-round price per share, dilution | Incorporate the company · Sign the founder agreement & split equity · Set up cap table · Update cap table · Audit cap table · Raise pre-seed funding · Close a priced equity round · Issue stock options · Convert fundraising instruments at the priced round · Handle a co-founder departure |
-| [Vesting](open-modules/README.md#vesting-mechanics) | Cliff and periodic schedules, back-loaded tranches, acceleration, departures | Incorporate the company · Sign the founder agreement & split equity · Issue stock options · Hire first employee · Hire an executive · Handle a co-founder departure |
+| [Cap table](open-modules/README.md#cap-table) | Issuance, option pools, SAFE conversion, priced-round price per share, dilution | Incorporate the company · Sign the founder agreement & split equity · Set up cap table · Update cap table · Audit cap table · Raise pre-seed funding · Close a priced equity round · Issue employee equity awards · Convert fundraising instruments at the priced round · Handle a co-founder departure |
+| [Vesting](open-modules/README.md#vesting-mechanics) | Cliff and periodic schedules, back-loaded tranches, acceleration, departures | Incorporate the company · Sign the founder agreement & split equity · Issue employee equity awards · Hire first employee · Hire an executive · Handle a co-founder departure |
 | [83(b) election](open-modules/README.md#83b-election-math) | Tax at grant vs tax at vesting, forfeiture cost | Incorporate the company · Sign the founder agreement & split equity · Change the company legal form · Recover from a missed 83(b) deadline |
 | [QSBS (§ 1202)](open-modules/README.md#qsbs--1202) | Eligibility conditions, holding clock, exclusion percentages, per-issuer cap | Incorporate the company · Change the company legal form |
-| [Equity comp](open-modules/README.md#offer--equity-comp-scenarios) | Offer grant percentage, option spread, exit scenarios | Issue stock options · Hire first employee · Hire an executive |
-| [Option tax](open-modules/README.md#iso--nso-exercise-tax) | NSO income at exercise, ISO/AMT outcomes, the $100,000 limit, sale outcomes | Issue stock options · Offboard employee |
-| [409A](open-modules/README.md#409a-grant-sanity) | Strike floor, valuation staleness, presumption timing | Close a priced equity round · Get a 409A valuation · Issue stock options |
+| [Equity comp](open-modules/README.md#offer--equity-comp-scenarios) | Offer grant percentage, option spread, exit scenarios | Issue employee equity awards · Hire first employee · Hire an executive |
+| [Option tax](open-modules/README.md#iso--nso-exercise-tax) | NSO income at exercise, ISO/AMT outcomes, the $100,000 limit, sale outcomes | Issue employee equity awards · Offboard employee |
+| [409A](open-modules/README.md#409a-grant-sanity) | Strike floor, valuation staleness, presumption timing | Close a priced equity round · Get a 409A valuation · Issue employee equity awards |
 
 ### Fundraising & exits
 
@@ -114,7 +114,7 @@ module computes for, written from the committed module-to-process map by
 | [Deadlines](open-modules/README.md#deadline-calendar) | The founder compliance calendar, each date citing a law rule | Incorporate the company · Sign the founder agreement & split equity · Change the company legal form · File DE franchise tax · File the company income tax return · Cure a Delaware franchise tax delinquency |
 | [Payroll tax](open-modules/README.md#employer-payroll-tax) | Employer FICA/FUTA load, per-employee annual cost | Set up payroll · Hire first employee · Run payroll |
 | [Delaware franchise tax](open-modules/README.md#delaware-franchise-tax) | Both published methods, the cheaper-method comparison | File DE franchise tax · Cure a Delaware franchise tax delinquency |
-| [R&D tax](open-modules/README.md#rd-tax-mechanics) | § 174 amortization, § 41(h) payroll-offset mechanics | Claim the R&D tax credit |
+| [R&D tax](open-modules/README.md#rd-tax-mechanics) | § 174 amortization, § 41(h) payroll-offset mechanics | Claim research-and-development tax incentives |
 
 ### Finance & runway
 
@@ -231,8 +231,7 @@ linked as a tension: Horowitz's case for the fat startup (in a big market, outsp
 beats running lean) against Ries's lean loop, and Kan's sell-from-strength against Cohen's
 rich-versus-king. The acquisition stories (WhatsApp, Twitch, MySpace) are in
 [`open-lore/LORE.md`](open-lore/LORE.md) with lessons and sources, and the waterfall
-module computes who gets what at any price. The acquisition playbook process is a known,
-open gap.
+module computes who gets what at any price. The [acquisition guide](open-processes/pages/sell-the-company-through-an-acquisition.md) covers the operational path from sale preparation through closing and post-close obligations, with qualified advisers owning the transaction decisions.
 
 ## Open law
 

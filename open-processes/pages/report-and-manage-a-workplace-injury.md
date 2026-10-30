@@ -9,7 +9,7 @@
 
 **Trigger:** Someone is hurt at work: an injury on the job just happened and reporting deadlines may already be running.
 
-Take care of the person first. The reporting deadlines are short and run from when you learn of the outcome: a work-related fatality goes to OSHA within 8 hours; in-patient hospitalization, amputation, or eye loss within 24 (law rule [us-fed.osha-severe-injury-reporting](../../open-law/US-FED/us-fed-osha-severe-injury-reporting.json), osha.gov cited). Then workers' comp. Notify your carrier and get the claim form to the employee fast; state deadlines are short (California requires the DWC-1 within one working day of learning of the injury). Write the incident record while memories are fresh, plus the OSHA 300 log entry if you are covered. Plan the return to work realistically. Fix the hazard. State systems differ sharply; this is the generic shape, so check your own state's rules and fund. Nothing here is legal advice. The claim moves on the carrier's and the state's timelines.
+Arrange immediate care, preserve the incident facts and identify the reporting, insurance and worker-support requirements that apply to the workplace. Follow the relevant authority’s deadlines, support recovery and address the hazard.
 
 | Field | Value |
 | --- | --- |
@@ -141,6 +141,8 @@ human · ~14 d · async wait
 <a id="geo-us"></a>
 
 ### United States
+
+Take care of the person first. The reporting deadlines are short and run from when you learn of the outcome: a work-related fatality goes to OSHA within 8 hours; in-patient hospitalization, amputation, or eye loss within 24 (law rule [us-fed.osha-severe-injury-reporting](../../open-law/US-FED/us-fed-osha-severe-injury-reporting.json), osha.gov cited). Then workers' comp. Notify your carrier and get the claim form to the employee fast; state deadlines are short (California requires the DWC-1 within one working day of learning of the injury). Write the incident record while memories are fresh, plus the OSHA 300 log entry if you are covered. Plan the return to work realistically. Fix the hazard. State systems differ sharply; this is the generic shape, so check your own state's rules and fund. Nothing here is legal advice. The claim moves on the carrier's and the state's timelines.
 
 - Step 2: The OSHA clocks: a work-related fatality within 8 hours; in-patient hospitalization, amputation, or eye loss within 24 (law rule us-fed.osha-severe-injury-reporting) ([OSHA: report an incident](https://www.osha.gov/report))
 - Step 3: File the OSHA report by phone or the online form; state-plan states have their own channels ([OSHA: report an incident](https://www.osha.gov/report))

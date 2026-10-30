@@ -149,6 +149,8 @@ Confirm the vehicle, manager permissions, investor subscriptions and closing con
 
 ### United States
 
+Prepare subscriptions, obtain investor signatures, finalize the fund governing agreement and investor schedule, and hold the authorized close under the selected vehicle’s legal and regulatory requirements.
+
 - Step 6: Hold the first and final close Run the fund's closing: subscription documents out to the LPs, LP signatures collected, the amended & restated LPA executed with the final LP schedule, and the first and final close held. Establish that subscriptions, approvals, executed documents and investor acceptance meet the conditions for this close. The authorized GP decides to close on the final investor schedule and any permitted outstanding conditions. Give the administrator the effective commitments and terms, and send closing confirmations. Track offering filings and remaining obligations separately from signature completion.
 
 <a id="geo-in"></a>

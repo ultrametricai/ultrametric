@@ -104,6 +104,8 @@ The authorized directors or other required decision-makers review and sign the f
 
 ### United States
 
+Keep the cap table current after new SAFEs, grants, or transfers — reconciled and properly approved.
+
 - Step 3: Draft the board consent for the changes A Delaware board or committee acts without a meeting only by unanimous written consent (law rule [us-de.board-action-by-written-consent](../../open-law/US-DE/us-de-board-action-by-written-consent.json)).
 - Step 4: The board signs the written consent
 

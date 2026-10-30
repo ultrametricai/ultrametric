@@ -32,13 +32,13 @@ lines; edit the map, rerun the script.
 
 | Module | What it computes | Serves | Worked-example source | Status |
 | --- | --- | --- | --- | --- |
-| [Cap table](#cap-table) | Issuance, pools, SAFE conversion, priced-round PPS, dilution waterfall | Incorporate the company · Sign the founder agreement & split equity · Set up cap table · Update cap table · Audit cap table · Raise pre-seed funding · Close a priced equity round · Issue stock options · Convert fundraising instruments at the priced round · Handle a co-founder departure | YC Post-Money Safe User Guide (Appendix II) | verified + property-tested |
-| [Vesting mechanics](#vesting-mechanics) | Cliff/periodic/back-loaded schedules, acceleration, departures | Incorporate the company · Sign the founder agreement & split equity · Issue stock options · Hire first employee · Hire an executive · Handle a co-founder departure | Cooley GO; Amazon 5/15/40/40; FAST grid | verified + property-tested |
+| [Cap table](#cap-table) | Issuance, pools, SAFE conversion, priced-round PPS, dilution waterfall | Incorporate the company · Sign the founder agreement & split equity · Set up cap table · Update cap table · Audit cap table · Raise pre-seed funding · Close a priced equity round · Issue employee equity awards · Convert fundraising instruments at the priced round · Handle a co-founder departure | YC Post-Money Safe User Guide (Appendix II) | verified + property-tested |
+| [Vesting mechanics](#vesting-mechanics) | Cliff/periodic/back-loaded schedules, acceleration, departures | Incorporate the company · Sign the founder agreement & split equity · Issue employee equity awards · Hire first employee · Hire an executive · Handle a co-founder departure | Cooley GO; Amazon 5/15/40/40; FAST grid | verified + property-tested |
 | [83(b) election math](#83b-election-math) | Tax-at-grant vs tax-at-vesting, forfeiture cost | Incorporate the company · Sign the founder agreement & split equity · Change the company legal form · Recover from a missed 83(b) deadline | Rev. Proc. 2012-29 (all six examples) | verified |
 | [QSBS (§ 1202)](#qsbs--1202) | Eligibility checklist, holding clock, exclusion %, per-issuer cap | Incorporate the company · Change the company legal form | IRC § 1202 (re-derived caps) | verified, checklist-shaped |
-| [Offer / equity-comp scenarios](#offer--equity-comp-scenarios) | Grant %, spread, exit scenarios | Issue stock options · Hire first employee · Hire an executive | Holloway equity guide; Rewarding Talent | verified, pre-tax by design |
-| [ISO / NSO exercise tax](#iso--nso-exercise-tax) | NSO income, ISO/AMT outcomes, § 422(d) $100k, dispositions | Issue stock options · Offboard employee | Pub 525; Treas. Reg. § 1.422-4(d) Ex. 1–3; Rev. Proc. 2024-40/2025-32 | verified; AMT is illustration-only |
-| [409A grant sanity](#409a-grant-sanity) | Strike floor, staleness, presumptions, refresh triggers, penalty illustration | Close a priced equity round · Get a 409A valuation · Issue stock options | Treas. Reg. § 1.409A law rules | sanity model — never a valuation |
+| [Offer / equity-comp scenarios](#offer--equity-comp-scenarios) | Grant %, spread, exit scenarios | Issue employee equity awards · Hire first employee · Hire an executive | Holloway equity guide; Rewarding Talent | verified, pre-tax by design |
+| [ISO / NSO exercise tax](#iso--nso-exercise-tax) | NSO income, ISO/AMT outcomes, § 422(d) $100k, dispositions | Issue employee equity awards · Offboard employee | Pub 525; Treas. Reg. § 1.422-4(d) Ex. 1–3; Rev. Proc. 2024-40/2025-32 | verified; AMT is illustration-only |
+| [409A grant sanity](#409a-grant-sanity) | Strike floor, staleness, presumptions, refresh triggers, penalty illustration | Close a priced equity round · Get a 409A valuation · Issue employee equity awards | Treas. Reg. § 1.409A law rules | sanity model — never a valuation |
 
 ### Fundraising & exits
 
@@ -57,7 +57,7 @@ lines; edit the map, rerun the script.
 | [Deadline calendar](#deadline-calendar) | Law-rule-backed due dates and recurring clocks | Incorporate the company · Sign the founder agreement & split equity · Change the company legal form · File DE franchise tax · File the company income tax return · Cure a Delaware franchise tax delinquency | Dated law rules in `open-law/` | verified, always `needsReview` where dates can move |
 | [Employer payroll tax](#employer-payroll-tax) | FICA/FUTA employer load, per-employee cost | Set up payroll · Hire first employee · Run payroll | IRS Pub 15 / instructions (pinned maxima) | verified, FEDERAL ONLY |
 | [Delaware franchise tax](#delaware-franchise-tax) | Both published methods, exactly; the March comparison | File DE franchise tax · Cure a Delaware franchise tax delinquency | 8 Del. C. § 503 + Division worked examples | verified |
-| [R&D tax mechanics](#rd-tax-mechanics) | § 174 amortization patterns, § 41(h) offset caps, Form 8974 application | Claim the R&D tax credit | IRC § 174/41; Form 8974 instructions | explanation + arithmetic — never a credit computation |
+| [R&D tax mechanics](#rd-tax-mechanics) | § 174 amortization patterns, § 41(h) offset caps, Form 8974 application | Claim research-and-development tax incentives | IRC § 174/41; Form 8974 instructions | explanation + arithmetic — never a credit computation |
 
 ### Finance & runway
 
@@ -134,7 +134,7 @@ PPS = 15,000,000 ÷ (11,764,705 + 1,695,000) = $1.1144; new shares =
 floor(5,000,000 ÷ 1.1144) = 4,486,719; Investor B's pro rata = 4,486,719 × 10% = 448,671.
 Final fully diluted: 17,946,424, with founders at 51.54% and the pool at 10.00%.
 
-**Serves:** [Incorporate the company](https://ultrametric.ai/processes/incorporate-the-company) (n7 `buildCapTable`) · [Sign the founder agreement & split equity](https://ultrametric.ai/processes/sign-the-founder-agreement-split-equity) (n4 `buildCapTable`) · [Set up cap table](https://ultrametric.ai/processes/set-up-cap-table) (n2 `buildCapTable`, n3 `safeOwnershipPct`) · [Update cap table](https://ultrametric.ai/processes/update-cap-table) (n2 `buildCapTable`) · [Audit cap table](https://ultrametric.ai/processes/audit-cap-table) (n2 `buildCapTable`) · [Raise pre-seed funding](https://ultrametric.ai/processes/raise-pre-seed-funding) (n6 `safeOwnershipPct`, n8 `buildCapTable`) · [Close a priced equity round](https://ultrametric.ai/processes/close-a-priced-equity-round) (n7 `buildCapTable`) · [Issue stock options](https://ultrametric.ai/processes/issue-stock-options) · [Convert fundraising instruments at the priced round](https://ultrametric.ai/processes/convert-fundraising-instruments-at-the-priced-round) (n2 `buildCapTable`) · [Handle a co-founder departure](https://ultrametric.ai/processes/handle-a-co-founder-departure) (n7 `buildCapTable`)
+**Serves:** [Incorporate the company](https://ultrametric.ai/processes/incorporate-the-company) (n7 `buildCapTable`) · [Sign the founder agreement & split equity](https://ultrametric.ai/processes/sign-the-founder-agreement-split-equity) (n4 `buildCapTable`) · [Set up cap table](https://ultrametric.ai/processes/set-up-cap-table) (n2 `buildCapTable`, n3 `safeOwnershipPct`) · [Update cap table](https://ultrametric.ai/processes/update-cap-table) (n2 `buildCapTable`) · [Audit cap table](https://ultrametric.ai/processes/audit-cap-table) (n2 `buildCapTable`) · [Raise pre-seed funding](https://ultrametric.ai/processes/raise-pre-seed-funding) (n6 `safeOwnershipPct`, n8 `buildCapTable`) · [Close a priced equity round](https://ultrametric.ai/processes/close-a-priced-equity-round) (n7 `buildCapTable`) · [Issue employee equity awards](https://ultrametric.ai/processes/issue-employee-equity-awards) · [Convert fundraising instruments at the priced round](https://ultrametric.ai/processes/convert-fundraising-instruments-at-the-priced-round) (n2 `buildCapTable`) · [Handle a co-founder departure](https://ultrametric.ai/processes/handle-a-co-founder-departure) (n7 `buildCapTable`)
 
 **Honesty boundaries.** The module records what documents say and decides no terms.
 Shares floor and prices round to 4 decimals (the guide's convention), so sub-cent prices
@@ -174,7 +174,7 @@ the final event on 2030-01-15 reaches 4,800,000 exactly. A founder departing 202
 keeps 1,800,000 vested shares (18/48) and 3,000,000 remain subject to the company's
 repurchase right.
 
-**Serves:** [Incorporate the company](https://ultrametric.ai/processes/incorporate-the-company) · [Sign the founder agreement & split equity](https://ultrametric.ai/processes/sign-the-founder-agreement-split-equity) (n1 `vestingEvents`) · [Issue stock options](https://ultrametric.ai/processes/issue-stock-options) (n4 `vestingEvents`) · [Hire first employee](https://ultrametric.ai/processes/hire-first-employee) (n10 `vestingEvents`) · [Hire an executive](https://ultrametric.ai/processes/hire-an-executive) (n5 `applyAcceleration`) · [Handle a co-founder departure](https://ultrametric.ai/processes/handle-a-co-founder-departure) (n2 `vestedAsOf`, n4 `departureSummary`)
+**Serves:** [Incorporate the company](https://ultrametric.ai/processes/incorporate-the-company) · [Sign the founder agreement & split equity](https://ultrametric.ai/processes/sign-the-founder-agreement-split-equity) (n1 `vestingEvents`) · [Issue employee equity awards](https://ultrametric.ai/processes/issue-employee-equity-awards) (n4 `vestingEvents`) · [Hire first employee](https://ultrametric.ai/processes/hire-first-employee) (n10 `vestingEvents`) · [Hire an executive](https://ultrametric.ai/processes/hire-an-executive) (n5 `applyAcceleration`) · [Handle a co-founder departure](https://ultrametric.ai/processes/handle-a-co-founder-departure) (n2 `vestedAsOf`, n4 `departureSummary`)
 
 **Honesty boundaries.** Anniversary clamping and cumulative-floor rounding are stated
 conventions; the plan documents control, so every position carries `needsReview`.
@@ -530,7 +530,7 @@ $50,000 × (7 + 1)% × 2 = $8,000, labeled a simple-interest illustration becaus
 Code's actual interest computation runs year by year. Both outputs carry
 `producesValuation: false` and `needsReview: true`.
 
-**Serves:** [Close a priced equity round](https://ultrametric.ai/processes/close-a-priced-equity-round) (n9 `refreshTriggerChecklist`) · [Get a 409A valuation](https://ultrametric.ai/processes/get-a-409a-valuation) · [Issue stock options](https://ultrametric.ai/processes/issue-stock-options) (n1 `fmvAgeCheck`, n4 `strikeFloorCheck`)
+**Serves:** [Close a priced equity round](https://ultrametric.ai/processes/close-a-priced-equity-round) (n9 `refreshTriggerChecklist`) · [Get a 409A valuation](https://ultrametric.ai/processes/get-a-409a-valuation) · [Issue employee equity awards](https://ultrametric.ai/processes/issue-employee-equity-awards) (n1 `fmvAgeCheck`, n4 `strikeFloorCheck`)
 
 **Honesty boundaries.** OPM, backsolve, and every other appraisal method are out of
 scope; the module cannot produce an FMV. Qualification under a presumption (appraiser,
@@ -567,7 +567,7 @@ pre-tax. At month 24 of the standard 48/12 schedule, 25,000 vested options are w
 25,000 × ($8.00 − $0.40) = $190,000. A $3,000,000 exit prices the share at $0.30, under
 the strike, so the net is $0.
 
-**Serves:** [Issue stock options](https://ultrametric.ai/processes/issue-stock-options) · [Hire first employee](https://ultrametric.ai/processes/hire-first-employee) (n1 `grantOwnershipPct`) · [Hire an executive](https://ultrametric.ai/processes/hire-an-executive) (n5 `offerScenarioTable`)
+**Serves:** [Issue employee equity awards](https://ultrametric.ai/processes/issue-employee-equity-awards) · [Hire first employee](https://ultrametric.ai/processes/hire-first-employee) (n1 `grantOwnershipPct`) · [Hire an executive](https://ultrametric.ai/processes/hire-an-executive) (n5 `offerScenarioTable`)
 
 **Honesty boundaries.** The share price at exit is a common-stock proxy that ignores
 liquidation preferences, participation, and carve-outs, so below the preference stack it
@@ -605,7 +605,7 @@ procedures: each published complete-phaseout amount equals threshold + exemption
 (2025, Rev. Proc. 2024-40 § 2.11 at 25 cents — single: 626,350 + 88,100 ÷ 0.25 = 978,750;
 2026, Rev. Proc. 2025-32 § 2.10 at 50 cents — single: 500,000 + 90,100 ÷ 0.50 = 680,200).
 
-**Serves:** [Issue stock options](https://ultrametric.ai/processes/issue-stock-options) (n4 `iso100kAttribution`) · [Offboard employee](https://ultrametric.ai/processes/offboard-employee)
+**Serves:** [Issue employee equity awards](https://ultrametric.ai/processes/issue-employee-equity-awards) (n4 `iso100kAttribution`) · [Offboard employee](https://ultrametric.ai/processes/offboard-employee)
 
 **Honesty boundaries.** The AMT exposure is a labeled illustration,
 `producesFilingComputation: false`; Form 6251 capital-gain rates, credits, and state tax
@@ -715,7 +715,7 @@ hand-derives the Form 8974 ordering: a $500,000 election splits into a $250,000
 social-security-only pool and a $250,000 Medicare pool, applied quarter by quarter with
 carryforward.
 
-**Serves:** [Claim the R&D tax credit](https://ultrametric.ai/processes/claim-the-r-d-tax-credit) (n1 `qsbPayrollOffsetEligibility`, n6 `payrollOffsetElectionCap`, n6 `quarterlyOffsetApplication`)
+**Serves:** [Claim research-and-development tax incentives](https://ultrametric.ai/processes/claim-research-and-development-tax-incentives) (n1 `qsbPayrollOffsetEligibility`, n6 `payrollOffsetElectionCap`, n6 `quarterlyOffsetApplication`)
 
 **Honesty boundaries.** Whether expenditures are qualified research (§ 41(d)) and the
 credit amount itself (Form 6765) are never computed, so eligibility is at most

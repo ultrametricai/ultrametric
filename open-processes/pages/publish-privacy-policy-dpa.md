@@ -178,6 +178,13 @@ Reconcile the subprocessor list with engineering and procurement records. For ea
 
 ## Country details
 
+<a id="geo-us"></a>
+
+### United States
+
+Stand up the privacy paperwork customers ask for: generate the privacy policy and terms, get counsel review, publish to the site, and wire a DPA signature flow with a maintained subprocessor list.
+
+
 <a id="geo-in"></a>
 
 ### India

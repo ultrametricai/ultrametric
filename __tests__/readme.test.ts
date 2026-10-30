@@ -230,11 +230,11 @@ describe('README.md structure (founder round 2, 2026-10-12)', () => {
     )
   })
 
-  it('the Getting acquired example names the playbook gap without linking coverage/', () => {
+  it('the Getting acquired example links the acquisition guide without linking coverage/', () => {
     const at = readme.indexOf('### Example: Getting acquired')
     expect(at).toBeGreaterThan(-1)
     const body = readme.slice(at, readme.indexOf('\n## ', at))
-    expect(body).toContain('open gap')
+    expect(body).toContain('](open-processes/pages/sell-the-company-through-an-acquisition.md)')
     expect(body).not.toContain('](coverage/')
   })
 

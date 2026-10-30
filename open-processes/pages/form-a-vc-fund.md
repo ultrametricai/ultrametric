@@ -7,7 +7,7 @@
 
 ## Overview
 
-Stand up the venture fund's legal stack: the GP management entity, the fund vehicle's formation filing, the initial limited partnership agreement and GP operating agreement, the fund's tax ID, and the fund bank account. In the US that is a Delaware LP with an LLC (or series-LLC series) GP and an IRS EIN; elsewhere the manager's regulator registration is part of the same stack.
+Choose the fund and management entities with local counsel, prepare the governing documents, complete applicable formation and regulatory registrations, obtain tax identifiers and open the fund’s bank account.
 
 | Field | Value |
 | --- | --- |
@@ -92,8 +92,7 @@ manual form/portal · ~30 min · hard to undo
 
 Settle the GP structure with fund counsel, including its relationship to the fund, manager and principals and whether a separate entity or series is suitable. The authorized principals adopt that structure and execute the required formation actions. Establish its owners and management authority, with bank accounts, books and contracting roles assigned to the correct entities.
 
-- Verify: The GP entity appears in the Delaware entity search with its own file number. ([icis.corp.delaware.gov](https://icis.corp.delaware.gov/ecorp/entitysearch/namesearch.aspx))
-- Cost: $110 (government fee, as of 2026-10-01, [corpfiles.delaware.gov](https://corpfiles.delaware.gov/Fee_Schedule/AugustFee2026.pdf)). A new Delaware LLC Certificate of Formation and a registered-series formation are each $110 on the published schedule.
+- Verify: Retain the applicable authority’s confirmation and reconcile it with the approved submission and company records.
 - Vendor options: AngelList, Sydecar, LegalZoom
 - Do it yourself: [Delaware Division of Corporations](https://corp.delaware.gov/howtoform/)
 
@@ -106,8 +105,7 @@ manual form/portal · ~30 min · hard to undo
 
 Prepare the formation certificate using the fund name, registered agent or office and general-partner information, checking it against the agreed structure and partnership documents. The authorized GP or permitted filer signs and submits it with the intended effective timing. Follow the submission through the registry’s response before treating the filed certificate as formation evidence.
 
-- Verify: The LP appears in the Delaware entity search once the Certificate of Limited Partnership is stamped. ([icis.corp.delaware.gov](https://icis.corp.delaware.gov/ecorp/entitysearch/namesearch.aspx))
-- Cost: $200 (government fee, as of 2026-10-01, [corpfiles.delaware.gov](https://corpfiles.delaware.gov/Fee_Schedule/AugustFee2026.pdf)). Delaware Certificate of Limited Partnership filing fee.
+- Verify: Retain the applicable authority’s confirmation and reconcile it with the approved submission and company records.
 - Vendor options: AngelList, Sydecar
 - Do it yourself: [Delaware Division of Corporations](https://corp.delaware.gov/howtoform/)
 - Sources: [Delaware Revised Uniform Limited Partnership Act](https://delcode.delaware.gov/title6/c017/sc02/index.html)
@@ -168,8 +166,7 @@ manual form/portal · ~15 min · hard to undo
 
 Apply for the formed fund’s tax identification using its exact legal name, address, formation details and responsible party. Check for an existing registration and use the current route the tax authority sets for the applicant. The responsible party or properly authorized designee submits the application; reconcile the resulting confirmation to the entity records for bank and administrator use.
 
-- Verify: The EIN is issued in the XX-XXXXXXX format at the end of the online session — retain the CP 575 confirmation notice; banks and payroll providers ask for it. ([www.irs.gov](https://www.irs.gov/businesses/small-businesses-self-employed/apply-for-an-employer-identification-number-ein-online))
-- Cost: free (free, as of 2026-10-01, [www.irs.gov](https://www.irs.gov/businesses/small-businesses-self-employed/apply-for-an-employer-identification-number-ein-online)). The IRS issues EINs for free; third-party services charge to file on your behalf.
+- Verify: Retain the applicable authority’s confirmation and reconcile it with the approved submission and company records.
 - Canonical vendor: IRS
 - Do it yourself: [IRS EIN application](https://www.irs.gov/businesses/small-businesses-self-employed/get-an-employer-identification-number)
 
@@ -196,10 +193,18 @@ Open an account in the fund’s own name suited to investor flows and payment co
 
 ### United States
 
+Stand up the venture fund's legal stack: the GP management entity, the fund vehicle's formation filing, the initial limited partnership agreement and GP operating agreement, the fund's tax ID, and the fund bank account. In the US that is a Delaware LP with an LLC (or series-LLC series) GP and an IRS EIN; elsewhere the manager's regulator registration is part of the same stack.
+
 - Step 1: Settle the private-fund exemptions and adviser-regulation posture with counsel; the SEC's private-funds and investment-adviser building blocks frame the choices ([SEC Private Funds](https://www.sec.gov/resources-small-businesses/capital-raising-building-blocks/private-funds))
 - Step 2: Form a new Delaware LLC or a new registered series of the series LLC as the GP ([Delaware Division of Corporations](https://corp.delaware.gov/howtoform/))
+  - Cost: $110 (government fee, as of 2026-10-01, [corpfiles.delaware.gov](https://corpfiles.delaware.gov/Fee_Schedule/AugustFee2026.pdf)). A new Delaware LLC Certificate of Formation and a registered-series formation are each $110 on the published schedule.
+  - Verify: The GP entity appears in the Delaware entity search with its own file number. ([icis.corp.delaware.gov](https://icis.corp.delaware.gov/ecorp/entitysearch/namesearch.aspx))
 - Step 3: File the Certificate of Limited Partnership with the Delaware Division of Corporations ($200) ([Delaware Division of Corporations](https://corp.delaware.gov/howtoform/))
+  - Cost: $200 (government fee, as of 2026-10-01, [corpfiles.delaware.gov](https://corpfiles.delaware.gov/Fee_Schedule/AugustFee2026.pdf)). Delaware Certificate of Limited Partnership filing fee.
+  - Verify: The LP appears in the Delaware entity search once the Certificate of Limited Partnership is stamped. ([icis.corp.delaware.gov](https://icis.corp.delaware.gov/ecorp/entitysearch/namesearch.aspx))
 - Step 8: Apply for the fund's EIN on the current IRS route; retain the CP 575 confirmation for the bank and administrator ([IRS EIN application](https://www.irs.gov/businesses/small-businesses-self-employed/get-an-employer-identification-number))
+  - Cost: free (free, as of 2026-10-01, [www.irs.gov](https://www.irs.gov/businesses/small-businesses-self-employed/apply-for-an-employer-identification-number-ein-online)). The IRS issues EINs for free; third-party services charge to file on your behalf.
+  - Verify: The EIN is issued in the XX-XXXXXXX format at the end of the online session — retain the CP 575 confirmation notice; banks and payroll providers ask for it. ([www.irs.gov](https://www.irs.gov/businesses/small-businesses-self-employed/apply-for-an-employer-identification-number-ein-online))
 
 <a id="geo-in"></a>
 
