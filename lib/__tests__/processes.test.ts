@@ -29,7 +29,7 @@ const node = (over: Partial<DagNode>): DagNode => ({
 describe('corpus', () => {
   it('loads the expanded operational catalog (197 processes + 33 situations) with unique, non-empty slugs', () => {
     const tasks = loadProcesses(DATA_DIR)
-    expect(tasks.length).toBe(230)
+    expect(tasks.length).toBe(240)
     const slugs = tasks.map((t) => processSlug(t.title))
     expect(new Set(slugs).size).toBe(tasks.length)
     for (const s of slugs) expect(s).toMatch(/^[a-z0-9]+(-[a-z0-9]+)*$/)
@@ -278,7 +278,9 @@ describe('corpus', () => {
     // no India note") carries all four too — stamp duty in India, share classes in the UK.
     for (const id of ['form_001', 'startup_002']) {
       const t = tasks.find((x) => x.id === id)!
-      expect((t.geoNotes ?? []).map((n) => n.country).sort(), id).toEqual(['AU', 'CA', 'DE', 'EE', 'FR', 'HK', 'IN', 'KR', 'NZ', 'PT', 'SG', 'UK'])
+      const expected = ['AU', 'CA', 'DE', 'EE', 'FR', 'HK', 'IN', 'KR', 'NZ', 'PT', 'SG', 'UK']
+      if (id === 'form_001') expected.push('NL', 'IE', 'ES', 'SE', 'CH', 'JP', 'BR', 'AE')
+      expect((t.geoNotes ?? []).map((n) => n.country).sort(), id).toEqual(expected.sort())
     }
   })
 
