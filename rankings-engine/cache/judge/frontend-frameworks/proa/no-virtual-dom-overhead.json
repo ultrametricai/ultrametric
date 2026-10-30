@@ -2,16 +2,16 @@
   "hash": "e5a3ed29470a66f886146389e46deb8f7f4e4ecb9a6d3481a193fd1d8fd3e3f7",
   "keyVersion": "v2",
   "verdict": {
+    "productId": "proa",
+    "storyId": "no-virtual-dom-overhead",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "low",
-    "rationale": "Proa's template macro validates templates at compile time and consolidates static markup. Adding signals and event handlers makes Proa emit per-island vanilla-JS modules on a roughly 1.3 KB shared runtime, which points to compiler-generated, signal-driven DOM updates rather than a VDOM library. However, the compile-time optimization evidence covers server HTML output, and no source says how client DOM updates happen or that there is no diffing step. Missing for 10: explicit documentation that island DOM updates avoid virtual-DOM diffing, a description of the client update mechanism, and independent or benchmark corroboration of client-side update performance.",
+    "rationale": "Proa's template macro optimizes markup at compile time by validating it and consolidating static HTML. For interactivity, Proa compiles signals and event handlers into a per-island vanilla-JS module that runs on a shared runtime of about 1.3 KB. Together these suggest compiler-generated, fine-grained client updates, but the docs never say how the DOM is updated or that no diffing step exists. Missing for 10: an explicit statement or documentation that DOM updates skip virtual DOM diffing, a description of the island update mechanism (e.g. signal-to-DOM bindings), and independent benchmarks or hands-on corroboration of client-side update performance.",
     "evidenceIds": [
       "proa-gh-2",
       "proa-gh-3",
       "proa-docs-16"
-    ],
-    "productId": "proa",
-    "storyId": "no-virtual-dom-overhead"
+    ]
   }
 }
