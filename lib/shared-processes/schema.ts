@@ -60,8 +60,12 @@ const partSchema: z.ZodType<Part> = z.lazy(() => z.strictObject({
   when: text.nullable(), ref: id.nullable(), options: z.array(optionSchema), references: z.array(reference),
   notes: z.array(note), metadata: stepMetadata,
 }))
+const routeSlug = z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)
+export const countryViewSchema = z.strictObject({ country: z.enum(['US', 'UK', 'IN', 'DE', 'FR', 'PT', 'CA', 'NZ', 'SG', 'AU', 'KR', 'HK', 'EE', 'NL', 'IE', 'ES', 'SE', 'CH', 'JP', 'BR', 'AE']), title: text, slug: routeSlug, summary: text.optional() })
+
 export const sharedRecordSchema = z.strictObject({
   schemaVersion: z.literal(1), id, kind: z.enum(['situation', 'process']), title: text, summary: z.string(),
+  globalSlug: routeSlug.optional(), countryViews: z.array(countryViewSchema).min(1).optional(),
   outcomes: z.array(text), guidance: text.nullable(), when: text.nullable().optional(), aliases: z.array(id).optional(),
   entrySteps: z.array(id).min(1).optional(), taskIds: z.array(id).min(1).optional(),
   parts: z.array(partSchema), links: z.array(connectionSchema), references: z.array(reference),
@@ -101,6 +105,18 @@ export function validateCatalog(input: unknown): SharedRecord[] {
   const records = z.array(sharedRecordSchema).parse(input)
   const byId = new Map(records.map(record => [record.id, record]))
   if (byId.size !== records.length) throw new Error('Duplicate record ID')
+  const routeOwners = new Map(records.map(record => [record.id, record.id]))
+  for (const record of records) {
+    const views = record.countryViews ?? []
+    if (Boolean(record.globalSlug) !== Boolean(views.length)) throw new Error(`${record.id}: globalSlug and countryViews must be authored together`)
+    if (new Set(views.map(view => view.country)).size !== views.length) throw new Error(`${record.id}: duplicate country view`)
+    if (new Set(views.map(view => view.slug)).size !== views.length || views.some(view => view.slug === record.globalSlug)) throw new Error(`${record.id}: duplicate country route`)
+    for (const key of new Set([...(record.aliases ?? []), ...(record.globalSlug ? [record.globalSlug] : []), ...views.map(view => view.slug)])) {
+      const owner = routeOwners.get(key)
+      if (owner && owner !== record.id) throw new Error(`Country route collision: ${key}`)
+      routeOwners.set(key, record.id)
+    }
+  }
   const aliases = new Set(byId.keys())
   const references = new Map<string, string[]>()
   for (const record of records) {

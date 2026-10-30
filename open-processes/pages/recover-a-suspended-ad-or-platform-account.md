@@ -3,6 +3,10 @@
 
 # Recover a suspended ad or platform account
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Steps](#steps-at-a-glance)
+
+## Overview
+
 **Trigger:** Google Ads, Meta, or another ad/platform account is suspended: campaigns stop and a policy email names the violation.
 
 Losing an ad account cuts a growth channel overnight. The appeal that works is filed after the violation is fixed, not before. Read which policy they cited (Google Ads publishes its suspension reasons and appeal path; Meta's runs through the Business Help Center's account-quality flow). Audit what plausibly tripped it: billing mismatches, landing-page policy, circumventing-systems flags. Fix that first. Then file one complete appeal; five thin ones read as circumvention. While the appeal runs, move spend to channels you own, starting with your email list. Reinstatement is the platform's decision; nothing here promises it.
@@ -22,19 +26,77 @@ Losing an ad account cuts a growth channel overnight. The appeal that works is f
 
 Policy enforcement and appeals run on the platforms' own judgment and consoles; an agent can audit the likely trigger and keep the owned channels running, but deciding what to fix and what to assert in the appeal is on the founder.
 
-## Steps
+## Before you start
 
-1. **Read the suspension notice: which policy is cited, and at what level (account, campaign, payment profile)** — human · ~20 min
+| Information to gather | Required by the record |
+| --- | --- |
+| the suspension notice (policy cited, account level) | Yes |
+| how much acquisition rides the suspended channel | Optional |
 
-   - Do it yourself: [Google Ads: account suspensions](https://support.google.com/adspolicy/answer/2375414)
-2. **Audit what could have tripped it: billing mismatches, destination/landing-page policy, circumventing-systems flags** — agent-runnable · ~1 h
-3. **Fix the underlying violation first — appeals filed with the violation still live get denied** — human · ~1 h
-4. **File ONE complete appeal through the published flow with the fix documented (Meta's path runs through the Business Help Center's account-quality flow)** — manual form/portal · ~30 min
-5. **Shift spend to the channels still standing while the appeal runs — the email list first; concentration was the real lesson** — human · ~45 min
+## Steps at a glance
 
-   - Vendor options: Mailchimp, Loops, Customer.io
-   - Ranked market: [email-marketing](../../open-rankings/email-marketing)
-6. **Wait for the appeal decision — the clock is the platform's** — human · ~7 d · async wait
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
+
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Read the suspension notice: which policy is cited, and at what level (account, campaign, payment profile)](#step-1) | human | ~20 min | Entry step |
+| [2. Audit what could have tripped it: billing mismatches, destination/landing-page policy, circumventing-systems flags](#step-2) | agent-runnable | ~1 h | [Step 1](#step-1) |
+| [3. Fix the underlying violation first — appeals filed with the violation still live get denied](#step-3) | human | ~1 h | [Step 2](#step-2) |
+| [4. File ONE complete appeal through the published flow with the fix documented (Meta's path runs through the Business Help Center's account-quality flow)](#step-4) | manual form/portal | ~30 min | [Step 3](#step-3) |
+| [5. Shift spend to the channels still standing while the appeal runs — the email list first; concentration was the real lesson](#step-5) | human | ~45 min | [Step 4](#step-4) |
+| [6. Wait for the appeal decision — the clock is the platform's](#step-6) | human; includes waiting | ~7 d | [Step 5](#step-5) |
+
+<a id="steps"></a>
+
+## Step details
+
+<a id="step-1"></a>
+
+### 1. Read the suspension notice: which policy is cited, and at what level (account, campaign, payment profile)
+
+human · ~20 min
+
+
+- Do it yourself: [Google Ads: account suspensions](https://support.google.com/adspolicy/answer/2375414)
+
+<a id="step-2"></a>
+
+### 2. Audit what could have tripped it: billing mismatches, destination/landing-page policy, circumventing-systems flags
+
+agent-runnable · ~1 h
+
+
+<a id="step-3"></a>
+
+### 3. Fix the underlying violation first — appeals filed with the violation still live get denied
+
+human · ~1 h
+
+
+<a id="step-4"></a>
+
+### 4. File ONE complete appeal through the published flow with the fix documented (Meta's path runs through the Business Help Center's account-quality flow)
+
+manual form/portal · ~30 min
+
+
+<a id="step-5"></a>
+
+### 5. Shift spend to the channels still standing while the appeal runs — the email list first; concentration was the real lesson
+
+human · ~45 min
+
+
+- Vendor options: Mailchimp, Loops, Customer.io
+- Ranked market: [email-marketing](../../open-rankings/email-marketing)
+
+<a id="step-6"></a>
+
+### 6. Wait for the appeal decision — the clock is the platform's
+
+human · ~7 d · async wait
+
+
 
 ---
 

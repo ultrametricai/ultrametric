@@ -95,6 +95,62 @@ describe('canonical diagram generator', () => {
     expect(readFileSync('open-processes/README.md', 'utf8')).toContain('<img src="assets/incorporate-c-corp.svg" alt="Incorporate C-Corp step graph" width="700">')
   })
 
+  it('generates the README examples with every authored node and edge, including the 409A join', () => {
+    const root = fixture()
+    const result = run(root, '--examples')
+    expect(result.status, result.stderr).toBe(0)
+    for (const slug of ['incorporate-c-corp', 'get-a-409a-valuation', 'set-up-mailing-address', 'sell-the-company-through-an-acquisition']) {
+      const process = catalog.find(item => item.slug === slug)!
+      const projected = projectOperational(process, catalog)!
+      const asset = `open-processes/assets/${slug}.svg`
+      const svg = readFileSync(path.join(root, asset), 'utf8')
+      expect(svg).toBe(readFileSync(asset, 'utf8'))
+      expect([...svg.matchAll(/data-node="([^"]+)"/g)].map(match => match[1]).sort())
+        .toEqual(projected.dag.nodes.map(node => node.id).sort())
+      expect([...svg.matchAll(/data-from="([^"]+)" data-to="([^"]+)"/g)].map(match => `${match[1]}:${match[2]}`).sort())
+        .toEqual((projected.dag.edges ?? []).map(edge => `${edge.from}:${edge.to}`).sort())
+      if (slug === 'get-a-409a-valuation') {
+        expect(svg).toContain('data-from="n1" data-to="n3"')
+        expect(svg).toContain('data-from="n2" data-to="n3"')
+        expect(svg).not.toContain('Jurisdiction-specific steps')
+      }
+      if (slug === 'set-up-mailing-address') {
+        // The current assessment overrides the historical agent route on address updates.
+        const last = svg.slice(svg.indexOf('<g data-node="n3">')).split('</g>')[0]
+        expect(last).toContain('Human Online')
+        expect(last).not.toContain('Agent Native')
+        expect(svg).toContain('Signature')
+      }
+    }
+  })
+
+  it('regenerates the README maps and preserves the conditional 83(b) scope and approvals', () => {
+    const root = mkdtempSync(path.join(os.tmpdir(), 'readme-maps-'))
+    temporary.push(root)
+    for (const file of ['scripts/generate-readme-maps.mjs', 'README.md', 'open-processes/get-ein.json',
+      'open-processes/set-up-an-llc.json', 'open-processes/consider-a-section-83-b-election-after-a-restricted-property-transfer.json']) {
+      mkdirSync(path.dirname(path.join(root, file)), { recursive: true })
+      cpSync(file, path.join(root, file))
+    }
+    const result = spawnSync(process.execPath, ['scripts/generate-readme-maps.mjs'], { cwd: root, encoding: 'utf8' })
+    expect(result.status, result.stderr).toBe(0)
+    for (const name of ['83b-election-map', 'founder-country-switch', 'formation-and-growth-map']) {
+      const file = `open-processes/assets/${name}.svg`
+      expect(readFileSync(path.join(root, file))).toEqual(readFileSync(file))
+      expect(readFileSync('README.md', 'utf8')).toContain(file)
+    }
+    const svg = readFileSync(path.join(root, 'open-processes/assets/83b-election-map.svg'), 'utf8')
+    const record = byId('equity.us-de.83b-election').record
+    expect([...svg.matchAll(/data-node="([^"]+)"/g)].map(match => match[1]))
+      .toEqual(record.parts.map(part => part.id))
+    expect([...svg.matchAll(/data-from="([^"]+)" data-to="([^"]+)"/g)].map(match => `${match[1]}:${match[2]}`))
+      .toEqual(record.links.map(edge => `${edge.from}:${edge.to}`))
+    expect(svg).toContain('stroke-dasharray="5 4"')
+    expect(svg).toContain('eligible recipient chooses the election after tax review')
+    expect(svg).toContain('demonstration')
+    expect(svg.match(/Approval: recipient/g)).toHaveLength(2)
+  })
+
   it('retains process/output arguments, escaping, and failure for an unknown process', () => {
     const root = fixture()
     const file = path.join(root, 'open-processes/generate-a-brand-logo.json')
@@ -121,7 +177,7 @@ describe('canonical catalog consumer contract', () => {
     // (the non-profit and business-phone-number processes) sit beside them.
     const retained = new Set(catalog.map(item => item.record.id))
     for (const id of importedIdentities.ids) expect(retained.has(id), `historical identity ${id}`).toBe(true)
-    expect(catalog).toHaveLength(186)
+    expect(catalog).toHaveLength(266)
     expect(catalog.filter(item => item.taskIds)).toHaveLength(24)
     const situations = catalog.filter(item => item.record.metadata.kind === 'situation')
     expect(situations).toHaveLength(33)

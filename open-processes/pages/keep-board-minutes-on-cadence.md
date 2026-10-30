@@ -3,6 +3,10 @@
 
 # Keep board minutes on cadence
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Geography](#geography) · [Steps](#steps-at-a-glance) · [Outputs](#outputs)
+
+## Overview
+
 Keep the corporate record clean: schedule the board cadence, prep the minutes template, record the meeting, route minutes for signature, and file them in the data room.
 
 | Field | Value |
@@ -19,60 +23,131 @@ Keep the corporate record clean: schedule the board cadence, prep the minutes te
 
 Scheduling, templates, signature routing, and filing are automatable. The minutes themselves record human deliberation in the room.
 
-## Steps
+<a id="artifacts"></a>
 
-1. **Schedule the board cadence** — agent-runnable · ~5 min
+## Before you start
 
-   Plan meetings around upcoming board decisions, available reporting and director attendance. Check the governing documents, investor commitments and jurisdiction-specific obligations for the actual company before choosing the cadence. Include preparation dates for materials and a way to handle urgent decisions through the appropriate special-meeting or written-action process.
+Required artifacts:
 
-   - Canonical vendor: Calendly
-2. **Prepare the minutes template** — agent-runnable · ~10 min
+- Diligence data room — from [Set up a data room](set-up-a-data-room.md)
 
-   Adapt the company’s prior minutes format to the agenda. Provide places for attendance, notice or waivers, conflicts, motions, votes and referenced materials where relevant. Include proposed resolutions as proposals and leave actual deliberations and outcomes blank. Check that the format fits this entity and meeting type before using it to record the meeting.
+## Geography
 
-   - Canonical vendor: Notion
-   - Vendor options: Notion, Google Drive
-3. **Hold the meeting and take minutes** — human · ~1 h
+Country rows describe the guidance recorded here. Local notes and step alternatives do not establish a complete country-specific workflow.
 
-   Record who attended, what was considered and what was decided. Capture approved resolutions, voting outcomes, conflicts and assigned actions accurately without inventing a transcript. Use recording or transcription only under the agreed participant arrangements. Compare the draft with the chair’s notes and supporting materials, and resolve disputed recollections before the minutes are approved.
+| Country | Recorded guidance | Steps with local alternatives or resolutions |
+| --- | --- | --- |
+| [India](#geo-in) | Local analog note | — |
+| [United Kingdom](#geo-uk) | Local analog note | — |
+| [Singapore](#geo-sg) | Local analog note | — |
 
-   - Cross-arena market: [meeting-ai](../../open-rankings/meeting-ai)
-4. **Circulate minutes for signature** — agent-runnable · ~5 min · human approval required
+## Steps at a glance
 
-   Follow the company’s applicable approval and signature process for these minutes. Resolve corrections, freeze the final wording and confirm the required signers and their capacities before sending an approved signature request. Track approval separately from signature completion and keep the execution evidence with the minutes. The correct process may not require every director to sign.
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
 
-   - Produces: Signed board minutes
-   - Canonical vendor: DocuSign
-5. **File signed minutes in the data room** — agent-runnable · ~5 min · support work
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Schedule the board cadence](#step-1) | agent-runnable | ~5 min | Entry step |
+| [2. Prepare the minutes template](#step-2) | agent-runnable | ~10 min | [Step 1](#step-1) |
+| [3. Hold the meeting and take minutes](#step-3) | human | ~1 h | [Step 2](#step-2) |
+| [4. Circulate minutes for signature](#step-4) | agent-runnable; approval required | ~5 min | [Step 3](#step-3) |
+| [5. File signed minutes in the data room](#step-5) | agent-runnable | ~5 min | [Step 4](#step-4) |
 
-   File the approved minutes, approval or signature evidence and referenced exhibits in the corporate records. Label them by meeting and keep amendments or follow-up resolutions linked without replacing the original. Restrict access appropriately and check that the records custodian can retrieve the files. Apply the entity’s retention requirements and any legal hold.
+<a id="steps"></a>
 
-   - Vendor options: Google Drive, Dropbox
-   - Ranked market: [cloud-storage](../../open-rankings/cloud-storage)
+## Step details
 
-## By country
+<a id="step-1"></a>
+
+### 1. Schedule the board cadence
+
+agent-runnable · ~5 min
+
+
+Plan meetings around upcoming board decisions, available reporting and director attendance. Check the governing documents, investor commitments and jurisdiction-specific obligations for the actual company before choosing the cadence. Include preparation dates for materials and a way to handle urgent decisions through the appropriate special-meeting or written-action process.
+
+- Canonical vendor: Calendly
+
+<a id="step-2"></a>
+
+### 2. Prepare the minutes template
+
+agent-runnable · ~10 min
+
+
+Adapt the company’s prior minutes format to the agenda. Provide places for attendance, notice or waivers, conflicts, motions, votes and referenced materials where relevant. Include proposed resolutions as proposals and leave actual deliberations and outcomes blank. Check that the format fits this entity and meeting type before using it to record the meeting.
+
+- Canonical vendor: Notion
+- Vendor options: Notion, Google Drive
+
+<a id="step-3"></a>
+
+### 3. Hold the meeting and take minutes
+
+human · ~1 h
+
+
+Record who attended, what was considered and what was decided. Capture approved resolutions, voting outcomes, conflicts and assigned actions accurately without inventing a transcript. Use recording or transcription only under the agreed participant arrangements. Compare the draft with the chair’s notes and supporting materials, and resolve disputed recollections before the minutes are approved.
+
+- Cross-arena market: [meeting-ai](../../open-rankings/meeting-ai)
+
+<a id="step-4"></a>
+
+### 4. Circulate minutes for signature
+
+agent-runnable · ~5 min · human approval required
+
+
+Follow the company’s applicable approval and signature process for these minutes. Resolve corrections, freeze the final wording and confirm the required signers and their capacities before sending an approved signature request. Track approval separately from signature completion and keep the execution evidence with the minutes. The correct process may not require every director to sign.
+
+- Produces: Signed board minutes
+- Canonical vendor: DocuSign
+
+<a id="step-5"></a>
+
+### 5. File signed minutes in the data room
+
+agent-runnable · ~5 min · support work
+
+
+File the approved minutes, approval or signature evidence and referenced exhibits in the corporate records. Label them by meeting and keep amendments or follow-up resolutions linked without replacing the original. Restrict access appropriately and check that the records custodian can retrieve the files. Apply the entity’s retention requirements and any legal hold.
+
+- Vendor options: Google Drive, Dropbox
+- Ranked market: [cloud-storage](../../open-rankings/cloud-storage)
+
+
+<a id="by-country"></a>
+
+## Country details
+
+<a id="geo-us"></a>
+
+### United States
+
+Keep the corporate record clean: schedule the board cadence, prep the minutes template, record the meeting, route minutes for signature, and file them in the data room.
+
+
+<a id="geo-in"></a>
 
 ### India
 
 - Cadence is law, not hygiene: the first board meeting within 30 days of incorporation and at least four a year (gap ≤ 120 days), run per ICSI Secretarial Standard SS-1 — small companies get a lighter two-meeting regime. ([ICSI — secretarial standards](https://www.icsi.edu/))
 
+<a id="geo-uk"></a>
+
 ### United Kingdom
 
 - No statutory meeting cadence for private companies, but the Companies Act requires minutes of every board and shareholder decision kept for TEN years — written resolutions are the routine substitute for meetings. ([Running a limited company](https://www.gov.uk/running-a-limited-company))
+
+<a id="geo-sg"></a>
 
 ### Singapore
 
 - No statutory meeting cadence for private companies — written resolutions are routine — but minutes and resolutions must be kept, and the fixed rhythm is the AGM (or its dispensation) plus the annual return declared to ACRA each year (law rule [sg.agm-deadline](../../open-law/SG/sg-agm-deadline.json)). ([ACRA — AGM due dates](https://www.acra.gov.sg/manage/companies/legal-requirements-common-offences/holding-annual-general-meetings/due-dates-requirements/))
 
-## Artifacts
-
-Produces:
+## Outputs
 
 - Signed board minutes
-
-Requires:
-
-- Diligence data room — from [Set up a data room](set-up-a-data-room.md)
 
 ## Related records
 

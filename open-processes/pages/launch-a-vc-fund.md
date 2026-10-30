@@ -3,17 +3,27 @@
 
 # Launch a VC fund
 
+[Overview](#overview) · [Process sequence](#process-sequence)
+
+## Overview
+
 The vehicle formed and filed, the LPs signed and closed, the money loop running.
 
 | Field | Value |
 | --- | --- |
 | Kind | chain |
 
-## Processes in order
+<a id="processes-in-order"></a>
 
-1. [Form a VC fund](form-a-vc-fund.md)
-2. [Close the fund](close-the-fund.md)
-3. [Run the fund back office](run-the-fund-back-office.md)
+## Process sequence
+
+Run the linked processes in the recorded chain order. Each process defines its own internal dependencies.
+
+| Order | Process | Requires | Produces |
+| --- | --- | --- | --- |
+| 1 | [Form a VC fund](form-a-vc-fund.md) | Not recorded | Fund LP certificate; Fund LPA & GP operating agreement; Fund bank account |
+| 2 | [Close the fund](close-the-fund.md) | Fund LP certificate; Fund LPA & GP operating agreement; Fund bank account | Fund closing |
+| 3 | [Run the fund back office](run-the-fund-back-office.md) | Fund closing; Fund bank account | Not recorded |
 
 ---
 

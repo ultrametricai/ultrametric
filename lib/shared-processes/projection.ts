@@ -34,7 +34,9 @@ function method(option: Option): Record<string, unknown> {
 function node(part: Part, workflow = false): Record<string, unknown> {
   const base = part.options.find(option => option.id === 'default')
   const alternatives = part.options.filter(option => option.id !== 'default')
-  return { ...part.metadata, ...base?.metadata, ...referenceFields([...part.references, ...(base?.references ?? [])]),
+  const us = Array.isArray(part.metadata.geoResolutions) ? part.metadata.geoResolutions.find((row: { country?: string }) => row.country === 'US') : undefined
+  const referenceMechanics = us && typeof us === 'object' ? { ...(us.verify ? { verify: us.verify } : {}), ...(us.cost ? { cost: us.cost } : {}) } : {}
+  return { ...part.metadata, ...referenceMechanics, ...base?.metadata, ...referenceFields([...part.references, ...(base?.references ?? [])]),
     id: part.id, [workflow ? 'action' : 'label']: part.title,
     ...(part.ref ? { processRef: part.ref } : {}),
     ...(alternatives.length ? { methods: alternatives.map(method) } : {}),

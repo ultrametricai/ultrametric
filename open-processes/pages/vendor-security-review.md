@@ -3,6 +3,10 @@
 
 # Vendor security review
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Steps](#steps-at-a-glance)
+
+## Overview
+
 Create a vendor security assessment workflow for SOC 2 compliance — questionnaires, risk scoring, and approval.
 
 | Field | Value |
@@ -19,44 +23,95 @@ Create a vendor security assessment workflow for SOC 2 compliance — questionna
 
 Vanta API supports vendor tracking. Security questionnaire review requires human judgment.
 
-## Steps
+<a id="artifacts"></a>
 
-1. **Create vendor assessment template** — agent-runnable · ~30 min · human approval required
+## Before you start
 
-   Tailor the assessment to the vendor’s service, data access, integration and operational importance. Request evidence relevant to those risks and define what security, privacy, legal or continuity questions require specialist review. Set criteria for accepting evidence and deciding exceptions. The template should support a reasoned vendor decision without making a numeric score the purchasing authority.
-
-   - Canonical vendor: Notion
-   - Sources: [NIST SP 800-53 Rev. 5](https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final)
-2. **Send security questionnaires** — agent-runnable · ~15 min · human approval required
-
-   Send the questionnaire approved for this vendor and service to the verified contact. Explain what evidence is needed, where confidential reports should be delivered and the agreed response date. Provide enough context to answer accurately without disclosing unrelated internal information. Give the vendor a contact for clarifying the request.
-
-   - Canonical vendor: Gmail
-   - Sources: [NIST SP 800-53 Rev. 5](https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final)
-3. **Vendors respond** — human · ~5 d · async wait
-
-   Check incoming reports and responses for the actual product, legal entity and relevant period. Follow up on missing evidence or ambiguous answers. Keep confidential material restricted and preserve the original response alongside clarifications. Assessment can proceed with omissions visible; distinguish verified evidence from conclusions still awaiting information.
-
-   - Cross-arena market: [workflow-automation](../../open-rankings/workflow-automation)
-   - Sources: [NIST SP 800-53 Rev. 5](https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final)
-4. **Score and assess responses** — human · ~2 h · human approval required
-
-   Assess supplied evidence against planned data access, sensitivity and service dependency. Explain the practical effect of gaps and exclusions, getting specialist review for material privacy, security or contract issues. The accountable risk or business owner decides whether to proceed, require remediation or decline. Record conditions and responsibilities with that decision, while leaving independently derived product rankings unchanged.
-
-   - Sources: [NIST SP 800-53 Rev. 5](https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final)
-5. **Log in Vanta** — agent-runnable · ~10 min
-
-   Enter the vendor, assessed service, evidence period, conclusions and decision conditions in the chosen compliance system. Restrict report access and link outstanding remediation to responsible people. Preserve any documented score calculation and its underlying answers. The record should let procurement see the approved decision and security see what must be reassessed.
-
-   - Canonical vendor: Vanta
-   - Sources: [NIST SP 800-53 Rev. 5](https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final)
-
-## Artifacts
-
-Requires:
+Required artifacts:
 
 - Vendor contract — from [Pick the right vendor for the task](pick-the-right-vendor-for-the-task.md)
 - Compliance platform — from [Start SOC 2 Type I](start-soc-2-type-i.md)
+
+| Information to gather | Required by the record |
+| --- | --- |
+| vendor list to review | Yes |
+| security requirements | Yes |
+
+## Steps at a glance
+
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
+
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Create vendor assessment template](#step-1) | agent-runnable; approval required | ~30 min | Entry step |
+| [2. Send security questionnaires](#step-2) | agent-runnable; approval required | ~15 min | [Step 1](#step-1) |
+| [3. Vendors respond](#step-3) | human; includes waiting | ~5 d | [Step 2](#step-2) |
+| [4. Score and assess responses](#step-4) | human; approval required | ~2 h | [Step 3](#step-3) |
+| [5. Log in Vanta](#step-5) | agent-runnable | ~10 min | [Step 4](#step-4) |
+
+<a id="steps"></a>
+
+## Step details
+
+<a id="step-1"></a>
+
+### 1. Create vendor assessment template
+
+agent-runnable · ~30 min · human approval required
+
+
+Tailor the assessment to the vendor’s service, data access, integration and operational importance. Request evidence relevant to those risks and define what security, privacy, legal or continuity questions require specialist review. Set criteria for accepting evidence and deciding exceptions. The template should support a reasoned vendor decision without making a numeric score the purchasing authority.
+
+- Canonical vendor: Notion
+- Sources: [NIST SP 800-53 Rev. 5](https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final)
+
+<a id="step-2"></a>
+
+### 2. Send security questionnaires
+
+agent-runnable · ~15 min · human approval required
+
+
+Send the questionnaire approved for this vendor and service to the verified contact. Explain what evidence is needed, where confidential reports should be delivered and the agreed response date. Provide enough context to answer accurately without disclosing unrelated internal information. Give the vendor a contact for clarifying the request.
+
+- Canonical vendor: Gmail
+- Sources: [NIST SP 800-53 Rev. 5](https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final)
+
+<a id="step-3"></a>
+
+### 3. Vendors respond
+
+human · ~5 d · async wait
+
+
+Check incoming reports and responses for the actual product, legal entity and relevant period. Follow up on missing evidence or ambiguous answers. Keep confidential material restricted and preserve the original response alongside clarifications. Assessment can proceed with omissions visible; distinguish verified evidence from conclusions still awaiting information.
+
+- Cross-arena market: [workflow-automation](../../open-rankings/workflow-automation)
+- Sources: [NIST SP 800-53 Rev. 5](https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final)
+
+<a id="step-4"></a>
+
+### 4. Score and assess responses
+
+human · ~2 h · human approval required
+
+
+Assess supplied evidence against planned data access, sensitivity and service dependency. Explain the practical effect of gaps and exclusions, getting specialist review for material privacy, security or contract issues. The accountable risk or business owner decides whether to proceed, require remediation or decline. Record conditions and responsibilities with that decision, while leaving independently derived product rankings unchanged.
+
+- Sources: [NIST SP 800-53 Rev. 5](https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final)
+
+<a id="step-5"></a>
+
+### 5. Log in Vanta
+
+agent-runnable · ~10 min
+
+
+Enter the vendor, assessed service, evidence period, conclusions and decision conditions in the chosen compliance system. Restrict report access and link outstanding remediation to responsible people. Preserve any documented score calculation and its underlying answers. The record should let procurement see the approved decision and security see what must be reassessed.
+
+- Canonical vendor: Vanta
+- Sources: [NIST SP 800-53 Rev. 5](https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final)
+
 
 ---
 

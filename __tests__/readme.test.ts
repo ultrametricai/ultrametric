@@ -2,6 +2,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { loadProcesses } from '@/lib/processes'
+import { loadProcessCatalog } from '@/lib/shared-processes/catalog'
 
 import { GEO_COUNTRIES, GEO_PREF_META } from '../lib/geoPreference'
 
@@ -66,7 +67,7 @@ const INTRO = [
   '<!-- Legacy anchor: external links to #start-here predate the merge into this map. -->',
   '<a id="start-here"></a>',
   '',
-  'Supporting founders globally: 🌐 🇺🇸 🇬🇧 🇮🇳 🇩🇪 🇫🇷 🇵🇹 🇨🇦 🇳🇿 🇸🇬 🇦🇺 🇰🇷 🇭🇰 🇪🇪',
+  `Supporting founders globally: 🌐 ${GEO_COUNTRIES.map((c) => GEO_PREF_META[c].flag).join(' ')}`,
   '',
   '[![A tour of ultrametric.ai at 4x: the simulator founding a company, a process page, a vendor page, a situation, the overall rankings, government services, and open documents](assets/readme/demo.gif)](https://ultrametric.ai)',
 ].join('\n')
@@ -229,11 +230,11 @@ describe('README.md structure (founder round 2, 2026-10-12)', () => {
     )
   })
 
-  it('the Getting acquired example names the playbook gap without linking coverage/', () => {
+  it('the Getting acquired example links the acquisition guide without linking coverage/', () => {
     const at = readme.indexOf('### Example: Getting acquired')
     expect(at).toBeGreaterThan(-1)
     const body = readme.slice(at, readme.indexOf('\n## ', at))
-    expect(body).toContain('open gap')
+    expect(body).toContain('](open-processes/pages/sell-the-company-through-an-acquisition.md)')
     expect(body).not.toContain('](coverage/')
   })
 
@@ -249,7 +250,7 @@ describe('README.md structure (founder round 2, 2026-10-12)', () => {
       const at = readme.indexOf(sub)
       expect(at).toBeGreaterThan(-1)
       const body = readme.slice(at, readme.indexOf('\n#', at + sub.length))
-      expect(body, `${sub} carries no bulleted example links`).toMatch(/\n- \[[^\]]+\]\(https:\/\/ultrametric\.ai\/processes\//)
+      expect(body, `${sub} carries no bulleted example links`).toMatch(/\n- \[[^\]]+\]\(open-processes\/pages\//)
     }
   })
 
@@ -451,18 +452,21 @@ describe('README.md anchors and links', () => {
 })
 
 describe('README.md examples pin to the committed records', () => {
-  type CorpusRec = { id: string; title: string }
+  type CorpusRec = { id: string; title: string; slugAliases?: Array<{ slug: string }> }
   const corpus: CorpusRec[] = loadProcesses(path.join(ROOT, 'open-rankings'))
   // Mirrors lib/processes.ts processSlug.
-  const slug = (title: string) => title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')
 
   it('the three example links resolve to real processes via their derived slugs', () => {
     // Founder round 4: the formal picks — Incorporate C-Corp, Get a 409A valuation,
-    // Set up mailing address (all three verified 200 on the live site, 2026-10-12).
+    // Set up mailing address. Readable-guide rollout: examples resolve inside the repo.
     for (const id of ['form_001', 'fund_003', 'qs_044']) {
       const rec = corpus.find((t) => t.id === id)
       expect(rec, `corpus record ${id} missing`).toBeDefined()
-      expect(readme).toContain(`https://ultrametric.ai/processes/${slug(rec!.title)}`)
+      const canonical = loadProcessCatalog().processes.find((p) => p.record.id === id)
+      expect(canonical, id).toBeDefined()
+      const guide = `open-processes/pages/${canonical!.slug}.md`
+      expect(readme).toContain(`](${guide})`)
+      expect(fs.existsSync(path.join(ROOT, guide)), guide).toBe(true)
     }
   })
 })

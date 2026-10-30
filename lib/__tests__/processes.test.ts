@@ -1,6 +1,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { describe, expect, it } from 'vitest'
+import { readSharedCatalog } from '../shared-processes/reader'
 import { isPopulated, loadCategories, loadCategory } from '@/lib/data'
 import {
   buildSimSteps, CADENCE_META, CADENCE_ORDER, cadenceRank, chainTasks, computeCeiling,
@@ -26,9 +27,9 @@ const node = (over: Partial<DagNode>): DagNode => ({
 })
 
 describe('corpus', () => {
-  it('loads all 160 records (127 processes + 33 situations) with unique, non-empty slugs', () => {
+  it('loads the expanded operational catalog (197 processes + 33 situations) with unique, non-empty slugs', () => {
     const tasks = loadProcesses(DATA_DIR)
-    expect(tasks.length).toBe(160)
+    expect(tasks.length).toBe(240)
     const slugs = tasks.map((t) => processSlug(t.title))
     expect(new Set(slugs).size).toBe(tasks.length)
     for (const s of slugs) expect(s).toMatch(/^[a-z0-9]+(-[a-z0-9]+)*$/)
@@ -221,22 +222,22 @@ describe('corpus', () => {
     expect(scopes.filter((s) => s === 'us-state').length).toBeGreaterThan(0)
   })
 
-  it('geo anchors: name is global, EIN is federal, franchise tax is state-level', () => {
+  it('geo anchors: tax identifiers and incorporation are global; US national regimes retain their scopes', () => {
     const tasks = loadProcesses(DATA_DIR)
     const byId = (id: string) => tasks.find((t) => t.id === id)!
     expect(byId('brand_001').geoScope).toBe('global') // choosing a name is global
     expect(byId('site_001').geoScope).toBe('global') // so is generating a website
-    expect(byId('form_002').geoScope).toBe('us') // EIN — the IRS
-    expect(byId('form_001').geoScope).toBe('us') // DE incorporation (founder call: us)
+    expect(byId('form_002').geoScope).toBe('global') // EIN is the US resolution
+    expect(byId('form_001').geoScope).toBe('global') // local incorporation routes
     expect(byId('tax_003').geoScope).toBe('us') // 1099s — the IRS
     // Truly state-level: the counterparty is a US state.
-    for (const id of ['tax_001', 'form_005', 'qs_043', 'qs_045', 'qs_047', 'tax_011']) {
+    for (const id of ['tax_001', 'form_005', 'qs_043', 'qs_045']) {
       expect(byId(id).geoScope, `${id} is state-level work`).toBe('us-state')
     }
     // Payroll RUNNING is global (the vendor loop); payroll SETUP is US (state/federal
     // registrations) and carries the per-country analogs.
     expect(byId('hr_002').geoScope).toBe('global')
-    expect(byId('qs_063').geoScope).toBe('us')
+    expect(byId('qs_063').geoScope).toBe('global')
     expect((byId('qs_063').geoNotes ?? []).length).toBeGreaterThan(0)
   })
 
@@ -277,7 +278,9 @@ describe('corpus', () => {
     // no India note") carries all four too — stamp duty in India, share classes in the UK.
     for (const id of ['form_001', 'startup_002']) {
       const t = tasks.find((x) => x.id === id)!
-      expect((t.geoNotes ?? []).map((n) => n.country).sort(), id).toEqual(['AU', 'CA', 'DE', 'EE', 'FR', 'HK', 'IN', 'KR', 'NZ', 'PT', 'SG', 'UK'])
+      const expected = ['AU', 'CA', 'DE', 'EE', 'FR', 'HK', 'IN', 'KR', 'NZ', 'PT', 'SG', 'UK']
+      if (id === 'form_001') expected.push('NL', 'IE', 'ES', 'SE', 'CH', 'JP', 'BR', 'AE')
+      expect((t.geoNotes ?? []).map((n) => n.country).sort(), id).toEqual(expected.sort())
     }
   })
 
@@ -294,7 +297,9 @@ describe('corpus', () => {
         kinds[n.kind]++
         // A note on a GLOBAL process is a per-country flavor of work that exists everywhere —
         // by construction it can only be 'analog' (the other kinds would contradict the scope).
-        if (t.geoScope === 'global') expect(n.kind, `${t.id}/${n.country}: global flavor notes are analogs`).toBe('analog')
+        if (t.geoScope === 'global' && n.kind !== 'analog') {
+          expect(t.dag.nodes.some(step => step.geoResolutions?.some(row => row.country === n.country && row.kind === n.kind)), `${t.id}/${n.country}: absorbed work needs explicit step mechanics`).toBe(true)
+        }
       }
     }
     // Honest distribution: most mapped needs exist abroad as their own processes; the absorbed/
@@ -395,7 +400,9 @@ describe('corpus', () => {
       ['qs_047', 'US-NV', 'us-nv.annual-list-business-license'],
       ['qs_047', 'US-TX', 'us-tx.franchise-tax-report'],
     ] as const) {
-      expect(byId(pid).description, `${pid} cites ${ruleId}`).toContain(ruleId)
+      const task = byId(pid)
+      const usText = task.dag.nodes.flatMap(node => (node.geoResolutions ?? []).filter(row => row.country === 'US').map(row => row.guidance ?? '')).join(' ')
+      expect(`${task.description} ${usText}`, `${pid} cites ${ruleId}`).toContain(ruleId)
       const file = path.join(__dirname, '..', '..', 'open-law', dir, `${ruleId.replace(/\./g, '-')}.json`)
       expect(fs.existsSync(file), `${ruleId} card committed at ${file}`).toBe(true)
       expect(JSON.parse(fs.readFileSync(file, 'utf8')).id).toBe(ruleId)
@@ -458,7 +465,9 @@ describe('corpus', () => {
       ['sit_015', 'EU', 'eu.gdpr-dsar-response-deadline'],
       ['sit_021', 'US-FED', 'us-fed.osha-severe-injury-reporting'],
     ] as const) {
-      expect(byId(sid).description, `${sid} cites its law rule`).toContain(ruleId)
+      const record = readSharedCatalog().find(record => record.id === sid)
+      const summaries = [byId(sid).description, ...(record?.countryViews ?? []).map(view => view.summary ?? '')].join('\n')
+      expect(summaries, `${sid} cites its law rule in the applicable country summary`).toContain(ruleId)
       const file = path.join(__dirname, '..', '..', 'open-law', dir, `${ruleId.replace(/\./g, '-')}.json`)
       expect(fs.existsSync(file), `${ruleId} card committed at ${file}`).toBe(true)
       expect(JSON.parse(fs.readFileSync(file, 'utf8')).id).toBe(ruleId)

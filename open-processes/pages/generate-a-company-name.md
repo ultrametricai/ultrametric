@@ -3,6 +3,10 @@
 
 # Generate a company name
 
+[Overview](#overview) · [Geography](#geography) · [Steps](#steps-at-a-glance) · [Outputs](#outputs)
+
+## Overview
+
 Branding: the agent generates brand-name candidates and scores each on domain availability, social handles, and trademark conflicts.
 
 | Field | Value |
@@ -19,37 +23,81 @@ Branding: the agent generates brand-name candidates and scores each on domain av
 
 An agent generates candidates and scores each on domain availability, social handles, and trademark conflicts via search APIs.
 
-## Steps
+## Geography
 
-1. **Generate name candidates** — agent-runnable · ~1 min
+Country rows describe the guidance recorded here. Local notes and step alternatives do not establish a complete country-specific workflow.
 
-   Generate distinct naming directions from the product's purpose, customers, languages and constraints. Give exact spellings, pronunciation and the association each name creates. Flag language questions for a fluent reviewer, then recommend candidates for availability and conflict checks.
+| Country | Recorded guidance | Steps with local alternatives or resolutions |
+| --- | --- | --- |
+| [United States](#geo-us) | step resolution | [2](#step-2) |
 
-   - Vendor options: ChatGPT, Claude, Gemini, Grok
-   - Ranked market: [ai-assistants](../../open-rankings/ai-assistants)
-2. **Check domain + social + trademark intel** — agent-runnable · ~2 min
+## Steps at a glance
 
-   Check each candidate's exact domain, priority social handles and similar trademarks for the intended markets and goods or services. Link the searches and date the observations, following the clearance-search guidance of each market's trademark office. Flag material conflicts for a qualified trademark adviser; an available domain or an empty search result does not establish legal clearance.
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
 
-   - Cross-arena options: ChatGPT, Claude, Gemini (ai-assistants)
-   - Sources: [Comprehensive clearance search for similar trademarks](https://www.uspto.gov/trademarks/search/comprehensive-clearance-search-similar-trademarks)
-3. **Present ranked candidates** — agent-runnable · ~1 min
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Generate name candidates](#step-1) | agent-runnable | ~1 min | Entry step |
+| [2. Check domain + social + trademark intel](#step-2) | agent-runnable | ~2 min | [Step 1](#step-1) |
+| [3. Present ranked candidates](#step-3) | agent-runnable | ~1 min | [Step 2](#step-2) |
 
-   Rank the checked names by audience fit, pronunciation, distinctiveness, workable domains and handles, and unresolved conflicts. Explain the tradeoffs using the search evidence, and identify which further check could change the recommendation. Carry the founder's selected spelling into the brand brief. While selection is open, label the shortlist as recommendations awaiting a choice.
+<a id="steps"></a>
 
-   - Produces: Company name
-   - Vendor options: ChatGPT, Claude, Gemini, Grok
-   - Ranked market: [ai-assistants](../../open-rankings/ai-assistants)
+## Step details
 
-## By country
+<a id="step-1"></a>
+
+### 1. Generate name candidates
+
+agent-runnable · ~1 min
+
+
+Generate distinct naming directions from the product's purpose, customers, languages and constraints. Give exact spellings, pronunciation and the association each name creates. Flag language questions for a fluent reviewer, then recommend candidates for availability and conflict checks.
+
+- Vendor options: ChatGPT, Claude, Gemini, Grok
+- Ranked market: [ai-assistants](../../open-rankings/ai-assistants)
+
+<a id="step-2"></a>
+
+### 2. Check domain + social + trademark intel
+
+agent-runnable · ~2 min
+
+
+Check each candidate's exact domain, priority social handles and similar trademarks for the intended markets and goods or services. Link the searches and date the observations, following the clearance-search guidance of each market's trademark office. Flag material conflicts for a qualified trademark adviser; an available domain or an empty search result does not establish legal clearance.
+
+- Cross-arena options: ChatGPT, Claude, Gemini (ai-assistants)
+- Sources: [Comprehensive clearance search for similar trademarks](https://www.uspto.gov/trademarks/search/comprehensive-clearance-search-similar-trademarks)
+
+<a id="step-3"></a>
+
+### 3. Present ranked candidates
+
+agent-runnable · ~1 min
+
+
+Rank the checked names by audience fit, pronunciation, distinctiveness, workable domains and handles, and unresolved conflicts. Explain the tradeoffs using the search evidence, and identify which further check could change the recommendation. Carry the founder's selected spelling into the brand brief. While selection is open, label the shortlist as recommendations awaiting a choice.
+
+- Produces: Company name
+- Vendor options: ChatGPT, Claude, Gemini, Grok
+- Ranked market: [ai-assistants](../../open-rankings/ai-assistants)
+
+
+<a id="by-country"></a>
+
+## Country details
+
+<a id="geo-us"></a>
 
 ### United States
 
+Branding: the agent generates brand-name candidates and scores each on domain availability, social handles, and trademark conflicts.
+
 - Step 2: A U.S. clearance search covers federal records and common-law use, per USPTO guidance ([Comprehensive clearance search for similar trademarks](https://www.uspto.gov/trademarks/search/comprehensive-clearance-search-similar-trademarks))
 
-## Artifacts
+<a id="artifacts"></a>
 
-Produces:
+## Outputs
 
 - Company name
 

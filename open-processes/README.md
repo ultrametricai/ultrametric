@@ -35,102 +35,182 @@ and its referenced records. Commit source changes before exporting a pin.
 
 ## Record pages
 
+Use the [startup task inventory](../coverage/STARTUP-TASKS.md) to find guides by lifecycle need and inspect conditional or specialist work.
+
 Each canonical record in this directory renders as a Markdown page in [`pages/`](pages):
-the step walk with routing and time estimates, decisions with their options, per-country
-notes and step resolutions, law-rule citations linked to their rule cards, and the
-artifacts the record produces and requires. The pages and the index below are generated
+prerequisites and required inputs, a geography navigation table, a step overview with
+dependencies, linked step instructions with routing and time estimates, decisions with
+their options, and detailed country notes. Law-rule citations link to their rule cards,
+and outputs link the work to the artifacts it produces. Chains show their constituent
+processes with required and produced artifacts. The pages and the index below are generated
 (`pnpm exec tsx scripts/generate-process-pages.ts`); edit the source record, then
 regenerate. Drift gate: `__tests__/process-pages.test.ts`.
 
 <!-- process-pages:index:start (generated — scripts/generate-process-pages.ts) -->
 
-One page per canonical record: 129 processes, 33 situations, 24 chains.
+One page per canonical record: 209 processes, 33 situations, 24 chains.
 
 ### Processes
 
-- [Add a contractor (1099)](pages/add-a-contractor-1099.md)
+- [Acquire and integrate another business](pages/acquire-and-integrate-another-business.md)
+- [Administer an employee equity plan](pages/administer-an-employee-equity-plan.md)
 - [Answer a security questionnaire](pages/answer-a-security-questionnaire.md)
+- [Apply for a research grant or innovation award](pages/apply-for-a-research-grant-or-innovation-award.md)
 - [Apply to Y Combinator](pages/apply-to-y-combinator.md)
+- [Appoint or replace directors and officers](pages/appoint-or-replace-directors-and-officers.md)
+- [Approve a remote work location change](pages/approve-a-remote-work-location-change.md)
+- [Approve a reserved corporate matter](pages/approve-a-reserved-corporate-matter.md)
+- [Approve and pay a shareholder distribution](pages/approve-and-pay-a-shareholder-distribution.md)
+- [Assess and file a patent application](pages/assess-and-file-a-patent-application.md)
+- [Assess and manage AI product risk](pages/assess-and-manage-ai-product-risk.md)
+- [Assess cross-border withholding before a payment](pages/assess-cross-border-withholding-before-a-payment.md)
+- [Assess IPO readiness and public-company operations](pages/assess-ipo-readiness-and-public-company-operations.md)
+- [Assess privacy impact before a processing change](pages/assess-privacy-impact-before-a-processing-change.md)
+- [Assess product safety concerns and coordinate a recall](pages/assess-product-safety-concerns-and-coordinate-a-recall.md)
+- [Assess regulatory approval before a product launch](pages/assess-regulatory-approval-before-a-product-launch.md)
 - [Audit cap table](pages/audit-cap-table.md)
 - [Bookkeeping close](pages/bookkeeping-close.md)
 - [Build a hiring pipeline](pages/build-a-hiring-pipeline.md)
 - [Build an SEO & content engine](pages/build-an-seo-content-engine.md)
 - [Buy a domain](pages/buy-a-domain.md)
+- [Change the company legal form](pages/convert-an-llc-to-a-c-corp.md)
 - [Check domain availability](pages/check-domain-availability.md)
-- [Claim the R&D tax credit](pages/claim-the-r-d-tax-credit.md)
+- [Claim research-and-development tax incentives](pages/claim-the-r-d-tax-credit.md)
 - [Close a priced equity round](pages/close-a-priced-equity-round.md)
 - [Close the fund](pages/close-the-fund.md)
+- [Collect overdue invoices and resolve bad debt](pages/collect-overdue-invoices-and-resolve-bad-debt.md)
+- [Complete a private secondary share sale](pages/complete-a-private-secondary-share-sale.md)
 - [Complete SOC 2 Type II](pages/complete-soc-2-type-ii.md)
+- [Configure metered usage billing](pages/configure-metered-usage-billing.md)
 - [Connect a payment processor](pages/connect-a-payment-processor.md)
 - [Connect a vendor or MCP server](pages/connect-a-vendor-or-mcp-server.md)
 - [Consider a section 83(b) election after a restricted-property transfer](pages/consider-a-section-83-b-election-after-a-restricted-property-transfer.md)
-- [Convert an LLC to a C-Corp](pages/convert-an-llc-to-a-c-corp.md)
-- [Convert SAFEs at the priced round](pages/convert-safes-at-the-priced-round.md)
+- [Convert fundraising instruments at the priced round](pages/convert-safes-at-the-priced-round.md)
+- [Coordinate a tax audit or examination](pages/coordinate-a-tax-audit-or-examination.md)
 - [Create a project in your tracker](pages/create-a-project-in-your-tracker.md)
 - [Create a subscription product](pages/create-a-subscription-product.md)
 - [Create an issue from a task](pages/create-an-issue-from-a-task.md)
 - [Cut a release](pages/cut-a-release.md)
+- [Define the business model and unit economics](pages/define-the-business-model-and-unit-economics.md)
+- [Design prototype and validate a physical product](pages/design-prototype-and-validate-a-physical-product.md)
 - [Draft and send an email](pages/draft-and-send-an-email.md)
+- [Establish a channel or commercial partnership](pages/establish-a-channel-or-commercial-partnership.md)
+- [Establish a foreign subsidiary or branch](pages/establish-a-foreign-subsidiary-or-branch.md)
+- [Establish an information security management system](pages/establish-an-information-security-management-system.md)
+- [Establish payment and purchasing approval controls](pages/establish-payment-and-purchasing-approval-controls.md)
+- [Exercise employee stock options](pages/exercise-employee-stock-options.md)
 - [File DE franchise tax](pages/file-de-franchise-tax.md)
-- [File federal tax return](pages/file-federal-tax-return.md)
-- [File state annual report](pages/file-state-annual-report.md)
+- [File the company income tax return](pages/file-federal-tax-return.md)
+- [File the recurring company registry return](pages/file-state-annual-report.md)
 - [File trademark](pages/file-trademark.md)
 - [Form a VC fund](pages/form-a-vc-fund.md)
 - [Generate a brand logo](pages/generate-a-brand-logo.md)
 - [Generate a company name](pages/generate-a-company-name.md)
 - [Generate a website](pages/generate-a-website.md)
 - [Get a 409A valuation](pages/get-a-409a-valuation.md)
-- [Get EIN](pages/get-ein.md)
 - [Get insurance quotes](pages/get-insurance-quotes.md)
 - [Get IP assignments signed](pages/get-ip-assignments-signed.md)
+- [Handle an employee grievance](pages/handle-an-employee-grievance.md)
 - [Hire abroad via an EOR](pages/hire-abroad-via-an-eor.md)
 - [Hire an executive](pages/hire-an-executive.md)
 - [Hire first employee](pages/hire-first-employee.md)
 - [Hire intl contractor](pages/hire-intl-contractor.md)
-- [Incorporate C-Corp](pages/incorporate-c-corp.md)
+- [Implement data retention and deletion controls](pages/implement-data-retention-and-deletion-controls.md)
+- [Incorporate the company](pages/incorporate-c-corp.md)
 - [Invite a teammate](pages/invite-a-teammate.md)
 - [Issue 1099s](pages/issue-1099s.md)
 - [Issue a refund](pages/issue-a-refund.md)
-- [Issue stock options](pages/issue-stock-options.md)
+- [Issue employee equity awards](pages/issue-stock-options.md)
 - [Keep board minutes on cadence](pages/keep-board-minutes-on-cadence.md)
 - [Launch a referral program](pages/launch-a-referral-program.md)
+- [Launch an online storefront](pages/launch-an-online-storefront.md)
 - [Launch in the app stores](pages/launch-in-the-app-stores.md)
 - [Launch on Product Hunt & directories](pages/launch-on-product-hunt-directories.md)
 - [Lease an office](pages/lease-an-office.md)
+- [Localize a product for a new market](pages/localize-a-product-for-a-new-market.md)
+- [Maintain a personal data inventory](pages/maintain-a-personal-data-inventory.md)
+- [Maintain the compliance obligations calendar](pages/maintain-the-compliance-obligations-calendar.md)
 - [Make the repo agent-ready](pages/make-the-repo-agent-ready.md)
+- [Manage a conflict of interest](pages/manage-a-conflict-of-interest.md)
+- [Manage a customer renewal or expansion](pages/manage-a-customer-renewal-or-expansion.md)
+- [Manage cash and treasury reserves](pages/manage-cash-and-treasury-reserves.md)
+- [Manage cookies consent and marketing preferences](pages/manage-cookies-consent-and-marketing-preferences.md)
+- [Manage employee leave and return to work](pages/manage-employee-leave-and-return-to-work.md)
+- [Manage grant spending and reporting](pages/manage-grant-spending-and-reporting.md)
+- [Manage inventory order fulfillment and returns](pages/manage-inventory-order-fulfillment-and-returns.md)
+- [Manage the product roadmap](pages/manage-the-product-roadmap.md)
+- [Manage vendor renewals and orderly offboarding](pages/manage-vendor-renewals-and-orderly-offboarding.md)
+- [Manage vulnerability remediation and patching](pages/manage-vulnerability-remediation-and-patching.md)
+- [Manage workplace safety and emergency readiness](pages/manage-workplace-safety-and-emergency-readiness.md)
+- [Monitor debt covenants and lender reporting](pages/monitor-debt-covenants-and-lender-reporting.md)
 - [Monitor trademark / handle availability](pages/monitor-trademark-handle-availability.md)
 - [Negotiate SaaS agreement](pages/negotiate-saas-agreement.md)
+- [Obtain business licenses and operating permits](pages/obtain-business-licenses-and-operating-permits.md)
+- [Obtain the company tax identifiers](pages/get-ein.md)
+- [Offboard a customer and deliver an authorized data export](pages/offboard-a-customer-and-deliver-an-authorized-data-export.md)
 - [Offboard employee](pages/offboard-employee.md)
+- [Onboard a contractor](pages/add-a-contractor-1099.md)
+- [Onboard a new customer](pages/onboard-a-new-customer.md)
+- [Onboard a new employee](pages/onboard-a-new-employee.md)
 - [Open bank account](pages/open-bank-account.md)
 - [Pay vendor invoices](pages/pay-vendor-invoices.md)
 - [Pick a brand color palette](pages/pick-a-brand-color-palette.md)
 - [Pick the right vendor for the task](pages/pick-the-right-vendor-for-the-task.md)
+- [Plan and test product accessibility](pages/plan-and-test-product-accessibility.md)
+- [Plan business continuity and alternate operations](pages/plan-business-continuity-and-alternate-operations.md)
+- [Plan employee training and development](pages/plan-employee-training-and-development.md)
+- [Plan founder and key-person succession](pages/plan-founder-and-key-person-succession.md)
+- [Plan production quality and product release](pages/plan-production-quality-and-product-release.md)
 - [Prepare a board meeting](pages/prepare-a-board-meeting.md)
+- [Prepare and file sales tax VAT or GST returns](pages/prepare-and-file-sales-tax-vat-or-gst-returns.md)
+- [Prepare and submit a public procurement bid](pages/prepare-and-submit-a-public-procurement-bid.md)
+- [Prepare for and complete an external financial audit](pages/prepare-for-and-complete-an-external-financial-audit.md)
+- [Protect trade secrets and confidential know-how](pages/protect-trade-secrets-and-confidential-know-how.md)
 - [Provision a workspace user](pages/provision-a-workspace-user.md)
 - [Publish a status page & SLA](pages/publish-a-status-page-sla.md)
 - [Publish privacy policy & DPA](pages/publish-privacy-policy-dpa.md)
-- [Raise pre-seed (SAFEs)](pages/raise-pre-seed-safes.md)
-- [Register for sales tax where you have nexus](pages/register-for-sales-tax-where-you-have-nexus.md)
+- [Qualify a manufacturing or fulfillment supplier](pages/qualify-a-manufacturing-or-fulfillment-supplier.md)
+- [Qualify a sales opportunity](pages/qualify-a-sales-opportunity.md)
+- [Raise pre-seed funding](pages/raise-pre-seed-safes.md)
+- [Register for sales tax, VAT or GST](pages/register-for-sales-tax-where-you-have-nexus.md)
 - [Register state taxes](pages/register-state-taxes.md)
+- [Renew insurance and coordinate a claim](pages/renew-insurance-and-coordinate-a-claim.md)
 - [Reorganize into multiple teams](pages/reorganize-into-multiple-teams.md)
+- [Retire a product feature or API](pages/retire-a-product-feature-or-api.md)
+- [Review a cross-border personal data transfer](pages/review-a-cross-border-personal-data-transfer.md)
+- [Review beneficial ownership reporting](pages/review-beneficial-ownership-reporting.md)
 - [Review common-stock fair market value before a stock option grant](pages/review-common-stock-fair-market-value-before-a-stock-option-grant.md)
+- [Review export controls sanctions and cross-border shipments](pages/review-export-controls-sanctions-and-cross-border-shipments.md)
+- [Review open-source licenses and software dependencies](pages/review-open-source-licenses-and-software-dependencies.md)
+- [Review revenue recognition and deferred revenue](pages/review-revenue-recognition-and-deferred-revenue.md)
 - [Review state registration](pages/review-state-registration.md)
+- [Review user access and privileged accounts](pages/review-user-access-and-privileged-accounts.md)
 - [Roll out a pricing change](pages/roll-out-a-pricing-change.md)
+- [Run a backup restoration and disaster recovery drill](pages/run-a-backup-restoration-and-disaster-recovery-drill.md)
+- [Run a customer demonstration and evaluation](pages/run-a-customer-demonstration-or-pilot.md)
+- [Run a paid customer acquisition experiment](pages/run-a-paid-customer-acquisition-experiment.md)
+- [Run a performance improvement process](pages/run-a-performance-improvement-process.md)
+- [Run a product beta or design-partner program](pages/run-a-product-beta-or-design-partner-program.md)
 - [Run a win-back campaign](pages/run-a-win-back-campaign.md)
 - [Run an incident postmortem](pages/run-an-incident-postmortem.md)
 - [Run outbound sales sequences](pages/run-outbound-sales-sequences.md)
 - [Run payroll](pages/run-payroll.md)
 - [Run performance reviews](pages/run-performance-reviews.md)
+- [Run security awareness training](pages/run-security-awareness-training.md)
 - [Run the annual penetration test](pages/run-the-annual-penetration-test.md)
 - [Run the fund back office](pages/run-the-fund-back-office.md)
 - [Save a churning customer](pages/save-a-churning-customer.md)
+- [Scope and deliver a professional services engagement](pages/scope-and-deliver-a-professional-services-engagement.md)
+- [Secure a business loan or credit facility](pages/secure-a-business-loan-or-credit-facility.md)
+- [Sell the company through an acquisition](pages/sell-the-company-through-an-acquisition.md)
 - [Send a wire or ACH payment](pages/send-a-wire-or-ach-payment.md)
+- [Send an investor update](pages/send-an-investor-update.md)
 - [Send an invoice](pages/send-an-invoice.md)
 - [Send NDA](pages/send-nda.md)
 - [Send the board financial report](pages/send-the-board-financial-report.md)
 - [Set company OKRs](pages/set-company-okrs.md)
+- [Set compensation bands and review pay](pages/set-compensation-bands-and-review-pay.md)
 - [Set the annual budget & get board approval](pages/set-the-annual-budget-get-board-approval.md)
-- [Set up a 401(k)](pages/set-up-a-401-k.md)
 - [Set up a business phone number](pages/set-up-a-business-phone-number.md)
 - [Set up a code hosting org](pages/set-up-a-code-hosting-org.md)
 - [Set up a CRM](pages/set-up-a-crm.md)
@@ -158,6 +238,7 @@ One page per canonical record: 129 processes, 33 situations, 24 chains.
 - [Set up error tracking](pages/set-up-error-tracking.md)
 - [Set up expense management](pages/set-up-expense-management.md)
 - [Set up mailing address](pages/set-up-mailing-address.md)
+- [Set up marketplace seller onboarding and payouts](pages/set-up-marketplace-seller-onboarding-and-payouts.md)
 - [Set up on-call & incident response](pages/set-up-on-call-incident-response.md)
 - [Set up payroll](pages/set-up-payroll.md)
 - [Set up product analytics](pages/set-up-product-analytics.md)
@@ -166,12 +247,15 @@ One page per canonical record: 129 processes, 33 situations, 24 chains.
 - [Set up subscription billing](pages/set-up-subscription-billing.md)
 - [Set up team chat](pages/set-up-team-chat.md)
 - [Set up transactional email](pages/set-up-transactional-email.md)
+- [Set up transfer pricing and intercompany agreements](pages/set-up-transfer-pricing-and-intercompany-agreements.md)
+- [Set up workplace retirement benefits](pages/set-up-a-401-k.md)
 - [Ship a feature (spec to deploy)](pages/ship-a-feature-spec-to-deploy.md)
 - [Shut down the company](pages/shut-down-the-company.md)
 - [Sign the founder agreement & split equity](pages/sign-the-founder-agreement-split-equity.md)
 - [Sponsor a work visa](pages/sponsor-a-work-visa.md)
 - [Stand up a data warehouse & BI](pages/stand-up-a-data-warehouse-bi.md)
 - [Start SOC 2 Type I](pages/start-soc-2-type-i.md)
+- [Track company assets and equipment](pages/track-company-assets-and-equipment.md)
 - [Track runway](pages/track-runway.md)
 - [Update cap table](pages/update-cap-table.md)
 - [Validate the idea](pages/validate-the-idea.md)
@@ -192,7 +276,6 @@ One page per canonical record: 129 processes, 33 situations, 24 chains.
 - [Handle a key employee's resignation](pages/handle-a-key-employee-s-resignation.md)
 - [Handle a press crisis](pages/handle-a-press-crisis.md)
 - [Handle a security-vulnerability report](pages/handle-a-security-vulnerability-report.md)
-- [Handle an employee's visa denial or RFE](pages/handle-an-employee-s-visa-denial-or-rfe.md)
 - [Migrate off a shutting-down vendor](pages/migrate-off-a-shutting-down-vendor.md)
 - [Recover a hijacked domain or social account](pages/recover-a-hijacked-domain-or-social-account.md)
 - [Recover a suspended ad or platform account](pages/recover-a-suspended-ad-or-platform-account.md)
@@ -209,6 +292,7 @@ One page per canonical record: 129 processes, 33 situations, 24 chains.
 - [Respond to a patent demand letter](pages/respond-to-a-patent-demand-letter.md)
 - [Respond to a trademark office action](pages/respond-to-a-trademark-office-action.md)
 - [Respond to an acquisition approach](pages/respond-to-an-acquisition-approach.md)
+- [Respond to an employee work-authorization refusal or evidence request](pages/handle-an-employee-s-visa-denial-or-rfe.md)
 - [Run a reduction in force](pages/run-a-reduction-in-force.md)
 - [Survive a DDoS attack or major outage](pages/survive-a-ddos-attack-or-major-outage.md)
 - [Take a down round or recap](pages/take-a-down-round-or-recap.md)
@@ -571,13 +655,39 @@ registry pointers and traversal of conditional and nested vendor references.
 
 ## The Incorporate C-Corp step graph
 
-The diagram is `form_001` (Incorporate C-Corp) from canonical `incorporate-c-corp.json`:
-`scripts/generate-process-diagram.mjs` draws the unfiltered operational projection's `dag.nodes` and
-`dag.edges`, nothing invented, and is re-run when the definition changes. Glyphs: 🤖 `agent` ·
-📝 `form` (manual web form) · 🧑 `person` · ✍ a `person` step with `legalSignature`
-(legally required human signature). Presentation adoption of execution assessments is deferred.
+The diagram is generated from [`incorporate-c-corp.json`](incorporate-c-corp.json).
+Arrows preserve the authored dependencies; disconnected jurisdiction-specific steps
+appear separately. The [guide](pages/incorporate-c-corp.md) includes country applicability,
+step options, verification and recovery guidance.
 
 <p align="center"><img src="assets/incorporate-c-corp.svg" alt="Incorporate C-Corp step graph" width="700"></p>
+
+## Get a 409A valuation step graph
+
+The [guide](pages/get-a-409a-valuation.md) and
+[source record](get-a-409a-valuation.json) show financial statements and a cap-table
+snapshot feeding the valuation request. The graph preserves both inputs before the
+questionnaire, report and acceptance steps.
+
+[![Get a 409A valuation step graph](assets/get-a-409a-valuation.svg)](pages/get-a-409a-valuation.md)
+
+## Set up mailing address step graph
+
+The [guide](pages/set-up-mailing-address.md) and
+[source record](set-up-mailing-address.json) cover provider selection, signup,
+mail authorization, witnessing and address updates. Consult the guide for the
+requirements that apply to the selected country and address type.
+
+[![Set up mailing address step graph](assets/set-up-mailing-address.svg)](pages/set-up-mailing-address.md)
+
+Regenerate the README examples with `node scripts/generate-process-diagram.mjs --examples`.
+The renderer reads canonical definitions through their operational projection. It uses
+Ultrametric's site typography stack, zinc surfaces and borders, gray connectors, and
+execution colors. Native SVG text uses Inter with Arial and Helvetica fallbacks.
+Execution labels use the authored assessment, or remain unclassified when it is missing;
+explicit approval and signature markers are shown separately. Open the linked guide for
+step options and full approval scope. A displayed agent capability does not authorize
+an external action. No process definition is changed by rendering its diagram.
 
 ## How the site consumes this directory
 

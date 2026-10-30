@@ -3,19 +3,29 @@
 
 # Set up compliance (SOC 2-lite)
 
+[Overview](#overview) · [Process sequence](#process-sequence)
+
+## Overview
+
 Password manager, SSO, devices under management, privacy policy and DPA, then the SOC 2 Type I run.
 
 | Field | Value |
 | --- | --- |
 | Kind | chain |
 
-## Processes in order
+<a id="processes-in-order"></a>
 
-1. [Set up a password manager](set-up-a-password-manager.md)
-2. [Set up SSO & access management](set-up-sso-access-management.md)
-3. [Set up device management (MDM)](set-up-device-management-mdm.md)
-4. [Publish privacy policy & DPA](publish-privacy-policy-dpa.md)
-5. [Start SOC 2 Type I](start-soc-2-type-i.md)
+## Process sequence
+
+Run the linked processes in the recorded chain order. Each process defines its own internal dependencies.
+
+| Order | Process | Requires | Produces |
+| --- | --- | --- | --- |
+| 1 | [Set up a password manager](set-up-a-password-manager.md) | Not recorded | Team password manager |
+| 2 | [Set up SSO & access management](set-up-sso-access-management.md) | Company email workspace | Identity provider (SSO) |
+| 3 | [Set up device management (MDM)](set-up-device-management-mdm.md) | Compliance platform | Device management (MDM) |
+| 4 | [Publish privacy policy & DPA](publish-privacy-policy-dpa.md) | Company website | Privacy policy |
+| 5 | [Start SOC 2 Type I](start-soc-2-type-i.md) | Identity provider (SSO) | Compliance platform; Security policies; SOC 2 Type I report |
 
 ---
 

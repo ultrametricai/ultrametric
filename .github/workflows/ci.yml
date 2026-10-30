@@ -7,6 +7,7 @@ name: CI
 
 on:
   pull_request:
+  workflow_dispatch: # generated PRs explicitly dispatch CI on their head branch
   push:
     branches: [main]
 
@@ -24,6 +25,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+        with:
+          fetch-depth: 0 # compare refresh verdicts against their main merge base
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v6
@@ -40,6 +43,16 @@ jobs:
         with:
           node-version: ${{ steps.node-version.outputs.version }}
           cache: pnpm
+
+      - name: Refresh stability checker tests
+        run: node --test rankings-engine/scripts/check-refresh-stability.test.mjs
+
+      - name: Repair controller tests
+        run: python3 rankings-engine/__tests__/refresh_repair_controller.py
+
+      - name: Refresh verdict stability
+        if: startsWith(github.head_ref || github.ref_name, 'story-runner/')
+        run: node rankings-engine/scripts/check-refresh-stability.mjs origin/main
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -123,7 +136,7 @@ jobs:
 
       - name: Test
         if: steps.fastpath.outputs.docs_only != 'true'
-        run: pnpm test
+        run: pnpm test --maxWorkers=2
 
       - name: Rankings determinism check
         if: steps.fastpath.outputs.docs_only != 'true'
@@ -145,3 +158,14 @@ jobs:
             echo "::error::All CI jobs must succeed; failure, cancellation, or skipped checks block CI."
             exit 1
           fi
+
+  # Running the metadata gate after CI also initializes its required status when
+  # Greptile produces a clean review without submitting an inline review event.
+  review-findings:
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+    needs: [ci]
+    permissions:
+      checks: read
+      pull-requests: read
+      statuses: write
+    uses: ./.github/workflows/review-findings.yml

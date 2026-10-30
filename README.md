@@ -27,7 +27,7 @@ ultrametric/
 <!-- Legacy anchor: external links to #start-here predate the merge into this map. -->
 <a id="start-here"></a>
 
-Supporting founders globally: 🌐 🇺🇸 🇬🇧 🇮🇳 🇩🇪 🇫🇷 🇵🇹 🇨🇦 🇳🇿 🇸🇬 🇦🇺 🇰🇷 🇭🇰 🇪🇪
+Supporting founders globally: 🌐 🇺🇸 🇬🇧 🇮🇳 🇩🇪 🇫🇷 🇵🇹 🇨🇦 🇳🇿 🇸🇬 🇦🇺 🇰🇷 🇭🇰 🇪🇪 🇳🇱 🇮🇪 🇪🇸 🇸🇪 🇨🇭 🇯🇵 🇧🇷 🇦🇪
 
 [![A tour of ultrametric.ai at 4x: the simulator founding a company, a process page, a vendor page, a situation, the overall rankings, government services, and open documents](assets/readme/demo.gif)](https://ultrametric.ai)
 
@@ -57,7 +57,7 @@ The [full index of ranked markets](https://ultrametric.ai/arenas) is live, and t
 
 ## Open processes
 
-The founder [processes](open-processes/) are written step by step. Each step has an [execution assessment](open-processes/execution.md), is timed, and marked by how hard it is to undo. The vendors that can run a step are
+The founder processes are written step by step. Read the process, situation, and chain guides directly in the repo through the [full index](open-processes/README.md). The [startup task inventory](coverage/STARTUP-TASKS.md) groups common and conditional work across the company lifecycle. Each step has an [execution assessment](open-processes/execution.md), is timed, and marked by how hard it is to undo. The vendors that can run a step are
 listed on it, with their judged scores. See it live at
 [ultrametric.ai/processes](https://ultrametric.ai/processes).
 
@@ -65,9 +65,36 @@ listed on it, with their judged scores. See it live at
 
 ### Examples
 
-- [Incorporate C-Corp](https://ultrametric.ai/processes/incorporate-c-corp) — set up a Delaware C-corp, filing to signed 83(b)
-- [Get a 409A valuation](https://ultrametric.ai/processes/get-a-409a-valuation) — establish the fair market value for stock options
-- [Set up mailing address](https://ultrametric.ai/processes/set-up-mailing-address) — a business mailing address for legal and banking purposes
+The diagrams are generated from the linked process definitions, preserving their step
+dependencies, execution assessments, estimates and explicit approval or signature markers.
+The guides include applicability, alternatives and verification details.
+
+- [Incorporate C-Corp](open-processes/pages/incorporate-c-corp.md) — set up a Delaware C-corp, filing to signed 83(b)
+
+<details open>
+<summary>Incorporate C-Corp: process diagram</summary>
+
+[![Incorporate C-Corp: canonical steps, dependencies and execution assessments](open-processes/assets/incorporate-c-corp.svg)](open-processes/pages/incorporate-c-corp.md)
+
+</details>
+
+- [Get a 409A valuation](open-processes/pages/get-a-409a-valuation.md) — establish the fair market value for stock options
+
+<details open>
+<summary>Get a 409A valuation: process diagram</summary>
+
+[![Get a 409A valuation: canonical steps, dependencies and execution assessments](open-processes/assets/get-a-409a-valuation.svg)](open-processes/pages/get-a-409a-valuation.md)
+
+</details>
+
+- [Set up mailing address](open-processes/pages/set-up-mailing-address.md) — a business mailing address for legal and banking purposes
+
+<details open>
+<summary>Set up mailing address: process diagram</summary>
+
+[![Set up mailing address: canonical steps, dependencies and execution assessments](open-processes/assets/set-up-mailing-address.svg)](open-processes/pages/set-up-mailing-address.md)
+
+</details>
 
 [![The Incorporate C-Corp process: the step diagram, steps with ranked vendor options](assets/readme/process-page.png)](https://ultrametric.ai/processes/incorporate-c-corp)
 
@@ -89,32 +116,32 @@ module computes for, written from the committed module-to-process map by
 
 | Module | What it computes | Serves |
 | --- | --- | --- |
-| [Cap table](open-modules/README.md#cap-table) | Issuance, option pools, SAFE conversion, priced-round price per share, dilution | Incorporate C-Corp · Sign the founder agreement & split equity · Set up cap table · Update cap table · Audit cap table · Raise pre-seed (SAFEs) · Close a priced equity round · Issue stock options · Convert SAFEs at the priced round · Handle a co-founder departure |
-| [Vesting](open-modules/README.md#vesting-mechanics) | Cliff and periodic schedules, back-loaded tranches, acceleration, departures | Incorporate C-Corp · Sign the founder agreement & split equity · Issue stock options · Hire first employee · Hire an executive · Handle a co-founder departure |
-| [83(b) election](open-modules/README.md#83b-election-math) | Tax at grant vs tax at vesting, forfeiture cost | Incorporate C-Corp · Sign the founder agreement & split equity · Convert an LLC to a C-Corp · Recover from a missed 83(b) deadline |
-| [QSBS (§ 1202)](open-modules/README.md#qsbs--1202) | Eligibility conditions, holding clock, exclusion percentages, per-issuer cap | Incorporate C-Corp · Convert an LLC to a C-Corp |
-| [Equity comp](open-modules/README.md#offer--equity-comp-scenarios) | Offer grant percentage, option spread, exit scenarios | Issue stock options · Hire first employee · Hire an executive |
-| [Option tax](open-modules/README.md#iso--nso-exercise-tax) | NSO income at exercise, ISO/AMT outcomes, the $100,000 limit, sale outcomes | Issue stock options · Offboard employee |
-| [409A](open-modules/README.md#409a-grant-sanity) | Strike floor, valuation staleness, presumption timing | Close a priced equity round · Get a 409A valuation · Issue stock options |
+| [Cap table](open-modules/README.md#cap-table) | Issuance, option pools, SAFE conversion, priced-round price per share, dilution | Incorporate the company · Sign the founder agreement & split equity · Set up cap table · Update cap table · Audit cap table · Raise pre-seed funding · Close a priced equity round · Issue employee equity awards · Convert fundraising instruments at the priced round · Handle a co-founder departure |
+| [Vesting](open-modules/README.md#vesting-mechanics) | Cliff and periodic schedules, back-loaded tranches, acceleration, departures | Incorporate the company · Sign the founder agreement & split equity · Issue employee equity awards · Hire first employee · Hire an executive · Handle a co-founder departure |
+| [83(b) election](open-modules/README.md#83b-election-math) | Tax at grant vs tax at vesting, forfeiture cost | Incorporate the company · Sign the founder agreement & split equity · Change the company legal form · Recover from a missed 83(b) deadline |
+| [QSBS (§ 1202)](open-modules/README.md#qsbs--1202) | Eligibility conditions, holding clock, exclusion percentages, per-issuer cap | Incorporate the company · Change the company legal form |
+| [Equity comp](open-modules/README.md#offer--equity-comp-scenarios) | Offer grant percentage, option spread, exit scenarios | Issue employee equity awards · Hire first employee · Hire an executive |
+| [Option tax](open-modules/README.md#iso--nso-exercise-tax) | NSO income at exercise, ISO/AMT outcomes, the $100,000 limit, sale outcomes | Issue employee equity awards · Offboard employee |
+| [409A](open-modules/README.md#409a-grant-sanity) | Strike floor, valuation staleness, presumption timing | Close a priced equity round · Get a 409A valuation · Issue employee equity awards |
 
 ### Fundraising & exits
 
 | Module | What it computes | Serves |
 | --- | --- | --- |
-| [Convertible notes](open-modules/README.md#convertible-notes) | Interest accrual, cap/discount conversion, maturity paths | Raise pre-seed (SAFEs) · Convert SAFEs at the priced round |
-| [Priced round](open-modules/README.md#priced-round-mechanics) | Pro rata, pool sizing from a hiring plan, down rounds, secondaries | Close a priced equity round · Convert SAFEs at the priced round |
-| [Round composer](open-modules/README.md#priced-round-composer) | A priced round end to end, term sheet to post-close table | Close a priced equity round · Convert SAFEs at the priced round |
+| [Convertible notes](open-modules/README.md#convertible-notes) | Interest accrual, cap/discount conversion, maturity paths | Raise pre-seed funding · Convert fundraising instruments at the priced round |
+| [Priced round](open-modules/README.md#priced-round-mechanics) | Pro rata, pool sizing from a hiring plan, down rounds, secondaries | Close a priced equity round · Convert fundraising instruments at the priced round |
+| [Round composer](open-modules/README.md#priced-round-composer) | A priced round end to end, term sheet to post-close table | Close a priced equity round · Convert fundraising instruments at the priced round |
 | [Anti-dilution](open-modules/README.md#anti-dilution) | Weighted-average and full-ratchet adjustments | Close a priced equity round · Take a down round or recap |
-| [Sale waterfall](open-modules/README.md#liquidity-event-waterfall) | Per-holder proceeds at a sale price | Raise pre-seed (SAFEs) · Close a priced equity round |
+| [Sale waterfall](open-modules/README.md#liquidity-event-waterfall) | Per-holder proceeds at a sale price | Raise pre-seed funding · Close a priced equity round |
 
 ### Tax & compliance
 
 | Module | What it computes | Serves |
 | --- | --- | --- |
-| [Deadlines](open-modules/README.md#deadline-calendar) | The founder compliance calendar, each date citing a law rule | Incorporate C-Corp · Sign the founder agreement & split equity · Convert an LLC to a C-Corp · File DE franchise tax · File federal tax return · Cure a Delaware franchise tax delinquency |
+| [Deadlines](open-modules/README.md#deadline-calendar) | The founder compliance calendar, each date citing a law rule | Incorporate the company · Sign the founder agreement & split equity · Change the company legal form · File DE franchise tax · File the company income tax return · Cure a Delaware franchise tax delinquency |
 | [Payroll tax](open-modules/README.md#employer-payroll-tax) | Employer FICA/FUTA load, per-employee annual cost | Set up payroll · Hire first employee · Run payroll |
 | [Delaware franchise tax](open-modules/README.md#delaware-franchise-tax) | Both published methods, the cheaper-method comparison | File DE franchise tax · Cure a Delaware franchise tax delinquency |
-| [R&D tax](open-modules/README.md#rd-tax-mechanics) | § 174 amortization, § 41(h) payroll-offset mechanics | Claim the R&D tax credit |
+| [R&D tax](open-modules/README.md#rd-tax-mechanics) | § 174 amortization, § 41(h) payroll-offset mechanics | Claim research-and-development tax incentives |
 
 ### Finance & runway
 
@@ -190,8 +217,13 @@ the UK, India, Germany, France, Portugal, Canada, and New Zealand have country a
 filing links. Adding your country is a pull request that the data checks validate
 automatically.
 
-- [Get EIN](https://ultrametric.ai/processes/get-ein) — in the UK, France, Portugal, and Canada the tax ID arrives automatically with incorporation; in Germany it is its own filing with the tax office
-- [Set up an LLC](https://ultrametric.ai/processes/set-up-an-llc) — the analog shifts by country (LLP in the UK and India, UG in Germany, SARL in France) and Canada and New Zealand have no LLC at all
+- [Get EIN](open-processes/pages/get-ein.md) — in the UK, France, Portugal, and Canada the tax ID arrives automatically with incorporation; in Germany it is its own filing with the tax office
+- [Set up an LLC](open-processes/pages/set-up-an-llc.md) — the analog shifts by country (LLP in the UK and India, UG in Germany, SARL in France) and Canada and New Zealand have no LLC at all
+
+[![Founder country switch: the authored country treatments for company tax identifiers and LLC setup](open-processes/assets/founder-country-switch.svg)](open-processes/pages/get-ein.md#geography)
+
+Read the country guidance for [company tax identifiers](open-processes/pages/get-ein.md#geography)
+and [LLC setup](open-processes/pages/set-up-an-llc.md#geography).
 
 ## Open lore
 
@@ -231,8 +263,9 @@ linked as a tension: Horowitz's case for the fat startup (in a big market, outsp
 beats running lean) against Ries's lean loop, and Kan's sell-from-strength against Cohen's
 rich-versus-king. The acquisition stories (WhatsApp, Twitch, MySpace) are in
 [`open-lore/LORE.md`](open-lore/LORE.md) with lessons and sources, and the waterfall
-module computes who gets what at any price. The acquisition playbook process is a known,
-open gap.
+module computes who gets what at any price. The [acquisition guide](open-processes/pages/sell-the-company-through-an-acquisition.md) covers the operational path from sale preparation through closing and post-close obligations, with qualified advisers owning the transaction decisions.
+
+[![Acquisition process: preparation, approvals, diligence, closing and post-close obligations](open-processes/assets/sell-the-company-through-an-acquisition.svg)](open-processes/pages/sell-the-company-through-an-acquisition.md)
 
 ## Open law
 
@@ -255,13 +288,19 @@ it and the processes it governs, graded mapped, partial, or unmapped.
 One rule, followed through the repo. The distilled law states the thirty-day window
 ([Formation and housekeeping](open-law/LAWS.md#formation-and-housekeeping)); its rule
 [`us-fed.83b-filing-period`](open-law/US-FED/us-fed-83b-filing-period.json) pins the IRS
-procedure; the [Incorporate C-Corp](https://ultrametric.ai/processes/incorporate-c-corp)
+procedure; the [Incorporate C-Corp](open-processes/pages/incorporate-c-corp.md)
 process signs and files the election as explicit steps, with the jurisdiction-scoped
 workflow [`equity.us-de.83b-election`](open-processes/equity/us-de/83b-election.json)
 requiring a named human approval on the filing; and the
 [83(b) election math module](open-modules/README.md#83b-election-math) computes
 tax-at-grant against tax-at-vesting, replaying the IRS revenue-procedure examples in
 tests.
+
+[![The 83(b) election: related law, workflow, calculation module and private outputs, with conditional filing and scoped recipient approvals](open-processes/assets/83b-election-map.svg)](open-processes/pages/consider-a-section-83-b-election-after-a-restricted-property-transfer.md)
+
+[Read the scoped 83(b) workflow](open-processes/pages/consider-a-section-83-b-election-after-a-restricted-property-transfer.md)
+for applicability, stop conditions and recipient approvals. The diagram summarizes the
+existing demonstration workflow.
 
 ## Government services and startups
 
@@ -299,7 +338,7 @@ behind the decisions. Two stages as examples:
 
 ### Stage: Formation
 
-- Process: [Incorporate C-Corp](https://ultrametric.ai/processes/incorporate-c-corp) — filing to signed 83(b)
+- Process: [Incorporate C-Corp](open-processes/pages/incorporate-c-corp.md) — filing to signed 83(b)
 - Vendors: [startup legal & incorporation](https://ultrametric.ai/arena/legal-ops) and [startup banking](https://ultrametric.ai/arena/startup-banking)
 - Modules: [cap table](open-modules/README.md#cap-table) and [83(b) election math](open-modules/README.md#83b-election-math)
 - Artifacts: the certificate of incorporation and EIN letter in the [registry](open-artifacts/registry.json), establishing the incorporation-date and EIN [fields](open-artifacts/fields.json)
@@ -308,12 +347,17 @@ behind the decisions. Two stages as examples:
 
 ### Stage: Growth
 
-- Processes: [set up email marketing](https://ultrametric.ai/processes/set-up-email-marketing) and [build an SEO & content engine](https://ultrametric.ai/processes/build-an-seo-content-engine)
+- Processes: [set up email marketing](open-processes/pages/set-up-email-marketing.md) and [build an SEO & content engine](open-processes/pages/build-an-seo-content-engine.md)
 - Vendors: [email marketing](https://ultrametric.ai/arena/email-marketing) and [CRM](https://ultrametric.ai/arena/crm)
 - Module: [runway & burn](open-modules/README.md#runway--burn) — default-alive trajectories as spend scales
 - Artifacts: the marketing email audience and subscription billing in the [registry](open-artifacts/registry.json)
 - Lore: the [library's](open-lore/library.json) growth and distribution readings, distilled in [growth, people and spending](open-law/LAWS.md#growth-people-and-spending)
 - Law: the [CAN-SPAM requirements](open-law/US-FED/us-fed-can-spam-requirements.json) on the sends
+
+[![Formation and Growth: the README selections of processes, vendors, modules, artifacts, lore and law](open-processes/assets/formation-and-growth-map.svg)](open-processes/README.md)
+
+Explore the [process index](open-processes/README.md), [calculation modules](open-modules/README.md)
+and [artifact guide](open-artifacts/README.md) through their linked entries.
 
 <a id="install-ultrametric"></a>
 

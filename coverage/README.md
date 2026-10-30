@@ -1,5 +1,7 @@
 # Coverage
 
+[Startup task inventory](STARTUP-TASKS.md) maps common and conditional startup needs to readable guides, with the specialist boundaries and source evidence. Guide presence, country-law depth and verified execution are measured separately.
+
 This directory is the cross-area answer to what this repo covers and what is missing. `index.json` carries
 one entry per top-level content area: a maturity grade, a short summary, the headline
 gaps, and pointers to the file where that area tracks its own gaps in detail. The detail
@@ -79,3 +81,5 @@ not domain coverage, and recorded review dates do not establish expert approval 
 liveness. Required inputs must resolve or generation fails rather than emitting a partial
 report. Checks: `node --test scripts/content-audit.test.mjs`; no model, remote probe, or
 external effect runs during generation.
+
+Country launch entry points and their explicit remaining scope are recorded in [startup-country-expansion.json](startup-country-expansion.json) and the generated [startup coverage index](STARTUP-TASKS.md#additional-country-launch-guidance). These are draft scoping summaries; country-specific law-layer coverage remains separate.

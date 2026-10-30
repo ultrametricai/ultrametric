@@ -1,3 +1,4 @@
+import { loadArtifactPages } from '../artifactPages'
 import path from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { operationalSources } from './helpers/operational-sources'
@@ -129,7 +130,7 @@ describe('no invented artifacts — committed steps and real consumers', () => {
   it('the typed layer parses through the site loader (required fields, no defaults)', () => {
     // loadProcesses throws on any record missing produces/requires — totality by construction;
     // the assertions above exist to name offenders precisely.
-    expect(loadProcesses(DATA_DIR).length).toBe(160)
+    expect(loadProcesses(DATA_DIR).length).toBe(240)
   })
 })
 
@@ -339,5 +340,15 @@ describe('artifact geo — per-country analogs', () => {
         }
       }
     }
+  })
+})
+
+
+describe('artifact country scope after process abstraction', () => {
+  it('keeps US-centric tax artifacts scoped while their producer has a global abstraction', () => {
+    const pages = loadArtifactPages()
+    expect(pages.find(page => page.artifact.id === 'ein')?.usOnlyProducers).toBe(true)
+    expect(pages.find(page => page.artifact.id === '83b-election')?.usOnlyProducers).toBe(true)
+    expect(pages.find(page => page.artifact.id === 'bank-account')?.usOnlyProducers).toBe(false)
   })
 })

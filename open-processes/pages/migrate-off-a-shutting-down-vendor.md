@@ -3,6 +3,10 @@
 
 # Migrate off a shutting-down vendor
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Steps](#steps-at-a-glance)
+
+## Overview
+
 **Trigger:** A vendor you depend on announces a shutdown or sunsets the product you're built on.
 
 You did not choose this deadline, but you have to meet it. The notice gives an end-of-service date and a shorter data-export window. Export your data first, whatever else slips; it is the one step that cannot wait. Then run an ordinary migration under time pressure: pick a replacement from the current market, set it up, run old and new in parallel through one business cycle, cut over. Cancel only after that, and get written confirmation your data was deleted. That confirmation cannot be taken back, which is why it comes last.
@@ -30,39 +34,103 @@ Exports, imports, and integration re-pointing are agent-drivable where the APIs 
 - A replacement mapping and import reconciliation, with representative workflow and recovery evidence.
 - A cutover decision after the agreed parallel-run checks, with cancellation and retention/deletion evidence only when actually authorized and completed.
 
-## Steps
+## Before you start
 
-1. **Read the shutdown notice: the end-of-service date, the data-export window, and what your contract promises** — human · ~30 min
+| Information to gather | Required by the record |
+| --- | --- |
+| the shutdown notice (dates, export window) and what depends on the vendor | Yes |
 
-   Read the actual notice and contract for shutdown, export, support and retention dates, including timezone. Identify the earlier deadline that could make recovery impossible and the services, integrations, owners and data affected. Confirm existing account/export permissions and the authorized data destination. Resolve ambiguous dates with the owner while preparing a safe export; do not infer an extension or new service commitment.
-2. **Export your data now — not in the deadline crunch** — agent-runnable · ~45 min
+## Steps at a glance
 
-   Export through a supported API or authorized account interface while access remains available. Preserve the raw export and capture its source account, time, scope, pagination/completion state, record counts and attachment hashes. Include relationships, configuration and identifiers needed to restore the business workflow. Check for missing pages, corrupt files and inaccessible records; counts alone cannot prove completeness. Mark gaps explicitly and keep a usable copy in the authorized destination before proceeding.
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
 
-   - Use the shutdown situation to prioritize recoverability, then select the arena evidence for the actual vendor. UM's CRM full-export verdict illustrates a consequential gap: readable contacts and import documentation do not establish export of attachments, relationships and all other objects. Build the source inventory from this company's usage and compare it with the documented export coverage. Preserve uncovered objects as explicit migration blockers, and carry that coverage check through restore, parallel operation and cutover. A successful export request alone does not establish recoverability.
-3. **Choose the replacement from the live market** — human · ~1 h
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Read the shutdown notice: the end-of-service date, the data-export window, and what your contract promises](#step-1) | human | ~30 min | Entry step |
+| [2. Export your data now — not in the deadline crunch](#step-2) | agent-runnable | ~45 min | [Step 1](#step-1) |
+| [3. Choose the replacement from the live market](#step-3) | human | ~1 h | [Step 2](#step-2) |
+| [4. Migrate: stand up the replacement, import the data, re-point the integrations](#step-4) | agent-runnable | ~3 h | [Step 3](#step-3) |
+| [5. Run and verify the parallel-run window](#step-5) | human; includes waiting | ~7 d | [Step 4](#step-4) |
+| [6. Review the parallel-run results and cut over](#step-6) | human | ~1.5 h | [Step 5](#step-5) |
+| [7. Cancel the old contract and get the data deletion confirmed in writing](#step-7) | manual form/portal | ~30 min | [Step 6](#step-6) |
 
-   Choose a replacement against the workflows, data model, integrations, budget and deadline already recorded. Reuse the vendor-selection process for consequential unknowns. Verify import/export support and the specific plan or access needed, with a small synthetic or cleared sample where possible. A shortlist or successful sign-in is not a working replacement; record any unsupported requirement before committing to a route.
+<a id="steps"></a>
 
-   - Runs the process [Pick the right vendor for the task](pick-the-right-vendor-for-the-task.md)
-4. **Migrate: stand up the replacement, import the data, re-point the integrations** — agent-runnable · ~3 h
+## Step details
 
-   Map stable source identifiers, fields, relationships, attachment references, permissions and timezones to the replacement. Start in a permitted test destination and import a representative sample, then reconcile the full permitted import against the export manifest. Check content hashes and relationship integrity as well as counts. Retain a per-item result ledger and inspect destination state after uncertain responses before retrying. Re-point test integrations and prove a restore path; leave production endpoints and the old source intact until cutover is authorized.
+<a id="step-1"></a>
 
-   Choose the authoritative system for writes during migration. Capture a baseline watermark and a repeatable delta export or a planned write freeze; include creations, edits, deletions, attachments and permission changes. Keep shadow tests from sending duplicate notifications or triggering live downstream actions. Reconcile changed records by stable identifier, not only total counts.
-5. **Run and verify the parallel-run window** — human · ~7 d · async wait
+### 1. Read the shutdown notice: the end-of-service date, the data-export window, and what your contract promises
 
-   Agree the business cycle, minimum observation period and acceptance checks with the operational owner before running old and new in parallel. Compare the required reads, updates, permissions and downstream results, and record discrepancies and their resolution. Complete the actual observation window before presenting the cutover decision. A simulated clock or replay is a rehearsal only. If time remaining cannot support the agreed window, escalate that constraint rather than silently skipping the check.
+human · ~30 min
 
-   Keep normal business writes in the designated source unless an explicitly approved synchronization scheme covers both systems. Track any test or destination-only writes so they can be discarded or reconciled deliberately. Verify that updates after the first export reach the replacement and that the recovery plan preserves work created after switching.
-6. **Review the parallel-run results and cut over** — human · ~1.5 h · hard to undo
 
-   Review the completed parallel-run evidence, reconciled data, integration checks, unresolved exceptions and tested recovery path with the cutover owner. Obtain authority for the exact production changes and timing, then switch only that scope. Verify the primary business workflow and destination state after the change. Stop or recover on failed checks; retain the old service and export until the owner accepts the result and retention requirements are resolved.
+Read the actual notice and contract for shutdown, export, support and retention dates, including timezone. Identify the earlier deadline that could make recovery impossible and the services, integrations, owners and data affected. Confirm existing account/export permissions and the authorized data destination. Resolve ambiguous dates with the owner while preparing a safe export; do not infer an extension or new service commitment.
 
-   At the approved cutover window, freeze source writes or establish the agreed final watermark, transfer and reconcile the final delta, and rerun permission and business-task checks before switching traffic. If recovery is needed, pause destination writes and preserve/reconcile post-switch changes before reopening the old source. If the shutdown deadline makes a safe parallel run impossible, deliver the verified archive and a continuity decision to the owner; record the reduced assurance and obtain an explicit revised cutover decision.
-7. **Cancel the old contract and get the data deletion confirmed in writing** — manual form/portal · ~30 min · irreversible
+<a id="step-2"></a>
 
-   After accepted cutover and the agreed observation checks, have the owner confirm cancellation scope, contract obligations, export retention and any deletion request. Preserve the recovery data the company is required and authorized to keep. Cancel or request deletion only through the approved account process, then retain the provider’s actual confirmation and effective date. A submitted request is not proof of cancellation or deletion. Keep unconfirmed items with an owner and follow-up; never delete the only recoverable copy.
+### 2. Export your data now — not in the deadline crunch
+
+agent-runnable · ~45 min
+
+
+Export through a supported API or authorized account interface while access remains available. Preserve the raw export and capture its source account, time, scope, pagination/completion state, record counts and attachment hashes. Include relationships, configuration and identifiers needed to restore the business workflow. Check for missing pages, corrupt files and inaccessible records; counts alone cannot prove completeness. Mark gaps explicitly and keep a usable copy in the authorized destination before proceeding.
+
+- Use the shutdown situation to prioritize recoverability, then select the arena evidence for the actual vendor. UM's CRM full-export verdict illustrates a consequential gap: readable contacts and import documentation do not establish export of attachments, relationships and all other objects. Build the source inventory from this company's usage and compare it with the documented export coverage. Preserve uncovered objects as explicit migration blockers, and carry that coverage check through restore, parallel operation and cutover. A successful export request alone does not establish recoverability.
+
+<a id="step-3"></a>
+
+### 3. Choose the replacement from the live market
+
+human · ~1 h
+
+
+Choose a replacement against the workflows, data model, integrations, budget and deadline already recorded. Reuse the vendor-selection process for consequential unknowns. Verify import/export support and the specific plan or access needed, with a small synthetic or cleared sample where possible. A shortlist or successful sign-in is not a working replacement; record any unsupported requirement before committing to a route.
+
+- Runs the process [Pick the right vendor for the task](pick-the-right-vendor-for-the-task.md)
+
+<a id="step-4"></a>
+
+### 4. Migrate: stand up the replacement, import the data, re-point the integrations
+
+agent-runnable · ~3 h
+
+
+Map stable source identifiers, fields, relationships, attachment references, permissions and timezones to the replacement. Start in a permitted test destination and import a representative sample, then reconcile the full permitted import against the export manifest. Check content hashes and relationship integrity as well as counts. Retain a per-item result ledger and inspect destination state after uncertain responses before retrying. Re-point test integrations and prove a restore path; leave production endpoints and the old source intact until cutover is authorized.
+
+Choose the authoritative system for writes during migration. Capture a baseline watermark and a repeatable delta export or a planned write freeze; include creations, edits, deletions, attachments and permission changes. Keep shadow tests from sending duplicate notifications or triggering live downstream actions. Reconcile changed records by stable identifier, not only total counts.
+
+<a id="step-5"></a>
+
+### 5. Run and verify the parallel-run window
+
+human · ~7 d · async wait
+
+
+Agree the business cycle, minimum observation period and acceptance checks with the operational owner before running old and new in parallel. Compare the required reads, updates, permissions and downstream results, and record discrepancies and their resolution. Complete the actual observation window before presenting the cutover decision. A simulated clock or replay is a rehearsal only. If time remaining cannot support the agreed window, escalate that constraint rather than silently skipping the check.
+
+Keep normal business writes in the designated source unless an explicitly approved synchronization scheme covers both systems. Track any test or destination-only writes so they can be discarded or reconciled deliberately. Verify that updates after the first export reach the replacement and that the recovery plan preserves work created after switching.
+
+<a id="step-6"></a>
+
+### 6. Review the parallel-run results and cut over
+
+human · ~1.5 h · hard to undo
+
+
+Review the completed parallel-run evidence, reconciled data, integration checks, unresolved exceptions and tested recovery path with the cutover owner. Obtain authority for the exact production changes and timing, then switch only that scope. Verify the primary business workflow and destination state after the change. Stop or recover on failed checks; retain the old service and export until the owner accepts the result and retention requirements are resolved.
+
+At the approved cutover window, freeze source writes or establish the agreed final watermark, transfer and reconcile the final delta, and rerun permission and business-task checks before switching traffic. If recovery is needed, pause destination writes and preserve/reconcile post-switch changes before reopening the old source. If the shutdown deadline makes a safe parallel run impossible, deliver the verified archive and a continuity decision to the owner; record the reduced assurance and obtain an explicit revised cutover decision.
+
+<a id="step-7"></a>
+
+### 7. Cancel the old contract and get the data deletion confirmed in writing
+
+manual form/portal · ~30 min · irreversible
+
+
+After accepted cutover and the agreed observation checks, have the owner confirm cancellation scope, contract obligations, export retention and any deletion request. Preserve the recovery data the company is required and authorized to keep. Cancel or request deletion only through the approved account process, then retain the provider’s actual confirmation and effective date. A submitted request is not proof of cancellation or deletion. Keep unconfirmed items with an owner and follow-up; never delete the only recoverable copy.
+
 
 ---
 

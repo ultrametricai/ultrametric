@@ -3,14 +3,18 @@
 
 # Shut down the company
 
-Wind down and dissolve the corporation: board and stockholder dissolution consents, the final payroll and contractor terminations, vendor cancellations, final tax returns with IRS account closure, the Delaware certificate of dissolution with franchise-tax true-up, state withdrawals, bank closure with final distributions, and records retention.
+[Overview](#overview) · [Before you start](#before-you-start) · [Geography](#geography) · [Steps](#steps-at-a-glance) · [Outputs](#outputs)
+
+## Overview
+
+Close the company through its jurisdiction’s approved dissolution or liquidation route, settle obligations, complete final tax filings, withdraw remaining registrations and retain the records.
 
 | Field | Value |
 | --- | --- |
 | Kind | process |
 | Phase | legal |
 | Cadence | once |
-| Geo scope | us |
+| Geo scope | global |
 | Complexity | very complex |
 | Reversibility | irreversible |
 | Active work | ~3.7 h |
@@ -19,188 +23,361 @@ Wind down and dissolve the corporation: board and stockholder dissolution consen
 
 The agent drafts the consents, runs the final payroll, cancels vendors, and prepares every filing; the dissolution consents and return jurats need real signatures, and the Delaware, IRS, and bank-closure steps are portal or mail work.
 
-## Steps
+<a id="artifacts"></a>
 
-1. **Draft board and stockholder dissolution consents** — agent-runnable · ~30 min
+## Before you start
 
-   Prepare the dissolution approvals with counsel using ownership, liabilities, assets and the proposed closure route. Address employees, creditors, contracts, taxes and records in the plan. Identify filings triggered by adoption, including Form 966 where applicable, and calendar them before signatures. Resolve the company’s eligibility for the proposed route and the decision-makers required to authorize it.
+Required artifacts:
 
-   - Sources: [IRS Form 966](https://www.irs.gov/pub/irs-pdf/f966.pdf)
-2. **Sign the dissolution consents** — human (legally required signature) · ~10 min · hard to undo
-
-   Obtain the approvals required for the chosen dissolution route from the actual directors, stockholders or other decision-makers. Present the final plan and financial consequences, then check voting requirements, capacities and document consistency. Record the true adoption date and notify the closure coordinator, because filings may run from that event. Resolve incomplete approvals before relying on the plan as authorized.
-
-   - Sources: [DGCL dissolution](https://delcode.delaware.gov/title8/c001/sc10/index.html)
-3. **Run the final payroll and terminate contractors** — agent-runnable · ~30 min · human approval required · irreversible
-
-   Resolve final compensation, notices, benefits, contractor invoices, equipment and access for each departing person and location. HR, payroll and counsel handle the relevant local requirements. The responsible company representatives authorize termination communications and payments. Reconcile completed payments and outstanding claims, and retain the staff access needed to finish payroll reporting, tax work and closure.
-
-   - Canonical vendor: Gusto
-4. **Cancel vendor contracts and subscriptions** — agent-runnable · ~45 min · human approval required · hard to undo
-
-   Review contracts and subscriptions for termination rights, notice methods, final charges and data exports. Include services holding records needed after closure. Send authorized cancellation notices, retain acknowledgements and verify billing stops. Export necessary records before accounts disappear, and keep essential communications and storage running until their custodians can complete dependent closure work.
-
-   - Cross-arena market: [browser-agents](../../open-rankings/browser-agents)
-5. **File the certificate of dissolution and franchise-tax true-up** — manual form/portal · ~30 min · irreversible
-
-   Use the reviewed dissolution route for this entity. For a Delaware corporation, reconcile the certificate with its corporate approvals and the state’s annual-report and franchise-tax requirements. The authorized officer approves the filing, effective timing and payments. Track acceptance and continue winding up. A foreign option requires its local procedure and a fresh plan for the subsequent tax, creditor and distribution work.
-
-   - Verify: The Delaware entity search shows the corporation's status as dissolved once the certificate is stamped. ([icis.corp.delaware.gov](https://icis.corp.delaware.gov/ecorp/entitysearch/namesearch.aspx))
-   - Cost: $224 (government fee, as of 2026-10-01, [corpfiles.delaware.gov](https://corpfiles.delaware.gov/Fee_Schedule/AugustFee2026.pdf)). Certificate of Dissolution (§275) filing fee; franchise taxes must be brought current to dissolve, and the §391 short form is $50 where eligible.
-   - Canonical vendor: State Secretary of State
-   - Do it yourself: [Delaware dissolution forms](https://corp.delaware.gov/corpforms/)
-   - Sources: [Delaware annual report and tax](https://corp.delaware.gov/frtax/) · [DGCL dissolution](https://delcode.delaware.gov/title8/c001/sc10/index.html)
-
-   Options:
-     - **Default — Delaware dissolution forms** — manual form/portal · ~30 min · irreversible
-
-       Select the appropriate Delaware dissolution certificate and confirm the corporate approvals supporting it. Reconcile annual-report and franchise-tax requirements for the corporation ending its existence. The authorized officer approves the certificate, timing and payments before submission. Keep the accepted filing and continue the separate work on claims, taxes, distributions and records.
-     - **India - STK-2 strike-off or IBC liquidation**
-
-       When: Winding up in India
-
-       Review the Indian company’s activity, liabilities, assets and filing status with a local professional to determine the available closure route. Assess strike-off or formal liquidation against current requirements before choosing either. Establish the necessary approvals, creditor treatment and tax work, then carry out authorized filings through the local process. The subsequent US forms do not constitute an Indian closure procedure.
-
-       - Do it yourself: [IBBI (voluntary liquidation) / MCA strike-off](https://ibbi.gov.in/)
-       - Sources: [IBBI current liquidation regulations](https://ibbi.gov.in/legal-framework/updated?title=liquidation)
-     - **UK - DS01 voluntary strike-off**
-
-       When: Winding up in the United Kingdom
-
-       Check voluntary strike-off eligibility against the company’s trading, creditor, asset and insolvency position. Resolve required communications and remaining assets and obligations before the authorized directors approve applying. Follow Companies House notices through the actual outcome. If the company is ineligible, assess the appropriate alternative closure route.
-
-       - Do it yourself: [Strike off a company (DS01)](https://www.gov.uk/strike-off-your-company-from-companies-register)
-     - **Germany - liquidation + Sperrjahr** — human
-
-       When: Winding up in Germany
-
-       Confirm the German dissolution decision, liquidators, registry filings and creditor process with local counsel. Assess assets and liabilities and the distribution restrictions in GmbHG section 73 before authorizing payouts. Track liquidation separately from final register removal, keeping the required corporate and registry evidence. Use the local sequence and applicable German tax filings for subsequent closure work.
-
-       - Do it yourself: [Handelsregister (Liquidation & Sperrjahr)](https://www.handelsregister.de/)
-       - Sources: [GmbHG section 73](https://www.gesetze-im-internet.de/gmbhg/__73.html)
-     - **France - dissolution then radiation**
-
-       When: Winding up in France
-
-       Assess whether voluntary dissolution fits the French company’s financial and ownership facts. Follow the appropriate dissolution decision, liquidator’s work, closure accounts and radiation process, with associated tax and social filings identified separately. Obtain the required approvals for submissions and distributions and retain decisions and registry evidence. The local closure sequence governs follow-up, including which tax forms apply.
-
-       - Do it yourself: [INPI guichet unique (dissolution-liquidation)](https://procedures.inpi.fr/)
-       - Sources: [Service Public voluntary dissolution](https://entreprendre.service-public.gouv.fr/vosdroits/F23744)
-6. **Wait for the dissolution to be accepted** — human · ~7 d · async wait
-
-   Follow the registry’s acceptance or correction requests and verify the effective dissolution date against the filing. Resolve discrepancies with the filer or counsel and save the accepted record. Continue the applicable tax, creditor and records work under the closure plan. Registry acceptance is one milestone within winding up; it does not establish that remaining obligations are finished.
-
-   - Produces: Certificate of dissolution
-   - Cross-arena market: [workflow-automation](../../open-rankings/workflow-automation)
-   - Sources: [DGCL dissolution](https://delcode.delaware.gov/title8/c001/sc10/index.html)
-7. **Your accountant prepares the final tax returns** — human · ~7 d · async wait
-
-   Give the accountant the final books, asset dispositions, payroll, contractor payments, prior returns and closure approvals. Identify the returns, periods, final-return designations and related forms for this entity and jurisdiction, with each deadline tracked independently. Resolve open accounting items before return review.
-
-   - Sources: [IRS closing a business](https://www.irs.gov/businesses/small-businesses-self-employed/closing-a-business)
-8. **Sign the final return jurats and Form 966** — human (legally required signature) · ~10 min
-
-   Review final returns and any required Form 966 against the closure records, then obtain the proper human signature or electronic authorization. Check Form 966’s separate deadline from adoption of the dissolution or liquidation plan; it may precede final-return preparation. Keep required resolution attachments with the filing and resolve factual discrepancies before submission.
-
-   - Sources: [IRS Form 966](https://www.irs.gov/pub/irs-pdf/f966.pdf)
-9. **File the final returns and close the tax accounts** — manual form/portal · ~20 min · async wait · irreversible
-
-   Authorize the reviewed final tax filings and check acknowledgements and payments. Reconcile outstanding obligations before requesting closure of the entity's tax accounts under current instructions. Keep the tax identifier in historical records as the entity’s permanent identifier. Assign a reachable person to later notices, and track actual account-closure status separately from the company’s dissolution filing.
-
-   - Verify: The final returns are marked final and the IRS closing-a-business checklist is completed for the EIN account. ([www.irs.gov](https://www.irs.gov/businesses/small-businesses-self-employed/closing-a-business))
-   - Canonical vendor: IRS
-   - Do it yourself: [IRS closing a business](https://www.irs.gov/businesses/small-businesses-self-employed/closing-a-business)
-10. **Withdraw foreign-state registrations** — manual form/portal · ~30 min · hard to undo
-
-   Check every foreign-state registration for its withdrawal procedure and outstanding reports, taxes or clearances. Submit the approved withdrawal and fee, then follow it through acceptance. Keep agent coverage where still required during closure and update the jurisdiction record when withdrawal is confirmed. A home-state dissolution does not automatically terminate registrations elsewhere.
-
-   - Verify: Each state's business search shows the registration withdrawn or terminated.
-11. **Close bank accounts and distribute remaining assets** — manual form/portal · ~20 min · human approval required · irreversible
-
-   Reconcile cash with remaining debts, taxes, fees and contingent claims. Counsel and the financial adviser determine appropriate reserves and distributions under the winding-up plan. Authorized company representatives approve transfers to verified recipients. Close accounts only after remaining payment and receipt needs are resolved, and preserve the final statements and distribution evidence for the custodian.
-
-   - Canonical vendor: Mercury
-   - Sources: [DGCL dissolution](https://delcode.delaware.gov/title8/c001/sc10/index.html)
-12. **Archive corporate records for retention** — agent-runnable · ~15 min · support work
-
-   Preserve corporate decisions, ownership, contracts, employment, tax and financial records with the closure evidence. Apply the relevant retention requirements and legal holds. Name a reachable custodian and test access to storage that will survive closed subscriptions and employee accounts. Arrange where future notices will arrive and who can retrieve documents or address unresolved matters.
-
-   - Vendor options: Google Drive
-   - Ranked market: [cloud-storage](../../open-rankings/cloud-storage)
-   - Sources: [IRS closing a business](https://www.irs.gov/businesses/small-businesses-self-employed/closing-a-business)
-
-## By country
-
-### United States
-
-- Step 7: The CPA prepares the final federal and state returns, each marked final ([IRS — closing a business](https://www.irs.gov/businesses/small-businesses-self-employed/closing-a-business))
-- Step 9: Close the IRS business account once federal obligations reconcile; the EIN stays on record as the entity's permanent identifier ([IRS — closing a business](https://www.irs.gov/businesses/small-businesses-self-employed/closing-a-business))
-
-### India
-
-- Two exits: MCA strike-off via form STK-2 for a company with no liabilities, or a formal voluntary liquidation under the IBC run by an insolvency professional and overseen by the IBBI — both slower and more document-heavy than a US dissolution. ([IBBI (voluntary liquidation) / MCA strike-off](https://ibbi.gov.in/))
-
-### United Kingdom
-
-- A solvent company applies for voluntary strike-off with a £33 DS01 filing to Companies House (or a members' voluntary liquidation for larger balance sheets) — closer to one filing than the DE dissolution + IRS final-return chain. ([Strike off a company (DS01)](https://www.gov.uk/strike-off-your-company-from-companies-register))
-
-### Germany
-
-- Winding up a GmbH is slow by design: a notarized dissolution resolution, liquidators registered, creditors publicly invited — then a mandatory one-year Sperrjahr before assets can distribute and the company is finally deleted from the Handelsregister. ([Handelsregister (Liquidation & Sperrjahr)](https://www.handelsregister.de/))
-
-### France
-
-- The sequence is dissolution (shareholder decision + legal-announcement publication), a liquidation phase closing the accounts, then radiation from the RCS — every step filed through the guichet unique. ([INPI guichet unique (dissolution-liquidation)](https://procedures.inpi.fr/))
-
-### Portugal
-
-- Wind-down runs through the registry's dissolution-and-liquidation channel (the encerrar-o-negócio guide maps it), plus the final Modelo 22 and IES and the cessação de atividade declarations to the tax authority and Segurança Social. ([gov.pt — encerrar o negócio](https://www.gov.pt/guias/encerrar-o-negocio))
-- Step 7: The final Modelo 22 and IES close out the entity's tax years ([gov.pt — encerrar o negócio](https://www.gov.pt/guias/encerrar-o-negocio))
-- Step 9: File the cessação de atividade declarations to the tax authority and Segurança Social ([gov.pt — encerrar o negócio](https://www.gov.pt/guias/encerrar-o-negocio))
-
-### Canada
-
-- A solvent corporation dissolves by shareholder-authorized articles of dissolution filed with Corporations Canada; the certificate of dissolution ends the final tax year, so the final T2 (due within six months of that year end) and the CRA program-account closures (payroll, GST/HST) follow the certificate. ([Corporations Canada — closing a corporation](https://ised-isde.canada.ca/site/corporations-canada/en/closing-corporation))
-- Step 7: The certificate of dissolution ends the final tax year, so the final T2 is due within six months of that year end ([Corporations Canada — closing a corporation](https://ised-isde.canada.ca/site/corporations-canada/en/closing-corporation))
-- Step 9: Close the CRA program accounts (payroll, GST/HST) after the certificate of dissolution ([Corporations Canada — closing a corporation](https://ised-isde.canada.ca/site/corporations-canada/en/closing-corporation))
-
-### New Zealand
-
-- When the company closes down you ask the Companies Office to remove it from the register, after working through the before-you-close steps; a company that ignores its Companies Act 1993 obligations can be removed by the Registrar instead. ([Closing a company — Companies Register](https://companies-register.companiesoffice.govt.nz/help-centre/closing-a-company/))
-
-### Singapore
-
-- A solvent exit is an ACRA strike-off application through Bizfile — the process runs at least 2 months after approval, with gazette notices — or a members' voluntary winding up for larger balance sheets; clear the IRAS filings first. ([ACRA — striking off a company](https://www.acra.gov.sg/manage/companies/closing-a-local-company/striking-off/))
-
-### Australia
-
-- A solvent company whose members all agree, with assets under $1,000 and no outstanding liabilities, applies for voluntary deregistration with ASIC (Corporations Act 2001 s 601AA); bigger balance sheets run a members' voluntary liquidation. Cancel the GST/PAYG registrations and the ABN and lodge the final company tax return with the ATO. ([ASIC — close your company](https://asic.gov.au/for-business/closing-your-company/))
-
-### South Korea
-
-- Winding down runs on two tracks: dissolution and liquidation registrations with the court registry (IROS), and business-closure reporting to the tax office through Hometax, with the final VAT return due within 25 days after the closure month. ([Internet Registry Office (IROS)](https://www.iros.go.kr/))
-
-### Hong Kong
-
-- A solvent exit is deregistration: obtain the Commissioner of Inland Revenue's Notice of No Objection, then apply to the Companies Registry, with gazette notices before the company dissolves — a members' voluntary winding up is the heavier route for larger balance sheets. ([Companies Registry — deregistration](https://www.cr.gov.hk/en/services/deregister-company.htm))
-
-### Estonia
-
-- Winding down runs through the commercial register: the shareholders resolve dissolution, liquidation is entered and run, and the company is deleted after creditor protection, with tax deregistration through e-MTA alongside. ([e-Business Register](https://ariregister.rik.ee/eng))
-
-## Artifacts
-
-Produces:
-
-- Certificate of dissolution
-
-Requires:
-
-- Certificate of Incorporation — from [Incorporate C-Corp](incorporate-c-corp.md)
+- Certificate of Incorporation — from [Incorporate the company](incorporate-c-corp.md)
 - Business bank account — from [Open bank account](open-bank-account.md)
 - Payroll account — from [Set up payroll](set-up-payroll.md)
 - Foreign qualifications — from [Review state registration](review-state-registration.md)
 - Vendor contract — from [Pick the right vendor for the task](pick-the-right-vendor-for-the-task.md)
+
+| Information to gather | Required by the record |
+| --- | --- |
+| dissolution effective date | Yes |
+| records custodian after wind-down | Optional |
+
+## Geography
+
+Country rows describe the guidance recorded here. Local notes and step alternatives do not establish a complete country-specific workflow.
+
+| Country | Recorded guidance | Steps with local alternatives or resolutions |
+| --- | --- | --- |
+| [United States](#geo-us) | step resolution; step alternative | [5](#step-5), [7](#step-7), [8](#step-8), [9](#step-9) |
+| [India](#geo-in) | Local analog note; step resolution; step alternative | [5](#step-5) |
+| [United Kingdom](#geo-uk) | Local analog note; step resolution; step alternative | [5](#step-5) |
+| [Germany](#geo-de) | Local analog note; step resolution; step alternative | [5](#step-5) |
+| [France](#geo-fr) | Local analog note; step resolution; step alternative | [5](#step-5) |
+| [Portugal](#geo-pt) | Local analog note; step resolution | [5](#step-5), [7](#step-7), [9](#step-9) |
+| [Canada](#geo-ca) | Local analog note; step resolution | [5](#step-5), [7](#step-7), [9](#step-9) |
+| [New Zealand](#geo-nz) | Local analog note; step resolution | [5](#step-5) |
+| [Singapore](#geo-sg) | Local analog note; step resolution | [5](#step-5) |
+| [Australia](#geo-au) | Local analog note; step resolution | [5](#step-5) |
+| [South Korea](#geo-kr) | Local analog note; step resolution | [5](#step-5) |
+| [Hong Kong](#geo-hk) | Local analog note; step resolution | [5](#step-5) |
+| [Estonia](#geo-ee) | Local analog note; step resolution | [5](#step-5) |
+
+## Steps at a glance
+
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
+
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Draft the required corporate dissolution approvals](#step-1) | agent-runnable | ~30 min | Entry step |
+| [2. Sign the corporate dissolution approvals](#step-2) | human; signature required | ~10 min | [Step 1](#step-1) |
+| [3. Run the final payroll and terminate contractors](#step-3) | agent-runnable; approval required | ~30 min | [Step 2](#step-2) |
+| [4. Cancel vendor contracts and subscriptions](#step-4) | agent-runnable; approval required | ~45 min | [Step 3](#step-3) |
+| [5. Submit the dissolution or closure filing and settle registry obligations](#step-5) | manual form/portal | ~30 min | [Step 4](#step-4) |
+| [6. Wait for the dissolution to be accepted](#step-6) | human; includes waiting | ~7 d | [Step 5](#step-5) |
+| [7. Your accountant prepares the final tax returns](#step-7) | human; includes waiting | ~7 d | [Step 6](#step-6) |
+| [8. Sign the final tax returns and closure declarations the jurisdiction requires](#step-8) | human; signature required | ~10 min | [Step 7](#step-7) |
+| [9. File the final returns and close the tax accounts](#step-9) | manual form/portal; includes waiting | ~20 min | [Step 8](#step-8) |
+| [10. Withdraw registrations outside the home jurisdiction](#step-10) | manual form/portal | ~30 min | [Step 9](#step-9) |
+| [11. Close bank accounts and distribute remaining assets](#step-11) | manual form/portal; approval required | ~20 min | [Step 10](#step-10) |
+| [12. Archive corporate records for retention](#step-12) | agent-runnable | ~15 min | [Step 11](#step-11) |
+
+<a id="steps"></a>
+
+## Step details
+
+<a id="step-1"></a>
+
+### 1. Draft the required corporate dissolution approvals
+
+agent-runnable · ~30 min
+
+
+Prepare the dissolution approvals with counsel using ownership, liabilities, assets and the proposed closure route. Address employees, creditors, contracts, taxes and records in the plan. Identify filings triggered by adoption, including Form 966 where applicable, and calendar them before signatures. Resolve the company’s eligibility for the proposed route and the decision-makers required to authorize it.
+
+- Sources: [IRS Form 966](https://www.irs.gov/pub/irs-pdf/f966.pdf)
+
+<a id="step-2"></a>
+
+### 2. Sign the corporate dissolution approvals
+
+human (legally required signature) · ~10 min · hard to undo
+
+
+Obtain the approvals required for the chosen dissolution route from the actual directors, stockholders or other decision-makers. Present the final plan and financial consequences, then check voting requirements, capacities and document consistency. Record the true adoption date and notify the closure coordinator, because filings may run from that event. Resolve incomplete approvals before relying on the plan as authorized.
+
+- Sources: [DGCL dissolution](https://delcode.delaware.gov/title8/c001/sc10/index.html)
+
+<a id="step-3"></a>
+
+### 3. Run the final payroll and terminate contractors
+
+agent-runnable · ~30 min · human approval required · irreversible
+
+
+Resolve final compensation, notices, benefits, contractor invoices, equipment and access for each departing person and location. HR, payroll and counsel handle the relevant local requirements. The responsible company representatives authorize termination communications and payments. Reconcile completed payments and outstanding claims, and retain the staff access needed to finish payroll reporting, tax work and closure.
+
+- Canonical vendor: Gusto
+
+<a id="step-4"></a>
+
+### 4. Cancel vendor contracts and subscriptions
+
+agent-runnable · ~45 min · human approval required · hard to undo
+
+
+Review contracts and subscriptions for termination rights, notice methods, final charges and data exports. Include services holding records needed after closure. Send authorized cancellation notices, retain acknowledgements and verify billing stops. Export necessary records before accounts disappear, and keep essential communications and storage running until their custodians can complete dependent closure work.
+
+- Cross-arena market: [browser-agents](../../open-rankings/browser-agents)
+
+<a id="step-5"></a>
+
+### 5. Submit the dissolution or closure filing and settle registry obligations
+
+manual form/portal · ~30 min · irreversible
+
+| Option | Applies when |
+| --- | --- |
+| United States — Delaware dissolution forms | Recorded default |
+| India - STK-2 strike-off or IBC liquidation | Winding up in India |
+| UK - DS01 voluntary strike-off | Winding up in the United Kingdom |
+| Germany - liquidation + Sperrjahr | Winding up in Germany |
+| France - dissolution then radiation | Winding up in France |
+
+
+Use the closure route approved for this entity and jurisdiction. Reconcile corporate approvals, creditor and registry requirements, and any outstanding charges before the authorized person approves filing and payment. Retain acceptance evidence and follow the local winding-up sequence.
+
+- Verify: The Delaware entity search shows the corporation's status as dissolved once the certificate is stamped. ([icis.corp.delaware.gov](https://icis.corp.delaware.gov/ecorp/entitysearch/namesearch.aspx))
+- Cost: $224 (government fee, as of 2026-10-01, [corpfiles.delaware.gov](https://corpfiles.delaware.gov/Fee_Schedule/AugustFee2026.pdf)). Certificate of Dissolution (§275) filing fee; franchise taxes must be brought current to dissolve, and the §391 short form is $50 where eligible.
+- Canonical vendor: State Secretary of State
+- Do it yourself: [Delaware dissolution forms](https://corp.delaware.gov/corpforms/)
+- Sources: [Delaware annual report and tax](https://corp.delaware.gov/frtax/) · [DGCL dissolution](https://delcode.delaware.gov/title8/c001/sc10/index.html)
+
+Options:
+  - **United States — Delaware dissolution forms** — manual form/portal · ~30 min · irreversible
+
+    Select the appropriate Delaware dissolution certificate and confirm the corporate approvals supporting it. Reconcile annual-report and franchise-tax requirements for the corporation ending its existence. The authorized officer approves the certificate, timing and payments before submission. Keep the accepted filing and continue the separate work on claims, taxes, distributions and records.
+  - **India - STK-2 strike-off or IBC liquidation**
+
+    When: Winding up in India
+
+    Review the Indian company’s activity, liabilities, assets and filing status with a local professional to determine the available closure route. Assess strike-off or formal liquidation against current requirements before choosing either. Establish the necessary approvals, creditor treatment and tax work, then carry out authorized filings through the local process. The subsequent US forms do not constitute an Indian closure procedure.
+
+    - Do it yourself: [IBBI (voluntary liquidation) / MCA strike-off](https://ibbi.gov.in/)
+    - Sources: [IBBI current liquidation regulations](https://ibbi.gov.in/legal-framework/updated?title=liquidation)
+  - **UK - DS01 voluntary strike-off**
+
+    When: Winding up in the United Kingdom
+
+    Check voluntary strike-off eligibility against the company’s trading, creditor, asset and insolvency position. Resolve required communications and remaining assets and obligations before the authorized directors approve applying. Follow Companies House notices through the actual outcome. If the company is ineligible, assess the appropriate alternative closure route.
+
+    - Do it yourself: [Strike off a company (DS01)](https://www.gov.uk/strike-off-your-company-from-companies-register)
+  - **Germany - liquidation + Sperrjahr** — human
+
+    When: Winding up in Germany
+
+    Confirm the German dissolution decision, liquidators, registry filings and creditor process with local counsel. Assess assets and liabilities and the distribution restrictions in GmbHG section 73 before authorizing payouts. Track liquidation separately from final register removal, keeping the required corporate and registry evidence. Use the local sequence and applicable German tax filings for subsequent closure work.
+
+    - Do it yourself: [Handelsregister (Liquidation & Sperrjahr)](https://www.handelsregister.de/)
+    - Sources: [GmbHG section 73](https://www.gesetze-im-internet.de/gmbhg/__73.html)
+  - **France - dissolution then radiation**
+
+    When: Winding up in France
+
+    Assess whether voluntary dissolution fits the French company’s financial and ownership facts. Follow the appropriate dissolution decision, liquidator’s work, closure accounts and radiation process, with associated tax and social filings identified separately. Obtain the required approvals for submissions and distributions and retain decisions and registry evidence. The local closure sequence governs follow-up, including which tax forms apply.
+
+    - Do it yourself: [INPI guichet unique (dissolution-liquidation)](https://procedures.inpi.fr/)
+    - Sources: [Service Public voluntary dissolution](https://entreprendre.service-public.gouv.fr/vosdroits/F23744)
+
+<a id="step-6"></a>
+
+### 6. Wait for the dissolution to be accepted
+
+human · ~7 d · async wait
+
+
+Follow the registry’s acceptance or correction requests and verify the effective dissolution date against the filing. Resolve discrepancies with the filer or counsel and save the accepted record. Continue the applicable tax, creditor and records work under the closure plan. Registry acceptance is one milestone within winding up; it does not establish that remaining obligations are finished.
+
+- Produces: Certificate of dissolution
+- Cross-arena market: [workflow-automation](../../open-rankings/workflow-automation)
+- Sources: [DGCL dissolution](https://delcode.delaware.gov/title8/c001/sc10/index.html)
+
+<a id="step-7"></a>
+
+### 7. Your accountant prepares the final tax returns
+
+human · ~7 d · async wait
+
+
+Give the accountant the final books, asset dispositions, payroll, contractor payments, prior returns and closure approvals. Identify the returns, periods, final-return designations and related forms for this entity and jurisdiction, with each deadline tracked independently. Resolve open accounting items before return review.
+
+- Sources: [IRS closing a business](https://www.irs.gov/businesses/small-businesses-self-employed/closing-a-business)
+
+<a id="step-8"></a>
+
+### 8. Sign the final tax returns and closure declarations the jurisdiction requires
+
+human (legally required signature) · ~10 min
+
+
+Have the authorized person review and sign the final tax returns, filing authorizations and closure declarations required for the entity. Use the forms and sequence confirmed by the local adviser.
+
+- Sources: [IRS Form 966](https://www.irs.gov/pub/irs-pdf/f966.pdf)
+
+<a id="step-9"></a>
+
+### 9. File the final returns and close the tax accounts
+
+manual form/portal · ~20 min · async wait · irreversible
+
+
+Authorize the reviewed final tax filings and check acknowledgements and payments. Reconcile outstanding obligations before requesting closure of the entity's tax accounts under current instructions. Keep the tax identifier in historical records as the entity’s permanent identifier. Assign a reachable person to later notices, and track actual account-closure status separately from the company’s dissolution filing.
+
+- Verify: Retain the applicable authority’s confirmation and reconcile it with the approved submission and company records.
+- Canonical vendor: IRS
+- Do it yourself: [IRS closing a business](https://www.irs.gov/businesses/small-businesses-self-employed/closing-a-business)
+
+<a id="step-10"></a>
+
+### 10. Withdraw registrations outside the home jurisdiction
+
+manual form/portal · ~30 min · hard to undo
+
+
+Check every foreign-state registration for its withdrawal procedure and outstanding reports, taxes or clearances. Submit the approved withdrawal and fee, then follow it through acceptance. Keep agent coverage where still required during closure and update the jurisdiction record when withdrawal is confirmed. A home-state dissolution does not automatically terminate registrations elsewhere.
+
+- Verify: Each state's business search shows the registration withdrawn or terminated.
+
+<a id="step-11"></a>
+
+### 11. Close bank accounts and distribute remaining assets
+
+manual form/portal · ~20 min · human approval required · irreversible
+
+
+Reconcile cash with remaining debts, taxes, fees and contingent claims. Counsel and the financial adviser determine appropriate reserves and distributions under the winding-up plan. Authorized company representatives approve transfers to verified recipients. Close accounts only after remaining payment and receipt needs are resolved, and preserve the final statements and distribution evidence for the custodian.
+
+- Canonical vendor: Mercury
+- Sources: [DGCL dissolution](https://delcode.delaware.gov/title8/c001/sc10/index.html)
+
+<a id="step-12"></a>
+
+### 12. Archive corporate records for retention
+
+agent-runnable · ~15 min · support work
+
+
+Preserve corporate decisions, ownership, contracts, employment, tax and financial records with the closure evidence. Apply the relevant retention requirements and legal holds. Name a reachable custodian and test access to storage that will survive closed subscriptions and employee accounts. Arrange where future notices will arrive and who can retrieve documents or address unresolved matters.
+
+- Vendor options: Google Drive
+- Ranked market: [cloud-storage](../../open-rankings/cloud-storage)
+- Sources: [IRS closing a business](https://www.irs.gov/businesses/small-businesses-self-employed/closing-a-business)
+
+
+<a id="by-country"></a>
+
+## Country details
+
+<a id="geo-us"></a>
+
+### United States
+
+Close the company through its jurisdiction’s approved dissolution or liquidation route, settle obligations, complete final tax filings, withdraw remaining registrations and retain the records.
+
+- Step 5: Delaware dissolution forms Wind down and dissolve the corporation: board and stockholder dissolution consents, the final payroll and contractor terminations, vendor cancellations, final tax returns with IRS account closure, the Delaware certificate of dissolution with franchise-tax true-up, state withdrawals, bank closure with final distributions, and records retention. Select the appropriate Delaware dissolution certificate and confirm the corporate approvals supporting it. Reconcile annual-report and franchise-tax requirements for the corporation ending its existence. The authorized officer approves the certificate, timing and payments before submission. Keep the accepted filing and continue the separate work on claims, taxes, distributions and records. ([Delaware dissolution forms](https://corp.delaware.gov/corpforms/))
+- Step 7: The CPA prepares the final federal and state returns, each marked final ([IRS — closing a business](https://www.irs.gov/businesses/small-businesses-self-employed/closing-a-business))
+- Step 8: Sign the final return jurats and Form 966 Review final returns and any required Form 966 against the closure records, then obtain the proper human signature or electronic authorization. Check Form 966’s separate deadline from adoption of the dissolution or liquidation plan; it may precede final-return preparation. Keep required resolution attachments with the filing and resolve factual discrepancies before submission.
+- Step 9: Close the IRS business account once federal obligations reconcile; the EIN stays on record as the entity's permanent identifier ([IRS — closing a business](https://www.irs.gov/businesses/small-businesses-self-employed/closing-a-business))
+  - Verify: The final returns are marked final and the IRS closing-a-business checklist is completed for the EIN account. ([www.irs.gov](https://www.irs.gov/businesses/small-businesses-self-employed/closing-a-business))
+
+<a id="geo-in"></a>
+
+### India
+
+- Two exits: MCA strike-off via form STK-2 for a company with no liabilities, or a formal voluntary liquidation under the IBC run by an insolvency professional and overseen by the IBBI — both slower and more document-heavy than a US dissolution. ([IBBI (voluntary liquidation) / MCA strike-off](https://ibbi.gov.in/))
+- Step 5: India - STK-2 strike-off or IBC liquidation Review the Indian company’s activity, liabilities, assets and filing status with a local professional to determine the available closure route. Assess strike-off or formal liquidation against current requirements before choosing either. Establish the necessary approvals, creditor treatment and tax work, then carry out authorized filings through the local process. The subsequent US forms do not constitute an Indian closure procedure. ([IBBI (voluntary liquidation) / MCA strike-off](https://ibbi.gov.in/))
+
+<a id="geo-uk"></a>
+
+### United Kingdom
+
+- A solvent company applies for voluntary strike-off with a £33 DS01 filing to Companies House (or a members' voluntary liquidation for larger balance sheets) — closer to one filing than the DE dissolution + IRS final-return chain. ([Strike off a company (DS01)](https://www.gov.uk/strike-off-your-company-from-companies-register))
+- Step 5: UK - DS01 voluntary strike-off Check voluntary strike-off eligibility against the company’s trading, creditor, asset and insolvency position. Resolve required communications and remaining assets and obligations before the authorized directors approve applying. Follow Companies House notices through the actual outcome. If the company is ineligible, assess the appropriate alternative closure route. ([Strike off a company (DS01)](https://www.gov.uk/strike-off-your-company-from-companies-register))
+
+<a id="geo-de"></a>
+
+### Germany
+
+- Winding up a GmbH is slow by design: a notarized dissolution resolution, liquidators registered, creditors publicly invited — then a mandatory one-year Sperrjahr before assets can distribute and the company is finally deleted from the Handelsregister. ([Handelsregister (Liquidation & Sperrjahr)](https://www.handelsregister.de/))
+- Step 5: Germany - liquidation + Sperrjahr Confirm the German dissolution decision, liquidators, registry filings and creditor process with local counsel. Assess assets and liabilities and the distribution restrictions in GmbHG section 73 before authorizing payouts. Track liquidation separately from final register removal, keeping the required corporate and registry evidence. Use the local sequence and applicable German tax filings for subsequent closure work. ([Handelsregister (Liquidation & Sperrjahr)](https://www.handelsregister.de/))
+
+<a id="geo-fr"></a>
+
+### France
+
+- The sequence is dissolution (shareholder decision + legal-announcement publication), a liquidation phase closing the accounts, then radiation from the RCS — every step filed through the guichet unique. ([INPI guichet unique (dissolution-liquidation)](https://procedures.inpi.fr/))
+- Step 5: France - dissolution then radiation Assess whether voluntary dissolution fits the French company’s financial and ownership facts. Follow the appropriate dissolution decision, liquidator’s work, closure accounts and radiation process, with associated tax and social filings identified separately. Obtain the required approvals for submissions and distributions and retain decisions and registry evidence. The local closure sequence governs follow-up, including which tax forms apply. ([INPI guichet unique (dissolution-liquidation)](https://procedures.inpi.fr/))
+
+<a id="geo-pt"></a>
+
+### Portugal
+
+- Wind-down runs through the registry's dissolution-and-liquidation channel (the encerrar-o-negócio guide maps it), plus the final Modelo 22 and IES and the cessação de atividade declarations to the tax authority and Segurança Social. ([gov.pt — encerrar o negócio](https://www.gov.pt/guias/encerrar-o-negocio))
+- Step 5: Wind-down runs through the registry's dissolution-and-liquidation channel (the encerrar-o-negócio guide maps it), plus the final Modelo 22 and IES and the cessação de atividade declarations to the tax authority and Segurança Social. ([gov.pt — encerrar o negócio](https://www.gov.pt/guias/encerrar-o-negocio))
+- Step 7: The final Modelo 22 and IES close out the entity's tax years ([gov.pt — encerrar o negócio](https://www.gov.pt/guias/encerrar-o-negocio))
+- Step 9: File the cessação de atividade declarations to the tax authority and Segurança Social ([gov.pt — encerrar o negócio](https://www.gov.pt/guias/encerrar-o-negocio))
+
+<a id="geo-ca"></a>
+
+### Canada
+
+- A solvent corporation dissolves by shareholder-authorized articles of dissolution filed with Corporations Canada; the certificate of dissolution ends the final tax year, so the final T2 (due within six months of that year end) and the CRA program-account closures (payroll, GST/HST) follow the certificate. ([Corporations Canada — closing a corporation](https://ised-isde.canada.ca/site/corporations-canada/en/closing-corporation))
+- Step 5: A solvent corporation dissolves by shareholder-authorized articles of dissolution filed with Corporations Canada; the certificate of dissolution ends the final tax year, so the final T2 (due within six months of that year end) and the CRA program-account closures (payroll, GST/HST) follow the certificate. ([Corporations Canada — closing a corporation](https://ised-isde.canada.ca/site/corporations-canada/en/closing-corporation))
+- Step 7: The certificate of dissolution ends the final tax year, so the final T2 is due within six months of that year end ([Corporations Canada — closing a corporation](https://ised-isde.canada.ca/site/corporations-canada/en/closing-corporation))
+- Step 9: Close the CRA program accounts (payroll, GST/HST) after the certificate of dissolution ([Corporations Canada — closing a corporation](https://ised-isde.canada.ca/site/corporations-canada/en/closing-corporation))
+
+<a id="geo-nz"></a>
+
+### New Zealand
+
+- When the company closes down you ask the Companies Office to remove it from the register, after working through the before-you-close steps; a company that ignores its Companies Act 1993 obligations can be removed by the Registrar instead. ([Closing a company — Companies Register](https://companies-register.companiesoffice.govt.nz/help-centre/closing-a-company/))
+- Step 5: When the company closes down you ask the Companies Office to remove it from the register, after working through the before-you-close steps; a company that ignores its Companies Act 1993 obligations can be removed by the Registrar instead. ([Closing a company — Companies Register](https://companies-register.companiesoffice.govt.nz/help-centre/closing-a-company/))
+
+<a id="geo-sg"></a>
+
+### Singapore
+
+- A solvent exit is an ACRA strike-off application through Bizfile — the process runs at least 2 months after approval, with gazette notices — or a members' voluntary winding up for larger balance sheets; clear the IRAS filings first. ([ACRA — striking off a company](https://www.acra.gov.sg/manage/companies/closing-a-local-company/striking-off/))
+- Step 5: A solvent exit is an ACRA strike-off application through Bizfile — the process runs at least 2 months after approval, with gazette notices — or a members' voluntary winding up for larger balance sheets; clear the IRAS filings first. ([ACRA — striking off a company](https://www.acra.gov.sg/manage/companies/closing-a-local-company/striking-off/))
+
+<a id="geo-au"></a>
+
+### Australia
+
+- A solvent company whose members all agree, with assets under $1,000 and no outstanding liabilities, applies for voluntary deregistration with ASIC (Corporations Act 2001 s 601AA); bigger balance sheets run a members' voluntary liquidation. Cancel the GST/PAYG registrations and the ABN and lodge the final company tax return with the ATO. ([ASIC — close your company](https://asic.gov.au/for-business/closing-your-company/))
+- Step 5: A solvent company whose members all agree, with assets under $1,000 and no outstanding liabilities, applies for voluntary deregistration with ASIC (Corporations Act 2001 s 601AA); bigger balance sheets run a members' voluntary liquidation. Cancel the GST/PAYG registrations and the ABN and lodge the final company tax return with the ATO. ([ASIC — close your company](https://asic.gov.au/for-business/closing-your-company/))
+
+<a id="geo-kr"></a>
+
+### South Korea
+
+- Winding down runs on two tracks: dissolution and liquidation registrations with the court registry (IROS), and business-closure reporting to the tax office through Hometax, with the final VAT return due within 25 days after the closure month. ([Internet Registry Office (IROS)](https://www.iros.go.kr/))
+- Step 5: Winding down runs on two tracks: dissolution and liquidation registrations with the court registry (IROS), and business-closure reporting to the tax office through Hometax, with the final VAT return due within 25 days after the closure month. ([Internet Registry Office (IROS)](https://www.iros.go.kr/))
+
+<a id="geo-hk"></a>
+
+### Hong Kong
+
+- A solvent exit is deregistration: obtain the Commissioner of Inland Revenue's Notice of No Objection, then apply to the Companies Registry, with gazette notices before the company dissolves — a members' voluntary winding up is the heavier route for larger balance sheets. ([Companies Registry — deregistration](https://www.cr.gov.hk/en/services/deregister-company.htm))
+- Step 5: A solvent exit is deregistration: obtain the Commissioner of Inland Revenue's Notice of No Objection, then apply to the Companies Registry, with gazette notices before the company dissolves — a members' voluntary winding up is the heavier route for larger balance sheets. ([Companies Registry — deregistration](https://www.cr.gov.hk/en/services/deregister-company.htm))
+
+<a id="geo-ee"></a>
+
+### Estonia
+
+- Winding down runs through the commercial register: the shareholders resolve dissolution, liquidation is entered and run, and the company is deleted after creditor protection, with tax deregistration through e-MTA alongside. ([e-Business Register](https://ariregister.rik.ee/eng))
+- Step 5: Winding down runs through the commercial register: the shareholders resolve dissolution, liquidation is entered and run, and the company is deleted after creditor protection, with tax deregistration through e-MTA alongside. ([e-Business Register](https://ariregister.rik.ee/eng))
+
+## Outputs
+
+- Certificate of dissolution
 
 ## Related records
 

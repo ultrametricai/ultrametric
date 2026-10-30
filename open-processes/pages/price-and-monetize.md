@@ -3,17 +3,27 @@
 
 # Price and monetize
 
+[Overview](#overview) · [Process sequence](#process-sequence)
+
+## Overview
+
 Recurring revenue made real: the subscription product created and tested, the pricing change modeled and rolled out without burning the base, the bad charge refunded behind an approval.
 
 | Field | Value |
 | --- | --- |
 | Kind | chain |
 
-## Processes in order
+<a id="processes-in-order"></a>
 
-1. [Create a subscription product](create-a-subscription-product.md)
-2. [Roll out a pricing change](roll-out-a-pricing-change.md)
-3. [Issue a refund](issue-a-refund.md)
+## Process sequence
+
+Run the linked processes in the recorded chain order. Each process defines its own internal dependencies.
+
+| Order | Process | Requires | Produces |
+| --- | --- | --- | --- |
+| 1 | [Create a subscription product](create-a-subscription-product.md) | Payment processor account | Not recorded |
+| 2 | [Roll out a pricing change](roll-out-a-pricing-change.md) | Subscription billing; Company website | Not recorded |
+| 3 | [Issue a refund](issue-a-refund.md) | Payment processor account | Not recorded |
 
 ---
 

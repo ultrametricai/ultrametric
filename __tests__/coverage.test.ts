@@ -4,6 +4,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { z } from 'zod'
 import { GEO_COUNTRIES } from '../lib/geoPreference'
+import { loadProcessCatalog } from '../lib/shared-processes/catalog'
 
 // coverage/index.json is the cross-area rollup: one entry per top-level content area, each
 // pointing at the file where that area tracks its own gaps in detail. These gates stop the
@@ -120,5 +121,145 @@ describe('coverage/index.json', () => {
     for (const area of index.areas) {
       expect(Object.keys(index.maturity_grades), `${area.id} uses an undefined grade`).toContain(area.maturity)
     }
+  })
+})
+
+describe('startup task inventory and operational expansion', () => {
+  const read = (file: string) => JSON.parse(fs.readFileSync(path.join(ROOT, file), 'utf8'))
+  const inventory = read('coverage/startup-task-inventory.json') as {
+    sources: string
+    measurement: string
+    domains: Array<{ id: string; name: string }>
+    needs: Array<{ id: string; domain: string; status: string; processIds: string[]; sourceIds: string[] }>
+    specialistBoundaries: Array<{ id: string; scope: string; entryProcessIds: string[]; status: string }>
+  }
+  const sources = read(inventory.sources) as { sources: Array<{ id: string; url: string; checkedOn: string }> }
+  const audit = read('coverage/startup-expansion-audit.json') as { newProcessIds: string[]; fixture: string }
+  const fixtures = read(audit.fixture) as { fictional: boolean; cases: Array<{ company: string; expectedProcessId: string; expectedOutcome: string; externalActionsAuthorized: boolean; gateChecks: Array<{ id: string; stepId: string; facts: { triggerConfirmed: boolean; requiredLocationsKnown: boolean; expertReviewComplete: boolean; approval: { role: string; scope: string } | null }; expectedDecision: string }> }> }
+  const catalog = loadProcessCatalog().processes
+  const records = new Map(catalog.map((p) => [p.record.id, p.record]))
+
+  it('validates the inventory, source register, audit and fictional cases against their published schemas', () => {
+    for (const [data, name] of [[inventory, 'startup-task-inventory'], [sources, 'startup-process-sources'], [audit, 'startup-expansion-audit'], [fixtures, 'startup-lifecycle-fixtures']] as const) {
+      expect(z.fromJSONSchema(read(`schemas/${name}.schema.json`)).parse(data)).toEqual(data)
+    }
+  })
+
+  it('resolves needs and source identities, retains explicit gaps and separates specialist boundaries', () => {
+    expect(new Set(inventory.needs.map((n) => n.id)).size).toBe(inventory.needs.length)
+    expect(new Set(inventory.domains.map((d) => d.id)).size).toBe(inventory.domains.length)
+    const domains = new Set(inventory.domains.map((d) => d.id))
+    const sourceIds = new Set(sources.sources.map((s) => s.id))
+    expect(sourceIds.size).toBe(sources.sources.length)
+    for (const need of inventory.needs) {
+      expect(domains.has(need.domain), need.id).toBe(true)
+      expect(need.status === 'guide-present', need.id).toBe(need.processIds.length > 0)
+      for (const id of need.processIds) expect(records.has(id), `${need.id}: ${id}`).toBe(true)
+      for (const id of need.sourceIds) expect(sourceIds.has(id), `${need.id}: ${id}`).toBe(true)
+    }
+    const mapped = new Set(inventory.needs.flatMap((n) => n.processIds))
+    for (const process of catalog.filter((p) => !p.taskIds)) expect(mapped.has(process.record.id), process.slug).toBe(true)
+    for (const boundary of inventory.specialistBoundaries) {
+      expect(boundary.status).not.toBe('covered')
+      for (const id of boundary.entryProcessIds) expect(records.has(id), id).toBe(true)
+    }
+    expect(inventory.measurement).toContain('does not establish universal completeness')
+  })
+
+  it('new guides have distinct outcomes, scoped applicability, sourced instructions and human gates', () => {
+    expect(new Set(audit.newProcessIds).size).toBe(audit.newProcessIds.length)
+    for (const id of audit.newProcessIds) {
+      const record = records.get(id)!
+      expect(record, id).toBeDefined()
+      expect(record.when, id).toBeTruthy()
+      expect(record.outcomes.length, id).toBeGreaterThan(0)
+      expect(record.parts.length, id).toBeGreaterThanOrEqual(5)
+      expect(record.references.some((r) => r.kind === 'url'), id).toBe(true)
+      expect(record.metadata.editorial).toMatchObject({ status: 'draft' })
+      expect(record.notes.some((n) => n.text.includes('No case-specific legal review')), id).toBe(true)
+      expect(record.metadata.provenRuns, id).toBeUndefined()
+      for (const part of record.parts) {
+        expect(part.guidance?.length, `${id}/${part.id}`).toBeGreaterThan(100)
+        expect(part.metadata.execution).not.toMatchObject({ automationEvidence: { status: 'observed' } })
+        if (part.metadata.route !== 'agent') expect(part.metadata.approvalRequired, `${id}/${part.id}`).toBe(true)
+      }
+      expect(record.parts.at(-1)?.metadata.verify, id).toMatchObject({ how: record.outcomes[0] })
+    }
+  })
+
+  it('fictional examples cover the additions and exercise context, scope, review and approval stops', () => {
+    expect(fixtures.fictional).toBe(true)
+    expect(new Set(fixtures.cases.map((c) => c.expectedProcessId))).toEqual(new Set(audit.newProcessIds))
+    for (const example of fixtures.cases) {
+      expect(example.company).toContain('Fictional')
+      expect(example.externalActionsAuthorized).toBe(false)
+      const record = records.get(example.expectedProcessId)!
+      expect(record.outcomes).toContain(example.expectedOutcome)
+      // These are editorial gate fixtures, not prose matching or an external-action executor.
+      expect(new Set(example.gateChecks.map((g) => g.expectedDecision))).toEqual(new Set([
+        'out-of-scope', 'needs-context', 'needs-approval', 'needs-review', 'ready-for-human',
+      ]))
+      for (const gate of example.gateChecks) {
+        const step = record.parts.find((p) => p.id === gate.stepId)!
+        expect(step, `${example.expectedProcessId}/${gate.stepId}`).toBeDefined()
+        expect(step.metadata.approvalRequired).toBe(true)
+        expect(step.metadata.execution).toMatchObject({ reviewRequired: true })
+        const { facts } = gate
+        const approval = step.metadata.approval as { role: string; scope: string } | undefined
+        const decision = !facts.triggerConfirmed ? 'out-of-scope'
+          : !facts.requiredLocationsKnown ? 'needs-context'
+          : !facts.approval || facts.approval.role !== approval?.role || facts.approval.scope !== approval?.scope ? 'needs-approval'
+          : !facts.expertReviewComplete ? 'needs-review' : 'ready-for-human'
+        expect(decision, `${example.expectedProcessId}/${gate.id}`).toBe(gate.expectedDecision)
+        // Even a ready step is work for the accountable person, not delegated authority.
+        expect(step.metadata.route).not.toBe('agent')
+      }
+    }
+  })
+
+  it('country launch entries resolve official sources, authored views and explicit remaining gaps', () => {
+    const expansion = read('coverage/startup-country-expansion.json') as {
+      countries: Array<{ country: string; depth: string; knownGaps: string[]; formation: { sourceId: string; guidance: string }; tax: { sourceId: string; guidance: string }; permits: { sourceId: string; guidance: string } }>
+    }
+    expect(z.fromJSONSchema(read('schemas/startup-country-expansion.schema.json')).parse(expansion)).toEqual(expansion)
+    expect(new Set(expansion.countries.map(c => c.country)).size).toBe(expansion.countries.length)
+    const processIds = { formation: 'form_001', tax: 'form_002', permits: 'startup-coverage.obtain-business-licenses-and-operating-permits' }
+    for (const country of expansion.countries) {
+      expect(country.depth).toBe('launch-entry-point')
+      expect(country.knownGaps.length).toBeGreaterThan(0)
+      for (const area of ['formation', 'tax', 'permits'] as const) {
+        const source = sources.sources.find(source => source.id === country[area].sourceId)
+        expect(source, `${country.country}/${area}`).toBeDefined()
+        const record = records.get(processIds[area])!
+        expect(record.references.some(ref => ref.kind === 'url' && ref.url === source!.url)).toBe(true)
+        const view = record.countryViews?.find(view => view.country === country.country)
+        expect(view?.summary).toContain(country[area].guidance)
+        expect(view?.summary).toContain('local review')
+        const notes = record.metadata.geoNotes as Array<{ country: string; actionUrl: string }>
+        expect(notes.find(note => note.country === country.country)?.actionUrl).toBe(source!.url)
+      }
+    }
+  })
+
+  it('country links reach local sections and declined bids skip submission while money release is irreversible', () => {
+    const index = fs.readFileSync(path.join(ROOT, 'coverage/STARTUP-TASKS.md'), 'utf8')
+    const countries = read('coverage/startup-country-expansion.json').countries as Array<{ country: string }>
+    for (const { country } of countries) for (const slug of ['incorporate-c-corp', 'get-ein', 'obtain-business-licenses-and-operating-permits']) {
+      const anchor = `geo-${country.toLowerCase()}`
+      expect(index).toContain(`pages/${slug}.md#${anchor}`)
+      expect(fs.readFileSync(path.join(ROOT, `open-processes/pages/${slug}.md`), 'utf8')).toContain(`id="${anchor}"`)
+    }
+    const bid = records.get('startup-coverage.prepare-and-submit-a-public-procurement-bid')!
+    expect(bid.links.filter(link => link.from === 'n2')).toEqual([
+      { from: 'n2', to: 'n3', when: 'Bid decision approved; mandatory eligibility requirements can be met.' },
+      { from: 'n2', to: 'n6', when: 'No-bid decision approved; skip preparation and submission.' },
+    ])
+    for (const step of bid.parts.slice(2, 5)) expect(step.when).toContain('approves a bid')
+    expect(bid.parts.at(-1)?.guidance).toContain('close the opportunity without submitting')
+    expect(records.get('startup-coverage.approve-and-pay-a-shareholder-distribution')!.parts.find(part => part.id === 'n5')!.metadata.reversibility).toBe('irreversible')
+  })
+
+  it('the readable coverage map is regenerated from the current inventory and canonical titles', () => {
+    expect(() => execFileSync(process.execPath, ['scripts/generate-startup-coverage.mjs', '--check'], { cwd: ROOT })).not.toThrow()
   })
 })

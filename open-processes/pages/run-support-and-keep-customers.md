@@ -3,18 +3,28 @@
 
 # Run support & keep customers
 
+[Overview](#overview) · [Process sequence](#process-sequence)
+
+## Overview
+
 Support stood up, the cancellation met with a save offer, the churned cohort won back, the happy ones turned into a referral channel.
 
 | Field | Value |
 | --- | --- |
 | Kind | chain |
 
-## Processes in order
+<a id="processes-in-order"></a>
 
-1. [Set up customer support](set-up-customer-support.md)
-2. [Save a churning customer](save-a-churning-customer.md)
-3. [Run a win-back campaign](run-a-win-back-campaign.md)
-4. [Launch a referral program](launch-a-referral-program.md)
+## Process sequence
+
+Run the linked processes in the recorded chain order. Each process defines its own internal dependencies.
+
+| Order | Process | Requires | Produces |
+| --- | --- | --- | --- |
+| 1 | [Set up customer support](set-up-customer-support.md) | Company website | Customer support desk |
+| 2 | [Save a churning customer](save-a-churning-customer.md) | Product analytics workspace; CRM workspace; Subscription billing | Not recorded |
+| 3 | [Run a win-back campaign](run-a-win-back-campaign.md) | Subscription billing; CRM workspace; Marketing email audience | Not recorded |
+| 4 | [Launch a referral program](launch-a-referral-program.md) | Payment processor account; Marketing email audience; Product analytics workspace | Not recorded |
 
 ---
 

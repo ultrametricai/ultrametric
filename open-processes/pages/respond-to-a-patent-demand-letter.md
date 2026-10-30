@@ -3,9 +3,13 @@
 
 # Respond to a patent demand letter
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Geography](#geography) · [Steps](#steps-at-a-glance)
+
+## Overview
+
 **Trigger:** A letter arrives asserting a patent against your product and demanding a license fee, often from a non-practicing entity (NPE).
 
-A patent demand letter is a business proposition dressed as a legal threat, and some are both. It is not a general cease-and-desist; that playbook is its own situation. Read what is actually asserted: the patent numbers, the accused features, and whether a claim chart maps claims to your product; if there is none, counsel's first ask is usually for one. Preserve the letter and the accused product's current behavior before anything changes. The economics are case math, stated plainly: a license can cost less than a month of defense, and a defense can cost less than a licensing campaign that repeats. Where patented products were not marked, damages ordinarily run only from when the infringer was notified (law rule [us-fed.patent-marking-damages-notice](../../open-law/US-FED/us-fed-patent-marking-damages-notice.json)), which is one reason the letter exists. Prior-art search is real work an agent can start the same day. Check your insurance and the defense-network memberships before pricing a fight alone. Then pick the path with patent counsel on the letter's clock. Educational guidance, not legal advice.
+Preserve the patent demand and relevant product evidence, identify the asserted patents and accused features, and have counsel assess scope, exposure and response options. Check available insurance or defense support and authorize the chosen response.
 
 | Field | Value |
 | --- | --- |
@@ -22,51 +26,147 @@ A patent demand letter is a business proposition dressed as a legal threat, and 
 
 Letter parsing, evidence preservation, and the prior-art search are agent work; the counsel economics, the insurer and defense-fund conversations, and the path decision stay with people, and the counterparty answers on its own clock.
 
-## Steps
+## Before you start
 
-1. **Read what is actually asserted: the patent numbers, the accused features, the demanded license, and whether a claim chart maps claims to your product** — human · ~30 min
+| Information to gather | Required by the record |
+| --- | --- |
+| the demand letter (patents asserted, accused features, deadline, any claim chart) | Yes |
+| what the accused product actually does: versions, release dates, documentation | Yes |
 
-   - Next: steps 2 and 3 — all follow this step
-2. **Preserve the evidence before anything changes: the letter, its dates, and the accused product's current behavior** — agent-runnable · ~30 min
+## Geography
 
-   - Next: continue at step 4
-3. **If the letter asserts trademark, copyright, or other non-patent IP, run the cease-and-desist response instead** — human · ~15 min
+Country rows describe the guidance recorded here. Local notes and step alternatives do not establish a complete country-specific workflow.
 
-   *Follows step 1.*
+| Country | Recorded guidance | Steps with local alternatives or resolutions |
+| --- | --- | --- |
+| [United States](#geo-us) | step resolution | [7](#step-7) |
+| [United Kingdom](#geo-uk) | step resolution | [7](#step-7) |
+| [Germany](#geo-de) | step resolution | [7](#step-7) |
 
-   When: The letter asserts non-patent IP
+## Steps at a glance
 
-   - Runs the process [Respond to a cease-and-desist](respond-to-a-cease-and-desist.md)
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
 
-   *This path ends here.*
-4. **Run the prior-art search: the asserted patents' prosecution histories, earlier filings, and products on sale before the priority dates** — agent-runnable · ~1.5 h
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Read what is actually asserted: the patent numbers, the accused features, the demanded license, and whether a claim chart maps claims to your product](#step-1) | human | ~30 min | Entry step |
+| [2. Preserve the evidence before anything changes: the letter, its dates, and the accused product's current behavior](#step-2) | agent-runnable | ~30 min | [Step 1](#step-1) |
+| [3. If the letter asserts trademark, copyright, or other non-patent IP, run the cease-and-desist response instead](#step-3) | human | ~15 min | [Step 1](#step-1) |
+| [4. Run the prior-art search: the asserted patents' prosecution histories, earlier filings, and products on sale before the priority dates](#step-4) | agent-runnable | ~1.5 h | [Step 2](#step-2) |
+| [5. Get patent counsel's read before any reply: the licensing-versus-fight economics are case math, not posture](#step-5) | human | ~1 h | [Step 4](#step-4) |
+| [6. Check the escape hatches: existing IP or defense insurance, and memberships such as LOT Network or Unified Patents, before pricing a fight alone](#step-6) | human | ~45 min | [Step 5](#step-5) |
+| [7. Pick the path on the letter's clock: license, negotiate, design around, or challenge validity](#step-7) | human | ~1 h | [Step 6](#step-6) |
+| [8. Wait out the counterparty: campaigns run in waves, and silence after a reply is common](#step-8) | human; includes waiting | ~30 d | [Step 7](#step-7) |
 
-   *Follows step 2.*
+<a id="steps"></a>
 
-   - Do it yourself: [Google Patents](https://patents.google.com/)
-5. **Get patent counsel's read before any reply: the licensing-versus-fight economics are case math, not posture** — human · ~1 h
+## Step details
 
-   - Vendor options: Cooley, Fenwick, Gunderson Dettmer
-   - Ranked market: [startup-law-firms](../../open-rankings/startup-law-firms)
-6. **Check the escape hatches: existing IP or defense insurance, and memberships such as LOT Network or Unified Patents, before pricing a fight alone** — human · ~45 min
+<a id="step-1"></a>
 
-   - Do it yourself: [Unified Patents](https://www.unifiedpatents.com/)
-7. **Pick the path on the letter's clock: license, negotiate, design around, or challenge validity** — human · ~1 h · hard to undo
+### 1. Read what is actually asserted: the patent numbers, the accused features, the demanded license, and whether a claim chart maps claims to your product
 
-   - Do it yourself: [USPTO: Patent Trial and Appeal Board](https://www.uspto.gov/patents/ptab)
-8. **Wait out the counterparty: campaigns run in waves, and silence after a reply is common** — human · ~30 d · async wait
+human · ~30 min
 
-## By country
+
+- Next: steps 2 and 3 — all follow this step
+
+<a id="step-2"></a>
+
+### 2. Preserve the evidence before anything changes: the letter, its dates, and the accused product's current behavior
+
+agent-runnable · ~30 min
+
+
+- Next: continue at step 4
+
+<a id="step-3"></a>
+
+### 3. If the letter asserts trademark, copyright, or other non-patent IP, run the cease-and-desist response instead
+
+human · ~15 min
+
+
+*Follows step 1.*
+
+When: The letter asserts non-patent IP
+
+- Runs the process [Respond to a cease-and-desist](respond-to-a-cease-and-desist.md)
+
+*This path ends here.*
+
+<a id="step-4"></a>
+
+### 4. Run the prior-art search: the asserted patents' prosecution histories, earlier filings, and products on sale before the priority dates
+
+agent-runnable · ~1.5 h
+
+
+*Follows step 2.*
+
+- Do it yourself: [Google Patents](https://patents.google.com/)
+
+<a id="step-5"></a>
+
+### 5. Get patent counsel's read before any reply: the licensing-versus-fight economics are case math, not posture
+
+human · ~1 h
+
+
+- Vendor options: Cooley, Fenwick, Gunderson Dettmer
+- Ranked market: [startup-law-firms](../../open-rankings/startup-law-firms)
+
+<a id="step-6"></a>
+
+### 6. Check the escape hatches: existing IP or defense insurance, and memberships such as LOT Network or Unified Patents, before pricing a fight alone
+
+human · ~45 min
+
+
+- Do it yourself: [Unified Patents](https://www.unifiedpatents.com/)
+
+<a id="step-7"></a>
+
+### 7. Pick the path on the letter's clock: license, negotiate, design around, or challenge validity
+
+human · ~1 h · hard to undo
+
+
+- Do it yourself: [USPTO: Patent Trial and Appeal Board](https://www.uspto.gov/patents/ptab)
+
+<a id="step-8"></a>
+
+### 8. Wait out the counterparty: campaigns run in waves, and silence after a reply is common
+
+human · ~30 d · async wait
+
+
+
+<a id="by-country"></a>
+
+## Country details
+
+<a id="geo-us"></a>
 
 ### United States
 
+A patent demand letter is a business proposition dressed as a legal threat, and some are both. It is not a general cease-and-desist; that playbook is its own situation. Read what is actually asserted: the patent numbers, the accused features, and whether a claim chart maps claims to your product; if there is none, counsel's first ask is usually for one. Preserve the letter and the accused product's current behavior before anything changes. The economics are case math, stated plainly: a license can cost less than a month of defense, and a defense can cost less than a licensing campaign that repeats. Where patented products were not marked, damages ordinarily run only from when the infringer was notified (law rule [us-fed.patent-marking-damages-notice](../../open-law/US-FED/us-fed-patent-marking-damages-notice.json)), which is one reason the letter exists. Prior-art search is real work an agent can start the same day. Check your insurance and the defense-network memberships before pricing a fight alone. Then pick the path with patent counsel on the letter's clock. Educational guidance, not legal advice.
+
 - Step 7: Validity can be challenged administratively: inter partes review at the PTAB is the standard route ([USPTO: Patent Trial and Appeal Board](https://www.uspto.gov/patents/ptab))
+
+<a id="geo-uk"></a>
 
 ### United Kingdom
 
+The Intellectual Property Enterprise Court hears smaller patent cases
+
 - Step 7: The Intellectual Property Enterprise Court hears smaller patent cases ([Intellectual Property Enterprise Court](https://www.gov.uk/courts-tribunals/intellectual-property-enterprise-court))
 
+<a id="geo-de"></a>
+
 ### Germany
+
+European patents are opposed at the EPO within nine months of grant, or challenged in national courts
 
 - Step 7: European patents are opposed at the EPO within nine months of grant, or challenged in national courts ([EPO: oppositions](https://www.epo.org/en/applying/european/oppositions))
 

@@ -3,6 +3,10 @@
 
 # Set up subscription billing
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Steps](#steps-at-a-glance) · [Outputs](#outputs)
+
+## Overview
+
 Configure subscription plans, pricing, and a customer portal for SaaS billing. Stripe is the canonical route; alternatives are ranked in the payments arena.
 
 | Field | Value |
@@ -19,84 +23,149 @@ Configure subscription plans, pricing, and a customer portal for SaaS billing. S
 
 Stripe API fully supports product, pricing, subscription, and portal management.
 
-## Steps
+<a id="artifacts"></a>
 
-1. **Create products** — agent-runnable · ~10 min · human approval required
+## Before you start
 
-   Define the offerings, included features and charging unit, such as an account, seat or measured use. Choose which system owns the catalog and map each offering to application access and financial records. Use those requirements to select a billing approach. Build a draft catalog with stable internal identifiers and customer-facing names for the pricing and subscription tests.
-
-   - Canonical vendor: Stripe
-   - Sources: [Manage products and prices](https://docs.stripe.com/products-prices/manage-prices)
-
-   Options:
-     - **Default — Create products** — agent-runnable · ~10 min · human approval required
-
-       Use the payment processor's billing catalog if its documented subscription model supports the required units and intervals. In its test environment, map each internal offering to a product and recurring prices. Save the identifiers used by checkout and access control, and compare the displayed descriptions and charges with the commercial plan before connecting the catalog to live purchases.
-     - **Dedicated billing platform**
-
-       When: Complex plans/entitlements independent of the PSP - a dedicated billing layer over the processor
-
-       Compare a separate billing platform against the required pricing, subscription changes, entitlements and financial exports. Identify which system owns customer, subscription and payment state, and how conflicting records will be reconciled. Demonstrate the required changes with sample subscriptions. Use those results, integration responsibilities and current commercial terms to decide whether the extra platform is justified.
-
-       - Canonical vendor: Chargebee
-       - Vendor options: Chargebee, Recurly
-       - Ranked market: [billing-subscriptions](../../open-rankings/billing-subscriptions)
-     - **Merchant of record (MoR)**
-
-       When: Global self-serve SaaS without a tax footprint - the MoR sells as the seller of record
-
-       Read the proposed merchant-of-record agreement for the product, seller entity and customer markets. Map who contracts with customers and handles payments, taxes, refunds, disputes and support, including exclusions and payout terms. Finance and qualified advisers should resolve the seller's remaining obligations before the provider commitment. Test checkout, receipts, cancellation and application access.
-
-       - Canonical vendor: Paddle
-       - Vendor options: Paddle
-       - Sources: [Paddle 101](https://www.paddle.com/paddle-101)
-2. **Configure pricing plans** — agent-runnable · ~10 min · human approval required
-
-   Build a pricing matrix with currency, amount, interval, charging unit, included usage, trial conditions and discounts. Work through representative quantities and plan changes to expose ambiguous totals or renewal terms. Configure the matrix in a draft or test catalog and compare checkout and invoice previews against it. Resolve any mismatch in the commercial terms before making the prices available to customers.
-
-   - Produces: Subscription billing
-   - Canonical vendor: Stripe
-   - Sources: [Manage products and prices](https://docs.stripe.com/products-prices/manage-prices)
-   - Next: steps 3 and 4 — all follow this step
-3. **Set up customer portal** — agent-runnable · ~10 min · human approval required
-
-   Choose which actions customers can perform in the billing portal: view invoices, update payment details, change plans or cancel. Match their effective dates and access consequences to the billing policy. Test each enabled action as representative customers, including account isolation and the resulting invoices and access. Provide a support route for unsupported actions, then publish the tested entry point within the agreed release scope.
-
-   - Canonical vendor: Stripe
-   - Sources: [Configure the customer portal](https://docs.stripe.com/customer-management/configure-portal)
-4. **Configure webhooks** — agent-runnable · ~5 min
-
-   *Follows step 2.*
-
-   Map payment, failure and cancellation events to the application state they should change. Follow the provider's current webhook instructions to authenticate events and protect credentials. Exercise duplicate delivery, delayed events and processing failures; repeated or out-of-order notifications must not grant access twice or restore an obsolete state. Link event identifiers to processing results so failed updates can be reconciled before the production destination is enabled.
-
-   - Verify: A test webhook delivery returns 2xx and shows delivered in the dashboard's webhook logs.
-   - Canonical vendor: Stripe
-   - Sources: [Receive Stripe events in your webhook endpoint](https://docs.stripe.com/webhooks)
-5. **Test subscriptions** — agent-runnable · ~10 min
-
-   *Follows steps 3 and 4 — both are required first.*
-
-   In the provider's test environment, exercise purchase, renewal, payment authentication or failure, quantity and plan changes, cancellation and the enabled portal actions. Use fictional customers and supported test payment methods. For each scenario, compare the invoice, notification, application access and stored subscription state with the expected result. Keep reproducible test identifiers and resolve mismatches before allowing live customer billing.
-
-   - Canonical vendor: Stripe
-   - Sources: [Test your Billing integration](https://docs.stripe.com/billing/testing)
-6. **Configure dunning** — agent-runnable · ~5 min · human approval required
-
-   Translate the failed-payment policy into customer notices, retry settings, support escalation and the final billing and access outcome. Check what recovery the provider supports for the selected payment methods and failure types. Test both successful recovery and exhausted retries. Enable the agreed retry schedule and messages only when the observed charges, notices and access changes match that policy.
-
-   - Canonical vendor: Stripe
-   - Sources: [Automate payment retries](https://docs.stripe.com/billing/revenue-recovery/smart-retries)
-
-## Artifacts
-
-Produces:
-
-- Subscription billing
-
-Requires:
+Required artifacts:
 
 - Payment processor account — from [Connect a payment processor](connect-a-payment-processor.md)
+
+| Information to gather | Required by the record |
+| --- | --- |
+| billing pricing model | Yes |
+| billing plan tiers | Yes |
+| billing trial period | Optional |
+
+## Steps at a glance
+
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
+
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Create products](#step-1) | agent-runnable; approval required | ~10 min | Entry step |
+| [2. Configure pricing plans](#step-2) | agent-runnable; approval required | ~10 min | [Step 1](#step-1) |
+| [3. Set up customer portal](#step-3) | agent-runnable; approval required | ~10 min | [Step 2](#step-2) |
+| [4. Configure webhooks](#step-4) | agent-runnable | ~5 min | [Step 2](#step-2) |
+| [5. Test subscriptions](#step-5) | agent-runnable | ~10 min | All: [Step 3](#step-3); [Step 4](#step-4) |
+| [6. Configure dunning](#step-6) | agent-runnable; approval required | ~5 min | [Step 5](#step-5) |
+
+<a id="steps"></a>
+
+## Step details
+
+<a id="step-1"></a>
+
+### 1. Create products
+
+agent-runnable · ~10 min · human approval required
+
+| Option | Applies when |
+| --- | --- |
+| Default — Create products | Recorded default |
+| Dedicated billing platform | Complex plans/entitlements independent of the PSP - a dedicated billing layer over the processor |
+| Merchant of record (MoR) | Global self-serve SaaS without a tax footprint - the MoR sells as the seller of record |
+
+
+Define the offerings, included features and charging unit, such as an account, seat or measured use. Choose which system owns the catalog and map each offering to application access and financial records. Use those requirements to select a billing approach. Build a draft catalog with stable internal identifiers and customer-facing names for the pricing and subscription tests.
+
+- Canonical vendor: Stripe
+- Sources: [Manage products and prices](https://docs.stripe.com/products-prices/manage-prices)
+
+Options:
+  - **Default — Create products** — agent-runnable · ~10 min · human approval required
+
+    Use the payment processor's billing catalog if its documented subscription model supports the required units and intervals. In its test environment, map each internal offering to a product and recurring prices. Save the identifiers used by checkout and access control, and compare the displayed descriptions and charges with the commercial plan before connecting the catalog to live purchases.
+  - **Dedicated billing platform**
+
+    When: Complex plans/entitlements independent of the PSP - a dedicated billing layer over the processor
+
+    Compare a separate billing platform against the required pricing, subscription changes, entitlements and financial exports. Identify which system owns customer, subscription and payment state, and how conflicting records will be reconciled. Demonstrate the required changes with sample subscriptions. Use those results, integration responsibilities and current commercial terms to decide whether the extra platform is justified.
+
+    - Canonical vendor: Chargebee
+    - Vendor options: Chargebee, Recurly
+    - Ranked market: [billing-subscriptions](../../open-rankings/billing-subscriptions)
+  - **Merchant of record (MoR)**
+
+    When: Global self-serve SaaS without a tax footprint - the MoR sells as the seller of record
+
+    Read the proposed merchant-of-record agreement for the product, seller entity and customer markets. Map who contracts with customers and handles payments, taxes, refunds, disputes and support, including exclusions and payout terms. Finance and qualified advisers should resolve the seller's remaining obligations before the provider commitment. Test checkout, receipts, cancellation and application access.
+
+    - Canonical vendor: Paddle
+    - Vendor options: Paddle
+    - Sources: [Paddle 101](https://www.paddle.com/paddle-101)
+
+<a id="step-2"></a>
+
+### 2. Configure pricing plans
+
+agent-runnable · ~10 min · human approval required
+
+
+Build a pricing matrix with currency, amount, interval, charging unit, included usage, trial conditions and discounts. Work through representative quantities and plan changes to expose ambiguous totals or renewal terms. Configure the matrix in a draft or test catalog and compare checkout and invoice previews against it. Resolve any mismatch in the commercial terms before making the prices available to customers.
+
+- Produces: Subscription billing
+- Canonical vendor: Stripe
+- Sources: [Manage products and prices](https://docs.stripe.com/products-prices/manage-prices)
+- Next: steps 3 and 4 — all follow this step
+
+<a id="step-3"></a>
+
+### 3. Set up customer portal
+
+agent-runnable · ~10 min · human approval required
+
+
+Choose which actions customers can perform in the billing portal: view invoices, update payment details, change plans or cancel. Match their effective dates and access consequences to the billing policy. Test each enabled action as representative customers, including account isolation and the resulting invoices and access. Provide a support route for unsupported actions, then publish the tested entry point within the agreed release scope.
+
+- Canonical vendor: Stripe
+- Sources: [Configure the customer portal](https://docs.stripe.com/customer-management/configure-portal)
+
+<a id="step-4"></a>
+
+### 4. Configure webhooks
+
+agent-runnable · ~5 min
+
+
+*Follows step 2.*
+
+Map payment, failure and cancellation events to the application state they should change. Follow the provider's current webhook instructions to authenticate events and protect credentials. Exercise duplicate delivery, delayed events and processing failures; repeated or out-of-order notifications must not grant access twice or restore an obsolete state. Link event identifiers to processing results so failed updates can be reconciled before the production destination is enabled.
+
+- Verify: A test webhook delivery returns 2xx and shows delivered in the dashboard's webhook logs.
+- Canonical vendor: Stripe
+- Sources: [Receive Stripe events in your webhook endpoint](https://docs.stripe.com/webhooks)
+
+<a id="step-5"></a>
+
+### 5. Test subscriptions
+
+agent-runnable · ~10 min
+
+
+*Follows steps 3 and 4 — both are required first.*
+
+In the provider's test environment, exercise purchase, renewal, payment authentication or failure, quantity and plan changes, cancellation and the enabled portal actions. Use fictional customers and supported test payment methods. For each scenario, compare the invoice, notification, application access and stored subscription state with the expected result. Keep reproducible test identifiers and resolve mismatches before allowing live customer billing.
+
+- Canonical vendor: Stripe
+- Sources: [Test your Billing integration](https://docs.stripe.com/billing/testing)
+
+<a id="step-6"></a>
+
+### 6. Configure dunning
+
+agent-runnable · ~5 min · human approval required
+
+
+Translate the failed-payment policy into customer notices, retry settings, support escalation and the final billing and access outcome. Check what recovery the provider supports for the selected payment methods and failure types. Test both successful recovery and exhausted retries. Enable the agreed retry schedule and messages only when the observed charges, notices and access changes match that policy.
+
+- Canonical vendor: Stripe
+- Sources: [Automate payment retries](https://docs.stripe.com/billing/revenue-recovery/smart-retries)
+
+
+## Outputs
+
+- Subscription billing
 
 ## Related records
 
