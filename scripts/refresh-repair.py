@@ -1,5 +1,6 @@
 """Trusted-main repair controller. PR refs are read only as allowlisted JSON data."""
 import json
+import hashlib
 import os
 import re
 import subprocess
@@ -43,12 +44,18 @@ def identity(pr):
             and pr['user']['login'] == 'github-actions[bot]'
             and re.fullmatch(r'story-runner/([a-z0-9-]+)-[0-9]+', pr['head']['ref']))
 
+def diagnostic_comments(comments):
+    return '\n\n'.join(f"[{(entry.get('author') or {}).get('login')}] {entry['body']}"
+                        for entry in comments
+                        if (entry.get('author') or {}).get('login') not in ['foreloop-app','foreloop-app[bot]'])
+
+
 def threads():
     query = '''query($owner:String!, $name:String!, $number:Int!, $cursor:String) {
       repository(owner:$owner,name:$name) { pullRequest(number:$number) {
         headRefOid reviewThreads(first:100,after:$cursor) {
           pageInfo {hasNextPage endCursor}
-          nodes {id isResolved path originalLine comments(first:1) {nodes {
+          nodes {id isResolved path originalLine comments(first:100) {pageInfo {hasNextPage} nodes {
             body author {login} originalCommit {oid}
           }}}
         }
@@ -63,6 +70,8 @@ def threads():
             raise RuntimeError(result['errors'])
         pr = result['data']['repository']['pullRequest']
         for thread in pr['reviewThreads']['nodes']:
+            if thread['comments']['pageInfo']['hasNextPage']:
+                raise RuntimeError('Review thread exceeds the bounded diagnostic context; scoped review required')
             comment = thread['comments']['nodes'][0] if thread['comments']['nodes'] else None
             if (thread['isResolved'] or not comment or (comment.get('author') or {}).get('login')
                     not in ['greptile-apps', 'greptile-apps[bot]', 'greptileai']):
@@ -70,11 +79,16 @@ def threads():
             if thread['originalLine'] is None or not comment.get('originalCommit'):
                 continue
             findings.append({'id': thread['id'], 'path': thread['path'], 'line': thread['originalLine'],
-                             'commit': comment['originalCommit']['oid'], 'body': comment['body']})
+                             'commit': comment['originalCommit']['oid'], 'body': diagnostic_comments(thread['comments']['nodes'])})
         page = pr['reviewThreads']['pageInfo']
         if not page['hasNextPage']:
             return pr['headRefOid'], findings
         cursor = page['endCursor']
+
+
+def finding_fingerprint(finding):
+    fields = {key:finding.get(key) for key in ['path','line','commit','body']}
+    return hashlib.sha256(json.dumps(fields,sort_keys=True).encode()).hexdigest()
 
 
 def load_resume_report(head, trusted):
@@ -111,6 +125,8 @@ def load_resume_report(head, trusted):
         raise RuntimeError('Prior audit source is outside trusted main history')
     if (not isinstance(report.get('originalThreads'), list) or len(report['originalThreads']) > 20
             or not all(isinstance(thread, str) for thread in report['originalThreads'])
+            or not isinstance(report.get('findingSnapshots'), dict)
+            or any(not re.fullmatch('[a-f0-9]{64}',report['findingSnapshots'].get(thread,'')) for thread in report['originalThreads'])
             or not isinstance(report.get('audits'), list) or len(report['audits']) > 20
             or any(not isinstance(audit.get('addressed'), bool) or not isinstance(audit.get('thread'), str)
                    for audit in report['audits'])):
@@ -148,7 +164,9 @@ def recheck(report, branch, new_sha):
     if sha != new_sha:
         return 'closed-or-changed'
     new_findings = [finding for finding in remaining if finding['id'] not in original_ids]
-    if new_findings:
+    if new_findings or any(finding['id'] in original_ids and
+                           report['findingSnapshots'].get(finding['id']) != finding_fingerprint(finding)
+                           for finding in remaining):
         return 'needs-repair'
     live_ids = {finding['id'] for finding in remaining}
     for audit in report['audits']:
@@ -216,7 +234,8 @@ def main():
     command(['git', 'add', 'open-rankings', 'rankings-engine/cache', 'README.md'])
     tree = output(['git', 'write-tree'])
     report = json.loads(report_file.read_text())
-    report.update(pr=NUMBER, runId=RUN_ID, originalThreads=[finding['id'] for finding in findings], phase='validated')
+    report.update(pr=NUMBER, runId=RUN_ID, originalThreads=[finding['id'] for finding in findings],
+                  findingSnapshots={finding['id']:finding_fingerprint(finding) for finding in findings},phase='validated')
     report_file.write_text(json.dumps(report, indent=2))
     message = (f'chore(story-runner): repair {arena} judgments and projections\n\n'
                f'Refresh-Repair-Attempt: {rounds + 1}\n'

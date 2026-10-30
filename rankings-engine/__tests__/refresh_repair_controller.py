@@ -13,7 +13,8 @@ GLOBALS = MODULE['recheck'].__globals__
 SHA = 'a'*40
 BRANCH = 'story-runner/email-123'
 PR = {'state':'open','draft':False,'base':{'ref':'main'},'head':{'sha':SHA,'ref':BRANCH,'repo':{'full_name':'owner/repo'}},'user':{'login':'github-actions[bot]'}}
-REPORT = {'originalThreads':['old'],'audits':[{'thread':'old','addressed':True}]}
+REPORT = {'originalThreads':['old'],'audits':[{'thread':'old','addressed':True}],
+          'findingSnapshots':{'old':MODULE['finding_fingerprint']({'id':'old'})}}
 
 def checks(status='success'):
     return [{'name':name,'app':{'id':app},'status':'completed' if status=='success' else 'in_progress','conclusion':status if status=='success' else None}
@@ -34,6 +35,12 @@ class ControllerTests(unittest.TestCase):
             result=MODULE['recheck'](report,BRANCH,SHA)
         return result,calls,commands
 
+    def test_foreloop_replies_are_not_diagnostic_or_audit_input(self):
+        body=MODULE['diagnostic_comments']([{'author':{'login':'greptileai'},'body':'review concern'},
+                                          {'author':{'login':'foreloop-app'},'body':'excluded concern'}])
+        self.assertIn('review concern',body)
+        self.assertNotIn('excluded concern',body)
+
     def test_slow_checks_keep_audit_without_publishing_or_resolving(self):
         phase,calls,commands=self.recheck(REPORT,pending=True)
         self.assertEqual(phase,'waiting-checks')
@@ -50,8 +57,13 @@ class ControllerTests(unittest.TestCase):
         self.assertEqual(phase,'needs-repair')
         self.assertFalse(any(endpoint=='graphql' for endpoint,_ in calls))
 
+    def test_edited_diagnostic_or_reply_invalidates_the_saved_audit(self):
+        phase,calls,_=self.recheck(REPORT,findings=[{'id':'old','body':'New review reply: still incorrect'}])
+        self.assertEqual(phase,'needs-repair')
+        self.assertFalse(any(endpoint=='graphql' for endpoint,_ in calls))
+
     def test_failed_audit_is_not_resolved_or_reported_complete(self):
-        phase,calls,_=self.recheck({'originalThreads':['old'],'audits':[{'thread':'old','addressed':False}]})
+        phase,calls,_=self.recheck({**REPORT,'audits':[{'thread':'old','addressed':False}]})
         self.assertEqual(phase,'needs-repair')
         self.assertFalse(any(endpoint=='graphql' for endpoint,_ in calls))
 
@@ -110,7 +122,8 @@ class ResumeArtifactTests(unittest.TestCase):
     def resume(self, *, bad_branch=False, bad_binding=False, expired=False):
         base='b'*40
         report={'pr':536,'runId':'123','publishedHead':'x'*40 if bad_binding else SHA,'main':base,
-                'originalThreads':['old'],'audits':[{'thread':'old','addressed':True}]}
+                'originalThreads':['old'],'audits':[{'thread':'old','addressed':True}],
+                'findingSnapshots':REPORT['findingSnapshots']}
         def output(args):
             if args[:3]==['git','log','-1']:return f'Refresh-Repair-Run: 123\nRefresh-Repair-Base: {base}'
             if args[:2]==['git','merge-base']:return args[2]

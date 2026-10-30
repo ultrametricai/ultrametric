@@ -203,6 +203,7 @@ export async function repair({ head, main, arena, findings, keyed }: { head: str
   }
   if (findings.length > 20) throw new Error('More than 20 findings need a scoped repair')
   for (const finding of findings) {
+    if (finding.body.length > 12000) throw new Error('Review diagnostic exceeds the scoped context budget')
     if (finding.path !== `${dir}/verdicts.json` || !/^[a-f0-9]{40}$/.test(finding.commit)) continue
     const source = show(finding.commit, finding.path)
     if (!source) continue

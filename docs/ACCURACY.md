@@ -141,7 +141,8 @@ threads remain open. A changed head discards the repair. Attempts are bounded to
 published repair commits, three failed-worker retries per head, and two concurrent workers. Pending checks resume
 the saved audit for the same published head, without another judgment or repair commit.
 Only artifacts from the trusted main repair workflow with matching PR, head, run, and base
-bindings can resume. Failed stages are appended to the retained report.
+bindings can resume. Audits are bound to the exact review discussion; edited findings or
+new replies require another assessment. Foreloop replies are excluded from that context. Failed stages are appended to the retained report.
 Reports are retained as workflow artifacts; exhausted or ambiguous repairs require review.
 
 ## Invariants
