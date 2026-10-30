@@ -10,7 +10,7 @@ jobs:
     timeout-minutes: 60
     strategy:
       fail-fast: false
-      max-parallel: 3
+      max-parallel: 4
       matrix:
         include:
           - { category: compliance-screening, product: complyadvantage }
@@ -42,12 +42,42 @@ jobs:
           if not os.environ.get('ANTHROPIC_API_KEY'):
               raise SystemExit('Hosted evaluation credential is not configured')
           pathlib.Path('engine-artifacts').mkdir(exist_ok=True)
-          for stage in ['crawl','extract','collect-community','probe','judge','claims','pricing','integrations']:
-              result=subprocess.run(['node','--import','tsx','rankings-engine/cli.ts',stage,'--category',category,'--product',product])
-              results.append({'stage':stage,'exit_code':result.returncode})
+          evidence=pathlib.Path(f'open-rankings/{category}/evidence/{product}.json')
+          collected=evidence.exists() and len(json.loads(evidence.read_text())) > 0
+          stages=([] if collected else ['crawl','extract','collect-community','probe'])+['judge','claims','pricing','integrations']
+          for stage in stages:
+              print('Starting '+stage+' for '+category+'/'+product,flush=True)
+              if stage=='judge':
+                  import tempfile, concurrent.futures
+                  base=pathlib.Path('open-rankings')
+                  stories=json.loads((base/category/'stories.json').read_text())
+                  products=json.loads((base/category/'products.json').read_text())
+                  selected=[p for p in products if p['id']==product]
+                  assert len(selected)==1
+                  chunks=[stories[i::4] for i in range(4)]
+                  assert len({s['id'] for chunk in chunks for s in chunk})==len(stories)
+                  def judge_chunk(chunk):
+                      with tempfile.TemporaryDirectory(prefix='um-judge-') as directory:
+                          data=pathlib.Path(directory);arena=data/category
+                          (arena/'evidence').mkdir(parents=True)
+                          (data/'categories.json').write_bytes((base/'categories.json').read_bytes())
+                          (arena/'products.json').write_text(json.dumps(selected))
+                          (arena/'stories.json').write_text(json.dumps(chunk))
+                          (arena/'evidence'/f'{product}.json').write_bytes(evidence.read_bytes())
+                          env=os.environ.copy();env['UM_DATA_DIR']=str(data)
+                          return subprocess.run(['node','--import','tsx','rankings-engine/cli.ts','judge','--category',category,'--product',product],env=env).returncode
+                  with concurrent.futures.ThreadPoolExecutor(4) as pool:
+                      codes=list(pool.map(judge_chunk,chunks))
+                  if any(codes):
+                      code=next(c for c in codes if c)
+                  else:
+                      code=subprocess.run(['node','--import','tsx','rankings-engine/cli.ts','judge','--category',category,'--product',product]).returncode
+              else:
+                  code=subprocess.run(['node','--import','tsx','rankings-engine/cli.ts',stage,'--category',category,'--product',product]).returncode
+              results.append({'stage':stage,'exit_code':code})
               pathlib.Path('engine-artifacts/stages.json').write_text(json.dumps(results,indent=2))
-              if result.returncode:
-                  sys.exit(result.returncode)
+              if code:
+                  sys.exit(code)
           PYRUN
       - name: Preserve evaluation outputs
         if: always()
