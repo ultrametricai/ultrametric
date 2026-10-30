@@ -1,20 +1,21 @@
 {
-  "hash": "2315b29d5d5f139e0e34e2afbf5b48b0cb8c0e9746597089a1dc9c4c0cf6a3af",
+  "hash": "9abf0c3d6717ff2955a07fa6786dff7379832aa0479789b716c4b10a7d9de241",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "productId": "terraform",
+    "storyId": "drift-detection",
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Terraform's state maps real-world resources to the configuration, and `terraform plan` previews the changes needed to reconcile them. The `-refresh-only` plan mode updates state from remote objects, and `terraform show -json` exposes the plan and current state in machine-readable form, so differences between declared and actual infrastructure can be surfaced. missing for 10: evidence explicitly framing plan or refresh-only as drift detection, continuous or scheduled drift detection, independent or hands-on corroboration of drift reporting.",
+    "rationale": "Terraform's own CLI provides the core mechanism. State maps real-world resources to configuration (terraform-docs-20), `terraform plan` previews the changes needed to reconcile them (terraform-docs-15), and `-refresh-only` plans updates to state from the actual infrastructure (terraform-docs-45). Plan output can also be emitted as JSON for automated checks (terraform-docs-48, terraform-docs-22). However, the evidence never explicitly frames any of this as drift detection, and no dedicated or continuous drift-detection feature is documented. missing for 10: explicit drift-detection documentation, scheduled/continuous drift monitoring or alerting, hands-on corroboration of drift-detection use.",
     "evidenceIds": [
       "terraform-docs-20",
       "terraform-docs-15",
       "terraform-docs-45",
-      "terraform-docs-47",
+      "terraform-docs-62",
       "terraform-docs-48",
-      "terraform-docs-43"
-    ],
-    "productId": "terraform",
-    "storyId": "drift-detection"
+      "terraform-docs-22",
+      "terraform-comm-11-refresh-5c4b6ca22dd15ce1"
+    ]
   }
 }

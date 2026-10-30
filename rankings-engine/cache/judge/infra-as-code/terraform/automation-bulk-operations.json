@@ -1,23 +1,23 @@
 {
-  "hash": "aa49cf01a69415eb90c890aa3c0570af5dbfc0b9a5b61fdcad4465b423e154f3",
+  "hash": "a3e7ffafe1f093583e217f191a113cbc65fd8676b2fec97e82e495b2d9db7880",
   "keyVersion": "v2",
   "verdict": {
+    "productId": "terraform",
+    "storyId": "automation-bulk-operations",
     "verdict": "full",
-    "quality": 7,
-    "confidence": "medium",
-    "rationale": "Terraform's core workflow is bulk operations. A single plan/apply covers every defined resource across providers: it builds a resource graph and parallelizes creation and modification of non-dependent resources, and `-destroy` plans removal of all remote objects. Users also report adding infrastructure in bulk via for_each and dynamic blocks, and say declarative moves and imports are now simple and safe. missing for 10: first-party docs on for_each/count-style bulk instancing, a smooth path for bulk state refactoring (users describe merging hundreds or thousands of resources via state mv as a big job), and evidence that performance holds up at large scale (users report having to split stacks).",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "Terraform's core model applies changes to many resources at once. It builds a dependency graph and parallelizes creation and modification of non-dependent resources (terraform-gh-1). A single `apply` can run unattended with `-auto-approve`, and `-destroy` plans removal of all remote objects (terraform-docs-17, terraform-docs-45). The `import` block can bring in multiple resources at a time (terraform-docs-64), and `for_each` drives multi-item configuration (terraform-comm-5). Missing for 10: first-party docs on `for_each`/`count` bulk patterns in the pack, and evidence that large-scale state refactors are safe (users describe bulk `state mv` merges across hundreds of resources as risky, terraform-comm-14).",
     "evidenceIds": [
       "terraform-gh-1",
-      "terraform-docs-44",
       "terraform-docs-45",
-      "terraform-docs-42",
+      "terraform-docs-64",
+      "terraform-docs-17",
+      "terraform-docs-44",
       "terraform-docs-51",
-      "terraform-comm-12",
-      "terraform-comm-18",
-      "terraform-comm-5",
-      "terraform-comm-2"
-    ],
-    "productId": "terraform",
-    "storyId": "automation-bulk-operations"
+      "terraform-comm-5-refresh-2af7c52a54f48b6f",
+      "terraform-comm-18-refresh-edb7aa9fb9a08066",
+      "terraform-comm-14-refresh-c8b67f26f4522dc6"
+    ]
   }
 }
