@@ -50,7 +50,7 @@ import {
   YC_CALIBRATION,
   YC_DEAL,
   YEAR_CHAIN_IDS,
-  YEAR_SWEEP_GATES,
+  YEAR_SWEEP_GATES, YEAR_SWEEP_EXCLUSIONS,
   yearRows,
   yearStats,
   type RouteMix,
@@ -893,12 +893,19 @@ describe('cadence sweep + event-driven examples (richer rhythm, 2026-09-25)', ()
     }
   })
 
-  it('sweeps EVERY calendar-recurring corpus process except the VC-fund back office', () => {
+  it('accounts for calendar-recurring tasks through simulation gates or explicit scope exclusions', () => {
     const covered = new Set(candidates.map((c) => c.taskId))
+    for (const [id, why] of Object.entries(YEAR_SWEEP_EXCLUSIONS)) {
+      const task = corpusById.get(id)
+      expect(task, id).toBeDefined()
+      expect(RUNS_PER_YEAR[task!.cadence], id).not.toBeNull()
+      expect(covered.has(id), id).toBe(false)
+      expect(why.length, id).toBeGreaterThan(20)
+    }
     for (const t of corpusById.values()) {
       if (RUNS_PER_YEAR[t.cadence] === null) continue
-      if (t.id === 'vc_003') {
-        // launch-a-vc-fund playbook — not something a startup's journey activates.
+      if (YEAR_SWEEP_EXCLUSIONS[t.id]) {
+        expect(YEAR_SWEEP_EXCLUSIONS[t.id].length).toBeGreaterThan(0)
         expect(covered.has(t.id)).toBe(false)
         continue
       }

@@ -150,6 +150,8 @@ human · ~30 min · hard to undo
 
 ### United States
 
+Three things protect the company: the equity math, a properly authorized decision, and a deadline. Calculate vested versus unvested equity at the departure date. Have the body your governing documents name accept the resignation and authorize what happens to the unvested equity under the founder agreement. Act inside the window that agreement sets; windows lapse, so read yours. Confirm the signed IP assignment is on file. Revoke access the same day. Update the ownership records. Tell the team once, clearly. Separation agreements and releases are work for employment counsel. Once executed, the equity settlement and its authorization cannot be undone. Educational guidance, not legal advice.
+
 - Step 3: Board consent: accept the resignation, remove officer roles, authorize the unvested-share repurchase A Delaware board acts without a meeting only by unanimous written consent (law rule [us-de.board-action-by-written-consent](../../open-law/US-DE/us-de-board-action-by-written-consent.json)).
 - Step 4: Exercise the unvested-share repurchase inside the stock-agreement window, often 90 days from termination
 - Step 5: The signed PIIA (proprietary information and inventions assignment) is the instrument to confirm

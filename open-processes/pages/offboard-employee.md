@@ -31,7 +31,7 @@ Required artifacts:
 
 - Payroll account — from [Set up payroll](set-up-payroll.md)
 - Benefits plan — from [Set up benefits](set-up-benefits.md)
-- Option grants — from [Issue stock options](issue-stock-options.md)
+- Option grants — from [Issue employee equity awards](issue-stock-options.md)
 - Signed offer / employment agreement — from [Hire first employee](hire-first-employee.md)
 - Company email workspace — from [Set up company email & docs](set-up-company-email-docs.md)
 - Team chat workspace — from [Set up team chat](set-up-team-chat.md)
@@ -244,6 +244,13 @@ Compare the asset register with the employee’s actual equipment, security keys
 <a id="by-country"></a>
 
 ## Country details
+
+<a id="geo-us"></a>
+
+### United States
+
+Process an employee departure including final paycheck, benefits termination, account deactivation, and equity handling.
+
 
 <a id="geo-in"></a>
 

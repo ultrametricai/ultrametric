@@ -146,6 +146,13 @@ List bank and card accounts by accounting entity and agree the import start date
 
 ## Country details
 
+<a id="geo-us"></a>
+
+### United States
+
+Choose accounting software and configure the chart of accounts so the books can close every month.
+
+
 <a id="geo-in"></a>
 
 ### India

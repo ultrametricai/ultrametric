@@ -9,7 +9,7 @@
 
 **Trigger:** A key employee resigns: notice is in hand and the transition starts now.
 
-This is not the co-founder split; that is its own situation. This is the senior engineer or first AE handing in notice. Decide on the merits: counter, or accept a clean exit. Check what the contract and handbook say about notice, and what statute or collective agreement sets as the minimum; your real leverage is goodwill and a good transition plan. Run the equity math. Put the post-termination exercise window in writing to the departing employee; a missed window is the classic post-exit dispute, and the tax clock can be statutory (US plans commonly give 90 days, and ISOs lose their tax treatment if exercised more than 3 months after employment ends). Then knowledge transfer to named successors, same-day offboarding on the last day with final wages on the clock your jurisdiction sets (in California, due at quitting after 72 hours' notice, or within 72 hours of a no-notice quit; law rule [us-ca.final-wages-timing](../../open-law/US-CA/us-ca-final-wages-timing.json), Labor Code §§ 202, 203), an exit interview that tells you why people actually leave, and the cap-table and rotation updates. Educational guidance, not legal or tax advice.
+Review the resignation, applicable notice requirements and equity arrangements; agree a transition plan, arrange final pay and revoke access at the appropriate time. Record the exit and any continuing obligations under the applicable agreements and local rules.
 
 | Field | Value |
 | --- | --- |
@@ -144,6 +144,8 @@ agent-runnable · ~20 min
 <a id="geo-us"></a>
 
 ### United States
+
+This is not the co-founder split; that is its own situation. This is the senior engineer or first AE handing in notice. Decide on the merits: counter, or accept a clean exit. Check what the contract and handbook say about notice, and what statute or collective agreement sets as the minimum; your real leverage is goodwill and a good transition plan. Run the equity math. Put the post-termination exercise window in writing to the departing employee; a missed window is the classic post-exit dispute, and the tax clock can be statutory (US plans commonly give 90 days, and ISOs lose their tax treatment if exercised more than 3 months after employment ends). Then knowledge transfer to named successors, same-day offboarding on the last day with final wages on the clock your jurisdiction sets (in California, due at quitting after 72 hours' notice, or within 72 hours of a no-notice quit; law rule [us-ca.final-wages-timing](../../open-law/US-CA/us-ca-final-wages-timing.json), Labor Code §§ 202, 203), an exit interview that tells you why people actually leave, and the cap-table and rotation updates. Educational guidance, not legal or tax advice.
 
 - Step 2: At-will is the baseline, so goodwill and the transition plan are the real levers
 - Step 4: The plan's post-termination window plus the ISO 3-month rule set the deadline Plans commonly give 90 days, and ISOs lose their tax treatment if exercised more than 3 months after employment ends. ([IRS Topic 427 (stock options)](https://www.irs.gov/taxtopics/tc427))

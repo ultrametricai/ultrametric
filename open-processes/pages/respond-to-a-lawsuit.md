@@ -9,7 +9,7 @@
 
 **Trigger:** You've been served: a process server hands you a summons and complaint naming the company.
 
-Being served starts a real deadline, and the served document or the court's own rules state yours. In US federal court the answer is due 21 days after service (FRCP 12(a)(1)(A)(i), law rule [us-fed.frcp-answer-deadline](../../open-law/US-FED/us-fed-frcp-answer-deadline.json)); state and non-US courts set their own clocks. In the first week: record how you were served, calendar the deadline, issue a litigation hold (destroying evidence after that is sanctionable), notify any insurer that might owe you a defense, and engage litigation counsel. The response itself, answer, motion, or negotiate, is your lawyer's craft, filed under the court's signature rules. Educational guidance, not legal advice. The deadline math has exceptions (waived service, a government party); verify with counsel against the rule.
+Record service and the response deadline, preserve relevant evidence, notify applicable insurers and engage litigation counsel. Prepare and authorize the response required by the court or tribunal and retain the filing and service records.
 
 | Field | Value |
 | --- | --- |
@@ -148,6 +148,8 @@ human · ~14 d · async wait
 <a id="geo-us"></a>
 
 ### United States
+
+Being served starts a real deadline, and the served document or the court's own rules state yours. In US federal court the answer is due 21 days after service (FRCP 12(a)(1)(A)(i), law rule [us-fed.frcp-answer-deadline](../../open-law/US-FED/us-fed-frcp-answer-deadline.json)); state and non-US courts set their own clocks. In the first week: record how you were served, calendar the deadline, issue a litigation hold (destroying evidence after that is sanctionable), notify any insurer that might owe you a defense, and engage litigation counsel. The response itself, answer, motion, or negotiate, is your lawyer's craft, filed under the court's signature rules. Educational guidance, not legal advice. The deadline math has exceptions (waived service, a government party); verify with counsel against the rule.
 
 - Step 2: 21 days after service in federal court (FRCP 12(a)(1)(A)(i), law rule us-fed.frcp-answer-deadline); state courts set their own, and the summons states yours ([Federal Rules of Civil Procedure](https://www.uscourts.gov/rules-policies/current-rules-practice-procedure/federal-rules-civil-procedure))
 - Step 8: Every pleading is signed under FRCP 11; counsel files the answer or motion on the court's docket ([Federal Rules of Civil Procedure](https://www.uscourts.gov/rules-policies/current-rules-practice-procedure/federal-rules-civil-procedure))

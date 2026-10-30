@@ -26,7 +26,7 @@ Run the linked processes in the recorded chain order. Each process defines its o
 | 3 | [Set up benefits](set-up-benefits.md) | Payroll account | Benefits plan |
 | 4 | [Write the employee handbook](write-the-employee-handbook.md) | Team wiki; Team chat workspace | Employee handbook |
 | 5 | [Run performance reviews](run-performance-reviews.md) | Signed offer / employment agreement | Not recorded |
-| 6 | [Issue stock options](issue-stock-options.md) | 409A valuation report; Cap table record | Option grants |
+| 6 | [Issue employee equity awards](issue-stock-options.md) | 409A valuation report; Cap table record | Option grants |
 
 ---
 

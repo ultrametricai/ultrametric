@@ -159,6 +159,13 @@ Match receipts to the invoice by customer, reference, amount and currency, accou
 
 ## Country details
 
+<a id="geo-us"></a>
+
+### United States
+
+Create and send an invoice to a customer for services rendered. Stripe is the canonical route; any payments provider with invoicing works.
+
+
 <a id="geo-in"></a>
 
 ### India
