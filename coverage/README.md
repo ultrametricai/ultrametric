@@ -81,3 +81,5 @@ not domain coverage, and recorded review dates do not establish expert approval 
 liveness. Required inputs must resolve or generation fails rather than emitting a partial
 report. Checks: `node --test scripts/content-audit.test.mjs`; no model, remote probe, or
 external effect runs during generation.
+
+Country launch entry points and their explicit remaining scope are recorded in [startup-country-expansion.json](startup-country-expansion.json) and the generated [startup coverage index](STARTUP-TASKS.md#additional-country-launch-guidance). These are draft scoping summaries; country-specific law-layer coverage remains separate.
