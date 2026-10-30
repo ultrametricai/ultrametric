@@ -110,6 +110,10 @@ class DispatcherTests(unittest.TestCase):
                                        {'id':2,'name':'ci','app':{'id':15368},'conclusion':'success'}])
         self.assertEqual(latest[0]['conclusion'],'success')
 
+    def test_a_superseded_workflow_suite_cannot_satisfy_a_new_recheck(self):
+        old={'id':1,'name':'validation','app':{'id':15368},'conclusion':'success','check_suite':{'id':10}}
+        self.assertEqual(MODULE['latest_checks']([old],ci_suite=20),[])
+
     def test_cancelled_ci_restarts_the_same_head_without_a_repair_commit(self):
         def api(endpoint,data=None):
             return {'workflow_runs':[{'id':1,'event':'workflow_dispatch','status':'completed','conclusion':'cancelled'}]}

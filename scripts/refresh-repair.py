@@ -134,9 +134,12 @@ def load_resume_report(head, trusted):
     return report
 
 
-def latest_checks(checks):
+def latest_checks(checks, ci_suite=None):
     latest = {}
     for check in checks:
+        if (ci_suite is not None and check['name'] in ['ci','validation'] and check['app']['id'] == 15368
+                and check.get('check_suite',{}).get('id') != ci_suite):
+            continue
         key = (check['name'],check['app']['id'])
         if key not in latest or check.get('id',0) >= latest[key].get('id',0):
             latest[key] = check
@@ -162,7 +165,7 @@ def recheck(report, branch, new_sha):
         pr = current()
         if pr['state'] != 'open' or pr['head']['sha'] != new_sha:
             return 'closed-or-changed'
-        checks = latest_checks(api(f'repos/{REPO}/commits/{new_sha}/check-runs?per_page=100')['check_runs'])
+        checks = latest_checks(api(f'repos/{REPO}/commits/{new_sha}/check-runs?per_page=100')['check_runs'],newest.get('check_suite_id'))
         if any(c['name'] in ['ci', 'validation'] and c['app']['id'] == 15368
                and c['status'] == 'completed' and c['conclusion'] == 'failure' for c in checks):
             return 'needs-repair'
