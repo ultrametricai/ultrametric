@@ -9,7 +9,7 @@
 
 **Trigger:** The decision is made: the plan no longer supports the team, and a reduction in force is how the company survives.
 
-A reduction in force is a legal process wrapped around a painful decision, so do the paperwork in the right order. Write the business case and the selection criteria before any names, and review the resulting list for adverse impact. Check the statutory notice floors early: under the federal WARN Act, an employer with 100 or more employees may not order a plant closing or mass layoff until 60 days after written notice (law rule [us-fed.warn-notice](../../open-law/US-FED/us-fed-warn-notice.json)), and several states run mini-WARN acts with lower thresholds. Plan final pay by state; in California final wages are due at the termination itself, with waiting-time penalties for lateness (law rule [us-ca.final-wages-timing](../../open-law/US-CA/us-ca-final-wages-timing.json)). For anyone 40 or older, a release of federal age claims only works inside the OWBPA windows: at least 21 days to consider (45 for a group program), a 7-day revocation period, and the group disclosures (law rule [us-fed.owbpa-release-windows](../../open-law/US-FED/us-fed-owbpa-release-windows.json)). Then run one humane day: managers briefed first, affected people told first and in person, the company the same day, each offboarding executed cleanly, and the survivors given the real math once. Educational guidance, not legal advice; employment counsel reviews the plan before anyone hears a word.
+Document the business case and selection criteria, review the proposed reduction with local employment advice and identify consultation, notice, final-pay and release requirements. Obtain approvals, communicate the plan and complete the affected employees’ exits and records.
 
 | Field | Value |
 | --- | --- |
@@ -137,6 +137,8 @@ human · ~45 min · hard to undo
 
 ### United States
 
+A reduction in force is a legal process wrapped around a painful decision, so do the paperwork in the right order. Write the business case and the selection criteria before any names, and review the resulting list for adverse impact. Check the statutory notice floors early: under the federal WARN Act, an employer with 100 or more employees may not order a plant closing or mass layoff until 60 days after written notice (law rule [us-fed.warn-notice](../../open-law/US-FED/us-fed-warn-notice.json)), and several states run mini-WARN acts with lower thresholds. Plan final pay by state; in California final wages are due at the termination itself, with waiting-time penalties for lateness (law rule [us-ca.final-wages-timing](../../open-law/US-CA/us-ca-final-wages-timing.json)). For anyone 40 or older, a release of federal age claims only works inside the OWBPA windows: at least 21 days to consider (45 for a group program), a 7-day revocation period, and the group disclosures (law rule [us-fed.owbpa-release-windows](../../open-law/US-FED/us-fed-owbpa-release-windows.json)). Then run one humane day: managers briefed first, affected people told first and in person, the company the same day, each offboarding executed cleanly, and the survivors given the real math once. Educational guidance, not legal advice; employment counsel reviews the plan before anyone hears a word.
+
 - Step 2: The federal WARN Act binds employers with 100 or more employees ordering a plant closing or mass layoff: 60 days' written notice to affected employees or their representatives, the state dislocated-worker unit, and the chief elected local official, with the statute's reduced-notice exceptions (law rule us-fed.warn-notice); state mini-WARN acts set lower floors ([29 U.S.C. § 2102](https://www.law.cornell.edu/uscode/text/29/2102))
 - Step 3: Final pay runs on each work state's clock: California requires final wages, including accrued vacation, at the termination when the employer discharges, with a waiting-time penalty of a day's wages per day late up to 30 days (law rule us-ca.final-wages-timing) ([California DIR: final pay FAQ](https://www.dir.ca.gov/dlse/faq_paydays.htm))
 - Step 4: A release of federal age-discrimination claims by anyone 40 or older is only knowing and voluntary inside the OWBPA conditions: at least 21 days to consider, 45 days when the waiver rides a group termination program, a 7-day revocation period before effectiveness, and the written group disclosures of the decisional unit, eligibility factors, and the ages and titles selected and not selected (law rule us-fed.owbpa-release-windows) ([29 U.S.C. § 626(f)](https://www.law.cornell.edu/uscode/text/29/626))
@@ -145,11 +147,15 @@ human · ~45 min · hard to undo
 
 ### Australia
 
+Dismissals run under the Fair Work Act: unfair-dismissal exposure begins after the minimum employment period (law rule [au.unfair-dismissal-minimum-period](../../open-law/AU/au-unfair-dismissal-minimum-period.json)), and genuine-redundancy requirements shape the selection and consultation
+
 - Step 2: Dismissals run under the Fair Work Act: unfair-dismissal exposure begins after the minimum employment period (law rule au.unfair-dismissal-minimum-period), and genuine-redundancy requirements shape the selection and consultation
 
 <a id="geo-kr"></a>
 
 ### South Korea
+
+Statutory severance is part of the cost of every separation: an employee with a year or more of service is owed roughly 30 days' average wages per year of service (law rule [kr.severance-pay](../../open-law/KR/kr-severance-pay.json)) Wages and all other amounts settle within 14 days of separation, and statutory severance is owed for a year or more of service (law rule [kr.severance-pay](../../open-law/KR/kr-severance-pay.json))
 
 - Step 2: Statutory severance is part of the cost of every separation: an employee with a year or more of service is owed roughly 30 days' average wages per year of service (law rule kr.severance-pay)
 - Step 3: Wages and all other amounts settle within 14 days of separation, and statutory severance is owed for a year or more of service (law rule kr.severance-pay)

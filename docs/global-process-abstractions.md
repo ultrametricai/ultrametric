@@ -19,3 +19,11 @@ The URSSAF attestation page reset the direct connection and failed web retrieval
 The Indian ministry homepage failed certificate verification, and the older Australian Fair Work Commission harassment URL returned 403. Alternate primary-source pages also timed out or returned 429. New resolutions for those complaint-handling entries retain the previously committed country guidance, disclose the access limit and omit the unavailable action link. Original process-level source notes remain intact. The Fair Work Commission's indexed current route is [Sexual harassment](https://www.fwc.gov.au/workplace-disputes/sexual-harassment); the Indian primary text is the [POSH Act](https://www.indiacode.nic.in/bitstream/123456789/2104/1/A2013-14.pdf). These inaccessible alternatives are references, not verified filing routes.
 
 The new resolutions reuse authored country notes and option summaries. This editorial change supplies no independent legal sign-off and changes no legal maturity designation. The existing human approvals for filings, signatures, payments and equity actions continue to apply.
+
+## Country URL rollout
+
+Global processes with committed country notes or step resolutions have authored Global and local entry points. A local title uses the existing terminology in its country guidance. The selector, search entries, canonical URL and page description use that entry together; old aliases continue to resolve. A country represented only by step guidance receives that guidance as its local summary, without implying a complete local workflow.
+
+The country entry can retain its own summary. Shared summaries and step instructions describe the jurisdiction-neutral work; statutory US examples, authority checks and dated fees remain in the US entry or step resolution. Generated guides retain those summaries under the named country. Existing process identifiers, dependencies, source references and reference rankings remain intact.
+
+Processes scoped to US legislation or state filings keep their original scope. Globally applicable processes without authored country differences retain their existing Global view; this rollout does not manufacture country variants for them.

@@ -150,6 +150,13 @@ Send remediation evidence to the testing firm and arrange retesting of the affec
 
 ## Country details
 
+<a id="geo-us"></a>
+
+### United States
+
+The pen test customers and SOC 2 auditors expect every year: scope it, sign the rules-of-engagement authorization, hand the firm a test environment, then triage the findings into the tracker, fix the criticals, and collect the retest letter for your trust center.
+
+
 <a id="geo-in"></a>
 
 ### India

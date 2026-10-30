@@ -277,6 +277,8 @@ Prepare the proposed award from the offer, current equity plan and grant workflo
 
 ### United States
 
+Complete the full hiring process including offer letter, onboarding, payroll setup, and benefits enrollment.
+
 - Step 6: Employee completes I-9 and W-4 The employee completes and signs I-9 Section 1 by the first day of employment; the employer or authorized representative completes Section 2 within three business days after that first day, or on the first day if employment lasts fewer than three business days (law rule [us-fed.i9-verification-deadline](../../open-law/US-FED/us-fed-i9-verification-deadline.json)). Let the employee choose acceptable documents. Separately, request Form W-4 when work starts and use it for federal withholding on the first wage payment; payroll applies IRS default withholding if a valid W-4 is missing and checks applicable state forms. ([USCIS I-9 Central](https://www.uscis.gov/i-9-central))
 
 <a id="geo-in"></a>

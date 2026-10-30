@@ -120,6 +120,13 @@ File the approved minutes, approval or signature evidence and referenced exhibit
 
 ## Country details
 
+<a id="geo-us"></a>
+
+### United States
+
+Keep the corporate record clean: schedule the board cadence, prep the minutes template, record the meeting, route minutes for signature, and file them in the data room.
+
+
 <a id="geo-in"></a>
 
 ### India

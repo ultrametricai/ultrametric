@@ -141,6 +141,13 @@ Trace the opening cap table to the charter, issuance approvals, agreements, cons
 
 ## Country details
 
+<a id="geo-us"></a>
+
+### United States
+
+Track every investment on a real cap table from day one — even informal rounds.
+
+
 <a id="geo-in"></a>
 
 ### India

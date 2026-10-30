@@ -9,7 +9,7 @@
 
 **Trigger:** The trademark examiner issues an office action against your application: refusals or requirements with a response deadline.
 
-An office action is a letter from the trademark examiner, not a rejection of your company. It raises refusals (likelihood of confusion, descriptiveness) or requirements, and each needs an answer by the deadline the office sets. In the US that is three months from the issue date plus one paid three-month extension; Madrid Section 66(a) filings get six months and no extension (law rule [us-fed.trademark-office-action-response](../../open-law/US-FED/us-fed-trademark-office-action-response.json), USPTO guidance cited). Miss the deadline and the application abandons. Pull the cited marks from the register. Decide: argue, amend, or hire counsel. File the signed response through the office's channel. This is what happens when the filing from 'File trademark' comes back with questions. Educational guidance, not legal advice.
+Read each trademark examiner objection, verify the office’s response deadline and review the cited marks or requirements. Prepare the evidence and amendments with appropriate advice, authorize the response and retain the filing receipt.
 
 | Field | Value |
 | --- | --- |
@@ -135,6 +135,8 @@ human · ~30 d · async wait
 <a id="geo-us"></a>
 
 ### United States
+
+An office action is a letter from the trademark examiner, not a rejection of your company. It raises refusals (likelihood of confusion, descriptiveness) or requirements, and each needs an answer by the deadline the office sets. In the US that is three months from the issue date plus one paid three-month extension; Madrid Section 66(a) filings get six months and no extension (law rule [us-fed.trademark-office-action-response](../../open-law/US-FED/us-fed-trademark-office-action-response.json), USPTO guidance cited). Miss the deadline and the application abandons. Pull the cited marks from the register. Decide: argue, amend, or hire counsel. File the signed response through the office's channel. This is what happens when the filing from 'File trademark' comes back with questions. Educational guidance, not legal advice.
 
 - Step 2: 3 months from the issue date with one 3-month paid extension; Madrid §66(a) filings get 6 months and no extension (law rule us-fed.trademark-office-action-response) ([USPTO: responding to office actions](https://www.uspto.gov/trademarks/maintain/responding-office-actions))
 - Step 3: TSDR is the status lookup for the cited registrations and applications ([USPTO TSDR status lookup](https://tsdr.uspto.gov/))

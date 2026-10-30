@@ -9,7 +9,7 @@
 
 **Trigger:** A letter arrives asserting a patent against your product and demanding a license fee, often from a non-practicing entity (NPE).
 
-A patent demand letter is a business proposition dressed as a legal threat, and some are both. It is not a general cease-and-desist; that playbook is its own situation. Read what is actually asserted: the patent numbers, the accused features, and whether a claim chart maps claims to your product; if there is none, counsel's first ask is usually for one. Preserve the letter and the accused product's current behavior before anything changes. The economics are case math, stated plainly: a license can cost less than a month of defense, and a defense can cost less than a licensing campaign that repeats. Where patented products were not marked, damages ordinarily run only from when the infringer was notified (law rule [us-fed.patent-marking-damages-notice](../../open-law/US-FED/us-fed-patent-marking-damages-notice.json)), which is one reason the letter exists. Prior-art search is real work an agent can start the same day. Check your insurance and the defense-network memberships before pricing a fight alone. Then pick the path with patent counsel on the letter's clock. Educational guidance, not legal advice.
+Preserve the patent demand and relevant product evidence, identify the asserted patents and accused features, and have counsel assess scope, exposure and response options. Check available insurance or defense support and authorize the chosen response.
 
 | Field | Value |
 | --- | --- |
@@ -150,17 +150,23 @@ human · ~30 d · async wait
 
 ### United States
 
+A patent demand letter is a business proposition dressed as a legal threat, and some are both. It is not a general cease-and-desist; that playbook is its own situation. Read what is actually asserted: the patent numbers, the accused features, and whether a claim chart maps claims to your product; if there is none, counsel's first ask is usually for one. Preserve the letter and the accused product's current behavior before anything changes. The economics are case math, stated plainly: a license can cost less than a month of defense, and a defense can cost less than a licensing campaign that repeats. Where patented products were not marked, damages ordinarily run only from when the infringer was notified (law rule [us-fed.patent-marking-damages-notice](../../open-law/US-FED/us-fed-patent-marking-damages-notice.json)), which is one reason the letter exists. Prior-art search is real work an agent can start the same day. Check your insurance and the defense-network memberships before pricing a fight alone. Then pick the path with patent counsel on the letter's clock. Educational guidance, not legal advice.
+
 - Step 7: Validity can be challenged administratively: inter partes review at the PTAB is the standard route ([USPTO: Patent Trial and Appeal Board](https://www.uspto.gov/patents/ptab))
 
 <a id="geo-uk"></a>
 
 ### United Kingdom
 
+The Intellectual Property Enterprise Court hears smaller patent cases
+
 - Step 7: The Intellectual Property Enterprise Court hears smaller patent cases ([Intellectual Property Enterprise Court](https://www.gov.uk/courts-tribunals/intellectual-property-enterprise-court))
 
 <a id="geo-de"></a>
 
 ### Germany
+
+European patents are opposed at the EPO within nine months of grant, or challenged in national courts
 
 - Step 7: European patents are opposed at the EPO within nine months of grant, or challenged in national courts ([EPO: oppositions](https://www.epo.org/en/applying/european/oppositions))
 

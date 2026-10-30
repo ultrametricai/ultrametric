@@ -125,6 +125,13 @@ File executed agreements, schedules and signature evidence with the contributorâ
 
 ## Country details
 
+<a id="geo-us"></a>
+
+### United States
+
+Ensure all founders and employees have signed IP assignment agreements (PIIA).
+
+
 <a id="geo-in"></a>
 
 ### India

@@ -230,7 +230,7 @@ manual form/portal · ~20 min · async wait · irreversible
 
 Authorize the reviewed final tax filings and check acknowledgements and payments. Reconcile outstanding obligations before requesting closure of the entity's tax accounts under current instructions. Keep the tax identifier in historical records as the entity’s permanent identifier. Assign a reachable person to later notices, and track actual account-closure status separately from the company’s dissolution filing.
 
-- Verify: The final returns are marked final and the IRS closing-a-business checklist is completed for the EIN account. ([www.irs.gov](https://www.irs.gov/businesses/small-businesses-self-employed/closing-a-business))
+- Verify: Retain the applicable authority’s confirmation and reconcile it with the approved submission and company records.
 - Canonical vendor: IRS
 - Do it yourself: [IRS closing a business](https://www.irs.gov/businesses/small-businesses-self-employed/closing-a-business)
 
@@ -279,10 +279,13 @@ Preserve corporate decisions, ownership, contracts, employment, tax and financia
 
 ### United States
 
+Close the company through its jurisdiction’s approved dissolution or liquidation route, settle obligations, complete final tax filings, withdraw remaining registrations and retain the records.
+
 - Step 5: Delaware dissolution forms Wind down and dissolve the corporation: board and stockholder dissolution consents, the final payroll and contractor terminations, vendor cancellations, final tax returns with IRS account closure, the Delaware certificate of dissolution with franchise-tax true-up, state withdrawals, bank closure with final distributions, and records retention. Select the appropriate Delaware dissolution certificate and confirm the corporate approvals supporting it. Reconcile annual-report and franchise-tax requirements for the corporation ending its existence. The authorized officer approves the certificate, timing and payments before submission. Keep the accepted filing and continue the separate work on claims, taxes, distributions and records. ([Delaware dissolution forms](https://corp.delaware.gov/corpforms/))
 - Step 7: The CPA prepares the final federal and state returns, each marked final ([IRS — closing a business](https://www.irs.gov/businesses/small-businesses-self-employed/closing-a-business))
 - Step 8: Sign the final return jurats and Form 966 Review final returns and any required Form 966 against the closure records, then obtain the proper human signature or electronic authorization. Check Form 966’s separate deadline from adoption of the dissolution or liquidation plan; it may precede final-return preparation. Keep required resolution attachments with the filing and resolve factual discrepancies before submission.
 - Step 9: Close the IRS business account once federal obligations reconcile; the EIN stays on record as the entity's permanent identifier ([IRS — closing a business](https://www.irs.gov/businesses/small-businesses-self-employed/closing-a-business))
+  - Verify: The final returns are marked final and the IRS closing-a-business checklist is completed for the EIN account. ([www.irs.gov](https://www.irs.gov/businesses/small-businesses-self-employed/closing-a-business))
 
 <a id="geo-in"></a>
 

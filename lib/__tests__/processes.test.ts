@@ -1,6 +1,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { describe, expect, it } from 'vitest'
+import { readSharedCatalog } from '../shared-processes/reader'
 import { isPopulated, loadCategories, loadCategory } from '@/lib/data'
 import {
   buildSimSteps, CADENCE_META, CADENCE_ORDER, cadenceRank, chainTasks, computeCeiling,
@@ -26,9 +27,9 @@ const node = (over: Partial<DagNode>): DagNode => ({
 })
 
 describe('corpus', () => {
-  it('loads all 160 records (127 processes + 33 situations) with unique, non-empty slugs', () => {
+  it('loads the expanded operational catalog (197 processes + 33 situations) with unique, non-empty slugs', () => {
     const tasks = loadProcesses(DATA_DIR)
-    expect(tasks.length).toBe(160)
+    expect(tasks.length).toBe(230)
     const slugs = tasks.map((t) => processSlug(t.title))
     expect(new Set(slugs).size).toBe(tasks.length)
     for (const s of slugs) expect(s).toMatch(/^[a-z0-9]+(-[a-z0-9]+)*$/)
@@ -462,7 +463,9 @@ describe('corpus', () => {
       ['sit_015', 'EU', 'eu.gdpr-dsar-response-deadline'],
       ['sit_021', 'US-FED', 'us-fed.osha-severe-injury-reporting'],
     ] as const) {
-      expect(byId(sid).description, `${sid} cites its law rule`).toContain(ruleId)
+      const record = readSharedCatalog().find(record => record.id === sid)
+      const summaries = [byId(sid).description, ...(record?.countryViews ?? []).map(view => view.summary ?? '')].join('\n')
+      expect(summaries, `${sid} cites its law rule in the applicable country summary`).toContain(ruleId)
       const file = path.join(__dirname, '..', '..', 'open-law', dir, `${ruleId.replace(/\./g, '-')}.json`)
       expect(fs.existsSync(file), `${ruleId} card committed at ${file}`).toBe(true)
       expect(JSON.parse(fs.readFileSync(file, 'utf8')).id).toBe(ruleId)

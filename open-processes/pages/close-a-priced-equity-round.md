@@ -249,6 +249,8 @@ Update the equity system for the completed financing, converted instruments, iss
 
 ### United States
 
+Close a priced round (seed or Series A): term sheet, diligence, definitive documents, board and stockholder approvals, signatures, wires, and the cap table made true.
+
 - Step 1: Negotiate the term sheet Model the proposed term sheet’s effects on valuation, option-pool dilution, liquidation preferences, governance and participation rights against the current capitalization. Compare those outcomes with the fundraising goals and existing investor rights. Identify binding provisions with counsel and develop the founder’s negotiation positions, including terms that need board input.
 - Step 5: Counsel drafts the definitive documents Give counsel the signed term sheet, existing corporate and equity documents, diligence findings and investor allocations. Review the definitive documents together for consistent economics, governance, disclosures and closing conditions. Compare revisions with the negotiated deal and resolve founder decisions as they arise. The resulting package should identify any approvals or conditions still needed before it can be executed and closed.
 - Step 10: SEC EDGAR online forms For an offering requiring Form D, reconcile the notice to the executed transaction and first-sale date. Check the company’s EDGAR access and the filing individual’s assigned role. The authorized filer submits the reviewed notice and verifies its status, preserving the filed version and receipt. Identify amendments and state notices separately with counsel so the remaining offering obligations are visible. ([SEC EDGAR online forms](https://www.onlineforms.edgarfiling.sec.gov/))
