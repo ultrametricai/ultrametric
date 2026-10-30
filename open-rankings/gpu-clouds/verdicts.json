@@ -2,22 +2,22 @@
   {
     "productId": "coreweave",
     "storyId": "agent-provisions-gpu",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "CoreWeave documents a CKS API to create, list, update, and delete clusters, a Terraform provider for CKS infrastructure, API access tokens plus generated kubeconfigs for running workloads via kubectl/Slurm, and a Cluster Autoscaler that scales GPU Node Pools. Grafana metrics and alerts plus a Mission Control MCP server cover monitoring and supported changes. Missing for 10: explicit API/CLI provisioning of GPU Node Pools (only implied via autoscaling), programmatic capacity discovery and quota requests (Capacity Finder and quota increases are Cloud Console flows), a documented programmatic monitoring API, and independent or hands-on corroboration of an end-to-end agent-driven lifecycle.",
+    "rationale": "The concern is valid, and this stays partial. Provisioning and teardown are documented: the CKS API creates, lists, updates and deletes clusters, the Terraform provider manages CKS infrastructure, and the Cluster Autoscaler scales GPU Node Pools. Workloads can then run through kubectl via generated kubeconfigs or through SUNK. However, monitoring is only described as Grafana dashboards, and the MCP server's \"supported changes\" are unspecified, while Capacity Finder and quota viewing and increases are documented only in the Cloud Console, so a human is still in the loop. Missing for 10: documented programmatic GPU and Node Pool monitoring via API, CLI or MCP; API or CLI capacity discovery and quota handling without the Console; explicit MCP provisioning or teardown capability; hands-on corroboration of an unattended end-to-end flow.",
     "evidenceIds": [
       "coreweave-docs-5",
       "coreweave-docs-6",
-      "coreweave-docs-1",
+      "coreweave-docs-3",
       "coreweave-docs-7",
       "coreweave-docs-17",
-      "coreweave-docs-3",
       "coreweave-docs-11",
       "coreweave-docs-61",
       "coreweave-docs-62",
       "coreweave-docs-23",
-      "coreweave-docs-12"
+      "coreweave-docs-12",
+      "coreweave-docs-1"
     ]
   },
   {
@@ -47,11 +47,18 @@
   {
     "productId": "coreweave",
     "storyId": "agentic-autonomous-automation",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "The axis applies, since a cloud platform could plausibly offer user-configured background or agentic automations, but the pack documents no such feature. The Mission Control Agent and MCP server are described only as tools for investigating the environment and making supported changes, with nothing on autonomous, scheduled, or background runs. The Cluster Autoscaler, bucket lifecycle policies, and Slurm batch jobs are adjacent infrastructure behaviors or building blocks, not user-defined automations, so they earn no credit.",
-    "evidenceIds": []
+    "rationale": "CoreWeave offers infrastructure-level automation that runs unattended. The Kubernetes Cluster Autoscaler scales Node Pools on its own as workload demand changes, bucket lifecycle policies expire objects automatically, and Slurm via SUNK runs batch jobs in the background. Terraform and the APIs allow programmatic orchestration, but you must assemble the automations yourself from Kubernetes and Slurm primitives rather than through a first-class automation feature. Missing for 10: a native scheduled-task or trigger system, agent-driven automation workflows, documentation on setting up autonomous background automations end to end, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "coreweave-docs-3",
+      "coreweave-docs-40",
+      "coreweave-docs-11",
+      "coreweave-docs-36",
+      "coreweave-docs-6",
+      "coreweave-docs-5"
+    ]
   },
   {
     "productId": "coreweave",
@@ -88,10 +95,10 @@
   {
     "productId": "coreweave",
     "storyId": "agentic-mcp-client",
-    "verdict": "none",
+    "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "CoreWeave ships its own Mission Control Agent, so letting users plug external MCP servers into it is a fair question for this product. The evidence only shows CoreWeave offering its own Mission Control MCP server, which is the server role. Nothing documents connecting third-party MCP servers so the agent or platform can use their tools.",
+    "rationale": "CoreWeave is GPU cloud infrastructure: managed Kubernetes, Slurm, object storage, and inference deployment APIs. It is not an agent or assistant that consumes tools, so acting as an MCP client is outside its product role. Nothing in the evidence shows it ships an MCP-client or tool-calling capability that would make this axis apply.",
     "evidenceIds": []
   },
   {
@@ -188,19 +195,26 @@
   {
     "productId": "coreweave",
     "storyId": "api-interactive-docs",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence shows CoreWeave publishes API reference documentation for the CKS and Inference APIs, along with generated Connect/gRPC/Protobuf clients and an llms.txt index. Nothing in the pack mentions an interactive explorer, try-it console, or runnable examples in the reference. A static reference and SDK clients are adjacent features, not the interactive capability the story asks for.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "CoreWeave documents API references for CKS cluster CRUD and the Inference API. These cover multiple transports and generated clients in Go, Python, TypeScript and other languages, plus an llms.txt index, so the reference itself exists and is explorable. Nothing in the evidence shows it is interactive or offers runnable examples. Missing for 10: an interactive try-it console or API explorer, runnable or copy-paste example requests in the reference, and hands-on corroboration of the reference experience.",
+    "evidenceIds": [
+      "coreweave-docs-5",
+      "coreweave-docs-19",
+      "coreweave-docs-9",
+      "coreweave-docs-21",
+      "coreweave-docs-25",
+      "coreweave-probe-1"
+    ]
   },
   {
     "productId": "coreweave",
     "storyId": "api-machine-spec",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "low",
-    "rationale": "The Inference API documents generated clients for the Connect, gRPC and Protobuf ecosystems across many languages, which implies a published Protobuf schema, a machine-readable spec equivalent. However, no evidence shows the spec file itself can be downloaded, and the CKS API reference names no OpenAPI or equivalent artifact. missing for 10: an explicitly downloadable OpenAPI or Protobuf spec file, spec coverage for the CKS and other APIs beyond Inference, and independent or hands-on corroboration.",
+    "rationale": "The Inference API docs say generated clients are available for the Connect, gRPC, and Protobuf ecosystems across many languages. That implies a machine-readable Protobuf schema exists, and a CKS API reference page is also documented. However, no evidence shows a downloadable OpenAPI or Protobuf spec file. Missing for 10: an explicit downloadable spec artifact (OpenAPI/proto files or registry link), spec coverage beyond the Inference API (e.g., CKS, storage, billing), and independent or hands-on confirmation.",
     "evidenceIds": [
       "coreweave-docs-9",
       "coreweave-docs-21",
@@ -211,11 +225,17 @@
   {
     "productId": "coreweave",
     "storyId": "api-sandbox",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence shows CoreWeave can create multiple clusters via Console, Terraform, or API, and that each CKS cluster runs in its own private VPC. These are infrastructure primitives a user could use to build an isolated test environment, not a documented sandbox or test-mode capability. No evidence describes a dedicated sandbox, staging environment, or mechanism that keeps testing separate from production data.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "CoreWeave has no dedicated sandbox or test-mode environment. Users can still build their own isolated test setups: the API and Terraform create and delete separate CKS clusters on demand, each cluster runs in its own private VPC, and group-based bucket policies can restrict access to production data. That makes isolation a do-it-yourself workaround rather than a first-class sandbox. Missing for 10: a documented sandbox/staging environment feature, guidance on keeping test workloads away from production data, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "coreweave-docs-5",
+      "coreweave-docs-6",
+      "coreweave-docs-32",
+      "coreweave-docs-37",
+      "coreweave-docs-20"
+    ]
   },
   {
     "productId": "coreweave",
@@ -229,11 +249,16 @@
   {
     "productId": "coreweave",
     "storyId": "auto-shutdown-spend-guards",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence pack documents no auto-shutdown timers, idle-instance termination, budget caps, or spend limits for CoreWeave compute. The nearest items are adjacent controls that do not cap spend or stop forgotten instances: capacity quotas on Node Pools, the Cluster Autoscaler scaling on workload demand, billing usage insights and FOCUS export, and generic Grafana alerts.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The evidence shows no auto-shutdown timer and no spend limit. It shows only adjacent controls: the Cluster Autoscaler scales Node Pools with workload demand, which can trim idle capacity. Node Pool quotas cap capacity rather than dollars, and billing insights, the FOCUS API and Grafana cost dashboards give visibility but do not enforce anything. Missing for 10: explicit idle or auto-shutdown timers, budget or spend caps with enforcement, budget alerts, and hands-on corroboration that autoscaler scale-down protects against forgotten resources.",
+    "evidenceIds": [
+      "coreweave-docs-3",
+      "coreweave-docs-12",
+      "coreweave-docs-13",
+      "coreweave-docs-34"
+    ]
   },
   {
     "productId": "coreweave",
@@ -270,20 +295,29 @@
   {
     "productId": "coreweave",
     "storyId": "automation-scheduled-jobs",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence shows CoreWeave can run batch training jobs through Slurm on Kubernetes (SUNK) and managed Kubernetes clusters (CKS). Nothing in the pack documents a first-party way to schedule jobs or workflows on a recurring basis, such as cron-style triggers or a workflow scheduler. Running batch jobs, autoscaling, and object-storage lifecycle policies are adjacent features and earn no credit toward recurring scheduling.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "CoreWeave documents running batch jobs through Slurm inside Kubernetes (SUNK) on managed CKS clusters, which gives a job-scheduling substrate. However, nothing in the evidence describes recurring or time-based scheduling, such as cron-style triggers or workflow orchestration. Missing for 10: documented recurring/cron job scheduling, workflow orchestration features, and hands-on or independent corroboration.",
+    "evidenceIds": [
+      "coreweave-docs-11",
+      "coreweave-docs-36",
+      "coreweave-docs-27"
+    ]
   },
   {
     "productId": "coreweave",
     "storyId": "automation-versioned-workflows",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Versioning, reviewing, and rolling back automations is a fair question for a cloud platform, but the evidence documents no CoreWeave feature for it. The Terraform provider enables infrastructure-as-code, but any versioning, review, or rollback would come from the user's own git and Terraform workflow, not from CoreWeave. The Mission Control Agent and MCP server can make 'supported changes', yet nothing shows version history, review, or rollback for them, and object-version lifecycle rules apply to storage objects rather than automations.",
-    "evidenceIds": []
+    "rationale": "CoreWeave's Terraform/OpenTofu provider lets you manage CKS clusters, VPC networking, object storage policies and Managed Inference resources as code. Those infrastructure definitions can be versioned, reviewed and rolled back in your own source-control and Terraform workflow. The platform itself documents no native versioning, review or rollback of automations, so this relies entirely on external tooling. Missing for 10: native automation version history, a built-in review or approval flow, a documented rollback mechanism, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "coreweave-docs-6",
+      "coreweave-docs-28",
+      "coreweave-docs-1",
+      "coreweave-docs-5"
+    ]
   },
   {
     "productId": "coreweave",
@@ -373,7 +407,7 @@
       "coreweave-docs-46",
       "coreweave-docs-23",
       "coreweave-docs-60",
-      "coreweave-comm-3"
+      "coreweave-comm-3-refresh-7be2beb37bccb69f"
     ]
   },
   {
@@ -527,11 +561,16 @@
   {
     "productId": "coreweave",
     "storyId": "per-second-billing",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence describes pay-as-you-go Spot Node Pools and On-Demand GPU capacity without long-term commitments, plus usage views and exports. None of it states per-second or per-minute billing granularity, or that charges stop when an instance is not running. Commitment-free pricing and usage reporting are adjacent to this story, not evidence of it, so the axis applies but is unevidenced.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "CoreWeave documents pay-as-you-go Spot Node Pools and On-Demand GPU capacity with no long-term commitments. It also offers billing insights that break down usage by resource type. Together these loosely imply usage-based billing, but no evidence states the billing granularity or that charges stop when nodes are not running. Missing for 10: documented per-second or per-minute billing granularity, explicit confirmation that billing applies only while instances run, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "coreweave-docs-4",
+      "coreweave-docs-20",
+      "coreweave-docs-13",
+      "coreweave-docs-34"
+    ]
   },
   {
     "productId": "coreweave",
@@ -560,11 +599,14 @@
   {
     "productId": "coreweave",
     "storyId": "privacy-data-residency",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence pack never documents choosing a storage region or data-residency location for CoreWeave AI Object Storage or any other data store. The only location-related evidence is Capacity Finder comparing Spot Node Pool placement across Zones, which is compute placement. That is an adjacent control, not data-residency selection, so it earns no credit.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The only location-related evidence is that users can compare placement availability across Zones with Capacity Finder before creating Spot Node Pools. That implies some choice over where compute runs, but nothing ties it to where data is stored, and the AI Object Storage docs never mention selecting a region for buckets. Missing for 10: documented region/zone selection for object storage buckets and other data stores, an explicit data-residency or sovereignty policy, a list of available regions, and independent corroboration.",
+    "evidenceIds": [
+      "coreweave-docs-23",
+      "coreweave-docs-31"
+    ]
   },
   {
     "productId": "coreweave",
@@ -636,11 +678,17 @@
   {
     "productId": "coreweave",
     "storyId": "serverless-gpu-endpoints",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Serverless GPU workers are a fair question for a GPU cloud, so the axis applies, but the evidence pack shows nothing that delivers them. CoreWeave documents the Kubernetes Cluster Autoscaler for CKS Node Pools, Spot and On-Demand capacity, and a Managed Inference API covering gateways, model deployments and capacity claims. None of these is documented as a serverless worker product that scales to zero; they are infrastructure building blocks or adjacent features that still require managing clusters and nodes.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "CoreWeave documents autoscaling GPU Node Pools in its managed Kubernetes service via the Cluster Autoscaler, and a Managed Inference offering with model deployments and capacity claims. However, the developer still manages Kubernetes clusters and node pools rather than deploying code to serverless workers, and nothing documents scale-to-zero or per-request serverless billing. missing for 10: a serverless GPU worker/endpoint product, documented scale-to-zero behavior, a code-to-endpoint deploy workflow without cluster management, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "coreweave-docs-3",
+      "coreweave-docs-16",
+      "coreweave-docs-6",
+      "coreweave-docs-19",
+      "coreweave-docs-20"
+    ]
   },
   {
     "productId": "coreweave",
@@ -711,7 +759,7 @@
       "lambda-labs-docs-31",
       "lambda-labs-docs-39",
       "lambda-labs-docs-49",
-      "lambda-labs-comm-1"
+      "lambda-labs-comm-1-refresh-19b8428a70b93266"
     ]
   },
   {
@@ -822,7 +870,7 @@
       "lambda-labs-docs-23",
       "lambda-labs-docs-24",
       "lambda-labs-docs-29",
-      "lambda-labs-comm-1",
+      "lambda-labs-comm-1-refresh-19b8428a70b93266",
       "lambda-labs-docs-52"
     ]
   },
@@ -914,18 +962,24 @@
     "confidence": "high",
     "rationale": "Auto-shutdown timers and spend limits are a fair axis for a GPU cloud, but the docs show neither. Only adjacent features are documented: the Usage page for viewing spend, per-minute billing, and cloud-init and API building blocks a user could script around. Community evidence points to absence: a user who forgot an instance ran up a $583 bill, support said Lambda doesn't distinguish idle from in-use instances, and the user's suggestion of auto-stop or limits went unanswered.",
     "evidenceIds": [
-      "lambda-labs-comm-2",
-      "lambda-labs-comm-3"
+      "lambda-labs-comm-2-refresh-9da09078e502c6db",
+      "lambda-labs-comm-3-refresh-3146da1916e9f6ff"
     ]
   },
   {
     "productId": "lambda-labs",
     "storyId": "automation-bulk-operations",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Bulk operations are a fair question for a GPU cloud, for example batch launching or terminating many instances. The evidence shows only single-instance API launch, firewall rules scoped to the whole workspace, and an S3 adapter for third-party tools like rclone and s5cmd. These are adjacent controls or user-side tooling, not a documented bulk-operation capability across many items.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "Lambda has no documented bulk-action feature, but its programmable surfaces allow bulk work. The REST API can create and manage resources, so multi-instance operations can be scripted. The S3-compatible adapter supports bulk file tools like rclone and s5cmd, and Slurm and Kubernetes schedule workloads across many nodes. Missing for 10: documented bulk/batch API endpoints (e.g., terminating or launching many instances in one call), console multi-select actions, and hands-on or independent corroboration of bulk workflows.",
+    "evidenceIds": [
+      "lambda-labs-docs-31",
+      "lambda-labs-docs-5",
+      "lambda-labs-docs-25",
+      "lambda-labs-docs-37",
+      "lambda-labs-docs-8"
+    ]
   },
   {
     "productId": "lambda-labs",
@@ -939,11 +993,17 @@
   {
     "productId": "lambda-labs",
     "storyId": "automation-scheduled-jobs",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Recurring scheduling is a fair question for a GPU cloud, so the axis applies. However, nothing in the evidence describes recurring or cron-style scheduling of jobs or workflows. Managed Slurm's automatic workload scheduling (lambda-labs-docs-37) is queue and resource allocation, not time-based recurrence, so it is an adjacent feature and earns no credit. Likewise, Kubernetes and Slurm environments and the Cloud API are building blocks a user could assemble into scheduling, not a documented recurring-job capability.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Lambda offers workload orchestration through Managed Slurm, where 'Slurm automatically schedules workloads' using standard Slurm tooling, and through Managed Kubernetes for deploying workloads. The REST Cloud API also lets users launch instances programmatically, so recurring runs could be built externally. However, the evidence only shows queue-based resource scheduling, not time-based recurring jobs or a native workflow scheduler. missing for 10: documented recurring/cron-style scheduling (e.g. scrontab or Kubernetes CronJobs), a native workflow or pipeline scheduler, scheduled instance start/stop via the API, and independent hands-on corroboration.",
+    "evidenceIds": [
+      "lambda-labs-docs-37",
+      "lambda-labs-docs-46",
+      "lambda-labs-docs-33",
+      "lambda-labs-docs-31",
+      "lambda-labs-docs-5"
+    ]
   },
   {
     "productId": "lambda-labs",
@@ -967,14 +1027,15 @@
     "productId": "lambda-labs",
     "storyId": "custom-docker-images",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Lambda documents choosing among base images via the API, including a minimal 'GPU Base' image for more control over the environment. It also supports cloud-init launch-time configuration to script an environment onto an instance. However, nothing shows that users can supply their own Docker image or save and reuse a custom machine image or template. Missing for 10: bring-your-own Docker/container image launch, custom/saved machine image or template support, independent or hands-on corroboration.",
+    "rationale": "Lambda lets you choose a different base image through the API, such as the minimal GPU Base image. You can also script your exact environment at launch with cloud-init, and Managed Kubernetes on 1-Click Clusters lets you deploy workloads, which implies containers. However, the evidence never documents bringing your own Docker image to an instance or saving and reusing a custom machine template. Missing for 10: explicit support for user-supplied Docker or container images on instances, custom image or snapshot creation and reuse, documentation of which base images are allowed, independent hands-on corroboration.",
     "evidenceIds": [
       "lambda-labs-docs-29",
-      "lambda-labs-docs-22",
       "lambda-labs-docs-24",
-      "lambda-labs-docs-42"
+      "lambda-labs-docs-22",
+      "lambda-labs-docs-42",
+      "lambda-labs-docs-33"
     ]
   },
   {
@@ -1029,7 +1090,7 @@
       "lambda-labs-docs-28",
       "lambda-labs-docs-8",
       "lambda-labs-docs-15",
-      "lambda-labs-comm-2"
+      "lambda-labs-comm-2-refresh-9da09078e502c6db"
     ]
   },
   {
@@ -1044,8 +1105,8 @@
       "lambda-labs-docs-23",
       "lambda-labs-docs-31",
       "lambda-labs-docs-10",
-      "lambda-labs-comm-1",
-      "lambda-labs-comm-2"
+      "lambda-labs-comm-1-refresh-19b8428a70b93266",
+      "lambda-labs-comm-2-refresh-9da09078e502c6db"
     ]
   },
   {
@@ -1061,7 +1122,7 @@
       "lambda-labs-docs-7",
       "lambda-labs-docs-50",
       "lambda-labs-docs-51",
-      "lambda-labs-comm-2"
+      "lambda-labs-comm-2-refresh-9da09078e502c6db"
     ]
   },
   {
@@ -1075,7 +1136,7 @@
       "lambda-labs-docs-41",
       "lambda-labs-docs-28",
       "lambda-labs-docs-31",
-      "lambda-labs-comm-1"
+      "lambda-labs-comm-1-refresh-19b8428a70b93266"
     ]
   },
   {
@@ -1130,8 +1191,8 @@
       "lambda-labs-docs-43",
       "lambda-labs-docs-7",
       "lambda-labs-docs-28",
-      "lambda-labs-comm-1",
-      "lambda-labs-comm-2"
+      "lambda-labs-comm-1-refresh-19b8428a70b93266",
+      "lambda-labs-comm-2-refresh-9da09078e502c6db"
     ]
   },
   {
@@ -1199,7 +1260,7 @@
     "evidenceIds": [
       "lambda-labs-docs-10",
       "lambda-labs-docs-20",
-      "lambda-labs-comm-2"
+      "lambda-labs-comm-2-refresh-9da09078e502c6db"
     ]
   },
   {
@@ -1257,11 +1318,15 @@
   {
     "productId": "lambda-labs",
     "storyId": "privacy-retention-controls",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Data retention and deletion controls are a fair privacy question for a GPU cloud provider, so the axis applies. However, the evidence pack documents no retention policies, data-deletion guarantees, or deletion workflows. The filesystem S3 adapter for generic file operations (copy files and \"perform common file operations\") is an adjacent storage feature, not a documented retention or deletion control, so it earns no credit.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 2,
+    "confidence": "low",
+    "rationale": "Lambda is a GPU cloud, so data retention and deletion is a fair axis. The only related evidence is indirect. Users store data on user-managed regional filesystems they attach to instances. An S3-compatible adapter lets them copy files and 'perform common file operations', which implies they can delete their own stored data. Missing for 10: documented retention policies, guarantees that data is deleted when instances or filesystems are terminated, account-level data deletion controls, privacy/data-handling documentation, and independent corroboration.",
+    "evidenceIds": [
+      "lambda-labs-docs-9",
+      "lambda-labs-docs-25",
+      "lambda-labs-docs-31"
+    ]
   },
   {
     "productId": "lambda-labs",
@@ -1339,7 +1404,7 @@
       "lambda-labs-docs-22",
       "lambda-labs-docs-24",
       "lambda-labs-docs-29",
-      "lambda-labs-comm-1"
+      "lambda-labs-comm-1-refresh-19b8428a70b93266"
     ]
   },
   {
@@ -1412,11 +1477,14 @@
     "productId": "paperspace",
     "storyId": "agentic-autonomous-automation",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Paperspace documents its own automation feature, Workflows, which automates ML tasks as GPU-backed pipelines defined in a few lines of code. Deployments also run containers as a service, which suggests long-running background execution. The API, CLI and auto-shutdown are building blocks or adjacent controls and earn no credit. Missing for 10: evidence of scheduled or event-triggered runs, detail on unattended background execution and monitoring, in-depth Workflows documentation, and any independent or hands-on corroboration that Workflows run autonomously.",
+    "rationale": "Paperspace documents Workflows that automate machine learning tasks as GPU-backed pipelines, plus an API and CLI for programmatic resource control and an auto-shutdown policy. This supports scripted, unattended background jobs, but the evidence is a single marketing-level line on Workflows. Nothing shows scheduling, triggers, or how autonomous runs are monitored. missing for 10: scheduled/cron or event-triggered automation, documented background job execution and monitoring details, independent or hands-on corroboration that Workflows run autonomously.",
     "evidenceIds": [
       "paperspace-docs-9",
+      "paperspace-docs-23",
+      "paperspace-docs-30",
+      "paperspace-docs-5",
       "paperspace-docs-8"
     ]
   },
@@ -1561,11 +1629,17 @@
   {
     "productId": "paperspace",
     "storyId": "api-sandbox",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence pack documents no sandbox or test mode for Paperspace, nor any way to exercise the API or platform separately from production resources and data. Spinning up separate machines from custom templates, using snapshots, or creating a free exploration account are adjacent features or user-side workarounds, not a documented sandbox capability.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Paperspace has no documented sandbox or test mode. A user can approximate one by provisioning separate, disposable machines through the console, API or CLI, cloning configurations via custom templates, and choosing whether to attach a private network. That isolates experiments from other workloads, but only as a workaround. Missing for 10: an explicit sandbox/staging environment or test API mode, documented separation from production data (e.g. separate projects/teams or scoped keys), and independent or hands-on corroboration of isolated testing workflows.",
+    "evidenceIds": [
+      "paperspace-docs-1",
+      "paperspace-docs-3",
+      "paperspace-docs-25",
+      "paperspace-docs-5",
+      "paperspace-docs-6"
+    ]
   },
   {
     "productId": "paperspace",
@@ -1591,29 +1665,43 @@
   {
     "productId": "paperspace",
     "storyId": "automation-bulk-operations",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Bulk actions across many resources at once are a fair ask for a GPU cloud platform, so the axis applies. The evidence only shows single-resource management (create a machine, templates, auto-shutdown) through the console, REST API, and CLI. A general-purpose API and CLI are building blocks a user could script loops with, not a documented bulk-operation capability, and shared drives spanning multiple machines are an adjacent feature.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "No documented bulk or batch operation exists. Paperspace does offer a REST API and an official CLI for managing resources programmatically, and custom templates for creating machines with the same specs, so users could script bulk actions themselves. That is a workaround, not native bulk support. Missing for 10: native bulk/batch endpoints or CLI commands acting on many items at once, documentation of multi-resource operations, an OpenAPI spec (the probe returned 404), and hands-on corroboration.",
+    "evidenceIds": [
+      "paperspace-docs-23",
+      "paperspace-docs-30",
+      "paperspace-docs-1",
+      "paperspace-docs-3",
+      "paperspace-probe-4",
+      "paperspace-probe-3"
+    ]
   },
   {
     "productId": "paperspace",
     "storyId": "automation-rules-engine",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "The evidence shows no user-definable event-triggered rules engine, and no documented triggers, webhooks, or event-based actions. Auto-shutdown is a single fixed inactivity timer, an adjacent control rather than user-defined rules. Workflows are described as ML pipeline automation, with no evidence that they fire on events.",
-    "evidenceIds": []
+    "rationale": "The only event-triggered automation in the evidence is auto-shutdown, a single built-in rule that stops a machine after a configurable inactivity period (1 hour to 1 week). Workflows automate ML pipelines, but nothing shows them firing on events. Missing for 10: user-defined rules for arbitrary events, configurable actions beyond shutdown, event-triggered Workflows or webhooks, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "paperspace-docs-5",
+      "paperspace-docs-9"
+    ]
   },
   {
     "productId": "paperspace",
     "storyId": "automation-scheduled-jobs",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Paperspace documents Workflows for automating ML pipelines, but nothing in the evidence shows scheduling or recurring triggers such as cron-style runs. Pipeline automation and auto-shutdown on inactivity are adjacent features, not recurring job scheduling, so they earn no credit.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Paperspace documents Workflows that automate ML pipelines with GPU instances (docs-9), and its REST API and CLI allow programmatic control (docs-23, docs-30). That means an external scheduler such as cron could trigger jobs, but the evidence never shows native scheduling or recurring triggers. Missing for 10: native cron or recurring schedule triggers for Workflows or jobs, documentation of how to schedule, and hands-on or independent corroboration.",
+    "evidenceIds": [
+      "paperspace-docs-9",
+      "paperspace-docs-23",
+      "paperspace-docs-30"
+    ]
   },
   {
     "productId": "paperspace",
@@ -1646,22 +1734,18 @@
       "paperspace-docs-25",
       "paperspace-docs-12",
       "paperspace-docs-8",
-      "paperspace-comm-3",
-      "paperspace-comm-9"
+      "paperspace-comm-3-refresh-3ae567444c901b0e",
+      "paperspace-comm-9-refresh-f8ba53cbbfefbf10"
     ]
   },
   {
     "productId": "paperspace",
     "storyId": "data-transfer-cloud-sync",
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "The only first-party evidence touching data movement is a doc titled \"How to Mount Datasets in a Gradient Notebook\" and the claim that Machines come with free unlimited bandwidth. Shared drives are internal private-network storage, not an import/export path, so they don't count. A hands-on report says Core servers had very slow internet and copying datasets took forever, which undercuts the 'efficiently' part. missing for 10: S3-compatible endpoints, cloud-storage sync integrations, documented transfer tooling (e.g., CLI upload/download), details of how datasets are ingested, independent confirmation of efficient transfers.",
-    "evidenceIds": [
-      "paperspace-docs-39",
-      "paperspace-docs-16",
-      "paperspace-comm-8"
-    ]
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Data import/export is a fair question for a GPU cloud, so the axis applies, but the pack documents no S3-compatible endpoint, cloud-storage sync, or dedicated transfer tooling. The nearby items earn no credit under the partial-credit boundary. The 'How to Mount Datasets in a Gradient Notebook' page title only covers making data accessible inside a notebook, and unlimited bandwidth, shared drives, and SSH access are adjacent features or user-side workarounds. The reviewer's concern is valid: the earlier partial/3 grade lacked a documented import or export path, so the cell should be none.",
+    "evidenceIds": []
   },
   {
     "productId": "paperspace",
@@ -1675,7 +1759,7 @@
       "paperspace-docs-25",
       "paperspace-docs-33",
       "paperspace-docs-4",
-      "paperspace-comm-1"
+      "paperspace-comm-1-refresh-c3eab05187af5444"
     ]
   },
   {
@@ -1718,7 +1802,7 @@
       "paperspace-docs-25",
       "paperspace-docs-5",
       "paperspace-docs-6",
-      "paperspace-comm-9"
+      "paperspace-comm-9-refresh-f8ba53cbbfefbf10"
     ]
   },
   {
@@ -1734,7 +1818,7 @@
       "paperspace-docs-38",
       "paperspace-docs-2",
       "paperspace-docs-12",
-      "paperspace-comm-8"
+      "paperspace-comm-8-refresh-43b4c2e26d9b0665"
     ]
   },
   {
@@ -1758,11 +1842,19 @@
   {
     "productId": "paperspace",
     "storyId": "multi-node-clusters",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "The evidence shows only self-serve single machines with up to 8 A100 GPUs and intra-node NVLink, plus a generic private network and shared drives across machines. There is no documented multi-node GPU cluster offering or high-speed inter-node interconnect (e.g. InfiniBand) for distributed training. Wiring separate VMs together over a private network is a user-side arrangement built from primitives, and high-end H100 machines require an approval request.",
-    "evidenceIds": []
+    "rationale": "Paperspace offers self-serve signup and multi-GPU machines with up to 8 A100s plus NVLink. Separate machines can share a private network and shared drives, so a user could hand-assemble a loose multi-node setup. But NVLink is an intra-node interconnect, and high-end GPUs like the H100 need an approval request, which adds a gating step similar to a sales cycle. Missing for 10: a documented managed multi-node cluster provisioning flow, fast inter-node interconnect (e.g. InfiniBand/RDMA), distributed-training guidance, approval-free access to top-tier GPUs, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "paperspace-docs-11",
+      "paperspace-docs-20",
+      "paperspace-docs-4",
+      "paperspace-docs-25",
+      "paperspace-docs-17",
+      "paperspace-docs-10",
+      "paperspace-docs-1"
+    ]
   },
   {
     "productId": "paperspace",
@@ -1781,8 +1873,8 @@
       "paperspace-docs-10",
       "paperspace-docs-23",
       "paperspace-docs-30",
-      "paperspace-comm-9",
-      "paperspace-comm-8",
+      "paperspace-comm-9-refresh-f8ba53cbbfefbf10",
+      "paperspace-comm-8-refresh-43b4c2e26d9b0665",
       "paperspace-probe-3"
     ]
   },
@@ -1972,7 +2064,7 @@
       "paperspace-docs-21",
       "paperspace-docs-2",
       "paperspace-docs-25",
-      "paperspace-comm-8"
+      "paperspace-comm-8-refresh-43b4c2e26d9b0665"
     ]
   },
   {
@@ -2074,21 +2166,21 @@
     "productId": "runpod",
     "storyId": "agentic-headless",
     "verdict": "full",
-    "quality": 7,
-    "confidence": "medium",
-    "rationale": "Runpod documents an open-source CLI (runpodctl) with scriptable commands such as `runpodctl pod create --name NAME --gpu-id ... --image ...`, covering Pods, endpoints, templates, volumes and file transfer. Its REST API v1 is explicitly positioned for \"workflows and automation systems\", supported by API-key authentication, GraphQL, and Python/JS/Go SDKs, so headless automated operation is clearly supported. Missing for 10: explicit CI integration docs (e.g., GitHub Actions examples), documented non-interactive or env-var auth for CLI use in pipelines, and independent or hands-on corroboration of CI usage.",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "Runpod can be driven entirely without the console. It ships an open-source CLI (runpodctl) with scriptable commands such as `pod create`. A REST API v1 is described as being for \"automation systems\", alongside a GraphQL API, Serverless SDKs for Python/JS/Go, and API-key authentication for the Flash CLI, which together suit headless and CI automation. Missing for 10: explicit CI/CD integration docs or examples (e.g. GitHub Actions, non-interactive auth guidance), a published OpenAPI spec (probe returned 404), and independent hands-on corroboration of CI usage.",
     "evidenceIds": [
       "runpod-docs-5",
       "runpod-docs-16",
       "runpod-docs-29",
       "runpod-docs-32",
-      "runpod-docs-46",
       "runpod-docs-8",
-      "runpod-docs-36",
       "runpod-docs-63",
       "runpod-docs-70",
       "runpod-docs-66",
-      "runpod-probe-4"
+      "runpod-docs-46",
+      "runpod-probe-4",
+      "runpod-probe-2"
     ]
   },
   {
@@ -2118,15 +2210,16 @@
     "productId": "runpod",
     "storyId": "agentic-nl-commands",
     "verdict": "full",
-    "quality": 7,
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Runpod documents a first-party agent skills plugin that lets users ask their coding agent, in natural language, to create Pods, deploy Serverless endpoints, transfer files, and deploy code with Flash (it also ships slash-command skills such as /runpod:migrate). It also ships two official MCP servers that connect AI tools and coding agents directly to Runpod resource management. Missing for 10: a native natural-language interface in Runpod's own console (operation depends on an external coding agent), any independent or hands-on corroboration that natural-language operation works reliably, and detail on which operations the skills and MCP servers cover beyond the listed examples.",
+    "rationale": "Runpod documents an agent skills plugin that lets you ask your coding agent, in natural language, to create Pods, deploy Serverless endpoints, transfer files, or deploy code with Flash. It also ships two official MCP servers that connect AI tools and coding agents directly to Runpod resource management, plus agent slash-commands like `/runpod:migrate rest`. Missing for 10: no native natural-language interface in Runpod's own console (it depends on a third-party coding agent), and no independent or hands-on corroboration that the natural-language operations work reliably.",
     "evidenceIds": [
       "runpod-docs-12",
       "runpod-docs-44",
-      "runpod-docs-9",
       "runpod-docs-3",
+      "runpod-docs-53",
       "runpod-docs-36",
+      "runpod-docs-9",
       "runpod-probe-3"
     ]
   },
@@ -2134,9 +2227,9 @@
     "productId": "runpod",
     "storyId": "agentic-official-cli",
     "verdict": "full",
-    "quality": 9,
+    "quality": 8,
     "confidence": "high",
-    "rationale": "Runpod documents an official, open-source CLI (runpodctl). It manages Pods, Serverless endpoints, templates, network volumes and models, transfers files, diagnoses issues and shows account info, with concrete commands such as `runpodctl pod create`. A separate Flash CLI (init/login) is also documented, and a probe confirmed the official CLI docs page. Missing for 10: independent or hands-on community corroboration of the CLI in use.",
+    "rationale": "Runpod ships an official, open-source CLI (runpodctl). It manages Pods, Serverless endpoints, templates, network volumes and models, handles file transfer and diagnostics, and has documented commands such as `runpodctl pod create`. The probe confirms the CLI documentation exists, and a separate Flash CLI (init and login) is also documented. Missing for 10: no independent or community hands-on corroboration of the CLI, and no evidence of AI-native-specific CLI features such as machine-readable/JSON output or agent-oriented usage.",
     "evidenceIds": [
       "runpod-docs-5",
       "runpod-docs-16",
@@ -2144,9 +2237,9 @@
       "runpod-docs-29",
       "runpod-docs-46",
       "runpod-docs-56",
+      "runpod-probe-4",
       "runpod-docs-65",
-      "runpod-docs-66",
-      "runpod-probe-4"
+      "runpod-docs-66"
     ]
   },
   {
@@ -2250,29 +2343,46 @@
   {
     "productId": "runpod",
     "storyId": "auto-shutdown-spend-guards",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence pack documents no auto-shutdown timer, idle-stop setting, or configurable spend cap for Pods. The closest items fall outside the story: prepaid credit billing, auto-pay top-ups (which keep instances running rather than stopping them), manual start/stop/terminate via console or CLI, and Serverless scale-to-zero. These are adjacent billing or lifecycle features, so they earn no credit here.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "There is no documented auto-shutdown timer or explicit spend-limit setting for Pods. Runpod's prepaid, credit-based billing implicitly caps spend at the account balance, and Serverless Flex workers scale to zero when idle. Optional auto-pay reloads the balance automatically, which removes that implicit cap, and Pods otherwise appear to be stopped manually via console or CLI. Missing for 10: Pod idle/auto-shutdown timers, configurable spend limits or budget alerts, and hands-on corroboration of cost protection.",
+    "evidenceIds": [
+      "runpod-docs-58",
+      "runpod-docs-13",
+      "runpod-docs-25",
+      "runpod-docs-46"
+    ]
   },
   {
     "productId": "runpod",
     "storyId": "automation-bulk-operations",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence documents per-resource management through the CLI, REST API and GraphQL, such as `runpodctl pod create` and create/start/stop/terminate for individual Pods. Nothing shows a native bulk action (for example, selecting and stopping or terminating many Pods, endpoints or volumes in one operation). These APIs are developer building blocks that could be scripted into bulk workflows. 'Batch Inference' on Serverless is an adjacent feature for processing inference workloads, not bulk operations across many managed items, so neither earns credit.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Runpod offers several programmatic surfaces that would let an AI-native user script operations across many resources: the REST API covers all compute resources, there is a GraphQL API, the runpodctl CLI manages Pods, endpoints, templates and volumes, an S3-compatible API handles network-volume files, and MCP servers and agent skills support natural-language agent control. However, no evidence shows a native bulk or batch operation. Bulk work is only implied through user-written scripting or agent loops, and the one CLI example shown (pod create) is single-item. Missing for 10: documented batch/bulk endpoints or CLI flags (e.g., multi-select stop/terminate), bulk file operations explicitly described, and hands-on or independent corroboration of bulk workflows.",
+    "evidenceIds": [
+      "runpod-docs-8",
+      "runpod-docs-16",
+      "runpod-docs-32",
+      "runpod-docs-63",
+      "runpod-docs-19",
+      "runpod-docs-12",
+      "runpod-docs-36",
+      "runpod-docs-29"
+    ]
   },
   {
     "productId": "runpod",
     "storyId": "automation-rules-engine",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Event-driven automation rules are a fair axis for a GPU cloud platform, but the evidence shows no user-definable rule or trigger system. Auto-pay's fixed low-balance reload and serverless scale-to-zero are adjacent built-in behaviors, not rules users define. The REST API, CLI, and MCP servers are building blocks a developer could use to construct such automation, not the capability itself.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The only rule-style automation in the evidence is narrow and built-in. Auto-pay reloads the account balance when it drops below a user-set threshold, and Serverless flex workers scale to zero when idle. Nothing shows a general mechanism for users to define their own event-to-action rules. missing for 10: user-defined event rules/triggers, webhooks or event notifications, rules spanning Pods/Serverless/storage events, independent corroboration.",
+    "evidenceIds": [
+      "runpod-docs-13",
+      "runpod-docs-25"
+    ]
   },
   {
     "productId": "runpod",
@@ -2317,7 +2427,7 @@
       "runpod-docs-32",
       "runpod-docs-36",
       "runpod-docs-63",
-      "runpod-comm-2"
+      "runpod-comm-2-refresh-c0398a5efb9798d9"
     ]
   },
   {
@@ -2361,7 +2471,7 @@
     "confidence": "low",
     "rationale": "Runpod is a GPU cloud, so this axis clearly applies. The only on-topic evidence is a community report that the deploy flow shows \"low availability\" messages for GPU types like the 4090. That suggests some availability signal appears around provisioning, but the same report notes instances sometimes still fail to boot. The pricing page lists GPU types and claims 30+ regions, but nothing documents a real-time availability view or API. Missing for 10: first-party documentation of a real-time GPU availability view broken down by type and region, a programmatic availability query in the REST API, GraphQL API or CLI, and evidence that the signal reliably predicts stockouts before provisioning.",
     "evidenceIds": [
-      "runpod-comm-1",
+      "runpod-comm-1-refresh-2d268751cfd101fe",
       "runpod-docs-33"
     ]
   },
@@ -2377,7 +2487,7 @@
       "runpod-docs-29",
       "runpod-docs-28",
       "runpod-comm-6",
-      "runpod-comm-1",
+      "runpod-comm-1-refresh-2d268751cfd101fe",
       "runpod-docs-33"
     ]
   },
@@ -2412,24 +2522,17 @@
       "runpod-docs-22",
       "runpod-docs-10",
       "runpod-docs-6",
-      "runpod-comm-2"
+      "runpod-comm-2-refresh-c0398a5efb9798d9"
     ]
   },
   {
     "productId": "runpod",
     "storyId": "keyless-catalog-pricing-api",
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Runpod's public pricing page lists GPU models with per-hour prices (e.g. B300 at $8.99/hr), across Community and Secure Cloud. Its REST and GraphQL APIs are documented only generically as giving 'programmatic access to all compute resources'. Nothing in the evidence shows a documented machine-readable GPU-catalog endpoint that returns live pricing or real-time availability, and the OpenAPI spec probes all returned 404. Missing for 10: a documented API/CLI/MCP call that lists GPU types with live prices, real-time availability or stock data, a machine-readable spec, and hands-on corroboration that an agent can query it before spending.",
-    "evidenceIds": [
-      "runpod-docs-80",
-      "runpod-docs-79",
-      "runpod-docs-33",
-      "runpod-docs-8",
-      "runpod-docs-63",
-      "runpod-probe-2"
-    ]
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The reviewer's concern is valid. Nothing in the pack documents an API, CLI, or MCP call that returns the GPU catalog with live prices or availability. The REST, GraphQL and CLI docs cover only managing Pods, templates, endpoints and volumes. The pricing page shows static marketing rates (e.g. B300 at $8.99/hr), which is a related feature that earns no partial credit.",
+    "evidenceIds": []
   },
   {
     "productId": "runpod",
@@ -2480,9 +2583,9 @@
       "runpod-docs-64",
       "runpod-docs-22",
       "runpod-docs-14",
-      "runpod-comm-2",
+      "runpod-comm-2-refresh-c0398a5efb9798d9",
       "runpod-comm-6",
-      "runpod-comm-1"
+      "runpod-comm-1-refresh-2d268751cfd101fe"
     ]
   },
   {
@@ -2588,17 +2691,22 @@
       "runpod-docs-34",
       "runpod-docs-67",
       "runpod-docs-59",
-      "runpod-comm-2"
+      "runpod-comm-2-refresh-c0398a5efb9798d9"
     ]
   },
   {
     "productId": "runpod",
     "storyId": "privacy-data-residency",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Choosing a storage region applies to a GPU cloud like Runpod, but the evidence never documents a user choosing a region or data center for their data. The marketing line about '30+ regions' describes footprint, not a user-facing residency choice. The network volume docs cover persistence and S3 access but not region selection, and the Secure vs Community Cloud choice is an infrastructure tier, not data residency.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Runpod states it runs GPUs across 30+ regions and offers persistent network volumes and Secure Cloud data centers, which suggests users can place workloads and storage in different locations. However, no evidence shows users explicitly choosing a storage region or getting data-residency guarantees. missing for 10: documented region selection for network volumes/Pods, data-residency or geographic guarantees, region-pinning via API/CLI, independent corroboration.",
+    "evidenceIds": [
+      "runpod-docs-33",
+      "runpod-docs-51",
+      "runpod-docs-18",
+      "runpod-docs-28"
+    ]
   },
   {
     "productId": "runpod",
@@ -2708,7 +2816,7 @@
       "runpod-docs-41",
       "runpod-docs-45",
       "runpod-docs-21",
-      "runpod-comm-3"
+      "runpod-comm-3-refresh-1d202c429599e442"
     ]
   },
   {
@@ -2786,11 +2894,19 @@
   {
     "productId": "vast-ai",
     "storyId": "agentic-autonomous-automation",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Asking a GPU cloud platform about user-configured background automations is fair, so the axis applies. However, the pack documents no first-party scheduled jobs, triggers or autonomous workflow feature. The CLI, REST API, SDK and scoped CI/CD keys are developer building blocks. Autobilling and serverless autoscaling are adjacent features. The agent skill lets an external coding assistant drive the platform rather than running automations itself.",
-    "evidenceIds": []
+    "rationale": "Vast.ai provides building blocks for automation: a full REST API, CLI, and Python SDK ('Automate with the CLI or SDK'), scoped API keys meant for CI/CD and automation, and an agent skill that lets AI assistants drive the platform. Serverless also offers automatic benchmark-driven scaling, and autobilling runs unattended. However, the evidence shows no native way to define and schedule background automations; users must build that orchestration themselves with external tools. Missing for 10: first-party scheduled jobs or cron triggers, event-driven automation workflows on the platform, and independent or hands-on evidence of autonomous background automations running.",
+    "evidenceIds": [
+      "vast-ai-docs-29",
+      "vast-ai-docs-3",
+      "vast-ai-docs-24",
+      "vast-ai-docs-4",
+      "vast-ai-docs-46",
+      "vast-ai-docs-8",
+      "vast-ai-docs-2"
+    ]
   },
   {
     "productId": "vast-ai",
@@ -2858,16 +2974,16 @@
     "productId": "vast-ai",
     "storyId": "agentic-official-cli",
     "verdict": "full",
-    "quality": 10,
+    "quality": 9,
     "confidence": "high",
-    "rationale": "Vast.ai ships an official `vastai` CLI. The docs cover the whole platform from the shell: auth, GPU search, instance lifecycle, templates, volumes, serverless endpoints and scoped API keys, with concrete command examples. A first-party GitHub repo (vast-ai/vast-cli) provides the CLI and SDK, and an official agent skill lets AI coding assistants drive the CLI, matching the AI-native framing. A probe independently confirmed the CLI docs page exists.",
+    "rationale": "Vast.ai ships an official `vastai` CLI. The docs say it covers the entire platform: auth, GPU search, instance lifecycle, templates, volumes, serverless endpoints and scoped API keys. They show concrete commands and a full rent-to-cleanup workflow, the CLI lives in the official vast-ai/vast-cli GitHub repo, and an agent skill lets AI coding assistants drive it. The reviewer concern holds: the probe only confirms the docs page exists, and no community or hands-on item shows the CLI in use. Missing for 10: independent or hands-on corroboration that the CLI works as documented.",
     "evidenceIds": [
       "vast-ai-docs-2",
       "vast-ai-docs-55",
       "vast-ai-docs-20",
+      "vast-ai-docs-34",
       "vast-ai-docs-5",
       "vast-ai-docs-29",
-      "vast-ai-docs-34",
       "vast-ai-docs-70",
       "vast-ai-gh-4",
       "vast-ai-docs-4",
@@ -2963,11 +3079,15 @@
   {
     "productId": "vast-ai",
     "storyId": "api-sandbox",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "A sandbox or test mode is a fair question for a GPU cloud platform with an API, so the axis applies. However, the evidence never documents a sandbox, test-mode API, or staging environment separated from production. Scoped API keys, teams, and disposable instances are adjacent controls and building blocks, not a sandbox capability, so they earn no credit.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The evidence does not document a dedicated sandbox, test mode or non-production environment for Vast.ai. The closest support is scoped API keys with limited permissions for CI/CD and shared tooling, which let an agent or test workload run without full access to other account resources. This is a thin, indirect form of isolation rather than a true sandbox. missing for 10: a documented sandbox/test environment or test API mode, explicit separation of test and production resources or data, and hands-on corroboration of safe agent testing.",
+    "evidenceIds": [
+      "vast-ai-docs-5",
+      "vast-ai-docs-19",
+      "vast-ai-docs-24"
+    ]
   },
   {
     "productId": "vast-ai",
@@ -2981,29 +3101,44 @@
   {
     "productId": "vast-ai",
     "storyId": "auto-shutdown-spend-guards",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence pack documents no auto-shutdown timer, idle-stop setting, or user-configurable spend limit for instances. The billing material describes prepaid credit and autobilling, which automatically tops up the balance to keep instances running. That is the opposite of a spend cap, and a prepaid balance that implicitly halts instances when it runs out is not a configurable limit or timer.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The docs describe a prepaid-credit model: users top up via Billing → Add Credit. The billing docs note that keeping a positive balance protects instances from interruption or deletion, which implies a running instance stops consuming money once credit runs out. Autobilling can be left off, so the loaded balance acts as an implicit spending ceiling, but this is a crude backstop that risks losing the instance rather than a deliberate guardrail. Missing for 10: configurable auto-shutdown or idle timers, explicit per-instance or account spend limits, budget alerts, and any hands-on confirmation of how instances behave when credit is exhausted.",
+    "evidenceIds": [
+      "vast-ai-docs-25",
+      "vast-ai-docs-8",
+      "vast-ai-docs-42"
+    ]
   },
   {
     "productId": "vast-ai",
     "storyId": "automation-bulk-operations",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence documents a CLI, REST API, Python SDK, and agent skill that act on individual resources, such as starting an instance by ID. These are building blocks a user could script loops around, not a documented bulk or batch capability, so they earn no credit. No evidence shows multi-item operations such as batch destroy, batch start/stop, or bulk endpoints.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Vast.ai offers a CLI, Python SDK, and REST API with programmatic control over the whole platform, plus filtered offer search that returns many results. A user could script loops over many instances, volumes, or endpoints. The evidence never shows a native bulk or batch operation that acts on many items in one command. missing for 10: documented multi-item or batch commands (e.g., destroy/stop/label many instances at once), bulk API endpoints, any examples of bulk workflows, independent corroboration.",
+    "evidenceIds": [
+      "vast-ai-docs-2",
+      "vast-ai-docs-3",
+      "vast-ai-docs-29",
+      "vast-ai-gh-1",
+      "vast-ai-docs-20",
+      "vast-ai-probe-2"
+    ]
   },
   {
     "productId": "vast-ai",
     "storyId": "automation-rules-engine",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence shows no user-definable rules engine, event triggers, or automation policies on Vast.ai. Autobilling is a single fixed top-up behavior, and serverless autoscaling is managed by the platform, so both are adjacent features rather than user-defined event rules. The CLI, REST API and SDK are developer building blocks that could be used to construct such automation, not the capability itself.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The only event-triggered automation in the evidence is narrow and built in. Autobilling automatically tops up the account from a saved card when the balance runs low [vast-ai-docs-8, vast-ai-docs-25]. Serverless offers automatic benchmark-driven scaling [vast-ai-docs-46]. Neither is a general facility for user-defined rules or triggers; anything broader would have to be scripted externally via the CLI/API. Missing for 10: user-definable rules or triggers on platform events (e.g. instance state changes, outbid or interruption), webhooks or event notifications, configurable conditions and actions, and documentation or hands-on corroboration of any rules engine.",
+    "evidenceIds": [
+      "vast-ai-docs-8",
+      "vast-ai-docs-25",
+      "vast-ai-docs-46"
+    ]
   },
   {
     "productId": "vast-ai",
@@ -3026,11 +3161,17 @@
   {
     "productId": "vast-ai",
     "storyId": "billing-usage-api",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence pack does not document a programmatic way to pull usage or billing breakdowns, such as an invoice or charges endpoint, or a per-team or per-workload cost report. What it does show is related but different: generic claims that the REST API and CLI cover the entire platform, an agent skill that can \"check balances\", autobilling top-ups, per-second billing and a teams feature. None of these establishes the ability to attribute GPU spend by team or workload.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The evidence shows only general programmatic access: a REST API and CLI said to cover the entire platform, with an OpenAPI spec confirmed by probe. It also shows a balance-check capability and the existence of teams. None of it shows usage or billing breakdowns, invoices or spend reports that can be pulled via API, or any way to attribute GPU spend by team or workload. missing for 10: documented usage/billing breakdown API or CLI endpoint, per-team or per-workload spend attribution (tags/labels), exportable invoices or cost reports, independent corroboration.",
+    "evidenceIds": [
+      "vast-ai-docs-3",
+      "vast-ai-docs-2",
+      "vast-ai-docs-4",
+      "vast-ai-docs-50",
+      "vast-ai-probe-2"
+    ]
   },
   {
     "productId": "vast-ai",
@@ -3046,7 +3187,7 @@
       "vast-ai-docs-52",
       "vast-ai-docs-64",
       "vast-ai-docs-2",
-      "vast-ai-comm-9",
+      "vast-ai-comm-9-refresh-465387f38e3aabfb",
       "vast-ai-docs-73"
     ]
   },
@@ -3062,8 +3203,8 @@
       "vast-ai-docs-36",
       "vast-ai-docs-43",
       "vast-ai-docs-65",
-      "vast-ai-comm-4",
-      "vast-ai-comm-10"
+      "vast-ai-comm-4-refresh-7d05286395e17394",
+      "vast-ai-comm-10-refresh-e7f1277febcddf8b"
     ]
   },
   {
@@ -3119,16 +3260,16 @@
   {
     "productId": "vast-ai",
     "storyId": "instance-lifecycle-management",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Vast.ai documents programmatic instance lifecycle control through its CLI, REST API and Python SDK, including an explicit `vast.start_instance(id=...)` call and a CLI walkthrough that ends with cleanup. Instances bill by the second for actual usage, which supports paying only for what runs. missing for 10: explicit documented stop/restart/destroy commands or endpoints, clarity on whether stopped instances still incur storage charges, independent hands-on corroboration of lifecycle automation.",
+    "rationale": "The reviewer concern is valid. The evidence explicitly shows programmatic `start_instance` in the SDK (gh-3), and docs claim the CLI and REST API cover 'instance lifecycle', can automate 'anything you can do in the web console', and include a 'clean up' step (docs-2, docs-3, docs-55, docs-34); instances bill by the second for actual usage (docs-59). However, stop, restart and terminate are never explicitly named as programmatic operations, so the core lifecycle claim rests on generic statements rather than documented controls. Missing for 10: explicit documentation of programmatic stop, restart and destroy/terminate commands, evidence on whether stopped instances incur storage charges, and independent or hands-on corroboration of lifecycle automation.",
     "evidenceIds": [
+      "vast-ai-gh-3",
       "vast-ai-docs-2",
       "vast-ai-docs-3",
-      "vast-ai-gh-3",
-      "vast-ai-docs-34",
       "vast-ai-docs-55",
+      "vast-ai-docs-34",
       "vast-ai-docs-59",
       "vast-ai-probe-2"
     ]
@@ -3136,18 +3277,17 @@
   {
     "productId": "vast-ai",
     "storyId": "jupyter-ide-access",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Vast.ai documents Jupyter as a first-class connection method, with a dedicated Jupyter guide, a direct-connection option, and Jupyter-ready templates like PyTorch. Its instance portal creates Cloudflare tunnels for open ports, and the connect overview lists SSH terminal access with port forwarding and VS Code support. Missing for 10: explicit evidence that IDE connection is a one-step flow, any mention of Cursor, detailed VS Code setup docs, and independent hands-on corroboration.",
+    "rationale": "The reviewer's concern holds. Vast.ai documents Jupyter access, including a direct-connection option (vast-ai-docs-48, vast-ai-docs-65), and lists SSH or Jupyter as connection methods (vast-ai-docs-59). Its instance portal creates Cloudflare tunnels for open ports (vast-ai-docs-49), templates come Jupyter-ready (vast-ai-docs-62), and the connection overview mentions VS Code support (vast-ai-docs-63). However, no excerpt shows Jupyter opening or an IDE attaching in a single step, and one-click template launch is not the same as one-step access to the running instance. Missing for 10: a documented one-click Jupyter open or one-step VS Code/Cursor connect flow, any mention of Cursor, depth on the VS Code connection steps, and independent or hands-on corroboration.",
     "evidenceIds": [
       "vast-ai-docs-48",
       "vast-ai-docs-65",
       "vast-ai-docs-59",
-      "vast-ai-docs-62",
-      "vast-ai-docs-63",
       "vast-ai-docs-49",
-      "vast-ai-docs-13"
+      "vast-ai-docs-62",
+      "vast-ai-docs-63"
     ]
   },
   {
@@ -3191,7 +3331,7 @@
       "vast-ai-docs-53",
       "vast-ai-gh-1",
       "vast-ai-docs-34",
-      "vast-ai-comm-10"
+      "vast-ai-comm-10-refresh-e7f1277febcddf8b"
     ]
   },
   {
@@ -3214,7 +3354,7 @@
       "vast-ai-docs-59",
       "vast-ai-docs-44",
       "vast-ai-gh-3",
-      "vast-ai-comm-1",
+      "vast-ai-comm-1-refresh-667a9174c59e1e62",
       "vast-ai-comm-13",
       "vast-ai-comm-11"
     ]
@@ -3449,7 +3589,7 @@
       "vast-ai-docs-59",
       "vast-ai-docs-63",
       "vast-ai-docs-64",
-      "vast-ai-comm-9"
+      "vast-ai-comm-9-refresh-465387f38e3aabfb"
     ]
   },
   {
@@ -3481,7 +3621,7 @@
       "vast-ai-docs-70",
       "vast-ai-docs-41",
       "vast-ai-docs-51",
-      "vast-ai-comm-5",
+      "vast-ai-comm-5-refresh-8d6bb9920c9a2e52",
       "vast-ai-comm-12"
     ]
   }
