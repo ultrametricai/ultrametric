@@ -108,8 +108,8 @@ score built entirely from zero-evidence none/na cells renders italic *untested*,
 3. **The work-queue issue** (labels `story-runner` + `founder-call`, Wednesdays, filed only when
    the queue is non-empty) — the ranked to-do list. Close it once the listed rankings have been
    through keyed runs (the next week's issue also closes it automatically, naming its successor);
-   flips that survive a re-judge become verdict changes with new citations, which is the only way
-   a flip may move a score.
+   score changes require new supporting citations, or a verified non-upward judgment after
+   previously cited support changes or disappears. Unchanged-support rerolls are reverted.
 4. **Contest / vendor-response issues** — external correction channels; vendor responses enter
    the evidence pool but never change a verdict by themselves.
 
