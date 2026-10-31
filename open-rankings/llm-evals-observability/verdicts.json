@@ -231,11 +231,18 @@
   {
     "productId": "arize-phoenix",
     "storyId": "api-interactive-docs",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "An interactive API reference is a fair ask for an observability platform with SDKs and APIs, but nothing in the evidence shows an API explorer or runnable 'try it' examples. The SDK reference page only describes package features such as auto-instrumentation, decorators and span querying. The OpenAPI probe returned 404 on all candidate paths, and the Mintlify-hosted docs index alone does not show an interactive playground.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Phoenix has an SDK/API reference section covering zero-config tracing, tracing decorators, span querying and modular Python packages, and its docs are served as Mintlify markdown. Nothing shows that reference is interactive or that its examples can be run in-browser, and the probes found no OpenAPI spec at the standard arize.com paths. Missing for 10: an interactive try-it API explorer, runnable in-docs examples, a published OpenAPI spec, and independent corroboration.",
+    "evidenceIds": [
+      "arize-phoenix-docs-28",
+      "arize-phoenix-docs-29",
+      "arize-phoenix-docs-30",
+      "arize-phoenix-docs-68",
+      "arize-phoenix-probe-2",
+      "arize-phoenix-probe-3"
+    ]
   },
   {
     "productId": "arize-phoenix",
@@ -290,11 +297,15 @@
   {
     "productId": "arize-phoenix",
     "storyId": "automation-rules-engine",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Event-triggered automation rules are a fair question for an LLM observability platform, so the axis applies. The pack shows no user-defined trigger/action rules, alerts, or online automations firing on incoming traces or other events. The closest evidence is dataset evaluators that automatically score outputs when an experiment runs. That is built-in evaluation-harness behavior, an adjacent feature rather than a configurable event-rule system.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The only event-driven automation in the evidence is that evaluators configured in the UI and attached to datasets automatically score outputs whenever an experiment runs. That is a narrow, eval-only form of rule-triggered action. Nothing shows a general rules engine for defining conditions on traces or production events that fire actions. Missing for 10: general user-defined trigger/condition rules, alerts or notifications on events, webhook or other action integrations, automatic online evaluation of incoming production traces, independent corroboration.",
+    "evidenceIds": [
+      "arize-phoenix-docs-18",
+      "arize-phoenix-docs-26",
+      "arize-phoenix-docs-55"
+    ]
   },
   {
     "productId": "arize-phoenix",
@@ -308,20 +319,31 @@
   {
     "productId": "arize-phoenix",
     "storyId": "automation-versioned-workflows",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Automations such as scheduled evaluations or alerting rules are a fair axis for an LLM observability and evaluation platform, so the story applies. The pack, however, documents no automations that a user can version, review, or roll back. What it does show is adjacent: prompt versioning and deployment, versioned datasets, and experiment comparison. Those are versioning of prompts and data, not of automations, and no rollback mechanism is described.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "Phoenix has no automation or workflow engine in the evidence. The closest analog is Prompt Management: prompts can be versioned, stored and deployed, and synced across environments via SDK. Changes can also be reviewed before rollout by testing prompt variants across datasets and comparing experiment results, and datasets are versioned. missing for 10: versioning of actual automations or workflows (beyond prompts), an explicit documented rollback or revert-to-prior-version capability, a review or approval workflow for changes, and independent hands-on corroboration.",
+    "evidenceIds": [
+      "arize-phoenix-docs-7",
+      "arize-phoenix-docs-40",
+      "arize-phoenix-docs-44",
+      "arize-phoenix-docs-41",
+      "arize-phoenix-docs-66",
+      "arize-phoenix-gh-1"
+    ]
   },
   {
     "productId": "arize-phoenix",
     "storyId": "bulk-trace-export",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence shows SDK span querying with filters, MCP access to traces and datasets, and self-hosting where data stays in your own infrastructure. None of these is a documented bulk-export feature to blob storage or a data warehouse. They are developer building blocks or adjacent capabilities that a user would have to assemble into an export pipeline, so they earn no credit for this story.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The only export-adjacent evidence is programmatic access. The SDK lets you query and filter spans (docs-30), and the /mcp endpoint can query traces and datasets (docs-58). Self-hosting keeps data in your own infrastructure (docs-27). Getting that data into blob storage or a warehouse would mean writing your own pull-and-load code. Missing for 10: a documented bulk-export feature for traces and datasets, native blob-storage or data-warehouse connectors and export formats, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "arize-phoenix-docs-30",
+      "arize-phoenix-docs-58",
+      "arize-phoenix-docs-27"
+    ]
   },
   {
     "productId": "arize-phoenix",
@@ -372,11 +394,18 @@
   {
     "productId": "arize-phoenix",
     "storyId": "custom-dashboards",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Custom dashboards are a fair axis for an LLM observability platform like Phoenix, but the evidence pack never documents a dashboard builder. The docs do show adjacent capabilities: per-trace latency inspection, token-usage breakdowns, eval scoring, and span querying via the SDK. Those are adjacent features and developer building blocks, not configurable dashboards over latency, error, cost, and eval-score metrics, so they earn no credit here.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The evidence shows Phoenix captures the underlying signals: latency analysis (docs-12, docs-38), token-usage breakdowns for spotting expensive calls (docs-46), and eval scores on traces and spans (docs-39, docs-42). Span data can also be queried and filtered through the SDK (docs-30), so custom dashboards would have to be built externally from that data. Nothing in the pack documents a custom dashboard or charting feature, and error-rate metrics are not evidenced. Missing for 10: a native custom dashboard builder, error-rate metric views, cost (dollar) metrics beyond token counts, aggregated time-series charts, independent corroboration.",
+    "evidenceIds": [
+      "arize-phoenix-docs-12",
+      "arize-phoenix-docs-38",
+      "arize-phoenix-docs-46",
+      "arize-phoenix-docs-39",
+      "arize-phoenix-docs-42",
+      "arize-phoenix-docs-30"
+    ]
   },
   {
     "productId": "arize-phoenix",
@@ -417,9 +446,9 @@
     "productId": "arize-phoenix",
     "storyId": "human-annotation-queues",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Phoenix documents first-party human annotation: you can attach ground-truth labels directly in the UI and score traces and spans with human labels. That covers the review-and-labeling part of the story. The evidence never mentions annotation queues or any mechanism to route outputs to reviewers. Missing for 10: documented annotation queues, routing or assignment of outputs to reviewers, reviewer workflow details, independent or hands-on corroboration.",
+    "rationale": "Phoenix documents human annotation: ground-truth labels can be attached directly in the UI, and traces and spans can be scored with human labels alongside LLM and code evaluators. This covers the labeling half of the story. Nothing in the evidence describes annotation queues or a way to route outputs to reviewers. Missing for 10: annotation queue functionality, routing/assignment of outputs to human reviewers, review workflow details, independent corroboration.",
     "evidenceIds": [
       "arize-phoenix-docs-6",
       "arize-phoenix-docs-33",
@@ -513,11 +542,17 @@
   {
     "productId": "arize-phoenix",
     "storyId": "openness-full-export",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence pack documents no export feature for getting traces, datasets, evaluations, or prompts out of Phoenix in open formats. The nearby evidence does not count toward this story. Self-hosting with data kept in your own infrastructure is a data-residency control, not export. OTLP/OpenTelemetry support covers ingestion, not export. SDK span querying and the MCP endpoint are primitives you could build an export from, not a documented bulk export.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "Phoenix is free to self-host with your data kept entirely in your own infrastructure (docs-27), and it is built on open standards (OpenTelemetry/OpenInference). Spans and traces can be queried programmatically via the SDK and through the MCP endpoint, which suggests data can be extracted. However, no evidence shows a documented bulk-export feature or the specific open formats it would produce. missing for 10: explicit export functionality for traces/datasets/experiments/prompts/annotations, documented open export formats (e.g., CSV/Parquet/JSON/OTLP out), a complete migration/off-boarding path, and independent corroboration.",
+    "evidenceIds": [
+      "arize-phoenix-docs-27",
+      "arize-phoenix-docs-59",
+      "arize-phoenix-docs-30",
+      "arize-phoenix-docs-58",
+      "arize-phoenix-docs-5"
+    ]
   },
   {
     "productId": "arize-phoenix",
@@ -592,9 +627,9 @@
     "productId": "arize-phoenix",
     "storyId": "privacy-no-training",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Phoenix's own self-hosting docs say your data stays entirely within your infrastructure, nothing is sent to Arize, and deployments can be fully air-gapped. That keeps the vendor from accessing data, and so from training on it. However, nothing in the evidence explicitly addresses AI-training use, so the story is met only indirectly through the self-hosted deployment model. Missing for 10: an explicit no-training policy or opt-out, training-data terms for any hosted offering, and independent corroboration.",
+    "rationale": "Phoenix's self-hosting docs say your data stays entirely within your infrastructure, nothing is sent to Arize, and deployments can be fully air-gapped. That structurally keeps your traces and datasets out of any Arize model training. There is, however, no explicit no-training policy statement or opt-out control. Missing for 10: an explicit data-use/no-training policy, training guarantees for any Arize-hosted offering, independent corroboration.",
     "evidenceIds": [
       "arize-phoenix-docs-27",
       "arize-phoenix-docs-56",
@@ -604,11 +639,14 @@
   {
     "productId": "arize-phoenix",
     "storyId": "privacy-retention-controls",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Phoenix stores traces, datasets and evaluations, so data retention and deletion is a fair question for it. The pack documents no retention policies, TTLs, or trace/project deletion features. The self-hosting claim that data stays within your infrastructure and can be air-gapped is a data-residency control, not a retention or deletion capability, so it earns no credit here.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The only relevant evidence is that Phoenix is free to self-host, keeps data entirely within your own infrastructure, sends nothing to Arize, and can be fully air-gapped. That gives users ownership of where data lives, and implicitly of how long it is kept, but the pack documents no retention or deletion controls. Missing for 10: configurable retention policies (TTL/auto-purge), trace/span/dataset deletion via UI or API, documented deletion guarantees for any hosted offering, and independent corroboration.",
+    "evidenceIds": [
+      "arize-phoenix-docs-27",
+      "arize-phoenix-docs-56"
+    ]
   },
   {
     "productId": "arize-phoenix",
@@ -688,9 +726,9 @@
     "productId": "arize-phoenix",
     "storyId": "token-cost-dashboards",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "Phoenix documents a detailed per-call token usage breakdown in its tracing views, which helps spot the most expensive LLM invocations. That covers token visibility per request. The evidence does not show dollar cost tracking, model-level aggregation, or time-series dashboards. Missing for 10: monetary cost calculation, aggregation by model, time-period dashboards/charts, independent or hands-on corroboration.",
+    "rationale": "Phoenix's tracing docs say it provides a detailed breakdown of token usage for LLM calls, so you can find the most expensive invocations. That covers per-request token visibility. Nothing in the pack shows dollar-cost tracking or aggregation by model or time period in dashboards. Missing for 10: monetary cost tracking, per-model aggregation, time-period dashboards or charts, independent or hands-on corroboration.",
     "evidenceIds": [
       "arize-phoenix-docs-46"
     ]
@@ -720,9 +758,9 @@
     "productId": "bentolabs",
     "storyId": "agent-queries-own-traces",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Bento's official CLI lets a script or agent read runs, inspect signals and their firings, triage issues, and pull analytics, with raw JSON output to stdout. That gives a coding agent a first-party programmatic path into trace and metric data. However, the documented MCP usage only loads Bento's docs into the agent, not the user's telemetry, and no public API spec was found (all OpenAPI probes returned 404). Missing for 10: an MCP server or documented API exposing traces/metrics/evals, explicit querying of eval results from the CLI, and independent or hands-on corroboration of agent-driven debugging.",
+    "rationale": "Bento's official CLI claims dashboard parity from the terminal or scripts, including reading runs, triaging issues, inspecting signals and their firings, and pulling analytics. Its raw JSON output lets an agent pipe and parse the data, so an agent can query traces and metrics through it. However, the documented MCP usage only loads docs into the agent, not trace data, and no OpenAPI spec was found, so access goes through the CLI rather than a documented API or MCP server. Missing for 10: a documented data-querying MCP server or public REST API, explicit agent access to eval and regression results, and independent hands-on corroboration.",
     "evidenceIds": [
       "bentolabs-docs-30",
       "bentolabs-docs-32",
@@ -817,11 +855,16 @@
   {
     "productId": "bentolabs",
     "storyId": "agentic-builtin-assistant",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "The evidence shows AI-powered features rather than a built-in assistant that users delegate tasks to. Plain-English signal and alert definitions, automatic incident judging, and auto-promoted fixes are adjacent capabilities, and the Agent Skills are installed into external coding agents (Claude Code, Cursor, etc.) rather than running as an assistant inside Bento. No in-product conversational or task-delegation assistant is documented.",
-    "evidenceIds": []
+    "rationale": "Bento has built-in AI behavior you can hand work to in plain English. You describe a failure mode and it trains, fires and backfills a signal [docs-4]. Alerts written in English are grouped into incidents and judged real or benign automatically [docs-7]. It also proposes and shadow-tests fixes that graduate to full traffic only if they help [docs-11, docs-12]. However, there is no evidence of a general-purpose in-product assistant you can delegate arbitrary tasks to. Its agent-facing tooling (Agent Skills, MCP docs) targets external agents like Claude Code rather than a built-in assistant [docs-1, docs-2]. Missing for 10: a documented general in-product assistant or chat interface, open-ended task delegation beyond signal/alert/fix workflows, and independent corroboration.",
+    "evidenceIds": [
+      "bentolabs-docs-4",
+      "bentolabs-docs-7",
+      "bentolabs-docs-11",
+      "bentolabs-docs-12"
+    ]
   },
   {
     "productId": "bentolabs",
@@ -853,9 +896,9 @@
     "productId": "bentolabs",
     "storyId": "agentic-mcp-server",
     "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Bento is an observability platform rather than an agent, so the MCP-server axis applies. The only MCP evidence is that coding agents install Bento's skill and then \"load the docs over MCP,\" which points to an official docs-serving MCP endpoint, not one exposing product data or actions. Product operations such as triaging issues, reading runs and managing signals are documented only via the CLI. missing for 10: documented MCP server exposing Bento product data and actions (traces, issues, signals), MCP server setup and connection docs, tool list, independent or hands-on corroboration",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "Bento is an observability platform rather than an agent, so the MCP-server axis applies. The quickstart says coding agents (Claude Code, Cursor, Codex, etc.) install Bento's skill and then \"load the docs over MCP,\" which points to an official docs-serving MCP endpoint. Nothing shows an MCP server that exposes Bento's product data or actions such as issues, runs, signals, or alerts; those are only documented through the CLI. Missing for 10: an MCP server exposing product data and actions (triage, runs, signals), a documented MCP endpoint or tool list with setup instructions, and independent or hands-on corroboration.",
     "evidenceIds": [
       "bentolabs-docs-2",
       "bentolabs-docs-1"
@@ -990,11 +1033,20 @@
   {
     "productId": "bentolabs",
     "storyId": "automation-bulk-operations",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence shows a scriptable CLI with JSON output and only per-ID commands such as `signals update <signal-id>`. There is no documented bulk or batch operation, such as bulk-triaging issues or updating many signals in one action. Looping the CLI in a script is a user-side workaround. Signal backfill and failure clustering are adjacent features, not user-driven bulk operations, so none of this earns credit.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "Bento has no documented bulk-action feature such as multi-select triage or batch updates, but its CLI lets you do everything the dashboard does from a script or CI, with raw JSON output you can pipe into jq. So bulk operations can be built by looping over list commands. Signals also backfill across your entire trace history, and recurring failures are auto-grouped into issues and clusters, which are aggregate operations of a kind. Missing for 10: a native bulk update or triage command for many issues or signals at once, a documented batch API (no OpenAPI spec was found), and hands-on corroboration.",
+    "evidenceIds": [
+      "bentolabs-docs-30",
+      "bentolabs-docs-32",
+      "bentolabs-docs-34",
+      "bentolabs-docs-36",
+      "bentolabs-docs-4",
+      "bentolabs-docs-5",
+      "bentolabs-docs-6",
+      "bentolabs-probe-2"
+    ]
   },
   {
     "productId": "bentolabs",
@@ -1026,27 +1078,30 @@
   {
     "productId": "bentolabs",
     "storyId": "automation-versioned-workflows",
-    "verdict": "partial",
-    "quality": 6,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Bento's marketing page says every prompt, skill, and model change is versioned, diffable, and reversible (docs-15). Skills and rules live in the user's repo as Markdown/YAML (docs-16), and fixes graduate from candidate to promoted through shadow-mode scoring (docs-11, docs-12), which gives a review step. All of this is high-level marketing copy with no documented version-history, diff, or rollback workflow, and signal/alert edits via the CLI show no version tracking (docs-36, docs-42). Missing for 10: documented rollback/version-history UI or CLI commands, versioning of signals and alerts, review/approval workflow detail, independent or hands-on corroboration.",
+    "rationale": "Bento states that every prompt, skill, and model change is versioned, diffable, and reversible, with regressions traceable to the change that caused them [15]. Skills and rules live in the user's repo as Markdown/YAML, so they can be reviewed and rolled back through normal source control [16]. Fixes ship in shadow mode and promote from candidate only after proving themselves, with releases scored before rollout [11][12][14], which adds a review gate. Missing for 10: detailed docs on the rollback mechanism and review workflow (UI/CLI commands), any version history for signals and alert rules (only an in-place `signals update` is documented), and independent or hands-on corroboration.",
     "evidenceIds": [
       "bentolabs-docs-15",
       "bentolabs-docs-16",
       "bentolabs-docs-11",
       "bentolabs-docs-12",
-      "bentolabs-docs-14",
-      "bentolabs-docs-36"
+      "bentolabs-docs-14"
     ]
   },
   {
     "productId": "bentolabs",
     "storyId": "bulk-trace-export",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Bulk export is a fair question for an agent-observability platform, so the axis applies. However, the evidence shows no documented export of traces or datasets to blob storage (e.g. S3/GCS) or to a data warehouse. The CLI can read runs and print raw JSON to stdout, but scripting that into an export is a developer workaround, not a native bulk-export capability. The webhook routes alerts, and the OpenTelemetry docs cover only ingestion into Bento.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The official CLI can read runs and pull analytics from a script or CI, and its `raw` mode emits plain JSON that can be piped to a file. That makes a scripted export of trace data possible as a workaround, but nothing documents a native bulk-export capability. missing for 10: native bulk export of traces, any dataset export, blob-storage (S3/GCS) destinations, data-warehouse connectors (e.g. Snowflake/BigQuery), scheduled/streaming export, independent corroboration.",
+    "evidenceIds": [
+      "bentolabs-docs-30",
+      "bentolabs-docs-32",
+      "bentolabs-probe-3"
+    ]
   },
   {
     "productId": "bentolabs",
@@ -1164,11 +1219,15 @@
     "productId": "bentolabs",
     "storyId": "offline-eval-datasets",
     "verdict": "partial",
-    "quality": 4,
-    "confidence": "low",
-    "rationale": "Bento's own marketing claims every release is \"scored against your production history — offline, in CI, and on live traffic,\" which touches the offline-evaluation half of the story. There is no documented way to curate, select, or version datasets from production traces, and the evaluation claim is a single homepage line with no workflow docs. missing for 10: documented dataset curation from traces (selecting, labeling, versioning subsets), docs on how offline eval runs are configured and executed, independent or hands-on corroboration.",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Bento claims every release is scored against production history offline, in CI, and on live traffic, and it captures full production traces with tagging, signals, and issue grouping. That covers the offline-eval-against-production half of the story. However, no evidence shows an explicit dataset curation workflow, such as selecting, labeling, or versioning trace subsets into named datasets. Missing for 10: documented dataset creation and curation from traces, details on how offline eval runs are configured and scored, and independent or hands-on corroboration.",
     "evidenceIds": [
-      "bentolabs-docs-14"
+      "bentolabs-docs-14",
+      "bentolabs-docs-3",
+      "bentolabs-docs-5",
+      "bentolabs-docs-22",
+      "bentolabs-docs-4"
     ]
   },
   {
@@ -1735,23 +1794,33 @@
   {
     "productId": "braintrust",
     "storyId": "automation-versioned-workflows",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Braintrust does run automations: online scoring on production traces, scheduled Patterns runs, and CI/CD evals. So the axis applies, but the pack has no evidence that these automations can be versioned, reviewed, or rolled back. The documented versioning covers datasets, and experiments are immutable records; that is an adjacent capability and earns no credit for versioning automations.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Braintrust's automations (scheduled Patterns runs, online scoring) have no documented versioning, review, or rollback. The only adjacent support is versioned datasets, immutable experiment records, and running evals on every pull request, which gives a git/CI review path for code-defined evals. The `bt` CLI and API also let you manage functions, prompts, and scorers, but nothing says those are versioned. missing for 10: versioning of automation definitions (online scoring rules, Patterns schedules, prompts/functions), a review/approval workflow for automation changes, rollback to prior versions, independent corroboration.",
+    "evidenceIds": [
+      "braintrust-docs-31",
+      "braintrust-docs-27",
+      "braintrust-docs-2",
+      "braintrust-docs-33",
+      "braintrust-docs-34",
+      "braintrust-docs-7"
+    ]
   },
   {
     "productId": "braintrust",
     "storyId": "bulk-trace-export",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Braintrust documents its own bulk export path for traces: logs can be downloaded as CSV or JSON, or pulled locally with `bt sync pull` [braintrust-docs-35], and the `bt` CLI is described as able to 'sync data' [braintrust-docs-33]. The API can manage datasets [braintrust-docs-34], but nothing documents a direct, managed export to blob storage or a data warehouse, so getting data there means a user-built pipeline from local pulls or the API. Missing for 10: a native export or connector to S3/GCS/blob storage or warehouses (Snowflake, BigQuery, etc.), explicitly documented bulk export of datasets, scheduled or continuous export, and independent corroboration.",
+    "rationale": "Braintrust documents downloading logs as CSV or JSON and pulling them locally with `bt sync pull` (the CLI 'sync data' feature). Its API also lets you programmatically manage datasets, so bulk extraction is possible. However, no evidence shows a native export or sync to blob storage (S3/GCS) or a data warehouse; reaching those targets would require custom scripting on top of local pulls or API calls. Self-hosting keeps data in your own cloud account, which is data residency rather than an export pipeline. Missing for 10: native connectors or scheduled export to blob storage/warehouses, explicit bulk dataset export docs, independent corroboration.",
     "evidenceIds": [
       "braintrust-docs-35",
       "braintrust-docs-33",
-      "braintrust-docs-34"
+      "braintrust-docs-26",
+      "braintrust-docs-34",
+      "braintrust-docs-41",
+      "braintrust-docs-32"
     ]
   },
   {
@@ -2025,20 +2094,29 @@
   {
     "productId": "braintrust",
     "storyId": "privacy-no-training",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Whether customer data may be used to train AI models is a fair question for an AI observability SaaS that stores traces, prompts and datasets, so this axis applies. The pack contains no no-training policy, training opt-out setting, or contractual commitment about model training. The self-hosting option keeps data in the customer's own cloud for residency and compliance, but that is an adjacent control and says nothing about training use, so it earns no credit.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The evidence includes no explicit no-training policy or opt-out control. The only related capability is self-hosting: you deploy and control the infrastructure that stores your sensitive AI data, keeping it in your own cloud account and region. This only indirectly limits vendor access to your data. Missing for 10: an explicit statement that customer data is not used for model training, a documented training opt-out setting, coverage of how Loop and other AI features handle data sent to model providers, and independent corroboration.",
+    "evidenceIds": [
+      "braintrust-docs-10",
+      "braintrust-docs-32",
+      "braintrust-docs-40"
+    ]
   },
   {
     "productId": "braintrust",
     "storyId": "privacy-retention-controls",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence pack documents no retention policies, retention windows, or deletion controls (UI, API, or CLI) for logs, traces, or datasets. The self-hosting option (keeping data in your own cloud account and region) addresses data residency and storage location, which is an adjacent control, not a documented retention or deletion capability. Generic API 'create and manage' language does not explicitly cover deletion.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "Braintrust's self-hosted deployment lets you deploy and control the infrastructure that stores your AI data in your own cloud account and region. That implies you can govern retention and deletion of that data yourself. The API also says it can 'create and manage' projects, experiments, and datasets, but no doc explicitly describes retention or deletion controls. Missing for 10: configurable retention policies/TTLs for logs and traces, documented deletion APIs or UI for traces/projects/datasets, retention controls on the managed cloud tier, independent corroboration.",
+    "evidenceIds": [
+      "braintrust-docs-10",
+      "braintrust-docs-32",
+      "braintrust-docs-40",
+      "braintrust-docs-34"
+    ]
   },
   {
     "productId": "braintrust",
@@ -2436,11 +2514,16 @@
   {
     "productId": "cekura",
     "storyId": "automation-bulk-operations",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Bulk operations are a fair question for a testing and observability SaaS with a CLI, SDK and API, so the axis applies. The pack never documents a bulk or batch capability: no batch API endpoints, no multi-select actions, and no bulk create, update or delete commands in the CLI or SDK. The marketing line about running thousands of synthetic conversations, the cron scheduling and the A/B run comparison are adjacent simulation-scale and automation features, not bulk operations across items, so they earn no credit.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The only evidence of acting on many items at once is batch-style test execution: marketing copy about running thousands of synthetic conversations and running the same scenarios across platforms and models, plus a CLI and SDK that manage agents, scenarios, runs and call data, which could be scripted over many items. No bulk endpoint or bulk command is actually documented. Missing for 10: explicit bulk create/update/delete operations for agents, scenarios or calls; documented batch API or CLI commands; any hands-on or independent corroboration.",
+    "evidenceIds": [
+      "cekura-docs-19",
+      "cekura-docs-17",
+      "cekura-docs-4",
+      "cekura-docs-5"
+    ]
   },
   {
     "productId": "cekura",
@@ -2503,11 +2586,15 @@
   {
     "productId": "cekura",
     "storyId": "cost-attribution-metadata",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Cekura's observability ingestion accepts per-call metadata, and its dashboards can visualize metadata, but nothing documents attributing cost or usage to users, sessions, or features through that metadata. The cost-related items describe Cekura's own evaluation credits and sampling, which are adjacent features, not attribution. Metadata tagging plus generic dashboards is at most a building block, so it earns no credit.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Cekura accepts custom metadata with each ingested call log (cekura-docs-6/25), and its dashboards can visualize and analyze call data and metadata (cekura-docs-11). That allows some usage slicing by call/session attributes, but nothing shows cost tracking or attribution of spend to users or features. Missing for 10: any cost capture or cost reporting, explicit per-user and per-feature attribution, documentation of grouping or aggregation by metadata keys, and independent corroboration.",
+    "evidenceIds": [
+      "cekura-docs-6",
+      "cekura-docs-25",
+      "cekura-docs-11"
+    ]
   },
   {
     "productId": "cekura",
@@ -2661,11 +2748,16 @@
   {
     "productId": "cekura",
     "storyId": "openness-full-export",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Cekura is a SaaS testing and observability platform, so data export and portability is a fair axis. However, the evidence documents no export feature, no open-format dump, and no account-exit or deletion path. The CLI, SDK and OpenAPI spec that give programmatic access to agents, runs and call data are developer building blocks someone could use to build an export, not a documented export capability.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Cekura has no documented export or data-portability feature. Its CLI manages agents, scenarios, runs and call data from the terminal, and a public OpenAPI spec plus SDK give programmatic access, so data could in principle be pulled out through the API. missing for 10: a documented bulk/full-account export, explicit open export formats (e.g., CSV/JSON/audio bundles), export of recordings and evaluation results, account-deletion/offboarding guidance, independent confirmation that a full export works.",
+    "evidenceIds": [
+      "cekura-docs-4",
+      "cekura-docs-5",
+      "cekura-probe-3",
+      "cekura-probe-5"
+    ]
   },
   {
     "productId": "cekura",
@@ -2727,11 +2819,15 @@
   {
     "productId": "cekura",
     "storyId": "privacy-retention-controls",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Cekura stores customer call transcripts and recordings, so data retention and deletion is a fair question for it. The pack documents no retention settings or deletion controls. PII redaction (cekura-docs-12/60) is an adjacent control that removes sensitive content, not a retention or deletion policy. The CLI's vague \"manage call data\" (cekura-docs-4) never mentions deleting data or setting retention periods.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Cekura stores customer call transcripts and recordings as CallLogs, so retention and deletion controls are a fair axis. The only related evidence is a PII-redaction feature that automatically removes sensitive information from transcripts and audio, plus a CLI described as able to 'manage' call data. Neither documents configurable retention periods or explicit deletion. Missing for 10: configurable data-retention policies, documented call-log/recording deletion via API, CLI or UI, account-level data purge, and independent corroboration.",
+    "evidenceIds": [
+      "cekura-docs-12",
+      "cekura-docs-25",
+      "cekura-docs-4"
+    ]
   },
   {
     "productId": "cekura",
@@ -2745,11 +2841,15 @@
   {
     "productId": "cekura",
     "storyId": "prompt-playground",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Cekura is a voice-agent testing and observability platform, so a prompt playground is a fair question to ask of it. However, the evidence never documents an interactive playground for iterating on prompts against live models with variables. A/B testing of agent versions, in-platform agent creation, and evaluator dynamic variables are adjacent features. They are not a prompt-iteration playground and earn no credit.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Cekura has no documented prompt playground. Developers can still iterate on prompts and models indirectly: they can A/B test two agent versions to measure prompt or model changes, run the same scenarios across models, and create and test agents on Cekura without external keys. Missing for 10: an interactive prompt playground, prompt variable/template support, direct model selection in an editor, and independent corroboration of the prompt-iteration workflow.",
+    "evidenceIds": [
+      "cekura-docs-10",
+      "cekura-docs-17",
+      "cekura-docs-16"
+    ]
   },
   {
     "productId": "cekura",
@@ -2866,16 +2966,16 @@
     "productId": "chronicle-labs",
     "storyId": "agentic-agent-docs",
     "verdict": "full",
-    "quality": 9,
+    "quality": 8,
     "confidence": "high",
-    "rationale": "A hands-on probe confirms a live llms.txt (HTTP 200) at docs.chronicle-labs.com with a structured, agent-readable index, and a second llms.txt on the marketing site describes product capabilities. Doc pages are also served as raw .md URLs (e.g., introduction.md, platform/twins.md, api-reference/authentication.md), which suits agent consumption. Missing for 10: no evidence of an llms-full.txt or bundled full-docs export, and no first-party guidance on pointing agents at the docs.",
+    "rationale": "A live probe returned HTTP 200 for a structured llms.txt at docs.chronicle-labs.com, and the marketing site also serves /llms.txt. Docs pages are published as raw .md URLs (introduction.md, platform/*.md, api-reference/*.md), which an agent can ingest directly. Missing for 10: no evidence of an llms-full.txt or documented guidance for agent consumption, and no machine-readable OpenAPI spec (all candidate paths returned 404).",
     "evidenceIds": [
       "chronicle-labs-probe-1",
       "chronicle-labs-docs-24",
       "chronicle-labs-docs-25",
       "chronicle-labs-docs-4",
       "chronicle-labs-docs-7",
-      "chronicle-labs-docs-17"
+      "chronicle-labs-probe-2"
     ]
   },
   {
@@ -3138,11 +3238,14 @@
   {
     "productId": "chronicle-labs",
     "storyId": "bulk-trace-export",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Bulk export is a fair axis for an agent evaluation and observability platform, but the evidence never documents exporting traces or datasets to blob storage or a data warehouse. What it does show is ingestion (SDK and OpenTelemetry), querying traces in Timeline or through the SDK, and semantic search over events. Those are developer building blocks a user could script an export from, not a native bulk-export capability, so they earn no credit.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The only data-access path in the evidence is reading traces back: events can be queried in Timeline or through the SDK, and there is a semantic-search endpoint (POST /v1/search). A developer could script their own export from that, but the docs show no native bulk export and no blob-storage or warehouse destinations. The OpenTelemetry exporter mentioned only covers sending data into Chronicle, not out. Missing for 10: native bulk export of traces, dataset/task export, blob storage (S3/GCS/Azure) or data warehouse connectors, scheduled or streaming export, and any independent corroboration.",
+    "evidenceIds": [
+      "chronicle-labs-docs-19",
+      "chronicle-labs-docs-20"
+    ]
   },
   {
     "productId": "chronicle-labs",
@@ -3187,11 +3290,17 @@
   {
     "productId": "chronicle-labs",
     "storyId": "custom-dashboards",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The axis applies to an agent evaluation and observability platform, but the evidence shows no capability to build custom dashboards over latency, error, cost, or eval-score metrics. The pack documents per-trial Timeline views, event querying via the SDK, scorer values, and a generic 'dashboard' mention. These are adjacent features or developer building blocks, not configurable metric dashboards, and latency and cost metrics are never mentioned.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The evidence shows observability and telemetry: every request, change, and score can be viewed, and events from code or OpenTelemetry can be queried in Timeline or through the SDK. There are also generic mentions of a dashboard and real-time production monitoring. Nothing documents a configurable dashboard builder, and latency, error, and cost metrics are never named; only eval scores (0–1 scorer values) are explicit. Missing for 10: custom dashboard/widget creation, explicit latency/error/cost metric charts, aggregation over eval scores across runs, independent corroboration.",
+    "evidenceIds": [
+      "chronicle-labs-docs-14",
+      "chronicle-labs-docs-19",
+      "chronicle-labs-docs-23",
+      "chronicle-labs-docs-24",
+      "chronicle-labs-docs-4"
+    ]
   },
   {
     "productId": "chronicle-labs",
@@ -3213,11 +3322,14 @@
   {
     "productId": "chronicle-labs",
     "storyId": "framework-auto-instrumentation",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "Chronicle documents generic trace ingestion through its own SDKs, custom code, or an OpenTelemetry exporter pointed at Chronicle. Nothing in the evidence names a prebuilt integration for LangChain, the OpenAI SDK, the Vercel AI SDK, or any other framework. A generic OTel endpoint and raw SDK ingestion are building blocks for instrumentation, not existing framework integrations, so they earn no credit for this story.",
-    "evidenceIds": []
+    "rationale": "Chronicle accepts telemetry from your own code, from agent tool calls, or from a generic OpenTelemetry exporter, and agent processes get a traces:write key, so instrumentation is possible. No first-party integrations for LangChain, the OpenAI SDK, or the Vercel AI SDK are documented, so connecting those frameworks would mean building your own OpenTelemetry instrumentation. Missing for 10: named framework integrations for LangChain, OpenAI SDK, and Vercel AI SDK; setup docs for auto-instrumentation; independent or hands-on corroboration.",
+    "evidenceIds": [
+      "chronicle-labs-docs-19",
+      "chronicle-labs-docs-17"
+    ]
   },
   {
     "productId": "chronicle-labs",
@@ -3276,11 +3388,18 @@
   {
     "productId": "chronicle-labs",
     "storyId": "online-evals-guardrails",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Chronicle's documented scorers run only on tasks and trials inside simulated, frozen environments: backtests, suite runs and version comparisons. Production traces can be ingested via SDK or OpenTelemetry, but they are turned into tasks or replayed in staging rather than scored live. The marketing claim of 'real-time monitoring of production agents' is an adjacent monitoring feature with no evidence that evaluators or scorers run continuously on live traffic.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Chronicle's documented evaluation model runs scorers against frozen task suites in simulated environments. Production data is mainly turned into replayed tests, which is offline evaluation. The only production-facing pieces are telemetry ingestion from the agent process via SDK or OpenTelemetry, and a marketing claim of real-time monitoring of production agents; neither shows scorers running continuously on live traffic. Missing for 10: documented online/continuous scorer execution on live production traces, sampling or scheduling controls for production evals, hands-on or independent corroboration.",
+    "evidenceIds": [
+      "chronicle-labs-docs-24",
+      "chronicle-labs-docs-19",
+      "chronicle-labs-docs-14",
+      "chronicle-labs-docs-17",
+      "chronicle-labs-docs-22",
+      "chronicle-labs-docs-13"
+    ]
   },
   {
     "productId": "chronicle-labs",
@@ -3460,14 +3579,15 @@
     "productId": "galileo",
     "storyId": "agent-queries-own-traces",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Galileo documents an official MCP server that connects AI IDEs like Cursor and VS Code/Copilot to its evaluation and observability platform. The listed MCP capabilities, though, are creating and managing datasets, running experiments, and setting up prompt templates, so only the eval/experiment part of the story is covered. Nothing shows an agent can query logged traces, spans, or production metrics through MCP or a documented query API, and the OpenAPI probes all returned 404. missing for 10: documented MCP tools or API endpoints for querying traces/spans/sessions, programmatic access to metric values and eval results for debugging, a public API reference, independent or hands-on corroboration of agent-driven debugging.",
+    "rationale": "Galileo documents an official MCP server that connects AI IDEs like Cursor and VS Code Copilot to its evaluation and observability platform. However, the documented MCP capabilities are creating datasets, running experiments, and setting up prompt templates, not explicitly querying traces, metrics, or eval results for debugging. No public OpenAPI spec was found. Missing for 10: documented MCP/API tools for querying traces and spans, retrieving metric and eval results programmatically, a published query API spec, and hands-on corroboration of agent-driven debugging.",
     "evidenceIds": [
       "galileo-docs-31",
       "galileo-docs-4",
       "galileo-probe-4",
-      "galileo-probe-3"
+      "galileo-probe-3",
+      "galileo-docs-6"
     ]
   },
   {
@@ -3490,17 +3610,16 @@
   {
     "productId": "galileo",
     "storyId": "agent-triggers-eval-run",
-    "verdict": "partial",
-    "quality": 6,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Galileo's official MCP server lets AI-powered IDEs and agents create and manage datasets and run experiments directly from the development environment, which covers the dataset-creation and eval-trigger steps of the story. Nothing in the evidence shows an agent reading experiment results back through MCP or another API, and no OpenAPI spec was found. Missing for 10: documented read-back of experiment results via MCP or API, a published API/SDK reference for dataset and experiment endpoints, hands-on or independent corroboration of the end-to-end agent loop.",
+    "rationale": "Galileo's official MCP server lets AI-powered IDEs and agents create and manage datasets and run experiments directly, and experiments evaluate prompts, models, and app code against chosen metrics. This covers the agent-driven dataset creation and programmatic eval-run core of the story. missing for 10: explicit evidence that an agent can read back experiment results/metric scores via MCP or SDK, a public OpenAPI spec (probe 404), and independent or hands-on corroboration of the end-to-end agent workflow.",
     "evidenceIds": [
       "galileo-docs-4",
       "galileo-docs-31",
       "galileo-docs-32",
       "galileo-probe-4",
-      "galileo-docs-2",
-      "galileo-probe-3"
+      "galileo-docs-2"
     ]
   },
   {
@@ -3521,11 +3640,15 @@
     "productId": "galileo",
     "storyId": "agentic-ai-insights",
     "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "The release notes mention an in-product AI Assistant for troubleshooting agentic systems, which directly matches AI-generated insights from the user's data, but this rests on a single one-line mention. Related features such as LLM-as-a-judge scoring and metrics auto-tuned from natural-language feedback are evaluation mechanics, not insights or suggestions, so they earn no credit here. Missing for 10: documentation of what the AI Assistant analyzes and what suggestions it produces, how it surfaces insights in the UI, and independent or hands-on corroboration.",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "The release notes mention an in-product AI Assistant for troubleshooting agentic systems, which directly fits the story. LLM-as-a-judge metrics and hallucination and instruction-adherence evaluations also produce AI-generated assessments of logged data, and natural-language feedback can refine those metrics. However, the assistant appears only as a one-line release note, with nothing on what insights or suggestions it surfaces. Missing for 10: detailed docs on the AI Assistant's scope and outputs, evidence of proactive suggestions or recommendations, independent or hands-on corroboration.",
     "evidenceIds": [
-      "galileo-docs-41"
+      "galileo-docs-41",
+      "galileo-docs-8",
+      "galileo-docs-10",
+      "galileo-docs-14",
+      "galileo-docs-37"
     ]
   },
   {
@@ -3597,9 +3720,9 @@
     "productId": "galileo",
     "storyId": "agentic-nl-commands",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Galileo's own official MCP server lets AI IDEs such as Cursor and VS Code with Copilot drive it, so users can create datasets, run experiments and set up prompt templates through natural-language prompts. The release notes also mention an in-product AI Assistant for troubleshooting agentic systems, and the docs describe natural-language feedback for tuning metrics. However, natural-language operation inside the product is documented only by a single release-note line, and the MCP path depends on an external AI client. Missing for 10: a documented in-product natural-language command interface covering broad operations, detail on the AI Assistant's scope, and independent or hands-on corroboration.",
+    "rationale": "Galileo's official MCP server lets AI IDEs such as Cursor and VS Code with Copilot drive core operations through natural-language prompts: creating and managing datasets, running experiments, and setting up prompt templates. In-product natural-language support is narrower: an AI Assistant for troubleshooting agentic systems, and natural-language feedback that tunes metrics. Missing for 10: a general in-product natural-language command interface (operation in plain language mostly depends on an external IDE agent via MCP), documented scope of the AI Assistant beyond troubleshooting, and independent or hands-on corroboration.",
     "evidenceIds": [
       "galileo-docs-4",
       "galileo-docs-31",
@@ -3714,11 +3837,15 @@
   {
     "productId": "galileo",
     "storyId": "automation-bulk-operations",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Bulk operations are a fair axis for an eval and observability platform, such as bulk-tagging, deleting, or annotating traces or dataset rows. The evidence never documents selecting many items and acting on them at once. Experiments that run over datasets, annotation queues that organize traces, and decision models that score large text volumes are adjacent batch-evaluation features, not a documented bulk-operation capability.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Galileo shows some batch-style handling of many items: experiments run prompts and code against whole datasets of inputs, and annotation queues group many sessions, traces and spans for structured review. However, nothing in the evidence documents explicit bulk actions such as bulk edit, tag, delete or export across selected items. missing for 10: documented bulk-action capabilities (multi-select edit/tag/delete/export), a bulk API or MCP batch endpoints, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "galileo-docs-2",
+      "galileo-docs-40",
+      "galileo-docs-4"
+    ]
   },
   {
     "productId": "galileo",
@@ -3763,11 +3890,15 @@
   {
     "productId": "galileo",
     "storyId": "ci-eval-gating",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence documents experiments that evaluate prompts, models, and application code against metrics, an SDK, and threshold-based alerts on production logs. Nothing documents running evals in a CI pipeline or failing or gating a deployment on their results. Experiments and the SDK are only building blocks, and log alerts are an adjacent production-monitoring feature, so neither earns credit for this story.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Galileo documents Experiments that evaluate prompts, models and application code against chosen metrics, with a Python SDK and custom metrics. This means evals can plausibly be scripted, but nothing in the pack shows them running in a CI pipeline or gating a deployment on their results. Missing for 10: documented CI integration (e.g. GitHub Actions or a CLI runner), pass/fail thresholds or exit codes for deployment gating, programmatic experiment-run docs, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "galileo-docs-2",
+      "galileo-docs-8",
+      "galileo-docs-28"
+    ]
   },
   {
     "productId": "galileo",
@@ -3801,11 +3932,16 @@
   {
     "productId": "galileo",
     "storyId": "custom-dashboards",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Custom dashboards are a fair question for an LLM observability platform, but the evidence pack never documents user-built dashboards or charts. What it does document is metric-threshold alerts on Cost and Correctness, custom eval metrics, and viewing session-level metrics in tutorials. These are adjacent features, not the ability to compose custom dashboards over latency, error, cost and eval-score metrics.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Galileo captures real-time session, trace and span data, supports custom eval metrics, and lets users view session-level metrics and alert on cost and hallucination rates. That implies cost and eval-score metrics are tracked and surfaced, but nothing in the pack shows a user building custom dashboards. Missing for 10: any documentation of custom dashboard creation or configurable charts, explicit latency and error-rate panels, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "galileo-docs-6",
+      "galileo-docs-14",
+      "galileo-docs-24",
+      "galileo-docs-8"
+    ]
   },
   {
     "productId": "galileo",
@@ -3946,11 +4082,13 @@
   {
     "productId": "galileo",
     "storyId": "openness-open-license",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Openness of source code is a fair question for an AI evaluation and observability platform, so the axis applies. The only GitHub evidence is the public galileo-python SDK repo, which shows a logging decorator but says nothing about a license. It also covers only a client SDK, not the platform itself. Nothing in the pack shows the product's source is available under an open license.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 2,
+    "confidence": "low",
+    "rationale": "The only relevant evidence is a public GitHub repository for Galileo's Python SDK (rungalileo/galileo-python), so some client-side source is readable. Nothing in the pack shows the core platform's source is public, and the SDK's license is not stated. Missing for 10: evidence of an open-source license (e.g. OSI-approved), public source for the core platform rather than just the SDK, and independent confirmation of openness.",
+    "evidenceIds": [
+      "galileo-gh-1"
+    ]
   },
   {
     "productId": "galileo",
@@ -4039,11 +4177,14 @@
   {
     "productId": "galileo",
     "storyId": "prompt-versioning-deploy",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Galileo's evidence mentions prompt templates via its MCP server and evaluating prompts in experiments. However, nothing documents prompt versioning or pushing prompt changes to production without a code deploy, so these are adjacent features rather than this capability.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Galileo's docs show prompt templates can be set up through its MCP server (galileo-docs-4), and its experiments can evaluate prompts (galileo-docs-2), so some prompt-management capability exists. Nothing in the evidence shows prompt versioning or pushing prompt changes to production without a code deploy. Missing for 10: prompt version history/registry, deploying or promoting prompt versions to production without shipping code, SDK runtime fetch of managed prompts, independent corroboration.",
+    "evidenceIds": [
+      "galileo-docs-4",
+      "galileo-docs-2"
+    ]
   },
   {
     "productId": "galileo",
@@ -4137,11 +4278,18 @@
   {
     "productId": "helicone",
     "storyId": "agent-triggers-eval-run",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence pack documents no first-party dataset-creation API and no way to programmatically trigger an eval run and read back its results. The webhook docs mention scoring and evaluating responses, but that is scoring done by the user's own external system on request-completion callbacks, which is a developer building block rather than an eval-run capability. The request-query REST API and exporting logs to build datasets are adjacent features or user-side workarounds, so they earn no credit for this story.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The evidence shows only adjacent building blocks. Webhooks can drive real-time automatic scoring of LLM responses, a REST request-query API and an OpenAPI spec allow programmatic reads, and an llms.txt probe makes the docs agent-readable. Nothing shows an API for creating datasets or triggering a discrete eval run, so an agent would have to assemble this workflow from webhooks plus external scoring. Missing for 10: a programmatic dataset-creation API, an endpoint to trigger an eval run against a dataset, a documented way to read eval-run results, and hands-on corroboration of an agent-driven eval workflow.",
+    "evidenceIds": [
+      "helicone-docs-23",
+      "helicone-docs-9",
+      "helicone-docs-15",
+      "helicone-docs-32",
+      "helicone-probe-3",
+      "helicone-probe-1"
+    ]
   },
   {
     "productId": "helicone",
@@ -4317,9 +4465,9 @@
     "productId": "helicone",
     "storyId": "api-machine-spec",
     "verdict": "full",
-    "quality": 9,
+    "quality": 8,
     "confidence": "high",
-    "rationale": "A hands-on probe confirmed a downloadable OpenAPI spec at docs.helicone.ai/swagger.json: it returned HTTP 200 and contains an \"openapi\" key. This is backed by documented REST API reference pages such as POST /v1/request/query. missing for 10: in-depth first-party documentation describing the spec's coverage or versioning, and independent community corroboration of its use.",
+    "rationale": "A direct probe returned HTTP 200 for a machine-readable OpenAPI document at https://docs.helicone.ai/swagger.json, and the REST reference docs (e.g. POST /v1/request/query) appear to be generated from that spec. An AI-native user can download and consume it directly. Missing for 10: documentation describing the spec's coverage, completeness or versioning, and independent or hands-on corroboration of using the spec for client generation or agent tooling.",
     "evidenceIds": [
       "helicone-probe-3",
       "helicone-docs-15",
@@ -4344,9 +4492,9 @@
     "productId": "helicone",
     "storyId": "api-versioning-policy",
     "verdict": "partial",
-    "quality": 2,
+    "quality": 3,
     "confidence": "low",
-    "rationale": "Helicone's REST API uses a versioned path (`https://api.helicone.ai/v1/request/query`) and publishes an OpenAPI spec, so versioned endpoints exist. However, nothing documents a versioning scheme or any deprecation policy. Prompt version tracking is a different feature and earns no credit here. Missing for 10: a documented API versioning policy, a documented deprecation policy with timelines/notice, a changelog of breaking changes, and independent corroboration.",
+    "rationale": "Helicone's REST API uses a versioned path (`/v1/request/query`) and publishes an OpenAPI spec, which is thin evidence of API versioning. Nothing in the pack documents a deprecation policy, sunset timelines or versioning guarantees. Missing for 10: a documented API deprecation policy, an explicit versioning/compatibility policy, changelog or migration guidance, and independent corroboration.",
     "evidenceIds": [
       "helicone-docs-32",
       "helicone-probe-3"
@@ -4450,12 +4598,13 @@
     "productId": "helicone",
     "storyId": "custom-code-scorers",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "low",
-    "rationale": "Helicone's webhooks docs name scoring responses and 'real-time evaluation' (scoring LLM responses for quality, safety, and relevance) as a documented use case, so custom code-based scoring is possible. The scorer code runs in the user's own webhook receiver, though, and nothing shows scores being written back to Helicone or a first-class evaluator or metric framework. missing for 10: native custom scorer/evaluator definitions, a score ingestion or metrics API, scores tied to datasets or experiments, documentation depth beyond a one-line use-case mention, independent or hands-on corroboration.",
+    "rationale": "The only relevant evidence is that Helicone webhooks fire when requests complete, so you can run your own code to 'score responses' and do 'real-time evaluation' for quality, safety, and relevance. That custom scoring logic lives in your own external webhook handler, not in a documented scorer framework inside Helicone. missing for 10: a first-party API/SDK for defining custom code-based scorers or metrics, documentation on writing scores back to Helicone, a way to run scorers against eval datasets/experiments, and independent or hands-on corroboration.",
     "evidenceIds": [
       "helicone-docs-9",
-      "helicone-docs-23"
+      "helicone-docs-23",
+      "helicone-docs-10"
     ]
   },
   {
@@ -4478,11 +4627,16 @@
   {
     "productId": "helicone",
     "storyId": "experiment-comparison",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence pack never documents eval runs, experiments, or a side-by-side comparison of evaluation results across prompt or model versions. The prompt-management claim to 'compare versions, and rollback' (helicone-docs-18) is about prompt version history, an adjacent feature. Webhook-driven 'real-time evaluation' (helicone-docs-23) only supplies scores to an external system, which is a developer building block. Neither delivers comparison of eval runs to catch regressions.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The evidence shows prompt version tracking with a 'compare versions' capability and rollback. It also shows response scoring and evaluation via webhooks, plus a playground for iterating on prompts. None of it documents running evals and viewing run results side by side to spot regressions; scoring appears to depend on external webhook integrations. Missing for 10: a first-class eval-run or experiment comparison view, side-by-side scores across prompt or model versions, regression detection between runs, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "helicone-docs-18",
+      "helicone-docs-23",
+      "helicone-docs-9",
+      "helicone-gh-3"
+    ]
   },
   {
     "productId": "helicone",
@@ -4514,41 +4668,56 @@
   {
     "productId": "helicone",
     "storyId": "llm-as-judge-scoring",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "The only evaluation-related evidence is the webhooks page, which says webhooks can be used to 'score responses' and run 'real-time evaluation'. That describes a building block for wiring up your own external scorer, not a built-in, configurable LLM-as-a-judge evaluator in Helicone itself. No evidence shows Helicone shipping its own judge evaluators, so this applicable axis gets no credit.",
-    "evidenceIds": []
+    "rationale": "The only evidence is webhook-based: Helicone sends request-completion webhooks that users can use to \"score responses\" and run \"real-time evaluation\" for quality, safety, and relevance. That implies the ML engineer must build and host the judge logic externally. Nothing shows natively configurable LLM-as-a-judge evaluators. Missing for 10: built-in LLM-as-a-judge evaluator configuration (judge model, criteria, rubric), native score storage and display, evaluation against datasets, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "helicone-docs-9",
+      "helicone-docs-23",
+      "helicone-docs-10"
+    ]
   },
   {
     "productId": "helicone",
     "storyId": "multimodal-trace-payloads",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence shows the AI Gateway can route image-generation requests and that requests are logged automatically. Nothing documents capturing, storing, or rendering images, audio, or file payloads inside traces or sessions. Image-generation routing is an adjacent gateway capability, not evidence that multimodal content is captured in traces, so it earns no credit here.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The only multimodal evidence is that Helicone's AI Gateway supports image generation, and gateway traffic is automatically logged. That only implies generated images may show up in request logs; no evidence explicitly describes capturing or rendering image, audio, or file payloads inside traces. Missing for 10: explicit documentation of multimodal payload capture in traces or sessions, audio and file input support, rendering of image inputs in the trace UI, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "helicone-docs-31",
+      "helicone-docs-2",
+      "helicone-docs-5"
+    ]
   },
   {
     "productId": "helicone",
     "storyId": "offline-eval-datasets",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence pack has no first-party documentation of dataset curation from production traces or of offline evaluation runs. Request export, the query API, and the webhook-driven \"real-time evaluation\" are adjacent features or developer building blocks. The webhook scoring is online and runs in external systems, so it is not offline evals against a curated dataset. None of these earn credit for this story.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Helicone logs production requests and exposes them through a request query API and HQL. Its Playground lets you 'test and iterate on prompts, sessions and traces'. Webhooks enable 'real-time evaluation' scoring in external systems. Together these give only glancing, do-it-yourself support for building datasets from traces and evaluating against them. Missing for 10: a documented first-party dataset curation feature, offline/batch evaluation runs against curated datasets, built-in evaluators or experiment comparison, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "helicone-docs-15",
+      "helicone-docs-32",
+      "helicone-docs-33",
+      "helicone-gh-3",
+      "helicone-docs-9",
+      "helicone-docs-23"
+    ]
   },
   {
     "productId": "helicone",
     "storyId": "online-evals-guardrails",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Helicone's webhooks docs name real-time evaluation of live LLM responses as a supported use case: they say webhooks fire when requests complete so you can \"score responses\" and \"automatically score and evaluate LLM responses for quality, safety, and relevance.\" Property filters let you target a subset of production traffic. However, the evaluator logic appears to run in the user's own external system that receives the webhook, not as a native online-evaluator feature. Missing for 10: native first-party evaluators that run on production traffic, configurable evaluator types and sampling, eval score storage and dashboards in Helicone, and independent or hands-on corroboration of online evals.",
+    "rationale": "Helicone's docs list real-time evaluation of live traffic as a webhook use case: webhooks fire as production requests complete and can be filtered by properties to score responses for quality, safety, and relevance. The scoring logic itself appears to run in the user's own external system rather than as built-in evaluators. Missing for 10: native managed evaluators running on production traffic, built-in score storage and dashboards for online evals, sampling controls, and independent or hands-on corroboration.",
     "evidenceIds": [
       "helicone-docs-9",
-      "helicone-docs-23",
-      "helicone-docs-10"
+      "helicone-docs-10",
+      "helicone-docs-23"
     ]
   },
   {
@@ -4658,20 +4827,27 @@
   {
     "productId": "helicone",
     "storyId": "privacy-retention-controls",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence pack documents no retention-period settings, log deletion API, or user-facing deletion controls for logged requests. Self-hosting and cache namespaces are adjacent features that do not establish retention or deletion control, and community privacy concerns do not address the capability either way.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "No evidence describes retention settings or deletion controls. The only support is indirect: the documented self-hosting options (including Docker Compose) let a user keep logged data on their own infrastructure, which gives de facto control over how long it is kept and when it is removed. Missing for 10: configurable retention periods on the hosted service, request/log deletion API or UI, account-level data purge, and independent corroboration of any of these.",
+    "evidenceIds": [
+      "helicone-docs-14",
+      "helicone-docs-20"
+    ]
   },
   {
     "productId": "helicone",
     "storyId": "privacy-telemetry-optout",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Opting out of a product's own telemetry is a fair question for an observability platform, so the axis applies. The pack documents self-hosting (Docker Compose and other deployment methods), but that is an adjacent deployment option, not a documented telemetry or usage-tracking opt-out. No evidence shows a switch, setting, or policy that lets users disable Helicone's own telemetry.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "There is no documented telemetry or usage-tracking opt-out setting. The closest evidence is that Helicone is open-source and self-hostable (e.g. via Docker Compose), which could let users keep request data off Helicone's cloud. That only indirectly addresses the story. missing for 10: an explicit telemetry/analytics opt-out control or environment flag, documentation of what usage data the self-hosted or cloud product reports back to Helicone, and independent confirmation that self-hosted deployments send no telemetry.",
+    "evidenceIds": [
+      "helicone-docs-14",
+      "helicone-docs-20",
+      "helicone-docs-21"
+    ]
   },
   {
     "productId": "helicone",
@@ -4854,11 +5030,17 @@
   {
     "productId": "langfuse",
     "storyId": "agentic-ai-insights",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "The evidence pack documents no in-product AI assistant or feature that analyzes a user's traces, metrics or dashboards and returns AI-generated insights or suggestions. LLM-as-a-Judge evaluators produce user-configured quality scores on traces, which is an adjacent evaluation feature rather than insight generation. The MCP server and CLI only let external AI tools query the data, and 'Ask AI' appears only as a documentation helper, so none of these count.",
-    "evidenceIds": []
+    "rationale": "Langfuse runs managed LLM-as-a-Judge evaluators on live production traces inside the product, including hallucination detection, so users get AI-generated quality assessments of their data. The evidence shows no in-product AI assistant that summarizes trends, explains anomalies, or suggests improvements; the MCP server and CLI only expose data to external AI tools rather than producing insights within Langfuse. Missing for 10: an in-product AI insights or suggestion feature (e.g., natural-language analysis of traces and dashboards, or recommended prompt and cost fixes), and independent or hands-on corroboration of AI-driven insights.",
+    "evidenceIds": [
+      "langfuse-docs-11",
+      "langfuse-docs-42",
+      "langfuse-docs-62",
+      "langfuse-docs-63",
+      "langfuse-docs-47"
+    ]
   },
   {
     "productId": "langfuse",
@@ -5040,16 +5222,17 @@
     "productId": "langfuse",
     "storyId": "api-sandbox",
     "verdict": "partial",
-    "quality": 4,
-    "confidence": "low",
-    "rationale": "Langfuse documents running a local Docker Compose instance \"recommended for testing\", which can serve as an isolated non-production deployment. It also documents offline experiments against fixed datasets, so prompt and code changes can be tested without touching live traffic. Prompt labels can manage deployments across environments. However, there is no evidence of a dedicated sandbox environment, test project, or test API keys that isolate test data from production. missing for 10: a documented first-class sandbox/test environment feature, explicit data isolation between test and production projects or environments, and independent hands-on corroboration.",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Langfuse lets you test changes away from live traffic. Experiments run against fixed datasets instead of production traces (docs-8, docs-61, docs-63), and CI/CD experiments catch regressions before shipping (docs-57). Prompt labels manage deployments across environments (docs-10), and a local Docker Compose instance is recommended for testing (docs-51). However, the evidence never documents a dedicated sandbox or test environment that isolates test data from production data within a single deployment. Missing for 10: an explicit sandbox/staging environment feature, documented data isolation between test and production projects or environments, and independent or hands-on corroboration.",
     "evidenceIds": [
-      "langfuse-docs-51",
       "langfuse-docs-8",
-      "langfuse-docs-27",
-      "langfuse-docs-61",
       "langfuse-docs-10",
-      "langfuse-docs-57"
+      "langfuse-docs-51",
+      "langfuse-docs-57",
+      "langfuse-docs-61",
+      "langfuse-docs-63",
+      "langfuse-docs-27"
     ]
   },
   {
@@ -5442,11 +5625,16 @@
   {
     "productId": "langfuse",
     "storyId": "privacy-no-training",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence contains no Langfuse policy, setting, or contractual commitment stating that customer data is excluded from AI model training, and no opt-out control. Self-hosting (MIT, Docker/Helm/Terraform) and community praise for keeping sensitive traces on-prem are a related deployment-model feature, not a documented no-training capability, so they earn no credit for this story.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "No evidence shows a policy or setting stating that customer trace data is excluded from AI model training. The only lever is indirect: Langfuse is MIT-licensed open source and can be self-hosted on your own infrastructure with all core features, which keeps data under the user's control. Missing for 10: an explicit no-training commitment for Langfuse Cloud, a documented opt-out control, and independent corroboration of data-use practices.",
+    "evidenceIds": [
+      "langfuse-docs-59",
+      "langfuse-docs-64",
+      "langfuse-docs-31",
+      "langfuse-docs-16"
+    ]
   },
   {
     "productId": "langfuse",
@@ -5475,13 +5663,12 @@
     "productId": "langfuse",
     "storyId": "prompt-playground",
     "verdict": "full",
-    "quality": 7,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Langfuse documents an LLM Playground for testing prompts interactively. It sits inside a prompt-management workflow where prompts are iterated in the UI, and new prompt versions can be tested against datasets via Experiments. The evidence covers the playground only with a brief mention, so how it runs against real models and fills in variables is implied rather than shown. missing for 10: explicit documentation of variable substitution in the playground, details on supported model providers/real model calls, independent hands-on corroboration of playground use.",
+    "rationale": "First-party docs state that prompts can be tested interactively in a dedicated LLM Playground, and that prompts can be iterated in the UI and checked via experiments against datasets. However, the evidence is only a single-line mention of the playground. It gives no detail on which real model providers are supported or on substituting variables into prompt templates. Missing for 10: documented support for selecting and calling real models in the playground, documentation of variable/template substitution, in-depth playground docs, and independent or hands-on corroboration.",
     "evidenceIds": [
       "langfuse-docs-7",
       "langfuse-docs-20",
-      "langfuse-docs-6",
       "langfuse-docs-56",
       "langfuse-docs-8"
     ]
@@ -5524,9 +5711,9 @@
     "productId": "langfuse",
     "storyId": "threshold-alerting",
     "verdict": "full",
-    "quality": 6,
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Langfuse documents threshold-based alerts that notify over Slack, GitHub Actions, or webhooks when a metric crosses a threshold. It also explicitly documents alerting when spend crosses a threshold, which covers the cost-spike and Slack path of the story. Both mentions are brief one-liners, so the depth of the capability is not shown. missing for 10: explicit evidence of alerts on error rates and eval-score drops, native PagerDuty or email channels, in-depth alert configuration docs, independent or hands-on corroboration.",
+    "rationale": "Langfuse documents threshold-based alerts that notify via Slack, GitHub Actions, or webhooks when a metric crosses a threshold. It also specifically documents alerts when spend crosses a threshold, which covers the cost-spike case and the Slack channel. Missing for 10: explicit evidence that error-rate and eval-score drops are supported alert metrics, native PagerDuty or email channels (only reachable via generic webhooks), and independent or hands-on corroboration.",
     "evidenceIds": [
       "langfuse-docs-4",
       "langfuse-docs-53"
@@ -5605,18 +5792,16 @@
     "productId": "langsmith",
     "storyId": "agent-triggers-eval-run",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "LangSmith documents creating datasets from curated cases, traces, or synthetic data, and running an application over a dataset to produce an experiment with configurable repetitions and concurrency. It also offers Python, TypeScript, Go, and Java SDKs, API access, and an official MCP server, which together suggest an agent could drive this workflow. However, the pack never explicitly shows dataset creation, experiment triggering, or result retrieval being done through the SDK, API, or MCP, and the OpenAPI probe returned 404. Missing for 10: explicit docs for programmatic dataset creation and eval triggering, a documented API or MCP tool for reading back experiment results, a published OpenAPI spec, and hands-on corroboration of an agent-driven eval loop.",
+    "rationale": "The docs describe creating datasets from curated cases, traces, or synthetic data, and running an application on a dataset to create an experiment with configurable repetitions and concurrency. Programmatic access is implied by the Python/TypeScript/Go/Java SDKs and an official MCP server an agent could use. However, nothing explicitly shows these SDK, API or MCP surfaces covering dataset creation, launching an experiment, or retrieving experiment scores. Missing for 10: explicit evidence of programmatic or agent-driven dataset creation, an API/SDK call that triggers an eval run, a way to read back experiment results programmatically, details of the MCP server's tools, and independent hands-on corroboration.",
     "evidenceIds": [
       "langsmith-docs-7",
       "langsmith-docs-9",
       "langsmith-docs-19",
       "langsmith-docs-35",
       "langsmith-docs-24",
-      "langsmith-docs-2",
-      "langsmith-probe-4",
-      "langsmith-probe-3"
+      "langsmith-probe-4"
     ]
   },
   {
@@ -5704,9 +5889,9 @@
     "productId": "langsmith",
     "storyId": "agentic-mcp-server",
     "verdict": "full",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "LangSmith is an observability and evaluation platform, not an agent itself, so publishing an official MCP server is a fair axis. A probe confirms an official, first-party LangSmith MCP server repository (langchain-ai/langsmith-mcp-server) that agents can connect to. The evidence is a single existence mention with no detail on what the server exposes, so depth is thin. missing for 10: documentation of the exposed tools and capabilities (e.g., trace, dataset, or prompt access), setup and auth instructions, hosted endpoint details, and independent or hands-on corroboration of agent connectivity.",
+    "rationale": "LangSmith is an observability and evaluation SaaS platform, not an agent, so the MCP-server axis applies. A probe confirms an official, first-party MCP server is documented under the langchain-ai GitHub org (langsmith-mcp-server), which delivers the core of the story. However, the evidence is a single pointer with no detail on what the server exposes or how to connect to it. Missing for 10: documentation of the exposed tools and capabilities (e.g., trace or dataset access), setup and auth instructions for connecting an agent, and any independent or hands-on corroboration that it works.",
     "evidenceIds": [
       "langsmith-probe-4"
     ]
@@ -5732,16 +5917,17 @@
   {
     "productId": "langsmith",
     "storyId": "agentic-public-api",
-    "verdict": "partial",
-    "quality": 6,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "LangSmith's docs say traces can be filtered, exported, shared and compared via the API as well as the UI. They also document official Python, TypeScript, Go and Java SDKs (with a public SDK repo) and an official MCP server, so programmatic control is a first-party capability. However, the pack contains no API reference, and the OpenAPI spec probe returned 404 on every candidate path, so the breadth of the public API surface beyond tracing is unproven. Missing for 10: a published API reference or OpenAPI spec, evidence that datasets, evaluations, alerts and dashboards are API-drivable, and hands-on corroboration of driving the product via the API.",
+    "rationale": "The docs say traces can be filtered, exported, shared and compared via the UI or the API. LangSmith also ships official Python, TypeScript, Go and Java SDKs (the GitHub SDK repo is in the pack) and an official MCP server, so the product can clearly be driven programmatically. Missing for 10: a published API reference or OpenAPI spec (probes of the docs domain returned 404), evidence that the API covers datasets, evaluations, alerts and dashboards rather than just traces, and independent hands-on corroboration of API usage.",
     "evidenceIds": [
       "langsmith-docs-2",
       "langsmith-docs-24",
       "langsmith-gh-1",
-      "langsmith-probe-3",
-      "langsmith-probe-4"
+      "langsmith-docs-38",
+      "langsmith-probe-4",
+      "langsmith-probe-3"
     ]
   },
   {
@@ -5832,14 +6018,14 @@
     "productId": "langsmith",
     "storyId": "automation-bulk-operations",
     "verdict": "partial",
-    "quality": 4,
-    "confidence": "low",
-    "rationale": "LangSmith documents several operations that act on many items at once. Filtered sets of traces can be exported via the UI or API, automation rules and online evaluators run over filtered production traces, and an application can be executed across a whole dataset as an experiment with configurable concurrency. None of this is described as a general bulk-operations feature, such as multi-select edit, delete, tag or move. Missing for 10: explicit bulk select/act (edit, delete, tag, annotate) across many traces or examples, documented batch API endpoints, and hands-on or independent corroboration of bulk workflows.",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "The docs show several ways to act on many items at once. Traces can be filtered and exported via the UI or API, and rules, webhooks and online evaluators run automatically across production traces using filters and sampling. Experiments also run an application over a whole dataset with configurable concurrency. None of the evidence describes explicit bulk actions such as multi-select edit, delete, tag or move. missing for 10: explicit bulk select/edit/delete operations on traces or dataset examples, documented bulk API endpoints, independent or hands-on corroboration of bulk workflows.",
     "evidenceIds": [
       "langsmith-docs-2",
       "langsmith-docs-4",
-      "langsmith-docs-9",
       "langsmith-docs-10",
+      "langsmith-docs-9",
       "langsmith-docs-35"
     ]
   },
@@ -6145,20 +6331,27 @@
   {
     "productId": "langsmith",
     "storyId": "privacy-no-training",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence pack has no training opt-out, no no-training policy, and no statement on how LangSmith uses customer data for AI model training. The self-hosted option keeps trace data in your own environment, but that is a data-residency feature, not a documented training-use control, so it earns no credit for this story.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Nothing in the evidence states a no-training policy or a training opt-out. The only relevant evidence is that LangSmith can be self-hosted on your own infrastructure for observability, evaluation, and prompt engineering, which indirectly keeps trace data out of the vendor's hands. Missing for 10: an explicit first-party statement that customer traces and data are not used for model training, a documented opt-out control for the cloud service, and independent corroboration of the data-use policy.",
+    "evidenceIds": [
+      "langsmith-docs-17",
+      "langsmith-docs-23",
+      "langsmith-docs-32"
+    ]
   },
   {
     "productId": "langsmith",
     "storyId": "privacy-retention-controls",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence pack documents no data retention settings, TTLs, or trace or data deletion controls for LangSmith. The closest item is self-hosting so that trace data stays in your own environment, which is an adjacent data-residency feature, not retention or deletion control. With no evidence for this applicable capability, the verdict is none.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The pack never mentions retention policies, TTLs, or trace/data deletion. The only relevant evidence is that LangSmith can be self-hosted on your own infrastructure, which implies indirect control over where trace data lives and how long it is kept. Missing for 10: documented configurable retention periods, trace/dataset deletion via UI or API, account/workspace data purge, and any independent corroboration.",
+    "evidenceIds": [
+      "langsmith-docs-17",
+      "langsmith-docs-23"
+    ]
   },
   {
     "productId": "langsmith",
@@ -6230,16 +6423,17 @@
   {
     "productId": "langsmith",
     "storyId": "token-cost-dashboards",
-    "verdict": "partial",
-    "quality": 5,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "LangSmith documents prebuilt per-project dashboards that include token usage, plus custom chart collections that can be grouped by run tag or metadata. Cost is a tracked metric, since alerts can fire on cost thresholds. However, the evidence never explicitly shows cost charts in dashboards or breakdowns by request, model, or time period. missing for 10: explicit cost charts in dashboards, documented per-model breakdown, per-request cost/token view, time-period filtering, independent corroboration.",
+    "rationale": "LangSmith auto-creates prebuilt per-project dashboards that explicitly cover token usage. It also supports custom chart collections that can be grouped by run tag or metadata, and it tracks Cost as a first-class metric, which is shown by threshold alerting on it. Missing for 10: explicit documentation of cost charts in dashboards, explicit per-model and per-request cost/token breakdowns (only implied via metadata grouping and traces), time-range controls, and independent or hands-on corroboration.",
     "evidenceIds": [
       "langsmith-docs-14",
       "langsmith-docs-15",
       "langsmith-docs-16",
       "langsmith-docs-30",
-      "langsmith-docs-12"
+      "langsmith-docs-12",
+      "langsmith-docs-3"
     ]
   },
   {
@@ -6331,11 +6525,17 @@
   {
     "productId": "mirrors",
     "storyId": "agentic-autonomous-automation",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Mirrors is a developer tool that captures agent traces and injects user-written corrections into prompts when routing conditions match. Background automation is a fair question for agent tooling, so the axis applies, but the evidence documents no user-configured automations, scheduled jobs, or background tasks that run on their own. Auto-applied correction routing and background trace capture are adjacent features that only fire inside the customer's own agent runs, so they do not count toward this story.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Mirrors lets teams define routing conditions that, once activated, automatically inject context edits into live agent conversations with no redeploy or code change. Routing runs locally and unattended, which is a narrow form of rule-triggered background automation (docs-2, docs-6, docs-7, docs-3). It is not a general automation feature: humans still write the context, review traces, and decide keep/revise/rollback (docs-1, docs-4, docs-9). Missing for 10: general-purpose user-defined automations or workflows, scheduled or background jobs, autonomous action beyond context injection, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "mirrors-docs-2",
+      "mirrors-docs-3",
+      "mirrors-docs-6",
+      "mirrors-docs-7",
+      "mirrors-docs-9"
+    ]
   },
   {
     "productId": "mirrors",
@@ -6572,11 +6772,15 @@
   {
     "productId": "mirrors",
     "storyId": "custom-code-scorers",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Mirrors is a correction-delivery tool that compares corrected sessions against holdout groups. Outcome measurement is a fair axis for it, but the evidence never documents a way to write custom code-based scorers or metrics inside the product. Its references to 'your own outcome labels, checks, and customer feedback' and '3 of 4 checks passed' describe outcomes the team tracks and brings in, not a scorer-authoring capability. Mirrors' own llms.txt also places evals in other tools such as Langfuse, LangSmith and Braintrust.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Mirrors lets teams define success with their own outcome labels, checks, and customer feedback, and compares sessions against holdout groups on those outcomes. A UI fragment also shows sessions scored by checks (\"3 of 4 checks passed\"). Nothing shows these checks can be written as custom code, so support for code-based scorers is only implied. Missing for 10: documented way to author scorers or metrics in code, SDK or API for custom metrics, examples or reference docs, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "mirrors-docs-9",
+      "mirrors-docs-13",
+      "mirrors-docs-4"
+    ]
   },
   {
     "productId": "mirrors",
@@ -6645,11 +6849,17 @@
   {
     "productId": "mirrors",
     "storyId": "offline-eval-datasets",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Mirrors captures production traces and lets you preview a correction's routing conditions against stored traces to see which sessions it would match. That preview checks matching, not model outputs, so it does not evaluate anything offline. Its outcome comparison runs against live holdout groups, which is online testing rather than offline evaluation against a curated dataset. The llms.txt even positions evals as the role of separate tools such as Braintrust and LangSmith, and nothing documents curating datasets or running offline evals.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Mirrors works with existing traces and lets teams review sessions against outcome labels. It can preview routing conditions against stored traces (matches, misses, unexpected matches), which is a limited offline check. Its main evaluation is an online holdout comparison of live sessions, not offline evals run over curated datasets. Missing for 10: explicit dataset curation or export from production traces, offline evaluation runs scoring agent outputs against a dataset, eval docs or API, and independent corroboration.",
+    "evidenceIds": [
+      "mirrors-docs-1",
+      "mirrors-docs-3",
+      "mirrors-docs-4",
+      "mirrors-docs-9",
+      "mirrors-docs-11"
+    ]
   },
   {
     "productId": "mirrors",
@@ -6918,15 +7128,17 @@
     "productId": "wandb-weave",
     "storyId": "agentic-ai-insights",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Weave's own built-in and custom signals automatically classify agent interactions and surface failure modes inside the product, and LLM-judge scorers produce AI-generated assessments of logged data. These are a form of in-product AI-derived insight. The evidence does not show an in-product assistant that generates natural-language insights or improvement suggestions. Conversational Q&A and iteration over data are delivered only through external coding agents via the MCP server and Skills, which does not count as inside the product. Missing for 10: an in-product AI assistant or chat over traces, AI-generated suggestions for prompt or agent fixes inside the UI, documentation of how signals are generated, and independent hands-on corroboration.",
+    "rationale": "Weave offers in-product AI-driven analysis of your data. Built-in and custom signals automatically classify agent interactions and surface failure modes, and LLM-judge and predefined scorers (hallucination, summarization quality) produce AI-generated assessments of traces. However, nothing in the evidence shows a native in-product assistant that generates insights or suggests improvements. The conversational, suggestion-style experience is delivered by external coding agents through the MCP server and Skills, not inside the Weave UI. Missing for 10: an in-product AI assistant or chat over your data, AI-generated improvement suggestions inside the UI, and independent or hands-on corroboration that signals produce useful insights.",
     "evidenceIds": [
       "wandb-weave-docs-16",
       "wandb-weave-docs-42",
       "wandb-weave-docs-46",
       "wandb-weave-docs-2",
-      "wandb-weave-docs-47"
+      "wandb-weave-docs-8",
+      "wandb-weave-docs-44",
+      "wandb-weave-docs-20"
     ]
   },
   {
@@ -7103,11 +7315,18 @@
   {
     "productId": "wandb-weave",
     "storyId": "api-sandbox",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Weave documents evaluations on test datasets and a Playground for trying prompts and models, but these are adjacent testing features, not an isolated sandbox environment separate from production data. Some evidence points the other way: agents and model tests are described as working against live production data and traces. No sandbox, test-mode or environment-isolation capability is documented.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "Weave supports offline testing that is separate from live traffic: Evaluation objects run against user-supplied datasets of test examples, and the Playground lets you try prompts, models and custom endpoints. Nothing in the evidence describes a dedicated sandbox environment or isolation from production data, and several items emphasize testing against production traces and live production data. Missing for 10: a documented sandbox or isolated test environment/project, explicit guarantees of separation from production data, and independent corroboration.",
+    "evidenceIds": [
+      "wandb-weave-docs-6",
+      "wandb-weave-docs-31",
+      "wandb-weave-docs-9",
+      "wandb-weave-docs-10",
+      "wandb-weave-docs-21",
+      "wandb-weave-docs-20"
+    ]
   },
   {
     "productId": "wandb-weave",
@@ -7121,11 +7340,16 @@
   {
     "productId": "wandb-weave",
     "storyId": "automation-bulk-operations",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Bulk operations are a reasonable capability for an LLM observability and evaluation platform, but nothing in the evidence documents bulk actions such as bulk delete, tag, annotate, or export across many traces or calls. Evaluations that run scorers over a Dataset are a different capability. The generic REST Service API and the MCP server are building blocks rather than a documented bulk-operation feature, so neither earns credit here.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The evidence only shows indirect batch-style behavior: evaluations run scorers across a whole Dataset of examples, and Threads let you score an entire conversation rather than individual calls. Signals automatically classify agent interactions at scale, and a REST Service API allows programmatic access that could be scripted across many items. None of this is documented as a bulk-operations feature. Missing for 10: explicit bulk actions on traces/calls/datasets (e.g., bulk delete, tag, annotate, or export), documented batch endpoints in the Service API, and any hands-on or independent corroboration.",
+    "evidenceIds": [
+      "wandb-weave-docs-6",
+      "wandb-weave-docs-5",
+      "wandb-weave-docs-16",
+      "wandb-weave-docs-15"
+    ]
   },
   {
     "productId": "wandb-weave",
@@ -7221,14 +7445,18 @@
     "productId": "wandb-weave",
     "storyId": "custom-dashboards",
     "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Weave documents some built-in views over these metrics: per-call costs in the trace tree and calls table, evaluation comparison visualizations, org-shareable leaderboards that aggregate eval results, and vaguely described \"native analytics tools.\" None of this amounts to a documented user-composable dashboard builder spanning latency, error, cost and eval scores. Missing for 10: a documented custom dashboard or panel builder, latency and error-rate charting, combined cross-metric dashboards, and independent or hands-on corroboration.",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "Weave captures the underlying metrics: execution metadata per call, automatic and custom cost tracking shown in the trace tree and calls table, and scorer outputs. It also offers evaluation comparison visualizations, leaderboards and \"native analytics tools.\" However, nothing documents a user-configurable dashboard builder for composing panels over these metrics; the REST API only implies you could build dashboards externally. Missing for 10: explicit custom dashboard creation, latency and error-rate charts or aggregation, cost-over-time panels, combining eval scores with operational metrics in one view, and hands-on corroboration.",
     "evidenceIds": [
+      "wandb-weave-docs-4",
       "wandb-weave-docs-27",
+      "wandb-weave-docs-12",
       "wandb-weave-docs-19",
       "wandb-weave-docs-23",
-      "wandb-weave-docs-37"
+      "wandb-weave-docs-37",
+      "wandb-weave-docs-39",
+      "wandb-weave-docs-15"
     ]
   },
   {
@@ -7265,11 +7493,13 @@
   {
     "productId": "wandb-weave",
     "storyId": "human-annotation-queues",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Human annotation queues are a fair capability for an LLM observability and evaluation platform, so the axis applies. However, the evidence pack documents no way to route outputs to human annotation queues for review or labeling. The closest items are a generic mention of collecting feedback, automated signals that tag agent turns, and alert/webhook automations, all of which are adjacent features rather than human review queues.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The only relevant evidence is a single docs mention that Weave lets you trace, version and 'collect feedback about your application.' That glancingly touches human review of outputs. Nothing documents annotation queues, routing outputs to reviewers, or a labeling workflow. Alerts and webhooks route signals to Slack, not to human annotation. Missing for 10: documented human annotation queues, routing of traces or outputs into review queues, labeling UI or schema for annotators, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "wandb-weave-docs-1"
+    ]
   },
   {
     "productId": "wandb-weave",
@@ -7300,18 +7530,21 @@
   {
     "productId": "wandb-weave",
     "storyId": "offline-eval-datasets",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Weave documents a core `Evaluation` object that runs a `Dataset` against scorers for repeatable offline tests (docs-6, docs-31), with built-in and custom scorers (docs-7, docs-8). The marketing site claims you can test models against production traces (docs-21), and tracing captures inputs and outputs of production calls (docs-4). Missing for 10: explicit documentation of the workflow for selecting or exporting traces into a versioned Dataset, and independent or hands-on corroboration of trace-to-dataset curation.",
+    "rationale": "Offline evaluation is well documented: the `Evaluation` object pairs a `Dataset` of test examples with built-in or custom scorers, and Weave supports comparisons and regression detection. The curation half is thin. The only link between production traces and evaluation is a marketing claim that you can test models against production traces; no documented workflow turns selected traces into a versioned Dataset. Missing for 10: documented trace-to-dataset curation (selecting, filtering or exporting production calls into a Dataset), and independent or hands-on corroboration of the end-to-end workflow.",
     "evidenceIds": [
       "wandb-weave-docs-6",
+      "wandb-weave-docs-25",
       "wandb-weave-docs-31",
-      "wandb-weave-docs-21",
-      "wandb-weave-docs-4",
+      "wandb-weave-docs-38",
       "wandb-weave-docs-7",
       "wandb-weave-docs-8",
-      "wandb-weave-docs-19"
+      "wandb-weave-docs-19",
+      "wandb-weave-docs-21",
+      "wandb-weave-docs-4",
+      "wandb-weave-gh-4"
     ]
   },
   {
@@ -7459,11 +7692,17 @@
   {
     "productId": "wandb-weave",
     "storyId": "prompt-versioning-deploy",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Prompt management is a fair axis for an LLM observability and evaluation platform, but the pack never documents a prompt registry or runtime prompt fetching that would let changes reach production without a code deploy. The closest items are adjacent features that earn no credit here: generic versioning of instrumented functions and captured op code, Playground prompt editing for experimentation, and saved model presets.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The evidence offers only glancing support. Weave says it can 'trace, version' application functions and captures op code automatically, and its Playground supports prompt editing and saved model presets. Nothing shows a prompt registry or a way to promote prompt versions to production without a code change. Missing for 10: dedicated prompt versioning objects or registry, runtime fetching of prompts by label or alias, deploying prompt changes to production without a code release, rollback or environment promotion, independent corroboration.",
+    "evidenceIds": [
+      "wandb-weave-docs-1",
+      "wandb-weave-docs-4",
+      "wandb-weave-docs-9",
+      "wandb-weave-docs-11",
+      "wandb-weave-docs-40"
+    ]
   },
   {
     "productId": "wandb-weave",
