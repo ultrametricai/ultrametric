@@ -1,13 +1,16 @@
 {
-  "hash": "4e1006548359d2377368c31f164402dbc03d034b777fd7040fa29f2098628259",
+  "hash": "b277c00e68bc1289a02a141d61c2cd2a4775429e1c113f32caea253296f80822",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Braintrust is a tracing and observability platform, so OTLP ingest and export is a fair axis for it. However, nothing in the evidence pack mentions OpenTelemetry or OTLP. The tracing evidence covers only Braintrust's own SDKs, wrappers (wrap_openai, Go trace/contrib, Java Agent), its API, and CSV/JSON export, none of which shows OTLP support.",
-    "evidenceIds": [],
     "productId": "braintrust",
-    "storyId": "otel-native-tracing"
+    "storyId": "otel-native-tracing",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Braintrust's Go SDK documents that its tracing is built on OpenTelemetry, so developers instrument their own code with the standard OpenTelemetry API ([braintrust-docs-66], [braintrust-docs-42]). The pack never documents an OTLP ingestion endpoint for standard OTel exporters, OTLP support outside Go, or exporting traces back out over OTLP. The other docs describe sending traces via Braintrust's own SDK wrappers. missing for 10: a documented OTLP receive endpoint, OTLP export or receive of traces, OTel support beyond the Go SDK, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "braintrust-docs-66",
+      "braintrust-docs-42"
+    ]
   }
 }
