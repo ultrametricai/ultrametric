@@ -89,23 +89,24 @@
     "productId": "alacritty",
     "storyId": "agentic-official-cli",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Alacritty's own binary has documented CLI subcommands, including `alacritty msg` for IPC and `alacritty msg create-window` to script new windows, and it ships shell completions and a manual page. The evidenced surface is narrow, though, and nothing shows it is designed for agent or AI-native workflows. Missing for 10: documented coverage of the full CLI command and flag set, scriptable control beyond window creation, any agent-oriented features, and independent hands-on corroboration of CLI use.",
+    "rationale": "Alacritty ships its own official `alacritty` binary, installable via cargo. That binary includes an `alacritty msg` IPC subcommand that can script a running instance, for example `alacritty msg create-window`. This is a real first-party CLI surface, but the evidence shows only narrow window and IPC control, with nothing aimed at programmatic or agent-driven use. missing for 10: documented CLI command reference beyond create-window, machine-readable output or automation-oriented flags, agent/AI-oriented docs (llms.txt returns 404), independent corroboration of scripting the CLI.",
     "evidenceIds": [
       "alacritty-docs-5",
       "alacritty-docs-11",
       "alacritty-docs-16",
-      "alacritty-docs-10"
+      "alacritty-docs-19",
+      "alacritty-probe-1"
     ]
   },
   {
     "productId": "alacritty",
     "storyId": "agentic-public-api",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Alacritty documents its own IPC channel, `alacritty msg`, enabled by a config option. The only documented command is `alacritty msg create-window` for opening new windows, so this is a real but very narrow programmatic control surface. missing for 10: documentation of the full IPC command set, any way to send input or read terminal content/state, a richer scripting/remote-control API reference, and independent or hands-on evidence of agents driving it.",
+    "rationale": "Alacritty documents an IPC interface through the `alacritty msg` subcommand, with an `ipc_socket`-style config option, and documents `alacritty msg create-window` for spawning windows programmatically. The evidence shows only that narrow window-creation surface, not a broad documented API for driving the terminal. The runtime probe could not test `alacritty msg` because the macOS install failed, so this neither confirms nor contradicts the capability. Missing for 10: a documented API covering more than window creation (sending input, reading output, controlling sessions), a full IPC command reference, and hands-on corroboration that the IPC works.",
     "evidenceIds": [
       "alacritty-docs-5",
       "alacritty-docs-11",
@@ -169,11 +170,16 @@
   {
     "productId": "alacritty",
     "storyId": "api-machine-spec",
-    "verdict": "na",
+    "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Alacritty is a local desktop terminal emulator with no web service or HTTP API, so a downloadable OpenAPI-style spec is a category error for this kind of product. Its only programmatic surface is local IPC via `alacritty msg`, and nothing in the evidence shows a machine-readable spec for it. The 404 probe results for openapi.json and similar paths are consistent with there being no web API at all.",
-    "evidenceIds": []
+    "rationale": "Alacritty exposes a programmatic control surface through its `alacritty msg` IPC, so a machine-readable spec for that interface is a fair question for this product. The evidence shows no such spec: probes of common OpenAPI/Swagger paths and llms.txt all returned 404, and the docs only describe the IPC subcommand informally.",
+    "evidenceIds": [
+      "alacritty-probe-2",
+      "alacritty-probe-1",
+      "alacritty-docs-11",
+      "alacritty-docs-5"
+    ]
   },
   {
     "productId": "alacritty",
@@ -242,14 +248,13 @@
     "productId": "alacritty",
     "storyId": "cli-remote-control",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Alacritty documents an IPC interface via `alacritty msg`, enabled by a config option, and the `alacritty msg create-window` subcommand opens new windows from the command line, so the window-opening part of the story is covered first-party. Nothing in the evidence shows sending text to a terminal or querying terminal or window state through this interface, which is roughly half the story. Missing for 10: send-text capability, state query capability, depth of the IPC command set, independent corroboration.",
+    "rationale": "Alacritty documents an IPC interface through the `alacritty msg` subcommand and a config option to offer it. The only documented use is opening new windows with `alacritty msg create-window`, which covers the window-opening part of the story. The runtime probe could not exercise `alacritty msg` because macOS installation failed, so this neither confirms nor contradicts the capability. Missing for 10: documented ability to send text/input to a terminal via CLI/IPC, documented ability to query terminal state, in-depth IPC reference docs, hands-on or independent corroboration of the msg interface.",
     "evidenceIds": [
       "alacritty-docs-5",
       "alacritty-docs-11",
-      "alacritty-docs-16",
-      "alacritty-docs-4"
+      "alacritty-docs-16"
     ]
   },
   {
@@ -332,18 +337,19 @@
   {
     "productId": "alacritty",
     "storyId": "gpu-accelerated-rendering",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Alacritty's GitHub README says it uses vtebench to measure terminal throughput and consistently scores better than competitors. Hands-on community reports back this up: a find benchmark ran 0:20 vs 1:28 in iTerm2, rendering kept up with fast-scrolling tmux log panes, and Ctrl-C stayed responsive after accidentally catting a 1GB file or binary output because refresh is locked to the screen rate. One user finds foot faster, which is a comparison rather than a contradiction. missing for 10: no evidence in the pack explicitly documents GPU/OpenGL acceleration as the rendering mechanism, and no first-party detail on responsiveness under heavy output beyond the throughput benchmark claim.",
+    "rationale": "The reviewer's concern is valid: nothing in the pack mentions GPU, OpenGL, or any hardware-accelerated rendering method, so a full verdict is not supported. The performance half of the story is well evidenced. The GitHub README says Alacritty consistently scores better than the competition on vtebench throughput. Hands-on reports back this up: a heavy `find` finished in 0:20 versus 1:28 in iTerm2, capping refresh at the screen rate keeps it responsive when catting a 1GB file, and it avoids the hangs kitty hit on garbled binary output. Missing for 10: any first-party or independent evidence that rendering is GPU-accelerated, and recent independent benchmarks (one user finds foot faster).",
     "evidenceIds": [
       "alacritty-gh-6",
       "alacritty-comm-2-refresh-b38f6f9e5e5a6008",
       "alacritty-comm-7-refresh-354f534d868942b6",
-      "alacritty-comm-3-refresh-e23af1df2aa92ce8",
       "alacritty-comm-20",
+      "alacritty-comm-3-refresh-e23af1df2aa92ce8",
       "alacritty-comm-1-refresh-f9fbcf8287739aec",
-      "alacritty-comm-9-refresh-61b6745e9982f22e"
+      "alacritty-comm-9-refresh-61b6745e9982f22e",
+      "alacritty-comm-16"
     ]
   },
   {
@@ -737,10 +743,10 @@
   {
     "productId": "ghostty",
     "storyId": "agentic-webhooks",
-    "verdict": "na",
+    "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Ghostty is a local desktop terminal emulator and embeddable library (libghostty). Registrable outbound HTTP webhook callbacks are a hosted-service integration pattern, so this axis is a category error for this kind of product. The evidence also shows nothing that would flip the axis to applicable: AppleScript, App Intents and systemd integration are local automation, not webhooks.",
+    "rationale": "Event subscription is a fair question for a terminal emulator in an agentic workflow, since a terminal could emit hooks or notifications to external tools. The evidence shows no webhook or event-subscription mechanism. The runtime probe found no remote-control or IPC interface at all, and no OpenAPI surface exists. The only automation evidence is AppleScript scripting of windows and tabs and the CLI +actions, which are command interfaces rather than event subscriptions.",
     "evidenceIds": []
   },
   {
@@ -818,10 +824,10 @@
   {
     "productId": "ghostty",
     "storyId": "automation-scheduled-jobs",
-    "verdict": "none",
+    "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Ghostty is a terminal emulator. Its documented automation surfaces are an AppleScript dictionary and Apple Shortcuts/AppIntents on macOS, plus systemd integration on Linux. None of these is a first-party way to schedule recurring jobs or workflows. Any scheduling would have to come from the host OS (cron, systemd timers, Shortcuts automations) using these as building blocks, which earns no credit.",
+    "rationale": "Ghostty is a terminal emulator. Scheduling recurring jobs or workflows is a job-scheduler or automation-platform capability, normally handled by the OS (e.g. cron), not by a terminal emulator, so this axis is a category error. Its documented automation surfaces, AppleScript scripting and CLI +actions, control windows, tabs and input but include no scheduling, so nothing flips the axis to applicable.",
     "evidenceIds": []
   },
   {
@@ -1399,11 +1405,16 @@
   {
     "productId": "iterm2",
     "storyId": "agentic-webhooks",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Outbound event callbacks are a plausible capability for a scriptable terminal, so this question applies to iTerm2. However, the evidence shows no documented, registrable outbound HTTP webhooks. Triggers that run commands or Python scripts, the Python API, and desktop notifications are developer building blocks or adjacent features, not webhook subscriptions, so they earn no credit.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "iTerm2 has no documented webhook mechanism. The closest support is event-driven automation: triggers fire actions (run commands, invoke Python scripts) when output matches a regex, and the Python API allows full automation. A user could make a trigger or script call an HTTP endpoint, but that is a do-it-yourself workaround rather than webhook subscriptions. Missing for 10: native webhook or HTTP callback delivery, a documented catalog of subscribable events, webhook configuration and management, and any independent corroboration.",
+    "evidenceIds": [
+      "iterm2-gh-2",
+      "iterm2-docs-16",
+      "iterm2-gh-15",
+      "iterm2-docs-13"
+    ]
   },
   {
     "productId": "iterm2",
@@ -1577,11 +1588,15 @@
   {
     "productId": "iterm2",
     "storyId": "command-palette-discovery",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "The only nearby feature is Open Quickly (Cmd-Shift-O), which is documented as a search for switching between sessions by tab title, command, hostname, directory, or badge. That is session navigation, not a palette for discovering and running terminal actions. Global Search, the searchable profiles database, and Cmd-; autocomplete are also related features that don't deliver a command palette, so nothing in the evidence shows the product delivers this story.",
-    "evidenceIds": []
+    "rationale": "iTerm2's Open Quickly (Cmd-Shift-O) is a searchable palette-style popup, but the evidence describes it only as a way to find and switch between sessions by tab title, command, hostname, directory, or badge. It does not show discovering or running terminal actions or menu commands from it. Missing for 10: evidence that the palette can search and execute actions or menu commands, documentation of action discovery, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "iterm2-gh-5",
+      "iterm2-gh-7",
+      "iterm2-gh-14"
+    ]
   },
   {
     "productId": "iterm2",
@@ -1664,17 +1679,17 @@
   {
     "productId": "iterm2",
     "storyId": "nl-command-generation",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "iTerm2 ships an optional first-party AI plugin and a built-in LLM chat window that can link to sessions and run commands on your behalf. A hands-on user report describes prompting the feature in natural language to generate an awk command, calling it about 10x faster than searching. Setup requires installing the separate plugin and supplying your own API key. Missing for 10: evidence that commands are inserted in place at the shell prompt rather than produced in a chat/toolbox window, and in-depth first-party docs on the command-generation workflow.",
+    "rationale": "iTerm2 ships its own generative AI capability: an optional AI plugin (iterm2-docs-15, iterm2-docs-50) and a built-in LLM chat window that can run commands on your behalf (iterm2-gh-6). A hands-on user report confirms that a natural-language prompt produced a correct awk command much faster than searching (iterm2-comm-5-refresh-e25923d9a38a8681). However, the evidence shows generation through a separate chat/Codecierge toolbox (iterm2-comm-9) rather than in place at the shell prompt, and it needs a separately installed plugin plus the user's own API key (iterm2-comm-3-refresh-a2aeeb9bc7c4ec3a), so the reviewer's concern holds and this stays partial. Missing for 10: evidence of in-place command generation at the shell prompt, in-depth first-party docs on the natural-language-to-command workflow, and delivery without a separate plugin and user-supplied API key.",
     "evidenceIds": [
       "iterm2-docs-15",
       "iterm2-docs-50",
       "iterm2-gh-6",
       "iterm2-comm-5-refresh-e25923d9a38a8681",
-      "iterm2-comm-3-refresh-a2aeeb9bc7c4ec3a",
-      "iterm2-comm-9"
+      "iterm2-comm-9",
+      "iterm2-comm-3-refresh-a2aeeb9bc7c4ec3a"
     ]
   },
   {
@@ -1719,19 +1734,25 @@
   {
     "productId": "iterm2",
     "storyId": "openness-self-host",
-    "verdict": "na",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "iTerm2 is a local macOS terminal emulator with no vendor-hosted or cloud version, so \"self-host the core product\" is a deployment question that does not fit this kind of product. The app already runs entirely on the user's own Mac, so there is no hosted-versus-self-hosted choice to evaluate. The configurable AI endpoint is a user-side workaround for the optional AI plugin, not self-hosting of the core product.",
-    "evidenceIds": []
+    "rationale": "iTerm2 is a locally installed macOS terminal with its source in a public GitHub repo (gnachman/iTerm2), so the core product runs entirely on the user's own machine. Its session server processes are also local, and the generative AI features ship as an optional plugin rather than a required cloud service. missing for 10: explicit license/open-source terms in the evidence, documented build-from-source instructions, and a way to point the AI features at a self-hosted/local model instead of OpenAI.",
+    "evidenceIds": [
+      "iterm2-gh-4",
+      "iterm2-gh-9",
+      "iterm2-docs-20",
+      "iterm2-docs-15",
+      "iterm2-gh-15"
+    ]
   },
   {
     "productId": "iterm2",
     "storyId": "privacy-data-residency",
-    "verdict": "na",
+    "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "iTerm2 is a local macOS terminal emulator with no first-party cloud storage, so choosing a storage region or data residency is a category error for this kind of product. The community-reported configurable AI API URL controls where AI prompts are sent, not where data is stored. It is an adjacent control and does not make the residency axis applicable.",
+    "rationale": "Data residency is a fair question for a terminal, since some ship cloud sync and iTerm2's optional AI features send data to an external LLM provider. However, nothing in the evidence documents any choice of storage region or residency. The only storage evidence is local, such as paste history optionally saved to disk.",
     "evidenceIds": []
   },
   {
@@ -2082,10 +2103,10 @@
   {
     "productId": "kitty",
     "storyId": "agentic-webhooks",
-    "verdict": "na",
+    "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "kitty is a local GPU terminal emulator, not a hosted service or platform, so registrable outbound HTTP webhook callbacks are a category error for this kind of product. The evidence shows only local scripting and remote control over sockets (kitty-docs-23, kitty-probe-4), which are not webhooks and earn no credit here.",
+    "rationale": "Kitty is a scriptable terminal with a remote-control interface, so letting agents subscribe to its events is a fair question. The evidence shows only request/response control: an agent can poll `kitten @ ls` and `get-text` and send commands. Nothing documents webhooks or any push-style event subscription, and no API spec was found.",
     "evidenceIds": []
   },
   {
@@ -2154,11 +2175,16 @@
   {
     "productId": "kitty",
     "storyId": "automation-rules-engine",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Kitty is a terminal emulator, and event-triggered rules are a fair axis for that category, so the story applies. However, the evidence shows no user-definable event→action rule system. The closest items are adjacent features: a built-in automatic theme switch when the OS changes light/dark mode, keyboard-mappable actions, hint-kitten match customization, and scripting via remote control. None of these is a documented mechanism for defining rules that fire actions on events.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "The evidence shows a few narrow event-driven behaviours. Kitty can change color themes automatically when the OS switches between light and dark mode (kitty-docs-21), and lets users fully customize the matching rules and actions of a kitten (kitty-docs-14). It is also scriptable and extensible with Python kittens (kitty-docs-27, kitty-docs-23), though that control is externally driven, not rule-triggered. missing for 10: a documented general-purpose event→action rule or hook system (e.g. triggers on window, command or output events), detail on how such rules are defined, and hands-on or community corroboration of automatic event-triggered actions.",
+    "evidenceIds": [
+      "kitty-docs-21",
+      "kitty-docs-14",
+      "kitty-docs-27",
+      "kitty-docs-23"
+    ]
   },
   {
     "productId": "kitty",
@@ -2172,11 +2198,16 @@
   {
     "productId": "kitty",
     "storyId": "automation-versioned-workflows",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "kitty documents scripting through remote control, Python kittens, kitty.conf and startup sessions. Nothing in the evidence shows a built-in way to version, review, or roll back those automations. A community note that the config 'fits in a dotfiles repo' describes a user-side workaround with external version control, which does not count as product capability.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "kitty's automations live in user-authored artifacts: kitty.conf, Python kittens and startup session files. Its documented git integration and kitty-diff could support reviewing changes to those files. That makes versioning possible only through external tools like git; the evidence shows no built-in versioning, history, review workflow or rollback for automations. Missing for 10: native automation version history, a review/approval flow, one-step rollback, and any documentation or hands-on evidence of versioning automations specifically.",
+    "evidenceIds": [
+      "kitty-docs-5",
+      "kitty-docs-27",
+      "kitty-docs-19",
+      "kitty-docs-12"
+    ]
   },
   {
     "productId": "kitty",
@@ -2437,13 +2468,12 @@
     "productId": "kitty",
     "storyId": "prompt-marks-navigation",
     "verdict": "full",
-    "quality": 8,
-    "confidence": "high",
-    "rationale": "kitty's official shell-integration docs say its zsh, fish and bash integration enables jumping to previous prompts in the scrollback and viewing the last command's output in less, which shows it marks prompts and command output. The ssh kitten also sets up shell integration automatically on remote hosts. missing for 10: explicit documentation of jumping forward to the next prompt and of the mappable actions/keybindings for prompt navigation, and independent or hands-on corroboration of the feature.",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Kitty's first-party shell integration docs state that zsh, fish and bash integration enables jumping to previous prompts in the scrollback, and also lets you view the last command's output. That clearly delivers the core of the story. Missing for 10: detailed documentation of the jump-to-prompt keybindings/actions and forward/backward navigation between command marks, and independent or hands-on corroboration of prompt jumping.",
     "evidenceIds": [
       "kitty-docs-25",
-      "kitty-docs-3",
-      "kitty-docs-26"
+      "kitty-docs-3"
     ]
   },
   {
@@ -2474,11 +2504,14 @@
   {
     "productId": "kitty",
     "storyId": "scrollback-search",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Scrollback search is a fair axis for a terminal emulator, but the pack never documents a kitty search feature with match navigation. Shell integration only covers jumping between prompts and viewing the last command's output in less. That is an adjacent capability, and any searching would come from the external pager, not kitty. The hints kitten acts on visible text, not searchable scrollback.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The only on-topic evidence is the shell-integration docs: kitty can jump between previous prompts in the scrollback and open the last command's output in less, where it could presumably be searched. There is no documented built-in scrollback search or match-to-match navigation. missing for 10: native scrollback search, jump-to-next/previous-match navigation, docs describing search keybindings or actions, hands-on or community corroboration of search speed.",
+    "evidenceIds": [
+      "kitty-docs-25",
+      "kitty-docs-3"
+    ]
   },
   {
     "productId": "kitty",
@@ -2565,11 +2598,19 @@
   {
     "productId": "warp",
     "storyId": "agent-drives-terminal",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence shows no documented protocol or API that lets an external coding agent drive Warp's terminal (create panes, send commands, read pane output). Warp's built-in agent can run commands and read live output, but that is Warp's own agent, not an external control interface. The Oz CLI and API manage cloud agent runs, and the settings file only covers configuration; both are adjacent capabilities and earn no credit here.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Warp's own built-in agent can run commands, read results, and control interactive or full-screen terminal apps through its PTY, and third-party CLI agents can run inside Warp. The documented programmatic surfaces are narrower: the Oz CLI/API for launching cloud agents, an OpenAPI spec of unspecified scope, and a settings file. None of these is shown to let an external agent create panes or drive terminal sessions. Missing for 10: a documented terminal-control protocol or API, programmatic pane/tab creation, external-agent access to session output, and independent corroboration.",
+    "evidenceIds": [
+      "warp-docs-16",
+      "warp-docs-69",
+      "warp-docs-2",
+      "warp-docs-22",
+      "warp-docs-40",
+      "warp-probe-2",
+      "warp-docs-42"
+    ]
   },
   {
     "productId": "warp",
@@ -2689,11 +2730,13 @@
   {
     "productId": "warp",
     "storyId": "agentic-mcp-server",
-    "verdict": "na",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Warp is itself a coding agent and agentic development environment, so it fills the MCP client role, and serving MCP tools to other agents is a different product role. All of its MCP evidence is client-side and cannot be credited here: Warp AI and the Oz CLI connect to MCP servers like GitHub and Linear, and MCP servers act as plugins for Warp's agents. The one marketing line listing 'API, CLI, SDK and MCP' as platform surfaces does not explicitly document a Warp-run MCP server, such as an 'mcp serve' command or a hosted MCP endpoint.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Warp is primarily an agent product, where an MCP server role would normally not apply. However, its homepage says the Oz agent platform offers \"API, CLI, SDK and MCP\" as platform surfaces, which suggests a first-party MCP interface other agents could connect to. That single line is thin and ambiguous, and every other MCP mention in the pack describes Warp acting as an MCP client, which earns no credit here. Missing for 10: explicit documentation of a Warp-hosted or local MCP server (endpoint or serve command, exposed tools, auth/setup), and hands-on or independent corroboration.",
+    "evidenceIds": [
+      "warp-docs-42"
+    ]
   },
   {
     "productId": "warp",
@@ -2758,11 +2801,14 @@
     "productId": "warp",
     "storyId": "agentic-scoped-keys",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Warp documents API keys that let the Oz CLI, cloud agents, and self-hosted workers authenticate without human interaction, so it does issue credentials meant for agents. Nothing in the evidence shows those keys can be scoped or restricted to least privilege. Agent profiles limit what an agent can do (file access, commands, MCP usage, directories), but that is an adjacent agent-permission control, not credential scoping. missing for 10: documented per-key scopes or permission restrictions, key expiry/rotation or revocation controls, independent or hands-on corroboration.",
+    "rationale": "Warp documents creating and managing API keys so the Oz CLI can authenticate agents without a human, for CI pipelines, headless servers, and containers (warp-docs-63). Separately, agent profiles restrict what an agent can access, including files, command execution, and MCP servers (warp-docs-64), and admins can set org-wide agent autonomy (warp-docs-66). However, the evidence never says the API keys themselves can be scoped or limited to least privilege; permission limits come from profiles, not the credentials. Missing for 10: documented per-key scopes or permissions, key expiry or rotation controls, an explicit link between API keys and agent profiles, and independent hands-on corroboration.",
     "evidenceIds": [
-      "warp-docs-63"
+      "warp-docs-63",
+      "warp-docs-64",
+      "warp-docs-66",
+      "warp-docs-37"
     ]
   },
   {
@@ -2782,11 +2828,14 @@
   {
     "productId": "warp",
     "storyId": "agentic-webhooks",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "The axis applies because Warp's Automation Platform is an API-driven product that could plausibly emit webhooks, but the pack documents no registrable outbound HTTP callbacks a programmatic consumer can subscribe to. The only webhook mention describes inbound 'custom webhooks' that trigger cloud agents (Warp receiving events), which is an adjacent capability and earns no credit. App and agent notifications are not webhooks either.",
-    "evidenceIds": []
+    "rationale": "Warp documents inbound event triggers: cloud agents can react to events from Slack, Linear, GitHub, or custom webhooks, and run on system events and integrations. That covers webhook-driven event handling, but nothing shows outbound webhook subscriptions for Warp's own events (such as agent run status). Missing for 10: outbound webhook subscriptions for Warp events, webhook configuration and payload documentation, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "warp-docs-4",
+      "warp-docs-60"
+    ]
   },
   {
     "productId": "warp",
@@ -2855,11 +2904,16 @@
   {
     "productId": "warp",
     "storyId": "api-sandbox",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The axis applies, since an agentic development environment could plausibly offer isolated or sandboxed execution. However, nothing in the evidence documents a sandbox or test environment that keeps agents away from production data. Cloud agents running on Warp's or your own infrastructure, and agent profiles that restrict file access, commands and directories, are adjacent controls, not a sandbox capability.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Nothing in the evidence describes a dedicated sandbox or test environment. Two features give indirect support. Cloud agents run on Warp's cloud infrastructure or your own, separate from the local machine. Agent profiles and admin-controlled autonomy can restrict file access, command execution, MCP usage and where the agent can act, which could keep agents away from production resources. Missing for 10: an explicit sandboxed or ephemeral execution environment, documented isolation from production data or credentials, test/sandbox mode documentation, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "warp-docs-60",
+      "warp-docs-64",
+      "warp-docs-66",
+      "warp-docs-52"
+    ]
   },
   {
     "productId": "warp",
@@ -2989,9 +3043,9 @@
     "productId": "warp",
     "storyId": "config-as-code",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Warp's open-source announcement says it is shipping a settings file that gives users programmatic control over settings and easy portability between devices. That is a first-party capability on the story's axis, but it comes from a single launch-blog line. Its depth is unproven: the evidence does not say whether the file covers the terminal's full configuration or how it fits a dotfiles workflow. missing for 10: confirmation that the settings file is plain text and covers all configuration (themes, keybindings, prompts, appearance), docs on file location/format for dotfiles management, evidence of cross-machine sync behavior, independent or hands-on corroboration.",
+    "rationale": "Warp's open-source announcement says it is shipping a long-overdue settings file for programmatic control and easy portability between devices, which supports keeping settings in dotfiles and syncing them. That is a single blog-level mention: there is no documentation of the file's format or location, or whether it covers the full configuration. Missing for 10: documented plain-text format and path for the settings file, evidence it covers all configuration (themes, keybindings, etc.), a documented dotfiles/multi-machine sync workflow, independent or hands-on corroboration.",
     "evidenceIds": [
       "warp-docs-40"
     ]
@@ -3011,11 +3065,15 @@
   {
     "productId": "warp",
     "storyId": "extensibility-plugins",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "The evidence shows no documented plugin or scripting API for extending the terminal itself in a real language such as Lua or Python. MCP servers are described as 'plugins' only for Warp's AI agents, which is an adjacent capability. Saved Warp Drive workflows, a settings file, Fig completion specs and open-source code access are configuration, building blocks or workarounds, not a terminal extension mechanism.",
-    "evidenceIds": []
+    "rationale": "Warp's docs describe MCP servers as \"essentially acting as plugins for Warp,\" which can expose custom tools written in any language. However, these extend only the AI agents, not the terminal itself. The other related items are thin: Warp Drive offers saved, parameterized workflows, and a newly shipped settings file gives programmatic control over settings. Missing for 10: a documented terminal-level scripting or plugin API in a real language (Lua/Python/kittens-style), hooks into terminal events, rendering, or keybindings, and any hands-on or community corroboration of terminal extensibility.",
+    "evidenceIds": [
+      "warp-docs-18",
+      "warp-docs-11",
+      "warp-docs-40"
+    ]
   },
   {
     "productId": "warp",
@@ -3092,11 +3150,16 @@
   {
     "productId": "warp",
     "storyId": "openness-full-export",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Warp stores user data such as Warp Drive workflows, agent conversations and cloud run transcripts, so a data-export story applies to it. The evidence documents no feature for exporting that data in open formats. The nearest items do not qualify: a new settings file for moving settings between devices, the AGPL-licensed client source code, and shareable run links are adjacent features, not a data export capability.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Warp is shipping a settings file for programmatic control and easy portability between devices. Its client is open source under AGPL, and terminal input/output is not stored on Warp servers, which limits lock-in for that data. However, no evidence shows a documented export of Warp Drive workflows, notebooks, rules, agent conversations or cloud-agent run history in open formats. Missing for 10: a documented full-account data export, open-format export of Warp Drive content and conversation history, an account deletion/offboarding flow, and independent confirmation that leaving is clean.",
+    "evidenceIds": [
+      "warp-docs-40",
+      "warp-docs-25",
+      "warp-docs-38",
+      "warp-docs-12"
+    ]
   },
   {
     "productId": "warp",
@@ -3156,15 +3219,17 @@
     "productId": "warp",
     "storyId": "privacy-retention-controls",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Warp documents several of its own retention controls. Users can keep sensitive Blocks from being saved locally or clear blocks from a machine entirely. Terminal input and output are claimed never to be stored on Warp servers. Business and Enterprise plans get a Zero Data Retention agreement covering AI interaction data, and team admins have centralized privacy controls. However, ZDR is plan-gated, and there is no documented user-facing way to set retention periods or delete server-side data such as cloud agent run transcripts, Warp Drive objects, or AI conversation history. missing for 10: configurable retention windows, user-initiated deletion of server-side data (account, conversations, run transcripts), ZDR on Free/Pro plans, independent corroboration.",
+    "rationale": "Warp documents several retention controls: local Blocks can be kept from being saved or cleared from a machine entirely, conversation history can be managed, and telemetry can be opted out. It also says terminal input/output is never stored on its servers, and Business/Enterprise plans get a Zero Data Retention agreement with admin-panel privacy controls. These controls are tiered, though: ZDR is limited to higher plans and Free users must keep telemetry on to use AI. missing for 10: user-initiated deletion of server-side account/AI data, configurable retention periods, ZDR outside Business/Enterprise, independent corroboration of retention claims.",
     "evidenceIds": [
-      "warp-docs-36",
       "warp-docs-12",
       "warp-docs-34",
-      "warp-docs-66",
-      "warp-docs-58"
+      "warp-docs-36",
+      "warp-docs-33",
+      "warp-docs-17",
+      "warp-docs-58",
+      "warp-docs-66"
     ]
   },
   {
@@ -3206,11 +3271,15 @@
   {
     "productId": "warp",
     "storyId": "scripted-session-layouts",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence pack never documents a way to declare windows, tabs, panes, and startup commands in a config file or script and open a project workspace with one command. Session restoration only automatically restores the previous state on relaunch. The new settings file covers general settings, and Warp Drive workflows are saved commands. All three are adjacent features, not user-defined workspace layouts.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Warp automatically restores the previous session's windows, tabs, panes and recent Blocks on relaunch, and it now ships a settings file for programmatic control over settings. Neither is shown to let you declare named startup sessions or window layouts in config or scripts and open them with one command. Missing for 10: documented declarative layout/launch configuration files, a scriptable command to open a defined project workspace, examples of per-project startup sessions, independent corroboration.",
+    "evidenceIds": [
+      "warp-docs-21",
+      "warp-docs-35",
+      "warp-docs-40"
+    ]
   },
   {
     "productId": "warp",
