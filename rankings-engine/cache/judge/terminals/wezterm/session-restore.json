@@ -1,17 +1,17 @@
 {
-  "hash": "67d0e5b731f3b1a3abdd19697f64d6fa14068c3eb9f114659134a80e006d9112",
+  "hash": "2a3166dee6c2e50ea6ebfc184b384168de848847396eaf857b7bb3ab334e751c",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "WezTerm's multiplexer keeps tabs alive. The docs say a connection to a remote wezterm instance \"preserves your tabs\", and a runtime probe shows a daemonized wezterm-mux-server holding windows, tabs and panes independently of the GUI. That lets a developer reattach after closing or losing the GUI, but nothing shows layouts or working directories surviving a restart of the mux server, a machine reboot or a crash. The OSC 7 working-directory feature only seeds the directory of newly spawned tabs; it does not restore them. Missing for 10: restoring sessions after a reboot or mux-server crash, persisting working directories across restarts, saving and loading layouts, and independent corroboration of session restore.",
+    "rationale": "WezTerm's built-in multiplexer keeps tabs and panes alive in a mux server that the GUI can reconnect to. The docs say connecting to a wezterm instance 'preserves your tabs' and that local tmux-like multiplexing is available, and a user reports 'mosh+tmux-like reconnectable sessions with panes and tabs'. So a GUI restart or disconnect is survivable, but nothing shows session state being saved to disk and restored after a full restart or crash of the mux itself. Missing for 10: documented save/restore of windows, tabs and working directories across machine restart or mux-server crash, explicit restoration of working directories, and hands-on corroboration of crash recovery.",
     "evidenceIds": [
       "wezterm-docs-14",
+      "wezterm-docs-36",
       "wezterm-docs-3",
-      "wezterm-docs-8",
-      "wezterm-probe-rt-1",
-      "wezterm-docs-10"
+      "wezterm-comm-10-refresh-8c7fab3bf93de00f",
+      "wezterm-docs-39"
     ],
     "productId": "wezterm",
     "storyId": "session-restore"
