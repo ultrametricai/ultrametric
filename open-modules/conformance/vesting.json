@@ -1,0 +1,100 @@
+{
+  "module": "vesting",
+  "entrypoint": "vestedAsOf",
+  "implementation": {
+    "file": "lib/openstartup/vesting.ts",
+    "sha256": "013bf2e2b16bc9d560ddcb4d6cf652281e9a208553b3d9cb462c045feb0f8a37"
+  },
+  "readme": "open-modules/conformance/README.md",
+  "cases": [
+    {
+      "name": "standard-48-12-before-cliff",
+      "description": "4,800,000 shares on the standard 4-year schedule with a 1-year cliff, commencing 2026-01-15: nothing vests the day before the cliff (2027-01-14).",
+      "source": "Cooley GO, \"Founder's Stock, Vesting and Founder Departures\" (https://www.cooleygo.com/founder-basics-founders-stock/, verified 2026-10-01): the standard 4-year / 1-year-cliff monthly convention; share arithmetic hand-derived in lib/openstartup/__tests__/vesting.test.ts",
+      "inputs": [
+        {
+          "shares": 4800000,
+          "commencement": "2026-01-15",
+          "schedule": {
+            "kind": "periodic",
+            "totalMonths": 48,
+            "cliffMonths": 12,
+            "periodMonths": 1
+          }
+        },
+        "2027-01-14"
+      ],
+      "expected": {
+        "vestedShares": 0,
+        "unvestedShares": 4800000
+      }
+    },
+    {
+      "name": "standard-48-12-at-cliff",
+      "description": "Exactly 25% (12/48 of 4,800,000 = 1,200,000 shares) vests on the first anniversary, 2027-01-15.",
+      "source": "Cooley GO, \"Founder's Stock, Vesting and Founder Departures\" (https://www.cooleygo.com/founder-basics-founders-stock/, verified 2026-10-01); hand-derived in lib/openstartup/__tests__/vesting.test.ts",
+      "inputs": [
+        {
+          "shares": 4800000,
+          "commencement": "2026-01-15",
+          "schedule": {
+            "kind": "periodic",
+            "totalMonths": 48,
+            "cliffMonths": 12,
+            "periodMonths": 1
+          }
+        },
+        "2027-01-15"
+      ],
+      "expected": {
+        "vestedShares": 1200000,
+        "unvestedShares": 3600000,
+        "nextVestingDate": "2027-02-15"
+      }
+    },
+    {
+      "name": "standard-48-12-month-13",
+      "description": "One month past the cliff (2027-02-15), 13/48 of the grant has vested: 1,300,000 shares.",
+      "source": "Cooley GO, \"Founder's Stock, Vesting and Founder Departures\" (https://www.cooleygo.com/founder-basics-founders-stock/, verified 2026-10-01); hand-derived in lib/openstartup/__tests__/vesting.test.ts",
+      "inputs": [
+        {
+          "shares": 4800000,
+          "commencement": "2026-01-15",
+          "schedule": {
+            "kind": "periodic",
+            "totalMonths": 48,
+            "cliffMonths": 12,
+            "periodMonths": 1
+          }
+        },
+        "2027-02-15"
+      ],
+      "expected": {
+        "vestedShares": 1300000,
+        "unvestedShares": 3500000
+      }
+    },
+    {
+      "name": "standard-48-12-fully-vested",
+      "description": "On the fourth anniversary (2030-01-15) the grant is fully vested at 4,800,000 shares.",
+      "source": "Cooley GO, \"Founder's Stock, Vesting and Founder Departures\" (https://www.cooleygo.com/founder-basics-founders-stock/, verified 2026-10-01); hand-derived in lib/openstartup/__tests__/vesting.test.ts",
+      "inputs": [
+        {
+          "shares": 4800000,
+          "commencement": "2026-01-15",
+          "schedule": {
+            "kind": "periodic",
+            "totalMonths": 48,
+            "cliffMonths": 12,
+            "periodMonths": 1
+          }
+        },
+        "2030-01-15"
+      ],
+      "expected": {
+        "vestedShares": 4800000,
+        "unvestedShares": 0
+      }
+    }
+  ]
+}

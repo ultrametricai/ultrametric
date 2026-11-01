@@ -3,6 +3,10 @@
 
 # Review common-stock fair market value before a stock option grant
 
+[Overview](#overview) · [Steps](#steps-at-a-glance)
+
+## Overview
+
 **Trigger:** A proposed stock option grant, or new information that could materially affect an existing valuation before a proposed grant.
 
 A planning workflow for a private Delaware corporation considering a US service-provider option grant. It does not itself value stock or approve grants.
@@ -19,39 +23,90 @@ A planning workflow for a private Delaware corporation considering a US service-
 - Specific corporate authorization
 - Executed option records if approved
 
-## Steps
+## Steps at a glance
 
-1. **Record entity, security class, recipient, proposed grant date, option terms, and governing plan.** — mode: read only
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
 
-   Identify the issuing entity, stock class, recipient’s service relationship, tax residence and work location, proposed grant date, share count, proposed exercise price and other option terms, and governing plan from the company’s records. Distinguish agreed terms from proposals and missing facts. The resulting grant record should let the valuation reviewer assess what is being valued, for whom and when, including any facts outside this Delaware corporation and US option scenario.
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Record entity, security class, recipient, proposed grant date, option terms, and governing plan.](#step-1) | Not recorded | Not recorded | Entry step |
+| [2. Assemble current cap table, prior valuation date/report, financials, forecasts, financing terms, and material events since that date.](#step-2) | Not recorded | Not recorded | [Step 1](#step-1) |
+| [3. Ask qualified valuation and tax advisers to evaluate current fair market value, available methods, material changes, and the option exception.](#step-3) | Not recorded | Not recorded | [Step 2](#step-2) |
+| [4. Approve valuation use and proposed option terms through the corporate decision path that counsel confirms is authorized.](#step-4) | Not recorded | Not recorded | [Step 3](#step-3) |
+| [5. Only after counsel and authorized decision-maker approval, issue the specific option and record grant date, exercise price, recipient acceptance, and source report version.](#step-5) | Not recorded | Not recorded | [Step 4](#step-4) (Counsel and the authorized decision-maker approve the specific grant.) |
+| [6. Before subsequent grants, recheck material developments and the valuation date; schedule a case-specific refresh review.](#step-6) | Not recorded | Not recorded | [Step 5](#step-5) |
 
-   - Sources: [26 CFR 1.409A-1](https://www.ecfr.gov/current/title-26/chapter-I/subchapter-A/part-1/section-1.409A-1)
-2. **Assemble current cap table, prior valuation date/report, financials, forecasts, financing terms, and material events since that date.** — mode: prepare draft
+<a id="steps"></a>
 
-   Assemble the current cap table, previous valuation report and date, recent financial statements, management forecasts and financing terms. Add material developments since the prior valuation, with their dates. Reconcile share counts and financial periods across the documents, and explain missing or provisional inputs so the valuation reviewer can distinguish evidence from assumptions. Keep this company information in the private valuation workspace.
-3. **Ask qualified valuation and tax advisers to evaluate current fair market value, available methods, material changes, and the option exception.** — mode: prepare draft
+## Step details
 
-   Ask the valuation adviser and tax counsel to evaluate the proposed option and available methods against the company’s financial and capitalization records. Include financing discussions, changed forecasts, acquisition interest and other developments affecting value. Resolve inconsistent inputs, then obtain a conclusion identifying the valuation date, stock class, method, assumptions and conditions on using the result.
+<a id="step-1"></a>
 
-   - Sources: [26 CFR 1.409A-1](https://www.ecfr.gov/current/title-26/chapter-I/subchapter-A/part-1/section-1.409A-1)
-4. **Approve valuation use and proposed option terms through the corporate decision path that counsel confirms is authorized.** — mode: external effect
+### 1. Record entity, security class, recipient, proposed grant date, option terms, and governing plan.
 
-   Bring the valuation conclusion, proposed option terms, plan capacity and report version to the board or delegate authorized under the company’s documents. Identify the precise grant scope and any conditions requiring a decision. The resolution should record what was approved and by whom, including the authority of any delegate, so the equity administrator can apply it to the subsequent grant.
+mode: read only
 
-   - Sources: [Delaware General Corporation Law](https://delcode.delaware.gov/title8/c001/sc05/index.html)
-   - If "Counsel and the authorized decision-maker approve the specific grant": continue at step 5
-5. **Only after counsel and authorized decision-maker approval, issue the specific option and record grant date, exercise price, recipient acceptance, and source report version.** — mode: external effect
 
-   *Follows step 4 (when Counsel and the authorized decision-maker approve the specific grant).*
+Identify the issuing entity, stock class, recipient’s service relationship, tax residence and work location, proposed grant date, share count, proposed exercise price and other option terms, and governing plan from the company’s records. Distinguish agreed terms from proposals and missing facts. The resulting grant record should let the valuation reviewer assess what is being valued, for whom and when, including any facts outside this Delaware corporation and US option scenario.
 
-   Issue the specific grant only after the required counsel review and corporate authorization. Match the agreement to the approved recipient, share class and quantity, exercise price, grant date and vesting terms. Obtain recipient acceptance as the agreement requires and reconcile the grant to the equity records. Link the executed agreement, authorization and valuation version so the recorded grant can be traced to its basis.
+- Sources: [26 CFR 1.409A-1](https://www.ecfr.gov/current/title-26/chapter-I/subchapter-A/part-1/section-1.409A-1)
 
-   - Sources: [Delaware General Corporation Law](https://delcode.delaware.gov/title8/c001/sc05/index.html)
-6. **Before subsequent grants, recheck material developments and the valuation date; schedule a case-specific refresh review.** — mode: read only
+<a id="step-2"></a>
 
-   Before a subsequent grant, compare the valuation date and assumptions with current financing, operating and transaction information. Ask the adviser to assess developments that could affect value. The US regulation treats a previously calculated value as unreasonable when material information is omitted or the calculation is more than twelve months old. Establish whether the next grant can rely on the report or needs a refresh.
+### 2. Assemble current cap table, prior valuation date/report, financials, forecasts, financing terms, and material events since that date.
 
-   - Sources: [26 CFR 1.409A-1](https://www.ecfr.gov/current/title-26/chapter-I/subchapter-A/part-1/section-1.409A-1)
+mode: prepare draft
+
+
+Assemble the current cap table, previous valuation report and date, recent financial statements, management forecasts and financing terms. Add material developments since the prior valuation, with their dates. Reconcile share counts and financial periods across the documents, and explain missing or provisional inputs so the valuation reviewer can distinguish evidence from assumptions. Keep this company information in the private valuation workspace.
+
+<a id="step-3"></a>
+
+### 3. Ask qualified valuation and tax advisers to evaluate current fair market value, available methods, material changes, and the option exception.
+
+mode: prepare draft
+
+
+Ask the valuation adviser and tax counsel to evaluate the proposed option and available methods against the company’s financial and capitalization records. Include financing discussions, changed forecasts, acquisition interest and other developments affecting value. Resolve inconsistent inputs, then obtain a conclusion identifying the valuation date, stock class, method, assumptions and conditions on using the result.
+
+- Sources: [26 CFR 1.409A-1](https://www.ecfr.gov/current/title-26/chapter-I/subchapter-A/part-1/section-1.409A-1)
+
+<a id="step-4"></a>
+
+### 4. Approve valuation use and proposed option terms through the corporate decision path that counsel confirms is authorized.
+
+mode: external effect
+
+
+Bring the valuation conclusion, proposed option terms, plan capacity and report version to the board or delegate authorized under the company’s documents. Identify the precise grant scope and any conditions requiring a decision. The resolution should record what was approved and by whom, including the authority of any delegate, so the equity administrator can apply it to the subsequent grant.
+
+- Sources: [Delaware General Corporation Law](https://delcode.delaware.gov/title8/c001/sc05/index.html)
+- If "Counsel and the authorized decision-maker approve the specific grant": continue at step 5
+
+<a id="step-5"></a>
+
+### 5. Only after counsel and authorized decision-maker approval, issue the specific option and record grant date, exercise price, recipient acceptance, and source report version.
+
+mode: external effect
+
+
+*Follows step 4 (when Counsel and the authorized decision-maker approve the specific grant).*
+
+Issue the specific grant only after the required counsel review and corporate authorization. Match the agreement to the approved recipient, share class and quantity, exercise price, grant date and vesting terms. Obtain recipient acceptance as the agreement requires and reconcile the grant to the equity records. Link the executed agreement, authorization and valuation version so the recorded grant can be traced to its basis.
+
+- Sources: [Delaware General Corporation Law](https://delcode.delaware.gov/title8/c001/sc05/index.html)
+
+<a id="step-6"></a>
+
+### 6. Before subsequent grants, recheck material developments and the valuation date; schedule a case-specific refresh review.
+
+mode: read only
+
+
+Before a subsequent grant, compare the valuation date and assumptions with current financing, operating and transaction information. Ask the adviser to assess developments that could affect value. The US regulation treats a previously calculated value as unreasonable when material information is omitted or the calculation is more than twelve months old. Establish whether the next grant can rely on the report or needs a refresh.
+
+- Sources: [26 CFR 1.409A-1](https://www.ecfr.gov/current/title-26/chapter-I/subchapter-A/part-1/section-1.409A-1)
+
 
 ---
 

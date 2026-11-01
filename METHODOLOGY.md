@@ -290,7 +290,11 @@ has measurable re-roll variance (~9% of cells can change verdict or quality on a
 no relevant evidence change). To keep rankings evidence-driven rather than noise-driven, large
 re-judge waves are reviewed against the prior state and pure churn is reverted under audited
 rules: applicability (`na`↔`none`) never flips without new evidence, verdicts that cite nothing
-new don't move close races, and negative mechanical probe results only affect the story axis
+new don't move close races while their prior support is unchanged. If previously cited
+content changes or disappears, a verified current-input judgment may lower full/partial
+credit toward none without raising quality. Uncited none is untested; source loss does not
+prove a failed capability. Upgrades and applicability changes still require new evidence.
+Negative mechanical probe results only affect the story axis
 they actually test. Every revert is recorded in the commit that applies it. A future prompt
 version will pass the prior verdict as an anchor to reduce this variance at the source.
 

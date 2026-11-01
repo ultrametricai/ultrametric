@@ -3,6 +3,10 @@
 
 # Complete SOC 2 Type II
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Steps](#steps-at-a-glance) · [Outputs](#outputs)
+
+## Overview
+
 The report enterprise buyers actually ask for: after the Type I snapshot, run controls through a 3–12 month observation window with continuous evidence collection, sign the management assertion, sit the auditor’s fieldwork, and publish the report to your trust center. Type I setup lives in Start SOC 2 Type I.
 
 | Field | Value |
@@ -19,67 +23,138 @@ The report enterprise buyers actually ask for: after the Type I snapshot, run co
 
 Compliance platforms run the continuous monitoring and evidence collection through the window; the scoping, the signed management assertion, and the auditor’s fieldwork stay human.
 
-## Steps
+<a id="artifacts"></a>
 
-1. **Set the observation window and scope with the auditor** — human · ~1 h
+## Before you start
 
-   Agree the service, environments, locations and trust-service subjects with the auditor. Review the prior report and material system changes before selecting the examination period. Match evidence collection and fieldwork to customer delivery needs, then have management approve the engagement. Use the examination period and request schedule agreed with the auditor.
-
-   - Sources: [AICPA SOC suite](https://www.aicpa-cima.com/resources/landing/system-and-organization-controls-soc-suite-of-services)
-2. **Configure continuous control monitoring** — agent-runnable · ~30 min
-
-   Map each in-scope control to an evidence source and accountable person. Verify that connectors cover the full asset population and alert when collection stops. Schedule the manual approvals, policy reviews and other recurring activities that automated checks cannot capture. Test collection with sample evidence before the examination period so missing records can be fixed while the activity is still observable.
-
-   - Canonical vendor: Vanta
-   - Vendor options: Vanta, Secureframe, Oneleet
-   - Ranked market: [compliance-automation](../../open-rankings/compliance-automation)
-   - Sources: [AICPA SOC suite](https://www.aicpa-cima.com/resources/landing/system-and-organization-controls-soc-suite-of-services)
-3. **Observation window elapses (3–12 months)** — human · ~90 d · async wait
-
-   Operate the controls throughout the agreed examination period and collect evidence when each activity occurs. Investigate missing records, ownership changes and exceptions as they arise. Preserve the dates and effects of system changes for the auditor. At the end of the period, reconcile evidence coverage with the examination scope; elapsed time alone does not establish that controls operated effectively.
-
-   - Sources: [AICPA SOC suite](https://www.aicpa-cima.com/resources/landing/system-and-organization-controls-soc-suite-of-services)
-4. **Run the quarterly access reviews** — manual form/portal · ~1 h
-
-   Compare application access lists with current employment status, role and approved access needs. Managers or system owners review privileged, inactive and exceptional accounts explicitly. Carry out approved removals through the access-change process and check the result. Record the population reviewed, reviewer decisions and retained exceptions using the cadence agreed for this control, which may differ from the catalog’s quarterly title.
-
-   - Canonical vendor: Vanta
-   - Sources: [AICPA SOC suite](https://www.aicpa-cima.com/resources/landing/system-and-organization-controls-soc-suite-of-services)
-5. **Remediate control failures before fieldwork** — agent-runnable · ~1 h
-
-   Bring together monitoring failures, incidents and missed recurring controls before fieldwork. Establish when each happened and which assets or periods were affected. Implement approved fixes and collect new evidence while retaining the original exceptions. Explain unresolved risk and compensating measures to the auditor. Link a later passing test to the remediation and original failure.
-
-   - Sources: [AICPA SOC suite](https://www.aicpa-cima.com/resources/landing/system-and-organization-controls-soc-suite-of-services)
-6. **Sign the management assertion letter** — human (legally required signature) · ~10 min · hard to undo
-
-   Compare the proposed management assertion with the final system description, examination period and supplied evidence. Responsible officers should resolve any representation that exceeds known facts with the auditor before signing. Keep the executed assertion with the examination record and distinguish it from other representation requests that remain unanswered.
-
-   - Sources: [AICPA SOC suite](https://www.aicpa-cima.com/resources/landing/system-and-organization-controls-soc-suite-of-services)
-7. **Auditor fieldwork and sampling requests** — human · ~7 d · async wait
-
-   Route each sampling request to the control owner with the requested population and period. Share the relevant evidence through the agreed secure channel and explain missing samples or exceptions. Supply original records with accurate activity dates. Reconcile unanswered requests with the auditor so both sides know which evidence or explanation is still needed.
-
-   - Sources: [AICPA SOC suite](https://www.aicpa-cima.com/resources/landing/system-and-organization-controls-soc-suite-of-services)
-8. **Receive the report and publish to the trust center** — agent-runnable · ~15 min
-
-   Check the issued report’s entity, service, period, opinion and exceptions. Before sharing it, confirm authorized recipients and access settings under the report’s distribution conditions and the company’s disclosure process. Test the trust-center recipient experience and keep the issued original distinct from public summaries. Assign follow-up for exceptions and refresh dates based on the actual report.
-
-   - Produces: SOC 2 Type II report
-   - Canonical vendor: Vanta
-   - Sources: [AICPA SOC suite](https://www.aicpa-cima.com/resources/landing/system-and-organization-controls-soc-suite-of-services)
-
-## Artifacts
-
-Produces:
-
-- SOC 2 Type II report
-
-Requires:
+Required artifacts:
 
 - SOC 2 Type I report — from [Start SOC 2 Type I](start-soc-2-type-i.md)
 - Compliance platform — from [Start SOC 2 Type I](start-soc-2-type-i.md)
 - Identity provider (SSO) — from [Set up SSO & access management](set-up-sso-access-management.md)
 - Pen test report & attestation — from [Run the annual penetration test](run-the-annual-penetration-test.md)
+
+| Information to gather | Required by the record |
+| --- | --- |
+| audit observation period | Yes |
+
+## Steps at a glance
+
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
+
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Set the observation window and scope with the auditor](#step-1) | human | ~1 h | Entry step |
+| [2. Configure continuous control monitoring](#step-2) | agent-runnable | ~30 min | [Step 1](#step-1) |
+| [3. Observation window elapses (3–12 months)](#step-3) | human; includes waiting | ~90 d | [Step 2](#step-2) |
+| [4. Run the quarterly access reviews](#step-4) | manual form/portal | ~1 h | [Step 3](#step-3) |
+| [5. Remediate control failures before fieldwork](#step-5) | agent-runnable | ~1 h | [Step 4](#step-4) |
+| [6. Sign the management assertion letter](#step-6) | human; signature required | ~10 min | [Step 5](#step-5) |
+| [7. Auditor fieldwork and sampling requests](#step-7) | human; includes waiting | ~7 d | [Step 6](#step-6) |
+| [8. Receive the report and publish to the trust center](#step-8) | agent-runnable | ~15 min | [Step 7](#step-7) |
+
+<a id="steps"></a>
+
+## Step details
+
+<a id="step-1"></a>
+
+### 1. Set the observation window and scope with the auditor
+
+human · ~1 h
+
+
+Agree the service, environments, locations and trust-service subjects with the auditor. Review the prior report and material system changes before selecting the examination period. Match evidence collection and fieldwork to customer delivery needs, then have management approve the engagement. Use the examination period and request schedule agreed with the auditor.
+
+- Sources: [AICPA SOC suite](https://www.aicpa-cima.com/resources/landing/system-and-organization-controls-soc-suite-of-services)
+
+<a id="step-2"></a>
+
+### 2. Configure continuous control monitoring
+
+agent-runnable · ~30 min
+
+
+Map each in-scope control to an evidence source and accountable person. Verify that connectors cover the full asset population and alert when collection stops. Schedule the manual approvals, policy reviews and other recurring activities that automated checks cannot capture. Test collection with sample evidence before the examination period so missing records can be fixed while the activity is still observable.
+
+- Canonical vendor: Vanta
+- Vendor options: Vanta, Secureframe, Oneleet
+- Ranked market: [compliance-automation](../../open-rankings/compliance-automation)
+- Sources: [AICPA SOC suite](https://www.aicpa-cima.com/resources/landing/system-and-organization-controls-soc-suite-of-services)
+
+<a id="step-3"></a>
+
+### 3. Observation window elapses (3–12 months)
+
+human · ~90 d · async wait
+
+
+Operate the controls throughout the agreed examination period and collect evidence when each activity occurs. Investigate missing records, ownership changes and exceptions as they arise. Preserve the dates and effects of system changes for the auditor. At the end of the period, reconcile evidence coverage with the examination scope; elapsed time alone does not establish that controls operated effectively.
+
+- Sources: [AICPA SOC suite](https://www.aicpa-cima.com/resources/landing/system-and-organization-controls-soc-suite-of-services)
+
+<a id="step-4"></a>
+
+### 4. Run the quarterly access reviews
+
+manual form/portal · ~1 h
+
+
+Compare application access lists with current employment status, role and approved access needs. Managers or system owners review privileged, inactive and exceptional accounts explicitly. Carry out approved removals through the access-change process and check the result. Record the population reviewed, reviewer decisions and retained exceptions using the cadence agreed for this control, which may differ from the catalog’s quarterly title.
+
+- Canonical vendor: Vanta
+- Sources: [AICPA SOC suite](https://www.aicpa-cima.com/resources/landing/system-and-organization-controls-soc-suite-of-services)
+
+<a id="step-5"></a>
+
+### 5. Remediate control failures before fieldwork
+
+agent-runnable · ~1 h
+
+
+Bring together monitoring failures, incidents and missed recurring controls before fieldwork. Establish when each happened and which assets or periods were affected. Implement approved fixes and collect new evidence while retaining the original exceptions. Explain unresolved risk and compensating measures to the auditor. Link a later passing test to the remediation and original failure.
+
+- Sources: [AICPA SOC suite](https://www.aicpa-cima.com/resources/landing/system-and-organization-controls-soc-suite-of-services)
+
+<a id="step-6"></a>
+
+### 6. Sign the management assertion letter
+
+human (legally required signature) · ~10 min · hard to undo
+
+
+Compare the proposed management assertion with the final system description, examination period and supplied evidence. Responsible officers should resolve any representation that exceeds known facts with the auditor before signing. Keep the executed assertion with the examination record and distinguish it from other representation requests that remain unanswered.
+
+- Sources: [AICPA SOC suite](https://www.aicpa-cima.com/resources/landing/system-and-organization-controls-soc-suite-of-services)
+
+<a id="step-7"></a>
+
+### 7. Auditor fieldwork and sampling requests
+
+human · ~7 d · async wait
+
+
+Route each sampling request to the control owner with the requested population and period. Share the relevant evidence through the agreed secure channel and explain missing samples or exceptions. Supply original records with accurate activity dates. Reconcile unanswered requests with the auditor so both sides know which evidence or explanation is still needed.
+
+- Sources: [AICPA SOC suite](https://www.aicpa-cima.com/resources/landing/system-and-organization-controls-soc-suite-of-services)
+
+<a id="step-8"></a>
+
+### 8. Receive the report and publish to the trust center
+
+agent-runnable · ~15 min
+
+
+Check the issued report’s entity, service, period, opinion and exceptions. Before sharing it, confirm authorized recipients and access settings under the report’s distribution conditions and the company’s disclosure process. Test the trust-center recipient experience and keep the issued original distinct from public summaries. Assign follow-up for exceptions and refresh dates based on the actual report.
+
+- Produces: SOC 2 Type II report
+- Canonical vendor: Vanta
+- Sources: [AICPA SOC suite](https://www.aicpa-cima.com/resources/landing/system-and-organization-controls-soc-suite-of-services)
+
+
+## Outputs
+
+- SOC 2 Type II report
 
 ## Related records
 

@@ -3,6 +3,10 @@
 
 # Absorb a pulled term sheet
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Steps](#steps-at-a-glance)
+
+## Overview
+
 **Trigger:** The lead pulls the term sheet, by call or by silence, and the round you planned around is gone.
 
 Start with facts. Get the real reason if you can; a fixable diligence finding is different from partner politics or a turning market. Check what you signed. Term sheets are mostly non-binding except exclusivity/no-shop and confidentiality, so note when the no-shop expires before re-opening conversations (the NVCA model documents show the standard shape). Re-run the runway math on real numbers. Then pick a path: re-open the process wide, bridge with insiders on SAFEs (YC's published documents are the standard), or cut to default-alive. Tell the waiting investors the truth: the round changed, the company did not. If cash is the issue, start the cost plan now; the weeks in denial are the expensive ones. Editorial guidance from the standard documents; nothing here is legal or financial advice.
@@ -22,25 +26,90 @@ Start with facts. Get the real reason if you can; a fixable diligence finding is
 
 The investor conversations and the path decision are founder work; an agent can re-run the runway scenarios from the books and rebuild the pipeline and data room for the re-opened process.
 
-## Steps
+## Before you start
 
-1. **Get the real reason if you can — a fixable diligence finding, partner politics, or the market are three different problems** — human · ~45 min
-2. **Check what you signed: term sheets are mostly non-binding except exclusivity/no-shop and confidentiality — note when the no-shop expires** — human · ~30 min
+| Information to gather | Required by the record |
+| --- | --- |
+| the signed term sheet (no-shop/confidentiality terms and dates) | Yes |
+| current cash, burn, and committed-but-unclosed checks | Yes |
 
-   - Do it yourself: [NVCA model legal documents](https://nvca.org/model-legal-documents/)
-3. **Re-run the runway on real numbers: months left, the cut scenarios, the honest minimum raise** — agent-runnable · ~45 min
+## Steps at a glance
 
-   - Vendor options: QuickBooks, Xero
-   - Ranked market: [accounting](../../open-rankings/accounting)
-4. **Pick the path: re-open the process wide, bridge with insiders on SAFEs, or cut to default-alive** — human · ~1 h
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
 
-   - Do it yourself: [YC SAFE documents](https://www.ycombinator.com/documents)
-5. **Tell the other investors who were waiting, honestly — the round changed, the company didn't** — human · ~45 min · hard to undo
-6. **Rebuild the raise machine: refresh the data room, the target list, and the weekly cadence** — agent-runnable · ~1 h
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Get the real reason if you can — a fixable diligence finding, partner politics, or the market are three different problems](#step-1) | human | ~45 min | Entry step |
+| [2. Check what you signed: term sheets are mostly non-binding except exclusivity/no-shop and confidentiality — note when the no-shop expires](#step-2) | human | ~30 min | [Step 1](#step-1) |
+| [3. Re-run the runway on real numbers: months left, the cut scenarios, the honest minimum raise](#step-3) | agent-runnable | ~45 min | [Step 2](#step-2) |
+| [4. Pick the path: re-open the process wide, bridge with insiders on SAFEs, or cut to default-alive](#step-4) | human | ~1 h | [Step 3](#step-3) |
+| [5. Tell the other investors who were waiting, honestly — the round changed, the company didn't](#step-5) | human | ~45 min | [Step 4](#step-4) |
+| [6. Rebuild the raise machine: refresh the data room, the target list, and the weekly cadence](#step-6) | agent-runnable | ~1 h | [Step 5](#step-5) |
+| [7. If cash is the issue, start the cost plan now — the weeks of denial are the expensive part](#step-7) | human | ~1 h | [Step 6](#step-6) |
 
-   - Vendor options: Carta
-   - Ranked market: [equity-management](../../open-rankings/equity-management)
-7. **If cash is the issue, start the cost plan now — the weeks of denial are the expensive part** — human · ~1 h
+<a id="steps"></a>
+
+## Step details
+
+<a id="step-1"></a>
+
+### 1. Get the real reason if you can — a fixable diligence finding, partner politics, or the market are three different problems
+
+human · ~45 min
+
+
+<a id="step-2"></a>
+
+### 2. Check what you signed: term sheets are mostly non-binding except exclusivity/no-shop and confidentiality — note when the no-shop expires
+
+human · ~30 min
+
+
+- Do it yourself: [NVCA model legal documents](https://nvca.org/model-legal-documents/)
+
+<a id="step-3"></a>
+
+### 3. Re-run the runway on real numbers: months left, the cut scenarios, the honest minimum raise
+
+agent-runnable · ~45 min
+
+
+- Vendor options: QuickBooks, Xero
+- Ranked market: [accounting](../../open-rankings/accounting)
+
+<a id="step-4"></a>
+
+### 4. Pick the path: re-open the process wide, bridge with insiders on SAFEs, or cut to default-alive
+
+human · ~1 h
+
+
+- Do it yourself: [YC SAFE documents](https://www.ycombinator.com/documents)
+
+<a id="step-5"></a>
+
+### 5. Tell the other investors who were waiting, honestly — the round changed, the company didn't
+
+human · ~45 min · hard to undo
+
+
+<a id="step-6"></a>
+
+### 6. Rebuild the raise machine: refresh the data room, the target list, and the weekly cadence
+
+agent-runnable · ~1 h
+
+
+- Vendor options: Carta
+- Ranked market: [equity-management](../../open-rankings/equity-management)
+
+<a id="step-7"></a>
+
+### 7. If cash is the issue, start the cost plan now — the weeks of denial are the expensive part
+
+human · ~1 h
+
+
 
 ---
 

@@ -25,7 +25,7 @@ export const IRREDUCIBLE_REASON =
 // (approve, board, KYC, notarize, review, professional counsel) must never pick up a workaround
 // from a later rule, even when its label also mentions signatures, portals, or drafting.
 const IRREDUCIBLE_RE =
-  /approv|kyc|\bboard\b|notari|verify identity|identity verification|sign[\s-]?off|\breview|attorney|counsel|\bcpa\b|auditor|\baudit\b|calibration|negotiat|meeting|interview|decision/
+  /approv|kyc|\bboard\b|notari|verify identity|identity verification|sign[\s-]?off|\breview|attorney|counsel|tax advis[eo]r|\bcpa\b|auditor|\baudit\b|calibration|negotiat|meeting|interview|decision/
 
 // "Sign up" is account creation, not a signature — keep it away from the e-sign rule.
 const SIGNUP_RE = /sign[\s-]?up|signup/

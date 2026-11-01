@@ -3,6 +3,10 @@
 
 # Hire an executive
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Steps](#steps-at-a-glance) · [Outputs](#outputs)
+
+## Overview
+
 The first VP hire runs nothing like a normal loop: scorecard and comp band with the board, a retained search engagement, months of interviews and references, then an offer with equity, severance, and a board-approved grant.
 
 | Field | Value |
@@ -19,68 +23,146 @@ The first VP hire runs nothing like a normal loop: scorecard and comp band with 
 
 Search, interviews, references, and the board’s comp approval are human end-to-end; the agent preps the scorecard, comp benchmarks, and the grant paperwork around them.
 
-## Steps
+<a id="artifacts"></a>
 
-1. **Define the role scorecard and comp band with the board** — human · ~1.5 h
+## Before you start
 
-   Define the executive’s business outcomes, decision authority, reporting relationships and required capabilities. Discuss the cash and equity range with the board or delegated decision makers alongside budget and company stage. Set the search owner and negotiation boundaries, including decisions that must return for approval. Use the agreed scorecard to align the search firm, interviewers and eventual offer.
-
-   - Next: steps 2 and 4 — all follow this step
-2. **Engage a retained search firm** — human · ~1 h
-
-   Compare search firms on relevant placements, the team doing the work, market coverage, conflicts and candidate relationships. Discuss the target role, expected reporting, exclusivity, fees and replacement terms before selecting a firm. Present the commercial proposal and unresolved engagement terms to the hiring sponsor. Share confidential company or candidate information only through the authorized search arrangement.
-3. **Sign the search engagement letter** — human (legally required signature) · ~5 min · hard to undo
-
-   Check the engagement against the agreed search scope, fees, payment triggers, expenses, exclusivity and termination or replacement terms. Resolve disputed provisions with counsel and the hiring sponsor before the authorized signer executes. Give the search owner the agreed reporting expectations and finance the payment obligations, including any milestones that trigger invoices.
-
-   - Next: continue at step 5
-4. **Benchmark executive comp and equity** — agent-runnable · ~30 min
-
-   *Follows step 1.*
-
-   Compare compensation data for similar functions, company stages, geographies and responsibilities. Separate base pay, variable compensation, benefits and equity, identifying whether equity figures mean grant value, ownership percentage or realized value. Check the source period and sample limitations, then model affordability with finance. Present the hiring sponsor a proposed range with its cost, relevant comparisons and source limitations.
-
-   - Canonical vendor: Carta
-5. **Interview loop and references** — human · ~7 d · async wait
-
-   *Follows step 3.*
-
-   Assign interviews to the executive outcomes and capabilities in the scorecard. Seek concrete examples of decisions, results and working relationships, and collect references through the company’s candidate-consent process. Compare the evidence in the hiring debrief, including conflicting accounts and questions that still need diligence. Give the hiring sponsor a reasoned recommendation with specific risks to resolve before an offer.
-
-   - Cross-arena market: [applicant-tracking](../../open-rankings/applicant-tracking)
-   - Sources: [EEOC: Recruiting, hiring or promoting employees](https://www.eeoc.gov/employers/small-business/3-im-recruiting-hiring-or-promoting-employees)
-6. **Draft the offer (comp, equity, severance)** — agent-runnable · ~30 min
-
-   *Follows steps 4 and 5 — both are required first.*
-
-   Draft the offer from the settled negotiation position: role, reporting line, cash compensation, proposed equity, severance and any change-of-control terms. Identify provisions dependent on board action or separate grant documents. Reconcile the package with counsel and finance, calling out differences from the approved range and unusual commitments. Resolve those decisions before the candidate receives the offer.
-
-   - Vendor options: ChatGPT, Claude, Gemini, Grok
-   - Ranked market: [ai-assistants](../../open-rankings/ai-assistants)
-7. **Board approves the exec comp and signs the grant consent** — human (legally required signature) · ~1 d · async wait
-
-   Assemble the proposed compensation and grant terms with the pricing support and approvals required by the governing documents and equity plan. Counsel or the corporate secretary prepares the resolutions and checks who can decide. After the board or delegated body acts, reconcile its approved terms with the offer and grant instructions before either is released.
-8. **Send the offer for signature** — agent-runnable · ~10 min · hard to undo
-
-   Check the offer against the board decision and final negotiation, including attachments and conditions. Once the hiring sponsor authorizes release, send it to the verified candidate and company signer. Route proposed changes back to the relevant decision makers and keep the search owner informed of signature status. Restrict compensation details to those involved in the hire.
-
-   - Canonical vendor: DocuSign
-9. **Candidate accepts and onboarding starts** — human · ~2 d · async wait · hard to undo
-
-   Confirm acceptance of the final offer and any separately required documents, then agree the start plan with the executive and hiring sponsor. Identify unfinished conditions and coordinate payroll, equipment, access, introductions and any public announcement. Give each onboarding owner the details they need, keeping compensation private. Track unfinished equity or other actions independently of the accepted offer.
-
-   - Produces: Signed offer / employment agreement
-
-## Artifacts
-
-Produces:
-
-- Signed offer / employment agreement
-
-Requires:
+Required artifacts:
 
 - Cap table record — from [Set up cap table](set-up-cap-table.md)
 - 409A valuation report — from [Get a 409A valuation](get-a-409a-valuation.md)
+
+| Information to gather | Required by the record |
+| --- | --- |
+| role definition and reporting line | Yes |
+
+## Steps at a glance
+
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
+
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Define the role scorecard and comp band with the board](#step-1) | human | ~1.5 h | Entry step |
+| [2. Engage a retained search firm](#step-2) | human | ~1 h | [Step 1](#step-1) |
+| [3. Sign the search engagement letter](#step-3) | human; signature required | ~5 min | [Step 2](#step-2) |
+| [4. Benchmark executive comp and equity](#step-4) | agent-runnable | ~30 min | [Step 1](#step-1) |
+| [5. Interview loop and references](#step-5) | human; includes waiting | ~7 d | [Step 3](#step-3) |
+| [6. Draft the offer (comp, equity, severance)](#step-6) | agent-runnable | ~30 min | All: [Step 5](#step-5); [Step 4](#step-4) |
+| [7. Board approves the exec comp and signs the grant consent](#step-7) | human; signature required; includes waiting | ~1 d | [Step 6](#step-6) |
+| [8. Send the offer for signature](#step-8) | agent-runnable | ~10 min | [Step 7](#step-7) |
+| [9. Candidate accepts and onboarding starts](#step-9) | human; includes waiting | ~2 d | [Step 8](#step-8) |
+
+<a id="steps"></a>
+
+## Step details
+
+<a id="step-1"></a>
+
+### 1. Define the role scorecard and comp band with the board
+
+human · ~1.5 h
+
+
+Define the executive’s business outcomes, decision authority, reporting relationships and required capabilities. Discuss the cash and equity range with the board or delegated decision makers alongside budget and company stage. Set the search owner and negotiation boundaries, including decisions that must return for approval. Use the agreed scorecard to align the search firm, interviewers and eventual offer.
+
+- Next: steps 2 and 4 — all follow this step
+
+<a id="step-2"></a>
+
+### 2. Engage a retained search firm
+
+human · ~1 h
+
+
+Compare search firms on relevant placements, the team doing the work, market coverage, conflicts and candidate relationships. Discuss the target role, expected reporting, exclusivity, fees and replacement terms before selecting a firm. Present the commercial proposal and unresolved engagement terms to the hiring sponsor. Share confidential company or candidate information only through the authorized search arrangement.
+
+<a id="step-3"></a>
+
+### 3. Sign the search engagement letter
+
+human (legally required signature) · ~5 min · hard to undo
+
+
+Check the engagement against the agreed search scope, fees, payment triggers, expenses, exclusivity and termination or replacement terms. Resolve disputed provisions with counsel and the hiring sponsor before the authorized signer executes. Give the search owner the agreed reporting expectations and finance the payment obligations, including any milestones that trigger invoices.
+
+- Next: continue at step 5
+
+<a id="step-4"></a>
+
+### 4. Benchmark executive comp and equity
+
+agent-runnable · ~30 min
+
+
+*Follows step 1.*
+
+Compare compensation data for similar functions, company stages, geographies and responsibilities. Separate base pay, variable compensation, benefits and equity, identifying whether equity figures mean grant value, ownership percentage or realized value. Check the source period and sample limitations, then model affordability with finance. Present the hiring sponsor a proposed range with its cost, relevant comparisons and source limitations.
+
+- Canonical vendor: Carta
+
+<a id="step-5"></a>
+
+### 5. Interview loop and references
+
+human · ~7 d · async wait
+
+
+*Follows step 3.*
+
+Assign interviews to the executive outcomes and capabilities in the scorecard. Seek concrete examples of decisions, results and working relationships, and collect references through the company’s candidate-consent process. Compare the evidence in the hiring debrief, including conflicting accounts and questions that still need diligence. Give the hiring sponsor a reasoned recommendation with specific risks to resolve before an offer.
+
+- Cross-arena market: [applicant-tracking](../../open-rankings/applicant-tracking)
+- Sources: [EEOC: Recruiting, hiring or promoting employees](https://www.eeoc.gov/employers/small-business/3-im-recruiting-hiring-or-promoting-employees)
+
+<a id="step-6"></a>
+
+### 6. Draft the offer (comp, equity, severance)
+
+agent-runnable · ~30 min
+
+
+*Follows steps 4 and 5 — both are required first.*
+
+Draft the offer from the settled negotiation position: role, reporting line, cash compensation, proposed equity, severance and any change-of-control terms. Identify provisions dependent on board action or separate grant documents. Reconcile the package with counsel and finance, calling out differences from the approved range and unusual commitments. Resolve those decisions before the candidate receives the offer.
+
+- Vendor options: ChatGPT, Claude, Gemini, Grok
+- Ranked market: [ai-assistants](../../open-rankings/ai-assistants)
+
+<a id="step-7"></a>
+
+### 7. Board approves the exec comp and signs the grant consent
+
+human (legally required signature) · ~1 d · async wait
+
+
+Assemble the proposed compensation and grant terms with the pricing support and approvals required by the governing documents and equity plan. Counsel or the corporate secretary prepares the resolutions and checks who can decide. After the board or delegated body acts, reconcile its approved terms with the offer and grant instructions before either is released.
+
+<a id="step-8"></a>
+
+### 8. Send the offer for signature
+
+agent-runnable · ~10 min · hard to undo
+
+
+Check the offer against the board decision and final negotiation, including attachments and conditions. Once the hiring sponsor authorizes release, send it to the verified candidate and company signer. Route proposed changes back to the relevant decision makers and keep the search owner informed of signature status. Restrict compensation details to those involved in the hire.
+
+- Canonical vendor: DocuSign
+
+<a id="step-9"></a>
+
+### 9. Candidate accepts and onboarding starts
+
+human · ~2 d · async wait · hard to undo
+
+
+Confirm acceptance of the final offer and any separately required documents, then agree the start plan with the executive and hiring sponsor. Identify unfinished conditions and coordinate payroll, equipment, access, introductions and any public announcement. Give each onboarding owner the details they need, keeping compensation private. Track unfinished equity or other actions independently of the accepted offer.
+
+- Produces: Signed offer / employment agreement
+
+
+## Outputs
+
+- Signed offer / employment agreement
 
 ---
 

@@ -37,7 +37,19 @@
           "metadata": {
             "route": "person",
             "reversibility": "reversible",
-            "estimatedMinutes": 10
+            "estimatedMinutes": 10,
+            "execution": {
+              "category": "agent-native",
+              "basis": "local-work",
+              "rationale": "Compare processor terms and payment capabilities against the supplied business and market requirements.",
+              "evidence": [
+                "open-processes/connect-a-payment-processor.json#/parts/0/options/0/summary"
+              ],
+              "reviewRequired": false,
+              "automationEvidence": {
+                "status": "documented"
+              }
+            }
           }
         },
         {
@@ -62,6 +74,18 @@
           "metadata": {
             "context": {
               "kind": "vendor"
+            },
+            "execution": {
+              "category": "agent-native",
+              "basis": "local-work",
+              "rationale": "Analyze the merchant-of-record contract's allocation of seller, tax, refund and payout responsibilities.",
+              "evidence": [
+                "open-processes/connect-a-payment-processor.json#/parts/0/options/1/summary"
+              ],
+              "reviewRequired": false,
+              "automationEvidence": {
+                "status": "documented"
+              }
             }
           }
         },
@@ -93,6 +117,18 @@
             "route": "agent",
             "context": {
               "kind": "situational"
+            },
+            "execution": {
+              "category": "agent-native",
+              "basis": "local-work",
+              "rationale": "Design the invoice-and-transfer collection schedule, responsibilities and reconciliation records.",
+              "evidence": [
+                "open-processes/connect-a-payment-processor.json#/parts/0/options/2/summary"
+              ],
+              "reviewRequired": false,
+              "automationEvidence": {
+                "status": "documented"
+              }
             }
           }
         }
@@ -119,6 +155,19 @@
         "async": true,
         "verify": {
           "how": "The processor's dashboard shows the account activated for live charges and payouts, and a live-mode API key is issued."
+        },
+        "execution": {
+          "category": "human-online",
+          "basis": "human-work",
+          "rationale": "The owner completes processor onboarding and verification through the account interface and responds personally to identity or underwriting questions.",
+          "evidence": [
+            "open-processes/connect-a-payment-processor.json#/parts/1/guidance",
+            "open-processes/connect-a-payment-processor.json#/parts/1"
+          ],
+          "reviewRequired": true,
+          "automationEvidence": {
+            "status": "unverified"
+          }
         }
       }
     },
@@ -146,7 +195,21 @@
       "metadata": {
         "route": "agent",
         "reversibility": "reversible",
-        "estimatedMinutes": 15
+        "estimatedMinutes": 15,
+        "execution": {
+          "category": "agent-native",
+          "basis": "local-work",
+          "rationale": "The step implements and tests Stripe’s documented SDK/API payment flow in application code, including final-state handling and duplicate protection. Secret storage and production release use the project’s existing controls.",
+          "evidence": [
+            "open-processes/connect-a-payment-processor.json#/parts/2/guidance",
+            "https://docs.stripe.com/payments/accept-a-payment?payment-ui=checkout&ui=stripe-hosted",
+            "https://docs.stripe.com/testing"
+          ],
+          "reviewRequired": false,
+          "automationEvidence": {
+            "status": "documented"
+          }
+        }
       }
     },
     {
@@ -175,7 +238,21 @@
       "metadata": {
         "route": "agent",
         "reversibility": "reversible",
-        "estimatedMinutes": 10
+        "estimatedMinutes": 10,
+        "execution": {
+          "category": "agent-computer-use",
+          "basis": "browser-evidence",
+          "rationale": "Stripe documents sandbox payment scenarios and Dashboard payout settings. The workflow exercises the application, compares payment/accounting state and inspects the live bank destination and schedule; any production charge needs finance authorization.",
+          "evidence": [
+            "open-processes/connect-a-payment-processor.json#/parts/3/guidance",
+            "https://docs.stripe.com/testing",
+            "https://docs.stripe.com/payouts"
+          ],
+          "reviewRequired": false,
+          "automationEvidence": {
+            "status": "documented"
+          }
+        }
       }
     }
   ],

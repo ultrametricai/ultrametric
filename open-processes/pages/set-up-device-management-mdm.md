@@ -3,6 +3,10 @@
 
 # Set up device management (MDM)
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Steps](#steps-at-a-glance) · [Outputs](#outputs)
+
+## Overview
+
 Get every laptop under management before the auditor asks: enroll in Apple Business Manager, pick the MDM, push baseline policies (disk encryption, screen lock, updates), enroll the fleet, and feed the compliance reports into SOC 2 evidence.
 
 | Field | Value |
@@ -19,60 +23,115 @@ Get every laptop under management before the auditor asks: enroll in Apple Busin
 
 Policy configuration and compliance reporting run over the MDM’s API; Apple Business Manager’s business verification and per-device enrollment acceptance are manual.
 
-## Steps
+<a id="artifacts"></a>
 
-1. **Choose an MDM** — human · ~20 min
+## Before you start
 
-   Inventory the fleet by operating system, ownership, device age, and current management status. List the controls IT needs to apply and the reports it needs to see, including enrollment, recovery, updates, and lost-device handling. Compare services against that inventory and test the most important requirements on representative hardware. Include administrative effort and subscription cost in the recommendation, with unsupported devices and personal-device concerns clearly identified before purchase.
-
-   - Vendor options: Rippling, Kandji, Jamf
-
-   Options:
-     - **Default — Choose an MDM** — human · ~20 min
-
-       Use the general selection path when the fleet spans operating systems or ownership models. Compare services against the real device inventory, identity setup, support capacity, and required controls. Try enrollment, policy application, and recovery on representative devices with IT, and inspect the resulting reports. Choose a service that covers the stated requirements within budget, identifying which device groups or controls will need separate handling.
-     - **Mac-native MDM**
-
-       When: All-Mac fleet - a Mac-native MDM over the HR-platform bundle
-
-       For an Apple-focused fleet, compare the service's supported devices and operating-system versions with the company inventory. Examine its use of Apple's enrollment and management options, then try the required policies and recovery process on representative hardware. Include the work of buying, assigning, replacing, and retiring devices in the comparison. Document any non-Apple or personally owned devices separately so the selected service's coverage is clear before purchase.
-
-       - Vendor options: Kandji, Jamf
-       - Sources: [Apple: Device Enrollment and device management](https://support.apple.com/guide/deployment/device-enrollment-and-device-management-depd1c27dfe6/web)
-2. **Enroll in Apple Business Manager** — manual form/portal · ~2 d · async wait
-
-   For the Apple devices in scope, follow Apple's current business enrollment and organization-verification process using a company-controlled administrator account. Gather the requested organization and verification details, and assign someone who can respond to Apple's questions. Once the organization is verified, connect it to the chosen management service using the supported setup. Keep organization verification, device assignment, and device enrollment distinguishable in the rollout checklist; each addresses a different part of getting the fleet managed.
-
-   - Verify: Apple Business Manager approves the organization after D-U-N-S verification and the portal activates. ([business.apple.com](https://business.apple.com/))
-   - Do it yourself: [Apple Business Manager](https://business.apple.com/)
-   - Sources: [Apple: Sign up for Apple Business](https://support.apple.com/guide/business/sign-up-and-verify-your-organization-axm402206497/web)
-3. **Configure baseline policies (encryption, screen lock, updates)** — agent-runnable · ~45 min
-
-   Translate the security baseline into policies supported by each device platform, including encryption, screen locking, and updates. Decide how recovery information is protected and how exceptions will be handled before enforcement. Try the policies on representative hardware with IT, checking the resulting device state and any disruption to everyday work. Resolve problems, then roll out the agreed settings and give the support team instructions for recovery and noncompliant devices.
-
-   - Canonical vendor: Rippling
-   - Sources: [CISA: Secure Your Business](https://www.cisa.gov/audiences/small-and-medium-businesses/secure-your-business)
-4. **Enroll the fleet’s devices** — human · ~1 h
-
-   Match each device to the appropriate enrollment method for its platform and ownership. Tell users what management can control and arrange backups or recovery preparation where the enrollment process needs them. Enroll in batches that IT can support, then check device identity, last contact, and applied policies in the console. Reconcile the result with the inventory and assign follow-up for devices that are missing, offline, or unable to meet the baseline.
-
-   - Produces: Device management (MDM)
-   - Sources: [Apple: Device Enrollment and device management](https://support.apple.com/guide/deployment/device-enrollment-and-device-management-depd1c27dfe6/web)
-5. **Wire compliance reports into SOC 2 evidence** — agent-runnable · ~15 min
-
-   Identify the device controls and assessment period the compliance team needs to evidence. Pull the relevant management reports and reconcile their device population with the fleet inventory. Investigate missing devices, stale check-ins, and exceptions, and include their disposition with the reports. Link the reports to the relevant controls, policy versions, and remediation work in the assessment workspace, and ask the assessor about any remaining evidence gap for that specific control.
-
-   - Canonical vendor: Vanta
-
-## Artifacts
-
-Produces:
-
-- Device management (MDM)
-
-Requires:
+Required artifacts:
 
 - Compliance platform — from [Start SOC 2 Type I](start-soc-2-type-i.md)
+
+| Information to gather | Required by the record |
+| --- | --- |
+| device inventory | Yes |
+
+## Steps at a glance
+
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
+
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Choose an MDM](#step-1) | human | ~20 min | Entry step |
+| [2. Enroll in Apple Business Manager](#step-2) | manual form/portal; includes waiting | ~2 d | [Step 1](#step-1) |
+| [3. Configure baseline policies (encryption, screen lock, updates)](#step-3) | agent-runnable | ~45 min | [Step 2](#step-2) |
+| [4. Enroll the fleet’s devices](#step-4) | human | ~1 h | [Step 3](#step-3) |
+| [5. Wire compliance reports into SOC 2 evidence](#step-5) | agent-runnable | ~15 min | [Step 4](#step-4) |
+
+<a id="steps"></a>
+
+## Step details
+
+<a id="step-1"></a>
+
+### 1. Choose an MDM
+
+human · ~20 min
+
+| Option | Applies when |
+| --- | --- |
+| Default — Choose an MDM | Recorded default |
+| Mac-native MDM | All-Mac fleet - a Mac-native MDM over the HR-platform bundle |
+
+
+Inventory the fleet by operating system, ownership, device age, and current management status. List the controls IT needs to apply and the reports it needs to see, including enrollment, recovery, updates, and lost-device handling. Compare services against that inventory and test the most important requirements on representative hardware. Include administrative effort and subscription cost in the recommendation, with unsupported devices and personal-device concerns clearly identified before purchase.
+
+- Vendor options: Rippling, Kandji, Jamf
+
+Options:
+  - **Default — Choose an MDM** — human · ~20 min
+
+    Use the general selection path when the fleet spans operating systems or ownership models. Compare services against the real device inventory, identity setup, support capacity, and required controls. Try enrollment, policy application, and recovery on representative devices with IT, and inspect the resulting reports. Choose a service that covers the stated requirements within budget, identifying which device groups or controls will need separate handling.
+  - **Mac-native MDM**
+
+    When: All-Mac fleet - a Mac-native MDM over the HR-platform bundle
+
+    For an Apple-focused fleet, compare the service's supported devices and operating-system versions with the company inventory. Examine its use of Apple's enrollment and management options, then try the required policies and recovery process on representative hardware. Include the work of buying, assigning, replacing, and retiring devices in the comparison. Document any non-Apple or personally owned devices separately so the selected service's coverage is clear before purchase.
+
+    - Vendor options: Kandji, Jamf
+    - Sources: [Apple: Device Enrollment and device management](https://support.apple.com/guide/deployment/device-enrollment-and-device-management-depd1c27dfe6/web)
+
+<a id="step-2"></a>
+
+### 2. Enroll in Apple Business Manager
+
+manual form/portal · ~2 d · async wait
+
+
+For the Apple devices in scope, follow Apple's current business enrollment and organization-verification process using a company-controlled administrator account. Gather the requested organization and verification details, and assign someone who can respond to Apple's questions. Once the organization is verified, connect it to the chosen management service using the supported setup. Keep organization verification, device assignment, and device enrollment distinguishable in the rollout checklist; each addresses a different part of getting the fleet managed.
+
+- Verify: Apple Business Manager approves the organization after D-U-N-S verification and the portal activates. ([business.apple.com](https://business.apple.com/))
+- Do it yourself: [Apple Business Manager](https://business.apple.com/)
+- Sources: [Apple: Sign up for Apple Business](https://support.apple.com/guide/business/sign-up-and-verify-your-organization-axm402206497/web)
+
+<a id="step-3"></a>
+
+### 3. Configure baseline policies (encryption, screen lock, updates)
+
+agent-runnable · ~45 min
+
+
+Translate the security baseline into policies supported by each device platform, including encryption, screen locking, and updates. Decide how recovery information is protected and how exceptions will be handled before enforcement. Try the policies on representative hardware with IT, checking the resulting device state and any disruption to everyday work. Resolve problems, then roll out the agreed settings and give the support team instructions for recovery and noncompliant devices.
+
+- Canonical vendor: Rippling
+- Sources: [CISA: Secure Your Business](https://www.cisa.gov/audiences/small-and-medium-businesses/secure-your-business)
+
+<a id="step-4"></a>
+
+### 4. Enroll the fleet’s devices
+
+human · ~1 h
+
+
+Match each device to the appropriate enrollment method for its platform and ownership. Tell users what management can control and arrange backups or recovery preparation where the enrollment process needs them. Enroll in batches that IT can support, then check device identity, last contact, and applied policies in the console. Reconcile the result with the inventory and assign follow-up for devices that are missing, offline, or unable to meet the baseline.
+
+- Produces: Device management (MDM)
+- Sources: [Apple: Device Enrollment and device management](https://support.apple.com/guide/deployment/device-enrollment-and-device-management-depd1c27dfe6/web)
+
+<a id="step-5"></a>
+
+### 5. Wire compliance reports into SOC 2 evidence
+
+agent-runnable · ~15 min
+
+
+Identify the device controls and assessment period the compliance team needs to evidence. Pull the relevant management reports and reconcile their device population with the fleet inventory. Investigate missing devices, stale check-ins, and exceptions, and include their disposition with the reports. Link the reports to the relevant controls, policy versions, and remediation work in the assessment workspace, and ask the assessor about any remaining evidence gap for that specific control.
+
+- Canonical vendor: Vanta
+
+
+## Outputs
+
+- Device management (MDM)
 
 ## Related records
 

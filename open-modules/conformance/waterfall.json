@@ -1,0 +1,190 @@
+{
+  "module": "waterfall",
+  "entrypoint": "liquidityWaterfall",
+  "implementation": {
+    "file": "lib/openstartup/waterfall.ts",
+    "sha256": "b9f25906aa43e58918eda76ab17e9abbba4ce9069aacc25b71872249d0df782e"
+  },
+  "readme": "open-modules/conformance/README.md",
+  "cases": [
+    {
+      "name": "yc-appendix-ii-q3-10m-both-convert",
+      "description": "Appendix II Example 1 Q3, the $10,000,000 acquisition: both safes convert (561,764 and 1,123,529 shares on the 9,550,000 / 85% Liquidity Capitalization, at liquidity prices $0.3560 and $0.7120), the per-share consideration is $0.8901 over 11,235,293 shares, and the module allocates the actual price exactly in cents: $8,232,985.11 / $267,015.74 / $499,999.42 / $999,999.73.",
+      "source": "YC Post-Money Safe User Guide, Feb 2023 (PDF linked from https://www.ycombinator.com/documents), Appendix II Example 1 Q3",
+      "inputs": [
+        {
+          "holders": [
+            {
+              "name": "Founders",
+              "shares": 9250000,
+              "group": "common"
+            },
+            {
+              "name": "Options outstanding",
+              "shares": 300000,
+              "group": "options"
+            }
+          ],
+          "safes": [
+            {
+              "name": "Investor A",
+              "amount": 200000,
+              "postMoneyCap": 4000000
+            },
+            {
+              "name": "Investor B",
+              "amount": 800000,
+              "postMoneyCap": 8000000
+            }
+          ],
+          "unissuedPoolShares": 450000
+        },
+        10000000
+      ],
+      "expected": {
+        "residualShares": 11235293,
+        "perShare": 0.8901,
+        "safeConversions": [
+          {
+            "name": "Investor A",
+            "shares": 561764,
+            "liquidityPrice": 0.356,
+            "allConvertPerShare": 0.8901,
+            "decision": "convert"
+          },
+          {
+            "name": "Investor B",
+            "shares": 1123529,
+            "liquidityPrice": 0.712,
+            "allConvertPerShare": 0.8901,
+            "decision": "convert"
+          }
+        ],
+        "rows": [
+          {
+            "name": "Founders",
+            "total": 8232985.11
+          },
+          {
+            "name": "Options outstanding",
+            "total": 267015.74
+          },
+          {
+            "name": "Investor A",
+            "total": 499999.42
+          },
+          {
+            "name": "Investor B",
+            "total": 999999.73
+          }
+        ],
+        "unissuedPoolSharesExcluded": 450000
+      }
+    },
+    {
+      "name": "yc-appendix-ii-q4-3m-both-cash-out",
+      "description": "Appendix II Example 1 Q4, the $3,000,000 acquisition: at $0.2670 per all-convert share both safes' as-converted values ($149,990.99 and $299,982.24) fall below their Purchase Amounts, so both cash out at $200,000 and $800,000 and the remaining $2,000,000 goes pro rata to the 9,550,000 outstanding shares.",
+      "source": "YC Post-Money Safe User Guide, Feb 2023 (PDF linked from https://www.ycombinator.com/documents), Appendix II Example 1 Q4",
+      "inputs": [
+        {
+          "holders": [
+            {
+              "name": "Founders",
+              "shares": 9250000,
+              "group": "common"
+            },
+            {
+              "name": "Options outstanding",
+              "shares": 300000,
+              "group": "options"
+            }
+          ],
+          "safes": [
+            {
+              "name": "Investor A",
+              "amount": 200000,
+              "postMoneyCap": 4000000
+            },
+            {
+              "name": "Investor B",
+              "amount": 800000,
+              "postMoneyCap": 8000000
+            }
+          ],
+          "unissuedPoolShares": 450000
+        },
+        3000000
+      ],
+      "expected": {
+        "safeConversions": [
+          {
+            "name": "Investor A",
+            "allConvertPerShare": 0.267,
+            "decision": "cash-out"
+          },
+          {
+            "name": "Investor B",
+            "allConvertPerShare": 0.267,
+            "decision": "cash-out"
+          }
+        ],
+        "rows": [
+          {
+            "name": "Founders",
+            "total": 1937172.77
+          },
+          {
+            "name": "Options outstanding",
+            "total": 62827.23
+          },
+          {
+            "name": "Investor A",
+            "total": 200000
+          },
+          {
+            "name": "Investor B",
+            "total": 800000
+          }
+        ]
+      }
+    },
+    {
+      "name": "participating-preferred-30m",
+      "description": "Participating preferred on a $30,000,000 sale: 2,500,000 Series A shares (25%) for $5,000,000 at 1x take the $5,000,000 preference plus 25% of the remaining $25,000,000, totaling $11,250,000; common takes $18,750,000.",
+      "source": "Cooley GO glossary, \"Preferred Stock\" (https://www.cooleygo.com/glossary/preferred-stock/, verified 2026-10-01) and Brad Feld, \"Term Sheet: Liquidation Preference\" (2005-01-04, https://feld.com/archives/2005/01/term-sheet-liquidation-preference/); arithmetic hand-derived in lib/openstartup/__tests__/waterfall.test.ts",
+      "inputs": [
+        {
+          "holders": [
+            {
+              "name": "Common",
+              "shares": 7500000,
+              "group": "common"
+            }
+          ],
+          "preferred": {
+            "name": "Series A",
+            "shares": 2500000,
+            "invested": 5000000,
+            "participating": true
+          }
+        },
+        30000000
+      ],
+      "expected": {
+        "rows": [
+          {
+            "name": "Common",
+            "total": 18750000
+          },
+          {
+            "name": "Series A",
+            "decision": "participate",
+            "preferencePayout": 5000000,
+            "residualPayout": 6250000,
+            "total": 11250000
+          }
+        ]
+      }
+    }
+  ]
+}

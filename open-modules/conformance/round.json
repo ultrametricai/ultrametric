@@ -1,0 +1,122 @@
+{
+  "module": "round",
+  "entrypoint": "downRoundModel",
+  "implementation": {
+    "file": "lib/openstartup/round.ts",
+    "sha256": "c97ef800b2e68ca8c39172295f67101505d66a0d02e2c29b8fcdd819cf4a2633"
+  },
+  "readme": "open-modules/conformance/README.md",
+  "cases": [
+    {
+      "name": "springmeyer-down-round-broad-based",
+      "description": "The Springmeyer down round on the full table: 8,000,000 founder/pool shares plus 4,000,000 Series A preferred, a 5,000,000-share $5,000,000 issuance at $1.00. Broad-based protection moves the conversion price to $1.7059 and the Series A to 4,689,606 as-converted shares; fully diluted lands at 17,689,606 with founders falling from 66.67% to 45.22%, the protected Series A at 26.51%, and the new money at 28.27%.",
+      "source": "Bryan Springmeyer, \"Anti-Dilution Provisions in Venture Capital Transactions\" (https://www.calstartuplawfirm.com/business-lawyer-blog/anti-dilution-provisions.php, verified 2026-10-01)",
+      "tolerance": 0.0005,
+      "inputs": [
+        [
+          {
+            "id": "founders",
+            "name": "Founders + pool",
+            "group": "founder",
+            "shares": 8000000,
+            "pct": null
+          },
+          {
+            "id": "series-a",
+            "name": "Series A",
+            "group": "investor",
+            "shares": 4000000,
+            "pct": null
+          }
+        ],
+        [
+          {
+            "seriesName": "Series A",
+            "originalIssuePrice": 2,
+            "conversionPriceBefore": 2,
+            "basis": "broad-based"
+          }
+        ],
+        {
+          "newShares": 5000000,
+          "considerationDollars": 5000000,
+          "investorName": "Series B"
+        }
+      ],
+      "expected": {
+        "pps": 1,
+        "adjustments": [
+          {
+            "conversionPriceAfter": 1.7059,
+            "asConvertedAfter": 4689606,
+            "adjusted": true
+          }
+        ],
+        "fullyDilutedBefore": 12000000,
+        "fullyDilutedAfter": 17689606,
+        "rows": [
+          {
+            "name": "Founders + pool",
+            "pctBefore": 66.6667,
+            "pctAfter": 45.2243
+          },
+          {
+            "name": "Series A",
+            "pctBefore": 33.3333,
+            "pctAfter": 26.5105
+          },
+          {
+            "name": "Series B",
+            "pctBefore": 0,
+            "pctAfter": 28.2652
+          }
+        ]
+      }
+    },
+    {
+      "name": "springmeyer-down-round-narrow-based",
+      "description": "The same down round under narrow-based protection: conversion price $1.4444, Series A at 5,538,631 as-converted shares, fully diluted 18,538,631.",
+      "source": "Bryan Springmeyer, \"Anti-Dilution Provisions in Venture Capital Transactions\" (https://www.calstartuplawfirm.com/business-lawyer-blog/anti-dilution-provisions.php, verified 2026-10-01)",
+      "inputs": [
+        [
+          {
+            "id": "founders",
+            "name": "Founders + pool",
+            "group": "founder",
+            "shares": 8000000,
+            "pct": null
+          },
+          {
+            "id": "series-a",
+            "name": "Series A",
+            "group": "investor",
+            "shares": 4000000,
+            "pct": null
+          }
+        ],
+        [
+          {
+            "seriesName": "Series A",
+            "originalIssuePrice": 2,
+            "conversionPriceBefore": 2,
+            "basis": "narrow-based"
+          }
+        ],
+        {
+          "newShares": 5000000,
+          "considerationDollars": 5000000,
+          "investorName": "Series B"
+        }
+      ],
+      "expected": {
+        "adjustments": [
+          {
+            "conversionPriceAfter": 1.4444,
+            "asConvertedAfter": 5538631
+          }
+        ],
+        "fullyDilutedAfter": 18538631
+      }
+    }
+  ]
+}

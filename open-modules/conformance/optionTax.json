@@ -1,0 +1,125 @@
+{
+  "module": "optionTax",
+  "entrypoint": "iso100kAttribution",
+  "implementation": {
+    "file": "lib/openstartup/optionTax.ts",
+    "sha256": "8725289c5e17fe3a591415ca43510a0ec476e4ad06a2a7b630c058a7858f3ffb"
+  },
+  "readme": "open-modules/conformance/README.md",
+  "cases": [
+    {
+      "name": "reg-1-422-4d-example-2",
+      "description": "Example 2: a $100,000 option (April) and a $75,000 option (December) both first exercisable in 2004. The earlier grant absorbs the whole $100,000 limit, so the later grant is entirely nonstatutory.",
+      "source": "Treas. Reg. § 1.422-4(d) (https://www.law.cornell.edu/cfr/text/26/1.422-4, verified 2026-10-01), Example 2",
+      "inputs": [
+        [
+          {
+            "id": "y-corp",
+            "grantDate": "2004-04-01",
+            "grantDateFmvPerShare": 1,
+            "firstExercisable": [
+              {
+                "year": 2004,
+                "shares": 100000
+              }
+            ]
+          },
+          {
+            "id": "z-corp",
+            "grantDate": "2004-12-31",
+            "grantDateFmvPerShare": 1,
+            "firstExercisable": [
+              {
+                "year": 2004,
+                "shares": 75000
+              }
+            ]
+          }
+        ]
+      ],
+      "expected": {
+        "slices": [
+          {
+            "grantId": "y-corp",
+            "isoValue": 100000,
+            "nsoValue": 0
+          },
+          {
+            "grantId": "z-corp",
+            "isoValue": 0,
+            "nsoValue": 75000
+          }
+        ],
+        "remainingByYear": {
+          "2004": 0
+        }
+      }
+    },
+    {
+      "name": "reg-1-422-4d-example-3",
+      "description": "Example 3: acceleration pulls $150,000 of grant-date value into 2004 across three options ($60,000 April, $50,000 May, $40,000 June, all at a $10 grant-date FMV). Attribution runs in grant order: $60,000 ISO, then a $40,000/$10,000 ISO/NSO bifurcation (4,000 ISO shares, 1,000 NSO), then $40,000 entirely nonstatutory. Inputs are deliberately out of order; § 422(d)(2) sorts by grant date.",
+      "source": "Treas. Reg. § 1.422-4(d) (https://www.law.cornell.edu/cfr/text/26/1.422-4, verified 2026-10-01), Example 3",
+      "inputs": [
+        [
+          {
+            "id": "opt3",
+            "grantDate": "2004-06-01",
+            "grantDateFmvPerShare": 10,
+            "firstExercisable": [
+              {
+                "year": 2004,
+                "shares": 4000
+              }
+            ]
+          },
+          {
+            "id": "opt1",
+            "grantDate": "2004-04-01",
+            "grantDateFmvPerShare": 10,
+            "firstExercisable": [
+              {
+                "year": 2004,
+                "shares": 6000
+              }
+            ]
+          },
+          {
+            "id": "opt2",
+            "grantDate": "2004-05-01",
+            "grantDateFmvPerShare": 10,
+            "firstExercisable": [
+              {
+                "year": 2004,
+                "shares": 5000
+              }
+            ]
+          }
+        ]
+      ],
+      "expected": {
+        "slices": [
+          {
+            "grantId": "opt1",
+            "isoValue": 60000,
+            "nsoValue": 0
+          },
+          {
+            "grantId": "opt2",
+            "isoShares": 4000,
+            "nsoShares": 1000,
+            "isoValue": 40000,
+            "nsoValue": 10000
+          },
+          {
+            "grantId": "opt3",
+            "isoValue": 0,
+            "nsoValue": 40000
+          }
+        ],
+        "remainingByYear": {
+          "2004": 0
+        }
+      }
+    }
+  ]
+}

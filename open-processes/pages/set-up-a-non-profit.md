@@ -3,6 +3,10 @@
 
 # Set up a non-profit
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Geography](#geography) · [Steps](#steps-at-a-glance)
+
+## Overview
+
 Form a charitable organization: define the mission, choose the legal structure, seat the board, register the entity, obtain charitable-status recognition from the tax authority or regulator, and put the fundraising registrations and annual filings on a calendar.
 
 | Field | Value |
@@ -19,78 +23,183 @@ Form a charitable organization: define the mission, choose the legal structure, 
 
 Regulator and tax-authority applications are portal forms with human declarations. The system drafts documents, pre-fills applications, and tracks the deadlines and renewals.
 
-## Steps
+<a id="artifacts"></a>
 
-1. **Define the mission and charitable purposes** — human · ~1 h
+## Before you start
 
-   Write down what the organization exists to do, who benefits, and the activities that deliver it, in the vocabulary the jurisdiction's charity framework recognizes. A venture that intends to distribute profits to owners does not fit this process. Check the proposed purposes against the recognized categories before any drafting, and record purposes the framework does not cover for counsel review. The agreed wording feeds the governing document and the charitable-status application, so inconsistencies here surface as regulator questions later.
+Required artifacts:
 
-   - Sources: [IRS: Exempt purposes under section 501(c)(3)](https://www.irs.gov/charities-non-profits/charitable-organizations/exempt-purposes-internal-revenue-code-section-501c3) · [Charities Act 2011 section 3: Descriptions of charitable purposes](https://www.legislation.gov.uk/ukpga/2011/25/section/3)
-2. **Choose the legal structure** — human · ~30 min
+- Company name — from [Generate a company name](generate-a-company-name.md)
 
-   Pick the legal form before any drafting: it determines the governing document, the registration authority, and who bears liability. Weigh whether the organization needs corporate status (contracts, employees, leases), a wider voting membership, and how the chosen jurisdiction recognizes charitable status for that form. Confirm the choice with counsel where the structure carries personal-liability or regulatory consequences, and record the decision with its reasons for the registration step.
+| Information to gather | Required by the record |
+| --- | --- |
+| mission and charitable purposes | Yes |
+| initial board or trustee names | Yes |
 
-   - Sources: [IRS: State links for exempt organizations](https://www.irs.gov/charities-non-profits/state-links)
+## Geography
 
-   Options:
-     - **Default — nonprofit corporation** — human · ~30 min
+Country rows describe the guidance recorded here. Local notes and step alternatives do not establish a complete country-specific workflow.
 
-       Form a nonprofit corporation under the jurisdiction's nonprofit corporation statute: a corporate body with directors, no owners, and no distributions. In the US this is the standard vehicle for a 501(c)(3) public charity; the state statute chosen sets the filing, the required clauses, and the annual report rhythm.
-     - **UK - charitable incorporated organisation (CIO)**
+| Country | Recorded guidance | Steps with local alternatives or resolutions |
+| --- | --- | --- |
+| [United States](#geo-us) | step resolution | [1](#step-1), [3](#step-3), [4](#step-4), [5](#step-5), [6](#step-6), [7](#step-7), [8](#step-8), [9](#step-9) |
+| [United Kingdom](#geo-uk) | Local analog note; step resolution; step alternative | [1](#step-1), [2](#step-2), [3](#step-3), [4](#step-4), [5](#step-5), [6](#step-6), [7](#step-7), [8](#step-8), [9](#step-9) |
 
-       When: Forming the charity in England or Wales as a CIO
+## Steps at a glance
 
-       A CIO is a corporate body registered only with the Charity Commission: it comes into existence on registration (law rule [uk.cio-registration-effect](../../open-law/UK/uk-cio-registration-effect.json)), files only to the Commission, and registers regardless of income. Choose the foundation model where the trustees are the only members, or the association model for a wider voting membership.
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
 
-       - Sources: [Charity Commission CC22a: Charity types and structures](https://www.gov.uk/guidance/charity-types-how-to-choose-a-structure-cc22a)
-     - **UK - charitable company limited by guarantee**
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Define the mission and charitable purposes](#step-1) | human | ~1 h | Entry step |
+| [2. Choose the legal structure](#step-2) | human | ~30 min | [Step 1](#step-1) |
+| [3. Draft the governing document](#step-3) | manual form/portal | ~1 h | [Step 2](#step-2) |
+| [4. Recruit the initial board](#step-4) | human | ~1 h | [Step 3](#step-3) |
+| [5. Register the legal entity](#step-5) | manual form/portal; approval required | ~30 min | [Step 4](#step-4) |
+| [6. Obtain the tax identifier the status application requires](#step-6) | manual form/portal | ~15 min | [Step 5](#step-5) |
+| [7. Apply for charitable-status recognition](#step-7) | manual form/portal; approval required; includes waiting | ~4 h | [Step 6](#step-6) |
+| [8. Register to fundraise where the rules require it](#step-8) | manual form/portal | ~30 min | [Step 7](#step-7) |
+| [9. Set up the annual filings calendar](#step-9) | agent-runnable | ~15 min | [Step 8](#step-8) |
 
-       When: Forming the charity in England or Wales as a company limited by guarantee
+<a id="steps"></a>
 
-       A charitable company incorporates at Companies House under articles of association, then registers with the Charity Commission when the registration duty arises (law rule [uk.charity-registration-duty](../../open-law/UK/uk-charity-registration-duty.json)). It reports to both registrars, which suits charities that want the company-law framework around contracts and credit.
+## Step details
 
-       - Sources: [Charity Commission CC22a: Charity types and structures](https://www.gov.uk/guidance/charity-types-how-to-choose-a-structure-cc22a)
-3. **Draft the governing document** — manual form/portal · ~1 h
+<a id="step-1"></a>
 
-   Translate the agreed purposes into the governing document for the chosen structure: the purposes clause, board composition and appointment rules, membership provisions where one exists, conflict-of-interest handling, and a dissolution clause dedicating remaining assets to charitable purposes. Start from the regulator's model documents where they exist and record each departure for counsel review. The charitable-status reviewers read this document first, so wording that permits non-charitable activity invites questions or refusal.
+### 1. Define the mission and charitable purposes
 
-   - Sources: [IRS: Organizational test under section 501(c)(3)](https://www.irs.gov/charities-non-profits/charitable-organizations/organizational-test-internal-revenue-code-section-501c3) · [Charity Commission CC22a: Charity types and structures](https://www.gov.uk/guidance/charity-types-how-to-choose-a-structure-cc22a)
-4. **Recruit the initial board** — human · ~1 h
+human · ~1 h
 
-   Seat the initial governing body the structure requires: directors or trustees who understand the duties they are taking on. Check each candidate against the jurisdiction's eligibility and disqualification rules, collect the declarations the registration forms require, and adopt a conflict-of-interest policy before the first transactions. Record the appointments with start dates; the entity registration and the charitable-status application both name these people.
 
-   - Sources: [Charity Commission CC21b: How to register your charity](https://www.gov.uk/guidance/how-to-register-your-charity-cc21b) · [IRS: About Form 1023](https://www.irs.gov/forms-pubs/about-form-1023)
-5. **Register the legal entity** — manual form/portal · ~30 min · human approval required · hard to undo
+Write down what the organization exists to do, who benefits, and the activities that deliver it, in the vocabulary the jurisdiction's charity framework recognizes. A venture that intends to distribute profits to owners does not fit this process. Check the proposed purposes against the recognized categories before any drafting, and record purposes the framework does not cover for counsel review. The agreed wording feeds the governing document and the charitable-status application, so inconsistencies here surface as regulator questions later.
 
-   File the formation application for the chosen structure with its registration authority. The structure decision determines the authority, the documents, and the signatories; assemble the governing document, the board details, and the required declarations, have the authorized person approve the filing, and submit it with the required fee. Retain the certificate or register entry that comes back; the charitable-status application and the bank will both ask for it.
+- Sources: [IRS: Exempt purposes under section 501(c)(3)](https://www.irs.gov/charities-non-profits/charitable-organizations/exempt-purposes-internal-revenue-code-section-501c3) · [Charities Act 2011 section 3: Descriptions of charitable purposes](https://www.legislation.gov.uk/ukpga/2011/25/section/3)
 
-   - Sources: [IRS: State links for exempt organizations](https://www.irs.gov/charities-non-profits/state-links) · [GOV.UK: Register your charity](https://www.gov.uk/setting-up-charity/register-your-charity)
-6. **Obtain the tax identifier the status application requires** — manual form/portal · ~15 min
+<a id="step-2"></a>
 
-   Get the tax-authority identifier the charitable-status application and the bank account require, using the entity's registered details exactly as filed. Mismatched names or addresses between the register and the tax authority surface as application rejections, so reconcile them before applying.
+### 2. Choose the legal structure
 
-   - Sources: [IRS: Employer identification number for exempt organizations](https://www.irs.gov/charities-non-profits/employer-identification-number)
-7. **Apply for charitable-status recognition** — manual form/portal · ~4 h · async wait · human approval required · hard to undo
+human · ~30 min
 
-   Apply to the authority that recognizes charitable status for the chosen structure, attaching the governing document, the activities and finances the forms require, and the board declarations. Answer the reviewer's questions from the committed documents rather than improvising new positions. Track the application to a decision and retain the determination or register entry; banks, grantmakers, and donors ask for it, and the recognition date drives the tax treatment of early donations.
+| Option | Applies when |
+| --- | --- |
+| Default — nonprofit corporation | Recorded default |
+| UK - charitable incorporated organisation (CIO) | Forming the charity in England or Wales as a CIO |
+| UK - charitable company limited by guarantee | Forming the charity in England or Wales as a company limited by guarantee |
 
-   - Verify: The authority's own decision record is the proof: the IRS determination letter on the US route; on the UK route, the charity's entry in the Charity Commission's public register where registration applies, together with HMRC's confirmation of recognition for tax purposes (a CIO's register entry arrives with its creation, so the HMRC confirmation is the part this step adds). Retain the originals with the company records. ([register-of-charities.charitycommission.gov.uk](https://register-of-charities.charitycommission.gov.uk/en/charity-search))
-   - Cost: $600 (government fee, as of 2026-10-26, [www.irs.gov](https://www.irs.gov/charities-non-profits/form-1023-and-1023-ez-amount-of-user-fee)). US route: the Form 1023 user fee is $600 ($275 for an eligible Form 1023-EZ filer), paid through Pay.gov. The UK route charges no fee for Charity Commission registration or HMRC recognition.
-   - Sources: [IRS: Applying for tax-exempt status](https://www.irs.gov/charities-non-profits/applying-for-tax-exempt-status) · [IRS: Instructions for Form 1023](https://www.irs.gov/instructions/i1023) · [Charity Commission CC21b: How to register your charity](https://www.gov.uk/guidance/how-to-register-your-charity-cc21b) · [HMRC: Get recognition as a charity for tax purposes](https://www.gov.uk/charity-recognition-hmrc)
-8. **Register to fundraise where the rules require it** — manual form/portal · ~30 min
 
-   Before soliciting donations, check the registration and licensing regimes that apply where the organization will solicit, not just where it is formed. Register where required, record what each registration covers, and diary the renewals. Fundraising platforms and grantmakers increasingly check these registrations before releasing funds.
+Pick the legal form before any drafting: it determines the governing document, the registration authority, and who bears liability. Weigh whether the organization needs corporate status (contracts, employees, leases), a wider voting membership, and how the chosen jurisdiction recognizes charitable status for that form. Confirm the choice with counsel where the structure carries personal-liability or regulatory consequences, and record the decision with its reasons for the registration step.
 
-   - Sources: [NASCO: National Association of State Charity Officials](https://www.nasconet.org/) · [Fundraising Regulator](https://www.fundraisingregulator.org.uk/)
-9. **Set up the annual filings calendar** — agent-runnable · ~15 min
+- Sources: [IRS: State links for exempt organizations](https://www.irs.gov/charities-non-profits/state-links)
 
-   Put every recurring obligation on a calendar with owners before the first year ends: the tax authority's annual return or notice, the regulator's annual return and accounts, the entity register's own filings, and the fundraising-registration renewals. Missing the tax authority's annual filings has teeth, so treat the calendar as part of formation rather than an operations afterthought.
+Options:
+  - **Default — nonprofit corporation** — human · ~30 min
 
-   - Sources: [IRS: Annual filing and forms for exempt organizations](https://www.irs.gov/charities-non-profits/annual-filing-and-forms) · [GOV.UK: Prepare a charity annual return](https://www.gov.uk/guidance/prepare-a-charity-annual-return)
+    Form a nonprofit corporation under the jurisdiction's nonprofit corporation statute: a corporate body with directors, no owners, and no distributions. In the US this is the standard vehicle for a 501(c)(3) public charity; the state statute chosen sets the filing, the required clauses, and the annual report rhythm.
+  - **UK - charitable incorporated organisation (CIO)**
 
-## By country
+    When: Forming the charity in England or Wales as a CIO
+
+    A CIO is a corporate body registered only with the Charity Commission: it comes into existence on registration (law rule [uk.cio-registration-effect](../../open-law/UK/uk-cio-registration-effect.json)), files only to the Commission, and registers regardless of income. Choose the foundation model where the trustees are the only members, or the association model for a wider voting membership.
+
+    - Sources: [Charity Commission CC22a: Charity types and structures](https://www.gov.uk/guidance/charity-types-how-to-choose-a-structure-cc22a)
+  - **UK - charitable company limited by guarantee**
+
+    When: Forming the charity in England or Wales as a company limited by guarantee
+
+    A charitable company incorporates at Companies House under articles of association, then registers with the Charity Commission when the registration duty arises (law rule [uk.charity-registration-duty](../../open-law/UK/uk-charity-registration-duty.json)). It reports to both registrars, which suits charities that want the company-law framework around contracts and credit.
+
+    - Sources: [Charity Commission CC22a: Charity types and structures](https://www.gov.uk/guidance/charity-types-how-to-choose-a-structure-cc22a)
+
+<a id="step-3"></a>
+
+### 3. Draft the governing document
+
+manual form/portal · ~1 h
+
+
+Translate the agreed purposes into the governing document for the chosen structure: the purposes clause, board composition and appointment rules, membership provisions where one exists, conflict-of-interest handling, and a dissolution clause dedicating remaining assets to charitable purposes. Start from the regulator's model documents where they exist and record each departure for counsel review. The charitable-status reviewers read this document first, so wording that permits non-charitable activity invites questions or refusal.
+
+- Sources: [IRS: Organizational test under section 501(c)(3)](https://www.irs.gov/charities-non-profits/charitable-organizations/organizational-test-internal-revenue-code-section-501c3) · [Charity Commission CC22a: Charity types and structures](https://www.gov.uk/guidance/charity-types-how-to-choose-a-structure-cc22a)
+
+<a id="step-4"></a>
+
+### 4. Recruit the initial board
+
+human · ~1 h
+
+
+Seat the initial governing body the structure requires: directors or trustees who understand the duties they are taking on. Check each candidate against the jurisdiction's eligibility and disqualification rules, collect the declarations the registration forms require, and adopt a conflict-of-interest policy before the first transactions. Record the appointments with start dates; the entity registration and the charitable-status application both name these people.
+
+- Sources: [Charity Commission CC21b: How to register your charity](https://www.gov.uk/guidance/how-to-register-your-charity-cc21b) · [IRS: About Form 1023](https://www.irs.gov/forms-pubs/about-form-1023)
+
+<a id="step-5"></a>
+
+### 5. Register the legal entity
+
+manual form/portal · ~30 min · human approval required · hard to undo
+
+
+File the formation application for the chosen structure with its registration authority. The structure decision determines the authority, the documents, and the signatories; assemble the governing document, the board details, and the required declarations, have the authorized person approve the filing, and submit it with the required fee. Retain the certificate or register entry that comes back; the charitable-status application and the bank will both ask for it.
+
+- Sources: [IRS: State links for exempt organizations](https://www.irs.gov/charities-non-profits/state-links) · [GOV.UK: Register your charity](https://www.gov.uk/setting-up-charity/register-your-charity)
+
+<a id="step-6"></a>
+
+### 6. Obtain the tax identifier the status application requires
+
+manual form/portal · ~15 min
+
+
+Get the tax-authority identifier the charitable-status application and the bank account require, using the entity's registered details exactly as filed. Mismatched names or addresses between the register and the tax authority surface as application rejections, so reconcile them before applying.
+
+- Sources: [IRS: Employer identification number for exempt organizations](https://www.irs.gov/charities-non-profits/employer-identification-number)
+
+<a id="step-7"></a>
+
+### 7. Apply for charitable-status recognition
+
+manual form/portal · ~4 h · async wait · human approval required · hard to undo
+
+
+Apply to the authority that recognizes charitable status for the chosen structure, attaching the governing document, the activities and finances the forms require, and the board declarations. Answer the reviewer's questions from the committed documents rather than improvising new positions. Track the application to a decision and retain the determination or register entry; banks, grantmakers, and donors ask for it, and the recognition date drives the tax treatment of early donations.
+
+- Verify: Retain the applicable authority’s confirmation and reconcile it with the approved submission and company records.
+- Sources: [IRS: Applying for tax-exempt status](https://www.irs.gov/charities-non-profits/applying-for-tax-exempt-status) · [IRS: Instructions for Form 1023](https://www.irs.gov/instructions/i1023) · [Charity Commission CC21b: How to register your charity](https://www.gov.uk/guidance/how-to-register-your-charity-cc21b) · [HMRC: Get recognition as a charity for tax purposes](https://www.gov.uk/charity-recognition-hmrc)
+
+<a id="step-8"></a>
+
+### 8. Register to fundraise where the rules require it
+
+manual form/portal · ~30 min
+
+
+Before soliciting donations, check the registration and licensing regimes that apply where the organization will solicit, not just where it is formed. Register where required, record what each registration covers, and diary the renewals. Fundraising platforms and grantmakers increasingly check these registrations before releasing funds.
+
+- Sources: [NASCO: National Association of State Charity Officials](https://www.nasconet.org/) · [Fundraising Regulator](https://www.fundraisingregulator.org.uk/)
+
+<a id="step-9"></a>
+
+### 9. Set up the annual filings calendar
+
+agent-runnable · ~15 min
+
+
+Put every recurring obligation on a calendar with owners before the first year ends: the tax authority's annual return or notice, the regulator's annual return and accounts, the entity register's own filings, and the fundraising-registration renewals. Missing the tax authority's annual filings has teeth, so treat the calendar as part of formation rather than an operations afterthought.
+
+- Sources: [IRS: Annual filing and forms for exempt organizations](https://www.irs.gov/charities-non-profits/annual-filing-and-forms) · [GOV.UK: Prepare a charity annual return](https://www.gov.uk/guidance/prepare-a-charity-annual-return)
+
+
+<a id="by-country"></a>
+
+## Country details
+
+<a id="geo-us"></a>
 
 ### United States
+
+Form a charitable organization: define the mission, choose the legal structure, seat the board, register the entity, obtain charitable-status recognition from the tax authority or regulator, and put the fundraising registrations and annual filings on a calendar.
 
 - Step 1: State the purposes within the section 501(c)(3) exempt categories: charitable, religious, educational, scientific, literary, and the other listed purposes The organization must be organized and operated exclusively for exempt purposes, with no earnings inuring to any private shareholder or individual, no substantial lobbying, and no political campaign activity. ([IRS — exempt purposes](https://www.irs.gov/charities-non-profits/charitable-organizations/exempt-purposes-internal-revenue-code-section-501c3))
 - Step 3: Articles of incorporation under the state nonprofit statute plus bylaws, with the purpose and dissolution clauses the federal organizational test requires The organizational test reads the articles themselves: the purposes must be limited to exempt purposes and assets must be permanently dedicated to them on dissolution. ([IRS — organizational test](https://www.irs.gov/charities-non-profits/charitable-organizations/organizational-test-internal-revenue-code-section-501c3))
@@ -98,8 +207,12 @@ Regulator and tax-authority applications are portal forms with human declaration
 - Step 5: File articles of incorporation under the state's nonprofit corporation statute; the state filing creates the entity, separately from federal tax exemption Each state's filing office and fee differ; the state links directory routes to the right office. ([IRS — state links](https://www.irs.gov/charities-non-profits/state-links))
 - Step 6: Get the EIN; the exemption application cannot be submitted without one ([IRS — EIN for exempt organizations](https://www.irs.gov/charities-non-profits/employer-identification-number))
 - Step 7: Submit Form 1023 (or 1023-EZ where eligible) electronically through Pay.gov and track it to a determination letter Filing within 27 months after the end of the month of formation makes the exemption effective from the formation date (law rule [us-fed.1023-27-month-window](../../open-law/US-FED/us-fed-1023-27-month-window.json)). The user fee is $600, or $275 for Form 1023-EZ. ([IRS — applying for tax-exempt status](https://www.irs.gov/charities-non-profits/applying-for-tax-exempt-status))
+  - Cost: $600 (government fee, as of 2026-10-26, [www.irs.gov](https://www.irs.gov/charities-non-profits/form-1023-and-1023-ez-amount-of-user-fee)). The Form 1023 user fee is $600 ($275 for an eligible Form 1023-EZ filer), paid through Pay.gov.
+  - Verify: Retain the IRS determination letter with the organization’s records. ([www.irs.gov](https://www.irs.gov/charities-non-profits/applying-for-tax-exempt-status))
 - Step 8: Charitable solicitation registration is state-by-state: registration and filing requirements differ from state to state, so check each state where the organization will solicit ([NASCO — state charity officials](https://www.nasconet.org/))
 - Step 9: File the Form 990-series return or notice every year: three consecutive missed years revoke exemption automatically (law rule us-fed.990-auto-revocation) ([IRS — annual filing and forms](https://www.irs.gov/charities-non-profits/annual-filing-and-forms))
+
+<a id="geo-uk"></a>
 
 ### United Kingdom
 
@@ -110,14 +223,10 @@ Regulator and tax-authority applications are portal forms with human declaration
 - Step 5: A CIO is created by Charity Commission registration itself (law rule uk.cio-registration-effect); a charitable company incorporates at Companies House first and registers with the Commission when the duty arises ([GOV.UK — register your charity](https://www.gov.uk/setting-up-charity/register-your-charity))
 - Step 6: Absorbed: No separate pre-application identifier exists; HMRC issues the charity's tax reference with the recognition application in the next step ([HMRC — charity recognition](https://www.gov.uk/charity-recognition-hmrc))
 - Step 7: Register the charity with the Charity Commission when the duty arises, then apply to HMRC for recognition as a charity for tax purposes Registration is a duty once gross income exceeds £5,000, and a CIO registers regardless because registration creates it (law rules [uk.charity-registration-duty](../../open-law/UK/uk-charity-registration-duty.json), [uk.cio-registration-effect](../../open-law/UK/uk-cio-registration-effect.json)). HMRC recognition is the separate application that unlocks the tax reliefs and Gift Aid. ([HMRC — charity recognition](https://www.gov.uk/charity-recognition-hmrc))
+  - Cost: free (free, as of 2026-10-26, [www.gov.uk](https://www.gov.uk/charity-recognition-hmrc)). The UK route charges no fee for Charity Commission registration or HMRC recognition.
+  - Verify: Retain the charity’s entry in the Charity Commission register where registration applies, together with HMRC’s confirmation of recognition for tax purposes. A CIO’s register entry arrives with its creation; retain HMRC confirmation alongside it. ([register-of-charities.charitycommission.gov.uk](https://register-of-charities.charitycommission.gov.uk/en/charity-search))
 - Step 8: No single national pre-solicitation registration exists; organisations fundraising in England, Wales or Northern Ireland can apply to register with the Fundraising Regulator, whose code sets the fundraising standards ([Fundraising Regulator](https://www.fundraisingregulator.org.uk/))
 - Step 9: Send the Charity Commission annual return and accounts on its income-banded requirements; a charitable company also files accounts and the confirmation statement at Companies House ([GOV.UK — charity annual return](https://www.gov.uk/guidance/prepare-a-charity-annual-return))
-
-## Artifacts
-
-Requires:
-
-- Company name — from [Generate a company name](generate-a-company-name.md)
 
 ---
 

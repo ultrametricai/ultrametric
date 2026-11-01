@@ -24,6 +24,17 @@ describe('open-processes/pages', () => {
     }
   })
 
+  it('keeps local fees and completion checks in their named country section', () => {
+    const source = ctx.sources.find((s) => s.record.id === 'form_001')!
+    const page = renderProcessPage(source, ctx)
+    const country = page.slice(page.indexOf('### United States'), page.indexOf('### United Kingdom'))
+    expect(country).toContain('$500')
+    expect(country).toContain('Verify:')
+    const uk = page.slice(page.indexOf('### United Kingdom'), page.indexOf('### Germany'))
+    expect(uk).toContain('Companies House')
+    expect(uk).not.toContain('$500')
+  })
+
   it('every page carries the generated-file header naming its source record', () => {
     for (const [name, content] of committedPages()) {
       const slug = name.slice(0, -3)
@@ -52,11 +63,65 @@ describe('open-processes/pages', () => {
     expect(renderProcessPage(situation, ctx)).toContain('**Trigger:**')
     const chain = ctx.sources.find((s) => s.taskIds)!
     const page = renderProcessPage(chain, ctx)
-    expect(page).toContain('## Processes in order')
+    expect(page).toContain('## Process sequence')
+    expect(page).toContain('| Order | Process | Requires | Produces |')
     for (const id of chain.taskIds!) {
       const slug = ctx.slugById.get(id)!
       expect(page).toContain(`(${slug}.md)`)
     }
+  })
+
+  it('every navigation fragment resolves on the rendered page', () => {
+    for (const [name, page] of committedPages()) {
+      const anchors = new Set([...page.matchAll(/<a id="([^"]+)"><\/a>/g)].map((m) => m[1]))
+      for (const match of page.matchAll(/^#{1,6} (.+)$/gm)) {
+        anchors.add(match[1].toLowerCase().replace(/[^\p{L}\p{N}_ -]/gu, '').replace(/ /g, '-'))
+      }
+      for (const match of page.matchAll(/\]\(#([^)]+)\)/g)) {
+        expect(anchors.has(match[1]), `${name}: #${match[1]}`).toBe(true)
+      }
+    }
+  })
+
+  it('keeps geography scope, state conditions and parallel prerequisites visible', () => {
+    const source = ctx.sources.find((s) => s.slug === 'register-state-taxes')!
+    const page = renderProcessPage(source, ctx)
+    expect(page.indexOf('## Geography')).toBeLessThan(page.indexOf('## Steps at a glance'))
+    expect(page).toContain('Local notes and step alternatives do not establish a complete country-specific workflow.')
+    expect(page).toContain('### State conditions')
+    expect(page).toContain('All: [Step 2](#step-2); [Step 3](#step-3)')
+    expect(page).toContain('<a id="by-country"></a>')
+    expect(page).toContain('<a id="steps"></a>')
+  })
+
+  it('puts required artifacts before the instructions and retains verification and sources', () => {
+    const source = ctx.sources.find((s) => s.slug === 'get-ein')!
+    const page = renderProcessPage(source, ctx)
+    expect(page.indexOf('## Before you start')).toBeLessThan(page.indexOf('## Step details'))
+    expect(page).toContain('](incorporate-c-corp.md)')
+    expect(page).toContain('| Information to gather | Required by the record |')
+    expect(page).toContain('- Verify:')
+    expect(page).toContain('## Outputs')
+    expect(page).toContain('https://www.irs.gov/')
+  })
+
+  it('retains the option and the additional condition on every conditional connection', () => {
+    const source = ctx.sources.find((s) => s.slug === 'validate-the-idea')!
+    const page = renderProcessPage(source, ctx)
+    const overview = page.split('## Step details')[0]
+    for (const connection of source.record.links.filter((l) => l.option && l.when)) {
+      const option = source.record.parts.find((p) => p.id === connection.from)!.options.find((o) => o.id === connection.option)!
+      expect(overview).toContain(`${option.title} and ${connection.when}`)
+      expect(page.split('## Step details')[1]).toContain(`${option.title} and ${connection.when?.replace(/\.\s*$/, '')}`)
+    }
+  })
+
+  it('legacy artifact fragments reach required artifacts before the instructions', () => {
+    const source = ctx.sources.find((s) => s.slug === 'track-runway')!
+    const page = renderProcessPage(source, ctx)
+    expect(page).toContain('<a id="artifacts"></a>\n\n## Before you start')
+    expect(page.indexOf('<a id="artifacts"></a>')).toBeLessThan(page.indexOf('## Step details'))
+    expect(page).toContain('[Open bank account](open-bank-account.md)')
   })
 })
 

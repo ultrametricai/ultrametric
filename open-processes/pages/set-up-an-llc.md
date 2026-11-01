@@ -3,6 +3,10 @@
 
 # Set up an LLC
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Geography](#geography) · [Steps](#steps-at-a-glance) · [Outputs](#outputs)
+
+## Overview
+
 Form an LLC: name check, Articles of Organization with a registered agent, a signed operating agreement, then the EIN, bank account, and state-tax registrations. The default for holding companies, agencies, and bootstrapped businesses — founders planning to raise priced venture rounds should incorporate a Delaware C-Corp instead, and an LLC that later takes that path runs the statutory conversion (see Convert an LLC to a C-Corp).
 
 | Field | Value |
@@ -19,178 +23,312 @@ Form an LLC: name check, Articles of Organization with a registered agent, a sig
 
 Formation services drive the state filing but expose limited APIs. The agent checks the name, drafts the operating agreement, and pre-fills every form; the state portal, the IRS EIN wizard, and member signatures stay manual.
 
-## Steps
+<a id="artifacts"></a>
 
-1. **Choose a formation service** — human · ~10 min
+## Before you start
 
-   Choose the intended jurisdiction and entity form before comparing formation services. For a US LLC, compare filing assistance, registered-agent coverage, operating-agreement support, ongoing charges and tasks left to the founders. Once the founder responsible for formation approves the service, use its actual input requirements. A foreign entity option needs its own formation route and governing documents.
+Required artifacts:
 
-   - Vendor options: Stripe Atlas, Firstbase, LegalZoom, Northwest Registered Agent, Doola
-   - Sources: [SBA register your business](https://legacy.sba.gov/business-guide/launch-your-business/register-your-business)
-2. **Check name availability** — agent-runnable · ~2 min
+- Company name — from [Generate a company name](generate-a-company-name.md)
 
-   Search the relevant registry for the proposed name and check the entity suffix and restricted-word rules. Keep alternatives for the founders to choose and assess whether a reservation is useful. Domain and trademark checks address different questions. Use the selected name consistently in the filing; the registry ultimately decides whether to accept it.
+| Information to gather | Required by the record |
+| --- | --- |
+| company desired name | Yes |
+| member names and ownership split | Yes |
+| formation state | Yes |
+| member-managed or manager-managed | Optional |
 
-   - Do it yourself: [Delaware name search](https://icis.corp.delaware.gov/ecorp/entitysearch/namesearch.aspx)
-   - Sources: [SBA register your business](https://legacy.sba.gov/business-guide/launch-your-business/register-your-business)
-3. **File Articles of Organization and appoint a registered agent** — manual form/portal · ~20 min · human approval required · hard to undo
+## Geography
 
-   Prepare the filing for the selected legal form and jurisdiction. For a US LLC, use the formation state’s current form with the chosen name, management details, address and required agent information. The organizer approves the final submission, fee and effective-date choice. Track acceptance or corrections. A non-US option requires its local procedure and a fresh applicability check of the following US steps.
+Country rows describe the guidance recorded here. Local notes and step alternatives do not establish a complete country-specific workflow.
 
-   - Verify: The LLC appears in the Delaware entity search with a file number once the Certificate of Formation is stamped. ([icis.corp.delaware.gov](https://icis.corp.delaware.gov/ecorp/entitysearch/namesearch.aspx))
-   - Cost: $110 (government fee, as of 2026-10-01, [corpfiles.delaware.gov](https://corpfiles.delaware.gov/Fee_Schedule/AugustFee2026.pdf)). Delaware domestic LLC Certificate of Formation filing fee.
-   - Canonical vendor: Stripe Atlas
-   - Sources: [SBA register your business](https://legacy.sba.gov/business-guide/launch-your-business/register-your-business)
+| Country | Recorded guidance | Steps with local alternatives or resolutions |
+| --- | --- | --- |
+| [India](#geo-in) | Local analog note; step alternative | [3](#step-3) |
+| [United Kingdom](#geo-uk) | Local analog note; step alternative | [3](#step-3) |
+| [Germany](#geo-de) | Local analog note; step alternative | [3](#step-3) |
+| [France](#geo-fr) | Local analog note; step alternative | [3](#step-3) |
+| [Portugal](#geo-pt) | Local analog note | — |
+| [Canada](#geo-ca) | Marked not applicable | — |
+| [New Zealand](#geo-nz) | Marked not applicable | — |
+| [Singapore](#geo-sg) | Local analog note | — |
+| [Australia](#geo-au) | Marked not applicable | — |
+| [South Korea](#geo-kr) | Local analog note | — |
+| [Hong Kong](#geo-hk) | Marked not applicable | — |
+| [Estonia](#geo-ee) | Local analog note | — |
 
-   Options:
-     - **Default — File Articles of Organization and appoint a registered agent** — manual form/portal · ~20 min · human approval required · hard to undo
+## Steps at a glance
 
-       File the selected state’s Articles of Organization or equivalent form using the approved name and management structure. Confirm the registered agent’s details and consent, and decide any available effective-date option before the organizer approves submission and fees. Track the application through registry acceptance and retain the issued formation record. Identify follow-up required by that state separately from services included in the formation package.
-     - **India - LLP via MCA FiLLiP**
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
 
-       When: Forming the pass-through entity in India
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Choose a formation service](#step-1) | human | ~10 min | Entry step |
+| [2. Check name availability](#step-2) | agent-runnable | ~2 min | [Step 1](#step-1) |
+| [3. File Articles of Organization and appoint a registered agent](#step-3) | manual form/portal; approval required | ~20 min | [Step 2](#step-2) |
+| [4. Receive the stamped Certificate of Formation](#step-4) | human; includes waiting | ~2 d | [Step 3](#step-3) |
+| [5. Draft the operating agreement](#step-5) | agent-runnable | ~30 min | [Step 4](#step-4) |
+| [6. Members sign the operating agreement](#step-6) | human; signature required | ~5 min | [Step 5](#step-5) |
+| [7. Apply for an EIN](#step-7) | manual form/portal | ~15 min | [Step 6](#step-6) |
+| [8. Open a business bank account](#step-8) | manual form/portal | ~15 min | [Step 7](#step-7) |
+| [9. Register for state taxes](#step-9) | manual form/portal | ~20 min | [Step 7](#step-7) |
 
-       For an Indian LLP, resolve the partners, designated partners, registered office and business activity using the current MCA route. A local formation professional should verify the required documents and signatures before filing. The partners authorize the application and use the registry response to track acceptance or corrections. Plan the LLP agreement and tax setup separately; the Indian form does not inherit US LLC tax or governance treatment.
+<a id="steps"></a>
 
-       - Do it yourself: [NSWS (MCA LLP incorporation)](https://www.nsws.gov.in/)
-       - Sources: [MCA LLP e-filing](https://www.mca.gov.in/content/mca/global/en/mca/llp-e-filling.html)
-     - **UK - LLP at Companies House**
+## Step details
 
-       When: Forming the pass-through entity in the United Kingdom
+<a id="step-1"></a>
 
-       Prepare the UK LLP’s members, designated-member responsibilities, registered office, email and proposed LLP agreement. Use the current Companies House registration route, with submission approved by the authorized members. The certificate and registry record establish the registration outcome. Use the official LLP guidance for the subsequent UK accounting and tax work.
+### 1. Choose a formation service
 
-       - Do it yourself: [Set up and run an LLP](https://www.gov.uk/guidance/set-up-and-run-a-limited-liability-partnership-llp)
-     - **Germany - UG (haftungsbeschraenkt)** — human
+human · ~10 min
 
-       When: Forming the low-capital entity in Germany
 
-       Give the German adviser or notary the founders’ identities, ownership, intended activity, office and capital proposal. Review the governing document and GmbHG section 5a capital and reserve rules before choosing the UG form. The founders execute the required local documents through the confirmed procedure. Track capital and registry requirements until registration, then use a German setup plan for subsequent work.
+Choose the intended jurisdiction and entity form before comparing formation services. For a US LLC, compare filing assistance, registered-agent coverage, operating-agreement support, ongoing charges and tasks left to the founders. Once the founder responsible for formation approves the service, use its actual input requirements. A foreign entity option needs its own formation route and governing documents.
 
-       - Do it yourself: [BMWK founders portal (UG/GmbH)](https://www.existenzgruender.de/)
-       - Sources: [GmbHG section 5a](https://www.gesetze-im-internet.de/gmbhg/__5a.html)
-     - **France - SARL/EURL via INPI**
+- Vendor options: Stripe Atlas, Firstbase, LegalZoom, Northwest Registered Agent, Doola
+- Sources: [SBA register your business](https://legacy.sba.gov/business-guide/launch-your-business/register-your-business)
 
-       When: Forming the pass-through analog in France
+<a id="step-2"></a>
 
-       Prepare the chosen SARL or EURL’s owners, management, registered office, capitalization and required formation documents. Resolve the package with the formation adviser before the authorized applicant submits through the guichet unique. Respond to correction requests until the registry processes the filing. Use local governing and tax documents afterward; the remaining US LLC steps do not become applicable merely by selecting this option.
+### 2. Check name availability
 
-       - Do it yourself: [INPI guichet unique (SARL/EURL)](https://procedures.inpi.fr/)
-       - Sources: [Service Public business formalities](https://entreprendre.service-public.gouv.fr/vosdroits/F24023)
-4. **Receive the stamped Certificate of Formation** — human · ~2 d · async wait
+agent-runnable · ~2 min
 
-   Obtain the registry’s accepted formation record and check the legal name, entity number and filing or effective date. Resolve discrepancies with the filer before using those details for banking and tax setup. Save the issued document in the company records. A provider dashboard or payment receipt remains insufficient evidence that the registry accepted the formation.
 
-   - Produces: LLC Certificate of Formation
-   - Cross-arena market: [workflow-automation](../../open-rankings/workflow-automation)
-   - Sources: [SBA register your business](https://legacy.sba.gov/business-guide/launch-your-business/register-your-business)
-5. **Draft the operating agreement** — agent-runnable · ~30 min
+Search the relevant registry for the proposed name and check the entity suffix and restricted-word rules. Keep alternatives for the founders to choose and assess whether a reservation is useful. Domain and trademark checks address different questions. Use the selected name consistently in the filing; the registry ultimately decides whether to accept it.
 
-   For a US LLC, draft the members’ agreed contributions, ownership, management, voting, distributions, transfers and departure arrangements into the operating agreement. Highlight unresolved economics and management authority for the members to decide. Check the draft against the formation state and tax plan during legal review before execution. LLP, UG, SARL and EURL options require their appropriate governing documents.
+- Do it yourself: [Delaware name search](https://icis.corp.delaware.gov/ecorp/entitysearch/namesearch.aspx)
+- Sources: [SBA register your business](https://legacy.sba.gov/business-guide/launch-your-business/register-your-business)
 
-   - Cross-arena options: ChatGPT, Claude (ai-assistants)
-   - Sources: [SBA register your business](https://legacy.sba.gov/business-guide/launch-your-business/register-your-business)
-6. **Members sign the operating agreement** — human (legally required signature) · ~5 min
+<a id="step-3"></a>
 
-   Reconcile the final US LLC agreement and schedules with the members’ actual ownership and contribution terms. Confirm the signers, capacities and effective date, resolve blanks, then circulate the approved version for execution. Keep signed counterparts together and track outstanding contributions separately. For a foreign entity, follow the local execution process for its governing document.
+### 3. File Articles of Organization and appoint a registered agent
 
-   - Produces: LLC operating agreement
-   - Sources: [SBA register your business](https://legacy.sba.gov/business-guide/launch-your-business/register-your-business)
-7. **Apply for an EIN** — manual form/portal · ~15 min · hard to undo
+manual form/portal · ~20 min · human approval required · hard to undo
 
-   Determine whether the formed entity needs a US EIN and whether one already exists. Use the accepted entity details and responsible-party information to select the appropriate IRS channel. The authorized representative reviews and submits the application, completing any third-party designation. Keep the issued confirmation for banking and tax records. A foreign formation option does not by itself establish a US EIN requirement.
+| Option | Applies when |
+| --- | --- |
+| Default — File Articles of Organization and appoint a registered agent | Recorded default |
+| India - LLP via MCA FiLLiP | Forming the pass-through entity in India |
+| UK - LLP at Companies House | Forming the pass-through entity in the United Kingdom |
+| Germany - UG (haftungsbeschraenkt) | Forming the low-capital entity in Germany |
+| France - SARL/EURL via INPI | Forming the pass-through analog in France |
 
-   - Verify: The EIN is issued in the XX-XXXXXXX format at the end of the online session — retain the CP 575 confirmation notice; banks and payroll providers ask for it. ([www.irs.gov](https://www.irs.gov/businesses/small-businesses-self-employed/apply-for-an-employer-identification-number-ein-online))
-   - Cost: free (free, as of 2026-10-01, [www.irs.gov](https://www.irs.gov/businesses/small-businesses-self-employed/apply-for-an-employer-identification-number-ein-online)). The IRS issues EINs for free; third-party services charge to file on your behalf.
-   - Produces: EIN assignment letter
-   - Canonical vendor: IRS
-   - Do it yourself: [IRS EIN application](https://www.irs.gov/businesses/small-businesses-self-employed/get-an-employer-identification-number)
-   - Sources: [SBA register your business](https://legacy.sba.gov/business-guide/launch-your-business/register-your-business)
-   - Next: steps 8 and 9 — all follow this step
-8. **Open a business bank account** — manual form/portal · ~15 min · hard to undo
 
-   Assemble the formation record, governing agreement, tax registration and signatory information requested by the selected bank. Submit identity documents only through its secure process. The designated applicant approves the account terms and application and completes identity checks. After approval, verify the legal account holder, authorized users and access arrangements. Any initial transfer needs its own payment approval.
+Prepare the filing for the selected legal form and jurisdiction. For a US LLC, use the formation state’s current form with the chosen name, management details, address and required agent information. The organizer approves the final submission, fee and effective-date choice. Track acceptance or corrections. A non-US option requires its local procedure and a fresh applicability check of the following US steps.
 
-   - Verify: The dashboard shows account and routing numbers and a small inbound test transfer clears.
-   - Produces: Business bank account
-   - Vendor options: Mercury
-   - Ranked market: [startup-banking](../../open-rankings/startup-banking)
-   - Sources: [SBA register your business](https://legacy.sba.gov/business-guide/launch-your-business/register-your-business)
+- Verify: The LLC appears in the Delaware entity search with a file number once the Certificate of Formation is stamped. ([icis.corp.delaware.gov](https://icis.corp.delaware.gov/ecorp/entitysearch/namesearch.aspx))
+- Cost: $110 (government fee, as of 2026-10-01, [corpfiles.delaware.gov](https://corpfiles.delaware.gov/Fee_Schedule/AugustFee2026.pdf)). Delaware domestic LLC Certificate of Formation filing fee.
+- Canonical vendor: Stripe Atlas
+- Sources: [SBA register your business](https://legacy.sba.gov/business-guide/launch-your-business/register-your-business)
 
-   *This path ends here.*
-9. **Register for state taxes** — manual form/portal · ~20 min · hard to undo
+Options:
+  - **Default — File Articles of Organization and appoint a registered agent** — manual form/portal · ~20 min · human approval required · hard to undo
 
-   *Follows step 7.*
+    File the selected state’s Articles of Organization or equivalent form using the approved name and management structure. Confirm the registered agent’s details and consent, and decide any available effective-date option before the organizer approves submission and fees. Track the application through registry acceptance and retain the issued formation record. Identify follow-up required by that state separately from services included in the formation package.
+  - **India - LLP via MCA FiLLiP**
 
-   For a US LLC, assess employee locations, operations and sales for state tax accounts separately from foreign qualification. Use the tax adviser’s conclusions to set the account types and effective dates, then authorize the required filings. Capture agency confirmations and recurring obligations. A non-US formation route needs a local registration plan before any US state-tax step is treated as applicable.
+    When: Forming the pass-through entity in India
 
-   - Verify: The state tax authority issues an account or registration number for each tax you registered.
-   - Produces: State tax accounts
-   - Sources: [SBA register your business](https://legacy.sba.gov/business-guide/launch-your-business/register-your-business)
+    For an Indian LLP, resolve the partners, designated partners, registered office and business activity using the current MCA route. A local formation professional should verify the required documents and signatures before filing. The partners authorize the application and use the registry response to track acceptance or corrections. Plan the LLP agreement and tax setup separately; the Indian form does not inherit US LLC tax or governance treatment.
 
-## By country
+    - Do it yourself: [NSWS (MCA LLP incorporation)](https://www.nsws.gov.in/)
+    - Sources: [MCA LLP e-filing](https://www.mca.gov.in/content/mca/global/en/mca/llp-e-filling.html)
+  - **UK - LLP at Companies House**
+
+    When: Forming the pass-through entity in the United Kingdom
+
+    Prepare the UK LLP’s members, designated-member responsibilities, registered office, email and proposed LLP agreement. Use the current Companies House registration route, with submission approved by the authorized members. The certificate and registry record establish the registration outcome. Use the official LLP guidance for the subsequent UK accounting and tax work.
+
+    - Do it yourself: [Set up and run an LLP](https://www.gov.uk/guidance/set-up-and-run-a-limited-liability-partnership-llp)
+  - **Germany - UG (haftungsbeschraenkt)** — human
+
+    When: Forming the low-capital entity in Germany
+
+    Give the German adviser or notary the founders’ identities, ownership, intended activity, office and capital proposal. Review the governing document and GmbHG section 5a capital and reserve rules before choosing the UG form. The founders execute the required local documents through the confirmed procedure. Track capital and registry requirements until registration, then use a German setup plan for subsequent work.
+
+    - Do it yourself: [BMWK founders portal (UG/GmbH)](https://www.existenzgruender.de/)
+    - Sources: [GmbHG section 5a](https://www.gesetze-im-internet.de/gmbhg/__5a.html)
+  - **France - SARL/EURL via INPI**
+
+    When: Forming the pass-through analog in France
+
+    Prepare the chosen SARL or EURL’s owners, management, registered office, capitalization and required formation documents. Resolve the package with the formation adviser before the authorized applicant submits through the guichet unique. Respond to correction requests until the registry processes the filing. Use local governing and tax documents afterward; the remaining US LLC steps do not become applicable merely by selecting this option.
+
+    - Do it yourself: [INPI guichet unique (SARL/EURL)](https://procedures.inpi.fr/)
+    - Sources: [Service Public business formalities](https://entreprendre.service-public.gouv.fr/vosdroits/F24023)
+
+<a id="step-4"></a>
+
+### 4. Receive the stamped Certificate of Formation
+
+human · ~2 d · async wait
+
+
+Obtain the registry’s accepted formation record and check the legal name, entity number and filing or effective date. Resolve discrepancies with the filer before using those details for banking and tax setup. Save the issued document in the company records. A provider dashboard or payment receipt remains insufficient evidence that the registry accepted the formation.
+
+- Produces: LLC Certificate of Formation
+- Cross-arena market: [workflow-automation](../../open-rankings/workflow-automation)
+- Sources: [SBA register your business](https://legacy.sba.gov/business-guide/launch-your-business/register-your-business)
+
+<a id="step-5"></a>
+
+### 5. Draft the operating agreement
+
+agent-runnable · ~30 min
+
+
+For a US LLC, draft the members’ agreed contributions, ownership, management, voting, distributions, transfers and departure arrangements into the operating agreement. Highlight unresolved economics and management authority for the members to decide. Check the draft against the formation state and tax plan during legal review before execution. LLP, UG, SARL and EURL options require their appropriate governing documents.
+
+- Cross-arena options: ChatGPT, Claude (ai-assistants)
+- Sources: [SBA register your business](https://legacy.sba.gov/business-guide/launch-your-business/register-your-business)
+
+<a id="step-6"></a>
+
+### 6. Members sign the operating agreement
+
+human (legally required signature) · ~5 min
+
+
+Reconcile the final US LLC agreement and schedules with the members’ actual ownership and contribution terms. Confirm the signers, capacities and effective date, resolve blanks, then circulate the approved version for execution. Keep signed counterparts together and track outstanding contributions separately. For a foreign entity, follow the local execution process for its governing document.
+
+- Produces: LLC operating agreement
+- Sources: [SBA register your business](https://legacy.sba.gov/business-guide/launch-your-business/register-your-business)
+
+<a id="step-7"></a>
+
+### 7. Apply for an EIN
+
+manual form/portal · ~15 min · hard to undo
+
+
+Determine whether the formed entity needs a US EIN and whether one already exists. Use the accepted entity details and responsible-party information to select the appropriate IRS channel. The authorized representative reviews and submits the application, completing any third-party designation. Keep the issued confirmation for banking and tax records. A foreign formation option does not by itself establish a US EIN requirement.
+
+- Verify: The EIN is issued in the XX-XXXXXXX format at the end of the online session — retain the CP 575 confirmation notice; banks and payroll providers ask for it. ([www.irs.gov](https://www.irs.gov/businesses/small-businesses-self-employed/apply-for-an-employer-identification-number-ein-online))
+- Cost: free (free, as of 2026-10-01, [www.irs.gov](https://www.irs.gov/businesses/small-businesses-self-employed/apply-for-an-employer-identification-number-ein-online)). The IRS issues EINs for free; third-party services charge to file on your behalf.
+- Produces: EIN assignment letter
+- Canonical vendor: IRS
+- Do it yourself: [IRS EIN application](https://www.irs.gov/businesses/small-businesses-self-employed/get-an-employer-identification-number)
+- Sources: [SBA register your business](https://legacy.sba.gov/business-guide/launch-your-business/register-your-business)
+- Next: steps 8 and 9 — all follow this step
+
+<a id="step-8"></a>
+
+### 8. Open a business bank account
+
+manual form/portal · ~15 min · hard to undo
+
+
+Assemble the formation record, governing agreement, tax registration and signatory information requested by the selected bank. Submit identity documents only through its secure process. The designated applicant approves the account terms and application and completes identity checks. After approval, verify the legal account holder, authorized users and access arrangements. Any initial transfer needs its own payment approval.
+
+- Verify: The dashboard shows account and routing numbers and a small inbound test transfer clears.
+- Produces: Business bank account
+- Vendor options: Mercury
+- Ranked market: [startup-banking](../../open-rankings/startup-banking)
+- Sources: [SBA register your business](https://legacy.sba.gov/business-guide/launch-your-business/register-your-business)
+
+*This path ends here.*
+
+<a id="step-9"></a>
+
+### 9. Register for state taxes
+
+manual form/portal · ~20 min · hard to undo
+
+
+*Follows step 7.*
+
+For a US LLC, assess employee locations, operations and sales for state tax accounts separately from foreign qualification. Use the tax adviser’s conclusions to set the account types and effective dates, then authorize the required filings. Capture agency confirmations and recurring obligations. A non-US formation route needs a local registration plan before any US state-tax step is treated as applicable.
+
+- Verify: The state tax authority issues an account or registration number for each tax you registered.
+- Produces: State tax accounts
+- Sources: [SBA register your business](https://legacy.sba.gov/business-guide/launch-your-business/register-your-business)
+
+
+<a id="by-country"></a>
+
+## Country details
+
+<a id="geo-in"></a>
 
 ### India
 
 - The Indian analog is the LLP: incorporated with the MCA via the FiLLiP form (mca.gov.in blocks automated checks — the government's NSWS portal fronts MCA services), with a partner-drafted LLP agreement filed within 30 days. ([NSWS (MCA LLP incorporation)](https://www.nsws.gov.in/))
 
+<a id="geo-uk"></a>
+
 ### United Kingdom
 
 - The pass-through analog is the LLP, registered at Companies House — though most UK founders just form a private limited company, since there is no US-style LLC and no check-the-box tax election. ([Set up and run an LLP](https://www.gov.uk/guidance/set-up-and-run-a-limited-liability-partnership-llp))
+
+<a id="geo-de"></a>
 
 ### Germany
 
 - No LLC analog with pass-through: the low-capital route is the UG (haftungsbeschränkt) — a mini-GmbH formable from €1 with a notarized deed; the ministry's founders portal walks through the choices. ([BMWK founders portal (UG/GmbH)](https://www.existenzgruender.de/))
 
+<a id="geo-fr"></a>
+
 ### France
 
 - The closest analog is the SARL (or single-member EURL) — a simpler, statute-driven company than the SAS — formed like every French entity through the INPI guichet unique. ([INPI guichet unique (SARL/EURL)](https://procedures.inpi.fr/))
+
+<a id="geo-pt"></a>
 
 ### Portugal
 
 - No LLC or check-the-box: the everyday small-company form is the Lda (sociedade por quotas), formable online through Empresa Online with quota capital from €1 — corporate tax treatment, not pass-through. ([Empresa Online — form an Lda](https://www.gov.pt/guias/empresa-online-servicos-do-registo-comercial))
 
+<a id="geo-ca"></a>
+
 ### Canada
 
 - Not applicable: Canada has no LLC: corporations are the only limited-liability company form and there is no check-the-box pass-through election — the ULC (available in AB, BC and NS) is still taxed as a corporation in Canada and exists mainly for US tax planning. ([Corporations Canada — incorporation](https://ised-isde.canada.ca/site/corporations-canada/en/federal-incorporation))
+
+<a id="geo-nz"></a>
 
 ### New Zealand
 
 - Not applicable: No US-style LLC exists: the standard vehicle is the limited company registered with the Companies Office (28% company tax rate), with partnership structures covering pass-through needs. ([Incorporating a company — Companies Register](https://companies-register.companiesoffice.govt.nz/help-centre/starting-a-company/incorporating-a-company/))
 
+<a id="geo-sg"></a>
+
 ### Singapore
 
 - The pass-through analog is the LLP, registered with ACRA — though most founders just form a Pte Ltd: there is no US-style LLC, no check-the-box election, and the start-up tax exemption only helps companies. ([ACRA — limited liability partnerships](https://www.acra.gov.sg/register/business/registering-different-business-structures/limited-liability-partnership/))
+
+<a id="geo-au"></a>
 
 ### Australia
 
 - Not applicable: No LLC and no check-the-box election: the standard limited-liability vehicle is the Pty Ltd, taxed as a company. Discretionary trusts serve some small businesses, but startups register a company. ([Business structures (business.gov.au)](https://business.gov.au/planning/business-structures-and-types/business-structures))
 
+<a id="geo-kr"></a>
+
 ### South Korea
 
 - The close analog is the yuhan hoesa (유한회사), a members’ company under the Commercial Act with no statutory minimum capital; startups aiming at venture investment incorporate as a chusik hoesa instead. ([StartBiz online incorporation](https://www.startbiz.go.kr/))
+
+<a id="geo-hk"></a>
 
 ### Hong Kong
 
 - Not applicable: Hong Kong has no LLC form: there is no members-managed pass-through company to form — the standard vehicle is the private company limited by shares, with general and limited partnerships (and the fund-only limited partnership fund) as the unincorporated alternatives. ([Companies Registry — register a new company](https://www.cr.gov.hk/en/services/register-company.htm))
 
+<a id="geo-ee"></a>
+
 ### Estonia
 
 - The osaühing (OÜ) is itself the default startup entity: limited liability, no minimum capital beyond one cent per share, formed through the e-Business Register (law rules [ee.private-limited-company-registration](../../open-law/EE/ee-private-limited-company-registration.json), [ee.osauhing-no-minimum-capital](../../open-law/EE/ee-osauhing-no-minimum-capital.json)). ([e-Business Register](https://ariregister.rik.ee/eng))
 
-## Artifacts
-
-Produces:
+## Outputs
 
 - LLC Certificate of Formation
 - LLC operating agreement
 - EIN assignment letter
 - Business bank account
 - State tax accounts
-
-Requires:
-
-- Company name — from [Generate a company name](generate-a-company-name.md)
 
 ---
 

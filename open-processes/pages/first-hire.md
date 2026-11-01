@@ -3,18 +3,28 @@
 
 # First hire
 
+[Overview](#overview) · [Process sequence](#process-sequence)
+
+## Overview
+
 Offer out and signed, IP assigned, accounts provisioned, the first payroll run.
 
 | Field | Value |
 | --- | --- |
 | Kind | chain |
 
-## Processes in order
+<a id="processes-in-order"></a>
 
-1. [Hire first employee](hire-first-employee.md)
-2. [Get IP assignments signed](get-ip-assignments-signed.md)
-3. [Provision a workspace user](provision-a-workspace-user.md)
-4. [Run payroll](run-payroll.md)
+## Process sequence
+
+Run the linked processes in the recorded chain order. Each process defines its own internal dependencies.
+
+| Order | Process | Requires | Produces |
+| --- | --- | --- | --- |
+| 1 | [Hire first employee](hire-first-employee.md) | Payroll account; Benefits plan; 409A valuation report; Company email workspace; Team chat workspace | Signed offer / employment agreement |
+| 2 | [Get IP assignments signed](get-ip-assignments-signed.md) | Not recorded | IP assignments (PIIA) |
+| 3 | [Provision a workspace user](provision-a-workspace-user.md) | Company email workspace; Identity provider (SSO); Signed offer / employment agreement | Not recorded |
+| 4 | [Run payroll](run-payroll.md) | Payroll account; Signed offer / employment agreement | Not recorded |
 
 ---
 

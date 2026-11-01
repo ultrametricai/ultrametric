@@ -215,16 +215,29 @@ export function isWaitlistOnly(html: string): boolean {
 
 // Docs-surface discovery on a product page: a link whose href names a docs/API-reference
 // surface. Returns the first such href resolved against the page URL.
-const DOCS_HREF_RE = /href="([^"]*(?:\/docs\b|\/documentation\b|\/developers?\b|\/api-reference\b|\/api\/docs\b|docs\.[a-z0-9.-]+|developer\.[a-z0-9.-]+|readthedocs|mintlify|gitbook)[^"]*)"/i
+const DOCS_TOKEN = /(?:\/docs\b|\/documentation\b|\/developers?\b|\/api-reference\b|\/api\/docs\b|docs\.[a-z0-9.-]+|developer\.[a-z0-9.-]+|readthedocs|mintlify|gitbook)/i
+const DOCS_HREF_RE = new RegExp(`href="([^"]*${DOCS_TOKEN.source}[^"]*)"`, 'gi')
+// Static assets are not a docs surface: a bundler-named stylesheet like /assets/docs-XXXX.css
+// matches the /docs token on the hyphen word boundary (found 2026-10-23: Munito AI's triage
+// receipt resolved to a CSS asset, issue #434). Only presentation assets are excluded:
+// text documents (llms.txt, .md mirrors) and machine API descriptions (openapi.json) are
+// legitimate docs surfaces.
+const STATIC_ASSET_RE = /\.(css|js|mjs|svg|png|jpe?g|gif|ico|webp|woff2?|ttf|eot|map)$/i
 
 export function findDocsLink(html: string, baseUrl: string): string | null {
-  const m = html.match(DOCS_HREF_RE)
-  if (!m) return null
-  try {
-    return new URL(m[1], baseUrl).toString()
-  } catch {
-    return null
+  for (const m of html.matchAll(DOCS_HREF_RE)) {
+    try {
+      const url = new URL(m[1], baseUrl)
+      if (STATIC_ASSET_RE.test(url.pathname)) continue
+      // The docs token must sit in the link's own origin or path: a docs URL quoted inside
+      // another site's query string (share/prompt links) is not that site's docs surface.
+      if (!DOCS_TOKEN.test(url.origin + url.pathname)) continue
+      return url.toString()
+    } catch {
+      continue
+    }
   }
+  return null
 }
 
 // Agentic surface signals: explicit namings of a public API, an MCP server, an llms.txt, or

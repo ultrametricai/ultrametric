@@ -3,6 +3,10 @@
 
 # Set up AI code review
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Steps](#steps-at-a-glance) · [Outputs](#outputs)
+
+## Overview
+
 Install an AI code reviewer on the code hosting org, scope its repository access, add its config to the repo, and confirm it reviews a test pull request. CodeRabbit is the canonical route; the ai-code-review arena ranks the alternatives.
 
 | Field | Value |
@@ -19,42 +23,92 @@ Install an AI code reviewer on the code hosting org, scope its repository access
 
 The reviewer installs as a code-host app behind an OAuth consent a human must grant. The config file and the test pull request are agent-runnable; the merge-gate policy call stays human.
 
-## Steps
+<a id="artifacts"></a>
 
-1. **Install the AI reviewer on the code hosting org** — manual form/portal · ~10 min · human approval required
+## Before you start
 
-   Pick the reviewer from the ranked options and install it as an app on the code hosting organization. The install is an OAuth consent: an org admin grants the reviewer read access to the repositories it will review. Record which account performed the install and where the reviewer's dashboard lives so access can be revoked or rescoped later.
-
-   - Produces: AI code reviewer
-   - Canonical vendor: CodeRabbit
-   - Vendor options: CodeRabbit, Greptile, Cursor Bugbot
-   - Ranked market: [ai-code-review](../../open-rankings/ai-code-review)
-2. **Scope repository access** — agent-runnable · ~5 min · human approval required
-
-   Grant the reviewer access to the repositories that actually need review rather than the whole organization. Start with the main application repositories and leave experiments and forks out until the signal is proven. Note the scope in the engineering docs so new repositories get a deliberate include-or-exclude decision instead of inheriting a default.
-3. **Add the reviewer config to the repo** — agent-runnable · ~15 min · human approval required
-
-   Add the reviewer's configuration file to each covered repository: review rules, path filters for generated or vendored code, and any language-specific instructions. Keep the config in version control so review behavior changes go through pull requests themselves. A coding agent can draft the file; review it like any other code change.
-
-   - Cross-arena market: [ai-coding](../../open-rankings/ai-coding)
-4. **Open a test pull request and confirm a review lands** — agent-runnable · ~10 min · human approval required
-
-   Open a small, intentionally imperfect pull request and confirm the reviewer posts a review on it. Check latency, the quality of the findings, and whether path filters are respected. The review visible on the test pull request is the proof the installation works; fix scope or config before relying on it.
-
-   - Verify: The reviewer's review appears on the test pull request in the code host.
-5. **Decide the merge gate: blocking check or advisory comments** — human · ~5 min
-
-   Decide with the team whether the reviewer runs as a required check that blocks merging or as advisory comments. A blocking gate enforces attention but adds friction and false-positive risk while the config is young; advisory mode builds trust first. Revisit the choice once the team has seen a few weeks of findings.
-
-## Artifacts
-
-Produces:
-
-- AI code reviewer
-
-Requires:
+Required artifacts:
 
 - Code hosting organization — from [Set up a code hosting org](set-up-a-code-hosting-org.md)
+
+| Information to gather | Required by the record |
+| --- | --- |
+| code hosting org | Yes |
+
+## Steps at a glance
+
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
+
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Install the AI reviewer on the code hosting org](#step-1) | manual form/portal; approval required | ~10 min | Entry step |
+| [2. Scope repository access](#step-2) | agent-runnable; approval required | ~5 min | [Step 1](#step-1) |
+| [3. Add the reviewer config to the repo](#step-3) | agent-runnable; approval required | ~15 min | [Step 2](#step-2) |
+| [4. Open a test pull request and confirm a review lands](#step-4) | agent-runnable; approval required | ~10 min | [Step 3](#step-3) |
+| [5. Decide the merge gate: blocking check or advisory comments](#step-5) | human | ~5 min | [Step 4](#step-4) |
+
+<a id="steps"></a>
+
+## Step details
+
+<a id="step-1"></a>
+
+### 1. Install the AI reviewer on the code hosting org
+
+manual form/portal · ~10 min · human approval required
+
+
+Pick the reviewer from the ranked options and install it as an app on the code hosting organization. The install is an OAuth consent: an org admin grants the reviewer read access to the repositories it will review. Record which account performed the install and where the reviewer's dashboard lives so access can be revoked or rescoped later.
+
+- Produces: AI code reviewer
+- Canonical vendor: CodeRabbit
+- Vendor options: CodeRabbit, Greptile, Cursor Bugbot
+- Ranked market: [ai-code-review](../../open-rankings/ai-code-review)
+
+<a id="step-2"></a>
+
+### 2. Scope repository access
+
+agent-runnable · ~5 min · human approval required
+
+
+Grant the reviewer access to the repositories that actually need review rather than the whole organization. Start with the main application repositories and leave experiments and forks out until the signal is proven. Note the scope in the engineering docs so new repositories get a deliberate include-or-exclude decision instead of inheriting a default.
+
+<a id="step-3"></a>
+
+### 3. Add the reviewer config to the repo
+
+agent-runnable · ~15 min · human approval required
+
+
+Add the reviewer's configuration file to each covered repository: review rules, path filters for generated or vendored code, and any language-specific instructions. Keep the config in version control so review behavior changes go through pull requests themselves. A coding agent can draft the file; review it like any other code change.
+
+- Cross-arena market: [ai-coding](../../open-rankings/ai-coding)
+
+<a id="step-4"></a>
+
+### 4. Open a test pull request and confirm a review lands
+
+agent-runnable · ~10 min · human approval required
+
+
+Open a small, intentionally imperfect pull request and confirm the reviewer posts a review on it. Check latency, the quality of the findings, and whether path filters are respected. The review visible on the test pull request is the proof the installation works; fix scope or config before relying on it.
+
+- Verify: The reviewer's review appears on the test pull request in the code host.
+
+<a id="step-5"></a>
+
+### 5. Decide the merge gate: blocking check or advisory comments
+
+human · ~5 min
+
+
+Decide with the team whether the reviewer runs as a required check that blocks merging or as advisory comments. A blocking gate enforces attention but adds friction and false-positive risk while the config is young; advisory mode builds trust first. Revisit the choice once the team has seen a few weeks of findings.
+
+
+## Outputs
+
+- AI code reviewer
 
 ## Related records
 

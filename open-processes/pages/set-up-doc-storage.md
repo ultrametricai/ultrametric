@@ -3,6 +3,10 @@
 
 # Set up doc storage
 
+[Overview](#overview) · [Steps](#steps-at-a-glance) · [Outputs](#outputs)
+
+## Overview
+
 Stand up the company’s shared document system — pick a provider, configure the workspace, and bring the existing documents in.
 
 | Field | Value |
@@ -19,31 +23,68 @@ Stand up the company’s shared document system — pick a provider, configure t
 
 Account creation is manual; sharing and document import run over the provider APIs.
 
-## Steps
+## Steps at a glance
 
-1. **Choose storage provider** — human · ~5 min
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
 
-   Compare storage options against the company's document types, access needs, current collaboration tools, and migration effort. Check company ownership, external sharing, export, and the features available in the proposed plan. Ask the people handling sensitive records where the current setup fails them. Recommend a provider with the required access boundaries and manageable cost, identifying any unresolved retention or migration requirement before the budget owner commits.
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Choose storage provider](#step-1) | human | ~5 min | Entry step |
+| [2. Create the account and set the folder structure](#step-2) | manual form/portal | ~15 min | [Step 1](#step-1) |
+| [3. Share the workspace with the team](#step-3) | agent-runnable | ~3 min | [Step 2](#step-2) |
+| [4. Import existing company documents](#step-4) | agent-runnable | ~5 min | [Step 3](#step-3) |
 
-   - Vendor options: Google Drive, Dropbox, Notion
-   - Ranked market: [cloud-storage](../../open-rankings/cloud-storage)
-2. **Create the account and set the folder structure** — manual form/portal · ~15 min
+<a id="steps"></a>
 
-   Create the storage workspace with company-controlled administration and recovery. Organize folders or libraries by document ownership, with distinct access boundaries for employee files, legal and financial records, and everyday collaboration. Give each area a maintainer and set the default sharing behavior. Check a representative document with the intended reader and editor before importing that area, looking for unexpected inherited permissions.
+## Step details
 
-   - Produces: Document storage
-3. **Share the workspace with the team** — agent-runnable · ~3 min
+<a id="step-1"></a>
 
-   Map teammates to the storage areas they need, using groups where the service supports them. Check external collaborators separately and review whether shared links expose more than intended. Have the workspace administrator confirm new invitations and access grants, then distribute the starting link and a short filing guide. Help the first users locate and work on their documents, and resolve missing access without broadening every folder to the whole team.
-4. **Import existing company documents** — agent-runnable · ~5 min
+### 1. Choose storage provider
 
-   Inventory the source documents, owners, permissions, and links that other work relies on. Choose destinations and decide how to handle duplicates and superseded versions before importing. Move or copy through the provider's supported path, reconciling files and failures as each area completes. Check important documents and links with their users. Keep original sources available until the migration owner accepts the result and authorizes cleanup, especially where document history or permissions did not transfer.
+human · ~5 min
 
-   - Cross-arena options: Poly (notes-knowledge)
 
-## Artifacts
+Compare storage options against the company's document types, access needs, current collaboration tools, and migration effort. Check company ownership, external sharing, export, and the features available in the proposed plan. Ask the people handling sensitive records where the current setup fails them. Recommend a provider with the required access boundaries and manageable cost, identifying any unresolved retention or migration requirement before the budget owner commits.
 
-Produces:
+- Vendor options: Google Drive, Dropbox, Notion
+- Ranked market: [cloud-storage](../../open-rankings/cloud-storage)
+
+<a id="step-2"></a>
+
+### 2. Create the account and set the folder structure
+
+manual form/portal · ~15 min
+
+
+Create the storage workspace with company-controlled administration and recovery. Organize folders or libraries by document ownership, with distinct access boundaries for employee files, legal and financial records, and everyday collaboration. Give each area a maintainer and set the default sharing behavior. Check a representative document with the intended reader and editor before importing that area, looking for unexpected inherited permissions.
+
+- Produces: Document storage
+
+<a id="step-3"></a>
+
+### 3. Share the workspace with the team
+
+agent-runnable · ~3 min
+
+
+Map teammates to the storage areas they need, using groups where the service supports them. Check external collaborators separately and review whether shared links expose more than intended. Have the workspace administrator confirm new invitations and access grants, then distribute the starting link and a short filing guide. Help the first users locate and work on their documents, and resolve missing access without broadening every folder to the whole team.
+
+<a id="step-4"></a>
+
+### 4. Import existing company documents
+
+agent-runnable · ~5 min
+
+
+Inventory the source documents, owners, permissions, and links that other work relies on. Choose destinations and decide how to handle duplicates and superseded versions before importing. Move or copy through the provider's supported path, reconciling files and failures as each area completes. Check important documents and links with their users. Keep original sources available until the migration owner accepts the result and authorizes cleanup, especially where document history or permissions did not transfer.
+
+- Cross-arena options: Poly (notes-knowledge)
+
+
+<a id="artifacts"></a>
+
+## Outputs
 
 - Document storage
 

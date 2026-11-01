@@ -3,6 +3,10 @@
 
 # Set up a project tracker
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Steps](#steps-at-a-glance) · [Outputs](#outputs)
+
+## Overview
+
 Configure the project tracker with projects, teams, labels, and workflows. Linear is the canonical route; the project-management arena ranks the alternatives.
 
 | Field | Value |
@@ -19,45 +23,96 @@ Configure the project tracker with projects, teams, labels, and workflows. Linea
 
 Linear has a comprehensive GraphQL API and MCP integration. Full workspace setup automatable.
 
-## Steps
+## Before you start
 
-1. **Create the project tracker workspace** — manual form/portal · ~10 min · human approval required
+| Information to gather | Required by the record |
+| --- | --- |
+| members | Yes |
+| team projects | Yes |
 
-   Find the company's existing account or create the workspace in the selected tracker. Set the company name, administrator, recovery contact, and default visibility, keeping customer or confidential work restricted as needed. Use the agreed plan and seat budget; new paid commitments need the budget owner's approval. Add the workspace link to onboarding and identify the administrator teammates should contact for access or configuration changes.
+## Steps at a glance
 
-   - Produces: Project tracker
-   - Canonical vendor: Linear
-   - Vendor options: Linear, Asana, Notion
-   - Ranked market: [project-management](../../open-rankings/project-management)
-2. **Configure workflow states** — agent-runnable · ~5 min · human approval required
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
 
-   Map how work enters the queue, becomes accepted, moves through execution and review, and reaches completion. Give each state a clear meaning and make blocked, cancelled, and completed work distinguishable. Configure the states the team needs, then walk an actual representative task through them to find unclear transitions. If the tracker already contains work, map old states to new ones before changing anything that would strand active issues.
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Create the project tracker workspace](#step-1) | manual form/portal; approval required | ~10 min | Entry step |
+| [2. Configure workflow states](#step-2) | agent-runnable; approval required | ~5 min | [Step 1](#step-1) |
+| [3. Create teams and projects](#step-3) | agent-runnable; approval required | ~5 min | [Step 2](#step-2) |
+| [4. Set up labels](#step-4) | agent-runnable | ~3 min | [Step 3](#step-3) |
+| [5. Invite team members](#step-5) | agent-runnable; approval required | ~3 min | [Step 3](#step-3) |
 
-   - Canonical vendor: Linear
-3. **Create teams and projects** — agent-runnable · ~5 min · human approval required
+<a id="steps"></a>
 
-   Create tracker teams where membership, ownership, or workflows genuinely differ. Use projects for concrete initiatives, each with a stated outcome and accountable owner. Link existing tasks to their new projects and team owners. Set visibility for each team and project, and check that teammates can find their active work from the main workspace. Keep unowned initiatives in a visible planning queue until someone takes responsibility.
+## Step details
 
-   - Canonical vendor: Linear
-   - Next: steps 4 and 5 — all follow this step
-4. **Set up labels** — agent-runnable · ~3 min
+<a id="step-1"></a>
 
-   Choose labels for distinctions the team needs to filter or triage, such as work type or affected product area. Keep status and ownership in their dedicated fields. Give ambiguous labels a short definition and merge near-duplicates. Apply the proposed set to a few current issues with the triage owner; disagreements will reveal which definitions need tightening before the label list spreads.
+### 1. Create the project tracker workspace
 
-   - Canonical vendor: Linear
+manual form/portal · ~10 min · human approval required
 
-   *This path ends here.*
-5. **Invite team members** — agent-runnable · ~3 min · human approval required
 
-   *Follows step 3.*
+Find the company's existing account or create the workspace in the selected tracker. Set the company name, administrator, recovery contact, and default visibility, keeping customer or confidential work restricted as needed. Use the agreed plan and seat budget; new paid commitments need the budget owner's approval. Add the workspace link to onboarding and identify the administrator teammates should contact for access or configuration changes.
 
-   Compare the team roster with current tracker members and prepare invitations for the missing people. Match each person to the right team and role, checking administrator permissions and any additional seat cost. Ask the tracker administrator to check the list and seat impact, then send access instructions with the team's workflow guide. Follow up on failed invitations and help the first new member find and update a real assigned task.
+- Produces: Project tracker
+- Canonical vendor: Linear
+- Vendor options: Linear, Asana, Notion
+- Ranked market: [project-management](../../open-rankings/project-management)
 
-   - Canonical vendor: Linear
+<a id="step-2"></a>
 
-## Artifacts
+### 2. Configure workflow states
 
-Produces:
+agent-runnable · ~5 min · human approval required
+
+
+Map how work enters the queue, becomes accepted, moves through execution and review, and reaches completion. Give each state a clear meaning and make blocked, cancelled, and completed work distinguishable. Configure the states the team needs, then walk an actual representative task through them to find unclear transitions. If the tracker already contains work, map old states to new ones before changing anything that would strand active issues.
+
+- Canonical vendor: Linear
+
+<a id="step-3"></a>
+
+### 3. Create teams and projects
+
+agent-runnable · ~5 min · human approval required
+
+
+Create tracker teams where membership, ownership, or workflows genuinely differ. Use projects for concrete initiatives, each with a stated outcome and accountable owner. Link existing tasks to their new projects and team owners. Set visibility for each team and project, and check that teammates can find their active work from the main workspace. Keep unowned initiatives in a visible planning queue until someone takes responsibility.
+
+- Canonical vendor: Linear
+- Next: steps 4 and 5 — all follow this step
+
+<a id="step-4"></a>
+
+### 4. Set up labels
+
+agent-runnable · ~3 min
+
+
+Choose labels for distinctions the team needs to filter or triage, such as work type or affected product area. Keep status and ownership in their dedicated fields. Give ambiguous labels a short definition and merge near-duplicates. Apply the proposed set to a few current issues with the triage owner; disagreements will reveal which definitions need tightening before the label list spreads.
+
+- Canonical vendor: Linear
+
+*This path ends here.*
+
+<a id="step-5"></a>
+
+### 5. Invite team members
+
+agent-runnable · ~3 min · human approval required
+
+
+*Follows step 3.*
+
+Compare the team roster with current tracker members and prepare invitations for the missing people. Match each person to the right team and role, checking administrator permissions and any additional seat cost. Ask the tracker administrator to check the list and seat impact, then send access instructions with the team's workflow guide. Follow up on failed invitations and help the first new member find and update a real assigned task.
+
+- Canonical vendor: Linear
+
+
+<a id="artifacts"></a>
+
+## Outputs
 
 - Project tracker
 

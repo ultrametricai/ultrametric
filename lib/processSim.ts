@@ -1,3 +1,4 @@
+import type { Execution } from './execution'
 // Client-safe half of lib/processes.ts — the flattened simulator prop shapes plus display
 // helpers, with NO node:fs/path imports so components/ProcessSimulator.tsx (a client component)
 // can bundle it. Same split convention as lib/megaTableSort.ts (client) vs lib/megaTable.ts
@@ -147,6 +148,7 @@ export interface SimStep {
   taskTitle: string
   label: string
   route?: StepRoute
+  execution?: Execution
   vendor: string | null
   vendorLabel: string | null
   // Set when the vendor is mapped to an arena — the simulator swaps this step's product.

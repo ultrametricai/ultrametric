@@ -3,6 +3,10 @@
 
 # Launch on Product Hunt & directories
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Steps](#steps-at-a-glance)
+
+## Overview
+
 The launch-day play: prep assets and copy, submit to Product Hunt and startup directories, rally your network, and track the signup spike.
 
 | Field | Value |
@@ -19,69 +23,125 @@ The launch-day play: prep assets and copy, submit to Product Hunt and startup di
 
 Asset prep and analytics are agent work. The submission portals have no launch APIs, and rallying your network on the day is human.
 
-## Steps
+<a id="artifacts"></a>
 
-1. **Prepare launch assets and copy** — agent-runnable · ~30 min
+## Before you start
 
-   Build the launch packet from the working product: description, intended audience, real screenshots or demo, logo, destination URL and answers to likely questions. Verify feature and customer claims against what is available at launch, and confirm rights to testimonials and customer assets. Adapt the copy to the selected channel so the launch owner can clear a concrete set of public claims and assets.
-
-   - Vendor options: ChatGPT, Claude, Gemini, Grok
-   - Ranked market: [ai-assistants](../../open-rankings/ai-assistants)
-   - Cross-arena options: Canva, Figma (design-tools)
-   - Sources: [How to Launch: Preparation](https://www.producthunt.com/launch/before-launch)
-2. **Submit to Product Hunt** — manual form/portal · ~15 min · hard to undo
-
-   Choose a launch venue that fits the product's readiness and intended audience. Check current eligibility, required assets, charges and submission rules. Test the destination and arrange for a product representative to answer questions. Submit the launch owner's agreed content and timing within the authorized fee, then track whether the submission is awaiting review or actually published.
-
-   - Verify: The launch is scheduled in your Product Hunt dashboard and the post URL resolves publicly on launch day.
-   - Vendor options: Product Hunt
-   - Sources: [How to Launch: Preparation](https://www.producthunt.com/launch/before-launch) · [How do I share my post?](https://help.producthunt.com/en/articles/2690626-how-do-i-share-my-post)
-
-   Options:
-     - **Default — Submit to Product Hunt** — manual form/portal · ~15 min · hard to undo
-
-       Complete Product Hunt's current submission form with the launch packet, tested product URL, tagline, imagery and maker identity. Confirm the publication or scheduling decision with the launch owner. Check the resulting listing and have a maker answer genuine questions. Share it within Product Hunt's promotion rules; coordinated voting and incentives for upvotes are prohibited.
-     - **Show HN launch** — manual form/portal
-
-       When: Developer-tool audience - Show HN reaches it better than Product Hunt
-
-       Use Show HN when the maker has a substantive project that people can actually try and is available to discuss it. The guidelines exclude landing pages and signup-only material and ask for an accessible demonstration. Have the maker write, approve and manually post their own submission, starting its title with Show HN, and handle the discussion personally under the current HN rules. Save the post link and feedback; soliciting upvotes or comments is prohibited.
-
-       - Vendor options: Hacker News
-       - Sources: [Show HN Guidelines](https://news.ycombinator.com/showhn.html) · [Hacker News Guidelines](https://news.ycombinator.com/newsguidelines.html)
-     - **BetaList pre-launch** — manual form/portal
-
-       When: Pre-launch - you want waitlist signups before the product is public
-
-       Check BetaList's eligibility for the product and its own-domain landing page; its criteria cover upcoming and recently launched startups. Prepare an accurate description, visuals and working signup or access path. Before the authorized purchase, resolve the package price and refund terms against checkout and the applicable terms, including discrepancies in published guidance. Keep the receipt and editorial status separate from evidence that a feature has been published.
-
-       - Vendor options: BetaList
-       - Sources: [Submission Guidelines](https://betalist.com/criteria) · [Support & FAQ](https://betalist.com/support) · [Submission Terms](https://betalist.com/terms/submissions)
-3. **Submit to startup directories** — manual form/portal · ~20 min
-
-   Choose directories that serve the intended audience and check their eligibility, terms and charges. Adapt the launch description without changing its claims or destination. Submit to the agreed destinations within the paid-listing budget. Track each review status and published URL, then check live listings for accurate copy and working links so corrections can be requested where needed.
-
-   - Vendor options: BetaList, Hacker News
-4. **Rally your network on launch day** — human · ~2 h
-
-   Share the launch link through the agreed company or community channels and have someone answer product questions from experience. Tailor the outreach to each venue's rules: Product Hunt prohibits coordinated voting and upvote incentives, while Hacker News prohibits soliciting upvotes or comments. Collect substantive feedback and route reported product failures to the team that can fix them.
-
-   - Sources: [How do I share my post?](https://help.producthunt.com/en/articles/2690626-how-do-i-share-my-post) · [Hacker News Guidelines](https://news.ycombinator.com/newsguidelines.html)
-5. **Track the signup spike** — agent-runnable · ~10 min
-
-   Compare launch traffic and signups with a defined pre-launch baseline. Check referral attribution, duplicate events and the signup funnel before crediting a listing. Follow signups through activation or the next meaningful product action. Report results by channel and observation window, including tracking gaps and customer feedback, so the team can choose follow-up experiments from outcomes beyond the initial traffic spike.
-
-   - Canonical vendor: PostHog
-   - Vendor options: PostHog, Amplitude, Mixpanel
-   - Ranked market: [product-analytics](../../open-rankings/product-analytics)
-
-## Artifacts
-
-Requires:
+Required artifacts:
 
 - Company website — from [Generate a website](generate-a-website.md)
 - Brand logo — from [Generate a brand logo](generate-a-brand-logo.md)
 - Product analytics workspace — from [Set up product analytics](set-up-product-analytics.md)
+
+| Information to gather | Required by the record |
+| --- | --- |
+| launch date and positioning | Yes |
+
+## Steps at a glance
+
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
+
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Prepare launch assets and copy](#step-1) | agent-runnable | ~30 min | Entry step |
+| [2. Submit to Product Hunt](#step-2) | manual form/portal | ~15 min | [Step 1](#step-1) |
+| [3. Submit to startup directories](#step-3) | manual form/portal | ~20 min | [Step 2](#step-2) |
+| [4. Rally your network on launch day](#step-4) | human | ~2 h | [Step 3](#step-3) |
+| [5. Track the signup spike](#step-5) | agent-runnable | ~10 min | [Step 4](#step-4) |
+
+<a id="steps"></a>
+
+## Step details
+
+<a id="step-1"></a>
+
+### 1. Prepare launch assets and copy
+
+agent-runnable · ~30 min
+
+
+Build the launch packet from the working product: description, intended audience, real screenshots or demo, logo, destination URL and answers to likely questions. Verify feature and customer claims against what is available at launch, and confirm rights to testimonials and customer assets. Adapt the copy to the selected channel so the launch owner can clear a concrete set of public claims and assets.
+
+- Vendor options: ChatGPT, Claude, Gemini, Grok
+- Ranked market: [ai-assistants](../../open-rankings/ai-assistants)
+- Cross-arena options: Canva, Figma (design-tools)
+- Sources: [How to Launch: Preparation](https://www.producthunt.com/launch/before-launch)
+
+<a id="step-2"></a>
+
+### 2. Submit to Product Hunt
+
+manual form/portal · ~15 min · hard to undo
+
+| Option | Applies when |
+| --- | --- |
+| Default — Submit to Product Hunt | Recorded default |
+| Show HN launch | Developer-tool audience - Show HN reaches it better than Product Hunt |
+| BetaList pre-launch | Pre-launch - you want waitlist signups before the product is public |
+
+
+Choose a launch venue that fits the product's readiness and intended audience. Check current eligibility, required assets, charges and submission rules. Test the destination and arrange for a product representative to answer questions. Submit the launch owner's agreed content and timing within the authorized fee, then track whether the submission is awaiting review or actually published.
+
+- Verify: The launch is scheduled in your Product Hunt dashboard and the post URL resolves publicly on launch day.
+- Vendor options: Product Hunt
+- Sources: [How to Launch: Preparation](https://www.producthunt.com/launch/before-launch) · [How do I share my post?](https://help.producthunt.com/en/articles/2690626-how-do-i-share-my-post)
+
+Options:
+  - **Default — Submit to Product Hunt** — manual form/portal · ~15 min · hard to undo
+
+    Complete Product Hunt's current submission form with the launch packet, tested product URL, tagline, imagery and maker identity. Confirm the publication or scheduling decision with the launch owner. Check the resulting listing and have a maker answer genuine questions. Share it within Product Hunt's promotion rules; coordinated voting and incentives for upvotes are prohibited.
+  - **Show HN launch** — manual form/portal
+
+    When: Developer-tool audience - Show HN reaches it better than Product Hunt
+
+    Use Show HN when the maker has a substantive project that people can actually try and is available to discuss it. The guidelines exclude landing pages and signup-only material and ask for an accessible demonstration. Have the maker write, approve and manually post their own submission, starting its title with Show HN, and handle the discussion personally under the current HN rules. Save the post link and feedback; soliciting upvotes or comments is prohibited.
+
+    - Vendor options: Hacker News
+    - Sources: [Show HN Guidelines](https://news.ycombinator.com/showhn.html) · [Hacker News Guidelines](https://news.ycombinator.com/newsguidelines.html)
+  - **BetaList pre-launch** — manual form/portal
+
+    When: Pre-launch - you want waitlist signups before the product is public
+
+    Check BetaList's eligibility for the product and its own-domain landing page; its criteria cover upcoming and recently launched startups. Prepare an accurate description, visuals and working signup or access path. Before the authorized purchase, resolve the package price and refund terms against checkout and the applicable terms, including discrepancies in published guidance. Keep the receipt and editorial status separate from evidence that a feature has been published.
+
+    - Vendor options: BetaList
+    - Sources: [Submission Guidelines](https://betalist.com/criteria) · [Support & FAQ](https://betalist.com/support) · [Submission Terms](https://betalist.com/terms/submissions)
+
+<a id="step-3"></a>
+
+### 3. Submit to startup directories
+
+manual form/portal · ~20 min
+
+
+Choose directories that serve the intended audience and check their eligibility, terms and charges. Adapt the launch description without changing its claims or destination. Submit to the agreed destinations within the paid-listing budget. Track each review status and published URL, then check live listings for accurate copy and working links so corrections can be requested where needed.
+
+- Vendor options: BetaList, Hacker News
+
+<a id="step-4"></a>
+
+### 4. Rally your network on launch day
+
+human · ~2 h
+
+
+Share the launch link through the agreed company or community channels and have someone answer product questions from experience. Tailor the outreach to each venue's rules: Product Hunt prohibits coordinated voting and upvote incentives, while Hacker News prohibits soliciting upvotes or comments. Collect substantive feedback and route reported product failures to the team that can fix them.
+
+- Sources: [How do I share my post?](https://help.producthunt.com/en/articles/2690626-how-do-i-share-my-post) · [Hacker News Guidelines](https://news.ycombinator.com/newsguidelines.html)
+
+<a id="step-5"></a>
+
+### 5. Track the signup spike
+
+agent-runnable · ~10 min
+
+
+Compare launch traffic and signups with a defined pre-launch baseline. Check referral attribution, duplicate events and the signup funnel before crediting a listing. Follow signups through activation or the next meaningful product action. Report results by channel and observation window, including tracking gaps and customer feedback, so the team can choose follow-up experiments from outcomes beyond the initial traffic spike.
+
+- Canonical vendor: PostHog
+- Vendor options: PostHog, Amplitude, Mixpanel
+- Ranked market: [product-analytics](../../open-rankings/product-analytics)
+
 
 ## Related records
 

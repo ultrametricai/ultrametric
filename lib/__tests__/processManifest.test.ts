@@ -140,6 +140,7 @@ describe('DagNodeSchema forward-compat', () => {
 
 describe('process manifests over the real corpus', () => {
   it('builds a versioned manifest for every process, steps 1:1 with the DAG', () => {
+    let publishedExecutionAssessments = 0
     for (const task of loadProcesses(DATA_DIR)) {
       const manifest = buildProcessManifest(task, DATA_DIR)
       expect(manifest.manifestVersion).toBe(MANIFEST_VERSION)
@@ -147,12 +148,18 @@ describe('process manifests over the real corpus', () => {
       expect(manifest.steps.length).toBe(task.dag.nodes.length)
       expect(manifest.manifestUrl).toBe(processManifestUrl(manifest.process.slug))
       expect(manifest.provenance.source).toBe('productarena')
+      task.dag.nodes.forEach((source, index) => {
+        if (!source.execution) return
+        publishedExecutionAssessments += 1
+        expect(manifest.steps[index].execution).toEqual(source.execution)
+      })
     }
+    expect(publishedExecutionAssessments).toBeGreaterThan(0)
   })
 
   it('resolves incorporate-c-corp with kinds, gates, and vendor options intact', () => {
     const manifest = processManifestBySlug('incorporate-c-corp', DATA_DIR)!
-    expect(manifest.process.title).toBe('Incorporate C-Corp')
+    expect(manifest.process.title).toBe('Incorporate the company')
     expect(manifest.process.phase).toBe('formation')
     const byId = new Map(manifest.steps.map((s) => [s.id, s]))
     expect(byId.get('n3')!.kind).toBe('api')
@@ -188,7 +195,7 @@ describe('chain manifests', () => {
     expect(manifest.chain.manifestUrl).toBe(chainManifestUrl('company-launch'))
     expect(manifest.processes.length).toBe(chain.taskIds.length)
     // Run order preserved, and each embedded process carries its own standalone manifest URL.
-    expect(manifest.processes[0].process.slug).toBe('incorporate-c-corp')
+    expect(manifest.processes[0].process.slug).toBe('incorporate-the-company')
     for (const p of manifest.processes) {
       expect(p.manifestUrl).toBe(processManifestUrl(p.process.slug))
       expect(p.steps.length).toBeGreaterThan(0)
@@ -211,11 +218,26 @@ describe('manifest URLs', () => {
   })
 })
 
-it('excludes private operations from every public manifest step without weakening approval', () => {
-  const step = buildManifestStep(node({ toolCall: 'synthetic_create_resource', functionCalls: [{ method: 'POST /synthetic-resource' }], approvalRequired: true, legalSignature: true }), DATA_DIR)
+it('preserves the public execution assessment while excluding private operations', () => {
+  const execution = {
+    category: 'agent-native',
+    basis: 'documented-interface',
+    rationale: 'The public interface documents this execution mechanism.',
+    evidence: ['https://example.test/public-interface'],
+    reviewRequired: true,
+    automationEvidence: { status: 'documented' },
+  } satisfies NonNullable<DagNode['execution']>
+  const step = buildManifestStep(node({
+    execution,
+    toolCall: 'synthetic_private_create',
+    functionCalls: [{ method: 'POST /synthetic-private-resource' }],
+    approvalRequired: true,
+    legalSignature: true,
+  }), DATA_DIR)
+  expect(step.execution).toEqual(execution)
   expect(step).not.toHaveProperty('toolCall')
   expect(step).not.toHaveProperty('calls')
-  expect(JSON.stringify(step)).not.toContain('synthetic')
+  expect(JSON.stringify(step)).not.toContain('synthetic_private')
   expect(step.approvalRequired).toBe(true)
   expect(step.legalSignature).toBe(true)
   expect(MANIFEST_VERSION).toBe(3)

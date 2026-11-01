@@ -1,3 +1,4 @@
+import type { Execution } from './execution'
 // Method variants, CLIENT-SAFE half (founder 2026-09-30: "certain processes have steps that
 // are just ONE way to do it when there are multiple methods depending on context — get multiple
 // options selectable by context"). The serializable view shapes the server builds
@@ -34,6 +35,7 @@ export interface StepMethodSubStepView {
   id: string
   label: string
   route?: StepRoute
+  execution?: Execution
   legalSignature: boolean
   async: boolean
   estimatedMinutes?: number
@@ -53,6 +55,7 @@ export interface StepMethodView {
   summary: string | null
   context: { kind: StepMethodContextKind; when: string; countries: GeoSelection[] } | null
   route?: StepRoute
+  execution?: Execution
   estimatedMinutes: number | null | undefined
   calls: string[]
   chips: StepMethodChipView[]

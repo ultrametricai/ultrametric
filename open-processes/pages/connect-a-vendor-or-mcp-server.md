@@ -3,6 +3,10 @@
 
 # Connect a vendor or MCP server
 
+[Overview](#overview) · [Steps](#steps-at-a-glance)
+
+## Overview
+
 Connect a third-party vendor integration, or register a custom MCP server so agents can drive it.
 
 | Field | Value |
@@ -19,29 +23,66 @@ Connect a third-party vendor integration, or register a custom MCP server so age
 
 Credential exchange is a manual connect flow; once connected, MCP servers expose the vendor to agents.
 
-## Steps
+## Steps at a glance
 
-1. **Pick the integration path (native integration or MCP server)** — human · ~3 min
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
 
-   List the tasks the connection needs to support and the company data they require. Compare the native integration and MCP-server paths using current vendor documentation and the runtime's supported methods. Check the service operator, permissions, hosting, revocation, and which operations are actually available. Recommend the path that covers the intended use with manageable access, and resolve unsupported tasks or unclear data handling before credentials are connected.
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Pick the integration path (native integration or MCP server)](#step-1) | human | ~3 min | Entry step |
+| [2. Authorize credentials (OAuth grant or API key exchange)](#step-2) | manual form/portal | ~3 min | [Step 1](#step-1) |
+| [3. Register the MCP server with the agent runtime](#step-3) | agent-runnable | ~2 min | [Step 2](#step-2) |
+| [4. Run a smoke-test tool call and save the connection](#step-4) | agent-runnable | ~2 min | [Step 3](#step-3) |
 
-   - Vendor options: Composio, Smithery
-   - Ranked market: [mcp-infrastructure](../../open-rankings/mcp-infrastructure)
-   - Sources: [Model Context Protocol: Authorization](https://modelcontextprotocol.io/specification/2026-07-28/basic/authorization)
-2. **Authorize credentials (OAuth grant or API key exchange)** — manual form/portal · ~3 min
+<a id="steps"></a>
 
-   Review the exact service, company account, requested permissions, and data access with the account owner in the documented connection flow. Grant the agreed scope through the supported OAuth or credential mechanism and keep secrets in protected runtime configuration. Check the connected identity and permissions afterward. Record who owns the integration and how to revoke it; unexpected access requests should be resolved before the connection is enabled for the team.
+## Step details
 
-   - Sources: [Model Context Protocol: Authorization Security Considerations](https://modelcontextprotocol.io/specification/2026-07-28/basic/authorization/security-considerations)
-3. **Register the MCP server with the agent runtime** — agent-runnable · ~2 min
+<a id="step-1"></a>
 
-   For the MCP path, obtain the verified server endpoint or local-launch configuration and follow the runtime's current registration instructions. Review the operator, requested access, and tools before enabling the server, using protected credential storage. Inspect tool discovery to see what the connection actually exposes and compare it with the intended tasks. Configure controls for consequential actions and identify who maintains or disables the server if its behavior or permissions change.
+### 1. Pick the integration path (native integration or MCP server)
 
-   - Canonical vendor: Composio
-   - Sources: [Model Context Protocol: Tools](https://modelcontextprotocol.io/specification/2026-07-28/server/tools)
-4. **Run a smoke-test tool call and save the connection** — agent-runnable · ~2 min
+human · ~3 min
 
-   Run a harmless read-only operation against a known record in the connected account. Compare the result with the source system to check account identity, data scope, and the usefulness of the returned information. Inspect errors or logs for exposed secrets and investigate mismatches. Save the working connection configuration and hand over any limits to its owner. Test consequential writes separately with checks for the relevant operation and approval for the specific action.
+
+List the tasks the connection needs to support and the company data they require. Compare the native integration and MCP-server paths using current vendor documentation and the runtime's supported methods. Check the service operator, permissions, hosting, revocation, and which operations are actually available. Recommend the path that covers the intended use with manageable access, and resolve unsupported tasks or unclear data handling before credentials are connected.
+
+- Vendor options: Composio, Smithery
+- Ranked market: [mcp-infrastructure](../../open-rankings/mcp-infrastructure)
+- Sources: [Model Context Protocol: Authorization](https://modelcontextprotocol.io/specification/2026-07-28/basic/authorization)
+
+<a id="step-2"></a>
+
+### 2. Authorize credentials (OAuth grant or API key exchange)
+
+manual form/portal · ~3 min
+
+
+Review the exact service, company account, requested permissions, and data access with the account owner in the documented connection flow. Grant the agreed scope through the supported OAuth or credential mechanism and keep secrets in protected runtime configuration. Check the connected identity and permissions afterward. Record who owns the integration and how to revoke it; unexpected access requests should be resolved before the connection is enabled for the team.
+
+- Sources: [Model Context Protocol: Authorization Security Considerations](https://modelcontextprotocol.io/specification/2026-07-28/basic/authorization/security-considerations)
+
+<a id="step-3"></a>
+
+### 3. Register the MCP server with the agent runtime
+
+agent-runnable · ~2 min
+
+
+For the MCP path, obtain the verified server endpoint or local-launch configuration and follow the runtime's current registration instructions. Review the operator, requested access, and tools before enabling the server, using protected credential storage. Inspect tool discovery to see what the connection actually exposes and compare it with the intended tasks. Configure controls for consequential actions and identify who maintains or disables the server if its behavior or permissions change.
+
+- Canonical vendor: Composio
+- Sources: [Model Context Protocol: Tools](https://modelcontextprotocol.io/specification/2026-07-28/server/tools)
+
+<a id="step-4"></a>
+
+### 4. Run a smoke-test tool call and save the connection
+
+agent-runnable · ~2 min
+
+
+Run a harmless read-only operation against a known record in the connected account. Compare the result with the source system to check account identity, data scope, and the usefulness of the returned information. Inspect errors or logs for exposed secrets and investigate mismatches. Save the working connection configuration and hand over any limits to its owner. Test consequential writes separately with checks for the relevant operation and approval for the specific action.
+
 
 ---
 

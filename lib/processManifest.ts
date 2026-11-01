@@ -1,3 +1,4 @@
+import type { Execution } from './execution'
 import { classifyGapStep } from './gapClosers'
 import {
   chainTasks, findProcessBySlug, loadChains, processSlug, stepVendorOptions, vendorChipInfo,
@@ -37,6 +38,8 @@ export interface ManifestStep {
   kind: ManifestStepKind
   // Original corpus routing, kept alongside `kind` so a consumer can audit the mapping.
   route: DagNode['route']
+  // Content execution assessment; independent of the route-derived executor kind.
+  execution?: Execution
   vendorOptions: ManifestVendorOption[]
   // Deep link to perform the step / vendor signup page — forward-compat corpus fields
   // (see DagNodeSchema), passed through whenever present.
@@ -181,6 +184,7 @@ export function buildManifestStep(node: DagNode, dir?: string): ManifestStep {
     title: node.label,
     kind: stepKind(node.route),
     route: node.route,
+    ...(node.execution ? { execution: node.execution } : {}),
     vendorOptions: stepVendorChips(node, dir).map(optionFromChip),
     approvalRequired: stepApprovalRequired(node),
     riskLevel: node.riskLevel ?? null,

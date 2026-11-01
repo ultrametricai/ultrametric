@@ -28,6 +28,17 @@ describe('vendor-state corpus', () => {
   const entries = loadVendorState(DATA_DIR)
   const states = registryStates()
 
+  it('every checkedAt is a real date no later than today', () => {
+    const today = new Date().toISOString().slice(0, 10)
+    for (const e of entries) {
+      const parsed = new Date(e.checkedAt)
+      expect(Number.isNaN(parsed.getTime()), `${e.productId}/${e.state}/${e.service}`).toBe(false)
+      // Rejects impossible dates such as 2026-02-30, which Date silently rolls forward.
+      expect(parsed.toISOString().slice(0, 10), `${e.productId}/${e.state}/${e.service} checkedAt`).toBe(e.checkedAt)
+      expect(e.checkedAt <= today, `${e.productId}/${e.state}/${e.service} checkedAt`).toBe(true)
+    }
+  })
+
   it('loads and every row is fully sourced', () => {
     expect(entries.length).toBeGreaterThan(0)
     for (const e of entries) {
@@ -74,6 +85,11 @@ describe('vendor-state corpus', () => {
     expect(status('stripe-atlas', 'US-CA', 'formation')).toBe('unavailable')
     expect(status('clerky', 'US-DE', 'formation')).toBe('available')
     expect(status('firstbase', 'US-WY', 'formation')).toBe('available')
+    // Clerky files foreign qualification directly in CA and NY only; other states go to partners.
+    expect(status('clerky', 'US-CA', 'foreign-qualification')).toBe('available')
+    expect(status('clerky', 'US-TX', 'foreign-qualification')).toBe('partial')
+    // Rippling registers state payroll-tax accounts through its PEO, not payroll alone.
+    expect(status('rippling', 'US-CA', 'payroll-tax-registration')).toBe('partial')
   })
 })
 
@@ -106,6 +122,7 @@ describe('vendorStateLookup', () => {
     expect(atlas.formation?.status).toBe('available')
     expect(atlas.formation?.sourceUrl).toMatch(/^https:\/\//)
     expect(atlas.formation?.note).toMatch(/Delaware/)
+    expect(atlas.formation?.checkedAt).toMatch(/^\d{4}-\d{2}-\d{2}$/)
     // Rows for other states never leak into the selection.
     const ca = vendorStateLookup(['stripe-atlas'], 'US-CA', DATA_DIR)['stripe-atlas']
     expect(ca.formation?.status).toBe('unavailable')
@@ -141,6 +158,13 @@ describe('government-services state tags', () => {
     expect(tag('ny-dtf')).toBe('US-NY')
     expect(tag('tx-comptroller')).toBe('US-TX')
     expect(tag('de-dor')).toBe('US-DE')
+    // The six agencies of the 2026-10-27 bring-up (PR #500).
+    expect(tag('tx-twc')).toBe('US-TX')
+    expect(tag('wa-esd')).toBe('US-WA')
+    expect(tag('wa-dor')).toBe('US-WA')
+    expect(tag('fl-dor')).toBe('US-FL')
+    expect(tag('nevada-sos')).toBe('US-NV')
+    expect(tag('wyoming-sos')).toBe('US-WY')
     expect(tag('delaware-doc')).toBe('US-DE')
     expect(tag('california-sos')).toBe('US-CA')
     expect(tag('new-york-dos')).toBe('US-NY')
@@ -179,7 +203,12 @@ describe('governmentStepEligibility with a state code', () => {
     for (const [state, ids] of [
       ['US-DE', ['delaware-doc', 'de-dor']],
       ['US-NY', ['new-york-dos', 'ny-dtf']],
-      ['US-TX', ['texas-sos', 'tx-comptroller']],
+      ['US-TX', ['texas-sos', 'tx-comptroller', 'tx-twc']],
+      // The 2026-10-27 bring-up states.
+      ['US-WA', ['washington-sos', 'wa-esd', 'wa-dor']],
+      ['US-FL', ['florida-dos', 'fl-dor']],
+      ['US-NV', ['nevada-sos']],
+      ['US-WY', ['wyoming-sos']],
     ] as const) {
       expect(
         governmentStepEligibility({ jurisdictions: [state] }, GOVERNMENT_ARENA_ID, DATA_DIR),
@@ -196,6 +225,13 @@ describe('governmentStepEligibility with a state code', () => {
       ['ca_ftb', 'US-CA', 'ca-ftb'],
       ['ny_dtf', 'US-NY', 'ny-dtf'],
       ['tx_comptroller', 'US-TX', 'tx-comptroller'],
+      // The 2026-10-27 bring-up wiring (PR #500).
+      ['tx_twc', 'US-TX', 'tx-twc'],
+      ['wa_esd', 'US-WA', 'wa-esd'],
+      ['wa_dor', 'US-WA', 'wa-dor'],
+      ['fl_dor', 'US-FL', 'fl-dor'],
+      ['nevada_sos', 'US-NV', 'nevada-sos'],
+      ['wyoming_sos', 'US-WY', 'wyoming-sos'],
     ] as const) {
       expect(
         governmentStepEligibility({ vendor, jurisdictions: [state] }, GOVERNMENT_ARENA_ID, DATA_DIR),
@@ -233,6 +269,13 @@ describe('governmentStepEligibility with a state code', () => {
     expect(resolve('tax_001', 'tx_comptroller')).toEqual(new Set(['tx-comptroller'])) // TX franchise tax
     expect(resolve('qs_047', 'tx_comptroller')).toEqual(new Set(['tx-comptroller'])) // TX franchise report + PIR
     expect(resolve('form_005', 'ny_dtf')).toEqual(new Set(['ny-dtf']))      // NY Article 9-A / CT-3
+    // The 2026-10-27 bring-up: each agency anchors its own state step (PR #500).
+    expect(resolve('qs_063', 'tx_twc')).toEqual(new Set(['tx-twc']))        // TX unemployment-tax registration
+    expect(resolve('qs_063', 'wa_esd')).toEqual(new Set(['wa-esd']))        // WA employer registration
+    expect(resolve('qs_063', 'fl_dor')).toEqual(new Set(['fl-dor']))        // FL reemployment-tax registration
+    expect(resolve('form_005', 'wa_dor')).toEqual(new Set(['wa-dor']))      // WA B&O registration
+    expect(resolve('qs_047', 'nevada_sos')).toEqual(new Set(['nevada-sos'])) // NV annual list
+    expect(resolve('qs_043', 'wyoming_sos')).toEqual(new Set(['wyoming-sos'])) // WY registered-agent change
   })
 
   it('steps without a state code behave exactly as before', () => {

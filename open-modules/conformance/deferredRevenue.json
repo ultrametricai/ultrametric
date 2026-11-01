@@ -1,0 +1,72 @@
+{
+  "module": "deferredRevenue",
+  "entrypoint": "recognitionReport",
+  "implementation": {
+    "file": "lib/openstartup/deferredRevenue.ts",
+    "sha256": "d0813c5d39ff374ba6254d415a090f7ab1080bf31efba8f18a0df5086eede7d9"
+  },
+  "readme": "open-modules/conformance/README.md",
+  "cases": [
+    {
+      "name": "stripe-monthly-subscription",
+      "description": "The Stripe monthly example: a $31 invoice for Jan 15 to Feb 14, 2026 recognizes $17 across the 17 January days and $14 across the 14 February days, leaving $14 deferred at the January close.",
+      "source": "Stripe Docs, \"Revenue Recognition examples\" (https://docs.stripe.com/revenue-recognition/examples, verified 2026-10-02)",
+      "inputs": [
+        [
+          {
+            "amount": 31,
+            "serviceStart": "2026-01-15",
+            "serviceEnd": "2026-02-14"
+          }
+        ]
+      ],
+      "expected": {
+        "months": [
+          {
+            "month": "2026-01",
+            "billed": 31,
+            "recognized": 17,
+            "deferredEnd": 14
+          },
+          {
+            "month": "2026-02",
+            "billed": 0,
+            "recognized": 14,
+            "deferredEnd": 0
+          }
+        ],
+        "totalBilled": 31,
+        "totalRecognized": 31
+      }
+    },
+    {
+      "name": "cents-exact-largest-remainder",
+      "description": "$100 over the same Jan 15 to Feb 14 period: 100 × 17/31 = 54.8387... splits 54.84 + 45.16 under largest-remainder cent allocation, conserving the $100.00 exactly.",
+      "source": "Largest-remainder cent conservation on the Stripe day-count convention, hand-derived in lib/openstartup/__tests__/deferredRevenue.test.ts",
+      "inputs": [
+        [
+          {
+            "amount": 100,
+            "serviceStart": "2026-01-15",
+            "serviceEnd": "2026-02-14"
+          }
+        ]
+      ],
+      "expected": {
+        "months": [
+          {
+            "month": "2026-01",
+            "recognized": 54.84,
+            "deferredEnd": 45.16
+          },
+          {
+            "month": "2026-02",
+            "recognized": 45.16,
+            "deferredEnd": 0
+          }
+        ],
+        "totalRecognized": 100
+      }
+    }
+  ]
+}

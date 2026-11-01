@@ -3,6 +3,10 @@
 
 # Generate a brand logo
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Steps](#steps-at-a-glance) · [Outputs](#outputs)
+
+## Overview
+
 Use an image model to develop a logo, then refine its colors, icon and wordmark, small-size detail, and black-and-white versions.
 
 Start with a capable image model and a clear design brief. The useful work is choosing a direction and refining the colors, icon and wordmark, simplicity, and behavior across real uses. Keep existing assets and decisions in use where possible.
@@ -35,76 +39,119 @@ Image-generation APIs produce the candidates; the founder picks the primary logo
 - Coherent icon and wordmark arrangements, suitable color and monochrome versions, and a mark that remains recognizable at the sizes needed.
 - Usable artwork with a short explanation of its design choices and any unresolved limitations.
 
-## Steps
+<a id="artifacts"></a>
 
-1. **Turn the company context into a design brief** — agent-runnable
+## Before you start
 
-   Choose what the logo should communicate and which uses matter first: a website header, app icon, social avatar, presentation, or another known setting. Carry exact spelling and any existing brand constraints.
-
-   Decide whether to start with a wordmark, an icon with a wordmark, or an icon alone. An icon with a wordmark provides a readable company name and a compact mark for small spaces. A wordmark can stand on its own when a separate symbol adds little. An icon alone needs enough surrounding context for people to know whose mark it is. Treat these as design choices you can recommend from context.
-
-   Describe the desired character through shape, typography, and composition. Specify the relationship between icon and name: visual weight, spacing, alignment, and the horizontal or stacked arrangements actually needed. Choose an intentional color direction and require the identity to hold up in solid black and solid white. Do not rely on a gradient or several colors to make an otherwise unreadable symbol work.
-2. **Create or refine the artwork**
-
-   For new work, generate a promising direction from the brief using a current image model. Compare a few distinct directions when there is a real design question to resolve. For an existing direction, make focused edits instead of starting over. Judge the artwork itself before relying on a decorative product mockup.
-
-   The methods below can be operated by an agent using the tools and connections available in its environment. Consult the linked provider documentation for current capabilities.
-
-   - Sources: [Images in ChatGPT](https://help.openai.com/en/articles/11084440-images-in-chatgpt) · [Can Claude produce images?](https://support.claude.com/en/articles/9002504-can-claude-produce-images)
-   - If "Generate a logo direction": continue at step 3
-   - If "Refine existing artwork": continue at step 3
-   - If "Edit existing vector artwork": continue at step 3
-
-   Options:
-     - **Generate a logo direction**
-
-       When: A new direction is needed and an image-generation method is available to the agent.
-
-       Call an available image model with the design brief. Inspect the returned artwork, select the strongest direction, and carry that image into refinement.
-
-       - Sources: [Images in ChatGPT](https://help.openai.com/en/articles/11084440-images-in-chatgpt) · [Can Claude produce images?](https://support.claude.com/en/articles/9002504-can-claude-produce-images)
-     - **Refine existing artwork**
-
-       When: A useful draft or existing raster logo is available and the agent can operate an image-editing method.
-
-       Provide the current image to an editing method. Specify the exact change and what must remain consistent: silhouette, icon/wordmark relationship, type character, or color. Inspect the returned image for drift.
-
-       - Sources: [Images in ChatGPT](https://help.openai.com/en/articles/11084440-images-in-chatgpt) · [Can Claude produce images?](https://support.claude.com/en/articles/9002504-can-claude-produce-images)
-     - **Edit existing vector artwork**
-
-       When: The existing editable vector identity should be preserved or a real output requirement needs vector work.
-
-       Use a connected vector/design tool or edit the SVG source to make the required adjustment. Preserve the established geometry and typography; verify the resulting artwork.
-3. **Refine the design across its real uses** — agent-runnable
-
-   *Follows step 2 (option "Generate a logo direction" or option "Refine existing artwork" or option "Edit existing vector artwork").*
-
-   Inspect the actual artwork and make targeted edits:
-
-   - **Icon and wordmark:** check whether the symbol and letters feel related. Adjust their relative size, visual weight, gap, alignment, and typography. Inspect both together and separately when both will be used. Create a horizontal or stacked arrangement only where that use needs it.
-   - **Complexity and scale:** place the icon at a real avatar or favicon size and the full logo at a realistic header size. Remove fine lines, small holes, tiny text, or competing details that collapse. Keep the recognizable silhouette. A simplified small-size version can preserve the same identity instead of shrinking every detail.
-   - **Color:** compare the direction on the intended light and dark surfaces. Check exact colors when an existing brand requires them. Use color to reinforce the identity; avoid adding colors merely to decorate it. Keep logo colors separate from the later job of defining a complete UI palette.
-   - **Black and white:** produce solid black on a light background and solid white on a dark background. Inspect whether negative space, overlaps, and letterforms remain clear. A grayscale image is not the same test as a single-color mark.
-   - **Consistency:** check spelling, stray marks, geometry, spacing, and whether variations still look like the same logo.
-
-   State the change you want before each edit, such as “keep the symbol and type character; reduce the icon's visual weight and increase its gap from the wordmark.” Compare the edited output with the previous image. Continue refining the selected direction rather than repeatedly restarting from a blank prompt. Recommend the result that works across the required uses and explain any remaining compromise.
-4. **Return the useful logo set and design choices** — agent-runnable · ~1 min
-
-   Return the main logo and the variants needed now: the standalone icon when used, the relevant icon/wordmark arrangements, and black and white versions. Include a simplified small mark when the normal icon loses detail. Keep these as consistent variations of one identity.
-
-   Show the actual artwork and a short account of why it fits, how to use each variant, and what remains unresolved. Preserve editable sources when available and provide the usable image files. State actual format and background properties; a raster image wrapped in SVG is not editable vector artwork. Carry the selected direction and assets into subsequent work so the next agent can continue from them.
-
-   - Produces: Brand logo
-
-## Artifacts
-
-Produces:
-
-- Brand logo
-
-Requires:
+Required artifacts:
 
 - Company name — from [Generate a company name](generate-a-company-name.md)
+
+## Steps at a glance
+
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
+
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Turn the company context into a design brief](#step-1) | agent-runnable | Not recorded | Entry step |
+| [2. Create or refine the artwork](#step-2) | Not recorded | Not recorded | [Step 1](#step-1) |
+| [3. Refine the design across its real uses](#step-3) | agent-runnable | Not recorded | Alternatives: [Step 2](#step-2) (Generate a logo direction); [Step 2](#step-2) (Refine existing artwork); [Step 2](#step-2) (Edit existing vector artwork) |
+| [4. Return the useful logo set and design choices](#step-4) | agent-runnable | ~1 min | [Step 3](#step-3) |
+
+<a id="steps"></a>
+
+## Step details
+
+<a id="step-1"></a>
+
+### 1. Turn the company context into a design brief
+
+agent-runnable
+
+
+Choose what the logo should communicate and which uses matter first: a website header, app icon, social avatar, presentation, or another known setting. Carry exact spelling and any existing brand constraints.
+
+Decide whether to start with a wordmark, an icon with a wordmark, or an icon alone. An icon with a wordmark provides a readable company name and a compact mark for small spaces. A wordmark can stand on its own when a separate symbol adds little. An icon alone needs enough surrounding context for people to know whose mark it is. Treat these as design choices you can recommend from context.
+
+Describe the desired character through shape, typography, and composition. Specify the relationship between icon and name: visual weight, spacing, alignment, and the horizontal or stacked arrangements actually needed. Choose an intentional color direction and require the identity to hold up in solid black and solid white. Do not rely on a gradient or several colors to make an otherwise unreadable symbol work.
+
+<a id="step-2"></a>
+
+### 2. Create or refine the artwork
+
+| Option | Applies when |
+| --- | --- |
+| Generate a logo direction | A new direction is needed and an image-generation method is available to the agent. |
+| Refine existing artwork | A useful draft or existing raster logo is available and the agent can operate an image-editing method. |
+| Edit existing vector artwork | The existing editable vector identity should be preserved or a real output requirement needs vector work. |
+
+
+For new work, generate a promising direction from the brief using a current image model. Compare a few distinct directions when there is a real design question to resolve. For an existing direction, make focused edits instead of starting over. Judge the artwork itself before relying on a decorative product mockup.
+
+The methods below can be operated by an agent using the tools and connections available in its environment. Consult the linked provider documentation for current capabilities.
+
+- Sources: [Images in ChatGPT](https://help.openai.com/en/articles/11084440-images-in-chatgpt) · [Can Claude produce images?](https://support.claude.com/en/articles/9002504-can-claude-produce-images)
+- If "Generate a logo direction": continue at step 3
+- If "Refine existing artwork": continue at step 3
+- If "Edit existing vector artwork": continue at step 3
+
+Options:
+  - **Generate a logo direction**
+
+    When: A new direction is needed and an image-generation method is available to the agent.
+
+    Call an available image model with the design brief. Inspect the returned artwork, select the strongest direction, and carry that image into refinement.
+
+    - Sources: [Images in ChatGPT](https://help.openai.com/en/articles/11084440-images-in-chatgpt) · [Can Claude produce images?](https://support.claude.com/en/articles/9002504-can-claude-produce-images)
+  - **Refine existing artwork**
+
+    When: A useful draft or existing raster logo is available and the agent can operate an image-editing method.
+
+    Provide the current image to an editing method. Specify the exact change and what must remain consistent: silhouette, icon/wordmark relationship, type character, or color. Inspect the returned image for drift.
+
+    - Sources: [Images in ChatGPT](https://help.openai.com/en/articles/11084440-images-in-chatgpt) · [Can Claude produce images?](https://support.claude.com/en/articles/9002504-can-claude-produce-images)
+  - **Edit existing vector artwork**
+
+    When: The existing editable vector identity should be preserved or a real output requirement needs vector work.
+
+    Use a connected vector/design tool or edit the SVG source to make the required adjustment. Preserve the established geometry and typography; verify the resulting artwork.
+
+<a id="step-3"></a>
+
+### 3. Refine the design across its real uses
+
+agent-runnable
+
+
+*Follows step 2 (option "Generate a logo direction" or option "Refine existing artwork" or option "Edit existing vector artwork").*
+
+Inspect the actual artwork and make targeted edits:
+
+- **Icon and wordmark:** check whether the symbol and letters feel related. Adjust their relative size, visual weight, gap, alignment, and typography. Inspect both together and separately when both will be used. Create a horizontal or stacked arrangement only where that use needs it.
+- **Complexity and scale:** place the icon at a real avatar or favicon size and the full logo at a realistic header size. Remove fine lines, small holes, tiny text, or competing details that collapse. Keep the recognizable silhouette. A simplified small-size version can preserve the same identity instead of shrinking every detail.
+- **Color:** compare the direction on the intended light and dark surfaces. Check exact colors when an existing brand requires them. Use color to reinforce the identity; avoid adding colors merely to decorate it. Keep logo colors separate from the later job of defining a complete UI palette.
+- **Black and white:** produce solid black on a light background and solid white on a dark background. Inspect whether negative space, overlaps, and letterforms remain clear. A grayscale image is not the same test as a single-color mark.
+- **Consistency:** check spelling, stray marks, geometry, spacing, and whether variations still look like the same logo.
+
+State the change you want before each edit, such as “keep the symbol and type character; reduce the icon's visual weight and increase its gap from the wordmark.” Compare the edited output with the previous image. Continue refining the selected direction rather than repeatedly restarting from a blank prompt. Recommend the result that works across the required uses and explain any remaining compromise.
+
+<a id="step-4"></a>
+
+### 4. Return the useful logo set and design choices
+
+agent-runnable · ~1 min
+
+
+Return the main logo and the variants needed now: the standalone icon when used, the relevant icon/wordmark arrangements, and black and white versions. Include a simplified small mark when the normal icon loses detail. Keep these as consistent variations of one identity.
+
+Show the actual artwork and a short account of why it fits, how to use each variant, and what remains unresolved. Preserve editable sources when available and provide the usable image files. State actual format and background properties; a raster image wrapped in SVG is not editable vector artwork. Carry the selected direction and assets into subsequent work so the next agent can continue from them.
+
+- Produces: Brand logo
+
+
+## Outputs
+
+- Brand logo
 
 ## Related records
 
