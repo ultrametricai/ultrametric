@@ -110,9 +110,19 @@ function changedIdsFor(productId: string): { changed: Set<string>; repeats: Map<
     else changed.add(item.id) // genuinely new content
   }
   // Removals are content-aware too: the collect-community re-collect mints a new id for a
-  // paraphrase of the same report (drata-comm-3 -> drata-comm-2-refresh-*, token overlap
-  // 0.59, same url). A removed id whose content survives in a same-url fresh item (verbatim,
-  // containment, or token overlap >= 0.5) is a re-mint, not lost support.
+  // paraphrase of the same report, sometimes under an equivalent source URL (the PR #556
+  // review's reclaim-comm-3 -> reclaim-comm-5-refresh-*, hn.algolia.com/api/v1/items/N vs
+  // news.ycombinator.com/item?id=N for the same HN comment thread). A removed id whose
+  // content survives in an equivalent-url fresh item (verbatim, containment, or token
+  // overlap >= 0.5) is a re-mint, not lost support.
+  // Equivalent source URLs: the HN API item endpoint and the HN web item page address the
+  // same recorded comment thread.
+  const canonUrl = (u: string | undefined): string => {
+    if (!u) return ''
+    const hn = u.match(/hn\.algolia\.com\/api\/v1\/items\/(\d+)/) ?? u.match(/news\.ycombinator\.com\/item\?id=(\d+)/)
+    if (hn) return `hn:${hn[1]}`
+    return u.replace(/\/+$/, '')
+  }
   const overlap = (a: string, b: string): number => {
     const ta = new Set(norm(a).split(' '))
     const tb = new Set(norm(b).split(' '))
@@ -121,12 +131,30 @@ function changedIdsFor(productId: string): { changed: Set<string>; repeats: Map<
     for (const t of ta) if (tb.has(t)) shared++
     return shared / Math.max(ta.size, tb.size)
   }
+  // Re-minted community reports are condensed paraphrases, so the raw-token ratio can dip
+  // under the bar on function words alone (reclaim-comm-3 vs its comm-5-refresh-* survivor
+  // in the PR #556 review). Content survival compares the informative tokens: stopwords
+  // stripped, shared share measured against the shorter excerpt.
+  const STOP = new Set(
+    ('a an and are as at be but by for from has have i if in into is it its like me my of on ' +
+      'or our so than that the their them they this to was we were will with you your').split(' '),
+  )
+  const contentOverlap = (a: string, b: string): number => {
+    const ta = new Set(norm(a).split(' ').filter((t) => t && !STOP.has(t)))
+    const tb = new Set(norm(b).split(' ').filter((t) => t && !STOP.has(t)))
+    if (!ta.size || !tb.size) return 0
+    let shared = 0
+    for (const t of ta) if (tb.has(t)) shared++
+    return shared / Math.min(ta.size, tb.size)
+  }
   for (const [id, old] of baseById) {
     if (freshIds.has(id)) continue
     const survivor = freshItems.find(
       (f) =>
-        f.url === old.url &&
-        (nearDup(old.excerpt ?? '', f.excerpt ?? '') || overlap(old.excerpt ?? '', f.excerpt ?? '') >= 0.5),
+        canonUrl(f.url) === canonUrl(old.url) &&
+        (nearDup(old.excerpt ?? '', f.excerpt ?? '') ||
+          overlap(old.excerpt ?? '', f.excerpt ?? '') >= 0.5 ||
+          contentOverlap(old.excerpt ?? '', f.excerpt ?? '') >= 0.5),
     )
     if (survivor) repeats.set(id, survivor.id) // re-minted under a new id: not lost support
     else changed.add(id) // genuinely removed
