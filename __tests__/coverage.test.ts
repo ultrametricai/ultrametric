@@ -306,6 +306,7 @@ describe('process and country completeness evidence', () => {
 
   it('retains the full process-country product including missing and not-applicable notes', () => {
     const input = makeInput()
+    input.needs.push({ id: 'fictional-unmapped-need', domain: 'legal', need: 'Fictional newly discovered need', status: 'gap', processIds: [], sourceIds: [input.sources[0].id] })
     const report = buildProcessCoverage(input, asOf)
     const ordinary = input.records.filter(r => !r.taskIds)
     expect(report.cells.length).toBe(ordinary.length * GEO_COUNTRIES.length)
@@ -426,6 +427,25 @@ describe('process and country completeness evidence', () => {
     expect(buildProcessCoverage(input, asOf).independentInventoryReview).toBe('current')
     input.sources.find(source => source.id === input.audit.checks[0].sourceId)!.url += '?changed-reference'
     expect(buildProcessCoverage(input, asOf).independentInventoryReview).toBe('content-changed')
+  })
+
+  it('maps every named need while retaining unreviewed jurisdiction and audit coverage', () => {
+    const report = buildProcessCoverage(makeInput(), asOf)
+    expect(report.summary.mappedNeeds).toBe(report.summary.needs)
+    expect(report.gaps).toEqual([])
+    expect(report.crosscheckPendingNeedIds.length).toBeGreaterThan(0)
+    expect(report.summary.reviewedScopeCells).toBe(0)
+    expect(report.summary.comprehensiveWithinDeclaredScope).toBe(false)
+    const collaboration = makeInput().records.find(record => record.id === 'startup-coverage.review-competitor-collaboration-and-information-exchange')!
+    expect(collaboration.links.filter(link => link.from === 'n4').map(link => link.to).sort()).toEqual(['n5', 'n6'])
+    expect(collaboration.parts.find(part => part.id === 'n5')?.when).toContain('approves')
+    const remedy = makeInput().records.find(record => record.id === 'startup-coverage.handle-consumer-guarantees-and-statutory-remedies')!
+    expect(remedy.metadata.reversibility).toBe('irreversible')
+    expect(remedy.parts.find(part => part.id === 'n5r')?.metadata).toMatchObject({ reversibility: 'irreversible', approvalRequired: true })
+    expect(remedy.links.filter(link => link.from === 'n4').map(link => link.to).sort()).toEqual(['n5', 'n5d', 'n5r'])
+    expect(remedy.parts.find(part => part.id === 'n5')?.when).toContain('repair or replacement')
+    expect(remedy.parts.find(part => part.id === 'n5d')?.metadata.approvalRequired).toBe(true)
+    expect(remedy.links.some(link => link.from === 'n5d' && link.to === 'n6')).toBe(true)
   })
 
   it('keeps the generated matrix and readable report deterministic against the canonical catalog', () => {
