@@ -142,13 +142,13 @@
     "productId": "bigquery",
     "storyId": "agentic-official-cli",
     "verdict": "full",
-    "quality": 8,
+    "quality": 7,
     "confidence": "high",
-    "rationale": "BigQuery's first-party docs describe `bq`, its official Python-based CLI, for creating datasets, loading sample data and querying tables, and a probe confirms the official CLI documentation. Missing for 10: independent or hands-on corroboration of the CLI, and any evidence of agent-oriented features such as machine-readable output or scripting guidance for AI workflows.",
+    "rationale": "BigQuery's own documentation describes `bq`, its official Python-based CLI, for creating datasets, loading sample data, and querying tables, and the probe confirms the official CLI page. The evidence comes from a quickstart-level description, so depth is only partly shown. Missing for 10: evidence of agent-friendly CLI behavior (structured/JSON output, non-interactive or headless auth for automated workflows), coverage of the CLI's full command surface, independent or hands-on corroboration.",
     "evidenceIds": [
+      "bigquery-docs-12",
       "bigquery-docs-49",
       "bigquery-docs-58",
-      "bigquery-docs-12",
       "bigquery-probe-2"
     ]
   },
@@ -441,15 +441,15 @@
     "productId": "bigquery",
     "storyId": "dataset-marketplace",
     "verdict": "full",
-    "quality": 9,
+    "quality": 8,
     "confidence": "high",
-    "rationale": "BigQuery sharing (formerly Analytics Hub) is documented as a data exchange where analysts can discover curated third-party and Google datasets and combine them with their own internal data. Access works across organizational boundaries without replicating data, and listings can be monetized via Google Cloud Marketplace, which covers the in-platform enrichment story. Missing for 10: independent or hands-on corroboration of the marketplace enrichment workflow, and detail on catalog breadth or listing quality.",
+    "rationale": "BigQuery sharing (formerly Analytics Hub) is documented as a data exchange where users can discover curated third-party and Google datasets and combine them with their internal data, accessed in place without replication. Listings can also be monetized on Google Cloud Marketplace, which directly matches the marketplace-enrichment story. Missing for 10: independent or hands-on corroboration of the consumer experience, and evidence of how broad the third-party catalog is (all evidence comes from a single intro page).",
     "evidenceIds": [
       "bigquery-docs-32",
       "bigquery-docs-52",
-      "bigquery-docs-9",
+      "bigquery-docs-79",
       "bigquery-docs-101",
-      "bigquery-docs-79"
+      "bigquery-docs-9"
     ]
   },
   {
@@ -1002,16 +1002,17 @@
     "productId": "databricks",
     "storyId": "ai-sql-assistant",
     "verdict": "full",
-    "quality": 8,
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Databricks documents SQL editing with integrated AI assistance. Its Genie Code assistant generates and runs code, debugs and fixes errors, and works directly with Unity Catalog tables and columns. Genie also turns natural-language questions into SQL queries, all inside the workspace. missing for 10: explicit documentation of SQL explanation, independent or hands-on corroboration of assistant quality.",
+    "rationale": "Databricks documents a built-in assistant, Genie Code, that generates and runs code, debugs and fixes errors, and works directly with Unity Catalog tables and columns. The SQL editor has integrated AI assistance, and Genie turns natural-language questions into SQL queries and results. Missing for 10: explicit evidence of the assistant explaining SQL, independent or hands-on corroboration of quality against real schemas.",
     "evidenceIds": [
       "databricks-docs-5",
-      "databricks-docs-15",
+      "databricks-docs-3",
+      "databricks-docs-30",
       "databricks-docs-29",
       "databricks-docs-28",
       "databricks-docs-80",
-      "databricks-docs-3"
+      "databricks-docs-8"
     ]
   },
   {
@@ -1083,18 +1084,11 @@
   {
     "productId": "databricks",
     "storyId": "automation-bulk-operations",
-    "verdict": "partial",
-    "quality": 5,
+    "verdict": "none",
+    "quality": 0,
     "confidence": "medium",
-    "rationale": "Databricks' core engine processes data in bulk: ANSI SQL with Delta Lake extensions runs over entire tables, batch and streaming computation is supported, and ETL pipelines process whole datasets. The CLI and Python SDK are documented for automating platform operations from scripts, and Unity Catalog objects can be managed through SQL, CLI and REST APIs. However, no evidence shows first-party bulk actions for managing many assets at once (jobs, permissions, catalog objects), so applying an operation to many items appears to require scripting. missing for 10: documented native bulk/batch endpoints or UI actions for operating on many workspace assets at once, AI-agent-driven bulk actions, independent hands-on corroboration.",
-    "evidenceIds": [
-      "databricks-docs-32",
-      "databricks-docs-51",
-      "databricks-docs-40",
-      "databricks-docs-2",
-      "databricks-docs-49",
-      "databricks-docs-56"
-    ]
+    "rationale": "Bulk operations are a fair question for a data platform, so the axis applies. However, the evidence has no documented first-party bulk-action capability, such as multi-select actions or batch endpoints for acting on many workspace objects at once. The CLI, SDK and REST APIs are documented for 'automation scripts' and to 'automate Databricks operations', but these are developer building blocks a user could script bulk work with, not a bulk-operation feature itself, so they earn no credit here.",
+    "evidenceIds": []
   },
   {
     "productId": "databricks",
@@ -1225,9 +1219,9 @@
     "productId": "databricks",
     "storyId": "dataset-marketplace",
     "verdict": "full",
-    "quality": 7,
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Databricks documents a first-party Marketplace whose listings include datasets from its partner ecosystem, which customers discover, evaluate and connect to directly from their workspace. OpenSharing (Delta Sharing) provides the underlying cross-organization data sharing. missing for 10: explicit documentation of how acquired third-party datasets land in Unity Catalog and are joined with an analyst's own tables (the enrichment workflow is only implied), and independent or hands-on corroboration of the marketplace experience.",
+    "rationale": "Databricks Marketplace lists third-party datasets alongside models, notebooks, apps and MCP servers as a single catalog across the partner ecosystem. Providers publish offerings that customers can discover, evaluate and connect to directly from their workspace, and Delta/OpenSharing is the underlying sharing mechanism. This covers the core of an in-platform third-party data marketplace. Missing for 10: explicit documentation that acquired listings appear as queryable tables you can join with your own data (enrichment is only implied), and independent or hands-on corroboration of the marketplace workflow.",
     "evidenceIds": [
       "databricks-docs-34",
       "databricks-docs-69",
@@ -1869,11 +1863,15 @@
   {
     "productId": "motherduck",
     "storyId": "automation-rules-engine",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Event-triggered automation rules are a fair question for a cloud data warehouse, but the evidence pack documents no triggers, alerts, or event-driven rule engine. The closest feature, Flights, runs Python jobs on a time schedule. That is an adjacent capability, not rules that fire actions in response to events, so it earns no credit here.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "MotherDuck's own Flights feature runs Python jobs automatically on a schedule, with scheduling, secrets, logging and versioning handled by the platform. That is time-based automation, though, not rules that fire on data or system events. No documentation shows event-driven triggers, conditional rules, alerts or webhooks, so this counts only as glancing support. Missing for 10: event-based triggers (e.g., on data change, on load, on threshold), a rule-definition mechanism, alerting or outbound actions on events, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "motherduck-docs-3",
+      "motherduck-docs-57",
+      "motherduck-docs-62"
+    ]
   },
   {
     "productId": "motherduck",
@@ -1919,9 +1917,9 @@
     "productId": "motherduck",
     "storyId": "bulk-load-object-storage",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "MotherDuck's own docs say it can load data from object storage and query S3, GCS and Azure Blob directly, with S3 credentials stored as SECRET objects. That covers the core of ingesting from cloud storage. The pack, however, never names the CSV, JSON and Parquet formats or shows a single bulk-load command. missing for 10: an explicitly documented single load command (e.g. a CREATE TABLE AS / COPY example), confirmed coverage of the CSV, JSON and Parquet formats, independent or hands-on corroboration of bulk-load behavior.",
+    "rationale": "MotherDuck's docs say it can load data from object storage and query S3, GCS and Azure Blob Storage directly. It also documents S3 credential secrets, so the core cloud-storage ingestion path is a documented capability. However, the evidence never names the CSV, JSON or Parquet formats and never shows a single documented load command. Missing for 10: explicit CSV/JSON/Parquet format support, a concrete single-command bulk-load example (e.g. CREATE TABLE AS from an object-storage path), and independent or hands-on corroboration.",
     "evidenceIds": [
       "motherduck-docs-6",
       "motherduck-docs-56",
@@ -2096,14 +2094,15 @@
     "productId": "motherduck",
     "storyId": "managed-continuous-ingestion",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "MotherDuck Flights is a first-party managed runtime for scheduled Python jobs: it handles the runtime, scheduling, secrets, logging and versioning, and is explicitly positioned for ingest. That removes the need for your own pipeline infrastructure. However, the evidence shows only scheduled jobs that you write yourself, not continuous ingestion triggered by new files or events. missing for 10: event- or file-arrival-triggered (continuous/streaming) ingestion, a managed auto-ingest connector that needs no user code, and independent or hands-on corroboration.",
+    "rationale": "MotherDuck Flights is a first-party managed runtime that runs Python jobs on a schedule for ingestion, and MotherDuck handles the runtime, scheduling, secrets, logging and versioning, so no self-run pipeline infrastructure is needed. However, the evidence shows only scheduled batch jobs and one-off loads from databases or object storage, not continuous or event-driven ingestion of files or events as they arrive. The user still writes the ingest code. Missing for 10: continuous/streaming or file-arrival-triggered ingestion, managed connectors that ingest without user-written code, detailed docs on freshness/latency, independent or hands-on corroboration.",
     "evidenceIds": [
       "motherduck-docs-3",
       "motherduck-docs-57",
       "motherduck-docs-62",
-      "motherduck-docs-6"
+      "motherduck-docs-6",
+      "motherduck-docs-42"
     ]
   },
   {
@@ -2380,10 +2379,10 @@
   {
     "productId": "obsessiondb",
     "storyId": "agentic-headless",
-    "verdict": "partial",
-    "quality": 5,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "ObsessionDB's own CHKit tooling is described as typed commands to describe, validate, test, and deploy schema and pipelines as code, \"infrastructure an agent can drive, in CI\". That is a first-party headless/CI capability, and the native ClickHouse protocol and HTTP interface let standard clients and drivers script against it unchanged. However, the CI claim appears only as homepage marketing copy, with no docs page detailing CHKit commands or CI setup. Missing for 10: CHKit CLI reference docs, CI pipeline examples/integrations, non-interactive auth (service tokens) for CI, independent or hands-on corroboration.",
+    "rationale": "ObsessionDB's own CHKit tool provides typed commands to describe, validate, test, and deploy schema and pipelines as code. The vendor explicitly positions it as 'infrastructure an agent can drive, in CI, with a diff you can review.' Unchanged native-protocol and HTTP client access also allows scripted, headless querying. Missing for 10: in-depth CHKit/CLI reference docs or CI pipeline examples, documented headless provisioning of clusters (API/IaC), and independent or hands-on corroboration.",
     "evidenceIds": [
       "obsessiondb-docs-11",
       "obsessiondb-docs-39",
@@ -2471,12 +2470,12 @@
     "productId": "obsessiondb",
     "storyId": "agentic-sdks",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "ObsessionDB documents that it speaks the native ClickHouse protocol and HTTP interface, so every ClickHouse client and driver works unchanged with only a host and credential change, and it keeps a dedicated drivers-and-clients docs page. Developers can therefore build against the official ClickHouse language drivers. However, these are ClickHouse's SDKs, not ObsessionDB's own, and there is no evidence of first-party ObsessionDB SDKs for its platform features. CHKit is a schema-as-code command tool, not an SDK. Missing for 10: first-party ObsessionDB SDKs (e.g., for cluster management, branching, or monitoring APIs), per-language SDK documentation, and hands-on or independent corroboration.",
+    "rationale": "ObsessionDB documents that it speaks the native ClickHouse protocol and HTTP interface, with a dedicated drivers-and-clients page stating every ClickHouse client and driver works unchanged, so developers can build against the official ClickHouse drivers. There is no evidence of ObsessionDB's own first-party SDKs (e.g. for cluster management, branching, or monitoring APIs); CHKit is a schema/pipeline CLI and MCP is an agent integration, not SDKs. Missing for 10: first-party ObsessionDB SDKs in named languages, SDK reference docs, programmatic SDK coverage of ObsessionDB-specific features, independent corroboration.",
     "evidenceIds": [
-      "obsessiondb-docs-5",
       "obsessiondb-docs-43",
+      "obsessiondb-docs-5",
       "obsessiondb-docs-29",
       "obsessiondb-docs-1"
     ]
@@ -2626,9 +2625,9 @@
     "productId": "obsessiondb",
     "storyId": "bulk-load-object-storage",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "ObsessionDB's ingestion docs say the s3() and url() table functions work as documented, which gives a single-statement path to load data from object storage. The migration docs also describe bridging data through object storage. However, the evidence never names CSV, JSON, or Parquet formats, nor shows a worked bulk-load command or example. missing for 10: explicit CSV/JSON/Parquet format support, a documented single-command bulk-load example, coverage of non-S3 object stores (GCS/Azure), independent or hands-on corroboration.",
+    "rationale": "ObsessionDB documents its own ingestion page stating that the s3() and url() table functions and INSERT 'work as documented', and its migration docs describe bridging data through object storage. That is a single-command path for bulk-loading from cloud object storage. However, the evidence never names CSV, JSON, or Parquet, nor any storage beyond S3, so format coverage is only implied by ClickHouse compatibility. Missing for 10: explicit documentation of CSV/JSON/Parquet format support, a concrete documented bulk-load command example, coverage of GCS/Azure object storage, and independent or hands-on corroboration.",
     "evidenceIds": [
       "obsessiondb-docs-36",
       "obsessiondb-docs-45",
@@ -2739,9 +2738,9 @@
     "productId": "obsessiondb",
     "storyId": "granular-rbac-masking",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "The product's own homepage says access can be scoped 'with roles down to the table and column', alongside SSO through your identity provider. That covers the roles, table and column parts of the story, but only as a single marketing-level mention. Nothing in the pack shows row-level policies or masking policies, which are half the story. Missing for 10: row-level access policies, column masking policies, detailed first-party docs on the role/grant model, independent or hands-on corroboration.",
+    "rationale": "ObsessionDB's own marketing says access can be scoped with roles down to the table and column, alongside SSO through your identity provider. That covers the role, table and column parts of the story. Nothing in the pack documents row-level policies or masking, and the claim is a single line with no in-depth docs. missing for 10: row-level security policies, column masking policies, detailed access-control documentation, independent or hands-on corroboration",
     "evidenceIds": [
       "obsessiondb-docs-24"
     ]
@@ -2750,12 +2749,12 @@
     "productId": "obsessiondb",
     "storyId": "live-data-sharing",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "The docs describe sharing data with other clusters without exposing cluster credentials or sharing compute, using read-only access with real-time revocable permissions. Combined with compute–storage separation on shared object storage, this points to live, zero-copy sharing. However, the evidence only says \"other clusters\" and never confirms sharing across separate accounts or organizations. missing for 10: explicit cross-account/cross-organization sharing, explicit confirmation that shared data is live and not copied, setup documentation detail, independent or hands-on corroboration.",
+    "rationale": "ObsessionDB documents sharing data with other clusters without exposing cluster credentials or sharing compute. Its compute–storage separation lets separate compute read the same object-storage data, which suggests live, zero-copy access rather than an export pipeline. However, the evidence only speaks of sharing between clusters, not explicitly with another account or organization, and is a single thin claim. Missing for 10: explicit cross-account/cross-organization sharing, a documented zero-copy/live guarantee for shares, setup and permission details for consumers, and independent or hands-on corroboration.",
     "evidenceIds": [
       "obsessiondb-docs-17",
-      "obsessiondb-docs-44",
+      "obsessiondb-docs-13",
       "obsessiondb-docs-9"
     ]
   },
@@ -2779,14 +2778,14 @@
     "productId": "obsessiondb",
     "storyId": "managed-continuous-ingestion",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "ObsessionDB documents that the Kafka table engine and materialized views work on its managed service. That lets the database itself continuously consume event streams without a separate ingestion pipeline. Continuous file ingestion is not shown: the s3() and url() table functions are one-shot pulls, and there is no evidence of a managed connector or auto-ingest-on-arrival feature. missing for 10: continuous file/object-storage ingestion as files arrive, managed ingestion connectors beyond Kafka, detailed docs on running Kafka consumption in the managed environment, independent or hands-on corroboration.",
+    "rationale": "ObsessionDB's ingestion docs say the Kafka table engine, s3()/url() table functions and materialized views all work as documented. That gives server-side, continuous consumption of events from a Kafka stream into tables, and CHKit deploys \"pipelines as code.\" However, the Kafka path still requires the user to run or supply the Kafka broker, and nothing shows a managed connector that watches for new files and ingests them automatically. missing for 10: a managed ingestion service or connectors that run with no user pipeline infrastructure, continuous file/object-storage arrival ingestion (e.g. auto-detecting new files), details on what CHKit pipelines actually do, and hands-on or independent corroboration.",
     "evidenceIds": [
       "obsessiondb-docs-36",
-      "obsessiondb-docs-45",
+      "obsessiondb-docs-37",
       "obsessiondb-docs-34",
-      "obsessiondb-docs-37"
+      "obsessiondb-docs-11"
     ]
   },
   {
@@ -2878,9 +2877,9 @@
     "productId": "obsessiondb",
     "storyId": "privacy-data-residency",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "ObsessionDB documents its own deployment choices: fully managed on AWS, Google Cloud or Azure, or BYOC inside your own AWS or Google Cloud account, where your data never leaves your cloud. That gives users real control over where data lives, but nothing in the evidence shows choosing a specific region or making residency commitments. missing for 10: explicit region selection for managed clusters, documented data-residency/geographic guarantees, list of available regions, independent corroboration.",
+    "rationale": "ObsessionDB documents a choice of cloud provider for managed hosting (AWS, Google Cloud or Azure) and a BYOC option inside your own AWS or Google Cloud account, where data never leaves your cloud. That gives strong control over where data lives, but no explicit region selection or residency guarantees are documented for the managed offering. Missing for 10: documented region selection for managed clusters, explicit data-residency commitments or region list, independent corroboration.",
     "evidenceIds": [
       "obsessiondb-docs-30",
       "obsessiondb-docs-26"
@@ -2898,11 +2897,17 @@
   {
     "productId": "obsessiondb",
     "storyId": "privacy-retention-controls",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence pack documents no retention or deletion controls: nothing on TTL policies, configurable retention windows, purging data or backups, log retention, or account and data deletion. The nearest items are adjacent features that do not give users control over retention: automated daily backups, point-in-time recovery and time travel (which keep data rather than delete it), disposable agent branches, and BYOC data residency. These earn no credit for this story.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "ObsessionDB takes plain MergeTree DDL and claims every ClickHouse query works unchanged. That implies standard SQL deletion and table-level retention, but nothing documents retention or deletion explicitly. Agent data branches can be thrown away after use, and automated daily backups and point-in-time recovery are documented, but backup retention is not described as user-controllable. Missing for 10: explicit retention/TTL controls, documented data deletion guarantees (including backups, branches and query logs), user-configurable backup/log retention windows, account-level data deletion, independent corroboration.",
+    "evidenceIds": [
+      "obsessiondb-docs-9",
+      "obsessiondb-docs-29",
+      "obsessiondb-docs-13",
+      "obsessiondb-docs-31",
+      "obsessiondb-docs-23"
+    ]
   },
   {
     "productId": "obsessiondb",
@@ -3097,9 +3102,9 @@
     "productId": "snowflake",
     "storyId": "agentic-mcp-server",
     "verdict": "full",
-    "quality": 8,
+    "quality": 9,
     "confidence": "high",
-    "rationale": "Snowflake documents a first-party, Snowflake-managed MCP server that lets AI agents securely retrieve data without separate infrastructure. It can be configured to serve Cortex Analyst, Cortex Search, Cortex Agents, custom tools and SQL execution as tools, and a probe confirms the official docs page exists. Missing for 10: independent or hands-on corroboration of connecting an agent, and evidence on client connection and authentication setup details.",
+    "rationale": "Snowflake documents a first-party, Snowflake-managed MCP server that lets AI agents securely retrieve account data without deploying separate infrastructure (snowflake-docs-14). It can serve Cortex Analyst, Cortex Search, Cortex Agents, custom tools and SQL execution as tools (snowflake-docs-57), and a probe confirms the official MCP server docs page exists (snowflake-probe-3). Missing for 10: independent or hands-on community corroboration of connecting an agent to the server.",
     "evidenceIds": [
       "snowflake-docs-14",
       "snowflake-docs-57",
@@ -3159,9 +3164,9 @@
     "productId": "snowflake",
     "storyId": "agentic-scoped-keys",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 3,
     "confidence": "low",
-    "rationale": "Snowflake documents its own least-privilege mechanism: RBAC, where privileges are assigned to roles and roles to users. The SQL API can provision users and roles, so a narrowly scoped identity for an agent can be created programmatically, and the managed MCP server claims agents can retrieve data securely. However, nothing in the pack documents actually issuing API credentials (tokens, keys, or service-user secrets) or binding them to a restricted role for agent use. Missing for 10: documented issuance of scoped API tokens/keys for agents, credential expiry/revocation controls, per-credential scope binding, independent or hands-on corroboration.",
+    "rationale": "Snowflake documents its own scoping model: privileges are granted to roles and roles to users (RBAC). Its SQL API can provision users and roles, so a narrowly-privileged identity for an agent is plausible, and the managed MCP server claims to let agents retrieve data securely. However, the evidence never shows issuing an API credential itself (token, key or OAuth client) scoped to such a role, so the story is only glancingly supported. Missing for 10: documented issuance of agent API credentials (e.g., tokens/keys/OAuth), per-credential scoping or expiry controls, guidance on least-privilege setup for agents or the MCP server, independent or hands-on corroboration.",
     "evidenceIds": [
       "snowflake-docs-8",
       "snowflake-docs-45",
@@ -3259,15 +3264,15 @@
     "productId": "snowflake",
     "storyId": "api-versioning-policy",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Snowflake documents formal programmatic APIs: REST APIs for resource management, a SQL API, and official OpenAPI specs in the snowflakedb/snowflake-rest-api-specs repo. It also runs a documented change-management process of dated 'behavior change bundles' announced to minimize disruption, which partly covers the deprecation-policy half of the story. However, nothing in the evidence shows explicit API version numbering, version pinning, or a formal deprecation timeline or sunset policy for API endpoints. missing for 10: explicit API versioning scheme, documented API deprecation/sunset policy with timelines, independent corroboration of upgrade stability.",
+    "rationale": "Snowflake documents programmatic REST APIs and a SQL API, and publishes OpenAPI-compliant specs in an official repo. Its 'Behavior change announcements' process groups changes that may affect usage into dated bundles, which gives a first-party change-management mechanism close to a deprecation policy. However, no evidence shows explicit API version numbering, version pinning, or a stated deprecation timeline or sunset policy. Missing for 10: explicit API versioning scheme, documented deprecation/sunset policy with notice periods, independent corroboration of upgrade stability.",
     "evidenceIds": [
-      "snowflake-supp-behavior-changes",
-      "snowflake-supp-openapi-specs",
       "snowflake-docs-65",
       "snowflake-docs-66",
-      "snowflake-docs-72"
+      "snowflake-docs-72",
+      "snowflake-supp-openapi-specs",
+      "snowflake-supp-behavior-changes"
     ]
   },
   {
@@ -3669,16 +3674,14 @@
     "productId": "snowflake",
     "storyId": "privacy-retention-controls",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Snowflake's Time Travel docs describe a data-retention mechanism: changed or deleted data stays accessible and restorable 'within a defined period'. Deletes are first-class DML operations, and streams record them. The evidence never shows that users can set or shorten that retention window, or control permanent purging of data after it expires. Missing for 10: documented user-configurable retention periods, retention/expiry policies, permanent purge or post-retention deletion guarantees, retention controls for AI/Cortex data, independent or hands-on corroboration.",
+    "rationale": "Snowflake's own Time Travel feature keeps changed or deleted data for a \"defined period\", during which it can be queried and restored. Deletes are a documented DML operation, as stream tracking shows. However, the evidence never says users can configure that retention window, permanently purge data, or set retention policies. missing for 10: documented user-configurable retention periods (e.g., per-object retention settings), explicit permanent deletion/purge controls beyond Time Travel and Fail-safe, retention policies for AI/Cortex data, independent corroboration.",
     "evidenceIds": [
       "snowflake-docs-48",
       "snowflake-docs-5",
       "snowflake-docs-35",
-      "snowflake-docs-24",
-      "snowflake-docs-7",
-      "snowflake-docs-66"
+      "snowflake-docs-7"
     ]
   },
   {
@@ -3756,9 +3759,9 @@
     "productId": "snowflake",
     "storyId": "time-travel-restore",
     "verdict": "full",
-    "quality": 8,
+    "quality": 9,
     "confidence": "high",
-    "rationale": "Snowflake's first-party Time Travel docs say you can query historical data that has since been updated or deleted at any point within a defined period. They also say you can restore deleted objects, either individual tables or whole container objects. Together these cover both halves of the story: point-in-time querying and recovering dropped tables. missing for 10: explicit documentation of restoring a corrupted (not dropped) table to a past state (e.g., clone-at-timestamp), details on the retention-period limits, independent or hands-on corroboration.",
+    "rationale": "Snowflake's first-party Time Travel docs explicitly cover both halves of the story. They describe querying past data that has since been updated or deleted at any point within a defined period, and restoring accidentally or intentionally deleted objects, including individual tables or whole containers. Missing for 10: independent or hands-on corroboration, and explicit detail on retention-period limits and on recovering corrupted (not just dropped) tables.",
     "evidenceIds": [
       "snowflake-docs-5",
       "snowflake-docs-30",
