@@ -48,7 +48,7 @@ regenerate. Drift gate: `__tests__/process-pages.test.ts`.
 
 <!-- process-pages:index:start (generated — scripts/generate-process-pages.ts) -->
 
-One page per canonical record: 209 processes, 33 situations, 24 chains.
+One page per canonical record: 217 processes, 33 situations, 24 chains.
 
 ### Processes
 
@@ -63,7 +63,9 @@ One page per canonical record: 209 processes, 33 situations, 24 chains.
 - [Approve and pay a shareholder distribution](pages/approve-and-pay-a-shareholder-distribution.md)
 - [Assess and file a patent application](pages/assess-and-file-a-patent-application.md)
 - [Assess and manage AI product risk](pages/assess-and-manage-ai-product-risk.md)
+- [Assess and operate packaging producer responsibilities](pages/assess-and-operate-packaging-producer-responsibilities.md)
 - [Assess cross-border withholding before a payment](pages/assess-cross-border-withholding-before-a-payment.md)
+- [Assess distress and manage formal restructuring](pages/assess-distress-and-manage-formal-restructuring.md)
 - [Assess IPO readiness and public-company operations](pages/assess-ipo-readiness-and-public-company-operations.md)
 - [Assess privacy impact before a processing change](pages/assess-privacy-impact-before-a-processing-change.md)
 - [Assess product safety concerns and coordinate a recall](pages/assess-product-safety-concerns-and-coordinate-a-recall.md)
@@ -93,6 +95,7 @@ One page per canonical record: 209 processes, 33 situations, 24 chains.
 - [Cut a release](pages/cut-a-release.md)
 - [Define the business model and unit economics](pages/define-the-business-model-and-unit-economics.md)
 - [Design prototype and validate a physical product](pages/design-prototype-and-validate-a-physical-product.md)
+- [Determine and review worker status](pages/determine-and-review-worker-status.md)
 - [Draft and send an email](pages/draft-and-send-an-email.md)
 - [Establish a channel or commercial partnership](pages/establish-a-channel-or-commercial-partnership.md)
 - [Establish a foreign subsidiary or branch](pages/establish-a-foreign-subsidiary-or-branch.md)
@@ -111,6 +114,7 @@ One page per canonical record: 209 processes, 33 situations, 24 chains.
 - [Get insurance quotes](pages/get-insurance-quotes.md)
 - [Get IP assignments signed](pages/get-ip-assignments-signed.md)
 - [Handle an employee grievance](pages/handle-an-employee-grievance.md)
+- [Handle consumer guarantees and statutory remedies](pages/handle-consumer-guarantees-and-statutory-remedies.md)
 - [Hire abroad via an EOR](pages/hire-abroad-via-an-eor.md)
 - [Hire an executive](pages/hire-an-executive.md)
 - [Hire first employee](pages/hire-first-employee.md)
@@ -162,7 +166,10 @@ One page per canonical record: 209 processes, 33 situations, 24 chains.
 - [Plan founder and key-person succession](pages/plan-founder-and-key-person-succession.md)
 - [Plan production quality and product release](pages/plan-production-quality-and-product-release.md)
 - [Prepare a board meeting](pages/prepare-a-board-meeting.md)
+- [Prepare and clear a customs shipment](pages/prepare-and-clear-a-customs-shipment.md)
 - [Prepare and file sales tax VAT or GST returns](pages/prepare-and-file-sales-tax-vat-or-gst-returns.md)
+- [Prepare and file statutory annual accounts](pages/prepare-and-file-statutory-annual-accounts.md)
+- [Prepare and manage a temporary cross-border worker posting](pages/prepare-and-manage-a-temporary-cross-border-worker-posting.md)
 - [Prepare and submit a public procurement bid](pages/prepare-and-submit-a-public-procurement-bid.md)
 - [Prepare for and complete an external financial audit](pages/prepare-for-and-complete-an-external-financial-audit.md)
 - [Protect trade secrets and confidential know-how](pages/protect-trade-secrets-and-confidential-know-how.md)
@@ -180,6 +187,7 @@ One page per canonical record: 209 processes, 33 situations, 24 chains.
 - [Review a cross-border personal data transfer](pages/review-a-cross-border-personal-data-transfer.md)
 - [Review beneficial ownership reporting](pages/review-beneficial-ownership-reporting.md)
 - [Review common-stock fair market value before a stock option grant](pages/review-common-stock-fair-market-value-before-a-stock-option-grant.md)
+- [Review competitor collaboration and information exchange](pages/review-competitor-collaboration-and-information-exchange.md)
 - [Review export controls sanctions and cross-border shipments](pages/review-export-controls-sanctions-and-cross-border-shipments.md)
 - [Review open-source licenses and software dependencies](pages/review-open-source-licenses-and-software-dependencies.md)
 - [Review revenue recognition and deferred revenue](pages/review-revenue-recognition-and-deferred-revenue.md)
