@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "version": {
+      "type": "number",
+      "const": 1
+    },
+    "fictional": {
+      "type": "boolean",
+      "const": true
+    },
+    "cases": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "assessmentId": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "facts": {
+            "type": "object",
+            "propertyNames": {
+              "type": "string"
+            },
+            "additionalProperties": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "pattern": "\\S"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "expected": {
+            "type": "string",
+            "enum": [
+              "matches",
+              "needs-context",
+              "out-of-scope"
+            ]
+          },
+          "externalActionsAuthorized": {
+            "type": "boolean",
+            "const": false
+          }
+        },
+        "required": [
+          "id",
+          "assessmentId",
+          "facts",
+          "expected",
+          "externalActionsAuthorized"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "version",
+    "fictional",
+    "cases"
+  ],
+  "additionalProperties": false
+}
