@@ -136,21 +136,19 @@
     "productId": "coreweave",
     "storyId": "agentic-public-api",
     "verdict": "full",
-    "quality": 8,
-    "confidence": "high",
-    "rationale": "CoreWeave documents public APIs across its main products. The CKS API can create, list, update and delete clusters. The Inference API controls gateways, deployments and capacity claims, uses Bearer-token auth and offers generated clients in Go, Python, TypeScript and other languages. API access tokens are documented, object storage is S3-compatible, and a FOCUS usage API (Public Preview) and a Terraform provider round out programmatic control. missing for 10: independent or hands-on corroboration of API use, explicit API coverage for node pools and capacity/quotas (quota and capacity docs reference only the Cloud Console)",
+    "quality": 9,
+    "confidence": "medium",
+    "rationale": "CoreWeave documents several public APIs. A CKS API lets you create, list, update and delete managed Kubernetes clusters. An Inference API controls gateways, model deployments and capacity claims, with Bearer-token auth, multiple transports and generated clients in many languages. A FOCUS API exports usage, and a Terraform provider covers infrastructure as code. Missing for 10: independent or hands-on corroboration that the APIs work as documented; the FOCUS usage API is only Public Preview.",
     "evidenceIds": [
       "coreweave-docs-5",
+      "coreweave-docs-19",
       "coreweave-docs-8",
       "coreweave-docs-9",
-      "coreweave-docs-19",
       "coreweave-docs-21",
       "coreweave-docs-25",
-      "coreweave-docs-50",
+      "coreweave-docs-6",
       "coreweave-docs-17",
-      "coreweave-docs-10",
-      "coreweave-docs-59",
-      "coreweave-docs-6"
+      "coreweave-docs-34"
     ]
   },
   {
@@ -281,15 +279,13 @@
     "productId": "coreweave",
     "storyId": "automation-rules-engine",
     "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "CoreWeave has no general event-driven rules engine. It does document narrow, domain-specific automation: user-defined bucket lifecycle policies that automatically run actions such as Expiration and AbortIncompleteMultipartUpload, Cluster Autoscaler scaling of Node Pools in response to GPU/CPU/memory demand, and Grafana alerts for monitoring. Missing for 10: a general rule/trigger system for arbitrary platform events, event-to-action automation beyond storage lifecycle and autoscaling, outbound event hooks, and any hands-on or independent corroboration.",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "CoreWeave documents some narrow rule-driven automation. The Kubernetes Cluster Autoscaler scales Node Pools automatically in response to GPU, CPU, or memory demand. AI Object Storage lifecycle policies run defined actions such as Expiration and AbortIncompleteMultipartUpload. However, the evidence shows no general-purpose way to define custom rules that fire actions on platform events. missing for 10: general event-rule/trigger engine, webhooks or event notifications, user-defined custom actions on arbitrary events, independent or hands-on corroboration.",
     "evidenceIds": [
-      "coreweave-docs-40",
-      "coreweave-docs-57",
       "coreweave-docs-3",
       "coreweave-docs-16",
-      "coreweave-docs-61"
+      "coreweave-docs-40"
     ]
   },
   {
@@ -657,12 +653,11 @@
     "productId": "coreweave",
     "storyId": "reserved-committed-discounts",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 3,
     "confidence": "low",
-    "rationale": "CoreWeave's pricing page and Spot docs imply that long-term capacity commitments and reservations exist: on-demand is positioned for 'when you're not looking for long-term capacity commitments,' and Spot is described as 'without long-term commitments or reservations' under a 'capacity-plans' docs section. However, no evidence describes how to purchase or lock in reserved capacity, or what discount it earns. Missing for 10: explicit documentation of reserved/committed-use offerings, discount rates or terms, the purchase/management workflow (console/API), and independent corroboration.",
+    "rationale": "The evidence only implies that committed capacity exists. The pricing page frames On-Demand and Spot as the options for when you are 'not looking for long-term capacity commitments' (docs-20). The Spot docs, filed under 'capacity-plans', contrast Spot with 'long-term commitments or reservations' (docs-4). Nothing documents how a platform engineer actually secures reserved or committed capacity, or what discount it carries. Missing for 10: first-party docs on reserved/committed-use plans, stated discount levels or pricing terms, a self-serve or API/Terraform workflow for committing capacity, and independent corroboration.",
     "evidenceIds": [
       "coreweave-docs-20",
-      "coreweave-docs-60",
       "coreweave-docs-4"
     ]
   },
@@ -784,13 +779,17 @@
     "productId": "lambda-labs",
     "storyId": "agentic-autonomous-automation",
     "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Lambda's Managed Slurm offering is the only first-party mechanism here: it automatically schedules submitted workloads so batch jobs run unattended on the cluster, and Lambda maintains the Slurm daemons. Nothing shows a native automation feature such as scheduled or triggered workflows or autonomous agents. The unofficial community MCP/CLI tool, the API, and cloud-init are user-built or building-block approaches and earn no credit. Missing for 10: first-party scheduled or triggered automations, event-driven background workflows outside Slurm clusters, built-in lifecycle automation such as auto-stop, and independent corroboration.",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "Lambda has no native automation, trigger, or scheduled-job feature. Users can still assemble background automation from building blocks: the REST Cloud API launches instances programmatically, cloud-init runs launch-time configuration, and Managed Slurm schedules queued workloads automatically. The only agent-driven automation evidenced is an unofficial community CLI/MCP server. Missing for 10: a first-party scheduler or cron/trigger-based automations, event webhooks for compute resources (webhooks cover only support tickets), official agent tooling, and hands-on corroboration of unattended background workflows.",
     "evidenceIds": [
+      "lambda-labs-docs-5",
+      "lambda-labs-docs-24",
+      "lambda-labs-docs-31",
       "lambda-labs-docs-37",
       "lambda-labs-docs-46",
-      "lambda-labs-docs-38"
+      "lambda-labs-docs-40",
+      "lambda-labs-comm-1-refresh-19b8428a70b93266"
     ]
   },
   {
@@ -841,11 +840,16 @@
   {
     "productId": "lambda-labs",
     "storyId": "agentic-nl-commands",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Operating a GPU cloud through natural-language commands is a fair question for this kind of product, so the axis applies. Lambda's own documentation shows only a console, a REST API, SSH/JupyterLab, and standard Slurm/Kubernetes tooling, with no first-party natural-language interface. The only natural-language path is an unofficial, community-built CLI/MCP server, which is a third-party workaround and earns no credit.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Lambda has no first-party natural-language interface; its docs cover only a console, SSH/JupyterLab and a REST Cloud API with an OpenAPI spec. The only natural-language path is an unofficial, community-built CLI and MCP server that lets AI agents find, launch and terminate Lambda GPU instances from commands like 'launch an H100, ssh in, run a job', built on that public API. Missing for 10: a first-party natural-language or agent interface, an official MCP server, AI-readable docs (llms.txt returns 404), and independent hands-on corroboration that the unofficial tool works reliably.",
+    "evidenceIds": [
+      "lambda-labs-comm-1-refresh-19b8428a70b93266",
+      "lambda-labs-docs-31",
+      "lambda-labs-docs-5",
+      "lambda-labs-probe-1"
+    ]
   },
   {
     "productId": "lambda-labs",
@@ -886,22 +890,27 @@
   {
     "productId": "lambda-labs",
     "storyId": "agentic-sdks",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "The evidence documents only a REST API, the Lambda Cloud API, along with an OpenAPI spec. It never mentions any official language SDK or client library. A REST API and OpenAPI spec are building blocks a developer could use to generate a client, not an official SDK. The only client tooling cited is an unofficial, community-built Rust CLI and MCP server, which does not count as an official SDK.",
-    "evidenceIds": []
+    "rationale": "Lambda documents an official Lambda Cloud API: REST endpoints for creating and managing resources, published with an OpenAPI spec at cloud.lambda.ai, plus programmatic instance launch with cloud-init. You can build against it with raw HTTP or OpenAPI-generated clients, but no official language SDK is evidenced, and the only CLI/MCP tooling is a community-built, unofficial project. Missing for 10: official language SDKs (e.g., Python/TypeScript), SDK documentation and examples, an official CLI, and independent corroboration of SDK use.",
+    "evidenceIds": [
+      "lambda-labs-docs-31",
+      "lambda-labs-docs-5",
+      "lambda-labs-docs-23",
+      "lambda-labs-docs-24",
+      "lambda-labs-comm-1-refresh-19b8428a70b93266"
+    ]
   },
   {
     "productId": "lambda-labs",
     "storyId": "agentic-webhooks",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "Lambda's OpenAPI spec documents outbound webhook notifications sent to a user-supplied URL, but only for support ticket events, not for compute resources like instance or cluster lifecycle and billing. The unofficial tool's Slack/Discord/Telegram notifications are third-party chat alerts and do not count. Missing for 10: webhooks for instance/cluster/billing events, documented registration/subscription endpoints, payload schemas, signature verification and retry semantics, independent or hands-on corroboration.",
+    "rationale": "Lambda's Cloud API OpenAPI spec documents webhook notifications sent to a user-supplied URL, but only for support ticket events. There is no evidence of webhooks for instance, cluster, billing or other infrastructure lifecycle events that an AI-native workflow would most need. Missing for 10: webhooks for instance and cluster lifecycle events (e.g., launched, SSH-ready, terminated), documentation of the subscription and management API, payload and signature details, and independent hands-on corroboration.",
     "evidenceIds": [
-      "lambda-labs-docs-40",
-      "lambda-labs-docs-58"
+      "lambda-labs-docs-40"
     ]
   },
   {
@@ -984,11 +993,15 @@
   {
     "productId": "lambda-labs",
     "storyId": "automation-rules-engine",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Nothing in the evidence shows Lambda letting users define event-driven rules that automatically trigger actions. The closest items earn no credit: support-ticket webhook notifications, static firewall rules, launch-time cloud-init configuration, and Slurm job scheduling are adjacent features, and the unofficial community CLI is a user-side workaround. Community reports also note there is no auto-stop or idle detection.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 2,
+    "confidence": "low",
+    "rationale": "The only first-party event mechanism in the evidence is webhook notifications for support ticket events, which let users wire their own systems to react in near real-time. There is no evidence of user-defined rules that automatically act on Lambda resources (instances, clusters). Cloud-init runs only at launch, and the event-driven notifications in comm-3 come from an unofficial third-party tool. Missing for 10: a native rule/trigger engine, events covering instances, clusters or billing, configurable automatic actions (e.g. stop on idle), and independent corroboration.",
+    "evidenceIds": [
+      "lambda-labs-docs-40",
+      "lambda-labs-docs-24",
+      "lambda-labs-comm-1-refresh-19b8428a70b93266"
+    ]
   },
   {
     "productId": "lambda-labs",
@@ -1129,13 +1142,13 @@
     "productId": "lambda-labs",
     "storyId": "keyless-catalog-pricing-api",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "low",
-    "rationale": "Lambda publishes a public pricing page for instances and clusters, and documents a REST Cloud API (OpenAPI spec) for creating and managing resources. A community-built tool lets agents 'find' instances, which hints that the API exposes catalog data, but no first-party evidence shows a documented endpoint returning instance types with live pricing and availability. missing for 10: documented catalog/instance-types endpoint, live availability data per region, machine-readable pricing via API, independent corroboration that an agent can query price and availability before launch.",
+    "rationale": "Lambda publishes a documented REST API with an OpenAPI spec for managing cloud resources (docs-31) and a public pricing page (docs-41, docs-28). An unofficial CLI/MCP tool lets agents \"find\" and launch GPU instances through it (comm-3), which implies some programmatic catalog query. However, no evidence explicitly documents an endpoint that returns instance types with live pricing and availability. missing for 10: explicit documentation of a catalog/instance-types endpoint returning live prices and per-region availability, machine-readable pricing data (rather than a marketing page), first-party agent-oriented docs, and independent hands-on corroboration of pre-spend querying.",
     "evidenceIds": [
+      "lambda-labs-docs-31",
       "lambda-labs-docs-41",
       "lambda-labs-docs-28",
-      "lambda-labs-docs-31",
       "lambda-labs-comm-1-refresh-19b8428a70b93266"
     ]
   },
@@ -1159,19 +1172,16 @@
     "productId": "lambda-labs",
     "storyId": "multi-node-clusters",
     "verdict": "full",
-    "quality": 8,
+    "quality": 9,
     "confidence": "medium",
-    "rationale": "Lambda documents self-serve 1-Click Clusters of 16 to 512 H100/B200 GPUs that you reserve directly from the console, described as launching \"instantly\" with no long-term commitments. They provide GPUDirect RDMA at up to 3200 Gb/s and InfiniBand-enabled Managed Kubernetes or Slurm for multi-node jobs. The \"contact us\" path covers only discounted reserved capacity and Private Cloud at 1,000+ GPUs, so it does not gate the core story. Missing for 10: independent or hands-on corroboration of self-serve cluster provisioning; details of the reservation flow (minimum term, availability waits); self-serve access beyond 512 GPUs.",
+    "rationale": "Lambda's docs say users can 'launch 16x to 512x NVIDIA H100 or B200 GPU clusters instantly' with 'no long-term commitments' via 1-Click Clusters. Those clusters provide GPUDirect RDMA at up to 3200 Gb/s and InfiniBand support, and the Managed Slurm quick start goes 'to your first multi-node GPU job in minutes'. Sales contact appears only for reserved capacity at lower prices, not for provisioning a cluster. missing for 10: independent or hands-on corroboration that 1CC provisioning is truly self-serve and instant, and explicit confirmation that the managed Slurm/Kubernetes layers need no SLA contract.",
     "evidenceIds": [
       "lambda-labs-docs-1",
       "lambda-labs-docs-8",
       "lambda-labs-docs-36",
-      "lambda-labs-docs-52",
       "lambda-labs-docs-12",
       "lambda-labs-docs-14",
-      "lambda-labs-docs-46",
-      "lambda-labs-docs-35",
-      "lambda-labs-docs-19"
+      "lambda-labs-docs-35"
     ]
   },
   {
@@ -1591,12 +1601,15 @@
     "productId": "paperspace",
     "storyId": "agentic-sdks",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Paperspace's own API-key docs name an official 'Core JavaScript SDK' alongside the REST API and CLI, so a first-party SDK exists. That single line is the only SDK evidence: there are no SDK reference docs, no Python or other language SDKs, and nothing showing how the SDK works in practice. The REST API and CLI are separate surfaces and are not credited as SDKs. Missing for 10: dedicated SDK documentation and reference, multi-language SDK coverage (e.g., Python), evidence of maintenance and currency, independent or hands-on corroboration of building against the SDK.",
+    "rationale": "The only direct SDK evidence is a single first-party mention that API keys work with the 'Core JavaScript SDK' alongside the REST API and Gradient CLI. The documented REST API and official pspace CLI give further programmatic options, but the pack has no dedicated SDK documentation, no multi-language coverage and no published OpenAPI spec (probes returned 404). Missing for 10: dedicated SDK docs or reference, Python or other language SDKs, OpenAPI spec for generating clients, independent or hands-on confirmation that the SDK is current and usable.",
     "evidenceIds": [
       "paperspace-docs-6",
-      "paperspace-docs-40"
+      "paperspace-docs-23",
+      "paperspace-docs-30",
+      "paperspace-probe-3",
+      "paperspace-probe-4"
     ]
   },
   {
@@ -2143,14 +2156,16 @@
     "productId": "runpod",
     "storyId": "agentic-autonomous-automation",
     "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Runpod's own products run workloads unattended in the background: Pods support long-running processes, Serverless workers scale to zero when idle, and Batch Inference is generally available. However, the evidence shows no first-party way to define automations (schedules, triggers, recurring jobs), and the REST API is pitched for plugging into the user's own external automation systems, which is a building block rather than the capability itself. missing for 10: native scheduling/cron or event triggers for automations, documented autonomous workflow orchestration, any detail on how Batch Inference jobs run, independent or hands-on corroboration.",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "Runpod gives you building blocks for background work: a REST API for integrating GPU compute into 'workflows and automation systems', Pods that keep long-running processes going over SSH, Serverless endpoints that scale to zero, and cluster job deployment. Nothing in the evidence shows a native automation feature, so scheduling and orchestration would have to come from outside tools. Missing for 10: built-in scheduling/cron or event triggers, a native workflow/automation builder, documented autonomous background-job orchestration, independent hands-on corroboration.",
     "evidenceIds": [
+      "runpod-docs-8",
       "runpod-docs-6",
-      "runpod-docs-74",
       "runpod-docs-25",
-      "runpod-docs-8"
+      "runpod-docs-37",
+      "runpod-docs-70",
+      "runpod-docs-12"
     ]
   },
   {
@@ -2682,13 +2697,14 @@
     "productId": "runpod",
     "storyId": "prebuilt-ml-templates",
     "verdict": "full",
-    "quality": 7,
+    "quality": 8,
     "confidence": "high",
-    "rationale": "Runpod's docs describe templates as pre-configured Docker image setups. They state you can pick an official Runpod PyTorch template instead of installing PyTorch, JupyterLab and dependencies yourself. A community user confirms launching from templates \"in a few clicks,\" and the docs also cover vLLM workers on Serverless. Missing for 10: explicit evidence of ComfyUI and CUDA-specific templates, a documented vLLM Pod template (only Serverless vLLM workers are shown), and a listing of the template catalog's breadth.",
+    "rationale": "Runpod's docs say templates are pre-configured Docker image setups. They state that instead of installing PyTorch, configuring JupyterLab and setting up dependencies yourself, you can select an official Runpod PyTorch template and have everything ready instantly. vLLM workers are also documented, and a community user confirms launching third-party templates in a few clicks. Missing for 10: explicit evidence of ComfyUI and CUDA-specific templates, and a listing of the template catalog showing a vLLM Pod template specifically.",
     "evidenceIds": [
       "runpod-docs-10",
       "runpod-docs-22",
       "runpod-docs-34",
+      "runpod-docs-39",
       "runpod-docs-67",
       "runpod-docs-59",
       "runpod-comm-2-refresh-c0398a5efb9798d9"
@@ -3437,16 +3453,15 @@
   {
     "productId": "vast-ai",
     "storyId": "persistent-network-storage",
-    "verdict": "partial",
-    "quality": 5,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Vast.ai documents Volumes that provide persistent storage which survives instance destruction and can be reattached to new instances. Volumes are managed from a Storage page, the template 'Add volume' flow and the CLI, so checkpoints and datasets can outlive a single rental. However, the docs explicitly describe these as 'Local volume' and 'persistent local storage', not network-attached storage, so portability to GPUs on other hosts is not evidenced. A community comment that persistent disks are hard to work with lowers confidence but does not concretely contradict the documented feature. Missing for 10: evidence of network-attached (cross-host) storage, documentation of reattaching volumes to instances on different machines, and independent hands-on corroboration.",
+    "rationale": "Vast.ai documents Volumes as persistent storage that survives instance destruction and can be reattached to new instances. Volumes can be managed from a Storage page and through the CLI, which covers datasets and checkpoints outliving a single rental. One community user wished persistent disks were easier to work with over time, a usability complaint rather than a contradiction. Missing for 10: evidence that volumes are network-attached and usable across different host machines, detailed docs on attach/reattach workflow and limits, and independent hands-on corroboration.",
     "evidenceIds": [
       "vast-ai-docs-10",
-      "vast-ai-docs-72",
-      "vast-ai-docs-69",
       "vast-ai-docs-47",
-      "vast-ai-docs-2"
+      "vast-ai-docs-2",
+      "vast-ai-comm-3-refresh-2c2a16af32b11fa7"
     ]
   },
   {
