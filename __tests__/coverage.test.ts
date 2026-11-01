@@ -419,6 +419,15 @@ describe('process and country completeness evidence', () => {
     expect(scopeDigest(input)).not.toBe(before)
   })
 
+  it('invalidates inventory review when a crosschecked source changes', () => {
+    const input = makeInput()
+    input.audit.independentReview = { reviewer: 'Fictional inventory reviewer', qualification: 'editorial', independent: true,
+      reviewedOn: asOf, reviewDue: later(14), contentDigest: scopeDigest(input), evidenceUrl: 'https://example.test/fictional-inventory-review' }
+    expect(buildProcessCoverage(input, asOf).independentInventoryReview).toBe('current')
+    input.sources.find(source => source.id === input.audit.checks[0].sourceId)!.url += '?changed-reference'
+    expect(buildProcessCoverage(input, asOf).independentInventoryReview).toBe('content-changed')
+  })
+
   it('keeps the generated matrix and readable report deterministic against the canonical catalog', () => {
     expect(() => execFileSync(process.execPath, ['--import', 'tsx', 'scripts/generate-process-coverage.ts', '--check'], { cwd: ROOT })).not.toThrow()
   })

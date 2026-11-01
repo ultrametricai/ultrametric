@@ -154,7 +154,8 @@ export function assessmentDigest(input: CoverageInputs, assessment: LocalAssessm
 export function scopeDigest(input: CoverageInputs): string {
   const { independentScopeReview: _review, ...scope } = input.scope
   const { independentReview: _auditReview, ...audit } = input.audit
-  return coverageDigest({ scope, audit, needs: input.needs, records: input.records.filter(r => !r.taskIds).map(r => r.id).sort() })
+  const sourceIds = new Set([...input.audit.checks.map(check => check.sourceId), ...input.needs.flatMap(need => need.sourceIds)])
+  return coverageDigest({ scope, audit, sources: input.sources.filter(source => sourceIds.has(source.id)).sort((a, b) => a.id < b.id ? -1 : a.id > b.id ? 1 : 0), needs: input.needs, records: input.records.filter(r => !r.taskIds).map(r => r.id).sort() })
 }
 export function scenarioScopeDigest(input: CoverageInputs, scope: CompletenessScope['scenarioScopes'][number]): string {
   return coverageDigest({ processId: scope.processId, country: scope.country, limitation: scope.limitation,
