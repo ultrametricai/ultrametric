@@ -95,13 +95,18 @@ const verdictsFile = `open-rankings/${CATEGORY}/verdicts.json`
 const theirVerdicts = showJson<VerdictRow[]>(THEIRS, verdictsFile)
 const ourVerdicts = showJson<VerdictRow[]>(OURS, verdictsFile)
 const geoIds = new Set(Object.keys(ID_REMAP))
+// Remap every reference to a geo id, in the citation list and inside the rationale text:
+// a reader following "brex-docs-44" from a rationale must land on the entry the judge saw,
+// not on the refresh's unrelated entry that now owns the old number.
+const remapIds = (row: VerdictRow): VerdictRow => ({
+  ...row,
+  evidenceIds: row.evidenceIds.map((id) => ID_REMAP[id] ?? id),
+  rationale: Object.entries(ID_REMAP).reduce((text, [from, to]) => text.replaceAll(from, to), row.rationale),
+})
 const geoRows = new Map(
   ourVerdicts
     .filter((row) => row.evidenceIds.some((id) => geoIds.has(id)))
-    .map((row) => [
-      `${row.productId}:${row.storyId}`,
-      { ...row, evidenceIds: row.evidenceIds.map((id) => ID_REMAP[id] ?? id) },
-    ]),
+    .map((row) => [`${row.productId}:${row.storyId}`, remapIds(row)]),
 )
 const geoRowCount = geoRows.size
 const mergedIds = new Map(PRODUCTS.map((p) => [p, new Set(mergedEvidence[p].map((e) => e.id))]))
