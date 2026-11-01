@@ -52,6 +52,13 @@ export interface YcRawCompany {
 // product's ycBatch, and the coverage queue treats the new domain as already tracked instead of
 // re-nominating the rebrand. Add an entry only with the old domain's live redirect (or an
 // equivalent citable source) as evidence.
+//
+// Verified NON-alias, so it is not re-added by mistake: ramp.com is NOT a YC directory match.
+// The "ramp": "S15" stamp the 2026-10-30 refresh dropped came from Paribus (YC S15, acquired),
+// whose feed entry once listed ramp.com as its website; as of 2026-11-01 the directory's
+// Paribus page (https://www.ycombinator.com/companies/paribus) lists website: null and names
+// Ramp only in the founder bio ("Karim Atiyeh, Founder — Ramp (https://Ramp.com)"). Ramp the
+// product is the founders' later, non-YC company, so the stamp removal stands.
 export const YC_DOMAIN_ALIASES: Record<string, string> = {
   'paradev.com': 'superset.sh',
 }

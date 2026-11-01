@@ -133,36 +133,63 @@ function compileVocab(arenaIds: Set<string>): Map<string, { word: string; re: Re
   return compiled
 }
 
-// Counts distinct vocab CONCEPTS, not distinct regexes: singular/plural and prefix pairs in the
-// vocab ('device'/'devices', 'credit'/'credits', 'transcript'/'transcription') all match at the
-// same text offset, and counting each regex separately let ONE occurrence satisfy
-// MIN_VOCAB_HITS=2 — exactly how the "Medical Devices" tag nominated catheter and hydrogel
-// makers into device-agents, "tax credits" put a bookkeeping service in ai-video, and
-// "transcription factors" put a therapeutics company in business-phone (PR #528 review).
-// Deduping hits by first-match offset makes a hit count a count of distinct matched words.
-export function countVocabHits(text: string, words: { word: string; re: RegExp }[]): number {
+// Distinct vocab CONCEPT match offsets (ascending), not distinct regexes: singular/plural and
+// prefix pairs in the vocab ('device'/'devices', 'credit'/'credits',
+// 'transcript'/'transcription') all match at the same text offset, and counting each regex
+// separately let ONE occurrence satisfy MIN_VOCAB_HITS=2 — exactly how the "Medical Devices"
+// tag nominated catheter and hydrogel makers into device-agents, "tax credits" put a
+// bookkeeping service in ai-video, and "transcription factors" put a therapeutics company in
+// business-phone (PR #528 review). Deduping hits by first-match offset makes a hit count a
+// count of distinct matched words.
+export function vocabHitOffsets(text: string, words: { word: string; re: RegExp }[]): number[] {
   const offsets = new Set<number>()
   for (const { re } of words) {
     const m = re.exec(text)
     if (m) offsets.add(m.index)
   }
-  return offsets.size
+  return Array.from(offsets).sort((a, b) => a - b)
 }
 
-function bestVocabArena(
+export function countVocabHits(text: string, words: { word: string; re: RegExp }[]): number {
+  return vocabHitOffsets(text, words).length
+}
+
+// The vocab match text: the company's own one-liner first, then its curated tags — the
+// "one-liner + tags" match the lane header has always specified. YC's coarse industry labels
+// ("B2B", "Engineering, Product and Design", "Finance and Accounting") are sector taxonomy, not
+// product description; matching arena keywords against them minted junk hits ('product', 'b2b',
+// 'engine') for unrelated arenas (PR #528 re-review: zeroheight landing in ecommerce-platforms),
+// so they stay out of the text.
+function vocabText(c: YcRawCompany): string {
+  return `${c.one_liner ?? ''} ${(c.tags ?? []).join(' ')}`
+}
+
+export function bestVocabArena(
   text: string,
   vocab: Map<string, { word: string; re: RegExp }[]>,
 ): { arena: string; hits: number } | null {
-  let best: { arena: string; hits: number } | null = null
+  let best: { arena: string; hits: number; first: number } | null = null
   for (const [arena, words] of vocab) {
-    const hits = countVocabHits(text, words)
+    const offsets = vocabHitOffsets(text, words)
+    const hits = offsets.length
     if (hits < MIN_VOCAB_HITS) continue
-    // Deterministic tiebreak: more hits wins, then alphabetical arena id.
-    if (!best || hits > best.hits || (hits === best.hits && arena < best.arena)) {
-      best = { arena, hits }
+    // Deterministic tiebreak: more hits wins; at equal hits the arena whose FIRST match sits
+    // earliest in the text wins — the match text starts with the company's own one-liner, so
+    // evidence from the product description outranks evidence that only starts in the trailing
+    // tag labels ("The design system layer for coding agents" reads design-tools even though
+    // 'agent' plus generic tag words also graze other arenas; PR #528 re-review). Then
+    // alphabetical arena id.
+    const first = offsets[0]
+    if (
+      !best ||
+      hits > best.hits ||
+      (hits === best.hits && first < best.first) ||
+      (hits === best.hits && first === best.first && arena < best.arena)
+    ) {
+      best = { arena, hits, first }
     }
   }
-  return best
+  return best ? { arena: best.arena, hits: best.hits } : null
 }
 
 // Registry suffixes that sell names under a second-level label, so the registrable apex is the
@@ -430,8 +457,7 @@ async function main() {
         // these candidates exactly as it does to radar candidates.
         const words = vocab.get(arena)
         if (words) {
-          const text = `${c.one_liner ?? ''} ${(c.tags ?? []).join(' ')} ${(c.industries ?? []).join(' ')}`
-          vocabHits = countVocabHits(text, words)
+          vocabHits = countVocabHits(vocabText(c), words)
         }
       } else if (cls && !cls.pending && (cls.proposedArena || (!cls.mappedArena && !cls.proposedArena))) {
         // yc-classify already judged this one: software-without-an-existing-arena, or not
@@ -441,8 +467,7 @@ async function main() {
         noFit++
         continue
       } else {
-        const text = `${c.one_liner ?? ''} ${(c.tags ?? []).join(' ')} ${(c.industries ?? []).join(' ')}`
-        const best = bestVocabArena(text, vocab)
+        const best = bestVocabArena(vocabText(c), vocab)
         if (!best) {
           noFit++
           continue

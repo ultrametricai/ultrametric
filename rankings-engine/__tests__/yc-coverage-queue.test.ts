@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { countVocabHits, RADAR_TOP, radarReportFromQueue, registrableApex, type YcQueue } from '../scripts/yc-coverage-queue'
+import { bestVocabArena, countVocabHits, RADAR_TOP, radarReportFromQueue, registrableApex, type YcQueue } from '../scripts/yc-coverage-queue'
 import { RadarReportSchema } from '../scripts/vendor-radar'
 
 // Pure unit for the queue → radar-triage hand-off: the weekly YC lane emits its top queue
@@ -56,6 +56,38 @@ describe('countVocabHits', () => {
 
   it('still counts distinct matched words separately', () => {
     expect(countVocabHits('a device with a screen', words)).toBe(2)
+  })
+})
+
+describe('bestVocabArena', () => {
+  const compile = (vocab: Record<string, string[]>) =>
+    new Map(
+      Object.entries(vocab).map(([arena, words]) => [
+        arena,
+        words.map((w) => ({ word: w, re: new RegExp(`\\b(${w})`, 'i') })),
+      ]),
+    )
+
+  it('more distinct hits wins outright', () => {
+    const vocab = compile({ 'design-tools': ['design', 'layer'], 'ai-coding': ['coding'] })
+    expect(bestVocabArena('The design system layer for coding agents', vocab)).toEqual({ arena: 'design-tools', hits: 2 })
+  })
+
+  it('at equal hits, the arena matched earliest in the text wins (description beats trailing tags: the zeroheight case)', () => {
+    // Text layout mirrors the real composition: one-liner first, tag labels after.
+    const text = 'The design system layer for coding agents Developer Tools SaaS Design Tools'
+    const vocab = compile({
+      'agent-frameworks': ['agent', 'tool'],
+      'design-tools': ['design', 'layer'],
+    })
+    // Both arenas have 2 distinct hits; design-tools matches at offset 4 ('design'),
+    // agent-frameworks first at offset 35 ('agent').
+    expect(bestVocabArena(text, vocab)).toEqual({ arena: 'design-tools', hits: 2 })
+  })
+
+  it('returns null below the two-hit floor', () => {
+    const vocab = compile({ 'design-tools': ['design', 'layer'] })
+    expect(bestVocabArena('generic marketing copy', vocab)).toBeNull()
   })
 })
 
