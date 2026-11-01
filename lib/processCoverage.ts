@@ -114,11 +114,24 @@ export function validateCoverageInputs(input: CoverageInputs): void {
     if (assessment.professionalReview) { coverageDay(assessment.professionalReview.reviewedOn); coverageDay(assessment.professionalReview.reviewDue) }
     for (const run of assessment.observedRuns) coverageDay(run.ranOn)
   }
+  unique(input.scope.scenarioScopes.map(s => `${s.processId}/${s.country}`), 'scenario scopes')
+  const assessmentMap = new Map(input.local.assessments.map(a => [a.id, a]))
+  for (const scope of input.scope.scenarioScopes) {
+    if (!records.has(scope.processId) || records.get(scope.processId)?.taskIds || !input.scope.countries.includes(scope.country)) throw new Error('Invalid scenario-scope cell')
+    unique(scope.assessmentIds, 'required scenarios')
+    for (const id of scope.assessmentIds) {
+      const a = assessmentMap.get(id)
+      if (!a || a.processId !== scope.processId || a.country !== scope.country) throw new Error(`${id}: scenario belongs to another cell`)
+    }
+    if (scope.independentReview) { coverageDay(scope.independentReview.reviewedOn); coverageDay(scope.independentReview.reviewDue) }
+  }
+  for (const assessment of input.local.assessments) if (!input.scope.scenarioScopes.some(s => s.assessmentIds.includes(assessment.id))) throw new Error(`${assessment.id}: not included in the scenario inventory`)
   for (const review of [input.scope.independentScopeReview, input.audit.independentReview]) if (review) { coverageDay(review.reviewedOn); coverageDay(review.reviewDue) }
   const assessments = new Map(input.local.assessments.map(a => [a.id, a]))
   for (const fixture of input.fixtures.cases) if (!assessments.has(fixture.assessmentId)) throw new Error(`${fixture.id}: unknown assessment`)
 }
 export function matchCoverageFacts(required: Record<string, string>, actual: Record<string, string | null>): 'matches' | 'needs-context' | 'out-of-scope' {
+  if (Object.keys(actual).some(key => !(key in required))) return 'needs-context'
   if (Object.keys(required).some(key => actual[key] == null || actual[key]?.trim() === '')) return 'needs-context'
   return Object.entries(required).every(([key, value]) => actual[key] === value) ? 'matches' : 'out-of-scope'
 }
@@ -142,6 +155,11 @@ export function scopeDigest(input: CoverageInputs): string {
   const { independentScopeReview: _review, ...scope } = input.scope
   const { independentReview: _auditReview, ...audit } = input.audit
   return coverageDigest({ scope, audit, needs: input.needs, records: input.records.filter(r => !r.taskIds).map(r => r.id).sort() })
+}
+export function scenarioScopeDigest(input: CoverageInputs, scope: CompletenessScope['scenarioScopes'][number]): string {
+  return coverageDigest({ processId: scope.processId, country: scope.country, limitation: scope.limitation,
+    scenarios: scope.assessmentIds.map(id => assessmentDigest(input, input.local.assessments.find(a => a.id === id)!)),
+    businessModels: input.scope.businessModels, countries: input.scope.countries, exclusions: input.scope.exclusions })
 }
 export function assessLocalProcedure(input: CoverageInputs, assessment: LocalAssessments['assessments'][number], asOf: string) {
   const digest = assessmentDigest(input, assessment)
@@ -173,25 +191,52 @@ export function buildProcessCoverage(input: CoverageInputs, asOf: string) {
     const localSteps = partsOf(record.parts).flatMap(p => resolutions(p).filter(r => r.country === country).map(r => ({ stepId: p.id, kind: r.kind, sourceUrl: r.actionUrl ?? null })))
     const nativeUs = country === 'US' && ['us', 'us-state'].includes(String(record.metadata.geoScope))
     const procedures = assessments.filter(a => a.processId === record.id && a.country === country)
+    const declared = input.scope.scenarioScopes.find(s => s.processId === record.id && s.country === country)
+    const scenarioScopeReview = declared ? coverageReviewState(declared.independentReview, asOf, scenarioScopeDigest(input, declared), ['editorial']) : 'missing'
+    const declaredScopeComplete = Boolean(declared && scenarioScopeReview === 'current' && declared.assessmentIds.every(id => procedures.some(a => a.id === id && a.reviewedProcedureReady)))
     return { processId: record.id, country, guidePresent: record.parts.length > 0, localMaterial: localNotes.length > 0 || localSteps.length > 0 || nativeUs,
       noteKinds: localNotes.map(n => n.kind), localStepIds: localSteps.map(s => s.stepId),
       sourceUrls: [...new Set([...localNotes.map(n => n.actionUrl), ...localSteps.flatMap(s => s.sourceUrl ? [s.sourceUrl] : [])])],
       scenarioIds: procedures.map(a => a.id), reviewedScenarioCount: procedures.filter(a => a.reviewedProcedureReady).length,
-      wholeCountryCompleteness: 'unassessed' as const }
+      scenarioScopeReview, declaredScopeCompleteness: declaredScopeComplete ? 'reviewed' : 'unassessed', scopeLimitation: declared?.limitation ?? 'Entity, subnational, sector and cross-border scenario scope is unassessed.' }
   }))
   const gaps = input.needs.filter(n => n.status === 'gap').map(n => ({ id: n.id, domain: n.domain, need: n.need, sourceIds: n.sourceIds }))
   const countries = input.scope.countries.map(country => ({ country, processCells: ordinary.length, withLocalMaterial: cells.filter(c => c.country === country && c.localMaterial).length,
     scopedProcedures: assessments.filter(a => a.country === country).length, reviewedProcedures: assessments.filter(a => a.country === country && a.reviewedProcedureReady).length,
     observedProcedures: assessments.filter(a => a.country === country && a.observedExecution === 'evidenced').length }))
-  return { version: 1, asOf, scope: input.scope.scope, scopeDigest: scopeDigest(input), independentScopeReview: scopeReview, independentInventoryReview: auditReview,
+  return processCountryMatrixSchema.parse({ version: 1, asOf, scope: input.scope.scope, scopeDigest: scopeDigest(input), independentScopeReview: scopeReview, independentInventoryReview: auditReview,
     summary: { needs: input.needs.length, mappedNeeds: input.needs.filter(n => n.status === 'guide-present').length, explicitNeedGaps: gaps.length,
       processesAndSituations: ordinary.length, countries: input.scope.countries.length, matrixCells: cells.length,
       cellsWithLocalMaterial: cells.filter(c => c.localMaterial).length, scopedProcedures: assessments.length,
       reviewedProcedures: assessments.filter(a => a.reviewedProcedureReady).length, observedProcedures: assessments.filter(a => a.observedExecution === 'evidenced').length,
-      wholeCountryCompleteCells: 0, comprehensive: false },
+      reviewedScopeCells: cells.filter(c => c.declaredScopeCompleteness === 'reviewed').length,
+      comprehensiveWithinDeclaredScope: Boolean(input.scope.maintenance.owner) && scopeReview === 'current' && auditReview === 'current' && gaps.length === 0 && cells.every(c => c.declaredScopeCompleteness === 'reviewed') },
     metricDefinitions: { mappedNeeds: 'A canonical guide is linked; this measures entry points only.', localMaterial: 'An authored country note, step resolution or US-scoped baseline exists; this does not establish completeness or freshness.',
       reviewedProcedures: 'All required instruction sections, sources, dates, ownership, qualified independent review and fictional scope tests are current for the stated facts.',
       observedProcedures: 'A dated independent passed-run attestation identifies this exact procedure content. Public attestation links must be verified by the contributor; case-specific authorization remains separate.',
-      wholeCountryCompleteness: 'Unassessed: the full entity, subnational, sector and cross-border scenario universe has not been independently established. No cell is excluded for missing or not-applicable notes.' },
-    countries, assessments, gaps, cells }
+      declaredScopeCompleteness: 'Requires independent current review of the scenario inventory and all its required procedures. Credit applies only to the stated scope; no cell is excluded for missing or not-applicable notes.' },
+    countries, assessments, gaps, cells })
 }
+
+const count = z.number().int().nonnegative()
+const reviewState = z.enum(['missing', 'not-independent', 'unqualified', 'content-changed', 'future-dated', 'stale', 'current'])
+const procedureResultSchema = z.strictObject({
+  id: text, processId: text, country: text, title: text, facts: z.record(z.string(), text), exclusions: strings,
+  contentDigest: z.string().regex(/^[a-f0-9]{64}$/), instructionChecklist: z.enum(['partial', 'authored']),
+  sourcesCurrent: z.boolean(), instructionsCurrent: z.boolean(), owner: text.nullable(), professionalReview: reviewState,
+  fictionalTests: z.enum(['passed', 'missing-or-failed']), observedExecution: z.enum(['evidenced', 'unverified']),
+  blockers: strings, reviewedProcedureReady: z.boolean(), externalActionsAuthorized: z.literal(false),
+})
+export const processCountryMatrixSchema = z.strictObject({
+  version: z.literal(1), asOf: date, scope: text, scopeDigest: z.string().regex(/^[a-f0-9]{64}$/),
+  independentScopeReview: reviewState, independentInventoryReview: reviewState,
+  summary: z.strictObject({ needs: count, mappedNeeds: count, explicitNeedGaps: count, processesAndSituations: count, countries: count, matrixCells: count,
+    cellsWithLocalMaterial: count, scopedProcedures: count, reviewedProcedures: count, observedProcedures: count, reviewedScopeCells: count, comprehensiveWithinDeclaredScope: z.boolean() }),
+  metricDefinitions: z.strictObject({ mappedNeeds: text, localMaterial: text, reviewedProcedures: text, observedProcedures: text, declaredScopeCompleteness: text }),
+  countries: z.array(z.strictObject({ country: text, processCells: count, withLocalMaterial: count, scopedProcedures: count, reviewedProcedures: count, observedProcedures: count })),
+  assessments: z.array(procedureResultSchema),
+  gaps: z.array(z.strictObject({ id: text, domain: text, need: text, sourceIds: strings })),
+  cells: z.array(z.strictObject({ processId: text, country: text, guidePresent: z.boolean(), localMaterial: z.boolean(), noteKinds: strings,
+    localStepIds: strings, sourceUrls: z.array(z.string().url()), scenarioIds: strings, reviewedScenarioCount: count,
+    scenarioScopeReview: reviewState, declaredScopeCompleteness: z.enum(['reviewed', 'unassessed']), scopeLimitation: text })),
+})
