@@ -10,12 +10,12 @@ General startup operating needs and explicitly conditional business models. The 
 
 | Measure | Result | Meaning |
 | --- | --- | --- |
-| Needs with guide entry points | 144/151 (95.4%) | Related guide presence; remaining needs stay in the denominator |
+| Needs with guide entry points | 151/151 (100.0%) | Related guide presence; remaining needs stay in the denominator |
 | Needs in the external-source crosscheck | 16/151 | Unchecked needs remain pending; independent human review is separate |
-| Cells with local material | 666/5103 (13.1%) | Country notes, step resolutions or a US-scoped baseline; quality, freshness and completeness are separate |
+| Cells with local material | 666/5250 (12.7%) | Country notes, step resolutions or a US-scoped baseline; quality, freshness and completeness are separate |
 | Reviewed procedures | 0/8 | Required sections, dates, owner, qualified independent review and scenario tests are current |
 | Procedures with observed run evidence | 0/8 | Independent passed-run evidence binds to the assessed content |
-| Reviewed declared-scope cells | 0/5103 | Independent scenario-inventory review and all required scoped procedures |
+| Reviewed declared-scope cells | 0/5250 | Independent scenario-inventory review and all required scoped procedures |
 
 Independent overall scope review: **missing**. Independent inventory review: **missing**. Comprehensive within declared scope: **no**.
 
@@ -25,33 +25,33 @@ A fictional case checks scope routing and documented gates. It does not establis
 
 | Country | Process/situation cells | Local material | Scoped procedures | Reviewed procedures | Observed procedures |
 | --- | --- | --- | --- | --- | --- |
-| United States | 243 | 58 | 0 | 0 | 0 |
-| United Kingdom | 243 | 61 | 8 | 0 | 0 |
-| India | 243 | 54 | 0 | 0 | 0 |
-| Germany | 243 | 56 | 0 | 0 | 0 |
-| France | 243 | 53 | 0 | 0 | 0 |
-| Portugal | 243 | 43 | 0 | 0 | 0 |
-| Canada | 243 | 43 | 0 | 0 | 0 |
-| New Zealand | 243 | 30 | 0 | 0 | 0 |
-| Singapore | 243 | 56 | 0 | 0 | 0 |
-| Australia | 243 | 44 | 0 | 0 | 0 |
-| South Korea | 243 | 48 | 0 | 0 | 0 |
-| Hong Kong | 243 | 49 | 0 | 0 | 0 |
-| Estonia | 243 | 47 | 0 | 0 | 0 |
-| Netherlands | 243 | 3 | 0 | 0 | 0 |
-| Ireland | 243 | 3 | 0 | 0 | 0 |
-| Spain | 243 | 3 | 0 | 0 | 0 |
-| Sweden | 243 | 3 | 0 | 0 | 0 |
-| Switzerland | 243 | 3 | 0 | 0 | 0 |
-| Japan | 243 | 3 | 0 | 0 | 0 |
-| Brazil | 243 | 3 | 0 | 0 | 0 |
-| United Arab Emirates | 243 | 3 | 0 | 0 | 0 |
+| United States | 250 | 58 | 0 | 0 | 0 |
+| United Kingdom | 250 | 61 | 8 | 0 | 0 |
+| India | 250 | 54 | 0 | 0 | 0 |
+| Germany | 250 | 56 | 0 | 0 | 0 |
+| France | 250 | 53 | 0 | 0 | 0 |
+| Portugal | 250 | 43 | 0 | 0 | 0 |
+| Canada | 250 | 43 | 0 | 0 | 0 |
+| New Zealand | 250 | 30 | 0 | 0 | 0 |
+| Singapore | 250 | 56 | 0 | 0 | 0 |
+| Australia | 250 | 44 | 0 | 0 | 0 |
+| South Korea | 250 | 48 | 0 | 0 | 0 |
+| Hong Kong | 250 | 49 | 0 | 0 | 0 |
+| Estonia | 250 | 47 | 0 | 0 | 0 |
+| Netherlands | 250 | 3 | 0 | 0 | 0 |
+| Ireland | 250 | 3 | 0 | 0 | 0 |
+| Spain | 250 | 3 | 0 | 0 | 0 |
+| Sweden | 250 | 3 | 0 | 0 | 0 |
+| Switzerland | 250 | 3 | 0 | 0 | 0 |
+| Japan | 250 | 3 | 0 | 0 | 0 |
+| Brazil | 250 | 3 | 0 | 0 | 0 |
+| United Arab Emirates | 250 | 3 | 0 | 0 | 0 |
 
 ## Next work
 
 1. Complete the source crosscheck for the remaining needs, assign an editorial maintenance owner and commission an independent review of the scope and inventory.
 2. Have appropriately qualified local reviewers assess the scoped procedures, source locators, exclusions and scenario inventory. Keep receipts for any subsequent authorized run in the private company system.
-3. Add procedures for the explicit inventory gaps below, then deepen unassessed process/country cells within the existing country set.
+3. Deepen unassessed process/country cells within the existing country set and add newly discovered needs to the inventory.
 4. Recheck source material and instructions on the declared editorial cadence. Regenerate the snapshot after source, scope or instruction changes; previous review and run evidence loses credit when its content digest no longer matches.
 
 ## Scoped procedures and blockers
@@ -71,13 +71,7 @@ A fictional case checks scope routing and documented gates. It does not establis
 
 | Need | Domain | Sources |
 | --- | --- | --- |
-| Operate statutory consumer guarantees and remedies | revenue | [Your Europe consumer guarantees](https://europa.eu/youreurope/business/selling-in-eu/consumer-contracts-guarantees/consumer-guarantees/index_en.htm) |
-| Operate customs registration clearance and importer responsibilities | international | [HMRC EORI registration process](https://www.gov.uk/guidance/economic-operators-registration-and-identification-eori/registration-process) |
-| Assess and operate packaging producer responsibilities | physical | [GOV.UK packaging EPR applicability](https://www.gov.uk/guidance/check-if-you-must-comply-with-epr-for-packaging--2) |
-| Determine and review worker employment and tax status | people | [GOV.UK employment status](https://www.gov.uk/employment-status) |
-| Manage insolvency and formal restructuring | exit | [GOV.UK closing a limited company](https://www.gov.uk/closing-a-limited-company) |
-| Assess competition rules before competitor collaboration | legal | [Your Europe competition rules](https://europa.eu/youreurope/business/selling-in-eu/competition-between-businesses/competition-rules-eu/index_en.htm) |
-| Manage temporary worker postings and cross-border social security | international | [Your Europe posting staff abroad](https://europa.eu/youreurope/business/hiring-managing-staff/cross-border-posted-workers/posting-staff-abroad/index_en.htm) |
+| No unmapped named needs | Local scenario coverage and the external-source crosscheck remain incomplete | |
 
 ## External-source crosscheck
 
@@ -88,13 +82,14 @@ Source crosscheck by the author against independent government reference structu
 | [GOV.UK set up a business](https://www.gov.uk/set-up-business) | Business structures and responsibilities | Existing formation, recurring filing, tax and employment entry points exist; this crosscheck does not establish local completeness. |
 | [Your Europe doing business](https://europa.eu/youreurope/business/index_en.htm) | Doing business navigation: lifecycle, selling, human resources and product requirements | Existing operational guides cover entry points; sector, geography and technical depth remain separately assessed. |
 | [GOV.UK prepare annual accounts](https://www.gov.uk/annual-accounts) | Overview and statutory accounts | Dedicated statutory annual accounts guide added; independent professional review remains pending. |
-| [Your Europe consumer guarantees](https://europa.eu/youreurope/business/selling-in-eu/consumer-contracts-guarantees/consumer-guarantees/index_en.htm) | After-sale responsibilities and country implementation | Distinct need added as a gap; a related general guide is insufficient to close it. |
-| [HMRC EORI registration process](https://www.gov.uk/guidance/economic-operators-registration-and-identification-eori/registration-process) | Registration process | Distinct need added as a gap; a related general guide is insufficient to close it. |
-| [GOV.UK packaging EPR applicability](https://www.gov.uk/guidance/check-if-you-must-comply-with-epr-for-packaging--2) | Who must comply and next steps | Distinct need added as a gap; a related general guide is insufficient to close it. |
-| [GOV.UK employment status](https://www.gov.uk/employment-status) | Employment law and tax status | Distinct need added as a gap; a related general guide is insufficient to close it. |
-| [GOV.UK closing a limited company](https://www.gov.uk/closing-a-limited-company) | Solvent and insolvent company routes | Distinct need added as a gap; a related general guide is insufficient to close it. |
-| [Your Europe competition rules](https://europa.eu/youreurope/business/selling-in-eu/competition-between-businesses/competition-rules-eu/index_en.htm) | Overview and competition rules | Distinct need added as a gap; a related general guide is insufficient to close it. |
-| [Your Europe posting staff abroad](https://europa.eu/youreurope/business/hiring-managing-staff/cross-border-posted-workers/posting-staff-abroad/index_en.htm) | Posting conditions and social security obligations | Distinct need added as a gap; a related general guide is insufficient to close it. |
+| [Your Europe consumer guarantees](https://europa.eu/youreurope/business/selling-in-eu/consumer-contracts-guarantees/consumer-guarantees/index_en.htm) | After-sale responsibilities and country implementation | Dedicated operational draft added after source crosscheck; local applicability, professional review and successful execution remain unverified. |
+| [HMRC EORI registration process](https://www.gov.uk/guidance/economic-operators-registration-and-identification-eori/registration-process) | Registration process | Dedicated operational draft added after source crosscheck; local applicability, professional review and successful execution remain unverified. |
+| [GOV.UK packaging EPR applicability](https://www.gov.uk/guidance/check-if-you-must-comply-with-epr-for-packaging--2) | Who must comply and next steps | Dedicated operational draft added after source crosscheck; local applicability, professional review and successful execution remain unverified. |
+| [GOV.UK employment status](https://www.gov.uk/employment-status) | Employment law and tax status | Dedicated operational draft added after source crosscheck; local applicability, professional review and successful execution remain unverified. |
+| [GOV.UK closing a limited company](https://www.gov.uk/closing-a-limited-company) | Solvent and insolvent company routes | Dedicated operational draft added after source crosscheck; local applicability, professional review and successful execution remain unverified. |
+| [Your Europe competition rules](https://europa.eu/youreurope/business/selling-in-eu/competition-between-businesses/competition-rules-eu/index_en.htm) | Overview and competition rules | Dedicated operational draft added after source crosscheck; local applicability, professional review and successful execution remain unverified. |
+| [Your Europe posting staff abroad](https://europa.eu/youreurope/business/hiring-managing-staff/cross-border-posted-workers/posting-staff-abroad/index_en.htm) | Posting conditions and social security obligations | Dedicated operational draft added after source crosscheck; local applicability, professional review and successful execution remain unverified. |
+| [GOV.UK import goods into the UK step by step](https://www.gov.uk/import-goods-into-uk) | Get your business ready; classify goods; make an import declaration; get goods released; keep records | Import operations guide separates trader registration from shipment classification, declaration, payment and release; qualified route-specific assessment remains required. |
 
 ## Scope limits
 
