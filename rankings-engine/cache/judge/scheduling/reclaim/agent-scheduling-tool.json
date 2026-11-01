@@ -4,10 +4,13 @@
   "verdict": {
     "productId": "reclaim",
     "storyId": "agent-scheduling-tool",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Reclaim is a scheduling SaaS, so exposing availability, bookings, and event types to external agents through an MCP server or tool-calling API is a fair question. The evidence shows no such surface. The in-app natural-language AI Assistant is an adjacent feature, not an agent-callable tool. The llms.txt file only indexes help docs, and the OpenAPI probes all returned 404.",
-    "evidenceIds": []
+    "rationale": "Runtime probes confirm a live, first-party remote MCP server at mcp.reclaim.ai. It is OAuth-gated per the MCP spec and publishes RFC 9728 discovery metadata with read/write/mcp scopes, so agents can plausibly use the scheduling account as a tool. However, no vendor documentation was found, and the probes stop at the auth handshake, so the exposed tools are unverified. Missing for 10: documentation of the MCP server, evidence of which tools it exposes (availability, bookings, scheduling-link/event types), and hands-on or independent confirmation of tool calls working end to end.",
+    "evidenceIds": [
+      "reclaim-probe-rt-1",
+      "reclaim-probe-rt-2"
+    ]
   }
 }

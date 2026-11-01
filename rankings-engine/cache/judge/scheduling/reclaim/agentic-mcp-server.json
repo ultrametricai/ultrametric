@@ -4,10 +4,13 @@
   "verdict": {
     "productId": "reclaim",
     "storyId": "agentic-mcp-server",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Reclaim.ai is a scheduling SaaS, not an agent, so an official MCP server is a fair question and the axis applies. Nothing in the current pack documents or probes an MCP endpoint: the docs cover scheduling features and an in-app chat assistant, the probes find only an llms.txt file and no OpenAPI spec, and the reviewer's cited runtime checks for mcp.reclaim.ai are not in the pack, so they cannot be credited here.",
-    "evidenceIds": []
+    "rationale": "Runtime probes, re-verified a month apart, show a live first-party remote MCP server at mcp.reclaim.ai. It returns a spec-compliant 401 Bearer challenge and publishes RFC 9728 OAuth protected-resource metadata with read/write/mcp scopes, so a standard MCP client can plausibly connect. However, the vendor publishes no documentation for the server, and the probes stop at the auth gate, so the exposed tools and an end-to-end agent connection are unverified. Missing for 10: vendor documentation of the MCP server and its setup, a published tool list or capabilities, hands-on evidence of an authenticated session with working tool calls, and independent community corroboration.",
+    "evidenceIds": [
+      "reclaim-probe-rt-1",
+      "reclaim-probe-rt-2"
+    ]
   }
 }

@@ -160,13 +160,12 @@
   {
     "productId": "cal-com",
     "storyId": "agentic-official-cli",
-    "verdict": "partial",
+    "verdict": "full",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Cal.com's agents documentation explicitly points to an \"official Cal.com CLI\" that agents able to run commands should use instead of calling the API directly. It says the CLI handles authentication, versioning, and common workflows automatically, so an official, agent-oriented CLI is a first-party claim. The evidence is limited to this one passage on a single page, so its depth and coverage are unproven. Missing for 10: dedicated CLI documentation (install instructions, command reference, supported operations), detail on how it covers bookings, event types and schedules, and independent or hands-on corroboration that it works.",
+    "rationale": "Cal.com's agent docs explicitly point to an official Cal.com CLI and recommend it over direct API calls for agents that can run commands on a machine. That is a direct, AI-native-oriented claim of the capability. It is a single sentence, though, with no detail on installation, commands, auth or coverage. Missing for 10: CLI installation and command reference docs, which operations the CLI covers (bookings, event types, schedules), how it authenticates, and independent or hands-on confirmation that it works.",
     "evidenceIds": [
-      "cal-com-docs-45",
-      "cal-com-docs-68"
+      "cal-com-docs-45"
     ]
   },
   {
@@ -272,14 +271,16 @@
     "productId": "cal-com",
     "storyId": "api-interactive-docs",
     "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Cal.com publishes a per-endpoint API v2 reference covering bookings, slots, event types, schedules and webhooks, with request-schema fragments and auth guidance. A machine-readable markdown version is also served for AI consumption. No evidence shows the reference is interactive (try-it console) or has runnable examples, and probes for a public OpenAPI spec at common paths returned 404. Missing for 10: evidence of an interactive try-it/playground, runnable code samples, a discoverable OpenAPI spec, and independent hands-on corroboration.",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "Cal.com publishes an extensive, per-endpoint API v2 reference covering bookings, slots, event types, webhooks with schema enums, schedules, and routing trace. It also serves machine-readable markdown pages and an llms.txt index, which helps AI-native exploration. However, nothing in the evidence shows an interactive playground or runnable examples, and the probe found no public OpenAPI spec at the standard paths. missing for 10: evidence of an interactive 'try it' console, runnable request/response examples, a discoverable OpenAPI spec, independent hands-on corroboration",
     "evidenceIds": [
-      "cal-com-docs-37",
-      "cal-com-docs-42",
-      "cal-com-docs-61",
+      "cal-com-docs-1",
+      "cal-com-docs-26",
+      "cal-com-docs-8",
+      "cal-com-docs-20",
       "cal-com-probe-2",
+      "cal-com-probe-1",
       "cal-com-probe-3"
     ]
   },
@@ -335,16 +336,18 @@
   {
     "productId": "cal-com",
     "storyId": "automation-rules-engine",
-    "verdict": "partial",
-    "quality": 5,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Cal.com names \"workflows\" as a platform feature, and a community report confirms Workflows exist as an enterprise-edition feature removed from Cal.diy, but the evidence never describes how rules or actions are defined. What is documented is event-triggered automation: event-type webhooks with a trigger enum (BOOKING_CREATED, BOOKING_PAID, BOOKING_RESCHEDULED, BOOKING_CANCELLED and others) and a customizable payload template sent to a subscriber URL. The listed Zapier app automates on booking events, but through an external tool. Missing for 10: documentation of Workflows rule definition (conditions and actions such as reminders or emails), native configurable actions beyond outbound webhooks, and agent/API access to create automation rules.",
+    "rationale": "Cal.com documents event-triggered webhooks with a trigger enum (BOOKING_CREATED, BOOKING_PAID, BOOKING_RESCHEDULED, BOOKING_CANCELLED, etc.) and a customizable payload template sent to a subscriber URL. It also lists native 'workflows' as a platform capability, and a Zapier app automates actions when bookings are created, rescheduled or cancelled, or when a meeting ends. missing for 10: detailed documentation of the native workflow rule builder (conditions and action types), evidence of conditional rule logic beyond event subscription, independent or hands-on corroboration.",
     "evidenceIds": [
-      "cal-com-docs-28",
-      "cal-com-comm-19-refresh-0cdd74908dd901b8",
+      "cal-com-docs-26",
       "cal-com-docs-42",
+      "cal-com-docs-5",
       "cal-com-docs-52",
-      "cal-com-intdir-7"
+      "cal-com-docs-28",
+      "cal-com-intdir-7",
+      "cal-com-docs-60"
     ]
   },
   {
@@ -415,16 +418,15 @@
   {
     "productId": "cal-com",
     "storyId": "collective-availability",
-    "verdict": "partial",
-    "quality": 5,
+    "verdict": "full",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Cal.com's own overview names collective scheduling as a supported event type (docs-28). The slots API can return times when two or more named users are all available, though that is documented for dynamic events rather than collective team event types (docs-38, docs-70). The team scheduling-configuration endpoint varies its response by scheduling type, but only round-robin settings are detailed (docs-35, docs-51). missing for 10: first-party docs on collective event types that show slots only when every required host is free, details on configuring required hosts, independent or hands-on corroboration.",
+    "rationale": "Cal.com's own overview lists collective scheduling as a supported mode alongside round-robin [cal-com-docs-28]. The slots API can return times when two or more people are all available [cal-com-docs-38], and team availability is queryable [cal-com-docs-12], with team event scheduling configuration varying by scheduling type [cal-com-docs-35]. The core is supported, but the evidence is thin, so quality is moderate. Missing for 10: explicit docs on collective event setup and on the rule that slots appear only when all required hosts are free; any detail on required versus optional hosts; independent or hands-on corroboration.",
     "evidenceIds": [
       "cal-com-docs-28",
       "cal-com-docs-38",
-      "cal-com-docs-70",
-      "cal-com-docs-35",
-      "cal-com-docs-51"
+      "cal-com-docs-12",
+      "cal-com-docs-35"
     ]
   },
   {
@@ -545,11 +547,18 @@
   {
     "productId": "cal-com",
     "storyId": "openness-full-export",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence pack has no documented data-export feature: no account export, no bulk download, and no open-format (CSV/ICS/JSON) dump of bookings, event types or schedules. The REST API, MCP server and CLI are developer building blocks for scheduling operations, not an export capability. The MIT-licensed Cal.diy fork and GDPR compliance claims are adjacent to the story and do not show a way to export all of a user's data and leave.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "There is no documented export feature. Indirect paths exist: API v2 and the MCP server can manage bookings, event types and schedules, which could pull data out as JSON. The fully MIT-licensed Cal.diy fork lets self-hosters keep their scheduling data on their own infrastructure, so leaving the hosted service is plausible. Missing for 10: a documented bulk or full-account data export, explicit open export formats (e.g. CSV/ICS/JSON dumps), a migration-off or account-portability guide, and any hands-on corroboration of a complete export.",
+    "evidenceIds": [
+      "cal-com-docs-30",
+      "cal-com-docs-12",
+      "cal-com-gh-1",
+      "cal-com-gh-2",
+      "cal-com-docs-43",
+      "cal-com-comm-5-refresh-1febad52d60bd33f"
+    ]
   },
   {
     "productId": "cal-com",
@@ -886,12 +895,11 @@
     "productId": "calendly",
     "storyId": "agentic-ai-insights",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Calendly's own pricing and homepage docs describe in-product AI features: AI meeting recaps and action items (Notetaker), tracking of next steps, and an AI assistant 'Callie' (beta) with an 'Ask Callie' interactive chat. That is AI-generated output from the user's meeting data, but the evidence is thin marketing copy and covers meeting content rather than broader insights or suggestions drawn from scheduling data. Missing for 10: AI insights or suggestions over scheduling and booking data, detailed docs on what Ask Callie can analyze or suggest, a non-beta assistant, and independent or hands-on corroboration.",
+    "rationale": "Calendly's pricing page lists in-product AI features: meeting recaps and action items, recordings and transcripts, and an AI assistant 'to help with the work around meetings.' The homepage adds that next steps are tracked and follow-ups handled. These are AI-generated outputs from meeting data, but they are thin marketing one-liners, not documented insight or suggestion features over the user's scheduling data. Missing for 10: AI insights or suggestions over scheduling, booking and routing data, in-depth docs on how recaps and suggestions are generated and surfaced, and independent or hands-on corroboration.",
     "evidenceIds": [
       "calendly-docs-58",
-      "calendly-docs-85",
       "calendly-docs-18",
       "calendly-docs-28"
     ]
@@ -917,11 +925,10 @@
     "productId": "calendly",
     "storyId": "agentic-builtin-assistant",
     "verdict": "full",
-    "quality": 6,
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Calendly ships a built-in AI assistant, Callie. You can add it to an email thread to coordinate scheduling on your behalf, chat with it via 'Ask Callie', and use a meeting-work assistant alongside the Notetaker's recaps and action items. That is genuine in-product task delegation, though it is labeled Beta and evidenced only by marketing and pricing copy. The MCP server is an external integration and was not credited here. Missing for 10: in-depth first-party docs on what tasks Callie can do and its limits, non-beta status, and independent or hands-on corroboration that the delegation works.",
+    "rationale": "Calendly ships a built-in AI assistant, Callie. Users can add it to any email thread to coordinate scheduling on their behalf [27][19]. The pricing page also describes an AI assistant that helps with the work around meetings, alongside recaps and action items [58][28], so delegating tasks inside the product is clearly supported. Missing for 10: in-depth first-party documentation of what tasks Callie can take on and how users control or approve its actions, and any independent or hands-on corroboration that delegation works as marketed.",
     "evidenceIds": [
-      "calendly-docs-85",
       "calendly-docs-27",
       "calendly-docs-19",
       "calendly-docs-58",
@@ -932,19 +939,17 @@
     "productId": "calendly",
     "storyId": "agentic-headless",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Calendly can be driven headlessly through its own documented REST API v2. It supports non-interactive personal access tokens for internal or private automation, programmatic booking and data read/write, webhook subscriptions that trigger automations, and a Sandbox environment for testing. There is no evidence of a CLI, CI-specific tooling or guidance, or service-account-style credentials for pipelines, so headless use is API-only rather than a first-class CI mode. Missing for 10: official CLI or CI integration docs, service-account or CI credential guidance, independent hands-on evidence of pipeline use.",
+    "rationale": "Calendly can be driven headlessly through its REST API v2. Personal access tokens give non-interactive auth for internal automation, and the API supports programmatic booking and read/write of scheduling data. Webhook subscriptions (with signing keys) support event-driven pipelines. However, there is no first-party CLI or CI-specific tooling, so automation means writing custom API scripts. Missing for 10: an official CLI or CI integration, documented CI/headless usage examples, and independent hands-on corroboration of automated pipelines.",
     "evidenceIds": [
       "calendly-docs-1",
-      "calendly-docs-52",
-      "calendly-docs-78",
       "calendly-docs-3",
-      "calendly-docs-62",
-      "calendly-docs-69",
-      "calendly-docs-77",
-      "calendly-docs-81",
-      "calendly-docs-79"
+      "calendly-docs-52",
+      "calendly-docs-54",
+      "calendly-docs-55",
+      "calendly-docs-6",
+      "calendly-docs-30"
     ]
   },
   {
@@ -1293,11 +1298,16 @@
   {
     "productId": "calendly",
     "storyId": "cross-calendar-blocking-sync",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "Calendly's evidence shows it can connect multiple calendars and check them for conflicts before someone books. That is read-only availability checking for Calendly bookings, an adjacent feature. Nothing shows it automatically writing busy blocks from a work calendar into a personal one, or the reverse, to keep both calendars in step.",
-    "evidenceIds": []
+    "rationale": "Calendly documents connecting multiple calendars and checking them for conflicts before someone books time, and a community user confirms it checks multiple calendars. That only prevents double-booking of Calendly meetings. Nothing shows it writes busy blocks from one calendar into another so work and personal calendars stay in step. Missing for 10: automatic busy-block mirroring between work and personal calendars, two-way calendar sync of non-Calendly events, documentation of sync behavior, hands-on corroboration.",
+    "evidenceIds": [
+      "calendly-docs-15",
+      "calendly-docs-42",
+      "calendly-docs-49",
+      "calendly-comm-10-refresh-65cae820cb83c78d"
+    ]
   },
   {
     "productId": "calendly",
@@ -1380,11 +1390,17 @@
   {
     "productId": "calendly",
     "storyId": "openness-full-export",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence pack documents no first-party data export feature: no account-wide download, no CSV/ICS/JSON export, and no take-out or offboarding tool. The REST API can read Scheduling, Contacts, and Notetaker data and push it to CRMs, but that is a developer building block for constructing an export, not the export capability itself. A community anecdote about switching to zcal in 30 minutes concerns migration effort, not exporting one's data in open formats.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "There is no documented export or download-your-data feature. Data portability is only implied: the REST API v2 can programmatically read Scheduling, Contacts and Notetaker data, and webhooks stream event data in real time, so a user could build their own extraction. One community report says leaving was easy (moved to zcal in 30 minutes), which weakly supports low lock-in. Missing for 10: a documented first-party bulk export, explicit open file formats (e.g., CSV/ICS/JSON dumps), coverage of all data types (recordings, transcripts, routing forms, workflows), and account-deletion/offboarding docs.",
+    "evidenceIds": [
+      "calendly-docs-1",
+      "calendly-docs-52",
+      "calendly-docs-54",
+      "calendly-docs-30",
+      "calendly-comm-12-refresh-0a3255b6bd767273"
+    ]
   },
   {
     "productId": "calendly",
@@ -1468,15 +1484,16 @@
     "productId": "calendly",
     "storyId": "reschedule-cancel-flows",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Calendly's own webhook docs confirm that invitees can cancel and reschedule meetings. Events fire when meetings are \"canceled by either the host or the invitee,\" and an invitee reschedule triggers both invitee.created and invitee.canceled. Calendar sync is documented, but only for checking conflicts before booking. Missing for 10: evidence that reschedule/cancel links appear in the invitee's confirmation, any enforcement of host policies (notice windows, cancellation rules), explicit evidence that connected calendars update on reschedule/cancel, and independent corroboration.",
+    "rationale": "Calendly's docs confirm invitees can cancel and reschedule meetings: webhooks fire whenever invitees schedule, cancel, or reschedule (calendly-docs-54, calendly-docs-7). Hosts can also send reschedule requests (calendly-docs-14), and multiple calendars sync for conflict checks (calendly-docs-49, calendly-docs-15). The evidence does not describe the invitee-facing flow from the confirmation itself, any policy enforcement, or how connected calendars are updated after a change. Missing for 10: documented reschedule/cancel links in confirmations, enforceable cancellation/reschedule policies (e.g., minimum notice or cutoffs), explicit evidence that all connected calendars update on reschedule/cancel, independent hands-on corroboration.",
     "evidenceIds": [
-      "calendly-docs-7",
       "calendly-docs-54",
-      "calendly-docs-63",
-      "calendly-docs-66",
-      "calendly-docs-49"
+      "calendly-docs-7",
+      "calendly-docs-23",
+      "calendly-docs-14",
+      "calendly-docs-49",
+      "calendly-docs-15"
     ]
   },
   {
@@ -1620,11 +1637,18 @@
   {
     "productId": "motion",
     "storyId": "agent-scheduling-tool",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "The evidence shows no MCP server or agent tool-calling surface that exposes scheduling availability, bookings, or meeting/event types. The only documented API covers creating and managing projects and tasks, which does not map to this story. Booking templates and availability windows are described only as UI features, with no evidence they are exposed programmatically to agents.",
-    "evidenceIds": []
+    "rationale": "Motion has a live, documented REST API with X-API-Key auth that agents could call as a tool, and an agent-oriented llms.txt. However, the documented API scope is creating and managing projects and tasks, not the scheduling objects the story names; booking templates and embeddable booking calendars appear only as UI features. Missing for 10: an official MCP server, API or tool exposure of availability, bookings, and event types (meeting templates), and agent tool-calling documentation or hands-on corroboration.",
+    "evidenceIds": [
+      "motion-docs-1",
+      "motion-docs-29",
+      "motion-probe-rt-2",
+      "motion-probe-rt-1",
+      "motion-docs-27",
+      "motion-docs-7"
+    ]
   },
   {
     "productId": "motion",
@@ -1700,15 +1724,15 @@
     "productId": "motion",
     "storyId": "agentic-headless",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Motion documents its own public API, available to all users, for creating, updating and managing projects and tasks. The API has a full endpoint reference and cookbooks, so scripts can automate it without the UI. There is no evidence of a CLI, a CI integration, or guidance for running it in pipelines. Headless use is only implied through raw API calls. Missing for 10: an official CLI or headless runner, CI/pipeline docs or examples, service-account/token auth guidance for automation, and independent hands-on corroboration.",
+    "rationale": "Motion has a public REST API for creating, updating and managing projects and tasks, with a full endpoint reference and cookbooks. A probe confirmed the API is live and enforces X-API-Key auth, so scripted, non-UI automation from a CI job is feasible, and Zapier offers another automation path. However, nothing in the evidence shows a CLI, SDK, or CI-specific headless guidance, so CI automation means hand-rolling HTTP calls. Missing for 10: an official CLI or headless runner, documented CI/pipeline integration, and independent hands-on reports of headless or CI use.",
     "evidenceIds": [
       "motion-docs-1",
-      "motion-docs-60",
       "motion-docs-29",
       "motion-docs-2",
-      "motion-docs-28"
+      "motion-probe-rt-2",
+      "motion-docs-18"
     ]
   },
   {
@@ -1829,15 +1853,15 @@
     "productId": "motion",
     "storyId": "api-interactive-docs",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Motion documents its own API reference, described as a complete guide to all endpoints, plus cookbooks with fully fleshed-out examples. Nothing in the evidence shows the reference is interactive (e.g., a try-it console) or that the examples can be run in the browser. missing for 10: evidence of an interactive try-it/playground in the API reference, runnable in-docs examples, independent or hands-on corroboration of the docs experience",
+    "rationale": "Motion publishes an API reference described as \"a complete guide on all our endpoints\", plus cookbooks and guides with \"fully fleshed out examples\". A probe confirmed the documented REST API is live and enforces its documented X-API-Key auth. Nothing in the evidence shows the reference is interactive or that examples can be run in-browser, so only the reference-and-examples half of the story is supported. Missing for 10: evidence of an interactive try-it/playground in the API reference, runnable example execution, and independent hands-on corroboration of the docs experience.",
     "evidenceIds": [
       "motion-docs-29",
       "motion-docs-2",
       "motion-docs-28",
-      "motion-docs-60",
-      "motion-docs-1"
+      "motion-docs-1",
+      "motion-probe-rt-2"
     ]
   },
   {
@@ -1861,48 +1885,58 @@
   {
     "productId": "motion",
     "storyId": "api-versioning-policy",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "Motion documents a public API with an endpoint reference, but nothing in the evidence mentions API versioning, version identifiers, or a deprecation policy. Having an API is related but does not deliver this story, so this applicable axis is judged none.",
-    "evidenceIds": []
+    "rationale": "Motion has a live REST API with a version segment in its path: a probe of api.usemotion.com/v1/tasks returned a structured 401, and the docs reference a complete endpoint guide. That versioning is only implied by the URL, and nothing in the pack documents a versioning scheme, changelog, or deprecation policy. Missing for 10: a documented deprecation policy, an explicit versioning or compatibility policy, a changelog or sunset timelines, and independent corroboration of version stability.",
+    "evidenceIds": [
+      "motion-probe-rt-2",
+      "motion-docs-29",
+      "motion-docs-1"
+    ]
   },
   {
     "productId": "motion",
     "storyId": "automation-bulk-operations",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence shows only single-item actions: API endpoints for creating and updating tasks, one-click assign, and per-task deadline adjustment. It also shows adjacent features: filtering and sorting, and automatic rescheduling of the whole day. None of these is a documented user-facing bulk-edit or batch API capability for acting on many items at once, so the API counts only as a developer building block and the rescheduling as an adjacent automation.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "There is no explicit bulk-edit feature or bulk API endpoint in the evidence. A user could approximate bulk operations by scripting the REST API, which is documented for creating and updating tasks and projects and is confirmed live behind API-key auth. The AI also reschedules an entire day or week at once, but that is automatic rescheduling, not user-directed bulk actions. Missing for 10: a native multi-select or bulk-edit UI, batch API endpoints, documented bulk update/delete/reassign across many items, and hands-on corroboration.",
+    "evidenceIds": [
+      "motion-docs-1",
+      "motion-docs-29",
+      "motion-probe-rt-2",
+      "motion-docs-44",
+      "motion-docs-31"
+    ]
   },
   {
     "productId": "motion",
     "storyId": "automation-rules-engine",
     "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Motion documents some of its own event-driven automation. Its AI Workflow Builder turns SOPs into workflows, and projects advance automatically when blocking tasks are completed. Users can also set daily meeting limits that make the calendar unbookable once reached. None of this is shown to be a general user-defined rule engine where you choose a trigger and an action, and Zapier connectivity is a third-party integration, so it earns no credit here. Missing for 10: a documented user-configurable trigger/condition/action rule builder, a range of selectable event types and actions, depth documentation of the workflow builder, and independent or hands-on corroboration.",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "Motion has built-in event-driven behaviors: projects advance when blocking tasks complete, user-set daily meeting limits are enforced automatically, forwarded emails become tasks, and an 'AI Workflow Builder' builds workflows from SOPs. General trigger→action rules, however, appear to depend on the external Zapier integration. Missing for 10: documented native user-defined rule/trigger engine, choice of trigger events and actions, details on how the AI Workflow Builder configures automations, and hands-on corroboration.",
     "evidenceIds": [
-      "motion-docs-23",
-      "motion-docs-34",
-      "motion-docs-59",
       "motion-docs-14",
-      "motion-docs-6"
+      "motion-docs-6",
+      "motion-docs-16",
+      "motion-docs-18",
+      "motion-docs-23"
     ]
   },
   {
     "productId": "motion",
     "storyId": "automation-scheduled-jobs",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Motion documents its own recurrence feature: users can create daily, weekly, monthly or quarterly tasks, and the AI Task Manager blocks calendar time for them on a regular basis (motion-docs-12, motion-docs-57). That covers recurring human work items, not automated jobs. The AI Workflow Builder (motion-docs-23, motion-docs-64) builds workflows from SOPs, but no evidence shows those workflows can be scheduled to run on a recurrence. Missing for 10: scheduled or recurring execution of automated jobs or workflows, recurrence via the API, cron-like trigger configuration, and independent corroboration.",
+    "rationale": "Motion documents recurring tasks: you can create daily, weekly, monthly, or quarterly tasks and it blocks calendar time for them automatically. It also advertises an AI Workflow Builder and Zapier connectivity. However, these recurring items are human to-dos placed on a calendar, not automated jobs that execute on a schedule. Nothing shows that workflows can run on a recurring trigger, natively or via the API. Missing for 10: scheduled or recurring execution of automated workflows, API support for recurrence, detailed recurrence configuration docs, independent hands-on corroboration.",
     "evidenceIds": [
       "motion-docs-12",
-      "motion-docs-57",
       "motion-docs-23",
-      "motion-docs-64"
+      "motion-docs-18",
+      "motion-docs-34"
     ]
   },
   {
@@ -2061,11 +2095,15 @@
   {
     "productId": "motion",
     "storyId": "openness-full-export",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Data export is a fair question for a SaaS productivity tool, but the evidence pack never documents a data export feature, open export formats, or an offboarding path. The REST API for managing projects and tasks is a developer building block a user could use to build their own export, not an export capability, so it earns no credit.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "There is no documented export feature. The only route out is the live, documented REST API (X-API-Key auth, structured JSON), which covers projects and tasks and could be scripted to pull that data. This is a self-built workaround that covers only part of a user's data, not a clean way to export everything and leave. Missing for 10: a first-party bulk or 'export all data' feature, documented open export formats (e.g. CSV/JSON/ICS), coverage of calendars, meeting notes, docs and settings, an account-exit or migration guide, and independent confirmation that a complete export works.",
+    "evidenceIds": [
+      "motion-docs-1",
+      "motion-docs-29",
+      "motion-probe-rt-2"
+    ]
   },
   {
     "productId": "motion",
@@ -2256,20 +2294,28 @@
   {
     "productId": "reclaim",
     "storyId": "agent-books-meeting",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Agent-driven scheduling via API or MCP is a fair question for a calendar-scheduling SaaS, so the axis applies. The pack documents no public API, MCP server, or programmatic endpoints for checking availability, booking, rescheduling, or cancelling meetings, and the OpenAPI probe returned 404 on every path. The in-app chat assistant, scheduling links, and calendar drag-to-reschedule are dashboard and UI features, not agent-accessible interfaces.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Runtime probes show a live first-party remote MCP server at mcp.reclaim.ai, auth-gated via spec-compliant OAuth discovery advertising read/write/mcp scopes, so an agent channel plausibly exists. However, no vendor documentation describes the server or its tools, no OpenAPI spec was found, and nothing shows that availability checks, booking, rescheduling, or cancellation are exposed to agents; the scheduling features in the docs are all dashboard or calendar-driven. Missing for 10: documented MCP/API tool list, evidenced availability-check, book, reschedule and cancel operations via API/MCP, public API reference, hands-on end-to-end agent corroboration.",
+    "evidenceIds": [
+      "reclaim-probe-rt-1",
+      "reclaim-probe-rt-2",
+      "reclaim-probe-3",
+      "reclaim-docs-49"
+    ]
   },
   {
     "productId": "reclaim",
     "storyId": "agent-scheduling-tool",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Reclaim is a scheduling SaaS, so exposing availability, bookings, and event types to external agents through an MCP server or tool-calling API is a fair question. The evidence shows no such surface. The in-app natural-language AI Assistant is an adjacent feature, not an agent-callable tool. The llms.txt file only indexes help docs, and the OpenAPI probes all returned 404.",
-    "evidenceIds": []
+    "rationale": "Runtime probes confirm a live, first-party remote MCP server at mcp.reclaim.ai. It is OAuth-gated per the MCP spec and publishes RFC 9728 discovery metadata with read/write/mcp scopes, so agents can plausibly use the scheduling account as a tool. However, no vendor documentation was found, and the probes stop at the auth handshake, so the exposed tools are unverified. Missing for 10: documentation of the MCP server, evidence of which tools it exposes (availability, bookings, scheduling-link/event types), and hands-on or independent confirmation of tool calls working end to end.",
+    "evidenceIds": [
+      "reclaim-probe-rt-1",
+      "reclaim-probe-rt-2"
+    ]
   },
   {
     "productId": "reclaim",
@@ -2341,11 +2387,15 @@
   {
     "productId": "reclaim",
     "storyId": "agentic-headless",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Scriptable or headless automation is a fair question for a SaaS scheduling service, since it could ship an API or CLI. The evidence pack documents no such interface. All OpenAPI probe paths returned 404, and the documented controls (in-calendar hashtags, Google Calendar and Gmail add-ons, the chat assistant) are UI or calendar-side, not headless or CI automation.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Reclaim is a SaaS calendar assistant, so headless or programmatic automation is a fair question to ask of it. The only programmatic surface in evidence is a live, first-party remote MCP endpoint at mcp.reclaim.ai: it requires OAuth bearer-token auth and advertises read/write scopes (probe-rt-1, rt-2). That offers a plausible route to non-UI automation, but no vendor docs for it exist, OpenAPI paths all 404, and nothing shows a CLI or CI usage. missing for 10: documented public API or CLI, non-interactive/service-account auth suitable for CI, vendor docs for the MCP server, any hands-on evidence of headless or CI automation.",
+    "evidenceIds": [
+      "reclaim-probe-rt-1",
+      "reclaim-probe-rt-2",
+      "reclaim-probe-3"
+    ]
   },
   {
     "productId": "reclaim",
@@ -2359,11 +2409,14 @@
   {
     "productId": "reclaim",
     "storyId": "agentic-mcp-server",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Reclaim.ai is a scheduling SaaS, not an agent, so an official MCP server is a fair question and the axis applies. Nothing in the current pack documents or probes an MCP endpoint: the docs cover scheduling features and an in-app chat assistant, the probes find only an llms.txt file and no OpenAPI spec, and the reviewer's cited runtime checks for mcp.reclaim.ai are not in the pack, so they cannot be credited here.",
-    "evidenceIds": []
+    "rationale": "Runtime probes, re-verified a month apart, show a live first-party remote MCP server at mcp.reclaim.ai. It returns a spec-compliant 401 Bearer challenge and publishes RFC 9728 OAuth protected-resource metadata with read/write/mcp scopes, so a standard MCP client can plausibly connect. However, the vendor publishes no documentation for the server, and the probes stop at the auth gate, so the exposed tools and an end-to-end agent connection are unverified. Missing for 10: vendor documentation of the MCP server and its setup, a published tool list or capabilities, hands-on evidence of an authenticated session with working tool calls, and independent community corroboration.",
+    "evidenceIds": [
+      "reclaim-probe-rt-1",
+      "reclaim-probe-rt-2"
+    ]
   },
   {
     "productId": "reclaim",
@@ -2392,20 +2445,27 @@
   {
     "productId": "reclaim",
     "storyId": "agentic-public-api",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "A documented public API is a fair question for a SaaS scheduling product, so the axis applies, but the evidence pack contains no API reference, endpoints or auth documentation. The OpenAPI/Swagger probes on the help domain all returned 404. Calendar hashtags, the in-app chat assistant, task-tool integrations and a help-center llms.txt are adjacent features, not a programmatic API, and earn no credit.",
-    "evidenceIds": []
+    "rationale": "No documented public API appears in the evidence, and the OpenAPI/Swagger probes all returned 404. Probes did find a live, first-party, OAuth-gated remote MCP endpoint at mcp.reclaim.ai, which publishes an RFC 9728 discovery document with read/write/mcp scopes, so programmatic driving appears possible. However, no vendor documentation for that endpoint was found on either probe date. Missing for 10: published API reference or OpenAPI spec, vendor docs for the MCP/API surface, documented endpoints and auth setup, and hands-on evidence of driving the product through the API beyond the auth handshake.",
+    "evidenceIds": [
+      "reclaim-probe-rt-1",
+      "reclaim-probe-rt-2",
+      "reclaim-probe-3"
+    ]
   },
   {
     "productId": "reclaim",
     "storyId": "agentic-scoped-keys",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Scoped API credentials are a fair question for a SaaS scheduling product, so the axis applies. Nothing in the evidence pack documents API keys, tokens, scopes, or least-privilege credentials for agents. The OpenAPI probe returned 404 on every candidate path, and the docs cover only end-user scheduling features.",
-    "evidenceIds": []
+    "rationale": "Runtime probes show Reclaim's first-party MCP endpoint is auth-gated with MCP-spec OAuth. Its RFC 9728 discovery document advertises coarse 'read', 'write' and 'mcp' scopes, so an agent could plausibly be granted a read-only, scoped token. However, no vendor documentation describes this, and there is no evidence of user-facing controls for issuing, scoping or revoking agent credentials. Missing for 10: first-party docs on credential scoping, fine-grained per-resource scopes, a user-facing token/API-key management UI with revocation, and hands-on confirmation that the scopes are actually enforced.",
+    "evidenceIds": [
+      "reclaim-probe-rt-1",
+      "reclaim-probe-rt-2"
+    ]
   },
   {
     "productId": "reclaim",
@@ -2710,11 +2770,15 @@
   {
     "productId": "reclaim",
     "storyId": "openness-api-parity",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "API parity is a fair question for a SaaS scheduling product, but the evidence pack never documents a public API. The OpenAPI/Swagger probes all returned 404. The llms.txt help-center index, calendar hashtags, and Google Calendar/Slack add-ons are adjacent features, not programmatic API coverage of UI functionality.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 2,
+    "confidence": "low",
+    "rationale": "The only programmatic surface in the evidence is an undocumented, auth-gated first-party remote MCP server at mcp.reclaim.ai, which advertises read/write scopes. Nothing shows what it covers or that it matches the UI, and no OpenAPI spec was found at any probed path. missing for 10: a documented public REST API, an OpenAPI or reference spec, evidence of coverage across Tasks/Habits/Focus Time/Scheduling Links/Calendar Sync/settings, any vendor docs for the MCP server, and independent confirmation of UI parity.",
+    "evidenceIds": [
+      "reclaim-probe-rt-1",
+      "reclaim-probe-rt-2",
+      "reclaim-probe-3"
+    ]
   },
   {
     "productId": "reclaim",
