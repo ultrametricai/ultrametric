@@ -13,7 +13,7 @@ DESC = '0 unresolved Greptile findings; Foreloop excluded'
 
 class ReviewGateTests(unittest.TestCase):
     def run_gate(self, *, target='513', head='', checks=None, threads=None, status=None,
-                 pages=None, changed=False, metadata_error=False):
+                 pages=None, changed=False, metadata_error=False, status_read_error=False):
         source = (Path(__file__).resolve().parents[2] / '.github/workflows/review-findings.yml').read_text()
         selection = source.split('        run: |\n', 1)[1].split('\n  findings:', 1)[0]
         selection = '\n'.join(line[10:] if line.startswith('          ') else line for line in selection.splitlines())
@@ -46,6 +46,8 @@ class ReviewGateTests(unittest.TestCase):
             if '/check-runs?' in endpoint:
                 return json.dumps({'check_runs': checks})
             if endpoint.endswith('/status'):
+                if status_read_error:
+                    raise RuntimeError('status history unavailable')
                 return json.dumps({'statuses': prior})
             if '/statuses/' in endpoint:
                 posts.append(data)
@@ -117,6 +119,16 @@ class ReviewGateTests(unittest.TestCase):
         posts, _ = self.run_gate(metadata_error=True,
             status=[{'context': 'review-findings', 'state': 'success', 'description': DESC}])
         self.assertEqual(posts[0]['state'], 'pending')
+
+    def test_status_read_failure_revokes_stale_success(self):
+        posts, _ = self.run_gate(status_read_error=True,
+            status=[{'context': 'review-findings', 'state': 'success', 'description': DESC}])
+        self.assertEqual(posts, [{
+            'state': 'pending',
+            'context': 'review-findings',
+            'description': 'Review metadata unavailable; retry required',
+            'target_url': 'https://github.com/owner/repo/actions/runs/123',
+        }])
 
     def test_head_change_never_publishes_approval(self):
         posts, _ = self.run_gate(changed=True)

@@ -96,12 +96,18 @@ jobs:
               if data is not None:
                   args += ['--method', 'POST', '--input', '-']
               return json.loads(subprocess.check_output(args, input=json.dumps(data) if data is not None else None, text=True))
-          def publish(sha, state, description):
+          def publish(sha, state, description, *, allow_status_read_failure=False):
               # Polling must not append identical statuses: GitHub caps each SHA/context.
-              previous = api(f'repos/{repo}/commits/{sha}/status')['statuses']
-              current = next((item for item in previous if item['context'] == 'review-findings'), None)
-              if current and current['state'] == state and current.get('description') == description:
-                  return
+              try:
+                  previous = api(f'repos/{repo}/commits/{sha}/status')['statuses']
+              except Exception:
+                  # Only the fail-closed pending fallback may write without a read.
+                  if not allow_status_read_failure or state != 'pending':
+                      raise
+              else:
+                  current = next((item for item in previous if item['context'] == 'review-findings'), None)
+                  if current and current['state'] == state and current.get('description') == description:
+                      return
               api(f'repos/{repo}/statuses/{sha}', {
                   'state': state, 'context': 'review-findings', 'description': description,
                   'target_url': f"{os.environ['SERVER_URL']}/{repo}/actions/runs/{os.environ['RUN_ID']}"})
@@ -153,7 +159,8 @@ jobs:
                   # Metadata/API failures revoke any stale approval for this head.
                   try:
                       if initial is not None and initial['state'] == 'open':
-                          publish(initial['head']['sha'], 'pending', 'Review metadata unavailable; retry required')
+                          publish(initial['head']['sha'], 'pending', 'Review metadata unavailable; retry required',
+                                  allow_status_read_failure=True)
                   except Exception:
                       pass
                   print(f'::warning::#{number}: {error}', flush=True)
