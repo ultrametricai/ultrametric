@@ -7280,6 +7280,97 @@
           "expectedDecision": "ready-for-human"
         }
       ]
+    },
+    {
+      "id": "fictional-statutory-accounts",
+      "company": "Fictional Accounts Workshop Ltd",
+      "scenario": "At the annual reporting close when the entity must prepare or distribute statutory financial statements.",
+      "expectedProcessId": "startup-coverage.prepare-and-file-statutory-annual-accounts",
+      "expectedOutcome": "Approved annual financial statements with required distribution and filing evidence, and unresolved exceptions assigned.",
+      "externalActionsAuthorized": false,
+      "gateChecks": [
+        {
+          "id": "outside-trigger",
+          "stepId": "n2",
+          "facts": {
+            "triggerConfirmed": false,
+            "requiredLocationsKnown": true,
+            "expertReviewComplete": true,
+            "approval": {
+              "role": "accountable reporting owner",
+              "scope": "Confirm the reporting framework and obligations"
+            }
+          },
+          "expectedDecision": "out-of-scope"
+        },
+        {
+          "id": "missing-locations",
+          "stepId": "n2",
+          "facts": {
+            "triggerConfirmed": true,
+            "requiredLocationsKnown": false,
+            "expertReviewComplete": true,
+            "approval": {
+              "role": "accountable reporting owner",
+              "scope": "Confirm the reporting framework and obligations"
+            }
+          },
+          "expectedDecision": "needs-context"
+        },
+        {
+          "id": "missing-approval",
+          "stepId": "n2",
+          "facts": {
+            "triggerConfirmed": true,
+            "requiredLocationsKnown": true,
+            "expertReviewComplete": true,
+            "approval": null
+          },
+          "expectedDecision": "needs-approval"
+        },
+        {
+          "id": "wrong-scope",
+          "stepId": "n2",
+          "facts": {
+            "triggerConfirmed": true,
+            "requiredLocationsKnown": true,
+            "expertReviewComplete": true,
+            "approval": {
+              "role": "accountable reporting owner",
+              "scope": "Unrelated action"
+            }
+          },
+          "expectedDecision": "needs-approval"
+        },
+        {
+          "id": "missing-review",
+          "stepId": "n2",
+          "facts": {
+            "triggerConfirmed": true,
+            "requiredLocationsKnown": true,
+            "expertReviewComplete": false,
+            "approval": {
+              "role": "accountable reporting owner",
+              "scope": "Confirm the reporting framework and obligations"
+            }
+          },
+          "expectedDecision": "needs-review"
+        },
+        {
+          "id": "ready-for-human",
+          "stepId": "n2",
+          "facts": {
+            "triggerConfirmed": true,
+            "requiredLocationsKnown": true,
+            "expertReviewComplete": true,
+            "approval": {
+              "role": "accountable reporting owner",
+              "scope": "Confirm the reporting framework and obligations"
+            }
+          },
+          "expectedDecision": "ready-for-human"
+        }
+      ]
     }
   ],
   "scope": "Editorial examples and human-approval gate checks. Trigger confirmation is an explicit fictional fact; these cases do not infer applicability from prose or implement jurisdiction-specific legal matching. Ready-for-human does not authorize external actions."

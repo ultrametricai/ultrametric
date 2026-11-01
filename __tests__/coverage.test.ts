@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest'
+import { assessmentDigest, assessLocalProcedure, buildProcessCoverage, completenessScopeSchema, coverageCasesSchema, coverageDay, inventoryCrosscheckSchema, localAssessmentsSchema, matchCoverageFacts, processCountryMatrixSchema, scenarioScopeDigest, scopeDigest, validateCoverageInputs, type CoverageInputs } from '../lib/processCoverage'
 import { execFileSync } from 'node:child_process'
 import fs from 'node:fs'
 import path from 'node:path'
@@ -261,5 +262,173 @@ describe('startup task inventory and operational expansion', () => {
 
   it('the readable coverage map is regenerated from the current inventory and canonical titles', () => {
     expect(() => execFileSync(process.execPath, ['scripts/generate-startup-coverage.mjs', '--check'], { cwd: ROOT })).not.toThrow()
+  })
+})
+
+describe('process and country completeness evidence', () => {
+  const read = (file: string) => JSON.parse(fs.readFileSync(path.join(ROOT, file), 'utf8'))
+  const makeInput = (): CoverageInputs => ({
+    scope: completenessScopeSchema.parse(read('coverage/completeness-scope.json')),
+    audit: inventoryCrosscheckSchema.parse(read('coverage/inventory-crosscheck.json')),
+    local: localAssessmentsSchema.parse(read('coverage/local-procedure-assessments.json')),
+    fixtures: coverageCasesSchema.parse(read('coverage/fixtures/coverage-scenarios.json')),
+    records: structuredClone(loadProcessCatalog().processes.map(p => p.taskIds ? { ...p.record, taskIds: p.taskIds } : p.record)),
+    sources: read('coverage/startup-process-sources.json').sources,
+    needs: read('coverage/startup-task-inventory.json').needs,
+  })
+  const asOf = read('coverage/completeness-scope.json').snapshotDate as string
+  const later = (days: number) => new Date((coverageDay(asOf) + days) * 86400000).toISOString().slice(0, 10)
+  const reviewedExample = () => {
+    const input = makeInput()
+    const assessment = input.local.assessments.find(a => a.domain === 'tax')!
+    assessment.owner = 'Fictional test maintainer'
+    assessment.checkedOn = asOf
+    for (const sourceId of new Set(assessment.requirements.flatMap(r => r.sourceIds))) input.sources.find(s => s.id === sourceId)!.checkedOn = asOf
+    assessment.professionalReview = { reviewer: 'Fictional qualified reviewer', qualification: 'tax', independent: true,
+      reviewedOn: asOf, reviewDue: later(14), contentDigest: assessmentDigest(input, assessment), evidenceUrl: 'https://example.test/fictional-review' }
+    return { input, assessment }
+  }
+
+  it('publishes schemas identical to the live contracts and validates the authored data', () => {
+    const input = makeInput()
+    for (const [name, contract, value] of [
+      ['completeness-scope', completenessScopeSchema, input.scope], ['inventory-crosscheck', inventoryCrosscheckSchema, input.audit],
+      ['local-procedure-assessments', localAssessmentsSchema, input.local], ['coverage-scenarios', coverageCasesSchema, input.fixtures],
+    ] as const) {
+      expect(read(`schemas/${name}.schema.json`)).toEqual(z.toJSONSchema(contract))
+      expect(z.fromJSONSchema(read(`schemas/${name}.schema.json`)).parse(value)).toEqual(value)
+    }
+    expect(() => validateCoverageInputs(input)).not.toThrow()
+    expect(read('schemas/process-country-matrix.schema.json')).toEqual(z.toJSONSchema(processCountryMatrixSchema))
+    const report = buildProcessCoverage(input, asOf)
+    expect(z.fromJSONSchema(read('schemas/process-country-matrix.schema.json')).parse(report)).toEqual(report)
+  })
+
+  it('retains the full process-country product including missing and not-applicable notes', () => {
+    const input = makeInput()
+    const report = buildProcessCoverage(input, asOf)
+    const ordinary = input.records.filter(r => !r.taskIds)
+    expect(report.cells.length).toBe(ordinary.length * GEO_COUNTRIES.length)
+    expect(new Set(report.cells.map(c => `${c.processId}/${c.country}`)).size).toBe(report.cells.length)
+    expect(report.cells.some(c => c.noteKinds.includes('not-applicable'))).toBe(true)
+    expect(report.cells.some(c => !c.localMaterial)).toBe(true)
+    expect(report.summary.explicitNeedGaps).toBeGreaterThan(0)
+    expect(report.summary.mappedNeeds).toBeLessThan(report.summary.needs)
+    expect(report.summary.crosscheckedNeeds).toBe(new Set(input.audit.checks.flatMap(c => c.needIds)).size)
+    expect(report.summary.crosscheckedNeeds + report.crosscheckPendingNeedIds.length).toBe(report.summary.needs)
+  })
+
+  it('gives source-checked drafts and fictional cases no professional-review or execution credit', () => {
+    const report = buildProcessCoverage(makeInput(), asOf)
+    expect(report.assessments.every(a => a.fictionalTests === 'passed')).toBe(true)
+    expect(report.summary.reviewedProcedures).toBe(0)
+    expect(report.summary.observedProcedures).toBe(0)
+    expect(report.summary.reviewedScopeCells).toBe(0)
+    expect(report.summary.comprehensiveWithinDeclaredScope).toBe(false)
+    expect(report.independentScopeReview).toBe('missing')
+    expect(report.assessments.every(a => a.blockers.includes('owner-unassigned') && a.blockers.includes('professional-review-missing'))).toBe(true)
+  })
+
+  it('replays authored scope cases and refuses missing or unassessed dimensions', () => {
+    const input = makeInput()
+    for (const fixture of input.fixtures.cases) {
+      const assessment = input.local.assessments.find(a => a.id === fixture.assessmentId)!
+      expect(matchCoverageFacts(assessment.facts, fixture.facts), fixture.id).toBe(fixture.expected)
+      expect(fixture.externalActionsAuthorized).toBe(false)
+    }
+    const required = input.local.assessments[0].facts
+    expect(matchCoverageFacts(required, { ...required, unassessedWorkerLocation: 'US' })).toBe('needs-context')
+    expect(matchCoverageFacts(required, { ...required, registeredRegion: null })).toBe('needs-context')
+    expect(matchCoverageFacts(required, { ...required, country: 'IE' })).toBe('out-of-scope')
+  })
+
+  it('requires a maintained, current and qualified reviewed procedure while keeping external authorization separate', () => {
+    const { input, assessment } = reviewedExample()
+    expect(assessLocalProcedure(input, assessment, asOf)).toMatchObject({ reviewedProcedureReady: true, externalActionsAuthorized: false, observedExecution: 'unverified' })
+    assessment.owner = null
+    expect(assessLocalProcedure(input, assessment, asOf).blockers).toContain('owner-unassigned')
+  })
+
+  it('rejects editorial or non-independent review as a substitute for tax expertise', () => {
+    const { input, assessment } = reviewedExample()
+    assessment.professionalReview!.qualification = 'editorial'
+    expect(assessLocalProcedure(input, assessment, asOf).professionalReview).toBe('unqualified')
+    assessment.professionalReview!.qualification = 'tax'
+    assessment.professionalReview!.independent = false
+    expect(assessLocalProcedure(input, assessment, asOf).professionalReview).toBe('not-independent')
+  })
+
+  it('downgrades expired reviews, old instructions and old sources using the requested reporting date', () => {
+    const { input, assessment } = reviewedExample()
+    expect(assessLocalProcedure(input, assessment, later(14)).professionalReview).toBe('current')
+    expect(assessLocalProcedure(input, assessment, later(15)).professionalReview).toBe('stale')
+    expect(assessLocalProcedure(input, assessment, later(31)).blockers).toContain('instructions-need-recheck')
+    expect(assessLocalProcedure(input, assessment, later(92)).blockers).toContain('sources-need-recheck')
+    expect(assessLocalProcedure(input, assessment, later(-1)).professionalReview).toBe('future-dated')
+  })
+
+  it('invalidates existing review and observed-run credit when assessed content changes', () => {
+    const { input, assessment } = reviewedExample()
+    assessment.observedRuns.push({ id: 'fictional-test-attestation', ranOn: asOf, independent: true, operator: 'Fictional test operator', outcome: 'passed',
+      receiptUrl: 'https://example.test/fictional-run-attestation', contentDigest: assessmentDigest(input, assessment) })
+    expect(assessLocalProcedure(input, assessment, asOf).observedExecution).toBe('evidenced')
+    input.records.find(r => r.id === assessment.processId)!.parts[0].guidance += ' Changed fictional test instruction.'
+    expect(assessLocalProcedure(input, assessment, asOf)).toMatchObject({ professionalReview: 'content-changed', observedExecution: 'unverified', reviewedProcedureReady: false })
+  })
+
+  it('does not infer broader coverage from a reviewed narrow scenario', () => {
+    const { input, assessment } = reviewedExample()
+    const declared = input.scope.scenarioScopes.find(s => s.assessmentIds.includes(assessment.id))!
+    declared.limitation = 'Fictional test scope for the exact recorded domestic company facts.'
+    declared.independentReview = { reviewer: 'Fictional scope reviewer', qualification: 'editorial', independent: true, reviewedOn: asOf, reviewDue: later(14),
+      evidenceUrl: 'https://example.test/fictional-scope-review', contentDigest: scenarioScopeDigest(input, declared) }
+    const report = buildProcessCoverage(input, asOf)
+    expect(report.cells.find(c => c.processId === assessment.processId && c.country === assessment.country)?.declaredScopeCompleteness).toBe('reviewed')
+    expect(report.summary.reviewedScopeCells).toBe(1)
+    expect(report.summary.comprehensiveWithinDeclaredScope).toBe(false)
+    expect(report.cells.find(c => c.processId === assessment.processId && c.country === 'IE')?.declaredScopeCompleteness).toBe('unassessed')
+  })
+
+  it('prevents denominator shrinking, invalid scope links and unsupported authored-instruction claims', () => {
+    let input = makeInput()
+    input.scope.countries.pop()
+    expect(() => buildProcessCoverage(input, asOf)).toThrow('full process country selector')
+    input = makeInput()
+    input.scope.scenarioScopes[0].country = 'IE'
+    expect(() => buildProcessCoverage(input, asOf)).toThrow('another cell')
+    input = makeInput()
+    const assessment = input.local.assessments[0]
+    const step = input.records.find(r => r.id === assessment.processId)!.parts.find(p => p.id === assessment.requirements[0].stepIds[0])!
+    step.metadata.geoResolutions = []
+    expect(() => buildProcessCoverage(input, asOf)).toThrow('no local instructions')
+  })
+
+  it('retains incomplete requirements and failing cases as readiness blockers', () => {
+    const { input, assessment } = reviewedExample()
+    assessment.requirements[0].status = 'missing'
+    expect(assessLocalProcedure(input, assessment, asOf).blockers).toContain('instructions-incomplete')
+    input.fixtures.cases.find(c => c.assessmentId === assessment.id)!.expected = 'out-of-scope'
+    expect(assessLocalProcedure(input, assessment, asOf).blockers).toContain('scenario-tests-missing-or-failing')
+  })
+
+  it('rejects invalid calendar dates and binds scope reviews to the current inventory', () => {
+    expect(() => coverageDay('2026-02-30')).toThrow('Invalid coverage date')
+    const input = makeInput()
+    const before = scopeDigest(input)
+    input.needs[0].need += ' Changed fictional test need.'
+    expect(scopeDigest(input)).not.toBe(before)
+  })
+
+  it('invalidates inventory review when a crosschecked source changes', () => {
+    const input = makeInput()
+    input.audit.independentReview = { reviewer: 'Fictional inventory reviewer', qualification: 'editorial', independent: true,
+      reviewedOn: asOf, reviewDue: later(14), contentDigest: scopeDigest(input), evidenceUrl: 'https://example.test/fictional-inventory-review' }
+    expect(buildProcessCoverage(input, asOf).independentInventoryReview).toBe('current')
+    input.sources.find(source => source.id === input.audit.checks[0].sourceId)!.url += '?changed-reference'
+    expect(buildProcessCoverage(input, asOf).independentInventoryReview).toBe('content-changed')
+  })
+
+  it('keeps the generated matrix and readable report deterministic against the canonical catalog', () => {
+    expect(() => execFileSync(process.execPath, ['--import', 'tsx', 'scripts/generate-process-coverage.ts', '--check'], { cwd: ROOT })).not.toThrow()
   })
 })

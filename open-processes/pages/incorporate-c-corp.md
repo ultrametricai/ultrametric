@@ -11,6 +11,8 @@ Form a company in the selected jurisdiction: check the name, submit the local fo
 
 > Additional country launch entry points source-checked 2026-10-30. These are draft scoping summaries. They do not establish complete local-law workflows, professional review or verified execution for those countries.
 
+> Scoped draft detail: UK-resident private company limited by shares registered in England and Wales, operating domestically in unregulated services. Other entities, locations and cross-border facts need another assessment. Professional review is pending. Source and instruction check: 2026-11-01. Assessment: coverage/local-procedure-assessments.json.
+
 | Field | Value |
 | --- | --- |
 | Kind | process |
@@ -25,7 +27,7 @@ Form a company in the selected jurisdiction: check the name, submit the local fo
 
 Clerky/Stripe Atlas have limited APIs. System guides through the process, pre-fills known data, tracks progress, but cannot automate the filing itself.
 
-- Sources: [Business.gov.nl starting a business](https://business.gov.nl/starting-your-business/preparations/step-by-step-plan-how-to-start-a-business-in-the-netherlands/) · [Companies Registration Office: registering a company](https://cro.ie/Registration/Company/) · [Spain public administration: create a company](https://administracion.gob.es/tu-espacio-europeo/derechos-obligaciones/empresas/inicio-gestion-cierre/registro-cambio-cierre/crear) · [Verksamt starting a limited company](https://verksamt.se/en/setting-up/choose-business-type/limited-company) · [SECO how to register a company](https://www.kmu.admin.ch/en/how-to-register-a-company) · [JETRO setting up business](https://www.jetro.go.jp/en/invest/setting_up/) · [Brazil register an entity in CNPJ](https://www.gov.br/pt-br/servicos/inscrever-no-cnpj) · [UAE government mainland business setup](https://u.ae/en/information-and-services/business/doing-business-on-the-mainland/steps-to-start-a-business-on-the-mainland)
+- Sources: [Business.gov.nl starting a business](https://business.gov.nl/starting-your-business/preparations/step-by-step-plan-how-to-start-a-business-in-the-netherlands/) · [Companies Registration Office: registering a company](https://cro.ie/Registration/Company/) · [Spain public administration: create a company](https://administracion.gob.es/tu-espacio-europeo/derechos-obligaciones/empresas/inicio-gestion-cierre/registro-cambio-cierre/crear) · [Verksamt starting a limited company](https://verksamt.se/en/setting-up/choose-business-type/limited-company) · [SECO how to register a company](https://www.kmu.admin.ch/en/how-to-register-a-company) · [JETRO setting up business](https://www.jetro.go.jp/en/invest/setting_up/) · [Brazil register an entity in CNPJ](https://www.gov.br/pt-br/servicos/inscrever-no-cnpj) · [UAE government mainland business setup](https://u.ae/en/information-and-services/business/doing-business-on-the-mainland/steps-to-start-a-business-on-the-mainland) · [GOV.UK register a private limited company](https://www.gov.uk/limited-company-formation/register-your-company)
 
 <a id="artifacts"></a>
 
@@ -53,7 +55,7 @@ Country rows describe the guidance recorded here. Local notes and step alternati
 | --- | --- | --- |
 | [United States](#geo-us) | step resolution; step alternative | [1](#step-1), [2](#step-2), [3](#step-3), [4](#step-4), [5](#step-5), [7](#step-7), [8](#step-8), [9](#step-9), [10](#step-10) |
 | [India](#geo-in) | Local analog note; step resolution; step alternative | [2](#step-2), [3](#step-3), [10](#step-10) |
-| [United Kingdom](#geo-uk) | Local analog note; step resolution; step alternative | [2](#step-2), [3](#step-3), [9](#step-9), [10](#step-10) |
+| [United Kingdom](#geo-uk) | Local analog note; step resolution; step alternative | [2](#step-2), [3](#step-3), [4](#step-4), [9](#step-9), [10](#step-10) |
 | [Germany](#geo-de) | Local analog note; step resolution; step alternative | [2](#step-2), [3](#step-3), [10](#step-10) |
 | [France](#geo-fr) | Local analog note; step resolution; step alternative | [2](#step-2), [3](#step-3), [10](#step-10) |
 | [Portugal](#geo-pt) | Local analog note; step resolution | [3](#step-3), [10](#step-10) |
@@ -148,7 +150,7 @@ Have the exact proposed legal name, including its corporate ending, and a few al
 
 - Verify: Retain the official confirmation or accepted documents required for this step in the selected jurisdiction; reconcile them with the approved company records.
 - Do it yourself: [Delaware name search](https://icis.corp.delaware.gov/ecorp/entitysearch/namesearch.aspx)
-- Sources: [Delaware name availability checker](https://icis.corp.delaware.gov/Ecorp/NameReserv/NameReservation.aspx) · [Delaware formation requirements](https://corp.delaware.gov/howtoform/) · [Delaware incorporation and bylaws law](https://delcode.delaware.gov/title8/c001/sc01/index.html)
+- Sources: [Delaware name availability checker](https://icis.corp.delaware.gov/Ecorp/NameReserv/NameReservation.aspx) · [Delaware formation requirements](https://corp.delaware.gov/howtoform/) · [Delaware incorporation and bylaws law](https://delcode.delaware.gov/title8/c001/sc01/index.html) · [GOV.UK register a private limited company](https://www.gov.uk/limited-company-formation/register-your-company)
 
 <a id="step-3"></a>
 
@@ -252,7 +254,7 @@ Collect the Certificate of Incorporation bearing Delaware’s “Filed” endors
 - Verify: Retain the official confirmation or accepted documents required for this step in the selected jurisdiction; reconcile them with the approved company records.
 - Produces: Certificate of Incorporation
 - Cross-arena market: [workflow-automation](../../open-rankings/workflow-automation)
-- Sources: [Delaware incorporation and bylaws law](https://delcode.delaware.gov/title8/c001/sc01/index.html) · [Delaware formation requirements](https://corp.delaware.gov/howtoform/)
+- Sources: [Delaware incorporation and bylaws law](https://delcode.delaware.gov/title8/c001/sc01/index.html) · [Delaware formation requirements](https://corp.delaware.gov/howtoform/) · [GOV.UK register a private limited company](https://www.gov.uk/limited-company-formation/register-your-company)
 
 <a id="step-5"></a>
 
@@ -473,9 +475,12 @@ A corporation doing business in Washington registers with the Secretary of State
 
 ### United Kingdom
 
-- Register a private limited company with Companies House — online filings are usually approved within 24 hours, and Companies House exposes a live REST filing API, so software-driven incorporation genuinely exists here. ([Companies House — set up a limited company](https://www.gov.uk/limited-company-formation))
-- Step 2: Check the proposed company name with Companies House Register a private limited company with Companies House — online filings are usually approved within 24 hours, and Companies House exposes a live REST filing API, so software-driven incorporation genuinely exists here. ([Companies House — set up a limited company](https://www.gov.uk/limited-company-formation))
-- Step 3: UK - Companies House filing Gather the company name, registered office and email address, director and people-with-significant-control details, business activity code, and documents for the chosen company type. Check the share and shareholder information for a company limited by shares, or the guarantor information for one limited by guarantee. Confirm the applicable identity-verification requirements and personal codes before submitting through Companies House or the selected formation agent. Retain the application confirmation and follow up on acceptance; the resulting certificate records the company number and formation date. ([Companies House - set up a limited company](https://www.gov.uk/limited-company-formation))
+Register the selected private company type with Companies House using verified corporate and identity information. Confirm the accepted certificate and company number; the scoped domestic assessment does not establish other entity or cross-border procedures.
+
+- Register the selected private company type with Companies House using verified corporate and identity information. Confirm the accepted certificate and company number; the scoped domestic assessment does not establish other entity or cross-border procedures. ([Companies House — set up a limited company](https://www.gov.uk/limited-company-formation))
+- Step 2: Check name availability For the scoped domestic private company limited by shares, confirm the company type and proposed name. Stop for another assessment if the company is limited by guarantee, regulated, cross-border or has restricted-securities questions. ([GOV.UK register a private limited company](https://www.gov.uk/limited-company-formation/register-your-company))
+- Step 3: Submit incorporation filing Prepare registered office and email, directors, PSCs, shareholder and share information, activity code and incorporation documents. Confirm current identity-verification requirements and the authorized Companies House or agent route; the human applicant approves the final declarations. ([GOV.UK register a private limited company](https://www.gov.uk/limited-company-formation/register-your-company))
+- Step 4: Receive the accepted formation documents Retain the accepted certificate, company number and incorporation date. Check the result against the approved application and hand tax registration and recurring filing obligations to their owners; a submitted application is not an incorporated company. ([GOV.UK register a private limited company](https://www.gov.uk/limited-company-formation/register-your-company))
 - Step 9: Sign the joint section 431 ITEPA election to be taxed on the unrestricted value of restricted shares Made jointly with the company within 14 days of acquisition; HMRC's employment-related securities guidance covers it. ([HMRC — employment related securities](https://www.gov.uk/government/collections/employment-related-securities))
 - Step 10: Complete the joint section 431 election within 14 days of acquisition The UK cousin is the joint section 431 ITEPA election to be taxed on the unrestricted value of restricted shares; HMRC's employment-related securities guidance covers it. ([HMRC — employment related securities](https://www.gov.uk/government/collections/employment-related-securities))
 
