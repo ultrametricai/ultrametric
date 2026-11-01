@@ -442,8 +442,10 @@ describe('process and country completeness evidence', () => {
     const remedy = makeInput().records.find(record => record.id === 'startup-coverage.handle-consumer-guarantees-and-statutory-remedies')!
     expect(remedy.metadata.reversibility).toBe('irreversible')
     expect(remedy.parts.find(part => part.id === 'n5r')?.metadata).toMatchObject({ reversibility: 'irreversible', approvalRequired: true })
-    expect(remedy.links.filter(link => link.from === 'n4').map(link => link.to).sort()).toEqual(['n5', 'n5r'])
+    expect(remedy.links.filter(link => link.from === 'n4').map(link => link.to).sort()).toEqual(['n5', 'n5d', 'n5r'])
     expect(remedy.parts.find(part => part.id === 'n5')?.when).toContain('repair or replacement')
+    expect(remedy.parts.find(part => part.id === 'n5d')?.metadata.approvalRequired).toBe(true)
+    expect(remedy.links.some(link => link.from === 'n5d' && link.to === 'n6')).toBe(true)
   })
 
   it('keeps the generated matrix and readable report deterministic against the canonical catalog', () => {
