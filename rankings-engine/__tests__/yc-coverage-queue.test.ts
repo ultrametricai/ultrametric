@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { bestVocabArena, countVocabHits, RADAR_TOP, radarReportFromQueue, registrableApex, type YcQueue } from '../scripts/yc-coverage-queue'
+import { bestVocabArena, compileVocab, countVocabHits, RADAR_TOP, radarReportFromQueue, registrableApex, type YcQueue } from '../scripts/yc-coverage-queue'
 import { RadarReportSchema } from '../scripts/vendor-radar'
 
 // Pure unit for the queue → radar-triage hand-off: the weekly YC lane emits its top queue
@@ -88,6 +88,30 @@ describe('bestVocabArena', () => {
   it('returns null below the two-hit floor', () => {
     const vocab = compile({ 'design-tools': ['design', 'layer'] })
     expect(bestVocabArena('generic marketing copy', vocab)).toBeNull()
+  })
+})
+
+describe('compileVocab fit-evidence filter (real DOMAIN_VOCAB)', () => {
+  it('deployment descriptors earn no fit hits: Chatwoot lands in ai-support-agents, not authenticator-apps', () => {
+    const vocab = compileVocab(new Set(['ai-support-agents', 'authenticator-apps']))
+    const text =
+      'The modern, open source, self-hosted AI customer support platform B2B Customer Success Open Source Customer Service Customer Support'
+    // Without the filter, authenticator-apps got 2 hits from 'open source' + 'self-host' and
+    // outranked the real arena on text position (PR #528 re-review).
+    expect(bestVocabArena(text, vocab)).toEqual({ arena: 'ai-support-agents', hits: 2 })
+    expect(countVocabHits(text, vocab.get('authenticator-apps')!)).toBe(0)
+  })
+
+  it("the genre word 'agent' earns no fit hits: Aden has no distinctive two-word evidence and stays unmatched", () => {
+    const vocab = compileVocab(
+      new Set(['authenticator-apps', 'email-apis', 'agent-frameworks', 'ai-video', 'customer-data-platforms', 'data-pipelines', 'mcp-infrastructure']),
+    )
+    expect(bestVocabArena('Open source agent generation framework Developer Tools Infrastructure AI', vocab)).toBeNull()
+  })
+
+  it('arena-defining words shared by a few arenas still count', () => {
+    const vocab = compileVocab(new Set(['device-agents']))
+    expect(countVocabHits('control a device with a screen', vocab.get('device-agents')!)).toBe(2)
   })
 })
 

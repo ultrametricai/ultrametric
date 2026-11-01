@@ -119,15 +119,43 @@ async function ensureFeed(refetch: boolean): Promise<YcRawCompany[]> {
   return all
 }
 
+// Deployment and form-factor descriptors say HOW software ships, not which market it competes
+// in. Inside an arena they are legitimate story-scoping vocab (authenticator-apps really does
+// compare open-source, self-hostable authenticators), but as cross-arena FIT evidence they
+// misfire: "The modern, open source, self-hosted AI customer support platform" (Chatwoot) is an
+// ai-support-agents description, and "Open source agent generation framework" (Aden) is not an
+// authenticator (PR #528 re-review). Listed by exact DOMAIN_VOCAB spelling; entries that appear
+// in no list are harmless.
+const DEPLOYMENT_VOCAB_STOPLIST = new Set([
+  'open source', 'open-source', 'self-host', 'self-hosted', 'on-prem', 'on-premise',
+  'cross-platform', 'desktop app', 'mobile app', 'browser extension',
+])
+
+// A keyword carried by more than this share of ALL arena vocab lists names the agentic-software
+// genre rather than any arena ('agent' sits in 44 of the 83 lists, five times the runner-up) and
+// earns no fit hit. The share is measured over the whole DOMAIN_VOCAB table so it does not move
+// when a category is added or retired from categories.json.
+const GENERIC_VOCAB_ARENA_SHARE = 0.25
+
 // Compiled per-arena vocab: for each arena, one regex per keyword so we can count DISTINCT
 // keyword hits (a single regex with alternation only says "matched", not how many concepts).
-function compileVocab(arenaIds: Set<string>): Map<string, { word: string; re: RegExp }[]> {
+// Keywords that are deployment descriptors or genre-generic (see above) are dropped at compile
+// time, so every downstream hit count only measures arena-distinctive evidence.
+export function compileVocab(arenaIds: Set<string>): Map<string, { word: string; re: RegExp }[]> {
+  const arenasPerWord = new Map<string, number>()
+  for (const words of Object.values(DOMAIN_VOCAB)) {
+    for (const w of new Set(words)) arenasPerWord.set(w, (arenasPerWord.get(w) ?? 0) + 1)
+  }
+  const genericLimit = Object.keys(DOMAIN_VOCAB).length * GENERIC_VOCAB_ARENA_SHARE
+  const isFitEvidence = (w: string) =>
+    !DEPLOYMENT_VOCAB_STOPLIST.has(w) && (arenasPerWord.get(w) ?? 0) <= genericLimit
+
   const compiled = new Map<string, { word: string; re: RegExp }[]>()
   for (const [arena, words] of Object.entries(DOMAIN_VOCAB)) {
     if (!arenaIds.has(arena)) continue
     compiled.set(
       arena,
-      words.map((w) => ({ word: w, re: new RegExp(`\\b(${w})`, 'i') })),
+      words.filter(isFitEvidence).map((w) => ({ word: w, re: new RegExp(`\\b(${w})`, 'i') })),
     )
   }
   return compiled
