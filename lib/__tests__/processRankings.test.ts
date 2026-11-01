@@ -624,8 +624,10 @@ describe('government-services step applicability (founder 2026-10-08: scope cand
     expect(govStepVendors).toContain('eftps')
     expect(govStepVendors).not.toContain('uspto')
     // State tax agencies share the US/tax cell but are never substitutes for the federal
-    // anchor (state-agency bring-up 2026-10-22): a federal return cannot be filed with them.
-    for (const id of ['ca-ftb', 'ca-edd', 'ny-dtf', 'tx-comptroller', 'de-dor']) {
+    // anchor (state-agency bring-up 2026-10-22, extended 2026-10-27): a federal return cannot
+    // be filed with them.
+    for (const id of ['ca-ftb', 'ca-edd', 'ny-dtf', 'tx-comptroller', 'de-dor',
+      'tx-twc', 'wa-esd', 'wa-dor', 'fl-dor']) {
       expect(govStepVendors).not.toContain(id)
     }
     // Agencies live on the step rosters only — the process leaderboard lists competing
@@ -671,9 +673,11 @@ describe('government-services step applicability (founder 2026-10-08: scope cand
 
   it('pin: government-services products never appear as process-leaderboard entries on any task', () => {
     // Agencies are step-roster candidates only (lib/processRankings.ts excludes the arena from
-    // leaderboard entries). The five state agencies added 2026-10-22 must obey the same rule.
+    // leaderboard entries). The five state agencies added 2026-10-22 and the six added
+    // 2026-10-27 (PR #500) must obey the same rule.
     const govIds = new Set(govProducts().map((p) => p.id))
-    for (const newId of ['ca-ftb', 'ca-edd', 'ny-dtf', 'tx-comptroller', 'de-dor']) {
+    for (const newId of ['ca-ftb', 'ca-edd', 'ny-dtf', 'tx-comptroller', 'de-dor',
+      'tx-twc', 'wa-esd', 'wa-dor', 'fl-dor', 'nevada-sos', 'wyoming-sos']) {
       expect(govIds.has(newId)).toBe(true)
     }
     for (const task of tasks()) {

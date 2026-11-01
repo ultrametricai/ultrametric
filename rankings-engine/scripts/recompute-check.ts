@@ -39,6 +39,7 @@ const CATEGORIES = [
   'cloud-storage',
   'code-hosting',
   'compliance-automation',
+  'compliance-screening',
   'crm',
   'customer-data-platforms',
   'design-tools',

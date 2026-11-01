@@ -77,14 +77,17 @@ describe('compareRivalsFor', () => {
 
   it('links each rival to the stored battle slug with the record oriented self-first', () => {
     // open-rankings/startup-banking/rankings.json stores the pair as a=mercury, b=ramp with
-    // record { aWins: 19, bWins: 30, draws: 23 } — assert both orientations read from it.
+    // record { aWins: 18, bWins: 29, draws: 25 } — assert both orientations read from it.
+    // Re-pinned 2026-10-27 (was 19/30/23): the mercury evidence-parity repair re-judge moved
+    // 14 mercury cells (fdic-insurance-sweep none → full, api-machine-spec full → disputed)
+    // and derive recomputed the stored record.
     const fromMercury = compareRivalsFor(banking, 'mercury').find((r) => r.productId === 'ramp')!
     expect(fromMercury.battleSlug).toBe('mercury-vs-ramp')
-    expect(fromMercury.record).toEqual({ wins: 19, losses: 30, draws: 23 })
+    expect(fromMercury.record).toEqual({ wins: 18, losses: 29, draws: 25 })
 
     const fromRamp = compareRivalsFor(banking, 'ramp').find((r) => r.productId === 'mercury')!
     expect(fromRamp.battleSlug).toBe('mercury-vs-ramp') // stored (a, b) order, either direction
-    expect(fromRamp.record).toEqual({ wins: 30, losses: 19, draws: 23 })
+    expect(fromRamp.record).toEqual({ wins: 29, losses: 18, draws: 25 })
   })
 
   it('a 3-product arena yields self + 2 rivals', () => {

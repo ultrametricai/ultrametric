@@ -3,6 +3,10 @@
 
 # Set up expense management
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Steps](#steps-at-a-glance)
+
+## Overview
+
 Configure expense reporting, approval workflows, corporate card policies, and reimbursement rules.
 
 | Field | Value |
@@ -19,47 +23,98 @@ Configure expense reporting, approval workflows, corporate card policies, and re
 
 Brex/Ramp APIs fully support card limits, policies, and approval workflows.
 
-## Steps
+<a id="artifacts"></a>
 
-1. **Define expense categories and limits** — human · ~30 min · human approval required
+## Before you start
 
-   Define eligible expenses, documentation, limits and exceptions from the company’s spending patterns and budget. Distinguish card purchases from reimbursement and work through travel, recurring software and shared purchases with finance and team leads. Agree how exceptions are decided, using realistic examples to expose rules that would be unclear in daily use.
-
-   - Next: steps 2 and 3 — all follow this step
-2. **Configure card limits per employee** — agent-runnable · ~10 min · human approval required
-
-   Set cardholder limits and permitted categories from role, expected spending and the expense policy, checking for existing cards or overlapping access. The finance owner authorizes limits and temporary exceptions before the administrator applies them. Check the resulting settings, tell the cardholder what they can spend and arrange expiry or review of temporary changes.
-
-   - Canonical vendor: Brex
-
-   *This path ends here.*
-3. **Set up approval workflows** — agent-runnable · ~10 min · human approval required
-
-   *Follows step 1.*
-
-   Configure expense routing by category and amount, with the appropriate reviewer, absence cover and exception route. Keep the requester from silently approving their own spending. Test ordinary, rejected and edited requests to see where they stall or reach the wrong person. Finance owns the approval rules; the administrator maintains them as roles and budgets change.
-
-   - Canonical vendor: Brex
-   - Next: steps 4 and 5 — all follow this step
-4. **Configure Slack notifications** — agent-runnable · ~5 min
-
-   Choose expense events that need notification and a channel whose membership fits the information. The authorized finance administrator connects the service with appropriate permissions and tests delivery, links and duplicate alerts using fictional or suitable test data. Keep sensitive receipts and account details in the finance system, and make each alert point to the action its recipient needs to take.
-
-   - Canonical vendor: Slack
-
-   *This path ends here.*
-5. **Document policy and share** — agent-runnable · ~10 min · human approval required
-
-   *Follows step 3.*
-
-   Publish the expense policy with its categories, limits, receipt requirements and exception process, using examples of common purchases. Explain submission, review and how employees resolve rejected items. Match the document to the live system settings with the policy owner before sharing it through the employee channel, and make the current policy and contact easy to find.
-
-## Artifacts
-
-Requires:
+Required artifacts:
 
 - Corporate card — from [Set up credit card](set-up-credit-card.md)
 - Team chat workspace — from [Set up team chat](set-up-team-chat.md)
+
+| Information to gather | Required by the record |
+| --- | --- |
+| expense policy limits | Yes |
+| approval chain | Yes |
+
+## Steps at a glance
+
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
+
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Define expense categories and limits](#step-1) | human; approval required | ~30 min | Entry step |
+| [2. Configure card limits per employee](#step-2) | agent-runnable; approval required | ~10 min | [Step 1](#step-1) |
+| [3. Set up approval workflows](#step-3) | agent-runnable; approval required | ~10 min | [Step 1](#step-1) |
+| [4. Configure Slack notifications](#step-4) | agent-runnable | ~5 min | [Step 3](#step-3) |
+| [5. Document policy and share](#step-5) | agent-runnable; approval required | ~10 min | [Step 3](#step-3) |
+
+<a id="steps"></a>
+
+## Step details
+
+<a id="step-1"></a>
+
+### 1. Define expense categories and limits
+
+human · ~30 min · human approval required
+
+
+Define eligible expenses, documentation, limits and exceptions from the company’s spending patterns and budget. Distinguish card purchases from reimbursement and work through travel, recurring software and shared purchases with finance and team leads. Agree how exceptions are decided, using realistic examples to expose rules that would be unclear in daily use.
+
+- Next: steps 2 and 3 — all follow this step
+
+<a id="step-2"></a>
+
+### 2. Configure card limits per employee
+
+agent-runnable · ~10 min · human approval required
+
+
+Set cardholder limits and permitted categories from role, expected spending and the expense policy, checking for existing cards or overlapping access. The finance owner authorizes limits and temporary exceptions before the administrator applies them. Check the resulting settings, tell the cardholder what they can spend and arrange expiry or review of temporary changes.
+
+- Canonical vendor: Brex
+
+*This path ends here.*
+
+<a id="step-3"></a>
+
+### 3. Set up approval workflows
+
+agent-runnable · ~10 min · human approval required
+
+
+*Follows step 1.*
+
+Configure expense routing by category and amount, with the appropriate reviewer, absence cover and exception route. Keep the requester from silently approving their own spending. Test ordinary, rejected and edited requests to see where they stall or reach the wrong person. Finance owns the approval rules; the administrator maintains them as roles and budgets change.
+
+- Canonical vendor: Brex
+- Next: steps 4 and 5 — all follow this step
+
+<a id="step-4"></a>
+
+### 4. Configure Slack notifications
+
+agent-runnable · ~5 min
+
+
+Choose expense events that need notification and a channel whose membership fits the information. The authorized finance administrator connects the service with appropriate permissions and tests delivery, links and duplicate alerts using fictional or suitable test data. Keep sensitive receipts and account details in the finance system, and make each alert point to the action its recipient needs to take.
+
+- Canonical vendor: Slack
+
+*This path ends here.*
+
+<a id="step-5"></a>
+
+### 5. Document policy and share
+
+agent-runnable · ~10 min · human approval required
+
+
+*Follows step 3.*
+
+Publish the expense policy with its categories, limits, receipt requirements and exception process, using examples of common purchases. Explain submission, review and how employees resolve rejected items. Match the document to the live system settings with the policy owner before sharing it through the employee channel, and make the current policy and contact easy to find.
+
 
 ---
 

@@ -3,6 +3,10 @@
 
 # Set up CI/CD
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Steps](#steps-at-a-glance) · [Outputs](#outputs)
+
+## Overview
+
 Configure GitHub Actions CI/CD with testing, linting, and auto-deploy to Vercel.
 
 | Field | Value |
@@ -19,57 +23,115 @@ Configure GitHub Actions CI/CD with testing, linting, and auto-deploy to Vercel.
 
 GitHub and Vercel have comprehensive APIs. Full automation of workflow creation and deployment configuration.
 
-## Steps
+<a id="artifacts"></a>
 
-1. **Create the CI workflow in your code host** — agent-runnable · ~15 min · human approval required
+## Before you start
 
-   Build the workflow around the repository's existing package manager, lockfile, runtime and check commands. Specify branch and pull-request triggers and start with the permissions each job needs. Examine third-party actions and untrusted contributions before introducing secrets or write access. Run the workflow from a clean checkout on a small branch; its logs should show the same install and checks a contributor can reproduce locally. Changes to repository credentials or deployment authority belong in the maintainer's security review.
-
-   - Produces: CI/CD pipeline
-   - Canonical vendor: GitHub
-   - Vendor options: GitHub
-   - Ranked market: [code-hosting](../../open-rankings/code-hosting)
-   - Sources: [GitHub Actions secure use reference](https://docs.github.com/en/actions/reference/security/secure-use)
-2. **Configure test and lint jobs** — agent-runnable · ~10 min
-
-   Run linting, type checking and tests as distinct checks with recognizable, unique names. Reuse the repository's commands and verify that command failures reach CI as failed checks. Try one passing change and one deliberate failure, then remove the test failure. For checks required by branch protection, confirm the configured names match the jobs that actually report results. Separate existing failures from regressions introduced by the branch.
-
-   - Canonical vendor: GitHub
-   - Sources: [GitHub Actions secure use reference](https://docs.github.com/en/actions/reference/security/secure-use) · [About protected branches](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches)
-3. **Connect the deploy platform to the code host** — manual form/portal · ~10 min · human approval required
-
-   Connect the intended repository to the hosting project using the repository and hosting owners' authorized integration scope. Inspect requested access before installation, particularly if the connection covers more repositories than this project needs. Push a test branch and follow its preview deployment back to the triggering commit. Check preview visibility and confirm that the connection has not enabled an unintended production deployment path. Keep a usable way to revoke the integration.
-
-   - Canonical vendor: Vercel
-   - Sources: [Managing deployment environments](https://docs.github.com/actions/deployment/environments) · [GitHub Actions secure use reference](https://docs.github.com/en/actions/reference/security/secure-use)
-4. **Set up env variables** — agent-runnable · ~5 min · human approval required
-
-   List the variables needed at build time and runtime, separating public configuration from secrets and development from production values. Put secrets in the platform's protected configuration within the application owner's authorized scope; commit names and setup instructions only. Test that a preview connects to test resources. On Vercel, changed values apply to subsequent deployments, so deploy again before checking the result. Inspect behavior without printing secret values into build logs.
-
-   - Canonical vendor: Vercel
-   - Sources: [Vercel environment variables](https://vercel.com/docs/environment-variables) · [GitHub Actions secure use reference](https://docs.github.com/en/actions/reference/security/secure-use)
-5. **Configure deploy settings** — agent-runnable · ~5 min · human approval required
-
-   Match the hosting configuration to the repository's root directory, build command, output and runtime. Specify which branch or action creates a preview and which reaches production. Include database migrations in the release plan where the application needs them, with recovery consequences made explicit. Verify that the chosen plan supports the protection controls being relied on. Apply live settings within the release owner's authority and inspect a resulting deployment for the correct commit and environment.
-
-   - Canonical vendor: Vercel
-   - Sources: [Managing deployment environments](https://docs.github.com/actions/deployment/environments) · [Vercel environment variables](https://vercel.com/docs/environment-variables)
-6. **Test pipeline end-to-end** — agent-runnable · ~10 min
-
-   Take a small change from branch to pull request, successful checks and preview deployment. Introduce a controlled failing check and verify that the configured merge path blocks it. Then use the authorized release path to test deployment and recovery in the designated environment. Compare the live revision with the reviewed commit and exercise the application. The useful result is a working path plus the manual steps or failures that still prevent a repeatable release.
-
-   - Canonical vendor: GitHub
-   - Sources: [About protected branches](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches) · [Managing deployment environments](https://docs.github.com/actions/deployment/environments)
-
-## Artifacts
-
-Produces:
-
-- CI/CD pipeline
-
-Requires:
+Required artifacts:
 
 - Code hosting organization — from [Set up a code hosting org](set-up-a-code-hosting-org.md)
+
+| Information to gather | Required by the record |
+| --- | --- |
+| repo name | Yes |
+| repo framework | Yes |
+
+## Steps at a glance
+
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
+
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Create the CI workflow in your code host](#step-1) | agent-runnable; approval required | ~15 min | Entry step |
+| [2. Configure test and lint jobs](#step-2) | agent-runnable | ~10 min | [Step 1](#step-1) |
+| [3. Connect the deploy platform to the code host](#step-3) | manual form/portal; approval required | ~10 min | [Step 2](#step-2) |
+| [4. Set up env variables](#step-4) | agent-runnable; approval required | ~5 min | [Step 3](#step-3) |
+| [5. Configure deploy settings](#step-5) | agent-runnable; approval required | ~5 min | [Step 4](#step-4) |
+| [6. Test pipeline end-to-end](#step-6) | agent-runnable | ~10 min | [Step 5](#step-5) |
+
+<a id="steps"></a>
+
+## Step details
+
+<a id="step-1"></a>
+
+### 1. Create the CI workflow in your code host
+
+agent-runnable · ~15 min · human approval required
+
+
+Build the workflow around the repository's existing package manager, lockfile, runtime and check commands. Specify branch and pull-request triggers and start with the permissions each job needs. Examine third-party actions and untrusted contributions before introducing secrets or write access. Run the workflow from a clean checkout on a small branch; its logs should show the same install and checks a contributor can reproduce locally. Changes to repository credentials or deployment authority belong in the maintainer's security review.
+
+- Produces: CI/CD pipeline
+- Canonical vendor: GitHub
+- Vendor options: GitHub
+- Ranked market: [code-hosting](../../open-rankings/code-hosting)
+- Sources: [GitHub Actions secure use reference](https://docs.github.com/en/actions/reference/security/secure-use)
+
+<a id="step-2"></a>
+
+### 2. Configure test and lint jobs
+
+agent-runnable · ~10 min
+
+
+Run linting, type checking and tests as distinct checks with recognizable, unique names. Reuse the repository's commands and verify that command failures reach CI as failed checks. Try one passing change and one deliberate failure, then remove the test failure. For checks required by branch protection, confirm the configured names match the jobs that actually report results. Separate existing failures from regressions introduced by the branch.
+
+- Canonical vendor: GitHub
+- Sources: [GitHub Actions secure use reference](https://docs.github.com/en/actions/reference/security/secure-use) · [About protected branches](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches)
+
+<a id="step-3"></a>
+
+### 3. Connect the deploy platform to the code host
+
+manual form/portal · ~10 min · human approval required
+
+
+Connect the intended repository to the hosting project using the repository and hosting owners' authorized integration scope. Inspect requested access before installation, particularly if the connection covers more repositories than this project needs. Push a test branch and follow its preview deployment back to the triggering commit. Check preview visibility and confirm that the connection has not enabled an unintended production deployment path. Keep a usable way to revoke the integration.
+
+- Canonical vendor: Vercel
+- Sources: [Managing deployment environments](https://docs.github.com/actions/deployment/environments) · [GitHub Actions secure use reference](https://docs.github.com/en/actions/reference/security/secure-use)
+
+<a id="step-4"></a>
+
+### 4. Set up env variables
+
+agent-runnable · ~5 min · human approval required
+
+
+List the variables needed at build time and runtime, separating public configuration from secrets and development from production values. Put secrets in the platform's protected configuration within the application owner's authorized scope; commit names and setup instructions only. Test that a preview connects to test resources. On Vercel, changed values apply to subsequent deployments, so deploy again before checking the result. Inspect behavior without printing secret values into build logs.
+
+- Canonical vendor: Vercel
+- Sources: [Vercel environment variables](https://vercel.com/docs/environment-variables) · [GitHub Actions secure use reference](https://docs.github.com/en/actions/reference/security/secure-use)
+
+<a id="step-5"></a>
+
+### 5. Configure deploy settings
+
+agent-runnable · ~5 min · human approval required
+
+
+Match the hosting configuration to the repository's root directory, build command, output and runtime. Specify which branch or action creates a preview and which reaches production. Include database migrations in the release plan where the application needs them, with recovery consequences made explicit. Verify that the chosen plan supports the protection controls being relied on. Apply live settings within the release owner's authority and inspect a resulting deployment for the correct commit and environment.
+
+- Canonical vendor: Vercel
+- Sources: [Managing deployment environments](https://docs.github.com/actions/deployment/environments) · [Vercel environment variables](https://vercel.com/docs/environment-variables)
+
+<a id="step-6"></a>
+
+### 6. Test pipeline end-to-end
+
+agent-runnable · ~10 min
+
+
+Take a small change from branch to pull request, successful checks and preview deployment. Introduce a controlled failing check and verify that the configured merge path blocks it. Then use the authorized release path to test deployment and recovery in the designated environment. Compare the live revision with the reviewed commit and exercise the application. The useful result is a working path plus the manual steps or failures that still prevent a repeatable release.
+
+- Canonical vendor: GitHub
+- Sources: [About protected branches](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches) · [Managing deployment environments](https://docs.github.com/actions/deployment/environments)
+
+
+## Outputs
+
+- CI/CD pipeline
 
 ## Related records
 

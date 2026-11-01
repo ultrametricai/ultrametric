@@ -3,20 +3,30 @@
 
 # Land the enterprise deal
 
+[Overview](#overview) · [Process sequence](#process-sequence)
+
+## Overview
+
 Type II and the pen test in hand, status page live, NDA signed, the questionnaire cleared, the contract closed.
 
 | Field | Value |
 | --- | --- |
 | Kind | chain |
 
-## Processes in order
+<a id="processes-in-order"></a>
 
-1. [Complete SOC 2 Type II](complete-soc-2-type-ii.md)
-2. [Run the annual penetration test](run-the-annual-penetration-test.md)
-3. [Publish a status page & SLA](publish-a-status-page-sla.md)
-4. [Send NDA](send-nda.md)
-5. [Answer a security questionnaire](answer-a-security-questionnaire.md)
-6. [Negotiate SaaS agreement](negotiate-saas-agreement.md)
+## Process sequence
+
+Run the linked processes in the recorded chain order. Each process defines its own internal dependencies.
+
+| Order | Process | Requires | Produces |
+| --- | --- | --- | --- |
+| 1 | [Complete SOC 2 Type II](complete-soc-2-type-ii.md) | SOC 2 Type I report; Compliance platform; Identity provider (SSO); Pen test report & attestation | SOC 2 Type II report |
+| 2 | [Run the annual penetration test](run-the-annual-penetration-test.md) | Cloud infrastructure; Project tracker | Pen test report & attestation |
+| 3 | [Publish a status page & SLA](publish-a-status-page-sla.md) | Registered domain; SaaS agreement template | Status page |
+| 4 | [Send NDA](send-nda.md) | Not recorded | Executed NDA |
+| 5 | [Answer a security questionnaire](answer-a-security-questionnaire.md) | Security policies; Privacy policy | Not recorded |
+| 6 | [Negotiate SaaS agreement](negotiate-saas-agreement.md) | Company website | SaaS agreement template; Terms of Service; Privacy policy |
 
 ---
 

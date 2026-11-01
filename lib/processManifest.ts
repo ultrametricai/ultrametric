@@ -1,3 +1,4 @@
+import type { Execution } from './execution'
 import { classifyGapStep } from './gapClosers'
 import { mcpEndpointFor } from './mcpEndpoints'
 import {
@@ -52,6 +53,8 @@ export interface ManifestStep {
   kind: ManifestStepKind
   // Original corpus routing, kept alongside `kind` so a consumer can audit the mapping.
   route: DagNode['route']
+  // Content execution assessment; independent of the v2 executor kind.
+  execution?: Execution
   toolCall: string | null
   calls: ManifestCall[]
   vendorOptions: ManifestVendorOption[]
@@ -197,6 +200,7 @@ export function buildManifestStep(node: DagNode, dir?: string): ManifestStep {
     title: node.label,
     kind: stepKind(node.route),
     route: node.route,
+    ...(node.execution ? { execution: node.execution } : {}),
     toolCall: node.toolCall ?? null,
     calls: node.functionCalls ?? [],
     vendorOptions: stepVendorChips(node, dir).map(optionFromChip),

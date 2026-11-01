@@ -3,6 +3,10 @@
 
 # Bookkeeping close
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Steps](#steps-at-a-glance) · [Outputs](#outputs)
+
+## Overview
+
 Complete monthly bookkeeping including categorization, reconciliation, and financial statement preparation.
 
 | Field | Value |
@@ -19,64 +23,136 @@ Complete monthly bookkeeping including categorization, reconciliation, and finan
 
 QuickBooks API and official Intuit MCP server enable transaction categorization, bank auto-matching for reconciliation, and reports. Final review and approval stay human.
 
-## Steps
+<a id="artifacts"></a>
 
-1. **Pull the bank transactions** — agent-runnable · ~3 min
+## Before you start
 
-   Export the closing period’s activity for every bank and card account in scope, including balances, transaction identifiers and original currency. Compare feed coverage with statements to find missing days, stale syncs or overlapping imports. Preserve the original extracts and resolve gaps before categorization so the ledger receives a complete transaction population without duplicates.
-
-   - Canonical vendor: Mercury
-   - Vendor options: Mercury, Brex, Ramp, Relay
-   - Ranked market: [startup-banking](../../open-rankings/startup-banking)
-2. **Categorize transactions in the ledger** — agent-runnable · ~15 min
-
-   Categorize transactions using the chart of accounts, supporting invoices or receipts and their business purpose. Match transfers between company accounts to avoid duplicate income or expense. Apply established treatments consistently and send ambiguous capital, revenue, tax or owner transactions to the accountant. Attach the supporting reference to each entry and leave unresolved classifications visible in the draft ledger.
-
-   - Canonical vendor: QuickBooks
-   - Next: steps 3 and 4 — all follow this step
-3. **Reconcile bank statement** — agent-runnable · ~15 min · human approval required
-
-   Match cleared bank activity to the ledger at the same closing date. Explain differences through outstanding payments, deposits in transit, fees, duplicates or supported corrections. The bookkeeper should investigate unexplained differences rather than insert a balancing entry. Finish with reconciled balances and a dated list of outstanding items that can be followed into the next period.
-
-   - Canonical vendor: QuickBooks
-4. **Review uncategorized items** — human · ~30 min
-
-   *Follows step 2.*
-
-   Resolve uncategorized transactions using the original entry, receipt and responsible employee or vendor record. Ask about business purpose, service period and tax treatment where these are unclear. Group missing-document requests by owner and show the accountant which unresolved amounts could affect the close.
-5. **Generate P&L statement** — agent-runnable · ~2 min
-
-   *Follows steps 3 and 4 — both are required first.*
-
-   Run the profit-and-loss report for the selected entity, accounting basis and closing period. Compare revenue, payroll and large or negative expense lines with supporting schedules, prior periods and budget. Identify provisional balances and expected adjustments so the accountant can review the result and later board reporting uses the same figures.
-
-   - Canonical vendor: QuickBooks
-6. **Generate Balance Sheet** — agent-runnable · ~2 min
-
-   Generate the balance sheet at the closing date and tie cash, receivables, payables, debt and equity to their supporting schedules. Reconcile opening balances and period movements, including intercompany balances where relevant. Investigate unexplained negative or stale amounts with the accountant and show unresolved adjustments alongside the affected balances.
-
-   - Produces: Financial statements
-   - Canonical vendor: QuickBooks
-7. **Flag anomalies for review** — agent-runnable · ~5 min
-
-   Investigate unusual movements in the draft close against prior periods, budget and known business events. Check duplicate vendors, unexpected refunds, large manual entries and stale balances against their transactions. Explain genuine operating changes and separate them from suspected errors. Give finance the amount, evidence and likely impact of each unresolved anomaly so material issues are addressed before close approval.
-8. **Accountant review and approval** — human · ~1 d · async wait · human approval required
-
-   The accountant reviews reconciliations, draft statements, supporting schedules and unresolved items, deciding the treatment of material exceptions and final adjustments. Apply the approved adjustments and reissue the statements. Once the accountable finance owner accepts the close, use the team’s period-locking process and preserve a traceable route for later corrections.
-
-   - Vendor options: Pilot, QuickBooks
-   - Ranked market: [accounting](../../open-rankings/accounting)
-
-## Artifacts
-
-Produces:
-
-- Financial statements
-
-Requires:
+Required artifacts:
 
 - Business bank account — from [Open bank account](open-bank-account.md)
 - Accounting ledger — from [Set up accounting](set-up-accounting.md)
+
+| Information to gather | Required by the record |
+| --- | --- |
+| monthly transactions | Yes |
+| chart of accounts | Yes |
+
+## Steps at a glance
+
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
+
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Pull the bank transactions](#step-1) | agent-runnable | ~3 min | Entry step |
+| [2. Categorize transactions in the ledger](#step-2) | agent-runnable | ~15 min | [Step 1](#step-1) |
+| [3. Reconcile bank statement](#step-3) | agent-runnable; approval required | ~15 min | [Step 2](#step-2) |
+| [4. Review uncategorized items](#step-4) | human | ~30 min | [Step 2](#step-2) |
+| [5. Generate P&L statement](#step-5) | agent-runnable | ~2 min | All: [Step 3](#step-3); [Step 4](#step-4) |
+| [6. Generate Balance Sheet](#step-6) | agent-runnable | ~2 min | [Step 5](#step-5) |
+| [7. Flag anomalies for review](#step-7) | agent-runnable | ~5 min | [Step 6](#step-6) |
+| [8. Accountant review and approval](#step-8) | human; approval required; includes waiting | ~1 d | [Step 7](#step-7) |
+
+<a id="steps"></a>
+
+## Step details
+
+<a id="step-1"></a>
+
+### 1. Pull the bank transactions
+
+agent-runnable · ~3 min
+
+
+Export the closing period’s activity for every bank and card account in scope, including balances, transaction identifiers and original currency. Compare feed coverage with statements to find missing days, stale syncs or overlapping imports. Preserve the original extracts and resolve gaps before categorization so the ledger receives a complete transaction population without duplicates.
+
+- Canonical vendor: Mercury
+- Vendor options: Mercury, Brex, Ramp, Relay
+- Ranked market: [startup-banking](../../open-rankings/startup-banking)
+
+<a id="step-2"></a>
+
+### 2. Categorize transactions in the ledger
+
+agent-runnable · ~15 min
+
+
+Categorize transactions using the chart of accounts, supporting invoices or receipts and their business purpose. Match transfers between company accounts to avoid duplicate income or expense. Apply established treatments consistently and send ambiguous capital, revenue, tax or owner transactions to the accountant. Attach the supporting reference to each entry and leave unresolved classifications visible in the draft ledger.
+
+- Canonical vendor: QuickBooks
+- Next: steps 3 and 4 — all follow this step
+
+<a id="step-3"></a>
+
+### 3. Reconcile bank statement
+
+agent-runnable · ~15 min · human approval required
+
+
+Match cleared bank activity to the ledger at the same closing date. Explain differences through outstanding payments, deposits in transit, fees, duplicates or supported corrections. The bookkeeper should investigate unexplained differences rather than insert a balancing entry. Finish with reconciled balances and a dated list of outstanding items that can be followed into the next period.
+
+- Canonical vendor: QuickBooks
+
+<a id="step-4"></a>
+
+### 4. Review uncategorized items
+
+human · ~30 min
+
+
+*Follows step 2.*
+
+Resolve uncategorized transactions using the original entry, receipt and responsible employee or vendor record. Ask about business purpose, service period and tax treatment where these are unclear. Group missing-document requests by owner and show the accountant which unresolved amounts could affect the close.
+
+<a id="step-5"></a>
+
+### 5. Generate P&L statement
+
+agent-runnable · ~2 min
+
+
+*Follows steps 3 and 4 — both are required first.*
+
+Run the profit-and-loss report for the selected entity, accounting basis and closing period. Compare revenue, payroll and large or negative expense lines with supporting schedules, prior periods and budget. Identify provisional balances and expected adjustments so the accountant can review the result and later board reporting uses the same figures.
+
+- Canonical vendor: QuickBooks
+
+<a id="step-6"></a>
+
+### 6. Generate Balance Sheet
+
+agent-runnable · ~2 min
+
+
+Generate the balance sheet at the closing date and tie cash, receivables, payables, debt and equity to their supporting schedules. Reconcile opening balances and period movements, including intercompany balances where relevant. Investigate unexplained negative or stale amounts with the accountant and show unresolved adjustments alongside the affected balances.
+
+- Produces: Financial statements
+- Canonical vendor: QuickBooks
+
+<a id="step-7"></a>
+
+### 7. Flag anomalies for review
+
+agent-runnable · ~5 min
+
+
+Investigate unusual movements in the draft close against prior periods, budget and known business events. Check duplicate vendors, unexpected refunds, large manual entries and stale balances against their transactions. Explain genuine operating changes and separate them from suspected errors. Give finance the amount, evidence and likely impact of each unresolved anomaly so material issues are addressed before close approval.
+
+<a id="step-8"></a>
+
+### 8. Accountant review and approval
+
+human · ~1 d · async wait · human approval required
+
+
+The accountant reviews reconciliations, draft statements, supporting schedules and unresolved items, deciding the treatment of material exceptions and final adjustments. Apply the approved adjustments and reissue the statements. Once the accountable finance owner accepts the close, use the team’s period-locking process and preserve a traceable route for later corrections.
+
+- Vendor options: Pilot, QuickBooks
+- Ranked market: [accounting](../../open-rankings/accounting)
+
+
+## Outputs
+
+- Financial statements
 
 ## Related records
 

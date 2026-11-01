@@ -1,3 +1,4 @@
+import { executionSchema, type Execution } from './execution'
 import fs from 'node:fs'
 import path from 'node:path'
 import { z } from 'zod'
@@ -11,12 +12,13 @@ import { z } from 'zod'
 // an empty list (no prompt panels anywhere), never an error. Display-only, never feeds
 // scoring.
 
-export interface StepPrompt { taskId: string; nodeId: string; prompt: string }
+export interface StepPrompt { taskId: string; nodeId: string; prompt: string; execution?: Execution }
 
 const StepPromptSchema = z.object({
   taskId: z.string().min(1),
   nodeId: z.string().min(1),
   prompt: z.string().min(1),
+  execution: executionSchema.optional(),
 })
 
 let cache: StepPrompt[] | null = null

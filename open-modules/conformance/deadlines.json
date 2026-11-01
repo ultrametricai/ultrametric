@@ -1,0 +1,55 @@
+{
+  "module": "deadlines",
+  "entrypoint": "complianceCalendar",
+  "implementation": {
+    "file": "lib/openstartup/deadlines.ts",
+    "sha256": "0b0d37118eb859876bc8c5f276cdc941a3782c51d46aa8218ffc5e93279feecf"
+  },
+  "readme": "open-modules/conformance/README.md",
+  "cases": [
+    {
+      "name": "calendar-year-2026-with-payroll",
+      "description": "The 2026 compliance clock for a calendar-year Delaware C corporation with payroll: Form 941 for 2025 Q4 due 2026-01-31, the Delaware annual report and franchise tax due 2026-03-01, Form 1120 for 2025 due 2026-04-15, then the 2026 Q1-Q3 Form 941 dates (2026-04-30, 2026-07-31, 2026-10-31), in due-date order. Dates are nominal: entries whose nominal date lands on a weekend (2026-01-31 Saturday, 2026-03-01 Sunday, 2026-10-31 Saturday) carry needsReview true for the rule's next-business-day treatment.",
+      "source": "The dated rule cards named by each entry's ruleId in open-law/ (IRS Instructions for Form 941 due-date table; IRS Instructions for Form 1120; 8 Del. C. § 502)",
+      "inputs": [
+        "2026-01-01",
+        "2026-12-31",
+        {
+          "hasPayroll": true
+        }
+      ],
+      "expected": [
+        {
+          "id": "form-941-2025-q4",
+          "due": "2026-01-31",
+          "needsReview": true
+        },
+        {
+          "id": "de-franchise-tax-2025",
+          "due": "2026-03-01",
+          "needsReview": true
+        },
+        {
+          "id": "form-1120-2025",
+          "due": "2026-04-15",
+          "needsReview": false
+        },
+        {
+          "id": "form-941-2026-q1",
+          "due": "2026-04-30",
+          "needsReview": false
+        },
+        {
+          "id": "form-941-2026-q2",
+          "due": "2026-07-31",
+          "needsReview": false
+        },
+        {
+          "id": "form-941-2026-q3",
+          "due": "2026-10-31",
+          "needsReview": true
+        }
+      ]
+    }
+  ]
+}

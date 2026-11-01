@@ -1,0 +1,140 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "fictional",
+    "cases",
+    "scope"
+  ],
+  "properties": {
+    "fictional": {
+      "const": true
+    },
+    "cases": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "company",
+          "scenario",
+          "expectedProcessId",
+          "expectedOutcome",
+          "externalActionsAuthorized",
+          "gateChecks"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "company": {
+            "type": "string",
+            "minLength": 1
+          },
+          "scenario": {
+            "type": "string",
+            "minLength": 1
+          },
+          "expectedProcessId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "expectedOutcome": {
+            "type": "string",
+            "minLength": 1
+          },
+          "externalActionsAuthorized": {
+            "const": false
+          },
+          "gateChecks": {
+            "type": "array",
+            "minItems": 6,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "id",
+                "stepId",
+                "facts",
+                "expectedDecision"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "stepId": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "facts": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "triggerConfirmed",
+                    "requiredLocationsKnown",
+                    "expertReviewComplete",
+                    "approval"
+                  ],
+                  "properties": {
+                    "triggerConfirmed": {
+                      "type": "boolean"
+                    },
+                    "requiredLocationsKnown": {
+                      "type": "boolean"
+                    },
+                    "expertReviewComplete": {
+                      "type": "boolean"
+                    },
+                    "approval": {
+                      "anyOf": [
+                        {
+                          "type": "object",
+                          "additionalProperties": false,
+                          "required": [
+                            "role",
+                            "scope"
+                          ],
+                          "properties": {
+                            "role": {
+                              "type": "string",
+                              "minLength": 1
+                            },
+                            "scope": {
+                              "type": "string",
+                              "minLength": 1
+                            }
+                          }
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    }
+                  }
+                },
+                "expectedDecision": {
+                  "enum": [
+                    "out-of-scope",
+                    "needs-context",
+                    "needs-approval",
+                    "needs-review",
+                    "ready-for-human"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "minItems": 1
+    },
+    "scope": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}

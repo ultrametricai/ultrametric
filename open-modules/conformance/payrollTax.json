@@ -1,0 +1,31 @@
+{
+  "module": "payrollTax",
+  "entrypoint": "employerPayrollCostAnnual",
+  "implementation": {
+    "file": "lib/openstartup/payrollTax.ts",
+    "sha256": "15b1b2a8543074f743b9b5bf4ed62d5c5798812e9509c9532f3f28336edcebe6"
+  },
+  "readme": "open-modules/conformance/README.md",
+  "cases": [
+    {
+      "name": "federal-cost-120k",
+      "description": "A $120,000 hire: employer FICA 6.2% + 1.45% = $9,180, net FUTA 0.6% on the first $7,000 = $42, federal employer total $129,222 and load factor 0.0769.",
+      "source": "IRS-published 2026 FICA figures and 2025 Form 940 instructions, pinned via rule cards us-fed.fica-rates-2026 and us-fed.futa-2025 in open-law/US-FED/; totals hand-derived in lib/openstartup/__tests__/payrollTax.test.ts",
+      "inputs": [
+        120000
+      ],
+      "expected": {
+        "fica": {
+          "employerSocialSecurity": 7440,
+          "employerMedicare": 1740,
+          "employerFicaTotal": 9180
+        },
+        "futa": {
+          "netFuta": 42
+        },
+        "federalEmployerTotal": 129222,
+        "federalLoadFactor": 0.0769
+      }
+    }
+  ]
+}

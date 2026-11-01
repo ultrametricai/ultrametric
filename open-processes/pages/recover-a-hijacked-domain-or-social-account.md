@@ -3,6 +3,10 @@
 
 # Recover a hijacked domain or social account
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Steps](#steps-at-a-glance)
+
+## Overview
+
 **Trigger:** Your domain, DNS, or a company social/email account is taken over: logins fail, records change, or posts you didn't write appear.
 
 The first hour decides how far this spreads. Work out what was taken: the registrar account, DNS, email, or the social handle. Changed MX and DNS records are how one stolen login becomes all of them. Lock what you still hold: passwords, hardware-key 2FA, the registrar transfer lock. Then use the owners' own processes: the registrar's compromise case (if the domain was transferred away, ICANN's transfer-dispute path, where the 60-day rules matter) and the platforms' recovery flows (Google's hacked-account flow; Instagram's /hacked; X's sits behind its help center). Check registration state on RDAP instead of guessing. If posts went out or mail was read, tell the people affected before the screenshots do. A domain transferred to another registrar comes back only with pain.
@@ -22,25 +26,97 @@ The first hour decides how far this spreads. Work out what was taken: the regist
 
 Recovery runs through registrar cases, ICANN processes, and platform flows that verify the human owner; an agent can run the lock-down, the RDAP checks, and the hardening, but the ownership proofs are yours.
 
-## Steps
+## Before you start
 
-1. **Scope the compromise: registrar account, DNS, email, or the social handle — and whether MX/DNS were changed (that's how everything else falls)** — human · ~30 min
-2. **Lock what you still hold: rotate passwords, enforce hardware-key 2FA, check DNS and MX against known-good, enable the registrar/transfer lock** — agent-runnable · ~45 min
+| Information to gather | Required by the record |
+| --- | --- |
+| which accounts/domains are affected and what still logs in | Yes |
+| registrar, DNS host, and the ownership proofs you hold | Yes |
 
-   - Vendor options: Cloudflare Registrar, Namecheap, Porkbun
-   - Ranked market: [domain-registrars](../../open-rankings/domain-registrars)
-3. **Open the registrar's compromise case — and if the domain was transferred away, invoke ICANN's transfer-dispute path (the 60-day rules matter)** — human · ~45 min
+## Steps at a glance
 
-   - Do it yourself: [ICANN: registrar complaints](https://www.icann.org/compliance/complaint)
-4. **Verify the live registration state and transfer timeline on RDAP — facts, not guesses** — agent-runnable · ~20 min
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
 
-   - Do it yourself: [ICANN RDAP lookup](https://lookup.icann.org/)
-5. **Run the platform's own recovery flow for hijacked accounts (Google's hacked-account flow; Instagram's /hacked; X's via its help center)** — manual form/portal · ~45 min
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Scope the compromise: registrar account, DNS, email, or the social handle — and whether MX/DNS were changed (that's how everything else falls)](#step-1) | human | ~30 min | Entry step |
+| [2. Lock what you still hold: rotate passwords, enforce hardware-key 2FA, check DNS and MX against known-good, enable the registrar/transfer lock](#step-2) | agent-runnable | ~45 min | [Step 1](#step-1) |
+| [3. Open the registrar's compromise case — and if the domain was transferred away, invoke ICANN's transfer-dispute path (the 60-day rules matter)](#step-3) | human | ~45 min | [Step 2](#step-2) |
+| [4. Verify the live registration state and transfer timeline on RDAP — facts, not guesses](#step-4) | agent-runnable | ~20 min | [Step 3](#step-3) |
+| [5. Run the platform's own recovery flow for hijacked accounts (Google's hacked-account flow; Instagram's /hacked; X's via its help center)](#step-5) | manual form/portal | ~45 min | [Step 4](#step-4) |
+| [6. If posts went out from your handle or mail was read, tell the people affected before the screenshots do](#step-6) | human | ~30 min | [Step 5](#step-5) |
+| [7. Harden after recovery: registrar lock + hardware keys everywhere + DNS monitoring, documented](#step-7) | agent-runnable | ~45 min | [Step 6](#step-6) |
+| [8. Wait out the registrar/platform case queues and re-verify on RDAP when they close](#step-8) | human; includes waiting | ~7 d | [Step 7](#step-7) |
 
-   - Do it yourself: [Google: secure a hacked account](https://support.google.com/accounts/answer/6294825)
-6. **If posts went out from your handle or mail was read, tell the people affected before the screenshots do** — human · ~30 min · hard to undo
-7. **Harden after recovery: registrar lock + hardware keys everywhere + DNS monitoring, documented** — agent-runnable · ~45 min
-8. **Wait out the registrar/platform case queues and re-verify on RDAP when they close** — human · ~7 d · async wait
+<a id="steps"></a>
+
+## Step details
+
+<a id="step-1"></a>
+
+### 1. Scope the compromise: registrar account, DNS, email, or the social handle — and whether MX/DNS were changed (that's how everything else falls)
+
+human · ~30 min
+
+
+<a id="step-2"></a>
+
+### 2. Lock what you still hold: rotate passwords, enforce hardware-key 2FA, check DNS and MX against known-good, enable the registrar/transfer lock
+
+agent-runnable · ~45 min
+
+
+- Vendor options: Cloudflare Registrar, Namecheap, Porkbun
+- Ranked market: [domain-registrars](../../open-rankings/domain-registrars)
+
+<a id="step-3"></a>
+
+### 3. Open the registrar's compromise case — and if the domain was transferred away, invoke ICANN's transfer-dispute path (the 60-day rules matter)
+
+human · ~45 min
+
+
+- Do it yourself: [ICANN: registrar complaints](https://www.icann.org/compliance/complaint)
+
+<a id="step-4"></a>
+
+### 4. Verify the live registration state and transfer timeline on RDAP — facts, not guesses
+
+agent-runnable · ~20 min
+
+
+- Do it yourself: [ICANN RDAP lookup](https://lookup.icann.org/)
+
+<a id="step-5"></a>
+
+### 5. Run the platform's own recovery flow for hijacked accounts (Google's hacked-account flow; Instagram's /hacked; X's via its help center)
+
+manual form/portal · ~45 min
+
+
+- Do it yourself: [Google: secure a hacked account](https://support.google.com/accounts/answer/6294825)
+
+<a id="step-6"></a>
+
+### 6. If posts went out from your handle or mail was read, tell the people affected before the screenshots do
+
+human · ~30 min · hard to undo
+
+
+<a id="step-7"></a>
+
+### 7. Harden after recovery: registrar lock + hardware keys everywhere + DNS monitoring, documented
+
+agent-runnable · ~45 min
+
+
+<a id="step-8"></a>
+
+### 8. Wait out the registrar/platform case queues and re-verify on RDAP when they close
+
+human · ~7 d · async wait
+
+
 
 ---
 

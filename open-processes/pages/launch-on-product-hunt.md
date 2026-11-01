@@ -3,17 +3,27 @@
 
 # Launch on Product Hunt
 
+[Overview](#overview) · [Process sequence](#process-sequence)
+
+## Overview
+
 Analytics and email capture on before launch day, assets ready, submitted to PH and the directories, the spike caught.
 
 | Field | Value |
 | --- | --- |
 | Kind | chain |
 
-## Processes in order
+<a id="processes-in-order"></a>
 
-1. [Set up product analytics](set-up-product-analytics.md)
-2. [Set up email marketing](set-up-email-marketing.md)
-3. [Launch on Product Hunt & directories](launch-on-product-hunt-directories.md)
+## Process sequence
+
+Run the linked processes in the recorded chain order. Each process defines its own internal dependencies.
+
+| Order | Process | Requires | Produces |
+| --- | --- | --- | --- |
+| 1 | [Set up product analytics](set-up-product-analytics.md) | Code hosting organization | Product analytics workspace |
+| 2 | [Set up email marketing](set-up-email-marketing.md) | Company website | Marketing email audience |
+| 3 | [Launch on Product Hunt & directories](launch-on-product-hunt-directories.md) | Company website; Brand logo; Product analytics workspace | Not recorded |
 
 ---
 

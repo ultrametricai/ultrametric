@@ -3,7 +3,11 @@
 
 # Form a VC fund
 
-Stand up the venture fund's legal stack: the GP management entity, the fund vehicle's formation filing, the initial limited partnership agreement and GP operating agreement, the fund's tax ID, and the fund bank account. In the US that is a Delaware LP with an LLC (or series-LLC series) GP and an IRS EIN; elsewhere the manager's regulator registration is part of the same stack.
+[Overview](#overview) · [Before you start](#before-you-start) · [Geography](#geography) · [Steps](#steps-at-a-glance) · [Outputs](#outputs)
+
+## Overview
+
+Choose the fund and management entities with local counsel, prepare the governing documents, complete applicable formation and regulatory registrations, obtain tax identifiers and open the fund’s bank account.
 
 | Field | Value |
 | --- | --- |
@@ -19,79 +23,190 @@ Stand up the venture fund's legal stack: the GP management entity, the fund vehi
 
 The agent drafts the LPA and the operating agreement and pre-fills every filing; the formation registry and tax-ID portals have no API, and the GP's signatures on the fund documents are legally human.
 
-## Steps
+## Before you start
 
-1. **Choose a fund formation platform or counsel** — human · ~30 min
+| Information to gather | Required by the record |
+| --- | --- |
+| fund name | Yes |
+| GP entity structure | Yes |
+| fund size, management fee, and carry terms | Yes |
+| GP legal names and addresses | Yes |
 
-   Compare formation services against the proposed fund strategy, investors, jurisdictions, commitments and team. Establish the vehicle, offering and adviser-regulation work with fund counsel, then determine who handles documents, filings, administration and ongoing support. Check fees and exclusions so the GP can assign each task and choose an engagement with clear responsibilities.
+## Geography
 
-   - Vendor options: AngelList, Sydecar
-   - Sources: [SEC Private Funds](https://www.sec.gov/resources-small-businesses/capital-raising-building-blocks/private-funds) · [SEC Investment Advisers](https://www.sec.gov/resources-small-businesses/capital-raising-building-blocks/investment-advisers)
-2. **Create the GP management entity** — manual form/portal · ~30 min · hard to undo
+Country rows describe the guidance recorded here. Local notes and step alternatives do not establish a complete country-specific workflow.
 
-   Settle the GP structure with fund counsel, including its relationship to the fund, manager and principals and whether a separate entity or series is suitable. The authorized principals adopt that structure and execute the required formation actions. Establish its owners and management authority, with bank accounts, books and contracting roles assigned to the correct entities.
+| Country | Recorded guidance | Steps with local alternatives or resolutions |
+| --- | --- | --- |
+| [United States](#geo-us) | step resolution | [1](#step-1), [2](#step-2), [3](#step-3), [8](#step-8) |
+| [India](#geo-in) | Local analog note; step resolution | [1](#step-1), [3](#step-3) |
+| [United Kingdom](#geo-uk) | Local analog note; step resolution | [1](#step-1), [3](#step-3) |
+| [Germany](#geo-de) | Local analog note; step resolution | [1](#step-1), [2](#step-2), [3](#step-3) |
+| [France](#geo-fr) | Local analog note; step resolution | [1](#step-1), [3](#step-3) |
+| [Portugal](#geo-pt) | Local analog note; step resolution | [1](#step-1), [3](#step-3) |
+| [Canada](#geo-ca) | Local analog note; step resolution | [1](#step-1), [2](#step-2), [3](#step-3) |
+| [Singapore](#geo-sg) | Local analog note | — |
+| [Australia](#geo-au) | Local analog note | — |
+| [South Korea](#geo-kr) | Local analog note | — |
+| [Hong Kong](#geo-hk) | Local analog note | — |
+| [Estonia](#geo-ee) | Local analog note | — |
 
-   - Verify: The GP entity appears in the Delaware entity search with its own file number. ([icis.corp.delaware.gov](https://icis.corp.delaware.gov/ecorp/entitysearch/namesearch.aspx))
-   - Cost: $110 (government fee, as of 2026-10-01, [corpfiles.delaware.gov](https://corpfiles.delaware.gov/Fee_Schedule/AugustFee2026.pdf)). A new Delaware LLC Certificate of Formation and a registered-series formation are each $110 on the published schedule.
-   - Vendor options: AngelList, Sydecar, LegalZoom
-   - Do it yourself: [Delaware Division of Corporations](https://corp.delaware.gov/howtoform/)
-3. **Create the fund vehicle's formation document and file it with the registry** — manual form/portal · ~30 min · hard to undo
+## Steps at a glance
 
-   Prepare the formation certificate using the fund name, registered agent or office and general-partner information, checking it against the agreed structure and partnership documents. The authorized GP or permitted filer signs and submits it with the intended effective timing. Follow the submission through the registry’s response before treating the filed certificate as formation evidence.
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
 
-   - Verify: The LP appears in the Delaware entity search once the Certificate of Limited Partnership is stamped. ([icis.corp.delaware.gov](https://icis.corp.delaware.gov/ecorp/entitysearch/namesearch.aspx))
-   - Cost: $200 (government fee, as of 2026-10-01, [corpfiles.delaware.gov](https://corpfiles.delaware.gov/Fee_Schedule/AugustFee2026.pdf)). Delaware Certificate of Limited Partnership filing fee.
-   - Vendor options: AngelList, Sydecar
-   - Do it yourself: [Delaware Division of Corporations](https://corp.delaware.gov/howtoform/)
-   - Sources: [Delaware Revised Uniform Limited Partnership Act](https://delcode.delaware.gov/title6/c017/sc02/index.html)
-4. **Receive the stamped formation certificate** — human · ~2 d · async wait
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Choose a fund formation platform or counsel](#step-1) | human | ~30 min | Entry step |
+| [2. Create the GP management entity](#step-2) | manual form/portal | ~30 min | [Step 1](#step-1) |
+| [3. Create the fund vehicle's formation document and file it with the registry](#step-3) | manual form/portal | ~30 min | [Step 2](#step-2) |
+| [4. Receive the stamped formation certificate](#step-4) | human; includes waiting | ~2 d | [Step 3](#step-3) |
+| [5. Create the simple LPA (limited partnership agreement)](#step-5) | agent-runnable; approval required | ~1 h | [Step 4](#step-4) |
+| [6. Create the GP operating agreement](#step-6) | agent-runnable; approval required | ~45 min | [Step 5](#step-5) |
+| [7. GP signs the LPA and the operating agreement](#step-7) | human; signature required | ~10 min | [Step 6](#step-6) |
+| [8. Apply for the fund's tax ID](#step-8) | manual form/portal | ~15 min | [Step 7](#step-7) |
+| [9. Open the fund bank account](#step-9) | manual form/portal | ~20 min | [Step 8](#step-8) |
 
-   Retrieve the registry-returned certificate and compare its name, filing details and effective time with the submission. Resolve discrepancies or conditions with counsel before using it for bank or investor onboarding. Add the final certificate to the fund’s formation records so those relying on it use the registry-returned version.
+<a id="steps"></a>
 
-   - Produces: Fund LP certificate
-   - Cross-arena market: [workflow-automation](../../open-rankings/workflow-automation)
-   - Sources: [Delaware Revised Uniform Limited Partnership Act](https://delcode.delaware.gov/title6/c017/sc02/index.html)
-5. **Create the simple LPA (limited partnership agreement)** — agent-runnable · ~1 h · human approval required
+## Step details
 
-   Draft the LPA with fund counsel from the strategy, GP structure, economics and initial investor terms. Work through commitments, investment authority, fees, distributions, governance and amendment provisions, checking consistency across the agreement. Mark terms still open to negotiation so the GP can settle them before the document goes into execution.
+<a id="step-1"></a>
 
-   - Vendor options: AngelList, Sydecar
-   - Cross-arena options: ChatGPT, Claude (ai-assistants)
-6. **Create the GP operating agreement** — agent-runnable · ~45 min · human approval required
+### 1. Choose a fund formation platform or counsel
 
-   Draft the GP operating agreement from the principals’ ownership, contributions, decision rights and economic arrangements. Address who can act for the GP, conflicts, departures and allocation of fund-related rights. Reconcile those provisions with the fund agreement and management arrangements, resolving open decisions with the principals and counsel before execution.
+human · ~30 min
 
-   - Cross-arena options: ChatGPT, Claude (ai-assistants)
-7. **GP signs the LPA and the operating agreement** — human (legally required signature) · ~10 min
 
-   The relevant principals sign the final LPA and GP operating agreement in the capacities required by each document. Check signatory authority, conditions and consistency with the agreed terms before execution. Establish effectiveness and outstanding actions with counsel, then keep the executed agreements identifiable by entity so administration applies the correct governing terms.
+Compare formation services against the proposed fund strategy, investors, jurisdictions, commitments and team. Establish the vehicle, offering and adviser-regulation work with fund counsel, then determine who handles documents, filings, administration and ongoing support. Check fees and exclusions so the GP can assign each task and choose an engagement with clear responsibilities.
 
-   - Produces: Fund LPA & GP operating agreement
-8. **Apply for the fund's tax ID** — manual form/portal · ~15 min · hard to undo
+- Vendor options: AngelList, Sydecar
+- Sources: [SEC Private Funds](https://www.sec.gov/resources-small-businesses/capital-raising-building-blocks/private-funds) · [SEC Investment Advisers](https://www.sec.gov/resources-small-businesses/capital-raising-building-blocks/investment-advisers)
 
-   Apply for the formed fund’s tax identification using its exact legal name, address, formation details and responsible party. Check for an existing registration and use the current route the tax authority sets for the applicant. The responsible party or properly authorized designee submits the application; reconcile the resulting confirmation to the entity records for bank and administrator use.
+<a id="step-2"></a>
 
-   - Verify: The EIN is issued in the XX-XXXXXXX format at the end of the online session — retain the CP 575 confirmation notice; banks and payroll providers ask for it. ([www.irs.gov](https://www.irs.gov/businesses/small-businesses-self-employed/apply-for-an-employer-identification-number-ein-online))
-   - Cost: free (free, as of 2026-10-01, [www.irs.gov](https://www.irs.gov/businesses/small-businesses-self-employed/apply-for-an-employer-identification-number-ein-online)). The IRS issues EINs for free; third-party services charge to file on your behalf.
-   - Canonical vendor: IRS
-   - Do it yourself: [IRS EIN application](https://www.irs.gov/businesses/small-businesses-self-employed/get-an-employer-identification-number)
-9. **Open the fund bank account** — manual form/portal · ~20 min · hard to undo
+### 2. Create the GP management entity
 
-   Open an account in the fund’s own name suited to investor flows and payment controls, separate from GP and management company accounts. The authorized GP representative supplies the bank’s requested formation, tax-ID, governing and signer documents and accepts the account terms. Check the account title and access controls, then establish verified wire instructions and reconciliation with the administrator.
+manual form/portal · ~30 min · hard to undo
 
-   - Verify: The dashboard shows account and routing numbers and a small inbound test transfer clears.
-   - Produces: Fund bank account
-   - Vendor options: Mercury, Brex
-   - Ranked market: [startup-banking](../../open-rankings/startup-banking)
 
-## By country
+Settle the GP structure with fund counsel, including its relationship to the fund, manager and principals and whether a separate entity or series is suitable. The authorized principals adopt that structure and execute the required formation actions. Establish its owners and management authority, with bank accounts, books and contracting roles assigned to the correct entities.
+
+- Verify: Retain the applicable authority’s confirmation and reconcile it with the approved submission and company records.
+- Vendor options: AngelList, Sydecar, LegalZoom
+- Do it yourself: [Delaware Division of Corporations](https://corp.delaware.gov/howtoform/)
+
+<a id="step-3"></a>
+
+### 3. Create the fund vehicle's formation document and file it with the registry
+
+manual form/portal · ~30 min · hard to undo
+
+
+Prepare the formation certificate using the fund name, registered agent or office and general-partner information, checking it against the agreed structure and partnership documents. The authorized GP or permitted filer signs and submits it with the intended effective timing. Follow the submission through the registry’s response before treating the filed certificate as formation evidence.
+
+- Verify: Retain the applicable authority’s confirmation and reconcile it with the approved submission and company records.
+- Vendor options: AngelList, Sydecar
+- Do it yourself: [Delaware Division of Corporations](https://corp.delaware.gov/howtoform/)
+- Sources: [Delaware Revised Uniform Limited Partnership Act](https://delcode.delaware.gov/title6/c017/sc02/index.html)
+
+<a id="step-4"></a>
+
+### 4. Receive the stamped formation certificate
+
+human · ~2 d · async wait
+
+
+Retrieve the registry-returned certificate and compare its name, filing details and effective time with the submission. Resolve discrepancies or conditions with counsel before using it for bank or investor onboarding. Add the final certificate to the fund’s formation records so those relying on it use the registry-returned version.
+
+- Produces: Fund LP certificate
+- Cross-arena market: [workflow-automation](../../open-rankings/workflow-automation)
+- Sources: [Delaware Revised Uniform Limited Partnership Act](https://delcode.delaware.gov/title6/c017/sc02/index.html)
+
+<a id="step-5"></a>
+
+### 5. Create the simple LPA (limited partnership agreement)
+
+agent-runnable · ~1 h · human approval required
+
+
+Draft the LPA with fund counsel from the strategy, GP structure, economics and initial investor terms. Work through commitments, investment authority, fees, distributions, governance and amendment provisions, checking consistency across the agreement. Mark terms still open to negotiation so the GP can settle them before the document goes into execution.
+
+- Vendor options: AngelList, Sydecar
+- Cross-arena options: ChatGPT, Claude (ai-assistants)
+
+<a id="step-6"></a>
+
+### 6. Create the GP operating agreement
+
+agent-runnable · ~45 min · human approval required
+
+
+Draft the GP operating agreement from the principals’ ownership, contributions, decision rights and economic arrangements. Address who can act for the GP, conflicts, departures and allocation of fund-related rights. Reconcile those provisions with the fund agreement and management arrangements, resolving open decisions with the principals and counsel before execution.
+
+- Cross-arena options: ChatGPT, Claude (ai-assistants)
+
+<a id="step-7"></a>
+
+### 7. GP signs the LPA and the operating agreement
+
+human (legally required signature) · ~10 min
+
+
+The relevant principals sign the final LPA and GP operating agreement in the capacities required by each document. Check signatory authority, conditions and consistency with the agreed terms before execution. Establish effectiveness and outstanding actions with counsel, then keep the executed agreements identifiable by entity so administration applies the correct governing terms.
+
+- Produces: Fund LPA & GP operating agreement
+
+<a id="step-8"></a>
+
+### 8. Apply for the fund's tax ID
+
+manual form/portal · ~15 min · hard to undo
+
+
+Apply for the formed fund’s tax identification using its exact legal name, address, formation details and responsible party. Check for an existing registration and use the current route the tax authority sets for the applicant. The responsible party or properly authorized designee submits the application; reconcile the resulting confirmation to the entity records for bank and administrator use.
+
+- Verify: Retain the applicable authority’s confirmation and reconcile it with the approved submission and company records.
+- Canonical vendor: IRS
+- Do it yourself: [IRS EIN application](https://www.irs.gov/businesses/small-businesses-self-employed/get-an-employer-identification-number)
+
+<a id="step-9"></a>
+
+### 9. Open the fund bank account
+
+manual form/portal · ~20 min · hard to undo
+
+
+Open an account in the fund’s own name suited to investor flows and payment controls, separate from GP and management company accounts. The authorized GP representative supplies the bank’s requested formation, tax-ID, governing and signer documents and accepts the account terms. Check the account title and access controls, then establish verified wire instructions and reconciliation with the administrator.
+
+- Verify: The dashboard shows account and routing numbers and a small inbound test transfer clears.
+- Produces: Fund bank account
+- Vendor options: Mercury, Brex
+- Ranked market: [startup-banking](../../open-rankings/startup-banking)
+
+
+<a id="by-country"></a>
+
+## Country details
+
+<a id="geo-us"></a>
 
 ### United States
 
+Stand up the venture fund's legal stack: the GP management entity, the fund vehicle's formation filing, the initial limited partnership agreement and GP operating agreement, the fund's tax ID, and the fund bank account. In the US that is a Delaware LP with an LLC (or series-LLC series) GP and an IRS EIN; elsewhere the manager's regulator registration is part of the same stack.
+
 - Step 1: Settle the private-fund exemptions and adviser-regulation posture with counsel; the SEC's private-funds and investment-adviser building blocks frame the choices ([SEC Private Funds](https://www.sec.gov/resources-small-businesses/capital-raising-building-blocks/private-funds))
 - Step 2: Form a new Delaware LLC or a new registered series of the series LLC as the GP ([Delaware Division of Corporations](https://corp.delaware.gov/howtoform/))
+  - Cost: $110 (government fee, as of 2026-10-01, [corpfiles.delaware.gov](https://corpfiles.delaware.gov/Fee_Schedule/AugustFee2026.pdf)). A new Delaware LLC Certificate of Formation and a registered-series formation are each $110 on the published schedule.
+  - Verify: The GP entity appears in the Delaware entity search with its own file number. ([icis.corp.delaware.gov](https://icis.corp.delaware.gov/ecorp/entitysearch/namesearch.aspx))
 - Step 3: File the Certificate of Limited Partnership with the Delaware Division of Corporations ($200) ([Delaware Division of Corporations](https://corp.delaware.gov/howtoform/))
+  - Cost: $200 (government fee, as of 2026-10-01, [corpfiles.delaware.gov](https://corpfiles.delaware.gov/Fee_Schedule/AugustFee2026.pdf)). Delaware Certificate of Limited Partnership filing fee.
+  - Verify: The LP appears in the Delaware entity search once the Certificate of Limited Partnership is stamped. ([icis.corp.delaware.gov](https://icis.corp.delaware.gov/ecorp/entitysearch/namesearch.aspx))
 - Step 8: Apply for the fund's EIN on the current IRS route; retain the CP 575 confirmation for the bank and administrator ([IRS EIN application](https://www.irs.gov/businesses/small-businesses-self-employed/get-an-employer-identification-number))
+  - Cost: free (free, as of 2026-10-01, [www.irs.gov](https://www.irs.gov/businesses/small-businesses-self-employed/apply-for-an-employer-identification-number-ein-online)). The IRS issues EINs for free; third-party services charge to file on your behalf.
+  - Verify: The EIN is issued in the XX-XXXXXXX format at the end of the online session — retain the CP 575 confirmation notice; banks and payroll providers ask for it. ([www.irs.gov](https://www.irs.gov/businesses/small-businesses-self-employed/apply-for-an-employer-identification-number-ein-online))
+
+<a id="geo-in"></a>
 
 ### India
 
@@ -99,11 +214,15 @@ The agent drafts the LPA and the operating agreement and pre-fills every filing;
 - Step 1: SEBI registration as a Category I AIF (VCF sub-category) precedes any fundraising, with a SEBI-registered manager and minimum corpus and ticket floors ([SEBI — Alternative Investment Funds](https://www.sebi.gov.in/))
 - Step 3: The fund is a trust or LLP structure registered with SEBI before fundraising ([SEBI — Alternative Investment Funds](https://www.sebi.gov.in/))
 
+<a id="geo-uk"></a>
+
 ### United Kingdom
 
 - The stack is an English (or Scottish) limited partnership — usually a PFLP — with a GP and an FCA-regulated manager: most emerging managers start as sub-threshold AIFMs registered with the FCA or operate under a regulatory host. ([FCA — authorisation & registration](https://www.fca.org.uk/firms/authorisation))
 - Step 1: Most emerging managers start as sub-threshold AIFMs registered with the FCA or operate under a regulatory host ([FCA — authorisation & registration](https://www.fca.org.uk/firms/authorisation))
 - Step 3: The vehicle is an English (or Scottish) limited partnership, usually a PFLP ([FCA — authorisation & registration](https://www.fca.org.uk/firms/authorisation))
+
+<a id="geo-de"></a>
 
 ### Germany
 
@@ -112,17 +231,23 @@ The agent drafts the LPA and the operating agreement and pre-fills every filing;
 - Step 2: In the standard GmbH & Co. KG stack the GP role sits with the GmbH ([BaFin (AIFM registration)](https://www.bafin.de/))
 - Step 3: The standard vehicle is a GmbH & Co. KG ([BaFin (AIFM registration)](https://www.bafin.de/))
 
+<a id="geo-fr"></a>
+
 ### France
 
 - French venture vehicles are FPCIs (professional private-equity funds) run by an AMF-authorised (or registered) management company — AMF approval of the manager is the long pole in the schedule. ([AMF — fund management authorisation](https://www.amf-france.org/))
 - Step 1: AMF authorisation (or registration) of the management company is the long pole in the schedule ([AMF — fund management authorisation](https://www.amf-france.org/))
 - Step 3: The vehicle is an FPCI constituted by the AMF-authorised management company ([AMF — fund management authorisation](https://www.amf-france.org/))
 
+<a id="geo-pt"></a>
+
 ### Portugal
 
 - The standard stack is an FCR (venture-capital fund) with its management entity registered with and supervised by the CMVM under the asset-management regime — registration precedes accepting commitments. ([CMVM — supervised entities](https://www.cmvm.pt/))
 - Step 1: The management entity registers with the CMVM under the asset-management regime before accepting commitments ([CMVM — supervised entities](https://www.cmvm.pt/))
 - Step 3: The vehicle is an FCR under the CMVM's asset-management regime ([CMVM — supervised entities](https://www.cmvm.pt/))
+
+<a id="geo-ca"></a>
 
 ### Canada
 
@@ -131,29 +256,39 @@ The agent drafts the LPA and the operating agreement and pre-fills every filing;
 - Step 2: The GP is formed for a provincial limited partnership (Ontario and BC are standard) ([OSC — NI 45-106 and registration](https://www.osc.ca/en/securities-law/instruments-rules-policies/4/45-106))
 - Step 3: Form a provincial limited partnership (Ontario and BC are standard) ([OSC — NI 45-106 and registration](https://www.osc.ca/en/securities-law/instruments-rules-policies/4/45-106))
 
+<a id="geo-sg"></a>
+
 ### Singapore
 
 - The stack is a Singapore limited partnership or a VCC with a manager holding MAS fund-management licensing or registration under the Securities and Futures Act — stand up the manager entity and its licence before the fund closes. ([MAS — capital-markets licensing](https://www.mas.gov.sg/regulation/capital-markets/apply-for-licensing-or-registration-of-capital-market-entities))
+
+<a id="geo-au"></a>
 
 ### Australia
 
 - The local stack is a VCLP or ESVCLP: an incorporated limited partnership registered with Industry Innovation and Science Australia, flow-through taxed with investor incentives, and the manager licensed or authorised under an AFSL. ([ESVCLP (business.gov.au)](https://business.gov.au/grants-and-programs/early-stage-venture-capital-limited-partnerships))
 
+<a id="geo-kr"></a>
+
 ### South Korea
 
 - Funds form as venture investment partnerships (벤처투자조합) registered with the Ministry of SMEs and Startups under the Venture Investment Promotion Act; KVIC anchors the ecosystem as the national fund of funds. ([Korea Venture Investment Corp (KVIC)](https://www.kvic.or.kr/))
+
+<a id="geo-hk"></a>
 
 ### Hong Kong
 
 - The stack is a limited partnership fund registered with the Companies Registry under the Limited Partnership Fund Ordinance with a manager licensed or registered with the Securities and Futures Commission — stand up the manager and its licensing before the fund closes. ([Companies Registry — limited partnership funds](https://www.cr.gov.hk/en/legislation/lpf.htm))
 
+<a id="geo-ee"></a>
+
 ### Estonia
 
 - Funds commonly form as Estonian limited partnerships (usaldusühing) entered in the commercial register, with fund-manager registration or authorisation under the investment-funds rules supervised by Finantsinspektsioon. ([e-Business Register](https://ariregister.rik.ee/eng))
 
-## Artifacts
+<a id="artifacts"></a>
 
-Produces:
+## Outputs
 
 - Fund LP certificate
 - Fund LPA & GP operating agreement

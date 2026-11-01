@@ -3,6 +3,10 @@
 
 # Set up custom domain
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Steps](#steps-at-a-glance)
+
+## Overview
+
 Register domain, configure DNS, set up SSL, point to hosting.
 
 | Field | Value |
@@ -19,59 +23,116 @@ Register domain, configure DNS, set up SSL, point to hosting.
 
 Namecheap and Cloudflare APIs fully support domain/DNS operations. SSL auto-provisioned.
 
-## Steps
+<a id="artifacts"></a>
 
-1. **Search domain availability** — agent-runnable · ~2 min
+## Before you start
 
-   Search the exact proposed names and extensions at the registrar that would handle registration. Compare initial and renewal prices, premium or resale listings, and any extension restrictions. Keep the spelling and check time with the shortlist because availability can change. Flag apparent naming conflicts for the brand-clearance work.
-
-   - Canonical vendor: Namecheap
-   - Vendor options: Namecheap, Porkbun, Name.com, Cloudflare Registrar
-   - Ranked market: [domain-registrars](../../open-rankings/domain-registrars)
-   - Sources: [The domain name registration process](https://www.icann.org/resources/pages/domain-name-registration-process-2023-11-02-en)
-2. **Register domain** — agent-runnable · ~3 min · human approval required
-
-   Register the exact domain and term authorized by the purchaser, checking spelling, registrant details, renewal settings and optional extras at checkout. Use the company-controlled account and complete its contact-verification steps. After payment, confirm the domain appears under the intended registrant with the expected expiration and renewal arrangement. Put renewal notices and account recovery with maintained company contacts, and retain the registration receipt privately.
-
-   - Verify: An RDAP/WHOIS lookup shows the domain registered to you (or your registrar's privacy proxy) with the expected expiry date. ([lookup.icann.org](https://lookup.icann.org/))
-   - Canonical vendor: Namecheap
-   - Sources: [The domain name registration process](https://www.icann.org/resources/pages/domain-name-registration-process-2023-11-02-en)
-3. **Transfer DNS to Cloudflare** — agent-runnable · ~5 min · async wait · human approval required
-
-   Export the current zone before moving authoritative DNS to Cloudflare. Compare imported records against the export, especially mail and verification records, and review the provider's instructions for existing DNSSEC and proxy settings. Under the domain owner's change authorization, replace nameservers with the values assigned to this zone. Check authoritative answers and actual website and mail behavior after the switch. Use the exported zone to diagnose and restore missing records.
-
-   - Canonical vendor: Cloudflare
-   - Sources: [Set up a primary DNS zone](https://developers.cloudflare.com/dns/zone-setups/full-setup/setup/)
-4. **Configure DNS records** — agent-runnable · ~5 min · human approval required
-
-   Compare the host's required DNS values with records already present at each name. Preserve unrelated mail, verification and subdomain records, and apply the smallest authorized change set. Query authoritative DNS first, then a public resolver and the affected service. Differences can be investigated against the old values and TTLs. Keep the before-and-after zone entries so a bad change can be reversed without reconstructing them from memory.
-
-   - Canonical vendor: Cloudflare
-   - Sources: [Set up a primary DNS zone](https://developers.cloudflare.com/dns/zone-setups/full-setup/setup/) · [Working with SSL certificates](https://vercel.com/docs/domains/working-with-ssl)
-   - Next: steps 5 and 6 — all follow this step
-5. **Add domain to Vercel** — agent-runnable · ~3 min · human approval required
-
-   Attach the hostname to the intended hosting project within the domain and hosting owners' authorized scope. On Vercel, use the validation status and DNS values shown for that specific domain. Set the intended canonical hostname and redirects, then open each customer-facing hostname to verify the project and deployment it serves. Check HTTPS separately: adding the domain starts certificate work, but successful DNS validation is still needed.
-
-   - Canonical vendor: Vercel
-   - Sources: [Working with SSL certificates](https://vercel.com/docs/domains/working-with-ssl)
-
-   *This path ends here.*
-6. **Verify SSL** — agent-runnable · ~2 min
-
-   *Follows step 4.*
-
-   Open the site over HTTPS on every supported hostname, including redirect sources. Inspect certificate names and validity, then exercise pages and API calls for certificate or mixed-content failures. On Vercel, investigate pending issuance against domain validation, DNS/proxy settings and certificate-authority restrictions. Make traffic-affecting corrections within the domain owner's change scope. Confirm renewal-failure notices reach someone who can repair the configuration.
-
-   - Canonical vendor: Cloudflare
-   - Sources: [Working with SSL certificates](https://vercel.com/docs/domains/working-with-ssl)
-
-## Artifacts
-
-Requires:
+Required artifacts:
 
 - Registered domain — from [Buy a domain](buy-a-domain.md)
 - DNS control — from [Buy a domain](buy-a-domain.md)
+
+| Information to gather | Required by the record |
+| --- | --- |
+| domain name | Yes |
+
+## Steps at a glance
+
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
+
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Search domain availability](#step-1) | agent-runnable | ~2 min | Entry step |
+| [2. Register domain](#step-2) | agent-runnable; approval required | ~3 min | [Step 1](#step-1) |
+| [3. Transfer DNS to Cloudflare](#step-3) | agent-runnable; approval required; includes waiting | ~5 min | [Step 2](#step-2) |
+| [4. Configure DNS records](#step-4) | agent-runnable; approval required | ~5 min | [Step 3](#step-3) |
+| [5. Add domain to Vercel](#step-5) | agent-runnable; approval required | ~3 min | [Step 4](#step-4) |
+| [6. Verify SSL](#step-6) | agent-runnable | ~2 min | [Step 4](#step-4) |
+
+<a id="steps"></a>
+
+## Step details
+
+<a id="step-1"></a>
+
+### 1. Search domain availability
+
+agent-runnable · ~2 min
+
+
+Search the exact proposed names and extensions at the registrar that would handle registration. Compare initial and renewal prices, premium or resale listings, and any extension restrictions. Keep the spelling and check time with the shortlist because availability can change. Flag apparent naming conflicts for the brand-clearance work.
+
+- Canonical vendor: Namecheap
+- Vendor options: Namecheap, Porkbun, Name.com, Cloudflare Registrar
+- Ranked market: [domain-registrars](../../open-rankings/domain-registrars)
+- Sources: [The domain name registration process](https://www.icann.org/resources/pages/domain-name-registration-process-2023-11-02-en)
+
+<a id="step-2"></a>
+
+### 2. Register domain
+
+agent-runnable · ~3 min · human approval required
+
+
+Register the exact domain and term authorized by the purchaser, checking spelling, registrant details, renewal settings and optional extras at checkout. Use the company-controlled account and complete its contact-verification steps. After payment, confirm the domain appears under the intended registrant with the expected expiration and renewal arrangement. Put renewal notices and account recovery with maintained company contacts, and retain the registration receipt privately.
+
+- Verify: An RDAP/WHOIS lookup shows the domain registered to you (or your registrar's privacy proxy) with the expected expiry date. ([lookup.icann.org](https://lookup.icann.org/))
+- Canonical vendor: Namecheap
+- Sources: [The domain name registration process](https://www.icann.org/resources/pages/domain-name-registration-process-2023-11-02-en)
+
+<a id="step-3"></a>
+
+### 3. Transfer DNS to Cloudflare
+
+agent-runnable · ~5 min · async wait · human approval required
+
+
+Export the current zone before moving authoritative DNS to Cloudflare. Compare imported records against the export, especially mail and verification records, and review the provider's instructions for existing DNSSEC and proxy settings. Under the domain owner's change authorization, replace nameservers with the values assigned to this zone. Check authoritative answers and actual website and mail behavior after the switch. Use the exported zone to diagnose and restore missing records.
+
+- Canonical vendor: Cloudflare
+- Sources: [Set up a primary DNS zone](https://developers.cloudflare.com/dns/zone-setups/full-setup/setup/)
+
+<a id="step-4"></a>
+
+### 4. Configure DNS records
+
+agent-runnable · ~5 min · human approval required
+
+
+Compare the host's required DNS values with records already present at each name. Preserve unrelated mail, verification and subdomain records, and apply the smallest authorized change set. Query authoritative DNS first, then a public resolver and the affected service. Differences can be investigated against the old values and TTLs. Keep the before-and-after zone entries so a bad change can be reversed without reconstructing them from memory.
+
+- Canonical vendor: Cloudflare
+- Sources: [Set up a primary DNS zone](https://developers.cloudflare.com/dns/zone-setups/full-setup/setup/) · [Working with SSL certificates](https://vercel.com/docs/domains/working-with-ssl)
+- Next: steps 5 and 6 — all follow this step
+
+<a id="step-5"></a>
+
+### 5. Add domain to Vercel
+
+agent-runnable · ~3 min · human approval required
+
+
+Attach the hostname to the intended hosting project within the domain and hosting owners' authorized scope. On Vercel, use the validation status and DNS values shown for that specific domain. Set the intended canonical hostname and redirects, then open each customer-facing hostname to verify the project and deployment it serves. Check HTTPS separately: adding the domain starts certificate work, but successful DNS validation is still needed.
+
+- Canonical vendor: Vercel
+- Sources: [Working with SSL certificates](https://vercel.com/docs/domains/working-with-ssl)
+
+*This path ends here.*
+
+<a id="step-6"></a>
+
+### 6. Verify SSL
+
+agent-runnable · ~2 min
+
+
+*Follows step 4.*
+
+Open the site over HTTPS on every supported hostname, including redirect sources. Inspect certificate names and validity, then exercise pages and API calls for certificate or mixed-content failures. On Vercel, investigate pending issuance against domain validation, DNS/proxy settings and certificate-authority restrictions. Make traffic-affecting corrections within the domain owner's change scope. Confirm renewal-failure notices reach someone who can repair the configuration.
+
+- Canonical vendor: Cloudflare
+- Sources: [Working with SSL certificates](https://vercel.com/docs/domains/working-with-ssl)
+
 
 ## Related records
 

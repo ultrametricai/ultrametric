@@ -85,9 +85,11 @@ describe('derived vs curated timeline — the committed renumbering worklist', (
 
   it('the placement-slack complement surfaces the fund_007 question (YC application curated last, feasible by #4)', () => {
     const slack = placementSlack()
-    expect(slack[0]?.id).toBe('fund_007')
-    expect(slack[0]?.earliestFeasible).toBe(4)
-    expect(slack[0]?.slack).toBeGreaterThanOrEqual(100)
+    // New optional lifecycle tasks can have greater placement slack; preserve the original YC finding.
+    const yc = slack.find(item => item.id === 'fund_007')
+    expect(yc).toBeDefined()
+    expect(yc?.earliestFeasible).toBe(4)
+    expect(yc?.slack).toBeGreaterThanOrEqual(100)
   })
 })
 
@@ -110,6 +112,6 @@ describe('artifact chips (the Needs/Produces header rows)', () => {
     const ein = artifactChipRows(llc).produces.find((c) => c.id === 'ein')!
     expect(ein.producedHere).toBe(false)
     expect(ein.producerId).toBe('form_002')
-    expect(ein.producerHref).toBe('/processes/get-ein')
+    expect(ein.producerHref).toBe('/processes/obtain-the-company-tax-identifiers')
   })
 })

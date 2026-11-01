@@ -1,0 +1,133 @@
+{
+  "module": "antiDilution",
+  "entrypoint": "applyAntiDilution",
+  "implementation": {
+    "file": "lib/openstartup/antiDilution.ts",
+    "sha256": "4ca3e5a40eb6bd8716b8f34e14c28c30ad260af5d974a7daa0d279aa2b99f938"
+  },
+  "readme": "open-modules/conformance/README.md",
+  "cases": [
+    {
+      "name": "springmeyer-broad-based",
+      "description": "Broad-based weighted average on the Springmeyer example: CP2 = $2.00 × (12,000,000 + 5,000,000/2.00) / (12,000,000 + 5,000,000) = $1.7059; the 4,000,000 preferred convert to 4,689,606 shares (the article's \"roughly 4.69 million\").",
+      "source": "Bryan Springmeyer, \"Anti-Dilution Provisions in Venture Capital Transactions\" (https://www.calstartuplawfirm.com/business-lawyer-blog/anti-dilution-provisions.php, verified 2026-10-01)",
+      "inputs": [
+        {
+          "name": "Series A",
+          "preferredShares": 4000000,
+          "originalIssuePrice": 2,
+          "conversionPriceBefore": 2
+        },
+        {
+          "newShares": 5000000,
+          "considerationDollars": 5000000
+        },
+        "broad-based",
+        12000000
+      ],
+      "expected": {
+        "seriesName": "Series A",
+        "basis": "broad-based",
+        "conversionPriceBefore": 2,
+        "conversionPriceAfter": 1.7059,
+        "asConvertedBefore": 4000000,
+        "asConvertedAfter": 4689606,
+        "additionalCommonShares": 689606,
+        "adjusted": true
+      }
+    },
+    {
+      "name": "springmeyer-narrow-based",
+      "description": "Narrow-based weighted average on the same facts, base = only the series' 4,000,000 as-converted shares: CP2 = $2.00 × (4,000,000 + 2,500,000) / (4,000,000 + 5,000,000) = $1.4444; conversion yields 5,538,631 shares (the article's \"5.54 million\").",
+      "source": "Bryan Springmeyer, \"Anti-Dilution Provisions in Venture Capital Transactions\" (https://www.calstartuplawfirm.com/business-lawyer-blog/anti-dilution-provisions.php, verified 2026-10-01)",
+      "inputs": [
+        {
+          "name": "Series A",
+          "preferredShares": 4000000,
+          "originalIssuePrice": 2,
+          "conversionPriceBefore": 2
+        },
+        {
+          "newShares": 5000000,
+          "considerationDollars": 5000000
+        },
+        "narrow-based"
+      ],
+      "expected": {
+        "conversionPriceAfter": 1.4444,
+        "asConvertedAfter": 5538631,
+        "adjusted": true
+      }
+    },
+    {
+      "name": "springmeyer-full-ratchet",
+      "description": "Full ratchet on the same facts drops the conversion price to the $1.00 issue price: the Series A investor can convert their $8 million position into 8,000,000 shares.",
+      "source": "Bryan Springmeyer, \"Anti-Dilution Provisions in Venture Capital Transactions\" (https://www.calstartuplawfirm.com/business-lawyer-blog/anti-dilution-provisions.php, verified 2026-10-01)",
+      "inputs": [
+        {
+          "name": "Series A",
+          "preferredShares": 4000000,
+          "originalIssuePrice": 2,
+          "conversionPriceBefore": 2
+        },
+        {
+          "newShares": 5000000,
+          "considerationDollars": 5000000
+        },
+        "full-ratchet"
+      ],
+      "expected": {
+        "conversionPriceAfter": 1,
+        "asConvertedAfter": 8000000,
+        "adjusted": true
+      }
+    },
+    {
+      "name": "cooley-full-ratchet",
+      "description": "The Cooley GO full-ratchet example: 1,000 shares bought at $10.00; a $5.00 down round (100,000 shares for $500,000) converts the $10,000 investment into 2,000 shares.",
+      "source": "Cooley GO, \"What You Need to Know About Down Round Financings\" (https://www.cooleygo.com/down-round-financings/, verified 2026-10-01)",
+      "inputs": [
+        {
+          "name": "Investor",
+          "preferredShares": 1000,
+          "originalIssuePrice": 10,
+          "conversionPriceBefore": 10
+        },
+        {
+          "newShares": 100000,
+          "considerationDollars": 500000
+        },
+        "full-ratchet"
+      ],
+      "expected": {
+        "conversionPriceAfter": 5,
+        "asConvertedAfter": 2000,
+        "adjusted": true
+      }
+    },
+    {
+      "name": "springmeyer-up-round-no-adjustment",
+      "description": "The Springmeyer up-round (5,000,000 shares at $4.00 = $20,000,000, above the $2.00 conversion price) adjusts nothing: the conversion price stays $2.00.",
+      "source": "Bryan Springmeyer, \"Anti-Dilution Provisions in Venture Capital Transactions\" (https://www.calstartuplawfirm.com/business-lawyer-blog/anti-dilution-provisions.php, verified 2026-10-01)",
+      "inputs": [
+        {
+          "name": "Series A",
+          "preferredShares": 4000000,
+          "originalIssuePrice": 2,
+          "conversionPriceBefore": 2
+        },
+        {
+          "newShares": 5000000,
+          "considerationDollars": 20000000
+        },
+        "broad-based",
+        12000000
+      ],
+      "expected": {
+        "conversionPriceAfter": 2,
+        "additionalCommonShares": 0,
+        "adjusted": false
+      }
+    }
+  ]
+}

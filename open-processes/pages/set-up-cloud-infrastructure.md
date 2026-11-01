@@ -3,6 +3,10 @@
 
 # Set up cloud infrastructure
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Steps](#steps-at-a-glance) · [Outputs](#outputs)
+
+## Overview
+
 Configure cloud infrastructure with networking, a managed database, container hosting, and basic security. AWS (VPC, RDS, ECS) is the canonical route.
 
 | Field | Value |
@@ -19,98 +23,177 @@ Configure cloud infrastructure with networking, a managed database, container ho
 
 AWS has comprehensive APIs. System can provision via CloudFormation/API, but architecture decisions need human input.
 
-## Steps
+## Before you start
 
-1. **Design infrastructure** — human · ~2 h · human approval required
+| Information to gather | Required by the record |
+| --- | --- |
+| infra expected traffic | Yes |
+| infra database type | Yes |
+| infra region | Yes |
 
-   Trace one request and one background job from entry point to storage and external services. Sketch which components need public access and which can remain private. Size the first deployment from expected traffic, data growth and recovery needs; compare a small managed setup with the extra components the team would have to operate. Note environment separation, likely recurring costs and the reason for each service choice. Leave uncertain capacity assumptions visible for the first deployment test.
+## Steps at a glance
 
-   - Sources: [Get started with Google Cloud](https://docs.cloud.google.com/docs/get-started.md.txt) · [AWS VPC security best practices](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-best-practices.md)
-2. **Create AWS account + billing** — manual form/portal · ~20 min · human approval required
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
 
-   Check whether the company already has an account, organization or subscription on the selected cloud. Identify the administrator, billing arrangement and recovery contact, then create or join the workload account within their authorized scope. Separate production and test ownership and spending visibility in the chosen account structure. Before provisioning resources, verify that an operator can sign in and that billing and security notices reach maintained company contacts.
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Design infrastructure](#step-1) | human; approval required | ~2 h | Entry step |
+| [2. Create AWS account + billing](#step-2) | manual form/portal; approval required | ~20 min | [Step 1](#step-1) |
+| [3. Configure VPC and networking](#step-3) | agent-runnable; approval required | ~30 min | [Step 2](#step-2) |
+| [4. Set up RDS database](#step-4) | agent-runnable; approval required | ~30 min | [Step 3](#step-3) |
+| [5. Configure ECS cluster](#step-5) | agent-runnable; approval required | ~30 min | [Step 3](#step-3) |
+| [6. Set up IAM roles](#step-6) | agent-runnable; approval required | ~20 min | [Step 3](#step-3) |
+| [7. Configure monitoring](#step-7) | agent-runnable; approval required | ~20 min | [Step 5](#step-5) |
+| [8. Test deployment](#step-8) | agent-runnable | ~30 min | [Step 7](#step-7) |
 
-   - Canonical vendor: AWS
-   - Vendor options: AWS, Google Cloud, Microsoft Azure, Oracle Cloud Infrastructure
-   - Ranked market: [cloud-platforms](../../open-rankings/cloud-platforms)
-   - Sources: [Get started with Google Cloud](https://docs.cloud.google.com/docs/get-started.md.txt) · [Create and scale Azure subscriptions](https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/azure-setup-guide/initial-subscriptions) · [AWS IAM security best practices](https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html)
+<a id="steps"></a>
 
-   Options:
-     - **Default — Create AWS account + billing** — manual form/portal · ~20 min · human approval required
+## Step details
 
-       Use the company's AWS account structure and authorized billing arrangement. Protect root credentials and recovery, enable MFA, and establish everyday operator access through federation or appropriately scoped roles. Check that the workload account is the intended one before creating resources. An operator should be able to perform the setup without sharing root credentials; the account owner should retain control of recovery and billing notifications.
-     - **Google Cloud account**
+<a id="step-1"></a>
 
-       When: Standardizing on GCP (BigQuery, GKE, Vertex)
+### 1. Design infrastructure
 
-       Use the company's Google Cloud organization and authorized billing arrangement to create or select the workload project. Confirm its administrator, project identifier and access roles. Make production and test ownership and spending visible in the chosen project structure, then check operator access and billing contacts. This account setup leaves the downstream AWS-specific VPC, RDS and ECS route unresolved.
+human · ~2 h · human approval required
 
-       - Canonical vendor: Google Cloud
-       - Sources: [Get started with Google Cloud](https://docs.cloud.google.com/docs/get-started.md.txt)
-     - **Microsoft Azure account**
 
-       When: Microsoft-stack team or enterprise-agreement pricing
+Trace one request and one background job from entry point to storage and external services. Sketch which components need public access and which can remain private. Size the first deployment from expected traffic, data growth and recovery needs; compare a small managed setup with the extra components the team would have to operate. Note environment separation, likely recurring costs and the reason for each service choice. Leave uncertain capacity assumptions visible for the first deployment test.
 
-       Locate the intended Azure tenant, billing agreement and subscription. Confirm its administrator, access roles and company-controlled recovery contact. Use the authorized subscription structure to separate production and test ownership and make spending visible. Verify that operators can enter the correct tenant and subscription and that billing notices reach maintained company contacts. The downstream AWS-specific VPC, RDS and ECS route remains unresolved for Azure.
+- Sources: [Get started with Google Cloud](https://docs.cloud.google.com/docs/get-started.md.txt) · [AWS VPC security best practices](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-best-practices.md)
 
-       - Canonical vendor: Microsoft Azure
-       - Sources: [Create and scale Azure subscriptions](https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/azure-setup-guide/initial-subscriptions)
-3. **Configure VPC and networking** — agent-runnable · ~30 min · human approval required
+<a id="step-2"></a>
 
-   Draw the permitted paths between the public entry point, application, database and outside services. Choose address ranges that do not overlap networks this deployment must reach. For AWS, configure the VPC routes and security groups within the infrastructure owner's authorized change scope; use the selected platform's network design on other clouds. Test from the application's actual location: required connections should work, and a probe from an unauthorized location should fail. Keep the prior configuration available when changing live connectivity.
+### 2. Create AWS account + billing
 
-   - Canonical vendor: AWS
-   - Sources: [AWS VPC security best practices](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-best-practices.md)
-   - Next: steps 4, 5 and 6 — all follow this step
-4. **Set up RDS database** — agent-runnable · ~30 min · human approval required
+manual form/portal · ~20 min · human approval required
 
-   Match the database engine and version to the application's driver, migrations and expected data. For AWS, configure RDS using the chosen capacity, network access, backup and maintenance settings; another cloud needs its own database implementation. Provision within the database owner's access and spending authority. From the application environment, test a connection, a sample migration and a write/read cycle using nonproduction data. Exercise the intended restore procedure before relying on the database for recoverable production storage.
+| Option | Applies when |
+| --- | --- |
+| Default — Create AWS account + billing | Recorded default |
+| Google Cloud account | Standardizing on GCP (BigQuery, GKE, Vertex) |
+| Microsoft Azure account | Microsoft-stack team or enterprise-agreement pricing |
 
-   - Canonical vendor: AWS
-   - Cross-arena market: [edge-platforms](../../open-rankings/edge-platforms)
-   - Sources: [Getting started with Amazon RDS](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_GettingStarted.html) · [AWS IAM security best practices](https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html)
 
-   *This path ends here.*
-5. **Configure ECS cluster** — agent-runnable · ~30 min · human approval required
+Check whether the company already has an account, organization or subscription on the selected cloud. Identify the administrator, billing arrangement and recovery contact, then create or join the workload account within their authorized scope. Separate production and test ownership and spending visibility in the chosen account structure. Before provisioning resources, verify that an operator can sign in and that billing and security notices reach maintained company contacts.
 
-   *Follows step 3.*
+- Canonical vendor: AWS
+- Vendor options: AWS, Google Cloud, Microsoft Azure, Oracle Cloud Infrastructure
+- Ranked market: [cloud-platforms](../../open-rankings/cloud-platforms)
+- Sources: [Get started with Google Cloud](https://docs.cloud.google.com/docs/get-started.md.txt) · [Create and scale Azure subscriptions](https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/azure-setup-guide/initial-subscriptions) · [AWS IAM security best practices](https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html)
 
-   Run a versioned container image with its actual startup command, ports, health check, configuration and resource needs. On AWS, translate these into the chosen ECS task and service setup; use the selected provider's deployment design elsewhere. Create resources within the service owner's authorized account and spending scope. Inspect startup failures and logs, reach the exposed endpoint, then replace the test image with another version and back again. Keep the image and configuration versions paired so recovery restores the intended application.
+Options:
+  - **Default — Create AWS account + billing** — manual form/portal · ~20 min · human approval required
 
-   - Canonical vendor: AWS
-   - Cross-arena market: [edge-platforms](../../open-rankings/edge-platforms)
-   - Sources: [Getting started with Amazon ECS](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/getting-started.html)
-   - Next: continue at step 7
-6. **Set up IAM roles** — agent-runnable · ~20 min · human approval required
+    Use the company's AWS account structure and authorized billing arrangement. Protect root credentials and recovery, enable MFA, and establish everyday operator access through federation or appropriately scoped roles. Check that the workload account is the intended one before creating resources. An operator should be able to perform the setup without sharing root credentials; the account owner should retain control of recovery and billing notifications.
+  - **Google Cloud account**
 
-   *Follows step 3.*
+    When: Standardizing on GCP (BigQuery, GKE, Vertex)
 
-   Separate access for people, deployment jobs and the running application. For each identity, list the resources and actions it needs and who may assume its role. Use temporary credentials where supported, and have the cloud or security administrator authorize the resulting grants. Test a required action and a forbidden one from the identity itself. Remove permissions added only for diagnosis once the working policy is understood, and keep credentials out of source control.
+    Use the company's Google Cloud organization and authorized billing arrangement to create or select the workload project. Confirm its administrator, project identifier and access roles. Make production and test ownership and spending visible in the chosen project structure, then check operator access and billing contacts. This account setup leaves the downstream AWS-specific VPC, RDS and ECS route unresolved.
 
-   - Canonical vendor: AWS
-   - Sources: [AWS IAM security best practices](https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html)
+    - Canonical vendor: Google Cloud
+    - Sources: [Get started with Google Cloud](https://docs.cloud.google.com/docs/get-started.md.txt)
+  - **Microsoft Azure account**
 
-   *This path ends here.*
-7. **Configure monitoring** — agent-runnable · ~20 min · human approval required
+    When: Microsoft-stack team or enterprise-agreement pricing
 
-   *Follows step 5.*
+    Locate the intended Azure tenant, billing agreement and subscription. Confirm its administrator, access roles and company-controlled recovery contact. Use the authorized subscription structure to separate production and test ownership and make spending visible. Verify that operators can enter the correct tenant and subscription and that billing notices reach maintained company contacts. The downstream AWS-specific VPC, RDS and ECS route remains unresolved for Azure.
 
-   Cover failures a user would notice: an unreachable endpoint, failed job, database error or exhausted resource. Choose measurements that distinguish those cases and label them by service and environment. Check what sensitive data enters logs before enabling collection under the service's data-access authority. Route actionable alerts to the responsible responder with a useful diagnostic link. Trigger a controlled failure and recovery; adjust thresholds or routing if the test creates noise without explaining what needs attention.
+    - Canonical vendor: Microsoft Azure
+    - Sources: [Create and scale Azure subscriptions](https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/azure-setup-guide/initial-subscriptions)
 
-   - Produces: Cloud infrastructure
-   - Canonical vendor: AWS
-   - Cross-arena market: [observability](../../open-rankings/observability)
-   - Sources: [Google SRE implementing SLOs](https://sre.google/workbook/implementing-slos/) · [Sentry sensitive data scrubbing](https://docs.sentry.io/platforms/javascript/data-management/sensitive-data/)
-8. **Test deployment** — agent-runnable · ~30 min
+<a id="step-3"></a>
 
-   Deploy a known image or build into the test environment through the normal configuration path. Exercise a request through the network, application and database, then test a failed request and a restart. Check that diagnostics identify the deployed version and that access restrictions still hold. Recover the previous version and repeat the main journey. Keep failures tied to the build and configuration that produced them; any production trial must fit the service owner's release authorization.
+### 3. Configure VPC and networking
 
-   - Canonical vendor: AWS
-   - Sources: [Getting started with Amazon ECS](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/getting-started.html) · [Managing deployment environments](https://docs.github.com/actions/deployment/environments)
+agent-runnable · ~30 min · human approval required
 
-## Artifacts
 
-Produces:
+Draw the permitted paths between the public entry point, application, database and outside services. Choose address ranges that do not overlap networks this deployment must reach. For AWS, configure the VPC routes and security groups within the infrastructure owner's authorized change scope; use the selected platform's network design on other clouds. Test from the application's actual location: required connections should work, and a probe from an unauthorized location should fail. Keep the prior configuration available when changing live connectivity.
+
+- Canonical vendor: AWS
+- Sources: [AWS VPC security best practices](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-best-practices.md)
+- Next: steps 4, 5 and 6 — all follow this step
+
+<a id="step-4"></a>
+
+### 4. Set up RDS database
+
+agent-runnable · ~30 min · human approval required
+
+
+Match the database engine and version to the application's driver, migrations and expected data. For AWS, configure RDS using the chosen capacity, network access, backup and maintenance settings; another cloud needs its own database implementation. Provision within the database owner's access and spending authority. From the application environment, test a connection, a sample migration and a write/read cycle using nonproduction data. Exercise the intended restore procedure before relying on the database for recoverable production storage.
+
+- Canonical vendor: AWS
+- Cross-arena market: [edge-platforms](../../open-rankings/edge-platforms)
+- Sources: [Getting started with Amazon RDS](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_GettingStarted.html) · [AWS IAM security best practices](https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html)
+
+*This path ends here.*
+
+<a id="step-5"></a>
+
+### 5. Configure ECS cluster
+
+agent-runnable · ~30 min · human approval required
+
+
+*Follows step 3.*
+
+Run a versioned container image with its actual startup command, ports, health check, configuration and resource needs. On AWS, translate these into the chosen ECS task and service setup; use the selected provider's deployment design elsewhere. Create resources within the service owner's authorized account and spending scope. Inspect startup failures and logs, reach the exposed endpoint, then replace the test image with another version and back again. Keep the image and configuration versions paired so recovery restores the intended application.
+
+- Canonical vendor: AWS
+- Cross-arena market: [edge-platforms](../../open-rankings/edge-platforms)
+- Sources: [Getting started with Amazon ECS](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/getting-started.html)
+- Next: continue at step 7
+
+<a id="step-6"></a>
+
+### 6. Set up IAM roles
+
+agent-runnable · ~20 min · human approval required
+
+
+*Follows step 3.*
+
+Separate access for people, deployment jobs and the running application. For each identity, list the resources and actions it needs and who may assume its role. Use temporary credentials where supported, and have the cloud or security administrator authorize the resulting grants. Test a required action and a forbidden one from the identity itself. Remove permissions added only for diagnosis once the working policy is understood, and keep credentials out of source control.
+
+- Canonical vendor: AWS
+- Sources: [AWS IAM security best practices](https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html)
+
+*This path ends here.*
+
+<a id="step-7"></a>
+
+### 7. Configure monitoring
+
+agent-runnable · ~20 min · human approval required
+
+
+*Follows step 5.*
+
+Cover failures a user would notice: an unreachable endpoint, failed job, database error or exhausted resource. Choose measurements that distinguish those cases and label them by service and environment. Check what sensitive data enters logs before enabling collection under the service's data-access authority. Route actionable alerts to the responsible responder with a useful diagnostic link. Trigger a controlled failure and recovery; adjust thresholds or routing if the test creates noise without explaining what needs attention.
+
+- Produces: Cloud infrastructure
+- Canonical vendor: AWS
+- Cross-arena market: [observability](../../open-rankings/observability)
+- Sources: [Google SRE implementing SLOs](https://sre.google/workbook/implementing-slos/) · [Sentry sensitive data scrubbing](https://docs.sentry.io/platforms/javascript/data-management/sensitive-data/)
+
+<a id="step-8"></a>
+
+### 8. Test deployment
+
+agent-runnable · ~30 min
+
+
+Deploy a known image or build into the test environment through the normal configuration path. Exercise a request through the network, application and database, then test a failed request and a restart. Check that diagnostics identify the deployed version and that access restrictions still hold. Recover the previous version and repeat the main journey. Keep failures tied to the build and configuration that produced them; any production trial must fit the service owner's release authorization.
+
+- Canonical vendor: AWS
+- Sources: [Getting started with Amazon ECS](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/getting-started.html) · [Managing deployment environments](https://docs.github.com/actions/deployment/environments)
+
+
+<a id="artifacts"></a>
+
+## Outputs
 
 - Cloud infrastructure
 

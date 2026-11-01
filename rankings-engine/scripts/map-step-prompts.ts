@@ -1,3 +1,4 @@
+import { executionSchema, type Execution } from '../../lib/execution'
 // Step→prompt generator: for every DAG node of a process, one LLM pass writes a copy-pasteable
 // PROMPT an end user can hand to their own agent (Claude, etc.) to perform that step — grounded
 // in exactly what this site knows about the step: the task title/description, the node's
@@ -41,7 +42,7 @@ import { stepVendorCallsFor } from '../../lib/stepVendorCalls'
 import { llmJson } from '../llm'
 import { CACHE_DIR, categoryDir, DATA_DIR, readJson, writeJson } from '../paths'
 
-export const STEP_PROMPT_VERSION = 'v1'
+export const STEP_PROMPT_VERSION = 'v3-execution-signature'
 
 export const MIN_PROMPT_WORDS = 120
 export const MAX_PROMPT_WORDS = 350
@@ -95,9 +96,11 @@ export interface PromptTarget {
   taskTitle: string
   taskDescription: string
   label: string
+  execution?: Execution
   route: DagNode['route']
   async: boolean
   approvalRequired: boolean
+  legalSignature: boolean
   actionUrl: string | null
   functionCalls: Array<{ method: string; type: string; description?: string }>
   vendor: string | null // canonical vendor key, e.g. 'sendgrid'
@@ -113,8 +116,10 @@ export function promptTargetHash(t: PromptTarget, promptVersion: string): string
   const payload = JSON.stringify({
     label: t.label,
     route: t.route,
+    execution: t.execution,
     async: t.async,
     approvalRequired: t.approvalRequired,
+    legalSignature: t.legalSignature,
     actionUrl: t.actionUrl,
     functionCalls: t.functionCalls,
     vendor: t.vendor,
@@ -175,8 +180,22 @@ export function validatePrompt(t: PromptTarget, prompt: string): string | null {
     }
   }
 
-  // Non-agent steps must respect the audit verdict.
-  if (t.route !== 'agent' && t.audit) {
+  if (t.legalSignature) {
+    if (instructsImpersonation(prompt)) return "prompt instructs the agent to act on the human's behalf — the required signature must stay human"
+    if (!STOP_FOR_HUMAN_RE.test(prompt)) return 'legalSignature — include the exact phrase "stop for human sign-off"'
+    if (!REMAINS_HUMAN_RE.test(prompt)) return 'legalSignature — state that signing "remains a human step"'
+  }
+  if (t.execution?.reviewRequired && !STOP_FOR_HUMAN_RE.test(prompt)) {
+    return 'execution needs review — include the exact phrase "stop for human sign-off"'
+  }
+  if (t.execution?.category?.startsWith('human-')) {
+    if (instructsImpersonation(prompt)) return "prompt instructs the agent to act on the human's behalf"
+    if (!REMAINS_HUMAN_RE.test(prompt)) return 'human execution — include the exact phrase "remains a human step"'
+  }
+
+  // Legacy imports retain their historical audit posture. Assessed content uses
+  // its execution assessment for the actor and its separate approval property.
+  if (!t.execution && t.route !== 'agent' && t.audit) {
     const verdict = t.audit.computerUse
     if (verdict !== 'drivable' && instructsImpersonation(prompt)) {
       return `prompt instructs the agent to act on the human's behalf — the human part must stay human`
@@ -187,6 +206,10 @@ export function validatePrompt(t: PromptTarget, prompt: string): string | null {
     if ((verdict === 'no-screen' || verdict === 'third-party-wait') && !REMAINS_HUMAN_RE.test(prompt)) {
       return `audit verdict is '${verdict}' — the prompt must cover only the preparable/monitorable part and include the exact phrase "remains a human step"`
     }
+  }
+
+  if (t.approvalRequired && !STOP_FOR_HUMAN_RE.test(prompt)) {
+    return 'approvalRequired — include the exact phrase "stop for human sign-off" before applying changes'
   }
 
   if (SECRETS_RE.test(prompt)) {
@@ -202,11 +225,15 @@ Write ONE prompt of ${MIN_PROMPT_WORDS}-${MAX_PROMPT_WORDS} words, addressed to 
 
 Hard rules — a validator rejects violations:
 - If the step context says it HAS A VENDOR MARKET, write the literal placeholder {{vendor}} wherever the vendor/product name would go (it is substituted with my chosen vendor later) and NEVER name a specific vendor for that role. If it says NO vendor market, name the actual service plainly and never write {{vendor}}.
-- Never write an HTTP method + path (like "POST /v3/...") unless that exact endpoint appears in the GROUNDED VENDOR CALLS section — if none are listed, describe operations in words ("use the domain authentication API", "create the DNS records via the dashboard or API").
+- Never write an HTTP method + path (like "POST /v3/...") unless that exact endpoint appears in the GROUNDED VENDOR CALLS section — if none are listed, describe the required outcome and request verification of an available interface before taking action.
 - Credentials: at most "use your configured credentials". Never instruct pasting/sharing/embedding API keys, tokens, passwords or secrets.
-- If a HUMAN-STEP AUDIT is given, obey its verdict:
+- If approvalRequired is true, preserve that gate regardless of execution category; include the exact phrase "stop for human sign-off" before changes are applied.
+- If legalSignature is true, the human must sign regardless of execution category. Prepare the materials, include "stop for human sign-off" and state that signing "remains a human step". Never instruct the agent to sign on the human's behalf.
+- For a legacy record without an execution assessment, obey its HUMAN-STEP AUDIT verdict:
   · assist / policy-gate — the agent PREPARES everything (drafts, pre-filled values, a checklist) and then must stop; include the exact phrase "stop for human sign-off" and never tell the agent to sign, accept terms, approve, or submit on my behalf.
   · no-screen / third-party-wait — prompt only the preparable/monitorable part; include the exact phrase "remains a human step" about the part the agent cannot do.
+- Execution categories are Agent Native, Agent Computer Use, Human Online and Human Offline. Signatures, approval, jurisdiction and risk remain independent properties. For human execution, offer preparation and include the exact phrase "remains a human step" about the human act. For a missing, unresolved or reviewRequired assessment, stop for review of the actor and mechanism; include the exact phrase "stop for human sign-off". Missing browser test receipts alone do not imply human execution. A documented browser procedure can support Agent Computer Use; permissions and approvals remain preconditions. Local text/file/code work differs from external operations backed by a documented API, CLI, MCP tool or module. A vendor listing, old route, possible API or speculative audit is not evidence of an executable interface. Do not convert an assessment or remove a gate.
+- Automation evidence is separate from execution category. Preserve the selected conservative human method when whole-step automation is unverified. Documented capability does not claim an observed run; an observed claim is limited to its recorded scope and receipt. Review requirements and personal acts remain intact.
 - Stay inside what the step context supports. Do not invent features, URLs, or endpoints.
 
 Return JSON only: {"prompt":"..."}`
@@ -218,6 +245,8 @@ export function generationPrompt(t: PromptTarget, extra = ''): string {
   lines.push(
     `Route: ${t.route}${t.async ? ' (async — the result lands later; the agent should note it must poll/verify)' : ''}${t.approvalRequired ? ' | approvalRequired: a human explicitly approves before changes are applied' : ''}`,
   )
+  lines.push(`Execution assessment (authoritative): ${JSON.stringify(t.execution ?? null)}`)
+  if (t.legalSignature) lines.push('legalSignature: a human must perform the signature; prepare the materials, stop for human sign-off, and state that signing remains a human step.')
   if (t.actionUrl) lines.push(`Action URL: ${t.actionUrl}`)
   lines.push(
     hasVendorMarket(t)
@@ -237,12 +266,13 @@ export function generationPrompt(t: PromptTarget, extra = ''): string {
       ? `GROUNDED VENDOR CALLS (the only endpoints you may quote verbatim):\n${t.groundedCalls.map((c) => `- [${c.vendorName}] ${c.method} (${c.type})${c.description ? ` — ${c.description}` : ''}`).join('\n')}`
       : 'GROUNDED VENDOR CALLS: none — quote no endpoints; describe every operation in words.',
   )
-  if (t.route !== 'agent') {
-    lines.push(
-      t.audit
-        ? `HUMAN-STEP AUDIT: verdict '${t.audit.computerUse}'. Why human: ${t.audit.why} Computer-use feasibility: ${t.audit.computerUseWhy}`
-        : 'HUMAN-STEP AUDIT: none on file — this is a manual step; have the agent prepare and let me execute.',
-    )
+  if (!t.execution?.category || t.execution.reviewRequired) {
+    lines.push('EXECUTION NEEDS REVIEW: establish the supported actor, medium and complete method before execution; stop for human sign-off. An unresolved or missing assessment does not establish human or manual execution.')
+  }
+  if (t.audit) {
+    lines.push(t.execution
+      ? `Historical audit context (does not override the execution assessment or approval property): verdict '${t.audit.computerUse}'. ${t.audit.why} ${t.audit.computerUseWhy}`
+      : `HUMAN-STEP AUDIT: verdict '${t.audit.computerUse}'. Why human: ${t.audit.why} Computer-use feasibility: ${t.audit.computerUseWhy}`)
   }
   lines.push(`Write the ${MIN_PROMPT_WORDS}-${MAX_PROMPT_WORDS} word prompt now.${extra}`)
   return lines.join('\n\n')
@@ -280,8 +310,10 @@ export function enumeratePromptTargets(tasks: ProcessTask[]): PromptTarget[] {
         taskDescription: task.description,
         label: node.label,
         route: node.route,
+        execution: node.execution,
         async: node.async ?? false,
         approvalRequired: node.approvalRequired ?? false,
+        legalSignature: node.legalSignature ?? false,
         actionUrl: node.actionUrl ?? null,
         functionCalls: (node.functionCalls ?? []).map((c) => ({
           method: c.method,
@@ -331,6 +363,7 @@ export const StepPromptEntrySchema = z.object({
   taskId: z.string().min(1),
   nodeId: z.string().min(1),
   prompt: z.string().min(1),
+  execution: executionSchema.optional(),
 })
 export const StepPromptsFileSchema = StepPromptEntrySchema.array()
 
@@ -404,7 +437,7 @@ export async function runGenerator({ task }: { task?: string } = {}): Promise<vo
       console.warn(`prompts: ${taskId} incomplete after run — not writing open-rankings/step-prompts.json`)
       return
     }
-    for (const t of targets) entries.push({ taskId: t.taskId, nodeId: t.nodeId, prompt: cache[t.stepKey].prompt })
+    for (const t of targets) entries.push({ taskId: t.taskId, nodeId: t.nodeId, prompt: cache[t.stepKey].prompt, execution: t.execution })
   }
   entries.sort((a, b) => a.taskId.localeCompare(b.taskId) || a.nodeId.localeCompare(b.nodeId))
   writeJson(path.join(DATA_DIR, 'step-prompts.json'), StepPromptsFileSchema.parse(entries))

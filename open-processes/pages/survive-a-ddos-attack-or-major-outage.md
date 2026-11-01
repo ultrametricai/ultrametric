@@ -3,6 +3,10 @@
 
 # Survive a DDoS attack or major outage
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Steps](#steps-at-a-glance)
+
+## Overview
+
 **Trigger:** Traffic spikes take the product down: a DDoS attack is live, or a major outage looks like one.
 
 In the first minutes, pick one incident commander and one channel. Then work out what you are in: a volumetric L3/4 flood, an application-layer attack, or a self-inflicted outage that looks like one. Edge mitigation and WAF rules can be agent-driven on the judged edge platforms. What stays human: deciding what to block, talking to customers, the postmortem (its own process: 'Run an incident postmortem'). While an attack is live, a current status page beats silence.
@@ -22,20 +26,84 @@ In the first minutes, pick one incident commander and one channel. Then work out
 
 Edge mitigation, WAF rules, and status updates are real API surfaces on the judged edge platforms, so an agent can drive them. Incident command, the block-what judgment, and customer communication stay human.
 
-## Steps
+## Before you start
 
-1. **Declare the incident: one commander, one channel, sev1 rules** — human · ~15 min
-2. **Identify what you're in: a volumetric L3/4 flood, an L7 application attack, or a self-inflicted outage** — human · ~30 min
-3. **Turn on the edge's DDoS mitigation / under-attack mode** — agent-runnable · ~20 min
+| Information to gather | Required by the record |
+| --- | --- |
+| edge/DNS provider account and current traffic picture | Yes |
 
-   - Canonical vendor: Cloudflare
-   - Vendor options: Cloudflare, Vercel
-   - Ranked market: [edge-platforms](../../open-rankings/edge-platforms)
-   - Do it yourself: [Cloudflare under-attack hotline](https://www.cloudflare.com/under-attack-hotline/)
-4. **Rate-limit and block the attack signatures (WAF rules, geo blocks, bot rules)** — agent-runnable · ~45 min
-5. **Post the status page update — early, honest, updated often** — agent-runnable · ~15 min
-6. **Tell the affected customers: support channels, and the key accounts directly** — human · ~45 min
-7. **Stand down and run the postmortem (its own process: 'Run an incident postmortem')** — human · ~1 h
+## Steps at a glance
+
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
+
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Declare the incident: one commander, one channel, sev1 rules](#step-1) | human | ~15 min | Entry step |
+| [2. Identify what you're in: a volumetric L3/4 flood, an L7 application attack, or a self-inflicted outage](#step-2) | human | ~30 min | [Step 1](#step-1) |
+| [3. Turn on the edge's DDoS mitigation / under-attack mode](#step-3) | agent-runnable | ~20 min | [Step 2](#step-2) |
+| [4. Rate-limit and block the attack signatures (WAF rules, geo blocks, bot rules)](#step-4) | agent-runnable | ~45 min | [Step 3](#step-3) |
+| [5. Post the status page update — early, honest, updated often](#step-5) | agent-runnable | ~15 min | [Step 4](#step-4) |
+| [6. Tell the affected customers: support channels, and the key accounts directly](#step-6) | human | ~45 min | [Step 5](#step-5) |
+| [7. Stand down and run the postmortem (its own process: 'Run an incident postmortem')](#step-7) | human | ~1 h | [Step 6](#step-6) |
+
+<a id="steps"></a>
+
+## Step details
+
+<a id="step-1"></a>
+
+### 1. Declare the incident: one commander, one channel, sev1 rules
+
+human · ~15 min
+
+
+<a id="step-2"></a>
+
+### 2. Identify what you're in: a volumetric L3/4 flood, an L7 application attack, or a self-inflicted outage
+
+human · ~30 min
+
+
+<a id="step-3"></a>
+
+### 3. Turn on the edge's DDoS mitigation / under-attack mode
+
+agent-runnable · ~20 min
+
+
+- Canonical vendor: Cloudflare
+- Vendor options: Cloudflare, Vercel
+- Ranked market: [edge-platforms](../../open-rankings/edge-platforms)
+- Do it yourself: [Cloudflare under-attack hotline](https://www.cloudflare.com/under-attack-hotline/)
+
+<a id="step-4"></a>
+
+### 4. Rate-limit and block the attack signatures (WAF rules, geo blocks, bot rules)
+
+agent-runnable · ~45 min
+
+
+<a id="step-5"></a>
+
+### 5. Post the status page update — early, honest, updated often
+
+agent-runnable · ~15 min
+
+
+<a id="step-6"></a>
+
+### 6. Tell the affected customers: support channels, and the key accounts directly
+
+human · ~45 min
+
+
+<a id="step-7"></a>
+
+### 7. Stand down and run the postmortem (its own process: 'Run an incident postmortem')
+
+human · ~1 h
+
+
 
 ---
 

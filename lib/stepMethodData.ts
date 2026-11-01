@@ -45,6 +45,7 @@ function subStepView(s: DagSubStep, dir?: string): StepMethodSubStepView {
     id: s.id,
     label: s.label,
     route: s.route,
+    execution: s.execution,
     legalSignature: s.legalSignature ?? false,
     async: s.async ?? false,
     estimatedMinutes: s.estimatedMinutes,
@@ -87,6 +88,7 @@ export function buildStepMethodViews(
     summary: null,
     context: null,
     route: node.route,
+    execution: node.execution,
     estimatedMinutes: node.estimatedMinutes,
     calls: (node.functionCalls ?? []).map((fc) => fc.method),
     chips: chipsFor(node, dir),
@@ -112,6 +114,7 @@ export function buildStepMethodViews(
         countries: [...(m.context.countries ?? [])],
       } : null,
       route: m.route ?? node.route,
+      execution: m.execution,
       // Honest time only: the corpus value (load-validated to equal the sub-step sum when both
       // exist), else the sum derived from sub-steps, else nothing.
       estimatedMinutes: m.estimatedMinutes ?? derivedMinutes,

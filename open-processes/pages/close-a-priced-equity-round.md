@@ -3,6 +3,10 @@
 
 # Close a priced equity round
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Geography](#geography) · [Steps](#steps-at-a-glance) · [Outputs](#outputs)
+
+## Overview
+
 Close a priced round (seed or Series A): term sheet, diligence, definitive documents, board and stockholder approvals, signatures, wires, and the cap table made true.
 
 | Field | Value |
@@ -19,162 +23,319 @@ Close a priced round (seed or Series A): term sheet, diligence, definitive docum
 
 The term sheet, diligence, and approvals are human; the paperwork routing, signatures, share issuance, and cap-table updates run on APIs.
 
-## Steps
+<a id="artifacts"></a>
 
-1. **Negotiate the term sheet** — human · ~2.0 d
+## Before you start
 
-   Model the proposed term sheet’s effects on valuation, option-pool dilution, liquidation preferences, governance and participation rights against the current capitalization. Compare those outcomes with the fundraising goals and existing investor rights. Identify binding provisions with counsel and develop the founder’s negotiation positions, including terms that need board input.
-2. **Sign the term sheet** — human (legally required signature) · ~1 h · hard to undo
-
-   Check the final term sheet against the negotiated terms and understand its binding provisions, conditions and exclusivity commitments with counsel. The company signatory needs authority for the commitments being made. Once signed, use the executed terms to drive diligence and definitive documents, identifying any obligations or dates that now constrain the company.
-3. **Refresh the data room for diligence** — agent-runnable · ~30 min · support work
-
-   Update the data room against the investor’s diligence request and proposed round. Reconcile capitalization, financials, contracts, IP records and corporate approvals to current versions, replacing superseded material and identifying gaps. Limit each investor’s access to the agreed scope and clear sensitive disclosures with their owner. Keep an index that lets reviewers locate the evidence behind each response.
-
-   - Vendor options: Notion, Google Drive
-   - Ranked market: [cloud-storage](../../open-rankings/cloud-storage)
-4. **Investor diligence and Q&A** — human · ~7 d · async wait
-
-   Track investor questions against the requested evidence and the team member who can answer them. Verify substantive financial, legal and customer claims with that person, and route sensitive or privileged requests through the appropriate executive or counsel. Share the response through the agreed diligence channel and record whether it resolved the question or left a closing condition outstanding.
-
-   - Cross-arena market: [workflow-automation](../../open-rankings/workflow-automation)
-5. **Counsel drafts the definitive documents** — human · ~3 d
-
-   Give counsel the signed term sheet, existing corporate and equity documents, diligence findings and investor allocations. Review the definitive documents together for consistent economics, governance, disclosures and closing conditions. Compare revisions with the negotiated deal and resolve founder decisions as they arise. The resulting package should identify any approvals or conditions still needed before it can be executed and closed.
-6. **Prepare and circulate the board and stockholder consents** — agent-runnable · ~30 min · human approval required
-
-   Draft the resolutions needed for the transaction with counsel or the corporate secretary. Reconcile share classes, issuance amounts, charter changes and reserved rights to the pro forma capitalization, then identify the directors or holders who must decide each action. Circulate the proposed resolutions with enough supporting material for those decisions, tracking revisions until the signature version is settled.
-
-   - Canonical vendor: DocuSign
-7. **Board and stockholders sign the consents** — human (legally required signature) · ~23.5 h · async wait
-
-   Route the final consents to the directors and stockholders whose approval is required for this transaction. Check voting thresholds, signatory authority and conditions with counsel. Collect the signed resolutions and establish when the necessary approvals become effective, resolving changes before the closing team relies on them to issue securities.
-8. **Route the closing packet for e-signature** — agent-runnable · ~15 min · hard to undo
-
-   Match each closing document’s signature block to the correct person, entity and signing capacity. Check the final versions, side letters and any sequencing or release conditions set by counsel, then send the packet through the transaction’s authorized signing process. Track execution separately from permission to release documents and close; an assembled set of signatures may still have conditions outstanding.
-
-   - Canonical vendor: DocuSign
-9. **Verify the wires and issue the shares** — agent-runnable · ~20 min · human approval required · irreversible
-
-   Reconcile incoming wires to investor allocations and resolve missing, partial or unexpected receipts. Counsel and the closing lead establish whether the documents, corporate authorizations and other conditions permit issuance. The authorized equity administrator records the specific shares released at closing, linking each allocation to funds and executed documents. Leave investors still awaiting completion separate from the completed close.
-
-   - Produces: Priced round closing
-   - Canonical vendor: Carta
-   - Sources: [Delaware General Corporation Law](https://delcode.delaware.gov/title8/c001/sc05/index.html)
-10. **Make the post-closing securities and registry filings the round requires** — manual form/portal · ~30 min · hard to undo
-
-   Determine the applicable post-closing filings from the issuer’s jurisdiction and actual transaction. Use the final issuance schedule, approvals and investor information to identify the required notices and deadlines with counsel. The company’s authorized filer submits the completed forms through the relevant official route and resolves rejected or incomplete submissions. Completion is the required filing outcome, with its receipt linked to the transaction.
-
-   - Verify: The accepted Form D appears under the company's name in EDGAR full-text search within about a business day. ([www.sec.gov](https://www.sec.gov/edgar/search/))
-   - Cost: free (free, as of 2026-10-01, [www.sec.gov](https://www.sec.gov/info/smallbus/secg/formdguide.htm)). The SEC charges no filing fee for a Form D notice or amendment; most states charge their own blue-sky notice-filing fees.
-   - Canonical vendor: SEC
-   - Do it yourself: [SEC EDGAR online forms](https://www.onlineforms.edgarfiling.sec.gov/)
-   - Sources: [SEC Filing a Form D Notice](https://www.sec.gov/resources-small-businesses/exempt-offerings/filing-form-d-notice)
-
-   Options:
-     - **Default — SEC EDGAR online forms** — manual form/portal · ~30 min · hard to undo
-
-       For an offering requiring Form D, reconcile the notice to the executed transaction and first-sale date. Check the company’s EDGAR access and the filing individual’s assigned role. The authorized filer submits the reviewed notice and verifies its status, preserving the filed version and receipt. Identify amendments and state notices separately with counsel so the remaining offering obligations are visible.
-     - **India - PAS-3 private placement**
-
-       When: Closing the priced round in India
-
-       For an Indian allotment, establish the applicable return and filing route with company counsel. Reconcile allottees, securities, consideration, resolutions and required valuation documents to bank and capitalization records. The authorized officer and certifying professional review and file the return through the current MCA process, then resolve any resubmission request. Match the final filing status to the transaction records.
-
-       - Do it yourself: [NSWS (MCA private placement filings)](https://www.nsws.gov.in/)
-       - Sources: [India Companies Act section 42](https://www.indiacode.nic.in/show-data?abv=CEN&actid=AC_CEN_22_29_00008_201318_1517807327856&orderno=44&orgactid=undefined&sectionId=1232&sectionno=42&statehandle=123456789%2F1362)
-     - **UK - SH01 return of allotment**
-
-       When: Closing the priced round in the United Kingdom
-
-       Prepare the UK SH01 from the actual allotment date, share numbers and classes, amounts paid and resulting capital. The authorized officer or filing agent submits it through the current Companies House process and checks the acknowledgment. Reconcile the company’s ownership records to the allotment, and identify any accompanying constitutional or control filings required by the round.
-
-       - Do it yourself: [Companies House - return of allotment (SH01)](https://www.gov.uk/government/publications/return-of-allotment-of-shares-sh01)
-     - **Germany - notarized Kapitalerhoehung** — human
-
-       When: Closing the priced round in Germany
-
-       Work with the German notary and counsel on the resolutions, subscription declarations, contribution evidence and registry submission needed for this capital increase. Reconcile the documents with the articles, financing terms and allocations. The responsible signatories execute the package, and the filing owner tracks the register’s response. Record the increase in capitalization at the effective event counsel identifies.
-
-       - Do it yourself: [Handelsregister (capital increase)](https://www.handelsregister.de/)
-       - Sources: [GmbHG section 55](https://www.gesetze-im-internet.de/gmbhg/__55.html)
-     - **France - augmentation de capital**
-
-       When: Closing the priced round in France
-
-       Determine the French capital-increase procedure from the company’s legal form and articles with counsel. Match allocations and contributions to the resolution, amended articles and required publication or filing documents. The authorized representative completes the applicable formalities and follows any correction request through acceptance. Reconcile the final capital and shareholder records with the completed transaction.
-
-       - Do it yourself: [INPI guichet unique (capital increase)](https://procedures.inpi.fr/)
-       - Sources: [Service Public: augmenter le capital social](https://entreprendre.service-public.gouv.fr/vosdroits/F36607)
-11. **Update the cap table and kick off the valuation refresh** — agent-runnable · ~15 min
-
-   Update the equity system for the completed financing, converted instruments, issued shares and option-pool changes, reconciling it to the final closing schedule. The authorized equity owner resolves any difference from the legal documents. Give the valuation adviser the financing terms and other material changes to assess a refresh before later grants; the preferred financing price does not itself establish common-stock value.
-
-   - Canonical vendor: Carta
-   - Sources: [26 CFR 1.409A-1](https://www.ecfr.gov/current/title-26/chapter-I/subchapter-A/part-1/section-1.409A-1)
-
-## By country
-
-### United States
-
-- Step 11: The refresh is the 409A valuation (Treas. Reg. § 1.409A-1): the financing is a material event, and the preferred price does not establish common-stock value ([26 CFR 1.409A-1](https://www.ecfr.gov/current/title-26/chapter-I/subchapter-A/part-1/section-1.409A-1))
-
-### India
-
-- A priced round is a private placement under Companies Act s.42: special resolution, a registered-valuer report on price, PAS-3 return of allotment to the MCA (fronted by NSWS — mca.gov.in blocks automated access), and FC-GPR reporting to the RBI within 30 days if the money is foreign. ([NSWS (MCA private placement filings)](https://www.nsws.gov.in/))
-
-### United Kingdom
-
-- Closing means allotting new shares: board and (usually) shareholder authorities, a subscription and shareholders' agreement, new articles for the preferred class, then the SH01 return of allotment filed at Companies House within a month. ([Companies House — return of allotment (SH01)](https://www.gov.uk/government/publications/return-of-allotment-of-shares-sh01))
-
-### Germany
-
-- A priced round is a notarized Kapitalerhöhung: the notary beurkundets the shareholder resolution and subscription, and the new shares only exist once the increase is registered in the Handelsregister — build notary lead time into the closing plan. ([Handelsregister (capital increase)](https://www.handelsregister.de/))
-
-### France
-
-- Closing is an augmentation de capital: an extraordinary general meeting, updated statuts, the funds certified on a blocked account, then the capital change filed through the guichet unique into the RCS. ([INPI guichet unique (capital increase)](https://procedures.inpi.fr/))
-
-### Portugal
-
-- A priced round is a shareholder-resolved aumento de capital registered at the commercial registry (online through Empresa Online) — notarization is generally no longer required for standard capital increases since the 2006 registry reform. ([Empresa Online — registry filings](https://www.gov.pt/guias/empresa-online-servicos-do-registo-comercial))
-
-### Canada
-
-- Closing means articles of amendment creating the preferred class plus a private placement under NI 45-106 exemptions — with the Form 45-106F1 report of exempt distribution due to the regulators within 10 days of closing. ([NI 45-106 — prospectus exemptions (OSC)](https://www.osc.ca/en/securities-law/instruments-rules-policies/4/45-106))
-
-### Singapore
-
-- Closing means allotting the preferred shares: board and members' authorities, the subscription and shareholders' agreements, then the return of allotment lodged with ACRA via Bizfile — the allotment only takes effect when ACRA updates the electronic register of members (law rule [sg.allotment-return-constitutive](../../open-law/SG/sg-allotment-return-constitutive.json)). ([Bizfile (ACRA filings)](https://www.bizfile.gov.sg/))
-
-### Australia
-
-- Closing is an allotment under the constitution and shareholders' agreement: board approval, entry on the members register, and the share-issue notice lodged with ASIC within 28 days (law rule [au.share-issue-notice](../../open-law/AU/au-share-issue-notice.json)). ([ASIC — share issues](https://asic.gov.au/for-business-and-companies/companies/company-share-and-shareholder-rules-and-changes))
-
-### South Korea
-
-- A priced round is a third-party new-share issue the board resolves under Commercial Act Article 416 where the articles permit, with the capital change registered at the court registry within two weeks. ([Commercial Act Article 416 (law.go.kr)](https://www.law.go.kr/%EB%B2%95%EB%A0%B9/%EC%83%81%EB%B2%95/%EC%A0%9C416%EC%A1%B0))
-
-### Hong Kong
-
-- Closing means allotting the preferred shares under board and any needed members' authority, then delivering the return of allotment with its statement of capital to the Companies Registry within one month after the allotment (Companies Ordinance section 142). ([Companies Ordinance s 142 — return of allotment](https://www.elegislation.gov.hk/hk/cap622!en/s142))
-
-### Estonia
-
-- A priced round is a share-capital increase: the shareholders resolve it, the new shares are subscribed and paid, and the increase is entered in the commercial register before the new equity exists. ([e-Business Register](https://ariregister.rik.ee/eng))
-
-## Artifacts
-
-Produces:
-
-- Priced round closing
-
-Requires:
+Required artifacts:
 
 - Diligence data room — from [Set up a data room](set-up-a-data-room.md)
 - Cap table record — from [Set up cap table](set-up-cap-table.md)
 - Business bank account — from [Open bank account](open-bank-account.md)
 - Signed board minutes — from [Keep board minutes on cadence](keep-board-minutes-on-cadence.md)
+
+## Geography
+
+Country rows describe the guidance recorded here. Local notes and step alternatives do not establish a complete country-specific workflow.
+
+| Country | Recorded guidance | Steps with local alternatives or resolutions |
+| --- | --- | --- |
+| [United States](#geo-us) | step resolution; step alternative | [1](#step-1), [5](#step-5), [10](#step-10), [11](#step-11) |
+| [India](#geo-in) | Local analog note; step resolution; step alternative | [10](#step-10) |
+| [United Kingdom](#geo-uk) | Local analog note; step resolution; step alternative | [10](#step-10) |
+| [Germany](#geo-de) | Local analog note; step resolution; step alternative | [10](#step-10) |
+| [France](#geo-fr) | Local analog note; step resolution; step alternative | [10](#step-10) |
+| [Portugal](#geo-pt) | Local analog note; step resolution | [10](#step-10) |
+| [Canada](#geo-ca) | Local analog note; step resolution | [10](#step-10) |
+| [Singapore](#geo-sg) | Local analog note; step resolution | [10](#step-10) |
+| [Australia](#geo-au) | Local analog note; step resolution | [10](#step-10) |
+| [South Korea](#geo-kr) | Local analog note; step resolution | [10](#step-10) |
+| [Hong Kong](#geo-hk) | Local analog note; step resolution | [10](#step-10) |
+| [Estonia](#geo-ee) | Local analog note; step resolution | [10](#step-10) |
+
+## Steps at a glance
+
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
+
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Negotiate the term sheet](#step-1) | human | ~2.0 d | Entry step |
+| [2. Sign the term sheet](#step-2) | human; signature required | ~1 h | [Step 1](#step-1) |
+| [3. Refresh the data room for diligence](#step-3) | agent-runnable | ~30 min | [Step 2](#step-2) |
+| [4. Investor diligence and Q&A](#step-4) | human; includes waiting | ~7 d | [Step 3](#step-3) |
+| [5. Counsel drafts the definitive documents](#step-5) | human | ~3 d | [Step 4](#step-4) |
+| [6. Prepare and circulate the board and stockholder consents](#step-6) | agent-runnable; approval required | ~30 min | [Step 5](#step-5) |
+| [7. Board and stockholders sign the consents](#step-7) | human; signature required; includes waiting | ~23.5 h | [Step 6](#step-6) |
+| [8. Route the closing packet for e-signature](#step-8) | agent-runnable | ~15 min | [Step 7](#step-7) |
+| [9. Verify the wires and issue the shares](#step-9) | agent-runnable; approval required | ~20 min | [Step 8](#step-8) |
+| [10. Make the post-closing securities and registry filings the round requires](#step-10) | manual form/portal | ~30 min | [Step 9](#step-9) |
+| [11. Update the cap table and kick off the valuation refresh](#step-11) | agent-runnable | ~15 min | [Step 10](#step-10) |
+
+<a id="steps"></a>
+
+## Step details
+
+<a id="step-1"></a>
+
+### 1. Negotiate the term sheet
+
+human · ~2.0 d
+
+
+Model the proposed term sheet’s effects on valuation, option-pool dilution, liquidation preferences, governance and participation rights against the current capitalization. Compare those outcomes with the fundraising goals and existing investor rights. Identify binding provisions with counsel and develop the founder’s negotiation positions, including terms that need board input.
+
+<a id="step-2"></a>
+
+### 2. Sign the term sheet
+
+human (legally required signature) · ~1 h · hard to undo
+
+
+Check the final term sheet against the negotiated terms and understand its binding provisions, conditions and exclusivity commitments with counsel. The company signatory needs authority for the commitments being made. Once signed, use the executed terms to drive diligence and definitive documents, identifying any obligations or dates that now constrain the company.
+
+<a id="step-3"></a>
+
+### 3. Refresh the data room for diligence
+
+agent-runnable · ~30 min · support work
+
+
+Update the data room against the investor’s diligence request and proposed round. Reconcile capitalization, financials, contracts, IP records and corporate approvals to current versions, replacing superseded material and identifying gaps. Limit each investor’s access to the agreed scope and clear sensitive disclosures with their owner. Keep an index that lets reviewers locate the evidence behind each response.
+
+- Vendor options: Notion, Google Drive
+- Ranked market: [cloud-storage](../../open-rankings/cloud-storage)
+
+<a id="step-4"></a>
+
+### 4. Investor diligence and Q&A
+
+human · ~7 d · async wait
+
+
+Track investor questions against the requested evidence and the team member who can answer them. Verify substantive financial, legal and customer claims with that person, and route sensitive or privileged requests through the appropriate executive or counsel. Share the response through the agreed diligence channel and record whether it resolved the question or left a closing condition outstanding.
+
+- Cross-arena market: [workflow-automation](../../open-rankings/workflow-automation)
+
+<a id="step-5"></a>
+
+### 5. Counsel drafts the definitive documents
+
+human · ~3 d
+
+
+Give counsel the signed term sheet, existing corporate and equity documents, diligence findings and investor allocations. Review the definitive documents together for consistent economics, governance, disclosures and closing conditions. Compare revisions with the negotiated deal and resolve founder decisions as they arise. The resulting package should identify any approvals or conditions still needed before it can be executed and closed.
+
+<a id="step-6"></a>
+
+### 6. Prepare and circulate the board and stockholder consents
+
+agent-runnable · ~30 min · human approval required
+
+
+Draft the resolutions needed for the transaction with counsel or the corporate secretary. Reconcile share classes, issuance amounts, charter changes and reserved rights to the pro forma capitalization, then identify the directors or holders who must decide each action. Circulate the proposed resolutions with enough supporting material for those decisions, tracking revisions until the signature version is settled.
+
+- Canonical vendor: DocuSign
+
+<a id="step-7"></a>
+
+### 7. Board and stockholders sign the consents
+
+human (legally required signature) · ~23.5 h · async wait
+
+
+Route the final consents to the directors and stockholders whose approval is required for this transaction. Check voting thresholds, signatory authority and conditions with counsel. Collect the signed resolutions and establish when the necessary approvals become effective, resolving changes before the closing team relies on them to issue securities.
+
+<a id="step-8"></a>
+
+### 8. Route the closing packet for e-signature
+
+agent-runnable · ~15 min · hard to undo
+
+
+Match each closing document’s signature block to the correct person, entity and signing capacity. Check the final versions, side letters and any sequencing or release conditions set by counsel, then send the packet through the transaction’s authorized signing process. Track execution separately from permission to release documents and close; an assembled set of signatures may still have conditions outstanding.
+
+- Canonical vendor: DocuSign
+
+<a id="step-9"></a>
+
+### 9. Verify the wires and issue the shares
+
+agent-runnable · ~20 min · human approval required · irreversible
+
+
+Reconcile incoming wires to investor allocations and resolve missing, partial or unexpected receipts. Counsel and the closing lead establish whether the documents, corporate authorizations and other conditions permit issuance. The authorized equity administrator records the specific shares released at closing, linking each allocation to funds and executed documents. Leave investors still awaiting completion separate from the completed close.
+
+- Produces: Priced round closing
+- Canonical vendor: Carta
+- Sources: [Delaware General Corporation Law](https://delcode.delaware.gov/title8/c001/sc05/index.html)
+
+<a id="step-10"></a>
+
+### 10. Make the post-closing securities and registry filings the round requires
+
+manual form/portal · ~30 min · hard to undo
+
+| Option | Applies when |
+| --- | --- |
+| United States — SEC EDGAR online forms | Recorded default |
+| India - PAS-3 private placement | Closing the priced round in India |
+| UK - SH01 return of allotment | Closing the priced round in the United Kingdom |
+| Germany - notarized Kapitalerhoehung | Closing the priced round in Germany |
+| France - augmentation de capital | Closing the priced round in France |
+
+
+Determine the applicable post-closing filings from the issuer’s jurisdiction and actual transaction. Use the final issuance schedule, approvals and investor information to identify the required notices and deadlines with counsel. The company’s authorized filer submits the completed forms through the relevant official route and resolves rejected or incomplete submissions. Completion is the required filing outcome, with its receipt linked to the transaction.
+
+- Verify: The accepted Form D appears under the company's name in EDGAR full-text search within about a business day. ([www.sec.gov](https://www.sec.gov/edgar/search/))
+- Cost: free (free, as of 2026-10-01, [www.sec.gov](https://www.sec.gov/info/smallbus/secg/formdguide.htm)). The SEC charges no filing fee for a Form D notice or amendment; most states charge their own blue-sky notice-filing fees.
+- Canonical vendor: SEC
+- Do it yourself: [SEC EDGAR online forms](https://www.onlineforms.edgarfiling.sec.gov/)
+- Sources: [SEC Filing a Form D Notice](https://www.sec.gov/resources-small-businesses/exempt-offerings/filing-form-d-notice)
+
+Options:
+  - **United States — SEC EDGAR online forms** — manual form/portal · ~30 min · hard to undo
+
+    For an offering requiring Form D, reconcile the notice to the executed transaction and first-sale date. Check the company’s EDGAR access and the filing individual’s assigned role. The authorized filer submits the reviewed notice and verifies its status, preserving the filed version and receipt. Identify amendments and state notices separately with counsel so the remaining offering obligations are visible.
+  - **India - PAS-3 private placement**
+
+    When: Closing the priced round in India
+
+    For an Indian allotment, establish the applicable return and filing route with company counsel. Reconcile allottees, securities, consideration, resolutions and required valuation documents to bank and capitalization records. The authorized officer and certifying professional review and file the return through the current MCA process, then resolve any resubmission request. Match the final filing status to the transaction records.
+
+    - Do it yourself: [NSWS (MCA private placement filings)](https://www.nsws.gov.in/)
+    - Sources: [India Companies Act section 42](https://www.indiacode.nic.in/show-data?abv=CEN&actid=AC_CEN_22_29_00008_201318_1517807327856&orderno=44&orgactid=undefined&sectionId=1232&sectionno=42&statehandle=123456789%2F1362)
+  - **UK - SH01 return of allotment**
+
+    When: Closing the priced round in the United Kingdom
+
+    Prepare the UK SH01 from the actual allotment date, share numbers and classes, amounts paid and resulting capital. The authorized officer or filing agent submits it through the current Companies House process and checks the acknowledgment. Reconcile the company’s ownership records to the allotment, and identify any accompanying constitutional or control filings required by the round.
+
+    - Do it yourself: [Companies House - return of allotment (SH01)](https://www.gov.uk/government/publications/return-of-allotment-of-shares-sh01)
+  - **Germany - notarized Kapitalerhoehung** — human
+
+    When: Closing the priced round in Germany
+
+    Work with the German notary and counsel on the resolutions, subscription declarations, contribution evidence and registry submission needed for this capital increase. Reconcile the documents with the articles, financing terms and allocations. The responsible signatories execute the package, and the filing owner tracks the register’s response. Record the increase in capitalization at the effective event counsel identifies.
+
+    - Do it yourself: [Handelsregister (capital increase)](https://www.handelsregister.de/)
+    - Sources: [GmbHG section 55](https://www.gesetze-im-internet.de/gmbhg/__55.html)
+  - **France - augmentation de capital**
+
+    When: Closing the priced round in France
+
+    Determine the French capital-increase procedure from the company’s legal form and articles with counsel. Match allocations and contributions to the resolution, amended articles and required publication or filing documents. The authorized representative completes the applicable formalities and follows any correction request through acceptance. Reconcile the final capital and shareholder records with the completed transaction.
+
+    - Do it yourself: [INPI guichet unique (capital increase)](https://procedures.inpi.fr/)
+    - Sources: [Service Public: augmenter le capital social](https://entreprendre.service-public.gouv.fr/vosdroits/F36607)
+
+<a id="step-11"></a>
+
+### 11. Update the cap table and kick off the valuation refresh
+
+agent-runnable · ~15 min
+
+
+Update the equity system for the completed financing, converted instruments, issued shares and option-pool changes, reconciling it to the final closing schedule. The authorized equity owner resolves any difference from the legal documents. Give the valuation adviser the financing terms and other material changes to assess a refresh before later grants; the preferred financing price does not itself establish common-stock value.
+
+- Canonical vendor: Carta
+- Sources: [26 CFR 1.409A-1](https://www.ecfr.gov/current/title-26/chapter-I/subchapter-A/part-1/section-1.409A-1)
+
+
+<a id="by-country"></a>
+
+## Country details
+
+<a id="geo-us"></a>
+
+### United States
+
+Close a priced round (seed or Series A): term sheet, diligence, definitive documents, board and stockholder approvals, signatures, wires, and the cap table made true.
+
+- Step 1: Negotiate the term sheet Model the proposed term sheet’s effects on valuation, option-pool dilution, liquidation preferences, governance and participation rights against the current capitalization. Compare those outcomes with the fundraising goals and existing investor rights. Identify binding provisions with counsel and develop the founder’s negotiation positions, including terms that need board input.
+- Step 5: Counsel drafts the definitive documents Give counsel the signed term sheet, existing corporate and equity documents, diligence findings and investor allocations. Review the definitive documents together for consistent economics, governance, disclosures and closing conditions. Compare revisions with the negotiated deal and resolve founder decisions as they arise. The resulting package should identify any approvals or conditions still needed before it can be executed and closed.
+- Step 10: SEC EDGAR online forms For an offering requiring Form D, reconcile the notice to the executed transaction and first-sale date. Check the company’s EDGAR access and the filing individual’s assigned role. The authorized filer submits the reviewed notice and verifies its status, preserving the filed version and receipt. Identify amendments and state notices separately with counsel so the remaining offering obligations are visible. ([SEC EDGAR online forms](https://www.onlineforms.edgarfiling.sec.gov/))
+- Step 11: The refresh is the 409A valuation (Treas. Reg. § 1.409A-1): the financing is a material event, and the preferred price does not establish common-stock value ([26 CFR 1.409A-1](https://www.ecfr.gov/current/title-26/chapter-I/subchapter-A/part-1/section-1.409A-1))
+
+<a id="geo-in"></a>
+
+### India
+
+- A priced round is a private placement under Companies Act s.42: special resolution, a registered-valuer report on price, PAS-3 return of allotment to the MCA (fronted by NSWS — mca.gov.in blocks automated access), and FC-GPR reporting to the RBI within 30 days if the money is foreign. ([NSWS (MCA private placement filings)](https://www.nsws.gov.in/))
+- Step 10: India - PAS-3 private placement For an Indian allotment, establish the applicable return and filing route with company counsel. Reconcile allottees, securities, consideration, resolutions and required valuation documents to bank and capitalization records. The authorized officer and certifying professional review and file the return through the current MCA process, then resolve any resubmission request. Match the final filing status to the transaction records. ([NSWS (MCA private placement filings)](https://www.nsws.gov.in/))
+
+<a id="geo-uk"></a>
+
+### United Kingdom
+
+- Closing means allotting new shares: board and (usually) shareholder authorities, a subscription and shareholders' agreement, new articles for the preferred class, then the SH01 return of allotment filed at Companies House within a month. ([Companies House — return of allotment (SH01)](https://www.gov.uk/government/publications/return-of-allotment-of-shares-sh01))
+- Step 10: UK - SH01 return of allotment Prepare the UK SH01 from the actual allotment date, share numbers and classes, amounts paid and resulting capital. The authorized officer or filing agent submits it through the current Companies House process and checks the acknowledgment. Reconcile the company’s ownership records to the allotment, and identify any accompanying constitutional or control filings required by the round. ([Companies House - return of allotment (SH01)](https://www.gov.uk/government/publications/return-of-allotment-of-shares-sh01))
+
+<a id="geo-de"></a>
+
+### Germany
+
+- A priced round is a notarized Kapitalerhöhung: the notary beurkundets the shareholder resolution and subscription, and the new shares only exist once the increase is registered in the Handelsregister — build notary lead time into the closing plan. ([Handelsregister (capital increase)](https://www.handelsregister.de/))
+- Step 10: Germany - notarized Kapitalerhoehung Work with the German notary and counsel on the resolutions, subscription declarations, contribution evidence and registry submission needed for this capital increase. Reconcile the documents with the articles, financing terms and allocations. The responsible signatories execute the package, and the filing owner tracks the register’s response. Record the increase in capitalization at the effective event counsel identifies. ([Handelsregister (capital increase)](https://www.handelsregister.de/))
+
+<a id="geo-fr"></a>
+
+### France
+
+- Closing is an augmentation de capital: an extraordinary general meeting, updated statuts, the funds certified on a blocked account, then the capital change filed through the guichet unique into the RCS. ([INPI guichet unique (capital increase)](https://procedures.inpi.fr/))
+- Step 10: France - augmentation de capital Determine the French capital-increase procedure from the company’s legal form and articles with counsel. Match allocations and contributions to the resolution, amended articles and required publication or filing documents. The authorized representative completes the applicable formalities and follows any correction request through acceptance. Reconcile the final capital and shareholder records with the completed transaction. ([INPI guichet unique (capital increase)](https://procedures.inpi.fr/))
+
+<a id="geo-pt"></a>
+
+### Portugal
+
+- A priced round is a shareholder-resolved aumento de capital registered at the commercial registry (online through Empresa Online) — notarization is generally no longer required for standard capital increases since the 2006 registry reform. ([Empresa Online — registry filings](https://www.gov.pt/guias/empresa-online-servicos-do-registo-comercial))
+- Step 10: A priced round is a shareholder-resolved aumento de capital registered at the commercial registry (online through Empresa Online) — notarization is generally no longer required for standard capital increases since the 2006 registry reform. ([Empresa Online — registry filings](https://www.gov.pt/guias/empresa-online-servicos-do-registo-comercial))
+
+<a id="geo-ca"></a>
+
+### Canada
+
+- Closing means articles of amendment creating the preferred class plus a private placement under NI 45-106 exemptions — with the Form 45-106F1 report of exempt distribution due to the regulators within 10 days of closing. ([NI 45-106 — prospectus exemptions (OSC)](https://www.osc.ca/en/securities-law/instruments-rules-policies/4/45-106))
+- Step 10: Closing means articles of amendment creating the preferred class plus a private placement under NI 45-106 exemptions — with the Form 45-106F1 report of exempt distribution due to the regulators within 10 days of closing. ([NI 45-106 — prospectus exemptions (OSC)](https://www.osc.ca/en/securities-law/instruments-rules-policies/4/45-106))
+
+<a id="geo-sg"></a>
+
+### Singapore
+
+- Closing means allotting the preferred shares: board and members' authorities, the subscription and shareholders' agreements, then the return of allotment lodged with ACRA via Bizfile — the allotment only takes effect when ACRA updates the electronic register of members (law rule [sg.allotment-return-constitutive](../../open-law/SG/sg-allotment-return-constitutive.json)). ([Bizfile (ACRA filings)](https://www.bizfile.gov.sg/))
+- Step 10: Closing means allotting the preferred shares: board and members' authorities, the subscription and shareholders' agreements, then the return of allotment lodged with ACRA via Bizfile — the allotment only takes effect when ACRA updates the electronic register of members (law rule sg.allotment-return-constitutive). ([Bizfile (ACRA filings)](https://www.bizfile.gov.sg/))
+
+<a id="geo-au"></a>
+
+### Australia
+
+- Closing is an allotment under the constitution and shareholders' agreement: board approval, entry on the members register, and the share-issue notice lodged with ASIC within 28 days (law rule [au.share-issue-notice](../../open-law/AU/au-share-issue-notice.json)). ([ASIC — share issues](https://asic.gov.au/for-business-and-companies/companies/company-share-and-shareholder-rules-and-changes))
+- Step 10: Closing is an allotment under the constitution and shareholders' agreement: board approval, entry on the members register, and the share-issue notice lodged with ASIC within 28 days (law rule au.share-issue-notice). ([ASIC — share issues](https://asic.gov.au/for-business-and-companies/companies/company-share-and-shareholder-rules-and-changes))
+
+<a id="geo-kr"></a>
+
+### South Korea
+
+- A priced round is a third-party new-share issue the board resolves under Commercial Act Article 416 where the articles permit, with the capital change registered at the court registry within two weeks. ([Commercial Act Article 416 (law.go.kr)](https://www.law.go.kr/%EB%B2%95%EB%A0%B9/%EC%83%81%EB%B2%95/%EC%A0%9C416%EC%A1%B0))
+- Step 10: A priced round is a third-party new-share issue the board resolves under Commercial Act Article 416 where the articles permit, with the capital change registered at the court registry within two weeks. ([Commercial Act Article 416 (law.go.kr)](https://www.law.go.kr/%EB%B2%95%EB%A0%B9/%EC%83%81%EB%B2%95/%EC%A0%9C416%EC%A1%B0))
+
+<a id="geo-hk"></a>
+
+### Hong Kong
+
+- Closing means allotting the preferred shares under board and any needed members' authority, then delivering the return of allotment with its statement of capital to the Companies Registry within one month after the allotment (Companies Ordinance section 142). ([Companies Ordinance s 142 — return of allotment](https://www.elegislation.gov.hk/hk/cap622!en/s142))
+- Step 10: Closing means allotting the preferred shares under board and any needed members' authority, then delivering the return of allotment with its statement of capital to the Companies Registry within one month after the allotment (Companies Ordinance section 142). ([Companies Ordinance s 142 — return of allotment](https://www.elegislation.gov.hk/hk/cap622!en/s142))
+
+<a id="geo-ee"></a>
+
+### Estonia
+
+- A priced round is a share-capital increase: the shareholders resolve it, the new shares are subscribed and paid, and the increase is entered in the commercial register before the new equity exists. ([e-Business Register](https://ariregister.rik.ee/eng))
+- Step 10: A priced round is a share-capital increase: the shareholders resolve it, the new shares are subscribed and paid, and the increase is entered in the commercial register before the new equity exists. ([e-Business Register](https://ariregister.rik.ee/eng))
+
+## Outputs
+
+- Priced round closing
 
 ## Related records
 

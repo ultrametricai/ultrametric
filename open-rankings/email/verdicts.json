@@ -47,11 +47,19 @@
   {
     "productId": "agentmail",
     "storyId": "agentic-autonomous-automation",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "AgentMail is email infrastructure for agents. Its evidence shows event-delivery primitives (webhooks, WebSockets), API and CLI access, and third-party workflow integrations such as Sim. These are developer building blocks or host-platform capabilities a user could wire into their own agents. There is no evidence of a first-party facility for defining and running background automations, such as scheduled jobs, rules, or hosted agent runs.",
-    "evidenceIds": []
+    "rationale": "AgentMail provides event-driven building blocks for autonomous background agents. Webhooks push a POST on each new email so agents need not poll, WebSockets offer a persistent real-time event stream, and agents can self-register and create inboxes on demand via API. However, the evidence shows no hosted automation, rules, or scheduling feature, so the user must build and host the background agent logic themselves. Missing for 10: a native automation/rules or scheduled-job capability run by AgentMail, and hands-on corroboration of autonomous background workflows.",
+    "evidenceIds": [
+      "agentmail-docs-6",
+      "agentmail-docs-19",
+      "agentmail-docs-7",
+      "agentmail-docs-20",
+      "agentmail-docs-1",
+      "agentmail-docs-2",
+      "agentmail-docs-14"
+    ]
   },
   {
     "productId": "agentmail",
@@ -557,13 +565,11 @@
   {
     "productId": "agentmail",
     "storyId": "share-availability",
-    "verdict": "partial",
-    "quality": 2,
-    "confidence": "low",
-    "rationale": "The only on-topic evidence is one doc line saying AgentMail's hosted MCP server exposes 'calendar tools' (docs-54). Other versions of the same MCP page list no calendar tools at all, and nothing describes sharing availability or embedding bookable meeting slots in an email. Missing for 10: documented availability-sharing or booking-link insertion into messages, details of what the calendar tools do, consistent documentation, and hands-on corroboration.",
-    "evidenceIds": [
-      "agentmail-docs-54"
-    ]
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "AgentMail's MCP documentation mentions generic calendar tools, but it does not establish sharing free time or inserting bookable meeting slots into an email. Other versions of the same MCP page list no calendar tools. Related tooling does not meet this story's availability-sharing requirement.",
+    "evidenceIds": []
   },
   {
     "productId": "agentmail",
@@ -832,11 +838,16 @@
   {
     "productId": "fastmail",
     "storyId": "api-machine-spec",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "No evidence shows Fastmail publishing a downloadable OpenAPI or equivalent machine-readable spec of its API. The JMAP `/.well-known/jmap` session object only provides runtime capability and URL discovery, not a method or schema specification. The 'fully documented' open-standard claims describe human-readable documentation, and probes for openapi/swagger files returned 404 (though only on the help-center domain).",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Fastmail's API is JMAP, an open standard. Fetching `/.well-known/jmap` returns a machine-readable session object listing capabilities, accounts and API URLs, which is runtime discovery rather than a downloadable schema. A Fastmail API documentation page exists, but no OpenAPI or equivalent spec file is evidenced, and probes of the usual OpenAPI and Swagger paths returned 404 (though only on the help domain). Missing for 10: a downloadable OpenAPI/JSON-schema-style spec, evidence of machine-readable method and type definitions, and independent confirmation that agents can consume such a spec.",
+    "evidenceIds": [
+      "fastmail-docs-1",
+      "fastmail-docs-21",
+      "fastmail-docs-40",
+      "fastmail-probe-2"
+    ]
   },
   {
     "productId": "fastmail",
@@ -2295,16 +2306,11 @@
   {
     "productId": "missive",
     "storyId": "automation-scheduled-jobs",
-    "verdict": "partial",
-    "quality": 3,
+    "verdict": "none",
+    "quality": 0,
     "confidence": "medium",
-    "rationale": "Missive's own rules engine now supports multi-step rules that run over time. Each step waits a calendar or business-hours delay, re-checks its conditions, then acts (e.g., escalate at 24/48/72 hrs), so time-based scheduled workflow actions are documented. These are per-conversation delayed sequences triggered by events, though, not recurring or cron-style jobs. Missing for 10: recurring or periodic job scheduling (cron/interval triggers), scheduling of AI assistant or agent runs, API/MCP-driven schedule management, independent or hands-on corroboration.",
-    "evidenceIds": [
-      "missive-docs-57",
-      "missive-docs-58",
-      "missive-docs-59",
-      "missive-docs-25"
-    ]
+    "rationale": "Missive documents finite, event-triggered sequences of delayed actions on one conversation. Those delays do not establish recurring jobs or workflows, so the evidence does not meet this story's scheduling requirement.",
+    "evidenceIds": []
   },
   {
     "productId": "missive",

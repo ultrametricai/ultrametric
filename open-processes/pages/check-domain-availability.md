@@ -3,6 +3,10 @@
 
 # Check domain availability
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Steps](#steps-at-a-glance) · [Outputs](#outputs)
+
+## Overview
+
 Search domains and check availability across TLDs.
 
 | Field | Value |
@@ -19,35 +23,67 @@ Search domains and check availability across TLDs.
 
 Domain and social-handle availability are public search APIs — fully agent-runnable.
 
-## Steps
+<a id="artifacts"></a>
 
-1. **Check registrar availability across TLDs** — agent-runnable · ~1 min
+## Before you start
 
-   Search the candidate names and required extensions at registrars that support them. Distinguish available registrations from resale listings, unavailable names and unsupported extensions. Capture the exact spelling, displayed price and observation time, then recheck ambiguous results with the registrar that would handle the purchase. Return the viable choices and restrictions for the cost comparison.
-
-   - Canonical vendor: Name.com
-   - Vendor options: Name.com, Namecheap, Porkbun, Cloudflare Registrar
-   - Ranked market: [domain-registrars](../../open-rankings/domain-registrars)
-   - Sources: [Information for Domain Name Registrants](https://www.icann.org/registrants) · [Domain Name Renewals and Expiration](https://www.icann.org/resources/pages/domain-name-renewal-expiration-faqs-2018-12-07-en)
-2. **Check matching social handles** — agent-runnable · ~2 min
-
-   Check exact handles on the company's intended social channels and link the profiles found. Check platform availability even when the existing profile appears inactive. Where names are taken, compare recognizable alternatives that work consistently across the priority channels.
-3. **Shortlist candidates with pricing and renewal costs** — agent-runnable · ~2 min
-
-   Compare each shortlisted domain's registrar, registration term, initial price, renewal price, currency, extras and any resale quote. Use current renewal and transfer terms to calculate the ongoing cost after any introductory discount. Recommend a domain and registrar with the exact spending requirement, company ownership arrangement and person responsible for renewals.
-
-   - Produces: Domain shortlist
-   - Sources: [Information for Domain Name Registrants](https://www.icann.org/registrants) · [Domain Name Renewals and Expiration](https://www.icann.org/resources/pages/domain-name-renewal-expiration-faqs-2018-12-07-en)
-
-## Artifacts
-
-Produces:
-
-- Domain shortlist
-
-Requires:
+Required artifacts:
 
 - Company name — from [Generate a company name](generate-a-company-name.md)
+
+## Steps at a glance
+
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
+
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Check registrar availability across TLDs](#step-1) | agent-runnable | ~1 min | Entry step |
+| [2. Check matching social handles](#step-2) | agent-runnable | ~2 min | [Step 1](#step-1) |
+| [3. Shortlist candidates with pricing and renewal costs](#step-3) | agent-runnable | ~2 min | [Step 2](#step-2) |
+
+<a id="steps"></a>
+
+## Step details
+
+<a id="step-1"></a>
+
+### 1. Check registrar availability across TLDs
+
+agent-runnable · ~1 min
+
+
+Search the candidate names and required extensions at registrars that support them. Distinguish available registrations from resale listings, unavailable names and unsupported extensions. Capture the exact spelling, displayed price and observation time, then recheck ambiguous results with the registrar that would handle the purchase. Return the viable choices and restrictions for the cost comparison.
+
+- Canonical vendor: Name.com
+- Vendor options: Name.com, Namecheap, Porkbun, Cloudflare Registrar
+- Ranked market: [domain-registrars](../../open-rankings/domain-registrars)
+- Sources: [Information for Domain Name Registrants](https://www.icann.org/registrants) · [Domain Name Renewals and Expiration](https://www.icann.org/resources/pages/domain-name-renewal-expiration-faqs-2018-12-07-en)
+
+<a id="step-2"></a>
+
+### 2. Check matching social handles
+
+agent-runnable · ~2 min
+
+
+Check exact handles on the company's intended social channels and link the profiles found. Check platform availability even when the existing profile appears inactive. Where names are taken, compare recognizable alternatives that work consistently across the priority channels.
+
+<a id="step-3"></a>
+
+### 3. Shortlist candidates with pricing and renewal costs
+
+agent-runnable · ~2 min
+
+
+Compare each shortlisted domain's registrar, registration term, initial price, renewal price, currency, extras and any resale quote. Use current renewal and transfer terms to calculate the ongoing cost after any introductory discount. Recommend a domain and registrar with the exact spending requirement, company ownership arrangement and person responsible for renewals.
+
+- Produces: Domain shortlist
+- Sources: [Information for Domain Name Registrants](https://www.icann.org/registrants) · [Domain Name Renewals and Expiration](https://www.icann.org/resources/pages/domain-name-renewal-expiration-faqs-2018-12-07-en)
+
+
+## Outputs
+
+- Domain shortlist
 
 ## Related records
 
