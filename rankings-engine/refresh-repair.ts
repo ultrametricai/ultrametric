@@ -26,10 +26,13 @@ const write = (file: string, value: unknown) => {
 const key = (row: Pick<Verdict, 'productId' | 'storyId'>) => `${row.productId}:${row.storyId}`
 
 // Only projections that are rebuilt below may resolve a three-way conflict by regeneration.
+// Score intervals are fleet-wide: their shared noise model can change during one arena refresh,
+// and compute-confidence-intervals rebuilds every arena from the trusted checkout below.
 export function projection(file: string, arena: string): boolean {
-  return ['open-rankings/graph.json', 'open-rankings/step-rankings.json', 'open-rankings/predictions.json',
+  return /^open-rankings\/[a-z0-9-]+\/score-intervals\.json$/.test(file)
+    || ['open-rankings/graph.json', 'open-rankings/step-rankings.json', 'open-rankings/predictions.json',
     `open-rankings/${arena}/rankings.json`, `open-rankings/${arena}/rollups.json`,
-    `open-rankings/${arena}/score-intervals.json`, `open-rankings/${arena}/score-history.jsonl`].includes(file)
+    `open-rankings/${arena}/score-history.jsonl`].includes(file)
     || file.startsWith('open-rankings/reviews/generated/')
 }
 export function allowed(file: string, arena: string): boolean {
