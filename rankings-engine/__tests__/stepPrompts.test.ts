@@ -302,9 +302,16 @@ describe('open-rankings/step-prompts.json', () => {
       // Assessed steps use their execution assessment for the actor (validatePrompt's
       // contract: "Legacy imports retain their historical audit posture. Assessed content
       // uses its execution assessment"); the audit-verdict phrasing below binds only
-      // records without one, and validatePrompt enforces the execution-based phrasing at
-      // generation time.
-      if (node.execution) continue
+      // records without one. For assessed steps, the impersonation boundary is enforced on
+      // the committed file here; the exact-phrase rules (stop for human sign-off /
+      // remains a human step) are enforced by validatePrompt at generation and join this
+      // gate when the v3-execution-signature prompt refresh regenerates the corpus — the
+      // committed prompts largely predate that version (79 reviewRequired and 125
+      // human-category entries lack the phrases as of 2026-11-01).
+      if (node.execution) {
+        expect(instructsImpersonation(e.prompt), `${e.taskId}:${e.nodeId} impersonation`).toBe(false)
+        continue
+      }
       const audit = humanStepAudit(e.taskId, e.nodeId)
       if (!audit || audit.computerUse === 'drivable') continue
       expect(instructsImpersonation(e.prompt), `${e.taskId}:${e.nodeId} impersonation`).toBe(false)

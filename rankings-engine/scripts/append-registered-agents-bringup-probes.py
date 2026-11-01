@@ -44,15 +44,19 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA = os.path.join(os.path.dirname(ROOT), 'open-rankings', 'registered-agents', 'evidence')
 
 
-def get(url: str, timeout: int = 25):
-    """One keyless GET, no retries. Returns (status, body_prefix) or ('ERR', message)."""
+def get(url: str, timeout: int = 25, limit: int = 4096):
+    """One keyless GET, no retries. Returns (status, body up to `limit` bytes) or ('ERR', message).
+
+    Wall checks need only a prefix; marker checks against a whole document (the Harbor OpenAPI
+    spec is ~680 KB with the registered-agent endpoints past the first 4 KB) must pass a limit
+    that covers the full body, or an incomplete read would be recorded as an absent endpoint."""
     req = urllib.request.Request(url, headers={'User-Agent': UA})
     try:
         with urllib.request.urlopen(req, timeout=timeout) as res:
-            return res.status, res.read(4096).decode('utf-8', 'replace')
+            return res.status, res.read(limit).decode('utf-8', 'replace')
     except urllib.error.HTTPError as e:
         try:
-            return e.code, e.read(4096).decode('utf-8', 'replace')
+            return e.code, e.read(limit).decode('utf-8', 'replace')
         except Exception:
             return e.code, ''
     except (urllib.error.URLError, ssl.SSLError, ConnectionError, OSError, TimeoutError) as e:
@@ -67,7 +71,7 @@ def status_str(s) -> str:
     return f'HTTP {s}' if s != 'ERR' else 'connection failed'
 
 
-checks = []  # (productId, key, url, build_excerpt(status, body) -> str)
+checks = []  # (productId, key, url, build_excerpt(status, body) -> str[, read_limit_bytes])
 
 checks.append(('harbor-compliance', 'root-llms-txt', 'https://www.harborcompliance.com/llms.txt', lambda s, b: (
     f'PROBE llms.txt: {status_str(s)} at https://www.harborcompliance.com/llms.txt (observed {TODAY}; '
@@ -77,10 +81,11 @@ checks.append(('harbor-compliance', 'root-llms-txt', 'https://www.harborcomplian
 
 checks.append(('harbor-compliance', 'public-openapi', 'https://www.harborcompliance.com/api/v3/openapi', lambda s, b: (
     f'PROBE OpenAPI spec: {status_str(s)} at https://www.harborcompliance.com/api/v3/openapi (observed {TODAY}; '
-    f'"openapi" key {seen(b, "openapi")}, title marker {seen(b, "Harbor Compliance API")}, registered-agent '
-    f'endpoints {seen(b, "registered-agent-deliveries")}) — a public, keyless OpenAPI document for the Harbor '
-    'Compliance API (OAuth-authenticated at runtime), including registered-agent-deliveries read endpoints; '
-    'documented at developers.harborcompliance.com, a JS-rendered portal.')))
+    f'full document read, {len(b)} chars; "openapi" key {seen(b, "openapi")}, title marker '
+    f'{seen(b, "Harbor Compliance API")}, registered-agent-deliveries endpoints '
+    f'{seen(b, "registered-agent-deliveries")}) — a public, keyless OpenAPI document for the Harbor '
+    'Compliance API (OAuth-authenticated at runtime); documented at developers.harborcompliance.com, a '
+    'JS-rendered portal.'), 4_000_000))
 
 checks.append(('northwest-registered-agent', 'robots-wall', 'https://www.northwestregisteredagent.com/robots.txt', lambda s, b: (
     f'PROBE front-door robots: {status_str(s)} at https://www.northwestregisteredagent.com/robots.txt (observed '
@@ -106,12 +111,12 @@ checks.append(('ct-corporation', 'legacy-host-redirect', 'https://ct.wolterskluw
 def run():
     results = []
     last_host = {}
-    for pid, key, url, build in checks:
+    for pid, key, url, build, *rest in checks:
         host = url.split('/')[2]
         wait = last_host.get(host, 0) + 2 - time.time()
         if wait > 0:
             time.sleep(wait)
-        status, body = get(url)
+        status, body = get(url, limit=rest[0] if rest else 4096)
         last_host[host] = time.time()
         excerpt = build(status, body)
         results.append((pid, key, url, excerpt))
