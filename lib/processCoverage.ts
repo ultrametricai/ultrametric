@@ -5,7 +5,7 @@ const date = z.string().regex(/^\d{4}-\d{2}-\d{2}$/)
 const strings = z.array(text)
 export const coverageReviewSchema = z.strictObject({
   reviewer: text, qualification: z.enum(['editorial', 'accounting', 'legal', 'employment', 'tax', 'security']),
-  independent: z.boolean(), reviewedOn: date, reviewDue: date, evidenceUrl: z.string().url(),
+  independent: z.boolean(), contentDigest: z.string().regex(/^[a-f0-9]{64}$/), reviewedOn: date, reviewDue: date, evidenceUrl: z.string().url(),
 })
 export const completenessScopeSchema = z.strictObject({
   version: z.literal(1), snapshotDate: date, requestIssue: z.number().int().positive(),
@@ -30,7 +30,7 @@ export const localAssessmentsSchema = z.strictObject({
       id: z.enum(LOCAL_REQUIREMENTS), stepIds: strings.min(1), sourceIds: strings.min(1), locator: text,
       status: z.enum(['authored', 'missing']), completionEvidence: text,
     })).min(1),
-    observedRuns: z.array(z.strictObject({ id: text, ranOn: date, independent: z.boolean(), receiptUrl: z.string().url(), outcome: z.enum(['passed', 'failed']) })),
+    observedRuns: z.array(z.strictObject({ id: text, ranOn: date, independent: z.boolean(), receiptUrl: z.string().url(), contentDigest: z.string().regex(/^[a-f0-9]{64}$/), outcome: z.enum(['passed', 'failed']) })),
   })),
 })
 export const coverageCasesSchema = z.strictObject({
