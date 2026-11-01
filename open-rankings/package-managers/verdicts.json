@@ -3,9 +3,9 @@
     "productId": "bun",
     "storyId": "agent-headless-dependency-install",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Bun documents non-interactive dependency management. `bun install`, `bun add`, and `bun update` run without prompts, and interactivity is opt-in via `--interactive`. `--frozen-lockfile` gives reproducible installs, and offline mode states that an uncached required dependency \"is an error\". The failure-reporting half of the story is barely evidenced: there is no documentation of exit-code semantics or error output formats. missing for 10: documented exit codes, structured/machine-readable error output, explicit CI/non-interactive mode guidance, independent hands-on corroboration of agent-driven installs.",
+    "rationale": "Bun documents CLI-driven, non-interactive dependency management. That covers `bun install`, `bun add`, and `bun update`, where interactive selection is opt-in via `--interactive`. It also offers `--frozen-lockfile` for reproducible installs and an offline mode where an uncached dependency 'is an error'. However, the evidence never documents exit codes or how errors are structured for machine consumption. A community report of install crashes also suggests failures are not always clean. Missing for 10: documented exit-code semantics, machine-readable error output, independent hands-on corroboration of agent/CI non-interactive use.",
     "evidenceIds": [
       "bun-docs-42",
       "bun-docs-43",
@@ -13,7 +13,7 @@
       "bun-docs-35",
       "bun-docs-5",
       "bun-docs-20",
-      "bun-docs-26"
+      "bun-comm-13"
     ]
   },
   {
@@ -998,17 +998,16 @@
     "productId": "homebrew",
     "storyId": "automation-versioned-workflows",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Homebrew's own Brewfile feature encodes desired environment state declaratively. The docs present it as a file to commit to a project repository, and `brew bundle dump` snapshots installed state into it, so this automation can be versioned and reviewed through the repo. However, `brew bundle check`/`install` only converge to the current file, and community reports describe no package rollback mechanism: users fall back to disabling cleanup to keep old versions, and say upgrades could not be pinned. missing for 10: first-party rollback to prior versions, version pinning in Brewfiles, built-in review or diff of automation changes, independent corroboration of versioned-automation workflows.",
+    "rationale": "Homebrew's declarative Brewfile can be committed to a project repository like a package.json, and `brew bundle dump` snapshots installed state. That gives git-based versioning and review of environment setup, and `brew bundle check`/`install` re-apply a given Brewfile. Rollback is not a native capability: a community user asks for a better rollback mechanism after bad updates and resorts to disabling cleanup to keep old versions. Missing for 10: native rollback of packages or applied state, first-party review/diff workflow for Brewfile changes, a notion of automations beyond declarative dependency lists, and independent corroboration of a version-review-rollback workflow.",
     "evidenceIds": [
       "homebrew-docs-1",
       "homebrew-docs-2",
-      "homebrew-docs-64",
       "homebrew-docs-14",
-      "homebrew-docs-65",
-      "homebrew-comm-14-refresh-21f3703ecca8f360",
-      "homebrew-comm-8-refresh-296a4237ca45a378"
+      "homebrew-docs-26",
+      "homebrew-docs-30",
+      "homebrew-comm-14-refresh-21f3703ecca8f360"
     ]
   },
   {
@@ -1582,11 +1581,17 @@
   {
     "productId": "mise",
     "storyId": "agentic-public-api",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "The pack contains no documented programmatic API for mise, such as an HTTP/REST endpoint, OpenAPI spec or library API, and the OpenAPI probe returned 404 on every candidate path. The documented CLI, its occasional `--json` output and the `mise mcp` server belong to the separate CLI and MCP-server stories, so they earn no credit here. A local developer tool could plausibly ship a public API, so the axis applies and the verdict is none rather than na.",
-    "evidenceIds": []
+    "rationale": "mise is a local CLI tool, so its programmatic surface is the documented CLI reference (mise-probe-4), which offers machine-readable output such as `--json` (mise-docs-35). A first-party MCP server also lets AI assistants inspect tools, tasks, env and config and run tasks (mise-docs-74). However, there is no documented HTTP/REST or library API: OpenAPI probes all returned 404 (mise-probe-3), so driving mise programmatically means shelling out to the CLI or using MCP. Missing for 10: a documented public HTTP/library API or schema, consistent JSON output documented across commands, and independent corroboration of programmatic use.",
+    "evidenceIds": [
+      "mise-probe-4",
+      "mise-docs-35",
+      "mise-docs-74",
+      "mise-probe-3",
+      "mise-probe-1-refresh-5213a45afc44be7a"
+    ]
   },
   {
     "productId": "mise",
@@ -1713,18 +1718,17 @@
     "productId": "mise",
     "storyId": "automation-versioned-workflows",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "mise defines its automations, both tasks and bootstrap machine setup, as declarative files (mise.toml and mise-tasks scripts) that are meant to be checked in, and it has its own review tooling: `mise bootstrap plan`/`status`, `--dry-run` previews, and `mise lock --bump --dry-run`. Lockfiles with `mise install --locked` pin reproducible tool versions. Versioning and rollback of the automations themselves, however, depend on external git rather than a mise feature. Missing for 10: native versioning/history of tasks and automations, a built-in rollback command, review/diff of task changes beyond bootstrap dry-runs, and independent corroboration.",
+    "rationale": "mise automations are tasks defined in mise.toml or as standalone script files, and the config is meant to be checked into git. That lets users version and review them through ordinary source control, and pinning plus committed lockfiles make tool versions reproducible. Versioning, review and rollback all depend on external git, and mise ships no native history or undo of its own; the closest built-in review aid is `mise lock --bump --dry-run`, which previews tool version bumps rather than task changes. Missing for 10: native automation version history, a built-in review/diff workflow for task changes, documented rollback of automations, and independent corroboration of this workflow.",
     "evidenceIds": [
+      "mise-docs-28",
+      "mise-docs-29",
       "mise-docs-19",
       "mise-docs-48",
-      "mise-docs-29",
-      "mise-docs-107",
-      "mise-docs-111",
-      "mise-docs-35",
       "mise-docs-70",
-      "mise-docs-95"
+      "mise-docs-35",
+      "mise-docs-60"
     ]
   },
   {
@@ -1905,21 +1909,20 @@
   {
     "productId": "mise",
     "storyId": "openness-full-export",
-    "verdict": "partial",
-    "quality": 5,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "mise has no dedicated export feature. Its state already lives in open, user-owned plain-text files: project and global config in `mise.toml` (TOML), env vars from `.env` files, tasks as standalone bash script files, and a committed lockfile. It also reads asdf `.tool-versions` and idiomatic version files, so the data is portable by design rather than through an explicit export path. missing for 10: a documented export or migration command, evidence of converting mise config back into other tools' formats (e.g. writing `.tool-versions`), explicit portability or offboarding documentation, independent corroboration of leaving mise cleanly.",
+    "rationale": "mise keeps its data in plain-text, version-controlled files rather than a proprietary store, so there is nothing locked in to export. Configuration lives in TOML (`mise.toml`), env vars in `.env` files, and tasks can be standalone bash scripts. It also reads asdf `.tool-versions` and idiomatic files like `.node-version` as-is, which makes leaving for another version manager straightforward. Missing for 10: explicit documentation of migrating away or exporting state such as installed tools and trust settings, and independent hands-on reports of users leaving mise.",
     "evidenceIds": [
-      "mise-docs-78",
-      "mise-docs-79",
-      "mise-docs-80",
+      "mise-docs-3",
+      "mise-docs-55",
+      "mise-docs-25",
+      "mise-docs-7",
       "mise-docs-29",
       "mise-docs-44",
-      "mise-docs-55",
-      "mise-docs-41",
+      "mise-docs-19",
       "mise-docs-70",
-      "mise-docs-35",
-      "mise-docs-19"
+      "mise-docs-35"
     ]
   },
   {
@@ -1958,12 +1961,11 @@
     "productId": "mise",
     "storyId": "parseable-lockfile-format",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "mise ships its own lockfile: the docs link a dedicated lockfile page, say to commit it and run `mise install --locked` so every job installs the same versions, and expose `mise lock --bump --dry-run --json` for machine-readable lock updates. Committing it to the repo implies it can be diffed, but the evidence never shows the file's contents or confirms it is a text format. missing for 10: evidence of the lockfile's text format and schema, explicit diff/readability guidance, independent or hands-on corroboration.",
+    "rationale": "The CI docs tell users to commit a lockfile, link to a dedicated lockfile doc page, and support `mise install --locked` for reproducible installs. The security docs show `mise lock --bump --dry-run --json`, which gives an agent machine-readable output for proposed lock changes. The evidence never describes the lockfile's on-disk format, so it is not shown to be text-based or easy to diff. missing for 10: explicit documentation of the lockfile's text format and contents (e.g. structure, checksums, per-platform entries), evidence that it diffs cleanly in version control, independent or hands-on corroboration of agents reading or diffing it.",
     "evidenceIds": [
       "mise-docs-70",
-      "mise-docs-95",
       "mise-docs-35"
     ]
   },
@@ -2634,14 +2636,13 @@
     "productId": "nix",
     "storyId": "openness-full-export",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "low",
-    "rationale": "Nix has no hosted account data to export, but its own documentation shows the user's state lives in plain-text declarative files such as /etc/nixos/configuration.nix and Nix expressions. It also offers a first-party exit path: `nix bundle` packages an application so it works outside the Nix store, and environments are described as easy to transfer between computers. This is a glancing, inferred fit rather than a documented data-export or offboarding capability. Missing for 10: an explicit data-export or migration feature, documentation that all user state is in open formats, documented guidance for leaving or uninstalling Nix, and independent corroboration.",
+    "rationale": "Nix keeps a user's setup in plain-text declarative files such as /etc/nixos/configuration.nix (nix-docs-15, nix-docs-46). It also advertises easy transfer of software environments between computers (nix-docs-53), so the user's configuration is portable and readable rather than locked in a proprietary store. That format is still Nix's own functional language, and nothing documents exporting to neutral formats or migrating off Nix. missing for 10: an explicit data-export or migration path, conversion of configs into tool-neutral formats, any evidence about leaving Nix, independent corroboration.",
     "evidenceIds": [
       "nix-docs-15",
-      "nix-docs-66",
-      "nix-docs-53",
-      "nix-docs-46"
+      "nix-docs-46",
+      "nix-docs-53"
     ]
   },
   {
@@ -2715,11 +2716,15 @@
   {
     "productId": "nix",
     "storyId": "privacy-retention-controls",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Data-retention controls are a fair privacy question for a package manager, so the axis applies. However, the pack documents no privacy-oriented retention or deletion controls for user data, such as telemetry or analytics retention, data-deletion requests, or retention policies. The Nix store garbage collector and community-mentioned auto-gc only reclaim disk space from unused packages. That is an adjacent package-cleanup feature, not control over user-data retention, so it earns no credit.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Nix is a local package manager, so the only retention and deletion control in evidence covers local Nix store contents. The garbage collector safely deletes unused packages, and a community user reports enabling automatic GC to reclaim large amounts of disk. That gives users direct control over what stays on disk, but it is store housekeeping rather than a documented privacy posture. Missing for 10: any documented data-retention or privacy policy, explicit statements about what data (if any) leaves the machine via binary caches or remote builds, and configurable retention for generations or logs described in privacy terms.",
+    "evidenceIds": [
+      "nix-docs-6",
+      "nix-docs-18",
+      "nix-comm-8-refresh-e4edb04f84dca692"
+    ]
   },
   {
     "productId": "nix",
@@ -2879,10 +2884,10 @@
   {
     "productId": "pnpm",
     "storyId": "agent-headless-dependency-install",
-    "verdict": "partial",
-    "quality": 6,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "pnpm is a documented CLI (pnpm-probe-4) that can install and update dependencies without prompts in automation. It auto-detects CI and switches to frozen-lockfile mode, and it fails the install when the lockfile needs an update, when an offline package is missing, or when a workspace: version is unresolvable. It also offers dry-run and lockfile-only modes an agent can use to preview or limit changes. The 'fails' language implies non-zero exits, but the evidence never documents exit codes, the format or clarity of error messages, or an explicit non-interactive flag outside CI detection. missing for 10: documented exit-code semantics, evidence of clear or structured error output for install/update failures, an explicit non-interactive mode for agents outside CI, independent hands-on corroboration of agent-driven installs",
+    "rationale": "pnpm is an official CLI that installs non-interactively in automation. It auto-switches to frozen-lockfile mode in CI, and installs fail in several documented cases: a stale lockfile in CI, packages missing in offline/store-only mode, or an unsatisfiable workspace: version. A dry-run reports what an install would change without writing anything, which suits agent planning. Missing for 10: explicit exit-code documentation, a documented non-interactive update/upgrade command flow, evidence on error-message clarity or machine-readable error output, and hands-on agent corroboration (one community note calls failures hard to debug).",
     "evidenceIds": [
       "pnpm-probe-4",
       "pnpm-docs-13",
@@ -2891,9 +2896,8 @@
       "pnpm-docs-39",
       "pnpm-docs-9",
       "pnpm-docs-19",
-      "pnpm-docs-55",
-      "pnpm-docs-43",
-      "pnpm-docs-54"
+      "pnpm-docs-22",
+      "pnpm-comm-4-refresh-66f78e27d5c8fd7b"
     ]
   },
   {
@@ -3247,15 +3251,16 @@
     "productId": "pnpm",
     "storyId": "lockfile-reproducible-install",
     "verdict": "full",
-    "quality": 7,
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "pnpm documents lockfile-enforced installs. In CI it automatically switches to frozen-lockfile mode and fails if the lockfile is present but needs an update. Checksum verification is only bypassed via an explicit --update-checksums opt-in, and a single shared lockfile covers whole workspaces. One community comment prefers yarn3 for reproducibility, but it is general opinion, not a concrete failure. missing for 10: explicit documentation of frozen-lockfile behavior on developer machines outside CI, an explicit statement that resolved versions are pinned identically across machines, independent hands-on corroboration of cross-machine determinism.",
+    "rationale": "pnpm's docs say it switches to frozen-lockfile mode automatically in CI and fails the install if the lockfile is present but needs an update. Checksum verification can only be bypassed through an explicit --update-checksums opt-in, and monorepos share a single lockfile. Pinning the pnpm version (packageManager) and the Node.js runtime per project further reduces version drift across machines. Missing for 10: detailed first-party docs on lockfile semantics and the local frozen-install flag outside CI, and independent hands-on confirmation that resolved versions are identical across machines.",
     "evidenceIds": [
       "pnpm-docs-13",
       "pnpm-docs-34",
       "pnpm-docs-35",
       "pnpm-docs-6",
-      "pnpm-docs-57",
+      "pnpm-docs-22",
+      "pnpm-docs-4",
       "pnpm-docs-23"
     ]
   },
@@ -3366,14 +3371,13 @@
     "productId": "pnpm",
     "storyId": "openness-self-host",
     "verdict": "full",
-    "quality": 7,
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "pnpm is a locally run CLI, not a hosted service, so the core product already runs entirely on the user's own machines. The docs describe it as a self-contained executable that needs no Node.js, and the GitHub repo lists support for Windows, Linux and macOS. It can also install offline from the local store alone, with no dependency on a vendor-hosted service. Missing for 10: explicit open-source license or build-from-source documentation in the evidence, and independent corroboration of fully air-gapped or self-managed deployment.",
+    "rationale": "pnpm is a self-contained executable that runs entirely on the user's own machines and CI with no vendor-hosted service (pnpm-docs-21). It can install offline from the local content-addressable store (pnpm-docs-10, pnpm-docs-15), and its source is published on GitHub (pnpm-gh-1), so the core product is inherently self-run. Missing for 10: explicit open-source license evidence, documentation of fully air-gapped installation or distribution of the binary, and independent corroboration of self-hosted use.",
     "evidenceIds": [
       "pnpm-docs-21",
-      "pnpm-gh-4",
-      "pnpm-docs-54",
       "pnpm-docs-10",
+      "pnpm-docs-15",
       "pnpm-gh-1"
     ]
   },
@@ -3455,12 +3459,11 @@
     "productId": "pnpm",
     "storyId": "project-env-activation",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "pnpm documents per-project Node.js pinning and installation (devEngines.runtime, 'install and pin Node.js per project… no nvm, no shell hooks'), and it auto-switches to the pnpm version declared in packageManager/devEngines.packageManager on first use. That covers the tool-version half of the story, but the switch happens through pnpm itself rather than when you enter a directory. The only environment-variable evidence is ${NAME} substitution inside config files, which is an adjacent feature and does not activate project env vars. missing for 10: automatic activation on directory entry, project-scoped environment variable loading, version management for tools beyond Node.js and pnpm, independent hands-on corroboration.",
+    "rationale": "pnpm can pin and install Node.js per project via `devEngines.runtime` and switches to the pinned pnpm version from `packageManager` on first use, with no nvm or shell hooks needed. This covers project-scoped tool versions, but only for Node.js and pnpm, and only when pnpm is invoked rather than on entering the directory. Missing for 10: environment-variable activation, automatic activation on directory entry, version pinning for tools beyond Node.js/pnpm, independent corroboration.",
     "evidenceIds": [
       "pnpm-docs-4",
-      "pnpm-docs-53",
       "pnpm-docs-22",
       "pnpm-docs-23",
       "pnpm-gh-2",
@@ -3568,34 +3571,32 @@
     "productId": "pnpm",
     "storyId": "version-pinning-per-project",
     "verdict": "full",
-    "quality": 8,
+    "quality": 9,
     "confidence": "high",
-    "rationale": "pnpm's own docs cover pinning both tools and packages per project. Tools: Node.js can be installed and pinned per project (pnpm-docs-4, pnpm-gh-2), and pnpm switches to the version named in `packageManager` or `devEngines.packageManager` (pnpm-docs-22), with runtime entries driven by `devEngines.runtime` (pnpm-docs-23). Packages: a lockfile is enforced in frozen mode in CI, and installs fail if it needs an update (pnpm-docs-13, pnpm-docs-34); checksums cannot change without an explicit opt-in (pnpm-docs-35); catalogs and overrides hold versions in one place (pnpm-docs-7, pnpm-docs-12). Missing for 10: no documented save-exact option for writing exact versions into package.json, and no independent hands-on corroboration that pins are respected in practice.",
+    "rationale": "pnpm docs show per-project pins being enforced for both packages and tools. For packages, CI automatically switches to frozen-lockfile mode and fails if the lockfile needs updating, and catalogs and overrides centralize and force versions. For tools, Node.js can be pinned per project via devEngines.runtime, and pnpm switches to the version declared in packageManager or devEngines.packageManager. missing for 10: an explicit exact-version save option (e.g. save-exact) in the evidence, and independent hands-on corroboration that pins are respected in practice.",
     "evidenceIds": [
       "pnpm-docs-4",
-      "pnpm-docs-53",
-      "pnpm-gh-2",
-      "pnpm-docs-22",
-      "pnpm-docs-23",
       "pnpm-docs-13",
       "pnpm-docs-34",
-      "pnpm-docs-35",
+      "pnpm-docs-22",
+      "pnpm-docs-23",
       "pnpm-docs-7",
-      "pnpm-docs-12"
+      "pnpm-docs-12",
+      "pnpm-docs-39",
+      "pnpm-gh-2"
     ]
   },
   {
     "productId": "pnpm",
     "storyId": "workspace-filtered-operations",
-    "verdict": "partial",
+    "verdict": "full",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "pnpm's own homepage claims first-class monorepo filtering to run tasks on just the projects you touched, which covers filtered script runs and the affected-by-change subset. Community reports confirm that recursive/parallel workspace commands replace Lerna, but the evidence is a single marketing line with no reference documentation of the filter mechanism. Missing for 10: documentation of filter syntax and change-based (git ref) selection, evidence that installs can be filtered to a package subset, hands-on corroboration of filtering specifically.",
+    "rationale": "pnpm's homepage says its first-class monorepo support includes 'filtering to run tasks on just the projects you touched'. That covers running scripts on a subset of workspace packages, including only changed ones. Community users corroborate that the built-in monorepo support works well as a script runner, but the evidence is a single thin marketing line. missing for 10: documentation of filter syntax and selectors, evidence that installs (not just scripts) can be filtered, documented change-detection (e.g. since a git ref) or dependency/dependent selection, hands-on corroboration of filtering specifically.",
     "evidenceIds": [
       "pnpm-docs-6",
-      "pnpm-comm-16-refresh-1ab6854306afd120",
-      "pnpm-comm-9-refresh-cb212c120c30a643",
-      "pnpm-docs-47"
+      "pnpm-comm-1-refresh-f0e2e889c09aaf2d",
+      "pnpm-comm-9-refresh-cb212c120c30a643"
     ]
   },
   {
