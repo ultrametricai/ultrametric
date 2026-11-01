@@ -133,8 +133,12 @@ describe('existing judged selection compatibility', () => {
     // (sit_028-sit_033) add arena-covered steps (payroll, accounting, equity-management,
     // startup-law-firms), whose judged candidates join the mapped step rows.
     // ComplyAdvantage's judged fraud-prevention entry adds one positive function candidate.
-    expect(positiveCount).toBe(3121)
-    expect(zeroCount).toBe(291)
+    // Re-pinned at the registered-agents bring-up (2026-11-01): set-up-registered-agent's
+    // choose-provider step gains its function mapping onto the new arena, so the six
+    // positive-scoring judged candidates join the step's rows and the two wall-judged
+    // products (northwest-registered-agent, ct-corporation) land in the published zero rows.
+    expect(positiveCount).toBe(3127)
+    expect(zeroCount).toBe(293)
     // Re-pinned at the issue-closeout integration (2026-10-27): munito-ai and obsessiondb
     // join their arenas' candidate lists and the monday re-judge moved cells; counts re-probed.
     // Re-pinned at the v5 settlement wave 1 integration (2026-10-23): seven arenas

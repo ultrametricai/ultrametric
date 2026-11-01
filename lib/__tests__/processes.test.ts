@@ -632,13 +632,18 @@ describe('vendor -> arena mapping', () => {
     expect(atlas.label).toBe('Stripe Atlas')
 
     // untracked vendor: honest unlinked chip, label still pretty
-    const doola = vendorChipInfo('doola', DATA_DIR)
-    expect(doola.productId).toBeNull()
-    expect(doola.arenaId).toBeNull()
-    expect(doola.label).toBe('Doola')
+    const fondo = vendorChipInfo('fondo', DATA_DIR)
+    expect(fondo.productId).toBeNull()
+    expect(fondo.arenaId).toBeNull()
+    expect(fondo.label).toBe('Fondo')
+
+    // a registry productId override resolves where the key and product id differ structurally
+    const northwest = vendorChipInfo('northwest', DATA_DIR)
+    expect(northwest.productId).toBe('northwest-registered-agent')
+    expect(northwest.arenaId).toBe('registered-agents')
   })
 
-  it('the formation-service step lists the real market: 4 tracked formation services + honest unlinked chips', () => {
+  it('the formation-service step lists the real market: every option resolves to a judged product', () => {
     const incorporate = loadProcesses(DATA_DIR).find((t) => t.id === 'form_001')!
     const choose = incorporate.dag.nodes.find((n) => n.label === 'Choose formation service')!
     // Deliberately CURATED, not arena-derived: the function (formation services) is narrower
@@ -647,11 +652,11 @@ describe('vendor -> arena mapping', () => {
     expect(choose.vendorOptions).toEqual([
       'clerky', 'stripe_atlas', 'firstbase', 'legalzoom', 'northwest', 'doola',
     ])
+    // northwest and doola became tracked at the registered-agents bring-up, so every chip
+    // now links a judged product (legal-ops for the four incumbents, registered-agents for them).
     const chips = stepVendorOptions(choose, DATA_DIR)
-    expect(chips.filter((c) => c.productId).length).toBe(4)
-    expect(chips.filter((c) => !c.productId).map((c) => c.label)).toEqual(
-      ['Northwest Registered Agent', 'Doola'],
-    )
+    expect(chips.filter((c) => c.productId).length).toBe(6)
+    expect(chips.filter((c) => !c.productId)).toEqual([])
   })
 
   it('track-runway lists the real market: banking AND accounting options, not just Mercury', () => {

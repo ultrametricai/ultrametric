@@ -299,6 +299,12 @@ describe('open-rankings/step-prompts.json', () => {
       const node = nodeByKey.get(`${e.taskId}:${e.nodeId}`)!
       expect(SECRETS_RE.test(e.prompt), `${e.taskId}:${e.nodeId} secrets`).toBe(false)
       if (node.route === 'agent') continue
+      // Assessed steps use their execution assessment for the actor (validatePrompt's
+      // contract: "Legacy imports retain their historical audit posture. Assessed content
+      // uses its execution assessment"); the audit-verdict phrasing below binds only
+      // records without one, and validatePrompt enforces the execution-based phrasing at
+      // generation time.
+      if (node.execution) continue
       const audit = humanStepAudit(e.taskId, e.nodeId)
       if (!audit || audit.computerUse === 'drivable') continue
       expect(instructsImpersonation(e.prompt), `${e.taskId}:${e.nodeId} impersonation`).toBe(false)
