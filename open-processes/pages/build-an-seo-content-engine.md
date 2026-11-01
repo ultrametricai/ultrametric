@@ -3,6 +3,10 @@
 
 # Build an SEO & content engine
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Steps](#steps-at-a-glance)
+
+## Overview
+
 A repeatable content loop: research keywords, draft with an agent, human-edit, publish to the site, submit the sitemap, and watch what ranks.
 
 | Field | Value |
@@ -19,55 +23,112 @@ A repeatable content loop: research keywords, draft with an agent, human-edit, p
 
 Drafting, publishing, and sitemap submission are agent-runnable. Editorial review before publishing at scale is a human gate.
 
-## Steps
+<a id="artifacts"></a>
 
-1. **Keyword and topic research** — agent-runnable · ~30 min
+## Before you start
 
-   Collect customer questions and search language, then compare current results and available search data with existing site coverage in the intended markets. Prioritize questions the company can answer with specific knowledge or examples. Give each proposed article a reader, question and evidence source.
-
-   - Vendor options: ChatGPT, Claude, Gemini, Grok, Ahrefs, Semrush
-   - Ranked market: [ai-assistants](../../open-rankings/ai-assistants)
-   - Sources: [Creating Helpful, Reliable, People-First Content](https://developers.google.com/search/docs/fundamentals/creating-helpful-content)
-2. **Draft content with an agent** — agent-runnable · ~45 min
-
-   Give the drafting agent the reader's question, audience, company knowledge, examples and sources. Draft a direct answer, marking unsupported claims for subject-matter review. Keep private customer information out of tools without authority to use it. Deliver an editable article with source notes and specific questions for the editor.
-
-   - Vendor options: ChatGPT, Claude, Gemini, Grok
-   - Ranked market: [ai-assistants](../../open-rankings/ai-assistants)
-   - Sources: [Creating Helpful, Reliable, People-First Content](https://developers.google.com/search/docs/fundamentals/creating-helpful-content)
-3. **Editorial review** — human · ~30 min
-
-   Read the article for a useful answer to its reader's question and an accurate description of the current product. Verify factual claims, try instructions where practical and obtain specialist review for regulated topics. Remove invented real-world examples, unauthorized customer references and search-oriented filler. Return precise corrections or an edited version ready for the named publication owner.
-
-   - Sources: [Creating Helpful, Reliable, People-First Content](https://developers.google.com/search/docs/fundamentals/creating-helpful-content)
-4. **Publish to the site** — agent-runnable · ~10 min
-
-   Load the edited article into the site's publishing system with its sources, headings, links and intended URL. Preview small and large screens and check downloads and navigation. Publish the version cleared by the content owner, then read the live page to verify assets, links and intended indexing settings. Pass the live URL to the content measurement and maintenance workflow.
-
-   - Canonical vendor: Vercel
-   - Vendor options: Vercel, Cloudflare
-   - Ranked market: [edge-platforms](../../open-rankings/edge-platforms)
-   - Cross-arena market: [vibe-coding](../../open-rankings/vibe-coding)
-5. **Submit sitemap to search engines** — agent-runnable · ~5 min
-
-   Check that the sitemap lists the intended canonical public pages and excludes drafts and private content. Validate its format and public URL, then submit or inspect it through the search engine's supported site tools using authorized access. Investigate reported errors. Google treats sitemap submission as a hint, so verify subsequent indexing observations separately from successful submission.
-
-   - Verify: Search Console shows the sitemap fetched with status Success and pages discovered. ([search.google.com](https://search.google.com/search-console/about))
-   - Vendor options: Google Search Console
-   - Sources: [Build and Submit a Sitemap](https://developers.google.com/search/docs/crawling-indexing/sitemaps/build-sitemap)
-6. **Monitor traffic and rankings** — agent-runnable · ~10 min
-
-   Review the content program's pages, queries and conversions over a consistent reporting window. Compare search impressions, clicks and positions with site outcomes, publication dates and tracking changes. Investigate useful impressions that lead to weak engagement or broken conversion paths. Recommend specific updates, identifying other changes that could explain the observed ranking movement.
-
-   - Canonical vendor: PostHog
-   - Vendor options: PostHog, Google Search Console
-   - Ranked market: [product-analytics](../../open-rankings/product-analytics)
-
-## Artifacts
-
-Requires:
+Required artifacts:
 
 - Company website — from [Generate a website](generate-a-website.md)
+
+| Information to gather | Required by the record |
+| --- | --- |
+| target keywords and audience | Yes |
+
+## Steps at a glance
+
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
+
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Keyword and topic research](#step-1) | agent-runnable | ~30 min | Entry step |
+| [2. Draft content with an agent](#step-2) | agent-runnable | ~45 min | [Step 1](#step-1) |
+| [3. Editorial review](#step-3) | human | ~30 min | [Step 2](#step-2) |
+| [4. Publish to the site](#step-4) | agent-runnable | ~10 min | [Step 3](#step-3) |
+| [5. Submit sitemap to search engines](#step-5) | agent-runnable | ~5 min | [Step 4](#step-4) |
+| [6. Monitor traffic and rankings](#step-6) | agent-runnable | ~10 min | [Step 5](#step-5) |
+
+<a id="steps"></a>
+
+## Step details
+
+<a id="step-1"></a>
+
+### 1. Keyword and topic research
+
+agent-runnable · ~30 min
+
+
+Collect customer questions and search language, then compare current results and available search data with existing site coverage in the intended markets. Prioritize questions the company can answer with specific knowledge or examples. Give each proposed article a reader, question and evidence source.
+
+- Vendor options: ChatGPT, Claude, Gemini, Grok, Ahrefs, Semrush
+- Ranked market: [ai-assistants](../../open-rankings/ai-assistants)
+- Sources: [Creating Helpful, Reliable, People-First Content](https://developers.google.com/search/docs/fundamentals/creating-helpful-content)
+
+<a id="step-2"></a>
+
+### 2. Draft content with an agent
+
+agent-runnable · ~45 min
+
+
+Give the drafting agent the reader's question, audience, company knowledge, examples and sources. Draft a direct answer, marking unsupported claims for subject-matter review. Keep private customer information out of tools without authority to use it. Deliver an editable article with source notes and specific questions for the editor.
+
+- Vendor options: ChatGPT, Claude, Gemini, Grok
+- Ranked market: [ai-assistants](../../open-rankings/ai-assistants)
+- Sources: [Creating Helpful, Reliable, People-First Content](https://developers.google.com/search/docs/fundamentals/creating-helpful-content)
+
+<a id="step-3"></a>
+
+### 3. Editorial review
+
+human · ~30 min
+
+
+Read the article for a useful answer to its reader's question and an accurate description of the current product. Verify factual claims, try instructions where practical and obtain specialist review for regulated topics. Remove invented real-world examples, unauthorized customer references and search-oriented filler. Return precise corrections or an edited version ready for the named publication owner.
+
+- Sources: [Creating Helpful, Reliable, People-First Content](https://developers.google.com/search/docs/fundamentals/creating-helpful-content)
+
+<a id="step-4"></a>
+
+### 4. Publish to the site
+
+agent-runnable · ~10 min
+
+
+Load the edited article into the site's publishing system with its sources, headings, links and intended URL. Preview small and large screens and check downloads and navigation. Publish the version cleared by the content owner, then read the live page to verify assets, links and intended indexing settings. Pass the live URL to the content measurement and maintenance workflow.
+
+- Canonical vendor: Vercel
+- Vendor options: Vercel, Cloudflare
+- Ranked market: [edge-platforms](../../open-rankings/edge-platforms)
+- Cross-arena market: [vibe-coding](../../open-rankings/vibe-coding)
+
+<a id="step-5"></a>
+
+### 5. Submit sitemap to search engines
+
+agent-runnable · ~5 min
+
+
+Check that the sitemap lists the intended canonical public pages and excludes drafts and private content. Validate its format and public URL, then submit or inspect it through the search engine's supported site tools using authorized access. Investigate reported errors. Google treats sitemap submission as a hint, so verify subsequent indexing observations separately from successful submission.
+
+- Verify: Search Console shows the sitemap fetched with status Success and pages discovered. ([search.google.com](https://search.google.com/search-console/about))
+- Vendor options: Google Search Console
+- Sources: [Build and Submit a Sitemap](https://developers.google.com/search/docs/crawling-indexing/sitemaps/build-sitemap)
+
+<a id="step-6"></a>
+
+### 6. Monitor traffic and rankings
+
+agent-runnable · ~10 min
+
+
+Review the content program's pages, queries and conversions over a consistent reporting window. Compare search impressions, clicks and positions with site outcomes, publication dates and tracking changes. Investigate useful impressions that lead to weak engagement or broken conversion paths. Recommend specific updates, identifying other changes that could explain the observed ranking movement.
+
+- Canonical vendor: PostHog
+- Vendor options: PostHog, Google Search Console
+- Ranked market: [product-analytics](../../open-rankings/product-analytics)
+
 
 ---
 

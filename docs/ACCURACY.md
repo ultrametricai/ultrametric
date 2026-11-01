@@ -86,8 +86,16 @@ score built entirely from zero-evidence none/na cells renders italic *untested*,
 
 ## Human review points
 
-1. **story-runner PRs** — every refresh lands as a PR. Apply the re-judge stability policy
-   before merging: a verdict flip citing NO evidence id new to the pack is re-roll noise —
+1. **story-runner PRs** — every refresh lands as a PR and explicitly dispatches CI on its
+   branch. The metadata-only refresh-auto-merge recovery workflow updates generated branches
+   and dispatches missing CI on main pushes, twice hourly, or by manual dispatch. Auto-merge waits for validation, ci, Greptile Review, a current main base, and
+   resolved Greptile review threads via the metadata-only `review-findings` gate.
+   Foreloop checks and threads are outside the merge requirements. The CI stability
+   gate rejects upgrades without a cited evidence ID new to that product pack. A verified
+   downgrade may instead follow changed or lost prior support; quality cannot increase and
+   applicability cannot change through that path. Review semantic findings under the re-judge
+   stability policy before merging: when prior cited support is unchanged, a verdict flip
+   citing NO evidence id new to the pack is re-roll noise —
    revert it (`rankings-engine/scripts/revert-churn.ts` pattern, METHODOLOGY.md). Exception: a
    labeled judge-model migration wave (e.g. 2026-09-30, sonnet-5 → opus-5-5) is exempt — under
    a judge change every flip cites no new evidence by construction, so the wave is labeled in
@@ -100,10 +108,48 @@ score built entirely from zero-evidence none/na cells renders italic *untested*,
 3. **The work-queue issue** (labels `story-runner` + `founder-call`, Wednesdays, filed only when
    the queue is non-empty) — the ranked to-do list. Close it once the listed rankings have been
    through keyed runs (the next week's issue also closes it automatically, naming its successor);
-   flips that survive a re-judge become verdict changes with new citations, which is the only way
-   a flip may move a score.
+   score changes require new supporting citations, or a verified non-upward judgment after
+   previously cited support changes or disappears. Unchanged-support rerolls are reverted.
 4. **Contest / vendor-response issues** — external correction channels; vendor responses enter
    the evidence pool but never change a verdict by themselves.
+
+## Repair and recheck
+
+The recovery controller dispatches `refresh-repair.yml` for failing generated story-runner
+PRs, unresolved Greptile findings on verdict cells, and merge conflicts. CI completion also
+wakes recovery. Foreloop remains outside this loop.
+
+The worker executes the current main branch only. It fetches the proposed branch as data,
+accepts changes only in its arena and declared generated projections, and rejects code,
+workflow, symlink, and cross-arena source edits. Concurrent canonical source edits remain
+blocked; generated rankings, graphs, reviews, intervals, predictions, and history are rebuilt
+from merged inputs. Append-only uptime observations are combined without rewriting history.
+
+Evidence content changes receive distinct deterministic IDs before future judgments;
+repeated extraction of the same content retains the same identity. Timestamp-only updates
+create no new evidence. Repairs reconcile older PRs that reused an ID for changed text and
+remap their citations. A cache may migrate across label-only changes only after its original
+payload hash and exact original judgment are verified.
+
+Unsupported grade churn restores the previously published judgment when its cited content
+is unchanged and its rules remain valid. Changed or missing source content requires a verified current-input judgment, or a
+scoped re-judge within the worker's cell budget. Such source loss may lower full/partial
+credit toward none with no quality increase, and cannot justify an upgrade or applicability
+change. Failed-worker budgets are scoped to the deployed repair policy version, so a
+policy correction can retry heads that exhausted an older worker implementation. Reviewed cells may use the configured judge to reconsider the evidence and audit
+the reported concern. Review text is diagnostic context, never evidence. Missing evidence,
+unknown citations, rubric violations, and affiliated-product review needs stay blocked.
+
+Every repair runs the repository gates before a non-force push, launches CI and a fresh
+Greptile review, and checks the new head again. An old thread may close only for an audited
+cell after CI and independent review pass, with no new verdict-matrix findings. All other
+threads remain open. A changed head discards the repair. Attempts are bounded to three
+published repair commits, three failed-worker retries per head, and two concurrent workers. Pending checks resume
+the saved audit for the same published head, without another judgment or repair commit.
+Only artifacts from the trusted main repair workflow with matching PR, head, run, and base
+bindings can resume. Audits are bound to the exact review discussion; edited findings or
+new replies require another assessment. Foreloop replies are excluded from that context. Failed stages are appended to the retained report.
+Reports are retained as workflow artifacts; exhausted or ambiguous repairs require review.
 
 ## Invariants
 

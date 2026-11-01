@@ -3,6 +3,10 @@
 
 # Create a project in your tracker
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Steps](#steps-at-a-glance)
+
+## Overview
+
 Create a project with its initial tasks in the team’s tracker.
 
 | Field | Value |
@@ -19,29 +23,61 @@ Create a project with its initial tasks in the team’s tracker.
 
 Project and task creation are core tracker APIs — a one-call agent step.
 
-## Steps
+<a id="artifacts"></a>
 
-1. **Draft the project brief and task breakdown** — agent-runnable · ~3 min
+## Before you start
 
-   Describe the result the project should produce, who needs it, the scope boundaries, and how the team will judge completion. Break it into tasks that each produce something reviewable, such as a design or a working import. Identify real dependencies and unresolved decisions. Link the source request and any existing work so the project brief gives the team a common starting point.
-2. **Create the project and tasks in the tracker** — agent-runnable · ~2 min
-
-   Search the intended team workspace for an existing project or overlapping tasks. Create the project from the brief, then add task descriptions, acceptance criteria, source links, and the dependencies already identified. Set visibility to match the material it contains. Check that every task belongs to the right project and return the project link with a short list of anything still missing, such as access to a supporting document.
-
-   - Canonical vendor: Asana
-   - Vendor options: Asana, Linear, Notion
-   - Ranked market: [project-management](../../open-rankings/project-management)
-3. **Assign owners and due dates** — agent-runnable · ~2 min
-
-   Agree an accountable owner for each task with the team doing the work. Work backward from real milestones, allowing for dependencies and capacity, and distinguish a committed due date from a tentative estimate. Update assignments and dates in the tracker, then flag unowned work or a dependency that makes the schedule impossible. The resulting plan should show who acts next and where a decision is needed to keep the project moving.
-
-   - Canonical vendor: Asana
-
-## Artifacts
-
-Requires:
+Required artifacts:
 
 - Project tracker — from [Set up a project tracker](set-up-a-project-tracker.md)
+
+## Steps at a glance
+
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
+
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Draft the project brief and task breakdown](#step-1) | agent-runnable | ~3 min | Entry step |
+| [2. Create the project and tasks in the tracker](#step-2) | agent-runnable | ~2 min | [Step 1](#step-1) |
+| [3. Assign owners and due dates](#step-3) | agent-runnable | ~2 min | [Step 2](#step-2) |
+
+<a id="steps"></a>
+
+## Step details
+
+<a id="step-1"></a>
+
+### 1. Draft the project brief and task breakdown
+
+agent-runnable · ~3 min
+
+
+Describe the result the project should produce, who needs it, the scope boundaries, and how the team will judge completion. Break it into tasks that each produce something reviewable, such as a design or a working import. Identify real dependencies and unresolved decisions. Link the source request and any existing work so the project brief gives the team a common starting point.
+
+<a id="step-2"></a>
+
+### 2. Create the project and tasks in the tracker
+
+agent-runnable · ~2 min
+
+
+Search the intended team workspace for an existing project or overlapping tasks. Create the project from the brief, then add task descriptions, acceptance criteria, source links, and the dependencies already identified. Set visibility to match the material it contains. Check that every task belongs to the right project and return the project link with a short list of anything still missing, such as access to a supporting document.
+
+- Canonical vendor: Asana
+- Vendor options: Asana, Linear, Notion
+- Ranked market: [project-management](../../open-rankings/project-management)
+
+<a id="step-3"></a>
+
+### 3. Assign owners and due dates
+
+agent-runnable · ~2 min
+
+
+Agree an accountable owner for each task with the team doing the work. Work backward from real milestones, allowing for dependencies and capacity, and distinguish a committed due date from a tentative estimate. Update assignments and dates in the tracker, then flag unowned work or a dependency that makes the schedule impossible. The resulting plan should show who acts next and where a decision is needed to keep the project moving.
+
+- Canonical vendor: Asana
+
 
 ---
 

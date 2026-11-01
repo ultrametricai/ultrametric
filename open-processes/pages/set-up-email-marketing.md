@@ -3,6 +3,10 @@
 
 # Set up email marketing
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Steps](#steps-at-a-glance) · [Outputs](#outputs)
+
+## Overview
+
 Configure email marketing with an audience, templates, and welcome automation. Mailchimp is the canonical route.
 
 | Field | Value |
@@ -19,72 +23,128 @@ Configure email marketing with an audience, templates, and welcome automation. M
 
 Mailchimp API fully supports audience, campaign, and automation management.
 
-## Steps
+<a id="artifacts"></a>
 
-1. **Create your email marketing account** — manual form/portal · ~10 min · human approval required
+## Before you start
 
-   Choose an email workspace from the program's audience, sending identity, volume, team access and existing systems. Compare list-based campaigns with event-driven messaging against the actual use case and current plan limits. Establish company-controlled ownership and administrators, and create the workspace within the agreed subscription budget. Define the contact fields and sender identity before importing an audience.
-
-   - Canonical vendor: Mailchimp
-   - Vendor options: Mailchimp, Loops, Customer.io
-   - Ranked market: [email-marketing](../../open-rankings/email-marketing)
-
-   Options:
-     - **Default — Create your email marketing account** — manual form/portal · ~10 min · human approval required
-
-       Use a list-oriented workspace for audience-based newsletters or campaigns. Compare required audience size, templates and reporting with current plan limits and cost. Set the sender and audience structure, then test signup, duplicate handling and suppression before importing real contacts.
-     - **Event-driven lifecycle email**
-
-       When: Product-led SaaS - email keyed to product events, not newsletter blasts
-
-       Use event-driven messaging when product activity should start, change or stop a message sequence. Define the events, user identifiers, attributes and suppression rules before choosing a service. With fictional accounts, test missing and repeated events and verify who enters and exits each journey. Resolve data-sharing and audience-eligibility questions before activating customer messages.
-
-       - Canonical vendor: Loops
-       - Vendor options: Loops, Customer.io
-2. **Set up audience list** — agent-runnable · ~10 min · human approval required
-
-   Build the audience with each contact's source, preferences, relevant location and evidence of eligibility for this program. Deduplicate records and carry existing opt-outs into the import. Resolve regional requirements and uncertain eligibility before treating a contact as sendable. Test a small import, inspect mapped fields and suppressions, then reconcile imported and excluded counts against the source list.
-
-   - Produces: Marketing email audience
-   - Canonical vendor: Mailchimp
-   - Sources: [CAN-SPAM Act: A Compliance Guide for Business](https://www.ftc.gov/business-guidance/resources/can-spam-act-compliance-guide-business)
-   - Next: steps 3, 4 and 5 — all follow this step
-3. **Create email templates** — agent-runnable · ~15 min · human approval required
-
-   Build templates for the program's actual messages with a recognizable sender, brand assets and clear next action. Add personalization fallbacks and the sender, preference and unsubscribe content required for the audience. Check links, plain text and mobile previews, then save each draft with its intended use.
-
-   - Canonical vendor: Mailchimp
-   - Sources: [CAN-SPAM Act: A Compliance Guide for Business](https://www.ftc.gov/business-guidance/resources/can-spam-act-compliance-guide-business)
-
-   *This path ends here.*
-4. **Set up welcome automation** — agent-runnable · ~10 min · human approval required
-
-   *Follows step 2.*
-
-   Define welcome-sequence entry, message order, timing and exit rules from the signup promise. Test new signups, repeated profile events, missing personalization, unsubscribes and completed onboarding; existing users should not restart unintentionally. Activate the agreed audience rules and messages after those paths work, with a named person able to pause the sequence and investigate unexpected sends.
-
-   - Canonical vendor: Mailchimp
-   - Sources: [CAN-SPAM Act: A Compliance Guide for Business](https://www.ftc.gov/business-guidance/resources/can-spam-act-compliance-guide-business)
-
-   *This path ends here.*
-5. **Configure signup forms** — agent-runnable · ~10 min · human approval required
-
-   *Follows step 2.*
-
-   Ask only for the information the email program needs and explain what subscribers will receive. Implement the reviewed preference and confirmation choices. Test valid, invalid and duplicate submissions through the audience list and welcome sequence, including where opt-outs are stored. Once the site and marketing owners have cleared the form for publication, verify a controlled signup on the live page.
-
-   - Canonical vendor: Mailchimp
-   - Sources: [CAN-SPAM Act: A Compliance Guide for Business](https://www.ftc.gov/business-guidance/resources/can-spam-act-compliance-guide-business)
-
-## Artifacts
-
-Produces:
-
-- Marketing email audience
-
-Requires:
+Required artifacts:
 
 - Company website — from [Generate a website](generate-a-website.md)
+
+| Information to gather | Required by the record |
+| --- | --- |
+| marketing audience segments | Yes |
+| company brand assets | Optional |
+
+## Steps at a glance
+
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
+
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Create your email marketing account](#step-1) | manual form/portal; approval required | ~10 min | Entry step |
+| [2. Set up audience list](#step-2) | agent-runnable; approval required | ~10 min | [Step 1](#step-1) |
+| [3. Create email templates](#step-3) | agent-runnable; approval required | ~15 min | [Step 2](#step-2) |
+| [4. Set up welcome automation](#step-4) | agent-runnable; approval required | ~10 min | [Step 2](#step-2) |
+| [5. Configure signup forms](#step-5) | agent-runnable; approval required | ~10 min | [Step 2](#step-2) |
+
+<a id="steps"></a>
+
+## Step details
+
+<a id="step-1"></a>
+
+### 1. Create your email marketing account
+
+manual form/portal · ~10 min · human approval required
+
+| Option | Applies when |
+| --- | --- |
+| Default — Create your email marketing account | Recorded default |
+| Event-driven lifecycle email | Product-led SaaS - email keyed to product events, not newsletter blasts |
+
+
+Choose an email workspace from the program's audience, sending identity, volume, team access and existing systems. Compare list-based campaigns with event-driven messaging against the actual use case and current plan limits. Establish company-controlled ownership and administrators, and create the workspace within the agreed subscription budget. Define the contact fields and sender identity before importing an audience.
+
+- Canonical vendor: Mailchimp
+- Vendor options: Mailchimp, Loops, Customer.io
+- Ranked market: [email-marketing](../../open-rankings/email-marketing)
+
+Options:
+  - **Default — Create your email marketing account** — manual form/portal · ~10 min · human approval required
+
+    Use a list-oriented workspace for audience-based newsletters or campaigns. Compare required audience size, templates and reporting with current plan limits and cost. Set the sender and audience structure, then test signup, duplicate handling and suppression before importing real contacts.
+  - **Event-driven lifecycle email**
+
+    When: Product-led SaaS - email keyed to product events, not newsletter blasts
+
+    Use event-driven messaging when product activity should start, change or stop a message sequence. Define the events, user identifiers, attributes and suppression rules before choosing a service. With fictional accounts, test missing and repeated events and verify who enters and exits each journey. Resolve data-sharing and audience-eligibility questions before activating customer messages.
+
+    - Canonical vendor: Loops
+    - Vendor options: Loops, Customer.io
+
+<a id="step-2"></a>
+
+### 2. Set up audience list
+
+agent-runnable · ~10 min · human approval required
+
+
+Build the audience with each contact's source, preferences, relevant location and evidence of eligibility for this program. Deduplicate records and carry existing opt-outs into the import. Resolve regional requirements and uncertain eligibility before treating a contact as sendable. Test a small import, inspect mapped fields and suppressions, then reconcile imported and excluded counts against the source list.
+
+- Produces: Marketing email audience
+- Canonical vendor: Mailchimp
+- Sources: [CAN-SPAM Act: A Compliance Guide for Business](https://www.ftc.gov/business-guidance/resources/can-spam-act-compliance-guide-business)
+- Next: steps 3, 4 and 5 — all follow this step
+
+<a id="step-3"></a>
+
+### 3. Create email templates
+
+agent-runnable · ~15 min · human approval required
+
+
+Build templates for the program's actual messages with a recognizable sender, brand assets and clear next action. Add personalization fallbacks and the sender, preference and unsubscribe content required for the audience. Check links, plain text and mobile previews, then save each draft with its intended use.
+
+- Canonical vendor: Mailchimp
+- Sources: [CAN-SPAM Act: A Compliance Guide for Business](https://www.ftc.gov/business-guidance/resources/can-spam-act-compliance-guide-business)
+
+*This path ends here.*
+
+<a id="step-4"></a>
+
+### 4. Set up welcome automation
+
+agent-runnable · ~10 min · human approval required
+
+
+*Follows step 2.*
+
+Define welcome-sequence entry, message order, timing and exit rules from the signup promise. Test new signups, repeated profile events, missing personalization, unsubscribes and completed onboarding; existing users should not restart unintentionally. Activate the agreed audience rules and messages after those paths work, with a named person able to pause the sequence and investigate unexpected sends.
+
+- Canonical vendor: Mailchimp
+- Sources: [CAN-SPAM Act: A Compliance Guide for Business](https://www.ftc.gov/business-guidance/resources/can-spam-act-compliance-guide-business)
+
+*This path ends here.*
+
+<a id="step-5"></a>
+
+### 5. Configure signup forms
+
+agent-runnable · ~10 min · human approval required
+
+
+*Follows step 2.*
+
+Ask only for the information the email program needs and explain what subscribers will receive. Implement the reviewed preference and confirmation choices. Test valid, invalid and duplicate submissions through the audience list and welcome sequence, including where opt-outs are stored. Once the site and marketing owners have cleared the form for publication, verify a controlled signup on the live page.
+
+- Canonical vendor: Mailchimp
+- Sources: [CAN-SPAM Act: A Compliance Guide for Business](https://www.ftc.gov/business-guidance/resources/can-spam-act-compliance-guide-business)
+
+
+## Outputs
+
+- Marketing email audience
 
 ## Related records
 

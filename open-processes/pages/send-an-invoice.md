@@ -3,6 +3,10 @@
 
 # Send an invoice
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Geography](#geography) · [Steps](#steps-at-a-glance)
+
+## Overview
+
 Create and send an invoice to a customer for services rendered. Stripe is the canonical route; any payments provider with invoicing works.
 
 | Field | Value |
@@ -19,104 +23,196 @@ Create and send an invoice to a customer for services rendered. Stripe is the ca
 
 Stripe Invoicing API fully supports create, send, and track.
 
-## Steps
+<a id="artifacts"></a>
 
-1. **Look up or create customer** — agent-runnable · ~2 min
+## Before you start
 
-   Find the customer’s existing billing record from the contract or order before creating another. Check legal name, address, relevant tax identifiers, currency, purchase-order requirements and billing contact. Resolve conflicts with the account owner or customer through the established channel, leaving a billing record that matches the agreed commercial relationship.
+Required artifacts:
 
-   - Canonical vendor: Stripe
-2. **Create invoice with line items** — agent-runnable · ~3 min · human approval required
+- Payment processor account — from [Connect a payment processor](connect-a-payment-processor.md)
 
-   Draft the invoice from the contract or order and the billable milestone or service period. Check quantities, prices, discounts, currency, payment terms and tax treatment, using the applicable local invoice route. Recalculate totals and compare earlier invoices to avoid duplicate billing. Resolve exceptions with the billing owner before the document is issued.
+| Information to gather | Required by the record |
+| --- | --- |
+| customer email | Yes |
+| invoice line items | Yes |
 
-   - Canonical vendor: Stripe
+## Geography
 
-   Options:
-     - **Default — Create invoice with line items** — agent-runnable · ~3 min · human approval required
+Country rows describe the guidance recorded here. Local notes and step alternatives do not establish a complete country-specific workflow.
 
-       Describe line items so the customer can recognize what was delivered and when. Match quantities, prices, discounts and service periods to the order, with the correct tax treatment, payment terms and purchase-order reference. Check the total and any departure from agreed terms so the draft is ready for the billing owner to issue.
-     - **India - GST e-invoice (IRN)** — manual form/portal
+| Country | Recorded guidance | Steps with local alternatives or resolutions |
+| --- | --- | --- |
+| [India](#geo-in) | Local analog note; step alternative | [2](#step-2) |
+| [United Kingdom](#geo-uk) | Local analog note; step alternative | [2](#step-2) |
+| [Germany](#geo-de) | Local analog note; step alternative | [2](#step-2) |
+| [France](#geo-fr) | Local analog note; step alternative | [2](#step-2) |
+| [Singapore](#geo-sg) | Local analog note | — |
+| [South Korea](#geo-kr) | Local analog note | — |
+| [Hong Kong](#geo-hk) | Local analog note | — |
+| [Estonia](#geo-ee) | Local analog note | — |
 
-       When: Invoicing from an Indian entity
+## Steps at a glance
 
-       Establish GST treatment and e-invoicing applicability with the Indian tax owner for this supplier and document. Where an IRN is required, the authorized billing user submits accurate seller, buyer, supply and amount data through an eligible route. Match the returned IRN, signed data and QR information to the invoice and resolve validation errors before delivery.
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
 
-       - Do it yourself: [GST e-Invoice portal (IRP)](https://einvoice.gst.gov.in/)
-       - Sources: [NIC GST e-Invoice System](https://einvoice1.gst.gov.in/)
-     - **UK - statutory VAT invoice**
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Look up or create customer](#step-1) | agent-runnable | ~2 min | Entry step |
+| [2. Create invoice with line items](#step-2) | agent-runnable; approval required | ~3 min | [Step 1](#step-1) |
+| [3. Send invoice](#step-3) | agent-runnable; approval required | ~1 min | [Step 2](#step-2) |
+| [4. Track payment status](#step-4) | agent-runnable | ~1 min | [Step 3](#step-3) |
 
-       When: Invoicing from a UK entity
+<a id="steps"></a>
 
-       For the UK invoice, check party details, unique number, supply and issue dates, descriptions, charges and total against the transaction. Determine whether a VAT invoice is required and apply its fields and treatment. Use the agreed payment terms, resolving any proposed late-payment charge before the billing owner issues the final document.
+## Step details
 
-       - Do it yourself: [Invoicing and taking payment](https://www.gov.uk/invoicing-and-taking-payment-from-customers)
-       - Sources: [GOV.UK invoice requirements](https://www.gov.uk/invoicing-and-taking-payment-from-customers/invoices-what-they-must-include)
-     - **Germany - s.14 UStG e-invoice**
+<a id="step-1"></a>
 
-       When: Invoicing from a German entity
+### 1. Look up or create customer
 
-       Establish the German invoice particulars, VAT treatment and electronic format required for the parties and transaction. Populate the invoice from the contract and delivery evidence, checking identifiers, dates and amounts. Validate structured output where required alongside its readable presentation, then issue it through the billing owner’s accounting workflow.
+agent-runnable · ~2 min
 
-       - Do it yourself: [s.14 UStG - invoice requirements](https://www.gesetze-im-internet.de/ustg_1980/__14.html)
-     - **France - mentions obligatoires**
 
-       When: Invoicing from a French entity
+Find the customer’s existing billing record from the contract or order before creating another. Check legal name, address, relevant tax identifiers, currency, purchase-order requirements and billing contact. Resolve conflicts with the account owner or customer through the established channel, leaving a billing record that matches the agreed commercial relationship.
 
-       Check the French invoice’s party identities, transaction details, price, tax presentation and applicable payment statements against current requirements. Establish the electronic-invoicing channel and obligations for the company’s size and transaction with the accountant. Validate the document or structured submission, then follow platform acknowledgments or correction requests against the issued invoice.
+- Canonical vendor: Stripe
 
-       - Do it yourself: [Mentions obligatoires sur une facture](https://entreprendre.service-public.fr/vosdroits/F31808)
-       - Sources: [Service Public invoice particulars](https://entreprendre.service-public.gouv.fr/vosdroits/F31808)
-3. **Send invoice** — agent-runnable · ~1 min · human approval required
+<a id="step-2"></a>
 
-   The billing owner sends the final invoice to the verified contact or required customer portal with the correct attachments, purchase-order reference and payment instructions. Check the delivery acknowledgment and resolve rejected or failed submissions. Link corrections and re-delivery to the original invoice to preserve a single receivable for the charge.
+### 2. Create invoice with line items
 
-   - Canonical vendor: Stripe
-4. **Track payment status** — agent-runnable · ~1 min
+agent-runnable · ~3 min · human approval required
 
-   Match receipts to the invoice by customer, reference, amount and currency, accounting for partial payments, credits and fees. Keep unpaid, disputed and settled balances distinct. Investigate mismatches and follow the agreed collection process for overdue amounts, using the account owner’s customer context to resolve disputes or arrange the next action.
+| Option | Applies when |
+| --- | --- |
+| Default — Create invoice with line items | Recorded default |
+| India - GST e-invoice (IRN) | Invoicing from an Indian entity |
+| UK - statutory VAT invoice | Invoicing from a UK entity |
+| Germany - s.14 UStG e-invoice | Invoicing from a German entity |
+| France - mentions obligatoires | Invoicing from a French entity |
 
-   - Canonical vendor: Stripe
 
-## By country
+Draft the invoice from the contract or order and the billable milestone or service period. Check quantities, prices, discounts, currency, payment terms and tax treatment, using the applicable local invoice route. Recalculate totals and compare earlier invoices to avoid duplicate billing. Resolve exceptions with the billing owner before the document is issued.
+
+- Canonical vendor: Stripe
+
+Options:
+  - **Default — Create invoice with line items** — agent-runnable · ~3 min · human approval required
+
+    Describe line items so the customer can recognize what was delivered and when. Match quantities, prices, discounts and service periods to the order, with the correct tax treatment, payment terms and purchase-order reference. Check the total and any departure from agreed terms so the draft is ready for the billing owner to issue.
+  - **India - GST e-invoice (IRN)** — manual form/portal
+
+    When: Invoicing from an Indian entity
+
+    Establish GST treatment and e-invoicing applicability with the Indian tax owner for this supplier and document. Where an IRN is required, the authorized billing user submits accurate seller, buyer, supply and amount data through an eligible route. Match the returned IRN, signed data and QR information to the invoice and resolve validation errors before delivery.
+
+    - Do it yourself: [GST e-Invoice portal (IRP)](https://einvoice.gst.gov.in/)
+    - Sources: [NIC GST e-Invoice System](https://einvoice1.gst.gov.in/)
+  - **UK - statutory VAT invoice**
+
+    When: Invoicing from a UK entity
+
+    For the UK invoice, check party details, unique number, supply and issue dates, descriptions, charges and total against the transaction. Determine whether a VAT invoice is required and apply its fields and treatment. Use the agreed payment terms, resolving any proposed late-payment charge before the billing owner issues the final document.
+
+    - Do it yourself: [Invoicing and taking payment](https://www.gov.uk/invoicing-and-taking-payment-from-customers)
+    - Sources: [GOV.UK invoice requirements](https://www.gov.uk/invoicing-and-taking-payment-from-customers/invoices-what-they-must-include)
+  - **Germany - s.14 UStG e-invoice**
+
+    When: Invoicing from a German entity
+
+    Establish the German invoice particulars, VAT treatment and electronic format required for the parties and transaction. Populate the invoice from the contract and delivery evidence, checking identifiers, dates and amounts. Validate structured output where required alongside its readable presentation, then issue it through the billing owner’s accounting workflow.
+
+    - Do it yourself: [s.14 UStG - invoice requirements](https://www.gesetze-im-internet.de/ustg_1980/__14.html)
+  - **France - mentions obligatoires**
+
+    When: Invoicing from a French entity
+
+    Check the French invoice’s party identities, transaction details, price, tax presentation and applicable payment statements against current requirements. Establish the electronic-invoicing channel and obligations for the company’s size and transaction with the accountant. Validate the document or structured submission, then follow platform acknowledgments or correction requests against the issued invoice.
+
+    - Do it yourself: [Mentions obligatoires sur une facture](https://entreprendre.service-public.fr/vosdroits/F31808)
+    - Sources: [Service Public invoice particulars](https://entreprendre.service-public.gouv.fr/vosdroits/F31808)
+
+<a id="step-3"></a>
+
+### 3. Send invoice
+
+agent-runnable · ~1 min · human approval required
+
+
+The billing owner sends the final invoice to the verified contact or required customer portal with the correct attachments, purchase-order reference and payment instructions. Check the delivery acknowledgment and resolve rejected or failed submissions. Link corrections and re-delivery to the original invoice to preserve a single receivable for the charge.
+
+- Canonical vendor: Stripe
+
+<a id="step-4"></a>
+
+### 4. Track payment status
+
+agent-runnable · ~1 min
+
+
+Match receipts to the invoice by customer, reference, amount and currency, accounting for partial payments, credits and fees. Keep unpaid, disputed and settled balances distinct. Investigate mismatches and follow the agreed collection process for overdue amounts, using the account owner’s customer context to resolve disputes or arrange the next action.
+
+- Canonical vendor: Stripe
+
+
+<a id="by-country"></a>
+
+## Country details
+
+<a id="geo-us"></a>
+
+### United States
+
+Create and send an invoice to a customer for services rendered. Stripe is the canonical route; any payments provider with invoicing works.
+
+
+<a id="geo-in"></a>
 
 ### India
 
 - Invoices are GST documents: registered businesses past ₹5 crore turnover must clear every B2B invoice through the government IRP (e-invoicing) to get an IRN and QR code — an invoice without one simply isn't valid. ([GST e-Invoice portal (IRP)](https://einvoice.gst.gov.in/))
 
+<a id="geo-uk"></a>
+
 ### United Kingdom
 
 - Invoices must carry the statutory particulars (and full VAT-invoice fields once registered); late payers owe statutory interest at 8% over base under the late-payment legislation — gov.uk documents both. ([Invoicing and taking payment](https://www.gov.uk/invoicing-and-taking-payment-from-customers))
+
+<a id="geo-de"></a>
 
 ### Germany
 
 - § 14 UStG fixes the mandatory invoice fields (sequential number, Steuernummer/USt-IdNr, …) — and since January 2025 every German business must be able to RECEIVE structured e-invoices (XRechnung/ZUGFeRD) for domestic B2B, with issuing phasing in. ([§ 14 UStG — invoice requirements](https://www.gesetze-im-internet.de/ustg_1980/__14.html))
 
+<a id="geo-fr"></a>
+
 ### France
 
 - French invoices carry a long list of mentions obligatoires (SIREN, RCS, per-line detail, late-payment penalty terms…), and mandatory B2B e-invoicing via accredited platforms (PDP) phases in from September 2026 — receiving first, issuing by 2027. ([Mentions obligatoires sur une facture](https://entreprendre.service-public.fr/vosdroits/F31808))
+
+<a id="geo-sg"></a>
 
 ### Singapore
 
 - Once GST-registered, invoices must be proper tax invoices with the prescribed particulars — and GST-registered businesses are being phased onto InvoiceNow (Peppol) e-invoicing, so pick software that speaks it. ([IRAS — invoicing customers](https://www.iras.gov.sg/taxes/goods-services-tax-(gst)/basics-of-gst/invoicing-price-display-and-record-keeping/invoicing-customers))
 
+<a id="geo-kr"></a>
+
 ### South Korea
 
 - B2B invoicing runs on the electronic tax invoice (전자세금계산서) issued through Hometax, which doubles as the VAT paper trail. ([Hometax (NTS e-filing)](https://www.hometax.go.kr/))
+
+<a id="geo-hk"></a>
 
 ### Hong Kong
 
 - Invoices carry no tax line: Hong Kong has no sales tax, GST or VAT, so an invoice is a commercial document rather than a tax artifact — keep the business records the Inland Revenue Ordinance requires for 7 years and pick software accordingly. ([GovHK — business taxes](https://www.gov.hk/en/business/taxes/))
 
+<a id="geo-ee"></a>
+
 ### Estonia
 
 - Invoices follow the Accounting Act's source-document rules, and since July 2025 a buyer registered as an e-invoice recipient in the commercial register can require a machine-readable e-invoice to the European standard (Accounting Act § 7¹). ([e-Business Register](https://ariregister.rik.ee/eng))
-
-## Artifacts
-
-Requires:
-
-- Payment processor account — from [Connect a payment processor](connect-a-payment-processor.md)
 
 ## Related records
 

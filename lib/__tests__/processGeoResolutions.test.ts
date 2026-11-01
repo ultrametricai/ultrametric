@@ -157,6 +157,36 @@ describe('step geo resolutions', () => {
     }
   })
 
+  it('completes the PR 125 abstractions without globalizing US-only or conditional steps', () => {
+    const tasks = loadProcesses(DATA_DIR)
+    const globalIds = ['form_001', 'form_002', 'form_012', 'fund_001', 'fund_002', 'fund_004',
+      'fund_006', 'hr_012', 'legal_002', 'opp_002', 'qs_047', 'qs_063', 'scale_002',
+      'shutdown_001', 'sit_022', 'tax_002', 'tax_011', 'vc_002']
+    for (const id of globalIds) {
+      const task = tasks.find(task => task.id === id)!
+      expect(task.geoScope, id).toBe('global')
+      for (const node of task.dag.nodes) {
+        const at = `${id}/${node.id}`
+        expect(node.label, at).not.toMatch(/\b(?:IRS|Delaware|USPTO|SEC|EIN|1099|409A|Carta)\b|83\(b\)|401\(k\)/)
+        if (node.actionUrl) {
+          expect(node.geoResolutions?.length, at).toBeGreaterThan(0)
+          expect(node.geoResolutions?.find(row => row.country === 'US')?.actionUrl, at).toMatch(/^https:\/\//)
+        }
+      }
+    }
+    for (const id of ['sit_002', 'sit_010', 'tax_001', 'qs_043', 'fund_003', 'form_011', 'tax_003']) {
+      expect(tasks.find(task => task.id === id)?.geoScope, id).not.toBe('global')
+    }
+    const taxId = tasks.find(task => task.id === 'form_002')!
+    expect(taxId.dag.nodes.find(node => node.id === 'n3')?.geoResolutions?.find(row => row.country === 'IN')?.kind).toBe('absorbed')
+    const retirement = tasks.find(task => task.id === 'hr_012')!
+    expect(retirement.dag.nodes.find(node => node.id === 'n1')?.geoResolutions?.find(row => row.country === 'FR')?.kind).toBe('absorbed')
+    const preseed = tasks.find(task => task.id === 'fund_001')!
+    expect(preseed.title).toBe('Raise pre-seed funding')
+    expect(preseed.slugAliases).toContainEqual({ slug: 'raise-pre-seed-safes', label: 'Raise pre-seed (SAFEs)' })
+    expect(tasks.find(task => task.id === 'fund_004')?.dag.nodes.find(node => node.id === 'n6')?.label).toBe('Record the grant in the equity register')
+  })
+
   it('non-US entries reuse committed geo knowledge: the entry country also has a process geoNote or the process is global', () => {
     const tasks = loadProcesses(DATA_DIR)
     for (const t of tasks) {

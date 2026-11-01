@@ -3,6 +3,10 @@
 
 # Recover from an app-store rejection or removal
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Steps](#steps-at-a-glance)
+
+## Overview
+
 **Trigger:** Your app is rejected in review, or pulled from the App Store or Google Play with a policy notice.
 
 A rejection names a guideline; a removal names a policy. Read which one you got. Apple publishes its App Review guidelines and an appeal path (disagreements go to the App Review Board); Google Play publishes its removal reasons and appeal process in the Play Console help. Usually, fixing the issue and resubmitting beats contesting, unless the reviewer is actually wrong about your app. If store revenue matters, tell your users what is happening while the review runs. How long review takes is the stores' call; treat it as a wait.
@@ -22,31 +26,96 @@ A rejection names a guideline; a removal names a policy. Read which one you got.
 
 Review and appeals run inside Apple's and Google's own consoles on their own judgment. An agent can diff your build against the cited guideline and assemble the evidence; the appeal and the resubmission decisions are yours.
 
-## Steps
+## Before you start
 
-1. **Read the rejection/removal notice: which guideline or policy is cited, and what exactly the reviewer saw** — human · ~30 min
+| Information to gather | Required by the record |
+| --- | --- |
+| the rejection/removal notice (guideline or policy cited) | Yes |
+| how much of your revenue and install base rides the affected store | Optional |
 
-   - Do it yourself: [App Store Review Guidelines](https://developer.apple.com/app-store/review/guidelines/)
-2. **Diff your build and metadata against the cited guideline and assemble the evidence: screens, flows, policy docs** — agent-runnable · ~1 h
-3. **Decide the fork: fix and resubmit, or contest — contest only when the reviewer is genuinely wrong about your app** — human · ~30 min
+## Steps at a glance
 
-   - If "The rejection or removal is on Apple's App Store": continue at step 4
-   - If "The rejection or removal is on Google Play": continue at step 5
-4. **Apple path: resubmit the fixed build, or appeal to the App Review Board through the published flow** — manual form/portal · ~45 min
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
 
-   *Follows step 3 (when The rejection or removal is on Apple's App Store).*
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Read the rejection/removal notice: which guideline or policy is cited, and what exactly the reviewer saw](#step-1) | human | ~30 min | Entry step |
+| [2. Diff your build and metadata against the cited guideline and assemble the evidence: screens, flows, policy docs](#step-2) | agent-runnable | ~1 h | [Step 1](#step-1) |
+| [3. Decide the fork: fix and resubmit, or contest — contest only when the reviewer is genuinely wrong about your app](#step-3) | human | ~30 min | [Step 2](#step-2) |
+| [4. Apple path: resubmit the fixed build, or appeal to the App Review Board through the published flow](#step-4) | manual form/portal | ~45 min | [Step 3](#step-3) (The rejection or removal is on Apple's App Store.) |
+| [5. Google Play path: follow the published removal/appeal flow in the Play Console help](#step-5) | manual form/portal | ~30 min | [Step 3](#step-3) (The rejection or removal is on Google Play.) |
+| [6. If store revenue is material, tell users honestly what's happening and what still works](#step-6) | human | ~30 min | Alternatives: [Step 4](#step-4); [Step 5](#step-5) |
+| [7. Wait for the review decision — the clock is the stores'](#step-7) | human; includes waiting | ~3 d | [Step 6](#step-6) |
 
-   - Do it yourself: [Apple: appeal an App Review decision](https://developer.apple.com/contact/app-store/?topic=appeal)
-   - Next: continue at step 6
-5. **Google Play path: follow the published removal/appeal flow in the Play Console help** — manual form/portal · ~30 min
+<a id="steps"></a>
 
-   *Follows step 3 (when The rejection or removal is on Google Play).*
+## Step details
 
-   - Do it yourself: [Play Console: app removals & appeals](https://support.google.com/googleplay/android-developer/answer/2477981)
-6. **If store revenue is material, tell users honestly what's happening and what still works** — human · ~30 min · hard to undo
+<a id="step-1"></a>
 
-   *Follows step 4 or step 5.*
-7. **Wait for the review decision — the clock is the stores'** — human · ~3 d · async wait
+### 1. Read the rejection/removal notice: which guideline or policy is cited, and what exactly the reviewer saw
+
+human · ~30 min
+
+
+- Do it yourself: [App Store Review Guidelines](https://developer.apple.com/app-store/review/guidelines/)
+
+<a id="step-2"></a>
+
+### 2. Diff your build and metadata against the cited guideline and assemble the evidence: screens, flows, policy docs
+
+agent-runnable · ~1 h
+
+
+<a id="step-3"></a>
+
+### 3. Decide the fork: fix and resubmit, or contest — contest only when the reviewer is genuinely wrong about your app
+
+human · ~30 min
+
+
+- If "The rejection or removal is on Apple's App Store": continue at step 4
+- If "The rejection or removal is on Google Play": continue at step 5
+
+<a id="step-4"></a>
+
+### 4. Apple path: resubmit the fixed build, or appeal to the App Review Board through the published flow
+
+manual form/portal · ~45 min
+
+
+*Follows step 3 (when The rejection or removal is on Apple's App Store).*
+
+- Do it yourself: [Apple: appeal an App Review decision](https://developer.apple.com/contact/app-store/?topic=appeal)
+- Next: continue at step 6
+
+<a id="step-5"></a>
+
+### 5. Google Play path: follow the published removal/appeal flow in the Play Console help
+
+manual form/portal · ~30 min
+
+
+*Follows step 3 (when The rejection or removal is on Google Play).*
+
+- Do it yourself: [Play Console: app removals & appeals](https://support.google.com/googleplay/android-developer/answer/2477981)
+
+<a id="step-6"></a>
+
+### 6. If store revenue is material, tell users honestly what's happening and what still works
+
+human · ~30 min · hard to undo
+
+
+*Follows step 4 or step 5.*
+
+<a id="step-7"></a>
+
+### 7. Wait for the review decision — the clock is the stores'
+
+human · ~3 d · async wait
+
+
 
 ---
 

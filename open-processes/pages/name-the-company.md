@@ -3,20 +3,30 @@
 
 # Validate the idea & name the company
 
+[Overview](#overview) · [Process sequence](#process-sequence)
+
+## Overview
+
 The pre-formation act: the idea pressure-tested with a landing-page smoke test, then name candidates scored on domains, handles, and marks — the domain bought, the logo and palette set, the trademark filed.
 
 | Field | Value |
 | --- | --- |
 | Kind | chain |
 
-## Processes in order
+<a id="processes-in-order"></a>
 
-1. [Validate the idea](validate-the-idea.md)
-2. [Generate a company name](generate-a-company-name.md)
-3. [Buy a domain](buy-a-domain.md)
-4. [Generate a brand logo](generate-a-brand-logo.md)
-5. [Pick a brand color palette](pick-a-brand-color-palette.md)
-6. [File trademark](file-trademark.md)
+## Process sequence
+
+Run the linked processes in the recorded chain order. Each process defines its own internal dependencies.
+
+| Order | Process | Requires | Produces |
+| --- | --- | --- | --- |
+| 1 | [Validate the idea](validate-the-idea.md) | Team wiki | Not recorded |
+| 2 | [Generate a company name](generate-a-company-name.md) | Not recorded | Company name |
+| 3 | [Buy a domain](buy-a-domain.md) | Domain shortlist | Registered domain; DNS control |
+| 4 | [Generate a brand logo](generate-a-brand-logo.md) | Company name | Brand logo |
+| 5 | [Pick a brand color palette](pick-a-brand-color-palette.md) | Not recorded | Brand color palette |
+| 6 | [File trademark](file-trademark.md) | Company name; Brand logo | Trademark application |
 
 ---
 

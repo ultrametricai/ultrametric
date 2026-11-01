@@ -111,8 +111,10 @@ export type CompanyFieldSpec = z.infer<typeof CompanyFieldSpecSchema>
 
 // US (the base jurisdiction the specs are written against) plus the geo switcher's countries;
 // the pairing with GEO_NOTE_COUNTRIES in lib/processes.ts is vitest-gated.
-export const FIELD_GEO_COUNTRIES = ['US', 'UK', 'IN', 'DE', 'FR', 'PT', 'CA', 'NZ', 'SG', 'AU', 'KR', 'HK', 'EE'] as const
+export const FIELD_GEO_COUNTRIES = ['US', 'UK', 'IN', 'DE', 'FR', 'PT', 'CA', 'NZ', 'SG', 'AU', 'KR', 'HK', 'EE', 'NL', 'IE', 'ES', 'SE', 'CH', 'JP', 'BR', 'AE'] as const
 export type FieldGeoCountry = (typeof FIELD_GEO_COUNTRIES)[number]
+// Reviewed field equivalents cover a subset of the process country selector.
+// Adding a process country does not supply an identifier format or local field equivalent.
 export const FIELD_GEO_EQUIVALENT_COUNTRIES = ['UK', 'IN', 'DE', 'FR', 'PT', 'CA', 'NZ', 'SG', 'AU', 'KR', 'HK', 'EE'] as const
 
 // One government-defined instance of the field in one jurisdiction: the value's local name

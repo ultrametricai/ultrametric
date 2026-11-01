@@ -3,9 +3,13 @@
 
 # Report and manage a workplace injury
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Geography](#geography) · [Steps](#steps-at-a-glance)
+
+## Overview
+
 **Trigger:** Someone is hurt at work: an injury on the job just happened and reporting deadlines may already be running.
 
-Take care of the person first. The reporting deadlines are short and run from when you learn of the outcome: a work-related fatality goes to OSHA within 8 hours; in-patient hospitalization, amputation, or eye loss within 24 (law rule [us-fed.osha-severe-injury-reporting](../../open-law/US-FED/us-fed-osha-severe-injury-reporting.json), osha.gov cited). Then workers' comp. Notify your carrier and get the claim form to the employee fast; state deadlines are short (California requires the DWC-1 within one working day of learning of the injury). Write the incident record while memories are fresh, plus the OSHA 300 log entry if you are covered. Plan the return to work realistically. Fix the hazard. State systems differ sharply; this is the generic shape, so check your own state's rules and fund. Nothing here is legal advice. The claim moves on the carrier's and the state's timelines.
+Arrange immediate care, preserve the incident facts and identify the reporting, insurance and worker-support requirements that apply to the workplace. Follow the relevant authority’s deadlines, support recovery and address the hazard.
 
 | Field | Value |
 | --- | --- |
@@ -22,31 +26,130 @@ Take care of the person first. The reporting deadlines are short and run from wh
 
 The emergency response, the carrier conversation, and the return-to-work plan are human; an agent can draft the incident record, keep the OSHA log, and track the claim's deadlines. Treat the state-fund specifics as needs-review until checked against your state.
 
-## Steps
+## Before you start
 
-1. **Care first: emergency response, the scene made safe — everything else waits for this** — human · ~30 min
-2. **Check the severe-injury reporting clocks — they run in hours or days from when you learn of the outcome** — human · ~20 min
+| Information to gather | Required by the record |
+| --- | --- |
+| what happened, to whom, how serious — and when you learned of it (the clocks run from knowledge) | Yes |
+| your workers'-comp carrier/policy and the state you operate in | Yes |
 
-   - Do it yourself: [OSHA: report an incident](https://www.osha.gov/report)
-3. **File the regulator's injury report if a clock applies, on the channel your regime names** — manual form/portal · ~30 min · hard to undo
-4. **Notify the accident-insurance carrier and give the employee the claim paperwork — the deadlines are short** — human · ~45 min
+## Geography
 
-   - Do it yourself: [California DWC (workers' comp)](https://www.dir.ca.gov/dwc/)
-5. **Write the incident record while it's fresh: what, where, witnesses, equipment — and the injury-log entry your regime requires** — agent-runnable · ~45 min
+Country rows describe the guidance recorded here. Local notes and step alternatives do not establish a complete country-specific workflow.
 
-   - Do it yourself: [OSHA recordkeeping](https://www.osha.gov/recordkeeping)
-6. **Plan return-to-work or modified duty honestly, with the employee and the carrier** — human · ~45 min
-7. **Fix the hazard and document the correction — the recurrence is the lawsuit** — agent-runnable · ~1 h
-8. **The claim runs on the carrier's and the state's clocks — track it, don't chase it daily** — human · ~14 d · async wait
+| Country | Recorded guidance | Steps with local alternatives or resolutions |
+| --- | --- | --- |
+| [United States](#geo-us) | step resolution | [2](#step-2), [3](#step-3), [4](#step-4), [5](#step-5) |
+| [India](#geo-in) | Local analog note; step resolution | [3](#step-3), [4](#step-4) |
+| [United Kingdom](#geo-uk) | Local analog note; step resolution | [2](#step-2), [3](#step-3) |
+| [Germany](#geo-de) | Local analog note; step resolution | [2](#step-2), [3](#step-3) |
+| [France](#geo-fr) | Local analog note; step resolution | [2](#step-2), [3](#step-3) |
+| [Portugal](#geo-pt) | Local analog note; step resolution | [2](#step-2), [3](#step-3), [4](#step-4) |
+| [Canada](#geo-ca) | Local analog note; step resolution | [2](#step-2), [3](#step-3) |
+| [Singapore](#geo-sg) | Local analog note | — |
+| [Australia](#geo-au) | Local analog note | — |
+| [South Korea](#geo-kr) | Local analog note | — |
+| [Hong Kong](#geo-hk) | Local analog note | — |
+| [Estonia](#geo-ee) | Local analog note | — |
 
-## By country
+## Steps at a glance
+
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
+
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Care first: emergency response, the scene made safe — everything else waits for this](#step-1) | human | ~30 min | Entry step |
+| [2. Check the severe-injury reporting clocks — they run in hours or days from when you learn of the outcome](#step-2) | human | ~20 min | [Step 1](#step-1) |
+| [3. File the regulator's injury report if a clock applies, on the channel your regime names](#step-3) | manual form/portal | ~30 min | [Step 2](#step-2) |
+| [4. Notify the accident-insurance carrier and give the employee the claim paperwork — the deadlines are short](#step-4) | human | ~45 min | [Step 3](#step-3) |
+| [5. Write the incident record while it's fresh: what, where, witnesses, equipment — and the injury-log entry your regime requires](#step-5) | agent-runnable | ~45 min | [Step 4](#step-4) |
+| [6. Plan return-to-work or modified duty honestly, with the employee and the carrier](#step-6) | human | ~45 min | [Step 5](#step-5) |
+| [7. Fix the hazard and document the correction — the recurrence is the lawsuit](#step-7) | agent-runnable | ~1 h | [Step 6](#step-6) |
+| [8. The claim runs on the carrier's and the state's clocks — track it, don't chase it daily](#step-8) | human; includes waiting | ~14 d | [Step 7](#step-7) |
+
+<a id="steps"></a>
+
+## Step details
+
+<a id="step-1"></a>
+
+### 1. Care first: emergency response, the scene made safe — everything else waits for this
+
+human · ~30 min
+
+
+<a id="step-2"></a>
+
+### 2. Check the severe-injury reporting clocks — they run in hours or days from when you learn of the outcome
+
+human · ~20 min
+
+
+- Do it yourself: [OSHA: report an incident](https://www.osha.gov/report)
+
+<a id="step-3"></a>
+
+### 3. File the regulator's injury report if a clock applies, on the channel your regime names
+
+manual form/portal · ~30 min · hard to undo
+
+
+<a id="step-4"></a>
+
+### 4. Notify the accident-insurance carrier and give the employee the claim paperwork — the deadlines are short
+
+human · ~45 min
+
+
+- Do it yourself: [California DWC (workers' comp)](https://www.dir.ca.gov/dwc/)
+
+<a id="step-5"></a>
+
+### 5. Write the incident record while it's fresh: what, where, witnesses, equipment — and the injury-log entry your regime requires
+
+agent-runnable · ~45 min
+
+
+- Do it yourself: [OSHA recordkeeping](https://www.osha.gov/recordkeeping)
+
+<a id="step-6"></a>
+
+### 6. Plan return-to-work or modified duty honestly, with the employee and the carrier
+
+human · ~45 min
+
+
+<a id="step-7"></a>
+
+### 7. Fix the hazard and document the correction — the recurrence is the lawsuit
+
+agent-runnable · ~1 h
+
+
+<a id="step-8"></a>
+
+### 8. The claim runs on the carrier's and the state's clocks — track it, don't chase it daily
+
+human · ~14 d · async wait
+
+
+
+<a id="by-country"></a>
+
+## Country details
+
+<a id="geo-us"></a>
 
 ### United States
+
+Take care of the person first. The reporting deadlines are short and run from when you learn of the outcome: a work-related fatality goes to OSHA within 8 hours; in-patient hospitalization, amputation, or eye loss within 24 (law rule [us-fed.osha-severe-injury-reporting](../../open-law/US-FED/us-fed-osha-severe-injury-reporting.json), osha.gov cited). Then workers' comp. Notify your carrier and get the claim form to the employee fast; state deadlines are short (California requires the DWC-1 within one working day of learning of the injury). Write the incident record while memories are fresh, plus the OSHA 300 log entry if you are covered. Plan the return to work realistically. Fix the hazard. State systems differ sharply; this is the generic shape, so check your own state's rules and fund. Nothing here is legal advice. The claim moves on the carrier's and the state's timelines.
 
 - Step 2: The OSHA clocks: a work-related fatality within 8 hours; in-patient hospitalization, amputation, or eye loss within 24 (law rule us-fed.osha-severe-injury-reporting) ([OSHA: report an incident](https://www.osha.gov/report))
 - Step 3: File the OSHA report by phone or the online form; state-plan states have their own channels ([OSHA: report an incident](https://www.osha.gov/report))
 - Step 4: Notify the workers'-comp carrier and give the employee the state claim form — state deadlines are short (California: DWC-1 within one working day of notice) ([California DWC (workers' comp)](https://www.dir.ca.gov/dwc/))
 - Step 5: Add the OSHA 300 log entry if you're covered ([OSHA recordkeeping](https://www.osha.gov/recordkeeping))
+
+<a id="geo-in"></a>
 
 ### India
 
@@ -54,11 +157,15 @@ The emergency response, the carrier conversation, and the return-to-work plan ar
 - Step 3: ESI-covered units report accidents through ESIC; non-covered employment falls under the Employees' Compensation Act ([Ministry of Labour & Employment (India)](https://labour.gov.in/))
 - Step 4: For ESI-covered units the benefits run from ESIC ([Ministry of Labour & Employment (India)](https://labour.gov.in/))
 
+<a id="geo-uk"></a>
+
 ### United Kingdom
 
 - RIDDOR makes certain workplace injuries reportable to the HSE — deaths and specified injuries by the quickest practicable means with the report within 10 days, over-seven-day incapacitations within 15 — through the HSE's online reporting forms. ([HSE: report under RIDDOR](https://www.hse.gov.uk/riddor/report.htm))
 - Step 2: RIDDOR: deaths and specified injuries by the quickest practicable means with the report within 10 days; over-seven-day incapacitations within 15 ([HSE: report under RIDDOR](https://www.hse.gov.uk/riddor/report.htm))
 - Step 3: Report to the HSE under RIDDOR ([HSE: report under RIDDOR](https://www.hse.gov.uk/riddor/report.htm))
+
+<a id="geo-de"></a>
 
 ### Germany
 
@@ -66,11 +173,15 @@ The emergency response, the carrier conversation, and the return-to-work plan ar
 - Step 2: The Unfallanzeige is required for injuries causing more than three days' incapacity; serious and fatal accidents carry their own immediate duties ([DGUV (statutory accident insurance)](https://www.dguv.de/))
 - Step 3: File the Unfallanzeige through your Berufsgenossenschaft (the DGUV accident-insurance system) ([DGUV (statutory accident insurance)](https://www.dguv.de/))
 
+<a id="geo-fr"></a>
+
 ### France
 
 - Declare the accident du travail to the CPAM within 48 hours (Sundays and holidays excluded) and give the employee the feuille d'accident — the declaration runs electronically and late declarations expose the employer to the costs. ([service-public — accident du travail](https://www.service-public.fr/particuliers/vosdroits/F14840))
 - Step 2: Declare the accident du travail to the CPAM within 48 hours (Sundays and holidays excluded); late declarations carry exposure ([service-public — accident du travail](https://www.service-public.fr/particuliers/vosdroits/F14840))
 - Step 3: The declaration to the CPAM runs electronically, and the employee gets the feuille d'accident ([service-public — accident du travail](https://www.service-public.fr/particuliers/vosdroits/F14840))
+
+<a id="geo-pt"></a>
 
 ### Portugal
 
@@ -79,27 +190,39 @@ The emergency response, the carrier conversation, and the return-to-work plan ar
 - Step 3: Serious or fatal accidents are reported to ACT ([Código do Trabalho (DRE)](https://diariodarepublica.pt/dr/legislacao-consolidada/lei/2009-34546475))
 - Step 4: Work accidents route through the employer's mandatory private accident insurance ([Código do Trabalho (DRE)](https://diariodarepublica.pt/dr/legislacao-consolidada/lei/2009-34546475))
 
+<a id="geo-ca"></a>
+
 ### Canada
 
 - Reporting clocks are provincial: each workers'-compensation board sets its own employer-report deadline (Ontario's WSIB gives three days), and serious incidents also go to the provincial OHS regulator — CCOHS maintains the board directory. ([CCOHS — workers' compensation boards](https://www.ccohs.ca/oshanswers/information/wcb_canada.html))
 - Step 2: Reporting clocks are provincial: each workers'-compensation board sets its own employer-report deadline (Ontario's WSIB gives three days) ([CCOHS — workers' compensation boards](https://www.ccohs.ca/oshanswers/information/wcb_canada.html))
 - Step 3: Report to the provincial workers'-compensation board; serious incidents also go to the provincial OHS regulator ([CCOHS — workers' compensation boards](https://www.ccohs.ca/oshanswers/information/wcb_canada.html))
 
+<a id="geo-sg"></a>
+
 ### Singapore
 
 - WICA makes work injuries compensable and reportable: report qualifying accidents to MOM through its incident-reporting eService and loop in your designated WIC insurer — medical leave wages, medical expenses and lump-sum compensation run on the statutory scales. ([MOM — work injury compensation](https://www.mom.gov.sg/workplace-safety-and-health/work-injury-compensation))
+
+<a id="geo-au"></a>
 
 ### Australia
 
 - Work health and safety runs on the state model laws: notifiable incidents — a death, serious injury or illness, or dangerous incident — go to the state WHS regulator immediately, the site is preserved, and the state-mandated workers' compensation insurance carries the claim. ([Work health and safety](https://business.gov.au/risk-management/health-and-safety/work-health-and-safety))
 
+<a id="geo-kr"></a>
+
 ### South Korea
 
 - A serious industrial accident (중대재해) must be reported to the Ministry of Employment and Labor without delay (Occupational Safety and Health Act Article 54(2)), and the injured worker’s compensation claim runs through the industrial-accident insurance. ([Occupational Safety and Health Act Article 54 (law.go.kr)](https://www.law.go.kr/%EB%B2%95%EB%A0%B9/%EC%82%B0%EC%97%85%EC%95%88%EC%A0%84%EB%B3%B4%EA%B1%B4%EB%B2%95/%EC%A0%9C54%EC%A1%B0))
 
+<a id="geo-hk"></a>
+
 ### Hong Kong
 
 - The Employees' Compensation Ordinance runs the regime: the employer reports a work accident causing incapacity to the Commissioner for Labour not later than 14 days after the accident, whether or not it gives rise to liability (section 15), and the compulsory EC insurance (section 40) carries the claim. ([Labour Department — Employees' Compensation Ordinance](https://www.labour.gov.hk/eng/legislat/content1.htm))
+
+<a id="geo-ee"></a>
 
 ### Estonia
 

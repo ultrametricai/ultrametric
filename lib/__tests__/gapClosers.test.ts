@@ -16,6 +16,12 @@ describe('classifyGapStep — keyword routing (pure, no disk)', () => {
     expect(classifyGapStep(step('File on Delaware portal', 'agent'))).toBeNull()
   })
 
+  it('keeps neutral tax-adviser labels in the professional-review category', () => {
+    for (const label of ['The tax adviser prepares the company return', 'The tax adviser files the company return']) {
+      expect(classifyGapStep(step(label, 'person'))?.kind).toBe('irreducible')
+    }
+  })
+
   it('marks form portal/filing/signup/provisioning steps computer-use candidates (browser-agents) with the assisted caution', () => {
     for (const label of [
       'File on Delaware portal',

@@ -3,6 +3,10 @@
 
 # Send a wire or ACH payment
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Steps](#steps-at-a-glance)
+
+## Overview
+
 Move money out of the company bank account — create a wire or ACH payment behind an approval gate.
 
 | Field | Value |
@@ -19,45 +23,89 @@ Move money out of the company bank account — create a wire or ACH payment behi
 
 The banking APIs expose payments (wires/ACH) — an agent prepares and creates the payment; a human approver releases it before money moves.
 
-## Steps
+<a id="artifacts"></a>
 
-1. **Collect payee details and amount** — agent-runnable · ~3 min
+## Before you start
 
-   Identify the obligation, payee, amount, currency and intended payment date from the invoice or other supporting record. Verify beneficiary instructions through a known contact, especially after bank-detail changes, and check for an existing payment. Resolve discrepancies before creating the transfer and keep bank details in the payment system.
-2. **Create the wire/ACH payment in the bank** — agent-runnable · ~2 min · human approval required
-
-   Compare the available methods for the beneficiary and currency using the provider’s fees, delivery estimates and information requirements. Draft the selected transfer with its funding account, amount, reference and verified recipient details. Check the preview against the obligation so the later bank approver can assess the complete transaction, including conversion and additional charges.
-
-   - Canonical vendor: Mercury
-   - Vendor options: Mercury, Brex, Relay
-   - Ranked market: [startup-banking](../../open-rankings/startup-banking)
-
-   Options:
-     - **Default — Create the wire/ACH payment in the bank** — agent-runnable · ~2 min · human approval required
-
-       Enter the verified beneficiary and account details for the chosen wire or ACH route. Select the funding account and check the bank’s displayed fee, delivery estimate and total against the obligation. Use a reference the payee can reconcile, then leave the completed bank instruction in its draft or pending-approval state for the authorized release step.
-     - **Cross-border payout**
-
-       When: The payee is outside the US - multi-currency rails beat a USD wire
-
-       Establish the currency and account format the overseas payee can receive. Compare the full quote, exchange rate, intermediary charges and delivery estimate across eligible routes. Select the quote that fits the obligation, noting its expiry and the amount expected at the recipient. Include those details in the payment awaiting bank approval and reconcile any eventual shortfall or return.
-
-       - Canonical vendor: Wise Business
-       - Vendor options: Wise Business, Airwallex
-3. **Approver releases the payment in the banking dashboard** — human · ~2 min · irreversible
-
-   The designated bank approver checks beneficiary, amount, currency, funding account, fees and business purpose in the bank’s trusted interface. Resolve changed instructions and duplicate warnings against the source obligation before authorizing release. Follow the bank’s actual result: processing, rejection or additional review requires follow-up before the payment can be treated as settled.
-4. **Confirm the payment settled and reconcile it** — agent-runnable · ~2 min · async wait
-
-   Match the bank’s completed payment to the obligation using the debit and transaction reference. If receipt is uncertain, use a trace or provider confirmation and the verified payee contact to investigate. Reconcile fees, exchange differences and returns separately from principal, then update the payable to reflect what actually settled. Keep shortfalls and unresolved transfers open.
-
-   - Canonical vendor: Mercury
-
-## Artifacts
-
-Requires:
+Required artifacts:
 
 - Business bank account — from [Open bank account](open-bank-account.md)
+
+## Steps at a glance
+
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
+
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Collect payee details and amount](#step-1) | agent-runnable | ~3 min | Entry step |
+| [2. Create the wire/ACH payment in the bank](#step-2) | agent-runnable; approval required | ~2 min | [Step 1](#step-1) |
+| [3. Approver releases the payment in the banking dashboard](#step-3) | human | ~2 min | [Step 2](#step-2) |
+| [4. Confirm the payment settled and reconcile it](#step-4) | agent-runnable; includes waiting | ~2 min | [Step 3](#step-3) |
+
+<a id="steps"></a>
+
+## Step details
+
+<a id="step-1"></a>
+
+### 1. Collect payee details and amount
+
+agent-runnable · ~3 min
+
+
+Identify the obligation, payee, amount, currency and intended payment date from the invoice or other supporting record. Verify beneficiary instructions through a known contact, especially after bank-detail changes, and check for an existing payment. Resolve discrepancies before creating the transfer and keep bank details in the payment system.
+
+<a id="step-2"></a>
+
+### 2. Create the wire/ACH payment in the bank
+
+agent-runnable · ~2 min · human approval required
+
+| Option | Applies when |
+| --- | --- |
+| Default — Create the wire/ACH payment in the bank | Recorded default |
+| Cross-border payout | The payee is outside the US - multi-currency rails beat a USD wire |
+
+
+Compare the available methods for the beneficiary and currency using the provider’s fees, delivery estimates and information requirements. Draft the selected transfer with its funding account, amount, reference and verified recipient details. Check the preview against the obligation so the later bank approver can assess the complete transaction, including conversion and additional charges.
+
+- Canonical vendor: Mercury
+- Vendor options: Mercury, Brex, Relay
+- Ranked market: [startup-banking](../../open-rankings/startup-banking)
+
+Options:
+  - **Default — Create the wire/ACH payment in the bank** — agent-runnable · ~2 min · human approval required
+
+    Enter the verified beneficiary and account details for the chosen wire or ACH route. Select the funding account and check the bank’s displayed fee, delivery estimate and total against the obligation. Use a reference the payee can reconcile, then leave the completed bank instruction in its draft or pending-approval state for the authorized release step.
+  - **Cross-border payout**
+
+    When: The payee is outside the US - multi-currency rails beat a USD wire
+
+    Establish the currency and account format the overseas payee can receive. Compare the full quote, exchange rate, intermediary charges and delivery estimate across eligible routes. Select the quote that fits the obligation, noting its expiry and the amount expected at the recipient. Include those details in the payment awaiting bank approval and reconcile any eventual shortfall or return.
+
+    - Canonical vendor: Wise Business
+    - Vendor options: Wise Business, Airwallex
+
+<a id="step-3"></a>
+
+### 3. Approver releases the payment in the banking dashboard
+
+human · ~2 min · irreversible
+
+
+The designated bank approver checks beneficiary, amount, currency, funding account, fees and business purpose in the bank’s trusted interface. Resolve changed instructions and duplicate warnings against the source obligation before authorizing release. Follow the bank’s actual result: processing, rejection or additional review requires follow-up before the payment can be treated as settled.
+
+<a id="step-4"></a>
+
+### 4. Confirm the payment settled and reconcile it
+
+agent-runnable · ~2 min · async wait
+
+
+Match the bank’s completed payment to the obligation using the debit and transaction reference. If receipt is uncertain, use a trace or provider confirmation and the verified payee contact to investigate. Reconcile fees, exchange differences and returns separately from principal, then update the payable to reflect what actually settled. Keep shortfalls and unresolved transfers open.
+
+- Canonical vendor: Mercury
+
 
 ---
 

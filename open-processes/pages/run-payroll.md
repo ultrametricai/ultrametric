@@ -3,7 +3,13 @@
 
 # Run payroll
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Geography](#geography) · [Steps](#steps-at-a-glance)
+
+## Overview
+
 Process the regular monthly payroll run through Gusto.
+
+> Scoped draft detail: UK-resident private company limited by shares registered in England and Wales, operating domestically in unregulated services. Other entities, locations and cross-border facts need another assessment. Professional review is pending. Source and instruction check: 2026-11-01. Assessment: coverage/local-procedure-assessments.json.
 
 | Field | Value |
 | --- | --- |
@@ -19,41 +25,134 @@ Process the regular monthly payroll run through Gusto.
 
 Gusto API fully supports payroll. System verifies hours, checks for changes, previews, and submits with approval.
 
-## Steps
+- Sources: [HMRC payroll FPS reporting](https://www.gov.uk/running-payroll/reporting-to-hmrc) · [HMRC payroll payments](https://www.gov.uk/running-payroll/paying-hmrc)
 
-1. **Check for employee changes** — agent-runnable · ~2 min
+<a id="artifacts"></a>
 
-   Compare the employee roster with changes since the previous payroll: starters, departures, pay changes, work locations, leave and payment details. Match each change to its effective date and supporting instruction. Investigate unexpected differences with the people team, especially changes that could affect this run retrospectively. Give payroll a resolved change list and clearly separate requests still awaiting verification.
+## Before you start
 
-   - Canonical vendor: Gusto
-2. **Verify time entries and PTO** — agent-runnable · ~3 min
-
-   Reconcile hours and leave to the pay period and manager-approved entries. Look for missing time, overlaps, unusual overtime and corrections to earlier periods. Ask payroll how unresolved entries, unpaid leave and adjustments should be treated for the worker’s classification and location. Return specific discrepancies to the responsible manager, then use the corrected input set for the payroll preview.
-
-   - Canonical vendor: Gusto
-3. **Preview payroll summary** — agent-runnable · ~2 min
-
-   Compare the payroll preview with the resolved input changes and previous run. Explain significant differences in headcount, gross pay, deductions, reimbursements, employer costs and net payments. Check unusual employee-level amounts as well as totals, then verify the funding account and required balance. Present the reconciled run and any remaining exceptions to the payroll approver before release.
-
-   - Canonical vendor: Gusto
-4. **Submit payroll** — agent-runnable · ~2 min · human approval required · irreversible
-
-   Check that the run still matches the approved preview, employee population, pay date and funding account. Release that specific payroll under the company’s payment approval process. Check the submission result and processing warnings immediately. If status is uncertain or the request fails, investigate the existing run before retrying to avoid duplicate payments.
-
-   - Verify: Pay stubs generate for every employee and the provider confirms the federal and state tax deposits for the run — retain both artifacts.
-   - Canonical vendor: Gusto
-5. **Verify bank debit** — agent-runnable · ~2 min
-
-   Match the provider’s funding record to the bank debit by run, amount and settlement details. Investigate missing, duplicate or different debits with payroll and the provider. Check employee-payment exceptions separately: the employer’s debit does not show that every employee received the intended amount. Close the reconciliation when funding and payment statuses agree, with any unresolved exception assigned for follow-up.
-
-   - Canonical vendor: Mercury
-
-## Artifacts
-
-Requires:
+Required artifacts:
 
 - Payroll account — from [Set up payroll](set-up-payroll.md)
 - Signed offer / employment agreement — from [Hire first employee](hire-first-employee.md)
+
+| Information to gather | Required by the record |
+| --- | --- |
+| period | Yes |
+| time entries | Optional |
+
+## Geography
+
+Country rows describe the guidance recorded here. Local notes and step alternatives do not establish a complete country-specific workflow.
+
+| Country | Recorded guidance | Steps with local alternatives or resolutions |
+| --- | --- | --- |
+| [United States](#geo-us) | step resolution | [1](#step-1), [3](#step-3), [4](#step-4), [5](#step-5) |
+| [United Kingdom](#geo-uk) | Local analog note; step resolution | [1](#step-1), [3](#step-3), [4](#step-4), [5](#step-5) |
+
+## Steps at a glance
+
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
+
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Check for employee changes](#step-1) | agent-runnable | ~2 min | Entry step |
+| [2. Verify time entries and PTO](#step-2) | agent-runnable | ~3 min | [Step 1](#step-1) |
+| [3. Preview payroll summary](#step-3) | agent-runnable | ~2 min | [Step 2](#step-2) |
+| [4. Submit payroll](#step-4) | agent-runnable; approval required | ~2 min | [Step 3](#step-3) |
+| [5. Verify bank debit](#step-5) | agent-runnable | ~2 min | [Step 4](#step-4) |
+
+<a id="steps"></a>
+
+## Step details
+
+<a id="step-1"></a>
+
+### 1. Check for employee changes
+
+agent-runnable · ~2 min
+
+
+Compare the employee roster with changes since the previous payroll: starters, departures, pay changes, work locations, leave and payment details. Match each change to its effective date and supporting instruction. Investigate unexpected differences with the people team, especially changes that could affect this run retrospectively. Give payroll a resolved change list and clearly separate requests still awaiting verification.
+
+- Canonical vendor: Gusto
+- Sources: [HMRC payroll FPS reporting](https://www.gov.uk/running-payroll/reporting-to-hmrc) · [HMRC payroll payments](https://www.gov.uk/running-payroll/paying-hmrc)
+
+<a id="step-2"></a>
+
+### 2. Verify time entries and PTO
+
+agent-runnable · ~3 min
+
+
+Reconcile hours and leave to the pay period and manager-approved entries. Look for missing time, overlaps, unusual overtime and corrections to earlier periods. Ask payroll how unresolved entries, unpaid leave and adjustments should be treated for the worker’s classification and location. Return specific discrepancies to the responsible manager, then use the corrected input set for the payroll preview.
+
+- Canonical vendor: Gusto
+
+<a id="step-3"></a>
+
+### 3. Preview payroll summary
+
+agent-runnable · ~2 min
+
+
+Compare the payroll preview with the resolved input changes and previous run. Explain significant differences in headcount, gross pay, deductions, reimbursements, employer costs and net payments. Check unusual employee-level amounts as well as totals, then verify the funding account and required balance. Present the reconciled run and any remaining exceptions to the payroll approver before release.
+
+- Canonical vendor: Gusto
+- Sources: [HMRC payroll FPS reporting](https://www.gov.uk/running-payroll/reporting-to-hmrc) · [HMRC payroll payments](https://www.gov.uk/running-payroll/paying-hmrc)
+
+<a id="step-4"></a>
+
+### 4. Submit payroll
+
+agent-runnable · ~2 min · human approval required · irreversible
+
+
+Check that the run still matches the approved preview, employee population, pay date and funding account. Release that specific payroll under the company’s payment approval process. Check the submission result and processing warnings immediately. If status is uncertain or the request fails, investigate the existing run before retrying to avoid duplicate payments.
+
+- Verify: Pay stubs generate for every employee and the provider confirms the federal and state tax deposits for the run — retain both artifacts.
+- Canonical vendor: Gusto
+- Sources: [HMRC payroll FPS reporting](https://www.gov.uk/running-payroll/reporting-to-hmrc) · [HMRC payroll payments](https://www.gov.uk/running-payroll/paying-hmrc)
+
+<a id="step-5"></a>
+
+### 5. Verify bank debit
+
+agent-runnable · ~2 min
+
+
+Match the provider’s funding record to the bank debit by run, amount and settlement details. Investigate missing, duplicate or different debits with payroll and the provider. Check employee-payment exceptions separately: the employer’s debit does not show that every employee received the intended amount. Close the reconciliation when funding and payment statuses agree, with any unresolved exception assigned for follow-up.
+
+- Canonical vendor: Mercury
+- Sources: [HMRC payroll FPS reporting](https://www.gov.uk/running-payroll/reporting-to-hmrc) · [HMRC payroll payments](https://www.gov.uk/running-payroll/paying-hmrc)
+
+
+<a id="by-country"></a>
+
+## Country details
+
+<a id="geo-us"></a>
+
+### United States
+
+Shared coordination guide. A US-specific procedure has not been assessed here.
+
+- Step 1: Check for employee changes Compare the employee roster with changes since the previous payroll: starters, departures, pay changes, work locations, leave and payment details. Match each change to its effective date and supporting instruction. Investigate unexpected differences with the people team, especially changes that could affect this run retrospectively. Give payroll a resolved change list and clearly separate requests still awaiting verification.
+- Step 3: Preview payroll summary Compare the payroll preview with the resolved input changes and previous run. Explain significant differences in headcount, gross pay, deductions, reimbursements, employer costs and net payments. Check unusual employee-level amounts as well as totals, then verify the funding account and required balance. Present the reconciled run and any remaining exceptions to the payroll approver before release.
+- Step 4: Submit payroll Check that the run still matches the approved preview, employee population, pay date and funding account. Release that specific payroll under the company’s payment approval process. Check the submission result and processing warnings immediately. If status is uncertain or the request fails, investigate the existing run before retrying to avoid duplicate payments.
+- Step 5: Verify bank debit Match the provider’s funding record to the bank debit by run, amount and settlement details. Investigate missing, duplicate or different debits with payroll and the provider. Check employee-payment exceptions separately: the employer’s debit does not show that every employee received the intended amount. Close the reconciliation when funding and payment statuses agree, with any unresolved exception assigned for follow-up.
+
+<a id="geo-uk"></a>
+
+### United Kingdom
+
+Scoped draft detail: UK-resident private company limited by shares registered in England and Wales, operating domestically in unregulated services. Other entities, locations and cross-border facts need another assessment. Professional review is pending.
+
+- Scoped draft detail: UK-resident private company limited by shares registered in England and Wales, operating domestically in unregulated services. Other entities, locations and cross-border facts need another assessment. Professional review is pending. ([HMRC payroll FPS reporting](https://www.gov.uk/running-payroll/reporting-to-hmrc))
+- Step 1: Check for employee changes For the scoped domestic employee payroll, confirm employer references, normal payday, approved employee changes and private payroll records. Escalate overseas work, special pay or uncertain tax treatment to the payroll adviser. ([HMRC payroll FPS reporting](https://www.gov.uk/running-payroll/reporting-to-hmrc))
+- Step 3: Preview payroll summary The payroll owner reviews the calculation and employee data before approval. Check the FPS reporting date and corrections using current HMRC instructions; keep payroll approval distinct from payment authority. ([HMRC payroll FPS reporting](https://www.gov.uk/running-payroll/reporting-to-hmrc))
+- Step 4: Submit payroll The authorized operator submits the approved FPS on or before payday under the applicable HMRC rules, retaining the accepted report or rejection. A missing-reference or late-report case needs the prescribed exception route and adviser review. ([HMRC payroll FPS reporting](https://www.gov.uk/running-payroll/reporting-to-hmrc))
+- Step 5: Verify bank debit Verify employee payment evidence separately from the FPS and reconcile HMRC liabilities and remittances. Assign rejected reports, failed payments and any corrections; a bank debit alone does not prove the payroll reporting duties are complete. ([HMRC payroll FPS reporting](https://www.gov.uk/running-payroll/reporting-to-hmrc))
 
 ## Related records
 

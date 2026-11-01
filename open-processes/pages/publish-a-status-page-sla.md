@@ -3,6 +3,10 @@
 
 # Publish a status page & SLA
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Steps](#steps-at-a-glance) · [Outputs](#outputs)
+
+## Overview
+
 Give customers a public uptime commitment: stand up the status page on your domain, wire the uptime monitors, draft the SLA with its credit terms, get counsel over the credits, and put the SLA into contracts and the site.
 
 | Field | Value |
@@ -19,55 +23,112 @@ Give customers a public uptime commitment: stand up the status page on your doma
 
 Status pages, monitors, and DNS are fully API-driven; the SLA’s credit terms need counsel before they go into contracts.
 
-## Steps
+<a id="artifacts"></a>
 
-1. **Choose a status-page provider** — human · ~15 min
+## Before you start
 
-   Compare status-page services using the components customers need to see, the people who will publish incidents and the notification paths subscribers will use. Try a draft incident, update and recovery before choosing. Check custom-domain behavior, access controls and the quoted plan cost. Purchase within the operations owner's budget authority, and ensure responders have a way to reach the page and communicate if the main application or usual sign-in path is unavailable.
-
-   - Vendor options: Better Stack, incident.io, Statuspage
-   - Ranked market: [incident-management](../../open-rankings/incident-management)
-   - Next: steps 2 and 4 — all follow this step
-2. **Create components and wire uptime monitors** — agent-runnable · ~30 min
-
-   Name components in terms customers recognize, then map monitors to the user journeys each component represents. Decide when a failed check should page a responder and when it should change public status; those need not be the same action. Activate monitoring and public updates within the service owner's authorized scope. Use a controlled failure and recovery to verify the component, responder and public message, and identify outages the checks would miss.
-
-   - Canonical vendor: Better Stack
-   - Sources: [Google SRE implementing SLOs](https://sre.google/workbook/implementing-slos/) · [PagerDuty escalation policies and schedules](https://docs.pagerduty.com/incident-management/schedules/escalation-policies-and-schedules)
-3. **Publish the page on your domain** — agent-runnable · ~10 min
-
-   Connect the status hostname using the provider's DNS instructions and the domain owner's change authority. Publish the communications owner's cleared components and content, then verify HTTPS and the live page from an external connection. Use a controlled drill or client-side simulation to test access without depending on the main application; do not take production down for this check. Test a notification with a designated recipient and make the fallback communication route available to responders.
-
-   - Produces: Status page
-   - Canonical vendor: Cloudflare
-   - Sources: [Set up a primary DNS zone](https://developers.cloudflare.com/dns/zone-setups/full-setup/setup/) · [Working with SSL certificates](https://vercel.com/docs/domains/working-with-ssl)
-
-   *This path ends here.*
-4. **Draft the SLA (uptime target, credits)** — agent-runnable · ~30 min
-
-   *Follows step 1.*
-
-   Draft the SLA from the service measurements and customer commitments the company can actually support. Define the covered service, measurement window, outage calculation, exclusions, claim process and proposed remedy. Work through an outage example with engineering and finance, including what data establishes the event and how the credit would be calculated. Mark commercial choices and unresolved terms for counsel, keeping the internal reliability target distinct from the promise proposed for the contract.
-
-   - Cross-arena options: ChatGPT, Claude (ai-assistants)
-   - Sources: [Google SRE implementing SLOs](https://sre.google/workbook/implementing-slos/)
-5. **Counsel reviews the SLA credit terms** — human · ~1 d · async wait
-
-   Give counsel the SLA draft, service agreement and worked outage examples. Resolve inconsistent definitions, exclusions, claim procedures and remedy language across the documents. Engineering should confirm that the calculation can be reproduced from available measurements; finance should confirm it can administer the remedy. Record the legal revisions and commercial decisions against the specific version cleared for customer use.
-6. **Add the SLA to contracts and the site** — agent-runnable · ~15 min · hard to undo
-
-   Publish the version cleared by the legal and commercial owners in the intended contract templates and public pages. Check document references, download links and version identifiers. Have the legal owner determine how existing customers are affected before changing their terms; a website edit alone does not implement that process. Give sales and support the applicable version and claim instructions, and verify that the live materials agree.
-
-## Artifacts
-
-Produces:
-
-- Status page
-
-Requires:
+Required artifacts:
 
 - Registered domain — from [Buy a domain](buy-a-domain.md)
 - SaaS agreement template — from [Negotiate SaaS agreement](negotiate-saas-agreement.md)
+
+| Information to gather | Required by the record |
+| --- | --- |
+| uptime target | Yes |
+
+## Steps at a glance
+
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
+
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Choose a status-page provider](#step-1) | human | ~15 min | Entry step |
+| [2. Create components and wire uptime monitors](#step-2) | agent-runnable | ~30 min | [Step 1](#step-1) |
+| [3. Publish the page on your domain](#step-3) | agent-runnable | ~10 min | [Step 2](#step-2) |
+| [4. Draft the SLA (uptime target, credits)](#step-4) | agent-runnable | ~30 min | [Step 1](#step-1) |
+| [5. Counsel reviews the SLA credit terms](#step-5) | human; includes waiting | ~1 d | [Step 4](#step-4) |
+| [6. Add the SLA to contracts and the site](#step-6) | agent-runnable | ~15 min | [Step 5](#step-5) |
+
+<a id="steps"></a>
+
+## Step details
+
+<a id="step-1"></a>
+
+### 1. Choose a status-page provider
+
+human · ~15 min
+
+
+Compare status-page services using the components customers need to see, the people who will publish incidents and the notification paths subscribers will use. Try a draft incident, update and recovery before choosing. Check custom-domain behavior, access controls and the quoted plan cost. Purchase within the operations owner's budget authority, and ensure responders have a way to reach the page and communicate if the main application or usual sign-in path is unavailable.
+
+- Vendor options: Better Stack, incident.io, Statuspage
+- Ranked market: [incident-management](../../open-rankings/incident-management)
+- Next: steps 2 and 4 — all follow this step
+
+<a id="step-2"></a>
+
+### 2. Create components and wire uptime monitors
+
+agent-runnable · ~30 min
+
+
+Name components in terms customers recognize, then map monitors to the user journeys each component represents. Decide when a failed check should page a responder and when it should change public status; those need not be the same action. Activate monitoring and public updates within the service owner's authorized scope. Use a controlled failure and recovery to verify the component, responder and public message, and identify outages the checks would miss.
+
+- Canonical vendor: Better Stack
+- Sources: [Google SRE implementing SLOs](https://sre.google/workbook/implementing-slos/) · [PagerDuty escalation policies and schedules](https://docs.pagerduty.com/incident-management/schedules/escalation-policies-and-schedules)
+
+<a id="step-3"></a>
+
+### 3. Publish the page on your domain
+
+agent-runnable · ~10 min
+
+
+Connect the status hostname using the provider's DNS instructions and the domain owner's change authority. Publish the communications owner's cleared components and content, then verify HTTPS and the live page from an external connection. Use a controlled drill or client-side simulation to test access without depending on the main application; do not take production down for this check. Test a notification with a designated recipient and make the fallback communication route available to responders.
+
+- Produces: Status page
+- Canonical vendor: Cloudflare
+- Sources: [Set up a primary DNS zone](https://developers.cloudflare.com/dns/zone-setups/full-setup/setup/) · [Working with SSL certificates](https://vercel.com/docs/domains/working-with-ssl)
+
+*This path ends here.*
+
+<a id="step-4"></a>
+
+### 4. Draft the SLA (uptime target, credits)
+
+agent-runnable · ~30 min
+
+
+*Follows step 1.*
+
+Draft the SLA from the service measurements and customer commitments the company can actually support. Define the covered service, measurement window, outage calculation, exclusions, claim process and proposed remedy. Work through an outage example with engineering and finance, including what data establishes the event and how the credit would be calculated. Mark commercial choices and unresolved terms for counsel, keeping the internal reliability target distinct from the promise proposed for the contract.
+
+- Cross-arena options: ChatGPT, Claude (ai-assistants)
+- Sources: [Google SRE implementing SLOs](https://sre.google/workbook/implementing-slos/)
+
+<a id="step-5"></a>
+
+### 5. Counsel reviews the SLA credit terms
+
+human · ~1 d · async wait
+
+
+Give counsel the SLA draft, service agreement and worked outage examples. Resolve inconsistent definitions, exclusions, claim procedures and remedy language across the documents. Engineering should confirm that the calculation can be reproduced from available measurements; finance should confirm it can administer the remedy. Record the legal revisions and commercial decisions against the specific version cleared for customer use.
+
+<a id="step-6"></a>
+
+### 6. Add the SLA to contracts and the site
+
+agent-runnable · ~15 min · hard to undo
+
+
+Publish the version cleared by the legal and commercial owners in the intended contract templates and public pages. Check document references, download links and version identifiers. Have the legal owner determine how existing customers are affected before changing their terms; a website edit alone does not implement that process. Give sales and support the applicable version and claim instructions, and verify that the live materials agree.
+
+
+## Outputs
+
+- Status page
 
 ## Related records
 

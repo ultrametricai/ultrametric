@@ -19,11 +19,9 @@ import { GEO_COUNTRIES, type GeoSelection, type VendorGeoLookup } from './geoPre
 // pages (components/WhereItWorks.tsx), rendered only when rows exist. Missing file = no lines
 // anywhere (honest degrade, never an error).
 
-// The LatAm countries (BR…PE) joined in the 2026-10-23 LatAm vendor-geo wave (maintainer ask:
-// map vendor availability for Latin American geographies). They are vendor-geo-only countries:
-// rows exist and render on product pages, but the geo switcher (lib/geoPreference.ts
-// GEO_COUNTRIES) does not offer them, because no process geo notes cover them yet — so
-// vendorGeoLookup below ships switcher countries only.
+// Vendor evidence covers the countries below independently of process guidance.
+// Brazil can now be selected in the process country switcher; the other LatAm
+// vendor-only countries remain available on product pages. Missing evidence stays absent.
 export const VENDOR_GEO_COUNTRIES = ['US', 'UK', 'IN', 'DE', 'FR', 'BR', 'MX', 'AR', 'CO', 'CL', 'PE'] as const
 export type VendorGeoCountry = (typeof VENDOR_GEO_COUNTRIES)[number]
 

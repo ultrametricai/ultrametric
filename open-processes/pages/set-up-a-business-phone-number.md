@@ -3,6 +3,10 @@
 
 # Set up a business phone number
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Geography](#geography) · [Steps](#steps-at-a-glance) · [Outputs](#outputs)
+
+## Overview
+
 Get the company a phone number that is not a founder's cell: choose the provider type, pick or port the number, complete the identity and messaging registrations the destination country requires, configure routing and voicemail, and record the number everywhere the company contact phone lives.
 
 | Field | Value |
@@ -19,93 +23,177 @@ Get the company a phone number that is not a founder's cell: choose the provider
 
 Number search, purchase, and routing configuration are API surfaces at the programmable providers; the identity and messaging registrations are review queues fed with human-supplied business details.
 
-## Steps
+<a id="artifacts"></a>
 
-1. **Choose the business-phone provider** — human · ~10 min
+## Before you start
 
-   Decide who answers before choosing a provider: a team answering shared lines wants a business-phone system with ring groups, voicemail, and a shared message inbox; software answering or dialing wants a programmable telephony API. Compare the shortlisted providers on the team features the chosen type needs — the shared text inbox, ring groups and business-hours routing, voicemail transcription, and CRM integrations — plus number coverage in the countries you need, messaging support, and what the provider exposes to agents and automation. Record the choice and the plan; the number purchase and the compliance registrations happen inside this account.
+Required artifacts:
 
-   - Vendor options: Quo, Dialpad, Aircall, Ringcentral, Twilio, Google Voice, Community Phone
-   - Ranked market: [business-phone](../../open-rankings/business-phone)
+- Business mailing address — from [Set up mailing address](set-up-mailing-address.md)
 
-   Options:
-     - **Default — shared business-phone system** — human · ~10 min
+| Information to gather | Required by the record |
+| --- | --- |
+| business identity details (legal name, registered address, website) | Yes |
 
-       A business-phone system the team answers: shared numbers, ring groups, business hours, voicemail transcription, and a shared text inbox. The right default when humans handle the calls and texts and the company wants the number off personal devices.
-     - **Programmable telephony API** — human · ~10 min
+## Geography
 
-       When: Software, not a team, answers or dials: telephony built into the product or run by agents
+Country rows describe the guidance recorded here. Local notes and step alternatives do not establish a complete country-specific workflow.
 
-       A programmable platform that exposes number provisioning, voice, and messaging as APIs. The right choice when software answers — IVRs, support automations, or agents place and receive the traffic — or when telephony is being built into the product itself.
-2. **Pick the number** — manual form/portal · ~10 min
+| Country | Recorded guidance | Steps with local alternatives or resolutions |
+| --- | --- | --- |
+| [United States](#geo-us) | step resolution | [2](#step-2), [4](#step-4), [6](#step-6) |
 
-   Choose the number the company will publish. Check the exact number's voice and messaging capability before buying — not every number supports SMS — and confirm the monthly and usage charges on the provider's published pricing. Where the destination country requires identity or address documentation before a number there can be purchased, complete the next step's business-identity bundle first and come back; US numbers purchase immediately. If the company already has a number people know, port it instead of buying a new one; the port branch has its own paperwork and timing.
+## Steps at a glance
 
-   - Sources: [Twilio docs: Phone numbers](https://www.twilio.com/docs/phone-numbers)
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
 
-   Options:
-     - **Default — new local number** — manual form/portal · ~10 min
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Choose the business-phone provider](#step-1) | human | ~10 min | Entry step |
+| [2. Pick the number](#step-2) | manual form/portal | ~10 min | [Step 1](#step-1) |
+| [3. Complete the business identity the provider and country require](#step-3) | manual form/portal | ~20 min | [Step 2](#step-2) |
+| [4. Complete the messaging registrations the destination country requires before texting](#step-4) | manual form/portal; includes waiting | ~2 d | [Step 3](#step-3) (Texting is planned on the number; voice-only setups skip the messaging registrations.) |
+| [5. Configure call routing, voicemail, and the shared inbox](#step-5) | agent-runnable | ~15 min | Alternatives: [Step 3](#step-3) (Voice-only setup: no messaging registrations to wait on, straight to routing.); [Step 4](#step-4) |
+| [6. Record the number everywhere the company contact phone lives](#step-6) | agent-runnable | ~10 min | [Step 5](#step-5) |
 
-       Buy a new number local to where the company operates or sells. Search the provider's inventory for the area code and confirm the number supports both voice and messaging where texting is planned. Complete the purchase — or, where the destination country gates purchase on identity documents, reserve the choice and finish the purchase once the next step's documentation is accepted. Record the number, its capabilities, and its line item on the plan.
-     - **Toll-free number**
+<a id="steps"></a>
 
-       When: A national presence matters more than a local area code
+## Step details
 
-       A toll-free number reads as a national presence and keeps callers from paying for the call. Where texting is planned, check the country's rules first: in some markets a toll-free number cannot send SMS until a verification is approved, so the messaging-registration step gates the first text.
-     - **Vanity number**
+<a id="step-1"></a>
 
-       When: The number itself is marketing: a memorable pattern worth the search
+### 1. Choose the business-phone provider
 
-       A memorable digit pattern or word-mapped number. Search the provider's inventory for the pattern, expect fewer matches and sometimes a premium, and apply the same voice-and-messaging capability check before buying.
-     - **Port an existing number**
+human · ~10 min
 
-       When: The company already has a number customers know
+| Option | Applies when |
+| --- | --- |
+| Default — shared business-phone system | Recorded default |
+| Programmable telephony API | Software, not a team, answers or dials: telephony built into the product or run by agents |
 
-       Keep the number the company already answers. Gather the losing carrier's account number, PIN, and billing details exactly as that carrier holds them, sign the letter of authorization, and schedule the port. Keep the old service active until the port completes — cancelling early can forfeit the number — and expect the timeline to vary by country and carrier.
 
-       - Sources: [Twilio docs: Port a number in](https://www.twilio.com/docs/phone-numbers/port-in)
-3. **Complete the business identity the provider and country require** — manual form/portal · ~20 min
+Decide who answers before choosing a provider: a team answering shared lines wants a business-phone system with ring groups, voicemail, and a shared message inbox; software answering or dialing wants a programmable telephony API. Compare the shortlisted providers on the team features the chosen type needs — the shared text inbox, ring groups and business-hours routing, voicemail transcription, and CRM integrations — plus number coverage in the countries you need, messaging support, and what the provider exposes to agents and automation. Record the choice and the plan; the number purchase and the compliance registrations happen inside this account.
 
-   Fill in the provider's business profile with the company's legal name, registered address, and contact details exactly as the company's registrations state them. Many countries require identity or proof-of-address documentation before a number there can be purchased or activated, so check the destination country's requirements and supply the documents up front. Mismatches between the profile and the company's registered details are the usual cause of rejected registrations downstream.
+- Vendor options: Quo, Dialpad, Aircall, Ringcentral, Twilio, Google Voice, Community Phone
+- Ranked market: [business-phone](../../open-rankings/business-phone)
 
-   - Sources: [Twilio docs: Regulatory compliance for phone numbers](https://www.twilio.com/docs/phone-numbers/regulatory/getting-started)
-   - If "Texting is planned on the number; voice-only setups skip the messaging registrations": continue at step 4
-   - If "Voice-only setup: no messaging registrations to wait on, straight to routing": continue at step 5
-4. **Complete the messaging registrations the destination country requires before texting** — manual form/portal · ~2 d · async wait
+Options:
+  - **Default — shared business-phone system** — human · ~10 min
 
-   *Follows step 3 (when Texting is planned on the number; voice-only setups skip the messaging registrations).*
+    A business-phone system the team answers: shared numbers, ring groups, business hours, voicemail transcription, and a shared text inbox. The right default when humans handle the calls and texts and the company wants the number off personal devices.
+  - **Programmable telephony API** — human · ~10 min
 
-   Where the company plans to text, complete the country's sender registrations before the first production message, using the business identity from the previous step. Unregistered application traffic gets filtered and surcharged where registration regimes exist, so treat the registration review time as part of the setup, document the opt-in and opt-out flows the registration asks about, and wait for approved status before pointing campaigns at the number.
+    When: Software, not a team, answers or dials: telephony built into the product or run by agents
 
-   - Verify: The provider's compliance console shows the brand, campaign, and number registrations in an approved state before the first production message; retain the registration records with the account details.
-   - Sources: [Twilio docs: A2P 10DLC compliance](https://www.twilio.com/docs/messaging/compliance/a2p-10dlc) · [Twilio docs: Toll-free verification](https://www.twilio.com/docs/messaging/compliance/toll-free/console-onboarding)
-5. **Configure call routing, voicemail, and the shared inbox** — agent-runnable · ~15 min
+    A programmable platform that exposes number provisioning, voice, and messaging as APIs. The right choice when software answers — IVRs, support automations, or agents place and receive the traffic — or when telephony is being built into the product itself.
 
-   *Follows step 3 (when Voice-only setup: no messaging registrations to wait on, straight to routing) or step 4.*
+<a id="step-2"></a>
 
-   Set the business hours, the ring order or group that answers inside them, and the after-hours behavior. Record or generate the voicemail greeting, turn on voicemail transcription to email or chat where the plan carries it, and set forwarding for the people who take calls on the move. Put texts and voicemails in a shared inbox so responders see one another's replies, then test the whole path from an outside line: open hours, closed hours, voicemail, and a text.
+### 2. Pick the number
 
-   - Produces: Business phone number
-6. **Record the number everywhere the company contact phone lives** — agent-runnable · ~10 min
+manual form/portal · ~10 min
 
-   Update every place that holds the company's contact phone: the website and contact pages, the bank and card accounts, the payment processor profile and its statement descriptor, business registrations and directories, email signatures, and the hiring-paperwork templates that print an employer phone. Keep one canonical record of the number and its owner so later changes propagate from a single place.
+| Option | Applies when |
+| --- | --- |
+| Default — new local number | Recorded default |
+| Toll-free number | A national presence matters more than a local area code |
+| Vanity number | The number itself is marketing: a memorable pattern worth the search |
+| Port an existing number | The company already has a number customers know |
 
-## By country
+
+Choose the number the company will publish. Check the exact number's voice and messaging capability before buying — not every number supports SMS — and confirm the monthly and usage charges on the provider's published pricing. Where the destination country requires identity or address documentation before a number there can be purchased, complete the next step's business-identity bundle first and come back. If the company already has a number people know, port it instead of buying a new one; the port branch has its own paperwork and timing.
+
+- Sources: [Twilio docs: Phone numbers](https://www.twilio.com/docs/phone-numbers)
+
+Options:
+  - **Default — new local number** — manual form/portal · ~10 min
+
+    Buy a new number local to where the company operates or sells. Search the provider's inventory for the area code and confirm the number supports both voice and messaging where texting is planned. Complete the purchase — or, where the destination country gates purchase on identity documents, reserve the choice and finish the purchase once the next step's documentation is accepted. Record the number, its capabilities, and its line item on the plan.
+  - **Toll-free number**
+
+    When: A national presence matters more than a local area code
+
+    A toll-free number reads as a national presence and keeps callers from paying for the call. Where texting is planned, check the country's rules first: in some markets a toll-free number cannot send SMS until a verification is approved, so the messaging-registration step gates the first text.
+  - **Vanity number**
+
+    When: The number itself is marketing: a memorable pattern worth the search
+
+    A memorable digit pattern or word-mapped number. Search the provider's inventory for the pattern, expect fewer matches and sometimes a premium, and apply the same voice-and-messaging capability check before buying.
+  - **Port an existing number**
+
+    When: The company already has a number customers know
+
+    Keep the number the company already answers. Gather the losing carrier's account number, PIN, and billing details exactly as that carrier holds them, sign the letter of authorization, and schedule the port. Keep the old service active until the port completes — cancelling early can forfeit the number — and expect the timeline to vary by country and carrier.
+
+    - Sources: [Twilio docs: Port a number in](https://www.twilio.com/docs/phone-numbers/port-in)
+
+<a id="step-3"></a>
+
+### 3. Complete the business identity the provider and country require
+
+manual form/portal · ~20 min
+
+
+Fill in the provider's business profile with the company's legal name, registered address, and contact details exactly as the company's registrations state them. Many countries require identity or proof-of-address documentation before a number there can be purchased or activated, so check the destination country's requirements and supply the documents up front. Mismatches between the profile and the company's registered details are the usual cause of rejected registrations downstream.
+
+- Sources: [Twilio docs: Regulatory compliance for phone numbers](https://www.twilio.com/docs/phone-numbers/regulatory/getting-started)
+- If "Texting is planned on the number; voice-only setups skip the messaging registrations": continue at step 4
+- If "Voice-only setup: no messaging registrations to wait on, straight to routing": continue at step 5
+
+<a id="step-4"></a>
+
+### 4. Complete the messaging registrations the destination country requires before texting
+
+manual form/portal · ~2 d · async wait
+
+
+*Follows step 3 (when Texting is planned on the number; voice-only setups skip the messaging registrations).*
+
+Where the company plans to text, complete the country's sender registrations before the first production message, using the business identity from the previous step. Unregistered application traffic gets filtered and surcharged where registration regimes exist, so treat the registration review time as part of the setup, document the opt-in and opt-out flows the registration asks about, and wait for approved status before pointing campaigns at the number.
+
+- Verify: The provider's compliance console shows the brand, campaign, and number registrations in an approved state before the first production message; retain the registration records with the account details.
+- Sources: [Twilio docs: A2P 10DLC compliance](https://www.twilio.com/docs/messaging/compliance/a2p-10dlc) · [Twilio docs: Toll-free verification](https://www.twilio.com/docs/messaging/compliance/toll-free/console-onboarding)
+
+<a id="step-5"></a>
+
+### 5. Configure call routing, voicemail, and the shared inbox
+
+agent-runnable · ~15 min
+
+
+*Follows step 3 (when Voice-only setup: no messaging registrations to wait on, straight to routing) or step 4.*
+
+Set the business hours, the ring order or group that answers inside them, and the after-hours behavior. Record or generate the voicemail greeting, turn on voicemail transcription to email or chat where the plan carries it, and set forwarding for the people who take calls on the move. Put texts and voicemails in a shared inbox so responders see one another's replies, then test the whole path from an outside line: open hours, closed hours, voicemail, and a text.
+
+- Produces: Business phone number
+
+<a id="step-6"></a>
+
+### 6. Record the number everywhere the company contact phone lives
+
+agent-runnable · ~10 min
+
+
+Update every place that holds the company's contact phone: the website and contact pages, the bank and card accounts, the payment processor profile and its statement descriptor, business registrations and directories, email signatures, and the hiring-paperwork templates that print an employer phone. Keep one canonical record of the number and its owner so later changes propagate from a single place.
+
+
+<a id="by-country"></a>
+
+## Country details
+
+<a id="geo-us"></a>
 
 ### United States
 
+Get the company a phone number that is not a founder's cell: choose the provider type, pick or port the number, complete the identity and messaging registrations the destination country requires, configure routing and voicemail, and record the number everywhere the company contact phone lives.
+
+- Step 2: Pick the number Choose the number the company will publish. Check the exact number's voice and messaging capability before buying — not every number supports SMS — and confirm the monthly and usage charges on the provider's published pricing. Where the destination country requires identity or address documentation before a number there can be purchased, complete the next step's business-identity bundle first and come back; US numbers purchase immediately. If the company already has a number people know, port it instead of buying a new one; the port branch has its own paperwork and timing.
 - Step 4: Register the A2P 10DLC brand and campaign before texting from a 10-digit local number, and complete toll-free verification before SMS on a toll-free number US carriers require application-to-person traffic on 10-digit local numbers to be registered — unregistered traffic is filtered and carries extra carrier fees — and a toll-free number cannot send SMS to the US or Canada until its verification is approved. ([A2P 10DLC compliance docs](https://www.twilio.com/docs/messaging/compliance/a2p-10dlc))
 - Step 6: Put the number on the US paperwork that asks for an employer phone: bank and processor KYC profiles, and the written notice New York employers give at hire, which must state the employer's telephone number (law rule us-ny.wage-notice-at-hire) ([NY Labor Law § 195](https://www.nysenate.gov/legislation/laws/LAB/195))
 
-## Artifacts
-
-Produces:
+## Outputs
 
 - Business phone number
-
-Requires:
-
-- Business mailing address — from [Set up mailing address](set-up-mailing-address.md)
 
 ---
 

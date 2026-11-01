@@ -3,6 +3,10 @@
 
 # Set up a team wiki
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Steps](#steps-at-a-glance) · [Outputs](#outputs)
+
+## Overview
+
 Set up the team wiki with meeting notes and process templates. Notion is the canonical route.
 
 | Field | Value |
@@ -19,44 +23,94 @@ Set up the team wiki with meeting notes and process templates. Notion is the can
 
 Notion API and MCP support page/database creation. Fully automatable.
 
-## Steps
+## Before you start
 
-1. **Create the team wiki workspace** — manual form/portal · ~10 min · human approval required
+| Information to gather | Required by the record |
+| --- | --- |
+| members | Yes |
 
-   Choose the wiki's home within the company's documentation platform, checking whether a suitable workspace already exists. Set a company-controlled administrator, a clear landing page, and default access for ordinary teammates. Identify where restricted finance, personnel, or board material will live before adding content. Name a documentation owner and link the wiki from onboarding so the team has a stable starting point for company knowledge.
+## Steps at a glance
 
-   - Produces: Team wiki
-   - Canonical vendor: Notion
-   - Vendor options: Notion, Confluence, Slite, Slab
-2. **Create wiki structure** — agent-runnable · ~5 min · human approval required
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
 
-   Organize the wiki around questions teammates repeatedly need answered: how to join, find a decision, operate a service, or run a recurring process. Keep durable instructions separate from meeting history and working drafts. Give each main area a maintainer and make the next level of navigation understandable without knowing who wrote a document. Move existing pages into the structure, repairing important links as you go and leaving a visible queue for unsorted material.
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Create the team wiki workspace](#step-1) | manual form/portal; approval required | ~10 min | Entry step |
+| [2. Create wiki structure](#step-2) | agent-runnable; approval required | ~5 min | [Step 1](#step-1) |
+| [3. Create meeting notes DB](#step-3) | agent-runnable | ~3 min | [Step 2](#step-2) |
+| [4. Create process templates](#step-4) | agent-runnable | ~5 min | [Step 2](#step-2) |
+| [5. Share with team](#step-5) | agent-runnable; approval required | ~2 min | All: [Step 3](#step-3); [Step 4](#step-4) |
 
-   - Canonical vendor: Notion
-   - Next: steps 3 and 4 — all follow this step
-3. **Create meeting notes DB** — agent-runnable · ~3 min
+<a id="steps"></a>
 
-   Create a meeting-notes collection with the meeting date, purpose, attendees, notes, and links to decisions and actions. Give each action an owner and agreed due date, and link it to the tracker when work continues there. Group recurring meetings and make past sessions searchable by date and topic. Set access according to the discussion's sensitivity, with personnel and board notes restricted. Use the next meeting to check that participants can find previous decisions and open actions.
+## Step details
 
-   - Canonical vendor: Notion
-4. **Create process templates** — agent-runnable · ~5 min
+<a id="step-1"></a>
 
-   *Follows step 2.*
+### 1. Create the team wiki workspace
 
-   Document one recurring process the team actually performs, starting with its trigger and required inputs. Describe the actions, decision points, responsible roles, and the output that means the work is finished. Turn that example into a reusable page template without forcing every process into identical sections. Include the maintainer and links to working forms or systems. Ask someone who performs the process to fill the gaps before others begin using the template.
+manual form/portal · ~10 min · human approval required
 
-   - Canonical vendor: Notion
-5. **Share with team** — agent-runnable · ~2 min · human approval required
 
-   *Follows steps 3 and 4 — both are required first.*
+Choose the wiki's home within the company's documentation platform, checking whether a suitable workspace already exists. Set a company-controlled administrator, a clear landing page, and default access for ordinary teammates. Identify where restricted finance, personnel, or board material will live before adding content. Name a documentation owner and link the wiki from onboarding so the team has a stable starting point for company knowledge.
 
-   Check that company-wide pages are readable by ordinary teammates and that restricted sections keep their intended audience. Share the landing-page link with a short explanation of where common answers live and how to suggest changes. Ask a teammate to find an answer they currently need; use the result to improve labels or navigation. Make the maintainer visible on important pages so missing or outdated guidance reaches the person who can fix it.
+- Produces: Team wiki
+- Canonical vendor: Notion
+- Vendor options: Notion, Confluence, Slite, Slab
 
-   - Canonical vendor: Notion
+<a id="step-2"></a>
 
-## Artifacts
+### 2. Create wiki structure
 
-Produces:
+agent-runnable · ~5 min · human approval required
+
+
+Organize the wiki around questions teammates repeatedly need answered: how to join, find a decision, operate a service, or run a recurring process. Keep durable instructions separate from meeting history and working drafts. Give each main area a maintainer and make the next level of navigation understandable without knowing who wrote a document. Move existing pages into the structure, repairing important links as you go and leaving a visible queue for unsorted material.
+
+- Canonical vendor: Notion
+- Next: steps 3 and 4 — all follow this step
+
+<a id="step-3"></a>
+
+### 3. Create meeting notes DB
+
+agent-runnable · ~3 min
+
+
+Create a meeting-notes collection with the meeting date, purpose, attendees, notes, and links to decisions and actions. Give each action an owner and agreed due date, and link it to the tracker when work continues there. Group recurring meetings and make past sessions searchable by date and topic. Set access according to the discussion's sensitivity, with personnel and board notes restricted. Use the next meeting to check that participants can find previous decisions and open actions.
+
+- Canonical vendor: Notion
+
+<a id="step-4"></a>
+
+### 4. Create process templates
+
+agent-runnable · ~5 min
+
+
+*Follows step 2.*
+
+Document one recurring process the team actually performs, starting with its trigger and required inputs. Describe the actions, decision points, responsible roles, and the output that means the work is finished. Turn that example into a reusable page template without forcing every process into identical sections. Include the maintainer and links to working forms or systems. Ask someone who performs the process to fill the gaps before others begin using the template.
+
+- Canonical vendor: Notion
+
+<a id="step-5"></a>
+
+### 5. Share with team
+
+agent-runnable · ~2 min · human approval required
+
+
+*Follows steps 3 and 4 — both are required first.*
+
+Check that company-wide pages are readable by ordinary teammates and that restricted sections keep their intended audience. Share the landing-page link with a short explanation of where common answers live and how to suggest changes. Ask a teammate to find an answer they currently need; use the result to improve labels or navigation. Make the maintainer visible on important pages so missing or outdated guidance reaches the person who can fix it.
+
+- Canonical vendor: Notion
+
+
+<a id="artifacts"></a>
+
+## Outputs
 
 - Team wiki
 

@@ -3,6 +3,10 @@
 
 # Connect a payment processor
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Steps](#steps-at-a-glance) · [Outputs](#outputs)
+
+## Overview
+
 Take payments: pick a processor, activate the account, integrate the API, and confirm money actually lands.
 
 | Field | Value |
@@ -19,64 +23,109 @@ Take payments: pick a processor, activate the account, integrate the API, and co
 
 Account activation and KYC are processor-hosted forms; the integration, test charge, and payout checks run on the API.
 
-## Steps
+<a id="artifacts"></a>
 
-1. **Choose a payment processor** — human · ~10 min
+## Before you start
 
-   Compare payment routes against the product, customer locations, currencies, billing pattern and expected volume. Examine eligibility, responsibilities, full fees, payout terms, support and engineering effort with finance and engineering. Choose a processor, merchant-of-record service or invoice-first approach that fits those needs, with unresolved commercial or integration questions visible before contracting.
+Required artifacts:
 
-   - Vendor options: Stripe
-   - Ranked market: [payments](../../open-rankings/payments)
+- EIN assignment letter — from [Obtain the company tax identifiers](get-ein.md)
+- Business bank account — from [Open bank account](open-bank-account.md)
 
-   Options:
-     - **Default — Choose a payment processor** — human · ~10 min
+## Steps at a glance
 
-       Check that a direct processor supports the company, business model and required payment methods. Compare fees, reserves, settlement currencies, refunds, disputes and accounting reconciliation. Identify the tax, invoicing and customer obligations the company would retain. Use those findings to select the provider and evaluate its contract before opening the live account.
-     - **Merchant of record (MoR)**
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
 
-       When: Selling software globally without a tax/entity footprint - the MoR is the seller of record
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Choose a payment processor](#step-1) | human | ~10 min | Entry step |
+| [2. Activate the account (business details, KYC)](#step-2) | manual form/portal; includes waiting | ~20 min | [Step 1](#step-1) |
+| [3. Integrate the API keys and SDK](#step-3) | agent-runnable | ~15 min | [Step 2](#step-2) |
+| [4. Run a test charge and confirm the payout schedule](#step-4) | agent-runnable | ~10 min | [Step 3](#step-3) |
 
-       Read the merchant-of-record contract to establish who is the seller and how invoicing, tax, refunds and disputes are allocated for the intended products and markets. Compare total cost, payout terms and customer experience with direct processing. Resolve exclusions with finance and counsel so the operating team knows which responsibilities the service takes and which remain with the company.
+<a id="steps"></a>
 
-       - Canonical vendor: Paddle
-       - Vendor options: Paddle
-     - **Invoice-first (no checkout)** — agent-runnable
+## Step details
 
-       When: B2B with a handful of large contracts - invoice and bank transfer before a checkout exists
+<a id="step-1"></a>
 
-       For a small number of contract customers, design collection around invoices and bank transfers. Establish the seller, required invoice details, billing terms, currencies and verified payment instructions, then decide how receipts and overdue balances will be tracked. Assign billing and customer-query ownership. Identify what change in sales volume or customer needs would make a checkout integration worthwhile.
+### 1. Choose a payment processor
 
-       - Vendor options: QuickBooks, Xero
-       - Ranked market: [accounting](../../open-rankings/accounting)
-2. **Activate the account (business details, KYC)** — manual form/portal · ~20 min · async wait
+human · ~10 min
 
-   Complete the provider’s onboarding from corporate records: legal entity, ownership, authorized representative, activity and payout account. The company representative submits the application and attestations through the verified channel, supplying requested identity evidence securely. Resolve follow-up questions and check the account’s actual live capabilities and restrictions before treating it as activated.
+| Option | Applies when |
+| --- | --- |
+| Default — Choose a payment processor | Recorded default |
+| Merchant of record (MoR) | Selling software globally without a tax/entity footprint - the MoR is the seller of record |
+| Invoice-first (no checkout) | B2B with a handful of large contracts - invoice and bank transfer before a checkout exists |
 
-   - Verify: The processor's dashboard shows the account activated for live charges and payouts, and a live-mode API key is issued.
-   - Produces: Payment processor account
-3. **Integrate the API keys and SDK** — agent-runnable · ~15 min
 
-   Implement the selected payment flow from the provider’s current documentation, separating test and live credentials and storing secrets in the application’s secret store. Handle final payment states, verification, failures and duplicate requests relevant to the integration. Test those paths and use the project’s production-release process before enabling real transactions, with a clear owner for payment failures.
+Compare payment routes against the product, customer locations, currencies, billing pattern and expected volume. Examine eligibility, responsibilities, full fees, payout terms, support and engineering effort with finance and engineering. Choose a processor, merchant-of-record service or invoice-first approach that fits those needs, with unresolved commercial or integration questions visible before contracting.
 
-   - Canonical vendor: Stripe
-   - Cross-arena market: [ai-coding](../../open-rankings/ai-coding)
-4. **Run a test charge and confirm the payout schedule** — agent-runnable · ~10 min
+- Vendor options: Stripe
+- Ranked market: [payments](../../open-rankings/payments)
 
-   Exercise success, decline, authentication, refunds and delayed outcomes in the provider’s documented test environment. Check that application state and accounting references follow the final status. Separately inspect the live payout schedule, bank destination and restrictions. If verifying the live flow requires a production transaction, the finance owner must authorize that charge.
+Options:
+  - **Default — Choose a payment processor** — human · ~10 min
 
-   - Canonical vendor: Stripe
-   - Sources: [Stripe testing documentation](https://docs.stripe.com/testing)
+    Check that a direct processor supports the company, business model and required payment methods. Compare fees, reserves, settlement currencies, refunds, disputes and accounting reconciliation. Identify the tax, invoicing and customer obligations the company would retain. Use those findings to select the provider and evaluate its contract before opening the live account.
+  - **Merchant of record (MoR)**
 
-## Artifacts
+    When: Selling software globally without a tax/entity footprint - the MoR is the seller of record
 
-Produces:
+    Read the merchant-of-record contract to establish who is the seller and how invoicing, tax, refunds and disputes are allocated for the intended products and markets. Compare total cost, payout terms and customer experience with direct processing. Resolve exclusions with finance and counsel so the operating team knows which responsibilities the service takes and which remain with the company.
+
+    - Canonical vendor: Paddle
+    - Vendor options: Paddle
+  - **Invoice-first (no checkout)** — agent-runnable
+
+    When: B2B with a handful of large contracts - invoice and bank transfer before a checkout exists
+
+    For a small number of contract customers, design collection around invoices and bank transfers. Establish the seller, required invoice details, billing terms, currencies and verified payment instructions, then decide how receipts and overdue balances will be tracked. Assign billing and customer-query ownership. Identify what change in sales volume or customer needs would make a checkout integration worthwhile.
+
+    - Vendor options: QuickBooks, Xero
+    - Ranked market: [accounting](../../open-rankings/accounting)
+
+<a id="step-2"></a>
+
+### 2. Activate the account (business details, KYC)
+
+manual form/portal · ~20 min · async wait
+
+
+Complete the provider’s onboarding from corporate records: legal entity, ownership, authorized representative, activity and payout account. The company representative submits the application and attestations through the verified channel, supplying requested identity evidence securely. Resolve follow-up questions and check the account’s actual live capabilities and restrictions before treating it as activated.
+
+- Verify: The processor's dashboard shows the account activated for live charges and payouts, and a live-mode API key is issued.
+- Produces: Payment processor account
+
+<a id="step-3"></a>
+
+### 3. Integrate the API keys and SDK
+
+agent-runnable · ~15 min
+
+
+Implement the selected payment flow from the provider’s current documentation, separating test and live credentials and storing secrets in the application’s secret store. Handle final payment states, verification, failures and duplicate requests relevant to the integration. Test those paths and use the project’s production-release process before enabling real transactions, with a clear owner for payment failures.
+
+- Canonical vendor: Stripe
+- Cross-arena market: [ai-coding](../../open-rankings/ai-coding)
+
+<a id="step-4"></a>
+
+### 4. Run a test charge and confirm the payout schedule
+
+agent-runnable · ~10 min
+
+
+Exercise success, decline, authentication, refunds and delayed outcomes in the provider’s documented test environment. Check that application state and accounting references follow the final status. Separately inspect the live payout schedule, bank destination and restrictions. If verifying the live flow requires a production transaction, the finance owner must authorize that charge.
+
+- Canonical vendor: Stripe
+- Sources: [Stripe testing documentation](https://docs.stripe.com/testing)
+
+
+## Outputs
 
 - Payment processor account
-
-Requires:
-
-- EIN assignment letter — from [Get EIN](get-ein.md)
-- Business bank account — from [Open bank account](open-bank-account.md)
 
 ## Related records
 

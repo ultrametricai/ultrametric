@@ -1,0 +1,54 @@
+name: Refresh repair and recheck
+run-name: 'Repair refresh #${{ inputs.pr }} @${{ inputs.head }} [support-loss-v2]'
+on:
+  workflow_dispatch:
+    inputs:
+      pr:
+        description: Generated story-runner PR number
+        required: true
+        type: string
+      head:
+        description: Expected PR head SHA
+        required: true
+        type: string
+permissions:
+  contents: write
+  pull-requests: write
+  actions: write
+  checks: read
+concurrency:
+  group: refresh-repair-${{ inputs.pr }}
+  cancel-in-progress: false
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      # Execute trusted main only. Fetched PR refs are consumed as JSON data.
+      - uses: actions/checkout@v7
+        with:
+          ref: main
+          fetch-depth: 0
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24.22.1
+      - run: pnpm install --frozen-lockfile
+      - name: Repair, validate, publish, and independently recheck
+        env:
+          REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ inputs.pr }}
+          PR_HEAD: ${{ inputs.head }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GIT_AUTHOR_NAME: ultrametric-story-runner
+          GIT_AUTHOR_EMAIL: noreply@ultrametric.ai
+          GIT_COMMITTER_NAME: ultrametric-story-runner
+          GIT_COMMITTER_EMAIL: noreply@ultrametric.ai
+        run: python3 scripts/refresh-repair.py
+      - uses: actions/upload-artifact@v6
+        if: always()
+        with:
+          name: refresh-repair-${{ inputs.pr }}-${{ github.run_id }}
+          path: ${{ runner.temp }}/refresh-repair-report.json
+          if-no-files-found: ignore

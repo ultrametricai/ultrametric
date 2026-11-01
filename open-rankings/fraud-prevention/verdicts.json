@@ -667,6 +667,632 @@
     "evidenceIds": []
   },
   {
+    "productId": "complyadvantage",
+    "storyId": "account-abuse-coverage",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "ComplyAdvantage is a financial-crime risk platform, so scoring fraud surfaces beyond checkout is a fair question for it. The evidence covers only sanctions, PEP and adverse-media screening, configurable customer risk scores, transaction monitoring and case management. Nothing documents account-takeover detection, fake-account detection or promo/policy-abuse scoring; onboarding sanctions screening is an adjacent capability and earns no credit.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "complyadvantage",
+    "storyId": "agent-buyer-detection",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "ComplyAdvantage does transaction monitoring and payment screening, so classifying agent-driven purchases is a fair question for this kind of product. However, the evidence never shows it detecting bots or recognizing legitimate AI buying agents. The 'agents' it documents are its own compliance-workflow agents for screening and transaction monitoring, not a way to tell buyer-side AI agents from malicious bots.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "complyadvantage",
+    "storyId": "agent-drives-rules",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence shows API access to customers, per-customer monitoring configuration, cases, audit trails, exports and transaction processing. Nothing documents programmatic creation or editing of transaction-monitoring rules such as velocity rules, blocklist or allowlist management via API, or human approval gates on rule or list changes. Screening configurations and risk-score equations are described as configured with compliance teams and the web app, not exposed for agent-driven rule management. The agentic workflows' escalation to human review covers alert triage, not rule governance, so it is an adjacent feature that earns no credit.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "complyadvantage",
+    "storyId": "agent-triages-reviews",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "ComplyAdvantage's own agentic workflows include a Customer Screening and Ongoing Monitoring agent and a Transaction Monitoring agent. These auto-remediate level 1 alerts and escalate high-risk or complex cases to human review. Separately, the API exposes cases, alerts, risks, filtering, audit trails and decision outcomes, so an external agent can pull flagged cases with context. However, no evidence shows an agent producing an evidence summary and a recommended decision for a human to confirm, and the first-party agents act autonomously and escalate rather than recommend. Missing for 10: documented summarize-and-recommend output for human confirmation, detail on what context the agents surface to reviewers, MCP or agent-native tooling for case review, hands-on or independent corroboration.",
+    "evidenceIds": [
+      "complyadvantage-scope-screening-ai",
+      "complyadvantage-scope-transaction-ai",
+      "complyadvantage-scope-ai-escalation",
+      "complyadvantage-scope-ai-remediation",
+      "complyadvantage-docs-14",
+      "complyadvantage-docs-6",
+      "complyadvantage-docs-7",
+      "complyadvantage-scope-case-audit",
+      "complyadvantage-scope-openapi-retrieval"
+    ]
+  },
+  {
+    "productId": "complyadvantage",
+    "storyId": "agentic-agent-docs",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "A hands-on probe found a live llms.txt at docs.mesh.complyadvantage.com that indexes the Mesh guides. Docs pages are served as raw markdown, and their frontmatter includes an `agentTools.projectIndex` pointer back to llms.txt, so agents can follow the docs directly. A machine-readable OpenAPI 3.0.3 schema was also retrieved unauthenticated, adding agent-consumable API docs. Missing for 10: no first-party guidance on using these docs with agents (e.g. an llms-full.txt or agent setup page), and no independent corroboration beyond probes.",
+    "evidenceIds": [
+      "complyadvantage-probe-1",
+      "complyadvantage-probe-2",
+      "complyadvantage-scope-openapi-retrieval",
+      "complyadvantage-docs-10"
+    ]
+  },
+  {
+    "productId": "complyadvantage",
+    "storyId": "agentic-ai-insights",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "ComplyAdvantage markets in-product AI agents for customer screening, ongoing monitoring and transaction monitoring. These agents auto-remediate level 1 alerts and escalate high-risk or complex cases for human review, so AI does act on the user's own data inside the product. The evidence is thin marketing-page snippets describing automated triage rather than insights or suggestions surfaced to the user. Missing for 10: documented AI-generated insights or recommendations shown to analysts (e.g., summaries, rationale, suggested decisions), detailed first-party docs on agent outputs, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "complyadvantage-scope-screening-ai",
+      "complyadvantage-scope-transaction-ai",
+      "complyadvantage-scope-ai-remediation",
+      "complyadvantage-scope-ai-escalation",
+      "complyadvantage-scope-starter-config-limit"
+    ]
+  },
+  {
+    "productId": "complyadvantage",
+    "storyId": "agentic-autonomous-automation",
+    "verdict": "partial",
+    "quality": 6,
+    "confidence": "medium",
+    "rationale": "ComplyAdvantage documents its own background automation. Ongoing monitoring can be switched on per customer via the monitoring-configuration API. Its marketed 'agentic workflows' (Customer Screening/Ongoing Monitoring and Transaction Monitoring agents) auto-remediate level 1 alerts and auto-escalate high-risk cases. WORKFLOW_COMPLETED webhooks and async/batch screening support unattended pipelines. However, the agent capabilities appear only as one-line marketing claims, and Starter Plan agent configurations cannot be customized, so the user's ability to set up their own automations is limited. Missing for 10: user-defined automation rules/triggers or scheduling, detailed docs on configuring the autonomous agents, independent or hands-on corroboration of autonomous operation.",
+    "evidenceIds": [
+      "complyadvantage-scope-screening-ai",
+      "complyadvantage-scope-transaction-ai",
+      "complyadvantage-scope-ai-remediation",
+      "complyadvantage-scope-ai-escalation",
+      "complyadvantage-scope-monitor-config",
+      "complyadvantage-scope-starter-config-limit",
+      "complyadvantage-docs-13",
+      "complyadvantage-docs-11",
+      "complyadvantage-docs-12"
+    ]
+  },
+  {
+    "productId": "complyadvantage",
+    "storyId": "agentic-builtin-assistant",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "ComplyAdvantage's marketing pages describe built-in AI agents for customer screening and ongoing monitoring, and for transaction monitoring. These agents auto-remediate level 1 alerts and escalate high-risk cases to humans, so users can hand off alert triage to an in-product AI. The evidence describes fixed workflow agents (non-customizable on Starter), not an assistant that accepts arbitrary user-directed tasks, and it comes only from thin marketing pages. Missing for 10: interactive or ad-hoc task delegation to an assistant, product documentation of how the agents work and are controlled, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "complyadvantage-scope-screening-ai",
+      "complyadvantage-scope-transaction-ai",
+      "complyadvantage-scope-ai-remediation",
+      "complyadvantage-scope-ai-escalation",
+      "complyadvantage-scope-starter-config-limit"
+    ]
+  },
+  {
+    "productId": "complyadvantage",
+    "storyId": "agentic-headless",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "ComplyAdvantage Mesh is API-first, so it can run without the UI. It issues API credentials with configurable permissions and expiry, and it supports synchronous, asynchronous and batch screening plus webhooks for event-driven results. Cases and alerts can be remediated fully through the API, and a Postman collection and OpenAPI schema support integration. Missing for 10: no CLI or CI-specific tooling (e.g., pipeline integrations or a documented sandbox/test environment), and no hands-on or independent corroboration of headless automated runs.",
+    "evidenceIds": [
+      "complyadvantage-docs-4",
+      "complyadvantage-docs-11",
+      "complyadvantage-docs-12",
+      "complyadvantage-docs-13",
+      "complyadvantage-docs-14",
+      "complyadvantage-docs-10",
+      "complyadvantage-docs-8",
+      "complyadvantage-docs-9",
+      "complyadvantage-scope-openapi-retrieval"
+    ]
+  },
+  {
+    "productId": "complyadvantage",
+    "storyId": "agentic-mcp-client",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "ComplyAdvantage Mesh ships its own AI agents for screening and transaction monitoring, so a buyer could fairly ask whether those agents can consume external MCP servers. That makes the axis applicable. However, the evidence pack contains no documentation of any MCP client capability or any mechanism for registering external tool servers. The llms.txt file and the OpenAPI schema are documentation-retrieval aids, not MCP client support, so they earn no credit.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "complyadvantage",
+    "storyId": "agentic-mcp-server",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "ComplyAdvantage is a SaaS compliance platform, so an official MCP server is a plausible capability and the axis applies. The evidence pack contains no mention of an MCP server. The llms.txt index, markdown docs, OpenAPI schema and Postman collection are adjacent agent-friendly building blocks, not an MCP endpoint. Its in-product screening and transaction-monitoring 'agents' are internal automation, not a way to connect an external agent.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "complyadvantage",
+    "storyId": "agentic-nl-commands",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Nothing in the evidence shows a natural-language command interface such as a chat assistant, copilot, or NL query box for operating Mesh. The documented AI agents autonomously remediate and escalate alerts but do not take user commands. The llms.txt file and OpenAPI schema are developer building blocks an external agent could use, not a native capability, so they earn no credit here.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "complyadvantage",
+    "storyId": "agentic-official-cli",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "An official CLI is a fair question for an API-first SaaS compliance platform, so the axis applies. However, the evidence shows only a REST API, a Postman collection, an OpenAPI schema and llms.txt docs. Those are adjacent developer building blocks, not a first-party command-line tool, so there is no evidence of an official CLI.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "complyadvantage",
+    "storyId": "agentic-public-api",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "ComplyAdvantage Mesh has a documented public REST API. It covers API credentials with configurable permissions, endpoints for customers, screening, cases, exports, audit trails and transactions, and documented rate limiting and versioning. A Postman collection is offered, and a probe retrieved and parsed a public OpenAPI 3.0.3 schema; the 404s on generic OpenAPI paths do not contradict this, since the schema lives at a different path. Missing for 10: hands-on corroboration of authenticated API calls, and independent user reports of driving the product end-to-end via the API.",
+    "evidenceIds": [
+      "complyadvantage-docs-4",
+      "complyadvantage-docs-9",
+      "complyadvantage-docs-10",
+      "complyadvantage-docs-11",
+      "complyadvantage-docs-12",
+      "complyadvantage-docs-14",
+      "complyadvantage-scope-monitor-config",
+      "complyadvantage-scope-export-selection",
+      "complyadvantage-scope-case-audit",
+      "complyadvantage-scope-process-transaction",
+      "complyadvantage-scope-versioning",
+      "complyadvantage-scope-openapi-retrieval"
+    ]
+  },
+  {
+    "productId": "complyadvantage",
+    "storyId": "agentic-scoped-keys",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Mesh lets you generate API credentials under Settings > Access Management > API Credentials, configure their permissions, and set an optional expiry date. Endpoint references name specific required permissions (e.g. \"Monitor and unmonitor customers\", \"View roles in account\"), which suggests scoping can be fine-grained enough for least-privilege agent keys. Missing for 10: a documented catalog of credential permission scopes and how they map to the API, any agent-specific credential or identity guidance, credential rotation/revocation details, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "complyadvantage-docs-4",
+      "complyadvantage-scope-monitor-permission",
+      "complyadvantage-scope-role-permission"
+    ]
+  },
+  {
+    "productId": "complyadvantage",
+    "storyId": "agentic-sdks",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence shows a REST API with a Postman collection and a downloadable OpenAPI 3.0.3 schema, but no official client SDKs or language libraries. An OpenAPI schema and a Postman collection are developer building blocks from which a client could be generated or tested; they are not first-party SDKs, so the story is unevidenced.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "complyadvantage",
+    "storyId": "agentic-webhooks",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "ComplyAdvantage Mesh documents outbound webhooks: you set up a webhook of a given type, such as `WORKFLOW_COMPLETED`, whose payload carries screening results. Each delivery includes a `webhook-id` header to use as an idempotency key, and signing is available as an opt-in per account. Missing for 10: a documented catalog of subscribable event types beyond WORKFLOW_COMPLETED, detail on how endpoints are registered (API vs UI) and on retry behavior, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "complyadvantage-docs-8",
+      "complyadvantage-docs-13",
+      "complyadvantage-scope-webhook-signing-opt-in"
+    ]
+  },
+  {
+    "productId": "complyadvantage",
+    "storyId": "ai-fraud-analyst",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence shows built-in autonomous agents for screening and transaction monitoring that auto-remediate level 1 alerts and escalate complex cases. That is automated alert triage, an adjacent capability. Nothing in the evidence shows an analyst-facing assistant that answers natural-language queries over fraud data, drafts rules, or writes investigation summaries in the console.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "complyadvantage",
+    "storyId": "api-interactive-docs",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "ComplyAdvantage publishes a per-endpoint API reference (e.g. /reference/ pages for monitoring, exports, audit and transactions) and a downloadable OpenAPI 3.0.3 schema, which a probe retrieved unauthenticated. Runnable examples come only through an official Postman collection, an external tool, rather than an in-docs interactive console. The 404s on standard OpenAPI paths do not contradict this, because the schema was found at a different path. missing for 10: evidence of an interactive 'try it' console in the reference, in-page runnable code samples, hands-on corroboration of interactivity.",
+    "evidenceIds": [
+      "complyadvantage-docs-10",
+      "complyadvantage-scope-openapi-retrieval",
+      "complyadvantage-scope-monitor-status",
+      "complyadvantage-scope-export-selection",
+      "complyadvantage-scope-case-audit",
+      "complyadvantage-scope-process-transaction"
+    ]
+  },
+  {
+    "productId": "complyadvantage",
+    "storyId": "api-machine-spec",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "ComplyAdvantage's docs say users can download the OpenAPI (\"Swagger\") schema alongside a Postman collection. A hands-on probe fetched an OpenAPI 3.0.3 file without authentication at /openapi/mesh-api.json, and it covers customer, case, audit, export and transaction resources. The 404s on generic guessed paths don't contradict this, since the spec lives at a different documented URL. Missing for 10: the spec isn't available at standard or well-known paths, and there's no confirmation it covers the full API surface (e.g., screening or webhook schemas).",
+    "evidenceIds": [
+      "complyadvantage-docs-10",
+      "complyadvantage-scope-openapi-retrieval",
+      "complyadvantage-probe-3"
+    ]
+  },
+  {
+    "productId": "complyadvantage",
+    "storyId": "api-sandbox",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "A sandbox or test environment is a fair question for a compliance-screening API platform, so the axis applies. Nothing in the evidence pack documents a sandbox, test mode, or non-production environment. The Postman collection, OpenAPI schema and API credential management are adjacent developer conveniences, not an isolated environment for testing without touching production data.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "complyadvantage",
+    "storyId": "api-versioning-policy",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "ComplyAdvantage has a documented versioning page stating that a new endpoint version ships whenever a backwards-incompatible change is released. Versioned endpoints (v2, v3) appear in the API reference, and one legacy lookup endpoint returns a 308 Permanent Redirect. However, the evidence never documents a deprecation policy (notice periods, sunset timelines, or deprecation headers), which is half of the story. Missing for 10: a documented deprecation/sunset policy with timelines, deprecation signaling (headers or changelog), and independent corroboration of version stability.",
+    "evidenceIds": [
+      "complyadvantage-scope-versioning",
+      "complyadvantage-scope-external-identifier-redirect",
+      "complyadvantage-scope-process-transaction",
+      "complyadvantage-scope-case-audit"
+    ]
+  },
+  {
+    "productId": "complyadvantage",
+    "storyId": "automation-bulk-operations",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "ComplyAdvantage's own docs point to a Batch Processing API for high-volume processing and asynchronous screening for high-volume scenarios. Bulk data extraction is also available through date-ranged exports across several resource types and CSV transaction export. However, the Batch Processing API is only a one-line mention, and the monitoring endpoints are explicitly single-customer. missing for 10: documented batch API details (payloads, limits, item counts), bulk case/alert decisioning or bulk monitor/unmonitor actions, independent or hands-on corroboration of bulk operations.",
+    "evidenceIds": [
+      "complyadvantage-docs-12",
+      "complyadvantage-docs-11",
+      "complyadvantage-scope-export-selection",
+      "complyadvantage-scope-export-types",
+      "complyadvantage-scope-transaction-csv",
+      "complyadvantage-scope-monitor-config"
+    ]
+  },
+  {
+    "productId": "complyadvantage",
+    "storyId": "automation-rules-engine",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "ComplyAdvantage has its own event-driven automation. Users configure the risk-score equation and screening configurations. They can subscribe to typed webhooks such as WORKFLOW_COMPLETED that fire outbound callbacks on events. The agentic workflows auto-remediate level 1 alerts and auto-escalate high-risk cases. However, these automations are largely vendor-defined, Starter Plan agent configurations cannot be customized, and no general user-authored if-event-then-action rule builder is documented. Missing for 10: a documented user-defined rule engine mapping events to arbitrary actions, user-customizable automation triggers/conditions beyond risk scoring, and hands-on or independent corroboration.",
+    "evidenceIds": [
+      "complyadvantage-docs-2",
+      "complyadvantage-docs-5",
+      "complyadvantage-docs-13",
+      "complyadvantage-docs-8",
+      "complyadvantage-scope-ai-remediation",
+      "complyadvantage-scope-ai-escalation",
+      "complyadvantage-scope-starter-config-limit"
+    ]
+  },
+  {
+    "productId": "complyadvantage",
+    "storyId": "automation-scheduled-jobs",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence shows no user-configurable way to schedule recurring jobs or workflows, such as cron-style schedules, recurring exports or timed rescreening. Several items are adjacent but do not count: per-customer ongoing monitoring, on-demand exports with a date range, batch processing, webhooks and AI agents that auto-remediate alerts. Under the partial-credit boundary these do not amount to scheduling controls.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "complyadvantage",
+    "storyId": "automation-versioned-workflows",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "ComplyAdvantage ships configurable automations (screening configurations, risk-score equations, agentic screening and transaction-monitoring workflows), so versioning and rollback of them is a fair question for this product. The evidence never documents version history, change review, or rollback for these configurations. The nearby items do not count: API endpoint versioning covers backwards-incompatible API releases, the case audit trail covers case activity, and support for multiple configurations is not versioning.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "complyadvantage",
+    "storyId": "chargeback-guarantee",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "ComplyAdvantage is a financial-crime risk platform with transaction monitoring and payment screening, so a fraud-liability question is a fair axis to ask of it. However, the evidence pack contains nothing about a chargeback guarantee, reimbursement of disputed orders, or liability-shift coverage terms. The documented capabilities are limited to AML screening, risk scoring, case management, webhooks and exports.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "complyadvantage",
+    "storyId": "custom-rules-authoring",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence shows a configurable customer risk-score equation, selectable screening configurations, and a transaction-monitoring endpoint. None of it documents analyst-authored rules that combine model scores, velocity counters, list matches and transaction attributes into allow, block or review outcomes. These are adjacent features rather than the rules-authoring capability itself, and case decisions are manual reviewer choices, not rule outputs.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "complyadvantage",
+    "storyId": "custom-signals-enrichment",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "ComplyAdvantage documents that you can configure the equation that calculates a customer's risk score (docs-2). However, nothing in the evidence shows developers can supply their own signals to the scoring model, such as device fingerprints, behavioral data or arbitrary custom metadata. Tuning the equation over the vendor's own inputs is an adjacent control, and external identifiers and transaction processing are standard inputs, not custom scoring signals.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "complyadvantage",
+    "storyId": "data-residency-controls",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Data residency and retention controls are a fair question for a SaaS AML/fraud-compliance platform like ComplyAdvantage Mesh, so the axis applies. The evidence pack documents no regional hosting options and no data-retention or deletion settings. Adjacent items (the 5-second export download URL TTL and optional API credential expiry) are different controls and earn no credit here.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "complyadvantage",
+    "storyId": "dispute-evidence-automation",
+    "verdict": "na",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "ComplyAdvantage is an AML/compliance product covering sanctions, PEP and adverse-media screening, payment screening, transaction monitoring and case management. Merchant chargeback representment, meaning compiling order, delivery and session evidence and submitting it to issuers, falls outside this product category. Nothing in the evidence shows it ships any dispute or representment capability that would make the axis apply.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "complyadvantage",
+    "storyId": "fraud-outcome-reporting",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "KPI reporting and board-ready export is a fair question for a compliance/screening platform, since false-positive rate and review workload are core AML metrics, so the axis applies. The evidence shows only raw data exports of cases, alerts and transactions by date range, plus case filtering. There is no documented metrics view or report covering dispute rate, false-positive rate, approval-rate lift or review workload. Raw exports a user would have to analyze themselves are building blocks, not the capability.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "complyadvantage",
+    "storyId": "lists-velocity-management",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "ComplyAdvantage ships transaction monitoring, so a rules engine with custom allow/block lists and velocity limits is a fair question for this product. However, the evidence only covers selecting sanctions, PEP and watchlist screening lists, configurable risk-score equations, and transaction processing. None of these document user-maintained allow or block lists for emails, cards, devices or IPs, or velocity limits, whether in the dashboard or via the API. Third-party screening-list selection is an adjacent feature and earns no credit.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "complyadvantage",
+    "storyId": "manual-review-queue",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "ComplyAdvantage documents its own case management queue. Analysts can prioritise, filter (by customer risk, stage, assignee, date) and decide on alerts. Transactions run through transaction monitoring, which produces transaction-monitoring cases and alerts, and high-risk cases are escalated for human review. Each case also has an audit trail. However, the evidence never shows the queue presenting the rich context the story asks for. missing for 10: evidence that the review view surfaces customer history, risk signals/explanations and similar cases alongside the flagged transaction, plus any hands-on corroboration of review speed or consistency.",
+    "evidenceIds": [
+      "complyadvantage-docs-3",
+      "complyadvantage-docs-6",
+      "complyadvantage-docs-7",
+      "complyadvantage-docs-14",
+      "complyadvantage-scope-process-transaction",
+      "complyadvantage-scope-export-types",
+      "complyadvantage-scope-case-audit",
+      "complyadvantage-scope-ai-escalation",
+      "complyadvantage-scope-transaction-ai"
+    ]
+  },
+  {
+    "productId": "complyadvantage",
+    "storyId": "model-performance-visibility",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Measuring model performance and shadow-testing new rules or models is a fair question for an AML screening and transaction-monitoring platform with configurable risk scoring and AI agents, so the axis applies. However, the evidence documents no precision/recall reporting and no shadow or champion-challenger mode. Case and decision exports, and the option to keep multiple screening configurations, would only let a user compute metrics themselves; that is a user-side workaround and an adjacent feature, so it earns no credit.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "complyadvantage",
+    "storyId": "network-intelligence",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Cross-merchant consortium signals are a fair question for a risk-scoring and transaction-monitoring product, so the axis applies. However, nothing in the evidence shows ComplyAdvantage pooling card or identity observations across its client businesses to inform scoring. The documented inputs are third-party sanctions, PEP, watchlist and adverse-media databases plus a configurable risk-score equation, which are adjacent features rather than a shared merchant network.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "complyadvantage",
+    "storyId": "openness-api-parity",
+    "verdict": "partial",
+    "quality": 6,
+    "confidence": "medium",
+    "rationale": "The documented API covers much of the core UI functionality: customer creation and screening, case/alert/risk review and remediation (explicitly 'via the web application or by integrating with the API'), monitoring configuration, exports, case audit trails, IAM roles and transaction processing, all described in a retrievable OpenAPI 3.0.3 schema. However, API credentials are generated only in the web application, and there is no evidence that screening configurations or the risk-score equation can be managed through the API. No parity claim is documented. Missing for 10: an explicit API/UI parity statement, API management of credentials, screening configurations and risk-scoring equations, and independent hands-on corroboration of coverage.",
+    "evidenceIds": [
+      "complyadvantage-docs-14",
+      "complyadvantage-docs-4",
+      "complyadvantage-docs-2",
+      "complyadvantage-docs-5",
+      "complyadvantage-docs-10",
+      "complyadvantage-scope-openapi-retrieval",
+      "complyadvantage-scope-monitor-config",
+      "complyadvantage-scope-export-selection",
+      "complyadvantage-scope-case-audit",
+      "complyadvantage-scope-role-permission",
+      "complyadvantage-scope-process-transaction",
+      "complyadvantage-docs-12"
+    ]
+  },
+  {
+    "productId": "complyadvantage",
+    "storyId": "openness-full-export",
+    "verdict": "partial",
+    "quality": 6,
+    "confidence": "medium",
+    "rationale": "ComplyAdvantage documents a first-party Export API that creates date-ranged exports across many data types: customers, customer screening, screening and monitoring cases, profiles, payment screening cases, transaction monitoring cases and alerts, and transactions. Transaction data can be exported as CSV, and case audit trails and other resources are retrievable via a documented OpenAPI schema. However, an open file format is only evidenced for transactions, download URLs expire after 5 seconds, and nothing covers exporting configurations or risk-scoring setups or offboarding and deletion. missing for 10: documented open file formats for every export type, evidence that exports cover all account data (configurations, risk equations, audit logs in bulk), a documented account exit or data-deletion process, independent hands-on corroboration of a complete export.",
+    "evidenceIds": [
+      "complyadvantage-scope-export-selection",
+      "complyadvantage-scope-export-types",
+      "complyadvantage-scope-export-download-expiry",
+      "complyadvantage-scope-transaction-csv",
+      "complyadvantage-scope-case-audit",
+      "complyadvantage-scope-openapi-retrieval"
+    ]
+  },
+  {
+    "productId": "complyadvantage",
+    "storyId": "openness-open-license",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "high",
+    "rationale": "Whether a product's source is available under an open license is a fair question for a SaaS compliance platform, so the axis applies. Nothing in the evidence shows ComplyAdvantage publishing source code or naming an open license. The downloadable OpenAPI schema and Postman collection are integration artifacts, not product source, so they earn no credit.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "complyadvantage",
+    "storyId": "openness-self-host",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Self-hosting is a fair question for a compliance and AML screening platform, since on-prem or private deployments are plausible in this category. However, the evidence only describes the hosted ComplyAdvantage Mesh web application and its cloud API. Nothing documents a self-hosted, on-premise, or private-deployment option for the core product.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "complyadvantage",
+    "storyId": "platform-integrations",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "ComplyAdvantage offers payment screening and transaction monitoring, so pre-built commerce and PSP connectors are a fair question for this kind of product. The evidence shows only a raw REST API, Postman collection, OpenAPI schema, webhooks and a batch API. None of the cited docs mention maintained integrations for Shopify, Salesforce Commerce, BigCommerce or any payment service provider. Developer building blocks do not count as maintained integrations.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "complyadvantage",
+    "storyId": "privacy-data-residency",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Data residency is a fair question for a SaaS compliance and screening platform that stores customer PII, so the axis applies. However, nothing in the evidence pack covers storage regions, residency options or region selection. The cited material covers screening, cases, webhooks, exports and API credentials, none of which bears on where data is stored.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "complyadvantage",
+    "storyId": "privacy-no-training",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "ComplyAdvantage is a SaaS compliance platform that ships AI agents for screening and transaction monitoring, so whether customer data is used for model training is a fair question to ask. The evidence pack documents no AI-training opt-out, data-usage policy, or training exclusion control. The AI agent pages and the Starter Plan configuration limits describe agent behavior, not training-data use, so they earn no credit.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "complyadvantage",
+    "storyId": "privacy-retention-controls",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Data retention and deletion controls are a fair question for a SaaS compliance platform that holds customer PII, so the axis applies. The pack documents no retention-period settings, no deletion endpoints, and no erasure workflow. Adjacent features such as data exports, a 5-second download-URL TTL, and monitor/unmonitor toggles are related but are not retention or deletion control, so they earn no credit.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "complyadvantage",
+    "storyId": "privacy-telemetry-optout",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Opting out of telemetry or usage tracking is a fair question for a SaaS compliance platform with a web app, so the axis applies. Nothing in the evidence pack documents a telemetry or analytics opt-out. The 'monitor/unmonitor customers' and 'webhook signing is opt-in' items are unrelated controls (customer screening monitoring and webhook security), not user usage tracking.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "complyadvantage",
+    "storyId": "psd2-sca-optimization",
+    "verdict": "na",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "ComplyAdvantage is an AML/KYC compliance platform covering sanctions, PEP and adverse-media screening, case management, payment screening and transaction monitoring. It is not a payment gateway or card authorization service. Routing European card traffic through SCA, triggering 3DS and requesting exemptions is a payment-authentication function outside this product category. Its transaction monitoring is AML risk screening, not 3DS or exemption decisioning, and nothing in the pack shows it ships SCA capabilities.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "complyadvantage",
+    "storyId": "psp-agnostic-coverage",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "ComplyAdvantage exposes its own standalone API endpoint that creates a transaction and runs payment screening and transaction monitoring on it, documented in a public OpenAPI schema. Because transactions are submitted directly through this API, the product is implicitly independent of any single processor's rails. However, no evidence explicitly addresses multi-PSP, gateway or platform support, so processor-agnosticism is inferred rather than documented. Missing for 10: explicit documentation of PSP/gateway-agnostic ingestion, named connectors or integrations for multiple payment processors and platforms, guidance on normalizing transactions from different PSPs, and independent or hands-on corroboration of multi-stack deployments.",
+    "evidenceIds": [
+      "complyadvantage-scope-process-transaction",
+      "complyadvantage-scope-openapi-retrieval",
+      "complyadvantage-docs-10"
+    ]
+  },
+  {
+    "productId": "complyadvantage",
+    "storyId": "realtime-scoring-api",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The documented transaction endpoint creates a transaction and runs payment screening and transaction monitoring. Nothing shows it returning a machine-learning risk score synchronously before authorization completes. The documented 'synchronous screening' covers customer onboarding, and the configurable risk-score equation applies to customer risk, not to per-transaction ML scoring. Neither transfers to this story.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "complyadvantage",
+    "storyId": "review-outcomes-feedback",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "A feedback loop from analyst decisions into models and rules is a fair question for a compliance and risk platform with case management and AI agents, so the axis applies. The evidence shows analysts can record case decisions (no risk / accepted / offboard), configure the risk-score equation, and rely on AI agents that auto-remediate and escalate. None of it documents analyst decisions or confirmed outcomes being fed back to retrain models or tune rules. Manual risk-score configuration is an adjacent control and earns no credit.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "complyadvantage",
+    "storyId": "review-team-workflows",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "ComplyAdvantage Mesh has case management for prioritising and reviewing alerts, and cases can be filtered by assignee and case stage, which implies assignment and staged workflow. Reviewers record case decisions, and a case audit-trail endpoint exists. Escalation is documented only as AI agents routing high-risk cases to human review, not as analyst-to-analyst escalation. Missing for 10: any SLA or due-date tracking, documented reviewer-to-senior escalation or approval chains, detail showing the audit trail captures who decided and the rationale, and hands-on corroboration.",
+    "evidenceIds": [
+      "complyadvantage-docs-3",
+      "complyadvantage-docs-6",
+      "complyadvantage-docs-7",
+      "complyadvantage-scope-case-audit",
+      "complyadvantage-scope-ai-escalation",
+      "complyadvantage-docs-14"
+    ]
+  },
+  {
+    "productId": "complyadvantage",
+    "storyId": "rules-backtesting",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "ComplyAdvantage offers transaction monitoring and configurable screening and risk-score settings, so rule backtesting is a fair question for this product. However, nothing in the evidence describes simulating or backtesting a rule against historical traffic, or previewing what it would have blocked, flagged, or cost. Configurable risk equations, multiple screening configurations, and CSV/transaction exports are adjacent features or user-side workarounds and earn no credit.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "complyadvantage",
+    "storyId": "score-explainability",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence pack does not show any per-score explanation. Nothing documents that a transaction or customer risk score is returned with its top contributing risk factors or reason codes. The closest items are adjacent rather than per-score explainability: a configurable risk-score equation, alerts/risks surfaced for case review, and a transaction-processing endpoint. None of these shows that each score carries its own 'why this looks risky' breakdown.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "complyadvantage",
+    "storyId": "score-thresholds-actions",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Risk scoring is a fair axis for an AML screening and transaction-monitoring product, but the pack has no evidence of mapping score ranges to actions such as allow, review, block or step-up 3DS. It also shows no tunable decision thresholds. The configurable risk-score equation, selectable screening configurations and manual case decisions are adjacent features: they change how a score is computed or how a case is closed, not which action a score range triggers.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "complyadvantage",
+    "storyId": "trusted-agent-signals",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "ComplyAdvantage runs a risk and transaction-screening API, so ingesting verified agent identity as a risk signal is a fair question for this product. The evidence never mentions agentic-payment protocols, signed agent tokens, or delegated spending scopes as inputs. Its own AI agents for screening and transaction monitoring, and its configurable risk-score equation, are adjacent features or building blocks, not this capability.",
+    "evidenceIds": []
+  },
+  {
     "productId": "forter",
     "storyId": "account-abuse-coverage",
     "verdict": "partial",

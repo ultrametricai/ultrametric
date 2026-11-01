@@ -57,7 +57,7 @@ export type ExtraOptionRef = z.infer<typeof ExtraOptionRefSchema>
 // block below (founder ask 2026-09-28) for the full story of these countries (PT and CA joined
 // in the new-countries wave, founder 2026-10-03; NZ, SG, AU, KR, HK, and EE in the 2026-10-23
 // country runs).
-export const GEO_NOTE_COUNTRIES = ['IN', 'UK', 'DE', 'FR', 'PT', 'CA', 'NZ', 'SG', 'AU', 'KR', 'HK', 'EE'] as const
+export const GEO_NOTE_COUNTRIES = ['IN', 'UK', 'DE', 'FR', 'PT', 'CA', 'NZ', 'SG', 'AU', 'KR', 'HK', 'EE', 'NL', 'IE', 'ES', 'SE', 'CH', 'JP', 'BR', 'AE'] as const
 export type GeoNoteCountry = (typeof GEO_NOTE_COUNTRIES)[number]
 
 export const DagNodeBaseSchema = z.object({
@@ -282,6 +282,9 @@ export const GEO_RESOLUTION_COUNTRIES = ['US', ...GEO_NOTE_COUNTRIES] as const
 export type GeoResolutionCountry = (typeof GEO_RESOLUTION_COUNTRIES)[number]
 
 export const StepGeoResolutionSchema = z.object({
+  // These details apply to this country's mechanics, rather than the shared step.
+  verify: StepVerifySchema.optional(),
+  cost: StepCostSchema.optional(),
   country: z.enum(GEO_RESOLUTION_COUNTRIES),
   kind: z.enum(GEO_NOTE_KINDS),
   // The country's concrete mechanics for this abstract step — the text that was (or would have
@@ -415,6 +418,14 @@ export const GEO_COUNTRY_META: Record<GeoNoteCountry, { label: string; flag: str
   KR: { label: 'South Korea', flag: '🇰🇷' },
   HK: { label: 'Hong Kong', flag: '🇭🇰' },
   EE: { label: 'Estonia', flag: '🇪🇪' },
+  NL: { label: 'Netherlands', flag: '🇳🇱' },
+  IE: { label: 'Ireland', flag: '🇮🇪' },
+  ES: { label: 'Spain', flag: '🇪🇸' },
+  SE: { label: 'Sweden', flag: '🇸🇪' },
+  CH: { label: 'Switzerland', flag: '🇨🇭' },
+  JP: { label: 'Japan', flag: '🇯🇵' },
+  BR: { label: 'Brazil', flag: '🇧🇷' },
+  AE: { label: 'United Arab Emirates', flag: '🇦🇪' },
 }
 
 // Proven runs (founder spike 2026-10-02 — EXECUTED-PROOF SLOT, design only): a dated record
