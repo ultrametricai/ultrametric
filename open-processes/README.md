@@ -48,7 +48,7 @@ regenerate. Drift gate: `__tests__/process-pages.test.ts`.
 
 <!-- process-pages:index:start (generated — scripts/generate-process-pages.ts) -->
 
-One page per canonical record: 209 processes, 33 situations, 24 chains.
+One page per canonical record: 210 processes, 33 situations, 24 chains.
 
 ### Processes
 
@@ -163,6 +163,7 @@ One page per canonical record: 209 processes, 33 situations, 24 chains.
 - [Plan production quality and product release](pages/plan-production-quality-and-product-release.md)
 - [Prepare a board meeting](pages/prepare-a-board-meeting.md)
 - [Prepare and file sales tax VAT or GST returns](pages/prepare-and-file-sales-tax-vat-or-gst-returns.md)
+- [Prepare and file statutory annual accounts](pages/prepare-and-file-statutory-annual-accounts.md)
 - [Prepare and submit a public procurement bid](pages/prepare-and-submit-a-public-procurement-bid.md)
 - [Prepare for and complete an external financial audit](pages/prepare-for-and-complete-an-external-financial-audit.md)
 - [Protect trade secrets and confidential know-how](pages/protect-trade-secrets-and-confidential-know-how.md)
