@@ -203,22 +203,24 @@ export function buildProcessCoverage(input: CoverageInputs, asOf: string) {
       scenarioIds: procedures.map(a => a.id), reviewedScenarioCount: procedures.filter(a => a.reviewedProcedureReady).length,
       scenarioScopeReview, declaredScopeCompleteness: declaredScopeComplete ? 'reviewed' : 'unassessed', scopeLimitation: declared?.limitation ?? 'Entity, subnational, sector and cross-border scenario scope is unassessed.' }
   }))
+  const checkedNeeds = new Set(input.audit.checks.flatMap(c => c.needIds))
+  const crosscheckPendingNeedIds = input.needs.filter(n => !checkedNeeds.has(n.id)).map(n => n.id)
   const gaps = input.needs.filter(n => n.status === 'gap').map(n => ({ id: n.id, domain: n.domain, need: n.need, sourceIds: n.sourceIds }))
   const countries = input.scope.countries.map(country => ({ country, processCells: ordinary.length, withLocalMaterial: cells.filter(c => c.country === country && c.localMaterial).length,
     scopedProcedures: assessments.filter(a => a.country === country).length, reviewedProcedures: assessments.filter(a => a.country === country && a.reviewedProcedureReady).length,
     observedProcedures: assessments.filter(a => a.country === country && a.observedExecution === 'evidenced').length }))
   return processCountryMatrixSchema.parse({ version: 1, asOf, scope: input.scope.scope, scopeDigest: scopeDigest(input), independentScopeReview: scopeReview, independentInventoryReview: auditReview,
-    summary: { needs: input.needs.length, mappedNeeds: input.needs.filter(n => n.status === 'guide-present').length, explicitNeedGaps: gaps.length,
+    summary: { needs: input.needs.length, crosscheckedNeeds: checkedNeeds.size, mappedNeeds: input.needs.filter(n => n.status === 'guide-present').length, explicitNeedGaps: gaps.length,
       processesAndSituations: ordinary.length, countries: input.scope.countries.length, matrixCells: cells.length,
       cellsWithLocalMaterial: cells.filter(c => c.localMaterial).length, scopedProcedures: assessments.length,
       reviewedProcedures: assessments.filter(a => a.reviewedProcedureReady).length, observedProcedures: assessments.filter(a => a.observedExecution === 'evidenced').length,
       reviewedScopeCells: cells.filter(c => c.declaredScopeCompleteness === 'reviewed').length,
-      comprehensiveWithinDeclaredScope: Boolean(input.scope.maintenance.owner) && scopeReview === 'current' && auditReview === 'current' && gaps.length === 0 && cells.every(c => c.declaredScopeCompleteness === 'reviewed') },
-    metricDefinitions: { mappedNeeds: 'A canonical guide is linked; this measures entry points only.', localMaterial: 'An authored country note, step resolution or US-scoped baseline exists; this does not establish completeness or freshness.',
+      comprehensiveWithinDeclaredScope: Boolean(input.scope.maintenance.owner) && scopeReview === 'current' && auditReview === 'current' && crosscheckPendingNeedIds.length === 0 && gaps.length === 0 && cells.every(c => c.declaredScopeCompleteness === 'reviewed') },
+    metricDefinitions: { inventoryCrosscheck: 'Needs explicitly compared against an external reference structure. Unchecked needs remain pending; source crosschecking is separate from independent human review.', mappedNeeds: 'A canonical guide is linked; this measures entry points only.', localMaterial: 'An authored country note, step resolution or US-scoped baseline exists; this does not establish completeness or freshness.',
       reviewedProcedures: 'All required instruction sections, sources, dates, ownership, qualified independent review and fictional scope tests are current for the stated facts.',
       observedProcedures: 'A dated independent passed-run attestation identifies this exact procedure content. Public attestation links must be verified by the contributor; case-specific authorization remains separate.',
       declaredScopeCompleteness: 'Requires independent current review of the scenario inventory and all its required procedures. Credit applies only to the stated scope; no cell is excluded for missing or not-applicable notes.' },
-    countries, assessments, gaps, cells })
+    countries, assessments, gaps, crosscheckPendingNeedIds, cells })
 }
 
 const count = z.number().int().nonnegative()
@@ -233,12 +235,13 @@ const procedureResultSchema = z.strictObject({
 export const processCountryMatrixSchema = z.strictObject({
   version: z.literal(1), asOf: date, scope: text, scopeDigest: z.string().regex(/^[a-f0-9]{64}$/),
   independentScopeReview: reviewState, independentInventoryReview: reviewState,
-  summary: z.strictObject({ needs: count, mappedNeeds: count, explicitNeedGaps: count, processesAndSituations: count, countries: count, matrixCells: count,
+  summary: z.strictObject({ needs: count, crosscheckedNeeds: count, mappedNeeds: count, explicitNeedGaps: count, processesAndSituations: count, countries: count, matrixCells: count,
     cellsWithLocalMaterial: count, scopedProcedures: count, reviewedProcedures: count, observedProcedures: count, reviewedScopeCells: count, comprehensiveWithinDeclaredScope: z.boolean() }),
-  metricDefinitions: z.strictObject({ mappedNeeds: text, localMaterial: text, reviewedProcedures: text, observedProcedures: text, declaredScopeCompleteness: text }),
+  metricDefinitions: z.strictObject({ inventoryCrosscheck: text, mappedNeeds: text, localMaterial: text, reviewedProcedures: text, observedProcedures: text, declaredScopeCompleteness: text }),
   countries: z.array(z.strictObject({ country: text, processCells: count, withLocalMaterial: count, scopedProcedures: count, reviewedProcedures: count, observedProcedures: count })),
   assessments: z.array(procedureResultSchema),
   gaps: z.array(z.strictObject({ id: text, domain: text, need: text, sourceIds: strings })),
+  crosscheckPendingNeedIds: strings,
   cells: z.array(z.strictObject({ processId: text, country: text, guidePresent: z.boolean(), localMaterial: z.boolean(), noteKinds: strings,
     instructionDepth: z.enum(['scoped-procedure', 'country-material', 'shared-guide-only', 'missing']),
     sourceAgeStatus: z.enum(['current-for-listed-scenarios', 'recheck-needed-for-listed-scenarios', 'unassessed']), observedScenarioCount: count,
