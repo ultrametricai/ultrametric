@@ -3,6 +3,7 @@ import json
 import os
 from pathlib import Path
 import unittest
+import tempfile
 from unittest.mock import patch
 
 SHA = 'a' * 40
@@ -14,7 +15,9 @@ class ReviewGateTests(unittest.TestCase):
     def run_gate(self, *, target='513', head='', checks=None, threads=None, status=None,
                  pages=None, changed=False, metadata_error=False):
         source = (Path(__file__).resolve().parents[2] / '.github/workflows/review-findings.yml').read_text()
-        source = source.split('        run: |\n', 1)[1]
+        selection = source.split('        run: |\n', 1)[1].split('\n  findings:', 1)[0]
+        selection = '\n'.join(line[10:] if line.startswith('          ') else line for line in selection.splitlines())
+        source = source.split('- name: Gate unresolved Greptile findings', 1)[1].split('        run: |\n', 1)[1]
         code = '\n'.join(line[10:] if line.startswith('          ') else line for line in source.splitlines())
         posts, reads = [], []
         prior = list(status or [])
@@ -55,7 +58,14 @@ class ReviewGateTests(unittest.TestCase):
         namespace = {}
         with patch.dict(os.environ, env), patch('subprocess.check_output', side_effect=output):
             try:
-                exec(code, namespace)
+                with tempfile.NamedTemporaryFile(mode='r+') as selected:
+                    with patch.dict(os.environ, {'GITHUB_OUTPUT': selected.name}):
+                        exec(selection, {})
+                    selected.seek(0)
+                    numbers = json.loads(selected.read().split('=', 1)[1])
+                    for number in numbers:
+                        with patch.dict(os.environ, {'TARGET_PR': str(number)}):
+                            exec(code, namespace)
             except SystemExit:
                 pass
             if pages:

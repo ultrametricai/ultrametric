@@ -30,15 +30,49 @@ permissions:
   pull-requests: read
   statuses: write
 
-# Serialize metadata reads and status writes so an older run cannot overwrite a
-# newer finding result on the same revision. Every queued run reads fresh state.
-concurrency:
-  group: review-findings-gate
-  cancel-in-progress: false
-
 jobs:
-  findings:
+  targets:
     if: >-
+      (github.event_name != 'check_run' || github.event.check_run.app.slug == 'greptile-apps') &&
+      (github.event_name != 'pull_request_review' || github.event.pull_request.head.repo.full_name == github.repository)
+    runs-on: ubuntu-latest
+    outputs:
+      prs: ${{ steps.select.outputs.prs }}
+    steps:
+      - name: Select review targets
+        id: select
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          TARGET_PR: ${{ inputs.pr || github.event.pull_request.number || '' }}
+          TARGET_HEAD: ${{ inputs.head || github.event.check_run.head_sha || '' }}
+        shell: python
+        run: |
+          import json, os, subprocess
+          pages = json.loads(subprocess.check_output(['gh', 'api', '--paginate', '--slurp',
+                   f"repos/{os.environ['REPO']}/pulls?state=open&per_page=100"], text=True))
+          target_pr = os.environ.get('TARGET_PR', '')
+          target_head = os.environ.get('TARGET_HEAD', '')
+          numbers = [pr['number'] for page in pages for pr in page
+                     if (not target_pr or str(pr['number']) == target_pr)
+                     and (target_pr or not target_head or pr['head']['sha'] == target_head)]
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
+              output.write('prs=' + json.dumps(numbers) + '\n')
+
+  findings:
+    needs: [targets]
+    strategy:
+      fail-fast: false
+      max-parallel: 8
+      matrix:
+        pr: ${{ fromJSON(needs.targets.outputs.prs) }}
+    # Serialize each PR across sweeps, CI and events. An event for another PR
+    # cannot cancel this PR's pending gate or monopolize its concurrency slot.
+    concurrency:
+      group: review-findings-pr-${{ matrix.pr }}
+      cancel-in-progress: false
+    if: >-
+      needs.targets.outputs.prs != '[]' &&
       (github.event_name != 'check_run' || github.event.check_run.app.slug == 'greptile-apps') &&
       (github.event_name != 'pull_request_review' || github.event.pull_request.head.repo.full_name == github.repository)
     runs-on: ubuntu-latest
@@ -50,22 +84,13 @@ jobs:
           REPO: ${{ github.repository }}
           SERVER_URL: ${{ github.server_url }}
           RUN_ID: ${{ github.run_id }}
-          TARGET_PR: ${{ inputs.pr || github.event.pull_request.number || '' }}
-          TARGET_HEAD: ${{ inputs.head || '' }}
+          TARGET_PR: ${{ matrix.pr }}
         shell: python
         run: |
           import json, os, subprocess
           repo = os.environ['REPO']
           owner, name = repo.split('/')
-          # CI and event runs target one PR. The periodic sweep reconciles any
-          # event displaced from GitHub's single pending concurrency slot.
-          pages = json.loads(subprocess.check_output(['gh', 'api', '--paginate', '--slurp',
-                   f'repos/{repo}/pulls?state=open&per_page=100'], text=True))
-          target_pr = os.environ.get('TARGET_PR', '')
-          target_head = os.environ.get('TARGET_HEAD', '')
-          numbers = [pr['number'] for page in pages for pr in page
-                     if (not target_pr or str(pr['number']) == target_pr)
-                     and (target_pr or not target_head or pr['head']['sha'] == target_head)]
+          numbers = [int(os.environ['TARGET_PR'])]
           def api(path, data=None):
               args = ['gh', 'api', path]
               if data is not None:
