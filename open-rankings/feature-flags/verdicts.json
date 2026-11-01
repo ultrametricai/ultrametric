@@ -1193,14 +1193,15 @@
     "productId": "growthbook",
     "storyId": "guarded-rollouts-auto-rollback",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "low",
-    "rationale": "GrowthBook lists \"Safe rollouts\" as a paid-tier feature, and experiments can be configured with guardrail metrics. Both point toward metric-guarded releases, but the evidence never describes how Safe rollouts behave. The community question in growthbook-comm-7 about metric-monitored rollouts is not a hands-on counter-example, so it does not create a dispute. missing for 10: documentation of Safe rollouts monitoring guardrail metrics on a feature rollout, automatic regression detection, automatic rollback when a regression is found, and independent or hands-on corroboration.",
+    "rationale": "GrowthBook lists \"Safe rollouts\" as a Pro-tier feature and supports guardrail metrics computed from warehouse data, so metric-guarded releases are plausibly covered. The pack never describes how safe rollouts monitor regressions or whether they roll back automatically; the evidence is only a pricing bullet plus guardrail metrics in the experiment context. Missing for 10: documentation of automatic regression detection and rollback behavior, details of how safe rollouts work, and any hands-on corroboration.",
     "evidenceIds": [
       "growthbook-docs-15",
       "growthbook-docs-31",
       "growthbook-docs-8",
-      "growthbook-docs-61"
+      "growthbook-docs-9",
+      "growthbook-docs-22"
     ]
   },
   {
@@ -1456,13 +1457,12 @@
   {
     "productId": "growthbook",
     "storyId": "scheduled-releases",
-    "verdict": "partial",
-    "quality": 5,
+    "verdict": "full",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "GrowthBook's rules docs say rules can be scoped, ramped and scheduled, and a rule's optional release plan can ramp up automatically over time. Pricing lists \"Ramp schedules\" as a paid-tier feature. These are first-party claims of time-based releases, but the evidence is only one-line summaries. missing for 10: detailed docs on setting a specific future date/time for a flag change, whether scheduling extends to whole-flag toggles or draft publishes rather than only rules, API/automation support for scheduling, independent or hands-on corroboration.",
+    "rationale": "GrowthBook's rules documentation says feature rules can be scoped, ramped and scheduled, and the pricing page lists \"Ramp schedules\" as a capability, so time-based flag changes and releases are a documented product feature. The evidence is only summary-level, and ramp schedules appear only in the top pricing tier (\"Pro, plus\"). Missing for 10: detailed docs showing how a specific future date/time is set for a flag change or release, confirmation of which plans include basic rule scheduling versus ramp schedules, scheduling via the API or publishing flow, and independent or hands-on corroboration.",
     "evidenceIds": [
       "growthbook-docs-22",
-      "growthbook-docs-61",
       "growthbook-docs-16",
       "growthbook-docs-37"
     ]
@@ -1578,39 +1578,40 @@
     "productId": "launchdarkly",
     "storyId": "agent-experiment-analysis",
     "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "LaunchDarkly documents first-party experimentation with Bayesian results that surface a leading or winning variation (docs-30, 34, 57). It also offers programmatic surfaces an agent can use: scoped read-only API tokens (docs-67) and an official MCP server for flags, configs and observability data (docs-59, probe-4). None of these sources explicitly says experiment configurations or results can be read through the API or MCP, so agent-driven experiment summarization is only implied. missing for 10: explicit API/MCP endpoints for experiment configs and results, documented agent workflows for ship/rollback recommendations, independent or hands-on corroboration.",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "LaunchDarkly documents Experimentation with Bayesian decision-making and guarded rollouts, and provides programmatic access paths for agents: an official MCP server (local and hosted), a CLI, and API access tokens. However, the evidence never states that experiment configurations or results are readable through the MCP server, API, or CLI, so the agent-reads-results workflow is only implied by combining these pieces. missing for 10: explicit evidence that experiment results/metrics are exposed via API or MCP tools, documentation of programmatic access to experiment configurations, any hands-on or independent corroboration of an agent summarizing results or recommending ship/rollback.",
     "evidenceIds": [
       "launchdarkly-docs-30",
       "launchdarkly-docs-34",
-      "launchdarkly-docs-57",
-      "launchdarkly-docs-67",
-      "launchdarkly-docs-59",
+      "launchdarkly-docs-27",
+      "launchdarkly-docs-10",
+      "launchdarkly-docs-11",
+      "launchdarkly-docs-37",
+      "launchdarkly-docs-12",
+      "launchdarkly-docs-5",
       "launchdarkly-probe-4"
     ]
   },
   {
     "productId": "launchdarkly",
     "storyId": "agent-toggles-flag-safely",
-    "verdict": "partial",
-    "quality": 6,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "The agent-access half is well documented: an official MCP server, local and hosted, lets AI clients manage flags with natural language. The ldcli CLI manages flags from the command line, and scoped API tokens can restrict which operations an integration may perform. On the governance half, the approvals docs only say members have \"the option to request approval\" for a change. Nothing in the pack shows approvals can be made mandatory, or that they block API, CLI or MCP writes to production. missing for 10: evidence that approvals can be required and enforced on agent-initiated (API/CLI/MCP) changes, documentation that MCP or CLI changes route through approval requests, independent or hands-on corroboration.",
+    "rationale": "LaunchDarkly documents an official MCP server, both self-run and hosted, plus an official CLI (ldcli), API access tokens and flag creation, which gives an agent several documented paths to create and toggle flags. It also documents Approvals, role assignment and change history, which together let the platform route changes through review instead of writing straight to production. The evidence consists only of doc titles, though, and no item explicitly shows approvals being enforced on changes made through the API, CLI or MCP. Missing for 10: explicit evidence that approval workflows gate API/MCP/CLI-originated production changes, and independent or hands-on corroboration of agent-driven flag changes under approvals.",
     "evidenceIds": [
       "launchdarkly-docs-10",
       "launchdarkly-docs-11",
-      "launchdarkly-docs-59",
-      "launchdarkly-docs-60",
-      "launchdarkly-docs-12",
-      "launchdarkly-docs-61",
+      "launchdarkly-docs-40",
       "launchdarkly-probe-4",
+      "launchdarkly-docs-12",
       "launchdarkly-probe-5",
       "launchdarkly-docs-37",
-      "launchdarkly-docs-67",
+      "launchdarkly-docs-19",
       "launchdarkly-docs-6",
-      "launchdarkly-docs-52",
-      "launchdarkly-docs-19"
+      "launchdarkly-docs-36",
+      "launchdarkly-docs-7"
     ]
   },
   {
@@ -1720,12 +1721,11 @@
     "productId": "launchdarkly",
     "storyId": "agentic-official-cli",
     "verdict": "full",
-    "quality": 8,
-    "confidence": "high",
-    "rationale": "LaunchDarkly documents an official CLI (ldcli) for setting up and managing feature flags, account members, projects, environments, teams, and other resources from the command line, and a probe confirms the official CLI docs page exists. Missing for 10: independent or hands-on corroboration of the CLI in use, and documentation depth on agent-friendly behaviors such as machine-readable output or scripted, non-interactive use.",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "LaunchDarkly has a first-party CLI (ldcli) documented on its getting-started docs, and a probe independently confirmed the official CLI documentation page exists. The evidence establishes that the CLI exists but says nothing about what it does. missing for 10: detail on CLI commands and coverage (flags, environments, etc.), evidence of AI/agent-oriented workflows or scripting use, independent or hands-on corroboration of CLI usage.",
     "evidenceIds": [
       "launchdarkly-docs-12",
-      "launchdarkly-docs-61",
       "launchdarkly-probe-5"
     ]
   },
@@ -1834,13 +1834,15 @@
   {
     "productId": "launchdarkly",
     "storyId": "approvals-change-requests",
-    "verdict": "partial",
-    "quality": 6,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "LaunchDarkly has a first-party Approvals feature in which a member making a flag change can request approval from a member or team in their project. The evidence only describes this as an option, not as a mandatory gate enforced on production environments. Missing for 10: documented evidence that approvals can be required or enforced per environment (e.g. production-only), detail on reviewer and change-request workflow configuration, and independent or hands-on corroboration.",
+    "rationale": "LaunchDarkly has a dedicated first-party Approvals docs page under releases. Its environments, role assignment and change history pages are the natural surrounding controls for gating production flag changes behind review. The evidence is only page titles, though, so how approvals are enforced is not shown. Missing for 10: detailed evidence that approvals can be made mandatory per environment (e.g. production only), external change-request system integration, and independent or hands-on corroboration.",
     "evidenceIds": [
       "launchdarkly-docs-6",
-      "launchdarkly-docs-52"
+      "launchdarkly-docs-9",
+      "launchdarkly-docs-36",
+      "launchdarkly-docs-7"
     ]
   },
   {
@@ -1874,15 +1876,15 @@
     "productId": "launchdarkly",
     "storyId": "automation-rules-engine",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "LaunchDarkly documents some event-driven automation. There is an 'Adaptive triggers' capability, guarded rollouts that progressively increase traffic while monitoring selected metrics for regressions, and webhooks that send an HTTP POST when a flag changes. However, the evidence only titles adaptive triggers without describing how they work, and it never shows a general user-defined 'when event X, do action Y' rule engine. Targeting rules and scheduled changes are condition-based and time-based, not event-triggered. Missing for 10: documented detail on trigger definitions and supported event sources, explicit automatic actions such as rollback on regression, a general-purpose automation rule builder, and independent or hands-on corroboration.",
+    "rationale": "LaunchDarkly documents several event-driven automation mechanisms. Adaptive triggers [docs-26] and guarded rollouts [docs-5] change flag state automatically. Progressive rollouts [docs-4] and scheduled flag changes [docs-35] advance releases without manual steps. Webhooks [docs-38] send events to external systems. However, the evidence is mostly titles with no detail, and the automation appears limited to flag and release actions rather than a general rule-to-action engine. Missing for 10: detailed documentation of how trigger conditions and actions are defined, user-defined event-to-action rules beyond flag state changes, and hands-on or independent corroboration.",
     "evidenceIds": [
       "launchdarkly-docs-26",
       "launchdarkly-docs-5",
-      "launchdarkly-docs-51",
-      "launchdarkly-docs-68",
-      "launchdarkly-docs-65"
+      "launchdarkly-docs-4",
+      "launchdarkly-docs-35",
+      "launchdarkly-docs-38"
     ]
   },
   {
@@ -1968,15 +1970,12 @@
   {
     "productId": "launchdarkly",
     "storyId": "flag-environments",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "LaunchDarkly documents Environments as the way to manage feature flags across the lifecycle from local development through production, and change history is kept per environment, which implies independent per-environment flag state. The CLI also manages environments. missing for 10: explicit evidence of environment-scoped SDK keys, explicit statement that flag targeting/on-off state is independent per environment, independent or hands-on corroboration of environment workflows.",
+    "rationale": "LaunchDarkly has a dedicated first-party 'Environments' docs page, which establishes that environments are a managed concept. The pack only gives that page's title, so per-environment flag states and environment-scoped SDK keys are implied rather than shown. Missing for 10: evidence of independent flag states per environment, evidence of environment-scoped SDK keys, any detail of dev/staging/prod setup, and independent or hands-on corroboration.",
     "evidenceIds": [
-      "launchdarkly-docs-9",
-      "launchdarkly-docs-58",
-      "launchdarkly-docs-53",
-      "launchdarkly-docs-61"
+      "launchdarkly-docs-9"
     ]
   },
   {
@@ -2395,15 +2394,16 @@
     "productId": "statsig",
     "storyId": "agentic-autonomous-automation",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Statsig documents a few self-running product mechanisms. Scheduled Rollouts gradually deploy a feature over time without further action, Autotune automatically reallocates traffic toward the winning variant, and Infra Analytics alerts catch regressions. These are narrow, feature-specific automations rather than a general background-automation or agentic workflow capability. CLI use in CI/CD is a developer building block and earns no credit. Missing for 10: a general-purpose user-configurable automation/workflow engine, triggers/schedules beyond rollouts, autonomous agent-driven background tasks, independent corroboration.",
+    "rationale": "Statsig ships several domain-specific automations that run unattended once configured. Scheduled Rollouts gradually deploy a feature over time, Autotune shifts traffic toward the winning variant, and alerts catch regressions. The CLI can also be wired into CI/CD pipelines to automate gate and experiment management. However, there is no evidence of a general-purpose or AI-agent-driven background automation or workflow engine; the documented MCP server is interactive question-and-explore access. Missing for 10: a general automation or workflow builder, agent-triggered or scheduled background jobs beyond rollouts and bandits, and independent or hands-on corroboration.",
     "evidenceIds": [
       "statsig-docs-3",
       "statsig-docs-25",
       "statsig-docs-6",
-      "statsig-docs-47",
-      "statsig-docs-18"
+      "statsig-docs-35",
+      "statsig-docs-18",
+      "statsig-docs-31"
     ]
   },
   {
@@ -2604,14 +2604,15 @@
     "productId": "statsig",
     "storyId": "automation-bulk-operations",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "low",
-    "rationale": "Statsig's API documents a few multi-item calls: the check-feature-gates endpoint evaluates one or more gates in a single request, and the events endpoint logs one or more custom events at once. These are narrow batch operations, not bulk management of many configs. The Console API, CLI and MCP server are general CRUD and automation primitives with no documented bulk-edit capability, and Layers are a grouping construct rather than bulk actions. missing for 10: documented bulk create/update/delete of gates, experiments or configs; bulk actions via CLI, MCP or console; independent or hands-on corroboration of bulk workflows.",
+    "rationale": "Statsig has a Console CRUD API, a CLI that can run in CI/CD to automate management of Feature Gates and Experiments, and an MCP server. Together these let an AI-native user script operations across many items, and Layers group multiple experiments and flags. However, nothing in the evidence documents a native bulk-edit, batch endpoint, or multi-select operation, so bulk work appears to mean looping over single-item calls. Missing for 10: explicit bulk/batch API endpoints or CLI commands, bulk actions via MCP, documented bulk-edit workflows in the console, independent or hands-on corroboration.",
     "evidenceIds": [
-      "statsig-docs-49",
-      "statsig-docs-50",
       "statsig-docs-11",
-      "statsig-docs-31"
+      "statsig-docs-9",
+      "statsig-docs-31",
+      "statsig-docs-30",
+      "statsig-docs-13"
     ]
   },
   {
@@ -3180,16 +3181,16 @@
     "productId": "unleash",
     "storyId": "agentic-scoped-keys",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Unleash documents API keys for 'other tools and automation', and backend tokens can be scoped to specific projects and a single environment. It also documents RBAC with custom root and project roles, so least-privilege scoping of credentials is a first-party capability. However, the evidence never ties these scoped tokens to Admin API or MCP agent use: an agent managing flags needs write access, and scoping write credentials is not shown. Missing for 10: documented least-privilege scoping for Admin API or personal access tokens used by agents, guidance on credentials for the MCP server, and independent or hands-on corroboration.",
+    "rationale": "Unleash documents API keys for SDKs, Edge, and other tools and automation (docs-23), and backend tokens can be scoped to specific projects and a single environment (docs-15, docs-34). RBAC also supports custom root and project roles (docs-12, docs-32), and an MCP server lets coding assistants create and manage flags (docs-7). However, the evidence never shows how the admin-level credentials an agent needs to manage flags through the Admin API or MCP server are scoped to least privilege. Missing for 10: documented scoping of admin/automation tokens or service accounts for agents, guidance on least-privilege credentials for the MCP server, and independent corroboration.",
     "evidenceIds": [
       "unleash-docs-15",
       "unleash-docs-23",
       "unleash-docs-34",
       "unleash-docs-12",
       "unleash-docs-32",
-      "unleash-docs-42",
+      "unleash-docs-6",
       "unleash-docs-7"
     ]
   },
@@ -3292,14 +3293,15 @@
     "productId": "unleash",
     "storyId": "automation-bulk-operations",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "low",
-    "rationale": "Unleash documents a few first-party capabilities that act on many items at once. These are export/import of feature flags for migration and change requests that group multiple changes and apply them together at a specific time. Reusable segments and release templates that apply across any number of flags are also documented. However, there is no explicit evidence of bulk edit, archive, toggle or delete actions across many flags, whether in the UI or through a bulk API endpoint. The Admin API's general programmatic access is only a building block and earns no credit here. Missing for 10: documented bulk actions (bulk enable/disable/archive/tag) across many flags, bulk API endpoints, AI/MCP-driven batch operations, independent or hands-on corroboration.",
+    "rationale": "There is no explicit bulk-operation feature (such as multi-select archive or toggle) in the evidence. What exists are adjacent mechanisms: export/import of feature flags, segments defined once and reused across any number of flags, release templates applicable to any flag, and an Admin API with comprehensive programmatic access that would let an agent script batch changes. missing for 10: documented bulk actions on many flags at once (bulk enable/disable/archive/tag), bulk API endpoints, MCP-driven batch operations, independent or hands-on corroboration.",
     "evidenceIds": [
+      "unleash-docs-6",
       "unleash-docs-16",
-      "unleash-docs-41",
       "unleash-docs-31",
-      "unleash-docs-33"
+      "unleash-docs-33",
+      "unleash-docs-7"
     ]
   },
   {
