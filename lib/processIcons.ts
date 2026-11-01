@@ -135,6 +135,7 @@ export const FEASIBILITY_ICONS: Record<'drivable' | 'assist' | 'policy-gate' | '
 // pick as the semantic guide each glyph was drawn from.
 
 export const PROCESS_ICONS: Record<string, string> = {
+  'startup-coverage.prepare-and-file-statutory-annual-accounts': pi('ledger', 'emerald'),
   // Startup lifecycle expansion, grouped by the task domain.
   'startup-coverage.launch-an-online-storefront': pi('handshake', 'fuchsia'),
   'startup-coverage.set-up-marketplace-seller-onboarding-and-payouts': pi('handshake', 'fuchsia'),
