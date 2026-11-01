@@ -4,16 +4,15 @@
   "verdict": {
     "productId": "wezterm",
     "storyId": "agentic-headless",
-    "verdict": "partial",
-    "quality": 4,
-    "confidence": "low",
-    "rationale": "WezTerm's own `wezterm cli` subcommand can spawn programs and manipulate tabs and panes against a running GUI *or multiplexer instance*, which implies a non-GUI mux mode that scripts can drive. Remote and local multiplexing domains reinforce this. However, no evidence documents a headless server mode, how to start it, or its use in CI pipelines. missing for 10: documented headless/mux-server startup, explicit CI/automation guidance or examples, independent hands-on reports of headless or CI use.",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "The docs say the `wezterm cli` subcommand can drive a running GUI or multiplexer instance to spawn programs and manipulate tabs and panes. A hands-on runtime probe confirmed a fully headless control loop with no GUI session: `wezterm-mux-server --daemonize`, then CLI spawn, send-text, get-text and list. A community user also corroborates using get-text to dump pane contents to stdout. Missing for 10: first-party documentation of the mux-server headless mode itself, and CI-specific guidance or examples (containers, exit-code and scripting behavior).",
     "evidenceIds": [
       "wezterm-docs-7",
       "wezterm-docs-19",
-      "wezterm-docs-36",
-      "wezterm-docs-39",
-      "wezterm-probe-4"
+      "wezterm-probe-4",
+      "wezterm-probe-rt-1"
     ]
   }
 }

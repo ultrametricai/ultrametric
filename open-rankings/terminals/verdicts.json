@@ -20,7 +20,9 @@
     "quality": 0,
     "confidence": "high",
     "rationale": "Any product with public documentation could publish an llms.txt or agent-oriented docs, so this axis applies to a terminal emulator like Alacritty. The probe found no llms.txt (HTTP 404 at alacritty.org/llms.txt). The evidence pack shows only conventional human-oriented feature and config docs, with nothing agent-oriented.",
-    "evidenceIds": []
+    "evidenceIds": [
+      "alacritty-probe-1"
+    ]
   },
   {
     "productId": "alacritty",
@@ -545,7 +547,11 @@
     "quality": 0,
     "confidence": "high",
     "rationale": "Built-in panes and tabs are a fair question for a terminal emulator, so the axis applies. Alacritty's own README explicitly says it lacks tabs and splits, leaving them to a window manager or terminal multiplexer. Its multi-window support only opens separate OS windows, not panes or tabs. Community users confirm they rely on tmux, or switched to WezTerm, because Alacritty has no tabs.",
-    "evidenceIds": []
+    "evidenceIds": [
+      "alacritty-gh-3",
+      "alacritty-docs-4",
+      "alacritty-docs-5"
+    ]
   },
   {
     "productId": "alacritty",
@@ -560,15 +566,15 @@
     "productId": "alacritty",
     "storyId": "theming-color-schemes",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Alacritty documents color configuration in its TOML config using #RRGGBB hex values. It also supports importing additional config files and live config reload, which together allow swapping color schemes. Nothing in the pack shows automatic light/dark mode switching or a documented theme/scheme system. Missing for 10: automatic light/dark mode switching, explicit documented theme/color-scheme support (named palettes, theme files), independent corroboration of theming.",
+    "rationale": "Alacritty's TOML config lets you set colors as #RRGGBB hex values, and theme files can be imported, so color schemes are supported. Live config reload is on by default, which helps when swapping themes. Nothing in the evidence shows automatic light/dark mode switching, which is half of the story. Missing for 10: automatic light/dark switching tied to the OS appearance, a documented theme/scheme mechanism beyond raw hex colors and imports, and independent corroboration.",
     "evidenceIds": [
       "alacritty-docs-23",
       "alacritty-docs-30",
       "alacritty-docs-14",
-      "alacritty-docs-39",
-      "alacritty-docs-17"
+      "alacritty-docs-17",
+      "alacritty-docs-15"
     ]
   },
   {
@@ -621,7 +627,10 @@
     "quality": 0,
     "confidence": "high",
     "rationale": "Ghostty has a public documentation site, so publishing llms.txt or agent-oriented docs is a fair question for it. Direct probes found no such thing: https://ghostty.org/llms.txt and https://ghostty.org/docs.md both return HTTP 404. Nothing else in the pack describes machine-readable or agent-oriented documentation; the `+show-config --docs` CLI output is an adjacent feature and earns no credit.",
-    "evidenceIds": []
+    "evidenceIds": [
+      "ghostty-probe-1",
+      "ghostty-probe-2"
+    ]
   },
   {
     "productId": "ghostty",
@@ -635,14 +644,14 @@
   {
     "productId": "ghostty",
     "storyId": "agentic-autonomous-automation",
-    "verdict": "partial",
-    "quality": 3,
+    "verdict": "disputed",
+    "quality": 2,
     "confidence": "low",
-    "rationale": "Ghostty documents its own automation surface: a built-in AppleScript dictionary for scripting windows, tabs, terminals, layouts and input events, plus Apple Shortcuts (AppIntents) support on macOS. Nothing shows Ghostty itself scheduling, triggering, or running those automations unattended in the background; that would depend on external tools. The systemd always-on integration only keeps the app running, not automations. Missing for 10: native scheduled or triggered automations, autonomous background execution, Linux-side automation equivalents, hands-on corroboration of the scripting features.",
+    "rationale": "Ghostty's docs claim a built-in AppleScript dictionary for scripting windows, tabs, terminals, layouts and input events, which could drive automations if an external scheduler triggered them. A hands-on runtime probe of Ghostty 1.3.1 found no remote-control or IPC interface and concluded that an external script or agent cannot send commands to or read output from a running instance, which concretely contradicts that claim. Missing for 10: any native background or scheduled automation capability, verified external scripting or IPC control, and documentation of autonomous workflows.",
     "evidenceIds": [
       "ghostty-docs-9",
       "ghostty-docs-19",
-      "ghostty-gh-6"
+      "ghostty-probe-rt-1"
     ]
   },
   {
@@ -657,11 +666,17 @@
   {
     "productId": "ghostty",
     "storyId": "agentic-headless",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Ghostty is a GUI terminal emulator, and the evidence documents no headless mode or CI usage of the application itself. AppleScript and Shortcuts automation drive GUI windows and tabs, and `+show-config` only prints configuration. libghostty/libghostty-vt is a developer library for building or embedding terminal functionality, so it earns no credit under the partial-credit rules.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Nothing in the pack shows the Ghostty app running headlessly or in CI. The runtime probe found only config/+action CLI commands and no remote-control or IPC interface. AppleScript automation (macOS only) still drives a GUI instance. The only headless-capable path is the embeddable `libghostty-vt` library (C/Zig, including WebAssembly), which provides terminal functionality such as parsing without the GUI. That gives glancing, build-it-yourself support. Missing for 10: a documented headless/no-GUI mode for the app, CI usage docs or examples, a remote-control/IPC interface for scripts or agents to send input and read output, and hands-on evidence of CI use.",
+    "evidenceIds": [
+      "ghostty-gh-4",
+      "ghostty-gh-3",
+      "ghostty-probe-rt-1",
+      "ghostty-docs-9",
+      "ghostty-docs-37"
+    ]
   },
   {
     "productId": "ghostty",
@@ -779,11 +794,15 @@
   {
     "productId": "ghostty",
     "storyId": "api-machine-spec",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Ghostty exposes programmable surfaces, including the libghostty C/Zig library and a built-in AppleScript dictionary, so asking about a machine-readable API spec is a fair question for this product. However, the evidence shows no downloadable OpenAPI or equivalent spec: every probed OpenAPI/Swagger path returned 404. The AppleScript dictionary is a related scripting feature, not a documented downloadable spec, so it earns no credit here.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Ghostty has no OpenAPI or swagger spec: all candidate paths return 404, as do llms.txt and docs.md, and the runtime probe found no remote-control or IPC interface. The closest machine-readable equivalent is the built-in AppleScript dictionary describing windows, tabs, terminals, layouts and input events, plus the `+list-actions` enumeration of bindable actions. Neither is evidenced as a downloadable, standalone spec. missing for 10: a downloadable machine-readable spec file, cross-platform coverage beyond the macOS-only AppleScript dictionary, documentation of the spec's schema or format, independent corroboration.",
+    "evidenceIds": [
+      "ghostty-probe-3",
+      "ghostty-docs-9",
+      "ghostty-probe-rt-1"
+    ]
   },
   {
     "productId": "ghostty",
@@ -806,20 +825,30 @@
   {
     "productId": "ghostty",
     "storyId": "automation-bulk-operations",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Bulk operations, such as broadcasting input to many panes or acting on many tabs or windows at once, are a fair question for a terminal emulator, so the axis applies. The evidence documents no built-in bulk or multi-target operation. The AppleScript dictionary and Apple Shortcuts support are scripting primitives a user could build bulk actions from, not a bulk-operation capability itself, so they earn no credit here.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Ghostty's only relevant evidence is a claimed built-in AppleScript dictionary for scripting windows, tabs, terminals, layouts and input events. That could in principle let a script act on many sessions at once, but no bulk or broadcast operation is documented. A hands-on runtime probe found no remote-control or IPC interface through the CLI, which further weakens confidence that an external agent can drive multi-item operations. Missing for 10: any documented bulk/broadcast operation across many tabs, splits or sessions; agent-accessible remote-control API; hands-on corroboration that AppleScript automation works for multi-item actions.",
+    "evidenceIds": [
+      "ghostty-docs-9",
+      "ghostty-docs-19",
+      "ghostty-probe-rt-1"
+    ]
   },
   {
     "productId": "ghostty",
     "storyId": "automation-rules-engine",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "Event-triggered automation rules, like output-pattern triggers, are a fair axis for a terminal emulator, but the evidence shows no user-definable event→action rule system in Ghostty. The closest items do not qualify: AppleScript and Apple Shortcuts scripting are building blocks or host-platform features, keybindings are user-initiated, and automatic theme switching on dark/light mode and password-prompt detection are fixed built-in behaviors rather than user-defined rules.",
-    "evidenceIds": []
+    "rationale": "Ghostty's only user-defined event-to-action rules are custom keybindings, which map key events to bindable actions (85 enumerated via `ghostty +list-actions`). The macOS AppleScript dictionary allows external scripting of windows, tabs, terminals, layouts and input events, and the automatic dark/light theme switching and password-prompt detection are built-in behaviors rather than rules users write. Missing for 10: general event triggers such as output-pattern matches, command completion or session lifecycle hooks; a user-authored rule engine; any remote-control/IPC surface for agents (the runtime probe found none); and independent corroboration of event-driven automation.",
+    "evidenceIds": [
+      "ghostty-docs-4",
+      "ghostty-docs-9",
+      "ghostty-docs-21",
+      "ghostty-docs-10",
+      "ghostty-probe-rt-1"
+    ]
   },
   {
     "productId": "ghostty",
@@ -1164,14 +1193,15 @@
     "productId": "ghostty",
     "storyId": "splits-tabs-panes",
     "verdict": "full",
-    "quality": 7,
-    "confidence": "medium",
-    "rationale": "Ghostty's docs say it supports multiple windows, each with its own tabs and splits, rendered with native UI components. GitHub adds tab renaming and coloring, and the AppleScript dictionary can script windows, tabs and layouts. So panes and tabs are built in, with no external multiplexer needed. Missing for 10: detailed docs on creating, navigating and resizing splits; any detach or session-persistence equivalent to a multiplexer; independent hands-on confirmation of split and tab workflows.",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "First-party docs state that Ghostty supports multiple windows, each with its own tabs and splits, rendered with native UI components. A runtime probe confirms bindable `new_split` and `new_tab` actions, which can be mapped through the keybind system, so panes and tabs work without an external multiplexer. missing for 10: in-depth documentation of pane navigation, resizing and layout management, and independent community corroboration of the splits and tabs workflow.",
     "evidenceIds": [
       "ghostty-docs-32",
       "ghostty-docs-40",
-      "ghostty-gh-5",
-      "ghostty-docs-19"
+      "ghostty-probe-rt-1",
+      "ghostty-docs-4",
+      "ghostty-docs-9"
     ]
   },
   {
@@ -1203,16 +1233,11 @@
   {
     "productId": "ghostty",
     "storyId": "tmux-compat",
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Ghostty documents its own terminal emulation and supported control sequences, and full-screen TUI apps work in it (Neovim synchronized rendering; htop over SSH once the terminfo docs are followed). That implies tmux can run inside it, but no evidence names tmux directly, and a user wishing for tmux -CC support suggests there is no native control-mode integration. Missing for 10: explicit documentation or hands-on reports of tmux running in Ghostty, a native tmux integration/control mode (tmux -CC), and documented handling of TERM/terminfo for tmux over SSH.",
-    "evidenceIds": [
-      "ghostty-docs-1",
-      "ghostty-docs-44",
-      "ghostty-comm-17-refresh-326b236696a45c93",
-      "ghostty-comm-15-refresh-478a45c51fbb7cf2"
-    ]
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Ghostty is a terminal emulator, so running tmux or offering a native tmux integration/control mode is a fair question for this product. However, nothing in the evidence pack mentions tmux, tmux compatibility, or a tmux control-mode integration. The docs only cover general terminal emulation, control sequences, native windows/tabs/splits and keybindings, so the story is unevidenced.",
+    "evidenceIds": []
   },
   {
     "productId": "ghostty",
@@ -1572,17 +1597,16 @@
     "productId": "iterm2",
     "storyId": "command-aware-features",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "iTerm2's own shell integration knows where prompts are, which commands you enter, the host and the current directory, and it sets marks at each prompt (docs-31, docs-8, gh-10). Separately, it can notify you of job completion so long jobs can run in the background (docs-37, docs-45), and per-line timestamps help you see how long a job took (docs-49). However, the evidence never mentions exit-status tracking or a per-command duration feature, and it does not tie the completion notifications to shell integration. Missing for 10: documented per-command exit status display, explicit command duration tracking via shell integration, notifications explicitly tied to command completion, independent hands-on corroboration.",
+    "rationale": "iTerm2's shell integration is documented as command-aware: it knows where prompts are and what commands you enter, keeps per-host command history, sets marks at each prompt, and loads automatically from profile settings. Separately, the app offers job-completion notifications, but the evidence does not tie them to shell integration. missing for 10: explicit evidence of per-command exit status display, command duration tracking, notifications specifically for long-running commands tied to shell integration, and independent or hands-on corroboration.",
     "evidenceIds": [
-      "iterm2-docs-31",
       "iterm2-docs-8",
+      "iterm2-docs-31",
       "iterm2-gh-10",
-      "iterm2-docs-37",
-      "iterm2-docs-45",
-      "iterm2-docs-49",
-      "iterm2-docs-24"
+      "iterm2-docs-9",
+      "iterm2-docs-24",
+      "iterm2-docs-37"
     ]
   },
   {
@@ -1961,15 +1985,15 @@
     "productId": "kitty",
     "storyId": "agent-drives-terminal",
     "verdict": "full",
-    "quality": 7,
-    "confidence": "medium",
-    "rationale": "kitty's first-party remote-control docs describe controlling the terminal from scripts or the shell: opening new windows, sending arbitrary text input to any window, and changing titles, alongside programmable tabs, splits and layouts. Remote-control sockets are even forwarded over the ssh kitten, so the core of an agent creating panes and running commands through a documented interface is covered. missing for 10: explicit evidence of reading window output or scrollback via the control interface, detail on the protocol's wire format or security model, and independent or hands-on corroboration of agent-driven use.",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Kitty's first-party remote-control docs say scripts can open new windows and send arbitrary text to any window, and it advertises programmable tabs and splits. A recorded hands-on probe confirmed the full external control loop: `kitten @ ls` returned window and tab state as JSON, `send-text` ran a command in the live window, `get-text` read the output back, and `close-window` tore it down. Missing for 10: hands-on verification of creating a new pane/split via remote control (the probe launched kitty itself rather than a new split), and evidence documenting the underlying wire protocol beyond the CLI.",
     "evidenceIds": [
       "kitty-docs-1",
       "kitty-docs-23",
       "kitty-docs-27",
-      "kitty-docs-26",
-      "kitty-probe-4"
+      "kitty-probe-4",
+      "kitty-probe-rt-1"
     ]
   },
   {
@@ -1996,11 +2020,17 @@
   {
     "productId": "kitty",
     "storyId": "agentic-autonomous-automation",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Background automation is a fair question for a terminal emulator, so the axis applies. However, the evidence shows only scripting primitives: remote control from scripts, Python kittens and startup sessions. These are developer building blocks that a user could build automations from, not a documented feature for setting up automations that run autonomously in the background, and no scheduler, trigger or background task runner is evidenced.",
-    "evidenceIds": []
+    "rationale": "kitty is scriptable rather than a native automation runner. Its remote-control interface lets external scripts open windows, send text and read output, and kittens extend it in Python. A hands-on probe confirmed a detached kitty instance can be driven end-to-end over a socket by `kitten @` commands. Anything autonomous or background must come from external scripts or schedulers driving that control layer. Missing for 10: built-in scheduling or trigger-based automations, native background job or agent execution, documentation of autonomous unattended workflows.",
+    "evidenceIds": [
+      "kitty-docs-23",
+      "kitty-docs-27",
+      "kitty-probe-rt-1",
+      "kitty-probe-4",
+      "kitty-docs-1"
+    ]
   },
   {
     "productId": "kitty",
@@ -2014,11 +2044,16 @@
   {
     "productId": "kitty",
     "storyId": "agentic-headless",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Kitty is a GUI terminal emulator, and a headless/CI mode is a fair question for that kind of product, so the axis applies. However, the evidence only documents remote control and scripting of a running kitty instance (opening windows, sending text) plus startup sessions. That is an adjacent automation feature, not a documented headless or CI execution mode. Nothing in the pack shows kitty running without a display or inside CI pipelines.",
-    "evidenceIds": []
+    "rationale": "kitty is strongly scriptable: the remote-control docs describe driving it from scripts, and a hands-on probe ran `kitty --detach --listen-on` with `kitten @ ls/send-text/get-text/close-window` as a full external automation loop. Nothing shows it running truly headless (no display) or inside a CI pipeline, so it supports scripted automation of a live GUI instance rather than the story as written. Missing for 10: documented headless/no-display mode, CI usage guidance or examples, independent corroboration of CI or headless runs.",
+    "evidenceIds": [
+      "kitty-docs-23",
+      "kitty-docs-27",
+      "kitty-probe-4",
+      "kitty-probe-rt-1"
+    ]
   },
   {
     "productId": "kitty",
@@ -2051,30 +2086,32 @@
     "productId": "kitty",
     "storyId": "agentic-official-cli",
     "verdict": "full",
-    "quality": 7,
-    "confidence": "medium",
-    "rationale": "Kitty ships an official, first-party remote-control CLI: the docs say kitty \"can be controlled from scripts or the shell prompt\" to open windows, send text input to any window, and change titles, and a probe confirms the CLI is documented on the remote-control page. The ssh kitten also forwards remote-control sockets to remote hosts. missing for 10: evidence of agent-oriented CLI affordances (e.g. machine-readable output or AI-workflow docs), independent hands-on corroboration of the CLI's use in scripted/agentic workflows.",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "kitty ships an official remote-control CLI (`kitten @`) that is documented first-party for driving the terminal from scripts or the shell: opening windows, sending text, and changing titles. A hands-on runtime probe confirmed a complete agent-control loop: `ls` returned JSON state, and `send-text`, `get-text` and `close-window` all worked against a live instance. Missing for 10: independent community corroboration of CLI use in agent or AI workflows.",
     "evidenceIds": [
       "kitty-docs-1",
       "kitty-docs-23",
       "kitty-docs-27",
-      "kitty-docs-26",
-      "kitty-probe-4"
+      "kitty-probe-4",
+      "kitty-probe-rt-1"
     ]
   },
   {
     "productId": "kitty",
     "storyId": "agentic-public-api",
     "verdict": "full",
-    "quality": 8,
-    "confidence": "medium",
-    "rationale": "Kitty's first-party docs describe a remote-control facility for driving the terminal from scripts or the shell: opening windows, sending arbitrary text to any window, and changing window and tab titles. A probe confirms an official CLI on the remote-control page, and the ssh kitten forwards remote-control sockets, so a script or agent can drive kitty through a documented public interface. The missing OpenAPI and llms.txt are not material for a desktop terminal's local control API. Missing for 10: independent or hands-on corroboration of scripted or agent control, and evidence in the pack detailing the underlying wire protocol and full command coverage.",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "kitty documents a remote-control interface for scripts and the shell: opening windows, sending text, changing titles, and more. A hands-on probe confirmed a complete external agent loop over a socket: `kitten @ ls` returned window and tab state as JSON, then send-text, get-text and close-window all worked against a live window. Missing for 10: the pack does not cite the underlying wire-protocol documentation itself, and there is no machine-readable spec or llms.txt (both probes returned 404), though OpenAPI matters little for a local terminal.",
     "evidenceIds": [
       "kitty-docs-1",
       "kitty-docs-23",
       "kitty-docs-27",
-      "kitty-docs-26",
-      "kitty-probe-4"
+      "kitty-probe-4",
+      "kitty-probe-rt-1",
+      "kitty-probe-1",
+      "kitty-probe-3"
     ]
   },
   {
@@ -2090,14 +2127,16 @@
     "productId": "kitty",
     "storyId": "agentic-sdks",
     "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "kitty documents its own programmable surfaces: kittens, an extension framework written in Python, and remote control of the terminal from scripts or the shell via an official CLI. These are first-party ways to build against kitty, but the evidence names no packaged, versioned SDK libraries for any language. missing for 10: dedicated official SDK packages (e.g., Python/JS/Go client libraries), API reference docs for an SDK, multi-language coverage, independent corroboration of SDK-based development.",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "kitty documents programmatic surfaces you can build against: a Python extension API for writing kittens, and a scriptable remote-control CLI and protocol. A hands-on probe confirmed the remote-control loop works end to end (list state as JSON, send text, read output back, close the window). These are extension and control interfaces, though, not packaged official SDKs or client libraries, and no OpenAPI spec exists. Missing for 10: official language SDK/client libraries, SDK reference docs, machine-readable API spec (OpenAPI probe 404), independent corroboration of SDK-style development.",
     "evidenceIds": [
       "kitty-docs-27",
       "kitty-docs-8",
       "kitty-docs-23",
-      "kitty-probe-4"
+      "kitty-docs-24",
+      "kitty-probe-rt-1",
+      "kitty-probe-3"
     ]
   },
   {
@@ -2130,11 +2169,17 @@
   {
     "productId": "kitty",
     "storyId": "api-interactive-docs",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "kitty has a programmatic surface: remote-control commands and a terminal graphics protocol. An API reference is therefore a fair question for it, but the evidence shows only static documentation pages, with no interactive explorer or runnable in-browser examples. Probes for an OpenAPI/Swagger spec all returned 404, so there is no evidence of an interactive API reference.",
-    "evidenceIds": []
+    "rationale": "kitty documents a remote-control interface for scripts and the shell. Its commands can be run directly, and a hands-on probe showed `kitten @ ls/send-text/get-text` working against a live instance. That makes the reference effectively runnable from a terminal, but it is a static docs page rather than an interactive API explorer, and no OpenAPI/Swagger spec was found. Missing for 10: an interactive in-browser API reference, an OpenAPI or other machine-readable spec, embedded runnable examples in the docs.",
+    "evidenceIds": [
+      "kitty-docs-1",
+      "kitty-docs-23",
+      "kitty-probe-4",
+      "kitty-probe-rt-1",
+      "kitty-probe-3"
+    ]
   },
   {
     "productId": "kitty",
@@ -2166,11 +2211,16 @@
   {
     "productId": "kitty",
     "storyId": "automation-bulk-operations",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Bulk operations across many items is a fair question for a scriptable terminal, for example broadcasting input to many windows or acting on several tabs at once, so the axis applies. However, the evidence only shows per-window remote control from scripts: opening windows, sending text to any window, and changing titles. That is a scripting building block a user could loop over, not a documented multi-target or bulk capability. No broadcast or match-many feature appears in the pack.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "Kitty's remote control lets scripts open windows, send text to any window and change window and tab titles (kitty-docs-23). A hands-on probe confirmed `kitten @ ls` returns the full window, tab and layout state as JSON, with send-text, get-text and close-window working (kitty-probe-rt-1). An agent could therefore enumerate all windows and loop over them, but the evidence never shows a native multi-target or batch operation, so bulk action is only inferred from per-window scripting. Missing for 10: documented multi-window match/broadcast targeting, hands-on evidence of one command acting on many windows or tabs, and independent corroboration of bulk workflows.",
+    "evidenceIds": [
+      "kitty-docs-23",
+      "kitty-docs-27",
+      "kitty-probe-rt-1",
+      "kitty-probe-4"
+    ]
   },
   {
     "productId": "kitty",
@@ -2222,15 +2272,15 @@
     "productId": "kitty",
     "storyId": "cli-remote-control",
     "verdict": "full",
-    "quality": 8,
+    "quality": 10,
     "confidence": "high",
-    "rationale": "kitty's first-party remote-control docs say it can be controlled from scripts or the shell prompt to open new windows, send arbitrary text to any window, and change window and tab titles. The CLI is documented at the remote-control page, and the ssh kitten forwards remote-control sockets to remote hosts. Missing for 10: explicit evidence of querying terminal state (e.g. listing windows or tabs), and independent or hands-on corroboration of the remote-control interface.",
+    "rationale": "kitty's first-party remote-control docs describe controlling the terminal from scripts or the shell: opening windows, sending arbitrary text, and changing window and tab titles, over a documented socket interface. A hands-on runtime probe on kitty 0.48.2 independently confirmed the whole loop: `kitten @ ls` returned window, tab and layout state as JSON, `send-text` executed in the live window, `get-text` read the output back, and `close-window` tore it down. Every element of the story (open windows, send text, query state) is covered by in-depth docs plus hands-on verification.",
     "evidenceIds": [
-      "kitty-docs-23",
       "kitty-docs-1",
+      "kitty-docs-23",
       "kitty-docs-27",
-      "kitty-docs-26",
-      "kitty-probe-4"
+      "kitty-probe-4",
+      "kitty-probe-rt-1"
     ]
   },
   {
@@ -2374,16 +2424,17 @@
   {
     "productId": "kitty",
     "storyId": "openness-api-parity",
-    "verdict": "partial",
-    "quality": 5,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Kitty has its own documented remote-control interface that can be driven from scripts or the shell prompt. It can open new windows, send arbitrary text to any window, and change window and tab titles \"etc.\"; tabs, splits and layouts are described as programmable, and an official CLI is documented. However, nothing shows that remote control covers every UI action, such as the full set of mappable actions, so UI parity is implied rather than proven. Missing for 10: documented parity mapping between all mappable UI actions and remote-control commands, coverage of config and theme changes through the API, and independent hands-on corroboration of full parity.",
+    "rationale": "kitty's documented remote-control interface lets scripts open windows, send arbitrary text to any window, and change window and tab titles; tabs, splits and layouts are described as programmable. A hands-on probe confirmed a full external control loop: `kitten @ ls` returned window, tab and layout state as JSON, then send-text, get-text and close-window all worked. Missing for 10: an explicit statement or mapping showing remote control covers every UI and mappable action (true parity), and independent community corroboration of API completeness.",
     "evidenceIds": [
-      "kitty-docs-1",
       "kitty-docs-23",
       "kitty-docs-27",
+      "kitty-docs-1",
       "kitty-probe-4",
-      "kitty-docs-29"
+      "kitty-probe-rt-1",
+      "kitty-docs-22"
     ]
   },
   {
@@ -2855,24 +2906,18 @@
   {
     "productId": "warp",
     "storyId": "ai-privacy-controls",
-    "verdict": "partial",
-    "quality": 5,
+    "verdict": "disputed",
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Warp documents real data-egress controls. Telemetry can be opted out of and watched live in the native Network Log. Secret Redaction is always applied to AI interactions, Business/Enterprise plans get Zero Data Retention, and the client source is auditable under AGPL. Users also report that AI features like Prompt Suggestions and Next Command can be turned off. The caveats are significant: Free-plan users must keep telemetry on to use AI, and users report that Active AI sent terminal errors and output to LLMs proactively without explicit consent. Users also report login requirements, with AI only activating after login and one user blocked even from a local prompt, so the 'no forced login' part of the story is not delivered. Missing for 10: login-free use (including login-free AI), AI data-sharing off by default with explicit consent, AI usable on the Free plan without telemetry, and a documented first-party global 'disable all AI' switch.",
+    "rationale": "Warp documents data controls: a telemetry opt-out, a native Network Log for watching what is sent, unconditional secret redaction, and Zero Data Retention on Business/Enterprise plans. A co-founder also says the login requirement was removed. However, a concrete community report says 'Prompt Suggestions' and 'Next Command' send terminal session data to LLMs without explicit consent, which contradicts the claim of clear control. The Free plan also requires telemetry to use AI at all. Missing for 10: documented toggle to fully disable all AI features, explicit per-feature consent for session data sent to LLMs, independent confirmation that Warp and its AI work without login, and privacy controls on the Free tier that match paid tiers.",
     "evidenceIds": [
       "warp-docs-17",
-      "warp-docs-50",
       "warp-docs-33",
       "warp-docs-34",
       "warp-docs-56",
-      "warp-docs-25",
       "warp-docs-12",
-      "warp-comm-7-refresh-71c9a415f7c7f549",
-      "warp-comm-20",
-      "warp-comm-5-refresh-c863a0652662cc18",
-      "warp-comm-3-refresh-5354735514913349",
-      "warp-comm-12-refresh-ddf5b3ffaf25cb42",
-      "warp-comm-2-refresh-fed23bdb9358bd07"
+      "warp-docs-46",
+      "warp-comm-5-refresh-c863a0652662cc18"
     ]
   },
   {
@@ -3078,13 +3123,11 @@
   {
     "productId": "warp",
     "storyId": "fonts-ligatures",
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Warp's docs say its visual appearance can be customized, including fonts (warp-docs-90), so basic font selection is a first-party capability. Nothing in the pack shows the specific elements the story asks for. Missing for 10: ligature support, fallback font configuration, fine-grained font tuning (size, line height, weight, etc.), in-depth font docs, and independent or hands-on corroboration.",
-    "evidenceIds": [
-      "warp-docs-90"
-    ]
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Font configuration is a fair question for a terminal emulator like Warp, so the axis applies. However, the evidence pack covers only themes (background-image themes and OS light/dark sync), app icons and a settings file. Nothing in it mentions programming fonts, ligature support, fallback fonts or font tuning.",
+    "evidenceIds": []
   },
   {
     "productId": "warp",
@@ -3364,17 +3407,16 @@
   {
     "productId": "wezterm",
     "storyId": "agent-drives-terminal",
-    "verdict": "partial",
-    "quality": 6,
-    "confidence": "medium",
-    "rationale": "WezTerm's official `cli` subcommand is documented to interact with a running GUI or multiplexer instance and to spawn programs and manipulate tabs and panes. That gives an agent a first-party way to create panes and launch commands programmatically. However, the evidence never shows reading pane output back, sending input to an existing pane, or a machine-readable protocol or API spec, and the OpenAPI probes all returned 404. Missing for 10: documented capability to read pane output or scrollback, sending text or commands into existing panes, a structured control protocol or API reference, and hands-on corroboration of agent-driven use.",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "WezTerm's documented `wezterm cli` subcommand controls a running GUI or mux instance to spawn programs and manipulate tabs and panes. A runtime probe confirmed a fully headless agent loop: `spawn` returned a pane-id, `send-text` ran a command, `get-text` read the output back, and `list` enumerated windows, tabs and panes. A community user also independently cites `get-text` for dumping scrollback. Missing for 10: in-depth first-party documentation of the individual subcommands (e.g. pane splitting and machine-readable output formats) beyond the summary-level docs snippet.",
     "evidenceIds": [
       "wezterm-docs-7",
       "wezterm-docs-19",
-      "wezterm-docs-35",
       "wezterm-probe-4",
-      "wezterm-docs-36",
-      "wezterm-probe-3"
+      "wezterm-probe-rt-1",
+      "wezterm-docs-3"
     ]
   },
   {
@@ -3398,11 +3440,15 @@
   {
     "productId": "wezterm",
     "storyId": "agentic-autonomous-automation",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Autonomous background automation is a fair question for a terminal product, since some terminals ship agent or automation features. However, the evidence only documents developer building blocks: the `wezterm cli` subcommand for spawning programs and manipulating panes, Lua config, user vars, and persistent multiplexer sessions. None of these is a product capability for setting up automations that run autonomously in the background, so they earn no credit.",
-    "evidenceIds": []
+    "rationale": "WezTerm provides the building blocks for background automation: a hands-on probe ran a fully headless loop with `wezterm-mux-server --daemonize`, then used `wezterm cli` to spawn, send-text, get-text and list panes with no GUI session. The docs confirm the cli subcommand can spawn programs and manipulate panes in a running mux instance. However, these are scripting primitives driven by an external tool, not a built-in way to define and run autonomous automations. Missing for 10: built-in scheduling or trigger mechanisms, first-party docs on setting up autonomous background workflows, and independent corroboration of such use.",
+    "evidenceIds": [
+      "wezterm-probe-rt-1",
+      "wezterm-docs-7",
+      "wezterm-docs-3"
+    ]
   },
   {
     "productId": "wezterm",
@@ -3416,16 +3462,15 @@
   {
     "productId": "wezterm",
     "storyId": "agentic-headless",
-    "verdict": "partial",
-    "quality": 4,
-    "confidence": "low",
-    "rationale": "WezTerm's own `wezterm cli` subcommand can spawn programs and manipulate tabs and panes against a running GUI *or multiplexer instance*, which implies a non-GUI mux mode that scripts can drive. Remote and local multiplexing domains reinforce this. However, no evidence documents a headless server mode, how to start it, or its use in CI pipelines. missing for 10: documented headless/mux-server startup, explicit CI/automation guidance or examples, independent hands-on reports of headless or CI use.",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "The docs say the `wezterm cli` subcommand can drive a running GUI or multiplexer instance to spawn programs and manipulate tabs and panes. A hands-on runtime probe confirmed a fully headless control loop with no GUI session: `wezterm-mux-server --daemonize`, then CLI spawn, send-text, get-text and list. A community user also corroborates using get-text to dump pane contents to stdout. Missing for 10: first-party documentation of the mux-server headless mode itself, and CI-specific guidance or examples (containers, exit-code and scripting behavior).",
     "evidenceIds": [
       "wezterm-docs-7",
       "wezterm-docs-19",
-      "wezterm-docs-36",
-      "wezterm-docs-39",
-      "wezterm-probe-4"
+      "wezterm-probe-4",
+      "wezterm-probe-rt-1"
     ]
   },
   {
@@ -3459,30 +3504,30 @@
     "productId": "wezterm",
     "storyId": "agentic-official-cli",
     "verdict": "full",
-    "quality": 7,
+    "quality": 9,
     "confidence": "high",
-    "rationale": "WezTerm ships an official, documented `wezterm cli` subcommand that talks to a running GUI or multiplexer instance to spawn programs and manipulate tabs and panes. It also documents an `imgcat` CLI command and command-line config overrides, which together make the terminal scriptable from the shell. Missing for 10: documentation of machine-readable/structured output or command reference depth in evidence, independent or hands-on corroboration of CLI use in automated/agent workflows.",
+    "rationale": "WezTerm ships an official, documented `wezterm cli` subcommand that drives a running GUI or mux instance to spawn programs and manipulate tabs and panes. A runtime probe confirmed a fully headless agent loop (mux-server daemonize, spawn, send-text, get-text, list), and a community user independently relies on `get-text` to dump scrollback. Missing for 10: evidence of machine-readable (e.g. JSON) output modes and in-depth per-subcommand reference beyond the overview snippets.",
     "evidenceIds": [
       "wezterm-docs-7",
       "wezterm-docs-19",
-      "wezterm-docs-35",
       "wezterm-probe-4",
-      "wezterm-docs-12",
-      "wezterm-docs-23"
+      "wezterm-probe-rt-1",
+      "wezterm-docs-12"
     ]
   },
   {
     "productId": "wezterm",
     "storyId": "agentic-public-api",
-    "verdict": "partial",
-    "quality": 5,
-    "confidence": "medium",
-    "rationale": "WezTerm documents a `wezterm cli` subcommand that talks to a running GUI or multiplexer instance to spawn programs and manipulate tabs and panes. That is a first-party, documented programmatic control surface an agent can drive, though the evidence describes it only in one-line summaries. Probes found no OpenAPI spec or llms.txt, and the pack does not show the breadth of the CLI or of any scripting API. Missing for 10: detailed reference coverage of the CLI's commands and output formats, evidence of a broader documented API (e.g. a Lua scripting API or machine-readable spec), and independent or hands-on corroboration of programmatic use.",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "WezTerm documents a `wezterm cli` subcommand for driving a running GUI or multiplexer instance: spawning programs and manipulating tabs and panes. A hands-on runtime probe confirmed a fully headless control loop: a daemonized mux-server, then spawn, send-text, get-text and list, with no GUI needed. Community use of get-text corroborates this. Missing for 10: a machine-readable API spec or LLM-oriented docs (llms.txt and OpenAPI both 404), and in-depth evidence of the full command reference or a scripting API beyond the CLI summary page.",
     "evidenceIds": [
       "wezterm-docs-7",
       "wezterm-docs-19",
-      "wezterm-docs-35",
       "wezterm-probe-4",
+      "wezterm-probe-rt-1",
+      "wezterm-probe-1",
       "wezterm-probe-3"
     ]
   },
@@ -3570,11 +3615,15 @@
   {
     "productId": "wezterm",
     "storyId": "automation-bulk-operations",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Bulk operations, such as broadcasting input or acting on many panes or tabs at once, are a fair question for a terminal multiplexer. The evidence only shows a `cli` subcommand that can spawn programs and manipulate tabs and panes. That is a building block a user could script around, not a documented bulk-operation capability, and nothing mentions broadcast input or multi-item actions.",
-    "evidenceIds": []
+    "rationale": "WezTerm's `cli` subcommand can enumerate all windows, tabs and panes (`wezterm cli list`) and send text to or read text from individual panes by pane-id. A hands-on probe verified this works headlessly, so a script could loop over many panes to approximate bulk operations. However, every documented operation targets a single pane, and nothing shows a native bulk or broadcast capability. Missing for 10: native multi-pane/broadcast input or batch commands, documented bulk-operation workflows, and independent evidence of bulk use across many items.",
+    "evidenceIds": [
+      "wezterm-docs-7",
+      "wezterm-probe-rt-1",
+      "wezterm-probe-4"
+    ]
   },
   {
     "productId": "wezterm",
@@ -3616,15 +3665,14 @@
     "productId": "wezterm",
     "storyId": "cli-remote-control",
     "verdict": "full",
-    "quality": 7,
-    "confidence": "medium",
-    "rationale": "WezTerm documents a `wezterm cli` subcommand that talks to a running GUI or multiplexer instance and can spawn programs and manipulate tabs and panes, which covers the core of scripting the terminal from the command line. missing for 10: explicit evidence of sending text into panes, explicit evidence of querying state (e.g. listing windows or panes), detailed per-command documentation in the pack, independent or hands-on corroboration of CLI scripting.",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "WezTerm documents a `wezterm cli` subcommand that talks to a running GUI or multiplexer instance to spawn programs and manipulate tabs and panes. A recorded runtime probe ran the full loop headlessly: `spawn --new-window` returned a pane-id, `send-text` delivered text, `get-text` read the pane back, and `list` enumerated windows, tabs and panes. A community user separately confirms using `get-text` to dump scrollback. Missing for 10: the pack holds only a one-line summary of the CLI docs, with no in-depth per-subcommand reference (e.g. flags or output formats for list/get-text).",
     "evidenceIds": [
       "wezterm-docs-7",
       "wezterm-docs-19",
-      "wezterm-docs-35",
       "wezterm-probe-4",
-      "wezterm-docs-23"
+      "wezterm-probe-rt-1"
     ]
   },
   {
@@ -3775,30 +3823,30 @@
     "productId": "wezterm",
     "storyId": "openness-api-parity",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "WezTerm documents a first-party `wezterm cli` subcommand that drives a running GUI or multiplexer instance to spawn programs and manipulate tabs and panes, and it supports command-line config overrides. That gives real programmatic control over the core windowing surface. Nothing shows this reaches parity with the UI: scrollback search, quick select, copy mode and other UI features have no documented programmatic equivalent, and no OpenAPI or similar API surface was found. missing for 10: evidence of full UI-to-API parity, programmatic access to search/quick-select/copy-mode and other UI actions, a documented comprehensive API reference, independent corroboration of automation coverage",
+    "rationale": "WezTerm's `cli` subcommand drives a running GUI or mux instance to spawn programs and manipulate tabs and panes. A hands-on probe confirmed a fully headless loop (spawn, send-text, get-text, list) with no GUI session, and the community confirms get-text scrollback dumping. Configuration can also be changed through the auto-reloaded Lua config and command-line overrides. However, nothing shows that every UI capability is exposed programmatically. Missing for 10: documented UI/API parity for interactive features (search mode, Quick Select, copy modes, font-size/color changes at runtime via the CLI), a comprehensive API reference beyond pane/tab/window manipulation, and independent confirmation of complete coverage.",
     "evidenceIds": [
       "wezterm-docs-7",
       "wezterm-docs-19",
-      "wezterm-docs-35",
-      "wezterm-docs-23",
       "wezterm-probe-4",
-      "wezterm-probe-3"
+      "wezterm-probe-rt-1",
+      "wezterm-docs-23",
+      "wezterm-docs-24"
     ]
   },
   {
     "productId": "wezterm",
     "storyId": "openness-full-export",
-    "verdict": "partial",
-    "quality": 5,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "WezTerm keeps its main user data, the configuration, in a plain-text Lua file in your home directory (or next to wezterm.exe for portable use), so it is inherently open and portable. Community users confirm they diff, sync and reuse the config across machines with chezmoi and nix. However, there is no documented export feature or statement covering all data, such as scrollback or session state. Missing for 10: documented export of scrollback/session data, an explicit data-portability or export statement covering all user data.",
+    "rationale": "WezTerm is a local terminal, and its user data is portable. Configuration is a plain Lua file it watches and reloads, which users describe as easy to diff and sync with tools like chezmoi. Pane content and scrollback can be dumped as text with `wezterm cli get-text`, which a headless probe confirmed works. Missing for 10: no first-party documentation of data export or portability as such, nothing on exporting session or multiplexer state, and only community and probe corroboration of the export path.",
     "evidenceIds": [
-      "wezterm-docs-31",
-      "wezterm-docs-34",
-      "wezterm-comm-14-refresh-664e6b8460436594",
-      "wezterm-comm-12-refresh-6d5e6506079aa7ed"
+      "wezterm-docs-6",
+      "wezterm-docs-24",
+      "wezterm-probe-rt-1",
+      "wezterm-docs-7"
     ]
   },
   {
@@ -3893,15 +3941,14 @@
     "productId": "wezterm",
     "storyId": "scripted-session-layouts",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "WezTerm documents a `cli` subcommand that can spawn programs and manipulate tabs and panes in a running instance. That gives a scriptable way to build a workspace layout, and it fits the story's \"or scripts\" path. It also has a Lua config file and pane splitting, but nothing in the pack shows the config declaring startup sessions or layouts. missing for 10: documented config-level startup session/layout definition (e.g. startup hooks or workspace definitions), evidence of a single-command project workspace launch, hands-on corroboration of scripted layout creation.",
+    "rationale": "The official `wezterm cli` can spawn programs and manipulate tabs and panes in a running GUI or mux instance. A runtime probe confirmed scripted `spawn --new-window`, `send-text` and `list` working, so a workspace can be scripted into one command. The evidence only shows this via external scripting against the CLI, not a declarative startup-session or layout definition in the Lua config. Missing for 10: documented config-level startup/session hooks, explicit pane-split layout definitions, named workspace/session restore, and independent reports of one-command project workspaces.",
     "evidenceIds": [
       "wezterm-docs-7",
       "wezterm-docs-19",
-      "wezterm-docs-29",
-      "wezterm-docs-31",
-      "wezterm-probe-4"
+      "wezterm-probe-rt-1",
+      "wezterm-docs-3"
     ]
   },
   {

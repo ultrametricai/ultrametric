@@ -4,17 +4,16 @@
   "verdict": {
     "productId": "wezterm",
     "storyId": "agent-drives-terminal",
-    "verdict": "partial",
-    "quality": 6,
-    "confidence": "medium",
-    "rationale": "WezTerm's official `cli` subcommand is documented to interact with a running GUI or multiplexer instance and to spawn programs and manipulate tabs and panes. That gives an agent a first-party way to create panes and launch commands programmatically. However, the evidence never shows reading pane output back, sending input to an existing pane, or a machine-readable protocol or API spec, and the OpenAPI probes all returned 404. Missing for 10: documented capability to read pane output or scrollback, sending text or commands into existing panes, a structured control protocol or API reference, and hands-on corroboration of agent-driven use.",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "WezTerm's documented `wezterm cli` subcommand controls a running GUI or mux instance to spawn programs and manipulate tabs and panes. A runtime probe confirmed a fully headless agent loop: `spawn` returned a pane-id, `send-text` ran a command, `get-text` read the output back, and `list` enumerated windows, tabs and panes. A community user also independently cites `get-text` for dumping scrollback. Missing for 10: in-depth first-party documentation of the individual subcommands (e.g. pane splitting and machine-readable output formats) beyond the summary-level docs snippet.",
     "evidenceIds": [
       "wezterm-docs-7",
       "wezterm-docs-19",
-      "wezterm-docs-35",
       "wezterm-probe-4",
-      "wezterm-docs-36",
-      "wezterm-probe-3"
+      "wezterm-probe-rt-1",
+      "wezterm-docs-3"
     ]
   }
 }
