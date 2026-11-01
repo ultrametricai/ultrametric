@@ -126,6 +126,98 @@
         }
       ]
     },
+    "scenarioScopes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "processId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "country": {
+            "type": "string",
+            "minLength": 1
+          },
+          "assessmentIds": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "limitation": {
+            "type": "string",
+            "minLength": 1
+          },
+          "independentReview": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "reviewer": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "qualification": {
+                    "type": "string",
+                    "enum": [
+                      "editorial",
+                      "accounting",
+                      "legal",
+                      "employment",
+                      "tax",
+                      "security"
+                    ]
+                  },
+                  "independent": {
+                    "type": "boolean"
+                  },
+                  "contentDigest": {
+                    "type": "string",
+                    "pattern": "^[a-f0-9]{64}$"
+                  },
+                  "reviewedOn": {
+                    "type": "string",
+                    "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                  },
+                  "reviewDue": {
+                    "type": "string",
+                    "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                  },
+                  "evidenceUrl": {
+                    "type": "string",
+                    "format": "uri"
+                  }
+                },
+                "required": [
+                  "reviewer",
+                  "qualification",
+                  "independent",
+                  "contentDigest",
+                  "reviewedOn",
+                  "reviewDue",
+                  "evidenceUrl"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "processId",
+          "country",
+          "assessmentIds",
+          "limitation",
+          "independentReview"
+        ],
+        "additionalProperties": false
+      }
+    },
     "maintenance": {
       "type": "object",
       "properties": {
@@ -195,6 +287,7 @@
     "includedWork",
     "exclusions",
     "independentScopeReview",
+    "scenarioScopes",
     "maintenance",
     "qualificationByDomain"
   ],
