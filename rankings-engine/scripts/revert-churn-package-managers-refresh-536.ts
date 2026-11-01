@@ -12,15 +12,28 @@
 // Rule, per cell: a (verdict, quality) flip vs the pre-refresh baseline stands only when it
 // rests on evidence that actually changed. Content-aware rule (re-crawled packs mint NEW
 // ids for UNCHANGED excerpts, e.g. mise-docs-95 repeating mise-docs-70): an id added by
-// the refresh whose normalized excerpt already
-// exists verbatim in the baseline pack is NOT changed evidence. Changed evidence is:
-//   - an added id whose excerpt text is new to the pack,
-//   - a removed id,
+// the refresh whose normalized excerpt already exists verbatim in the baseline pack is NOT
+// changed evidence, and a REMOVED id whose content survives in a fresh item from the same
+// canonical url (verbatim, containment, or token overlap >= 0.5) is a re-mint: neither
+// lost support nor, on the fresh side, new content. Urls are canonicalized so the two
+// recorded forms of a Hacker News item (hn.algolia.com/api/v1/items/<id> and
+// news.ycombinator.com/item?id=<id>) match: the second review round names mise-comm-7
+// surviving as mise-comm-19 with only the url form and quoting style changed.
+// Changed evidence is:
+//   - an added id whose excerpt text is new to the pack and is not a re-mint survivor,
+//   - a removed id whose content does not survive under a new id,
 //   - a same-id excerpt replacement.
 // A flip citing none of that (on either side) is sampling churn and converges back to the
-// committed baseline verdict; the judge cache is patched in place (same hash, restored
-// verdict) so a future judge run does not resurrect the churn. A revert is skipped (and
-// reported) when the baseline verdict cites an id no longer in the pack.
+// committed baseline verdict, with restored citations remapped through re-mints so nothing
+// dangles; the judge cache is patched in place (same hash, restored verdict) so a future
+// judge run does not resurrect the churn. A revert is skipped (and reported) when a
+// baseline citation neither resolves in the pack nor remaps to a survivor.
+//
+// The second round also names two upgrades resting on a same-page re-crawl below the 0.8
+// pairwise threshold (mise-docs-100 restates mise-docs-74, recorded in
+// REVIEW_VERIFIED_REPEATS) and two upgrades whose only new citation does not describe the
+// graded capability (pnpm-gh-4 is OS support, not licensing; uv-docs-77 is cache
+// revalidation, not retention control — recorded in REVIEW_VERIFIED_IRRELEVANT).
 //
 // Baseline: origin/main at settle time (main's package-managers files are pre-refresh;
 // the arena changed only in this PR).
@@ -84,6 +97,35 @@ function nearDup(a: string, b: string): boolean {
 
 // Ids whose evidence actually changed vs baseline: added-with-new-excerpt, removed, or
 // same-id excerpt replaced. Added ids repeating a baseline excerpt are recorded separately.
+// Review-verified repeats the pairwise nearDup cannot see: a same-page re-crawl restating a
+// baseline excerpt (token overlap 0.6), verified by reading both. mise-docs-100 ("`mise mcp`
+// runs a Model Context Protocol server that lets an AI assistant read a project's tools,
+// tasks, environment variables and config files, and run its tasks", mcp.html) restates
+// mise-docs-74 ("The mise MCP server lets an AI assistant inspect a project's tools, tasks,
+// environment, and configuration, and run mise tasks", same page); the command name is not
+// a new capability fact. Entries apply only when the baseline twin is in the baseline pack.
+const REVIEW_VERIFIED_REPEATS: Record<string, Record<string, string[]>> = {
+  mise: { 'mise-docs-100': ['mise-docs-74'] },
+}
+
+// Review-verified irrelevant citations, per cell: the review verified (and reading the
+// excerpt confirms) that the flip's only new citation does not describe the graded
+// capability, so the flip does not rest on changed evidence OF the story. Scoped to the
+// named cells; the id can still count as new content elsewhere.
+const REVIEW_VERIFIED_IRRELEVANT: Record<string, string[]> = {
+  'pnpm:openness-open-license': ['pnpm-gh-4'],
+  'uv:privacy-retention-controls': ['uv-docs-77'],
+}
+
+// The crawler records a Hacker News item under either its Algolia API form or its
+// news.ycombinator form; both name the same resource, so survivor matching treats them as
+// the same url.
+const canonicalUrl = (u: string): string => {
+  const hn = u.match(/hn\.algolia\.com\/api\/v1\/items\/(\d+)/) ?? u.match(/news\.ycombinator\.com\/item\?id=(\d+)/)
+  if (hn) return `hn:${hn[1]}`
+  return u.replace(/\/+$/, '')
+}
+
 function changedIdsFor(productId: string): { changed: Set<string>; repeats: Map<string, string> } {
   const file = `open-rankings/${CAT}/evidence/${productId}.json`
   const baseItems = gitShowJson<EvidenceItem[]>(BASELINE_REF, file) ?? []
@@ -101,14 +143,20 @@ function changedIdsFor(productId: string): { changed: Set<string>; repeats: Map<
       if (!nearDup(old.excerpt ?? '', item.excerpt ?? '')) changed.add(item.id)
       continue
     }
+    const verified = REVIEW_VERIFIED_REPEATS[productId]?.[item.id]
+    if (verified && verified.every((vid) => baseById.has(vid))) {
+      repeats.set(item.id, verified.join('+')) // review-verified same-page restatement
+      continue
+    }
     const twin = baseItems.find((b) => nearDup(b.excerpt ?? '', item.excerpt ?? ''))
     if (twin) repeats.set(item.id, twin.id) // new id, repeated content: not changed evidence
     else changed.add(item.id) // genuinely new content
   }
   // Removals are content-aware too: the collect-community re-collect mints a new id for a
-  // paraphrase of the same report (drata-comm-3 -> drata-comm-2-refresh-*, token overlap
-  // 0.59, same url). A removed id whose content survives in a same-url fresh item (verbatim,
-  // containment, or token overlap >= 0.5) is a re-mint, not lost support.
+  // paraphrase of the same report (pnpm-comm-2 -> pnpm-comm-17-refresh-*, same thread). A
+  // removed id whose content survives in a fresh item from the same canonical url (verbatim,
+  // containment, or token overlap >= 0.5) is a re-mint: the removal is not lost support,
+  // and the surviving fresh id is the same evidence, not new content.
   const overlap = (a: string, b: string): number => {
     const ta = new Set(norm(a).split(' '))
     const tb = new Set(norm(b).split(' '))
@@ -121,11 +169,16 @@ function changedIdsFor(productId: string): { changed: Set<string>; repeats: Map<
     if (freshIds.has(id)) continue
     const survivor = freshItems.find(
       (f) =>
-        f.url === old.url &&
+        canonicalUrl(f.url ?? '') === canonicalUrl(old.url ?? '') &&
         (nearDup(old.excerpt ?? '', f.excerpt ?? '') || overlap(old.excerpt ?? '', f.excerpt ?? '') >= 0.5),
     )
-    if (survivor) repeats.set(id, survivor.id) // re-minted under a new id: not lost support
-    else changed.add(id) // genuinely removed
+    if (survivor) {
+      repeats.set(id, survivor.id) // re-minted under a new id: not lost support
+      if (changed.has(survivor.id)) {
+        changed.delete(survivor.id) // the survivor is the same evidence, not new content
+        repeats.set(survivor.id, id)
+      }
+    } else changed.add(id) // genuinely removed
   }
   return { changed, repeats }
 }
@@ -157,7 +210,8 @@ function main(): void {
     // content changed). A downgrade citing only new positive content with its
     // prior support intact is reinterpretation (the secureframe cells in review).
     const rank: Record<string, number> = { none: 0, partial: 1, full: 2 }
-    const citesNewContent = row.evidenceIds.some((id) => changed.has(id))
+    const irrelevant = new Set(REVIEW_VERIFIED_IRRELEVANT[key] ?? [])
+    const citesNewContent = row.evidenceIds.some((id) => changed.has(id) && !irrelevant.has(id))
     const supportLoss = base.evidenceIds.some((id) => changed.has(id))
     const rankable = Object.hasOwn(rank, base.verdict) && Object.hasOwn(rank, row.verdict)
     const isUp =
@@ -185,9 +239,17 @@ function main(): void {
     }
     const curIds = currentIdsByProduct.get(pid)!
     // Restore the baseline verdict with citations remapped through re-mints (a removed id
-    // whose content survives under a new same-url id cites the survivor instead).
-    const restoredIds = base.evidenceIds.map((id) => (curIds.has(id) ? id : (repeats.get(id) ?? id)))
-    if (restoredIds.some((id) => !curIds.has(id))) {
+    // whose content survives under a new same-url id cites the survivor instead). For a
+    // churn UPGRADE, a baseline citation that is genuinely gone cannot block the revert:
+    // losing support can only ever justify a downgrade, so the baseline cell is restored
+    // citing its surviving citations and the dropped id is reported (the review-named
+    // pnpm/supply-chain-protections cell: pnpm-comm-1, one of five citations, did not
+    // survive the community re-collect). Downgrades and non-rankable changes still skip,
+    // since lost support might genuinely explain them.
+    const remapped = base.evidenceIds.map((id) => (curIds.has(id) ? id : (repeats.get(id) ?? id)))
+    const unresolved = remapped.filter((id) => !curIds.has(id))
+    const restoredIds = remapped.filter((id) => curIds.has(id))
+    if (unresolved.length && (!isUp || restoredIds.length === 0)) {
       skipped++
       console.log(`SKIP ${CAT}/${key}: baseline citation no longer resolves in the pack`)
       continue
@@ -198,9 +260,11 @@ function main(): void {
       .filter((id) => repeats.has(id))
       .map((id) => `${id} repeats ${repeats.get(id)}`)
       .join(', ')
+    const dropNote = unresolved.length ? `  [drops ${unresolved.join(', ')}: no survivor in the pack]` : ''
     console.log(
       `REVERT ${CAT}/${key}  ${row.verdict}(q${row.quality}) -> baseline ${base.verdict}(q${base.quality})` +
-        (repeatNote ? `  [${repeatNote}]` : ''),
+        (repeatNote ? `  [${repeatNote}]` : '') +
+        dropNote,
     )
     if (WRITE) {
       current[i] = { ...restored }

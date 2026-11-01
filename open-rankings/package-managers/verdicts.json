@@ -1536,11 +1536,10 @@
     "productId": "mise",
     "storyId": "agentic-mcp-server",
     "verdict": "full",
-    "quality": 8,
-    "confidence": "high",
-    "rationale": "mise ships its own Model Context Protocol server through the `mise mcp` subcommand, documented on a dedicated first-party page. The server lets an AI assistant read a project's tools, tasks, environment variables and config files, and run its tasks. missing for 10: documented client-connection setup steps (e.g., agent config examples), independent or hands-on corroboration that the server works in practice.",
+    "quality": 6,
+    "confidence": "medium",
+    "rationale": "mise has a dedicated first-party docs page (mise.jdx.dev/mcp.html) for an official MCP server that lets an AI assistant inspect a project's tools, tasks, environment and configuration, and run mise tasks. That covers the core of connecting an agent through an official MCP server, but the evidence is a single descriptive line. Missing for 10: documented setup and connection steps for agent clients, the transport and stability/experimental status, the full list of exposed tools and permission controls, and independent or hands-on corroboration.",
     "evidenceIds": [
-      "mise-docs-100",
       "mise-docs-74"
     ]
   },
@@ -2164,17 +2163,18 @@
     "productId": "mise",
     "storyId": "third-party-extension-ecosystem",
     "verdict": "full",
-    "quality": 7,
-    "confidence": "medium",
-    "rationale": "mise documents a pluggable backend model in which tools come from package registries (npm, cargo, pipx), GitHub releases or plugins. It can still use asdf plugins, and any tool's backend can be overridden to a third-party vfox plugin (e.g. `vfox:mise-plugins/vfox-php`). Community users confirm the wider set of package sources. missing for 10: documentation on authoring or publishing your own plugins/backends, evidence of installing plugins from arbitrary third-party repositories, and hands-on corroboration of the plugin extension path specifically.",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "mise can be extended through several backends: asdf plugins remain usable, vfox plugins can be wired in (e.g. `vfox:mise-plugins/vfox-php`), and any tool's backend can be overridden with `MISE_BACKENDS_<TOOL>`. Third-party sources such as npm, pipx, github, aqua and arbitrary http URLs also work as backends, and community users confirm it supports many more package sources than asdf. Missing for 10: first-party docs on authoring your own plugin or backend, and evidence of adding custom third-party registries (taps/overlays).",
     "evidenceIds": [
-      "mise-docs-104",
       "mise-docs-25",
       "mise-docs-33",
       "mise-docs-15",
-      "mise-docs-94",
+      "mise-docs-52",
       "mise-docs-57",
+      "mise-docs-26",
       "mise-docs-54",
+      "mise-docs-51",
       "mise-comm-19"
     ]
   },
@@ -3357,14 +3357,13 @@
     "productId": "pnpm",
     "storyId": "openness-open-license",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "The GitHub items (github.com/pnpm/pnpm) show pnpm's source is publicly hosted and readable, which covers the 'read the source' part of the story. Nothing in the pack names the license, and the `pnpm licenses list` items describe auditing dependency licenses, not pnpm's own license, so they are not credited. Missing for 10: explicit evidence of an OSI-approved open license for pnpm itself, and documentation or independent corroboration of the licensing terms.",
+    "rationale": "pnpm has a public GitHub repository (github.com/pnpm/pnpm) with README content, which implies the source is readable. However, nothing in the pack states the license the code is released under. `pnpm licenses list` (pnpm-docs-20) only reports the licenses of installed dependencies and says nothing about pnpm's own license. Missing for 10: explicit evidence of an OSI-approved open-source license for pnpm itself, and confirmation that the full source (including the Rust rewrite) is public.",
     "evidenceIds": [
       "pnpm-gh-1",
       "pnpm-gh-2",
-      "pnpm-gh-3",
-      "pnpm-gh-4"
+      "pnpm-gh-3"
     ]
   },
   {
@@ -3547,13 +3546,12 @@
     "productId": "pnpm",
     "storyId": "supply-chain-protections",
     "verdict": "full",
-    "quality": 8,
-    "confidence": "high",
-    "rationale": "pnpm's docs say install scripts do not run for arbitrary dependencies and that you approve which packages may run build scripts. A community comment confirms a `minimumReleaseAge` setting exists in the workspace file, and `pnpm audit` adds registry signature verification. Missing for 10: first-party documentation of the `minimumReleaseAge` setting (evidenced only by a community comment), and detailed configuration docs for the build-script allowlist beyond homepage marketing copy.",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "pnpm's docs say install scripts do not run for arbitrary dependencies, and that you approve which packages may run build scripts, which covers lifecycle-script blocking. Community threads discuss configuring a `minimumReleaseAge` setting in the workspace file; their confusion about global versus workspace config is a usability question, not a contradiction. Registry signature verification and audit add further supply-chain protection. Missing for 10: in-depth first-party documentation of the `minimumReleaseAge` setting, detailed configuration docs for the build-script allowlist, and independent hands-on corroboration that both protections work as claimed.",
     "evidenceIds": [
       "pnpm-docs-16",
       "pnpm-docs-24",
-      "pnpm-docs-51",
       "pnpm-comm-17-refresh-3baa377eca315f91",
       "pnpm-docs-11"
     ]
@@ -4143,15 +4141,15 @@
     "productId": "uv",
     "storyId": "privacy-retention-controls",
     "verdict": "partial",
-    "quality": 5,
-    "confidence": "medium",
-    "rationale": "uv is a local CLI, so the only data it retains is its own on-disk cache. The docs show first-party deletion controls over that data: `uv cache clean` clears the cache entirely or for a specific package, `--refresh` forces revalidation, and the GitHub setup-uv action makes cache persistence optional. This covers deletion but says nothing about retention policies, privacy posture, or any telemetry or remote data handling. Missing for 10: documented retention or expiry controls (e.g., automatic cache pruning or age limits), a privacy/data-collection statement, and independent corroboration of the deletion controls.",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "uv is a local CLI with no hosted user-data service, so the only retained data in evidence is its local dependency cache. Users can delete that cache entirely or per package with `uv cache clean` [uv-docs-11, uv-docs-49]. In CI, cache persistence is optional via setup-uv [uv-docs-10]. Ephemeral tool environments via `uvx` avoid persistent installs [uv-docs-7]. Missing for 10: any documented retention policy or automatic expiry/pruning controls, any statement on telemetry or what data (if any) leaves the machine, and independent corroboration of deletion behavior.",
     "evidenceIds": [
       "uv-docs-11",
       "uv-docs-49",
-      "uv-docs-25",
-      "uv-docs-77",
-      "uv-docs-10"
+      "uv-docs-10",
+      "uv-docs-7",
+      "uv-docs-25"
     ]
   },
   {
