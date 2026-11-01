@@ -546,6 +546,7 @@ describe('end-to-end: Incorporate C-Corp (company-launch playbook)', () => {
           productId: entry.productId,
           arenaId: entry.arenaId,
           stepsServed: entry.stepsServed,
+          avgStepScore: entry.avgStepScore,
           processScore: entry.processScore,
         })),
         bestPerStep: lb.bestPerStep.map((step) => ({
@@ -574,11 +575,16 @@ describe('end-to-end: Incorporate C-Corp (company-launch playbook)', () => {
     expect(result.bestPerStep.map((step) => step.nodeId)).toEqual(['n4', 'n6', 'n7', 'n8'])
     expect(result.leaderboard.length).toBeGreaterThan(0)
 
-    const expectedEntries = new Set(task.dag.nodes.flatMap((node) => {
+    const expectedScores = new Map<string, number[]>()
+    for (const node of task.dag.nodes) {
       const ranking = stepRankingFull(task.id, node, DATA_DIR)
-      if (!ranking || ranking.arenaId === GOVERNMENT_ARENA_ID || node.supporting) return []
-      return ranking.vendors.map((vendor) => `${ranking.arenaId}/${vendor.productId}`)
-    }))
+      if (!ranking || ranking.arenaId === GOVERNMENT_ARENA_ID || node.supporting) continue
+      for (const vendor of ranking.vendors) {
+        const key = `${ranking.arenaId}/${vendor.productId}`
+        expectedScores.set(key, [...(expectedScores.get(key) ?? []), vendor.score])
+      }
+    }
+    const expectedEntries = new Set(expectedScores.keys())
     expect(new Set(result.leaderboard.map((entry) => `${entry.arenaId}/${entry.productId}`)))
       .toEqual(expectedEntries)
 
@@ -594,6 +600,11 @@ describe('end-to-end: Incorporate C-Corp (company-launch playbook)', () => {
       expect(entry.stepsServed).toBeLessThanOrEqual(result.rankableSteps)
       expect(entry.processScore).toBeGreaterThanOrEqual(0)
       expect(entry.processScore).toBeLessThanOrEqual(100)
+      const scores = expectedScores.get(`${entry.arenaId}/${entry.productId}`)!
+      const sum = scores.reduce((total, score) => total + score, 0)
+      expect(entry.stepsServed).toBe(scores.length)
+      expect(entry.avgStepScore).toBe(Math.round((sum / scores.length) * 10) / 10)
+      expect(entry.processScore).toBe(Math.round((sum / result.rankableSteps) * 10) / 10)
       if (i > 0) expect(result.leaderboard[i - 1].processScore).toBeGreaterThanOrEqual(entry.processScore)
     }
     expect(new Set(result.leaderboard.map((entry) => entry.productId)).size).toBe(result.leaderboard.length)
