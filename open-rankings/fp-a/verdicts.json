@@ -955,25 +955,25 @@
     "productId": "aleph",
     "storyId": "csv-spreadsheet-ingest",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "low",
-    "rationale": "Aleph's own docs hint that spreadsheets can act as a data source: headcount planning is described as 'backed by live … spreadsheet data', and the Excel/Google Sheets workflows include 'pull/push sync'. However, nothing explicitly documents uploading a CSV or spreadsheet as a first-class source alongside its 150+ connectors. Missing for 10: explicit CSV/file-upload ingestion docs, evidence that uploaded spreadsheets are treated as a modeled source (refresh, mapping, consolidation), independent or hands-on corroboration.",
+    "rationale": "Aleph documents bi-directional Excel and Google Sheets workflows with pull/push sync (aleph-docs-2). It also says headcount planning can be backed by spreadsheet data alongside HRIS/ATS/ERP sources (aleph-docs-4), which implies spreadsheets can feed the data model. But the evidence frames Sheets/Excel mainly as reporting front-ends and never explicitly describes uploading a file as a standalone, first-class source. missing for 10: explicit CSV/file upload documentation, confirmation that ingested spreadsheets are treated like connector sources (refresh, mapping, consolidation), independent or hands-on corroboration.",
     "evidenceIds": [
-      "aleph-docs-4",
       "aleph-docs-2",
-      "aleph-docs-1"
+      "aleph-docs-4"
     ]
   },
   {
     "productId": "aleph",
     "storyId": "driver-based-model",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "low",
-    "rationale": "Aleph documents its own scenario modeling and versioned forecasts (aleph-docs-3) and headcount planning backed by live HRIS/ATS data (aleph-docs-4), which partly covers assumption-driven planning, including hiring. It never explicitly describes driver-based models or configurable growth and price-point assumptions; the actual model logic appears to live in users' synced Excel/Sheets workbooks (aleph-docs-1, aleph-docs-2). Missing for 10: explicit driver-based modeling capability, documented growth and price-point assumption inputs, evidence that assumptions replace hard-coded rows, and independent or hands-on corroboration.",
+    "rationale": "Aleph documents its own scenario modeling and versioned forecasts (aleph-docs-3), headcount planning backed by HRIS/ATS data (aleph-docs-4), and logic to run calculations and store metrics (aleph-docs-20). Together these suggest assumption-driven planning, but nothing explicitly describes driver-based models instead of hard-coded rows, and much of the modeling appears to live in connected Excel/Sheets workbooks (aleph-docs-1, aleph-docs-2). Missing for 10: explicit driver-based modeling documentation, growth-rate and price-point driver support, evidence that hiring assumptions flow into the forecast as drivers, independent or hands-on corroboration.",
     "evidenceIds": [
       "aleph-docs-3",
       "aleph-docs-4",
+      "aleph-docs-20",
       "aleph-docs-1",
       "aleph-docs-2"
     ]
@@ -997,9 +997,9 @@
     "productId": "aleph",
     "storyId": "forecast-refresh-on-actuals",
     "verdict": "partial",
-    "quality": 4,
-    "confidence": "low",
-    "rationale": "Aleph says it keeps existing financial models and reporting packages in sync with a single source of truth. It describes pull/push sync into Excel and Google Sheets and offers versioned forecasts, so fresh actuals can plausibly flow into an existing model without rebuilding it. Nothing in the evidence shows the forecast itself re-baselining or rolling forward on closed-period actuals. Missing for 10: explicit actuals-replace-forecast or rolling re-baseline after close, documentation of a close-triggered refresh workflow, and independent or hands-on corroboration.",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Aleph documents a single source of truth that keeps existing financial models in sync. It also offers pull/push sync into Excel and Google Sheets models, versioned forecasts, and automated closing and reporting processes. Together these suggest fresh actuals can flow into an existing model without rebuilding it. However, nothing explicitly describes the forecast re-baselining on closed actuals, such as actuals replacing forecast periods or a rolling forecast after close. Missing for 10: explicit documentation of forecast re-baselining or rolling-forecast behavior triggered by period close, how actuals replace forecast periods in versioned forecasts, and independent or hands-on corroboration.",
     "evidenceIds": [
       "aleph-docs-1",
       "aleph-docs-2",
@@ -1058,11 +1058,16 @@
   {
     "productId": "aleph",
     "storyId": "openness-full-export",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Aleph is a SaaS FP&A platform, so data portability is a fair question to ask of it. However, the evidence documents no bulk or full-account export in open formats. Its bi-directional Excel and Google Sheets sync is a reporting workflow feature, not a way to export all your data. The trial page's \"cancel and remove your data\" refers to deletion, not export, and probes found no public API spec that could serve as an export route.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Aleph's own bi-directional Excel and Google Sheets workflows include push sync (aleph-docs-2, aleph-docs-1), so data can be moved out into common spreadsheet formats. However, nothing documents a complete, bulk export of all account data for leaving the platform. The trial page's 'cancel and remove your data' (aleph-docs-27) covers deletion, not export. Missing for 10: documented full-account or bulk data export, explicit open-format export options (e.g., CSV/JSON/Parquet), a public API or OpenAPI spec for programmatic extraction (probe found none), offboarding/portability docs, independent corroboration.",
+    "evidenceIds": [
+      "aleph-docs-2",
+      "aleph-docs-1",
+      "aleph-docs-27",
+      "aleph-probe-3"
+    ]
   },
   {
     "productId": "aleph",
@@ -1175,9 +1180,9 @@
     "productId": "aleph",
     "storyId": "scenario-assumption-tracking",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 3,
     "confidence": "low",
-    "rationale": "Aleph's own docs claim versioned forecasts and scenario modeling (aleph-docs-3), and list audit logs among its security controls (aleph-docs-25). Together these suggest scenarios are versioned and changes are logged. However, nothing ties those audit logs to scenario assumptions, and no evidence shows per-scenario assumption records or who-changed-what attribution in a scenario comparison. missing for 10: explicit per-scenario assumption tracking, user-level change attribution on scenario assumptions, an auditable scenario comparison view, and independent or hands-on corroboration.",
+    "rationale": "Aleph claims versioned forecasts and scenario modeling (aleph-docs-3) and lists audit logs among its enterprise security features (aleph-docs-25), which together suggest some scenario versioning and change tracking. Nothing shows that each scenario records its assumptions or attributes assumption changes to specific users, and the audit logs are described only generically. missing for 10: per-scenario assumption recording, user attribution of assumption changes within scenarios, auditable scenario-to-scenario comparison, detailed docs or independent corroboration.",
     "evidenceIds": [
       "aleph-docs-3",
       "aleph-docs-25"
@@ -1588,11 +1593,15 @@
   {
     "productId": "cfo-ai",
     "storyId": "automation-versioned-workflows",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "cfo.ai has automations: proactive alerts and triggers, scheduled syncs, and Ari keeping the model current. The changelog and undo it documents cover edits to the financial Model (formulas, tables, pages), not the automation definitions. That is an adjacent capability and earns no credit here. Nothing in the evidence shows versioning, review or rollback of the triggers, alerts or sync configurations themselves.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "cfo.ai records every change to the Model, including changes made by Ari or MCP-connected agents, in a changelog under the user's name. Every write can be undone, and agent tools run under an allow/ask/deny policy with human approval, so users can review and roll back what automated actions did. However, nothing shows versioning, review, or rollback of the automation definitions themselves: proactive alerts, triggers, sync schedules, or connection configurations. Missing for 10: versioned history of trigger/alert/sync definitions, diff/review of automation configuration changes, rollback of automation definitions to a prior version, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "cfo-ai-docs-23",
+      "cfo-ai-docs-11",
+      "cfo-ai-docs-16"
+    ]
   },
   {
     "productId": "cfo-ai",
@@ -1898,9 +1907,9 @@
     "productId": "cfo-ai",
     "storyId": "runway-per-scenario",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "cfo.ai's own docs say it forecasts cash, answers 'how long your cash lasts,' and lets you see what a hire, price change, or cut does before committing, with scenarios requested in one line. That covers the core of decision-driven runway planning. However, the docs never say that burn and runway are computed separately for each scenario, or that a moved zero-cash date is surfaced or compared across scenarios. Missing for 10: explicit per-scenario burn and runway outputs, zero-cash-date display or scenario comparison view, independent or hands-on corroboration.",
+    "rationale": "cfo.ai documents cash forecasting from business drivers, answering \"how long your cash lasts,\" and one-line scenarios (a hire wave, a slipped quarter, a downside case) that show what a decision does before you commit. The docs never explicitly say burn and runway are computed separately for each scenario, or that the zero-cash date can be compared across scenarios, so that link is only implied. Missing for 10: explicit per-scenario burn/runway calculation, a zero-cash-date comparison view across scenarios, and independent or hands-on corroboration.",
     "evidenceIds": [
       "cfo-ai-docs-1",
       "cfo-ai-docs-5",
@@ -1928,15 +1937,14 @@
   {
     "productId": "cfo-ai",
     "storyId": "scenario-create-compare",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "cfo.ai's own copy names this story's exact scenarios: \"a hire wave, a slipped quarter, a downside growth case, several at once\", created by asking Ari in one line. It also says you can see what a hire, price change or cut does before you commit, and the pricing page lists unlimited models and scenarios. Side-by-side comparison is only implied by \"several at once\" and is never explicitly documented. Missing for 10: an explicitly documented side-by-side scenario comparison view, in-depth scenario documentation beyond marketing and llms.txt lines, and independent or hands-on corroboration.",
+    "rationale": "cfo.ai's own docs show scenario creation in one line, naming the story's exact examples ('a hire wave, a slipped quarter, a downside growth case, several at once'). They also offer what-if analysis of a hire, price change, or cut, and the pricing page lists unlimited scenarios. However, no evidence shows a side-by-side comparison view, and all support is vendor-claimed. missing for 10: documented side-by-side scenario comparison, independent or hands-on corroboration of scenario workflows.",
     "evidenceIds": [
       "cfo-ai-docs-14",
       "cfo-ai-docs-6",
-      "cfo-ai-docs-28",
-      "cfo-ai-docs-2"
+      "cfo-ai-docs-28"
     ]
   },
   {
@@ -1951,11 +1959,15 @@
   {
     "productId": "cfo-ai",
     "storyId": "sheets-excel-addin",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "The evidence shows no Excel or Google Sheets add-in. cfo.ai can import a connected Google Sheet or Excel file into its Model and refresh when the file changes, and it can download a Page as a static Excel workbook with formulas. Neither feature pulls live cfo.ai data into a spreadsheet or pushes spreadsheet edits back through an add-in, so these are adjacent features that earn no credit for this story.",
-    "evidenceIds": []
+    "rationale": "cfo.ai's own Google Sheets/Drive connector imports a sheet or Excel file into the Model and updates the Model when the file changes, which covers one direction: spreadsheet edits flowing into the product. It can also download a Page as an Excel workbook that keeps its formulas, but that is a static export, not a live pull. missing for 10: an actual Excel or Google Sheets add-in, live data refreshing into the spreadsheet, true bi-directional write-back from the add-in, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "cfo-ai-docs-17",
+      "cfo-ai-docs-8",
+      "cfo-ai-docs-4"
+    ]
   },
   {
     "productId": "cfo-ai",
@@ -2033,24 +2045,25 @@
     "productId": "pigment",
     "storyId": "agent-model-qa",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Pigment documents an official MCP server through which teams can ask business questions from ChatGPT or Claude and get answers 'grounded in your business truth'. Variance analysis and scenarios run in the platform's own modeling engine, so the core of agent-asked finance questions answered from platform data is claimed. However, the evidence never states that MCP answers return engine-computed figures with calculation lineage. The block-level history covers edit events, not provenance of the numbers. missing for 10: explicit documentation that agent answers return engine-calculated figures rather than LLM-generated ones, per-answer lineage or traceability to model formulas and source data, independent or hands-on corroboration.",
+    "rationale": "Pigment's official MCP server lets teams ask business questions from ChatGPT or Claude and get answers \"grounded in your business truth\". Its Analyst Agent builds reports conversationally, and its planning engine handles variance and cash KPIs. However, nothing explicitly states that figures returned to the agent are computed by the calculation engine rather than generated by the LLM, and lineage is evidenced only as block-level edit history, not calculation provenance. Missing for 10: explicit documentation that agent answers come from engine-computed figures, per-answer calculation lineage/traceability, and independent or hands-on corroboration.",
     "evidenceIds": [
       "pigment-docs-2",
       "pigment-probe-4",
+      "pigment-docs-6",
       "pigment-docs-8",
-      "pigment-docs-11",
-      "pigment-docs-4"
+      "pigment-docs-10",
+      "pigment-docs-16"
     ]
   },
   {
     "productId": "pigment",
     "storyId": "agentic-agent-docs",
     "verdict": "full",
-    "quality": 8,
+    "quality": 9,
     "confidence": "high",
-    "rationale": "Hands-on probes confirm a live llms.txt at kb.pigment.com/llms.txt (HTTP 200) indexing the knowledge base, and markdown versions of the docs served at .md URLs with a 'Documentation Index' pointer. A second llms.txt exists at www.pigment.com/llms.txt for marketing content. An agent can therefore be pointed directly at agent-oriented docs. Missing for 10: first-party guidance on using these agent-oriented docs, and verification of how complete the llms.txt and markdown coverage is (the probe output is truncated; no OpenAPI spec was found).",
+    "rationale": "Live probes confirm a working llms.txt at kb.pigment.com that indexes the knowledge base, and per-page markdown docs (.md) with a 'Documentation Index' header aimed at agents. The marketing site also serves its own llms.txt (www.pigment.com/llms.txt), so an agent can be pointed at either. Missing for 10: independent or community corroboration of agents actually consuming these docs, and any first-party guidance explaining how to use the agent-oriented docs.",
     "evidenceIds": [
       "pigment-probe-1",
       "pigment-probe-2",
@@ -2074,9 +2087,9 @@
     "productId": "pigment",
     "storyId": "agentic-autonomous-automation",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "low",
-    "rationale": "Pigment's own Analyst Agent is described as one that \"continuously monitors your business\", which implies some background agent activity. Scheduled imports show that data loads can run on a schedule without user involvement. However, nothing documents users configuring their own autonomous automations, such as triggers, schedules or agent tasks that act unattended; the Modeler Agent and MCP features are conversational and user-initiated. Missing for 10: user-configurable automation or workflow builder, scheduling or triggers for agent tasks, documentation of unattended agent actions, any independent or hands-on corroboration.",
+    "rationale": "Pigment's own docs say the Analyst Agent \"continuously monitors your business\", which implies some autonomous background agent activity. The docs also mention scheduled imports, a first-party form of background automation. Neither shows that users can define and configure their own autonomous automations. Missing for 10: documented user-configurable automation or workflow builder, triggers/schedules for agent actions beyond data imports, details on how background agent runs are set up and monitored, independent or hands-on corroboration.",
     "evidenceIds": [
       "pigment-docs-6",
       "pigment-docs-7"
@@ -2350,13 +2363,14 @@
     "productId": "pigment",
     "storyId": "driver-based-model",
     "verdict": "partial",
-    "quality": 4,
-    "confidence": "low",
-    "rationale": "Pigment documents its own modeling capability: the Modeler Agent builds planning models from natural-language intent (pigment-docs-5), a function library supplies formula logic (pigment-docs-18), and workforce scenarios can be run to test different assumptions (pigment-docs-11), which touches on hiring assumptions. However, the evidence never explicitly describes driver-based models that replace hard-coded rows, so the depth of this capability is unproven. Missing for 10: explicit driver-based modeling documentation, evidence of growth and price-point assumption drivers, evidence that hiring drivers flow into the financial plan, and independent or hands-on corroboration.",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Pigment documents its own planning-model building: the Modeler Agent builds planning models from natural-language intent, and a function library supplies formula logic. Workforce planning lets users run scenarios to assess different assumptions, which touches hiring drivers. The evidence never explicitly describes driver-based modeling that replaces hard-coded rows, nor growth or price-point assumptions. missing for 10: explicit driver-based modeling documentation, growth-rate and price-point driver examples, hands-on or independent corroboration.",
     "evidenceIds": [
       "pigment-docs-5",
+      "pigment-docs-11",
       "pigment-docs-18",
-      "pigment-docs-11"
+      "pigment-docs-10"
     ]
   },
   {
@@ -2424,9 +2438,9 @@
     "productId": "pigment",
     "storyId": "openness-api-parity",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 3,
     "confidence": "low",
-    "rationale": "Pigment documents its own programmatic surfaces: an official MCP server that lets users build and edit Pigment models from Claude, Cursor and Codex, \"open APIs\" for integration, and an Audit Trail API. Nothing in the evidence claims or shows that the API matches the UI feature for feature, and probes found no public OpenAPI spec. missing for 10: an explicit API-to-UI parity claim, a published API reference or OpenAPI spec covering modeling/scenarios/permissions/collaboration, independent hands-on corroboration.",
+    "rationale": "Pigment documents several programmatic surfaces: 'open APIs' for integration, an Audit Trail API, and an official MCP server for building and editing models from Claude, Cursor or Codex. That covers part of what the UI does, but nothing claims or demonstrates full UI parity, and no OpenAPI spec was found at the probed paths. Missing for 10: documented API-UI parity statement, published API reference/OpenAPI spec, evidence of API coverage for reporting, scenarios, permissions and workflow features, independent corroboration.",
     "evidenceIds": [
       "pigment-docs-1",
       "pigment-docs-7",
@@ -2466,9 +2480,9 @@
     "productId": "pigment",
     "storyId": "privacy-data-residency",
     "verdict": "full",
-    "quality": 8,
-    "confidence": "high",
-    "rationale": "Pigment's security page explicitly states that customer data is stored in the region the customer chooses, either europe-west3 (Frankfurt) or us-west1 (Oregon). This directly delivers the region/residency choice the story asks for. Missing for 10: only two regions are offered, there are no in-depth docs on how the region is selected or migrated (or on AI-agent/MCP data-processing locality), and there is no independent or hands-on corroboration.",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Pigment's security page explicitly states that customer data is stored in the region the customer chooses: europe-west3 (Frankfurt) or us-west1 (Oregon). That directly delivers region selection, but only two regions are documented and nothing describes how the choice is made or its scope. Missing for 10: more than two region options, details on how region is selected and whether it covers AI/agent processing and backups, independent or hands-on corroboration.",
     "evidenceIds": [
       "pigment-docs-17"
     ]
@@ -2564,9 +2578,9 @@
     "productId": "pigment",
     "storyId": "scenario-create-compare",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Pigment's own docs claim you can \"run scenarios at the touch of a button to assess different assumptions\" in its HR/workforce use case, which fits a hiring-wave scenario. Nothing in the pack shows how scenarios are created or compared side by side; variance analysis and staging environments are adjacent features, not scenario comparison. Missing for 10: documented side-by-side scenario comparison, evidence of building downside or slipped-quarter cases, in-depth scenario docs, independent or hands-on corroboration.",
+    "rationale": "Pigment's own docs say you can \"run scenarios at the touch of a button to assess different assumptions\" in workforce planning, which covers creating scenarios such as a hiring wave. Nothing in the evidence shows comparing scenarios side by side, or modelling a slipped quarter or downside case specifically; variance analysis against budget is a related but different feature. missing for 10: documented side-by-side scenario comparison, evidence of scenario creation beyond the workforce use case (e.g. revenue or downside cases), independent or hands-on corroboration.",
     "evidenceIds": [
       "pigment-docs-11"
     ]
