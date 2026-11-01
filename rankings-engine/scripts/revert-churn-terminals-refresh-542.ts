@@ -49,6 +49,14 @@
 // this PR). A revert outside extensions B/C is skipped (and reported) when the baseline
 // verdict cites an id no longer in the pack.
 //
+// D. Round-2 exclusions (review: "Old grades restore unsupported credit"). Three baseline
+//    grades fail the v5 partial-credit boundary (developer building blocks and related
+//    features earn no credit), so the refresh none judgments are the valid current-rules
+//    answers and this script must not restore the old credit:
+//      - ghostty:agentic-headless (credit was for the embeddable libghostty-vt library),
+//      - wezterm:automation-bulk-operations (credit was for a user-scriptable loop),
+//      - kitty:api-interactive-docs (credit was for runnable commands, not interactive docs).
+//
 // Usage: pnpm exec tsx rankings-engine/scripts/revert-churn-terminals-refresh-542.ts [--write]
 //   (default: dry run, prints the plan only)
 
@@ -66,6 +74,13 @@ const RESTORED_PROBES = new Set([
   'wezterm-probe-rt-1',
   'ghostty-probe-rt-1',
   'alacritty-probe-rt-1',
+])
+
+// Extension D: baseline grades that fail the v5 partial-credit boundary; never restored.
+const EXCLUDE_RESTORE = new Set([
+  'ghostty:agentic-headless',
+  'wezterm:automation-bulk-operations',
+  'kitty:api-interactive-docs',
 ])
 
 // Extension C: review-named cells whose new citations do not establish the story.
@@ -193,6 +208,11 @@ function main(): void {
     const base = baseline.get(key)
     if (!base) continue // product or story new to the arena: nothing to settle against
     if (base.verdict === row.verdict && base.quality === row.quality) continue
+    if (EXCLUDE_RESTORE.has(key)) {
+      stood++
+      console.log(`EXCLUDE ${CAT}/${key}: baseline grade fails the v5 partial-credit boundary; refresh judgment stands`)
+      continue
+    }
     const pid = row.productId
     if (!packInfo.has(pid)) packInfo.set(pid, changedIdsFor(pid))
     const { changed, repeats, removedCommunity, currentIds } = packInfo.get(pid)!

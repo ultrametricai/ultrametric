@@ -666,16 +666,13 @@
   {
     "productId": "ghostty",
     "storyId": "agentic-headless",
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Nothing in the pack shows the Ghostty app running headlessly or in CI. The runtime probe found only config/+action CLI commands and no remote-control or IPC interface. AppleScript automation (macOS only) still drives a GUI instance. The only headless-capable path is the embeddable `libghostty-vt` library (C/Zig, including WebAssembly), which provides terminal functionality such as parsing without the GUI. That gives glancing, build-it-yourself support. Missing for 10: a documented headless/no-GUI mode for the app, CI usage docs or examples, a remote-control/IPC interface for scripts or agents to send input and read output, and hands-on evidence of CI use.",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Ghostty is a GUI terminal emulator, and the evidence documents no headless mode or CI usage of the application itself. AppleScript and Shortcuts automation drive GUI windows and tabs, and `+show-config` only prints configuration. libghostty/libghostty-vt is a developer library for building or embedding terminal functionality, so it earns no credit under the partial-credit rules.",
     "evidenceIds": [
-      "ghostty-gh-4",
-      "ghostty-gh-3",
-      "ghostty-probe-rt-1",
-      "ghostty-docs-9",
-      "ghostty-docs-37"
+      "ghostty-gh-6",
+      "ghostty-docs-46"
     ]
   },
   {
@@ -1824,7 +1821,7 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "First-party docs say shell integration lets iTerm2 know where your shell prompt is and lets you navigate to previous prompts with ⇧⌘↑/⇧⌘↓ (iterm2-docs-31, iterm2-docs-9, iterm2-docs-48). The GitHub README confirms it places marks at each prompt and that Copy Mode works with marks to jump between command prompts (iterm2-gh-10, iterm2-gh-8). Setup is documented via auto-loading, and triggers can stand in where scripts can't be installed (iterm2-docs-24, iterm2-docs-54). Missing for 10: independent hands-on corroboration of prompt/mark navigation.",
+    "rationale": "First-party docs say shell integration lets iTerm2 know where your shell prompt is and lets you navigate to previous prompts with \u21e7\u2318\u2191/\u21e7\u2318\u2193 (iterm2-docs-31, iterm2-docs-9, iterm2-docs-48). The GitHub README confirms it places marks at each prompt and that Copy Mode works with marks to jump between command prompts (iterm2-gh-10, iterm2-gh-8). Setup is documented via auto-loading, and triggers can stand in where scripts can't be installed (iterm2-docs-24, iterm2-docs-54). Missing for 10: independent hands-on corroboration of prompt/mark navigation.",
     "evidenceIds": [
       "iterm2-docs-9",
       "iterm2-docs-48",
@@ -2171,16 +2168,14 @@
   {
     "productId": "kitty",
     "storyId": "api-interactive-docs",
-    "verdict": "partial",
-    "quality": 3,
+    "verdict": "none",
+    "quality": 0,
     "confidence": "medium",
-    "rationale": "kitty documents a remote-control interface for scripts and the shell. Its commands can be run directly, and a hands-on probe showed `kitten @ ls/send-text/get-text` working against a live instance. That makes the reference effectively runnable from a terminal, but it is a static docs page rather than an interactive API explorer, and no OpenAPI/Swagger spec was found. Missing for 10: an interactive in-browser API reference, an OpenAPI or other machine-readable spec, embedded runnable examples in the docs.",
+    "rationale": "kitty has a programmatic surface: remote-control commands and a terminal graphics protocol. An API reference is therefore a fair question for it, but the evidence shows only static documentation pages, with no interactive explorer or runnable in-browser examples. Probes for an OpenAPI/Swagger spec all returned 404, so there is no evidence of an interactive API reference.",
     "evidenceIds": [
-      "kitty-docs-1",
-      "kitty-docs-23",
-      "kitty-probe-4",
-      "kitty-probe-rt-1",
-      "kitty-probe-3"
+      "kitty-docs-31",
+      "kitty-probe-3",
+      "kitty-probe-4"
     ]
   },
   {
@@ -2230,7 +2225,7 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "low",
-    "rationale": "The evidence shows a few narrow event-driven behaviours. Kitty can change color themes automatically when the OS switches between light and dark mode (kitty-docs-21), and lets users fully customize the matching rules and actions of a kitten (kitty-docs-14). It is also scriptable and extensible with Python kittens (kitty-docs-27, kitty-docs-23), though that control is externally driven, not rule-triggered. missing for 10: a documented general-purpose event→action rule or hook system (e.g. triggers on window, command or output events), detail on how such rules are defined, and hands-on or community corroboration of automatic event-triggered actions.",
+    "rationale": "The evidence shows a few narrow event-driven behaviours. Kitty can change color themes automatically when the OS switches between light and dark mode (kitty-docs-21), and lets users fully customize the matching rules and actions of a kitten (kitty-docs-14). It is also scriptable and extensible with Python kittens (kitty-docs-27, kitty-docs-23), though that control is externally driven, not rule-triggered. missing for 10: a documented general-purpose event\u2192action rule or hook system (e.g. triggers on window, command or output events), detail on how such rules are defined, and hands-on or community corroboration of automatic event-triggered actions.",
     "evidenceIds": [
       "kitty-docs-21",
       "kitty-docs-14",
@@ -3083,7 +3078,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Warp is a terminal, so a searchable command palette for discovering and running actions is a fair question to ask. The evidence pack never documents one, though. The nearby items don't qualify: the Conversations menu (⌘+Y) only selects agent conversations, the 'palette' of app icons is about dock appearance, and Warp Drive saved workflows are a different feature.",
+    "rationale": "Warp is a terminal, so a searchable command palette for discovering and running actions is a fair question to ask. The evidence pack never documents one, though. The nearby items don't qualify: the Conversations menu (\u2318+Y) only selects agent conversations, the 'palette' of app icons is about dock appearance, and Warp Drive saved workflows are a different feature.",
     "evidenceIds": []
   },
   {
@@ -3103,7 +3098,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Warp's docs give keyboard shortcuts for macOS (⌘+Y) and for Windows/Linux (Ctrl+Shift+Y), which implies the same desktop terminal runs on all three OSes. Warp also says it is shipping a settings file for programmatic control and easy portability between devices, which covers carrying the same config across machines. missing for 10: an explicit first-party statement of supported platforms, documentation of how the settings file syncs or behaves across OSes (it was only just announced), and independent hands-on confirmation of identical config across macOS, Linux and Windows.",
+    "rationale": "Warp's docs give keyboard shortcuts for macOS (\u2318+Y) and for Windows/Linux (Ctrl+Shift+Y), which implies the same desktop terminal runs on all three OSes. Warp also says it is shipping a settings file for programmatic control and easy portability between devices, which covers carrying the same config across machines. missing for 10: an explicit first-party statement of supported platforms, documentation of how the settings file syncs or behaves across OSes (it was only just announced), and independent hands-on confirmation of identical config across macOS, Linux and Windows.",
     "evidenceIds": [
       "warp-docs-49",
       "warp-docs-40"
@@ -3310,7 +3305,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Warp is a terminal emulator, so a global hotkey or quake-style dropdown is a fair question for it. However, nothing in the evidence pack documents either capability. The only shortcut mentioned (⌘+Y / Ctrl+Shift+Y) opens the in-app Conversations menu, which is an adjacent feature and not a system-wide summon hotkey.",
+    "rationale": "Warp is a terminal emulator, so a global hotkey or quake-style dropdown is a fair question for it. However, nothing in the evidence pack documents either capability. The only shortcut mentioned (\u2318+Y / Ctrl+Shift+Y) opens the in-app Conversations menu, which is an adjacent feature and not a system-wide summon hotkey.",
     "evidenceIds": []
   },
   {
@@ -3617,14 +3612,12 @@
   {
     "productId": "wezterm",
     "storyId": "automation-bulk-operations",
-    "verdict": "partial",
-    "quality": 4,
+    "verdict": "none",
+    "quality": 0,
     "confidence": "medium",
-    "rationale": "WezTerm's `cli` subcommand can enumerate all windows, tabs and panes (`wezterm cli list`) and send text to or read text from individual panes by pane-id. A hands-on probe verified this works headlessly, so a script could loop over many panes to approximate bulk operations. However, every documented operation targets a single pane, and nothing shows a native bulk or broadcast capability. Missing for 10: native multi-pane/broadcast input or batch commands, documented bulk-operation workflows, and independent evidence of bulk use across many items.",
+    "rationale": "Bulk operations, such as broadcasting input or acting on many panes or tabs at once, are a fair question for a terminal multiplexer. The evidence only shows a `cli` subcommand that can spawn programs and manipulate tabs and panes. That is a building block a user could script around, not a documented bulk-operation capability, and nothing mentions broadcast input or multi-item actions.",
     "evidenceIds": [
-      "wezterm-docs-7",
-      "wezterm-probe-rt-1",
-      "wezterm-probe-4"
+      "wezterm-docs-35"
     ]
   },
   {
