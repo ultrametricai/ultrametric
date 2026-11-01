@@ -574,6 +574,14 @@ describe('end-to-end: Incorporate C-Corp (company-launch playbook)', () => {
     expect(result.bestPerStep.map((step) => step.nodeId)).toEqual(['n4', 'n6', 'n7', 'n8'])
     expect(result.leaderboard.length).toBeGreaterThan(0)
 
+    const expectedEntries = new Set(task.dag.nodes.flatMap((node) => {
+      const ranking = stepRankingFull(task.id, node, DATA_DIR)
+      if (!ranking || ranking.arenaId === GOVERNMENT_ARENA_ID || node.supporting) return []
+      return ranking.vendors.map((vendor) => `${ranking.arenaId}/${vendor.productId}`)
+    }))
+    expect(new Set(result.leaderboard.map((entry) => `${entry.arenaId}/${entry.productId}`)))
+      .toEqual(expectedEntries)
+
     for (const best of result.bestPerStep) {
       const ranked = result.stepRankings.find((step) => step.nodeId === best.nodeId)?.ranked
       expect(ranked?.[0], `leaderboard best for ${best.nodeId} must match its step ranking`)
