@@ -167,9 +167,9 @@
     {
       "id": "n5",
       "kind": "step",
-      "title": "Carry out the approved remedy",
-      "guidance": "The authorized operator sends the approved response and arranges the agreed repair, replacement or payment through the private operating systems. Retain shipping, repair and payment records and keep any failure or rejection open.",
-      "when": null,
+      "title": "Carry out the approved repair or replacement",
+      "guidance": "The authorized operator sends the approved response and arranges the agreed repair or replacement through the private operating systems. Retain shipping and repair records and keep any failure or rejection open. Use the separate approved refund route for returning money.",
+      "when": "Only when the approved remedy is repair or replacement.",
       "ref": null,
       "options": [],
       "notes": [],
@@ -201,7 +201,48 @@
         "approvalRequired": true,
         "approval": {
           "role": "accountable revenue owner",
-          "scope": "Carry out the approved remedy"
+          "scope": "Carry out the approved repair or replacement"
+        }
+      }
+    },
+    {
+      "id": "n5r",
+      "kind": "step",
+      "title": "Execute the specifically approved refund",
+      "guidance": "The authorized payment operator verifies the approved recipient, amount and payment route, checks for duplicate refunds and executes only the specifically approved refund or monetary price adjustment. Retain the payment reference, success or failure evidence and customer response; a processed refund is irreversible.",
+      "when": "Only when the approved remedy requires a refund or return of money.",
+      "ref": null,
+      "options": [],
+      "notes": [],
+      "references": [
+        {
+          "kind": "url",
+          "url": "https://europa.eu/youreurope/business/selling-in-eu/consumer-contracts-guarantees/consumer-guarantees/index_en.htm",
+          "title": "Your Europe consumer guarantees",
+          "description": null,
+          "role": "authored-guidance-source"
+        }
+      ],
+      "metadata": {
+        "route": "person",
+        "reversibility": "irreversible",
+        "execution": {
+          "category": "human-online",
+          "basis": "human-work",
+          "rationale": "Local evidence preparation is reversible. Named accountable people retain specialist judgments, external actions and case-specific authorization.",
+          "evidence": [
+            "open-processes/handle-consumer-guarantees-and-statutory-remedies.json#/parts/5/guidance",
+            "https://europa.eu/youreurope/business/selling-in-eu/consumer-contracts-guarantees/consumer-guarantees/index_en.htm"
+          ],
+          "reviewRequired": true,
+          "automationEvidence": {
+            "status": "unverified"
+          }
+        },
+        "approvalRequired": true,
+        "approval": {
+          "role": "accountable revenue owner",
+          "scope": "Execute the specifically approved refund"
         }
       }
     },
@@ -231,7 +272,7 @@
           "basis": "local-work",
           "rationale": "Local evidence preparation is reversible. Named accountable people retain specialist judgments, external actions and case-specific authorization.",
           "evidence": [
-            "open-processes/handle-consumer-guarantees-and-statutory-remedies.json#/parts/5/guidance",
+            "open-processes/handle-consumer-guarantees-and-statutory-remedies.json#/parts/6/guidance",
             "https://europa.eu/youreurope/business/selling-in-eu/consumer-contracts-guarantees/consumer-guarantees/index_en.htm"
           ],
           "reviewRequired": false,
@@ -259,11 +300,21 @@
       "to": "n4"
     },
     {
-      "from": "n4",
-      "to": "n5"
+      "from": "n5",
+      "to": "n6"
     },
     {
-      "from": "n5",
+      "from": "n4",
+      "to": "n5",
+      "when": "Approved remedy requires repair or replacement."
+    },
+    {
+      "from": "n4",
+      "to": "n5r",
+      "when": "Approved remedy requires a refund or return of money."
+    },
+    {
+      "from": "n5r",
       "to": "n6"
     }
   ],
@@ -286,7 +337,7 @@
     "cadence": "event-driven",
     "geoScope": "global",
     "complexity": "complex",
-    "reversibility": "reversible",
+    "reversibility": "irreversible",
     "category": "revenue",
     "supportLevel": "partial",
     "supportReason": "An agent can prepare and reconcile the documented inputs. Named people retain decisions, specialist judgments, physical work and authorized external actions.",

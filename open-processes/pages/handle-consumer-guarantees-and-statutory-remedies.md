@@ -20,7 +20,7 @@ Start with the applicability facts and evidence listed in the first step. Resolv
 | Cadence | event-driven |
 | Geo scope | global |
 | Complexity | complex |
-| Reversibility | reversible |
+| Reversibility | irreversible |
 | Agent support | partial |
 
 An agent can prepare and reconcile the documented inputs. Named people retain decisions, specialist judgments, physical work and authorized external actions.
@@ -48,8 +48,9 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | [2. Determine the applicable consumer remedy route](#step-2) | human; approval required | Not recorded | [Step 1](#step-1) |
 | [3. Prepare a remedy proposal and fulfillment plan](#step-3) | agent-runnable | Not recorded | [Step 2](#step-2) |
 | [4. Approve the remedy and customer communication](#step-4) | human; approval required | Not recorded | [Step 3](#step-3) |
-| [5. Carry out the approved remedy](#step-5) | human; approval required | Not recorded | [Step 4](#step-4) |
-| [6. Verify resolution and review repeated defects](#step-6) | agent-runnable | Not recorded | [Step 5](#step-5) |
+| [5. Carry out the approved repair or replacement](#step-5) | human; approval required | Not recorded | [Step 4](#step-4) (Approved remedy requires repair or replacement.) |
+| [6. Execute the specifically approved refund](#step-6) | human; approval required | Not recorded | [Step 4](#step-4) (Approved remedy requires a refund or return of money.) |
+| [7. Verify resolution and review repeated defects](#step-7) | agent-runnable | Not recorded | Alternatives: [Step 5](#step-5); [Step 6](#step-6) |
 
 <a id="steps"></a>
 
@@ -98,24 +99,48 @@ human · human approval required · hard to undo
 The accountable customer-operations owner approves the specific remedy and response after required local advice. Escalate denials, repeat failures and unresolved disputes; an agent draft does not authorize a refund, settlement or waiver.
 
 - Sources: [Your Europe consumer guarantees](https://europa.eu/youreurope/business/selling-in-eu/consumer-contracts-guarantees/consumer-guarantees/index_en.htm)
+- If "Approved remedy requires repair or replacement": continue at step 5
+- If "Approved remedy requires a refund or return of money": continue at step 6
 
 <a id="step-5"></a>
 
-### 5. Carry out the approved remedy
+### 5. Carry out the approved repair or replacement
 
 human · human approval required · hard to undo
 
 
-The authorized operator sends the approved response and arranges the agreed repair, replacement or payment through the private operating systems. Retain shipping, repair and payment records and keep any failure or rejection open.
+*Follows step 4 (when Approved remedy requires repair or replacement).*
+
+When: Only when the approved remedy is repair or replacement.
+
+The authorized operator sends the approved response and arranges the agreed repair or replacement through the private operating systems. Retain shipping and repair records and keep any failure or rejection open. Use the separate approved refund route for returning money.
 
 - Sources: [Your Europe consumer guarantees](https://europa.eu/youreurope/business/selling-in-eu/consumer-contracts-guarantees/consumer-guarantees/index_en.htm)
+- Next: continue at step 7
 
 <a id="step-6"></a>
 
-### 6. Verify resolution and review repeated defects
+### 6. Execute the specifically approved refund
+
+human · human approval required · irreversible
+
+
+*Follows step 4 (when Approved remedy requires a refund or return of money).*
+
+When: Only when the approved remedy requires a refund or return of money.
+
+The authorized payment operator verifies the approved recipient, amount and payment route, checks for duplicate refunds and executes only the specifically approved refund or monetary price adjustment. Retain the payment reference, success or failure evidence and customer response; a processed refund is irreversible.
+
+- Sources: [Your Europe consumer guarantees](https://europa.eu/youreurope/business/selling-in-eu/consumer-contracts-guarantees/consumer-guarantees/index_en.htm)
+
+<a id="step-7"></a>
+
+### 7. Verify resolution and review repeated defects
 
 agent-runnable
 
+
+*Follows step 5 or step 6.*
 
 Reconcile the customer response and delivery or payment evidence against the approved remedy. Assign unresolved disputes and recurring defects to named owners, and review whether product, support or safety processes require correction.
 

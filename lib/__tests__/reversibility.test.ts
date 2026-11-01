@@ -66,8 +66,9 @@ describe('reversibility distribution — irreversible is rare and means it', () 
     const byTier = { reversible: 0, painful: 0, irreversible: 0 }
     for (const t of RAW) byTier[t.reversibility] += 1
     expect(byTier.irreversible).toBeGreaterThanOrEqual(3)
-    // The shareholder-distribution process adds an explicit irreversible payment release.
-    expect(byTier.irreversible).toBeLessThanOrEqual(16)
+    // Dedicated consumer-refund, customs-payment and packaging-fee guides add three
+    // payment commitments to the previous corpus ceiling.
+    expect(byTier.irreversible).toBeLessThanOrEqual(19)
     expect(byTier.reversible).toBeGreaterThan(RAW.length / 2)
   })
 
@@ -81,6 +82,7 @@ describe('reversibility distribution — irreversible is rare and means it', () 
   it('pins the anchors: shutting down is irreversible, a wire is irreversible', () => {
     expect(taskTier('shutdown_001')).toBe('irreversible')
     expect(nodeTier('shutdown_001', 'n5'), 'certificate of dissolution filed').toBe('irreversible')
+    for (const slug of ['handle-consumer-guarantees-and-statutory-remedies', 'prepare-and-clear-a-customs-shipment', 'assess-and-operate-packaging-producer-responsibilities']) expect(taskTier('startup-coverage.' + slug)).toBe('irreversible')
     expect(taskTier('opp_001')).toBe('irreversible')
     expect(nodeTier('opp_001', 'n3'), 'the wire release').toBe('irreversible')
   })

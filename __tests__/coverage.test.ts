@@ -439,6 +439,11 @@ describe('process and country completeness evidence', () => {
     const collaboration = makeInput().records.find(record => record.id === 'startup-coverage.review-competitor-collaboration-and-information-exchange')!
     expect(collaboration.links.filter(link => link.from === 'n4').map(link => link.to).sort()).toEqual(['n5', 'n6'])
     expect(collaboration.parts.find(part => part.id === 'n5')?.when).toContain('approves')
+    const remedy = makeInput().records.find(record => record.id === 'startup-coverage.handle-consumer-guarantees-and-statutory-remedies')!
+    expect(remedy.metadata.reversibility).toBe('irreversible')
+    expect(remedy.parts.find(part => part.id === 'n5r')?.metadata).toMatchObject({ reversibility: 'irreversible', approvalRequired: true })
+    expect(remedy.links.filter(link => link.from === 'n4').map(link => link.to).sort()).toEqual(['n5', 'n5r'])
+    expect(remedy.parts.find(part => part.id === 'n5')?.when).toContain('repair or replacement')
   })
 
   it('keeps the generated matrix and readable report deterministic against the canonical catalog', () => {

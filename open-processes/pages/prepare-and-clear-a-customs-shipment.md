@@ -20,7 +20,7 @@ Start with the applicability facts and evidence listed in the first step. Resolv
 | Cadence | event-driven |
 | Geo scope | global |
 | Complexity | complex |
-| Reversibility | reversible |
+| Reversibility | irreversible |
 | Agent support | partial |
 
 An agent can prepare and reconcile the documented inputs. Named people retain decisions, specialist judgments, physical work and authorized external actions.
@@ -103,7 +103,7 @@ The accountable trader approves the exact declaration data, broker mandate, paym
 
 ### 5. Submit and coordinate customs release
 
-human · human approval required · hard to undo
+human · human approval required · irreversible
 
 
 The authorized declarant or broker submits through the applicable customs route, handles official requests and arranges approved duty or tax payment. Retain declaration references and release or hold messages; physical delivery alone does not establish customs acceptance.

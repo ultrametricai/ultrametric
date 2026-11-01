@@ -20,7 +20,7 @@ Start with the applicability facts and evidence listed in the first step. Resolv
 | Cadence | event-driven |
 | Geo scope | global |
 | Complexity | complex |
-| Reversibility | reversible |
+| Reversibility | irreversible |
 | Agent support | partial |
 
 An agent can prepare and reconcile the documented inputs. Named people retain decisions, specialist judgments, physical work and authorized external actions.
@@ -103,7 +103,7 @@ The accountable compliance owner approves the applicability determination, any s
 
 ### 5. Complete approved registrations and reports
 
-human · human approval required · hard to undo
+human · human approval required · irreversible
 
 
 An authorized operator submits the reviewed registrations and packaging reports and arranges approved fees or scheme work through the applicable route. Retain acceptance, rejection and payment evidence; submission or scheme membership alone does not prove every obligation is complete.
