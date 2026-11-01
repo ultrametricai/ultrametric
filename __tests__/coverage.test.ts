@@ -314,6 +314,8 @@ describe('process and country completeness evidence', () => {
     expect(report.cells.some(c => !c.localMaterial)).toBe(true)
     expect(report.summary.explicitNeedGaps).toBeGreaterThan(0)
     expect(report.summary.mappedNeeds).toBeLessThan(report.summary.needs)
+    expect(report.summary.crosscheckedNeeds).toBe(new Set(input.audit.checks.flatMap(c => c.needIds)).size)
+    expect(report.summary.crosscheckedNeeds + report.crosscheckPendingNeedIds.length).toBe(report.summary.needs)
   })
 
   it('gives source-checked drafts and fictional cases no professional-review or execution credit', () => {

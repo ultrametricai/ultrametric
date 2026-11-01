@@ -11,6 +11,7 @@ General startup operating needs and explicitly conditional business models. The 
 | Measure | Result | Meaning |
 | --- | --- | --- |
 | Needs with guide entry points | 144/151 (95.4%) | Related guide presence; remaining needs stay in the denominator |
+| Needs in the external-source crosscheck | 16/151 | Unchecked needs remain pending; independent human review is separate |
 | Cells with local material | 666/5103 (13.1%) | Country notes, step resolutions or a US-scoped baseline; quality, freshness and completeness are separate |
 | Reviewed procedures | 0/8 | Required sections, dates, owner, qualified independent review and scenario tests are current |
 | Procedures with observed run evidence | 0/8 | Independent passed-run evidence binds to the assessed content |
@@ -48,7 +49,7 @@ A fictional case checks scope routing and documented gates. It does not establis
 
 ## Next work
 
-1. Assign an editorial maintenance owner and commission an independent review of the scope and source crosscheck.
+1. Complete the source crosscheck for the remaining needs, assign an editorial maintenance owner and commission an independent review of the scope and inventory.
 2. Have appropriately qualified local reviewers assess the scoped procedures, source locators, exclusions and scenario inventory. Keep receipts for any subsequent authorized run in the private company system.
 3. Add procedures for the explicit inventory gaps below, then deepen unassessed process/country cells within the existing country set.
 4. Recheck source material and instructions on the declared editorial cadence. Regenerate the snapshot after source, scope or instruction changes; previous review and run evidence loses credit when its content digest no longer matches.
