@@ -11,6 +11,8 @@ Obtain or confirm the tax identifiers needed by the company. Some jurisdictions 
 
 > Additional country launch entry points source-checked 2026-10-30. These are draft scoping summaries. They do not establish complete local-law workflows, professional review or verified execution for those countries.
 
+> Scoped draft detail: UK-resident private company limited by shares registered in England and Wales, operating domestically in unregulated services. Other entities, locations and cross-border facts need another assessment. Professional review is pending. Source and instruction check: 2026-11-01. Assessment: coverage/local-procedure-assessments.json.
+
 | Field | Value |
 | --- | --- |
 | Kind | process |
@@ -25,7 +27,7 @@ Obtain or confirm the tax identifiers needed by the company. Some jurisdictions 
 
 IRS EIN application is a web form with no API. System provides step-by-step guidance and pre-fills company data.
 
-- Sources: [KVK Business Register and Tax Administration](https://www.kvk.nl/en/starting/business-register-and-tax-administration/) · [Revenue registering for tax](https://www.revenue.ie/en/starting-a-business/registering-for-tax/index.aspx) · [Agencia Tributaria tax census and NIF](https://sede.agenciatributaria.gob.es/Sede/censos-nif-domicilio-fiscal/censos.html) · [Skatteverket starting and registering a business](https://www.skatteverket.se/foretag/drivaforetag/startaochregistrera.4.58d555751259e4d661680006123.html) · [Swiss Federal Tax Administration VAT registration](https://www.estv.admin.ch/en/register-for-vat) · [Japan National Tax Agency notification guidelines](https://www.nta.go.jp/english/Guidelines.htm) · [Brazil register an entity in CNPJ](https://www.gov.br/pt-br/servicos/inscrever-no-cnpj) · [UAE Federal Tax Authority corporate tax registration](https://tax.gov.ae/en/services/corporate.tax.registration.aspx)
+- Sources: [KVK Business Register and Tax Administration](https://www.kvk.nl/en/starting/business-register-and-tax-administration/) · [Revenue registering for tax](https://www.revenue.ie/en/starting-a-business/registering-for-tax/index.aspx) · [Agencia Tributaria tax census and NIF](https://sede.agenciatributaria.gob.es/Sede/censos-nif-domicilio-fiscal/censos.html) · [Skatteverket starting and registering a business](https://www.skatteverket.se/foretag/drivaforetag/startaochregistrera.4.58d555751259e4d661680006123.html) · [Swiss Federal Tax Administration VAT registration](https://www.estv.admin.ch/en/register-for-vat) · [Japan National Tax Agency notification guidelines](https://www.nta.go.jp/english/Guidelines.htm) · [Brazil register an entity in CNPJ](https://www.gov.br/pt-br/servicos/inscrever-no-cnpj) · [UAE Federal Tax Authority corporate tax registration](https://tax.gov.ae/en/services/corporate.tax.registration.aspx) · [GOV.UK register a private limited company](https://www.gov.uk/limited-company-formation/register-your-company) · [GOV.UK accounts and tax returns](https://www.gov.uk/prepare-file-annual-accounts-for-limited-company) · [HMRC Corporation Tax account services](https://www.gov.uk/limited-company-formation/add-corporation-tax-services-to-business-tax-account)
 
 <a id="artifacts"></a>
 
@@ -48,9 +50,9 @@ Country rows describe the guidance recorded here. Local notes and step alternati
 
 | Country | Recorded guidance | Steps with local alternatives or resolutions |
 | --- | --- | --- |
-| [United States](#geo-us) | step resolution | [1](#step-1), [2](#step-2) |
+| [United States](#geo-us) | step resolution | [1](#step-1), [2](#step-2), [3](#step-3) |
 | [India](#geo-in) | Handled within another local process; step resolution | [2](#step-2) |
-| [United Kingdom](#geo-uk) | Handled within another local process; step resolution | [2](#step-2) |
+| [United Kingdom](#geo-uk) | Handled within another local process; step resolution | [1](#step-1), [2](#step-2), [3](#step-3) |
 | [Germany](#geo-de) | Local analog note; step resolution | [2](#step-2) |
 | [France](#geo-fr) | Handled within another local process; step resolution | [2](#step-2) |
 | [Portugal](#geo-pt) | Handled within another local process; step resolution | [2](#step-2) |
@@ -93,7 +95,7 @@ agent-runnable · ~1 min
 
 Collect the legal entity details and existing registration records. Determine which tax identifiers were issued at formation and what additional registration is required by the company’s jurisdiction. Keep identifiers and responsible-person details in the private workspace.
 
-- Sources: [IRS get an EIN](https://www.irs.gov/businesses/small-businesses-self-employed/get-an-employer-identification-number)
+- Sources: [IRS get an EIN](https://www.irs.gov/businesses/small-businesses-self-employed/get-an-employer-identification-number) · [GOV.UK register a private limited company](https://www.gov.uk/limited-company-formation/register-your-company) · [GOV.UK accounts and tax returns](https://www.gov.uk/prepare-file-annual-accounts-for-limited-company) · [HMRC Corporation Tax account services](https://www.gov.uk/limited-company-formation/add-corporation-tax-services-to-business-tax-account)
 
 <a id="step-2"></a>
 
@@ -108,7 +110,7 @@ Check the accepted formation documents for identifiers already issued. Where a s
 - Produces: EIN assignment letter
 - Canonical vendor: IRS
 - Do it yourself: [IRS EIN online application](https://www.irs.gov/businesses/small-businesses-self-employed/apply-for-an-employer-identification-number-ein-online)
-- Sources: [IRS get an EIN](https://www.irs.gov/businesses/small-businesses-self-employed/get-an-employer-identification-number) · [KVK Business Register and Tax Administration](https://www.kvk.nl/en/starting/business-register-and-tax-administration/) · [Revenue registering for tax](https://www.revenue.ie/en/starting-a-business/registering-for-tax/index.aspx) · [Agencia Tributaria tax census and NIF](https://sede.agenciatributaria.gob.es/Sede/censos-nif-domicilio-fiscal/censos.html) · [Skatteverket starting and registering a business](https://www.skatteverket.se/foretag/drivaforetag/startaochregistrera.4.58d555751259e4d661680006123.html) · [Swiss Federal Tax Administration VAT registration](https://www.estv.admin.ch/en/register-for-vat) · [Japan National Tax Agency notification guidelines](https://www.nta.go.jp/english/Guidelines.htm) · [Brazil register an entity in CNPJ](https://www.gov.br/pt-br/servicos/inscrever-no-cnpj) · [UAE Federal Tax Authority corporate tax registration](https://tax.gov.ae/en/services/corporate.tax.registration.aspx)
+- Sources: [IRS get an EIN](https://www.irs.gov/businesses/small-businesses-self-employed/get-an-employer-identification-number) · [KVK Business Register and Tax Administration](https://www.kvk.nl/en/starting/business-register-and-tax-administration/) · [Revenue registering for tax](https://www.revenue.ie/en/starting-a-business/registering-for-tax/index.aspx) · [Agencia Tributaria tax census and NIF](https://sede.agenciatributaria.gob.es/Sede/censos-nif-domicilio-fiscal/censos.html) · [Skatteverket starting and registering a business](https://www.skatteverket.se/foretag/drivaforetag/startaochregistrera.4.58d555751259e4d661680006123.html) · [Swiss Federal Tax Administration VAT registration](https://www.estv.admin.ch/en/register-for-vat) · [Japan National Tax Agency notification guidelines](https://www.nta.go.jp/english/Guidelines.htm) · [Brazil register an entity in CNPJ](https://www.gov.br/pt-br/servicos/inscrever-no-cnpj) · [UAE Federal Tax Authority corporate tax registration](https://tax.gov.ae/en/services/corporate.tax.registration.aspx) · [GOV.UK register a private limited company](https://www.gov.uk/limited-company-formation/register-your-company) · [GOV.UK accounts and tax returns](https://www.gov.uk/prepare-file-annual-accounts-for-limited-company) · [HMRC Corporation Tax account services](https://www.gov.uk/limited-company-formation/add-corporation-tax-services-to-business-tax-account)
 
 <a id="step-3"></a>
 
@@ -119,7 +121,7 @@ agent-runnable · ~1 min
 
 Store the verified identifiers, issuing authority and confirmation privately. Make them available only to authorized users and downstream filings that require them.
 
-- Sources: [IRS get an EIN](https://www.irs.gov/businesses/small-businesses-self-employed/get-an-employer-identification-number)
+- Sources: [IRS get an EIN](https://www.irs.gov/businesses/small-businesses-self-employed/get-an-employer-identification-number) · [GOV.UK register a private limited company](https://www.gov.uk/limited-company-formation/register-your-company) · [GOV.UK accounts and tax returns](https://www.gov.uk/prepare-file-annual-accounts-for-limited-company) · [HMRC Corporation Tax account services](https://www.gov.uk/limited-company-formation/add-corporation-tax-services-to-business-tax-account)
 
 
 <a id="by-country"></a>
@@ -134,6 +136,7 @@ Store the verified identifiers, issuing authority and confirmation privately. Ma
 - Step 2: Complete IRS SS-4 form online Use the IRS application method for which the entity and responsible party qualify. Review the answers against the prepared facts and current instructions. The authorized representative approves submission; a third-party designee needs signed authorization. Complete the required identity or signature steps and save the IRS confirmation. If the applicant is ineligible for the online assistant, use the appropriate IRS alternative with accurate identity details. ([IRS EIN online application](https://www.irs.gov/businesses/small-businesses-self-employed/apply-for-an-employer-identification-number-ein-online))
   - Cost: free (free, as of 2026-10-01, [www.irs.gov](https://www.irs.gov/businesses/small-businesses-self-employed/apply-for-an-employer-identification-number-ein-online)). The IRS issues EINs for free; third-party services charge to file on your behalf.
   - Verify: The EIN is issued in the XX-XXXXXXX format at the end of the online session — retain the CP 575 confirmation notice; banks and payroll providers ask for it. ([www.irs.gov](https://www.irs.gov/businesses/small-businesses-self-employed/apply-for-an-employer-identification-number-ein-online))
+- Step 3: Store the tax identifiers in company records Store the verified identifiers, issuing authority and confirmation privately. Make them available only to authorized users and downstream filings that require them.
 
 <a id="geo-in"></a>
 
@@ -146,8 +149,12 @@ Store the verified identifiers, issuing authority and confirmation privately. Ma
 
 ### United Kingdom
 
-- Absorbed: There is no EIN application: HMRC posts the company a Unique Taxpayer Reference (UTR) automatically after incorporation, and you register for Corporation Tax within 3 months of starting business. ([HMRC Corporation Tax (UTR)](https://www.gov.uk/corporation-tax))
-- Step 2: Absorbed: There is no EIN application: HMRC posts the company a Unique Taxpayer Reference (UTR) automatically after incorporation, and you register for Corporation Tax within 3 months of starting business. ([HMRC Corporation Tax (UTR)](https://www.gov.uk/corporation-tax))
+Confirm the company Unique Taxpayer Reference (UTR), HMRC record and the tax registrations actually completed through formation. VAT and employer registration are separate obligations and require their own assessment.
+
+- Absorbed: Confirm the company Unique Taxpayer Reference (UTR), HMRC record and the tax registrations actually completed through formation. VAT and employer registration are separate obligations and require their own assessment. ([HMRC Corporation Tax (UTR)](https://www.gov.uk/corporation-tax))
+- Step 1: Prepare the company tax-registration information For the scoped UK company, reconcile its company number, incorporation and business-start facts and tax correspondence. Check what registration the incorporation route actually completed; dormant, foreign-resident or cross-border cases need another assessment. ([HMRC Corporation Tax account services](https://www.gov.uk/limited-company-formation/add-corporation-tax-services-to-business-tax-account))
+- Step 2: Absorbed: Confirm the issued UTR and the separate company-tax account access For the scoped company, reconcile the UTR received through HMRC correspondence after formation. Confirm which Corporation Tax services the incorporation route activated and add access through the authorized business tax account where required. Use the current HMRC missing-UTR or activation route for unresolved correspondence; VAT and PAYE remain separate. ([HMRC Corporation Tax account services](https://www.gov.uk/limited-company-formation/add-corporation-tax-services-to-business-tax-account))
+- Step 3: Store the tax identifiers in company records Store the verified references in the private company system and assign separate company-tax, VAT and employer work where applicable. Retain evidence of registration and unresolved issues; source checking does not authorize a filing. ([HMRC Corporation Tax account services](https://www.gov.uk/limited-company-formation/add-corporation-tax-services-to-business-tax-account))
 
 <a id="geo-de"></a>
 
