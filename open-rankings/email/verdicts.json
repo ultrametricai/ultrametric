@@ -28,7 +28,7 @@
     "confidence": "high",
     "rationale": "A live probe confirms https://docs.agentmail.to/llms.txt returns HTTP 200 with an AgentMail documentation index. Every doc page is also served as a .md file, an OpenAPI spec is published, and the docs include agent-oriented material: an agent self-registration quickstart and installable agent skills for Claude Code, Cursor and Codex. Missing for 10: independent or community reports of agents successfully consuming these docs, and evidence of an llms-full.txt or similar full-content dump.",
     "evidenceIds": [
-      "agentmail-probe-1",
+      "agentmail-probe-1-refresh-9d053c0f53386411",
       "agentmail-probe-2",
       "agentmail-docs-1",
       "agentmail-docs-29",
@@ -154,7 +154,7 @@
       "agentmail-docs-55",
       "agentmail-docs-6",
       "agentmail-docs-10",
-      "agentmail-probe-1",
+      "agentmail-probe-1-refresh-9d053c0f53386411",
       "agentmail-comm-16"
     ]
   },
@@ -205,11 +205,14 @@
   {
     "productId": "agentmail",
     "storyId": "ai-drafts-in-my-voice",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "AgentMail is email infrastructure for agents, so AI-drafted replies are a fair question for it. However, nothing in the evidence shows it generating replies, let alone learning or matching a user's voice and tone. Its Drafts API lets a developer's own agent create drafts for human review, but that is a building block for constructing the capability, not the capability itself, so it earns no credit.",
-    "evidenceIds": []
+    "rationale": "AgentMail offers a Drafts primitive: an agent can create a draft that a human reviews and approves before sending, and drafts are also exposed through its hosted MCP server. That covers the 'ready to review and send' part of the story. However, AgentMail is email infrastructure for agents, and nothing in the evidence shows it generates reply content or adapts to the user's voice. Missing for 10: built-in AI reply generation, learning or matching the user's personal voice and tone, any evidence that drafts avoid generic boilerplate, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "agentmail-docs-16",
+      "agentmail-docs-12"
+    ]
   },
   {
     "productId": "agentmail",
@@ -228,11 +231,17 @@
   {
     "productId": "agentmail",
     "storyId": "ai-triage-labels",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "AgentMail is email infrastructure for agents, so AI inbox triage is a fair question for this kind of product. The evidence only shows developer primitives: string labels that agents can attach to messages and threads, keyword search, allow/block lists, webhooks, and MCP tools. These are building blocks a developer could use to construct triage. There is no documented first-party capability that auto-labels, categorizes, or surfaces what needs attention, with steerable or auditable behavior.",
-    "evidenceIds": []
+    "rationale": "AgentMail offers primitives an agent could use to triage email: Labels to track conversation state, allow/block Lists for filtering, full-text thread search, and real-time webhooks/WebSockets on new mail. There is no evidence of a built-in AI that auto-labels, categorizes or surfaces priority mail, so the user must build the triage agent and its logic. Missing for 10: built-in AI auto-labeling/categorization, attention/priority surfacing, user-steerable triage rules, an audit log of triage decisions, and hands-on corroboration.",
+    "evidenceIds": [
+      "agentmail-docs-17",
+      "agentmail-docs-18",
+      "agentmail-docs-5",
+      "agentmail-docs-6",
+      "agentmail-docs-7"
+    ]
   },
   {
     "productId": "agentmail",
@@ -245,7 +254,7 @@
       "agentmail-docs-32",
       "agentmail-probe-2",
       "agentmail-comm-16",
-      "agentmail-comm-5"
+      "agentmail-comm-5-refresh-58c94430ccea7bcf"
     ]
   },
   {
@@ -257,7 +266,7 @@
     "rationale": "A hands-on probe fetched https://docs.agentmail.to/openapi.json with HTTP 200, and the file contains an \"openapi\" key, so a machine-readable OpenAPI spec is publicly downloadable. An llms.txt docs index is also served for AI consumption. Missing for 10: first-party documentation prose that describes or links the OpenAPI spec and confirms it covers the full API.",
     "evidenceIds": [
       "agentmail-probe-2",
-      "agentmail-probe-1",
+      "agentmail-probe-1-refresh-9d053c0f53386411",
       "agentmail-docs-32"
     ]
   },
@@ -282,11 +291,16 @@
   {
     "productId": "agentmail",
     "storyId": "assignment-and-routing",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence pack has no documented way to assign conversations to teammates and no rule-based routing of incoming mail. Labels for tracking conversation state, allow/block Lists, and per-pod webhook routing are adjacent features or developer building blocks, not ownership assignment or mail-routing rules.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "AgentMail has no native conversation assignment or rule-based routing. A team could approximate ownership by tagging threads with Labels and could build its own routing logic on webhook events. Lists only allow or block senders and domains, and the per-pod 'route webhook events' guidance is tenant plumbing rather than mail-routing rules. Missing for 10: native assignment of conversations to teammates, a rule engine for routing incoming mail, explicit owner fields or team-lead UI, and any hands-on corroboration.",
+    "evidenceIds": [
+      "agentmail-docs-17",
+      "agentmail-docs-18",
+      "agentmail-docs-9",
+      "agentmail-docs-19"
+    ]
   },
   {
     "productId": "agentmail",
@@ -300,11 +314,17 @@
   {
     "productId": "agentmail",
     "storyId": "automation-rules-engine",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "The evidence shows no first-party rules engine where a user defines conditions that automatically trigger actions. Webhooks and WebSockets only deliver events, so they are developer building blocks: the user must write their own code to act on them. Allow/block Lists are a fixed sender filter, an adjacent control rather than user-defined event-to-action rules.",
-    "evidenceIds": []
+    "rationale": "AgentMail pushes email events to your code through webhooks (a POST to a registered URL as soon as an event happens) and real-time WebSockets. Allow/block Lists act as simple declarative filtering rules, and webhook events can be routed per pod. Beyond that, the user must write their own handler code to turn events into actions, because no built-in rule engine or condition-to-action configuration is documented. Missing for 10: native declarative rule or automation builder, documented event types and condition matching, built-in actions triggered without custom code, independent hands-on corroboration.",
+    "evidenceIds": [
+      "agentmail-docs-6",
+      "agentmail-docs-19",
+      "agentmail-docs-7",
+      "agentmail-docs-18",
+      "agentmail-docs-9"
+    ]
   },
   {
     "productId": "agentmail",
@@ -418,11 +438,15 @@
   {
     "productId": "agentmail",
     "storyId": "offline-access",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "AgentMail is a hosted, API-first email provider, so offline access with later sync is a fair question for an email product. However, the evidence documents no offline mode, local cache, or reconnect sync in AgentMail itself. Its IMAP/SMTP support (agentmail-docs-8) lets third-party clients like Thunderbird connect, but any offline behavior there would come from those external clients, a user-side workaround that earns no credit.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "AgentMail is an API-first, hosted email service with no documented native offline mode. The only route to offline work is its IMAP/SMTP support, which lets clients like Thunderbird, Outlook or Apple Mail connect; those clients could cache mail and sync on reconnect, but the docs never say so. Its documented full-text search is a server-side API feature, so it gives no offline search. Missing for 10: any first-party offline read/search/compose capability, documented offline-sync or conflict-resolution behavior, confirmation that IMAP sync handles offline changes, and any hands-on corroboration.",
+    "evidenceIds": [
+      "agentmail-docs-8",
+      "agentmail-docs-14",
+      "agentmail-docs-5"
+    ]
   },
   {
     "productId": "agentmail",
@@ -492,7 +516,7 @@
     "confidence": "low",
     "rationale": "AgentMail is documented as a hosted email API and MCP service. The only self-hosting signal is a single community comment that its enterprise options include \"Bring Your Own Cloud\", which suggests a deployment into the customer's own cloud on enterprise terms. missing for 10: first-party documentation of BYOC or self-hosted deployment, open-source or downloadable server components, installation/operations guides, availability outside enterprise contracts, and hands-on corroboration that the core product runs on user-controlled infrastructure.",
     "evidenceIds": [
-      "agentmail-comm-6"
+      "agentmail-comm-6-refresh-de68b24b7aea1299"
     ]
   },
   {
@@ -503,7 +527,7 @@
     "confidence": "low",
     "rationale": "The only relevant evidence is a community comment noting that AgentMail's enterprise options include Bring Your Own Cloud. That would let an organization control where its data lives, but it is reported secondhand and appears to be enterprise-only. Pods offer tenant isolation, not location choice. Missing for 10: first-party docs on region or residency selection, self-serve region choice for non-enterprise users, a list of available regions, and independent or hands-on corroboration of BYOC.",
     "evidenceIds": [
-      "agentmail-comm-6"
+      "agentmail-comm-6-refresh-de68b24b7aea1299"
     ]
   },
   {
@@ -559,7 +583,7 @@
     "confidence": "low",
     "rationale": "AgentMail is documented as a hosted email API, with a hosted MCP server and managed inboxes. The only sign of self-hosting is one community comment that enterprise plans include a Bring Your Own Cloud option, which would put the pipeline in the customer's own cloud. Custom domains and IMAP/SMTP client access are adjacent controls and earn no credit. Missing for 10: first-party docs for self-hosting or BYOC deployment, details on which pipeline components run under customer control, any self-host option outside enterprise plans, and hands-on corroboration.",
     "evidenceIds": [
-      "agentmail-comm-6"
+      "agentmail-comm-6-refresh-de68b24b7aea1299"
     ]
   },
   {
@@ -606,11 +630,17 @@
   {
     "productId": "agentmail",
     "storyId": "split-inbox-triage",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "AgentMail is an email provider, so splitting an inbox into prioritized streams is a fair question. The evidence shows no categorized or split-inbox feature that sorts mail into important, team, newsletter or calendar streams. Labels (string tags an agent or developer attaches), allow/block Lists, and creating multiple inboxes are building blocks or adjacent features. They are not the product's own priority-stream triage capability, so they earn no credit here.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "AgentMail offers building blocks a developer could use to approximate focused streams: Labels to tag conversations, Lists to allow or block senders and domains, many inboxes per agent, relevance-ranked search, and webhooks to route events. Nothing in the evidence shows built-in stream splitting or priority-ordered triage, so a power user would have to build the categorization logic themselves. Missing for 10: automatic categorization into important/team/newsletter/calendar streams, priority-ordered triage views, calendar-invite detection, and any independent or hands-on corroboration.",
+    "evidenceIds": [
+      "agentmail-docs-17",
+      "agentmail-docs-18",
+      "agentmail-docs-2",
+      "agentmail-docs-5",
+      "agentmail-docs-6"
+    ]
   },
   {
     "productId": "agentmail",
@@ -625,18 +655,16 @@
     "productId": "fastmail",
     "storyId": "agent-email-end-to-end",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Fastmail documents a JMAP API with API tokens and standard OAuth 2.0/Bearer auth, so a custom agent can query, fetch, and send mail in one HTTP request. That gives the 'my own agent' path a real documented connection, but there is no evidence of a turnkey Claude or ChatGPT connector or MCP server. The llms.txt and OpenAPI probes both returned 404. Missing for 10: an official Claude/ChatGPT connector or MCP server, explicit documentation of draft creation and triage actions (move/flag/label) via the API, agent-oriented docs such as llms.txt, and independent hands-on reports of agents running email end to end.",
+    "rationale": "Fastmail documents a programmatic connection that an agent could use: the JMAP API, with a session object at /.well-known/jmap, OAuth 2.0 or Bearer API tokens, and batched methodCalls that \"query, fetch, and send\" in one request. That covers reading and sending mail for a self-built agent. However, nothing in the evidence shows a ready-made connection for Claude or ChatGPT, so those agents would need custom integration work. Drafting and triage (moving or labelling mail) through the API are only implied, not documented. Missing for 10: official MCP server or first-party Claude/ChatGPT connector, explicit API docs for drafts and triage actions, hands-on or independent evidence of agents running end to end.",
     "evidenceIds": [
-      "fastmail-docs-38",
-      "fastmail-docs-41",
+      "fastmail-docs-1",
       "fastmail-docs-2",
       "fastmail-docs-5",
+      "fastmail-docs-38",
       "fastmail-docs-40",
-      "fastmail-docs-1",
-      "fastmail-probe-1",
-      "fastmail-probe-2"
+      "fastmail-docs-42"
     ]
   },
   {
@@ -671,7 +699,7 @@
       "fastmail-docs-30",
       "fastmail-docs-supp-1",
       "fastmail-docs-supp-2",
-      "fastmail-comm-7"
+      "fastmail-comm-7-refresh-1145f5d70e18d15d"
     ]
   },
   {
@@ -696,7 +724,7 @@
       "fastmail-docs-38",
       "fastmail-docs-1",
       "fastmail-docs-40",
-      "fastmail-comm-8"
+      "fastmail-comm-8-refresh-69236ad6de4a7c0c"
     ]
   },
   {
@@ -766,7 +794,7 @@
       "fastmail-docs-22",
       "fastmail-docs-2",
       "fastmail-docs-40",
-      "fastmail-comm-8"
+      "fastmail-comm-8-refresh-69236ad6de4a7c0c"
     ]
   },
   {
@@ -904,7 +932,7 @@
     "evidenceIds": [
       "fastmail-docs-6",
       "fastmail-docs-28",
-      "fastmail-comm-7"
+      "fastmail-comm-7-refresh-1145f5d70e18d15d"
     ]
   },
   {
@@ -953,7 +981,7 @@
     "evidenceIds": [
       "fastmail-docs-14",
       "fastmail-docs-34",
-      "fastmail-comm-5"
+      "fastmail-comm-5-refresh-614ee31bf0fb64de"
     ]
   },
   {
@@ -967,9 +995,9 @@
       "fastmail-docs-13",
       "fastmail-docs-25",
       "fastmail-docs-24",
-      "fastmail-comm-7",
-      "fastmail-comm-4",
-      "fastmail-comm-13"
+      "fastmail-comm-7-refresh-1145f5d70e18d15d",
+      "fastmail-comm-4-refresh-5a3fce226adb6fa1",
+      "fastmail-comm-13-refresh-20e8c721b9540dbb"
     ]
   },
   {
@@ -1003,7 +1031,7 @@
     "evidenceIds": [
       "fastmail-docs-8",
       "fastmail-docs-27",
-      "fastmail-comm-9",
+      "fastmail-comm-9-refresh-6d68af859941b5ab",
       "fastmail-docs-4"
     ]
   },
@@ -1019,7 +1047,7 @@
       "fastmail-docs-29",
       "fastmail-docs-12",
       "fastmail-docs-36",
-      "fastmail-comm-1"
+      "fastmail-comm-1-refresh-3c7dba25a39b5c6a"
     ]
   },
   {
@@ -1030,7 +1058,7 @@
     "confidence": "low",
     "rationale": "A community report says Fastmail can be set up to fetch mail from, and send via, Gmail like a mail client. That is a native multi-provider capability, but it is evidenced only for Gmail and only by community testimony. The 'Logging in to multiple accounts' and 'Import your mail' docs are bare titles about Fastmail sessions and one-time migration, not ongoing cross-provider access. Missing for 10: first-party docs for external account fetching, Microsoft 365 support, generic IMAP account connection, evidence of a unified place to work across connected accounts, hands-on corroboration.",
     "evidenceIds": [
-      "fastmail-comm-4"
+      "fastmail-comm-4-refresh-5a3fce226adb6fa1"
     ]
   },
   {
@@ -1062,8 +1090,8 @@
       "fastmail-docs-5",
       "fastmail-docs-23",
       "fastmail-docs-40",
-      "fastmail-comm-8",
-      "fastmail-comm-7"
+      "fastmail-comm-8-refresh-69236ad6de4a7c0c",
+      "fastmail-comm-7-refresh-1145f5d70e18d15d"
     ]
   },
   {
@@ -1103,11 +1131,14 @@
   {
     "productId": "fastmail",
     "storyId": "openness-open-license",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Open-source licensing is a fair question for a hosted email service, so the axis applies. The evidence offers only an open protocol (JMAP is an open, patent-free standard), which is an adjacent feature and not readable product source. There is also a bare page title, \"Open source and standards | Fastmail\", with no content showing that Fastmail's own product source is published under an open license.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 2,
+    "confidence": "low",
+    "rationale": "The only evidence on this subject is a page titled 'Open source and standards' (fastmail-docs-23), with no content showing which code is published or under what license. JMAP being an open standard (fastmail-docs-21) covers protocol openness, not the product's own source, so this barely counts. Missing for 10: evidence that Fastmail's own product source (server, web client, or apps) is publicly readable, the specific open license it uses, any repository links, and independent corroboration.",
+    "evidenceIds": [
+      "fastmail-docs-23",
+      "fastmail-docs-21"
+    ]
   },
   {
     "productId": "fastmail",
@@ -1126,8 +1157,8 @@
     "confidence": "low",
     "rationale": "The only evidence of region choice is a community thread on Fastmail's new EU (Amsterdam) region, which notes that Fastmail says it cannot guarantee data stays only in the EU. Another user describes data falling under both Australian and American jurisdictions given Fastmail's hosting locations. So some region option appears to exist, but true residency control is limited and has no first-party documentation in this pack. Missing for 10: first-party docs on region selection, a guaranteed residency commitment, a list of available regions and how to choose one, and independent hands-on confirmation.",
     "evidenceIds": [
-      "fastmail-comm-15",
-      "fastmail-comm-12"
+      "fastmail-comm-15-refresh-0771d21c9fc7a2e3",
+      "fastmail-comm-12-refresh-61f43a013c7534f4"
     ]
   },
   {
@@ -1241,7 +1272,7 @@
     "evidenceIds": [
       "fastmail-docs-6",
       "fastmail-docs-28",
-      "fastmail-comm-6",
+      "fastmail-comm-6-refresh-00d2332b935e2090",
       "fastmail-docs-45"
     ]
   },
@@ -1491,11 +1522,14 @@
     "productId": "gmail",
     "storyId": "ai-triage-labels",
     "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Gemini in Gmail can be asked to organize mail, such as adding labels or deleting multiple emails (gmail-docs-14). That is a prompt-steered AI labeling capability, but it is on-demand rather than autonomous inbox triage. Rule-based filters (gmail-docs-15, gmail-docs-28) are not AI and get no credit, and thread summarization (gmail-docs-13) is an adjacent feature rather than triage. Missing for 10: automatic AI labeling/categorization of incoming mail, AI surfacing of what needs attention, a way to audit the AI's triage decisions, and independent or hands-on corroboration.",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "Gemini in Gmail can organize the inbox on request, such as adding labels or deleting multiple emails (gmail-docs-14), and can summarize long threads (gmail-docs-13). Automatic labeling comes from user-defined filter rules that match on sender, subject or size (gmail-docs-15, gmail-docs-28), which you can steer but which are deterministic rules rather than AI triage. Missing for 10: autonomous AI auto-labeling/categorization of incoming mail, AI surfacing of what needs attention, an audit trail or explanation of AI triage actions, and independent hands-on corroboration.",
     "evidenceIds": [
-      "gmail-docs-14"
+      "gmail-docs-14",
+      "gmail-docs-13",
+      "gmail-docs-15",
+      "gmail-docs-28"
     ]
   },
   {
@@ -1724,7 +1758,7 @@
       "gmail-docs-43",
       "gmail-docs-6",
       "gmail-docs-53",
-      "gmail-comm-3",
+      "gmail-comm-3-refresh-8188449eea12ea75",
       "gmail-comm-4",
       "gmail-comm-5"
     ]
@@ -2150,10 +2184,10 @@
   {
     "productId": "missive",
     "storyId": "agentic-webhooks",
-    "verdict": "partial",
-    "quality": 3,
+    "verdict": "full",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Missive's developer docs list webhooks as a first-party developer tool alongside the REST API and custom channels. This is a documented capability of the product itself, but the evidence is a single passing mention with no detail on how to register or subscribe. Missing for 10: documented webhook registration/subscription mechanism, list of subscribable event types, payload format, signing/retry details, and independent or hands-on corroboration.",
+    "rationale": "Missive's developer documentation explicitly lists webhooks alongside its REST API, UI integrations and custom channels, so the capability is first-party documented. The evidence is only a single summary-level mention, though, with nothing on how a subscription works. Missing for 10: documented event types or triggers, the subscription/registration mechanism (API vs. rules-based), payload and signing details, and independent or hands-on corroboration.",
     "evidenceIds": [
       "missive-docs-31",
       "missive-docs-39"
@@ -2212,13 +2246,14 @@
     "productId": "missive",
     "storyId": "api-interactive-docs",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Missive publishes its own REST API endpoint reference with per-endpoint example requests against https://public.missiveapp.com/v1/, which users can copy and run. The same evidence states there is no live try-it runner and no OpenAPI spec, and probes confirm every OpenAPI path returns 404, so the reference is static rather than interactive. missing for 10: an in-browser interactive try-it console, a machine-readable OpenAPI spec for generating runnable examples, and hands-on corroboration that the examples run as written.",
+    "rationale": "Missive publishes a complete REST endpoint reference covering conversations, drafts, posts, contacts, labels and more. Each endpoint has an example request against public.missiveapp.com/v1, and the pages are AI-readable as raw Markdown with an llms.txt index. The docs explicitly state there is no live try-it runner and no OpenAPI spec, and probes found no openapi/swagger file, so the reference is static rather than interactive. Missing for 10: an interactive in-browser try-it console, an OpenAPI spec to drive interactive tooling, and hands-on corroboration that the examples run as documented.",
     "evidenceIds": [
       "missive-supp-endpoints-reference",
       "missive-probe-3",
-      "missive-docs-31"
+      "missive-docs-31",
+      "missive-docs-15"
     ]
   },
   {
@@ -2273,16 +2308,17 @@
     "productId": "missive",
     "storyId": "automation-bulk-operations",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "low",
-    "rationale": "Missive documents ways to act across many conversations: AI agents connected through its MCP server can triage new conversations and summarize the inbox, and rules automate actions on every matching conversation. But no documented bulk-select or batch operation exists, and the API rate limits (5 concurrent, 300/min) suggest per-item calls only. Missing for 10: documented multi-select bulk actions in the UI, batch or bulk API/MCP endpoints, any hands-on or independent corroboration of bulk operations at scale.",
+    "rationale": "There is no explicit bulk-action feature in the evidence. Bulk-style work is only implied: rules (up to 1000) automate workflows across incoming conversations, and the REST API and MCP server act on conversations, labels and drafts. An AI agent can summarize the inbox or triage new conversations against a CRM. The API is also rate-limited to 5 concurrent requests and 300 per minute, which constrains large batch jobs. Missing for 10: documented multi-select bulk actions in the UI, batch or bulk API endpoints, any documentation of an AI agent applying one action across many items, and independent or hands-on corroboration.",
     "evidenceIds": [
+      "missive-docs-25",
       "missive-docs-20",
       "missive-docs-21",
       "missive-docs-22",
-      "missive-docs-25",
-      "missive-probe-4",
-      "missive-supp-rate-limits"
+      "missive-supp-endpoints-reference",
+      "missive-supp-rate-limits",
+      "missive-docs-44"
     ]
   },
   {
@@ -2374,9 +2410,9 @@
     "productId": "missive",
     "storyId": "instant-search-operators",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Missive documents search filters for Type (Internal/External) and Date range, and command-bar search across all messages, contacts, or a specific label. That is real first-party search capability, but there is no evidence of query operators, result ranking, speed, or coverage of full mail history. Missing for 10: documented search operators/syntax, ranked or relevance-sorted results, evidence of search speed, confirmation that search spans full history, and independent or hands-on corroboration.",
+    "rationale": "Missive documents search filters for Type (Internal/External) and Date range, which now work without a search term. Its command bar can search across all messages, contacts, or messages inside a specific label. That covers basic filtered search across mail, but none of the power-user depth the story asks for is evidenced. Missing for 10: documented search operators/query syntax, ranked or relevance-ordered results, evidence of search speed, explicit coverage of full mail history, and independent or hands-on corroboration.",
     "evidenceIds": [
       "missive-docs-4",
       "missive-docs-38",
@@ -2393,7 +2429,7 @@
     "evidenceIds": [
       "missive-docs-30",
       "missive-docs-48",
-      "missive-comm-3"
+      "missive-comm-3-refresh-57d7753fbcf6d09d"
     ]
   },
   {
@@ -2407,8 +2443,8 @@
       "missive-docs-supp-2",
       "missive-docs-supp-3",
       "missive-docs-supp-4",
-      "missive-comm-4",
-      "missive-comm-5"
+      "missive-comm-4-refresh-6275cedafd098c5c",
+      "missive-comm-5-refresh-30e1d21e21fb0a52"
     ]
   },
   {
@@ -2479,11 +2515,17 @@
   {
     "productId": "missive",
     "storyId": "openness-full-export",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Data export applies to a SaaS shared-inbox product like Missive, but the evidence pack documents no export feature, bulk download, or open-format archive for leaving the service. The REST API endpoints for conversations and contacts, and the MCP server, are developer building blocks rather than a first-party export capability. Two-way sync with Gmail/IMAP and contact sync with Office 365/Google are host-platform behaviors and earn no credit.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The evidence documents no first-party export or offboarding feature. The only route out is the REST API, which exposes conversations, drafts, posts, contacts, labels and analytics as JSON, plus the MCP server. That would make extraction a DIY job, throttled by documented rate limits (5 concurrent requests, 900 per 15 minutes). Missing for 10: documented bulk/self-serve export, standard archive formats (e.g. MBOX/EML/vCard/CSV), coverage guarantees for all data types (chats, tasks, audit logs, attachments), and any independent confirmation that a full exit is feasible.",
+    "evidenceIds": [
+      "missive-supp-endpoints-reference",
+      "missive-supp-rate-limits",
+      "missive-docs-31",
+      "missive-docs-47",
+      "missive-probe-4"
+    ]
   },
   {
     "productId": "missive",
@@ -2592,8 +2634,8 @@
       "missive-docs-8",
       "missive-docs-73",
       "missive-docs-30",
-      "missive-comm-3",
-      "missive-comm-4"
+      "missive-comm-3-refresh-57d7753fbcf6d09d",
+      "missive-comm-4-refresh-6275cedafd098c5c"
     ]
   },
   {
@@ -2620,7 +2662,7 @@
     "evidenceIds": [
       "missive-docs-supp-1",
       "missive-docs-supp-2",
-      "missive-comm-5",
+      "missive-comm-5-refresh-30e1d21e21fb0a52",
       "missive-docs-57",
       "missive-docs-58",
       "missive-docs-59"
@@ -2815,11 +2857,15 @@
   {
     "productId": "shortwave",
     "storyId": "agentic-webhooks",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Shortwave is an email client, so a webhook event-subscription story is a fair question for it. However, the evidence shows no registrable outbound HTTP callbacks. The pack covers in-app triggers (draft replies, organize threads), MCP integrations and a Zapier connection used by the AI assistant, all of which are adjacent features rather than webhooks a programmatic consumer can subscribe to. Probes also found no published API spec.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The changelog describes triggers that fire when emails arrive and can connect to 3,000+ other apps, and a Tasklet integration acts on emails automatically. That is event-driven automation, but it is not a documented webhook subscription. No public API spec was found at any probed path. missing for 10: documented webhook subscription endpoints, event types and payload schemas, delivery/retry and signing semantics, public API docs, independent corroboration.",
+    "evidenceIds": [
+      "shortwave-docs-1",
+      "shortwave-docs-36",
+      "shortwave-probe-3"
+    ]
   },
   {
     "productId": "shortwave",
@@ -2848,7 +2894,7 @@
       "shortwave-docs-28",
       "shortwave-docs-24",
       "shortwave-docs-48",
-      "shortwave-comm-7"
+      "shortwave-comm-7-refresh-adc6e68233f6319a"
     ]
   },
   {
@@ -2864,7 +2910,7 @@
       "shortwave-docs-1",
       "shortwave-docs-43",
       "shortwave-docs-33",
-      "shortwave-comm-1"
+      "shortwave-comm-1-refresh-f56181d6963cc17f"
     ]
   },
   {
@@ -2922,9 +2968,9 @@
     "evidenceIds": [
       "shortwave-docs-29",
       "shortwave-docs-15",
-      "shortwave-comm-1",
-      "shortwave-comm-2",
-      "shortwave-comm-4"
+      "shortwave-comm-1-refresh-f56181d6963cc17f",
+      "shortwave-comm-2-refresh-4ecc78f6885877e5",
+      "shortwave-comm-4-refresh-fa90f76b10606801"
     ]
   },
   {
@@ -2976,8 +3022,8 @@
     "rationale": "Shortwave's homepage promises you can identify important emails and todos \"with a single click\" and \"Sweep away the rest,\" which implies a one-stroke bulk dismissal. A community user also praised 'mark as done' and cleared a weeks-old inbox in about 10 minutes. However, nothing explicitly documents manually multi-selecting arbitrary conversations and applying archive, label, or done to them together, and the AI filters are automation rather than manual bulk action. Missing for 10: documented multi-select of arbitrary threads, bulk labeling, explicit bulk archive/done controls or shortcuts, hands-on corroboration of multi-select triage.",
     "evidenceIds": [
       "shortwave-docs-29",
-      "shortwave-comm-1",
-      "shortwave-comm-4"
+      "shortwave-comm-1-refresh-f56181d6963cc17f",
+      "shortwave-comm-4-refresh-fa90f76b10606801"
     ]
   },
   {
@@ -3003,9 +3049,9 @@
     "evidenceIds": [
       "shortwave-docs-47",
       "shortwave-docs-48",
-      "shortwave-comm-7",
-      "shortwave-comm-1",
-      "shortwave-comm-12"
+      "shortwave-comm-7-refresh-adc6e68233f6319a",
+      "shortwave-comm-1-refresh-f56181d6963cc17f",
+      "shortwave-comm-12-refresh-ef535d15d23192c1"
     ]
   },
   {
@@ -3020,7 +3066,7 @@
       "shortwave-docs-43",
       "shortwave-docs-12",
       "shortwave-docs-48",
-      "shortwave-comm-7"
+      "shortwave-comm-7-refresh-adc6e68233f6319a"
     ]
   },
   {
@@ -3048,7 +3094,7 @@
     "evidenceIds": [
       "shortwave-docs-49",
       "shortwave-docs-13",
-      "shortwave-comm-2"
+      "shortwave-comm-2-refresh-4ecc78f6885877e5"
     ]
   },
   {
@@ -3149,8 +3195,8 @@
     "confidence": "low",
     "rationale": "The only on-topic evidence is a community report that users can leave by deleting their Shortwave account, which implies some account-level deletion. No documentation describes retention settings or selective data controls, and another user wished for a denylist to keep sensitive mail from syncing to Shortwave's servers. missing for 10: first-party documentation of account/data deletion, user-configurable retention periods, selective exclusion of mail from server sync, deletion of AI-processed data, independent corroboration.",
     "evidenceIds": [
-      "shortwave-comm-1",
-      "shortwave-comm-10"
+      "shortwave-comm-1-refresh-f56181d6963cc17f",
+      "shortwave-comm-10-refresh-7f307fdb59d33e3a"
     ]
   },
   {
@@ -3219,8 +3265,8 @@
       "shortwave-docs-11",
       "shortwave-docs-37",
       "shortwave-docs-1",
-      "shortwave-comm-3",
-      "shortwave-comm-13"
+      "shortwave-comm-3-refresh-4abd3b42868b1cc9",
+      "shortwave-comm-13-refresh-66b171fdfbbb1e01"
     ]
   },
   {
@@ -3319,21 +3365,20 @@
     "productId": "superhuman",
     "storyId": "agentic-autonomous-automation",
     "verdict": "full",
-    "quality": 8,
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "First-party docs describe user-configurable background automations: custom Auto Labels defined by AI prompts, Auto Archive, Auto Drafts generated for every message needing a reply, and automatic follow-up reminders that run as mail arrives. The docs also describe agents built via chat or a visual builder that 'run proactively based on triggers you set.' Missing for 10: detailed documentation of the trigger-based agent builder (only one thin mention), independent or hands-on corroboration that these automations run reliably unattended, and custom Auto Labels being limited to Business/Enterprise plans.",
+    "rationale": "Superhuman documents several background automations that act on incoming mail without user action. Auto Labels classify messages as they arrive, Auto Archive clears low-priority mail, and Auto Drafts plus follow-up reminders are generated automatically. Users can configure these with custom AI-prompt labels and plain-language instructions, and a builder (chat or visual) creates agents that run proactively on user-set triggers. Missing for 10: in-depth documentation of the trigger-based agent builder and clarity that it applies to Mail itself; custom Auto Labels are limited to Business/Enterprise plans; no independent or hands-on corroboration that the background automations work reliably.",
     "evidenceIds": [
       "superhuman-docs-61",
-      "superhuman-docs-62",
+      "superhuman-docs-27",
+      "superhuman-docs-66",
+      "superhuman-docs-58",
       "superhuman-docs-3",
       "superhuman-docs-15",
-      "superhuman-docs-22",
-      "superhuman-docs-27",
       "superhuman-docs-33",
-      "superhuman-docs-36",
       "superhuman-docs-57",
-      "superhuman-docs-58",
-      "superhuman-docs-66"
+      "superhuman-docs-6",
+      "superhuman-docs-9"
     ]
   },
   {
@@ -3358,11 +3403,18 @@
   {
     "productId": "superhuman",
     "storyId": "agentic-headless",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Headless or CI automation is a fair question for an AI-native email SaaS, so the axis applies. The pack has no documented headless mode, CLI, or public API: OpenAPI probes all 404. The official MCP server, which drives the inbox from Claude or ChatGPT, belongs to a separate MCP story and does not count here. The in-app trigger-based agents are an adjacent feature, not headless or CI execution.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Superhuman Mail can be driven without its UI through an official MCP server that lets Claude, ChatGPT and other assistants read, draft, send and schedule. It also offers trigger-based agents that run proactively. However, every send requires explicit user approval, and probes found no public OpenAPI spec, which limits true unattended or CI automation. Missing for 10: a CLI or public REST API for scripting, documented headless/CI runtime support, unattended send without approval, and independent hands-on corroboration.",
+    "evidenceIds": [
+      "superhuman-docs-10",
+      "superhuman-docs-37",
+      "superhuman-docs-61",
+      "superhuman-docs-41",
+      "superhuman-probe-2",
+      "superhuman-probe-3"
+    ]
   },
   {
     "productId": "superhuman",
@@ -3396,21 +3448,20 @@
     "productId": "superhuman",
     "storyId": "agentic-nl-commands",
     "verdict": "full",
-    "quality": 7,
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Superhuman documents several first-party ways to operate it in natural language. Its official MCP server lets users drive the inbox and calendar from Claude or ChatGPT with single prompts to summarize, draft, send and schedule. In-app, Ask AI answers plain-English questions, writing and Auto Labels accept plain-language instructions, and agents can be built via chat. missing for 10: documented in-app natural-language commands that execute arbitrary actions (Ask AI is question-answering, and Cmd+K is a command palette, not shown to accept natural language), independent or hands-on corroboration of natural-language operation.",
+    "rationale": "Superhuman documents several natural-language interfaces. Ask AI answers plain-English questions about your inbox. Mail MCP lets you drive the inbox and calendar from Claude or ChatGPT with prompts to draft, send, schedule and run follow-ups. Plain-language prompts also shape writing, custom Auto Labels and chat-built agents. Missing for 10: independent or hands-on corroboration that the NL commands work as claimed, and clear evidence of native in-app NL execution of arbitrary actions beyond Q&A and drafting (most action-taking runs through external AI assistants via MCP).",
     "evidenceIds": [
-      "superhuman-docs-37",
+      "superhuman-docs-4",
+      "superhuman-docs-18",
       "superhuman-docs-10",
       "superhuman-docs-11",
+      "superhuman-docs-37",
       "superhuman-docs-25",
-      "superhuman-docs-18",
-      "superhuman-docs-4",
       "superhuman-docs-9",
       "superhuman-docs-15",
-      "superhuman-docs-23",
       "superhuman-docs-61",
-      "superhuman-probe-3"
+      "superhuman-docs-23"
     ]
   },
   {
@@ -3425,11 +3476,18 @@
   {
     "productId": "superhuman",
     "storyId": "agentic-public-api",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "The evidence pack documents no general-purpose public API for Superhuman Mail: no REST or developer API docs, no API keys or endpoints, and probes for OpenAPI/Swagger specs and llms.txt all returned 404. The official MCP server lets AI assistants drive the inbox, but it is a separate MCP-server capability and is not credited here as a documented public API.",
-    "evidenceIds": []
+    "rationale": "There is no evidence of a general documented public API: probes for OpenAPI/Swagger specs and llms.txt all returned 404. The only programmatic surface is the official Superhuman Mail MCP server, which lets AI assistants like Claude and ChatGPT read, draft and send email and schedule meetings, and is framed as a way to 'drive Superhuman Mail' from AI tools. Missing for 10: a documented public REST/HTTP API with reference docs or a spec, developer auth/rate-limit documentation, and independent hands-on corroboration of the MCP interface.",
+    "evidenceIds": [
+      "superhuman-docs-10",
+      "superhuman-docs-37",
+      "superhuman-docs-11",
+      "superhuman-probe-3",
+      "superhuman-probe-2",
+      "superhuman-probe-1"
+    ]
   },
   {
     "productId": "superhuman",
@@ -3554,11 +3612,18 @@
   {
     "productId": "superhuman",
     "storyId": "assignment-and-routing",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "The evidence has no feature for assigning conversations to teammates or routing incoming mail to an owner. Auto Labels and split inbox sort mail into the user's own categories, not to owners. The team features (shared read statuses, reply indicators, @mention team comments) are adjacent collaboration and collision-avoidance tools, not explicit assignment or ownership routing.",
-    "evidenceIds": []
+    "rationale": "Superhuman offers adjacent team-collaboration features: @mentioning teammates in team comments, shared read statuses, and reply indicators that prevent duplicate work. It also routes incoming mail into categories via AI Auto Labels and split-inbox tabs. None of this amounts to explicitly assigning a conversation's ownership to a teammate, and the routing sorts mail within one user's own inbox rather than sending it to a teammate. Missing for 10: an explicit conversation assignment/owner feature, rules that route incoming mail to specific teammates, any shared-inbox ownership model, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "superhuman-docs-55",
+      "superhuman-docs-49",
+      "superhuman-docs-50",
+      "superhuman-docs-15",
+      "superhuman-docs-22",
+      "superhuman-docs-61"
+    ]
   },
   {
     "productId": "superhuman",
@@ -3579,15 +3644,16 @@
     "productId": "superhuman",
     "storyId": "automation-rules-engine",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Superhuman lets users define custom Auto Labels with AI prompts that are applied automatically to incoming email and can drive split-inbox tabs, so a user-defined rule fires an action on email arrival. Auto Archive and auto-drafts are automatic but preset toggles, not user-authored rules, and custom Auto Labels are limited to Business/Enterprise. The whats-new page mentions agents that 'run proactively based on triggers you set' via a visual builder, but this is a single thin mention and it is unclear whether it applies to Mail. Missing for 10: user-defined condition→action rules beyond labeling (e.g., custom archive, forward, reply), documented trigger/event types, clear evidence that the trigger-based agent builder applies to Mail, availability on all plans, and independent or hands-on corroboration.",
+    "rationale": "Superhuman lets users write short AI prompts for custom Auto Labels that classify mail as it arrives, and those labels can drive split-inbox tabs. Auto Archive and the email assistant also act automatically on incoming mail (labeling, archiving, drafting, follow-up reminders). The what's-new page separately claims agents that \"run proactively based on triggers you set\" via chat or a visual builder, but that is a single thin line and it is unclear whether it covers Mail. Missing for 10: a documented general rule builder mapping user-defined conditions to arbitrary actions (beyond labeling or preset archive behavior), detail on which event triggers and actions the agent builder supports in Mail, availability of custom Auto Labels beyond Business/Enterprise plans, and independent or hands-on corroboration.",
     "evidenceIds": [
       "superhuman-docs-15",
       "superhuman-docs-22",
       "superhuman-docs-33",
-      "superhuman-docs-58",
       "superhuman-docs-3",
+      "superhuman-docs-58",
+      "superhuman-docs-27",
       "superhuman-docs-61",
       "superhuman-docs-5"
     ]
@@ -3596,11 +3662,13 @@
     "productId": "superhuman",
     "storyId": "automation-scheduled-jobs",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "low",
-    "rationale": "The only relevant evidence is a single what's-new mention: users can build agents via chat or a visual builder that 'run proactively based on triggers you set.' That points to self-running workflows, but it never says time-based or recurring schedules are among those triggers, nor that this belongs to Superhuman Mail rather than the broader Superhuman platform. Missing for 10: explicit time-based/recurring schedule triggers (e.g. cron-style or daily/weekly jobs), documentation of how scheduled workflows are configured and managed, confirmation the feature applies to Superhuman Mail, independent or hands-on corroboration.",
+    "rationale": "Superhuman's what's-new page says users can build agents via chat or a visual builder that 'run proactively based on triggers you set,' and the MCP lets external AI tools drive workflows across inbox and calendar. Nothing confirms that time-based or recurring schedules are among those triggers; the one timing-related feature is send-at-optimal-time follow-ups, which are one-off sends, not recurring jobs. missing for 10: explicit recurring/time-based scheduling (e.g., daily/weekly cron-style runs), documentation of trigger types and agent builder depth, independent or hands-on corroboration.",
     "evidenceIds": [
-      "superhuman-docs-61"
+      "superhuman-docs-61",
+      "superhuman-docs-37",
+      "superhuman-docs-25"
     ]
   },
   {
@@ -3669,8 +3737,8 @@
       "superhuman-docs-86",
       "superhuman-docs-4",
       "superhuman-docs-18",
-      "superhuman-comm-8",
-      "superhuman-comm-7"
+      "superhuman-comm-8-refresh-61a0b32fadf0c77e",
+      "superhuman-comm-7-refresh-b68c405ac5cc4be4"
     ]
   },
   {
@@ -3701,10 +3769,10 @@
       "superhuman-docs-86",
       "superhuman-comm-15",
       "superhuman-comm-16",
-      "superhuman-comm-8",
-      "superhuman-comm-7",
-      "superhuman-comm-9",
-      "superhuman-comm-10"
+      "superhuman-comm-8-refresh-61a0b32fadf0c77e",
+      "superhuman-comm-7-refresh-b68c405ac5cc4be4",
+      "superhuman-comm-9-refresh-01c1199112f1a9f5",
+      "superhuman-comm-10-refresh-3e8f44236989e44b"
     ]
   },
   {
@@ -3849,8 +3917,8 @@
       "superhuman-docs-71",
       "superhuman-docs-25",
       "superhuman-docs-31",
-      "superhuman-comm-3",
-      "superhuman-comm-1"
+      "superhuman-comm-3-refresh-d86a1157820059c1",
+      "superhuman-comm-1-refresh-73c5e943eb594746"
     ]
   },
   {
@@ -4477,11 +4545,16 @@
   {
     "productId": "zero",
     "storyId": "privacy-no-training",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence pack has no documented AI-training opt-out, no no-training policy, and nothing on how AI providers handle user email data. The general claim that Zero 'does not track, collect, or sell your data' and the self-hosting option are adjacent privacy features, not a capability to prevent training on user data, so they earn no credit.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "Zero states it does not track, collect, or sell user data, and it can be self-hosted, which gives users control over where their email data lives. Neither point explicitly addresses AI model training, and the AI features (AI compose, Perplexity web search) come with no stated no-training terms. Missing for 10: an explicit no-training policy or opt-out, disclosure of third-party AI providers' data-use and training terms, independent verification of the privacy claim.",
+    "evidenceIds": [
+      "zero-gh-15",
+      "zero-gh-2",
+      "zero-gh-13",
+      "zero-docs-14"
+    ]
   },
   {
     "productId": "zero",
