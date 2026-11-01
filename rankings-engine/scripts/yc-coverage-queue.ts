@@ -30,7 +30,7 @@ import path from 'node:path'
 import { z } from 'zod'
 import { ProductSchema, YcMapSchema } from '../../lib/schemas'
 import { readJson, resolveCategories, writeJson, ROOT } from '../paths'
-import { batchCode, normalizeDomain, YC_ALL_COMPANIES_URL, type YcRawCompany } from '../yc-shared'
+import { batchCode, canonicalYcDomain, normalizeDomain, YC_ALL_COMPANIES_URL, type YcRawCompany } from '../yc-shared'
 import { DOMAIN_VOCAB } from './tag-story-scopes'
 import { RadarReportSchema, type RadarReport } from './vendor-radar'
 
@@ -133,14 +133,29 @@ function compileVocab(arenaIds: Set<string>): Map<string, { word: string; re: Re
   return compiled
 }
 
+// Counts distinct vocab CONCEPTS, not distinct regexes: singular/plural and prefix pairs in the
+// vocab ('device'/'devices', 'credit'/'credits', 'transcript'/'transcription') all match at the
+// same text offset, and counting each regex separately let ONE occurrence satisfy
+// MIN_VOCAB_HITS=2 — exactly how the "Medical Devices" tag nominated catheter and hydrogel
+// makers into device-agents, "tax credits" put a bookkeeping service in ai-video, and
+// "transcription factors" put a therapeutics company in business-phone (PR #528 review).
+// Deduping hits by first-match offset makes a hit count a count of distinct matched words.
+export function countVocabHits(text: string, words: { word: string; re: RegExp }[]): number {
+  const offsets = new Set<number>()
+  for (const { re } of words) {
+    const m = re.exec(text)
+    if (m) offsets.add(m.index)
+  }
+  return offsets.size
+}
+
 function bestVocabArena(
   text: string,
   vocab: Map<string, { word: string; re: RegExp }[]>,
 ): { arena: string; hits: number } | null {
   let best: { arena: string; hits: number } | null = null
   for (const [arena, words] of vocab) {
-    let hits = 0
-    for (const { re } of words) if (re.test(text)) hits++
+    const hits = countVocabHits(text, words)
     if (hits < MIN_VOCAB_HITS) continue
     // Deterministic tiebreak: more hits wins, then alphabetical arena id.
     if (!best || hits > best.hits || (hits === best.hits && arena < best.arena)) {
@@ -150,12 +165,40 @@ function bestVocabArena(
   return best
 }
 
+// Registry suffixes that sell names under a second-level label, so the registrable apex is the
+// LAST THREE labels, not two. Without this, the docs-subdomain probe turned digistain.co.uk into
+// https://docs.co.uk/ — a third-party host — and credited/denied the wrong site (PR #528
+// review). A short static list covering the ccTLD patterns that actually occur in company
+// domains keeps the probe keyless and dependency-free; an unlisted suffix falls back to the old
+// two-label apex.
+const MULTI_LABEL_PUBLIC_SUFFIXES = new Set([
+  'ac.uk', 'co.uk', 'gov.uk', 'ltd.uk', 'me.uk', 'net.uk', 'org.uk', 'plc.uk',
+  'com.au', 'id.au', 'net.au', 'org.au',
+  'ac.nz', 'co.nz', 'net.nz', 'org.nz',
+  'co.jp', 'ne.jp', 'or.jp',
+  'co.kr', 'or.kr',
+  'co.in', 'firm.in', 'gen.in', 'ind.in', 'net.in', 'org.in',
+  'co.za', 'org.za', 'web.za',
+  'co.id', 'co.il', 'co.ke', 'co.th',
+  'com.ar', 'com.br', 'net.br', 'org.br', 'com.cn', 'net.cn', 'org.cn',
+  'com.co', 'com.eg', 'com.gh', 'com.hk', 'com.mx', 'com.my', 'com.ng',
+  'com.pe', 'com.ph', 'com.pk', 'com.sa', 'com.sg', 'com.tr', 'com.tw',
+  'com.ua', 'com.ve', 'com.vn', 'org.il',
+])
+
+// Registrable apex of a normalized domain: app.foo.com -> foo.com, digistain.co.uk stays
+// digistain.co.uk, app.digistain.co.uk -> digistain.co.uk.
+export function registrableApex(domain: string): string {
+  const parts = domain.split('.')
+  if (parts.length <= 2) return domain
+  const keep = MULTI_LABEL_PUBLIC_SUFFIXES.has(parts.slice(-2).join('.')) ? 3 : 2
+  return parts.slice(-keep).join('.')
+}
+
 function probeUrl(domain: string, probe: (typeof DOCS_PROBE_PATHS)[number]): string {
   if (probe === 'docs-subdomain') {
-    // docs.<apex>: strip one subdomain level if the site itself lives on one (app.foo.com -> docs.foo.com).
-    const parts = domain.split('.')
-    const apex = parts.length > 2 ? parts.slice(-2).join('.') : domain
-    return `https://docs.${apex}/`
+    // docs.<apex>: strip subdomain levels if the site itself lives on one (app.foo.com -> docs.foo.com).
+    return `https://docs.${registrableApex(domain)}/`
   }
   return `https://${domain}${probe}`
 }
@@ -366,7 +409,9 @@ async function main() {
         noFit++
         continue
       }
-      if (trackedDomains.has(domain)) {
+      // canonicalYcDomain: a verified rebrand (yc-shared.ts YC_DOMAIN_ALIASES) is the tracked
+      // product under a new name, not a new candidate.
+      if (trackedDomains.has(canonicalYcDomain(domain))) {
         alreadyTracked++
         continue
       }
@@ -386,7 +431,7 @@ async function main() {
         const words = vocab.get(arena)
         if (words) {
           const text = `${c.one_liner ?? ''} ${(c.tags ?? []).join(' ')} ${(c.industries ?? []).join(' ')}`
-          vocabHits = words.filter(({ re }) => re.test(text)).length
+          vocabHits = countVocabHits(text, words)
         }
       } else if (cls && !cls.pending && (cls.proposedArena || (!cls.mappedArena && !cls.proposedArena))) {
         // yc-classify already judged this one: software-without-an-existing-arena, or not

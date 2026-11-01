@@ -43,6 +43,25 @@ export interface YcRawCompany {
   url: string
 }
 
+// Verified brand renames: YC-directory domain -> the tracked product's site domain. When a
+// company rebrands, the YC feed renames its slug and website in place (Superset -> Paradev, X26:
+// the directory entry is now "Paradev (formerly Superset)" at paradev.com, and
+// https://superset.sh/ answers 308 -> https://paradev.com/, probed 2026-11-01), so plain domain
+// matching sees the rename as "tracked product lost its batch" plus "brand-new candidate". An
+// alias records the verified same-company link: the cross-reference keeps stamping the existing
+// product's ycBatch, and the coverage queue treats the new domain as already tracked instead of
+// re-nominating the rebrand. Add an entry only with the old domain's live redirect (or an
+// equivalent citable source) as evidence.
+export const YC_DOMAIN_ALIASES: Record<string, string> = {
+  'paradev.com': 'superset.sh',
+}
+
+// Collapses a normalized YC-directory domain onto the tracked product's domain when the pair is
+// a verified rename; identity for everything else.
+export function canonicalYcDomain(domain: string): string {
+  return YC_DOMAIN_ALIASES[domain] ?? domain
+}
+
 // Normalizes a domain for matching: strips protocol, "www.", trailing slash, and path/query, and
 // lowercases. Two products are "the same YC company" iff their normalized site domains match —
 // deliberately never matched by name (see the lane spec's "verify each match by website domain,

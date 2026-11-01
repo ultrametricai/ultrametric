@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { RADAR_TOP, radarReportFromQueue, type YcQueue } from '../scripts/yc-coverage-queue'
+import { countVocabHits, RADAR_TOP, radarReportFromQueue, registrableApex, type YcQueue } from '../scripts/yc-coverage-queue'
 import { RadarReportSchema } from '../scripts/vendor-radar'
 
 // Pure unit for the queue → radar-triage hand-off: the weekly YC lane emits its top queue
@@ -33,6 +33,31 @@ function queueOf(n: number): YcQueue {
     })),
   }
 }
+
+describe('registrableApex', () => {
+  it('strips subdomains down to the registrable apex', () => {
+    expect(registrableApex('foo.com')).toBe('foo.com')
+    expect(registrableApex('app.foo.com')).toBe('foo.com')
+  })
+
+  it('keeps three labels under multi-label public suffixes (the digistain.co.uk -> docs.co.uk bug)', () => {
+    expect(registrableApex('digistain.co.uk')).toBe('digistain.co.uk')
+    expect(registrableApex('app.digistain.co.uk')).toBe('digistain.co.uk')
+    expect(registrableApex('shop.foo.com.au')).toBe('foo.com.au')
+  })
+})
+
+describe('countVocabHits', () => {
+  const words = ['device', 'devices', 'screen\\b'].map((w) => ({ word: w, re: new RegExp(`\\b(${w})`, 'i') }))
+
+  it('counts one hit when singular/plural vocab pairs match the same occurrence (the "Medical Devices" bug)', () => {
+    expect(countVocabHits('Medical Devices', words)).toBe(1)
+  })
+
+  it('still counts distinct matched words separately', () => {
+    expect(countVocabHits('a device with a screen', words)).toBe(2)
+  })
+})
 
 describe('radarReportFromQueue', () => {
   it('round-trips the radar report schema, keyed by product domain, capped at RADAR_TOP with honest overflow', () => {
