@@ -9,6 +9,8 @@
 
 Set up a payroll provider to run payroll, file employment taxes, and administer benefits.
 
+> Scoped draft detail: UK-resident private company limited by shares registered in England and Wales, operating domestically in unregulated services. Other entities, locations and cross-border facts need another assessment. Professional review is pending. Source and instruction check: 2026-11-01. Assessment: coverage/local-procedure-assessments.json.
+
 | Field | Value |
 | --- | --- |
 | Kind | process |
@@ -22,6 +24,8 @@ Set up a payroll provider to run payroll, file employment taxes, and administer 
 | Agent support | manual guide |
 
 Provider onboarding is a guided online form (needs EIN and bank account); the journal sync runs on the payroll API.
+
+- Sources: [HMRC register as an employer](https://www.gov.uk/register-employer) · [HMRC payroll FPS reporting](https://www.gov.uk/running-payroll/reporting-to-hmrc)
 
 <a id="artifacts"></a>
 
@@ -44,9 +48,9 @@ Country rows describe the guidance recorded here. Local notes and step alternati
 
 | Country | Recorded guidance | Steps with local alternatives or resolutions |
 | --- | --- | --- |
-| [United States](#geo-us) | step resolution; step alternative | [2](#step-2) |
+| [United States](#geo-us) | step resolution; step alternative | [1](#step-1), [2](#step-2), [3](#step-3) |
 | [India](#geo-in) | Local analog note; step resolution; step alternative | [2](#step-2) |
-| [United Kingdom](#geo-uk) | Local analog note; step resolution; step alternative | [2](#step-2) |
+| [United Kingdom](#geo-uk) | Local analog note; step resolution; step alternative | [1](#step-1), [2](#step-2), [3](#step-3) |
 | [Germany](#geo-de) | Local analog note; step resolution; step alternative | [2](#step-2) |
 | [France](#geo-fr) | Local analog note; step resolution; step alternative | [2](#step-2) |
 | [Portugal](#geo-pt) | Local analog note; step resolution | [2](#step-2) |
@@ -103,6 +107,7 @@ Compare payroll providers using the actual entities, worker locations, pay types
 - Vendor options: Gusto, Rippling, Deel, Justworks
 - Ranked market: [payroll](../../open-rankings/payroll)
 - Cross-arena options: ChatGPT, Claude, Gemini (ai-assistants)
+- Sources: [HMRC register as an employer](https://www.gov.uk/register-employer) · [HMRC payroll FPS reporting](https://www.gov.uk/running-payroll/reporting-to-hmrc)
 
 <a id="step-2"></a>
 
@@ -126,6 +131,7 @@ Choose the setup route from the employing entity and employee work locations. Ga
 - Produces: Payroll account
 - Vendor options: Gusto, Rippling, Deel, Justworks
 - Ranked market: [payroll](../../open-rankings/payroll)
+- Sources: [HMRC register as an employer](https://www.gov.uk/register-employer) · [HMRC payroll FPS reporting](https://www.gov.uk/running-payroll/reporting-to-hmrc)
 
 Options:
   - **United States — Sign up and configure payroll online** — manual form/portal · ~30 min · async wait
@@ -205,6 +211,7 @@ agent-runnable · ~3 min
 Map payroll categories to the ledger’s wage, employer-cost, deduction, liability and cash accounts, including department allocations where used. Check integration permissions with the account owners, then compare the first export or journal with the payroll preview. Work through rounding, duplicate postings, reversals and corrections with accounting. The mapping is ready when both systems reconcile and the team knows how to handle adjustments.
 
 - Canonical vendor: Gusto
+- Sources: [HMRC register as an employer](https://www.gov.uk/register-employer) · [HMRC payroll FPS reporting](https://www.gov.uk/running-payroll/reporting-to-hmrc)
 
 *This path ends here.*
 
@@ -314,7 +321,9 @@ Florida employers register for reemployment tax with the Department of Revenue t
 
 Set up a payroll provider to run payroll, file employment taxes, and administer benefits.
 
+- Step 1: Compare payroll providers Compare payroll providers using the actual entities, worker locations, pay types, benefits and accounting requirements. Ask them to walk through relevant setup, reporting, corrections and support, including work they leave to the employer. Compare complete costs and implementation needs with finance and the people lead. Identify registration or migration gaps before selecting the provider.
 - Step 2: Sign up and configure payroll online Configure US payroll from verified employer details, relevant tax accounts, pay schedule, funding method and administrator roles. Reconcile employee work locations and pay types with the payroll specialist. Finance authorizes the funding connection, then payroll reviews the first-run preview and outstanding setup issues. Assign responsibility for returns, payments and corrections from the provider’s actual service scope and the employer’s remaining duties.
+- Step 3: Connect payroll to the books Map payroll categories to the ledger’s wage, employer-cost, deduction, liability and cash accounts, including department allocations where used. Check integration permissions with the account owners, then compare the first export or journal with the payroll preview. Work through rounding, duplicate postings, reversals and corrections with accounting. The mapping is ready when both systems reconcile and the team knows how to handle adjustments.
 
 <a id="geo-in"></a>
 
@@ -328,7 +337,9 @@ Set up a payroll provider to run payroll, file employment taxes, and administer 
 ### United Kingdom
 
 - Register as an employer with HMRC for PAYE before the first payday, then report pay through Real Time Information (RTI) — a submission to HMRC on or before every payment — plus pension auto-enrolment duties. ([Register as an employer (PAYE)](https://www.gov.uk/register-employer))
-- Step 2: UK - PAYE + RTI payroll Set up the applicable HMRC registration and UK payroll software using verified employer references and employee information. Assign responsibility for calculations, FPS reports, payments and corrections, and review pension duties separately. Use the nested steps to complete registration, check configuration and handle the first submission. Keep reporting, employee payment and amounts due to HMRC distinct in the first-pay plan. ([Register as an employer (PAYE)](https://www.gov.uk/register-employer))
+- Step 1: Compare payroll providers For the scoped company employing staff in England and Wales, confirm worker status, first payday, private employer records and the payroll owner. Different worker locations, contractors or sponsored workers need another assessment. ([HMRC register as an employer](https://www.gov.uk/register-employer))
+- Step 2: Sign up and configure payroll online Have the authorized person register the employer through HMRC where required and configure UK-capable payroll with verified references and employee inputs. Keep missing-reference and first-pay exceptions with the payroll adviser; register access, RTI reporting, wages and payment to HMRC are distinct controls. ([HMRC register as an employer](https://www.gov.uk/register-employer))
+- Step 3: Connect payroll to the books Reconcile the payroll setup with the books and retain the registration evidence, software configuration and first-report plan. Confirm who reviews the FPS and any correction before submission and who approves the separate payments. ([HMRC register as an employer](https://www.gov.uk/register-employer))
 
 <a id="geo-de"></a>
 
