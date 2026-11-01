@@ -4039,20 +4039,17 @@
   {
     "productId": "ramp",
     "storyId": "accounting-sync-mapping",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Ramp's QuickBooks integration documents real-time sync of \"accounting fields, transactions, reimbursements, payments...\" (ramp-docs-44), and transactions are coded to the correct GL account (ramp-docs-32). NetSuite and Xero integration pages also exist, and departments, tracking categories, and accounting field options are first-class objects (ramp-supp-ai-agents-channels, ramp-docs-68). Missing for 10: explicit documentation that transactions (not just vendor bills) sync to NetSuite and Xero, explicit user-controlled class and department mapping configuration, and independent or hands-on corroboration.",
+    "rationale": "Ramp's own QuickBooks integration page documents real-time sync of \"accounting fields, transactions, reimbursements\" and more, plus a reconciliation tool. Ramp also says receipts are \"coded to the correct GL account\" and that it handles multi-entity transaction sync. For NetSuite and Xero, however, the integration evidence only describes vendor-bill workflows, not transaction sync. Nothing explicitly shows finance-controlled mapping of GL account, class, or department. missing for 10: documented transaction sync to NetSuite and Xero, explicit user-configurable GL/class/department mapping rules, class mapping evidence, independent or hands-on corroboration.",
     "evidenceIds": [
       "ramp-docs-44",
+      "ramp-docs-26",
       "ramp-docs-32",
       "ramp-docs-24",
-      "ramp-docs-55",
       "ramp-docs-27",
       "ramp-docs-28",
-      "ramp-docs-56",
-      "ramp-docs-68",
-      "ramp-supp-ai-agents-channels",
       "ramp-docs-21"
     ]
   },
@@ -4062,15 +4059,15 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Ramp ships first-party agent channels that cover this loop. Ramp MCP and the AI Agents guide document searching transactions, loading accounting and tracking categories, edits, and approvals, with every action landing in the audit log. The open-source CLI's agent mode adds transactions list/get/edit/missing/flag-missing/explain-missing/memo-suggestions, so an agent can pull incomplete transactions, propose memos and coding, flag gaps, and write changes back for human approval. Missing for 10: explicit documentation that the transaction edit writes GL/accounting-category coding fields, a documented 'uncoded' filter (only missing receipts/memos is shown), API-level policy-violation flagging beyond missing-item flags, and independent hands-on corroboration.",
+    "rationale": "Ramp exposes transactions to agents through the Transactions API, an OAuth-gated MCP server with transactions:read/write and accounting:read/write scopes, and the agent-mode CLI. The CLI's transactions commands include list/get/edit/missing/flag-missing/explain-missing/memo-suggestions, and the agents guide documents loading accounting and tracking categories, editing, and approving transactions, with every action landing in the audit log. Missing for 10: an explicitly documented 'uncoded transactions' filter (only missing receipts/memos is shown), an explicit agent workflow for proposing policy flags, a documented review queue for agent-proposed coding (as opposed to direct edits), and independent hands-on corroboration.",
     "evidenceIds": [
-      "ramp-supp-ai-agents-channels",
+      "ramp-docs-1",
       "ramp-supp-cli-agent-mode",
-      "ramp-supp-mcp-server",
+      "ramp-supp-ai-agents-channels",
+      "ramp-probe-4",
       "ramp-docs-29",
-      "ramp-docs-62",
-      "ramp-supp-oauth-scopes",
-      "ramp-supp-agent-cards"
+      "ramp-supp-mcp-server",
+      "ramp-probe-6"
     ]
   },
   {
@@ -4079,12 +4076,13 @@
     "verdict": "full",
     "quality": 10,
     "confidence": "high",
-    "rationale": "A live probe confirms docs.ramp.com/llms.txt returns HTTP 200. Docs describe it as a machine-readable index with explicit agent usage instructions, per-guide plain-text exports, llms-full.txt, a plain-text API reference, an OpenAPI schema, and channel recommendations for agents. Ramp also ships an unauthenticated Developer MCP docs server, and agents.ramp.com offers a markdown alternate for machine readers.",
+    "rationale": "A probe confirms a live llms.txt at docs.ramp.com (HTTP 200). It is a machine-readable index with explicit agent usage instructions, per-guide plain-text exports, llms-api.txt and llms-full.txt bundles, and channel-selection recommendations for agents. Further probes confirm the linked OpenAPI schema and a working unauthenticated Developer docs MCP server, so the agent-oriented docs surface is both documented and hands-on verified.",
     "evidenceIds": [
       "ramp-probe-1",
       "ramp-supp-machine-docs",
+      "ramp-probe-6",
       "ramp-supp-three-mcp-servers",
-      "ramp-docs-70",
+      "ramp-probe-5",
       "ramp-supp-agents-site",
       "ramp-docs-6"
     ]
@@ -4095,14 +4093,14 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Ramp's marketing documents in-product AI insights and suggestions. These include \"Custom reports and insights via AI reporting\" on the pricing page, a recommended action on every spend request grounded in policies and budgets, and Ramp Intelligence agents that scan transactions for anomalies, flag fraud and auto-code expenses and memos. Missing for 10: in-depth first-party documentation of how the AI reporting/insights feature works (only one-line marketing mentions), and independent or hands-on corroboration of in-product insight quality.",
+    "rationale": "Ramp documents a shipping in-product AI layer, Ramp Intelligence. It attaches policy-grounded recommended actions to every spend request, scans transactions in real time for anomalies and fraud, and auto-codes expenses and drafts memos (the CLI also exposes memo-suggestions). Together these are AI suggestions and flags generated from the user's own data. Missing for 10: in-product analytical insights such as spend trends or forecasting (documented only via external assistants over MCP), and any independent or hands-on corroboration of the quality of these suggestions.",
     "evidenceIds": [
-      "ramp-docs-58",
       "ramp-docs-10",
       "ramp-supp-ramp-agents-product",
       "ramp-docs-21",
       "ramp-docs-8",
-      "ramp-docs-48"
+      "ramp-docs-32",
+      "ramp-supp-cli-agent-mode"
     ]
   },
   {
@@ -4111,37 +4109,32 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Ramp's own agents run continuously in the background, coding expenses, flagging fraud, auto-approving in-policy spend and escalating the rest. Users configure rules-based workflows, auto-lock and auto-rebook behaviors, and per-agent keys with long-running access \"for background agents that run on a schedule.\" The CLI (non-interactive mode, client-credentials agent login) and webhooks are documented for scripted, scheduled and event-triggered automation. Missing for 10: a first-party scheduler or automation builder (scheduling relies on the user's own cron/CI), detail on how users author custom autonomous automations beyond policy and workflow rules, and independent or hands-on corroboration.",
+    "rationale": "Ramp ships its own autonomous background agents that work around the clock: they flag fraud, code expenses, enforce policy, scan transactions in real time, and auto-approve in-policy spend. Users configure this through rules-based routing workflows, personalized notification workflows, and a customizable auto-approve vs. human-hold policy. For custom agents, Ramp documents long-running agent keys for background agents that run on a schedule, plus a CLI built for scripted and scheduled workflows. missing for 10: a first-party scheduler or automation builder for arbitrary user-defined automations (scheduled custom agents must be hosted and triggered by the user), and independent or hands-on corroboration that the autonomous agents and workflows behave as claimed.",
     "evidenceIds": [
-      "ramp-supp-agents-site",
-      "ramp-supp-ai-agents-channels",
-      "ramp-supp-cli-agent-mode",
-      "ramp-supp-ramp-agents-product",
       "ramp-docs-21",
+      "ramp-supp-ramp-agents-product",
       "ramp-docs-23",
+      "ramp-docs-12",
       "ramp-docs-32",
       "ramp-docs-20",
-      "ramp-docs-59",
-      "ramp-supp-machine-docs",
-      "ramp-docs-63"
+      "ramp-supp-agents-site",
+      "ramp-supp-ai-agents-channels",
+      "ramp-supp-machine-docs"
     ]
   },
   {
     "productId": "ramp",
     "storyId": "agentic-builtin-assistant",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Ramp ships a named in-product AI layer, Ramp Intelligence and Ramp agents, that takes on finance work: coding expenses, drafting memos, approving when safe and escalating when not, and flagging anomalies. Users can also hand off procurement in natural language ('Describe what vendor you're looking for… Ramp researches options, generates your RFx'; 'Tell Ramp what you need to buy… pre-fills the intake form and kicks off approvals'), ask travel-policy questions in the Ramp app, and get AI reporting. MCP and CLI access serve external assistants rather than a built-in one, so they were not credited here. Missing for 10: detailed first-party docs on a general-purpose conversational assistant inside the product (scope of delegable tasks, how users invoke it), and independent or hands-on corroboration beyond marketing pages.",
+    "rationale": "Ramp documents a built-in AI layer, Ramp Intelligence and Ramp agents. These agents autonomously code expenses, apply invoice logic, approve or escalate within policy, scan for anomalies, draft memos, and parse contracts to auto-fill procurement requests, so users can hand off defined finance workflows to in-product AI. The natural-language task delegation in the evidence goes through external assistants (ChatGPT, Claude) via MCP or the CLI, which does not count as a built-in assistant. Missing for 10: an in-product conversational assistant users can direct with arbitrary tasks, evidence of user-initiated rather than workflow-preset delegation, independent or hands-on corroboration.",
     "evidenceIds": [
       "ramp-supp-ramp-agents-product",
       "ramp-docs-21",
-      "ramp-docs-52",
-      "ramp-docs-53",
-      "ramp-docs-51",
-      "ramp-docs-58",
       "ramp-docs-22",
-      "ramp-docs-10"
+      "ramp-docs-10",
+      "ramp-docs-45"
     ]
   },
   {
@@ -4150,15 +4143,16 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "The open-source Ramp CLI is built for unattended use. It has `--no-input` to disable prompts in CI and `--agent` JSON output for scripting (the default when piped). Standalone agents can authenticate without a browser by exchanging OAuth client credentials (RAMP_CLIENT_ID/SECRET), and `RAMP_PROFILE` pins an identity for automation. This is backed by server-to-server client-credentials API auth, scheduled/background agent access on agents.ramp.com, and a sandbox the CLI connects to by default for safe testing. Missing for 10: independent or hands-on corroboration of CI runs, and a documented CI pipeline example (e.g. a GitHub Actions recipe).",
+    "rationale": "The open-source Ramp CLI is built for headless use: `--agent` emits JSON for scripting (the default when piped), `--no-input` disables prompts for CI, standalone agents log in without a browser via OAuth client credentials (RAMP_CLIENT_ID/RAMP_CLIENT_SECRET), and RAMP_PROFILE pins an identity for automation. The CLI defaults to the sandbox for safe testing, and the Developer API supports a server-to-server Client Credentials flow backed by a live, probed OpenAPI schema. missing for 10: independent or hands-on corroboration of an actual CI run, documented CI pipeline recipes (e.g. GitHub Actions examples).",
     "evidenceIds": [
       "ramp-supp-cli-agent-mode",
       "ramp-supp-ai-agents-channels",
       "ramp-supp-oauth-scopes",
-      "ramp-supp-agents-site",
       "ramp-supp-sandbox",
       "ramp-supp-machine-docs",
-      "ramp-probe-3"
+      "ramp-probe-3",
+      "ramp-probe-6",
+      "ramp-docs-4"
     ]
   },
   {
@@ -4167,7 +4161,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Ramp ships in-product AI agents (Ramp Intelligence), so letting users connect external MCP servers to them is a plausible capability for this kind of product. The evidence, however, documents Ramp only in the MCP server role: Ramp MCP, Developer MCP and Ramp Data MCP all expose Ramp to outside assistants. Nothing shows Ramp's own agents consuming tools from MCP servers the user plugs in, and server-side evidence does not transfer to this client-side story.",
+    "rationale": "Ramp ships its own AI agents (Ramp Intelligence), so letting users connect external MCP servers to them is a fair question for this product. However, the evidence only shows Ramp acting as an MCP server: Ramp MCP, Developer MCP and Ramp Data MCP are consumed by assistants such as Claude, ChatGPT and Cursor. Nothing shows Ramp acting as an MCP client that can register external MCP servers and use their tools, and server-side MCP evidence does not transfer to this client-side story.",
     "evidenceIds": []
   },
   {
@@ -4176,17 +4170,18 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Ramp ships an official hosted MCP server (https://mcp.ramp.com/mcp, plus a demo endpoint) for connecting Claude, ChatGPT, Cursor and other MCP clients, with admin role/department restrictions and broad read and action tools. It also runs separate Developer MCP and Ramp Data MCP servers, and the support-article probe confirms the server is documented. Bill approvals are an acknowledged gap. missing for 10: independent or hands-on corroboration of the MCP server in real use, bill approvals via MCP (documented as not yet available).",
+    "rationale": "Ramp documents an official remote MCP server at https://mcp.ramp.com/mcp for Claude, ChatGPT, Cursor and other MCP clients, with admin role and user restrictions, demo and multi-business endpoints, and two additional servers (Developer docs and Ramp Data). Live probes confirm a spec-compliant OAuth-gated endpoint publishing granular scopes and an unauthenticated developer MCP that answers initialize. Missing for 10: bill approvals are not yet available via MCP, and there is no independent hands-on corroboration of actual tool calls beyond the auth and initialize handshakes.",
     "evidenceIds": [
       "ramp-supp-mcp-server",
       "ramp-supp-three-mcp-servers",
       "ramp-supp-ai-agents-channels",
       "ramp-docs-5",
       "ramp-docs-6",
+      "ramp-probe-2",
+      "ramp-probe-4",
+      "ramp-probe-5",
       "ramp-docs-29",
-      "ramp-docs-43",
-      "ramp-docs-70",
-      "ramp-probe-2"
+      "ramp-docs-43"
     ]
   },
   {
@@ -4195,18 +4190,16 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Ramp ships an official, account-scoped MCP server for ChatGPT, Claude and other assistants so users can \"query Ramp data and take actions with natural language.\" Documented example prompts include \"Lock my card — I can't find it\" and \"Show me our top software vendors by spend this quarter,\" and the server covers reads, approvals, edits and policy Q&A. In-product natural-language intake also exists (\"Tell Ramp what you need to buy,\" \"Describe what vendor you're looking for,\" policy questions via SMS/Slack). Missing for 10: bill approvals are not yet available via MCP, and there is no independent hands-on corroboration of natural-language operation beyond the probe confirming the MCP server is documented.",
+    "rationale": "Ramp documents a first-party MCP server that lets users \"query Ramp data and take actions with natural language\" from ChatGPT, Claude and other assistants. The support article gives concrete natural-language prompts: \"Lock my card — I can't find it\", \"Show me our top software vendors by spend this quarter\", and drafting reminders for missing receipts. The AI Agents guide covers reads, approvals, edits, policy Q&A and purchases, and a live probe confirms the OAuth-gated server at mcp.ramp.com exposes granular read/write scopes. missing for 10: no native in-product natural-language command interface (language understanding comes from external assistants), bill approvals not yet available via MCP, no independent hands-on corroboration of natural-language operation.",
     "evidenceIds": [
       "ramp-docs-5",
       "ramp-supp-mcp-server",
-      "ramp-supp-ai-agents-channels",
-      "ramp-docs-29",
       "ramp-docs-30",
       "ramp-docs-43",
-      "ramp-docs-53",
-      "ramp-docs-52",
-      "ramp-docs-51",
-      "ramp-probe-2"
+      "ramp-docs-29",
+      "ramp-supp-ai-agents-channels",
+      "ramp-probe-2",
+      "ramp-probe-4"
     ]
   },
   {
@@ -4215,16 +4208,15 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Ramp ships an official open-source CLI (github.com/ramp-public/ramp-cli), installable via an install script or Homebrew. It is built for agents: `--agent` JSON output (the default when piped), `--no-input` for CI, browser OAuth plus headless client-credentials `agent login`, profile switching, and 12 resources spanning bills, cards, funds, transactions, reimbursements, travel and more. Ramp's docs position it as the channel for coding agents and scripted workflows, and a probe confirms the repo exists. Missing for 10: independent or hands-on corroboration of the CLI's behavior in real agent workflows beyond first-party docs and an existence probe.",
+    "rationale": "Ramp ships an official open-source CLI (github.com/ramp-public/ramp-cli), installable via curl or brew. It is explicitly built for agents: `--agent` JSON output (the default when piped), `--no-input` for CI, browserless client-credentials agent login, human/agent profiles, and broad resource coverage. The AI Agents guide and llms.txt also position it as the channel for coding agents and scripted workflows, and it ships packaged skills such as agentic-purchase. Missing for 10: independent or hands-on corroboration that the CLI installs and runs as documented (the probe only confirms the repo is referenced).",
     "evidenceIds": [
-      "ramp-supp-cli-agent-mode",
       "ramp-docs-4",
-      "ramp-docs-6",
+      "ramp-probe-3",
+      "ramp-supp-cli-agent-mode",
       "ramp-supp-ai-agents-channels",
       "ramp-supp-machine-docs",
-      "ramp-supp-agents-site",
       "ramp-supp-sandbox",
-      "ramp-probe-3"
+      "ramp-supp-agents-site"
     ]
   },
   {
@@ -4233,18 +4225,19 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Ramp documents a public Developer API with a getting-started flow (create an app under Company → Developer, mint a token, call the Transactions API). It uses OAuth 2.0 client-credentials and authorization-code grants with granular resource:permission scopes, and publishes a canonical OpenAPI schema plus a plain-text endpoint reference. Write endpoints are documented (POST /bills, Vault card creation, Custom Records, AI-usage ingest), along with a sandbox API base for safe testing; a probe confirmed the machine-readable docs index is live. Missing for 10: independent or hands-on corroboration of real API calls succeeding beyond vendor docs and the docs-index probe.",
+    "rationale": "Ramp publishes a documented Developer API. Its getting-started guide covers creating an app and access token. It uses OAuth 2.0 with client-credentials and authorization-code flows and granular resource:permission scopes. A probe confirmed a live OpenAPI schema with 174 paths, and endpoint guides cover transactions, bills, virtual cards via the Vault API, custom records and AI usage. A sandbox API base and machine-readable llms.txt and llms-api exports round out agent-friendly consumption. Missing for 10: independent or hands-on corroboration of real API calls (especially writes) beyond the schema probe; some sensitive endpoints such as the Vault API require Ramp approval.",
     "evidenceIds": [
-      "ramp-docs-62",
+      "ramp-docs-1",
       "ramp-docs-33",
       "ramp-supp-oauth-scopes",
+      "ramp-probe-6",
       "ramp-supp-machine-docs",
+      "ramp-probe-1",
       "ramp-docs-38",
       "ramp-supp-virtual-cards-vault",
       "ramp-docs-39",
-      "ramp-supp-ai-usage-tracking",
       "ramp-supp-sandbox",
-      "ramp-probe-1"
+      "ramp-supp-ai-usage-tracking"
     ]
   },
   {
@@ -4253,15 +4246,15 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Ramp documents OAuth 2.0 client-credentials apps with granular resource:permission scopes and explicit least-privilege guidance (\"configure only the scopes your app needs\"). It also documents a dedicated agent-identity model: one key per agent tied to a human sponsor, flexible per-agent read/do permissions, and full attribution. On top of that come CLI `agent login` via client credentials, role-respecting MCP admin restrictions, and session expiry for read-only and read-write sessions. Missing for 10: independent or hands-on corroboration that per-agent scoped keys work as documented.",
+    "rationale": "Ramp documents OAuth 2.0 scopes in a `resource:permission` pattern, recommends least privilege (\"configure only the scopes your app needs\"), and supports client-credentials auth for standalone agents through `ramp agent login`. Its agent-identity model promises \"one key per agent\" tied to a human sponsor, with flexible per-agent permissions, and adds expiring sessions plus role-based MCP restrictions. A live probe confirms the MCP server is OAuth-gated and publishes granular read/write scopes. Missing for 10: independent hands-on corroboration of actually issuing a narrowly scoped per-agent key, beyond vendor docs and scope-metadata probes.",
     "evidenceIds": [
       "ramp-supp-oauth-scopes",
-      "ramp-docs-2",
       "ramp-supp-agents-site",
       "ramp-supp-cli-agent-mode",
+      "ramp-probe-4",
       "ramp-supp-mcp-server",
       "ramp-supp-agent-cards",
-      "ramp-supp-ai-agents-channels",
+      "ramp-supp-ai-usage-tracking",
       "ramp-docs-33"
     ]
   },
@@ -4271,7 +4264,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence documents a Developer API with OAuth scopes, a published OpenAPI schema, webhooks, a sandbox, an open-source CLI and MCP servers. None of it mentions official language SDKs or client libraries (e.g., Python or TypeScript packages). The OpenAPI schema is a building block a developer could generate clients from, and the CLI and MCP servers are adjacent channels, so neither earns credit for an official SDK.",
+    "rationale": "The evidence documents a REST Developer API with a canonical OpenAPI schema, an open-source CLI, and MCP servers, but never mentions an official language SDK or client library (e.g. Python or TypeScript packages). The OpenAPI document is a building block a developer could use to generate an SDK, and the CLI and MCP are adjacent channels, so neither earns credit for this story.",
     "evidenceIds": []
   },
   {
@@ -4280,11 +4273,10 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Ramp's first-party developer docs include a dedicated webhooks guide. It says webhooks 'push notifications to your specified endpoint whenever an event happens' as a real-time alternative to polling, and the llms.txt index recommends webhooks for event triggers. These are registrable outbound HTTP callbacks a programmatic consumer can receive. The evidence consists of short excerpts only, so registration mechanics, event types and payload security are not shown. Missing for 10: documented event-type catalog, subscription/registration API or UI details, signature verification and retry semantics, independent or hands-on corroboration.",
+    "rationale": "Ramp's developer docs include a dedicated webhooks guide. It states that webhooks deliver real-time notifications about account events by pushing them to an endpoint you specify, which is a registrable outbound HTTP callback. The llms.txt index also recommends webhooks to agents as the channel for event triggers. Missing for 10: documented event-type catalog, registration/subscription API or UI steps, payload signing/verification and retry semantics, independent or hands-on corroboration.",
     "evidenceIds": [
       "ramp-docs-3",
       "ramp-docs-35",
-      "ramp-docs-63",
       "ramp-supp-machine-docs"
     ]
   },
@@ -4294,15 +4286,14 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Ramp's own docs say it captures receipts at swipe and auto-fills memos and categories (ramp-docs-8, ramp-docs-45), codes expenses to the correct GL account (ramp-docs-32), and offers memo suggestions via the CLI. For auditing, Ramp Intelligence agents flag fraud, scan transactions in real time for anomalies, and flag questionable vendors (ramp-docs-21, ramp-supp-ramp-agents-product, ramp-docs-48), and bill-pay OCR reads line items (ramp-docs-16). Missing for 10: explicit duplicate-expense detection, in-depth technical docs on how receipt reading and coding work (current evidence is mostly marketing copy), and independent or hands-on corroboration.",
+    "rationale": "Ramp's own materials say the product captures receipts and auto-fills memos and categories on swipe, codes expenses to the correct GL account, and suggests memos (CLI memo-suggestions). Ramp Intelligence also positions AI agents as flagging fraud and scanning transactions in real time for anomalies, with OCR claimed at 99% line-item accuracy. Missing for 10: explicit duplicate-expense detection, documentation of how fraud and anomaly detection works, and independent or hands-on corroboration of coding accuracy.",
     "evidenceIds": [
       "ramp-docs-8",
-      "ramp-docs-45",
-      "ramp-docs-32",
       "ramp-docs-21",
-      "ramp-supp-ramp-agents-product",
-      "ramp-docs-48",
+      "ramp-docs-32",
+      "ramp-docs-45",
       "ramp-docs-16",
+      "ramp-supp-ramp-agents-product",
       "ramp-supp-cli-agent-mode"
     ]
   },
@@ -4312,7 +4303,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Ramp documents conversational policy help through Ramp MCP, where employees can \"get policy answers directly from their daily tools,\" and the AI Agents guide lists policy Q&A. Missing-receipt chasing is covered by an MCP example prompt that finds missing receipts and drafts reminders, CLI commands such as flag-missing and explain-missing, automated reminders, and SMS/Slack/Teams submission. Travel policy questions can also be asked over SMS or Slack. Missing for 10: any evidence that the assistant explains card declines, a demonstrated pre-spend \"can I expense this?\" exchange for general (non-travel) spend, and independent or hands-on corroboration.",
+    "rationale": "Ramp MCP lets employees \"get policy answers directly from their daily tools\" through assistants like ChatGPT and Claude, and the AI Agents guide lists policy Q&A among its capabilities. Missing-receipt chasing is documented in several places: the MCP prompt \"find transactions with missing receipts... draft reminder messages,\" the CLI's transactions missing / flag-missing / explain-missing commands, automatic reminders, and SMS/Slack/Teams receipt submission. The core of the story is delivered, but explaining card declines conversationally is not documented anywhere. missing for 10: evidence of conversational explanation of declines, concrete documentation of pre-spend \"can I expense this?\" answers, independent or hands-on corroboration.",
     "evidenceIds": [
       "ramp-supp-mcp-server",
       "ramp-supp-ai-agents-channels",
@@ -4320,10 +4311,8 @@
       "ramp-supp-cli-agent-mode",
       "ramp-docs-13",
       "ramp-docs-8",
-      "ramp-docs-51",
-      "ramp-docs-18",
       "ramp-docs-21",
-      "ramp-supp-ramp-agents-product"
+      "ramp-docs-18"
     ]
   },
   {
@@ -4331,13 +4320,13 @@
     "storyId": "api-interactive-docs",
     "verdict": "partial",
     "quality": 4,
-    "confidence": "low",
-    "rationale": "Ramp publishes its own API reference: a generated endpoint and schema reference (/llms-api.txt), a canonical OpenAPI schema, and a Developer MCP that gives AI assistants live access to the API reference. Its guides include worked requests (a first Transactions API call, a working POST /bills example) that can be run against the documented sandbox API base. Nothing in the evidence shows an in-browser interactive explorer or try-it console; the rendered docs pages are described only as JavaScript shells. missing for 10: an interactive try-it/explorer UI in the API reference, runnable examples embedded directly in the reference, independent or hands-on corroboration.",
+    "confidence": "medium",
+    "rationale": "Ramp publishes its own API reference: a generated endpoint/schema reference (/llms-api.txt), a canonical OpenAPI document with 174 paths, and a Developer MCP server that lets AI assistants search and read the API reference live. Guides include working request examples (e.g. a working POST /bills request), and a sandbox API base exists for safe execution. However, nothing documents an interactive, in-browser API explorer with \"try it\"/runnable examples; the rendered docs are only described as JavaScript shells. Missing for 10: documented interactive try-it console in the API reference, runnable examples embedded per endpoint, independent or hands-on corroboration of an interactive reference experience.",
     "evidenceIds": [
       "ramp-supp-machine-docs",
-      "ramp-docs-70",
+      "ramp-probe-6",
       "ramp-supp-three-mcp-servers",
-      "ramp-docs-62",
+      "ramp-probe-5",
       "ramp-docs-38",
       "ramp-supp-sandbox"
     ]
@@ -4346,14 +4335,15 @@
     "productId": "ramp",
     "storyId": "api-machine-spec",
     "verdict": "full",
-    "quality": 9,
+    "quality": 10,
     "confidence": "high",
-    "rationale": "Ramp's llms.txt index links a canonical OpenAPI schema at /openapi/developer-api.json, plus a generated plain-text endpoint and schema reference (/llms-api.txt) and full exports. Its unauthenticated Developer MCP also gives AI assistants live access to the OpenAPI schemas through a developer_docs_schema tool. The llms.txt index was live-probed (HTTP 200), which corroborates the machine-readable docs surface. Missing for 10: no hands-on probe or independent confirmation that the OpenAPI JSON file itself downloads and is complete.",
+    "rationale": "Ramp's llms.txt index links a canonical OpenAPI schema at /openapi/developer-api.json, alongside a generated plain-text endpoint/schema reference and full exports. An independent probe confirmed the file returns HTTP 200 as a parseable OpenAPI document ('Ramp Developer API' v1) with 174 paths. The unauthenticated Developer MCP server also exposes the OpenAPI schemas, and a probe confirmed it is reachable without keys.",
     "evidenceIds": [
       "ramp-supp-machine-docs",
+      "ramp-probe-6",
       "ramp-probe-1",
       "ramp-supp-three-mcp-servers",
-      "ramp-docs-70"
+      "ramp-probe-5"
     ]
   },
   {
@@ -4362,11 +4352,10 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Ramp documents a dedicated sandbox at demo.ramp.com with API base demo-api.ramp.com, built so developers can test 'without affecting live production data' and with 'no real money movement.' It also offers a demo actions panel (⌘ J) for simulating events such as adding transactions or paying bills. The agent tooling targets it directly: the CLI connects to Sandbox by default, and Ramp MCP has a demo endpoint at demo-mcp.ramp.com. Missing for 10: independent or hands-on corroboration that the sandbox and demo MCP/CLI flows work as documented.",
+    "rationale": "Ramp documents a dedicated sandbox for safely building and testing \"without affecting live production data\". It has its own frontend (demo.ramp.com) and API base (demo-api.ramp.com), moves no real money, and includes a demo actions panel for simulating events. The AI-native surfaces target it directly: the CLI connects to Sandbox by default, and a demo-data MCP endpoint (demo-mcp.ramp.com/mcp) is published. Missing for 10: independent or hands-on corroboration that the sandbox and demo MCP endpoints work as documented (no probe hit them).",
     "evidenceIds": [
       "ramp-supp-sandbox",
       "ramp-docs-36",
-      "ramp-docs-66",
       "ramp-supp-mcp-server",
       "ramp-supp-cli-agent-mode"
     ]
@@ -4375,12 +4364,12 @@
     "productId": "ramp",
     "storyId": "api-versioning-policy",
     "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "The only relevant evidence is the endpoint path /developer/v1/ai-usage/unified, which shows a versioned URL scheme for the Developer API. A canonical OpenAPI schema is also published, but nothing in the pack describes a versioning strategy, deprecation timelines, sunset notices, or changelog commitments. missing for 10: documented API versioning policy, documented deprecation/sunset policy with notice periods, changelog or migration guidance, independent corroboration.",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "Ramp's Developer API is path-versioned: endpoints sit under /developer/v1/, and the canonical OpenAPI document is published as \"Ramp Developer API\" v1 with 174 paths. Nothing in the evidence documents a deprecation policy, sunset timelines, or version-migration guidance, so only half the story is covered. Missing for 10: documented deprecation/sunset policy, changelog or version-lifecycle guidance, evidence of multiple supported versions or migration paths, independent corroboration.",
     "evidenceIds": [
+      "ramp-probe-6",
       "ramp-docs-40",
-      "ramp-supp-ai-usage-tracking",
       "ramp-supp-machine-docs"
     ]
   },
@@ -4390,13 +4379,12 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Ramp documents its own approval workflows: rules-based routing of requests to stakeholders by vendor type, spend category, or dollar amount; workflows keyed to spend amount or team role; and approval workflows as part of the spend-controls layer across cards, reimbursements, bills, and agent purchases. None of this evidence shows explicit sequential multi-step chains (manager → budget owner → finance), approver delegation, or time-based escalation when approvers sit on requests. The AI agent's \"escalates when it's not [safe]\" refers to risk flagging, not approver escalation. Missing for 10: explicitly documented multi-step sequential approval chains, approver delegation/out-of-office reassignment, escalation or reminders for stalled approvals, independent corroboration.",
+    "rationale": "Ramp documents rules-based approval workflows that route requests to stakeholders by vendor type, spend category, or dollar amount, and workflows targeted by spend amount or team role. Spend controls are described as including approval workflows across cards, reimbursements, bills, and agent purchases. However, nothing shows explicit sequential multi-step chains such as manager then budget owner then finance. Delegation of approval authority is never mentioned. Time-based escalation when approvers sit on requests is also absent; the AI 'escalates when it's not safe' claim is a different behavior. missing for 10: explicit multi-step sequential approver chains (manager/budget owner/finance), approver delegation/out-of-office reassignment, SLA-based escalation of stalled approvals, independent or hands-on corroboration.",
     "evidenceIds": [
       "ramp-docs-23",
       "ramp-docs-12",
       "ramp-supp-spend-controls-agents",
-      "ramp-docs-47",
-      "ramp-docs-53"
+      "ramp-docs-10"
     ]
   },
   {
@@ -4422,7 +4410,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Bulk operations are a fair axis for a spend-management platform, but the evidence never documents a capability to act on many items at once, such as bulk approve, bulk edit, bulk card issuance, or batch API endpoints. What the pack does show earns no credit here. The CLI being 'built for scripted loops' is a building block for user-written loops, not bulk operations. The multi-entity accounting sync 'in a single step' and batched AI-usage event ingestion are adjacent features. Full spend exports are bulk reads, not bulk actions.",
+    "rationale": "The evidence pack documents no bulk or batch action capability, such as mass-approving, bulk-editing or bulk-updating many transactions, bills or cards in one call through the API, MCP or CLI. The CLI being suited to 'scripted loops' is a developer building block, not a bulk feature. The other candidates are adjacent rather than bulk actions: the multi-entity accounting sync, full spend exports, the MCP prompt that drafts reminders for transactions missing receipts, and AI-usage telemetry batch ingestion.",
     "evidenceIds": []
   },
   {
@@ -4431,13 +4419,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Ramp documents its own rules-based automation in several places. Procurement workflows route requests automatically by vendor type, spend category, or dollar amount. Notification workflows trigger on spend amount or team role, and cards auto-lock when compliance is unmet. A configurable human-in-the-loop policy auto-approves routine spend, and in-policy expenses are auto-approved. However, these are fixed, domain-specific triggers described in one-line marketing claims, not a general event-to-action rule builder. Webhooks only notify external systems and are a building block, so they earn no credit here. Missing for 10: a general user-defined trigger/condition/action rule engine, in-depth docs on rule configuration and the events and actions available, independent or hands-on corroboration.",
+    "rationale": "Ramp documents its own rules-based workflows. They route requests to stakeholders automatically by vendor type, spend category or dollar amount (ramp-docs-23), notify people based on spend amount or team role (ramp-docs-12), and auto-approve in-policy spend under a customizable human-in-the-loop policy (ramp-docs-32, ramp-supp-agents-site). These rules are limited to approval routing, notifications and spend controls rather than general event-to-action automation; webhooks are a developer building block and are not credited here. Missing for 10: a general user-defined rule builder with arbitrary event triggers and custom actions, detailed docs on rule configuration, and independent or hands-on corroboration.",
     "evidenceIds": [
       "ramp-docs-23",
       "ramp-docs-12",
-      "ramp-docs-59",
       "ramp-docs-32",
-      "ramp-docs-48",
       "ramp-supp-agents-site",
       "ramp-docs-9"
     ]
@@ -4448,7 +4434,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The axis applies, since a finance SaaS could ship scheduled recurring jobs such as scheduled reports or recurring automations, but the evidence shows no Ramp-native scheduler. The CLI being suited to \"scripted/scheduled workflows\" and \"long-running access for background agents that run on a schedule\" both depend on an external scheduler such as the user's own cron or agent runtime, which is a user-side workaround. Recurring fund intervals, automatic reminders and rules-based routing are adjacent features, not user-defined scheduled jobs.",
+    "rationale": "Nothing in the evidence shows Ramp offering its own way to define and schedule recurring jobs or workflows. The mentions of the CLI supporting 'scripted/scheduled workflows' and of keys for 'background agents that run on a schedule' assume an external scheduler, which is a user-side workaround. Recurring-budget spend programs, automatic reminders and rules-based approval routing are adjacent features, not user-defined scheduled jobs.",
     "evidenceIds": []
   },
   {
@@ -4457,7 +4443,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Ramp ships automations such as rules-based approval workflows, notification workflows, and spend templates, so versioning, reviewing, and rolling back automations is a fair question for this product. The evidence never documents version history, change review, or rollback for those workflows. The agent-action audit log and the sandbox are adjacent features: they record or test actions but do not version or revert automation definitions, so they earn no credit.",
+    "rationale": "Ramp documents rules-based workflows and an audit log of agent and API write actions, but nothing in the evidence shows versioning, change review, or rollback of the automations themselves. The audit log covers actions taken, not workflow definitions, so it is an adjacent feature and earns no credit. The axis applies to a finance-automation platform, so the lack of evidence makes this none rather than na.",
     "evidenceIds": []
   },
   {
@@ -4466,28 +4452,25 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Ramp documents a native bill-pay product covering the full AP flow. Invoice capture uses OCR with claimed 99% line-item accuracy, plus two- and three-way matching. Bills fall under the same approval workflows as other spend: they can be approved in the UI or CLI, and Ramp agents learn from past invoices and escalate risky ones. Vendors can be paid per bill by ACH, check, wire, card, and more, including via the POST /bills API. missing for 10: detailed documentation of bill-specific approval routing rules (e.g., by amount or approver chain), independent or hands-on corroboration of the AP workflow.",
+    "rationale": "Ramp's own docs cover each step of the AP workflow in one platform. Invoices are captured by OCR, with line items checked through 2- and 3-way matching. Spend-control approval workflows explicitly apply to bills, and the CLI and Ramp UI support bill approval. Bills are created via POST /bills with a per-bill payment method of card, ACH, check or wire, and NetSuite and Xero bills can be completed with Ramp payments. Missing for 10: no independent or hands-on corroboration, and only thin detail on how bill approvals are routed (approver chains and rules)—bill approvals are also not yet available via MCP.",
     "evidenceIds": [
       "ramp-docs-16",
       "ramp-docs-17",
-      "ramp-docs-57",
       "ramp-docs-38",
-      "ramp-docs-69",
       "ramp-supp-spend-controls-agents",
-      "ramp-supp-ai-agents-channels",
       "ramp-supp-cli-agent-mode",
-      "ramp-supp-ramp-agents-product",
-      "ramp-docs-61",
-      "ramp-docs-27"
+      "ramp-supp-ai-agents-channels",
+      "ramp-docs-27",
+      "ramp-docs-28"
     ]
   },
   {
     "productId": "ramp",
     "storyId": "budgets-enforcement",
     "verdict": "full",
-    "quality": 7,
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Ramp documents Funds as budgets with enforced restrictions: amount, interval, allowed merchants, categories and countries. Its spend controls layer applies budgets, templates and approval workflows across cards, reimbursements and bills, enforcing limits before spend happens. Cards and permissions can be set for individual teams, approvals route by amount, team role or category, and spend requests are recommended against budgets. Missing for 10: explicit project-level budget allocation, team/department budget rollups beyond per-card or per-fund limits, and independent or hands-on corroboration that enforcement works as claimed.",
+    "rationale": "Ramp documents Funds as budgets with enforced restrictions: amount, interval, allowed merchants, categories and countries. Its spend-controls layer of budgets, templates and approval workflows applies to cards, reimbursements and bills, and spend limits and merchant blocks are enforced before spend happens. Cards can be scoped to individual teams, and approval workflows route by spend amount, team role or category, with request recommendations grounded in budgets. Missing for 10: explicit evidence of project-level (not just team-level) budget allocation and rollup, and independent or hands-on corroboration that enforcement works as described.",
     "evidenceIds": [
       "ramp-docs-41",
       "ramp-supp-spend-controls-agents",
@@ -4496,9 +4479,8 @@
       "ramp-docs-11",
       "ramp-docs-12",
       "ramp-docs-23",
-      "ramp-docs-47",
       "ramp-docs-31",
-      "ramp-docs-42"
+      "ramp-docs-7"
     ]
   },
   {
@@ -4507,14 +4489,14 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Ramp's spend-controls docs define Funds as budgets with amount, interval, allowed merchant categories, allowed merchants and allowed countries, and cards carry these controls. Marketing says Ramp will \"block risky merchants or categories all before spend happens\", and pricing lists \"auto-lock cards when compliance is unmet\", which covers both restriction and point-of-sale enforcement. Missing for 10: technical documentation of how authorization-time declines work (e.g., decline reasons, real-time auth behavior), and independent or hands-on corroboration that out-of-policy swipes are actually blocked.",
+    "rationale": "Ramp's spend-controls docs define funds as budgets restricted by amount, interval, allowed merchant categories, allowed merchants and countries, and these controls attach to issued cards. The marketing page says Ramp will \"enforce spend limits, and block risky merchants or categories all before spend happens,\" which covers declining out-of-policy spend before purchase. Per-vendor limits on virtual cards are also described. Missing for 10: explicit documentation of point-of-sale decline behavior, evidence of automatic card locking on policy violation (lock appears only as a manual CLI/MCP action), and independent or hands-on corroboration.",
     "evidenceIds": [
       "ramp-docs-41",
-      "ramp-supp-spend-controls-agents",
       "ramp-docs-9",
-      "ramp-docs-59",
       "ramp-docs-7",
-      "ramp-docs-31"
+      "ramp-docs-31",
+      "ramp-supp-spend-controls-agents",
+      "ramp-docs-11"
     ]
   },
   {
@@ -4523,15 +4505,16 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Ramp's own materials say that when a card is swiped, it captures the receipt, fills in memos and categories, codes the spend to the correct GL account, and syncs accounting fields and transactions to QuickBooks in real time (ramp-docs-8, ramp-docs-32, ramp-docs-44). Reminders for missing items and CLI/MCP commands for missing receipts and memo suggestions support a review-style month-end close (ramp-docs-13, ramp-docs-29, ramp-supp-cli-agent-mode). missing for 10: independent or hands-on corroboration of coding accuracy, in-depth documentation of how auto-coding rules and merchant/category mapping work beyond marketing-level claims.",
+    "rationale": "Ramp documents real-time coding at the moment of spend. On swipe it captures the receipt and fills in memos and categories, and receipts are 'coded to the correct GL account' and auto-approved within policy. It reminds users about missing items and syncs accounting fields and transactions to QuickBooks in real time with a built-in reconciliation tool. The CLI and MCP also expose missing-receipt/memo detection and memo suggestions, so close becomes a review of exceptions. Missing for 10: independent or hands-on corroboration of auto-coding accuracy, and in-depth first-party docs on how merchant/category/GL rules are configured (the evidence is mostly marketing-page claims).",
     "evidenceIds": [
       "ramp-docs-8",
       "ramp-docs-32",
       "ramp-docs-45",
       "ramp-docs-21",
-      "ramp-docs-44",
       "ramp-docs-13",
       "ramp-docs-29",
+      "ramp-docs-44",
+      "ramp-docs-26",
       "ramp-supp-cli-agent-mode",
       "ramp-supp-ramp-agents-product"
     ]
@@ -4542,55 +4525,53 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Ramp documents its own audit log: every write operation, including approvals and edits made via MCP/CLI, \"lands in the customer's Ramp audit log automatically,\" with full attribution to the acting agent. Policy-grounded approval recommendations and auto-flagging of out-of-policy spend are also documented. However, the audit-log evidence is framed around agent actions rather than describing a per-expense history of edits, approvals and policy checks. Missing for 10: explicit documentation of a per-expense audit trail covering all edits, approvals and policy-check outcomes; audit-log export or retention details; evidence of auditor-ready reporting or external-audit acceptance; independent corroboration.",
+    "rationale": "Ramp documents a native audit log: agent and CLI/MCP actions, including approvals and edits, 'land in the Ramp audit log' and 'every write operation lands in the customer's Ramp audit log automatically.' The MCP server also exposes an audits_logs:read scope. Policy enforcement and policy-grounded approval recommendations are documented, but the evidence describes the audit log mainly in the agent context and never shows a per-expense trail combining edits, approvals and policy-check outcomes. missing for 10: documentation of per-expense audit history covering human edits, approvals and policy-check results, audit-ready export or retention guarantees for external auditors, independent corroboration.",
     "evidenceIds": [
       "ramp-supp-ai-agents-channels",
       "ramp-supp-agent-cards",
       "ramp-supp-agents-site",
+      "ramp-probe-4",
       "ramp-docs-10",
-      "ramp-docs-48",
-      "ramp-docs-32"
+      "ramp-docs-32",
+      "ramp-docs-9"
     ]
   },
   {
     "productId": "ramp",
     "storyId": "expense-policy-engine",
     "verdict": "full",
-    "quality": 7,
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Ramp documents pre-spend policy controls: spend limits, blocked merchants and categories, and funds restricted by amount, interval, merchant category, merchant and country. Context-aware rules include per diem adjusted by trip location and duration, and policy status shown on travel options. Approval workflows route by spend amount, team role or category, and Ramp states that in-policy receipts are auto-approved while questionable or risky items are flagged or escalated to a human. Missing for 10: detailed first-party docs on configuring auto-approval rules and role-based limits (role appears mainly in notification and routing workflows), plus independent or hands-on corroboration of the auto-approve and exception flow.",
+    "rationale": "Ramp documents a policy layer. Funds carry restrictions on amount, interval, merchant categories, merchants, and countries (ramp-docs-41, spend-controls). Limits are enforced and risky categories blocked before spend happens (ramp-docs-9). Approval workflows route by spend amount or team role across cards, reimbursements, and bills (ramp-docs-12, ramp-docs-23). In-policy expenses are explicitly auto-approved, while unclear or risky ones escalate to a human (ramp-docs-32, ramp-supp-ramp-agents-product, ramp-docs-10). missing for 10: detailed configuration docs for role-based limit rules and auto-approval thresholds (most evidence is marketing copy), independent or hands-on corroboration.",
     "evidenceIds": [
       "ramp-docs-9",
       "ramp-docs-41",
       "ramp-supp-spend-controls-agents",
-      "ramp-docs-32",
       "ramp-docs-12",
       "ramp-docs-23",
-      "ramp-docs-48",
+      "ramp-docs-32",
       "ramp-docs-10",
       "ramp-supp-ramp-agents-product",
-      "ramp-docs-47",
-      "ramp-docs-19",
-      "ramp-docs-18",
       "ramp-docs-42",
-      "ramp-docs-11"
+      "ramp-docs-11",
+      "ramp-docs-21"
     ]
   },
   {
     "productId": "ramp",
     "storyId": "expenses-api-read",
     "verdict": "full",
-    "quality": 7,
-    "confidence": "medium",
-    "rationale": "Ramp documents a Developer REST API: the getting-started guide calls the Transactions API with an access token, and a published OpenAPI schema and generated endpoint reference exist. Its OAuth 2.0 model supports client credentials, authorization code, and refresh token grants, with granular resource:permission scopes such as transactions:read and least-privilege guidance. Missing for 10: explicit REST API endpoints for receipts and expenses/reimbursements (these appear only via the CLI's receipts and reimbursements resources), and independent or hands-on corroboration of API data pulls.",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "Ramp documents a REST Developer API with a Transactions API. Probe-6 confirms a live OpenAPI schema with 174 paths, including /developer/v1/transactions. The API uses OAuth 2.0 (client credentials, authorization code, refresh) with granular resource:permission scopes such as transactions:read and least-privilege guidance. Missing for 10: explicit REST endpoint evidence for retrieving receipts and reimbursements/expenses (shown only via CLI/MCP scopes such as receipts:write and reimbursements:read), and independent developer corroboration of pulling that data.",
     "evidenceIds": [
       "ramp-docs-1",
-      "ramp-docs-62",
       "ramp-docs-33",
       "ramp-supp-oauth-scopes",
-      "ramp-docs-2",
+      "ramp-probe-6",
       "ramp-supp-machine-docs",
-      "ramp-supp-cli-agent-mode"
+      "ramp-supp-cli-agent-mode",
+      "ramp-probe-4"
     ]
   },
   {
@@ -4599,9 +4580,8 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Ramp documents employee reimbursement requests on web or mobile (snap a receipt, add a memo, submit), with payout \"in two days or less\" in local currency across 70+ countries. Employees can also submit via the CLI (reimbursements list/pending/submit) and via MCP. Pending and paid reimbursement states are implied by CLI commands and the sandbox's \"mark reimbursement as paid\" action. missing for 10: explicit confirmation that payout is by direct deposit/bank transfer, documented employee-facing status tracking from submission through payout, independent or hands-on corroboration.",
+    "rationale": "Ramp documents employee reimbursements paid \"in two days or less in their local currency\" across 70+ countries, with mileage calculation. Employees can submit and request reimbursements via the CLI (reimbursements list/pending/submit) and MCP, and the sandbox models a reimbursement lifecycle through to \"paid\". Missing for 10: explicit confirmation that payout is by direct deposit/bank transfer, documented employee-facing status tracking from submission to payout, and independent or hands-on corroboration of the two-day speed.",
     "evidenceIds": [
-      "ramp-docs-50",
       "ramp-docs-14",
       "ramp-docs-15",
       "ramp-supp-cli-agent-mode",
@@ -4615,11 +4595,9 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Ramp's reimbursements page says employees in more than 70 countries and 40 currencies can be paid in their local currency within two days. Because this sits inside Ramp's native reimbursement flow (employees submit requests via web or mobile, and admins approve them in the same system), no separate international payments process is needed. Missing for 10: detailed docs on FX rates, fees, and how foreign payouts are set up, plus independent or hands-on corroboration of international payouts.",
+    "rationale": "Ramp's reimbursements page directly claims employees can be reimbursed in more than 70 countries and 40 currencies, paid in their local currency within two days. That is native in-product support, so no separate international payments process is needed. The evidence is a single marketing claim with no detailed docs or hands-on confirmation. Missing for 10: in-depth docs on FX handling, payout rails and setup for international reimbursements; explicit confirmation that these run in the same reimbursement workflow as domestic ones; independent or hands-on corroboration.",
     "evidenceIds": [
-      "ramp-docs-14",
-      "ramp-docs-50",
-      "ramp-supp-ai-agents-channels"
+      "ramp-docs-14"
     ]
   },
   {
@@ -4628,14 +4606,14 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Ramp's docs say you can issue physical cards for in-person employee spend and virtual cards, with controls attached to each (ramp-docs-7, ramp-docs-11). Spend limits come from funds with amount, interval, merchant and country restrictions (ramp-docs-41, ramp-docs-9). Speed is supported by 'instant virtual cards' with per-vendor limits (ramp-docs-31) and templates that make issuing 'just one click' (ramp-docs-47). Missing for 10: details on how quickly physical cards are issued and shipped, and independent or hands-on confirmation of the 'in minutes' claim.",
+    "rationale": "Ramp's docs say it can issue both physical cards (for in-person employee spend) and virtual cards, each with attached controls. Its marketing describes 'instant virtual cards' with per-vendor spending limits, and funds carry amount and interval limits (daily, monthly, total) plus merchant restrictions. missing for 10: evidence that physical cards are issued or delivered 'in minutes' (only virtual cards are described as instant), and independent or hands-on confirmation of how fast issuance and limit setup really are.",
     "evidenceIds": [
       "ramp-docs-7",
       "ramp-docs-11",
       "ramp-docs-31",
       "ramp-docs-41",
-      "ramp-docs-47",
       "ramp-docs-9",
+      "ramp-supp-spend-controls-agents",
       "ramp-supp-virtual-cards-vault"
     ]
   },
@@ -4643,13 +4621,13 @@
     "productId": "ramp",
     "storyId": "mileage-per-diem",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Ramp's reimbursements page says its Google Maps integration provides automatic mileage calculations, which covers map-based mileage logging, and employees can submit repayment requests on web or mobile. The per-diem evidence is weaker: it says per diem shows what you can purchase and adjusts by trip location and duration. That describes a travel spending allowance, not a documented flow for claiming per-diem reimbursement without building the expense by hand. Missing for 10: an explicit per-diem claim/reimbursement workflow, in-depth docs on the mileage logging flow (route entry, rates), and independent or hands-on corroboration of either feature.",
+    "rationale": "Ramp's reimbursements page documents a Google Maps integration for automatic mileage calculations, which covers map-based mileage logging. Ramp Travel documents a per diem that automatically adjusts to trip location and duration, but the evidence frames it as an allowance showing what you can spend, not a per-diem reimbursement claim. Both are single-line marketing claims with no employee-facing workflow detail. Missing for 10: evidence that per-diem rates can be claimed and reimbursed rather than only displayed as a spending allowance, a documented employee mileage-entry workflow (route entry, rate application, submission), and independent or hands-on corroboration.",
     "evidenceIds": [
       "ramp-docs-15",
       "ramp-docs-19",
-      "ramp-docs-50"
+      "ramp-docs-14"
     ]
   },
   {
@@ -4658,12 +4636,13 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Ramp documents a multi-entity capability: entity-specific spend policies and controls in a single consolidated account, separate statement payments per business, one-step sync of transactions and reimbursements to multiple entities, and management of all global NetSuite entities in one multi-entity environment. The currency and consolidated-reporting parts of the story are weakly evidenced. The only currency claim covers employee reimbursements in 40 currencies, which says nothing about per-entity functional currencies. missing for 10: explicit multi-currency entity books (per-entity base currency, FX handling), documented consolidated cross-entity reporting, and independent or hands-on corroboration.",
+    "rationale": "Ramp documents running multiple entities in a single consolidated account, with per-entity spend policies and controls [ramp-docs-42]. It also syncs transaction and reimbursement data to multiple entities in one step [ramp-docs-24], and exposes entities as a data object to agents and the API [ramp-supp-ai-agents-channels, ramp-probe-4]. Multi-currency support is evidenced only for employee reimbursements (40 currencies) [ramp-docs-14], and consolidated cross-entity reporting is not explicitly documented. Missing for 10: explicit multi-currency entity accounts and books, documented consolidated reporting across entities, and independent or hands-on corroboration.",
     "evidenceIds": [
       "ramp-docs-42",
       "ramp-docs-24",
-      "ramp-docs-54",
-      "ramp-docs-55"
+      "ramp-docs-14",
+      "ramp-supp-ai-agents-channels",
+      "ramp-probe-4"
     ]
   },
   {
@@ -4672,18 +4651,20 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Ramp's programmatic surface is broad. The Developer API covers transactions, bills (POST /bills with multiple payment methods), virtual cards via the Vault API, custom records, spend controls and AI usage, all under resource-level OAuth scopes. The open-source CLI spans 12 resources, including approvals, reimbursements, travel, receipts and funds, and MCP adds reads, approvals and purchases. Ramp never claims full UI parity, and its own docs name gaps: bill approvals are not available via MCP (the UI or the Approvals API is required), and creating an API app requires the UI's Company → Developer page. Missing for 10: an explicit or verified API/UI parity claim, API coverage of UI features like procurement RFx and travel booking/rebooking, API-based app provisioning, and independent hands-on corroboration.",
+    "rationale": "Ramp exposes a broad programmatic surface. The probe confirms an OpenAPI spec with 174 paths, and the docs cover bills, virtual cards via the Vault API, Custom Records, spend controls/funds, and OAuth scopes. The CLI and MCP add approvals, reimbursements, transactions, travel, receipts and purchasing. However, there is no explicit UI-parity claim, and the docs name UI-only steps: creating API apps happens in the dashboard (Company → Developer), MCP access restrictions are set in the dashboard, and bill approvals are not available via MCP ('use the Ramp UI or the Blank Canvas Approvals API'). Missing for 10: a documented API/UI parity commitment, API-based app/admin configuration (developer app creation, MCP access policy), uniform bill-approval coverage across channels, and independent hands-on verification of parity.",
     "evidenceIds": [
+      "ramp-probe-6",
+      "ramp-supp-machine-docs",
       "ramp-supp-ai-agents-channels",
       "ramp-supp-cli-agent-mode",
-      "ramp-supp-oauth-scopes",
+      "ramp-supp-mcp-server",
+      "ramp-probe-4",
+      "ramp-docs-33",
       "ramp-docs-38",
       "ramp-docs-39",
       "ramp-supp-virtual-cards-vault",
       "ramp-supp-spend-controls-agents",
-      "ramp-supp-machine-docs",
-      "ramp-docs-33",
-      "ramp-supp-mcp-server"
+      "ramp-supp-oauth-scopes"
     ]
   },
   {
@@ -4692,13 +4673,12 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Ramp documents its own data-access paths. Admins can \"pull full spend exports\" via MCP or the CLI, the open-source CLI emits JSON in agent mode, the REST API retrieves transaction data, and accounting integrations sync transactions, reimbursements and bills out to QuickBooks, NetSuite and Xero. However, nothing documents a complete account-wide export or an offboarding path. Missing for 10: a documented bulk export of all account data (receipts, cards, users, policies, audit logs) in open formats, an explicit data-portability or account-exit process, and independent hands-on corroboration of a full export.",
+    "rationale": "Ramp documents its own data-extraction paths. Admins can 'pull full spend exports' through MCP. The CLI's --agent mode outputs JSON, and a 174-path Developer API (with a public OpenAPI schema) retrieves transactions and other resources. There is no documented bulk 'export all my data' or account-exit feature, so the 'all data' and 'leave' parts of the story go unproven. Missing for 10: a documented complete account-data export covering every object type, explicit open-format bulk export files (e.g. CSV/JSON archive), offboarding/data-portability documentation, and independent or hands-on corroboration.",
     "evidenceIds": [
       "ramp-supp-ai-agents-channels",
       "ramp-supp-cli-agent-mode",
       "ramp-docs-1",
-      "ramp-docs-44",
-      "ramp-docs-71"
+      "ramp-probe-6"
     ]
   },
   {
@@ -4707,11 +4687,10 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "medium",
-    "rationale": "The core Ramp spend-management platform is proprietary SaaS, and no evidence shows its source is available. Only peripheral first-party tooling is public: the Ramp CLI is described as \"open-source\" at github.com/ramp-public/ramp-cli, and a ramp-mcp repository README is publicly readable. missing for 10: source for the core Ramp product, an explicitly named open license (e.g. MIT/Apache) for any repo, independent corroboration of the CLI and MCP repos' licensing.",
+    "rationale": "The only openness evidence is that Ramp's first-party CLI is described as open-source and hosted publicly at github.com/ramp-public/ramp-cli. That lets a user read source for one official client component, but nothing indicates the core Ramp platform's source is available, and the specific license is never named. Missing for 10: source availability for the core Ramp product beyond the CLI client, an identified open license (e.g., MIT/Apache), and independent confirmation of the repository's licensing terms.",
     "evidenceIds": [
       "ramp-supp-cli-agent-mode",
-      "ramp-probe-3",
-      "ramp-docs-71"
+      "ramp-probe-3"
     ]
   },
   {
@@ -4720,7 +4699,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Self-hosting is a fair openness question for a SaaS spend-management platform, but the evidence shows Ramp only as a vendor-hosted service. The open-source CLI and the locally run MCP server (ramp-mcp, an ETL plus in-memory sqlite) are client-side tools that call Ramp's hosted API, not a self-hostable deployment of the core product, so they earn no credit.",
+    "rationale": "Self-hosting is a fair question for spend-management software, but nothing in the evidence shows Ramp offering a self-hosted or on-prem deployment of its core product. Every environment documented, including production, the demo sandbox, and the MCP servers, is Ramp-hosted. The open-source CLI is only a client to that hosted service.",
     "evidenceIds": []
   },
   {
@@ -4729,7 +4708,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data residency is a fair question for a SaaS finance platform, but the evidence pack never documents a way to choose a storage region. Multi-entity support, reimbursements in 70+ countries, and \"allowed countries\" fund restrictions are spend and geography controls, not data-storage location, so they earn no credit.",
+    "rationale": "Choosing a data storage region is a fair question for a SaaS finance platform like Ramp, but the evidence pack never mentions data residency or regional hosting. Related-sounding items, such as \"allowed countries\" on funds and reimbursements in 70+ countries, cover spend controls and payouts, not where data is stored, so they earn no credit.",
     "evidenceIds": []
   },
   {
@@ -4738,7 +4717,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Ramp ships AI features (Ramp Intelligence, agents that learn from past invoices, an MCP server), so a training opt-out is a fair question for this product. However, nothing in the evidence documents a policy, setting, or contractual control that keeps customer data out of AI model training. The community comments criticize Ramp's aggregate transaction analysis, not model training, and no vendor claim exists to contradict, so they do not move the verdict.",
+    "rationale": "Ramp ships in-product AI (Ramp Intelligence and Ramp agents), so whether customers can stop their data from being used to train AI models is a fair question for this product. Nothing in the evidence pack documents a training opt-out, a no-training commitment, or any data-use policy for model training. The scope controls, MCP access restrictions and audit logs cover access to data, not training use, so they earn no credit here.",
     "evidenceIds": []
   },
   {
@@ -4747,7 +4726,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Ramp is a SaaS finance platform, so user control over data retention and deletion is a fair axis, but the evidence pack documents no retention settings, deletion APIs, or data-erasure controls. The nearest items are adjacent and earn no credit: OAuth session expiry, auto-expiring agent cards, and the open-source MCP server's ephemeral in-memory SQLite. Community comments raise concern about Ramp's use of customer transaction data but show no retention or deletion capability either way.",
+    "rationale": "Data retention and deletion controls are a fair privacy question for a finance SaaS platform like Ramp. The evidence pack documents no retention settings, deletion requests, or data-purge capabilities. Adjacent items such as session expiry, OAuth scopes, audit logs and the sandbox are different controls and earn no credit.",
     "evidenceIds": []
   },
   {
@@ -4756,25 +4735,26 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Telemetry and usage-tracking opt-out is a fair question for a SaaS platform with an open-source CLI, so the axis applies. The evidence pack documents no opt-out control in the product, CLI or MCP servers. The AI-usage ingestion API is a different feature (customers sending their own AI spend data into Ramp), not a way to opt out of tracking.",
+    "rationale": "Opting out of telemetry is a fair question for a SaaS platform that ships a CLI and MCP servers, so the axis applies. The pack has no evidence of a telemetry or usage-tracking opt-out in the Ramp product, CLI, or MCP. The AI-usage ingestion API covers customers sending their own AI spend data into Ramp, which is a different capability and earns no credit here.",
     "evidenceIds": []
   },
   {
     "productId": "ramp",
     "storyId": "programmatic-card-issuance",
-    "verdict": "partial",
-    "quality": 6,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Ramp's developer docs show programmatic card issuance. The Cards & Funds guide says to \"Issue cards, attach controls,\" and the Vault API lets \"your backend create a card\" server-side, though that requires the cards:read_vault scope and Ramp approval. Funds carry amount and interval limits plus merchant, category and country restrictions. Locking is evidenced only through the official CLI (funds lock) and the MCP server (\"Lock my card\"), not as a documented public API endpoint, and updating controls on an existing card via the API is not shown. Missing for 10: a documented public API endpoint for locking cards, a documented API for updating controls on an existing card, ungated card creation, and independent or hands-on corroboration.",
+    "rationale": "Ramp documents programmatic card issuance in its Developer API. The Vault API lets a backend create a card and retrieve its PAN, CVV and expiry in one call. The cards guide covers issuing cards and attaching controls, and funds carry configurable restrictions on amount, interval, merchants, categories and countries. Locking is documented through Ramp's own CLI (`funds lock`) and MCP (\"Lock my card\"), and the cards:write, limits:write and funds:write scopes appear among Ramp's published OAuth scopes. Missing for 10: an explicit Developer API endpoint for locking a card, an explicit endpoint for updating limits or controls on an existing card, independent hands-on corroboration, and server-side PAN retrieval being gated behind Ramp approval.",
     "evidenceIds": [
-      "ramp-docs-7",
       "ramp-supp-virtual-cards-vault",
       "ramp-docs-37",
+      "ramp-docs-7",
       "ramp-supp-spend-controls-agents",
       "ramp-docs-41",
-      "ramp-supp-oauth-scopes",
       "ramp-supp-cli-agent-mode",
-      "ramp-docs-30"
+      "ramp-docs-30",
+      "ramp-probe-4",
+      "ramp-supp-oauth-scopes"
     ]
   },
   {
@@ -4783,34 +4763,30 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Ramp's own docs say you can \"watch spend in real time\" on issued cards and that receipts and categories are captured \"as soon as you swipe.\" They also describe real-time visibility into per-vendor SaaS spend. Ramp's MCP and AI-agent surfaces let you search transactions by merchant, load departments and accounting categories, and ask for top vendors by spend, and pricing lists custom AI reports. Missing for 10: no explicit native dashboard showing spend broken down by team, category, and merchant (these slices are mostly implied via MCP or AI reporting), and no independent or hands-on corroboration of same-day visibility.",
+    "rationale": "Ramp documents real-time spend visibility as a product capability: \"watch spend in real time\" on issued cards, \"real-time visibility into SaaS spend\" with per-vendor cards, and receipts captured and categorized \"as soon as you swipe.\" Slicing by merchant, category and department is supported through MCP and agent queries (\"top software vendors by spend,\" search transactions by merchant, load departments and accounting categories). However, a founder-facing dashboard breaking spend down by team, category and merchant is only implied, not explicitly documented. missing for 10: explicit documentation of a native real-time dashboard with team/category/merchant breakdowns, independent or hands-on corroboration of same-day data freshness.",
     "evidenceIds": [
       "ramp-docs-7",
-      "ramp-docs-8",
       "ramp-docs-31",
-      "ramp-docs-45",
-      "ramp-supp-ai-agents-channels",
+      "ramp-docs-8",
       "ramp-docs-43",
-      "ramp-docs-58",
+      "ramp-supp-ai-agents-channels",
       "ramp-supp-mcp-server",
-      "ramp-docs-11"
+      "ramp-docs-45"
     ]
   },
   {
     "productId": "ramp",
     "storyId": "receipt-capture-ocr",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Ramp documents receipt capture tied to card swipes: it captures the receipt, fills memos and categories, and lets employees submit via SMS, Slack, Teams or the mobile app. Reimbursements support \"snap a picture,\" and the CLI offers receipt upload and attach against transactions. Its 99% OCR claim is documented only for bill-pay invoices, so receipt-level OCR and automatic matching are implied rather than explicit. Missing for 10: email-forwarding receipt capture, explicit OCR of employee receipts, documented auto-matching of a photographed receipt to the correct card transaction, independent or hands-on corroboration.",
+    "rationale": "Ramp documents automatic receipt capture tied to card swipes, with memos and categories filled in and edits or submission possible via SMS, Slack or Teams. It also says receipts are captured and coded to the correct GL account, and the CLI exposes receipt upload/attach against transactions. However, nothing explicitly documents snapping a photo or forwarding an email for OCR-based matching to the right transaction. The 99% OCR claim refers to bill-pay invoices, not employee receipts. missing for 10: explicit photo-capture and email-forwarding channels, documented receipt OCR with automatic transaction matching, independent or hands-on corroboration.",
     "evidenceIds": [
       "ramp-docs-8",
-      "ramp-docs-49",
-      "ramp-docs-50",
-      "ramp-docs-45",
       "ramp-docs-32",
-      "ramp-docs-16",
-      "ramp-supp-cli-agent-mode"
+      "ramp-docs-45",
+      "ramp-supp-cli-agent-mode",
+      "ramp-supp-ramp-agents-product"
     ]
   },
   {
@@ -4819,13 +4795,11 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Ramp documents in-platform travel booking (ramp-docs-61, ramp-docs-4) with policy shown at booking time: \"See policy status for every option… no wondering if trips will get rejected\" (ramp-docs-18). Per diem adjusts automatically by location and duration (ramp-docs-19), and hotel rebooking is automatic (ramp-docs-20). Missing for 10: flights are never named explicitly, there are no details on whether out-of-policy options are blocked or routed for pre-approval, and there is no independent or hands-on corroboration.",
+    "rationale": "Ramp's travel product shows policy status for every booking option, so trips aren't rejected after the fact. It also applies per diems by location and duration and monitors and rebooks hotels in-platform. The CLI documents a travel/trips resource for booking travel. missing for 10: explicit evidence of flight booking specifically, detailed docs on how policy is enforced or blocked at booking time, and independent or hands-on corroboration.",
     "evidenceIds": [
       "ramp-docs-18",
       "ramp-docs-19",
       "ramp-docs-20",
-      "ramp-docs-51",
-      "ramp-docs-61",
       "ramp-docs-4",
       "ramp-supp-cli-agent-mode"
     ]
@@ -4834,16 +4808,16 @@
     "productId": "ramp",
     "storyId": "trip-expenses-autocollect",
     "verdict": "partial",
-    "quality": 5,
-    "confidence": "medium",
-    "rationale": "Ramp has native travel booking with viewable trip details (ramp-docs-51) and automatic receipt capture and memo filling on card swipe (ramp-docs-8, ramp-docs-32). The CLI's transactions resource includes a 'trips' subcommand, which suggests transactions can be grouped by trip. However, nothing explicitly states that bookings, card charges and receipts are automatically consolidated into one itinerary-linked report. Missing for 10: explicit documentation of automatic trip-level grouping of bookings, card spend and receipts into a single itinerary-linked report; detail on how out-of-booking card spend links to a trip; independent or hands-on corroboration.",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "Ramp ships a travel booking product with per diem and policy status (ramp-docs-18, ramp-docs-19). Its CLI exposes a `transactions … trips` subcommand and a `travel` resource, and its MCP server enumerates `trips:read`/`trips:write` scopes, which suggests transactions are associated with trips. Card receipts are auto-captured and memos auto-filled on swipe (ramp-docs-8, ramp-docs-32). However, no evidence explicitly describes bookings, card spend and receipts automatically assembling into a single itinerary-linked trip report. Missing for 10: documentation of automatic trip-level grouping of bookings, card charges and receipts into one report, itinerary linkage details, and independent or hands-on corroboration.",
     "evidenceIds": [
-      "ramp-docs-51",
-      "ramp-docs-8",
-      "ramp-docs-32",
-      "ramp-supp-cli-agent-mode",
       "ramp-docs-18",
-      "ramp-docs-19"
+      "ramp-docs-19",
+      "ramp-supp-cli-agent-mode",
+      "ramp-probe-4",
+      "ramp-docs-8",
+      "ramp-docs-32"
     ]
   },
   {
@@ -4852,7 +4826,7 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Ramp's own materials describe issuing instant virtual cards for each software subscription with per-vendor spending limits and no shared card numbers (ramp-docs-31). Funds can be restricted to allowed merchants, merchant categories, amounts and intervals (ramp-docs-41, ramp-supp-spend-controls-agents), and custom virtual cards and reusable virtual card details are documented (ramp-docs-11, ramp-docs-7, ramp-supp-agent-cards). missing for 10: independent or hands-on corroboration, explicit documentation of issuing vendor cards from procurement/PO flows, and explicit documentation of locking a single compromised vendor card in isolation.",
+    "rationale": "Ramp's own materials describe issuing instant virtual cards for each software subscription with per-vendor spending limits and no shared card numbers (ramp-docs-31). Cards can be restricted to allowed merchants and categories through funds (ramp-docs-41, ramp-supp-spend-controls-agents), and Ramp points to Virtual Cards for subscriptions and recurring merchant charges (ramp-supp-agent-cards, ramp-docs-7, ramp-docs-11). Missing for 10: independent or hands-on corroboration of merchant-locked card isolation, and explicit documentation that procurement requests issue vendor-specific virtual cards rather than only routing approvals.",
     "evidenceIds": [
       "ramp-docs-31",
       "ramp-docs-11",
@@ -4860,7 +4834,8 @@
       "ramp-docs-41",
       "ramp-supp-spend-controls-agents",
       "ramp-supp-agent-cards",
-      "ramp-supp-virtual-cards-vault"
+      "ramp-supp-virtual-cards-vault",
+      "ramp-docs-23"
     ]
   }
 ]
