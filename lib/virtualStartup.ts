@@ -1433,6 +1433,7 @@ export const YEAR_SWEEP_GATES: Record<string, VsGate> = {
 // explicitly outside its year instead of asserting that every startup has a grant,
 // debt agreement, audit obligation, foreign entity or physical stock.
 export const YEAR_SWEEP_EXCLUSIONS: Record<string, string> = {
+  'startup-coverage.prepare-and-file-statutory-annual-accounts': 'Statutory accounts depend on the actual reporting jurisdiction, accounting regime and filing obligations, which the simulator does not determine.',
   vc_003: 'The startup journey does not operate a venture fund.',
   'startup-coverage.set-up-transfer-pricing-and-intercompany-agreements': 'No related foreign-entity transaction facts in the simulator profile.',
   'startup-coverage.monitor-debt-covenants-and-lender-reporting': 'No debt facility or covenant facts in the simulator profile.',
