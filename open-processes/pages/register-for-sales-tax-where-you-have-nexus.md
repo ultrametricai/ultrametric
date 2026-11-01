@@ -9,6 +9,8 @@
 
 Determine sales tax, VAT or GST registration obligations from the company’s activities and customer locations, register where required, configure collection and schedule returns and remittances.
 
+> Scoped draft detail: UK-resident private company limited by shares registered in England and Wales, operating domestically in unregulated services. Other entities, locations and cross-border facts need another assessment. Professional review is pending. Source and instruction check: 2026-11-01. Assessment: coverage/local-procedure-assessments.json.
+
 | Field | Value |
 | --- | --- |
 | Kind | process |
@@ -22,6 +24,8 @@ Determine sales tax, VAT or GST registration obligations from the company’s ac
 | Agent support | partial |
 
 Tax platforms watch nexus thresholds, calculate at checkout, and file returns over their APIs; the state registration portals are manual form work and the exposure review is a judgment call.
+
+- Sources: [HMRC VAT registration applicability](https://www.gov.uk/register-for-vat) · [HMRC how to register for VAT](https://www.gov.uk/register-for-vat/how-register-for-vat)
 
 <a id="artifacts"></a>
 
@@ -41,9 +45,9 @@ Country rows describe the guidance recorded here. Local notes and step alternati
 
 | Country | Recorded guidance | Steps with local alternatives or resolutions |
 | --- | --- | --- |
-| [United States](#geo-us) | step resolution; step alternative | [4](#step-4) |
+| [United States](#geo-us) | step resolution; step alternative | [2](#step-2), [4](#step-4), [5](#step-5), [6](#step-6) |
 | [India](#geo-in) | Local analog note; step resolution; step alternative | [4](#step-4) |
-| [United Kingdom](#geo-uk) | Local analog note; step resolution; step alternative | [4](#step-4) |
+| [United Kingdom](#geo-uk) | Local analog note; step resolution; step alternative | [2](#step-2), [4](#step-4), [5](#step-5), [6](#step-6) |
 | [Germany](#geo-de) | Local analog note; step resolution; step alternative | [4](#step-4) |
 | [France](#geo-fr) | Local analog note; step resolution; step alternative | [4](#step-4) |
 | [Portugal](#geo-pt) | Local analog note; step resolution | [4](#step-4) |
@@ -94,6 +98,7 @@ agent-runnable · ~15 min
 Reconcile imported transactions to billing, including dates, locations, products, refunds and marketplace handling. Add physical business presence to the assessment. Check the platform’s flagged states against current state rules and measurement periods with the tax adviser. Preserve the data snapshot and assumptions; a detected threshold signal still needs a company-specific registration conclusion.
 
 - Canonical vendor: Stripe Tax
+- Sources: [HMRC VAT registration applicability](https://www.gov.uk/register-for-vat) · [HMRC how to register for VAT](https://www.gov.uk/register-for-vat/how-register-for-vat)
 
 <a id="step-3"></a>
 
@@ -124,7 +129,7 @@ Use the registration route required for the company’s sales tax, VAT or GST ob
 - Verify: Each state issues a sales-tax permit or account number — required before collecting tax there.
 - Produces: Sales tax registrations
 - Do it yourself: [Streamlined Sales Tax registration](https://www.streamlinedsalestax.org/)
-- Sources: [Streamlined Sales Tax remote sellers](https://www.streamlinedsalestax.org/for-businesses/remote-seller-faqs)
+- Sources: [HMRC VAT registration applicability](https://www.gov.uk/register-for-vat) · [HMRC how to register for VAT](https://www.gov.uk/register-for-vat/how-register-for-vat) · [Streamlined Sales Tax remote sellers](https://www.streamlinedsalestax.org/for-businesses/remote-seller-faqs)
 
 Options:
   - **United States — Streamlined Sales Tax registration** — manual form/portal · ~45 min · hard to undo
@@ -172,6 +177,7 @@ agent-runnable · ~15 min
 Configure products, locations, exemptions and effective dates from the reviewed tax treatment. Test invoices, refunds and representative customer types before enabling the approved production changes. Reconcile early collected tax to expectations and confirm required registrations are in place. Decide how later product or customer-status changes reach the people maintaining tax settings.
 
 - Canonical vendor: Stripe
+- Sources: [HMRC VAT registration applicability](https://www.gov.uk/register-for-vat) · [HMRC how to register for VAT](https://www.gov.uk/register-for-vat/how-register-for-vat)
 
 <a id="step-6"></a>
 
@@ -183,6 +189,7 @@ agent-runnable · ~20 min
 Use issued accounts and agency-assigned frequencies to schedule returns, including any required zero filings. Reconcile collected tax, refunds and credits before each return. Configure the company’s actual filing and remittance approvals and escalation for failed submissions or debits before enabling recurring actions. Keep acceptance and payment evidence with each return and revisit the schedule when registrations change.
 
 - Canonical vendor: Avalara
+- Sources: [HMRC VAT registration applicability](https://www.gov.uk/register-for-vat) · [HMRC how to register for VAT](https://www.gov.uk/register-for-vat/how-register-for-vat)
 
 
 <a id="by-country"></a>
@@ -193,7 +200,10 @@ Use issued accounts and agency-assigned frequencies to schedule returns, includi
 
 ### United States
 
+- Step 2: Connect billing data and assess indirect-tax registration obligations Reconcile imported transactions to billing, including dates, locations, products, refunds and marketplace handling. Add physical business presence to the assessment. Check the platform’s flagged states against current state rules and measurement periods with the tax adviser. Preserve the data snapshot and assumptions; a detected threshold signal still needs a company-specific registration conclusion.
 - Step 4: Streamlined Sales Tax registration Once revenue crosses state thresholds you owe sales tax where your customers are: connect billing to a tax platform, run the nexus study, register with each state’s department of revenue, turn on collection at checkout, and put the filings on autopilot. Check which approved state registrations the Streamlined Sales Tax service supports. Review the selected states, entity, effective dates and resulting obligations before submitting through the authorized filing route. Track each state’s issued account and connect it to collection and return preparation. Use the appropriate separate registration process for states or taxes outside the service. ([Streamlined Sales Tax registration](https://www.streamlinedsalestax.org/))
+- Step 5: Enable tax collection on checkout and invoices Configure products, locations, exemptions and effective dates from the reviewed tax treatment. Test invoices, refunds and representative customer types before enabling the approved production changes. Reconcile early collected tax to expectations and confirm required registrations are in place. Decide how later product or customer-status changes reach the people maintaining tax settings.
+- Step 6: Schedule required returns and remittances Use issued accounts and agency-assigned frequencies to schedule returns, including any required zero filings. Reconcile collected tax, refunds and credits before each return. Configure the company’s actual filing and remittance approvals and escalation for failed submissions or debits before enabling recurring actions. Keep acceptance and payment evidence with each return and revisit the schedule when registrations change.
 
 <a id="geo-in"></a>
 
@@ -207,7 +217,10 @@ Use issued accounts and agency-assigned frequencies to schedule returns, includi
 ### United Kingdom
 
 - Instead of per-state sales tax there is one national VAT registration — mandatory past £90k of taxable turnover (or immediately for many non-established sellers) — with returns filed digitally under Making Tax Digital. ([Register for VAT (Making Tax Digital)](https://www.gov.uk/register-for-vat))
-- Step 4: UK - one VAT registration (MTD) Assess establishment, taxable supplies, turnover and customer arrangements under current HMRC rules. Determine whether registration is required or elective and the effective date before preparing the application. Submit through the company’s authorized route, then use the issued registration to set up invoices, digital records and returns. Use the UK assessment to set the account’s tax treatment. ([Register for VAT (Making Tax Digital)](https://www.gov.uk/register-for-vat))
+- Step 2: Connect billing data and assess indirect-tax registration obligations For the scoped UK-established domestic business, prepare actual taxable-supply and turnover evidence and company records. A tax adviser must determine required or voluntary registration and its effective date; non-established businesses and Northern Ireland goods need another assessment. ([HMRC VAT registration applicability](https://www.gov.uk/register-for-vat))
+- Step 4: Register with the applicable indirect-tax authorities Prepare the company number, UTR, business bank and turnover information required by the current HMRC route. The authorized applicant checks declarations and submits only after the tax position is reviewed; retain the application reference and respond to official requests. ([HMRC VAT registration applicability](https://www.gov.uk/register-for-vat))
+- Step 5: Enable tax collection on checkout and invoices Use the issued registration and effective date to configure approved VAT treatment. Keep pending applications and eligibility uncertainty visible rather than treating the submission as authorization for every invoice treatment. ([HMRC VAT registration applicability](https://www.gov.uk/register-for-vat))
+- Step 6: Schedule required returns and remittances Assign digital records, return and remittance controls and retain registration evidence. Confirm the actual VAT obligations with the adviser before closing the setup; returns and payments remain separate approved work. ([HMRC VAT registration applicability](https://www.gov.uk/register-for-vat))
 
 <a id="geo-de"></a>
 
