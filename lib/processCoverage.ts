@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-const text = z.string().min(1)
+const text = z.string().min(1).regex(/\S/)
 const date = z.string().regex(/^\d{4}-\d{2}-\d{2}$/)
 const strings = z.array(text)
 export const coverageReviewSchema = z.strictObject({
@@ -57,7 +57,7 @@ export interface CoverageInputs {
 }
 function canonical(value: unknown): unknown {
   if (Array.isArray(value)) return value.map(canonical)
-  if (value && typeof value === 'object') return Object.fromEntries(Object.entries(value).sort(([a], [b]) => a.localeCompare(b)).map(([k, v]) => [k, canonical(v)]))
+  if (value && typeof value === 'object') return Object.fromEntries(Object.entries(value).sort(([a], [b]) => a < b ? -1 : a > b ? 1 : 0).map(([k, v]) => [k, canonical(v)]))
   return value
 }
 export function coverageDigest(value: unknown): string { return createHash('sha256').update(JSON.stringify(canonical(value))).digest('hex') }
@@ -138,7 +138,7 @@ export function matchCoverageFacts(required: Record<string, string>, actual: Rec
 function fresh(checkedOn: string, asOf: string, maxDays: number): boolean { const age = coverageDay(asOf) - coverageDay(checkedOn); return age >= 0 && age <= maxDays }
 type Review = z.infer<typeof coverageReviewSchema>
 export function coverageReviewState(review: Review | null, asOf: string, digest: string, qualifications: string[]): string {
-  if (!review) return 'missing'
+  if (!review || !review.reviewer.trim()) return 'missing'
   if (!review.independent) return 'not-independent'
   if (!qualifications.includes(review.qualification)) return 'unqualified'
   if (review.contentDigest !== digest) return 'content-changed'
@@ -172,7 +172,7 @@ export function assessLocalProcedure(input: CoverageInputs, assessment: LocalAss
   const testsPass = cases.length > 0 && cases.every(c => matchCoverageFacts(assessment.facts, c.facts) === c.expected)
     && ['matches', 'needs-context', 'out-of-scope'].every(status => cases.some(c => c.expected === status))
   const observed = assessment.observedRuns.some(run => run.outcome === 'passed' && run.independent && run.contentDigest === digest && coverageDay(run.ranOn) <= coverageDay(asOf))
-  const blockers = [!assessment.owner && 'owner-unassigned', missingRequirements.length > 0 && 'instructions-incomplete', !sourcesCurrent && 'sources-need-recheck',
+  const blockers = [!assessment.owner?.trim() && 'owner-unassigned', missingRequirements.length > 0 && 'instructions-incomplete', !sourcesCurrent && 'sources-need-recheck',
     !instructionsCurrent && 'instructions-need-recheck', review !== 'current' && `professional-review-${review}`, !testsPass && 'scenario-tests-missing-or-failing'].filter((x): x is string => Boolean(x))
   return { id: assessment.id, processId: assessment.processId, country: assessment.country, title: assessment.title, facts: assessment.facts, exclusions: assessment.exclusions,
     contentDigest: digest, instructionChecklist: missingRequirements.length ? 'partial' : 'authored', sourcesCurrent, instructionsCurrent, owner: assessment.owner,

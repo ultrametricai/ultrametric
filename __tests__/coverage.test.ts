@@ -272,7 +272,7 @@ describe('process and country completeness evidence', () => {
     audit: inventoryCrosscheckSchema.parse(read('coverage/inventory-crosscheck.json')),
     local: localAssessmentsSchema.parse(read('coverage/local-procedure-assessments.json')),
     fixtures: coverageCasesSchema.parse(read('coverage/fixtures/coverage-scenarios.json')),
-    records: loadProcessCatalog().processes.map(p => p.taskIds ? { ...p.record, taskIds: p.taskIds } : p.record),
+    records: structuredClone(loadProcessCatalog().processes.map(p => p.taskIds ? { ...p.record, taskIds: p.taskIds } : p.record)),
     sources: read('coverage/startup-process-sources.json').sources,
     needs: read('coverage/startup-task-inventory.json').needs,
   })
