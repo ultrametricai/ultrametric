@@ -380,16 +380,14 @@
     "productId": "bigquery",
     "storyId": "connector-ecosystem",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "BigQuery documents first-party ingestion paths: the Data Transfer Service for scheduled load jobs and batch transfers, near-real-time database replication, Pub/Sub BigQuery subscriptions, and a hands-on-tested Sheets connector. However, the evidence never names a catalog of SaaS-app connectors or partner ETL/ELT integrations, and one community user needed a third-party service to move CloudSQL data into BigQuery. Missing for 10: documented SaaS-app connector coverage, a partner ETL/ELT connector ecosystem, per-source setup documentation, and independent corroboration of database connector breadth.",
+    "rationale": "BigQuery's own docs describe near-real-time database replication into BigQuery, scheduled one-time or batch data transfers, and a Pub/Sub subscription for streaming ingestion, so part of the connector story is documented. However, nothing in the pack shows SaaS-app connectors or a partner ETL/ELT connector catalog. A community user also reported that getting Cloud SQL data in was hard and needed a third-party tool, which tempers confidence on database coverage. Missing for 10: documented SaaS application connectors, a partner ETL/ELT tool integration catalog, step-by-step connector setup documentation, independent hands-on corroboration of connector breadth.",
     "evidenceIds": [
-      "bigquery-docs-120",
-      "bigquery-docs-41",
       "bigquery-docs-36",
+      "bigquery-docs-41",
       "bigquery-docs-18",
       "bigquery-docs-42",
-      "bigquery-comm-19",
       "bigquery-comm-20"
     ]
   },
@@ -1268,14 +1266,13 @@
     "productId": "databricks",
     "storyId": "granular-rbac-masking",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "Unity Catalog's documented access control is enforced on every table query, and the docs cover creating a table and granting privileges, so table-level role grants are covered. Nothing in the pack documents row filters, column-level permissions, or masking policies. A hands-on PoC report (from an older thread) found security was table-level only and contrasted this with Snowflake's row/column security and masking. missing for 10: documented row-level filtering, column-level access control, dynamic masking policies, and independent confirmation of fine-grained governance for multi-team warehouses.",
+    "rationale": "Unity Catalog documents enforced access control when tables are queried, plus table creation with privilege grants, so table-level role-based control is evidenced. Nothing in the pack documents column-level permissions, row filters, or dynamic masking policies, and a community comparison describes Databricks security as table-level only. missing for 10: column-level access control, row-level filtering, masking policies, evidence of multi-team isolation on one warehouse, independent hands-on corroboration.",
     "evidenceIds": [
       "databricks-docs-38",
       "databricks-docs-46",
       "databricks-docs-56",
-      "databricks-docs-75",
       "databricks-comm-10-refresh-73c6d16a0f53c9ac"
     ]
   },
@@ -1606,17 +1603,16 @@
     "productId": "motherduck",
     "storyId": "agentic-builtin-assistant",
     "verdict": "partial",
-    "quality": 5,
-    "confidence": "medium",
-    "rationale": "MotherDuck documents some built-in AI capabilities. These include built-in LLM functions for text analysis and SQL generation, and Dives, which build dashboards from natural-language prompts and are refined conversationally (\"add a filter for US region\") with the Viewer updating in place. However, the evidence does not clearly show a general-purpose AI assistant inside the product that users delegate tasks to. Much of the conversational, agentic workflow is framed around external agents connecting through the MCP server rather than a native in-app assistant. Missing for 10: a documented in-product agent or chat assistant that accepts general task delegation, clarity on whether Dives conversation happens inside the MotherDuck UI, and independent or hands-on corroboration.",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "MotherDuck documents natural-language task delegation through Dives. Users can generate dashboards from prompts, refine them conversationally (\"add a filter for US region\", \"switch to a bar chart\"), have the Viewer update in place, and save answers as Dives. However, the evidence frames this as driven largely by the user's own agent via the remote MCP server rather than a clearly built-in, in-product assistant. That MCP connectivity is a separate server capability and earns no credit here. missing for 10: explicit evidence of a native in-app AI assistant, delegation beyond dashboard/visualization creation, independent or hands-on corroboration.",
     "evidenceIds": [
-      "motherduck-docs-75",
       "motherduck-docs-4",
+      "motherduck-docs-14",
       "motherduck-docs-23",
       "motherduck-docs-27",
       "motherduck-docs-58",
-      "motherduck-docs-70",
-      "motherduck-docs-26"
+      "motherduck-docs-61"
     ]
   },
   {
@@ -1764,18 +1760,11 @@
   {
     "productId": "motherduck",
     "storyId": "ai-sql-assistant",
-    "verdict": "partial",
-    "quality": 5,
+    "verdict": "none",
+    "quality": 0,
     "confidence": "medium",
-    "rationale": "MotherDuck documents built-in LLM functions that include SQL generation (docs-75), and in-product Dives turn natural-language prompts into dashboards that you refine conversationally (docs-4, docs-23). Guides supply schema and metric context so agents produce accurate SQL (docs-30). The remote MCP server is aimed at external agents, so it is not an in-product assistant. missing for 10: evidence of an in-product assistant that fixes SQL errors, evidence that it explains SQL, detail on how SQL generation grounds itself in user schemas, and independent or hands-on corroboration.",
-    "evidenceIds": [
-      "motherduck-docs-75",
-      "motherduck-docs-4",
-      "motherduck-docs-23",
-      "motherduck-docs-14",
-      "motherduck-docs-30",
-      "motherduck-docs-70"
-    ]
+    "rationale": "The evidence does not document an AI assistant built into MotherDuck's own UI that writes, fixes, or explains SQL. Natural-language analysis runs through the remote and local MCP servers, which are used by the customer's own external AI agent rather than an in-product assistant. Dives turn natural-language prompts into dashboards, which is an adjacent capability and not SQL writing, fixing, or explaining. Instant SQL is a live-preview SQL editor with no AI-assist evidence.",
+    "evidenceIds": []
   },
   {
     "productId": "motherduck",
@@ -2241,15 +2230,11 @@
   {
     "productId": "motherduck",
     "storyId": "query-profiling",
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "MotherDuck documents an MD_INFORMATION_SCHEMA.QUERY_HISTORY view that records every query across the organization, plus SQL usage views and a billing dashboard meant to help identify costly workloads and ways to reduce costs. That lets an engineer find which queries are expensive, but nothing in the evidence shows query profiles or execution plans that explain why a query is slow. missing for 10: EXPLAIN/EXPLAIN ANALYZE or execution-plan inspection, per-operator query profiling, UI profile visualization, any documentation of query-level timing/cost breakdowns, hands-on corroboration.",
-    "evidenceIds": [
-      "motherduck-docs-73",
-      "motherduck-supp-cost-controls",
-      "motherduck-docs-44"
-    ]
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Query profiling and execution plans are a fair question for a serverless data warehouse, so the axis applies. However, the evidence never mentions EXPLAIN, query profiles or plan inspection. The nearby items are adjacent features that earn no credit: the query-performance page covers read scaling, the billing SQL views and dashboard track compute consumption rather than per-query execution plans, and Instant SQL's CTE inspection previews intermediate results rather than showing an execution plan.",
+    "evidenceIds": []
   },
   {
     "productId": "motherduck",
@@ -3691,18 +3676,19 @@
     "productId": "snowflake",
     "storyId": "runaway-cost-controls",
     "verdict": "full",
-    "quality": 7,
+    "quality": 8,
     "confidence": "high",
-    "rationale": "Snowflake documents resource monitors that track warehouse credit usage and suspend a warehouse once it hits a credit limit. A hands-on user confirms setting one to stop all warehouses at 20 credits to keep costs from ballooning, and cost anomaly monitors plus notification integrations add alerting on top. Missing for 10: no evidence of idle-time auto-suspend settings for warehouses, no per-query timeout or cancellation of a single runaway query, and no evidence of a budgets feature (anomaly monitors are only in preview).",
+    "rationale": "Snowflake's docs say resource monitors track warehouse credit usage and can suspend a standard virtual warehouse when it hits a credit limit. That is a native hard stop on runaway spend. Supporting pieces include GA per-user quotas, cost anomaly monitors (preview) with GA notification integrations, and user-controlled warehouse start/stop. A community user also independently recommends resource monitors to keep costs from ballooning. Missing for 10: explicit evidence of warehouse auto-suspend on idle, per-query timeouts that kill a single runaway query, and detail on how per-user quotas enforce limits.",
     "evidenceIds": [
       "snowflake-docs-53",
       "snowflake-docs-60",
       "snowflake-docs-64",
-      "snowflake-comm-1-refresh-1c2d34399269f014",
+      "snowflake-docs-16",
+      "snowflake-docs-17",
+      "snowflake-docs-33",
       "snowflake-docs-36",
       "snowflake-docs-37",
-      "snowflake-docs-17",
-      "snowflake-docs-33"
+      "snowflake-comm-1-refresh-1c2d34399269f014"
     ]
   },
   {
