@@ -283,15 +283,16 @@
     "productId": "arize-phoenix",
     "storyId": "automation-bulk-operations",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Phoenix documents running operations over many items at once in its own workflows. You can run thousands of evaluations without writing retry or concurrency logic, group traces into datasets and rerun them through different app versions, and have evaluators score experiment results automatically across a dataset. However, there is no evidence of general bulk-action tooling such as multi-select edit, delete, annotate, tag or export across traces, spans or prompts. Missing for 10: bulk edit/delete/annotate operations in the UI or API, batch CLI/API endpoints for arbitrary items, and independent or hands-on corroboration of bulk workflows.",
+    "rationale": "Phoenix supports batch-style work over many items. You can run thousands of evaluations without writing retry or concurrency logic, group traces into datasets and rerun them across app versions, and evaluators attached to datasets auto-score whole experiments. Span querying with filtering is also documented. However, nothing describes general bulk operations such as multi-select edit, delete, annotate, move or export across many traces or examples. Missing for 10: bulk edit/delete/annotate operations on traces, spans or dataset examples; bulk actions via the SDK, MCP or CLI; independent hands-on corroboration.",
     "evidenceIds": [
       "arize-phoenix-docs-21",
       "arize-phoenix-docs-41",
       "arize-phoenix-docs-18",
-      "arize-phoenix-docs-26",
-      "arize-phoenix-docs-75"
+      "arize-phoenix-docs-61",
+      "arize-phoenix-docs-30",
+      "arize-phoenix-docs-58"
     ]
   },
   {
@@ -349,16 +350,17 @@
     "productId": "arize-phoenix",
     "storyId": "ci-eval-gating",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Phoenix documents Python and TypeScript SDKs for running evaluations programmatically against datasets. Its dataset evaluators act as test cases forming \"an evaluation harness similar to a unit test suite,\" used to tell whether an update is an improvement or a regression. That is the core of a CI eval step, but nothing documents running it in CI or gating deployments on the results. Missing for 10: documented CI integration (e.g., GitHub Actions or another CI recipe), pass/fail thresholds or exit codes for gating deployments, and independent or hands-on corroboration of CI usage.",
+    "rationale": "Phoenix provides the building blocks for CI evals. Dataset evaluators act as test cases forming 'an evaluation harness similar to a unit test suite'. Experiments rerun datasets against app versions to find regressions. A modular Python SDK makes these runs scriptable. However, nothing in the evidence documents running evals inside a CI pipeline or gating a deployment on the results, so a developer would have to build that glue themselves. Missing for 10: documented CI integration (e.g. GitHub Actions or a CLI eval command), pass/fail thresholds or exit codes for gating deployments, independent or hands-on corroboration.",
     "evidenceIds": [
-      "arize-phoenix-docs-76",
+      "arize-phoenix-docs-26",
       "arize-phoenix-docs-55",
-      "arize-phoenix-docs-66",
-      "arize-phoenix-docs-41",
       "arize-phoenix-docs-2",
-      "arize-phoenix-docs-61"
+      "arize-phoenix-docs-41",
+      "arize-phoenix-docs-66",
+      "arize-phoenix-docs-61",
+      "arize-phoenix-docs-68"
     ]
   },
   {
@@ -840,14 +842,13 @@
     "productId": "bentolabs",
     "storyId": "agentic-autonomous-automation",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Bento documents user-defined automations that run unattended in the background. You can describe failure modes in plain English, and Bento trains signals that fire in real time and backfill history (bentolabs-docs-4, bentolabs-docs-38). Natural-language alert rules compile to trace queries, route to Slack, PagerDuty, email or webhook, and incidents are automatically judged real or benign (bentolabs-docs-7, bentolabs-docs-45). Trigger-based fixes and nudges run in shadow mode and graduate to full traffic autonomously (bentolabs-docs-11, bentolabs-docs-12). These automations are limited to monitoring, alerting and fix promotion, not general-purpose workflows. Missing for 10: a general automation builder with arbitrary actions or schedules, detail on how users configure and control autonomous fix promotion, and independent or hands-on corroboration that these background automations work as claimed.",
+    "rationale": "Bento runs several user-configured processes autonomously in the background. Plain-English signals fire in real time and backfill history (bentolabs-docs-4). English-written alert rules route to Slack, PagerDuty, email or webhook, and incidents are auto-judged real or benign (bentolabs-docs-7, bentolabs-docs-8). Trigger-based fixes run in shadow mode and graduate to full traffic on their own (bentolabs-docs-11, bentolabs-docs-12). These automations are confined to monitoring and remediation of agent traces rather than general-purpose user automations, and all evidence is vendor-claimed. missing for 10: general-purpose automation/workflow builder beyond monitoring, scheduling/trigger configuration docs, independent or hands-on corroboration.",
     "evidenceIds": [
       "bentolabs-docs-4",
-      "bentolabs-docs-38",
       "bentolabs-docs-7",
-      "bentolabs-docs-45",
+      "bentolabs-docs-8",
       "bentolabs-docs-11",
       "bentolabs-docs-12"
     ]
@@ -908,14 +909,13 @@
     "productId": "bentolabs",
     "storyId": "agentic-nl-commands",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Bento documents natural-language input for key configuration: failure-mode signals and alerts are written in plain English and compiled into detectors and trace queries. It also ships first-party Agent Skills that let coding agents carry out integration and migrations from a pasted prompt. However, general operation (triage, reading runs, analytics) is documented only through a structured CLI and dashboard, not natural-language commands. Missing for 10: a documented natural-language/chat interface for operating the product broadly (querying runs, triaging issues), any hands-on or independent corroboration.",
+    "rationale": "Bento lets users define failure-mode signals and alert rules in plain English, which compile to trace queries. Its Agent Skills plug into Claude Code, Cursor, and similar agents to drive integration and migrations from natural-language prompts. Beyond signal and alert authoring and agent-led setup, though, there is no evidence of a general natural-language interface for operating the product, such as triaging issues or querying runs conversationally. Missing for 10: a documented natural-language interface for day-to-day operation (querying runs and analytics, triage), evidence that agents can drive the CLI or dashboard actions from natural language, and independent hands-on corroboration.",
     "evidenceIds": [
       "bentolabs-docs-4",
-      "bentolabs-docs-38",
       "bentolabs-docs-7",
-      "bentolabs-docs-45",
+      "bentolabs-docs-8",
       "bentolabs-docs-1",
       "bentolabs-docs-2",
       "bentolabs-docs-26"
@@ -943,15 +943,19 @@
     "productId": "bentolabs",
     "storyId": "agentic-public-api",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Bento documents a public OTLP ingestion endpoint: point an exporter at one endpoint with one auth header, even with no Bento package. It also ships SDK calls such as bento.track_ai. That makes trace ingestion programmatically drivable, but no documented management or query API for issues, signals or analytics appears, and probes for an OpenAPI spec all returned 404. Full control is documented only through the CLI, which belongs to a separate story and is not credited here. Missing for 10: documented REST/HTTP management API reference, OpenAPI spec, API auth/token docs for non-ingest operations, independent corroboration.",
+    "rationale": "Bento documents programmatic control through an official CLI that claims full dashboard parity: triage issues, read runs, inspect and update signals, and pull analytics, with raw JSON output for scripts and CI. It also documents an OpenTelemetry ingest endpoint with one auth header and SDK calls. However, no documented public management REST API surfaced, and every OpenAPI/Swagger probe path returned 404, so control runs through the CLI and ingest SDK rather than a published API. missing for 10: documented public REST/management API reference, OpenAPI spec, independent corroboration.",
     "evidenceIds": [
+      "bentolabs-docs-30",
+      "bentolabs-docs-31",
+      "bentolabs-docs-32",
+      "bentolabs-docs-33",
+      "bentolabs-docs-36",
       "bentolabs-docs-21",
-      "bentolabs-docs-40",
-      "bentolabs-docs-20",
       "bentolabs-docs-18",
-      "bentolabs-probe-2"
+      "bentolabs-probe-2",
+      "bentolabs-probe-3"
     ]
   },
   {
@@ -986,12 +990,12 @@
     "productId": "bentolabs",
     "storyId": "agentic-webhooks",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Bento's FAQ says natural-language alert rules compile to trace queries and can route to a webhook destination, alongside Slack, PagerDuty and email. That is a first-party outbound HTTP callback, but the evidence covers only a one-line mention scoped to alert firings, not a general event-subscription system. Missing for 10: webhook registration/configuration docs, payload schema, documented event types beyond alerts, signing/retry semantics, independent or hands-on corroboration.",
+    "rationale": "Bento's FAQ says alert rules compile to trace queries and can route to a webhook alongside Slack, PagerDuty and email, so webhook delivery exists for alert and incident events. That is a single FAQ line, and it covers only alert routing, not general event subscription. missing for 10: general-purpose webhook subscriptions for other event types (issues, signal firings, runs), documented payload schemas, delivery guarantees such as retries and signing, setup docs or an API for managing webhooks, and independent or hands-on corroboration.",
     "evidenceIds": [
       "bentolabs-docs-8",
-      "bentolabs-docs-45"
+      "bentolabs-docs-7"
     ]
   },
   {
@@ -1300,14 +1304,13 @@
     "productId": "bentolabs",
     "storyId": "otel-native-tracing",
     "verdict": "full",
-    "quality": 7,
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Bento's docs say every span is captured over OpenTelemetry. You can point a standard OTel exporter at a single Bento endpoint with one auth header, even from TypeScript with no Bento package, and the Python SDK can plug into an existing OTel pipeline as its transport. This covers the core of using OTLP instead of a proprietary format. Missing for 10: OTLP protocol details are unclear (only JSON emission is mentioned for JS, with no word on protobuf or gRPC); there is no documented way to export traces back out of Bento over OTLP; there is no independent or hands-on corroboration.",
+    "rationale": "Bento's docs say spans are captured over OpenTelemetry (bentolabs-docs-3, bentolabs-docs-29). You can point any OTel exporter at a single Bento endpoint with one auth header, and in TypeScript this needs no Bento package at all (bentolabs-docs-21). Bento can also wire directly into an existing OTel pipeline (bentolabs-docs-20), so ingestion is clearly standards-based rather than proprietary. Missing for 10: evidence of exporting or forwarding traces out of Bento over OTLP, explicit OTLP protocol/transport details (gRPC vs HTTP), and independent or hands-on corroboration.",
     "evidenceIds": [
       "bentolabs-docs-3",
       "bentolabs-docs-20",
       "bentolabs-docs-21",
-      "bentolabs-docs-40",
       "bentolabs-docs-29"
     ]
   },
@@ -1539,9 +1542,9 @@
     "productId": "braintrust",
     "storyId": "agentic-autonomous-automation",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Braintrust ships several of its own background processes. Patterns runs the Loop agent on a schedule over the trace backlog and records recurring problems with suggested fixes. Online scoring evaluates production traces automatically and asynchronously as they are logged, and Topics continuously classifies traces without manual review. These are fixed, purpose-specific background jobs rather than a general way for users to define their own autonomous automations. Running evals on every pull request depends on the user's external CI, so it earns no credit here. Missing for 10: a general user-defined automation or workflow builder, documentation of configurable schedules and triggers beyond Patterns, and independent or hands-on corroboration of the background features.",
+    "rationale": "Braintrust ships several background automations that run without manual steps. Patterns runs its Loop agent on a schedule over the trace backlog, online scoring evaluates production traces asynchronously as they are logged, Topics continuously classifies traces, and evals can run automatically in CI/CD on every pull request. These are fixed-purpose features within the observability/eval domain rather than a general automation builder. Missing for 10: user-defined triggers and actions or workflows, alerting/webhook actions, documentation of schedule configuration and controls, independent or hands-on corroboration.",
     "evidenceIds": [
       "braintrust-docs-7",
       "braintrust-docs-20",
@@ -1549,7 +1552,8 @@
       "braintrust-docs-28",
       "braintrust-docs-13",
       "braintrust-docs-21",
-      "braintrust-docs-47"
+      "braintrust-docs-2",
+      "braintrust-docs-27"
     ]
   },
   {
@@ -1727,16 +1731,15 @@
     "productId": "braintrust",
     "storyId": "api-sandbox",
     "verdict": "partial",
-    "quality": 4,
-    "confidence": "low",
-    "rationale": "Braintrust's own Playgrounds and offline experiments let users run evaluations against versioned datasets, separate from live traffic and production logs, so changes are tested before they reach production. However, the evidence never documents a dedicated sandbox or test environment, and datasets are often built directly from production logs, so isolation from production data is implied rather than guaranteed. Missing for 10: a documented sandbox/test-mode or separate environment concept, explicit isolation guarantees from production data, agent-driven sandbox workflows, and independent corroboration.",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Braintrust offers isolated testing surfaces. Playgrounds are a workspace for iterating on prompts, models, and datasets. Experiments run evals offline against versioned datasets, and CI evals \"catch regressions before they reach production.\" However, nothing documents a dedicated sandbox or test environment, and datasets are often built from production logs. Missing for 10: an explicit sandbox/staging environment or test-mode separation, documented isolation from production data, and independent hands-on corroboration.",
     "evidenceIds": [
       "braintrust-docs-3",
       "braintrust-docs-27",
       "braintrust-docs-31",
-      "braintrust-docs-56",
-      "braintrust-docs-69",
-      "braintrust-docs-2"
+      "braintrust-docs-2",
+      "braintrust-gh-2"
     ]
   },
   {
@@ -1752,15 +1755,18 @@
     "productId": "braintrust",
     "storyId": "automation-bulk-operations",
     "verdict": "partial",
-    "quality": 4,
-    "confidence": "low",
-    "rationale": "Braintrust has its own features that act on many items at once. You can download logs as CSV or JSON or pull them in bulk with `bt sync pull`. Online scoring and Topics also process every trace automatically, and evals run across whole datasets. However, nothing documents a general bulk-operation feature for selecting many items and editing, tagging, deleting or moving them together. Missing for 10: documented multi-select bulk edit/tag/delete/move actions in the UI, API or CLI batch-mutation endpoints, independent or hands-on corroboration.",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Braintrust clearly processes many items at once: evals run across whole datasets, online scoring and Topics apply automatically to every logged trace, and logs can be exported in bulk as CSV/JSON or pulled with `bt sync pull`. The API and CLI also allow programmatic management that could be scripted for batch work. However, nothing documents explicit bulk actions on selected items, such as multi-select edit, tag, delete or move, or batch API endpoints. missing for 10: documented bulk edit/tag/delete of selected logs or dataset rows, batch API/CLI mutation endpoints, independent or hands-on corroboration of bulk workflows.",
     "evidenceIds": [
       "braintrust-docs-35",
-      "braintrust-docs-33",
       "braintrust-docs-28",
       "braintrust-docs-30",
-      "braintrust-docs-49"
+      "braintrust-docs-7",
+      "braintrust-docs-27",
+      "braintrust-docs-33",
+      "braintrust-docs-41",
+      "braintrust-gh-2"
     ]
   },
   {
@@ -1782,13 +1788,16 @@
     "productId": "braintrust",
     "storyId": "automation-scheduled-jobs",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Braintrust's only documented scheduled capability is Patterns, which runs its Loop agent over the trace backlog on a schedule to surface recurring problems. That is a single built-in scheduled analysis, not a general facility for users to define recurring jobs or workflows. Running evals in CI/CD depends on the host CI platform's scheduling, and online scoring is event-driven rather than scheduled, so neither earns credit. Missing for 10: user-defined schedules (cron or intervals) for evals or arbitrary workflows, schedule configuration and management docs, API/CLI control of schedules, independent corroboration.",
+    "rationale": "Braintrust has some built-in recurring automation. Patterns runs Loop over the trace backlog on a schedule, online scoring and Topics run continuously on incoming traces, and evals can run on every pull request through external CI/CD. However, nothing in the evidence shows users can define their own scheduled jobs or workflows, such as cron-style recurring evals. Missing for 10: general user-defined job scheduling, configurable schedules or intervals for evals and workflows, documentation on managing scheduled runs, independent corroboration.",
     "evidenceIds": [
       "braintrust-docs-7",
       "braintrust-docs-20",
-      "braintrust-docs-47"
+      "braintrust-docs-4",
+      "braintrust-docs-13",
+      "braintrust-docs-2",
+      "braintrust-docs-27"
     ]
   },
   {
@@ -2148,15 +2157,14 @@
     "productId": "braintrust",
     "storyId": "prompt-versioning-deploy",
     "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Braintrust documents first-party prompt management. The API and SDKs can \"manage prompts,\" the MCP integration can \"author prompts,\" Playgrounds offer a no-code workspace for iterating on prompts, and stored prompts are a named data type. However, nothing shows that prompts are versioned (only datasets are described as versioned) or that prompt changes can be deployed to production without a code release. missing for 10: explicit prompt version history/pinning, a documented runtime prompt-loading or deployment/environment mechanism that decouples prompt changes from code shipping, and independent or hands-on corroboration.",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "Braintrust clearly offers prompt management: the API can manage prompts, the MCP server can author prompts, the `bt` CLI manages functions, and Playgrounds give a no-code workspace for iterating on prompts. The other two halves of the story are not evidenced: nothing documents prompt versioning (only datasets are described as versioned), and nothing shows prompt changes reaching production without a code deploy. missing for 10: explicit prompt version history, deploying or promoting prompt versions to production (environments, runtime prompt loading) without a code change, independent or hands-on corroboration.",
     "evidenceIds": [
-      "braintrust-docs-34",
-      "braintrust-docs-63",
-      "braintrust-docs-9",
       "braintrust-docs-3",
-      "braintrust-docs-57"
+      "braintrust-docs-34",
+      "braintrust-docs-9",
+      "braintrust-docs-33"
     ]
   },
   {
@@ -2529,14 +2537,15 @@
     "productId": "cekura",
     "storyId": "automation-rules-engine",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Cekura documents its own rule-driven automation, but only in narrow forms. Structured Test evaluators support conditional actions: rule-based behavior that responds when the agent says specific things during a conversation. Cron jobs run automated calls on a schedule and alert you when they fail. Neither amounts to a general user-defined event→action rule engine; the GitHub Actions trigger runs on the host platform and earns no credit. Missing for 10: a general automation/rules engine over production events (e.g., metric threshold breach → custom action), configurable outbound actions or webhooks on events, and independent corroboration.",
+    "rationale": "Cekura documents rule-based conditional actions in evaluators that respond to specific conversation conditions. Incoming calls posted via webhook automatically schedule metric evaluation, and test runs can be triggered by scheduled cron jobs or by GitHub Actions on each change. However, there is no evidence of a general user-defined event→action rule engine; the conditional actions are scoped to simulated test conversations, and the CI trigger depends on an external tool. Missing for 10: user-configurable event-triggered rules beyond evaluator conversations (e.g., alerts or outbound webhooks on metric failures or drift), documentation of the available trigger and action types, and independent or hands-on corroboration.",
     "evidenceIds": [
       "cekura-docs-22",
-      "cekura-docs-44",
+      "cekura-docs-25",
       "cekura-docs-13",
-      "cekura-docs-62"
+      "cekura-docs-14",
+      "cekura-docs-21"
     ]
   },
   {
@@ -2572,15 +2581,15 @@
   {
     "productId": "cekura",
     "storyId": "ci-eval-gating",
-    "verdict": "partial",
-    "quality": 6,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Cekura documents a first-party GitHub Actions CI/CD guide for running agent tests automatically on every code change, pull request, or schedule, and it also ships a CLI and SDK. That covers running evals in CI. The evidence never shows that failing results or rubric thresholds fail the build or block a deployment, so the gating half of the story is only implied. Missing for 10: documented pass/fail exit codes or threshold-based build gating, an explicit deployment-blocking workflow, and independent or hands-on corroboration of CI usage.",
+    "rationale": "Cekura documents a dedicated GitHub Actions CI/CD guide for automatically testing agents on each change, backed by a terminal CLI for managing scenarios and runs and an SDK for programmatic access. That covers running evals in CI. Gating deploys on the results is only implied by the CI workflow framing and is never shown explicitly. Missing for 10: explicit evidence of pass/fail thresholds or exit codes that block deployments, and independent or hands-on corroboration of the CI workflow.",
     "evidenceIds": [
       "cekura-docs-14",
-      "cekura-docs-61",
       "cekura-docs-4",
-      "cekura-docs-53"
+      "cekura-docs-5",
+      "cekura-probe-5"
     ]
   },
   {
@@ -2695,17 +2704,18 @@
     "productId": "cekura",
     "storyId": "offline-eval-datasets",
     "verdict": "partial",
-    "quality": 4,
-    "confidence": "low",
-    "rationale": "Cekura ingests production calls as CallLogs and runs metric evaluation on them (LLM-judge, Python metrics, rubrics). Its marketing claims it flags production issues and reproduces them in simulation, which roughly approximates turning traces into test cases. Offline runs are supported through evaluator scenarios, results comparison and A/B testing. However, no doc describes explicitly curating a dataset or test suite from selected production traces, and a community user asked whether linking simulations back to production sessions is still manual. missing for 10: documented workflow to select production calls into a curated dataset/test set, re-running offline evals against that curated set, independent hands-on corroboration.",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Cekura ingests production calls as CallLogs and schedules metric evaluation on them, using Python, LLM-judge and rubric metrics. Its homepage says flagged production issues are reproduced in simulation, and saved scenarios can be rerun across agent versions via A/B testing and the CLI. However, nothing documents explicitly curating a dataset from production traces and running offline evaluations against that fixed set; the story is only partly covered through scenarios and simulation. Missing for 10: documented dataset curation from production call logs (selecting traces and saving them as an eval set), explicit offline replay or evaluation of curated traces, and independent hands-on corroboration.",
     "evidenceIds": [
       "cekura-docs-25",
       "cekura-docs-21",
-      "cekura-docs-9",
-      "cekura-docs-8",
-      "cekura-docs-43",
+      "cekura-docs-4",
       "cekura-docs-10",
-      "cekura-docs-59"
+      "cekura-docs-17",
+      "cekura-docs-8",
+      "cekura-docs-9",
+      "cekura-docs-32"
     ]
   },
   {
@@ -2998,12 +3008,15 @@
     "productId": "chronicle-labs",
     "storyId": "agentic-autonomous-automation",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "low",
-    "rationale": "Chronicle is mainly an agent simulation and evaluation platform. Its only first-party claim of autonomous background operation is a one-line marketing mention of real-time monitoring of production agents with autonomous fix and rollback. The SDK 'automate workflows' line and CI keys are developer building blocks, not configurable background automations. missing for 10: documented user-configurable automations (scheduling, triggers, background runs), detailed docs on how the autonomous monitoring/fix works, independent or hands-on corroboration.",
+    "rationale": "Chronicle is an agent simulation and evaluation platform, so background automation applies mainly to evaluation runs and agent monitoring. Its marketing llms.txt claims \"real-time monitoring of production agents with autonomous fix and rollback\". The docs mention automating workflows via SDKs in several languages, CI-scoped API keys for unattended runs, and retry-safe idempotent calls. Missing for 10: documented scheduling or trigger configuration for background automations, in-depth docs for the autonomous monitoring/fix/rollback feature beyond a one-line marketing claim, and independent or hands-on corroboration.",
     "evidenceIds": [
       "chronicle-labs-docs-24",
-      "chronicle-labs-docs-34"
+      "chronicle-labs-docs-5",
+      "chronicle-labs-docs-17",
+      "chronicle-labs-docs-18",
+      "chronicle-labs-docs-25"
     ]
   },
   {
@@ -3682,15 +3695,16 @@
     "productId": "galileo",
     "storyId": "agentic-headless",
     "verdict": "partial",
-    "quality": 4,
-    "confidence": "low",
-    "rationale": "Galileo has its own Python/TypeScript SDK for logging traces and evaluating application code programmatically, so the product can be driven from code without the console UI. However, nothing in the evidence documents CI pipeline integration, a CLI, or eval gating in automation. Missing for 10: explicit CI/CD integration docs (e.g., GitHub Actions or pass/fail gates on experiment results), a headless CLI, documented programmatic experiment runs, and independent hands-on corroboration.",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Galileo can plausibly be driven without the UI. It has a Python SDK with an `@log` decorator for programmatic tracing, experiments that evaluate application code against chosen metrics, and an official MCP server that can create datasets and run experiments from a dev environment. However, nothing in the evidence explicitly documents headless or CI use, and the OpenAPI probe returned 404 on every candidate path. missing for 10: explicit CI/CD integration docs (e.g., GitHub Actions or pipeline gating on eval results), a documented CLI, a published OpenAPI/REST spec, independent or hands-on corroboration of headless runs.",
     "evidenceIds": [
-      "galileo-docs-2",
-      "galileo-docs-28",
-      "galileo-docs-43",
       "galileo-gh-1",
-      "galileo-docs-30"
+      "galileo-docs-28",
+      "galileo-docs-2",
+      "galileo-docs-4",
+      "galileo-docs-31",
+      "galileo-probe-3"
     ]
   },
   {
@@ -3947,14 +3961,12 @@
     "productId": "galileo",
     "storyId": "experiment-comparison",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "low",
-    "rationale": "Galileo documents Experiments that evaluate prompts, models, and application code against chosen metrics on well-defined inputs. Experiments can be created from the console or via MCP. That is the raw material for regression checks between prompt or model versions, but no evidence shows a side-by-side run comparison view or diffing. Missing for 10: a documented side-by-side experiment comparison UI or API, per-row or per-metric diffs between runs, regression highlighting, and independent or hands-on corroboration.",
+    "rationale": "Galileo documents Experiments that evaluate prompts, models, and application code against chosen metrics on well-defined inputs, with a 'Create Experiment' UI flow. That covers the run-and-score foundation for catching regressions across versions, but nothing in the evidence describes actually comparing runs against each other. Missing for 10: an explicit side-by-side experiment comparison view, per-sample or metric diffs between runs, regression flagging between prompt/model versions, and independent or hands-on corroboration.",
     "evidenceIds": [
       "galileo-docs-2",
-      "galileo-docs-3",
-      "galileo-docs-44",
-      "galileo-docs-4"
+      "galileo-docs-3"
     ]
   },
   {
@@ -4056,18 +4068,19 @@
     "productId": "galileo",
     "storyId": "openness-api-parity",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Galileo documents programmatic access to core workflows. The Python/TypeScript SDK covers logging and tracing, and the official MCP server can create and manage datasets, run experiments, and set up prompt templates. Nothing shows these interfaces match the UI, and the OpenAPI probe returned 404 on every candidate path, so the API surface's coverage is unproven. Missing for 10: an explicit API/UI parity claim, a published OpenAPI/REST reference, and evidence that alerts, annotation queues, metric scoping and AI Assistant troubleshooting can be driven via API.",
+    "rationale": "Galileo exposes substantial programmatic surface: a Python SDK for logging traces and spans (with an sdk-api docs section), OTel-based distributed tracing, and an official MCP server that covers creating and managing datasets, running experiments, and setting up prompt templates. Nothing documents that the API matches the UI feature-for-feature, and no OpenAPI spec was found at the probed paths. Missing for 10: an explicit API/UI parity statement, a public REST API reference/OpenAPI spec, and evidence that UI-centric features (alerts, annotation queues, AI Assistant, Luna distillation, continuous metric feedback) are reachable via API.",
     "evidenceIds": [
       "galileo-docs-4",
       "galileo-docs-31",
-      "galileo-probe-4",
-      "galileo-docs-43",
+      "galileo-docs-32",
       "galileo-gh-1",
+      "galileo-docs-7",
       "galileo-docs-28",
       "galileo-docs-3",
-      "galileo-probe-3"
+      "galileo-probe-3",
+      "galileo-probe-4"
     ]
   },
   {
@@ -4422,16 +4435,17 @@
     "productId": "helicone",
     "storyId": "agentic-sdks",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Helicone's documented integration path is to build against existing official provider SDKs: the OpenAI SDK, used via a two-line change to reach 100+ models, plus one-line integrations for Anthropic, LangChain, Gemini and the Vercel AI SDK. It also publishes an OpenAPI spec and a REST API. The evidence never shows a first-party Helicone-published SDK, so the story is met only through compatibility with other vendors' SDKs. Missing for 10: a first-party Helicone SDK (e.g., TS/Python packages) with its own docs, and SDK coverage for Helicone-specific features such as sessions, prompts and queries.",
+    "rationale": "Helicone lets developers build against the familiar OpenAI SDK through its AI Gateway, and integrates in one line with the OpenAI, Anthropic, LangChain, Gemini and Vercel AI SDKs. Community users confirm the one-line swap. A REST API with a published OpenAPI spec also supports programmatic access. However, these are third-party provider SDKs plus a raw REST surface, not Helicone-owned SDKs. Missing for 10: evidence of first-party Helicone SDK packages (language coverage, versioning, SDK reference docs) for the platform's own features such as querying, prompts and sessions.",
     "evidenceIds": [
       "helicone-docs-2",
       "helicone-docs-34",
-      "helicone-docs-37",
       "helicone-gh-1",
       "helicone-gh-5",
+      "helicone-docs-32",
       "helicone-probe-3",
+      "helicone-comm-1-refresh-40e38fa39d2875d4",
       "helicone-comm-14-refresh-c7f338760098a3d4"
     ]
   },
@@ -4542,13 +4556,11 @@
     "productId": "helicone",
     "storyId": "automation-versioned-workflows",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Helicone documents versioning, comparison and instant rollback for prompts managed through its gateway: commit histories and tags, independent deployment of versions to production, staging and development, and referencing prompts by ID without redeploying. Prompts are the main deployable logic in this product, but its actual automation mechanisms (webhooks, alerts, routing and fallback rules) have no documented versioning, review or rollback. Missing for 10: version history and rollback for webhooks, alerts and routing configurations; a review or approval workflow before changes go live; independent or hands-on corroboration of prompt rollback.",
+    "rationale": "Helicone's prompt management lets you track every change, compare versions, and roll back instantly, and prompts are deployed by ID without redeploying the app. That covers version, review, and rollback for prompts, the closest thing to an automation artifact here. However, nothing in the evidence shows versioning or rollback for its actual automation surfaces (webhooks, alerts, routing/fallback configs), and the claims are first-party docs only. Missing for 10: versioning/rollback of webhooks, alerts, and gateway routing configs; a documented review/approval workflow beyond version comparison; independent or hands-on corroboration.",
     "evidenceIds": [
       "helicone-docs-18",
-      "helicone-docs-45",
-      "helicone-docs-46",
       "helicone-docs-7",
       "helicone-docs-8",
       "helicone-docs-25"
@@ -5115,15 +5127,15 @@
     "productId": "langfuse",
     "storyId": "agentic-nl-commands",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Langfuse documents a first-party MCP Server for AI tools that cannot run shell commands, and a CLI for working with Langfuse from a terminal or coding agent. Together these let a user drive the product through an external AI agent using natural language. There is no evidence of a native in-product natural-language command interface, and the evidence never says which operations the MCP server or CLI expose. The docs-MCP item is about getting a coding agent to add tracing to your codebase, not about operating Langfuse itself. Missing for 10: native natural-language command interface inside the Langfuse UI, documentation of which actions are exposed via MCP/CLI, independent or hands-on corroboration of agent-driven operation.",
+    "rationale": "Langfuse documents an MCP Server for connecting AI tools (langfuse-docs-39, langfuse-docs-50) and a CLI designed for use from a coding agent (langfuse-docs-30). A user can therefore drive the product with natural language, but only indirectly through an external AI agent, not through a built-in command interface. The Docs MCP (langfuse-docs-19, langfuse-docs-36) mainly helps a coding agent integrate tracing into code rather than operate Langfuse itself. Missing for 10: a native in-product natural-language command interface, documentation of which operations the MCP server and CLI expose to agents, and independent or hands-on corroboration of natural-language operation.",
     "evidenceIds": [
       "langfuse-docs-39",
       "langfuse-docs-50",
       "langfuse-docs-30",
-      "langfuse-docs-76",
       "langfuse-docs-19",
+      "langfuse-docs-36",
       "langfuse-probe-4"
     ]
   },
@@ -5131,12 +5143,11 @@
     "productId": "langfuse",
     "storyId": "agentic-official-cli",
     "verdict": "full",
-    "quality": 7,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Langfuse's own API & data platform overview lists an official CLI for working with Langfuse \"from a terminal or coding agent\". It positions this CLI against its MCP server, which is meant for AI tools that cannot run shell commands, so the CLI is clearly aimed at AI-native, agent-driven workflows. missing for 10: details of CLI commands, scope and installation, and independent or hands-on corroboration of CLI usage.",
+    "rationale": "Langfuse's API & data platform overview lists an official CLI for working with Langfuse \"from a terminal or coding agent\" [langfuse-docs-30]. It also points AI tools that cannot run shell commands to the MCP server instead [langfuse-docs-39], which signals the CLI is the intended agent-facing path. The evidence, however, amounts to one table-row mention with no command reference or usage detail. Missing for 10: CLI command and feature documentation, installation and auth details, and independent or hands-on corroboration of CLI use.",
     "evidenceIds": [
       "langfuse-docs-30",
-      "langfuse-docs-76",
       "langfuse-docs-39"
     ]
   },
@@ -5266,13 +5277,12 @@
     "productId": "langfuse",
     "storyId": "automation-rules-engine",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Langfuse documents its own event-driven rules in two forms. Alerts fire when a metric or spend crosses a threshold and notify via Slack, GitHub Actions, or Webhooks. Evaluator rules automatically run LLM-as-a-Judge scoring on sampled live production traces. The available action types are narrow (notifications or scoring), and the docs offer only one-line mentions. missing for 10: a general rule/automation builder with arbitrary actions, detailed docs on rule conditions and event types, independent or hands-on corroboration of alerting/webhook triggers.",
+    "rationale": "Langfuse documents threshold-based alerts that automatically notify via Slack, GitHub Actions, or webhooks when a metric or spend crosses a threshold. It also runs managed LLM-as-a-judge evaluators automatically on live production traces, so rules can trigger actions. The rule model, though, appears limited to metric-threshold alerts and auto-scoring rather than a general event-to-action automation engine. Missing for 10: arbitrary event types beyond metric thresholds (e.g., prompt or trace events), documented rule conditions and configuration depth, any action types beyond notifications, webhooks and scoring, and independent or hands-on corroboration.",
     "evidenceIds": [
       "langfuse-docs-4",
       "langfuse-docs-53",
-      "langfuse-docs-73",
       "langfuse-docs-42",
       "langfuse-docs-62"
     ]
@@ -5491,18 +5501,15 @@
     "productId": "langfuse",
     "storyId": "online-evals-guardrails",
     "verdict": "full",
-    "quality": 8,
-    "confidence": "high",
-    "rationale": "Langfuse documents managed LLM-as-a-Judge evaluators that automatically score live production traces via evaluator rules (\"Evaluate Production Traffic\"). Its engineering guides describe running the same evaluator offline with `run_experiment` and continuously on a sample of live traffic. A community comment says LLM-as-judge may not be included in the free/self-hosted tier; that is an availability caveat, not a contradiction of the capability. Missing for 10: independent hands-on corroboration of online evaluation, explicit evidence that code/deterministic evaluators also run on live traffic, and clarity on tier availability for self-hosted users.",
+    "quality": 9,
+    "confidence": "medium",
+    "rationale": "First-party docs state that Langfuse automatically scores live production traces with LLM-as-a-Judge and API/SDK scores. Engineering guides describe managed LLM-as-a-judge evaluators running on a sample of live traffic, as distinct from offline `run_experiment` dataset runs. Missing for 10: independent or hands-on corroboration of online evaluators running continuously in production.",
     "evidenceIds": [
       "langfuse-docs-42",
-      "langfuse-docs-73",
       "langfuse-docs-62",
-      "langfuse-docs-71",
       "langfuse-docs-63",
-      "langfuse-docs-70",
       "langfuse-docs-11",
-      "langfuse-comm-2-refresh-a19c5633e739e056"
+      "langfuse-docs-47"
     ]
   },
   {
@@ -5863,16 +5870,16 @@
     "productId": "langsmith",
     "storyId": "agentic-headless",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "LangSmith documents programmatic, non-UI operation. Tracing can be enabled via environment variables or SDKs in Python, TypeScript, Go and Java, and traces can be accessed through the API. Evaluations run on datasets to catch regressions, with configurable concurrency, and workflows can be automated with rules and webhooks. These are building blocks a CI pipeline would use, but nothing in the evidence explicitly documents CI usage. missing for 10: explicit CI/CD integration docs (e.g., GitHub Actions or pass/fail eval gating), an official CLI for headless runs, a published OpenAPI spec (probe found none), independent hands-on corroboration of CI usage.",
+    "rationale": "LangSmith can be driven programmatically without the UI. It offers Python, TypeScript, Go and Java SDKs, API access to traces, and automation via rules, webhooks and online evaluations. Dataset-based experiments that \"catch regressions\" are a natural fit for CI gating, but the evidence never documents CI use explicitly. Missing for 10: explicit CI/CD integration docs (e.g. pipeline examples or pass/fail gating), a documented headless CLI, a published OpenAPI spec (the probe returned 404), and hands-on corroboration of CI usage.",
     "evidenceIds": [
+      "langsmith-docs-24",
       "langsmith-docs-2",
       "langsmith-docs-4",
       "langsmith-docs-9",
       "langsmith-docs-19",
-      "langsmith-docs-24",
-      "langsmith-docs-40",
+      "langsmith-gh-1",
       "langsmith-probe-3"
     ]
   },
@@ -5899,11 +5906,16 @@
   {
     "productId": "langsmith",
     "storyId": "agentic-nl-commands",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Operating an observability and evaluation platform through natural-language commands is a fair axis for LangSmith. However, the evidence shows no first-party natural-language interface for driving the product, such as a chat assistant that builds dashboards, filters traces or configures alerts from plain-language requests. LangSmith Engine's automatic issue detection is an adjacent automation feature, not natural-language operation, and the official MCP server belongs to a separate MCP-server story, so neither is credited here.",
-    "evidenceIds": []
+    "rationale": "An official LangSmith MCP server is documented (probe-4), so users can operate LangSmith through natural language from an external AI client. Agent-readable docs (llms.txt, markdown pages) support that workflow. There is no evidence of a built-in natural-language command interface: LangSmith Engine automatically detects and diagnoses issues but is not described as taking NL commands, and other operations run via the UI, API or SDKs. Missing for 10: an in-product natural-language command or assistant interface, documentation of which operations the MCP server exposes, and independent or hands-on corroboration of NL-driven operation.",
+    "evidenceIds": [
+      "langsmith-probe-4",
+      "langsmith-probe-1-refresh-8494fa2eb15ae3e6",
+      "langsmith-probe-2",
+      "langsmith-docs-6"
+    ]
   },
   {
     "productId": "langsmith",
@@ -5962,15 +5974,14 @@
     "productId": "langsmith",
     "storyId": "agentic-webhooks",
     "verdict": "full",
-    "quality": 6,
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "LangSmith documents its own outbound webhooks: automation rules can trigger webhooks, and threshold alerts on run count, cost, errors, feedback score and latency can be routed to any HTTP endpoint via webhook. A programmatic consumer can therefore register and receive event callbacks. The evidence is only brief doc mentions, though, with no detail on the webhook mechanism itself or independent confirmation. Missing for 10: a documented event catalog beyond alerts and rules, payload schema, signing/verification and retry semantics, and independent or hands-on corroboration.",
+    "rationale": "LangSmith's docs say workflows can be automated with rules and webhooks, and that threshold alerts on run count, cost, errors, feedback score and latency can be routed to any HTTP endpoint via webhook. That covers the core of subscribing to platform events over webhooks. Missing for 10: a documented catalog of subscribable event types beyond alerts and rule matches, payload schema, delivery/retry and signature-verification details, and independent or hands-on corroboration.",
     "evidenceIds": [
       "langsmith-docs-4",
       "langsmith-docs-13",
       "langsmith-docs-29",
-      "langsmith-docs-12",
-      "langsmith-docs-47"
+      "langsmith-docs-12"
     ]
   },
   {
@@ -6092,17 +6103,17 @@
   {
     "productId": "langsmith",
     "storyId": "cost-attribution-metadata",
-    "verdict": "partial",
-    "quality": 6,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "LangSmith's dashboards can group charts by run tag or metadata to split data over application attributes (docs-16, docs-31). Prebuilt dashboards track token usage (docs-14), cost is a tracked alerting metric (docs-12), and threads are inspectable (docs-34). Together these let a developer split usage by custom metadata. However, the docs never explicitly show cost being broken down per user, session, or feature, and a community commenter notes that capturing which user is involved takes extra work (comm-2). missing for 10: explicit documentation of cost/token attribution grouped by metadata, documented per-user and per-session cost breakdowns, independent hands-on corroboration.",
+    "rationale": "LangSmith dashboards track token usage and cost, and charts can be grouped by run tag or metadata to split data over application attributes, which covers attributing usage to users or features. Cost-threshold alerts and thread views add cost tracking and session context. Missing for 10: explicit documentation that cost and token charts break down by metadata keys such as user_id or session_id, detail on attaching custom metadata to traces, and independent or hands-on corroboration of per-user or per-feature cost attribution.",
     "evidenceIds": [
+      "langsmith-docs-14",
       "langsmith-docs-16",
       "langsmith-docs-31",
-      "langsmith-docs-14",
       "langsmith-docs-12",
-      "langsmith-docs-34",
-      "langsmith-comm-2-refresh-c22006912c3d93cf"
+      "langsmith-docs-15",
+      "langsmith-docs-34"
     ]
   },
   {
@@ -6379,13 +6390,13 @@
     "productId": "langsmith",
     "storyId": "prompt-versioning-deploy",
     "verdict": "partial",
-    "quality": 2,
+    "quality": 3,
     "confidence": "low",
-    "rationale": "The only relevant evidence is a passing mention that self-hosted LangSmith covers 'prompt engineering', linking to a prompt hub page, plus a Playground service for sending requests to LLMs. This suggests first-party prompt management exists, but nothing in the pack documents prompt versioning or promoting prompt changes to production without a code deploy. Missing for 10: documented prompt versioning/commits, environment tags or promotion of prompt versions, runtime prompt fetching via SDK so changes ship without code, independent or hands-on corroboration.",
+    "rationale": "The only on-topic evidence is the self-hosting docs, which list \"prompt engineering\" as a core LangSmith capability and link to a prompt hub page. That shows some prompt-management feature exists, but nothing in the pack describes prompt versioning, environment tags, or pulling prompts at runtime so changes reach production without a code deploy. Missing for 10: documented prompt versioning/commit history, a mechanism to promote prompt versions to production without redeploying code, SDK runtime prompt-pull evidence, independent or hands-on corroboration.",
     "evidenceIds": [
-      "langsmith-docs-32",
       "langsmith-docs-17",
-      "langsmith-docs-49"
+      "langsmith-docs-23",
+      "langsmith-docs-32"
     ]
   },
   {
@@ -6407,16 +6418,15 @@
     "productId": "langsmith",
     "storyId": "threshold-alerting",
     "verdict": "full",
-    "quality": 7,
+    "quality": 8,
     "confidence": "high",
-    "rationale": "LangSmith documents threshold-based alerts on Errors, Cost, and Feedback Score (along with Run Count and Latency). Errors alerts support stackable filters, and Feedback Score alerts can cover scores from online evaluators. Alerts route to Slack, PagerDuty, Dynatrace, or any webhook endpoint. Missing for 10: email as a documented notification channel, explicit confirmation that online-eval scores feed Feedback Score alerts, and independent or hands-on corroboration.",
+    "rationale": "LangSmith's alerts docs describe threshold-based alerting on Errors, Cost, and Feedback Score, which covers eval-score drops since online evaluators write feedback scores on production traces. Alerts route to Slack, PagerDuty, Dynatrace, or any webhook, so the story's core is clearly delivered from first-party docs. Missing for 10: no documented email notification channel, alerts are fixed thresholds rather than spike/anomaly detection, and there is no independent or hands-on corroboration of alerting.",
     "evidenceIds": [
       "langsmith-docs-12",
       "langsmith-docs-13",
       "langsmith-docs-29",
-      "langsmith-docs-47",
-      "langsmith-docs-10",
       "langsmith-docs-3",
+      "langsmith-docs-10",
       "langsmith-docs-36"
     ]
   },
@@ -6795,14 +6805,15 @@
     "productId": "mirrors",
     "storyId": "experiment-comparison",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "low",
-    "rationale": "Mirrors documents comparing sessions that received a context change against held-out sessions, using team-tracked outcomes, with options to keep, revise, or roll back (mirrors-docs-4, mirrors-docs-19, mirrors-docs-5). This is a production holdout comparison for one prompt/context change, not side-by-side comparison of eval runs. Mirrors itself positions evals as a separate concern handled by tools like Braintrust and LangSmith (mirrors-docs-30). missing for 10: side-by-side eval run comparison views, comparison across model versions, offline eval/dataset runs, regression diffing between prompt versions, independent corroboration.",
+    "rationale": "Mirrors lets teams compare sessions that received a context change against holdout groups using their own outcome labels, then keep, revise, or roll back the change (mirrors-docs-4, mirrors-docs-5, mirrors-docs-9). It also previews routing conditions against stored traces and shows per-session check pass counts (mirrors-docs-3, mirrors-docs-13). This is online A/B comparison of context edits rather than side-by-side eval-run comparison, and all evidence is vendor marketing copy. Missing for 10: side-by-side comparison of offline eval runs, comparison across model versions, explicit regression detection or diffing views, and in-depth docs or independent corroboration.",
     "evidenceIds": [
       "mirrors-docs-4",
-      "mirrors-docs-19",
       "mirrors-docs-5",
-      "mirrors-docs-30"
+      "mirrors-docs-9",
+      "mirrors-docs-3",
+      "mirrors-docs-13"
     ]
   },
   {
@@ -6865,17 +6876,13 @@
     "productId": "mirrors",
     "storyId": "online-evals-guardrails",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "low",
-    "rationale": "Mirrors captures every production session in the background and compares live sessions that received a correction against held-out sessions using the team's own outcome labels and checks. The UI also shows checks passing on recorded sessions. However, Mirrors positions itself as distinct from evals tools, and success signals are user-supplied rather than evaluators the product runs continuously. Missing for 10: documented continuous or online evaluator execution on live traffic, configurable evaluator types or scoring, and independent or hands-on corroboration.",
+    "rationale": "Mirrors compares live sessions that received a context change against holdout groups, using outcomes your team tracks (labels, checks, customer feedback). A recorded session shows \"3 of 4 checks passed\", which implies checks run on real sessions. However, the success signals are team-supplied, and nothing describes Mirrors running evaluators continuously on production traffic as a general capability. Missing for 10: documented continuous or online evaluator execution on live traffic, evaluator configuration and scoring docs, sampling and alerting on production evals, and independent or hands-on corroboration.",
     "evidenceIds": [
-      "mirrors-docs-9",
-      "mirrors-docs-13",
-      "mirrors-docs-19",
       "mirrors-docs-4",
-      "mirrors-docs-22",
-      "mirrors-docs-15",
-      "mirrors-docs-30"
+      "mirrors-docs-9",
+      "mirrors-docs-13"
     ]
   },
   {
@@ -6984,20 +6991,16 @@
   {
     "productId": "mirrors",
     "storyId": "prompt-versioning-deploy",
-    "verdict": "partial",
-    "quality": 6,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Mirrors documents shipping prompt and context changes to production without redeploying: corrections append system-prompt guidance and edit tool descriptions, schemas or tool-result content, and reach live agents with 'No redeploy, no code change'. Changes are previewed against stored traces before activation and can be revised or rolled back. Its scope is targeted corrections layered on the app's own prompt, not management of the base prompt itself, and versioning is only implied by revise/rollback. Missing for 10: explicit prompt version history/diffing, management of the full base prompt outside code, and independent hands-on corroboration.",
+    "rationale": "Mirrors says context changes reach the agent mid-conversation with \"no redeploy, no code change.\" Those changes can append guidance, edit tool descriptions, tighten tool schemas, or rewrite tool-result content. Teams can preview routing against stored traces before activation and keep, revise, or roll back a change, which implies change management. Missing for 10: explicit versioning features (version history, diffs, labeled releases), in-depth docs beyond the marketing site, and independent or hands-on corroboration.",
     "evidenceIds": [
       "mirrors-docs-2",
+      "mirrors-docs-3",
       "mirrors-docs-4",
       "mirrors-docs-5",
-      "mirrors-docs-6",
-      "mirrors-docs-17",
-      "mirrors-docs-18",
-      "mirrors-docs-23",
-      "mirrors-docs-26",
-      "mirrors-docs-28"
+      "mirrors-docs-6"
     ]
   },
   {
@@ -7281,14 +7284,13 @@
     "productId": "wandb-weave",
     "storyId": "agentic-webhooks",
     "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Weave's marketing site says alerts can 'trigger webhook automations', so outbound webhooks appear to be a first-party capability. However, that one sentence (repeated across several items) is the only evidence, and nothing in the docs shows how to register an endpoint or subscribe to specific events. The Slack-notification part of the same claim earns no credit. Missing for 10: documentation for registering webhook endpoints, a catalog of subscribable event types, payload schema and signing/retry behavior, programmatic (API) subscription management, and independent or hands-on corroboration.",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "The Weave product page says alerts, driven by built-in and custom signals, can route through Slack and 'trigger webhook automations.' That shows some event-to-webhook capability, but it rests on a single marketing line repeated across items, with no technical documentation behind it. Missing for 10: documented webhook configuration or subscription API, list of subscribable event types, payload schema/signing/retry details, independent or hands-on corroboration.",
     "evidenceIds": [
       "wandb-weave-docs-17",
       "wandb-weave-docs-28",
-      "wandb-weave-docs-36",
-      "wandb-weave-docs-59"
+      "wandb-weave-docs-36"
     ]
   },
   {
