@@ -247,11 +247,17 @@
   {
     "productId": "cal-com",
     "storyId": "ai-meeting-time-optimization",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "Cal.com documents finding times when two or more people are free (the dynamic usernames-only slots query), collective scheduling, and calendar conflict checks. That is plain open-slot discovery, which this story explicitly goes beyond. There is no evidence of Cal.com's own AI ranking or choosing the best time, or continuously re-optimizing meetings. The MCP server and agent API only let outside AI clients query slots, which is a developer building block rather than this capability.",
-    "evidenceIds": []
+    "rationale": "Cal.com can find mutual availability across multiple people. It offers collective scheduling, slot queries by multiple usernames to see when two or more people are free, and connected calendars, and external AI agents can query those slots through the API or MCP server. However, nothing in the evidence shows AI ranking or optimizing the 'best' time, or continuously re-optimizing meetings after booking; it simply returns open slots for someone to choose. Missing for 10: native AI-driven time optimization beyond open-slot listing, continuous re-optimization or auto-rescheduling of booked meetings, and any independent or hands-on corroboration.",
+    "evidenceIds": [
+      "cal-com-docs-38",
+      "cal-com-docs-28",
+      "cal-com-docs-16",
+      "cal-com-docs-12",
+      "cal-com-docs-11"
+    ]
   },
   {
     "productId": "cal-com",
@@ -280,11 +286,17 @@
   {
     "productId": "cal-com",
     "storyId": "api-machine-spec",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "The evidence contains no documented, downloadable OpenAPI (or equivalent) spec for Cal.com's API, and a probe found every common spec path (openapi.json, swagger.json, api/openapi.json, .well-known/openapi.json) returning 404. Schema-like YAML snippets inside individual endpoint doc pages, llms.txt, and markdown docs are adjacent machine-readable documentation, not a downloadable API spec, so they earn no credit.",
-    "evidenceIds": []
+    "rationale": "No downloadable spec was found: every standard OpenAPI/Swagger path tried returned 404. Still, the per-endpoint API reference pages are served as machine-readable markdown with embedded OpenAPI-style YAML schema fragments (e.g. typed `triggers` enums), and the docs are indexed via llms.txt, so agents can parse the spec piecemeal. Missing for 10: a single downloadable OpenAPI/JSON spec file at a documented URL, first-party docs pointing to such a spec, and independent confirmation of spec completeness.",
+    "evidenceIds": [
+      "cal-com-probe-3",
+      "cal-com-probe-2",
+      "cal-com-docs-26",
+      "cal-com-docs-42",
+      "cal-com-probe-1"
+    ]
   },
   {
     "productId": "cal-com",
@@ -338,11 +350,16 @@
   {
     "productId": "cal-com",
     "storyId": "automation-scheduled-jobs",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Scheduled automation is a fair question for a scheduling and automation platform, so the axis applies. However, the pack documents no capability to schedule recurring jobs or workflows. 'Recurring bookings' are recurring meetings rather than scheduled jobs, and webhooks and the Zapier app are booking-event triggers rather than time-based recurring execution. 'Workflows' is only named in a feature list, with nothing showing it can run on a schedule or recur, so these adjacent features earn no credit.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Cal.com mentions 'workflows' as a platform feature and documents recurring bookings via POST /v2/bookings. Automation is otherwise event-triggered, through booking webhooks and the Zapier app firing on booking created, rescheduled or cancelled. There is no evidence of scheduling arbitrary recurring jobs or time-based workflow runs. Missing for 10: cron-like or recurring scheduling of jobs/workflows, documentation of workflow configuration and scheduling via API, MCP or CLI, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "cal-com-docs-28",
+      "cal-com-docs-37",
+      "cal-com-docs-26",
+      "cal-com-intdir-7"
+    ]
   },
   {
     "productId": "cal-com",
@@ -432,11 +449,15 @@
   {
     "productId": "cal-com",
     "storyId": "cross-calendar-blocking-sync",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Cal.com documents connecting multiple calendars, checking them for conflicts, and writing its own bookings into a calendar (e.g., Outlook). That is booking-page availability, an adjacent feature. Nothing in the evidence shows automatic mirroring of busy blocks between a user's work and personal calendars so the calendars themselves stay in step.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Cal.com's docs say you can connect multiple calendars so people can pick a time without back-and-forth, and its app directory lists Google Calendar and Apple Calendar integrations. This suggests availability is checked across several calendars. Nothing in the evidence shows busy blocks being automatically mirrored between a work and a personal calendar. Missing for 10: documented automatic busy-block syncing between separate calendars, conflict-checking across multiple connected calendars, any hands-on or independent corroboration.",
+    "evidenceIds": [
+      "cal-com-docs-16",
+      "cal-com-docs-55",
+      "cal-com-intdir-2"
+    ]
   },
   {
     "productId": "cal-com",
@@ -613,11 +634,16 @@
   {
     "productId": "cal-com",
     "storyId": "privacy-retention-controls",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Data retention and deletion controls are a fair question for a scheduling SaaS, but the evidence pack documents no retention settings, data-deletion endpoints, or account and booking purge capability. GDPR/CCPA compliance claims and Cal.diy's 'full control over scheduling infrastructure' are adjacent signals, not documented retention or deletion controls, so they earn no credit.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "There is only indirect evidence for this story. Cal.com claims GDPR and CCPA compliance, which implies data-subject deletion rights. The MIT-licensed, self-hostable Cal.diy edition gives individuals and self-hosters full control over their scheduling infrastructure, and therefore over where data lives and how long it is kept. However, no documentation describes retention settings, deletion endpoints or account and booking purge controls. Missing for 10: documented retention policy or configurable retention windows, a documented deletion or erasure API or UI (including via MCP or agents), data export/deletion workflows, and independent corroboration.",
+    "evidenceIds": [
+      "cal-com-docs-44",
+      "cal-com-docs-56",
+      "cal-com-gh-1",
+      "cal-com-gh-4"
+    ]
   },
   {
     "productId": "cal-com",
@@ -924,10 +950,10 @@
   {
     "productId": "calendly",
     "storyId": "agentic-mcp-client",
-    "verdict": "none",
+    "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Calendly ships its own AI assistant (Callie), so letting users plug external MCP servers into it is a fair question for this product. The evidence only documents Calendly's own MCP server, which exposes Calendly tools to outside AI apps. That is the server role and earns no credit for this client-side story. Nothing in the pack shows Calendly or Callie connecting to user-supplied MCP servers.",
+    "rationale": "Calendly is a scheduling SaaS whose MCP role is that of a server: it publishes the Calendly MCP server that external AI apps connect to. That is the opposite direction of this story and cannot be credited here. Nothing in the evidence shows Calendly or its assistants (Callie, the meeting AI assistant) acting as an MCP client that loads third-party MCP servers, so this client-side axis does not fit the product's role.",
     "evidenceIds": []
   },
   {
@@ -1020,11 +1046,18 @@
   {
     "productId": "calendly",
     "storyId": "agentic-sdks",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence documents a REST API v2, an Embed API with a JavaScript widget snippet, webhooks, and an official MCP server, but no official language SDKs or client libraries for building against the API. The raw REST API, the embed widget, and the MCP server are adjacent capabilities that each belong to other stories, so they earn no credit here.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The evidence documents a REST-based API v2, an official JavaScript embed library (`Calendly.initInlineWidget`), a Webhook API and an official MCP server. These give developers first-party building blocks, but nothing in the pack shows official language SDKs or client libraries; developers appear to call raw REST endpoints. missing for 10: official language SDKs/client libraries (e.g., Node, Python), SDK reference docs or package distribution, independent or hands-on corroboration of SDK usage.",
+    "evidenceIds": [
+      "calendly-docs-52",
+      "calendly-docs-53",
+      "calendly-docs-46",
+      "calendly-docs-54",
+      "calendly-docs-5",
+      "calendly-probe-3"
+    ]
   },
   {
     "productId": "calendly",
@@ -1564,13 +1597,15 @@
     "productId": "calendly",
     "storyId": "working-hours-overrides",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Calendly's own docs say users can \"fine-tune your availability with meeting buffers, custom schedules, and daily limits\" and sync calendars for conflict checks. That supports defining custom availability schedules, which implies working hours. Neither date-specific overrides nor out-of-office periods are explicitly documented. Missing for 10: explicit working-hours configuration docs, date override support, out-of-office/vacation blocking, hands-on corroboration.",
+    "rationale": "Calendly's marketing says users can fine-tune availability with custom schedules, buffers and daily limits. That supports defining working-hour schedules. Calendar sync blocks conflicting busy time, which could indirectly cover time off, and an API exposes user availability data. However, the evidence never mentions date-specific overrides or dedicated out-of-office periods. Missing for 10: explicit evidence of date overrides, out-of-office/vacation blocking, detailed working-hours configuration docs, independent hands-on corroboration.",
     "evidenceIds": [
       "calendly-docs-15",
       "calendly-docs-42",
-      "calendly-docs-49"
+      "calendly-docs-49",
+      "calendly-docs-24",
+      "calendly-docs-48"
     ]
   },
   {
@@ -1760,11 +1795,17 @@
   {
     "productId": "motion",
     "storyId": "ai-meeting-time-optimization",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "The evidence covers adjacent scheduling features only: booking links that offer the host's 'ideal time slots' to prospects, preferred meeting windows, daily meeting caps, merging the user's own calendar accounts, and reshuffling tasks when meetings run long. Nothing documents AI that analyzes all attendees' calendars to find the best mutual meeting time, or that keeps re-optimizing a meeting's time afterward. Adjacent controls like these earn no credit for this story.",
-    "evidenceIds": []
+    "rationale": "Motion's docs show adjacent capabilities but nothing that directly matches this story. It offers a booking page that exposes your 'ideal time slots' to prospects, merges your own Outlook/Google/iCloud calendars into one view, enforces daily meeting caps, and automatically reshuffles your day and week when meetings run long. None of this shows the AI searching across all attendees' calendars to pick an optimal shared time, or re-optimizing meeting times over time. Missing for 10: cross-attendee calendar analysis for meeting placement, evidence of choosing an optimal rather than first-available slot, continuous re-optimization of scheduled meetings, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "motion-docs-5",
+      "motion-docs-27",
+      "motion-docs-8",
+      "motion-docs-44",
+      "motion-docs-6"
+    ]
   },
   {
     "productId": "motion",
@@ -1943,11 +1984,13 @@
   {
     "productId": "motion",
     "storyId": "cross-calendar-blocking-sync",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence shows Motion combining Outlook, Google and iCloud calendars into one unified view and claiming 'never get double-booked'. That is an adjacent capability, an aggregated view with conflict awareness. Nothing documents Motion automatically writing busy blocks from one calendar into another (for example, work events appearing as busy on a personal calendar), so the story's core capability is unevidenced.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Motion's docs say it combines Outlook, Google and iCloud calendars into one interface, which covers multi-calendar awareness. Nothing shows it automatically writes busy blocks from one calendar into another so that each external calendar stays in step. Missing for 10: explicit cross-calendar busy-block sync, documentation of automatic two-way blocking between work and personal calendars, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "motion-docs-8"
+    ]
   },
   {
     "productId": "motion",
@@ -2319,7 +2362,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Reclaim.ai is a SaaS calendar product, so shipping an official MCP server is a plausible capability and the axis applies. The evidence pack never mentions an MCP server or any agent-connection endpoint. The in-product AI chat assistant is an adjacent feature, and an llms.txt docs file is not an MCP server, so neither earns credit.",
+    "rationale": "Reclaim.ai is a SaaS calendar product, not a coding agent, so publishing an official MCP server is a fair question and the axis applies. Nothing in the pack documents or observes an MCP server or endpoint: the docs cover scheduling features, the in-app chat assistant and Slack/Calendar add-ons, and the probes cover only llms.txt and missing OpenAPI paths. The reviewer's mention of a reachable mcp.reclaim.ai endpoint refers to probe observations that are not in this pack, so it cannot be credited here; if those observations are restored, the cell should be re-judged.",
     "evidenceIds": []
   },
   {
@@ -2437,11 +2480,13 @@
   {
     "productId": "reclaim",
     "storyId": "api-sandbox",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "A sandbox or test environment is a fair question for a calendar-automation SaaS like Reclaim, but the evidence pack documents no sandbox, test account, or isolated non-production environment. The closest item, the 2.0 'Preview changes in your calendar before deploying them', is an adjacent preview-before-apply feature on the user's real calendar, not a sandbox. Probes also found no OpenAPI spec that might indicate test endpoints.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The only relevant evidence is the Reclaim 2.0 note that you can 'preview changes in your calendar before deploying them' [reclaim-docs-52]. That is a dry-run of schedule changes on your real calendar, not an isolated sandbox environment with non-production data. Nothing shows a test or sandbox tenant for the API or the first-party MCP server, which documents only read/write/mcp OAuth scopes. missing for 10: a dedicated sandbox or test environment, isolated test data for API/MCP agent testing, documentation of the preview mechanics, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "reclaim-docs-52"
+    ]
   },
   {
     "productId": "reclaim",
@@ -2455,11 +2500,18 @@
   {
     "productId": "reclaim",
     "storyId": "automation-bulk-operations",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Bulk operations are a fair axis for a calendar and task-scheduling product, but the evidence never documents a user-driven way to select or act on many items at once. The closest material is adjacent and earns no credit: automatic rescheduling, Calendar Sync copying events, per-item priorities and hashtags, and a chat assistant that plans and optimizes the schedule. None of these is a documented bulk edit, delete, or update capability.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Reclaim applies automation across many calendar items at once: it auto-schedules and reschedules events around priorities, auto-categorizes all events, and the 2.0 Schedule Assistant lets you preview a set of changes before deploying them. None of this is documented as user-initiated bulk editing of selected items, and the auth-gated MCP endpoint with a write scope has no documented bulk tools. Missing for 10: explicit bulk select/edit/delete of tasks or events, documented batch actions via the AI assistant or API/MCP, and hands-on corroboration of multi-item operations.",
+    "evidenceIds": [
+      "reclaim-docs-34",
+      "reclaim-docs-36",
+      "reclaim-docs-33",
+      "reclaim-docs-51",
+      "reclaim-docs-52",
+      "reclaim-docs-11"
+    ]
   },
   {
     "productId": "reclaim",
@@ -2507,13 +2559,14 @@
     "productId": "reclaim",
     "storyId": "booking-link-self-serve",
     "verdict": "full",
-    "quality": 9,
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Reclaim's docs describe Scheduling Links that share your availability so others can book time across one or many calendars. Bookers see your true availability across multiple calendars, free events show as bookable, and lower-priority events can be offered up for more important meetings. Together these cover sharing a link that books from live availability without email back-and-forth. Missing for 10: independent or hands-on corroboration of the booking-link flow (all evidence is vendor documentation).",
+    "rationale": "Reclaim's first-party docs describe Scheduling Links that let you send links to your availability so others can book time across one or many calendars. Bookings draw on your true, synced availability across calendars, and Reclaim can offer lower-priority smart events as open slots, auto-rescheduling whatever gets overbooked. That covers the core of self-serve booking without back-and-forth email. Missing for 10: no independent or hands-on corroboration of the booking-link flow, and no detailed docs on the invitee-side experience of picking a time.",
     "evidenceIds": [
       "reclaim-docs-49",
       "reclaim-docs-2",
       "reclaim-docs-50",
+      "reclaim-docs-23",
       "reclaim-docs-35",
       "reclaim-docs-17",
       "reclaim-docs-29"
@@ -2532,27 +2585,28 @@
     "productId": "reclaim",
     "storyId": "buffers-notice-limits",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Reclaim documents Scheduling Links with 'smart meeting controls' and calendar-level buffers: Travel Time before and after events with a location, and Decompression Time after meetings. That covers the buffer element in part. Nothing documents the other protections this story names. Missing for 10: booking-link-specific before/after buffers, minimum-notice settings, daily booking caps, date-range booking windows, independent or hands-on corroboration.",
+    "rationale": "Reclaim documents Scheduling Links with 'smart meeting controls'. It also documents buffer time: travel time before and after events with a location, and decompression time after meetings. Those buffers protect the calendar around meetings, but they are general calendar features rather than documented booking-link settings. Missing for 10: evidence of minimum-notice settings, daily booking caps, date-range booking windows, explicit per-link before/after buffers, and independent corroboration.",
     "evidenceIds": [
       "reclaim-docs-2",
       "reclaim-docs-49",
       "reclaim-docs-14",
       "reclaim-docs-20",
-      "reclaim-docs-24",
-      "reclaim-docs-21"
+      "reclaim-docs-24"
     ]
   },
   {
     "productId": "reclaim",
     "storyId": "collective-availability",
     "verdict": "partial",
-    "quality": 5,
-    "confidence": "medium",
-    "rationale": "Reclaim documents Scheduling Links that share 'you and your team's availability, allowing others to book time across one, or many, calendars' (reclaim-docs-49). That is its own multi-host booking capability. The evidence does not say these links work in a collective mode that shows only slots where every required host is free, as opposed to round-robin or any-host availability, and there is no hands-on corroboration. missing for 10: explicit documentation of collective/all-hosts-required availability logic, required vs optional host configuration, independent or hands-on confirmation of team booking links.",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "Reclaim's Scheduling Links can share 'you and your team's availability' and let others book across one or many calendars, and Smart Meetings find times across all attendees' schedules. However, nothing in the evidence explicitly describes a collective mode that shows only slots where every required host is free, as opposed to round-robin or any-host pooling. missing for 10: explicit documentation of collective or all-hosts-required booking logic, configuration of required vs optional hosts, independent or hands-on corroboration.",
     "evidenceIds": [
-      "reclaim-docs-49"
+      "reclaim-docs-49",
+      "reclaim-docs-5",
+      "reclaim-docs-2"
     ]
   },
   {
@@ -3118,11 +3172,14 @@
   {
     "productId": "savvycal",
     "storyId": "automation-bulk-operations",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence pack documents no bulk-operation capability, either as a batch API endpoint or as a multi-select bulk action in the UI. The API endpoints shown (list, cancel, create, update, duplicate) all act on one item at a time; looping over them is only a developer building block. Attaching a workflow to one or more links, or auto-attaching it to new links, is an adjacent feature rather than general bulk operations across many items.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 2,
+    "confidence": "low",
+    "rationale": "The only evidence near bulk action is that one workflow can be attached to one or more links, a single one-to-many configuration action. A REST API exists, but nothing shows bulk or batch endpoints or multi-select actions across many items. Missing for 10: bulk/batch API endpoints, bulk edit or delete of links/meetings in the UI, AI-driven bulk actions, documentation or hands-on corroboration of multi-item operations.",
+    "evidenceIds": [
+      "savvycal-docs-16",
+      "savvycal-docs-1"
+    ]
   },
   {
     "productId": "savvycal",
@@ -3288,11 +3345,14 @@
   {
     "productId": "savvycal",
     "storyId": "focus-time-defense",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The axis applies, since a scheduling product could plausibly defend focus time, but the evidence shows no capability that creates recurring focus or habit blocks and automatically reschedules them when conflicts arise. SavvyCal's time budgeting via calendar events, per-day/week/month meeting caps, and fragmentation-reducing suggestions only constrain when others can book. These are adjacent booking controls, not auto-defended, flexibly moved focus time, so they earn no credit.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "SavvyCal lets you budget time with calendar events and have its scheduling links honor those blocks, and it nudges bookings next to existing meetings to reduce fragmentation. That protects focus time from incoming bookings only passively, and nothing shows recurring focus or habit blocks being rescheduled automatically. Missing for 10: automatic rescheduling of focus/habit blocks when conflicts appear, recurring habit management, AI-driven defense of protected time, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "savvycal-docs-12",
+      "savvycal-docs-13"
+    ]
   },
   {
     "productId": "savvycal",
