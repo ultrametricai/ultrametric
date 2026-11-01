@@ -13,14 +13,26 @@
 // Rule, per cell: a (verdict, quality) flip vs the pre-refresh baseline stands only when it
 // rests on evidence that actually changed. Content-aware rule (re-crawled packs mint NEW
 // ids for UNCHANGED excerpts): an id added by the refresh whose normalized excerpt already
-// exists verbatim in the baseline pack is NOT changed evidence. Changed evidence is:
-//   - an added id whose excerpt text is new to the pack,
-//   - a removed id,
+// exists verbatim in the baseline pack is NOT changed evidence, and a REMOVED id whose
+// content survives in a same-url fresh item (verbatim, containment, or token overlap
+// >= 0.5) is a re-mint: neither lost support nor, on the fresh side, new content.
+// Changed evidence is:
+//   - an added id whose excerpt text is new to the pack and is not a re-mint survivor,
+//   - a removed id whose content does not survive under a new same-url id,
 //   - a same-id excerpt replacement.
 // A flip citing none of that (on either side) is sampling churn and converges back to the
-// committed baseline verdict; the judge cache is patched in place (same hash, restored
-// verdict) so a future judge run does not resurrect the churn. A revert is skipped (and
-// reported) when the baseline verdict cites an id no longer in the pack.
+// committed baseline verdict, with restored citations remapped through re-mints so nothing
+// dangles; the judge cache is patched in place (same hash, restored verdict) so a future
+// judge run does not resurrect the churn. A revert is skipped (and reported) when a
+// baseline citation neither resolves in the pack nor remaps to a survivor.
+//
+// The second review round names three upgrades resting on clause-variant re-crawls that sit
+// below the 0.8 pairwise threshold, verified by reading both excerpts (entries in
+// REVIEW_VERIFIED_REPEATS below), and two upgrades (coreweave/agentic-ai-insights,
+// coreweave/agentic-nl-commands) whose only new citation, coreweave-docs-62, names the
+// Mission Control Agent and MCP server but describes neither AI-generated insights from
+// customer data nor a natural-language interface — outside the judge's partial-credit
+// boundary (entries in REVIEW_VERIFIED_IRRELEVANT below).
 //
 // Baseline: origin/main at settle time (main's gpu-clouds files are pre-refresh; the
 // arena changed only in this PR).
@@ -83,6 +95,28 @@ function nearDup(a: string, b: string): boolean {
   return shared / Math.max(ta.size, tb.size) >= 0.8
 }
 
+// Review-verified repeats the pairwise nearDup cannot see: re-crawled clause variants of a
+// baseline excerpt from the same docs page family, verified by reading both. The PR #532
+// second round names: coreweave-docs-48 (quotas page re-crawl of coreweave-docs-12 with the
+// quota-error clause elided) and coreweave-docs-47 (the Capacity Finder sentence already in
+// coreweave-docs-23/-31, with "your requested instance type" re-crawled as "one or more GPU
+// and CPU instance types"). Entries apply only when the baseline twin is in the baseline pack.
+const REVIEW_VERIFIED_REPEATS: Record<string, Record<string, string[]>> = {
+  coreweave: {
+    'coreweave-docs-48': ['coreweave-docs-12'],
+    'coreweave-docs-47': ['coreweave-docs-23'],
+  },
+}
+
+// Review-verified irrelevant citations, per cell: the review verified (and reading the
+// excerpt confirms) that the flip's only new citation does not describe the story's
+// capability, so the flip does not rest on changed evidence OF the story. Scoped to the
+// named cells; the id can still count as new content elsewhere.
+const REVIEW_VERIFIED_IRRELEVANT: Record<string, string[]> = {
+  'coreweave:agentic-ai-insights': ['coreweave-docs-62'],
+  'coreweave:agentic-nl-commands': ['coreweave-docs-62'],
+}
+
 // Ids whose evidence actually changed vs baseline: added-with-new-excerpt, removed, or
 // same-id excerpt replaced. Added ids repeating a baseline excerpt are recorded separately.
 function changedIdsFor(productId: string): { changed: Set<string>; repeats: Map<string, string> } {
@@ -100,6 +134,11 @@ function changedIdsFor(productId: string): { changed: Set<string>; repeats: Map<
     if (old) {
       // same-id replacement counts as changed only when the content actually differs
       if (!nearDup(old.excerpt ?? '', item.excerpt ?? '')) changed.add(item.id)
+      continue
+    }
+    const verified = REVIEW_VERIFIED_REPEATS[productId]?.[item.id]
+    if (verified && verified.every((vid) => baseById.has(vid))) {
+      repeats.set(item.id, verified.join('+')) // review-verified clause-variant re-crawl
       continue
     }
     const twin = baseItems.find((b) => nearDup(b.excerpt ?? '', item.excerpt ?? ''))
@@ -125,8 +164,13 @@ function changedIdsFor(productId: string): { changed: Set<string>; repeats: Map<
         f.url === old.url &&
         (nearDup(old.excerpt ?? '', f.excerpt ?? '') || overlap(old.excerpt ?? '', f.excerpt ?? '') >= 0.5),
     )
-    if (survivor) repeats.set(id, survivor.id) // re-minted under a new id: not lost support
-    else changed.add(id) // genuinely removed
+    if (survivor) {
+      repeats.set(id, survivor.id) // re-minted under a new id: not lost support
+      if (changed.has(survivor.id)) {
+        changed.delete(survivor.id) // the survivor is the same evidence, not new content
+        repeats.set(survivor.id, id)
+      }
+    } else changed.add(id) // genuinely removed
   }
   return { changed, repeats }
 }
@@ -158,7 +202,8 @@ function main(): void {
     // content changed). A downgrade citing only new positive content with its
     // prior support intact is reinterpretation (the secureframe cells in review).
     const rank: Record<string, number> = { none: 0, partial: 1, full: 2 }
-    const citesNewContent = row.evidenceIds.some((id) => changed.has(id))
+    const irrelevant = new Set(REVIEW_VERIFIED_IRRELEVANT[key] ?? [])
+    const citesNewContent = row.evidenceIds.some((id) => changed.has(id) && !irrelevant.has(id))
     const supportLoss = base.evidenceIds.some((id) => changed.has(id))
     const rankable = Object.hasOwn(rank, base.verdict) && Object.hasOwn(rank, row.verdict)
     const isUp =

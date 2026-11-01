@@ -36,13 +36,11 @@
   {
     "productId": "coreweave",
     "storyId": "agentic-ai-insights",
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "An in-product AI insights feature is a fair question for a GPU cloud console, so the axis applies. The only relevant evidence is a single first-party line naming a 'Mission Control Agent' (and an MCP server) for 'investigating your environment and making supported changes' [coreweave-docs-62]. That is the product's own agent analyzing the customer's environment, so it counts as thin, glancing support rather than an adjacent feature. The reviewer is right that the line never explicitly says the agent generates insights or suggestions from customer data, which is why quality is minimal and confidence low. The Grafana dashboards and billing breakdowns elsewhere in the pack are not AI-generated and earn no credit. Missing for 10: explicit documentation that the agent produces AI-generated insights or recommendations from user data (telemetry, usage, workloads), a description of how insights surface in the Cloud Console, examples of suggestion output, and independent or hands-on corroboration.",
-    "evidenceIds": [
-      "coreweave-docs-62"
-    ]
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "An AI cloud platform could plausibly ship AI-generated insights or suggestions in its console, so this axis applies. The evidence pack never shows any AI-generated insight feature. 'Billing insights' are usage breakdowns, Capacity Finder is an availability comparison tool, and llms.txt is documentation formatted for LLMs; none of these are AI-generated suggestions drawn from user data inside the product.",
+    "evidenceIds": []
   },
   {
     "productId": "coreweave",
@@ -115,13 +113,11 @@
   {
     "productId": "coreweave",
     "storyId": "agentic-nl-commands",
-    "verdict": "partial",
-    "quality": 4,
-    "confidence": "low",
-    "rationale": "CoreWeave's docs list a first-party Mission Control Agent and Mission Control MCP server for investigating your environment and making supported changes. This implies natural-language operation of the platform, but it rests on a single one-line mention, and changes are limited to 'supported' ones. The rest of the pack covers Console, Terraform, API and kubectl interfaces, not natural-language control. Missing for 10: documentation of the natural-language command interface and its scope of operations (e.g., clusters, node pools, storage), detail on which changes are supported, and independent or hands-on corroboration.",
-    "evidenceIds": [
-      "coreweave-docs-62"
-    ]
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "A GPU cloud platform could plausibly ship a natural-language console assistant or agent interface, so this axis applies. The evidence shows CoreWeave being operated only through the Cloud Console, Terraform, the APIs and generated clients, and kubectl. The llms.txt probe makes the docs readable by LLMs but is not a natural-language way to operate the product.",
+    "evidenceIds": []
   },
   {
     "productId": "coreweave",
@@ -380,14 +376,13 @@
   {
     "productId": "coreweave",
     "storyId": "gpu-availability-transparency",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "CoreWeave documents Capacity Finder in the Cloud Console. Before provisioning, it lets you compare placement availability across Zones for one or more GPU and CPU instance types and a requested Node count, which directly addresses checking availability by type and location rather than discovering stockouts by failure. Quota viewing in the console adds pre-provisioning visibility. Missing for 10: explicit evidence that availability data is real-time, evidence that Capacity Finder applies beyond the Spot Node Pool workflow, programmatic/API access to availability, independent or hands-on corroboration.",
+    "rationale": "CoreWeave documents Capacity Finder in the Cloud Console, which lets you compare placement availability across Zones for a requested instance type and Node count before creating a node pool, directly addressing checking availability before provisioning. However, it is only described in the Spot Node Pool docs as a single brief mention; the quotas page covers quota errors rather than physical availability. Missing for 10: evidence that availability is real-time, coverage of on-demand or reserved capacity beyond Spot, programmatic or API access to availability data, detailed docs on what Capacity Finder shows, and independent or hands-on corroboration.",
     "evidenceIds": [
       "coreweave-docs-23",
       "coreweave-docs-31",
-      "coreweave-docs-47",
       "coreweave-docs-12"
     ]
   },
@@ -641,12 +636,12 @@
     "productId": "coreweave",
     "storyId": "quota-limit-transparency",
     "verdict": "full",
-    "quality": 8,
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "CoreWeave has a dedicated quotas doc page. It explains how to view quotas in the Cloud Console, how to read quota errors when a Node Pool exceeds its quota, and how to request an increase when more capacity is needed. That covers documented limits plus a defined process for raising them. missing for 10: details of the increase process (e.g., turnaround, programmatic/API request path, specific limit values) are not visible in the evidence, and there is no independent or hands-on corroboration.",
+    "rationale": "CoreWeave has a dedicated quotas page. It covers viewing quotas in the Cloud Console, reading quota errors when a Node Pool exceeds its quota, and requesting an increase, which together meet the core of the story. Capacity Finder adds visibility into instance placement availability. Missing for 10: specific documented limit values or a quota table, details of the increase-request process (channel, turnaround, approval), programmatic quota access, and independent or hands-on corroboration.",
     "evidenceIds": [
       "coreweave-docs-12",
-      "coreweave-docs-48"
+      "coreweave-docs-23"
     ]
   },
   {
@@ -2586,20 +2581,20 @@
     "productId": "runpod",
     "storyId": "on-demand-gpu-provisioning",
     "verdict": "full",
-    "quality": 9,
+    "quality": 8,
     "confidence": "high",
-    "rationale": "Runpod documents creating Pods from the console or CLI (`runpodctl pod create`) and via the REST and GraphQL APIs. Its get-started guide promises running code on a remote GPU in minutes, with templates that are ready instantly and access via SSH, JupyterLab, or VS Code. Community users corroborate deploying in a few clicks and getting H100s easily, though one reports low GPU availability and occasional failed boots. Missing for 10: consistent evidence of reliable capacity and boot success for in-demand GPU types.",
+    "rationale": "First-party docs cover the whole flow: a get-started guide promising to \"run code on a remote GPU in minutes\", Pod creation from the console or CLI (`runpodctl pod create`), and programmatic creation through the REST and GraphQL APIs. Templates are described as ready instantly, and access is via SSH, JupyterLab or VS Code. Community users say H100s are easy to get and templates take a few clicks, but one report describes 4090 'low availability' and instances not booting correctly. missing for 10: independent hands-on confirmation of time-to-running-code, consistent GPU availability (a community report contradicts it for some GPU types).",
     "evidenceIds": [
       "runpod-docs-52",
-      "runpod-docs-1",
+      "runpod-docs-43",
       "runpod-docs-46",
       "runpod-docs-29",
       "runpod-docs-8",
       "runpod-docs-64",
       "runpod-docs-22",
       "runpod-docs-14",
-      "runpod-comm-2-refresh-c0398a5efb9798d9",
       "runpod-comm-6",
+      "runpod-comm-2-refresh-c0398a5efb9798d9",
       "runpod-comm-1-refresh-2d268751cfd101fe"
     ]
   },
