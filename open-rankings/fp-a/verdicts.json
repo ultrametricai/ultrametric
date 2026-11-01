@@ -12,14 +12,14 @@
     "productId": "abacum",
     "storyId": "agent-model-qa",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "low",
-    "rationale": "Abacum states that its AI runs inside the financial model, so answers are \"grounded in how your business actually works\" rather than free-form generation. Separately, it documents traceable statements with drill-down to source data, which suggests lineage. However, nothing shows an external agent can query the engine: no API or MCP surface was found, and OpenAPI probes all returned 404. Nothing ties AI answers to runway, forecast or variance questions with cited lineage either. missing for 10: documented agent/API/MCP access for asking questions, explicit evidence that AI answers return engine-computed figures with lineage attached, runway/variance Q&A examples, independent or hands-on corroboration.",
+    "rationale": "Abacum claims it runs AI inside the financial model, so answers are grounded in the model rather than free-form LLM output (abacum-docs-2, abacum-docs-1). It also says statements built from live ERP actuals are traceable (abacum-docs-9), with edit history on data models (abacum-docs-13). The evidence is only marketing copy, there is no agent-facing interface, and the OpenAPI probes all returned 404 (abacum-probe-3). Missing for 10: documented programmatic or agent access (API/MCP) for asking finance questions, explicit per-figure lineage on AI answers, specifics on runway/variance Q&A, and independent or hands-on corroboration.",
     "evidenceIds": [
+      "abacum-docs-1",
       "abacum-docs-2",
       "abacum-docs-9",
-      "abacum-docs-18",
-      "abacum-docs-1",
+      "abacum-docs-13",
       "abacum-probe-3"
     ]
   },
@@ -853,14 +853,13 @@
     "productId": "aleph",
     "storyId": "automation-rules-engine",
     "verdict": "partial",
-    "quality": 4,
-    "confidence": "medium",
-    "rationale": "Aleph documents one event-driven automation of its own: mapping agents monitor source data 24/7 and act when new accounts, vendors or dimensions appear. Users steer these agents with natural-language prompts, and the agents send real-time Slack/Teams alerts for approval. Beyond that, the evidence offers only generic claims of reporting automation and putting processes 'on autopilot', with no general user-defined rule engine. missing for 10: a general-purpose rule/trigger builder for arbitrary events, configurable action types beyond mapping suggestions and alerts, documentation of rule definition and scheduling, independent or hands-on corroboration.",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Aleph's own mapping agents watch source data around the clock and act when new accounts, vendors, or dimensions appear: they propose mappings and send Slack/Teams alerts for approval. Users steer this behavior with natural-language prompts, which is a narrow form of a user-defined, event-triggered action. Beyond that, the evidence only offers vague 'reporting automation' and 'autopilot' claims, with no general rule or trigger builder shown. Missing for 10: a general user-configurable rules engine (custom event triggers, conditions and actions beyond mappings), documentation of trigger/action configuration, and independent or hands-on corroboration.",
     "evidenceIds": [
       "aleph-docs-14",
       "aleph-docs-15",
       "aleph-docs-16",
-      "aleph-docs-30",
       "aleph-docs-2",
       "aleph-docs-24"
     ]
@@ -982,15 +981,14 @@
     "productId": "aleph",
     "storyId": "figure-lineage",
     "verdict": "partial",
-    "quality": 4,
-    "confidence": "low",
-    "rationale": "Aleph documents drill-down within its Excel and Google Sheets reporting workflows, a single source of truth that feeds reports, and AI agent answers with clickable cited sources that trace back to that source of truth. That is the product's own traceability capability, but the evidence is marketing-level and mostly tied to agent answers rather than to every report number. Missing for 10: tracing a report number through its formulas or calculation logic, drill-down to individual source transaction lines, depth documentation of the drill-down feature, and independent or hands-on corroboration.",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Aleph's own docs claim drill-down within its Excel/Sheets reporting workflows and a single source of truth that keeps reports in sync. That is a first-party mechanism for tracing report numbers to underlying data. Its AI agent also returns answers with clickable, cited sources traceable to the source of truth, though that covers agent answers rather than report figures. The claims are one-line marketing mentions and never describe tracing through formulas. missing for 10: documented formula-level lineage/audit trail for report cells, detail on drill-down to individual source transactions/lines, independent or hands-on corroboration.",
     "evidenceIds": [
       "aleph-docs-2",
       "aleph-docs-1",
       "aleph-docs-5",
-      "aleph-docs-9",
-      "aleph-docs-29"
+      "aleph-docs-9"
     ]
   },
   {
@@ -1309,18 +1307,18 @@
     "productId": "cfo-ai",
     "storyId": "agent-model-qa",
     "verdict": "full",
-    "quality": 8,
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "An agent can connect through the official MCP server (`claude mcp add ... https://api.cfo.ai/mcp`) and hand a finance question to Ari via `edit_chats`/`inspect_chats`. Ari answers by building and updating a financial Model whose numbers can be opened, checked, and traced, and the vendor says outputs print lineage back to the source line and that it declines to sign anything it cannot verify. Missing for 10: independent or hands-on corroboration that figures returned over MCP come from the engine rather than LLM text; explicit documentation that lineage is surfaced to the calling agent (the lineage claim comes from marketing llms.txt with an ambiguous referent).",
+    "rationale": "Agents connect through the official MCP server and can read the financial Model directly or ask Ari through edit_chats/inspect_chats. Answers come from a live, formula-driven Model whose numbers users can open and check, and the docs say outputs print their lineage back to the source line. The core of the story is delivered, but the separation between engine-computed figures and LLM-generated text is implied rather than stated. Missing for 10: an explicit statement that agent answers are computed by the engine rather than generated, clearer documentation of how lineage reaches MCP/agent responses, and independent or hands-on corroboration.",
     "evidenceIds": [
-      "cfo-ai-docs-1",
       "cfo-ai-docs-10",
-      "cfo-ai-docs-25",
-      "cfo-ai-docs-40",
-      "cfo-ai-docs-32",
-      "cfo-ai-docs-34",
       "cfo-ai-docs-21",
+      "cfo-ai-docs-22",
+      "cfo-ai-docs-11",
+      "cfo-ai-docs-2",
+      "cfo-ai-docs-1",
       "cfo-ai-docs-5",
+      "cfo-ai-docs-25",
       "cfo-ai-probe-3"
     ]
   },
@@ -1345,17 +1343,17 @@
     "productId": "cfo-ai",
     "storyId": "agentic-ai-insights",
     "verdict": "full",
-    "quality": 8,
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "cfo.ai's built-in agent Ari answers questions directly from the user's connected financial data, such as whether you can afford to hire, why spending went up, or how long cash lasts. It also proactively messages users when something moves, explaining what changed before they ask, and it runs one-line scenarios backed by an inspectable Model with lineage. Missing for 10: explicit documentation of prescriptive recommendations (suggestions are only implied through scenarios and answers), and independent or hands-on corroboration, since all evidence is vendor-claimed.",
+    "rationale": "cfo.ai's built-in agent Ari answers questions about your data, such as whether you can afford to hire, why spending went up, or how long your cash lasts. It also runs one-line scenarios, drafts board decks from last night's numbers, and proactively messages you when something moves. All of this happens inside the product, on data from your connected ledger, bank and payroll systems. missing for 10: explicit documentation of actionable recommendations beyond answers and alerts, in-depth docs on how insights are generated and surfaced (evidence is mostly one-line vendor claims), independent or hands-on corroboration.",
     "evidenceIds": [
       "cfo-ai-docs-1",
       "cfo-ai-docs-12",
-      "cfo-ai-docs-30",
-      "cfo-ai-docs-32",
       "cfo-ai-docs-14",
-      "cfo-ai-docs-34",
-      "cfo-ai-docs-44"
+      "cfo-ai-docs-15",
+      "cfo-ai-docs-30",
+      "cfo-ai-docs-6",
+      "cfo-ai-docs-28"
     ]
   },
   {
@@ -1580,14 +1578,15 @@
     "productId": "cfo-ai",
     "storyId": "automation-scheduled-jobs",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "cfo.ai's own docs let users change the time a connection refreshes each night, which is a user-configurable recurring sync job. The product also runs automatic overnight model rebuilds and advertises 'Proactive alerts & triggers'. These cover only fixed nightly data syncs and vendor-run automation, not general user-defined recurring workflows. missing for 10: user-defined schedules for arbitrary jobs or workflows (e.g., recurring reports, Ari tasks, scenario runs), configurable cadence beyond nightly sync time, documentation of how triggers are set up, independent or hands-on corroboration.",
+    "rationale": "cfo.ai's own docs show built-in recurring automation. Data connections refresh nightly and the user can change that refresh time. Ari keeps the Model current and messages proactively when numbers move. Pricing lists 'Proactive alerts & triggers', and one example is a board deck drafted off last night's numbers. There is no evidence that users can define their own recurring jobs or workflows with custom cadences. missing for 10: user-defined scheduled workflows/jobs with arbitrary cadence, documentation of how triggers are configured, scheduling via MCP/agent tools, independent or hands-on corroboration.",
     "evidenceIds": [
       "cfo-ai-docs-19",
-      "cfo-ai-docs-36",
       "cfo-ai-docs-28",
-      "cfo-ai-docs-12"
+      "cfo-ai-docs-12",
+      "cfo-ai-docs-15",
+      "cfo-ai-docs-17"
     ]
   },
   {
@@ -1623,15 +1622,15 @@
     "productId": "cfo-ai",
     "storyId": "budget-vs-actuals",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "low",
-    "rationale": "cfo.ai documents pieces of this story: it imports actuals from QuickBooks, Xero, NetSuite and Rillet, builds forecasts, and its Model supports Dimensions. Ari can explain 'why spending went up', and outputs print lineage back to the source line, which approximates drill-down into the transactions behind a number. However, no evidence describes a budget-vs-actuals report, a variance view split by department and account, or transaction-level drill-down from a variance. Missing for 10: an explicit budget-vs-actuals feature, a department/account variance breakdown, documented transaction drill-down from a variance, and independent or hands-on corroboration.",
+    "rationale": "cfo.ai pulls in actuals from QuickBooks, Xero, NetSuite and Rillet. It answers questions like \"why spending went up\" and says each number \"prints its lineage back to the source line\", which points toward variance explanation and drill-down to transactions. Its Model supports Dimensions, which could carry department and account splits. Missing for 10: an explicit budget-vs-actuals or variance report, documented department-and-account variance breakdowns, a documented drill-down from a variance to the underlying ledger transactions, and any hands-on or independent corroboration.",
     "evidenceIds": [
       "cfo-ai-docs-1",
+      "cfo-ai-docs-2",
       "cfo-ai-docs-3",
-      "cfo-ai-docs-5",
-      "cfo-ai-docs-21",
-      "cfo-ai-docs-34"
+      "cfo-ai-docs-11",
+      "cfo-ai-docs-21"
     ]
   },
   {
@@ -1922,14 +1921,13 @@
     "productId": "cfo-ai",
     "storyId": "scenario-assumption-tracking",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "cfo.ai records every Model change (formulas, Table blocks, Page edits) in a changelog under the user's name and makes it undoable. Numbers print lineage back to the source line, and users can open the Model to inspect and change assumptions. Scenarios are generated on request, but the docs never say each scenario keeps its own assumption record or that scenarios can be compared side by side. Missing for 10: explicit per-scenario assumption records, a documented scenario-comparison view tied to the audit trail, and independent or hands-on corroboration.",
+    "rationale": "cfo.ai documents a Model changelog that records every change under the user's name, with undo [cfo-ai-docs-23]. It also documents lineage back to the source line [cfo-ai-docs-11], user-editable assumptions [cfo-ai-docs-2], and one-line scenarios [cfo-ai-docs-14][cfo-ai-docs-6]. The docs never say the changelog is kept per scenario or that a scenario comparison surfaces the differing assumptions and their authors. missing for 10: explicit per-scenario assumption records, attribution of who changed each scenario's assumptions, an auditable side-by-side scenario comparison view, independent/hands-on corroboration.",
     "evidenceIds": [
-      "cfo-ai-docs-41",
       "cfo-ai-docs-23",
-      "cfo-ai-docs-32",
-      "cfo-ai-docs-34",
+      "cfo-ai-docs-11",
+      "cfo-ai-docs-2",
       "cfo-ai-docs-14",
       "cfo-ai-docs-6"
     ]
@@ -1999,29 +1997,28 @@
     "productId": "cfo-ai",
     "storyId": "three-statement-outputs",
     "verdict": "partial",
-    "quality": 4,
-    "confidence": "low",
-    "rationale": "cfo.ai documents a live financial Model you can open to \"check every number,\" forecasts of revenue, costs, and cash, actuals pulled from QuickBooks/Xero/NetSuite/Rillet, and outputs that \"print [their] lineage back to the source line.\" Together these point toward traceability from figures to source records. However, the evidence never names P&L, balance sheet, or cash flow statement views, and the lineage claim is short marketing copy that does not clearly describe interactive drill-down from any figure. Missing for 10: explicit P&L, balance sheet, and cash flow statement views; documented click-through drill-down from any figure to underlying transactions; independent or hands-on corroboration.",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "cfo.ai documents traceability: you can open the Model and check every number, outputs print their lineage back to the source line, and Actuals come in from QuickBooks, Xero, NetSuite, or Rillet. Its forecasting covers revenue, costs, and cash, but the docs never name P&L, balance sheet, or cash flow statement views. Missing for 10: explicit P&L, balance sheet, and cash flow statement views; documented click-through drill-down from a statement figure to individual ledger transactions; independent or hands-on corroboration.",
     "evidenceIds": [
-      "cfo-ai-docs-32",
-      "cfo-ai-docs-34",
-      "cfo-ai-docs-5",
+      "cfo-ai-docs-2",
+      "cfo-ai-docs-11",
       "cfo-ai-docs-3",
-      "cfo-ai-docs-36"
+      "cfo-ai-docs-5"
     ]
   },
   {
     "productId": "cfo-ai",
     "storyId": "variance-explanation",
     "verdict": "partial",
-    "quality": 4,
-    "confidence": "low",
-    "rationale": "First-party docs say users can ask Ari \"why spending went up,\" which is a period-over-period variance explanation, and Ari traces outputs back to the source line. Ari also proactively reports \"what changed,\" which is flagging, and actuals can be imported from the ledger. However, no evidence shows a structured budget-to-actual variance analysis or what form the explanations take. Missing for 10: explicit budget-vs-actual variance reporting, documentation of variance-driver decomposition and explanation depth, and any independent or hands-on corroboration.",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "The docs say users can ask Ari 'why spending went up' (cfo-ai-docs-1), which is a period-over-period variance explanation. Ari also proactively tells you what changed (cfo-ai-docs-12, cfo-ai-docs-30), computed numbers trace their lineage back to the source line (cfo-ai-docs-11), and actuals are imported from the ledger (cfo-ai-docs-3). Missing for 10: explicit budget-to-actual variance comparison, documentation of how explanations attribute drivers, and hands-on or independent corroboration of explanation quality.",
     "evidenceIds": [
       "cfo-ai-docs-1",
-      "cfo-ai-docs-30",
       "cfo-ai-docs-12",
-      "cfo-ai-docs-34",
+      "cfo-ai-docs-30",
+      "cfo-ai-docs-11",
       "cfo-ai-docs-3"
     ]
   },
@@ -2385,15 +2382,11 @@
   {
     "productId": "pigment",
     "storyId": "forecast-refresh-on-actuals",
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Pigment documents scheduled imports and native connectors for bringing data into the platform, which covers fresh actuals landing automatically. It also documents variance analysis on the same platform where the budget is built, suggesting actuals flow into the live model rather than a rebuilt one. Nothing explicitly describes the forecast re-baselining or rolling forward on closed-period actuals. Missing for 10: documented actuals-over-forecast replacement or rolling-forecast mechanics after close, evidence that the model updates without rebuild, hands-on or independent corroboration.",
-    "evidenceIds": [
-      "pigment-docs-7",
-      "pigment-docs-23",
-      "pigment-docs-8"
-    ]
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The pack has adjacent pieces: scheduled imports and native connectors for bringing data in, variance analysis alongside the budget, and a Modeler Agent that 'maintains' models. None of these documents a forecast that re-baselines on newly closed actuals while the model stays intact. Without evidence of rolling-forecast or actuals-override behaviour after close, these building blocks earn no credit for this story.",
+    "evidenceIds": []
   },
   {
     "productId": "pigment",
