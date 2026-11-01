@@ -6,7 +6,7 @@ Common startup lifecycle and conditional commerce, marketplace, consumption-bill
 
 A mapped guide is an entry point for the named need. This inventory does not establish universal completeness, country-law coverage, expert review or verified execution.
 
-Mapped guide entry points: **144 / 151 named needs**. The catalog has 210 process guides and 33 situation guides.
+Mapped guide entry points: **151 / 151 named needs**. The catalog has 217 process guides and 33 situation guides.
 
 See the [process and jurisdiction coverage report](PROCESS-COVERAGE.md) for local depth, professional review, execution evidence and explicit gaps.
 
@@ -100,7 +100,7 @@ Use each guide’s applicability, completion checks and approval requirements. O
 | Handle an employee grievance | When a worker raises a workplace concern outside the immediate safety or harassment-response route. | [Handle an employee grievance](../open-processes/pages/handle-an-employee-grievance.md) |
 | Plan employee training and development | When a role, promotion, control or business change creates a capability or training need. | [Plan employee training and development](../open-processes/pages/plan-employee-training-and-development.md) |
 | Approve a remote work location change | Before a worker starts working from a different country or location with new legal, tax or security implications. | [Approve a remote work location change](../open-processes/pages/approve-a-remote-work-location-change.md) |
-| Determine and review worker employment and tax status | Before engaging a worker or when the real working relationship changes. | Gap: no guide mapped |
+| Determine and review worker employment and tax status | Before engaging a worker or when the real working relationship changes. | [Determine and review worker status](../open-processes/pages/determine-and-review-worker-status.md) |
 
 ## Product and engineering
 
@@ -135,7 +135,7 @@ Use each guide’s applicability, completion checks and approval requirements. O
 | Configure metered usage billing | When a product charges based on measured consumption, credits or contract-specific usage commitments. | [Configure metered usage billing](../open-processes/pages/configure-metered-usage-billing.md) |
 | Scope and deliver a professional services engagement | When the company sells a defined consulting, implementation or other services project. | [Scope and deliver a professional services engagement](../open-processes/pages/scope-and-deliver-a-professional-services-engagement.md) |
 | Prepare and submit a public procurement bid | When the company is considering a government or other formal tender opportunity. | [Prepare and submit a public procurement bid](../open-processes/pages/prepare-and-submit-a-public-procurement-bid.md) |
-| Operate statutory consumer guarantees and remedies | When selling to consumers in a market with mandatory remedies or guarantee obligations. | Gap: no guide mapped |
+| Operate statutory consumer guarantees and remedies | When selling to consumers in a market with mandatory remedies or guarantee obligations. | [Handle consumer guarantees and statutory remedies](../open-processes/pages/handle-consumer-guarantees-and-statutory-remedies.md) |
 
 ## Privacy and security
 
@@ -176,8 +176,8 @@ Use each guide’s applicability, completion checks and approval requirements. O
 | Establish a foreign subsidiary or branch | When operating in another country requires a reviewed legal presence rather than remote sales alone. | [Establish a foreign subsidiary or branch](../open-processes/pages/establish-a-foreign-subsidiary-or-branch.md) |
 | Localize a product for a new market | Before committing to a commercial launch in a market with different user, language or operating needs. | [Localize a product for a new market](../open-processes/pages/localize-a-product-for-a-new-market.md) |
 | Review export controls sanctions and cross-border shipments | Before supplying goods, software, technology or services across borders with unresolved trade restrictions. | [Review export controls sanctions and cross-border shipments](../open-processes/pages/review-export-controls-sanctions-and-cross-border-shipments.md) |
-| Operate customs registration clearance and importer responsibilities | When moving goods across a customs border as an importer or exporter. | Gap: no guide mapped |
-| Manage temporary worker postings and cross-border social security | When sending workers temporarily to perform work in another country. | Gap: no guide mapped |
+| Operate customs registration clearance and importer responsibilities | When moving goods across a customs border as an importer or exporter. | [Prepare and clear a customs shipment](../open-processes/pages/prepare-and-clear-a-customs-shipment.md) |
+| Manage temporary worker postings and cross-border social security | When sending workers temporarily to perform work in another country. | [Prepare and manage a temporary cross-border worker posting](../open-processes/pages/prepare-and-manage-a-temporary-cross-border-worker-posting.md) |
 
 ## Physical products and supply chain
 
@@ -188,7 +188,7 @@ Use each guide’s applicability, completion checks and approval requirements. O
 | Manage inventory order fulfillment and returns | When the company holds physical stock or is responsible for delivering physical customer orders. | [Manage inventory order fulfillment and returns](../open-processes/pages/manage-inventory-order-fulfillment-and-returns.md) |
 | Assess product safety concerns and coordinate a recall | When a physical product may present a safety defect or a regulator or supplier raises a concern. | [Assess product safety concerns and coordinate a recall](../open-processes/pages/assess-product-safety-concerns-and-coordinate-a-recall.md) |
 | Design prototype and validate a physical product | Before committing a physical product design to tooling, production or customer release. | [Design prototype and validate a physical product](../open-processes/pages/design-prototype-and-validate-a-physical-product.md) |
-| Assess and operate packaging producer responsibilities | When placing packaging or packaged goods on a market with producer obligations. | Gap: no guide mapped |
+| Assess and operate packaging producer responsibilities | When placing packaging or packaged goods on a market with producer obligations. | [Assess and operate packaging producer responsibilities](../open-processes/pages/assess-and-operate-packaging-producer-responsibilities.md) |
 
 ## Regulated market entry
 
@@ -203,7 +203,7 @@ Use each guide’s applicability, completion checks and approval requirements. O
 | Establish intellectual-property and confidentiality ownership | When the described activity is part of the company operating model. | [Get IP assignments signed](../open-processes/pages/get-ip-assignments-signed.md) · [Send NDA](../open-processes/pages/send-nda.md) · [File trademark](../open-processes/pages/file-trademark.md) · [Monitor trademark / handle availability](../open-processes/pages/monitor-trademark-handle-availability.md) |
 | Assess and file a patent application | When a potentially patentable invention is identified before public disclosure or a filing decision. | [Assess and file a patent application](../open-processes/pages/assess-and-file-a-patent-application.md) |
 | Protect trade secrets and confidential know-how | When valuable confidential technical or commercial information requires a deliberate protection plan. | [Protect trade secrets and confidential know-how](../open-processes/pages/protect-trade-secrets-and-confidential-know-how.md) |
-| Assess competition rules before competitor collaboration | Before agreements or information exchanges with actual or potential competitors. | Gap: no guide mapped |
+| Assess competition rules before competitor collaboration | Before agreements or information exchanges with actual or potential competitors. | [Review competitor collaboration and information exchange](../open-processes/pages/review-competitor-collaboration-and-information-exchange.md) |
 
 ## Exit and continuity
 
@@ -213,7 +213,7 @@ Use each guide’s applicability, completion checks and approval requirements. O
 | Sell the company through an acquisition | When shareholders and the board choose to evaluate or pursue a company sale. | [Sell the company through an acquisition](../open-processes/pages/sell-the-company-through-an-acquisition.md) |
 | Acquire and integrate another business | When the company evaluates purchasing another company, product line or business assets. | [Acquire and integrate another business](../open-processes/pages/acquire-and-integrate-another-business.md) |
 | Assess IPO readiness and public-company operations | When the board considers whether a public listing could be an appropriate financing or liquidity route. | [Assess IPO readiness and public-company operations](../open-processes/pages/assess-ipo-readiness-and-public-company-operations.md) |
-| Manage insolvency and formal restructuring | When the company cannot pay its obligations or needs a formal restructuring route. | Gap: no guide mapped |
+| Manage insolvency and formal restructuring | When the company cannot pay its obligations or needs a formal restructuring route. | [Assess distress and manage formal restructuring](../open-processes/pages/assess-distress-and-manage-formal-restructuring.md) |
 
 ## Event response
 
@@ -385,5 +385,6 @@ Source jurisdiction describes the cited material. A source from one country does
 | [Your Europe competition rules](https://europa.eu/youreurope/business/selling-in-eu/competition-between-businesses/competition-rules-eu/index_en.htm) | EU competition | 2026-11-01 |
 | [Your Europe posting staff abroad](https://europa.eu/youreurope/business/hiring-managing-staff/cross-border-posted-workers/posting-staff-abroad/index_en.htm) | EU posted workers | 2026-11-01 |
 | [HMRC Corporation Tax account services](https://www.gov.uk/limited-company-formation/add-corporation-tax-services-to-business-tax-account) | UK company tax registration and account access | 2026-11-01 |
+| [GOV.UK import goods into the UK step by step](https://www.gov.uk/import-goods-into-uk) | UK import declarations and release; route-specific exceptions apply | 2026-11-01 |
 
 [Expansion audit](startup-expansion-audit.json) · [Country expansion sources and gaps](startup-country-expansion.json) · [Fictional examples and approval gates](fixtures/startup-lifecycle-coverage.json) · [Full guide index](../open-processes/README.md#record-pages)
