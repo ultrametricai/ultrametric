@@ -135,6 +135,14 @@ export const FEASIBILITY_ICONS: Record<'drivable' | 'assist' | 'policy-gate' | '
 // pick as the semantic guide each glyph was drawn from.
 
 export const PROCESS_ICONS: Record<string, string> = {
+  'startup-coverage.prepare-and-manage-a-temporary-cross-border-worker-posting': pi('world', 'orange'),
+  'startup-coverage.review-competitor-collaboration-and-information-exchange': pi('scales', 'amber'),
+  'startup-coverage.assess-distress-and-manage-formal-restructuring': pi('ledger', 'emerald'),
+  'startup-coverage.determine-and-review-worker-status': pi('people', 'orange'),
+  'startup-coverage.assess-and-operate-packaging-producer-responsibilities': pi('shield-check', 'sky'),
+  'startup-coverage.prepare-and-clear-a-customs-shipment': pi('world', 'orange'),
+  'startup-coverage.handle-consumer-guarantees-and-statutory-remedies': pi('lifebuoy', 'fuchsia'),
+  'startup-coverage.prepare-and-file-statutory-annual-accounts': pi('ledger', 'emerald'),
   // Startup lifecycle expansion, grouped by the task domain.
   'startup-coverage.launch-an-online-storefront': pi('handshake', 'fuchsia'),
   'startup-coverage.set-up-marketplace-seller-onboarding-and-payouts': pi('handshake', 'fuchsia'),
