@@ -1,6 +1,8 @@
 // Analytic score-intervals pass (v1, no new judging) — writes open-rankings/{cat}/score-intervals.json,
-// the 68% confidence band on every product's Overall score and agent-readiness. All the modeling
-// and math live in lib/scoreIntervals.ts (buildMeasuredNoiseModel + simulateScoreInterval — see
+// the point-containing uncertainty interval on every product's Overall score and agent-readiness.
+// Each stored interval is the envelope of the nominal 68% (16th/84th percentile) sampled band and
+// the published point, so coverage can be wider. All the modeling and math live in
+// lib/scoreIntervals.ts (buildMeasuredNoiseModel + simulateScoreInterval — see
 // that module's doc for the precise method); this script only:
 //
 //   1. Aggregates the MEASURED judge re-roll statistics fleet-wide from every
