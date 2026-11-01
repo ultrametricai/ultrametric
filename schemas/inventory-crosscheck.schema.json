@@ -1,0 +1,123 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "version": {
+      "type": "number",
+      "const": 1
+    },
+    "checkedOn": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    },
+    "method": {
+      "type": "string",
+      "minLength": 1
+    },
+    "author": {
+      "type": "string",
+      "minLength": 1
+    },
+    "independentReview": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "reviewer": {
+              "type": "string",
+              "minLength": 1
+            },
+            "qualification": {
+              "type": "string",
+              "enum": [
+                "editorial",
+                "accounting",
+                "legal",
+                "employment",
+                "tax",
+                "security"
+              ]
+            },
+            "independent": {
+              "type": "boolean"
+            },
+            "reviewedOn": {
+              "type": "string",
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+            },
+            "reviewDue": {
+              "type": "string",
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+            },
+            "evidenceUrl": {
+              "type": "string",
+              "format": "uri"
+            }
+          },
+          "required": [
+            "reviewer",
+            "qualification",
+            "independent",
+            "reviewedOn",
+            "reviewDue",
+            "evidenceUrl"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "checks": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "sourceId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "locator": {
+            "type": "string",
+            "minLength": 1
+          },
+          "needIds": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "finding": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "id",
+          "sourceId",
+          "locator",
+          "needIds",
+          "finding"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "version",
+    "checkedOn",
+    "method",
+    "author",
+    "independentReview",
+    "checks"
+  ],
+  "additionalProperties": false
+}

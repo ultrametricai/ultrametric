@@ -1,0 +1,197 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "version": {
+      "type": "number",
+      "const": 1
+    },
+    "snapshotDate": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    },
+    "requestIssue": {
+      "type": "integer",
+      "exclusiveMinimum": 0,
+      "maximum": 9007199254740991
+    },
+    "scope": {
+      "type": "string",
+      "minLength": 1
+    },
+    "countries": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "businessModels": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "includedWork": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "exclusions": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "scope": {
+            "type": "string",
+            "minLength": 1
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "id",
+          "scope",
+          "reason"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "independentScopeReview": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "reviewer": {
+              "type": "string",
+              "minLength": 1
+            },
+            "qualification": {
+              "type": "string",
+              "enum": [
+                "editorial",
+                "accounting",
+                "legal",
+                "employment",
+                "tax",
+                "security"
+              ]
+            },
+            "independent": {
+              "type": "boolean"
+            },
+            "reviewedOn": {
+              "type": "string",
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+            },
+            "reviewDue": {
+              "type": "string",
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+            },
+            "evidenceUrl": {
+              "type": "string",
+              "format": "uri"
+            }
+          },
+          "required": [
+            "reviewer",
+            "qualification",
+            "independent",
+            "reviewedOn",
+            "reviewDue",
+            "evidenceUrl"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "maintenance": {
+      "type": "object",
+      "properties": {
+        "owner": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "sourceMaxAgeDays": {
+          "type": "integer",
+          "exclusiveMinimum": 0,
+          "maximum": 9007199254740991
+        },
+        "instructionMaxAgeDays": {
+          "type": "integer",
+          "exclusiveMinimum": 0,
+          "maximum": 9007199254740991
+        },
+        "missingOwnerIsBlocker": {
+          "type": "boolean",
+          "const": true
+        }
+      },
+      "required": [
+        "owner",
+        "sourceMaxAgeDays",
+        "instructionMaxAgeDays",
+        "missingOwnerIsBlocker"
+      ],
+      "additionalProperties": false
+    },
+    "qualificationByDomain": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string"
+      },
+      "additionalProperties": {
+        "minItems": 1,
+        "type": "array",
+        "items": {
+          "type": "string",
+          "enum": [
+            "editorial",
+            "accounting",
+            "legal",
+            "employment",
+            "tax",
+            "security"
+          ]
+        }
+      }
+    }
+  },
+  "required": [
+    "version",
+    "snapshotDate",
+    "requestIssue",
+    "scope",
+    "countries",
+    "businessModels",
+    "includedWork",
+    "exclusions",
+    "independentScopeReview",
+    "maintenance",
+    "qualificationByDomain"
+  ],
+  "additionalProperties": false
+}
