@@ -1,17 +1,17 @@
 {
-  "hash": "e47cc7ea5860190c5bb315562b3dd1ac4caf3ef79023b0f0d059c9d8b35556d6",
+  "hash": "26cea32208189cc59e462c7b38f79b50060fd6433e407ebd6b81cd726c95e353",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "BigQuery's loading docs describe a managed Pub/Sub BigQuery subscription that streams data in real time, \"loading data as it's generated\" at high throughput, so the user runs no pipeline of their own. The docs also describe near-real-time replication from databases and scheduled recurring transfers. The event-streaming core of the story is clearly delivered, but continuous ingestion of new files as they land is only evidenced as scheduled batch transfers at intervals. Missing for 10: event-driven file-arrival ingestion, detail on the Pub/Sub subscription and replication setup, and independent or hands-on corroboration.",
+    "rationale": "BigQuery's loading docs describe real-time event ingestion through a Pub/Sub BigQuery subscription, which loads data as it is generated without user-run pipeline infrastructure. They also mention near-real-time replication from databases. File ingestion, however, is only shown as scheduled or batch load jobs through the Data Transfer Service, not continuous on-arrival loading. The event path also relies on the companion Pub/Sub service rather than BigQuery itself. missing for 10: documented continuous file-arrival ingestion (not just scheduled transfers), detail on the managed event path's operational behavior (latency, schema handling), independent or hands-on corroboration that ingestion works without self-managed infrastructure.",
     "evidenceIds": [
       "bigquery-docs-18",
       "bigquery-docs-42",
-      "bigquery-docs-29",
-      "bigquery-docs-36",
-      "bigquery-docs-41"
+      "bigquery-docs-120",
+      "bigquery-docs-41",
+      "bigquery-docs-36"
     ],
     "productId": "bigquery",
     "storyId": "managed-continuous-ingestion"

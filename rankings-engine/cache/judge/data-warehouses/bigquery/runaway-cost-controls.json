@@ -1,15 +1,17 @@
 {
-  "hash": "e798eb479c19b495bae5e2e2464fd0e2f1fd53128a5d7fd83c29aab45f6c0062",
+  "hash": "caee0d814d6ee581d2958d94b88e57c37fa6709e164a38d9f14de83d00bcdabd",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "partial",
-    "quality": 5,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "BigQuery documents custom quotas that cap the amount of data processed per day, which is a native control that stops runaway on-demand query spend across projects and users. Nothing in the evidence covers idle-compute auto-suspend, budget enforcement, or slot-reservation resource monitors. A community report of a $14,000 bill with no warning shows that protection is not on by default, but it does not contradict the quota feature. missing for 10: auto-suspend or scale-to-zero for reserved slot compute, budget alerts or enforcement, per-query cost caps, independent corroboration that custom quotas halt overnight runaway spend.",
+    "rationale": "BigQuery documents custom quotas that cap the amount of data processed per day at the project or user level, explicitly to control costs (bigquery-docs-63, bigquery-docs-76, bigquery-docs-118). Community users corroborate per-query byte limits plus custom quotas as the safeguard, but note that a looping script can get past a per-query limit (bigquery-comm-6). The $14k surprise bill shows these guards are not on by default, not that they fail (bigquery-comm-1-refresh-4c1f88658aaf2867). Missing for 10: documented budget alerts or auto-stop for reserved slot capacity, idle-compute suspension for reservations, evidence that safeguards are enabled by default, and hands-on confirmation that the daily quota halts a runaway overnight job.",
     "evidenceIds": [
       "bigquery-docs-63",
       "bigquery-docs-76",
-      "bigquery-comm-1"
+      "bigquery-docs-118",
+      "bigquery-comm-6-refresh-635c5c074a7df888",
+      "bigquery-comm-1-refresh-4c1f88658aaf2867"
     ],
     "productId": "bigquery",
     "storyId": "runaway-cost-controls"

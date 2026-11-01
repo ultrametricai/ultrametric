@@ -1,16 +1,18 @@
 {
-  "hash": "17b6fa292fe8e019da672bac443f5e2661bda92c2d3fcbd491295b3fa0f45e99",
+  "hash": "f8b5d4ca190ec1cadbb0d888763ca222342e49ca4d6a4a74c72bf81785ef9a5b",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "partial",
-    "quality": 5,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "The evidence shows Snowflake's own file-loading path. COPY INTO is referenced as the manual load statement, Snowpipe loads files from a stage in micro-batches, and a community user confirms the COPY command loads JSON Lines files and skips files it already loaded. Semi-structured loading is also documented. However, the pack never names CSV or Parquet as supported formats, never ties stages to cloud object storage, and never shows the single-command syntax. missing for 10: explicit COPY INTO documentation covering CSV/JSON/Parquet, evidence that stages map to external cloud object storage (S3/GCS/Azure), command syntax/reference detail, independent hands-on corroboration for CSV and Parquet.",
+    "rationale": "Snowflake documents COPY INTO, stages and file formats as its ingestion path, along with SQL for bulk copying data into tables. Snowpipe docs describe loading staged files as an automated alternative to manually running COPY statements. A hands-on user confirms the COPY command loads many JSON Lines files straight from a bucket and skips files already loaded. Missing for 10: explicit evidence naming CSV and Parquet as supported formats, and first-party detail on COPY INTO syntax for external cloud stages (S3/GCS/Azure).",
     "evidenceIds": [
+      "snowflake-docs-88",
+      "snowflake-docs-92",
       "snowflake-docs-6",
-      "snowflake-docs-7",
+      "snowflake-docs-81",
       "snowflake-supp-sql-semistructured",
-      "snowflake-comm-4"
+      "snowflake-comm-5-refresh-74eef2cc02b09e5e"
     ],
     "productId": "snowflake",
     "storyId": "bulk-load-object-storage"

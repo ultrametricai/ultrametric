@@ -1,21 +1,20 @@
 {
-  "hash": "449855e31009f78189881c5e952e799c863e321e984fa46d73cf89f5a901eff6",
+  "hash": "c0b567170935d40acb6f28bfd9d214b08549a69abe796ce9645c16b0a91134d9",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "MotherDuck's remote MCP server exposes a read-write `query_rw` tool, so agents can run INSERT, UPDATE, DELETE and schema changes in SQL. Those statements act on whole sets of rows at once. Bulk-scale work is also backed by whole-database uploads, table loads from Postgres/MySQL, scheduled Python Flights jobs for ingest and transformation, and backfills on large Mega instances. Missing for 10: no explicit docs framing these as bulk or batch operations (no limits, transactional guarantees or batch semantics described), and no independent or hands-on corroboration of agent-driven bulk modifications.",
+    "rationale": "MotherDuck's remote MCP server lets agents run read-write SQL through the query_rw tool, including INSERT, UPDATE, DELETE, table creation and schema changes. Because these are set-based statements, one operation can change many rows or tables at once. The docs also cover bulk-scale workloads such as backfills on Mega instances, loading whole databases or tables from other sources, and scheduled Flights Python jobs for ingest and transformation. Missing for 10: explicit documentation framing these as bulk or batch operations (limits, transactional guarantees for large multi-item changes), and independent or hands-on corroboration of agent-driven bulk writes.",
     "evidenceIds": [
       "motherduck-docs-63",
-      "motherduck-docs-51",
-      "motherduck-docs-49",
+      "motherduck-docs-67",
       "motherduck-docs-38",
       "motherduck-docs-50",
-      "motherduck-docs-62",
-      "motherduck-docs-3",
       "motherduck-docs-29",
-      "motherduck-docs-42"
+      "motherduck-docs-42",
+      "motherduck-docs-62",
+      "motherduck-docs-3"
     ],
     "productId": "motherduck",
     "storyId": "automation-bulk-operations"
