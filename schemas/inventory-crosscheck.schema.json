@@ -1,0 +1,136 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "version": {
+      "type": "number",
+      "const": 1
+    },
+    "checkedOn": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    },
+    "method": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "author": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "independentReview": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "reviewer": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "qualification": {
+              "type": "string",
+              "enum": [
+                "editorial",
+                "accounting",
+                "legal",
+                "employment",
+                "tax",
+                "security"
+              ]
+            },
+            "independent": {
+              "type": "boolean"
+            },
+            "contentDigest": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "reviewedOn": {
+              "type": "string",
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+            },
+            "reviewDue": {
+              "type": "string",
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+            },
+            "evidenceUrl": {
+              "type": "string",
+              "format": "uri"
+            }
+          },
+          "required": [
+            "reviewer",
+            "qualification",
+            "independent",
+            "contentDigest",
+            "reviewedOn",
+            "reviewDue",
+            "evidenceUrl"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "checks": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "sourceId": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "locator": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "needIds": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            }
+          },
+          "finding": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          }
+        },
+        "required": [
+          "id",
+          "sourceId",
+          "locator",
+          "needIds",
+          "finding"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "version",
+    "checkedOn",
+    "method",
+    "author",
+    "independentReview",
+    "checks"
+  ],
+  "additionalProperties": false
+}
