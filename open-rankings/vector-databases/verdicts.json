@@ -4720,10 +4720,9 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "medium",
-    "rationale": "turbopuffer documents API tokens that can be created and expired in the dashboard, which covers the API-key part of the story. The permissions doc only recommends storing user_id/group_ids on documents and filtering at query time. That is an application-side pattern, not access control enforced by the database, so it earns no credit. Missing for 10: role-based access control, per-namespace (per-collection) scoped keys or permissions, granular read/write operation scoping, independent corroboration.",
+    "rationale": "turbopuffer documents API tokens that can be created and expired in the dashboard, which covers the API-key part of the story. There is no evidence of roles, RBAC, or tokens scoped per namespace. The permissions guide only describes storing user/group IDs on documents and filtering at query time. That is an application-level building block, not enforced access control, so it earns no credit. Missing for 10: role-based access control, per-namespace/collection scoped permissions, key scoping (e.g. read-only vs write), and any independent corroboration.",
     "evidenceIds": [
-      "turbopuffer-docs-35",
-      "turbopuffer-docs-28"
+      "turbopuffer-docs-35"
     ]
   },
   {
@@ -4749,7 +4748,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "turbopuffer is a vector and full-text search database. A product of this kind could plausibly offer in-product AI insights or suggestions, so the axis applies. The evidence shows native embedding, managed reranking and a dashboard for browsing documents and running queries. These are retrieval building blocks and adjacent features, not AI-generated insights or suggestions surfaced from the user's data inside the product.",
+    "rationale": "turbopuffer is a vector and full-text search database, and a data product like this could plausibly offer in-product AI insights, so the axis applies. However, nothing in the evidence shows AI-generated insights or suggestions about a user's data. Native embedding, managed reranking and the dashboard's document browsing and querying are retrieval primitives and adjacent features, not insight generation, so they earn no credit.",
     "evidenceIds": []
   },
   {
@@ -4758,7 +4757,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Automations are a fair question for a search database, since databases can ship scheduled jobs or triggers, so the axis applies. The evidence shows no user-configurable automations, schedules, or triggers. Async operations via the `Prefer: respond-async` header and automatic background indexing are adjacent features that run a single requested operation, not automations the user sets up, so they earn no credit.",
+    "rationale": "A managed search database could plausibly offer user-configured background automations such as scheduled jobs or triggers, so the axis applies. The evidence shows no such capability. The `Prefer: respond-async` header and automatic incremental indexing are adjacent behaviors: they let individual operations finish asynchronously but do not let users set up autonomous automations, so they earn no credit.",
     "evidenceIds": []
   },
   {
@@ -4767,7 +4766,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "An in-product AI assistant is a fair question for a managed search database with a web dashboard, since many database services ship one, so the axis applies. The evidence shows no built-in assistant that accepts delegated tasks. The dashboard's document browsing and query running, native embedding, and the llms.txt file for external agents are adjacent features, not a built-in assistant.",
+    "rationale": "turbopuffer is a hosted search database with a dashboard, so an in-product AI assistant that takes delegated tasks is a fair thing for a buyer to ask about. The evidence shows no such assistant. The dashboard's document browsing and query running, native embedding and managed reranking are adjacent features, not an assistant users can delegate tasks to.",
     "evidenceIds": []
   },
   {
@@ -4776,12 +4775,13 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "turbopuffer is an API-first service: it authenticates with API tokens (docs-35), supports background async operations via the `Prefer: respond-async` header (docs-34), and ships API clients (docs-10). Its docs also recommend isolated per-test namespaces for testing (docs-37), so it can be driven non-interactively from scripts and CI. missing for 10: an official CLI, explicit CI/automation integration guides, programmatic token creation (docs show tokens managed only in the dashboard), a published OpenAPI spec (probe found none), and independent hands-on corroboration of CI usage.",
+    "rationale": "turbopuffer is an API-first service that runs headlessly by design. It ships official SDKs in Python, TypeScript, Go, Java, Ruby and Rust, uses token-based API auth, and supports async long-running operations that the clients handle by blocking until completion. Its docs explicitly recommend isolated per-test namespaces for testing, which fits CI use. missing for 10: no CLI or CI-specific guides (e.g. CI pipeline examples), programmatic API-token provisioning (tokens are created in the dashboard), a published OpenAPI spec (probes returned 404), and independent hands-on corroboration of CI usage.",
     "evidenceIds": [
-      "turbopuffer-docs-34",
+      "turbopuffer-docs-39",
       "turbopuffer-docs-35",
       "turbopuffer-docs-37",
-      "turbopuffer-docs-10",
+      "turbopuffer-docs-34",
+      "turbopuffer-docs-40",
       "turbopuffer-probe-3"
     ]
   },
@@ -4790,8 +4790,8 @@
     "storyId": "agentic-mcp-client",
     "verdict": "na",
     "quality": 0,
-    "confidence": "medium",
-    "rationale": "turbopuffer is a vector and full-text search database, not an agent or AI application that calls tools. Acting as an MCP client that consumes other servers' tools is a category error for this kind of product. Nothing in the evidence shows it ships any MCP-client capability that would make the axis apply.",
+    "confidence": "high",
+    "rationale": "turbopuffer is a vector and full-text search engine built on object storage, not an agent or assistant that invokes tools. Plugging in MCP servers as a client is a category error for this kind of product, and nothing in the evidence shows it has any tool-calling or MCP-client capability that would make the axis apply.",
     "evidenceIds": []
   },
   {
@@ -4800,7 +4800,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "turbopuffer is a hosted search/database service, not an agent, so shipping an official MCP server is a fair question to ask of it. Nothing in the evidence pack mentions an MCP server, hosted MCP endpoint, or agent connector. The llms.txt file and the HTTP API are adjacent developer building blocks, not an MCP server, so they earn no credit.",
+    "rationale": "turbopuffer is a hosted vector and full-text search service, so an official MCP server is a fair capability to ask about. The evidence pack documents only SDKs (Python, TypeScript, Go, Java, Ruby, Rust), a REST API and an llms.txt file, with no MCP server. llms.txt and SDKs are adjacent agent-friendly features or developer building blocks, not an MCP server.",
     "evidenceIds": []
   },
   {
@@ -4809,7 +4809,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nothing in the evidence shows turbopuffer offering a natural-language command interface, such as an NL console, dashboard assistant, or agent that translates plain-English instructions into operations. Its llms.txt file, native embedding and semantic vector search are adjacent features or developer building blocks rather than operating the product through natural-language commands. The axis is a fair question for a cloud search service, so the absence of evidence yields none rather than na.",
+    "rationale": "Operating a managed search database through natural-language commands is a fair axis for this kind of product, but the evidence shows no such capability, such as a natural-language console, an NL-to-query assistant, or an agent interface. The nearest items do not count: native embedding of text queries is semantic search over data, not commanding the product. The llms.txt file and the dashboard query browser are documentation and UI, not natural-language operation.",
     "evidenceIds": []
   },
   {
@@ -4818,7 +4818,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "An official CLI is a plausible offering for a hosted search service like turbopuffer, so the axis applies. The evidence mentions only an HTTP API, a beta Rust API client, a dashboard and llms.txt. None of these is a command-line tool: SDKs and dashboards are adjacent features and do not count toward this story.",
+    "rationale": "An official CLI is a fair question for a hosted vector/full-text search service, so the axis applies. However, the evidence shows only language SDKs (Python, TypeScript, Go, Java, Ruby, Rust), a dashboard and an HTTP API. None of these is an official command-line tool, and SDK client libraries do not count as a CLI.",
     "evidenceIds": []
   },
   {
@@ -4827,16 +4827,16 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "turbopuffer is an API-driven product. Its docs include an API overview covering token auth and the async `Prefer: respond-async` header, plus documented write, query, namespace-listing, metadata and recall endpoints, a Rust API client in beta, and a live llms.txt. Together these let an AI-native user drive the product programmatically. Missing for 10: a machine-readable OpenAPI/Swagger spec (all probed paths returned 404) and independent hands-on corroboration of API usage.",
+    "rationale": "turbopuffer is API-first. Its documented API overview covers token auth, async operations via the `Prefer: respond-async` header and compression behavior. It also documents write, query, namespace and metadata endpoints in detail, ships official SDKs in Python, TypeScript, Go, Java, Ruby and Rust, and serves an llms.txt for agent consumption. Missing for 10: no machine-readable OpenAPI spec (all probed paths returned 404), no independent or hands-on corroboration of driving the API.",
     "evidenceIds": [
       "turbopuffer-docs-34",
       "turbopuffer-docs-35",
-      "turbopuffer-docs-24",
+      "turbopuffer-docs-40",
+      "turbopuffer-docs-39",
       "turbopuffer-docs-21",
-      "turbopuffer-docs-20",
+      "turbopuffer-docs-24",
       "turbopuffer-docs-27",
-      "turbopuffer-docs-14",
-      "turbopuffer-docs-10",
+      "turbopuffer-docs-20",
       "turbopuffer-probe-1",
       "turbopuffer-probe-3"
     ]
@@ -4847,17 +4847,19 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The only credential-related evidence is that tokens can be created and expired in the dashboard. That covers token issuance and revocation but says nothing about limiting a token's permissions, such as by namespace or to read-only access. The permissions doc describes application-side, per-document filtering by user_id/group_ids, which is an adjacent pattern and not scoped API credentials. Neither delivers least-privilege credentials for an agent.",
+    "rationale": "The evidence shows that tokens can be created and expired in the dashboard, but nothing documents scoping them by namespace, operation, or read/write permission, which is the least-privilege core of this story. Plain token creation is an adjacent control. The permissions doc describes app-side document filtering by user_id or group_ids, which is a user workaround rather than credential scoping, so neither earns credit.",
     "evidenceIds": []
   },
   {
     "productId": "turbopuffer",
     "storyId": "agentic-sdks",
-    "verdict": "partial",
-    "quality": 4,
-    "confidence": "medium",
-    "rationale": "The roadmap documents a first-party Rust API client beta release, which shows turbopuffer ships official SDKs. But the only one evidenced is a single beta-stage client, and the pack names no other language SDKs, install or usage docs, or hands-on reports. Missing for 10: documented stable SDKs across major languages (e.g., Python/TypeScript/Go), SDK reference docs, a published OpenAPI spec (probes 404), independent corroboration of SDK quality.",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "The quickstart documents official SDKs for Python, TypeScript, Go, Java, Ruby and Rust, each with install instructions and a full write/query code sample. The API overview also describes behaviors the official client libraries handle automatically, such as compression defaults and blocking on async operations. Missing for 10: independent or hands-on corroboration of SDK quality, and the Rust client is still only a beta release.",
     "evidenceIds": [
+      "turbopuffer-docs-39",
+      "turbopuffer-docs-40",
       "turbopuffer-docs-10"
     ]
   },
@@ -4867,7 +4869,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Webhooks are a fair axis for a hosted SaaS search service, but the evidence never documents registrable outbound HTTP callbacks for events. The `Prefer: respond-async` header and monitoring of long-running `copy_from_namespace` operations are adjacent polling and async features, not webhook subscriptions.",
+    "rationale": "turbopuffer is a managed search/database service, so outbound event webhooks (for example, on index or copy completion) are a fair capability to ask about. The evidence pack documents no registrable HTTP callbacks. The nearest features are the `Prefer: respond-async` header and monitoring a long-running `copy_from_namespace`, but both are polling or async-request patterns and do not count as webhooks.",
     "evidenceIds": []
   },
   {
@@ -4876,7 +4878,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "turbopuffer has API reference pages such as api-overview, write and query docs, but nothing in the evidence shows they are interactive or include runnable 'try it' examples. The probe found no OpenAPI or Swagger spec at any candidate path. The dashboard's ability to browse documents and run queries is an adjacent feature, not an interactive API reference, so it earns no credit.",
+    "rationale": "The evidence shows static API documentation with multi-language code samples in the quickstart and API overview, but nothing about an interactive API reference where examples can be run in-browser. The OpenAPI/Swagger probes all returned 404. The dashboard's ability to browse documents and run queries is an adjacent feature, not an interactive API reference, so it earns no credit.",
     "evidenceIds": []
   },
   {
@@ -4885,7 +4887,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "turbopuffer is an API-first search service, so a downloadable API spec is a fair question. However, every probed OpenAPI/Swagger path returned 404, and nothing in the evidence documents a machine-readable API spec. The llms.txt index, per-page Markdown docs and client SDKs are adjacent documentation and tooling, not an OpenAPI or equivalent spec, so they earn no credit.",
+    "rationale": "turbopuffer is an HTTP API service, so offering a downloadable OpenAPI or equivalent spec is a fair question to ask of it. The evidence shows no such spec: every probed OpenAPI/Swagger path returned 404, and the docs never mention a spec download. The llms.txt file, markdown doc pages and multi-language SDKs are adjacent features, not a machine-readable API spec, so they earn no credit here.",
     "evidenceIds": []
   },
   {
@@ -4894,12 +4896,11 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "turbopuffer's own docs describe testing with isolated per-test namespaces. It can also branch a namespace into an instant copy-on-write clone, or copy one server-side, so tests can run on a copy of production data without modifying the original. However, these are namespace-level isolation patterns, each evidenced by a single line, rather than a dedicated sandbox environment. Missing for 10: a dedicated sandbox or test-mode environment, test-scoped API keys or access separation from production, in-depth testing docs, and independent or hands-on corroboration.",
+    "rationale": "turbopuffer documents its own ways to test in isolation: the docs recommend testing with isolated per-test namespaces, and 'branch from namespace' instantly creates a copy-on-write clone, so tests can run against realistic data without modifying the production namespace. Server-side namespace copies add another way to stage test data. However, there is no evidence of a dedicated sandbox or test-mode environment; isolation happens at the namespace level inside the same account. Missing for 10: a dedicated sandbox/test environment or test-mode credentials, documented credential scoping that keeps test tokens away from production namespaces, in-depth testing docs beyond a one-line mention, and independent or hands-on corroboration.",
     "evidenceIds": [
       "turbopuffer-docs-37",
       "turbopuffer-docs-23",
-      "turbopuffer-docs-33",
-      "turbopuffer-docs-27"
+      "turbopuffer-docs-33"
     ]
   },
   {
@@ -4908,7 +4909,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "API versioning and deprecation policy is a fair question for a SaaS search API like turbopuffer, so the axis applies. Nothing in the evidence pack mentions API versions, version headers, or a documented deprecation policy: the API overview items cover async headers and tokens, and the roadmap items cover features and a beta Rust client. The probes also found no OpenAPI spec.",
+    "rationale": "API versioning and deprecation policy apply to any API-first SaaS like turbopuffer, but the evidence pack never documents API versions, version pinning, or a deprecation or sunset policy. The only hint is the Go SDK module path `turbopuffer-go/v2`, which is a client-library major version, not a versioned API contract or deprecation policy, so it earns no credit.",
     "evidenceIds": []
   },
   {
@@ -4917,7 +4918,7 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "turbopuffer documents native bulk operations. It supports patch-by-filter and delete-by-filter across all matching documents, column-based batch upserts, and conditional writes. Server-side namespace copies and copy-on-write branching can run in the background via `Prefer: respond-async`. Missing for 10: independent or hands-on corroboration of bulk operations at scale, and documented batch size limits or throughput for bulk writes.",
+    "rationale": "turbopuffer documents first-party bulk operations. Patch-by-filter and delete-by-filter modify or remove every document matching a filter, and column-based upserts write many rows in a single request. Server-side namespace copies, copy-on-write branching and async (`Prefer: respond-async`) execution cover long-running bulk jobs. missing for 10: independent or hands-on corroboration of bulk operations at scale, documented batch-size limits and per-item error handling.",
     "evidenceIds": [
       "turbopuffer-docs-22",
       "turbopuffer-docs-24",
@@ -4934,7 +4935,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Event-driven rules such as triggers, change streams or webhooks are a fair question for a database or search service, so the axis applies. However, the evidence shows no capability to define rules that fire actions automatically on events. Conditional writes, patch/delete by filter and async operations are request-time controls invoked by the caller, not event-triggered automation, so they earn no credit.",
+    "rationale": "Event-driven rules are a fair axis for a database or search service, which could ship triggers, change streams, or webhooks, so the story applies. The evidence pack documents no such capability. Conditional writes and patch- or delete-by-filter are adjacent controls: the user runs them explicitly, and nothing fires automatically on an event, so they earn no credit.",
     "evidenceIds": []
   },
   {
@@ -4943,7 +4944,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Scheduled or recurring jobs are a fair question for a managed database service, for example scheduled backups or periodic maintenance, so the axis applies. The evidence pack documents no scheduling capability. Async background operations (`Prefer: respond-async`) and monitoring a long-running `copy_from_namespace` are adjacent one-off features, not recurring job scheduling.",
+    "rationale": "Scheduled recurring work, such as scheduled backups or periodic jobs, is a plausible capability for a managed database service, so the axis applies. However, the evidence documents no scheduler, cron, or recurring-workflow feature. The closest items are one-off background operations (the `Prefer: respond-async` header, monitoring a long-running `copy_from_namespace`), which are adjacent features and earn no credit.",
     "evidenceIds": []
   },
   {
@@ -4952,7 +4953,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "turbopuffer is a vector and full-text search database served over an API. Versioning, reviewing, and rolling back user-defined automations is a workflow-tool axis that falls outside this product category. Namespace branching and copy/backup features version data, not automations, so they do not make this axis applicable.",
+    "rationale": "turbopuffer is a vector and full-text search database. It has no concept of user-defined automations or workflows, so versioning, reviewing and rolling back automations is a category error for this product type. Namespace branching (copy-on-write clones) and server-side copies version data, not automations, and earn no credit for this story.",
     "evidenceIds": []
   },
   {
@@ -4974,13 +4975,14 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "turbopuffer documents native BM25 full-text search over string and []string attributes inside the database (docs-15), plus trigram-indexed regex search (docs-2) and server-side RRF fusion with vector results (docs-16). Its own positioning as a 'vector and full-text search engine' (docs-38, probe-1) confirms no separate search engine is needed. missing for 10: evidence of FTS depth (tokenizers/language analyzers, phrase or fuzzy matching), independent or hands-on corroboration of full-text search quality.",
+    "rationale": "turbopuffer documents native BM25 full-text search on string and []string attributes (docs-15). It also offers trigram-indexed regex search (docs-2) and positions itself as a combined vector and full-text search engine (docs-38, probe-1), so no separate search engine is needed. Server-side RRF fusion and multi-queries let keyword results combine with vector results in the same database (docs-16, docs-20). missing for 10: detail on tokenization, language analyzers and phrase or fuzzy query support, and independent or hands-on corroboration of full-text search quality.",
     "evidenceIds": [
       "turbopuffer-docs-15",
       "turbopuffer-docs-2",
-      "turbopuffer-docs-16",
       "turbopuffer-docs-38",
-      "turbopuffer-probe-1"
+      "turbopuffer-probe-1",
+      "turbopuffer-docs-16",
+      "turbopuffer-docs-20"
     ]
   },
   {
@@ -5003,7 +5005,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Embedded or local deployment is a fair question for a search database, so the axis applies. The documented deployment modes are only multi-tenant, single-tenant and BYOC, all running on cloud object storage. Isolated per-test namespaces are a hosted-service testing pattern, not an in-process or local instance, and nothing in the pack shows an embedded library or local server.",
+    "rationale": "Asking whether a vector database can run embedded or as a local instance is a fair question for this kind of product, so the axis applies. However, the documented deployment modes are only multi-tenant, single-tenant, and BYOC on object storage. Isolated per-test namespaces are a hosted-service testing pattern, not a local or in-process runtime, so they earn no credit. Nothing in the evidence shows an embedded or lightweight local mode.",
     "evidenceIds": []
   },
   {
@@ -5012,7 +5014,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A free tier is a fair question for a managed vector/full-text search service, so the axis applies. However, nothing in the evidence pack mentions a free tier, free credits, or a trial. The general cost claims (\"10x cheaper\", a 50% discount for non-filterable attributes) are adjacent pricing features and do not show that a developer can prototype for free.",
+    "rationale": "A free tier is a fair question for a managed search service like turbopuffer, but the evidence pack never mentions a free tier, trial, or free usage allowance. The only pricing-adjacent items are a 50% discount for non-filterable attributes and a '10x cheaper' marketing claim, and neither shows that a developer can prototype without paying.",
     "evidenceIds": []
   },
   {
@@ -5021,11 +5023,11 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "turbopuffer documents generally available sharding that scales a single namespace up to 256TB, and an object-storage architecture with an NVMe/memory compute cache that it says scales queries to petabyte scale. That is first-party evidence of scaling beyond a single node. However, the sharding evidence is a one-line roadmap entry with no detail on how it works. Missing for 10: in-depth docs on sharding configuration and behavior (shard count, rebalancing, node topology), detail on how distributed compute scales out, and independent or hands-on corroboration of multi-node scaling.",
+    "rationale": "turbopuffer documents generally available sharding that scales a single namespace up to 256TB. Its object-storage architecture is described as scaling low-latency queries to petabyte scale, and single-tenant and BYOC deployments are offered alongside the multi-tenant default. Missing for 10: in-depth docs on how sharding is configured or operated (shard count, rebalancing, node topology), detail on distributed BYOC or single-tenant operation, and independent or hands-on corroboration of multi-node scaling.",
     "evidenceIds": [
       "turbopuffer-docs-5",
       "turbopuffer-docs-4",
-      "turbopuffer-docs-38"
+      "turbopuffer-docs-3"
     ]
   },
   {
@@ -5034,12 +5036,12 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "turbopuffer documents BM25 full-text search, dense and sparse vector search, multi-queries explicitly meant for hybrid search, and server-side rank fusion via RRF plus native reranking. Together these deliver dense plus keyword/sparse retrieval fused into one ranked result. Missing for 10: detail on fusion configuration (e.g., weighting or methods beyond RRF) and independent or hands-on corroboration of hybrid query quality.",
+    "rationale": "turbopuffer's docs show dense and sparse vector search (docs-1), BM25 full-text search (docs-15), and multi-queries that send several queries to one namespace for hybrid search (docs-20). They also document server-side rank fusion via RRF plus native reranking (docs-16), which covers dense+keyword fusion in one request. Missing for 10: independent or hands-on confirmation of hybrid fusion quality, and detail on fusion configuration beyond RRF (e.g., weighting between dense and BM25 signals).",
     "evidenceIds": [
-      "turbopuffer-docs-16",
-      "turbopuffer-docs-20",
+      "turbopuffer-docs-1",
       "turbopuffer-docs-15",
-      "turbopuffer-docs-1"
+      "turbopuffer-docs-16",
+      "turbopuffer-docs-20"
     ]
   },
   {
@@ -5048,7 +5050,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "turbopuffer's docs say vectors go into an SPFresh index that is automatically tuned for 90-100% recall, with a recall endpoint for verification only. Nothing in the pack documents user-tunable index parameters, HNSW-style graph settings, or selectable index types for trading recall against latency or memory. The exact-kNN query mode and the `filterable: false` attribute flag are adjacent controls, not index tuning, so they earn no credit.",
+    "rationale": "The docs say turbopuffer's SPFresh vector index is automatically tuned for 90-100% recall, and nothing documents user-adjustable index parameters, graph settings or selectable index types. The kNN exact-search query mode, the recall-testing endpoint and `filterable: false` are adjacent features, not index tuning for recall versus latency or memory, so they earn no credit.",
     "evidenceIds": []
   },
   {
@@ -5057,7 +5059,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "turbopuffer's own docs say native embedding is generally available. They also state that it embeds your text on both writes and queries without you integrating an embedding provider, which removes the need for a separate embedding pipeline. Both sources are brief first-party claims with no hands-on corroboration. missing for 10: documentation of which built-in models are supported, evidence of configuring external or alternative model providers, detailed usage docs, independent or hands-on corroboration.",
+    "rationale": "turbopuffer's docs state that native embedding is generally available. They also say turbopuffer embeds your text on both writes and queries, so you don't integrate an embedding provider at all. That directly covers in-database embedding at ingest and query time without a separate pipeline. Missing for 10: documentation of which embedding models are available or how to configure them (dimensions, provider choice, bring-your-own-model), and independent or hands-on corroboration of the native embedding feature.",
     "evidenceIds": [
       "turbopuffer-docs-7",
       "turbopuffer-docs-12"
@@ -5069,7 +5071,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Asking whether a search database can be deployed on Kubernetes is a fair axis, and turbopuffer does offer single-tenant and BYOC deployments, so the story applies. However, nothing in the evidence mentions an official Helm chart, a Kubernetes operator, or any self-managed Kubernetes deployment path. BYOC is a related deployment mode, not the Helm/operator capability the story asks for.",
+    "rationale": "Deploying on Kubernetes via a Helm chart or operator is a fair question for a search database, especially one that offers single-tenant and BYOC deployments. However, the evidence never mentions a Helm chart, an operator, or Kubernetes. The BYOC deployment mode is an adjacent capability and does not count as an official Kubernetes deployment artifact.",
     "evidenceIds": []
   },
   {
@@ -5091,17 +5093,20 @@
     "productId": "turbopuffer",
     "storyId": "managed-cloud-offering",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "turbopuffer is clearly a managed cloud service: multi-tenant is the default deployment, with single-tenant and BYOC options. Namespace-level resources can be handled via the API: listing namespaces, branching copy-on-write clones, server-side copies across regions and clouds, namespace pinning for reserved compute, and isolated per-test namespaces. However, API tokens are created and expired in the dashboard, and there is no evidence of a provisioning API for accounts, projects, or deployments. Missing for 10: documented programmatic provisioning of accounts/projects/API keys (e.g., a management API or Terraform provider), explicit docs on namespace creation via API, and independent corroboration of the managed-cloud provisioning experience.",
+    "rationale": "turbopuffer is clearly a managed cloud service: multi-tenant is the default deployment, with single-tenant and BYOC options, and the docs describe the object-storage architecture and native client SDKs. Programmatic provisioning is only partly evidenced. Namespaces can be created and managed through the API (branching creates copy-on-write clones, cross-region copies, prefix listing, per-test namespaces, namespace pinning), but API tokens are created and expired in the dashboard. missing for 10: documented API/IaC provisioning of accounts, tokens, and single-tenant/BYOC deployments, an explicit namespace-creation API, a published OpenAPI spec, and independent hands-on corroboration.",
     "evidenceIds": [
       "turbopuffer-docs-3",
+      "turbopuffer-docs-4",
       "turbopuffer-docs-23",
       "turbopuffer-docs-26",
       "turbopuffer-docs-27",
       "turbopuffer-docs-33",
       "turbopuffer-docs-35",
-      "turbopuffer-docs-37"
+      "turbopuffer-docs-37",
+      "turbopuffer-docs-39",
+      "turbopuffer-probe-3"
     ]
   },
   {
@@ -5141,7 +5146,7 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "turbopuffer is API-first. Its documented API covers writes (upsert, patch/delete by filter, conditional writes), branching, server-side copies, every query type, namespace listing and metadata. That includes what the dashboard offers for browsing documents and running queries. However, API tokens are documented only as created and expired in the dashboard, which suggests at least some admin functions are UI-only, and no OpenAPI spec was found to confirm parity. Missing for 10: API-based token/account management, a documented statement of UI-API parity, a published OpenAPI spec, independent corroboration.",
+    "rationale": "turbopuffer is API-first: writes, conditional and filter-based patch/delete, branching, queries, namespace listing, metadata, copies and async operations are all documented as API calls, with official SDKs in six languages. The dashboard's browse-documents and run-queries features map directly onto those query and namespace APIs. However, API tokens are documented only as created and expired in the dashboard, with no API equivalent shown, and there is no explicit parity statement or published OpenAPI spec. missing for 10: documented API for token creation/expiry and other account or admin tasks, an explicit UI–API parity guarantee, a machine-readable OpenAPI spec, independent corroboration.",
     "evidenceIds": [
       "turbopuffer-docs-8",
       "turbopuffer-docs-35",
@@ -5151,6 +5156,7 @@
       "turbopuffer-docs-27",
       "turbopuffer-docs-33",
       "turbopuffer-docs-34",
+      "turbopuffer-docs-39",
       "turbopuffer-probe-3"
     ]
   },
@@ -5160,7 +5166,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data export is a fair question for a hosted search database, but the evidence shows no documented bulk export to open formats such as Parquet or JSONL. Query pagination (`offset`) and namespace listing are only building blocks a user could script an export from. Server-side `copy_from_namespace` and cross-region/cross-cloud copies keep the data inside turbopuffer rather than letting you take it out and leave.",
+    "rationale": "The evidence pack documents no export feature, open-format dump, or data-portability path for leaving the service. The closest items do not qualify. Server-side copies across regions and clouds move data between turbopuffer namespaces, not out of the product. Query pagination with `offset` is only a developer building block from which an export could be constructed. Neither counts as a documented capability to export all data in open formats.",
     "evidenceIds": []
   },
   {
@@ -5169,32 +5175,28 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Whether source is available under an open license is a fair question for a database/search engine, so the axis applies. The evidence pack contains no first-party claim of open-source code. A community commenter explicitly calls turbopuffer a 'source-unavailable' version of Quickwit, and another asks whether its indexes are proprietary.",
-    "evidenceIds": [
-      "turbopuffer-comm-3",
-      "turbopuffer-comm-8"
-    ]
+    "rationale": "turbopuffer is a managed search service, and the evidence never shows its engine source published under an open license. A community comment explicitly calls it a 'source-unavailable' version of Quickwit, and another asks whether its indexes are proprietary. Public SDK client libraries (e.g., the GitHub-hosted Go client) are adjacent artifacts, not the product's source, and no license is stated for them.",
+    "evidenceIds": []
   },
   {
     "productId": "turbopuffer",
     "storyId": "openness-self-host",
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "turbopuffer's docs list single-tenant and BYOC (bring-your-own-cloud) deployment options alongside the default multi-tenant service, so the core product can run in the customer's own cloud environment. That is a glancing approximation of self-hosting, not true self-hosting: the evidence describes no install path, and a community commenter notes the product is source-unavailable, so users cannot run it themselves. Missing for 10: downloadable or open-source distribution, self-managed installation and operations docs, details on how BYOC divides control between customer and vendor, independent hands-on corroboration of self-run deployments.",
-    "evidenceIds": [
-      "turbopuffer-docs-3",
-      "turbopuffer-comm-3"
-    ]
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Self-hosting is a fair ask for a database product, so the axis applies. The docs list single-tenant and BYOC deployment alongside the default multi-tenant service, but the evidence describes no install path and a community commenter notes the product is source-unavailable, so users cannot run it themselves. Vendor-operated BYOC is a related deployment mode, not self-hosting, so no credit attaches (corrected 2026-11-01 per the prompt-v5 own-capability rule; PR #563 review).",
+    "evidenceIds": []
   },
   {
     "productId": "turbopuffer",
     "storyId": "polyglot-sdk-breadth",
-    "verdict": "partial",
-    "quality": 2,
-    "confidence": "low",
-    "rationale": "The only SDK evidence is turbopuffer's own roadmap entry for a beta Rust API client. That shows the vendor ships official clients, but none of the four languages named in the story is documented anywhere in the pack. Missing for 10: documented official Python, TypeScript, Go and Java SDKs; SDK reference docs or install instructions; a non-beta release status; independent or hands-on corroboration of SDK usage.",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "The quickstart documents installable SDKs with full write/query code samples for Python (pip), TypeScript (npm @turbopuffer/turbopuffer), Go (turbopuffer-go/v2) and Java (com.turbopuffer.client), plus Ruby and Rust. The API docs refer to these as official client libraries that handle compression and async operations transparently. missing for 10: independent or hands-on corroboration of SDK quality, and an explicit Java install/package coordinate (only the import is shown).",
     "evidenceIds": [
+      "turbopuffer-docs-39",
+      "turbopuffer-docs-40",
       "turbopuffer-docs-10"
     ]
   },
@@ -5204,7 +5206,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "turbopuffer offers BYOC and single-tenant deployments, which let a customer control where data physically lives. Its copy docs say data can move across regions and cloud providers (AWS to GCP), which implies multiple selectable regions. However, the evidence never documents choosing a region when creating a namespace or account, or any residency guarantees. Missing for 10: explicit region-selection docs with a list of available regions, data-residency commitments (e.g., EU-only), and independent or hands-on corroboration.",
+    "rationale": "turbopuffer documents BYOC deployments, which let a customer keep data in their own cloud environment. It also documents namespace copies that work across regions and across cloud providers (AWS to GCP), which implies data lives in a specific region and provider. Neither item explicitly documents letting a user choose a storage region or meet a residency requirement. Missing for 10: an explicit region-selection mechanism, a list of available regions or residency guarantees (e.g. EU-only), and independent or hands-on corroboration.",
     "evidenceIds": [
       "turbopuffer-docs-3",
       "turbopuffer-docs-33"
@@ -5216,7 +5218,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "turbopuffer is a hosted data service with managed embedding and reranking models, so a no-training guarantee or opt-out is a fair question to ask of it. The evidence pack never states that customer data is excluded from model training, nor does it document any training opt-out. Encryption at rest, customer-managed keys, BAAs, BYOC deployments and PrivateLink are adjacent privacy controls, not a training-use guarantee, so they earn no credit.",
+    "rationale": "A hosted vector and search service that stores customer data and runs managed embedding and reranking models could reasonably publish a no-training commitment or opt-out, so the axis applies. The pack contains no such policy or control. Encryption at rest, customer-managed keys, BAAs, BYOC deployments and private connectivity are adjacent security features and do not address AI-training use of data.",
     "evidenceIds": []
   },
   {
@@ -5225,7 +5227,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "turbopuffer documents its own deletion controls: conditional deletes, deleting a document only if a condition holds, and delete-by-filter for removing all documents that match a filter. That covers the deletion half of the story. Nothing in the pack shows retention control, and no independent source confirms deletion actually purges data. missing for 10: retention policies/TTL or automatic expiry, documented namespace deletion, guarantees on purge from object storage/backups/WAL, independent corroboration.",
+    "rationale": "turbopuffer documents user-controlled deletion: delete by filter and conditional deletes that remove a document only when a condition is met (docs-21, docs-22). Together these give programmatic control over removing data. Nothing in the evidence covers retention, such as TTLs, automatic expiry or configurable retention windows, so only the deletion half of the story is delivered. missing for 10: configurable retention policies/TTL or auto-expiry, documented namespace-level deletion, guarantees on deletion propagation to object storage/backups, independent corroboration.",
     "evidenceIds": [
       "turbopuffer-docs-21",
       "turbopuffer-docs-22"
@@ -5237,7 +5239,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Telemetry opt-out is a fair question for a hosted search service and its client SDKs, so the axis applies. The evidence pack never mentions telemetry, usage tracking, or any opt-out control. Encryption at rest, BYOC deployments and PrivateLink are adjacent privacy features that earn no credit for this story.",
+    "rationale": "Telemetry and usage-tracking opt-out is a fair question for a managed search service that ships official client SDKs, so the axis applies. The pack never mentions telemetry, analytics collection, or any opt-out setting. Encryption at rest, BYOC deployments, and PrivateLink are adjacent privacy and security controls, not a telemetry opt-out, so they earn no credit.",
     "evidenceIds": []
   },
   {
@@ -5261,7 +5263,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nothing in the evidence pack documents a user-enableable vector quantization or compression option, or a stated accuracy trade-off for one. The closest items are adjacent and earn no credit: object-storage-based cost savings, automatic recall tuning, the filterable:false discount, and kNN exact search.",
+    "rationale": "Nothing in the evidence documents a user-enabled vector quantization or compression option, or any accuracy trade-off tied to one. The vector index is said to be auto-tuned for 90-100% recall, which is not a quantization setting. The compression mentioned in the API docs is HTTP request/response compression, an adjacent feature that earns no credit.",
     "evidenceIds": []
   },
   {
@@ -5270,7 +5272,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "turbopuffer is a vector and full-text search database, so integrations with RAG and agent frameworks are a fair axis to judge it on. However, nothing in the evidence pack mentions LangChain, LlamaIndex, or any other framework integration. The only client-library evidence is a beta Rust API client, which is a general SDK rather than a maintained framework integration.",
+    "rationale": "The evidence documents official client SDKs for Python, TypeScript, Go, Java, Ruby and Rust. Those are general-purpose building blocks, not integrations with RAG or agent frameworks. Nothing in the pack mentions a maintained LangChain, LlamaIndex or similar vector-store integration, so this applicable axis has no supporting evidence.",
     "evidenceIds": []
   },
   {
@@ -5279,7 +5281,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence does not document replication across nodes or zones for high availability, and it gives no formal consistency model. The closest items earn no credit under the partial-credit boundary: server-side namespace copies across regions are a one-off backup feature, not continuous HA replication, and using object storage for state is architecture, not a stated replication guarantee. The single note that writes appear in search results immediately is too thin to count as a documented consistency model.",
+    "rationale": "The evidence pack contains no documented replication across nodes or zones for high availability, and no documented consistency model for replicated data. State living in object storage (docs-4) is a host-platform property, not turbopuffer's own replication feature. Server-side cross-region namespace copies (docs-33) are a backup/copy operation, an adjacent feature rather than HA replication. The note that writes appear in search results immediately (docs-13) describes index freshness, not a consistency model for replicas.",
     "evidenceIds": []
   },
   {
@@ -5300,7 +5302,7 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "turbopuffer documents filtering as a first-class query feature. Docs say vector search works 'combined with any filters', exact kNN runs 'over a filtered subset', regex search has trigram indexes, attributes can be marked filterable, and patch/delete operate by filter. The permissions guide has you store `group_ids` on each document and pass them as a query filter, which implies array-membership filtering. However, none of the evidence shows the specific operators the story asks for. Missing for 10: documented range operators, geo filtering, nested AND/OR/NOT composition, explicit array-membership operator semantics, and independent or hands-on corroboration of complex filter expressions.",
+    "rationale": "turbopuffer documents its own query filtering. Vector search is \"combined with any filters\", kNN runs \"over a filtered subset\", regex matching uses trigram indexes, patch and delete work by filter, and attributes can be marked filterable. The permissions guide also implies membership-style filtering, since it filters on per-document `group_ids`. However, the pack never shows the specific operators the story names, so the depth of filter expressiveness is unproven. missing for 10: documented range operators, geo filtering, nested boolean (And/Or/Not) composition, explicit array-membership operators, and independent or hands-on corroboration of filter richness.",
     "evidenceIds": [
       "turbopuffer-docs-1",
       "turbopuffer-docs-2",
@@ -5316,12 +5318,13 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "low",
-    "rationale": "The docs suggest a usage-based, non-provisioned model without stating it outright. Multi-tenant is the default deployment, and namespace pinning is an opt-in way to reserve compute for predictable cost, which implies the default is not fixed provisioning. Marking attributes non-filterable earns a 50% discount, which implies per-unit metering, and the homepage claims '10x cheaper'. missing for 10: an explicit serverless/usage-based pricing statement, published per-unit rates (storage, writes, queries), a pricing page or calculator in evidence, and independent corroboration of cost transparency.",
+    "rationale": "The docs suggest a usage-based, non-provisioned default. Namespace pinning is described as opt-in reserved compute 'to provide predictable cost', which implies the default is not fixed capacity. The performance docs offer a 50% discount for non-filterable attributes, which implies metered per-attribute or per-write billing, and the homepage claims '10x cheaper' on object storage. However, no pricing page, per-unit rates, or explicit 'serverless/pay-per-use' statement appears in the evidence. Missing for 10: published per-unit prices (writes, queries, storage), an explicit statement of the usage-based billing model, and independent confirmation of cost transparency.",
     "evidenceIds": [
       "turbopuffer-docs-26",
       "turbopuffer-docs-29",
+      "turbopuffer-docs-38",
       "turbopuffer-docs-3",
-      "turbopuffer-docs-38"
+      "turbopuffer-docs-4"
     ]
   },
   {
