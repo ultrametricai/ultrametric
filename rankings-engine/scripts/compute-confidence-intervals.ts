@@ -18,8 +18,9 @@
 // runs this post-derive for the refreshed arena).
 //
 // Usage: pnpm exec tsx rankings-engine/scripts/compute-confidence-intervals.ts [--category <id>]
-//   --category limits which arenas get REwritten; the measured noise model is always built from
-//   the whole fleet's uncertainty files regardless.
+//   --category identifies and validates the arena that triggered a refresh, but every populated
+//   arena is REwritten. The measured noise model is fleet-wide, so a category-only write could
+//   leave every other arena stale when the shared model changes.
 import fs from 'node:fs'
 import path from 'node:path'
 import {
@@ -29,7 +30,7 @@ import {
   ProductSchema, type ScoreIntervalEntry, StorySchema, type UncertaintyEntry,
   UncertaintyArraySchema, VerdictSchema,
 } from '../../lib/schemas'
-import { categoryDir, readCategories, readJson, resolveCategories, writeJson } from '../paths'
+import { categoryDir, readCategories, readJson, writeJson } from '../paths'
 
 const DRAWS = 500
 // Bump on any change to the noise model or sampling order — the seed key namespaces the PRNG
@@ -46,6 +47,14 @@ function main(): void {
 
   // 1. Measured noise model, fleet-wide (see lib/scoreIntervals.ts's buildMeasuredNoiseModel).
   const allCategories = readCategories()
+  if (onlyCategory && !allCategories.some((cat) => cat.id === onlyCategory)) {
+    throw new Error(`unknown category: ${onlyCategory}`)
+  }
+  if (onlyCategory) {
+    console.log(
+      `refresh trigger: ${onlyCategory}; regenerating all arenas because the score-interval model is fleet-wide`,
+    )
+  }
   const uncertainty: UncertaintyEntry[] = []
   const partialQualities: number[] = []
   for (const cat of allCategories) {
@@ -69,7 +78,7 @@ function main(): void {
 
   // 2. Simulate + write per arena.
   const fleet: Array<{ cat: string; productId: string; width: number }> = []
-  for (const cat of resolveCategories(onlyCategory)) {
+  for (const cat of allCategories) {
     const dataDir = categoryDir(cat.id)
     if (!isPopulated(dataDir)) continue
     const products = readJson(ProductSchema.array(), path.join(dataDir, 'products.json'))

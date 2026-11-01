@@ -349,7 +349,9 @@ How it's built (`rankings-engine/scripts/compute-confidence-intervals.ts`, math 
   keyed per product) — builds are byte-reproducible, no `Math.random`.
 
 Results land in `open-rankings/{category}/score-intervals.json` (committed, re-run post-derive by the
-story-runner). Display is tolerant-optional (`lib/scoreIntervals.ts`): no interval data ⇒ no
+story-runner). Because the measured noise model is fleet-wide, even a category-triggered refresh
+rewrites every populated arena's interval file; this prevents a shared-model change from leaving
+the rest of the fleet stale. Display is tolerant-optional (`lib/scoreIntervals.ts`): no interval data ⇒ no
 interval is ever rendered — never a fabricated one. Fleet-wide as of the first pass the median
 interval width is ~4.5 Overall score points.
 
