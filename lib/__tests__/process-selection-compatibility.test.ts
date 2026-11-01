@@ -133,8 +133,12 @@ describe('existing judged selection compatibility', () => {
     // (sit_028-sit_033) add arena-covered steps (payroll, accounting, equity-management,
     // startup-law-firms), whose judged candidates join the mapped step rows.
     // ComplyAdvantage's judged fraud-prevention entry adds one positive function candidate.
-    expect(positiveCount).toBe(3121)
-    expect(zeroCount).toBe(291)
+    // Re-pinned at the accuracy-queue 2026-10-28 kushki re-judge (issue #508): the keyed
+    // re-crawl of the moved docs.kushki.com/cl tree re-judged kushki's payments cells, and
+    // the settled flips moved four kushki rows from the zero set to the positive set on the
+    // steps mapped to the payments arena.
+    expect(positiveCount).toBe(3125)
+    expect(zeroCount).toBe(287)
     // Re-pinned at the issue-closeout integration (2026-10-27): munito-ai and obsessiondb
     // join their arenas' candidate lists and the monday re-judge moved cells; counts re-probed.
     // Re-pinned at the v5 settlement wave 1 integration (2026-10-23): seven arenas
