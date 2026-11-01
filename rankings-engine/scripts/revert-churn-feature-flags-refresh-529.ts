@@ -14,14 +14,19 @@
 // Rule, per cell: a (verdict, quality) flip vs the pre-refresh baseline stands only when it
 // rests on evidence that actually changed. Content-aware rule (re-crawled packs mint NEW
 // ids for UNCHANGED excerpts): an id added by the refresh whose normalized excerpt already
-// exists verbatim in the baseline pack is NOT changed evidence. Changed evidence is:
+// exists verbatim in the baseline pack is NOT changed evidence, and a REMOVED id whose
+// content survives in a same-url fresh item is a re-mint, not lost support (the review's
+// second-round example: growthbook-comm-5 survives as growthbook-comm-6-refresh-*, so the
+// growthbook privacy-no-training and privacy-retention-controls downgrades are churn).
+// Changed evidence is:
 //   - an added id whose excerpt text is new to the pack,
-//   - a removed id,
+//   - a removed id whose content does not survive under a new same-url id,
 //   - a same-id excerpt replacement.
 // A flip citing none of that (on either side) is sampling churn and converges back to the
-// committed baseline verdict; the judge cache is patched in place (same hash, restored
-// verdict) so a future judge run does not resurrect the churn. A revert is skipped (and
-// reported) when the baseline verdict cites an id no longer in the pack.
+// committed baseline verdict, with restored citations remapped through re-mints so nothing
+// dangles; the judge cache is patched in place (same hash, restored verdict) so a future
+// judge run does not resurrect the churn. A revert is skipped (and reported) when a
+// baseline citation neither resolves in the pack nor remaps to a survivor.
 //
 // Baseline: origin/main at settle time (main's feature-flags files are pre-refresh; the
 // arena changed only in this PR).
@@ -124,7 +129,28 @@ function changedIdsFor(productId: string): { changed: Set<string>; repeats: Map<
     if (twin) repeats.set(item.id, twin.id) // new id, repeated content: not changed evidence
     else changed.add(item.id) // genuinely new content
   }
-  for (const id of baseById.keys()) if (!freshIds.has(id)) changed.add(id) // removals
+  // Removals are content-aware too: the collect-community re-collect mints a new id for a
+  // paraphrase of the same report (growthbook-comm-5 -> growthbook-comm-6-refresh-*, same
+  // url). A removed id whose content survives in a same-url fresh item (verbatim,
+  // containment, or token overlap >= 0.5) is a re-mint, not lost support.
+  const overlap = (a: string, b: string): number => {
+    const ta = new Set(norm(a).split(' '))
+    const tb = new Set(norm(b).split(' '))
+    if (!ta.size || !tb.size) return 0
+    let shared = 0
+    for (const t of ta) if (tb.has(t)) shared++
+    return shared / Math.max(ta.size, tb.size)
+  }
+  for (const [id, old] of baseById) {
+    if (freshIds.has(id)) continue
+    const survivor = freshItems.find(
+      (f) =>
+        f.url === old.url &&
+        (nearDup(old.excerpt ?? '', f.excerpt ?? '') || overlap(old.excerpt ?? '', f.excerpt ?? '') >= 0.5),
+    )
+    if (survivor) repeats.set(id, survivor.id) // re-minted under a new id: not lost support
+    else changed.add(id) // genuinely removed
+  }
   return { changed, repeats }
 }
 
@@ -182,11 +208,15 @@ function main(): void {
       currentIdsByProduct.set(pid, new Set(items.map((e) => e.id)))
     }
     const curIds = currentIdsByProduct.get(pid)!
-    if (base.evidenceIds.some((id) => !curIds.has(id))) {
+    // Restore the baseline verdict with citations remapped through re-mints (a removed id
+    // whose content survives under a new same-url id cites the survivor instead).
+    const restoredIds = base.evidenceIds.map((id) => (curIds.has(id) ? id : (repeats.get(id) ?? id)))
+    if (restoredIds.some((id) => !curIds.has(id))) {
       skipped++
       console.log(`SKIP ${CAT}/${key}: baseline citation no longer resolves in the pack`)
       continue
     }
+    const restored = { ...base, evidenceIds: restoredIds }
     reverted++
     const repeatNote = row.evidenceIds
       .filter((id) => repeats.has(id))
@@ -197,10 +227,10 @@ function main(): void {
         (repeatNote ? `  [${repeatNote}]` : ''),
     )
     if (WRITE) {
-      current[i] = { ...base }
+      current[i] = { ...restored }
       const cacheFile = path.join(ROOT, 'rankings-engine', 'cache', 'judge', CAT, pid, `${row.storyId}.json`)
       const cache = JSON.parse(fs.readFileSync(cacheFile, 'utf8')) as { verdict: VerdictRow }
-      cache.verdict = { ...base }
+      cache.verdict = { ...restored }
       fs.writeFileSync(cacheFile, `${JSON.stringify(cache, null, 2)}\n`)
     }
   }
