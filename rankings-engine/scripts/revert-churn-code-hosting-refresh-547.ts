@@ -6,9 +6,14 @@
 // Rule, per cell: a (verdict, quality) flip vs the pre-refresh baseline stands only when it
 // rests on evidence that actually changed. Content-aware changed evidence is:
 //   - an added id whose excerpt text is new to the pack (an added id that near-duplicates
-//     a baseline excerpt is NOT new),
-//   - a removed id,
+//     a baseline excerpt, or rewords a same-url baseline row at >= 0.5 token overlap, is a
+//     re-mint, NOT new),
+//   - a removed id whose content does not survive in the pack (a removed id whose content
+//     survives in a same-url fresh item at the same cutoffs is a re-mint, not lost support),
 //   - a same-id excerpt replacement (a same-id near-dup replacement is NOT a change).
+// Added and removed ids use the same survivorship cutoffs in both directions (round-2
+// review "Reworded reports raise scores": asymmetric cutoffs let a reworded report count
+// as new evidence even though its removal did not count as lost support).
 // Directional stability: an upgrade stands only citing genuinely new content; a downgrade
 // stands only on support loss; a non-rankable verdict change needs either side changed.
 // A flip resting on none of that is sampling churn and converges back to the committed
@@ -16,18 +21,22 @@
 // future judge run does not resurrect the churn. A revert is skipped (and reported) when
 // the baseline verdict cites an id no longer in the pack.
 //
-// Extension, from the PR #547 review threads: two review-named upgrades cite new or
-// re-minted content that does not establish the graded story, so "genuinely new content"
-// is not met and they settle to the baseline none:
-//   - gitlab:browse-files-history-blame (cache/judge/.../browse-files-history-blame.json):
-//     citations describe Git and source control generally plus visible commit emails;
-//     none shows a web file browser, history view, or blame view, as the rationale notes.
-//   - gitea:api-sandbox (cache/judge/.../api-sandbox.json): reports of browsing a demo
-//     instance and importing a repo into Try Gitea do not show a documented sandbox for
-//     testing without production data, as the rationale notes.
+// Extension, from the PR #547 review threads: review-named upgrades whose cited content
+// does not establish the graded story, so "genuinely new content" is not met and they
+// settle to baseline:
+//   - gitlab:browse-files-history-blame (round 1): citations describe Git and source
+//     control generally plus visible commit emails; none shows a web file browser, history
+//     view, or blame view, as the rationale notes.
+//   - gitea:api-sandbox (round 1): reports of browsing a demo instance and importing a repo
+//     into Try Gitea do not show a documented sandbox for testing without production data.
+//   - gitea:automation-versioned-workflows (round 2): the only added citation,
+//     gitea-docs-33, restates the GitHub Actions compatibility already in gitea-docs-2 and
+//     adds nothing about versioning, review, or rollback.
+//   - gitlab:custom-merge-checks (round 2): the added gitlab-docs-70 documents AI review
+//     instructions, not merge enforcement.
 //
-// Baseline: origin/main as fetched at settle time (819253bc4f, merged into the branch
-// before this settle; the arena changed only in this PR).
+// Baseline: origin/main as fetched at settle time (819253bc4f at round 1, fe484a5bd4 at
+// round 2; the arena is unchanged between the two and changed only in this PR).
 //
 // Usage: pnpm exec tsx rankings-engine/scripts/revert-churn-code-hosting-refresh-547.ts [--write]
 //   (default: dry run, prints the plan only)
@@ -45,6 +54,8 @@ const BASELINE_REF = process.env.BASELINE_REF ?? 'origin/main'
 const FORCE_BASELINE = new Map<string, string>([
   ['gitlab:browse-files-history-blame', 'citations show Git/source control generally, no web browse/history/blame views (review thread)'],
   ['gitea:api-sandbox', 'demo-instance reports do not show a sandbox isolated from production data (review thread)'],
+  ['gitea:automation-versioned-workflows', 'gitea-docs-33 restates gitea-docs-2 compatibility; nothing on versioning, review, or rollback (round-2 review)'],
+  ['gitlab:custom-merge-checks', 'gitlab-docs-70 documents AI review instructions, not merge enforcement (round-2 review)'],
 ])
 
 type VerdictRow = {
@@ -105,21 +116,6 @@ function changedIdsFor(productId: string): { changed: Set<string>; repeats: Map<
   const freshIds = new Set(freshItems.map((i) => i.id))
   const changed = new Set<string>()
   const repeats = new Map<string, string>()
-  for (const item of freshItems) {
-    const old = baseById.get(item.id)
-    if (old) {
-      // same-id replacement counts as changed only when the content actually differs
-      if (!nearDup(old.excerpt ?? '', item.excerpt ?? '')) changed.add(item.id)
-      continue
-    }
-    const twin = baseItems.find((b) => nearDup(b.excerpt ?? '', item.excerpt ?? ''))
-    if (twin) repeats.set(item.id, twin.id) // new id, repeated content: not changed evidence
-    else changed.add(item.id) // genuinely new content
-  }
-  // Removals are content-aware too: the collect-community re-collect mints a new id for a
-  // paraphrase of the same report (drata-comm-3 -> drata-comm-2-refresh-*, token overlap
-  // 0.59, same url). A removed id whose content survives in a same-url fresh item (verbatim,
-  // containment, or token overlap >= 0.5) is a re-mint, not lost support.
   const overlap = (a: string, b: string): number => {
     const ta = new Set(norm(a).split(' '))
     const tb = new Set(norm(b).split(' '))
@@ -128,13 +124,30 @@ function changedIdsFor(productId: string): { changed: Set<string>; repeats: Map<
     for (const t of ta) if (tb.has(t)) shared++
     return shared / Math.max(ta.size, tb.size)
   }
+  // Symmetric content-equivalence (round-2 review): an added id is a re-mint of a baseline
+  // row when it near-duplicates any baseline excerpt, or rewords a same-url baseline row at
+  // token overlap >= 0.5 — the same cutoffs the removal check uses below.
+  const sameEvidence = (a: EvidenceItem, b: EvidenceItem): boolean =>
+    nearDup(a.excerpt ?? '', b.excerpt ?? '') ||
+    (a.url === b.url && overlap(a.excerpt ?? '', b.excerpt ?? '') >= 0.5)
+  for (const item of freshItems) {
+    const old = baseById.get(item.id)
+    if (old) {
+      // same-id replacement counts as changed only when the content actually differs
+      if (!nearDup(old.excerpt ?? '', item.excerpt ?? '')) changed.add(item.id)
+      continue
+    }
+    const twin = baseItems.find((b) => sameEvidence(item, b))
+    if (twin) repeats.set(item.id, twin.id) // new id, repeated content: not changed evidence
+    else changed.add(item.id) // genuinely new content
+  }
+  // Removals are content-aware too: the collect-community re-collect mints a new id for a
+  // paraphrase of the same report (drata-comm-3 -> drata-comm-2-refresh-*, token overlap
+  // 0.59, same url). A removed id whose content survives in a same-url fresh item (verbatim,
+  // containment, or token overlap >= 0.5) is a re-mint, not lost support.
   for (const [id, old] of baseById) {
     if (freshIds.has(id)) continue
-    const survivor = freshItems.find(
-      (f) =>
-        f.url === old.url &&
-        (nearDup(old.excerpt ?? '', f.excerpt ?? '') || overlap(old.excerpt ?? '', f.excerpt ?? '') >= 0.5),
-    )
+    const survivor = freshItems.find((f) => sameEvidence(old, f))
     if (survivor) repeats.set(id, survivor.id) // re-minted under a new id: not lost support
     else changed.add(id) // genuinely removed
   }
