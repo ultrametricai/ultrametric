@@ -4,7 +4,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import type { z } from 'zod'
 import {
-  type Evidence, EvidenceSchema, ProductSchema, type Story, StorySchema,
+  type Category, type Evidence, EvidenceSchema, ProductSchema, type Story, StorySchema,
   type Verdict, VerdictBaseSchema, VerdictSchema,
 } from '../../lib/schemas'
 import { clearBatchState, runMessageBatches } from '../batch-llm'
@@ -247,10 +247,8 @@ export async function runJudge({ category, product, batch }: { category?: string
   let matched = 0
   const cats = resolveCategories(category)
 
-  // Collect every cache-miss cell across the run's scope first, so batch mode can submit
-  // them as one message batch; the interactive default judges the same cells in order.
-  const cellsByCat = new Map<string, JudgeCell[]>()
-  for (const cat of cats) {
+  // Collects one category's cache-miss cells (and counts its matched targets).
+  const collectCells = (cat: Category): JudgeCell[] => {
     const dataDir = categoryDir(cat.id)
     const products = readJson(ProductSchema.array(), path.join(dataDir, 'products.json'))
     const stories = readJson(StorySchema.array(), path.join(dataDir, 'stories.json'))
@@ -271,20 +269,26 @@ export async function runJudge({ category, product, batch }: { category?: string
         cells.push({ catId: cat.id, productId: p.id, productName: p.name, story, evidence, hash, cacheFile })
       }
     }
-    cellsByCat.set(cat.id, cells)
+    return cells
   }
 
   // One state file per (category, product) scope: a re-run of the same interrupted
   // invocation resumes its in-flight batches instead of resubmitting.
   const stateFile = path.join(CACHE_DIR, 'judge-batches', `${category ?? 'all'}--${product ?? 'all'}.json`)
+
+  // Batch mode collects every category up front so the whole scope rides one submission.
+  // Interactive mode collects lazily inside the per-category loop, so a read failure in a
+  // later category cannot block earlier categories' judging and assembly.
+  const collected = new Map<string, JudgeCell[]>()
+  if (batch) for (const cat of cats) collected.set(cat.id, collectCells(cat))
   const prefilled = batch
-    ? await batchPrefillVerdicts([...cellsByCat.values()].flat(), stateFile)
+    ? await batchPrefillVerdicts([...collected.values()].flat(), stateFile)
     : undefined
 
   for (const cat of cats) {
     // Judge, then assemble, one category at a time: a failure in a later category must
     // not cost an earlier, fully judged category its verdicts.json update.
-    await judgeCells(cellsByCat.get(cat.id) ?? [], prefilled)
+    await judgeCells(collected.get(cat.id) ?? collectCells(cat), prefilled)
 
     const dataDir = categoryDir(cat.id)
     const products = readJson(ProductSchema.array(), path.join(dataDir, 'products.json'))
