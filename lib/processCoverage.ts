@@ -197,6 +197,9 @@ export function buildProcessCoverage(input: CoverageInputs, asOf: string) {
     return { processId: record.id, country, guidePresent: record.parts.length > 0, localMaterial: localNotes.length > 0 || localSteps.length > 0 || nativeUs,
       noteKinds: localNotes.map(n => n.kind), localStepIds: localSteps.map(s => s.stepId),
       sourceUrls: [...new Set([...localNotes.map(n => n.actionUrl), ...localSteps.flatMap(s => s.sourceUrl ? [s.sourceUrl] : [])])],
+      instructionDepth: procedures.length ? 'scoped-procedure' : localNotes.length || localSteps.length || nativeUs ? 'country-material' : record.parts.length ? 'shared-guide-only' : 'missing',
+      sourceAgeStatus: procedures.length ? procedures.every(p => p.sourcesCurrent && p.instructionsCurrent) ? 'current-for-listed-scenarios' : 'recheck-needed-for-listed-scenarios' : 'unassessed',
+      observedScenarioCount: procedures.filter(p => p.observedExecution === 'evidenced').length,
       scenarioIds: procedures.map(a => a.id), reviewedScenarioCount: procedures.filter(a => a.reviewedProcedureReady).length,
       scenarioScopeReview, declaredScopeCompleteness: declaredScopeComplete ? 'reviewed' : 'unassessed', scopeLimitation: declared?.limitation ?? 'Entity, subnational, sector and cross-border scenario scope is unassessed.' }
   }))
@@ -237,6 +240,8 @@ export const processCountryMatrixSchema = z.strictObject({
   assessments: z.array(procedureResultSchema),
   gaps: z.array(z.strictObject({ id: text, domain: text, need: text, sourceIds: strings })),
   cells: z.array(z.strictObject({ processId: text, country: text, guidePresent: z.boolean(), localMaterial: z.boolean(), noteKinds: strings,
+    instructionDepth: z.enum(['scoped-procedure', 'country-material', 'shared-guide-only', 'missing']),
+    sourceAgeStatus: z.enum(['current-for-listed-scenarios', 'recheck-needed-for-listed-scenarios', 'unassessed']), observedScenarioCount: count,
     localStepIds: strings, sourceUrls: z.array(z.string().url()), scenarioIds: strings, reviewedScenarioCount: count,
     scenarioScopeReview: reviewState, declaredScopeCompleteness: z.enum(['reviewed', 'unassessed']), scopeLimitation: text })),
 })

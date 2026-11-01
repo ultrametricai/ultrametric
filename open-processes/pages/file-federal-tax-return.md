@@ -9,6 +9,8 @@
 
 Prepare, review, authorize and file the company income tax return with the applicable tax authority, and arrange payment of any tax due.
 
+> Scoped draft detail: UK-resident private company limited by shares registered in England and Wales, operating domestically in unregulated services. Other entities, locations and cross-border facts need another assessment. Professional review is pending. Source and instruction check: 2026-11-01. Assessment: coverage/local-procedure-assessments.json.
+
 | Field | Value |
 | --- | --- |
 | Kind | process |
@@ -22,6 +24,8 @@ Prepare, review, authorize and file the company income tax return with the appli
 | Agent support | manual guide |
 
 Tax filing requires a CPA. System compiles financial data, tracks deadlines, coordinates with accountant.
+
+- Sources: [GOV.UK accounts and tax returns](https://www.gov.uk/prepare-file-annual-accounts-for-limited-company)
 
 <a id="artifacts"></a>
 
@@ -45,9 +49,9 @@ Country rows describe the guidance recorded here. Local notes and step alternati
 
 | Country | Recorded guidance | Steps with local alternatives or resolutions |
 | --- | --- | --- |
-| [United States](#geo-us) | step resolution | [5](#step-5), [6](#step-6), [7](#step-7) |
+| [United States](#geo-us) | step resolution | [1](#step-1), [3](#step-3), [4](#step-4), [5](#step-5), [6](#step-6), [7](#step-7), [8](#step-8) |
 | [India](#geo-in) | Local analog note; step resolution | [6](#step-6) |
-| [United Kingdom](#geo-uk) | Local analog note; step resolution | [6](#step-6) |
+| [United Kingdom](#geo-uk) | Local analog note; step resolution | [1](#step-1), [3](#step-3), [4](#step-4), [6](#step-6), [8](#step-8) |
 | [Germany](#geo-de) | Local analog note; step resolution | [6](#step-6) |
 | [France](#geo-fr) | Local analog note; step resolution | [6](#step-6) |
 | [Portugal](#geo-pt) | Local analog note; step resolution | [6](#step-6) |
@@ -88,6 +92,7 @@ agent-runnable · ~5 min
 Export the complete financial records and supporting schedules for the tax period. Reconcile them with the books and share them privately with the appointed tax adviser.
 
 - Canonical vendor: QuickBooks
+- Sources: [GOV.UK accounts and tax returns](https://www.gov.uk/prepare-file-annual-accounts-for-limited-company)
 
 <a id="step-2"></a>
 
@@ -114,7 +119,7 @@ human · ~14 d · async wait
 
 The appointed adviser prepares the company income tax return under the local rules using the reconciled records. Resolve missing information and review questions before the draft moves to approval.
 
-- Sources: [IRS Form 1120 instructions](https://www.irs.gov/instructions/i1120)
+- Sources: [IRS Form 1120 instructions](https://www.irs.gov/instructions/i1120) · [GOV.UK accounts and tax returns](https://www.gov.uk/prepare-file-annual-accounts-for-limited-company)
 
 Options:
   - **Default — CPA prepares return (2-3 weeks)** — human · ~14 d · async wait
@@ -137,7 +142,7 @@ human · ~1 h · human approval required
 
 Compare the draft with final books, carryforwards, ownership records and significant transactions. Review tax adjustments, elections, related-party reporting and estimated payments with the preparer. Resolve unfamiliar figures and verify the entity and period before approving the exact return version through the company’s filing process. Treat any payment instruction as a distinct decision.
 
-- Sources: [IRS Form 1120 instructions](https://www.irs.gov/instructions/i1120)
+- Sources: [IRS Form 1120 instructions](https://www.irs.gov/instructions/i1120) · [GOV.UK accounts and tax returns](https://www.gov.uk/prepare-file-annual-accounts-for-limited-company)
 
 <a id="step-5"></a>
 
@@ -162,6 +167,7 @@ Use the selected tax authority’s filing procedure for the approved return. The
 - Verify: Retain the official confirmation or accepted documents required for this step in the selected jurisdiction; reconcile them with the approved company records.
 - Produces: Federal tax return
 - Canonical vendor: IRS
+- Sources: [GOV.UK accounts and tax returns](https://www.gov.uk/prepare-file-annual-accounts-for-limited-company)
 
 <a id="step-7"></a>
 
@@ -186,7 +192,7 @@ agent-runnable · ~2 min · support work
 File the submitted return, schedules, elections, signature authorization, acceptance and payment evidence together. Keep supporting workpapers and explanations of material positions, with drafts clearly separate. Apply the relevant retention and access arrangements so a new preparer can understand the filed position and any later notice or amendment can be investigated.
 
 - Canonical vendor: Google Drive
-- Sources: [IRS Form 1120 instructions](https://www.irs.gov/instructions/i1120)
+- Sources: [IRS Form 1120 instructions](https://www.irs.gov/instructions/i1120) · [GOV.UK accounts and tax returns](https://www.gov.uk/prepare-file-annual-accounts-for-limited-company)
 
 
 <a id="by-country"></a>
@@ -197,11 +203,15 @@ File the submitted return, schedules, elections, signature authorization, accept
 
 ### United States
 
+- Step 1: Export financial data from the accounting system Export the complete financial records and supporting schedules for the tax period. Reconcile them with the books and share them privately with the appointed tax adviser.
+- Step 3: The tax adviser prepares the company return The appointed adviser prepares the company income tax return under the local rules using the reconciled records. Resolve missing information and review questions before the draft moves to approval.
+- Step 4: Review draft return Compare the draft with final books, carryforwards, ownership records and significant transactions. Review tax adjustments, elections, related-party reporting and estimated payments with the preparer. Resolve unfamiliar figures and verify the entity and period before approving the exact return version through the company’s filing process. Treat any payment instruction as a distinct decision.
 - Step 5: Officer signs the e-file authorization (Form 8879-CORP) Prepare the annual federal corporate tax return (Form 1120) and file with the IRS. For a return using Form 8879-CORP, the authorized corporate officer reviews the complete electronic return before signing. Verify the corporation, year, required return figures and any electronic-withdrawal consent against the reviewed draft. Resolve changes with the electronic return originator, then sign and return the authorization securely. Keep it associated with the return it authorizes.
 - Step 6: CPA files return with IRS Confirm the preparer has the approved return and required signature authorization before transmission. Obtain the filing acknowledgement and distinguish acceptance from rejection. Resolve rejected submissions promptly, reviewing material corrections before retransmission. Preserve the filed return and acceptance, and check any separately required forms or attachments the preparer identified.
   - Verify: The IRS e-file acceptance acknowledgment comes back through the CPA — retain it with the signed copy of the return.
 - Step 7: Pay any tax due Reconcile the balance due with credits, estimated payments and any electronic withdrawal already authorized. Verify taxpayer, period, payment type, amount and due date with the preparer. Use the company’s payment-approval process and check settlement. Match any debit included with filing before paying again, and resolve failed or missing payments against the tax account. ([IRS payments](https://www.irs.gov/payments))
   - Verify: IRS Direct Pay or EFTPS issues a payment confirmation number and the payment posts to the business tax account. ([www.irs.gov](https://www.irs.gov/payments))
+- Step 8: File copy in records File the submitted return, schedules, elections, signature authorization, acceptance and payment evidence together. Keep supporting workpapers and explanations of material positions, with drafts clearly separate. Apply the relevant retention and access arrangements so a new preparer can understand the filed position and any later notice or amendment can be investigated.
 
 <a id="geo-in"></a>
 
@@ -215,7 +225,11 @@ File the submitted return, schedules, elections, signature authorization, accept
 ### United Kingdom
 
 - The company files a CT600 Company Tax Return with HMRC within 12 months of its accounting period end — plus statutory accounts to Companies House. ([HMRC Company Tax Return (CT600)](https://www.gov.uk/company-tax-returns))
-- Step 6: File the CT600 Company Tax Return with HMRC The company files a CT600 Company Tax Return with HMRC within 12 months of its accounting period end — plus statutory accounts to Companies House. ([HMRC Company Tax Return (CT600)](https://www.gov.uk/company-tax-returns))
+- Step 1: Export financial data from the accounting system For the scoped active domestic company, reconcile accounts, Corporation Tax period and private source records with the accountant. Dormancy, groups, foreign tax residence and specialist tax positions need another assessment. ([GOV.UK accounts and tax returns](https://www.gov.uk/prepare-file-annual-accounts-for-limited-company))
+- Step 3: The tax adviser prepares the company return The tax adviser prepares the Company Tax Return under current HMRC requirements and reconciles it to the statutory accounts. Keep Companies House accounts, the HMRC return and tax payment deadlines distinct. ([GOV.UK accounts and tax returns](https://www.gov.uk/prepare-file-annual-accounts-for-limited-company))
+- Step 4: Review draft return The accountable company person reviews the return and authorizes the specific filing through the adviser or approved software. Resolve uncertain positions and missing records before authorizing submission. ([GOV.UK accounts and tax returns](https://www.gov.uk/prepare-file-annual-accounts-for-limited-company))
+- Step 6: The tax adviser files the company return The authorized adviser submits through the current permitted HMRC route and retains acceptance or rejection evidence. Do not assume the Companies House accounts filing also completes the Company Tax Return. ([GOV.UK accounts and tax returns](https://www.gov.uk/prepare-file-annual-accounts-for-limited-company))
+- Step 8: File copy in records Retain the accepted return, calculations and separate payment or no-tax-due evidence as applicable. Reconcile them with the ledger and statutory accounts and assign corrections and future reporting dates. ([GOV.UK accounts and tax returns](https://www.gov.uk/prepare-file-annual-accounts-for-limited-company))
 
 <a id="geo-de"></a>
 

@@ -9,6 +9,8 @@
 
 Prepare and submit the recurring corporate registry return or accounts disclosure required for the company’s jurisdiction. Retain acceptance evidence and track the next filing obligation.
 
+> Scoped draft detail: UK-resident private company limited by shares registered in England and Wales, operating domestically in unregulated services. Other entities, locations and cross-border facts need another assessment. Professional review is pending. Source and instruction check: 2026-11-01. Assessment: coverage/local-procedure-assessments.json.
+
 | Field | Value |
 | --- | --- |
 | Kind | process |
@@ -22,6 +24,8 @@ Prepare and submit the recurring corporate registry return or accounts disclosur
 | Agent support | manual guide |
 
 State filing portals have no API — the filing is manual form work; gathering the details and saving the receipt are agent steps.
+
+- Sources: [Companies House confirmation statement guidance](https://www.gov.uk/guidance/filing-your-companys-confirmation-statement)
 
 <a id="artifacts"></a>
 
@@ -41,9 +45,9 @@ Country rows describe the guidance recorded here. Local notes and step alternati
 
 | Country | Recorded guidance | Steps with local alternatives or resolutions |
 | --- | --- | --- |
-| [United States](#geo-us) | step resolution | [2](#step-2) |
+| [United States](#geo-us) | step resolution | [1](#step-1), [2](#step-2), [3](#step-3) |
 | [India](#geo-in) | Local analog note; step resolution | [2](#step-2) |
-| [United Kingdom](#geo-uk) | Local analog note; step resolution | [2](#step-2) |
+| [United Kingdom](#geo-uk) | Local analog note; step resolution | [1](#step-1), [2](#step-2), [3](#step-3) |
 | [Germany](#geo-de) | Local analog note; step resolution | [2](#step-2) |
 | [France](#geo-fr) | Local analog note; step resolution | [2](#step-2) |
 | [Portugal](#geo-pt) | Local analog note; step resolution | [2](#step-2) |
@@ -97,6 +101,8 @@ agent-runnable · ~5 min
 
 Identify the state report, entity type and period from the official record and current instructions. Compare requested addresses, officers or managers and agent details with the company’s records, resolving changes before certification. Keep private information in the filing workspace. Separate this report from any franchise-tax, income-tax or licensing work so the correct task is prepared.
 
+- Sources: [Companies House confirmation statement guidance](https://www.gov.uk/guidance/filing-your-companys-confirmation-statement)
+
 <a id="step-2"></a>
 
 ### 2. File the required recurring company registry return
@@ -108,6 +114,7 @@ Confirm the entity, registry, reporting period and required filing. Prepare the 
 
 - Verify: Retain the official confirmation or accepted documents required for this step in the selected jurisdiction; reconcile them with the approved company records.
 - Vendor options: Northwest Registered Agent, LegalZoom, Harbor Compliance
+- Sources: [Companies House confirmation statement guidance](https://www.gov.uk/guidance/filing-your-companys-confirmation-statement)
 
 <a id="step-3"></a>
 
@@ -117,6 +124,8 @@ agent-runnable · ~2 min
 
 
 Save the submitted report, payment receipt and acceptance evidence under the correct entity and period. If review is pending, track that status until resolved. Update the compliance calendar from the state’s actual next requirement and make the files retrievable by the person responsible for the next cycle.
+
+- Sources: [Companies House confirmation statement guidance](https://www.gov.uk/guidance/filing-your-companys-confirmation-statement)
 
 *This path ends here.*
 
@@ -227,8 +236,10 @@ Florida profit corporations file the Sunbiz annual report between January 1 and 
 
 ### United States
 
+- Step 1: Gather filing details Identify the state report, entity type and period from the official record and current instructions. Compare requested addresses, officers or managers and agent details with the company’s records, resolving changes before certification. Keep private information in the filing workspace. Separate this report from any franchise-tax, income-tax or licensing work so the correct task is prepared.
 - Step 2: File the annual report on the state portal File the annual report and keep the company in good standing with your state of incorporation. The ritual differs by state: California's Statement of Information is due within 90 days of registration and annually after (law rule [us-ca.statement-of-information](../../open-law/US-CA/us-ca-statement-of-information.json)), Nevada's annual list lands by the end of the anniversary month alongside the $500 business-license renewal (law rule [us-nv.annual-list-business-license](../../open-law/US-NV/us-nv-annual-list-business-license.json)), and Texas ties standing to the May 15 franchise tax report (law rule [us-tx.franchise-tax-report](../../open-law/US-TX/us-tx-franchise-tax-report.json)). Select the correct entity, report and period in the official portal. Compare prefilled information with current company records and identify changes requiring a separate filing. The authorized filer reviews the declaration and approves submission and fees. Preserve the submitted report and check whether it was accepted or needs correction.
   - Verify: The state portal shows the report filed and the entity in good standing for the year.
+- Step 3: Save the confirmation receipt Save the submitted report, payment receipt and acceptance evidence under the correct entity and period. If review is pending, track that status until resolved. Update the compliance calendar from the state’s actual next requirement and make the files retrievable by the person responsible for the next cycle.
 
 <a id="geo-in"></a>
 
@@ -241,8 +252,12 @@ Florida profit corporations file the Sunbiz annual report between January 1 and 
 
 ### United Kingdom
 
-- The direct analog is the confirmation statement: at least annually, £34 online, confirming registered details to Companies House — miss it and the registrar can strike the company off. ([File your confirmation statement](https://www.gov.uk/file-your-confirmation-statement-with-companies-house))
-- Step 2: The direct analog is the confirmation statement: at least annually, £34 online, confirming registered details to Companies House — miss it and the registrar can strike the company off. ([File your confirmation statement](https://www.gov.uk/file-your-confirmation-statement-with-companies-house))
+Review and file the Companies House confirmation statement using current company details, identity requirements, service eligibility and filing fees. Verify acceptance; annual accounts are a separate reporting process.
+
+- Review and file the Companies House confirmation statement using current company details, identity requirements, service eligibility and filing fees. Verify acceptance; annual accounts are a separate reporting process. ([Companies House confirmation statement guidance](https://www.gov.uk/guidance/filing-your-companys-confirmation-statement))
+- Step 1: Gather filing details For the scoped private company, check the Companies House record, review period and due date against private ownership and officer records. Identify changes requiring separate filings and confirm current director identity-verification requirements before approving the statement. ([Companies House confirmation statement guidance](https://www.gov.uk/guidance/filing-your-companys-confirmation-statement))
+- Step 2: File the required recurring company registry return Use the authorized Companies House route after correcting details through the required filings. Check the current fee and service eligibility at filing time, obtain approval for the specific statement and payment, and retain the submission result; a confirmation statement is separate from annual accounts. ([Companies House confirmation statement guidance](https://www.gov.uk/guidance/filing-your-companys-confirmation-statement))
+- Step 3: Save the confirmation receipt Check acceptance against the company record and retain its reference and any corrections. Calendar the next review and escalate rejection or overdue filings to the responsible adviser rather than marking an attempted submission complete. ([Companies House confirmation statement guidance](https://www.gov.uk/guidance/filing-your-companys-confirmation-statement))
 
 <a id="geo-de"></a>
 

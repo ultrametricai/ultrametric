@@ -61,6 +61,8 @@ The founder processes are written step by step. Read the process, situation, and
 listed on it, with their judged scores. See it live at
 [ultrametric.ai/processes](https://ultrametric.ai/processes).
 
+[Process and jurisdiction completeness](coverage/PROCESS-COVERAGE.md) shows local instruction depth, review status, tested scope and remaining gaps.
+
 [![The founder processes on ultrametric.ai, ranked on the founder timeline, with area and agentic share](assets/readme/processes-index.png)](https://ultrametric.ai/processes)
 
 ### Examples
