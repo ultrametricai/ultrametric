@@ -1,9 +1,12 @@
 """Metadata-only repair recheck/resume scenarios; no network or repository writes."""
 import json
+import io
 import os
 import runpy
+import subprocess
 import tempfile
 import unittest
+from contextlib import redirect_stdout
 from pathlib import Path
 from unittest.mock import Mock, patch
 
@@ -179,6 +182,124 @@ class ResumeArtifactTests(unittest.TestCase):
             self.assertEqual(result['audits'],REPORT['audits'])
             self.assertEqual(result['failedStage'],'gh workflow run ci.yml')
             self.assertEqual(result['blocked'],'dispatch failed')
+
+class RecoveryCITests(unittest.TestCase):
+    """Execute the recovery workflow against GitHub event histories, without writes."""
+    def run_record(self, event='pull_request', conclusion='action_required', *, id=1, status='completed'):
+        return {'id':id,'event':event,'status':status,'conclusion':conclusion}
+
+    def recover(self, runs, *, pr=None, updated_head=None):
+        pr = pr or {**PR,'number':536,'auto_merge':{'enabled_by':{'login':'maintainer'}}}
+        calls = []
+        def run(args, **kwargs):
+            calls.append(args)
+            result = None
+            if args[:3] == ['gh','api','graphql']:
+                result = {'data':{'repository':{'pullRequest':{'reviewThreads':{
+                    'nodes':[],'pageInfo':{'hasNextPage':False}}}}}}
+            elif args[:2] == ['gh','api']:
+                endpoint = args[4]
+                if '/compare/main...' in endpoint:
+                    result = {'behind_by':1 if updated_head else 0}
+                elif endpoint.endswith('/update-branch'):
+                    result = {}
+                elif endpoint.endswith('/pulls/536'):
+                    result = {**pr,'head':{**pr['head'],'sha':updated_head}}
+                elif '/workflows/ci.yml/runs?' in endpoint:
+                    self.assertIn(f'head_sha={updated_head or SHA}&', endpoint)
+                    result = {'workflow_runs':runs}
+                elif '/check-runs?' in endpoint:
+                    result = {'check_runs':[{'app':{'id':867647}}]}
+                elif '/workflows/refresh-repair.yml/runs?' in endpoint:
+                    result = {'workflow_runs':[]}
+                else:
+                    raise AssertionError(endpoint)
+            return subprocess.CompletedProcess(args, 0, json.dumps(result) if result is not None else '')
+        source = (Path(__file__).resolve().parents[2]/'.github/workflows/refresh-automerge.yml').read_text().split('        run: |\n',1)[1]
+        code = '\n'.join(line[10:] if line.startswith('          ') else line for line in source.splitlines())
+        error = None
+        with patch.dict(os.environ,{'REPO':'owner/repo'}), \
+                patch('subprocess.check_output',return_value=json.dumps([[pr]])), \
+                patch('subprocess.run',side_effect=run), patch('time.sleep'), redirect_stdout(io.StringIO()):
+            try:
+                exec(code,{})
+            except SystemExit as exc:
+                error = str(exc)
+        ci = [call for call in calls if call[:4] == ['gh','workflow','run','ci.yml']]
+        return ci, calls, error
+
+    def test_approval_event_winning_branch_update_race_still_dispatches_ci(self):
+        ci, calls, error = self.recover([self.run_record()], updated_head='b'*40)
+        self.assertIsNone(error)
+        self.assertEqual(ci, [['gh','workflow','run','ci.yml','--repo','owner/repo','--ref',BRANCH]])
+        self.assertTrue(any('/update-branch' in ' '.join(call) for call in calls))
+        self.assertFalse(any('approve' in call for call in calls))
+
+    def test_no_run_or_approval_only_history_dispatches(self):
+        for runs in [[], [self.run_record()]]:
+            with self.subTest(runs=runs):
+                ci, _, error = self.recover(runs)
+                self.assertIsNone(error)
+                self.assertEqual(len(ci), 1)
+
+    def test_pending_ci_is_left_running(self):
+        for event in ['pull_request','workflow_dispatch']:
+            for status in ['queued','in_progress','waiting']:
+                with self.subTest(event=event,status=status):
+                    ci, _, error = self.recover([self.run_record(event,None,status=status)])
+                    self.assertIsNone(error)
+                    self.assertEqual(ci, [])
+
+    def test_real_ci_results_are_preserved_despite_newer_approval_record(self):
+        for conclusion in ['success','failure']:
+            with self.subTest(conclusion=conclusion):
+                ci, calls, error = self.recover([
+                    self.run_record('workflow_dispatch',conclusion), self.run_record(id=2)])
+                self.assertIsNone(error)
+                self.assertEqual(ci, [])
+                repairs = [call for call in calls if call[:4] == ['gh','workflow','run','refresh-repair.yml']]
+                self.assertEqual(len(repairs), 1 if conclusion == 'failure' else 0)
+
+    def test_approved_pr_ci_result_also_counts(self):
+        ci, _, error = self.recover([self.run_record(conclusion='success')])
+        self.assertIsNone(error)
+        self.assertEqual(ci, [])
+
+    def test_ci_without_a_result_retries_the_same_branch(self):
+        for conclusion in ['cancelled','timed_out','action_required','startup_failure','stale','skipped','neutral']:
+            with self.subTest(conclusion=conclusion):
+                ci, _, error = self.recover([self.run_record('workflow_dispatch',conclusion)])
+                self.assertIsNone(error)
+                self.assertEqual(len(ci), 1)
+                self.assertEqual(ci[0][-1], BRANCH)
+
+    def test_newer_success_supersedes_cancelled_dispatch(self):
+        ci, _, error = self.recover([
+            self.run_record('workflow_dispatch','success',id=2),
+            self.run_record('workflow_dispatch','cancelled'), self.run_record(id=3)])
+        self.assertIsNone(error)
+        self.assertEqual(ci, [])
+
+    def test_repeated_startup_failures_exhaust_budget_without_dispatching(self):
+        ci, calls, error = self.recover([
+            self.run_record('workflow_dispatch','startup_failure',id=i) for i in range(3)])
+        self.assertEqual(ci, [])
+        self.assertIn('Refresh PRs need attention or retry: [536]', error)
+        self.assertFalse(any(call[:3] == ['gh','pr','merge'] for call in calls))
+
+    def test_many_approval_records_do_not_exhaust_dispatch_budget(self):
+        ci, _, error = self.recover([self.run_record(id=i) for i in range(4)])
+        self.assertIsNone(error)
+        self.assertEqual(len(ci), 1)
+
+    def test_drafts_forks_and_unrelated_authors_still_stay_outside_recovery(self):
+        for override in [{'draft':True}, {'user':{'login':'someone'}},
+                         {'head':{**PR['head'],'repo':{'full_name':'fork/repo'}}}]:
+            with self.subTest(override=override):
+                ci, calls, error = self.recover([], pr={**PR,'number':536,**override})
+                self.assertIsNone(error)
+                self.assertEqual(ci, [])
+                self.assertEqual(calls, [])
 
 if __name__=='__main__':
     unittest.main()

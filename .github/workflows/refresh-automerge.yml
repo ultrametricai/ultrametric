@@ -1,7 +1,7 @@
 name: Refresh auto-merge recovery
 
-# Bot-created PRs and bot merges do not trigger normal PR/push workflows.
-# The timer recovers missed dispatches and refreshes bases after another PR lands.
+# GITHUB_TOKEN PR events create approval-required runs; explicit CI dispatches run
+# the same gates. The timer recovers missing results and refreshes stale bases.
 on:
   workflow_run:
     workflows: [CI]
@@ -45,6 +45,23 @@ jobs:
               return json.loads(result.stdout) if result.stdout.strip() else None
           prs = json.loads(subprocess.check_output(
               ['gh', 'api', '--paginate', '--slurp', f'repos/{repo}/pulls?state=open&per_page=100'], text=True))
+          def needs_ci_dispatch(runs):
+              # An approval-required PR run has no jobs and cannot replace the
+              # explicit dispatch. Prefer dispatches when both events exist so a
+              # newer approval-required record cannot hide a real CI result.
+              dispatches = [run for run in runs if run['event'] == 'workflow_dispatch']
+              candidates = dispatches or runs
+              if any(run['status'] != 'completed' for run in candidates):
+                  return False
+              newest = max(candidates, key=lambda run: run['id']) if candidates else {}
+              if newest.get('conclusion') in ['success', 'failure']:
+                  return False # real failures stay with the existing repair/review gates
+              # Bound same-head retries when CI is cancelled or cannot start.
+              # A new head gets its own budget; the approval-only runs do not count.
+              if len(dispatches) >= 3:
+                  raise RuntimeError('CI ended without a result and exhausted three dispatches on this head; human review required')
+              return True
+
           def request_repair(pr, sha):
               if not pr['head']['ref'].startswith('story-runner/'):
                   return
@@ -114,7 +131,7 @@ jobs:
                       if current['state'] != 'open':
                           continue
                   runs = api(f'actions/workflows/ci.yml/runs?head_sha={sha}&per_page=100')
-                  if not runs['workflow_runs']:
+                  if needs_ci_dispatch(runs['workflow_runs']):
                       subprocess.run(['gh', 'workflow', 'run', 'ci.yml', '--repo', repo, '--ref', branch], check=True)
                   checks = api(f'commits/{sha}/check-runs?check_name=Greptile%20Review&per_page=100')
                   if not any(check['app']['id'] == 867647 for check in checks['check_runs']):
