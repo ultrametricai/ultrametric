@@ -21,12 +21,11 @@
     "productId": "formant",
     "storyId": "agentic-agent-docs",
     "verdict": "full",
-    "quality": 8,
-    "confidence": "high",
-    "rationale": "A live probe confirms a working llms.txt at docs.formant.io (HTTP 200, with a proper '# Formant Documentation' header and summary). The cited docs pages are also served as raw .md URLs, which an agent can ingest directly. Missing for 10: no evidence of an llms-full.txt or agent-specific usage guidance, no machine-readable OpenAPI spec (all candidate paths returned 404), and no independent corroboration of how complete the llms.txt index is.",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "A live probe found a properly formatted llms.txt at docs.formant.io (HTTP 200, with the standard '# Formant Documentation' header and summary). Docs pages are also served as .md URLs, giving agents markdown versions of the documentation to read. missing for 10: no evidence of llms.txt coverage or depth (e.g., an llms-full.txt), no first-party docs describing agent-oriented documentation, no hands-on or independent corroboration of agents consuming it (and no OpenAPI spec found)",
     "evidenceIds": [
       "formant-probe-1",
-      "formant-probe-2",
       "formant-docs-2",
       "formant-docs-3"
     ]
@@ -80,17 +79,18 @@
     "productId": "formant",
     "storyId": "agentic-headless",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Formant documents its own programmatic, UI-free interfaces. The Python Cloud SDK can query and ingest data without the web app or an agent, and the Admin API can create custom commands. The device agent installs via Docker and is configured through environment variables, so automated scripts can drive the platform headlessly. Nothing shows a CLI, CI-pipeline integration, or non-interactive auth guidance for CI runners, so headless use is only implied through SDK/API access. Missing for 10: an official CLI or headless mode, documented CI/CD usage examples, token-based auth for CI, and independent or hands-on corroboration.",
+    "rationale": "Formant can be driven without its UI through its own Python Cloud SDK, which queries and ingests telemetry via the APIs, and through the Admin API for custom commands. The device agent installs via Docker and is configured through environment variables, which supports unattended, scripted operation. However, nothing documents CI pipelines, a CLI, or headless-automation workflows as such, and no OpenAPI spec was found. Missing for 10: documented CI/CD integration, an official CLI, a published OpenAPI spec for scripted automation, independent or hands-on corroboration of headless use.",
     "evidenceIds": [
       "formant-docs-3",
-      "formant-docs-45",
       "formant-docs-27",
+      "formant-docs-45",
       "formant-docs-4",
-      "formant-docs-57",
+      "formant-docs-40",
       "formant-docs-1",
-      "formant-docs-40"
+      "formant-docs-57",
+      "formant-probe-2"
     ]
   },
   {
@@ -183,9 +183,9 @@
     "productId": "formant",
     "storyId": "agentic-webhooks",
     "verdict": "full",
-    "quality": 6,
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Formant has a dedicated docs page, \"Trigger webhooks from events\" [formant-docs-28]. It says a webhook makes an HTTP API call to any endpoint when a Formant event fires, which is a registrable outbound callback a programmatic consumer can receive. The evidence is a single line, though, so beyond the core mechanism it says little about depth or how robust it is. Missing for 10: payload/schema documentation, event-type filtering details, delivery guarantees (retries, signing/auth), API-based webhook registration, and independent or hands-on corroboration.",
+    "rationale": "Formant documents first-party webhooks that make an HTTP API call to any endpoint when a Formant event fires, which is a registrable outbound callback a programmatic consumer can receive. The evidence is a single doc sentence with no detail on setup or delivery behavior. Missing for 10: payload schema, signing/authentication, retry and delivery guarantees, programmatic (API-based) webhook registration, independent or hands-on corroboration.",
     "evidenceIds": [
       "formant-docs-28"
     ]
@@ -393,10 +393,10 @@
   {
     "productId": "formant",
     "storyId": "hardware-abstraction",
-    "verdict": "na",
+    "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Formant is a cloud fleet-operations, observability and teleoperation platform with an on-device data and command agent. It is not robot middleware or a driver framework. Stable hardware-abstraction interfaces for swapping sensors and actuators belong to the robot runtime (e.g. ROS drivers), so this story is a category error for Formant. Its multi-vendor data normalization and adapter restarting are fleet-level features and do not make this axis apply.",
+    "rationale": "Formant is a robot fleet operations platform with an on-device agent, so a hardware-abstraction story is a fair question to ask of it. However, the evidence shows no stable sensor or actuator abstraction interfaces that would let application code survive hardware swaps. The closest items are uniform data ingestion across robot types, cross-vendor fleet orchestration and agent adapters, which are adjacent telemetry and fleet features rather than a hardware-abstraction layer.",
     "evidenceIds": []
   },
   {
@@ -419,11 +419,15 @@
   {
     "productId": "formant",
     "storyId": "ml-training-loop",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Formant documents general data export through the Cloud SDK for data scientists and generic device commands such as run_script and get_file. These are developer building blocks only. There is no documented model-training pipeline, ML data-curation workflow, or model deployment/rollout to the fleet, so the story's train-and-redeploy loop is not delivered as a product capability.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Formant documents the data-collection half of the loop. Its Python Cloud SDK is described as the primary way data scientists query and export telemetry (formant-docs-3, formant-docs-56), and it offers time-synced video, sensor and intervention records (formant-docs-13), which could feed external model training. Nothing in the evidence documents a training integration or a model deployment / OTA path back to the fleet; a generic `formant.run_script` command (formant-docs-54) is only a building block for that. Missing for 10: native or documented integration with ML training pipelines, model versioning and fleet-wide model deployment or rollout, end-to-end data-to-model loop documentation, and independent corroboration.",
+    "evidenceIds": [
+      "formant-docs-3",
+      "formant-docs-56",
+      "formant-docs-13"
+    ]
   },
   {
     "productId": "formant",
@@ -501,11 +505,15 @@
   {
     "productId": "formant",
     "storyId": "openness-open-license",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Open-source availability is a fair question for a robotics fleet platform, so the axis applies. However, nothing in the evidence shows Formant's platform or agent source being published under an open license. The only GitHub evidence is the FormantIO/toolkit repo, which holds SDK and UI building blocks for apps built on Formant's APIs, not the product's own source, and no license is stated.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 2,
+    "confidence": "low",
+    "rationale": "The only source-related evidence is a public GitHub repo, FormantIO/toolkit, which holds peripheral developer code (RealtimeSDK usage, UI custom elements, embeddable modules). Nothing shows the core platform or agent source is public, and no license is cited for the toolkit, so this barely counts. Missing for 10: an open license stated for any repo, public source for the core platform and agent, and any independent confirmation of open-source status.",
+    "evidenceIds": [
+      "formant-gh-1",
+      "formant-gh-3",
+      "formant-gh-4"
+    ]
   },
   {
     "productId": "formant",
@@ -546,11 +554,13 @@
   {
     "productId": "formant",
     "storyId": "privacy-no-training",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Formant ships AI features (an analytics AI assistant and ML-driven recommendations), so a training-data opt-out is a fair question, but the evidence never documents a policy or control that keeps customer data out of AI model training. Choosing which streams upload to the cloud is an adjacent data-collection control. The line \"where you choose, scoped research partnerships\" does not explicitly address AI training. Neither earns credit.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 2,
+    "confidence": "low",
+    "rationale": "The only relevant evidence is a product-page line saying data goes to your team and, \"where you choose,\" to scoped research partnerships. That implies sharing data beyond your team is opt-in, but it never says AI model training is excluded or can be turned off. Missing for 10: an explicit no-training or opt-out policy, documentation of how training opt-out controls work, any statement on whether the AI assistant or ML recommendations train on customer data, and independent corroboration.",
+    "evidenceIds": [
+      "formant-docs-13"
+    ]
   },
   {
     "productId": "formant",
@@ -610,11 +620,16 @@
   {
     "productId": "formant",
     "storyId": "sensor-integration",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Formant is a robot fleet-operations platform, and sensor bring-up is a fair question for it. The evidence only shows a Docker/ROS agent install, an Agent SDK for ingesting telemetry, and commands such as publishing to ROS topics. Nothing documents ready-made drivers or standard message types for cameras, lidars, IMUs, or GPS, and ingesting existing ROS data is an adjacent capability, not hardware integration.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Formant gets sensor data into its platform rather than providing hardware drivers. The evidence shows a ROS 2 Docker agent install path, an Agent SDK for ingesting telemetry, and claims of connecting multiple robot types with uniform, searchable data and time-synced video and sensor records. That suggests sensor streams can be brought in through ROS 2 and the SDK, but nothing names specific camera, lidar, IMU or GPS drivers or standard message types. Missing for 10: ready-made drivers for cameras, lidars, IMUs and GPS; documentation of supported standard message types; hands-on or independent evidence of sensor bring-up.",
+    "evidenceIds": [
+      "formant-docs-1",
+      "formant-docs-2",
+      "formant-docs-10",
+      "formant-docs-13"
+    ]
   },
   {
     "productId": "formant",
@@ -665,10 +680,10 @@
   {
     "productId": "gazebo",
     "storyId": "agent-controls-robot",
-    "verdict": "none",
+    "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Gazebo is a robotics simulator, and robot-control APIs are a fair question for robotics platforms, so the axis applies. However, the evidence only shows control of simulated robots through gz-transport, plugins, CLI tools and the ROS bridge. Nothing documents scoped-credential authentication for an agent or end-to-end command of a real physical robot through Gazebo's own API or SDK.",
+    "rationale": "Gazebo is a robot simulator: its documented surfaces (gz-sim server and GUI, gz-transport messaging, plugins, and the ros_gz bridge) all operate on simulated worlds. Commanding a real robot end-to-end with scoped credentials belongs to a hardware or fleet-control platform, not a simulator, so this axis is a category error. Nothing in the evidence shows Gazebo shipping real-robot control or credential-scoped API access that would make the axis apply.",
     "evidenceIds": []
   },
   {
@@ -692,11 +707,16 @@
   {
     "productId": "gazebo",
     "storyId": "agentic-autonomous-automation",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence does not show Gazebo offering any feature to configure autonomous background automations, such as scheduled or triggered jobs or agent-driven tasks. Headless server mode for CI, custom plugins, and launch configuration scripts only let users build such workflows with their own CI or tooling. Those are adjacent features and developer building blocks, so they earn no credit for this story.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Gazebo documents its own unattended-run capabilities: a headless server-only mode (-s), a lightweight server package aimed at headless and CI environments, and a launch configuration script that specifies which programs and plugins to run. Together these let simulations run in the background without a GUI. However, none of this amounts to user-configurable autonomous automations such as scheduled, triggered or agent-driven background tasks. Custom plugins are developer building blocks and earn no credit. Missing for 10: scheduling or trigger mechanisms, background job/automation management, AI-agent-driven autonomous workflows, and any independent or hands-on corroboration.",
+    "evidenceIds": [
+      "gazebo-docs-2",
+      "gazebo-docs-30",
+      "gazebo-docs-12",
+      "gazebo-docs-38"
+    ]
   },
   {
     "productId": "gazebo",
@@ -711,15 +731,15 @@
     "productId": "gazebo",
     "storyId": "agentic-headless",
     "verdict": "full",
-    "quality": 8,
+    "quality": 9,
     "confidence": "high",
-    "rationale": "Gazebo's docs say the simulator can run headless with the `-s` server-only flag. They also describe a dedicated `gz-sim10-server` package with no GUI or Qt dependencies, recommended specifically \"for headless and CI environments.\" Extensive command line tools, remote server operation over Gazebo Transport, and `-v 4` console logging support automation; missing for 10: independent or hands-on corroboration of headless/CI runs, and concrete CI workflow documentation (e.g., container images, pipeline examples, headless sensor rendering).",
+    "rationale": "Gazebo's official docs say Gazebo Sim runs headless with the `-s` server-only flag. A dedicated `gz-sim10-server` package, explicitly positioned 'for headless and CI environments', installs only the server with no GUI or Qt dependencies. Command line tools for introspection and control, socket-based transport for remote servers, and verbose console logging (`-v 4`) round out automation use. missing for 10: independent or hands-on corroboration of CI usage (e.g., community reports or example CI pipeline configs).",
     "evidenceIds": [
       "gazebo-docs-2",
       "gazebo-docs-11",
-      "gazebo-docs-30",
       "gazebo-docs-4",
       "gazebo-docs-12",
+      "gazebo-docs-30",
       "gazebo-gh-3",
       "gazebo-gh-6",
       "gazebo-docs-26"
@@ -848,11 +868,17 @@
   {
     "productId": "gazebo",
     "storyId": "api-sandbox",
-    "verdict": "na",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Gazebo is a locally run, open-source robotics simulator and set of C++ libraries. It has no hosted service, accounts, or production data, so a sandbox-versus-production test mode is a category error for this kind of product. The evidence shows no hosted production environment that a sandbox would be separated from. Gazebo being a simulation tool itself does not make this SaaS-style sandbox axis applicable.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "low",
+    "rationale": "Gazebo is a simulator, so it is by nature an isolated test environment. Users run robot and sensor scenarios in simulated worlds rather than on real systems. The docs describe a headless, server-only package aimed explicitly at CI environments, and example worlds that can be freely copied and modified. However, the evidence never frames this as separating test runs from production data or real deployments, and offers nothing agent-oriented. missing for 10: explicit documentation of sim-vs-production isolation, agent-oriented sandbox workflows, independent/hands-on corroboration.",
+    "evidenceIds": [
+      "gazebo-docs-30",
+      "gazebo-docs-2",
+      "gazebo-docs-20",
+      "gazebo-gh-14",
+      "gazebo-gh-6"
+    ]
   },
   {
     "productId": "gazebo",
@@ -1001,11 +1027,17 @@
   {
     "productId": "gazebo",
     "storyId": "hardware-abstraction",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Swapping hardware behind stable abstraction interfaces is a fair question for a robotics simulator, so the axis applies. However, the evidence documents no hardware-abstraction layer that lets sensors or actuators be exchanged without changing application code. What it does show does not qualify: physics-engine plugin swapping is an adjacent feature, custom sensor plugins and pub/sub transport are developer building blocks, and simulated sensor data generation is a different capability.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Gazebo's plugin architecture lets you build custom robot, sensor and environment control plugins, and gz-transport message passing decouples external application code from the simulator. ros_gz also implies ROS-based apps can talk to simulated hardware. The only explicit swappable abstraction in the evidence, though, is the plugin interface to physics engines (ODE, Bullet, DART), not sensors or actuators. Missing for 10: documented stable hardware-abstraction interfaces for sensors/actuators, evidence that swapping sensors or actuators (or sim vs. real hardware) requires no application-code changes, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "gazebo-gh-1",
+      "gazebo-gh-6",
+      "gazebo-docs-15",
+      "gazebo-docs-6",
+      "gazebo-docs-1"
+    ]
   },
   {
     "productId": "gazebo",
@@ -1156,19 +1188,19 @@
   {
     "productId": "gazebo",
     "storyId": "privacy-data-residency",
-    "verdict": "none",
+    "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Gazebo is a simulator with a hosted model repository (Gazebo Fuel), so a data-residency question is a fair one to ask of it. However, the evidence contains no documented capability for choosing a storage region or data residency. Running the simulator locally or on remote servers is a deployment choice made by the user, not a residency feature of the product, so it earns no credit.",
+    "rationale": "Gazebo is an open-source robotics simulator installed and run on the user's own machines or servers. Choosing a vendor storage region or data residency is a hosted-SaaS concept that does not apply to this kind of product. Nothing in the evidence shows a vendor-hosted data service with region options.",
     "evidenceIds": []
   },
   {
     "productId": "gazebo",
     "storyId": "privacy-no-training",
-    "verdict": "none",
+    "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Gazebo is mainly a locally run simulator, but it also connects to the hosted Gazebo Fuel model servers, so a data-use or AI-training opt-out policy is a fair question and the axis applies. The evidence pack contains no AI-training opt-out, data-use policy or privacy control. Local and headless operation is a deployment feature, not a documented training opt-out, so it earns no credit.",
+    "rationale": "Gazebo is an open-source robotics simulator and set of C++ libraries that users install and run locally or on their own servers. It is not a hosted AI service that ingests customer data, so an opt-out from AI model training is a category mismatch for this kind of product. Nothing in the evidence pack mentions data collection or AI training at all.",
     "evidenceIds": []
   },
   {
@@ -1264,10 +1296,10 @@
   {
     "productId": "gazebo",
     "storyId": "teleoperation",
-    "verdict": "na",
+    "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Gazebo is a robotics simulator, so teleoperating a physical remote robot with live video over real-world networks belongs to a different product category: fleet and teleop platforms. The evidence offers only adjacent pieces: running the simulation on remote servers via Gazebo Transport, and a GUI that connects to a simulation server. Neither shows Gazebo shipping real-robot teleoperation, so the exception does not apply.",
+    "rationale": "Gazebo is robotics software, so remote teleoperation is a fair axis to evaluate. However, the evidence only shows remote *simulation* servers reached over socket-based Gazebo Transport, plus pub/sub building blocks. Neither is a documented capability for teleoperating a real remote robot with live video and responsive control over real-world networks.",
     "evidenceIds": []
   },
   {
@@ -1424,10 +1456,10 @@
   {
     "productId": "nvidia-isaac",
     "storyId": "agentic-scoped-keys",
-    "verdict": "none",
+    "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Isaac is mainly a locally installed simulation and robot-learning platform, but it ties into NVIDIA cloud and asset services, so scoped credentials are a fair question rather than a category error. The evidence pack documents no API keys, tokens, or least-privilege credential issuance for agents. The agent-skill mentions cover development workflows, not credential scoping, and the probes found no OpenAPI surface.",
+    "rationale": "NVIDIA Isaac is a locally run robotics simulation, learning, and ROS acceleration platform made of Python packages, open-source frameworks, and models. It is not a hosted API service that issues credentials, so scoped or least-privilege API keys for agents are a category error for this product type. Nothing in the evidence shows a credentialed API surface that would make the axis apply, and the OpenAPI probes all returned 404.",
     "evidenceIds": []
   },
   {
@@ -1512,11 +1544,18 @@
   {
     "productId": "nvidia-isaac",
     "storyId": "automation-bulk-operations",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Bulk operations are a fair question for a simulation platform, for example batch-importing or converting many robot assets, or applying edits across many scene items at once, so the axis applies. The evidence shows no documented bulk-operation capability. Standalone Python scripting and pip packages are developer building blocks, and large-scale GPU training or scene randomization are adjacent scaling features, not bulk operations on items. None of these earn credit.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "The axis applies, since a simulation platform with Python APIs could offer batch operations. The evidence only implies scale-oriented automation: large-scale GPU-parallel training across CUDA-graphable environments, headless operation, scripted synthetic-data generation with Replicator over randomized scenes, and pip-installable Python packages for composing apps. Nothing documents explicit bulk operations on many items at once, such as batch import, multi-asset edits, or batch spawning. missing for 10: explicit documented bulk/batch operations on many assets or entities, batch import/conversion workflows, an agent-friendly API surface (llms.txt and OpenAPI both 404), independent hands-on corroboration.",
+    "evidenceIds": [
+      "nvidia-isaac-docs-10",
+      "nvidia-isaac-docs-17",
+      "nvidia-isaac-docs-3",
+      "nvidia-isaac-docs-5",
+      "nvidia-isaac-docs-12",
+      "nvidia-isaac-docs-21"
+    ]
   },
   {
     "productId": "nvidia-isaac",
@@ -1605,11 +1644,17 @@
   {
     "productId": "nvidia-isaac",
     "storyId": "data-query-export",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "A robotics platform could plausibly offer querying and export of collected robot data, so this axis applies. However, the evidence covers only synthetic data generation (Replicator), capturing sensor data in simulation, and converting teleoperation demonstrations for GR00T post-training. None of it documents a query API, SQL interface, or export mechanism for offline analysis of collected robot data, and the OpenAPI probe found no API spec. Data generation and model-training pipelines are adjacent capabilities and earn no credit toward this story.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The evidence shows Isaac Sim can generate and capture data: Replicator produces labeled training data, the AMR workflow captures stereo camera data, and the platform supports custom synthetic-data pipelines through Python packages. This loosely covers exporting data for offline use. Nothing shows a query interface over collected robot data, and the OpenAPI probe returned 404s. missing for 10: an API or SQL query layer over collected or logged robot data, documented export formats for offline analysis, support for real-robot telemetry rather than only synthetic simulation output, and independent corroboration.",
+    "evidenceIds": [
+      "nvidia-isaac-docs-3",
+      "nvidia-isaac-docs-5",
+      "nvidia-isaac-docs-21",
+      "nvidia-isaac-docs-12",
+      "nvidia-isaac-probe-3"
+    ]
   },
   {
     "productId": "nvidia-isaac",
@@ -1650,11 +1695,18 @@
   {
     "productId": "nvidia-isaac",
     "storyId": "hardware-abstraction",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Nothing in the evidence documents a first-party hardware-abstraction layer that lets engineers swap physical sensors or actuators behind stable interfaces without changing application code. The closest items are adjacent rather than this capability: ROS 2 integration (a host-framework feature), NITROS transport portability, software-in-the-loop and hardware-in-the-loop testing, and configuring sensor models in simulation.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "The evidence only implies hardware abstraction. Isaac validates robot stacks through ROS 2 and a ROS bridge, and supports software-in-the-loop and hardware-in-the-loop testing of the same perception and mobility stacks, so application code is decoupled from the backing hardware (simulated or real). Isaac ROS also offers plug-and-play packages, and users can add their own robots and physics-based sensors. None of this explicitly documents stable sensor/actuator abstraction interfaces or hot-swapping hardware without code changes. Missing for 10: explicit hardware-abstraction/driver interface documentation, evidence of swapping physical sensors or actuators without app rewrites, and independent hands-on corroboration.",
+    "evidenceIds": [
+      "nvidia-isaac-docs-2",
+      "nvidia-isaac-gh-3",
+      "nvidia-isaac-docs-26",
+      "nvidia-isaac-docs-27",
+      "nvidia-isaac-docs-28",
+      "nvidia-isaac-docs-7"
+    ]
   },
   {
     "productId": "nvidia-isaac",
@@ -1819,11 +1871,15 @@
   {
     "productId": "nvidia-isaac",
     "storyId": "privacy-data-residency",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Data residency is a fair question for a platform like Isaac, which spans deployment from workstation to data center, so the axis applies. The pack never documents any region or residency selection, storage-location controls, or data-handling policy. Self-hosted options such as Docker and headless deployment are user-side infrastructure choices, not a product residency capability, so they earn no credit.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Isaac is installed and run by the user via pip packages, on workstations, Jetson devices, or the user's own data center with headless operation. That implies data stays wherever the user deploys it, but this control is inferred from self-hosting rather than documented as a residency feature. Missing for 10: explicit data-residency or region-selection documentation, coverage of any NVIDIA-hosted or cloud components and where their data lives, independent corroboration.",
+    "evidenceIds": [
+      "nvidia-isaac-docs-10",
+      "nvidia-isaac-docs-12",
+      "nvidia-isaac-docs-7"
+    ]
   },
   {
     "productId": "nvidia-isaac",
@@ -2009,11 +2065,17 @@
   {
     "productId": "ros2",
     "storyId": "agentic-autonomous-automation",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Background automation is a fair question for a robotics framework, so the axis applies. The evidence only shows developer building blocks: nodes, a launch system, actions for long-running tasks, and lifecycle nodes, all of which a developer would use to construct autonomous behavior. It also mentions an adjacent background daemon that only caches graph information for CLI queries. Nothing documents a first-party way for a user to set up automations that run unattended in the background.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "ROS 2 documents a launch system that coordinates multiple long-running nodes, managed-lifecycle nodes, and actions for long-running tasks with feedback, so autonomously running processes are part of its own design. However, the user must write those nodes in code, and nothing shows a first-party way to define, schedule, or trigger background automations. Missing for 10: a documented automation or scheduling feature (triggers, cron-like jobs, background agents), AI-native setup flows, and hands-on corroboration of unattended background operation.",
+    "evidenceIds": [
+      "ros2-docs-6",
+      "ros2-docs-5",
+      "ros2-docs-56",
+      "ros2-docs-24",
+      "ros2-docs-10"
+    ]
   },
   {
     "productId": "ros2",
@@ -2027,28 +2089,29 @@
   {
     "productId": "ros2",
     "storyId": "agentic-headless",
-    "verdict": "partial",
-    "quality": 5,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "ROS 2 documents a GUI-free ROS-Base install with command-line tools only, plus a scriptable `ros2` CLI (topic pub/echo, bag record/play, doctor) and a launch system for coordinating multiple nodes, all of which support headless, scripted operation. Nothing in the evidence addresses running it in CI pipelines. Missing for 10: explicit CI/automation documentation (e.g. CI integration, test runners in pipelines, container images), non-interactive/headless operation guidance, independent or hands-on corroboration of CI use.",
+    "rationale": "ROS 2 documents a 'ROS-Base' install with communication libraries and command-line tools but no GUI tools. Its scriptable `ros2` CLI can publish and echo topics, record and play bags, and run `ros2 doctor`, and a launch system coordinates multiple nodes, so the core of headless, scripted automation is clearly supported. missing for 10: explicit CI documentation (e.g., running tests or launch files in CI pipelines or containers), and any independent or hands-on corroboration of headless/CI use.",
     "evidenceIds": [
       "ros2-docs-44",
       "ros2-docs-8",
       "ros2-docs-37",
       "ros2-docs-9",
+      "ros2-docs-61",
       "ros2-docs-39",
       "ros2-docs-62",
       "ros2-docs-6",
-      "ros2-docs-52"
+      "ros2-docs-30"
     ]
   },
   {
     "productId": "ros2",
     "storyId": "agentic-mcp-client",
-    "verdict": "none",
+    "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "ROS 2 is a robotics middleware framework. Its ecosystem could plausibly add AI or agent integrations, so the MCP-client axis is not a clear category error. However, nothing in the evidence pack shows any ability to connect to MCP servers or use their tools. Its documented features cover pub/sub, services, actions, QoS, security, the CLI and bags, none of which is an MCP client capability.",
+    "rationale": "Plugging in MCP servers so the product can use their tools is a capability of an AI agent or LLM host acting as an MCP client. ROS 2 is a robotics middleware and framework (pub/sub, services, actions, DDS) with no agent or LLM host of its own, so the story does not fit its product category. Nothing in the evidence shows ROS 2 shipping MCP client support that would make the axis apply.",
     "evidenceIds": []
   },
   {
@@ -2213,20 +2276,30 @@
   {
     "productId": "ros2",
     "storyId": "automation-bulk-operations",
-    "verdict": "na",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "ROS 2 is a robotics middleware framework (pub/sub, services, actions, launch, CLI introspection), not a product that manages collections of user records, so \"bulk operations across many items\" is a category error for this kind of product. The launch system for coordinating multiple nodes is runtime orchestration rather than a bulk-edit or bulk-action capability, so it does not make the axis apply.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "ROS 2 is a robotics framework, not an item-management tool. The closest match to bulk operations is the launch system, which coordinates and starts multiple nodes together (ros2-docs-6). Node composition (ros2-docs-4) and the ros2 command-line tools (ros2-docs-37) offer a scriptable way to act on many graph entities at once. Missing for 10: any documented batch or bulk-apply operations (e.g., setting parameters or managing lifecycles across many nodes in one command), AI-oriented bulk automation, and hands-on corroboration.",
+    "evidenceIds": [
+      "ros2-docs-6",
+      "ros2-docs-4",
+      "ros2-docs-37"
+    ]
   },
   {
     "productId": "ros2",
     "storyId": "automation-rules-engine",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Event-driven automation rules are a fair question for a robotics middleware framework, so the axis applies. However, the evidence shows no documented feature for declaring rules that automatically trigger actions on events. Pub/sub topics, services, actions, content-filtered subscriptions and the launch system are developer building blocks a user could code such behavior with, not a rule/trigger capability itself, so they earn no credit.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "ROS 2 is event-driven, so automatic reactions are possible by writing code: subscriptions react to published topic messages (ros2-docs-20), content-filtering subscriptions narrow which events reach a callback (ros2-docs-33), and a node can process data as it arrives and dispatch long-running actions (ros2-docs-23, ros2-docs-24). However, there is no evidence of a declarative way to define rules; any event-to-action logic must be hand-coded in nodes and callbacks. Missing for 10: a declarative rule/trigger definition mechanism, documentation of event-to-action automation as a feature, and independent hands-on corroboration.",
+    "evidenceIds": [
+      "ros2-docs-20",
+      "ros2-docs-33",
+      "ros2-docs-23",
+      "ros2-docs-24",
+      "ros2-docs-28"
+    ]
   },
   {
     "productId": "ros2",
@@ -2790,10 +2863,10 @@
   {
     "productId": "viam",
     "storyId": "agentic-mcp-client",
-    "verdict": "none",
+    "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Viam is a robotics platform with logic modules and ML services, so acting as an MCP client is a plausible capability and the axis applies. However, nothing in the evidence shows Viam can connect to external MCP servers or consume their tools. The agent-related docs describe the opposite direction: an external AI agent operating a Viam machine through the CLI or SDK. That does not count toward this story.",
+    "rationale": "Viam is a robotics and machine-management platform that AI agents operate through its CLI and SDKs (viam-docs-12); it is not itself an AI agent or LLM host that consumes tools. Plugging MCP servers in as a tool client is therefore a category mismatch. The evidence also never shows Viam acting as an MCP client, so the exception that would make the axis apply is not triggered.",
     "evidenceIds": []
   },
   {
@@ -2808,11 +2881,18 @@
   {
     "productId": "viam",
     "storyId": "agentic-nl-commands",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Nothing in the evidence shows Viam itself accepting natural-language commands, such as a built-in assistant or chat interface. The agent guide says an external AI agent can drive a machine through the CLI or SDK, but that agent supplies the natural-language layer. That is a user-side tool plus developer building blocks, so it earns no credit for this story.",
-    "evidenceIds": []
+    "rationale": "Viam has no built-in natural-language command interface. It does document a path for external AI agents to operate machines via shell or SDK (viam-docs-12, viam-docs-31, viam-docs-32), backed by a CLI that calls any machine API with JSON in and out (viam-docs-30) and a published llms.txt (viam-probe-1). Natural-language operation is therefore possible, but only by bringing your own agent to translate commands into CLI or SDK calls. Missing for 10: a native natural-language or chat interface in the app or CLI, an official MCP server or agent integration, and independent or hands-on corroboration of agent-driven operation.",
+    "evidenceIds": [
+      "viam-docs-12",
+      "viam-docs-31",
+      "viam-docs-32",
+      "viam-docs-30",
+      "viam-docs-13",
+      "viam-probe-1"
+    ]
   },
   {
     "productId": "viam",
@@ -2897,11 +2977,16 @@
   {
     "productId": "viam",
     "storyId": "api-interactive-docs",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "Viam documents API reference pages (fleet, machine, ML training), but nothing shows an interactive reference where examples can be run in place, and the OpenAPI probe found no spec at any candidate path. The CLI calling any API method and the web UI's component test panels are separate features, so they earn no credit for this story.",
-    "evidenceIds": []
+    "rationale": "Viam publishes API reference docs, for example the fleet API reference. The CLI can call any API method a machine serves with JSON in and JSON out, and the web app has test panels for exercising components directly. Together these give an adjacent way to try API calls, but nothing shows the API reference itself is interactive or has runnable examples, and no OpenAPI/Swagger spec was found. Missing for 10: an interactive in-docs API explorer, runnable examples embedded in the reference, a machine-readable API spec, and independent corroboration.",
+    "evidenceIds": [
+      "viam-docs-20",
+      "viam-docs-30",
+      "viam-docs-6",
+      "viam-probe-2"
+    ]
   },
   {
     "productId": "viam",
@@ -3004,15 +3089,14 @@
   {
     "productId": "viam",
     "storyId": "command-access-control",
-    "verdict": "partial",
-    "quality": 6,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Viam documents its own access-control capability. The fleet management API can 'manage permissions and authorization' across organizations, locations, and machines, pricing lists 'access control' under Fleet Management, and machines can optionally enforce per-resource, per-method restrictions through `user_permissions` in the machine config. The evidence only mentions these features briefly and does not describe named roles that separate command, configure, and view rights for each robot. missing for 10: explicit role definitions (e.g. operator vs. viewer vs. owner), documented per-machine scoping of configure/view rights, in-depth docs on assigning permissions, independent or hands-on corroboration.",
+    "rationale": "Viam documents access control as part of Fleet Management, and its fleet API lets you manage permissions and authorization across organizations, locations and machines. Machines can also enforce per-resource, per-method restrictions through `user_permissions` in their config, which gives fine-grained control over who can command each robot. missing for 10: explicit documentation of named roles (e.g., owner/operator/viewer) that separate command, configure and view rights; detail on how role assignment scopes to individual machines; independent or hands-on corroboration.",
     "evidenceIds": [
+      "viam-docs-10",
       "viam-docs-20",
       "viam-docs-34",
-      "viam-docs-43",
-      "viam-docs-10",
       "viam-docs-58",
       "viam-docs-62"
     ]
@@ -3054,9 +3138,9 @@
     "productId": "viam",
     "storyId": "data-query-export",
     "verdict": "full",
-    "quality": 7,
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Viam's official CLI documents `viam data query tabular sql` with a `--destination` output path, and its data commands export data in a variety of formats and query tabular or binary data with SQL or MQL. Data captured by the built-in data manager is synced to the Viam cloud, and Data Management is a priced feature for collecting, storing and querying telemetry, which together covers the SQL query-and-export core of the story. missing for 10: documentation of a programmatic SDK/data-client API for querying, specifics of the export formats, independent or hands-on corroboration.",
+    "rationale": "Viam's CLI docs show tabular SQL queries via `viam data query tabular sql` with an optional `--destination` output path. The same docs describe exporting data in several formats and querying tabular or binary data with SQL or MQL. The pricing page lists collecting, storing and querying sensor data as part of Data Management, and data captured by the built-in data manager syncs to the Viam cloud. missing for 10: explicit documentation of programmatic data-query/export through an SDK or API (only the CLI is evidenced), independent or hands-on corroboration of the query/export workflow.",
     "evidenceIds": [
       "viam-docs-11",
       "viam-docs-23",
@@ -3064,7 +3148,7 @@
       "viam-docs-47",
       "viam-docs-28",
       "viam-docs-51",
-      "viam-docs-7"
+      "viam-probe-3"
     ]
   },
   {
@@ -3080,16 +3164,17 @@
     "productId": "viam",
     "storyId": "fleet-alerts",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Viam's own marketing claims \"cloud-managed fleet monitoring and alerting\" and remote monitoring for fleets, and its docs show threshold-triggered notifications from sensor readings, but only through user-written logic modules. Machine status and health are exposed via GetMachineStatus, but no documented built-in alert rules for faults, battery, or connectivity are evidenced. Missing for 10: documented built-in alert configuration, specific battery/fault/offline-connectivity alert types, notification channels, and independent or hands-on corroboration.",
+    "rationale": "Viam's marketing claims 'cloud-managed fleet monitoring and alerting' and remote monitoring. The documented way to raise alerts, though, is writing a logic module that fires a notification when a sensor reading crosses a threshold. Machine health is exposed through GetMachineStatus, which reports unhealthy resources, so fault alerting is possible but appears to need custom code rather than built-in alert rules. missing for 10: documented built-in alert rules for faults, battery and offline/connectivity alerts, notification channel details, independent or hands-on corroboration.",
     "evidenceIds": [
-      "viam-docs-26",
       "viam-docs-49",
+      "viam-docs-26",
       "viam-docs-10",
       "viam-docs-38",
       "viam-docs-46",
-      "viam-docs-31"
+      "viam-docs-31",
+      "viam-docs-15"
     ]
   },
   {
@@ -3113,20 +3198,20 @@
   {
     "productId": "viam",
     "storyId": "fleet-dashboard",
-    "verdict": "partial",
-    "quality": 6,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Viam's own materials claim cloud-managed fleet monitoring and alerting and remote monitoring as a Fleet Management feature. A fleet API organizes machines by organization and location and mirrors what the web UI can do, and per-machine health is exposed through GetMachineStatus and online confirmation. Teleop is also documented for building monitoring dashboards. However, the evidence never shows a single fleet-wide dashboard displaying health, location, and status together; these elements come from marketing bullets and per-machine or API docs. Missing for 10: documentation of a unified fleet-level dashboard view, explicit fleet-wide health/status rollup, evidence that 'location' covers physical position rather than just an organizational grouping, and independent or hands-on corroboration.",
+    "rationale": "Viam markets cloud-managed fleet monitoring and alerting and a Fleet Management tier with remote monitoring. Its fleet API mirrors the web UI for managing organizations, locations, and machines, and the machine API and GetMachineStatus expose per-machine health and status, including whether a machine is online. A Teleop-based monitoring dashboard is also documented. Missing for 10: detailed docs of a single fleet-wide dashboard view showing health and status across all machines, evidence of physical/geographic location tracking (Viam 'locations' appear to be organizational groupings), and independent or hands-on corroboration of fleet monitoring.",
     "evidenceIds": [
-      "viam-docs-10",
       "viam-docs-26",
       "viam-docs-49",
-      "viam-docs-20",
+      "viam-docs-10",
       "viam-docs-62",
+      "viam-docs-20",
       "viam-docs-31",
+      "viam-docs-63",
       "viam-docs-15",
-      "viam-docs-72",
-      "viam-docs-63"
+      "viam-docs-72"
     ]
   },
   {
@@ -3151,29 +3236,37 @@
   {
     "productId": "viam",
     "storyId": "intervention-workflows",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence shows adjacent pieces: remote driving from the web UI and a Teleop monitoring dashboard, fleet monitoring and alerting, and logic modules that can fire notifications. None of it documents routing autonomy failures into a human intervention queue, an operator resolution workflow, or handing control back to autonomy. These are building blocks or adjacent features, not the capability itself, so the verdict is none.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Viam supplies building blocks but no actual intervention queue. Cloud fleet monitoring and alerting exist, logic modules can fire notifications when conditions are met, machine status reports unhealthy resources, and operators can take manual control from the web UI (keyboard driving, arm moves). However, nothing shows failures being routed into a human queue, or any structured resolve-and-hand-back-control workflow; this would have to be custom-built. Missing for 10: an intervention or exception queue, automatic routing of autonomy failures to operators, a documented autonomy-to-teleop handoff and return-of-control flow, and any independent corroboration.",
+    "evidenceIds": [
+      "viam-docs-6",
+      "viam-docs-49",
+      "viam-docs-26",
+      "viam-docs-38",
+      "viam-docs-46",
+      "viam-docs-31",
+      "viam-docs-17"
+    ]
   },
   {
     "productId": "viam",
     "storyId": "ml-training-loop",
     "verdict": "full",
-    "quality": 8,
+    "quality": 9,
     "confidence": "medium",
-    "rationale": "Viam documents the whole loop. Robot data is captured and synced to the cloud, even through outages (viam-docs-51, viam-docs-7). Datasets are created, annotated and used to train models in the cloud, with an ML Training API for submitting jobs (viam-docs-8, viam-docs-61). Trained models are pushed so machines pull them automatically, with versioning, staging, canary testing and rollback via OTA (viam-docs-9, viam-docs-48, viam-docs-26). Missing for 10: independent or hands-on corroboration of the end-to-end loop, and in-depth docs on training (supported architectures, how captured data becomes training datasets) rather than overview-level marketing claims.",
+    "rationale": "Viam's docs describe the full loop. Captured data syncs to the cloud (viam-docs-7, viam-docs-51). Developers build and annotate datasets and train models in the cloud, with programmatic job submission through the ML Training Client API (viam-docs-8, viam-docs-61). Trained models are pushed back and pulled automatically by machines for local inference, with versioning, staging, canary testing, rollback and OTA model updates (viam-docs-9, viam-docs-26, viam-docs-48). Missing for 10: independent or hands-on corroboration of the end-to-end retrain-and-redeploy loop, and in-depth docs beyond marketing-level summaries.",
     "evidenceIds": [
-      "viam-docs-51",
       "viam-docs-7",
-      "viam-docs-28",
+      "viam-docs-51",
       "viam-docs-8",
       "viam-docs-61",
       "viam-docs-9",
-      "viam-docs-48",
       "viam-docs-26",
-      "viam-docs-40"
+      "viam-docs-48",
+      "viam-docs-40",
+      "viam-docs-23"
     ]
   },
   {
@@ -3196,11 +3289,18 @@
   {
     "productId": "viam",
     "storyId": "nl-to-robot-task",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Nothing in the evidence shows Viam itself accepting a natural-language task description and turning it into a plan it executes. The docs say an external AI agent with a shell or SDK can operate a machine through the CLI or APIs, and the motion service plans collision-free paths. These are developer building blocks for a user's own agent and goal-pose planning, not a first-party natural-language task interface, so they earn no credit for this story.",
-    "evidenceIds": []
+    "rationale": "Viam does not document a native natural-language task interface. It does document that an external AI agent with a shell or SDK can operate a machine, with the CLI calling any API method using JSON in and out. Its motion service then plans and executes collision-free paths toward goal poses, so the platform supplies the planning and execution layer while the user's own agent has to translate language into calls. Missing for 10: a first-party natural-language-to-task interface, built-in task-level (not just motion) planning from language, and hands-on or independent corroboration of agent-driven operation.",
+    "evidenceIds": [
+      "viam-docs-12",
+      "viam-docs-13",
+      "viam-docs-30",
+      "viam-docs-31",
+      "viam-docs-32",
+      "viam-docs-14"
+    ]
   },
   {
     "productId": "viam",
@@ -3219,20 +3319,21 @@
     "productId": "viam",
     "storyId": "openness-api-parity",
     "verdict": "full",
-    "quality": 8,
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Viam's docs explicitly state the fleet management API lets you manage your fleet with code the same way as in the web UI, covering organizations, locations, machines, permissions and fragments. Separate APIs cover data (SQL/MQL query, export, tagging, delete) and ML training jobs, and the CLI can call any API method a machine serves with JSON in and out. The docs also say an agent with a shell or SDK can operate a machine the same way a person can. Missing for 10: an explicit platform-wide parity statement beyond fleet management (e.g., API equivalents for the setup wizard, inline-module browser editor, test panels and Teleop dashboards are not documented), and no independent or hands-on corroboration.",
+    "rationale": "Viam's docs say outright that the fleet management API lets you manage a fleet with code \"the same way you can do in the web UI\". APIs and the CLI also cover machine control (any method a machine serves), data query/export/tagging, and ML training jobs, and an agent can operate a machine \"the same way a person or a program can\". However, onboarding docs walk through creating machines and writing inline modules in the browser app without showing API equivalents. Missing for 10: explicit API parity for UI-only flows (machine-creation wizard, inline module editor, test panels/Teleop dashboards), a machine-readable API spec (OpenAPI probes 404), and independent or hands-on corroboration of full parity.",
     "evidenceIds": [
       "viam-docs-62",
       "viam-docs-20",
+      "viam-docs-12",
       "viam-docs-13",
       "viam-docs-59",
-      "viam-docs-12",
+      "viam-docs-63",
       "viam-docs-23",
       "viam-docs-61",
-      "viam-docs-63",
-      "viam-docs-31",
-      "viam-probe-3"
+      "viam-docs-24",
+      "viam-docs-18",
+      "viam-probe-2"
     ]
   },
   {
@@ -3395,19 +3496,19 @@
   {
     "productId": "viam",
     "storyId": "sensor-integration",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Viam documents ready-made hardware drivers pulled automatically from its Registry once you specify the model in config. It also documents a uniform API per component type (e.g., every camera exposes GetImage(), and the same applies to sensors), plus hardware search, a discovery service that suggests component configurations, and built-in data capture. Cameras are explicitly evidenced, but the other named sensor types are not. Missing for 10: explicit evidence of lidar, IMU and GPS drivers or their standard interfaces (movement sensor, point clouds), and independent hands-on corroboration of driver coverage.",
+    "rationale": "Viam documents ready-made drivers pulled automatically from its Registry once you specify a hardware model in config, plus a searchable model catalog and a Discovery service. Components expose uniform, brand-agnostic APIs (e.g., every camera uses GetImage(), and sensors are likewise standardized), which serves as the standard-interface equivalent of message types. Cameras are clearly covered, but lidar, IMU, and GPS drivers are never specifically evidenced. missing for 10: explicit evidence of ready-made lidar, IMU, and GPS drivers or APIs, documentation of the standard data/message types for those sensors, independent hands-on corroboration.",
     "evidenceIds": [
-      "viam-docs-27",
-      "viam-docs-41",
       "viam-docs-1",
+      "viam-docs-2",
+      "viam-docs-27",
       "viam-docs-36",
+      "viam-docs-41",
       "viam-docs-69",
-      "viam-docs-37",
-      "viam-docs-51",
-      "viam-docs-19"
+      "viam-docs-29",
+      "viam-docs-37"
     ]
   },
   {
