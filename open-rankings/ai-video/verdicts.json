@@ -97,14 +97,14 @@
     "productId": "heygen",
     "storyId": "agentic-mcp-server",
     "verdict": "full",
-    "quality": 9,
+    "quality": 8,
     "confidence": "high",
-    "rationale": "HeyGen is a SaaS video platform, so an official MCP server is a fair question. Its docs say every endpoint ships with an MCP server that Claude, Cursor, and other agents can use. They also describe connecting video generation to any MCP-compatible agent with no API keys, no local server, and no separate credits, and a probe confirms a dedicated MCP overview page at developers.heygen.com/mcp/overview. missing for 10: independent or hands-on corroboration that agents actually connect and run tools successfully, and detail on the exposed tool set and auth flow.",
+    "rationale": "HeyGen documents an official MCP server. A probe confirmed the dedicated docs page at developers.heygen.com/mcp/overview, and the docs say every endpoint ships with an MCP server so Claude, Cursor and custom agents can generate video. The llms.txt adds that any MCP-compatible agent can connect with no API keys, no local server and no separate credits. Missing for 10: independent or hands-on corroboration of the MCP connection working, and detailed evidence of the exposed tool set and auth/setup flow.",
     "evidenceIds": [
+      "heygen-probe-3",
       "heygen-docs-3",
       "heygen-docs-4",
-      "heygen-docs-7",
-      "heygen-probe-3"
+      "heygen-docs-7"
     ]
   },
   {
@@ -161,10 +161,10 @@
   {
     "productId": "heygen",
     "storyId": "agentic-scoped-keys",
-    "verdict": "partial",
-    "quality": 5,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "HeyGen's developer docs reference restricted API keys with read and write scopes mapped to the public endpoints that need them (heygen-docs-8), which is a first-party least-privilege credential mechanism usable by agents. The evidence is a single llms.txt index line, though, so the depth of scoping and how keys are issued and managed are unproven. Missing for 10: detail on per-agent key issuance, scope granularity beyond read/write, key expiry and revocation, and independent or hands-on corroboration.",
+    "rationale": "HeyGen's developer docs reference restricted API keys with read and write scopes mapped to the specific public endpoints that require them (heygen-docs-8). That is a first-party scoped, least-privilege credential model an agent can be given. The evidence is a single index-level line from llms.txt, so the issuance flow and how fine-grained the scopes are remain unshown. missing for 10: detailed docs on creating and revoking restricted keys, scope granularity beyond read/write, per-agent or expiring credentials, independent or hands-on corroboration",
     "evidenceIds": [
       "heygen-docs-8"
     ]
@@ -233,10 +233,10 @@
   {
     "productId": "heygen",
     "storyId": "automation-bulk-operations",
-    "verdict": "partial",
-    "quality": 5,
+    "verdict": "full",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "HeyGen's developer docs claim first-party Batch APIs that accept up to 100 requests per call, with webhooks for completion. That is a documented bulk-operation capability for an API or agent user. However, the evidence is a single headline line, with no detail on which endpoints or operations can be batched or how failures and partial results are handled. Missing for 10: detailed batch endpoint documentation, coverage of bulk operations beyond video generation (e.g., bulk translate, edit, or delete), error and partial-result handling, independent or hands-on corroboration.",
+    "rationale": "HeyGen's developer docs advertise Batch APIs that accept up to 100 requests per call, with webhooks included. That is a first-party bulk-operations capability aimed at programmatic users. Evidence is only a headline-level claim. Missing for 10: detailed docs on which endpoints or operations support batching, how per-item results and errors are handled, and independent or hands-on corroboration.",
     "evidenceIds": [
       "heygen-docs-1"
     ]
@@ -244,11 +244,14 @@
   {
     "productId": "heygen",
     "storyId": "automation-rules-engine",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Event-driven automation rules are a fair axis for an AI video SaaS platform, but the evidence shows no native HeyGen feature for defining rules that trigger actions on events. Batch API webhooks [heygen-docs-1] are developer building blocks for building such automation, not a rules capability. The n8n/Make/Zapier integrations [heygen-docs-28] would put rule definition in external tools, and the pack never says HeyGen exposes event triggers to them, so neither earns credit.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "HeyGen has no native rules engine in the evidence. Its pricing page lists first-party integrations with n8n, Make, HubSpot and Zapier, which let users wire event-triggered rules to HeyGen actions, though the rules themselves are defined in those external tools. Batch APIs with webhooks supply event signals but are only developer building blocks. Missing for 10: a native in-product rule/trigger builder, documentation of which events and actions the integrations expose, and hands-on corroboration of event-driven automation.",
+    "evidenceIds": [
+      "heygen-docs-28",
+      "heygen-docs-1"
+    ]
   },
   {
     "productId": "heygen",
@@ -324,9 +327,9 @@
     "productId": "heygen",
     "storyId": "completion-webhooks",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "low",
-    "rationale": "HeyGen's developer docs say only that its Batch APIs come with 'webhooks included'. That is a first-party claim of outbound callbacks, but it is a single thin mention. Nothing shows the webhooks report render completion or failure, and no pollable video-status endpoint is documented. Missing for 10: documented webhook registration and event types for render success/failure, a documented job-status polling endpoint with completed/failed states, and independent or hands-on corroboration.",
+    "rationale": "HeyGen's developer docs say its Batch APIs come with \"webhooks included\", which points to first-party outbound callbacks for job completion. That single mention is all the pack offers, with no detail on registration, event types or failure events. No pollable job-status endpoint appears in the evidence, and the OpenAPI probes returned 404, so there is no schema to confirm either path. Missing for 10: documented webhook registration and payloads for finished/failed renders, a documented job-status polling endpoint, webhooks outside batch calls, hands-on corroboration.",
     "evidenceIds": [
       "heygen-docs-1"
     ]
@@ -438,11 +441,14 @@
   {
     "productId": "heygen",
     "storyId": "openness-full-export",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Data portability applies to a SaaS video platform, but the evidence never documents a bulk account or data export feature, nor any way to take avatars, voice clones, scripts, and assets out in open formats. The '4K video export' and 'SCORM export' items are adjacent features for delivering rendered videos and LMS packages, not account-wide data portability. The profile/credit retrieval endpoint is a developer building block, not an export capability, so neither earns credit.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "HeyGen documents exporting its rendered output: 4K video export on paid plans and SCORM export (an open e-learning standard) for LMS use. That lets a user take finished videos with them, but nothing in the evidence shows a bulk account-data export or portability of the other assets a user builds up (scripts, projects, avatars, voice clones, brand kit). Missing for 10: full account/data export tooling, export of avatars, voices, scripts and project files in open formats, documented offboarding or data-portability process, and independent corroboration.",
+    "evidenceIds": [
+      "heygen-docs-21",
+      "heygen-docs-27"
+    ]
   },
   {
     "productId": "heygen",
@@ -474,19 +480,21 @@
   {
     "productId": "heygen",
     "storyId": "privacy-no-training",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence pack contains no documented control letting users opt out of, or prevent, their data being used to train HeyGen's AI models. The only privacy-adjacent item is enterprise \"zero data retention options\" (heygen-docs-29). Data retention is a related but different control from a training opt-out, so it earns no credit for this story.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The only relevant evidence is HeyGen's enterprise API page listing \"zero data retention options\". Data that is never retained cannot later be used for training, so this indirectly serves the story, but it is enterprise-tier only and never mentions AI training. Missing for 10: an explicit documented no-training policy or opt-out control, availability to non-enterprise users, details of how the ZDR option is enabled and what it covers, and independent corroboration.",
+    "evidenceIds": [
+      "heygen-docs-29"
+    ]
   },
   {
     "productId": "heygen",
     "storyId": "privacy-retention-controls",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "HeyGen's enterprise API page lists \"zero data retention options,\" a first-party retention control, but it appears only as a single line on the enterprise tier, with no detail on how it is configured. Nothing in the pack documents user-facing deletion of videos, avatars or voice data. missing for 10: documented deletion controls or endpoints for videos/avatars/voice clones, configurable retention periods, availability outside the enterprise tier, in-depth docs on how zero retention works, independent or hands-on corroboration.",
+    "rationale": "HeyGen's enterprise API page lists \"zero data retention options\" alongside SOC 2 Type II and audit logs. That is a first-party retention control, but it is a single brief mention and appears to be enterprise-tier only. Missing for 10: documented user-facing deletion controls (e.g., delete endpoints for videos, avatars or uploaded assets), configurable retention periods, availability beyond enterprise plans, detailed docs on how ZDR works, and independent corroboration.",
     "evidenceIds": [
       "heygen-docs-29"
     ]
@@ -667,11 +675,13 @@
   {
     "productId": "kling",
     "storyId": "agentic-ai-insights",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "An in-product AI agent is a plausible capability for an AI creative platform, so this axis applies. However, the evidence shows no feature that analyzes the user's own data to surface insights or suggestions. The agent described in kling-docs-3 brainstorms and writes scripts for content generation, which is adjacent creative ideation rather than insights drawn from the user's data, so it earns no credit.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Kling documents an in-product Agent you can brainstorm with to write scripts and plan storyboards, which is a form of AI-generated suggestions inside the product. Nothing shows it analyzing the user's own data, such as past generations, usage, or performance, to produce insights. Missing for 10: insights derived from the user's own data, analytics or recommendation features, detailed docs on what the Agent suggests, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "kling-docs-3"
+    ]
   },
   {
     "productId": "kling",
@@ -726,9 +736,9 @@
     "productId": "kling",
     "storyId": "agentic-mcp-server",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 3,
     "confidence": "low",
-    "rationale": "Kling's homepage makes a first-party claim of an 'MCP / CLI' offering that lets your agent power Kling (kling-docs-8), so the official-MCP-server axis applies and is nominally claimed. It is only a single marketing line, and nothing in the pack documents the server itself; the REST API (kling-docs-10) is a separate developer building block and earns no credit here. Missing for 10: MCP server documentation (install/endpoint, auth, exposed tools), evidence that it is official and generally available, and independent or hands-on corroboration of an agent connecting to it.",
+    "rationale": "Kling's own site advertises \"MCP / CLI: Let Your Agent Power Kling,\" a first-party claim that external agents can drive Kling through MCP. That makes the official MCP server axis applicable and nominally supported, but the evidence is a single marketing line with no setup or usage detail. missing for 10: MCP server setup/connection documentation, endpoint or package details, list of exposed tools, authentication guidance for MCP clients, independent or hands-on corroboration.",
     "evidenceIds": [
       "kling-docs-8"
     ]
@@ -1629,14 +1639,11 @@
   {
     "productId": "luma",
     "storyId": "openness-full-export",
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Luma documents exporting generated work in an open, industry-standard format: native 16-bit EXR frames in ACES2065-1 that composite in Resolve or Nuke. That covers getting individual generated assets out in open formats. Nothing in the evidence shows a bulk account-level export of all user data (projects, prompts, references, history) or a documented exit or deletion path. missing for 10: bulk export of all account data, export of prompts/projects/metadata in open formats, documented account deletion/offboarding, independent corroboration.",
-    "evidenceIds": [
-      "luma-docs-13",
-      "luma-docs-16"
-    ]
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence shows 16-bit EXR and HDR export of individual generated frames for compositing workflows. That is a render-output feature, not a documented way to export all account data (projects, prompts, generations, references) in open formats for migration. The pack contains no account-wide export, bulk download, or data portability or deletion documentation, so the applicable axis is unevidenced.",
+    "evidenceIds": []
   },
   {
     "productId": "luma",
@@ -2445,16 +2452,15 @@
   {
     "productId": "reelmimic",
     "storyId": "agentic-ai-insights",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "ReelMimic uses AI to analyze the user's own reference video, breaking it down into shot count, shot lengths, BPM, transitions, colors, framing and camera moves. It then proposes a storyboard, characters, assets and style frames that the user refines in chat, and writes up a new-style proposal when the reference doesn't match a known style. Missing for 10: insights beyond analysis of the single reference video (e.g. across projects or output performance), and independent or hands-on corroboration of the breakdown's quality.",
+    "rationale": "ReelMimic's AI analyzes the user's own input, a reference video, and reports shot count, shot lengths, BPM, transitions, colors, framing and camera moves. It then proposes a storyboard and style frames you can refine in chat, and writes up a new-style proposal when the reference doesn't match a known style. These are AI-generated insights and suggestions inside the product, but they are limited to analyzing a single reference clip to plan a video, not broader insights from the user's data. Missing for 10: insights beyond per-reference video breakdown (e.g. across the user's projects or outputs), proactive recommendations, and independent or hands-on corroboration of analysis quality.",
     "evidenceIds": [
-      "reelmimic-docs-1",
       "reelmimic-docs-2",
       "reelmimic-docs-3",
-      "reelmimic-gh-1",
-      "reelmimic-gh-4"
+      "reelmimic-gh-4",
+      "reelmimic-docs-1"
     ]
   },
   {
@@ -2805,14 +2811,14 @@
     "productId": "reelmimic",
     "storyId": "openness-open-license",
     "verdict": "partial",
-    "quality": 4,
-    "confidence": "low",
-    "rationale": "ReelMimic is hosted as a public GitHub repository that users clone and run locally (install script, `cd app && npm run doctor`, extension docs for adding styles, engines and AIs), so its source is readable. However, nothing in the pack states the project's own license. The license references in docs-13 cover third-party assets, not the product's code. Missing for 10: an explicit open-source license for the repository (e.g. a LICENSE file or SPDX identifier), and independent confirmation of how open the source is.",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "The product is a public GitHub repository that users clone and run locally (`cd app && npm run doctor`, install script) and extend with new styles, rendering engines or another AI. That indicates the source is readable, but no evidence names the license it ships under. Missing for 10: an explicitly stated open-source license (e.g. a LICENSE file or SPDX identifier), independent confirmation of the license terms.",
     "evidenceIds": [
       "reelmimic-gh-5",
       "reelmimic-gh-11",
       "reelmimic-docs-9",
-      "reelmimic-gh-10"
+      "reelmimic-docs-8"
     ]
   },
   {
@@ -2892,9 +2898,9 @@
     "productId": "reelmimic",
     "storyId": "shot-consistency",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "low",
-    "rationale": "ReelMimic defines characters, assets and style frames in an approved plan before production. Its Production line tab tracks each character across the video's parts, and it follows user-supplied character designs. Together this implies shared character and asset definitions reused across shots, but no source explicitly claims or demonstrates cross-shot consistency. missing for 10: an explicit claim that characters and scenes stay consistent across shots, a description of how consistency is enforced or checked in review, and independent or hands-on corroboration.",
+    "rationale": "ReelMimic plans a whole multi-shot video up front with a storyboard, defined characters, assets and style frames (docs-3). The Production line tracks each character across the video (gh-2), and user-supplied character designs are followed (docs-11), which implies shared character and scene definitions carry across shots. However, no evidence explicitly claims or demonstrates that characters or scenes stay visually consistent from shot to shot, and per-shot review (docs-4) is not stated to check cross-shot consistency. missing for 10: an explicit cross-shot character/scene consistency guarantee or mechanism, a consistency check in the review step, and hands-on or independent corroboration.",
     "evidenceIds": [
       "reelmimic-docs-3",
       "reelmimic-gh-2",
@@ -3232,9 +3238,9 @@
     "productId": "runway",
     "storyId": "automation-bulk-operations",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "low",
-    "rationale": "Runway documents that a plan supports 20 parallel video and image generations. It also lets you run the same prompt across multiple models at once. Both give some ability to act on many items simultaneously, but neither is a documented bulk or batch operation feature. Missing for 10: a documented batch/bulk API endpoint or UI for applying one action across many assets, bulk edit or delete of library items, and independent or hands-on confirmation of bulk workflows.",
+    "rationale": "Runway documents its own concurrency features: plans allow up to 20 parallel video and image generations, and the API platform can run the same prompt across multiple models at once. This is fan-out generation rather than a true bulk-operations feature over many existing items. The async task API alone is only a developer building block and earns no credit. Missing for 10: a documented batch/bulk endpoint or UI for acting on many items at once (bulk edit, export, delete, or batch job submission), and hands-on corroboration of bulk workflows.",
     "evidenceIds": [
       "runway-docs-28",
       "runway-docs-18"
@@ -3272,11 +3278,16 @@
   {
     "productId": "runway",
     "storyId": "avatar-from-script",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The axis applies, since Runway is a generative video platform, but nothing in the evidence documents turning a pasted script into a rendered presenter-led avatar video. The 'Characters: Avatars' feature is described as real-time conversational sessions with knowledge bases, tool calling and an embedded widget, which is an adjacent interactive-agent capability rather than scripted presenter video. Generic text-to-video and voice cloning are building blocks, not this capability.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Runway documents a first-party Characters feature with avatars and custom voices, plus custom voice clones on its plans, so presenter-style avatar output exists in the product. However, Characters is described as real-time conversational sessions, and the general video models are text-to-video rather than script-to-presenter tools, so the paste-a-script flow is not shown. Missing for 10: a documented script-to-presenter video workflow, a stock avatar library, custom avatar creation from a likeness, lip-synced rendered video output, and any hands-on corroboration.",
+    "evidenceIds": [
+      "runway-docs-7",
+      "runway-probe-1",
+      "runway-docs-26",
+      "runway-docs-25"
+    ]
   },
   {
     "productId": "runway",
@@ -3364,10 +3375,10 @@
   {
     "productId": "runway",
     "storyId": "generation-cost-visibility",
-    "verdict": "partial",
-    "quality": 6,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Spend tracking afterwards is documented. Responses report the realized cost in credits, credits map to dollars at $0.01 each, and the API platform claims cost visibility per model, endpoint and team. Pre-run cost visibility is only implied: there are published rate tiers (e.g. draft previews billed at the 480p rate) and a claim that you can score models by cost before committing, but no explicit cost estimate shown before a generation runs. Missing for 10: a documented pre-generation cost quote/estimate in the app or API, in-app credit-cost display for the marketer-facing creative product, and independent or hands-on corroboration of the spend dashboards.",
+    "rationale": "Runway documents per-credit pricing at $0.01 per credit, published rates (for example, draft previews bill at the 480p rate), and the ability to compare models on cost before committing to production, so cost can be judged before a run. For tracking afterwards, response metadata reports the realized credit cost, and the platform claims full visibility into cost per model, per endpoint and per team, with a usage page in the developer portal. Missing for 10: an explicit in-product per-generation cost quote shown before submitting, documented spend tracking in the creative web app (versus the developer API), and independent or hands-on corroboration.",
     "evidenceIds": [
       "runway-docs-14",
       "runway-docs-15",
@@ -4523,9 +4534,9 @@
     "productId": "veo",
     "storyId": "extend-regenerate",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "low",
-    "rationale": "Veo's docs list \"extended videos\" among Veo 3's expanded creative controls, and describe refining results over multiple turns with conversational editing such as element replacement. That points toward extending clips and iterative edits. However, the \"extended videos\" mention is a single ambiguous phrase that does not clearly mean extending an existing clip. The editing evidence is spatial or element-level, not regenerating a time segment. missing for 10: documented clip-extension workflow (e.g. extend from the last frame), segment-level regeneration without a full re-render, independent or hands-on corroboration.",
+    "rationale": "Veo 3's own docs briefly claim \"extended videos\" as one of its creative controls, and the Gemini API docs describe multi-turn refinement and conversational editing such as element replacement. That gives a thin first-party basis for extending clips. Nothing shows a creator can regenerate a single time segment while leaving the rest of the clip untouched. missing for 10: documented clip-extension workflow details (how extension works, length limits, continuity), explicit segment-level regeneration without re-rendering the whole video, hands-on or independent corroboration of either capability.",
     "evidenceIds": [
       "veo-docs-2",
       "veo-docs-8",
