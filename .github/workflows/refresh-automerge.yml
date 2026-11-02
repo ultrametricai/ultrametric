@@ -46,15 +46,13 @@ jobs:
           prs = json.loads(subprocess.check_output(
               ['gh', 'api', '--paginate', '--slurp', f'repos/{repo}/pulls?state=open&per_page=100'], text=True))
           def needs_ci_dispatch(runs):
-              # An approval-required PR run has no jobs and cannot replace the
-              # explicit dispatch. Prefer dispatches when both events exist so a
-              # newer approval-required record cannot hide a real CI result.
+              # Approval-required records have no jobs. Keep active runs and real
+              # results from either event: an approved PR run can finish after a
+              # cancelled dispatch despite having an older run ID.
               dispatches = [run for run in runs if run['event'] == 'workflow_dispatch']
-              candidates = dispatches or runs
-              if any(run['status'] != 'completed' for run in candidates):
-                  return False
-              newest = max(candidates, key=lambda run: run['id']) if candidates else {}
-              if newest.get('conclusion') in ['success', 'failure']:
+              candidates = [run for run in runs if run['conclusion'] != 'action_required']
+              if any(run['status'] != 'completed' or run['conclusion'] in ['success', 'failure']
+                     for run in candidates):
                   return False # real failures stay with the existing repair/review gates
               # Bound same-head retries when CI is cancelled or cannot start.
               # A new head gets its own budget; the approval-only runs do not count.

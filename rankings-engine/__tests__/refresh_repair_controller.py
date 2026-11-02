@@ -265,6 +265,17 @@ class RecoveryCITests(unittest.TestCase):
         self.assertIsNone(error)
         self.assertEqual(ci, [])
 
+    def test_approved_pr_ci_prevents_duplicate_after_cancelled_dispatch(self):
+        # Approval resumes the original PR run ID, which predates the dispatch.
+        for status, conclusion in [('queued',None), ('in_progress',None),
+                                   ('completed','success'), ('completed','failure')]:
+            with self.subTest(status=status,conclusion=conclusion):
+                ci, _, error = self.recover([
+                    self.run_record(status=status,conclusion=conclusion),
+                    self.run_record('workflow_dispatch','cancelled',id=2)])
+                self.assertIsNone(error)
+                self.assertEqual(ci, [])
+
     def test_ci_without_a_result_retries_the_same_branch(self):
         for conclusion in ['cancelled','timed_out','action_required','startup_failure','stale','skipped','neutral']:
             with self.subTest(conclusion=conclusion):
