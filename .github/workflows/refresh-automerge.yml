@@ -89,7 +89,7 @@ jobs:
                   cursor = threads['pageInfo']['endCursor']
 
           errors = []
-          for pr in [pr for page in prs for pr in page]:
+          for pr in sorted([pr for page in prs for pr in page], key=lambda pr: pr['number']):
               branch = pr['head']['ref']
               if (pr['draft'] or pr['base']['ref'] != 'main'
                   or pr['head']['repo'] is None or pr['head']['repo']['full_name'] != repo
