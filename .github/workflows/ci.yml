@@ -47,6 +47,9 @@ jobs:
       - name: Refresh stability checker tests
         run: node --test rankings-engine/scripts/check-refresh-stability.test.mjs
 
+      - name: Review gate tests
+        run: python3 rankings-engine/__tests__/review_gate_controller.py
+
       - name: Repair controller tests
         run: python3 rankings-engine/__tests__/refresh_repair_controller.py
 
@@ -172,3 +175,6 @@ jobs:
       pull-requests: read
       statuses: write
     uses: ./.github/workflows/review-findings.yml
+    with:
+      pr: ${{ github.event.pull_request.number && format('{0}', github.event.pull_request.number) || '' }}
+      head: ${{ github.sha }}
