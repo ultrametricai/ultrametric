@@ -53,13 +53,15 @@
     "productId": "auth0",
     "storyId": "agentic-autonomous-automation",
     "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Auth0's own Actions are versioned, tenant-hosted Node.js functions that run automatically within login and identity flows, and log streaming exports tenant logs continuously in near real-time. Both are user-configured logic that runs without manual intervention, but they are tied to identity events rather than being general background automations. Missing for 10: scheduled or cron-style jobs, general-purpose background workflows independent of login events, agent-driven autonomous task execution, and independent or hands-on corroboration.",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "Auth0 offers event-triggered automation through Actions, which are versioned Node.js functions that run inside login and identity flows. Log streaming exports tenant logs continuously in the background, and the CLI is documented to 'automate tasks.' These are trigger-bound identity hooks and scriptable tooling, not a general facility for autonomous background automations; the AI features (CIBA, Token Vault) secure other people's background agents rather than run them. Missing for 10: scheduled or cron-style jobs, general-purpose autonomous workflows outside identity flows, agent-driven background runs, and independent or hands-on corroboration.",
     "evidenceIds": [
       "auth0-docs-52",
-      "auth0-docs-47",
-      "auth0-docs-74"
+      "auth0-docs-12",
+      "auth0-docs-77",
+      "auth0-docs-79",
+      "auth0-docs-18"
     ]
   },
   {
@@ -114,12 +116,11 @@
     "productId": "auth0",
     "storyId": "agentic-nl-commands",
     "verdict": "full",
-    "quality": 7,
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Auth0 ships a first-party MCP Server that is explicitly documented for managing an Auth0 tenant through natural language with AI tools like Claude Desktop (auth0-docs-13, auth0-docs-60, auth0-probe-4). The docs and GitHub repo describe multi-step operations through it, such as creating apps, managing users, deploying Actions and debugging logs (auth0-docs-41, auth0-gh-1). Missing for 10: no native natural-language interface inside the dashboard itself (it requires an external AI client), and no independent or hands-on corroboration of how well natural-language operation works in practice.",
+    "rationale": "Auth0 documents an official MCP Server for managing a tenant through natural language from AI tools like Claude Desktop, using OAuth 2.0 Device Authorization. The GitHub repo confirms it works with Claude, Cursor, or Windsurf to create apps, deploy Actions, debug logs, and manage users without the dashboard. Natural-language operation works only through an external AI client, not a built-in assistant. Missing for 10: a native in-product natural-language interface, independent hands-on corroboration of how reliable the MCP-driven operations are, and documentation of which management operations are or aren't covered.",
     "evidenceIds": [
       "auth0-docs-13",
-      "auth0-docs-60",
       "auth0-docs-41",
       "auth0-gh-1",
       "auth0-probe-4"
@@ -187,11 +188,16 @@
   {
     "productId": "auth0",
     "storyId": "agentic-webhooks",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The axis applies, since an identity SaaS could plausibly offer event webhooks, but nothing in the evidence documents registrable outbound HTTP callbacks that a programmatic consumer can receive. The closest item is log streaming, which exports tenant logs in near real time to a log analysis service. That is an adjacent capability and is not described as a webhook subscription, so it earns no credit here.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Auth0's log streaming exports tenant logs in near real-time to a log analysis service, with configurable content type and format and payload preview in the Dashboard. That is a form of outbound event delivery, but none of the cited evidence calls it a webhook or describes subscribing to specific event types. Missing for 10: explicit webhook/HTTP endpoint delivery, per-event-type subscription, payload signing or retry semantics, and independent corroboration.",
+    "evidenceIds": [
+      "auth0-docs-12",
+      "auth0-docs-47",
+      "auth0-docs-58",
+      "auth0-docs-74"
+    ]
   },
   {
     "productId": "auth0",
@@ -250,9 +256,9 @@
     "productId": "auth0",
     "storyId": "auth-event-webhooks",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Auth0's own log streaming service exports tenant logs in near real-time with configurable content type and payload format, which gives an event stream of tenant activity. The evidence only describes exporting to a 'log analysis service'. It never confirms registrable HTTP webhook endpoints for programmatic consumers, or that specific sign-up, sign-in and user-change events are delivered for sync purposes. Actions are a developer building block for customizing flows, not an event subscription, so they earn no credit. Missing for 10: documented outbound HTTP webhook/custom-endpoint destinations, explicit coverage of sign-up/sign-in/user-change event types, delivery guarantees or retries, independent corroboration.",
+    "rationale": "Auth0's documented log streaming exports tenant logs in near real-time, with a configurable content type and a payload preview in the Dashboard. That is a form of event stream a developer could consume. However, the evidence frames it as exporting logs to a log analysis service rather than as a webhook or event subscription for keeping systems in sync. Missing for 10: explicit webhook or custom HTTP endpoint delivery, documented coverage of sign-up, sign-in and user-change event types, a dedicated events API for sync, and independent or hands-on corroboration.",
     "evidenceIds": [
       "auth0-docs-12",
       "auth0-docs-47",
@@ -309,9 +315,9 @@
     "productId": "auth0",
     "storyId": "automation-versioned-workflows",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Auth0 describes Actions, its automation units for login and identity flows, as \"versioned\" Node.js functions. The Auth0 CLI and MCP server can manage tenant configuration and deploy Actions as part of development and deployment workflows. That evidences versioning and controlled deployment, but the pack never documents reviewing changes or rolling back to a prior version. Missing for 10: documented rollback to prior Action versions, review/diff or approval of changes before deploy, independent or hands-on corroboration.",
+    "rationale": "Auth0 Actions, its main automation mechanism, are documented as 'versioned' Node.js functions. The CLI and MCP server can manage tenant configuration and deploy Actions, which could support a config-as-code workflow. However, the evidence never documents rollback or a review/approval step, and only one thin line confirms versioning. Missing for 10: documented rollback to prior Action versions, a review/diff or approval workflow before deploy, explicit config-as-code versioning via the CLI, and independent or hands-on corroboration.",
     "evidenceIds": [
       "auth0-docs-52",
       "auth0-docs-77",
@@ -670,15 +676,16 @@
     "productId": "auth0",
     "storyId": "rbac-roles-in-tokens",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Auth0's RBAC docs show developers can define roles, assign permissions to roles, and assign roles to users. The access-management pages say authorization is handled through scopes and granular permissions for first-party, third-party and M2M apps. However, no evidence explicitly shows role or permission claims being added to access or ID tokens, or Auth0 enforcing them at the API. Missing for 10: explicit documentation that permissions/roles are surfaced as token claims, documented enforcement mechanics for API authorization checks, and independent or hands-on corroboration.",
+    "rationale": "Auth0's docs clearly describe RBAC: you define roles, assign permissions to roles and assign roles to users. The access-management pages say authorization is handled through scopes and granular permissions for APIs, apps and M2M. However, nothing in the evidence explicitly shows permissions or roles being embedded in access/ID tokens or enforced at token issuance, so the token-surfacing half of the story is only implied. Missing for 10: explicit documentation that roles/permissions are added to session or access tokens, a description of how enforcement works at the API, and independent or hands-on corroboration.",
     "evidenceIds": [
       "auth0-docs-7",
       "auth0-docs-39",
       "auth0-docs-45",
       "auth0-docs-56",
-      "auth0-docs-81"
+      "auth0-docs-81",
+      "auth0-docs-2"
     ]
   },
   {
@@ -696,10 +703,10 @@
   {
     "productId": "auth0",
     "storyId": "scoped-agent-identities",
-    "verdict": "partial",
-    "quality": 6,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Auth0 markets giving each agent a unique digital identity (auth0-docs-20) and documents M2M client-credentials identities that authenticate the application rather than a user (auth0-docs-8, auth0-docs-54). It also offers scopes and granular permissions for M2M communications (auth0-docs-81) and delegated agent access that avoids broad, unrestricted access (auth0-docs-16), which together cover the per-agent, least-privilege core of the story. Missing for 10: any evidence of instant revocation of agent credentials or tokens, in-depth docs on per-agent identity beyond a marketing line, and independent or hands-on corroboration.",
+    "rationale": "Auth0 documents giving each agent its own unique digital identity (auth0-docs-20). It backs this with Machine-to-Machine applications that authenticate via their own client ID and secret through the Client Credentials flow, so agents do not use a user's login (auth0-docs-8, auth0-docs-54). Permissions can be narrowed with scopes and granular permissions for M2M communications, and agent access is described as fine-grained rather than broad (auth0-docs-81, auth0-docs-16, auth0-docs-68). Missing for 10: any evidence of instant credential or token revocation for an agent identity, and independent or hands-on confirmation of per-agent least-privilege setups.",
     "evidenceIds": [
       "auth0-docs-20",
       "auth0-docs-8",
@@ -867,26 +874,31 @@
     "productId": "better-auth",
     "storyId": "agentic-mcp-server",
     "verdict": "full",
-    "quality": 7,
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Better Auth's docs say it hosts an official remote MCP server that any MCP-capable client (Cursor, Codex, Claude Code, Open Code) can connect to, exposing documentation search, examples, and setup help. That directly delivers the story of connecting an agent via an official MCP server. The separate MCP plugin is a building block for securing your own MCP server, so it is not credited here. Missing for 10: tools beyond docs and setup assistance (e.g., managing a project's auth configuration), detailed connection and configuration instructions in the evidence, and independent or hands-on corroboration.",
+    "rationale": "Better Auth documents an official hosted remote MCP server that any MCP-capable client (Cursor, Codex, Claude Code, Open Code) can connect to for documentation search, examples, and setup help. The probe confirms official MCP documentation, and the MCP plugin additionally lets apps act as an OAuth authorization server for MCP clients. Missing for 10: independent or hands-on corroboration of connecting to the server, connection setup details in the evidence, and tools beyond docs/setup help (e.g. operating on a project's auth instance).",
     "evidenceIds": [
       "better-auth-docs-18",
       "better-auth-docs-59",
-      "better-auth-docs-43"
+      "better-auth-docs-12",
+      "better-auth-probe-4",
+      "better-auth-docs-76"
     ]
   },
   {
     "productId": "better-auth",
     "storyId": "agentic-nl-commands",
     "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Better Auth is a code-first TypeScript auth framework, so natural-language operation is a fair axis. Its only first-party support is a hosted remote MCP server that gives MCP clients (Cursor, Claude Code, Codex) documentation search, examples, and setup help. That lets an AI-native user get natural-language guidance, but nothing shows the product itself carrying out operations from natural-language commands. The MCP plugin (which makes your app an OAuth server for MCP clients) and llms.txt are building blocks or adjacent features and earn no credit. Missing for 10: natural-language commands that actually execute operations (e.g., configuring auth or managing users), documented coverage beyond docs and setup help, and independent hands-on corroboration.",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "Better Auth hosts a remote MCP server that gives MCP-capable agents (Cursor, Claude Code, Codex, etc.) documentation search, examples, and setup help, so developers can get natural-language assistance through their agent. Machine-readable llms.txt and markdown docs support the same workflow. This is help with docs and setup, not natural-language operation of auth itself, and the product's model is code-defined config ('No dashboard clicks'). Missing for 10: natural-language control of auth operations (managing users, sessions, config) via an agent or MCP tools, any first-party NL command interface, and independent or hands-on corroboration of the MCP server's usefulness.",
     "evidenceIds": [
       "better-auth-docs-18",
+      "better-auth-docs-59",
       "better-auth-docs-43",
-      "better-auth-docs-59"
+      "better-auth-probe-1",
+      "better-auth-probe-2",
+      "better-auth-docs-45"
     ]
   },
   {
@@ -1002,11 +1014,13 @@
   {
     "productId": "better-auth",
     "storyId": "api-versioning-policy",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Better Auth is a TypeScript auth framework, so API versioning and a deprecation policy are a fair question for it. The evidence pack documents no versioned API scheme, semver commitment, changelog policy, or deprecation timeline. The truncated llms.txt line ('Use the documentation version that matc…') hints only at versioned docs, not a deprecation policy, so it earns no credit.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 2,
+    "confidence": "low",
+    "rationale": "Better Auth is a TypeScript auth library, so API versioning and deprecation policy apply. The only relevant evidence is a truncated llms.txt line telling readers to \"Use the documentation version that matc[hes]\", which hints at version-matched docs but does not show a versioning scheme or any deprecation policy. Missing for 10: a documented deprecation policy, an explicit API/semver versioning scheme, changelog or migration notes between versions, and any independent corroboration.",
+    "evidenceIds": [
+      "better-auth-probe-1"
+    ]
   },
   {
     "productId": "better-auth",
@@ -1059,11 +1073,13 @@
     "productId": "better-auth",
     "storyId": "automation-versioned-workflows",
     "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Better Auth's own homepage says auth config lives in code that is \"version controlled, type-safe, and reviewable in PRs\" with \"no dashboard clicks.\" So versioning and review happen through the user's standard code workflow, but the evidence shows no first-party automation concept with its own versioning or rollback. missing for 10: a defined automation/workflow feature, documented versioning or history for automations, a built-in review/approval flow, rollback capability, independent corroboration.",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Better Auth has no dedicated automation system, but its auth configuration (including plugin setup) lives in application code that is \"version controlled, type-safe, and reviewable in PRs.\" Versioning and review therefore come from standard git workflows, and rollback is implied by reverting code rather than offered as a native feature. missing for 10: a native automation/workflow construct with built-in version history, explicit rollback documentation, and independent or hands-on corroboration of a review/rollback workflow.",
     "evidenceIds": [
-      "better-auth-docs-45"
+      "better-auth-docs-45",
+      "better-auth-docs-21",
+      "better-auth-docs-19"
     ]
   },
   {
@@ -1124,14 +1140,14 @@
     "productId": "better-auth",
     "storyId": "device-flow-for-cli-agents",
     "verdict": "full",
-    "quality": 9,
+    "quality": 8,
     "confidence": "high",
-    "rationale": "Better Auth ships a first-party Device Authorization plugin implementing the RFC 8628 code issuance and approval flow, explicitly aimed at CLI applications and other limited-input devices. The docs also note the flow can be tested immediately with the Better Auth CLI, which is the story's exact use case of authenticating CLIs without pasting long-lived secrets. Missing for 10: independent or hands-on community corroboration of the device flow in real CLI or agent deployments, and explicit documentation of headless-agent usage beyond CLIs.",
+    "rationale": "Better Auth ships a first-party Device Authorization plugin that implements the OAuth 2.0 Device Authorization Grant (RFC 8628) code issuance and approval flow. It explicitly targets CLI applications, and the docs note the flow can be tested with the Better Auth CLI. That covers the core of authenticating CLIs without pasting long-lived secrets. Missing for 10: explicit documentation of headless/AI-agent use beyond CLIs and limited-input devices, and independent or hands-on corroboration of the device flow working in practice.",
     "evidenceIds": [
       "better-auth-docs-17",
       "better-auth-docs-56",
-      "better-auth-docs-28",
-      "better-auth-docs-74"
+      "better-auth-docs-74",
+      "better-auth-docs-28"
     ]
   },
   {
@@ -1197,11 +1213,15 @@
   {
     "productId": "better-auth",
     "storyId": "human-approval-for-agent-actions",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Asynchronous human approval is a fair question for an authentication framework, so the axis applies. However, the evidence pack documents no CIBA or per-transaction approval capability. The Device Authorization plugin is a different capability: it covers RFC 8628 login approval for limited-input devices, not confirming an agent's sensitive transaction. The homepage line about \"agent delegation\" does not describe a human-in-the-loop approval step either.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Better Auth's Device Authorization plugin implements an RFC 8628 code-issuance and approval flow, in which a human approves on a separate device. The homepage also claims 'agent delegation' for AI agents. Together these offer a glancing form of decoupled human approval an agent could use to obtain tokens, but nothing documents per-transaction confirmation. missing for 10: a CIBA or backchannel per-transaction approval flow, documentation of approval gating for sensitive agent actions, details of how agent delegation works, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "better-auth-docs-17",
+      "better-auth-docs-28",
+      "better-auth-docs-76"
+    ]
   },
   {
     "productId": "better-auth",
@@ -1595,11 +1615,16 @@
   {
     "productId": "clerk",
     "storyId": "agentic-autonomous-automation",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Clerk is an auth and user-management platform, and such a platform could plausibly ship background automations, so the axis applies. The evidence shows no Clerk-hosted feature for setting up autonomous background automations. Webhooks, API keys for callers such as cron jobs, and M2M tokens are building blocks or authentication for automations that the user runs elsewhere, not the capability itself.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Clerk is an auth and user-management platform, and it does not document its own automation or workflow engine. What it offers are building blocks: webhooks push events such as user created or updated to your handler, and API keys and M2M tokens authenticate background agents calling each other. You would have to host and run the actual automations yourself. Missing for 10: a native automation or scheduled-job feature, autonomous background execution hosted by Clerk, and independent or hands-on evidence of automation workflows.",
+    "evidenceIds": [
+      "clerk-docs-5",
+      "clerk-docs-11",
+      "clerk-docs-43",
+      "clerk-supp-m2m-pricing"
+    ]
   },
   {
     "productId": "clerk",
@@ -1746,9 +1771,9 @@
     "productId": "clerk",
     "storyId": "agentic-webhooks",
     "verdict": "full",
-    "quality": 7,
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Clerk's first-party docs describe webhooks that send event notifications, such as user created or updated, to a receiving endpoint (clerk-docs-5). Billing also emits webhook events (clerk-docs-25). The official CLI can relay webhook deliveries to a local handler and verify their signatures offline (clerk-docs-38), which supports agent and developer workflows. Missing for 10: a documented event catalog, details on endpoint registration and retry behavior, and independent or hands-on corroboration.",
+    "rationale": "Clerk's docs describe webhooks that send event notifications such as user created or updated, and Billing webhook events are also documented. The CLI can relay webhook deliveries to a local handler and verify signatures offline, which supports an agent-friendly dev workflow. Missing for 10: a full event catalog or details on subscribing to specific event types, delivery/retry guarantees, and independent hands-on corroboration.",
     "evidenceIds": [
       "clerk-docs-5",
       "clerk-docs-25",
@@ -1758,11 +1783,15 @@
   {
     "productId": "clerk",
     "storyId": "api-interactive-docs",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Clerk publishes a machine-readable OpenAPI spec at /openapi.json, plus llms.txt, markdown docs and an MCP server that serves SDK snippets. None of the evidence shows an interactive API reference with runnable examples (e.g., a try-it console or executable request playground). A raw spec and snippet delivery are building blocks or adjacent features, not the capability itself.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The probe confirms a published OpenAPI spec at clerk.com/openapi.json, which is the foundation for an API reference and could be loaded into third-party tools to explore and run calls. The MCP server and CLI give agents SDK snippets, but nothing in the evidence shows a first-party interactive reference or runnable examples. missing for 10: evidence of an interactive API reference UI, runnable or try-it examples, documentation of the reference experience, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "clerk-probe-3",
+      "clerk-docs-7",
+      "clerk-docs-2"
+    ]
   },
   {
     "productId": "clerk",
@@ -1843,11 +1872,15 @@
   {
     "productId": "clerk",
     "storyId": "automation-rules-engine",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "The evidence shows no user-definable rules or automation engine in Clerk. There is nothing that lets a user configure conditions on events that automatically trigger actions. Clerk webhooks (event notifications on user create/update) and static controls like allow/block lists and sign-up rate limits are adjacent building blocks or controls, not a rule-to-action automation capability.",
-    "evidenceIds": []
+    "rationale": "Clerk emits webhook event notifications, such as user created or updated and billing events. Its CLI can relay webhook deliveries to a local handler and verify signatures, so developers can trigger their own actions on events. However, the evidence shows no built-in rules engine: event-to-action logic must be written and hosted in your own backend code. missing for 10: native rule definition or configurable triggers inside Clerk, built-in automatic actions without custom handler code, documentation of event filtering or conditions, independent hands-on corroboration.",
+    "evidenceIds": [
+      "clerk-docs-5",
+      "clerk-docs-25",
+      "clerk-docs-38"
+    ]
   },
   {
     "productId": "clerk",
@@ -1908,12 +1941,13 @@
     "productId": "clerk",
     "storyId": "device-flow-for-cli-agents",
     "verdict": "full",
-    "quality": 6,
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Clerk's changelog describes a standards-based grant for CLIs and other devices that cannot open a browser: the user approves access from a browser-capable device instead of entering credentials on the original device, which is the OAuth device authorization flow. It sits within Clerk's own OAuth provider implementation with scoped access. Missing for 10: a dedicated docs page detailing device-flow setup and token lifetimes/refresh, explicit coverage of headless agent use, and independent or hands-on corroboration.",
+    "rationale": "Clerk's changelog describes a standards-based OAuth grant that lets CLIs and other browser-less devices have a user approve access from a browser-capable device. That is the device authorization flow, so it replaces pasting secrets on the original device. Clerk's OAuth scoped access and custom OAuth scopes for MCP clients round out the delegated-access story. Missing for 10: dedicated in-depth docs for the device grant (endpoints, polling, token lifetimes, refresh), explicit coverage of headless agents beyond CLIs and devices, and independent or hands-on corroboration.",
     "evidenceIds": [
       "clerk-docs-52",
-      "clerk-docs-10"
+      "clerk-docs-10",
+      "clerk-docs-55"
     ]
   },
   {
@@ -1971,11 +2005,15 @@
   {
     "productId": "clerk",
     "storyId": "human-approval-for-agent-actions",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Clerk is an auth platform, so asynchronous human approval for agent actions is a fair question to ask of it. However, the pack shows no CIBA-style or out-of-band approval for an agent's sensitive transaction. The nearby features don't count: the device authorization grant approves initial access for browserless devices, reverification is a recency check on the user's own session, and eve tool-call gating checks permissions and scopes without a human approving the action.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The closest evidence is Clerk's device authorization grant, a decoupled flow where a browser-less client asks a user to approve access from another device. Clerk also offers a configurable reverification window for sensitive actions and permission/scope gating of agent tool calls. None of these is documented as per-transaction asynchronous human approval for autonomous agents, so delivering the story would need custom assembly. Missing for 10: a CIBA or backchannel approval flow, per-transaction approval prompts for agent actions, agent-initiated pending-approval states, and hands-on or independent corroboration.",
+    "evidenceIds": [
+      "clerk-docs-52",
+      "clerk-docs-53",
+      "clerk-docs-16"
+    ]
   },
   {
     "productId": "clerk",
@@ -2078,9 +2116,9 @@
     "productId": "clerk",
     "storyId": "org-level-sso-domains",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "Clerk documents Enterprise SSO over SAML and OIDC with IdPs such as Azure AD, Okta and Google Workspace, with user data synchronized into Clerk. Separately, it documents Organizations for multi-tenant B2B apps. Nothing in the evidence ties an SSO connection to a specific customer organization, and verified domains and just-in-time provisioning are not documented. missing for 10: per-organization SSO connection binding, verified domain configuration, explicit JIT provisioning into organizations, independent or hands-on corroboration.",
+    "rationale": "Clerk documents Enterprise SSO over SAML and OIDC with IdPs such as Azure AD, Okta, and Google Workspace, with user data synchronized into Clerk. It also documents multi-tenant Organizations. However, nothing in the pack ties an SSO connection to an individual customer organization, and nothing mentions domain verification or just-in-time provisioning. Missing for 10: per-organization SSO connection assignment, verified/claimed domains, explicit JIT provisioning into the org, independent or hands-on corroboration.",
     "evidenceIds": [
       "clerk-docs-8",
       "clerk-docs-28",
@@ -2263,10 +2301,10 @@
   {
     "productId": "clerk",
     "storyId": "token-vending-for-agent-tools",
-    "verdict": "partial",
-    "quality": 5,
+    "verdict": "full",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Clerk's eve tool-call authorization guide says it can \"broker OAuth for tools that need a provider token on the caller's behalf,\" a first-party claim that matches the core of delegated third-party tokens for agent tool calls. That claim is a single line, with no detail on how it works. missing for 10: documentation of the user-consent flow, evidence that brokered tokens are short-lived or refreshed, details of token vault storage or exchange, a list of supported third-party providers, and independent or hands-on corroboration.",
+    "rationale": "Clerk's eve tool-call authorization guide says it can gate tool calls against the caller's permissions and scopes and 'broker OAuth for tools that need a provider token on the caller's behalf'. That is the core of delegated third-party token access for agents. The evidence is a single one-line claim with no detail on how the tokens work. Missing for 10: token lifetime and refresh behavior, how the user consent flow works, vault or storage semantics for provider tokens, which providers are supported, and any independent or hands-on corroboration.",
     "evidenceIds": [
       "clerk-docs-16",
       "clerk-docs-27"
@@ -2299,16 +2337,16 @@
   {
     "productId": "keycloak",
     "storyId": "active-session-visibility",
-    "verdict": "partial",
-    "quality": 5,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Keycloak's own docs say admins can manage users' sessions through the admin console and that users can manage their own sessions in the account console, so both personas have session management. The docs do not show device visibility or explicit per-session versus all-at-once revocation. Single sign-out and the token revocation endpoint are adjacent and only loosely support bulk logout. Missing for 10: documented device/session listing detail (device, browser, IP), explicit per-session and sign-out-all revocation in the admin and account consoles, admin REST session-revocation endpoints, and independent hands-on corroboration.",
+    "rationale": "First-party docs say admins can manage users \"including permissions and sessions\" and that users can \"manage sessions as well as view history\" in the account console, which covers both personas. Single sign-out and a token revocation endpoint support logout across all applications and revocation of individual tokens. missing for 10: an explicit device listing, documented per-session vs. sign-out-all-sessions revocation controls, in-depth session-management docs beyond marketing-level statements, and independent or hands-on corroboration.",
     "evidenceIds": [
       "keycloak-docs-21",
       "keycloak-docs-48",
-      "keycloak-docs-11",
       "keycloak-docs-15",
-      "keycloak-docs-53"
+      "keycloak-docs-53",
+      "keycloak-docs-11"
     ]
   },
   {
@@ -2476,20 +2514,29 @@
   {
     "productId": "keycloak",
     "storyId": "api-interactive-docs",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Keycloak documents an Administration REST API (keycloak-docs-6), but nothing in the evidence shows that reference is interactive or offers runnable examples. Probes for an OpenAPI/Swagger spec at standard paths all returned 404. A static API reference is an adjacent feature and earns no credit for an interactive, runnable explorer.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 2,
+    "confidence": "low",
+    "rationale": "Keycloak documents an Administration REST API reference (keycloak-docs-6), and the OIDC layers guide lists protocol endpoints (keycloak-docs-74), so a static API reference exists. Nothing in the evidence shows that reference is interactive or offers runnable examples, and probes for a published OpenAPI/Swagger spec on keycloak.org all returned 404 (keycloak-probe-3). Missing for 10: an interactive API explorer, runnable or try-it examples, a machine-readable OpenAPI spec, and independent corroboration.",
+    "evidenceIds": [
+      "keycloak-docs-6",
+      "keycloak-docs-74",
+      "keycloak-probe-3"
+    ]
   },
   {
     "productId": "keycloak",
     "storyId": "api-machine-spec",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Keycloak exposes an Admin REST API, so a downloadable machine-readable spec is a fair question, but the evidence only references human-facing 'Documentation for the Administration RESTful API' and never says an OpenAPI or equivalent file is published. The OIDC well-known discovery document is protocol metadata listing auth endpoints, not an API spec, so it is an adjacent feature and earns no credit. Probes of common OpenAPI/Swagger paths on keycloak.org all returned 404.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Keycloak documents an OIDC well-known discovery endpoint that lists protocol endpoints and configuration in machine-readable form, and it publishes Admin REST API documentation. However, the evidence never shows a downloadable OpenAPI or equivalent spec for the Admin REST API, and probes of common OpenAPI/Swagger paths on keycloak.org all returned 404. Missing for 10: a downloadable OpenAPI/Swagger spec for the Admin REST API, a machine-readable spec covering the full API surface beyond OIDC discovery metadata, and hands-on confirmation that such a spec can be fetched.",
+    "evidenceIds": [
+      "keycloak-docs-4",
+      "keycloak-docs-74",
+      "keycloak-docs-6",
+      "keycloak-probe-3"
+    ]
   },
   {
     "productId": "keycloak",
@@ -2532,11 +2579,15 @@
   {
     "productId": "keycloak",
     "storyId": "auth-event-webhooks",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence pack contains no documented webhook registration, outbound HTTP callbacks, or subscribable event stream for sign-ups, sign-ins, or user changes. The brute-force lockout event types, account history view, metrics/OpenTelemetry observability, and generic 'customize through code' providers are adjacent features or developer building blocks, not a subscription capability. Webhooks and event streams are a fair axis for an identity provider, so absence of evidence yields 'none' rather than 'na'.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 2,
+    "confidence": "low",
+    "rationale": "The admin guide shows Keycloak records auth-related events such as brute-force lockouts, and the docs say the server can be customized with code through providers. That suggests a developer could hook into events with custom code, but nothing documents a subscribable webhook or event stream. Missing for 10: documented webhook or event-stream subscription, coverage of sign-up/sign-in/user-change events, delivery and retry semantics, an event listener configuration guide, and independent corroboration.",
+    "evidenceIds": [
+      "kc-supp-brute-force",
+      "keycloak-docs-5",
+      "keycloak-docs-41"
+    ]
   },
   {
     "productId": "keycloak",
@@ -2557,11 +2608,15 @@
   {
     "productId": "keycloak",
     "storyId": "automation-rules-engine",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Event-triggered automation is a fair question for an IAM server, but the evidence documents no user-definable rules engine or event-to-action automation. Brute-force lockout is a fixed built-in security control, an adjacent feature rather than user-defined rules. Generic 'customize through code' and provider extensibility are developer building blocks, so neither earns credit.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 2,
+    "confidence": "low",
+    "rationale": "The only evidence of event-triggered automation is brute-force protection, a built-in rule that automatically disables accounts after too many login failures. Beyond that, the pack has only generic claims of extensibility through code and custom providers, so user-defined event-to-action rules would require custom development and are not documented. Missing for 10: a user-definable rule or workflow engine, documented event listeners or webhooks that trigger actions, and any independent or hands-on corroboration.",
+    "evidenceIds": [
+      "kc-supp-brute-force",
+      "keycloak-docs-5",
+      "keycloak-docs-41"
+    ]
   },
   {
     "productId": "keycloak",
@@ -2692,20 +2747,30 @@
   {
     "productId": "keycloak",
     "storyId": "guided-competitor-migration",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence contains no vendor-maintained migration guide or tool for moving users off a competing auth provider, and nothing on importing existing password hashes to avoid forced resets. Realm JSON import/export covers Keycloak's own configuration, and the 'implement your own provider' user-federation hook is a developer building block. One community user found leaving Auth0 'fairly easy', but that is an anecdote, not first-party tooling, so none of these earn credit.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Keycloak offers building blocks that could support a migration without password resets: user federation to LDAP/AD, a custom provider you implement yourself for users in other stores such as a relational database, brokering to existing OIDC/SAML identity providers, and realm JSON import plus the Admin REST API and CLI. However, none of this is a vendor-maintained migration guide or tool for leaving a competing auth provider; it takes custom code and assembly on your part. Missing for 10: a first-party migration guide from competing providers, documented password-hash import or lazy-migration tooling that explicitly preserves passwords, and hands-on corroboration of a migration without resets.",
+    "evidenceIds": [
+      "kc-supp-federation",
+      "keycloak-docs-47",
+      "keycloak-docs-46",
+      "keycloak-docs-10",
+      "kc-supp-kcadm",
+      "keycloak-docs-6"
+    ]
   },
   {
     "productId": "keycloak",
     "storyId": "human-approval-for-agent-actions",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Asynchronous human approval before an agent completes a transaction is a fair question for an identity provider, so the axis applies. However, nothing in the evidence pack mentions CIBA, backchannel authentication, or transaction-approval flows. The documented device authorization grant is a different flow, in which a limited-input device obtains a user code for the user to enter elsewhere, so it earns no credit here.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The evidence does not mention CIBA or transaction-bound approval. The closest documented capability is the device authorization grant, a decoupled flow where a human approves on a separate device before the client gets a token. That only loosely approximates asynchronous human approval for an agent. Missing for 10: documented CIBA / backchannel authentication support, approval bound to a specific sensitive transaction, push or poll approval notifications to the user, and independent or hands-on corroboration of agent approval workflows.",
+    "evidenceIds": [
+      "kc-supp-device-grant",
+      "keycloak-docs-1"
+    ]
   },
   {
     "productId": "keycloak",
@@ -2782,16 +2847,19 @@
   {
     "productId": "keycloak",
     "storyId": "openness-full-export",
-    "verdict": "partial",
-    "quality": 6,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Keycloak's own docs say realms can be imported and exported as JSON files, and authorization configuration can also be exported. The Admin REST API, the kcadm.sh CLI and built-in SCIM endpoints give further programmatic ways to pull users and configuration out in standard formats. But the evidence is a single-line mention of realm export, so it is unproven that 'all data' (for example users and credentials) is included in the export. missing for 10: explicit documentation that realm export covers users, credentials, sessions and events, a documented step-by-step migration-out path, and independent hands-on corroboration of a full export and exit.",
+    "rationale": "Keycloak documents exporting and importing realms as JSON files and separately exporting authorization configuration. Its Admin REST API, the kcadm.sh CLI and standards-based SCIM endpoints offer scripted, open-format access to users, groups, roles and clients. Data can live in a standard database such as PostgreSQL, and the use of standard OIDC/SAML protocols eases migration to another identity provider. Missing for 10: explicit confirmation that realm exports cover users and credentials (including password-hash portability), end-user self-service export from the account console, and independent or hands-on corroboration of a full migration out.",
     "evidenceIds": [
       "keycloak-docs-10",
       "keycloak-docs-71",
       "keycloak-docs-6",
       "kc-supp-kcadm",
-      "kc-supp-scim"
+      "kc-supp-scim",
+      "keycloak-docs-59",
+      "keycloak-docs-1",
+      "keycloak-docs-76"
     ]
   },
   {
@@ -2919,11 +2987,18 @@
   {
     "productId": "keycloak",
     "storyId": "privacy-retention-controls",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Data retention and deletion is a fair axis for a self-hosted identity server that stores user and event data. However, the evidence pack documents no retention policies, no event or audit data expiration, and no user or self-service account deletion. The cited items cover only adjacent controls: managing users and sessions, editing profiles, revoking tokens, and choosing your own database.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Keycloak is self-hosted on an operator-chosen database such as PostgreSQL, so the deployer controls where identity data lives. Admins can manage users and sessions through the admin console, Admin CLI and REST API, users can manage their own sessions, and tokens can be revoked through a revocation endpoint. However, nothing in the evidence explicitly documents deleting user data or setting retention policies. Missing for 10: documented user/account deletion (admin or self-service), configurable retention or expiration for events and logs, data-purge or export-for-deletion workflows, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "keycloak-docs-59",
+      "keycloak-docs-21",
+      "keycloak-docs-48",
+      "keycloak-docs-53",
+      "kc-supp-kcadm",
+      "keycloak-docs-13"
+    ]
   },
   {
     "productId": "keycloak",
@@ -3038,11 +3113,17 @@
   {
     "productId": "keycloak",
     "storyId": "token-vending-for-agent-tools",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Delegated, user-consented third-party API tokens are a fair question for an IAM server like Keycloak, so the axis applies. However, the evidence pack never documents token exchange, a token vault, or retrieval of stored identity-provider tokens. Identity brokering, account linking, device grant and client credentials are adjacent features and earn no credit toward this story.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Keycloak documents standard OAuth 2.0/OIDC flows that issue user-delegated tokens, including the device authorization grant an agent could use for user consent. It also documents identity brokering and account linking with external providers. However, nothing in the pack shows that it stores third-party provider tokens or exchanges them for agent use. Missing for 10: documented token exchange, a vault or retrieval mechanism for brokered third-party API tokens, short-lived scoped delegation to external APIs, agent-specific guidance, and hands-on corroboration.",
+    "evidenceIds": [
+      "keycloak-docs-1",
+      "kc-supp-device-grant",
+      "kc-supp-social-brokering",
+      "keycloak-docs-25",
+      "keycloak-docs-53"
+    ]
   },
   {
     "productId": "workos",
@@ -3170,12 +3251,11 @@
     "productId": "workos",
     "storyId": "agentic-official-cli",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "WorkOS documents an official \"WorkOS CLI migrations tool\" as the fastest way to export Auth0 data, which produces a migration package of users, orgs, memberships, roles and SSO handoff files. That confirms a first-party CLI exists, but its evidenced scope is limited to migrations. CLI Auth (the device-flow feature) is a building block for customers' own CLIs and earns no credit here. Missing for 10: evidence of general workspace management from the CLI, installation/command reference docs, AI/agent-oriented CLI workflows, and independent or hands-on corroboration.",
+    "rationale": "The only evidence of an official WorkOS CLI is a single mention of a \"WorkOS CLI migrations tool\" for exporting Auth0 data. The CLI Auth items describe a Device Authorization Flow that customers use to authenticate their own command-line apps, so they are not an official WorkOS CLI and are not credited here. Missing for 10: documented CLI install and command reference, CLI coverage of workspace management beyond migrations, AI/agent-oriented CLI features (e.g., non-interactive or machine-readable output), and independent or hands-on corroboration.",
     "evidenceIds": [
-      "workos-docs-37",
-      "workos-docs-6"
+      "workos-docs-37"
     ]
   },
   {
@@ -3254,11 +3334,15 @@
   {
     "productId": "workos",
     "storyId": "api-interactive-docs",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The pack shows WorkOS has API reference pages (/docs/reference/...), a published OpenAPI spec, and a community comment praising the docs' look. None of it documents an interactive explorer or runnable 'try it' examples. A static reference and an OpenAPI file are only building blocks or adjacent features, not the interactive, runnable reference the story asks for.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "WorkOS publishes an API reference section (/docs/reference/... pages such as CLI Auth and MFA) and a machine-readable OpenAPI spec at /openapi.json, which could be loaded into third-party API explorers. Nothing in the pack shows that the reference itself is interactive or offers runnable 'try it' examples. Missing for 10: evidence of an interactive in-browser API explorer, runnable or executable request examples, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "workos-probe-3",
+      "workos-docs-10",
+      "workos-docs-46"
+    ]
   },
   {
     "productId": "workos",
@@ -3294,17 +3378,17 @@
   {
     "productId": "workos",
     "storyId": "audit-logs-export",
-    "verdict": "partial",
-    "quality": 6,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "WorkOS documents an Audit Logs product for emitting and exporting events as a compliance and security paper trail. Its pricing lists log streaming per SIEM connection, which covers the core of capturing activity and getting it into a SIEM. The tamper-evident element is not evidenced, and events appear to be emitted by your own application rather than captured automatically from WorkOS authentication and admin activity. Missing for 10: any evidence of tamper-evidence or integrity guarantees, documented automatic capture of authentication and admin events, details of SIEM destinations and streaming setup, and independent hands-on corroboration.",
+    "rationale": "WorkOS Audit Logs lets apps emit and export events as a compliance and security paper trail of sensitive actions by organization members, and pricing lists \"Log streaming (per SIEM connection)\" for streaming audit logs to a SIEM. That covers the core capture-and-stream story, but only through first-party docs. Missing for 10: any evidence of tamper-evidence or immutability guarantees, documentation that authentication events are captured automatically rather than emitted by the developer, details of supported SIEM destinations and formats, and independent or hands-on corroboration.",
     "evidenceIds": [
       "workos-docs-4",
       "workos-docs-14",
       "workos-docs-23",
+      "workos-docs-35",
       "workos-docs-42",
-      "workos-supp-radar",
-      "workos-docs-35"
+      "workos-supp-radar"
     ]
   },
   {
@@ -3337,19 +3421,22 @@
   {
     "productId": "workos",
     "storyId": "automation-rules-engine",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "Event-driven automation is a fair axis for an identity platform, so it applies. The evidence only shows outbound event delivery: Directory Sync updates arrive via webhooks or the Events API. That is a developer building block for constructing automation, not a documented capability to define rules that trigger actions automatically, so it earns no credit.",
-    "evidenceIds": []
+    "rationale": "WorkOS emits events: Directory Sync automatically pushes updates for directories, groups, users and access rules, delivered via webhooks or retrievable through the Events API. That gives developers triggers they can wire to actions in their own code. However, the evidence shows no built-in rule engine, workflow builder or event-triggered actions configurable inside WorkOS, so the user must build the rule logic externally. Missing for 10: a native rule/automation definition capability, actions triggered automatically within the platform, coverage of event types beyond Directory Sync, and hands-on corroboration.",
+    "evidenceIds": [
+      "workos-supp-scim-webhooks",
+      "workos-docs-21"
+    ]
   },
   {
     "productId": "workos",
     "storyId": "automation-scheduled-jobs",
-    "verdict": "na",
+    "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "WorkOS is an enterprise authentication and identity platform covering SSO, Directory Sync, RBAC, Audit Logs, Vault and AuthKit. A general-purpose scheduler for recurring jobs or workflows is outside that product category. The evidence shows no first-party scheduling or cron capability that would make the axis apply; Directory Sync's automatic updates are event-driven sync, not user-scheduled jobs.",
+    "rationale": "Identity platforms can plausibly offer scheduled identity-automation workflows, so this axis applies to WorkOS. However, the evidence pack contains nothing about scheduling recurring jobs or workflows. Directory Sync's automatic updates and audit-log export are event-driven or integration features, not user-defined scheduled jobs.",
     "evidenceIds": []
   },
   {
@@ -3557,11 +3644,18 @@
   {
     "productId": "workos",
     "storyId": "openness-full-export",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Data portability is a fair question for a hosted identity platform, so the axis applies. However, the evidence documents no first-party way to export all WorkOS data (users, organizations, SSO connections) in open formats for leaving. The migration docs cover importing into WorkOS from Auth0, and audit-log export covers only one data type. API/MCP read access is a developer building block rather than an export feature, and the community lock-in question is an open concern rather than evidence either way.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The evidence shows only piecemeal paths out of WorkOS. Audit log events can be exported or streamed to a SIEM, directory data can be retrieved via the Events API, and a public OpenAPI spec and MCP server give programmatic read access to dashboard data such as users, organizations and connections. There is no documented one-step export of all data in open formats; the Auth0 guide covers migrating into WorkOS, not out of it, and a community user's open question about how to export login data and switch away remains unanswered in the evidence. Missing for 10: a documented full-account data export, open-format export of users/credentials/SSO connections, an outbound migration guide or portability guarantees, and independent hands-on confirmation of leaving.",
+    "evidenceIds": [
+      "workos-docs-4",
+      "workos-docs-14",
+      "workos-supp-radar",
+      "workos-supp-scim-webhooks",
+      "workos-docs-9",
+      "workos-probe-3"
+    ]
   },
   {
     "productId": "workos",
