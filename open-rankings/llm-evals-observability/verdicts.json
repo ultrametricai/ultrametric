@@ -4263,7 +4263,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Helicone documents a REST endpoint for programmatic request queries (POST /v1/request/query) with a published OpenAPI spec. Its pricing page lists HQL, and a community report confirms users can write SQL against its ClickHouse store, so an agent could pull logged request data through an API. However, there is no evidence of an official MCP server, and querying session traces, aggregate metrics, or eval results via API is not specifically documented. Missing for 10: official MCP server, documented API access to session/trace trees, metrics endpoints, eval-result query endpoints, hands-on evidence of agent-driven debugging.",
+    "rationale": "Helicone documents a REST endpoint for querying logged requests (POST /v1/request/query) and publishes an OpenAPI spec, so an agent could programmatically pull trace data. Its HQL query language and community reports of direct SQL access against ClickHouse add further programmatic query paths. However, nothing shows an MCP server, agent-oriented tooling, or API access to aggregated metrics or eval results. missing for 10: official MCP server, documented API for querying metrics/dashboards, API access to eval/score results, hands-on evidence of agent-driven debugging via the API.",
     "evidenceIds": [
       "helicone-docs-15",
       "helicone-docs-32",
@@ -4279,7 +4279,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Helicone's Sessions feature groups related requests so you can trace an entire agent flow, from user input to final response, in one unified view. Path syntax expresses parent-child relationships, which gives a nested hierarchy, and the GitHub README confirms sessions and traces are viewable in the UI. Missing for 10: evidence that non-LLM steps (tool calls, custom spans) can be captured as true spans rather than only LLM requests, any thread-level grouping, and independent or hands-on corroboration of the sessions feature specifically.",
+    "rationale": "Helicone's Sessions feature groups related requests so you can trace an entire agent flow in one unified view. Path syntax expresses parent-child relationships, giving nested, hierarchical traces, and the GitHub README lists sessions and traces as first-class UI concepts. A LangChain user also reported that Helicone helped them debug long chains and runaway agents. missing for 10: evidence of span-level instrumentation beyond LLM requests (e.g., tool or non-LLM steps as spans), thread/conversation grouping semantics, independent hands-on corroboration of the Sessions/nesting feature specifically",
     "evidenceIds": [
       "helicone-docs-5",
       "helicone-docs-43",
@@ -4310,7 +4310,7 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Direct probes confirm a live llms.txt index at docs.helicone.ai/llms.txt. Doc pages are also served as raw .md files that point agents to that index, many cited docs URLs use the .md form, and a machine-readable OpenAPI spec (swagger.json) is available. Missing for 10: no evidence of an llms-full.txt or first-party guidance on pointing agents at these docs.",
+    "rationale": "Direct probes confirm Helicone serves an llms.txt index at docs.helicone.ai/llms.txt (HTTP 200). Its docs pages are available as raw .md files that tell agents to fetch that index, and a machine-readable OpenAPI spec is published at swagger.json. Together these give an agent everything needed to read the docs directly. Missing for 10: no evidence of an llms-full.txt or other full-content bundle, and no independent or community reports of agents actually being pointed at these docs.",
     "evidenceIds": [
       "helicone-probe-1",
       "helicone-probe-2",
@@ -4325,7 +4325,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The axis applies, since an LLM observability platform could plausibly surface AI-generated insights or suggestions about logged traffic. However, the evidence shows only dashboards, alerts and reports, HQL querying, and webhooks. The webhook-driven 'real-time evaluation' is something users build externally on registered callbacks, not built-in AI insights or suggestions. No evidence shows the product generating AI insights or recommendations from user data inside the UI.",
+    "rationale": "Helicone is an LLM observability platform, so in-product AI-generated insights or suggestions about a user's logged data is a fair axis to ask about. The evidence covers dashboards, HQL querying, alerts and sessions, none of which is AI-generated insight. Webhook-driven 'real-time evaluation' is a building block for users to score responses externally, not a built-in feature that produces insights or suggestions, so the evidence documents no such capability.",
     "evidenceIds": []
   },
   {
@@ -4349,7 +4349,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "An in-product AI assistant is a fair axis for an LLM observability SaaS, but nothing in the evidence describes a built-in assistant that users can hand tasks to. The Playground is a prompt-testing UI, and the gateway, sessions and webhooks are developer infrastructure, not a delegated assistant.",
+    "rationale": "An in-product AI assistant is a fair question for an LLM observability SaaS, so the axis applies. However, nothing in the evidence describes a built-in assistant that users can delegate tasks to. The Playground (helicone-gh-3), the AI Gateway, and the prompt-management features are tools for testing or routing your own LLM calls, not an in-product agent.",
     "evidenceIds": []
   },
   {
@@ -4358,15 +4358,17 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Helicone works as an API-driven gateway, so it can run without a UI. Requests are logged through the OpenAI SDK, a REST query API (curl example) and an OpenAPI spec are documented, outbound webhooks can trigger automated workflows, and self-hosting via Docker Compose is supported. However, nothing in the evidence documents CI pipeline usage or a headless CLI, so this rests on API primitives rather than a documented CI/automation story. Missing for 10: an official CLI, CI/CD integration docs or examples (e.g., GitHub Actions), and hands-on reports of headless/CI use.",
+    "rationale": "Helicone's core runs headlessly by design: requests flow through the AI Gateway via the OpenAI SDK with automatic logging (helicone-docs-2, helicone-docs-34). It also documents a REST request-query API with curl examples and a published OpenAPI spec (helicone-docs-15, helicone-docs-32, helicone-probe-3), registrable webhooks for automating workflows (helicone-docs-9), and Docker Compose self-hosting (helicone-docs-20). However, nothing documents CI pipeline usage, and prompt building and versioning are described as UI/Playground-driven (helicone-docs-46). Missing for 10: explicit CI/automation guides or examples, an official CLI, headless management of prompts, evals, and config, and independent hands-on reports of CI use.",
     "evidenceIds": [
       "helicone-docs-2",
+      "helicone-docs-34",
       "helicone-docs-15",
       "helicone-docs-32",
       "helicone-probe-3",
       "helicone-docs-9",
       "helicone-docs-20",
-      "helicone-docs-55"
+      "helicone-docs-8",
+      "helicone-docs-46"
     ]
   },
   {
@@ -4375,7 +4377,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Helicone is an LLM gateway and observability platform. Gateways of this kind could plausibly add MCP tool integration, so the axis applies. However, nothing in the evidence shows Helicone can connect to MCP servers or use their tools. Tool schemas appear only as prompt-template variables, which is an adjacent feature and earns no credit.",
+    "rationale": "An LLM gateway and observability platform could plausibly connect to MCP servers and expose their tools to routed requests, so the axis applies. However, the evidence pack never mentions MCP client support or plugging in external tool servers. Prompt-template variables in tool schemas (helicone-docs-44) are an adjacent feature and earn no credit.",
     "evidenceIds": []
   },
   {
@@ -4384,7 +4386,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Helicone is an LLM observability and gateway platform, not an agent, so shipping an official MCP server is a fair question and the axis applies. Nothing in the evidence pack mentions an MCP server. The llms.txt, markdown docs and OpenAPI spec are adjacent AI-friendly building blocks and earn no credit for this story.",
+    "rationale": "Helicone is an LLM observability platform and AI gateway, not an agent itself, so shipping an official MCP server is a fair question for it. The evidence pack contains no mention of an MCP server or MCP endpoint. The llms.txt file, the OpenAPI spec and the REST query API are adjacent agent-friendly building blocks, not an official MCP server, so they earn no credit.",
     "evidenceIds": []
   },
   {
@@ -4393,7 +4395,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Natural-language operation is a reasonable thing to ask of an LLM observability platform, but the evidence shows no way to operate Helicone itself through natural-language commands. HQL is a structured query language, and llms.txt, the markdown docs and the OpenAPI spec are adjacent features or developer building blocks rather than a natural-language interface. The Playground is for testing your own prompts, not for operating the product.",
+    "rationale": "Operating an LLM observability platform through natural-language commands, such as an assistant that queries logs or configures alerts from plain-English requests, is a fair axis for this kind of product, so the story applies. The evidence pack contains no such capability. HQL is a structured query language, and the REST API, OpenAPI spec and llms.txt are developer building blocks rather than a first-party natural-language interface, so none of them earn credit.",
     "evidenceIds": []
   },
   {
@@ -4402,7 +4404,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "An official CLI is a fair question for an LLM observability and gateway platform like Helicone, so the axis applies. Nothing in the evidence pack mentions a Helicone CLI. The REST API, OpenAPI spec, llms.txt and SDK-based integration are adjacent developer surfaces, not an official command-line tool, so they earn no credit.",
+    "rationale": "An official CLI is a fair question for an LLM observability and gateway platform, so the axis applies. However, the evidence pack never mentions a Helicone CLI. The REST API (curl examples), OpenAPI spec, llms.txt and Docker Compose self-hosting are developer building blocks or adjacent features, not an official command-line tool.",
     "evidenceIds": []
   },
   {
@@ -4411,15 +4413,15 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Helicone documents a public REST API, for example `POST https://api.helicone.ai/v1/request/query`, with a live OpenAPI spec at docs.helicone.ai/swagger.json. Its core gateway is driven programmatically through an OpenAI-compatible API, and a community user confirms exporting all requests. Missing for 10: evidence of API coverage beyond request querying (e.g., managing prompts, webhooks, alerts or sessions via REST), and independent hands-on corroboration of the management API's breadth.",
+    "rationale": "Helicone documents a public REST API, such as POST https://api.helicone.ai/v1/request/query with curl examples. A probe confirmed a live OpenAPI spec at docs.helicone.ai/swagger.json. The product is also driven programmatically through its OpenAI-compatible AI Gateway API, and a community user reports exporting all requests. Missing for 10: evidence that the API covers management surfaces like prompts, sessions, alerts and webhooks beyond request querying; independent hands-on reports of using the REST API; clarity on long-term API evolution given the product is now in maintenance mode.",
     "evidenceIds": [
       "helicone-docs-15",
       "helicone-docs-32",
       "helicone-probe-3",
       "helicone-gh-5",
       "helicone-docs-2",
-      "helicone-docs-25",
-      "helicone-comm-7-refresh-3b13e5eafdb2bd3a"
+      "helicone-comm-7-refresh-3b13e5eafdb2bd3a",
+      "helicone-docs-57"
     ]
   },
   {
@@ -4428,7 +4430,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Helicone is an LLM gateway and observability platform, so issuing scoped, least-privilege API credentials is a fair axis for it. The evidence pack never documents creating Helicone API keys with restricted permissions or scopes. Custom rate limits, managed provider keys and BYOK are adjacent controls and earn no credit for credential scoping.",
+    "rationale": "Scoped credentials are a fair question for an LLM gateway, but the evidence pack never documents issuing Helicone API keys with restricted scopes or permissions. Per-user rate limits and cost controls are adjacent controls, and managed or BYOK provider keys are a different capability, so neither earns credit here.",
     "evidenceIds": []
   },
   {
@@ -4455,7 +4457,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Helicone documents a first-party webhooks feature that sends notifications when LLM requests complete, for workflow automation, response scoring, and integration with external systems. Webhooks can be filtered so only requests matching all specified properties trigger them. Slack/email alerts are not credited here, since they are chat/email notifications rather than webhooks. Missing for 10: evidence of event types beyond request completion, details on endpoint registration, payload signing and retries, and independent or hands-on corroboration.",
+    "rationale": "Helicone's first-party docs describe webhooks that send instant notifications when LLM requests complete. These can be filtered so that only requests matching all specified properties trigger them, and they are meant for automating workflows, scoring responses, and integrating with external systems. That delivers the core of a programmatic event subscription. Missing for 10: documented event types beyond request completion, payload, signing and retry details, and independent or hands-on corroboration.",
     "evidenceIds": [
       "helicone-docs-9",
       "helicone-docs-10",
@@ -4468,7 +4470,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Helicone publishes a REST API reference (e.g., the 'Get Requests' endpoint page) with a copyable curl example for POST /v1/request/query, backed by a published OpenAPI spec at /swagger.json. Nothing in the evidence shows the reference is interactive, such as an in-browser 'try it' playground that runs requests, so only the reference-with-examples half of the story is evidenced. Missing for 10: evidence of an interactive in-browser request runner, multi-language runnable snippets, broad endpoint coverage, and independent or hands-on corroboration.",
+    "rationale": "Helicone publishes a REST API reference, for example the 'Get Requests' endpoint page with a copyable curl example against api.helicone.ai/v1/request/query. A probe also confirmed a served OpenAPI spec at docs.helicone.ai/swagger.json, so a structured, spec-backed API reference exists. Nothing in the evidence shows the reference is interactive, such as an in-browser 'try it' console that executes requests. The prompt Playground is a separate product feature, not an API reference. Missing for 10: evidence of an interactive in-docs request runner, runnable (not just copyable) examples across endpoints, and independent or hands-on corroboration.",
     "evidenceIds": [
       "helicone-docs-15",
       "helicone-docs-32",
@@ -4494,12 +4496,12 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "low",
-    "rationale": "Helicone documents some of its own isolation mechanisms. Prompt versions can be deployed independently to production, staging and development environments [helicone-docs-45]. The Playground lets you test prompts, sessions and traces in the UI [helicone-gh-3]. A Docker Compose self-host option is offered for local development [helicone-docs-20], which could serve as an isolated instance. None of this is described as a sandbox that keeps test traffic and logged data separate from production. missing for 10: a documented sandbox/test-mode or separate workspace with isolated request data, explicit guarantees that test traffic doesn't mix with production logs, and hands-on corroboration.",
+    "rationale": "Helicone documents some environment separation of its own. Prompt versions can be deployed independently to production, staging and development environments (helicone-docs-45). The Playground lets you test prompts, sessions and traces (helicone-gh-3). Docker Compose self-hosting is documented as suited to local development (helicone-docs-20). None of this explicitly describes an isolated sandbox whose logged requests and data are kept apart from production. missing for 10: a documented sandbox or test-mode environment, explicit isolation of test data from production logs and analytics, and any independent or hands-on corroboration.",
     "evidenceIds": [
       "helicone-docs-45",
       "helicone-gh-3",
       "helicone-docs-20",
-      "helicone-docs-7"
+      "helicone-docs-46"
     ]
   },
   {
@@ -4520,11 +4522,11 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "The only bulk-style capability in the evidence is a user report of exporting all logged requests at once (comm-7). It is supported by a request query REST endpoint and HQL for retrieving many requests (docs-32, docs-33), but that is bulk read and export only, with no documented bulk mutation actions. Missing for 10: first-party docs on bulk actions (bulk tag, delete, score or re-run across many items), any API for batch updates, and independent hands-on corroboration beyond a single export comment.",
+    "rationale": "There is no documented bulk-action feature such as batch edit, tag, delete or re-run. The only evidence of acting on many items at once is a hands-on report that users can export all their requests, plus the request query API and HQL for querying across many records. These are read-only bulk retrieval, not bulk mutation. Missing for 10: documented bulk edit/delete/tag/score operations across many requests, first-party docs describing bulk export, batch API endpoints for mutations.",
     "evidenceIds": [
       "helicone-comm-7-refresh-3b13e5eafdb2bd3a",
       "helicone-docs-32",
-      "helicone-docs-33"
+      "helicone-docs-16"
     ]
   },
   {
@@ -4533,14 +4535,13 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Helicone documents rule-based event triggers in two places. Webhooks fire automatically when LLM requests complete, gated by property filters, so only requests matching all specified properties trigger them; the docs pitch this for automating workflows and real-time scoring. Alerts let you configure filters on error rates and costs and automatically notify through Slack or email. Missing for 10: a general rule engine beyond request-completion events and error/cost thresholds, actions other than webhook or notification delivery, richer rule logic than property matching, and independent or hands-on corroboration.",
+    "rationale": "Helicone documents event-triggered automation. Webhooks fire when LLM requests complete and can be scoped by property-match rules (only requests matching ALL specified properties trigger), so external workflows and scoring run automatically. Alerts on error rates and costs can be configured with filters and automatically notify via Slack or email. The core rule→action loop is first-party, but rule expressiveness and event types are narrow. missing for 10: event types beyond request completion and alert thresholds, richer rule logic (OR/conditions beyond property matching), built-in actions beyond outbound webhooks and notifications, independent or hands-on corroboration.",
     "evidenceIds": [
       "helicone-docs-9",
       "helicone-docs-10",
       "helicone-docs-23",
       "helicone-docs-11",
-      "helicone-docs-54",
-      "helicone-docs-33"
+      "helicone-docs-54"
     ]
   },
   {
@@ -4549,7 +4550,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Scheduling recurring jobs is a fair question for an LLM gateway and observability platform, for example scheduled evaluations or reports, so the axis applies. The evidence shows no user-schedulable recurring jobs or workflows. Webhooks fire on request completion (event-driven, not scheduled), alerts monitor error rates and costs, and the bare 'Alerts & reports' pricing line does not document scheduling. These are adjacent features, not this capability.",
+    "rationale": "Scheduling recurring jobs is a fair question for an LLM observability and gateway platform, since products of this kind could offer scheduled evaluations or reports, so the axis applies. However, the evidence never documents a scheduler, cron, or recurring workflow feature. Webhooks and alerts are event-driven reactions to requests, and the pricing page's 'Alerts & reports' line does not describe user-defined scheduled jobs, so neither earns credit.",
     "evidenceIds": []
   },
   {
@@ -4572,12 +4573,13 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Helicone has its own export path for logged data: a user reports Helicone lets them 'see each request and export them all' to build a fine-tuning dataset, and the GitHub README advertises a one-line export to PostHog. A REST request-query API and HQL also expose the logs programmatically. None of this documents a bulk export to blob storage (S3/GCS) or a data warehouse, so the story's destination requirement is unmet. missing for 10: native blob-storage/S3 export, data-warehouse connectors (e.g., Snowflake/BigQuery), documented bulk/scheduled export of traces and datasets, first-party export docs.",
+    "rationale": "Helicone has its own data-access paths: a REST request-query endpoint (POST /v1/request/query), HQL, and a one-line PostHog export. A community user also confirms they can 'see each request and export them all' to build a fine-tuning dataset. Nothing documents bulk export to blob storage (e.g. S3/GCS) or a data warehouse, so the story's core destination is unevidenced. missing for 10: documented bulk/scheduled export to blob storage, native data-warehouse connectors (e.g. Snowflake/BigQuery), dataset-level export docs, independent hands-on corroboration of large-scale export.",
     "evidenceIds": [
-      "helicone-comm-7-refresh-3b13e5eafdb2bd3a",
-      "helicone-gh-2",
+      "helicone-docs-15",
       "helicone-docs-32",
-      "helicone-docs-33"
+      "helicone-docs-33",
+      "helicone-gh-2",
+      "helicone-comm-7-refresh-3b13e5eafdb2bd3a"
     ]
   },
   {
@@ -4586,7 +4588,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Evals in CI are a fair axis for an LLM observability platform like Helicone, but the pack has no evidence of a CI eval runner, eval datasets run as test suites, or pass/fail gating of deployments. The closest items are adjacent or building blocks and earn no credit: webhook-driven real-time scoring of production responses, the UI Playground for iterating on prompts, and the REST request-query API.",
+    "rationale": "Running evals in CI and gating deployments is a fair question for an LLM observability platform, so the axis applies. The pack never documents a CI integration, eval runner, or deployment gate. The closest items are webhook-driven real-time scoring of production responses and UI Playground testing, which are adjacent features rather than CI eval gating.",
     "evidenceIds": []
   },
   {
@@ -4625,14 +4627,13 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Helicone documents a first-party one-line PostHog export explicitly for custom dashboards (helicone-gh-2), so custom dashboards are possible but are built in PostHog rather than in Helicone. Natively it offers a fixed dashboard tracking usage, costs, and performance (helicone-docs-42), HQL/SQL querying over request data (helicone-docs-33, helicone-comm-17), and charts that users report finding useful (helicone-comm-3-refresh-8dd2a8a90d9cf707). Response scoring exists only via webhooks (helicone-docs-23). missing for 10: a native in-product custom dashboard builder, documented charting of eval-score metrics, explicit latency and error-rate panels, and hands-on corroboration of custom dashboard building.",
+    "rationale": "Helicone documents a built-in dashboard that tracks usage, costs and performance across providers. Its paid tier adds HQL, a query language, and a community report describes users writing SQL directly against ClickHouse, which supports ad-hoc analysis over logged metrics. The GitHub README's 'custom dashboards' claim depends on a one-line export to PostHog, so the custom dashboard building happens in an external tool rather than in Helicone itself. missing for 10: a native, user-configurable custom dashboard builder documented in Helicone, eval-score metrics surfaced in dashboards, explicit latency/error charting configuration, and independent hands-on corroboration of custom dashboard creation.",
     "evidenceIds": [
-      "helicone-gh-2",
       "helicone-docs-42",
       "helicone-docs-33",
       "helicone-docs-16",
+      "helicone-gh-2",
       "helicone-comm-17",
-      "helicone-docs-23",
       "helicone-comm-3-refresh-8dd2a8a90d9cf707"
     ]
   },
@@ -4656,7 +4657,7 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "The GitHub README says one line of code logs requests from OpenAI, Anthropic, LangChain, Gemini, the Vercel AI SDK and more. The docs show drop-in OpenAI SDK instrumentation (\"add two lines to your existing OpenAI code\"). Community users confirm one-line setup, including a LangChain user who was running in 4 minutes. missing for 10: dedicated first-party integration docs for LangChain and the Vercel AI SDK (evidenced only by the README list), hands-on corroboration of the Vercel AI SDK integration.",
+    "rationale": "The GitHub README says one line of code logs requests from OpenAI, Anthropic, LangChain, Gemini, the Vercel AI SDK and more. The docs describe adding two lines to existing OpenAI SDK code to get automatic observability. Community users confirm one-line OpenAI setup, and one LangChain user was running in 4 minutes. Missing for 10: dedicated first-party integration docs for LangChain and the Vercel AI SDK (only the README lists them), and independent hands-on corroboration of the Vercel AI SDK integration.",
     "evidenceIds": [
       "helicone-gh-1",
       "helicone-gh-4",
@@ -4674,7 +4675,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Human annotation queues are a fair question for an LLM observability platform, but the evidence never documents Helicone routing outputs to reviewers for labeling. What it does show is adjacent: webhooks for automated scoring, request export and sessions. Those are building blocks or neighboring features and earn no credit for this story.",
+    "rationale": "Human annotation queues are a fair capability for an LLM observability platform like Helicone, but the evidence pack never documents queues, reviewer assignment, or labeling workflows. Webhooks for automated scoring and request export for fine-tuning datasets are adjacent features or developer building blocks, so they earn no credit here.",
     "evidenceIds": []
   },
   {
@@ -4738,14 +4739,17 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Helicone has a documented public REST API: a published OpenAPI spec at swagger.json and a POST /v1/request/query endpoint for querying logged requests. Prompts are referenced by ID through the gateway, and HQL appears on the pricing page. However, nothing documents parity with the UI. Prompt authoring is described as happening in the Playground, and alerts, sessions views and dashboards show no corresponding management API in the evidence. Missing for 10: an explicit API-parity claim, documented API coverage for prompt creation and versioning, alert configuration and dashboard or analytics management, and independent or hands-on confirmation of API completeness.",
+    "rationale": "Helicone has a documented REST API, including the POST /v1/request/query endpoint, and a published OpenAPI spec (swagger.json). It also offers HQL for direct querying and lets prompts be referenced by ID through the gateway, so core data access and usage are programmatic. However, several workflows are described as UI-driven, such as building and saving prompts in the Playground and configuring alerts, and nothing claims or shows that the API matches the UI. Missing for 10: an explicit API-parity claim, documented API endpoints for prompt creation/versioning, alerts, webhooks and settings management, and independent confirmation that UI actions are fully scriptable.",
     "evidenceIds": [
-      "helicone-probe-3",
       "helicone-docs-15",
       "helicone-docs-32",
+      "helicone-probe-3",
       "helicone-docs-16",
+      "helicone-comm-17",
       "helicone-docs-25",
-      "helicone-docs-46"
+      "helicone-docs-46",
+      "helicone-gh-3",
+      "helicone-docs-54"
     ]
   },
   {
@@ -4754,13 +4758,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Helicone documents a REST request-query API (POST /v1/request/query), HQL querying, and a one-line PostHog export, so request data can be pulled out programmatically. A community user says Helicone lets them see each request and 'export them all' to build a fine-tuning dataset. Self-hosting via Docker Compose offers a further route to owning the data and leaving. missing for 10: documented bulk 'export everything' feature, explicit open export formats (CSV/JSON/OTel), coverage of non-request data (prompts, sessions, evaluations) in exports, documented migration/offboarding path.",
+    "rationale": "Helicone documents a REST request-query API (POST /v1/request/query, with a published OpenAPI spec), a one-line PostHog export, and self-hosting via Docker Compose, so users can pull their logged data out and run their own instance. A hands-on user also reports being able to see each request and 'export them all' to build a fine-tuning dataset. However, no first-party documentation describes a complete bulk export or names the open formats (e.g., CSV/JSONL) it produces. missing for 10: documented bulk export of all data (requests, sessions, prompts, settings), explicit open-format specification, documented migration/offboarding path.",
     "evidenceIds": [
+      "helicone-comm-7-refresh-3b13e5eafdb2bd3a",
       "helicone-docs-15",
       "helicone-docs-32",
-      "helicone-docs-16",
+      "helicone-probe-3",
       "helicone-gh-2",
-      "helicone-comm-7-refresh-3b13e5eafdb2bd3a",
       "helicone-docs-14",
       "helicone-docs-20",
       "helicone-docs-55"
@@ -4772,7 +4776,7 @@
     "verdict": "disputed",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Helicone's pricing page calls the product open-source, its llms.txt is titled 'Helicone OSS', and the source is published at github.com/Helicone/helicone with documented self-hosting. A community report concretely contradicts the 'open license' claim: it says Helicone shipped under the Commons Clause, which is not generally considered an open-source license, and that this was raised on GitHub. That report may predate the current license. missing for 10: explicit first-party documentation of the current license (e.g. OSI-approved Apache/MIT), independent confirmation that the Commons Clause restriction was removed.",
+    "rationale": "Helicone calls itself open-source: the pricing page says it 'is open-source', llms.txt is titled 'Helicone OSS', and the GitHub repo plus self-host docs show the source is publicly readable. However, a community report says the project used the Commons Clause, which is not generally considered an open source license, and that this was raised on GitHub. That concretely contradicts the 'open license' claim, though that report may be dated. Missing for 10: explicit evidence of the current license terms (e.g., an OSI-approved license file), independent confirmation that the Commons Clause restriction was removed.",
     "evidenceIds": [
       "helicone-docs-21",
       "helicone-probe-1",
@@ -4787,7 +4791,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Helicone's docs have a dedicated self-host section stating you can \"deploy your own instance of Helicone using your preferred method\" with multiple deployment options, including Docker Compose for quick or small-scale setups. The pricing page and llms.txt describe it as open-source/OSS. The community note about the Commons Clause concerns license labeling, not whether you can self-host, so it creates no dispute. Missing for 10: detail on deployment methods beyond Docker Compose (e.g. production-scale or Kubernetes options), confirmation that self-hosted instances carry feature parity with the cloud core, and independent hands-on reports of self-hosting.",
+    "rationale": "Helicone documents a dedicated self-hosting section offering multiple deployment methods to run your own instance, including Docker Compose for quick or small-scale setups. It also describes itself as open source, with the GitHub repo and an \"OSS\" llms.txt corroborating this. The Commons Clause licensing note concerns license terminology, not whether self-hosting works, so it does not create a dispute. Missing for 10: details of the other deployment methods (e.g., production-scale options), any statement of feature parity between self-hosted and cloud, and independent or hands-on reports of successful self-hosting.",
     "evidenceIds": [
       "helicone-docs-14",
       "helicone-docs-20",
@@ -4802,7 +4806,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Tracing interoperability is a fair axis for an LLM observability platform, so the story applies. However, nothing in the evidence mentions OpenTelemetry, OTLP ingestion, or OTLP export. Helicone's documented tracing runs through its own gateway/proxy logging and Sessions path syntax, which are proprietary mechanisms, not OTLP.",
+    "rationale": "Helicone is an LLM observability platform, so OTLP trace ingest and export is a fair question. However, nothing in the evidence pack mentions OpenTelemetry or OTLP. Its documented tracing relies on its own Sessions path syntax and proxy- or gateway-based logging, which is a proprietary approach rather than OTLP.",
     "evidenceIds": []
   },
   {
@@ -4811,7 +4815,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Redacting data before storage is a fair question for an LLM observability and tracing product, so the axis applies. However, the evidence pack documents no masking, redaction or omit-from-logs capability. The LLM security docs cover prompt-injection detection and data-exfiltration prevention, which is a related but different control. The community PII concern describes a risk, not a feature, and the only remedy mentioned is a user-side GDPR subprocessor workaround.",
+    "rationale": "Nothing in the evidence pack documents masking, redaction, or omitting request/response content before Helicone logs it. The LLM security feature (prompt-injection detection, data-exfiltration prevention) is an adjacent control that does not redact stored traces. The community PII concern describes a risk, not a capability. Redaction is a fair axis for an LLM observability product, so the verdict is none, not na.",
     "evidenceIds": []
   },
   {
@@ -4820,11 +4824,12 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Helicone documents its own self-hosting options, including Docker Compose and other deployment methods (helicone-docs-14, helicone-docs-20, helicone-docs-55). Self-hosting lets a user decide where their logged data lives, but nothing in the evidence shows region or residency selection for the hosted cloud product. Missing for 10: hosted region selection (e.g., EU/US data residency), documentation of where cloud data is stored, and independent or hands-on corroboration of residency control.",
+    "rationale": "Helicone documents first-party self-hosting, including Docker Compose and other deployment methods to run your own instance. That lets a user decide where their logged LLM data lives by choosing their own infrastructure. The evidence never mentions a region or residency selector (e.g. US/EU) for the hosted cloud, and docs note cached responses sit on Cloudflare's global edge network. missing for 10: hosted-cloud region selection (e.g. EU data residency), documented residency guarantees for logs and cache, independent corroboration of self-hosted residency control.",
     "evidenceIds": [
       "helicone-docs-14",
       "helicone-docs-20",
-      "helicone-docs-55"
+      "helicone-docs-55",
+      "helicone-docs-12"
     ]
   },
   {
@@ -4833,7 +4838,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Helicone is an LLM gateway and observability service that processes user prompts and responses, so a no-training privacy posture is a fair question for it. However, the evidence pack contains no documented policy, opt-out, or setting that prevents user data from being used to train AI models. Self-hosting options are an adjacent deployment choice, not a stated training-use guarantee, so they earn no credit here.",
+    "rationale": "A data-handling LLM gateway and observability service could plausibly publish a no-training policy or opt-out, so this axis applies. The evidence pack contains no documented policy, setting, or contractual commitment preventing customer data from being used for model training. Self-hosting options and fine-tuning integrations are adjacent features, not a training opt-out, so they earn no credit.",
     "evidenceIds": []
   },
   {
@@ -4867,15 +4872,15 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Helicone documents a Playground for rapidly testing and iterating on prompts (helicone-gh-3, helicone-docs-46), where prompts can be saved with commit history and tags and changes tested instantly (helicone-docs-7, helicone-docs-18). Its prompt system supports variables in system prompts, messages and tool schemas (helicone-docs-44), and the gateway reaches 100+ real models (helicone-docs-3). Missing for 10: explicit docs that variables can be filled in and run inside the Playground itself, explicit docs on picking real models within the Playground, and independent or hands-on corroboration of the Playground workflow.",
+    "rationale": "Helicone documents a UI Playground for rapidly testing and iterating on prompts ([helicone-gh-3], [helicone-gh-6]). Prompts built there can be saved with commit history and tags ([helicone-docs-46]). Its prompt system supports variables in system prompts, messages and tool schemas ([helicone-docs-44]), and the gateway reaches 100+ real models by changing the model name ([helicone-docs-3]). missing for 10: explicit docs showing variable inputs and model selection inside the Playground itself (currently only implied by the prompt and gateway docs), independent or hands-on corroboration of Playground use.",
     "evidenceIds": [
       "helicone-gh-3",
       "helicone-gh-6",
       "helicone-docs-46",
       "helicone-docs-44",
       "helicone-docs-7",
-      "helicone-docs-18",
-      "helicone-docs-3"
+      "helicone-docs-3",
+      "helicone-docs-18"
     ]
   },
   {
@@ -4884,14 +4889,14 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "medium",
-    "rationale": "Helicone's docs describe prompt versioning with commit histories, tags, version comparison and instant rollback (docs-18, docs-46). They also cover per-environment deployment to production, staging and development (docs-45). Apps reference prompts by ID through the AI Gateway, so changes ship without code changes or redeploys (docs-7, docs-8, docs-25, docs-47). The 2023 community request about storing templates predates this feature and does not contradict it. Missing for 10: independent or hands-on corroboration of the prompt versioning and deployment workflow.",
+    "rationale": "Helicone's prompt management docs say prompts are saved in the Playground with commit histories and tags, can be compared and rolled back, and can be deployed independently to production, staging and development. Applications reference prompts by ID through the AI Gateway, so changes ship without rebuilds or redeploys. Missing for 10: independent or hands-on corroboration that the versioning and deployment workflow works as documented.",
     "evidenceIds": [
       "helicone-docs-7",
       "helicone-docs-8",
       "helicone-docs-18",
-      "helicone-docs-25",
       "helicone-docs-45",
       "helicone-docs-46",
+      "helicone-docs-25",
       "helicone-docs-47",
       "helicone-docs-44"
     ]
@@ -4917,7 +4922,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Helicone's first-party Alerts feature monitors error rates and costs on LLM requests. Each alert can be configured with filters and notifies through Slack or email. Alerts are also listed as a paid-plan feature on the pricing page. Missing for 10: alerting on eval-score drops, PagerDuty as a notification channel, independent or hands-on corroboration of alerting, and detail on threshold/spike configuration.",
+    "rationale": "Helicone's docs describe Alerts for monitoring error rates and costs on LLM requests. Each alert can be configured with filters and notifies through Slack or email, and alerts are listed as a feature on a paid pricing tier. That covers the core of the story: error-rate and cost alerts delivered to Slack or email. Missing for 10: alerts on eval-score drops, PagerDuty as a notification channel, detail on how cost-spike thresholds are configured, and independent or hands-on corroboration of alerting.",
     "evidenceIds": [
       "helicone-docs-11",
       "helicone-docs-54",
@@ -4930,7 +4935,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Helicone's docs say you can 'track usage, costs, and performance across all providers in one dashboard,' and requests appear in a Requests tab. Community users confirm they can see per-request cost and charts, and contrast this with OpenAI's daily-total-only view. missing for 10: explicit documentation of per-model and per-time-period breakdowns, explicit mention of token-count metrics in dashboards, in-depth first-party dashboard docs.",
+    "rationale": "Helicone documents tracking usage, costs, and performance across all providers in one dashboard, and a Requests tab where each logged request appears. Community users corroborate charts, per-request cost visibility (including LangChain prompt cost), and request-level views that go beyond OpenAI's per-day totals. missing for 10: explicit evidence of per-model and per-time-period breakdowns, explicit documentation of token-usage metrics in dashboards.",
     "evidenceIds": [
       "helicone-docs-42",
       "helicone-docs-36",
