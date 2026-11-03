@@ -1,0 +1,37 @@
+name: Refresh review request
+on:
+  workflow_dispatch:
+    inputs:
+      pr:
+        description: Opted-in generated PR number
+        required: true
+        type: string
+      head:
+        description: Expected PR head SHA
+        required: true
+        type: string
+permissions:
+  contents: read
+  pull-requests: write
+  actions: read
+  checks: read
+concurrency:
+  group: refresh-review-${{ inputs.pr }}
+  cancel-in-progress: false
+jobs:
+  request:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      # Only trusted main code runs; PR contents are never checked out.
+      - uses: actions/checkout@v7
+        with:
+          ref: main
+          persist-credentials: false
+      - name: Reserve and request a review after CI
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ inputs.pr }}
+          PR_HEAD: ${{ inputs.head }}
+        run: python3 scripts/refresh-review.py
