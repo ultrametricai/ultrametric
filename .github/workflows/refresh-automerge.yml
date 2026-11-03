@@ -169,20 +169,18 @@ jobs:
                       continue
                   comparison = api(f'compare/main...{sha}')
                   head_checks = api(f'commits/{sha}/check-runs?per_page=100')['check_runs']
+                  conflict = False
                   if comparison['behind_by']:
                       current = api(f'pulls/{number}')
                       if (current['state'] != 'open' or current['draft'] or not current['auto_merge']
                           or current['head']['sha'] != sha or current['base']['ref'] != 'main'):
                           continue # a manual stop or concurrent edit wins over the listing
-                      if current.get('mergeable') is False:
-                          if not checks_allow_update(head_checks) or has_findings(number, verdict_only=False):
-                              raise RuntimeError('merge conflict awaits checks or findings; retain the existing head')
-                          raise RuntimeError('merge conflict between base and head; bounded repair required')
-                      if current.get('mergeable') is not True:
+                      conflict = current.get('mergeable') is False
+                      if not conflict and current.get('mergeable') is not True:
                           raise RuntimeError('mergeability is not known yet; retry on next run')
                   # Leave pending reviews and unresolved findings on a stable head.
                   # Being behind alone does not invalidate a reviewed candidate.
-                  if (comparison['behind_by'] and checks_allow_update(head_checks)
+                  if (comparison['behind_by'] and not conflict and checks_allow_update(head_checks)
                       and not has_findings(number, verdict_only=False) and rules_require_current_base()):
                       api(f'pulls/{number}/update-branch', 'PUT', {'expected_head_sha': sha})
                       for _ in range(10):
@@ -198,16 +196,21 @@ jobs:
                       if current['state'] != 'open':
                           continue
                   runs = api(f'actions/workflows/ci.yml/runs?head_sha={sha}&per_page=100')
-                  if needs_ci_dispatch(runs['workflow_runs']):
+                  ci_requested = needs_ci_dispatch(runs['workflow_runs'])
+                  if ci_requested:
                       subprocess.run(['gh', 'workflow', 'run', 'ci.yml', '--repo', repo, '--ref', branch], check=True)
                   subprocess.run(['gh', 'workflow', 'run', 'refresh-review.yml', '--repo', repo,
                                   '--ref', 'main', '--field', f'pr={number}', '--field', f'head={sha}'], check=True)
                   subprocess.run(['gh', 'workflow', 'run', 'review-findings.yml', '--repo', repo,
                                   '--ref', 'main', '--field', f'pr={number}'], check=True)
                   checks = api(f'commits/{sha}/check-runs?per_page=100')['check_runs']
-                  if (failed_validation(runs['workflow_runs'], checks)
-                      or (branch.startswith('story-runner/') and has_findings(number))):
+                  if (not ci_requested and usable_ci_run(runs['workflow_runs']) is not None) and (failed_validation(runs['workflow_runs'], checks)
+                      or (branch.startswith('story-runner/') and has_findings(number))
+                      or (conflict and checks_allow_update(checks) and not has_findings(number, verdict_only=False))):
                       request_repair(pr, sha)
+                  if conflict:
+                      print(f'::warning::#{number}: merge conflict remains; same-head CI/review recovery retained', flush=True)
+                      errors.append(number)
                   print(f'#{number}: CI dispatched or present; existing auto-merge opt-in retained', flush=True)
               except (subprocess.CalledProcessError, RuntimeError) as error:
                   # Conflicts and setup failures stay visible; process independent PRs too.

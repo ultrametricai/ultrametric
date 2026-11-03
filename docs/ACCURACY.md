@@ -126,7 +126,9 @@ conflict-free head keeps its existing checks and review. GitHub still enforces e
 requirement; the controller reads applied rulesets without changing them. Unknown
 mergeability or an unreadable freshness policy stops recovery for that PR. Real conflicts
 remain visible and reach bounded repair once checks and findings permit changing the head.
-Pending reviews and repairs keep a stable head. Foreloop remains outside this loop.
+Missing CI and reviews are recovered on the same head even while it conflicts. Active
+CI runs keep their head, including runs whose checks have not appeared yet. Pending reviews
+and repairs keep a stable head. Foreloop remains outside this loop.
 
 Story-runner publishes with `GITHUB_TOKEN`, matching the Actions-bot author accepted by
 recovery, repair, and review. Its optional PAT publication override is retired. Existing

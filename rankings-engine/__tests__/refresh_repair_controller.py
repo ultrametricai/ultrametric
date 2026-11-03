@@ -256,12 +256,13 @@ class RecoveryCITests(unittest.TestCase):
 
     def recover(self, runs, *, pr=None, updated_head=None, pending_review=False,
                 strict=True, behind=None, mergeable=True, current_override=None,
-                rules_error=False, unresolved=False):
+                rules_error=False, unresolved=False, later_runs=None):
         pr = pr or {**PR,'number':536,'auto_merge':{'enabled_by':{'login':'maintainer'}}}
         calls = []
         branch_updated = False
+        ci_reads = 0
         def run(args, **kwargs):
-            nonlocal branch_updated
+            nonlocal branch_updated, ci_reads
             calls.append(args)
             result = None
             if args[:3] == ['gh','api','graphql']:
@@ -285,7 +286,8 @@ class RecoveryCITests(unittest.TestCase):
                     result = [{'type':'required_status_checks','parameters':{'strict_required_status_checks_policy':strict}}]
                 elif '/workflows/ci.yml/runs?' in endpoint:
                     self.assertIn(f'head_sha={(updated_head if branch_updated else None) or SHA}&', endpoint)
-                    result = {'workflow_runs':runs}
+                    ci_reads += 1
+                    result = {'workflow_runs':later_runs if later_runs is not None and ci_reads > 1 else runs}
                 elif '/check-runs?' in endpoint:
                     result = {'check_runs':[{'id':index,'name':name,'app':{'id':app},'check_suite':{'id':123},
                         'status':'in_progress' if pending_review and name=='Greptile Review' else 'completed',
@@ -337,7 +339,7 @@ class RecoveryCITests(unittest.TestCase):
         self.assertEqual(ci, [])
         self.assertFalse(any('/update-branch' in ' '.join(call) for call in calls))
         workers = [call[3] for call in calls if call[:3] == ['gh','workflow','run']]
-        self.assertEqual(workers, ['refresh-repair.yml'])
+        self.assertEqual(workers, ['refresh-review.yml','review-findings.yml','refresh-repair.yml'])
 
     def test_unknown_mergeability_waits_without_requesting_review_or_repair(self):
         _, calls, error = self.recover([], behind=1, strict=False, mergeable=None)
@@ -348,9 +350,21 @@ class RecoveryCITests(unittest.TestCase):
     def test_conflict_does_not_replace_a_head_awaiting_review_or_findings(self):
         for waiting in [{'pending_review':True}, {'unresolved':True}]:
             with self.subTest(waiting=waiting):
-                _, calls, error = self.recover([], behind=1, mergeable=False, **waiting)
+                _, calls, error = self.recover([self.run_record('workflow_dispatch','success')],
+                                               behind=1, mergeable=False, **waiting)
                 self.assertIn('need attention', error)
-                self.assertFalse(any(call[:3] == ['gh','workflow','run'] for call in calls))
+                workers = [call[3] for call in calls if call[:3] == ['gh','workflow','run']]
+                self.assertEqual(workers, ['refresh-review.yml','review-findings.yml'])
+                self.assertFalse(any('/update-branch' in ' '.join(call) for call in calls))
+
+    def test_conflict_keeps_missing_or_cancelled_ci_and_review_recoverable(self):
+        for runs in [[], [self.run_record()], [self.run_record('workflow_dispatch','cancelled')]]:
+            with self.subTest(runs=runs):
+                ci, calls, error = self.recover(runs, behind=1, mergeable=False, strict=False)
+                self.assertIn('need attention', error)
+                self.assertEqual(len(ci),1)
+                workers = [call[3] for call in calls if call[:3] == ['gh','workflow','run']]
+                self.assertEqual(workers,['ci.yml','refresh-review.yml','review-findings.yml'])
                 self.assertFalse(any('/update-branch' in ' '.join(call) for call in calls))
 
     def test_failed_policy_lookup_keeps_the_existing_head(self):
@@ -404,6 +418,14 @@ class RecoveryCITests(unittest.TestCase):
                                        behind=1, mergeable=False, strict=False)
         self.assertIsNone(error)
         self.assertFalse(any(call[:3] == ['gh','workflow','run'] for call in calls))
+
+    def test_ci_started_during_recovery_prevents_conflict_repair(self):
+        _, calls, error = self.recover([self.run_record('workflow_dispatch','success')],
+                                       behind=1, mergeable=False, strict=False,
+                                       later_runs=[self.run_record('workflow_dispatch',None,status='queued')])
+        self.assertIn('need attention', error)
+        workers = [call[3] for call in calls if call[:3] == ['gh','workflow','run']]
+        self.assertEqual(workers,['refresh-review.yml','review-findings.yml'])
 
     def test_real_ci_results_are_preserved_despite_newer_approval_record(self):
         for conclusion in ['success','failure']:
