@@ -7,6 +7,7 @@ import subprocess
 import time
 import tempfile
 from pathlib import Path
+from refresh_queue import allows as queue_allows
 
 REPO = os.environ['REPO']
 NUMBER = int(os.environ['PR_NUMBER'])
@@ -174,6 +175,8 @@ def recheck(report, branch, new_sha):
     live = current()
     if not identity(live) or live['head']['sha'] != new_sha:
         return 'closed-or-changed'
+    if not queue_allows(REPO, NUMBER):
+        return 'waiting-queue'
     original_ids = set(report['originalThreads'])
     runs = api(f'repos/{REPO}/actions/workflows/ci.yml/runs?head_sha={new_sha}&per_page=100')
     if not runs['workflow_runs']:
@@ -230,6 +233,8 @@ def recheck(report, branch, new_sha):
             live = current()
             if not identity(live) or live['head']['sha'] != new_sha:
                 return 'closed-or-changed'
+            if not queue_allows(REPO, NUMBER):
+                return 'waiting-queue'
             api('graphql', {'query': 'mutation($id:ID!){resolveReviewThread(input:{threadId:$id}){thread{id isResolved}}}',
                             'variables': {'id': audit['thread']}})
     command(['gh', 'workflow', 'run', 'review-findings.yml', '--repo', REPO, '--ref', 'main', '--field', f'pr={NUMBER}'])
@@ -248,6 +253,8 @@ def main():
     match = identity(pr)
     if not match or pr['head']['sha'] != EXPECTED or not re.fullmatch('[0-9a-f]{40}', EXPECTED):
         raise RuntimeError('PR identity or expected head changed; no repair performed')
+    if not queue_allows(REPO, NUMBER):
+        return
     branch, arena = pr['head']['ref'], match.group(1)
     trusted = output(['git', 'rev-parse', 'HEAD'])
     command(['git', 'fetch', '--no-tags', 'origin', f'refs/heads/{branch}:refs/repair/head'])
@@ -278,6 +285,8 @@ def main():
         return
     if rounds >= MAX_ROUNDS:
         raise RuntimeError('Repair stopped after three published attempts; human review required')
+    if not queue_allows(REPO, NUMBER):
+        return
     tmp = Path(os.environ['RUNNER_TEMP'])
     finding_file, report_file = tmp / 'refresh-findings.json', tmp / 'refresh-repair-report.json'
     finding_file.write_text(json.dumps(findings))
@@ -313,6 +322,10 @@ def main():
         raise RuntimeError('PR changed or automation opt-in was removed during checks; discarding repair')
     if api(f'repos/{REPO}/actions/workflows/refresh-repair.yml')['state'] != 'active':
         raise RuntimeError('Repair workflow was paused during checks; discarding repair')
+    if not queue_allows(REPO, NUMBER):
+        report.update(phase='waiting-queue', blocked='Older refresh PR appeared; unpublished candidate discarded')
+        report_file.write_text(json.dumps(report, indent=2))
+        return
     if review_active(EXPECTED):
         report.update(phase='waiting-review', blocked='Review became active before publication; head unchanged')
         report_file.write_text(json.dumps(report, indent=2))

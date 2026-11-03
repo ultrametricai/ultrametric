@@ -9,6 +9,7 @@ import json
 import os
 import re
 import subprocess
+from refresh_queue import allows as queue_allows
 
 MARKER = 'refresh-review-reservation:v1'
 COOLDOWN = dt.timedelta(hours=1)
@@ -84,6 +85,8 @@ def request(repo, number, head, now=None):
     if not eligible(api(repo, f'pulls/{number}'), repo, head):
         print('PR changed or automation opt-in was removed; no review requested')
         return
+    if not queue_allows(repo, number):
+        return
     runs = api(repo, f'actions/workflows/ci.yml/runs?head_sha={head}&per_page=100')['workflow_runs']
     newest = usable_ci_run(runs)
     if newest is None:
@@ -100,7 +103,7 @@ def request(repo, number, head, now=None):
     attempt = next_request(checks, reservations([c for page in pages for c in page], head), now)
     if attempt is None:
         return
-    if not eligible(api(repo, f'pulls/{number}'), repo, head):
+    if not eligible(api(repo, f'pulls/{number}'), repo, head) or not queue_allows(repo, number):
         return
     record = json.dumps({'head': head, 'attempt': attempt}, separators=(',', ':'))
     api(repo, f'issues/{number}/comments', {
@@ -109,6 +112,8 @@ def request(repo, number, head, now=None):
     if not eligible(api(repo, f'pulls/{number}'), repo, head):
         return
     if api(repo, 'actions/workflows/refresh-automerge.yml')['state'] != 'active':
+        return
+    if not queue_allows(repo, number):
         return
     api(repo, f'issues/{number}/comments', {'body': f'@greptileai review\n\nReserved refresh head: `{head}`; attempt {attempt}/{MAX_REQUESTS}.'})
 

@@ -1,11 +1,16 @@
 """Replay reservation races and worker restarts without GitHub or paid reviews."""
 import datetime as dt
 import json
+import os
 import runpy
+import sys
+import tempfile
 import unittest
 from pathlib import Path
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / 'scripts'))
+import refresh_queue
 MODULE = runpy.run_path(str(Path(__file__).resolve().parents[2] / 'scripts/refresh-review.py'))
 GLOBALS = MODULE['request'].__globals__
 SHA = 'a' * 40
@@ -21,7 +26,8 @@ def review(conclusion='success', status='completed'):
 
 class ReviewTests(unittest.TestCase):
     def run_worker(self, comments, *, now=NOW, extra_checks=None, fail_mention=False,
-                   paused=False, pr=PR, suite=123, validation='success', change_after_reserve=False, runs=None):
+                   paused=False, pr=PR, suite=123, validation='success', change_after_reserve=False, runs=None,
+                   queue_states=None):
         writes = []
         def api(repo, endpoint, data=None):
             if endpoint.endswith('/comments'):
@@ -43,7 +49,7 @@ class ReviewTests(unittest.TestCase):
                      'conclusion':validation, 'check_suite':{'id':suite}}
                     for i,name in enumerate(['validation','ci'])] + (extra_checks or [])}
             raise AssertionError(endpoint)
-        with patch.dict(GLOBALS, {'api':api}), patch('subprocess.check_output', side_effect=lambda *a,**k:json.dumps([comments])):
+        with patch.dict(GLOBALS, {'api':api,'queue_allows':Mock(side_effect=queue_states) if queue_states else lambda *_:True}), patch('subprocess.check_output', side_effect=lambda *a,**k:json.dumps([comments])):
             MODULE['request']('owner/repo', 567, SHA, now)
         return writes
 
@@ -109,6 +115,17 @@ class ReviewTests(unittest.TestCase):
         self.assertEqual(len(writes),1)
         self.assertFalse(writes[0].startswith('@'))
 
+    def test_later_pr_cannot_reserve_or_request_a_review(self):
+        self.assertEqual(self.run_worker([],queue_states=[False]),[])
+
+    def test_queue_change_before_reservation_prevents_every_write(self):
+        self.assertEqual(self.run_worker([],queue_states=[True,False]),[])
+
+    def test_queue_change_after_reservation_prevents_paid_mention(self):
+        writes=self.run_worker([],queue_states=[True,True,False])
+        self.assertEqual(len(writes),1)
+        self.assertFalse(writes[0].startswith('@'))
+
     def test_only_bot_reservations_for_the_exact_head_count(self):
         comments=[]
         self.run_worker(comments)
@@ -116,6 +133,66 @@ class ReviewTests(unittest.TestCase):
         self.assertEqual(MODULE['reservations'](comments,SHA),[])
         comments[0]['user']['login']='github-actions[bot]'
         self.assertEqual(MODULE['reservations'](comments,'b'*40),[])
+
+
+class QueueTests(unittest.TestCase):
+    def pr(self, number, **override):
+        return {**PR,'number':number,**override}
+
+    def test_selects_oldest_across_pages_independent_of_api_order(self):
+        pages=[[self.pr(572),self.pr(548)],[self.pr(518),self.pr(519)]]
+        with patch('subprocess.check_output',return_value=json.dumps(pages)):
+            self.assertTrue(refresh_queue.allows('owner/repo',518))
+            self.assertFalse(refresh_queue.allows('owner/repo',519))
+            self.assertFalse(refresh_queue.allows('owner/repo'))
+
+    def test_paused_oldest_remains_a_queue_barrier(self):
+        for stop in [{'draft':True},{'auto_merge':None}]:
+            pages=[[self.pr(518,**stop),self.pr(519)]]
+            with patch('subprocess.check_output',return_value=json.dumps(pages)):
+                self.assertFalse(refresh_queue.allows('owner/repo',519))
+                self.assertFalse(refresh_queue.allows('owner/repo'))
+
+    def test_closed_oldest_advances_to_next_pr(self):
+        first=refresh_queue.oldest([self.pr(518,state='closed'),self.pr(519)],'owner/repo')
+        self.assertEqual(first['number'],519)
+
+    def test_unrelated_human_or_fork_pr_does_not_join_managed_queue(self):
+        unrelated=[self.pr(495,user={'login':'human'}),self.pr(496,head={**PR['head'],'repo':{'full_name':'fork/repo'}})]
+        self.assertIsNone(refresh_queue.oldest(unrelated,'owner/repo'))
+        with patch('subprocess.check_output',return_value=json.dumps([unrelated])):
+            self.assertTrue(refresh_queue.allows('owner/repo'))
+
+    def test_queue_read_failure_does_not_authorize_any_operation(self):
+        with patch('subprocess.check_output',side_effect=RuntimeError('API unavailable')):
+            with self.assertRaisesRegex(RuntimeError,'API unavailable'):
+                refresh_queue.allows('owner/repo',518)
+
+    def test_generation_job_output_blocks_before_engine_work_until_queue_empty(self):
+        for prs,allow in [([self.pr(518)],'false'),([],'true')]:
+            with tempfile.TemporaryDirectory() as directory:
+                output=Path(directory)/'output'
+                with patch.dict(os.environ,{'REPO':'owner/repo','GITHUB_OUTPUT':str(output)}), \
+                     patch('sys.argv',['refresh_queue.py','--generation']), \
+                     patch('subprocess.check_output',return_value=json.dumps([prs])):
+                    runpy.run_path(str(Path(refresh_queue.__file__)),run_name='__main__')
+                self.assertEqual(output.read_text(),f'allow={allow}\n')
+
+    def test_publication_stops_if_queue_changed_after_generation_started(self):
+        with patch.dict(os.environ,{'REPO':'owner/repo'}), \
+             patch('sys.argv',['refresh_queue.py','--require-empty']), \
+             patch('subprocess.check_output',return_value=json.dumps([[self.pr(518)]])):
+            with self.assertRaises(SystemExit) as raised:
+                runpy.run_path(str(Path(refresh_queue.__file__)),run_name='__main__')
+        self.assertEqual(raised.exception.code,1)
+
+    def test_new_pr_auto_merge_opt_in_requires_oldest_position(self):
+        with patch.dict(os.environ,{'REPO':'owner/repo'}), \
+             patch('sys.argv',['refresh_queue.py','--pr','519']), \
+             patch('subprocess.check_output',return_value=json.dumps([[self.pr(518),self.pr(519)]])):
+            with self.assertRaises(SystemExit) as raised:
+                runpy.run_path(str(Path(refresh_queue.__file__)),run_name='__main__')
+        self.assertEqual(raised.exception.code,1)
 
 
 if __name__ == '__main__':

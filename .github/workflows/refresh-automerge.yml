@@ -27,14 +27,20 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      # Metadata-only controller. No checkout, dependencies, or PR code execution.
+      # Only trusted main helpers run; PR code and dependencies are never loaded.
+      - uses: actions/checkout@v7
+        with:
+          ref: main
+          persist-credentials: false
       - name: Recover opted-in refresh PRs after CI
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPO: ${{ github.repository }}
+          PYTHONPATH: scripts
         shell: python
         run: |
           import json, os, re, subprocess, time
+          from refresh_queue import oldest, allows as queue_allows
           repo = os.environ['REPO']
           def api(path, method='GET', data=None):
               args = ['gh', 'api', '--method', method, f'repos/{repo}/{path}']
@@ -94,6 +100,8 @@ jobs:
 
           def request_repair(pr, sha):
               if not pr['head']['ref'].startswith('story-runner/'):
+                  return
+              if not queue_allows(repo, pr['number']):
                   return
               if review_active(sha):
                   print(f"#{pr['number']}: review is active; defer repair on this head", flush=True)
@@ -166,12 +174,16 @@ jobs:
                   page += 1
 
           errors = []
-          for pr in sorted([pr for page in prs for pr in page], key=lambda pr: pr['number']):
+          first = oldest([pr for page in prs for pr in page], repo)
+          # Every event uses the same single target. Pending checks, errors and
+          # manual pauses hold the queue until this PR is merged or closed.
+          for pr in [first] if first else []:
               branch = pr['head']['ref']
               if (pr['draft'] or not pr['auto_merge'] or pr['base']['ref'] != 'main'
                   or pr['head']['repo'] is None or pr['head']['repo']['full_name'] != repo
                   or pr['user']['login'] != 'github-actions[bot]'
                   or not re.fullmatch(r'(story-runner|accuracy-engine|vendor-radar|vendor-radar-bringup|yc-coverage)/[A-Za-z0-9_-]+', branch)):
+                  print(f"#{pr['number']}: oldest refresh PR is paused; later PRs remain untouched", flush=True)
                   continue
               number, sha = pr['number'], pr['head']['sha']
               try:
@@ -197,6 +209,8 @@ jobs:
                   if (comparison['behind_by'] and not conflict and checks_allow_update(head_checks)
                       and not has_findings(number, verdict_only=False) and rules_require_current_base()
                       and not review_active(sha)):
+                      if not queue_allows(repo, number):
+                          continue
                       api(f'pulls/{number}/update-branch', 'PUT', {'expected_head_sha': sha})
                       for _ in range(10):
                           time.sleep(2)
@@ -211,6 +225,8 @@ jobs:
                       if current['state'] != 'open':
                           continue
                   runs = api(f'actions/workflows/ci.yml/runs?head_sha={sha}&per_page=100')
+                  if not queue_allows(repo, number):
+                      continue
                   ci_requested = needs_ci_dispatch(runs['workflow_runs'])
                   if ci_requested:
                       subprocess.run(['gh', 'workflow', 'run', 'ci.yml', '--repo', repo, '--ref', branch], check=True)

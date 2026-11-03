@@ -5,8 +5,9 @@
 # Results land as a PR (never a direct push) so every ranking change stays reviewable and the
 # re-judge stability policy (see README) can be applied before merge.
 #
-# Also runs the keyless agent-surface SLO check (rankings-engine/scripts/slo-check.ts) on every
-# 6-hourly run — that step needs no secrets, so it runs (and its open-rankings/slo-history.jsonl
+# Generation waits for the managed refresh backlog to empty. Each unblocked run also
+# runs the keyless agent-surface SLO check (rankings-engine/scripts/slo-check.ts), which
+# needs no secrets, so it runs (and its open-rankings/slo-history.jsonl
 # appends get committed) even while the LLM stages below are gated.
 #
 # The LLM stages require the ANTHROPIC_API_KEY repo secret; until it exists those steps are
@@ -33,7 +34,27 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  queue:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+    outputs:
+      allow: ${{ steps.queue.outputs.allow }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: main
+          persist-credentials: false
+      - name: Wait for the managed refresh backlog
+        id: queue
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+        run: python3 scripts/refresh_queue.py --generation
   run:
+    needs: queue
+    if: needs.queue.outputs.allow == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 90
     steps:
@@ -177,6 +198,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CATEGORY: ${{ steps.pick.outputs.category }}
           RUN_ID: ${{ github.run_id }}
+          REPO: ${{ github.repository }}
         run: |
           # When the API-key gate skipped the LLM stages, only the SLO check ran and CATEGORY is
           # empty — branch/PR naming falls back accordingly.
@@ -194,6 +216,7 @@ jobs:
           git commit -m "chore(story-runner): refresh $CATEGORY evidence + verdicts"
           # Check the committed candidate before any remote branch, PR, or review exists.
           node rankings-engine/scripts/check-refresh-stability.mjs HEAD^ HEAD
+          python3 scripts/refresh_queue.py --require-empty
           git push -u origin "$BRANCH"
           # If organization policy prevents PR creation, leave the compare link
           # in an issue for maintainer attention.
@@ -209,7 +232,11 @@ jobs:
             --base main --head "$BRANCH"); then
             # Explicit dispatch is allowed by GitHub's workflow recursion guard.
             gh workflow run ci.yml --ref "$BRANCH"
-            gh pr merge --auto --merge "$PR_URL"
+            if python3 scripts/refresh_queue.py --pr "${PR_URL##*/}"; then
+              gh pr merge --auto --merge "$PR_URL"
+            else
+              echo "Refresh queue changed; leave the new PR for manual auto-merge opt-in."
+            fi
           else
             gh issue create \
               --title "story-runner: $CATEGORY refresh ready on $BRANCH" \

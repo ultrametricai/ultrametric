@@ -119,8 +119,11 @@ score built entirely from zero-evidence none/na cells renders italic *untested*,
 
 The recovery controller dispatches `refresh-repair.yml` for failing generated story-runner
 PRs, unresolved Greptile findings on verdict cells, and merge conflicts. CI completion also
-wakes recovery. Drafts and PRs whose auto-merge opt-in was removed are skipped. Recovery
-and repair retain existing opt-in and never re-enable it. Recovery waits for ordinary CI,
+wakes recovery. Every recovery event selects only the oldest open, same-repository bot PR
+on a managed refresh branch. Pending checks, errors, drafts, and removed auto-merge opt-in
+hold that position; later PRs receive no recovery work until the oldest closes or merges.
+Unrelated human-authored PRs are outside this queue. Recovery and repair retain existing
+opt-in and never re-enable it. Recovery waits for ordinary CI,
 independent review, and resolved findings before advancing a stale base, and only updates
 it when an active required-check ruleset demands a current base. With loose rules, a
 conflict-free head keeps its existing checks and review. GitHub still enforces every merge
@@ -238,6 +241,16 @@ not cause an immediate retry. At most two requests are permitted per head, at le
 hour apart. A completed successful review never triggers another request on that head,
 even if findings remain. Exhaustion and unmanaged failed reviews require human attention.
 The request worker honors drafts, removed auto-merge opt-in, and paused recovery.
+Review and repair workers recheck oldest position before paid work or publication, so
+queued/manual dispatches cannot bypass the controller's selection. A queue change after
+reservation retains the reservation without sending the paid mention.
+
+Story generation, including its SLO publication, waits for the managed queue to empty
+before running any engine stages. It checks again before pushing and before enabling
+auto-merge on its new PR. If another managed PR appeared, the new PR stays available for
+manual opt-in. These guards order work initiated by this pipeline. They do not disable
+existing GitHub auto-merge settings or prevent independent human, app, or workflow actions.
+Before rollout, the backlog owner must account for those independent completion paths.
  An old thread may close only for an audited
 cell after CI and independent review pass, with no new verdict-matrix findings. All other
 threads remain open. A changed head discards the repair. Attempts are bounded to three

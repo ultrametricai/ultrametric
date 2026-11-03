@@ -5,15 +5,19 @@ import os
 import runpy
 import shutil
 import subprocess
+import sys
 import tempfile
 import unittest
 from contextlib import redirect_stdout
 from pathlib import Path
 from unittest.mock import Mock, patch
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / 'scripts'))
 with patch.dict(os.environ, {'REPO':'owner/repo','PR_NUMBER':'536','PR_HEAD':'a'*40}):
     MODULE = runpy.run_path(str(Path(__file__).resolve().parents[2] / 'scripts/refresh-repair.py'), run_name='controller_test')
 GLOBALS = MODULE['recheck'].__globals__
+# Existing repair tests isolate the queue; queue selection has its own fixtures.
+GLOBALS['queue_allows'] = lambda *_: True
 SHA = 'a'*40
 BRANCH = 'story-runner/email-123'
 PR = {'state':'open','draft':False,'auto_merge':{'enabled_by':{'login':'maintainer'}},'base':{'ref':'main'},'head':{'sha':SHA,'ref':BRANCH,'repo':{'full_name':'owner/repo'}},'user':{'login':'github-actions[bot]'}}
@@ -118,7 +122,7 @@ class ControllerTests(unittest.TestCase):
 
 
 class RepairReviewBoundaryTests(unittest.TestCase):
-    def repair(self, review_states):
+    def repair(self, review_states, queue_states=None):
         with tempfile.TemporaryDirectory() as directory:
             report_file=Path(directory)/'refresh-repair-report.json'
             calls=[]; review_reads=[]; states=iter(review_states)
@@ -146,7 +150,8 @@ class RepairReviewBoundaryTests(unittest.TestCase):
                     report_file.write_text(json.dumps({'restored':[],'audits':[]}))
             with patch.dict(GLOBALS,{'api':api,'current':lambda:PR,'output':output,'command':command,
                                     'threads':lambda:(SHA,[{'id':'finding'}]),'load_resume_report':lambda *_:None,
-                                    'recheck':lambda *_:'rechecked'}),patch.dict(os.environ,{'RUNNER_TEMP':directory}):
+                                    'recheck':lambda *_:'rechecked',
+                                    'queue_allows':Mock(side_effect=queue_states) if queue_states else lambda *_:True}),patch.dict(os.environ,{'RUNNER_TEMP':directory}):
                 MODULE['main']()
             return calls, json.loads(report_file.read_text()) if report_file.exists() else {}, review_reads
 
@@ -174,6 +179,17 @@ class RepairReviewBoundaryTests(unittest.TestCase):
         self.assertEqual(report['phase'],'rechecked')
         self.assertEqual(len(reads),2)
 
+    def test_later_pr_worker_stops_before_model_or_data_changes(self):
+        calls,report,_=self.repair([],queue_states=[False])
+        self.assertEqual(calls,[])
+        self.assertEqual(report,{})
+
+    def test_older_pr_appearing_during_repair_prevents_publication(self):
+        calls,report,_=self.repair(['completed'],queue_states=[True,True,False])
+        self.assertEqual(sum('rankings-engine/scripts/repair-refresh.ts' in call for call in calls),1)
+        self.assertFalse(any(call[:2]==['git','push'] for call in calls))
+        self.assertEqual(report['phase'],'waiting-queue')
+
 
 class DispatcherTests(unittest.TestCase):
     def controller(self):
@@ -186,6 +202,7 @@ class DispatcherTests(unittest.TestCase):
 
     def request(self,history,review_checks=None):
         namespace=self.controller()
+        namespace['queue_allows']=lambda *_:True
         namespace['api']=lambda endpoint: ({'check_runs':review_checks if review_checks is not None else checks()}
                                            if '/check-runs?' in endpoint else {'workflow_runs':history})
         command=Mock()
@@ -336,7 +353,7 @@ class RecoveryCITests(unittest.TestCase):
     def recover(self, runs, *, pr=None, updated_head=None, pending_review=False,
                 strict=True, behind=None, mergeable=True, current_override=None,
                 rules_error=False, unresolved=False, later_runs=None, finding_path='README.md',
-                review_history=None):
+                review_history=None, backlog=None):
         pr = pr or {**PR,'number':536,'auto_merge':{'enabled_by':{'login':'maintainer'}}}
         calls = []
         branch_updated = False
@@ -383,7 +400,7 @@ class RecoveryCITests(unittest.TestCase):
         code = '\n'.join(line[10:] if line.startswith('          ') else line for line in source.splitlines())
         error = None
         with patch.dict(os.environ,{'REPO':'owner/repo'}), \
-                patch('subprocess.check_output',return_value=json.dumps([[pr]])), \
+                patch('subprocess.check_output',return_value=json.dumps(backlog if backlog is not None else [[pr]])), \
                 patch('subprocess.run',side_effect=run), patch('time.sleep'), redirect_stdout(io.StringIO()):
             try:
                 exec(code,{})
@@ -391,6 +408,33 @@ class RecoveryCITests(unittest.TestCase):
                 error = str(exc)
         ci = [call for call in calls if call[:4] == ['gh','workflow','run','ci.yml']]
         return ci, calls, error
+
+    def test_every_recovery_event_targets_only_the_oldest_managed_pr(self):
+        first={**PR,'number':536}
+        newer={**PR,'number':572,'head':{**PR['head'],'ref':'story-runner/newer-572'}}
+        for event in ['workflow_dispatch','schedule','push','workflow_run']:
+            with self.subTest(event=event),patch.dict(os.environ,{'GITHUB_EVENT_NAME':event}):
+                ci,calls,error=self.recover([],backlog=[[newer],[first]])
+                self.assertIsNone(error)
+                self.assertEqual(len(ci),1)
+                self.assertFalse(any('pr=572' in call or any('/pulls/572' in part for part in call) for call in calls))
+                self.assertTrue(any('pr=536' in call for call in calls))
+
+    def test_pending_or_failed_oldest_does_not_fall_through_to_a_later_pr(self):
+        backlog=[[{**PR,'number':572},{**PR,'number':536}]]
+        histories=[[self.run_record('workflow_dispatch',None,status='in_progress')],
+                   [self.run_record('workflow_dispatch','startup_failure',id=i) for i in range(3)]]
+        for runs in histories:
+            ci,calls,_=self.recover(runs,backlog=backlog)
+            self.assertEqual(ci,[])
+            self.assertFalse(any('pr=572' in call for call in calls))
+
+    def test_paused_oldest_blocks_later_opted_in_prs(self):
+        for stop in [{'draft':True},{'auto_merge':None}]:
+            ci,calls,error=self.recover([],backlog=[[{**PR,'number':536},{**PR,'number':518,**stop}]])
+            self.assertIsNone(error)
+            self.assertEqual(ci,[])
+            self.assertEqual(calls,[])
 
     def test_approval_event_winning_branch_update_race_still_dispatches_ci(self):
         ci, calls, error = self.recover([self.run_record()], updated_head='b'*40)
