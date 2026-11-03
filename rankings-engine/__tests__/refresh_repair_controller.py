@@ -623,6 +623,7 @@ class PublicationTests(unittest.TestCase):
             arena=cwd/'open-rankings/fixture'; (arena/'evidence').mkdir(parents=True)
             checker=cwd/'rankings-engine/scripts/check-refresh-stability.mjs'; checker.parent.mkdir(parents=True)
             shutil.copy(root/'rankings-engine/scripts/check-refresh-stability.mjs',checker)
+            shutil.copy(root/'rankings-engine/evidence-source.mjs',cwd/'rankings-engine/evidence-source.mjs')
             old={'productId':'vendor','storyId':'story','verdict':'partial','quality':5,'evidenceIds':['old']}
             (arena/'verdicts.json').write_text(json.dumps([old]))
             (arena/'evidence/vendor.json').write_text(json.dumps([{'id':'old','excerpt':'same support'}]))

@@ -6,6 +6,7 @@ import { execFileSync } from 'node:child_process'
 import { z } from 'zod'
 import { EvidenceSchema, ProductSchema, StorySchema, VerdictSchema, type Evidence, type Verdict, type Story } from '../lib/schemas'
 import { unsupportedFlips } from './scripts/check-refresh-stability.mjs'
+import { sameEvidence } from './evidence-source.mjs'
 import { CELL_HASH_VERSION, PROMPT_VERSION, RawVerdictSchema, SYSTEM, cellHash, judgePrompt, validateVerdictRules } from './stages/judge'
 import { llmJson } from './llm'
 import { runDerive } from './stages/derive'
@@ -76,8 +77,8 @@ export function rekeyEvidence(before: Evidence[], proposed: Evidence[]): { evide
   const evidence = proposed.map(item => {
     const previous = old.get(item.id)
     const family = before.filter(candidate => stem(candidate.id) === stem(item.id))
-    const identical = previous && payload(previous) === payload(item) ? previous
-      : before.find(candidate => payload(candidate) === payload(item))
+    const identical = previous && sameEvidence(previous, item) ? previous
+      : before.find(candidate => sameEvidence(candidate, item))
     let id = item.id
     if (identical) id = identical.id
     else if (family.length) id = `${stem(item.id)}-refresh-${crypto.createHash('sha256').update(payload(item)).digest('hex').slice(0, 16)}`
@@ -102,6 +103,18 @@ export function normalizeArenaEvidence(arena: string, baseline = 'HEAD'): void {
     write(file, rekeyEvidence(old, proposed).evidence)
   }
 }
+export function remapVerdictEvidence(row: Verdict, renamed: Record<string, string>): Verdict {
+  return {
+    ...row,
+    evidenceIds: row.evidenceIds.map(id => renamed[id] ?? id),
+    ...(row.support ? { support: {
+      ...row.support,
+      citations: row.support.citations.map(citation => ({
+        ...citation, evidenceId: renamed[citation.evidenceId] ?? citation.evidenceId,
+      })),
+    } } : {}),
+  }
+}
 export function sourceCacheMatches(cached: unknown, originalRow: Verdict | undefined, story: Story, evidence: Evidence[]): boolean {
   const parsed = z.object({ hash: z.string(), keyVersion: z.string().optional(), verdict: VerdictSchema }).safeParse(cached)
   return parsed.success && parsed.data.keyVersion === CELL_HASH_VERSION
@@ -113,7 +126,7 @@ export async function judgeRepairCell(productId: string, productName: string, st
   for (let attempt = 0; attempt < 3; attempt++) {
     const raw = await llmJson({ schema: RawVerdictSchema, system: SYSTEM, prompt: judgePrompt(productName, story, evidence, extra + correction) })
     const next = VerdictSchema.parse({ ...raw, productId, storyId: story.id })
-    const violation = validateVerdictRules(next, evidence)
+    const violation = validateVerdictRules(next, evidence, story)
     if (!violation) return next
     correction = `\nThe last response violated this mechanical rule: ${violation}. Correct it.`
   }
@@ -129,7 +142,7 @@ export function restoreChurn(before: Verdict[], after: Verdict[], oldPacks: Reco
     const ids = new Map((packs[row.productId] ?? []).map(item => [item.id, item]))
     const originals = new Map((oldPacks[row.productId] ?? []).map(item => [item.id, item]))
     if (previous.evidenceIds.some(id => !ids.has(id) || !originals.has(id)
-        || ['url', 'tier', 'excerpt'].some(field => ids.get(id)![field as keyof Evidence] !== originals.get(id)![field as keyof Evidence])) || validateVerdictRules(previous, packs[row.productId] ?? [])) {
+        || !sameEvidence(ids.get(id)!, originals.get(id)!)) || validateVerdictRules(previous, packs[row.productId] ?? [])) {
       blocked.push(key(row)); return row
     }
     restored.push(key(row)); return previous
@@ -204,7 +217,7 @@ export async function repair({ head, main, arena, findings, keyed }: { head: str
     packs[product.id] = normalized.evidence; renames[product.id] = normalized.renamed
     write(file, normalized.evidence)
   }
-  const after = rawAfter.map(row => ({ ...row, evidenceIds: row.evidenceIds.map(id => renames[row.productId][id] ?? id) }))
+  const after = rawAfter.map(row => remapVerdictEvidence(row, renames[row.productId]))
   let result = restoreChurn(before, after, oldPacks, packs)
   let rows = result.rows
   const audits: Array<{ thread: string; cell: string; addressed: boolean; reason: string }> = []
@@ -261,7 +274,7 @@ export async function repair({ head, main, arena, findings, keyed }: { head: str
   for (const row of rows) {
     const story = stories.find(story => story.id === row.storyId)
     if (!story || !packs[row.productId]) throw new Error('Cell is outside the current product/story catalog')
-    const violation = validateVerdictRules(row, packs[row.productId])
+    const violation = validateVerdictRules(row, packs[row.productId], story)
     if (violation) throw new Error(`${key(row)}: ${violation}`)
     const cacheFile = `rankings-engine/cache/judge/${arena}/${row.productId}/${row.storyId}.json`
     const expected = cellHash(story, packs[row.productId], PROMPT_VERSION)

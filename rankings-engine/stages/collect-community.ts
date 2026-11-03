@@ -5,6 +5,7 @@ import { type Evidence, EvidenceSchema, ProductSchema } from '../../lib/schemas'
 import { fetchWithRetry, htmlToMarkdown } from '../fetch-page'
 import { llmJson } from '../llm'
 import { categoryDir, readJson, resolveCategories, writeJson } from '../paths'
+import { canonicalSource, sameEvidence, sourceHash } from '../evidence-source.mjs'
 
 const CommunityItemsSchema = z.object({
   items: z.array(z.object({ url: z.string().url(), excerpt: z.string().min(10).max(400) })).min(0).max(20),
@@ -46,6 +47,28 @@ async function hnCorpus(name: string): Promise<{ url: string; text: string }[]> 
     }
   }
   return out
+}
+
+export function mergeCommunityEvidence(productId: string, existing: Evidence[], items: Array<{ url: string; excerpt: string }>,
+  sources: Array<{ url: string; text: string }>, now: string): Evidence[] {
+  const digests = new Map(sources.map(source => [canonicalSource(source.url), sourceHash(source.text)]))
+  const result = [...existing]
+  const ids = new Set(existing.map(item => item.id))
+  let index = 0
+  for (const item of items) {
+    const digest = digests.get(canonicalSource(item.url))
+    if (!digest) throw new Error(`Community item cites an unfetched source: ${item.url}`)
+    const candidate: Evidence = { ...item, id: '', tier: 'community', fetchedAt: now, sourceHash: digest }
+    // An unchanged fetched discussion cannot become new support through another
+    // model paraphrase. Missing results do not delete dated reports (#548/#556).
+    if (existing.some(old => old.tier === 'community' && canonicalSource(old.url) === canonicalSource(item.url)
+        && old.sourceHash === digest) || result.some(old => sameEvidence(old, candidate))) continue
+    do { index++ } while (ids.has(`${productId}-comm-${index}`))
+    candidate.id = `${productId}-comm-${index}`
+    ids.add(candidate.id)
+    result.push(candidate)
+  }
+  return result
 }
 
 export async function runCollectCommunity({ category, product }: { category?: string; product?: string }): Promise<void> {
@@ -117,22 +140,15 @@ export async function runCollectCommunity({ category, product }: { category?: st
           ;({ items } = await distill(seedSources))
         }
         const now = new Date().toISOString()
-        const community: Evidence[] = items.map((item, i) => ({
-          id: `${p.id}-comm-${i + 1}`,
-          tier: 'community',
-          url: item.url,
-          excerpt: item.excerpt,
-          fetchedAt: now,
-        }))
         const file = path.join(dataDir, 'evidence', `${p.id}.json`)
         const existing = fs.existsSync(file) ? readJson(EvidenceSchema.array(), file) : []
-        writeJson(file, [...existing.filter((e) => e.tier !== 'community'), ...community])
-        if (community.length === 0) {
+        writeJson(file, mergeCommunityEvidence(p.id, existing, items, sources, now))
+        if (items.length === 0) {
           console.warn(
-            `collect-community: WARN ${cat.id}/${p.id} → 0 community items qualified (of ${sources.length} sources); non-community evidence preserved`,
+            `collect-community: WARN ${cat.id}/${p.id} → 0 community items qualified (of ${sources.length} sources); dated evidence preserved`,
           )
         } else {
-          console.log(`collect-community: ${cat.id}/${p.id} → ${community.length} items from ${sources.length} sources`)
+          console.log(`collect-community: ${cat.id}/${p.id} → ${items.length} candidates from ${sources.length} sources`)
         }
       } catch (err) {
         console.warn(`collect-community: WARN ${cat.id}/${p.id} failed: ${(err as Error).message}`)
