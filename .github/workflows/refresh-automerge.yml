@@ -1,7 +1,7 @@
 name: Refresh auto-merge recovery
 
 # GITHUB_TOKEN PR events create approval-required runs; explicit CI dispatches run
-# the same gates. The timer recovers missing results and refreshes stale bases.
+# the same gates. Refresh stale bases only when an active ruleset requires it.
 on:
   workflow_run:
     workflows: [CI]
@@ -134,6 +134,23 @@ jobs:
                          and latest[key]['conclusion'] == 'success'
                          for key in [('validation',15368), ('ci',15368), ('Greptile Review',867647)])
 
+          def rules_require_current_base():
+              # This public repository uses rulesets. Read every active rule that
+              # applies to main, including inherited rules, without admin access.
+              page = 1
+              while True:
+                  rules = api(f'rules/branches/main?per_page=100&page={page}')
+                  for rule in rules:
+                      if rule['type'] == 'required_status_checks':
+                          strict = rule.get('parameters', {}).get('strict_required_status_checks_policy')
+                          if not isinstance(strict, bool):
+                              raise RuntimeError('required-check freshness policy unavailable; human review required')
+                          if strict:
+                              return True
+                  if len(rules) < 100:
+                      return False
+                  page += 1
+
           errors = []
           for pr in sorted([pr for page in prs for pr in page], key=lambda pr: pr['number']):
               branch = pr['head']['ref']
@@ -145,10 +162,22 @@ jobs:
               number, sha = pr['number'], pr['head']['sha']
               try:
                   comparison = api(f'compare/main...{sha}')
-                  # Leave pending reviews and unresolved findings on a stable head.
-                  # Refresh the base only when the existing candidate is ready to land.
                   head_checks = api(f'commits/{sha}/check-runs?per_page=100')['check_runs']
-                  if comparison['behind_by'] and checks_allow_update(head_checks) and not has_findings(number, verdict_only=False):
+                  if comparison['behind_by']:
+                      current = api(f'pulls/{number}')
+                      if (current['state'] != 'open' or current['draft'] or not current['auto_merge']
+                          or current['head']['sha'] != sha or current['base']['ref'] != 'main'):
+                          continue # a manual stop or concurrent edit wins over the listing
+                      if current.get('mergeable') is False:
+                          if not checks_allow_update(head_checks) or has_findings(number, verdict_only=False):
+                              raise RuntimeError('merge conflict awaits checks or findings; retain the existing head')
+                          raise RuntimeError('merge conflict between base and head; bounded repair required')
+                      if current.get('mergeable') is not True:
+                          raise RuntimeError('mergeability is not known yet; retry on next run')
+                  # Leave pending reviews and unresolved findings on a stable head.
+                  # Being behind alone does not invalidate a reviewed candidate.
+                  if (comparison['behind_by'] and checks_allow_update(head_checks)
+                      and not has_findings(number, verdict_only=False) and rules_require_current_base()):
                       api(f'pulls/{number}/update-branch', 'PUT', {'expected_head_sha': sha})
                       for _ in range(10):
                           time.sleep(2)

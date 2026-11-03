@@ -182,6 +182,28 @@ class DispatcherTests(unittest.TestCase):
         history=[{'display_title':f'Repair refresh #536 @{SHA} [support-loss-v2]','status':'completed','conclusion':'failure'} for _ in range(3)]
         self.request(history).assert_not_called()
 
+    def test_freshness_uses_all_applicable_rules_including_later_pages(self):
+        namespace=self.controller()
+        loose={'type':'required_status_checks','parameters':{'strict_required_status_checks_policy':False}}
+        strict={'type':'required_status_checks','parameters':{'strict_required_status_checks_policy':True}}
+        api=Mock(side_effect=[[loose]*100,[strict]])
+        namespace['api']=api
+        self.assertTrue(namespace['rules_require_current_base']())
+        self.assertEqual([call.args[0] for call in api.call_args_list],
+                         ['rules/branches/main?per_page=100&page=1','rules/branches/main?per_page=100&page=2'])
+
+    def test_absent_or_loose_rules_do_not_require_a_current_base(self):
+        for rules in [[], [{'type':'deletion'}], [{'type':'required_status_checks','parameters':{'strict_required_status_checks_policy':False}}]]:
+            namespace=self.controller()
+            namespace['api']=Mock(return_value=rules)
+            self.assertFalse(namespace['rules_require_current_base']())
+
+    def test_missing_freshness_parameter_is_not_guessed(self):
+        namespace=self.controller()
+        namespace['api']=Mock(return_value=[{'type':'required_status_checks','parameters':{}}])
+        with self.assertRaisesRegex(RuntimeError,'policy unavailable'):
+            namespace['rules_require_current_base']()
+
 
 class ResumeArtifactTests(unittest.TestCase):
     def resume(self, *, bad_branch=False, bad_binding=False, expired=False):
@@ -232,25 +254,37 @@ class RecoveryCITests(unittest.TestCase):
     def run_record(self, event='pull_request', conclusion='action_required', *, id=1, status='completed'):
         return {'id':id,'event':event,'status':status,'conclusion':conclusion,'check_suite_id':123}
 
-    def recover(self, runs, *, pr=None, updated_head=None, pending_review=False):
+    def recover(self, runs, *, pr=None, updated_head=None, pending_review=False,
+                strict=True, behind=None, mergeable=True, current_override=None,
+                rules_error=False, unresolved=False):
         pr = pr or {**PR,'number':536,'auto_merge':{'enabled_by':{'login':'maintainer'}}}
         calls = []
+        branch_updated = False
         def run(args, **kwargs):
+            nonlocal branch_updated
             calls.append(args)
             result = None
             if args[:3] == ['gh','api','graphql']:
                 result = {'data':{'repository':{'pullRequest':{'reviewThreads':{
-                    'nodes':[],'pageInfo':{'hasNextPage':False}}}}}}
+                    'nodes':[{'isResolved':False,'path':'README.md','comments':{'nodes':[{'author':{'login':'greptileai'}}]}}] if unresolved else [],
+                    'pageInfo':{'hasNextPage':False}}}}}}
             elif args[:2] == ['gh','api']:
                 endpoint = args[4]
                 if '/compare/main...' in endpoint:
-                    result = {'behind_by':1 if updated_head else 0}
+                    result = {'behind_by':behind if behind is not None else (1 if updated_head else 0)}
                 elif endpoint.endswith('/update-branch'):
+                    branch_updated = True
                     result = {}
                 elif endpoint.endswith('/pulls/536'):
-                    result = {**pr,'head':{**pr['head'],'sha':updated_head}}
+                    result = {**pr,'mergeable':mergeable,
+                              'head':{**pr['head'],'sha':updated_head if branch_updated else SHA},
+                              **(current_override or {})}
+                elif '/rules/branches/main?' in endpoint:
+                    if rules_error:
+                        raise subprocess.CalledProcessError(1,args,stderr='policy lookup failed')
+                    result = [{'type':'required_status_checks','parameters':{'strict_required_status_checks_policy':strict}}]
                 elif '/workflows/ci.yml/runs?' in endpoint:
-                    self.assertIn(f'head_sha={(updated_head if not pending_review else None) or SHA}&', endpoint)
+                    self.assertIn(f'head_sha={(updated_head if branch_updated else None) or SHA}&', endpoint)
                     result = {'workflow_runs':runs}
                 elif '/check-runs?' in endpoint:
                     result = {'check_runs':[{'id':index,'name':name,'app':{'id':app},'check_suite':{'id':123},
@@ -286,6 +320,59 @@ class RecoveryCITests(unittest.TestCase):
         _, calls, error = self.recover([self.run_record('workflow_dispatch','success')], updated_head='b'*40, pending_review=True)
         self.assertFalse(any('/update-branch' in ' '.join(call) for call in calls))
         self.assertIsNone(error)
+
+    def test_loose_policy_keeps_a_reviewed_behind_head_unchanged(self):
+        ci, calls, error = self.recover([self.run_record('workflow_dispatch','success')],
+                                        updated_head='b'*40, strict=False)
+        self.assertIsNone(error)
+        self.assertEqual(ci, [])
+        self.assertFalse(any('/update-branch' in ' '.join(call) for call in calls))
+        reviews = [call for call in calls if call[:4] == ['gh','workflow','run','refresh-review.yml']]
+        self.assertEqual(reviews[0][-1], f'head={SHA}')
+
+    def test_real_conflict_reaches_bounded_repair_even_with_loose_policy(self):
+        ci, calls, error = self.recover([self.run_record('workflow_dispatch','success')],
+                                        behind=1, strict=False, mergeable=False)
+        self.assertIn('need attention', error)
+        self.assertEqual(ci, [])
+        self.assertFalse(any('/update-branch' in ' '.join(call) for call in calls))
+        workers = [call[3] for call in calls if call[:3] == ['gh','workflow','run']]
+        self.assertEqual(workers, ['refresh-repair.yml'])
+
+    def test_unknown_mergeability_waits_without_requesting_review_or_repair(self):
+        _, calls, error = self.recover([], behind=1, strict=False, mergeable=None)
+        self.assertIn('need attention', error)
+        self.assertFalse(any(call[:3] == ['gh','workflow','run'] for call in calls))
+        self.assertFalse(any('/update-branch' in ' '.join(call) for call in calls))
+
+    def test_conflict_does_not_replace_a_head_awaiting_review_or_findings(self):
+        for waiting in [{'pending_review':True}, {'unresolved':True}]:
+            with self.subTest(waiting=waiting):
+                _, calls, error = self.recover([], behind=1, mergeable=False, **waiting)
+                self.assertIn('need attention', error)
+                self.assertFalse(any(call[:3] == ['gh','workflow','run'] for call in calls))
+                self.assertFalse(any('/update-branch' in ' '.join(call) for call in calls))
+
+    def test_failed_policy_lookup_keeps_the_existing_head(self):
+        _, calls, error = self.recover([], updated_head='b'*40, rules_error=True)
+        self.assertIn('need attention', error)
+        self.assertFalse(any('/update-branch' in ' '.join(call) for call in calls))
+        self.assertFalse(any(call[:3] == ['gh','workflow','run'] for call in calls))
+
+    def test_strict_policy_does_not_update_with_unresolved_findings(self):
+        _, calls, error = self.recover([self.run_record('workflow_dispatch','success')],
+                                       updated_head='b'*40, unresolved=True)
+        self.assertIsNone(error)
+        self.assertFalse(any('/update-branch' in ' '.join(call) for call in calls))
+
+    def test_manual_stop_or_head_change_after_listing_prevents_branch_update(self):
+        for override in [{'draft':True}, {'auto_merge':None}, {'state':'closed'},
+                         {'head':{**PR['head'],'sha':'c'*40}}, {'base':{'ref':'other'}}]:
+            with self.subTest(override=override):
+                _, calls, error = self.recover([], updated_head='b'*40, current_override=override)
+                self.assertIsNone(error)
+                self.assertFalse(any('/update-branch' in ' '.join(call) for call in calls))
+                self.assertFalse(any(call[:3] == ['gh','workflow','run'] for call in calls))
 
     def test_no_run_or_approval_only_history_dispatches(self):
         for runs in [[], [self.run_record()]]:

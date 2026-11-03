@@ -88,7 +88,8 @@ score built entirely from zero-evidence none/na cells renders italic *untested*,
 
 1. **story-runner PRs** — every refresh passes the deterministic stability check locally
    before its branch is pushed or PR opened, then explicitly dispatches CI on its branch. The metadata-only refresh-auto-merge recovery workflow updates generated branches
-   and dispatches missing CI on main pushes, twice hourly, or by manual dispatch. Auto-merge waits for validation, ci, Greptile Review, a current main base, and
+   when an active ruleset requires a current base, and dispatches missing CI on main
+   pushes, twice hourly, or by manual dispatch. Auto-merge waits for validation, ci, Greptile Review, and
    resolved Greptile review threads via the metadata-only `review-findings` gate.
    Foreloop checks and threads are outside the merge requirements. The CI stability
    gate rejects upgrades without a cited evidence ID new to that product pack. A verified
@@ -119,8 +120,13 @@ The recovery controller dispatches `refresh-repair.yml` for failing generated st
 PRs, unresolved Greptile findings on verdict cells, and merge conflicts. CI completion also
 wakes recovery. Drafts and PRs whose auto-merge opt-in was removed are skipped. Recovery
 and repair retain existing opt-in and never re-enable it. Recovery waits for ordinary CI,
-independent review, and resolved findings before advancing a stale base; pending reviews
-and repairs keep a stable head. Foreloop remains outside this loop.
+independent review, and resolved findings before advancing a stale base, and only updates
+it when an active required-check ruleset demands a current base. With loose rules, a
+conflict-free head keeps its existing checks and review. GitHub still enforces every merge
+requirement; the controller reads applied rulesets without changing them. Unknown
+mergeability or an unreadable freshness policy stops recovery for that PR. Real conflicts
+remain visible and reach bounded repair once checks and findings permit changing the head.
+Pending reviews and repairs keep a stable head. Foreloop remains outside this loop.
 
 Story-runner publishes with `GITHUB_TOKEN`, matching the Actions-bot author accepted by
 recovery, repair, and review. Its optional PAT publication override is retired. Existing
