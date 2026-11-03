@@ -21,15 +21,16 @@ REPORT = {'originalThreads':['old'],'audits':[{'thread':'old','addressed':True}]
           'findingSnapshots':{'old':MODULE['finding_fingerprint']({'id':'old'})}}
 
 def checks(status='success'):
-    return [{'name':name,'app':{'id':app},'status':'completed' if status=='success' else 'in_progress','conclusion':status if status=='success' else None}
+    return [{'name':name,'app':{'id':app},'check_suite':{'id':123},'status':'completed' if status=='success' else 'in_progress','conclusion':status if status=='success' else None}
             for name,app in [('validation',15368),('ci',15368),('Greptile Review',867647)]]
 
 class ControllerTests(unittest.TestCase):
-    def recheck(self, report, *, pending=False, findings=None, changed=False):
+    def recheck(self, report, *, pending=False, findings=None, changed=False, runs=None):
         calls=[]
         def api(endpoint,data=None):
             calls.append((endpoint,data))
-            if '/workflows/ci.yml/runs' in endpoint:return {'workflow_runs':[{}]}
+            if '/workflows/ci.yml/runs' in endpoint:return {'workflow_runs':runs if runs is not None else [
+                {'id':1,'event':'workflow_dispatch','status':'completed','conclusion':'success','check_suite_id':123}]}
             if '/check-runs?' in endpoint:return {'check_runs':checks('pending' if pending else 'success')}
             if endpoint=='graphql':return {'data':{'resolveReviewThread':{'thread':{'id':'old','isResolved':True}}}}
             raise AssertionError(endpoint)
@@ -55,6 +56,21 @@ class ControllerTests(unittest.TestCase):
         phase,calls,_=self.recheck(REPORT)
         self.assertEqual(phase,'rechecked')
         self.assertEqual([data['variables']['id'] for endpoint,data in calls if endpoint=='graphql'],['old'])
+
+    def test_recheck_uses_approved_ci_without_retrying_a_newer_cancelled_dispatch(self):
+        runs=[{'id':1,'event':'pull_request','status':'completed','conclusion':'success','check_suite_id':123},
+              {'id':2,'event':'workflow_dispatch','status':'completed','conclusion':'cancelled','check_suite_id':124}]
+        phase,_,commands=self.recheck(REPORT,runs=runs)
+        self.assertEqual(phase,'rechecked')
+        self.assertFalse(any(call.args[0][3]=='ci.yml' for call in commands.call_args_list))
+
+    def test_active_approved_ci_keeps_recheck_waiting_despite_newer_cancelled_dispatch(self):
+        runs=[{'id':1,'event':'pull_request','status':'in_progress','conclusion':None,'check_suite_id':123},
+              {'id':2,'event':'workflow_dispatch','status':'completed','conclusion':'cancelled','check_suite_id':124}]
+        phase,calls,commands=self.recheck(REPORT,runs=runs)
+        self.assertEqual(phase,'waiting-checks')
+        self.assertFalse(any(endpoint=='graphql' for endpoint,_ in calls))
+        commands.assert_not_called()
 
     def test_new_findings_keep_old_threads_open_for_another_pass(self):
         phase,calls,_=self.recheck(REPORT,findings=[{'id':'old'},{'id':'new'}])
