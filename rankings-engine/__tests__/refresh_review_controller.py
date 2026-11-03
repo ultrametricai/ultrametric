@@ -21,7 +21,7 @@ def review(conclusion='success', status='completed'):
 
 class ReviewTests(unittest.TestCase):
     def run_worker(self, comments, *, now=NOW, extra_checks=None, fail_mention=False,
-                   paused=False, pr=PR, suite=123, validation='success', change_after_reserve=False):
+                   paused=False, pr=PR, suite=123, validation='success', change_after_reserve=False, runs=None):
         writes = []
         def api(repo, endpoint, data=None):
             if endpoint.endswith('/comments'):
@@ -36,7 +36,7 @@ class ReviewTests(unittest.TestCase):
             if endpoint == 'actions/workflows/refresh-automerge.yml':
                 return {'state':'disabled_manually' if paused else 'active'}
             if '/ci.yml/runs?' in endpoint:
-                return {'workflow_runs':[{'id':1, 'status':'completed', 'conclusion':'success', 'check_suite_id':123}]}
+                return {'workflow_runs':runs if runs is not None else [{'id':1, 'event':'workflow_dispatch', 'status':'completed', 'conclusion':'success', 'check_suite_id':123}]}
             if '/check-runs?' in endpoint:
                 return {'check_runs':[
                     {'id':i, 'name':name, 'app':{'id':15368}, 'status':'completed',
@@ -87,6 +87,17 @@ class ReviewTests(unittest.TestCase):
     def test_ci_must_pass_on_the_exact_suite(self):
         for options in [{'validation':'failure'},{'suite':122}]:
             self.assertEqual(self.run_worker([],**options),[])
+
+    def test_approved_pr_result_survives_a_newer_cancelled_dispatch(self):
+        approved={'id':1,'event':'pull_request','status':'completed','conclusion':'success','check_suite_id':123}
+        cancelled={**approved,'id':2,'event':'workflow_dispatch','conclusion':'cancelled','check_suite_id':124}
+        self.assertEqual(len(self.run_worker([],runs=[approved,cancelled])),2)
+        self.assertEqual(self.run_worker([],runs=[approved,cancelled],suite=124),[])
+
+    def test_newer_cancelled_run_of_same_event_cannot_reuse_old_success(self):
+        old={'id':1,'event':'workflow_dispatch','status':'completed','conclusion':'success','check_suite_id':123}
+        cancelled={**old,'id':2,'conclusion':'cancelled','check_suite_id':124}
+        self.assertEqual(self.run_worker([],runs=[old,cancelled]),[])
 
     def test_paused_workflow_draft_or_disabled_auto_merge_cannot_request(self):
         self.assertEqual(self.run_worker([],paused=True),[])

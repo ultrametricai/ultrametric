@@ -123,6 +123,11 @@ and repair retain existing opt-in and never re-enable it. Recovery waits for ord
 independent review, and resolved findings before advancing a stale base; pending reviews
 and repairs keep a stable head. Foreloop remains outside this loop.
 
+Story-runner publishes with `GITHUB_TOKEN`, matching the Actions-bot author accepted by
+recovery, repair, and review. Its optional PAT publication override is retired. Existing
+PRs created under a PAT account require maintainer attention; automation does not widen
+its author allowlist to adopt them.
+
 GitHub marks `pull_request` runs created by `GITHUB_TOKEN` as `action_required` until a
 maintainer approves them. Generated PRs explicitly dispatch the same CI workflow on their
 head branch. Recovery treats an approval-required run with no dispatched result as missing
@@ -131,6 +136,10 @@ each event. Older completed runs cannot mask a newer cancelled run of the same e
 ended without a result up to three dispatches per head. Exhausting that budget reports an
 error for human review. An approval-required run appearing after a successful dispatch
 does not trigger another dispatch. See [GitHub's workflow-trigger rules](https://docs.github.com/en/actions/concepts/security/github_token#when-github_token-triggers-workflow-runs).
+
+Recovery, repair routing, and review requests select the same usable result: the newest
+success or failure among the latest runs per event. A newer cancelled dispatch cannot
+hide an approved PR result. Validation and review still bind checks to that exact suite.
 
 The worker executes the current main branch only. It fetches the proposed branch as data,
 accepts changes only in its arena and declared generated projections, and rejects code,
