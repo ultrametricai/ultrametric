@@ -8,9 +8,10 @@
 // available; it does not establish same-week onboarding or improve Tap to Pay capability.
 //
 // This dated settlement restores the exact current-main story matrix and replaces only the
-// verdict payload in each current judge-cache entry. Cache hashes and key versions stay keyed to
-// the current evidence packs and prompt, so a later judge run replays the settled result instead
-// of resurrecting prompt-only churn. Square's three new geo evidence rows remain in its pack.
+// verdict payload in each current judge-cache entry. Cache hashes and key versions stay as the
+// historical v5 run produced them. Main's later v6 prompt deliberately invalidates those caches
+// on their next judge touch; this settlement does not authorize that category-wide migration.
+// Square's three new geo evidence rows remain in its pack.
 //
 // Usage:
 //   pnpm exec tsx rankings-engine/scripts/settle-mobile-payments-geo-pass-churn-2026-11-03.ts \
@@ -207,7 +208,9 @@ if (removedHistoryLines < 0) {
 
 console.log(`baseline: ${resolvedRef}`)
 console.log(`matrix rows restored: ${changedRows}; grade/quality changes restored: ${changedGrades}`)
-console.log(`cache verdict payloads restored: ${changedCaches}; cache hashes/key versions preserved`)
+console.log(
+  `cache verdict payloads restored: ${changedCaches}; historical cache hashes/key versions preserved (pre-v6 by design)`,
+)
 console.log(`prompt-only score-history rows removed: ${removedHistoryLines}`)
 
 if (!WRITE) {
