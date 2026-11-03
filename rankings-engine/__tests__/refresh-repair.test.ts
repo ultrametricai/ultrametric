@@ -4,9 +4,9 @@ import os from 'node:os'
 import path from 'node:path'
 import { execFileSync } from 'node:child_process'
 import { llmJson } from '../llm'
-import { cellHash, CELL_HASH_VERSION, PROMPT_VERSION } from '../stages/judge'
+import { cellHash, CELL_HASH_VERSION, PROMPT_VERSION, validateVerdictRules } from '../stages/judge'
 vi.mock('../llm', async importOriginal => ({ ...await importOriginal<typeof import('../llm')>(), llmJson: vi.fn() }))
-import { allowed, mergeData, projection, restoreChurn, rowAtLine, rekeyEvidence, sourceCacheMatches, judgeRepairCell, repair, repairProgress } from '../refresh-repair'
+import { allowed, mergeData, projection, restoreChurn, rowAtLine, rekeyEvidence, remapVerdictEvidence, sourceCacheMatches, judgeRepairCell, repair, repairProgress } from '../refresh-repair'
 import type { Evidence, Verdict, Story } from '../../lib/schemas'
 const old: Verdict = { productId: 'vendor', storyId: 'story', verdict: 'partial', quality: 5, confidence: 'high', rationale: 'missing for 10: callback documentation', evidenceIds: ['old'] }
 const evidence = (id: string): Evidence => ({ id, tier: 'claimed-docs', url: `https://example.invalid/docs/${id}`, excerpt: 'Documented behavior', fetchedAt: '2026-10-30T00:00:00Z' })
@@ -115,6 +115,23 @@ describe('changed-source identities and scoped judging', () => {
     expect(sourceCacheMatches({ ...cache, verdict: { ...old, quality: 9 } }, old, story, pack)).toBe(false)
     expect(sourceCacheMatches(cache, old, story, [{ ...pack[0], excerpt: 'changed' }])).toBe(false)
     expect(sourceCacheMatches({ ...cache, keyVersion: 'old' }, old, story, pack)).toBe(false)
+  })
+  it('keeps structured quotations valid when repair renames evidence and migrates its cache', () => {
+    const baseline = evidence('old')
+    const proposed = { ...baseline, id: 'renumbered' }
+    const normalized = rekeyEvidence([baseline], [proposed])
+    const row: Verdict = { ...old, evidenceIds: [proposed.id], support: {
+      subject: story.title, relation: 'direct', coverage: 'partial',
+      citations: [{ evidenceId: proposed.id, quote: proposed.excerpt }],
+    } }
+    const cache = { hash: cellHash(story, [proposed], PROMPT_VERSION), keyVersion: CELL_HASH_VERSION, verdict: row }
+    expect(sourceCacheMatches(cache, row, story, [proposed])).toBe(true)
+    const remapped = remapVerdictEvidence(row, normalized.renamed)
+    expect(validateVerdictRules(remapped, normalized.evidence, story)).toBeNull()
+    expect(remapped.support?.citations).toEqual([{ evidenceId: baseline.id, quote: proposed.excerpt }])
+    expect(row.support?.citations[0].evidenceId).toBe(proposed.id)
+    expect(sourceCacheMatches({ ...cache, hash: cellHash(story, normalized.evidence, PROMPT_VERSION), verdict: remapped }, remapped, story, normalized.evidence)).toBe(true)
+    expect(remapVerdictEvidence(old, {})).toEqual(old)
   })
   it('corrects an invented model citation through the existing judge rules', async () => {
     const fake = vi.mocked(llmJson); fake.mockReset()

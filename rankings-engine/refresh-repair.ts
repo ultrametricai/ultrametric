@@ -103,6 +103,18 @@ export function normalizeArenaEvidence(arena: string, baseline = 'HEAD'): void {
     write(file, rekeyEvidence(old, proposed).evidence)
   }
 }
+export function remapVerdictEvidence(row: Verdict, renamed: Record<string, string>): Verdict {
+  return {
+    ...row,
+    evidenceIds: row.evidenceIds.map(id => renamed[id] ?? id),
+    ...(row.support ? { support: {
+      ...row.support,
+      citations: row.support.citations.map(citation => ({
+        ...citation, evidenceId: renamed[citation.evidenceId] ?? citation.evidenceId,
+      })),
+    } } : {}),
+  }
+}
 export function sourceCacheMatches(cached: unknown, originalRow: Verdict | undefined, story: Story, evidence: Evidence[]): boolean {
   const parsed = z.object({ hash: z.string(), keyVersion: z.string().optional(), verdict: VerdictSchema }).safeParse(cached)
   return parsed.success && parsed.data.keyVersion === CELL_HASH_VERSION
@@ -205,7 +217,7 @@ export async function repair({ head, main, arena, findings, keyed }: { head: str
     packs[product.id] = normalized.evidence; renames[product.id] = normalized.renamed
     write(file, normalized.evidence)
   }
-  const after = rawAfter.map(row => ({ ...row, evidenceIds: row.evidenceIds.map(id => renames[row.productId][id] ?? id) }))
+  const after = rawAfter.map(row => remapVerdictEvidence(row, renames[row.productId]))
   let result = restoreChurn(before, after, oldPacks, packs)
   let rows = result.rows
   const audits: Array<{ thread: string; cell: string; addressed: boolean; reason: string }> = []
