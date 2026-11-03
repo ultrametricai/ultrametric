@@ -354,15 +354,16 @@
   {
     "productId": "auth0",
     "storyId": "deployment-data-control",
-    "verdict": "partial",
-    "quality": 6,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Auth0 documents a Private Cloud offering: a dedicated, isolated, Auth0-managed instance on AWS or Azure aimed at data-residency requirements (auth0-docs-14, auth0-docs-48, auth0-docs-64). Custom database connections to an external user store are mentioned, but only in a migration (import mode) context (auth0-docs-10), and there is no evidence of a self-managed or self-hosted deployment. Private Cloud is still run by Auth0, so control is limited to choosing a vendor-managed private instance. Missing for 10: self-managed/on-prem deployment option, explicit docs on keeping user data permanently in your own database (not just migrating it), and independent corroboration of the data-residency controls.",
+    "rationale": "Auth0 documents a Private Cloud offering: a dedicated, isolated, managed private instance on AWS or Azure, chosen to meet data-residency requirements, with Azure's 60+ regions available for storing customer data. This delivers the story's 'private instance' option and gives control over where user data lives. Missing for 10: any self-managed or self-hosted deployment (Private Cloud is still operated by Auth0); documentation of keeping user data permanently in your own database (custom database connections are evidenced only as a migration path); independent or hands-on corroboration of Private Cloud.",
     "evidenceIds": [
       "auth0-docs-14",
+      "auth0-docs-28",
       "auth0-docs-48",
       "auth0-docs-64",
-      "auth0-docs-28",
+      "auth0-docs-103",
       "auth0-docs-10"
     ]
   },
@@ -505,18 +506,19 @@
     "productId": "auth0",
     "storyId": "openness-api-parity",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Auth0 offers programmatic tenant management outside the dashboard. The official MCP server can create apps, deploy Actions, debug logs and manage users \"all without touching the dashboard.\" The official CLI manages tenant configuration and automates tasks, and a My Organization API supports in-app admin. None of this establishes that every UI capability is available through the API, and no public OpenAPI spec was found at the probed paths. Missing for 10: an explicit Management API parity statement or full API reference covering every dashboard function, a discoverable OpenAPI spec, and independent hands-on confirmation of UI/API parity.",
+    "rationale": "Auth0 documents several first-party programmatic surfaces for tenant management. The official MCP server can create apps, deploy Actions, debug logs and manage users \"all without touching the dashboard.\" The Auth0 CLI manages tenant configuration and automates tasks, and a Terraform module sets up apps, APIs, roles, MFA, enterprise SSO and custom domains. None of this evidence states that the API covers everything the dashboard can do, and the OpenAPI probe returned 404 at every candidate path, so parity is implied rather than proven. Missing for 10: an explicit statement of Management API/UI parity, a published OpenAPI spec, coverage evidence for dashboard-only areas such as log-stream payload preview, and independent or hands-on corroboration.",
     "evidenceIds": [
       "auth0-gh-1",
       "auth0-docs-41",
       "auth0-docs-13",
       "auth0-docs-61",
       "auth0-docs-77",
+      "auth0-docs-95",
       "auth0-docs-80",
-      "auth0-probe-5",
-      "auth0-probe-3"
+      "auth0-probe-3",
+      "auth0-probe-5"
     ]
   },
   {
@@ -620,12 +622,12 @@
     "productId": "auth0",
     "storyId": "privacy-data-residency",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Auth0's docs say Private Cloud managed deployments on AWS or Azure let customers choose a dedicated, isolated environment that meets their data-residency requirements. That is a premium dedicated-deployment route, and the evidence never shows region choice in the standard tenant. missing for 10: documented region selection for standard (public cloud) tenants, a list of available regions/geographies, details of what data stays in-region, independent or hands-on corroboration.",
+    "rationale": "Auth0 documents data-residency choice through its Private Cloud managed deployments on AWS and Azure, including choosing among Azure's 60+ regions to store customer data. That choice is tied to a dedicated, isolated private-instance offering. The evidence does not show region selection for standard tenants. Missing for 10: documented region selection for standard (non-Private-Cloud) tenants, detail on the AWS region options and configuration steps, and independent or hands-on corroboration.",
     "evidenceIds": [
       "auth0-docs-14",
-      "auth0-docs-28",
+      "auth0-docs-103",
       "auth0-docs-48",
       "auth0-docs-64"
     ]
@@ -1770,13 +1772,12 @@
     "productId": "clerk",
     "storyId": "api-machine-spec",
     "verdict": "full",
-    "quality": 7,
-    "confidence": "medium",
-    "rationale": "A hands-on probe found https://clerk.com/openapi.json returning HTTP 200 with an \"openapi\" key, so a downloadable machine-readable OpenAPI spec exists. The docs confirm Clerk exposes a programmatic Backend API that such a spec would describe. Missing for 10: first-party documentation of the spec (which APIs it covers, e.g. Backend vs. Frontend API, and its versioning), and independent corroboration that the spec is complete and usable.",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "A live probe confirmed a machine-readable OpenAPI spec is downloadable at https://clerk.com/openapi.json (HTTP 200, contains an \"openapi\" key). Content pulled from that spec describes real API features such as allow-lists and block-lists, which shows it is a substantive spec rather than a stub. Missing for 10: first-party documentation describing the spec's scope (e.g., Backend vs Frontend API coverage) and versioning.",
     "evidenceIds": [
       "clerk-probe-3",
-      "clerk-docs-7",
-      "clerk-docs-10"
+      "clerk-docs-71"
     ]
   },
   {
@@ -2461,11 +2462,13 @@
   {
     "productId": "keycloak",
     "storyId": "agentic-sdks",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "The evidence shows Keycloak exposes standard OIDC, OAuth 2.0 and SAML endpoints, a documented Admin REST API and the kcadm.sh Admin CLI. Nothing in the pack names an official client or admin SDK library to build against. Standards compliance lets developers use generic OIDC libraries, but that is not evidence of official SDKs, so this applicable axis is unevidenced.",
-    "evidenceIds": []
+    "rationale": "The only SDK-like evidence is the official Node.js adapter (Keycloak Node.js Connect) in the keycloak GitHub org, a first-party client library for securing apps. The Admin REST API docs and the kcadm.sh CLI are an API and a CLI, not SDKs, so they earn no credit. missing for 10: documented official SDKs across multiple languages, an official admin-API client library, SDK reference docs, and independent or hands-on corroboration of SDK usage.",
+    "evidenceIds": [
+      "keycloak-gh-1"
+    ]
   },
   {
     "productId": "keycloak",
@@ -2674,11 +2677,13 @@
   {
     "productId": "keycloak",
     "storyId": "edge-middleware-route-protection",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Framework SDKs and route-protecting middleware are a fair question for an identity provider like Keycloak, so the axis applies. However, the evidence only covers standard OIDC/OAuth endpoints (well-known configuration, token introspection) and generic claims about securing apps. Nothing documents first-party SDKs or middleware for Next.js or peer frameworks, or session verification at the edge.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The only first-party framework integration in evidence is the Keycloak Node.js Connect adapter, a Node.js middleware for protecting routes. Token introspection and OIDC endpoints are developer building blocks and earn no credit here. Missing for 10: Next.js or other modern framework SDKs, edge-runtime session verification, documentation of route-protection middleware usage, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "keycloak-gh-1"
+    ]
   },
   {
     "productId": "keycloak",
@@ -2834,11 +2839,14 @@
   {
     "productId": "keycloak",
     "storyId": "openness-open-license",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Whether a product's source is published under an open license is a fair question for an IAM server, so the axis applies. However, nothing in the pack states Keycloak's license or points to a public source repository. The closest items are a self-hostable Docker image, \"Customize through code,\" and custom provider extensibility, none of which establish open-source availability.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The only first-party pointer is a GitHub item at github.com/keycloak/keycloak, and its excerpt describes a Node.js adapter rather than the core server source. The open-license element rests only on a community remark that indirectly calls Keycloak a FOSS project. The reviewer's concern is valid: the evidence does not establish readable core source or license terms, so full credit is unsupported. missing for 10: explicit license name/terms (e.g., an OSI-approved license statement), confirmation that the core server source is publicly readable, first-party docs on source availability, independent corroboration.",
+    "evidenceIds": [
+      "keycloak-gh-1",
+      "keycloak-comm-3-refresh-4cdf8c8809fdfde2"
+    ]
   },
   {
     "productId": "keycloak",
@@ -3261,14 +3269,22 @@
     "productId": "workos",
     "storyId": "agentic-sdks",
     "verdict": "full",
-    "quality": 7,
-    "confidence": "medium",
-    "rationale": "WorkOS publishes an official Node SDK on GitHub (`npm install @workos-inc/node`). It documents real developer ergonomics: automatic retries with exponential backoff and jitter on transient errors, and a client-ID-only mode for apps that can't store secrets. An OpenAPI spec at /openapi.json supports generating typed clients. Missing for 10: evidence of official SDKs in other languages, in-depth SDK reference docs, and independent or hands-on corroboration of building with the SDKs.",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "WorkOS ships official SDKs across many languages and frameworks: Node, Python (with an async client), iOS, Laravel, TanStack Start, React, Astro and Next.js. The GitHub-published Node SDK documents concrete behaviors such as automatic retries with exponential backoff and public-client initialization. An OpenAPI spec and llms.txt also support AI-native building. missing for 10: independent or hands-on corroboration of the SDK experience, since community feedback praises ease of integration only in general terms.",
     "evidenceIds": [
       "workos-gh-1",
       "workos-gh-2",
       "workos-gh-4",
-      "workos-probe-3"
+      "workos-docs-53",
+      "workos-docs-54",
+      "workos-docs-55",
+      "workos-docs-56",
+      "workos-docs-57",
+      "workos-docs-58",
+      "workos-docs-59",
+      "workos-probe-3",
+      "workos-probe-1"
     ]
   },
   {
@@ -3459,13 +3475,15 @@
     "productId": "workos",
     "storyId": "edge-middleware-route-protection",
     "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "The evidence shows a first-party Node SDK (@workos-inc/node), including a client-ID-only mode for apps that can't hold secrets. RBAC docs say access is enforced through AuthKit session JWTs, which implies sessions can be verified to protect routes. Nothing documents framework-specific SDKs or route-protecting middleware. Missing for 10: a first-party Next.js SDK, middleware for route protection, edge-runtime session verification, SDKs for peer frameworks, and any hands-on or independent corroboration.",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "WorkOS documents first-party framework SDKs: Next.js with server- and client-side utilities, Astro with session validation and route protection, plus React, TanStack Start and Laravel integrations. That covers framework-level route protection. Nothing in the pack shows middleware that verifies sessions at the edge, so the reviewer's concern holds and the verdict stays partial rather than full. Missing for 10: documented Next.js middleware for route protection, edge-runtime session verification, independent or hands-on corroboration.",
     "evidenceIds": [
-      "workos-gh-1",
-      "workos-gh-2",
-      "workos-supp-rbac-jwt"
+      "workos-docs-59",
+      "workos-docs-58",
+      "workos-docs-57",
+      "workos-docs-56",
+      "workos-docs-55"
     ]
   },
   {
@@ -3555,18 +3573,20 @@
     "productId": "workos",
     "storyId": "oauth-oidc-standard-flows",
     "verdict": "full",
-    "quality": 7,
-    "confidence": "medium",
-    "rationale": "WorkOS documents AuthKit as a spec-compatible OAuth authorization server with OAuth applications for web, mobile, desktop and CLI clients. The Node SDK can be initialized with just a client ID for apps that can't store secrets, which points to SDK-handled public-client flows, and the OAuth 2.0 Device Authorization Flow is documented. Together these mean developers need not hand-roll the protocol. Missing for 10: explicit documentation of authorization code with PKCE and of refresh-token handling, plus independent hands-on corroboration of the OAuth/OIDC flows.",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "AuthKit is documented as a spec-compatible OAuth authorization server whose OAuth applications use the `authorization_code` flow. Official SDKs (React, Astro, TanStack Start, iOS) provide PKCE sign-in, PKCE public-client mode and automatic token refresh, so developers do not hand-roll protocol details. The Device Authorization Flow is also supported for CLIs. Missing for 10: explicit documentation of OIDC-specific artifacts for the developer's own app (ID tokens, discovery endpoint), and independent or hands-on corroboration of the OAuth/PKCE flows rather than of SSO/SAML.",
     "evidenceIds": [
       "workos-docs-27",
+      "workos-docs-48",
       "workos-docs-45",
-      "workos-docs-33",
-      "workos-gh-2",
-      "workos-gh-1",
+      "workos-docs-56",
+      "workos-docs-54",
+      "workos-docs-57",
+      "workos-docs-58",
       "workos-docs-31",
       "workos-docs-10",
-      "workos-docs-1"
+      "workos-gh-2"
     ]
   },
   {
@@ -3675,15 +3695,15 @@
     "productId": "workos",
     "storyId": "prebuilt-auth-ui",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "WorkOS documents AuthKit as a \"customizable hosted UI for authentication\" within a full authentication platform. It supports email + password, social login, passkeys, MFA and magic auth, which covers hosted sign-in and implies sign-up. There is no evidence of prebuilt embeddable UI components or of profile-management UI. The only related item is storing additional user and organization data, which is a data capability, not a profile screen. Missing for 10: prebuilt embeddable UI components, profile-management UI, explicit sign-up flow documentation, details of hosted-page customization, independent or hands-on corroboration.",
+    "rationale": "The reviewer's concern is valid. WorkOS documents a customizable hosted UI for authentication (workos-docs-17), and its AuthKit SDKs handle sign-in and sign-up through a hosted flow (workos-docs-57). The Astro SDK ships auth components (workos-docs-58), and Next.js and Laravel integrations exist (workos-docs-59, workos-docs-55). No item shows a prebuilt or hosted profile or account-management UI; storing extra user metadata (workos-docs-30) is an adjacent capability and earns no credit, so one of the story's three required surfaces is unevidenced. missing for 10: prebuilt/hosted profile or account-management UI, detail on how far the hosted UI can be customized, independent or hands-on corroboration of the hosted sign-in/sign-up UI.",
     "evidenceIds": [
       "workos-docs-17",
-      "workos-docs-25",
-      "workos-supp-passkeys-pricing",
-      "workos-docs-28",
-      "workos-docs-30"
+      "workos-docs-57",
+      "workos-docs-58",
+      "workos-docs-59",
+      "workos-docs-55"
     ]
   },
   {
@@ -3787,11 +3807,16 @@
   {
     "productId": "workos",
     "storyId": "session-lifecycle-revocation",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Session lifecycle management is a fair question for an authentication platform like WorkOS, but the pack has no evidence of session expiry configuration, token refresh, or server-side revocation of a compromised session. The only nearby mentions are RBAC being enforced \"through session JWTs\" and CLI Auth polling for tokens, which show that sessions and tokens exist but say nothing about managing their lifecycle.",
-    "evidenceIds": []
+    "rationale": "AuthKit SDK docs cover session management and automatic token refresh: the React SDK handles 'token refresh, and session management', and the Astro SDK offers 'session validation, automatic token refresh'. RBAC docs confirm that sessions are carried as session JWTs. Nothing in the pack shows configurable session expiry or immediate server-side revocation of a compromised session, which is a central part of this story. Missing for 10: documented session expiry configuration, server-side session revocation/logout API, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "workos-docs-57",
+      "workos-docs-58",
+      "workos-supp-rbac-jwt",
+      "workos-docs-59"
+    ]
   },
   {
     "productId": "workos",
