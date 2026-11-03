@@ -86,9 +86,10 @@ score built entirely from zero-evidence none/na cells renders italic *untested*,
 
 ## Human review points
 
-1. **story-runner PRs** — every refresh lands as a PR and explicitly dispatches CI on its
-   branch. The metadata-only refresh-auto-merge recovery workflow updates generated branches
-   and dispatches missing CI on main pushes, twice hourly, or by manual dispatch. Auto-merge waits for validation, ci, Greptile Review, a current main base, and
+1. **story-runner PRs** — every refresh passes the deterministic stability check locally
+   before its branch is pushed or PR opened, then explicitly dispatches CI on its branch. The metadata-only refresh-auto-merge recovery workflow updates generated branches
+   when an active ruleset requires a current base, and dispatches missing CI on main
+   pushes, twice hourly, or by manual dispatch. Auto-merge waits for validation, ci, Greptile Review, and
    resolved Greptile review threads via the metadata-only `review-findings` gate.
    Foreloop checks and threads are outside the merge requirements. The CI stability
    gate rejects upgrades without a cited evidence ID new to that product pack. A verified
@@ -117,7 +118,24 @@ score built entirely from zero-evidence none/na cells renders italic *untested*,
 
 The recovery controller dispatches `refresh-repair.yml` for failing generated story-runner
 PRs, unresolved Greptile findings on verdict cells, and merge conflicts. CI completion also
-wakes recovery. Foreloop remains outside this loop.
+wakes recovery. Drafts and PRs whose auto-merge opt-in was removed are skipped. Recovery
+and repair retain existing opt-in and never re-enable it. Recovery waits for ordinary CI,
+independent review, and resolved findings before advancing a stale base, and only updates
+it when an active required-check ruleset demands a current base. With loose rules, a
+conflict-free head keeps its existing checks and review. GitHub still enforces every merge
+requirement; the controller reads applied rulesets without changing them. Unknown
+mergeability or an unreadable freshness policy stops recovery for that PR. Real conflicts
+remain visible and reach bounded repair once checks and findings permit changing the head.
+Missing CI and reviews are recovered on the same head even while it conflicts. Active
+CI runs keep their head, including runs whose checks have not appeared yet. Pending reviews
+and repairs keep a stable head. Repair dispatch waits for every active Greptile review on
+that head; the worker rechecks before model calls and before publishing, discarding its
+unpublished candidate if a review started during repair. Foreloop remains outside this loop.
+
+Story-runner publishes with `GITHUB_TOKEN`, matching the Actions-bot author accepted by
+recovery, repair, and review. Its optional PAT publication override is retired. Existing
+PRs created under a PAT account require maintainer attention; automation does not widen
+its author allowlist to adopt them.
 
 GitHub marks `pull_request` runs created by `GITHUB_TOKEN` as `action_required` until a
 maintainer approves them. Generated PRs explicitly dispatch the same CI workflow on their
@@ -127,6 +145,10 @@ each event. Older completed runs cannot mask a newer cancelled run of the same e
 ended without a result up to three dispatches per head. Exhausting that budget reports an
 error for human review. An approval-required run appearing after a successful dispatch
 does not trigger another dispatch. See [GitHub's workflow-trigger rules](https://docs.github.com/en/actions/concepts/security/github_token#when-github_token-triggers-workflow-runs).
+
+Recovery, repair routing, and review requests select the same usable result: the newest
+success or failure among the latest runs per event. A newer cancelled dispatch cannot
+hide an approved PR result. Validation and review still bind checks to that exact suite.
 
 The worker executes the current main branch only. It fetches the proposed branch as data,
 accepts changes only in its arena and declared generated projections, and rejects code,
@@ -149,8 +171,22 @@ policy correction can retry heads that exhausted an older worker implementation.
 the reported concern. Review text is diagnostic context, never evidence. Missing evidence,
 unknown citations, rubric violations, and affiliated-product review needs stay blocked.
 
-Every repair runs the repository gates before a non-force push, launches CI and a fresh
-Greptile review, and checks the new head again. An old thread may close only for an audited
+Unsupported findings (including claims, projections, unmappable lines, and affiliated
+products) stop repair and name the blocker. Every finding must have a successful audit
+before publication. A repair must change canonical verdict or evidence content compared
+with the PR head; timestamps, reordered evidence, cache rewrites, and projection-only changes
+do not establish progress. A no-op stops before projection regeneration or a commit.
+
+Every repair runs the repository gates before a non-force push, launches CI, and checks
+the new head again. Story-runner, recovery, and repair route review requests through
+`refresh-review.yml`. Its per-PR concurrency group serializes callers and its trusted bot
+comment reserves each attempt before sending the review mention. Exact-head CI must pass
+first. An ambiguous send consumes the reservation; checks that have not appeared yet do
+not cause an immediate retry. At most two requests are permitted per head, at least one
+hour apart. A completed successful review never triggers another request on that head,
+even if findings remain. Exhaustion and unmanaged failed reviews require human attention.
+The request worker honors drafts, removed auto-merge opt-in, and paused recovery.
+ An old thread may close only for an audited
 cell after CI and independent review pass, with no new verdict-matrix findings. All other
 threads remain open. A changed head discards the repair. Attempts are bounded to three
 published repair commits, three failed-worker retries per head, and two concurrent workers. Pending checks resume
