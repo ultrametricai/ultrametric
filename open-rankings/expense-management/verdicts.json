@@ -1081,15 +1081,15 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Brex documents top-line budget assignment with instant spend tracking (brex-docs-10) and a Budgets API for managing Budgets and Spend Limits (brex-docs-5). It also describes auto-enforced limits (brex-docs-9), automatic blocking of out-of-policy purchases (brex-docs-36), and rule-based approval routing (brex-docs-8, brex-docs-11, brex-docs-16), which together cover the core of allocating budgets and having limits and approvals enforce them. Most of this is marketing copy rather than in-depth docs. missing for 10: explicit documentation of allocating budgets per team/project (as opposed to top-line), detail on how budget limits bind to card limits, independent or hands-on corroboration of enforcement.",
+    "rationale": "Brex's own docs describe the core loop of this story. Finance can assign top-line budgets (brex-docs-10) and manage Budgets and Spend Limits via the UI and API (brex-docs-5), including for entities and departments (brex-docs-74). Limits are described as auto-enforced, with out-of-policy purchases blocked (brex-docs-9, brex-docs-36), and approval routing is policy-driven and multi-level (brex-docs-8, brex-docs-11). Missing for 10: explicit project-level budget allocation, documentation that a budget directly governs card limits and approvals, and independent or hands-on confirmation that enforcement works as claimed.",
     "evidenceIds": [
       "brex-docs-5",
       "brex-docs-10",
+      "brex-docs-74",
       "brex-docs-9",
       "brex-docs-36",
       "brex-docs-8",
-      "brex-docs-11",
-      "brex-docs-16"
+      "brex-docs-11"
     ]
   },
   {
@@ -1147,15 +1147,18 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Brex says finance teams can set rules for spending, documentation, and approvers, which Brex AI applies to every transaction (brex-docs-8). It also offers auto-enforced limits by category such as stipends, travel, and procurement (brex-docs-9, brex-docs-36, brex-docs-39), and a review agent that auto-approves low-risk expenses and escalates exceptions to humans (brex-docs-16, brex-docs-41). Spend limits are also manageable through the Budgets API (brex-docs-5). Missing for 10: role-based expense policy limits are not explicitly documented (role-based routing appears only for bill pay), there is no in-depth documentation of the policy rule model or what context rules can express, and there is no independent or hands-on corroboration of exception-only auto-approval.",
+    "rationale": "Brex's own product pages describe the full loop. Admins set rules for spending, documentation and approvers, and Brex AI applies them to every transaction (brex-docs-8, brex-docs-41). Limits can be set by spend type such as stipends, travel and procurement (brex-docs-9), and localized policies can apply to entities, individuals and departments (brex-docs-74). Out-of-policy purchases are auto-blocked (brex-docs-36), and a review agent auto-approves low-risk expenses while escalating exceptions to people (brex-docs-16). Missing for 10: in-depth documentation of how policy rules are configured (role and context conditions specifically for expenses; role-based routing is only shown for bill pay in brex-docs-11), and any independent or hands-on corroboration that auto-approval and exception routing work as marketed.",
     "evidenceIds": [
       "brex-docs-8",
       "brex-docs-9",
-      "brex-docs-36",
       "brex-docs-16",
+      "brex-docs-36",
       "brex-docs-41",
+      "brex-docs-74",
+      "brex-docs-15",
       "brex-docs-39",
-      "brex-docs-5"
+      "brex-docs-6",
+      "brex-docs-11"
     ]
   },
   {
@@ -1181,22 +1184,27 @@
     "productId": "brex",
     "storyId": "fast-reimbursements",
     "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Brex's AI page says its assistants can file reimbursements for employees automatically, which confirms a first-party reimbursement flow exists. Nothing describes how an employee submits an out-of-pocket expense, how the payout is made, or how fast it arrives. The receipt-upload API matches receipts to existing expenses rather than creating out-of-pocket claims. Missing for 10: documented employee out-of-pocket submission flow, reimbursement payout by direct deposit, payout timing (days), status tracking from submission to payout, independent or hands-on corroboration.",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "Brex documents that AI assistants file employee reimbursements automatically (brex-docs-23) and that reimbursements are paid to local bank accounts to speed up payment (brex-docs-73). A review agent auto-approves low-risk expenses (brex-docs-16), and receipts can be uploaded and matched (brex-docs-27). However, the core out-of-pocket flow is only glancingly described, missing for 10: an explicit out-of-pocket expense submission flow, direct-deposit payout timing (reimbursed in days), status tracking from submission to payout, and independent or hands-on corroboration.",
     "evidenceIds": [
       "brex-docs-23",
-      "brex-docs-7"
+      "brex-docs-73",
+      "brex-docs-16",
+      "brex-docs-27"
     ]
   },
   {
     "productId": "brex",
     "storyId": "global-reimbursements",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "The pack mentions reimbursement filing by AI assistants and 'global spend', but nothing documents paying employees abroad in their local currency. Multi-currency payments appear only in Bill Pay for vendors, a different capability, and the Payments API lists only ACH, domestic wires, and checks.",
-    "evidenceIds": []
+    "rationale": "Brex's own Global page documents paying reimbursements to and from local bank accounts to avoid intercompany transactions, and Brex documents automated reimbursement filing. This directly establishes a built-in global-reimbursement flow, but not the story's required payout in the employee's local currency. Missing for 10: explicit local-currency payout to the employee, supported payout countries and currencies, API or detailed lifecycle documentation, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "brex-docs-73",
+      "brex-docs-23"
+    ]
   },
   {
     "productId": "brex",
@@ -1232,15 +1240,15 @@
     "productId": "brex",
     "storyId": "multi-entity-currency",
     "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Brex's own Team API exposes a `legal_entity_id` filter, which implies the account models multiple legal entities. Its marketing mentions global spend and payments in more currencies, so multi-entity and multi-currency support is only glancingly evidenced. Missing for 10: documented consolidated reporting across entities, per-entity books/ledgers, explicit multi-currency account and reporting handling, and any independent or hands-on corroboration.",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Brex documents multi-entity, multi-currency operation: budgets and spend limits in 100+ currencies with localized policies for entities, local statement payments to avoid intercompany transactions, cards issued in 60+ countries, and a legal_entity_id dimension in the API. There is no explicit evidence of consolidated cross-entity reporting or separate per-entity books/ledgers. Missing for 10: documented consolidated reporting across entities, per-entity books/accounting sync, independent or hands-on corroboration.",
     "evidenceIds": [
+      "brex-docs-74",
+      "brex-docs-73",
+      "brex-docs-72",
       "brex-docs-19",
-      "brex-docs-33",
-      "brex-docs-14",
-      "brex-docs-37",
-      "brex-docs-18"
+      "brex-docs-37"
     ]
   },
   {
@@ -1358,13 +1366,14 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Brex's own marketing says founders can \"track spend instantly\" against budgets and \"close the books in real time\", and its card app lets users view spend. Its API also exposes pending (not just settled) Brex Card transaction events via real-time webhooks, which supports same-day visibility. However, nothing in the evidence documents a dashboard that breaks spend down by team, category, and merchant, and the real-time claims are marketing copy only. Missing for 10: documented spend breakdowns by team/department, category, and merchant; first-party docs describing the real-time spend dashboard; independent or hands-on corroboration of same-day visibility.",
+    "rationale": "Brex's marketing says it tracks spend instantly against budgets and manages spend in real time. It also offers department-level budgets and in-app spend viewing, and AI agents categorize spend instantly, which supports same-day visibility. However, a dashboard breaking spend down by team, category, and merchant is never explicitly documented. Missing for 10: explicit documentation of a spend view by team, category, and merchant; evidence that transactions appear the same day; independent or hands-on corroboration of real-time reporting.",
     "evidenceIds": [
       "brex-docs-10",
       "brex-docs-37",
       "brex-docs-21",
-      "brex-docs-52",
-      "brex-docs-51"
+      "brex-docs-41",
+      "brex-docs-74",
+      "brex-docs-4"
     ]
   },
   {
@@ -4627,15 +4636,17 @@
     "productId": "ramp",
     "storyId": "multi-entity-currency",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Ramp documents running multiple entities in a single consolidated account, with per-entity spend policies and controls [ramp-docs-42]. It also syncs transaction and reimbursement data to multiple entities in one step [ramp-docs-24], and exposes entities as a data object to agents and the API [ramp-supp-ai-agents-channels, ramp-probe-4]. Multi-currency support is evidenced only for employee reimbursements (40 currencies) [ramp-docs-14], and consolidated cross-entity reporting is not explicitly documented. Missing for 10: explicit multi-currency entity accounts and books, documented consolidated reporting across entities, and independent or hands-on corroboration.",
+    "rationale": "Ramp documents multi-entity support in a single consolidated account, with per-entity spend policies and controls, plus one-step syncing of transactions and reimbursements to multiple entities in the accounting system. Multi-currency evidence covers only reimbursements, paid in about 40 local currencies. Eligibility requires US registration with most operations and spend in the US, which limits multi-country entity setups. Missing for 10: explicit consolidated cross-entity reporting, multi-currency cards/accounts/books beyond reimbursements, details on per-entity ledgers and FX handling, and independent corroboration.",
     "evidenceIds": [
       "ramp-docs-42",
       "ramp-docs-24",
       "ramp-docs-14",
       "ramp-supp-ai-agents-channels",
-      "ramp-probe-4"
+      "ramp-probe-4",
+      "ramp-docs-46",
+      "ramp-docs-47"
     ]
   },
   {

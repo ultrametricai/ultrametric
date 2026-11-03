@@ -87,6 +87,8 @@ export async function llmJson<T>(opts: {
   system: string
   prompt: string
   maxTokens?: number
+  retry?: boolean
+  timeoutMs?: number
 }): Promise<T> {
   const messages: Anthropic.MessageParam[] = [{ role: 'user', content: opts.prompt }]
   let lastError = ''
@@ -96,17 +98,23 @@ export async function llmJson<T>(opts: {
   // on truncation and retry the ORIGINAL prompt (appending half a JSON object only confuses
   // the model).
   let maxTokens = opts.maxTokens ?? 4096
-  for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
+  const retries = opts.retry === false ? 0 : MAX_RETRIES
+  for (let attempt = 0; attempt <= retries; attempt++) {
     const res = await getClient().messages.create({
       model: MODEL,
       max_tokens: maxTokens,
       system: opts.system,
       messages,
-    })
+    }, { ...(opts.retry === false ? { maxRetries: 0 } : {}),
+      ...(opts.timeoutMs !== undefined ? { timeout: opts.timeoutMs } : {}) })
     const text = res.content
       .filter((b): b is Anthropic.TextBlock => b.type === 'text')
       .map((b) => b.text)
       .join('')
+    if (opts.retry === false && res.stop_reason === 'max_tokens') {
+      lastError = 'response truncated at max_tokens'
+      break
+    }
     if (res.stop_reason === 'max_tokens' && maxTokens < 16384) {
       maxTokens = Math.min(maxTokens * 2, 16384)
       lastError = `response truncated at max_tokens; retrying with ${maxTokens}`
@@ -144,7 +152,7 @@ export async function llmJson<T>(opts: {
         },
       )
     }
-    if (attempt < MAX_RETRIES) await sleep(retryBackoffMs(attempt))
+    if (attempt < retries) await sleep(retryBackoffMs(attempt))
   }
-  throw new Error(`LLM output failed validation after ${MAX_RETRIES + 1} attempts: ${lastError}`)
+  throw new Error(`LLM output failed validation after ${retries + 1} attempts: ${lastError}`)
 }

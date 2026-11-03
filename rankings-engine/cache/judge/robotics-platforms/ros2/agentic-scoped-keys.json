@@ -1,21 +1,20 @@
 {
-  "hash": "2831f7573b48f5d98860f3cb25bc9f7bd29082e0a7363d330358236afe026f54",
+  "hash": "03d56c03754e3ed0f57e85c7ed94c1a270042b72be5c31b3fcc74e4c0597f471",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "ros2",
-    "storyId": "agentic-scoped-keys",
     "verdict": "partial",
     "quality": 4,
-    "confidence": "medium",
-    "rationale": "ROS 2 ships its own credential mechanism via sros2/DDS-Security. Users create a keystore (`ros2 security create_keystore`) and security enclaves, each of which \"encapsulates a single policy for protecting ROS communications.\" Enclaves can be mapped to processes, users or devices, so an agent node could be issued its own scoped, authenticated identity. The evidence describes this only generically as graph-participant security, not as least-privilege API credentials for agents. Missing for 10: explicit documentation of fine-grained per-topic/service permission scoping, any agent-oriented credential issuance or revocation flow, and independent or hands-on corroboration.",
+    "confidence": "low",
+    "rationale": "ROS 2 ships its own credential mechanism through SROS2. You create a keystore with `ros2 security create_keystore`, and each security enclave encapsulates a single policy for protecting communications, with participant authentication and control over communications across the ROS graph. That makes per-participant, policy-scoped credentials plausible for a node acting as an agent. However, the evidence never shows fine-grained least-privilege permissions such as per-topic or per-service allow/deny, and it says nothing about agent-oriented credential issuance or API tokens. Missing for 10: documented per-topic/service permission scoping, credential issuance framed for AI agents, revocation/expiry of scoped credentials, independent or hands-on corroboration.",
     "evidenceIds": [
       "ros2-docs-13",
-      "ros2-docs-76",
+      "ros2-docs-15",
       "ros2-docs-42",
       "ros2-docs-65",
-      "ros2-docs-15",
       "ros2-docs-40",
       "ros2-docs-29"
-    ]
+    ],
+    "productId": "ros2",
+    "storyId": "agentic-scoped-keys"
   }
 }
