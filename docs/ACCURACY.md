@@ -91,7 +91,8 @@ score built entirely from zero-evidence none/na cells renders italic *untested*,
    and dispatches missing CI on main pushes, twice hourly, or by manual dispatch. Auto-merge waits for validation, ci, Greptile Review, a current main base, and
    resolved Greptile review threads via the metadata-only `review-findings` gate.
    Foreloop checks and threads are outside the merge requirements. The CI stability
-   gate rejects upgrades without a cited evidence ID new to that product pack. A verified
+   gate rejects upgrades without verified new cited source support. A fresh row ID or
+   model paraphrase alone does not establish new facts. A verified
    downgrade may instead follow changed or lost prior support; quality cannot increase and
    applicability cannot change through that path. Review semantic findings under the re-judge
    stability policy before merging: when prior cited support is unchanged, a verdict flip
@@ -142,6 +143,26 @@ repeated extraction of the same content retains the same identity. Timestamp-onl
 create no new evidence. Repairs reconcile older PRs that reused an ID for changed text and
 remap their citations. A cache may migrate across label-only changes only after its original
 payload hash and exact original judgment are verified.
+
+Fetched first-party and community text carries a SHA-256 source digest computed before
+model extraction. Same-source score changes require a changed digest as well as changed
+cited content. Legacy same-source records without digests require review; the runner cannot
+infer changed facts from a fresh label or paraphrase. Equivalent Hacker News API/discussion
+URLs and whitespace-only changes do not establish new support or support loss. Real probe
+observations can record changed behavior at the same endpoint. Runtime/audit probes and
+preservation markers survive scheduled refreshes, and publication rejects their removal.
+Community extraction appends dated observations and preserves prior reports when a model
+omits them. An unchanged source digest cannot produce another community paraphrase row.
+
+The current judge response requires structured support: the exact story subject, direct
+versus adjacent relation, complete versus partial coverage, and verbatim cited quotations.
+Full credit requires complete direct support; partial credit requires the named capability
+itself. Questions cannot establish an affirmative claim. Extraction verifies its quotations
+against the fetched source. These checks enforce the response contract, not semantic truth;
+independent review still checks whether a quotation actually entails the named capability.
+The new prompt version invalidates older judge caches on the next scoped judge run. This
+source change does not rewrite the published corpus or authorize a bulk re-judge. Review
+legacy same-source transitions and the rubric migration before resuming scheduled runs.
 
 Unsupported grade churn restores the previously published judgment when its cited content
 is unchanged and its rules remain valid. Changed or missing source content requires a verified current-input judgment, or a

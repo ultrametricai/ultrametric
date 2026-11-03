@@ -9,7 +9,7 @@ vi.mock('../llm', async importOriginal => ({ ...await importOriginal<typeof impo
 import { allowed, mergeData, projection, restoreChurn, rowAtLine, rekeyEvidence, sourceCacheMatches, judgeRepairCell, repair, repairProgress } from '../refresh-repair'
 import type { Evidence, Verdict, Story } from '../../lib/schemas'
 const old: Verdict = { productId: 'vendor', storyId: 'story', verdict: 'partial', quality: 5, confidence: 'high', rationale: 'missing for 10: callback documentation', evidenceIds: ['old'] }
-const evidence = (id: string): Evidence => ({ id, tier: 'claimed-docs', url: 'https://example.invalid/docs', excerpt: 'Documented behavior', fetchedAt: '2026-10-30T00:00:00Z' })
+const evidence = (id: string): Evidence => ({ id, tier: 'claimed-docs', url: `https://example.invalid/docs/${id}`, excerpt: 'Documented behavior', fetchedAt: '2026-10-30T00:00:00Z' })
 describe('refresh repair policy', () => {
   it('rejects the #567 no-op repairs even if evidence timestamps or order change', () => {
     const packs = { vendor: [evidence('old'), evidence('second')] }

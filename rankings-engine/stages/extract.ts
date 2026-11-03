@@ -5,6 +5,7 @@ import { type Evidence, EvidenceSchema, type Product, ProductSchema } from '../.
 import { llmJson } from '../llm'
 import { CACHE_DIR, categoryDir, readJson, resolveCategories, writeJson } from '../paths'
 import { isFullyCrawlExcluded } from './crawl'
+import { sourceHash, sourceText, questionOnly } from '../evidence-source.mjs'
 
 export const ExtractionSchema = z.object({
   stories: z
@@ -101,10 +102,19 @@ export function buildEvidence(
 
 const SYSTEM = `You extract user stories from a software product's own marketing and documentation.
 A user story is a concrete capability a user gains: "As a <persona>, I can <do something specific>."
-Only include capabilities the materials actually claim. Each story needs a short verbatim-ish quote (max 200 chars) from the materials as evidence and which source file it came from.
+Only include capabilities the materials actually claim. Each story needs a short verbatim quote (max 200 chars) from the materials as evidence and which source file it came from. Questions, headings and hypothetical examples do not assert a capability.
 Personas must be drawn from: developer, designer, switcher, power-user.
 Sources are labeled "=== SOURCE <key> ===" in the materials below; use that exact key. Besides site/docs/changelog/github, a source may be labeled extra-0, extra-1, etc. (additional vendor pages) — use the matching extra-N key, not "docs" or "site", when a quote comes from one of those.
 Return JSON: {"stories":[{"persona":"...","title":"As a ..., I can ...","quote":"...","sourceKey":"site|docs|changelog|github|extra-N"}]}`
+
+export function validateExtractionSources(extraction: Extraction, sources: Record<string, string>): void {
+  for (const story of extraction.stories) {
+    const source = sources[story.sourceKey]
+    if (!source || !sourceText(source).includes(sourceText(story.quote)) || questionOnly(story.quote)) {
+      throw new Error(`Extraction lacks an affirmative verbatim quotation from source ${story.sourceKey}`)
+    }
+  }
+}
 
 export async function runExtract({ category, product }: { category?: string; product?: string }): Promise<void> {
   let matched = 0
@@ -125,7 +135,8 @@ export async function runExtract({ category, product }: { category?: string; pro
       }
       const crawlDir = path.join(CACHE_DIR, 'crawl', cat.id, p.id)
       if (!fs.existsSync(crawlDir)) throw new Error(`extract: no crawl cache for ${cat.id}/${p.id} — run crawl first`)
-      const files = fs.readdirSync(crawlDir)
+      const files = fs.readdirSync(crawlDir).sort()
+      const sources = Object.fromEntries(files.map(file => [file.replace(/\.md$/, ''), fs.readFileSync(path.join(crawlDir, file), 'utf8')]))
       // Fair per-source budget: a single oversized source (e.g. a years-long changelog)
       // must not consume the whole corpus and silently starve every other crawled source
       // (docs, github, urls.extra pages) out of the extraction prompt. Each source gets an
@@ -144,6 +155,7 @@ export async function runExtract({ category, product }: { category?: string; pro
         prompt: `Product: ${p.name} (${p.vendor})\n\nMaterials:\n\n${corpus}`,
         maxTokens: 8192,
       })
+      validateExtractionSources(extraction, sources)
 
       const evidenceFile = path.join(dataDir, 'evidence', `${p.id}.json`)
       const existing = fs.existsSync(evidenceFile) ? readJson(EvidenceSchema.array(), evidenceFile) : []
@@ -151,8 +163,14 @@ export async function runExtract({ category, product }: { category?: string; pro
       const existingDocsGh = existing.filter((e) => e.tier === 'claimed-docs' || e.tier === 'github')
 
       const { candidates, evidence } = buildEvidence(p.id, extraction, p.urls, new Date().toISOString(), existingDocsGh)
-
-      writeJson(evidenceFile, [...evidence, ...kept])
+      // Stamp only observations actually present in this source. A missing legacy
+      // quote stays dated evidence, without inventing a current-source attestation.
+      const observed = evidence.map(item => {
+        const source = Object.entries(sources).find(([key, text]) => resolveSourceUrl(key, p.urls) === item.url
+          && sourceText(text).includes(sourceText(item.excerpt)))
+        return source ? { ...item, sourceHash: sourceHash(source[1]) } : item
+      })
+      writeJson(evidenceFile, [...observed, ...kept])
       writeJson(path.join(CACHE_DIR, 'extract', cat.id, `${p.id}.json`), candidates)
       console.log(`extract: ${cat.id}/${p.id} → ${candidates.length} candidate stories, ${evidence.length} evidence items`)
     }

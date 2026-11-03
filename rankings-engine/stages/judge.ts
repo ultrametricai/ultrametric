@@ -3,11 +3,14 @@ import fs from 'node:fs'
 import path from 'node:path'
 import {
   type Evidence, EvidenceSchema, ProductSchema, type Story, StorySchema,
-  type Verdict, VerdictBaseSchema, VerdictSchema,
+  type Verdict, VerdictBaseSchema, VerdictSchema, VerdictSupportSchema,
 } from '../../lib/schemas'
+import { sourceText, questionOnly } from '../evidence-source.mjs'
 import { JUDGE_MODEL, llmJson } from '../llm'
 import { CACHE_DIR, categoryDir, readJson, resolveCategories, writeJson } from '../paths'
 
+// v6 requires explicit capability support and verbatim citations for new judgments.
+// Legacy published verdicts remain readable; rubric migration is an explicit review event.
 // v5 (2026-10-19): adds the founder-ratified partial-credit boundary to the prompt — partial
 // requires the product's OWN documented capability for the story being judged; user-side
 // workarounds, host-platform capabilities, developer building blocks, adjacent controls, and
@@ -18,7 +21,7 @@ import { CACHE_DIR, categoryDir, readJson, resolveCategories, writeJson } from '
 // from v4 on the judge model id is folded into the cellHash payload below, so any future
 // model change is a first-class cache invalidator instead of silently keeping the previous
 // model's verdicts.)
-export const PROMPT_VERSION = 'v5'
+export const PROMPT_VERSION = 'v6'
 
 // Versions the hashed material itself, independent of prompt/model changes: bumping it makes
 // every cache entry written under an older key format miss cleanly (and re-judge) instead of
@@ -43,10 +46,25 @@ export function cellHash(story: Story, evidence: Evidence[], promptVersion: stri
   return crypto.createHash('sha256').update(payload).digest('hex')
 }
 
-export function validateVerdictRules(verdict: Verdict, evidence: Evidence[]): string | null {
+export function validateVerdictRules(verdict: Verdict, evidence: Evidence[], story?: Story): string | null {
   const known = new Map(evidence.map((e) => [e.id, e]))
   for (const id of verdict.evidenceIds) {
     if (!known.has(id)) return `cites unknown evidence id "${id}"`
+  }
+  if (verdict.support) {
+    const support = verdict.support
+    if (story && support.subject !== story.title) return 'support subject must be the exact story being judged'
+    const credited = ['full', 'partial', 'disputed'].includes(verdict.verdict)
+    if (credited && (support.relation !== 'direct' || support.coverage === 'none' || !support.citations.length)) {
+      return 'credit requires direct support for the product capability; adjacent features earn none'
+    }
+    if (verdict.verdict === 'full' && support.coverage !== 'complete') return 'full credit requires complete story coverage'
+    for (const citation of support.citations) {
+      const item = known.get(citation.evidenceId)
+      if (!item || !verdict.evidenceIds.includes(citation.evidenceId)
+          || !sourceText(item.excerpt).includes(sourceText(citation.quote))) return 'support must quote a cited evidence item verbatim'
+      if (credited && questionOnly(citation.quote)) return 'questions do not establish capability support'
+    }
   }
   if (verdict.verdict !== 'none' && verdict.verdict !== 'na' && verdict.evidenceIds.length === 0) {
     return 'non-none verdict must cite evidence'
@@ -71,7 +89,7 @@ export function validateVerdictRules(verdict: Verdict, evidence: Evidence[]): st
 // Exported so other consumers that need to re-run the EXACT judge prompt against current
 // evidence (rankings-engine/scripts/calibration-check.ts, rankings-engine/scripts/uncertainty-pass.ts) do so
 // verbatim rather than risking prompt drift from a hand-copied duplicate.
-export const RawVerdictSchema = VerdictBaseSchema.omit({ productId: true, storyId: true })
+export const RawVerdictSchema = VerdictBaseSchema.omit({ productId: true, storyId: true }).extend({ support: VerdictSupportSchema })
 
 export const SYSTEM = `You are the judge in a head-to-head product-comparison arena. Given ONE user story and ONE product's evidence pack, decide how well the product delivers that story.
 Verdicts: "full" (clearly delivers), "partial" (delivers with significant caveats/extra tools), "none" (the axis applies but no evidence it delivers), "disputed" (vendor claims it but community/hands-on evidence CONCRETELY contradicts — requires citing both sides), "na" (the story's axis does not apply to this product at all).
@@ -112,9 +130,10 @@ REQUIREMENT: whenever quality is below 10, the rationale MUST name what is missi
 A citation may only support or undermine a verdict if its content is ABOUT the story's subject. Off-topic material — general negative sentiment, unrelated security news, pricing complaints, criticism of other features — must be ignored entirely: it must not move the verdict or quality, must not appear in evidenceIds, and must not be mentioned in the rationale. Example: a news item about a vendor leaking its own source code says NOTHING about whether the product offers sandboxed execution — ignore it when judging a sandboxing story.
 
 ## Output
+support: {subject,relation,coverage,citations}. subject MUST equal the exact user-story title. relation is direct only when the PRODUCT ITSELF provides the named capability; use adjacent for developer building blocks, another feature, or a user-side workaround, and absent when there is no support. coverage is complete only if every required part is documented, partial if the named capability exists with documented limitations, otherwise none. Each citation is {evidenceId,quote}, an affirmative verbatim span from a cited evidence item. Questions and hypothetical examples are not affirmative support. full requires direct/complete support; partial requires direct/partial or direct/complete support. Adjacent support requires none, quality 0. Explicitly assess dry-run versus sandbox isolation, a one-off action versus a recurring schedule, and reference inputs versus consistency across shots; do not substitute one for the other.
 quality: 0-10 per the rubric (0 if none or na). confidence: high/medium/low based on evidence strength. rationale: 1-3 sentences (plus the required "missing for 10: ..." clause when quality < 10). evidenceIds: cite the specific items you relied on (empty only for "none" or "na").
 Judge ONLY from the evidence pack. Absence of evidence for a mainstream capability of a well-known product may still only ever yield "none" — do not use outside knowledge.
-Return JSON: {"verdict":"...","quality":N,"confidence":"...","rationale":"...","evidenceIds":["..."]}`
+Return JSON: {"verdict":"...","quality":N,"confidence":"...","rationale":"...","evidenceIds":["..."],"support":{"subject":"exact story title","relation":"direct|adjacent|absent","coverage":"complete|partial|none","citations":[{"evidenceId":"...","quote":"..."}]}}`
 
 export function judgePrompt(productName: string, story: Story, evidence: Evidence[], extra = ''): string {
   const pack = evidence
@@ -145,7 +164,7 @@ export async function runJudge({ category, product }: { category?: string; produ
 
         let raw = await llmJson({ schema: RawVerdictSchema, system: SYSTEM, prompt: judgePrompt(p.name, story, evidence) })
         let verdict: Verdict = { ...raw, productId: p.id, storyId: story.id }
-        let violation = validateVerdictRules(verdict, evidence)
+        let violation = validateVerdictRules(verdict, evidence, story)
         // Up to three correction rounds — one round proved brittle at fleet scale (a model that
         // phrases the rubric clause loosely once tends to comply on the next explicit ask).
         for (let round = 0; violation && round < 3; round++) {
@@ -155,7 +174,7 @@ export async function runJudge({ category, product }: { category?: string; produ
             prompt: judgePrompt(p.name, story, evidence, `\nYour previous verdict violated a rule: ${violation}. Correct it. If quality is below 10, the rationale MUST contain the literal phrase "missing for 10:" followed by the specific gaps.`),
           })
           verdict = { ...raw, productId: p.id, storyId: story.id }
-          violation = validateVerdictRules(verdict, evidence)
+          violation = validateVerdictRules(verdict, evidence, story)
         }
         if (violation) throw new Error(`judge: ${cat.id}/${p.id}:${story.id} still violates rules: ${violation}`)
         writeJson(cacheFile, { hash, keyVersion: CELL_HASH_VERSION, verdict })
