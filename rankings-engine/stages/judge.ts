@@ -142,6 +142,46 @@ export function judgePrompt(productName: string, story: Story, evidence: Evidenc
   return `Product: ${productName}\n\nUser story: ${story.title}\n(persona: ${story.persona}, theme: ${story.theme})\n\nEvidence pack:\n${pack}\n${extra}`
 }
 
+// This path deliberately never reads or writes the judge cache or assembles a matrix.
+// The explicit cell and single-request limit make a separately approved live pilot bounded.
+export async function runJudgePreview({ category, product, story: storyId }: { category?: string; product?: string; story?: string }) {
+  if (![category, product, storyId].every(id => typeof id === 'string' && /^[a-z0-9][a-z0-9_-]*$/.test(id))) {
+    throw new Error('judge-preview requires explicit --category, --product and --story identifiers')
+  }
+  const cat = resolveCategories(category)[0]
+  const dataDir = categoryDir(cat.id)
+  const target = readJson(ProductSchema.array(), path.join(dataDir, 'products.json')).find(p => p.id === product)
+  if (!target) throw new Error(`unknown product: ${product}`)
+  const story = readJson(StorySchema.array(), path.join(dataDir, 'stories.json')).find(s => s.id === storyId)
+  if (!story) throw new Error(`unknown story: ${storyId}`)
+  if (target.affiliation) throw new Error('Affiliated products require the separate bias-audit process')
+  const evidence = readJson(EvidenceSchema.array(), path.join(dataDir, 'evidence', `${target.id}.json`))
+  const prompt = judgePrompt(target.name, story, evidence)
+  if (Buffer.byteLength(SYSTEM + prompt, 'utf8') > 40_000) throw new Error('judge-preview input exceeds the 40000-byte pilot limit')
+  const raw = await llmJson({ schema: RawVerdictSchema, system: SYSTEM, prompt,
+    maxTokens: 4096, retry: false, timeoutMs: 60_000 })
+  const verdict = VerdictSchema.parse({ ...raw, productId: target.id, storyId: story.id })
+  const violation = validateVerdictRules(verdict, evidence, story)
+  if (violation) throw new Error(`judge-preview: ${violation}; no correction retry or publication performed`)
+  return { mode: 'judge-preview', category: cat.id, productId: target.id, storyId: story.id,
+    model: JUDGE_MODEL, promptVersion: PROMPT_VERSION,
+    promptHash: crypto.createHash('sha256').update(JSON.stringify([SYSTEM, prompt])).digest('hex'),
+    inputHash: cellHash(story, evidence, PROMPT_VERSION), verdict }
+}
+
+function currentCachedCell(category: string, product: string, story: Story, evidence: Evidence[]): Verdict | undefined {
+  const file = path.join(CACHE_DIR, 'judge', category, product, `${story.id}.json`)
+  if (!fs.existsSync(file)) return undefined
+  const cached = JSON.parse(fs.readFileSync(file, 'utf8')) as { hash: string; keyVersion?: string; verdict: unknown }
+  if (cached.keyVersion !== CELL_HASH_VERSION) return undefined
+  if (cached.hash !== cellHash(story, evidence, PROMPT_VERSION)) {
+    throw new Error(`judge: stale cached verdict for ${category}/${product}:${story.id}; inputs or judge version changed`)
+  }
+  const row = VerdictSchema.parse(cached.verdict)
+  if (row.productId !== product || row.storyId !== story.id) throw new Error(`judge: cache identity mismatch for ${category}/${product}:${story.id}`)
+  return row
+}
+
 export async function runJudge({ category, product }: { category?: string; product?: string }): Promise<void> {
   let matched = 0
   for (const cat of resolveCategories(category)) {
@@ -150,6 +190,20 @@ export async function runJudge({ category, product }: { category?: string; produ
     const stories = readJson(StorySchema.array(), path.join(dataDir, 'stories.json'))
     const targets = products.filter((p) => !product || p.id === product)
     matched += targets.length
+    if (!targets.length) continue
+
+    // A scoped publication still needs a complete current matrix. Check untouched
+    // cells before paying for target judgments or changing any target cache files.
+    if (product) for (const untouched of products.filter(p => p.id !== product)) {
+      const evidence = readJson(EvidenceSchema.array(), path.join(dataDir, 'evidence', `${untouched.id}.json`))
+      for (const story of stories) {
+        try {
+          if (!currentCachedCell(cat.id, untouched.id, story, evidence)) throw new Error('missing or old-format cache')
+        } catch (cause) {
+          throw new Error(`judge: scoped publication blocked by untouched ${cat.id}/${untouched.id}:${story.id}; use judge-preview for a bounded pilot or review the category migration first`, { cause })
+        }
+      }
+    }
 
     for (const p of targets) {
       const evidence = readJson(EvidenceSchema.array(), path.join(dataDir, 'evidence', `${p.id}.json`))
@@ -188,25 +242,13 @@ export async function runJudge({ category, product }: { category?: string; produ
     for (const p of products) {
       const currentEvidence = readJson(EvidenceSchema.array(), path.join(dataDir, 'evidence', `${p.id}.json`))
       for (const story of stories) {
-        const cacheFile = path.join(CACHE_DIR, 'judge', cat.id, p.id, `${story.id}.json`)
-        if (!fs.existsSync(cacheFile)) {
-          console.warn(`judge: matrix incomplete for ${cat.id} — missing ${p.id}:${story.id}; not writing verdicts.json`)
+        const cached = currentCachedCell(cat.id, p.id, story, currentEvidence)
+        if (!cached) {
+          console.warn(`judge: matrix incomplete for ${cat.id} — missing or old-format cache for ${p.id}:${story.id}; not writing verdicts.json`)
           incomplete = true
           break
         }
-        const cached = JSON.parse(fs.readFileSync(cacheFile, 'utf8')) as { hash: string; keyVersion?: string; verdict: unknown }
-        if (cached.keyVersion !== CELL_HASH_VERSION) {
-          // Pre-CELL_HASH_VERSION entry: a clean miss, not evidence staleness — the matrix is
-          // simply not fully judged under the current key format yet.
-          console.warn(`judge: matrix incomplete for ${cat.id} — ${p.id}:${story.id} cached under an older key format; not writing verdicts.json (re-run judge --category ${cat.id} --product ${p.id})`)
-          incomplete = true
-          break
-        }
-        const currentHash = cellHash(story, currentEvidence, PROMPT_VERSION)
-        if (cached.hash !== currentHash) {
-          throw new Error(`judge: stale cached verdict for ${cat.id}/${p.id}:${story.id} — evidence changed; re-run judge --category ${cat.id} --product ${p.id}`)
-        }
-        all.push(VerdictSchema.parse(cached.verdict))
+        all.push(cached)
       }
       if (incomplete) break
     }

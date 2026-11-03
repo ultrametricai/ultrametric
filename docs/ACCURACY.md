@@ -173,6 +173,37 @@ The new prompt version invalidates older judge caches on the next scoped judge r
 source change does not rewrite the published corpus or authorize a bulk re-judge. Review
 legacy same-source transitions and the rubric migration before resuming scheduled runs.
 
+### Scoped judge verification
+
+`judge --product` publishes through the category matrix. Before any model call or cache
+write, it checks that every untouched product already has current input/rubric caches.
+A missing, old-format, stale, corrupt or mismatched untouched cache blocks that scoped
+publication. This preserves the complete-matrix requirement during a rubric migration.
+
+Use `judge-preview` for a separately approved, non-publishing live pilot:
+
+```sh
+pnpm engine judge-preview --category ai-video --product reelmimic --story api-sandbox
+```
+
+Run from an isolated checkout pinned to the reviewed source commit and capture stdout
+outside that checkout. The stage requires one explicit category, product and story;
+affiliated products follow the separate bias-audit process. It reads the existing evidence
+pack, skips all caches and matrix assembly, and returns the proposed verdict with model,
+prompt version and input/prompt hashes. It writes no caches, verdicts, rankings or projections.
+
+The pilot permits one provider request, with SDK, parse and correction retries disabled,
+a 60-second request timeout, at most 40,000 input bytes and 4,096 output tokens. An invalid,
+truncated or unsupported result stops the pilot. A retry requires another explicit decision.
+Normal scheduled judging retains its existing retry policy.
+
+Before and after the pilot, compare the tracked evidence, verdict, ranking and cache files
+and confirm the checkout remains clean. Review the returned quotations against the selected
+evidence and exact story, including adjacent-feature boundaries, before accepting the result.
+Keep all content workflows disabled throughout. This pilot checks judge behavior only;
+it neither exercises publication/recovery nor authorizes an arena migration or restart.
+Those require a separate reviewed rollout after the stack's checks and findings are cleared.
+
 Unsupported grade churn restores the previously published judgment when its cited content
 is unchanged and its rules remain valid. Changed or missing source content requires a verified current-input judgment, or a
 scoped re-judge within the worker's cell budget. Such source loss may lower full/partial

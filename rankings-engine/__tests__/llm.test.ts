@@ -52,6 +52,21 @@ describe('llmJson', () => {
     expect(JSON.stringify(secondCallMessages[2])).toMatch(/expected string/i)
   })
 
+  it('a single-request preview disables SDK and validation retries, including truncation', async () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    for (const response of [textResponse('not JSON'), textResponse('{"name":42}'),
+      { ...textResponse('{"name":'), stop_reason: 'max_tokens' }]) {
+      sleeps.length = 0
+      const create = vi.fn().mockResolvedValue(response)
+      setClientForTests({ messages: { create } } as never)
+      await expect(llmJson({ schema, system: 's', prompt: 'p', retry: false, timeoutMs: 60_000 })).rejects.toThrow(/after 1 attempts/)
+      expect(create).toHaveBeenCalledTimes(1)
+      expect(create.mock.calls[0][1]).toEqual({ maxRetries: 0, timeout: 60_000 })
+      expect(sleeps).toHaveLength(0)
+    }
+    warn.mockRestore()
+  })
+
   it('throws after max retries (5 attempts), backing off between them', async () => {
     sleeps.length = 0
     const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
