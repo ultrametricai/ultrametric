@@ -4879,16 +4879,11 @@
   {
     "productId": "turbopuffer",
     "storyId": "api-interactive-docs",
-    "verdict": "partial",
-    "quality": 3,
+    "verdict": "none",
+    "quality": 0,
     "confidence": "medium",
-    "rationale": "turbopuffer's docs include API reference pages with full write/query code samples in six SDK languages (Python, TypeScript, Go, Java, Ruby, Rust), and it publishes a public OpenAPI spec. That spec is caveated as primarily for internal use and subject to breaking changes, and no interactive in-browser explorer or 'try it' console is evidenced, so the examples are copy-and-run rather than runnable in the reference itself. The dashboard query feature is a separate console, not an API reference, and is not credited. Missing for 10: an interactive API explorer with in-page runnable requests, a stable public-facing OpenAPI spec for tooling, and independent corroboration of the reference experience.",
-    "evidenceIds": [
-      "turbopuffer-docs-39",
-      "turbopuffer-supp-openapi-docs",
-      "turbopuffer-supp-openapi-repo",
-      "turbopuffer-probe-3"
-    ]
+    "rationale": "The evidence shows static API documentation with multi-language code samples in the quickstart and API overview, but nothing about an interactive API reference where examples can be run in-browser. The OpenAPI/Swagger probes all returned 404. The dashboard's ability to browse documents and run queries is an adjacent feature, not an interactive API reference, so it earns no credit.",
+    "evidenceIds": []
   },
   {
     "productId": "turbopuffer",
@@ -4975,14 +4970,14 @@
   {
     "productId": "turbopuffer",
     "storyId": "backup-restore-snapshots",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "turbopuffer has a dedicated backups doc describing fully server-side namespace copies that work across regions and cloud providers, backed by a monitorable `copy_from_namespace` operation and instant copy-on-write branching. Together these give a first-party way to snapshot a namespace (its equivalent of a collection) into a backup copy. missing for 10: an explicitly documented restore workflow (restoring is only implied by copying back), named or point-in-time snapshot semantics, retention or scheduling of backups, and independent or hands-on corroboration.",
+    "rationale": "turbopuffer documents its own backup mechanism: server-side namespace copies (`copy_from_namespace`) that work across regions and cloud providers. It also offers copy-on-write branching of a namespace, which works like a snapshot, and lets you monitor long-running copies. However, restore is only implied (copying back from a backup namespace), and nothing describes managed snapshot or restore primitives. missing for 10: explicit restore workflow documentation, scheduled or automated snapshots, point-in-time recovery or retention controls, independent or hands-on corroboration.",
     "evidenceIds": [
       "turbopuffer-docs-33",
-      "turbopuffer-docs-11",
-      "turbopuffer-docs-23"
+      "turbopuffer-docs-23",
+      "turbopuffer-docs-11"
     ]
   },
   {
@@ -5005,12 +5000,11 @@
     "productId": "turbopuffer",
     "storyId": "bulk-import-export",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Bulk import is documented: writes accept a column-based upsert format where each key is a column (docs-24), and long operations can run asynchronously (docs-34). Export is not documented as its own capability. The evidence shows only server-side namespace-to-namespace copies across regions and clouds (docs-33, docs-11) and result pagination with `offset` (docs-6), not an export to files or a defined format. Missing for 10: a documented bulk-export endpoint or file format for vectors plus metadata, documented import from files or object storage, and hands-on corroboration of large-scale import/export.",
+    "rationale": "Bulk import is documented: the write API accepts column-based upserts where each key is a column, covering vectors and attributes. Bulk export is not shown as a dedicated capability. The evidence only covers server-side `copy_from_namespace` between namespaces (including cross-region and cross-cloud) and offset pagination of query results, neither of which is an export in a documented file format. missing for 10: a documented bulk-export endpoint or format for vectors plus metadata, file-based import/export formats (e.g., Parquet/JSONL), independent or hands-on corroboration.",
     "evidenceIds": [
       "turbopuffer-docs-24",
-      "turbopuffer-docs-34",
       "turbopuffer-docs-33",
       "turbopuffer-docs-11",
       "turbopuffer-docs-6"
@@ -5052,9 +5046,9 @@
     "productId": "turbopuffer",
     "storyId": "hybrid-dense-sparse-search",
     "verdict": "full",
-    "quality": 9,
+    "quality": 8,
     "confidence": "high",
-    "rationale": "turbopuffer documents BM25 full-text search alongside dense and sparse vector search. A dedicated hybrid page describes server-side rank fusion via RRF plus native reranking with managed models. Multi-queries send the vector and keyword sub-queries to the same namespace in one request for hybrid search. Missing for 10: independent or hands-on corroboration that the hybrid fusion works as documented.",
+    "rationale": "turbopuffer's docs show dense and sparse vector search (docs-1), BM25 full-text search (docs-15), and multi-queries that send several queries to one namespace for hybrid search (docs-20). They also document server-side rank fusion via RRF plus native reranking (docs-16), which covers dense+keyword fusion in one request. Missing for 10: independent or hands-on confirmation of hybrid fusion quality, and detail on fusion configuration beyond RRF (e.g., weighting between dense and BM25 signals).",
     "evidenceIds": [
       "turbopuffer-docs-1",
       "turbopuffer-docs-15",
@@ -5075,9 +5069,9 @@
     "productId": "turbopuffer",
     "storyId": "integrated-embedding-generation",
     "verdict": "full",
-    "quality": 8,
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "turbopuffer documents native embedding as generally available ('Embed without an API call'). The quickstart states that it embeds your text on both writes and queries, so you don't integrate an embedding provider at all. That directly replaces a separate embedding pipeline at both ingest and query time. Missing for 10: details on which built-in models are available or whether external model providers can be configured, and independent or hands-on corroboration of the native embedding feature.",
+    "rationale": "turbopuffer's docs state that native embedding is generally available. They also say turbopuffer embeds your text on both writes and queries, so you don't integrate an embedding provider at all. That directly covers in-database embedding at ingest and query time without a separate pipeline. Missing for 10: documentation of which embedding models are available or how to configure them (dimensions, provider choice, bring-your-own-model), and independent or hands-on corroboration of the native embedding feature.",
     "evidenceIds": [
       "turbopuffer-docs-7",
       "turbopuffer-docs-12"
@@ -5096,9 +5090,9 @@
     "productId": "turbopuffer",
     "storyId": "live-upserts-freshness",
     "verdict": "full",
-    "quality": 8,
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "turbopuffer documents upserts, conditional upsert/patch/delete, and patch/delete-by-filter writes, and states that vectors are incrementally indexed in SPFresh with 'writes appear in search results immediately.' Namespace metadata also exposes the count of unindexed write-ahead-log rows, which gives visibility into indexing lag. Missing for 10: an explicit documented consistency model (e.g. strong vs eventual read options and their guarantees for deletes and full-text search), and independent or hands-on corroboration of write-to-query freshness.",
+    "rationale": "turbopuffer documents column-based upserts, conditional upserts/patches/deletes, and delete-by-filter. It states that vectors are incrementally indexed in an SPFresh index so writes appear in search results immediately. Namespace metadata also exposes the count of write-ahead-log rows not yet indexed, a documented signal of index freshness. missing for 10: an explicit documented consistency model (e.g. strong vs eventual read options and their tradeoffs), quantified write-to-query latency figures, and independent or hands-on corroboration of freshness under continuous writes.",
     "evidenceIds": [
       "turbopuffer-docs-13",
       "turbopuffer-docs-21",
@@ -5110,52 +5104,52 @@
   {
     "productId": "turbopuffer",
     "storyId": "managed-cloud-offering",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "turbopuffer is offered as a hosted service, with multi-tenant cloud as the default and single-tenant or BYOC as options [docs-3]. Developers work with it entirely through official SDKs and API tokens [docs-39, docs-35], and the namespace is the database unit. Namespaces can be listed, branched, copied across regions/clouds and spun up per test through the API [docs-27, docs-23, docs-33, docs-37], which amounts to programmatic provisioning in a serverless model, and namespace pinning provisions reserved compute [docs-26]. missing for 10: programmatic API-key/token creation (tokens are created in the dashboard), a documented API for provisioning single-tenant/BYOC deployments, an explicit statement of how namespaces are created, independent hands-on corroboration.",
+    "rationale": "turbopuffer is clearly a managed cloud service: multi-tenant is the default deployment, with single-tenant and BYOC options, and the docs describe the object-storage architecture and native client SDKs. Programmatic provisioning is only partly evidenced. Namespaces can be created and managed through the API (branching creates copy-on-write clones, cross-region copies, prefix listing, per-test namespaces, namespace pinning), but API tokens are created and expired in the dashboard. missing for 10: documented API/IaC provisioning of accounts, tokens, and single-tenant/BYOC deployments, an explicit namespace-creation API, a published OpenAPI spec, and independent hands-on corroboration.",
     "evidenceIds": [
       "turbopuffer-docs-3",
-      "turbopuffer-docs-39",
-      "turbopuffer-docs-35",
-      "turbopuffer-docs-27",
+      "turbopuffer-docs-4",
       "turbopuffer-docs-23",
+      "turbopuffer-docs-26",
+      "turbopuffer-docs-27",
       "turbopuffer-docs-33",
+      "turbopuffer-docs-35",
       "turbopuffer-docs-37",
-      "turbopuffer-docs-26"
+      "turbopuffer-docs-39",
+      "turbopuffer-probe-3"
     ]
   },
   {
     "productId": "turbopuffer",
     "storyId": "metadata-filtered-search",
     "verdict": "full",
-    "quality": 7,
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "turbopuffer's docs say vector search keeps >90% recall when combined with any filters. The index is auto-tuned for 90-100% recall, a recall endpoint lets you verify this yourself, and exact kNN over a filtered subset is also supported. Filters also back attribute-based permission checks, and attributes can be marked filterable or not to tune indexing. missing for 10: documentation of filter operators and condition syntax, specific evidence on latency under selective filters, independent or hands-on corroboration of filtered recall.",
+    "rationale": "turbopuffer's docs explicitly claim vector search with >90% recall combined with any filters, and an auto-tuned index targeting 90-100% recall that users can check via a recall endpoint. They also document exact kNN over a filtered subset, attribute-level `filterable` control, and filter-based permission scoping at query time. missing for 10: independent or hands-on corroboration of filtered recall/latency, documented filtered-query latency figures, detail on supported filter operators/conditions.",
     "evidenceIds": [
       "turbopuffer-docs-1",
       "turbopuffer-docs-14",
       "turbopuffer-docs-18",
-      "turbopuffer-docs-28",
       "turbopuffer-docs-29",
-      "turbopuffer-docs-4"
+      "turbopuffer-docs-28"
     ]
   },
   {
     "productId": "turbopuffer",
     "storyId": "multi-tenant-isolation",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "turbopuffer's core isolation unit is the namespace. The docs show namespaces as isolated units (per-test isolated namespaces), listable by prefix, warmable per namespace, and pinnable for reserved compute. Cheapness comes from the object-storage-first design, and one limit is documented: a sharded namespace scales to 256TB. missing for 10: an explicit namespace-per-tenant multi-tenancy guide, documented limits on namespace count or per-tenant overhead, per-namespace cost figures, and independent corroboration of running many tenants at scale.",
+    "rationale": "turbopuffer documents namespaces as its isolation unit: you can list and paginate them by prefix, the docs recommend isolated per-test namespaces, cache warming and pinning work per namespace, and one documented per-namespace limit exists (up to 256TB with sharding). The docs also position the object-storage design as roughly 10x cheaper. However, the evidence never explicitly presents namespace-per-tenant as the tenancy pattern, never states cheap per-tenant economics, and documents no limits on namespace count. missing for 10: explicit namespace-per-tenant guidance, documented limits on namespace count and per-namespace quotas, per-tenant cost evidence, independent corroboration of running many tenants at scale.",
     "evidenceIds": [
       "turbopuffer-docs-27",
       "turbopuffer-docs-37",
       "turbopuffer-docs-5",
       "turbopuffer-docs-26",
       "turbopuffer-docs-30",
-      "turbopuffer-docs-38",
-      "turbopuffer-docs-4"
+      "turbopuffer-docs-38"
     ]
   },
   {
@@ -5198,14 +5192,11 @@
   {
     "productId": "turbopuffer",
     "storyId": "openness-self-host",
-    "verdict": "partial",
-    "quality": 3,
+    "verdict": "none",
+    "quality": 0,
     "confidence": "medium",
-    "rationale": "turbopuffer's own docs list single-tenant and BYOC (bring-your-own-cloud) deployments alongside its default multi-tenant service, so the core product can run in a customer's own cloud environment. Nothing shows a downloadable, independently operable self-hosted distribution, and a community commenter notes it is source-unavailable. That is not a hands-on contradiction of BYOC, but it confirms there is no open-source self-host path. Missing for 10: documented self-managed install/operation of the core engine, details on what BYOC entails (who operates it, requirements), an on-prem or air-gapped option, independent corroboration of BYOC deployments.",
-    "evidenceIds": [
-      "turbopuffer-docs-3",
-      "turbopuffer-comm-3"
-    ]
+    "rationale": "Self-hosting is a fair ask for a database product, so the axis applies. The docs list single-tenant and BYOC deployment alongside the default multi-tenant service, but the evidence describes no install path and a community commenter notes the product is source-unavailable, so users cannot run it themselves. Vendor-operated BYOC is a related deployment mode, not self-hosting, so no credit attaches (corrected 2026-11-01 per the prompt-v5 own-capability rule; PR #563 review).",
+    "evidenceIds": []
   },
   {
     "productId": "turbopuffer",
@@ -5268,14 +5259,15 @@
     "productId": "turbopuffer",
     "storyId": "published-latency-benchmarks",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "turbopuffer documents a concrete recall target (index auto-tuned for 90-100% recall, >90% with filters) and ships its own recall endpoint so users can measure recall themselves. Its latency claims (\"low-latency queries to petabyte scale\") carry no published latency figures or benchmark methodology in the evidence. A community commenter notes the introductory page contains substantial data, but no specific turbopuffer latency numbers are evidenced. missing for 10: published latency benchmarks (p50/p99 figures), documented benchmark methodology or datasets, independent corroboration of recall/latency numbers.",
+    "rationale": "turbopuffer's docs give concrete recall figures (>90% recall, an index auto-tuned for 90–100% recall) and offer a recall endpoint so users can measure recall on their own data. Latency is only described qualitatively (\"low-latency queries to petabyte scale\", \"fast\"), and a community commenter notes the introductory page contains substantial performance data. Commenters disputed that page's ClickHouse comparison figures, but those concern a competitor, not turbopuffer's own numbers. Missing for 10: published latency numbers (p50/p99) or a benchmark methodology in the evidence, independent benchmark corroboration, and throughput figures.",
     "evidenceIds": [
-      "turbopuffer-docs-14",
       "turbopuffer-docs-1",
+      "turbopuffer-docs-14",
       "turbopuffer-docs-4",
-      "turbopuffer-comm-7"
+      "turbopuffer-comm-7",
+      "turbopuffer-comm-5"
     ]
   },
   {

@@ -4938,17 +4938,11 @@
   {
     "productId": "zoom-scribe",
     "storyId": "agentic-autonomous-automation",
-    "verdict": "partial",
-    "quality": 4,
+    "verdict": "none",
+    "quality": 0,
     "confidence": "medium",
-    "rationale": "Scribe's batch mode lets a user submit jobs of up to 10,000 files from S3 prefixes or manifests. Those jobs then run asynchronously through QUEUED/PROCESSING/SUCCEEDED states, and Zoom sends a signed webhook POST when each job finishes, so the work does run in the background without supervision. However, these are one-off submitted jobs, not configurable automations: nothing shows scheduled runs, recurring triggers, or automatic pickup of new files. Missing for 10: scheduled or recurring automation setup, event-triggered pipelines (e.g., auto-transcribe new uploads), automation management UI or config, and independent or hands-on corroboration.",
-    "evidenceIds": [
-      "zoom-scribe-supp-batch-lifecycle",
-      "zoom-scribe-supp-batch-webhooks",
-      "zoom-scribe-docs-4",
-      "zoom-scribe-docs-5",
-      "zoom-scribe-supp-batch-failures"
-    ]
+    "rationale": "A transcription API service could plausibly offer triggered or scheduled automations, such as auto-transcribing new files as they land in a bucket, so the axis applies. The evidence shows only on-demand modes: synchronous fast mode, live WebSocket streaming, and batch jobs the developer submits. Batch jobs over an S3 prefix are developer building blocks, not a documented capability to set up automations that run autonomously in the background, and no schedules, triggers or watchers are evidenced.",
+    "evidenceIds": []
   },
   {
     "productId": "zoom-scribe",
@@ -5181,14 +5175,12 @@
     "productId": "zoom-scribe",
     "storyId": "batch-concurrency",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "Scribe's batch mode handles large-scale parallel transcription: a single job can cover up to 10,000 files (or 1,000 from a manifest), and files are processed independently. Jobs move through a documented lifecycle that starts with a QUEUED state, with list, status, cancel and per-file endpoints. However, nothing in the evidence documents concurrency limits, rate limits, or how jobs are queued and scheduled beyond the existence of the QUEUED state. missing for 10: documented concurrency/rate limits (max concurrent jobs or requests), explicit queueing/scheduling behavior, limits on parallel synchronous or live sessions, independent corroboration",
+    "rationale": "Batch mode handles high-volume transcription, accepting up to 10,000 audio files per job or 1,000 from a manifest, including all files under an S3 prefix with glob filters. That gives developers a first-party way to process many files at once. The evidence never documents concurrency limits, parallel job execution, or queueing behavior, which are the core of this story. missing for 10: documented per-account concurrency limits, documented queueing and backpressure behavior when limits are exceeded, explicit support for running multiple jobs in parallel, rate-limit/429 handling guidance, independent corroboration.",
     "evidenceIds": [
       "zoom-scribe-docs-4",
-      "zoom-scribe-supp-batch-lifecycle",
-      "zoom-scribe-supp-batch-failures",
-      "zoom-scribe-supp-openapi-docs"
+      "zoom-scribe-docs-5"
     ]
   },
   {
@@ -5430,16 +5422,15 @@
     "productId": "zoom-scribe",
     "storyId": "streaming-endpoint",
     "verdict": "full",
-    "quality": 8,
+    "quality": 9,
     "confidence": "medium",
-    "rationale": "Zoom Scribe documents a Live mode in which developers stream binary PCM16 or Opus audio over a WebSocket. It returns partial Captions and completed transcript items as speech is processed, and the API reference catalogs a Live Scribe WebSocket operation. The live session also supports in-stream session.update events, for example to swap vocabulary mid-session. Missing for 10: independent or hands-on corroboration of real-time latency and behavior, and partial-result Captions are still in preview.",
+    "rationale": "Zoom Scribe documents a Live mode in which the client streams binary PCM16 or Opus audio over a WebSocket and receives partial captions plus completed transcript items as speech is processed. Inline vocabulary can be updated mid-session via session.update events, and the mode accepts Zoom RTMS audio. missing for 10: independent or hands-on corroboration of the live WebSocket stream, and the partial-results captions feature is still marked preview.",
     "evidenceIds": [
       "zoom-scribe-docs-2",
       "zoom-scribe-docs-21",
       "zoom-scribe-docs-3",
       "zoom-scribe-docs-16",
-      "zoom-scribe-supp-openapi-docs",
-      "zoom-scribe-supp-openapi-probe"
+      "zoom-scribe-docs-20"
     ]
   },
   {
