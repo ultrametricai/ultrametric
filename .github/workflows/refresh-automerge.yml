@@ -161,6 +161,12 @@ jobs:
                   continue
               number, sha = pr['number'], pr['head']['sha']
               try:
+                  # New CI runs may not have created check records yet. Preserve
+                  # their head before considering a base update or conflict repair.
+                  active_runs = api(f'actions/workflows/ci.yml/runs?head_sha={sha}&per_page=100')['workflow_runs']
+                  if any(run['status'] != 'completed' and run['conclusion'] != 'action_required' for run in active_runs):
+                      print(f'#{number}: CI is active; retain the existing head', flush=True)
+                      continue
                   comparison = api(f'compare/main...{sha}')
                   head_checks = api(f'commits/{sha}/check-runs?per_page=100')['check_runs']
                   if comparison['behind_by']:

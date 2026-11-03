@@ -389,6 +389,22 @@ class RecoveryCITests(unittest.TestCase):
                     self.assertIsNone(error)
                     self.assertEqual(ci, [])
 
+    def test_pending_ci_prevents_stale_checks_from_updating_a_behind_head(self):
+        for event in ['pull_request','workflow_dispatch']:
+            for status in ['queued','in_progress','waiting']:
+                with self.subTest(event=event,status=status):
+                    _, calls, error = self.recover([self.run_record(event,None,status=status)],
+                                                   updated_head='b'*40)
+                    self.assertIsNone(error)
+                    self.assertFalse(any('/update-branch' in ' '.join(call) for call in calls))
+                    self.assertFalse(any(call[:3] == ['gh','workflow','run'] for call in calls))
+
+    def test_pending_ci_prevents_conflict_repair_from_replacing_an_active_head(self):
+        _, calls, error = self.recover([self.run_record('workflow_dispatch',None,status='queued')],
+                                       behind=1, mergeable=False, strict=False)
+        self.assertIsNone(error)
+        self.assertFalse(any(call[:3] == ['gh','workflow','run'] for call in calls))
+
     def test_real_ci_results_are_preserved_despite_newer_approval_record(self):
         for conclusion in ['success','failure']:
             with self.subTest(conclusion=conclusion):
