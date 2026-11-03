@@ -19,7 +19,44 @@ These discussions may be about a DIFFERENT product that shares the name. Include
 Return JSON: {"items":[{"url":"...","excerpt":"..."}]}`
 }
 
-async function hnCorpus(name: string): Promise<{ url: string; text: string }[]> {
+type CommunitySource = { url: string; text: string }
+
+async function fetchCommunitySource(url: string): Promise<CommunitySource> {
+  const canonical = canonicalSource(url)
+  const hn = canonical.match(/^https:\/\/news\.ycombinator\.com\/item\?id=(\d+)$/)
+  if (!hn) return { url: canonical, text: htmlToMarkdown(await fetchWithRetry(url)).slice(0, 20_000) }
+  // Curated API/display URLs and search results must use identical source text,
+  // including when one fetch path fails or search stops returning the thread.
+  const item = JSON.parse(await fetchWithRetry(`https://hn.algolia.com/api/v1/items/${hn[1]}`)) as {
+    title: string
+    children: { text: string | null }[]
+  }
+  const comments = item.children.map(c => c.text ? htmlToMarkdown(c.text) : '')
+    .filter(Boolean).slice(0, 30).join('\n---\n')
+  return { url: canonical, text: `# ${item.title}\n${comments}`.slice(0, 20_000) }
+}
+
+const sourceBlock = (source: CommunitySource) => `=== ${source.url} ===\n${source.text}`
+
+function selectCommunitySources(sources: CommunitySource[]): CommunitySource[] {
+  const seen = new Set<string>()
+  const selected: CommunitySource[] = []
+  let length = 0
+  for (const source of sources) {
+    const key = canonicalSource(source.url)
+    if (seen.has(key)) continue
+    seen.add(key)
+    const size = sourceBlock(source).length + (selected.length ? 2 : 0)
+    // Keep complete, stable source representations. An omitted or partially
+    // rendered source cannot supply provenance for a model-written report.
+    if (length + size > 80_000) continue
+    selected.push(source)
+    length += size
+  }
+  return selected
+}
+
+async function hnCorpus(name: string, excluded: Set<string>): Promise<CommunitySource[]> {
   let search: { hits: { objectID: string; title: string; num_comments: number }[] }
   try {
     search = JSON.parse(
@@ -29,19 +66,14 @@ async function hnCorpus(name: string): Promise<{ url: string; text: string }[]> 
     console.warn(`collect-community: WARN HN search for "${name}" failed: ${(err as Error).message}`)
     return []
   }
-  const out: { url: string; text: string }[] = []
+  const out: CommunitySource[] = []
+  const seen = new Set(excluded)
   for (const hit of search.hits.filter((h) => h.num_comments > 0)) {
+    const url = `https://news.ycombinator.com/item?id=${hit.objectID}`
+    if (seen.has(url)) continue
     try {
-      const item = JSON.parse(await fetchWithRetry(`https://hn.algolia.com/api/v1/items/${hit.objectID}`)) as {
-        title: string
-        children: { text: string | null }[]
-      }
-      const comments = item.children
-        .map((c) => (c.text ? htmlToMarkdown(c.text) : ''))
-        .filter(Boolean)
-        .slice(0, 30)
-        .join('\n---\n')
-      out.push({ url: `https://news.ycombinator.com/item?id=${hit.objectID}`, text: `# ${item.title}\n${comments}` })
+      out.push(await fetchCommunitySource(url))
+      seen.add(url)
     } catch (err) {
       console.warn(`collect-community: WARN hn item ${hit.objectID} failed: ${(err as Error).message}`)
     }
@@ -51,7 +83,15 @@ async function hnCorpus(name: string): Promise<{ url: string; text: string }[]> 
 
 export function mergeCommunityEvidence(productId: string, existing: Evidence[], items: Array<{ url: string; excerpt: string }>,
   sources: Array<{ url: string; text: string }>, now: string): Evidence[] {
-  const digests = new Map(sources.map(source => [canonicalSource(source.url), sourceHash(source.text)]))
+  const digests = new Map<string, string>()
+  for (const source of sources) {
+    const key = canonicalSource(source.url)
+    const digest = sourceHash(source.text)
+    if (digests.has(key) && digests.get(key) !== digest) {
+      throw new Error(`Ambiguous community source representations: ${key}`)
+    }
+    digests.set(key, digest)
+  }
   const result = [...existing]
   const ids = new Set(existing.map(item => item.id))
   let index = 0
@@ -92,18 +132,19 @@ export async function runCollectCommunity({ category, product }: { category?: st
         // whose name is a common word (e.g. "Convex") the HN name-search returns off-topic
         // threads that would otherwise consume the whole budget before any hand-picked seed
         // is reached.
-        const sources: { url: string; text: string }[] = []
+        const seedSources: CommunitySource[] = []
+        const seedUrls = new Set<string>()
         for (const url of catSeeds[p.id] ?? []) {
+          if (seedUrls.has(canonicalSource(url))) continue
           try {
-            sources.push({ url, text: htmlToMarkdown(await fetchWithRetry(url)).slice(0, 20_000) })
+            const source = await fetchCommunitySource(url)
+            seedSources.push(source)
+            seedUrls.add(canonicalSource(source.url))
           } catch (err) {
             console.warn(`collect-community: WARN seed ${url} failed: ${(err as Error).message}`)
           }
         }
-        const seedUrls = new Set(sources.map((s) => s.url))
-        for (const source of await hnCorpus(`${p.name}`)) {
-          if (!seedUrls.has(source.url)) sources.push(source)
-        }
+        let sources = selectCommunitySources([...seedSources, ...await hnCorpus(p.name, seedUrls)])
         if (sources.length === 0) {
           console.warn(`collect-community: WARN no community sources found for ${cat.id}/${p.id}; skipping`)
           continue
@@ -114,17 +155,14 @@ export async function runCollectCommunity({ category, product }: { category?: st
         } catch {
           siteDomain = p.urls.site
         }
-        const buildCorpus = (srcs: { url: string; text: string }[]) =>
-          srcs.map((s) => `=== ${s.url} ===\n${s.text}`).join('\n\n').slice(0, 80_000)
-        const distill = (srcs: { url: string; text: string }[]) =>
+        const distill = (srcs: CommunitySource[]) =>
           llmJson({
             schema: CommunityItemsSchema,
             system: buildSystemPrompt(p.name, p.vendor, siteDomain, cat.name),
-            prompt: `Product: ${p.name}\n\nDiscussions:\n\n${buildCorpus(srcs)}`,
+            prompt: `Product: ${p.name}\n\nDiscussions:\n\n${srcs.map(sourceBlock).join('\n\n')}`,
             maxTokens: 8192,
           })
         let items: { url: string; excerpt: string }[]
-        const seedCount = (catSeeds[p.id] ?? []).length
         try {
           ;({ items } = await distill(sources))
         } catch (err) {
@@ -132,12 +170,12 @@ export async function runCollectCommunity({ category, product }: { category?: st
           // refuses to process at all (seen live: "Vapi" HN name-search returns vaping-illness
           // threads → stop_reason "refusal" on every attempt). When curated seeds exist, retry
           // once against the seed sources alone — they were hand-picked for the right product.
-          const seedSources = sources.slice(0, seedCount)
-          if (seedSources.length === 0) throw err
+          sources = selectCommunitySources(seedSources)
+          if (sources.length === 0) throw err
           console.warn(
-            `collect-community: WARN ${cat.id}/${p.id} full corpus failed (${(err as Error).message}); retrying with ${seedSources.length} curated seed source(s) only`,
+            `collect-community: WARN ${cat.id}/${p.id} full corpus failed (${(err as Error).message}); retrying with ${sources.length} curated seed source(s) only`,
           )
-          ;({ items } = await distill(seedSources))
+          ;({ items } = await distill(sources))
         }
         const now = new Date().toISOString()
         const file = path.join(dataDir, 'evidence', `${p.id}.json`)
