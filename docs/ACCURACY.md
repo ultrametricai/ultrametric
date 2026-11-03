@@ -92,7 +92,8 @@ score built entirely from zero-evidence none/na cells renders italic *untested*,
    pushes, twice hourly, or by manual dispatch. Auto-merge waits for validation, ci, Greptile Review, and
    resolved Greptile review threads via the metadata-only `review-findings` gate.
    Foreloop checks and threads are outside the merge requirements. The CI stability
-   gate rejects upgrades without a cited evidence ID new to that product pack. A verified
+   gate rejects upgrades without verified new cited source support. A fresh row ID or
+   model paraphrase alone does not establish new facts. A verified
    downgrade may instead follow changed or lost prior support; quality cannot increase and
    applicability cannot change through that path. Review semantic findings under the re-judge
    stability policy before merging: when prior cited support is unchanged, a verdict flip
@@ -161,6 +162,57 @@ repeated extraction of the same content retains the same identity. Timestamp-onl
 create no new evidence. Repairs reconcile older PRs that reused an ID for changed text and
 remap their citations. A cache may migrate across label-only changes only after its original
 payload hash and exact original judgment are verified.
+
+Fetched first-party and community text carries a SHA-256 source digest computed before
+model extraction. Same-source score changes require a changed digest as well as changed
+cited content. Legacy same-source records without digests require review; the runner cannot
+infer changed facts from a fresh label or paraphrase. Equivalent Hacker News API/discussion
+URLs and whitespace-only changes do not establish new support or support loss. Real probe
+observations can record changed behavior at the same endpoint. Runtime/audit probes and
+preservation markers survive scheduled refreshes, and publication rejects their removal.
+Community extraction appends dated observations and preserves prior reports when a model
+omits them. An unchanged source digest cannot produce another community paraphrase row.
+
+The current judge response requires structured support: the exact story subject, direct
+versus adjacent relation, complete versus partial coverage, and verbatim cited quotations.
+Full credit requires complete direct support; partial credit requires the named capability
+itself. Questions cannot establish an affirmative claim. Extraction verifies its quotations
+against the fetched source. These checks enforce the response contract, not semantic truth;
+independent review still checks whether a quotation actually entails the named capability.
+The new prompt version invalidates older judge caches on the next scoped judge run. This
+source change does not rewrite the published corpus or authorize a bulk re-judge. Review
+legacy same-source transitions and the rubric migration before resuming scheduled runs.
+
+### Scoped judge verification
+
+`judge --product` publishes through the category matrix. Before any model call or cache
+write, it checks that every untouched product already has current input/rubric caches.
+A missing, old-format, stale, corrupt or mismatched untouched cache blocks that scoped
+publication. This preserves the complete-matrix requirement during a rubric migration.
+
+Use `judge-preview` for a separately approved, non-publishing live pilot:
+
+```sh
+pnpm engine judge-preview --category ai-video --product reelmimic --story api-sandbox
+```
+
+Run from an isolated checkout pinned to the reviewed source commit and capture stdout
+outside that checkout. The stage requires one explicit category, product and story;
+affiliated products follow the separate bias-audit process. It reads the existing evidence
+pack, skips all caches and matrix assembly, and returns the proposed verdict with model,
+prompt version and input/prompt hashes. It writes no caches, verdicts, rankings or projections.
+
+The pilot permits one provider request, with SDK, parse and correction retries disabled,
+a 60-second request timeout, at most 40,000 input bytes and 4,096 output tokens. An invalid,
+truncated or unsupported result stops the pilot. A retry requires another explicit decision.
+Normal scheduled judging retains its existing retry policy.
+
+Before and after the pilot, compare the tracked evidence, verdict, ranking and cache files
+and confirm the checkout remains clean. Review the returned quotations against the selected
+evidence and exact story, including adjacent-feature boundaries, before accepting the result.
+Keep all content workflows disabled throughout. This pilot checks judge behavior only;
+it neither exercises publication/recovery nor authorizes an arena migration or restart.
+Those require a separate reviewed rollout after the stack's checks and findings are cleared.
 
 Unsupported grade churn restores the previously published judgment when its cited content
 is unchanged and its rules remain valid. Changed or missing source content requires a verified current-input judgment, or a
