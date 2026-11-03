@@ -119,6 +119,15 @@ The recovery controller dispatches `refresh-repair.yml` for failing generated st
 PRs, unresolved Greptile findings on verdict cells, and merge conflicts. CI completion also
 wakes recovery. Foreloop remains outside this loop.
 
+GitHub marks `pull_request` runs created by `GITHUB_TOKEN` as `action_required` until a
+maintainer approves them. Generated PRs explicitly dispatch the same CI workflow on their
+head branch. Recovery treats an approval-required run with no dispatched result as missing
+CI. It preserves active runs from either event and the latest success/failure result within
+each event. Older completed runs cannot mask a newer cancelled run of the same event. It retries runs that
+ended without a result up to three dispatches per head. Exhausting that budget reports an
+error for human review. An approval-required run appearing after a successful dispatch
+does not trigger another dispatch. See [GitHub's workflow-trigger rules](https://docs.github.com/en/actions/concepts/security/github_token#when-github_token-triggers-workflow-runs).
+
 The worker executes the current main branch only. It fetches the proposed branch as data,
 accepts changes only in its arena and declared generated projections, and rejects code,
 workflow, symlink, and cross-arena source edits. Concurrent canonical source edits remain
