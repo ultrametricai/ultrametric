@@ -3,6 +3,7 @@ import json
 import io
 import os
 import runpy
+import shutil
 import subprocess
 import tempfile
 import unittest
@@ -15,7 +16,7 @@ with patch.dict(os.environ, {'REPO':'owner/repo','PR_NUMBER':'536','PR_HEAD':'a'
 GLOBALS = MODULE['recheck'].__globals__
 SHA = 'a'*40
 BRANCH = 'story-runner/email-123'
-PR = {'state':'open','draft':False,'base':{'ref':'main'},'head':{'sha':SHA,'ref':BRANCH,'repo':{'full_name':'owner/repo'}},'user':{'login':'github-actions[bot]'}}
+PR = {'state':'open','draft':False,'auto_merge':{'enabled_by':{'login':'maintainer'}},'base':{'ref':'main'},'head':{'sha':SHA,'ref':BRANCH,'repo':{'full_name':'owner/repo'}},'user':{'login':'github-actions[bot]'}}
 REPORT = {'originalThreads':['old'],'audits':[{'thread':'old','addressed':True}],
           'findingSnapshots':{'old':MODULE['finding_fingerprint']({'id':'old'})}}
 
@@ -75,6 +76,15 @@ class ControllerTests(unittest.TestCase):
         self.assertEqual(phase,'closed-or-changed')
         self.assertFalse(any(endpoint=='graphql' for endpoint,_ in calls))
 
+    def test_manual_stop_during_recheck_does_not_resolve_or_reenable(self):
+        for override in [{'draft':True}, {'auto_merge':None}]:
+            command=Mock()
+            def api(endpoint,data=None):
+                return {'workflow_runs':[{}]} if '/runs?' in endpoint else {'check_runs':checks()}
+            with patch.dict(GLOBALS,{'api':api,'command':command,'current':lambda:{**PR,**override}}):
+                self.assertEqual(MODULE['recheck'](REPORT,BRANCH,SHA),'closed-or-changed')
+            command.assert_not_called()
+
     def test_audit_resume_precedes_the_published_attempt_limit(self):
         with tempfile.TemporaryDirectory() as directory:
             def output(args):
@@ -108,6 +118,15 @@ class DispatcherTests(unittest.TestCase):
             namespace['request_repair']({'number':536,'head':{'ref':BRANCH}},SHA)
         return command
 
+    def test_review_gate_failure_cannot_trigger_a_data_repair(self):
+        fn=self.controller()['failed_validation']
+        run={'id':1,'status':'completed','conclusion':'failure','check_suite_id':123}
+        check={'name':'review-findings','app':{'id':15368},'check_suite':{'id':123},'status':'completed','conclusion':'failure'}
+        self.assertFalse(fn([run],[check]))
+        self.assertTrue(fn([run],[{**check,'name':'validation'}]))
+        self.assertFalse(fn([run],[{**check,'name':'validation','check_suite':{'id':122}}]))
+        self.assertFalse(fn([run,{**run,'id':2,'status':'in_progress','conclusion':None}],[{**check,'name':'validation'}]))
+
     def test_latest_check_replaces_an_older_cancelled_or_failed_check(self):
         latest=MODULE['latest_checks']([{'id':1,'name':'ci','app':{'id':15368},'conclusion':'cancelled'},
                                        {'id':2,'name':'ci','app':{'id':15368},'conclusion':'success'}])
@@ -121,7 +140,7 @@ class DispatcherTests(unittest.TestCase):
         def api(endpoint,data=None):
             return {'workflow_runs':[{'id':1,'event':'workflow_dispatch','status':'completed','conclusion':'cancelled'}]}
         command=Mock()
-        with patch.dict(GLOBALS,{'api':api,'command':command}):
+        with patch.dict(GLOBALS,{'api':api,'command':command,'current':lambda:PR}):
             with self.assertRaisesRegex(RuntimeError,'same-head CI retry requested'):
                 MODULE['recheck'](REPORT,BRANCH,SHA)
         command.assert_called_once_with(['gh','workflow','run','ci.yml','--repo','owner/repo','--ref',BRANCH])
@@ -186,7 +205,7 @@ class ResumeArtifactTests(unittest.TestCase):
 class RecoveryCITests(unittest.TestCase):
     """Execute the recovery workflow against GitHub event histories, without writes."""
     def run_record(self, event='pull_request', conclusion='action_required', *, id=1, status='completed'):
-        return {'id':id,'event':event,'status':status,'conclusion':conclusion}
+        return {'id':id,'event':event,'status':status,'conclusion':conclusion,'check_suite_id':123}
 
     def recover(self, runs, *, pr=None, updated_head=None):
         pr = pr or {**PR,'number':536,'auto_merge':{'enabled_by':{'login':'maintainer'}}}
@@ -209,7 +228,8 @@ class RecoveryCITests(unittest.TestCase):
                     self.assertIn(f'head_sha={updated_head or SHA}&', endpoint)
                     result = {'workflow_runs':runs}
                 elif '/check-runs?' in endpoint:
-                    result = {'check_runs':[{'app':{'id':867647}}]}
+                    result = {'check_runs':[{'name':'ci','app':{'id':15368},'check_suite':{'id':123},'status':'completed',
+                        'conclusion':'failure' if any(r['conclusion']=='failure' for r in runs) else 'success'}]}
                 elif '/workflows/refresh-repair.yml/runs?' in endpoint:
                     result = {'workflow_runs':[]}
                 else:
@@ -319,13 +339,48 @@ class RecoveryCITests(unittest.TestCase):
         self.assertEqual(len(ci), 1)
 
     def test_drafts_forks_and_unrelated_authors_still_stay_outside_recovery(self):
-        for override in [{'draft':True}, {'user':{'login':'someone'}},
+        for override in [{'draft':True}, {'auto_merge':None}, {'user':{'login':'someone'}},
                          {'head':{**PR['head'],'repo':{'full_name':'fork/repo'}}}]:
             with self.subTest(override=override):
                 ci, calls, error = self.recover([], pr={**PR,'number':536,**override})
                 self.assertIsNone(error)
                 self.assertEqual(ci, [])
                 self.assertEqual(calls, [])
+
+
+class PublicationTests(unittest.TestCase):
+    def test_unsupported_grade_change_stops_before_remote_push_pr_or_review(self):
+        root=Path(__file__).resolve().parents[2]
+        source=(root/'.github/workflows/story-runner.yml').read_text().split('      - name: Open PR if anything changed\n',1)[1]
+        script='\n'.join(line[10:] for line in source.split('        run: |\n',1)[1].splitlines())
+        with tempfile.TemporaryDirectory() as directory:
+            cwd=Path(directory)
+            arena=cwd/'open-rankings/fixture'; (arena/'evidence').mkdir(parents=True)
+            checker=cwd/'rankings-engine/scripts/check-refresh-stability.mjs'; checker.parent.mkdir(parents=True)
+            shutil.copy(root/'rankings-engine/scripts/check-refresh-stability.mjs',checker)
+            old={'productId':'vendor','storyId':'story','verdict':'partial','quality':5,'evidenceIds':['old']}
+            (arena/'verdicts.json').write_text(json.dumps([old]))
+            (arena/'evidence/vendor.json').write_text(json.dumps([{'id':'old','excerpt':'same support'}]))
+            (cwd/'README.md').write_text('Fixture\n')
+            (cwd/'rankings-engine/cache').mkdir()
+            (cwd/'rankings-engine/cache/.keep').write_text('')
+            git=shutil.which('git')
+            for args in [['init','-b','main'],['config','user.name','Fixture'],['config','user.email','fixture@example.invalid'],['add','.'],['commit','-m','baseline']]:
+                subprocess.run([git,*args],cwd=cwd,check=True,capture_output=True)
+            (arena/'verdicts.json').write_text(json.dumps([{**old,'quality':9}]))
+            binaries=cwd/'bin'; binaries.mkdir()
+            for name,body in {
+                'pnpm':'exit 0',
+                'gh':'touch "$ATTEMPT_LOG"; exit 90',
+                'git':f'if [ "$1" = push ]; then touch "$ATTEMPT_LOG"; exit 91; fi\nexec "{git}" "$@"',
+            }.items():
+                binary=binaries/name; binary.write_text('#!/bin/sh\n'+body+'\n'); binary.chmod(0o755)
+            result=subprocess.run(['bash','-e','-c',script],cwd=cwd,text=True,capture_output=True,
+                env={**os.environ,'PATH':str(binaries)+os.pathsep+os.environ['PATH'],'CATEGORY':'fixture',
+                     'RUN_ID':'123','ATTEMPT_LOG':str(cwd/'remote-attempt')})
+            self.assertNotEqual(result.returncode,0)
+            self.assertIn('unsupported refresh grade changes',result.stderr)
+            self.assertFalse((cwd/'remote-attempt').exists())
 
 if __name__=='__main__':
     unittest.main()

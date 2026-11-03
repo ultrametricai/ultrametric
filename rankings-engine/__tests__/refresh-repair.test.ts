@@ -6,11 +6,18 @@ import { execFileSync } from 'node:child_process'
 import { llmJson } from '../llm'
 import { cellHash, CELL_HASH_VERSION, PROMPT_VERSION } from '../stages/judge'
 vi.mock('../llm', async importOriginal => ({ ...await importOriginal<typeof import('../llm')>(), llmJson: vi.fn() }))
-import { allowed, mergeData, projection, restoreChurn, rowAtLine, rekeyEvidence, sourceCacheMatches, judgeRepairCell, repair } from '../refresh-repair'
+import { allowed, mergeData, projection, restoreChurn, rowAtLine, rekeyEvidence, sourceCacheMatches, judgeRepairCell, repair, repairProgress } from '../refresh-repair'
 import type { Evidence, Verdict, Story } from '../../lib/schemas'
 const old: Verdict = { productId: 'vendor', storyId: 'story', verdict: 'partial', quality: 5, confidence: 'high', rationale: 'missing for 10: callback documentation', evidenceIds: ['old'] }
 const evidence = (id: string): Evidence => ({ id, tier: 'claimed-docs', url: 'https://example.invalid/docs', excerpt: 'Documented behavior', fetchedAt: '2026-10-30T00:00:00Z' })
 describe('refresh repair policy', () => {
+  it('rejects the #567 no-op repairs even if evidence timestamps or order change', () => {
+    const packs = { vendor: [evidence('old'), evidence('second')] }
+    const later = { vendor: [...packs.vendor].reverse().map(row => ({ ...row, fetchedAt: '2026-11-03T00:00:00Z' })) }
+    expect(repairProgress([old], [old], packs, later)).toBe(false)
+    expect(repairProgress([old], [{ ...old, quality: 4 }], packs, later)).toBe(true)
+    expect(repairProgress([old], [old], packs, { vendor: [{ ...evidence('old'), excerpt: 'corrected source' }] })).toBe(true)
+  })
   it('restores a previous judged cell for unsupported grade and quality churn', () => {
     const proposed = { ...old, verdict: 'full' as const, quality: 9 }
     const result = restoreChurn([old], [proposed], { vendor: [evidence('old')] }, { vendor: [evidence('old')] })
@@ -123,7 +130,7 @@ describe('changed-source identities and scoped judging', () => {
   })
 })
 describe('trusted-main Git boundary', () => {
-  for (const kind of ['code', 'symlink']) it(`rejects ${kind} changes before executing PR code or writing repairs`, async () => {
+  for (const kind of ['code', 'symlink', 'unsupported-finding']) it(`rejects ${kind} changes before executing PR code or writing repairs`, async () => {
     const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'um-repair-guard-'))
     const previous = process.cwd()
     const git = (...args: string[]) => execFileSync('git', args, { cwd: dir, encoding: 'utf8', stdio: 'pipe' }).trim()
@@ -134,11 +141,15 @@ describe('trusted-main Git boundary', () => {
       fs.writeFileSync(file, '[]\n'); git('add', '.'); git('commit', '-m', 'trusted')
       const main = git('rev-parse', 'HEAD')
       if (kind === 'code') fs.writeFileSync(path.join(dir, 'package.json'), '{"scripts":{"test":"untrusted"}}')
-      else { fs.unlinkSync(file); fs.symlinkSync('/tmp/untrusted-target', file) }
+      else if (kind === 'symlink') { fs.unlinkSync(file); fs.symlinkSync('/tmp/untrusted-target', file) }
+      else fs.writeFileSync(file, '[{}]\n')
       git('add', '-A'); git('commit', '-m', 'proposed')
       const head = git('rev-parse', 'HEAD'); git('checkout', '--detach', main)
       process.chdir(dir)
-      await expect(repair({ head, main, arena: 'fixture', findings: [], keyed: false })).rejects.toThrow(kind === 'code' ? 'outside its arena' : 'regular data file')
+      const findings = kind === 'unsupported-finding'
+        ? [{ id: '567-claims', path: 'open-rankings/fixture/claims/vendor.json', commit: head, line: 2, body: 'FAQ questions are not capability claims' }] : []
+      await expect(repair({ head, main, arena: 'fixture', findings, keyed: false })).rejects.toThrow(
+        kind === 'code' ? 'outside its arena' : kind === 'symlink' ? 'regular data file' : 'Unsupported repair finding')
       expect(git('status', '--porcelain')).toBe('')
     } finally { process.chdir(previous); fs.rmSync(dir, { recursive: true, force: true }) }
   })

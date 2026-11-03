@@ -86,8 +86,8 @@ score built entirely from zero-evidence none/na cells renders italic *untested*,
 
 ## Human review points
 
-1. **story-runner PRs** — every refresh lands as a PR and explicitly dispatches CI on its
-   branch. The metadata-only refresh-auto-merge recovery workflow updates generated branches
+1. **story-runner PRs** — every refresh passes the deterministic stability check locally
+   before its branch is pushed or PR opened, then explicitly dispatches CI on its branch. The metadata-only refresh-auto-merge recovery workflow updates generated branches
    and dispatches missing CI on main pushes, twice hourly, or by manual dispatch. Auto-merge waits for validation, ci, Greptile Review, a current main base, and
    resolved Greptile review threads via the metadata-only `review-findings` gate.
    Foreloop checks and threads are outside the merge requirements. The CI stability
@@ -117,7 +117,8 @@ score built entirely from zero-evidence none/na cells renders italic *untested*,
 
 The recovery controller dispatches `refresh-repair.yml` for failing generated story-runner
 PRs, unresolved Greptile findings on verdict cells, and merge conflicts. CI completion also
-wakes recovery. Foreloop remains outside this loop.
+wakes recovery. Drafts and PRs whose auto-merge opt-in was removed are skipped. Recovery
+and repair retain existing opt-in and never re-enable it. Foreloop remains outside this loop.
 
 GitHub marks `pull_request` runs created by `GITHUB_TOKEN` as `action_required` until a
 maintainer approves them. Generated PRs explicitly dispatch the same CI workflow on their
@@ -149,8 +150,22 @@ policy correction can retry heads that exhausted an older worker implementation.
 the reported concern. Review text is diagnostic context, never evidence. Missing evidence,
 unknown citations, rubric violations, and affiliated-product review needs stay blocked.
 
-Every repair runs the repository gates before a non-force push, launches CI and a fresh
-Greptile review, and checks the new head again. An old thread may close only for an audited
+Unsupported findings (including claims, projections, unmappable lines, and affiliated
+products) stop repair and name the blocker. Every finding must have a successful audit
+before publication. A repair must change canonical verdict or evidence content compared
+with the PR head; timestamps, reordered evidence, cache rewrites, and projection-only changes
+do not establish progress. A no-op stops before projection regeneration or a commit.
+
+Every repair runs the repository gates before a non-force push, launches CI, and checks
+the new head again. Story-runner, recovery, and repair route review requests through
+`refresh-review.yml`. Its per-PR concurrency group serializes callers and its trusted bot
+comment reserves each attempt before sending the review mention. Exact-head CI must pass
+first. An ambiguous send consumes the reservation; checks that have not appeared yet do
+not cause an immediate retry. At most two requests are permitted per head, at least one
+hour apart. A completed successful review never triggers another request on that head,
+even if findings remain. Exhaustion and unmanaged failed reviews require human attention.
+The request worker honors drafts, removed auto-merge opt-in, and paused recovery.
+ An old thread may close only for an audited
 cell after CI and independent review pass, with no new verdict-matrix findings. All other
 threads remain open. A changed head discards the repair. Attempts are bounded to three
 published repair commits, three failed-worker retries per head, and two concurrent workers. Pending checks resume

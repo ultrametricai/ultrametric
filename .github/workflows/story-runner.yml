@@ -38,6 +38,8 @@ jobs:
     timeout-minutes: 90
     steps:
       - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
 
       - name: Check for API key
         id: gate
@@ -190,6 +192,8 @@ jobs:
           git checkout -b "$BRANCH"
           git add open-rankings rankings-engine/cache README.md
           git commit -m "chore(story-runner): refresh $CATEGORY evidence + verdicts"
+          # Check the committed candidate before any remote branch, PR, or review exists.
+          node rankings-engine/scripts/check-refresh-stability.mjs HEAD^ HEAD
           git push -u origin "$BRANCH"
           # Org policy currently forbids Actions from creating PRs ("Write permissions for
           # workflows are disabled by the organization") — fall back to an issue carrying the
@@ -198,15 +202,12 @@ jobs:
           # on main holds the merge until validation/ci + Greptile Review pass and
           # every thread resolves — a reviewer applying the re-judge stability policy
           # opens a thread, which blocks the merge until it is resolved. Greptile does
-          # not review bot PRs unprompted (PRs #430/#433 each needed a maintainer's
-          # '@greptileai review'), so the comment requests it. Both follow-ups are
-          # best-effort; a failure leaves the PR open for a manual merge.
+          # not review bot PRs unprompted. Recovery requests review through the
+          # serialized reservation worker after ordinary CI passes.
           if PR_URL=$(gh pr create \
             --title "story-runner: $CATEGORY refresh" \
             --body "Automated evidence/verdict refresh for \`$CATEGORY\`. Review verdict flips against the re-judge stability policy (README) before merging: revert no-new-citation flips when prior support is unchanged; verified downgrades after support loss follow the documented exception." \
             --base main --head "$BRANCH"); then
-            gh pr comment "$PR_URL" --body "@greptileai review" \
-              || echo "Greptile review request failed — comment '@greptileai review' on $PR_URL manually"
             # Explicit dispatch is allowed by GitHub's workflow recursion guard.
             gh workflow run ci.yml --ref "$BRANCH"
             gh pr merge --auto --merge "$PR_URL"

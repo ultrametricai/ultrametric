@@ -28,7 +28,7 @@ jobs:
     timeout-minutes: 10
     steps:
       # Metadata-only controller. No checkout, dependencies, or PR code execution.
-      - name: Update generated branches, dispatch missing CI, and enable auto-merge
+      - name: Recover opted-in refresh PRs after CI
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPO: ${{ github.repository }}
@@ -65,6 +65,16 @@ jobs:
               if len(dispatches) >= 3:
                   raise RuntimeError('CI ended without a result and exhausted three dispatches on this head; human review required')
               return True
+
+          def failed_validation(runs, checks):
+              candidates = [run for run in runs if run['conclusion'] != 'action_required']
+              if not candidates or any(run['status'] != 'completed' for run in candidates):
+                  return False
+              newest = max(candidates, key=lambda run: run['id'])
+              return any(check['name'] in ['validation', 'ci'] and check['app']['id'] == 15368
+                         and check.get('check_suite', {}).get('id') == newest.get('check_suite_id')
+                         and check['status'] == 'completed' and check['conclusion'] == 'failure'
+                         for check in checks)
 
           def request_repair(pr, sha):
               if not pr['head']['ref'].startswith('story-runner/'):
@@ -112,7 +122,7 @@ jobs:
           errors = []
           for pr in sorted([pr for page in prs for pr in page], key=lambda pr: pr['number']):
               branch = pr['head']['ref']
-              if (pr['draft'] or pr['base']['ref'] != 'main'
+              if (pr['draft'] or not pr['auto_merge'] or pr['base']['ref'] != 'main'
                   or pr['head']['repo'] is None or pr['head']['repo']['full_name'] != repo
                   or pr['user']['login'] != 'github-actions[bot]'
                   or not re.fullmatch(r'(story-runner|accuracy-engine|vendor-radar|vendor-radar-bringup|yc-coverage)/[A-Za-z0-9_-]+', branch)):
@@ -137,19 +147,15 @@ jobs:
                   runs = api(f'actions/workflows/ci.yml/runs?head_sha={sha}&per_page=100')
                   if needs_ci_dispatch(runs['workflow_runs']):
                       subprocess.run(['gh', 'workflow', 'run', 'ci.yml', '--repo', repo, '--ref', branch], check=True)
-                  checks = api(f'commits/{sha}/check-runs?check_name=Greptile%20Review&per_page=100')
-                  if not any(check['app']['id'] == 867647 for check in checks['check_runs']):
-                      subprocess.run(['gh', 'pr', 'comment', str(number), '--repo', repo,
-                                      '--body', '@greptileai review'], check=True)
+                  subprocess.run(['gh', 'workflow', 'run', 'refresh-review.yml', '--repo', repo,
+                                  '--ref', 'main', '--field', f'pr={number}', '--field', f'head={sha}'], check=True)
                   subprocess.run(['gh', 'workflow', 'run', 'review-findings.yml', '--repo', repo,
                                   '--ref', 'main', '--field', f'pr={number}'], check=True)
-                  if (any(run['status'] == 'completed' and run['conclusion'] == 'failure' for run in runs['workflow_runs'])
+                  checks = api(f'commits/{sha}/check-runs?per_page=100')['check_runs']
+                  if (failed_validation(runs['workflow_runs'], checks)
                       or (branch.startswith('story-runner/') and has_findings(number))):
                       request_repair(pr, sha)
-                  if not pr['auto_merge']:
-                      subprocess.run(['gh', 'pr', 'merge', str(number), '--repo', repo,
-                                      '--auto', '--merge', '--match-head-commit', sha], check=True)
-                  print(f'#{number}: CI dispatched or present; auto-merge enabled', flush=True)
+                  print(f'#{number}: CI dispatched or present; existing auto-merge opt-in retained', flush=True)
               except (subprocess.CalledProcessError, RuntimeError) as error:
                   # Conflicts and setup failures stay visible; process independent PRs too.
                   detail = getattr(error, 'stderr', None) or str(error)

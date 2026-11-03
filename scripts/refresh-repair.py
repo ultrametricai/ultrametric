@@ -39,7 +39,7 @@ def current():
     return api(f'repos/{REPO}/pulls/{NUMBER}')
 
 def identity(pr):
-    return (pr['state'] == 'open' and not pr['draft'] and pr['base']['ref'] == 'main'
+    return (pr['state'] == 'open' and not pr['draft'] and bool(pr['auto_merge']) and pr['base']['ref'] == 'main'
             and pr['head']['repo'] is not None and pr['head']['repo']['full_name'] == REPO
             and pr['user']['login'] == 'github-actions[bot]'
             and re.fullmatch(r'story-runner/([a-z0-9-]+)-[0-9]+', pr['head']['ref']))
@@ -77,7 +77,7 @@ def threads():
                     not in ['greptile-apps', 'greptile-apps[bot]', 'greptileai']):
                 continue
             if thread['originalLine'] is None or not comment.get('originalCommit'):
-                continue
+                raise RuntimeError(f"Unresolved finding {thread['id']} has no supported inline scope; human review required")
             findings.append({'id': thread['id'], 'path': thread['path'], 'line': thread['originalLine'],
                              'commit': comment['originalCommit']['oid'], 'body': diagnostic_comments(thread['comments']['nodes'])})
         page = pr['reviewThreads']['pageInfo']
@@ -147,6 +147,9 @@ def latest_checks(checks, ci_suite=None):
 
 
 def recheck(report, branch, new_sha):
+    live = current()
+    if not identity(live) or live['head']['sha'] != new_sha:
+        return 'closed-or-changed'
     original_ids = set(report['originalThreads'])
     runs = api(f'repos/{REPO}/actions/workflows/ci.yml/runs?head_sha={new_sha}&per_page=100')
     if not runs['workflow_runs']:
@@ -159,11 +162,12 @@ def recheck(report, branch, new_sha):
         raise RuntimeError('CI ended without a result; same-head CI retry requested within the failed-worker budget')
     checks = api(f'repos/{REPO}/commits/{new_sha}/check-runs?per_page=100')['check_runs']
     if not any(check['app']['id'] == 867647 for check in checks):
-        command(['gh', 'pr', 'comment', str(NUMBER), '--repo', REPO, '--body', '@greptileai review'])
+        command(['gh', 'workflow', 'run', 'refresh-review.yml', '--repo', REPO,
+                 '--ref', 'main', '--field', f'pr={NUMBER}', '--field', f'head={new_sha}'])
     reviewed = False
     for _ in range(24):
         pr = current()
-        if pr['state'] != 'open' or pr['head']['sha'] != new_sha:
+        if not identity(pr) or pr['head']['sha'] != new_sha:
             return 'closed-or-changed'
         checks = latest_checks(api(f'repos/{REPO}/commits/{new_sha}/check-runs?per_page=100')['check_runs'],newest.get('check_suite_id'))
         if any(c['name'] in ['ci', 'validation'] and c['app']['id'] == 15368
@@ -171,8 +175,9 @@ def recheck(report, branch, new_sha):
             return 'needs-repair'
         if any(c['name'] == 'Greptile Review' and c['app']['id'] == 867647 and c['status'] == 'completed'
                and c['conclusion'] != 'success' for c in checks):
-            command(['gh','pr','comment',str(NUMBER),'--repo',REPO,'--body','@greptileai review'])
-            raise RuntimeError('Independent review ended without success; retry requested within the failed-worker budget')
+            command(['gh', 'workflow', 'run', 'refresh-review.yml', '--repo', REPO,
+                     '--ref', 'main', '--field', f'pr={NUMBER}', '--field', f'head={new_sha}'])
+            return 'waiting-review' # the reservation worker owns cooldowns and retry limits
         required = {'ci': 15368, 'validation': 15368, 'Greptile Review': 867647}
         if all(any(c['name'] == name and c['app']['id'] == app and c['status'] == 'completed'
                    and c['conclusion'] == 'success' for c in checks) for name, app in required.items()):
@@ -193,7 +198,8 @@ def recheck(report, branch, new_sha):
     live_ids = {finding['id'] for finding in remaining}
     for audit in report['audits']:
         if audit['addressed'] and audit['thread'] in original_ids and audit['thread'] in live_ids:
-            if current()['head']['sha'] != new_sha:
+            live = current()
+            if not identity(live) or live['head']['sha'] != new_sha:
                 return 'closed-or-changed'
             api('graphql', {'query': 'mutation($id:ID!){resolveReviewThread(input:{threadId:$id}){thread{id isResolved}}}',
                             'variables': {'id': audit['thread']}})
@@ -201,7 +207,6 @@ def recheck(report, branch, new_sha):
     addressed = {audit['thread'] for audit in report['audits'] if audit['addressed']}
     if (live_ids & original_ids) - addressed:
         return 'needs-repair'
-    command(['gh', 'pr', 'merge', str(NUMBER), '--repo', REPO, '--auto', '--merge', '--match-head-commit', new_sha])
     print(f'#{NUMBER}: repaired and independently rechecked; auto-merge remains gated')
     return 'rechecked'
 
@@ -271,8 +276,11 @@ def main():
     command(['node', 'rankings-engine/scripts/check-refresh-stability.mjs', trusted, new_sha])
     if api(f'repos/{REPO}/branches/main')['commit']['sha'] != trusted:
         raise RuntimeError('Main changed during validation; discard and retry against its new head')
-    if current()['head']['sha'] != EXPECTED:
-        raise RuntimeError('PR changed during checks; discarding repair')
+    live = current()
+    if not identity(live) or live['head']['sha'] != EXPECTED:
+        raise RuntimeError('PR changed or automation opt-in was removed during checks; discarding repair')
+    if api(f'repos/{REPO}/actions/workflows/refresh-repair.yml')['state'] != 'active':
+        raise RuntimeError('Repair workflow was paused during checks; discarding repair')
     # Non-force push rejects a concurrent update, including one after the preceding check.
     command(['git', 'push', 'origin', f'{new_sha}:refs/heads/{branch}'])
     report['publishedHead'] = new_sha
