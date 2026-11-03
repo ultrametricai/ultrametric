@@ -29,10 +29,13 @@ export function reconcileRadarState(refs: string[], root = ROOT): void {
         blobs.set(object, data)
       }
       let retained = file
+      let created: boolean
       if (file === 'rankings-engine/radar-seen.json') {
         const local = path.join(root, file)
         if (fs.existsSync(local) && fs.readFileSync(local).equals(data)) continue
-        retained = importLegacyLedger(data, root)
+        const snapshot = importLegacyLedger(data, root)
+        retained = snapshot.path
+        created = snapshot.created
       } else if (/^reports\/(vendor-radar|launch-watch)\//.test(file) && !file.includes('/runs/')) {
         // Date-only legacy reports can disagree across branches. Preserve every byte/version
         // under its content hash, with original path + commit recorded in the import manifest.
@@ -40,10 +43,13 @@ export function reconcileRadarState(refs: string[], root = ROOT): void {
         const local = path.join(root, file)
         if (fs.existsSync(local) && fs.readFileSync(local).equals(data)) continue
         retained = `reports/radar-imports/files/${sha256(data)}/${file}`
-        writeImmutable(path.join(root, retained), data)
+        created = writeImmutable(path.join(root, retained), data)
       } else {
-        writeImmutable(path.join(root, file), data)
+        created = writeImmutable(path.join(root, file), data)
       }
+      // A branch inherits prior discoveries and reports. Their bytes still pass the conflict
+      // check above, but retaining them again must not append another copy of their history.
+      if (!created) continue
       // Existing manifests already describe earlier imports; avoid nesting their provenance.
       if (!file.startsWith('reports/radar-imports/')) imported.push({ source: file, retained, sha256: sha256(data) })
     }

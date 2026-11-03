@@ -68,14 +68,17 @@ export function mergeSeenEntries(lists: SeenEntry[][]): SeenEntry[] {
   return [...byKey.values()].sort((a, b) => a.key.localeCompare(b.key))
 }
 
-// Existing bytes are immutable. Identical imports are idempotent; a collision fails closed.
-export function writeImmutable(file: string, data: string | Buffer): void {
+// Return whether bytes were newly retained. Identical imports are idempotent; a collision
+// fails closed even when the caller only needs to know whether to record new provenance.
+export function writeImmutable(file: string, data: string | Buffer): boolean {
   fs.mkdirSync(path.dirname(file), { recursive: true })
   try {
     fs.writeFileSync(file, data, { flag: 'wx' })
+    return true
   } catch (err) {
     if ((err as NodeJS.ErrnoException).code !== 'EEXIST') throw err
     if (!fs.readFileSync(file).equals(Buffer.from(data))) throw new Error(`radar: immutable file conflict: ${file}`)
+    return false
   }
 }
 
@@ -98,11 +101,10 @@ function validateReport(record: DiscoveryRecord, root: string): void {
 }
 
 // Legacy snapshots remain byte-for-byte, including metadata. Their keys mean only "seen".
-export function importLegacyLedger(data: Buffer, root = ROOT): string {
+export function importLegacyLedger(data: Buffer, root = ROOT): { path: string; created: boolean } {
   SeenLedgerSchema.parse(JSON.parse(data.toString()))
   const relative = `rankings-engine/radar-discoveries/legacy/${sha256(data)}.json`
-  writeImmutable(path.join(root, relative), data)
-  return relative
+  return { path: relative, created: writeImmutable(path.join(root, relative), data) }
 }
 
 export function loadSeenEntries(root = ROOT): SeenEntry[] {

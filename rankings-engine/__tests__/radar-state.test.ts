@@ -87,7 +87,7 @@ describe('immutable discovery storage', () => {
 
   it('rejects malformed records and damaged legacy imports', () => {
     const root = temporary()
-    const file = importLegacyLedger(Buffer.from(JSON.stringify({ updatedAt: 'x', seen: [] })), root)
+    const { path: file } = importLegacyLedger(Buffer.from(JSON.stringify({ updatedAt: 'x', seen: [] })), root)
     fs.writeFileSync(path.join(root, file), '{}')
     expect(() => loadSeenEntries(root)).toThrow(/legacy snapshot hash mismatch/)
     expect(() => importLegacyLedger(Buffer.from('{'), root)).toThrow()
@@ -95,6 +95,46 @@ describe('immutable discovery storage', () => {
 })
 
 describe('branch reconciliation', () => {
+  it('records only newly retained files across successive branches and still rejects conflicts', () => {
+    const { root, git } = repository()
+    git('checkout', '-b', 'first-scan')
+    const first = discovery(root, 'first-run', [entry('first')])
+    writeDiscovery(first, root)
+    writeImmutable(path.join(root, 'rankings-engine/radar-seen.json'), JSON.stringify({ updatedAt: 'old', seen: [entry('legacy')] }))
+    writeImmutable(path.join(root, 'reports/vendor-radar/2026-11-01.json'), 'historical report')
+    git('add', '.'); git('commit', '-m', 'first scan')
+    git('checkout', 'main')
+    reconcileRadarState(['first-scan'], root)
+    const manifestDir = path.join(root, 'reports/radar-imports/manifests')
+    const firstManifests = fs.readdirSync(manifestDir)
+    expect(firstManifests).toHaveLength(1)
+    git('add', '.'); git('commit', '-m', 'retain first scan')
+
+    // A later tip on the old branch reuses both legacy snapshots and per-run files.
+    git('checkout', 'first-scan')
+    git('commit', '--allow-empty', '-m', 'unchanged older history')
+    git('checkout', 'main')
+    reconcileRadarState(['first-scan'], root)
+    expect(fs.readdirSync(manifestDir)).toEqual(firstManifests)
+
+    git('checkout', '-b', 'next-scan')
+    const next = discovery(root, 'next-run', [entry('next')])
+    writeDiscovery(next, root)
+    git('add', '.'); git('commit', '-m', 'next scan inherits retained history')
+    git('checkout', 'main')
+    reconcileRadarState(['next-scan'], root)
+    const added = fs.readdirSync(manifestDir).filter((name) => !firstManifests.includes(name))
+    expect(added).toHaveLength(1)
+    const manifest = JSON.parse(fs.readFileSync(path.join(manifestDir, added[0]), 'utf8'))
+    expect(manifest.files.map((file: { source: string }) => file.source)).toEqual([
+      'rankings-engine/radar-discoveries/vendor-radar-next-run-scan.json', next.report.path,
+    ])
+    expect(loadSeenEntries(root).map((e) => e.key)).toEqual(['first', 'legacy', 'next'])
+
+    fs.writeFileSync(path.join(root, first.report.path), 'conflicting retained bytes')
+    expect(() => reconcileRadarState(['next-scan'], root)).toThrow(/immutable file conflict/)
+  })
+
   it('retains missing and conflicting legacy reports even when main already has every seen key', () => {
     const { root, git } = repository()
     const ledger = JSON.stringify({ updatedAt: 'x', seen: [entry('a')] })
