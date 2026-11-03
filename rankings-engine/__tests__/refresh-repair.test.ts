@@ -8,6 +8,7 @@ import { cellHash, CELL_HASH_VERSION, PROMPT_VERSION, validateVerdictRules } fro
 vi.mock('../llm', async importOriginal => ({ ...await importOriginal<typeof import('../llm')>(), llmJson: vi.fn() }))
 import { allowed, mergeData, projection, restoreChurn, rowAtLine, rekeyEvidence, remapVerdictEvidence, sourceCacheMatches, judgeRepairCell, repair, repairProgress } from '../refresh-repair'
 import type { Evidence, Verdict, Story } from '../../lib/schemas'
+import { parseSloHistoryJsonl, summarizeSlo, type SloEntry } from '../../lib/slo'
 const old: Verdict = { productId: 'vendor', storyId: 'story', verdict: 'partial', quality: 5, confidence: 'high', rationale: 'missing for 10: callback documentation', evidenceIds: ['old'] }
 const evidence = (id: string): Evidence => ({ id, tier: 'claimed-docs', url: `https://example.invalid/docs/${id}`, excerpt: 'Documented behavior', fetchedAt: '2026-10-30T00:00:00Z' })
 describe('refresh repair policy', () => {
@@ -53,11 +54,35 @@ describe('refresh repair policy', () => {
     expect(mergeData('old', 'new main', 'old', 'evidence.json')).toBe('new main')
     expect(mergeData('old', 'old', null, 'evidence.json')).toBeNull()
   })
-  it('unions append-only uptime while rejecting rewritten history', () => {
-    expect(mergeData('a\n', 'a\nb\n', 'a\nc\n', 'open-rankings/slo-history.jsonl')).toBe('a\nb\nc\n')
-    expect(() => mergeData('a\n', 'b\n', 'a\nc\n', 'open-rankings/slo-history.jsonl')).toThrow()
-    expect(() => mergeData('a\n', 'a\n', '', 'open-rankings/slo-history.jsonl')).toThrow()
-    expect(() => mergeData('a\n', 'a\n', null, 'open-rankings/slo-history.jsonl')).toThrow()
+  it('unions original uptime batches regardless of chronology without rewriting main', () => {
+    const line = (date: string, up = true) => JSON.stringify({ date, arena: 'email', productId: 'vendor', surface: 'mcp', url: 'https://example.invalid', up, status: up ? 200 : 503 } satisfies SloEntry) + '\n'
+    const a = line('2026-10-01'), b = line('2026-10-02', false), c = line('2026-10-03'), d = line('2026-10-04')
+    const file = 'open-rankings/slo-history.jsonl'
+    const main = a + c + d + '\n'
+    for (const proposed of [a + b + c, a + c + b]) {
+      const result = mergeData(a + c, main, proposed, file)!
+      expect(result).toBe(main + b)
+      expect(summarizeSlo(parseSloHistoryJsonl(result))).toEqual(summarizeSlo(parseSloHistoryJsonl(a + b + c + d)))
+    }
+    expect(mergeData(a, a + b, a + b, file)).toBe(a + b)
+    expect(mergeData(a + a, a + a + b, a + a + c, file)).toBe(a + a + b + c)
+    for (const [current, proposed] of [[b, a + c], [a, ''], [a, null], [a, a.replace('200', '201')], [null, a], [a, '{bad}']]) {
+      expect(() => mergeData(a, current, proposed, file)).toThrow()
+    }
+    expect(() => mergeData(a + a, a, a + a + b, file)).toThrow(/removed or rewritten/)
+  })
+  it('allows immutable shard additions and identical ingestion, rejecting modifications and deletions', () => {
+    const file = 'open-rankings/slo-history/2026-10-01-unique.jsonl'
+    const row = JSON.stringify({ date: '2026-10-01', arena: 'email', productId: 'vendor', surface: 'mcp', url: 'https://example.invalid', up: true, status: 200 }) + '\n'
+    expect(allowed(file, 'email')).toBe(true)
+    expect(projection(file, 'email')).toBe(false)
+    for (const bad of ['open-rankings/slo-history/run.ts', 'open-rankings/slo-history/sub/run.jsonl', 'open-rankings/slo-history/../run.jsonl']) expect(allowed(bad, 'email')).toBe(false)
+    expect(mergeData(null, null, row, file)).toBe(row)
+    expect(mergeData(null, row, row, file)).toBe(row)
+    expect(mergeData(row, row, row, file)).toBe(row)
+    for (const [base, current, proposed] of [[row, row, null], [row, null, row], [row, row, row + '\n'], [row, row + '\n', row], [null, row, row + '\n'], [null, null, '{bad}']]) {
+      expect(() => mergeData(base, current, proposed, file)).toThrow()
+    }
   })
   it('maps an inline review to the exact original cell', () => {
     const other = { ...old, storyId: 'other' }
@@ -147,7 +172,7 @@ describe('changed-source identities and scoped judging', () => {
   })
 })
 describe('trusted-main Git boundary', () => {
-  for (const kind of ['code', 'symlink', 'unsupported-finding']) it(`rejects ${kind} changes before executing PR code or writing repairs`, async () => {
+  for (const kind of ['code', 'symlink', 'unsupported-finding', 'slo-conflict']) it(`rejects ${kind} changes before executing PR code or writing repairs`, async () => {
     const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'um-repair-guard-'))
     const previous = process.cwd()
     const git = (...args: string[]) => execFileSync('git', args, { cwd: dir, encoding: 'utf8', stdio: 'pipe' }).trim()
@@ -155,10 +180,17 @@ describe('trusted-main Git boundary', () => {
       git('init', '-b', 'main'); git('config', 'user.name', 'Fixture'); git('config', 'user.email', 'fixture@example.invalid')
       fs.mkdirSync(path.join(dir, 'open-rankings/fixture/evidence'), { recursive: true })
       const file = path.join(dir, 'open-rankings/fixture/evidence/vendor.json')
-      fs.writeFileSync(file, '[]\n'); git('add', '.'); git('commit', '-m', 'trusted')
+      fs.writeFileSync(file, '[]\n')
+      const observation = { date: '2026-10-01', arena: 'fixture', productId: 'vendor', surface: 'mcp', url: 'https://example.invalid', up: true, status: 200 }
+      fs.writeFileSync(path.join(dir, 'open-rankings/slo-history.jsonl'), JSON.stringify(observation) + '\n')
+      git('add', '.'); git('commit', '-m', 'trusted')
       const main = git('rev-parse', 'HEAD')
       if (kind === 'code') fs.writeFileSync(path.join(dir, 'package.json'), '{"scripts":{"test":"untrusted"}}')
       else if (kind === 'symlink') { fs.unlinkSync(file); fs.symlinkSync('/tmp/untrusted-target', file) }
+      else if (kind === 'slo-conflict') {
+        fs.mkdirSync(path.join(dir, 'open-rankings/slo-history'))
+        fs.writeFileSync(path.join(dir, 'open-rankings/slo-history/new-run.jsonl'), JSON.stringify({ ...observation, up: false, status: 503 }) + '\n')
+      }
       else fs.writeFileSync(file, '[{}]\n')
       git('add', '-A'); git('commit', '-m', 'proposed')
       const head = git('rev-parse', 'HEAD'); git('checkout', '--detach', main)
@@ -166,7 +198,7 @@ describe('trusted-main Git boundary', () => {
       const findings = kind === 'unsupported-finding'
         ? [{ id: '567-claims', path: 'open-rankings/fixture/claims/vendor.json', commit: head, line: 2, body: 'FAQ questions are not capability claims' }] : []
       await expect(repair({ head, main, arena: 'fixture', findings, keyed: false })).rejects.toThrow(
-        kind === 'code' ? 'outside its arena' : kind === 'symlink' ? 'regular data file' : 'Unsupported repair finding')
+        kind === 'code' ? 'outside its arena' : kind === 'symlink' ? 'regular data file' : kind === 'slo-conflict' ? 'Conflicting SLO observation' : 'Unsupported repair finding')
       expect(git('status', '--porcelain')).toBe('')
     } finally { process.chdir(previous); fs.rmSync(dir, { recursive: true, force: true }) }
   })
