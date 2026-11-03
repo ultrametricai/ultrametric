@@ -10,6 +10,7 @@ import {
   parseWorkflowSchedule,
   untrackedVendorCensus,
 } from '@/lib/opsCoverage'
+import { SLO_HISTORY_DIR, SLO_HISTORY_FILE } from '@/lib/slo'
 
 // Aggregation units for the /ops dashboard, over a small synthetic fixture data dir (the
 // lib/data.test.ts tmp-dir convention) — no dependence on the live fleet's exact numbers.
@@ -144,6 +145,20 @@ describe('buildArenaCoverage', () => {
 })
 
 describe('parseWorkflowSchedule / buildCronHealth', () => {
+  it.each(['legacy', 'shards', 'mixed'])('uses the latest observation date from %s SLO history', (kind) => {
+    const dir = writeFixture()
+    const row = (date: string) => JSON.stringify({ date, arena: 'alpha', productId: 'p1', surface: 'mcp', url: 'https://example.invalid', up: true, status: 200 }) + '\n'
+    if (kind !== 'shards') fs.writeFileSync(path.join(dir, SLO_HISTORY_FILE), row('2026-09-24') + row('2026-09-21'))
+    if (kind !== 'legacy') {
+      fs.mkdirSync(path.join(dir, SLO_HISTORY_DIR))
+      fs.writeFileSync(path.join(dir, SLO_HISTORY_DIR, 'a.jsonl'), row('2026-09-25'))
+      fs.writeFileSync(path.join(dir, SLO_HISTORY_DIR, 'z.jsonl'), row('2026-09-22'))
+    }
+    const slo = buildCronHealth('/nonexistent', dir).lastRuns.find(run => run.label.startsWith('Agent-surface'))!
+    expect(slo.date).toBe(kind === 'legacy' ? '2026-09-24' : '2026-09-25')
+    expect(slo.source).toContain('slo-history/*.jsonl')
+  })
+
   it('extracts name, cron lines, and non-schedule triggers', () => {
     const wf = parseWorkflowSchedule('spike-engine.yml', [
       'name: spike-engine',
