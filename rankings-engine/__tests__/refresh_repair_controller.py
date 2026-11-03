@@ -284,6 +284,21 @@ class RecoveryCITests(unittest.TestCase):
                 self.assertEqual(len(ci), 1)
                 self.assertEqual(ci[0][-1], BRANCH)
 
+    def test_newer_cancelled_dispatch_supersedes_older_completed_result(self):
+        for conclusion in ['success','failure']:
+            with self.subTest(conclusion=conclusion):
+                ci, _, error = self.recover([
+                    self.run_record('workflow_dispatch',conclusion,id=1),
+                    self.run_record('workflow_dispatch','cancelled',id=2)])
+                self.assertIsNone(error)
+                self.assertEqual(len(ci),1)
+
+    def test_newer_cancelled_pr_run_supersedes_its_older_success(self):
+        ci, _, error = self.recover([self.run_record(conclusion='success',id=1),
+                                     self.run_record(conclusion='cancelled',id=2)])
+        self.assertIsNone(error)
+        self.assertEqual(len(ci),1)
+
     def test_newer_success_supersedes_cancelled_dispatch(self):
         ci, _, error = self.recover([
             self.run_record('workflow_dispatch','success',id=2),

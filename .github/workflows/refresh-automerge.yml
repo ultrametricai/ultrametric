@@ -51,8 +51,14 @@ jobs:
               # cancelled dispatch despite having an older run ID.
               dispatches = [run for run in runs if run['event'] == 'workflow_dispatch']
               candidates = [run for run in runs if run['conclusion'] != 'action_required']
-              if any(run['status'] != 'completed' or run['conclusion'] in ['success', 'failure']
-                     for run in candidates):
+              if any(run['status'] != 'completed' for run in candidates):
+                  return False
+              latest_by_event = {}
+              for run in candidates:
+                  previous = latest_by_event.get(run['event'])
+                  if previous is None or run['id'] > previous['id']:
+                      latest_by_event[run['event']] = run
+              if any(run['conclusion'] in ['success', 'failure'] for run in latest_by_event.values()):
                   return False # real failures stay with the existing repair/review gates
               # Bound same-head retries when CI is cancelled or cannot start.
               # A new head gets its own budget; the approval-only runs do not count.
