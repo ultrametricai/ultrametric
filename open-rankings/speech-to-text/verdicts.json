@@ -4872,5 +4872,643 @@
     "confidence": "medium",
     "rationale": "Word-level timestamps are a fair question for a speech-to-text product, so the axis applies. Nothing in the evidence pack mentions timestamps at word or segment level. The API docs describe only a final transcript and detected languages returned as JSON, and the GitHub items cover only transcription, translation and language detection. With no documented capability, the verdict is none.",
     "evidenceIds": []
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "accuracy-methodology",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Asking for published accuracy methodology or benchmark datasets is a fair question for a transcription API, so the axis applies. The only accuracy reference in the pack is a bare claim that the Pro model offers 'higher English accuracy,' with no WER figures, methodology, test datasets, or reproducible benchmarks. The pack therefore gives no evidence that accuracy claims are backed by checkable methodology.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "agent-cost-estimate",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Pricing is a fair axis for a paid transcription API, but nothing in the evidence pack covers it. There is no per-minute or per-hour rate, no itemized add-on prices (e.g. diarization, Pro model, text polishing), and no cost-estimation endpoint. The docs cover only features, endpoints, and job lifecycle, so an agent cannot compute a job's cost before submitting it from this evidence.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "agent-end-to-end-transcript",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "medium",
+    "rationale": "The public, machine-readable docs cover the whole agent loop. Auth uses API credentials with scopes and short-lived JWTs. Jobs can be created either synchronously (POST /aiservices/scribe/transcribe) or as batch jobs (POST /aiservices/scribe/jobs). Results come back via status, list-files and get-file endpoints with defined job states, or via signed completion webhooks. All of this is backed by a live OpenAPI spec, llms.txt and .md doc pages that probes confirmed. Missing for 10: the exact steps for minting a JWT from the API key/secret are only lightly documented in the evidence, and there is no independent or hands-on report of an agent running submission-to-transcript end to end.",
+    "evidenceIds": [
+      "zoom-scribe-docs-26",
+      "zoom-scribe-docs-25",
+      "zoom-scribe-docs-1",
+      "zoom-scribe-supp-sync-api-schema",
+      "zoom-scribe-supp-batch-lifecycle",
+      "zoom-scribe-supp-batch-webhooks",
+      "zoom-scribe-supp-openapi-docs",
+      "zoom-scribe-supp-openapi-probe",
+      "zoom-scribe-probe-1",
+      "zoom-scribe-probe-2"
+    ]
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "agentic-agent-docs",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "A live probe confirms an llms.txt at developers.zoom.us/llms.txt (HTTP 200), which links an API catalog and an MCP section. Scribe docs are served as markdown (e.g. scribe/.md, fast-mode.md, batch-mode.md, confirmed by probe), and a machine-readable OpenAPI spec for the Scribe endpoints is reachable. Together these give an agent clear entry points. Missing for 10: llms.txt is Zoom-wide and the truncated probe doesn't show Scribe-specific entries, and there's no independent or hands-on corroboration of agents using these docs.",
+    "evidenceIds": [
+      "zoom-scribe-probe-1",
+      "zoom-scribe-probe-2",
+      "zoom-scribe-supp-openapi-probe",
+      "zoom-scribe-supp-openapi-docs",
+      "zoom-scribe-docs-1"
+    ]
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "agentic-ai-insights",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Zoom Scribe is a transcription API, and AI insights over transcripts are a fair thing to ask of it. Its documented features are all transcription and cleanup: diarization, language detection, custom vocabulary and Text Polishing. None of these generates insights or suggestions. The docs send users to a separate Summarizer API for such artifacts, which is a different product and earns no credit here.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "agentic-autonomous-automation",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "A transcription API service could plausibly offer triggered or scheduled automations, such as auto-transcribing new files as they land in a bucket, so the axis applies. The evidence shows only on-demand modes: synchronous fast mode, live WebSocket streaming, and batch jobs the developer submits. Batch jobs over an S3 prefix are developer building blocks, not a documented capability to set up automations that run autonomously in the background, and no schedules, triggers or watchers are evidenced.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "agentic-builtin-assistant",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Zoom Scribe is a transcription API with a developer console, and such a product could plausibly ship an in-product AI assistant, so the axis applies. The evidence documents AI-powered transcription features: fast, live and batch modes, diarization, custom vocabulary and text polishing. It also mentions handing transcripts to a separate Summarizer API. None of this shows a built-in assistant that users can delegate tasks to.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "agentic-headless",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Scribe is an API-first service that runs without any UI. It offers a synchronous REST transcription endpoint, a fully programmatic batch-job lifecycle (submit, status, list, cancel, per-file results, with explicit states and partial-failure handling), and signed outbound webhooks on job completion. Unattended automation is also supported by API credentials with scopes, expiration and IP allowlists, plus a published OpenAPI spec. Missing for 10: an official CLI, documented CI/pipeline integration examples, and independent or hands-on corroboration of headless automation use.",
+    "evidenceIds": [
+      "zoom-scribe-supp-openapi-docs",
+      "zoom-scribe-supp-openapi-probe",
+      "zoom-scribe-supp-sync-api-schema",
+      "zoom-scribe-supp-batch-lifecycle",
+      "zoom-scribe-supp-batch-webhooks",
+      "zoom-scribe-supp-batch-failures",
+      "zoom-scribe-supp-batch-input-metadata",
+      "zoom-scribe-docs-25",
+      "zoom-scribe-docs-26",
+      "zoom-scribe-docs-4"
+    ]
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "agentic-mcp-client",
+    "verdict": "na",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Zoom Scribe is a speech-to-text API that offers synchronous, live, and batch transcription. It is not an agent or assistant that invokes external tools, so acting as an MCP client is a category error for this product type. The truncated 'MCP' heading in Zoom's llms.txt probe does not show Scribe consuming MCP servers, so it does not make this client-side axis applicable.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "agentic-mcp-server",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Zoom Scribe is a transcription API service, so an official MCP server is a fair question for this kind of product. The evidence covers REST, WebSocket and OpenAPI endpoints, but nothing documents an MCP server for Scribe. The only hint is a truncated \"## MCP C…\" heading in Zoom's site-wide llms.txt, which is too fragmentary and not Scribe-specific to credit.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "agentic-nl-commands",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Zoom Scribe is a transcription API, and natural-language control is a fair question for an API service, for example through a conversational or agent interface. However, the evidence documents only parameterized REST, WebSocket and batch endpoints. Transcribing speech is the product's function, not a way to operate it by command. The llms.txt file and its truncated MCP mention are Zoom-wide documentation for developers building agents, not a documented natural-language command capability of Scribe.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "agentic-official-cli",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "An official CLI is a reasonable thing to ask of an API-based transcription service, so the axis applies. The evidence pack documents REST, WebSocket and OpenAPI interfaces, an llms.txt file and webhooks, but no official command-line tool. Those are developer building blocks or adjacent features, not a CLI, so they earn no credit.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "agentic-public-api",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Scribe is itself a documented public API. The AI Services reference publishes an OpenAPI spec, confirmed live by a probe, covering synchronous transcription, batch job submit/status/list/cancel/files, and the Live WebSocket. Vocabulary assets have CRUD endpoints, credentials are scoped and support JWT, and batch jobs can send signed webhooks, so the product can be driven entirely through the API. Missing for 10: independent or hands-on corroboration of real API calls beyond the docs and spec probes; the reference and the probed payload also disagree on the OpenAPI version (3.1.1 vs 3.0.0).",
+    "evidenceIds": [
+      "zoom-scribe-supp-openapi-docs",
+      "zoom-scribe-supp-openapi-probe",
+      "zoom-scribe-supp-sync-api-schema",
+      "zoom-scribe-supp-batch-lifecycle",
+      "zoom-scribe-supp-batch-webhooks",
+      "zoom-scribe-docs-15",
+      "zoom-scribe-docs-2",
+      "zoom-scribe-docs-25",
+      "zoom-scribe-docs-26",
+      "zoom-scribe-probe-1"
+    ]
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "agentic-scoped-keys",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Zoom's AI Services auth docs describe creating API credentials with selectable permission scopes, an expiration option, and an IP allowlist. Short-lived JWTs are also documented for client-to-backend calls, so least-privilege credentials for an agent are a first-party capability. Missing for 10: documentation of the available scope list and how fine-grained it is, agent-specific credential guidance, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "zoom-scribe-docs-25",
+      "zoom-scribe-docs-26"
+    ]
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "agentic-sdks",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence shows a well-documented REST, batch, and WebSocket API with a published OpenAPI spec. It never mentions an official client SDK or library in any language. An OpenAPI spec and raw HTTP endpoints are developer building blocks from which one could build or generate a client, not official SDKs, so they earn no credit for this story.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "agentic-webhooks",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Batch-mode docs describe a registrable notifications.webhook_url plus secret. Scribe sends an outbound POST to that URL when a job finishes, signed with an x-zm-signature HMAC-SHA256 header and timestamp, and the docs give explicit verification and replay-rejection guidance. This is a genuine programmatic webhook, but it covers only the batch job-completion event and is registered per job rather than as a general event subscription. Missing for 10: webhooks for other event types (e.g., per-file or live-session events), account-level subscription management, a documented payload schema or retry policy, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "zoom-scribe-supp-batch-webhooks",
+      "zoom-scribe-supp-batch-lifecycle"
+    ]
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "api-interactive-docs",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "An interactive API reference is a fair capability to ask of a developer API, so the axis applies. The evidence shows a static OpenAPI-backed reference and a separate transcription playground, but neither provides runnable requests inside the API reference. A machine-readable spec and an adjacent product demo do not deliver this story, so they earn no credit.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "api-machine-spec",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Zoom's AI Services API reference identifies itself as OpenAPI-based. A live probe confirmed that a JSON OpenAPI document downloads over HTTP 200 and declares six Scribe paths covering synchronous, live, batch-job, status and per-file operations. llms.txt also points to a machine-readable API catalog. Missing for 10: the docs say OpenAPI 3.1.1 but the downloaded payload declares 3.0.0, and no documented, stable download link for the spec is surfaced to users.",
+    "evidenceIds": [
+      "zoom-scribe-supp-openapi-probe",
+      "zoom-scribe-supp-openapi-docs",
+      "zoom-scribe-probe-1"
+    ]
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "api-sandbox",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "A sandbox or test environment is a fair axis for a transcription API service, but the evidence documents no sandbox, test mode, or non-production credentials for Scribe. The playground inputs (record speech, use a sample conversation) and the scoped, expiring credentials are adjacent features, not an isolated sandbox environment, so they earn no credit.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "api-versioning-policy",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "medium",
+    "rationale": "Zoom's AI Services API reference and the live OpenAPI probe both declare 'API version 2' for the Scribe operations, so the API carries an explicit version identifier. Nothing in the pack documents a deprecation policy, sunset timelines, or how version changes are communicated, which is half of what the story asks for. Missing for 10: documented deprecation/sunset policy, versioning scheme details (e.g., version in path or header and compatibility guarantees), changelog or migration guidance, independent corroboration.",
+    "evidenceIds": [
+      "zoom-scribe-supp-openapi-docs",
+      "zoom-scribe-supp-openapi-probe"
+    ]
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "async-job-lifecycle",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Batch mode documents creating a job via POST /aiservices/scribe/jobs and polling a get-status endpoint. Jobs move through documented states (QUEUED, PROCESSING, SUCCEEDED, PARTIAL, FAILED, CANCELED), with per-file states, file counts and result locations, and the OpenAPI probe confirms the status and per-file paths. Missing for 10: independent or hands-on corroboration of the polling workflow.",
+    "evidenceIds": [
+      "zoom-scribe-supp-batch-lifecycle",
+      "zoom-scribe-supp-openapi-docs",
+      "zoom-scribe-supp-openapi-probe",
+      "zoom-scribe-supp-batch-failures",
+      "zoom-scribe-supp-batch-input-metadata"
+    ]
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "automation-bulk-operations",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Batch mode lets one job transcribe up to 10,000 files, or 1,000 from a manifest. Input can be an S3 prefix with glob include/exclude filters, and each transcript can be placed next to its input file. The full job lifecycle is documented: submit, list, status with per-state file counts, cancel, list files and get file. Files succeed or fail independently with PARTIAL job states, and a signed webhook fires on completion. Missing for 10: independent or hands-on corroboration of large batch runs, and bulk operations beyond transcription (e.g., vocabulary assets are managed one at a time).",
+    "evidenceIds": [
+      "zoom-scribe-docs-4",
+      "zoom-scribe-docs-5",
+      "zoom-scribe-docs-6",
+      "zoom-scribe-supp-batch-lifecycle",
+      "zoom-scribe-supp-batch-input-metadata",
+      "zoom-scribe-supp-batch-failures",
+      "zoom-scribe-supp-batch-webhooks",
+      "zoom-scribe-supp-openapi-docs",
+      "zoom-scribe-supp-openapi-probe"
+    ]
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "automation-rules-engine",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Zoom Scribe documents no user-definable rules engine or event-triggered automation. The closest feature is a per-batch-job webhook_url that POSTs a signed notification when a job finishes. That is an outbound notification primitive a developer must build their own automation on, not rules that trigger actions, so it earns no credit under the building-block exclusion.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "automation-scheduled-jobs",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Scribe documents on-demand batch jobs with status polling, cancellation, and completion webhooks. Nothing in the evidence describes scheduling, cron-like triggers, or recurring job definitions. Batch submission and webhooks are building blocks a developer could drive from an external scheduler, which earns no credit for this story.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "automation-versioned-workflows",
+    "verdict": "na",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Zoom Scribe is a transcription API (fast, live, and batch modes) that executes individual jobs rather than hosting user-defined automations or workflows. Versioning, reviewing, and rolling back automations is a category error for this product type. Batch job lifecycle and vocabulary-asset CRUD exist, but they are not versioned automations and do not make the axis applicable.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "batch-concurrency",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Concurrent-job limits and queueing are fair capabilities to ask of a batch transcription API, so the axis applies. The evidence documents only how many files fit in one batch and the lifecycle of one job; it does not show multiple jobs running concurrently, concurrency limits, or queue and backpressure behavior. Batch capacity and a QUEUED state are adjacent primitives, so they earn no credit for this story.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "custom-vocabulary",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Zoom Scribe documents a dedicated custom vocabulary feature for names, acronyms, product names and technical terms. It offers inline vocabularies plus reusable Vocabulary Assets with list/delete endpoints, and the active vocabulary can be updated mid-session in Live mode via session.update. The vocabulary control also appears in the synchronous transcription API schema. Missing for 10: independent or hands-on corroboration that boosting improves accuracy, and documented boost weights or limits.",
+    "evidenceIds": [
+      "zoom-scribe-docs-13",
+      "zoom-scribe-docs-14",
+      "zoom-scribe-docs-15",
+      "zoom-scribe-docs-16",
+      "zoom-scribe-supp-sync-api-schema"
+    ]
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "file-upload-transcribe",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Zoom Scribe documents a synchronous POST /aiservices/scribe/transcribe endpoint that accepts a single local audio or video file up to 100 MB and two hours. It publishes accepted formats (WAV, M4A, MP3, MP4, WebM), and a probed OpenAPI spec confirms the endpoint is real and documented. missing for 10: independent or hands-on corroboration of uploads and limit enforcement.",
+    "evidenceIds": [
+      "zoom-scribe-supp-sync-api-schema",
+      "zoom-scribe-docs-22",
+      "zoom-scribe-docs-1",
+      "zoom-scribe-supp-openapi-docs",
+      "zoom-scribe-supp-openapi-probe"
+    ]
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "job-failure-handling",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Batch mode documents FAILED and PARTIAL job states and per-file FILE_FAILED and FILE_SKIPPED states. Unsupported extensions are skipped with a documented UNSUPPORTED_MEDIA error code, and files are processed independently, so one bad file doesn't sink the job. Missing for 10: a documented error-code catalog beyond UNSUPPORTED_MEDIA, retry guidance (retryable vs. permanent errors, backoff), explicit fail-fast/timeout behavior for corrupt files, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "zoom-scribe-supp-batch-failures",
+      "zoom-scribe-supp-batch-lifecycle"
+    ]
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "job-metadata",
+    "verdict": "partial",
+    "quality": 6,
+    "confidence": "medium",
+    "rationale": "Batch jobs accept a caller-supplied reference_id, and the docs say it is preserved for tracking and correlation across the job and status schemas. That covers attaching your own identifier and getting it back in job/status results. However, the webhook documentation describes signing and delivery but never says reference_id is echoed in the webhook payload, and no free-form metadata object is documented. Missing for 10: confirmation that reference_id appears in webhook payloads, support for arbitrary key-value metadata beyond a single reference_id, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "zoom-scribe-supp-batch-input-metadata",
+      "zoom-scribe-supp-batch-webhooks",
+      "zoom-scribe-supp-batch-lifecycle"
+    ]
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "language-detection",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "The synchronous API documents a `language_detection` object that detects the input language either once or continuously, so callers need not declare the language up front. This is backed by the multilingual model's coverage of ten languages plus 26 Whisper locales. Missing for 10: documentation of the detected-language field in responses, confirmation that detection works in live and batch modes (evidence covers fast mode only), the list of languages detection supports, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "zoom-scribe-docs-11",
+      "zoom-scribe-docs-10",
+      "zoom-scribe-supp-sync-api-schema"
+    ]
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "language-list",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Zoom's docs state per-model language coverage: ten languages on zoom-scribe-multilingual, 26 additional locales on the whisper model, and an English-only Pro model (zoom-scribe-en-pro). However, the evidence gives only counts, not an actual enumerated list. Per-feature language differences are only hinted at, e.g. the profanity filter applies 'when supported by the selected model'. Missing for 10: the concrete enumerated list of language/locale codes, an explicit per-feature language support matrix (diarization, polishing, live vs batch), and independent corroboration.",
+    "evidenceIds": [
+      "zoom-scribe-docs-10",
+      "zoom-scribe-docs-12",
+      "zoom-scribe-docs-19",
+      "zoom-scribe-docs-11"
+    ]
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "long-form-audio",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "The synchronous transcribe endpoint documents explicit limits: a single file of up to 100 MB and two hours. That satisfies the 'documented maximum' half of the story. However, two hours is a hard ceiling, so recordings longer than that are not shown to be accepted in a single job. Batch mode handles up to 10,000 files per job, but the evidence documents no per-file duration or size limits for it. Missing for 10: support for recordings longer than two hours in one job, documented per-file duration/size limits for batch mode, independent corroboration of the limits.",
+    "evidenceIds": [
+      "zoom-scribe-supp-sync-api-schema",
+      "zoom-scribe-docs-4",
+      "zoom-scribe-supp-batch-lifecycle"
+    ]
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "model-selection",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "Zoom Scribe documents several selectable model IDs: zoom-scribe-multilingual (ten languages), whisper (26 additional locales), and zoom-scribe-en-pro, which is described as giving 'higher English accuracy'. So a developer can choose among models, and there is a qualitative accuracy/language tradeoff. Missing for 10: published accuracy figures (e.g. WER), per-model latency figures, per-model cost/pricing comparison, and independent benchmarking of the model differences.",
+    "evidenceIds": [
+      "zoom-scribe-docs-10",
+      "zoom-scribe-docs-12"
+    ]
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "multichannel-audio",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "First-party docs describe a `channel_separation` option that transcribes the left and right channels of a stereo input independently and tags each segment with a channel number. The synchronous transcribe endpoint documents this control, and its response returns channel labels with timing, so each side of a stereo call stays separate. missing for 10: evidence of support beyond two channels (true multichannel), confirmation that channel separation works in batch and live modes, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "zoom-scribe-docs-8",
+      "zoom-scribe-supp-sync-api-schema"
+    ]
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "openness-api-parity",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Scribe is API-first, and every input path shown in the UI playground has an API equivalent. Recording maps to the Live WebSocket, upload to synchronous POST /transcribe, and URLs to batch jobs with URI, prefix, or manifest input. Features such as diarization, vocabulary, polishing, language and profanity filtering are exposed as API parameters, and vocabulary assets and the full batch lifecycle have documented REST endpoints and an OpenAPI spec. Missing for 10: no explicit parity statement or independent hands-on confirmation, and credential management (expiration, IP allowlist, scopes) is documented only as a console flow with no API equivalent shown.",
+    "evidenceIds": [
+      "zoom-scribe-docs-23",
+      "zoom-scribe-docs-24",
+      "zoom-scribe-supp-openapi-docs",
+      "zoom-scribe-supp-openapi-probe",
+      "zoom-scribe-supp-sync-api-schema",
+      "zoom-scribe-supp-batch-lifecycle",
+      "zoom-scribe-supp-batch-input-metadata",
+      "zoom-scribe-docs-2",
+      "zoom-scribe-docs-15",
+      "zoom-scribe-docs-25"
+    ]
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "openness-full-export",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Scribe returns transcripts as structured JSON with segments, speaker or channel labels, and timing fields. Batch jobs write transcripts into the customer's own S3 storage, next to the input files. Documented list/get endpoints exist for job files and vocabulary assets, so the user's core artifacts are retrievable in an open format. However, nothing documents an explicit 'export all my data' or account offboarding/deletion path. missing for 10: documented bulk/full-account data export, offboarding or data-deletion guidance, coverage of job history and polished outputs in an export, independent corroboration.",
+    "evidenceIds": [
+      "zoom-scribe-supp-sync-api-schema",
+      "zoom-scribe-docs-6",
+      "zoom-scribe-supp-batch-input-metadata",
+      "zoom-scribe-supp-batch-lifecycle",
+      "zoom-scribe-docs-15",
+      "zoom-scribe-docs-18"
+    ]
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "openness-open-license",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Whether a transcription service publishes its source under an open license is a fair question for this kind of product, so the axis applies. Nothing in the pack shows Zoom Scribe's source code being published or licensed openly. The public OpenAPI spec, llms.txt and markdown docs are documentation openness, not source availability, and support for a third-party Whisper model does not make Scribe's own code open.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "openness-self-host",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Self-hosting is a fair question for a speech-to-text service, since some transcription vendors offer on-prem or containerized deployments, so the axis applies. Every item in the pack describes Zoom's hosted API (developers.zoom.us endpoints, JWT credentials, IP allowlists, cloud batch jobs). Nothing documents a deployable, self-hostable build, container, or open-source release of Scribe.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "privacy-data-residency",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Data residency is a fair question for a cloud transcription API, but the evidence pack never documents choosing a storage or processing region for Zoom Scribe. Batch mode can write transcripts back to the customer's own S3 prefix next to the input files, but that is an output-location option, not a residency or region control, so it earns no credit here.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "privacy-no-training",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Data-training opt-out is a fair privacy question for a hosted AI transcription API, so the axis applies. However, nothing in the evidence pack covers training-data usage, model-training opt-out, or data-retention policies. The only nearby items are auth controls (IP allowlist, scopes, JWT expiry) and vocabulary deletion, which are adjacent features and earn no credit.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "privacy-retention-controls",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence pack documents no retention policy, retention window, or deletion control for submitted audio, transcripts, or job results. The DELETE endpoint for custom vocabulary assets is resource management for phrase lists, not control over retention of user content, so it is an adjacent feature. Batch outputs written to the customer's own S3 prefix are a host-platform arrangement, and job cancellation is not deletion; neither earns credit.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "privacy-telemetry-optout",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Opting out of telemetry or usage tracking is a fair privacy question for a cloud transcription API, so the axis applies. The evidence pack documents no such control. Credential expiration, IP allowlists, scopes, and short-lived JWTs are adjacent security controls, not a telemetry opt-out, and earn no credit.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "smart-formatting",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "Scribe documents an optional Text Polishing step that improves punctuation, capitalization, grammar and readability. The polished text is returned separately under outputs.text_polishing.text while the original transcript is never overwritten, so a developer can choose formatted or unformatted output. The evidence does not say whether base transcripts include punctuation and casing by default, and it never mentions number formatting (inverse text normalization) or a dedicated switch to disable formatting. Missing for 10: evidence of default punctuation/casing on raw transcripts, number formatting, an explicit formatting on/off parameter, and independent corroboration.",
+    "evidenceIds": [
+      "zoom-scribe-docs-17",
+      "zoom-scribe-docs-18",
+      "zoom-scribe-supp-sync-api-schema"
+    ]
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "speaker-diarization",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "medium",
+    "rationale": "Zoom's first-party docs describe a diarization option that identifies speakers and adds a speaker label to transcript segments. The synchronous transcribe endpoint documents diarization as a request control, and its JSON response includes transcript segments with speaker labels and timing fields. Channel separation is also offered as a stereo alternative. missing for 10: independent or hands-on corroboration of diarization accuracy, explicit documentation of diarization support in Live and Batch modes.",
+    "evidenceIds": [
+      "zoom-scribe-docs-7",
+      "zoom-scribe-supp-sync-api-schema",
+      "zoom-scribe-docs-8"
+    ]
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "streaming-endpoint",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "medium",
+    "rationale": "Zoom Scribe documents a Live mode in which the client streams binary PCM16 or Opus audio over a WebSocket and receives partial captions plus completed transcript items as speech is processed. Inline vocabulary can be updated mid-session via session.update events, and the mode accepts Zoom RTMS audio. missing for 10: independent or hands-on corroboration of the live WebSocket stream, and the partial-results captions feature is still marked preview.",
+    "evidenceIds": [
+      "zoom-scribe-docs-2",
+      "zoom-scribe-docs-21",
+      "zoom-scribe-docs-3",
+      "zoom-scribe-docs-16",
+      "zoom-scribe-docs-20"
+    ]
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "streaming-finality",
+    "verdict": "partial",
+    "quality": 6,
+    "confidence": "medium",
+    "rationale": "Live mode over WebSocket documents two output kinds. Captions are partial results that arrive before a Live transcript item completes; completed transcript items arrive as speech is processed. That is a documented interim-versus-final distinction, but the partial-results feature is still marked as preview. The evidence also shows little about finality semantics, such as whether captions get revised or replaced, event type fields, or ordering guarantees. Missing for 10: GA status of partial results, detailed documentation of finality and revision semantics with event schemas, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "zoom-scribe-docs-2",
+      "zoom-scribe-docs-3"
+    ]
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "structured-json-output",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Zoom's API reference documents a JSON response for synchronous transcription with transcript segments, speaker or channel labels, and timing fields. Diarization and channel separation add labels to each segment, and word-level timestamps are optional. No evidence shows confidence values in the output, which is an explicit half of the story. Missing for 10: documented per-segment or per-word confidence scores, a full response schema example, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "zoom-scribe-supp-sync-api-schema",
+      "zoom-scribe-docs-7",
+      "zoom-scribe-docs-8",
+      "zoom-scribe-docs-9",
+      "zoom-scribe-docs-18",
+      "zoom-scribe-docs-2"
+    ]
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "subtitle-exports",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Caption-file export is a fair question for a transcription API, but the evidence pack never documents SRT or VTT output from any endpoint. The responses described are JSON with segments, timing fields and optional word-level timestamps. Live mode's \"Captions\" are partial streaming recognition results, not a caption file format, so they are an adjacent feature and earn no credit. Developers could build SRT/VTT from the timestamps themselves, but that is a building block, not the capability.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "transcript-translation",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Translation is a fair question for a speech-to-text API, so the axis applies. The evidence documents multilingual recognition, language detection, text polishing and summarization handoff, but no option or endpoint that translates a transcript into another language. Those are adjacent features and earn no credit.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "url-ingest",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Batch jobs accept cloud URIs, prefixes, or manifests, explicitly including pre-signed object URLs. Zoom fetches and transcribes those files, with documented job lifecycle and per-file results. The console also lets users enter a URL for a public audio or video file. However, the synchronous transcribe endpoint only accepts a locally uploaded file, and API support for arbitrary public HTTP URLs (as opposed to cloud-storage URIs) is not explicit. Missing for 10: URL input on the synchronous/fast API, explicit API documentation for arbitrary public (non-cloud-storage) URLs, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "zoom-scribe-supp-batch-input-metadata",
+      "zoom-scribe-docs-23",
+      "zoom-scribe-supp-batch-lifecycle",
+      "zoom-scribe-docs-5",
+      "zoom-scribe-supp-sync-api-schema"
+    ]
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "webhook-completion",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "medium",
+    "rationale": "Batch job submissions can register `notifications.webhook_url` with a secret, and Zoom sends an outbound POST when the job finishes. Each request carries an HMAC-SHA256 `x-zm-signature` and a timestamp, and the docs give verification guidance, so callers need not poll the status endpoint. Terminal states are documented (SUCCEEDED, PARTIAL, FAILED, CANCELED), but the docs only say the webhook fires 'when the job finishes', so firing on failure is implied rather than stated. Missing for 10: explicit confirmation the webhook fires on FAILED/PARTIAL outcomes, documented payload schema and retry/delivery guarantees, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "zoom-scribe-supp-batch-webhooks",
+      "zoom-scribe-supp-batch-lifecycle",
+      "zoom-scribe-supp-batch-failures"
+    ]
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "word-timestamps",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Fast mode documents a `word_time_offsets` boolean that includes word-level timestamps. The synchronous transcribe API schema lists word-timestamp controls and timing fields in its JSON response. Missing for 10: the word-level response structure (per-word start/end fields) is not shown, word timestamps in batch and live modes are unevidenced, and there is no hands-on or independent corroboration.",
+    "evidenceIds": [
+      "zoom-scribe-docs-9",
+      "zoom-scribe-supp-sync-api-schema"
+    ]
   }
 ]
