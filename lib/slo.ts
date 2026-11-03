@@ -2,13 +2,19 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { z } from 'zod'
 
-// Agent-surface SLO history — loader + uptime math over open-rankings/slo-history.jsonl, the
-// append-only log written by rankings-engine/scripts/slo-check.ts (one line per keyless check of a
+// Agent-surface SLO history — loader + uptime math over the legacy slo-history.jsonl and
+// immutable slo-history/*.jsonl runs (one line per keyless check of a
 // product's documented agent surface: its llms.txt, remote MCP endpoint, or openapi.json).
 // Split the usual way (lib/scoreHistory.ts / lib/scoreTrend.ts): the parse + summary math is
 // pure and unit-tested (lib/__tests__/slo.test.ts); only the loaders at the bottom touch fs.
 
 export const SLO_HISTORY_FILE = 'slo-history.jsonl'
+export const SLO_HISTORY_DIR = 'slo-history'
+
+// Flat, unique filenames keep independently produced runs mergeable by ordinary Git.
+export function isSloHistoryShard(file: string): boolean {
+  return /^open-rankings\/slo-history\/[a-zA-Z0-9][a-zA-Z0-9._-]*\.jsonl$/.test(file)
+}
 
 // How long a surface must have been tracked before we quote an uptime percentage at all.
 // Under this, display code says "tracking since <date>" — a 100% computed over two days of
@@ -54,10 +60,40 @@ export function classifyUp(status: number): boolean {
 // Same tolerant-blank-lines / strict-malformed-lines contract as parseScoreHistoryJsonl —
 // the file is machine-written only.
 export function parseSloHistoryJsonl(text: string): SloEntry[] {
-  return text
-    .split('\n')
-    .filter((line) => line.trim() !== '')
-    .map((line) => SloEntrySchema.parse(JSON.parse(line)))
+  return combineSloHistory([{ source: SLO_HISTORY_FILE, text }])
+}
+
+export interface SloHistorySource { source: string; text: string }
+
+// Deduplicate only exact raw lines, before schema parsing can strip unknown fields.
+// Different bytes for one observation require review, even if the parsed fields agree.
+// Keep all files intact; this is an ingestion rule, never a historical rewrite.
+export function combineSloHistory(sources: Iterable<SloHistorySource>): SloEntry[] {
+  const seen = new Map<string, { raw: string; location: string }>()
+  const entries: SloEntry[] = []
+  for (const { source, text } of sources) {
+    for (const [index, raw] of text.split('\n').entries()) {
+      if (!raw.trim()) continue
+      const location = `${source}:${index + 1}`
+      let entry: SloEntry
+      try {
+        entry = SloEntrySchema.parse(JSON.parse(raw))
+      } catch (cause) {
+        throw new Error(`Invalid SLO observation at ${location}`, { cause })
+      }
+      const key = JSON.stringify([entry.date, entry.arena, entry.productId, entry.surface, normUrl(entry.url)])
+      const previous = seen.get(key)
+      if (previous) {
+        if (previous.raw !== raw) {
+          throw new Error(`Conflicting SLO observation ${key}: ${previous.location} and ${location}`)
+        }
+        continue
+      }
+      seen.set(key, { raw, location })
+      entries.push(entry)
+    }
+  }
+  return entries
 }
 
 // One (arena, product, surface, url) series, summarized for display. URL is part of the series
@@ -212,13 +248,31 @@ const DEFAULT_DIR = () => path.join(process.cwd(), 'open-rankings')
 
 const sloCache = new Map<string, SloEntry[]>()
 
-// Tolerant-optional, like every other sidecar file: no slo-history.jsonl yet resolves to [],
+// Tolerant-optional, like every other sidecar file: no history yet resolves to [],
 // and every consumer renders "no tracking yet", never an error.
+// Existing malformed files and ambiguous observations fail with their source locations.
+export function readSloHistorySources(dir: string = DEFAULT_DIR()): SloHistorySource[] {
+  const files: string[] = []
+  const legacy = path.join(dir, SLO_HISTORY_FILE)
+  if (fs.existsSync(legacy)) files.push(legacy)
+  const shards = path.join(dir, SLO_HISTORY_DIR)
+  if (fs.existsSync(shards)) {
+    for (const name of fs.readdirSync(shards).sort()) {
+      if (!name.endsWith('.jsonl')) continue
+      const file = path.join(shards, name)
+      if (!isSloHistoryShard(`open-rankings/${SLO_HISTORY_DIR}/${name}`) || !fs.lstatSync(file).isFile()) {
+        throw new Error(`Expected a regular SLO history shard: ${file}`)
+      }
+      files.push(file)
+    }
+  }
+  return files.map(source => ({ source, text: fs.readFileSync(source, 'utf8') }))
+}
+
 export function loadSloHistory(dir: string = DEFAULT_DIR()): SloEntry[] {
   const hit = sloCache.get(dir)
   if (hit) return hit
-  const file = path.join(dir, SLO_HISTORY_FILE)
-  const entries = fs.existsSync(file) ? parseSloHistoryJsonl(fs.readFileSync(file, 'utf8')) : []
+  const entries = combineSloHistory(readSloHistorySources(dir))
   sloCache.set(dir, entries)
   return entries
 }
