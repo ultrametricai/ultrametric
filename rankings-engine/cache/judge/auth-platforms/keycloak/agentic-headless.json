@@ -1,27 +1,27 @@
 {
-  "hash": "207a7609d131f05fcc6c8fd47620c6107cbaf68f59829bf3f34ac01d554d9bd6",
+  "hash": "16f6bd140d8fbfeaf7781ebe6419cf0abd281974eee1cdaeae0e73d64a5b0c00",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "keycloak",
-    "storyId": "agentic-headless",
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Keycloak's own docs cover headless, scripted operation. It runs in a container with the admin user bootstrapped from environment variables, and it ships the kcadm.sh Admin CLI and an Admin REST API. Realms can be imported and exported as JSON, the operator handles declarative client and realm-import automation, health endpoints support CI readiness checks, and client-credentials service accounts allow machine access. Hands-on reports say the admin API is inconsistent, which makes idempotent Ansible automation hard. They also say config held in the database is hard to keep in sync or promote as code, leaning on the third-party keycloak-config-cli. missing for 10: consistent idempotent admin API behavior, first-party declarative config-as-code sync outside the operator, CI-specific documentation such as a test-container guide.",
+    "rationale": "Keycloak can be started non-interactively from a container image, with the bootstrap admin set via environment variables [keycloak-docs-2, keycloak-docs-45]. It can be administered by script through the kcadm.sh Admin CLI and the Admin REST API [kc-supp-kcadm, keycloak-docs-6], seeded via JSON realm import/export and operator-driven realm import and declarative clients [keycloak-docs-10, keycloak-docs-76, keycloak-docs-43], and gated in pipelines using health endpoints and client-credentials service accounts [keycloak-docs-17, kc-supp-client-credentials]. Hands-on reports describe friction with infrastructure-as-code: configuration lives in the database, the API is hard to keep idempotent, and slow warm-up makes it ill-suited to ephemeral runs [keycloak-comm-3, keycloak-comm-13, keycloak-comm-19]. Missing for 10: a documented CI-specific workflow guide, idempotent declarative config-as-code outside the operator, a published OpenAPI spec at the probed paths [keycloak-probe-3], and independent corroboration of smooth CI use.",
     "evidenceIds": [
       "keycloak-docs-2",
-      "keycloak-docs-27",
+      "keycloak-docs-45",
       "kc-supp-kcadm",
       "keycloak-docs-6",
       "keycloak-docs-10",
       "keycloak-docs-76",
       "keycloak-docs-43",
       "keycloak-docs-17",
-      "keycloak-docs-45",
       "kc-supp-client-credentials",
-      "keycloak-comm-13-refresh-d02c2141cad5303e",
-      "keycloak-comm-17-refresh-9b95d892e98065c6",
-      "keycloak-comm-3-refresh-e731fadbd90f74c3"
-    ]
+      "keycloak-comm-3",
+      "keycloak-comm-13",
+      "keycloak-comm-19",
+      "keycloak-probe-3"
+    ],
+    "productId": "keycloak",
+    "storyId": "agentic-headless"
   }
 }

@@ -1,22 +1,23 @@
 {
-  "hash": "be6ffbfa79c5f8c86549de9e942fcf50a812c1a89fd970d6bd70fa3e9359d23b",
+  "hash": "e2334a9a639ad253a94b7de3a6f12a075b9393eadc16e3659c35221082ff949d",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "keycloak",
-    "storyId": "scoped-agent-identities",
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Keycloak documents a client-credentials grant so clients can obtain access 'on behalf of themselves rather than on behalf of a user,' backed by service accounts. Each agent can therefore be its own registered client, created via dynamic client registration or kcadm/Admin REST. Narrow permissions come from role-based and fine-grained resource-level authorization policies, and a token revocation endpoint plus introspection support cutting off access. Missing for 10: agent-specific guidance or examples, evidence that revocation takes effect instantly for self-contained access tokens without introspection, and independent or hands-on corroboration of per-agent least-privilege setups.",
+    "rationale": "Keycloak documents the client credentials grant for clients acting on their own behalf, backed by service accounts, so each agent can be registered as its own client, including via dynamic client registration or kcadm/Admin REST scripting. Permissions can be narrowed with roles and fine-grained resource-level authorization policies, and a token revocation endpoint revokes both access and refresh tokens, with introspection to check token state. missing for 10: agent-specific guidance or examples, explicit documentation of per-client scope restriction for service accounts, documented behavior showing revocation takes effect instantly for already-issued JWT access tokens, and independent hands-on corroboration.",
     "evidenceIds": [
       "kc-supp-client-credentials",
       "kc-supp-authz-services",
+      "keycloak-docs-12",
       "keycloak-docs-49",
       "keycloak-docs-70",
       "keycloak-docs-53",
       "keycloak-docs-52",
       "keycloak-docs-39",
       "kc-supp-kcadm"
-    ]
+    ],
+    "productId": "keycloak",
+    "storyId": "scoped-agent-identities"
   }
 }
