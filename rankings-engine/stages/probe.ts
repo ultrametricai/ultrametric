@@ -1,4 +1,5 @@
 import fs from 'node:fs'
+import { recordedProbe } from '../evidence-source.mjs'
 import path from 'node:path'
 import { type Evidence, EvidenceSchema, type Product, ProductSchema } from '../../lib/schemas'
 import { categoryDir, readJson, resolveCategories, writeJson } from '../paths'
@@ -218,8 +219,8 @@ export function buildProbeEvidenceRows(
   })
 }
 
-// Merge semantics for a probe refresh: unmarked probe-tier rows are regenerated wholesale
-// (the collect-community.ts replace-prior-tier pattern), but rows marked `preserve: true`
+// Merge semantics for a probe refresh: numbered scheduled rows are regenerated,
+// while recorded runtime/audit rows and rows marked `preserve: true`
 // survive every rerun — they are recorded counter-evidence (audit counter-checks, recorded
 // runtime/self-eval probes), removable only by an explicit dated script, and a refresh that
 // dropped them is exactly how the 2026-10-14 agent-skills regression happened (the judge
@@ -227,14 +228,14 @@ export function buildProbeEvidenceRows(
 // collides with a preserved row are dropped defensively; buildProbeEvidenceRows avoids
 // minting such ids in the first place. Non-probe tiers pass through untouched.
 export function mergeProbeEvidence(existing: Evidence[], fresh: Evidence[]): Evidence[] {
-  const preserved = existing.filter((e) => e.tier === 'probe' && e.preserve === true)
+  const preserved = existing.filter(recordedProbe)
   const preservedIds = new Set(preserved.map((e) => e.id))
   const nonProbe = existing.filter((e) => e.tier !== 'probe')
   return [...nonProbe, ...fresh.filter((e) => !preservedIds.has(e.id)), ...preserved]
 }
 
 // CLI stage. Probe items are regenerated on each run and merged via mergeProbeEvidence:
-// unmarked probe-tier rows are replaced, preserved rows survive, and
+// scheduled probe-tier rows are replaced, recorded rows survive, and
 // claimed-docs/github/community rows are untouched.
 export async function runProbe({ category, product }: { category?: string; product?: string }): Promise<void> {
   let matched = 0
@@ -251,7 +252,7 @@ export async function runProbe({ category, product }: { category?: string; produ
       const file = path.join(dataDir, 'evidence', `${p.id}.json`)
       const existing = fs.existsSync(file) ? readJson(EvidenceSchema.array(), file) : []
       const preservedIds = new Set(
-        existing.filter((e) => e.tier === 'probe' && e.preserve === true).map((e) => e.id),
+        existing.filter(recordedProbe).map((e) => e.id),
       )
       const probeEvidence = buildProbeEvidenceRows(p.id, results, preservedIds, now)
       writeJson(file, mergeProbeEvidence(existing, probeEvidence))
