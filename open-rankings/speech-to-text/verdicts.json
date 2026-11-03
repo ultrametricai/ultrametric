@@ -3019,7 +3019,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "The homepage says Speech is Cheap publishes accuracy results so people can evaluate transcription performance before integrating. Nothing in the pack shows those results come with a methodology, test conditions, or a benchmark dataset a founder could check. That leaves only a thin claim that results exist, not that they are verifiable. Missing for 10: documented benchmark methodology, named or downloadable benchmark dataset, reproducible metrics (e.g. WER by language or condition), independent corroboration of the published numbers.",
+    "rationale": "The vendor says it publishes accuracy results so buyers can evaluate transcription performance before integrating. That is the product's own capability for this story, but nothing shows the results come with a methodology, test dataset, or reproducible benchmark rather than headline numbers. missing for 10: documented benchmark methodology, named or downloadable evaluation dataset, metric definitions (e.g., WER) with per-language/condition breakdowns, independent or hands-on verification of the published figures.",
     "evidenceIds": [
       "speech-is-cheap-docs-30"
     ]
@@ -3028,47 +3028,53 @@
     "productId": "speech-is-cheap",
     "storyId": "agent-cost-estimate",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "The pricing page publishes a flat pay-as-you-go rate of $0.002 per audio minute and a $20/month plan covering 21,600 core minutes, so an agent can compute the base cost of a job from its audio duration. However, the product offers optional features such as speaker diarization, multichannel parsing, word timestamps, audio-type labeling and edge transcription. The 'core transcription minutes' wording suggests extras may be priced separately, and no add-on prices are shown. Missing for 10: itemized add-on/feature pricing, confirmation of whether options change per-minute cost, machine-readable pricing for agents, independent corroboration.",
+    "rationale": "Speech is Cheap publishes its base per-minute and subscription pricing, the MCP check_access tool lists current prices, and the x402 API returns a free job quote before submission. These surfaces let an agent compute or retrieve the base job cost, but the cited sources do not itemize the separate prices for diarization, word timestamps, audio labeling, or edge transcription. Missing for 10: itemized add-on prices, explicit confirmation of how each option changes the quoted total, and independent or hands-on confirmation that the pre-submission quote matches the final charge.",
     "evidenceIds": [
       "speech-is-cheap-docs-28",
       "speech-is-cheap-docs-29",
       "speech-is-cheap-docs-11",
-      "speech-is-cheap-docs-13"
+      "speech-is-cheap-docs-13",
+      "speech-is-cheap-supp-mcp-tools",
+      "speech-is-cheap-supp-x402"
     ]
   },
   {
     "productId": "speech-is-cheap",
     "storyId": "agent-end-to-end-transcript",
     "verdict": "full",
-    "quality": 8,
+    "quality": 9,
     "confidence": "medium",
-    "rationale": "The public docs cover each step an API-key-holding agent needs. There is an auth test endpoint (GET /v2/jobs/auth), job creation by URL or direct upload, and a read endpoint that returns status and results as JSON, SRT or VTT. Webhooks and SSE cover completion without polling, and a machine-readable OpenAPI spec is published at /openapi.json. Missing for 10: the exact auth header/scheme is not shown in the evidence, there is no hands-on or independent end-to-end corroboration, and llms.txt and markdown docs return 404.",
+    "rationale": "The public, machine-readable docs cover each step an agent needs with an API key. It can test the key (GET /v2/jobs/auth), create a job from a URL or a direct upload of up to 2 GiB, and then poll the read endpoint or receive webhooks or SSE to get results as JSON, SRT or VTT. The docs are also served as llms.txt, Markdown pages and an OpenAPI spec, which supports discovery from docs alone with no human step. Missing for 10: the exact auth header scheme is not quoted in the evidence, and there is no hands-on or independent end-to-end run of submit-to-transcript via the Jobs API.",
     "evidenceIds": [
-      "speech-is-cheap-docs-21",
       "speech-is-cheap-docs-2",
       "speech-is-cheap-docs-3",
-      "speech-is-cheap-docs-9",
-      "speech-is-cheap-docs-10",
       "speech-is-cheap-docs-7",
       "speech-is-cheap-docs-8",
+      "speech-is-cheap-docs-9",
+      "speech-is-cheap-docs-10",
+      "speech-is-cheap-docs-21",
+      "speech-is-cheap-probe-1",
+      "speech-is-cheap-probe-2",
       "speech-is-cheap-probe-3",
-      "speech-is-cheap-gh-1"
+      "speech-is-cheap-supp-api-keys"
     ]
   },
   {
     "productId": "speech-is-cheap",
     "storyId": "agentic-agent-docs",
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "medium",
-    "rationale": "Probes confirm there is no llms.txt (404) and no markdown docs endpoint (404). The vendor does publish a machine-readable OpenAPI spec at docs.speechischeap.com/openapi.json (HTTP 200) and an official ClawHub agent skill repo, which together give agents a first-party, machine-consumable entry point. Missing for 10: an llms.txt file, markdown/agent-optimized versions of the docs, any explicit docs guidance on pointing agents at the documentation, and independent corroboration of agent use.",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Live probes confirm a served llms.txt (HTTP 200) at docs.speechischeap.com that summarizes the agent-facing surfaces (Jobs, x402, Edge and MCP). Probes also confirm markdown versions of doc pages (.md) and a machine-readable openapi.json, so an agent can be pointed directly at agent-oriented docs. Missing for 10: evidence of a full-content llms-full.txt variant and of how completely the llms.txt index covers the whole doc set.",
     "evidenceIds": [
       "speech-is-cheap-probe-1",
+      "speech-is-cheap-supp-agent-docs-index",
       "speech-is-cheap-probe-2",
       "speech-is-cheap-probe-3",
-      "speech-is-cheap-gh-1"
+      "speech-is-cheap-docs-5",
+      "speech-is-cheap-docs-17"
     ]
   },
   {
@@ -3077,7 +3083,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Speech is Cheap is a transcription API, and speech-to-text vendors can plausibly offer AI insights such as summaries or analysis of transcripts, so this axis applies. The evidence documents only transcription features: diarization, word timestamps, audio-type segment labels, confidence filtering and output formats. None of these are AI-generated insights or suggestions drawn from the user's data, so the verdict is \"none\".",
+    "rationale": "A speech-to-text API could plausibly offer in-product AI insights such as summaries, topics, or suggested actions drawn from transcripts, so this axis applies. The evidence covers only transcription features: diarization, word timestamps, audio-type labels, and confidence filtering. The MCP server and x402 API let external AI assistants or agents run transcriptions, which is adjacent functionality and not in-product AI insights or suggestions. Nothing documents AI-generated insights or suggestions inside the product.",
     "evidenceIds": []
   },
   {
@@ -3099,26 +3105,28 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Speech is Cheap is a transcription API service. A SaaS product of this kind could plausibly ship an in-product AI assistant, so the axis applies, but no evidence shows one. The ClawHub skill (gh-1) lets an external agent call the API. That is an outside integration, not a built-in assistant, so it earns no credit.",
+    "rationale": "Speech is Cheap is a speech-to-text API service, and a built-in assistant (for example, a dashboard copilot) is a plausible capability for this kind of product, so the axis applies. However, the evidence documents no built-in AI assistant to which users can delegate tasks. The MCP server and the x402 API let external AI assistants and agents call the product, which is the inverse role and earns no credit for a built-in in-product assistant.",
     "evidenceIds": []
   },
   {
     "productId": "speech-is-cheap",
     "storyId": "agentic-headless",
     "verdict": "full",
-    "quality": 7,
-    "confidence": "medium",
-    "rationale": "Speech is Cheap is an API-first transcription service, so it runs headlessly by design. Jobs are created programmatically by URL or file upload and polled through a status endpoint. It also offers completion webhooks, SSE progress streaming, auth and health check endpoints suited to automated pipelines, and a published OpenAPI spec. Missing for 10: a documented CLI or CI-specific guidance (e.g. a GitHub Actions example), and independent hands-on corroboration of use in CI pipelines.",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "Speech is Cheap is an API-only product, so it runs headlessly by design. Jobs are created by URL or file upload, then polled or delivered via webhooks and SSE ([speech-is-cheap-docs-2], [speech-is-cheap-docs-3], [speech-is-cheap-docs-7], [speech-is-cheap-docs-9]). The docs explicitly recommend a dedicated, revocable API key for each script or pipeline, and the upload command reads the key from the `SIC_API_KEY` environment variable, both of which suit CI. Health and auth-test endpoints, an OpenAPI spec, and a versioning policy with six months' deprecation notice support stable unattended pipelines. missing for 10: an official CLI or documented CI recipe (e.g. a GitHub Actions example), independent hands-on corroboration of CI usage.",
     "evidenceIds": [
       "speech-is-cheap-docs-1",
       "speech-is-cheap-docs-2",
       "speech-is-cheap-docs-3",
       "speech-is-cheap-docs-7",
-      "speech-is-cheap-docs-8",
       "speech-is-cheap-docs-9",
       "speech-is-cheap-docs-21",
       "speech-is-cheap-docs-22",
-      "speech-is-cheap-probe-3"
+      "speech-is-cheap-supp-api-keys",
+      "speech-is-cheap-supp-mcp-tools",
+      "speech-is-cheap-probe-3",
+      "speech-is-cheap-supp-versioning"
     ]
   },
   {
@@ -3127,26 +3135,37 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "high",
-    "rationale": "Speech is Cheap is a transcription API that turns audio and video files into transcripts. It is not an agent or host application that could act as an MCP client and call other servers' tools, so this story's axis does not apply. The ClawHub skill works in the opposite direction: it lets an agent call Speech is Cheap, not Speech is Cheap consume MCP tools.",
+    "rationale": "Speech is Cheap is a speech-to-text API, not an AI assistant or agent host, so connecting external MCP servers to use their tools is a category error for this kind of product. Its documented MCP capability is a server that exposes transcription tools to other AI clients. That is the opposite role and does not make this client-side axis applicable.",
     "evidenceIds": []
   },
   {
     "productId": "speech-is-cheap",
     "storyId": "agentic-mcp-server",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Speech is Cheap is a transcription API service, so shipping an official MCP server is a fair question for it, but the evidence pack never documents one. The ClawHub agent skill and the published OpenAPI spec are adjacent agent-integration building blocks, not an MCP server, so they earn no credit here.",
-    "evidenceIds": []
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Speech is Cheap documents an official hosted MCP server at https://mcp.speechischeap.com/mcp that uses Streamable HTTP and OAuth sign-in with the user's API key. The docs list tools (cancel_job, prepare_upload, check_access) and transcribe/subtitles prompt templates, and llms.txt references the server. A runtime probe confirmed the endpoint is live and correctly OAuth-gated with published protected-resource metadata. Missing for 10: independent user or hands-on reports of a full transcription session through an agent client, and an explicitly quoted job-creation/transcription tool in the excerpted tool list.",
+    "evidenceIds": [
+      "speech-is-cheap-supp-mcp-server",
+      "speech-is-cheap-supp-mcp-tools",
+      "speech-is-cheap-probe-4",
+      "speech-is-cheap-probe-rt-1",
+      "speech-is-cheap-supp-agent-docs-index"
+    ]
   },
   {
     "productId": "speech-is-cheap",
     "storyId": "agentic-nl-commands",
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "The product itself is a REST transcription API with parameter-driven requests and no native natural-language interface. However, the vendor's own GitHub org publishes a ClawHub skill for transcribing audio with Speech is Cheap, which suggests a first-party way for AI agents to operate it from natural-language prompts. That evidence is a single thin mention, so the depth and scope of natural-language control are unproven. Missing for 10: documented natural-language command interface, details of which operations the skill exposes (job creation, status, output formats), hands-on or independent corroboration.",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Speech is Cheap runs its own hosted MCP server that, per its docs, \"lets AI assistants transcribe audio and video files directly within your conversations.\" That server exposes job-operation tools (cancel_job, prepare_upload, check_access) and the prompt templates \"transcribe\" and \"subtitles\", and a runtime probe confirms the endpoint is live and OAuth-gated. So users can drive the product through natural-language conversation. The language understanding itself comes from the user's external AI client, though, and there is no hands-on proof of a conversational session. Missing for 10: a native natural-language interface in the product itself, independent or hands-on corroboration of end-to-end conversational operation, and a complete enumeration of the MCP tools covering every job action.",
     "evidenceIds": [
+      "speech-is-cheap-supp-mcp-server",
+      "speech-is-cheap-supp-mcp-tools",
+      "speech-is-cheap-probe-4",
+      "speech-is-cheap-probe-rt-1",
+      "speech-is-cheap-supp-agent-docs-index",
       "speech-is-cheap-gh-1"
     ]
   },
@@ -3156,7 +3175,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Speech is Cheap is a transcription API service, and such a product could plausibly ship an official CLI, so the axis applies. The evidence documents only HTTP API endpoints, webhooks, Zapier/Google integrations, an OpenAPI spec and a ClawHub agent skill; none of these is an official command-line tool. The OpenAPI spec is a developer building block and the agent skill is an adjacent feature, so neither earns partial credit.",
+    "rationale": "An official CLI is a fair thing to ask of a speech-to-text API service, so the axis applies. However, the evidence documents only the REST/x402/Edge APIs, a hosted MCP server, a ClawHub skill and no-code integrations, and none of these is an official command-line tool. The MCP `prepare_upload` tool returning an upload command is a building block, not a shipped CLI.",
     "evidenceIds": []
   },
   {
@@ -3165,7 +3184,7 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Speech is Cheap is an API-first transcription service with documented v2 job endpoints for creating jobs by URL or upload and for reading status and results, plus auth-test and health endpoints, webhooks, and SSE streaming. A probe confirmed a machine-readable OpenAPI spec is publicly served at /openapi.json. Missing for 10: independent hands-on corroboration of real-world API usage, since all docs evidence is vendor-claimed and the GitHub skill is first-party.",
+    "rationale": "Speech is Cheap is an API-first product. Its documented Jobs API covers creating jobs by URL or upload, reading status and results, auth and health endpoints, webhooks, and SSE streaming. A live OpenAPI spec and llms.txt were probe-confirmed, and a published versioning policy and per-agent API keys are documented. Missing for 10: independent or hands-on corroboration of actually driving the Jobs API end-to-end (the probes confirm the docs and spec exist, not that API calls succeed).",
     "evidenceIds": [
       "speech-is-cheap-docs-1",
       "speech-is-cheap-docs-2",
@@ -3173,11 +3192,12 @@
       "speech-is-cheap-docs-7",
       "speech-is-cheap-docs-8",
       "speech-is-cheap-docs-9",
-      "speech-is-cheap-docs-10",
       "speech-is-cheap-docs-21",
-      "speech-is-cheap-docs-22",
+      "speech-is-cheap-probe-1",
       "speech-is-cheap-probe-3",
-      "speech-is-cheap-gh-1"
+      "speech-is-cheap-supp-versioning",
+      "speech-is-cheap-supp-api-keys",
+      "speech-is-cheap-supp-x402"
     ]
   },
   {
@@ -3195,7 +3215,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Official SDKs are a fair question for a transcription API, so the axis applies. The evidence documents only a REST API and an OpenAPI spec (probe-3), which is a building block for generating clients rather than a shipped SDK, plus a ClawHub agent skill, which is an adjacent integration and not a language SDK. No official client libraries are evidenced.",
+    "rationale": "The evidence documents a REST Jobs API, a published OpenAPI spec, a hosted MCP server, an x402 agent API, a ClawHub skill, and Zapier/Google integrations. None of these is an official client SDK library, such as a Python or Node package. The OpenAPI spec is only a building block from which a developer could generate a client, and the MCP and skill surfaces belong to other stories, so no credit transfers here.",
     "evidenceIds": []
   },
   {
@@ -3204,7 +3224,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Speech is Cheap documents outbound webhook callbacks on transcription jobs: applications receive completion updates via webhooks, and the changelog adds a webhook callback when a job is canceled. This is a real programmatic event-subscription mechanism for the job lifecycle. Missing for 10: documentation of how webhooks are registered (per-job vs. account-level), a full event catalog beyond completion and cancellation, delivery guarantees such as retries and signing, and independent or hands-on corroboration.",
+    "rationale": "Speech is Cheap's own docs say applications can receive job completion updates through webhooks, and the Jobs API changelog adds a webhook callback for canceled jobs, so registrable outbound HTTP callbacks exist for job events. The evidence is only two brief mentions, so the depth of the feature is undocumented here. Missing for 10: details on how a callback URL is registered, payload schema, signature verification, retry/delivery guarantees, coverage of any events beyond completion and cancellation, and independent or hands-on corroboration.",
     "evidenceIds": [
       "speech-is-cheap-docs-7",
       "speech-is-cheap-docs-23"
@@ -3216,7 +3236,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows a documented API reference (endpoint pages for creating and reading jobs) and a machine-readable openapi.json, but nothing shows the reference itself is interactive or offers runnable 'try it' examples. The homepage 'test-drive' transcription tool is an adjacent demo, not an interactive API reference, and the OpenAPI spec is only a building block someone could use to construct one. Neither earns credit, so the verdict is none.",
+    "rationale": "The evidence shows a static endpoint reference (create/read job pages with parameter descriptions) and a published openapi.json, but nothing shows an interactive explorer, a try-it console, or runnable code examples in the reference. The OpenAPI spec is only a building block for such a reference, and the homepage \"test-drive\" free transcription tool is an adjacent demo feature, not an interactive API reference, so neither earns credit.",
     "evidenceIds": []
   },
   {
@@ -3225,12 +3245,11 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "A direct probe returned HTTP 200 for https://docs.speechischeap.com/openapi.json, and the file contains an \"openapi\" key, so a machine-readable OpenAPI spec can be downloaded from the docs site. The documented REST endpoints (job create, read, auth, health) give it a real API surface to describe. missing for 10: first-party docs that link to or describe the spec, and evidence that it fully covers the v2 jobs endpoints (e.g., webhooks, SSE, uploads).",
+    "rationale": "A live probe found a machine-readable OpenAPI document at https://docs.speechischeap.com/openapi.json: it returned HTTP 200 and contains an \"openapi\" key. That makes the spec directly downloadable from the official docs origin, and the agent-oriented llms.txt and markdown docs sit alongside it. Missing for 10: first-party documentation that announces or describes the spec, and confirmation that it covers all API surfaces (Jobs, Edge, x402) and stays in sync with versioned releases.",
     "evidenceIds": [
       "speech-is-cheap-probe-3",
-      "speech-is-cheap-docs-2",
-      "speech-is-cheap-docs-9",
-      "speech-is-cheap-docs-21"
+      "speech-is-cheap-probe-1",
+      "speech-is-cheap-probe-2"
     ]
   },
   {
@@ -3239,22 +3258,22 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A sandbox or test environment is a fair question for a transcription API, but the evidence shows no documented sandbox mode, test keys, or isolated non-production environment. The auth-test and health endpoints and the free 'test-drive' web tool are adjacent features, not a sandbox, so they earn no credit.",
+    "rationale": "A sandbox or test mode is a fair question for a speech-to-text API, but the evidence documents no sandbox environment, test keys, or non-production mode. The auth-check and health endpoints, the free test-drive tool, per-agent API keys, and free x402 quotes are adjacent features, not an isolated sandbox, so they earn no credit.",
     "evidenceIds": []
   },
   {
     "productId": "speech-is-cheap",
     "storyId": "api-versioning-policy",
-    "verdict": "partial",
-    "quality": 4,
-    "confidence": "medium",
-    "rationale": "The API is clearly versioned: endpoints live under /v2/jobs, the docs are organized as \"jobs-v2\", and there is a v2 changelog that records additions such as auth and health endpoints and a cancel webhook. Nothing in the pack documents a deprecation policy, sunset timelines or how older versions are retired, so only half the story is delivered. Missing for 10: a documented deprecation/sunset policy, version support windows, migration guidance between versions, and independent corroboration.",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Speech is Cheap publishes a versioning and deprecation policy covering the Jobs, x402, and Edge APIs. Versions sit in the URL path (/v2/), releases follow SemVer, and breaking changes ship as a new path version. Removal of any API version gets at least six months' notice. Per-API changelogs exist, and the v2 Jobs changelog entries confirm this in practice. Missing for 10: independent or hands-on corroboration that deprecation notices are actually honored.",
     "evidenceIds": [
+      "speech-is-cheap-supp-versioning",
       "speech-is-cheap-docs-21",
       "speech-is-cheap-docs-22",
       "speech-is-cheap-docs-23",
-      "speech-is-cheap-docs-2",
-      "speech-is-cheap-probe-3"
+      "speech-is-cheap-supp-x402"
     ]
   },
   {
@@ -3263,13 +3282,14 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "The docs describe a create-job endpoint that accepts either a URL or a file upload. They also describe a read endpoint that 'allows you to check the status of an existing transcription job and retrieve its results if available,' which covers the create-then-poll flow. The pack shows an OpenAPI spec exists, and a cancellation webhook implies a canceled state, but the actual list of job states is never shown. missing for 10: an explicitly documented list of job states and their transitions (e.g. queued/processing/completed/failed), polling guidance such as recommended intervals, and independent or hands-on corroboration of the polling flow.",
+    "rationale": "The Jobs API documents asynchronous job creation by URL or file upload, and a read endpoint that checks an existing job's status and returns its results when available, which covers the core create-then-poll workflow. The only hint of the state model is a 'pending' job mentioned in the MCP cancel tool. missing for 10: an explicit enumeration of documented job states and their transitions, polling guidance (intervals/rate limits), independent or hands-on corroboration of the polling flow.",
     "evidenceIds": [
       "speech-is-cheap-docs-2",
       "speech-is-cheap-docs-3",
       "speech-is-cheap-docs-9",
-      "speech-is-cheap-docs-23",
-      "speech-is-cheap-probe-3"
+      "speech-is-cheap-docs-10",
+      "speech-is-cheap-probe-1",
+      "speech-is-cheap-supp-mcp-tools"
     ]
   },
   {
@@ -3278,7 +3298,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Bulk operations are a fair axis for a transcription API, but the evidence only documents creating, reading, and receiving webhooks for individual jobs, one URL or uploaded file at a time. There is no batch submission, bulk cancel, or multi-job endpoint. The Google Drive/Zapier integrations are per-file automations on a host platform and do not count as the product's own bulk-operation capability.",
+    "rationale": "Bulk operations are a fair question for a transcription API, which could offer batch job submission or bulk cancel/read. The evidence only documents single-job creation (one URL or one uploaded file per job), per-job status reads, and per-job MCP tools such as cancel_job. The Google Drive/Zapier integrations automate transcription file by file, which is an adjacent workaround rather than a documented bulk capability, so it earns no credit.",
     "evidenceIds": []
   },
   {
@@ -3287,7 +3307,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Speech is Cheap documents no rules engine of its own for defining event-triggered actions. Its job-completion and cancellation webhooks are developer building blocks, not user-defined rules. The Google Drive automations rely on Zapier, a third-party platform where the rules actually live, so they earn no credit for this story.",
+    "rationale": "The evidence shows no product-native way to define event-triggered rules or automations. Webhooks on job completion and cancellation are developer building blocks for constructing automation, not a rules engine. The Google Drive→Sheets and Zapier Table guides rely on Zapier's automation layer, not a rules capability of Speech is Cheap itself.",
     "evidenceIds": []
   },
   {
@@ -3296,7 +3316,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Speech is Cheap is a transcription API, and scheduling recurring jobs is a fair question for a job-based API service, so the axis applies. However, its documentation only covers creating one-off transcription jobs via URL or upload, with webhook and SSE updates; it never mentions any scheduling or recurrence feature. The Google Drive automations (docs-24, docs-25) run on Zapier, a host platform, and are event-triggered rather than scheduled, so they earn no credit here.",
+    "rationale": "Scheduling recurring transcription jobs is a fair question for an async job API, but the evidence shows no scheduling or recurrence capability, only on-demand job creation. The Google Drive automations run through Zapier and Google Sheets, which are external platforms, and webhooks are an adjacent feature, so neither earns credit for this story.",
     "evidenceIds": []
   },
   {
@@ -3314,7 +3334,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows an asynchronous job API: you create jobs, poll their status, and receive webhook or SSE updates. Nothing documents running jobs in parallel, concurrency limits, rate limits, or queueing behavior. An async job model alone is adjacent to the story and does not establish documented parallel-job handling.",
+    "rationale": "The evidence shows an asynchronous Jobs API with status polling, webhooks and SSE progress, and an MCP tool that cancels \"pending\" jobs. None of it documents running jobs in parallel, any concurrency cap, or how excess jobs are queued. The MCP `check_access` tool \"lists current limits,\" but it never says these are concurrency limits or describes queueing, so it is adjacent and earns no credit.",
     "evidenceIds": []
   },
   {
@@ -3323,7 +3343,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Custom vocabulary or keyword boosting is a fair axis for a transcription API. The documented job-creation parameters (language, diarization, multichannel, confidence threshold, segment duration, privacy redaction, user agent) include no vocabulary, prompt, or keyword-boosting option. The evidence never mentions such a capability.",
+    "rationale": "Custom vocabulary and keyword boosting are a fair question for a speech-to-text API, so the axis applies. The documented job-creation parameters cover language, diarization, multi-channel speakers, word timestamps, confidence filtering, segment duration, and redaction. None of the evidence mentions custom vocabulary, keyword boosting, or prompt-based term biasing.",
     "evidenceIds": []
   },
   {
@@ -3332,7 +3352,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "The documented job-creation endpoint has an explicit direct-upload option for local media, with a published 2 GiB limit (also stated as up to 24 hours of audio). A types page says both audio-only files and video files with audio tracks are accepted, and an OpenAPI spec is served at a public URL. missing for 10: an explicit published list of accepted file formats or codecs, and independent or hands-on corroboration that local file upload works.",
+    "rationale": "The Jobs v2 create endpoint documents direct file upload for local media, with a published 2 GiB limit (and a 24-hour duration ceiling). The types page states that both audio-only files and video files with audio tracks are accepted, and an OpenAPI spec is published. The format guidance is only categorical, not a specific list of containers or codecs. missing for 10: an explicit list of accepted file formats/codecs in the evidence, independent or hands-on corroboration of local-file uploads.",
     "evidenceIds": [
       "speech-is-cheap-docs-3",
       "speech-is-cheap-docs-4",
@@ -3347,7 +3367,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack documents job creation, status reads, SSE progress and webhooks for completion and cancellation. Nothing describes documented error codes for failed jobs, retry guidance, or fail-fast handling of bad or unsupported files. The existence of an OpenAPI spec alone does not show that error semantics are documented.",
+    "rationale": "The evidence documents job creation, a status/read endpoint, webhooks (including on cancel), and SSE progress. None of it covers documented error codes for failed jobs, retry guidance, or fail-fast rejection of bad or invalid files. The x402 '402 Payment Required' flow is a payment handshake, not job-failure error handling, so it earns no credit here.",
     "evidenceIds": []
   },
   {
@@ -3356,7 +3376,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence documents job creation, webhooks for completion and cancellation, and result retrieval. Nothing shows a field for attaching custom identifiers or metadata to a job, or for echoing them back in results or webhook payloads. The custom user-agent option is a separate fetch setting and does not count toward this story.",
+    "rationale": "The evidence documents job creation, status retrieval, and completion and cancel webhooks. Nothing shows a client-supplied identifier, metadata, or passthrough field that is echoed back in results or webhook payloads. The custom user-agent option is an adjacent fetch setting, not job metadata, so it earns no credit.",
     "evidenceIds": []
   },
   {
@@ -3365,7 +3385,7 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "The job-creation docs say the language parameter is optional: \"If not provided, the language will be auto-detected for each speech segment.\" Developers can therefore skip declaring the language, and detection happens per segment rather than once per file. Declaring a language explicitly remains available through ISO 639-1 codes. Missing for 10: independent or hands-on corroboration of detection accuracy, and documentation of whether the detected language is returned in the output and which languages detection covers.",
+    "rationale": "The Jobs v2 create docs state that if no language is provided, it 'will be auto-detected for each speech segment'. That is per-segment automatic detection, so the developer does not need to declare a language. Declaring one stays optional through the documented language codes. Missing for 10: independent or hands-on corroboration of detection accuracy, and documentation of whether the detected language is returned in the output.",
     "evidenceIds": [
       "speech-is-cheap-docs-6",
       "speech-is-cheap-docs-5"
@@ -3390,11 +3410,12 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Speech is Cheap documents long-form transcription of files up to 24 hours or 2 GiB, and its API job-creation docs confirm direct uploads of up to 2 GiB. Both the maximum duration and file size are therefore documented for single jobs. Missing for 10: the 24-hour cap appears only on the marketing homepage rather than the API reference, limits for URL-submitted files are not stated explicitly, and there is no independent or hands-on corroboration of multi-hour jobs succeeding.",
+    "rationale": "The product documents long-form transcription of files up to 24 hours or 2 GiB, and its job-creation docs separately state that direct uploads support files up to 2 GiB. Both the maximum duration and the file size are therefore published for single asynchronous jobs. Missing for 10: the 24-hour cap appears only on the marketing homepage rather than the API reference, the limits for URL-submitted files are not spelled out, and there is no hands-on or independent confirmation of multi-hour jobs.",
     "evidenceIds": [
       "speech-is-cheap-docs-4",
       "speech-is-cheap-docs-3",
-      "speech-is-cheap-docs-2"
+      "speech-is-cheap-docs-2",
+      "speech-is-cheap-docs-1"
     ]
   },
   {
@@ -3417,7 +3438,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "The job-creation API documents an option that parses speakers from multi-channel audio, assigning one speaker per channel and labeling it for multi-track recordings. That keeps each side of a stereo call separate in the transcript. missing for 10: details on supported channel counts and how per-channel output is structured, and independent or hands-on confirmation that channel separation works as described.",
+    "rationale": "The Jobs API create endpoint documents an option that \"parses speakers from multi-channel audio by assigning one speaker per channel,\" which keeps each side of a stereo call separate as distinct speakers. Combined with per-segment speaker_id output, this delivers the core of the story. missing for 10: parameter name and output-format details for per-channel results, documented channel-count limits and stereo-specific behavior, independent or hands-on corroboration.",
     "evidenceIds": [
       "speech-is-cheap-docs-12",
       "speech-is-cheap-docs-11"
@@ -3429,21 +3450,23 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Speech is Cheap is an API-first product. Its core function is described as transcription 'through an API', and the web tool is framed as a way to 'test-drive the API'. Documented endpoints cover the transcription workflow: job creation by URL or upload, every option (diarization, language, segment length, confidence filtering, redaction), status and result retrieval in JSON/SRT/VTT, SSE streaming, webhooks, and auth and health checks. A published OpenAPI spec backs this up. Missing for 10: an explicit API/UI parity statement, evidence that account, billing and API-key management are available via API, and independent hands-on corroboration.",
+    "rationale": "Speech is Cheap is an API-first product. Its whole transcription feature set is documented as API parameters and endpoints: URL or file upload, diarization, multichannel, word timestamps, confidence filtering, redaction, SRT/VTT output, SSE streaming, webhooks, job read and cancel, plus auth and health checks. That surface is backed by a published OpenAPI spec, a hosted MCP server and the x402 agent API, so the UI is essentially a thin layer over the API. However, dashboard functions such as API key creation and revocation, and subscription or billing management, are never shown to be API-accessible. Missing for 10: an explicit API/UI parity statement, API endpoints for key management and billing, and independent hands-on corroboration.",
     "evidenceIds": [
       "speech-is-cheap-docs-1",
-      "speech-is-cheap-docs-26",
       "speech-is-cheap-docs-2",
       "speech-is-cheap-docs-3",
-      "speech-is-cheap-docs-9",
-      "speech-is-cheap-docs-10",
       "speech-is-cheap-docs-7",
       "speech-is-cheap-docs-8",
+      "speech-is-cheap-docs-9",
+      "speech-is-cheap-docs-10",
       "speech-is-cheap-docs-11",
       "speech-is-cheap-docs-18",
       "speech-is-cheap-docs-21",
-      "speech-is-cheap-docs-22",
-      "speech-is-cheap-probe-3"
+      "speech-is-cheap-docs-23",
+      "speech-is-cheap-probe-3",
+      "speech-is-cheap-supp-mcp-tools",
+      "speech-is-cheap-supp-x402",
+      "speech-is-cheap-supp-api-keys"
     ]
   },
   {
@@ -3452,10 +3475,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Speech is Cheap's job read endpoint returns transcription results in open formats: JSON by default, or SRT/VTT/WebVTT on request. Your core output is therefore retrievable without lock-in. However, retrieval is per job, and nothing documents exporting everything at once or the process for leaving. Missing for 10: a bulk or account-wide export of all jobs and transcripts, export of account metadata and settings, documented account closure or data deletion on exit, and independent corroboration.",
+    "rationale": "The product's own read endpoint returns each transcription job's results in open formats: JSON by default, or SRT, VTT and WebVTT on request. A published OpenAPI spec also documents the API surface for programmatic retrieval. However, the evidence shows only per-job retrieval: nothing documents bulk export of all account data or a clean leave/account-deletion path. Missing for 10: bulk or all-data export, a documented job-listing or enumeration endpoint for exporting history, account deletion or offboarding documentation, and independent corroboration.",
     "evidenceIds": [
       "speech-is-cheap-docs-9",
-      "speech-is-cheap-docs-10"
+      "speech-is-cheap-docs-10",
+      "speech-is-cheap-probe-3"
     ]
   },
   {
@@ -3464,7 +3488,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Speech is Cheap is a hosted transcription API, and nothing in the evidence shows its source code published under an open license. The only GitHub item is a ClawHub skill for calling the API, which is an integration wrapper rather than the product's own source, and no license is stated for it. The public OpenAPI spec is API documentation, not source code.",
+    "rationale": "Open-sourcing is a fair question for a hosted speech-to-text API, so the axis applies. The evidence documents only the hosted service, its APIs and an MCP endpoint, with no published product source or open license. The one GitHub repo is a ClawHub skill for calling the API, with no license stated, so it is an adjacent integration rather than the product's own source.",
     "evidenceIds": []
   },
   {
@@ -3473,7 +3497,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Self-hosting is a fair question for a transcription service, so the axis applies. However, the evidence describes only a hosted, pay-per-minute API. The only GitHub item is a ClawHub client skill, not the core transcription engine, and nothing documents an on-prem or self-hosted deployment.",
+    "rationale": "Self-hosting is a fair question for a speech-to-text API, so the axis applies. The evidence describes only vendor-hosted surfaces: the Jobs API, x402 API, Edge API and a hosted MCP endpoint, with transcripts stored in the vendor's AWS us-east-1 region. The only GitHub repo is a ClawHub client skill, not a deployable server, so there is no evidence of a self-hostable distribution.",
     "evidenceIds": []
   },
   {
@@ -3481,18 +3505,22 @@
     "storyId": "privacy-data-residency",
     "verdict": "none",
     "quality": 0,
-    "confidence": "medium",
-    "rationale": "Choosing a storage region is a fair question for a hosted transcription API, so the axis applies. The pack has no evidence of region or residency selection. The data-redaction and 12-hour deletion option (docs-18) is a retention control, and edge transcription (docs-15) is a speed feature; both are adjacent features and earn no credit.",
-    "evidenceIds": []
+    "confidence": "high",
+    "rationale": "The vendor's security page says transcript storage is fixed to AWS us-east-1, processing runs globally, and it does \"not currently offer customer-selectable data residency.\" Users therefore cannot choose a storage region. The auto-delete/redaction option is a related retention control, not region selection, so it earns no credit.",
+    "evidenceIds": [
+      "speech-is-cheap-supp-security-residency"
+    ]
   },
   {
     "productId": "speech-is-cheap",
     "storyId": "privacy-no-training",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "The evidence pack has no documented training opt-out and no policy statement that customer audio or transcripts are excluded from AI model training. The only privacy-related control is a redaction option that removes the input URL and deletes segments after 12 hours. That is a retention feature, an adjacent control that does not establish protection from training use.",
-    "evidenceIds": []
+    "rationale": "The security page commits that the company never uses customer data to train its own models and does not let its providers use it for model training. That no-training default covers the story with no opt-out needed, and private-job content is also stated to be off-limits to personnel. missing for 10: contractual backing (e.g. DPA or terms-of-service language) for the no-training commitment, independent or hands-on corroboration of the policy.",
+    "evidenceIds": [
+      "speech-is-cheap-supp-security-training"
+    ]
   },
   {
     "productId": "speech-is-cheap",
@@ -3500,7 +3528,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "The job-creation API has its own documented privacy option: when enabled, it immediately redacts the original input_url and deletes transcript segments after 12 hours. That is real per-job retention control, but it is a single fixed setting rather than configurable retention or on-demand deletion. Missing for 10: a configurable retention window, an explicit delete endpoint for jobs, transcripts or uploaded files, a documented default retention policy for uploaded audio, and independent or hands-on corroboration.",
+    "rationale": "The Jobs API documents a per-job option that immediately redacts the original input_url and deletes transcript segments after 12 hours, which gives users real control over retention for each job. That control is a single toggle with a fixed window, and nothing else in the pack documents broader retention or deletion controls. Missing for 10: configurable retention periods, an on-demand delete endpoint for jobs or transcripts, account-level data deletion, a documented default retention period for non-private jobs, independent corroboration.",
     "evidenceIds": [
       "speech-is-cheap-docs-18"
     ]
@@ -3511,7 +3539,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Opting out of telemetry is a fair question for a transcription API service, but the evidence pack has no documented setting or policy for disabling telemetry or usage tracking. The only privacy-related item is the option that redacts the input URL and deletes segments after 12 hours. That is a data-retention control, an adjacent feature that earns no credit toward a telemetry opt-out.",
+    "rationale": "Opting out of telemetry is a fair question for a hosted speech-to-text API, so the axis applies, but the evidence pack documents no telemetry or usage-tracking opt-out. The nearest items are adjacent controls and earn no credit: a private-job option that redacts the input URL and deletes segments after 12 hours, and a blanket policy of never training on customer data. Neither is a user-facing way to turn off usage tracking.",
     "evidenceIds": []
   },
   {
@@ -3520,7 +3548,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Speech is Cheap is a transcription API, so automatic punctuation, casing, number formatting and a toggle to disable them are fair questions to ask of it. The evidence pack never mentions any of these or a switch to turn them off. Output-format options (JSON/SRT/VTT), confidence filtering and word timestamps are adjacent features and earn no credit.",
+    "rationale": "Output formatting is a fair question for a speech-to-text API, so the axis applies. However, nothing in the pack mentions punctuation, casing, or number formatting in transcripts, or a parameter to turn formatting off. The documented output options cover only JSON, SRT and VTT formats, segment duration, and confidence filtering, none of which address this story.",
     "evidenceIds": []
   },
   {
@@ -3541,7 +3569,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Speech is Cheap documents transcription of prerecorded audio and video files only, submitted by URL or file upload. Its SSE option streams progress and transcript segments for an already-submitted file job, which is adjacent output streaming, not ingesting live audio over a WebSocket or streaming input endpoint. Live streaming is a fair question for a speech-to-text API, so the verdict is none rather than na.",
+    "rationale": "Speech is Cheap is a speech-to-text API, so live streaming transcription is a fair axis to judge it on. Its documentation describes only prerecorded file transcription: you submit a URL or upload a file up to 2 GiB, jobs run asynchronously, and short files can be sent to the synchronous Edge API. The SSE option streams progress and transcript segments for an already-submitted file job; it does not accept live audio input over a WebSocket or streaming endpoint, so it is an adjacent feature that earns no credit.",
     "evidenceIds": []
   },
   {
@@ -3550,7 +3578,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Speech is Cheap documents SSE streaming of progress and chronological segments for prerecorded file jobs. Nothing in the evidence shows it marks streamed results as interim versus final, or documents any finality semantics. Streaming finished segments is an adjacent feature, not the interim/final distinction this story asks for.",
+    "rationale": "Speech is Cheap is a speech-to-text API, so interim-versus-final streaming semantics is a fair question for it. However, the evidence documents only prerecorded/async transcription, plus an SSE option that streams progress and chronological segments. Nothing distinguishes interim from final results or documents finality semantics, so the SSE segment streaming is an adjacent feature that earns no credit.",
     "evidenceIds": []
   },
   {
@@ -3559,29 +3587,30 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Job results are returned as JSON by default, with SRT/VTT only as opt-in alternatives (docs-10). The output is organized into segments, which can carry speaker_id, configurable segment duration, and word-level start/end times (docs-8, docs-11, docs-13, docs-17). A segment-level confidence threshold filter (docs-16) implies each segment has a confidence score. Missing for 10: explicit documentation of a confidence field in the response schema, a sample JSON response, and independent or hands-on corroboration of the output structure.",
+    "rationale": "The read endpoint returns JSON by default, with SRT/VTT as alternatives. The docs describe segment-level structure: chronological segments streamed via SSE, a configurable segment_duration, speaker_id added per segment, per-word start/end times, and audio-type labels. A segment confidence threshold filter implies each segment carries a confidence score. Missing for 10: an explicit output schema showing confidence fields returned in the JSON, and independent or hands-on corroboration of the response structure.",
     "evidenceIds": [
       "speech-is-cheap-docs-10",
+      "speech-is-cheap-docs-9",
       "speech-is-cheap-docs-8",
       "speech-is-cheap-docs-11",
       "speech-is-cheap-docs-13",
+      "speech-is-cheap-docs-14",
       "speech-is-cheap-docs-16",
-      "speech-is-cheap-docs-17",
-      "speech-is-cheap-probe-3"
+      "speech-is-cheap-docs-17"
     ]
   },
   {
     "productId": "speech-is-cheap",
     "storyId": "subtitle-exports",
     "verdict": "full",
-    "quality": 9,
+    "quality": 8,
     "confidence": "high",
-    "rationale": "The read-job endpoint takes a documented output-format parameter that accepts srt, vtt, or webvtt (defaulting to JSON), so developers can retrieve captions directly through the API. Configurable segment duration (6–30s) shapes caption timing, and a live OpenAPI spec backs the documented path. Missing for 10: independent or hands-on corroboration that the SRT/VTT output works as documented.",
+    "rationale": "The Jobs API read endpoint documents a format parameter whose valid options are srt, vtt, or webvtt, with JSON as the default. That is a documented, first-party path for exporting transcripts as caption files. Related controls support caption use: segment_duration caps segment length, and the MCP server ships a 'subtitles' prompt template. Missing for 10: hands-on or independent corroboration of the SRT/VTT output, and documentation of caption formatting details such as sample output or cue/line-length behavior.",
     "evidenceIds": [
       "speech-is-cheap-docs-10",
       "speech-is-cheap-docs-9",
       "speech-is-cheap-docs-17",
-      "speech-is-cheap-probe-3"
+      "speech-is-cheap-supp-mcp-tools"
     ]
   },
   {
@@ -3590,7 +3619,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Translating transcripts is a fair question for a speech-to-text API, so this axis applies. The evidence documents only source-language selection via ISO 639-1 codes and per-segment auto-detection, which control the transcription language rather than translate output. No translation option or endpoint is documented, and the language-selection controls are an adjacent feature that earns no credit.",
+    "rationale": "Translation is a fair question for a speech-to-text API, so the axis applies. The evidence documents only source-language selection via language codes and per-segment auto-detection, plus SRT/VTT/JSON output formats. None of these is a translate option or endpoint that outputs a transcript in a different target language.",
     "evidenceIds": []
   },
   {
@@ -3599,12 +3628,12 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "The jobs-v2 create endpoint documents submitting a URL to a publicly accessible audio file as the standard ingestion method. A custom user-agent option for the fetch and an option to redact the input_url confirm the service retrieves the recording itself, with no upload needed. missing for 10: explicit documentation of signed/pre-signed URL support (e.g., expiry or auth-header handling), independent or hands-on corroboration of URL-based ingestion.",
+    "rationale": "The Jobs API documents submitting a URL to a publicly accessible audio file as the standard ingestion method, distinct from direct upload. A documented custom user-agent option for fetching the file and an option to redact the original input_url confirm the service fetches remote media itself. Missing for 10: explicit documentation that signed/pre-signed URLs (e.g., S3/GCS) are supported, and independent or hands-on corroboration of URL-based ingestion.",
     "evidenceIds": [
       "speech-is-cheap-docs-2",
+      "speech-is-cheap-docs-3",
       "speech-is-cheap-docs-19",
-      "speech-is-cheap-docs-18",
-      "speech-is-cheap-docs-3"
+      "speech-is-cheap-docs-18"
     ]
   },
   {
@@ -3613,7 +3642,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Speech is Cheap documents that applications creating transcription jobs can receive completion updates through webhooks, and its changelog adds a webhook callback when a job is canceled, so callers do not have to poll. The evidence is thin, though: it consists of a product-facts line and a changelog entry, with no detailed webhook reference. Missing for 10: an explicit webhook on job failure, documentation of callback registration, payload, retries and signing, and independent or hands-on corroboration.",
+    "rationale": "First-party docs state that applications creating transcription jobs receive completion updates through webhooks, and the Jobs v2 changelog adds a webhook callback for canceled jobs, so the core no-polling flow is documented. Evidence is thin, consisting of brief product-facts and changelog lines. Missing for 10: explicit failure-event callbacks, webhook registration/payload/signing/retry documentation, independent or hands-on corroboration.",
     "evidenceIds": [
       "speech-is-cheap-docs-7",
       "speech-is-cheap-docs-23"
@@ -3625,11 +3654,10 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "The vendor states it can \"add a start and end time to each word in the transcript,\" which directly matches the story, and results can be retrieved programmatically as JSON through the jobs API. The only evidence, though, is a one-line homepage claim; the API reference excerpts never show the request parameter or the per-word output fields. Missing for 10: API reference documentation of the word-timestamp parameter and response schema, and independent or hands-on confirmation of word-level timing accuracy.",
+    "rationale": "The product's own homepage says it can 'add a start and end time to each word in the transcript,' which is exactly the per-word positional mapping the story asks for. Results are returned as JSON by default, which suits programmatic use. The evidence is a single marketing line, so depth is unconfirmed. Missing for 10: API docs naming the request parameter that enables word timestamps, a documented JSON output schema showing per-word start/end fields, and independent or hands-on confirmation of timestamp accuracy.",
     "evidenceIds": [
       "speech-is-cheap-docs-13",
-      "speech-is-cheap-docs-10",
-      "speech-is-cheap-docs-9"
+      "speech-is-cheap-docs-10"
     ]
   },
   {
@@ -4844,5 +4872,643 @@
     "confidence": "medium",
     "rationale": "Word-level timestamps are a fair question for a speech-to-text product, so the axis applies. Nothing in the evidence pack mentions timestamps at word or segment level. The API docs describe only a final transcript and detected languages returned as JSON, and the GitHub items cover only transcription, translation and language detection. With no documented capability, the verdict is none.",
     "evidenceIds": []
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "accuracy-methodology",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Asking for published accuracy methodology or benchmark datasets is a fair question for a transcription API, so the axis applies. The only accuracy reference in the pack is a bare claim that the Pro model offers 'higher English accuracy,' with no WER figures, methodology, test datasets, or reproducible benchmarks. The pack therefore gives no evidence that accuracy claims are backed by checkable methodology.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "agent-cost-estimate",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Pricing is a fair axis for a paid transcription API, but nothing in the evidence pack covers it. There is no per-minute or per-hour rate, no itemized add-on prices (e.g. diarization, Pro model, text polishing), and no cost-estimation endpoint. The docs cover only features, endpoints, and job lifecycle, so an agent cannot compute a job's cost before submitting it from this evidence.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "agent-end-to-end-transcript",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "medium",
+    "rationale": "The public, machine-readable docs cover the whole agent loop. Auth uses API credentials with scopes and short-lived JWTs. Jobs can be created either synchronously (POST /aiservices/scribe/transcribe) or as batch jobs (POST /aiservices/scribe/jobs). Results come back via status, list-files and get-file endpoints with defined job states, or via signed completion webhooks. All of this is backed by a live OpenAPI spec, llms.txt and .md doc pages that probes confirmed. Missing for 10: the exact steps for minting a JWT from the API key/secret are only lightly documented in the evidence, and there is no independent or hands-on report of an agent running submission-to-transcript end to end.",
+    "evidenceIds": [
+      "zoom-scribe-docs-26",
+      "zoom-scribe-docs-25",
+      "zoom-scribe-docs-1",
+      "zoom-scribe-supp-sync-api-schema",
+      "zoom-scribe-supp-batch-lifecycle",
+      "zoom-scribe-supp-batch-webhooks",
+      "zoom-scribe-supp-openapi-docs",
+      "zoom-scribe-supp-openapi-probe",
+      "zoom-scribe-probe-1",
+      "zoom-scribe-probe-2"
+    ]
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "agentic-agent-docs",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "A live probe confirms an llms.txt at developers.zoom.us/llms.txt (HTTP 200), which links an API catalog and an MCP section. Scribe docs are served as markdown (e.g. scribe/.md, fast-mode.md, batch-mode.md, confirmed by probe), and a machine-readable OpenAPI spec for the Scribe endpoints is reachable. Together these give an agent clear entry points. Missing for 10: llms.txt is Zoom-wide and the truncated probe doesn't show Scribe-specific entries, and there's no independent or hands-on corroboration of agents using these docs.",
+    "evidenceIds": [
+      "zoom-scribe-probe-1",
+      "zoom-scribe-probe-2",
+      "zoom-scribe-supp-openapi-probe",
+      "zoom-scribe-supp-openapi-docs",
+      "zoom-scribe-docs-1"
+    ]
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "agentic-ai-insights",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Zoom Scribe is a transcription API, and AI insights over transcripts are a fair thing to ask of it. Its documented features are all transcription and cleanup: diarization, language detection, custom vocabulary and Text Polishing. None of these generates insights or suggestions. The docs send users to a separate Summarizer API for such artifacts, which is a different product and earns no credit here.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "agentic-autonomous-automation",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "A transcription API service could plausibly offer triggered or scheduled automations, such as auto-transcribing new files as they land in a bucket, so the axis applies. The evidence shows only on-demand modes: synchronous fast mode, live WebSocket streaming, and batch jobs the developer submits. Batch jobs over an S3 prefix are developer building blocks, not a documented capability to set up automations that run autonomously in the background, and no schedules, triggers or watchers are evidenced.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "agentic-builtin-assistant",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Zoom Scribe is a transcription API with a developer console, and such a product could plausibly ship an in-product AI assistant, so the axis applies. The evidence documents AI-powered transcription features: fast, live and batch modes, diarization, custom vocabulary and text polishing. It also mentions handing transcripts to a separate Summarizer API. None of this shows a built-in assistant that users can delegate tasks to.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "agentic-headless",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Scribe is an API-first service that runs without any UI. It offers a synchronous REST transcription endpoint, a fully programmatic batch-job lifecycle (submit, status, list, cancel, per-file results, with explicit states and partial-failure handling), and signed outbound webhooks on job completion. Unattended automation is also supported by API credentials with scopes, expiration and IP allowlists, plus a published OpenAPI spec. Missing for 10: an official CLI, documented CI/pipeline integration examples, and independent or hands-on corroboration of headless automation use.",
+    "evidenceIds": [
+      "zoom-scribe-supp-openapi-docs",
+      "zoom-scribe-supp-openapi-probe",
+      "zoom-scribe-supp-sync-api-schema",
+      "zoom-scribe-supp-batch-lifecycle",
+      "zoom-scribe-supp-batch-webhooks",
+      "zoom-scribe-supp-batch-failures",
+      "zoom-scribe-supp-batch-input-metadata",
+      "zoom-scribe-docs-25",
+      "zoom-scribe-docs-26",
+      "zoom-scribe-docs-4"
+    ]
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "agentic-mcp-client",
+    "verdict": "na",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Zoom Scribe is a speech-to-text API that offers synchronous, live, and batch transcription. It is not an agent or assistant that invokes external tools, so acting as an MCP client is a category error for this product type. The truncated 'MCP' heading in Zoom's llms.txt probe does not show Scribe consuming MCP servers, so it does not make this client-side axis applicable.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "agentic-mcp-server",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Zoom Scribe is a transcription API service, so an official MCP server is a fair question for this kind of product. The evidence covers REST, WebSocket and OpenAPI endpoints, but nothing documents an MCP server for Scribe. The only hint is a truncated \"## MCP C…\" heading in Zoom's site-wide llms.txt, which is too fragmentary and not Scribe-specific to credit.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "agentic-nl-commands",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Zoom Scribe is a transcription API, and natural-language control is a fair question for an API service, for example through a conversational or agent interface. However, the evidence documents only parameterized REST, WebSocket and batch endpoints. Transcribing speech is the product's function, not a way to operate it by command. The llms.txt file and its truncated MCP mention are Zoom-wide documentation for developers building agents, not a documented natural-language command capability of Scribe.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "agentic-official-cli",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "An official CLI is a reasonable thing to ask of an API-based transcription service, so the axis applies. The evidence pack documents REST, WebSocket and OpenAPI interfaces, an llms.txt file and webhooks, but no official command-line tool. Those are developer building blocks or adjacent features, not a CLI, so they earn no credit.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "agentic-public-api",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Scribe is itself a documented public API. The AI Services reference publishes an OpenAPI spec, confirmed live by a probe, covering synchronous transcription, batch job submit/status/list/cancel/files, and the Live WebSocket. Vocabulary assets have CRUD endpoints, credentials are scoped and support JWT, and batch jobs can send signed webhooks, so the product can be driven entirely through the API. Missing for 10: independent or hands-on corroboration of real API calls beyond the docs and spec probes; the reference and the probed payload also disagree on the OpenAPI version (3.1.1 vs 3.0.0).",
+    "evidenceIds": [
+      "zoom-scribe-supp-openapi-docs",
+      "zoom-scribe-supp-openapi-probe",
+      "zoom-scribe-supp-sync-api-schema",
+      "zoom-scribe-supp-batch-lifecycle",
+      "zoom-scribe-supp-batch-webhooks",
+      "zoom-scribe-docs-15",
+      "zoom-scribe-docs-2",
+      "zoom-scribe-docs-25",
+      "zoom-scribe-docs-26",
+      "zoom-scribe-probe-1"
+    ]
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "agentic-scoped-keys",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Zoom's AI Services auth docs describe creating API credentials with selectable permission scopes, an expiration option, and an IP allowlist. Short-lived JWTs are also documented for client-to-backend calls, so least-privilege credentials for an agent are a first-party capability. Missing for 10: documentation of the available scope list and how fine-grained it is, agent-specific credential guidance, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "zoom-scribe-docs-25",
+      "zoom-scribe-docs-26"
+    ]
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "agentic-sdks",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence shows a well-documented REST, batch, and WebSocket API with a published OpenAPI spec. It never mentions an official client SDK or library in any language. An OpenAPI spec and raw HTTP endpoints are developer building blocks from which one could build or generate a client, not official SDKs, so they earn no credit for this story.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "agentic-webhooks",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Batch-mode docs describe a registrable notifications.webhook_url plus secret. Scribe sends an outbound POST to that URL when a job finishes, signed with an x-zm-signature HMAC-SHA256 header and timestamp, and the docs give explicit verification and replay-rejection guidance. This is a genuine programmatic webhook, but it covers only the batch job-completion event and is registered per job rather than as a general event subscription. Missing for 10: webhooks for other event types (e.g., per-file or live-session events), account-level subscription management, a documented payload schema or retry policy, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "zoom-scribe-supp-batch-webhooks",
+      "zoom-scribe-supp-batch-lifecycle"
+    ]
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "api-interactive-docs",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "An interactive API reference is a fair capability to ask of a developer API, so the axis applies. The evidence shows a static OpenAPI-backed reference and a separate transcription playground, but neither provides runnable requests inside the API reference. A machine-readable spec and an adjacent product demo do not deliver this story, so they earn no credit.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "api-machine-spec",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Zoom's AI Services API reference identifies itself as OpenAPI-based. A live probe confirmed that a JSON OpenAPI document downloads over HTTP 200 and declares six Scribe paths covering synchronous, live, batch-job, status and per-file operations. llms.txt also points to a machine-readable API catalog. Missing for 10: the docs say OpenAPI 3.1.1 but the downloaded payload declares 3.0.0, and no documented, stable download link for the spec is surfaced to users.",
+    "evidenceIds": [
+      "zoom-scribe-supp-openapi-probe",
+      "zoom-scribe-supp-openapi-docs",
+      "zoom-scribe-probe-1"
+    ]
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "api-sandbox",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "A sandbox or test environment is a fair axis for a transcription API service, but the evidence documents no sandbox, test mode, or non-production credentials for Scribe. The playground inputs (record speech, use a sample conversation) and the scoped, expiring credentials are adjacent features, not an isolated sandbox environment, so they earn no credit.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "api-versioning-policy",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "medium",
+    "rationale": "Zoom's AI Services API reference and the live OpenAPI probe both declare 'API version 2' for the Scribe operations, so the API carries an explicit version identifier. Nothing in the pack documents a deprecation policy, sunset timelines, or how version changes are communicated, which is half of what the story asks for. Missing for 10: documented deprecation/sunset policy, versioning scheme details (e.g., version in path or header and compatibility guarantees), changelog or migration guidance, independent corroboration.",
+    "evidenceIds": [
+      "zoom-scribe-supp-openapi-docs",
+      "zoom-scribe-supp-openapi-probe"
+    ]
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "async-job-lifecycle",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Batch mode documents creating a job via POST /aiservices/scribe/jobs and polling a get-status endpoint. Jobs move through documented states (QUEUED, PROCESSING, SUCCEEDED, PARTIAL, FAILED, CANCELED), with per-file states, file counts and result locations, and the OpenAPI probe confirms the status and per-file paths. Missing for 10: independent or hands-on corroboration of the polling workflow.",
+    "evidenceIds": [
+      "zoom-scribe-supp-batch-lifecycle",
+      "zoom-scribe-supp-openapi-docs",
+      "zoom-scribe-supp-openapi-probe",
+      "zoom-scribe-supp-batch-failures",
+      "zoom-scribe-supp-batch-input-metadata"
+    ]
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "automation-bulk-operations",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Batch mode lets one job transcribe up to 10,000 files, or 1,000 from a manifest. Input can be an S3 prefix with glob include/exclude filters, and each transcript can be placed next to its input file. The full job lifecycle is documented: submit, list, status with per-state file counts, cancel, list files and get file. Files succeed or fail independently with PARTIAL job states, and a signed webhook fires on completion. Missing for 10: independent or hands-on corroboration of large batch runs, and bulk operations beyond transcription (e.g., vocabulary assets are managed one at a time).",
+    "evidenceIds": [
+      "zoom-scribe-docs-4",
+      "zoom-scribe-docs-5",
+      "zoom-scribe-docs-6",
+      "zoom-scribe-supp-batch-lifecycle",
+      "zoom-scribe-supp-batch-input-metadata",
+      "zoom-scribe-supp-batch-failures",
+      "zoom-scribe-supp-batch-webhooks",
+      "zoom-scribe-supp-openapi-docs",
+      "zoom-scribe-supp-openapi-probe"
+    ]
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "automation-rules-engine",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Zoom Scribe documents no user-definable rules engine or event-triggered automation. The closest feature is a per-batch-job webhook_url that POSTs a signed notification when a job finishes. That is an outbound notification primitive a developer must build their own automation on, not rules that trigger actions, so it earns no credit under the building-block exclusion.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "automation-scheduled-jobs",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Scribe documents on-demand batch jobs with status polling, cancellation, and completion webhooks. Nothing in the evidence describes scheduling, cron-like triggers, or recurring job definitions. Batch submission and webhooks are building blocks a developer could drive from an external scheduler, which earns no credit for this story.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "automation-versioned-workflows",
+    "verdict": "na",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Zoom Scribe is a transcription API (fast, live, and batch modes) that executes individual jobs rather than hosting user-defined automations or workflows. Versioning, reviewing, and rolling back automations is a category error for this product type. Batch job lifecycle and vocabulary-asset CRUD exist, but they are not versioned automations and do not make the axis applicable.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "batch-concurrency",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Concurrent-job limits and queueing are fair capabilities to ask of a batch transcription API, so the axis applies. The evidence documents only how many files fit in one batch and the lifecycle of one job; it does not show multiple jobs running concurrently, concurrency limits, or queue and backpressure behavior. Batch capacity and a QUEUED state are adjacent primitives, so they earn no credit for this story.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "custom-vocabulary",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Zoom Scribe documents a dedicated custom vocabulary feature for names, acronyms, product names and technical terms. It offers inline vocabularies plus reusable Vocabulary Assets with list/delete endpoints, and the active vocabulary can be updated mid-session in Live mode via session.update. The vocabulary control also appears in the synchronous transcription API schema. Missing for 10: independent or hands-on corroboration that boosting improves accuracy, and documented boost weights or limits.",
+    "evidenceIds": [
+      "zoom-scribe-docs-13",
+      "zoom-scribe-docs-14",
+      "zoom-scribe-docs-15",
+      "zoom-scribe-docs-16",
+      "zoom-scribe-supp-sync-api-schema"
+    ]
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "file-upload-transcribe",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Zoom Scribe documents a synchronous POST /aiservices/scribe/transcribe endpoint that accepts a single local audio or video file up to 100 MB and two hours. It publishes accepted formats (WAV, M4A, MP3, MP4, WebM), and a probed OpenAPI spec confirms the endpoint is real and documented. missing for 10: independent or hands-on corroboration of uploads and limit enforcement.",
+    "evidenceIds": [
+      "zoom-scribe-supp-sync-api-schema",
+      "zoom-scribe-docs-22",
+      "zoom-scribe-docs-1",
+      "zoom-scribe-supp-openapi-docs",
+      "zoom-scribe-supp-openapi-probe"
+    ]
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "job-failure-handling",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Batch mode documents FAILED and PARTIAL job states and per-file FILE_FAILED and FILE_SKIPPED states. Unsupported extensions are skipped with a documented UNSUPPORTED_MEDIA error code, and files are processed independently, so one bad file doesn't sink the job. Missing for 10: a documented error-code catalog beyond UNSUPPORTED_MEDIA, retry guidance (retryable vs. permanent errors, backoff), explicit fail-fast/timeout behavior for corrupt files, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "zoom-scribe-supp-batch-failures",
+      "zoom-scribe-supp-batch-lifecycle"
+    ]
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "job-metadata",
+    "verdict": "partial",
+    "quality": 6,
+    "confidence": "medium",
+    "rationale": "Batch jobs accept a caller-supplied reference_id, and the docs say it is preserved for tracking and correlation across the job and status schemas. That covers attaching your own identifier and getting it back in job/status results. However, the webhook documentation describes signing and delivery but never says reference_id is echoed in the webhook payload, and no free-form metadata object is documented. Missing for 10: confirmation that reference_id appears in webhook payloads, support for arbitrary key-value metadata beyond a single reference_id, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "zoom-scribe-supp-batch-input-metadata",
+      "zoom-scribe-supp-batch-webhooks",
+      "zoom-scribe-supp-batch-lifecycle"
+    ]
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "language-detection",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "The synchronous API documents a `language_detection` object that detects the input language either once or continuously, so callers need not declare the language up front. This is backed by the multilingual model's coverage of ten languages plus 26 Whisper locales. Missing for 10: documentation of the detected-language field in responses, confirmation that detection works in live and batch modes (evidence covers fast mode only), the list of languages detection supports, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "zoom-scribe-docs-11",
+      "zoom-scribe-docs-10",
+      "zoom-scribe-supp-sync-api-schema"
+    ]
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "language-list",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Zoom's docs state per-model language coverage: ten languages on zoom-scribe-multilingual, 26 additional locales on the whisper model, and an English-only Pro model (zoom-scribe-en-pro). However, the evidence gives only counts, not an actual enumerated list. Per-feature language differences are only hinted at, e.g. the profanity filter applies 'when supported by the selected model'. Missing for 10: the concrete enumerated list of language/locale codes, an explicit per-feature language support matrix (diarization, polishing, live vs batch), and independent corroboration.",
+    "evidenceIds": [
+      "zoom-scribe-docs-10",
+      "zoom-scribe-docs-12",
+      "zoom-scribe-docs-19",
+      "zoom-scribe-docs-11"
+    ]
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "long-form-audio",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "The synchronous transcribe endpoint documents explicit limits: a single file of up to 100 MB and two hours. That satisfies the 'documented maximum' half of the story. However, two hours is a hard ceiling, so recordings longer than that are not shown to be accepted in a single job. Batch mode handles up to 10,000 files per job, but the evidence documents no per-file duration or size limits for it. Missing for 10: support for recordings longer than two hours in one job, documented per-file duration/size limits for batch mode, independent corroboration of the limits.",
+    "evidenceIds": [
+      "zoom-scribe-supp-sync-api-schema",
+      "zoom-scribe-docs-4",
+      "zoom-scribe-supp-batch-lifecycle"
+    ]
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "model-selection",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "Zoom Scribe documents several selectable model IDs: zoom-scribe-multilingual (ten languages), whisper (26 additional locales), and zoom-scribe-en-pro, which is described as giving 'higher English accuracy'. So a developer can choose among models, and there is a qualitative accuracy/language tradeoff. Missing for 10: published accuracy figures (e.g. WER), per-model latency figures, per-model cost/pricing comparison, and independent benchmarking of the model differences.",
+    "evidenceIds": [
+      "zoom-scribe-docs-10",
+      "zoom-scribe-docs-12"
+    ]
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "multichannel-audio",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "First-party docs describe a `channel_separation` option that transcribes the left and right channels of a stereo input independently and tags each segment with a channel number. The synchronous transcribe endpoint documents this control, and its response returns channel labels with timing, so each side of a stereo call stays separate. missing for 10: evidence of support beyond two channels (true multichannel), confirmation that channel separation works in batch and live modes, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "zoom-scribe-docs-8",
+      "zoom-scribe-supp-sync-api-schema"
+    ]
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "openness-api-parity",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Scribe is API-first, and every input path shown in the UI playground has an API equivalent. Recording maps to the Live WebSocket, upload to synchronous POST /transcribe, and URLs to batch jobs with URI, prefix, or manifest input. Features such as diarization, vocabulary, polishing, language and profanity filtering are exposed as API parameters, and vocabulary assets and the full batch lifecycle have documented REST endpoints and an OpenAPI spec. Missing for 10: no explicit parity statement or independent hands-on confirmation, and credential management (expiration, IP allowlist, scopes) is documented only as a console flow with no API equivalent shown.",
+    "evidenceIds": [
+      "zoom-scribe-docs-23",
+      "zoom-scribe-docs-24",
+      "zoom-scribe-supp-openapi-docs",
+      "zoom-scribe-supp-openapi-probe",
+      "zoom-scribe-supp-sync-api-schema",
+      "zoom-scribe-supp-batch-lifecycle",
+      "zoom-scribe-supp-batch-input-metadata",
+      "zoom-scribe-docs-2",
+      "zoom-scribe-docs-15",
+      "zoom-scribe-docs-25"
+    ]
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "openness-full-export",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Scribe returns transcripts as structured JSON with segments, speaker or channel labels, and timing fields. Batch jobs write transcripts into the customer's own S3 storage, next to the input files. Documented list/get endpoints exist for job files and vocabulary assets, so the user's core artifacts are retrievable in an open format. However, nothing documents an explicit 'export all my data' or account offboarding/deletion path. missing for 10: documented bulk/full-account data export, offboarding or data-deletion guidance, coverage of job history and polished outputs in an export, independent corroboration.",
+    "evidenceIds": [
+      "zoom-scribe-supp-sync-api-schema",
+      "zoom-scribe-docs-6",
+      "zoom-scribe-supp-batch-input-metadata",
+      "zoom-scribe-supp-batch-lifecycle",
+      "zoom-scribe-docs-15",
+      "zoom-scribe-docs-18"
+    ]
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "openness-open-license",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Whether a transcription service publishes its source under an open license is a fair question for this kind of product, so the axis applies. Nothing in the pack shows Zoom Scribe's source code being published or licensed openly. The public OpenAPI spec, llms.txt and markdown docs are documentation openness, not source availability, and support for a third-party Whisper model does not make Scribe's own code open.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "openness-self-host",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Self-hosting is a fair question for a speech-to-text service, since some transcription vendors offer on-prem or containerized deployments, so the axis applies. Every item in the pack describes Zoom's hosted API (developers.zoom.us endpoints, JWT credentials, IP allowlists, cloud batch jobs). Nothing documents a deployable, self-hostable build, container, or open-source release of Scribe.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "privacy-data-residency",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Data residency is a fair question for a cloud transcription API, but the evidence pack never documents choosing a storage or processing region for Zoom Scribe. Batch mode can write transcripts back to the customer's own S3 prefix next to the input files, but that is an output-location option, not a residency or region control, so it earns no credit here.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "privacy-no-training",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Data-training opt-out is a fair privacy question for a hosted AI transcription API, so the axis applies. However, nothing in the evidence pack covers training-data usage, model-training opt-out, or data-retention policies. The only nearby items are auth controls (IP allowlist, scopes, JWT expiry) and vocabulary deletion, which are adjacent features and earn no credit.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "privacy-retention-controls",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence pack documents no retention policy, retention window, or deletion control for submitted audio, transcripts, or job results. The DELETE endpoint for custom vocabulary assets is resource management for phrase lists, not control over retention of user content, so it is an adjacent feature. Batch outputs written to the customer's own S3 prefix are a host-platform arrangement, and job cancellation is not deletion; neither earns credit.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "privacy-telemetry-optout",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Opting out of telemetry or usage tracking is a fair privacy question for a cloud transcription API, so the axis applies. The evidence pack documents no such control. Credential expiration, IP allowlists, scopes, and short-lived JWTs are adjacent security controls, not a telemetry opt-out, and earn no credit.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "smart-formatting",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "Scribe documents an optional Text Polishing step that improves punctuation, capitalization, grammar and readability. The polished text is returned separately under outputs.text_polishing.text while the original transcript is never overwritten, so a developer can choose formatted or unformatted output. The evidence does not say whether base transcripts include punctuation and casing by default, and it never mentions number formatting (inverse text normalization) or a dedicated switch to disable formatting. Missing for 10: evidence of default punctuation/casing on raw transcripts, number formatting, an explicit formatting on/off parameter, and independent corroboration.",
+    "evidenceIds": [
+      "zoom-scribe-docs-17",
+      "zoom-scribe-docs-18",
+      "zoom-scribe-supp-sync-api-schema"
+    ]
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "speaker-diarization",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "medium",
+    "rationale": "Zoom's first-party docs describe a diarization option that identifies speakers and adds a speaker label to transcript segments. The synchronous transcribe endpoint documents diarization as a request control, and its JSON response includes transcript segments with speaker labels and timing fields. Channel separation is also offered as a stereo alternative. missing for 10: independent or hands-on corroboration of diarization accuracy, explicit documentation of diarization support in Live and Batch modes.",
+    "evidenceIds": [
+      "zoom-scribe-docs-7",
+      "zoom-scribe-supp-sync-api-schema",
+      "zoom-scribe-docs-8"
+    ]
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "streaming-endpoint",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "medium",
+    "rationale": "Zoom Scribe documents a Live mode in which the client streams binary PCM16 or Opus audio over a WebSocket and receives partial captions plus completed transcript items as speech is processed. Inline vocabulary can be updated mid-session via session.update events, and the mode accepts Zoom RTMS audio. missing for 10: independent or hands-on corroboration of the live WebSocket stream, and the partial-results captions feature is still marked preview.",
+    "evidenceIds": [
+      "zoom-scribe-docs-2",
+      "zoom-scribe-docs-21",
+      "zoom-scribe-docs-3",
+      "zoom-scribe-docs-16",
+      "zoom-scribe-docs-20"
+    ]
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "streaming-finality",
+    "verdict": "partial",
+    "quality": 6,
+    "confidence": "medium",
+    "rationale": "Live mode over WebSocket documents two output kinds. Captions are partial results that arrive before a Live transcript item completes; completed transcript items arrive as speech is processed. That is a documented interim-versus-final distinction, but the partial-results feature is still marked as preview. The evidence also shows little about finality semantics, such as whether captions get revised or replaced, event type fields, or ordering guarantees. Missing for 10: GA status of partial results, detailed documentation of finality and revision semantics with event schemas, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "zoom-scribe-docs-2",
+      "zoom-scribe-docs-3"
+    ]
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "structured-json-output",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Zoom's API reference documents a JSON response for synchronous transcription with transcript segments, speaker or channel labels, and timing fields. Diarization and channel separation add labels to each segment, and word-level timestamps are optional. No evidence shows confidence values in the output, which is an explicit half of the story. Missing for 10: documented per-segment or per-word confidence scores, a full response schema example, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "zoom-scribe-supp-sync-api-schema",
+      "zoom-scribe-docs-7",
+      "zoom-scribe-docs-8",
+      "zoom-scribe-docs-9",
+      "zoom-scribe-docs-18",
+      "zoom-scribe-docs-2"
+    ]
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "subtitle-exports",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Caption-file export is a fair question for a transcription API, but the evidence pack never documents SRT or VTT output from any endpoint. The responses described are JSON with segments, timing fields and optional word-level timestamps. Live mode's \"Captions\" are partial streaming recognition results, not a caption file format, so they are an adjacent feature and earn no credit. Developers could build SRT/VTT from the timestamps themselves, but that is a building block, not the capability.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "transcript-translation",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Translation is a fair question for a speech-to-text API, so the axis applies. The evidence documents multilingual recognition, language detection, text polishing and summarization handoff, but no option or endpoint that translates a transcript into another language. Those are adjacent features and earn no credit.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "url-ingest",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Batch jobs accept cloud URIs, prefixes, or manifests, explicitly including pre-signed object URLs. Zoom fetches and transcribes those files, with documented job lifecycle and per-file results. The console also lets users enter a URL for a public audio or video file. However, the synchronous transcribe endpoint only accepts a locally uploaded file, and API support for arbitrary public HTTP URLs (as opposed to cloud-storage URIs) is not explicit. Missing for 10: URL input on the synchronous/fast API, explicit API documentation for arbitrary public (non-cloud-storage) URLs, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "zoom-scribe-supp-batch-input-metadata",
+      "zoom-scribe-docs-23",
+      "zoom-scribe-supp-batch-lifecycle",
+      "zoom-scribe-docs-5",
+      "zoom-scribe-supp-sync-api-schema"
+    ]
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "webhook-completion",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "medium",
+    "rationale": "Batch job submissions can register `notifications.webhook_url` with a secret, and Zoom sends an outbound POST when the job finishes. Each request carries an HMAC-SHA256 `x-zm-signature` and a timestamp, and the docs give verification guidance, so callers need not poll the status endpoint. Terminal states are documented (SUCCEEDED, PARTIAL, FAILED, CANCELED), but the docs only say the webhook fires 'when the job finishes', so firing on failure is implied rather than stated. Missing for 10: explicit confirmation the webhook fires on FAILED/PARTIAL outcomes, documented payload schema and retry/delivery guarantees, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "zoom-scribe-supp-batch-webhooks",
+      "zoom-scribe-supp-batch-lifecycle",
+      "zoom-scribe-supp-batch-failures"
+    ]
+  },
+  {
+    "productId": "zoom-scribe",
+    "storyId": "word-timestamps",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Fast mode documents a `word_time_offsets` boolean that includes word-level timestamps. The synchronous transcribe API schema lists word-timestamp controls and timing fields in its JSON response. Missing for 10: the word-level response structure (per-word start/end fields) is not shown, word timestamps in batch and live modes are unevidenced, and there is no hands-on or independent corroboration.",
+    "evidenceIds": [
+      "zoom-scribe-docs-9",
+      "zoom-scribe-supp-sync-api-schema"
+    ]
   }
 ]
