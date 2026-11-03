@@ -1,4 +1,10 @@
-import { describe, expect, it } from 'vitest'
+import fs from 'node:fs'
+import os from 'node:os'
+import path from 'node:path'
+import crypto from 'node:crypto'
+import { execFileSync } from 'node:child_process'
+import { afterEach, describe, expect, it, vi } from 'vitest'
+import { writeSloRun } from '../../rankings-engine/slo-history'
 import {
   aggregateBySurface,
   classifyUp,
@@ -6,6 +12,13 @@ import {
   formatUptimePct,
   hasMatureSloHistory,
   parseSloHistoryJsonl,
+  combineSloHistory,
+  loadSloHistory,
+  loadSloSummaries,
+  productSurfaceSlos,
+  readSloHistorySources,
+  SLO_HISTORY_DIR,
+  SLO_HISTORY_FILE,
   summarizeSlo,
   type SloEntry,
 } from '@/lib/slo'
@@ -22,6 +35,127 @@ function entry(overrides: Partial<SloEntry> & { date: string; up: boolean }): Sl
 }
 
 const NOW = new Date('2026-10-08T12:00:00Z')
+
+const temporary: string[] = []
+function fixture(): string {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'um-slo-'))
+  temporary.push(dir)
+  return dir
+}
+afterEach(() => {
+  vi.restoreAllMocks()
+  for (const dir of temporary.splice(0)) fs.rmSync(dir, { recursive: true, force: true })
+})
+const jsonl = (...entries: SloEntry[]) => entries.map(row => JSON.stringify(row)).join('\n') + '\n'
+
+describe('SLO history storage', () => {
+  const first = entry({ date: '2026-10-01T00:00:00.000Z', up: true })
+  const second = entry({ date: '2026-10-02T00:00:00.000Z', up: false, status: 503 })
+
+  it('supports absent, legacy-only and shard-only histories', () => {
+    expect(loadSloHistory(fixture())).toEqual([])
+    const legacy = fixture()
+    fs.writeFileSync(path.join(legacy, SLO_HISTORY_FILE), jsonl(first))
+    expect(loadSloHistory(legacy)).toEqual([first])
+    const shards = fixture()
+    writeSloRun([second], shards)
+    expect(loadSloHistory(shards)).toEqual([second])
+  })
+
+  it('keeps legacy bytes, gives same-time retries distinct files and counts exact duplicate ingestion once', () => {
+    const dir = fixture()
+    const legacy = path.join(dir, SLO_HISTORY_FILE)
+    const before = jsonl(first) + '\n'
+    fs.writeFileSync(legacy, before)
+    const a = writeSloRun([second], dir)!
+    const b = writeSloRun([second], dir)!
+    writeSloRun([first], dir) // copied legacy observation
+    expect(a).not.toBe(b)
+    expect(fs.readFileSync(legacy, 'utf8')).toBe(before)
+    expect(fs.readFileSync(a, 'utf8')).toBe(jsonl(second))
+    expect(fs.readdirSync(path.join(dir, SLO_HISTORY_DIR))).toHaveLength(3)
+    expect(loadSloHistory(dir)).toEqual([first, second])
+    expect(loadSloSummaries(dir, NOW)).toEqual(summarizeSlo([first, second], NOW))
+    expect(productSurfaceSlos('payments', 'stripe', dir, NOW)[0]).toMatchObject({ checks: 2, windowUptimePct: 50, currentlyUp: false })
+  })
+
+  it('does not overwrite on a filename collision or create an empty run', () => {
+    const dir = fixture()
+    vi.spyOn(crypto, 'randomUUID').mockReturnValue('00000000-0000-4000-8000-000000000000')
+    const file = writeSloRun([first], dir)!
+    expect(() => writeSloRun([{ ...first, up: false }], dir)).toThrow(/EEXIST/)
+    expect(fs.readFileSync(file, 'utf8')).toBe(jsonl(first))
+    expect(fs.readdirSync(path.join(dir, SLO_HISTORY_DIR))).toHaveLength(1)
+    expect(writeSloRun([], fixture())).toBeNull()
+  })
+
+  it('reports both sources for conflicting facts, extra fields, formatting or slash aliases', () => {
+    const raw = JSON.stringify(first)
+    for (const other of [JSON.stringify({ ...first, up: false }), JSON.stringify({ ...first, status: 201 }),
+      JSON.stringify({ ...first, note: 'additional fact' }), ` ${raw}`, JSON.stringify({ ...first, url: first.url.replace(/\/$/, '') })]) {
+      expect(() => combineSloHistory([{ source: 'legacy', text: raw }, { source: 'run', text: other }]))
+        .toThrow(/Conflicting SLO observation.*legacy:1 and run:1/)
+    }
+    expect(combineSloHistory([{ source: 'legacy', text: raw }, { source: 'run', text: raw }])).toEqual([first])
+  })
+
+  it('preserves distinct observations and gives equal summaries for chronological and appended ordering', () => {
+    const later = { ...first, date: '2026-10-03T00:00:00.000Z' }
+    const variants = [{ ...first, arena: 'other' }, { ...first, productId: 'other' },
+      { ...first, surface: 'openapi' as const }, { ...first, url: 'https://example.invalid/other' }]
+    expect(parseSloHistoryJsonl(jsonl(first, ...variants))).toHaveLength(5)
+    const chronological = parseSloHistoryJsonl(jsonl(first, second, later))
+    const appended = parseSloHistoryJsonl(jsonl(later, first, second))
+    expect(summarizeSlo(appended, NOW)).toEqual(summarizeSlo(chronological, NOW))
+  })
+
+  it('fails with a location for malformed shards and rejects invalid writer input before publishing', () => {
+    const dir = fixture()
+    fs.mkdirSync(path.join(dir, SLO_HISTORY_DIR))
+    fs.writeFileSync(path.join(dir, SLO_HISTORY_DIR, 'bad.jsonl'), '\n{"date":"x"}\n')
+    expect(() => loadSloHistory(dir)).toThrow(/bad.jsonl:2/)
+    expect(() => writeSloRun([{ ...first, status: 1.5 }], fixture())).toThrow('Invalid SLO observation')
+    expect(() => writeSloRun([first, second], fixture())).toThrow('one check timestamp')
+  })
+
+  it('schema-checks and checks conflicting identities across all committed history files', () => {
+    expect(() => combineSloHistory(readSloHistorySources())).not.toThrow()
+  })
+
+  it('merges independently produced runs with ordinary Git and stages a shard-only change', () => {
+    const root = fixture()
+    const git = (...args: string[]) => execFileSync('git', args, { cwd: root, encoding: 'utf8' }).trim()
+    git('init', '-q', '-b', 'main')
+    git('config', 'user.name', 'SLO test'); git('config', 'user.email', 'slo@example.invalid')
+    const data = path.join(root, 'open-rankings')
+    fs.mkdirSync(data)
+    fs.writeFileSync(path.join(data, SLO_HISTORY_FILE), jsonl(first))
+    git('add', '.'); git('-c', 'core.hooksPath=/dev/null', 'commit', '-qm', 'base')
+    git('switch', '-qc', 'run-a')
+    writeSloRun([second], data)
+    // Execute each workflow's real staging/change-detection prefix, without its
+    // publication commands. Only the new untracked shard differs in this fixture.
+    fs.mkdirSync(path.join(root, 'rankings-engine/cache'), { recursive: true })
+    for (const workflow of ['story-runner', 'daily-snapshot']) {
+      const source = fs.readFileSync(`.github/workflows/${workflow}.yml`, 'utf8')
+      const step = source.slice(source.indexOf('      - name: Open PR if anything changed'))
+      const stage = step.match(/^          git add .+$/m)![0].trim()
+      const condition = step.match(/^          if (git diff .+); then$/m)![1]
+      git('reset', '-q')
+      execFileSync('sh', ['-c', stage], { cwd: root })
+      expect(() => execFileSync('sh', ['-c', condition], { cwd: root })).toThrow()
+    }
+    git('-c', 'core.hooksPath=/dev/null', 'commit', '-qm', 'run a')
+    git('switch', '-qc', 'run-b', 'main')
+    const later = { ...first, date: '2026-10-03T00:00:00.000Z' }
+    writeSloRun([later], data)
+    git('add', 'open-rankings'); git('-c', 'core.hooksPath=/dev/null', 'commit', '-qm', 'run b')
+    git('-c', 'core.hooksPath=/dev/null', 'merge', '--no-edit', 'run-a')
+    expect(fs.readFileSync(path.join(data, SLO_HISTORY_FILE), 'utf8')).toBe(jsonl(first))
+    expect(loadSloHistory(data)).toHaveLength(3)
+    expect(loadSloSummaries(data, NOW)).toEqual(summarizeSlo([first, second, later], NOW))
+  })
+})
 
 describe('classifyUp', () => {
   it('counts 2xx as up', () => {
