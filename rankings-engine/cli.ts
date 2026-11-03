@@ -1,4 +1,4 @@
-const STAGES = ['crawl', 'extract', 'normalize', 'collect-community', 'probe', 'probe-record', 'judge', 'claims', 'derive', 'logos', 'popularity', 'pricing', 'integrations', 'screenshots'] as const
+const STAGES = ['crawl', 'extract', 'normalize', 'collect-community', 'probe', 'probe-record', 'judge', 'judge-preview', 'claims', 'derive', 'logos', 'popularity', 'pricing', 'integrations', 'screenshots'] as const
 type Stage = (typeof STAGES)[number]
 
 async function main() {
@@ -7,6 +7,8 @@ async function main() {
   const product = productFlag >= 0 ? rest[productFlag + 1] : undefined
   const categoryFlag = rest.indexOf('--category')
   const category = categoryFlag >= 0 ? rest[categoryFlag + 1] : undefined
+  const storyFlag = rest.indexOf('--story')
+  const story = storyFlag >= 0 ? rest[storyFlag + 1] : undefined
 
   if (!STAGES.includes(stage as Stage)) {
     console.error(`usage: pnpm engine <${STAGES.join('|')}> [--category <id>] [--product <id>]`)
@@ -17,6 +19,9 @@ async function main() {
     console.error('usage: pnpm engine normalize --category <id>')
     process.exit(1)
   }
+
+  if (storyFlag >= 0 && stage !== 'judge-preview') throw new Error('--story is supported only by judge-preview')
+  if (rest.includes('--preview')) throw new Error('Use the judge-preview stage with explicit --category, --product and --story')
 
   // --force is only meaningful to stages with a freshness cache (screenshots); others ignore it.
   const opts = { category, product, force: rest.includes('--force') }
@@ -38,6 +43,9 @@ async function main() {
       return (await import('./stages/probe-record')).runProbeRecord(opts)
     case 'judge':
       return (await import('./stages/judge')).runJudge(opts)
+    case 'judge-preview':
+      console.log(JSON.stringify(await (await import('./stages/judge')).runJudgePreview({ category, product, story }), null, 2))
+      return
     case 'claims':
       return (await import('./stages/claims')).runClaims(opts)
     case 'logos':
