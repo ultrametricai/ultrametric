@@ -1,6 +1,7 @@
 // Upgrades require new cited evidence. Lost prior support may justify a verified downgrade.
 import { execFileSync } from 'node:child_process'
 import { pathToFileURL } from 'node:url'
+import { newSourceSupport, supportDisappeared, recordedProbe, sameEvidence } from '../evidence-source.mjs'
 
 export function downgradeAfterSupportLoss(old, next, before, after) {
   const rank = { none: 0, partial: 1, full: 2 }
@@ -10,8 +11,7 @@ export function downgradeAfterSupportLoss(old, next, before, after) {
   const current = new Map(after.map(item => [item.id, item]))
   if (next.evidenceIds.some(id => !current.has(id))
       || (next.verdict !== 'none' && next.evidenceIds.length === 0)) return false
-  return old.evidenceIds.some(id => previous.has(id) && (!current.has(id)
-    || ['tier','url','excerpt'].some(field => previous.get(id)[field] !== current.get(id)[field])))
+  return old.evidenceIds.some(id => previous.has(id) && supportDisappeared(previous.get(id), after))
 }
 
 export function unsupportedFlips(before, after, oldPacks, newPacks) {
@@ -20,8 +20,9 @@ export function unsupportedFlips(before, after, oldPacks, newPacks) {
     const old = oldRows.get(`${row.productId}:${row.storyId}`)
     if (!old || (old.verdict === row.verdict && old.quality === row.quality)) return false
     const oldIds = new Set((oldPacks[row.productId] ?? []).map(item => item.id))
-    const newIds = new Set((newPacks[row.productId] ?? []).map(item => item.id))
-    return !row.evidenceIds.some(id => !oldIds.has(id) && newIds.has(id))
+    const newItems = new Map((newPacks[row.productId] ?? []).map(item => [item.id, item]))
+    return !row.evidenceIds.some(id => !oldIds.has(id) && newItems.has(id)
+      && newSourceSupport(newItems.get(id), oldPacks[row.productId] ?? []))
       && !downgradeAfterSupportLoss(old, row, oldPacks[row.productId] ?? [], newPacks[row.productId] ?? [])
   })
 }
@@ -37,6 +38,16 @@ export function check(baseRef, headRef = 'HEAD') {
   const base = git('merge-base', baseRef, headRef)
   const files = git('diff', '--name-only', base, headRef, '--', 'open-rankings').split('\n')
   let failures = 0
+  for (const file of files.filter(file => /^open-rankings\/[^/]+\/evidence\/[^/]+\.json$/.test(file))) {
+    const before = read(base, file), after = read(headRef, file)
+    for (const item of before.filter(recordedProbe)) {
+      if (!after.some(next => next.id === item.id && sameEvidence(item, next)
+          && (item.preserve !== true || next.preserve === true))) {
+        console.error(`${file}: recorded probe ${item.id} was removed or rewritten`)
+        failures++
+      }
+    }
+  }
   for (const file of files.filter(file => /^open-rankings\/[^/]+\/verdicts\.json$/.test(file))) {
     const before = read(base, file)
     const after = read(headRef, file)
@@ -48,11 +59,11 @@ export function check(baseRef, headRef = 'HEAD') {
       newPacks[product] = read(headRef, path)
     }
     for (const row of unsupportedFlips(before, after, oldPacks, newPacks)) {
-      console.error(`${arena}/${row.productId}/${row.storyId}: grade changed without a new cited evidence ID`)
+      console.error(`${arena}/${row.productId}/${row.storyId}: grade changed without verified new source support`)
       failures++
     }
   }
-  if (failures) throw new Error(`${failures} unsupported refresh grade changes; keep prior judgments or supply new evidence and re-judge`)
+  if (failures) throw new Error(`${failures} unsupported refresh grade changes or evidence removals; keep prior judgments or supply verified new source support and re-judge`)
   console.log('Refresh stability passed')
 }
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
