@@ -120,12 +120,21 @@ class DispatcherTests(unittest.TestCase):
 
     def test_review_gate_failure_cannot_trigger_a_data_repair(self):
         fn=self.controller()['failed_validation']
-        run={'id':1,'status':'completed','conclusion':'failure','check_suite_id':123}
+        run={'id':1,'event':'workflow_dispatch','status':'completed','conclusion':'failure','check_suite_id':123}
         check={'name':'review-findings','app':{'id':15368},'check_suite':{'id':123},'status':'completed','conclusion':'failure'}
         self.assertFalse(fn([run],[check]))
         self.assertTrue(fn([run],[{**check,'name':'validation'}]))
         self.assertFalse(fn([run],[{**check,'name':'validation','check_suite':{'id':122}}]))
         self.assertFalse(fn([run,{**run,'id':2,'status':'in_progress','conclusion':None}],[{**check,'name':'validation'}]))
+
+    def test_approved_pr_failure_survives_a_newer_cancelled_dispatch(self):
+        fn=self.controller()['failed_validation']
+        approved={'id':1,'event':'pull_request','status':'completed','conclusion':'failure','check_suite_id':123}
+        cancelled={**approved,'id':2,'event':'workflow_dispatch','conclusion':'cancelled','check_suite_id':124}
+        check={'name':'validation','app':{'id':15368},'check_suite':{'id':123},'status':'completed','conclusion':'failure'}
+        self.assertTrue(fn([approved,cancelled],[check]))
+        self.assertFalse(fn([approved,cancelled],[{**check,'check_suite':{'id':124}}]))
+        self.assertFalse(fn([{**approved,'event':'workflow_dispatch'},cancelled],[check]))
 
     def test_latest_check_replaces_an_older_cancelled_or_failed_check(self):
         latest=MODULE['latest_checks']([{'id':1,'name':'ci','app':{'id':15368},'conclusion':'cancelled'},
@@ -356,6 +365,12 @@ class RecoveryCITests(unittest.TestCase):
 
 
 class PublicationTests(unittest.TestCase):
+    def test_publication_uses_the_bot_identity_accepted_by_recovery(self):
+        root=Path(__file__).resolve().parents[2]
+        source=(root/'.github/workflows/story-runner.yml').read_text().split('      - name: Open PR if anything changed\n',1)[1]
+        self.assertIn('GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}',source)
+        self.assertNotIn('UM_BOT_PR_PAT',source)
+
     def test_unsupported_grade_change_stops_before_remote_push_pr_or_review(self):
         root=Path(__file__).resolve().parents[2]
         source=(root/'.github/workflows/story-runner.yml').read_text().split('      - name: Open PR if anything changed\n',1)[1]

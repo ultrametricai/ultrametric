@@ -45,6 +45,17 @@ jobs:
               return json.loads(result.stdout) if result.stdout.strip() else None
           prs = json.loads(subprocess.check_output(
               ['gh', 'api', '--paginate', '--slurp', f'repos/{repo}/pulls?state=open&per_page=100'], text=True))
+          def usable_ci_run(runs):
+              candidates = [run for run in runs if run['conclusion'] != 'action_required']
+              if any(run['status'] != 'completed' for run in candidates):
+                  return None
+              latest = {}
+              for run in candidates:
+                  if run['event'] not in latest or run['id'] > latest[run['event']]['id']:
+                      latest[run['event']] = run
+              usable = [run for run in latest.values() if run['conclusion'] in ['success', 'failure']]
+              return max(usable, key=lambda run: run['id']) if usable else None
+
           def needs_ci_dispatch(runs):
               # Approval-required records have no jobs. Keep active runs and real
               # results from either event: an approved PR run can finish after a
@@ -53,12 +64,7 @@ jobs:
               candidates = [run for run in runs if run['conclusion'] != 'action_required']
               if any(run['status'] != 'completed' for run in candidates):
                   return False
-              latest_by_event = {}
-              for run in candidates:
-                  previous = latest_by_event.get(run['event'])
-                  if previous is None or run['id'] > previous['id']:
-                      latest_by_event[run['event']] = run
-              if any(run['conclusion'] in ['success', 'failure'] for run in latest_by_event.values()):
+              if usable_ci_run(runs) is not None:
                   return False # real failures stay with the existing repair/review gates
               # Bound same-head retries when CI is cancelled or cannot start.
               # A new head gets its own budget; the approval-only runs do not count.
@@ -67,10 +73,9 @@ jobs:
               return True
 
           def failed_validation(runs, checks):
-              candidates = [run for run in runs if run['conclusion'] != 'action_required']
-              if not candidates or any(run['status'] != 'completed' for run in candidates):
+              newest = usable_ci_run(runs)
+              if newest is None:
                   return False
-              newest = max(candidates, key=lambda run: run['id'])
               return any(check['name'] in ['validation', 'ci'] and check['app']['id'] == 15368
                          and check.get('check_suite', {}).get('id') == newest.get('check_suite_id')
                          and check['status'] == 'completed' and check['conclusion'] == 'failure'

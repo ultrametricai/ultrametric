@@ -62,6 +62,18 @@ def next_request(checks, reserved, now):
     return len(reserved) + 1
 
 
+def usable_ci_run(runs):
+    candidates = [run for run in runs if run['conclusion'] != 'action_required']
+    if any(run['status'] != 'completed' for run in candidates):
+        return None
+    latest = {}
+    for run in candidates:
+        if run['event'] not in latest or run['id'] > latest[run['event']]['id']:
+            latest[run['event']] = run
+    usable = [run for run in latest.values() if run['conclusion'] in ['success', 'failure']]
+    return max(usable, key=lambda run: run['id']) if usable else None
+
+
 def request(repo, number, head, now=None):
     if not re.fullmatch('[a-f0-9]{40}', head):
         raise RuntimeError('Invalid expected head')
@@ -73,10 +85,9 @@ def request(repo, number, head, now=None):
         print('PR changed or automation opt-in was removed; no review requested')
         return
     runs = api(repo, f'actions/workflows/ci.yml/runs?head_sha={head}&per_page=100')['workflow_runs']
-    candidates = [r for r in runs if r['conclusion'] != 'action_required']
-    if not candidates or any(r['status'] != 'completed' for r in candidates):
+    newest = usable_ci_run(runs)
+    if newest is None:
         return
-    newest = max(candidates, key=lambda r: r['id'])
     # Read the exact CI suite, not similarly named checks from another workflow.
     checks = api(repo, f'commits/{head}/check-runs?per_page=100')['check_runs']
     if not all(any(c['name'] == name and c['app']['id'] == 15368

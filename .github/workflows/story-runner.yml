@@ -172,9 +172,9 @@ jobs:
 
       - name: Open PR if anything changed
         env:
-          # The optional PAT remains supported. With GITHUB_TOKEN, explicitly
-          # dispatch CI below: PR creation alone does not trigger PR workflows.
-          GH_TOKEN: ${{ secrets.UM_BOT_PR_PAT || secrets.GITHUB_TOKEN }}
+          # Recovery/review/repair authenticate generated PRs by the Actions bot
+          # author. Use that identity consistently; explicit dispatch starts CI.
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CATEGORY: ${{ steps.pick.outputs.category }}
           RUN_ID: ${{ github.run_id }}
         run: |
@@ -195,9 +195,8 @@ jobs:
           # Check the committed candidate before any remote branch, PR, or review exists.
           node rankings-engine/scripts/check-refresh-stability.mjs HEAD^ HEAD
           git push -u origin "$BRANCH"
-          # Org policy currently forbids Actions from creating PRs ("Write permissions for
-          # workflows are disabled by the organization") — fall back to an issue carrying the
-          # compare link so the refresh is never silently stranded on a branch.
+          # If organization policy prevents PR creation, leave the compare link
+          # in an issue for maintainer attention.
           # Auto-merge opt-in (maintainer authorization 2026-10-23): branch protection
           # on main holds the merge until validation/ci + Greptile Review pass and
           # every thread resolves — a reviewer applying the re-judge stability policy
