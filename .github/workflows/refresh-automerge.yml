@@ -95,7 +95,7 @@ jobs:
                               '--ref', 'main', '--field', f"pr={pr['number']}",
                               '--field', f'head={sha}'], check=True)
 
-          def has_findings(number):
+          def has_findings(number, verdict_only=True):
               query = """query($owner:String!,$name:String!,$number:Int!,$cursor:String) {
                 repository(owner:$owner,name:$name) { pullRequest(number:$number) {
                   reviewThreads(first:100,after:$cursor) {pageInfo {hasNextPage endCursor}
@@ -111,13 +111,23 @@ jobs:
                   if data.get('errors'):
                       raise RuntimeError(data['errors'])
                   threads = data['data']['repository']['pullRequest']['reviewThreads']
-                  if any(not t['isResolved'] and t['path'].endswith('/verdicts.json') and
+                  if any(not t['isResolved'] and (not verdict_only or t['path'].endswith('/verdicts.json')) and
                          any((c.get('author') or {}).get('login') in ['greptile-apps','greptile-apps[bot]','greptileai']
                              for c in t['comments']['nodes']) for t in threads['nodes']):
                       return True
                   if not threads['pageInfo']['hasNextPage']:
                       return False
                   cursor = threads['pageInfo']['endCursor']
+
+          def checks_allow_update(checks):
+              latest = {}
+              for check in checks:
+                  key = (check['name'], check['app']['id'])
+                  if key not in latest or check['id'] > latest[key]['id']:
+                      latest[key] = check
+              return all(key in latest and latest[key]['status'] == 'completed'
+                         and latest[key]['conclusion'] == 'success'
+                         for key in [('validation',15368), ('ci',15368), ('Greptile Review',867647)])
 
           errors = []
           for pr in sorted([pr for page in prs for pr in page], key=lambda pr: pr['number']):
@@ -130,7 +140,10 @@ jobs:
               number, sha = pr['number'], pr['head']['sha']
               try:
                   comparison = api(f'compare/main...{sha}')
-                  if comparison['behind_by']:
+                  # Leave pending reviews and unresolved findings on a stable head.
+                  # Refresh the base only when the existing candidate is ready to land.
+                  head_checks = api(f'commits/{sha}/check-runs?per_page=100')['check_runs']
+                  if comparison['behind_by'] and checks_allow_update(head_checks) and not has_findings(number, verdict_only=False):
                       api(f'pulls/{number}/update-branch', 'PUT', {'expected_head_sha': sha})
                       for _ in range(10):
                           time.sleep(2)

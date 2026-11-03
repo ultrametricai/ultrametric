@@ -118,7 +118,9 @@ score built entirely from zero-evidence none/na cells renders italic *untested*,
 The recovery controller dispatches `refresh-repair.yml` for failing generated story-runner
 PRs, unresolved Greptile findings on verdict cells, and merge conflicts. CI completion also
 wakes recovery. Drafts and PRs whose auto-merge opt-in was removed are skipped. Recovery
-and repair retain existing opt-in and never re-enable it. Foreloop remains outside this loop.
+and repair retain existing opt-in and never re-enable it. Recovery waits for ordinary CI,
+independent review, and resolved findings before advancing a stale base; pending reviews
+and repairs keep a stable head. Foreloop remains outside this loop.
 
 GitHub marks `pull_request` runs created by `GITHUB_TOKEN` as `action_required` until a
 maintainer approves them. Generated PRs explicitly dispatch the same CI workflow on their

@@ -207,7 +207,7 @@ class RecoveryCITests(unittest.TestCase):
     def run_record(self, event='pull_request', conclusion='action_required', *, id=1, status='completed'):
         return {'id':id,'event':event,'status':status,'conclusion':conclusion,'check_suite_id':123}
 
-    def recover(self, runs, *, pr=None, updated_head=None):
+    def recover(self, runs, *, pr=None, updated_head=None, pending_review=False):
         pr = pr or {**PR,'number':536,'auto_merge':{'enabled_by':{'login':'maintainer'}}}
         calls = []
         def run(args, **kwargs):
@@ -225,11 +225,13 @@ class RecoveryCITests(unittest.TestCase):
                 elif endpoint.endswith('/pulls/536'):
                     result = {**pr,'head':{**pr['head'],'sha':updated_head}}
                 elif '/workflows/ci.yml/runs?' in endpoint:
-                    self.assertIn(f'head_sha={updated_head or SHA}&', endpoint)
+                    self.assertIn(f'head_sha={(updated_head if not pending_review else None) or SHA}&', endpoint)
                     result = {'workflow_runs':runs}
                 elif '/check-runs?' in endpoint:
-                    result = {'check_runs':[{'name':'ci','app':{'id':15368},'check_suite':{'id':123},'status':'completed',
-                        'conclusion':'failure' if any(r['conclusion']=='failure' for r in runs) else 'success'}]}
+                    result = {'check_runs':[{'id':index,'name':name,'app':{'id':app},'check_suite':{'id':123},
+                        'status':'in_progress' if pending_review and name=='Greptile Review' else 'completed',
+                        'conclusion':'failure' if app==15368 and any(r['conclusion']=='failure' for r in runs) else 'success'}
+                        for index,(name,app) in enumerate([('validation',15368),('ci',15368),('Greptile Review',867647)])]}
                 elif '/workflows/refresh-repair.yml/runs?' in endpoint:
                     result = {'workflow_runs':[]}
                 else:
@@ -254,6 +256,11 @@ class RecoveryCITests(unittest.TestCase):
         self.assertEqual(ci, [['gh','workflow','run','ci.yml','--repo','owner/repo','--ref',BRANCH]])
         self.assertTrue(any('/update-branch' in ' '.join(call) for call in calls))
         self.assertFalse(any('approve' in call for call in calls))
+
+    def test_main_advance_does_not_replace_a_head_while_review_is_pending(self):
+        _, calls, error = self.recover([self.run_record('workflow_dispatch','success')], updated_head='b'*40, pending_review=True)
+        self.assertFalse(any('/update-branch' in ' '.join(call) for call in calls))
+        self.assertIsNone(error)
 
     def test_no_run_or_approval_only_history_dispatches(self):
         for runs in [[], [self.run_record()]]:
