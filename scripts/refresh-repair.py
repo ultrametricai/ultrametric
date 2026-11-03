@@ -146,6 +146,18 @@ def latest_checks(checks, ci_suite=None):
     return list(latest.values())
 
 
+def usable_ci_run(runs):
+    candidates = [run for run in runs if run['conclusion'] != 'action_required']
+    if any(run['status'] != 'completed' for run in candidates):
+        return None
+    latest = {}
+    for run in candidates:
+        if run['event'] not in latest or run['id'] > latest[run['event']]['id']:
+            latest[run['event']] = run
+    usable = [run for run in latest.values() if run['conclusion'] in ['success', 'failure']]
+    return max(usable, key=lambda run: run['id']) if usable else None
+
+
 def recheck(report, branch, new_sha):
     live = current()
     if not identity(live) or live['head']['sha'] != new_sha:
@@ -154,10 +166,10 @@ def recheck(report, branch, new_sha):
     runs = api(f'repos/{REPO}/actions/workflows/ci.yml/runs?head_sha={new_sha}&per_page=100')
     if not runs['workflow_runs']:
         command(['gh', 'workflow', 'run', 'ci.yml', '--repo', REPO, '--ref', branch])
-    candidates = [run for run in runs['workflow_runs'] if run.get('event') == 'workflow_dispatch'] or runs['workflow_runs']
-    ci_active = any(run.get('status') not in ['completed',None] for run in candidates)
-    newest = max(candidates,key=lambda run:run.get('id',0)) if candidates else {}
-    if not ci_active and newest.get('conclusion') in ['cancelled','timed_out','action_required','startup_failure','stale','skipped','neutral']:
+        return 'waiting-checks'
+    candidates = [run for run in runs['workflow_runs'] if run['conclusion'] != 'action_required']
+    ci_active = any(run['status'] != 'completed' for run in candidates)
+    if not ci_active and usable_ci_run(runs['workflow_runs']) is None:
         command(['gh','workflow','run','ci.yml','--repo',REPO,'--ref',branch])
         raise RuntimeError('CI ended without a result; same-head CI retry requested within the failed-worker budget')
     checks = api(f'repos/{REPO}/commits/{new_sha}/check-runs?per_page=100')['check_runs']
@@ -169,7 +181,12 @@ def recheck(report, branch, new_sha):
         pr = current()
         if not identity(pr) or pr['head']['sha'] != new_sha:
             return 'closed-or-changed'
-        checks = latest_checks(api(f'repos/{REPO}/commits/{new_sha}/check-runs?per_page=100')['check_runs'],newest.get('check_suite_id'))
+        runs = api(f'repos/{REPO}/actions/workflows/ci.yml/runs?head_sha={new_sha}&per_page=100')
+        newest = usable_ci_run(runs['workflow_runs'])
+        if newest is None or newest.get('check_suite_id') is None:
+            time.sleep(25)
+            continue
+        checks = latest_checks(api(f'repos/{REPO}/commits/{new_sha}/check-runs?per_page=100')['check_runs'],newest['check_suite_id'])
         if any(c['name'] in ['ci', 'validation'] and c['app']['id'] == 15368
                and c['status'] == 'completed' and c['conclusion'] == 'failure' for c in checks):
             return 'needs-repair'
