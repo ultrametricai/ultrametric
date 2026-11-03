@@ -1,15 +1,17 @@
 {
-  "hash": "e24f7b335c4e4c8f482069b8262a113b1499d55e2b9c1de9a52352ad30d9e7ad",
+  "hash": "20c8e4aecab857923b8eddad7a6e11302d05dff872aae3a0b868785c5ffd9108",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "partial",
-    "quality": 5,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "The docs say Scribe's input step can take 'a URL for a public audio or video file' instead of an upload, and batch mode pulls files straight from a shared S3 prefix/container, so the service does fetch remote media itself. However, the URL input is described in the console/playground flow, not as a documented API request parameter, and signed URLs are never mentioned. Missing for 10: a documented API field for URL-based input in fast/batch requests, explicit signed or pre-signed URL support, and independent or hands-on corroboration that remote fetch works via the API.",
+    "rationale": "Batch jobs accept cloud URIs, prefixes, or manifests, explicitly including pre-signed object URLs. Zoom fetches and transcribes those files, with documented job lifecycle and per-file results. The console also lets users enter a URL for a public audio or video file. However, the synchronous transcribe endpoint only accepts a locally uploaded file, and API support for arbitrary public HTTP URLs (as opposed to cloud-storage URIs) is not explicit. Missing for 10: URL input on the synchronous/fast API, explicit API documentation for arbitrary public (non-cloud-storage) URLs, independent or hands-on corroboration.",
     "evidenceIds": [
+      "zoom-scribe-supp-batch-input-metadata",
       "zoom-scribe-docs-23",
+      "zoom-scribe-supp-batch-lifecycle",
       "zoom-scribe-docs-5",
-      "zoom-scribe-docs-4"
+      "zoom-scribe-supp-sync-api-schema"
     ],
     "productId": "zoom-scribe",
     "storyId": "url-ingest"

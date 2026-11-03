@@ -1,12 +1,16 @@
 {
-  "hash": "27fe51fa83ab1ea88f95b6195ae40a538f65342d68bbf4e68f6dfd5b0690b28d",
+  "hash": "0b3aecdeb96d5709fdd655c21fb518b5c3d2b06f3e13b9e4630f2f312c7b34ab",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Zoom Scribe documents batch jobs of up to 10,000 files, so a job-completion webhook is a fair question for this product. However, no evidence shows a registrable webhook or callback URL that fires when a batch job completes or fails. Synchronous Fast mode and WebSocket Live streaming are adjacent delivery modes, not outbound job-completion callbacks, so they earn no credit.",
-    "evidenceIds": [],
+    "rationale": "Batch job submissions can register `notifications.webhook_url` with a secret, and Zoom sends an outbound POST when the job finishes. Each request carries an HMAC-SHA256 `x-zm-signature` and a timestamp, and the docs give verification guidance, so callers need not poll the status endpoint. Terminal states are documented (SUCCEEDED, PARTIAL, FAILED, CANCELED), but the docs only say the webhook fires 'when the job finishes', so firing on failure is implied rather than stated. Missing for 10: explicit confirmation the webhook fires on FAILED/PARTIAL outcomes, documented payload schema and retry/delivery guarantees, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "zoom-scribe-supp-batch-webhooks",
+      "zoom-scribe-supp-batch-lifecycle",
+      "zoom-scribe-supp-batch-failures"
+    ],
     "productId": "zoom-scribe",
     "storyId": "webhook-completion"
   }

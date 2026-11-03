@@ -1,12 +1,16 @@
 {
-  "hash": "4dccfe7de6542ae07c2d4d2342bfa2d94120cd41421ffecb0f138f746c968ba9",
+  "hash": "2e1fb3a05a3030cdafc4139a16fda60a816cfa202cb211b030803c6d9f74d894",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Zoom Scribe documents batch jobs and per-file output placement, but nothing in the evidence shows a client-supplied identifier or metadata field on a job. Nothing shows such values being echoed back in results or webhook payloads. Speaker and channel labels are system-generated annotations, not user metadata, so they earn no credit.",
-    "evidenceIds": [],
+    "rationale": "Batch jobs accept a caller-supplied reference_id, and the docs say it is preserved for tracking and correlation across the job and status schemas. That covers attaching your own identifier and getting it back in job/status results. However, the webhook documentation describes signing and delivery but never says reference_id is echoed in the webhook payload, and no free-form metadata object is documented. Missing for 10: confirmation that reference_id appears in webhook payloads, support for arbitrary key-value metadata beyond a single reference_id, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "zoom-scribe-supp-batch-input-metadata",
+      "zoom-scribe-supp-batch-webhooks",
+      "zoom-scribe-supp-batch-lifecycle"
+    ],
     "productId": "zoom-scribe",
     "storyId": "job-metadata"
   }

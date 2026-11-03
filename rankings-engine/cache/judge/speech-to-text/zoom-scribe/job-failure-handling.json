@@ -1,12 +1,15 @@
 {
-  "hash": "80dc514e2db08035d189cef5cde4b6a2a8a09eaf0f11c8adc965e8222d8e44d9",
+  "hash": "f9fbee8f0e12984333398fe98bcdb0953faec78e582f340e0935a894ca178112",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Error handling is a fair axis for a transcription API that runs batch jobs (up to 10,000 files per job). However, the evidence pack documents no error codes, retry guidance, or fail-fast behavior for malformed or unsupported files. The listed accepted formats and the synchronous Fast mode do not show how failures are reported, so they earn no credit.",
-    "evidenceIds": [],
+    "rationale": "Batch mode documents FAILED and PARTIAL job states and per-file FILE_FAILED and FILE_SKIPPED states. Unsupported extensions are skipped with a documented UNSUPPORTED_MEDIA error code, and files are processed independently, so one bad file doesn't sink the job. Missing for 10: a documented error-code catalog beyond UNSUPPORTED_MEDIA, retry guidance (retryable vs. permanent errors, backoff), explicit fail-fast/timeout behavior for corrupt files, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "zoom-scribe-supp-batch-failures",
+      "zoom-scribe-supp-batch-lifecycle"
+    ],
     "productId": "zoom-scribe",
     "storyId": "job-failure-handling"
   }
