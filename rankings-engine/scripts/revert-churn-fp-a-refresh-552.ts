@@ -1,25 +1,22 @@
 // Surgical, auditable settle of judge re-roll churn from the 2026-11-01 story-runner
-// data-warehouses refresh (PR #548), per the re-judge stability policy
+// fp-a refresh (PR #552), per the re-judge stability policy
 // (docs/ACCURACY.md "Human review points" §1) and the committed precedents
 // revert-churn-compliance-automation-refresh-506.ts /
 // revert-churn-desktop-os-refresh-wave.ts / revert-churn-robotics-platforms-refresh-wave.ts.
 //
-// The PR #548 review named these cells: databricks/automation-bulk-operations,
-// obsessiondb/agentic-headless, motherduck/automation-rules-engine,
-// obsessiondb/privacy-retention-controls, snowflake/dataset-marketplace, and
-// motherduck/dataset-marketplace. Earlier repair commits on the branch restored all but
-// the last; motherduck/dataset-marketplace still upgrades none -> partial citing
-// motherduck-docs-72, a new id repeating baseline sharing content, so the upgrade does
-// not rest on changed evidence and settles here. The second review round named
-// databricks/granular-rbac-masking and snowflake/runaway-cost-controls, both resting on
-// re-minted community citations; the removals rule below is content-aware for that
-// class, matching the extended revert-churn-compliance-automation-refresh-506.ts.
+// The PR #552 review named these cells: cfo-ai/scenario-create-compare,
+// pigment/forecast-refresh-on-actuals, aleph/openness-full-export,
+// cfo-ai/automation-versioned-workflows, and cfo-ai/sheets-excel-addin. Earlier repair
+// commits on the branch restored all but pigment/forecast-refresh-on-actuals, which
+// still upgrades none -> partial citing pigment-docs-23, a new id repeating the
+// baseline pigment-docs-7 excerpt, so the upgrade does not rest on changed evidence
+// and settles here.
 //
 // Rule, per cell: a (verdict, quality) flip vs the pre-refresh baseline stands only when it
-// rests on evidence that actually changed. Content-aware extension for this wave (re-crawled
-// packs mint NEW ids for UNCHANGED excerpts): an id added by the refresh whose normalized
-// excerpt already exists verbatim in the baseline pack is NOT changed evidence. Changed
-// evidence is:
+// rests on evidence that actually changed. Content-aware extension for this wave (the review
+// found re-crawled packs minting NEW ids for UNCHANGED excerpts, e.g. drata-docs-49
+// repeating drata-docs-40): an id added by the refresh whose normalized excerpt already
+// exists verbatim in the baseline pack is NOT changed evidence. Changed evidence is:
 //   - an added id whose excerpt text is new to the pack,
 //   - a removed id,
 //   - a same-id excerpt replacement.
@@ -28,10 +25,10 @@
 // verdict) so a future judge run does not resurrect the churn. A revert is skipped (and
 // reported) when the baseline verdict cites an id no longer in the pack.
 //
-// Baseline: origin/main at settle time (main's data-warehouses files are pre-refresh;
-// the arena changed only in this PR).
+// Baseline: origin/main at settle time (main's fp-a files are pre-refresh; the arena
+// changed only in this PR).
 //
-// Usage: pnpm exec tsx rankings-engine/scripts/revert-churn-data-warehouses-refresh-548.ts [--write]
+// Usage: pnpm exec tsx rankings-engine/scripts/revert-churn-fp-a-refresh-552.ts [--write]
 //   (default: dry run, prints the plan only)
 
 import { execSync } from 'node:child_process'
@@ -40,7 +37,7 @@ import path from 'node:path'
 
 const ROOT = path.resolve(__dirname, '..', '..')
 const WRITE = process.argv.includes('--write')
-const CAT = 'data-warehouses'
+const CAT = 'fp-a'
 const BASELINE_REF = process.env.BASELINE_REF ?? 'origin/main'
 
 type VerdictRow = {
@@ -74,8 +71,8 @@ const norm = (s: string): string =>
     .trim()
 
 // Content-equivalence for re-crawled excerpts: the refresh reformats bullet lists and
-// truncates sentences without adding facts (motherduck-docs-72 repeating the baseline
-// sharing-data content in this PR). Two excerpts are the same evidence when their
+// truncates sentences without adding facts (pigment-docs-23 repeating pigment-docs-7 in
+// this PR's review). Two excerpts are the same evidence when their
 // normalized text matches, one contains the other, or their token sets overlap >= 0.8.
 function nearDup(a: string, b: string): boolean {
   const na = norm(a)
@@ -112,10 +109,10 @@ function changedIdsFor(productId: string): { changed: Set<string>; repeats: Map<
     if (twin) repeats.set(item.id, twin.id) // new id, repeated content: not changed evidence
     else changed.add(item.id) // genuinely new content
   }
-  // Removals are content-aware too: re-collects mint a new id for a paraphrase of the same
-  // report (snowflake-comm-1 -> snowflake-comm-1-refresh-* in the PR #548 review, same url).
-  // A removed id whose content survives in a same-url fresh item (verbatim, containment, or
-  // token overlap >= 0.5) is a re-mint, not lost support.
+  // Removals are content-aware too: the collect-community re-collect mints a new id for a
+  // paraphrase of the same report (drata-comm-3 -> drata-comm-2-refresh-*, token overlap
+  // 0.59, same url). A removed id whose content survives in a same-url fresh item (verbatim,
+  // containment, or token overlap >= 0.5) is a re-mint, not lost support.
   const overlap = (a: string, b: string): number => {
     const ta = new Set(norm(a).split(' '))
     const tb = new Set(norm(b).split(' '))
