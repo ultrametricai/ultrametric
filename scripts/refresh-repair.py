@@ -158,6 +158,18 @@ def usable_ci_run(runs):
     return max(usable, key=lambda run: run['id']) if usable else None
 
 
+def review_active(sha):
+    page = 1
+    while True:
+        checks = api(f'repos/{REPO}/commits/{sha}/check-runs?check_name=Greptile%20Review&filter=all&per_page=100&page={page}')['check_runs']
+        if any(check['name'] == 'Greptile Review' and check['app']['id'] == 867647
+               and check['status'] != 'completed' for check in checks):
+            return True
+        if len(checks) < 100:
+            return False
+        page += 1
+
+
 def recheck(report, branch, new_sha):
     live = current()
     if not identity(live) or live['head']['sha'] != new_sha:
@@ -255,6 +267,9 @@ def main():
     sha, findings = threads()
     if sha != EXPECTED:
         raise RuntimeError('PR changed while collecting review context')
+    if review_active(EXPECTED):
+        print('Review is active; defer repair before model calls or data changes')
+        return
     checks = api(f'repos/{REPO}/commits/{EXPECTED}/check-runs?per_page=100')['check_runs']
     healthy = all(any(c['name'] == name and c['app']['id'] == 15368 and c['conclusion'] == 'success'
                       for c in checks) for name in ['validation', 'ci'])
@@ -298,6 +313,11 @@ def main():
         raise RuntimeError('PR changed or automation opt-in was removed during checks; discarding repair')
     if api(f'repos/{REPO}/actions/workflows/refresh-repair.yml')['state'] != 'active':
         raise RuntimeError('Repair workflow was paused during checks; discarding repair')
+    if review_active(EXPECTED):
+        report.update(phase='waiting-review', blocked='Review became active before publication; head unchanged')
+        report_file.write_text(json.dumps(report, indent=2))
+        print('Review became active; retain the existing head and discard this unpublished candidate')
+        return
     # Non-force push rejects a concurrent update, including one after the preceding check.
     command(['git', 'push', 'origin', f'{new_sha}:refs/heads/{branch}'])
     report['publishedHead'] = new_sha

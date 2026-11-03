@@ -128,7 +128,9 @@ mergeability or an unreadable freshness policy stops recovery for that PR. Real 
 remain visible and reach bounded repair once checks and findings permit changing the head.
 Missing CI and reviews are recovered on the same head even while it conflicts. Active
 CI runs keep their head, including runs whose checks have not appeared yet. Pending reviews
-and repairs keep a stable head. Foreloop remains outside this loop.
+and repairs keep a stable head. Repair dispatch waits for every active Greptile review on
+that head; the worker rechecks before model calls and before publishing, discarding its
+unpublished candidate if a review started during repair. Foreloop remains outside this loop.
 
 Story-runner publishes with `GITHUB_TOKEN`, matching the Actions-bot author accepted by
 recovery, repair, and review. Its optional PAT publication override is retired. Existing

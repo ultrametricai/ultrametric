@@ -81,8 +81,22 @@ jobs:
                          and check['status'] == 'completed' and check['conclusion'] == 'failure'
                          for check in checks)
 
+          def review_active(sha):
+              page = 1
+              while True:
+                  checks = api(f'commits/{sha}/check-runs?check_name=Greptile%20Review&filter=all&per_page=100&page={page}')['check_runs']
+                  if any(check['name'] == 'Greptile Review' and check['app']['id'] == 867647
+                         and check['status'] != 'completed' for check in checks):
+                      return True
+                  if len(checks) < 100:
+                      return False
+                  page += 1
+
           def request_repair(pr, sha):
               if not pr['head']['ref'].startswith('story-runner/'):
+                  return
+              if review_active(sha):
+                  print(f"#{pr['number']}: review is active; defer repair on this head", flush=True)
                   return
               title = f"Repair refresh #{pr['number']} @{sha} [support-loss-v2]"
               history = api('actions/workflows/refresh-repair.yml/runs?per_page=100')['workflow_runs']
@@ -181,7 +195,8 @@ jobs:
                   # Leave pending reviews and unresolved findings on a stable head.
                   # Being behind alone does not invalidate a reviewed candidate.
                   if (comparison['behind_by'] and not conflict and checks_allow_update(head_checks)
-                      and not has_findings(number, verdict_only=False) and rules_require_current_base()):
+                      and not has_findings(number, verdict_only=False) and rules_require_current_base()
+                      and not review_active(sha)):
                       api(f'pulls/{number}/update-branch', 'PUT', {'expected_head_sha': sha})
                       for _ in range(10):
                           time.sleep(2)

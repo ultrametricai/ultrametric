@@ -117,6 +117,64 @@ class ControllerTests(unittest.TestCase):
             self.assertEqual(json.loads((Path(directory)/'refresh-repair-report.json').read_text())['phase'],'waiting-checks')
 
 
+class RepairReviewBoundaryTests(unittest.TestCase):
+    def repair(self, review_states):
+        with tempfile.TemporaryDirectory() as directory:
+            report_file=Path(directory)/'refresh-repair-report.json'
+            calls=[]; review_reads=[]; states=iter(review_states)
+            def api(endpoint,data=None):
+                if '/check-runs?' in endpoint:
+                    if 'check_name=' in endpoint:
+                        review_reads.append(endpoint)
+                        return {'check_runs':[{'name':'Greptile Review','app':{'id':867647},
+                                              'status':next(states),'conclusion':None}]}
+                    return {'check_runs':checks()}
+                if endpoint.endswith('/branches/main'):return {'commit':{'sha':'b'*40}}
+                if endpoint.endswith('/workflows/refresh-repair.yml'):return {'state':'active'}
+                raise AssertionError(endpoint)
+            def output(args):
+                if args==['git','rev-parse','HEAD']:return 'b'*40
+                if args==['git','rev-parse','refs/repair/head']:return SHA
+                if args[:2]==['git','merge-base']:return 'c'*40
+                if args[:2]==['git','log']:return ''
+                if args[:2]==['git','write-tree']:return 'd'*40
+                if args[:2]==['git','commit-tree']:return 'e'*40
+                raise AssertionError(args)
+            def command(args,**kwargs):
+                calls.append(args)
+                if 'rankings-engine/scripts/repair-refresh.ts' in args:
+                    report_file.write_text(json.dumps({'restored':[],'audits':[]}))
+            with patch.dict(GLOBALS,{'api':api,'current':lambda:PR,'output':output,'command':command,
+                                    'threads':lambda:(SHA,[{'id':'finding'}]),'load_resume_report':lambda *_:None,
+                                    'recheck':lambda *_:'rechecked'}),patch.dict(os.environ,{'RUNNER_TEMP':directory}):
+                MODULE['main']()
+            return calls, json.loads(report_file.read_text()) if report_file.exists() else {}, review_reads
+
+    def test_worker_defers_before_model_or_data_writes_if_review_is_active(self):
+        for status in ['queued','in_progress','waiting']:
+            with self.subTest(status=status):
+                calls,report,reads=self.repair([status])
+                self.assertFalse(any(call[0]=='pnpm' or call[:2]==['git','push'] for call in calls))
+                self.assertEqual(report,{})
+                self.assertEqual(len(reads),1)
+
+    def test_review_starting_during_repair_prevents_publication(self):
+        calls,report,reads=self.repair(['completed','in_progress'])
+        self.assertEqual(sum('rankings-engine/scripts/repair-refresh.ts' in call for call in calls),1)
+        self.assertFalse(any(call[:2]==['git','push'] for call in calls))
+        self.assertNotIn('publishedHead',report)
+        self.assertEqual(report['phase'],'waiting-review')
+        self.assertEqual(len(reads),2)
+        self.assertTrue(all('filter=all' in path for path in reads))
+
+    def test_completed_review_allows_validated_repair_to_publish(self):
+        calls,report,reads=self.repair(['completed','completed'])
+        self.assertEqual(sum(call[:2]==['git','push'] for call in calls),1)
+        self.assertEqual(report['publishedHead'],'e'*40)
+        self.assertEqual(report['phase'],'rechecked')
+        self.assertEqual(len(reads),2)
+
+
 class DispatcherTests(unittest.TestCase):
     def controller(self):
         source=(Path(__file__).resolve().parents[2]/'.github/workflows/refresh-automerge.yml').read_text().split('        run: |\n',1)[1]
@@ -126,9 +184,10 @@ class DispatcherTests(unittest.TestCase):
             exec(code,namespace)
         return namespace
 
-    def request(self,history):
+    def request(self,history,review_checks=None):
         namespace=self.controller()
-        namespace['api']=lambda *_:{'workflow_runs':history}
+        namespace['api']=lambda endpoint: ({'check_runs':review_checks if review_checks is not None else checks()}
+                                           if '/check-runs?' in endpoint else {'workflow_runs':history})
         command=Mock()
         with patch('subprocess.run',command):
             namespace['request_repair']({'number':536,'head':{'ref':BRANCH}},SHA)
@@ -181,6 +240,26 @@ class DispatcherTests(unittest.TestCase):
     def test_three_failed_workers_stop_dispatching_that_head(self):
         history=[{'display_title':f'Repair refresh #536 @{SHA} [support-loss-v2]','status':'completed','conclusion':'failure'} for _ in range(3)]
         self.request(history).assert_not_called()
+
+    def test_repair_dispatch_waits_for_an_active_review_even_with_older_success(self):
+        for status in ['queued','in_progress','waiting']:
+            with self.subTest(status=status):
+                review={'id':10,'name':'Greptile Review','app':{'id':867647},'status':status,'conclusion':None}
+                self.request([],checks()+[review]).assert_not_called()
+
+    def test_review_activity_reads_all_pages_in_both_controllers(self):
+        completed={'name':'Greptile Review','app':{'id':867647},'status':'completed'}
+        for namespace in [self.controller(),GLOBALS]:
+            api=Mock(side_effect=[{'check_runs':[completed]*100},
+                                  {'check_runs':[{**completed,'status':'in_progress'}]}])
+            with patch.dict(namespace,{'api':api}):
+                self.assertTrue(namespace['review_active'](SHA))
+            self.assertEqual(len(api.call_args_list),2)
+            self.assertTrue(api.call_args_list[-1].args[0].endswith('page=2'))
+
+    def test_unrelated_active_checks_do_not_block_repairs(self):
+        self.request([], [{'name':'Greptile Review','app':{'id':1},'status':'in_progress'},
+                           {'name':'Other check','app':{'id':867647},'status':'in_progress'}]).assert_called_once()
 
     def test_freshness_uses_all_applicable_rules_including_later_pages(self):
         namespace=self.controller()
@@ -256,7 +335,8 @@ class RecoveryCITests(unittest.TestCase):
 
     def recover(self, runs, *, pr=None, updated_head=None, pending_review=False,
                 strict=True, behind=None, mergeable=True, current_override=None,
-                rules_error=False, unresolved=False, later_runs=None):
+                rules_error=False, unresolved=False, later_runs=None, finding_path='README.md',
+                review_history=None):
         pr = pr or {**PR,'number':536,'auto_merge':{'enabled_by':{'login':'maintainer'}}}
         calls = []
         branch_updated = False
@@ -267,7 +347,7 @@ class RecoveryCITests(unittest.TestCase):
             result = None
             if args[:3] == ['gh','api','graphql']:
                 result = {'data':{'repository':{'pullRequest':{'reviewThreads':{
-                    'nodes':[{'isResolved':False,'path':'README.md','comments':{'nodes':[{'author':{'login':'greptileai'}}]}}] if unresolved else [],
+                    'nodes':[{'isResolved':False,'path':finding_path,'comments':{'nodes':[{'author':{'login':'greptileai'}}]}}] if unresolved else [],
                     'pageInfo':{'hasNextPage':False}}}}}}
             elif args[:2] == ['gh','api']:
                 endpoint = args[4]
@@ -289,10 +369,11 @@ class RecoveryCITests(unittest.TestCase):
                     ci_reads += 1
                     result = {'workflow_runs':later_runs if later_runs is not None and ci_reads > 1 else runs}
                 elif '/check-runs?' in endpoint:
-                    result = {'check_runs':[{'id':index,'name':name,'app':{'id':app},'check_suite':{'id':123},
+                    head_checks = [{'id':index,'name':name,'app':{'id':app},'check_suite':{'id':123},
                         'status':'in_progress' if pending_review and name=='Greptile Review' else 'completed',
                         'conclusion':'failure' if app==15368 and any(r['conclusion']=='failure' for r in runs) else 'success'}
-                        for index,(name,app) in enumerate([('validation',15368),('ci',15368),('Greptile Review',867647)])]}
+                        for index,(name,app) in enumerate([('validation',15368),('ci',15368),('Greptile Review',867647)])]
+                    result = {'check_runs':review_history if review_history is not None and 'check_name=' in endpoint else head_checks}
                 elif '/workflows/refresh-repair.yml/runs?' in endpoint:
                     result = {'workflow_runs':[]}
                 else:
@@ -322,6 +403,13 @@ class RecoveryCITests(unittest.TestCase):
         _, calls, error = self.recover([self.run_record('workflow_dispatch','success')], updated_head='b'*40, pending_review=True)
         self.assertFalse(any('/update-branch' in ' '.join(call) for call in calls))
         self.assertIsNone(error)
+
+    def test_base_update_waits_for_active_review_hidden_by_latest_completed_check(self):
+        _, calls, error = self.recover([self.run_record('workflow_dispatch','success')],
+            updated_head='b'*40, review_history=[{'id':1,'name':'Greptile Review',
+                'app':{'id':867647},'status':'in_progress','conclusion':None}])
+        self.assertIsNone(error)
+        self.assertFalse(any('/update-branch' in ' '.join(call) for call in calls))
 
     def test_loose_policy_keeps_a_reviewed_behind_head_unchanged(self):
         ci, calls, error = self.recover([self.run_record('workflow_dispatch','success')],
@@ -366,6 +454,20 @@ class RecoveryCITests(unittest.TestCase):
                 workers = [call[3] for call in calls if call[:3] == ['gh','workflow','run']]
                 self.assertEqual(workers,['ci.yml','refresh-review.yml','review-findings.yml'])
                 self.assertFalse(any('/update-branch' in ' '.join(call) for call in calls))
+
+    def test_verdict_findings_keep_same_head_recovery_but_wait_for_review_to_finish(self):
+        for conflict in [False,True]:
+            with self.subTest(conflict=conflict):
+                _, calls, _ = self.recover([self.run_record('workflow_dispatch','success')],
+                    behind=1 if conflict else 0, mergeable=not conflict, pending_review=True,
+                    unresolved=True, finding_path='open-rankings/email/verdicts.json')
+                workers=[call[3] for call in calls if call[:3]==['gh','workflow','run']]
+                self.assertEqual(workers,['refresh-review.yml','review-findings.yml'])
+
+    def test_completed_review_with_verdict_findings_remains_repairable(self):
+        _, calls, _ = self.recover([self.run_record('workflow_dispatch','success')],
+            behind=1, mergeable=False, unresolved=True, finding_path='open-rankings/email/verdicts.json')
+        self.assertIn('refresh-repair.yml',[call[3] for call in calls if call[:3]==['gh','workflow','run']])
 
     def test_failed_policy_lookup_keeps_the_existing_head(self):
         _, calls, error = self.recover([], updated_head='b'*40, rules_error=True)
