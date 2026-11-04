@@ -1,5 +1,5 @@
 // Agent-surface SLO check: keylessly pings every product's DOCUMENTED agent surfaces and
-// appends one line per check to open-rankings/slo-history.jsonl (schema + uptime math in lib/slo.ts).
+// writes one immutable run under open-rankings/slo-history/ (schema + uptime math in lib/slo.ts).
 // "Documented" is deliberate — we only monitor surfaces we have previously observed to exist,
 // so the down-list is a real outage list, never "product X never had an llms.txt":
 //
@@ -23,8 +23,9 @@ import path from 'node:path'
 import { MCP_ENDPOINTS } from '../../lib/mcpEndpoints'
 import { ProofIndexSchema } from '../../lib/proofs'
 import { EvidenceSchema, ProductSchema } from '../../lib/schemas'
-import { classifyUp, SLO_HISTORY_FILE, type SloEntry, type SloSurface } from '../../lib/slo'
+import { classifyUp, type SloEntry, type SloSurface } from '../../lib/slo'
 import { DATA_DIR, readCategories, readJson } from '../paths'
+import { writeSloRun } from '../slo-history'
 
 const TIMEOUT_MS = 8_000
 const MAX_CONCURRENT = 3
@@ -88,7 +89,7 @@ function collectTargets(): Target[] {
     }
   }
   // Belt-and-braces dedupe (a product could carry two identical positive probe items) and a
-  // stable check/append order.
+  // stable check order.
   const unique = new Map<string, Target>()
   for (const t of targets) unique.set(`${t.arena}/${t.productId}/${t.surface}/${normUrl(t.url)}`, t)
   return [...unique.values()].sort(
@@ -160,11 +161,10 @@ async function run(): Promise<void> {
   }
   await Promise.all(Array.from({ length: MAX_CONCURRENT }, worker))
 
-  const file = path.join(DATA_DIR, SLO_HISTORY_FILE)
-  fs.appendFileSync(file, results.map((r) => JSON.stringify(r)).join('\n') + '\n')
+  const file = writeSloRun(results, DATA_DIR)
 
   const down = results.filter((r) => !r.up)
-  console.log(`slo-check: ${results.length - down.length} up, ${down.length} down → appended ${results.length} lines to ${path.relative(process.cwd(), file)}`)
+  console.log(`slo-check: ${results.length - down.length} up, ${down.length} down → ${file ? `wrote ${results.length} lines to ${path.relative(process.cwd(), file)}` : 'no observations to write'}`)
   for (const r of down) {
     console.log(`  DOWN ${r.arena}/${r.productId} ${r.surface} ${r.url} (status ${r.status || 'timeout/error'})`)
   }

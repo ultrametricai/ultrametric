@@ -5,6 +5,7 @@ import {
 } from '../../lib/schemas'
 import { llmJson } from '../llm'
 import { categoryDir, readJson, resolveCategories, writeJson } from '../paths'
+import { questionOnly } from '../evidence-source.mjs'
 
 const RawClaimSchema = z.object({
   text: z.string().min(1).max(160),
@@ -37,6 +38,7 @@ function claimsPrompt(productName: string, evidence: Evidence[], stories: Story[
 export function validateClaimRules(raw: RawClaims, byId: Map<string, Evidence>, storyIds: Set<string>): string | null {
   for (const c of raw.claims) {
     if (!byId.has(c.evidenceId)) return `claim cites unknown evidence id "${c.evidenceId}"`
+    if (questionOnly(byId.get(c.evidenceId)!.excerpt)) return 'questions do not establish a capability claim'
     for (const sid of c.storyIds) {
       if (!storyIds.has(sid)) return `claim cites unknown story id "${sid}"`
     }
@@ -69,7 +71,7 @@ export function buildClaims(
 
 // Claims are derived purely from a product's own claimed-docs/github evidence (monotonic —
 // extract only ever adds to that pack, see rankings-engine/stages/extract.ts), so unlike judge's
-// per-cell cache this stage is a plain idempotent full-replace: every run recomputes the whole
+// per-cell cache this stage is a full replacement: every run recomputes the whole
 // claims file for a product from its current evidence pack, no staleness bookkeeping needed.
 export async function runClaims({ category, product }: { category?: string; product?: string }): Promise<void> {
   let matched = 0

@@ -1,6 +1,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { loadProcesses, vendorLabel, VENDOR_ARENA, type DagNode } from './processes'
+import { loadSloHistory } from './slo'
 
 // Aggregations for the UNLINKED /ops coverage dashboard (founder ask 2026-09-23: "a private
 // dashboard for coverage: how deep we have tested all the vendors, arena coverage, missing
@@ -364,10 +365,10 @@ export function buildCronHealth(repoRoot: string = process.cwd(), dir: string = 
   const spike = readJsonTolerant<RawSpikeQueue>(path.join(dir, 'spike-queue.json'))
   const staleness = readJsonTolerant<{ generatedAt?: string }>(path.join(dir, 'staleness-report.json'))
   const news = readJsonTolerant<{ generatedAt?: string }>(path.join(dir, 'vendor-news.json'))
-  const slo =
-    lastJsonlDate(path.join(dir, 'slo-history.jsonl'), 'checkedAt') ??
-    lastJsonlDate(path.join(dir, 'slo-history.jsonl'), 'date') ??
-    lastJsonlDate(path.join(dir, 'slo-history.jsonl'), 'at')
+  const slo = loadSloHistory(dir).reduce<string | null>(
+    (latest, entry) => latest === null || Date.parse(entry.date) > Date.parse(latest) ? entry.date : latest,
+    null,
+  )
 
   return {
     workflows,
@@ -380,7 +381,7 @@ export function buildCronHealth(repoRoot: string = process.cwd(), dir: string = 
     lastRuns: [
       { label: 'Score history (story-runner / engines)', date: newestScore, source: 'open-rankings/*/score-history.jsonl' },
       { label: 'Popularity history (daily-snapshot)', date: newestPopularity, source: 'open-rankings/*/popularity-history.jsonl' },
-      { label: 'Agent-surface SLO check (daily-snapshot / story-runner)', date: slo, source: 'open-rankings/slo-history.jsonl' },
+      { label: 'Agent-surface SLO check (daily-snapshot / story-runner)', date: slo, source: 'open-rankings/slo-history.jsonl + open-rankings/slo-history/*.jsonl' },
       { label: 'Spike queue re-rank (session cron)', date: spike?.generatedAt ?? null, source: 'open-rankings/spike-queue.json' },
       { label: 'Staleness scan (accuracy-engine, Wednesdays)', date: staleness?.generatedAt ?? null, source: 'open-rankings/staleness-report.json' },
       { label: 'Vendor news watcher (session cron)', date: news?.generatedAt ?? null, source: 'open-rankings/vendor-news.json' },
