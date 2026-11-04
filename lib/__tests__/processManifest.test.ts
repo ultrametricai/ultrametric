@@ -63,13 +63,13 @@ describe('stepApprovalRequired — any side-effectful step is gated', () => {
 })
 
 describe('manifestVendorOption', () => {
-  it('resolves a tracked vendor to product id, arena, agent-readiness, MCP endpoint, and arena url', () => {
+  it('resolves public vendor assessments without endpoint bindings', () => {
     const opt = manifestVendorOption('mercury', DATA_DIR)
     expect(opt.vendor).toBe('mercury')
     expect(opt.productId).toBe('mercury')
     expect(opt.arena).toBe('startup-banking')
     expect(typeof opt.agentReady).toBe('number')
-    expect(opt.mcpEndpoint).toBe('https://mcp.mercury.com/mcp')
+    expect(opt).not.toHaveProperty('mcpEndpoint')
     expect(opt.paProductUrl).toBe(`${SITE_URL}/arena/startup-banking/product/mercury`)
   })
 
@@ -81,16 +81,16 @@ describe('manifestVendorOption', () => {
     expect(opt.productId).toBeNull()
     expect(opt.arena).toBeNull()
     expect(opt.agentReady).toBeNull()
-    expect(opt.mcpEndpoint).toBeNull()
+    expect(opt).not.toHaveProperty('mcpEndpoint')
     expect(opt.paProductUrl).toBeNull()
   })
 
-  it('tracked vendors without a published MCP endpoint get a null endpoint, not an invented one', () => {
+  it('omits invocation endpoints for every vendor', () => {
     // (gusto graduated to a live endpoint when its official-MCP-server evidence landed —
     // quickbooks is the current no-endpoint example.)
     const opt = manifestVendorOption('quickbooks', DATA_DIR)
     expect(opt.arena).toBe('accounting')
-    expect(opt.mcpEndpoint).toBeNull()
+    expect(opt).not.toHaveProperty('mcpEndpoint')
   })
 })
 
@@ -142,6 +142,7 @@ describe('DagNodeSchema forward-compat', () => {
 
 describe('process manifests over the real corpus', () => {
   it('builds a versioned manifest for every process, steps 1:1 with the DAG', () => {
+    let publishedExecutionAssessments = 0
     for (const task of loadProcesses(DATA_DIR)) {
       const manifest = buildProcessManifest(task, DATA_DIR)
       expect(manifest.manifestVersion).toBe(MANIFEST_VERSION)
@@ -149,7 +150,13 @@ describe('process manifests over the real corpus', () => {
       expect(manifest.steps.length).toBe(task.dag.nodes.length)
       expect(manifest.manifestUrl).toBe(processManifestUrl(manifest.process.slug))
       expect(manifest.provenance.source).toBe('productarena')
+      task.dag.nodes.forEach((source, index) => {
+        if (!source.execution) return
+        publishedExecutionAssessments += 1
+        expect(manifest.steps[index].execution).toEqual(source.execution)
+      })
     }
+    expect(publishedExecutionAssessments).toBeGreaterThan(0)
   })
 
   it('resolves incorporate-c-corp with kinds, gates, and vendor options intact', () => {
@@ -211,4 +218,29 @@ describe('manifest URLs', () => {
     expect(chainManifestPath('company-launch')).toBe('/processes/chains/company-launch/manifest.json')
     expect(processManifestUrl('get-ein')).toBe(`${SITE_URL}/processes/get-ein/manifest.json`)
   })
+})
+
+it('preserves the public execution assessment while excluding private operations', () => {
+  const execution = {
+    category: 'agent-native',
+    basis: 'documented-interface',
+    rationale: 'The public interface documents this execution mechanism.',
+    evidence: ['https://example.test/public-interface'],
+    reviewRequired: true,
+    automationEvidence: { status: 'documented' },
+  } satisfies NonNullable<DagNode['execution']>
+  const step = buildManifestStep(node({
+    execution,
+    toolCall: 'synthetic_private_create',
+    functionCalls: [{ method: 'POST /synthetic-private-resource' }],
+    approvalRequired: true,
+    legalSignature: true,
+  }), DATA_DIR)
+  expect(step.execution).toEqual(execution)
+  expect(step).not.toHaveProperty('toolCall')
+  expect(step).not.toHaveProperty('calls')
+  expect(JSON.stringify(step)).not.toContain('synthetic_private')
+  expect(step.approvalRequired).toBe(true)
+  expect(step.legalSignature).toBe(true)
+  expect(MANIFEST_VERSION).toBe(3)
 })
