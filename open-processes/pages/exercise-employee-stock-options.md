@@ -53,9 +53,9 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Reconcile the grant and the exercise request](#step-1) | agent-runnable | Not recorded | Entry step |
-| [2. Review eligibility, cost and tax questions](#step-2) | human; approval required | Not recorded | [Step 1](#step-1) |
+| [2. Review eligibility, cost and tax questions](#step-2) | human; human approval every run | Not recorded | [Step 1](#step-1) |
 | [3. Prepare the approved exercise documents](#step-3) | agent-runnable | Not recorded | [Step 2](#step-2) |
-| [4. Authorize and complete the exercise](#step-4) | human; approval required | Not recorded | [Step 3](#step-3) |
+| [4. Authorize and complete the exercise](#step-4) | human; human approval every run | Not recorded | [Step 3](#step-3) |
 | [5. Reconcile issuance and follow-up obligations](#step-5) | agent-runnable | Not recorded | [Step 4](#step-4) |
 
 <a id="steps"></a>
@@ -77,7 +77,7 @@ Gather the signed grant, plan, vesting history, exercise price, holder details a
 
 ### 2. Review eligibility, cost and tax questions
 
-human · human approval required
+human · human approval every run
 
 
 The holder and company obtain their own qualified advice on the actual instrument, jurisdiction and facts. Confirm the exercise method, available quantity and required approvals without promising liquidity or selecting a tax outcome for the holder.
@@ -99,7 +99,7 @@ Populate the applicable exercise notice and calculation from verified terms. Rec
 
 ### 4. Authorize and complete the exercise
 
-human · human approval required
+human · human approval every run
 
 
 The holder and authorized company representatives review and execute the required documents. Authorized operators collect and verify the required consideration and approvals before recording an issuance; a submitted request is not completed ownership.

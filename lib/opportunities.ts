@@ -24,7 +24,7 @@ import { parseStoryPersona } from './storyText'
 // Which headline index closing this story would move. Group-scoped agenticness stories feed a
 // named index (see lib/scoring.ts's agentReady/agenticApp/apiQuality filters); everything else
 // feeds the Overall score blend through its theme (openness, automation-depth) or the coverage score.
-export type ScoreLever = 'agent-ready' | 'Built-in AI' | 'API quality' | 'Overall score'
+export type ScoreLever = 'agent-ready' | 'Built-in AI' | 'API quality' | 'Agentic score'
 
 // Extra weight for the three groups that feed a headline index directly. 1.5 is deliberately
 // mild — a weight-3 domain story still outranks a weight-1 agentic nicety.
@@ -80,7 +80,7 @@ export function scoreLeverFor(story: Pick<Story, 'theme' | 'group'>): ScoreLever
     const lever = LEVER_BY_GROUP[story.group]
     if (lever) return lever
   }
-  return 'Overall score'
+  return 'Agentic score'
 }
 
 // The judge's required gap-naming clause (rankings-engine/stages/judge.ts: quality < 10 must include
@@ -106,7 +106,7 @@ export function opportunityWhy(rationale: string): string {
 }
 
 export function opportunityImpact(story: Pick<Story, 'weight' | 'theme' | 'group'>, quality: number): number {
-  const boost = scoreLeverFor(story) === 'Overall score' ? 1 : AGENTIC_BOOST
+  const boost = scoreLeverFor(story) === 'Agentic score' ? 1 : AGENTIC_BOOST
   return Math.round(story.weight * (10 - quality) * boost * 10) / 10
 }
 

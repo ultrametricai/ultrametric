@@ -1,13 +1,19 @@
+import type Anthropic from '@anthropic-ai/sdk'
 import crypto from 'node:crypto'
 import fs from 'node:fs'
 import path from 'node:path'
+import type { z } from 'zod'
 import {
-  type Evidence, EvidenceSchema, ProductSchema, type Story, StorySchema,
-  type Verdict, VerdictBaseSchema, VerdictSchema,
+  type Category, type Evidence, EvidenceSchema, ProductSchema, type Story, StorySchema,
+  type Verdict, VerdictBaseSchema, VerdictSchema, VerdictSupportSchema,
 } from '../../lib/schemas'
-import { JUDGE_MODEL, llmJson } from '../llm'
+import { sourceText, questionOnly } from '../evidence-source.mjs'
+import { clearBatchState, runMessageBatches } from '../batch-llm'
+import { DEFAULT_MAX_TOKENS, extractJson, JUDGE_MODEL, llmJson } from '../llm'
 import { CACHE_DIR, categoryDir, readJson, resolveCategories, writeJson } from '../paths'
 
+// v6 requires explicit capability support and verbatim citations for new judgments.
+// Legacy published verdicts remain readable; rubric migration is an explicit review event.
 // v5 (2026-10-19): adds the founder-ratified partial-credit boundary to the prompt — partial
 // requires the product's OWN documented capability for the story being judged; user-side
 // workarounds, host-platform capabilities, developer building blocks, adjacent controls, and
@@ -18,7 +24,7 @@ import { CACHE_DIR, categoryDir, readJson, resolveCategories, writeJson } from '
 // from v4 on the judge model id is folded into the cellHash payload below, so any future
 // model change is a first-class cache invalidator instead of silently keeping the previous
 // model's verdicts.)
-export const PROMPT_VERSION = 'v5'
+export const PROMPT_VERSION = 'v6'
 
 // Versions the hashed material itself, independent of prompt/model changes: bumping it makes
 // every cache entry written under an older key format miss cleanly (and re-judge) instead of
@@ -43,10 +49,25 @@ export function cellHash(story: Story, evidence: Evidence[], promptVersion: stri
   return crypto.createHash('sha256').update(payload).digest('hex')
 }
 
-export function validateVerdictRules(verdict: Verdict, evidence: Evidence[]): string | null {
+export function validateVerdictRules(verdict: Verdict, evidence: Evidence[], story?: Story): string | null {
   const known = new Map(evidence.map((e) => [e.id, e]))
   for (const id of verdict.evidenceIds) {
     if (!known.has(id)) return `cites unknown evidence id "${id}"`
+  }
+  if (verdict.support) {
+    const support = verdict.support
+    if (story && support.subject !== story.title) return 'support subject must be the exact story being judged'
+    const credited = ['full', 'partial', 'disputed'].includes(verdict.verdict)
+    if (credited && (support.relation !== 'direct' || support.coverage === 'none' || !support.citations.length)) {
+      return 'credit requires direct support for the product capability; adjacent features earn none'
+    }
+    if (verdict.verdict === 'full' && support.coverage !== 'complete') return 'full credit requires complete story coverage'
+    for (const citation of support.citations) {
+      const item = known.get(citation.evidenceId)
+      if (!item || !verdict.evidenceIds.includes(citation.evidenceId)
+          || !sourceText(item.excerpt).includes(sourceText(citation.quote))) return 'support must quote a cited evidence item verbatim'
+      if (credited && questionOnly(citation.quote)) return 'questions do not establish capability support'
+    }
   }
   if (verdict.verdict !== 'none' && verdict.verdict !== 'na' && verdict.evidenceIds.length === 0) {
     return 'non-none verdict must cite evidence'
@@ -71,7 +92,7 @@ export function validateVerdictRules(verdict: Verdict, evidence: Evidence[]): st
 // Exported so other consumers that need to re-run the EXACT judge prompt against current
 // evidence (rankings-engine/scripts/calibration-check.ts, rankings-engine/scripts/uncertainty-pass.ts) do so
 // verbatim rather than risking prompt drift from a hand-copied duplicate.
-export const RawVerdictSchema = VerdictBaseSchema.omit({ productId: true, storyId: true })
+export const RawVerdictSchema = VerdictBaseSchema.omit({ productId: true, storyId: true }).extend({ support: VerdictSupportSchema })
 
 export const SYSTEM = `You are the judge in a head-to-head product-comparison arena. Given ONE user story and ONE product's evidence pack, decide how well the product delivers that story.
 Verdicts: "full" (clearly delivers), "partial" (delivers with significant caveats/extra tools), "none" (the axis applies but no evidence it delivers), "disputed" (vendor claims it but community/hands-on evidence CONCRETELY contradicts — requires citing both sides), "na" (the story's axis does not apply to this product at all).
@@ -112,9 +133,10 @@ REQUIREMENT: whenever quality is below 10, the rationale MUST name what is missi
 A citation may only support or undermine a verdict if its content is ABOUT the story's subject. Off-topic material — general negative sentiment, unrelated security news, pricing complaints, criticism of other features — must be ignored entirely: it must not move the verdict or quality, must not appear in evidenceIds, and must not be mentioned in the rationale. Example: a news item about a vendor leaking its own source code says NOTHING about whether the product offers sandboxed execution — ignore it when judging a sandboxing story.
 
 ## Output
+support: {subject,relation,coverage,citations}. subject MUST equal the exact user-story title. relation is direct only when the PRODUCT ITSELF provides the named capability; use adjacent for developer building blocks, another feature, or a user-side workaround, and absent when there is no support. coverage is complete only if every required part is documented, partial if the named capability exists with documented limitations, otherwise none. Each citation is {evidenceId,quote}, an affirmative verbatim span from a cited evidence item. Questions and hypothetical examples are not affirmative support. full requires direct/complete support; partial requires direct/partial or direct/complete support. Adjacent support requires none, quality 0. Explicitly assess dry-run versus sandbox isolation, a one-off action versus a recurring schedule, and reference inputs versus consistency across shots; do not substitute one for the other.
 quality: 0-10 per the rubric (0 if none or na). confidence: high/medium/low based on evidence strength. rationale: 1-3 sentences (plus the required "missing for 10: ..." clause when quality < 10). evidenceIds: cite the specific items you relied on (empty only for "none" or "na").
 Judge ONLY from the evidence pack. Absence of evidence for a mainstream capability of a well-known product may still only ever yield "none" — do not use outside knowledge.
-Return JSON: {"verdict":"...","quality":N,"confidence":"...","rationale":"...","evidenceIds":["..."]}`
+Return JSON: {"verdict":"...","quality":N,"confidence":"...","rationale":"...","evidenceIds":["..."],"support":{"subject":"exact story title","relation":"direct|adjacent|absent","coverage":"complete|partial|none","citations":[{"evidenceId":"...","quote":"..."}]}}`
 
 export function judgePrompt(productName: string, story: Story, evidence: Evidence[], extra = ''): string {
   const pack = evidence
@@ -123,15 +145,193 @@ export function judgePrompt(productName: string, story: Story, evidence: Evidenc
   return `Product: ${productName}\n\nUser story: ${story.title}\n(persona: ${story.persona}, theme: ${story.theme})\n\nEvidence pack:\n${pack}\n${extra}`
 }
 
-export async function runJudge({ category, product }: { category?: string; product?: string }): Promise<void> {
+export type RawVerdict = z.infer<typeof RawVerdictSchema>
+
+// One cache-miss (product, story) cell, carrying everything both transports need: the
+// prompt inputs, the cache key, and where the verdict lands.
+export interface JudgeCell {
+  catId: string
+  productId: string
+  productName: string
+  story: Story
+  evidence: Evidence[]
+  hash: string
+  cacheFile: string
+}
+
+// Judges one cell to a rule-clean verdict. `initialRaw` is the batch transport's
+// already-parsed first verdict; when absent the first verdict is fetched interactively.
+// Either way, rule violations go through the same interactive correction rounds — up to
+// three, because one round proved brittle at fleet scale (a model that phrases the
+// rubric clause loosely once tends to comply on the next explicit ask).
+export async function resolveCellVerdict(cell: JudgeCell, initialRaw?: RawVerdict): Promise<Verdict> {
+  let raw = initialRaw
+    ?? await llmJson({ schema: RawVerdictSchema, system: SYSTEM, prompt: judgePrompt(cell.productName, cell.story, cell.evidence) })
+  let verdict: Verdict = { ...raw, productId: cell.productId, storyId: cell.story.id }
+  let violation = validateVerdictRules(verdict, cell.evidence, cell.story)
+  for (let round = 0; violation && round < 3; round++) {
+    raw = await llmJson({
+      schema: RawVerdictSchema,
+      system: SYSTEM,
+      prompt: judgePrompt(cell.productName, cell.story, cell.evidence, `\nYour previous verdict violated a rule: ${violation}. Correct it. If quality is below 10, the rationale MUST contain the literal phrase "missing for 10:" followed by the specific gaps.`),
+    })
+    verdict = { ...raw, productId: cell.productId, storyId: cell.story.id }
+    violation = validateVerdictRules(verdict, cell.evidence, cell.story)
+  }
+  if (violation) throw new Error(`judge: ${cell.catId}/${cell.productId}:${cell.story.id} still violates rules: ${violation}`)
+  return verdict
+}
+
+function writeCellCache(cell: JudgeCell, verdict: Verdict): void {
+  writeJson(cell.cacheFile, { hash: cell.hash, keyVersion: CELL_HASH_VERSION, verdict })
+  console.log(`judge: ${cell.catId}/${cell.productId}:${cell.story.id} → ${verdict.verdict} q${verdict.quality}`)
+}
+
+// The batch request for a cell is byte-for-byte the interactive first attempt — same
+// model, output cap, system prompt, and single-user-message shape. Only the transport
+// (and the per-token price) differs.
+export function cellBatchParams(cell: JudgeCell): Anthropic.Messages.MessageCreateParamsNonStreaming {
+  return {
+    model: JUDGE_MODEL,
+    max_tokens: DEFAULT_MAX_TOKENS,
+    system: SYSTEM,
+    messages: [{ role: 'user', content: judgePrompt(cell.productName, cell.story, cell.evidence) }],
+  }
+}
+
+// Parses a batch-completed Message with the same mechanics llmJson applies to an
+// interactive response: truncation is a failure, text blocks are joined, extractJson
+// recovers the object, and the raw verdict must validate against RawVerdictSchema.
+// Returns undefined on any miss — the cell then falls back to the interactive path.
+export function parseBatchVerdict(message: Anthropic.Message): RawVerdict | undefined {
+  if (message.stop_reason === 'max_tokens') return undefined
+  const text = message.content
+    .filter((b): b is Anthropic.TextBlock => b.type === 'text')
+    .map((b) => b.text)
+    .join('')
+  const json = extractJson(text)
+  if (json === undefined) return undefined
+  const parsed = RawVerdictSchema.safeParse(json)
+  return parsed.success ? parsed.data : undefined
+}
+
+// The batch custom_id folds the cell's identity (category, product, story) into the
+// cellHash. The hash alone is not enough: two products with identical evidence packs
+// share a cellHash, and a resumed run whose first cell was already cached would
+// otherwise apply the stored response — judged under the other product's name — to the
+// wrong product. Stable across runs, so a resumed poll still matches its stored batch,
+// and re-keyed whenever the hash changes, so stale stored results never apply.
+export function batchCustomId(cell: JudgeCell): string {
+  return crypto.createHash('sha256').update(`${cell.catId}/${cell.productId}/${cell.story.id}:${cell.hash}`).digest('hex')
+}
+
+// Fetches first verdicts for the given cells through the Message Batches API (half the
+// interactive per-token price), keyed by batchCustomId. Cells the batch fails,
+// truncates, or returns unparseable are absent from the map and fall back to the
+// interactive path in judgeCells, so a batch run converges on exactly the cells an
+// interactive run would have written.
+export async function batchPrefillVerdicts(cells: JudgeCell[], stateFile: string): Promise<Map<string, RawVerdict>> {
+  const prefilled = new Map<string, RawVerdict>()
+  if (cells.length === 0) return prefilled
+  const byId = new Map<string, JudgeCell>(cells.map((cell) => [batchCustomId(cell), cell]))
+  const requests = [...byId].map(([custom_id, cell]) => ({ custom_id, params: cellBatchParams(cell) }))
+  const results = await runMessageBatches({ requests, stateFile })
+  for (const [id, result] of results) {
+    const cell = byId.get(id)!
+    if (result.type !== 'succeeded') {
+      console.warn(`judge: batch cell ${cell.catId}/${cell.productId}:${cell.story.id} ${result.type}${result.reason ? ` (${result.reason})` : ''} — falling back to interactive`)
+      continue
+    }
+    const raw = parseBatchVerdict(result.message)
+    if (raw === undefined) {
+      console.warn(`judge: batch cell ${cell.catId}/${cell.productId}:${cell.story.id} returned no valid verdict JSON — falling back to interactive`)
+      continue
+    }
+    prefilled.set(id, raw)
+  }
+  return prefilled
+}
+
+// Judges every cell and writes it through the single cache-write path. `prefilled`
+// carries the batch transport's first verdicts, keyed by batchCustomId; cells without
+// one run interactively, which is also the default transport when `prefilled` is absent.
+export async function judgeCells(cells: JudgeCell[], prefilled?: Map<string, RawVerdict>): Promise<void> {
+  for (const cell of cells) {
+    const verdict = await resolveCellVerdict(cell, prefilled?.get(batchCustomId(cell)))
+    writeCellCache(cell, verdict)
+  }
+}
+
+// This path deliberately never reads or writes the judge cache or assembles a matrix.
+// The explicit cell and single-request limit make a separately approved live pilot bounded.
+export async function runJudgePreview({ category, product, story: storyId }: { category?: string; product?: string; story?: string }) {
+  if (![category, product, storyId].every(id => typeof id === 'string' && /^[a-z0-9][a-z0-9_-]*$/.test(id))) {
+    throw new Error('judge-preview requires explicit --category, --product and --story identifiers')
+  }
+  const cat = resolveCategories(category)[0]
+  const dataDir = categoryDir(cat.id)
+  const target = readJson(ProductSchema.array(), path.join(dataDir, 'products.json')).find(p => p.id === product)
+  if (!target) throw new Error(`unknown product: ${product}`)
+  const story = readJson(StorySchema.array(), path.join(dataDir, 'stories.json')).find(s => s.id === storyId)
+  if (!story) throw new Error(`unknown story: ${storyId}`)
+  if (target.affiliation) throw new Error('Affiliated products require the separate bias-audit process')
+  const evidence = readJson(EvidenceSchema.array(), path.join(dataDir, 'evidence', `${target.id}.json`))
+  const prompt = judgePrompt(target.name, story, evidence)
+  if (Buffer.byteLength(SYSTEM + prompt, 'utf8') > 40_000) throw new Error('judge-preview input exceeds the 40000-byte pilot limit')
+  const raw = await llmJson({ schema: RawVerdictSchema, system: SYSTEM, prompt,
+    maxTokens: 4096, retry: false, timeoutMs: 60_000 })
+  const verdict = VerdictSchema.parse({ ...raw, productId: target.id, storyId: story.id })
+  const violation = validateVerdictRules(verdict, evidence, story)
+  if (violation) throw new Error(`judge-preview: ${violation}; no correction retry or publication performed`)
+  return { mode: 'judge-preview', category: cat.id, productId: target.id, storyId: story.id,
+    model: JUDGE_MODEL, promptVersion: PROMPT_VERSION,
+    promptHash: crypto.createHash('sha256').update(JSON.stringify([SYSTEM, prompt])).digest('hex'),
+    inputHash: cellHash(story, evidence, PROMPT_VERSION), verdict }
+}
+
+function currentCachedCell(category: string, product: string, story: Story, evidence: Evidence[]): Verdict | undefined {
+  const file = path.join(CACHE_DIR, 'judge', category, product, `${story.id}.json`)
+  if (!fs.existsSync(file)) return undefined
+  const cached = JSON.parse(fs.readFileSync(file, 'utf8')) as { hash: string; keyVersion?: string; verdict: unknown }
+  if (cached.keyVersion !== CELL_HASH_VERSION) return undefined
+  if (cached.hash !== cellHash(story, evidence, PROMPT_VERSION)) {
+    throw new Error(`judge: stale cached verdict for ${category}/${product}:${story.id}; inputs or judge version changed`)
+  }
+  const row = VerdictSchema.parse(cached.verdict)
+  if (row.productId !== product || row.storyId !== story.id) throw new Error(`judge: cache identity mismatch for ${category}/${product}:${story.id}`)
+  return row
+}
+
+export async function runJudge({ category, product, batch }: { category?: string; product?: string; batch?: boolean }): Promise<void> {
+
   let matched = 0
-  for (const cat of resolveCategories(category)) {
+  const matchedCategories = new Set<string>()
+  const cats = resolveCategories(category)
+
+  // Collects one category's cache-miss cells (and counts its matched targets).
+  const collectCells = (cat: Category): JudgeCell[] => {
     const dataDir = categoryDir(cat.id)
     const products = readJson(ProductSchema.array(), path.join(dataDir, 'products.json'))
     const stories = readJson(StorySchema.array(), path.join(dataDir, 'stories.json'))
     const targets = products.filter((p) => !product || p.id === product)
     matched += targets.length
+    if (!targets.length) return []
+    matchedCategories.add(cat.id)
 
+    // A scoped publication still needs a complete current matrix. Check untouched
+    // cells before paying for target judgments or changing any target cache files.
+    if (product) for (const untouched of products.filter(p => p.id !== product)) {
+      const evidence = readJson(EvidenceSchema.array(), path.join(dataDir, 'evidence', `${untouched.id}.json`))
+      for (const story of stories) {
+        try {
+          if (!currentCachedCell(cat.id, untouched.id, story, evidence)) throw new Error('missing or old-format cache')
+        } catch (cause) {
+          throw new Error(`judge: scoped publication blocked by untouched ${cat.id}/${untouched.id}:${story.id}; use judge-preview for a bounded pilot or review the category migration first`, { cause })
+        }
+      }
+    }
+
+    const cells: JudgeCell[] = []
     for (const p of targets) {
       const evidence = readJson(EvidenceSchema.array(), path.join(dataDir, 'evidence', `${p.id}.json`))
       for (const story of stories) {
@@ -142,26 +342,35 @@ export async function runJudge({ category, product }: { category?: string; produ
           // An entry written under an older key format (no/other keyVersion) is a clean miss.
           if (cached.keyVersion === CELL_HASH_VERSION && cached.hash === hash) continue
         }
-
-        let raw = await llmJson({ schema: RawVerdictSchema, system: SYSTEM, prompt: judgePrompt(p.name, story, evidence) })
-        let verdict: Verdict = { ...raw, productId: p.id, storyId: story.id }
-        let violation = validateVerdictRules(verdict, evidence)
-        // Up to three correction rounds — one round proved brittle at fleet scale (a model that
-        // phrases the rubric clause loosely once tends to comply on the next explicit ask).
-        for (let round = 0; violation && round < 3; round++) {
-          raw = await llmJson({
-            schema: RawVerdictSchema,
-            system: SYSTEM,
-            prompt: judgePrompt(p.name, story, evidence, `\nYour previous verdict violated a rule: ${violation}. Correct it. If quality is below 10, the rationale MUST contain the literal phrase "missing for 10:" followed by the specific gaps.`),
-          })
-          verdict = { ...raw, productId: p.id, storyId: story.id }
-          violation = validateVerdictRules(verdict, evidence)
-        }
-        if (violation) throw new Error(`judge: ${cat.id}/${p.id}:${story.id} still violates rules: ${violation}`)
-        writeJson(cacheFile, { hash, keyVersion: CELL_HASH_VERSION, verdict })
-        console.log(`judge: ${cat.id}/${p.id}:${story.id} → ${verdict.verdict} q${verdict.quality}`)
+        cells.push({ catId: cat.id, productId: p.id, productName: p.name, story, evidence, hash, cacheFile })
       }
     }
+    return cells
+  }
+
+  // One state file per (category, product) scope: a re-run of the same interrupted
+  // invocation resumes its in-flight batches instead of resubmitting.
+  const stateFile = path.join(CACHE_DIR, 'judge-batches', `${category ?? 'all'}--${product ?? 'all'}.json`)
+
+  // Batch mode collects every category up front so the whole scope rides one submission.
+  // Interactive mode collects lazily inside the per-category loop, so a read failure in a
+  // later category cannot block earlier categories' judging and assembly.
+  const collected = new Map<string, JudgeCell[]>()
+  if (batch) for (const cat of cats) collected.set(cat.id, collectCells(cat))
+  const prefilled = batch
+    ? await batchPrefillVerdicts([...collected.values()].flat(), stateFile)
+    : undefined
+
+  for (const cat of cats) {
+    // Judge, then assemble, one category at a time: a failure in a later category must
+    // not cost an earlier, fully judged category its verdicts.json update.
+    const cells = collected.get(cat.id) ?? collectCells(cat)
+    if (!matchedCategories.has(cat.id)) continue
+    await judgeCells(cells, prefilled)
+
+    const dataDir = categoryDir(cat.id)
+    const products = readJson(ProductSchema.array(), path.join(dataDir, 'products.json'))
+    const stories = readJson(StorySchema.array(), path.join(dataDir, 'stories.json'))
 
     // Assemble verdicts.json from ALL cached cells for this category (not just targets)
     const all: Verdict[] = []
@@ -169,25 +378,13 @@ export async function runJudge({ category, product }: { category?: string; produ
     for (const p of products) {
       const currentEvidence = readJson(EvidenceSchema.array(), path.join(dataDir, 'evidence', `${p.id}.json`))
       for (const story of stories) {
-        const cacheFile = path.join(CACHE_DIR, 'judge', cat.id, p.id, `${story.id}.json`)
-        if (!fs.existsSync(cacheFile)) {
-          console.warn(`judge: matrix incomplete for ${cat.id} — missing ${p.id}:${story.id}; not writing verdicts.json`)
+        const cached = currentCachedCell(cat.id, p.id, story, currentEvidence)
+        if (!cached) {
+          console.warn(`judge: matrix incomplete for ${cat.id} — missing or old-format cache for ${p.id}:${story.id}; not writing verdicts.json`)
           incomplete = true
           break
         }
-        const cached = JSON.parse(fs.readFileSync(cacheFile, 'utf8')) as { hash: string; keyVersion?: string; verdict: unknown }
-        if (cached.keyVersion !== CELL_HASH_VERSION) {
-          // Pre-CELL_HASH_VERSION entry: a clean miss, not evidence staleness — the matrix is
-          // simply not fully judged under the current key format yet.
-          console.warn(`judge: matrix incomplete for ${cat.id} — ${p.id}:${story.id} cached under an older key format; not writing verdicts.json (re-run judge --category ${cat.id} --product ${p.id})`)
-          incomplete = true
-          break
-        }
-        const currentHash = cellHash(story, currentEvidence, PROMPT_VERSION)
-        if (cached.hash !== currentHash) {
-          throw new Error(`judge: stale cached verdict for ${cat.id}/${p.id}:${story.id} — evidence changed; re-run judge --category ${cat.id} --product ${p.id}`)
-        }
-        all.push(VerdictSchema.parse(cached.verdict))
+        all.push(cached)
       }
       if (incomplete) break
     }
@@ -197,5 +394,7 @@ export async function runJudge({ category, product }: { category?: string; produ
     writeJson(path.join(dataDir, 'verdicts.json'), all)
     console.log(`judge: wrote ${all.length} verdicts for ${cat.id}`)
   }
+  // Every cell in scope is cached now; the recorded batch ids have served their purpose.
+  if (batch) clearBatchState(stateFile)
   if (product && matched === 0) throw new Error(`unknown product: ${product}`)
 }

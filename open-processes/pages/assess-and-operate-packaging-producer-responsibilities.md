@@ -45,10 +45,10 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Map packaging activities and market data](#step-1) | agent-runnable | Not recorded | Entry step |
-| [2. Determine producer status and local obligations](#step-2) | human; approval required | Not recorded | [Step 1](#step-1) |
+| [2. Determine producer status and local obligations](#step-2) | human; human approval every run | Not recorded | [Step 1](#step-1) |
 | [3. Prepare the packaging data and reporting controls](#step-3) | agent-runnable | Not recorded | [Step 2](#step-2) |
-| [4. Approve the registration and compliance route](#step-4) | human; approval required | Not recorded | [Step 3](#step-3) |
-| [5. Complete approved registrations and reports](#step-5) | human; approval required | Not recorded | [Step 4](#step-4) |
+| [4. Approve the registration and compliance route](#step-4) | human; human approval every run | Not recorded | [Step 3](#step-3) |
+| [5. Complete approved registrations and reports](#step-5) | human; human approval every run | Not recorded | [Step 4](#step-4) |
 | [6. Reconcile receipts and reassess changes](#step-6) | agent-runnable | Not recorded | [Step 5](#step-5) |
 
 <a id="steps"></a>
@@ -70,7 +70,7 @@ Collect the selling entities, destination markets, packaging materials and weigh
 
 ### 2. Determine producer status and local obligations
 
-human · human approval required · hard to undo
+human · human approval every run · hard to undo
 
 
 The environmental-compliance owner reviews the actual market, producer role, group structure and current eligibility rules. Determine applicable registration, data, reporting, recycling and fee duties; do not apply one country assessment to every sales destination.
@@ -92,7 +92,7 @@ Build the material and activity schedules under the reviewed classification inst
 
 ### 4. Approve the registration and compliance route
 
-human · human approval required · hard to undo
+human · human approval every run · hard to undo
 
 
 The accountable compliance owner approves the applicability determination, any scheme appointment, required registration and reporting calendar. Obtain specialist review of disputed status or categories before authorizing an external declaration or payment.
@@ -103,7 +103,7 @@ The accountable compliance owner approves the applicability determination, any s
 
 ### 5. Complete approved registrations and reports
 
-human · human approval required · irreversible
+human · human approval every run · irreversible
 
 
 An authorized operator submits the reviewed registrations and packaging reports and arranges approved fees or scheme work through the applicable route. Retain acceptance, rejection and payment evidence; submission or scheme membership alone does not prove every obligation is complete.

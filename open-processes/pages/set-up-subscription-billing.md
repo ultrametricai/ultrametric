@@ -43,12 +43,12 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
-| [1. Create products](#step-1) | agent-runnable; approval required | ~10 min | Entry step |
-| [2. Configure pricing plans](#step-2) | agent-runnable; approval required | ~10 min | [Step 1](#step-1) |
-| [3. Set up customer portal](#step-3) | agent-runnable; approval required | ~10 min | [Step 2](#step-2) |
+| [1. Create products](#step-1) | agent-runnable; human approval on the first run | ~10 min | Entry step |
+| [2. Configure pricing plans](#step-2) | agent-runnable; human approval on the first run | ~10 min | [Step 1](#step-1) |
+| [3. Set up customer portal](#step-3) | agent-runnable; human approval on the first run | ~10 min | [Step 2](#step-2) |
 | [4. Configure webhooks](#step-4) | agent-runnable | ~5 min | [Step 2](#step-2) |
 | [5. Test subscriptions](#step-5) | agent-runnable | ~10 min | All: [Step 3](#step-3); [Step 4](#step-4) |
-| [6. Configure dunning](#step-6) | agent-runnable; approval required | ~5 min | [Step 5](#step-5) |
+| [6. Configure dunning](#step-6) | agent-runnable; human approval on the first run | ~5 min | [Step 5](#step-5) |
 
 <a id="steps"></a>
 
@@ -58,7 +58,7 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 
 ### 1. Create products
 
-agent-runnable · ~10 min · human approval required
+agent-runnable · ~10 min · human approval on the first run
 
 | Option | Applies when |
 | --- | --- |
@@ -73,7 +73,7 @@ Define the offerings, included features and charging unit, such as an account, s
 - Sources: [Manage products and prices](https://docs.stripe.com/products-prices/manage-prices)
 
 Options:
-  - **Default — Create products** — agent-runnable · ~10 min · human approval required
+  - **Default — Create products** — agent-runnable · ~10 min · human approval on the first run
 
     Use the payment processor's billing catalog if its documented subscription model supports the required units and intervals. In its test environment, map each internal offering to a product and recurring prices. Save the identifiers used by checkout and access control, and compare the displayed descriptions and charges with the commercial plan before connecting the catalog to live purchases.
   - **Dedicated billing platform**
@@ -99,7 +99,7 @@ Options:
 
 ### 2. Configure pricing plans
 
-agent-runnable · ~10 min · human approval required
+agent-runnable · ~10 min · human approval on the first run
 
 
 Build a pricing matrix with currency, amount, interval, charging unit, included usage, trial conditions and discounts. Work through representative quantities and plan changes to expose ambiguous totals or renewal terms. Configure the matrix in a draft or test catalog and compare checkout and invoice previews against it. Resolve any mismatch in the commercial terms before making the prices available to customers.
@@ -113,7 +113,7 @@ Build a pricing matrix with currency, amount, interval, charging unit, included 
 
 ### 3. Set up customer portal
 
-agent-runnable · ~10 min · human approval required
+agent-runnable · ~10 min · human approval on the first run
 
 
 Choose which actions customers can perform in the billing portal: view invoices, update payment details, change plans or cancel. Match their effective dates and access consequences to the billing policy. Test each enabled action as representative customers, including account isolation and the resulting invoices and access. Provide a support route for unsupported actions, then publish the tested entry point within the agreed release scope.
@@ -154,7 +154,7 @@ In the provider's test environment, exercise purchase, renewal, payment authenti
 
 ### 6. Configure dunning
 
-agent-runnable · ~5 min · human approval required
+agent-runnable · ~5 min · human approval on the first run
 
 
 Translate the failed-payment policy into customer notices, retry settings, support escalation and the final billing and access outcome. Check what recovery the provider supports for the selected payment methods and failure types. Test both successful recovery and exhausted retries. Enable the agreed retry schedule and messages only when the observed charges, notices and access changes match that policy.

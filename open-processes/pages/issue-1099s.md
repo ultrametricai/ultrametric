@@ -64,9 +64,9 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | --- | --- | --- | --- |
 | [1. Pull contractor payment totals](#step-1) | agent-runnable | ~5 min | Entry step |
 | [2. Verify W-9 info on file](#step-2) | agent-runnable | ~5 min | [Step 1](#step-1) |
-| [3. Generate 1099-NEC forms](#step-3) | agent-runnable; approval required | ~10 min | [Step 2](#step-2) |
-| [4. Review and approve 1099s](#step-4) | human; approval required | ~20 min | [Step 3](#step-3) |
-| [5. File with IRS and mail to contractors](#step-5) | agent-runnable; approval required | ~5 min | [Step 4](#step-4) |
+| [3. Generate 1099-NEC forms](#step-3) | agent-runnable; human approval every run | ~10 min | [Step 2](#step-2) |
+| [4. Review and approve 1099s](#step-4) | human; human approval every run | ~20 min | [Step 3](#step-3) |
+| [5. File with IRS and mail to contractors](#step-5) | agent-runnable; human approval every run | ~5 min | [Step 4](#step-4) |
 
 <a id="steps"></a>
 
@@ -100,7 +100,7 @@ Match potentially reportable recipients to signed tax documentation. Check legal
 
 ### 3. Generate 1099-NEC forms
 
-agent-runnable · ~10 min · human approval required
+agent-runnable · ~10 min · human approval every run
 
 
 Determine the appropriate form and reportable amount from the payment schedule and recipient documents using the reporting year’s instructions. Generate draft 1099-NEC forms for that population and reconcile totals. Flag missing identifiers, exceptional payment treatment and separate state requirements before the batch is approved for filing and delivery.
@@ -112,7 +112,7 @@ Determine the appropriate form and reportable amount from the payment schedule a
 
 ### 4. Review and approve 1099s
 
-human · ~20 min · human approval required
+human · ~20 min · human approval every run
 
 
 Check recipients, identifiers and amounts against the payment schedule and tax documents. Investigate exclusions, duplicates, corrections and payment-channel exceptions with the preparer. Verify the tax year and filing method, then approve the exact batch and recipient-delivery plan through the company’s reporting process. Any changed data should be reconciled before transmission.
@@ -123,7 +123,7 @@ Check recipients, identifiers and amounts against the payment schedule and tax d
 
 ### 5. File with IRS and mail to contractors
 
-agent-runnable · ~5 min · human approval required · hard to undo
+agent-runnable · ~5 min · human approval every run · hard to undo
 
 
 File the reviewed batch using the method required for the year and number of returns. Furnish recipient copies through the selected permitted delivery route, including electronic consent where needed. Check agency acceptance and delivery failures, correct rejected records and reconcile separate state submissions. Preserve evidence showing both the filed returns and the copies furnished to recipients.

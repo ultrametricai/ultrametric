@@ -1011,16 +1011,18 @@
   {
     "productId": "calendly",
     "storyId": "agentic-scoped-keys",
-    "verdict": "partial",
-    "quality": 3,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Calendly documents ways to issue API credentials: personal access tokens for internal apps and OAuth 2.1 for public apps. Its MCP server uses OAuth with Dynamic Client Registration, so an agent can get its own delegated credential without pre-registering an app. However, nothing in the evidence shows these credentials can be scoped or restricted to least privilege. Missing for 10: documented OAuth scopes or PAT permission scoping, read-only or resource-limited tokens, agent-specific credential restriction or revocation controls, independent corroboration.",
+    "rationale": "Calendly documents scopes that \"control which Calendly resources your integration can read or modify\". It also documents several ways to issue credentials: personal access tokens for internal apps, per-user OAuth 2.1 tokens via PKCE, and Dynamic Client Registration so MCP-connected agents get their own OAuth client. Together these provide scoped, least-privilege credentials an agent can use. missing for 10: detail on how granular the scopes are, confirmation that personal access tokens can be scoped (not just OAuth apps), and independent or hands-on corroboration of least-privilege agent setups.",
     "evidenceIds": [
-      "calendly-docs-3",
-      "calendly-docs-4",
-      "calendly-docs-30",
+      "calendly-docs-80",
+      "calendly-docs-78",
       "calendly-docs-31",
-      "calendly-docs-34"
+      "calendly-docs-76",
+      "calendly-docs-34",
+      "calendly-docs-3",
+      "calendly-docs-4"
     ]
   },
   {
@@ -1193,14 +1195,20 @@
     "productId": "calendly",
     "storyId": "booking-webhooks",
     "verdict": "full",
-    "quality": 8,
+    "quality": 9,
     "confidence": "high",
-    "rationale": "Calendly's first-party docs describe a Webhook API that sends payloads in real time to your endpoint when invitees schedule, cancel, or reschedule a meeting, by either host or invitee. Webhook signing keys are documented for verifying authenticity. Missing for 10: detailed documentation of how reschedules appear in the payload (the guide only names scheduled/canceled events), and independent or hands-on corroboration of webhook delivery.",
+    "rationale": "Calendly documents registrable webhook subscriptions (create, list, delete, sample data) that push payloads to your endpoint in real time when invitees schedule or cancel. Reschedules fire both `invitee.created` and `invitee.canceled`. The docs also cover signing keys for verification and 24-hour exponential-backoff retries. missing for 10: independent or hands-on corroboration of delivery reliability, and a distinct reschedule event type (reschedules surface as a created/canceled pair).",
     "evidenceIds": [
       "calendly-docs-7",
-      "calendly-docs-23",
       "calendly-docs-54",
-      "calendly-docs-55"
+      "calendly-docs-63",
+      "calendly-docs-66",
+      "calendly-docs-55",
+      "calendly-docs-68",
+      "calendly-docs-69",
+      "calendly-docs-70",
+      "calendly-docs-71",
+      "calendly-docs-72"
     ]
   },
   {
@@ -1862,7 +1870,7 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Motion has built-in event-driven behaviors: projects advance when blocking tasks complete, user-set daily meeting limits are enforced automatically, forwarded emails become tasks, and an 'AI Workflow Builder' builds workflows from SOPs. General trigger\u2192action rules, however, appear to depend on the external Zapier integration. Missing for 10: documented native user-defined rule/trigger engine, choice of trigger events and actions, details on how the AI Workflow Builder configures automations, and hands-on corroboration.",
+    "rationale": "Motion has built-in event-driven behaviors: projects advance when blocking tasks complete, user-set daily meeting limits are enforced automatically, forwarded emails become tasks, and an 'AI Workflow Builder' builds workflows from SOPs. General trigger→action rules, however, appear to depend on the external Zapier integration. Missing for 10: documented native user-defined rule/trigger engine, choice of trigger events and actions, details on how the AI Workflow Builder configures automations, and hands-on corroboration.",
     "evidenceIds": [
       "motion-docs-14",
       "motion-docs-6",
@@ -2525,7 +2533,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Reclaim runs many built-in event-triggered automations: it reschedules lower-priority smart events when a meeting overbooks them, adds travel time to events with a location, adds decompression buffers after meetings, syncs Slack status from event categories, and auto-locks Smart Meetings. Users can steer these through settings, priorities and hashtag directives (#reclaim_free, #reclaim_busy, #needs_travel). However, these are preset behaviors, not user-authored rules, so it only partly matches \"define rules that trigger actions\". Missing for 10: a general user-defined trigger\u2192action rule builder, custom actions or webhooks/API for event-driven automation, and independent hands-on corroboration of rule-style automation.",
+    "rationale": "Reclaim runs many built-in event-triggered automations: it reschedules lower-priority smart events when a meeting overbooks them, adds travel time to events with a location, adds decompression buffers after meetings, syncs Slack status from event categories, and auto-locks Smart Meetings. Users can steer these through settings, priorities and hashtag directives (#reclaim_free, #reclaim_busy, #needs_travel). However, these are preset behaviors, not user-authored rules, so it only partly matches \"define rules that trigger actions\". Missing for 10: a general user-defined trigger→action rule builder, custom actions or webhooks/API for event-driven automation, and independent hands-on corroboration of rule-style automation.",
     "evidenceIds": [
       "reclaim-docs-29",
       "reclaim-docs-34",
@@ -2635,7 +2643,7 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Reclaim's first-party Calendar Sync docs say it creates smart copies of events from a source calendar on a destination calendar. They also say the copies stay up to date as source events change, so nothing needs manual updating, and that availability stays accurate across multiple calendars. External or personal calendars (e.g., iCloud) can be synced into a Google Calendar, which covers keeping work and personal schedules in step. Missing for 10: explicit documentation that copies can be shown as private 'busy' blocks without event details, confirmation of two-way (work\u2194personal) sync, and independent or hands-on corroboration of Calendar Sync.",
+    "rationale": "Reclaim's first-party Calendar Sync docs say it creates smart copies of events from a source calendar on a destination calendar. They also say the copies stay up to date as source events change, so nothing needs manual updating, and that availability stays accurate across multiple calendars. External or personal calendars (e.g., iCloud) can be synced into a Google Calendar, which covers keeping work and personal schedules in step. Missing for 10: explicit documentation that copies can be shown as private 'busy' blocks without event details, confirmation of two-way (work↔personal) sync, and independent or hands-on corroboration of Calendar Sync.",
     "evidenceIds": [
       "reclaim-docs-8",
       "reclaim-docs-13",
@@ -2665,7 +2673,7 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "First-party docs say Focus Time uses AI to flexibly defend a weekly focus goal, and that Habits flex around your schedule and adapt as things come up. Reclaim automatically reschedules smart events to the next best time when a higher-priority meeting overbooks them, guided by P1\u2013P4 priorities. Community users corroborate that it reserves time for habits so meetings don't take over the day. Missing for 10: documented behavior when no alternative slot exists (the 'instead of dropping' guarantee), and clear independent hands-on confirmation of conflict-driven rescheduling (one early user reported the conflict test 'didn't work').",
+    "rationale": "First-party docs say Focus Time uses AI to flexibly defend a weekly focus goal, and that Habits flex around your schedule and adapt as things come up. Reclaim automatically reschedules smart events to the next best time when a higher-priority meeting overbooks them, guided by P1–P4 priorities. Community users corroborate that it reserves time for habits so meetings don't take over the day. Missing for 10: documented behavior when no alternative slot exists (the 'instead of dropping' guarantee), and clear independent hands-on confirmation of conflict-driven rescheduling (one early user reported the conflict test 'didn't work').",
     "evidenceIds": [
       "reclaim-docs-1",
       "reclaim-docs-30",
@@ -2822,7 +2830,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows Scheduling Links can expose 'you and your team's availability' across one or many calendars, but nothing documents round-robin distribution of inbound bookings, or weighting or fairness across hosts. Reclaim's P1\u2013P4 priorities rank events on a single user's calendar, not load across a team.",
+    "rationale": "The evidence shows Scheduling Links can expose 'you and your team's availability' across one or many calendars, but nothing documents round-robin distribution of inbound bookings, or weighting or fairness across hosts. Reclaim's P1–P4 priorities rank events on a single user's calendar, not load across a team.",
     "evidenceIds": []
   },
   {

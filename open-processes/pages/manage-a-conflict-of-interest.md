@@ -53,9 +53,9 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Record the interest and affected decisions](#step-1) | agent-runnable | Not recorded | Entry step |
-| [2. Determine the applicable governance process](#step-2) | human; approval required | Not recorded | [Step 1](#step-1) |
+| [2. Determine the applicable governance process](#step-2) | human; human approval every run | Not recorded | [Step 1](#step-1) |
 | [3. Prepare alternatives and mitigation options](#step-3) | agent-runnable | Not recorded | [Step 2](#step-2) |
-| [4. Approve the conflict-management decision](#step-4) | human; approval required | Not recorded | [Step 3](#step-3) |
+| [4. Approve the conflict-management decision](#step-4) | human; human approval every run | Not recorded | [Step 3](#step-3) |
 | [5. Track implementation and subsequent changes](#step-5) | agent-runnable | Not recorded | [Step 4](#step-4) |
 
 <a id="steps"></a>
@@ -77,7 +77,7 @@ Collect the relationship, economic interest, transaction and relevant roles in a
 
 ### 2. Determine the applicable governance process
 
-human · human approval required
+human · human approval every run
 
 
 Ask counsel or the designated independent reviewer to check the policy, governing documents and local requirements. Select reviewers who are not deciding their own conflict.
@@ -99,7 +99,7 @@ Document options such as recusal, independent pricing, information barriers or d
 
 ### 4. Approve the conflict-management decision
 
-human · human approval required
+human · human approval every run
 
 
 The authorized independent decision makers approve or reject the proposal under the applicable process. Record participants, disclosures, recusals and reasons while restricting sensitive personal information.

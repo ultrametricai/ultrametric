@@ -35,10 +35,10 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
-| [1. Create the password manager business account](#step-1) | manual form/portal; approval required | ~10 min | Entry step |
-| [2. Create shared vaults](#step-2) | agent-runnable; approval required | ~5 min | [Step 1](#step-1) |
-| [3. Invite team members](#step-3) | agent-runnable; approval required | ~5 min | [Step 2](#step-2) |
-| [4. Configure access groups](#step-4) | agent-runnable; approval required | ~5 min | [Step 2](#step-2) |
+| [1. Create the password manager business account](#step-1) | manual form/portal; human approval on the first run | ~10 min | Entry step |
+| [2. Create shared vaults](#step-2) | agent-runnable; human approval on the first run | ~5 min | [Step 1](#step-1) |
+| [3. Invite team members](#step-3) | agent-runnable; human approval above a threshold | ~5 min | [Step 2](#step-2) |
+| [4. Configure access groups](#step-4) | agent-runnable; human approval on the first run | ~5 min | [Step 2](#step-2) |
 
 <a id="steps"></a>
 
@@ -48,7 +48,7 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 
 ### 1. Create the password manager business account
 
-manual form/portal · ~10 min · human approval required
+manual form/portal · ~10 min · human approval on the first run
 
 
 Create the selected business password-manager account with a company-controlled administrator and the agreed subscription. Decide who administers it, who provides backup, and how access is recovered if an administrator is unavailable. Enable the service's supported sign-in protections. Put recovery material in a protected location available to the designated backup administrator, and explain when and how they should use it.
@@ -62,7 +62,7 @@ Create the selected business password-manager account with a company-controlled 
 
 ### 2. Create shared vaults
 
-agent-runnable · ~5 min · human approval required
+agent-runnable · ~5 min · human approval on the first run
 
 
 Create shared vaults around groups that genuinely need the same credentials, such as finance or infrastructure operations. Give each vault an owner and separate highly sensitive accounts from broadly shared tools. Check whether members can view, edit, export, or share items before placing credentials there. Move each existing shared credential to its intended vault and verify access with the people who use it, leaving personal accounts outside the company vaults.
@@ -74,7 +74,7 @@ Create shared vaults around groups that genuinely need the same credentials, suc
 
 ### 3. Invite team members
 
-agent-runnable · ~5 min · human approval required
+agent-runnable · ~5 min · human approval above a threshold
 
 
 Invite teammates using their verified company addresses and initial access groups. The administrator should check the recipients and permissions before sending invitations, then provide instructions for sign-in, recovery, and moving work credentials into the correct vault. Follow up on incomplete enrollment. Help each person find and update a credential for one of their authorized work accounts.
@@ -87,7 +87,7 @@ Invite teammates using their verified company addresses and initial access group
 
 ### 4. Configure access groups
 
-agent-runnable · ~5 min · human approval required
+agent-runnable · ~5 min · human approval on the first run
 
 
 *Follows step 2.*

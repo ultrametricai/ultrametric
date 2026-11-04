@@ -47,9 +47,9 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Inventory policies and the relevant change or event](#step-1) | agent-runnable | Not recorded | Entry step |
-| [2. Review coverage and notice requirements with the broker](#step-2) | human; approval required | Not recorded | [Step 1](#step-1) |
+| [2. Review coverage and notice requirements with the broker](#step-2) | human; human approval every run | Not recorded | [Step 1](#step-1) |
 | [3. Prepare the renewal or claim evidence pack](#step-3) | agent-runnable | Not recorded | [Step 2](#step-2) |
-| [4. Approve the submission and any commitment](#step-4) | human; approval required | Not recorded | [Step 3](#step-3) |
+| [4. Approve the submission and any commitment](#step-4) | human; human approval every run | Not recorded | [Step 3](#step-3) |
 | [5. Verify the resulting coverage or claim status](#step-5) | agent-runnable | Not recorded | [Step 4](#step-4) |
 
 <a id="steps"></a>
@@ -71,7 +71,7 @@ Collect policies, endorsements, insured entities, renewal terms and business cha
 
 ### 2. Review coverage and notice requirements with the broker
 
-human · human approval required
+human · human approval every run
 
 
 The insurance owner and qualified adviser assess exclusions, limits, deductibles, notification and renewal questions. For a claim, verify the insurer channel and obtain advice before admissions or settlements.
@@ -93,7 +93,7 @@ For renewal, reconcile exposures, staffing, revenue and requested cover. For a c
 
 ### 4. Approve the submission and any commitment
 
-human · human approval required
+human · human approval every run
 
 
 Authorized people review the disclosures, terms or claim statement before delivery. Approve premiums, settlement terms or mitigation spending separately through their applicable authority.

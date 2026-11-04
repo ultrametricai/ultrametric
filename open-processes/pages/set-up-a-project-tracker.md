@@ -36,11 +36,11 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
-| [1. Create the project tracker workspace](#step-1) | manual form/portal; approval required | ~10 min | Entry step |
-| [2. Configure workflow states](#step-2) | agent-runnable; approval required | ~5 min | [Step 1](#step-1) |
-| [3. Create teams and projects](#step-3) | agent-runnable; approval required | ~5 min | [Step 2](#step-2) |
+| [1. Create the project tracker workspace](#step-1) | manual form/portal; human approval on the first run | ~10 min | Entry step |
+| [2. Configure workflow states](#step-2) | agent-runnable; human approval on the first run | ~5 min | [Step 1](#step-1) |
+| [3. Create teams and projects](#step-3) | agent-runnable; human approval on the first run | ~5 min | [Step 2](#step-2) |
 | [4. Set up labels](#step-4) | agent-runnable | ~3 min | [Step 3](#step-3) |
-| [5. Invite team members](#step-5) | agent-runnable; approval required | ~3 min | [Step 3](#step-3) |
+| [5. Invite team members](#step-5) | agent-runnable; human approval above a threshold | ~3 min | [Step 3](#step-3) |
 
 <a id="steps"></a>
 
@@ -50,7 +50,7 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 
 ### 1. Create the project tracker workspace
 
-manual form/portal · ~10 min · human approval required
+manual form/portal · ~10 min · human approval on the first run
 
 
 Find the company's existing account or create the workspace in the selected tracker. Set the company name, administrator, recovery contact, and default visibility, keeping customer or confidential work restricted as needed. Use the agreed plan and seat budget; new paid commitments need the budget owner's approval. Add the workspace link to onboarding and identify the administrator teammates should contact for access or configuration changes.
@@ -64,7 +64,7 @@ Find the company's existing account or create the workspace in the selected trac
 
 ### 2. Configure workflow states
 
-agent-runnable · ~5 min · human approval required
+agent-runnable · ~5 min · human approval on the first run
 
 
 Map how work enters the queue, becomes accepted, moves through execution and review, and reaches completion. Give each state a clear meaning and make blocked, cancelled, and completed work distinguishable. Configure the states the team needs, then walk an actual representative task through them to find unclear transitions. If the tracker already contains work, map old states to new ones before changing anything that would strand active issues.
@@ -75,7 +75,7 @@ Map how work enters the queue, becomes accepted, moves through execution and rev
 
 ### 3. Create teams and projects
 
-agent-runnable · ~5 min · human approval required
+agent-runnable · ~5 min · human approval on the first run
 
 
 Create tracker teams where membership, ownership, or workflows genuinely differ. Use projects for concrete initiatives, each with a stated outcome and accountable owner. Link existing tasks to their new projects and team owners. Set visibility for each team and project, and check that teammates can find their active work from the main workspace. Keep unowned initiatives in a visible planning queue until someone takes responsibility.
@@ -100,7 +100,7 @@ Choose labels for distinctions the team needs to filter or triage, such as work 
 
 ### 5. Invite team members
 
-agent-runnable · ~3 min · human approval required
+agent-runnable · ~3 min · human approval above a threshold
 
 
 *Follows step 3.*

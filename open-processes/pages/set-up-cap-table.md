@@ -55,7 +55,7 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | [1. Choose cap table tool](#step-1) | human | ~10 min | Entry step |
 | [2. Enter founding shares](#step-2) | manual form/portal | ~15 min | [Step 1](#step-1) |
 | [3. Record investments/SAFEs](#step-3) | manual form/portal | ~20 min | [Step 2](#step-2) |
-| [4. Verify cap table](#step-4) | human; approval required | ~15 min | [Step 3](#step-3) |
+| [4. Verify cap table](#step-4) | human; human approval every run | ~15 min | [Step 3](#step-3) |
 
 <a id="steps"></a>
 
@@ -131,7 +131,7 @@ Record investments from executed agreements and funding evidence, including inve
 
 ### 4. Verify cap table
 
-human · ~15 min · human approval required
+human · ~15 min · human approval every run
 
 
 Trace the opening cap table to the charter, issuance approvals, agreements, consideration evidence and local ownership records. Reconcile class totals, option reserve, outstanding convertibles and fully diluted assumptions for omissions or double counting. Resolve unexplained differences with the equity owner and send legal defects to counsel; correcting a software entry alone cannot repair deficient corporate authority.

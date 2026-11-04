@@ -45,11 +45,11 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Extract the tender requirements and timetable](#step-1) | agent-runnable | Not recorded | Entry step |
-| [2. Approve a bid or no-bid decision](#step-2) | human; approval required | Not recorded | [Step 1](#step-1) |
+| [2. Approve a bid or no-bid decision](#step-2) | human; human approval every run | Not recorded | [Step 1](#step-1) |
 | [3. Assemble the evidence and response matrix](#step-3) | agent-runnable | Not recorded | [Step 2](#step-2) (Bid decision approved; mandatory eligibility requirements can be met.) |
-| [4. Review pricing commitments and declarations](#step-4) | human; approval required | Not recorded | [Step 3](#step-3) |
-| [5. Submit the approved bid through the buyer channel](#step-5) | manual form/portal; approval required | Not recorded | [Step 4](#step-4) |
-| [6. Record the decision and manage any bid follow-up](#step-6) | human; approval required | Not recorded | Alternatives: [Step 5](#step-5); [Step 2](#step-2) (No-bid decision approved; skip preparation and submission.) |
+| [4. Review pricing commitments and declarations](#step-4) | human; human approval every run | Not recorded | [Step 3](#step-3) |
+| [5. Submit the approved bid through the buyer channel](#step-5) | manual form/portal; human approval every run | Not recorded | [Step 4](#step-4) |
+| [6. Record the decision and manage any bid follow-up](#step-6) | human; human approval every run | Not recorded | Alternatives: [Step 5](#step-5); [Step 2](#step-2) (No-bid decision approved; skip preparation and submission.) |
 
 <a id="steps"></a>
 
@@ -70,7 +70,7 @@ Read the buyer-issued documents and amendments. Record eligibility, submission c
 
 ### 2. Approve a bid or no-bid decision
 
-human · human approval required · hard to undo
+human · human approval every run · hard to undo
 
 
 The accountable owner reviews qualification, delivery capacity, commercial risk and conflicts. Obtain specialist interpretation for unfamiliar procurement rules and decline opportunities whose mandatory requirements cannot be met. If the decision is no-bid, skip response preparation, pricing review and submission, and go directly to the final decision record.
@@ -98,7 +98,7 @@ Map each question and criterion to a specific response, supporting evidence and 
 
 ### 4. Review pricing commitments and declarations
 
-human · human approval required · hard to undo
+human · human approval every run · hard to undo
 
 
 When: Only after the accountable owner approves a bid decision.
@@ -111,7 +111,7 @@ Authorized commercial and technical reviewers approve delivery promises, pricing
 
 ### 5. Submit the approved bid through the buyer channel
 
-manual form/portal · human approval required · hard to undo
+manual form/portal · human approval every run · hard to undo
 
 
 When: Only after the accountable owner approves a bid decision.
@@ -124,7 +124,7 @@ An authorized submitter uploads the approved version and retains the receipt and
 
 ### 6. Record the decision and manage any bid follow-up
 
-human · human approval required · hard to undo
+human · human approval every run · hard to undo
 
 
 *Follows step 2 (when No-bid decision approved; skip preparation and submission) or step 5.*

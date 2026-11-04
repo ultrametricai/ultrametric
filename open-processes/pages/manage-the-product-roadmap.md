@@ -48,9 +48,9 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | --- | --- | --- | --- |
 | [1. Collect and classify product evidence](#step-1) | agent-runnable | Not recorded | Entry step |
 | [2. Model options and dependencies](#step-2) | agent-runnable | Not recorded | [Step 1](#step-1) |
-| [3. Choose priorities and capacity allocations](#step-3) | human; approval required | Not recorded | [Step 2](#step-2) |
+| [3. Choose priorities and capacity allocations](#step-3) | human; human approval every run | Not recorded | [Step 2](#step-2) |
 | [4. Translate priorities into owned delivery work](#step-4) | agent-runnable | Not recorded | [Step 3](#step-3) |
-| [5. Review results and revise the roadmap](#step-5) | human; approval required | Not recorded | [Step 4](#step-4) |
+| [5. Review results and revise the roadmap](#step-5) | human; human approval every run | Not recorded | [Step 4](#step-4) |
 
 <a id="steps"></a>
 
@@ -82,7 +82,7 @@ For each candidate outcome, record the affected customers, expected value, engin
 
 ### 3. Choose priorities and capacity allocations
 
-human · human approval required
+human · human approval every run
 
 
 Product and engineering owners review tradeoffs with the relevant commercial and risk owners. Agree the outcomes to pursue and explicitly defer work that exceeds capacity instead of publishing every request as a promise.
@@ -104,7 +104,7 @@ Connect each selected outcome to an owner, success measure and the existing feat
 
 ### 5. Review results and revise the roadmap
 
-human · human approval required
+human · human approval every run
 
 
 Compare shipped outcomes with customer evidence and actual cost. Update priorities and communicate approved changes to affected teams, retaining the reasoning behind major changes.

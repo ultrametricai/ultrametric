@@ -42,7 +42,7 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | [2. Tighten the fraud rules: raise risk thresholds, require 3DS where it applies](#step-2) | agent-runnable | ~30 min | [Step 1](#step-1) |
 | [3. Pause the leaking surface if the pattern demands it (a SKU, a geo, a payment method)](#step-3) | human | ~30 min | [Step 2](#step-2) |
 | [4. Submit evidence on the disputes worth contesting — responses are per-network and deadline-bound](#step-4) | agent-runnable | ~1.5 h | [Step 3](#step-3) |
-| [5. Refund clear fraud before it becomes a chargeback — a refund costs less than a lost dispute](#step-5) | agent-runnable; approval required | ~30 min | [Step 4](#step-4) |
+| [5. Refund clear fraud before it becomes a chargeback — a refund costs less than a lost dispute](#step-5) | agent-runnable; human approval every run | ~30 min | [Step 4](#step-4) |
 | [6. Watch the card networks' monitoring-program thresholds with your processor](#step-6) | human | ~30 min | [Step 5](#step-5) |
 | [7. Wait for the dispute outcomes and re-read the rate weekly](#step-7) | human; includes waiting | ~14 d | [Step 6](#step-6) |
 
@@ -90,7 +90,7 @@ agent-runnable · ~1.5 h
 
 ### 5. Refund clear fraud before it becomes a chargeback — a refund costs less than a lost dispute
 
-agent-runnable · ~30 min · human approval required · irreversible
+agent-runnable · ~30 min · human approval every run · irreversible
 
 
 - Canonical vendor: Stripe

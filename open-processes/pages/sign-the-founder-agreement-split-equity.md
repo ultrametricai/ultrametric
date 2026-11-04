@@ -63,7 +63,7 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | --- | --- | --- | --- |
 | [1. Agree the equity split and vesting](#step-1) | human | ~1 h | Entry step |
 | [2. Generate founder agreements and IP assignment](#step-2) | manual form/portal | ~20 min | [Step 1](#step-1) |
-| [3. Route agreements for e-signature](#step-3) | agent-runnable; approval required | ~5 min | [Step 2](#step-2) |
+| [3. Route agreements for e-signature](#step-3) | agent-runnable; human approval every run | ~5 min | [Step 2](#step-2) |
 | [4. Founders sign the agreements](#step-4) | human; signature required | ~10 min | [Step 3](#step-3) |
 | [5. Record splits on the cap table](#step-5) | manual form/portal | ~10 min | [Step 4](#step-4) |
 | [6. Sign any tax election the jurisdiction requires on the founder stock transfer](#step-6) | human; signature required | ~10 min | [Step 5](#step-5) (An eligible founder's jurisdiction offers a transfer-date tax election and they have chosen it with tax advice.) |
@@ -164,7 +164,7 @@ Options:
 
 ### 3. Route agreements for e-signature
 
-agent-runnable · ~5 min · human approval required
+agent-runnable · ~5 min · human approval every run
 
 
 Prepare the final agreement versions and schedules, matching every signature block to the person and capacity required. Confirm the execution method with counsel for the selected jurisdiction; documents requiring a notary need that route. Have the legal owner confirm the package and recipients before invitations are sent. Track completion by document and return changed terms for review, so a partial or superseded package cannot be mistaken for the agreement the founders signed.

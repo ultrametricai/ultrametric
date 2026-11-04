@@ -47,9 +47,9 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Define the AI use case and affected people](#step-1) | agent-runnable | Not recorded | Entry step |
-| [2. Agree risk ownership and acceptance criteria](#step-2) | human; approval required | Not recorded | [Step 1](#step-1) |
+| [2. Agree risk ownership and acceptance criteria](#step-2) | human; human approval every run | Not recorded | [Step 1](#step-1) |
 | [3. Build and run representative evaluations](#step-3) | agent-runnable | Not recorded | [Step 2](#step-2) |
-| [4. Review results and authorize a limited deployment](#step-4) | human; approval required | Not recorded | [Step 3](#step-3) |
+| [4. Review results and authorize a limited deployment](#step-4) | human; human approval every run | Not recorded | [Step 3](#step-3) |
 | [5. Monitor outcomes and reassess material changes](#step-5) | agent-runnable | Not recorded | [Step 4](#step-4) |
 
 <a id="steps"></a>
@@ -71,7 +71,7 @@ Record the intended users, decisions supported, model and data providers, prohib
 
 ### 2. Agree risk ownership and acceptance criteria
 
-human · human approval required
+human · human approval every run
 
 
 Product, security, domain and legal reviewers decide the applicable controls and release criteria. Assign human authority for sensitive decisions and define when the system must abstain, escalate or stop.
@@ -93,7 +93,7 @@ Prepare authorized test data and scenarios covering expected use, misuse, failur
 
 ### 4. Review results and authorize a limited deployment
 
-human · human approval required
+human · human approval every run
 
 
 The accountable reviewers evaluate unresolved failures, safeguards and rollback readiness. Approve only the specified scope and access, with an owner for user communication and incident handling.

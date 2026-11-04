@@ -47,9 +47,9 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Identify role and control-specific skill gaps](#step-1) | agent-runnable | Not recorded | Entry step |
-| [2. Agree learning objectives and support](#step-2) | human; approval required | Not recorded | [Step 1](#step-1) |
+| [2. Agree learning objectives and support](#step-2) | human; human approval every run | Not recorded | [Step 1](#step-1) |
 | [3. Schedule learning and supervised practice](#step-3) | agent-runnable | Not recorded | [Step 2](#step-2) |
-| [4. Assess application of the new skill](#step-4) | human; approval required | Not recorded | [Step 3](#step-3) |
+| [4. Assess application of the new skill](#step-4) | human; human approval every run | Not recorded | [Step 3](#step-3) |
 | [5. Update the capability plan and review date](#step-5) | agent-runnable | Not recorded | [Step 4](#step-4) |
 
 <a id="steps"></a>
@@ -71,7 +71,7 @@ Compare expected work with observed performance, new tools, customer commitments
 
 ### 2. Agree learning objectives and support
 
-human · human approval required
+human · human approval every run
 
 
 The employee and manager choose observable outcomes, learning time, mentoring and budget. Confirm any external qualification or training requirement with the relevant owner instead of assuming course attendance establishes competence.
@@ -93,7 +93,7 @@ Prepare a plan combining instruction, practice tasks, accessible materials and f
 
 ### 4. Assess application of the new skill
 
-human · human approval required
+human · human approval every run
 
 
 The employee performs an agreed practical task or assessment with appropriate supervision. Record the evidence and any gaps; completion of an automated quiz alone need not establish readiness for high-risk work.

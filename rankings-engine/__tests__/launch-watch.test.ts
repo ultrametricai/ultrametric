@@ -23,6 +23,7 @@ import {
   type LaunchWatchReport,
 } from '../scripts/launch-watch'
 import { buildArenaVocab, mergeSeenEntries } from '../scripts/vendor-radar'
+import { loadSeenEntries } from '../radar-state'
 
 const product = (over: Partial<Product> = {}): Product => ({
   id: 'mercury',
@@ -216,7 +217,7 @@ describe('seen-ledger partition', () => {
     ])
     expect(merged).toHaveLength(1)
     expect(merged[0].firstSeen).toBe('2026-10-23')
-    expect(merged[0].sources).toEqual(['https://mercury.com/blog/incorporation-service', 'https://mercury.com/blog/formation-v2'])
+    expect(merged[0].sources).toEqual(['https://mercury.com/blog/formation-v2', 'https://mercury.com/blog/incorporation-service'])
   })
 })
 
@@ -287,10 +288,10 @@ describe('apply', () => {
     return { dir, triagePath }
   }
 
-  it('copies the existing identity into the target roster once, with the launch post crawled and the applied key ledgered', () => {
+  it('copies the existing identity into the target roster once, with launch provenance and a selection record that makes no completion claim', () => {
     const { dir, triagePath } = setup(triageWith('auto-approved'))
-    const ledgerFile = path.join(dir, 'seen.json')
-    expect(applyLaunchBringups(triagePath, 2, dir, ledgerFile)).toEqual(['legal-ops mercury'])
+    const ledgerFile = path.join(dir, 'rankings-engine/radar-seen.json')
+    expect(applyLaunchBringups(triagePath, 2, dir, dir)).toEqual(['legal-ops mercury'])
     const roster = JSON.parse(fs.readFileSync(path.join(dir, 'legal-ops', 'products.json'), 'utf8')) as Product[]
     expect(roster).toHaveLength(1)
     expect(roster[0].id).toBe('mercury')
@@ -299,22 +300,40 @@ describe('apply', () => {
     // the entry must reach judging
     expect(roster[0].urls.extra).toEqual(['https://mercury.com/blog/incorporation-service'])
     expect(roster[0].affiliation).toContain('judged separately in startup-banking')
-    // the APPLIED key is ledgered here (scan ledgers only needs-human rows), so the pair stops
-    // re-surfacing only once it actually landed
-    const ledger = JSON.parse(fs.readFileSync(ledgerFile, 'utf8'))
-    expect(ledger.seen.map((e: { key: string }) => e.key)).toEqual([launchKey('mercury', 'legal-ops')])
+    expect(fs.existsSync(ledgerFile)).toBe(false)
+    expect(loadSeenEntries(dir).map((e) => e.key)).toEqual([launchKey('mercury', 'legal-ops')])
+    const records = fs.readdirSync(path.join(dir, 'rankings-engine/radar-discoveries'))
+    const record = JSON.parse(fs.readFileSync(path.join(dir, 'rankings-engine/radar-discoveries', records[0]), 'utf8'))
+    expect(record.kind).toBe('roster-selection')
+    expect(record).not.toHaveProperty('completed')
+    expect(JSON.parse(fs.readFileSync(triagePath, 'utf8')).dispositions[0].status).toBe('auto-approved')
     // idempotent: a second apply adds nothing
-    expect(applyLaunchBringups(triagePath, 2, dir, ledgerFile)).toEqual([])
+    expect(applyLaunchBringups(triagePath, 2, dir, dir)).toEqual([])
   })
 
   it('applies and ledgers nothing for needs-human rows or a zero cap', () => {
     const { dir, triagePath } = setup(triageWith('needs-human'))
-    const ledgerFile = path.join(dir, 'seen.json')
-    expect(applyLaunchBringups(triagePath, 2, dir, ledgerFile)).toEqual([])
+    const ledgerFile = path.join(dir, 'rankings-engine/radar-seen.json')
+    expect(applyLaunchBringups(triagePath, 2, dir, dir)).toEqual([])
     expect(fs.existsSync(ledgerFile)).toBe(false)
     const { dir: dir2, triagePath: triagePath2 } = setup(triageWith('auto-approved'))
     const ledgerFile2 = path.join(dir2, 'seen.json')
-    expect(applyLaunchBringups(triagePath2, 0, dir2, ledgerFile2)).toEqual([])
+    expect(applyLaunchBringups(triagePath2, 0, dir2, dir2)).toEqual([])
     expect(fs.existsSync(ledgerFile2)).toBe(false)
+    expect(loadSeenEntries(dir2)).toEqual([])
+    // The original approval survives the cap and can be selected on a later attempt.
+    expect(applyLaunchBringups(triagePath2, 1, dir2, dir2)).toEqual(['legal-ops mercury'])
+  })
+
+  it('retains approval after a failed roster read so selection can be retried', () => {
+    const { dir, triagePath } = setup(triageWith('auto-approved'))
+    const approval = fs.readFileSync(triagePath)
+    const target = path.join(dir, 'legal-ops/products.json')
+    fs.writeFileSync(target, '{')
+    expect(() => applyLaunchBringups(triagePath, 1, dir, dir)).toThrow()
+    expect(fs.readFileSync(triagePath)).toEqual(approval)
+    expect(loadSeenEntries(dir)).toEqual([])
+    fs.writeFileSync(target, '[]')
+    expect(applyLaunchBringups(triagePath, 1, dir, dir)).toEqual(['legal-ops mercury'])
   })
 })

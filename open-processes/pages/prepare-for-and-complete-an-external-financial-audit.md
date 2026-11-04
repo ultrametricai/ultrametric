@@ -52,11 +52,11 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
-| [1. Agree audit applicability, scope and independence](#step-1) | human; approval required | Not recorded | Entry step |
+| [1. Agree audit applicability, scope and independence](#step-1) | human; human approval every run | Not recorded | Entry step |
 | [2. Prepare reconciled financial statements and schedules](#step-2) | agent-runnable | Not recorded | [Step 1](#step-1) |
 | [3. Manage the evidence request register](#step-3) | agent-runnable | Not recorded | [Step 2](#step-2) |
-| [4. Resolve findings and approve management representations](#step-4) | human; approval required | Not recorded | [Step 3](#step-3) |
-| [5. Finalize the report and remediation plan](#step-5) | human; approval required | Not recorded | [Step 4](#step-4) |
+| [4. Resolve findings and approve management representations](#step-4) | human; human approval every run | Not recorded | [Step 3](#step-3) |
+| [5. Finalize the report and remediation plan](#step-5) | human; human approval every run | Not recorded | [Step 4](#step-4) |
 
 <a id="steps"></a>
 
@@ -66,7 +66,7 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 
 ### 1. Agree audit applicability, scope and independence
 
-human · human approval required
+human · human approval every run
 
 
 Finance leadership and qualified advisers determine the required reporting framework, periods and engagement type. Select an appropriately qualified independent auditor and confirm access, timetable and responsibilities.
@@ -99,7 +99,7 @@ Track each auditor request, owner, source version and response date. Share only 
 
 ### 4. Resolve findings and approve management representations
 
-human · human approval required
+human · human approval every run
 
 
 Management and the auditor discuss proposed adjustments, control issues and unresolved evidence. Authorized management approves corrections and representations; an agent does not provide audit assurance or sign on management's behalf.
@@ -110,7 +110,7 @@ Management and the auditor discuss proposed adjustments, control issues and unre
 
 ### 5. Finalize the report and remediation plan
 
-human · human approval required
+human · human approval every run
 
 
 Confirm that the issued statements and report match the approved versions. Distribute them only to authorized recipients and assign findings, filing obligations and the next audit-preparation cycle.

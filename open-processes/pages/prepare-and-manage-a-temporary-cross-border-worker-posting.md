@@ -45,10 +45,10 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Record sending and host-country assignment facts](#step-1) | agent-runnable | Not recorded | Entry step |
-| [2. Review posting, immigration, tax and social security](#step-2) | human; approval required | Not recorded | [Step 1](#step-1) |
+| [2. Review posting, immigration, tax and social security](#step-2) | human; human approval every run | Not recorded | [Step 1](#step-1) |
 | [3. Prepare the reviewed assignment dossier](#step-3) | agent-runnable | Not recorded | [Step 2](#step-2) |
-| [4. Approve the assignment and external applications](#step-4) | human; approval required | Not recorded | [Step 3](#step-3) |
-| [5. Complete authorized notifications and verify readiness](#step-5) | human; approval required | Not recorded | [Step 4](#step-4) |
+| [4. Approve the assignment and external applications](#step-4) | human; human approval every run | Not recorded | [Step 3](#step-3) |
+| [5. Complete authorized notifications and verify readiness](#step-5) | human; human approval every run | Not recorded | [Step 4](#step-4) |
 | [6. Monitor changes and reconcile the posting end](#step-6) | agent-runnable | Not recorded | [Step 5](#step-5) |
 
 <a id="steps"></a>
@@ -70,7 +70,7 @@ Collect sending employer, host recipient, worker citizenship and residence, habi
 
 ### 2. Review posting, immigration, tax and social security
 
-human · human approval required · hard to undo
+human · human approval every run · hard to undo
 
 
 Qualified local reviewers determine the applicable posting, host employment, immigration, payroll-tax and social-security routes for the actual worker and countries. A social-security certificate does not establish permission to work or settle the host-country employment requirements.
@@ -92,7 +92,7 @@ Prepare the assignment terms, host contact, approved pay and working conditions,
 
 ### 4. Approve the assignment and external applications
 
-human · human approval required · hard to undo
+human · human approval every run · hard to undo
 
 
 The accountable people owner approves the exact assignment and reviewed notification and application routes. Stop travel or work authorization where prerequisite review or evidence is missing; an internal assignment letter does not replace required external permission.
@@ -103,7 +103,7 @@ The accountable people owner approves the exact assignment and reviewed notifica
 
 ### 5. Complete authorized notifications and verify readiness
 
-human · human approval required · hard to undo
+human · human approval every run · hard to undo
 
 
 The authorized operator completes required host notifications and social-security or immigration applications through the applicable authorities. Retain accepted certificates and case references, check their coverage against the assignment, and escalate refusals before work begins.

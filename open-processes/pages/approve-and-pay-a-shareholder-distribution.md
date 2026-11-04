@@ -45,11 +45,11 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Prepare the proposed distribution and ownership facts](#step-1) | agent-runnable | Not recorded | Entry step |
-| [2. Confirm legal capacity and tax treatment](#step-2) | human; approval required | Not recorded | [Step 1](#step-1) |
+| [2. Confirm legal capacity and tax treatment](#step-2) | human; human approval every run | Not recorded | [Step 1](#step-1) |
 | [3. Draft the calculation and approval pack](#step-3) | agent-runnable | Not recorded | [Step 2](#step-2) |
-| [4. Obtain the required corporate approvals](#step-4) | human; approval required | Not recorded | [Step 3](#step-3) |
-| [5. Execute specifically authorized payments](#step-5) | manual form/portal; approval required | Not recorded | [Step 4](#step-4) |
-| [6. Reconcile records and reporting obligations](#step-6) | human; approval required | Not recorded | [Step 5](#step-5) |
+| [4. Obtain the required corporate approvals](#step-4) | human; human approval every run | Not recorded | [Step 3](#step-3) |
+| [5. Execute specifically authorized payments](#step-5) | manual form/portal; human approval every run | Not recorded | [Step 4](#step-4) |
+| [6. Reconcile records and reporting obligations](#step-6) | human; human approval every run | Not recorded | [Step 5](#step-5) |
 
 <a id="steps"></a>
 
@@ -70,7 +70,7 @@ Collect current accounts, cash forecasts, ownership rights, investor agreements 
 
 ### 2. Confirm legal capacity and tax treatment
 
-human · human approval required · hard to undo
+human · human approval every run · hard to undo
 
 
 Qualified company-law and tax advisers assess the entity, jurisdiction, restrictions and recipient treatment. Keep uncertain distributable amounts or required consents unresolved and block payment until reviewed.
@@ -92,7 +92,7 @@ Prepare recipient allocations from verified rights and record the assumptions an
 
 ### 4. Obtain the required corporate approvals
 
-human · human approval required · hard to undo
+human · human approval every run · hard to undo
 
 
 The authorized decision-makers approve the specific amount, recipients and conditions through the reviewed governance route. Retain resolutions and any required consent before releasing funds.
@@ -103,7 +103,7 @@ The authorized decision-makers approve the specific amount, recipients and condi
 
 ### 5. Execute specifically authorized payments
 
-manual form/portal · human approval required · irreversible
+manual form/portal · human approval every run · irreversible
 
 
 Authorized finance personnel independently verify recipient payment details and apply the approved payment controls. Record receipts and investigate rejected or mismatched transfers. A released wire cannot be assumed recoverable; reconfirm the amount, recipient and authority immediately before release.
@@ -114,7 +114,7 @@ Authorized finance personnel independently verify recipient payment details and 
 
 ### 6. Reconcile records and reporting obligations
 
-human · human approval required · hard to undo
+human · human approval every run · hard to undo
 
 
 Finance and advisers reconcile payments, distribution records and any applicable tax reporting or withholding. Escalate exceptions and avoid marking the distribution complete on approval alone.

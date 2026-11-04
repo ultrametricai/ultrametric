@@ -43,10 +43,10 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Search domain availability](#step-1) | agent-runnable | ~2 min | Entry step |
-| [2. Register domain](#step-2) | agent-runnable; approval required | ~3 min | [Step 1](#step-1) |
-| [3. Transfer DNS to Cloudflare](#step-3) | agent-runnable; approval required; includes waiting | ~5 min | [Step 2](#step-2) |
-| [4. Configure DNS records](#step-4) | agent-runnable; approval required | ~5 min | [Step 3](#step-3) |
-| [5. Add domain to Vercel](#step-5) | agent-runnable; approval required | ~3 min | [Step 4](#step-4) |
+| [2. Register domain](#step-2) | agent-runnable; human approval above a threshold | ~3 min | [Step 1](#step-1) |
+| [3. Transfer DNS to Cloudflare](#step-3) | agent-runnable; human approval on the first run; includes waiting | ~5 min | [Step 2](#step-2) |
+| [4. Configure DNS records](#step-4) | agent-runnable; human approval on the first run | ~5 min | [Step 3](#step-3) |
+| [5. Add domain to Vercel](#step-5) | agent-runnable; human approval on the first run | ~3 min | [Step 4](#step-4) |
 | [6. Verify SSL](#step-6) | agent-runnable | ~2 min | [Step 4](#step-4) |
 
 <a id="steps"></a>
@@ -71,7 +71,7 @@ Search the exact proposed names and extensions at the registrar that would handl
 
 ### 2. Register domain
 
-agent-runnable · ~3 min · human approval required
+agent-runnable · ~3 min · human approval above a threshold
 
 
 Register the exact domain and term authorized by the purchaser, checking spelling, registrant details, renewal settings and optional extras at checkout. Use the company-controlled account and complete its contact-verification steps. After payment, confirm the domain appears under the intended registrant with the expected expiration and renewal arrangement. Put renewal notices and account recovery with maintained company contacts, and retain the registration receipt privately.
@@ -84,7 +84,7 @@ Register the exact domain and term authorized by the purchaser, checking spellin
 
 ### 3. Transfer DNS to Cloudflare
 
-agent-runnable · ~5 min · async wait · human approval required
+agent-runnable · ~5 min · async wait · human approval on the first run
 
 
 Export the current zone before moving authoritative DNS to Cloudflare. Compare imported records against the export, especially mail and verification records, and review the provider's instructions for existing DNSSEC and proxy settings. Under the domain owner's change authorization, replace nameservers with the values assigned to this zone. Check authoritative answers and actual website and mail behavior after the switch. Use the exported zone to diagnose and restore missing records.
@@ -96,7 +96,7 @@ Export the current zone before moving authoritative DNS to Cloudflare. Compare i
 
 ### 4. Configure DNS records
 
-agent-runnable · ~5 min · human approval required
+agent-runnable · ~5 min · human approval on the first run
 
 
 Compare the host's required DNS values with records already present at each name. Preserve unrelated mail, verification and subdomain records, and apply the smallest authorized change set. Query authoritative DNS first, then a public resolver and the affected service. Differences can be investigated against the old values and TTLs. Keep the before-and-after zone entries so a bad change can be reversed without reconstructing them from memory.
@@ -109,7 +109,7 @@ Compare the host's required DNS values with records already present at each name
 
 ### 5. Add domain to Vercel
 
-agent-runnable · ~3 min · human approval required
+agent-runnable · ~3 min · human approval on the first run
 
 
 Attach the hostname to the intended hosting project within the domain and hosting owners' authorized scope. On Vercel, use the validation status and DNS values shown for that specific domain. Set the intended canonical hostname and redirects, then open each customer-facing hostname to verify the project and deployment it serves. Check HTTPS separately: adding the domain starts certificate work, but successful DNS validation is still needed.

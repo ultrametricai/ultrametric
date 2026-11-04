@@ -42,12 +42,12 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
-| [1. Create a project in your analytics platform](#step-1) | agent-runnable; approval required | ~10 min | Entry step |
-| [2. Install SDK in codebase](#step-2) | agent-runnable; approval required | ~20 min | [Step 1](#step-1) |
-| [3. Define key events](#step-3) | agent-runnable; approval required | ~15 min | [Step 2](#step-2) |
-| [4. Create dashboards](#step-4) | agent-runnable; approval required | ~15 min | [Step 3](#step-3) |
-| [5. Set up funnels](#step-5) | agent-runnable; approval required | ~10 min | [Step 3](#step-3) |
-| [6. Enable session recording](#step-6) | agent-runnable; approval required | ~5 min | [Step 2](#step-2) |
+| [1. Reuse or create an analytics project](#step-1) | agent-runnable; human approval on the first run | ~10 min | Entry step |
+| [2. Install SDK in codebase](#step-2) | agent-runnable; human approval on the first run | ~20 min | [Step 1](#step-1) |
+| [3. Define key events](#step-3) | agent-runnable; human approval on the first run | ~15 min | [Step 2](#step-2) |
+| [4. Create dashboards](#step-4) | agent-runnable; human approval on the first run | ~15 min | [Step 3](#step-3) |
+| [5. Set up funnels](#step-5) | agent-runnable; human approval on the first run | ~10 min | [Step 3](#step-3) |
+| [6. Enable session recording](#step-6) | agent-runnable; human approval on the first run | ~5 min | [Step 2](#step-2) |
 
 <a id="steps"></a>
 
@@ -55,12 +55,12 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 
 <a id="step-1"></a>
 
-### 1. Create a project in your analytics platform
+### 1. Reuse or create an analytics project
 
-agent-runnable · ~10 min · human approval required
+agent-runnable · ~10 min · human approval on the first run
 
 
-Start with the product questions the team needs to answer, then create the analytics project within its authorized account, budget and data-handling scope. Choose region, retention and access from those requirements. Decide how development traffic will be identified or separated before connecting an SDK. Check that the project receiving a test event is the one the team intends to use for reporting.
+Start with the product questions and the analytics project recorded in company context. Reuse that project and its verified event definitions when they cover this launch; record gaps before changing instrumentation. Create a project only when an existing one cannot serve the work, within the authorized account, budget and data-handling scope. Choose region, retention and access from those requirements. Decide how development traffic will be identified or separated before connecting an SDK. Check that the project receiving a test event is the one the team intends to use for reporting.
 
 - Canonical vendor: PostHog
 - Vendor options: PostHog, Amplitude, Mixpanel
@@ -71,7 +71,7 @@ Start with the product questions the team needs to answer, then create the analy
 
 ### 2. Install SDK in codebase
 
-agent-runnable · ~20 min · human approval required
+agent-runnable · ~20 min · human approval on the first run
 
 
 Install the integration for the actual framework and inspect its collection defaults before enabling it. Configure only the events, identity handling and data collection authorized for the application. Test an anonymous visit, sign-in and sign-out, examining the events and identities received at each stage. Confirm that one person's session does not remain attached to another user's account after a change of user. Check payloads for sensitive fields and keep a way to disable collection.
@@ -86,7 +86,7 @@ Install the integration for the actual framework and inspect its collection defa
 
 ### 3. Define key events
 
-agent-runnable · ~15 min · human approval required
+agent-runnable · ~15 min · human approval on the first run
 
 
 Define events at the point the behavior happens: a submitted form and a successfully created account answer different questions. For each event, specify its name, trigger, allowed properties and user or account identifier. Decide how retries and duplicate submissions should appear. Walk a test user through the product and compare payloads with the definitions. Keep the dictionary beside the implementation so a later event change can be distinguished from a real change in customer behavior.
@@ -99,7 +99,7 @@ Define events at the point the behavior happens: a submitted form and a successf
 
 ### 4. Create dashboards
 
-agent-runnable · ~15 min · human approval required
+agent-runnable · ~15 min · human approval on the first run
 
 
 Build each chart around a decision the team will make. Name its population, unit, time window and filters, and distinguish a count of events from a count of users or accounts. Trace at least one chart back to raw events or a known test cohort. Label freshness and exclusions where they affect interpretation, then share with the intended audience under the project's access rules.
@@ -113,7 +113,7 @@ Build each chart around a decision the team will make. Name its population, unit
 
 ### 5. Set up funnels
 
-agent-runnable · ~10 min · human approval required
+agent-runnable · ~10 min · human approval on the first run
 
 
 *Follows step 3.*
@@ -129,7 +129,7 @@ Choose a real journey with a clear entry and completion event. Set its order, co
 
 ### 6. Enable session recording
 
-agent-runnable · ~5 min · human approval required
+agent-runnable · ~5 min · human approval on the first run
 
 
 *Follows step 2.*

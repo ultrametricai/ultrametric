@@ -43,11 +43,11 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
-| [1. Create the company email workspace](#step-1) | manual form/portal; approval required | ~15 min | Entry step |
+| [1. Create the company email workspace](#step-1) | manual form/portal; human approval on the first run | ~15 min | Entry step |
 | [2. Verify domain ownership](#step-2) | manual form/portal | ~15 min | [Step 1](#step-1) |
-| [3. Create user accounts](#step-3) | agent-runnable; approval required | ~10 min | [Step 2](#step-2) |
-| [4. Set up shared drives](#step-4) | agent-runnable; approval required | ~5 min | [Step 3](#step-3) |
-| [5. Configure security settings](#step-5) | agent-runnable; approval required | ~10 min | [Step 3](#step-3) |
+| [3. Create user accounts](#step-3) | agent-runnable; human approval above a threshold | ~10 min | [Step 2](#step-2) |
+| [4. Set up shared drives](#step-4) | agent-runnable; human approval on the first run | ~5 min | [Step 3](#step-3) |
+| [5. Configure security settings](#step-5) | agent-runnable; human approval every run | ~10 min | [Step 3](#step-3) |
 
 <a id="steps"></a>
 
@@ -57,7 +57,7 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 
 ### 1. Create the company email workspace
 
-manual form/portal · ~15 min · human approval required
+manual form/portal · ~15 min · human approval on the first run
 
 | Option | Applies when |
 | --- | --- |
@@ -74,7 +74,7 @@ Compare the selected email and document platform with the team's required applic
 - Sources: [Google Workspace: Verify a domain and activate Gmail](https://support.google.com/channelservices/answer/9728923?hl=en)
 
 Options:
-  - **Default — Google Workspace signup** — manual form/portal · ~15 min · human approval required
+  - **Default — Google Workspace signup** — manual form/portal · ~15 min · human approval on the first run
 
     Use this path when Google Workspace is the chosen platform. Check whether the company domain already belongs to a tenant, then use a company-controlled administrator account to start the selected subscription within the agreed budget. Google's setup flow will provide the current domain-verification and mail-activation instructions. Prepare users and destination mailboxes before changing incoming mail routing, and keep the administration link and recovery arrangements available to the company's IT owner.
   - **Microsoft 365 workspace**
@@ -101,7 +101,7 @@ Get the verification value from the workspace's current setup flow and identify 
 
 ### 3. Create user accounts
 
-agent-runnable · ~10 min · human approval required
+agent-runnable · ~10 min · human approval above a threshold
 
 
 Create individual accounts from the team roster using consistent company addresses and the licenses each role needs. Resolve address collisions and use the platform's appropriate shared-address setup for functions such as billing or support. Give each person their sign-in and recovery instructions through the normal onboarding channel. Confirm that the mailboxes needed for cutover exist and identify any user whose old mail, contacts, or files still need migration.
@@ -114,7 +114,7 @@ Create individual accounts from the team roster using consistent company address
 
 ### 4. Set up shared drives
 
-agent-runnable · ~5 min · human approval required
+agent-runnable · ~5 min · human approval on the first run
 
 
 Create shared drives or libraries around who owns the documents and who needs access. Separate general team material from finance, personnel, legal, and other restricted records. Check how the selected platform handles shared ownership and departing users, then assign responsible groups and maintainers. Place a few real documents in their intended locations and check access with a reader and an editor. Publish a short filing guide so new documents land in the right place.
@@ -127,7 +127,7 @@ Create shared drives or libraries around who owns the documents and who needs ac
 
 ### 5. Configure security settings
 
-agent-runnable · ~10 min · human approval required
+agent-runnable · ~10 min · human approval every run
 
 
 *Follows step 3.*

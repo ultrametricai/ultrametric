@@ -1,8 +1,16 @@
 name: Review findings gate
 
-# Reads review metadata only. Foreloop is deliberately excluded.
+# Reads review metadata only. Verified Renovate PRs may omit Greptile completion;
+# unresolved Greptile findings still block them. Foreloop is deliberately excluded.
 on:
-  workflow_call: # CI calls the metadata gate even when a clean review emits no review event
+  workflow_call:
+    inputs:
+      pr:
+        type: string
+        default: ''
+      head:
+        type: string
+        default: ''
   pull_request_target:
     types: [opened, synchronize, reopened, ready_for_review]
   pull_request_review:
@@ -14,24 +22,59 @@ on:
   workflow_dispatch:
     inputs:
       pr:
-        description: Originating PR number (all open PRs are checked)
+        description: PR number to check (blank checks all open PRs)
         required: false
         type: string
 
 permissions:
+  actions: read # recover a success status linked to a failed shared workflow run
   checks: read # inspect Greptile completion on the current head
   pull-requests: read
   statuses: write
 
-# Serialize metadata reads and status writes so an older run cannot overwrite a
-# newer finding result on the same revision. Every queued run reads fresh state.
-concurrency:
-  group: review-findings-gate
-  cancel-in-progress: false
-
 jobs:
-  findings:
+  targets:
     if: >-
+      (github.event_name != 'check_run' || github.event.check_run.app.slug == 'greptile-apps') &&
+      (github.event_name != 'pull_request_review' || github.event.pull_request.head.repo.full_name == github.repository)
+    runs-on: ubuntu-latest
+    outputs:
+      prs: ${{ steps.select.outputs.prs }}
+    steps:
+      - name: Select review targets
+        id: select
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          TARGET_PR: ${{ inputs.pr || github.event.pull_request.number || '' }}
+          TARGET_HEAD: ${{ inputs.head || github.event.check_run.head_sha || '' }}
+        shell: python
+        run: |
+          import json, os, subprocess
+          pages = json.loads(subprocess.check_output(['gh', 'api', '--paginate', '--slurp',
+                   f"repos/{os.environ['REPO']}/pulls?state=open&per_page=100"], text=True))
+          target_pr = os.environ.get('TARGET_PR', '')
+          target_head = os.environ.get('TARGET_HEAD', '')
+          numbers = [pr['number'] for page in pages for pr in page
+                     if (not target_pr or str(pr['number']) == target_pr)
+                     and (target_pr or not target_head or pr['head']['sha'] == target_head)]
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
+              output.write('prs=' + json.dumps(numbers) + '\n')
+
+  findings:
+    needs: [targets]
+    strategy:
+      fail-fast: false
+      max-parallel: 8
+      matrix:
+        pr: ${{ fromJSON(needs.targets.outputs.prs) }}
+    # Serialize each PR across sweeps, CI and events. An event for another PR
+    # cannot cancel this PR's pending gate or monopolize its concurrency slot.
+    concurrency:
+      group: review-findings-pr-${{ matrix.pr }}
+      cancel-in-progress: false
+    if: >-
+      needs.targets.outputs.prs != '[]' &&
       (github.event_name != 'check_run' || github.event.check_run.app.slug == 'greptile-apps') &&
       (github.event_name != 'pull_request_review' || github.event.pull_request.head.repo.full_name == github.repository)
     runs-on: ubuntu-latest
@@ -43,21 +86,49 @@ jobs:
           REPO: ${{ github.repository }}
           SERVER_URL: ${{ github.server_url }}
           RUN_ID: ${{ github.run_id }}
+          TARGET_PR: ${{ matrix.pr }}
         shell: python
         run: |
-          import json, os, subprocess
+          import json, os, re, subprocess
           repo = os.environ['REPO']
           owner, name = repo.split('/')
-          # GitHub retains only one pending run in a concurrency group. Every
-          # replacement run sweeps all PRs so a cancelled event loses no update.
-          pages = json.loads(subprocess.check_output(['gh', 'api', '--paginate', '--slurp',
-                   f'repos/{repo}/pulls?state=open&per_page=100'], text=True))
-          numbers = [pr['number'] for page in pages for pr in page]
+          numbers = [int(os.environ['TARGET_PR'])]
           def api(path, data=None):
               args = ['gh', 'api', path]
               if data is not None:
                   args += ['--method', 'POST', '--input', '-']
               return json.loads(subprocess.check_output(args, input=json.dumps(data) if data is not None else None, text=True))
+          def publish(sha, state, description, *, allow_status_read_failure=False):
+              # Polling must not append identical statuses: GitHub caps each SHA/context.
+              target_url = f"{os.environ['SERVER_URL']}/{repo}/actions/runs/{os.environ['RUN_ID']}"
+              try:
+                  previous = api(f'repos/{repo}/commits/{sha}/status')['statuses']
+              except Exception:
+                  # Only the fail-closed pending fallback may write without a read.
+                  if not allow_status_read_failure or state != 'pending':
+                      raise
+              else:
+                  current = next((item for item in previous if item['context'] == 'review-findings'), None)
+                  if current and current['state'] == state and current.get('description') == description:
+                      if state != 'success' or current.get('target_url') == target_url:
+                          return
+                      # Another PR's matrix job can fail after this PR publishes success.
+                      # Preserve healthy or active links; repair only a completed failure
+                      # after this run has freshly evaluated the same PR head and findings.
+                      prefix = f"{os.environ['SERVER_URL']}/{repo}/actions/runs/"
+                      match = re.fullmatch(re.escape(prefix) + r'(\d+)', current.get('target_url') or '')
+                      if not match:
+                          raise RuntimeError('Review status does not reference this repository workflow')
+                      run_id = int(match[1])
+                      previous_run = api(f'repos/{repo}/actions/runs/{run_id}')
+                      if previous_run.get('id') != run_id:
+                          raise RuntimeError('Review status workflow identity unavailable')
+                      if (previous_run.get('status') != 'completed' or previous_run.get('conclusion') not in
+                          ['failure', 'cancelled', 'timed_out', 'startup_failure', 'action_required', 'neutral', 'skipped', 'stale']):
+                          return
+              api(f'repos/{repo}/statuses/{sha}', {
+                  'state': state, 'context': 'review-findings', 'description': description,
+                  'target_url': target_url})
           query = '''query($owner:String!, $name:String!, $number:Int!, $cursor:String) {
             repository(owner:$owner,name:$name) { pullRequest(number:$number) {
               headRefOid reviewThreads(first:100,after:$cursor) {
@@ -66,18 +137,28 @@ jobs:
               }
             } }
           }'''
+          def renovate_exempt(pr):
+              # Trust GitHub's bot identity, not a title, label, or branch alone.
+              author = pr.get('user') or {}
+              head = pr.get('head') or {}
+              return (author.get('id') == 29139614
+                      and author.get('login') == 'renovate[bot]'
+                      and author.get('type') == 'Bot'
+                      and (head.get('repo') or {}).get('full_name') == repo
+                      and head.get('ref', '').startswith('renovate/'))
           errors = []
           for number in numbers:
+              initial = None
               try:
                   initial = api(f'repos/{repo}/pulls/{number}')
                   sha = initial['head']['sha']
-                  # Revoke any previous success before reading mutable review state.
-                  api(f'repos/{repo}/statuses/{sha}', {
-                      'state': 'pending', 'context': 'review-findings',
-                      'description': 'Checking Greptile findings; Foreloop excluded'})
-                  checks = api(f'repos/{repo}/commits/{sha}/check-runs?check_name=Greptile%20Review&per_page=100')
-                  reviewed = any(check['app']['id'] == 867647 and check['status'] == 'completed'
-                                 and check['conclusion'] == 'success' for check in checks['check_runs'])
+                  exempt = renovate_exempt(initial)
+                  reviewed = False
+                  if not exempt:
+                      checks = api(f'repos/{repo}/commits/{sha}/check-runs?check_name=Greptile%20Review&per_page=100')
+                      latest = max((check for check in checks['check_runs'] if check['app']['id'] == 867647),
+                                   key=lambda check: check['id'], default=None)
+                      reviewed = latest is not None and latest['status'] == 'completed' and latest['conclusion'] == 'success'
                   cursor, blocked = None, 0
                   while True:
                       result = api('graphql', {'query': query, 'variables': {
@@ -100,15 +181,27 @@ jobs:
                   current = api(f'repos/{repo}/pulls/{number}')
                   if current['head']['sha'] != sha or current['state'] != 'open':
                       continue
-                  api(f'repos/{repo}/statuses/{sha}', {
-                      'state': ('failure' if blocked else 'success') if reviewed else 'pending',
-                      'context': 'review-findings',
-                      'description': (f'{blocked} unresolved Greptile findings; Foreloop excluded'
-                                      if reviewed else 'Waiting for Greptile on this revision; Foreloop excluded'),
-                      'target_url': f"{os.environ['SERVER_URL']}/{repo}/actions/runs/{os.environ['RUN_ID']}"})
+                  if exempt and not renovate_exempt(current):
+                      raise RuntimeError('Renovate exemption metadata changed; retry')
+                  if exempt:
+                      publish(sha, 'failure' if blocked else 'success',
+                              f'{blocked} unresolved Greptile findings; Renovate completion exempt'
+                              if blocked else 'Greptile completion exempt: verified Renovate PR; no unresolved findings')
+                  else:
+                      publish(sha, ('failure' if blocked else 'success') if reviewed else 'pending',
+                              f'{blocked} unresolved Greptile findings; Foreloop excluded'
+                              if reviewed else 'Waiting for Greptile on this revision; Foreloop excluded')
                   print(f'#{number}: {blocked} unresolved Greptile findings')
               except Exception as error:
+                  # Metadata/API failures revoke any stale approval for this head.
+                  try:
+                      if initial is not None and initial['state'] == 'open':
+                          publish(initial['head']['sha'], 'pending', 'Review metadata unavailable; retry required',
+                                  allow_status_read_failure=True)
+                  except Exception:
+                      pass
                   print(f'::warning::#{number}: {error}', flush=True)
                   errors.append(number)
           if errors:
               raise SystemExit(f'Review gates need retry for PRs: {errors}')
+

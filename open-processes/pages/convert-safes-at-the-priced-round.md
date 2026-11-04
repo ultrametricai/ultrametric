@@ -68,7 +68,7 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | [2. Model the conversion (caps, discounts, pro-rata)](#step-2) | agent-runnable | ~20 min | [Step 1](#step-1) |
 | [3. Counsel confirms the conversion mechanics](#step-3) | human; includes waiting | ~1 d | [Step 2](#step-2) |
 | [4. Review the pro-forma cap table with the lead investor](#step-4) | human | ~1 h | [Step 3](#step-3) |
-| [5. Execute the instrument conversion and issue the resulting equity](#step-5) | agent-runnable; approval required | ~15 min | [Step 4](#step-4) |
+| [5. Execute the instrument conversion and issue the resulting equity](#step-5) | agent-runnable; human approval every run | ~15 min | [Step 4](#step-4) |
 | [6. Notify instrument holders of their equity allocations](#step-6) | agent-runnable | ~10 min | [Step 5](#step-5) |
 
 <a id="steps"></a>
@@ -122,7 +122,7 @@ Review the pro forma capitalization with the lead investor, showing existing hol
 
 ### 5. Execute the instrument conversion and issue the resulting equity
 
-agent-runnable · ~15 min · human approval required · irreversible
+agent-runnable · ~15 min · human approval every run · irreversible
 
 
 Have local counsel confirm the conversion terms, required approvals, filings and issuance sequence for the instruments and entity. Obtain authorization to execute the conversion, retain the accepted documents and update the equity register.

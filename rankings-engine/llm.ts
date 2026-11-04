@@ -11,6 +11,9 @@ import type { z } from 'zod'
 // PA_MODEL is the deprecated pre-rename spelling, honored as a fallback.
 export const JUDGE_MODEL = process.env.UM_JUDGE_MODEL ?? process.env.PA_MODEL ?? 'claude-opus-5-5'
 const MODEL = JUDGE_MODEL
+// First-attempt output cap, shared with the batch transport so a batch-judged cell runs
+// under exactly the parameters an interactive first attempt would.
+export const DEFAULT_MAX_TOKENS = 4096
 // 5 attempts total. 3 proved too few in scheduled CI (story-runner, 2026-09: 2 of 3 runs died
 // on "response contained no parseable JSON" with nobody around to retry the job).
 const MAX_RETRIES = 4
@@ -87,6 +90,8 @@ export async function llmJson<T>(opts: {
   system: string
   prompt: string
   maxTokens?: number
+  retry?: boolean
+  timeoutMs?: number
 }): Promise<T> {
   const messages: Anthropic.MessageParam[] = [{ role: 'user', content: opts.prompt }]
   let lastError = ''
@@ -95,18 +100,24 @@ export async function llmJson<T>(opts: {
   // attempts (observed under prompt v3, whose rubric rationales run longer). Escalate the cap
   // on truncation and retry the ORIGINAL prompt (appending half a JSON object only confuses
   // the model).
-  let maxTokens = opts.maxTokens ?? 4096
-  for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
+  let maxTokens = opts.maxTokens ?? DEFAULT_MAX_TOKENS
+  const retries = opts.retry === false ? 0 : MAX_RETRIES
+  for (let attempt = 0; attempt <= retries; attempt++) {
     const res = await getClient().messages.create({
       model: MODEL,
       max_tokens: maxTokens,
       system: opts.system,
       messages,
-    })
+    }, { ...(opts.retry === false ? { maxRetries: 0 } : {}),
+      ...(opts.timeoutMs !== undefined ? { timeout: opts.timeoutMs } : {}) })
     const text = res.content
       .filter((b): b is Anthropic.TextBlock => b.type === 'text')
       .map((b) => b.text)
       .join('')
+    if (opts.retry === false && res.stop_reason === 'max_tokens') {
+      lastError = 'response truncated at max_tokens'
+      break
+    }
     if (res.stop_reason === 'max_tokens' && maxTokens < 16384) {
       maxTokens = Math.min(maxTokens * 2, 16384)
       lastError = `response truncated at max_tokens; retrying with ${maxTokens}`
@@ -144,7 +155,7 @@ export async function llmJson<T>(opts: {
         },
       )
     }
-    if (attempt < MAX_RETRIES) await sleep(retryBackoffMs(attempt))
+    if (attempt < retries) await sleep(retryBackoffMs(attempt))
   }
-  throw new Error(`LLM output failed validation after ${MAX_RETRIES + 1} attempts: ${lastError}`)
+  throw new Error(`LLM output failed validation after ${retries + 1} attempts: ${lastError}`)
 }
