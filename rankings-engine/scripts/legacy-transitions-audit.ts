@@ -370,7 +370,8 @@ const ERAS: Array<[string, (d: string) => boolean]> = [
 ]
 
 const report = {
-  generatedAt: new Date().toISOString(),
+  // The audited HEAD's commit time, not wall-clock time: identical inputs give identical output.
+  generatedAt: git(['show', '-s', '--format=%cI', 'HEAD']).trim(),
   headCommit: git(['rev-parse', 'HEAD']).trim(),
   method:
     'first-parent lineage of HEAD per arena verdicts.json across the data/ -> rankings/ -> open-rankings/ renames; ' +
