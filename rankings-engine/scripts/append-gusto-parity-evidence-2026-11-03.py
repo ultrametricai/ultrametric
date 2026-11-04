@@ -91,7 +91,7 @@ ITEMS = [
       "When a new API version is released, the oldest supported version is marked as deprecated.",
       "Deprecation headers are HTTP headers included in the API response once a version is marked for deprecation"],
      "\"Gusto uses date-based versioning to provide stability while continuously improving our services.\" Deprecation timeline: \"When a new API version is released, the oldest supported version is marked as deprecated. Partners are notified with clear timelines and instructions for upgrading.\" Support window table runs to 'End of life | After 12 months | No longer functional', and \"Deprecation headers are HTTP headers included in the API response once a version is marked for deprecation\" (Deprecation, Sunset, Link headers)."),
-    ("gusto-parity-openness-full-export-20261103",
+    ("gusto-parity-custom-reports-api-20261103",
      "open-rankings/legal-ops/evidence/gusto.json", "claimed-docs",
      "https://docs.gusto.com/embedded-payroll/docs/generate-custom-reports.md",
      ["Gusto provides the capability to create custom reports using custom columns, groupings, and optional filters."],

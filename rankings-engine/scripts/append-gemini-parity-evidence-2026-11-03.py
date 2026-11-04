@@ -44,7 +44,7 @@ ITEMS = [
       "\"title\": \"Gemini API\"",
       "\"rootUrl\": \"https://generativelanguage.googleapis.com/\""],
      "The Gemini API endpoint publishes a machine-readable Google API discovery document (equivalent of an OpenAPI spec), HTTP 200 JSON: \"canonicalName\": \"Generative Language\", \"version\": \"v1beta\", \"title\": \"Gemini API\", \"revision\": \"20261103\", \"protocol\": \"rest\", \"rootUrl\": \"https://generativelanguage.googleapis.com/\", \"kind\": \"discovery#restDescription\"."),
-    ("gemini-parity-api-sandbox-20261103",
+    ("gemini-parity-free-tier-20261103",
      "open-rankings/ai-assistants/evidence/gemini.json", "claimed-docs",
      "https://aistudio.google.com/docs/pricing.md",
      ["Start building free of charge with generous limits",
