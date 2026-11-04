@@ -345,12 +345,14 @@ export const UncertaintyEntrySchema = z.object({
 // category only covers its decisive cells, not the full matrix.
 export const UncertaintyArraySchema = UncertaintyEntrySchema.array()
 
-// Analytic 68% confidence band on one product's Overall score (aiEra) and agent-readiness — see
+// Point-containing uncertainty interval on one product's Overall score (aiEra) and agent-readiness — see
 // rankings-engine/scripts/compute-confidence-intervals.ts (which writes open-rankings/{cat}/score-intervals.json)
 // and lib/scoreIntervals.ts (the simulation math + tolerant-optional loader). Derived at pipeline
 // time by propagating the MEASURED judge re-roll variance (open-rankings/*/uncertainty.json) through the
 // exact scoring formula via a seeded Monte Carlo — no new judging, display-only, never feeds
-// lib/scoring.ts. Low/high are the 16th/84th percentiles of the simulated score distribution; a
+// lib/scoring.ts. Low/high are the envelope of the simulated score distribution's nominal 68%
+// (16th/84th percentile) band and the published point score, so the stored interval can be wider
+// and the displayed point is always inside it; a
 // null pair means the corresponding published score is itself null (nothing to band).
 export const ScoreIntervalEntrySchema = z.object({
   productId: z.string().min(1),
