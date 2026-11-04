@@ -89,6 +89,14 @@ describe('bestVocabArena', () => {
     const vocab = compile({ 'design-tools': ['design', 'layer'] })
     expect(bestVocabArena('generic marketing copy', vocab)).toBeNull()
   })
+
+  it('omits an unsupported game-engine winner without assigning a weaker alternative', () => {
+    const vocab = compile({
+      'game-engines': ['engine', 'platform', 'build'],
+      'ecommerce-platforms': ['platform', 'build'],
+    })
+    expect(bestVocabArena('An engineering platform to build office tools', vocab)).toBeNull()
+  })
 })
 
 describe('compileVocab fit-evidence filter (real DOMAIN_VOCAB)', () => {
@@ -112,6 +120,25 @@ describe('compileVocab fit-evidence filter (real DOMAIN_VOCAB)', () => {
   it('arena-defining words shared by a few arenas still count', () => {
     const vocab = compileVocab(new Set(['device-agents']))
     expect(countVocabHits('control a device with a screen', vocab.get('device-agents')!)).toBe(2)
+  })
+
+  it('boundary-marked singular and plural agent forms earn no support fit hits (Anima App)', () => {
+    const vocab = compileVocab(new Set(['ai-support-agents']))
+    for (const text of ['agent', 'agents', 'Agent agents']) {
+      expect(countVocabHits(text, vocab.get('ai-support-agents')!)).toBe(0)
+    }
+    expect(bestVocabArena('Anima - Design Agent | AgentGrid.io - Shared drive for humans & agents', vocab)).toBeNull()
+  })
+
+  it('requires gaming evidence before generic engine/platform terms can nominate a game engine (Cogram)', () => {
+    const vocab = compileVocab(new Set(['game-engines']))
+    expect(bestVocabArena('The AI Platform for Architects and Engineers', vocab)).toBeNull()
+    expect(bestVocabArena('A game engine with a scene editor', vocab)?.arena).toBe('game-engines')
+  })
+
+  it('does not infer a software factory from agent devboxes or CI runners (Amika)', () => {
+    const vocab = compileVocab(new Set(['software-factory']))
+    expect(bestVocabArena('Turn any spare computer into agent devboxes or CI runners Machine Learning B2B Infrastructure AI', vocab)).toBeNull()
   })
 })
 

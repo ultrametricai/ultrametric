@@ -142,13 +142,22 @@ const GENERIC_VOCAB_ARENA_SHARE = 0.25
 // Keywords that are deployment descriptors or genre-generic (see above) are dropped at compile
 // time, so every downstream hit count only measures arena-distinctive evidence.
 export function compileVocab(arenaIds: Set<string>): Map<string, { word: string; re: RegExp }[]> {
+  // Boundary assertions and a listed singular/plural pair name the same concept.
+  // Count each concept once per arena: agent, agent\b and agents\b must all share
+  // the generic-word threshold, while the original regex still controls matching.
+  const bareWord = (word: string) => word.replace(/\\b/g, '').toLowerCase()
+  const knownWords = new Set(Object.values(DOMAIN_VOCAB).flat().map(bareWord))
+  const concept = (word: string) => {
+    const bare = bareWord(word)
+    return bare.endsWith('s') && knownWords.has(bare.slice(0, -1)) ? bare.slice(0, -1) : bare
+  }
   const arenasPerWord = new Map<string, number>()
   for (const words of Object.values(DOMAIN_VOCAB)) {
-    for (const w of new Set(words)) arenasPerWord.set(w, (arenasPerWord.get(w) ?? 0) + 1)
+    for (const w of new Set(words.map(concept))) arenasPerWord.set(w, (arenasPerWord.get(w) ?? 0) + 1)
   }
   const genericLimit = Object.keys(DOMAIN_VOCAB).length * GENERIC_VOCAB_ARENA_SHARE
   const isFitEvidence = (w: string) =>
-    !DEPLOYMENT_VOCAB_STOPLIST.has(w) && (arenasPerWord.get(w) ?? 0) <= genericLimit
+    !DEPLOYMENT_VOCAB_STOPLIST.has(concept(w)) && (arenasPerWord.get(concept(w)) ?? 0) <= genericLimit
 
   const compiled = new Map<string, { word: string; re: RegExp }[]>()
   for (const [arena, words] of Object.entries(DOMAIN_VOCAB)) {
@@ -217,6 +226,10 @@ export function bestVocabArena(
       best = { arena, hits, first }
     }
   }
+  // Story-scoping terms such as platform, engine, build and editor also describe
+  // unrelated products. Reject an unsupported game-engine winner instead of
+  // rerouting it into a weaker runner-up arena on the same generic description.
+  if (best?.arena === 'game-engines' && !/\b(games?|gaming|gameplay|gamedev)\b/i.test(text)) return null
   return best ? { arena: best.arena, hits: best.hits } : null
 }
 
