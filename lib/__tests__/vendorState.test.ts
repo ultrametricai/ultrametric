@@ -258,7 +258,6 @@ describe('vendorStateLookup', () => {
     expect(gusto['annual-report-filing']?.supportingSourceUrls).toEqual([
       'https://support.gusto.com/article/178974266922487/use-gusto-business-compliance-to-stay-compliant-in-your-states',
     ])
-
   })
 
   it('uncovered products and states are simply absent — annotations never invent a row', () => {
