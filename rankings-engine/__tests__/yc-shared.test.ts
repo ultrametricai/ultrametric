@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { batchCode, MODERN_BATCHES, normalizeDomain } from '../yc-shared'
+import { batchCode, canonicalYcDomain, MODERN_BATCHES, normalizeDomain } from '../yc-shared'
 
 describe('batchCode', () => {
   it('converts full YC batch names to short codes', () => {
@@ -32,6 +32,17 @@ describe('normalizeDomain', () => {
     expect(normalizeDomain(undefined)).toBeNull()
     expect(normalizeDomain(null)).toBeNull()
     expect(normalizeDomain('')).toBeNull()
+  })
+})
+
+describe('canonicalYcDomain', () => {
+  it('collapses a verified rebrand onto the tracked product domain (Superset -> Paradev, X26)', () => {
+    expect(canonicalYcDomain('paradev.com')).toBe('superset.sh')
+  })
+
+  it('is the identity for every other domain', () => {
+    expect(canonicalYcDomain('mercury.com')).toBe('mercury.com')
+    expect(canonicalYcDomain('superset.sh')).toBe('superset.sh')
   })
 })
 

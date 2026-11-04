@@ -91,6 +91,13 @@ describe('buildNeedsHumanIssue', () => {
     expect(body).not.toContain('undefined')
   })
 
+  it('points launch-watch reviewers to the launch report directory', () => {
+    const report = triage([disposition({ status: 'needs-human' })])
+    expect(buildNeedsHumanIssue(report, 'launch-watch')).toContain('`reports/launch-watch/`')
+    expect(buildNeedsHumanIssue(report, 'vendor-radar')).toContain('`reports/vendor-radar/`')
+    expect(buildNeedsHumanIssue(report, 'yc-coverage')).toContain('`reports/vendor-radar/`')
+  })
+
   it('keeps singular/plural agreement for a single-candidate triage', () => {
     const body = buildNeedsHumanIssue(
       triage([disposition({ status: 'needs-human', criterion: 'founder-affiliation', reason: 'affiliated' })]),

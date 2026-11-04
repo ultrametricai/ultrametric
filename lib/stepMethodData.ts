@@ -6,15 +6,6 @@
 // so the client bundle never touches disk, and each variant's "with this method" ceiling is
 // precomputed with lib/processes.ts computeCeiling arithmetic.
 //
-// DERIVED-ARTIFACT DECISION (this phase): the generated per-step artifacts —
-// open-rankings/step-prompts.json and open-rankings/step-vendor-calls.json — key on (taskId, nodeId) and describe
-// the node's DEFAULT method; method variants are deliberately EXCLUDED from them. A variant
-// panel therefore shows only corpus-committed functionCalls (never a regenerated prompt or
-// per-vendor call table), and the default panel's prompt/vendor-call blocks hide while a
-// variant is selected. Regeneration for variants is a later, unscoped pass per the lane-merge
-// playbook; rankings-engine/scripts/recompute-check.ts is untouched either way (it covers arena
-// rankings only).
-
 import { hasLogo } from './logos'
 import {
   computeCeiling, loadProcesses, stepVendorOptions, vendorChipInfo,
