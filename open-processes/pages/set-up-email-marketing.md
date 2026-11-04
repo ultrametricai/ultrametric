@@ -42,7 +42,7 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
-| [1. Create your email marketing account](#step-1) | manual form/portal; human approval on the first run | ~10 min | Entry step |
+| [1. Reuse or create an email marketing workspace](#step-1) | manual form/portal; human approval on the first run | ~10 min | Entry step |
 | [2. Set up audience list](#step-2) | agent-runnable; human approval above a threshold | ~10 min | [Step 1](#step-1) |
 | [3. Create email templates](#step-3) | agent-runnable; human approval on the first run | ~15 min | [Step 2](#step-2) |
 | [4. Set up welcome automation](#step-4) | agent-runnable; human approval on the first run | ~10 min | [Step 2](#step-2) |
@@ -54,24 +54,24 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 
 <a id="step-1"></a>
 
-### 1. Create your email marketing account
+### 1. Reuse or create an email marketing workspace
 
 manual form/portal · ~10 min · human approval on the first run
 
 | Option | Applies when |
 | --- | --- |
-| Default — Create your email marketing account | Recorded default |
+| List-based email campaigns | Recorded default |
 | Event-driven lifecycle email | Product-led SaaS - email keyed to product events, not newsletter blasts |
 
 
-Choose an email workspace from the program's audience, sending identity, volume, team access and existing systems. Compare list-based campaigns with event-driven messaging against the actual use case and current plan limits. Establish company-controlled ownership and administrators, and create the workspace within the agreed subscription budget. Define the contact fields and sender identity before importing an audience.
+Check the email workspace and sender identity already recorded in company context against this program's audience, volume, team access and existing systems. Reuse a suitable workspace and its verified setup. Compare list-based campaigns with event-driven messaging against the actual use case and current plan limits. Confirm company-controlled ownership and administrators. Create a workspace only if needed, within the agreed subscription budget. Define the contact fields and sender identity before importing an audience.
 
 - Canonical vendor: Mailchimp
 - Vendor options: Mailchimp, Loops, Customer.io
 - Ranked market: [email-marketing](../../open-rankings/email-marketing)
 
 Options:
-  - **Default — Create your email marketing account** — manual form/portal · ~10 min · human approval on the first run
+  - **List-based email campaigns** — manual form/portal · ~10 min · human approval on the first run
 
     Use a list-oriented workspace for audience-based newsletters or campaigns. Compare required audience size, templates and reporting with current plan limits and cost. Set the sender and audience structure, then test signup, duplicate handling and suppression before importing real contacts.
   - **Event-driven lifecycle email**

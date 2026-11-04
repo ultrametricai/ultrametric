@@ -44,13 +44,13 @@ describe('docs/repo-split-census.json', () => {
     for (const file of liveTestFiles) {
       const open = file.startsWith('__tests__/') || file.startsWith('lib/') ||
         file.startsWith('rankings-engine/') || file === 'scripts/content-audit.test.mjs' ||
-        file === 'scripts/docs-fast-path.test.mjs'
+        file === 'scripts/docs-fast-path.test.mjs' || file === 'scripts/author-automerge.test.mjs'
       expect(open, `${file} is outside the open suites`).toBe(true)
     }
   })
 
   it('carries the node --test files explicitly (vitest glob blind spot)', () => {
-    for (const file of ['scripts/content-audit.test.mjs', 'scripts/docs-fast-path.test.mjs']) {
+    for (const file of ['scripts/content-audit.test.mjs', 'scripts/docs-fast-path.test.mjs', 'scripts/author-automerge.test.mjs']) {
       expect(census.nodeTestRunner.files).toContain(file)
       expect(census.open.files).toContain(file)
     }

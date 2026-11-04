@@ -42,7 +42,7 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
-| [1. Create a project in your analytics platform](#step-1) | agent-runnable; human approval on the first run | ~10 min | Entry step |
+| [1. Reuse or create an analytics project](#step-1) | agent-runnable; human approval on the first run | ~10 min | Entry step |
 | [2. Install SDK in codebase](#step-2) | agent-runnable; human approval on the first run | ~20 min | [Step 1](#step-1) |
 | [3. Define key events](#step-3) | agent-runnable; human approval on the first run | ~15 min | [Step 2](#step-2) |
 | [4. Create dashboards](#step-4) | agent-runnable; human approval on the first run | ~15 min | [Step 3](#step-3) |
@@ -55,12 +55,12 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 
 <a id="step-1"></a>
 
-### 1. Create a project in your analytics platform
+### 1. Reuse or create an analytics project
 
 agent-runnable · ~10 min · human approval on the first run
 
 
-Start with the product questions the team needs to answer, then create the analytics project within its authorized account, budget and data-handling scope. Choose region, retention and access from those requirements. Decide how development traffic will be identified or separated before connecting an SDK. Check that the project receiving a test event is the one the team intends to use for reporting.
+Start with the product questions and the analytics project recorded in company context. Reuse that project and its verified event definitions when they cover this launch; record gaps before changing instrumentation. Create a project only when an existing one cannot serve the work, within the authorized account, budget and data-handling scope. Choose region, retention and access from those requirements. Decide how development traffic will be identified or separated before connecting an SDK. Check that the project receiving a test event is the one the team intends to use for reporting.
 
 - Canonical vendor: PostHog
 - Vendor options: PostHog, Amplitude, Mixpanel

@@ -1,0 +1,90 @@
+name: Author automerge
+
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened, ready_for_review, converted_to_draft, labeled, unlabeled, edited]
+  workflow_run:
+    workflows: [CI, Review findings gate]
+    types: [completed]
+  schedule:
+    - cron: '9,29,49 * * * *'
+  workflow_dispatch:
+    inputs:
+      pr:
+        description: PR number (blank checks eligible PRs created after activation)
+        required: false
+        type: string
+
+permissions: {}
+
+concurrency:
+  group: author-automerge
+  cancel-in-progress: false
+
+jobs:
+  merge:
+    if: >-
+      github.repository == 'ultrametricai/ultrametric' &&
+      github.ref == 'refs/heads/main' &&
+      vars.AUTHOR_AUTOMERGE_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      actions: read
+      checks: read
+      contents: read
+      pull-requests: read
+      statuses: read
+    env:
+      AUTHOR_AUTOMERGE_ENABLED: ${{ vars.AUTHOR_AUTOMERGE_ENABLED }}
+      AUTHOR_AUTOMERGE_NOT_BEFORE: ${{ vars.AUTHOR_AUTOMERGE_NOT_BEFORE }}
+      AUTHOR_AUTOMERGE_CANARY_PR: ${{ vars.AUTHOR_AUTOMERGE_CANARY_PR }}
+      AUTOMERGE_BOT_LOGIN: ${{ vars.AUTOMERGE_BOT_LOGIN }}
+      HAS_AUTOMERGE_APP: ${{ secrets.AUTOMERGE_BOT_APP_ID != '' && secrets.AUTOMERGE_BOT_PRIVATE_KEY != '' }}
+      TARGET_PR: ${{ inputs.pr || github.event.pull_request.number || '' }}
+    steps:
+      - name: Checkout trusted main
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: main
+          persist-credentials: false
+          fetch-depth: 1
+
+      - name: Setup Node
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
+        with:
+          node-version: 22
+
+      - name: Read-only eligibility check
+        id: decision
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: node scripts/author-automerge.mjs
+
+      - name: Require dedicated merge credentials
+        if: steps.decision.outputs.needs_token == 'true' && env.HAS_AUTOMERGE_APP != 'true'
+        run: |
+          echo '::error::Configure the dedicated automerge App before activation.'
+          exit 1
+
+      # No dependencies or PR code run with the installation token. The App has
+      # no ruleset bypass; a normal merge preserves push-triggered main CI.
+      - name: Mint repository-scoped merge token
+        id: app
+        if: steps.decision.outputs.needs_token == 'true' && env.HAS_AUTOMERGE_APP == 'true'
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
+        with:
+          client-id: ${{ secrets.AUTOMERGE_BOT_APP_ID }}
+          private-key: ${{ secrets.AUTOMERGE_BOT_PRIVATE_KEY }}
+          owner: ultrametricai
+          repositories: ultrametric
+          permission-contents: write
+          permission-pull-requests: write
+
+      - name: Revalidate and merge the exact ready head
+        if: steps.decision.outputs.needs_token == 'true' && env.HAS_AUTOMERGE_APP == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          AUTOMERGE_TOKEN: ${{ steps.app.outputs.token }}
+          AUTOMERGE_APP_SLUG: ${{ steps.app.outputs.app-slug }}
+        run: node scripts/author-automerge.mjs
