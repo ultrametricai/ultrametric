@@ -50,6 +50,9 @@ jobs:
       - name: Review gate tests
         run: python3 rankings-engine/__tests__/review_gate_controller.py
 
+      - name: Author automerge controller tests
+        run: node --test scripts/author-automerge.test.mjs
+
       - name: Repair and review-request controller tests
         run: |
           python3 rankings-engine/__tests__/refresh_repair_controller.py
@@ -173,6 +176,7 @@ jobs:
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
     needs: [ci]
     permissions:
+      actions: read # the reusable gate verifies linked workflow outcomes
       checks: read
       pull-requests: read
       statuses: write
