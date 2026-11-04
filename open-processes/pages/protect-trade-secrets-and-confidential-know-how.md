@@ -47,9 +47,9 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Identify the information and business value](#step-1) | agent-runnable | Not recorded | Entry step |
-| [2. Choose the protection and sharing rules](#step-2) | human; approval required | Not recorded | [Step 1](#step-1) |
-| [3. Implement approved access and storage controls](#step-3) | manual form/portal; approval required | Not recorded | [Step 2](#step-2) |
-| [4. Review disclosures and train recipients](#step-4) | human; approval required | Not recorded | [Step 3](#step-3) |
+| [2. Choose the protection and sharing rules](#step-2) | human; human approval every run | Not recorded | [Step 1](#step-1) |
+| [3. Implement approved access and storage controls](#step-3) | manual form/portal; human approval every run | Not recorded | [Step 2](#step-2) |
+| [4. Review disclosures and train recipients](#step-4) | human; human approval every run | Not recorded | [Step 3](#step-3) |
 | [5. Review access changes and suspected exposure](#step-5) | agent-runnable | Not recorded | [Step 4](#step-4) |
 
 <a id="steps"></a>
@@ -71,7 +71,7 @@ Inventory the know-how, code, datasets, formulas, pricing or operating informati
 
 ### 2. Choose the protection and sharing rules
 
-human · human approval required
+human · human approval every run
 
 
 Counsel and business owners review ownership, confidentiality commitments and alternatives such as patenting or publication. Define permitted recipients and handling controls for each category without assuming a label alone establishes protection.
@@ -82,7 +82,7 @@ Counsel and business owners review ownership, confidentiality commitments and al
 
 ### 3. Implement approved access and storage controls
 
-manual form/portal · human approval required · hard to undo
+manual form/portal · human approval every run · hard to undo
 
 
 Authorized administrators restrict repositories, document stores and export paths to approved roles. Verify logging and recovery arrangements and keep secrets out of public tickets and general onboarding materials.
@@ -93,7 +93,7 @@ Authorized administrators restrict repositories, document stores and export path
 
 ### 4. Review disclosures and train recipients
 
-human · human approval required
+human · human approval every run
 
 
 Before sharing, verify the purpose, recipient authority and any required agreement. Explain handling and reporting expectations to staff and counterparties and retain evidence of approved disclosures.

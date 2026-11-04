@@ -42,11 +42,11 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
-| [1. Create your email marketing account](#step-1) | manual form/portal; approval required | ~10 min | Entry step |
-| [2. Set up audience list](#step-2) | agent-runnable; approval required | ~10 min | [Step 1](#step-1) |
-| [3. Create email templates](#step-3) | agent-runnable; approval required | ~15 min | [Step 2](#step-2) |
-| [4. Set up welcome automation](#step-4) | agent-runnable; approval required | ~10 min | [Step 2](#step-2) |
-| [5. Configure signup forms](#step-5) | agent-runnable; approval required | ~10 min | [Step 2](#step-2) |
+| [1. Create your email marketing account](#step-1) | manual form/portal; human approval on the first run | ~10 min | Entry step |
+| [2. Set up audience list](#step-2) | agent-runnable; human approval above a threshold | ~10 min | [Step 1](#step-1) |
+| [3. Create email templates](#step-3) | agent-runnable; human approval on the first run | ~15 min | [Step 2](#step-2) |
+| [4. Set up welcome automation](#step-4) | agent-runnable; human approval on the first run | ~10 min | [Step 2](#step-2) |
+| [5. Configure signup forms](#step-5) | agent-runnable; human approval on the first run | ~10 min | [Step 2](#step-2) |
 
 <a id="steps"></a>
 
@@ -56,7 +56,7 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 
 ### 1. Create your email marketing account
 
-manual form/portal · ~10 min · human approval required
+manual form/portal · ~10 min · human approval on the first run
 
 | Option | Applies when |
 | --- | --- |
@@ -71,7 +71,7 @@ Choose an email workspace from the program's audience, sending identity, volume,
 - Ranked market: [email-marketing](../../open-rankings/email-marketing)
 
 Options:
-  - **Default — Create your email marketing account** — manual form/portal · ~10 min · human approval required
+  - **Default — Create your email marketing account** — manual form/portal · ~10 min · human approval on the first run
 
     Use a list-oriented workspace for audience-based newsletters or campaigns. Compare required audience size, templates and reporting with current plan limits and cost. Set the sender and audience structure, then test signup, duplicate handling and suppression before importing real contacts.
   - **Event-driven lifecycle email**
@@ -87,7 +87,7 @@ Options:
 
 ### 2. Set up audience list
 
-agent-runnable · ~10 min · human approval required
+agent-runnable · ~10 min · human approval above a threshold
 
 
 Build the audience with each contact's source, preferences, relevant location and evidence of eligibility for this program. Deduplicate records and carry existing opt-outs into the import. Resolve regional requirements and uncertain eligibility before treating a contact as sendable. Test a small import, inspect mapped fields and suppressions, then reconcile imported and excluded counts against the source list.
@@ -101,7 +101,7 @@ Build the audience with each contact's source, preferences, relevant location an
 
 ### 3. Create email templates
 
-agent-runnable · ~15 min · human approval required
+agent-runnable · ~15 min · human approval on the first run
 
 
 Build templates for the program's actual messages with a recognizable sender, brand assets and clear next action. Add personalization fallbacks and the sender, preference and unsubscribe content required for the audience. Check links, plain text and mobile previews, then save each draft with its intended use.
@@ -115,7 +115,7 @@ Build templates for the program's actual messages with a recognizable sender, br
 
 ### 4. Set up welcome automation
 
-agent-runnable · ~10 min · human approval required
+agent-runnable · ~10 min · human approval on the first run
 
 
 *Follows step 2.*
@@ -131,7 +131,7 @@ Define welcome-sequence entry, message order, timing and exit rules from the sig
 
 ### 5. Configure signup forms
 
-agent-runnable · ~10 min · human approval required
+agent-runnable · ~10 min · human approval on the first run
 
 
 *Follows step 2.*

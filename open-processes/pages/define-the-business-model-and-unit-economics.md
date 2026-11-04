@@ -48,9 +48,9 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | --- | --- | --- | --- |
 | [1. Describe the customer and value exchange](#step-1) | agent-runnable | Not recorded | Entry step |
 | [2. Model contribution economics](#step-2) | agent-runnable | Not recorded | [Step 1](#step-1) |
-| [3. Choose a testable business-model hypothesis](#step-3) | human; approval required | Not recorded | [Step 2](#step-2) |
+| [3. Choose a testable business-model hypothesis](#step-3) | human; human approval every run | Not recorded | [Step 2](#step-2) |
 | [4. Connect the hypothesis to the operating plan](#step-4) | agent-runnable | Not recorded | [Step 3](#step-3) |
-| [5. Review evidence and approve the next commitment](#step-5) | human; approval required | Not recorded | [Step 4](#step-4) |
+| [5. Review evidence and approve the next commitment](#step-5) | human; human approval every run | Not recorded | [Step 4](#step-4) |
 
 <a id="steps"></a>
 
@@ -82,7 +82,7 @@ Build scenarios for price, acquisition cost, delivery cost, support load and ret
 
 ### 3. Choose a testable business-model hypothesis
 
-human · human approval required
+human · human approval every run
 
 
 Review the scenarios with the responsible founders. Select the smallest commercial test, the cash exposure allowed and the evidence that would cause a change of direction.
@@ -104,7 +104,7 @@ Turn the selected model into named customer, product, financing and hiring miles
 
 ### 5. Review evidence and approve the next commitment
 
-human · human approval required
+human · human approval every run
 
 
 Compare actual customer behavior and delivery costs with the agreed test. Record whether to continue, revise or stop, with the owner and evidence for the next review.

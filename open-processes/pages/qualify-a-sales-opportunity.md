@@ -47,9 +47,9 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Prepare the account and problem brief](#step-1) | agent-runnable | Not recorded | Entry step |
-| [2. Confirm the need and buying process](#step-2) | human; approval required | Not recorded | [Step 1](#step-1) |
+| [2. Confirm the need and buying process](#step-2) | human; human approval every run | Not recorded | [Step 1](#step-1) |
 | [3. Assess fit and delivery dependencies](#step-3) | agent-runnable | Not recorded | [Step 2](#step-2) |
-| [4. Choose the next commercial step](#step-4) | human; approval required | Not recorded | [Step 3](#step-3) |
+| [4. Choose the next commercial step](#step-4) | human; human approval every run | Not recorded | [Step 3](#step-3) |
 | [5. Update the pipeline evidence](#step-5) | agent-runnable | Not recorded | [Step 4](#step-4) |
 
 <a id="steps"></a>
@@ -71,7 +71,7 @@ Collect the prospect's stated problem, organization, existing solution and prior
 
 ### 2. Confirm the need and buying process
 
-human · human approval required
+human · human approval every run
 
 
 Discuss the desired outcome, decision participants, constraints and purchasing process with the prospect. Record unanswered questions and distinguish a user's interest from authority or budget to buy.
@@ -93,7 +93,7 @@ Compare the requested outcome with actual product capability, security needs, su
 
 ### 4. Choose the next commercial step
 
-human · human approval required
+human · human approval every run
 
 
 The sales owner decides whether to proceed, nurture, refer or decline. Agree the next customer action and any approved discovery, demonstration or pilot without inventing a close date.

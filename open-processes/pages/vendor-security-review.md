@@ -43,10 +43,10 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
-| [1. Create vendor assessment template](#step-1) | agent-runnable; approval required | ~30 min | Entry step |
-| [2. Send security questionnaires](#step-2) | agent-runnable; approval required | ~15 min | [Step 1](#step-1) |
+| [1. Create vendor assessment template](#step-1) | agent-runnable; human approval on the first run | ~30 min | Entry step |
+| [2. Send security questionnaires](#step-2) | agent-runnable; human approval above a threshold | ~15 min | [Step 1](#step-1) |
 | [3. Vendors respond](#step-3) | human; includes waiting | ~5 d | [Step 2](#step-2) |
-| [4. Score and assess responses](#step-4) | human; approval required | ~2 h | [Step 3](#step-3) |
+| [4. Score and assess responses](#step-4) | human; human approval every run | ~2 h | [Step 3](#step-3) |
 | [5. Log in Vanta](#step-5) | agent-runnable | ~10 min | [Step 4](#step-4) |
 
 <a id="steps"></a>
@@ -57,7 +57,7 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 
 ### 1. Create vendor assessment template
 
-agent-runnable · ~30 min · human approval required
+agent-runnable · ~30 min · human approval on the first run
 
 
 Tailor the assessment to the vendor’s service, data access, integration and operational importance. Request evidence relevant to those risks and define what security, privacy, legal or continuity questions require specialist review. Set criteria for accepting evidence and deciding exceptions. The template should support a reasoned vendor decision without making a numeric score the purchasing authority.
@@ -69,7 +69,7 @@ Tailor the assessment to the vendor’s service, data access, integration and op
 
 ### 2. Send security questionnaires
 
-agent-runnable · ~15 min · human approval required
+agent-runnable · ~15 min · human approval above a threshold
 
 
 Send the questionnaire approved for this vendor and service to the verified contact. Explain what evidence is needed, where confidential reports should be delivered and the agreed response date. Provide enough context to answer accurately without disclosing unrelated internal information. Give the vendor a contact for clarifying the request.
@@ -93,7 +93,7 @@ Check incoming reports and responses for the actual product, legal entity and re
 
 ### 4. Score and assess responses
 
-human · ~2 h · human approval required
+human · ~2 h · human approval every run
 
 
 Assess supplied evidence against planned data access, sensitivity and service dependency. Explain the practical effect of gaps and exclusions, getting specialist review for material privacy, security or contract issues. The accountable risk or business owner decides whether to proceed, require remediation or decline. Record conditions and responsibilities with that decision, while leaving independently derived product rankings unchanged.

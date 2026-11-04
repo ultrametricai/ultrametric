@@ -45,11 +45,11 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Frame the user need and operating constraints](#step-1) | agent-runnable | Not recorded | Entry step |
-| [2. Define engineering safety and regulatory criteria](#step-2) | human; approval required | Not recorded | [Step 1](#step-1) |
+| [2. Define engineering safety and regulatory criteria](#step-2) | human; human approval every run | Not recorded | [Step 1](#step-1) |
 | [3. Prepare design alternatives and a test plan](#step-3) | agent-runnable | Not recorded | [Step 2](#step-2) |
-| [4. Build and test controlled prototypes](#step-4) | human; approval required | Not recorded | [Step 3](#step-3) |
-| [5. Review evidence and resolve design risks](#step-5) | human; approval required | Not recorded | [Step 4](#step-4) |
-| [6. Approve the design transfer decision](#step-6) | human; approval required | Not recorded | [Step 5](#step-5) |
+| [4. Build and test controlled prototypes](#step-4) | human; human approval every run | Not recorded | [Step 3](#step-3) |
+| [5. Review evidence and resolve design risks](#step-5) | human; human approval every run | Not recorded | [Step 4](#step-4) |
+| [6. Approve the design transfer decision](#step-6) | human; human approval every run | Not recorded | [Step 5](#step-5) |
 
 <a id="steps"></a>
 
@@ -70,7 +70,7 @@ Collect evidence of the user problem, intended environment, target cost and prod
 
 ### 2. Define engineering safety and regulatory criteria
 
-human · human approval required · hard to undo
+human · human approval every run · hard to undo
 
 
 Qualified engineering and specialist owners select relevant performance, safety and market-access criteria. Record required testing and stop conditions before exposing people to prototype risks.
@@ -92,7 +92,7 @@ Document candidate designs, materials and expected failure modes. Specify measur
 
 ### 4. Build and test controlled prototypes
 
-human · human approval required · hard to undo
+human · human approval every run · hard to undo
 
 
 Authorized competent personnel build and test prototypes using suitable facilities and protective controls. Record configuration, measurements and failures; stop unsafe trials and investigate before continuing.
@@ -103,7 +103,7 @@ Authorized competent personnel build and test prototypes using suitable faciliti
 
 ### 5. Review evidence and resolve design risks
 
-human · human approval required · hard to undo
+human · human approval every run · hard to undo
 
 
 Engineering owners compare results with acceptance criteria and customer observations. Assign remediation and repeat testing when changes affect the safety or performance evidence.
@@ -114,7 +114,7 @@ Engineering owners compare results with acceptance criteria and customer observa
 
 ### 6. Approve the design transfer decision
 
-human · human approval required · hard to undo
+human · human approval every run · hard to undo
 
 
 The accountable owner approves revision-controlled drawings, requirements and remaining conditions for manufacturing. Keep required certification and production qualification as separate gates rather than claiming prototype success authorizes sale.

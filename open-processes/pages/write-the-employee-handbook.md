@@ -60,10 +60,10 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Draft handbook sections](#step-1) | agent-runnable | ~2 h | Entry step |
-| [2. Customize policies for company](#step-2) | human; approval required | ~4 h | [Step 1](#step-1) |
-| [3. Legal review](#step-3) | human; approval required; includes waiting | ~2 d | [Step 2](#step-2) |
-| [4. Publish to Notion](#step-4) | agent-runnable; approval required | ~15 min | [Step 3](#step-3) |
-| [5. Send announcement to team](#step-5) | agent-runnable; approval required | ~5 min | [Step 4](#step-4) |
+| [2. Customize policies for company](#step-2) | human; standing human approval | ~4 h | [Step 1](#step-1) |
+| [3. Legal review](#step-3) | human; human approval every run; includes waiting | ~2 d | [Step 2](#step-2) |
+| [4. Publish to Notion](#step-4) | agent-runnable; standing human approval | ~15 min | [Step 3](#step-3) |
+| [5. Send announcement to team](#step-5) | agent-runnable; standing human approval | ~5 min | [Step 4](#step-4) |
 
 <a id="steps"></a>
 
@@ -85,7 +85,7 @@ Outline the policies employees need using existing employment terms and actual c
 
 ### 2. Customize policies for company
 
-human · ~4 h · human approval required
+human · ~4 h · standing human approval
 
 
 Work through each draft policy with the person who will administer it. Resolve differences between written leave, remote-work, expense or conduct rules and actual practice. Make contacts and escalation paths specific, and identify where country or worker-group versions are needed. Track substantive changes so the legal reviewer can see the policies the company intends to operate.
@@ -94,7 +94,7 @@ Work through each draft policy with the person who will administer it. Resolve d
 
 ### 3. Legal review
 
-human · ~2 d · async wait · human approval required
+human · ~2 d · async wait · human approval every run
 
 
 Give counsel the draft, worker locations, relevant employment documents and substantive policy changes. Ask for the required local provisions, consultation or notice steps and conflicts with existing terms. Resolve legal questions with counsel and business choices with the people lead before release. Identify any excluded country or unresolved policy so a reviewed handbook version is not assumed to cover every employee automatically.
@@ -103,7 +103,7 @@ Give counsel the draft, worker locations, relevant employment documents and subs
 
 ### 4. Publish to Notion
 
-agent-runnable · ~15 min · human approval required
+agent-runnable · ~15 min · standing human approval
 
 
 Publish the reviewed handbook in the employee knowledge space with a clear owner, effective version and question route. Check that employees can reach the live document and that drafts or legal advice remain restricted. Preserve earlier versions so the company can identify the policy that applied at a particular time. Link country or worker-group addenda where employees would expect to find them.
@@ -115,7 +115,7 @@ Publish the reviewed handbook in the employee knowledge space with a clear owner
 
 ### 5. Send announcement to team
 
-agent-runnable · ~5 min · human approval required
+agent-runnable · ~5 min · standing human approval
 
 
 Tell employees where the handbook lives, which changes affect them and when those changes apply. Explain any acknowledgement process and provide a contact for questions. Check the published link before distribution and arrange accessible or translated material where needed. Route substantive questions to the relevant policy owner and follow up through the company’s actual acknowledgement process.

@@ -47,10 +47,10 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Define the learning goals and eligibility](#step-1) | agent-runnable | Not recorded | Entry step |
-| [2. Approve the participant terms and safeguards](#step-2) | human; approval required | Not recorded | [Step 1](#step-1) |
-| [3. Provision the approved beta environment](#step-3) | manual form/portal; approval required | Not recorded | [Step 2](#step-2) |
+| [2. Approve the participant terms and safeguards](#step-2) | human; human approval every run | Not recorded | [Step 1](#step-1) |
+| [3. Provision the approved beta environment](#step-3) | manual form/portal; human approval every run | Not recorded | [Step 2](#step-2) |
 | [4. Collect feedback and operating evidence](#step-4) | agent-runnable | Not recorded | [Step 3](#step-3) |
-| [5. Decide whether to launch, extend or stop](#step-5) | human; approval required | Not recorded | [Step 4](#step-4) |
+| [5. Decide whether to launch, extend or stop](#step-5) | human; human approval every run | Not recorded | [Step 4](#step-4) |
 
 <a id="steps"></a>
 
@@ -71,7 +71,7 @@ State the product behavior to test, target users, known limitations and evidence
 
 ### 2. Approve the participant terms and safeguards
 
-human · human approval required
+human · human approval every run
 
 
 Product, security and legal owners review beta access, support, confidentiality, data handling and exit arrangements. Confirm that participation does not imply production readiness or permission for an otherwise regulated use.
@@ -82,7 +82,7 @@ Product, security and legal owners review beta access, support, confidentiality,
 
 ### 3. Provision the approved beta environment
 
-manual form/portal · human approval required · hard to undo
+manual form/portal · human approval every run · hard to undo
 
 
 Invite only approved participants and configure limited access, monitoring and recovery. Test onboarding and support routes and record the software version and features each cohort receives.
@@ -104,7 +104,7 @@ Track adoption, task success, defects, incidents and qualitative feedback agains
 
 ### 5. Decide whether to launch, extend or stop
 
-human · human approval required
+human · human approval every run
 
 
 The accountable owners review the evidence, unresolved risks and support capacity. Communicate the approved decision, migrate or remove beta access appropriately and hand launch work to the release process.

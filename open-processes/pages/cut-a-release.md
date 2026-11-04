@@ -40,7 +40,7 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Draft the changelog](#step-1) | agent-runnable | ~10 min | Entry step |
-| [2. Tag the release](#step-2) | agent-runnable; approval required | ~5 min | [Step 1](#step-1) |
+| [2. Tag the release](#step-2) | agent-runnable; human approval on the first run | ~5 min | [Step 1](#step-1) |
 | [3. Publish release notes](#step-3) | agent-runnable | ~5 min | [Step 2](#step-2) |
 | [4. Monitor errors post-release](#step-4) | agent-runnable; includes waiting | ~30 min | [Step 3](#step-3) |
 | [5. Roll back if needed](#step-5) | human | ~15 min | [Step 4](#step-4) (Rollback criteria are met and the authorized release owner chooses rollback as the recovery action.) |
@@ -65,7 +65,7 @@ Compare the release candidate with the previous release tag and review the chang
 
 ### 2. Tag the release
 
-agent-runnable · ~5 min · human approval required
+agent-runnable · ~5 min · human approval on the first run
 
 
 Check the versioning convention, candidate commit and release checks, and confirm the proposed tag is unused. Inspect which workflows publishing it will trigger before using the release owner's authorization. Create the tag through the agreed release process and verify that the remote tag resolves to the reviewed commit. Follow any triggered build or publication so an unexpected side effect is caught at the release boundary.

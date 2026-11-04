@@ -53,10 +53,10 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Preserve the notice and relevant records](#step-1) | agent-runnable | Not recorded | Entry step |
-| [2. Appoint the adviser and agree the response strategy](#step-2) | human; approval required | Not recorded | [Step 1](#step-1) |
+| [2. Appoint the adviser and agree the response strategy](#step-2) | human; human approval every run | Not recorded | [Step 1](#step-1) |
 | [3. Build a reconciled evidence and request register](#step-3) | agent-runnable | Not recorded | [Step 2](#step-2) |
-| [4. Approve responses and manage authority discussions](#step-4) | human; approval required | Not recorded | [Step 3](#step-3) |
-| [5. Review findings and close or contest the examination](#step-5) | human; approval required | Not recorded | [Step 4](#step-4) |
+| [4. Approve responses and manage authority discussions](#step-4) | human; human approval every run | Not recorded | [Step 3](#step-3) |
+| [5. Review findings and close or contest the examination](#step-5) | human; human approval every run | Not recorded | [Step 4](#step-4) |
 
 <a id="steps"></a>
 
@@ -77,7 +77,7 @@ Record the authority, taxpayer, period, scope, response channel and dates stated
 
 ### 2. Appoint the adviser and agree the response strategy
 
-human · human approval required
+human · human approval every run
 
 
 Verify the authority contact and have qualified tax counsel or the accountant assess representation, response dates and the scope of information requested. Assign one response owner and resolve privilege or confidentiality questions before disclosure.
@@ -99,7 +99,7 @@ Map requests to returns, ledgers, invoices and supporting workpapers. Identify o
 
 ### 4. Approve responses and manage authority discussions
 
-human · human approval required
+human · human approval every run
 
 
 The authorized representative reviews factual explanations and documents before submission. Track follow-up questions and meeting records without admitting disputed conclusions or agreeing adjustments outside approved authority.
@@ -110,7 +110,7 @@ The authorized representative reviews factual explanations and documents before 
 
 ### 5. Review findings and close or contest the examination
 
-human · human approval required
+human · human approval every run
 
 
 Have advisers assess proposed changes, response rights and relevant dates for the specific jurisdiction. Obtain authority for a settlement, challenge or amended return and retain the final decision, payments and continuing obligations.

@@ -53,9 +53,9 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Identify key-person dependencies](#step-1) | agent-runnable | Not recorded | Entry step |
-| [2. Agree emergency and long-term authority](#step-2) | human; approval required | Not recorded | [Step 1](#step-1) |
+| [2. Agree emergency and long-term authority](#step-2) | human; human approval every run | Not recorded | [Step 1](#step-1) |
 | [3. Prepare handover and access-recovery instructions](#step-3) | agent-runnable | Not recorded | [Step 2](#step-2) |
-| [4. Exercise a realistic absence scenario](#step-4) | human; approval required | Not recorded | [Step 3](#step-3) |
+| [4. Exercise a realistic absence scenario](#step-4) | human; human approval every run | Not recorded | [Step 3](#step-3) |
 | [5. Close gaps and schedule a review](#step-5) | agent-runnable | Not recorded | [Step 4](#step-4) |
 
 <a id="steps"></a>
@@ -77,7 +77,7 @@ Inventory critical decisions, customer relationships, technical knowledge, signi
 
 ### 2. Agree emergency and long-term authority
 
-human · human approval required
+human · human approval every run
 
 
 The board and counsel establish how replacement decisions, delegations and communications will work. Resolve governing-document restrictions and distinguish temporary cover from permanent appointment or ownership transfer.
@@ -99,7 +99,7 @@ Write role-specific runbooks, contacts and evidence locations. Use the company a
 
 ### 4. Exercise a realistic absence scenario
 
-human · human approval required
+human · human approval every run
 
 
 Have designated alternates perform a tabletop handover and authorized access check. Record decisions they could not make, unavailable information and counterparty mandates needing updates.
