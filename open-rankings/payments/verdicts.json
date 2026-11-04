@@ -4521,18 +4521,18 @@
     "productId": "kushki",
     "storyId": "accept-card-payment-online",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 3,
     "confidence": "low",
-    "rationale": "Kushki's own docs cover online card acceptance: one-time card payments, an accept-a-payment guide, test data and moving to production. It also offers low-code paths such as Smartlink payment links, a hosted payment button, the Kajita checkout form and e-commerce plugins, plus an aggregator model that could ease onboarding. Nothing in the pack shows how long signup, approval or activation takes, so the 'within a day' part of the story is unproven. Missing for 10: documented signup-to-live timeline or self-serve instant activation, merchant approval/KYC turnaround, independent or hands-on corroboration of fast onboarding.",
+    "rationale": "Kushki's own docs clearly cover accepting online card payments, through the card-payment API, the kushki.js library, the Kajita checkout form, Smartlink payment links and e-commerce plugins. There is also a test-data and move-to-production guide, and an aggregator integration model is mentioned. Nothing in the evidence shows self-serve signup, onboarding or KYC turnaround, or how long it takes to go live, which is the defining 'within a day' part of the story. missing for 10: evidence of self-serve signup and same-day activation, documented time-to-production or onboarding/approval timelines, hands-on or independent reports of fast go-live.",
     "evidenceIds": [
       "kushki-docs-1",
       "kushki-docs-2",
       "kushki-docs-11",
       "kushki-docs-13",
       "kushki-docs-14",
-      "kushki-docs-16",
       "kushki-docs-17",
-      "kushki-docs-20"
+      "kushki-docs-20",
+      "kushki-docs-36"
     ]
   },
   {
@@ -4541,7 +4541,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Kushki is a payment processor, so API-driven dispute and chargeback handling is an applicable axis. Nothing in the evidence pack documents a dispute or chargeback API for retrieving disputes, assembling evidence, or submitting responses. The docs cover payments, refunds, 3DS and network tokens only, and the probes found no OpenAPI spec or llms.txt that would surface such endpoints.",
+    "rationale": "Dispute handling is a fair axis for a payments gateway like Kushki. However, the evidence pack documents no API for retrieving disputes or chargebacks, attaching evidence, or submitting dispute responses. The refunds/voids docs and the llms.txt agent-readable docs index are adjacent features and earn no credit toward this story.",
     "evidenceIds": []
   },
   {
@@ -4550,7 +4550,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Kushki is a payments API platform, so monitoring failed payments and driving retries and dunning is a fair question to ask of it. However, the evidence pack only documents one-time card charges, authorization/capture, refunds, 3DS, network tokens and payment links. Nothing in it shows webhooks for failed-payment events, automated retry logic, or dunning outreach, and the probes found no OpenAPI spec or llms.txt to support agent-driven workflows.",
+    "rationale": "Kushki documents recurring and scheduled charges (cargos recurrentes, cargos calendarizados) and webhooks, but the only webhooks shown are for card-present payments. Nothing in the pack covers failed-payment notifications, automated retries, or dunning outreach, so these adjacent features earn no credit. An agent-driven failed-payment recovery workflow is a fair axis for a payments platform with subscriptions, so the verdict is none rather than na.",
     "evidenceIds": []
   },
   {
@@ -4559,7 +4559,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The story asks for API-driven creation of a product, a price, and a payment link in one agent session. The pack shows no product or price catalog objects and no API endpoint for creating payment links. Smartlink is only marketed as a way to create and customize payment links, with no indication this can be done programmatically. The rest of the evidence covers card charges, refunds, and tokenization, which are off this axis, and the probes found no OpenAPI spec or llms.txt.",
+    "rationale": "Kushki markets Smartlink for creating and customizing payment links (kushki-docs-14), but nothing in the evidence shows those links can be created through an API. There is also no evidence of product or price catalog objects an agent could provision in one session. The API docs cover charges, subscriptions and refunds, not catalog or link provisioning, and no OpenAPI spec was found.",
     "evidenceIds": []
   },
   {
@@ -4568,17 +4568,21 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Kushki is a payment processor, so pulling payout and balance-transaction data to reconcile bank deposits to their underlying charges is a fair question for it. The evidence covers only charge acceptance, refunds and outbound supplier disbursements (an adjacent feature, not settlement reporting). Nothing shows a settlement, payout or balance-transaction API that links deposits to charges.",
+    "rationale": "Kushki is a payment processor, so payout reconciliation is a fair question to ask of it. The evidence pack covers charge acceptance, captures, refunds, 3DS and tokens, but none of it documents an API for settlement or payout records, balance transactions, or mapping bank deposits to underlying charges. The supplier-payment page (kushki-docs-18) describes outbound disbursements to suppliers, employees and partners, which is a different capability from settlement reconciliation, so it earns no credit here.",
     "evidenceIds": []
   },
   {
     "productId": "kushki",
     "storyId": "agentic-agent-docs",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Kushki is a payments API platform, so offering llms.txt or agent-oriented docs is a fair question for this kind of product. The direct probes found nothing: llms.txt, markdown doc variants and OpenAPI specs all returned 404, and the human-oriented docs pages never mention agent-oriented documentation.",
-    "evidenceIds": []
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "high",
+    "rationale": "Live probes show docs.kushki.com/llms.txt returns HTTP 200 as text/plain. It is a markdown docs index linking .md versions of the docs pages, and the .md pages themselves resolve (e.g., cl.md), so an agent can be pointed at agent-readable docs. The quality is limited: the probed llms.txt entries have empty descriptions, and the .md pages contain inline HTML styling rather than clean markdown. missing for 10: descriptive llms.txt entries or an llms-full.txt, clean markdown without embedded HTML, first-party documentation of agent-oriented docs, independent or hands-on corroboration of agent use.",
+    "evidenceIds": [
+      "kushki-probe-1",
+      "kushki-probe-2",
+      "kushki-probe-4"
+    ]
   },
   {
     "productId": "kushki",
@@ -4586,7 +4590,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The axis applies to a payments platform with merchant data, but the evidence only covers card payments, refunds, 3DS, payment links, plugins and doc probes. None of it mentions AI-generated insights or suggestions inside the product.",
+    "rationale": "Kushki is a payments platform, and AI-generated insights over transaction data is a fair thing to ask of such a product, so the axis applies. Nothing in the evidence pack describes in-product AI insights, analytics suggestions or recommendations. The llms.txt and markdown docs probes only make the documentation machine-readable, which is an adjacent capability and does not deliver in-product insights.",
     "evidenceIds": []
   },
   {
@@ -4595,7 +4599,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Background automation, such as scheduled or recurring charges, automated payouts, or rule-based workflows, is a fair axis for a payments platform, so the story applies. The evidence pack covers only one-time card payments, auth/capture, refunds, payment links, and supplier payouts, with nothing documenting automations that run on their own. Without that evidence the verdict is none.",
+    "rationale": "A payments platform could plausibly offer user-configurable background automations, so the axis applies. The evidence pack documents only payment flows (card charges, authorization and capture, refunds, 3DS, POS) plus an llms.txt docs index. The recurring and scheduled charge features (kushki-docs-29, kushki-docs-30) are billing capabilities that belong to a subscriptions story, not a general facility for setting up autonomous automations, so they earn no credit here.",
     "evidenceIds": []
   },
   {
@@ -4604,22 +4608,25 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A built-in AI assistant is a plausible feature for a payments platform's merchant console, so the axis applies. However, the evidence covers only card payments, payment links, POS, payouts and integrations. Nothing mentions an in-product AI assistant or the ability to delegate tasks to one.",
+    "rationale": "Kushki is a payments platform, and an in-product AI assistant (for example in a merchant dashboard) is a fair capability for this kind of SaaS, so the axis applies. Nothing in the evidence shows a built-in assistant that users can delegate tasks to. The llms.txt and markdown docs probes only make the documentation machine-readable for external AI tools, which is an adjacent feature and earns no credit for this story.",
     "evidenceIds": []
   },
   {
     "productId": "kushki",
     "storyId": "agentic-headless",
     "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Kushki is an API-driven payments platform. Its docs list server-side flows that need no browser UI, such as direct charge without a token, authorization/capture and refunds, plus test data and a production-promotion guide, which implies non-interactive, scriptable use against a test environment. The evidence is only page titles, though, with nothing explicit about CI or automation tooling. Missing for 10: a documented CLI or CI integration guide, explicit sandbox/test-mode automation docs, a machine-readable API spec (the OpenAPI probe returned 404), and any hands-on corroboration of headless/CI use.",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Kushki is an API-first payments platform, so it can be driven headlessly. Its own docs cover server-side flows such as direct charges without a token, 100% API 3DS integration, and authorization/capture and refunds via API, plus a test data and sandbox path that automated pipelines could run against. However, there is no CLI or documented CI workflow, and no machine-readable OpenAPI spec (the probe returned 404). Missing for 10: an official CLI or headless tooling, a documented CI/test-mode automation guide, a published OpenAPI spec, and independent hands-on corroboration.",
     "evidenceIds": [
       "kushki-docs-3",
+      "kushki-docs-27",
+      "kushki-docs-24",
       "kushki-docs-5",
       "kushki-docs-8",
       "kushki-docs-11",
-      "kushki-docs-12",
+      "kushki-docs-36",
+      "kushki-docs-26",
       "kushki-probe-3"
     ]
   },
@@ -4629,7 +4636,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Kushki is a payment gateway and processing API (card payments, payment links, payouts, POS). Acting as an MCP client that plugs in external MCP servers to use their tools is an agent or assistant capability, which is a category error for this kind of product. Nothing in the evidence shows Kushki has any agent or MCP-client functionality that would make this axis apply.",
+    "rationale": "Kushki is a payments gateway and API platform (card payments, refunds, 3DS, POS, payouts), not an agent or AI assistant that consumes tools. Plugging MCP servers into it as a client is a category error for this kind of product. The evidence shows no embedded agent or MCP-client feature that would make the axis apply; the llms.txt and markdown docs probes concern documentation for AI readers, not tool consumption.",
     "evidenceIds": []
   },
   {
@@ -4638,7 +4645,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Kushki is a payments platform, not an agent, so publishing an official MCP server is a fair question for it and the axis applies. The evidence pack covers only payment APIs, libraries, plugins and checkout products. Nothing mentions an MCP server, and the probes for llms.txt, markdown docs and an OpenAPI spec all returned 404.",
+    "rationale": "Kushki is a payments API platform, not an agent, so publishing an official MCP server is a fair question and the axis applies. The evidence shows no MCP server. The llms.txt index and markdown docs pages found by the probes are adjacent AI-readability features, not an MCP server an agent could connect to, so they earn no credit.",
     "evidenceIds": []
   },
   {
@@ -4647,7 +4654,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Kushki is a payments platform, and a product like this could plausibly ship a natural-language or agent interface, so the axis applies. None of the evidence shows a natural-language command capability: the docs cover card payments, refunds, 3DS, payment links and plugins. The probes for llms.txt, markdown docs and an OpenAPI spec all returned 404.",
+    "rationale": "Natural-language operation is a fair question for a payments platform, since it could ship an assistant or conversational interface, so the axis applies. The evidence pack shows no such capability. The llms.txt index and markdown docs (kushki-probe-1, -2, -4) only make the documentation readable by LLMs, which is a developer building block rather than a way to operate Kushki through natural-language commands. Every other item covers conventional API, SDK and checkout integrations.",
     "evidenceIds": []
   },
   {
@@ -4656,7 +4663,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Kushki is a payments platform, so an official developer CLI is a fair thing to ask for. The evidence pack only covers a JS library, plugins, payment links and API docs, and never mentions a CLI. The probes for llms.txt, markdown docs and OpenAPI all returned 404, which says nothing about a CLI either way.",
+    "rationale": "An official CLI is a reasonable thing to ask of a payments platform, so the axis applies. Nothing in the pack shows Kushki ships one. The evidence covers REST APIs, the kushki.js library, e-commerce plugins and an llms.txt/markdown docs index, but these are adjacent developer building blocks and docs features, not a CLI.",
     "evidenceIds": []
   },
   {
@@ -4665,17 +4672,18 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Kushki's first-party docs describe a public payments API. They cover direct charges without a token, authorization and capture, refunds and voids, 3DS API integration, network tokens, and test data for moving to production, and the site markets 'multiple payment methods with one API.' Probes found no machine-readable OpenAPI/Swagger spec, llms.txt, or markdown docs at the tested paths, and the evidence is mostly page titles rather than endpoint-level reference. Missing for 10: a published OpenAPI spec or other machine-readable API reference, endpoint-level documentation depth, and independent or hands-on corroboration of API use.",
+    "rationale": "Kushki is an API-first payments platform. It publicly documents API flows for card charges, including direct charge without a token, authorization and capture, refunds and voids, a 100% API 3DS integration, recurring and scheduled charges, plus test data and a move to production. Its docs are also exposed to agents through a live llms.txt index and .md pages, though the old /cl/en doc tree now returns 404 after a move to /cl/*. missing for 10: a published machine-readable OpenAPI/Swagger spec (all probed paths 404), independent or hands-on corroboration of API use, and docs depth beyond page titles.",
     "evidenceIds": [
-      "kushki-docs-2",
-      "kushki-docs-3",
-      "kushki-docs-5",
-      "kushki-docs-8",
-      "kushki-docs-9",
-      "kushki-docs-11",
       "kushki-docs-12",
+      "kushki-docs-21",
+      "kushki-docs-22",
+      "kushki-docs-23",
+      "kushki-docs-24",
+      "kushki-docs-27",
+      "kushki-docs-29",
+      "kushki-docs-36",
       "kushki-probe-3",
-      "kushki-probe-1"
+      "kushki-probe-4"
     ]
   },
   {
@@ -4684,7 +4692,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Kushki is a payments API platform, so issuing scoped or least-privilege API credentials is an applicable axis. However, nothing in the evidence pack documents restricted keys, permission scopes, or per-agent credential issuance. The docs cover card payments, refunds, 3DS, network tokens and moving to production, but not credential scoping.",
+    "rationale": "Scoped or least-privilege API credentials are a fair question for a payments API platform like Kushki, so the axis applies. Nothing in the evidence pack covers restricted or scoped keys, per-key permissions, or agent-specific credential issuance. The docs cover payment flows, 3DS, refunds and test-to-production steps, and the probes only show llms.txt and markdown docs, which are unrelated to credential scoping.",
     "evidenceIds": []
   },
   {
@@ -4693,20 +4701,23 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Kushki documents an official client-side JavaScript library (kushki.js / 'Librería JS'), which is used for card tokenization and 3DS integration. That is a first-party SDK, but the evidence shows only this single front-end library, with no breadth of language SDKs. The e-commerce plugins are platform integrations rather than SDKs and earn no credit here. Missing for 10: server-side SDKs in common languages, SDK reference docs or repositories, versioning/install details, and independent or hands-on corroboration of SDK quality.",
+    "rationale": "Kushki documents its own first-party client-side JavaScript library, kushki.js, which is promoted as a PCI-secure integration library and used for the 3DS integration flow. That is an official SDK, but only one, front-end only, and the evidence lists titles rather than SDK reference depth. Missing for 10: server-side SDKs in common languages (e.g. Node, Python, Java), mobile SDKs, SDK reference documentation and versioning details, and independent hands-on corroboration of SDK quality.",
     "evidenceIds": [
+      "kushki-docs-15",
       "kushki-docs-9",
-      "kushki-docs-15"
+      "kushki-docs-24"
     ]
   },
   {
     "productId": "kushki",
     "storyId": "agentic-webhooks",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Kushki is a payments API, so webhook event subscriptions are a fair question for this kind of product. However, nothing in the evidence pack documents registrable outbound HTTP callbacks or event subscriptions. The cited docs cover card payments, refunds, 3DS, payment links and plugins without mentioning webhooks, and the probes found no llms.txt, markdown docs or OpenAPI spec that could show them.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Kushki's own docs include a section titled \"Webhooks para tarjeta presente\" (webhooks for card-present payments), which shows first-party outbound event callbacks exist, at least for in-person card payments. The evidence is only a section heading, with no detail on how to register endpoints, which event types exist, payload format, signature verification, or retries, and no sign of webhook coverage for online, recurring, or refund events. Missing for 10: webhook registration/subscription docs, event catalog across payment products, payload and signature verification details, retry/delivery guarantees, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "kushki-docs-34"
+    ]
   },
   {
     "productId": "kushki",
@@ -4714,7 +4725,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Kushki's documentation covers integration guides for card payments, 3DS, refunds, and test data, but nothing in the pack shows an interactive API reference or runnable 'try it' examples. Probes found no OpenAPI or Swagger spec at any candidate path, which is consistent with no machine-driven explorer, though not proof. An interactive API reference is a fair question for a payments API, so absence of evidence yields none rather than na.",
+    "rationale": "Kushki is a payments API, so an interactive API reference is a fair question for it. The evidence shows only guide-style docs pages, an llms.txt index and markdown docs, none of which describe an interactive reference or runnable 'try it' examples. The OpenAPI/Swagger probe returned 404 on all candidate paths.",
     "evidenceIds": []
   },
   {
@@ -4723,18 +4734,20 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Kushki is a payments API platform, so offering a downloadable machine-readable API spec is a fair question for it. The evidence shows no such spec: every probed OpenAPI/Swagger path returned 404, and the docs pages cover integration guides without mentioning any spec download. Confidence is medium rather than high because the probes only checked common paths, so a spec at an unprobed location cannot be ruled out.",
+    "rationale": "Kushki is a payments API, so a downloadable OpenAPI-style spec is a fair question for it. Every probed OpenAPI/Swagger path returned 404, and no doc page mentions a downloadable spec. The llms.txt index and .md doc pages are machine-readable documentation, not an API specification, so they earn no credit here.",
     "evidenceIds": []
   },
   {
     "productId": "kushki",
     "storyId": "api-sandbox",
     "verdict": "partial",
-    "quality": 4,
-    "confidence": "low",
-    "rationale": "Kushki's own docs include a 'Test Data ... Moving to Production' section. That implies a separate test environment and a promotion step before live traffic, so payments can be exercised without touching production. The evidence is only a page title, though, with no detail on how the sandbox is isolated, on test credentials or endpoints, or on how well it matches production. Missing for 10: explicit documentation of a sandbox environment and endpoints, separate test API keys, details on test card data and simulated scenarios, and independent or hands-on corroboration.",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Kushki's own docs include a 'Test Data … Moving to Production' section (English and Spanish) and an Apple Pay sandbox testing page. That points to a test environment separate from production, but the evidence is only section headings with no detail on how it works. Missing for 10: documentation of the sandbox environment itself (separate endpoints or test credentials, separation from live data), coverage of test data across payment methods, and independent or hands-on corroboration.",
     "evidenceIds": [
-      "kushki-docs-11"
+      "kushki-docs-11",
+      "kushki-docs-36",
+      "kushki-docs-26"
     ]
   },
   {
@@ -4743,7 +4756,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Versioned APIs with a deprecation policy is an applicable axis for a payments API provider. However, none of the cited docs (payment flows, 3DS, refunds, network tokens, integration options) mention API versioning or a deprecation policy. With no evidence of this capability, the verdict is none.",
+    "rationale": "API versioning and deprecation policy is a fair question for a payments API like Kushki, so the axis applies. Nothing in the evidence pack mentions API version identifiers, version pinning, changelogs, or a documented deprecation policy. The docs-tree relocation in kushki-probe-4 concerns documentation URLs, not API versioning, and earns no credit.",
     "evidenceIds": []
   },
   {
@@ -4752,7 +4765,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Automated tax calculation is a fair question for a payments platform like Kushki. However, nothing in the evidence pack mentions sales tax, VAT, or GST. The cited docs cover card payments, authorization/capture, refunds, 3DS, network tokens, payment links, payouts, and POS, but none describe computing or collecting tax per transaction.",
+    "rationale": "Kushki is a payment gateway, so automatic sales-tax, VAT and GST calculation and collection is a fair question for it. None of the evidence (card payments, 3DS, refunds, recurring charges, POS, payouts, docs probes) mentions tax calculation or collection.",
     "evidenceIds": []
   },
   {
@@ -4761,7 +4774,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Bulk operations are a fair question for a payments platform, for example batch payouts, mass refunds, or bulk link creation. The evidence documents only single-item flows: one-time charges, authorization/capture, individual refunds and payment links. The payouts item (kushki-docs-18) mentions paying suppliers and employees but never describes batch or bulk submission, so it is an adjacent feature and earns no credit.",
+    "rationale": "Bulk operations fit a payments API (for example batch refunds, mass payouts, or bulk captures), so the axis applies. However, no evidence documents a batch or bulk endpoint or a dashboard bulk action. The payouts page (kushki-docs-18) only says payments to suppliers and employees are easy, without describing a bulk mechanism. Recurring and scheduled charges are a different capability: per-subscription automation, not bulk operations.",
     "evidenceIds": []
   },
   {
@@ -4770,17 +4783,21 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Event-driven automation rules are a fair question for a payments platform like Kushki, so the axis applies. Nothing in the evidence pack documents user-defined rules, triggers, or automated actions on events. The cited docs cover payment flows (one-time, authorization/capture, refunds, 3DS, payment links), and the probes found no machine-readable docs.",
+    "rationale": "A payments platform could plausibly offer a user-defined rules or automation engine, so this axis applies. The evidence pack documents no such capability. Recurring and scheduled charges (kushki-docs-29, kushki-docs-30) are adjacent billing features, and card-present webhooks (kushki-docs-34) are a developer building block, not user-defined event-to-action rules, so none of these earn credit.",
     "evidenceIds": []
   },
   {
     "productId": "kushki",
     "storyId": "automation-scheduled-jobs",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Scheduling recurring jobs, such as recurring charges, subscriptions or scheduled payouts, is a fair axis for a payments platform, so the story applies. The evidence pack covers only one-time card payments, authorization/capture, refunds, payment links and payouts, with nothing on scheduling or recurring automation. Absent documented scheduling, the verdict is none.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "Kushki documents its own scheduling for recurring work in the payments domain: guides titled \"Crea un cargo recurrente\" (create a recurring charge) and \"Maneja tus cargos calendarizados\" (manage your scheduled charges), plus external subscriptions. This covers recurring scheduled charges, not general jobs or workflows, and the evidence is page titles only. Missing for 10: scheduling of arbitrary jobs or workflows beyond recurring charges, documented schedule configuration details (frequency, cron-like rules, editing or pausing), agent or AI-native interfaces for managing schedules, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "kushki-docs-29",
+      "kushki-docs-30",
+      "kushki-docs-33"
+    ]
   },
   {
     "productId": "kushki",
@@ -4788,7 +4805,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Payment platforms can plausibly offer automation or workflow features with versioning and rollback, so this axis applies to Kushki. The evidence pack covers only payment acceptance, refunds, 3DS, tokens, payment links and payouts, with no mention of automations or of versioning, reviewing or rolling them back.",
+    "rationale": "Versioning, reviewing, and rolling back automations is a fair question for a payments platform, since such platforms can ship rule or workflow configuration, so the axis applies. The evidence covers only recurring and scheduled charges and webhooks, with no documented versioning, review, or rollback of automations.",
     "evidenceIds": []
   },
   {
@@ -4797,20 +4814,21 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Kushki is a payments platform, so automatic retry of failed subscription payments with dunning is a fair question for it. However, the evidence pack covers only one-time card payments, OTP, auth/capture, refunds, 3DS, network tokens, payment links, and payouts. Nothing documents subscriptions, failed-payment retries, smart dunning, or recovery emails.",
+    "rationale": "Kushki's docs cover recurring and scheduled charges and external subscriptions, so a subscription retry and dunning axis is fair for this payments platform. However, nothing in the evidence documents automatic retry of failed subscription payments, smart dunning logic, or recovery emails. Recurring-charge creation is an adjacent capability and earns no credit for this story.",
     "evidenceIds": []
   },
   {
     "productId": "kushki",
     "storyId": "embedded-checkout-components",
     "verdict": "full",
-    "quality": 6,
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Kushki markets 'Kajita de pagos' as a customizable payment form and offers kushki.js, a JS library for PCI-secure card capture used in its 3DS integration. This is distinct from its redirect-based 'Botón de pagos' hosted portal, so the core story of embedding customizable payment components in your own site is covered. Evidence is mostly product-page titles with little depth. Missing for 10: detailed docs on Kajita/kushki.js customization options (styling, fields, events), mobile SDK or in-app embedding evidence, and independent or hands-on corroboration.",
+    "rationale": "Kushki markets 'Kajita de pagos' as a customizable payment form and offers a JS library (kushki.js) for PCI-secure card capture inside the merchant's own site, including 3DS flows. It lists these separately from its redirect-based 'Botón de pagos', so embedded checkout is a distinct first-party option. The evidence is mostly product headlines rather than in-depth guides. Missing for 10: detailed docs on component customization (styling, fields, layout), evidence of native mobile app SDK embedding, independent or hands-on corroboration.",
     "evidenceIds": [
       "kushki-docs-13",
       "kushki-docs-15",
       "kushki-docs-9",
+      "kushki-docs-24",
       "kushki-docs-16"
     ]
   },
@@ -4820,7 +4838,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence covers card payments, 3DS authentication, network tokens and refunds, but no documented machine-learning fraud scoring or custom block/review/allow rules. 3DS is an adjacent authentication control and does not count toward this story.",
+    "rationale": "Fraud screening with ML scores and custom block/review/allow rules is a fair question for a payment processor like Kushki, so the axis applies. Nothing in the evidence pack documents fraud scoring or a rules engine. The pack covers card payments, refunds, network tokens and 3DS authentication, and 3DS is an adjacent control that earns no credit here.",
     "evidenceIds": []
   },
   {
@@ -4842,7 +4860,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Idempotency keys are a fair capability to ask of a payments API, so the axis applies. Nothing in the evidence pack mentions idempotency keys, safe retries, or duplicate-charge prevention. The card payment, capture and refund doc titles describe charge flows, not retry safety.",
+    "rationale": "Idempotency keys are a fair question for a payments API like Kushki. However, nothing in the evidence pack mentions idempotency keys, safe retries, or duplicate-charge protection. The card-payment, refund, and 3DS docs are titles only and say nothing about retry semantics.",
     "evidenceIds": []
   },
   {
@@ -4851,15 +4869,19 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "low",
-    "rationale": "Kushki publishes step-by-step integration guides for accepting card payments, authorization/capture and refunds, plus a kushki.js library and test-data/moving-to-production docs. That points to a documented path for building a payment flow from the docs. However, the evidence is only page titles: nothing shows the content contains copy-paste code samples, which languages are covered, or that integration fits within a day. Missing for 10: evidence of copy-paste code examples in multiple server languages or SDKs, a published OpenAPI spec (probes returned 404), and independent or hands-on corroboration of time-to-first-payment.",
+    "rationale": "Kushki publishes its own step-by-step integration guides for a working card flow: accept a card payment, authorization and capture, and refunds. It also documents test data and moving to production, and offers a kushki.js library, a customizable payment form and e-commerce plugins, so a docs-driven integration path exists. The pack does not show the copy-paste code samples themselves, which languages or SDKs they cover, or any evidence on time-to-integrate. The probe notes the old /cl/en docs tree now returns 404 after the move, but that is a site migration, not a failure of the integration guides. Missing for 10: evidence of copy-paste code samples in multiple programming languages or SDKs, an OpenAPI spec (the probe 404'd), and hands-on or independent corroboration of a same-day integration.",
     "evidenceIds": [
-      "kushki-docs-1",
       "kushki-docs-2",
+      "kushki-docs-21",
       "kushki-docs-5",
       "kushki-docs-8",
       "kushki-docs-11",
+      "kushki-docs-36",
       "kushki-docs-15",
-      "kushki-probe-3"
+      "kushki-docs-13",
+      "kushki-docs-17",
+      "kushki-probe-3",
+      "kushki-probe-4"
     ]
   },
   {
@@ -4868,7 +4890,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Marketplace payments are a fair question for a payment processor like Kushki, so the axis applies. The evidence shows no seller onboarding, sub-merchant accounts, or split payments between parties. The only related items are a generic payouts product for paying suppliers, partners and employees, and a mention of an 'aggregator' collection model. Both are adjacent features rather than the platform/marketplace capability this story describes.",
+    "rationale": "The evidence pack does not document seller or sub-merchant onboarding, split payments between parties, or per-seller payouts tied to marketplace transactions. The generic payouts-to-suppliers marketing line and the mention of an aggregator/gateway collection model are adjacent features, not a documented marketplace capability, so they earn no credit.",
     "evidenceIds": []
   },
   {
@@ -4877,7 +4899,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Multi-currency charging and FX settlement is a fair question for a payment processor like Kushki, so the axis applies. However, nothing in the evidence pack mentions presentment currencies, settlement currency, or FX handling. The docs cover card payments, refunds, 3DS, payment links and payouts, but none address currency conversion or cross-currency settlement.",
+    "rationale": "Kushki is a payments gateway, so charging in local currencies and settling in the merchant's currency with transparent FX is a fair question for it. However, the evidence pack covers only card payments, refunds, 3DS, tokens, subscriptions, payouts and POS. None of it documents multi-currency presentment, settlement currency choice, or FX rates and fees. Country-specific docs trees (e.g. /cl, /mx) alone do not show cross-currency charging or FX handling.",
     "evidenceIds": []
   },
   {
@@ -4885,8 +4907,8 @@
     "storyId": "no-code-payment-links",
     "verdict": "partial",
     "quality": 4,
-    "confidence": "low",
-    "rationale": "Kushki's own marketing lists \"Smartlink — Crea y personaliza links de pago\", a first-party product for creating and customizing payment links, so the core capability exists. The evidence is only a one-line product heading, with nothing showing it is built from a dashboard without code or that a merchant can start selling immediately. Missing for 10: dashboard-based no-code creation flow, sharing/distribution details, onboarding speed to go live, in-depth docs, and independent or hands-on corroboration.",
+    "confidence": "medium",
+    "rationale": "Kushki markets Smartlink as a first-party feature to create and customize payment links, which matches the core of the story. However, the only evidence is a one-line marketing headline: it does not show the links are made from a dashboard without code, that they are shareable, or that a founder can start selling right away. Missing for 10: documentation of no-code dashboard creation, link sharing and distribution, onboarding or time-to-first-sale details, and independent or hands-on corroboration.",
     "evidenceIds": [
       "kushki-docs-14"
     ]
@@ -4895,16 +4917,18 @@
     "productId": "kushki",
     "storyId": "openness-api-parity",
     "verdict": "partial",
-    "quality": 4,
-    "confidence": "low",
-    "rationale": "Kushki documents a broad payments API covering one-time card charges, direct charges, authorization and capture, voids and refunds, 3DS, network tokens, and a 'multiple payment methods with one API' positioning. That shows substantial programmatic coverage of core payment operations. Nothing in the pack states or demonstrates parity with the merchant dashboard/UI, though. Products like Smartlink payment links, payouts, and POS appear only as product pages, with no evidence they are API-manageable. Probes found no published OpenAPI spec, which would let parity be checked. Missing for 10: explicit API–UI parity claim, API coverage of dashboard/admin functions (payment links, account settings, reporting, payouts), a machine-readable OpenAPI spec, and independent corroboration.",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Kushki documents API-driven flows for the core payment lifecycle: card charges, direct charges without a token, authorization and capture, voids and refunds, a 100% API 3DS integration, recurring and scheduled charges, and Webpay OneClick. Its site also markets multiple payment methods through one API. However, nothing in the pack claims or shows parity with the dashboard UI, and no machine-readable OpenAPI spec was found (all candidate paths returned 404). Missing for 10: an explicit API/UI parity statement, evidence that dashboard functions (Smartlink creation, payouts, reporting, account and settings management) are exposed via API, and a published OpenAPI spec or independent corroboration.",
     "evidenceIds": [
       "kushki-docs-2",
       "kushki-docs-3",
       "kushki-docs-5",
       "kushki-docs-8",
-      "kushki-docs-10",
       "kushki-docs-12",
+      "kushki-docs-24",
+      "kushki-docs-29",
+      "kushki-docs-30",
       "kushki-docs-14",
       "kushki-probe-3"
     ]
@@ -4915,7 +4939,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Kushki is a payments platform, so exporting merchant data in open formats is a fair question for this kind of product. However, nothing in the evidence pack documents bulk data export, open export formats, or offboarding. The docs cover payment acceptance, refunds and integrations, and the probes only show missing llms.txt, markdown and OpenAPI artifacts, which say nothing about data export.",
+    "rationale": "Data portability is a fair question for a payments platform: transaction history, customer records and card-vault migration are all plausible exports. Nothing in the pack documents a bulk data export, report downloads in open formats, or a migration path for leaving. The llms.txt and markdown docs probes show that Kushki's documentation is open, not that a customer's own data can be exported, so they earn no credit here.",
     "evidenceIds": []
   },
   {
@@ -4924,7 +4948,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Open-sourcing is a fair question for a payments platform, so the axis applies. Nothing in the evidence shows Kushki publishing its source under an open license: the pack covers payment APIs, a JS library and e-commerce plugins, but no repository or license terms. The probes show only missing llms.txt and OpenAPI files, which do not bear on source availability.",
+    "rationale": "Whether source is available under an open license is a fair question for a payments platform, so this axis applies. Nothing in the evidence shows Kushki publishing its product source under an open license. The kushki.js library, e-commerce plugins, llms.txt and markdown docs are integration and documentation artifacts, with no stated source availability or license terms.",
     "evidenceIds": []
   },
   {
@@ -4933,7 +4957,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Self-hosting is a fair question for payment platforms, since some payment orchestration products ship self-hostable or open-source deployments, so the axis applies. Kushki's evidence describes only hosted APIs, JS libraries, payment buttons, links, plugins and POS terminals, with no self-hosted or on-premise deployment option.",
+    "rationale": "Self-hosting is a fair question for payment software, since open-source, self-hostable payment gateways and orchestrators exist, so the axis applies. Kushki's evidence pack describes only hosted services: card payment APIs, the kushki.js library, payment links, e-commerce plugins and POS terminals. None of it documents a self-hostable or on-premise deployment of the core product.",
     "evidenceIds": []
   },
   {
@@ -4942,7 +4966,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Payout scheduling and payout-level reconciliation is a fair question for a payment processor like Kushki, so the axis applies. However, the evidence pack documents only card acceptance, refunds as standalone operations, and payouts to third parties such as suppliers. Nothing covers controlling the merchant's settlement schedule or breaking each payout down into its charges, fees, and refunds.",
+    "rationale": "Kushki is a payment gateway/aggregator, so controlling the payout schedule and seeing a per-payout breakdown of charges, fees, and refunds is a fair question for it. The evidence pack does not document settlement schedules or payout reconciliation reports. The nearby items cover different capabilities and earn no credit: supplier/employee disbursements (docs-18), scheduled recurring charges (docs-30), and refund handling (docs-8/23).",
     "evidenceIds": []
   },
   {
@@ -4951,14 +4975,14 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Kushki documents its own client-side tokenization tooling: a JS library marketed as \"Máxima seguridad con PCI de Kushki\", kushki.js, a hosted customizable payment form (Kajita) and a redirect payment button to a secure portal. It also contrasts \"direct charge (without token)\" with token-based flows. That points to card data being tokenized off the merchant's servers, but the evidence is mostly page titles and taglines, with no explicit statement of PCI scope reduction. missing for 10: explicit documentation that card data never reaches merchant servers, stated PCI DSS scope/SAQ level reduction (e.g., SAQ A), detail on the tokenization flow, independent corroboration.",
+    "rationale": "Kushki's own materials describe client-side collection paths that lean on Kushki's PCI compliance: the kushki.js library is pitched as \"maximum security with Kushki's PCI\", there is a hosted customizable payment form (Kajita), and a payment button redirects to a secure portal. A separately labeled \"direct charge (without token)\" flow implies tokenized charging is the standard path. However, the evidence is mostly page titles and never explicitly states that raw card data bypasses merchant servers or what PCI scope (e.g., SAQ A/A-EP) a merchant ends up with. missing for 10: explicit documentation that card data never touches merchant servers, a stated PCI scope-reduction or SAQ level for merchants, details of the tokenization flow, independent corroboration.",
     "evidenceIds": [
       "kushki-docs-15",
       "kushki-docs-13",
       "kushki-docs-16",
-      "kushki-docs-9",
       "kushki-docs-3",
-      "kushki-docs-2"
+      "kushki-docs-27",
+      "kushki-docs-24"
     ]
   },
   {
@@ -4967,7 +4991,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Kushki is a payments platform, so choosing a data storage region or residency is a fair question for it. However, nothing in the evidence pack mentions data residency or region selection. The docs cover card payments, 3DS, tokens and refunds. The country-specific doc paths (e.g. /cl/) reflect market-specific integrations, not a user choice of where data is stored.",
+    "rationale": "Letting customers choose a data-storage region is a fair question for a payments SaaS like Kushki, so the axis applies. However, nothing in the evidence pack documents any data-residency or region-selection control. The country-specific doc trees (e.g. /cl, /mx) cover local payment methods per market, not where customer data is stored.",
     "evidenceIds": []
   },
   {
@@ -4976,7 +5000,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Kushki is a payments platform that processes merchant and cardholder data, so it is a fair question whether it offers an opt-out from AI model training. Nothing in the evidence pack mentions an AI-training opt-out, a data-usage policy, or any related privacy control. The pack covers only payment integration docs and documentation probes.",
+    "rationale": "Kushki is a payments platform that processes merchant and cardholder data, so whether that data can be excluded from AI model training is a fair privacy question for this kind of product. The evidence pack covers only payment flows, integrations, and docs/llms.txt probes. None of it mentions AI-training data usage, opt-out controls, or a data-use policy, so the capability is unevidenced.",
     "evidenceIds": []
   },
   {
@@ -4985,7 +5009,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data retention and deletion controls are a fair question for a payments platform that handles cardholder and customer data, so the axis applies. However, nothing in the evidence pack documents retention settings, data deletion APIs, or privacy controls. The pages cover card payments, refunds and voids (transaction reversals, not data deletion), 3DS, network tokens, and payment products.",
+    "rationale": "Controlling data retention and deletion is a fair question for a payments platform that stores cardholder and transaction data, so the axis applies. The evidence pack has nothing on retention policies, data deletion APIs, or customer-data erasure controls. The voids/refunds and network-token docs cover different capabilities and earn no credit.",
     "evidenceIds": []
   },
   {
@@ -4994,27 +5018,32 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Kushki is a payments platform that ships JS libraries, SDKs and plugins, so opting out of telemetry and usage tracking is a fair question to ask of it. Nothing in the evidence pack mentions telemetry, usage tracking, or any opt-out control. The docs cover only payment flows, and the probes cover only docs and OpenAPI availability.",
+    "rationale": "Opting out of telemetry is a fair question for a payments platform that ships client-side SDKs such as kushki.js, plugins, and POS terminals, so the axis applies. Nothing in the evidence pack mentions telemetry, usage tracking, analytics collection, or any opt-out control. The docs and probes cover only payment flows and the AI-readable docs index (llms.txt).",
     "evidenceIds": []
   },
   {
     "productId": "kushki",
     "storyId": "recurring-subscription-billing",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Kushki is a LATAM payment gateway, so recurring subscription billing is a fair axis for it. However, the evidence covers only one-time card payments, authorization/capture, refunds, 3DS, network tokens, payment links, and payouts. Nothing documents subscription plans, trials, upgrades, or proration, and adjacent features such as network tokens or one-time charges earn no credit.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Kushki's own docs include pages on creating recurring charges ('Crea un cargo recurrente'), managing scheduled charges ('Maneja tus cargos calendarizados') and external subscriptions, so recurring billing is a first-party capability. The evidence is only page titles, though, and says nothing about plan objects, trials, upgrades/downgrades, or proration. Missing for 10: plan/pricing-tier management, trial periods, subscription upgrades/downgrades, proration logic, in-depth docs content, and independent corroboration.",
+    "evidenceIds": [
+      "kushki-docs-29",
+      "kushki-docs-30",
+      "kushki-docs-33"
+    ]
   },
   {
     "productId": "kushki",
     "storyId": "refunds-full-partial",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "low",
-    "rationale": "Kushki has a first-party docs page on 'Returns, cancellations, and refunds' under card payments, so it documents its own refund/void capability. The pack shows only the page title, with no detail on amounts or channels. Missing for 10: evidence of partial vs full refund support, evidence of refunds from the dashboard, evidence of a refund API endpoint or request details, independent or hands-on corroboration.",
+    "rationale": "Kushki has a first-party docs page on refunds ('Returns, cancellations, and refunds' / 'Devoluciones, anulaciones y reembolsos'), so refunds are a documented capability. The evidence is only page titles, though, and doesn't show how refunds work or which channels support them. Missing for 10: evidence of partial vs. full refund amounts, evidence of issuing refunds from the dashboard, explicit refund API endpoint details, and independent or hands-on corroboration.",
     "evidenceIds": [
-      "kushki-docs-8"
+      "kushki-docs-8",
+      "kushki-docs-23"
     ]
   },
   {
@@ -5023,18 +5052,20 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Kushki is a payment processor, so chargeback response and dispute tracking is an applicable axis. However, nothing in the evidence pack mentions chargebacks, dispute evidence submission or dispute lifecycle tracking. The closest item is voids and refunds (kushki-docs-8), which is an adjacent feature and earns no credit.",
+    "rationale": "Chargeback and dispute management is a fair axis for a payment processor like Kushki, so the story applies. The evidence pack covers card payments, auth/capture, refunds and voids, 3DS, and network tokens, but never mentions chargebacks, dispute evidence submission, or dispute lifecycle tracking. Refund and void handling is a different capability and earns no credit here.",
     "evidenceIds": []
   },
   {
     "productId": "kushki",
     "storyId": "sandbox-test-mode-fidelity",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "low",
-    "rationale": "Kushki's docs include a 'Test Data ... Moving to Production' section, which points to a first-party test environment with test data separate from production. The evidence is only a title-level mention, so it does not show how closely the test environment mirrors production or which scenarios the test cards cover. missing for 10: evidence that the sandbox mirrors production, documented test cards for declines, documented test cards for disputes/chargebacks, end-to-end flow testing detail, independent or hands-on corroboration.",
+    "rationale": "Kushki's own docs include a 'Test Data' section paired with 'Moving to Production' (kushki-docs-11, kushki-docs-36) and a page on Apple Pay sandbox testing (kushki-docs-26), so a first-party test environment with test data exists. The evidence is only page titles, though, so its depth is unproven: nothing shows the sandbox mirrors production or that test cards cover declines or disputes. missing for 10: documented test cards for decline scenarios, dispute/chargeback simulation, evidence the sandbox mirrors production behavior across the full flow, independent or hands-on corroboration.",
     "evidenceIds": [
-      "kushki-docs-11"
+      "kushki-docs-11",
+      "kushki-docs-36",
+      "kushki-docs-26"
     ]
   },
   {
@@ -5043,7 +5074,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Invoicing is a fair axis for a payments platform like Kushki, but the evidence pack never documents hosted invoices or automatic payment reminders. Smartlink payment links and the hosted payment button are adjacent checkout features and earn no credit toward invoicing with reminders.",
+    "rationale": "Invoicing is a fair axis for a payments platform, but the evidence shows no hosted invoice product and no automatic payment reminders. Smartlink payment links, the hosted payment button, and recurring or scheduled charges are adjacent payment features, not invoicing with reminders, so they earn no credit.",
     "evidenceIds": []
   },
   {
@@ -5052,20 +5083,22 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Settlement reconciliation is a fair question for a payment gateway/aggregator like Kushki, so the axis applies. The pack has no documentation of settlement reports, bank-deposit matching, or itemized fee and chargeback reporting. The refunds doc (kushki-docs-8) covers processing voids and refunds, not reconciliation reporting. The payouts page (kushki-docs-18) covers paying suppliers and employees, not settlement reconciliation. Neither earns credit.",
+    "rationale": "Reconciliation reporting is a fair axis for a payment processor like Kushki, but the evidence pack contains nothing on settlement reports, bank-deposit reconciliation, or itemized fee and chargeback reporting. The only nearby items are refund/void API docs and a disbursements product, which are adjacent features and not reconciliation reports.",
     "evidenceIds": []
   },
   {
     "productId": "kushki",
     "storyId": "wallets-local-payment-methods",
     "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Kushki claims 'multiple payment methods with one API' and documents Webpay Plus, a Chilean redirect-based local payment method, so it offers some local-method acceptance alongside cards. Nothing in the evidence shows Apple Pay, Google Pay, or BNPL. missing for 10: Apple Pay/Google Pay wallet support, BNPL options, documented bank-transfer redirects beyond Webpay Plus, proof these methods work through a single integration, independent corroboration.",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Kushki documents Apple Pay payments with sandbox testing (kushki-docs-26) and a local Chilean redirect method, Webpay Plus (kushki-docs-6, kushki-docs-31, kushki-docs-32). Its marketing claims multiple payment methods through one API (kushki-docs-12), so part of the single-integration story is covered. missing for 10: Google Pay evidence, BNPL evidence, bank-transfer redirect methods beyond Webpay, documentation that wallets and local methods share one integration, independent or hands-on corroboration.",
     "evidenceIds": [
-      "kushki-docs-12",
+      "kushki-docs-26",
       "kushki-docs-6",
-      "kushki-docs-7"
+      "kushki-docs-31",
+      "kushki-docs-32",
+      "kushki-docs-12"
     ]
   },
   {
