@@ -23,13 +23,7 @@ Pressure-test the idea before building: draft the problem hypothesis, pick the v
 
 An agent can draft the hypothesis, propose the method that fits the starting situation, build the test assets, and analyze response data. Customer interviews, manual delivery, and the go/no-go decision are judgment work.
 
-<a id="artifacts"></a>
-
 ## Before you start
-
-Required artifacts:
-
-- Team wiki — from [Set up a team wiki](set-up-a-team-wiki.md)
 
 | Information to gather | Required by the record |
 | --- | --- |
@@ -42,7 +36,7 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Draft problem hypothesis and target customer](#step-1) | agent-runnable | ~15 min | Entry step |
-| [2. Capture the hypothesis doc in Notion](#step-2) | agent-runnable | ~5 min | [Step 1](#step-1) |
+| [2. Save the hypothesis and research](#step-2) | agent-runnable | ~5 min | [Step 1](#step-1) |
 | [3. Choose the validation method](#step-3) | agent-runnable | ~10 min | [Step 2](#step-2) |
 | [4. Instrument signup analytics](#step-4) | agent-runnable | ~10 min | Alternatives: [Step 3](#step-3) (Lean MVP launch and The MVP has a digital signup or payment path to instrument.); [Step 3](#step-3) (Pre-sale commitment test and The preorder page and checkout need conversion instrumentation.); [Step 3](#step-3) (Waitlist + ad-spend test and The waitlist page needs click-to-signup instrumentation.) |
 | [5. Run customer interviews](#step-5) | human; includes waiting | ~8 h | Alternatives: [Step 3](#step-3) (Problem-interview sprint and Interview evidence replaces digital conversion instrumentation.); [Step 3](#step-3) (Concierge / manual MVP and Manual-delivery records replace digital conversion instrumentation.); [Step 3](#step-3) (Product/market-fit survey and The product's existing analytics already measure usage; interviews probe the survey segments.); [Step 4](#step-4) |
@@ -60,19 +54,19 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 agent-runnable · ~15 min
 
 
-Describe the customer, the situation in which the problem occurs, the outcome they want, and how they handle it today. Separate what you have observed from assumptions about frequency, cost, urgency, or willingness to change. Pick the assumption that most threatens the idea and define what evidence would change your mind. Ask who wants this outcome so much they would use a rough first version from an unknown team (lore rule pg-deep-need-test); if no one fits that description, record it as the hypothesis's biggest open risk. That question should drive the first experiment and the decision you make from its results.
+Start from the saved hypothesis, customer context and research already available. Ask only for missing or changed facts that affect the validation choice. Describe the customer, the situation in which the problem occurs, the outcome they want, and how they handle it today. Separate what you have observed from assumptions about frequency, cost, urgency, or willingness to change. Pick the assumption that most threatens the idea and define what evidence would change your mind. Ask who wants this outcome so much they would use a rough first version from an unknown team (lore rule pg-deep-need-test); if no one fits that description, record it as the hypothesis's biggest open risk. That question should drive the first experiment and the decision you make from its results.
 
 - Vendor options: ChatGPT, Claude, Gemini, Grok
 - Ranked market: [ai-assistants](../../open-rankings/ai-assistants)
 
 <a id="step-2"></a>
 
-### 2. Capture the hypothesis doc in Notion
+### 2. Save the hypothesis and research
 
 agent-runnable · ~5 min
 
 
-Put the hypothesis in the team's knowledge workspace, using Notion if selected. Include the customer and problem context, evidence already available, uncertain assumptions, and the question the next test will answer. Link research notes without widening access to participant information. Keep the starting version and append findings as the experiment runs, making changes to the hypothesis visible.
+Save the hypothesis in the team's existing research document or knowledge workspace, using Notion if selected. If no workspace is available, keep a private working document so validation can proceed. Include the customer and problem context, evidence already available, uncertain assumptions, and the question the next test will answer. Link research notes without widening access to participant information. Keep the starting version and append findings as the experiment runs, making changes to the hypothesis visible.
 
 - Canonical vendor: Notion
 
