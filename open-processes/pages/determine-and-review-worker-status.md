@@ -45,10 +45,10 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Record the real working arrangement](#step-1) | agent-runnable | Not recorded | Entry step |
-| [2. Review employment and tax status separately](#step-2) | human; approval required | Not recorded | [Step 1](#step-1) |
+| [2. Review employment and tax status separately](#step-2) | human; human approval every run | Not recorded | [Step 1](#step-1) |
 | [3. Prepare the engagement and correction plan](#step-3) | agent-runnable | Not recorded | [Step 2](#step-2) |
-| [4. Approve the determination and engagement route](#step-4) | human; approval required | Not recorded | [Step 3](#step-3) |
-| [5. Implement the authorized engagement changes](#step-5) | human; approval required | Not recorded | [Step 4](#step-4) |
+| [4. Approve the determination and engagement route](#step-4) | human; human approval every run | Not recorded | [Step 3](#step-3) |
+| [5. Implement the authorized engagement changes](#step-5) | human; human approval every run | Not recorded | [Step 4](#step-4) |
 | [6. Verify actual practices and schedule reassessment](#step-6) | agent-runnable | Not recorded | [Step 5](#step-5) |
 
 <a id="steps"></a>
@@ -70,7 +70,7 @@ Collect the engaging entity, worker and work locations, intermediary, proposed d
 
 ### 2. Review employment and tax status separately
 
-human · human approval required · hard to undo
+human · human approval every run · hard to undo
 
 
 Appropriately qualified employment and tax reviewers assess the relationship under the applicable local tests, recording their reasoning and unresolved facts. Employment-rights status and tax status may differ; agency, intermediary, overseas and disputed cases need the relevant specialist route.
@@ -92,7 +92,7 @@ Translate the reviewed determinations into proposed contract, onboarding, payrol
 
 ### 4. Approve the determination and engagement route
 
-human · human approval required · hard to undo
+human · human approval every run · hard to undo
 
 
 The accountable people owner approves the specific engagement or remediation plan after required employment and tax review. Resolve material factual disputes or missing locations before onboarding; retain the decision and its stated assumptions.
@@ -103,7 +103,7 @@ The accountable people owner approves the specific engagement or remediation pla
 
 ### 5. Implement the authorized engagement changes
 
-human · human approval required · hard to undo
+human · human approval every run · hard to undo
 
 
 Authorized people complete the approved contracts, payroll or supplier setup and required communications in private systems. Retain signed records and implementation evidence, and assign disputed status or historical corrections to the qualified owner.

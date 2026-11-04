@@ -52,7 +52,7 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | --- | --- | --- | --- |
 | [1. Build the target list](#step-1) | agent-runnable | ~30 min | Entry step |
 | [2. Draft the sequence copy](#step-2) | agent-runnable | ~20 min | [Step 1](#step-1) (New eligible contacts need an outreach sequence.) |
-| [3. Set up and launch the sequence](#step-3) | agent-runnable; approval required | ~15 min | [Step 2](#step-2) |
+| [3. Set up and launch the sequence](#step-3) | agent-runnable; human approval above a threshold | ~15 min | [Step 2](#step-2) |
 | [4. Monitor delivery and handle conversations](#step-4) | agent-runnable; includes waiting | ~15 min | Alternatives: [Step 1](#step-1) (An existing conversation needs a response without enrollment in a new sequence.); [Step 3](#step-3) |
 | [5. Book meetings with responders](#step-5) | agent-runnable | ~5 min | [Step 4](#step-4) (A substantive response indicates interest in a meeting.) |
 | [6. Qualify on the call](#step-6) | human | ~1 h | [Step 5](#step-5) (The prospect accepts and attends the qualification conversation.) |
@@ -104,7 +104,7 @@ Include the verified sender name/company and reply route, plus a proposed interv
 
 ### 3. Set up and launch the sequence
 
-agent-runnable · ~15 min · human approval required · hard to undo
+agent-runnable · ~15 min · human approval above a threshold · hard to undo
 
 
 Load the messages and eligible audience into a draft sequence. Check the authorized sender, personalization, sending window, stop conditions and handling of replies, bounces and opt-outs. Run an internal test through the messages and CRM updates. Activate only the sales owner's agreed recipient set and cadence, with a named person able to pause unexpected sends.

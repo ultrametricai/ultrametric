@@ -53,9 +53,9 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Describe the intended foreign operation](#step-1) | agent-runnable | Not recorded | Entry step |
-| [2. Select the structure with local advisers](#step-2) | human; approval required | Not recorded | [Step 1](#step-1) |
+| [2. Select the structure with local advisers](#step-2) | human; human approval every run | Not recorded | [Step 1](#step-1) |
 | [3. Prepare formation and operating dependencies](#step-3) | agent-runnable | Not recorded | [Step 2](#step-2) |
-| [4. Authorize and complete the local establishment](#step-4) | human; approval required | Not recorded | [Step 3](#step-3) |
+| [4. Authorize and complete the local establishment](#step-4) | human; human approval every run | Not recorded | [Step 3](#step-3) |
 | [5. Reconcile local and group operations](#step-5) | agent-runnable | Not recorded | [Step 4](#step-4) |
 
 <a id="steps"></a>
@@ -77,7 +77,7 @@ Record activities, customers, personnel, premises, management, funds and data fl
 
 ### 2. Select the structure with local advisers
 
-human · human approval required
+human · human approval every run
 
 
 Qualified legal and tax advisers assess the actual commercial need, local rules, permanent-establishment exposure, ownership and reporting. Compare alternatives and document assumptions before approving a local entity.
@@ -99,7 +99,7 @@ Assemble approved ownership, director, address, capital and identification recor
 
 ### 4. Authorize and complete the local establishment
 
-human · human approval required
+human · human approval every run
 
 
 Authorized representatives execute the reviewed documents and local advisers coordinate submissions. Retain official decisions and keep restricted activities paused until required registrations or permissions are obtained.

@@ -37,13 +37,13 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
-| [1. Design infrastructure](#step-1) | human; approval required | ~2 h | Entry step |
-| [2. Create AWS account + billing](#step-2) | manual form/portal; approval required | ~20 min | [Step 1](#step-1) |
-| [3. Configure VPC and networking](#step-3) | agent-runnable; approval required | ~30 min | [Step 2](#step-2) |
-| [4. Set up RDS database](#step-4) | agent-runnable; approval required | ~30 min | [Step 3](#step-3) |
-| [5. Configure ECS cluster](#step-5) | agent-runnable; approval required | ~30 min | [Step 3](#step-3) |
-| [6. Set up IAM roles](#step-6) | agent-runnable; approval required | ~20 min | [Step 3](#step-3) |
-| [7. Configure monitoring](#step-7) | agent-runnable; approval required | ~20 min | [Step 5](#step-5) |
+| [1. Design infrastructure](#step-1) | human; human approval on the first run | ~2 h | Entry step |
+| [2. Create AWS account + billing](#step-2) | manual form/portal; human approval on the first run | ~20 min | [Step 1](#step-1) |
+| [3. Configure VPC and networking](#step-3) | agent-runnable; human approval every run | ~30 min | [Step 2](#step-2) |
+| [4. Set up RDS database](#step-4) | agent-runnable; human approval every run | ~30 min | [Step 3](#step-3) |
+| [5. Configure ECS cluster](#step-5) | agent-runnable; human approval every run | ~30 min | [Step 3](#step-3) |
+| [6. Set up IAM roles](#step-6) | agent-runnable; human approval every run | ~20 min | [Step 3](#step-3) |
+| [7. Configure monitoring](#step-7) | agent-runnable; human approval on the first run | ~20 min | [Step 5](#step-5) |
 | [8. Test deployment](#step-8) | agent-runnable | ~30 min | [Step 7](#step-7) |
 
 <a id="steps"></a>
@@ -54,7 +54,7 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 
 ### 1. Design infrastructure
 
-human · ~2 h · human approval required
+human · ~2 h · human approval on the first run
 
 
 Trace one request and one background job from entry point to storage and external services. Sketch which components need public access and which can remain private. Size the first deployment from expected traffic, data growth and recovery needs; compare a small managed setup with the extra components the team would have to operate. Note environment separation, likely recurring costs and the reason for each service choice. Leave uncertain capacity assumptions visible for the first deployment test.
@@ -65,7 +65,7 @@ Trace one request and one background job from entry point to storage and externa
 
 ### 2. Create AWS account + billing
 
-manual form/portal · ~20 min · human approval required
+manual form/portal · ~20 min · human approval on the first run
 
 | Option | Applies when |
 | --- | --- |
@@ -82,7 +82,7 @@ Check whether the company already has an account, organization or subscription o
 - Sources: [Get started with Google Cloud](https://docs.cloud.google.com/docs/get-started.md.txt) · [Create and scale Azure subscriptions](https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/azure-setup-guide/initial-subscriptions) · [AWS IAM security best practices](https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html)
 
 Options:
-  - **Default — Create AWS account + billing** — manual form/portal · ~20 min · human approval required
+  - **Default — Create AWS account + billing** — manual form/portal · ~20 min · human approval on the first run
 
     Use the company's AWS account structure and authorized billing arrangement. Protect root credentials and recovery, enable MFA, and establish everyday operator access through federation or appropriately scoped roles. Check that the workload account is the intended one before creating resources. An operator should be able to perform the setup without sharing root credentials; the account owner should retain control of recovery and billing notifications.
   - **Google Cloud account**
@@ -106,7 +106,7 @@ Options:
 
 ### 3. Configure VPC and networking
 
-agent-runnable · ~30 min · human approval required
+agent-runnable · ~30 min · human approval every run
 
 
 Draw the permitted paths between the public entry point, application, database and outside services. Choose address ranges that do not overlap networks this deployment must reach. For AWS, configure the VPC routes and security groups within the infrastructure owner's authorized change scope; use the selected platform's network design on other clouds. Test from the application's actual location: required connections should work, and a probe from an unauthorized location should fail. Keep the prior configuration available when changing live connectivity.
@@ -119,7 +119,7 @@ Draw the permitted paths between the public entry point, application, database a
 
 ### 4. Set up RDS database
 
-agent-runnable · ~30 min · human approval required
+agent-runnable · ~30 min · human approval every run
 
 
 Match the database engine and version to the application's driver, migrations and expected data. For AWS, configure RDS using the chosen capacity, network access, backup and maintenance settings; another cloud needs its own database implementation. Provision within the database owner's access and spending authority. From the application environment, test a connection, a sample migration and a write/read cycle using nonproduction data. Exercise the intended restore procedure before relying on the database for recoverable production storage.
@@ -134,7 +134,7 @@ Match the database engine and version to the application's driver, migrations an
 
 ### 5. Configure ECS cluster
 
-agent-runnable · ~30 min · human approval required
+agent-runnable · ~30 min · human approval every run
 
 
 *Follows step 3.*
@@ -150,7 +150,7 @@ Run a versioned container image with its actual startup command, ports, health c
 
 ### 6. Set up IAM roles
 
-agent-runnable · ~20 min · human approval required
+agent-runnable · ~20 min · human approval every run
 
 
 *Follows step 3.*
@@ -166,7 +166,7 @@ Separate access for people, deployment jobs and the running application. For eac
 
 ### 7. Configure monitoring
 
-agent-runnable · ~20 min · human approval required
+agent-runnable · ~20 min · human approval on the first run
 
 
 *Follows step 5.*

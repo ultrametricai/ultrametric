@@ -66,11 +66,11 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Verify the share valuation supporting the exercise price is current](#step-1) | agent-runnable | ~2 min | Entry step |
-| [2. Draft the corporate approval for the grant](#step-2) | agent-runnable; approval required | ~10 min | [Step 1](#step-1) |
-| [3. The required decision-makers approve and sign the grant authorization](#step-3) | human; approval required; signature required; includes waiting | ~2 d | [Step 2](#step-2) |
-| [4. Prepare the equity-award documents](#step-4) | agent-runnable; approval required | ~5 min | [Step 3](#step-3) |
-| [5. Send for employee signature](#step-5) | agent-runnable; approval required | ~5 min | [Step 4](#step-4) |
-| [6. Record the grant in the equity register](#step-6) | agent-runnable; approval required | ~5 min | [Step 5](#step-5) |
+| [2. Draft the corporate approval for the grant](#step-2) | agent-runnable; standing human approval | ~10 min | [Step 1](#step-1) |
+| [3. The required decision-makers approve and sign the grant authorization](#step-3) | human; human approval every run; signature required; includes waiting | ~2 d | [Step 2](#step-2) |
+| [4. Prepare the equity-award documents](#step-4) | agent-runnable; standing human approval | ~5 min | [Step 3](#step-3) |
+| [5. Send for employee signature](#step-5) | agent-runnable; human approval every run | ~5 min | [Step 4](#step-4) |
+| [6. Record the grant in the equity register](#step-6) | agent-runnable; human approval every run | ~5 min | [Step 5](#step-5) |
 
 <a id="steps"></a>
 
@@ -92,7 +92,7 @@ Compare the proposed option grant with the valuation’s date, stock class and c
 
 ### 2. Draft the corporate approval for the grant
 
-agent-runnable · ~10 min · human approval required
+agent-runnable · ~10 min · standing human approval
 
 
 Draft the grant consent from the proposed recipient, share count, option type, exercise price, vesting and intended grant date. Check plan capacity and the valuation supporting the price. Use the applicable corporate approval route, resolving uncertainty with counsel, and highlight deviations from standard terms so the decision-makers can assess the actual grant proposal.
@@ -104,7 +104,7 @@ Draft the grant consent from the proposed recipient, share count, option type, e
 
 ### 3. The required decision-makers approve and sign the grant authorization
 
-human (legally required signature) · ~2 d · async wait · human approval required
+human (legally required signature) · ~2 d · async wait · human approval every run
 
 
 The authorized decision-makers review the final grant schedule and sign the required approval through the applicable corporate process. Check recipient, quantity, price, dates and special terms against the proposal. Establish when approval is effective, and bring later changes back through the required decision path before they enter the agreement or equity records.
@@ -115,7 +115,7 @@ The authorized decision-makers review the final grant schedule and sign the requ
 
 ### 4. Prepare the equity-award documents
 
-agent-runnable · ~5 min · human approval required
+agent-runnable · ~5 min · standing human approval
 
 
 Prepare the award documents from the approved plan and corporate authorization. Check the recipient, award structure, quantity, consideration, vesting, exercise or settlement terms and dates against the approved decision. Resolve conflicts with counsel and retain the final approved package.
@@ -126,7 +126,7 @@ Prepare the award documents from the approved plan and corporate authorization. 
 
 ### 5. Send for employee signature
 
-agent-runnable · ~5 min · human approval required · irreversible
+agent-runnable · ~5 min · human approval every run · irreversible
 
 
 The equity administrator sends the final agreement and governing plan to the intended recipient for signature. Give the recipient a contact for questions and route requested changes back through the grant’s legal and corporate decision process. Track execution against the agreement’s requirements and link the completed signature record to the grant, distinguishing a sent invitation from acceptance.
@@ -137,7 +137,7 @@ The equity administrator sends the final agreement and governing plan to the int
 
 ### 6. Record the grant in the equity register
 
-agent-runnable · ~5 min · human approval required
+agent-runnable · ~5 min · human approval every run
 
 
 Enter the completed grant in the equity system from its effective authorization and executed documents. Match recipient, quantity, exercise price, grant date, vesting and plan allocation, then reconcile remaining capacity. The authorized equity administrator links the consent, agreement and valuation reference to the entry and resolves discrepancies between the system and the legal records.

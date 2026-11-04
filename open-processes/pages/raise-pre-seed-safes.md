@@ -64,15 +64,15 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
-| [1. Prepare the fundraising instrument documents](#step-1) | agent-runnable; approval required | ~30 min | Entry step |
+| [1. Prepare the fundraising instrument documents](#step-1) | agent-runnable; human approval every run | ~30 min | Entry step |
 | [2. Create investor pipeline tracker](#step-2) | agent-runnable | ~10 min | Entry step |
-| [3. Draft outreach emails](#step-3) | agent-runnable; approval required | ~20 min | [Step 2](#step-2) |
+| [3. Draft outreach emails](#step-3) | agent-runnable; standing human approval | ~20 min | [Step 2](#step-2) |
 | [4. Conduct investor meetings](#step-4) | human; includes waiting | ~3.3 d | [Step 3](#step-3) |
-| [5. Send the investment documents for signature](#step-5) | agent-runnable; approval required | ~10 min | All: [Step 1](#step-1); [Step 4](#step-4) |
+| [5. Send the investment documents for signature](#step-5) | agent-runnable; human approval every run | ~10 min | All: [Step 1](#step-1); [Step 4](#step-4) |
 | [6. Verify wire transfers received](#step-6) | agent-runnable | ~5 min | [Step 5](#step-5) |
-| [7. Update cap table](#step-7) | agent-runnable; approval required | ~15 min | [Step 6](#step-6) |
-| [8. Make the securities notice filing the offering rules require](#step-8) | manual form/portal; approval required | ~30 min | [Step 7](#step-7) |
-| [9. Send closing confirmation](#step-9) | agent-runnable; approval required | ~5 min | [Step 8](#step-8) |
+| [7. Update cap table](#step-7) | agent-runnable; human approval every run | ~15 min | [Step 6](#step-6) |
+| [8. Make the securities notice filing the offering rules require](#step-8) | manual form/portal; human approval every run | ~30 min | [Step 7](#step-7) |
+| [9. Send closing confirmation](#step-9) | agent-runnable; human approval every run | ~5 min | [Step 8](#step-8) |
 
 <a id="steps"></a>
 
@@ -82,7 +82,7 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 
 ### 1. Prepare the fundraising instrument documents
 
-agent-runnable · ~30 min · human approval required
+agent-runnable · ~30 min · human approval every run
 
 | Option | Applies when |
 | --- | --- |
@@ -101,7 +101,7 @@ Identify the issuer’s jurisdiction, investors, target amount and proposed econ
 - Sources: [Y Combinator SAFE documents](https://www.ycombinator.com/safe/)
 
 Options:
-  - **Default — Prepare SAFE documents** — agent-runnable · ~30 min · human approval required
+  - **Default — Prepare SAFE documents** — agent-runnable · ~30 min · human approval every run
 
     Use the selected SAFE form’s exact version and definitions to enter investor identity, purchase amount and agreed terms. Check caps, discounts or MFN provisions against the deal and any side letter, and model the dilution. Show deviations from the source form clearly for founder and counsel review before the document moves into execution.
   - **India - iSAFE / CCPS instruments** — manual form/portal
@@ -153,7 +153,7 @@ Build the investor pipeline with investment focus, contact source, relationship 
 
 ### 3. Draft outreach emails
 
-agent-runnable · ~20 min · human approval required
+agent-runnable · ~20 min · standing human approval
 
 | Option | Applies when |
 | --- | --- |
@@ -169,7 +169,7 @@ Choose direct outreach, introductions or a platform route based on investor fit,
 - Ranked market: [ai-assistants](../../open-rankings/ai-assistants)
 
 Options:
-  - **Default — Draft outreach emails** — agent-runnable · ~20 min · human approval required
+  - **Default — Draft outreach emails** — agent-runnable · ~20 min · standing human approval
 
     Write to the investor’s stated focus or a confirmed reason they may be interested. Explain the product, support progress claims with a few concrete figures, and make a clear request for a conversation. Use materials suitable for that audience and remove confidential customer or financial information outside the intended disclosure. The founder should be able to send the draft without reconstructing the pitch.
   - **Warm-intro outreach** — human
@@ -216,7 +216,7 @@ Prepare for the meeting around the investor’s focus, the company’s progress 
 
 ### 5. Send the investment documents for signature
 
-agent-runnable · ~10 min · human approval required · hard to undo
+agent-runnable · ~10 min · human approval every run · hard to undo
 
 
 *Follows steps 1 and 4 — both are required first.*
@@ -241,7 +241,7 @@ Match incoming bank credits to the executed investment documents by investor, am
 
 ### 7. Update cap table
 
-agent-runnable · ~15 min · human approval required
+agent-runnable · ~15 min · human approval every run
 
 
 Update the equity records from executed, funded instruments using the investor’s legal name, amount, instrument version and side-letter rights. Record convertibles in their proper category and distinguish modeled conversion from issued shares. The authorized equity administrator reconciles the update to bank receipts and agreements, preserving the previous export so any difference in ownership or outstanding instruments can be explained.
@@ -252,7 +252,7 @@ Update the equity records from executed, funded instruments using the investor�
 
 ### 8. Make the securities notice filing the offering rules require
 
-manual form/portal · ~30 min · human approval required · hard to undo
+manual form/portal · ~30 min · human approval every run · hard to undo
 
 
 Where the offering rules require a notice filing, gather the issuer, related persons, exemption, offering and investor information. Confirm the first-sale date and deadline with counsel; first sale may precede a wire receipt. The authorized filer submits the reviewed notice through the required channel and checks its resulting status. Keep the filed copy and receipt, and track separate state or provincial notices where applicable.
@@ -266,7 +266,7 @@ Where the offering rules require a notice filing, gather the issuer, related per
 
 ### 9. Send closing confirmation
 
-agent-runnable · ~5 min · human approval required
+agent-runnable · ~5 min · human approval every run
 
 
 Send each investor a closing confirmation based on reconciled signatures and funds received. The authorized company sender states the amount, instrument and document access, identifying any remaining closing item accurately. Give finance and the equity administrator the same final information, and keep each investor’s message limited to their own transaction details.

@@ -45,11 +45,11 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Specify the billable events and customer identity](#step-1) | agent-runnable | Not recorded | Entry step |
-| [2. Approve pricing and contractual treatment](#step-2) | human; approval required | Not recorded | [Step 1](#step-1) |
+| [2. Approve pricing and contractual treatment](#step-2) | human; human approval every run | Not recorded | [Step 1](#step-1) |
 | [3. Prepare a reproducible usage test dataset](#step-3) | agent-runnable | Not recorded | [Step 2](#step-2) |
-| [4. Configure approved meters and billing rules](#step-4) | manual form/portal; approval required | Not recorded | [Step 3](#step-3) |
-| [5. Verify quantities and customer-visible invoices](#step-5) | human; approval required | Not recorded | [Step 4](#step-4) |
-| [6. Authorize production billing and monitor exceptions](#step-6) | manual form/portal; approval required | Not recorded | [Step 5](#step-5) |
+| [4. Configure approved meters and billing rules](#step-4) | manual form/portal; human approval every run | Not recorded | [Step 3](#step-3) |
+| [5. Verify quantities and customer-visible invoices](#step-5) | human; human approval every run | Not recorded | [Step 4](#step-4) |
+| [6. Authorize production billing and monitor exceptions](#step-6) | manual form/portal; human approval every run | Not recorded | [Step 5](#step-5) |
 
 <a id="steps"></a>
 
@@ -70,7 +70,7 @@ Define units, event timestamps, customer identifiers, aggregation windows and ex
 
 ### 2. Approve pricing and contractual treatment
 
-human · human approval required · hard to undo
+human · human approval every run · hard to undo
 
 
 The commercial owner and advisers approve rates, commitments, credit expiry treatment and dispute handling for applicable contracts. Resolve uncertain terms before accepting billable usage.
@@ -92,7 +92,7 @@ Build fictional events for normal use, duplicates, late arrival, corrections and
 
 ### 4. Configure approved meters and billing rules
 
-manual form/portal · human approval required · hard to undo
+manual form/portal · human approval every run · hard to undo
 
 
 Authorized operators apply reviewed settings in a test environment using the provider currently supported integration. Preserve versioned event schemas and avoid creating real charges during configuration.
@@ -103,7 +103,7 @@ Authorized operators apply reviewed settings in a test environment using the pro
 
 ### 5. Verify quantities and customer-visible invoices
 
-human · human approval required · hard to undo
+human · human approval every run · hard to undo
 
 
 Engineering and finance compare events, aggregations, credits and invoice previews to independent expectations. Block launch on unexplained differences or inability to trace a charge back to usage.
@@ -114,7 +114,7 @@ Engineering and finance compare events, aggregations, credits and invoice previe
 
 ### 6. Authorize production billing and monitor exceptions
 
-manual form/portal · human approval required · hard to undo
+manual form/portal · human approval every run · hard to undo
 
 
 The accountable owner approves production activation. Authorized operators enable the reviewed configuration, monitor missing events and reconcile invoices; refunds or corrective charges require scoped approval.

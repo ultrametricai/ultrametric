@@ -5,7 +5,7 @@
 // decision combo.
 import path from 'node:path'
 import { describe, expect, it } from 'vitest'
-import { GEO_PREF_META } from '@/lib/geoPreference'
+import { GEO_COUNTRIES, GEO_PREF_META } from '@/lib/geoPreference'
 import { CADENCE_META, loadChains, loadProcesses, processSlug, taskCeiling } from '@/lib/processes'
 import type { SimStep } from '@/lib/processSim'
 import {
@@ -99,9 +99,9 @@ describe('decision → journey mapping (against the live corpus)', () => {
     for (const id of VS_CHAIN_IDS) expect(chainIds.has(id), `chain ${id} missing`).toBe(true)
   })
 
-  it('covers every decision combo, derived straight from DECISIONS (16 entities × 5 models × 6 compliance options × 4 ICPs × 5 launches × 2 workplaces × the rest)', () => {
+  it('covers every decision combo, derived straight from DECISIONS (28 entities × 5 models × 6 compliance options × 4 ICPs × 5 launches × 2 workplaces × the rest)', () => {
     const expected = DECISIONS.reduce((acc, d) => acc * d.options.length, 1)
-    expect(expected).toBe(307200) // 16 × 2 × 2 × 5 × 2 × 2 × 6 × 4 × 5 × 2 (PT/CA entities appended 2026-10-03; NZ, SG, AU, KR, HK, and EE 2026-10-23)
+    expect(expected).toBe(537600) // 28 × 2 × 2 × 5 × 2 × 2 × 6 × 4 × 5 × 2 (PT/CA entities appended 2026-10-03; NZ, SG, AU, KR, HK, and EE 2026-10-23; the guide countries NL, IE, ES, SE, CH, JP, BR, and AE 2026-11-03)
     expect(combos.length).toBe(expected)
     expect(new Set(combos.map(comboKey)).size).toBe(expected)
     expect(DECISIONS.length).toBe(10)
@@ -142,10 +142,11 @@ describe('decision → journey mapping (against the live corpus)', () => {
   it('country-aware entities (round 5, item 1): a non-US entity NEVER creates a corpus branch — task-identical to the C-Corp path; the country frame rides the phase note; codec order pins c-corp/llc at 0/1', () => {
     const entity = DECISIONS.find((d) => d.id === 'entity')!
     // Codec compat: the original values keep indices 0/1; non-US values are appended.
-    expect(entity.options.map((o) => o.value)).toEqual(['c-corp', 'llc', 'ltd', 'gmbh', 'ug', 'sas', 'sarl', 'pvt-ltd', 'lda', 'ca-corp', 'nz-ltd', 'pte-ltd', 'pty-ltd', 'kr-chusik-hoesa', 'hk-private-limited', 'ee-osauhing'])
+    expect(entity.options.map((o) => o.value)).toEqual(['c-corp', 'llc', 'ltd', 'gmbh', 'ug', 'sas', 'sarl', 'pvt-ltd', 'lda', 'ca-corp', 'nz-ltd', 'pte-ltd', 'pty-ltd', 'kr-chusik-hoesa', 'hk-private-limited', 'ee-osauhing', 'nl-bv', 'ie-ltd', 'ie-dac', 'es-sl', 'se-ab', 'ch-gmbh', 'ch-ag', 'jp-kk', 'jp-gk', 'br-ltda', 'ae-llc', 'ae-fz-llc'])
     // The dropdown roster follows the geo pick; each country's FIRST option is its default-asserted value.
     expect(ENTITY_OPTIONS_BY_COUNTRY).toEqual({
       US: ['c-corp', 'llc'], UK: ['ltd'], DE: ['gmbh', 'ug'], FR: ['sas', 'sarl'], IN: ['pvt-ltd'], PT: ['lda'], CA: ['ca-corp'], NZ: ['nz-ltd'], SG: ['pte-ltd'], AU: ['pty-ltd'], KR: ['kr-chusik-hoesa'], HK: ['hk-private-limited'], EE: ['ee-osauhing'],
+      NL: ['nl-bv'], IE: ['ie-ltd', 'ie-dac'], ES: ['es-sl'], SE: ['se-ab'], CH: ['ch-gmbh', 'ch-ag'], JP: ['jp-kk', 'jp-gk'], BR: ['br-ltda'], AE: ['ae-llc', 'ae-fz-llc'],
     })
     expect(defaultEntityFor('US')).toBe('c-corp')
     expect(defaultEntityFor('UK')).toBe('ltd')
@@ -160,13 +161,23 @@ describe('decision → journey mapping (against the live corpus)', () => {
     expect(defaultEntityFor('KR')).toBe('kr-chusik-hoesa')
     expect(defaultEntityFor('HK')).toBe('hk-private-limited')
     expect(defaultEntityFor('EE')).toBe('ee-osauhing')
-    expect(() => defaultEntityFor('NL')).toThrow('no startup simulation entity is authored')
+    expect(defaultEntityFor('NL')).toBe('nl-bv')
+    expect(defaultEntityFor('IE')).toBe('ie-ltd')
+    expect(defaultEntityFor('ES')).toBe('es-sl')
+    expect(defaultEntityFor('SE')).toBe('se-ab')
+    expect(defaultEntityFor('CH')).toBe('ch-gmbh')
+    expect(defaultEntityFor('JP')).toBe('jp-kk')
+    expect(defaultEntityFor('BR')).toBe('br-ltda')
+    expect(defaultEntityFor('AE')).toBe('ae-llc')
+    // Since the 2026-11-03 guide-country entities landed, every GEO country has a sim entity
+    // (the authored-entity guard in defaultEntityFor stays for the next country wave).
+    for (const c of GEO_COUNTRIES) expect(() => defaultEntityFor(c), c).not.toThrow()
     // Every DECISIONS entity value exists in exactly one country roster, and vice versa.
     const rosterValues = Object.values(ENTITY_OPTIONS_BY_COUNTRY).flat()
     expect([...rosterValues].sort()).toEqual(entity.options.map((o) => o.value).sort())
     // HONESTY: composition is byte-identical to the C-Corp path for every non-US entity.
     const ccorpIds = journeyTaskIds({ ...DEFAULT_CHOICES, entity: 'c-corp' }, chains)
-    for (const value of ['ltd', 'gmbh', 'ug', 'sas', 'sarl', 'pvt-ltd', 'lda', 'ca-corp', 'nz-ltd', 'pte-ltd', 'pty-ltd', 'kr-chusik-hoesa', 'hk-private-limited', 'ee-osauhing'] as const) {
+    for (const value of ['ltd', 'gmbh', 'ug', 'sas', 'sarl', 'pvt-ltd', 'lda', 'ca-corp', 'nz-ltd', 'pte-ltd', 'pty-ltd', 'kr-chusik-hoesa', 'hk-private-limited', 'ee-osauhing', 'nl-bv', 'ie-ltd', 'ie-dac', 'es-sl', 'se-ab', 'ch-gmbh', 'ch-ag', 'jp-kk', 'jp-gk', 'br-ltda', 'ae-llc', 'ae-fz-llc'] as const) {
       const combo = { ...DEFAULT_CHOICES, entity: value }
       expect(journeyTaskIds(combo, chains)).toEqual(ccorpIds)
       const note = journeyPhases(combo, chains).find((p) => p.id === 'form')!.note!
@@ -188,7 +199,7 @@ describe('decision → journey mapping (against the live corpus)', () => {
     // The committed geoNotes analogs the entity frame leans on actually exist on form_001.
     const form001 = corpusById.get('form_001')!
     const noteCountries = new Set((form001.geoNotes ?? []).map((n) => n.country))
-    for (const c of ['UK', 'DE', 'FR', 'IN', 'PT', 'CA', 'NZ'] as const) expect(noteCountries.has(c), `form_001 geoNotes missing ${c}`).toBe(true)
+    for (const c of ['UK', 'DE', 'FR', 'IN', 'PT', 'CA', 'NZ', 'SG', 'AU', 'KR', 'HK', 'EE', 'NL', 'IE', 'ES', 'SE', 'CH', 'JP', 'BR', 'AE'] as const) expect(noteCountries.has(c), `form_001 geoNotes missing ${c}`).toBe(true)
   })
 
   it('team: the founder equity split (startup_002) rides only with cofounders', () => {
@@ -638,7 +649,9 @@ describe('year one — the operating rhythm, derived from live corpus cadence', 
     }
   })
 
-  it('rows gate on the journey: payroll with the hire, invoicing on the invoices fork, Type II/pen test with the enterprise motion', () => {
+  // 120s: exhaustive 537,600-combo sweep calling yearRows per combo (28 entities as of
+  // 2026-11-03); the 30s default timed out under multi-lane load.
+  it('rows gate on the journey: payroll with the hire, invoicing on the invoices fork, Type II/pen test with the enterprise motion', { timeout: 120000 }, () => {
     for (const combo of combos) {
       const ids = journeyTaskIds(combo, chains)
       const rows = yearRows(combo, ids, candidates)
@@ -833,7 +846,8 @@ describe('YC batch mode — calibration, published deal, honesty', () => {
     }
   })
 
-  it('yc journeys ONLY rearrange — the same real tasks as the plain calibrated combo', () => {
+  // 120s: exhaustive 537,600-combo sweep composing each journey twice (plain and yc).
+  it('yc journeys ONLY rearrange — the same real tasks as the plain calibrated combo', { timeout: 120000 }, () => {
     for (const combo of combos) {
       const c = applyYcCalibration(combo)
       const plain = journeyTaskIds(c, chains)
@@ -914,8 +928,9 @@ describe('cadence sweep + event-driven examples (richer rhythm, 2026-09-25)', ()
     }
   })
 
-  // 90s: exhaustive 122,880-combo sweep — flaked at 30s under multi-lane load (2026-10-02).
-  it('sweep rows gate on the decisions that plausibly activate them', { timeout: 90000 }, () => {
+  // 240s: exhaustive 537,600-combo sweep (28 entities as of 2026-11-03) — the 90s budget set
+  // for the 122,880-combo era flaked under multi-lane load (2026-10-02 precedent).
+  it('sweep rows gate on the decisions that plausibly activate them', { timeout: 240000 }, () => {
     for (const combo of combos) {
       const rows = new Set(yearRows(combo, journeyTaskIds(combo, chains), candidates).map((r) => r.taskId))
       for (const id of ['opp_008', 'opp_009', 'sw_001', 'sw_002', 'growth_011', 'growth_012', 'opp_012', 'fin_010', 'ins_001', 'qs_045', 'qs_047']) {
@@ -932,7 +947,8 @@ describe('cadence sweep + event-driven examples (richer rhythm, 2026-09-25)', ()
     }
   })
 
-  it('sweep completeness: every cadence-bearing journey task appears in year one', () => {
+  // 180s: exhaustive 537,600-combo sweep calling yearRows per combo (see the budget note above).
+  it('sweep completeness: every cadence-bearing journey task appears in year one', { timeout: 180000 }, () => {
     for (const combo of combos) {
       const ids = journeyTaskIds(combo, chains)
       const rows = new Set(yearRows(combo, ids, candidates).map((r) => r.taskId))
@@ -943,7 +959,8 @@ describe('cadence sweep + event-driven examples (richer rhythm, 2026-09-25)', ()
     }
   })
 
-  it('event examples: real event-driven corpus tasks with named triggers, gated per combo', () => {
+  // 120s: exhaustive 537,600-combo sweep calling eventRows per combo.
+  it('event examples: real event-driven corpus tasks with named triggers, gated per combo', { timeout: 120000 }, () => {
     const examples = buildEventExamples(sources)
     expect(examples.length).toBe(Object.keys(EVENT_EXAMPLES).length)
     for (const e of examples) {

@@ -36,9 +36,9 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
-| [1. Create the team chat workspace](#step-1) | manual form/portal; approval required | ~10 min | Entry step |
-| [2. Create default channels](#step-2) | agent-runnable; approval required | ~5 min | [Step 1](#step-1) |
-| [3. Invite team members](#step-3) | agent-runnable; approval required | ~5 min | [Step 2](#step-2) |
+| [1. Create the team chat workspace](#step-1) | manual form/portal; human approval on the first run | ~10 min | Entry step |
+| [2. Create default channels](#step-2) | agent-runnable; human approval on the first run | ~5 min | [Step 1](#step-1) |
+| [3. Invite team members](#step-3) | agent-runnable; human approval above a threshold | ~5 min | [Step 2](#step-2) |
 | [4. Configure notification defaults](#step-4) | agent-runnable | ~5 min | [Step 2](#step-2) |
 
 <a id="steps"></a>
@@ -49,7 +49,7 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 
 ### 1. Create the team chat workspace
 
-manual form/portal · ~10 min · human approval required
+manual form/portal · ~10 min · human approval on the first run
 
 
 Check for an existing company chat workspace before creating another. Set the company name, workspace address, administrator, and account-recovery contact using company-controlled identities. Choose a plan that fits the agreed seat count and required features, with the budget owner's approval for paid commitments. Establish initial membership and visibility settings, then put the workspace link in the team's onboarding material.
@@ -63,7 +63,7 @@ Check for an existing company chat workspace before creating another. Set the co
 
 ### 2. Create default channels
 
-agent-runnable · ~5 min · human approval required
+agent-runnable · ~5 min · human approval on the first run
 
 
 Create a small channel set around the team's actual work: company announcements, active projects, operational questions, and any restricted discussions. Give each channel a short purpose and an owner for keeping it useful. Choose public or private visibility from the content and audience, then add a simple guide showing where a routine question, project update, or urgent issue belongs. Avoid empty channels created for hypothetical future teams.
@@ -75,7 +75,7 @@ Create a small channel set around the team's actual work: company announcements,
 
 ### 3. Invite team members
 
-agent-runnable · ~5 min · human approval required
+agent-runnable · ~5 min · human approval above a threshold
 
 
 Match the team roster to existing workspace members and prepare the remaining invitations with the correct company addresses and roles. Check guest and administrator access separately from ordinary membership. Have the workspace administrator confirm the invite list before sending, including any extra paid seats. Send newcomers the starting channels and onboarding link, and follow up on failed or unaccepted invitations with the person joining.

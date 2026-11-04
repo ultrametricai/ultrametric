@@ -37,7 +37,7 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
-| [1. Register and pay at your registrar](#step-1) | agent-runnable; approval required; includes waiting | ~3 min | Entry step |
+| [1. Register and pay at your registrar](#step-1) | agent-runnable; human approval above a threshold; includes waiting | ~3 min | Entry step |
 | [2. Provision DNS/SSL](#step-2) | agent-runnable; includes waiting | ~5 min | [Step 1](#step-1) |
 
 <a id="steps"></a>
@@ -48,7 +48,7 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 
 ### 1. Register and pay at your registrar
 
-agent-runnable · ~3 min · async wait · human approval required
+agent-runnable · ~3 min · async wait · human approval above a threshold
 
 | Option | Applies when |
 | --- | --- |
@@ -67,7 +67,7 @@ Match the checkout to the chosen domain, registrar, registration term and compan
 - Sources: [Information for Domain Name Registrants](https://www.icann.org/registrants) · [Domain Name Renewals and Expiration](https://www.icann.org/resources/pages/domain-name-renewal-expiration-faqs-2018-12-07-en)
 
 Options:
-  - **Default — Register and pay at your registrar** — agent-runnable · ~3 min · async wait · human approval required
+  - **Default — Register and pay at your registrar** — agent-runnable · ~3 min · async wait · human approval above a threshold
 
     Use the selected registrar's current checkout. Check the exact spelling, company registrant, term, final charge, renewal preference and extension restrictions against the authorized purchase. Resolve any checkout difference that changes that decision. After payment, complete required contact verification and confirm the domain is in the intended account, with the receipt and renewal details available to its owner.
   - **Cloudflare Registrar (at cost)**

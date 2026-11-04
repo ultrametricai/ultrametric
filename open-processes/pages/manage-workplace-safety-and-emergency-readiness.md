@@ -47,9 +47,9 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Inventory work activities and hazards](#step-1) | agent-runnable | Not recorded | Entry step |
-| [2. Assess requirements with competent local specialists](#step-2) | human; approval required | Not recorded | [Step 1](#step-1) |
-| [3. Approve and implement practical controls](#step-3) | human; approval required | Not recorded | [Step 2](#step-2) |
-| [4. Train people and exercise emergency procedures](#step-4) | human; approval required | Not recorded | [Step 3](#step-3) |
+| [2. Assess requirements with competent local specialists](#step-2) | human; human approval every run | Not recorded | [Step 1](#step-1) |
+| [3. Approve and implement practical controls](#step-3) | human; human approval every run | Not recorded | [Step 2](#step-2) |
+| [4. Train people and exercise emergency procedures](#step-4) | human; human approval every run | Not recorded | [Step 3](#step-3) |
 | [5. Inspect controls and close corrective actions](#step-5) | agent-runnable | Not recorded | [Step 4](#step-4) |
 
 <a id="steps"></a>
@@ -71,7 +71,7 @@ Identify premises, equipment, materials, travel and remote-work arrangements alo
 
 ### 2. Assess requirements with competent local specialists
 
-human · human approval required
+human · human approval every run
 
 
 Management and qualified safety advisers determine applicable standards, assessments and responsibilities. Identify urgent hazards and pause unsafe work while required controls are unresolved.
@@ -82,7 +82,7 @@ Management and qualified safety advisers determine applicable standards, assessm
 
 ### 3. Approve and implement practical controls
 
-human · human approval required
+human · human approval every run
 
 
 Assign elimination, engineering, procedural and protective measures appropriate to the hazards. Confirm equipment, emergency access, first-response arrangements and worker consultation with the relevant specialists.
@@ -93,7 +93,7 @@ Assign elimination, engineering, procedural and protective measures appropriate 
 
 ### 4. Train people and exercise emergency procedures
 
-human · human approval required
+human · human approval every run
 
 
 Workers complete their own instruction and supervised practice where required. Conduct approved drills and checks without exposing participants to uncontrolled hazards.

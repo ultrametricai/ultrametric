@@ -47,9 +47,9 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Preserve the report and trace affected products](#step-1) | agent-runnable | Not recorded | Entry step |
-| [2. Appoint the safety lead and assess reporting duties](#step-2) | human; approval required | Not recorded | [Step 1](#step-1) |
+| [2. Appoint the safety lead and assess reporting duties](#step-2) | human; human approval every run | Not recorded | [Step 1](#step-1) |
 | [3. Prepare the affected-product and response plan](#step-3) | agent-runnable | Not recorded | [Step 2](#step-2) |
-| [4. Authorize and coordinate the response](#step-4) | human; approval required | Not recorded | [Step 3](#step-3) |
+| [4. Authorize and coordinate the response](#step-4) | human; human approval every run | Not recorded | [Step 3](#step-3) |
 | [5. Verify effectiveness and corrective action](#step-5) | agent-runnable | Not recorded | [Step 4](#step-4) |
 
 <a id="steps"></a>
@@ -71,7 +71,7 @@ Collect the reported incident, product identifiers, configuration, batch and dis
 
 ### 2. Appoint the safety lead and assess reporting duties
 
-human · human approval required
+human · human approval every run
 
 
 Qualified product-safety and legal specialists assess the hazard, affected markets, required authority contacts and timing. Pause unsafe distribution or use through the authorized process while facts are reviewed.
@@ -93,7 +93,7 @@ Map customers, stock, suppliers and variants potentially affected. Draft the pro
 
 ### 4. Authorize and coordinate the response
 
-human · human approval required
+human · human approval every run
 
 
 The accountable decision makers approve required notifications and customer actions with the relevant authorities and advisers. Authorized teams execute traceable communications and logistics with clear safety instructions.

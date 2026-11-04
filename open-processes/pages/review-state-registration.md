@@ -58,7 +58,7 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | --- | --- | --- | --- |
 | [1. List employee locations](#step-1) | agent-runnable | ~5 min | Entry step |
 | [2. Check foreign qualification needs](#step-2) | agent-runnable | ~10 min | [Step 1](#step-1) |
-| [3. File foreign qualifications on the state portals](#step-3) | manual form/portal; approval required; includes waiting | ~30 min | [Step 2](#step-2) |
+| [3. File foreign qualifications on the state portals](#step-3) | manual form/portal; human approval every run; includes waiting | ~30 min | [Step 2](#step-2) |
 
 <a id="steps"></a>
 
@@ -90,7 +90,7 @@ Review the location facts, entity form and activities in each state against its 
 
 ### 3. File foreign qualifications on the state portals
 
-manual form/portal · ~30 min · async wait · human approval required · hard to undo
+manual form/portal · ~30 min · async wait · human approval every run · hard to undo
 
 
 Use the reviewed state-registration plan to assemble the application, home-state documents and local agent details. Check the destination’s current requirements, including signer authority and any certificate validity limit. Use the entity’s required signer and authorized filing process for submission and fees. Respond to corrections until accepted, then capture the issued entity number and ongoing state obligations.

@@ -1,5 +1,5 @@
 import fs from 'node:fs'
-import { executionSchema } from './execution'
+import { executionSchema, metadataApprovalSchema } from './execution'
 import path from 'node:path'
 import { z } from 'zod'
 import { loadProcessCatalog } from './shared-processes/catalog'
@@ -103,7 +103,10 @@ export const DagNodeBaseSchema = z.object({
   // Vendor signup page for manifest consumers (lib/processManifest.ts) — actionUrl/actionLabel
   // above are the canonical declarations; this is the remaining forward-compat field.
   signupUrl: z.string().min(1).optional(),
+  // Derived compatibility alias for approval.mode: true unless the mode is 'none'.
   approvalRequired: z.boolean().optional(),
+  // When a human approves this step (lib/execution.ts approvalSchema).
+  approval: metadataApprovalSchema.optional(),
   // The founder's "true human floor" (2026-09-21): this step IS a legally required human
   // signature/attestation act — a statute or counterparty genuinely requires a human to sign
   // or swear (board/stockholder consents, 83(b) elections, notarized USPS 1583, I-9/W-4

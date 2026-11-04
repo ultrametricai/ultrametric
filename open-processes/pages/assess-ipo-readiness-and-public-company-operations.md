@@ -47,10 +47,10 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Define the objective and readiness baseline](#step-1) | agent-runnable | Not recorded | Entry step |
-| [2. Select the market and qualified advisers](#step-2) | human; approval required | Not recorded | [Step 1](#step-1) |
+| [2. Select the market and qualified advisers](#step-2) | human; human approval every run | Not recorded | [Step 1](#step-1) |
 | [3. Build the readiness gap and evidence register](#step-3) | agent-runnable | Not recorded | [Step 2](#step-2) |
-| [4. Approve remediation and ongoing operating capacity](#step-4) | human; approval required | Not recorded | [Step 3](#step-3) |
-| [5. Decide whether to proceed and authorize the next stage](#step-5) | human; approval required | Not recorded | [Step 4](#step-4) |
+| [4. Approve remediation and ongoing operating capacity](#step-4) | human; human approval every run | Not recorded | [Step 3](#step-3) |
+| [5. Decide whether to proceed and authorize the next stage](#step-5) | human; human approval every run | Not recorded | [Step 4](#step-4) |
 
 <a id="steps"></a>
 
@@ -71,7 +71,7 @@ Record financing and liquidity goals, financial history, ownership, controls, pr
 
 ### 2. Select the market and qualified advisers
 
-human · human approval required
+human · human approval every run
 
 
 The board and securities counsel assess suitable jurisdictions, venues, eligibility and alternatives. Appoint appropriately qualified financial, audit and legal advisers and confirm conflicts and engagement scope.
@@ -93,7 +93,7 @@ Reconcile audited financials, governance, equity, controls, disclosures and publ
 
 ### 4. Approve remediation and ongoing operating capacity
 
-human · human approval required
+human · human approval every run
 
 
 Leadership agrees the budget, governance changes, reporting controls and staffing needed before a launch decision. Qualified reviewers determine required filings, communications controls and approvals for the selected route.
@@ -104,7 +104,7 @@ Leadership agrees the budget, governance changes, reporting controls and staffin
 
 ### 5. Decide whether to proceed and authorize the next stage
 
-human · human approval required
+human · human approval every run
 
 
 The board reviews readiness, market conditions, costs and alternatives with advisers. Authorize a separately scoped transaction only when required, keeping any offering, disclosure or filing within its specialist-led approval process.

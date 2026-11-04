@@ -50,7 +50,7 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | [4. Open the pull request](#step-4) | agent-runnable | ~5 min | [Step 3](#step-3) |
 | [5. AI code review pass](#step-5) | agent-runnable | ~15 min | [Step 4](#step-4) |
 | [6. Human review and approval](#step-6) | human | ~45 min | [Step 5](#step-5) |
-| [7. Merge and deploy via CI](#step-7) | agent-runnable; approval required | ~10 min | [Step 6](#step-6) |
+| [7. Merge and deploy via CI](#step-7) | agent-runnable; human approval on the first run | ~10 min | [Step 6](#step-6) |
 | [8. Verify in production](#step-8) | agent-runnable | ~10 min | [Step 7](#step-7) |
 
 <a id="steps"></a>
@@ -162,7 +162,7 @@ Review the final revision against the spec and test evidence. Trace the changed 
 
 ### 7. Merge and deploy via CI
 
-agent-runnable · ~10 min · human approval required
+agent-runnable · ~10 min · human approval on the first run
 
 
 Check the approved revision, required checks, target branch and deployment environment, including any migration order. Confirm that the recorded authorization covers this merge and deployment; obtain additional approval only for effects outside that scope. Use the protected merge and release path, then follow the resulting build and deployment to its actual status. Match the deployed revision to the reviewed change. If a required stage fails, diagnose it and use the agreed recovery path before continuing.

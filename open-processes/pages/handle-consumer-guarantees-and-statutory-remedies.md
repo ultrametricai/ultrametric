@@ -45,12 +45,12 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Record the purchase and reported problem](#step-1) | agent-runnable | Not recorded | Entry step |
-| [2. Determine the applicable consumer remedy route](#step-2) | human; approval required | Not recorded | [Step 1](#step-1) |
+| [2. Determine the applicable consumer remedy route](#step-2) | human; human approval every run | Not recorded | [Step 1](#step-1) |
 | [3. Prepare a remedy proposal and fulfillment plan](#step-3) | agent-runnable | Not recorded | [Step 2](#step-2) |
-| [4. Approve the remedy or reasoned no-remedy decision](#step-4) | human; approval required | Not recorded | [Step 3](#step-3) |
-| [5. Carry out the approved repair or replacement](#step-5) | human; approval required | Not recorded | [Step 4](#step-4) (Approved remedy requires repair or replacement.) |
-| [6. Execute the specifically approved refund](#step-6) | human; approval required | Not recorded | [Step 4](#step-4) (Approved remedy requires a refund or return of money.) |
-| [7. Send the approved no-remedy response](#step-7) | human; approval required | Not recorded | [Step 4](#step-4) (Reviewed decision requires no repair, replacement or return of money.) |
+| [4. Approve the remedy or reasoned no-remedy decision](#step-4) | human; human approval every run | Not recorded | [Step 3](#step-3) |
+| [5. Carry out the approved repair or replacement](#step-5) | human; human approval every run | Not recorded | [Step 4](#step-4) (Approved remedy requires repair or replacement.) |
+| [6. Execute the specifically approved refund](#step-6) | human; human approval every run | Not recorded | [Step 4](#step-4) (Approved remedy requires a refund or return of money.) |
+| [7. Send the approved no-remedy response](#step-7) | human; human approval every run | Not recorded | [Step 4](#step-4) (Reviewed decision requires no repair, replacement or return of money.) |
 | [8. Verify resolution and review repeated defects](#step-8) | agent-runnable | Not recorded | Alternatives: [Step 5](#step-5); [Step 6](#step-6); [Step 7](#step-7) |
 
 <a id="steps"></a>
@@ -72,7 +72,7 @@ Collect the order, seller, customer market, product or digital-service descripti
 
 ### 2. Determine the applicable consumer remedy route
 
-human · human approval required · hard to undo
+human · human approval every run · hard to undo
 
 
 Have the consumer-law owner determine applicable national rules, product scope, relevant dates and the available remedy sequence. Distinguish mandatory rights, voluntary warranties, cancellation rights and business-to-business requests; escalate uncertain facts.
@@ -94,7 +94,7 @@ Prepare the proposed repair, replacement, price adjustment or refund under the r
 
 ### 4. Approve the remedy or reasoned no-remedy decision
 
-human · human approval required · hard to undo
+human · human approval every run · hard to undo
 
 
 The accountable customer-operations owner approves the specific remedy or reasoned no-remedy decision and response after required local advice. Escalate denials, repeat failures and unresolved disputes; an agent draft does not authorize a refund, settlement, waiver or denial.
@@ -108,7 +108,7 @@ The accountable customer-operations owner approves the specific remedy or reason
 
 ### 5. Carry out the approved repair or replacement
 
-human · human approval required · hard to undo
+human · human approval every run · hard to undo
 
 
 *Follows step 4 (when Approved remedy requires repair or replacement).*
@@ -124,7 +124,7 @@ The authorized operator sends the approved response and arranges the agreed repa
 
 ### 6. Execute the specifically approved refund
 
-human · human approval required · irreversible
+human · human approval every run · irreversible
 
 
 *Follows step 4 (when Approved remedy requires a refund or return of money).*
@@ -140,7 +140,7 @@ The authorized payment operator verifies the approved recipient, amount and paym
 
 ### 7. Send the approved no-remedy response
 
-human · human approval required · hard to undo
+human · human approval every run · hard to undo
 
 
 *Follows step 4 (when Reviewed decision requires no repair, replacement or return of money).*

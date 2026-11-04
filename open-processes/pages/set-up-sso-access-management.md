@@ -42,13 +42,13 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
-| [1. Set up your identity provider tenant](#step-1) | manual form/portal; approval required | ~30 min | Entry step |
-| [2. Define role-based groups](#step-2) | agent-runnable; approval required | ~20 min | [Step 1](#step-1) |
-| [3. Configure SSO for each app](#step-3) | agent-runnable; approval required | ~2 h | [Step 2](#step-2) |
-| [4. Enable MFA policies](#step-4) | agent-runnable; approval required | ~15 min | [Step 3](#step-3) |
-| [5. Provision existing users](#step-5) | agent-runnable; approval required | ~30 min | [Step 4](#step-4) |
+| [1. Set up your identity provider tenant](#step-1) | manual form/portal; human approval every run | ~30 min | Entry step |
+| [2. Define role-based groups](#step-2) | agent-runnable; human approval on the first run | ~20 min | [Step 1](#step-1) |
+| [3. Configure SSO for each app](#step-3) | agent-runnable; human approval every run | ~2 h | [Step 2](#step-2) |
+| [4. Enable MFA policies](#step-4) | agent-runnable; human approval every run | ~15 min | [Step 3](#step-3) |
+| [5. Provision existing users](#step-5) | agent-runnable; human approval above a threshold | ~30 min | [Step 4](#step-4) |
 | [6. Test SSO across all apps](#step-6) | human | ~2 h | [Step 5](#step-5) |
-| [7. Roll out to team](#step-7) | human; approval required; includes waiting | ~8 h | [Step 6](#step-6) |
+| [7. Roll out to team](#step-7) | human; human approval every run; includes waiting | ~8 h | [Step 6](#step-6) |
 
 <a id="steps"></a>
 
@@ -58,7 +58,7 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 
 ### 1. Set up your identity provider tenant
 
-manual form/portal · ~30 min · human approval required
+manual form/portal · ~30 min · human approval every run
 
 
 Verify company control of the domain and choose the identity tenant for the intended applications. Review licensing, administrator ownership and account recovery before creating the approved account and granting privileged access. Establish protected recovery access before changing production sign-in. Record the tenant identifier so later integrations connect to the correct company environment.
@@ -73,7 +73,7 @@ Verify company control of the domain and choose the identity tenant for the inte
 
 ### 2. Define role-based groups
 
-agent-runnable · ~20 min · human approval required
+agent-runnable · ~20 min · human approval on the first run
 
 
 Map actual job responsibilities to required application access. Define separate ordinary, privileged, contractor and service-identity groups where appropriate, with membership criteria and responsible managers. Check overlapping grants and exceptions before creating approved groups. The resulting role-to-access mapping should support onboarding, role changes and departure without giving every user every application.
@@ -85,7 +85,7 @@ Map actual job responsibilities to required application access. Define separate 
 
 ### 3. Configure SSO for each app
 
-agent-runnable · ~2 h · human approval required
+agent-runnable · ~2 h · human approval every run
 
 
 Follow each application’s supported federation setup for the correct tenant, claims and user-matching rules. Keep a recovery route while testing the integration with designated accounts. Apply production sign-in changes through the established access-change process. Verify the resulting identity and access level, then record working settings and provider-documented certificate or secret rotation needs.
@@ -97,7 +97,7 @@ Follow each application’s supported federation setup for the correct tenant, c
 
 ### 4. Enable MFA policies
 
-agent-runnable · ~15 min · human approval required
+agent-runnable · ~15 min · human approval every run
 
 
 Choose supported authentication methods based on account risk and plan enrollment, lost-device recovery and emergency access. Pilot the policy with representative users and privileged accounts before approving enforcement and exceptions through the company’s access-control process. Resolve enrollment failures and test the supported recovery route before rollout.
@@ -109,7 +109,7 @@ Choose supported authentication methods based on account risk and plan enrollmen
 
 ### 5. Provision existing users
 
-agent-runnable · ~30 min · human approval required
+agent-runnable · ~30 min · human approval above a threshold
 
 
 Match the current employee and contractor roster to existing application identities. Resolve duplicate or shared accounts and verify each person’s approved groups and licenses. With the relevant access approvals, pilot provisioning on a small population before expanding. Investigate missing users and unexpected privileges before expanding provisioning.
@@ -132,7 +132,7 @@ Test sign-in, sign-out, recovery, role changes and deprovisioning using represen
 
 ### 7. Roll out to team
 
-human · ~8 h · async wait · human approval required
+human · ~8 h · async wait · human approval every run
 
 
 Give staff the new sign-in instructions, enrollment steps and support route. Coordinate rollout timing and approved enforcement through the existing access-change process. Watch for failed logins and access mismatches, using the agreed rollback if needed. Resolve pending users and application exceptions, then hand tenant and group maintenance to the team handling onboarding, transfers and departures.

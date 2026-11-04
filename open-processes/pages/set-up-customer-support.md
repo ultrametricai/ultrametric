@@ -42,12 +42,12 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
-| [1. Create your support platform account](#step-1) | manual form/portal; approval required | ~15 min | Entry step |
-| [2. Install Messenger widget](#step-2) | agent-runnable; approval required | ~15 min | [Step 1](#step-1) |
-| [3. Set up inbox and routing](#step-3) | agent-runnable; approval required | ~15 min | [Step 1](#step-1) |
-| [4. Create help center articles](#step-4) | human; approval required | ~1 h | [Step 1](#step-1) |
-| [5. Configure auto-responses](#step-5) | agent-runnable; approval required | ~10 min | [Step 3](#step-3) |
-| [6. Add team members](#step-6) | agent-runnable; approval required | ~5 min | [Step 3](#step-3) |
+| [1. Create your support platform account](#step-1) | manual form/portal; human approval on the first run | ~15 min | Entry step |
+| [2. Install Messenger widget](#step-2) | agent-runnable; human approval on the first run | ~15 min | [Step 1](#step-1) |
+| [3. Set up inbox and routing](#step-3) | agent-runnable; human approval on the first run | ~15 min | [Step 1](#step-1) |
+| [4. Create help center articles](#step-4) | human; human approval on the first run | ~1 h | [Step 1](#step-1) |
+| [5. Configure auto-responses](#step-5) | agent-runnable; human approval on the first run | ~10 min | [Step 3](#step-3) |
+| [6. Add team members](#step-6) | agent-runnable; human approval above a threshold | ~5 min | [Step 3](#step-3) |
 
 <a id="steps"></a>
 
@@ -57,7 +57,7 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 
 ### 1. Create your support platform account
 
-manual form/portal · ~15 min · human approval required
+manual form/portal · ~15 min · human approval on the first run
 
 
 Choose the support workspace from the channels, existing contact addresses, team size and access needs. Check plan costs and how customer conversations and attachments are handled. Set company ownership, recovery access and administrators within the support budget. Before connecting a customer channel, assign who monitors it and what coverage the team can actually provide.
@@ -72,7 +72,7 @@ Choose the support workspace from the channels, existing contact addresses, team
 
 ### 2. Install Messenger widget
 
-agent-runnable · ~15 min · human approval required
+agent-runnable · ~15 min · human approval on the first run
 
 
 Place the support widget where customers need help and limit the identity and page data it sends to the agreed fields. Use the provider's current installation instructions. In preview, test keyboard access, display, signed-in identity and conversation creation. After the authorized site release, send a controlled live request and verify it reaches the right inbox without exposing another customer's messages.
@@ -85,7 +85,7 @@ Place the support widget where customers need help and limit the identity and pa
 
 ### 3. Set up inbox and routing
 
-agent-runnable · ~15 min · human approval required
+agent-runnable · ~15 min · human approval on the first run
 
 
 *Follows step 1.*
@@ -99,7 +99,7 @@ Route each channel and request type to a responsible person or team. Define reas
 
 ### 4. Create help center articles
 
-human · ~1 h · human approval required
+human · ~1 h · human approval on the first run
 
 
 *Follows step 1.*
@@ -112,7 +112,7 @@ Write help articles for recurring questions, real product tasks and known failur
 
 ### 5. Configure auto-responses
 
-agent-runnable · ~10 min · human approval required
+agent-runnable · ~10 min · human approval on the first run
 
 
 *Follows step 3.*
@@ -127,7 +127,7 @@ Write automatic replies that match support coverage, with triggers and safeguard
 
 ### 6. Add team members
 
-agent-runnable · ~5 min · human approval required
+agent-runnable · ~5 min · human approval above a threshold
 
 
 *Follows step 3.*

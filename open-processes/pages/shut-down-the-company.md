@@ -68,15 +68,15 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | --- | --- | --- | --- |
 | [1. Draft the required corporate dissolution approvals](#step-1) | agent-runnable | ~30 min | Entry step |
 | [2. Sign the corporate dissolution approvals](#step-2) | human; signature required | ~10 min | [Step 1](#step-1) |
-| [3. Run the final payroll and terminate contractors](#step-3) | agent-runnable; approval required | ~30 min | [Step 2](#step-2) |
-| [4. Cancel vendor contracts and subscriptions](#step-4) | agent-runnable; approval required | ~45 min | [Step 3](#step-3) |
+| [3. Run the final payroll and terminate contractors](#step-3) | agent-runnable; human approval every run | ~30 min | [Step 2](#step-2) |
+| [4. Cancel vendor contracts and subscriptions](#step-4) | agent-runnable; human approval every run | ~45 min | [Step 3](#step-3) |
 | [5. Submit the dissolution or closure filing and settle registry obligations](#step-5) | manual form/portal | ~30 min | [Step 4](#step-4) |
 | [6. Wait for the dissolution to be accepted](#step-6) | human; includes waiting | ~7 d | [Step 5](#step-5) |
 | [7. Your accountant prepares the final tax returns](#step-7) | human; includes waiting | ~7 d | [Step 6](#step-6) |
 | [8. Sign the final tax returns and closure declarations the jurisdiction requires](#step-8) | human; signature required | ~10 min | [Step 7](#step-7) |
 | [9. File the final returns and close the tax accounts](#step-9) | manual form/portal; includes waiting | ~20 min | [Step 8](#step-8) |
 | [10. Withdraw registrations outside the home jurisdiction](#step-10) | manual form/portal | ~30 min | [Step 9](#step-9) |
-| [11. Close bank accounts and distribute remaining assets](#step-11) | manual form/portal; approval required | ~20 min | [Step 10](#step-10) |
+| [11. Close bank accounts and distribute remaining assets](#step-11) | manual form/portal; human approval every run | ~20 min | [Step 10](#step-10) |
 | [12. Archive corporate records for retention](#step-12) | agent-runnable | ~15 min | [Step 11](#step-11) |
 
 <a id="steps"></a>
@@ -109,7 +109,7 @@ Obtain the approvals required for the chosen dissolution route from the actual d
 
 ### 3. Run the final payroll and terminate contractors
 
-agent-runnable · ~30 min · human approval required · irreversible
+agent-runnable · ~30 min · human approval every run · irreversible
 
 
 Resolve final compensation, notices, benefits, contractor invoices, equipment and access for each departing person and location. HR, payroll and counsel handle the relevant local requirements. The responsible company representatives authorize termination communications and payments. Reconcile completed payments and outstanding claims, and retain the staff access needed to finish payroll reporting, tax work and closure.
@@ -120,7 +120,7 @@ Resolve final compensation, notices, benefits, contractor invoices, equipment an
 
 ### 4. Cancel vendor contracts and subscriptions
 
-agent-runnable · ~45 min · human approval required · hard to undo
+agent-runnable · ~45 min · human approval every run · hard to undo
 
 
 Review contracts and subscriptions for termination rights, notice methods, final charges and data exports. Include services holding records needed after closure. Send authorized cancellation notices, retain acknowledgements and verify billing stops. Export necessary records before accounts disappear, and keep essential communications and storage running until their custodians can complete dependent closure work.
@@ -249,7 +249,7 @@ Check every foreign-state registration for its withdrawal procedure and outstand
 
 ### 11. Close bank accounts and distribute remaining assets
 
-manual form/portal · ~20 min · human approval required · irreversible
+manual form/portal · ~20 min · human approval every run · irreversible
 
 
 Reconcile cash with remaining debts, taxes, fees and contingent claims. Counsel and the financial adviser determine appropriate reserves and distributions under the winding-up plan. Authorized company representatives approve transfers to verified recipients. Close accounts only after remaining payment and receipt needs are resolved, and preserve the final statements and distribution evidence for the custodian.
