@@ -17,11 +17,12 @@ export interface Submission {
   issue: number; source: string; revision: string; name: string; arena: string;
   urls: string[]; why: string; affiliated: boolean; disclosure: string;
 }
-const FIELDS = ['Product name', 'Category', 'URLs', 'Why it matters', 'Are you affiliated with this product?', 'Affiliation detail (if yes)']
+const FIELDS = ['Product name', 'Category', 'Product site', 'URLs', 'Why it matters', 'Are you affiliated with this product?', 'Affiliation detail (if yes)']
 export function digest(text: string): string { return createHash('sha256').update(text).digest('hex') }
 
 export function normalizeIssue(input: unknown): Submission {
   const issue = IssueSchema.parse(input)
+  if (issue.labels.some(l => ['needs-founder', 'intake-paused'].includes(l.name))) throw new Error('submission paused for human review')
   if (issue.pull_request || !issue.labels.some(l => l.name === 'product-request')) throw new Error('requires an open product-request issue')
   const fields = new Map<string, string>()
   for (const match of issue.body.matchAll(/^### ([^\r\n]+)\r?\n([\s\S]*?)(?=^### |$(?![\s\S]))/gm)) {
@@ -39,8 +40,17 @@ export function normalizeIssue(input: unknown): Submission {
   const disclosure = get('Affiliation detail (if yes)')
   if (!['Yes', 'No'].includes(affiliation) || (affiliation === 'Yes' && !disclosure)) throw new Error('explicit affiliation and disclosure required')
   if (disclosure.length > 2000) throw new Error('oversized affiliation disclosure')
-  const urls = [...new Set((get('URLs').match(/https?:\/\/[^\s<>\)]+/g) ?? []).map(u => publicUrl(u).href))]
-  if (!urls.length || urls.length > 8) throw new Error('provide one to eight public HTTPS URLs, product site first')
+  const urls = [...new Set((`${get('Product site')}\n${get('URLs')}`.match(/https?:\/\/[^\s<>\)]+/g) ?? []).map(u => publicUrl(u).href))]
+  if (!urls.length || urls.length > 8) throw new Error('provide one to eight public HTTPS URLs, including an explicit product site')
+  const explicit = get('Product site') || [...get('URLs').matchAll(/^\s*(?:[-*]\s*)?(?:Site|Website):\s*(https:\/\/\S+)\s*$/gmi)].map(m => m[1]).join(' ')
+  let primary: string
+  if (explicit) primary = publicUrl(explicit).href
+  else if (urls.length === 1 && (new URL(urls[0]).pathname === '/' || new URL(urls[0]).hostname === 'github.com') && !/^(docs|developer|developers)\./.test(new URL(urls[0]).hostname)) primary = urls[0]
+  else throw new Error('unclear product surface: provide Product site or a single Site: line; URL order is not identity')
+  if (new URL(primary).search) throw new Error('product site query parameters require human identity review')
+  if (!urls.includes(primary)) throw new Error('product site must be an unambiguous URL')
+  urls.splice(urls.indexOf(primary), 1)
+  urls.unshift(primary)
   // GitHub source identity is exact owner/repo, not an arbitrary URL that starts with it.
   for (const value of urls) {
     const u = new URL(value)
@@ -51,12 +61,13 @@ export function normalizeIssue(input: unknown): Submission {
 }
 
 export interface Catalog {
+  revision: string;
   categories: Category[];
   products: { arena: string; product: Product }[];
   roadmap: { id: string; name: string; status: string; candidateProducts: string[] }[];
 }
 export interface IntakeReport {
-  schemaVersion: 1; submission: Submission; route: 'draft-bringup' | 'arena-review' | 'needs-human' | 'duplicate';
+  schemaVersion: 1; baseRevision: string; submission: Submission; route: 'draft-bringup' | 'arena-review' | 'needs-human' | 'duplicate';
   reason: string; identity: string; branch: string; arena: string | null;
   receipts: Receipt[]; disposition?: Disposition; proposedProduct?: Product;
   roadmap?: Catalog['roadmap'][number]; duplicate?: { arena: string; id: string };
@@ -103,25 +114,36 @@ export function safeTriageIo(pages: Map<string, Page>, receipts: Receipt[], get:
   }
 }
 
+// Preserve listing paths: a common domain does not make two packages one product.
+export function productIdentity(value: string): string {
+  const url = publicUrl(value)
+  const host = url.hostname.replace(/^www\./, '')
+  const codeKey = rosterDedupeKey(value)!
+  if (codeKey.includes('/')) return codeKey
+  return host + url.pathname.replace(/\/+$/, '')
+}
+
 export function submissionIdentity(submission: Submission): { identity: string; branch: string } {
-  const identity = rosterDedupeKey(submission.urls[0])!
+  const identity = productIdentity(submission.urls[0])
   return { identity, branch: `submission-intake/${digest(`${submission.arena}\n${identity}`).slice(0, 24)}` }
 }
 
 export async function assess(submission: Submission, catalog: Catalog, get = fetchPublic): Promise<IntakeReport> {
   // Per product + requested arena, not per issue: duplicate issues share one draft.
   const { identity, branch } = submissionIdentity(submission)
-  const report: IntakeReport = { schemaVersion: 1, submission, identity, branch, route: 'needs-human', reason: '', arena: null, receipts: [] }
+  const report: IntakeReport = { schemaVersion: 1, baseRevision: catalog.revision, submission, identity, branch, route: 'needs-human', reason: '', arena: null, receipts: [] }
   const stop = (reason: string) => { report.reason = reason; return report }
   const knownAffiliated = catalog.products.filter(({ product }) => product.affiliation)
   if (submission.urls.some(url => isFounderAffiliated(submission.name, url)) || /\b(foreloop|afk)\b/i.test(submission.name) ||
-    knownAffiliated.some(({ product }) => product.name.toLowerCase() === submission.name.toLowerCase() || submission.urls.some(url => Object.values(product.urls).flat().some(known => rosterDedupeKey(known) === rosterDedupeKey(url))))) {
+    knownAffiliated.some(({ product }) => product.name.toLowerCase() === submission.name.toLowerCase() || submission.urls.some(url => Object.values(product.urls).flat().some(known => productIdentity(known) === productIdentity(url))))) {
     return stop('Affiliated identity: human disclosure and bias audit required.')
   }
   const duplicate = catalog.products.find(({ arena, product }) => arena === submission.arena &&
     (product.id === slugify(submission.name) || product.name.toLowerCase() === submission.name.toLowerCase() ||
-      submission.urls.some(url => [product.urls.site, product.urls.github].some(known => known && rosterDedupeKey(known) === rosterDedupeKey(url)))))
+      submission.urls.some(url => [product.urls.site, product.urls.github].some(known => known && productIdentity(known) === productIdentity(url)))))
   if (duplicate) { report.route = 'duplicate'; report.duplicate = { arena: duplicate.arena, id: duplicate.product.id }; return stop('Product already rostered in the requested arena; use the correction flow for new evidence.') }
+  if (catalog.products.some(({ arena, product }) => arena === submission.arena && rosterDedupeKey(product.urls.site) === rosterDedupeKey(submission.urls[0]))) return stop('Existing roster shares this host but has a different product path; confirm identity before adding a product.')
+  if (/^(?:www\.)?(?:npmjs\.com|pypi\.org|huggingface\.co|apps\.apple\.com|play\.google\.com|producthunt\.com)$/.test(new URL(submission.urls[0]).hostname)) return stop('Shared listing host: confirm the vendor product site or source repository before bring-up.')
   const roadmap = catalog.roadmap.find(r => r.id === submission.arena && r.status !== 'live')
   if (roadmap) {
     report.route = 'arena-review'; report.roadmap = roadmap; report.arena = roadmap.id
@@ -141,7 +163,7 @@ export async function assess(submission: Submission, catalog: Catalog, get = fet
       const page = await io.fetchPage(primary)
       if (page.status !== 200) return stop(`Product surface HTTP ${page.status}; retry after review.`)
       // Redirects across identities may be legitimate acquisitions, but require review.
-      if (rosterDedupeKey(page.url) !== identity) return stop('Product redirects to a different identity; review the canonical product URL.')
+      if (productIdentity(page.url) !== identity) return stop('Product redirects to a different identity; review the canonical product URL.')
       verifiedText = page.html.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, ' ').replace(/<[^>]+>/g, ' ')
     }
     // Submission rationale is not evidence and cannot manufacture placement keyword hits.

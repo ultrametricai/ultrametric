@@ -26,7 +26,7 @@ describe('GitHub intake adapter', () => {
   it('requires the same trusted main used for assessment before creating commits', async () => {
     const body = '### Product name\n\nAcme\n\n### Category\n\nrealtime-infra\n\n### URLs\n\nhttps://acme.io/\n\n### Why it matters\n\nRealtime.\n\n### Are you affiliated with this product?\n\nNo\n'
     const submission = normalizeIssue({ number: 1, title: 'Submit a product: Acme', body, state: 'open', updated_at: '', labels: [{ name: 'product-request' }] })
-    const report = await assess(submission, { categories: [], products: [], roadmap: [{ id: 'realtime-infra', name: 'Realtime', status: 'planned', candidateProducts: ['Acme'] }] })
+    const report = await assess(submission, { revision: sha, categories: [], products: [], roadmap: [{ id: 'realtime-infra', name: 'Realtime', status: 'planned', candidateProducts: ['Acme'] }] })
     exec.mockReset().mockReturnValue(JSON.stringify({ object: { sha: 'b'.repeat(40) } }))
     await expect(githubPublisher(sha).createBranch(report, {})).rejects.toThrow('main advanced')
     expect(exec).toHaveBeenCalledTimes(1)

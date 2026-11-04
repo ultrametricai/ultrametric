@@ -5,6 +5,7 @@ import { REPOSITORY, submissionIdentity, type IntakeReport } from './submission'
 
 export interface Pull { number: number; html_url: string; state: string; draft: boolean }
 export interface Publisher {
+  assertCurrentBase(revision: string): Promise<void>;
   currentRevision(issue: number): Promise<string>;
   readBranch(branch: string): Promise<IntakeReport | null>;
   pulls(branch: string): Promise<Pull[]>;
@@ -64,7 +65,9 @@ export async function publish(report: IntakeReport, io: Publisher): Promise<Publ
   const reserved = existing ?? report
   const pulls = await io.pulls(report.branch)
   if (pulls.length) return { status: 'existing', url: pulls[0].html_url }
+  if (reserved.baseRevision !== report.baseRevision) throw new Error('reserved main revision changed; human reassessment required')
   if (await io.currentRevision(reserved.submission.issue) !== reserved.submission.revision) throw new Error('reserved source issue changed; human review required')
+  await io.assertCurrentBase(reserved.baseRevision)
   const pr = await io.createPull(report.branch, `intake: ${reserved.route === 'arena-review' ? 'review arena' : 'prepare product'} for issue #${reserved.submission.issue}`, reviewBody(reserved))
   if (!pr.draft) throw new Error(`PR ${pr.html_url} is not a draft; human attention required`)
   return { status: 'created', url: pr.html_url }
@@ -79,12 +82,30 @@ export function ghApi(endpoint: string, method = 'GET', body?: unknown): unknown
 const Sha = z.object({ sha: z.string().regex(/^[a-f0-9]{40}$/) })
 const PullSchema = z.object({ number: z.number(), html_url: z.string().url(), state: z.string(), draft: z.boolean() })
 
-// Branch listing is paginated and exact. A transport/auth failure is never interpreted
+// Branch matching is exact. A transport/auth failure is never interpreted
 // as “not found”, which could otherwise create a second draft or lose prior state.
+export function parseReport(raw: unknown): IntakeReport {
+  z.object({ schemaVersion: z.literal(1), baseRevision: z.string().regex(/^[a-f0-9]{40}$/), branch: z.string().regex(/^submission-intake\/[a-f0-9]{24}$/), identity: z.string().min(1),
+    route: z.enum(['draft-bringup', 'arena-review', 'needs-human', 'duplicate']), reason: z.string(),
+    arena: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/).nullable(), receipts: z.array(z.object({ url: z.string().url(), status: z.number(), checkedAt: z.string(), sha256: z.string().regex(/^[a-f0-9]{64}$/), excerpt: z.string() })),
+    submission: z.object({ issue: z.number().int().positive(), revision: z.string().regex(/^[a-f0-9]{64}$/), arena: z.string(), name: z.string(), urls: z.array(z.string().url()).min(1), source: z.string(), why: z.string(), affiliated: z.boolean(), disclosure: z.string() }),
+  }).parse(raw)
+  const parsed = raw as IntakeReport
+  const key = submissionIdentity(parsed.submission)
+  if (key.branch !== parsed.branch || key.identity !== parsed.identity || parsed.submission.source !== `https://github.com/${REPOSITORY}/issues/${parsed.submission.issue}`) throw new Error('invalid reserved intake identity')
+  if (parsed.proposedProduct) ProductSchema.parse(parsed.proposedProduct)
+  return parsed
+}
+
 export function githubPublisher(expectedBase: string): Publisher {
   const repo = `repos/${REPOSITORY}`
   const api = ghApi
+  const assertCurrentBase = async (revision: string) => {
+    const ref = z.object({ object: Sha }).parse(api(`${repo}/git/ref/heads/main`))
+    if (revision !== expectedBase || ref.object.sha !== expectedBase) throw new Error('main advanced since intake checkout; refresh trusted main and reassess')
+  }
   return {
+    assertCurrentBase,
     async currentRevision(issue) {
       const { normalizeIssue } = await import('./submission')
       return normalizeIssue(api(`${repo}/issues/${issue}`)).revision
@@ -95,23 +116,16 @@ export function githubPublisher(expectedBase: string): Publisher {
       const data = z.object({ encoding: z.literal('base64'), content: z.string() }).parse(api(`${repo}/contents/${reportDirectory(branch)}/request.json?ref=${encodeURIComponent(branch)}`))
       // Validate the persisted fields used for resumption; other fields are never executed.
       const raw = JSON.parse(Buffer.from(data.content, 'base64').toString('utf8'))
-      z.object({ schemaVersion: z.literal(1), branch: z.literal(branch), identity: z.string().min(1),
-        route: z.enum(['draft-bringup', 'arena-review']), reason: z.string(),
-        arena: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/), receipts: z.array(z.object({ url: z.string().url(), status: z.number(), checkedAt: z.string(), sha256: z.string().regex(/^[a-f0-9]{64}$/), excerpt: z.string() })),
-        submission: z.object({ issue: z.number().int().positive(), revision: z.string().regex(/^[a-f0-9]{64}$/), arena: z.string(), name: z.string(), urls: z.array(z.string().url()).min(1), source: z.string(), why: z.string(), affiliated: z.boolean(), disclosure: z.string() }),
-      }).parse(raw)
-      const parsed = raw as IntakeReport
-      const key = submissionIdentity(parsed.submission)
-      if (key.branch !== branch || key.identity !== parsed.identity || parsed.submission.source !== `https://github.com/${REPOSITORY}/issues/${parsed.submission.issue}`) throw new Error('invalid reserved intake identity')
-      if (parsed.proposedProduct) ProductSchema.parse(parsed.proposedProduct)
+      const parsed = parseReport(raw)
+      if (parsed.branch !== branch) throw new Error('invalid reserved branch')
       return parsed
     },
     async pulls(branch) {
       return z.array(PullSchema).parse(api(`${repo}/pulls?state=all&head=ultrametricai:${encodeURIComponent(branch)}&per_page=100`))
     },
     async createBranch(report, files) {
-      const ref = z.object({ object: Sha }).parse(api(`${repo}/git/ref/heads/main`))
-      if (ref.object.sha !== expectedBase) throw new Error('main advanced since intake checkout; refresh trusted main and reassess')
+      await assertCurrentBase(report.baseRevision)
+      const ref = { object: { sha: expectedBase } }
       const parent = z.object({ tree: Sha }).parse(api(`${repo}/git/commits/${ref.object.sha}`))
       const tree = Sha.parse(api(`${repo}/git/trees`, 'POST', { base_tree: parent.tree.sha,
         tree: Object.entries(files).map(([path, content]) => ({ path, mode: '100644', type: 'blob', content })) }))

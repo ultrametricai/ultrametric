@@ -1,7 +1,10 @@
-# Dispatch-only pilot. Adding this workflow does not resume any existing content loop.
-# No issue-event trigger until a separately approved rollout. Default is read-only.
+# Public issue events are untrusted. Unattended intake stays OFF until a maintainer
+# explicitly sets UM_SUBMISSION_INTAKE_ENABLED=true after reviewing this workflow.
+# No existing content workflow is enabled, dispatched, repaired, or merged here.
 name: submission-intake
 on:
+  issues:
+    types: [opened, edited, reopened, labeled, unlabeled]
   workflow_dispatch:
     inputs:
       issue:
@@ -15,16 +18,28 @@ on:
 permissions:
   contents: read
 concurrency:
-  group: submission-intake
+  # Independent issues must not replace one another in GitHub's single pending slot.
+  group: submission-intake-${{ github.event.issue.number || inputs.issue }}
   cancel-in-progress: false
 jobs:
-  preview:
-    if: ${{ !inputs.publish }}
+  assess:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (vars.UM_SUBMISSION_INTAKE_ENABLED == 'true' &&
+       github.event.issue.state == 'open' &&
+       contains(github.event.issue.labels.*.name, 'product-request') &&
+       !contains(github.event.issue.labels.*.name, 'needs-founder') &&
+       !contains(github.event.issue.labels.*.name, 'intake-paused'))
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
       contents: read
       issues: read
+    outputs:
+      issue: ${{ steps.intake.outputs.issue }}
+      revision: ${{ steps.intake.outputs.revision }}
+      publishable: ${{ steps.intake.outputs.publishable }}
+      artifact: ${{ steps.upload.outputs.artifact-id }}
     steps:
       - uses: actions/checkout@v7
         with:
@@ -36,18 +51,32 @@ jobs:
           node-version: 24.22.1
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - name: Assess submission
+      - name: Assess submission with read-only credentials
+        id: intake
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ISSUE: ${{ inputs.issue }}
-        run: pnpm exec tsx rankings-engine/scripts/submission-intake.ts --issue "$ISSUE"
+          EVENT_NAME: ${{ github.event_name }}
+          UM_SUBMISSION_INTAKE_ENABLED: ${{ vars.UM_SUBMISSION_INTAKE_ENABLED }}
+        run: |
+          if [ "$EVENT_NAME" = issues ]; then
+            pnpm exec tsx rankings-engine/scripts/submission-intake.ts --event --prepare
+          else
+            pnpm exec tsx rankings-engine/scripts/submission-intake.ts --issue "$ISSUE" --prepare
+          fi
       - uses: actions/upload-artifact@v7
+        id: upload
         if: always()
         with:
-          name: submission-intake-preview
+          name: submission-intake-prepared-${{ github.run_attempt }}
           path: reports/submission-intake-local/
+          retention-days: 30
   draft:
-    if: ${{ inputs.publish }}
+    needs: assess
+    if: >-
+      needs.assess.outputs.publishable == 'true' &&
+      ((github.event_name == 'workflow_dispatch' && inputs.publish) ||
+       (github.event_name == 'issues' && vars.UM_SUBMISSION_INTAKE_ENABLED == 'true'))
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
@@ -57,7 +86,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
         with:
-          ref: main
+          ref: ${{ needs.assess.outputs.revision }}
           persist-credentials: false
       - uses: pnpm/action-setup@v6
       - uses: actions/setup-node@v7
@@ -65,13 +94,20 @@ jobs:
           node-version: 24.22.1
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - name: Prepare draft
+      # Same-run artifact only; no cross-run lookup or execution of artifact contents.
+      - uses: actions/download-artifact@v8
+        with:
+          artifact-ids: ${{ needs.assess.outputs.artifact }}
+          path: reports/submission-intake-local/
+          digest-mismatch: error
+      - name: Publish prepared draft without fetching vendor URLs
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          ISSUE: ${{ inputs.issue }}
-        run: pnpm exec tsx rankings-engine/scripts/submission-intake.ts --issue "$ISSUE" --publish
+          ISSUE: ${{ needs.assess.outputs.issue }}
+        run: pnpm exec tsx rankings-engine/scripts/submission-intake.ts --issue "$ISSUE" --publish-prepared
       - uses: actions/upload-artifact@v7
         if: always()
         with:
-          name: submission-intake-result
+          name: submission-intake-result-${{ github.run_attempt }}
           path: reports/submission-intake-local/
+          retention-days: 30
