@@ -135,7 +135,7 @@ describe('battleVerdict', () => {
 
   it('names the leader with both means and refuses to crown a winner inside the noise band', () => {
     const verdict = battleVerdict('Alpha', 'Beta', agg(80), agg(72))
-    expect(verdict).toContain('Alpha leads on mean Overall score, 80.0/100 vs 72.0/100')
+    expect(verdict).toContain('Alpha leads on mean Agentic score, 80.0/100 vs 72.0/100')
     expect(verdict).toContain('not a judged head-to-head')
     const even = battleVerdict('Alpha', 'Beta', agg(80), agg(80 - VERDICT_EVEN_DELTA / 2))
     expect(even).toContain('effectively even')
