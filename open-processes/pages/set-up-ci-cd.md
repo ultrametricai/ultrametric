@@ -42,11 +42,11 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
-| [1. Create the CI workflow in your code host](#step-1) | agent-runnable; approval required | ~15 min | Entry step |
+| [1. Create the CI workflow in your code host](#step-1) | agent-runnable; human approval on the first run | ~15 min | Entry step |
 | [2. Configure test and lint jobs](#step-2) | agent-runnable | ~10 min | [Step 1](#step-1) |
-| [3. Connect the deploy platform to the code host](#step-3) | manual form/portal; approval required | ~10 min | [Step 2](#step-2) |
-| [4. Set up env variables](#step-4) | agent-runnable; approval required | ~5 min | [Step 3](#step-3) |
-| [5. Configure deploy settings](#step-5) | agent-runnable; approval required | ~5 min | [Step 4](#step-4) |
+| [3. Connect the deploy platform to the code host](#step-3) | manual form/portal; human approval on the first run | ~10 min | [Step 2](#step-2) |
+| [4. Set up env variables](#step-4) | agent-runnable; human approval on the first run | ~5 min | [Step 3](#step-3) |
+| [5. Configure deploy settings](#step-5) | agent-runnable; human approval on the first run | ~5 min | [Step 4](#step-4) |
 | [6. Test pipeline end-to-end](#step-6) | agent-runnable | ~10 min | [Step 5](#step-5) |
 
 <a id="steps"></a>
@@ -57,7 +57,7 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 
 ### 1. Create the CI workflow in your code host
 
-agent-runnable · ~15 min · human approval required
+agent-runnable · ~15 min · human approval on the first run
 
 
 Build the workflow around the repository's existing package manager, lockfile, runtime and check commands. Specify branch and pull-request triggers and start with the permissions each job needs. Examine third-party actions and untrusted contributions before introducing secrets or write access. Run the workflow from a clean checkout on a small branch; its logs should show the same install and checks a contributor can reproduce locally. Changes to repository credentials or deployment authority belong in the maintainer's security review.
@@ -84,7 +84,7 @@ Run linting, type checking and tests as distinct checks with recognizable, uniqu
 
 ### 3. Connect the deploy platform to the code host
 
-manual form/portal · ~10 min · human approval required
+manual form/portal · ~10 min · human approval on the first run
 
 
 Connect the intended repository to the hosting project using the repository and hosting owners' authorized integration scope. Inspect requested access before installation, particularly if the connection covers more repositories than this project needs. Push a test branch and follow its preview deployment back to the triggering commit. Check preview visibility and confirm that the connection has not enabled an unintended production deployment path. Keep a usable way to revoke the integration.
@@ -96,7 +96,7 @@ Connect the intended repository to the hosting project using the repository and 
 
 ### 4. Set up env variables
 
-agent-runnable · ~5 min · human approval required
+agent-runnable · ~5 min · human approval on the first run
 
 
 List the variables needed at build time and runtime, separating public configuration from secrets and development from production values. Put secrets in the platform's protected configuration within the application owner's authorized scope; commit names and setup instructions only. Test that a preview connects to test resources. On Vercel, changed values apply to subsequent deployments, so deploy again before checking the result. Inspect behavior without printing secret values into build logs.
@@ -108,7 +108,7 @@ List the variables needed at build time and runtime, separating public configura
 
 ### 5. Configure deploy settings
 
-agent-runnable · ~5 min · human approval required
+agent-runnable · ~5 min · human approval on the first run
 
 
 Match the hosting configuration to the repository's root directory, build command, output and runtime. Specify which branch or action creates a preview and which reaches production. Include database migrations in the release plan where the application needs them, with recovery consequences made explicit. Verify that the chosen plan supports the protection controls being relied on. Apply live settings within the release owner's authority and inspect a resulting deployment for the correct commit and environment.

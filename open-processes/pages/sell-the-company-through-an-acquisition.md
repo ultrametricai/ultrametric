@@ -47,11 +47,11 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Prepare the sale objectives and readiness evidence](#step-1) | agent-runnable | Not recorded | Entry step |
-| [2. Appoint advisers and approve the transaction strategy](#step-2) | human; approval required | Not recorded | [Step 1](#step-1) |
-| [3. Review indications and authorize a letter of intent](#step-3) | human; approval required | Not recorded | [Step 2](#step-2) |
+| [2. Appoint advisers and approve the transaction strategy](#step-2) | human; human approval every run | Not recorded | [Step 1](#step-1) |
+| [3. Review indications and authorize a letter of intent](#step-3) | human; human approval every run | Not recorded | [Step 2](#step-2) |
 | [4. Manage diligence and the issues register](#step-4) | agent-runnable | Not recorded | [Step 3](#step-3) |
-| [5. Approve definitive agreements and closing conditions](#step-5) | human; approval required | Not recorded | [Step 4](#step-4) |
-| [6. Verify conditions and execute the closing](#step-6) | human; approval required | Not recorded | [Step 5](#step-5) |
+| [5. Approve definitive agreements and closing conditions](#step-5) | human; human approval every run | Not recorded | [Step 4](#step-4) |
+| [6. Verify conditions and execute the closing](#step-6) | human; human approval every run | Not recorded | [Step 5](#step-5) |
 | [7. Reconcile post-close obligations and handover](#step-7) | agent-runnable | Not recorded | [Step 6](#step-6) |
 
 <a id="steps"></a>
@@ -73,7 +73,7 @@ Compile ownership, financial, customer, IP, employment and contract records and 
 
 ### 2. Appoint advisers and approve the transaction strategy
 
-human · human approval required
+human · human approval every run
 
 
 The board, holders and qualified advisers assess structure, conflicts, valuation, authority and potential buyers. Set confidentiality and outreach authority and distinguish an approach or indication from a binding offer.
@@ -84,7 +84,7 @@ The board, holders and qualified advisers assess structure, conflicts, valuation
 
 ### 3. Review indications and authorize a letter of intent
 
-human · human approval required
+human · human approval every run
 
 
 Counsel and the authorized decision makers compare price, structure, financing, exclusivity and execution risk. Negotiate and approve any preliminary commitment within its stated binding scope.
@@ -106,7 +106,7 @@ Share approved materials through controlled access, reconcile requests and track
 
 ### 5. Approve definitive agreements and closing conditions
 
-human · human approval required
+human · human approval every run
 
 
 Qualified advisers negotiate the actual purchase agreement, disclosures, consents, regulatory conditions and employee treatment. Obtain the required company and holder approvals before authorized parties sign.
@@ -117,7 +117,7 @@ Qualified advisers negotiate the actual purchase agreement, disclosures, consent
 
 ### 6. Verify conditions and execute the closing
 
-human · human approval required · hard to undo
+human · human approval every run · hard to undo
 
 
 Counsel and finance confirm approvals, final consideration, payment instructions and the agreed funds and document flow. Authorized people release the closing actions and retain independent evidence of settlement.

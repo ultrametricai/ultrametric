@@ -47,9 +47,9 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Gather the proposed location and working facts](#step-1) | agent-runnable | Not recorded | Entry step |
-| [2. Assess local employment, tax and immigration implications](#step-2) | human; approval required | Not recorded | [Step 1](#step-1) |
+| [2. Assess local employment, tax and immigration implications](#step-2) | human; human approval every run | Not recorded | [Step 1](#step-1) |
 | [3. Prepare the operating and cost alternatives](#step-3) | agent-runnable | Not recorded | [Step 2](#step-2) |
-| [4. Approve the arrangement and required documents](#step-4) | human; approval required | Not recorded | [Step 3](#step-3) |
+| [4. Approve the arrangement and required documents](#step-4) | human; human approval every run | Not recorded | [Step 3](#step-3) |
 | [5. Verify implementation and monitor changes](#step-5) | agent-runnable | Not recorded | [Step 4](#step-4) |
 
 <a id="steps"></a>
@@ -71,7 +71,7 @@ Record the employing entity, worker status, current and proposed locations, date
 
 ### 2. Assess local employment, tax and immigration implications
 
-human · human approval required
+human · human approval every run
 
 
 Qualified advisers review the worker's authorization, payroll, employer obligations and entity exposure. Identify facts that could change the conclusion and keep the move unapproved while a required determination is unresolved.
@@ -93,7 +93,7 @@ Compare the approved employment, EOR or entity routes, costs, supervision, time 
 
 ### 4. Approve the arrangement and required documents
 
-human · human approval required
+human · human approval every run
 
 
 The authorized company and worker review the final location, duration, terms and conditions. Obtain required permissions and registrations through their own processes before the approved start date.

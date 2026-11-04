@@ -42,11 +42,11 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
-| [1. Create ATS account](#step-1) | manual form/portal; approval required | ~15 min | Entry step |
-| [2. Configure interview stages](#step-2) | agent-runnable; approval required | ~15 min | [Step 1](#step-1) |
-| [3. Create job postings](#step-3) | agent-runnable; approval required | ~20 min | [Step 2](#step-2) |
-| [4. Set up scorecard templates](#step-4) | agent-runnable; approval required | ~15 min | [Step 3](#step-3) |
-| [5. Connect careers page](#step-5) | manual form/portal; approval required | ~10 min | [Step 3](#step-3) |
+| [1. Create ATS account](#step-1) | manual form/portal; human approval on the first run | ~15 min | Entry step |
+| [2. Configure interview stages](#step-2) | agent-runnable; human approval on the first run | ~15 min | [Step 1](#step-1) |
+| [3. Create job postings](#step-3) | agent-runnable; human approval every run | ~20 min | [Step 2](#step-2) |
+| [4. Set up scorecard templates](#step-4) | agent-runnable; human approval on the first run | ~15 min | [Step 3](#step-3) |
+| [5. Connect careers page](#step-5) | manual form/portal; human approval on the first run | ~10 min | [Step 3](#step-3) |
 
 <a id="steps"></a>
 
@@ -56,7 +56,7 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 
 ### 1. Create ATS account
 
-manual form/portal · ~15 min · human approval required
+manual form/portal · ~15 min · human approval on the first run
 
 
 Set up the ATS around the hiring team, planned roles and candidate-data requirements. Check the selected subscription’s access, retention and export controls before committing to it. Assign recruiting administration and connect the company’s existing identity setup where supported. Open the first requisition and check that recruiters and interviewers see the information their roles require, with sensitive candidate details restricted appropriately.
@@ -70,7 +70,7 @@ Set up the ATS around the hiring team, planned roles and candidate-data requirem
 
 ### 2. Configure interview stages
 
-agent-runnable · ~15 min · human approval required
+agent-runnable · ~15 min · human approval on the first run
 
 
 Define the entry condition, evaluator and decision for each interview stage. Distinguish scheduling states from assessment outcomes and make the handoff between recruiter, interviewer and hiring manager explicit. Check how a candidate moves forward, pauses, withdraws or is rejected. Resolve ambiguous stages with the hiring manager before the team starts using them.
@@ -81,7 +81,7 @@ Define the entry condition, evaluator and decision for each interview stage. Dis
 
 ### 3. Create job postings
 
-agent-runnable · ~20 min · human approval required
+agent-runnable · ~20 min · human approval every run
 
 
 Draft the posting from the approved role, reporting line, location and compensation guidance. Separate essential skills from preferences and include the application route and accommodation contact. Resolve factual questions with the hiring manager and local posting requirements with the people lead before publication. Check that the published role accepts applications into the right requisition and reaches the responsible recruiter.
@@ -94,7 +94,7 @@ Draft the posting from the approved role, reporting line, location and compensat
 
 ### 4. Set up scorecard templates
 
-agent-runnable · ~15 min · human approval required
+agent-runnable · ~15 min · human approval on the first run
 
 
 Build the scorecard around observable job competencies, with examples explaining the rating levels. Assign each criterion to an interviewer and leave room for evidence, concerns and unanswered questions. Walk through a sample response with the hiring manager to expose ambiguous or overlapping criteria. Use the supporting examples in the hiring debrief to explain how each rating was reached.
@@ -108,7 +108,7 @@ Build the scorecard around observable job competencies, with examples explaining
 
 ### 5. Connect careers page
 
-manual form/portal · ~10 min · human approval required
+manual form/portal · ~10 min · human approval on the first run
 
 
 *Follows step 3.*

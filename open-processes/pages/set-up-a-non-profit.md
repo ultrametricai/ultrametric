@@ -55,9 +55,9 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | [2. Choose the legal structure](#step-2) | human | ~30 min | [Step 1](#step-1) |
 | [3. Draft the governing document](#step-3) | manual form/portal | ~1 h | [Step 2](#step-2) |
 | [4. Recruit the initial board](#step-4) | human | ~1 h | [Step 3](#step-3) |
-| [5. Register the legal entity](#step-5) | manual form/portal; approval required | ~30 min | [Step 4](#step-4) |
+| [5. Register the legal entity](#step-5) | manual form/portal; human approval every run | ~30 min | [Step 4](#step-4) |
 | [6. Obtain the tax identifier the status application requires](#step-6) | manual form/portal | ~15 min | [Step 5](#step-5) |
-| [7. Apply for charitable-status recognition](#step-7) | manual form/portal; approval required; includes waiting | ~4 h | [Step 6](#step-6) |
+| [7. Apply for charitable-status recognition](#step-7) | manual form/portal; human approval every run; includes waiting | ~4 h | [Step 6](#step-6) |
 | [8. Register to fundraise where the rules require it](#step-8) | manual form/portal | ~30 min | [Step 7](#step-7) |
 | [9. Set up the annual filings calendar](#step-9) | agent-runnable | ~15 min | [Step 8](#step-8) |
 
@@ -138,7 +138,7 @@ Seat the initial governing body the structure requires: directors or trustees wh
 
 ### 5. Register the legal entity
 
-manual form/portal · ~30 min · human approval required · hard to undo
+manual form/portal · ~30 min · human approval every run · hard to undo
 
 
 File the formation application for the chosen structure with its registration authority. The structure decision determines the authority, the documents, and the signatories; assemble the governing document, the board details, and the required declarations, have the authorized person approve the filing, and submit it with the required fee. Retain the certificate or register entry that comes back; the charitable-status application and the bank will both ask for it.
@@ -160,7 +160,7 @@ Get the tax-authority identifier the charitable-status application and the bank 
 
 ### 7. Apply for charitable-status recognition
 
-manual form/portal · ~4 h · async wait · human approval required · hard to undo
+manual form/portal · ~4 h · async wait · human approval every run · hard to undo
 
 
 Apply to the authority that recognizes charitable status for the chosen structure, attaching the governing document, the activities and finances the forms require, and the board declarations. Answer the reviewer's questions from the committed documents rather than improvising new positions. Track the application to a decision and retain the determination or register entry; banks, grantmakers, and donors ask for it, and the recognition date drives the tax treatment of early donations.

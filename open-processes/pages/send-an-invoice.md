@@ -58,8 +58,8 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Look up or create customer](#step-1) | agent-runnable | ~2 min | Entry step |
-| [2. Create invoice with line items](#step-2) | agent-runnable; approval required | ~3 min | [Step 1](#step-1) |
-| [3. Send invoice](#step-3) | agent-runnable; approval required | ~1 min | [Step 2](#step-2) |
+| [2. Create invoice with line items](#step-2) | agent-runnable; human approval on the first run | ~3 min | [Step 1](#step-1) |
+| [3. Send invoice](#step-3) | agent-runnable; human approval every run | ~1 min | [Step 2](#step-2) |
 | [4. Track payment status](#step-4) | agent-runnable | ~1 min | [Step 3](#step-3) |
 
 <a id="steps"></a>
@@ -81,7 +81,7 @@ Find the customer’s existing billing record from the contract or order before 
 
 ### 2. Create invoice with line items
 
-agent-runnable · ~3 min · human approval required
+agent-runnable · ~3 min · human approval on the first run
 
 | Option | Applies when |
 | --- | --- |
@@ -97,7 +97,7 @@ Draft the invoice from the contract or order and the billable milestone or servi
 - Canonical vendor: Stripe
 
 Options:
-  - **Default — Create invoice with line items** — agent-runnable · ~3 min · human approval required
+  - **Default — Create invoice with line items** — agent-runnable · ~3 min · human approval on the first run
 
     Describe line items so the customer can recognize what was delivered and when. Match quantities, prices, discounts and service periods to the order, with the correct tax treatment, payment terms and purchase-order reference. Check the total and any departure from agreed terms so the draft is ready for the billing owner to issue.
   - **India - GST e-invoice (IRN)** — manual form/portal
@@ -136,7 +136,7 @@ Options:
 
 ### 3. Send invoice
 
-agent-runnable · ~1 min · human approval required
+agent-runnable · ~1 min · human approval every run
 
 
 The billing owner sends the final invoice to the verified contact or required customer portal with the correct attachments, purchase-order reference and payment instructions. Check the delivery acknowledgment and resolve rejected or failed submissions. Link corrections and re-delivery to the original invoice to preserve a single receivable for the charge.

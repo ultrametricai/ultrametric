@@ -53,9 +53,9 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Map spending and payment risks](#step-1) | agent-runnable | Not recorded | Entry step |
-| [2. Approve the control design](#step-2) | human; approval required | Not recorded | [Step 1](#step-1) |
-| [3. Configure approved access and approval rules](#step-3) | manual form/portal; approval required | Not recorded | [Step 2](#step-2) |
-| [4. Test normal and exception transactions](#step-4) | human; approval required | Not recorded | [Step 3](#step-3) |
+| [2. Approve the control design](#step-2) | human; human approval every run | Not recorded | [Step 1](#step-1) |
+| [3. Configure approved access and approval rules](#step-3) | manual form/portal; human approval every run | Not recorded | [Step 2](#step-2) |
+| [4. Test normal and exception transactions](#step-4) | human; human approval every run | Not recorded | [Step 3](#step-3) |
 | [5. Monitor exceptions and reconcile evidence](#step-5) | agent-runnable | Not recorded | [Step 4](#step-4) |
 
 <a id="steps"></a>
@@ -77,7 +77,7 @@ List purchasing channels, payment accounts, cards, payee-maintenance rights and 
 
 ### 2. Approve the control design
 
-human · human approval required
+human · human approval every run
 
 
 Finance leadership sets authority limits, segregation of duties and exception rules suited to team size. Specify independent verification for new or changed bank details and the escalation path for urgent requests.
@@ -88,7 +88,7 @@ Finance leadership sets authority limits, segregation of duties and exception ru
 
 ### 3. Configure approved access and approval rules
 
-manual form/portal · human approval required · hard to undo
+manual form/portal · human approval every run · hard to undo
 
 
 The account administrator implements the approved roles and limits in purchasing and banking systems. Use least-privilege access, retain configuration evidence and protect recovery access from the same person who releases payments.
@@ -99,7 +99,7 @@ The account administrator implements the approved roles and limits in purchasing
 
 ### 4. Test normal and exception transactions
 
-human · human approval required
+human · human approval every run
 
 
 Walk a small authorized test through request, approval, release and reconciliation. Also test a changed-payee and unavailable-approver scenario without sending funds to an unverified account.

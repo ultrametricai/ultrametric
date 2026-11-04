@@ -45,12 +45,12 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | --- | --- | --- | --- |
 | [1. Pull the bank transactions](#step-1) | agent-runnable | ~3 min | Entry step |
 | [2. Categorize transactions in the ledger](#step-2) | agent-runnable | ~15 min | [Step 1](#step-1) |
-| [3. Reconcile bank statement](#step-3) | agent-runnable; approval required | ~15 min | [Step 2](#step-2) |
+| [3. Reconcile bank statement](#step-3) | agent-runnable; standing human approval | ~15 min | [Step 2](#step-2) |
 | [4. Review uncategorized items](#step-4) | human | ~30 min | [Step 2](#step-2) |
 | [5. Generate P&L statement](#step-5) | agent-runnable | ~2 min | All: [Step 3](#step-3); [Step 4](#step-4) |
 | [6. Generate Balance Sheet](#step-6) | agent-runnable | ~2 min | [Step 5](#step-5) |
 | [7. Flag anomalies for review](#step-7) | agent-runnable | ~5 min | [Step 6](#step-6) |
-| [8. Accountant review and approval](#step-8) | human; approval required; includes waiting | ~1 d | [Step 7](#step-7) |
+| [8. Accountant review and approval](#step-8) | human; human approval every run; includes waiting | ~1 d | [Step 7](#step-7) |
 
 <a id="steps"></a>
 
@@ -85,7 +85,7 @@ Categorize transactions using the chart of accounts, supporting invoices or rece
 
 ### 3. Reconcile bank statement
 
-agent-runnable · ~15 min · human approval required
+agent-runnable · ~15 min · standing human approval
 
 
 Match cleared bank activity to the ledger at the same closing date. Explain differences through outstanding payments, deposits in transit, fees, duplicates or supported corrections. The bookkeeper should investigate unexplained differences rather than insert a balancing entry. Finish with reconciled balances and a dated list of outstanding items that can be followed into the next period.
@@ -141,7 +141,7 @@ Investigate unusual movements in the draft close against prior periods, budget a
 
 ### 8. Accountant review and approval
 
-human · ~1 d · async wait · human approval required
+human · ~1 d · async wait · human approval every run
 
 
 The accountant reviews reconciliations, draft statements, supporting schedules and unresolved items, deciding the treatment of material exceptions and final adjustments. Apply the approved adjustments and reissue the statements. Once the accountable finance owner accepts the close, use the team’s period-locking process and preserve a traceable route for later corrections.

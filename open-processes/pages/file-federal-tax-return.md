@@ -70,12 +70,12 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Export financial data from the accounting system](#step-1) | agent-runnable | ~5 min | Entry step |
-| [2. Send financials to the tax adviser](#step-2) | agent-runnable; approval required | ~5 min | [Step 1](#step-1) |
+| [2. Send financials to the tax adviser](#step-2) | agent-runnable; human approval above a threshold | ~5 min | [Step 1](#step-1) |
 | [3. The tax adviser prepares the company return](#step-3) | human; includes waiting | ~14 d | [Step 2](#step-2) |
-| [4. Review draft return](#step-4) | human; approval required | ~1 h | [Step 3](#step-3) |
+| [4. Review draft return](#step-4) | human; human approval every run | ~1 h | [Step 3](#step-3) |
 | [5. Sign the filing authorization required by the tax authority](#step-5) | human; signature required | ~10 min | [Step 4](#step-4) |
 | [6. The tax adviser files the company return](#step-6) | human | ~20 min | [Step 5](#step-5) |
-| [7. Pay any company tax due](#step-7) | manual form/portal; approval required | ~10 min | [Step 6](#step-6) |
+| [7. Pay any company tax due](#step-7) | manual form/portal; human approval every run | ~10 min | [Step 6](#step-6) |
 | [8. File copy in records](#step-8) | agent-runnable | ~2 min | [Step 7](#step-7) |
 
 <a id="steps"></a>
@@ -98,7 +98,7 @@ Export the complete financial records and supporting schedules for the tax perio
 
 ### 2. Send financials to the tax adviser
 
-agent-runnable · ~5 min · human approval required
+agent-runnable · ~5 min · human approval above a threshold
 
 
 Send the reconciled financials and supporting records privately to the authorized tax adviser. Track missing information and confirm the filing responsibilities and deadlines.
@@ -137,7 +137,7 @@ Options:
 
 ### 4. Review draft return
 
-human · ~1 h · human approval required
+human · ~1 h · human approval every run
 
 
 Compare the draft with final books, carryforwards, ownership records and significant transactions. Review tax adjustments, elections, related-party reporting and estimated payments with the preparer. Resolve unfamiliar figures and verify the entity and period before approving the exact return version through the company’s filing process. Treat any payment instruction as a distinct decision.
@@ -173,7 +173,7 @@ Use the selected tax authority’s filing procedure for the approved return. The
 
 ### 7. Pay any company tax due
 
-manual form/portal · ~10 min · human approval required · hard to undo
+manual form/portal · ~10 min · human approval every run · hard to undo
 
 
 Confirm the amount, payment reference, authority and deadline with the tax adviser. Obtain authorization for payment through the authority’s supported method and retain the receipt.

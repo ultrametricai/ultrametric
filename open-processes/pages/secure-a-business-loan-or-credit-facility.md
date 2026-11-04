@@ -54,8 +54,8 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | --- | --- | --- | --- |
 | [1. Define the borrowing need and repayment case](#step-1) | agent-runnable | Not recorded | Entry step |
 | [2. Assemble the lender diligence pack](#step-2) | agent-runnable | Not recorded | [Step 1](#step-1) |
-| [3. Review terms and select an offer](#step-3) | human; approval required | Not recorded | [Step 2](#step-2) |
-| [4. Approve and execute the financing documents](#step-4) | human; approval required | Not recorded | [Step 3](#step-3) |
+| [3. Review terms and select an offer](#step-3) | human; human approval every run | Not recorded | [Step 2](#step-2) |
+| [4. Approve and execute the financing documents](#step-4) | human; human approval every run | Not recorded | [Step 3](#step-3) |
 | [5. Reconcile funding and register ongoing obligations](#step-5) | agent-runnable | Not recorded | [Step 4](#step-4) |
 
 <a id="steps"></a>
@@ -88,7 +88,7 @@ Gather financial statements, ownership records, existing debt, collateral inform
 
 ### 3. Review terms and select an offer
 
-human · human approval required
+human · human approval every run
 
 
 Finance leadership and counsel review interest mechanics, fees, security, guarantees, covenants, default terms and prepayment rules. Record the total obligations and who has authority to commit the company or provide a guarantee.
@@ -99,7 +99,7 @@ Finance leadership and counsel review interest mechanics, fees, security, guaran
 
 ### 4. Approve and execute the financing documents
 
-human · human approval required · hard to undo
+human · human approval every run · hard to undo
 
 
 Obtain required corporate and personal approvals for the final terms. The authorized people execute the documents and funding instructions; no guarantee or collateral commitment is assumed from an application alone.

@@ -251,7 +251,8 @@ describe('vendorStateLookup', () => {
     // Rows for other states never leak into the selection.
     const ca = vendorStateLookup(['stripe-atlas'], 'US-CA', DATA_DIR)['stripe-atlas']
     expect(ca.formation?.status).toBe('unavailable')
-    expect(Object.keys(ca)).toEqual(['formation'])
+    expect(ca['registered-agent']?.status).toBe('unavailable')
+    expect(Object.keys(ca).sort()).toEqual(['formation', 'registered-agent'])
 
     const gusto = vendorStateLookup(['gusto'], 'US-CA', DATA_DIR).gusto
     expect(gusto['annual-report-filing']?.supportingSourceUrls).toEqual([

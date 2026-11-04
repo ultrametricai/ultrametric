@@ -45,10 +45,10 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Describe the collaboration and information flows](#step-1) | agent-runnable | Not recorded | Entry step |
-| [2. Obtain competition-law assessment before exchange](#step-2) | human; approval required | Not recorded | [Step 1](#step-1) |
+| [2. Obtain competition-law assessment before exchange](#step-2) | human; human approval every run | Not recorded | [Step 1](#step-1) |
 | [3. Prepare the counsel-directed controls](#step-3) | agent-runnable | Not recorded | [Step 2](#step-2) |
-| [4. Approve, modify or decline the proposal](#step-4) | human; approval required | Not recorded | [Step 3](#step-3) |
-| [5. Implement only the approved collaboration](#step-5) | human; approval required | Not recorded | [Step 4](#step-4) (Counsel-reviewed decision approves the collaboration and information controls.) |
+| [4. Approve, modify or decline the proposal](#step-4) | human; human approval every run | Not recorded | [Step 3](#step-3) |
+| [5. Implement only the approved collaboration](#step-5) | human; human approval every run | Not recorded | [Step 4](#step-4) (Counsel-reviewed decision approves the collaboration and information controls.) |
 | [6. Review compliance and retain the decision trail](#step-6) | agent-runnable | Not recorded | Alternatives: [Step 5](#step-5); [Step 4](#step-4) (Proposal declined; skip agreement and information exchange.) |
 
 <a id="steps"></a>
@@ -70,7 +70,7 @@ Record the participants, markets, purpose, proposed agreement, meetings and info
 
 ### 2. Obtain competition-law assessment before exchange
 
-human · human approval required · hard to undo
+human · human approval every run · hard to undo
 
 
 Qualified competition counsel assesses the actual parties, markets, restrictions and applicable jurisdictional rules. Escalate sensitive exchanges and proposed coordination before participation; this guide supplies no exemption, safe-harbor threshold or automatic clearance.
@@ -92,7 +92,7 @@ Prepare the proposed agenda, permitted information categories, access restrictio
 
 ### 4. Approve, modify or decline the proposal
 
-human · human approval required · hard to undo
+human · human approval every run · hard to undo
 
 
 The accountable legal and business owners record the counsel-reviewed decision and precise conditions. If declined, skip agreement and exchange. A commercial manager or agent cannot replace competition review with a general confidentiality agreement.
@@ -105,7 +105,7 @@ The accountable legal and business owners record the counsel-reviewed decision a
 
 ### 5. Implement only the approved collaboration
 
-human · human approval required · hard to undo
+human · human approval every run · hard to undo
 
 
 *Follows step 4 (when Counsel-reviewed decision approves the collaboration and information controls).*

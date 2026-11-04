@@ -32,8 +32,8 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | [1. Identify actual transferred property, transfer evidence, consideration paid, restrictions, recipient, and dates in a private record.](#step-1) | Not recorded | Not recorded | Entry step |
 | [2. Have the recipient and tax counsel assess eligibility, tax consequences, whether to elect, and the official filing deadline; flag the short window immediately.](#step-2) | Not recorded | Not recorded | [Step 1](#step-1) |
 | [3. If the recipient elects, prepare current Form 15620 or a compliant statement; verify content, signature, address, and copies.](#step-3) | Not recorded | Not recorded | [Step 2](#step-2) (The eligible recipient affirmatively chooses the election after tax review.) |
-| [4. Recipient sends the signed election using the currently confirmed IRS filing method and preserves proof of timely filing.](#step-4) | Not recorded | Not recorded | [Step 3](#step-3) |
-| [5. Send required copies to the service recipient and, when applicable, a different property transferee; retain private delivery proof.](#step-5) | Not recorded | Not recorded | [Step 4](#step-4) |
+| [4. Recipient sends the signed election using the currently confirmed IRS filing method and preserves proof of timely filing.](#step-4) | Not recorded; human approval every run | Not recorded | [Step 3](#step-3) |
+| [5. Send required copies to the service recipient and, when applicable, a different property transferee; retain private delivery proof.](#step-5) | Not recorded; human approval every run | Not recorded | [Step 4](#step-4) |
 
 <a id="steps"></a>
 
@@ -77,7 +77,7 @@ If the recipient elects, complete current Form 15620 or a compliant statement us
 
 ### 4. Recipient sends the signed election using the currently confirmed IRS filing method and preserves proof of timely filing.
 
-mode: external effect
+mode: external effect · human approval every run
 
 
 The recipient or their specifically authorized filer submits the signed election using the current IRS instructions and verified destination. Keep the filed version with evidence of timely dispatch or other accepted filing, and follow delivery failures promptly with the tax adviser. The recipient’s file should establish what was filed, where and when; a prepared form or completed provider task alone does not establish submission.
@@ -88,7 +88,7 @@ The recipient or their specifically authorized filer submits the signed election
 
 ### 5. Send required copies to the service recipient and, when applicable, a different property transferee; retain private delivery proof.
 
-mode: external effect
+mode: external effect · human approval every run
 
 
 Send the filed election’s required copies to the person for whom the services were performed and, if different, the property transferee. The recipient or their authorized filer should use verified contacts and a secure delivery method for this tax information. Keep delivery evidence with the election and resolve failed deliveries so the required recipients receive the same filed version.

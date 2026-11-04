@@ -64,12 +64,12 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
-| [1. Create the subscription documents](#step-1) | agent-runnable; approval required | ~45 min | Entry step |
-| [2. Send the subscription documents to the LPs for signature](#step-2) | agent-runnable; approval required | ~15 min | [Step 1](#step-1) |
+| [1. Create the subscription documents](#step-1) | agent-runnable; human approval every run | ~45 min | Entry step |
+| [2. Send the subscription documents to the LPs for signature](#step-2) | agent-runnable; human approval every run | ~15 min | [Step 1](#step-1) |
 | [3. LPs sign the subscription documents](#step-3) | human; signature required; includes waiting | ~2 d | [Step 2](#step-2) |
-| [4. Prepare the final fund governing agreement and investor schedule](#step-4) | agent-runnable; approval required | ~45 min | [Step 3](#step-3) |
+| [4. Prepare the final fund governing agreement and investor schedule](#step-4) | agent-runnable; human approval every run | ~45 min | [Step 3](#step-3) |
 | [5. The required parties sign the final fund governing agreement](#step-5) | human; signature required; includes waiting | ~1 d | [Step 4](#step-4) |
-| [6. Hold the fund closing under its governing documents](#step-6) | human; approval required | ~1 h | [Step 5](#step-5) |
+| [6. Hold the fund closing under its governing documents](#step-6) | human; human approval every run | ~1 h | [Step 5](#step-5) |
 
 <a id="steps"></a>
 
@@ -79,7 +79,7 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 
 ### 1. Create the subscription documents
 
-agent-runnable · ~45 min · human approval required
+agent-runnable · ~45 min · human approval every run
 
 
 Draft subscription documents with fund counsel from the offering terms, LPA and investor eligibility analysis. Include the representations, commitments and supporting information required for the actual investors and jurisdictions, reconciling side letters and admission mechanics. Identify what must be completed, signed and accepted for an investor to enter the close.
@@ -91,7 +91,7 @@ Draft subscription documents with fund counsel from the offering terms, LPA and 
 
 ### 2. Send the subscription documents to the LPs for signature
 
-agent-runnable · ~15 min · human approval required
+agent-runnable · ~15 min · human approval every run
 
 
 Send each investor the final subscription package for their entity, commitment and authorized signers through the GP’s designated contact. Match side letters and document versions carefully and keep other investors’ terms private. Track missing information and signatures separately from the GP’s acceptance decision so a returned packet is not mistaken for admission.
@@ -112,7 +112,7 @@ Check returned subscriptions for identity, signing capacity, commitment and requ
 
 ### 4. Prepare the final fund governing agreement and investor schedule
 
-agent-runnable · ~45 min · human approval required
+agent-runnable · ~45 min · human approval every run
 
 
 Prepare the final fund governing agreement and investor schedule for the selected vehicle and jurisdiction. Counsel confirms the required approvals, signatures and regulatory steps before closing.
@@ -132,7 +132,7 @@ Identify with counsel who must sign or consent to the amended LPA and when it be
 
 ### 6. Hold the fund closing under its governing documents
 
-human · ~1 h · human approval required · irreversible
+human · ~1 h · human approval every run · irreversible
 
 
 Confirm the vehicle, manager permissions, investor subscriptions and closing conditions with fund counsel before accepting capital. Complete the authorized close and the jurisdiction’s required registrations, notifications and reports.

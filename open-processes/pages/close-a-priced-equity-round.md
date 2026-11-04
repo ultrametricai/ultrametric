@@ -64,10 +64,10 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | [3. Refresh the data room for diligence](#step-3) | agent-runnable | ~30 min | [Step 2](#step-2) |
 | [4. Investor diligence and Q&A](#step-4) | human; includes waiting | ~7 d | [Step 3](#step-3) |
 | [5. Counsel drafts the definitive documents](#step-5) | human | ~3 d | [Step 4](#step-4) |
-| [6. Prepare and circulate the board and stockholder consents](#step-6) | agent-runnable; approval required | ~30 min | [Step 5](#step-5) |
+| [6. Prepare and circulate the board and stockholder consents](#step-6) | agent-runnable; human approval every run | ~30 min | [Step 5](#step-5) |
 | [7. Board and stockholders sign the consents](#step-7) | human; signature required; includes waiting | ~23.5 h | [Step 6](#step-6) |
 | [8. Route the closing packet for e-signature](#step-8) | agent-runnable | ~15 min | [Step 7](#step-7) |
-| [9. Verify the wires and issue the shares](#step-9) | agent-runnable; approval required | ~20 min | [Step 8](#step-8) |
+| [9. Verify the wires and issue the shares](#step-9) | agent-runnable; human approval every run | ~20 min | [Step 8](#step-8) |
 | [10. Make the post-closing securities and registry filings the round requires](#step-10) | manual form/portal | ~30 min | [Step 9](#step-9) |
 | [11. Update the cap table and kick off the valuation refresh](#step-11) | agent-runnable | ~15 min | [Step 10](#step-10) |
 
@@ -129,7 +129,7 @@ Give counsel the signed term sheet, existing corporate and equity documents, dil
 
 ### 6. Prepare and circulate the board and stockholder consents
 
-agent-runnable · ~30 min · human approval required
+agent-runnable · ~30 min · human approval every run
 
 
 Draft the resolutions needed for the transaction with counsel or the corporate secretary. Reconcile share classes, issuance amounts, charter changes and reserved rights to the pro forma capitalization, then identify the directors or holders who must decide each action. Circulate the proposed resolutions with enough supporting material for those decisions, tracking revisions until the signature version is settled.
@@ -160,7 +160,7 @@ Match each closing document’s signature block to the correct person, entity an
 
 ### 9. Verify the wires and issue the shares
 
-agent-runnable · ~20 min · human approval required · irreversible
+agent-runnable · ~20 min · human approval every run · irreversible
 
 
 Reconcile incoming wires to investor allocations and resolve missing, partial or unexpected receipts. Counsel and the closing lead establish whether the documents, corporate authorizations and other conditions permit issuance. The authorized equity administrator records the specific shares released at closing, linking each allocation to funds and executed documents. Leave investors still awaiting completion separate from the completed close.

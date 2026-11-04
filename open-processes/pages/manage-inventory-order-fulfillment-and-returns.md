@@ -47,9 +47,9 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Reconcile items, locations and demand](#step-1) | agent-runnable | Not recorded | Entry step |
-| [2. Approve inventory and fulfillment controls](#step-2) | human; approval required | Not recorded | [Step 1](#step-1) |
-| [3. Process the authorized order and dispatch records](#step-3) | manual form/portal; approval required | Not recorded | [Step 2](#step-2) |
-| [4. Handle delivery exceptions and returns](#step-4) | human; approval required | Not recorded | [Step 3](#step-3) |
+| [2. Approve inventory and fulfillment controls](#step-2) | human; human approval every run | Not recorded | [Step 1](#step-1) |
+| [3. Process the authorized order and dispatch records](#step-3) | manual form/portal; human approval every run | Not recorded | [Step 2](#step-2) |
+| [4. Handle delivery exceptions and returns](#step-4) | human; human approval every run | Not recorded | [Step 3](#step-3) |
 | [5. Reconcile stock, customer balances and losses](#step-5) | agent-runnable | Not recorded | [Step 4](#step-4) |
 
 <a id="steps"></a>
@@ -71,7 +71,7 @@ Maintain item identifiers, stock locations, available and reserved quantities, l
 
 ### 2. Approve inventory and fulfillment controls
 
-human · human approval required
+human · human approval every run
 
 
 Operations and finance agree purchasing authority, reorder assumptions, custody, picking checks and reconciliation cadence. Review product, customs and customer commitments with specialists where required.
@@ -82,7 +82,7 @@ Operations and finance agree purchasing authority, reorder assumptions, custody,
 
 ### 3. Process the authorized order and dispatch records
 
-manual form/portal · human approval required · hard to undo
+manual form/portal · human approval every run · hard to undo
 
 
 Authorized operators validate the order, payment or credit approval, item and destination before release. Record lot or serial traceability and the agreed carrier and delivery evidence.
@@ -93,7 +93,7 @@ Authorized operators validate the order, payment or credit approval, item and de
 
 ### 4. Handle delivery exceptions and returns
 
-human · human approval required
+human · human approval every run
 
 
 Verify the customer, product and reason for any return or failed delivery. Use approved inspection, quarantine, refund and replacement decisions rather than returning potentially unsafe product directly to available stock.

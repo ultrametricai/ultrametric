@@ -56,10 +56,10 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | --- | --- | --- | --- |
 | [1. Determine required coverage types](#step-1) | agent-runnable | ~5 min | Entry step |
 | [2. Compile company info for application](#step-2) | agent-runnable | ~5 min | [Step 1](#step-1) |
-| [3. Submit applications to brokers](#step-3) | manual form/portal; approval required | ~30 min | [Step 2](#step-2) |
+| [3. Submit applications to brokers](#step-3) | manual form/portal; human approval every run | ~30 min | [Step 2](#step-2) |
 | [4. Wait for quotes (3-5 days)](#step-4) | human; includes waiting | ~3 d | [Step 3](#step-3) |
 | [5. Compare quotes and recommend](#step-5) | agent-runnable | ~10 min | [Step 4](#step-4) |
-| [6. Select and bind coverage](#step-6) | human; approval required | ~15 min | [Step 5](#step-5) |
+| [6. Select and bind coverage](#step-6) | human; human approval every run | ~15 min | [Step 5](#step-5) |
 
 <a id="steps"></a>
 
@@ -91,7 +91,7 @@ Gather the business description, revenue, payroll, locations, claims history and
 
 ### 3. Submit applications to brokers
 
-manual form/portal · ~30 min · human approval required
+manual form/portal · ~30 min · human approval every run
 
 
 Send the applicant-approved answers and requested coverage to the selected brokers through their verified secure channels. Keep the exact submission for comparison with later questions and quotes. Track which markets receive it, and correct inconsistent information across submissions. Give underwriting clarification requests to the person who knows the facts before an answer is returned.
@@ -128,7 +128,7 @@ Compare quotes for the same entities, activities, limits and start date. Examine
 
 ### 6. Select and bind coverage
 
-human · ~15 min · human approval required · hard to undo
+human · ~15 min · human approval every run · hard to undo
 
 
 The authorized buyer approves the insurer, terms, premium and effective date after outstanding conditions are resolved. Send the binding instruction and arrange the approved payment. Obtain written coverage confirmation, then compare the issued policy with the quote and endorsements. Keep discrepancies open with the broker until the company has the coverage it agreed to buy.

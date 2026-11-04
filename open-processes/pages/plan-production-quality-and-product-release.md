@@ -47,9 +47,9 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Define the product configuration and acceptance criteria](#step-1) | agent-runnable | Not recorded | Entry step |
-| [2. Approve the production and quality plan](#step-2) | human; approval required | Not recorded | [Step 1](#step-1) |
-| [3. Run the controlled production and inspections](#step-3) | human; approval required | Not recorded | [Step 2](#step-2) |
-| [4. Review deviations and authorize release](#step-4) | human; approval required | Not recorded | [Step 3](#step-3) |
+| [2. Approve the production and quality plan](#step-2) | human; human approval every run | Not recorded | [Step 1](#step-1) |
+| [3. Run the controlled production and inspections](#step-3) | human; human approval every run | Not recorded | [Step 2](#step-2) |
+| [4. Review deviations and authorize release](#step-4) | human; human approval every run | Not recorded | [Step 3](#step-3) |
 | [5. Reconcile batch records and field feedback](#step-5) | agent-runnable | Not recorded | [Step 4](#step-4) |
 
 <a id="steps"></a>
@@ -71,7 +71,7 @@ Record the approved design, bill of materials, intended use, tolerances and test
 
 ### 2. Approve the production and quality plan
 
-human · human approval required
+human · human approval every run
 
 
 Engineering, quality and operations owners agree supplier controls, process checks, sampling, traceability and nonconformance handling. Confirm responsibility for tooling, changes and outsourced tests.
@@ -82,7 +82,7 @@ Engineering, quality and operations owners agree supplier controls, process chec
 
 ### 3. Run the controlled production and inspections
 
-human · human approval required
+human · human approval every run
 
 
 Qualified operators execute the approved process and record material lots, measurements and deviations. Segregate unaccepted output and preserve traceability instead of changing acceptance criteria after seeing results.
@@ -93,7 +93,7 @@ Qualified operators execute the approved process and record material lots, measu
 
 ### 4. Review deviations and authorize release
 
-human · human approval required
+human · human approval every run
 
 
 The designated quality and product authorities evaluate test evidence, corrective actions and applicable approvals. Record accepted concessions or holds and keep unsafe or unapproved product out of customer delivery.

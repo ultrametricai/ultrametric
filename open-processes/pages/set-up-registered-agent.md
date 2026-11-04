@@ -91,7 +91,8 @@ human · ~10 min
 
 Compare registered-agent services for the company’s formation and qualification states. Check the designation details, consent process, legal-notice handling, account access and renewal charges. Distinguish service of legal papers from ordinary mail forwarding. Choose a provider that covers the required states and gives the company a reliable path for urgent notices before approving the purchase.
 
-- Vendor options: Firstbase, Stripe Atlas, LegalZoom, Northwest Registered Agent
+- Vendor options: Firstbase, Stripe Atlas, LegalZoom, Northwest Registered Agent, Harbor Compliance, CSC, CT Corporation, Doola
+- Ranked market: [registered-agents](../../open-rankings/registered-agents)
 - Sources: [SBA register your business](https://legacy.sba.gov/business-guide/launch-your-business/register-your-business)
 
 <a id="step-2"></a>
