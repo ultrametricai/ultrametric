@@ -10,6 +10,7 @@ import { sameEvidence } from './evidence-source.mjs'
 import { CELL_HASH_VERSION, PROMPT_VERSION, RawVerdictSchema, SYSTEM, cellHash, judgePrompt, validateVerdictRules } from './stages/judge'
 import { llmJson } from './llm'
 import { runDerive } from './stages/derive'
+import { combineSloHistory, isSloHistoryShard, readSloHistorySources } from '../lib/slo'
 
 export type Finding = { id: string; path: string; commit: string; line: number; body: string }
 export type Cell = { arena: string; productId: string; storyId: string }
@@ -36,15 +37,43 @@ export function projection(file: string, arena: string): boolean {
 export function allowed(file: string, arena: string): boolean {
   if (!/^[a-z0-9-]+$/.test(arena) || file.split('/').some(part => part === '..' || part === '.')) return false
   return projection(file, arena) || file === 'README.md' || file === 'open-rankings/slo-history.jsonl'
+    || isSloHistoryShard(file)
     || (file.startsWith(`open-rankings/${arena}/`) && /\.(json|jsonl)$/.test(file))
     || new RegExp(`^rankings-engine/cache/[a-z0-9-]+/${arena}/[a-z0-9/_-]+\\.json$`).test(file)
 }
 export function mergeData(base: string | null, main: string | null, proposed: string | null, file: string): string | null {
+  if (isSloHistoryShard(file)) {
+    // Existing shards are immutable. Identical add/add ingestion is harmless; every
+    // other collision, rewrite or deletion needs review, including one-sided edits.
+    if (proposed === null || (base !== null && (main !== base || proposed !== base))
+        || (main !== null && main !== proposed)) throw new Error(`Immutable SLO history shard cannot be changed: ${file}`)
+    combineSloHistory([{ source: file, text: proposed }])
+    return proposed
+  }
   if (file === 'open-rankings/slo-history.jsonl') {
-    if (base === null || main === null || proposed === null || !main.startsWith(base) || !proposed.startsWith(base)) {
-      throw new Error('Append-only uptime history cannot be removed or rewritten')
+    if (base === null || main === null || proposed === null) {
+      throw new Error('Legacy uptime history cannot be removed')
     }
-    return [...new Set([...main.trimEnd().split('\n'), ...proposed.slice(base.length).trim().split('\n').filter(Boolean)])].join('\n') + '\n'
+    combineSloHistory([{ source: `${file} (base)`, text: base }, { source: `${file} (main)`, text: main },
+      { source: `${file} (proposed)`, text: proposed }])
+    const lines = (text: string) => text.split('\n').filter(line => line.trim())
+    const counts = (text: string) => {
+      const result = new Map<string, number>()
+      for (const line of lines(text)) result.set(line, (result.get(line) ?? 0) + 1)
+      return result
+    }
+    const original = counts(base), current = counts(main), incoming = counts(proposed)
+    for (const [line, count] of original) {
+      if ((current.get(line) ?? 0) < count || (incoming.get(line) ?? 0) < count) {
+        throw new Error('Legacy uptime observations cannot be removed or rewritten')
+      }
+    }
+    // Older branches may insert an original batch chronologically. Preserve main
+    // byte-for-byte and append only missing raw lines, regardless of input order.
+    const missing = [...new Set(lines(proposed))].filter(line => !current.has(line))
+    const suffix = missing.length ? missing.join('\n') + '\n' : ''
+    const merged = main + (main && suffix && !main.endsWith('\n') ? '\n' : '') + suffix
+    return merged
   }
   if (main === base || main === proposed) return proposed
   if (proposed === base) return main
@@ -187,6 +216,15 @@ export async function repair({ head, main, arena, findings, keyed }: { head: str
     if (proposed !== null && file.endsWith('.json')) JSON.parse(proposed)
     const content = mergeData(show(base, file), show(main, file), proposed, file)
     plan.push([file, content])
+  }
+  // Validate the combined candidate before writes or paid repair work. A new shard
+  // can conflict with a different shard or the legacy log without a Git conflict.
+  if (plan.some(([file]) => isSloHistoryShard(file) || file === 'open-rankings/slo-history.jsonl')) {
+    const sources = new Map(readSloHistorySources('open-rankings').map(({ source, text }) => [source, text]))
+    for (const [file, content] of plan) {
+      if (isSloHistoryShard(file) || file === 'open-rankings/slo-history.jsonl') sources.set(file, content!)
+    }
+    combineSloHistory([...sources].map(([source, text]) => ({ source, text })))
   }
   for (const [file, content] of plan) {
     if (content === null) { fs.rmSync(file, { force: true }); continue }
