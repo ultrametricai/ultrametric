@@ -33,7 +33,7 @@ afterEach(() => {
 })
 
 const cell = (productId: string, excerpt = `evidence for ${productId}`): JudgeCell => {
-  const evidence = [ev('e1', excerpt)]
+  const evidence = [ev('e1', `${excerpt}. Provides the tested capability.`)]
   return {
     catId: 'cat', productId, productName: productId.toUpperCase(), story, evidence,
     hash: cellHash(story, evidence, PROMPT_VERSION),
@@ -44,7 +44,9 @@ const cell = (productId: string, excerpt = `evidence for ${productId}`): JudgeCe
 const stateFile = () => path.join(tmp, 'state', 'run.json')
 
 const verdictJson = (rationale: string) =>
-  `{"verdict":"full","quality":10,"confidence":"high","rationale":${JSON.stringify(rationale)},"evidenceIds":["e1"]}`
+  JSON.stringify({ verdict: 'full', quality: 10, confidence: 'high', rationale, evidenceIds: ['e1'],
+    support: { subject: story.title, relation: 'direct', coverage: 'complete',
+      citations: [{ evidenceId: 'e1', quote: 'Provides the tested capability.' }] } })
 
 const batchMessage = (text: string, stopReason = 'end_turn') =>
   ({ content: [{ type: 'text', text }], stop_reason: stopReason }) as unknown as Anthropic.Message
@@ -265,7 +267,7 @@ describe('judgeCells with batch prefill', () => {
     vi.spyOn(console, 'log').mockImplementation(() => {})
     const c1 = cell('p1')
     // quality 8 without the required "missing for 10:" clause violates validateVerdictRules.
-    const violating = '{"verdict":"full","quality":8,"confidence":"high","rationale":"fully supports","evidenceIds":["e1"]}'
+    const violating = JSON.stringify({ ...JSON.parse(verdictJson('fully supports')), quality: 8 })
     setBatchesClientForTests(fakeBatches({
       create: vi.fn().mockResolvedValue(endedBatch('b1')),
       retrieve: vi.fn().mockResolvedValue(endedBatch('b1')),
@@ -279,6 +281,31 @@ describe('judgeCells with batch prefill', () => {
     expect(interactive).toHaveBeenCalledTimes(1)
     expect(interactive.mock.calls[0][0].messages[0].content).toMatch(/Your previous verdict violated a rule/)
     expect(readCache(c1).verdict.rationale).toBe('corrected')
+  })
+})
+
+describe('batch rubric v6 parity', () => {
+  it('corrects support for a different story before writing the batch result', async () => {
+    vi.spyOn(console, 'log').mockImplementation(() => {})
+    const c = cell('p1')
+    const wrong = JSON.parse(verdictJson('wrong subject'))
+    wrong.support.subject = 'A different capability'
+    setBatchesClientForTests(fakeBatches({
+      create: vi.fn().mockResolvedValue(endedBatch('b1')),
+      retrieve: vi.fn().mockResolvedValue(endedBatch('b1')),
+      results: vi.fn().mockResolvedValue(lines(succeeded(batchCustomId(c), JSON.stringify(wrong)))),
+    }))
+    const interactive = vi.fn().mockResolvedValue(batchMessage(verdictJson('correct subject')))
+    setClientForTests({ messages: { create: interactive } } as never)
+    await batchJudge([c])
+    expect(interactive).toHaveBeenCalledTimes(1)
+    expect(interactive.mock.calls[0][0].messages[0].content).toContain('support subject must be the exact story')
+    expect(readCache(c).verdict.rationale).toBe('correct subject')
+  })
+
+  it('rejects legacy batch results without explicit support', () => {
+    const { support: _support, ...legacy } = JSON.parse(verdictJson('legacy'))
+    expect(parseBatchVerdict(batchMessage(JSON.stringify(legacy)))).toBeUndefined()
   })
 })
 
