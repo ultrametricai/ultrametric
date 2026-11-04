@@ -37,11 +37,11 @@ describe('scoreLeverFor', () => {
     expect(scoreLeverFor({ theme: 'agenticness', group: 'api-quality' })).toBe('API quality')
   })
 
-  it('everything else moves the Overall score blend', () => {
-    expect(scoreLeverFor({ theme: 'openness', group: 'openness' })).toBe('Overall score')
+  it('everything else moves the Agentic score blend', () => {
+    expect(scoreLeverFor({ theme: 'openness', group: 'openness' })).toBe('Agentic score')
     // Same group name under a NON-agenticness theme must not claim the index (mirrors
     // lib/scoring.ts's theme+group filter).
-    expect(scoreLeverFor({ theme: 'other', group: 'agent-access' })).toBe('Overall score')
+    expect(scoreLeverFor({ theme: 'other', group: 'agent-access' })).toBe('Agentic score')
   })
 })
 
@@ -111,7 +111,7 @@ describe('opportunitiesFor', () => {
     const report = opportunitiesFor({ stories, verdicts }, 'p')
     expect(report.opportunities.map((o) => o.storyId)).toEqual(['plain-none', 'agentic-partial', 'plain-partial'])
     expect(report.opportunities[1].scoreLever).toBe('agent-ready')
-    expect(report.opportunities[2].scoreLever).toBe('Overall score')
+    expect(report.opportunities[2].scoreLever).toBe('Agentic score')
   })
 
   it('renders the action-form title, not the persona frame', () => {
