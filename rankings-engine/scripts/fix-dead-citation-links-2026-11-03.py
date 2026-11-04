@@ -112,7 +112,11 @@ def main() -> None:
         by_file.setdefault(EVIDENCE / arena / "evidence" / f"{product}.json", []).append((evidence_id, old, new, kind))
     changed = 0
     for path, relinks in by_file.items():
-        rows = json.loads(path.read_text())
+        text = path.read_text()
+        rows = json.loads(text)
+        # Keep the file's existing escaping style (some evidence files store \u escapes).
+        ascii_style = json.dumps(rows, indent=2, ensure_ascii=True) + "\n" == text
+        file_changed = False
         by_id = {row["id"]: row for row in rows}
         for evidence_id, old, new, kind in relinks:
             row = by_id[evidence_id]
@@ -124,7 +128,9 @@ def main() -> None:
             if kind == "moved":
                 row["fetchedAt"] = VERIFIED_AT
             changed += 1
-        path.write_text(json.dumps(rows, indent=2, ensure_ascii=False) + "\n")
+            file_changed = True
+        if file_changed:
+            path.write_text(json.dumps(rows, indent=2, ensure_ascii=ascii_style) + "\n")
     print(f"relinked {changed} evidence rows")
 
 
