@@ -1,0 +1,77 @@
+# Dispatch-only pilot. Adding this workflow does not resume any existing content loop.
+# No issue-event trigger until a separately approved rollout. Default is read-only.
+name: submission-intake
+on:
+  workflow_dispatch:
+    inputs:
+      issue:
+        description: Open product-request issue number
+        type: string
+        required: true
+      publish:
+        description: Create or resume a scoped draft intake PR (no scoring or merge)
+        type: boolean
+        default: false
+permissions:
+  contents: read
+concurrency:
+  group: submission-intake
+  cancel-in-progress: false
+jobs:
+  preview:
+    if: ${{ !inputs.publish }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      issues: read
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: main
+          persist-credentials: false
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24.22.1
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Assess submission
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE: ${{ inputs.issue }}
+        run: pnpm exec tsx rankings-engine/scripts/submission-intake.ts --issue "$ISSUE"
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: submission-intake-preview
+          path: reports/submission-intake-local/
+  draft:
+    if: ${{ inputs.publish }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+      issues: read
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: main
+          persist-credentials: false
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24.22.1
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Prepare draft
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE: ${{ inputs.issue }}
+        run: pnpm exec tsx rankings-engine/scripts/submission-intake.ts --issue "$ISSUE" --publish
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: submission-intake-result
+          path: reports/submission-intake-local/

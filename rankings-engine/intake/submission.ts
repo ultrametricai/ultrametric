@@ -1,0 +1,166 @@
+import { createHash } from 'node:crypto'
+import { z } from 'zod'
+import { ProductSchema, type Category, type Product } from '../../lib/schemas'
+import { buildArenaVocab, matchArenas, type RadarCandidate } from '../scripts/vendor-radar'
+import { triageCandidate, MIN_FIT_HITS, isFounderAffiliated, type Disposition, type TriageIo } from '../scripts/radar-triage'
+import { rosterDedupeKey, slugify, vendorOf } from '../scripts/radar-bringup'
+import { fetchPublic, publicUrl, receipt, type Page, type Receipt } from './public-fetch'
+
+export const REPOSITORY = 'ultrametricai/ultrametric'
+export const IssueSchema = z.object({
+  number: z.number().int().positive(), body: z.string().max(30000), title: z.string().max(256),
+  state: z.literal('open'), updated_at: z.string(),
+  labels: z.array(z.object({ name: z.string() })), pull_request: z.unknown().optional(),
+})
+export type Issue = z.infer<typeof IssueSchema>
+export interface Submission {
+  issue: number; source: string; revision: string; name: string; arena: string;
+  urls: string[]; why: string; affiliated: boolean; disclosure: string;
+}
+const FIELDS = ['Product name', 'Category', 'URLs', 'Why it matters', 'Are you affiliated with this product?', 'Affiliation detail (if yes)']
+export function digest(text: string): string { return createHash('sha256').update(text).digest('hex') }
+
+export function normalizeIssue(input: unknown): Submission {
+  const issue = IssueSchema.parse(input)
+  if (issue.pull_request || !issue.labels.some(l => l.name === 'product-request')) throw new Error('requires an open product-request issue')
+  const fields = new Map<string, string>()
+  for (const match of issue.body.matchAll(/^### ([^\r\n]+)\r?\n([\s\S]*?)(?=^### |$(?![\s\S]))/gm)) {
+    if (fields.has(match[1]) || !FIELDS.includes(match[1])) throw new Error('duplicate or unknown form field; human review required')
+    fields.set(match[1], match[2].trim().replace(/^_No response_$/, ''))
+  }
+  const get = (key: string) => fields.get(key) ?? ''
+  const name = get('Product name')
+  const arena = get('Category')
+  if (!/^[\p{L}\p{N}][\p{L}\p{N} .+&()'/-]{0,99}$/u.test(name) || !slugify(name)) throw new Error('product name needs review')
+  if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(arena) || arena.length > 80) throw new Error('use an exact arena id or new')
+  const why = get('Why it matters')
+  if (!why || why.length > 5000) throw new Error('missing or oversized rationale')
+  const affiliation = get('Are you affiliated with this product?')
+  const disclosure = get('Affiliation detail (if yes)')
+  if (!['Yes', 'No'].includes(affiliation) || (affiliation === 'Yes' && !disclosure)) throw new Error('explicit affiliation and disclosure required')
+  if (disclosure.length > 2000) throw new Error('oversized affiliation disclosure')
+  const urls = [...new Set((get('URLs').match(/https?:\/\/[^\s<>\)]+/g) ?? []).map(u => publicUrl(u).href))]
+  if (!urls.length || urls.length > 8) throw new Error('provide one to eight public HTTPS URLs, product site first')
+  // GitHub source identity is exact owner/repo, not an arbitrary URL that starts with it.
+  for (const value of urls) {
+    const u = new URL(value)
+    if (u.hostname === 'github.com' && !/^\/[\w.-]+\/[\w.-]+\/?$/.test(u.pathname)) throw new Error('GitHub URLs must identify a repository root')
+  }
+  return { issue: issue.number, source: `https://github.com/${REPOSITORY}/issues/${issue.number}`,
+    revision: digest(issue.body), name, arena, urls, why, affiliated: affiliation === 'Yes', disclosure }
+}
+
+export interface Catalog {
+  categories: Category[];
+  products: { arena: string; product: Product }[];
+  roadmap: { id: string; name: string; status: string; candidateProducts: string[] }[];
+}
+export interface IntakeReport {
+  schemaVersion: 1; submission: Submission; route: 'draft-bringup' | 'arena-review' | 'needs-human' | 'duplicate';
+  reason: string; identity: string; branch: string; arena: string | null;
+  receipts: Receipt[]; disposition?: Disposition; proposedProduct?: Product;
+  roadmap?: Catalog['roadmap'][number]; duplicate?: { arena: string; id: string };
+}
+
+export function safeTriageIo(pages: Map<string, Page>, receipts: Receipt[], get: (url: string) => Promise<Page>): Omit<TriageIo, 'fetchPage'> & { fetchPage: (url: string) => Promise<Page> } {
+  async function read(url: string): Promise<Page> {
+    if (pages.has(url)) return pages.get(url)!
+    if (receipts.length >= 12) throw new Error('intake fetch budget exhausted')
+    try {
+      const page = await get(publicUrl(url).href)
+      receipts.push(receipt(page)); pages.set(url, page)
+      return page
+    } catch (error) {
+      receipts.push({ url, status: 0, checkedAt: new Date().toISOString(), sha256: digest(''), excerpt: '', error: String(error) })
+      throw error
+    }
+  }
+  return {
+    fetchPage: read,
+    async fetchRepo(fullName) {
+      if (!/^[\w.-]+\/[\w.-]+$/.test(fullName)) return { error: 'invalid repository identity' }
+      try {
+        const base = `https://api.github.com/repos/${fullName}`
+        const page = await read(base)
+        if (page.status !== 200) return { error: `GitHub HTTP ${page.status}` }
+        const repo = z.object({ archived: z.boolean(), fork: z.boolean(), description: z.string().nullable(), stargazers_count: z.number().nonnegative(), created_at: z.iso.datetime() }).parse(JSON.parse(page.html))
+        const readmePage = await read(`${base}/readme`)
+        if (readmePage.status !== 200) return { error: `README HTTP ${readmePage.status}` }
+        const data = z.object({ encoding: z.literal('base64'), content: z.string() }).parse(JSON.parse(readmePage.html))
+        const readme = Buffer.from(data.content, 'base64').toString('utf8')
+        let contributors: number | null = null
+        // A bounded exact count for small repos. Larger repos leave the ratio unavailable,
+        // as existing policy prescribes; sustained star-velocity checks still run.
+        const contrib = await read(`${base}/contributors?per_page=100`)
+        if (contrib.status === 200) {
+          const list = z.array(z.object({ login: z.string() })).parse(JSON.parse(contrib.html))
+          if (list.length < 100) contributors = list.length
+        }
+        return { archived: repo.archived, fork: repo.fork, description: repo.description, stars: repo.stargazers_count,
+          createdAt: repo.created_at, contributors, readme, readmeBytes: Buffer.byteLength(readme), readmeHead: readme.slice(0, 2000) }
+      } catch (error) { return { error: String(error) } }
+    },
+  }
+}
+
+export function submissionIdentity(submission: Submission): { identity: string; branch: string } {
+  const identity = rosterDedupeKey(submission.urls[0])!
+  return { identity, branch: `submission-intake/${digest(`${submission.arena}\n${identity}`).slice(0, 24)}` }
+}
+
+export async function assess(submission: Submission, catalog: Catalog, get = fetchPublic): Promise<IntakeReport> {
+  // Per product + requested arena, not per issue: duplicate issues share one draft.
+  const { identity, branch } = submissionIdentity(submission)
+  const report: IntakeReport = { schemaVersion: 1, submission, identity, branch, route: 'needs-human', reason: '', arena: null, receipts: [] }
+  const stop = (reason: string) => { report.reason = reason; return report }
+  const knownAffiliated = catalog.products.filter(({ product }) => product.affiliation)
+  if (submission.urls.some(url => isFounderAffiliated(submission.name, url)) || /\b(foreloop|afk)\b/i.test(submission.name) ||
+    knownAffiliated.some(({ product }) => product.name.toLowerCase() === submission.name.toLowerCase() || submission.urls.some(url => Object.values(product.urls).flat().some(known => rosterDedupeKey(known) === rosterDedupeKey(url))))) {
+    return stop('Affiliated identity: human disclosure and bias audit required.')
+  }
+  const duplicate = catalog.products.find(({ arena, product }) => arena === submission.arena &&
+    (product.id === slugify(submission.name) || product.name.toLowerCase() === submission.name.toLowerCase() ||
+      submission.urls.some(url => [product.urls.site, product.urls.github].some(known => known && rosterDedupeKey(known) === rosterDedupeKey(url)))))
+  if (duplicate) { report.route = 'duplicate'; report.duplicate = { arena: duplicate.arena, id: duplicate.product.id }; return stop('Product already rostered in the requested arena; use the correction flow for new evidence.') }
+  const roadmap = catalog.roadmap.find(r => r.id === submission.arena && r.status !== 'live')
+  if (roadmap) {
+    report.route = 'arena-review'; report.roadmap = roadmap; report.arena = roadmap.id
+    return stop('Planned arena: review peer set and create the arena through the submission exception in AGENT_POLICY. Every peer must pass triage; this report does not mark the arena live.')
+  }
+  if (!catalog.categories.some(c => c.id === submission.arena)) return stop('Unknown arena or new peer set: human arena review required.')
+  const pages = new Map<string, Page>()
+  const io = safeTriageIo(pages, report.receipts, get)
+  try {
+    const primary = submission.urls[0]
+    let verifiedText: string
+    if (new URL(primary).hostname === 'github.com') {
+      const repo = await io.fetchRepo(new URL(primary).pathname.slice(1).replace(/\/$/, ''))
+      if ('error' in repo) return stop(repo.error)
+      verifiedText = `${repo.description ?? ''} ${repo.readme}`
+    } else {
+      const page = await io.fetchPage(primary)
+      if (page.status !== 200) return stop(`Product surface HTTP ${page.status}; retry after review.`)
+      // Redirects across identities may be legitimate acquisitions, but require review.
+      if (rosterDedupeKey(page.url) !== identity) return stop('Product redirects to a different identity; review the canonical product URL.')
+      verifiedText = page.html.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, ' ').replace(/<[^>]+>/g, ' ')
+    }
+    // Submission rationale is not evidence and cannot manufacture placement keyword hits.
+    const matches = matchArenas(verifiedText, buildArenaVocab(catalog.categories, new Map()))
+    if (!matches[0] || matches[0].hits < MIN_FIT_HITS || matches[0].arena !== submission.arena || matches[1]?.hits === matches[0].hits) return stop('Fetched surface does not uniquely support the requested arena; human placement review required.')
+    const candidate: RadarCandidate = { key: identity, name: submission.name, url: primary,
+      // The issue source lives in submission.source, not radar.sources: the radar's
+      // githubRepoOf scans source URLs and would mistake our issue repo for the product.
+      sources: [],
+      matchedArenas: matches, firstSeen: report.receipts[0].checkedAt }
+    const d = await triageCandidate(candidate, new Set(catalog.categories.map(c => c.id)), io, new Map(catalog.categories.map(c => [c.id, c.description])))
+    report.disposition = d; report.arena = d.arena
+    if (d.status !== 'auto-approved' || !d.bringup) return stop(d.reason)
+    // All discovered roster URLs pass the same syntax gate, including docs links.
+    Object.values(d.bringup).filter(u => u.startsWith('http')).forEach(u => publicUrl(u))
+    report.proposedProduct = ProductSchema.parse({ id: slugify(submission.name), name: submission.name, vendor: vendorOf(d), type: d.bringup.type,
+      urls: { site: d.bringup.site, docs: d.bringup.docs, github: d.bringup.github },
+      ...(submission.affiliated ? { affiliation: `Vendor self-submission (${submission.source}): ${submission.disclosure}` } : {}) })
+    report.route = 'draft-bringup'
+    return stop('Mechanical triage passed. Draft contains a proposed roster input and source receipts. Confirm identity and placement, then run the scoped engine and bias audit before publication.')
+  } catch (error) { return stop(`Source verification failed: ${String(error)}`) }
+}
