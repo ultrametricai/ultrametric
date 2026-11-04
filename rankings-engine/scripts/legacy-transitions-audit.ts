@@ -30,7 +30,10 @@
 // Also computes v5 cache currency per standing-churn cell (committed judge caches +
 // cellHash with prompt v5) to size the correction each migration option would deliver.
 //
-// Usage: pnpm exec tsx rankings-engine/scripts/legacy-transitions-audit.ts [--out <file>] [--full]
+// Usage: pnpm exec tsx rankings-engine/scripts/legacy-transitions-audit.ts [--out <file>] [--full] [--ref <commit>]
+// --ref pins the audited revision (default HEAD). Git history is read at that ref; the
+// v5 cache-currency pass reads the working tree, so reproduce a committed report from a
+// checkout whose open-rankings/ and rankings-engine/cache/ match the ref.
 // Writes JSON to --out (default: stdout). Default output carries aggregates plus the per-cell
 // rows for the unsupported-churn and rubric-rollout classes (the report payload); --full adds
 // every transition including the labeled-migration and evidence-driven ones.
@@ -46,6 +49,13 @@ const ROOT = path.resolve(__dirname, '..', '..')
 const outArg = process.argv.indexOf('--out')
 const OUT = outArg >= 0 ? process.argv[outArg + 1] : undefined
 const FULL = process.argv.includes('--full')
+// The revision to audit. Committing the output moves HEAD, so reproducing a committed
+// report means naming the revision it audited, e.g. --ref bc778d69b9.
+const refArg = process.argv.indexOf('--ref')
+const REF = refArg >= 0 ? process.argv[refArg + 1] : 'HEAD'
+// The model whose caches the audit validates. Pinned so a UM_JUDGE_MODEL/PA_MODEL override
+// in the shell cannot silently stop historical opus caches from matching.
+const AUDIT_JUDGE_MODEL = 'claude-opus-5-5'
 
 type Verdict = 'full' | 'partial' | 'none' | 'disputed' | 'na'
 type Row = { productId: string; storyId: string; verdict: Verdict; quality: number; rationale?: string; evidenceIds?: string[] }
@@ -125,7 +135,7 @@ function promptAt(ref: string, arena: string, productId: string, storyId: string
   if (!story) return 'missing'
   const pack = evidenceAt(ref, arena, productId)
   for (const v of ['v5', 'v6', 'v4']) {
-    if (cached.hash === cellHash(story as never, pack as never, v)) return v
+    if (cached.hash === cellHash(story as never, pack as never, v, AUDIT_JUDGE_MODEL)) return v
   }
   return 'mismatch'
 }
@@ -186,7 +196,7 @@ const waveReconfirmedAt = new Map<string, string[]>()
 
 for (const arena of arenas) {
   const pathspecs = PATH_ERAS.map((era) => `${era}/${arena}/verdicts.json`)
-  const log = git(['log', '--first-parent', '--reverse', '--format=%H|%ct|%s', 'HEAD', '--', ...pathspecs])
+  const log = git(['log', '--first-parent', '--reverse', '--format=%H|%ct|%s', REF, '--', ...pathspecs])
     .trim()
     .split('\n')
     .filter(Boolean)
@@ -332,7 +342,7 @@ for (const arena of arenas) {
       if (fs.existsSync(cacheFile)) {
         try {
           const cached = JSON.parse(fs.readFileSync(cacheFile, 'utf8')) as { hash: string; keyVersion?: string }
-          current = cached.keyVersion === CELL_HASH_VERSION && cached.hash === cellHash(s as never, pack as never, 'v5')
+          current = cached.keyVersion === CELL_HASH_VERSION && cached.hash === cellHash(s as never, pack as never, 'v5', AUDIT_JUDGE_MODEL)
         } catch {
           current = false
         }
@@ -371,8 +381,8 @@ const ERAS: Array<[string, (d: string) => boolean]> = [
 
 const report = {
   // The audited HEAD's commit time, not wall-clock time: identical inputs give identical output.
-  generatedAt: git(['show', '-s', '--format=%cI', 'HEAD']).trim(),
-  headCommit: git(['rev-parse', 'HEAD']).trim(),
+  generatedAt: git(['show', '-s', '--format=%cI', REF]).trim(),
+  headCommit: git(['rev-parse', REF]).trim(),
   method:
     'first-parent lineage of HEAD per arena verdicts.json across the data/ -> rankings/ -> open-rankings/ renames; ' +
     'support classified with rankings-engine/evidence-source.mjs (newSourceSupport / supportDisappeared), ' +

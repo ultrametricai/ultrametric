@@ -115,8 +115,11 @@ wave corroboration.
 | cell currently v5-cache-current | 121 |
 | cell currently v5-stale | 50 |
 
-The class is concentrated in a handful of merges. For every post-2026-10-19 row the cache
-check confirms a same-rubric v5→v5 re-roll (first-v5-touch rollout is ruled out per cell):
+The class is concentrated in a handful of merges. The cache check confirms a same-rubric
+v5→v5 re-roll for 131 of the 132 post-2026-10-19 rows, ruling out first-v5-touch rollout per
+cell; the remaining row (self-hosted-assistants/openclaw:coding-agent-integration, 68fb9a87bb,
+old cache pre-v2-key, new cache matching no prompt version) has no machine-verifiable rubric
+and stays in this class by the same fail-closed rule as the evidence tests:
 
 | merge | date | arena(s) | cells |
 |---|---|---|---|
