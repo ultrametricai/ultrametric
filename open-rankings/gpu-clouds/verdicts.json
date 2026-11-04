@@ -1188,7 +1188,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Lambda publishes a REST Cloud API with an OpenAPI spec for creating and managing cloud resources. The evidence shows it can launch instances, apply cloud-init, choose base images, and send support-ticket webhooks, and a community-built CLI/MCP server on top of it confirms instance find/launch/terminate is automatable. However, the docs describe firewall rules, usage viewing, and JupyterLab access through UI pages, with no evidence of API equivalents, so full UI parity is not demonstrated. Missing for 10: documented API coverage for firewalls, filesystems, 1-Click Clusters, and usage/billing, plus any explicit statement of UI–API parity.",
+    "rationale": "Lambda publishes a REST Cloud API with an OpenAPI spec for creating and managing cloud resources. The evidence shows it can launch instances, apply cloud-init, choose base images, and send support-ticket webhooks, and a community-built CLI/MCP server on top of it confirms instance find/launch/terminate is automatable. However, the docs describe firewall rules, usage viewing, and JupyterLab access through UI pages, with no evidence of API equivalents, so full UI parity is not demonstrated. Missing for 10: documented API coverage for firewalls, filesystems, 1-Click Clusters, and usage/billing, plus any explicit statement of UI\u2013API parity.",
     "evidenceIds": [
       "lambda-labs-docs-31",
       "lambda-labs-docs-39",
@@ -3076,7 +3076,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "The docs describe a prepaid-credit model: users top up via Billing → Add Credit. The billing docs note that keeping a positive balance protects instances from interruption or deletion, which implies a running instance stops consuming money once credit runs out. Autobilling can be left off, so the loaded balance acts as an implicit spending ceiling, but this is a crude backstop that risks losing the instance rather than a deliberate guardrail. Missing for 10: configurable auto-shutdown or idle timers, explicit per-instance or account spend limits, budget alerts, and any hands-on confirmation of how instances behave when credit is exhausted.",
+    "rationale": "The docs describe a prepaid-credit model: users top up via Billing \u2192 Add Credit. The billing docs note that keeping a positive balance protects instances from interruption or deletion, which implies a running instance stops consuming money once credit runs out. Autobilling can be left off, so the loaded balance acts as an implicit spending ceiling, but this is a crude backstop that risks losing the instance rather than a deliberate guardrail. Missing for 10: configurable auto-shutdown or idle timers, explicit per-instance or account spend limits, budget alerts, and any hands-on confirmation of how instances behave when credit is exhausted.",
     "evidenceIds": [
       "vast-ai-docs-25",
       "vast-ai-docs-8",
@@ -3330,7 +3330,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Vast.ai's docs say the REST API gives \"programmatic control over the entire platform\" and that the CLI and SDK are built on it. The CLI is described as covering auth, search, instance lifecycle, templates, volumes and serverless, and a published OpenAPI spec was confirmed by probe. However, several flows are documented only as UI actions (account creation and email verification, Billing → Add Credit, teams setup, the Storage page), with no stated API equivalents. missing for 10: explicit evidence of API parity for account/billing top-up, teams/roles, and host listing flows; independent or hands-on corroboration of the \"entire platform\" claim.",
+    "rationale": "Vast.ai's docs say the REST API gives \"programmatic control over the entire platform\" and that the CLI and SDK are built on it. The CLI is described as covering auth, search, instance lifecycle, templates, volumes and serverless, and a published OpenAPI spec was confirmed by probe. However, several flows are documented only as UI actions (account creation and email verification, Billing \u2192 Add Credit, teams setup, the Storage page), with no stated API equivalents. missing for 10: explicit evidence of API parity for account/billing top-up, teams/roles, and host listing flows; independent or hands-on corroboration of the \"entire platform\" claim.",
     "evidenceIds": [
       "vast-ai-docs-3",
       "vast-ai-docs-2",
@@ -3572,6 +3572,679 @@
       "vast-ai-docs-20",
       "vast-ai-gh-1",
       "vast-ai-comm-3"
+    ]
+  },
+  {
+    "productId": "lium",
+    "storyId": "agent-provisions-gpu",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "medium",
+    "rationale": "Lium documents a browser-free agent lifecycle. It covers renting via `lium up --gpu H100 --ttl 1h` or `POST /executors/rent-by-spec`, running workloads with `lium exec` (which returns the remote exit code), and teardown through TTL, end-time or spend-cap auto-delete or the SDK's rent-run-remove flow. The agents page states an agent can 'sign up, fund, rent, connect and remove pods' with no browser. The OpenAPI probe 404s only cover docs.lium.io paths, not the documented lium.io/api/openapi.json, so they do not contradict the API claim. The MCP server only covers docs and prices, but the CLI and API paths are enough for this story. Missing for 10: pod health and status monitoring is only thinly evidenced (spend/runway and nvidia-smi via exec), and there is no independent hands-on corroboration of the end-to-end flow.",
+    "evidenceIds": [
+      "lium-docs-1",
+      "lium-docs-2",
+      "lium-docs-6",
+      "lium-docs-15",
+      "lium-docs-20",
+      "lium-docs-22",
+      "lium-docs-23",
+      "lium-docs-24",
+      "lium-gh-2",
+      "lium-probe-3"
+    ]
+  },
+  {
+    "productId": "lium",
+    "storyId": "agentic-agent-docs",
+    "verdict": "full",
+    "quality": 10,
+    "confidence": "high",
+    "rationale": "A probe confirms a live llms.txt (HTTP 200 at docs.lium.io/llms.txt), and a second llms.txt exists at lium.io with agent-directed instructions. The docs add further agent-oriented access: raw markdown for any page via `.md` or `Accept: text/markdown`, a docs MCP server with `search` and `read_page` tools, a dedicated agents page, and an official agent SKILL.md. First-party docs plus hands-on confirmation cover every element of the story.",
+    "evidenceIds": [
+      "lium-probe-1",
+      "lium-docs-5",
+      "lium-docs-4",
+      "lium-docs-3",
+      "lium-docs-22",
+      "lium-docs-25"
+    ]
+  },
+  {
+    "productId": "lium",
+    "storyId": "agentic-ai-insights",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "A GPU rental marketplace could plausibly offer in-product AI-generated insights, such as cost or usage recommendations, so the axis applies. However, the evidence shows no built-in AI insight feature. `lium spend` reports computed burn rate and runway rather than AI-generated suggestions. The docs MCP server and the agent/SDK automation are building blocks for external agents, not insights generated inside the product.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "lium",
+    "storyId": "agentic-autonomous-automation",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "Lium has its own background lifecycle automations: pods auto-delete on a TTL, end time, or USD spend cap, and volumes are backed up every 6 hours. Its SDK and agent flow can rent a node, run a job, and tear the pod down without a browser, within server-enforced budgets. But the multi-step automation is driven by the user's external agent or script calling these primitives, not by a first-party automation feature. missing for 10: scheduled or recurring job triggers, an event-driven or background workflow engine, monitoring or notification of autonomous runs, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "lium-docs-1",
+      "lium-docs-2",
+      "lium-docs-15",
+      "lium-docs-16",
+      "lium-docs-22",
+      "lium-docs-24",
+      "lium-docs-7"
+    ]
+  },
+  {
+    "productId": "lium",
+    "storyId": "agentic-builtin-assistant",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Lium's evidence is about making the platform usable by the user's own external agents: an agent-friendly API and CLI, a docs and pricing MCP server, a SKILL file, and budget-scoped keys. None of it describes an AI assistant built into the product that tasks can be delegated to. Those agent-facing surfaces are developer building blocks for outside agents, not an in-product assistant, so the axis applies but is unevidenced.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "lium",
+    "storyId": "agentic-headless",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "Lium documents fully browser-free operation: an agent can sign up, fund, rent, connect and remove pods without a browser. Automation is supported by an official CLI with TTL auto-removal and `lium exec`, which returns the remote command's exit code, plus an SDK, a REST API with an OpenAPI spec, scoped API keys with server-enforced budgets, and stable `error.code` values to branch on. The OpenAPI probe 404s only at docs.lium.io paths, while the docs point to lium.io/api/openapi.json, so it does not contradict the API claim. Missing for 10: explicit CI-pipeline integration examples (e.g. GitHub Actions or env-var auth recipes) and independent hands-on corroboration of headless runs.",
+    "evidenceIds": [
+      "lium-docs-22",
+      "lium-docs-23",
+      "lium-docs-1",
+      "lium-docs-2",
+      "lium-docs-24",
+      "lium-docs-7",
+      "lium-docs-21",
+      "lium-docs-20",
+      "lium-docs-25",
+      "lium-probe-3"
+    ]
+  },
+  {
+    "productId": "lium",
+    "storyId": "agentic-mcp-client",
+    "verdict": "na",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Lium is a GPU rental marketplace (CLI, API and SDK for renting pods), not an agent or AI host that consumes tools. Plugging MCP servers into it as a client is therefore outside its product category. The evidence shows only that Lium serves its own MCP server at `/mcp` for docs search and GPU prices. That is the server role, which does not make the client axis applicable.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "lium",
+    "storyId": "agentic-mcp-server",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Lium documents its own MCP server at `/mcp` that an agent can connect to, exposing `search` and `read_page` for the docs plus live GPU prices and availability with rent links. The documented tools are read-only, though: renting, managing and removing pods goes through the CLI, SDK and REST API rather than MCP. Missing for 10: MCP tools for renting and managing pods, auth/scoping details for the MCP endpoint, setup or client-configuration docs, and independent or hands-on confirmation that the endpoint works.",
+    "evidenceIds": [
+      "lium-docs-3"
+    ]
+  },
+  {
+    "productId": "lium",
+    "storyId": "agentic-nl-commands",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Lium has no built-in natural-language command interface of its own. It does ship first-party agent-facing artifacts: an official agent skill (lium-skill SKILL.md) and agent docs stating an agent can sign up, fund, rent, connect and remove pods with no browser. Its MCP server answers natural-language-style queries, but only for doc search and live GPU prices and availability, not for pod operations. missing for 10: native NL command interface, MCP or agent tooling covering full pod lifecycle operations, hands-on corroboration that agent-driven NL operation works end to end.",
+    "evidenceIds": [
+      "lium-docs-2",
+      "lium-docs-3",
+      "lium-docs-5",
+      "lium-docs-22",
+      "lium-docs-25"
+    ]
+  },
+  {
+    "productId": "lium",
+    "storyId": "agentic-official-cli",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Lium ships an official pip-installable `lium` CLI, published in the Datura-ai/lium GitHub repo. Documented commands cover renting pods with a TTL (`lium up --gpu H100 --ttl 1h`), running remote commands that return the remote exit code for agent scripting (`lium exec`), price quotes (`lium quote`) and spend tracking (`lium spend`). The docs explicitly target agents running jobs without a browser. missing for 10: independent hands-on corroboration of the CLI in agent workflows (the evidence is vendor docs and the vendor's own repo).",
+    "evidenceIds": [
+      "lium-docs-1",
+      "lium-docs-23",
+      "lium-gh-1",
+      "lium-gh-2",
+      "lium-probe-3",
+      "lium-docs-22"
+    ]
+  },
+  {
+    "productId": "lium",
+    "storyId": "agentic-public-api",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Lium documents a public REST API: an API reference page publishing an OpenAPI spec at lium.io/api/openapi.json, concrete endpoints (POST /executors/rent-by-spec, POST /auth/signup), scoped API keys with server-enforced budgets, and stable error codes with hints. It also states an agent can do everything with no browser, and adds keyless JSON, CSV and WebSocket feeds. The probe's 404s were on docs.lium.io paths, not the documented lium.io/api/openapi.json, so they do not contradict the spec's existence. Missing for 10: no independent or hands-on confirmation that the documented OpenAPI spec and endpoints work as described.",
+    "evidenceIds": [
+      "lium-docs-20",
+      "lium-docs-6",
+      "lium-docs-7",
+      "lium-docs-12",
+      "lium-docs-21",
+      "lium-docs-22",
+      "lium-docs-25",
+      "lium-docs-9",
+      "lium-docs-11",
+      "lium-docs-10",
+      "lium-probe-2"
+    ]
+  },
+  {
+    "productId": "lium",
+    "storyId": "agentic-scoped-keys",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "medium",
+    "rationale": "Lium documents first-party API keys with scopes plus per-key daily, monthly and lifetime USD budgets enforced by the server, which is a direct least-privilege credential mechanism for agents. Scopes are fixed when the key is created and cannot be changed later, so restrictions are set at issuance. Missing for 10: the specific scope catalog is not enumerated, there is no evidence on key revocation or rotation, and there is no independent or hands-on corroboration.",
+    "evidenceIds": [
+      "lium-docs-7",
+      "lium-docs-12"
+    ]
+  },
+  {
+    "productId": "lium",
+    "storyId": "agentic-sdks",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Lium documents its own official SDK on a dedicated SDK page. The SDK rents the cheapest matching node, runs a function there, returns the result, and removes the pod or keeps it warm. It is installed from a first-party package (`pip install lium.io`). The OpenAPI type generation in lium-docs-20 is a developer building block, not an official SDK, so it is not credited here. missing for 10: evidence of SDKs beyond the single (apparently Python) package, in-depth SDK reference documentation, independent or hands-on corroboration of the SDK itself.",
+    "evidenceIds": [
+      "lium-docs-24",
+      "lium-docs-1"
+    ]
+  },
+  {
+    "productId": "lium",
+    "storyId": "agentic-webhooks",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Webhooks are a fair axis for a GPU-rental API platform, but the evidence pack shows no documented, registrable outbound HTTP callbacks. The closest item is a public WebSocket feed of executor availability, which is an adjacent push mechanism the consumer must pull from, not a webhook subscription, so it earns no credit.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "lium",
+    "storyId": "api-interactive-docs",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence shows a published OpenAPI spec (lium.io/api/openapi.json, usable for type generation), raw-markdown docs and an MCP server for searching docs. None of these is an interactive API reference with runnable, try-it examples: the spec is a developer building block and doc search is an adjacent feature. The probe found no OpenAPI or Swagger explorer at the docs domain, and nothing documents an in-browser API console or executable request examples.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "lium",
+    "storyId": "api-machine-spec",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Lium's developer API docs reference a downloadable OpenAPI spec at https://lium.io/api/openapi.json and show it being fed into openapi-typescript to generate types, which is a machine-readable spec an agent can fetch. The probe's 404s were all on docs.lium.io paths, not the documented lium.io/api/openapi.json, so they do not contradict the claim. Missing for 10: hands-on confirmation that the documented lium.io/api/openapi.json URL resolves, and fuller documentation of the spec's coverage and versioning beyond a single code-snippet mention.",
+    "evidenceIds": [
+      "lium-docs-20",
+      "lium-probe-2"
+    ]
+  },
+  {
+    "productId": "lium",
+    "storyId": "api-sandbox",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Lium is a GPU rental marketplace with a programmatic API, so a sandbox or test mode for agents is a fair axis. However, the evidence documents no sandbox environment, test-mode API keys, or simulated rentals. Disposable pods with TTLs and spend caps, scoped API keys, and per-key budgets are adjacent controls that limit cost and blast radius. They are not a separate sandbox isolated from real account resources and data, so they earn no credit here.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "lium",
+    "storyId": "api-versioning-policy",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Lium documents a public REST API with an OpenAPI spec and states that `error.code` values are stable. Stable error codes are an adjacent guarantee, though, not API versioning. Nothing in the pack shows versioned endpoints (e.g., /v1), a version header, a changelog, or a documented deprecation policy or timeline, so the story is unevidenced.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "lium",
+    "storyId": "auto-shutdown-spend-guards",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Lium documents several first-party ways to keep a forgotten pod from running up a bill. The CLI takes `--ttl` to auto-remove a pod after a set time. Pod creation offers three auto-delete triggers: hours, an end time, or a USD spend cap. API keys carry daily, monthly and lifetime USD budgets that the server enforces. `lium spend` shows hourly burn and remaining runway. Missing for 10: independent or hands-on corroboration that the TTL and spend-cap auto-deletion actually triggers reliably.",
+    "evidenceIds": [
+      "lium-docs-1",
+      "lium-docs-15",
+      "lium-docs-7",
+      "lium-docs-2",
+      "lium-gh-2"
+    ]
+  },
+  {
+    "productId": "lium",
+    "storyId": "automation-bulk-operations",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Bulk operations are a fair question for a GPU rental platform, for example removing or renting many pods in one command or call. The evidence only shows single-pod actions (`lium up`, `lium exec`, rent-by-spec) and bulk read-only feeds, such as every rentable node in one JSON call. Clusters are one distributed job, not batch actions over many items. None of this is a documented bulk-operation capability, so these adjacent features earn no credit.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "lium",
+    "storyId": "automation-rules-engine",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "Lium has built-in termination rules: you set an hours limit, end time, or USD spend cap and the pod is deleted when it is reached (also `--ttl` in the CLI), and per-key budgets are enforced server-side. These are fixed conditions with a single action, not a general user-defined event\u2192action rule system. The availability WebSocket is only an event feed that users must script against themselves, so it earns no credit. Missing for 10: user-definable custom rules/triggers, a choice of actions beyond pod deletion, event-driven automation on events such as GPU availability or job completion, webhooks or outbound callbacks, and independent corroboration.",
+    "evidenceIds": [
+      "lium-docs-15",
+      "lium-docs-1",
+      "lium-docs-7"
+    ]
+  },
+  {
+    "productId": "lium",
+    "storyId": "automation-scheduled-jobs",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Recurring or scheduled job execution is a fair axis for a GPU rental platform, but the evidence never documents cron-style schedules or recurring workflows. What it does show is related but different: TTL, end-time and spend-cap auto-deletion, one-off `lium exec` jobs, and SDK run-and-remove calls. These control a pod's lifetime or run a single job; they do not schedule repeat runs. A user could build recurrence with an external scheduler, but that is a user-side workaround and earns no credit.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "lium",
+    "storyId": "automation-versioned-workflows",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Lium documents agent-driven automation: CLI scripting, an SDK, rent-by-spec, and TTL or budget auto-removal. Nothing in the evidence shows versioning, reviewing, or rolling back those automations. Pod volume backups and restores protect data rather than automation definitions, so they are an adjacent feature and earn no credit.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "lium",
+    "storyId": "billing-usage-api",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "The official CLI's `lium spend` command reports burn per hour, spend per pod and runway, which gives a scriptable per-workload (per-pod) spend breakdown. Per-key USD budgets also hint at key-level spend tracking, though they are documented as enforcement limits rather than reports. Missing for 10: a documented billing/usage API endpoint or export, team-level or tag-based cost attribution, historical usage reports, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "lium-gh-2",
+      "lium-docs-7",
+      "lium-docs-13"
+    ]
+  },
+  {
+    "productId": "lium",
+    "storyId": "custom-docker-images",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Lium documents root access and Docker-in-Docker on every pod, so a developer can run their own Docker image inside a rented pod. The phrase \"default templates\" implies a template system exists, but nothing shows that users can supply their own image as the pod base or create a custom template. missing for 10: documented support for a custom/BYO Docker image as the pod image, user-created machine templates, template management via CLI/API, independent corroboration.",
+    "evidenceIds": [
+      "lium-docs-8"
+    ]
+  },
+  {
+    "productId": "lium",
+    "storyId": "data-transfer-cloud-sync",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Lium is a GPU rental marketplace, so data ingress and egress is a fair axis, but the evidence pack documents no S3-compatible endpoint, cloud-storage sync, or dedicated transfer tooling such as copy or rsync commands. Persistent volumes mounted at /mnt and 6-hourly pod backups are adjacent storage features, not mechanisms for moving data in and out. The pricing CSV feed exports Lium's prices, not user data.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "lium",
+    "storyId": "exposed-ports-networking",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Lium documents clusters as several whole machines on the same RDMA fabric for one distributed job. That is a first-party form of interconnect between machines, but only within a cluster, not general private networking between arbitrary pods. Nothing in the evidence shows exposing ports to serve applications from a pod; the Jupyter toggle is an adjacent feature and does not count. missing for 10: documented port exposure or public endpoints for serving apps, general private networking between independent pods, network configuration details, independent corroboration.",
+    "evidenceIds": [
+      "lium-docs-19"
+    ]
+  },
+  {
+    "productId": "lium",
+    "storyId": "gpu-availability-transparency",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Lium documents several ways to check capacity before renting: a keyless public JSON feed of every rentable GPU node, a public WebSocket that pushes which executors are rentable now (replacing polling), and an MCP server and llms.txt for live GPU prices and availability. GPU-type filtering is implied by spec-based renting (e.g. `--gpu H100`, rent-by-spec), but region-level breakdown is never mentioned. missing for 10: explicit evidence of availability broken down by region, documented per-GPU-type availability fields, independent or hands-on corroboration that the feed reflects real-time stock.",
+    "evidenceIds": [
+      "lium-docs-9",
+      "lium-docs-11",
+      "lium-docs-3",
+      "lium-docs-5",
+      "lium-docs-6",
+      "lium-docs-1"
+    ]
+  },
+  {
+    "productId": "lium",
+    "storyId": "gpu-breadth-latest-hardware",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "Lium is a GPU rental marketplace for NVIDIA GPUs with live prices and availability across all rentable nodes. Its docs explicitly show renting an H100 (`lium up --gpu H100`), and rent-by-spec picks the cheapest node that matches a GPU spec under a price ceiling. That establishes current-generation H100 access and choice by spec, but the pack never names H200, B200 or any cheaper previous-generation model (e.g. A100). missing for 10: evidence of H200/B200 availability, named previous-generation GPU options with lower pricing, independent confirmation of the actual GPU catalog.",
+    "evidenceIds": [
+      "lium-docs-1",
+      "lium-docs-6",
+      "lium-docs-9",
+      "lium-docs-5",
+      "lium-probe-1"
+    ]
+  },
+  {
+    "productId": "lium",
+    "storyId": "instance-lifecycle-management",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Lium documents programmatic create and terminate: `lium up` with a TTL, `POST /executors/rent-by-spec`, and agents that \"rent, connect and remove pods\". It also bills per second with no minimum and auto-deletes pods by hours, end time or spend cap, so you pay only while a pod exists. There is no evidence of stop/pause or restart; persistent volumes and 6-hourly backups are only a workaround for preserving state between rentals. Missing for 10: documented stop/pause and restart operations, billing behavior for stopped instances, and independent hands-on corroboration of the lifecycle API.",
+    "evidenceIds": [
+      "lium-docs-1",
+      "lium-docs-2",
+      "lium-docs-6",
+      "lium-docs-13",
+      "lium-docs-15",
+      "lium-docs-22",
+      "lium-docs-24",
+      "lium-docs-18"
+    ]
+  },
+  {
+    "productId": "lium",
+    "storyId": "jupyter-ide-access",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Lium documents a create-pod toggle that puts a Jupyter notebook on the pod, which covers the Jupyter half of the story in roughly one step. Nothing in the evidence shows a VS Code or Cursor remote-connect flow, and the docs don't say how the notebook is opened or reached. missing for 10: IDE (VS Code/Cursor) one-step connection, documentation of how the Jupyter notebook is accessed (URL/auth), independent or hands-on corroboration.",
+    "evidenceIds": [
+      "lium-docs-17"
+    ]
+  },
+  {
+    "productId": "lium",
+    "storyId": "keyless-catalog-pricing-api",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Lium documents several keyless, public ways to check the GPU catalog with live pricing and availability before spending: a single-call JSON nodes feed, a pricing CSV, a public availability WebSocket, live prices via the docs MCP server, and public prices in llms.txt. The `lium quote` CLI command adds a cost estimate before renting. The openapi 404s were probed on docs.lium.io, not on the documented lium.io/api path, so they do not contradict anything. missing for 10: independent or hands-on confirmation that the nodes feed, pricing CSV and WebSocket actually return live data.",
+    "evidenceIds": [
+      "lium-docs-9",
+      "lium-docs-10",
+      "lium-docs-11",
+      "lium-docs-3",
+      "lium-docs-5",
+      "lium-gh-1",
+      "lium-probe-1"
+    ]
+  },
+  {
+    "productId": "lium",
+    "storyId": "managed-slurm-kubernetes",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Managed Slurm or Kubernetes is a fair question for a GPU rental marketplace, so the axis applies, but the evidence never mentions either. Lium's clusters are described only as whole machines on a shared RDMA fabric, with no scheduler layer. Its SDK and CLI job runs (rent a node, run, remove) are an adjacent ephemeral-pod feature, not a managed Slurm or Kubernetes scheduler.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "lium",
+    "storyId": "multi-node-clusters",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Lium documents its own cluster product: several whole machines on the same RDMA fabric for one distributed job, which covers multi-node and fast interconnect. General renting is self-serve (no-email signup, card or ACH payment, browserless agent rental), but the evidence never says clusters themselves can be provisioned without contacting sales. missing for 10: evidence that clusters are self-serve (CLI/API/UI provisioning flow), cluster sizes and interconnect specs, cluster pricing, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "lium-docs-19",
+      "lium-docs-22",
+      "lium-docs-25",
+      "lium-docs-14"
+    ]
+  },
+  {
+    "productId": "lium",
+    "storyId": "on-demand-gpu-provisioning",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "medium",
+    "rationale": "Lium documents several first-party ways to rent a GPU on demand: CLI `lium up --gpu H100`, the API `POST /executors/rent-by-spec`, a create-pod flow with Jupyter, and an SDK that runs a function on a rented node. Code can then run via `lium exec`, root and Docker-in-Docker, so the provisioning-to-running path is clearly covered. The OpenAPI probe 404s only hit docs.lium.io paths; the spec is documented at lium.io/api/openapi.json, so it is not a contradiction. missing for 10: evidence of time-to-running (the 'within minutes' claim), independent or hands-on corroboration of the provisioning flow.",
+    "evidenceIds": [
+      "lium-docs-1",
+      "lium-docs-6",
+      "lium-docs-15",
+      "lium-docs-17",
+      "lium-docs-20",
+      "lium-docs-22",
+      "lium-docs-23",
+      "lium-docs-24",
+      "lium-docs-8",
+      "lium-probe-3"
+    ]
+  },
+  {
+    "productId": "lium",
+    "storyId": "openness-api-parity",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "medium",
+    "rationale": "Lium's docs say an agent can do everything with no browser: sign up, fund, rent, connect and remove pods (lium-docs-22). This is backed by API signup (lium-docs-25), rent-by-spec (lium-docs-6), scoped and budgeted API keys (lium-docs-7, lium-docs-12), a published OpenAPI spec at lium.io/api/openapi.json (lium-docs-20), and stable error codes (lium-docs-21). The probe's 404s were against docs.lium.io paths, not the documented lium.io/api path, so they do not contradict the spec's existence. Missing for 10: independent or hands-on confirmation of full UI parity, and explicit API coverage for volumes, clusters, backups/restore and Jupyter toggles.",
+    "evidenceIds": [
+      "lium-docs-22",
+      "lium-docs-25",
+      "lium-docs-6",
+      "lium-docs-7",
+      "lium-docs-12",
+      "lium-docs-20",
+      "lium-docs-21",
+      "lium-docs-24"
+    ]
+  },
+  {
+    "productId": "lium",
+    "storyId": "openness-full-export",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Data export is a fair question for a GPU cloud platform, but the evidence shows no documented way to export a user's account data, billing history, or pod and volume contents in open formats. The volume backups (lium-docs-16) only restore to another Lium node. The CSV and JSON feeds and the markdown docs are public price and documentation data, not user data, so they earn no credit.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "lium",
+    "storyId": "openness-open-license",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Lium's official CLI is hosted in a public GitHub repository (Datura-ai/lium), and its agent skill file is served from a public GitHub repo (Datura-ai/lium-skill), so at least part of the client-side source can be read. The pack never names a license, and nothing covers the source of the core marketplace or platform. Missing for 10: any stated open-source license (e.g. MIT or Apache), evidence that the platform or backend source is public, and independent confirmation of repo openness and licensing.",
+    "evidenceIds": [
+      "lium-gh-1",
+      "lium-gh-2",
+      "lium-probe-3",
+      "lium-docs-25"
+    ]
+  },
+  {
+    "productId": "lium",
+    "storyId": "openness-self-host",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Lium is a hosted GPU rental marketplace, and self-hosting is a fair question for a SaaS platform of this kind. The evidence covers only the hosted service: CLI, API, SDK, MCP docs server and pod rental. A provider quickstart page is mentioned, but supplying GPUs to the marketplace is an adjacent feature, not deploying the core product yourself. There is no documented way to run the Lium platform on your own infrastructure.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "lium",
+    "storyId": "per-second-billing",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "high",
+    "rationale": "Lium's billing docs state that pods are billed per second (`hourly price \u00d7 seconds / 3600`) with no minimum, and llms.txt repeats 'billed per second'. TTL, end-time and spend-cap auto-removal, plus the CLI's per-pod spend view, suggest charges stop once a pod is removed. missing for 10: explicit documentation that billing stops when an instance is stopped or removed (including any storage or volume charges afterward), independent or hands-on corroboration of the per-second billing.",
+    "evidenceIds": [
+      "lium-docs-13",
+      "lium-probe-1",
+      "lium-docs-15",
+      "lium-docs-1",
+      "lium-gh-2"
+    ]
+  },
+  {
+    "productId": "lium",
+    "storyId": "persistent-network-storage",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Lium's docs describe a first-party Volume feature, \"storage that outlives your pods,\" which attaches to a pod at /mnt. That matches the core of the story: datasets and checkpoints persisting beyond a single GPU rental. Separately, pod-local volumes are backed up every 6 hours and kept 2 days, so they can be restored on another node. missing for 10: confirmation that volumes are network-attached and reattachable across nodes/regions, details on capacity/pricing/lifecycle, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "lium-docs-18",
+      "lium-docs-16"
+    ]
+  },
+  {
+    "productId": "lium",
+    "storyId": "prebuilt-ml-templates",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Lium's own docs refer to \"default templates\" for pods, in the context of root access, Docker-in-Docker and encryption at rest, so the platform does ship pre-built pod environments. Nothing in the evidence says what those templates contain, and PyTorch, CUDA, vLLM and ComfyUI are never named. The Jupyter toggle is a related option rather than a template, so it earns no credit here. Missing for 10: a documented template catalog naming PyTorch/CUDA/vLLM/ComfyUI images, docs on choosing a template at launch via CLI/API/UI, and independent or hands-on confirmation.",
+    "evidenceIds": [
+      "lium-docs-8"
+    ]
+  },
+  {
+    "productId": "lium",
+    "storyId": "privacy-data-residency",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Choosing a storage region or data residency is a fair question for a GPU rental marketplace that hosts pods and persistent volumes, so the axis applies. Nothing in the evidence pack documents a region or location selector for pods, volumes or backups. Rent-by-spec filters only on GPU spec and price, and at-rest encryption is a related but different control, so neither counts toward residency choice.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "lium",
+    "storyId": "privacy-no-training",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Lium is a GPU rental marketplace that hosts customer workloads and data, so a commitment or setting that keeps customer data out of AI training is a fair question and the axis applies. The evidence pack contains no training-data policy and no opt-out control. Encryption at rest and volume backups are adjacent privacy features and do not address training use.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "lium",
+    "storyId": "privacy-retention-controls",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Lium lets users and agents control when pods and their data go away. Pods can be given a TTL, end time or spend cap after which they are deleted, and agents can remove pods programmatically. However, local volumes are backed up every 6 hours and kept for a fixed 2 days, and persistent Volumes outlive pods, with no documented deletion guarantee for either. missing for 10: user-configurable backup retention or opt-out, documented deletion of backups and Volumes, account/data deletion controls, a data-retention policy, independent corroboration.",
+    "evidenceIds": [
+      "lium-docs-1",
+      "lium-docs-15",
+      "lium-docs-16",
+      "lium-docs-18",
+      "lium-docs-22",
+      "lium-docs-2"
+    ]
+  },
+  {
+    "productId": "lium",
+    "storyId": "privacy-telemetry-optout",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Telemetry opt-out is a fair question for a GPU rental platform that ships a CLI and SDK, so the axis applies, but no evidence documents any telemetry or usage-tracking setting or opt-out. Related privacy features such as no-email fingerprint signup and keyless public price feeds are a different capability and earn no credit here.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "lium",
+    "storyId": "quota-limit-transparency",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence never mentions platform-imposed quotas, per-account instance or GPU limits, or a process for requesting increases. The per-key USD budgets, per-pod spend caps and live availability feeds are user-set cost controls and inventory visibility, which are adjacent features rather than documented quotas with a raise process.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "lium",
+    "storyId": "reserved-committed-discounts",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Reserved or committed-use discounts are a fair question for a GPU rental marketplace, so the axis applies. The evidence only documents on-demand per-second billing with no minimum, plus spend caps, budgets, price ceilings and quotes. These are adjacent cost controls, not discounts for committing to sustained capacity, so they earn no credit.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "lium",
+    "storyId": "security-compliance-posture",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Lium's own docs disclose some data-handling facts: pod volumes are encrypted at rest by default on the default templates, and local volumes are backed up every 6 hours and kept for 2 days. These cover only a thin slice of the story's security-posture question. missing for 10: SOC 2 or other compliance attestations, a trust/security center or published data-handling policy, datacenter tier and provider vetting information for marketplace hosts, and independent corroboration.",
+    "evidenceIds": [
+      "lium-docs-8",
+      "lium-docs-16"
+    ]
+  },
+  {
+    "productId": "lium",
+    "storyId": "serverless-gpu-endpoints",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Lium's SDK can rent a node, run a function and remove the pod, but Lium does not offer a serverless worker or endpoint product; renting-and-running a pod is a related feature, which earns no credit under the judge's partial-credit boundary.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "lium",
+    "storyId": "spot-interruptible-pricing",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Lium is a GPU rental marketplace, so a spot or interruptible tier is a fair question to ask, but the evidence documents no such tier, no discount for accepting interruption, and no preemption semantics. The nearby features are adjacent controls rather than spot capacity: per-second billing, a `max_price_per_gpu_hour` ceiling on rent-by-spec, TTL or spend-cap auto-deletion, and 6-hourly volume backups for restoring on another node.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "lium",
+    "storyId": "ssh-root-access",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Lium's docs state that every pod comes with root and Docker-in-Docker, which covers the root-level control half of the story. Remote access is shown only through `lium exec` and a general claim that agents can \"connect\" to pods. Nothing in the evidence mentions SSH access or bringing your own SSH public keys. Missing for 10: documented SSH access, bring-your-own SSH key registration, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "lium-docs-8",
+      "lium-docs-22",
+      "lium-docs-23"
+    ]
+  },
+  {
+    "productId": "lium",
+    "storyId": "team-access-controls",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Lium documents scoped API keys whose scopes are fixed at creation, plus per-key daily, monthly and lifetime USD budgets enforced by the server. That covers the credential and spend-control half of the story well. The evidence never mentions team members, organizations or role-based access, so the team-management half is unsupported. Missing for 10: team/org member management, role-based permissions, independent or hands-on corroboration of scoped-key and budget enforcement.",
+    "evidenceIds": [
+      "lium-docs-7",
+      "lium-docs-12"
+    ]
+  },
+  {
+    "productId": "lium",
+    "storyId": "transparent-gpu-pricing",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Lium publishes GPU prices openly with no account or sales contact. llms.txt points users to 'the public prices below, no account', a public CSV price feed is served at lium.io/pricing.csv, and a no-key, no-signup JSON feed lists every rentable GPU node. Billing is documented as hourly price prorated per second, so the published figures are per-GPU-hour rates. missing for 10: confirmation of a human-readable pricing web page (the evidence shows machine feeds and llms.txt), proof that the feed shows a stable per-type rate for every GPU type rather than per-node marketplace prices, and an independent or probed check of the pricing feed contents.",
+    "evidenceIds": [
+      "lium-docs-5",
+      "lium-docs-9",
+      "lium-docs-10",
+      "lium-docs-13",
+      "lium-docs-3"
     ]
   }
 ]
