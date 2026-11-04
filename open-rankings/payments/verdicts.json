@@ -674,14 +674,17 @@
     "productId": "airwallex",
     "storyId": "accept-card-payment-online",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Airwallex documents low-effort ways to accept online payments: no-code Payment Links, a pre-built Hosted Payment Page, and a quickstart that completes an end-to-end payment. The sandbox has instant self-serve signup, but it uses simulations rather than real money, so nothing shows a live production account approved and taking real card payments within a day. missing for 10: evidence of production account activation/KYC turnaround time, explicit card-payment go-live timeline, independent or hands-on corroboration of same-day live acceptance.",
+    "rationale": "Airwallex documents low-effort ways to accept online payments: no-code Payment Links, a pre-built Hosted Payment Page, and an end-to-end quickstart. Its sandbox offers instant self-serve signup, but that only covers test payments, not real ones. Live acceptance requires applying for a business account, with eligibility checks, approval that is not guaranteed, and features that vary by country, so going live within a day of signing up is unproven. Missing for 10: evidence of production onboarding/KYC approval time, evidence that card acceptance is enabled immediately on approval, independent or hands-on reports of same-day go-live.",
     "evidenceIds": [
       "airwallex-docs-9",
       "airwallex-docs-7",
       "airwallex-docs-18",
-      "awx-supp-sandbox"
+      "awx-supp-sandbox",
+      "airwallex-docs-27",
+      "airwallex-docs-28",
+      "airwallex-docs-29"
     ]
   },
   {
@@ -690,7 +693,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The only dispute evidence is a docs line saying Airwallex will \"facilitate your dispute management step-by-step\". Nothing documents API endpoints or agent tooling to retrieve disputes, upload evidence, or submit a response. The generic CLI and AgentOS MCP claims of read/write API access never mention disputes, so they cannot be credited to this story.",
+    "rationale": "The only disputes evidence says Airwallex 'will facilitate your dispute management step-by-step' (airwallex-docs-26). It does not document API endpoints for retrieving disputes, attaching evidence, or submitting responses. The AgentOS, MCP and CLI materials list balances, beneficiaries, cards, cashflow and a generic 'broad slice of the API', but never dispute handling, so an end-to-end agent-driven dispute workflow is unevidenced.",
     "evidenceIds": []
   },
   {
@@ -699,12 +702,12 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Airwallex documents its own building pieces for this story: real-time webhooks with delivery-status inspection and re-delivery, a Billing suite with subscriptions and recurring invoices, and agent access through the AgentOS MCP server and CLI that read and write account resources. Nothing in the evidence shows failed-payment events specifically, automated payment retry logic, or dunning outreach, so the core of the story is only implied by generic primitives. Missing for 10: documented failed-payment webhook events, API-driven payment retry or smart-retry capability, dunning or customer-outreach workflows, AgentOS skills covering collections, and independent or hands-on corroboration.",
+    "rationale": "Airwallex documents real-time webhooks with delivery-status inspection, re-delivery, and stable event IDs. It also has a subscriptions/invoicing billing suite and agent access to the account through the AgentOS MCP server and CLI. Together these give an agent a documented way to watch account events, but nothing ties them to failed-payment events or dunning specifically. Missing for 10: documented failed-payment webhook events, an automatic or API-driven payment retry capability, dunning or reminder outreach for unpaid invoices or subscriptions, and any agent skill or hands-on evidence of this workflow.",
     "evidenceIds": [
       "awx-supp-webhooks",
       "airwallex-docs-15",
       "awx-supp-billing-suite",
-      "airwallex-docs-25",
+      "airwallex-docs-13",
       "awx-supp-agentos",
       "awx-supp-agentos-mcp",
       "awx-supp-cli"
@@ -715,16 +718,17 @@
     "storyId": "agent-provisions-payment-link",
     "verdict": "partial",
     "quality": 5,
-    "confidence": "low",
-    "rationale": "Airwallex documents first-party agent tooling: the CLI exposes a broad slice of the API for read/write in sandbox or production, the AgentOS MCP writes production resources, and the Developer MCP creates sandbox test resources. It also documents Payment Links and multi-item Billing with products and a contract-to-billing skill, so an agent session could plausibly chain these together. However, no evidence explicitly shows product, price, or payment-link creation endpoints, or that these tools expose them. Missing for 10: documented API endpoints for creating products and prices, explicit API or CLI/MCP support for creating payment links, and hands-on corroboration of an end-to-end agent flow.",
+    "confidence": "medium",
+    "rationale": "Airwallex documents Payment Links and a Billing suite covering multi-item products and subscriptions. Its agent tooling can write account resources programmatically: the CLI exposes a broad slice of the API, the AgentOS MCP reads and writes production resources, the Developer MCP creates sandbox resources, and a contract-to-billing skill exists. The evidence never explicitly shows API endpoints for creating products, prices, and payment links, or an agent chaining them in one session. Missing for 10: explicit API or MCP evidence for creating product and price objects, documented programmatic payment-link creation, an end-to-end agent walkthrough of the three-step flow, independent or hands-on corroboration.",
     "evidenceIds": [
       "airwallex-docs-9",
       "airwallex-docs-13",
-      "awx-supp-billing-suite",
-      "awx-supp-cli",
+      "airwallex-docs-14",
       "awx-supp-agentos",
       "awx-supp-agentos-mcp",
-      "awx-supp-developer-mcp"
+      "awx-supp-developer-mcp",
+      "awx-supp-cli",
+      "awx-supp-billing-suite"
     ]
   },
   {
@@ -758,7 +762,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence describes no AI insights or suggestions generated inside the Airwallex web app or product UI. AgentOS (MCP server, CLI, skills) lets external AI agents such as Claude Code and Cursor read account data and build cashflow reports, but that is an external-agent toolkit, not in-product AI insights, so it earns no credit for this story.",
+    "rationale": "The evidence pack documents no AI-generated insights or suggestions inside the Airwallex product itself. AgentOS, its MCP server, CLI and skills (including cashflow reports) let external AI agents such as Claude Code and Cursor act on account data. That is an adjacent agent-tooling capability, not in-product AI insights, so it earns no credit for this story.",
     "evidenceIds": []
   },
   {
@@ -781,7 +785,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence documents AgentOS, an MCP server, a CLI, and skills plugins that let external AI agents such as Claude Code, Cursor, and Codex act on an Airwallex account. That is connectivity for third-party agents, not a built-in AI assistant inside the Airwallex product, so it earns no credit here. Nothing in the pack shows an in-app assistant that users can delegate tasks to.",
+    "rationale": "A built-in AI assistant is a plausible feature for a financial SaaS platform like Airwallex, so this axis applies. However, the evidence only documents AgentOS, which provides an MCP server, CLI, skills, and plugins for external agents such as Claude Code, Cursor, and Codex to act on the account. That is tooling for third-party agents, belonging to separate MCP and CLI stories, not an assistant built into the Airwallex product to which users delegate tasks.",
     "evidenceIds": []
   },
   {
@@ -790,14 +794,13 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Airwallex's official CLI is documented as a scriptable terminal tool for automation: it can 'script repeatable tasks, and wire Airwallex into automated systems', installs with a one-line curl script, and defaults to sandbox with a `--prod` opt-in. Scoped API keys and a separate sandbox support unattended, least-privilege runs against a test environment. Missing for 10: explicit CI-pipeline docs or examples (e.g., GitHub Actions), a documented non-interactive CLI auth path (CLI auth is described as OAuth role-gated to Owner/Admin/Finance Admin), and independent hands-on corroboration of headless use.",
+    "rationale": "The official Airwallex CLI is documented as letting you \"script repeatable tasks, and wire Airwallex into automated systems\" against sandbox (the default) or production. Scoped API keys give least-privilege, non-interactive access to the API, and the separate sandbox suits automated test runs. Missing for 10: explicit CI/CD documentation (e.g., pipeline examples or env-var config), a documented non-interactive CLI auth path (the CLI's documented auth is OAuth, role-gated to Owner/Admin/Finance Admin), and any independent or hands-on corroboration of headless use.",
     "evidenceIds": [
       "awx-supp-cli",
       "airwallex-docs-5",
-      "airwallex-probe-4",
       "airwallex-docs-4",
       "awx-supp-sandbox",
-      "airwallex-docs-20"
+      "airwallex-probe-4"
     ]
   },
   {
@@ -806,7 +809,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Airwallex is a financial and payments platform, not an agent or AI host, so acting as an MCP client that consumes other servers' tools is outside its product role. The evidence shows only that Airwallex publishes its own MCP servers (the AgentOS MCP and the Developer and Docs MCPs) for external agents to connect to. That is the server role, which belongs to a different story and does not make this client axis applicable.",
+    "rationale": "This story asks whether the product can act as an MCP client or host that consumes external MCP servers' tools. Airwallex is a financial and payments platform, not an agent or assistant that hosts tool-using AI, so this client role is a category error for it. Its documented AgentOS MCP and Developer MCP make it an MCP server for other agents, which belongs to the separate server story and is not credited here.",
     "evidenceIds": []
   },
   {
@@ -815,7 +818,7 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Airwallex documents an official hosted remote AgentOS MCP server at https://mcp.airwallex.com/mcp. It uses OAuth, has safety defaults (no money-out actions by default), and gives copy-paste connection commands for any MCP client. Airwallex also ships a sandbox Developer MCP and an unauthenticated Docs MCP, plus one-step plugins for Claude Code and Cursor, and a probe confirms the docs page exists. Missing for 10: independent or hands-on corroboration that agents connect and operate successfully through the MCP server.",
+    "rationale": "Airwallex documents an official hosted AgentOS MCP server at https://mcp.airwallex.com/mcp. It uses OAuth against the production account, defaults to no money-out actions, and gives copy-paste setup for Claude Code and other MCP clients. A separate Developer MCP (sandbox) and a no-auth Docs MCP are also documented, and a probe confirms the MCP docs page exists. Missing for 10: independent or hands-on corroboration that the MCP endpoints work as described, and a documented list of the tools each server exposes.",
     "evidenceIds": [
       "awx-supp-agentos-mcp",
       "awx-supp-agentos",
@@ -831,7 +834,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Airwallex's first-party AgentOS lets users operate their production account in natural language through AI agents. It bundles a hosted MCP server, the CLI, pre-built skills (beneficiary creation, card provisioning, cashflow reports, contract-to-billing) and one-step plugins for Claude Code, Cowork and Cursor, so agents can run multi-step financial workflows on the user's behalf. Natural-language operation depends on a third-party agent client, and money-out actions are disabled by default. missing for 10: a native in-product natural-language interface, documented coverage of money-movement actions via agents, independent or hands-on corroboration that natural-language operation works as claimed.",
+    "rationale": "Airwallex ships AgentOS, a first-party toolkit that lets users drive their production account through natural-language requests in agents like Claude Code, Claude Cowork and Cursor. It bundles a hosted remote MCP server, the CLI, pre-built skills (beneficiary creation, card provisioning, cashflow reports) and one-step plugins. Money-out actions are off by default, and natural-language operation depends on a third-party agent client rather than a native in-product assistant. Missing for 10: a native natural-language interface inside the Airwallex web app, documented natural-language money-movement workflows (blocked by default), and independent or hands-on corroboration that agent-driven operation works as claimed.",
     "evidenceIds": [
       "awx-supp-agentos",
       "awx-supp-agentos-mcp",
@@ -846,7 +849,7 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Airwallex documents an official CLI with a one-line install script. It exposes a broad slice of the API as terminal commands in sandbox (the default) or production via `--prod`. It explicitly targets AI coding agents such as Claude Code, Cursor and Codex, and serves as the foundation of AgentOS, with OAuth role-gated auth and interactive API exploration; a probe confirms the CLI docs page exists. missing for 10: independent or hands-on corroboration of the CLI working in agent workflows.",
+    "rationale": "Airwallex documents an official CLI that exposes a broad slice of the API as terminal commands in sandbox or production, installed by a one-line script with OAuth auth. It explicitly targets AI coding agents (Claude Code, Cursor, Codex) and serves as the foundation of AgentOS, with plugin-based installation into agent hosts. Missing for 10: independent or hands-on corroboration of the CLI's agent workflows (all evidence is vendor docs plus a probe confirming the docs page exists).",
     "evidenceIds": [
       "awx-supp-cli",
       "airwallex-docs-5",
@@ -861,17 +864,17 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Airwallex documents a public API for programmatic use. It covers creating connected accounts, scoped API keys with Read/Write permissions per API, and bearer-token authentication guidance aimed at AI agents. The official CLI exposes a broad slice of the API and lets you explore endpoints and schemas interactively, and a full API-accessible sandbox supports testing. Missing for 10: a directly cited API reference or OpenAPI spec, and independent or hands-on corroboration of API usage (probes only confirm llms.txt, the CLI and the MCP docs).",
+    "rationale": "Airwallex's own documentation describes a public API that can be driven programmatically. It covers scoped Read/Write API keys, bearer-token authentication guidance written for AI agents, sandbox access to all products via the API, programmatic connected-account creation and transfers, and webhooks. The official CLI also exposes a broad slice of the API and lets users explore endpoints and schemas interactively, with agent-oriented MCP servers built on top. Missing for 10: a directly cited API reference or OpenAPI spec page, and independent or hands-on corroboration of API use.",
     "evidenceIds": [
-      "airwallex-docs-1",
       "airwallex-docs-4",
-      "awx-supp-cli",
-      "airwallex-docs-20",
       "awx-supp-ai-instructions",
       "awx-supp-sandbox",
-      "airwallex-docs-16",
+      "airwallex-docs-1",
+      "airwallex-docs-12",
+      "awx-supp-cli",
+      "airwallex-docs-20",
       "awx-supp-webhooks",
-      "airwallex-probe-4"
+      "awx-supp-agentos-mcp"
     ]
   },
   {
@@ -894,7 +897,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Airwallex documents first-party client-side SDKs: the Airwallex.js quickstart, the `@airwallex/components-sdk` package that its AI-agent instructions recommend over the legacy `airwallex-payment-elements`, and `createElement(...)` drop-in elements. However, the evidence covers only browser/payment-UI components, not general-purpose server-side SDKs across languages for the wider API. The CLI and MCP servers are separate tools and do not count as SDKs. Missing for 10: evidenced official server-side SDKs (e.g., Node/Python/Java/Go), SDK coverage of non-payments APIs such as transfers, issuing, and billing, SDK reference docs or versioning, and independent hands-on corroboration.",
+    "rationale": "The evidence shows official client-side SDKs. The quickstart uses Airwallex.js, the AI-agent instructions steer integrators to the official `@airwallex/components-sdk` package over the legacy `airwallex-payment-elements` library, and the drop-in element is configured via `createElement(...)`. Nothing in the pack shows official server-side or multi-language SDKs (e.g., Node, Python, Java); the CLI and MCP servers are separate tools and earn no credit here. Missing for 10: documented official server-side SDKs across languages, SDK reference docs/versioning, independent corroboration.",
     "evidenceIds": [
       "airwallex-docs-18",
       "awx-supp-ai-instructions",
@@ -907,10 +910,11 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Airwallex's first-party docs describe webhooks that push real-time notifications to your application when account events occur. They also document delivery semantics: endpoints must return 200, each event carries a stable `id` for idempotent retry handling, and the web app shows delivery status (success, queued, failed) and lets you re-deliver events. Missing for 10: explicit documentation of how to register endpoints and select event types (via API or UI), signature verification details, and independent or hands-on corroboration.",
+    "rationale": "Airwallex documents first-party webhooks that send real-time push notifications to your application when account events occur. It also documents reliability semantics: a 200-acknowledgement requirement, stable event IDs for idempotent retry handling, delivery-status inspection and manual re-delivery. The Developer MCP can simulate events in the sandbox for testing. Missing for 10: explicit documentation of endpoint registration and per-event-type subscription selection, signature verification details, and independent or hands-on corroboration.",
     "evidenceIds": [
       "airwallex-docs-15",
-      "awx-supp-webhooks"
+      "awx-supp-webhooks",
+      "awx-supp-developer-mcp"
     ]
   },
   {
@@ -918,11 +922,12 @@
     "storyId": "api-interactive-docs",
     "verdict": "partial",
     "quality": 4,
-    "confidence": "low",
-    "rationale": "The only on-topic evidence is the CLI docs, which say users can 'explore the API interactively — discover endpoints, preview requests, and inspect schemas.' The CLI defaults to sandbox, so commands can run safely against test resources. This is an interactive, runnable API exploration path, but it is terminal-based rather than a documented interactive API reference. Missing for 10: a documented web API reference with in-page 'try it' runnable examples, per-endpoint runnable code samples, and independent or hands-on corroboration.",
+    "confidence": "medium",
+    "rationale": "Airwallex's own CLI documents interactive API exploration: discovering endpoints, previewing requests, and inspecting schemas. Those requests can be executed against a self-serve sandbox, and the Developer MCP lets agents call sandbox endpoints. However, this is terminal- and agent-based exploration, not an evidenced browsable interactive API reference with embedded runnable examples. Missing for 10: a documented web API reference with try-it/runnable request examples, per-endpoint code samples, and independent or hands-on corroboration.",
     "evidenceIds": [
       "airwallex-docs-20",
       "awx-supp-cli",
+      "awx-supp-developer-mcp",
       "awx-supp-sandbox"
     ]
   },
@@ -932,7 +937,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nothing in the evidence documents a downloadable OpenAPI or equivalent machine-readable API specification for Airwallex. The CLI's interactive schema inspection, llms.txt, the Markdown docs, and the MCP servers are adjacent capabilities, not a downloadable spec, so they earn no credit. A published API spec is a fair question for an API-first payments platform, so the verdict is none rather than na.",
+    "rationale": "Nothing in the evidence pack shows a downloadable OpenAPI or equivalent machine-readable API specification for Airwallex. The CLI's interactive schema inspection, llms.txt, the MCP servers and the AI-agent instruction pages are adjacent agent-facing features, not a published API spec file, so they earn no credit for this story.",
     "evidenceIds": []
   },
   {
@@ -941,14 +946,15 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Airwallex documents a self-serve sandbox that is completely separate from production, with per-product simulations and no real money involved. It is AI-native: the CLI defaults to sandbox and requires an explicit `--prod` opt-in, and the Developer MCP endpoint (mcp.sandbox.airwallex.com) lets agents create test resources, simulate events and call sandbox endpoints. The Quickstart also walks through an end-to-end sandbox payment. Missing for 10: independent or hands-on corroboration, and sandbox coverage of Connected Account APIs, which are excluded.",
+    "rationale": "Airwallex documents a self-serve sandbox that is completely separate from production, covers all products, and has per-product simulation docs. AI agents get direct sandbox access through the Developer MCP (mcp.sandbox.airwallex.com), which can create test resources and simulate events, and through the CLI, which defaults to sandbox and needs an explicit --prod opt-in. missing for 10: sandbox coverage of Connected Account APIs (explicitly excluded), independent or hands-on corroboration of sandbox behavior.",
     "evidenceIds": [
       "airwallex-docs-6",
       "awx-supp-sandbox",
-      "awx-supp-cli",
-      "awx-supp-developer-mcp",
       "airwallex-docs-2",
-      "airwallex-docs-18"
+      "awx-supp-developer-mcp",
+      "awx-supp-cli",
+      "airwallex-docs-18",
+      "awx-supp-agentos"
     ]
   },
   {
@@ -957,7 +963,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nothing in the evidence pack documents API versioning (e.g., version headers or dated API versions) or a published deprecation policy for Airwallex APIs. The AI-agent instructions only steer agents away from a legacy front-end library toward a newer SDK. That is an adjacent note, not a versioned-API deprecation policy, so it earns no credit.",
+    "rationale": "The evidence pack contains nothing about API versioning (version headers, dated versions, changelogs) or a documented deprecation policy. The only related item is AI-agent guidance steering developers from a legacy client library to the newer components SDK. That is an adjacent feature, not a versioned-API deprecation policy, so it earns no credit.",
     "evidenceIds": []
   },
   {
@@ -966,7 +972,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Airwallex's own Merchant of Record add-on manages sales tax, VAT, and GST compliance for each sale, with Airwallex acting as legal seller. However, it is beta with limited eligibility and covers digital products only. There is no documented standalone tax-calculation or collection feature for merchants outside MoR. Missing for 10: tax calculation for physical goods and non-MoR merchants, general availability beyond beta, documentation of how rates are computed and shown per transaction, independent or hands-on corroboration.",
+    "rationale": "Airwallex's own Merchant of Record add-on has Airwallex act as the legal seller and manage sales tax, VAT, and GST compliance for each sale, and it can be enabled without rebuilding the Payments integration. That is first-party automatic tax handling, but it is in beta with limited eligibility and covers digital products only, with physical goods explicitly unsupported. missing for 10: tax calculation for physical goods, general availability beyond beta, a standalone tax calculation/collection capability for merchants selling as themselves (e.g. tax on invoices or subscriptions), detail on how tax is calculated and shown per transaction, and independent or hands-on corroboration.",
     "evidenceIds": [
       "airwallex-docs-10",
       "awx-supp-mor"
@@ -978,7 +984,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nothing in the evidence documents a native bulk or batch capability, such as batch transfers, bulk beneficiary creation, or batch API endpoints. The CLI's ability to \"script repeatable tasks\" is only a developer building block. \"Multi-item\" subscriptions are an adjacent billing feature, and AgentOS \"multi-step workflows\" are sequential actions, not bulk operations across many items.",
+    "rationale": "Bulk operations are a fair question for a financial platform, such as batch transfers or bulk beneficiary creation. However, the evidence pack documents no batch or bulk endpoint, CLI command, or AgentOS skill. The CLI's \"script repeatable tasks\" and AgentOS \"multi-step workflows\" are building blocks or adjacent features, and \"multi-item\" subscriptions means billing several products on one subscription, not bulk actions across many items.",
     "evidenceIds": []
   },
   {
@@ -987,7 +993,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack documents no user-definable rules engine that automatically runs actions when events occur. Webhooks, the CLI and AgentOS skills are developer building blocks or agent-invoked workflows, not native event-triggered rules, so they earn no credit. Recurring invoices are schedule-based and adjacent rather than event-rule automation.",
+    "rationale": "The evidence pack documents no product-native rules engine or event-triggered automation that a user can configure in Airwallex. Webhooks only push event notifications to your own application, so the user would have to build the triggered actions themselves; that makes them a developer building block, not the capability. AgentOS skills are agent-invoked workflows, and recurring invoices and subscriptions are fixed billing schedules rather than user-defined event rules.",
     "evidenceIds": []
   },
   {
@@ -1005,7 +1011,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Airwallex ships automation surfaces (AgentOS skills and multi-step workflows, plus a scriptable CLI), so asking about versioning, review, and rollback of automations is a fair question. However, no evidence shows the product itself versions automations, provides a review or approval flow for changes, or rolls back to a prior version. Scripting the CLI from a user's own repo is a user-side workaround, and sandbox testing and money-out guardrails are adjacent controls, so neither earns credit.",
+    "rationale": "Airwallex documents automation surfaces, including AgentOS skills and multi-step workflows, the CLI for scripting repeatable tasks, and webhooks, so the axis applies. However, no evidence shows any capability to version, review, or roll back those automations. Re-delivering webhook events and sandbox testing are adjacent features and earn no credit.",
     "evidenceIds": []
   },
   {
@@ -1014,7 +1020,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Airwallex Billing documents subscription management (multi-item, multi-frequency) and recurring invoices. However, nothing in the evidence describes automatic retries of failed subscription payments, smart dunning logic, or recovery emails. Webhook delivery retries are an adjacent feature and do not count toward this story.",
+    "rationale": "Airwallex Billing documents subscription management (multi-item, multi-frequency) and recurring invoices, so this axis applies. However, nothing in the evidence describes automatic retry of failed subscription payments, dunning logic, or recovery emails. The webhook re-delivery semantics cover event-notification delivery, not payment recovery, so they earn no credit.",
     "evidenceIds": []
   },
   {
@@ -1038,7 +1044,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Fraud screening is a fair question for a payments platform like Airwallex, so the axis applies. However, nothing in the pack documents ML fraud scores or custom block/review/allow rules. The only nearby items are a passing mention of 'risk' simulation in the sandbox and dispute-management guidance, which are adjacent features and earn no credit for this story.",
+    "rationale": "Fraud screening with ML scores and custom block/review/allow rules is a fair axis for a payments platform like Airwallex. The evidence pack never documents fraud scores or a rules engine. The only nearby items are a passing mention of 'risk' sandbox simulations and a disputes-management note, which are adjacent features and earn no credit.",
     "evidenceIds": []
   },
   {
@@ -1062,7 +1068,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Idempotency keys are a fair axis for a payments API, but nothing in the evidence pack documents idempotency keys or a safe-retry mechanism for outbound API requests. The only related item describes stable webhook event IDs for de-duplicating inbound event deliveries, which is a different capability and earns no credit here.",
+    "rationale": "Idempotent API retries are a fair question for a payments API, but nothing in the evidence pack documents idempotency keys or safe request retries on Airwallex's API. The only retry-related material covers deduplicating inbound webhook events by their stable event ID. That is an adjacent feature for event delivery, not protection against duplicate charges from retried outbound requests, so it earns no credit.",
     "evidenceIds": []
   },
   {
@@ -1100,25 +1106,28 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Airwallex's Multi-Currency Pricing API lets merchants display prices and take payment in shoppers' preferred currencies with local payment methods. Payments settle like-for-like into a natively multi-currency Wallet, avoiding forced FX conversion, and Transfers move funds to the merchant's own bank accounts. missing for 10: explicit documentation of FX rate/markup transparency and of converting settled balances into the founder's home currency, plus independent or hands-on corroboration.",
+    "rationale": "The Multi-Currency Pricing API lets merchants display prices and take payment in shoppers' preferred currencies with local payment methods. Funds settle like-for-like into a natively multi-currency wallet, avoiding forced conversion, and Transfers can move them to the merchant's own bank accounts. Feature availability varies by the business's registered location. missing for 10: explicit documentation of FX rate/markup transparency at conversion, a documented automatic convert-and-settle-to-home-currency bank payout flow, independent or hands-on corroboration.",
     "evidenceIds": [
       "airwallex-docs-16",
       "airwallex-docs-23",
       "airwallex-docs-11",
       "airwallex-docs-12",
-      "airwallex-docs-14"
+      "airwallex-docs-14",
+      "airwallex-docs-29"
     ]
   },
   {
     "productId": "airwallex",
     "storyId": "no-code-payment-links",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Airwallex documents a first-party Payment Links product as 'the easiest way for you to accept payments online without a digital storefront.' Its invoicing docs also describe generating digital payment links that support 160+ local payment methods, which covers the core of a shareable link for selling without building a site. Missing for 10: explicit evidence that links can be created from the dashboard with no code, evidence that a founder can start selling immediately (onboarding or activation speed), and independent or hands-on corroboration.",
+    "rationale": "Airwallex documents its own Payment Links as \"the easiest way for you to accept payments online without a digital storefront,\" and its invoicing docs mention generating digital payment links, so the core capability is first-party. The evidence never explicitly says links are created from the dashboard without code. \"Start selling immediately\" is weakened because onboarding depends on registration location and eligibility criteria that do not guarantee approval, and features vary by region. Missing for 10: explicit documentation of no-code dashboard creation and sharing of links, evidence of instant go-live after signup, independent or hands-on corroboration.",
     "evidenceIds": [
       "airwallex-docs-9",
-      "airwallex-docs-14"
+      "airwallex-docs-14",
+      "airwallex-docs-27",
+      "airwallex-docs-29"
     ]
   },
   {
@@ -1127,16 +1136,19 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Airwallex documents broad programmatic coverage: connected accounts, transfers, billing and invoicing, refunds and webhooks. Its CLI and AgentOS MCP expose read and write access to production resources such as balances, beneficiaries and cards. However, the CLI explicitly covers only \"a broad slice\" of the API, and nothing claims full parity with the web app. Webhook delivery inspection and re-delivery are described only as web-app features. Missing for 10: an explicit API/UI parity claim, evidence that UI-only operations like webhook re-delivery are API-accessible, and independent hands-on corroboration of coverage.",
+    "rationale": "Airwallex documents broad programmatic coverage: connected accounts, transfers, refunds, subscriptions, invoicing, payment links, webhooks and multi-currency pricing are all API-accessible. Its official CLI and AgentOS MCP let agents read and write production resources. However, nothing in the evidence states that the API matches the web app feature for feature. The CLI covers only \"a broad slice\" of the API, and some functions, such as webhook delivery inspection and re-delivery, are described only as web-app features. Missing for 10: an explicit documented claim of full API/UI parity, API equivalents for UI-only operations such as webhook re-delivery, and independent or hands-on corroboration of parity.",
     "evidenceIds": [
       "airwallex-docs-1",
       "airwallex-docs-12",
       "airwallex-docs-17",
+      "airwallex-docs-14",
+      "airwallex-docs-13",
+      "airwallex-docs-16",
       "awx-supp-cli",
       "awx-supp-agentos",
       "awx-supp-agentos-mcp",
       "awx-supp-webhooks",
-      "awx-supp-billing-suite"
+      "awx-supp-sandbox"
     ]
   },
   {
@@ -1145,7 +1157,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data export applies to a financial platform like Airwallex, but the evidence pack never documents a bulk export feature, open-format downloads (such as CSV or JSON statements), or an offboarding or portability path. The API and CLI read access (awx-supp-cli) and AgentOS cashflow reports are developer building blocks or adjacent features, not a documented 'export all data and leave' capability, so they earn no credit.",
+    "rationale": "Data portability applies to a financial platform like Airwallex, but the evidence pack documents no bulk data export, open-format (CSV/JSON) download, or account-closure/offboarding flow. The CLI and API can read resources and AgentOS can build cashflow reports, but these are developer building blocks or adjacent features, not a documented 'export everything and leave' capability.",
     "evidenceIds": []
   },
   {
@@ -1154,7 +1166,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Whether the source is available under an open license is a fair question for a software platform, so the axis applies. Nothing in the evidence pack shows that Airwallex publishes its product source under an open license. The CLI, MCP servers, AgentOS, and docs are all presented as proprietary hosted or installable tooling, with no license or repository information.",
+    "rationale": "Open-source availability is a fair question for a payments and financial platform, since some products in this category publish their source, so the axis applies. The evidence pack documents a CLI, MCP servers, AgentOS, and an llms.txt, but nothing shows the product's source is published under an open license. The 'software license' mention in the billing docs is about subscription billing and does not count.",
     "evidenceIds": []
   },
   {
@@ -1163,7 +1175,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Self-hosting is a fair question for payments and billing platforms, since self-hostable billing and payment-orchestration alternatives exist, so the axis applies. Nothing in the evidence shows a self-hostable deployment of Airwallex. Every documented component is hosted or Airwallex-operated: the remote MCP endpoint, the Hosted Payment Page and the sandbox. The CLI is only a client to the hosted service.",
+    "rationale": "Self-hosting is a fair question for a payments and financial platform, since self-hostable payment and billing stacks exist, so the axis applies. Nothing in the evidence pack shows Airwallex offering a self-hostable or on-prem deployment of its core product. Every documented component (payments, the AgentOS MCP server at mcp.airwallex.com, the hosted payment page, the sandbox) is a vendor-hosted service, and the CLI and MCP connectors are only clients of that service.",
     "evidenceIds": []
   },
   {
@@ -1172,7 +1184,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Payout scheduling and per-payout reconciliation are fair questions for a payments platform like Airwallex, so the axis applies. However, nothing in the evidence documents controlling a settlement schedule or a per-payout breakdown of charges, fees, and refunds. The related items do not cover it: settlement into a multi-currency balance, issuing refunds, and outbound Transfers are adjacent features, not reconciliation.",
+    "rationale": "The evidence pack has nothing on controlling a settlement or payout schedule, and nothing on a per-payout breakdown of the charges, fees, and refunds in each settlement. The only nearby items don't qualify. Like-for-like settlement into the Airwallex Wallet is about settlement currency, not schedule or line-item reconciliation. Transfers are outbound payments to suppliers and employees, a different capability. The refunds docs cover issuing refunds, not reconciling them against payouts. AgentOS cashflow reports are an adjacent feature.",
     "evidenceIds": []
   },
   {
@@ -1194,7 +1206,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data-residency choice is a fair question for a global financial platform, so the axis applies. Nothing in the pack documents any way to select a storage region or residency. The multi-currency, sandbox/production and MCP endpoint items concern currencies and environments, not where data is stored. The community allegation about China/HK engineering access is a concern, not evidence of a residency control, so it earns no credit.",
+    "rationale": "Data residency is a fair question for a global financial platform, but the evidence pack documents no customer-selectable data storage region. The help-center items only say that the onboarding Airwallex entity and available features depend on where the business is registered, which is not the same as choosing where data is stored. The community allegation about China/HK staff access is a concern rather than evidence of a residency feature, and there is no vendor claim for it to contradict.",
     "evidenceIds": []
   },
   {
@@ -1203,7 +1215,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "An AI-training opt-out or data-usage policy is a fair question for a financial SaaS platform that holds customer data, so the axis applies. Nothing in the evidence pack documents a policy or control that keeps customer data out of AI model training. The AI-related docs (AgentOS, MCP servers, CLI, scoped API keys) cover agent access and permissions, not training-data use.",
+    "rationale": "An AI-training opt-out or no-training data commitment is a fair privacy question for a financial SaaS platform that holds sensitive customer data, so the axis applies. The evidence pack has no policy, setting, or contractual commitment on whether customer data is used to train AI models. The AgentOS, MCP and CLI docs cover agent access and safety guardrails, not training-data use, and the community data-residency allegation is off-topic.",
     "evidenceIds": []
   },
   {
@@ -1212,7 +1224,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data retention and deletion controls are a fair question for a SaaS financial platform like Airwallex, so the axis applies. However, nothing in the evidence pack documents user-facing retention settings, deletion APIs, or data-erasure workflows. The docs cover scoped API keys, webhooks, the CLI, MCP servers and payments features, none of which address controlling retention or deletion.",
+    "rationale": "Data retention and deletion controls are a fair question for a financial platform that holds business and customer data, so the axis applies. Nothing in the evidence pack documents retention settings, deletion requests, or data-purge APIs. Scoped API keys and sandbox separation are adjacent access controls and earn no credit toward retention or deletion.",
     "evidenceIds": []
   },
   {
@@ -1221,7 +1233,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Opting out of telemetry is a fair question for a platform that ships a CLI, MCP servers, and web SDKs, so the axis applies. However, nothing in the evidence documents a telemetry or usage-tracking opt-out, such as a CLI flag, environment variable, or account privacy setting. The CLI, AgentOS and SDK docs cover authentication, scoping and sandbox defaults, which are adjacent controls and earn no credit.",
+    "rationale": "Telemetry and usage-tracking opt-out is a fair question for a platform that ships a CLI, MCP servers, and AI agent plugins, so the axis applies. However, nothing in the evidence pack documents a telemetry setting, an analytics opt-out, or a do-not-track control for the Airwallex CLI, AgentOS, or the developer MCP connectors.",
     "evidenceIds": []
   },
   {
@@ -1230,7 +1242,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Airwallex Billing documents its own subscription management, including multi-item and multi-frequency recurring billing and recurring invoices, built on top of payments acceptance. That covers recurring subscriptions with plan-like structures. Nothing in the evidence addresses trials, mid-cycle upgrades/downgrades, or proration. Missing for 10: documented free trials, plan upgrade/downgrade flows, proration logic, API-level subscription endpoint detail, independent/hands-on corroboration.",
+    "rationale": "Airwallex documents a first-party subscription management product under Airwallex Billing. It supports multi-item subscriptions (e.g., a license plus support), multi-frequency schedules (annual fee plus monthly support), recurring invoices, and hosted or embedded billing checkout, so the recurring-billing core is covered. The pack says nothing about trials, plan upgrades or downgrades, or proration. missing for 10: documented free trials, mid-cycle upgrade/downgrade handling, proration logic, explicit plan/price API objects, independent or hands-on corroboration.",
     "evidenceIds": [
       "airwallex-docs-13",
       "airwallex-docs-24",
@@ -1243,8 +1255,8 @@
     "storyId": "refunds-full-partial",
     "verdict": "partial",
     "quality": 3,
-    "confidence": "medium",
-    "rationale": "Airwallex's first-party refunds page confirms that merchants can issue refunds to return shopper funds, so the core refund capability exists. The snippet does not say whether partial amounts are supported, or whether refunds can be issued from the dashboard, the API, or both. Missing for 10: explicit evidence of partial-amount refunds, documented dashboard refund flow, documented refund API endpoint, independent or hands-on corroboration.",
+    "confidence": "low",
+    "rationale": "Airwallex's own refunds documentation confirms that merchants can issue refunds to return shopper funds, so the core capability exists. The evidence is a single thin line that does not say whether refunds can be partial or full, or whether they can be issued from the dashboard, the API, or both. Missing for 10: evidence of partial vs. full refund amounts, evidence of dashboard-initiated refunds, evidence of an API refund endpoint, independent or hands-on corroboration.",
     "evidenceIds": [
       "airwallex-docs-17"
     ]
@@ -1255,7 +1267,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Airwallex has a first-party disputes page saying it \"will facilitate your dispute management step-by-step,\" which shows a documented dispute-handling flow. The pack does not show how evidence is submitted or how a dispute's status is tracked through to resolution. missing for 10: documented structured evidence submission (fields, file uploads, API or dashboard flow), dispute lifecycle states and status tracking, dispute-specific notifications or events, independent or hands-on corroboration.",
+    "rationale": "Airwallex has a first-party disputes page saying it will \"facilitate your dispute management step-by-step,\" which implies a guided dispute-handling process. Nothing in the pack shows how evidence is submitted or how dispute status is tracked to resolution. missing for 10: documented structured evidence submission (fields, file uploads, API or dashboard), dispute lifecycle states and status tracking, dispute-specific events or notifications, independent or hands-on corroboration.",
     "evidenceIds": [
       "airwallex-docs-26"
     ]
@@ -1266,7 +1278,7 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Airwallex documents a self-serve sandbox, fully separate from production, that covers all products in the web app and API except Connected Account APIs. It has per-product simulation docs (payments, payouts, deposits, issuing, risk) and an end-to-end payment quickstart run in sandbox, and the CLI and Developer MCP can create test resources and simulate events. The evidence never mentions test card numbers or scenario-specific simulation of declines and disputes, and parity with production is limited by the Connected Account exclusion. Missing for 10: documented test cards for decline/3DS/error scenarios, documented dispute/chargeback simulation in sandbox, full production parity (Connected Account APIs excluded), independent hands-on corroboration.",
+    "rationale": "Airwallex documents a self-serve sandbox, separate from production, that covers all products except Connected Account APIs. It has per-product simulation docs (payments, payouts, issuing, risk), and its quickstart walks through a full end-to-end payment in the sandbox. The CLI defaults to sandbox, and the Developer MCP can simulate events. However, nothing in the evidence documents test card numbers or simulating declines and disputes. Missing for 10: documented test cards for decline and other scenarios, dispute simulation in sandbox, independent or hands-on corroboration of sandbox fidelity to production.",
     "evidenceIds": [
       "awx-supp-sandbox",
       "airwallex-docs-6",
@@ -1294,7 +1306,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack does not document any settlement reconciliation or itemized settlement report that breaks down fees, refunds, and chargebacks against bank deposits. The refunds, disputes, multi-currency balance settlement, and AgentOS cashflow-report docs are adjacent features, not this reconciliation capability, so they earn no credit.",
+    "rationale": "Reconciling settlements is a fair question for a payments platform, so the axis applies. However, the pack has no documented settlement or reconciliation reports that itemize fees, refunds and chargebacks against bank deposits. The cited material covers adjacent features only: settling into a multi-currency wallet, issuing refunds, dispute handling, and AgentOS building 'cashflow reports'. None of these is evidence of the reconciliation capability itself.",
     "evidenceIds": []
   },
   {
