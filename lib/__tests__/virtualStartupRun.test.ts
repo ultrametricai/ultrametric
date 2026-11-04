@@ -591,8 +591,21 @@ describe('permalink — the whole run state round-trips through ?run= (v2), and 
     // (ENTITY_CODEC_SLOTS — the maintainer-assigned slots of the parallel country lanes).
     expect(decodeCombo(digitAt('entity', 'e'))!.entity).toBe('hk-private-limited')
     expect(decodeCombo(digitAt('entity', 'f'))!.entity).toBe('ee-osauhing')
-    expect(decodeCombo(digitAt('entity', 'g'))).toBeNull()
     const entitySlot = DECISIONS.findIndex((d) => d.id === 'entity')
+    // The guide-country entities (2026-11-03) hold the next coordinated slots, 'g' through 'r';
+    // every published slot before them keeps its byte-identical meaning (asserted above), and
+    // the first unassigned slot still rejects.
+    const guideSlots: Array<[string, Choices['entity']]> = [
+      ['g', 'nl-bv'], ['h', 'ie-ltd'], ['i', 'ie-dac'], ['j', 'es-sl'], ['k', 'se-ab'],
+      ['l', 'ch-gmbh'], ['m', 'ch-ag'], ['n', 'jp-kk'], ['o', 'jp-gk'], ['p', 'br-ltda'],
+      ['q', 'ae-llc'], ['r', 'ae-fz-llc'],
+    ]
+    for (const [ch, value] of guideSlots) {
+      expect(decodeCombo(digitAt('entity', ch))!.entity, ch).toBe(value)
+      expect(encodeCombo({ ...DEFAULT_CHOICES, entity: value })[entitySlot], value).toBe(ch)
+      expect(decodeCombo(encodeCombo({ ...DEFAULT_CHOICES, entity: value }))!.entity).toBe(value)
+    }
+    expect(decodeCombo(digitAt('entity', 's'))).toBeNull()
     expect(encodeCombo({ ...DEFAULT_CHOICES, entity: 'nz-ltd' })[entitySlot]).toBe('a')
     expect(encodeCombo({ ...DEFAULT_CHOICES, entity: 'pte-ltd' })[entitySlot]).toBe('b')
     expect(encodeCombo({ ...DEFAULT_CHOICES, entity: 'pty-ltd' })[entitySlot]).toBe('c')
