@@ -7,8 +7,9 @@ import { describe, expect, it } from 'vitest'
 import {
   APPROVAL_MODES, approvalOf, approvalSchema, requiresExecutionApproval, validateApproval,
 } from '../execution'
+import { recordForInstructions } from '../shared-processes/instructions'
 import { loadSharedProcesses } from '../shared-processes/load'
-import type { Part } from '../shared-processes/schema'
+import type { Part, SharedRecord } from '../shared-processes/schema'
 import { loadProcesses } from '../processes'
 
 const records = loadSharedProcesses()
@@ -101,6 +102,40 @@ describe('approval modes on the operational projection', () => {
       }
     }
     expect(seen).toBeGreaterThan(200)
+  })
+})
+
+describe('approval instructions', () => {
+  const GENERIC = 'Obtain human approval before performing this step.'
+  const fixture = (metadata: Record<string, unknown>): SharedRecord => ({
+    schemaVersion: 1, id: 'test-rec', kind: 'process', title: 'Test', summary: '', outcomes: [], guidance: null,
+    parts: [{ id: 'n1', kind: 'step', title: 'Do the step', guidance: null, when: null, ref: null, options: [], references: [], notes: [], metadata }],
+    links: [], references: [], notes: [], metadata: {},
+  })
+  const notesFor = (metadata: Record<string, unknown>) =>
+    recordForInstructions(fixture(metadata)).parts[0].notes.map(note => note.text)
+
+  it('a declared mode emits its own line and suppresses the generic every-run request', () => {
+    const notes = notesFor({
+      approvalRequired: true,
+      approval: { mode: 'first-run', reason: 'policies/AGENT_POLICY.md: standing approval covers repeats.' },
+    })
+    expect(notes).toContain('Obtain named, scoped human approval before the first run; that recorded approval stands for repeat runs.')
+    expect(notes).not.toContain(GENERIC)
+  })
+
+  it('a threshold mode names its threshold kind and value', () => {
+    const notes = notesFor({
+      approvalRequired: true,
+      approval: { mode: 'threshold', threshold: { kind: 'amount', value: 'USD 500' }, reason: 'policies/AGENT_POLICY.md.' },
+    })
+    expect(notes).toContain('Obtain human approval once the amount threshold applies (USD 500).')
+    expect(notes).not.toContain(GENERIC)
+  })
+
+  it('the bare boolean still gets the generic request, exactly once', () => {
+    const notes = notesFor({ approvalRequired: true })
+    expect(notes.filter(text => text === GENERIC)).toHaveLength(1)
   })
 })
 
