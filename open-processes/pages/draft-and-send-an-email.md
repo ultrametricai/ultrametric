@@ -38,7 +38,7 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Draft the email for review](#step-1) | agent-runnable | ~1 min | Entry step |
-| [2. Send from the company account (approval)](#step-2) | agent-runnable; approval required | ~1 min | [Step 1](#step-1) |
+| [2. Send from the company account (approval)](#step-2) | agent-runnable; human approval every run | ~1 min | [Step 1](#step-1) |
 | [3. Watch for a reply and surface it](#step-3) | agent-runnable; includes waiting | ~1 min | [Step 2](#step-2) |
 
 <a id="steps"></a>
@@ -60,7 +60,7 @@ Draft the email from its purpose, the recipient's context, and the information t
 
 ### 2. Send from the company account (approval)
 
-agent-runnable · ~1 min · human approval required
+agent-runnable · ~1 min · human approval every run
 
 
 Have the named sender approve the complete message, recipient list, sending account, and attachments. Recheck reply-all recipients and sensitive material immediately before sending; return substantive changes for review. Send once from the agreed company account and check the resulting status. A queued message or failed attempt still needs attention. Link the sent message in the relevant customer or project record so later follow-up uses the right conversation.

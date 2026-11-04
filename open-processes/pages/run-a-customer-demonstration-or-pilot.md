@@ -46,11 +46,11 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
-| [1. Agree the use case and success criteria](#step-1) | human; approval required | Not recorded | Entry step |
-| [2. Approve pilot terms and data access](#step-2) | human; approval required | Not recorded | [Step 1](#step-1) |
-| [3. Provision the approved test configuration](#step-3) | manual form/portal; approval required | Not recorded | [Step 2](#step-2) |
+| [1. Agree the use case and success criteria](#step-1) | human; human approval every run | Not recorded | Entry step |
+| [2. Approve pilot terms and data access](#step-2) | human; human approval every run | Not recorded | [Step 1](#step-1) |
+| [3. Provision the approved test configuration](#step-3) | manual form/portal; human approval every run | Not recorded | [Step 2](#step-2) |
 | [4. Collect reproducible pilot evidence](#step-4) | agent-runnable | Not recorded | [Step 3](#step-3) |
-| [5. Review the outcome with the customer](#step-5) | human; approval required | Not recorded | [Step 4](#step-4) |
+| [5. Review the outcome with the customer](#step-5) | human; human approval every run | Not recorded | [Step 4](#step-4) |
 
 <a id="steps"></a>
 
@@ -60,7 +60,7 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 
 ### 1. Agree the use case and success criteria
 
-human · human approval required
+human · human approval every run
 
 
 Confirm the customer sponsor, users, problem, scope and observable success measures. Identify what the demonstration cannot prove and which requested capabilities are unavailable.
@@ -71,7 +71,7 @@ Confirm the customer sponsor, users, problem, scope and observable success measu
 
 ### 2. Approve pilot terms and data access
 
-human · human approval required
+human · human approval every run
 
 
 Review the environment, data rights, security, costs, support and exit arrangements with the authorized owners. Keep production integrations and sensitive customer data out until their required approvals are complete.
@@ -82,7 +82,7 @@ Review the environment, data rights, security, costs, support and exit arrangeme
 
 ### 3. Provision the approved test configuration
 
-manual form/portal · human approval required · hard to undo
+manual form/portal · human approval every run · hard to undo
 
 
 Use the authorized account and data to configure the agreed scope. Verify participant access, logging and rollback, and record the product version and setup dependencies.
@@ -104,7 +104,7 @@ Track task outcomes, adoption, defects, support effort and customer feedback aga
 
 ### 5. Review the outcome with the customer
 
-human · human approval required
+human · human approval every run
 
 
 Discuss the evidence, unresolved blockers and required commercial or technical next steps. Authorize any extension separately and remove or migrate pilot data and access according to the agreed terms.

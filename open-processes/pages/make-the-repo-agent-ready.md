@@ -54,7 +54,7 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | [3. Install an agent-skills stack](#step-3) | agent-runnable | ~15 min | [Step 2](#step-2) |
 | [4. Wire one-line repository checks](#step-4) | agent-runnable | ~30 min | [Step 3](#step-3) |
 | [5. Connect MCP servers for the stack’s vendors](#step-5) | agent-runnable | ~20 min | [Step 4](#step-4) |
-| [6. Trial run: complete a bounded repository task](#step-6) | agent-runnable; approval required | ~30 min | [Step 5](#step-5) |
+| [6. Trial run: complete a bounded repository task](#step-6) | agent-runnable; standing human approval | ~30 min | [Step 5](#step-5) |
 | [7. Team review of guardrails and permissions](#step-7) | human | ~30 min | [Step 6](#step-6) |
 
 <a id="steps"></a>
@@ -137,7 +137,7 @@ Skip this step when the bounded task does not require a vendor connection. If a 
 
 ### 6. Trial run: complete a bounded repository task
 
-agent-runnable · ~30 min · human approval required
+agent-runnable · ~30 min · standing human approval
 
 
 Give an agent the agreed bounded task, its expected behavior and the saved repository instructions. For a bug, retain the failing reproduction; for onboarding or maintenance, retain the observed starting behavior and measurable improvement while preserving behavior outside scope. Watch where setup, checks or missing context force it to guess. Review the patch and results, then carry it through the normal review and release path only as far as the task authorizes. Fix the instructions from the friction actually observed.

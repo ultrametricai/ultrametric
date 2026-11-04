@@ -41,10 +41,10 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
-| [1. Install the AI reviewer on the code hosting org](#step-1) | manual form/portal; approval required | ~10 min | Entry step |
-| [2. Scope repository access](#step-2) | agent-runnable; approval required | ~5 min | [Step 1](#step-1) |
-| [3. Add the reviewer config to the repo](#step-3) | agent-runnable; approval required | ~15 min | [Step 2](#step-2) |
-| [4. Open a test pull request and confirm a review lands](#step-4) | agent-runnable; approval required | ~10 min | [Step 3](#step-3) |
+| [1. Install the AI reviewer on the code hosting org](#step-1) | manual form/portal; human approval on the first run | ~10 min | Entry step |
+| [2. Scope repository access](#step-2) | agent-runnable; human approval above a threshold | ~5 min | [Step 1](#step-1) |
+| [3. Add the reviewer config to the repo](#step-3) | agent-runnable; human approval on the first run | ~15 min | [Step 2](#step-2) |
+| [4. Open a test pull request and confirm a review lands](#step-4) | agent-runnable; human approval on the first run | ~10 min | [Step 3](#step-3) |
 | [5. Decide the merge gate: blocking check or advisory comments](#step-5) | human | ~5 min | [Step 4](#step-4) |
 
 <a id="steps"></a>
@@ -55,7 +55,7 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 
 ### 1. Install the AI reviewer on the code hosting org
 
-manual form/portal · ~10 min · human approval required
+manual form/portal · ~10 min · human approval on the first run
 
 
 Pick the reviewer from the ranked options and install it as an app on the code hosting organization. The install is an OAuth consent: an org admin grants the reviewer read access to the repositories it will review. Record which account performed the install and where the reviewer's dashboard lives so access can be revoked or rescoped later.
@@ -69,7 +69,7 @@ Pick the reviewer from the ranked options and install it as an app on the code h
 
 ### 2. Scope repository access
 
-agent-runnable · ~5 min · human approval required
+agent-runnable · ~5 min · human approval above a threshold
 
 
 Grant the reviewer access to the repositories that actually need review rather than the whole organization. Start with the main application repositories and leave experiments and forks out until the signal is proven. Note the scope in the engineering docs so new repositories get a deliberate include-or-exclude decision instead of inheriting a default.
@@ -78,7 +78,7 @@ Grant the reviewer access to the repositories that actually need review rather t
 
 ### 3. Add the reviewer config to the repo
 
-agent-runnable · ~15 min · human approval required
+agent-runnable · ~15 min · human approval on the first run
 
 
 Add the reviewer's configuration file to each covered repository: review rules, path filters for generated or vendored code, and any language-specific instructions. Keep the config in version control so review behavior changes go through pull requests themselves. A coding agent can draft the file; review it like any other code change.
@@ -89,7 +89,7 @@ Add the reviewer's configuration file to each covered repository: review rules, 
 
 ### 4. Open a test pull request and confirm a review lands
 
-agent-runnable · ~10 min · human approval required
+agent-runnable · ~10 min · human approval on the first run
 
 
 Open a small, intentionally imperfect pull request and confirm the reviewer posts a review on it. Check latency, the quality of the findings, and whether path filters are respected. The review visible on the test pull request is the proof the installation works; fix scope or config before relying on it.

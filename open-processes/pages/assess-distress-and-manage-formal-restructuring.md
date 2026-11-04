@@ -45,10 +45,10 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Assemble an urgent financial and creditor record](#step-1) | agent-runnable | Not recorded | Entry step |
-| [2. Obtain the specialist distress assessment](#step-2) | human; approval required | Not recorded | [Step 1](#step-1) |
+| [2. Obtain the specialist distress assessment](#step-2) | human; human approval every run | Not recorded | [Step 1](#step-1) |
 | [3. Prepare the reviewed options and action timetable](#step-3) | agent-runnable | Not recorded | [Step 2](#step-2) |
-| [4. Approve the specific restructuring or insolvency route](#step-4) | human; approval required | Not recorded | [Step 3](#step-3) |
-| [5. Hand off and carry out authorized formal actions](#step-5) | human; approval required | Not recorded | [Step 4](#step-4) |
+| [4. Approve the specific restructuring or insolvency route](#step-4) | human; human approval every run | Not recorded | [Step 3](#step-3) |
+| [5. Hand off and carry out authorized formal actions](#step-5) | human; human approval every run | Not recorded | [Step 4](#step-4) |
 | [6. Track formal milestones and continuing duties](#step-6) | agent-runnable | Not recorded | [Step 5](#step-5) |
 
 <a id="steps"></a>
@@ -70,7 +70,7 @@ Prepare current cash, liabilities, overdue amounts, asset records, forecasts, se
 
 ### 2. Obtain the specialist distress assessment
 
-human · human approval required · hard to undo
+human · human approval every run · hard to undo
 
 
 The directors obtain qualified local insolvency and legal advice on the actual financial position, duties and available routes. This guide does not determine solvency or authorize continued trading, asset transfers, distributions or a solvent strike-off route.
@@ -92,7 +92,7 @@ Under adviser instructions, prepare the options, cash and creditor schedules, re
 
 ### 4. Approve the specific restructuring or insolvency route
 
-human · human approval required · hard to undo
+human · human approval every run · hard to undo
 
 
 The authorized decision-makers approve the adviser-reviewed route and any required appointments, applications or communications. Keep named authority and specialist review for each consequential action; unresolved duties or deadlines require urgent escalation.
@@ -103,7 +103,7 @@ The authorized decision-makers approve the adviser-reviewed route and any requir
 
 ### 5. Hand off and carry out authorized formal actions
 
-human · human approval required · hard to undo
+human · human approval every run · hard to undo
 
 
 The appointed practitioner, lawyer or authorized person completes the approved notices, applications and appointments through the applicable route. Record the responsible operator and retain formal acceptance and case references; an internal plan does not start a formal procedure.

@@ -53,9 +53,9 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Map related entities and actual transactions](#step-1) | agent-runnable | Not recorded | Entry step |
-| [2. Determine local tax and documentation requirements](#step-2) | human; approval required | Not recorded | [Step 1](#step-1) |
+| [2. Determine local tax and documentation requirements](#step-2) | human; human approval every run | Not recorded | [Step 1](#step-1) |
 | [3. Prepare agreements and pricing support](#step-3) | agent-runnable | Not recorded | [Step 2](#step-2) |
-| [4. Approve agreements and accounting implementation](#step-4) | human; approval required | Not recorded | [Step 3](#step-3) |
+| [4. Approve agreements and accounting implementation](#step-4) | human; human approval every run | Not recorded | [Step 3](#step-3) |
 | [5. Reconcile transactions and reassess changes](#step-5) | agent-runnable | Not recorded | [Step 4](#step-4) |
 
 <a id="steps"></a>
@@ -77,7 +77,7 @@ Inventory ownership, management, people, assets, IP, funding and services suppli
 
 ### 2. Determine local tax and documentation requirements
 
-human · human approval required
+human · human approval every run
 
 
 Qualified advisers in the affected jurisdictions assess the transaction character, pricing approach and reporting obligations. Record the scope and unresolved issues; OECD guidance does not itself establish each country's filing rules.
@@ -99,7 +99,7 @@ Document the proposed services, allocation keys, IP rights, financing terms and 
 
 ### 4. Approve agreements and accounting implementation
 
-human · human approval required
+human · human approval every run
 
 
 Authorized entities review and execute the approved arrangements and establish invoicing, currency and payment controls. Keep legal authority, local tax treatment and bookkeeping implementation separately evidenced.

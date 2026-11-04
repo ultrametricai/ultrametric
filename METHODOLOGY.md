@@ -1,7 +1,7 @@
 # Ultrametric Methodology
 
 The full methodology writeup — evidence tiers, judging, scoring, the claims-integrity index,
-the Agenticness Index, the Overall score, confidence grades, score intervals, story provenance,
+the Agenticness Index, the Agentic score, confidence grades, score intervals, story provenance,
 re-judge stability, and bias disclosure. The on-site
 [/methodology](https://ultrametric.ai/methodology) page is a tight one-screen summary of this
 document, and the [README](./README.md#methodology) carries a short summary; this file is the
@@ -185,7 +185,7 @@ Two sibling group-scoped indexes live under the same `agenticness` theme: `agent
 ("does the product act agentically itself" — `agenticApp` on the leaderboard) and, since v2.4,
 `api-quality` (see below).
 
-## The Overall score (formerly Arena Score / AI-Era Index)
+## The Agentic score (formerly the Overall score / Arena Score / AI-Era Index)
 
 v2.4 added a sixth canonical group, **API quality** (theme `agenticness`, group `api-quality`),
 alongside `agent-access`. Where `agent-access` asks "can an agent reach the product at all,"
@@ -198,8 +198,8 @@ alongside `agent-access`. Where `agent-access` asks "can an agent reach the prod
 | `api-versioning-policy` | I can rely on versioned APIs with a documented deprecation policy | 2 |
 | `api-sandbox` | I can test against a sandbox environment without touching production data | 1 |
 
-On top of that, every leaderboard entry carries an **Overall score** (`aiEra` internally, displayed
-on-site as a bare "{n}/100" badge under an "Overall score" label — this score used to be called the
+On top of that, every leaderboard entry carries an **Agentic score** (`aiEra` internally, displayed
+on-site as a bare "{n}/100" badge under an "Agentic score" label — this score used to be called the
 "Arena Score" and before that the "AI-Era Index," same formula, new name) — a single number
 meant to answer "how ready is this product for a world where agents, not just humans, are the
 primary users?" It's a weighted blend of five existing leaderboard components:
@@ -237,7 +237,7 @@ formula is open to challenge.
 ## Score confidence grades (A–D)
 
 Scores never pretend: untested cells can't score, and the confidence grade says how much of a
-score is backed by probes. Every Overall score badge carries a small A–D chip
+score is backed by probes. Every Agentic score badge carries a small A–D chip
 (`lib/confidence.ts`) derived from two fractions over the product's applicable (non-`na`)
 cells:
 
@@ -251,7 +251,7 @@ testedShare ≥ 0.25 · **C** = coverage ≥ 0.55 · **D** = below that. The gra
 published score — two products can post the same 60 while one earned it from probes and the
 other from vendor docs, and the chip is where that difference shows. Thresholds are calibrated
 against the live dataset so the letters actually discriminate (see
-`CONFIDENCE_THRESHOLDS` in `lib/confidence.ts`), and, like the Overall score weights, they're open
+`CONFIDENCE_THRESHOLDS` in `lib/confidence.ts`), and, like the Agentic score weights, they're open
 to challenge. In words:
 
 | Grade | Meaning |
@@ -313,9 +313,9 @@ migration itself). Two behavioral shifts to know when comparing to pre-migration
 and the concrete-contradiction bar more literally), and scores shifted up a few points
 fleet-wide — a judge-scale change, not a capability change.
 
-## Score intervals — the point-containing ± interval on every Overall score
+## Score intervals — the point-containing ± interval on every Agentic score
 
-Every Overall score carries a **point-containing uncertainty interval** ("42 ±3 /100" on product
+Every Agentic score carries a **point-containing uncertainty interval** ("42 ±3 /100" on product
 pages; the exact low–high bounds in the score badge's tooltip, including on the homepage mega-table).
 It starts with a nominal 68% sampled band, then expands only when needed to include the published
 point estimate. The interval states how much the published number could move under the judge noise
@@ -353,7 +353,7 @@ story-runner). Because the measured noise model is fleet-wide, even a category-t
 rewrites every populated arena's interval file; this prevents a shared-model change from leaving
 the rest of the fleet stale. Display is tolerant-optional (`lib/scoreIntervals.ts`): no interval data ⇒ no
 interval is ever rendered — never a fabricated one. Fleet-wide as of the first pass the median
-interval width is ~4.5 Overall score points.
+interval width is ~4.5 Agentic score points.
 
 **What the interval is not (yet):** it reflects propagated judge-*sampling* noise plus
 untested-cell ignorance, **not** model-family disagreement — the same evidence judged by a
@@ -368,7 +368,7 @@ registries (`api.github.com`, `api.npmjs.org`, `pypistats.org`), no API key requ
 a different question than everything else on this site: not "is this AI-ready" but "will this
 project still be alive tomorrow" — a reader-requested survival/support signal.
 
-It is **deliberately not part of the Overall score** and never affects rankings, leaderboard
+It is **deliberately not part of the Agentic score** and never affects rankings, leaderboard
 position, or any battle outcome (`pnpm engine popularity` makes no LLM calls and its output,
 `open-rankings/{category}/popularity.json`, isn't read by `lib/scoring.ts`). Popularity measures
 *adoption* — how many people already use something — which is a lagging, momentum-driven
@@ -425,7 +425,7 @@ corrections moved Foreloop from second to third of four.
 **Read this before trusting the `ai-coding` ranking's numbers.** The judge model
 (`claude-opus-5-5` since the 2026-09-30 migration; `claude-sonnet-5` before it) is made by
 Anthropic, and the `ai-coding` ranking includes Anthropic's own
-product, Claude Code, which leads that ranking's **Overall score** (29.5) as of v2.4 — though on
+product, Claude Code, which leads that ranking's **Agentic score** (29.5) as of v2.4 — though on
 raw coverage score it now sits second (34.6) behind GitHub Copilot (35.0), a lead that flipped
 when the v2.4 `api-quality` cells were added (Claude Code's own coverage score was 35.2 as of
 the last full audit below, before those cells existed). This is a real conflict of interest and

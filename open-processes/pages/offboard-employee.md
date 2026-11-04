@@ -64,13 +64,13 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
-| [1. Process the termination in your payroll platform](#step-1) | agent-runnable; approval required | ~5 min | Entry step |
-| [2. Calculate final paycheck + PTO payout](#step-2) | agent-runnable; approval required | ~5 min | [Step 1](#step-1) |
-| [3. Terminate benefits](#step-3) | agent-runnable; approval required | ~3 min | [Step 1](#step-1) |
-| [4. Deactivate the email account](#step-4) | agent-runnable; approval required | ~2 min | [Step 1](#step-1) |
-| [5. Remove from the team chat](#step-5) | agent-runnable; approval required | ~2 min | [Step 1](#step-1) |
-| [6. Remove from the code hosting org](#step-6) | agent-runnable; approval required | ~2 min | [Step 1](#step-1) |
-| [7. Notify about equity exercise window](#step-7) | agent-runnable; approval required | ~5 min | [Step 1](#step-1) |
+| [1. Process the termination in your payroll platform](#step-1) | agent-runnable; human approval every run | ~5 min | Entry step |
+| [2. Calculate final paycheck + PTO payout](#step-2) | agent-runnable; human approval every run | ~5 min | [Step 1](#step-1) |
+| [3. Terminate benefits](#step-3) | agent-runnable; human approval every run | ~3 min | [Step 1](#step-1) |
+| [4. Deactivate the email account](#step-4) | agent-runnable; standing human approval | ~2 min | [Step 1](#step-1) |
+| [5. Remove from the team chat](#step-5) | agent-runnable; standing human approval | ~2 min | [Step 1](#step-1) |
+| [6. Remove from the code hosting org](#step-6) | agent-runnable; standing human approval | ~2 min | [Step 1](#step-1) |
+| [7. Notify about equity exercise window](#step-7) | agent-runnable; human approval every run | ~5 min | [Step 1](#step-1) |
 | [8. Collect company property](#step-8) | human; includes waiting | ~1 d | [Step 1](#step-1) |
 
 <a id="steps"></a>
@@ -81,7 +81,7 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 
 ### 1. Process the termination in your payroll platform
 
-agent-runnable · ~5 min · human approval required · irreversible
+agent-runnable · ~5 min · human approval every run · irreversible
 
 | Option | Applies when |
 | --- | --- |
@@ -101,7 +101,7 @@ Reconcile the departure decision, employing entity, work location, last working 
 - Next: steps 2, 3, 4, 5, 6, 7 and 8 — all follow this step
 
 Options:
-  - **Default — Process the termination in your payroll platform** — agent-runnable · ~5 min · human approval required · irreversible
+  - **Default — Process the termination in your payroll platform** — agent-runnable · ~5 min · human approval every run · irreversible
 
     Use the payroll-system route after the people lead has settled the departure process for the work location. Reconcile the last working day, employment end date and final-pay instructions before applying the authorized change. Check its effect on scheduled payroll and benefits tasks. Follow up on remaining settlement items separately from the system’s termination status.
   - **India - notice, gratuity, F&F** — manual form/portal
@@ -141,7 +141,7 @@ Options:
 
 ### 2. Calculate final paycheck + PTO payout
 
-agent-runnable · ~5 min · human approval required
+agent-runnable · ~5 min · human approval every run
 
 
 Calculate the proposed final pay from recorded hours, salary, unused leave, expenses, bonuses and other agreed amounts. Have the local payroll specialist resolve payability, permitted deductions and payment timing for the actual contract and location. Present an itemized calculation for payment approval and explain discrepancies to the people lead. Keep disputed amounts separate from items ready for payment.
@@ -155,7 +155,7 @@ Calculate the proposed final pay from recorded hours, salary, unused leave, expe
 
 ### 3. Terminate benefits
 
-agent-runnable · ~3 min · human approval required · hard to undo
+agent-runnable · ~3 min · human approval every run · hard to undo
 
 
 *Follows step 1.*
@@ -171,7 +171,7 @@ List the employee’s active plans and ask the benefits administrator to determi
 
 ### 4. Deactivate the email account
 
-agent-runnable · ~2 min · human approval required
+agent-runnable · ~2 min · standing human approval
 
 
 *Follows step 1.*
@@ -186,7 +186,7 @@ Agree the account cutoff with the people and security leads. Identify mail, cale
 
 ### 5. Remove from the team chat
 
-agent-runnable · ~2 min · human approval required
+agent-runnable · ~2 min · standing human approval
 
 
 *Follows step 1.*
@@ -201,7 +201,7 @@ Identify the employee’s chat accounts, shared external workspaces, channel own
 
 ### 6. Remove from the code hosting org
 
-agent-runnable · ~2 min · human approval required
+agent-runnable · ~2 min · standing human approval
 
 
 *Follows step 1.*
@@ -216,7 +216,7 @@ Review code-hosting memberships, repository ownership, access tokens and automat
 
 ### 7. Notify about equity exercise window
 
-agent-runnable · ~5 min · human approval required
+agent-runnable · ~5 min · human approval every run
 
 
 *Follows step 1.*

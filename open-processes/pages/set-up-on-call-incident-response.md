@@ -43,12 +43,12 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
-| [1. Create services in your incident platform](#step-1) | agent-runnable; approval required | ~15 min | Entry step |
-| [2. Set up on-call schedules](#step-2) | agent-runnable; approval required | ~15 min | [Step 1](#step-1) |
-| [3. Configure escalation policies](#step-3) | agent-runnable; approval required | ~10 min | [Step 2](#step-2) |
-| [4. Connect error-tracker alerting](#step-4) | agent-runnable; approval required | ~10 min | [Step 1](#step-1) |
-| [5. Set up the incident chat channel](#step-5) | agent-runnable; approval required | ~5 min | [Step 3](#step-3) |
-| [6. Create post-mortem template](#step-6) | agent-runnable; approval required | ~10 min | [Step 5](#step-5) |
+| [1. Create services in your incident platform](#step-1) | agent-runnable; human approval on the first run | ~15 min | Entry step |
+| [2. Set up on-call schedules](#step-2) | agent-runnable; human approval on the first run | ~15 min | [Step 1](#step-1) |
+| [3. Configure escalation policies](#step-3) | agent-runnable; human approval every run | ~10 min | [Step 2](#step-2) |
+| [4. Connect error-tracker alerting](#step-4) | agent-runnable; human approval on the first run | ~10 min | [Step 1](#step-1) |
+| [5. Set up the incident chat channel](#step-5) | agent-runnable; human approval on the first run | ~5 min | [Step 3](#step-3) |
+| [6. Create post-mortem template](#step-6) | agent-runnable; human approval on the first run | ~10 min | [Step 5](#step-5) |
 
 <a id="steps"></a>
 
@@ -58,7 +58,7 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 
 ### 1. Create services in your incident platform
 
-agent-runnable · ~15 min · human approval required
+agent-runnable · ~15 min · human approval on the first run
 
 
 Group alerts into incident services that have clear operating ownership and runbooks. Distinguish production failures from test and informational events. In PagerDuty, check the entire routing chain from service to escalation policy to schedule; a schedule alone does not establish that a service will reach it. Activate the operations owner's agreed routing and send a labeled test to confirm who actually receives the incident.
@@ -74,7 +74,7 @@ Group alerts into incident services that have clear operating ownership and runb
 
 ### 2. Set up on-call schedules
 
-agent-runnable · ~15 min · human approval required
+agent-runnable · ~15 min · human approval on the first run
 
 
 Enter the team's agreed rotation, timezones, coverage hours and exceptions. Inspect the rendered schedule across handoffs, leave and upcoming calendar changes. Verify participants' notification methods with a scheduled test they expect. Fix uncovered periods or name the backup arrangement, and make swapping a shift a documented action that updates the actual schedule.
@@ -86,7 +86,7 @@ Enter the team's agreed rotation, timezones, coverage hours and exceptions. Insp
 
 ### 3. Configure escalation policies
 
-agent-runnable · ~10 min · human approval required
+agent-runnable · ~10 min · human approval every run
 
 
 Set the agreed response path when an incident goes unacknowledged: first responder, backup, escalation intervals and final owner. Attach that policy to the intended services and inspect who is on call at a representative time. During an announced test, leave the initial alert unacknowledged and check that escalation reaches the expected backup. Then acknowledge it and confirm the responder understands the next action and runbook.
@@ -99,7 +99,7 @@ Set the agreed response path when an incident goes unacknowledged: first respond
 
 ### 4. Connect error-tracker alerting
 
-agent-runnable · ~10 min · human approval required
+agent-runnable · ~10 min · human approval on the first run
 
 
 *Follows step 1.*
@@ -115,7 +115,7 @@ Map urgent error conditions to the right incident service, environment and sever
 
 ### 5. Set up the incident chat channel
 
-agent-runnable · ~5 min · human approval required
+agent-runnable · ~5 min · human approval on the first run
 
 
 *Follows step 3.*
@@ -129,7 +129,7 @@ Set up the incident channel with a clear place for the current status, lead resp
 
 ### 6. Create post-mortem template
 
-agent-runnable · ~10 min · human approval required
+agent-runnable · ~10 min · human approval on the first run
 
 
 Draft a template for impact, detection, a linked timeline, contributing conditions, recovery and follow-up work. Leave room for uncertainty and competing explanations. Try it with a past or fictional incident: can the reader tell what happened, why decisions were made and which improvement would address the failure? Remove sections that add no useful evidence, and identify the writer, reviewer and appropriate audience for the finished document.

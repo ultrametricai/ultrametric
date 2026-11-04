@@ -43,11 +43,11 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
-| [1. Create a project in your error tracker](#step-1) | agent-runnable; approval required | ~5 min | Entry step |
-| [2. Configure alert rules](#step-2) | agent-runnable; approval required | ~5 min | [Step 1](#step-1) |
-| [3. Connect team chat notifications](#step-3) | agent-runnable; approval required | ~5 min | [Step 1](#step-1) |
+| [1. Create a project in your error tracker](#step-1) | agent-runnable; human approval on the first run | ~5 min | Entry step |
+| [2. Configure alert rules](#step-2) | agent-runnable; human approval on the first run | ~5 min | [Step 1](#step-1) |
+| [3. Connect team chat notifications](#step-3) | agent-runnable; human approval on the first run | ~5 min | [Step 1](#step-1) |
 | [4. Set up release tracking](#step-4) | agent-runnable | ~5 min | [Step 1](#step-1) |
-| [5. Install SDK in codebase](#step-5) | agent-runnable; approval required | ~10 min | [Step 1](#step-1) |
+| [5. Install SDK in codebase](#step-5) | agent-runnable; human approval on the first run | ~10 min | [Step 1](#step-1) |
 
 <a id="steps"></a>
 
@@ -57,7 +57,7 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 
 ### 1. Create a project in your error tracker
 
-agent-runnable · ~5 min · human approval required
+agent-runnable · ~5 min · human approval on the first run
 
 
 Create the error-tracking project for the actual application and environments using the application's authorized vendor and data-sharing scope. Set access, retention and event-volume controls for the expected audience and traffic. Establish how test events will be identified and who triages production issues. Give developers the configuration identifier and SDK setup location while keeping management credentials private; the first test event should identify this application and environment.
@@ -72,7 +72,7 @@ Create the error-tracking project for the actual application and environments us
 
 ### 2. Configure alert rules
 
-agent-runnable · ~5 min · human approval required
+agent-runnable · ~5 min · human approval on the first run
 
 
 Choose a failure worth interrupting someone for, such as a broken checkout or errors affecting several users. Set an initial threshold against observed normal behavior and decide how repeated events and recovery are handled. Activate notifications within the service owner's authorized recipient scope. Send a labeled test event: the alert should identify the environment, lead to the issue and make the next diagnostic step clear. Adjust noisy rules after seeing actual traffic.
@@ -86,7 +86,7 @@ Choose a failure worth interrupting someone for, such as a broken checkout or er
 
 ### 3. Connect team chat notifications
 
-agent-runnable · ~5 min · human approval required
+agent-runnable · ~5 min · human approval on the first run
 
 
 *Follows step 1.*
@@ -118,7 +118,7 @@ Use a release identifier that resolves to the exact build and source revision, a
 
 ### 5. Install SDK in codebase
 
-agent-runnable · ~10 min · human approval required
+agent-runnable · ~10 min · human approval on the first run
 
 
 *Follows step 1.*

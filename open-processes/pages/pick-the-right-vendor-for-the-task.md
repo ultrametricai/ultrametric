@@ -50,9 +50,9 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | [2. Research the market and shortlist](#step-2) | agent-runnable | ~30 min | [Step 1](#step-1) |
 | [3. Compare on evidence and rank against your stack](#step-3) | agent-runnable | ~20 min | [Step 2](#step-2) |
 | [4. Trial top candidates agentically](#step-4) | agent-runnable | ~1 h | [Step 3](#step-3) |
-| [5. Security and data review](#step-5) | human; approval required | ~45 min | [Step 4](#step-4) |
-| [6. Negotiate pricing and terms](#step-6) | human; approval required | ~1 h | [Step 5](#step-5) |
-| [7. Prepare the agreement for signature](#step-7) | agent-runnable; approval required | ~10 min | [Step 6](#step-6) |
+| [5. Security and data review](#step-5) | human; human approval every run | ~45 min | [Step 4](#step-4) |
+| [6. Negotiate pricing and terms](#step-6) | human; human approval every run | ~1 h | [Step 5](#step-5) |
+| [7. Prepare the agreement for signature](#step-7) | agent-runnable; standing human approval | ~10 min | [Step 6](#step-6) |
 | [8. Sign the agreement](#step-8) | human; signature required | ~5 min | [Step 7](#step-7) |
 | [9. Connect and roll out to the team](#step-9) | agent-runnable | ~15 min | [Step 8](#step-8) |
 
@@ -128,7 +128,7 @@ Begin with synthetic data and minimum access. Complete the relevant data review 
 
 ### 5. Security and data review
 
-human · ~45 min · human approval required
+human · ~45 min · human approval every run
 
 
 Give security and privacy reviewers the intended data flows, permissions, vendor responses, and relevant assessment reports. Examine retention, deletion, access administration, subprocessors, and incident handling for this specific use. Resolve missing evidence with the vendor and record any required configuration or contractual condition. The designated reviewers decide whether the proposed use can proceed, needs changes, or is unsuitable before sensitive company data or a binding contract commits the business.
@@ -137,7 +137,7 @@ Give security and privacy reviewers the intended data flows, permissions, vendor
 
 ### 6. Negotiate pricing and terms
 
-human · ~1 h · human approval required
+human · ~1 h · human approval every run
 
 
 Use expected usage, trial results, budget, and security conditions to set a negotiation position. Compare the whole commercial proposal, including plan limits, renewal, price changes, support, and exit or migration terms. Negotiate within the purchasing owner's mandate and take legal terms to counsel. Keep concessions and unresolved points in the proposal, then obtain approval for the final total commitment and material exceptions before preparing the signature package.
@@ -146,7 +146,7 @@ Use expected usage, trial results, budget, and security conditions to set a nego
 
 ### 7. Prepare the agreement for signature
 
-agent-runnable · ~10 min · human approval required
+agent-runnable · ~10 min · standing human approval
 
 
 Assemble the final order form, agreement, and applicable data-protection or security schedules. Check entities, prices, dates, renewal terms, and negotiated changes across the package, including attachments incorporated by reference. Resolve inconsistencies with the purchasing and legal owners before they clear the signing version. Identify the authorized signer and verified recipients, then prepare the signature request with that exact package and any conditions still required for execution.

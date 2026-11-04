@@ -47,11 +47,11 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Define the acquisition thesis and capacity](#step-1) | agent-runnable | Not recorded | Entry step |
-| [2. Approve diligence scope and transaction authority](#step-2) | human; approval required | Not recorded | [Step 1](#step-1) |
+| [2. Approve diligence scope and transaction authority](#step-2) | human; human approval every run | Not recorded | [Step 1](#step-1) |
 | [3. Conduct a controlled diligence and integration assessment](#step-3) | agent-runnable | Not recorded | [Step 2](#step-2) |
-| [4. Approve terms, conditions and integration governance](#step-4) | human; approval required | Not recorded | [Step 3](#step-3) |
-| [5. Complete closing through the reviewed process](#step-5) | human; approval required | Not recorded | [Step 4](#step-4) |
-| [6. Execute and measure the approved integration plan](#step-6) | human; approval required | Not recorded | [Step 5](#step-5) |
+| [4. Approve terms, conditions and integration governance](#step-4) | human; human approval every run | Not recorded | [Step 3](#step-3) |
+| [5. Complete closing through the reviewed process](#step-5) | human; human approval every run | Not recorded | [Step 4](#step-4) |
+| [6. Execute and measure the approved integration plan](#step-6) | human; human approval every run | Not recorded | [Step 5](#step-5) |
 
 <a id="steps"></a>
 
@@ -72,7 +72,7 @@ State the customer, product or capability sought, available funding and acceptab
 
 ### 2. Approve diligence scope and transaction authority
 
-human · human approval required
+human · human approval every run
 
 
 Leadership and advisers verify the counterparty, confidentiality, structure and conflicts. Approve a bounded diligence budget and access plan without committing to buy before the required evidence is available.
@@ -94,7 +94,7 @@ Reconcile financial, customer, employee, IP, security, product and contract evid
 
 ### 4. Approve terms, conditions and integration governance
 
-human · human approval required
+human · human approval every run
 
 
 The authorized decision makers review price, financing, conditions, warranties and transition obligations with counsel. Assign a responsible integration lead and protect critical customer and workforce continuity.
@@ -105,7 +105,7 @@ The authorized decision makers review price, financing, conditions, warranties a
 
 ### 5. Complete closing through the reviewed process
 
-human · human approval required · hard to undo
+human · human approval every run · hard to undo
 
 
 Authorized advisers and operators verify approvals, settlement instructions and closing conditions. Retain transaction evidence before changing ownership records or taking control of acquired systems.
@@ -116,7 +116,7 @@ Authorized advisers and operators verify approvals, settlement instructions and 
 
 ### 6. Execute and measure the approved integration plan
 
-human · human approval required · hard to undo
+human · human approval every run · hard to undo
 
 
 Reconcile acquired assets and obligations, phase access and data migrations safely and track customer and employee commitments. Review actual outcomes against the thesis and maintain owners for unresolved liabilities.

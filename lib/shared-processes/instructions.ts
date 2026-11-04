@@ -66,12 +66,25 @@ function instructionalNotes(metadata: Record<string, unknown>): Note[] {
     if (metadata[key] && strings.parse(metadata[key]).length) add(`${label}: ${strings.parse(metadata[key]).join(', ')}`)
   }
   if (metadata.legalSignature === true) add('This step requires a human legal signature or attestation.')
-  if (metadata.approvalRequired === true) add('Obtain human approval before performing this step.')
+  // The generic request stands in only where no approval mode is declared; a declared mode
+  // emits its own line below, and doubling them would tell agents to ask on every run even
+  // where a standing or threshold approval governs the step.
+  const declaredMode = metadata.approval && typeof metadata.approval === 'object' ? (metadata.approval as { mode?: unknown }).mode : undefined
+  if (metadata.approvalRequired === true && typeof declaredMode !== 'string') add('Obtain human approval before performing this step.')
   if (typeof metadata.mode === 'string') add(`Action mode: ${metadata.mode}`)
   if (typeof metadata.owner === 'string') add(`Owner: ${metadata.owner}`)
   if (metadata.approval) {
-    const approval = z.object({ role: z.string(), scope: z.string() }).parse(metadata.approval)
-    add(`Required approval from ${approval.role}; scope: ${approval.scope}`)
+    const approval = z.object({
+      mode: z.string().optional(),
+      threshold: z.object({ kind: z.string(), value: z.string().optional() }).optional(),
+      role: z.string().optional(),
+      scope: z.string().optional(),
+    }).loose().parse(metadata.approval)
+    if (approval.mode === 'every-run') add('Obtain named, scoped human approval before every run of this step.')
+    if (approval.mode === 'first-run') add('Obtain named, scoped human approval before the first run; that recorded approval stands for repeat runs.')
+    if (approval.mode === 'threshold') add(`Obtain human approval once the ${approval.threshold?.kind ?? 'named'} threshold applies${approval.threshold?.value ? ` (${approval.threshold.value})` : ''}.`)
+    if (approval.mode === 'pre-approvable') add('Run only under a named, scoped standing human approval recorded before this step.')
+    if (approval.role && approval.scope) add(`Required approval from ${approval.role}; scope: ${approval.scope}`)
   }
   return notes
 }

@@ -64,9 +64,9 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | --- | --- | --- | --- |
 | [1. Assess statutory benefits and optional employee benefits](#step-1) | agent-runnable | ~1 h | Entry step |
 | [2. Get quotes from providers](#step-2) | human; includes waiting | ~5 d | [Step 1](#step-1) |
-| [3. Select plans and negotiate](#step-3) | human; approval required | ~2 h | [Step 2](#step-2) |
-| [4. Configure the selected benefits in the payroll or benefits system](#step-4) | agent-runnable; approval required | ~30 min | [Step 3](#step-3) |
-| [5. Explain benefits and any required enrollment to the team](#step-5) | agent-runnable; approval required | ~10 min | [Step 4](#step-4) |
+| [3. Select plans and negotiate](#step-3) | human; human approval every run | ~2 h | [Step 2](#step-2) |
+| [4. Configure the selected benefits in the payroll or benefits system](#step-4) | agent-runnable; human approval every run | ~30 min | [Step 3](#step-3) |
+| [5. Explain benefits and any required enrollment to the team](#step-5) | agent-runnable; standing human approval | ~10 min | [Step 4](#step-4) |
 | [6. Complete enrollment where required](#step-6) | human; includes waiting | ~5 d | [Step 5](#step-5) |
 
 <a id="steps"></a>
@@ -118,7 +118,7 @@ Options:
 
 ### 3. Select plans and negotiate
 
-human · ~2 h · human approval required · hard to undo
+human · ~2 h · human approval every run · hard to undo
 
 
 Compare the quoted plan documents with employee needs, provider access, deductibles, exclusions and contribution costs. Clarify price assumptions, renewal terms and administrative work with the adviser. Take material tradeoffs to the benefits and budget decision makers before committing to the chosen arrangement. Resolve implementation conditions before communicating enrollment dates or coverage promises.
@@ -129,7 +129,7 @@ Compare the quoted plan documents with employee needs, provider access, deductib
 
 ### 4. Configure the selected benefits in the payroll or benefits system
 
-agent-runnable · ~30 min · human approval required
+agent-runnable · ~30 min · human approval every run
 
 
 Configure only the required or approved benefits, contributions and eligibility in the supported local system. Confirm enrollment and payroll handling with the provider before the first deductions.
@@ -142,7 +142,7 @@ Configure only the required or approved benefits, contributions and eligibility 
 
 ### 5. Explain benefits and any required enrollment to the team
 
-agent-runnable · ~10 min · human approval required
+agent-runnable · ~10 min · standing human approval
 
 
 Explain the approved plans, employee costs, enrollment dates and support options using the plan materials. Check the audience and required notices with the benefits administrator, then give employees a working enrollment route. Clarify how they make elections or record waivers and where dependent or health information belongs. Address access problems early enough for employees to make their choices.

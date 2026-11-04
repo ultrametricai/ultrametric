@@ -45,11 +45,11 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Collect contracts and delivery evidence](#step-1) | agent-runnable | Not recorded | Entry step |
-| [2. Determine the applicable accounting framework](#step-2) | human; approval required | Not recorded | [Step 1](#step-1) |
+| [2. Determine the applicable accounting framework](#step-2) | human; human approval every run | Not recorded | [Step 1](#step-1) |
 | [3. Prepare the contract analysis and schedule](#step-3) | agent-runnable | Not recorded | [Step 2](#step-2) |
-| [4. Review judgments and approve the accounting treatment](#step-4) | human; approval required | Not recorded | [Step 3](#step-3) |
-| [5. Post approved entries through accounting controls](#step-5) | manual form/portal; approval required | Not recorded | [Step 4](#step-4) |
-| [6. Verify the close and refresh estimates](#step-6) | human; approval required | Not recorded | [Step 5](#step-5) |
+| [4. Review judgments and approve the accounting treatment](#step-4) | human; human approval every run | Not recorded | [Step 3](#step-3) |
+| [5. Post approved entries through accounting controls](#step-5) | manual form/portal; human approval every run | Not recorded | [Step 4](#step-4) |
+| [6. Verify the close and refresh estimates](#step-6) | human; human approval every run | Not recorded | [Step 5](#step-5) |
 
 <a id="steps"></a>
 
@@ -70,7 +70,7 @@ Gather signed agreements, amendments, invoices, credits and evidence of goods or
 
 ### 2. Determine the applicable accounting framework
 
-human · human approval required · hard to undo
+human · human approval every run · hard to undo
 
 
 The qualified accounting owner confirms the governing framework and contract treatment. This guide uses an IFRS overview as a reference and does not impose IFRS rules on entities using another framework.
@@ -92,7 +92,7 @@ Draft a contract-level schedule of promises, pricing assumptions, delivery dates
 
 ### 4. Review judgments and approve the accounting treatment
 
-human · human approval required · hard to undo
+human · human approval every run · hard to undo
 
 
 The accounting owner reviews allocations, estimates, progress measures and contract changes under the applicable framework. Record support for judgments and escalate material uncertainty before posting.
@@ -103,7 +103,7 @@ The accounting owner reviews allocations, estimates, progress measures and contr
 
 ### 5. Post approved entries through accounting controls
 
-manual form/portal · human approval required · hard to undo
+manual form/portal · human approval every run · hard to undo
 
 
 Authorized finance operators post the reviewed entries and retain approvals and source links. Reconcile recognized and deferred balances to the contract schedule and investigate differences.
@@ -114,7 +114,7 @@ Authorized finance operators post the reviewed entries and retain approvals and 
 
 ### 6. Verify the close and refresh estimates
 
-human · human approval required · hard to undo
+human · human approval every run · hard to undo
 
 
 The accounting owner reviews balances, remaining obligations and disclosure needs. Record changes in estimates and exceptions, with evidence for the next reporting close.

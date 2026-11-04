@@ -69,16 +69,16 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
-| [1. Draft offer letter](#step-1) | agent-runnable; approval required | ~10 min | Entry step |
-| [2. Send offer for signature](#step-2) | agent-runnable; approval required | ~5 min | [Step 1](#step-1) |
+| [1. Draft offer letter](#step-1) | agent-runnable; standing human approval | ~10 min | Entry step |
+| [2. Send offer for signature](#step-2) | agent-runnable; human approval every run | ~5 min | [Step 1](#step-1) |
 | [3. Candidate accepts (1-3 days)](#step-3) | human; includes waiting | ~3 d | [Step 2](#step-2) |
-| [4. Add the employee in your payroll platform](#step-4) | agent-runnable; approval required | ~5 min | [Step 3](#step-3) |
-| [5. Set up payroll schedule](#step-5) | agent-runnable; approval required | ~10 min | [Step 4](#step-4) |
+| [4. Add the employee in your payroll platform](#step-4) | agent-runnable; human approval above a threshold | ~5 min | [Step 3](#step-3) |
+| [5. Set up payroll schedule](#step-5) | agent-runnable; human approval on the first run | ~10 min | [Step 4](#step-4) |
 | [6. Employee completes the hiring formalities: right-to-work verification and tax withholding forms](#step-6) | human; signature required; includes waiting | ~1 d | [Step 4](#step-4) |
-| [7. Set up benefits enrollment](#step-7) | manual form/portal; approval required | ~10 min | [Step 4](#step-4) |
-| [8. Create company email](#step-8) | manual form/portal; approval required | ~5 min | [Step 4](#step-4) |
-| [9. Add to the team chat](#step-9) | agent-runnable; approval required | ~2 min | [Step 8](#step-8) |
-| [10. Grant stock options](#step-10) | agent-runnable; approval required | ~15 min | [Step 3](#step-3) |
+| [7. Set up benefits enrollment](#step-7) | manual form/portal; human approval on the first run | ~10 min | [Step 4](#step-4) |
+| [8. Create company email](#step-8) | manual form/portal; human approval above a threshold | ~5 min | [Step 4](#step-4) |
+| [9. Add to the team chat](#step-9) | agent-runnable; human approval above a threshold | ~2 min | [Step 8](#step-8) |
+| [10. Grant stock options](#step-10) | agent-runnable; human approval every run | ~15 min | [Step 3](#step-3) |
 
 <a id="steps"></a>
 
@@ -88,7 +88,7 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 
 ### 1. Draft offer letter
 
-agent-runnable · ~10 min · human approval required
+agent-runnable · ~10 min · standing human approval
 
 
 Draft the offer from the agreed role, reporting line, work location, start date and compensation package. Separate firm commitments from proposed equity, variable pay or conditions that still need a decision. Use the employment template reviewed for that location, and highlight departures from it for the hiring manager and people lead. The resulting draft should make the candidate’s terms clear and expose the few points that must be settled before sending.
@@ -100,7 +100,7 @@ Draft the offer from the agreed role, reporting line, work location, start date 
 
 ### 2. Send offer for signature
 
-agent-runnable · ~5 min · human approval required · hard to undo
+agent-runnable · ~5 min · human approval every run · hard to undo
 
 
 Check that the offer contains the agreed terms and attachments, then verify the candidate’s delivery address and the company signer. Once the hiring manager clears the package for release, set the signature fields and signer order and send it through the company’s signing service. Route questions and negotiated changes back to the hiring owner, then circulate any revised package consistently to both signers.
@@ -124,7 +124,7 @@ Follow up on the offer actually sent, using any agreed response date or extensio
 
 ### 4. Add the employee in your payroll platform
 
-agent-runnable · ~5 min · human approval required
+agent-runnable · ~5 min · human approval above a threshold
 
 | Option | Applies when |
 | --- | --- |
@@ -142,7 +142,7 @@ Choose the employment arrangement from the person’s work country, the employin
 - Next: steps 5, 6, 7 and 8 — all follow this step
 
 Options:
-  - **Default — Add the employee in your payroll platform** — agent-runnable · ~5 min · human approval required
+  - **Default — Add the employee in your payroll platform** — agent-runnable · ~5 min · human approval above a threshold
 
     Use direct employee onboarding when the classification and employing entity support it in the person’s work location. Enter the signed pay terms, start date and verified employee details into payroll. Resolve required registrations and employee onboarding tasks with the payroll team before activation, then check the first-pay setup. Keep any missing information assigned to the person who can supply it.
   - **EOR hire (no local employing entity)**
@@ -166,7 +166,7 @@ Options:
 
 ### 5. Set up payroll schedule
 
-agent-runnable · ~10 min · human approval required
+agent-runnable · ~10 min · human approval on the first run
 
 
 Set the pay periods, paydays and input cutoffs around the agreed compensation terms. Check the permitted frequency for the employee’s work location and the provider’s actual funding lead time. Work through the first partial period and any bonus, commission or reimbursement treatment with payroll. Share the resulting calendar with the employee and the managers responsible for submitting changes.
@@ -197,7 +197,7 @@ Run the start-date formalities your jurisdiction requires: verify the employee's
 
 ### 7. Set up benefits enrollment
 
-manual form/portal · ~10 min · human approval required
+manual form/portal · ~10 min · human approval on the first run
 
 
 *Follows step 4.*
@@ -213,7 +213,7 @@ Identify the enrollment tasks that apply under the selected plans and employment
 
 ### 8. Create company email
 
-manual form/portal · ~5 min · human approval required
+manual form/portal · ~5 min · human approval above a threshold
 
 | Option | Applies when |
 | --- | --- |
@@ -230,7 +230,7 @@ Use the company’s existing email suite and account-naming convention. Check th
 - Sources: [Google Workspace: Add an account for a new user](https://knowledge.workspace.google.com/admin/users/add-an-account-for-a-new-user)
 
 Options:
-  - **Default — Google Admin console** — manual form/portal · ~5 min · human approval required
+  - **Default — Google Admin console** — manual form/portal · ~5 min · human approval above a threshold
 
     In Google Workspace, the authorized user administrator checks the domain, employee name, existing identities and available license before adding the account. Apply the intended organizational settings and security policy, then send activation instructions securely. Check sign-in and mailbox availability. If a service is still provisioning, investigate its status on the existing account.
   - **Microsoft 365 mailbox**
@@ -246,7 +246,7 @@ Options:
 
 ### 9. Add to the team chat
 
-agent-runnable · ~2 min · human approval required
+agent-runnable · ~2 min · human approval above a threshold
 
 
 Invite the employee using their verified company identity and the access level agreed for their role. Add the team and onboarding channels their manager identifies, checking restricted or externally shared spaces with their owners. Point the employee to communication norms and the support contact. Resolve access problems within the permissions needed for the employee’s work.
@@ -259,7 +259,7 @@ Invite the employee using their verified company identity and the access level a
 
 ### 10. Grant stock options
 
-agent-runnable · ~15 min · human approval required · hard to undo
+agent-runnable · ~15 min · human approval every run · hard to undo
 
 
 *Follows step 3.*
