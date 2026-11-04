@@ -122,7 +122,7 @@ human · ~10 min
 
 *Entry step — no prerequisite step.*
 
-Compare services against the remaining formation work: Delaware incorporation, registered-agent service, bylaws and initial resolutions, founder stock documents, and handling of an 83(b) election where applicable. Check which items the proposed package includes, which require separate purchases, and what recurring charges follow setup. Distinguish document preparation from actual filing, and confirm how completed records will be delivered. Finish with a selected provider and package, plus a clear list of work that someone else must complete.
+Use saved company context to confirm the intended jurisdiction and entity form before comparing providers. Resolve missing or conflicting choices using the filing routes in n4. For Delaware incorporation, compare services against the remaining formation work: registered-agent service, bylaws and initial resolutions, founder stock documents, and handling of an 83(b) election where applicable. Check which items the proposed package includes, which require separate purchases, and what recurring charges follow setup. Distinguish document preparation from actual filing, and confirm how completed records will be delivered. Finish with a selected provider and package, plus a clear list of work that someone else must complete.
 
 - Vendor options: Clerky, Stripe Atlas, Firstbase, LegalZoom, Northwest Registered Agent, Doola
 - Sources: [Delaware formation requirements](https://corp.delaware.gov/howtoform/) · [Clerky package contents and pricing](https://www.clerky.com/pricing) · [Stripe Atlas formation package](https://stripe.com/atlas)

@@ -60,7 +60,7 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 agent-runnable · ~10 min · human approval required
 
 
-Start with the product questions the team needs to answer, then create the analytics project within its authorized account, budget and data-handling scope. Choose region, retention and access from those requirements. Decide how development traffic will be identified or separated before connecting an SDK. Check that the project receiving a test event is the one the team intends to use for reporting.
+Start with the product questions and the analytics project recorded in company context. Reuse that project and its verified event definitions when they cover this launch; record gaps before changing instrumentation. Create a project only when an existing one cannot serve the work, within the authorized account, budget and data-handling scope. Choose region, retention and access from those requirements. Decide how development traffic will be identified or separated before connecting an SDK. Check that the project receiving a test event is the one the team intends to use for reporting.
 
 - Canonical vendor: PostHog
 - Vendor options: PostHog, Amplitude, Mixpanel

@@ -64,7 +64,7 @@ manual form/portal · ~10 min · human approval required
 | Event-driven lifecycle email | Product-led SaaS - email keyed to product events, not newsletter blasts |
 
 
-Choose an email workspace from the program's audience, sending identity, volume, team access and existing systems. Compare list-based campaigns with event-driven messaging against the actual use case and current plan limits. Establish company-controlled ownership and administrators, and create the workspace within the agreed subscription budget. Define the contact fields and sender identity before importing an audience.
+Check the email workspace and sender identity already recorded in company context against this program's audience, volume, team access and existing systems. Reuse a suitable workspace and its verified setup. Compare list-based campaigns with event-driven messaging against the actual use case and current plan limits. Confirm company-controlled ownership and administrators. Create a workspace only if needed, within the agreed subscription budget. Define the contact fields and sender identity before importing an audience.
 
 - Canonical vendor: Mailchimp
 - Vendor options: Mailchimp, Loops, Customer.io

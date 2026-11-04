@@ -21,7 +21,7 @@ Run the linked processes in the recorded chain order. Each process defines its o
 
 | Order | Process | Requires | Produces |
 | --- | --- | --- | --- |
-| 1 | [Validate the idea](validate-the-idea.md) | Team wiki | Not recorded |
+| 1 | [Validate the idea](validate-the-idea.md) | Not recorded | Not recorded |
 | 2 | [Generate a company name](generate-a-company-name.md) | Not recorded | Company name |
 | 3 | [Buy a domain](buy-a-domain.md) | Domain shortlist | Registered domain; DNS control |
 | 4 | [Generate a brand logo](generate-a-brand-logo.md) | Company name | Brand logo |
