@@ -4,7 +4,7 @@ import path from 'node:path'
 import { afterAll, describe, expect, it } from 'vitest'
 import {
   aiEraBandFor, buildMeasuredNoiseModel, hashSeed, loadScoreIntervals, mulberry32,
-  NOISE_TIERS, simulateScoreInterval, type VerdictNoiseModel,
+  NOISE_TIERS, simulateScoreInterval, type ScoreIntervalEntry, type VerdictNoiseModel,
 } from '@/lib/scoreIntervals'
 import { computeAiEra, weightedPercent } from '@/lib/scoring'
 import type { Story, UncertaintyEntry, Verdict } from '@/lib/schemas'
@@ -110,14 +110,50 @@ describe('simulateScoreInterval', () => {
     })
   })
 
-  it('never widens below the published floor: bounds bracket the point score', () => {
-    const cells = cellsFor(evidencedVerdicts)
-    const noisy: VerdictNoiseModel = {
+  it('expands asymmetric percentile bands to contain the published point scores', () => {
+    const upwardCells = cellsFor(stories.map((s) => v(s.id, 'partial', 5)))
+    const upwardOnly: VerdictNoiseModel = {
       ...zeroNoise,
-      transitions: { ...zeroNoise.transitions, full: { full: 0.9, partial: 0.074, disputed: 0.003, none: 0.023 } },
+      transitions: {
+        ...zeroNoise.transitions,
+        partial: { full: 1, partial: 0, disputed: 0, none: 0 },
+      },
     }
-    const interval = simulateScoreInterval(cells, noisy, 'seed', 500)
-    expect(interval.aiEraLow!).toBeLessThanOrEqual(interval.aiEraHigh!)
+    const upwardInterval = simulateScoreInterval(upwardCells, upwardOnly, 'seed', 100)
+    const upwardAgentReady = weightedPercent(upwardCells.filter((c) => c.story.group === 'agent-access'))
+    const upwardAiEra = computeAiEra({
+      agentReady: upwardAgentReady,
+      apiQuality: weightedPercent(upwardCells.filter((c) => c.story.group === 'api-quality')),
+      openness: weightedPercent(upwardCells.filter((c) => c.story.theme === 'openness')),
+      agenticApp: weightedPercent(upwardCells.filter((c) => c.story.group === 'agentic-features')),
+      automation: weightedPercent(upwardCells.filter((c) => c.story.theme === 'automation-depth')),
+    })
+    expect(upwardInterval.aiEraLow).toBe(upwardAiEra)
+    expect(upwardInterval.agentReadyLow).toBe(upwardAgentReady)
+    expect(upwardInterval.aiEraHigh!).toBeGreaterThan(upwardAiEra!)
+    expect(upwardInterval.agentReadyHigh!).toBeGreaterThan(upwardAgentReady!)
+
+    const downwardCells = cellsFor(stories.map((s) => v(s.id, 'full', 8)))
+    const downwardOnly: VerdictNoiseModel = {
+      ...zeroNoise,
+      transitions: {
+        ...zeroNoise.transitions,
+        full: { full: 0, partial: 0, disputed: 0, none: 1 },
+      },
+    }
+    const downwardInterval = simulateScoreInterval(downwardCells, downwardOnly, 'seed', 100)
+    const downwardAgentReady = weightedPercent(downwardCells.filter((c) => c.story.group === 'agent-access'))
+    const downwardAiEra = computeAiEra({
+      agentReady: downwardAgentReady,
+      apiQuality: weightedPercent(downwardCells.filter((c) => c.story.group === 'api-quality')),
+      openness: weightedPercent(downwardCells.filter((c) => c.story.theme === 'openness')),
+      agenticApp: weightedPercent(downwardCells.filter((c) => c.story.group === 'agentic-features')),
+      automation: weightedPercent(downwardCells.filter((c) => c.story.theme === 'automation-depth')),
+    })
+    expect(downwardInterval.aiEraHigh).toBe(downwardAiEra)
+    expect(downwardInterval.agentReadyHigh).toBe(downwardAgentReady)
+    expect(downwardInterval.aiEraLow!).toBeLessThan(downwardAiEra!)
+    expect(downwardInterval.agentReadyLow!).toBeLessThan(downwardAgentReady!)
   })
 })
 
@@ -180,5 +216,59 @@ describe('loadScoreIntervals / aiEraBandFor', () => {
     expect(aiEraBandFor(intervals, 'ghost')).toBeUndefined()
     // A category without the file at all resolves to an empty map, not an error.
     expect(loadScoreIntervals('arena-missing', tmp).size).toBe(0)
+  })
+})
+
+describe('committed score intervals', () => {
+  it('covers every published product and contains each point score with matching nullability', () => {
+    const root = path.join(process.cwd(), 'open-rankings')
+    const violations: string[] = []
+    for (const category of fs.readdirSync(root)) {
+      const dataDir = path.join(root, category)
+      const intervalsPath = path.join(dataDir, 'score-intervals.json')
+      const rankingsPath = path.join(dataDir, 'rankings.json')
+      if (!fs.existsSync(intervalsPath) || !fs.existsSync(rankingsPath)) continue
+
+      const intervals = JSON.parse(fs.readFileSync(intervalsPath, 'utf8')) as ScoreIntervalEntry[]
+      const rankings = JSON.parse(fs.readFileSync(rankingsPath, 'utf8')) as {
+        leaderboard: Array<{ productId: string; aiEra: number | null; agentReady: number | null }>
+      }
+      const intervalIds = intervals.map((entry) => entry.productId).sort()
+      const publishedIds = rankings.leaderboard.map((entry) => entry.productId).sort()
+      if (JSON.stringify(intervalIds) !== JSON.stringify(publishedIds)) {
+        violations.push(
+          `${category}: interval products ${JSON.stringify(intervalIds)} do not match ` +
+            `published products ${JSON.stringify(publishedIds)}`,
+        )
+      }
+
+      const byProduct = new Map(intervals.map((entry) => [entry.productId, entry]))
+      for (const published of rankings.leaderboard) {
+        const interval = byProduct.get(published.productId)
+        if (!interval) continue
+        for (const [scoreKey, lowKey, highKey] of [
+          ['aiEra', 'aiEraLow', 'aiEraHigh'],
+          ['agentReady', 'agentReadyLow', 'agentReadyHigh'],
+        ] as const) {
+          const point = published[scoreKey]
+          const low = interval[lowKey]
+          const high = interval[highKey]
+          if (point === null) {
+            if (low !== null || high !== null) {
+              violations.push(
+                `${category}/${published.productId}:${scoreKey} null point has non-null bounds [${low}, ${high}]`,
+              )
+            }
+          } else if (low === null || high === null) {
+            violations.push(
+              `${category}/${published.productId}:${scoreKey} ${point} has null bounds [${low}, ${high}]`,
+            )
+          } else if (point < low || point > high) {
+            violations.push(`${category}/${published.productId}:${scoreKey} ${point} outside [${low}, ${high}]`)
+          }
+        }
+      }
+    }
+    expect(violations).toEqual([])
   })
 })

@@ -674,14 +674,17 @@
     "productId": "airwallex",
     "storyId": "accept-card-payment-online",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Airwallex documents low-effort ways to accept online payments: no-code Payment Links, a pre-built Hosted Payment Page, and a quickstart that completes an end-to-end payment. The sandbox has instant self-serve signup, but it uses simulations rather than real money, so nothing shows a live production account approved and taking real card payments within a day. missing for 10: evidence of production account activation/KYC turnaround time, explicit card-payment go-live timeline, independent or hands-on corroboration of same-day live acceptance.",
+    "rationale": "Airwallex documents low-effort ways to accept online payments: no-code Payment Links, a pre-built Hosted Payment Page, and an end-to-end quickstart. Its sandbox offers instant self-serve signup, but that only covers test payments, not real ones. Live acceptance requires applying for a business account, with eligibility checks, approval that is not guaranteed, and features that vary by country, so going live within a day of signing up is unproven. Missing for 10: evidence of production onboarding/KYC approval time, evidence that card acceptance is enabled immediately on approval, independent or hands-on reports of same-day go-live.",
     "evidenceIds": [
       "airwallex-docs-9",
       "airwallex-docs-7",
       "airwallex-docs-18",
-      "awx-supp-sandbox"
+      "awx-supp-sandbox",
+      "airwallex-docs-27",
+      "airwallex-docs-28",
+      "airwallex-docs-29"
     ]
   },
   {
@@ -690,7 +693,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The only dispute evidence is a docs line saying Airwallex will \"facilitate your dispute management step-by-step\". Nothing documents API endpoints or agent tooling to retrieve disputes, upload evidence, or submit a response. The generic CLI and AgentOS MCP claims of read/write API access never mention disputes, so they cannot be credited to this story.",
+    "rationale": "The only disputes evidence says Airwallex 'will facilitate your dispute management step-by-step' (airwallex-docs-26). It does not document API endpoints for retrieving disputes, attaching evidence, or submitting responses. The AgentOS, MCP and CLI materials list balances, beneficiaries, cards, cashflow and a generic 'broad slice of the API', but never dispute handling, so an end-to-end agent-driven dispute workflow is unevidenced.",
     "evidenceIds": []
   },
   {
@@ -699,12 +702,12 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Airwallex documents its own building pieces for this story: real-time webhooks with delivery-status inspection and re-delivery, a Billing suite with subscriptions and recurring invoices, and agent access through the AgentOS MCP server and CLI that read and write account resources. Nothing in the evidence shows failed-payment events specifically, automated payment retry logic, or dunning outreach, so the core of the story is only implied by generic primitives. Missing for 10: documented failed-payment webhook events, API-driven payment retry or smart-retry capability, dunning or customer-outreach workflows, AgentOS skills covering collections, and independent or hands-on corroboration.",
+    "rationale": "Airwallex documents real-time webhooks with delivery-status inspection, re-delivery, and stable event IDs. It also has a subscriptions/invoicing billing suite and agent access to the account through the AgentOS MCP server and CLI. Together these give an agent a documented way to watch account events, but nothing ties them to failed-payment events or dunning specifically. Missing for 10: documented failed-payment webhook events, an automatic or API-driven payment retry capability, dunning or reminder outreach for unpaid invoices or subscriptions, and any agent skill or hands-on evidence of this workflow.",
     "evidenceIds": [
       "awx-supp-webhooks",
       "airwallex-docs-15",
       "awx-supp-billing-suite",
-      "airwallex-docs-25",
+      "airwallex-docs-13",
       "awx-supp-agentos",
       "awx-supp-agentos-mcp",
       "awx-supp-cli"
@@ -715,16 +718,17 @@
     "storyId": "agent-provisions-payment-link",
     "verdict": "partial",
     "quality": 5,
-    "confidence": "low",
-    "rationale": "Airwallex documents first-party agent tooling: the CLI exposes a broad slice of the API for read/write in sandbox or production, the AgentOS MCP writes production resources, and the Developer MCP creates sandbox test resources. It also documents Payment Links and multi-item Billing with products and a contract-to-billing skill, so an agent session could plausibly chain these together. However, no evidence explicitly shows product, price, or payment-link creation endpoints, or that these tools expose them. Missing for 10: documented API endpoints for creating products and prices, explicit API or CLI/MCP support for creating payment links, and hands-on corroboration of an end-to-end agent flow.",
+    "confidence": "medium",
+    "rationale": "Airwallex documents Payment Links and a Billing suite covering multi-item products and subscriptions. Its agent tooling can write account resources programmatically: the CLI exposes a broad slice of the API, the AgentOS MCP reads and writes production resources, the Developer MCP creates sandbox resources, and a contract-to-billing skill exists. The evidence never explicitly shows API endpoints for creating products, prices, and payment links, or an agent chaining them in one session. Missing for 10: explicit API or MCP evidence for creating product and price objects, documented programmatic payment-link creation, an end-to-end agent walkthrough of the three-step flow, independent or hands-on corroboration.",
     "evidenceIds": [
       "airwallex-docs-9",
       "airwallex-docs-13",
-      "awx-supp-billing-suite",
-      "awx-supp-cli",
+      "airwallex-docs-14",
       "awx-supp-agentos",
       "awx-supp-agentos-mcp",
-      "awx-supp-developer-mcp"
+      "awx-supp-developer-mcp",
+      "awx-supp-cli",
+      "awx-supp-billing-suite"
     ]
   },
   {
@@ -758,7 +762,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence describes no AI insights or suggestions generated inside the Airwallex web app or product UI. AgentOS (MCP server, CLI, skills) lets external AI agents such as Claude Code and Cursor read account data and build cashflow reports, but that is an external-agent toolkit, not in-product AI insights, so it earns no credit for this story.",
+    "rationale": "The evidence pack documents no AI-generated insights or suggestions inside the Airwallex product itself. AgentOS, its MCP server, CLI and skills (including cashflow reports) let external AI agents such as Claude Code and Cursor act on account data. That is an adjacent agent-tooling capability, not in-product AI insights, so it earns no credit for this story.",
     "evidenceIds": []
   },
   {
@@ -781,7 +785,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence documents AgentOS, an MCP server, a CLI, and skills plugins that let external AI agents such as Claude Code, Cursor, and Codex act on an Airwallex account. That is connectivity for third-party agents, not a built-in AI assistant inside the Airwallex product, so it earns no credit here. Nothing in the pack shows an in-app assistant that users can delegate tasks to.",
+    "rationale": "A built-in AI assistant is a plausible feature for a financial SaaS platform like Airwallex, so this axis applies. However, the evidence only documents AgentOS, which provides an MCP server, CLI, skills, and plugins for external agents such as Claude Code, Cursor, and Codex to act on the account. That is tooling for third-party agents, belonging to separate MCP and CLI stories, not an assistant built into the Airwallex product to which users delegate tasks.",
     "evidenceIds": []
   },
   {
@@ -790,14 +794,13 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Airwallex's official CLI is documented as a scriptable terminal tool for automation: it can 'script repeatable tasks, and wire Airwallex into automated systems', installs with a one-line curl script, and defaults to sandbox with a `--prod` opt-in. Scoped API keys and a separate sandbox support unattended, least-privilege runs against a test environment. Missing for 10: explicit CI-pipeline docs or examples (e.g., GitHub Actions), a documented non-interactive CLI auth path (CLI auth is described as OAuth role-gated to Owner/Admin/Finance Admin), and independent hands-on corroboration of headless use.",
+    "rationale": "The official Airwallex CLI is documented as letting you \"script repeatable tasks, and wire Airwallex into automated systems\" against sandbox (the default) or production. Scoped API keys give least-privilege, non-interactive access to the API, and the separate sandbox suits automated test runs. Missing for 10: explicit CI/CD documentation (e.g., pipeline examples or env-var config), a documented non-interactive CLI auth path (the CLI's documented auth is OAuth, role-gated to Owner/Admin/Finance Admin), and any independent or hands-on corroboration of headless use.",
     "evidenceIds": [
       "awx-supp-cli",
       "airwallex-docs-5",
-      "airwallex-probe-4",
       "airwallex-docs-4",
       "awx-supp-sandbox",
-      "airwallex-docs-20"
+      "airwallex-probe-4"
     ]
   },
   {
@@ -806,7 +809,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Airwallex is a financial and payments platform, not an agent or AI host, so acting as an MCP client that consumes other servers' tools is outside its product role. The evidence shows only that Airwallex publishes its own MCP servers (the AgentOS MCP and the Developer and Docs MCPs) for external agents to connect to. That is the server role, which belongs to a different story and does not make this client axis applicable.",
+    "rationale": "This story asks whether the product can act as an MCP client or host that consumes external MCP servers' tools. Airwallex is a financial and payments platform, not an agent or assistant that hosts tool-using AI, so this client role is a category error for it. Its documented AgentOS MCP and Developer MCP make it an MCP server for other agents, which belongs to the separate server story and is not credited here.",
     "evidenceIds": []
   },
   {
@@ -815,7 +818,7 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Airwallex documents an official hosted remote AgentOS MCP server at https://mcp.airwallex.com/mcp. It uses OAuth, has safety defaults (no money-out actions by default), and gives copy-paste connection commands for any MCP client. Airwallex also ships a sandbox Developer MCP and an unauthenticated Docs MCP, plus one-step plugins for Claude Code and Cursor, and a probe confirms the docs page exists. Missing for 10: independent or hands-on corroboration that agents connect and operate successfully through the MCP server.",
+    "rationale": "Airwallex documents an official hosted AgentOS MCP server at https://mcp.airwallex.com/mcp. It uses OAuth against the production account, defaults to no money-out actions, and gives copy-paste setup for Claude Code and other MCP clients. A separate Developer MCP (sandbox) and a no-auth Docs MCP are also documented, and a probe confirms the MCP docs page exists. Missing for 10: independent or hands-on corroboration that the MCP endpoints work as described, and a documented list of the tools each server exposes.",
     "evidenceIds": [
       "awx-supp-agentos-mcp",
       "awx-supp-agentos",
@@ -831,7 +834,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Airwallex's first-party AgentOS lets users operate their production account in natural language through AI agents. It bundles a hosted MCP server, the CLI, pre-built skills (beneficiary creation, card provisioning, cashflow reports, contract-to-billing) and one-step plugins for Claude Code, Cowork and Cursor, so agents can run multi-step financial workflows on the user's behalf. Natural-language operation depends on a third-party agent client, and money-out actions are disabled by default. missing for 10: a native in-product natural-language interface, documented coverage of money-movement actions via agents, independent or hands-on corroboration that natural-language operation works as claimed.",
+    "rationale": "Airwallex ships AgentOS, a first-party toolkit that lets users drive their production account through natural-language requests in agents like Claude Code, Claude Cowork and Cursor. It bundles a hosted remote MCP server, the CLI, pre-built skills (beneficiary creation, card provisioning, cashflow reports) and one-step plugins. Money-out actions are off by default, and natural-language operation depends on a third-party agent client rather than a native in-product assistant. Missing for 10: a native natural-language interface inside the Airwallex web app, documented natural-language money-movement workflows (blocked by default), and independent or hands-on corroboration that agent-driven operation works as claimed.",
     "evidenceIds": [
       "awx-supp-agentos",
       "awx-supp-agentos-mcp",
@@ -846,7 +849,7 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Airwallex documents an official CLI with a one-line install script. It exposes a broad slice of the API as terminal commands in sandbox (the default) or production via `--prod`. It explicitly targets AI coding agents such as Claude Code, Cursor and Codex, and serves as the foundation of AgentOS, with OAuth role-gated auth and interactive API exploration; a probe confirms the CLI docs page exists. missing for 10: independent or hands-on corroboration of the CLI working in agent workflows.",
+    "rationale": "Airwallex documents an official CLI that exposes a broad slice of the API as terminal commands in sandbox or production, installed by a one-line script with OAuth auth. It explicitly targets AI coding agents (Claude Code, Cursor, Codex) and serves as the foundation of AgentOS, with plugin-based installation into agent hosts. Missing for 10: independent or hands-on corroboration of the CLI's agent workflows (all evidence is vendor docs plus a probe confirming the docs page exists).",
     "evidenceIds": [
       "awx-supp-cli",
       "airwallex-docs-5",
@@ -861,17 +864,17 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Airwallex documents a public API for programmatic use. It covers creating connected accounts, scoped API keys with Read/Write permissions per API, and bearer-token authentication guidance aimed at AI agents. The official CLI exposes a broad slice of the API and lets you explore endpoints and schemas interactively, and a full API-accessible sandbox supports testing. Missing for 10: a directly cited API reference or OpenAPI spec, and independent or hands-on corroboration of API usage (probes only confirm llms.txt, the CLI and the MCP docs).",
+    "rationale": "Airwallex's own documentation describes a public API that can be driven programmatically. It covers scoped Read/Write API keys, bearer-token authentication guidance written for AI agents, sandbox access to all products via the API, programmatic connected-account creation and transfers, and webhooks. The official CLI also exposes a broad slice of the API and lets users explore endpoints and schemas interactively, with agent-oriented MCP servers built on top. Missing for 10: a directly cited API reference or OpenAPI spec page, and independent or hands-on corroboration of API use.",
     "evidenceIds": [
-      "airwallex-docs-1",
       "airwallex-docs-4",
-      "awx-supp-cli",
-      "airwallex-docs-20",
       "awx-supp-ai-instructions",
       "awx-supp-sandbox",
-      "airwallex-docs-16",
+      "airwallex-docs-1",
+      "airwallex-docs-12",
+      "awx-supp-cli",
+      "airwallex-docs-20",
       "awx-supp-webhooks",
-      "airwallex-probe-4"
+      "awx-supp-agentos-mcp"
     ]
   },
   {
@@ -894,7 +897,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Airwallex documents first-party client-side SDKs: the Airwallex.js quickstart, the `@airwallex/components-sdk` package that its AI-agent instructions recommend over the legacy `airwallex-payment-elements`, and `createElement(...)` drop-in elements. However, the evidence covers only browser/payment-UI components, not general-purpose server-side SDKs across languages for the wider API. The CLI and MCP servers are separate tools and do not count as SDKs. Missing for 10: evidenced official server-side SDKs (e.g., Node/Python/Java/Go), SDK coverage of non-payments APIs such as transfers, issuing, and billing, SDK reference docs or versioning, and independent hands-on corroboration.",
+    "rationale": "The evidence shows official client-side SDKs. The quickstart uses Airwallex.js, the AI-agent instructions steer integrators to the official `@airwallex/components-sdk` package over the legacy `airwallex-payment-elements` library, and the drop-in element is configured via `createElement(...)`. Nothing in the pack shows official server-side or multi-language SDKs (e.g., Node, Python, Java); the CLI and MCP servers are separate tools and earn no credit here. Missing for 10: documented official server-side SDKs across languages, SDK reference docs/versioning, independent corroboration.",
     "evidenceIds": [
       "airwallex-docs-18",
       "awx-supp-ai-instructions",
@@ -907,10 +910,11 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Airwallex's first-party docs describe webhooks that push real-time notifications to your application when account events occur. They also document delivery semantics: endpoints must return 200, each event carries a stable `id` for idempotent retry handling, and the web app shows delivery status (success, queued, failed) and lets you re-deliver events. Missing for 10: explicit documentation of how to register endpoints and select event types (via API or UI), signature verification details, and independent or hands-on corroboration.",
+    "rationale": "Airwallex documents first-party webhooks that send real-time push notifications to your application when account events occur. It also documents reliability semantics: a 200-acknowledgement requirement, stable event IDs for idempotent retry handling, delivery-status inspection and manual re-delivery. The Developer MCP can simulate events in the sandbox for testing. Missing for 10: explicit documentation of endpoint registration and per-event-type subscription selection, signature verification details, and independent or hands-on corroboration.",
     "evidenceIds": [
       "airwallex-docs-15",
-      "awx-supp-webhooks"
+      "awx-supp-webhooks",
+      "awx-supp-developer-mcp"
     ]
   },
   {
@@ -918,11 +922,12 @@
     "storyId": "api-interactive-docs",
     "verdict": "partial",
     "quality": 4,
-    "confidence": "low",
-    "rationale": "The only on-topic evidence is the CLI docs, which say users can 'explore the API interactively — discover endpoints, preview requests, and inspect schemas.' The CLI defaults to sandbox, so commands can run safely against test resources. This is an interactive, runnable API exploration path, but it is terminal-based rather than a documented interactive API reference. Missing for 10: a documented web API reference with in-page 'try it' runnable examples, per-endpoint runnable code samples, and independent or hands-on corroboration.",
+    "confidence": "medium",
+    "rationale": "Airwallex's own CLI documents interactive API exploration: discovering endpoints, previewing requests, and inspecting schemas. Those requests can be executed against a self-serve sandbox, and the Developer MCP lets agents call sandbox endpoints. However, this is terminal- and agent-based exploration, not an evidenced browsable interactive API reference with embedded runnable examples. Missing for 10: a documented web API reference with try-it/runnable request examples, per-endpoint code samples, and independent or hands-on corroboration.",
     "evidenceIds": [
       "airwallex-docs-20",
       "awx-supp-cli",
+      "awx-supp-developer-mcp",
       "awx-supp-sandbox"
     ]
   },
@@ -932,7 +937,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nothing in the evidence documents a downloadable OpenAPI or equivalent machine-readable API specification for Airwallex. The CLI's interactive schema inspection, llms.txt, the Markdown docs, and the MCP servers are adjacent capabilities, not a downloadable spec, so they earn no credit. A published API spec is a fair question for an API-first payments platform, so the verdict is none rather than na.",
+    "rationale": "Nothing in the evidence pack shows a downloadable OpenAPI or equivalent machine-readable API specification for Airwallex. The CLI's interactive schema inspection, llms.txt, the MCP servers and the AI-agent instruction pages are adjacent agent-facing features, not a published API spec file, so they earn no credit for this story.",
     "evidenceIds": []
   },
   {
@@ -941,14 +946,15 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Airwallex documents a self-serve sandbox that is completely separate from production, with per-product simulations and no real money involved. It is AI-native: the CLI defaults to sandbox and requires an explicit `--prod` opt-in, and the Developer MCP endpoint (mcp.sandbox.airwallex.com) lets agents create test resources, simulate events and call sandbox endpoints. The Quickstart also walks through an end-to-end sandbox payment. Missing for 10: independent or hands-on corroboration, and sandbox coverage of Connected Account APIs, which are excluded.",
+    "rationale": "Airwallex documents a self-serve sandbox that is completely separate from production, covers all products, and has per-product simulation docs. AI agents get direct sandbox access through the Developer MCP (mcp.sandbox.airwallex.com), which can create test resources and simulate events, and through the CLI, which defaults to sandbox and needs an explicit --prod opt-in. missing for 10: sandbox coverage of Connected Account APIs (explicitly excluded), independent or hands-on corroboration of sandbox behavior.",
     "evidenceIds": [
       "airwallex-docs-6",
       "awx-supp-sandbox",
-      "awx-supp-cli",
-      "awx-supp-developer-mcp",
       "airwallex-docs-2",
-      "airwallex-docs-18"
+      "awx-supp-developer-mcp",
+      "awx-supp-cli",
+      "airwallex-docs-18",
+      "awx-supp-agentos"
     ]
   },
   {
@@ -957,7 +963,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nothing in the evidence pack documents API versioning (e.g., version headers or dated API versions) or a published deprecation policy for Airwallex APIs. The AI-agent instructions only steer agents away from a legacy front-end library toward a newer SDK. That is an adjacent note, not a versioned-API deprecation policy, so it earns no credit.",
+    "rationale": "The evidence pack contains nothing about API versioning (version headers, dated versions, changelogs) or a documented deprecation policy. The only related item is AI-agent guidance steering developers from a legacy client library to the newer components SDK. That is an adjacent feature, not a versioned-API deprecation policy, so it earns no credit.",
     "evidenceIds": []
   },
   {
@@ -966,7 +972,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Airwallex's own Merchant of Record add-on manages sales tax, VAT, and GST compliance for each sale, with Airwallex acting as legal seller. However, it is beta with limited eligibility and covers digital products only. There is no documented standalone tax-calculation or collection feature for merchants outside MoR. Missing for 10: tax calculation for physical goods and non-MoR merchants, general availability beyond beta, documentation of how rates are computed and shown per transaction, independent or hands-on corroboration.",
+    "rationale": "Airwallex's own Merchant of Record add-on has Airwallex act as the legal seller and manage sales tax, VAT, and GST compliance for each sale, and it can be enabled without rebuilding the Payments integration. That is first-party automatic tax handling, but it is in beta with limited eligibility and covers digital products only, with physical goods explicitly unsupported. missing for 10: tax calculation for physical goods, general availability beyond beta, a standalone tax calculation/collection capability for merchants selling as themselves (e.g. tax on invoices or subscriptions), detail on how tax is calculated and shown per transaction, and independent or hands-on corroboration.",
     "evidenceIds": [
       "airwallex-docs-10",
       "awx-supp-mor"
@@ -978,7 +984,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nothing in the evidence documents a native bulk or batch capability, such as batch transfers, bulk beneficiary creation, or batch API endpoints. The CLI's ability to \"script repeatable tasks\" is only a developer building block. \"Multi-item\" subscriptions are an adjacent billing feature, and AgentOS \"multi-step workflows\" are sequential actions, not bulk operations across many items.",
+    "rationale": "Bulk operations are a fair question for a financial platform, such as batch transfers or bulk beneficiary creation. However, the evidence pack documents no batch or bulk endpoint, CLI command, or AgentOS skill. The CLI's \"script repeatable tasks\" and AgentOS \"multi-step workflows\" are building blocks or adjacent features, and \"multi-item\" subscriptions means billing several products on one subscription, not bulk actions across many items.",
     "evidenceIds": []
   },
   {
@@ -987,7 +993,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack documents no user-definable rules engine that automatically runs actions when events occur. Webhooks, the CLI and AgentOS skills are developer building blocks or agent-invoked workflows, not native event-triggered rules, so they earn no credit. Recurring invoices are schedule-based and adjacent rather than event-rule automation.",
+    "rationale": "The evidence pack documents no product-native rules engine or event-triggered automation that a user can configure in Airwallex. Webhooks only push event notifications to your own application, so the user would have to build the triggered actions themselves; that makes them a developer building block, not the capability. AgentOS skills are agent-invoked workflows, and recurring invoices and subscriptions are fixed billing schedules rather than user-defined event rules.",
     "evidenceIds": []
   },
   {
@@ -1005,7 +1011,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Airwallex ships automation surfaces (AgentOS skills and multi-step workflows, plus a scriptable CLI), so asking about versioning, review, and rollback of automations is a fair question. However, no evidence shows the product itself versions automations, provides a review or approval flow for changes, or rolls back to a prior version. Scripting the CLI from a user's own repo is a user-side workaround, and sandbox testing and money-out guardrails are adjacent controls, so neither earns credit.",
+    "rationale": "Airwallex documents automation surfaces, including AgentOS skills and multi-step workflows, the CLI for scripting repeatable tasks, and webhooks, so the axis applies. However, no evidence shows any capability to version, review, or roll back those automations. Re-delivering webhook events and sandbox testing are adjacent features and earn no credit.",
     "evidenceIds": []
   },
   {
@@ -1014,7 +1020,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Airwallex Billing documents subscription management (multi-item, multi-frequency) and recurring invoices. However, nothing in the evidence describes automatic retries of failed subscription payments, smart dunning logic, or recovery emails. Webhook delivery retries are an adjacent feature and do not count toward this story.",
+    "rationale": "Airwallex Billing documents subscription management (multi-item, multi-frequency) and recurring invoices, so this axis applies. However, nothing in the evidence describes automatic retry of failed subscription payments, dunning logic, or recovery emails. The webhook re-delivery semantics cover event-notification delivery, not payment recovery, so they earn no credit.",
     "evidenceIds": []
   },
   {
@@ -1038,7 +1044,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Fraud screening is a fair question for a payments platform like Airwallex, so the axis applies. However, nothing in the pack documents ML fraud scores or custom block/review/allow rules. The only nearby items are a passing mention of 'risk' simulation in the sandbox and dispute-management guidance, which are adjacent features and earn no credit for this story.",
+    "rationale": "Fraud screening with ML scores and custom block/review/allow rules is a fair axis for a payments platform like Airwallex. The evidence pack never documents fraud scores or a rules engine. The only nearby items are a passing mention of 'risk' sandbox simulations and a disputes-management note, which are adjacent features and earn no credit.",
     "evidenceIds": []
   },
   {
@@ -1062,7 +1068,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Idempotency keys are a fair axis for a payments API, but nothing in the evidence pack documents idempotency keys or a safe-retry mechanism for outbound API requests. The only related item describes stable webhook event IDs for de-duplicating inbound event deliveries, which is a different capability and earns no credit here.",
+    "rationale": "Idempotent API retries are a fair question for a payments API, but nothing in the evidence pack documents idempotency keys or safe request retries on Airwallex's API. The only retry-related material covers deduplicating inbound webhook events by their stable event ID. That is an adjacent feature for event delivery, not protection against duplicate charges from retried outbound requests, so it earns no credit.",
     "evidenceIds": []
   },
   {
@@ -1100,25 +1106,28 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Airwallex's Multi-Currency Pricing API lets merchants display prices and take payment in shoppers' preferred currencies with local payment methods. Payments settle like-for-like into a natively multi-currency Wallet, avoiding forced FX conversion, and Transfers move funds to the merchant's own bank accounts. missing for 10: explicit documentation of FX rate/markup transparency and of converting settled balances into the founder's home currency, plus independent or hands-on corroboration.",
+    "rationale": "The Multi-Currency Pricing API lets merchants display prices and take payment in shoppers' preferred currencies with local payment methods. Funds settle like-for-like into a natively multi-currency wallet, avoiding forced conversion, and Transfers can move them to the merchant's own bank accounts. Feature availability varies by the business's registered location. missing for 10: explicit documentation of FX rate/markup transparency at conversion, a documented automatic convert-and-settle-to-home-currency bank payout flow, independent or hands-on corroboration.",
     "evidenceIds": [
       "airwallex-docs-16",
       "airwallex-docs-23",
       "airwallex-docs-11",
       "airwallex-docs-12",
-      "airwallex-docs-14"
+      "airwallex-docs-14",
+      "airwallex-docs-29"
     ]
   },
   {
     "productId": "airwallex",
     "storyId": "no-code-payment-links",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Airwallex documents a first-party Payment Links product as 'the easiest way for you to accept payments online without a digital storefront.' Its invoicing docs also describe generating digital payment links that support 160+ local payment methods, which covers the core of a shareable link for selling without building a site. Missing for 10: explicit evidence that links can be created from the dashboard with no code, evidence that a founder can start selling immediately (onboarding or activation speed), and independent or hands-on corroboration.",
+    "rationale": "Airwallex documents its own Payment Links as \"the easiest way for you to accept payments online without a digital storefront,\" and its invoicing docs mention generating digital payment links, so the core capability is first-party. The evidence never explicitly says links are created from the dashboard without code. \"Start selling immediately\" is weakened because onboarding depends on registration location and eligibility criteria that do not guarantee approval, and features vary by region. Missing for 10: explicit documentation of no-code dashboard creation and sharing of links, evidence of instant go-live after signup, independent or hands-on corroboration.",
     "evidenceIds": [
       "airwallex-docs-9",
-      "airwallex-docs-14"
+      "airwallex-docs-14",
+      "airwallex-docs-27",
+      "airwallex-docs-29"
     ]
   },
   {
@@ -1127,16 +1136,19 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Airwallex documents broad programmatic coverage: connected accounts, transfers, billing and invoicing, refunds and webhooks. Its CLI and AgentOS MCP expose read and write access to production resources such as balances, beneficiaries and cards. However, the CLI explicitly covers only \"a broad slice\" of the API, and nothing claims full parity with the web app. Webhook delivery inspection and re-delivery are described only as web-app features. Missing for 10: an explicit API/UI parity claim, evidence that UI-only operations like webhook re-delivery are API-accessible, and independent hands-on corroboration of coverage.",
+    "rationale": "Airwallex documents broad programmatic coverage: connected accounts, transfers, refunds, subscriptions, invoicing, payment links, webhooks and multi-currency pricing are all API-accessible. Its official CLI and AgentOS MCP let agents read and write production resources. However, nothing in the evidence states that the API matches the web app feature for feature. The CLI covers only \"a broad slice\" of the API, and some functions, such as webhook delivery inspection and re-delivery, are described only as web-app features. Missing for 10: an explicit documented claim of full API/UI parity, API equivalents for UI-only operations such as webhook re-delivery, and independent or hands-on corroboration of parity.",
     "evidenceIds": [
       "airwallex-docs-1",
       "airwallex-docs-12",
       "airwallex-docs-17",
+      "airwallex-docs-14",
+      "airwallex-docs-13",
+      "airwallex-docs-16",
       "awx-supp-cli",
       "awx-supp-agentos",
       "awx-supp-agentos-mcp",
       "awx-supp-webhooks",
-      "awx-supp-billing-suite"
+      "awx-supp-sandbox"
     ]
   },
   {
@@ -1145,7 +1157,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data export applies to a financial platform like Airwallex, but the evidence pack never documents a bulk export feature, open-format downloads (such as CSV or JSON statements), or an offboarding or portability path. The API and CLI read access (awx-supp-cli) and AgentOS cashflow reports are developer building blocks or adjacent features, not a documented 'export all data and leave' capability, so they earn no credit.",
+    "rationale": "Data portability applies to a financial platform like Airwallex, but the evidence pack documents no bulk data export, open-format (CSV/JSON) download, or account-closure/offboarding flow. The CLI and API can read resources and AgentOS can build cashflow reports, but these are developer building blocks or adjacent features, not a documented 'export everything and leave' capability.",
     "evidenceIds": []
   },
   {
@@ -1154,7 +1166,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Whether the source is available under an open license is a fair question for a software platform, so the axis applies. Nothing in the evidence pack shows that Airwallex publishes its product source under an open license. The CLI, MCP servers, AgentOS, and docs are all presented as proprietary hosted or installable tooling, with no license or repository information.",
+    "rationale": "Open-source availability is a fair question for a payments and financial platform, since some products in this category publish their source, so the axis applies. The evidence pack documents a CLI, MCP servers, AgentOS, and an llms.txt, but nothing shows the product's source is published under an open license. The 'software license' mention in the billing docs is about subscription billing and does not count.",
     "evidenceIds": []
   },
   {
@@ -1163,7 +1175,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Self-hosting is a fair question for payments and billing platforms, since self-hostable billing and payment-orchestration alternatives exist, so the axis applies. Nothing in the evidence shows a self-hostable deployment of Airwallex. Every documented component is hosted or Airwallex-operated: the remote MCP endpoint, the Hosted Payment Page and the sandbox. The CLI is only a client to the hosted service.",
+    "rationale": "Self-hosting is a fair question for a payments and financial platform, since self-hostable payment and billing stacks exist, so the axis applies. Nothing in the evidence pack shows Airwallex offering a self-hostable or on-prem deployment of its core product. Every documented component (payments, the AgentOS MCP server at mcp.airwallex.com, the hosted payment page, the sandbox) is a vendor-hosted service, and the CLI and MCP connectors are only clients of that service.",
     "evidenceIds": []
   },
   {
@@ -1172,7 +1184,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Payout scheduling and per-payout reconciliation are fair questions for a payments platform like Airwallex, so the axis applies. However, nothing in the evidence documents controlling a settlement schedule or a per-payout breakdown of charges, fees, and refunds. The related items do not cover it: settlement into a multi-currency balance, issuing refunds, and outbound Transfers are adjacent features, not reconciliation.",
+    "rationale": "The evidence pack has nothing on controlling a settlement or payout schedule, and nothing on a per-payout breakdown of the charges, fees, and refunds in each settlement. The only nearby items don't qualify. Like-for-like settlement into the Airwallex Wallet is about settlement currency, not schedule or line-item reconciliation. Transfers are outbound payments to suppliers and employees, a different capability. The refunds docs cover issuing refunds, not reconciling them against payouts. AgentOS cashflow reports are an adjacent feature.",
     "evidenceIds": []
   },
   {
@@ -1194,7 +1206,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data-residency choice is a fair question for a global financial platform, so the axis applies. Nothing in the pack documents any way to select a storage region or residency. The multi-currency, sandbox/production and MCP endpoint items concern currencies and environments, not where data is stored. The community allegation about China/HK engineering access is a concern, not evidence of a residency control, so it earns no credit.",
+    "rationale": "Data residency is a fair question for a global financial platform, but the evidence pack documents no customer-selectable data storage region. The help-center items only say that the onboarding Airwallex entity and available features depend on where the business is registered, which is not the same as choosing where data is stored. The community allegation about China/HK staff access is a concern rather than evidence of a residency feature, and there is no vendor claim for it to contradict.",
     "evidenceIds": []
   },
   {
@@ -1203,7 +1215,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "An AI-training opt-out or data-usage policy is a fair question for a financial SaaS platform that holds customer data, so the axis applies. Nothing in the evidence pack documents a policy or control that keeps customer data out of AI model training. The AI-related docs (AgentOS, MCP servers, CLI, scoped API keys) cover agent access and permissions, not training-data use.",
+    "rationale": "An AI-training opt-out or no-training data commitment is a fair privacy question for a financial SaaS platform that holds sensitive customer data, so the axis applies. The evidence pack has no policy, setting, or contractual commitment on whether customer data is used to train AI models. The AgentOS, MCP and CLI docs cover agent access and safety guardrails, not training-data use, and the community data-residency allegation is off-topic.",
     "evidenceIds": []
   },
   {
@@ -1212,7 +1224,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data retention and deletion controls are a fair question for a SaaS financial platform like Airwallex, so the axis applies. However, nothing in the evidence pack documents user-facing retention settings, deletion APIs, or data-erasure workflows. The docs cover scoped API keys, webhooks, the CLI, MCP servers and payments features, none of which address controlling retention or deletion.",
+    "rationale": "Data retention and deletion controls are a fair question for a financial platform that holds business and customer data, so the axis applies. Nothing in the evidence pack documents retention settings, deletion requests, or data-purge APIs. Scoped API keys and sandbox separation are adjacent access controls and earn no credit toward retention or deletion.",
     "evidenceIds": []
   },
   {
@@ -1221,7 +1233,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Opting out of telemetry is a fair question for a platform that ships a CLI, MCP servers, and web SDKs, so the axis applies. However, nothing in the evidence documents a telemetry or usage-tracking opt-out, such as a CLI flag, environment variable, or account privacy setting. The CLI, AgentOS and SDK docs cover authentication, scoping and sandbox defaults, which are adjacent controls and earn no credit.",
+    "rationale": "Telemetry and usage-tracking opt-out is a fair question for a platform that ships a CLI, MCP servers, and AI agent plugins, so the axis applies. However, nothing in the evidence pack documents a telemetry setting, an analytics opt-out, or a do-not-track control for the Airwallex CLI, AgentOS, or the developer MCP connectors.",
     "evidenceIds": []
   },
   {
@@ -1230,7 +1242,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Airwallex Billing documents its own subscription management, including multi-item and multi-frequency recurring billing and recurring invoices, built on top of payments acceptance. That covers recurring subscriptions with plan-like structures. Nothing in the evidence addresses trials, mid-cycle upgrades/downgrades, or proration. Missing for 10: documented free trials, plan upgrade/downgrade flows, proration logic, API-level subscription endpoint detail, independent/hands-on corroboration.",
+    "rationale": "Airwallex documents a first-party subscription management product under Airwallex Billing. It supports multi-item subscriptions (e.g., a license plus support), multi-frequency schedules (annual fee plus monthly support), recurring invoices, and hosted or embedded billing checkout, so the recurring-billing core is covered. The pack says nothing about trials, plan upgrades or downgrades, or proration. missing for 10: documented free trials, mid-cycle upgrade/downgrade handling, proration logic, explicit plan/price API objects, independent or hands-on corroboration.",
     "evidenceIds": [
       "airwallex-docs-13",
       "airwallex-docs-24",
@@ -1243,8 +1255,8 @@
     "storyId": "refunds-full-partial",
     "verdict": "partial",
     "quality": 3,
-    "confidence": "medium",
-    "rationale": "Airwallex's first-party refunds page confirms that merchants can issue refunds to return shopper funds, so the core refund capability exists. The snippet does not say whether partial amounts are supported, or whether refunds can be issued from the dashboard, the API, or both. Missing for 10: explicit evidence of partial-amount refunds, documented dashboard refund flow, documented refund API endpoint, independent or hands-on corroboration.",
+    "confidence": "low",
+    "rationale": "Airwallex's own refunds documentation confirms that merchants can issue refunds to return shopper funds, so the core capability exists. The evidence is a single thin line that does not say whether refunds can be partial or full, or whether they can be issued from the dashboard, the API, or both. Missing for 10: evidence of partial vs. full refund amounts, evidence of dashboard-initiated refunds, evidence of an API refund endpoint, independent or hands-on corroboration.",
     "evidenceIds": [
       "airwallex-docs-17"
     ]
@@ -1255,7 +1267,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Airwallex has a first-party disputes page saying it \"will facilitate your dispute management step-by-step,\" which shows a documented dispute-handling flow. The pack does not show how evidence is submitted or how a dispute's status is tracked through to resolution. missing for 10: documented structured evidence submission (fields, file uploads, API or dashboard flow), dispute lifecycle states and status tracking, dispute-specific notifications or events, independent or hands-on corroboration.",
+    "rationale": "Airwallex has a first-party disputes page saying it will \"facilitate your dispute management step-by-step,\" which implies a guided dispute-handling process. Nothing in the pack shows how evidence is submitted or how dispute status is tracked to resolution. missing for 10: documented structured evidence submission (fields, file uploads, API or dashboard), dispute lifecycle states and status tracking, dispute-specific events or notifications, independent or hands-on corroboration.",
     "evidenceIds": [
       "airwallex-docs-26"
     ]
@@ -1266,7 +1278,7 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Airwallex documents a self-serve sandbox, fully separate from production, that covers all products in the web app and API except Connected Account APIs. It has per-product simulation docs (payments, payouts, deposits, issuing, risk) and an end-to-end payment quickstart run in sandbox, and the CLI and Developer MCP can create test resources and simulate events. The evidence never mentions test card numbers or scenario-specific simulation of declines and disputes, and parity with production is limited by the Connected Account exclusion. Missing for 10: documented test cards for decline/3DS/error scenarios, documented dispute/chargeback simulation in sandbox, full production parity (Connected Account APIs excluded), independent hands-on corroboration.",
+    "rationale": "Airwallex documents a self-serve sandbox, separate from production, that covers all products except Connected Account APIs. It has per-product simulation docs (payments, payouts, issuing, risk), and its quickstart walks through a full end-to-end payment in the sandbox. The CLI defaults to sandbox, and the Developer MCP can simulate events. However, nothing in the evidence documents test card numbers or simulating declines and disputes. Missing for 10: documented test cards for decline and other scenarios, dispute simulation in sandbox, independent or hands-on corroboration of sandbox fidelity to production.",
     "evidenceIds": [
       "awx-supp-sandbox",
       "airwallex-docs-6",
@@ -1294,7 +1306,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack does not document any settlement reconciliation or itemized settlement report that breaks down fees, refunds, and chargebacks against bank deposits. The refunds, disputes, multi-currency balance settlement, and AgentOS cashflow-report docs are adjacent features, not this reconciliation capability, so they earn no credit.",
+    "rationale": "Reconciling settlements is a fair question for a payments platform, so the axis applies. However, the pack has no documented settlement or reconciliation reports that itemize fees, refunds and chargebacks against bank deposits. The cited material covers adjacent features only: settling into a multi-currency wallet, issuing refunds, dispute handling, and AgentOS building 'cashflow reports'. None of these is evidence of the reconciliation capability itself.",
     "evidenceIds": []
   },
   {
@@ -4509,18 +4521,18 @@
     "productId": "kushki",
     "storyId": "accept-card-payment-online",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 3,
     "confidence": "low",
-    "rationale": "Kushki's own docs cover online card acceptance: one-time card payments, an accept-a-payment guide, test data and moving to production. It also offers low-code paths such as Smartlink payment links, a hosted payment button, the Kajita checkout form and e-commerce plugins, plus an aggregator model that could ease onboarding. Nothing in the pack shows how long signup, approval or activation takes, so the 'within a day' part of the story is unproven. Missing for 10: documented signup-to-live timeline or self-serve instant activation, merchant approval/KYC turnaround, independent or hands-on corroboration of fast onboarding.",
+    "rationale": "Kushki's own docs clearly cover accepting online card payments, through the card-payment API, the kushki.js library, the Kajita checkout form, Smartlink payment links and e-commerce plugins. There is also a test-data and move-to-production guide, and an aggregator integration model is mentioned. Nothing in the evidence shows self-serve signup, onboarding or KYC turnaround, or how long it takes to go live, which is the defining 'within a day' part of the story. missing for 10: evidence of self-serve signup and same-day activation, documented time-to-production or onboarding/approval timelines, hands-on or independent reports of fast go-live.",
     "evidenceIds": [
       "kushki-docs-1",
       "kushki-docs-2",
       "kushki-docs-11",
       "kushki-docs-13",
       "kushki-docs-14",
-      "kushki-docs-16",
       "kushki-docs-17",
-      "kushki-docs-20"
+      "kushki-docs-20",
+      "kushki-docs-36"
     ]
   },
   {
@@ -4529,7 +4541,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Kushki is a payment processor, so API-driven dispute and chargeback handling is an applicable axis. Nothing in the evidence pack documents a dispute or chargeback API for retrieving disputes, assembling evidence, or submitting responses. The docs cover payments, refunds, 3DS and network tokens only, and the probes found no OpenAPI spec or llms.txt that would surface such endpoints.",
+    "rationale": "Dispute handling is a fair axis for a payments gateway like Kushki. However, the evidence pack documents no API for retrieving disputes or chargebacks, attaching evidence, or submitting dispute responses. The refunds/voids docs and the llms.txt agent-readable docs index are adjacent features and earn no credit toward this story.",
     "evidenceIds": []
   },
   {
@@ -4538,7 +4550,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Kushki is a payments API platform, so monitoring failed payments and driving retries and dunning is a fair question to ask of it. However, the evidence pack only documents one-time card charges, authorization/capture, refunds, 3DS, network tokens and payment links. Nothing in it shows webhooks for failed-payment events, automated retry logic, or dunning outreach, and the probes found no OpenAPI spec or llms.txt to support agent-driven workflows.",
+    "rationale": "Kushki documents recurring and scheduled charges (cargos recurrentes, cargos calendarizados) and webhooks, but the only webhooks shown are for card-present payments. Nothing in the pack covers failed-payment notifications, automated retries, or dunning outreach, so these adjacent features earn no credit. An agent-driven failed-payment recovery workflow is a fair axis for a payments platform with subscriptions, so the verdict is none rather than na.",
     "evidenceIds": []
   },
   {
@@ -4547,7 +4559,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The story asks for API-driven creation of a product, a price, and a payment link in one agent session. The pack shows no product or price catalog objects and no API endpoint for creating payment links. Smartlink is only marketed as a way to create and customize payment links, with no indication this can be done programmatically. The rest of the evidence covers card charges, refunds, and tokenization, which are off this axis, and the probes found no OpenAPI spec or llms.txt.",
+    "rationale": "Kushki markets Smartlink for creating and customizing payment links (kushki-docs-14), but nothing in the evidence shows those links can be created through an API. There is also no evidence of product or price catalog objects an agent could provision in one session. The API docs cover charges, subscriptions and refunds, not catalog or link provisioning, and no OpenAPI spec was found.",
     "evidenceIds": []
   },
   {
@@ -4556,17 +4568,21 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Kushki is a payment processor, so pulling payout and balance-transaction data to reconcile bank deposits to their underlying charges is a fair question for it. The evidence covers only charge acceptance, refunds and outbound supplier disbursements (an adjacent feature, not settlement reporting). Nothing shows a settlement, payout or balance-transaction API that links deposits to charges.",
+    "rationale": "Kushki is a payment processor, so payout reconciliation is a fair question to ask of it. The evidence pack covers charge acceptance, captures, refunds, 3DS and tokens, but none of it documents an API for settlement or payout records, balance transactions, or mapping bank deposits to underlying charges. The supplier-payment page (kushki-docs-18) describes outbound disbursements to suppliers, employees and partners, which is a different capability from settlement reconciliation, so it earns no credit here.",
     "evidenceIds": []
   },
   {
     "productId": "kushki",
     "storyId": "agentic-agent-docs",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Kushki is a payments API platform, so offering llms.txt or agent-oriented docs is a fair question for this kind of product. The direct probes found nothing: llms.txt, markdown doc variants and OpenAPI specs all returned 404, and the human-oriented docs pages never mention agent-oriented documentation.",
-    "evidenceIds": []
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "high",
+    "rationale": "Live probes show docs.kushki.com/llms.txt returns HTTP 200 as text/plain. It is a markdown docs index linking .md versions of the docs pages, and the .md pages themselves resolve (e.g., cl.md), so an agent can be pointed at agent-readable docs. The quality is limited: the probed llms.txt entries have empty descriptions, and the .md pages contain inline HTML styling rather than clean markdown. missing for 10: descriptive llms.txt entries or an llms-full.txt, clean markdown without embedded HTML, first-party documentation of agent-oriented docs, independent or hands-on corroboration of agent use.",
+    "evidenceIds": [
+      "kushki-probe-1",
+      "kushki-probe-2",
+      "kushki-probe-4"
+    ]
   },
   {
     "productId": "kushki",
@@ -4574,7 +4590,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The axis applies to a payments platform with merchant data, but the evidence only covers card payments, refunds, 3DS, payment links, plugins and doc probes. None of it mentions AI-generated insights or suggestions inside the product.",
+    "rationale": "Kushki is a payments platform, and AI-generated insights over transaction data is a fair thing to ask of such a product, so the axis applies. Nothing in the evidence pack describes in-product AI insights, analytics suggestions or recommendations. The llms.txt and markdown docs probes only make the documentation machine-readable, which is an adjacent capability and does not deliver in-product insights.",
     "evidenceIds": []
   },
   {
@@ -4583,7 +4599,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Background automation, such as scheduled or recurring charges, automated payouts, or rule-based workflows, is a fair axis for a payments platform, so the story applies. The evidence pack covers only one-time card payments, auth/capture, refunds, payment links, and supplier payouts, with nothing documenting automations that run on their own. Without that evidence the verdict is none.",
+    "rationale": "A payments platform could plausibly offer user-configurable background automations, so the axis applies. The evidence pack documents only payment flows (card charges, authorization and capture, refunds, 3DS, POS) plus an llms.txt docs index. The recurring and scheduled charge features (kushki-docs-29, kushki-docs-30) are billing capabilities that belong to a subscriptions story, not a general facility for setting up autonomous automations, so they earn no credit here.",
     "evidenceIds": []
   },
   {
@@ -4592,22 +4608,25 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A built-in AI assistant is a plausible feature for a payments platform's merchant console, so the axis applies. However, the evidence covers only card payments, payment links, POS, payouts and integrations. Nothing mentions an in-product AI assistant or the ability to delegate tasks to one.",
+    "rationale": "Kushki is a payments platform, and an in-product AI assistant (for example in a merchant dashboard) is a fair capability for this kind of SaaS, so the axis applies. Nothing in the evidence shows a built-in assistant that users can delegate tasks to. The llms.txt and markdown docs probes only make the documentation machine-readable for external AI tools, which is an adjacent feature and earns no credit for this story.",
     "evidenceIds": []
   },
   {
     "productId": "kushki",
     "storyId": "agentic-headless",
     "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Kushki is an API-driven payments platform. Its docs list server-side flows that need no browser UI, such as direct charge without a token, authorization/capture and refunds, plus test data and a production-promotion guide, which implies non-interactive, scriptable use against a test environment. The evidence is only page titles, though, with nothing explicit about CI or automation tooling. Missing for 10: a documented CLI or CI integration guide, explicit sandbox/test-mode automation docs, a machine-readable API spec (the OpenAPI probe returned 404), and any hands-on corroboration of headless/CI use.",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Kushki is an API-first payments platform, so it can be driven headlessly. Its own docs cover server-side flows such as direct charges without a token, 100% API 3DS integration, and authorization/capture and refunds via API, plus a test data and sandbox path that automated pipelines could run against. However, there is no CLI or documented CI workflow, and no machine-readable OpenAPI spec (the probe returned 404). Missing for 10: an official CLI or headless tooling, a documented CI/test-mode automation guide, a published OpenAPI spec, and independent hands-on corroboration.",
     "evidenceIds": [
       "kushki-docs-3",
+      "kushki-docs-27",
+      "kushki-docs-24",
       "kushki-docs-5",
       "kushki-docs-8",
       "kushki-docs-11",
-      "kushki-docs-12",
+      "kushki-docs-36",
+      "kushki-docs-26",
       "kushki-probe-3"
     ]
   },
@@ -4617,7 +4636,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Kushki is a payment gateway and processing API (card payments, payment links, payouts, POS). Acting as an MCP client that plugs in external MCP servers to use their tools is an agent or assistant capability, which is a category error for this kind of product. Nothing in the evidence shows Kushki has any agent or MCP-client functionality that would make this axis apply.",
+    "rationale": "Kushki is a payments gateway and API platform (card payments, refunds, 3DS, POS, payouts), not an agent or AI assistant that consumes tools. Plugging MCP servers into it as a client is a category error for this kind of product. The evidence shows no embedded agent or MCP-client feature that would make the axis apply; the llms.txt and markdown docs probes concern documentation for AI readers, not tool consumption.",
     "evidenceIds": []
   },
   {
@@ -4626,7 +4645,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Kushki is a payments platform, not an agent, so publishing an official MCP server is a fair question for it and the axis applies. The evidence pack covers only payment APIs, libraries, plugins and checkout products. Nothing mentions an MCP server, and the probes for llms.txt, markdown docs and an OpenAPI spec all returned 404.",
+    "rationale": "Kushki is a payments API platform, not an agent, so publishing an official MCP server is a fair question and the axis applies. The evidence shows no MCP server. The llms.txt index and markdown docs pages found by the probes are adjacent AI-readability features, not an MCP server an agent could connect to, so they earn no credit.",
     "evidenceIds": []
   },
   {
@@ -4635,7 +4654,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Kushki is a payments platform, and a product like this could plausibly ship a natural-language or agent interface, so the axis applies. None of the evidence shows a natural-language command capability: the docs cover card payments, refunds, 3DS, payment links and plugins. The probes for llms.txt, markdown docs and an OpenAPI spec all returned 404.",
+    "rationale": "Natural-language operation is a fair question for a payments platform, since it could ship an assistant or conversational interface, so the axis applies. The evidence pack shows no such capability. The llms.txt index and markdown docs (kushki-probe-1, -2, -4) only make the documentation readable by LLMs, which is a developer building block rather than a way to operate Kushki through natural-language commands. Every other item covers conventional API, SDK and checkout integrations.",
     "evidenceIds": []
   },
   {
@@ -4644,7 +4663,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Kushki is a payments platform, so an official developer CLI is a fair thing to ask for. The evidence pack only covers a JS library, plugins, payment links and API docs, and never mentions a CLI. The probes for llms.txt, markdown docs and OpenAPI all returned 404, which says nothing about a CLI either way.",
+    "rationale": "An official CLI is a reasonable thing to ask of a payments platform, so the axis applies. Nothing in the pack shows Kushki ships one. The evidence covers REST APIs, the kushki.js library, e-commerce plugins and an llms.txt/markdown docs index, but these are adjacent developer building blocks and docs features, not a CLI.",
     "evidenceIds": []
   },
   {
@@ -4653,17 +4672,18 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Kushki's first-party docs describe a public payments API. They cover direct charges without a token, authorization and capture, refunds and voids, 3DS API integration, network tokens, and test data for moving to production, and the site markets 'multiple payment methods with one API.' Probes found no machine-readable OpenAPI/Swagger spec, llms.txt, or markdown docs at the tested paths, and the evidence is mostly page titles rather than endpoint-level reference. Missing for 10: a published OpenAPI spec or other machine-readable API reference, endpoint-level documentation depth, and independent or hands-on corroboration of API use.",
+    "rationale": "Kushki is an API-first payments platform. It publicly documents API flows for card charges, including direct charge without a token, authorization and capture, refunds and voids, a 100% API 3DS integration, recurring and scheduled charges, plus test data and a move to production. Its docs are also exposed to agents through a live llms.txt index and .md pages, though the old /cl/en doc tree now returns 404 after a move to /cl/*. missing for 10: a published machine-readable OpenAPI/Swagger spec (all probed paths 404), independent or hands-on corroboration of API use, and docs depth beyond page titles.",
     "evidenceIds": [
-      "kushki-docs-2",
-      "kushki-docs-3",
-      "kushki-docs-5",
-      "kushki-docs-8",
-      "kushki-docs-9",
-      "kushki-docs-11",
       "kushki-docs-12",
+      "kushki-docs-21",
+      "kushki-docs-22",
+      "kushki-docs-23",
+      "kushki-docs-24",
+      "kushki-docs-27",
+      "kushki-docs-29",
+      "kushki-docs-36",
       "kushki-probe-3",
-      "kushki-probe-1"
+      "kushki-probe-4"
     ]
   },
   {
@@ -4672,7 +4692,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Kushki is a payments API platform, so issuing scoped or least-privilege API credentials is an applicable axis. However, nothing in the evidence pack documents restricted keys, permission scopes, or per-agent credential issuance. The docs cover card payments, refunds, 3DS, network tokens and moving to production, but not credential scoping.",
+    "rationale": "Scoped or least-privilege API credentials are a fair question for a payments API platform like Kushki, so the axis applies. Nothing in the evidence pack covers restricted or scoped keys, per-key permissions, or agent-specific credential issuance. The docs cover payment flows, 3DS, refunds and test-to-production steps, and the probes only show llms.txt and markdown docs, which are unrelated to credential scoping.",
     "evidenceIds": []
   },
   {
@@ -4681,20 +4701,23 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Kushki documents an official client-side JavaScript library (kushki.js / 'Librería JS'), which is used for card tokenization and 3DS integration. That is a first-party SDK, but the evidence shows only this single front-end library, with no breadth of language SDKs. The e-commerce plugins are platform integrations rather than SDKs and earn no credit here. Missing for 10: server-side SDKs in common languages, SDK reference docs or repositories, versioning/install details, and independent or hands-on corroboration of SDK quality.",
+    "rationale": "Kushki documents its own first-party client-side JavaScript library, kushki.js, which is promoted as a PCI-secure integration library and used for the 3DS integration flow. That is an official SDK, but only one, front-end only, and the evidence lists titles rather than SDK reference depth. Missing for 10: server-side SDKs in common languages (e.g. Node, Python, Java), mobile SDKs, SDK reference documentation and versioning details, and independent hands-on corroboration of SDK quality.",
     "evidenceIds": [
+      "kushki-docs-15",
       "kushki-docs-9",
-      "kushki-docs-15"
+      "kushki-docs-24"
     ]
   },
   {
     "productId": "kushki",
     "storyId": "agentic-webhooks",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Kushki is a payments API, so webhook event subscriptions are a fair question for this kind of product. However, nothing in the evidence pack documents registrable outbound HTTP callbacks or event subscriptions. The cited docs cover card payments, refunds, 3DS, payment links and plugins without mentioning webhooks, and the probes found no llms.txt, markdown docs or OpenAPI spec that could show them.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Kushki's own docs include a section titled \"Webhooks para tarjeta presente\" (webhooks for card-present payments), which shows first-party outbound event callbacks exist, at least for in-person card payments. The evidence is only a section heading, with no detail on how to register endpoints, which event types exist, payload format, signature verification, or retries, and no sign of webhook coverage for online, recurring, or refund events. Missing for 10: webhook registration/subscription docs, event catalog across payment products, payload and signature verification details, retry/delivery guarantees, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "kushki-docs-34"
+    ]
   },
   {
     "productId": "kushki",
@@ -4702,7 +4725,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Kushki's documentation covers integration guides for card payments, 3DS, refunds, and test data, but nothing in the pack shows an interactive API reference or runnable 'try it' examples. Probes found no OpenAPI or Swagger spec at any candidate path, which is consistent with no machine-driven explorer, though not proof. An interactive API reference is a fair question for a payments API, so absence of evidence yields none rather than na.",
+    "rationale": "Kushki is a payments API, so an interactive API reference is a fair question for it. The evidence shows only guide-style docs pages, an llms.txt index and markdown docs, none of which describe an interactive reference or runnable 'try it' examples. The OpenAPI/Swagger probe returned 404 on all candidate paths.",
     "evidenceIds": []
   },
   {
@@ -4711,18 +4734,20 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Kushki is a payments API platform, so offering a downloadable machine-readable API spec is a fair question for it. The evidence shows no such spec: every probed OpenAPI/Swagger path returned 404, and the docs pages cover integration guides without mentioning any spec download. Confidence is medium rather than high because the probes only checked common paths, so a spec at an unprobed location cannot be ruled out.",
+    "rationale": "Kushki is a payments API, so a downloadable OpenAPI-style spec is a fair question for it. Every probed OpenAPI/Swagger path returned 404, and no doc page mentions a downloadable spec. The llms.txt index and .md doc pages are machine-readable documentation, not an API specification, so they earn no credit here.",
     "evidenceIds": []
   },
   {
     "productId": "kushki",
     "storyId": "api-sandbox",
     "verdict": "partial",
-    "quality": 4,
-    "confidence": "low",
-    "rationale": "Kushki's own docs include a 'Test Data ... Moving to Production' section. That implies a separate test environment and a promotion step before live traffic, so payments can be exercised without touching production. The evidence is only a page title, though, with no detail on how the sandbox is isolated, on test credentials or endpoints, or on how well it matches production. Missing for 10: explicit documentation of a sandbox environment and endpoints, separate test API keys, details on test card data and simulated scenarios, and independent or hands-on corroboration.",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Kushki's own docs include a 'Test Data … Moving to Production' section (English and Spanish) and an Apple Pay sandbox testing page. That points to a test environment separate from production, but the evidence is only section headings with no detail on how it works. Missing for 10: documentation of the sandbox environment itself (separate endpoints or test credentials, separation from live data), coverage of test data across payment methods, and independent or hands-on corroboration.",
     "evidenceIds": [
-      "kushki-docs-11"
+      "kushki-docs-11",
+      "kushki-docs-36",
+      "kushki-docs-26"
     ]
   },
   {
@@ -4731,7 +4756,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Versioned APIs with a deprecation policy is an applicable axis for a payments API provider. However, none of the cited docs (payment flows, 3DS, refunds, network tokens, integration options) mention API versioning or a deprecation policy. With no evidence of this capability, the verdict is none.",
+    "rationale": "API versioning and deprecation policy is a fair question for a payments API like Kushki, so the axis applies. Nothing in the evidence pack mentions API version identifiers, version pinning, changelogs, or a documented deprecation policy. The docs-tree relocation in kushki-probe-4 concerns documentation URLs, not API versioning, and earns no credit.",
     "evidenceIds": []
   },
   {
@@ -4740,7 +4765,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Automated tax calculation is a fair question for a payments platform like Kushki. However, nothing in the evidence pack mentions sales tax, VAT, or GST. The cited docs cover card payments, authorization/capture, refunds, 3DS, network tokens, payment links, payouts, and POS, but none describe computing or collecting tax per transaction.",
+    "rationale": "Kushki is a payment gateway, so automatic sales-tax, VAT and GST calculation and collection is a fair question for it. None of the evidence (card payments, 3DS, refunds, recurring charges, POS, payouts, docs probes) mentions tax calculation or collection.",
     "evidenceIds": []
   },
   {
@@ -4749,7 +4774,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Bulk operations are a fair question for a payments platform, for example batch payouts, mass refunds, or bulk link creation. The evidence documents only single-item flows: one-time charges, authorization/capture, individual refunds and payment links. The payouts item (kushki-docs-18) mentions paying suppliers and employees but never describes batch or bulk submission, so it is an adjacent feature and earns no credit.",
+    "rationale": "Bulk operations fit a payments API (for example batch refunds, mass payouts, or bulk captures), so the axis applies. However, no evidence documents a batch or bulk endpoint or a dashboard bulk action. The payouts page (kushki-docs-18) only says payments to suppliers and employees are easy, without describing a bulk mechanism. Recurring and scheduled charges are a different capability: per-subscription automation, not bulk operations.",
     "evidenceIds": []
   },
   {
@@ -4758,17 +4783,21 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Event-driven automation rules are a fair question for a payments platform like Kushki, so the axis applies. Nothing in the evidence pack documents user-defined rules, triggers, or automated actions on events. The cited docs cover payment flows (one-time, authorization/capture, refunds, 3DS, payment links), and the probes found no machine-readable docs.",
+    "rationale": "A payments platform could plausibly offer a user-defined rules or automation engine, so this axis applies. The evidence pack documents no such capability. Recurring and scheduled charges (kushki-docs-29, kushki-docs-30) are adjacent billing features, and card-present webhooks (kushki-docs-34) are a developer building block, not user-defined event-to-action rules, so none of these earn credit.",
     "evidenceIds": []
   },
   {
     "productId": "kushki",
     "storyId": "automation-scheduled-jobs",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Scheduling recurring jobs, such as recurring charges, subscriptions or scheduled payouts, is a fair axis for a payments platform, so the story applies. The evidence pack covers only one-time card payments, authorization/capture, refunds, payment links and payouts, with nothing on scheduling or recurring automation. Absent documented scheduling, the verdict is none.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "Kushki documents its own scheduling for recurring work in the payments domain: guides titled \"Crea un cargo recurrente\" (create a recurring charge) and \"Maneja tus cargos calendarizados\" (manage your scheduled charges), plus external subscriptions. This covers recurring scheduled charges, not general jobs or workflows, and the evidence is page titles only. Missing for 10: scheduling of arbitrary jobs or workflows beyond recurring charges, documented schedule configuration details (frequency, cron-like rules, editing or pausing), agent or AI-native interfaces for managing schedules, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "kushki-docs-29",
+      "kushki-docs-30",
+      "kushki-docs-33"
+    ]
   },
   {
     "productId": "kushki",
@@ -4776,7 +4805,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Payment platforms can plausibly offer automation or workflow features with versioning and rollback, so this axis applies to Kushki. The evidence pack covers only payment acceptance, refunds, 3DS, tokens, payment links and payouts, with no mention of automations or of versioning, reviewing or rolling them back.",
+    "rationale": "Versioning, reviewing, and rolling back automations is a fair question for a payments platform, since such platforms can ship rule or workflow configuration, so the axis applies. The evidence covers only recurring and scheduled charges and webhooks, with no documented versioning, review, or rollback of automations.",
     "evidenceIds": []
   },
   {
@@ -4785,20 +4814,21 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Kushki is a payments platform, so automatic retry of failed subscription payments with dunning is a fair question for it. However, the evidence pack covers only one-time card payments, OTP, auth/capture, refunds, 3DS, network tokens, payment links, and payouts. Nothing documents subscriptions, failed-payment retries, smart dunning, or recovery emails.",
+    "rationale": "Kushki's docs cover recurring and scheduled charges and external subscriptions, so a subscription retry and dunning axis is fair for this payments platform. However, nothing in the evidence documents automatic retry of failed subscription payments, smart dunning logic, or recovery emails. Recurring-charge creation is an adjacent capability and earns no credit for this story.",
     "evidenceIds": []
   },
   {
     "productId": "kushki",
     "storyId": "embedded-checkout-components",
     "verdict": "full",
-    "quality": 6,
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Kushki markets 'Kajita de pagos' as a customizable payment form and offers kushki.js, a JS library for PCI-secure card capture used in its 3DS integration. This is distinct from its redirect-based 'Botón de pagos' hosted portal, so the core story of embedding customizable payment components in your own site is covered. Evidence is mostly product-page titles with little depth. Missing for 10: detailed docs on Kajita/kushki.js customization options (styling, fields, events), mobile SDK or in-app embedding evidence, and independent or hands-on corroboration.",
+    "rationale": "Kushki markets 'Kajita de pagos' as a customizable payment form and offers a JS library (kushki.js) for PCI-secure card capture inside the merchant's own site, including 3DS flows. It lists these separately from its redirect-based 'Botón de pagos', so embedded checkout is a distinct first-party option. The evidence is mostly product headlines rather than in-depth guides. Missing for 10: detailed docs on component customization (styling, fields, layout), evidence of native mobile app SDK embedding, independent or hands-on corroboration.",
     "evidenceIds": [
       "kushki-docs-13",
       "kushki-docs-15",
       "kushki-docs-9",
+      "kushki-docs-24",
       "kushki-docs-16"
     ]
   },
@@ -4808,7 +4838,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence covers card payments, 3DS authentication, network tokens and refunds, but no documented machine-learning fraud scoring or custom block/review/allow rules. 3DS is an adjacent authentication control and does not count toward this story.",
+    "rationale": "Fraud screening with ML scores and custom block/review/allow rules is a fair question for a payment processor like Kushki, so the axis applies. Nothing in the evidence pack documents fraud scoring or a rules engine. The pack covers card payments, refunds, network tokens and 3DS authentication, and 3DS is an adjacent control that earns no credit here.",
     "evidenceIds": []
   },
   {
@@ -4830,7 +4860,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Idempotency keys are a fair capability to ask of a payments API, so the axis applies. Nothing in the evidence pack mentions idempotency keys, safe retries, or duplicate-charge prevention. The card payment, capture and refund doc titles describe charge flows, not retry safety.",
+    "rationale": "Idempotency keys are a fair question for a payments API like Kushki. However, nothing in the evidence pack mentions idempotency keys, safe retries, or duplicate-charge protection. The card-payment, refund, and 3DS docs are titles only and say nothing about retry semantics.",
     "evidenceIds": []
   },
   {
@@ -4839,15 +4869,19 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "low",
-    "rationale": "Kushki publishes step-by-step integration guides for accepting card payments, authorization/capture and refunds, plus a kushki.js library and test-data/moving-to-production docs. That points to a documented path for building a payment flow from the docs. However, the evidence is only page titles: nothing shows the content contains copy-paste code samples, which languages are covered, or that integration fits within a day. Missing for 10: evidence of copy-paste code examples in multiple server languages or SDKs, a published OpenAPI spec (probes returned 404), and independent or hands-on corroboration of time-to-first-payment.",
+    "rationale": "Kushki publishes its own step-by-step integration guides for a working card flow: accept a card payment, authorization and capture, and refunds. It also documents test data and moving to production, and offers a kushki.js library, a customizable payment form and e-commerce plugins, so a docs-driven integration path exists. The pack does not show the copy-paste code samples themselves, which languages or SDKs they cover, or any evidence on time-to-integrate. The probe notes the old /cl/en docs tree now returns 404 after the move, but that is a site migration, not a failure of the integration guides. Missing for 10: evidence of copy-paste code samples in multiple programming languages or SDKs, an OpenAPI spec (the probe 404'd), and hands-on or independent corroboration of a same-day integration.",
     "evidenceIds": [
-      "kushki-docs-1",
       "kushki-docs-2",
+      "kushki-docs-21",
       "kushki-docs-5",
       "kushki-docs-8",
       "kushki-docs-11",
+      "kushki-docs-36",
       "kushki-docs-15",
-      "kushki-probe-3"
+      "kushki-docs-13",
+      "kushki-docs-17",
+      "kushki-probe-3",
+      "kushki-probe-4"
     ]
   },
   {
@@ -4856,7 +4890,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Marketplace payments are a fair question for a payment processor like Kushki, so the axis applies. The evidence shows no seller onboarding, sub-merchant accounts, or split payments between parties. The only related items are a generic payouts product for paying suppliers, partners and employees, and a mention of an 'aggregator' collection model. Both are adjacent features rather than the platform/marketplace capability this story describes.",
+    "rationale": "The evidence pack does not document seller or sub-merchant onboarding, split payments between parties, or per-seller payouts tied to marketplace transactions. The generic payouts-to-suppliers marketing line and the mention of an aggregator/gateway collection model are adjacent features, not a documented marketplace capability, so they earn no credit.",
     "evidenceIds": []
   },
   {
@@ -4865,7 +4899,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Multi-currency charging and FX settlement is a fair question for a payment processor like Kushki, so the axis applies. However, nothing in the evidence pack mentions presentment currencies, settlement currency, or FX handling. The docs cover card payments, refunds, 3DS, payment links and payouts, but none address currency conversion or cross-currency settlement.",
+    "rationale": "Kushki is a payments gateway, so charging in local currencies and settling in the merchant's currency with transparent FX is a fair question for it. However, the evidence pack covers only card payments, refunds, 3DS, tokens, subscriptions, payouts and POS. None of it documents multi-currency presentment, settlement currency choice, or FX rates and fees. Country-specific docs trees (e.g. /cl, /mx) alone do not show cross-currency charging or FX handling.",
     "evidenceIds": []
   },
   {
@@ -4873,8 +4907,8 @@
     "storyId": "no-code-payment-links",
     "verdict": "partial",
     "quality": 4,
-    "confidence": "low",
-    "rationale": "Kushki's own marketing lists \"Smartlink — Crea y personaliza links de pago\", a first-party product for creating and customizing payment links, so the core capability exists. The evidence is only a one-line product heading, with nothing showing it is built from a dashboard without code or that a merchant can start selling immediately. Missing for 10: dashboard-based no-code creation flow, sharing/distribution details, onboarding speed to go live, in-depth docs, and independent or hands-on corroboration.",
+    "confidence": "medium",
+    "rationale": "Kushki markets Smartlink as a first-party feature to create and customize payment links, which matches the core of the story. However, the only evidence is a one-line marketing headline: it does not show the links are made from a dashboard without code, that they are shareable, or that a founder can start selling right away. Missing for 10: documentation of no-code dashboard creation, link sharing and distribution, onboarding or time-to-first-sale details, and independent or hands-on corroboration.",
     "evidenceIds": [
       "kushki-docs-14"
     ]
@@ -4883,16 +4917,18 @@
     "productId": "kushki",
     "storyId": "openness-api-parity",
     "verdict": "partial",
-    "quality": 4,
-    "confidence": "low",
-    "rationale": "Kushki documents a broad payments API covering one-time card charges, direct charges, authorization and capture, voids and refunds, 3DS, network tokens, and a 'multiple payment methods with one API' positioning. That shows substantial programmatic coverage of core payment operations. Nothing in the pack states or demonstrates parity with the merchant dashboard/UI, though. Products like Smartlink payment links, payouts, and POS appear only as product pages, with no evidence they are API-manageable. Probes found no published OpenAPI spec, which would let parity be checked. Missing for 10: explicit API–UI parity claim, API coverage of dashboard/admin functions (payment links, account settings, reporting, payouts), a machine-readable OpenAPI spec, and independent corroboration.",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Kushki documents API-driven flows for the core payment lifecycle: card charges, direct charges without a token, authorization and capture, voids and refunds, a 100% API 3DS integration, recurring and scheduled charges, and Webpay OneClick. Its site also markets multiple payment methods through one API. However, nothing in the pack claims or shows parity with the dashboard UI, and no machine-readable OpenAPI spec was found (all candidate paths returned 404). Missing for 10: an explicit API/UI parity statement, evidence that dashboard functions (Smartlink creation, payouts, reporting, account and settings management) are exposed via API, and a published OpenAPI spec or independent corroboration.",
     "evidenceIds": [
       "kushki-docs-2",
       "kushki-docs-3",
       "kushki-docs-5",
       "kushki-docs-8",
-      "kushki-docs-10",
       "kushki-docs-12",
+      "kushki-docs-24",
+      "kushki-docs-29",
+      "kushki-docs-30",
       "kushki-docs-14",
       "kushki-probe-3"
     ]
@@ -4903,7 +4939,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Kushki is a payments platform, so exporting merchant data in open formats is a fair question for this kind of product. However, nothing in the evidence pack documents bulk data export, open export formats, or offboarding. The docs cover payment acceptance, refunds and integrations, and the probes only show missing llms.txt, markdown and OpenAPI artifacts, which say nothing about data export.",
+    "rationale": "Data portability is a fair question for a payments platform: transaction history, customer records and card-vault migration are all plausible exports. Nothing in the pack documents a bulk data export, report downloads in open formats, or a migration path for leaving. The llms.txt and markdown docs probes show that Kushki's documentation is open, not that a customer's own data can be exported, so they earn no credit here.",
     "evidenceIds": []
   },
   {
@@ -4912,7 +4948,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Open-sourcing is a fair question for a payments platform, so the axis applies. Nothing in the evidence shows Kushki publishing its source under an open license: the pack covers payment APIs, a JS library and e-commerce plugins, but no repository or license terms. The probes show only missing llms.txt and OpenAPI files, which do not bear on source availability.",
+    "rationale": "Whether source is available under an open license is a fair question for a payments platform, so this axis applies. Nothing in the evidence shows Kushki publishing its product source under an open license. The kushki.js library, e-commerce plugins, llms.txt and markdown docs are integration and documentation artifacts, with no stated source availability or license terms.",
     "evidenceIds": []
   },
   {
@@ -4921,7 +4957,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Self-hosting is a fair question for payment platforms, since some payment orchestration products ship self-hostable or open-source deployments, so the axis applies. Kushki's evidence describes only hosted APIs, JS libraries, payment buttons, links, plugins and POS terminals, with no self-hosted or on-premise deployment option.",
+    "rationale": "Self-hosting is a fair question for payment software, since open-source, self-hostable payment gateways and orchestrators exist, so the axis applies. Kushki's evidence pack describes only hosted services: card payment APIs, the kushki.js library, payment links, e-commerce plugins and POS terminals. None of it documents a self-hostable or on-premise deployment of the core product.",
     "evidenceIds": []
   },
   {
@@ -4930,7 +4966,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Payout scheduling and payout-level reconciliation is a fair question for a payment processor like Kushki, so the axis applies. However, the evidence pack documents only card acceptance, refunds as standalone operations, and payouts to third parties such as suppliers. Nothing covers controlling the merchant's settlement schedule or breaking each payout down into its charges, fees, and refunds.",
+    "rationale": "Kushki is a payment gateway/aggregator, so controlling the payout schedule and seeing a per-payout breakdown of charges, fees, and refunds is a fair question for it. The evidence pack does not document settlement schedules or payout reconciliation reports. The nearby items cover different capabilities and earn no credit: supplier/employee disbursements (docs-18), scheduled recurring charges (docs-30), and refund handling (docs-8/23).",
     "evidenceIds": []
   },
   {
@@ -4939,14 +4975,14 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Kushki documents its own client-side tokenization tooling: a JS library marketed as \"Máxima seguridad con PCI de Kushki\", kushki.js, a hosted customizable payment form (Kajita) and a redirect payment button to a secure portal. It also contrasts \"direct charge (without token)\" with token-based flows. That points to card data being tokenized off the merchant's servers, but the evidence is mostly page titles and taglines, with no explicit statement of PCI scope reduction. missing for 10: explicit documentation that card data never reaches merchant servers, stated PCI DSS scope/SAQ level reduction (e.g., SAQ A), detail on the tokenization flow, independent corroboration.",
+    "rationale": "Kushki's own materials describe client-side collection paths that lean on Kushki's PCI compliance: the kushki.js library is pitched as \"maximum security with Kushki's PCI\", there is a hosted customizable payment form (Kajita), and a payment button redirects to a secure portal. A separately labeled \"direct charge (without token)\" flow implies tokenized charging is the standard path. However, the evidence is mostly page titles and never explicitly states that raw card data bypasses merchant servers or what PCI scope (e.g., SAQ A/A-EP) a merchant ends up with. missing for 10: explicit documentation that card data never touches merchant servers, a stated PCI scope-reduction or SAQ level for merchants, details of the tokenization flow, independent corroboration.",
     "evidenceIds": [
       "kushki-docs-15",
       "kushki-docs-13",
       "kushki-docs-16",
-      "kushki-docs-9",
       "kushki-docs-3",
-      "kushki-docs-2"
+      "kushki-docs-27",
+      "kushki-docs-24"
     ]
   },
   {
@@ -4955,7 +4991,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Kushki is a payments platform, so choosing a data storage region or residency is a fair question for it. However, nothing in the evidence pack mentions data residency or region selection. The docs cover card payments, 3DS, tokens and refunds. The country-specific doc paths (e.g. /cl/) reflect market-specific integrations, not a user choice of where data is stored.",
+    "rationale": "Letting customers choose a data-storage region is a fair question for a payments SaaS like Kushki, so the axis applies. However, nothing in the evidence pack documents any data-residency or region-selection control. The country-specific doc trees (e.g. /cl, /mx) cover local payment methods per market, not where customer data is stored.",
     "evidenceIds": []
   },
   {
@@ -4964,7 +5000,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Kushki is a payments platform that processes merchant and cardholder data, so it is a fair question whether it offers an opt-out from AI model training. Nothing in the evidence pack mentions an AI-training opt-out, a data-usage policy, or any related privacy control. The pack covers only payment integration docs and documentation probes.",
+    "rationale": "Kushki is a payments platform that processes merchant and cardholder data, so whether that data can be excluded from AI model training is a fair privacy question for this kind of product. The evidence pack covers only payment flows, integrations, and docs/llms.txt probes. None of it mentions AI-training data usage, opt-out controls, or a data-use policy, so the capability is unevidenced.",
     "evidenceIds": []
   },
   {
@@ -4973,7 +5009,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data retention and deletion controls are a fair question for a payments platform that handles cardholder and customer data, so the axis applies. However, nothing in the evidence pack documents retention settings, data deletion APIs, or privacy controls. The pages cover card payments, refunds and voids (transaction reversals, not data deletion), 3DS, network tokens, and payment products.",
+    "rationale": "Controlling data retention and deletion is a fair question for a payments platform that stores cardholder and transaction data, so the axis applies. The evidence pack has nothing on retention policies, data deletion APIs, or customer-data erasure controls. The voids/refunds and network-token docs cover different capabilities and earn no credit.",
     "evidenceIds": []
   },
   {
@@ -4982,27 +5018,32 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Kushki is a payments platform that ships JS libraries, SDKs and plugins, so opting out of telemetry and usage tracking is a fair question to ask of it. Nothing in the evidence pack mentions telemetry, usage tracking, or any opt-out control. The docs cover only payment flows, and the probes cover only docs and OpenAPI availability.",
+    "rationale": "Opting out of telemetry is a fair question for a payments platform that ships client-side SDKs such as kushki.js, plugins, and POS terminals, so the axis applies. Nothing in the evidence pack mentions telemetry, usage tracking, analytics collection, or any opt-out control. The docs and probes cover only payment flows and the AI-readable docs index (llms.txt).",
     "evidenceIds": []
   },
   {
     "productId": "kushki",
     "storyId": "recurring-subscription-billing",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Kushki is a LATAM payment gateway, so recurring subscription billing is a fair axis for it. However, the evidence covers only one-time card payments, authorization/capture, refunds, 3DS, network tokens, payment links, and payouts. Nothing documents subscription plans, trials, upgrades, or proration, and adjacent features such as network tokens or one-time charges earn no credit.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Kushki's own docs include pages on creating recurring charges ('Crea un cargo recurrente'), managing scheduled charges ('Maneja tus cargos calendarizados') and external subscriptions, so recurring billing is a first-party capability. The evidence is only page titles, though, and says nothing about plan objects, trials, upgrades/downgrades, or proration. Missing for 10: plan/pricing-tier management, trial periods, subscription upgrades/downgrades, proration logic, in-depth docs content, and independent corroboration.",
+    "evidenceIds": [
+      "kushki-docs-29",
+      "kushki-docs-30",
+      "kushki-docs-33"
+    ]
   },
   {
     "productId": "kushki",
     "storyId": "refunds-full-partial",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "low",
-    "rationale": "Kushki has a first-party docs page on 'Returns, cancellations, and refunds' under card payments, so it documents its own refund/void capability. The pack shows only the page title, with no detail on amounts or channels. Missing for 10: evidence of partial vs full refund support, evidence of refunds from the dashboard, evidence of a refund API endpoint or request details, independent or hands-on corroboration.",
+    "rationale": "Kushki has a first-party docs page on refunds ('Returns, cancellations, and refunds' / 'Devoluciones, anulaciones y reembolsos'), so refunds are a documented capability. The evidence is only page titles, though, and doesn't show how refunds work or which channels support them. Missing for 10: evidence of partial vs. full refund amounts, evidence of issuing refunds from the dashboard, explicit refund API endpoint details, and independent or hands-on corroboration.",
     "evidenceIds": [
-      "kushki-docs-8"
+      "kushki-docs-8",
+      "kushki-docs-23"
     ]
   },
   {
@@ -5011,18 +5052,20 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Kushki is a payment processor, so chargeback response and dispute tracking is an applicable axis. However, nothing in the evidence pack mentions chargebacks, dispute evidence submission or dispute lifecycle tracking. The closest item is voids and refunds (kushki-docs-8), which is an adjacent feature and earns no credit.",
+    "rationale": "Chargeback and dispute management is a fair axis for a payment processor like Kushki, so the story applies. The evidence pack covers card payments, auth/capture, refunds and voids, 3DS, and network tokens, but never mentions chargebacks, dispute evidence submission, or dispute lifecycle tracking. Refund and void handling is a different capability and earns no credit here.",
     "evidenceIds": []
   },
   {
     "productId": "kushki",
     "storyId": "sandbox-test-mode-fidelity",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "low",
-    "rationale": "Kushki's docs include a 'Test Data ... Moving to Production' section, which points to a first-party test environment with test data separate from production. The evidence is only a title-level mention, so it does not show how closely the test environment mirrors production or which scenarios the test cards cover. missing for 10: evidence that the sandbox mirrors production, documented test cards for declines, documented test cards for disputes/chargebacks, end-to-end flow testing detail, independent or hands-on corroboration.",
+    "rationale": "Kushki's own docs include a 'Test Data' section paired with 'Moving to Production' (kushki-docs-11, kushki-docs-36) and a page on Apple Pay sandbox testing (kushki-docs-26), so a first-party test environment with test data exists. The evidence is only page titles, though, so its depth is unproven: nothing shows the sandbox mirrors production or that test cards cover declines or disputes. missing for 10: documented test cards for decline scenarios, dispute/chargeback simulation, evidence the sandbox mirrors production behavior across the full flow, independent or hands-on corroboration.",
     "evidenceIds": [
-      "kushki-docs-11"
+      "kushki-docs-11",
+      "kushki-docs-36",
+      "kushki-docs-26"
     ]
   },
   {
@@ -5031,7 +5074,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Invoicing is a fair axis for a payments platform like Kushki, but the evidence pack never documents hosted invoices or automatic payment reminders. Smartlink payment links and the hosted payment button are adjacent checkout features and earn no credit toward invoicing with reminders.",
+    "rationale": "Invoicing is a fair axis for a payments platform, but the evidence shows no hosted invoice product and no automatic payment reminders. Smartlink payment links, the hosted payment button, and recurring or scheduled charges are adjacent payment features, not invoicing with reminders, so they earn no credit.",
     "evidenceIds": []
   },
   {
@@ -5040,20 +5083,22 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Settlement reconciliation is a fair question for a payment gateway/aggregator like Kushki, so the axis applies. The pack has no documentation of settlement reports, bank-deposit matching, or itemized fee and chargeback reporting. The refunds doc (kushki-docs-8) covers processing voids and refunds, not reconciliation reporting. The payouts page (kushki-docs-18) covers paying suppliers and employees, not settlement reconciliation. Neither earns credit.",
+    "rationale": "Reconciliation reporting is a fair axis for a payment processor like Kushki, but the evidence pack contains nothing on settlement reports, bank-deposit reconciliation, or itemized fee and chargeback reporting. The only nearby items are refund/void API docs and a disbursements product, which are adjacent features and not reconciliation reports.",
     "evidenceIds": []
   },
   {
     "productId": "kushki",
     "storyId": "wallets-local-payment-methods",
     "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Kushki claims 'multiple payment methods with one API' and documents Webpay Plus, a Chilean redirect-based local payment method, so it offers some local-method acceptance alongside cards. Nothing in the evidence shows Apple Pay, Google Pay, or BNPL. missing for 10: Apple Pay/Google Pay wallet support, BNPL options, documented bank-transfer redirects beyond Webpay Plus, proof these methods work through a single integration, independent corroboration.",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Kushki documents Apple Pay payments with sandbox testing (kushki-docs-26) and a local Chilean redirect method, Webpay Plus (kushki-docs-6, kushki-docs-31, kushki-docs-32). Its marketing claims multiple payment methods through one API (kushki-docs-12), so part of the single-integration story is covered. missing for 10: Google Pay evidence, BNPL evidence, bank-transfer redirect methods beyond Webpay, documentation that wallets and local methods share one integration, independent or hands-on corroboration.",
     "evidenceIds": [
-      "kushki-docs-12",
+      "kushki-docs-26",
       "kushki-docs-6",
-      "kushki-docs-7"
+      "kushki-docs-31",
+      "kushki-docs-32",
+      "kushki-docs-12"
     ]
   },
   {

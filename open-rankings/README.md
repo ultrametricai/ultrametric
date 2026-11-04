@@ -83,7 +83,7 @@ Curated layers:
 
 Process-step wiring:
 
-- `step-prompts.json`, `step-vendor-calls.json`, `process-step-stories.json` — the links
+- `step-vendor-calls.json`, `process-step-stories.json` — the links
   from founder-process steps to markets, products, stories, and runnable calls.
 - `graph.json`, `story-graph.json`, `story-edges.json` — the story graph and its
   cross-story dependency edges.
@@ -96,7 +96,8 @@ Process-step wiring:
 Generated reports:
 
 - `staleness-report.json` — evidence age per market and product.
-- `slo-history.jsonl` — dated uptime checks per vendor surface.
+- `slo-history.jsonl` and `slo-history/*.jsonl` — legacy uptime checks and immutable
+  per-run observations per vendor surface (see [SLO history](#slo-history)).
 - `copy-audit.json` — flagged site copy with file and line locations.
 - `assistant-plugins.json` — the assistant-platform plugin sweep.
 - `vendor-news.json` — recent vendor blog and changelog items from the radar.
@@ -155,6 +156,57 @@ renders it at ultrametric.ai. In CI, `pnpm test` validates each file against its
 market from the on-disk inputs and deep-compares them against the committed
 `rankings.json`, then does the same for `step-rankings.json`.
 
+## SLO history
+
+`rankings-engine/scripts/slo-check.ts` probes documented llms.txt, OpenAPI and MCP
+surfaces across all markets. Each invocation writes a complete immutable JSONL file
+under `slo-history/`, named with its UTC check timestamp and a random UUID. Retries
+and simultaneous runs get separate filenames. Publication refuses to replace an
+existing file; unfinished temporary writes are ignored by Git and readers.
+`slo-history.jsonl` remains the legacy archive. Its recorded observations stay in
+place, and new checks write only to the run directory.
+
+`lib/slo.ts` reads the legacy archive and every run file with the existing
+`SloEntrySchema`. Uptime calculations sort observations by date, so chronological
+inserts and append ordering produce the same summaries. Exact duplicate raw lines
+count once across all inputs. An observation is identified by its recorded date,
+market, product, surface and trailing-slash-normalized URL. Different raw lines
+with the same identity fail with both source locations, including differences in
+extra fields or formatting. Resolve these with the original records; a parser's
+field stripping cannot establish that two records carry identical facts.
+
+The consumers and gates are:
+
+- `lib/slo.ts`: history, fleet summaries and per-product uptime.
+- `lib/opsCoverage.ts`: latest committed check date across the archive and runs,
+  independent of filenames or line order.
+- `rankings-engine/refresh-repair.ts`: allows added run files, refuses changed or
+  deleted runs, and validates the combined candidate before repair writes. For
+  older PRs that added legacy observations, it verifies every original base line
+  remains intact, keeps main's bytes, and appends missing original lines. This
+  also accepts chronological inserts without regenerating probes.
+- `story-runner.yml` and `daily-snapshot.yml`: stage `open-rankings` before checking
+  for changes, so a new run alone produces a commit. Story-runner validates the
+  combined history after probing; daily-snapshot's full tests include that gate.
+- `lib/__tests__/slo.test.ts`: validates all committed history through the shared
+  schema and duplicate/conflict rules. The manifest's `open-rankings` directory
+  entry includes the runs in the private site's pinned overlay alongside the
+  compatible readers.
+
+Migration requires no data conversion. Land the writer, readers, workflow staging
+and repair changes together, then update any private-site pin to consume the
+compatible reader and data together. Old PRs can retain their original legacy
+observations; reconcile them using the preservation rule above. Existing raw
+observations cannot be recovered by running today's probes.
+
+For rollback, retain the legacy archive and every published run. Revert the writer
+to legacy appends if needed while keeping the dual reader, schema gate and repair
+support until all shard consumers are handled. Reverting to a legacy-only reader
+would omit published runs from uptime. A full rollback needs a separately reviewed
+lossless export of the original run lines, duplicate/conflict validation, and
+summary-equivalence checks before switching readers. Keep the source run files
+for audit and do not reconstruct or discard observations.
+
 ## Contribute
 
 - [The verdict contest flow](../CONTRIBUTING.md#1-contest-a-verdict) — a prefilled issue
@@ -191,3 +243,8 @@ and `processors.json` are hardware spec-comparison prototypes curated from vendo
 sheets, outside the judged markets.
 
 This area's maturity grade and known gaps are tracked in [`coverage/index.json`](../coverage/index.json).
+
+`step-prompts.json` is a retirement notice. Its legacy execution prompts and generator
+are retired; the loader throws `STEP_PROMPTS_RETIRED`. Read canonical guidance in
+`open-processes/`; select necessary private instructions by explicit guide version.
+Historical Git commits can still contain the retired export.

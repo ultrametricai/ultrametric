@@ -1,7 +1,7 @@
 # Daily keyless fleet-wide snapshot: densifies the time-series datasets every single day,
 # instead of one arena per 6 hours via story-runner's rotation:
 #
-#   open-rankings/slo-history.jsonl          — agent-surface uptime (rankings-engine/scripts/slo-check.ts is
+#   open-rankings/slo-history/*.jsonl          — agent-surface uptime (rankings-engine/scripts/slo-check.ts is
 #                                     already fleet-wide and fully keyless).
 #   open-rankings/*/popularity-history.jsonl — stars/downloads time series. `rankings-engine/cli.ts popularity`
 #                                     with no --category runs every arena (rankings-engine/paths.ts
@@ -47,14 +47,14 @@ jobs:
       - uses: pnpm/action-setup@v6
       - uses: actions/setup-node@v7
         with:
-          node-version: 24.22.1
+          node-version: 24.22.2
           cache: pnpm
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      # Keyless and cheap (~300 HTTP checks, ≤3 concurrent, 8s timeout): appends one uptime line
+      # Keyless and cheap (~300 HTTP checks, ≤3 concurrent, 8s timeout): writes one immutable run with a line
       # per documented agent surface (llms.txt / remote MCP / openapi.json) to
-      # open-rankings/slo-history.jsonl. Same script story-runner runs 6-hourly — this daily run guarantees
+      # open-rankings/slo-history/*.jsonl. Same script story-runner runs 6-hourly — this daily run guarantees
       # at least one fleet-wide sample per day even if story-runner is idle or gated.
       - name: Agent-surface SLO check
         run: pnpm tsx rankings-engine/scripts/slo-check.ts
@@ -75,7 +75,9 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           RUN_ID: ${{ github.run_id }}
         run: |
-          if git diff --quiet -- rankings; then
+          # Stage first so new SLO shards are included in the change check.
+          git add open-rankings
+          if git diff --cached --quiet -- open-rankings; then
             echo "No data changes — done."
             exit 0
           fi
@@ -84,7 +86,7 @@ jobs:
           git config user.name "ultrametric-daily-snapshot"
           git config user.email "noreply@ultrametric.ai"
           git checkout -b "$BRANCH"
-          git add rankings README.md
+          git add open-rankings README.md
           git commit -m "chore(daily-snapshot): fleet-wide SLO + popularity snapshot"
           git push -u origin "$BRANCH"
           # Org policy currently forbids Actions from creating PRs ("Write permissions for
@@ -94,7 +96,7 @@ jobs:
           # fails on a missing label).
           if ! gh pr create \
             --title "daily-snapshot: fleet-wide SLO + popularity" \
-            --body "Automated daily keyless snapshot: agent-surface SLO checks (\`open-rankings/slo-history.jsonl\`) and fleet-wide popularity history (\`open-rankings/*/popularity-history.jsonl\` + \`open-rankings/*/popularity.json\`). No verdicts or rankings touched — display-only time series, safe to merge on green CI." \
+            --body "Automated daily keyless snapshot: agent-surface SLO checks (\`open-rankings/slo-history/*.jsonl\`) and fleet-wide popularity history (\`open-rankings/*/popularity-history.jsonl\` + \`open-rankings/*/popularity.json\`). No verdicts or rankings touched — display-only time series, safe to merge on green CI." \
             --base main --head "$BRANCH"; then
             gh issue create \
               --title "daily-snapshot: ready on $BRANCH" \

@@ -154,6 +154,10 @@ export const EvidenceSchema = z.object({
   url: z.string().url(),
   excerpt: z.string().min(1),
   fetchedAt: z.string().datetime(),
+  // Digest of the fetched source text, before model extraction/summarization.
+  // Distinguishes a changed source from another rendering of the same facts.
+  // Legacy evidence remains readable; it cannot prove a same-source refresh changed.
+  sourceHash: z.string().regex(/^[a-f0-9]{64}$/).optional(),
   // Marks a hand-recorded row (audit counter-check, recorded runtime/self-eval probe) that a
   // scheduled refresh must not clobber: the probe stage merges fresh rows around preserved
   // probe-tier rows instead of replacing the tier wholesale (rankings-engine/stages/probe.ts,
@@ -166,6 +170,15 @@ export const EvidenceSchema = z.object({
   preserve: z.literal(true).optional(),
 })
 
+export const VerdictSupportSchema = z.object({
+  relation: z.enum(['direct', 'adjacent', 'absent']),
+  coverage: z.enum(['complete', 'partial', 'none']),
+  // Explicit subject and quotations make the claimed support auditable. Relation
+  // still requires semantic review; exact quotation and credit rules are mechanical.
+  subject: z.string().min(1),
+  citations: z.array(z.object({ evidenceId: z.string().min(1), quote: z.string().min(1) })).max(20),
+})
+
 export const VerdictBaseSchema = z.object({
   productId: z.string().min(1),
   storyId: z.string().min(1),
@@ -174,6 +187,8 @@ export const VerdictBaseSchema = z.object({
   confidence: z.enum(['high', 'medium', 'low']),
   rationale: z.string().min(1),
   evidenceIds: z.array(z.string().min(1)),
+  // Optional for the published legacy corpus; required by the current judge response.
+  support: VerdictSupportSchema.optional(),
 })
 
 export const VerdictSchema = VerdictBaseSchema.refine(
@@ -330,12 +345,14 @@ export const UncertaintyEntrySchema = z.object({
 // category only covers its decisive cells, not the full matrix.
 export const UncertaintyArraySchema = UncertaintyEntrySchema.array()
 
-// Analytic 68% confidence band on one product's Overall score (aiEra) and agent-readiness — see
+// Point-containing uncertainty interval on one product's Overall score (aiEra) and agent-readiness — see
 // rankings-engine/scripts/compute-confidence-intervals.ts (which writes open-rankings/{cat}/score-intervals.json)
 // and lib/scoreIntervals.ts (the simulation math + tolerant-optional loader). Derived at pipeline
 // time by propagating the MEASURED judge re-roll variance (open-rankings/*/uncertainty.json) through the
 // exact scoring formula via a seeded Monte Carlo — no new judging, display-only, never feeds
-// lib/scoring.ts. Low/high are the 16th/84th percentiles of the simulated score distribution; a
+// lib/scoring.ts. Low/high are the envelope of the simulated score distribution's nominal 68%
+// (16th/84th percentile) band and the published point score, so the stored interval can be wider
+// and the displayed point is always inside it; a
 // null pair means the corresponding published score is itself null (nothing to band).
 export const ScoreIntervalEntrySchema = z.object({
   productId: z.string().min(1),

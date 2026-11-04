@@ -43,6 +43,32 @@ export interface YcRawCompany {
   url: string
 }
 
+// Verified brand renames: YC-directory domain -> the tracked product's site domain. When a
+// company rebrands, the YC feed renames its slug and website in place (Superset -> Paradev, X26:
+// the directory entry is now "Paradev (formerly Superset)" at paradev.com, and
+// https://superset.sh/ answers 308 -> https://paradev.com/, probed 2026-11-01), so plain domain
+// matching sees the rename as "tracked product lost its batch" plus "brand-new candidate". An
+// alias records the verified same-company link: the cross-reference keeps stamping the existing
+// product's ycBatch, and the coverage queue treats the new domain as already tracked instead of
+// re-nominating the rebrand. Add an entry only with the old domain's live redirect (or an
+// equivalent citable source) as evidence.
+//
+// Verified NON-alias, so it is not re-added by mistake: ramp.com is NOT a YC directory match.
+// The "ramp": "S15" stamp the 2026-10-30 refresh dropped came from Paribus (YC S15, acquired),
+// whose feed entry once listed ramp.com as its website; as of 2026-11-01 the directory's
+// Paribus page (https://www.ycombinator.com/companies/paribus) lists website: null and names
+// Ramp only in the founder bio ("Karim Atiyeh, Founder — Ramp (https://Ramp.com)"). Ramp the
+// product is the founders' later, non-YC company, so the stamp removal stands.
+export const YC_DOMAIN_ALIASES: Record<string, string> = {
+  'paradev.com': 'superset.sh',
+}
+
+// Collapses a normalized YC-directory domain onto the tracked product's domain when the pair is
+// a verified rename; identity for everything else.
+export function canonicalYcDomain(domain: string): string {
+  return YC_DOMAIN_ALIASES[domain] ?? domain
+}
+
 // Normalizes a domain for matching: strips protocol, "www.", trailing slash, and path/query, and
 // lowercases. Two products are "the same YC company" iff their normalized site domains match —
 // deliberately never matched by name (see the lane spec's "verify each match by website domain,
