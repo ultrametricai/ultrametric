@@ -42,7 +42,7 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
-| [1. Create your email marketing account](#step-1) | manual form/portal; approval required | ~10 min | Entry step |
+| [1. Reuse or create an email marketing workspace](#step-1) | manual form/portal; approval required | ~10 min | Entry step |
 | [2. Set up audience list](#step-2) | agent-runnable; approval required | ~10 min | [Step 1](#step-1) |
 | [3. Create email templates](#step-3) | agent-runnable; approval required | ~15 min | [Step 2](#step-2) |
 | [4. Set up welcome automation](#step-4) | agent-runnable; approval required | ~10 min | [Step 2](#step-2) |
@@ -54,13 +54,13 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 
 <a id="step-1"></a>
 
-### 1. Create your email marketing account
+### 1. Reuse or create an email marketing workspace
 
 manual form/portal · ~10 min · human approval required
 
 | Option | Applies when |
 | --- | --- |
-| Default — Create your email marketing account | Recorded default |
+| List-based email campaigns | Recorded default |
 | Event-driven lifecycle email | Product-led SaaS - email keyed to product events, not newsletter blasts |
 
 
@@ -71,7 +71,7 @@ Check the email workspace and sender identity already recorded in company contex
 - Ranked market: [email-marketing](../../open-rankings/email-marketing)
 
 Options:
-  - **Default — Create your email marketing account** — manual form/portal · ~10 min · human approval required
+  - **List-based email campaigns** — manual form/portal · ~10 min · human approval required
 
     Use a list-oriented workspace for audience-based newsletters or campaigns. Compare required audience size, templates and reporting with current plan limits and cost. Set the sender and audience structure, then test signup, duplicate handling and suppression before importing real contacts.
   - **Event-driven lifecycle email**

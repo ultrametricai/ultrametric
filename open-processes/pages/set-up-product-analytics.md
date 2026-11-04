@@ -42,7 +42,7 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
-| [1. Create a project in your analytics platform](#step-1) | agent-runnable; approval required | ~10 min | Entry step |
+| [1. Reuse or create an analytics project](#step-1) | agent-runnable; approval required | ~10 min | Entry step |
 | [2. Install SDK in codebase](#step-2) | agent-runnable; approval required | ~20 min | [Step 1](#step-1) |
 | [3. Define key events](#step-3) | agent-runnable; approval required | ~15 min | [Step 2](#step-2) |
 | [4. Create dashboards](#step-4) | agent-runnable; approval required | ~15 min | [Step 3](#step-3) |
@@ -55,7 +55,7 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 
 <a id="step-1"></a>
 
-### 1. Create a project in your analytics platform
+### 1. Reuse or create an analytics project
 
 agent-runnable · ~10 min · human approval required
 
