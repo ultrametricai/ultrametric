@@ -4,7 +4,8 @@
 // get the same dated, evidence-graded record the site renders without scraping it.
 //
 // DERIVED, NEVER JUDGED HERE: every field is a deterministic projection of committed data —
-// rankings.json (tested_on = the arena's generatedAt date; the dimension scores), the evidence
+// rankings.json (tested_on = the arena's generatedAt date, carried from the committed record
+// while the review's own content is unchanged — see carryCommittedDates; the dimension scores), the evidence
 // packs (up to 5 cited URIs with observed_on dates, strongest tiers first), lib/pricing.ts's
 // committed facts (the same deterministic headline pick the leaderboard column uses),
 // jurisdictions/vendor-geo.json (region availability as `CC:status` rows, honest negatives
@@ -165,6 +166,24 @@ function reviewFor(data: CategoryData, productId: string, geo: VendorGeoEntry[],
   }
 }
 
+// Persisted-date carryover (the recompute-check pattern: the persisted stamp is an input, not
+// a clock read). derive restamps rankings.generatedAt for the WHOLE arena on every run, but a
+// scoped re-judge only changes some products' reviews — re-dating every unrelated review in
+// the arena misstates when those products were last tested (PR #561 review). So when the
+// committed review's content is identical apart from tested_on/recheck_due, the committed
+// dates are carried: tested_on ends up meaning "the arena run that last changed this review".
+// Regeneration stays byte-identical because the committed record is part of the input.
+function carryCommittedDates(review: VendorReview, committedPath: string): VendorReview {
+  let committed: VendorReview
+  try {
+    committed = JSON.parse(fs.readFileSync(committedPath, 'utf8')) as VendorReview
+  } catch {
+    return review // new product: no committed record to carry from
+  }
+  const carried = { ...review, tested_on: committed.tested_on, recheck_due: committed.recheck_due }
+  return JSON.stringify(carried) === JSON.stringify(committed) ? carried : review
+}
+
 // filename -> file content for EVERY judged product (every leaderboard entry of every populated
 // arena), in categories.json × leaderboard order. Pure projection of the committed data under
 // `dir` — see the header.
@@ -176,7 +195,8 @@ export function buildVendorReviews(dir: string = path.join(ROOT, 'open-rankings'
       // product must not inherit another offering's availability reasoning (PR #449 review:
       // the gusto legal-ops/startup-banking reviews carried payroll-specific notes).
       const geo = vendorGeoFor(entry.productId, dir, data.category.id)
-      const review = reviewFor(data, entry.productId, geo, dir)
+      const fresh = reviewFor(data, entry.productId, geo, dir)
+      const review = carryCommittedDates(fresh, path.join(dir, 'reviews', 'generated', `${fresh.id}.json`))
       out.set(`${review.id}.json`, `${JSON.stringify(review, null, 2)}\n`)
     }
   }
