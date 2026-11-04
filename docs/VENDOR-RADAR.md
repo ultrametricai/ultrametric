@@ -21,7 +21,7 @@ own origin must answer with plain text; the disposition records the fetched URL 
 evidence note) — and records
 every candidate's disposition (auto-approved, skipped with the failing criterion and its evidence,
 or needs-human) on the day's scan PR body and in
-`reports/vendor-radar/<date>-triage.json`; needs-human dispositions additionally file the day's
+`reports/vendor-radar/runs/<run-id>-triage.json`; needs-human dispositions additionally file the day's
 needs-human issue (labels `story-runner` + `founder-call`). Ranking-fit placement is lexical, so every
 auto-approved disposition records the matched arena's `open-rankings/categories.json` definition in
 its evidence and carries "placement: keyword-matched, confirm against arena definition at
@@ -72,18 +72,21 @@ that review.
    name tokens and its `open-rankings/arena-sections.json` section-name tokens. `MIN_ARENA_HITS`
    distinct keyword hits are required — a hot launch that speaks no arena's language is not our
    vendor. Lexical matching is a NOMINATION signal, never a verdict input.
-3. **Dedupe**, so each candidate surfaces exactly once, ever:
+3. **Dedupe** nominations against:
    - every tracked product (`open-rankings/<arena>/products.json`) by normalized site domain
      (`rankings-engine/yc-shared.ts` `normalizeDomain`) and by normalized name/id,
    - the vendor registry (`open-rankings/reviews/generated/`) by product id,
-   - the committed seen-ledger **`rankings-engine/radar-seen.json`**: every candidate ever reported,
-     keyed by product domain (or `github:owner/repo` / normalized name when no product domain is
-     public). `firstSeen` is the date of the run that first reported it — never backdated.
-4. **Report**: `reports/vendor-radar/<date>.json` (schema-validated) + `<date>.md`, committed via
-   the usual PR-or-issue flow with the candidates list and the full triage disposition table on
-   the scan PR's body.
+   - the legacy `rankings-engine/radar-seen.json` and immutable records in
+     `rankings-engine/radar-discoveries/`, keyed by product domain (or `github:owner/repo` /
+     normalized name when no product domain is public). The reader unions keys and sorted
+     source URLs, retaining the earliest `firstSeen`; ties use the lexically first name.
+4. **Report**: `reports/vendor-radar/runs/<run-id>.json` (schema-validated) + `<run-id>.md`,
+   committed with the discovery record. Actions IDs include the run and attempt; local IDs
+   include a UUID. Records contain the report path and SHA-256, and the reader verifies that
+   the report contains every referenced candidate key before suppressing nominations.
+   Normal runs leave the global legacy ledger unchanged.
 5. **Triage + bring-up**: `radar-triage.ts` applies the auto-approval criteria to the day's new
-   candidates and writes `reports/vendor-radar/<date>-triage.json`. When the triage routed
+   candidates and writes `reports/vendor-radar/runs/<run-id>-triage.json`. When the triage routed
    candidates to a human, the workflow files (or, on a same-day re-run, comments on) a
    **`vendor-radar: needs-human candidates YYYY-MM-DD`** issue (labels `story-runner` +
    `founder-call`) listing just those rows, then closes the generator's previous still-open
@@ -93,7 +96,7 @@ that review.
    adds up to 3 auto-approved passers per run to their existing arenas and the workflow runs the
    scoped engine run on each, opening a **bring-up PR** with the full disposition table (including
    the skipped list) in the body. Without the key, passers stay approved-pending in the triage
-   report.
+   report. This step currently reads only the current run's triage; see the pending lifecycle below.
 
 ## Tuning keywords and thresholds
 
@@ -109,9 +112,9 @@ that review.
 - **Noise control**: raising `MIN_ARENA_HITS` cuts false positives fleet-wide; the per-report cap
   `MAX_REPORT_CANDIDATES` keeps the scan PR body readable (overflow is counted in
   `skipped.overflow`, and uncapped candidates simply surface on a later run since only REPORTED
-  candidates enter the seen-ledger).
-- A candidate that was wrongly skipped can be re-surfaced by deleting its row from
-  `rankings-engine/radar-seen.json` (a reviewed commit, like everything else).
+  candidates enter discovery history).
+- A wrongly skipped candidate needs an explicit, reviewed re-triage using its original report.
+  Preserve discovery history; deleting a legacy ledger row no longer resets the union.
 
 ## From candidate to judged product (the Instinct/dots precedent)
 
@@ -142,15 +145,14 @@ arenas the vendor is not rostered in. Seeding covers the high-change arenas: a r
 there carries `urls.news` wherever its vendor publishes a verifiable changelog, blog, or
 newsroom on its own domain, and bot-walled vendors stay unseeded.
 
-Candidates are keyed `launch:<productId>:<arena>` in the shared seen-ledger
-(`rankings-engine/radar-seen.json`): a needs-human pair is ledgered when reported (one human
-call per pair, rather than a re-nomination on every later post naming the same arena), while an
-auto-approved pair is ledgered only when a run actually applies it, so a row left behind by the
-apply cap or a missing `ANTHROPIC_API_KEY` re-surfaces until it lands. A later launch into an
-already-ledgered pair still merges its URL into the pair's entry (visible in the scan PR's
-ledger diff), and deleting the ledger row re-surfaces the pair, the same escape hatch the radar
-documents above. Dispositions are written
-in the radar-triage report shape (`reports/launch-watch/<date>-triage.json`): needs-human rows
+Candidates are keyed `launch:<productId>:<arena>` in discovery history. A needs-human pair
+is recorded when reported, so later launches into the same pair add their source URLs without
+repeating the nomination. The existing auto-approved behavior is preserved: only selected
+roster entries add suppression records, leaving capped or key-skipped entries available to a
+later scan. `roster-selection` records retain the original triage and expressly carry no
+processing or merge status. A downstream failure can still strand a selected entry; the
+pending lifecycle below is required to resolve that limitation. Dispositions are written
+in the radar-triage report shape (`reports/launch-watch/runs/<run-id>-triage.json`): needs-human rows
 flow through `needs-human-issue.ts --generator launch-watch` into a labeled issue, and
 auto-approved rows (`LW_AUTO_APPROVE_HITS`+ distinct keyword hits; founder-affiliated products
 are always needs-human) ride the scan PR itself — `launch-watch --apply` copies the existing
@@ -160,6 +162,53 @@ constants echoed into each report's `thresholds` block, like the radar's.
 `rankings-engine/__tests__/launch-watch.test.ts` tests the pure units over inline HTML
 fixtures, no network.
 
+## Branch reconciliation and historical reports
+
+Both workflows fetch the `vendor-radar/*` and `launch-watch/*` branch families before a scan.
+`reconcile-radar-state.ts` copies immutable discoveries with their reports, triage, and prior
+import provenance. It reads pinned commit IDs and fails on fetch/read errors, conflicting
+immutable bytes, missing referenced reports, or hash mismatches.
+
+Legacy ledgers are retained byte-for-byte under `rankings-engine/radar-discoveries/legacy/`,
+named by SHA-256. Legacy date-only reports that differ from or are missing on main are retained
+under `reports/radar-imports/files/<sha256>/<original-path>`. Import manifests map the source
+commit and original path to each retained file and its hash. This preserves conflicting
+same-day versions without overwriting main. Reports are checked independently of ledger keys:
+keys already on main do not establish that an older report or its triage has been retained.
+Existing dated reports and the global legacy ledger remain in place.
+
+The manual `--merge-seen` option still accepts legacy files and retains snapshots, but callers
+must retain their original reports separately. Workflows use the report-preserving reconciler.
+
+## Pending processing lifecycle
+
+This storage change preserves discovery and approval evidence. It does not implement a durable
+processing queue. Vendor bring-up still reads only the current run's triage; launch watch still
+suppresses selected pairs before downstream work succeeds. A cap, absent key, stage failure,
+open PR, or unmerged roster entry must not be interpreted as completed work. Legacy seen keys
+also carry no completion evidence. The workflows do not currently query equivalent open PRs
+before expensive processing.
+
+A follow-up needs a separate lifecycle keyed by candidate and target arena, with equivalent
+product identity resolved using the bring-up dedupe rules. It must:
+
+1. Reconstruct approved pending entries across original and imported report/triage pairs,
+   preserving candidate provenance and later human decisions. Legacy keys lacking reports or
+   existing roster entries lacking success evidence require reconciliation, with no blanket
+   reset or automatic rescoring.
+2. Record attempts separately from approvals. Caps, missing keys, and failed stages leave
+   approval pending; failures need bounded backoff and stage evidence for resumption.
+3. Check current open PRs, including older PRs without receipts, for equivalent products in
+   the target arena before spending. Serialize or claim concurrent attempts across producers;
+   an open PR blocks repeat work but does not complete it. Abandoned branches and closed,
+   unmerged PRs need an explicit retry/reuse policy.
+4. Write success receipts only after the required scoped stages and validation succeed,
+   linking the candidate, report, evidence, and head commit. Confirm merge into main separately
+   before marking completion. Roster insertion alone is insufficient.
+5. Drain bounded pending approvals across dates even when the new scan yields no candidates,
+   then test cap/failure recovery, missing-key recovery, equivalent open PR suppression, merge
+   completion, and concurrent claims together before enabling that drain.
+
 ## Testing
 
 `rankings-engine/__tests__/vendor-radar.test.ts` — pure units only, no network: fake HN/PH/GitHub
@@ -168,3 +217,8 @@ seen-ledger, same-key cross-source merging, and the report/issue shape (schema r
 criteria-triage line, the no-new-rankings statement). `rankings-engine/__tests__/radar-triage.test.ts`
 covers the criteria checks the same way: injected fetch results, no network. The committed
 inaugural run under `reports/vendor-radar/` is the end-to-end integration evidence.
+
+`rankings-engine/__tests__/radar-state.test.ts` covers immutable writes, disjoint branch merges,
+legacy compatibility, deterministic unions, same-day identities, report provenance failures,
+and retention of historical reports whose ledger keys already reached main. These are storage
+checks; they do not establish the pending lifecycle guarantees above.
