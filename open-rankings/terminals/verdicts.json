@@ -3572,16 +3572,24 @@
   {
     "productId": "wezterm",
     "storyId": "automation-rules-engine",
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "The evidence shows only indirect support. WezTerm automatically reloads its config when the file changes, which is a built-in event-triggered action, and it exposes shell-integration user vars via __wezterm_set_user_var. Its configuration is Lua code that users describe as intuitive and programmable, but nothing in the pack shows users defining their own event→action rules. Missing for 10: documented user-definable event hooks/handlers (e.g. event callbacks in Lua config), a list of supported events (pane output, user-var changes, bell, etc.), examples of rules triggering actions, independent or hands-on corroboration of event-driven automation.",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "WezTerm's own Lua config API provides `wezterm.on`, which registers a user-defined callback that runs automatically when a named event is emitted. That is a first-party event-to-action rule mechanism matching the story's core. The evidence is a single doc line, though: it does not enumerate which events exist or show what actions callbacks can take. Missing for 10: documented catalog of available events, examples of the actions callbacks can trigger, independent or hands-on corroboration of event-driven automation.",
     "evidenceIds": [
-      "wezterm-docs-24",
-      "wezterm-docs-25",
-      "wezterm-comm-19",
-      "wezterm-comm-2"
-    ]
+      "wezterm-review-source-20261104-4-1"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can define rules that trigger actions automatically on events",
+      "citations": [
+        {
+          "evidenceId": "wezterm-review-source-20261104-4-1",
+          "quote": "`wezterm.on` causes your specified `callback` to be called when `event_name` is emitted."
+        }
+      ]
+    }
   },
   {
     "productId": "wezterm",
@@ -3724,11 +3732,17 @@
   {
     "productId": "wezterm",
     "storyId": "gpu-accelerated-rendering",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "low",
-    "rationale": "Nothing in the evidence pack documents or mentions GPU-accelerated rendering. There is also no vendor claim about staying fast under heavy output. Community reports on speed are mixed: some users call it faster than iTerm2, while others report scrolling lag, higher latency than Kitty, and lines painted blank on macOS. Without any first-party claim of GPU rendering or heavy-output performance, the story is unevidenced.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "WezTerm's own repository describes it as a GPU-accelerated terminal, and one user finds it fast. Another notes its lower OpenGL/GLES requirements. Hands-on reports are mixed: one user saw latency noticeably higher than Kitty plus blank-painted lines in vim on macOS (fine on Linux), and another found input latency above cmd.exe on Windows. None of this directly tests heavy-output throughput. Missing for 10: first-party docs on the GPU rendering pipeline and performance, evidence of responsiveness under heavy output, consistent cross-platform latency.",
+    "evidenceIds": [
+      "wezterm-gh-1",
+      "wezterm-comm-6-refresh-b4839d5462f662e4",
+      "wezterm-comm-16-refresh-d31e5770bf953854",
+      "wezterm-comm-15-refresh-472547cec779a336",
+      "wezterm-comm-9-refresh-2fccbf71e5ae324c"
+    ]
   },
   {
     "productId": "wezterm",

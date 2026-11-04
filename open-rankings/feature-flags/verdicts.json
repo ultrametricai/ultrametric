@@ -202,16 +202,18 @@
     "productId": "flagsmith",
     "storyId": "agentic-sdks",
     "verdict": "full",
-    "quality": 7,
-    "confidence": "medium",
-    "rationale": "Flagsmith's GitHub README says official SDKs cover 15+ languages (TypeScript, .NET, Java and more) with framework integrations such as React and Next.js. The docs refer to both server-side and client-side SDKs, including server-side SDKs connecting to the Edge Proxy and a flag setting that blocks client-side SDK access. Missing for 10: dedicated SDK reference documentation in the pack, a per-language list or maturity detail, and independent or hands-on corroboration of SDK quality.",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "Flagsmith's own GitHub repo lists official SDKs for 15+ languages, including TypeScript, .NET and Java, plus framework integrations such as React and Next.js. Its docs also reference client-side and server-side SDKs, Edge Proxy connectivity from server-side SDKs, OpenFeature compatibility, and show a `flagsmith.hasFeature` code sample. missing for 10: per-language SDK reference docs in the evidence, independent or hands-on corroboration of SDK quality.",
     "evidenceIds": [
       "flagsmith-gh-4",
       "flagsmith-gh-5",
       "flagsmith-docs-22",
       "flagsmith-docs-28",
       "flagsmith-docs-44",
-      "flagsmith-docs-18"
+      "flagsmith-docs-49",
+      "flagsmith-docs-60",
+      "flagsmith-gh-8"
     ]
   },
   {
@@ -482,11 +484,34 @@
   {
     "productId": "flagsmith",
     "storyId": "openfeature-compatibility",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "OpenFeature provider support is a fair question for a feature-flag platform, so the axis applies. However, nothing in the pack documents a Flagsmith OpenFeature provider. The pack covers only Flagsmith's own SDKs in 15+ languages, and the one community comment mentions OpenFeature's flagd only as a comparison, not as Flagsmith integration.",
-    "evidenceIds": []
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "Flagsmith's own docs say it offers OpenFeature Providers, and the docs homepage lists \"OpenFeature Compatibility\". Its GitHub README states that the OpenFeature partnership means users are \"never locked into one vendor\", which matches the story's goal of keeping flag code off a single vendor's SDK API. missing for 10: the actual list of supported provider languages (the quoted docs line is truncated), and independent or hands-on corroboration that the providers work.",
+    "evidenceIds": [
+      "flagsmith-review-source-20261104-1-1",
+      "flagsmith-docs-49",
+      "flagsmith-gh-8"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a platform engineer, I can use the vendor through OpenFeature providers so my flag code isn't locked to one vendor's SDK API",
+      "citations": [
+        {
+          "evidenceId": "flagsmith-review-source-20261104-1-1",
+          "quote": "We currently offer [OpenFeature Providers](https://docs.openfeature.dev/docs/reference/concepts/provider) for the following languages:"
+        },
+        {
+          "evidenceId": "flagsmith-docs-49",
+          "quote": "OpenFeature Compatibility: Use Flagsmith with OpenFeature"
+        },
+        {
+          "evidenceId": "flagsmith-gh-8",
+          "quote": "Thanks to our partnership with OpenFeature, you are never locked into one vendor."
+        }
+      ]
+    }
   },
   {
     "productId": "flagsmith",
@@ -845,15 +870,15 @@
   {
     "productId": "growthbook",
     "storyId": "agentic-headless",
-    "verdict": "partial",
-    "quality": 5,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "GrowthBook documents a full REST API for working with the application, and its official MCP server makes authenticated calls to that API, so headless automation is possible. It can also be stood up non-interactively with `docker compose up -d`, and SDKs evaluate flags server-side without third-party requests. However, nothing in the pack shows a CLI, CI-specific integrations or examples, or a working OpenAPI spec (the probes returned 404). Missing for 10: an official CLI, documented CI/CD pipeline usage, a published OpenAPI spec, and independent hands-on reports of CI automation.",
+    "rationale": "GrowthBook documents a full REST API (docs-12), and explicitly describes automating flag toggles from a deploy script via the toggle feature endpoint (docs-58). It also documents pulling experiment results programmatically (docs-71), so the core of headless, CI-driven automation is first-party documented. Risky API changes can be held for human confirmation (docs-72). missing for 10: a dedicated CLI or CI integration (e.g., an official GitHub Action), a published OpenAPI spec (probe returned 404), independent or hands-on corroboration of CI usage.",
     "evidenceIds": [
       "growthbook-docs-12",
-      "growthbook-docs-21",
-      "growthbook-docs-35",
-      "growthbook-docs-19",
+      "growthbook-docs-58",
+      "growthbook-docs-71",
+      "growthbook-docs-72",
       "growthbook-probe-2"
     ]
   },
@@ -906,14 +931,15 @@
     "productId": "growthbook",
     "storyId": "agentic-public-api",
     "verdict": "full",
-    "quality": 7,
-    "confidence": "medium",
-    "rationale": "GrowthBook's docs say it offers a full REST API for interacting with the application, plus a separate public read-only SDK Connection Endpoint. The official MCP server is built on authenticated calls to that same REST API, which corroborates that it can be driven programmatically. missing for 10: detail on endpoint coverage and authentication in the evidence, a discoverable machine-readable OpenAPI spec (all probed paths returned 404), independent hands-on corroboration of API use.",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "GrowthBook documents a full REST API for interacting with the application, including concrete endpoints for pulling experiment results and toggling features from scripts, plus a confirmation control for risky changes. Its official MCP server is built on authenticated calls to that same REST API, which shows the API is meant for programmatic and agent use. Missing for 10: a discoverable machine-readable OpenAPI spec (probed paths returned 404), and independent or hands-on corroboration of API coverage and reliability.",
     "evidenceIds": [
       "growthbook-docs-12",
+      "growthbook-docs-71",
+      "growthbook-docs-58",
+      "growthbook-docs-72",
       "growthbook-docs-21",
-      "growthbook-docs-20",
-      "growthbook-docs-41",
       "growthbook-docs-53",
       "growthbook-probe-2"
     ]
@@ -1247,14 +1273,16 @@
     "productId": "growthbook",
     "storyId": "openness-api-parity",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "GrowthBook's docs say it offers \"a full REST API for interacting with the application,\" and its official MCP server works by making authenticated calls to that REST API, which suggests broad programmatic coverage. The evidence never shows that the API matches the UI feature-for-feature, and no machine-readable OpenAPI spec was found at the probed paths, so parity is claimed but not shown. Missing for 10: documented endpoint-by-endpoint parity with UI features (experiment results, metrics/fact tables, approval flows, dashboards), a discoverable OpenAPI spec, independent or hands-on confirmation that UI-only gaps don't exist.",
+    "rationale": "GrowthBook documents a 'full REST API for interacting with the application' with concrete endpoints: a toggle-feature endpoint for automation from deploy scripts and an experiment-results endpoint. Its official MCP server works by making authenticated calls to that same REST API. However, nothing shows UI-to-API parity: there is no endpoint coverage list or published OpenAPI spec (probed paths returned 404), and risky API changes can be held until a person confirms them in the UI. Missing for 10: explicit UI/API parity statement, documented API coverage of metrics/fact tables, approval flows, visual editor and settings, a discoverable OpenAPI spec, independent hands-on corroboration.",
     "evidenceIds": [
       "growthbook-docs-12",
+      "growthbook-docs-58",
+      "growthbook-docs-71",
+      "growthbook-docs-72",
       "growthbook-docs-21",
-      "growthbook-probe-2",
-      "growthbook-docs-53"
+      "growthbook-probe-2"
     ]
   },
   {
@@ -1278,15 +1306,13 @@
     "productId": "growthbook",
     "storyId": "openness-open-license",
     "verdict": "full",
-    "quality": 7,
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "GrowthBook's source is published in a public GitHub repository (growthbook/growthbook), and a community commenter describes it as \"open source with an optional cloud SaaS offering.\" Self-hosting via Docker Compose fits that open-source model. missing for 10: the specific license is never named, no first-party docs state the licensing terms, and nothing clarifies whether paid-tier features (e.g. SSO, audit logs) are in the openly licensed code.",
+    "rationale": "GrowthBook's public GitHub repository describes it as \"Open Source Feature Flags, Experimentation, and Product Analytics\", and the docs call it \"the open-source platform\". A community comparison independently confirms it is open source, with an optional cloud SaaS. missing for 10: the specific license is never named in the evidence, and it is unclear whether paid-tier features (e.g., SSO, audit logs, visual editor) ship under the same open license.",
     "evidenceIds": [
-      "growthbook-gh-1",
-      "growthbook-gh-2",
-      "growthbook-comm-5",
-      "growthbook-docs-10",
-      "growthbook-comm-1"
+      "growthbook-gh-9",
+      "growthbook-docs-55",
+      "growthbook-comm-6-refresh-03ca0c6a606b8232"
     ]
   },
   {
@@ -1368,17 +1394,18 @@
     "productId": "growthbook",
     "storyId": "progressive-percentage-rollouts",
     "verdict": "full",
-    "quality": 7,
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "GrowthBook documents percentage rollouts in targeting rules and rules that roll out gradually and can be scoped, ramped and scheduled. Flags are served as a cacheable JSON payload evaluated locally in the SDKs, with the proxy supporting real-time rollouts, so changing the percentage needs no redeploy. Users are assigned by hashing an attribute, which gives consistent bucketing. Missing for 10: explicit documentation that percentage rollout rules (not just experiment rules) use sticky hash-based bucketing when ramping from 1% to 100%, clarity that automated ramp schedules are gated to the higher pricing tier, and independent or hands-on corroboration of the ramping workflow.",
+    "rationale": "GrowthBook documents percentage rollouts and gradual-rollout rules that can be scoped, ramped and scheduled, including release plans that ramp up automatically over time. Bucketing hashes on a user attribute, and all SDKs use the same assignment logic so the same attributes always get the same result. Because flags are served from the GrowthBook backend, with streaming updates, changes take effect without redeploying. Missing for 10: explicit docs that rollout rules (not just experiment rules) use sticky hash-based bucketing as the percentage increases; automated ramp schedules appear only on a higher pricing tier; no independent or hands-on corroboration of ramping 1% to 100%.",
     "evidenceIds": [
-      "growthbook-docs-22",
       "growthbook-docs-47",
+      "growthbook-docs-22",
+      "growthbook-docs-60",
+      "growthbook-docs-61",
+      "growthbook-docs-75",
       "growthbook-docs-33",
-      "growthbook-comm-6",
-      "growthbook-docs-45",
       "growthbook-docs-37",
-      "growthbook-docs-20"
+      "growthbook-docs-70"
     ]
   },
   {
@@ -1442,20 +1469,23 @@
     "productId": "growthbook",
     "storyId": "sdk-language-breadth",
     "verdict": "full",
-    "quality": 8,
+    "quality": 9,
     "confidence": "high",
-    "rationale": "GrowthBook ships 24 official SDKs spanning web (React, script tag, edge Cloudflare Workers), backend (Python, plus server-side inline experiments), and mobile (Kotlin for Android, Swift for iOS and other Apple platforms). Consistency comes from a single cacheable JSON feature definition, served via the SDK Connection Endpoint and evaluated locally in each SDK. The 2021 founder comment that native mobile SDKs did not exist yet is superseded by the current Kotlin and Swift docs. Missing for 10: explicit documentation of cross-SDK evaluation parity (e.g., shared test suites or hashing guarantees), dedicated backend SDK docs in the pack beyond the README mention, and independent hands-on corroboration of consistent behavior across platforms.",
+    "rationale": "GrowthBook ships 24 official SDKs spanning backend (Python), web (JS, React, Vue, script tag, Cloudflare edge) and mobile (Kotlin/Android, Swift/iOS, React Native, Flutter). Its docs state that all SDKs use the same assignment logic, backed by a 400+ language-agnostic JSON test suite, which supports consistent flag behavior across the stack. Missing for 10: independent hands-on corroboration of cross-SDK consistency, and feature parity gaps exist (e.g., streaming is JavaScript/React only).",
     "evidenceIds": [
       "growthbook-gh-1",
+      "growthbook-docs-75",
+      "growthbook-docs-76",
       "growthbook-docs-50",
+      "growthbook-docs-79",
       "growthbook-docs-51",
       "growthbook-docs-52",
-      "growthbook-docs-49",
+      "growthbook-docs-82",
+      "growthbook-docs-80",
+      "growthbook-docs-78",
       "growthbook-docs-14",
-      "growthbook-docs-19",
-      "growthbook-docs-20",
-      "growthbook-comm-6",
-      "growthbook-docs-1"
+      "growthbook-docs-70",
+      "growthbook-comm-4-refresh-7f6052665f9e2f40"
     ]
   },
   {
@@ -2445,18 +2475,20 @@
     "productId": "statsig",
     "storyId": "agentic-sdks",
     "verdict": "full",
-    "quality": 8,
+    "quality": 9,
     "confidence": "high",
-    "rationale": "First-party docs describe official client and server SDKs that evaluate gates and experiments locally after initialization [statsig-docs-39], including On-Device Eval client SDKs [statsig-docs-8]. A React quickstart using StatsigProvider [statsig-docs-36] and a JavaScript SDK tutorial [statsig-docs-24] show hands-on usage, and the docs steer users to SDKs over the raw HTTP API [statsig-docs-37], with evaluation consistent across platforms [statsig-docs-7] and server SDKs used for prompt retrieval [statsig-docs-44]. Missing for 10: an explicit list of supported SDK languages, and independent hands-on corroboration of SDK quality.",
+    "rationale": "Statsig documents official client and server SDKs. The evidence shows a quickstart (React StatsigProvider), a JavaScript SDK tutorial, On-Device Eval client SDKs, and server SDKs used for prompt retrieval. The docs say SDKs handle caching, retries and networking and evaluate locally in under 1ms. The HTTP API is positioned as a fallback only when no SDK exists for your language. Community users describe implementing Statsig integrations at multiple companies. Missing for 10: an explicit list of supported languages and platforms, and independent hands-on corroboration that names the SDKs specifically.",
     "evidenceIds": [
-      "statsig-docs-39",
-      "statsig-docs-8",
       "statsig-docs-36",
       "statsig-docs-24",
+      "statsig-docs-8",
+      "statsig-docs-39",
+      "statsig-docs-55",
+      "statsig-docs-54",
       "statsig-docs-37",
-      "statsig-docs-7",
       "statsig-docs-44",
-      "statsig-docs-41"
+      "statsig-comm-2-refresh-9637d1b4d3bf3ddd",
+      "statsig-comm-3-refresh-4004e782335af5b1"
     ]
   },
   {
@@ -3121,16 +3153,16 @@
     "productId": "unleash",
     "storyId": "agentic-sdks",
     "verdict": "full",
-    "quality": 8,
+    "quality": 9,
     "confidence": "high",
-    "rationale": "The Unleash GitHub repo states it supports 15 official client and server SDKs, plus over 15 community SDKs. The quickstart directs users to integrate a client or backend SDK into their codebase, and the docs cover a code snippet (`unleash.isEnabled`), backend tokens for SDKs, and Edge serving thousands of connected SDKs. Missing for 10: per-language SDK reference documentation in the pack, and independent or hands-on corroboration of SDK quality.",
+    "rationale": "Unleash documents 15 official client and server SDKs, with over 30 SDKs counting community ones. Its quickstart tells users to connect via client or backend SDKs, a code snippet shows `unleash.isEnabled`, and backend tokens are documented for authenticating SDKs. A community commenter independently confirms official clients for Java, Node.js, Go, Ruby and Python. missing for 10: per-SDK reference documentation or a full official language list in the evidence.",
     "evidenceIds": [
       "unleash-gh-4",
+      "unleash-docs-51",
       "unleash-docs-24",
-      "unleash-docs-1",
       "unleash-docs-36",
       "unleash-docs-34",
-      "unleash-docs-5"
+      "unleash-comm-2"
     ]
   },
   {
@@ -3450,13 +3482,14 @@
     "productId": "unleash",
     "storyId": "openness-self-host",
     "verdict": "full",
-    "quality": 8,
-    "confidence": "medium",
-    "rationale": "First-party deployment docs explicitly cover setting up Unleash Open Source or Unleash Enterprise in your own environment with Docker. The GitHub repo presents the hosted instance as an alternative to running it yourself, and Edge can serve as a self-run read replica in front of your instance. Missing for 10: deployment-requirement detail (database, Kubernetes/Helm, upgrades) beyond a one-line docs snippet, and independent hands-on corroboration of self-hosting.",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "First-party docs give a Docker-based setup for self-hosting either Unleash Open Source or Unleash Enterprise in your own environment, including cloning the repo and starting the server with Docker Compose. The open-source GitHub repo and a community recommendation of Unleash as a self-hosted LaunchDarkly alternative corroborate this. Missing for 10: in-depth evidence on production self-hosting (scaling, upgrades, database requirements) and hands-on reports of running it.",
     "evidenceIds": [
       "unleash-docs-4",
-      "unleash-gh-3",
-      "unleash-docs-5"
+      "unleash-docs-46",
+      "unleash-gh-1",
+      "unleash-comm-2"
     ]
   },
   {
@@ -3581,16 +3614,16 @@
     "productId": "unleash",
     "storyId": "sdk-language-breadth",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Unleash documents 15 official client and server SDKs, and its docs distinguish backend SDKs (backend tokens) from client-side SDKs (frontend tokens safe to expose), which covers backend and web integration. The evidence never names mobile SDKs or shows that flag evaluation behaves the same across SDKs. missing for 10: explicit evidence of official mobile SDKs, documentation or corroboration of consistent flag evaluation across SDKs, independent hands-on validation.",
+    "rationale": "Unleash documents 15 official client and server SDKs (30+ in total including community SDKs) covering all major languages. Backend tokens serve backend SDKs and frontend tokens are safe to expose client-side, and a community comment names official Java, Node.js, Go, Ruby and Python clients. Backend and web coverage is clearly evidenced, but mobile SDKs and consistent cross-SDK flag evaluation are not shown. Missing for 10: explicit evidence of official mobile SDKs (iOS/Android/React Native/Flutter), documentation of consistent evaluation semantics across SDKs, hands-on corroboration of multi-platform use.",
     "evidenceIds": [
       "unleash-gh-4",
+      "unleash-docs-51",
       "unleash-docs-24",
       "unleash-docs-34",
       "unleash-docs-26",
-      "unleash-docs-23",
-      "unleash-docs-36"
+      "unleash-comm-2"
     ]
   },
   {

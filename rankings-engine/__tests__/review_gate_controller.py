@@ -9,11 +9,15 @@ from unittest.mock import patch
 SHA = 'a' * 40
 OTHER = 'b' * 40
 DESC = '0 unresolved Greptile findings; Foreloop excluded'
+RENOVATE = {'id': 29139614, 'login': 'renovate[bot]', 'type': 'Bot'}
+RENOVATE_HEAD = {'sha': SHA, 'ref': 'renovate/non-major-dependencies',
+                 'repo': {'full_name': 'owner/repo'}}
 
 
 class ReviewGateTests(unittest.TestCase):
     def run_gate(self, *, target='513', head='', checks=None, threads=None, status=None,
-                 pages=None, changed=False, metadata_error=False, status_read_error=False):
+                 pages=None, changed=False, metadata_error=False, status_read_error=False,
+                 author=None, pr_head=None, final_head=None, final_state='open'):
         source = (Path(__file__).resolve().parents[2] / '.github/workflows/review-findings.yml').read_text()
         selection = source.split('        run: |\n', 1)[1].split('\n  findings:', 1)[0]
         selection = '\n'.join(line[10:] if line.startswith('          ') else line for line in selection.splitlines())
@@ -35,7 +39,11 @@ class ReviewGateTests(unittest.TestCase):
             if '/pulls/999' in endpoint:
                 raise RuntimeError('unrelated PR must not block this CI run')
             if '/pulls/513' in endpoint:
-                return json.dumps({'head': {'sha': SHA}, 'state': 'open'})
+                final = reads.count(endpoint) > 1
+                return json.dumps({'head': (final_head if final and final_head is not None
+                                           else pr_head or {'sha': SHA}),
+                                   'user': author or {'id': 1, 'login': 'contributor', 'type': 'User'},
+                                   'state': final_state if final else 'open'})
             if endpoint == 'graphql':
                 if metadata_error:
                     raise RuntimeError('metadata unavailable')
@@ -134,6 +142,54 @@ class ReviewGateTests(unittest.TestCase):
         posts, _ = self.run_gate(changed=True)
         self.assertFalse(any(post['state'] == 'success' for post in posts))
 
+    def test_renovate_without_review_passes_without_reading_check_runs(self):
+        posts, reads = self.run_gate(author=RENOVATE, pr_head=RENOVATE_HEAD, checks=[])
+        self.assertEqual(posts[0]['state'], 'success')
+        self.assertIn('verified Renovate PR', posts[0]['description'])
+        self.assertFalse(any('/check-runs?' in endpoint for endpoint in reads))
+
+    def test_renovate_exemption_does_not_hide_unresolved_findings(self):
+        pages = [{'nodes': [{'isResolved': False, 'comments': {
+            'nodes': [{'author': {'login': 'greptile-apps'}}]}}],
+            'pageInfo': {'hasNextPage': False, 'endCursor': None}}]
+        posts, _ = self.run_gate(author=RENOVATE, pr_head=RENOVATE_HEAD,
+                                 checks=[], threads=pages)
+        self.assertEqual(posts[0]['state'], 'failure')
+        self.assertTrue(posts[0]['description'].startswith('1 unresolved'))
+
+    def test_renovate_identity_and_repository_must_all_match(self):
+        for field, value in [('id', 1), ('login', 'someone'), ('type', 'User')]:
+            with self.subTest(field=field):
+                author = {**RENOVATE, field: value}
+                posts, _ = self.run_gate(author=author, pr_head=RENOVATE_HEAD, checks=[])
+                self.assertEqual(posts[0]['state'], 'pending')
+        for field, value in [('repo', {'full_name': 'fork/repo'}), ('repo', None),
+                             ('ref', 'feature/renovate')]:
+            with self.subTest(field=field, value=value):
+                posts, _ = self.run_gate(author=RENOVATE,
+                    pr_head={**RENOVATE_HEAD, field: value}, checks=[])
+                self.assertEqual(posts[0]['state'], 'pending')
+
+    def test_renovate_metadata_error_fails_closed(self):
+        posts, _ = self.run_gate(author=RENOVATE, pr_head=RENOVATE_HEAD,
+                                 metadata_error=True, checks=[])
+        self.assertEqual(posts[0]['state'], 'pending')
+
+    def test_renovate_rechecks_head_and_open_state_before_success(self):
+        for final_head, final_state in [({**RENOVATE_HEAD, 'sha': OTHER}, 'open'),
+                                       (RENOVATE_HEAD, 'closed'),
+                                       ({**RENOVATE_HEAD, 'repo': None}, 'open')]:
+            with self.subTest(head=final_head, state=final_state):
+                posts, _ = self.run_gate(author=RENOVATE, pr_head=RENOVATE_HEAD, checks=[],
+                                         final_head=final_head, final_state=final_state)
+                self.assertFalse(any(post['state'] == 'success' for post in posts))
+
+    def test_renovate_head_change_during_pagination_fails_closed(self):
+        posts, _ = self.run_gate(author=RENOVATE, pr_head=RENOVATE_HEAD,
+                                 changed=True, checks=[])
+        self.assertFalse(any(post['state'] == 'success' for post in posts))
+
 
 if __name__ == '__main__':
     unittest.main()
+

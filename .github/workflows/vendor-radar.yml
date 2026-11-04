@@ -5,10 +5,10 @@
 # GitHub repo search (new repos crossing the star-velocity threshold), and YC Launches
 # (ycombinator.com/launches.json, keyless JSON feed) — matches candidates
 # lexically against the arena taxonomy, dedupes against every tracked product, the vendor
-# registry, and the committed seen-ledger (rankings-engine/radar-seen.json), then:
+# registry, and legacy + immutable discovery history, then:
 #
-#   1. commits the dated candidates report (reports/vendor-radar/<date>.{json,md}) + the updated
-#      seen-ledger via the usual PR-or-issue flow, with the candidates list and the full triage
+#   1. commits the dated candidates report (reports/vendor-radar/runs/<run-id>.{json,md}) + immutable
+#      discovery records via the usual PR-or-issue flow, with the candidates list and the full triage
 #      disposition table (auto-approved + skipped + needs-human) on the scan PR's body,
 #   2. when the triage routed candidates to a human (needs-human rows), files (or updates, on a
 #      same-day re-run) a 'vendor-radar: needs-human candidates YYYY-MM-DD' issue listing just
@@ -69,35 +69,24 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      # Seen-ledger updates land on main only when a scan PR merges, so a ledger committed to a
-      # still-open (or abandoned) vendor-radar/* branch would otherwise be invisible to the next
-      # run, re-nominating its candidates. Extract every radar branch's ledger and hand them to
-      # the scan via --merge-seen: stranded keys keep deduping and ride to main with the next
-      # merged PR. Each `git show` is gated on its own exit code.
-      - name: Collect seen-ledgers from open radar branches
+      # Preserve discoveries AND their source reports from both producer families. A failed
+      # fetch/import fails the run; deduping with incomplete branch history is unsafe.
+      - name: Reconcile radar discoveries and reports
         run: |
-          git fetch origin '+refs/heads/vendor-radar/*:refs/remotes/origin/vendor-radar/*'
-          mkdir -p /tmp/radar-seen
-          : > /tmp/radar-seen/flags
-          for REF in $(git for-each-ref --format='%(refname:short)' 'refs/remotes/origin/vendor-radar/*'); do
-            SAFE=$(echo "$REF" | tr '/' '-')
-            if git show "$REF:rankings-engine/radar-seen.json" > "/tmp/radar-seen/$SAFE.json" 2>/dev/null; then
-              printf ' --merge-seen /tmp/radar-seen/%s.json' "$SAFE" >> /tmp/radar-seen/flags
-            else
-              rm -f "/tmp/radar-seen/$SAFE.json"
-            fi
-          done
-          echo "MERGE_SEEN_FLAGS=$(cat /tmp/radar-seen/flags)" >> "$GITHUB_ENV"
+          git fetch origin '+refs/heads/vendor-radar/*:refs/remotes/origin/vendor-radar/*' \
+            '+refs/heads/launch-watch/*:refs/remotes/origin/launch-watch/*'
+          pnpm tsx rankings-engine/scripts/reconcile-radar-state.ts
+          echo "RADAR_RUN_ID=$(date -u +%F)-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}" >> "$GITHUB_ENV"
 
       # The scan itself: keyless, bounded (a handful of HTTP requests, 10s timeouts; GH_TOKEN
-      # only raises the GitHub search rate limit). Writes reports/vendor-radar/<date>.{json,md},
-      # updates rankings-engine/radar-seen.json, and writes the candidates markdown ONLY when there
+      # only raises the GitHub search rate limit). Writes reports/vendor-radar/runs/<run-id>.{json,md},
+      # writes an immutable record under rankings-engine/radar-discoveries, and writes the candidates markdown ONLY when there
       # are new candidates. A corrupt committed ledger FAILS the run (vendor-radar.ts
       # loadSeenLedger) instead of silently wiping the seen-history.
       - name: Vendor radar scan
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: pnpm tsx rankings-engine/scripts/vendor-radar.ts --issue-body /tmp/vendor-radar-candidates.md $MERGE_SEEN_FLAGS
+        run: pnpm tsx rankings-engine/scripts/vendor-radar.ts --issue-body /tmp/vendor-radar-candidates.md --run-id "$RADAR_RUN_ID"
 
       # Criteria triage (policies/AGENT_POLICY.md): mechanical checks per candidate — fetches
       # the docs surface, applies the shipped-product and affiliation guards. The full disposition
@@ -112,20 +101,19 @@ jobs:
             echo "No new candidates — nothing to triage."
             exit 0
           fi
-          DATE=$(date -u +%F)
           pnpm tsx rankings-engine/scripts/radar-triage.ts \
-            --report "reports/vendor-radar/$DATE.json" \
-            --out "reports/vendor-radar/$DATE-triage.json" \
+            --report "reports/vendor-radar/runs/$RADAR_RUN_ID.json" \
+            --out "reports/vendor-radar/runs/$RADAR_RUN_ID-triage.json" \
             --md /tmp/vendor-radar-triage.md
           pnpm tsx rankings-engine/scripts/needs-human-issue.ts \
-            --triage "reports/vendor-radar/$DATE-triage.json" \
+            --triage "reports/vendor-radar/runs/$RADAR_RUN_ID-triage.json" \
             --out /tmp/vendor-radar-needs-human.md \
             --generator vendor-radar
 
       - name: Tests
         run: pnpm test
 
-      - name: Commit report + seen-ledger as PR (or compare-link issue)
+      - name: Commit report + discovery records as PR (or compare-link issue)
         env:
           # Prefer the fine-grained PAT when the secret exists: a PR created with the
           # workflow's GITHUB_TOKEN does not trigger pull_request workflows (GitHub's
@@ -134,25 +122,24 @@ jobs:
           # completes. Falls back to GITHUB_TOKEN when the secret is absent; no
           # secrets are created here.
           GH_TOKEN: ${{ secrets.UM_BOT_PR_PAT || secrets.GITHUB_TOKEN }}
-          RUN_ID: ${{ github.run_id }}
         run: |
           # porcelain, not `git diff --quiet`: a brand-new dated report file is UNTRACKED and
           # invisible to diff.
-          if [ -z "$(git status --porcelain -- reports rankings-engine/radar-seen.json)" ]; then
-            echo "No report/ledger change — done."
+          if [ -z "$(git status --porcelain -- reports rankings-engine/radar-discoveries)" ]; then
+            echo "No report/discovery change — done."
             exit 0
           fi
-          BRANCH="vendor-radar/$RUN_ID"
+          BRANCH="vendor-radar/$RADAR_RUN_ID"
           git config user.name "ultrametric-vendor-radar"
           git config user.email "noreply@ultrametric.ai"
           git checkout -b "$BRANCH"
-          git add reports rankings-engine/radar-seen.json
+          git add reports rankings-engine/radar-discoveries
           git commit -m "chore(vendor-radar): daily launch-surface scan"
           git push -u origin "$BRANCH"
           # The PR body carries the candidates list and the full triage disposition table —
           # auto-approved and skipped rows are recorded here, not in an issue.
           {
-            echo "Automated keyless launch-surface scan (\`rankings-engine/scripts/vendor-radar.ts\`): dated candidates report + seen-ledger update. DETECTION ONLY — no products added, no verdicts touched; needs-human dispositions are in the companion 'vendor-radar: needs-human candidates' issue and a deep spike on approved ones runs via the standard engine stages (docs/VENDOR-RADAR.md)."
+            echo "Automated keyless launch-surface scan (\`rankings-engine/scripts/vendor-radar.ts\`): dated candidates report + immutable discovery record. DETECTION ONLY — no products added, no verdicts touched; needs-human dispositions are in the companion 'vendor-radar: needs-human candidates' issue and a deep spike on approved ones runs via the standard engine stages (docs/VENDOR-RADAR.md)."
             if [ -f /tmp/vendor-radar-candidates.md ]; then
               echo
               cat /tmp/vendor-radar-candidates.md
@@ -254,10 +241,9 @@ jobs:
           # secrets are created here.
           GH_TOKEN: ${{ secrets.UM_BOT_PR_PAT || secrets.GITHUB_TOKEN }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          RUN_ID: ${{ github.run_id }}
         run: |
           DATE=$(date -u +%F)
-          TRIAGE="reports/vendor-radar/$DATE-triage.json"
+          TRIAGE="reports/vendor-radar/runs/$RADAR_RUN_ID-triage.json"
           if [ ! -f "$TRIAGE" ]; then
             echo "No triage output — no bring-up."
             exit 0
@@ -267,7 +253,7 @@ jobs:
             exit 0
           fi
           cp "$TRIAGE" /tmp/triage.json
-          BRANCH="vendor-radar-bringup/$RUN_ID"
+          BRANCH="vendor-radar-bringup/$RADAR_RUN_ID"
           git config user.name "ultrametric-vendor-radar"
           git config user.email "noreply@ultrametric.ai"
           git checkout -f -B "$BRANCH" "$GITHUB_SHA"

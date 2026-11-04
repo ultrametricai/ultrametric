@@ -44,10 +44,13 @@ export const VendorStateEntrySchema = z.object({
   status: z.enum(['available', 'unavailable', 'partial']),
   // Optional, and only ever taken from the vendor's own pricing page.
   price: VendorStatePriceSchema.optional(),
-  // The vendor's own state page or availability table this row rests on — verified reachable
-  // before listing.
+  // The vendor's own state page or availability table that establishes the row's status —
+  // verified reachable before listing.
   sourceUrl: z.string().url(),
-  // What the source says, quoted or closely paraphrased.
+  // Additional first-party pages needed to support material limits or context in `note`.
+  // `sourceUrl` remains the primary availability source so existing consumers stay compatible.
+  supportingSourceUrls: z.array(z.string().url()).min(1).optional(),
+  // What the cited source(s) say, quoted or closely paraphrased.
   note: z.string().min(1),
   checkedAt: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'checkedAt must be YYYY-MM-DD'),
 })
@@ -60,6 +63,7 @@ export interface VendorStateCell {
   status: VendorStateStatus
   note: string
   sourceUrl: string
+  supportingSourceUrls?: string[]
   /** The date the source was last checked (YYYY-MM-DD). */
   checkedAt: string
   price?: z.infer<typeof VendorStatePriceSchema>
@@ -117,6 +121,7 @@ export function vendorStateLookup(
       status: e.status,
       note: e.note,
       sourceUrl: e.sourceUrl,
+      ...(e.supportingSourceUrls ? { supportingSourceUrls: e.supportingSourceUrls } : {}),
       checkedAt: e.checkedAt,
       ...(e.price ? { price: e.price } : {}),
     }
