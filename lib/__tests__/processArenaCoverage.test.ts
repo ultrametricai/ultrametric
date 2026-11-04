@@ -48,7 +48,13 @@ describe('process → arena coverage audit', () => {
 
     const file = path.join(root, 'open-processes/incorporate-c-corp.json')
     const definition = JSON.parse(fs.readFileSync(file, 'utf8'))
-    const conditional = definition.parts.find((part: { metadata: { jurisdictions?: string[] } }) => part.metadata.jurisdictions?.length)
+    // A conditional part WITHOUT a committed stated-vendor reference (the state-agency wiring
+    // 2026-10-22 wired most of form_001's conditional steps): the projection keeps only the
+    // first stated-vendor id, so pushing the fixture onto an already-wired part would drop it.
+    const conditional = definition.parts.find(
+      (part: { metadata: { jurisdictions?: string[] }; references: { kind: string }[] }) =>
+        part.metadata.jurisdictions?.length && !part.references.some((r) => r.kind === 'vendor'),
+    )
     conditional.references.push({ kind: 'vendor', role: 'stated-vendor', id: 'fixture_conditional' })
     const method = definition.parts.flatMap((part: { options: { parts: unknown[] }[] }) => part.options).find((option: { parts: unknown[] }) => option.parts.length)
     method.references.push({ kind: 'vendor', role: 'candidate', id: 'fixture_method' })

@@ -535,36 +535,80 @@ describe('LLM-first thinking steps (founder 2026-09-30: "validation of the idea 
 })
 
 describe('end-to-end: Incorporate C-Corp (company-launch playbook)', () => {
-  it('step rankings + process leaderboard + a temporarily-human step with computer-use options', () => {
+  it('step rankings and process leaderboard stay consistent with the live judged data', () => {
     const task = tasks().find((t) => t.id === 'form_001')!
-    const lb = processLeaderboard(task, DATA_DIR)
-    const snapshot = {
-      task: task.id,
-      rankableSteps: lb.rankableSteps,
-      totalSteps: lb.totalSteps,
-      leaderboard: lb.entries.map((e) => ({
-        productId: e.productId,
-        arenaId: e.arenaId,
-        stepsServed: e.stepsServed,
-        processScore: e.processScore,
-      })),
-      bestPerStep: lb.bestPerStep.map((s) => ({ nodeId: s.nodeId, top: s.top.productId, score: s.top.score })),
-      stepRankings: task.dag.nodes.map((n) => {
-        const r = stepRanking(task.id, n, DATA_DIR)
-        return {
-          nodeId: n.id,
-          label: n.label,
-          ranked: r ? r.vendors.map((v) => `${v.productId}:${v.score}`) : null,
-        }
-      }),
-      computerUse: temporarilyHumanSteps([task]).map((g) => ({
-        nodeId: g.node.id,
-        label: g.node.label,
-        options: computerUseOptions(g.taskId, g.node.id, DATA_DIR).map((o) => `${o.arenaId}/${o.productId}:${o.score}`),
-      })),
+    const read = () => {
+      const lb = processLeaderboard(task, DATA_DIR)
+      return {
+        rankableSteps: lb.rankableSteps,
+        totalSteps: lb.totalSteps,
+        leaderboard: lb.entries.map((entry) => ({
+          productId: entry.productId,
+          arenaId: entry.arenaId,
+          stepsServed: entry.stepsServed,
+          avgStepScore: entry.avgStepScore,
+          processScore: entry.processScore,
+        })),
+        bestPerStep: lb.bestPerStep.map((step) => ({
+          nodeId: step.nodeId,
+          top: step.top.productId,
+          score: step.top.score,
+        })),
+        stepRankings: task.dag.nodes.map((node) => {
+          const ranking = stepRanking(task.id, node, DATA_DIR)
+          return {
+            nodeId: node.id,
+            ranked: ranking?.vendors.map((vendor) => `${vendor.productId}:${vendor.score}`) ?? null,
+          }
+        }),
+      }
     }
-    expect(snapshot.leaderboard.length).toBeGreaterThan(0)
-    expect(snapshot).toMatchSnapshot()
+
+    const result = read()
+    const rankedSteps = result.stepRankings.filter((step) => step.ranked !== null)
+    expect(result.totalSteps).toBe(task.dag.nodes.length)
+    expect(result.rankableSteps).toBe(rankedSteps.length)
+    expect(result.bestPerStep).toHaveLength(result.rankableSteps)
+    // The process contract fixes which incorporation steps are evidence-rankable. Products,
+    // order and scores remain live derivations of the current judged evidence.
+    expect(rankedSteps.map((step) => step.nodeId)).toEqual(['n4', 'n6', 'n7', 'n8'])
+    expect(result.bestPerStep.map((step) => step.nodeId)).toEqual(['n4', 'n6', 'n7', 'n8'])
+    expect(result.leaderboard.length).toBeGreaterThan(0)
+
+    const expectedScores = new Map<string, number[]>()
+    for (const node of task.dag.nodes) {
+      const ranking = stepRankingFull(task.id, node, DATA_DIR)
+      if (!ranking || ranking.arenaId === GOVERNMENT_ARENA_ID || node.supporting) continue
+      for (const vendor of ranking.vendors) {
+        const key = `${ranking.arenaId}/${vendor.productId}`
+        expectedScores.set(key, [...(expectedScores.get(key) ?? []), vendor.score])
+      }
+    }
+    const expectedEntries = new Set(expectedScores.keys())
+    expect(new Set(result.leaderboard.map((entry) => `${entry.arenaId}/${entry.productId}`)))
+      .toEqual(expectedEntries)
+
+    for (const best of result.bestPerStep) {
+      const ranked = result.stepRankings.find((step) => step.nodeId === best.nodeId)?.ranked
+      expect(ranked?.[0], `leaderboard best for ${best.nodeId} must match its step ranking`)
+        .toBe(`${best.top}:${best.score}`)
+    }
+    for (let i = 0; i < result.leaderboard.length; i++) {
+      const entry = result.leaderboard[i]
+      expect(entry.arenaId).toBe('legal-ops')
+      expect(entry.stepsServed).toBeGreaterThan(0)
+      expect(entry.stepsServed).toBeLessThanOrEqual(result.rankableSteps)
+      expect(entry.processScore).toBeGreaterThanOrEqual(0)
+      expect(entry.processScore).toBeLessThanOrEqual(100)
+      const scores = expectedScores.get(`${entry.arenaId}/${entry.productId}`)!
+      const sum = scores.reduce((total, score) => total + score, 0)
+      expect(entry.stepsServed).toBe(scores.length)
+      expect(entry.avgStepScore).toBe(Math.round((sum / scores.length) * 10) / 10)
+      expect(entry.processScore).toBe(Math.round((sum / result.rankableSteps) * 10) / 10)
+      if (i > 0) expect(result.leaderboard[i - 1].processScore).toBeGreaterThanOrEqual(entry.processScore)
+    }
+    expect(new Set(result.leaderboard.map((entry) => entry.productId)).size).toBe(result.leaderboard.length)
+    expect(read()).toEqual(result)
   })
 
   // form_001 has no temporarily-human steps, so the computer-use surface is snapshotted on a
@@ -623,6 +667,13 @@ describe('government-services step applicability (founder 2026-10-08: scope cand
     expect(govStepVendors).toContain('irs')
     expect(govStepVendors).toContain('eftps')
     expect(govStepVendors).not.toContain('uspto')
+    // State tax agencies share the US/tax cell but are never substitutes for the federal
+    // anchor (state-agency bring-up 2026-10-22, extended 2026-10-27): a federal return cannot
+    // be filed with them.
+    for (const id of ['ca-ftb', 'ca-edd', 'ny-dtf', 'tx-comptroller', 'de-dor',
+      'tx-twc', 'wa-esd', 'wa-dor', 'fl-dor']) {
+      expect(govStepVendors).not.toContain(id)
+    }
     // Agencies live on the step rosters only — the process leaderboard lists competing
     // vendors, so no government-services entry appears there at all.
     const lbGov = processLeaderboard(task, DATA_DIR).entries
@@ -655,11 +706,28 @@ describe('government-services step applicability (founder 2026-10-08: scope cand
     }
   })
 
-  it('pin: the "or:" row for a government agency obeys the same rule — IRS never suggests a foreign or wrong-area agency', () => {
+  it('pin: the "or:" row for a government agency obeys the same rule — IRS never suggests a foreign, wrong-area, or state agency', () => {
     for (const alt of vendorAlternatives('irs', 99, DATA_DIR)) {
       const p = govProducts().find((x) => x.id === alt.id)!
       expect(p.country).toBe('US')
       expect(p.area).toBe('tax')
+      expect(p.state, `${p.id} is a state agency — not a federal substitute`).toBeUndefined()
+    }
+  })
+
+  it('pin: government-services products never appear as process-leaderboard entries on any task', () => {
+    // Agencies are step-roster candidates only (lib/processRankings.ts excludes the arena from
+    // leaderboard entries). The five state agencies added 2026-10-22 and the six added
+    // 2026-10-27 (PR #500) must obey the same rule.
+    const govIds = new Set(govProducts().map((p) => p.id))
+    for (const newId of ['ca-ftb', 'ca-edd', 'ny-dtf', 'tx-comptroller', 'de-dor',
+      'tx-twc', 'wa-esd', 'wa-dor', 'fl-dor', 'nevada-sos', 'wyoming-sos']) {
+      expect(govIds.has(newId)).toBe(true)
+    }
+    for (const task of tasks()) {
+      for (const e of processLeaderboard(task, DATA_DIR).entries) {
+        expect(e.arenaId, `${task.id} leaderboard lists ${e.productId}`).not.toBe(GOVERNMENT_ARENA_ID)
+      }
     }
   })
 

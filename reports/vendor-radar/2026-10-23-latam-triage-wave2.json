@@ -1,0 +1,198 @@
+{
+  "_comment": "Wave 2 of the 2026-10-23 LatAm candidate triage (first wave: 2026-10-23-latam-triage.json). Manual triage against policies/AGENT_POLICY.md#vendor-radar-candidate-approval of the seven candidates the lexical classifier skipped (Spanish/Portuguese page metadata, or the then-missing payments DOMAIN_VOCAB entry) plus placement corrections for the two lexically misplaced auto-approvals (EBANX, Clara). Evidence is fetched English developer-docs surfaces where they exist. The triage creates no rankings; bring-up of passers is a separate, reviewed step.",
+  "generatedAt": "2026-10-24T02:45:46.071Z",
+  "policy": "policies/AGENT_POLICY.md#vendor-radar-candidate-approval",
+  "dispositions": [
+    {
+      "key": "dlocal.com",
+      "name": "dLocal",
+      "url": "https://www.dlocal.com",
+      "arena": "payments",
+      "status": "auto-approved",
+      "criterion": null,
+      "reason": "wave-1 skip cause fixed: the payments arena now has a DOMAIN_VOCAB entry (rankings-engine/scripts/tag-story-scopes.ts); manual confirmation against the payments arena definition (accepting cards and wallets, running subscriptions, moving money at scale) from the English docs",
+      "evidence": [
+        "https://docs.dlocal.com/llms.txt — HTTP 200, plain text: \"Our payment platform empowers you to reach billions of customers, accept payments, send payouts, and settle funds globally.\" (criterion 1: payments arena fit; criterion 5: llms.txt on the docs origin)",
+        "https://docs.dlocal.com/docs/get-started — HTTP 200 (criterion 2: reachable English docs surface)",
+        "https://docs.dlocal.com/reference — HTTP 200, API reference (criterion 5: public API)",
+        "https://docs.dlocal.com/docs/using-llms — HTTP 200, vendor-published guide for using LLMs with dLocal docs (criterion 5: agent docs)",
+        "https://dashboard.dlocal.com — HTTP 302 to auth login (criterion 3: shipped product, working merchant dashboard sign-in)",
+        "criterion 4: no founder affiliation"
+      ],
+      "bringup": {
+        "site": "https://www.dlocal.com",
+        "docs": "https://docs.dlocal.com",
+        "type": "commercial"
+      }
+    },
+    {
+      "key": "ebanx.com",
+      "name": "EBANX",
+      "url": "https://www.ebanx.com",
+      "arena": "payments",
+      "status": "auto-approved",
+      "criterion": null,
+      "reason": "placement corrected from the wave-1 lexical match (docs-platforms, rejected at review): EBANX is cross-border payment processing (pay-in and payout) for Latin America, matching the payments arena definition, not a documentation-authoring platform",
+      "evidence": [
+        "https://docs.ebanx.com/llms.txt — HTTP 200, plain text: \"EBANX processes payments in Latin America, Africa, and Asia. Pay-in: Accept payments from customers via cards, Pix, Boleto, OXXO, and 30+ local methods. Payouts: Send money to recipients via local bank accounts and wallets.\" (criterion 1: payments arena fit — accepting cards/wallets and moving money; criterion 5: llms.txt)",
+        "arena-definition payments: \"Online payment platforms for accepting cards and wallets, running subscriptions, and moving money at scale.\" — the docs describe accepting payments and sending payouts, not docs-as-code publishing (the wave-1 docs-platforms match keyed on the words docs/api reference/developer)",
+        "https://docs.ebanx.com/ — HTTP 200, English: \"Pay-in: Learn how to accept payments, authorize transactions, and receive funds from your customers.\" (criterion 2)",
+        "https://docs.ebanx.com/.well-known/skills/ebanx-integration-guide/SKILL.md — HTTP 200, vendor-published agent skill (criterion 5: agent docs)",
+        "https://docs.ebanx.com/api — HTTP 200, API reference (criterion 5: public API)",
+        "https://www.ebanx.com/en/ — HTTP 200 (criterion 3: shipped product page)",
+        "criterion 4: no founder affiliation"
+      ],
+      "bringup": {
+        "site": "https://www.ebanx.com/en/",
+        "docs": "https://docs.ebanx.com",
+        "type": "commercial"
+      }
+    },
+    {
+      "key": "kushki.com",
+      "name": "Kushki",
+      "url": "https://www.kushki.com",
+      "arena": "payments",
+      "status": "auto-approved",
+      "criterion": null,
+      "reason": "wave-1 skip cause (Spanish homepage metadata, English-only matcher) bypassed by manual triage on the English docs: Kushki is an omnichannel LatAm payment processor (card payments, 3DS, refunds, tokenization), matching the payments arena definition",
+      "evidence": [
+        "https://docs.kushki.com/cl/en/ — HTTP 200, English docs: \"One-time card payments (Online): Securely r[eceive]…\", card payments, 3D Secure, refunds, network tokens (criteria 1 and 2)",
+        "https://docs.kushki.com/cl/en/card-payments/one-step-payments/accept-a-payment — HTTP 200, API integration guide (criterion 5: public API)",
+        "https://api-docs.kushki.com/ — HTTP 403 (bot-walled, error code 1014); substituted with the reachable English API guides on docs.kushki.com per the evidence doctrine",
+        "https://www.kushki.com — HTTP 200, shipped omnichannel payments product (criterion 3)",
+        "criterion 4: no founder affiliation"
+      ],
+      "bringup": {
+        "site": "https://www.kushki.com",
+        "docs": "https://docs.kushki.com/cl/en",
+        "type": "commercial"
+      }
+    },
+    {
+      "key": "mercadopago.com",
+      "name": "Mercado Pago",
+      "url": "https://www.mercadopago.com",
+      "arena": "payments",
+      "status": "auto-approved",
+      "criterion": null,
+      "reason": "wave-1 skip cause (Spanish homepage metadata, English-only matcher) bypassed by manual triage on the English developer docs: online payments (Checkout API, Checkout Pro), subscriptions, an MCP server, and a CLI, matching the payments arena definition",
+      "evidence": [
+        "https://www.mercadopago.com.mx/developers/en — HTTP 200, English: \"Implement the ideal solution for any type of business\" — Online payments, In-person payments, MCP Server, API Reference (criteria 1 and 2)",
+        "https://www.mercadopago.com.mx/developers/en/docs/mcp-server/overview — HTTP 200 (criterion 5: MCP server)",
+        "https://www.mercadopago.com.mx/developers/en/reference — HTTP 200, API reference (criterion 5: public API)",
+        "https://www.mercadopago.com.mx/developers/en/docs/subscriptions/overview — HTTP 200 (criterion 1: running subscriptions)",
+        "https://www.mercadopago.com — HTTP 200, shipped product with account sign-up (criterion 3)",
+        "criterion 4: no founder affiliation"
+      ],
+      "bringup": {
+        "site": "https://www.mercadopago.com",
+        "docs": "https://www.mercadopago.com.mx/developers/en",
+        "type": "commercial"
+      }
+    },
+    {
+      "key": "asaas.com",
+      "name": "Asaas",
+      "url": "https://www.asaas.com",
+      "arena": "payments",
+      "status": "auto-approved",
+      "criterion": null,
+      "reason": "wave-1 skip cause (Portuguese homepage metadata, English-only matcher) bypassed by manual triage on the English docs sections: Asaas is a Brazilian payment platform (charges via Pix, boleto, and cards, pre-authorization capture, subscriptions) behind a REST API, matching the payments arena definition",
+      "evidence": [
+        "https://docs.asaas.com/llms.txt — HTTP 200, plain text index with English sections: docs/english/llms.txt (guides) and reference/english-reference/llms.txt (API reference) (criteria 2 and 5)",
+        "https://docs.asaas.com/reference/create-new-payment — HTTP 200, English API reference: create payment, pay a charge with a credit card, capture payment with pre-authorization (criterion 1: payments arena fit; criterion 5: public API)",
+        "https://docs.asaas.com/docs/mcp-server-ai — HTTP 200, vendor MCP server docs (criterion 5: MCP server)",
+        "https://docs.asaas.com/reference/comece-por-aqui — HTTP 200: \"For AI agents: the docs index is at https://docs.asaas.com/llms.txt. Append .md to any documentation page URL to get its markdown version.\" (criterion 5: agent docs)",
+        "https://www.asaas.com — HTTP 200, shipped product with sign-up (criterion 3)",
+        "criterion 4: no founder affiliation"
+      ],
+      "bringup": {
+        "site": "https://www.asaas.com",
+        "docs": "https://docs.asaas.com",
+        "type": "commercial"
+      }
+    },
+    {
+      "key": "pomelo.la",
+      "name": "Pomelo",
+      "url": "https://pomelo.la",
+      "arena": "card-issuing",
+      "status": "auto-approved",
+      "criterion": null,
+      "reason": "wave-1 skip cause (Spanish page metadata, English-only matcher) bypassed by manual triage: Pomelo is a developer-first LatAm card-issuing and processing API (issuing, tokenization, transactions, an authorizer deciding each authorization, 3DS), matching the card-issuing arena definition; docs are Spanish-language but the API reference and MCP server are citable surfaces",
+      "evidence": [
+        "https://developers.pomelo.la/guides — HTTP 200: Processing — Usuarios, Emisión de tarjetas (card issuing), Tokenización, Transacciones, Autorizador (authorizer), 3D Secure (criteria 1 and 2; no English locale: /en/guides — HTTP 404)",
+        "arena-definition card-issuing: \"Developer-first card-issuing APIs for creating cards and deciding each authorization in real time.\" — Pomelo documents card issuance APIs and an Autorizador (real-time authorization decisioning)",
+        "https://developers.pomelo.la/api-reference — HTTP 200, \"Pomelo API Reference\" (criterion 5: public API)",
+        "https://developers.pomelo.la/mcp — HTTP 200, \"Pomelo MCP Server … interactuar con nuestras APIs usando lenguaje natural\" (criterion 5: MCP server)",
+        "https://pomelo.la — HTTP 200, shipped issuing/processing product (criterion 3)",
+        "criterion 4: no founder affiliation"
+      ],
+      "bringup": {
+        "site": "https://pomelo.la",
+        "docs": "https://developers.pomelo.la/guides",
+        "type": "commercial"
+      }
+    },
+    {
+      "key": "clara.com",
+      "name": "Clara",
+      "url": "https://www.clara.com",
+      "arena": "expense-management",
+      "status": "auto-approved",
+      "criterion": null,
+      "reason": "placement corrected from the wave-1 lexical match (mcp-infrastructure, rejected at review): Clara is a LatAm corporate-card and spend-management platform, matching the expense-management arena definition; its MCP server is an agentic surface of that product, not MCP infrastructure",
+      "evidence": [
+        "https://developers.clara.team/llms.txt — HTTP 200, plain text: \"Clara is a corporate card and spend management platform for Latin America. This documentation covers the Clara REST API (v1, v2, v3) for programmatic access to cards, transactions, users, invoices, and more.\" (criteria 1, 2, and 5)",
+        "arena-definition expense-management: \"Expense management and corporate-card platforms: cards, limits, receipts, policies, accounting sync.\" — matches cards, transactions, invoices, reimbursements, accounts payable; Clara issues its own cards to its customers rather than offering an issuing API deciding each authorization, so card-issuing does not fit, and the wave-1 mcp-infrastructure match keyed on the words mcp/server/connect on a product page",
+        "https://www.clara.com/products/developers — HTTP 200, English: \"Corporate Card … Spend Management: Eliminate manual tracking, expense reports, and unexpected costs … Developers: SDK, MCP, APIs and docs to build custom workflows\" (criteria 1 and 5)",
+        "https://developers.clara.team/agent-instructions — HTTP 200, \"Clara API Agent Instructions\" (criterion 5: agent docs)",
+        "https://app.clara.cc/auth/login — HTTP 200 (criterion 3: shipped product sign-in)",
+        "criterion 4: no founder affiliation"
+      ],
+      "bringup": {
+        "site": "https://www.clara.com",
+        "docs": "https://developers.clara.team/introduction",
+        "type": "commercial"
+      }
+    },
+    {
+      "key": "contasimples.com",
+      "name": "Conta Simples",
+      "url": "https://contasimples.com",
+      "arena": "expense-management",
+      "status": "auto-approved",
+      "criterion": null,
+      "reason": "wave-1 skip cause (Portuguese homepage metadata, no docs link on the homepage) bypassed by manual triage: Conta Simples is a Brazilian corporate-card and expense-management platform with an English API docs section, matching the expense-management arena definition",
+      "evidence": [
+        "https://developers.contasimples.com/llms.txt — HTTP 200, plain text index: \"English (https://developers.contasimples.com/llms/english.txt): 59 pages\" (criteria 2 and 5)",
+        "https://developers.contasimples.com/en/api-reference/get-credit-cards-v1-cards — HTTP 200, English API reference: list cards, block/unblock card, cost centers, categories, attachments (receipts/invoices) (criterion 1: cards, limits, receipts; criterion 5: public API)",
+        "https://developers.contasimples.com/ — HTTP 200: \"Every page is also available as Markdown: add .md to its URL\"; nav names an MCP section (criterion 5: agent docs)",
+        "https://contasimples.com — HTTP 200: \"Crie cartões corporativos e controle os pagamentos do seu negócio em tempo real\" — shipped corporate-card product (criterion 3)",
+        "criterion 4: no founder affiliation"
+      ],
+      "bringup": {
+        "site": "https://contasimples.com",
+        "docs": "https://developers.contasimples.com",
+        "type": "commercial"
+      }
+    },
+    {
+      "key": "openpay.mx",
+      "name": "Openpay",
+      "url": "https://www.openpay.mx",
+      "arena": null,
+      "status": "skipped",
+      "criterion": "docs-surface",
+      "reason": "no reachable documentation surface: the docs site is a JavaScript-only Nuxt SPA that serves an empty shell to non-browser fetchers, its locale configuration lists Spanish only, and llms.txt paths answer with the HTML shell (text/html), so there is no citable English docs surface and no citable agentic surface (the Column precedent from the 2026-10-23 vendor-geo pass: unreadable-to-fetchers pages are skipped rather than cited)",
+      "evidence": [
+        "https://documents.openpay.mx/en/docs/api.html — HTTP 200 but a 2.6 KB Nuxt shell with an empty body (div id __nuxt) and no server-rendered content; its embedded i18n config lists locales: [{code: es, name: Español}] only",
+        "https://documents.openpay.mx/llms.txt — HTTP 200, content-type text/html (the SPA shell, not plain text), failing the llms.txt plain-text check",
+        "https://www.openpay.mx/llms.txt — HTTP 200, content-type text/html (marketing-site shell)",
+        "https://www.openpay.mx — HTTP 200, Spanish: \"Simplificamos tus cobros en línea\" (shipped product, but criteria 2 and 5 fail)"
+      ],
+      "bringup": null
+    }
+  ]
+}

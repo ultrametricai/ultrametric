@@ -37,7 +37,7 @@ describe('open-modules/README.md Serves sync', () => {
   it('a Serves line names each mapped process once, with its step functions where they exist', () => {
     const line = renderServesLine('election83b', src)
     expect(line).toContain('n8a `compare83bScenario`')
-    expect(line).toContain('/processes/incorporate-c-corp')
+    expect(line).toContain('/processes/incorporate-the-company')
     // The deadlines module carries the filing-window step, not election83b.
     expect(line).not.toContain('election83bWindow')
     // A mixed module: one process with a step function, one served at task level only.

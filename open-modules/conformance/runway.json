@@ -1,0 +1,42 @@
+{
+  "module": "runway",
+  "entrypoint": "hiringImpact",
+  "implementation": {
+    "file": "lib/openstartup/runway.ts",
+    "sha256": "208f3720892efbef38c2c12da07af4b2537ca43533a1cb598c641924d260fdb9"
+  },
+  "readme": "open-modules/conformance/README.md",
+  "cases": [
+    {
+      "name": "default-alive-flips-default-dead",
+      "description": "The default-alive model's running example: $200,000 cash, $10,000 MRR growing 10% per month, $30,000 of constant monthly expenses. A $15,000-per-month hire from month 1 flips the plan from default alive to default dead: profitability moves to month 16 (1.1^m must reach 4.5) and cash crosses zero at month 7.",
+      "source": "Paul Graham, \"Default Alive or Default Dead?\" (October 2015, https://paulgraham.com/aord.html) for the model; arithmetic hand-derived in lib/openstartup/__tests__/runway.test.ts",
+      "inputs": [
+        {
+          "cash": 200000,
+          "monthlyRevenue": 10000,
+          "monthlyExpenses": 30000,
+          "revenueGrowthPctMoM": 10
+        },
+        [
+          {
+            "monthlyCost": 15000,
+            "startMonth": 1
+          }
+        ]
+      ],
+      "expected": {
+        "base": {
+          "status": "default-alive"
+        },
+        "withHires": {
+          "status": "default-dead",
+          "monthsToProfitability": 16,
+          "monthsToZeroCash": 7
+        },
+        "becomesDefaultDead": true,
+        "runwayDeltaMonths": null
+      }
+    }
+  ]
+}

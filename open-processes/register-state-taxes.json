@@ -20,7 +20,20 @@
       "metadata": {
         "route": "agent",
         "reversibility": "reversible",
-        "estimatedMinutes": 5
+        "estimatedMinutes": 5,
+        "execution": {
+          "category": "human-online",
+          "basis": "human-work",
+          "rationale": "The tax adviser reviews the company's location and activity records with the owner remotely and records which registrations are required.",
+          "evidence": [
+            "open-processes/register-state-taxes.json#/parts/0/guidance",
+            "open-processes/register-state-taxes.json#/parts/0"
+          ],
+          "reviewRequired": true,
+          "automationEvidence": {
+            "status": "unverified"
+          }
+        }
       }
     },
     {
@@ -48,6 +61,19 @@
         "estimatedMinutes": 30,
         "verify": {
           "how": "The state issues a tax account number and the registration shows active in the state's portal."
+        },
+        "execution": {
+          "category": "human-online",
+          "basis": "human-work",
+          "rationale": "The tax owner or adviser completes the applicable state registration through the authority's digital service, reviewing entity details and filing authority personally.",
+          "evidence": [
+            "open-processes/register-state-taxes.json#/parts/1/guidance",
+            "open-processes/register-state-taxes.json#/parts/1"
+          ],
+          "reviewRequired": true,
+          "automationEvidence": {
+            "status": "unverified"
+          }
         }
       }
     },
@@ -100,6 +126,19 @@
         "estimatedMinutes": 20,
         "verify": {
           "how": "A sales-tax permit number is issued — required before collecting tax in that state."
+        },
+        "execution": {
+          "category": "human-online",
+          "basis": "human-work",
+          "rationale": "The tax owner uses the applicable sales-tax registration service with adviser review of nexus and entity facts; registrations and payment authority remain separately approved.",
+          "evidence": [
+            "open-processes/register-state-taxes.json#/parts/2/guidance",
+            "open-processes/register-state-taxes.json#/parts/2"
+          ],
+          "reviewRequired": true,
+          "automationEvidence": {
+            "status": "unverified"
+          }
         }
       }
     },
@@ -116,7 +155,19 @@
       "metadata": {
         "route": "agent",
         "reversibility": "reversible",
-        "estimatedMinutes": 2
+        "estimatedMinutes": 2,
+        "execution": {
+          "category": "agent-native",
+          "basis": "local-work",
+          "rationale": "Update the restricted compliance register from issued agency confirmations and reconcile application statuses.",
+          "evidence": [
+            "open-processes/register-state-taxes.json#/parts/3/guidance"
+          ],
+          "reviewRequired": false,
+          "automationEvidence": {
+            "status": "documented"
+          }
+        }
       }
     },
     {
@@ -135,7 +186,128 @@
         "jurisdictions": [
           "MULTI"
         ],
-        "estimatedMinutes": 10
+        "service": "sales-tax-registration",
+        "estimatedMinutes": 10,
+        "execution": {
+          "category": "human-online",
+          "basis": "human-work",
+          "rationale": "The tax owner coordinates each required state registration digitally with the adviser, keeping separate entity, nexus and authorization checks for each jurisdiction.",
+          "evidence": [
+            "open-processes/register-state-taxes.json#/parts/4/guidance",
+            "open-processes/register-state-taxes.json#/parts/4"
+          ],
+          "reviewRequired": true,
+          "automationEvidence": {
+            "status": "unverified"
+          }
+        }
+      }
+    },
+    {
+      "id": "jny1",
+      "kind": "step",
+      "title": "Assess New York Article 9-A nexus and file Form CT-3",
+      "guidance": "A corporation that does business, employs capital, owns or leases property, maintains an office, or derives receipts from activity in New York State owes the Article 9-A franchise tax; for tax years beginning in 2024 through 2026, deriving $1,283,000 or more of New York receipts is itself sufficient (law rule us-ny.corporate-franchise-tax-nexus). Settle the nexus question with the tax adviser, then file Form CT-3 (CT-3-A for a combined group) and pay the highest of the income, capital, and fixed-dollar-minimum bases plus any MTA surcharge. New York City's business corporation tax is a separate analysis.",
+      "when": null,
+      "ref": null,
+      "options": [],
+      "notes": [],
+      "references": [
+        {
+          "kind": "vendor",
+          "id": "ny_dtf",
+          "role": "stated-vendor"
+        },
+        {
+          "kind": "url",
+          "url": "https://www.tax.ny.gov/bus/ct/article9a.htm",
+          "role": "legacy-action-link",
+          "title": "NY DTF — Article 9-A franchise tax",
+          "description": null
+        },
+        {
+          "kind": "url",
+          "url": "https://www.tax.ny.gov/bus/ct/article9a_deriving_receipts.htm",
+          "title": "NY DTF — deriving receipts thresholds",
+          "description": null,
+          "role": "authored-guidance-source"
+        }
+      ],
+      "metadata": {
+        "route": "form",
+        "reversibility": "painful",
+        "jurisdictions": [
+          "US-NY"
+        ],
+        "riskLevel": "medium",
+        "estimatedMinutes": 30,
+        "execution": {
+          "category": "human-online",
+          "basis": "human-work",
+          "rationale": "The tax adviser determines New York treatment and an authorized filer completes the return, signature authorization, payment and acknowledgement through supported tax software.",
+          "evidence": [
+            "open-processes/register-state-taxes.json#/parts/5/guidance",
+            "open-processes/register-state-taxes.json#/parts/5"
+          ],
+          "reviewRequired": true,
+          "automationEvidence": {
+            "status": "unverified"
+          }
+        }
+      }
+    },
+    {
+      "id": "jwa1",
+      "kind": "step",
+      "title": "Register with the Washington DOR and report B&O tax",
+      "guidance": "Washington levies no corporate income tax; most businesses instead owe the business and occupation (B&O) tax on gross receipts, at a rate set by the activity's classification, with no deduction for costs (law rule us-wa.business-occupation-tax). Register through the state business license application, which opens the Department of Revenue account, then report on the excise tax return through My DOR on the assigned filing frequency. Check the small business B&O credit and any city B&O obligations with the tax adviser.",
+      "when": null,
+      "ref": null,
+      "options": [],
+      "notes": [],
+      "references": [
+        {
+          "kind": "vendor",
+          "id": "wa_dor",
+          "role": "stated-vendor"
+        },
+        {
+          "kind": "url",
+          "url": "https://dor.wa.gov/taxes-rates/business-occupation-tax",
+          "role": "legacy-action-link",
+          "title": "WA DOR — business & occupation tax",
+          "description": null
+        },
+        {
+          "kind": "url",
+          "url": "https://dor.wa.gov/open-business/apply-business-license",
+          "title": "WA DOR — apply for a business license",
+          "description": null,
+          "role": "authored-guidance-source"
+        }
+      ],
+      "metadata": {
+        "route": "form",
+        "reversibility": "painful",
+        "jurisdictions": [
+          "US-WA"
+        ],
+        "riskLevel": "medium",
+        "estimatedMinutes": 25,
+        "execution": {
+          "category": "agent-computer-use",
+          "basis": "browser-evidence",
+          "rationale": "My DOR documents both the business-license registration and excise-return workflow, including B&O classifications, submission and confirmation. Tax advisers settle classifications and city obligations; account-holder authentication remains separate. The official procedures were readable in the index but direct help retrieval returned 403.",
+          "evidence": [
+            "open-processes/register-state-taxes.json#/parts/6/guidance",
+            "https://dor.wa.gov/manage-business/my-dor-help/renew-or-update-business-license/apply-new-business-license",
+            "https://dor.wa.gov/manage-business/my-dor-help/tax-returns"
+          ],
+          "reviewRequired": true,
+          "automationEvidence": {
+            "status": "documented"
+          }
+        }
       }
     }
   ],
@@ -270,6 +442,48 @@
         "summary": "The provincial layer is real: GST/HST is federal via the business number, but BC, Saskatchewan and Manitoba run their own PST registrations, Quebec runs QST, and provinces add payroll levies (Ontario's EHT) and workers'-compensation accounts.",
         "actionUrl": "https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/gst-hst-businesses.html",
         "actionLabel": "CRA — GST/HST for businesses"
+      },
+      {
+        "country": "NZ",
+        "kind": "analog",
+        "summary": "No states: tax registrations are national and run through Inland Revenue's myIR — the company IRD number (requestable inside incorporation), GST past the $60,000 threshold, and employer registration when you start employing.",
+        "actionUrl": "https://www.ird.govt.nz/myir",
+        "actionLabel": "myIR — Inland Revenue"
+      },
+      {
+        "country": "SG",
+        "kind": "absorbed",
+        "summary": "No states and no separate income-tax registration: IRAS picks the company up on its UEN automatically; the registrations that exist are GST once past the S$1 million threshold and a CPF Submission Number when you employ.",
+        "actionUrl": "https://www.cpf.gov.sg/employer/making-cpf-contributions/applying-for-a-cpf-submission-number",
+        "actionLabel": "CPF — apply for a Submission Number"
+      },
+      {
+        "country": "AU",
+        "kind": "analog",
+        "summary": "Federal registrations (GST, PAYG withholding) attach to the ABN in one ATO flow, but the real state-level tax is payroll tax: each state and territory sets its own threshold and rate, and you register with each revenue office whose threshold your Australia-wide wages cross.",
+        "actionUrl": "https://www.payrolltax.gov.au/",
+        "actionLabel": "Payroll Tax Australia"
+      },
+      {
+        "country": "KR",
+        "kind": "analog",
+        "summary": "No state layer exists, but local taxes are real: registration licence tax lands at incorporation and the corporate resident tax recurs, both with the municipality through WeTax while national taxes run through Hometax.",
+        "actionUrl": "https://www.wetax.go.kr/",
+        "actionLabel": "WeTax (local taxes)"
+      },
+      {
+        "country": "HK",
+        "kind": "absorbed",
+        "summary": "No separate tax registration exists: the business registration number from the one-stop incorporation is the Inland Revenue Department file (law rule hk.business-registration-certificate), the IRD issues the profits tax return itself, and employer duties start with IR56E notifications rather than a registration.",
+        "actionUrl": "https://www.ird.gov.hk/eng/tax/bre.htm",
+        "actionLabel": "IRD — business registration"
+      },
+      {
+        "country": "EE",
+        "kind": "not-applicable",
+        "summary": "No state or municipal tax registration exists: the registry code works with the Tax and Customs Board from day one and national taxes run through e-MTA; the one recurring local levy, land tax, is assessed on landowners without a company-side registration.",
+        "actionUrl": "https://www.emta.ee/en/business-client/taxes-and-payment/income-and-social-taxes",
+        "actionLabel": "Income and social taxes (e-MTA)"
       }
     ],
     "timeOrder": 42,
@@ -285,6 +499,8 @@
   },
   "entrySteps": [
     "n1",
-    "jmu1"
+    "jmu1",
+    "jny1",
+    "jwa1"
   ]
 }

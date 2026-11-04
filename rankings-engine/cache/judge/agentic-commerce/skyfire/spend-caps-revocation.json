@@ -1,19 +1,20 @@
 {
-  "hash": "f7e7d195ab8aabe2d3c66cee507b15cb9e0ede923d5cd9ff36571a4355df4690",
+  "hash": "dfca45e6bd8a40bdeafa8f7133c6ea6a5d128a858eaddb5dfbc8f290ba6a2f83",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Skyfire bounds spending per token: each pay token's amount is committed against the buyer agent's wallet, charges above the remaining balance are rejected, and tokens expire within 10 seconds to 24 hours. API keys are scoped to a single agent, and agents can be restricted to set source IP addresses. However, there are no documented per-agent configurable spend caps or usage limits, and revocation is not instant: deactivating an account stops new token creation, but in-flight tokens stay chargeable until expiry plus a 24-hour grace period, with no per-token revocation API. Missing for 10: configurable per-agent spend caps and usage-limit policies, an instant revocation or kill-switch for outstanding payment tokens, and independent corroboration.",
+    "rationale": "Skyfire bounds spend in its own way. Each pay token commits a fixed amount against the agent's wallet balance, and charges above that ceiling are rejected. API keys are scoped to a single agent, card spending is capped by cardholder approval, and per-agent source IPs can be set. Revocation is explicitly not instant: deactivation stops new token creation, but in-flight tokens stay chargeable until expiry plus a 24-hour grace period, and no per-token revocation API is documented. Missing for 10: configurable per-agent spend caps or usage-limit policies, instant revocation of an agent's payment authority including outstanding tokens, and independent corroboration.",
     "evidenceIds": [
       "skyfire-supp-4",
       "skyfire-supp-5",
       "skyfire-supp-6",
+      "skyfire-supp-7",
+      "skyfire-supp-8",
       "skyfire-docs-1",
       "skyfire-docs-34",
-      "skyfire-docs-35",
-      "skyfire-supp-7"
+      "skyfire-docs-35"
     ],
     "productId": "skyfire",
     "storyId": "spend-caps-revocation"

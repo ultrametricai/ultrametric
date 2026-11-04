@@ -84,3 +84,40 @@ describe('law validators (failure modes)', () => {
     expect(validateStartupLaws(twice, known).join(';')).toContain('duplicate law title')
   })
 })
+
+describe('law wording (the public name is "rule")', () => {
+  // The site's /open-law page bans the retired "card" wording (the 2026-10 rename). This
+  // gate keeps new jurisdictions from reintroducing it in rule prose. Card-type phrases
+  // quoted from statutes (credit card, debit card, ...) stay legal.
+  const CARD = /\bcards?\b/i
+  const QUOTED_CARD_TYPES = /\b(?:credit|debit|charge|gift|prepaid)\s+cards?\b/gi
+  const offenders = (text: string | undefined): boolean =>
+    !!text && CARD.test(text.replace(QUOTED_CARD_TYPES, ''))
+
+  it('no rule statement or caveat says "card"', async () => {
+    const { readdirSync, readFileSync, statSync } = await import('node:fs')
+    const { join } = await import('node:path')
+    const bad: string[] = []
+    for (const dir of readdirSync('open-law')) {
+      const full = join('open-law', dir)
+      if (!statSync(full).isDirectory() || dir === 'citations') continue
+      for (const file of readdirSync(full)) {
+        if (!file.endsWith('.json')) continue
+        const rule = JSON.parse(readFileSync(join(full, file), 'utf8'))
+        if (offenders(rule.statement) || offenders(rule.caveat)) bad.push(join(dir, file))
+      }
+    }
+    expect(bad).toEqual([])
+  })
+
+  it('no map.json prose says "card"', async () => {
+    const { readFileSync } = await import('node:fs')
+    const map = JSON.parse(readFileSync('open-law/map.json', 'utf8'))
+    const texts: string[] = [map.scope, ...Object.values(map.maturity_grades ?? {}) as string[]]
+    for (const d of map.domains ?? []) {
+      texts.push(d.covers ?? '')
+      for (const s of d.subareas ?? []) texts.push(...(s.gaps ?? []))
+    }
+    expect(texts.filter((t) => offenders(t))).toEqual([])
+  })
+})

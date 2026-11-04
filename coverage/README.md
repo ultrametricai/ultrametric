@@ -1,5 +1,7 @@
 # Coverage
 
+[Startup task inventory](STARTUP-TASKS.md) maps common and conditional startup needs to readable guides, with the specialist boundaries and source evidence. Guide presence, country-law depth and verified execution are measured separately.
+
 This directory is the cross-area answer to what this repo covers and what is missing. `index.json` carries
 one entry per top-level content area: a maturity grade, a short summary, the headline
 gaps, and pointers to the file where that area tracks its own gaps in detail. The detail
@@ -79,3 +81,19 @@ not domain coverage, and recorded review dates do not establish expert approval 
 liveness. Required inputs must resolve or generation fails rather than emitting a partial
 report. Checks: `node --test scripts/content-audit.test.mjs`; no model, remote probe, or
 external effect runs during generation.
+
+Country launch entry points and their explicit remaining scope are recorded in [startup-country-expansion.json](startup-country-expansion.json) and the generated [startup coverage index](STARTUP-TASKS.md#additional-country-launch-guidance). These are draft scoping summaries; country-specific law-layer coverage remains separate.
+
+## Process and jurisdiction completeness
+
+Start with [the generated coverage report](PROCESS-COVERAGE.md). It separates guide links, local material, scoped procedures, professional review and observed run evidence. Missing material and notes recorded as not applicable stay in the process-country discovery denominator. A narrow procedure cannot establish whole-country completeness.
+
+The [scope](completeness-scope.json) declares countries, business models, scenario inventories, editorial source and instruction check cadences, and ownership. A source crosscheck against government reference structures is [recorded separately](inventory-crosscheck.json) from independent human review. An unassigned reviewer or owner is visible.
+
+Author local instructions in canonical process records. [Local assessments](local-procedure-assessments.json) point to those steps and their sources with section locators; they carry the exact company, subnational, sector and cross-border facts, exclusions and required completion evidence. They do not hold a second workflow. [Fictional scenarios](fixtures/coverage-scenarios.json) test supported scope, missing facts and exclusions; they grant no external authority.
+
+Run `pnpm coverage:generate` after changing canonical instructions, scope or assessment evidence, updating the scope snapshot date to the actual editorial check date. `pnpm coverage:check` verifies the committed snapshot deterministically. `pnpm coverage:report --as-of YYYY-MM-DD` recalculates source age, instruction age, review expiry and blockers without modifying files; omitting the date uses today's UTC date. The committed report is a dated snapshot, and no background source monitor is asserted.
+
+Independent reviewers must provide their name, relevant qualification, review dates and an attestation URL bound to the reported content digest. An editorial review cannot satisfy a tax or accounting review. Changed content, future-dated or expired reviews, stale sources and missing owners prevent procedural readiness. Observed-run credit requires a named operator, dated independent passed-run attestation and matching content digest. Keep real company records, approvals and filing receipts in the private company system.
+
+Before claiming completeness, the independently reviewed scenario inventory and all required local procedures must be current for the declared scope, and the need inventory must have no unresolved gaps. Current source checks remain editorial evidence rather than a warranty that local law has stayed unchanged.

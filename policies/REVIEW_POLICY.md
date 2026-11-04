@@ -23,8 +23,12 @@ because it has several playbooks — coverage is tracked per scenario and locale
 
 - **Everything evidence-driven.** Verdicts, scores, and ranks are computed from cited evidence;
   they are never hand-tuned. Negative results are recorded as probes.
-- **Churn policy.** A verdict flip is kept only when it cites new evidence IDs; flips without
-  new evidence are reverted.
+- **Churn policy.** Upgrades require new cited evidence. With unchanged prior support,
+  grade changes without new evidence are reverted. When previously cited content changes
+  or disappears, a current-input judgment may lower full/partial credit toward none, with
+  no quality increase. This cannot upgrade a verdict, raise quality, alter applicability,
+  or invent a citation. An uncited none remains untested, not a verified failure. Repairs
+  verify the current judge-cache provenance before publishing such a downgrade.
 - **Owner-product bias audits.** Products affiliated with the maintainers (Foreloop, AFK,
   Ultrametric) carry affiliation disclosure on every surface and receive adversarial bias
   audits; favorable flips get extra scrutiny and have been reverted under this policy.

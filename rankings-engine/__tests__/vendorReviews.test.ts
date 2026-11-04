@@ -76,6 +76,8 @@ describe('generated vendor-review interchange records', () => {
     const r = JSON.parse(committed.get('startup-banking--mercury.json')!)
     expect(r.jurisdictions).toEqual([
       'US:available', 'UK:unavailable', 'IN:unavailable', 'DE:unavailable', 'FR:unavailable',
+      // The 2026-10-23 LatAm wave: the same US-entity lock, judged per country.
+      'BR:unavailable', 'MX:unavailable', 'AR:unavailable', 'CO:unavailable', 'CL:unavailable', 'PE:unavailable',
     ])
     // The judged negatives (the vendor's own eligibility page) are carried as honest ceilings.
     expect(r.limitations.length).toBeGreaterThanOrEqual(4)
@@ -86,7 +88,9 @@ describe('generated vendor-review interchange records', () => {
     const r = JSON.parse(committed.get('payroll--gusto.json')!)
     expect(r.jurisdictions[0]).toBe('US:available')
     expect(r.jurisdictions).toContain('IN:unavailable')
-    expect(r.tested_on).toBe('2026-10-01')
+    // tested_on tracks the arena's rankings generatedAt — re-pinned at the 2026-10-22 payroll
+    // bring-up (seven debuts plus the v5 re-judge the stale incumbent caches demanded).
+    expect(r.tested_on).toBe('2026-10-23')
     expect(r.evidence.length).toBeGreaterThan(0)
   })
 })

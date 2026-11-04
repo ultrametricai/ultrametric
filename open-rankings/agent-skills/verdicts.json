@@ -3379,6 +3379,583 @@
     ]
   },
   {
+    "productId": "replica-skill",
+    "storyId": "active-maintenance",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Project maintenance is a fair question for an open-source skill collection hosted on GitHub. However, the evidence pack only describes features, install steps and bundled scripts. It contains nothing about release cadence, issue triage, or merged community pull requests, so active maintenance is undocumented.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "replica-skill",
+    "storyId": "agent-authors-skill",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "replica-skill is a collection of Claude Code skills for cloning apps, so shipping a skill-authoring spec, template or meta-skill is a fair question for it. The evidence covers only using its existing skills: installing them, pasting a SKILL.md, copying folders into .claude/skills/, and running them in order. Nothing shows a documented way for an agent to author and package a new skill.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "replica-skill",
+    "storyId": "agent-installs-skill",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "The product documents its own install paths: Claude Code `/plugin marketplace add` and `/plugin install` slash commands, plus a project-local option of copying the skill folders into `.claude/skills/`. A file copy is something an agent could do without prompts, but nothing frames any of these paths as a headless or agent-driven install, and the slash commands are in-session interactive commands. Missing for 10: an explicitly documented non-interactive/headless install command (e.g. a shell one-liner or CLI flag), confirmation that an agent can complete the install end to end without user prompts, and hands-on corroboration.",
+    "evidenceIds": [
+      "replica-skill-docs-1",
+      "replica-skill-docs-3"
+    ]
+  },
+  {
+    "productId": "replica-skill",
+    "storyId": "agentic-agent-docs",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "The product is itself a set of agent-readable `SKILL.md` instruction files that you can paste into any chat to run as a mode, or install into `.claude/skills/`. That is agent-oriented markdown an agent can be pointed at directly. However, there is no evidence of an llms.txt or dedicated agent-facing documentation, and the probe for a markdown docs endpoint returned 404. Missing for 10: an llms.txt or llms-full.txt, a dedicated agent-oriented docs index or markdown docs endpoint, and independent corroboration of agents consuming the docs.",
+    "evidenceIds": [
+      "replica-skill-docs-2",
+      "replica-skill-docs-3",
+      "replica-skill-probe-1"
+    ]
+  },
+  {
+    "productId": "replica-skill",
+    "storyId": "agentic-ai-insights",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Replica-skill runs as AI skills inside Claude Code and produces suggestions from the user's own project. It compares your clone against the original and reports a parity score with what is missing (gh-7). It logs bugs by severity from a generated test plan (gh-6), and it checks your store listing for problems (gh-15). It also mines real app reviews into fixes and a positioning angle (gh-10), and entrepreneur mode tells you whether a clone is worth building (gh-11). These insights are tied to the clone-building workflow rather than general analysis of arbitrary user data, and some checks are deterministic scripts rather than AI reasoning. Missing for 10: general-purpose insights over arbitrary user or business data, documented depth or examples of the insight output, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "replica-skill-gh-7",
+      "replica-skill-gh-10",
+      "replica-skill-gh-11",
+      "replica-skill-gh-6",
+      "replica-skill-gh-15"
+    ]
+  },
+  {
+    "productId": "replica-skill",
+    "storyId": "agentic-autonomous-automation",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "replica-skill is a set of Claude Code skills that the user runs manually and in order, each reading the previous one's output. Deployment happens only 'when you say go'. Nothing in the evidence shows scheduled, triggered, or background automations run by the product itself. The reminder emails in /replica-backend belong to the cloned app being built, not to the product, so they don't count.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "replica-skill",
+    "storyId": "agentic-builtin-assistant",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "replica-skill is a set of AI-agent skills where the user hands off whole tasks to the assistant via slash commands: reverse-engineering an app, planning the stack, rebuilding screens, adding backend integrations, writing and running tests, rebranding, and shipping on approval (gh-1, gh-4, gh-5, gh-6, gh-16). However, the AI assistant itself is supplied by the host (Claude Code or a pasted chat), not built into the product (docs-1, docs-2). The product adds the delegated workflows on top of that host. Missing for 10: a product-owned built-in assistant rather than a host-provided one, and independent or hands-on evidence of the delegated workflows actually running end to end.",
+    "evidenceIds": [
+      "replica-skill-gh-1",
+      "replica-skill-gh-4",
+      "replica-skill-gh-5",
+      "replica-skill-gh-6",
+      "replica-skill-gh-16",
+      "replica-skill-docs-1",
+      "replica-skill-docs-2",
+      "replica-skill-docs-4"
+    ]
+  },
+  {
+    "productId": "replica-skill",
+    "storyId": "agentic-headless",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The product ships its own standard-library Python scripts that need no network. One is invoked from the command line (`python3 replica-design/contrast.py replica/design/tokens.json`), and the sweep step reportedly blocks the deploy until the code is clean, so parts of it can run non-interactively as automation gates. However, the main workflow is a set of skills run interactively inside Claude Code or a chat, and nothing documents headless or CI execution of the skills themselves. Missing for 10: documented headless/non-interactive mode for the skills, CI integration guidance or examples (e.g. GitHub Actions), exit-code/gating semantics for the scripts, independent corroboration.",
+    "evidenceIds": [
+      "replica-skill-gh-9",
+      "replica-skill-docs-5",
+      "replica-skill-gh-13",
+      "replica-skill-docs-4"
+    ]
+  },
+  {
+    "productId": "replica-skill",
+    "storyId": "agentic-mcp-client",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "replica-skill is a Claude Code skill/plugin pack (installed via /plugin marketplace or copied into .claude/skills/). Plugins of this kind could plausibly bundle or consume MCP servers, so the axis applies, but nothing in the evidence mentions MCP. Any MCP-client ability would belong to the host platform (Claude Code), not this product, so it earns no credit. Its integrations (Google Calendar, Stripe) go through direct APIs, and its bundled scripts are standard-library Python that never touch the network.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "replica-skill",
+    "storyId": "agentic-mcp-server",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "replica-skill is a Claude Code skill/plugin pack, not an agent itself, and such a pack could plausibly bundle an MCP server, so the axis applies. Nothing in the evidence documents an official MCP server or endpoint. Distribution is via the plugin marketplace, SKILL.md files, and local Python scripts that do not touch the network, and none of these is an MCP server.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "replica-skill",
+    "storyId": "agentic-nl-commands",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Replica-skill is a set of Claude Code skills that run inside an AI chat. Users invoke stages via slash commands like /replica-backend and /replica-entrepreneur, and can paste a SKILL.md into any chat to run it as a mode. The workflow is conversational, e.g. preflight runs and it 'ships it when you say go'. missing for 10: explicit documentation of free-form natural-language commands beyond slash-command invocation, independent or hands-on corroboration of conversational operation.",
+    "evidenceIds": [
+      "replica-skill-docs-2",
+      "replica-skill-docs-1",
+      "replica-skill-gh-5",
+      "replica-skill-gh-11",
+      "replica-skill-gh-16",
+      "replica-skill-docs-4"
+    ]
+  },
+  {
+    "productId": "replica-skill",
+    "storyId": "agentic-official-cli",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "medium",
+    "rationale": "The product ships its own first-party command-line helpers: six standard-library Python scripts that don't touch the network, such as `python3 replica-design/contrast.py` for WCAG token checks. These are scattered utility scripts rather than a unified official CLI. The slash commands and `/plugin install` run inside Claude Code, which is the host platform, so they earn no credit here. Missing for 10: a single packaged CLI binary or entry point, documented subcommands and flags, CLI-driven execution of the core recon/plan/build/ship workflow, and independent corroboration.",
+    "evidenceIds": [
+      "replica-skill-gh-9",
+      "replica-skill-docs-5"
+    ]
+  },
+  {
+    "productId": "replica-skill",
+    "storyId": "agentic-public-api",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "replica-skill is a Claude Code skill pack. It is driven through slash commands and SKILL.md files, and its helper Python scripts can be run locally. There is no evidence of a documented public API for driving the product programmatically. The \"API\" in gh-2 is the API the skill plans for the user's clone, not an interface to replica-skill itself, so it earns no credit here.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "replica-skill",
+    "storyId": "agentic-scoped-keys",
+    "verdict": "na",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "replica-skill is a local Claude Code skill pack of SKILL.md prompts plus standard-library Python scripts that do not touch the network. It has no service, account system or API of its own for which an agent credential could be issued, so this story is a category error for the product. The mention of using \"your keys\" with Google's API refers to third-party keys the user supplies to their clone, not credential issuance by the product.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "replica-skill",
+    "storyId": "agentic-sdks",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "replica-skill is a set of Claude Code skills (SKILL.md files plus standard-library Python helper scripts) for cloning apps, and the evidence shows no official SDK of its own to build against. Its use of Google's and Stripe's APIs in the generated backend is third-party tooling inside the cloned app, not an SDK the product provides, so it earns no credit.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "replica-skill",
+    "storyId": "agentic-webhooks",
+    "verdict": "na",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "replica-skill is a bundle of local Claude Code skill prompts and standard-library Python scripts that read and write a project folder (and, per its docs, never touch the network). It runs no service that could emit events, so subscribing to its events via webhooks is a category error. Stripe and Google integrations appear only in the backend it generates for the user's clone, not as product webhooks.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "replica-skill",
+    "storyId": "api-interactive-docs",
+    "verdict": "na",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "replica-skill is a bundle of Claude Code skills (SKILL.md prompts plus a few offline Python scripts) and exposes no API of its own, so an interactive API reference with runnable examples is a category error for this product type. The API mentioned in the evidence is the one it plans for the user's clone, which does not make this axis apply.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "replica-skill",
+    "storyId": "api-machine-spec",
+    "verdict": "na",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "replica-skill is a bundle of Claude Code skills (SKILL.md files) plus local standard-library Python scripts that read and write a project folder. It exposes no network API of its own, so a downloadable OpenAPI-style spec for the product is a category error. Its ability to plan an API for the user's clone (gh-2) is a different capability and does not make this axis applicable.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "replica-skill",
+    "storyId": "api-sandbox",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The skill writes Playwright test specs and runs a preflight before setting up production. However, the evidence never documents a sandbox or staging environment, test-mode credentials such as Stripe test keys, or isolation from production data. Pre-deploy testing and network-free helper scripts are adjacent behaviors, not a documented sandbox capability.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "replica-skill",
+    "storyId": "api-versioning-policy",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "replica-skill is a distributed Claude Code plugin/skill pack, so versioned interfaces and a deprecation policy for its commands and file contracts are a fair question to ask. The evidence shows no versioned API, release versioning scheme or deprecation policy. The API mentions (gh-2) are about planning an API for the user's clone, not the product's own interface, so they earn no credit.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "replica-skill",
+    "storyId": "author-from-template",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "replica-skill is a pack of Claude Code skills. Its docs cover installing the skills, copying their folders into `.claude/skills/`, and pasting an existing SKILL.md into a chat. Nothing in the evidence documents a template or guide for authoring a new skill with name/description frontmatter. Since a skill pack could plausibly ship such authoring guidance, the axis applies and the lack of evidence makes this none.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "replica-skill",
+    "storyId": "authoring-meta-skill",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "replica-skill is a Claude Code skill collection, so a skill-authoring meta-skill is a fair question for it. However, every documented skill targets cloning apps: recon, planning, design, building, backend, QA, parity, rebranding, listing and shipping. Nothing in the evidence describes a skill or tool that guides an agent through writing, improving or packaging new skills.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "replica-skill",
+    "storyId": "automation-bulk-operations",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "replica-skill is a Claude Code skill pack that runs sequential app-cloning stages (recon, design, build, test, parity, rebrand, launch). Nothing in the evidence documents a general capability to select and act on many items at once. The rebrand sweep that scans the whole codebase for the original's name is a specific single-purpose check, not a bulk-operations feature, so it earns no credit here.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "replica-skill",
+    "storyId": "automation-rules-engine",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Replica-skill is a sequence of Claude Code skills that the user runs in order. Each skill reads the previous one's output from a `replica/` folder. A plugin or skill pack could plausibly ship event-triggered rules or hooks, so the axis applies. However, nothing in the evidence documents user-definable rules that fire actions on events. The deploy-blocking sweep is a fixed preflight check, and the reminder emails are a feature of the generated clone app; neither is a rule system in this product.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "replica-skill",
+    "storyId": "automation-scheduled-jobs",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "replica-skill is a Claude Code skill pack whose stages are run manually in sequence (docs-4), and the evidence never mentions scheduling or recurring execution of its workflows. The \"reminder emails\" in gh-5 belong to the generated clone app's backend, not to the product scheduling its own jobs, so they earn no credit.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "replica-skill",
+    "storyId": "automation-versioned-workflows",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "replica-skill is a Claude Code skill pack that runs a staged clone-building workflow, so versioning, reviewing and rolling back its automations is a fair question, but the evidence documents no such capability. Copying skill folders into a repo's `.claude/skills/` would only let a user track them with their own tools, which is a user-side workaround, not a product feature. The `replica/` folder hand-off between stages is not version or rollback control of automations.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "replica-skill",
+    "storyId": "browse-searchable-catalog",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "replica-skill is a pack of cloning-workflow skills. The pack itself ships no registry, leaderboard or searchable catalog for discovering skills. The only discovery-adjacent evidence is the `/plugin marketplace add` install path, which depends on Claude Code's own plugin marketplace (a host-platform capability), so it earns no credit here.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "replica-skill",
+    "storyId": "clean-uninstall",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence covers only installation: a Claude Code plugin marketplace add/install, or copying skill folders into `.claude/skills/`. Any listing or uninstall would come from the host Claude Code plugin system, which earns no credit. The pack never documents how to list installed skills, uninstall them, or clean up the `replica/` artifacts the skills write into a project.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "replica-skill",
+    "storyId": "documented-update-path",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence documents only installation: a Claude Code plugin marketplace add/install, manually copying folders into `.claude/skills/`, or pasting a SKILL.md into a chat. Nothing in the pack describes an update command, auto-update behavior, or versioning. Any update the marketplace itself might offer is a host-platform capability, not one this product documents.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "replica-skill",
+    "storyId": "five-minute-quickstart",
+    "verdict": "partial",
+    "quality": 6,
+    "confidence": "medium",
+    "rationale": "The README documents a very short install path: two `/plugin` commands, plus alternatives of pasting a single SKILL.md into a chat or copying folders into `.claude/skills/`. It also explains that the skills run in order through a `replica/` folder. That points to fast onboarding, but nothing shows the setup working end to end or within any particular time. Missing for 10: a stated or demonstrated under-five-minute timeline, a first-run verification step confirming the skill works, and independent or hands-on corroboration of the install flow.",
+    "evidenceIds": [
+      "replica-skill-docs-1",
+      "replica-skill-docs-2",
+      "replica-skill-docs-3",
+      "replica-skill-docs-4"
+    ]
+  },
+  {
+    "productId": "replica-skill",
+    "storyId": "inspect-before-install",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "The skill ships as plain, readable files: single `SKILL.md` files that can be pasted into a chat, and folders that can be copied by hand into `.claude/skills/`. Its README also discloses its scripts as six standard-library Python files that do not touch the network, and names script paths like `replica-design/contrast.py`. This lets a lead inspect the content, but the skill offers no dedicated way to list everything before installing or to audit installed files, so most of the review falls to the user manually reading the repo. Missing for 10: an explicit file manifest or pre-install content listing, documentation of exactly what the plugin install writes to disk, and independent or hands-on confirmation that the script and network claims hold.",
+    "evidenceIds": [
+      "replica-skill-docs-2",
+      "replica-skill-docs-3",
+      "replica-skill-docs-5",
+      "replica-skill-gh-9",
+      "replica-skill-docs-1"
+    ]
+  },
+  {
+    "productId": "replica-skill",
+    "storyId": "multi-harness-support",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "medium",
+    "rationale": "Install docs cover only Claude Code: a plugin marketplace install and a project-local `.claude/skills/` copy. For anything else, the only documented route is a generic fallback of pasting a single `SKILL.md` into any chat to run it as a mode. That gives minimal cross-agent portability but no named per-harness instructions. Missing for 10: documented install steps for Codex, Cursor or other named harnesses, a way to install the whole collection outside Claude Code, and independent corroboration that it works in other agents.",
+    "evidenceIds": [
+      "replica-skill-docs-1",
+      "replica-skill-docs-2",
+      "replica-skill-docs-3"
+    ]
+  },
+  {
+    "productId": "replica-skill",
+    "storyId": "one-command-install",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "The README documents an in-agent marketplace install: `/plugin marketplace add Jakeschincariol/replica-skill` followed by `/plugin install replica-skill@replica-skill`. It also documents a manual alternative of copying the skill folders into `.claude/skills/` for a project-local setup. Missing for 10: an explicit statement that the skills are active in the next session, independent or hands-on confirmation that the install works, and a true single-command install (the marketplace flow takes two commands).",
+    "evidenceIds": [
+      "replica-skill-docs-1",
+      "replica-skill-docs-3"
+    ]
+  },
+  {
+    "productId": "replica-skill",
+    "storyId": "open-spec-compliance",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The skills ship as SKILL.md folders installable into `.claude/skills/` (docs-3). The docs also say any single SKILL.md can be pasted into a chat without Claude Code and still run as a mode (docs-2), which hints at portability beyond one vendor's tooling. Nothing in the pack says the skills conform to the open Agent Skills specification or have been validated in other tools, and the paste-into-chat path is a manual workaround rather than spec-level compatibility. Missing for 10: an explicit statement of Agent Skills spec conformance (frontmatter fields, folder layout), documented installation in non-Claude agents, and independent or hands-on corroboration of cross-tool validity.",
+    "evidenceIds": [
+      "replica-skill-docs-2",
+      "replica-skill-docs-3",
+      "replica-skill-docs-1"
+    ]
+  },
+  {
+    "productId": "replica-skill",
+    "storyId": "openness-api-parity",
+    "verdict": "na",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "replica-skill is a set of Claude Code skills (SKILL.md files plus local stdlib Python scripts) that run as slash commands inside an agent chat. It has no product UI and no service API, so UI/API parity is a category error. Mentions of planning an API refer to the clone being built, not to the product itself.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "replica-skill",
+    "storyId": "openness-full-export",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "low",
+    "rationale": "The skills write all of their outputs into a local `replica/` folder inside your own project, so artifacts stay on your disk rather than in a hosted service. At least one artifact is in an open format (`tokens.json`), and the bundled scripts are standard-library Python that never touch the network, so there is no evident lock-in. There is no documented export feature, though, and the formats of most other artifacts are unstated. Missing for 10: an explicit export/portability statement, documentation of the file formats for all generated artifacts (recon map, schema, test plans), and independent corroboration.",
+    "evidenceIds": [
+      "replica-skill-docs-4",
+      "replica-skill-gh-9",
+      "replica-skill-docs-5",
+      "replica-skill-docs-3"
+    ]
+  },
+  {
+    "productId": "replica-skill",
+    "storyId": "openness-open-license",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "The source is publicly readable: the product lives in a public GitHub repo, and users can copy its skill folders or paste any SKILL.md file directly into a chat. It also ships standard-library Python scripts such as contrast.py that users can inspect. Nothing in the evidence names a license, so the 'open license' half of the story is unproven. Missing for 10: a stated open-source license (e.g. MIT/Apache), and independent confirmation of the licensing terms.",
+    "evidenceIds": [
+      "replica-skill-gh-1",
+      "replica-skill-gh-9",
+      "replica-skill-docs-2",
+      "replica-skill-docs-3",
+      "replica-skill-docs-5"
+    ]
+  },
+  {
+    "productId": "replica-skill",
+    "storyId": "openness-self-host",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "The product is a set of skill files you install and run on your own machine. The docs show installing it via the plugin marketplace, copying the folders into a repo's `.claude/skills/`, or pasting a single SKILL.md into any chat. Its bundled scripts are standard-library Python that never touch the network, and all outputs are written to a local `replica/` folder, so the core product runs entirely under the user's control. Missing for 10: an explicit open-source license or self-hosting statement, a fully offline path (it still depends on a hosted LLM such as Claude), and independent hands-on corroboration.",
+    "evidenceIds": [
+      "replica-skill-docs-1",
+      "replica-skill-docs-2",
+      "replica-skill-docs-3",
+      "replica-skill-docs-4",
+      "replica-skill-docs-5",
+      "replica-skill-gh-9"
+    ]
+  },
+  {
+    "productId": "replica-skill",
+    "storyId": "per-skill-documentation",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "The README gives each skill a plain description of what it does: recon, planning, design system, build, backend, QA, parity, reviews, rebrand, launch and deploy. It also states that skills are invoked by slash command (e.g. /replica-backend, /replica-entrepreneur) and run in order, each reading the previous skill's output in the replica/ folder. That covers 'what it does', but 'when it activates' is only implied by manual slash invocation and run order. No evidence shows per-skill activation triggers or the SKILL.md descriptions that would govern automatic activation. missing for 10: documented per-skill activation/trigger conditions, evidence of whether skills can auto-activate, independent corroboration that the documentation makes behavior predictable.",
+    "evidenceIds": [
+      "replica-skill-gh-1",
+      "replica-skill-gh-4",
+      "replica-skill-gh-5",
+      "replica-skill-gh-7",
+      "replica-skill-gh-11",
+      "replica-skill-gh-16",
+      "replica-skill-docs-2",
+      "replica-skill-docs-4"
+    ]
+  },
+  {
+    "productId": "replica-skill",
+    "storyId": "plain-files-portability",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "medium",
+    "rationale": "The docs describe skills as plain `SKILL.md` files in folders. You can copy them into a repo's `.claude/skills/`, and any single SKILL.md can be pasted into any chat to run as a mode, with no Claude Code required. Helper scripts are plain standard-library Python and outputs land in an ordinary `replica/` folder, so nothing is proprietary or binary. Missing for 10: documented setup for other named harnesses (e.g. Codex, Cursor), and independent or hands-on corroboration of the portability claims.",
+    "evidenceIds": [
+      "replica-skill-docs-2",
+      "replica-skill-docs-3",
+      "replica-skill-docs-4",
+      "replica-skill-docs-5",
+      "replica-skill-docs-1"
+    ]
+  },
+  {
+    "productId": "replica-skill",
+    "storyId": "privacy-data-residency",
+    "verdict": "na",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "replica-skill is a locally run set of Claude Code skills. Its outputs go to a `replica/` folder in the user's own project, and its scripts never touch the network. It operates no hosted storage, so choosing a storage region or data residency is not an axis this kind of product has.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "replica-skill",
+    "storyId": "privacy-no-training",
+    "verdict": "na",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "replica-skill is a bundle of Claude Code skills (SKILL.md prompts plus local standard-library Python scripts) that runs inside a host assistant and operates no service that could ingest data for training. Whether user data is used to train models is controlled by the host LLM platform, not by a prompt or skill pack, so this axis is a category error for this kind of product. The note that its scripts never touch the network is an adjacent property and does not change that.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "replica-skill",
+    "storyId": "privacy-retention-controls",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence shows the skills write their artifacts to a local `replica/` folder and that the bundled Python scripts never touch the network. It documents no retention policy, deletion command, or other data-lifecycle control. Deleting local files by hand is a user-side workaround, and any retention behaviour belongs to the host platform, so neither counts toward this story.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "replica-skill",
+    "storyId": "privacy-telemetry-optout",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "There is no opt-out switch, but the docs say the bundled helper scripts are all standard-library Python and 'none touch the network', which implies no telemetry from them. The skills are plain SKILL.md files and local folders that write to a project 'replica/' directory, so this privacy posture is implied rather than stated. missing for 10: an explicit no-telemetry/no-tracking statement covering the whole skill pack, a documented opt-out mechanism if any tracking exists, and independent verification.",
+    "evidenceIds": [
+      "replica-skill-docs-5",
+      "replica-skill-docs-4",
+      "replica-skill-docs-2"
+    ]
+  },
+  {
+    "productId": "replica-skill",
+    "storyId": "project-vs-global-install",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "The docs describe both scopes. The default install is global, via the plugin marketplace commands. The documented alternative is project-local: copy the same skill folders into the repo's `.claude/skills/`, where they can live alongside the code. Missing for 10: the global install location is never stated explicitly, committing the skills to the repo is only implied, project-local install is a manual copy rather than a scope flag, and there is no independent or hands-on corroboration.",
+    "evidenceIds": [
+      "replica-skill-docs-3",
+      "replica-skill-docs-1"
+    ]
+  },
+  {
+    "productId": "replica-skill",
+    "storyId": "release-notes",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Release notes and changelogs are a fair question for a skill pack distributed through a plugin marketplace, so the axis applies. Nothing in the evidence pack mentions releases, version history, release notes or a changelog. The items only describe the skills' functions and how to install them.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "replica-skill",
+    "storyId": "reliable-auto-triggering",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence shows the skills installed as a Claude Code plugin or copied into .claude/skills/. They are invoked explicitly via slash commands (/replica-backend, /replica-entrepreneur) and the docs say to 'run them in order'. Nothing documents automatic triggering from task context or SKILL.md descriptions engineered for activation. Any auto-discovery of skills comes from the host platform, not this product, so it earns no credit.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "replica-skill",
+    "storyId": "security-posture-docs",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The project's own docs state that its helper scripts are six standard-library Python files and that none touch the network. That is a thin first-party statement about what executes and implies no outbound data flow. There is no dedicated security section, no trust model for third-party skills, and no explicit telemetry or data-collection policy. Missing for 10: an explicit documented scope of what each skill can execute or modify, a trust model or guidance for third-party skills, an explicit telemetry and data-collection statement, and independent corroboration.",
+    "evidenceIds": [
+      "replica-skill-docs-5"
+    ]
+  },
+  {
+    "productId": "replica-skill",
+    "storyId": "selective-install",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "The official install path (`/plugin install replica-skill@replica-skill`) installs the whole bundle. The docs do say you can paste any single `SKILL.md` into a chat to run it as a mode, and that you can copy the skill folders into `.claude/skills/`, which allows manual picking. However, the skills are designed to run in order, each reading the previous one's output, which limits standalone use. missing for 10: a documented per-skill install command in the plugin/marketplace flow, explicit guidance on which skills work standalone, independent corroboration.",
+    "evidenceIds": [
+      "replica-skill-docs-1",
+      "replica-skill-docs-2",
+      "replica-skill-docs-3",
+      "replica-skill-docs-4"
+    ]
+  },
+  {
+    "productId": "replica-skill",
+    "storyId": "skill-testing-harness",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence shows skills that generate tests for the user's cloned app: Playwright specs, a parity score, WCAG contrast checks and a preflight that runs tests before deploy. These are product features for the user's code, not tests or evals that verify the skill collection itself against regressions. Nothing in the pack shows a test suite, eval harness or CI for the skills' own behavior.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "replica-skill",
+    "storyId": "team-distribution",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "The project documents two of the story's distribution paths: installation through a Claude Code plugin marketplace (`/plugin marketplace add` / `/plugin install`) and a project-local install by copying the skill folders into the repo's `.claude/skills/`, where they can be committed for the whole team. Missing for 10: any team-oriented guidance (e.g., pinning versions or auto-enabling the plugin for every teammate), and independent or hands-on corroboration that team-wide distribution works as described.",
+    "evidenceIds": [
+      "replica-skill-docs-1",
+      "replica-skill-docs-3"
+    ]
+  },
+  {
+    "productId": "replica-skill",
+    "storyId": "version-control-pinning",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Version control is a fair question for a distributable skill pack, but the evidence documents no version pinning, lockfile, release tags, or update-control mechanism. The marketplace install command shows no version specifier. Copying folders into a repo's `.claude/skills/` is an install-location option. Freezing a version that way would rely on the user's own git and manual copying, which is a user-side workaround and not the product's own capability.",
+    "evidenceIds": []
+  },
+  {
     "productId": "skills-cli",
     "storyId": "active-maintenance",
     "verdict": "partial",

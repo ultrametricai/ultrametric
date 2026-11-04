@@ -22,7 +22,10 @@ describe('corpus and shared-record identity', () => {
     for (const task of tasks) {
       const record = findSharedRecord(records, task.id)
       expect(record, `task ${task.id} must have a shared record`).toBeDefined()
-      expect(record!.source?.id).toBe(task.id)
+      // Imported records carry their historical source receipt; records authored directly in
+      // open-processes/ have no prior source (open-processes/README.md: historical receipts
+      // stay unchanged), so their identity IS the record id.
+      expect(record!.source?.id ?? record!.id).toBe(task.id)
       // The canonical title slug resolves to the same record — old links cannot drift.
       expect(findSharedRecord(records, processSlug(task.title))?.id).toBe(task.id)
       // Renamed-process aliases mirror exactly (lib/processes.ts slugAliases is the source).

@@ -2,16 +2,16 @@
   "schemaVersion": 1,
   "id": "tax_002",
   "kind": "process",
-  "title": "File federal tax return",
-  "summary": "Prepare the annual federal corporate tax return (Form 1120) and file with the IRS.",
+  "title": "File the company income tax return",
+  "summary": "Prepare, review, authorize and file the company income tax return with the applicable tax authority, and arrange payment of any tax due.",
   "outcomes": [],
   "guidance": null,
   "parts": [
     {
       "id": "n2",
       "kind": "step",
-      "title": "Export financial data from QBO",
-      "guidance": "Export the trial balance, financial statements and transaction detail requested for the entity, period and accounting basis. Reconcile reports to the closed books and bank records, and identify late adjustments or incomplete schedules. Use consistent date filters and report versions so totals reconcile across the exports.",
+      "title": "Export financial data from the accounting system",
+      "guidance": "Export the complete financial records and supporting schedules for the tax period. Reconcile them with the books and share them privately with the appointed tax adviser.",
       "when": null,
       "ref": null,
       "options": [],
@@ -21,19 +21,55 @@
           "kind": "vendor",
           "id": "quickbooks",
           "role": "stated-vendor"
+        },
+        {
+          "kind": "url",
+          "url": "https://www.gov.uk/prepare-file-annual-accounts-for-limited-company",
+          "title": "GOV.UK accounts and tax returns",
+          "description": null,
+          "role": "authored-guidance-source"
         }
       ],
       "metadata": {
         "route": "agent",
         "reversibility": "reversible",
-        "estimatedMinutes": 5
+        "estimatedMinutes": 5,
+        "execution": {
+          "category": "agent-native",
+          "basis": "documented-interface",
+          "rationale": "QuickBooks Reports APIs export the requested statements and transaction reports for period reconciliation.",
+          "evidence": [
+            "open-processes/file-federal-tax-return.json#/parts/0/guidance",
+            "https://developer.intuit.com/app/developer/qbo/docs/develop/sdks-and-samples-collections/java/reports"
+          ],
+          "reviewRequired": false,
+          "automationEvidence": {
+            "status": "documented"
+          }
+        },
+        "geoResolutions": [
+          {
+            "country": "US",
+            "kind": "analog",
+            "label": "Export financial data from the accounting system",
+            "guidance": "Export the complete financial records and supporting schedules for the tax period. Reconcile them with the books and share them privately with the appointed tax adviser."
+          },
+          {
+            "country": "UK",
+            "kind": "analog",
+            "label": "Export financial data from the accounting system",
+            "guidance": "For the scoped active domestic company, reconcile accounts, Corporation Tax period and private source records with the accountant. Dormancy, groups, foreign tax residence and specialist tax positions need another assessment.",
+            "actionUrl": "https://www.gov.uk/prepare-file-annual-accounts-for-limited-company",
+            "actionLabel": "GOV.UK accounts and tax returns"
+          }
+        ]
       }
     },
     {
       "id": "n3",
       "kind": "step",
-      "title": "Send financials to CPA",
-      "guidance": "Send the preparer the reconciled exports, prior returns, ownership information and requested transaction records through the agreed secure channel. Include unusual events and known gaps explicitly. Keep an index of what was sent and use a single point of contact for questions and revised files so the final return can be traced to the supplied facts.",
+      "title": "Send financials to the tax adviser",
+      "guidance": "Send the reconciled financials and supporting records privately to the authorized tax adviser. Track missing information and confirm the filing responsibilities and deadlines.",
       "when": null,
       "ref": null,
       "options": [],
@@ -50,14 +86,27 @@
         "reversibility": "reversible",
         "approvalRequired": true,
         "riskLevel": "medium",
-        "estimatedMinutes": 5
+        "estimatedMinutes": 5,
+        "execution": {
+          "category": "agent-native",
+          "basis": "documented-interface",
+          "rationale": "For the retained Gmail method, send the approved preparer package and attachments through the configured account.",
+          "evidence": [
+            "open-processes/file-federal-tax-return.json#/parts/1/guidance",
+            "https://developers.google.com/workspace/gmail/api/reference/rest/v1/users.messages/send"
+          ],
+          "reviewRequired": false,
+          "automationEvidence": {
+            "status": "documented"
+          }
+        }
       }
     },
     {
       "id": "n4",
       "kind": "decision",
-      "title": "CPA prepares return (2-3 weeks)",
-      "guidance": "Answer the preparer’s questions with verified records and review proposed adjustments and elections. Identify unresolved issues, attachments and separate filing or payment dates for this entity. Compare drafts when material figures change. Preparation is ready for review when the return and supporting explanations are complete enough to decide the outstanding items; use the engagement’s actual timing estimate.",
+      "title": "The tax adviser prepares the company return",
+      "guidance": "The appointed adviser prepares the company income tax return under the local rules using the reconciled records. Resolve missing information and review questions before the draft moves to approval.",
       "when": null,
       "ref": null,
       "options": [
@@ -82,7 +131,20 @@
             "reversibility": "reversible",
             "riskLevel": "high",
             "estimatedMinutes": 20160,
-            "async": true
+            "async": true,
+            "execution": {
+              "category": "human-online",
+              "basis": "human-work",
+              "rationale": "The engaged CPA prepares the return with digital books and records, answers questions and coordinates review with the company; filing authority remains separate.",
+              "evidence": [
+                "open-processes/file-federal-tax-return.json#/parts/2/options/0/summary",
+                "open-processes/file-federal-tax-return.json#/parts/2/options/0"
+              ],
+              "reviewRequired": true,
+              "automationEvidence": {
+                "status": "unverified"
+              }
+            }
           }
         },
         {
@@ -107,6 +169,19 @@
           "metadata": {
             "context": {
               "kind": "situational"
+            },
+            "execution": {
+              "category": "human-online",
+              "basis": "human-work",
+              "rationale": "The company and selected tax professional exchange records through the service's secure digital process and personally review return-specific signing and filing authorization requirements.",
+              "evidence": [
+                "open-processes/file-federal-tax-return.json#/parts/2/options/1/summary",
+                "open-processes/file-federal-tax-return.json#/parts/2/options/1"
+              ],
+              "reviewRequired": true,
+              "automationEvidence": {
+                "status": "unverified"
+              }
             }
           }
         }
@@ -119,9 +194,33 @@
           "title": "IRS Form 1120 instructions",
           "description": null,
           "role": "authored-guidance-source"
+        },
+        {
+          "kind": "url",
+          "url": "https://www.gov.uk/prepare-file-annual-accounts-for-limited-company",
+          "title": "GOV.UK accounts and tax returns",
+          "description": null,
+          "role": "authored-guidance-source"
         }
       ],
-      "metadata": {}
+      "metadata": {
+        "geoResolutions": [
+          {
+            "country": "US",
+            "kind": "analog",
+            "label": "The tax adviser prepares the company return",
+            "guidance": "The appointed adviser prepares the company income tax return under the local rules using the reconciled records. Resolve missing information and review questions before the draft moves to approval."
+          },
+          {
+            "country": "UK",
+            "kind": "analog",
+            "label": "The tax adviser prepares the company return",
+            "guidance": "The tax adviser prepares the Company Tax Return under current HMRC requirements and reconciles it to the statutory accounts. Keep Companies House accounts, the HMRC return and tax payment deadlines distinct.",
+            "actionUrl": "https://www.gov.uk/prepare-file-annual-accounts-for-limited-company",
+            "actionLabel": "GOV.UK accounts and tax returns"
+          }
+        ]
+      }
     },
     {
       "id": "n5",
@@ -139,6 +238,13 @@
           "title": "IRS Form 1120 instructions",
           "description": null,
           "role": "authored-guidance-source"
+        },
+        {
+          "kind": "url",
+          "url": "https://www.gov.uk/prepare-file-annual-accounts-for-limited-company",
+          "title": "GOV.UK accounts and tax returns",
+          "description": null,
+          "role": "authored-guidance-source"
         }
       ],
       "metadata": {
@@ -146,14 +252,43 @@
         "reversibility": "reversible",
         "approvalRequired": true,
         "riskLevel": "high",
-        "estimatedMinutes": 60
+        "estimatedMinutes": 60,
+        "execution": {
+          "category": "human-online",
+          "basis": "human-work",
+          "rationale": "The company and tax adviser compare the draft return with books and transaction records through the secure digital review process.",
+          "evidence": [
+            "open-processes/file-federal-tax-return.json#/parts/3/guidance",
+            "open-processes/file-federal-tax-return.json#/parts/3"
+          ],
+          "reviewRequired": true,
+          "automationEvidence": {
+            "status": "unverified"
+          }
+        },
+        "geoResolutions": [
+          {
+            "country": "US",
+            "kind": "analog",
+            "label": "Review draft return",
+            "guidance": "Compare the draft with final books, carryforwards, ownership records and significant transactions. Review tax adjustments, elections, related-party reporting and estimated payments with the preparer. Resolve unfamiliar figures and verify the entity and period before approving the exact return version through the company’s filing process. Treat any payment instruction as a distinct decision."
+          },
+          {
+            "country": "UK",
+            "kind": "analog",
+            "label": "Review draft return",
+            "guidance": "The accountable company person reviews the return and authorizes the specific filing through the adviser or approved software. Resolve uncertain positions and missing records before authorizing submission.",
+            "actionUrl": "https://www.gov.uk/prepare-file-annual-accounts-for-limited-company",
+            "actionLabel": "GOV.UK accounts and tax returns"
+          }
+        ]
       }
     },
     {
       "id": "n5b",
       "kind": "step",
-      "title": "Officer signs the e-file authorization (Form 8879-CORP)",
-      "guidance": "For a return using Form 8879-CORP, the authorized corporate officer reviews the complete electronic return before signing. Verify the corporation, year, required return figures and any electronic-withdrawal consent against the reviewed draft. Resolve changes with the electronic return originator, then sign and return the authorization securely. Keep it associated with the return it authorizes.",
+      "title": "Sign the filing authorization required by the tax authority",
+      "guidance": "The authorized company representative reviews and signs the filing authorization or declarations required by the selected tax authority. Keep the authorization with the approved draft and confirm who may submit it.",
       "when": null,
       "ref": null,
       "options": [],
@@ -172,14 +307,35 @@
         "reversibility": "reversible",
         "legalSignature": true,
         "riskLevel": "high",
-        "estimatedMinutes": 10
+        "estimatedMinutes": 10,
+        "execution": {
+          "category": "human-online",
+          "basis": "human-work",
+          "rationale": "The authorized officer reviews the electronic return and personally completes the preparer's permitted digital authorization process; no agent signs for the officer.",
+          "evidence": [
+            "open-processes/file-federal-tax-return.json#/parts/4/guidance",
+            "open-processes/file-federal-tax-return.json#/parts/4"
+          ],
+          "reviewRequired": true,
+          "automationEvidence": {
+            "status": "unverified"
+          }
+        },
+        "geoResolutions": [
+          {
+            "country": "US",
+            "kind": "analog",
+            "label": "Officer signs the e-file authorization (Form 8879-CORP)",
+            "guidance": "Prepare the annual federal corporate tax return (Form 1120) and file with the IRS. For a return using Form 8879-CORP, the authorized corporate officer reviews the complete electronic return before signing. Verify the corporation, year, required return figures and any electronic-withdrawal consent against the reviewed draft. Resolve changes with the electronic return originator, then sign and return the authorization securely. Keep it associated with the return it authorizes."
+          }
+        ]
       }
     },
     {
       "id": "n6",
       "kind": "step",
-      "title": "CPA files return with IRS",
-      "guidance": "Confirm the preparer has the approved return and required signature authorization before transmission. Obtain the filing acknowledgement and distinguish acceptance from rejection. Resolve rejected submissions promptly, reviewing material corrections before retransmission. Preserve the filed return and acceptance, and check any separately required forms or attachments the preparer identified.",
+      "title": "The tax adviser files the company return",
+      "guidance": "Use the selected tax authority’s filing procedure for the approved return. The authorized filer submits it and retains the filing acknowledgement and any follow-up requirements.",
       "when": null,
       "ref": null,
       "options": [],
@@ -189,6 +345,13 @@
           "kind": "vendor",
           "id": "irs",
           "role": "stated-vendor"
+        },
+        {
+          "kind": "url",
+          "url": "https://www.gov.uk/prepare-file-annual-accounts-for-limited-company",
+          "title": "GOV.UK accounts and tax returns",
+          "description": null,
+          "role": "authored-guidance-source"
         }
       ],
       "metadata": {
@@ -197,16 +360,89 @@
         "producesArtifact": "federal-tax-return",
         "riskLevel": "high",
         "estimatedMinutes": 20,
+        "execution": {
+          "category": "human-online",
+          "basis": "human-work",
+          "rationale": "The authored method assigns transmission, rejection handling and the returned e-file acknowledgement to the CPA. IRS business e-file guidance documents the authorized provider’s electronic transmission and acknowledgement responsibilities. The CPA retains filing responsibility; the company supplies the approved return and required signature authorization. Separately required paper attachments or an e-file exception need a separate method check.",
+          "evidence": [
+            "open-processes/file-federal-tax-return.json#/parts/5/guidance",
+            "open-processes/file-federal-tax-return.json#/parts/5/metadata/verify",
+            "https://www.irs.gov/pub/irs-pdf/p4163.pdf"
+          ],
+          "reviewRequired": true,
+          "automationEvidence": {
+            "status": "unverified"
+          }
+        },
+        "geoResolutions": [
+          {
+            "country": "US",
+            "kind": "analog",
+            "label": "CPA files return with IRS",
+            "guidance": "Confirm the preparer has the approved return and required signature authorization before transmission. Obtain the filing acknowledgement and distinguish acceptance from rejection. Resolve rejected submissions promptly, reviewing material corrections before retransmission. Preserve the filed return and acceptance, and check any separately required forms or attachments the preparer identified.",
+            "verify": {
+              "how": "The IRS e-file acceptance acknowledgment comes back through the CPA — retain it with the signed copy of the return."
+            }
+          },
+          {
+            "country": "IN",
+            "kind": "analog",
+            "label": "File the company ITR-6 return",
+            "guidance": "Companies file the ITR-6 return electronically on the Income Tax e-filing portal; the tax year runs April–March rather than the calendar year.",
+            "actionUrl": "https://www.incometax.gov.in/iec/foportal/",
+            "actionLabel": "Income Tax e-filing (ITR-6)"
+          },
+          {
+            "country": "DE",
+            "kind": "analog",
+            "label": "File the corporation and trade tax returns through ELSTER",
+            "guidance": "Corporation tax (Körperschaftsteuer) plus trade tax (Gewerbesteuer) returns are filed electronically through ELSTER, in practice via a Steuerberater.",
+            "actionUrl": "https://www.elster.de/eportal/start",
+            "actionLabel": "ELSTER — corporate tax returns"
+          },
+          {
+            "country": "FR",
+            "kind": "analog",
+            "label": "File the corporate income tax return through the professional tax account",
+            "guidance": "Corporate income tax (impôt sur les sociétés) is declared and paid through the company's espace professionnel on impots.gouv.fr.",
+            "actionUrl": "https://www.impots.gouv.fr/professionnel",
+            "actionLabel": "impots.gouv.fr — espace professionnel"
+          },
+          {
+            "country": "PT",
+            "kind": "analog",
+            "label": "File the Modelo 22 corporate income tax return",
+            "guidance": "The company files the Modelo 22 (IRC) return electronically through the Portal das Finanças by the end of May for calendar-year companies, plus the IES annual declaration — in practice via a certified accountant (contabilista certificado).",
+            "actionUrl": "https://www.portaldasfinancas.gov.pt/",
+            "actionLabel": "Portal das Finanças — Modelo 22"
+          },
+          {
+            "country": "CA",
+            "kind": "analog",
+            "label": "File the T2 corporation income tax return",
+            "guidance": "The company files a T2 corporation income tax return with the CRA within six months of its fiscal year-end (tax owing is due earlier), plus any provincial corporate returns outside the CRA-administered provinces.",
+            "actionUrl": "https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/corporations.html",
+            "actionLabel": "CRA — corporation income tax (T2)"
+          },
+          {
+            "country": "UK",
+            "kind": "analog",
+            "label": "The tax adviser files the company return",
+            "guidance": "The authorized adviser submits through the current permitted HMRC route and retains acceptance or rejection evidence. Do not assume the Companies House accounts filing also completes the Company Tax Return.",
+            "actionUrl": "https://www.gov.uk/prepare-file-annual-accounts-for-limited-company",
+            "actionLabel": "GOV.UK accounts and tax returns"
+          }
+        ],
         "verify": {
-          "how": "The IRS e-file acceptance acknowledgment comes back through the CPA — retain it with the signed copy of the return."
+          "how": "Retain the official confirmation or accepted documents required for this step in the selected jurisdiction; reconcile them with the approved company records."
         }
       }
     },
     {
       "id": "n7",
       "kind": "step",
-      "title": "Pay any tax due",
-      "guidance": "Reconcile the balance due with credits, estimated payments and any electronic withdrawal already authorized. Verify taxpayer, period, payment type, amount and due date with the preparer. Use the company’s payment-approval process and check settlement. Match any debit included with filing before paying again, and resolve failed or missing payments against the tax account.",
+      "title": "Pay any company tax due",
+      "guidance": "Confirm the amount, payment reference, authority and deadline with the tax adviser. Obtain authorization for payment through the authority’s supported method and retain the receipt.",
       "when": null,
       "ref": null,
       "options": [],
@@ -231,9 +467,35 @@
         "approvalRequired": true,
         "riskLevel": "high",
         "estimatedMinutes": 10,
+        "execution": {
+          "category": "human-online",
+          "basis": "human-work",
+          "rationale": "The authorized company representative checks the return's payment instructions and completes the balance payment through the approved digital payment service.",
+          "evidence": [
+            "open-processes/file-federal-tax-return.json#/parts/6/guidance",
+            "open-processes/file-federal-tax-return.json#/parts/6"
+          ],
+          "reviewRequired": true,
+          "automationEvidence": {
+            "status": "unverified"
+          }
+        },
+        "geoResolutions": [
+          {
+            "country": "US",
+            "kind": "analog",
+            "label": "Pay any tax due",
+            "guidance": "Reconcile the balance due with credits, estimated payments and any electronic withdrawal already authorized. Verify taxpayer, period, payment type, amount and due date with the preparer. Use the company’s payment-approval process and check settlement. Match any debit included with filing before paying again, and resolve failed or missing payments against the tax account.",
+            "actionUrl": "https://www.irs.gov/payments",
+            "actionLabel": "IRS payments",
+            "verify": {
+              "how": "IRS Direct Pay or EFTPS issues a payment confirmation number and the payment posts to the business tax account.",
+              "url": "https://www.irs.gov/payments"
+            }
+          }
+        ],
         "verify": {
-          "how": "IRS Direct Pay or EFTPS issues a payment confirmation number and the payment posts to the business tax account.",
-          "url": "https://www.irs.gov/payments"
+          "how": "Retain the official confirmation or accepted documents required for this step in the selected jurisdiction; reconcile them with the approved company records."
         }
       }
     },
@@ -258,13 +520,50 @@
           "title": "IRS Form 1120 instructions",
           "description": null,
           "role": "authored-guidance-source"
+        },
+        {
+          "kind": "url",
+          "url": "https://www.gov.uk/prepare-file-annual-accounts-for-limited-company",
+          "title": "GOV.UK accounts and tax returns",
+          "description": null,
+          "role": "authored-guidance-source"
         }
       ],
       "metadata": {
         "route": "agent",
         "reversibility": "reversible",
         "estimatedMinutes": 2,
-        "supporting": true
+        "supporting": true,
+        "execution": {
+          "category": "agent-native",
+          "basis": "documented-interface",
+          "rationale": "Google Drive uploads retain the filed return and supporting records; its permission operations apply the approved restricted access to the package.",
+          "evidence": [
+            "open-processes/file-federal-tax-return.json#/parts/7/guidance",
+            "https://developers.google.com/workspace/drive/api/guides/manage-uploads",
+            "https://developers.google.com/workspace/drive/api/guides/manage-sharing"
+          ],
+          "reviewRequired": false,
+          "automationEvidence": {
+            "status": "documented"
+          }
+        },
+        "geoResolutions": [
+          {
+            "country": "US",
+            "kind": "analog",
+            "label": "File copy in records",
+            "guidance": "File the submitted return, schedules, elections, signature authorization, acceptance and payment evidence together. Keep supporting workpapers and explanations of material positions, with drafts clearly separate. Apply the relevant retention and access arrangements so a new preparer can understand the filed position and any later notice or amendment can be investigated."
+          },
+          {
+            "country": "UK",
+            "kind": "analog",
+            "label": "File copy in records",
+            "guidance": "Retain the accepted return, calculations and separate payment or no-tax-due evidence as applicable. Reconcile them with the ledger and statutory accounts and assign corrections and future reporting dates.",
+            "actionUrl": "https://www.gov.uk/prepare-file-annual-accounts-for-limited-company",
+            "actionLabel": "GOV.UK accounts and tax returns"
+          }
+        ]
       }
     }
   ],
@@ -320,9 +619,20 @@
       "kind": "vendor",
       "id": "gmail",
       "role": "involves"
+    },
+    {
+      "kind": "url",
+      "url": "https://www.gov.uk/prepare-file-annual-accounts-for-limited-company",
+      "title": "GOV.UK accounts and tax returns",
+      "description": null,
+      "role": "authored-guidance-source"
     }
   ],
-  "notes": [],
+  "notes": [
+    {
+      "text": "Scoped draft detail: UK-resident private company limited by shares registered in England and Wales, operating domestically in unregulated services. Other entities, locations and cross-border facts need another assessment. Professional review is pending. Source and instruction check: 2026-11-01. Assessment: coverage/local-procedure-assessments.json."
+    }
+  ],
   "metadata": {
     "phase": "compliance",
     "cadence": "annual",
@@ -367,8 +677,7 @@
     "activeMinutes": 112,
     "totalEstimatedMinutes": 20272,
     "hasAsyncSteps": true,
-    "region": "us",
-    "geoScope": "us",
+    "geoScope": "global",
     "geoNotes": [
       {
         "country": "IN",
@@ -411,12 +720,60 @@
         "summary": "The company files a T2 corporation income tax return with the CRA within six months of its fiscal year-end (tax owing is due earlier), plus any provincial corporate returns outside the CRA-administered provinces.",
         "actionUrl": "https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/corporations.html",
         "actionLabel": "CRA — corporation income tax (T2)"
+      },
+      {
+        "country": "NZ",
+        "kind": "analog",
+        "summary": "Companies complete and send an income tax return (IR4) to Inland Revenue each year, filed through myIR; most companies pay income tax on profit at a flat 28%.",
+        "actionUrl": "https://www.ird.govt.nz/income-tax/income-tax-for-businesses-and-organisations/income-tax-for-companies",
+        "actionLabel": "Income tax for companies — Inland Revenue"
+      },
+      {
+        "country": "SG",
+        "kind": "analog",
+        "summary": "The company files its corporate income tax return (Form C-S or Form C) with IRAS by 30 November for each year of assessment via the myTax Portal — a flat 17% rate, with the start-up exemption trimming the first three YAs.",
+        "actionUrl": "https://www.iras.gov.sg/taxes/corporate-income-tax/form-c-s-form-c-s-(lite)-form-c-filing/overview-of-form-c-s-form-c-s-(lite)-form-c",
+        "actionLabel": "IRAS — Form C-S/Form C overview"
+      },
+      {
+        "country": "AU",
+        "kind": "analog",
+        "summary": "The company lodges an annual company tax return with the ATO for its income year; due dates follow the ATO lodgment program (registered tax agents get extended schedules), and most startups lodge through an agent alongside their activity statements.",
+        "actionUrl": "https://business.gov.au/finance/tax/income-tax-for-business",
+        "actionLabel": "Income tax for business"
+      },
+      {
+        "country": "KR",
+        "kind": "analog",
+        "summary": "The corporate tax return goes to the NTS within three months from the end of the month in which the business year ends (Corporate Tax Act Article 60), filed through Hometax; local income tax follows to the municipality.",
+        "actionUrl": "https://www.hometax.go.kr/",
+        "actionLabel": "Hometax (NTS e-filing)"
+      },
+      {
+        "country": "HK",
+        "kind": "analog",
+        "summary": "The company files its profits tax return with the Inland Revenue Department when the return issues, by the date it states; corporate profits are taxed on a territorial basis at the two-tiered 8.25%/16.5% rates (law rule hk.profits-tax-two-tier-rates).",
+        "actionUrl": "https://www.ird.gov.hk/eng/tax/bus_pft.htm",
+        "actionLabel": "IRD — profits tax"
+      },
+      {
+        "country": "EE",
+        "kind": "analog",
+        "summary": "The yearly ritual splits in two: income tax is charged only when profit is distributed and rides the monthly TSD (law rule ee.corporate-tax-distributed-profits), while the annual report to the commercial register, due in six months, is the yearly compliance document (law rule ee.annual-report-deadline).",
+        "actionUrl": "https://www.emta.ee/en/business-client/taxes-and-payment/income-and-social-taxes",
+        "actionLabel": "Income and social taxes (e-MTA)"
       }
     ],
     "timeOrder": 93,
     "annoyance": 5,
     "risk": 5,
-    "growthImpact": 1
+    "growthImpact": 1,
+    "slugAliases": [
+      {
+        "slug": "file-federal-tax-return",
+        "label": "File federal tax return"
+      }
+    ]
   },
   "source": {
     "path": "open-processes/corpus.json",
@@ -426,5 +783,89 @@
   },
   "entrySteps": [
     "n2"
+  ],
+  "aliases": [
+    "file-the-company-income-tax-return",
+    "file-federal-tax-return",
+    "file-an-itr-6-company-tax-return-in",
+    "file-a-ct600-company-tax-return-uk",
+    "file-corporation-and-trade-tax-returns-de",
+    "file-the-corporate-income-tax-return-fr",
+    "file-a-modelo-22-corporate-tax-return-pt",
+    "file-a-t2-corporation-income-tax-return-ca",
+    "file-the-company-income-tax-return-in-new-zealand-nz",
+    "file-the-company-income-tax-return-in-singapore-sg",
+    "file-the-company-income-tax-return-in-australia-au",
+    "file-the-company-income-tax-return-in-south-korea-kr",
+    "file-the-company-income-tax-return-in-hong-kong-hk",
+    "file-the-company-income-tax-return-in-estonia-ee"
+  ],
+  "globalSlug": "file-the-company-income-tax-return",
+  "countryViews": [
+    {
+      "country": "US",
+      "title": "File a federal corporate tax return",
+      "slug": "file-federal-tax-return"
+    },
+    {
+      "country": "IN",
+      "title": "File an ITR-6 company tax return",
+      "slug": "file-an-itr-6-company-tax-return-in"
+    },
+    {
+      "country": "UK",
+      "title": "File a CT600 Company Tax Return",
+      "slug": "file-a-ct600-company-tax-return-uk"
+    },
+    {
+      "country": "DE",
+      "title": "File corporation and trade tax returns",
+      "slug": "file-corporation-and-trade-tax-returns-de"
+    },
+    {
+      "country": "FR",
+      "title": "File the corporate income tax return",
+      "slug": "file-the-corporate-income-tax-return-fr"
+    },
+    {
+      "country": "PT",
+      "title": "File a Modelo 22 corporate tax return",
+      "slug": "file-a-modelo-22-corporate-tax-return-pt"
+    },
+    {
+      "country": "CA",
+      "title": "File a T2 corporation income tax return",
+      "slug": "file-a-t2-corporation-income-tax-return-ca"
+    },
+    {
+      "country": "NZ",
+      "title": "File the company income tax return in New Zealand",
+      "slug": "file-the-company-income-tax-return-in-new-zealand-nz"
+    },
+    {
+      "country": "SG",
+      "title": "File the company income tax return in Singapore",
+      "slug": "file-the-company-income-tax-return-in-singapore-sg"
+    },
+    {
+      "country": "AU",
+      "title": "File the company income tax return in Australia",
+      "slug": "file-the-company-income-tax-return-in-australia-au"
+    },
+    {
+      "country": "KR",
+      "title": "File the company income tax return in South Korea",
+      "slug": "file-the-company-income-tax-return-in-south-korea-kr"
+    },
+    {
+      "country": "HK",
+      "title": "File the company income tax return in Hong Kong",
+      "slug": "file-the-company-income-tax-return-in-hong-kong-hk"
+    },
+    {
+      "country": "EE",
+      "title": "File the company income tax return in Estonia",
+      "slug": "file-the-company-income-tax-return-in-estonia-ee"
+    }
   ]
 }

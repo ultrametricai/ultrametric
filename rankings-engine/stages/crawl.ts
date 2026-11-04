@@ -34,7 +34,11 @@ export function isFullyCrawlExcluded(product: Product): boolean {
 async function crawlProduct(categoryId: string, product: Product): Promise<number> {
   const dir = path.join(CACHE_DIR, 'crawl', categoryId, product.id)
   fs.mkdirSync(dir, { recursive: true })
-  const { extra, ...singleUrls } = product.urls
+  // urls.news is launch-watch's input (a launch-announcement index, not claims material) and
+  // stays out of the ordinary crawl: extraction's sourceKey contract is exactly
+  // site|docs|changelog|github|extra-N, so a crawled news.md would invite citations no
+  // extraction can validly carry (and isFullyCrawlExcluded likewise ignores it).
+  const { extra, news: _news, ...singleUrls } = product.urls
   const sources: [string, string][] = [
     ...(Object.entries(singleUrls) as [string, string][]),
     ...(extra ?? []).map((url, i): [string, string] => [`extra-${i}`, url]),

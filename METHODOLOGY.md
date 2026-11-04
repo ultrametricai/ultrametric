@@ -290,7 +290,11 @@ has measurable re-roll variance (~9% of cells can change verdict or quality on a
 no relevant evidence change). To keep rankings evidence-driven rather than noise-driven, large
 re-judge waves are reviewed against the prior state and pure churn is reverted under audited
 rules: applicability (`na`↔`none`) never flips without new evidence, verdicts that cite nothing
-new don't move close races, and negative mechanical probe results only affect the story axis
+new don't move close races while their prior support is unchanged. If previously cited
+content changes or disappears, a verified current-input judgment may lower full/partial
+credit toward none without raising quality. Uncited none is untested; source loss does not
+prove a failed capability. Upgrades and applicability changes still require new evidence.
+Negative mechanical probe results only affect the story axis
 they actually test. Every revert is recorded in the commit that applies it. A future prompt
 version will pass the prior verdict as an anchor to reduce this variance at the source.
 
@@ -309,12 +313,14 @@ migration itself). Two behavioral shifts to know when comparing to pre-migration
 and the concrete-contradiction bar more literally), and scores shifted up a few points
 fleet-wide — a judge-scale change, not a capability change.
 
-## Score intervals — the ± band on every Overall score
+## Score intervals — the point-containing ± interval on every Overall score
 
-Every Overall score carries a **68% confidence band** ("42 ±3 /100" on product pages; the exact
-low–high band in the score badge's tooltip, including on the homepage mega-table). The band
-states how much the published number could move under the judge noise we have actually
-**measured** — it is *analytic v1*: computed from existing data with **no new judging**.
+Every Overall score carries a **point-containing uncertainty interval** ("42 ±3 /100" on product
+pages; the exact low–high bounds in the score badge's tooltip, including on the homepage mega-table).
+It starts with a nominal 68% sampled band, then expands only when needed to include the published
+point estimate. The interval states how much the published number could move under the judge noise
+we have actually **measured** — it is *analytic v1*: computed from existing data with **no new
+judging**.
 
 How it's built (`rankings-engine/scripts/compute-confidence-intervals.ts`, math in
 `lib/scoreIntervals.ts`):
@@ -335,16 +341,21 @@ How it's built (`rankings-engine/scripts/compute-confidence-intervals.ts`, math 
   policy-stable and modeling it as noise would overstate the band.
 - **Propagation is exact.** Each of 500 Monte Carlo draws per product resamples every relevant
   cell and recomputes the score through the *same* `weightedPercent` + `computeAiEra` code that
-  produces the published number (roundings included). The band is the 16th–84th percentile of
-  the resulting distribution; agent-readiness gets its own band the same way. The PRNG is
-  seeded (mulberry32, keyed per product) — builds are byte-reproducible, no `Math.random`.
+  produces the published number (roundings included). The nominal sampled band is the 16th–84th
+  percentile of the resulting distribution. The reported bounds are the envelope of that band and
+  the published point: `low = min(p16, point)` and `high = max(p84, point)`. Agent-readiness gets
+  its own interval the same way. This guarantees the displayed point is inside its interval, so
+  the reported interval can be wider than the nominal 68% band. The PRNG is seeded (mulberry32,
+  keyed per product) — builds are byte-reproducible, no `Math.random`.
 
 Results land in `open-rankings/{category}/score-intervals.json` (committed, re-run post-derive by the
-story-runner). Display is tolerant-optional (`lib/scoreIntervals.ts`): no interval data ⇒ no
-band is ever rendered — never a fabricated one. Fleet-wide as of the first pass the median band
-width is ~4.5 Overall score points.
+story-runner). Because the measured noise model is fleet-wide, even a category-triggered refresh
+rewrites every populated arena's interval file; this prevents a shared-model change from leaving
+the rest of the fleet stale. Display is tolerant-optional (`lib/scoreIntervals.ts`): no interval data ⇒ no
+interval is ever rendered — never a fabricated one. Fleet-wide as of the first pass the median
+interval width is ~4.5 Overall score points.
 
-**What the band is not (yet):** it reflects propagated judge-*sampling* noise plus
+**What the interval is not (yet):** it reflects propagated judge-*sampling* noise plus
 untested-cell ignorance, **not** model-family disagreement — the same evidence judged by a
 non-Anthropic model could move scores in ways this band doesn't capture. Adding a second judge
 model and folding cross-model disagreement into the interval is listed as future work.

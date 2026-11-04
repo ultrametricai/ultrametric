@@ -10,7 +10,7 @@ const { values } = parseArgs({ options: { output: { type: 'string' }, lock: { ty
 if (!values.output || !values.lock) throw new Error('Use --output <catalog.json> --lock <candidate.lock>')
 const processes = loadProcessCatalog(values.process ? { processes: values.process } : undefined).processes.map(process => ({ ...process, record: recordForInstructions(process.record) }))
 if (!processes.length) throw new Error('The candidate catalog is empty')
-const paths = [...(values.process ? [] : ['open-processes/catalog.json']), 'lib/shared-processes/catalog.ts', 'lib/shared-processes/schema.ts', 'lib/shared-processes/json-schema.ts', 'lib/shared-processes/instructions.ts', 'scripts/shared-processes/export-candidate.ts', 'schemas/shared-process.schema.json',
+const paths = [...(values.process ? [] : ['open-processes/catalog.json']), 'lib/execution.ts', 'lib/shared-processes/catalog.ts', 'lib/shared-processes/schema.ts', 'lib/shared-processes/json-schema.ts', 'lib/shared-processes/instructions.ts', 'scripts/shared-processes/export-candidate.ts', 'schemas/shared-process.schema.json',
   ...processes.map(process => `open-processes/${process.slug}.json`)]
 if (execFileSync('git', ['status', '--porcelain', '--', ...paths], { encoding: 'utf8' }).trim()) {
   throw new Error('Commit candidate source before exporting')

@@ -6,17 +6,29 @@
 
 Founder authorization (2026-10-13) replaced per-candidate checkbox approval with the
 criteria below. A radar candidate (a product surfaced by `rankings-engine/scripts/vendor-radar.ts`
-in a `vendor-radar: candidates` issue) is auto-approved for bring-up when all five hold:
+in a dated scan report and on its scan PR) is auto-approved for bring-up when all five hold:
 
 1. **Existing ranking fit** — the product clearly belongs in one existing arena
-   (`open-rankings/<arena>/`). Creating a new ranking requires a human decision.
+   (`open-rankings/<arena>/`). When a product submission passes the mechanical criteria
+   below but fits no live arena, and the arena it requires is on the roadmap
+   (`open-rankings/arena-roadmap.json`) or has an evident peer set, the agent creates
+   the arena and rosters the triage-passing peers as part of handling the submission
+   (maintainer decision 2026-10-23, issue #436). The maintainers retain veto through
+   review of the arena PR. A submission that fits no live arena and names no coherent
+   peer set goes to a human.
 2. **Public docs surface** — a reachable documentation site, API reference, or, for an
    open-source product, a substantive README (installation and usage written for users,
    not a link collection).
 3. **Shipped product** — the product is usable today: an install path, a working
    application, or a signup that grants access. Waitlist and coming-soon pages, demo or
    course repositories, link lists, and placeholder repos without working substance fail
-   this criterion.
+   this criterion. Anomalous popularity routes to human review instead of auto-approval:
+   a repo gaining stars above the sustained anomaly floor at any age, and (founder
+   decision 2026-10-23, issue #378) a repo younger than 60 days whose sustained rate
+   reaches 100 stars/day or whose stars exceed 20× its contributor count. When the
+   contributor count is unavailable the ratio check is skipped (fail-open); a missing
+   signal never blocks a candidate. Thresholds are the named `STARS_PER_DAY_ANOMALY`
+   and `YOUNG_REPO_*` constants in `rankings-engine/scripts/radar-triage.ts`.
 4. **No founder affiliation** — products affiliated with the founders always get human
    review, disclosure, and a bias audit (house rules, evidence doctrine); they are never
    auto-approved.
@@ -25,12 +37,17 @@ in a `vendor-radar: candidates` issue) is auto-approved for bring-up when all fi
    the surface and a one-line evidence note in its disposition; a candidate without one
    is skipped with the reason recorded.
 
-A candidate failing any criterion is recorded on the radar issue as skipped, with the
-failing criterion and the evidence (URL fetched, HTTP status, what the page showed).
+A candidate failing any criterion is recorded in the committed triage report and on the
+scan PR body as skipped, with the failing criterion and the evidence (URL fetched, HTTP
+status, what the page showed). Needs-human dispositions additionally file a
+`founder-call`-labeled issue.
 Bring-up of an auto-approved candidate still runs the standard scoped engine run
 (`docs/VENDOR-RADAR.md`); auto-approval replaces only the checkbox, not the evidence
-chain. New-ranking creation and founder-affiliated products require a human in every
-case.
+chain. New-ranking creation outside the submission path in criterion 1 and
+founder-affiliated products require a human in every case. A vendor self-submission
+is not founder affiliation, but it carries its own disclosure on the product entry
+and the same bias audit as every peer; nothing favorable ships that the evidence
+does not establish.
 - Read jurisdiction, entity form, transaction type, worker and tax locations before matching a workflow. Ambiguous facts mean `needs_review`; no matching coverage means `unsupported`.
 - Source check current primary material before relying on a legal rule. `review_due` is not a warranty of correctness.
 - You may read, search, compare, draft, and propose. Never file a tax election, issue equity, sign a contract, move money, invite an outside party, change a cap table, or send information to a vendor without case-specific human authorization and required expert review.

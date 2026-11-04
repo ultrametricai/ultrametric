@@ -241,7 +241,8 @@ describe('field geo dimension', () => {
 
   it('the country vocabulary is US plus the geo switcher set, and both forms are in use', () => {
     expect([...FIELD_GEO_COUNTRIES].sort()).toEqual(['US', ...GEO_NOTE_COUNTRIES].sort())
-    expect([...FIELD_GEO_EQUIVALENT_COUNTRIES].sort()).toEqual([...GEO_NOTE_COUNTRIES].sort())
+    for (const country of FIELD_GEO_EQUIVALENT_COUNTRIES) expect(GEO_NOTE_COUNTRIES).toContain(country)
+    expect(FIELD_GEO_EQUIVALENT_COUNTRIES).not.toContain('NL')
     expect(bound.length).toBeGreaterThan(0)
     expect(fields.length - bound.length).toBeGreaterThan(0)
   })

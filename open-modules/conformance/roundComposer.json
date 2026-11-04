@@ -1,0 +1,104 @@
+{
+  "module": "roundComposer",
+  "entrypoint": "replayPricedRound",
+  "implementation": {
+    "file": "lib/openstartup/roundComposer.ts",
+    "sha256": "7102d59d503026ff4b82d5d7e1e657a257315e1957feb03ccf5342be7be5472a"
+  },
+  "readme": "open-modules/conformance/README.md",
+  "cases": [
+    {
+      "name": "yc-appendix-ii-example-1-replay",
+      "description": "YC Appendix II Example 1 replayed stage by stage: the term sheet ($20,000,000 post, 25% to new investors), the closing (PPS $1.1144, 4,486,719 round shares, 1,695,000-share pool increase, cap conversions of 588,235 and 1,176,470, wires of $4,500,000.69 to the new investors and $499,998.96 for Investor B's 448,671-share pro rata), and the post-close table (17,946,424 fully diluted, 6,251,424 new preferred, conversion terms $1.1144 at a 1.0 ratio).",
+      "source": "YC Post-Money Safe User Guide, Feb 2023 (PDF linked from https://www.ycombinator.com/documents), Appendix II Example 1",
+      "inputs": [
+        [
+          {
+            "kind": "found",
+            "founders": [
+              {
+                "name": "Founders",
+                "shares": 9250000
+              }
+            ],
+            "poolShares": 750000
+          },
+          {
+            "kind": "grant",
+            "name": "Options outstanding",
+            "shares": 300000
+          },
+          {
+            "kind": "grant",
+            "name": "Promised options",
+            "shares": 350000
+          },
+          {
+            "kind": "safe",
+            "name": "Investor A",
+            "amount": 200000,
+            "cap": 4000000
+          },
+          {
+            "kind": "safe",
+            "name": "Investor B",
+            "amount": 800000,
+            "cap": 8000000,
+            "proRata": true
+          }
+        ],
+        {
+          "name": "Series A",
+          "preMoney": 15000000,
+          "newMoney": 5000000,
+          "poolShares": 1695000
+        }
+      ],
+      "expected": {
+        "termSheet": {
+          "postMoney": 20000000,
+          "newInvestorsPct": 25
+        },
+        "closing": {
+          "round": {
+            "pps": 1.1144,
+            "roundShares": 4486719,
+            "poolIncreaseShares": 1695000
+          },
+          "conversions": [
+            {
+              "safeName": "Investor A",
+              "shares": 588235,
+              "method": "cap"
+            },
+            {
+              "safeName": "Investor B",
+              "shares": 1176470,
+              "method": "cap",
+              "proRataShares": 448671
+            }
+          ],
+          "wires": [
+            {
+              "holder": "Series A — new investors",
+              "shares": 4038048,
+              "dollars": 4500000.69
+            },
+            {
+              "holder": "Investor B (pro rata)",
+              "shares": 448671,
+              "dollars": 499998.96
+            }
+          ],
+          "wireTotal": 4999999.65
+        },
+        "postClose": {
+          "fullyDilutedShares": 17946424,
+          "newPreferredShares": 6251424,
+          "conversionPriceAtClose": 1.1144,
+          "conversionRatioAtClose": 1
+        }
+      }
+    }
+  ]
+}

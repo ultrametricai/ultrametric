@@ -27,6 +27,21 @@ export interface AuthorityCitation {
   checked_on: string
   jurisdiction: string
   note: string
+  /** Language of the primary source (two-letter code, e.g. 'ko'); absent means English. */
+  lang?: string
+  /**
+   * Official-translation pointer rendered beside a non-English primary locator (e.g. the
+   * KLRI English translation of a Korean statute). The primary url/locator stay
+   * authoritative; only `url` is required, and a missing `lang` means English.
+   */
+  translation?: {
+    url: string
+    lang?: string
+    publisher?: string
+    publisher_short?: string
+    title?: string
+    checked_on?: string
+  }
 }
 
 export interface AuthorityCitationRegistry {

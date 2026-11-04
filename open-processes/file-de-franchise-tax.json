@@ -38,7 +38,21 @@
       "metadata": {
         "route": "agent",
         "reversibility": "reversible",
-        "estimatedMinutes": 5
+        "estimatedMinutes": 5,
+        "execution": {
+          "category": "agent-native",
+          "basis": "local-work",
+          "rationale": "Compute the Delaware franchise-tax comparison from supplied capitalization and asset inputs with the repository module.",
+          "evidence": [
+            "open-processes/file-de-franchise-tax.json#/parts/0/guidance",
+            "lib/openstartup/deFranchiseTax.ts",
+            "open-modules/registry.json"
+          ],
+          "reviewRequired": false,
+          "automationEvidence": {
+            "status": "documented"
+          }
+        }
       }
     },
     {
@@ -62,7 +76,19 @@
       "metadata": {
         "route": "agent",
         "reversibility": "reversible",
-        "estimatedMinutes": 2
+        "estimatedMinutes": 2,
+        "execution": {
+          "category": "agent-native",
+          "basis": "local-work",
+          "rationale": "Assemble and cross-check officer, director and address facts from company records before certification.",
+          "evidence": [
+            "open-processes/file-de-franchise-tax.json#/parts/1/guidance"
+          ],
+          "reviewRequired": false,
+          "automationEvidence": {
+            "status": "documented"
+          }
+        }
       }
     },
     {
@@ -104,6 +130,19 @@
         "verify": {
           "how": "The Delaware portal returns a filing confirmation and the annual report shows filed for the tax year.",
           "url": "https://icis.corp.delaware.gov/ecorp/logintax.aspx"
+        },
+        "execution": {
+          "category": "agent-computer-use",
+          "basis": "browser-evidence",
+          "rationale": "Delaware's annual-report service supports report entry, tax comparison and submission under the authorized filing route.",
+          "evidence": [
+            "open-processes/file-de-franchise-tax.json#/parts/2/guidance",
+            "https://corp.delaware.gov/frtax/"
+          ],
+          "reviewRequired": false,
+          "automationEvidence": {
+            "status": "documented"
+          }
         }
       }
     },
@@ -153,6 +192,19 @@
           "source": "https://corp.delaware.gov/frtax/",
           "asOf": "2026-10-01",
           "note": "Minimum: $175 minimum franchise tax (authorized-shares method) plus the $50 annual report filing fee; the assumed-par-value method minimum is $400 plus the $50 fee. Scales with authorized shares."
+        },
+        "execution": {
+          "category": "agent-computer-use",
+          "basis": "browser-evidence",
+          "rationale": "Delaware's documented tax-payment service submits the approved entity/year payment and provides its receipt.",
+          "evidence": [
+            "open-processes/file-de-franchise-tax.json#/parts/3/guidance",
+            "https://corp.delaware.gov/frtax/"
+          ],
+          "reviewRequired": false,
+          "automationEvidence": {
+            "status": "documented"
+          }
         }
       }
     },
@@ -183,7 +235,20 @@
         "route": "agent",
         "reversibility": "reversible",
         "estimatedMinutes": 1,
-        "supporting": true
+        "supporting": true,
+        "execution": {
+          "category": "agent-native",
+          "basis": "documented-interface",
+          "rationale": "Google Drive file operations retain the annual report, calculation and payment evidence by entity and year.",
+          "evidence": [
+            "open-processes/file-de-franchise-tax.json#/parts/4/guidance",
+            "https://developers.google.com/workspace/drive/api/guides/manage-uploads"
+          ],
+          "reviewRequired": false,
+          "automationEvidence": {
+            "status": "documented"
+          }
+        }
       }
     },
     {
@@ -196,6 +261,11 @@
       "options": [],
       "notes": [],
       "references": [
+        {
+          "kind": "vendor",
+          "id": "ca_ftb",
+          "role": "stated-vendor"
+        },
         {
           "kind": "url",
           "url": "https://www.ftb.ca.gov/file/business/types/corporations/c-corporations.html",
@@ -218,7 +288,74 @@
           "CA"
         ],
         "riskLevel": "high",
-        "estimatedMinutes": 15
+        "estimatedMinutes": 15,
+        "execution": {
+          "category": "human-online",
+          "basis": "human-work",
+          "rationale": "The authorized tax payer reviews the applicable FTB payment instructions and completes the approved payment through the agency or bank interface.",
+          "evidence": [
+            "open-processes/file-de-franchise-tax.json#/parts/5/guidance",
+            "open-processes/file-de-franchise-tax.json#/parts/5"
+          ],
+          "reviewRequired": true,
+          "automationEvidence": {
+            "status": "unverified"
+          }
+        }
+      }
+    },
+    {
+      "id": "jtx1",
+      "kind": "step",
+      "title": "File the Texas franchise tax report (May 15)",
+      "guidance": "Texas has no corporate income tax, but every taxable entity formed or doing business there files the annual franchise (margin) tax report, due May 15; entities at or below the no-tax-due threshold still file the Public Information Report or Ownership Report (law rule us-tx.franchise-tax-report). Reconcile the margin computation with the tax adviser, file through the Comptroller's Webfile, and clear any forfeiture notices — forfeiture suspends the entity's right to sue. Keep the filed report and payment evidence with the tax records.",
+      "when": null,
+      "ref": null,
+      "options": [],
+      "notes": [],
+      "references": [
+        {
+          "kind": "vendor",
+          "id": "tx_comptroller",
+          "role": "stated-vendor"
+        },
+        {
+          "kind": "url",
+          "url": "https://comptroller.texas.gov/taxes/franchise/",
+          "role": "legacy-action-link",
+          "title": "TX Comptroller — franchise tax",
+          "description": null
+        },
+        {
+          "kind": "url",
+          "url": "https://comptroller.texas.gov/taxes/franchise/",
+          "title": "Texas Comptroller franchise tax guidance",
+          "description": null,
+          "role": "authored-guidance-source"
+        }
+      ],
+      "metadata": {
+        "route": "form",
+        "reversibility": "painful",
+        "jurisdictions": [
+          "US-TX"
+        ],
+        "riskLevel": "medium",
+        "estimatedMinutes": 20,
+        "execution": {
+          "category": "agent-computer-use",
+          "basis": "browser-evidence",
+          "rationale": "The authored method prepares the report with the tax adviser, files through Webfile and checks account status. Texas documents Webfile reporting and electronic payment; required TEXNET payments use the separate state service. The adviser’s review and payment authorization remain required.",
+          "evidence": [
+            "open-processes/file-de-franchise-tax.json#/parts/6/guidance",
+            "https://comptroller.texas.gov/taxes/franchise/filing-requirements.php",
+            "https://comptroller.texas.gov/taxes/franchise/"
+          ],
+          "reviewRequired": false,
+          "automationEvidence": {
+            "status": "documented"
+          }
+        }
       }
     }
   ],
@@ -344,6 +481,48 @@
         "summary": "No franchise tax; the analog is the Corporations Canada annual return — a small online filing due within 60 days of the incorporation anniversary (it is not a tax return), and missing it can lead to administrative dissolution.",
         "actionUrl": "https://ised-isde.canada.ca/site/corporations-canada/en/keep-your-corporation-good-shape/annual-return",
         "actionLabel": "Corporations Canada — annual return"
+      },
+      {
+        "country": "NZ",
+        "kind": "analog",
+        "summary": "No franchise tax exists; the closest keep-the-company-in-good-standing ritual is the Companies Office annual return in your allocated filing month ($49.74 plus GST), confirming the register details — not a financial filing.",
+        "actionUrl": "https://companies-register.companiesoffice.govt.nz/help-centre/company-annual-returns/completing-an-annual-return/",
+        "actionLabel": "Complete your annual return — Companies Register"
+      },
+      {
+        "country": "SG",
+        "kind": "analog",
+        "summary": "No franchise tax: the keep-the-company-in-good-standing ritual is the ACRA annual return, due within 7 months after the financial year end (law rule sg.annual-return-deadline), filed through Bizfile.",
+        "actionUrl": "https://www.acra.gov.sg/manage/companies/legal-requirements-common-offences/filing-annual-returns-companies/deadline-requirements/",
+        "actionLabel": "ACRA — annual return deadlines"
+      },
+      {
+        "country": "AU",
+        "kind": "analog",
+        "summary": "The analog ritual is the ASIC annual review: ASIC issues an annual statement at the review date (the registration anniversary), the annual review fee falls due, and the directors pass a solvency resolution within 2 months (law rule au.annual-review-solvency-resolution).",
+        "actionUrl": "https://asic.gov.au/for-business/running-a-company/annual-statements/",
+        "actionLabel": "ASIC annual review"
+      },
+      {
+        "country": "KR",
+        "kind": "not-applicable",
+        "summary": "No franchise-tax ritual exists; the nearest recurring local obligation is the corporate resident tax (주민세) filed with the municipality through WeTax.",
+        "actionUrl": "https://www.wetax.go.kr/",
+        "actionLabel": "WeTax (local taxes)"
+      },
+      {
+        "country": "HK",
+        "kind": "analog",
+        "summary": "No franchise tax exists: the keep-the-company-current rituals are the NAR1 annual return within 42 days after the incorporation anniversary (law rule hk.annual-return-deadline) and the business registration certificate renewal with the Inland Revenue Department.",
+        "actionUrl": "https://www.cr.gov.hk/en/compliance/annual-return/private-company.htm",
+        "actionLabel": "Companies Registry — annual return (private company)"
+      },
+      {
+        "country": "EE",
+        "kind": "not-applicable",
+        "summary": "No franchise tax exists: there is no annual state fee for staying incorporated. The recurring commercial-register obligation is the annual report, due six months after the financial year ends (law rule ee.annual-report-deadline).",
+        "actionUrl": "https://ariregister.rik.ee/eng",
+        "actionLabel": "e-Business Register"
       }
     ],
     "slugAliases": [
@@ -366,7 +545,8 @@
   "entrySteps": [
     "n1",
     "n2",
-    "jca1"
+    "jca1",
+    "jtx1"
   ],
   "aliases": [
     "file-de-annual-report"

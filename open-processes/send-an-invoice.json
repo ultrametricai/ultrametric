@@ -26,7 +26,21 @@
       "metadata": {
         "route": "agent",
         "reversibility": "reversible",
-        "estimatedMinutes": 2
+        "estimatedMinutes": 2,
+        "execution": {
+          "category": "agent-native",
+          "basis": "documented-interface",
+          "rationale": "Stripe customer listing supports the existing-record check, and customer creation records the verified billing details when no matching customer exists.",
+          "evidence": [
+            "open-processes/send-an-invoice.json#/parts/0/guidance",
+            "https://docs.stripe.com/api/customers/create",
+            "https://docs.stripe.com/api/customers/list"
+          ],
+          "reviewRequired": false,
+          "automationEvidence": {
+            "status": "documented"
+          }
+        }
       }
     },
     {
@@ -56,7 +70,21 @@
             "reversibility": "reversible",
             "approvalRequired": true,
             "riskLevel": "medium",
-            "estimatedMinutes": 3
+            "estimatedMinutes": 3,
+            "execution": {
+              "category": "agent-native",
+              "basis": "documented-interface",
+              "rationale": "Stripe's invoice and invoice-item APIs support the reviewed line items and terms as a draft invoice.",
+              "evidence": [
+                "open-processes/send-an-invoice.json#/parts/1/options/0/summary",
+                "https://docs.stripe.com/api/invoiceitems/create",
+                "https://docs.stripe.com/api/invoices/create"
+              ],
+              "reviewRequired": false,
+              "automationEvidence": {
+                "status": "documented"
+              }
+            }
           }
         },
         {
@@ -89,6 +117,19 @@
               "countries": [
                 "IN"
               ]
+            },
+            "execution": {
+              "category": "human-online",
+              "basis": "human-work",
+              "rationale": "The authorized billing operator submits the invoice through the selected e-invoice service and checks the returned IRN, signed data and QR information.",
+              "evidence": [
+                "open-processes/send-an-invoice.json#/parts/1/options/1/summary",
+                "open-processes/send-an-invoice.json#/parts/1/options/1"
+              ],
+              "reviewRequired": true,
+              "automationEvidence": {
+                "status": "unverified"
+              }
             }
           }
         },
@@ -121,6 +162,18 @@
               "countries": [
                 "UK"
               ]
+            },
+            "execution": {
+              "category": "agent-native",
+              "basis": "local-work",
+              "rationale": "Prepare the UK invoice from supplied transaction facts and the tax owner's settled treatment for issuance review.",
+              "evidence": [
+                "open-processes/send-an-invoice.json#/parts/1/options/2/summary"
+              ],
+              "reviewRequired": false,
+              "automationEvidence": {
+                "status": "documented"
+              }
             }
           }
         },
@@ -146,6 +199,19 @@
               "countries": [
                 "DE"
               ]
+            },
+            "execution": {
+              "category": "human-online",
+              "basis": "human-work",
+              "rationale": "The billing operator prepares and validates the required digital invoice format and issues it through the supported customer delivery channel.",
+              "evidence": [
+                "open-processes/send-an-invoice.json#/parts/1/options/3/summary",
+                "open-processes/send-an-invoice.json#/parts/1/options/3"
+              ],
+              "reviewRequired": true,
+              "automationEvidence": {
+                "status": "unverified"
+              }
             }
           }
         },
@@ -178,6 +244,19 @@
               "countries": [
                 "FR"
               ]
+            },
+            "execution": {
+              "category": "human-online",
+              "basis": "human-work",
+              "rationale": "The billing operator uses the applicable digital invoicing platform and checks required invoice content, acknowledgements and correction handling.",
+              "evidence": [
+                "open-processes/send-an-invoice.json#/parts/1/options/4/summary",
+                "open-processes/send-an-invoice.json#/parts/1/options/4"
+              ],
+              "reviewRequired": true,
+              "automationEvidence": {
+                "status": "unverified"
+              }
             }
           }
         }
@@ -207,7 +286,21 @@
         "reversibility": "reversible",
         "approvalRequired": true,
         "riskLevel": "medium",
-        "estimatedMinutes": 1
+        "estimatedMinutes": 1,
+        "execution": {
+          "category": "human-online",
+          "basis": "human-work",
+          "rationale": "The billing operator delivers the invoice and required attachments through the customer-facing billing interface and verifies the delivery status.",
+          "evidence": [
+            "open-processes/send-an-invoice.json#/parts/2/guidance",
+            "https://docs.stripe.com/get-started/use-cases/invoices",
+            "open-processes/send-an-invoice.json#/parts/2"
+          ],
+          "reviewRequired": true,
+          "automationEvidence": {
+            "status": "unverified"
+          }
+        }
       }
     },
     {
@@ -229,7 +322,20 @@
       "metadata": {
         "route": "agent",
         "reversibility": "reversible",
-        "estimatedMinutes": 1
+        "estimatedMinutes": 1,
+        "execution": {
+          "category": "agent-computer-use",
+          "basis": "browser-evidence",
+          "rationale": "Stripe's invoice dashboard exposes paid, open and past-due balances and customer details for reconciliation and collection follow-up.",
+          "evidence": [
+            "open-processes/send-an-invoice.json#/parts/3/guidance",
+            "https://docs.stripe.com/get-started/use-cases/invoices"
+          ],
+          "reviewRequired": false,
+          "automationEvidence": {
+            "status": "documented"
+          }
+        }
       }
     }
   ],
@@ -296,6 +402,34 @@
         "summary": "French invoices carry a long list of mentions obligatoires (SIREN, RCS, per-line detail, late-payment penalty terms…), and mandatory B2B e-invoicing via accredited platforms (PDP) phases in from September 2026 — receiving first, issuing by 2027.",
         "actionUrl": "https://entreprendre.service-public.fr/vosdroits/F31808",
         "actionLabel": "Mentions obligatoires sur une facture"
+      },
+      {
+        "country": "SG",
+        "kind": "analog",
+        "summary": "Once GST-registered, invoices must be proper tax invoices with the prescribed particulars — and GST-registered businesses are being phased onto InvoiceNow (Peppol) e-invoicing, so pick software that speaks it.",
+        "actionUrl": "https://www.iras.gov.sg/taxes/goods-services-tax-(gst)/basics-of-gst/invoicing-price-display-and-record-keeping/invoicing-customers",
+        "actionLabel": "IRAS — invoicing customers"
+      },
+      {
+        "country": "KR",
+        "kind": "analog",
+        "summary": "B2B invoicing runs on the electronic tax invoice (전자세금계산서) issued through Hometax, which doubles as the VAT paper trail.",
+        "actionUrl": "https://www.hometax.go.kr/",
+        "actionLabel": "Hometax (NTS e-filing)"
+      },
+      {
+        "country": "HK",
+        "kind": "analog",
+        "summary": "Invoices carry no tax line: Hong Kong has no sales tax, GST or VAT, so an invoice is a commercial document rather than a tax artifact — keep the business records the Inland Revenue Ordinance requires for 7 years and pick software accordingly.",
+        "actionUrl": "https://www.gov.hk/en/business/taxes/",
+        "actionLabel": "GovHK — business taxes"
+      },
+      {
+        "country": "EE",
+        "kind": "analog",
+        "summary": "Invoices follow the Accounting Act's source-document rules, and since July 2025 a buyer registered as an e-invoice recipient in the commercial register can require a machine-readable e-invoice to the European standard (Accounting Act § 7¹).",
+        "actionUrl": "https://ariregister.rik.ee/eng",
+        "actionLabel": "e-Business Register"
       }
     ],
     "complexity": "simple",
@@ -343,6 +477,65 @@
     "n1"
   ],
   "aliases": [
-    "send-stripe-invoice"
+    "send-stripe-invoice",
+    "send-an-invoice",
+    "send-an-invoice-in-united-states-us",
+    "send-an-invoice-in-united-kingdom-uk",
+    "send-an-invoice-in-india-in",
+    "send-an-invoice-in-germany-de",
+    "send-an-invoice-in-france-fr",
+    "send-an-invoice-in-singapore-sg",
+    "send-an-invoice-in-south-korea-kr",
+    "send-an-invoice-in-hong-kong-hk",
+    "send-an-invoice-in-estonia-ee"
+  ],
+  "globalSlug": "send-an-invoice",
+  "countryViews": [
+    {
+      "country": "US",
+      "title": "Send an invoice in United States",
+      "slug": "send-an-invoice-in-united-states-us",
+      "summary": "Create and send an invoice to a customer for services rendered. Stripe is the canonical route; any payments provider with invoicing works."
+    },
+    {
+      "country": "UK",
+      "title": "Send an invoice in United Kingdom",
+      "slug": "send-an-invoice-in-united-kingdom-uk"
+    },
+    {
+      "country": "IN",
+      "title": "Send an invoice in India",
+      "slug": "send-an-invoice-in-india-in"
+    },
+    {
+      "country": "DE",
+      "title": "Send an invoice in Germany",
+      "slug": "send-an-invoice-in-germany-de"
+    },
+    {
+      "country": "FR",
+      "title": "Send an invoice in France",
+      "slug": "send-an-invoice-in-france-fr"
+    },
+    {
+      "country": "SG",
+      "title": "Send an invoice in Singapore",
+      "slug": "send-an-invoice-in-singapore-sg"
+    },
+    {
+      "country": "KR",
+      "title": "Send an invoice in South Korea",
+      "slug": "send-an-invoice-in-south-korea-kr"
+    },
+    {
+      "country": "HK",
+      "title": "Send an invoice in Hong Kong",
+      "slug": "send-an-invoice-in-hong-kong-hk"
+    },
+    {
+      "country": "EE",
+      "title": "Send an invoice in Estonia",
+      "slug": "send-an-invoice-in-estonia-ee"
+    }
   ]
 }

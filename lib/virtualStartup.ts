@@ -30,17 +30,38 @@ import type { Cadence, SimStep } from './processSim'
 
 // Country-aware entity options (founder round 5, item 1). Codec rule: 'c-corp'/'llc' keep their
 // original indices 0/1; every non-US entity value is APPENDED so old digit permalinks replay
-// unchanged. HONESTY: the step corpus is US-shaped — a non-US entity keeps the EXACT corpus
+// unchanged ('nz-ltd' through 'kr-chusik-hoesa' are the 11th-14th slots — the combo codec
+// writes option indices past 9 in base 36, so they encode as 'a' through 'd'; see
+// lib/virtualStartupRun.ts and ENTITY_CODEC_SLOTS below for the coordinated slots of the
+// 2026-10-23 country runs). HONESTY: the step corpus is
+// US-shaped — a non-US entity keeps the EXACT corpus
 // incorporation composition of the C-Corp path (never a fake corpus branch) and frames it with
 // the committed geoNotes country analog (terminal line + entity label).
 export type EntityChoice =
   | 'c-corp' | 'llc' | 'ltd' | 'gmbh' | 'ug' | 'sas' | 'sarl' | 'pvt-ltd' | 'lda' | 'ca-corp'
+  | 'nz-ltd' | 'pte-ltd'
+  | 'pty-ltd' | 'kr-chusik-hoesa' | 'hk-private-limited'
+  | 'ee-osauhing'
+
+// The entity decision's permalink slots, EXPLICIT rather than options-array positions since the
+// parallel country lanes of 2026-10-23: two lanes appending at once would race for the same
+// base-36 char, so the maintainer assigns slots up front and the codec reads this table for the
+// entity decision only (lib/virtualStartupRun.ts). Slots 0-13 are the shipped history and stay
+// byte-identical to the old findIndex behavior; slot 14 ('e') is Hong Kong (landed from the
+// parallel lane of the same runs); Estonia holds slot
+// 15 ('f'). Append-only, like DECISIONS: a slot, once published, is an immutable permalink fact.
+export const ENTITY_CODEC_SLOTS: Record<EntityChoice, number> = {
+  'c-corp': 0, 'llc': 1, 'ltd': 2, 'gmbh': 3, 'ug': 4, 'sas': 5, 'sarl': 6, 'pvt-ltd': 7,
+  'lda': 8, 'ca-corp': 9, 'nz-ltd': 10, 'pte-ltd': 11, 'pty-ltd': 12, 'kr-chusik-hoesa': 13,
+  'hk-private-limited': 14,
+  'ee-osauhing': 15,
+}
 export type FundingChoice = 'bootstrap' | 'seed'
 // Business models (founder round 5, item 2). Codec rule: 'subscriptions'/'invoices' keep indices
 // 0/1; 'marketplace'/'usage'/'ecommerce' append. Only compositions the corpus honestly supports:
 // usage runs the SAME subscription-billing task (usage is a billing mode — venue-noted);
 // marketplace and e-commerce run the get-paid spine (processor + first close) with the model
-// named — no take-rate or storefront corpus steps exist, so none are invented.
+// named. Dedicated marketplace and storefront guides are available outside this simulation.
 export type ProductChoice = 'subscriptions' | 'invoices' | 'marketplace' | 'usage' | 'ecommerce'
 export type TeamChoice = 'solo' | 'cofounders'
 // Founder iteration 2026-09-25 — five more corpus-real branches:
@@ -224,12 +245,36 @@ export const ENTITY_META: Record<EntityChoice, EntityMeta> = {
     label: 'Federal corporation (CBCA)', suffix: ' Inc.', country: 'CA',
     filing: { label: 'Certificate of Incorporation', register: 'Corporations Canada no. 0000000 (placeholder)' },
   },
+  'nz-ltd': {
+    label: 'NZ limited company', suffix: ' Limited', country: 'NZ',
+    filing: { label: 'Certificate of Incorporation', register: 'NZ Companies Office no. 0000000 (placeholder)' },
+  },
+  'pte-ltd': {
+    label: 'Pte Ltd', suffix: ' Pte. Ltd.', country: 'SG',
+    filing: { label: 'Notice of Incorporation', register: 'ACRA UEN 000000000X (placeholder)' },
+  },
+  'pty-ltd': {
+    label: 'Pty Ltd', suffix: ' Pty Ltd', country: 'AU',
+    filing: { label: 'Certificate of Registration', register: 'ASIC ACN 000 000 000 (placeholder)' },
+  },
+  'kr-chusik-hoesa': {
+    label: 'Chusik hoesa (주식회사)', suffix: ' Co., Ltd.', country: 'KR',
+    filing: { label: 'Incorporation registration', register: 'Corporate registry no. 000000-0000000 (placeholder)' },
+  },
+  'hk-private-limited': {
+    label: 'Private company limited by shares', suffix: ' Limited', country: 'HK',
+    filing: { label: 'Certificate of Incorporation', register: 'Companies Registry no. 0000000 (placeholder)' },
+  },
+  'ee-osauhing': {
+    label: 'Osaühing (OÜ)', suffix: ' OÜ', country: 'EE',
+    filing: { label: 'Commercial register entry', register: 'Registry code 00000000 (placeholder)' },
+  },
 }
 
 // The Entity dropdown's roster follows the geo selection; the FIRST option per country is the
 // country's default-asserted value (a geo switch with an incompatible asserted entity resets to
 // it — the component owns that rule).
-export const ENTITY_OPTIONS_BY_COUNTRY: Record<GeoCountry, EntityChoice[]> = {
+export const ENTITY_OPTIONS_BY_COUNTRY: Partial<Record<GeoCountry, EntityChoice[]>> = {
   US: ['c-corp', 'llc'],
   UK: ['ltd'],
   DE: ['gmbh', 'ug'],
@@ -237,10 +282,18 @@ export const ENTITY_OPTIONS_BY_COUNTRY: Record<GeoCountry, EntityChoice[]> = {
   IN: ['pvt-ltd'],
   PT: ['lda'],
   CA: ['ca-corp'],
+  NZ: ['nz-ltd'],
+  SG: ['pte-ltd'],
+  AU: ['pty-ltd'],
+  KR: ['kr-chusik-hoesa'],
+  HK: ['hk-private-limited'],
+  EE: ['ee-osauhing'],
 }
 
 export function defaultEntityFor(country: GeoCountry): EntityChoice {
-  return ENTITY_OPTIONS_BY_COUNTRY[country][0]
+  const options = ENTITY_OPTIONS_BY_COUNTRY[country]
+  if (!options?.length) throw new Error(`${country}: process guides are available, but no startup simulation entity is authored`)
+  return options[0]
 }
 
 export interface DecisionOption {
@@ -266,7 +319,7 @@ export interface DecisionDef {
 //   product    — the get-paid chain forked: growth_001 "Set up subscription billing" (SaaS and
 //                usage-based — usage is a billing mode, venue-noted) vs sales_002 "Send an
 //                invoice" (invoice-billed services); marketplace/e-commerce run the spine only
-//                (qs_021 + fin_002) — no take-rate/storefront corpus steps exist to run
+//                (qs_021 + fin_002) — dedicated marketplace/storefront guides are available separately, outside this simulation composition
 //   ordering   — name-first (classic) vs build-first: the ship-v1 chain runs before naming —
 //                pure reordering of committed chains, nothing added or dropped (the control
 //                left the panel 2026-09-30 — HIDDEN_DECISION_IDS; old links still replay it)
@@ -301,6 +354,12 @@ export const DECISIONS: DecisionDef[] = [
       { value: 'pvt-ltd', label: 'Pvt Ltd', detail: 'the same corpus incorporation composition as the C-Corp path (form_001), framed for India with the committed MCA analog — the corpus is US-shaped; no steps invented' },
       { value: 'lda', label: 'Lda', detail: 'the same corpus incorporation composition as the C-Corp path (form_001), framed for Portugal with the committed Empresa Online analog — the corpus is US-shaped; no steps invented' },
       { value: 'ca-corp', label: 'Federal corporation (CBCA)', detail: 'the same corpus incorporation composition as the C-Corp path (form_001), framed for Canada with the committed Corporations Canada analog — the corpus is US-shaped; no steps invented' },
+      { value: 'nz-ltd', label: 'NZ limited company', detail: 'the same corpus incorporation composition as the C-Corp path (form_001), framed for New Zealand with the committed Companies Office analog — the corpus is US-shaped; no steps invented' },
+      { value: 'pte-ltd', label: 'Pte Ltd', detail: 'the same corpus incorporation composition as the C-Corp path (form_001), framed for Singapore with the committed ACRA/Bizfile analog — the corpus is US-shaped; no steps invented' },
+      { value: 'pty-ltd', label: 'Pty Ltd', detail: 'the same corpus incorporation composition as the C-Corp path (form_001), framed for Australia with the committed ASIC analog — the corpus is US-shaped; no steps invented' },
+      { value: 'kr-chusik-hoesa', label: 'Chusik hoesa (주식회사)', detail: 'the same corpus incorporation composition as the C-Corp path (form_001), framed for South Korea with the committed court-registry (IROS) analog — the corpus is US-shaped; no steps invented' },
+      { value: 'hk-private-limited', label: 'Private company limited by shares', detail: 'the same corpus incorporation composition as the C-Corp path (form_001), framed for Hong Kong with the committed Companies Registry analog — the corpus is US-shaped; no steps invented' },
+      { value: 'ee-osauhing', label: 'Osaühing (OÜ)', detail: 'the same corpus incorporation composition as the C-Corp path (form_001), framed for Estonia with the committed e-Business Register analog — the corpus is US-shaped; no steps invented' },
     ],
   },
   {
@@ -328,9 +387,9 @@ export const DECISIONS: DecisionDef[] = [
     options: [
       { value: 'subscriptions', label: 'SaaS subscriptions', detail: 'turns on revenue via "Set up subscription billing" (growth_001)' },
       { value: 'invoices', label: 'Invoice-billed services', detail: 'turns on revenue via "Send an invoice" (sales_002)' },
-      { value: 'marketplace', label: 'Marketplace (take-rate)', detail: 'the same get-paid playbook spine — payment processor (qs_021) + first close (fin_002), take-rate named; the corpus has no dedicated take-rate billing steps, so neither billing fork runs and nothing is invented' },
+      { value: 'marketplace', label: 'Marketplace (take-rate)', detail: 'Simulate marketplace payments and accounting. The seller onboarding and payouts guide is available separately.' },
       { value: 'usage', label: 'Usage-based', detail: 'the same subscription-billing chain (growth_001) — usage is a billing mode, named in the journey; identical corpus steps to SaaS subscriptions' },
-      { value: 'ecommerce', label: 'E-commerce (DTC)', detail: 'the same get-paid playbook spine — checkout via the payment processor (qs_021) + first close (fin_002); the corpus has no storefront step yet, so none is invented' },
+      { value: 'ecommerce', label: 'E-commerce (DTC)', detail: 'Simulate checkout payments and accounting. The storefront launch guide is available separately.' },
     ],
   },
   {
@@ -783,9 +842,9 @@ export function journeyPhases(choices: Choices, chains: VsChain[], opts: Journey
       : choices.product === 'usage'
         ? 'usage-based — the same subscription-billing playbook (growth_001); usage is a billing mode (model named only; identical corpus steps); the invoice path (sales_002) is skipped'
         : choices.product === 'marketplace'
-          ? 'marketplace (take-rate) — the get-paid spine only: payment processor (qs_021) + first close (fin_002); the corpus has no take-rate billing steps, so neither billing fork runs'
+          ? 'marketplace (take-rate) — simulated payments and accounting; the seller onboarding and payouts guide is available separately.'
           : choices.product === 'ecommerce'
-            ? 'e-commerce (DTC) — the get-paid spine: checkout via the payment processor (qs_021) + first close (fin_002); the corpus has no storefront step yet, so none is invented'
+            ? 'e-commerce (DTC) — simulated checkout payments and accounting; the storefront launch guide is available separately.'
             : 'services — invoicing (sales_002); subscription billing (growth_001) is skipped') + icpNote,
   )
   if (choices.hire === 'yes') push('hire', 'First hire', 'first-hire')
@@ -1062,7 +1121,11 @@ const ARTIFACT_GENERATORS: Record<string, (ctx: ArtifactCtx) => Draft[]> = {
   form_011: ({ co }) => [{ label: 'Certificate of Formation', value: `${co.display} — DE file no. 0000000` }],
   // No real EIN starts 00 — the canonical impossible-real placeholder.
   form_002: () => [{ label: 'EIN', value: '00-0000000' }],
-  startup_002: () => [{ label: 'Founder equity', value: '50 / 50 split · 4-year vest, 1-year cliff' }],
+  // Two-founder equity follows the corpus guidance bound to this step (issue #437): near-equal
+  // with one extra share to one founder to prevent deadlock (open-lore/rules.json
+  // altman-one-extra-share, Altman's Startup Playbook) and 4-year/1-year-cliff vesting as the
+  // safety mechanism (open-lore/library.json seibel-how-to-split-equity).
+  startup_002: () => [{ label: 'Founder equity', value: 'near-equal split, one extra share to one founder · 4-year vest, 1-year cliff' }],
   qs_051: ({ choices }) => [{
     label: 'Cap table',
     value: `10,000,000 authorized · ${choices.team === 'cofounders' ? '2 founder holders' : '1 founder holder'}`,
@@ -1142,7 +1205,7 @@ const ARTIFACT_GENERATORS: Record<string, (ctx: ArtifactCtx) => Draft[]> = {
     choices.compliance === 'hipaa'
       ? { label: 'HIPAA readiness', value: 'controls stood up on the SOC 2-lite corpus playbook · framework named: HIPAA (no dedicated HIPAA corpus steps)' }
       : choices.compliance === 'iso'
-        ? { label: 'ISO 27001 readiness', value: 'controls stood up on the SOC 2-lite corpus playbook · framework named: ISO 27001 (no dedicated ISO corpus steps)' }
+        ? { label: 'ISO 27001 readiness', value: 'controls stood up on the SOC 2-lite corpus playbook · framework named: ISO 27001 (ISMS guide available separately; not included in this simulation)' }
         : { label: 'SOC 2 Type I', value: 'observation window opened · 0 failing controls' },
   ],
   // Lease-an-office process (2026-09-30, item 5 — the 'office' workplace branch). No rng: a
@@ -1322,6 +1385,25 @@ export interface YearTaskSource {
 // playbook's process, not something a startup's journey activates. Keys must be disjoint from
 // unionTaskIds (journey tasks stay journey-gated); tests enforce both.
 export const YEAR_SWEEP_GATES: Record<string, VsGate> = {
+  // Common recurring controls from the lifecycle expansion. These are simulated tasks;
+  // their guide-level approval and specialist requirements still apply to real execution.
+  'startup-coverage.maintain-the-compliance-obligations-calendar': { choice: null, why: 'the operating company reviews its actual obligations' },
+  'startup-coverage.manage-the-product-roadmap': { choice: null, why: 'the product team revisits priorities and capacity' },
+  'startup-coverage.review-user-access-and-privileged-accounts': { choice: null, why: 'the company reviews access to its operating systems' },
+  'startup-coverage.manage-vulnerability-remediation-and-patching': { choice: null, why: 'the software product and operating systems need vulnerability review' },
+  'startup-coverage.run-a-backup-restoration-and-disaster-recovery-drill': { choice: null, why: 'the software company tests recovery of its critical data and services' },
+  'startup-coverage.plan-business-continuity-and-alternate-operations': { choice: null, why: 'the operating company exercises its continuity arrangements' },
+  'startup-coverage.maintain-a-personal-data-inventory': { choice: null, why: 'customer and workforce data flows need owned records' },
+  'startup-coverage.implement-data-retention-and-deletion-controls': { choice: null, why: 'the company reviews the retention and disposal of its operating records' },
+  'startup-coverage.track-company-assets-and-equipment': { choice: null, why: 'the operating company reconciles custody of its equipment' },
+  'startup-coverage.protect-trade-secrets-and-confidential-know-how': { choice: null, why: 'the company reviews protection of its confidential product and business information' },
+  'startup-coverage.plan-founder-and-key-person-succession': { choice: null, why: 'founder dependency requires a continuity review' },
+  'startup-coverage.send-an-investor-update': { choice: 'funding', value: 'seed', why: 'the funded scenario has investors to update' },
+  'startup-coverage.administer-an-employee-equity-plan': { choice: 'funding', value: 'seed', why: 'the seeded scenario includes the equity plan and option pool' },
+  'startup-coverage.set-compensation-bands-and-review-pay': { choice: 'hire', value: 'yes', why: 'employee hiring activates compensation review' },
+  'startup-coverage.plan-employee-training-and-development': { choice: 'hire', value: 'yes', why: 'the employee scenario needs a development plan' },
+  'startup-coverage.run-security-awareness-training': { choice: 'hire', value: 'yes', why: 'employees complete their own security training' },
+  'startup-coverage.manage-workplace-safety-and-emergency-readiness': { choice: 'hire', value: 'yes', why: 'the employer reviews its actual workplace and remote-work hazards' },
   // Daily loops — the operating baseline once the company runs.
   opp_008: { choice: null, why: 'operating baseline — email goes out every day' },
   opp_009: { choice: null, why: 'operating baseline — tasks become tracked issues daily' },
@@ -1345,6 +1427,21 @@ export const YEAR_SWEEP_GATES: Record<string, VsGate> = {
   qs_047: { choice: null, why: 'the state annual report is due yearly' },
   fund_003: { choice: 'funding', value: 'seed', why: 'the 409A follows the raise and its option pool' },
   qs_053: { choice: 'funding', value: 'seed', why: 'the audited cap table follows the raise' },
+}
+
+// The simulator has no decision facts for these conditional workstreams. Keep them
+// explicitly outside its year instead of asserting that every startup has a grant,
+// debt agreement, audit obligation, foreign entity or physical stock.
+export const YEAR_SWEEP_EXCLUSIONS: Record<string, string> = {
+  'startup-coverage.prepare-and-file-statutory-annual-accounts': 'Statutory accounts depend on the actual reporting jurisdiction, accounting regime and filing obligations, which the simulator does not determine.',
+  vc_003: 'The startup journey does not operate a venture fund.',
+  'startup-coverage.set-up-transfer-pricing-and-intercompany-agreements': 'No related foreign-entity transaction facts in the simulator profile.',
+  'startup-coverage.monitor-debt-covenants-and-lender-reporting': 'No debt facility or covenant facts in the simulator profile.',
+  'startup-coverage.prepare-for-and-complete-an-external-financial-audit': 'No statutory or contractual audit requirement in the simulator profile.',
+  'startup-coverage.manage-cash-and-treasury-reserves': 'No treasury concentration or instrument-selection facts in the simulator profile.',
+  'startup-coverage.manage-inventory-order-fulfillment-and-returns': 'The business-model choice does not establish ownership of physical stock.',
+  'startup-coverage.prepare-and-file-sales-tax-vat-or-gst-returns': 'No specific tax registration and assigned return periods in the simulator profile.',
+  'startup-coverage.manage-grant-spending-and-reporting': 'No accepted grant agreement in the simulator profile.',
 }
 
 export interface YearCandidate extends YearTaskSource {

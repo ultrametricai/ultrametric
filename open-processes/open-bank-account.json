@@ -3,7 +3,7 @@
   "id": "qs_023",
   "kind": "process",
   "title": "Open bank account",
-  "summary": "Open a business bank account to separate personal and company finances — the first finance move for a company in any country. The US startup banks run fully-online applications with day-or-two approvals (the default flow below); the per-country rails and providers ride in the geo notes. KYC on the founders is universal; the tax ID the bank asks for is the local one (US: the EIN).",
+  "summary": "Choose a business bank account available to the company, complete the application and identity checks, provide the required formation and tax records, and connect the approved account to the books. Confirm the institution’s actual eligibility and onboarding requirements.",
   "outcomes": [],
   "guidance": null,
   "parts": [
@@ -54,7 +54,19 @@
           "metadata": {
             "route": "person",
             "reversibility": "reversible",
-            "estimatedMinutes": 10
+            "estimatedMinutes": 10,
+            "execution": {
+              "category": "agent-native",
+              "basis": "local-work",
+              "rationale": "Compare bank eligibility, operating capabilities and account terms for the company's needs.",
+              "evidence": [
+                "open-processes/open-bank-account.json#/parts/0/options/0/summary"
+              ],
+              "reviewRequired": false,
+              "automationEvidence": {
+                "status": "documented"
+              }
+            }
           }
         },
         {
@@ -89,6 +101,18 @@
                 "DE",
                 "FR"
               ]
+            },
+            "execution": {
+              "category": "agent-native",
+              "basis": "local-work",
+              "rationale": "Compare the supported currencies, balance arrangements and costs of the UK/EU account options.",
+              "evidence": [
+                "open-processes/open-bank-account.json#/parts/0/options/1/summary"
+              ],
+              "reviewRequired": false,
+              "automationEvidence": {
+                "status": "documented"
+              }
             }
           }
         }
@@ -153,7 +177,19 @@
             "actionUrl": "https://www.icicibank.com/business-banking/current-account",
             "actionLabel": "ICICI Bank — business current account"
           }
-        ]
+        ],
+        "execution": {
+          "category": "human-online",
+          "basis": "human-work",
+          "rationale": "The authorized applicant makes company and ownership attestations in the stated online bank application.",
+          "evidence": [
+            "open-processes/open-bank-account.json#/parts/1/guidance"
+          ],
+          "reviewRequired": false,
+          "automationEvidence": {
+            "status": "unverified"
+          }
+        }
       }
     },
     {
@@ -190,7 +226,21 @@
             "actionUrl": "https://wise.com/de/business/",
             "actionLabel": "Wise Business (Germany)"
           }
-        ]
+        ],
+        "execution": {
+          "category": "human-online",
+          "basis": "human-work",
+          "rationale": "Founders provide identity and formation records through the bank's secure account process and complete any personal verification requested by the bank.",
+          "evidence": [
+            "open-processes/open-bank-account.json#/parts/2/guidance",
+            "open-processes/open-bank-account.json#/parts/2/metadata/geoResolutions",
+            "open-processes/open-bank-account.json#/parts/2"
+          ],
+          "reviewRequired": true,
+          "automationEvidence": {
+            "status": "unverified"
+          }
+        }
       }
     },
     {
@@ -224,7 +274,20 @@
             "kind": "analog",
             "label": "The US startup banks approve fully-online applications in a day or two"
           }
-        ]
+        ],
+        "execution": {
+          "category": "human-online",
+          "basis": "human-work",
+          "rationale": "An authorized applicant checks the bank's application channel, answers requests and verifies account activation; the bank retains the approval decision.",
+          "evidence": [
+            "open-processes/open-bank-account.json#/parts/3/guidance",
+            "open-processes/open-bank-account.json#/parts/3"
+          ],
+          "reviewRequired": true,
+          "automationEvidence": {
+            "status": "unverified"
+          }
+        }
       }
     },
     {
@@ -249,6 +312,19 @@
         "estimatedMinutes": 3,
         "verify": {
           "how": "Transactions from the account appear in the books feed within a day."
+        },
+        "execution": {
+          "category": "agent-computer-use",
+          "basis": "browser-evidence",
+          "rationale": "Mercury documents browser authorization, account mapping and connection-status checks for its QuickBooks bank feed. The workflow checks import dates and reconciles sample transactions; this supports that documented connection, while another accounting system needs its own method check.",
+          "evidence": [
+            "open-processes/open-bank-account.json#/parts/4/guidance",
+            "https://support.mercury.com/hc/en-us/articles/28775977522068-Integrating-with-QuickBooks-Online"
+          ],
+          "reviewRequired": true,
+          "automationEvidence": {
+            "status": "documented"
+          }
         }
       }
     }
@@ -359,6 +435,34 @@
         "summary": "French companies open on the same EEA rails (Wise Europe, Airwallex Europe — both judged available) or with the Paris-native Qonto, whose onboarding is built around French formalities — a new SAS's dépôt de capital commonly happens at the same provider that becomes the operating account.",
         "actionUrl": "https://qonto.com/fr",
         "actionLabel": "Qonto (France)"
+      },
+      {
+        "country": "SG",
+        "kind": "analog",
+        "summary": "Banks onboard against the ACRA record — UEN, business profile, directors and shareholders — with resident-director KYC standard; open the account once the company registers, and expect extra diligence where founders are offshore.",
+        "actionUrl": "https://www.bizfile.gov.sg/",
+        "actionLabel": "Bizfile (ACRA business profile)"
+      },
+      {
+        "country": "KR",
+        "kind": "analog",
+        "summary": "Corporate accounts open at commercial banks against the registry certificate (등기사항전부증명서) and the business registration certificate; the Korea Federation of Banks lists the field.",
+        "actionUrl": "https://www.kfb.or.kr/",
+        "actionLabel": "Korea Federation of Banks"
+      },
+      {
+        "country": "HK",
+        "kind": "analog",
+        "summary": "Banks onboard against the registry record — certificate of incorporation, business registration certificate, directors and the significant-controllers picture — with the HKMA's account-opening pages setting the review expectations, and extra diligence where founders are offshore.",
+        "actionUrl": "https://www.hkma.gov.hk/eng/smart-consumers/account-opening/",
+        "actionLabel": "HKMA — account opening"
+      },
+      {
+        "country": "EE",
+        "kind": "analog",
+        "summary": "Accounts open at Estonian and EU banks or e-money institutions against the commercial-register data; for remote e-resident founders the programme lists the banking and fintech options, and a fully remote opening is commonly a fintech account.",
+        "actionUrl": "https://www.e-resident.gov.ee/",
+        "actionLabel": "e-Residency programme"
       }
     ]
   },
@@ -370,5 +474,66 @@
   },
   "entrySteps": [
     "n2"
+  ],
+  "globalSlug": "open-bank-account",
+  "countryViews": [
+    {
+      "country": "US",
+      "title": "Open bank account in United States",
+      "slug": "open-bank-account-in-united-states-us",
+      "summary": "Open a business bank account to separate personal and company finances — the first finance move for a company in any country. The US startup banks run fully-online applications with day-or-two approvals (the default flow below); the per-country rails and providers ride in the geo notes. KYC on the founders is universal; the tax ID the bank asks for is the local one (US: the EIN)."
+    },
+    {
+      "country": "UK",
+      "title": "Open a UK business bank account",
+      "slug": "open-a-uk-business-bank-account-uk"
+    },
+    {
+      "country": "IN",
+      "title": "Open an Indian business current account",
+      "slug": "open-an-indian-business-current-account-in"
+    },
+    {
+      "country": "DE",
+      "title": "Open a German business bank account",
+      "slug": "open-a-german-business-bank-account-de"
+    },
+    {
+      "country": "FR",
+      "title": "Open a French business bank account",
+      "slug": "open-a-french-business-bank-account-fr"
+    },
+    {
+      "country": "SG",
+      "title": "Open bank account in Singapore",
+      "slug": "open-bank-account-in-singapore-sg"
+    },
+    {
+      "country": "KR",
+      "title": "Open bank account in South Korea",
+      "slug": "open-bank-account-in-south-korea-kr"
+    },
+    {
+      "country": "HK",
+      "title": "Open bank account in Hong Kong",
+      "slug": "open-bank-account-in-hong-kong-hk"
+    },
+    {
+      "country": "EE",
+      "title": "Open bank account in Estonia",
+      "slug": "open-bank-account-in-estonia-ee"
+    }
+  ],
+  "aliases": [
+    "open-bank-account",
+    "open-bank-account-in-united-states-us",
+    "open-a-uk-business-bank-account-uk",
+    "open-an-indian-business-current-account-in",
+    "open-a-german-business-bank-account-de",
+    "open-a-french-business-bank-account-fr",
+    "open-bank-account-in-singapore-sg",
+    "open-bank-account-in-south-korea-kr",
+    "open-bank-account-in-hong-kong-hk",
+    "open-bank-account-in-estonia-ee"
   ]
 }

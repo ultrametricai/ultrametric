@@ -83,6 +83,13 @@ describe('schemas', () => {
     expect(RankingsSchema.safeParse(r).success).toBe(true)
   })
 
+  it('accepts an optional urls.news launch surface on products', () => {
+    const base = { id: 'p', name: 'P', vendor: 'V', type: 'commercial' as const, urls: { site: 'https://p.example' } }
+    expect(ProductSchema.safeParse(base).success).toBe(true)
+    expect(ProductSchema.safeParse({ ...base, urls: { ...base.urls, news: 'https://p.example/newsroom' } }).success).toBe(true)
+    expect(ProductSchema.safeParse({ ...base, urls: { ...base.urls, news: 'not-a-url' } }).success).toBe(false)
+  })
+
   it('accepts an optional links object on products', () => {
     const base = { id: 'p', name: 'P', vendor: 'V', type: 'oss' as const, urls: { site: 'https://p.example' } }
     expect(ProductSchema.safeParse(base).success).toBe(true)

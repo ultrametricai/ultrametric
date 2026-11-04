@@ -1,11 +1,11 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { z } from 'zod'
-import type { VendorGeoLookup } from './geoPreference'
+import { GEO_COUNTRIES, type GeoSelection, type VendorGeoLookup } from './geoPreference'
 
 // Vendor region-availability EVIDENCE (founder GEO ask 2026-09-28: "do spikes into India, UK,
 // European countries … whether the vendors are tuned for those regions or work globally").
-// jurisdictions/vendor-geo.json holds one row per (product, country) for the top vendors of the most
+// jurisdictions/vendor-geo.json holds one row per (arena, product, country) for the top vendors of the most
 // geo-sensitive arenas — startup-banking, payroll, legal-ops, tax-automation, payments,
 // accounting — each grounded in the vendor's OWN pages (help center, docs, availability
 // tables), crawl-verified live, honest negatives recorded (Mercury/Brex/Ramp/Gusto really are
@@ -19,7 +19,10 @@ import type { VendorGeoLookup } from './geoPreference'
 // pages (components/WhereItWorks.tsx), rendered only when rows exist. Missing file = no lines
 // anywhere (honest degrade, never an error).
 
-export const VENDOR_GEO_COUNTRIES = ['US', 'UK', 'IN', 'DE', 'FR'] as const
+// Vendor evidence covers the countries below independently of process guidance.
+// Brazil can now be selected in the process country switcher; the other LatAm
+// vendor-only countries remain available on product pages. Missing evidence stays absent.
+export const VENDOR_GEO_COUNTRIES = ['US', 'UK', 'IN', 'DE', 'FR', 'BR', 'MX', 'AR', 'CO', 'CL', 'PE'] as const
 export type VendorGeoCountry = (typeof VENDOR_GEO_COUNTRIES)[number]
 
 export const VENDOR_GEO_COUNTRY_META: Record<VendorGeoCountry, { label: string; flag: string }> = {
@@ -28,6 +31,12 @@ export const VENDOR_GEO_COUNTRY_META: Record<VendorGeoCountry, { label: string; 
   IN: { label: 'India', flag: '🇮🇳' },
   DE: { label: 'Germany', flag: '🇩🇪' },
   FR: { label: 'France', flag: '🇫🇷' },
+  BR: { label: 'Brazil', flag: '🇧🇷' },
+  MX: { label: 'Mexico', flag: '🇲🇽' },
+  AR: { label: 'Argentina', flag: '🇦🇷' },
+  CO: { label: 'Colombia', flag: '🇨🇴' },
+  CL: { label: 'Chile', flag: '🇨🇱' },
+  PE: { label: 'Peru', flag: '🇵🇪' },
 }
 
 export const VENDOR_GEO_STATUS_META: Record<VendorGeoStatus, { glyph: string; label: string }> = {
@@ -74,11 +83,32 @@ export function loadVendorGeo(dir: string = DEFAULT_DIR()): VendorGeoEntry[] {
 const countryRank = (c: VendorGeoCountry) => (VENDOR_GEO_COUNTRIES as readonly string[]).indexOf(c)
 
 // Every judged country row for one product, in canonical US→UK→IN→DE→FR order — [] for the
-// many products the spike hasn't covered (the component renders nothing for them).
-export function vendorGeoFor(productId: string, dir?: string): VendorGeoEntry[] {
-  return loadVendorGeo(dir)
-    .filter((e) => e.productId === productId)
-    .sort((a, b) => countryRank(a.country) - countryRank(b.country))
+// many products the spike hasn't covered (the component renders nothing for them). Rows are
+// judged against ONE arena's offering (the row's arenaId); pass `arenaId` to scope the result
+// to rows judged for that arena, so a cross-rostered product (gusto in payroll AND legal-ops)
+// never inherits another offering's availability reasoning. Since the 2026-10-27 cross-arena
+// pass a product can carry rows in more than one arena (brex/ramp in startup-banking AND
+// expense-management, square in payments AND mobile-payments, airwallex in startup-banking AND
+// payments); the unscoped call collapses to one row per country for the product-page strip,
+// preferring the freshest checkedAt (ties keep the earliest-committed row).
+export function vendorGeoFor(productId: string, dir?: string, arenaId?: string): VendorGeoEntry[] {
+  const rows = loadVendorGeo(dir).filter(
+    (e) => e.productId === productId && (!arenaId || e.arenaId === arenaId),
+  )
+  return dedupeFreshest(rows).sort((a, b) => countryRank(a.country) - countryRank(b.country))
+}
+
+// One row per (product, country): the freshest checkedAt wins; a tie keeps the row committed
+// first. Applied to every read path that is not scoped to a single arena, so cross-arena rows
+// stay deterministic for display.
+function dedupeFreshest(rows: VendorGeoEntry[]): VendorGeoEntry[] {
+  const byKey = new Map<string, VendorGeoEntry>()
+  for (const e of rows) {
+    const key = `${e.productId}/${e.country}`
+    const prev = byKey.get(key)
+    if (!prev || e.checkedAt > prev.checkedAt) byKey.set(key, e)
+  }
+  return [...byKey.values()]
 }
 
 // The client-annotation lookup for a page's vendors (founder GEO ask 2026-09-28: annotate the
@@ -90,10 +120,19 @@ export function vendorGeoFor(productId: string, dir?: string): VendorGeoEntry[] 
 export function vendorGeoLookup(productIds: Iterable<string>, dir?: string): VendorGeoLookup {
   const wanted = new Set(productIds)
   const lookup: VendorGeoLookup = {}
-  for (const e of loadVendorGeo(dir)) {
-    if (e.country === 'US' || !wanted.has(e.productId)) continue
+  // Deduped first: a cross-arena product annotates with its freshest judged row per country,
+  // not whichever arena's row happens to come later in the file.
+  for (const e of dedupeFreshest(loadVendorGeo(dir).filter((x) => wanted.has(x.productId)))) {
+    if (e.country === 'US') continue
+    // Only switcher countries annotate: a selection can only ever BE one of GEO_COUNTRIES, so
+    // vendor-geo-only countries (the LatAm set) would ship bytes no component can read.
+    if (!isGeoSelection(e.country)) continue
     const byCountry = (lookup[e.productId] ??= {})
     byCountry[e.country] = { status: e.status, note: e.note, sourceUrl: e.sourceUrl }
   }
   return lookup
+}
+
+function isGeoSelection(country: VendorGeoCountry): country is VendorGeoCountry & GeoSelection {
+  return country !== 'US' && (GEO_COUNTRIES as readonly string[]).includes(country)
 }

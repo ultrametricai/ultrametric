@@ -157,7 +157,7 @@ export function buildPlaybookRows(): PlaybookRow[] {
       agentSteps: ceiling.agentSteps,
       totalSteps: ceiling.totalSteps,
       // The route strip: one dot per step, capped client-side (legalSignature wears violet).
-      steps: nodes.map((n) => ({ label: n.label, route: n.route, legalSignature: n.legalSignature ?? false })),
+      steps: nodes.map((n) => ({ label: n.label, route: n.route, execution: n.execution, legalSignature: n.legalSignature ?? false })),
       // The vendor cell (founder 2026-10-02: chips instead of a 'Go to process' link) — each
       // constituent's derived vendors merged in journey order, deduped, same cap as a process
       // row. derivedVendorsFor already applies the shutdown filter per task.

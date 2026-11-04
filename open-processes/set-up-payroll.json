@@ -56,12 +56,55 @@
           "kind": "product",
           "id": "ai-assistants/gemini",
           "role": "additional-candidate"
+        },
+        {
+          "kind": "url",
+          "url": "https://www.gov.uk/register-employer",
+          "title": "HMRC register as an employer",
+          "description": null,
+          "role": "authored-guidance-source"
+        },
+        {
+          "kind": "url",
+          "url": "https://www.gov.uk/running-payroll/reporting-to-hmrc",
+          "title": "HMRC payroll FPS reporting",
+          "description": null,
+          "role": "authored-guidance-source"
         }
       ],
       "metadata": {
         "route": "agent",
         "reversibility": "reversible",
-        "estimatedMinutes": 5
+        "estimatedMinutes": 5,
+        "execution": {
+          "category": "human-online",
+          "basis": "human-work",
+          "rationale": "Finance and the people lead attend remote provider walkthroughs, test representative payroll tasks and discuss requirements before selecting the service.",
+          "evidence": [
+            "open-processes/set-up-payroll.json#/parts/0/guidance",
+            "open-processes/set-up-payroll.json#/parts/0"
+          ],
+          "reviewRequired": true,
+          "automationEvidence": {
+            "status": "unverified"
+          }
+        },
+        "geoResolutions": [
+          {
+            "country": "US",
+            "kind": "analog",
+            "label": "Compare payroll providers",
+            "guidance": "Compare payroll providers using the actual entities, worker locations, pay types, benefits and accounting requirements. Ask them to walk through relevant setup, reporting, corrections and support, including work they leave to the employer. Compare complete costs and implementation needs with finance and the people lead. Identify registration or migration gaps before selecting the provider."
+          },
+          {
+            "country": "UK",
+            "kind": "analog",
+            "label": "Compare payroll providers",
+            "guidance": "For the scoped company employing staff in England and Wales, confirm worker status, first payday, private employer records and the payroll owner. Different worker locations, contractors or sponsored workers need another assessment.",
+            "actionUrl": "https://www.gov.uk/register-employer",
+            "actionLabel": "HMRC register as an employer"
+          }
+        ]
       }
     },
     {
@@ -74,7 +117,7 @@
       "options": [
         {
           "id": "default",
-          "title": "Default — Sign up and configure payroll online",
+          "title": "United States — Sign up and configure payroll online",
           "summary": "Configure US payroll from verified employer details, relevant tax accounts, pay schedule, funding method and administrator roles. Reconcile employee work locations and pay types with the payroll specialist. Finance authorizes the funding connection, then payroll reviews the first-run preview and outstanding setup issues. Assign responsibility for returns, payments and corrections from the provider’s actual service scope and the employer’s remaining duties.",
           "when": null,
           "parts": [],
@@ -114,6 +157,25 @@
             "async": true,
             "verify": {
               "how": "A preview payroll run computes net pay and withholdings for every employee, and the provider shows the federal and state tax accounts connected."
+            },
+            "execution": {
+              "category": "agent-computer-use",
+              "basis": "browser-evidence",
+              "rationale": "Gusto documents company/payroll setup and pay schedules; funding authorization and required employer signatures stay with their owners.",
+              "evidence": [
+                "open-processes/set-up-payroll.json#/parts/1/options/0/summary",
+                "https://support.gusto.com/article/106622100100000/set-up-your-gusto-account-for-employers"
+              ],
+              "reviewRequired": false,
+              "automationEvidence": {
+                "status": "documented"
+              }
+            },
+            "context": {
+              "kind": "geo",
+              "countries": [
+                "US"
+              ]
             }
           }
         },
@@ -149,6 +211,23 @@
           "metadata": {
             "context": {
               "kind": "situational"
+            },
+            "execution": {
+              "category": "agent-computer-use",
+              "basis": "browser-evidence",
+              "rationale": "Deel documents EOR contract and onboarding status, country-specific benefit information, invoice breakdowns and payment tracking in its web application. Compare these records for the first payroll and raise exceptions with Deel. Finance retains funding authorization, employees complete personal onboarding, and local advisers settle employment responsibilities; this evidence covers the stated Deel route.",
+              "evidence": [
+                "open-processes/set-up-payroll.json#/parts/1/options/1/summary",
+                "https://help.letsdeel.com/hc/en-gb/articles/4407745374353-How-to-Create-an-Employer-Of-Record-EOR-Contract",
+                "https://help.letsdeel.com/hc/en-gb/articles/51708108302865-About-the-Global-Onboarding-Tracker",
+                "https://help.letsdeel.com/hc/en-gb/articles/33645767020433-How-to-enroll-your-employees-in-benefits-plans",
+                "https://help.letsdeel.com/hc/en-gb/articles/31845853594129-How-EOR-Invoices-Are-Calculated-and-Formatted",
+                "https://help.letsdeel.com/hc/en-gb/articles/4407737772689-Making-Invoice-Payments-With-Deel"
+              ],
+              "reviewRequired": true,
+              "automationEvidence": {
+                "status": "documented"
+              }
             }
           }
         },
@@ -178,7 +257,20 @@
               ],
               "metadata": {
                 "route": "form",
-                "estimatedMinutes": 30
+                "estimatedMinutes": 30,
+                "execution": {
+                  "category": "agent-computer-use",
+                  "basis": "browser-evidence",
+                  "rationale": "HMRC documents the employer-registration application; the representative retains approval of the reviewed facts.",
+                  "evidence": [
+                    "open-processes/set-up-payroll.json#/parts/1/options/2/parts/0/guidance",
+                    "https://www.gov.uk/register-employer"
+                  ],
+                  "reviewRequired": false,
+                  "automationEvidence": {
+                    "status": "documented"
+                  }
+                }
               }
             },
             {
@@ -211,7 +303,20 @@
               ],
               "metadata": {
                 "route": "form",
-                "estimatedMinutes": 30
+                "estimatedMinutes": 30,
+                "execution": {
+                  "category": "human-online",
+                  "basis": "human-work",
+                  "rationale": "Payroll staff enter the employer references and pay components in the selected UK payroll service and check the first preview before approval.",
+                  "evidence": [
+                    "open-processes/set-up-payroll.json#/parts/1/options/2/parts/1/guidance",
+                    "open-processes/set-up-payroll.json#/parts/1/options/2/parts/1"
+                  ],
+                  "reviewRequired": true,
+                  "automationEvidence": {
+                    "status": "unverified"
+                  }
+                }
               }
             },
             {
@@ -244,7 +349,20 @@
               ],
               "metadata": {
                 "route": "agent",
-                "estimatedMinutes": 15
+                "estimatedMinutes": 15,
+                "execution": {
+                  "category": "human-online",
+                  "basis": "human-work",
+                  "rationale": "The authorized payroll filer submits the FPS through the payroll service, checks acceptance and corrects rejected records; the deadline and payroll approval remain controlling.",
+                  "evidence": [
+                    "open-processes/set-up-payroll.json#/parts/1/options/2/parts/2/guidance",
+                    "open-processes/set-up-payroll.json#/parts/1/options/2/parts/2"
+                  ],
+                  "reviewRequired": true,
+                  "automationEvidence": {
+                    "status": "unverified"
+                  }
+                }
               }
             }
           ],
@@ -272,6 +390,19 @@
               "countries": [
                 "UK"
               ]
+            },
+            "execution": {
+              "category": "human-online",
+              "basis": "human-work",
+              "rationale": "Payroll staff configure the UK employer and employee records in the payroll service, submit RTI and reconcile acknowledgements and corrections.",
+              "evidence": [
+                "open-processes/set-up-payroll.json#/parts/1/options/2/summary",
+                "open-processes/set-up-payroll.json#/parts/1/options/2"
+              ],
+              "reviewRequired": true,
+              "automationEvidence": {
+                "status": "unverified"
+              }
             }
           }
         },
@@ -322,6 +453,19 @@
               "countries": [
                 "IN"
               ]
+            },
+            "execution": {
+              "category": "human-online",
+              "basis": "human-work",
+              "rationale": "The employer representative completes the applicable EPF and ESI account setup through the official services, retaining personal identity and signatory actions.",
+              "evidence": [
+                "open-processes/set-up-payroll.json#/parts/1/options/3/summary",
+                "open-processes/set-up-payroll.json#/parts/1/options/3"
+              ],
+              "reviewRequired": true,
+              "automationEvidence": {
+                "status": "unverified"
+              }
             }
           }
         },
@@ -365,6 +509,20 @@
               "countries": [
                 "DE"
               ]
+            },
+            "execution": {
+              "category": "human-online",
+              "basis": "human-work",
+              "rationale": "Payroll staff complete employer-number registration and configure downstream social-insurance reporting through the applicable digital services.",
+              "evidence": [
+                "open-processes/set-up-payroll.json#/parts/1/options/4/summary",
+                "https://web.arbeitsagentur.de/bno-prod/ui/",
+                "open-processes/set-up-payroll.json#/parts/1/options/4"
+              ],
+              "reviewRequired": true,
+              "automationEvidence": {
+                "status": "unverified"
+              }
             }
           }
         },
@@ -415,13 +573,138 @@
               "countries": [
                 "FR"
               ]
+            },
+            "execution": {
+              "category": "human-online",
+              "basis": "human-work",
+              "rationale": "The employer and payroll operator complete DPAE and DSN setup, submissions and corrections through the applicable official and payroll interfaces.",
+              "evidence": [
+                "open-processes/set-up-payroll.json#/parts/1/options/5/summary",
+                "open-processes/set-up-payroll.json#/parts/1/options/5"
+              ],
+              "reviewRequired": true,
+              "automationEvidence": {
+                "status": "unverified"
+              }
             }
           }
         }
       ],
       "notes": [],
-      "references": [],
-      "metadata": {}
+      "references": [
+        {
+          "kind": "url",
+          "url": "https://www.gov.uk/register-employer",
+          "title": "HMRC register as an employer",
+          "description": null,
+          "role": "authored-guidance-source"
+        },
+        {
+          "kind": "url",
+          "url": "https://www.gov.uk/running-payroll/reporting-to-hmrc",
+          "title": "HMRC payroll FPS reporting",
+          "description": null,
+          "role": "authored-guidance-source"
+        }
+      ],
+      "metadata": {
+        "geoResolutions": [
+          {
+            "country": "US",
+            "kind": "analog",
+            "label": "Sign up and configure payroll online",
+            "guidance": "Configure US payroll from verified employer details, relevant tax accounts, pay schedule, funding method and administrator roles. Reconcile employee work locations and pay types with the payroll specialist. Finance authorizes the funding connection, then payroll reviews the first-run preview and outstanding setup issues. Assign responsibility for returns, payments and corrections from the provider’s actual service scope and the employer’s remaining duties."
+          },
+          {
+            "country": "IN",
+            "kind": "analog",
+            "label": "India - EPF/ESI employer setup",
+            "guidance": "Give the local payroll specialist the entity, establishments, workforce and compensation structure. Determine applicable EPF, ESI, tax and state requirements from current rules, then prepare the required registrations for the employer’s authorized submission. Reconcile issued identifiers and employee setup before the first payroll. Resolve current Labour Code, tax-transition and threshold questions for the actual employer.",
+            "actionUrl": "https://unifiedportal-emp.epfindia.gov.in/epfo/",
+            "actionLabel": "EPFO employer portal"
+          },
+          {
+            "country": "DE",
+            "kind": "analog",
+            "label": "Germany - Betriebsnummer + social insurance",
+            "guidance": "Ask the local payroll adviser which employer identifiers, social-insurance and tax setup the workforce needs. Prepare the Betriebsnummer application using verified entity details and required supporting identifiers, then obtain the employer representative’s authorization to submit. Connect the issued number to payroll and reporting responsibilities. Follow up on any remaining registrations before relying on the setup for the first run.",
+            "actionUrl": "https://www.arbeitsagentur.de/unternehmen/betriebsnummern-service",
+            "actionLabel": "Betriebsnummern-Service (Bundesagentur fuer Arbeit)"
+          },
+          {
+            "country": "FR",
+            "kind": "analog",
+            "label": "France - DPAE + DSN payroll",
+            "guidance": "Have local payroll determine the applicable pre-employment declaration and reporting setup. Prepare the DPAE from verified employee and start details and submit with employer authorization through the confirmed process. Configure the payroll information needed for DSN and assign routine and event-report responsibilities. Resolve rejected or incomplete filings and outstanding setup before treating administrative onboarding as complete.",
+            "actionUrl": "https://entreprendre.service-public.fr/vosdroits/F23107",
+            "actionLabel": "Declaration prealable a l'embauche (DPAE)"
+          },
+          {
+            "country": "PT",
+            "kind": "analog",
+            "label": "Register as an employer with Segurança Social and report each hire before they start (comunicação de admissão), then file the monthly remuneration declaration and withhold income tax through the Portal das Finanças.",
+            "actionUrl": "https://www.seg-social.pt/empregadores",
+            "actionLabel": "Segurança Social — empregadores"
+          },
+          {
+            "country": "CA",
+            "kind": "analog",
+            "label": "Open a payroll (RP) program account on the CRA business number before the first remittance, withhold income tax, CPP and EI each pay run, and register with the provincial workers'-compensation board where your employees are.",
+            "actionUrl": "https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/payroll.html",
+            "actionLabel": "CRA — payroll"
+          },
+          {
+            "country": "NZ",
+            "kind": "analog",
+            "label": "Register as an employer with Inland Revenue as soon as you start employing staff (in myIR, or the paper IR334), then run PAYE: deduct tax and KiwiSaver each payday and file employment information with Inland Revenue.",
+            "actionUrl": "https://www.ird.govt.nz/employing-staff/register-as-an-employer",
+            "actionLabel": "Register as an employer — Inland Revenue"
+          },
+          {
+            "country": "SG",
+            "kind": "analog",
+            "label": "No PAYE: resident employees' income tax is not withheld from salary — the monthly ritual is CPF (due at month end, enforcement from the 14th of the following month) plus annual IR8A/Auto-Inclusion earnings reporting, and IR21 clearance when a foreign employee leaves.",
+            "actionUrl": "https://www.cpf.gov.sg/employer/making-cpf-contributions/applying-for-a-cpf-submission-number",
+            "actionLabel": "CPF — apply for a Submission Number"
+          },
+          {
+            "country": "AU",
+            "kind": "analog",
+            "label": "Register for PAYG withholding by the day you first withhold (law rule au.payg-withholding-registration), then report each pay event to the ATO through Single Touch Payroll-enabled software and pay superannuation within 7 business days of payday.",
+            "actionUrl": "https://business.gov.au/registrations/register-for-taxes/register-for-pay-as-you-go-payg-withholding",
+            "actionLabel": "Register for PAYG withholding"
+          },
+          {
+            "country": "KR",
+            "kind": "analog",
+            "label": "Payroll setup means wage withholding for the NTS through Hometax plus the four-insurances employer registration, with the employment and industrial-accident establishment report due within 14 days.",
+            "actionUrl": "https://www.4insure.or.kr/",
+            "actionLabel": "Four social insurances portal (4대사회보험)"
+          },
+          {
+            "country": "HK",
+            "kind": "analog",
+            "label": "No PAYE and no wage withholding: employees pay their own salaries tax, so payroll setup is the IR56 reporting cycle with the Inland Revenue Department (IR56E within 3 months of a start, the annual BIR56A/IR56B — law rule hk.employers-return-obligations) plus MPF contributions each wage period.",
+            "actionUrl": "https://www.ird.gov.hk/eng/tax/ere.htm",
+            "actionLabel": "IRD — employer's returns"
+          },
+          {
+            "country": "EE",
+            "kind": "analog",
+            "label": "Payroll is a register plus a return: each hire is entered in the employment register before work starts (law rule ee.employment-register-before-work), and the monthly TSD declares income tax, 33% social tax, and the 1.6%/0.8% unemployment premiums through e-MTA (law rules ee.social-tax-rate-and-monthly-return, ee.unemployment-insurance-premiums).",
+            "actionUrl": "https://www.emta.ee/en/business-client/taxes-and-payment/income-and-social-taxes",
+            "actionLabel": "Income and social taxes (e-MTA)"
+          },
+          {
+            "country": "UK",
+            "kind": "analog",
+            "label": "Sign up and configure payroll online",
+            "guidance": "Have the authorized person register the employer through HMRC where required and configure UK-capable payroll with verified references and employee inputs. Keep missing-reference and first-pay exceptions with the payroll adviser; register access, RTI reporting, wages and payment to HMRC are distinct controls.",
+            "actionUrl": "https://www.gov.uk/register-employer",
+            "actionLabel": "HMRC register as an employer"
+          }
+        ]
+      }
     },
     {
       "id": "n4",
@@ -437,12 +720,55 @@
           "kind": "vendor",
           "id": "gusto",
           "role": "stated-vendor"
+        },
+        {
+          "kind": "url",
+          "url": "https://www.gov.uk/register-employer",
+          "title": "HMRC register as an employer",
+          "description": null,
+          "role": "authored-guidance-source"
+        },
+        {
+          "kind": "url",
+          "url": "https://www.gov.uk/running-payroll/reporting-to-hmrc",
+          "title": "HMRC payroll FPS reporting",
+          "description": null,
+          "role": "authored-guidance-source"
         }
       ],
       "metadata": {
         "route": "agent",
         "reversibility": "reversible",
-        "estimatedMinutes": 3
+        "estimatedMinutes": 3,
+        "execution": {
+          "category": "agent-computer-use",
+          "basis": "browser-evidence",
+          "rationale": "Gusto's QuickBooks connection exposes account mapping and journal synchronization for payroll reconciliation and corrections.",
+          "evidence": [
+            "open-processes/set-up-payroll.json#/parts/2/guidance",
+            "https://support.gusto.com/article/100971895100000/integrate-with-quickbooks-online"
+          ],
+          "reviewRequired": false,
+          "automationEvidence": {
+            "status": "documented"
+          }
+        },
+        "geoResolutions": [
+          {
+            "country": "US",
+            "kind": "analog",
+            "label": "Connect payroll to the books",
+            "guidance": "Map payroll categories to the ledger’s wage, employer-cost, deduction, liability and cash accounts, including department allocations where used. Check integration permissions with the account owners, then compare the first export or journal with the payroll preview. Work through rounding, duplicate postings, reversals and corrections with accounting. The mapping is ready when both systems reconcile and the team knows how to handle adjustments."
+          },
+          {
+            "country": "UK",
+            "kind": "analog",
+            "label": "Connect payroll to the books",
+            "guidance": "Reconcile the payroll setup with the books and retain the registration evidence, software configuration and first-report plan. Confirm who reviews the FPS and any correction before submission and who approves the separate payments.",
+            "actionUrl": "https://www.gov.uk/register-employer",
+            "actionLabel": "HMRC register as an employer"
+          }
+        ]
       }
     },
     {
@@ -455,6 +781,11 @@
       "options": [],
       "notes": [],
       "references": [
+        {
+          "kind": "vendor",
+          "id": "ca_edd",
+          "role": "stated-vendor"
+        },
         {
           "kind": "url",
           "url": "https://edd.ca.gov/en/payroll_taxes/e-Services_for_Business/",
@@ -476,8 +807,22 @@
         "jurisdictions": [
           "CA"
         ],
+        "service": "payroll-tax-registration",
         "riskLevel": "medium",
-        "estimatedMinutes": 20
+        "estimatedMinutes": 20,
+        "execution": {
+          "category": "agent-computer-use",
+          "basis": "browser-evidence",
+          "rationale": "EDD documents employer enrollment and registration through e-Services for Business.",
+          "evidence": [
+            "open-processes/set-up-payroll.json#/parts/3/guidance",
+            "https://edd.ca.gov/en/Payroll_Taxes/Enroll_Employer_e-Services_Business"
+          ],
+          "reviewRequired": false,
+          "automationEvidence": {
+            "status": "documented"
+          }
+        }
       }
     },
     {
@@ -496,8 +841,243 @@
         "jurisdictions": [
           "MULTI"
         ],
+        "service": "payroll-tax-registration",
         "riskLevel": "medium",
-        "estimatedMinutes": 30
+        "estimatedMinutes": 30,
+        "execution": {
+          "category": "human-online",
+          "basis": "human-work",
+          "rationale": "The payroll owner and adviser coordinate the required state and local registrations digitally, checking existing accounts and obtaining filing authorization for each location.",
+          "evidence": [
+            "open-processes/set-up-payroll.json#/parts/4/guidance",
+            "open-processes/set-up-payroll.json#/parts/4"
+          ],
+          "reviewRequired": true,
+          "automationEvidence": {
+            "status": "unverified"
+          }
+        }
+      }
+    },
+    {
+      "id": "jny1",
+      "kind": "step",
+      "title": "Register as a New York employer (NYS-100)",
+      "guidance": "New York employers register once for unemployment insurance, withholding, and wage reporting by filing the NYS-100 through New York Business Express; the Department of Labor runs the UI account and the Tax Department the withholding account from the same registration. Pass the issued identifiers to payroll, which then files the quarterly NYS-45 combined return. Report each new hire to the Tax Department within 20 days of the hiring date.",
+      "when": null,
+      "ref": null,
+      "options": [],
+      "notes": [],
+      "references": [
+        {
+          "kind": "vendor",
+          "id": "ny_dtf",
+          "role": "stated-vendor"
+        },
+        {
+          "kind": "url",
+          "url": "https://www.tax.ny.gov/bus/doingbus/hire.htm",
+          "role": "legacy-action-link",
+          "title": "NY DTF — hiring employees (NYS-100 registration)",
+          "description": null
+        },
+        {
+          "kind": "url",
+          "url": "https://www.tax.ny.gov/bus/wt/wtidx.htm",
+          "title": "NY DTF — withholding tax",
+          "description": null,
+          "role": "authored-guidance-source"
+        }
+      ],
+      "metadata": {
+        "route": "form",
+        "reversibility": "painful",
+        "jurisdictions": [
+          "US-NY"
+        ],
+        "service": "payroll-tax-registration",
+        "riskLevel": "medium",
+        "estimatedMinutes": 25,
+        "execution": {
+          "category": "agent-computer-use",
+          "basis": "browser-evidence",
+          "rationale": "New York Business Express supports NYS-100 employer registration; Tax Department web services cover the referenced quarterly return and new-hire reporting. The employer confirms the entity, employee data and filing authority.",
+          "evidence": [
+            "open-processes/set-up-payroll.json#/parts/5/guidance",
+            "https://www.businessexpress.ny.gov/app/answers/cms/a_id/3033",
+            "https://www.tax.ny.gov/bus/ads/efile_addnys45.htm",
+            "https://www.tax.ny.gov/bus/wt/newhire.htm"
+          ],
+          "reviewRequired": true,
+          "automationEvidence": {
+            "status": "documented"
+          }
+        }
+      }
+    },
+    {
+      "id": "jtx1",
+      "kind": "step",
+      "title": "Register for Texas unemployment tax with TWC",
+      "guidance": "The Texas Unemployment Compensation Act requires employers to register with the Texas Workforce Commission within 10 days of becoming liable (law rule us-tx.unemployment-tax-registration), using the free online Unemployment Tax Registration service. Texas has no state individual income tax, so there is no state wage-withholding registration — the TWC account and quarterly wage reports are the Texas payroll obligations. Pass the issued TWC account number to payroll.",
+      "when": null,
+      "ref": null,
+      "options": [],
+      "notes": [],
+      "references": [
+        {
+          "kind": "vendor",
+          "id": "tx_twc",
+          "role": "stated-vendor"
+        },
+        {
+          "kind": "url",
+          "url": "https://www.twc.texas.gov/businesses/unemployment-tax-registration",
+          "role": "legacy-action-link",
+          "title": "TWC — unemployment tax registration",
+          "description": null
+        },
+        {
+          "kind": "url",
+          "url": "https://www.twc.texas.gov/programs/unemployment-tax",
+          "title": "TWC — unemployment tax program",
+          "description": null,
+          "role": "authored-guidance-source"
+        }
+      ],
+      "metadata": {
+        "route": "form",
+        "reversibility": "painful",
+        "jurisdictions": [
+          "US-TX"
+        ],
+        "service": "payroll-tax-registration",
+        "riskLevel": "medium",
+        "estimatedMinutes": 20,
+        "execution": {
+          "category": "agent-computer-use",
+          "basis": "browser-evidence",
+          "rationale": "TWC documents browser registration with saved progress, employer-liability determination, account-number issuance and subsequent wage reporting. The employer supplies authorized ownership data; the public page presented an anti-bot challenge during review.",
+          "evidence": [
+            "open-processes/set-up-payroll.json#/parts/6/guidance",
+            "https://www.twc.texas.gov/services/register-tax",
+            "https://apps.twc.texas.gov/UITAXREG/security/logon.do"
+          ],
+          "reviewRequired": true,
+          "automationEvidence": {
+            "status": "documented"
+          }
+        }
+      }
+    },
+    {
+      "id": "jwa1",
+      "kind": "step",
+      "title": "Register as a Washington employer via the business license application",
+      "guidance": "Washington employer accounts open through the state business license application: hiring (or planning to hire within 90 days) requires the application, which establishes the Employment Security Department unemployment account alongside the Department of Revenue registration. Washington has no state income-tax withholding; payroll instead handles ESD quarterly reports and the state premium programs the ESD employer pages describe. Pass the issued account identifiers to payroll.",
+      "when": null,
+      "ref": null,
+      "options": [],
+      "notes": [],
+      "references": [
+        {
+          "kind": "vendor",
+          "id": "wa_esd",
+          "role": "stated-vendor"
+        },
+        {
+          "kind": "url",
+          "url": "https://dor.wa.gov/open-business/apply-business-license",
+          "role": "legacy-action-link",
+          "title": "WA DOR — apply for a business license",
+          "description": null
+        },
+        {
+          "kind": "url",
+          "url": "https://esd.wa.gov/employer-taxes",
+          "title": "WA ESD — employer taxes",
+          "description": null,
+          "role": "authored-guidance-source"
+        }
+      ],
+      "metadata": {
+        "route": "form",
+        "reversibility": "painful",
+        "jurisdictions": [
+          "US-WA"
+        ],
+        "service": "payroll-tax-registration",
+        "riskLevel": "medium",
+        "estimatedMinutes": 25,
+        "execution": {
+          "category": "agent-computer-use",
+          "basis": "browser-evidence",
+          "rationale": "My DOR documents the employer business-license application, ownership and hiring details, submission and confirmation; ESD documents the linked employer account and quarterly-reporting service. SAW authentication remains with the authorized account holder; direct help retrieval returned 403, so the documented procedure was reviewed through the official indexed page.",
+          "evidence": [
+            "open-processes/set-up-payroll.json#/parts/7/guidance",
+            "https://dor.wa.gov/manage-business/my-dor-help/renew-or-update-business-license/apply-new-business-license",
+            "https://esd.wa.gov/employer-requirements/quarterly-reports/how-file-your-quarterly-tax-and-wage-reports"
+          ],
+          "reviewRequired": true,
+          "automationEvidence": {
+            "status": "documented"
+          }
+        }
+      }
+    },
+    {
+      "id": "jfl1",
+      "kind": "step",
+      "title": "Register for Florida reemployment tax (DR-1) and file the quarterly RT-6",
+      "guidance": "Florida employers register for reemployment tax with the Department of Revenue through the Florida Business Tax Application (Form DR-1), online or on paper, once the law's liability conditions are met. Florida has no state individual income tax, so there is no state wage-withholding registration — the reemployment account and the Employer's Quarterly Report (Form RT-6) are the Florida payroll obligations. Pass the issued account details to payroll and confirm the first RT-6 cycle.",
+      "when": null,
+      "ref": null,
+      "options": [],
+      "notes": [],
+      "references": [
+        {
+          "kind": "vendor",
+          "id": "fl_dor",
+          "role": "stated-vendor"
+        },
+        {
+          "kind": "url",
+          "url": "https://floridarevenue.com/taxes/taxesfees/Pages/reemployment.aspx",
+          "role": "legacy-action-link",
+          "title": "FL DOR — reemployment tax",
+          "description": null
+        },
+        {
+          "kind": "url",
+          "url": "https://floridarevenue.com/taxes/taxesfees/Pages/reemployment.aspx",
+          "title": "Florida DOR reemployment tax guidance",
+          "description": null,
+          "role": "authored-guidance-source"
+        }
+      ],
+      "metadata": {
+        "route": "form",
+        "reversibility": "painful",
+        "jurisdictions": [
+          "US-FL"
+        ],
+        "service": "payroll-tax-registration",
+        "riskLevel": "medium",
+        "estimatedMinutes": 20,
+        "execution": {
+          "category": "agent-computer-use",
+          "basis": "browser-evidence",
+          "rationale": "Florida DOR links the online business-tax registration application and reemployment e-filing service for RT-6 reporting and payment. The authorized employer confirms liability, account data and the first reporting period before submission.",
+          "evidence": [
+            "open-processes/set-up-payroll.json#/parts/8/guidance",
+            "https://taxapps.floridarevenue.com/taxregistration",
+            "https://floridarevenue.com/taxes/eservices/Pages/rtlogin.aspx"
+          ],
+          "reviewRequired": true,
+          "automationEvidence": {
+            "status": "documented"
+          }
+        }
       }
     }
   ],
@@ -533,9 +1113,27 @@
       "kind": "vendor",
       "id": "justworks",
       "role": "involves"
+    },
+    {
+      "kind": "url",
+      "url": "https://www.gov.uk/register-employer",
+      "title": "HMRC register as an employer",
+      "description": null,
+      "role": "authored-guidance-source"
+    },
+    {
+      "kind": "url",
+      "url": "https://www.gov.uk/running-payroll/reporting-to-hmrc",
+      "title": "HMRC payroll FPS reporting",
+      "description": null,
+      "role": "authored-guidance-source"
     }
   ],
-  "notes": [],
+  "notes": [
+    {
+      "text": "Scoped draft detail: UK-resident private company limited by shares registered in England and Wales, operating domestically in unregulated services. Other entities, locations and cross-border facts need another assessment. Professional review is pending. Source and instruction check: 2026-11-01. Assessment: coverage/local-procedure-assessments.json."
+    }
+  ],
   "metadata": {
     "phase": "hr",
     "cadence": "once",
@@ -571,8 +1169,7 @@
     "activeMinutes": 8,
     "totalEstimatedMinutes": 38,
     "hasAsyncSteps": true,
-    "region": "us",
-    "geoScope": "us",
+    "geoScope": "global",
     "geoNotes": [
       {
         "country": "IN",
@@ -615,6 +1212,48 @@
         "summary": "Open a payroll (RP) program account on the CRA business number before the first remittance, withhold income tax, CPP and EI each pay run, and register with the provincial workers'-compensation board where your employees are.",
         "actionUrl": "https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/payroll.html",
         "actionLabel": "CRA — payroll"
+      },
+      {
+        "country": "NZ",
+        "kind": "analog",
+        "summary": "Register as an employer with Inland Revenue as soon as you start employing staff (in myIR, or the paper IR334), then run PAYE: deduct tax and KiwiSaver each payday and file employment information with Inland Revenue.",
+        "actionUrl": "https://www.ird.govt.nz/employing-staff/register-as-an-employer",
+        "actionLabel": "Register as an employer — Inland Revenue"
+      },
+      {
+        "country": "SG",
+        "kind": "analog",
+        "summary": "No PAYE: resident employees' income tax is not withheld from salary — the monthly ritual is CPF (due at month end, enforcement from the 14th of the following month) plus annual IR8A/Auto-Inclusion earnings reporting, and IR21 clearance when a foreign employee leaves.",
+        "actionUrl": "https://www.cpf.gov.sg/employer/making-cpf-contributions/applying-for-a-cpf-submission-number",
+        "actionLabel": "CPF — apply for a Submission Number"
+      },
+      {
+        "country": "AU",
+        "kind": "analog",
+        "summary": "Register for PAYG withholding by the day you first withhold (law rule au.payg-withholding-registration), then report each pay event to the ATO through Single Touch Payroll-enabled software and pay superannuation within 7 business days of payday.",
+        "actionUrl": "https://business.gov.au/registrations/register-for-taxes/register-for-pay-as-you-go-payg-withholding",
+        "actionLabel": "Register for PAYG withholding"
+      },
+      {
+        "country": "KR",
+        "kind": "analog",
+        "summary": "Payroll setup means wage withholding for the NTS through Hometax plus the four-insurances employer registration, with the employment and industrial-accident establishment report due within 14 days.",
+        "actionUrl": "https://www.4insure.or.kr/",
+        "actionLabel": "Four social insurances portal (4대사회보험)"
+      },
+      {
+        "country": "HK",
+        "kind": "analog",
+        "summary": "No PAYE and no wage withholding: employees pay their own salaries tax, so payroll setup is the IR56 reporting cycle with the Inland Revenue Department (IR56E within 3 months of a start, the annual BIR56A/IR56B — law rule hk.employers-return-obligations) plus MPF contributions each wage period.",
+        "actionUrl": "https://www.ird.gov.hk/eng/tax/ere.htm",
+        "actionLabel": "IRD — employer's returns"
+      },
+      {
+        "country": "EE",
+        "kind": "analog",
+        "summary": "Payroll is a register plus a return: each hire is entered in the employment register before work starts (law rule ee.employment-register-before-work), and the monthly TSD declares income tax, 33% social tax, and the 1.6%/0.8% unemployment premiums through e-MTA (law rules ee.social-tax-rate-and-monthly-return, ee.unemployment-insurance-premiums).",
+        "actionUrl": "https://www.emta.ee/en/business-client/taxes-and-payment/income-and-social-taxes",
+        "actionLabel": "Income and social taxes (e-MTA)"
       }
     ],
     "timeOrder": 46,
@@ -631,6 +1270,95 @@
   "entrySteps": [
     "n2",
     "jca1",
-    "jmu1"
+    "jmu1",
+    "jny1",
+    "jtx1",
+    "jwa1",
+    "jfl1"
+  ],
+  "globalSlug": "set-up-payroll",
+  "countryViews": [
+    {
+      "country": "US",
+      "title": "Set up payroll in United States",
+      "slug": "set-up-payroll-in-united-states-us",
+      "summary": "Set up a payroll provider to run payroll, file employment taxes, and administer benefits."
+    },
+    {
+      "country": "UK",
+      "title": "Set up PAYE and payroll reporting",
+      "slug": "set-up-paye-and-payroll-reporting-uk"
+    },
+    {
+      "country": "IN",
+      "title": "Set up payroll with EPF, ESI and salary TDS",
+      "slug": "set-up-payroll-with-epf-esi-and-salary-tds-in"
+    },
+    {
+      "country": "DE",
+      "title": "Set up German payroll and social-insurance reporting",
+      "slug": "set-up-german-payroll-and-social-insurance-reporting-de"
+    },
+    {
+      "country": "FR",
+      "title": "Set up payroll with URSSAF and DSN",
+      "slug": "set-up-payroll-with-urssaf-and-dsn-fr"
+    },
+    {
+      "country": "PT",
+      "title": "Set up payroll in Portugal",
+      "slug": "set-up-payroll-in-portugal-pt"
+    },
+    {
+      "country": "CA",
+      "title": "Set up payroll in Canada",
+      "slug": "set-up-payroll-in-canada-ca"
+    },
+    {
+      "country": "NZ",
+      "title": "Set up payroll in New Zealand",
+      "slug": "set-up-payroll-in-new-zealand-nz"
+    },
+    {
+      "country": "SG",
+      "title": "Set up payroll in Singapore",
+      "slug": "set-up-payroll-in-singapore-sg"
+    },
+    {
+      "country": "AU",
+      "title": "Set up payroll in Australia",
+      "slug": "set-up-payroll-in-australia-au"
+    },
+    {
+      "country": "KR",
+      "title": "Set up payroll in South Korea",
+      "slug": "set-up-payroll-in-south-korea-kr"
+    },
+    {
+      "country": "HK",
+      "title": "Set up payroll in Hong Kong",
+      "slug": "set-up-payroll-in-hong-kong-hk"
+    },
+    {
+      "country": "EE",
+      "title": "Set up payroll in Estonia",
+      "slug": "set-up-payroll-in-estonia-ee"
+    }
+  ],
+  "aliases": [
+    "set-up-payroll",
+    "set-up-payroll-in-united-states-us",
+    "set-up-paye-and-payroll-reporting-uk",
+    "set-up-payroll-with-epf-esi-and-salary-tds-in",
+    "set-up-german-payroll-and-social-insurance-reporting-de",
+    "set-up-payroll-with-urssaf-and-dsn-fr",
+    "set-up-payroll-in-portugal-pt",
+    "set-up-payroll-in-canada-ca",
+    "set-up-payroll-in-new-zealand-nz",
+    "set-up-payroll-in-singapore-sg",
+    "set-up-payroll-in-australia-au",
+    "set-up-payroll-in-south-korea-kr",
+    "set-up-payroll-in-hong-kong-hk",
+    "set-up-payroll-in-estonia-ee"
   ]
 }

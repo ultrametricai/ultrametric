@@ -5,7 +5,7 @@ import { LOCAL_PROBES } from '@/rankings-engine/probes'
 
 // Total probes across all arena modules. Bump this when adding or removing probes in
 // rankings-engine/probes/<arena-id>.ts — it exists to catch accidental drops during merges.
-const EXPECTED_TOTAL_PROBES = 1043
+const EXPECTED_TOTAL_PROBES = 1044
 
 const probesDir = path.resolve(__dirname, '../probes')
 const NON_ARENA_MODULES = new Set(['index.ts', 'types.ts'])

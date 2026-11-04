@@ -1,17 +1,18 @@
 {
-  "hash": "d8e8c57df9b461f3b3f0febcdc082a64ed0b10fc4268b785a7c728b69641f0dd",
+  "hash": "3a4f290c4932df337d2b7b2d77a94ad1bb014a6e66982e5d0055d86065f8310f",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "The evidence shows only CLI-based automation that application code could wrap. Plan/apply/test emit a line-delimited JSON message stream meant for programmatic processing, `-auto-approve` skips interactive confirmation, `plan -out` saves a plan for later apply, and `show -json` gives machine-readable plan and state. However, all of this still runs through the CLI, which is a workaround rather than true in-code deployment control. Missing for 10: a native SDK or embeddable library API for plan/apply, a documented remote run API (the OpenAPI probe returned 404), and independent corroboration of programmatic deployment workflows.",
+    "rationale": "Terraform documents interfaces meant for machine consumption: `-json` streams machine-readable UI messages for plan and apply, `-auto-approve` skips interactive approval, saved plans can be applied later with `-out`, and `show -json` returns the plan as JSON. Together these let application code orchestrate deployments by wrapping the CLI, and the official MCP server adds workspace and run management for AI clients. However, everything evidenced still goes through the CLI or an agent-facing MCP layer, and no OpenAPI spec was found. missing for 10: a first-party SDK or library for driving plan/apply from application code, a documented HTTP run API (OpenAPI probe returned 404), and hands-on corroboration of embedding Terraform in an application.",
     "evidenceIds": [
       "terraform-docs-22",
       "terraform-docs-34",
-      "terraform-docs-3",
+      "terraform-docs-17",
       "terraform-docs-30",
-      "terraform-docs-4",
+      "terraform-docs-48",
+      "terraform-docs-56",
       "terraform-probe-3"
     ],
     "productId": "terraform",

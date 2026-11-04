@@ -1,18 +1,17 @@
 {
-  "hash": "37f7fa5a3885165defc6608ff466d138057b56d9a6debddabf97c209d45990c4",
+  "hash": "4ee6eec67fc7d972f2462f79a12e4f31e1e8d880efc6471ddb3562016ccf9670",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 4,
+    "quality": 3,
     "confidence": "low",
-    "rationale": "Hightouch Events stores collected events in the customer's own warehouse, so the event history remains available (hightouch-docs-5, hightouch-comm-3). Models built on that warehouse data can be synced to any of 300+ destinations, which implies history can be pushed to a newly added tool (hightouch-docs-23, hightouch-docs-27, hightouch-docs-49). However, the docs describe CDC syncs that send only new, changed, and removed rows, and say nothing about a replay, backfill, or full-resync operation. Missing for 10: a documented event replay or backfill feature, a full-resync or reset-CDC option for recovering a broken pipeline, explicit confirmation that a new sync's first run sends all historical rows, and hands-on corroboration.",
+    "rationale": "Hightouch Events stores collected events in the customer's own warehouse. Syncs can map any SQL model to any of 300+ destinations, so historical event tables could plausibly be sent to a newly added tool. However, no doc explicitly describes a replay, backfill, or full-resync feature. The CDC docs only say that runs send rows changed since the previous run. Missing for 10: an explicit replay/backfill or full-resync capability, documentation of initial-sync behavior that sends full history to a new destination, a recovery path for broken pipelines, and any hands-on or independent corroboration.",
     "evidenceIds": [
       "hightouch-docs-5",
-      "hightouch-comm-3",
-      "hightouch-docs-23",
       "hightouch-docs-27",
       "hightouch-docs-49",
-      "hightouch-docs-58"
+      "hightouch-docs-58",
+      "hightouch-comm-3"
     ],
     "productId": "hightouch",
     "storyId": "event-replay-backfill"

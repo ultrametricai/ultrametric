@@ -223,7 +223,7 @@ export function openDocumentById(id: string): OpenDocument {
 // 'US-DE' renders 🇺🇸 DE (country flag + state code); a bare or qualified single country
 // ('US', 'India', 'US (state law varies)', 'US-FED') renders the flag beside the committed
 // string. Everything else — multi-jurisdiction strings ('EU/EEA', 'US/EU-aware', 'Canada /
-// Cayman Islands / Singapore'), countries outside the committed set (Singapore),
+// Cayman Islands / Singapore'), countries outside the committed set,
 // 'jurisdiction-neutral' — renders exactly as today, no flag invented.
 const JURISDICTION_COUNTRY_TOKENS: Record<string, GeoCountry> = {
   US: 'US',
@@ -233,6 +233,7 @@ const JURISDICTION_COUNTRY_TOKENS: Record<string, GeoCountry> = {
   France: 'FR',
   Portugal: 'PT',
   Canada: 'CA',
+  Singapore: 'SG',
 }
 
 export interface JurisdictionFlag {

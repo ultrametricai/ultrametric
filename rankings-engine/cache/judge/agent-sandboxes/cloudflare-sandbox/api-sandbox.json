@@ -1,18 +1,18 @@
 {
-  "hash": "1befd223b0111f7c539972f5083fd19706f0621897582f63f0e38d6b2f22f2cd",
+  "hash": "a992d119f8e9b3e0e8a8204e2248316e881f5971c047230839cf63ecb515c28e",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Cloudflare Sandboxes is built to run untrusted code in isolated environments, with each sandbox in its own VM or container and a full Linux environment (docs-34, docs-38, docs-50). It also lets you intercept outbound HTTP through Workers (docs-23), so agents can test in a throwaway space walled off from production systems. However, sandboxes can be wired to KV, R2 and mounted buckets (docs-7, docs-20), and one community user describes outbound network control as all-or-nothing (comm-2), so keeping production data out depends on how you configure them. Missing for 10: documented guidance on scoping or keeping production bindings and data away from test sandboxes, fine-grained egress controls, and independent hands-on confirmation of the isolation guarantees.",
+    "rationale": "Cloudflare Sandboxes is built to run untrusted or agent-generated code in isolated environments. Each sandbox gets its own VM or container with a full Linux environment, and the SDK can intercept outbound HTTP via Workers, so an agent can execute and test code walled off from production systems. However, the docs do not explicitly frame this as test-versus-production data separation. Bindings to KV/R2/Durable Objects could reach real data unless the user scopes them, and a community user notes outbound network control looks all-or-nothing. missing for 10: explicit guidance or features for isolating test data from production (e.g., scoped or mock bindings, seeded test datasets), documented fine-grained egress restrictions, independent hands-on corroboration of the isolation guarantees.",
     "evidenceIds": [
       "cloudflare-sandbox-docs-34",
       "cloudflare-sandbox-docs-38",
       "cloudflare-sandbox-docs-50",
+      "cloudflare-sandbox-docs-41",
       "cloudflare-sandbox-docs-23",
       "cloudflare-sandbox-docs-24",
-      "cloudflare-sandbox-docs-7",
       "cloudflare-sandbox-docs-20",
       "cloudflare-sandbox-comm-2"
     ],

@@ -110,6 +110,20 @@ export const probes: LocalProbe[] = [
     timeoutMs: 30_000,
   },
   {
+    // Texas's Active Franchise Tax Permit Holders dataset on the Socrata open-data platform:
+    // keyless JSON, crawl-delay 1 honored as a single GET (committed evidence
+    // tx-comptroller-probe-5, state-agency bring-up 2026-10-22). Runtime robots result
+    // (2026-10-22, pipeline UA): data.texas.gov 200, /resource/* not disallowed, crawl-delay 1.
+    probeId: 'socrata-franchise-permit-holders',
+    productId: 'tx-comptroller',
+    storyIds: ['public-data-api', 'agentic-public-api'],
+    bin: 'curl',
+    argv: ['sh', '-c', `curl -s --max-time 20 -A '${UA}' 'https://data.texas.gov/resource/9cir-efmm.json?$limit=1' | head -c 400`],
+    displayCommand: `curl -s -A '${UA}' 'https://data.texas.gov/resource/9cir-efmm.json?$limit=1' | head -c 400  # credential-free franchise-tax permit-holder JSON (Socrata open-data platform)`,
+    expect: /"taxpayer_number"/,
+    timeoutMs: 30_000,
+  },
+  {
     // open.canada.ca CKAN: the national open-data layer answers keyless agents with structured
     // JSON (committed evidence corporations-canada-probe-1). Bare action URL — no query
     // parameters, per the host's robots extras.

@@ -1,6 +1,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { loadProcesses } from '@/lib/processes'
+import { loadProcessCatalog } from '@/lib/shared-processes/catalog'
 
 // open-processes/SITUATIONS.md ↔ corpus sync (founder 2026-10-02: situations get their own repo
 // surface). Same doctrine as the open-documents/README.md gate (lib/documents.ts): the listing
@@ -16,6 +17,8 @@ export const TABLE_END = '<!-- situations:table:end -->'
 export interface SituationDocRecord {
   id: string
   title: string
+  /** Catalog file slug — the readable page lives at open-processes/pages/<slug>.md. */
+  slug: string
   trigger: string
   urgency: 'hours' | 'days' | 'weeks'
   geoScope: 'global' | 'us' | 'us-state'
@@ -26,11 +29,13 @@ const URGENCY_ORDER = ['hours', 'days', 'weeks'] as const
 /** The corpus situations in the one honest display order (the /situations index order):
  * urgency hours → days → weeks, then title. */
 export function situationRecords(): SituationDocRecord[] {
+  const slugById = new Map(loadProcessCatalog().processes.map((p) => [p.record.id, p.slug]))
   return loadProcesses()
     .filter((t) => t.kind === 'situation')
     .map((t) => ({
       id: t.id,
       title: t.title,
+      slug: slugById.get(t.id)!,
       trigger: t.trigger!,
       urgency: t.urgency!,
       geoScope: t.geoScope,
@@ -46,7 +51,7 @@ export function situationRecords(): SituationDocRecord[] {
  * test requires the committed file to contain it verbatim. */
 export function renderSituationsTable(records: SituationDocRecord[]): string {
   const rows = records.map(
-    (r) => `| \`${r.id}\` | ${r.title} | ${r.trigger} | ${r.urgency} | ${r.geoScope} |`,
+    (r) => `| \`${r.id}\` | [${r.title}](pages/${r.slug}.md) | ${r.trigger} | ${r.urgency} | ${r.geoScope} |`,
   )
   return [
     TABLE_START,

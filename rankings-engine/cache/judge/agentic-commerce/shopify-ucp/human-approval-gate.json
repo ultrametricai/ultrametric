@@ -1,11 +1,11 @@
 {
-  "hash": "57064bab4fe91f30ab05b31227a82979ee7e4826f442f6faa4b28dac89a51894",
+  "hash": "6c5b8cf0a8787af57d1966b9df0e6e4e8371ac9a709be853afb265bf741044e2",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Shopify's default checkout flow hands the buyer off to the merchant storefront to pay, and checkouts in requires_escalation must go back to the buyer for input or review. The documented preconditions for complete_checkout include \"Buyer has reviewed and confirmed the order\", and the call is limited to Token-tier agents granted purchase permission. UCP also specifies AP2 payment mandates: cryptographically signed authorizations tied to cart state, with verifiable boundaries. missing for 10: proof that Shopify itself enforces buyer confirmation on direct complete_checkout (it reads as agent-side guidance), explicit evidence that Shopify's servers implement AP2 signed mandates (as opposed to the UCP spec), and hands-on verification of the checkout/consent step (the runtime probe stopped at cart creation).",
+    "rationale": "Shopify's Checkout MCP sets explicit preconditions for complete_checkout: the buyer has reviewed and confirmed the order and a payment credential has been collected. complete_checkout is also restricted to Token-tier agents whose token is granted purchase permission, and requires_escalation forces a handoff to the buyer via continue_url. The UCP spec adds AP2 signed payment mandates cryptographically tied to the cart state. Missing for 10: evidence that Shopify itself enforces buyer confirmation server-side rather than leaving it to agent guidance (trusted agents can complete checkouts directly), explicit Shopify-side documentation of AP2 mandate support beyond the UCP spec, and hands-on corroboration of the checkout/payment approval step.",
     "evidenceIds": [
       "shopify-ucp-supp-checkout-mcp",
       "shopify-ucp-supp-buyer-handoff",
@@ -13,8 +13,7 @@
       "shopify-ucp-supp-ucp-journey",
       "shopify-ucp-docs-18",
       "shopify-ucp-docs-31",
-      "shopify-ucp-supp-ucp-governance",
-      "shopify-ucp-docs-24"
+      "shopify-ucp-supp-ucp-governance"
     ],
     "productId": "shopify-ucp",
     "storyId": "human-approval-gate"

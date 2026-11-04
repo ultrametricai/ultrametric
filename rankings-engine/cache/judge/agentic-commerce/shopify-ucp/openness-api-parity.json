@@ -1,21 +1,22 @@
 {
-  "hash": "02a8a18681b684707179250c65a5e479bed361fecdb72f7630c4a262fa7b90c3",
+  "hash": "880f43865855e0eabe120ef51d50781c795b2423170969878fd95b60447c7d36",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Shopify exposes most of the agentic buyer journey through UCP MCP servers and a CLI: catalog search, cart create/update/cancel, checkout create/complete, and order reads. Probes confirmed live endpoints and a real keyless cart creation. However, the docs explicitly state API gaps that block UI parity: checkouts can enter requires_escalation for 'buyer input or review not available via API', forcing a handoff to the merchant's web checkout. Order webhook subscriptions have 'no self-serve subscription API' and must be set up through a partner manager, and complete_checkout and get_order are limited to Token-tier agents. Missing for 10: full API coverage of escalated checkout steps, a self-serve webhook subscription API, ungated purchase completion and order access, generally available Universal Cart, and independent parity verification beyond cart creation.",
+    "rationale": "Shopify's UCP MCP servers and CLI expose the core buyer journey programmatically: catalog search, cart create/update/cancel, checkout creation and completion, order reads, and order webhooks. A live probe confirmed real keyless cart creation. However, Shopify's own docs name parity gaps: checkouts can enter requires_escalation because they need 'buyer input or review not available via API', forcing a handoff to the merchant's web checkout via continue_url. Webhook subscription likewise has no self-serve API and requires contacting a partner manager, and complete_checkout and get_order are restricted to Token-tier agents. Missing for 10: full API coverage of checkout steps that currently require escalation to the UI, a self-serve webhook subscription API, the waitlisted Universal Cart, and a published OpenAPI spec or llms.txt index on shopify.dev.",
     "evidenceIds": [
       "shopify-ucp-supp-ucp-journey",
       "shopify-ucp-supp-cart-mcp",
       "shopify-ucp-supp-checkout-mcp",
       "shopify-ucp-supp-buyer-handoff",
-      "shopify-ucp-supp-order-webhooks",
       "shopify-ucp-supp-order-mcp",
+      "shopify-ucp-supp-order-webhooks",
       "shopify-ucp-supp-trust-tiers",
       "shopify-ucp-probe-rt-3",
-      "shopify-ucp-probe-rt-1"
+      "shopify-ucp-probe-3",
+      "shopify-ucp-probe-1"
     ],
     "productId": "shopify-ucp",
     "storyId": "openness-api-parity"

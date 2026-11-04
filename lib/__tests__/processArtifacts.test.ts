@@ -1,3 +1,4 @@
+import { loadArtifactPages } from '../artifactPages'
 import path from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { operationalSources } from './helpers/operational-sources'
@@ -35,7 +36,7 @@ const taskIds = new Set(tasks.map((t) => t.id))
 
 describe('artifact registry totality', () => {
   it('is corpus-sized (the founder expectation: roughly 40–80 canonical artifacts), ids unique', () => {
-    expect(artifacts.length).toBe(82)
+    expect(artifacts.length).toBe(83)
     expect(new Set(artifacts.map((a) => a.id)).size).toBe(artifacts.length)
   })
 
@@ -129,7 +130,7 @@ describe('no invented artifacts — committed steps and real consumers', () => {
   it('the typed layer parses through the site loader (required fields, no defaults)', () => {
     // loadProcesses throws on any record missing produces/requires — totality by construction;
     // the assertions above exist to name offenders precisely.
-    expect(loadProcesses(DATA_DIR).length).toBe(147)
+    expect(loadProcesses(DATA_DIR).length).toBe(248)
   })
 })
 
@@ -264,12 +265,19 @@ describe('artifact geo — per-country analogs', () => {
     expect(withGeo.length).toBeLessThanOrEqual(40)
   })
 
-  it('geo entries live only on artifacts of US-centric producers — global-scope objects stay absent', () => {
+  it('geo entries require a producer with committed per-country mechanics — unflavored global objects stay absent', () => {
+    // The rule (maintainer decisions 2026-10-22): an artifact carries per-country geo entries
+    // only when its producer commits per-country mechanics. That is either a US-scoped record
+    // (the artifact is the US object and the entries name its analogs) or a global-scoped
+    // record whose steps carry geoResolutions (the restructured class: the US is one
+    // resolution among the committed set, and the entries describe the same knowledge).
     for (const a of withGeo) {
       const producer = tasksById.get(a.producedBy)!
+      const restructuredGlobal = producer.geoScope === 'global'
+        && producer.dag.nodes.some((n) => (n.geoResolutions ?? []).length > 0)
       expect(
-        producer.geoScope === 'us' || producer.geoScope === 'us-state',
-        `${a.id}: geo on a ${producer.geoScope}-scope producer`,
+        producer.geoScope === 'us' || producer.geoScope === 'us-state' || restructuredGlobal,
+        `${a.id}: geo on a ${producer.geoScope}-scope producer without step geoResolutions`,
       ).toBe(true)
     }
     for (const id of ['team-chat', 'crm', 'error-tracking', 'domain', 'website']) {
@@ -332,5 +340,15 @@ describe('artifact geo — per-country analogs', () => {
         }
       }
     }
+  })
+})
+
+
+describe('artifact country scope after process abstraction', () => {
+  it('keeps US-centric tax artifacts scoped while their producer has a global abstraction', () => {
+    const pages = loadArtifactPages()
+    expect(pages.find(page => page.artifact.id === 'ein')?.usOnlyProducers).toBe(true)
+    expect(pages.find(page => page.artifact.id === '83b-election')?.usOnlyProducers).toBe(true)
+    expect(pages.find(page => page.artifact.id === 'bank-account')?.usOnlyProducers).toBe(false)
   })
 })

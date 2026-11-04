@@ -27,7 +27,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { EvidenceSchema, StorySchema, VerdictBaseSchema, type Verdict } from '../../lib/schemas'
 import { categoryDir, readJson } from '../paths'
-import { cellHash, PROMPT_VERSION, validateVerdictRules } from '../stages/judge'
+import { CELL_HASH_VERSION, cellHash, PROMPT_VERSION, validateVerdictRules } from '../stages/judge'
 
 const WRITE = process.argv.includes('--write')
 const categoryFlag = process.argv.indexOf('--category')
@@ -82,7 +82,9 @@ function main(): void {
     const cacheFile = path.join('rankings-engine', 'cache', 'judge', CATEGORY!, flip.productId, `${flip.storyId}.json`)
     console.log(`${WRITE ? 'WRITE' : 'DRY RUN'}: ${flip.productId}:${flip.storyId} na -> none (hash ${hash.slice(0, 12)}...)`)
     if (WRITE) {
-      fs.writeFileSync(cacheFile, JSON.stringify({ hash, verdict }, null, 2) + '\n')
+      // keyVersion must be stamped (cache key v2 migration, 2026-10-19): an entry without it
+      // is a clean judge-cache MISS, so the next judge run would re-roll the harmonized cell.
+      fs.writeFileSync(cacheFile, JSON.stringify({ hash, keyVersion: CELL_HASH_VERSION, verdict }, null, 2) + '\n')
     }
   }
   console.log(`${flips.length} cells ${WRITE ? 'written' : 'planned'}; re-run \`pnpm engine judge --category ${CATEGORY}\` to reassemble verdicts.json`)

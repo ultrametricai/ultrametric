@@ -1,13 +1,14 @@
 import fs from 'node:fs'
+import { executionSchema } from './execution'
 import path from 'node:path'
 import { z } from 'zod'
 import { loadProcessCatalog } from './shared-processes/catalog'
 import { projectChain, projectOperational } from './shared-processes/projection'
-import { connectionSchema } from './shared-processes/schema'
+import { connectionSchema, STATE_SERVICES } from './shared-processes/schema'
 import { isPopulated, loadCategory } from './data'
 import { resolveGapStep } from './gapClosers'
 import { GEO_NOTE_KINDS } from './geoPreference'
-import { JURISDICTIONS, type Jurisdiction, type JurisdictionStepView } from './jurisdictions'
+import { JURISDICTION_INPUTS, normalizeJurisdiction, type Jurisdiction, type JurisdictionStepView } from './jurisdictions'
 import { hasLogo } from './logos'
 import { isShutdown } from './shutdown'
 import type { Cadence, GapResolution, ProcessKind, Reversibility, SimStep, StepRoute, SwapOption, Urgency, VendorRole } from './processSim'
@@ -54,14 +55,17 @@ export type ExtraOptionRef = z.infer<typeof ExtraOptionRefSchema>
 
 // Declared ahead of the node schema so method contexts can reference it — see the GEO dimension
 // block below (founder ask 2026-09-28) for the full story of these countries (PT and CA joined
-// in the new-countries wave, founder 2026-10-03).
-export const GEO_NOTE_COUNTRIES = ['IN', 'UK', 'DE', 'FR', 'PT', 'CA'] as const
+// in the new-countries wave, founder 2026-10-03; NZ, SG, AU, KR, HK, and EE in the 2026-10-23
+// country runs).
+export const GEO_NOTE_COUNTRIES = ['IN', 'UK', 'DE', 'FR', 'PT', 'CA', 'NZ', 'SG', 'AU', 'KR', 'HK', 'EE', 'NL', 'IE', 'ES', 'SE', 'CH', 'JP', 'BR', 'AE'] as const
 export type GeoNoteCountry = (typeof GEO_NOTE_COUNTRIES)[number]
 
 export const DagNodeBaseSchema = z.object({
   id: z.string().min(1),
   label: z.string().min(1),
+  // Deprecated compatibility classification. Use execution for the work's mechanism.
   route: z.enum(['agent', 'form', 'person']).optional(),
+  execution: executionSchema.optional(),
   vendor: z.string().min(1).optional(),
   // Companies that can perform this step — the market for a "choose/sign up" step. Tracked
   // vendors render as chips linking to their judged product page; untracked ones (e.g. doola)
@@ -113,15 +117,23 @@ export const DagNodeBaseSchema = z.object({
   async: z.boolean().optional(),
   // Jurisdiction-conditional step (founder 2026-09-25: "allow more options for the processes —
   // ie multi-state situations or California included"): this step only applies when the reader
-  // turns the named jurisdiction option on (['CA'] = operating in California, ['MULTI'] =
-  // operating in multiple states). Absence = the step applies everywhere (the Delaware-only
-  // default). loadProcesses() STRIPS conditional nodes at load time, so every static surface —
-  // ceilings, rankings, the simulator, the manifest, the DAG, derived/generated step data —
-  // keeps the byte-identical default view and no judged number moves; the steps only render
-  // client-side via components/JurisdictionToggle.tsx (jurisdictionStepViews below). Task-level
-  // totals (activeMinutes/totalEstimatedMinutes/hasAsyncSteps) describe the DEFAULT flow and
-  // deliberately exclude conditional nodes. Client-safe half in lib/jurisdictions.ts.
-  jurisdictions: z.enum(JURISDICTIONS).array().min(1).optional(),
+  // turns the named jurisdiction option on — a registry US-state code (['US-CA'] = operating in
+  // California, ['US-TX'] = operating in Texas, … the lib/jurisdictions.ts JURISDICTIONS set)
+  // or ['MULTI'] (operating in multiple states). The original two-option enum spelled
+  // California 'CA'; committed records keep that spelling and it normalizes to 'US-CA' here at
+  // parse time (deprecated alias — new records use the registry code). Absence = the step
+  // applies everywhere (the Delaware-only default). loadProcesses() STRIPS conditional nodes at
+  // load time, so every static surface — ceilings, rankings, the simulator, the manifest, the
+  // DAG, derived/generated step data — keeps the byte-identical default view and no judged
+  // number moves; the steps only render client-side via components/JurisdictionToggle.tsx
+  // (jurisdictionStepViews below). Task-level totals (activeMinutes/totalEstimatedMinutes/
+  // hasAsyncSteps) describe the DEFAULT flow and deliberately exclude conditional nodes.
+  // Client-safe half in lib/jurisdictions.ts.
+  jurisdictions: z.enum(JURISDICTION_INPUTS).transform(normalizeJurisdiction).array().min(1).optional(),
+  // The state-level service a conditional step is (registered agent, foreign qualification,
+  // annual report, payroll-tax or sales-tax registration, formation), keying the per-state
+  // vendor evidence in jurisdictions/vendor-state.json. Annotation only: no judged number reads it.
+  service: z.enum(STATE_SERVICES).optional(),
   // Internal pointer for a conditional step whose work already lives in its OWN corpus process
   // (the sales-tax-nexus case — link it, never duplicate it): the canonical slug of that
   // process. Display-only; integrity (resolves to a real process) is corpus-tested.
@@ -204,7 +216,9 @@ export const StepMethodSchema = z.object({
   label: z.string().min(1),
   summary: z.string(),
   context: StepMethodContextSchema.optional(),
+  // Deprecated compatibility classification. Use execution for the work's mechanism.
   route: z.enum(['agent', 'form', 'person']).optional(),
+  execution: executionSchema.optional(),
   vendor: z.string().min(1).optional(),
   vendorOptions: z.string().min(1).array().optional(),
   optionsArenaId: z.string().min(1).optional(),
@@ -268,6 +282,9 @@ export const GEO_RESOLUTION_COUNTRIES = ['US', ...GEO_NOTE_COUNTRIES] as const
 export type GeoResolutionCountry = (typeof GEO_RESOLUTION_COUNTRIES)[number]
 
 export const StepGeoResolutionSchema = z.object({
+  // These details apply to this country's mechanics, rather than the shared step.
+  verify: StepVerifySchema.optional(),
+  cost: StepCostSchema.optional(),
   country: z.enum(GEO_RESOLUTION_COUNTRIES),
   kind: z.enum(GEO_NOTE_KINDS),
   // The country's concrete mechanics for this abstract step — the text that was (or would have
@@ -395,6 +412,20 @@ export const GEO_COUNTRY_META: Record<GeoNoteCountry, { label: string; flag: str
   FR: { label: 'France', flag: '🇫🇷' },
   PT: { label: 'Portugal', flag: '🇵🇹' },
   CA: { label: 'Canada', flag: '🇨🇦' },
+  NZ: { label: 'New Zealand', flag: '🇳🇿' },
+  SG: { label: 'Singapore', flag: '🇸🇬' },
+  AU: { label: 'Australia', flag: '🇦🇺' },
+  KR: { label: 'South Korea', flag: '🇰🇷' },
+  HK: { label: 'Hong Kong', flag: '🇭🇰' },
+  EE: { label: 'Estonia', flag: '🇪🇪' },
+  NL: { label: 'Netherlands', flag: '🇳🇱' },
+  IE: { label: 'Ireland', flag: '🇮🇪' },
+  ES: { label: 'Spain', flag: '🇪🇸' },
+  SE: { label: 'Sweden', flag: '🇸🇪' },
+  CH: { label: 'Switzerland', flag: '🇨🇭' },
+  JP: { label: 'Japan', flag: '🇯🇵' },
+  BR: { label: 'Brazil', flag: '🇧🇷' },
+  AE: { label: 'United Arab Emirates', flag: '🇦🇪' },
 }
 
 // Proven runs (founder spike 2026-10-02 — EXECUTED-PROOF SLOT, design only): a dated record
@@ -757,7 +788,9 @@ export function jurisdictionStepViews(taskId: string, dir: string = DEFAULT_DIR(
     return {
       label: n.label,
       route: n.route,
-      jurisdictions: (n.jurisdictions ?? []) as Jurisdiction[],
+      execution: n.execution,
+      jurisdictions: (n.jurisdictions ?? []) satisfies Jurisdiction[],
+      ...(n.service ? { service: n.service } : {}),
       actionUrl: n.actionUrl ?? null,
       actionLabel: n.actionLabel ?? null,
       estimatedMinutes: n.estimatedMinutes,
@@ -1056,27 +1089,58 @@ export const GOVERNMENT_ARENA_ID = 'government-services'
 // construction: a step wired to a foreign agency inherits that agency's own country. The
 // process-level jurisdiction context was checked and corroborates (every government-covered
 // step today sits on a geoScope-'us' process whose wired agency carries country 'US'; the
-// node-level `jurisdictions` field only marks CA/MULTI conditional steps), but the wired
+// node-level `jurisdictions` field only marks state/MULTI conditional steps), but the wired
 // agency is the finer committed signal — geoScope cannot tell a tax step from an IP step.
+//
+// THE STATE DIMENSION (per-state vendors foundation, 2026-10-22): some government-services
+// agencies carry a committed ProductSchema `state` tag (the US state company registries —
+// "US-CA" on the California Secretary of State), and a node may carry a state-level
+// jurisdiction code in its `jurisdictions` field. When both committed signals exist, the pull
+// narrows to the agencies tagged with the step's state: a Delaware filing never lists the
+// California Secretary of State as a candidate. The narrowing never guesses: when the arena
+// rosters no agency tagged with the step's state (federal tax steps, IP steps — their eligible
+// agencies carry no state tag), the country+area set stands unchanged, and a step without a
+// state code behaves exactly as before. A state-tagged step with no resolvable wired agency
+// still narrows on the state tag alone — the committed product tags are the finer signal there.
+//
+// State agencies are not substitutes for federal ones (state-agency bring-up, 2026-10-22: the
+// roster now carries state TAX and EMPLOYMENT agencies — ca-ftb, ca-edd, ny-dtf,
+// tx-comptroller, de-dor — alongside the federal IRS/EFTPS in the same country+area cells):
+// the anchored set matches the wired agency's `state` tag exactly, undefined meaning federal.
+// A step wired to the IRS never lists the Texas Comptroller, and a step wired to the CA EDD
+// (the US-CA payroll-registration conditional step) resolves to exactly the agencies sharing
+// its country, area, AND state. The committed wiring is the vendor reference on the canonical
+// step (open-processes/vendor-registry.json keys ca_ftb/ca_edd/ny_dtf/tx_comptroller).
 //
 // Returns null — UNFILTERED — for every other arena, and for a government-covered step that
 // is not wired to a tagged product of the arena (no canonical vendor, or an untagged
-// product): there the area cannot be honestly derived from committed data, so the pull is
-// left alone rather than guessed. The arena page itself never passes through this path and
-// keeps its full roster.
+// product) and carries no state code: there the area cannot be honestly derived from
+// committed data, so the pull is left alone rather than guessed. The arena page itself never
+// passes through this path and keeps its full roster.
+const STATE_JURISDICTION_CODE = /^US-[A-Z]{2}$/
+
 export function governmentStepEligibility(
-  node: Pick<DagNode, 'vendor'>,
+  node: Pick<DagNode, 'vendor'> & { jurisdictions?: readonly string[] },
   arenaId: string,
   dir?: string,
 ): Set<string> | null {
   if (arenaId !== GOVERNMENT_ARENA_ID) return null
-  if (!node.vendor || VENDOR_ARENA[node.vendor] !== GOVERNMENT_ARENA_ID) return null
   const products = loadCategory(arenaId, dir).products
-  const anchor = products.find((p) => p.id === vendorProductId(node.vendor!))
-  if (!anchor?.country || !anchor.area) return null
-  return new Set(
-    products.filter((p) => p.country === anchor.country && p.area === anchor.area).map((p) => p.id),
-  )
+  const state = node.jurisdictions?.find((j) => STATE_JURISDICTION_CODE.test(j))
+  const wired =
+    node.vendor && VENDOR_ARENA[node.vendor] === GOVERNMENT_ARENA_ID
+      ? products.find((p) => p.id === vendorProductId(node.vendor!))
+      : undefined
+  const anchored =
+    wired?.country && wired.area
+      ? products.filter((p) => p.country === wired.country && p.area === wired.area && p.state === wired.state)
+      : null
+  if (state) {
+    const inState = (anchored ?? products).filter((p) => p.state === state)
+    if (inState.length > 0) return new Set(inState.map((p) => p.id))
+  }
+  if (!anchored) return null
+  return new Set(anchored.map((p) => p.id))
 }
 
 // Pretty display names for corpus vendor keys (snake_case, lowercase). Fallback title-cases.
@@ -1408,6 +1472,7 @@ export function buildSimSteps(tasks: ProcessTask[], dir?: string): SimStep[] {
       taskTitle: task.title,
       label: n.label,
       route: n.route,
+      execution: n.execution,
       vendor: n.vendor ?? null,
       vendorLabel: n.vendor ? vendorLabel(n.vendor) : null,
       arenaId: (n.vendor && VENDOR_ARENA[n.vendor]) || null,

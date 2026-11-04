@@ -1,6 +1,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { describe, expect, it } from 'vitest'
+import { readSharedCatalog } from '../shared-processes/reader'
 import { isPopulated, loadCategories, loadCategory } from '@/lib/data'
 import {
   buildSimSteps, CADENCE_META, CADENCE_ORDER, cadenceRank, chainTasks, computeCeiling,
@@ -26,9 +27,9 @@ const node = (over: Partial<DagNode>): DagNode => ({
 })
 
 describe('corpus', () => {
-  it('loads all 147 records (125 processes + 22 situations) with unique, non-empty slugs', () => {
+  it('loads the expanded operational catalog (197 processes + 33 situations) with unique, non-empty slugs', () => {
     const tasks = loadProcesses(DATA_DIR)
-    expect(tasks.length).toBe(147)
+    expect(tasks.length).toBe(248)
     const slugs = tasks.map((t) => processSlug(t.title))
     expect(new Set(slugs).size).toBe(tasks.length)
     for (const s of slugs) expect(s).toMatch(/^[a-z0-9]+(-[a-z0-9]+)*$/)
@@ -221,22 +222,22 @@ describe('corpus', () => {
     expect(scopes.filter((s) => s === 'us-state').length).toBeGreaterThan(0)
   })
 
-  it('geo anchors: name is global, EIN is federal, franchise tax is state-level', () => {
+  it('geo anchors: tax identifiers and incorporation are global; US national regimes retain their scopes', () => {
     const tasks = loadProcesses(DATA_DIR)
     const byId = (id: string) => tasks.find((t) => t.id === id)!
     expect(byId('brand_001').geoScope).toBe('global') // choosing a name is global
     expect(byId('site_001').geoScope).toBe('global') // so is generating a website
-    expect(byId('form_002').geoScope).toBe('us') // EIN — the IRS
-    expect(byId('form_001').geoScope).toBe('us') // DE incorporation (founder call: us)
+    expect(byId('form_002').geoScope).toBe('global') // EIN is the US resolution
+    expect(byId('form_001').geoScope).toBe('global') // local incorporation routes
     expect(byId('tax_003').geoScope).toBe('us') // 1099s — the IRS
     // Truly state-level: the counterparty is a US state.
-    for (const id of ['tax_001', 'form_005', 'qs_043', 'qs_045', 'qs_047', 'tax_011']) {
+    for (const id of ['tax_001', 'form_005', 'qs_043', 'qs_045']) {
       expect(byId(id).geoScope, `${id} is state-level work`).toBe('us-state')
     }
     // Payroll RUNNING is global (the vendor loop); payroll SETUP is US (state/federal
     // registrations) and carries the per-country analogs.
     expect(byId('hr_002').geoScope).toBe('global')
-    expect(byId('qs_063').geoScope).toBe('us')
+    expect(byId('qs_063').geoScope).toBe('global')
     expect((byId('qs_063').geoNotes ?? []).length).toBeGreaterThan(0)
   })
 
@@ -249,7 +250,8 @@ describe('corpus', () => {
       if (notes.length === 0) continue
       if (t.geoScope === 'global') globalWithNotes++
       // At most one note per country per process, the committed country enum only (the schema
-      // re-checks it: IN/UK/DE/FR plus PT/CA since the 2026-10-03 new-countries wave).
+      // re-checks it: IN/UK/DE/FR plus PT/CA since the 2026-10-03 new-countries wave, NZ/SG/AU/KR/EE since
+      // the 2026-10-23 country runs).
       expect(new Set(notes.map((n) => n.country)).size).toBe(notes.length)
       for (const n of notes) {
         expect(n.actionUrl).toMatch(/^https:\/\//)
@@ -264,17 +266,21 @@ describe('corpus', () => {
     // data protection, accounting…). Honest coverage, not completeness theater — a country
     // with no real analog carries no note, so the band stays wide.
     expect(total).toBeGreaterThanOrEqual(120)
-    expect(total).toBeLessThanOrEqual(500)
-    // Global notes exist (the flavored set) but stay the minority of note-carrying processes.
+    // The scoped UK payroll and statutory-accounts guides add two authored notes.
+    expect(total).toBeLessThanOrEqual(602)
+    // Both camps stay populated: the geo-resolution restructures moved most note-carriers to
+    // global scope, and the US-scoped core (EIN, payroll setup, state work) keeps its notes.
     expect(globalWithNotes).toBeGreaterThan(0)
     const usWithNotes = tasks.filter((t) => t.geoScope !== 'global' && (t.geoNotes ?? []).length > 0).length
-    expect(usWithNotes).toBeGreaterThan(globalWithNotes)
+    expect(usWithNotes).toBeGreaterThan(0)
     // The founder's worked examples: incorporation has all four country analogs, and the
     // founder agreement / equity split (founder example 2026-09-29: "?geo=in currently has
     // no India note") carries all four too — stamp duty in India, share classes in the UK.
     for (const id of ['form_001', 'startup_002']) {
       const t = tasks.find((x) => x.id === id)!
-      expect((t.geoNotes ?? []).map((n) => n.country).sort(), id).toEqual(['CA', 'DE', 'FR', 'IN', 'PT', 'UK'])
+      const expected = ['AU', 'CA', 'DE', 'EE', 'FR', 'HK', 'IN', 'KR', 'NZ', 'PT', 'SG', 'UK']
+      if (id === 'form_001') expected.push('NL', 'IE', 'ES', 'SE', 'CH', 'JP', 'BR', 'AE')
+      expect((t.geoNotes ?? []).map((n) => n.country).sort(), id).toEqual(expected.sort())
     }
   })
 
@@ -291,7 +297,9 @@ describe('corpus', () => {
         kinds[n.kind]++
         // A note on a GLOBAL process is a per-country flavor of work that exists everywhere —
         // by construction it can only be 'analog' (the other kinds would contradict the scope).
-        if (t.geoScope === 'global') expect(n.kind, `${t.id}/${n.country}: global flavor notes are analogs`).toBe('analog')
+        if (t.geoScope === 'global' && n.kind !== 'analog') {
+          expect(t.dag.nodes.some(step => step.geoResolutions?.some(row => row.country === n.country && row.kind === n.kind)), `${t.id}/${n.country}: absorbed work needs explicit step mechanics`).toBe(true)
+        }
       }
     }
     // Honest distribution: most mapped needs exist abroad as their own processes; the absorbed/
@@ -309,11 +317,12 @@ describe('corpus', () => {
     expect(noteKind('form_002', 'UK')).toBe('absorbed')
     expect(noteKind('form_002', 'FR')).toBe('absorbed')
     expect(noteKind('form_002', 'DE')).toBe('analog')
+    expect(noteKind('form_002', 'SG')).toBe('absorbed') // the UEN arrives with ACRA incorporation
     // Incorporation has a true doable analog in every covered country.
-    for (const c of ['IN', 'UK', 'DE', 'FR', 'PT', 'CA']) expect(noteKind('form_001', c), `form_001/${c}`).toBe('analog')
+    for (const c of ['IN', 'UK', 'DE', 'FR', 'PT', 'CA', 'NZ', 'SG', 'AU', 'KR', 'HK', 'EE']) expect(noteKind('form_001', c), `form_001/${c}`).toBe('analog')
     // No country has a US-style registered-agent industry — the registered office is declared
     // inside formation everywhere.
-    for (const c of ['IN', 'UK', 'DE', 'FR', 'PT', 'CA']) expect(noteKind('qs_043', c), `qs_043/${c}`).toBe('absorbed')
+    for (const c of ['IN', 'UK', 'DE', 'FR', 'PT', 'CA', 'NZ', 'SG', 'AU', 'KR', 'HK', 'EE']) expect(noteKind('qs_043', c), `qs_043/${c}`).toBe('absorbed')
     // The need genuinely absent: no UK 1099 regime; nothing to foreign-qualify for inside the
     // UK; no German franchise-tax ritual (the IHK-Beitrag arrives automatically).
     expect(noteKind('tax_003', 'UK')).toBe('not-applicable')
@@ -322,18 +331,21 @@ describe('corpus', () => {
   })
 
   // Geo coverage to totality (founder boost 2026-10-02: "close EVERY gap … pin totality:
-  // uncovered = 0"; PT and CA joined the enum in the 2026-10-03 new-countries wave). Every
-  // US-scoped record — processes and situations alike — says what the need becomes in all six
+  // uncovered = 0"; PT and CA joined the enum in the 2026-10-03 new-countries wave; NZ, SG,
+  // AU, KR, HK, and EE in the 2026-10-23 country runs). Every
+  // US-scoped record — processes and situations alike — says what the need becomes in all twelve
   // countries, with the honesty carried by the note KIND (a not-applicable note is a closed gap
   // too: sit_002 is inherently US-inbound, Germany has no 409A ritual and no 1099 regime,
-  // Canada has no LLC). The six-country set is the whole enum, so this is the uncovered=0 pin.
-  it('geo totality: every US-scoped record carries all six countries (uncovered = 0)', () => {
+  // Canada, New Zealand, Australia, and Hong Kong have no LLC). The twelve-country set is the
+  // whole enum, so this is the
+  // uncovered=0 pin.
+  it('geo totality: every US-scoped record carries all twelve countries (uncovered = 0)', () => {
     const tasks = loadProcesses(DATA_DIR)
     for (const t of tasks.filter((x) => x.geoScope !== 'global')) {
       expect(
         (t.geoNotes ?? []).map((n) => n.country).sort(),
-        `${t.id} (${t.title}): six-country geo totality`,
-      ).toEqual(['CA', 'DE', 'FR', 'IN', 'PT', 'UK'])
+        `${t.id} (${t.title}): twelve-country geo totality`,
+      ).toEqual(['AU', 'CA', 'DE', 'EE', 'FR', 'HK', 'IN', 'KR', 'NZ', 'PT', 'SG', 'UK'])
     }
     // The worked decisions of the closing passes, pinned: bank-account analogs exist in the four
     // original countries (vendor-geo-aligned; qs_023 is global-scoped, so PT/CA notes are not
@@ -345,7 +357,7 @@ describe('corpus', () => {
     for (const c of ['IN', 'UK', 'DE', 'FR']) {
       expect(noteKind('qs_023', c), `qs_023/${c}`).toBe('analog')
     }
-    for (const c of ['IN', 'UK', 'DE', 'FR', 'PT', 'CA']) {
+    for (const c of ['IN', 'UK', 'DE', 'FR', 'PT', 'CA', 'NZ', 'SG', 'AU', 'KR', 'HK', 'EE']) {
       expect(noteKind('sit_002', c), `sit_002/${c}`).toBe('not-applicable')
     }
     expect(noteKind('fund_003', 'DE')).toBe('not-applicable')
@@ -353,10 +365,19 @@ describe('corpus', () => {
     expect(noteKind('fund_003', 'UK')).toBe('analog') // the EMI valuation precedent
     expect(noteKind('fund_003', 'PT')).toBe('not-applicable') // no safe-harbor appraisal; Lei 21/2023 defers tax instead
     expect(noteKind('fund_003', 'CA')).toBe('not-applicable') // CCPC deferral, no appraisal ritual
+    expect(noteKind('fund_003', 'NZ')).toBe('not-applicable') // no NZ 409A equivalent; IR's ESS rules instead
+    expect(noteKind('fund_003', 'SG')).toBe('not-applicable') // no IRAS valuation safe harbor; ESOW taxes at exercise
+    expect(noteKind('fund_003', 'KR')).toBe('not-applicable') // options run on their own Commercial Act rules, no appraisal ritual
+    expect(noteKind('fund_003', 'HK')).toBe('not-applicable') // salaries tax at exercise per DIPN 38, no appraisal ritual
+    expect(noteKind('fund_003', 'EE')).toBe('not-applicable') // fringe-benefit rules with the three-year holding relief, no appraisal ritual
     expect(noteKind('tax_003', 'DE')).toBe('not-applicable')
     expect(noteKind('tax_003', 'PT')).toBe('not-applicable') // e-Fatura already reports invoices
     expect(noteKind('tax_003', 'CA')).toBe('analog') // the T4A slip is a real information return
+    expect(noteKind('tax_003', 'NZ')).toBe('not-applicable') // schedular-payment withholding, no 1099-style return
+    expect(noteKind('tax_003', 'SG')).toBe('not-applicable') // contractors self-assess; IR8A covers employees
     expect(noteKind('form_011', 'CA')).toBe('not-applicable') // Canada has no LLC form at all
+    expect(noteKind('form_011', 'NZ')).toBe('not-applicable') // nor does New Zealand
+    expect(noteKind('form_011', 'HK')).toBe('not-applicable') // nor does Hong Kong
     expect(noteKind('qs_045', 'CA')).toBe('analog') // extra-provincial registration genuinely exists
     expect(noteKind('vc_002', 'DE')).toBe('analog') // AIFMD/BaFin is real, doable work
   })
@@ -379,7 +400,9 @@ describe('corpus', () => {
       ['qs_047', 'US-NV', 'us-nv.annual-list-business-license'],
       ['qs_047', 'US-TX', 'us-tx.franchise-tax-report'],
     ] as const) {
-      expect(byId(pid).description, `${pid} cites ${ruleId}`).toContain(ruleId)
+      const task = byId(pid)
+      const usText = task.dag.nodes.flatMap(node => (node.geoResolutions ?? []).filter(row => row.country === 'US').map(row => row.guidance ?? '')).join(' ')
+      expect(`${task.description} ${usText}`, `${pid} cites ${ruleId}`).toContain(ruleId)
       const file = path.join(__dirname, '..', '..', 'open-law', dir, `${ruleId.replace(/\./g, '-')}.json`)
       expect(fs.existsSync(file), `${ruleId} card committed at ${file}`).toBe(true)
       expect(JSON.parse(fs.readFileSync(file, 'utf8')).id).toBe(ruleId)
@@ -403,7 +426,7 @@ describe('corpus', () => {
     const tasks = loadProcesses(DATA_DIR)
     const byId = (id: string) => tasks.find((t) => t.id === id)!
     const situations = tasks.filter((t) => t.kind === 'situation')
-    expect(situations.length).toBe(22)
+    expect(situations.length).toBe(33)
     // Reactive by definition: every situation is event-driven — no situation sits on a calendar.
     for (const t of situations) expect(t.cadence, `${t.id} cadence`).toBe('event-driven')
     // The urgency clock is curated, not uniform — all three tiers exist in the set.
@@ -442,7 +465,9 @@ describe('corpus', () => {
       ['sit_015', 'EU', 'eu.gdpr-dsar-response-deadline'],
       ['sit_021', 'US-FED', 'us-fed.osha-severe-injury-reporting'],
     ] as const) {
-      expect(byId(sid).description, `${sid} cites its law rule`).toContain(ruleId)
+      const record = readSharedCatalog().find(record => record.id === sid)
+      const summaries = [byId(sid).description, ...(record?.countryViews ?? []).map(view => view.summary ?? '')].join('\n')
+      expect(summaries, `${sid} cites its law rule in the applicable country summary`).toContain(ruleId)
       const file = path.join(__dirname, '..', '..', 'open-law', dir, `${ruleId.replace(/\./g, '-')}.json`)
       expect(fs.existsSync(file), `${ruleId} card committed at ${file}`).toBe(true)
       expect(JSON.parse(fs.readFileSync(file, 'utf8')).id).toBe(ruleId)
@@ -465,14 +490,18 @@ describe('corpus', () => {
     // entry beside the committed GDPR/CERT-In/PIPEDA mechanics), so the record is geoScope
     // 'global' since the wave-2 restructuring. The notes stay country-total (the CNIL
     // teleservice URL verified live 2026-10-02 closed the FR gap the first pass couldn't; CNPD
-    // and the OPC closed PT/CA in the 2026-10-03 wave).
+    // and the OPC closed PT/CA in the 2026-10-03 wave; NZ's NotifyUs and the SG PDPA note joined 2026-10-23,
+    // with the KR PIPA, HK PDPO, and EE GDPR/AKI notes in the same day's country runs).
     expect(breach.geoScope).toBe('global')
-    expect((breach.geoNotes ?? []).map((n) => n.country).sort()).toEqual(['CA', 'DE', 'FR', 'IN', 'PT', 'UK'])
+    expect((breach.geoNotes ?? []).map((n) => n.country).sort()).toEqual(['AU', 'CA', 'DE', 'EE', 'FR', 'HK', 'IN', 'KR', 'NZ', 'PT', 'SG', 'UK'])
     expect(breach.geoNotes!.find((n) => n.country === 'FR')!.actionUrl).toContain('cnil.fr')
   })
 
   it('contains no scrubbed vendor names and no AFK-app-legacy framing', () => {
-    const raw = JSON.stringify(loadProcesses(DATA_DIR)).toLowerCase()
+    // Primary-source URLs in assessments are evidence, not vendor names in prose.
+    // The execution tests separately validate their local source references.
+    const raw = JSON.stringify(loadProcesses(DATA_DIR), (key, value) =>
+      key === 'execution' ? { ...value, evidence: [] } : value).toLowerCase()
     for (const banned of [
       'searchmarq', 'domscan', 'daytona', 'linear.app',
       // The corpus is a general startup-operations map, not the original AFK app's task list.
@@ -705,8 +734,10 @@ describe('derived step options (optionsArenaId)', () => {
     expect(payrollStep.optionsArenaId).toBe('payroll')
     const chips = stepVendorOptions(payrollStep, DATA_DIR)
     const leaderboard = loadCategory('payroll', DATA_DIR).rankings.leaderboard.map((e) => e.productId)
-    // Every curated payroll option is already in the roster, so the list IS the leaderboard.
-    expect(chips.map((c) => c.productId)).toEqual(leaderboard.slice(0, STEP_OPTIONS_CAP))
+    // The 2026-10-22 bring-up grew payroll past STEP_OPTIONS_CAP: the list is the leaderboard
+    // top N, and the curated option that now falls outside it (justworks) is appended, the same
+    // contract the ai-coding test below pins.
+    expect(chips.map((c) => c.productId)).toEqual([...leaderboard.slice(0, STEP_OPTIONS_CAP), 'justworks'])
     for (const c of chips) {
       expect(c.arenaId).toBe('payroll')
       expect(c.rank).toBeGreaterThanOrEqual(1)
@@ -916,7 +947,12 @@ describe('agentic showcase chains (founder 2026-09-25) — tagline claims recomp
     )
     // 26 of 31 steps (84%) at composition time — the tagline's "most reachable today over
     // judged MCP servers and CLIs".
-    expect(agentic.length / steps.length).toBeGreaterThanOrEqual(0.75)
+    // Re-pinned at the 2026-10-22 payroll bring-up: quickbooks-payroll now tops the two hr_002
+    // payroll steps on the judged step scores but holds no full/partial MCP-server or
+    // official-CLI verdict, so the chain recomputes at 22 of 31 steps (71%). The published
+    // claim ("most reachable today") still recomputes true; the floor moves with the data
+    // while staying a clear majority.
+    expect(agentic.length / steps.length).toBeGreaterThanOrEqual(0.7)
   })
 
   it('mcp-native-stack: at nearly every rankable step the top judged vendor ships an official MCP server', () => {

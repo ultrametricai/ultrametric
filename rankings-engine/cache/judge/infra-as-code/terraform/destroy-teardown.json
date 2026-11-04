@@ -1,14 +1,16 @@
 {
-  "hash": "fdf6c91633168816ca916a24b4dd10234f93f6e758c28e7cfe9963215a58f587",
+  "hash": "28768d02c7c20afe33b46bae63a6a16d0ebebc57d1352143b9f2e23f8eb8d20f",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "No evidence item documents a `terraform destroy` command or a full-environment teardown workflow. The only related evidence is indirect: a community user says Terraform state ensures deleted resources are purged, and test docs describe short-lived resources created for tests, which implies cleanup. Missing for 10: first-party documentation of a destroy operation, evidence of tearing down a whole environment in one step, a destroy plan preview, and hands-on corroboration that teardown is clean.",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Terraform's apply docs list a `-destroy` mode that \"creates a plan to destroy all remote objects\" (docs-45). Like any apply, that plan is previewed, approved, and executed in dependency order (docs-25, docs-44), which covers the core of a clean full-environment teardown. One user reports that a single-run Kubernetes/Helm setup \"doesn't handle cluster deletion well\" (comm-7), an edge-case limitation rather than a contradiction of the documented capability. missing for 10: dedicated in-depth documentation of the destroy workflow (e.g. a `terraform destroy` command page, dependency-ordered deletion details), independent hands-on corroboration of clean teardowns, and clarity on teardown reliability in multi-provider stacks like Kubernetes.",
     "evidenceIds": [
-      "terraform-comm-9",
-      "terraform-docs-27"
+      "terraform-docs-45",
+      "terraform-docs-25",
+      "terraform-docs-44",
+      "terraform-comm-7"
     ],
     "productId": "terraform",
     "storyId": "destroy-teardown"

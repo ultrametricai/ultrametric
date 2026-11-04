@@ -1,12 +1,15 @@
 {
-  "hash": "233b36b8a9372d086a1811547b64949733659a33c48718f6cedfd8c2a9e54f94",
+  "hash": "f45f81ab78035983fd97863e54bae7c0aac64fccb7dedf0c188c4364dedd8a35",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "The evidence covers only basic alerting: email to team members and webhook recipients. It says nothing about spike protection, per-key rate limits, or mute/ignore rules. The SDK-side tracesSampleRate is a client sampling setting for performance transactions, not a GlitchTip alert-noise control. Resolving issues via MCP is an adjacent feature, not muting or ignoring.",
-    "evidenceIds": [],
+    "rationale": "GlitchTip has two noise controls of its own. Alert rules can fire based on error frequency (docs-29), and individual issues can be ignored (update_issue: resolve, unresolve, or ignore, docs-37). That only touches the mute/ignore part of the story. The spike item (docs-48) is about on-demand billing that keeps collecting events past the plan, which is not spike protection. The 1% sampling setting (tracesSampleRate) is configured in the client SDK for performance transactions, not a per-key rate limit in GlitchTip. Missing for 10: spike protection, per-key/DSN rate limits, rule-based mute/snooze (e.g. ignore until N events or for a time window), and any hands-on corroboration of alert-noise reduction.",
+    "evidenceIds": [
+      "glitchtip-docs-29",
+      "glitchtip-docs-37"
+    ],
     "productId": "glitchtip",
     "storyId": "noise-spike-controls"
   }

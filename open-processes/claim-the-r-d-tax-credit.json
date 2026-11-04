@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "id": "tax_010",
   "kind": "process",
-  "title": "Claim the R&D tax credit",
-  "summary": "Claim the research-and-development credit your tax jurisdiction offers: scope the qualifying expenditure, run the study, attach the claim to the tax return, and apply any payroll offset the regime allows. In the US the claim is Form 6765 with the Form 8974 payroll-tax offset, worth up to $500k a year for pre-revenue startups.",
+  "title": "Claim research-and-development tax incentives",
+  "summary": "Identify the research-and-development tax incentives available to the company, document eligible work and expenditure, prepare the claim and retain the supporting evidence. Apply a payroll offset only where the relevant regime provides one.",
   "outcomes": [],
   "guidance": null,
   "parts": [
@@ -43,7 +43,19 @@
       "metadata": {
         "route": "person",
         "reversibility": "reversible",
-        "estimatedMinutes": 30
+        "estimatedMinutes": 30,
+        "execution": {
+          "category": "agent-native",
+          "basis": "local-work",
+          "rationale": "Compare credit-study providers and prepare eligibility questions from the supplied projects and prior claims for tax advice.",
+          "evidence": [
+            "open-processes/claim-the-r-d-tax-credit.json#/parts/0/guidance"
+          ],
+          "reviewRequired": false,
+          "automationEvidence": {
+            "status": "documented"
+          }
+        }
       }
     },
     {
@@ -110,7 +122,19 @@
             "actionUrl": "https://www.canada.ca/en/revenue-agency/services/scientific-research-experimental-development-tax-incentive-program.html",
             "actionLabel": "CRA — SR&ED program"
           }
-        ]
+        ],
+        "execution": {
+          "category": "agent-native",
+          "basis": "local-work",
+          "rationale": "Reconcile supplied payroll, activity and expense records into traceable study schedules with estimates identified.",
+          "evidence": [
+            "open-processes/claim-the-r-d-tax-credit.json#/parts/1/guidance"
+          ],
+          "reviewRequired": false,
+          "automationEvidence": {
+            "status": "documented"
+          }
+        }
       }
     },
     {
@@ -180,7 +204,20 @@
             "actionUrl": "https://www.canada.ca/en/revenue-agency/services/scientific-research-experimental-development-tax-incentive-program.html",
             "actionLabel": "CRA — SR&ED program"
           }
-        ]
+        ],
+        "execution": {
+          "category": "human-online",
+          "basis": "human-work",
+          "rationale": "The finance owner exchanges study inputs and questions with the R&D provider digitally, then reviews the delivered study and its outstanding assumptions.",
+          "evidence": [
+            "open-processes/claim-the-r-d-tax-credit.json#/parts/2/guidance",
+            "open-processes/claim-the-r-d-tax-credit.json#/parts/2"
+          ],
+          "reviewRequired": true,
+          "automationEvidence": {
+            "status": "unverified"
+          }
+        }
       }
     },
     {
@@ -205,7 +242,20 @@
         "route": "person",
         "reversibility": "reversible",
         "riskLevel": "high",
-        "estimatedMinutes": 45
+        "estimatedMinutes": 45,
+        "execution": {
+          "category": "human-online",
+          "basis": "human-work",
+          "rationale": "The technical owners and tax adviser review the study and supporting digital records before accepting the proposed credit treatment.",
+          "evidence": [
+            "open-processes/claim-the-r-d-tax-credit.json#/parts/3/guidance",
+            "open-processes/claim-the-r-d-tax-credit.json#/parts/3"
+          ],
+          "reviewRequired": true,
+          "automationEvidence": {
+            "status": "unverified"
+          }
+        }
       }
     },
     {
@@ -292,8 +342,59 @@
             "label": "No credit claim to file since the 200% weighted deduction lapsed: R&D spend deducts at 100%, and DSIR recognition gates the remaining incentives",
             "actionUrl": "https://dsir.gov.in/",
             "actionLabel": "DSIR — in-house R&D recognition"
+          },
+          {
+            "country": "SG",
+            "kind": "analog",
+            "label": "Claim the Enterprise Innovation Scheme enhanced deductions (400% on up to $400,000 of qualifying Singapore R&D, YA 2024-2028) in the Form C-S/C by the 30 November filing deadline",
+            "actionUrl": "https://www.iras.gov.sg/schemes/disbursement-schemes/enterprise-innovation-scheme-(eis)",
+            "actionLabel": "IRAS — Enterprise Innovation Scheme"
+          },
+          {
+            "country": "AU",
+            "kind": "analog",
+            "label": "Register the year's R&D activities on the R&DTI portal, then claim the offset in the company tax return's R&D schedule",
+            "actionUrl": "https://business.gov.au/grants-and-programs/research-and-development-tax-incentive",
+            "actionLabel": "R&D Tax Incentive"
+          },
+          {
+            "country": "KR",
+            "kind": "analog",
+            "label": "Claim the R&D credit on the corporate tax return through Hometax",
+            "guidance": "The research and manpower development credit under Restriction of Special Taxation Act Article 10 rides the corporate tax return, due within three months of the end of the business-year month (law rule kr.corporate-tax-return-deadline).",
+            "actionUrl": "https://www.hometax.go.kr/",
+            "actionLabel": "Hometax (NTS e-filing)"
+          },
+          {
+            "country": "HK",
+            "kind": "analog",
+            "label": "The enhanced R&D deduction is claimed in the profits tax return: 300% on the first HK$2,000,000 of qualifying Type B expenditure and 200% above it",
+            "guidance": "Inland Revenue Ordinance Schedule 45 defines qualifying R&D activities and splits Type A (100% deduction) from Type B (300%/200%) expenditures; the claim rides the profits tax return rather than a separate credit filing.",
+            "actionUrl": "https://www.elegislation.gov.hk/hk/cap112!en/sch45",
+            "actionLabel": "IRO Schedule 45 (e-Legislation)"
+          },
+          {
+            "country": "EE",
+            "kind": "not-applicable",
+            "label": "No profits return exists for an R&D credit to ride",
+            "guidance": "Corporate income tax is charged only when profit is distributed (law rule ee.corporate-tax-distributed-profits), so there is no annual profits return and no R&D tax-credit regime attached to one.",
+            "actionUrl": "https://www.emta.ee/en/business-client/taxes-and-payment/income-and-social-taxes",
+            "actionLabel": "Income and social taxes (e-MTA)"
           }
-        ]
+        ],
+        "execution": {
+          "category": "human-online",
+          "basis": "human-work",
+          "rationale": "The authorized tax filer reviews the credit treatment and submits the approved return and supporting claim through the accepted digital filing process.",
+          "evidence": [
+            "open-processes/claim-the-r-d-tax-credit.json#/parts/4/guidance",
+            "open-processes/claim-the-r-d-tax-credit.json#/parts/4"
+          ],
+          "reviewRequired": true,
+          "automationEvidence": {
+            "status": "unverified"
+          }
+        }
       }
     },
     {
@@ -337,19 +438,35 @@
         "route": "form",
         "reversibility": "painful",
         "estimatedMinutes": 20,
-        "verify": {
-          "how": "The elected credit shows on the payroll or wage-tax returns and the payroll provider shows it offsetting employer tax on subsequent runs (in the US, Form 8974 carries it onto the employment-tax return).",
-          "url": "https://www.irs.gov/forms-pubs/about-form-8974"
-        },
         "geoResolutions": [
           {
             "country": "US",
             "kind": "analog",
             "label": "Calculate the usable credit on Form 8974 and attach it to the employment-tax return: Form 941 filers start with the first quarter beginning after the income-tax return was filed; Form 943/944 filers follow the annual instructions",
             "actionUrl": "https://www.irs.gov/forms-pubs/about-form-8974",
-            "actionLabel": "IRS Form 8974 (payroll offset)"
+            "actionLabel": "IRS Form 8974 (payroll offset)",
+            "verify": {
+              "how": "The elected credit shows on the payroll or wage-tax returns and the payroll provider shows it offsetting employer tax on subsequent runs (in the US, Form 8974 carries it onto the employment-tax return).",
+              "url": "https://www.irs.gov/forms-pubs/about-form-8974"
+            }
           }
-        ]
+        ],
+        "execution": {
+          "category": "agent-computer-use",
+          "basis": "browser-evidence",
+          "rationale": "For the retained US Gusto method, an accountant administrator enters the filed credit and filing date in the documented tax-credit workflow. Gusto tracks quarterly use and carryforward with its payroll filings; the adviser retains eligibility and election decisions.",
+          "evidence": [
+            "open-processes/claim-the-r-d-tax-credit.json#/parts/5/guidance",
+            "https://support.gusto.com/article/250122151200223/apply-rd-tax-credits-calculated-by-your-cpa-or-rd-firm"
+          ],
+          "reviewRequired": true,
+          "automationEvidence": {
+            "status": "documented"
+          }
+        },
+        "verify": {
+          "how": "Retain the applicable authority’s confirmation and reconcile it with the approved submission and company records."
+        }
       }
     }
   ],
@@ -444,6 +561,34 @@
         "summary": "SR&ED is the closest thing anywhere to the US research credit — CCPCs earn an enhanced refundable credit on qualified R&D salaries and materials, claimed with the T2 on prescribed forms and defended with project records.",
         "actionUrl": "https://www.canada.ca/en/revenue-agency/services/scientific-research-experimental-development-tax-incentive-program.html",
         "actionLabel": "CRA — SR&ED program"
+      },
+      {
+        "country": "SG",
+        "kind": "analog",
+        "summary": "The analog is the Enterprise Innovation Scheme: 400% tax deductions on up to $400,000 of qualifying Singapore R&D per YA (2024-2028), claimed in the corporate tax return by the 30 Nov filing deadline, with a cash-payout conversion option for smaller spenders.",
+        "actionUrl": "https://www.iras.gov.sg/schemes/disbursement-schemes/enterprise-innovation-scheme-(eis)",
+        "actionLabel": "IRAS — Enterprise Innovation Scheme"
+      },
+      {
+        "country": "AU",
+        "kind": "analog",
+        "summary": "The analog is the R&D Tax Incentive: register the year's R&D activities with the Department of Industry, Science and Resources through the R&DTI portal, then claim the offset in the company tax return's R&D schedule.",
+        "actionUrl": "https://business.gov.au/grants-and-programs/research-and-development-tax-incentive",
+        "actionLabel": "R&D Tax Incentive"
+      },
+      {
+        "country": "KR",
+        "kind": "analog",
+        "summary": "The R&D tax credit (연구·인력개발비 세액공제, Restriction of Special Taxation Act Article 10) is claimed on the corporate tax return filed through Hometax.",
+        "actionUrl": "https://www.hometax.go.kr/",
+        "actionLabel": "Hometax (NTS e-filing)"
+      },
+      {
+        "country": "HK",
+        "kind": "analog",
+        "summary": "The analog is the enhanced R&D deduction rather than a credit: qualifying Type B expenditure deducts at 300% on the first HK$2,000,000 and 200% above it (Inland Revenue Ordinance Schedule 45), claimed in the profits tax return.",
+        "actionUrl": "https://www.elegislation.gov.hk/hk/cap112!en/sch45",
+        "actionLabel": "IRO Schedule 45 — R&D deductions (e-Legislation)"
       }
     ],
     "contextNeeded": [
@@ -486,5 +631,85 @@
   },
   "entrySteps": [
     "n1"
+  ],
+  "globalSlug": "claim-research-and-development-tax-incentives",
+  "countryViews": [
+    {
+      "country": "US",
+      "title": "Claim the R&D tax credit",
+      "slug": "claim-the-r-d-tax-credit",
+      "summary": "Claim the research-and-development credit your tax jurisdiction offers: scope the qualifying expenditure, run the study, attach the claim to the tax return, and apply any payroll offset the regime allows. In the US the claim is Form 6765 with the Form 8974 payroll-tax offset, worth up to $500k a year for pre-revenue startups."
+    },
+    {
+      "country": "UK",
+      "title": "Claim research-and-development tax incentives in United Kingdom",
+      "slug": "claim-research-and-development-tax-incentives-in-united-kingdom-uk"
+    },
+    {
+      "country": "IN",
+      "title": "Claim research-and-development tax incentives in India",
+      "slug": "claim-research-and-development-tax-incentives-in-india-in"
+    },
+    {
+      "country": "DE",
+      "title": "Claim research-and-development tax incentives in Germany",
+      "slug": "claim-research-and-development-tax-incentives-in-germany-de"
+    },
+    {
+      "country": "FR",
+      "title": "Claim research-and-development tax incentives in France",
+      "slug": "claim-research-and-development-tax-incentives-in-france-fr"
+    },
+    {
+      "country": "PT",
+      "title": "Claim research-and-development tax incentives in Portugal",
+      "slug": "claim-research-and-development-tax-incentives-in-portugal-pt"
+    },
+    {
+      "country": "CA",
+      "title": "Claim research-and-development tax incentives in Canada",
+      "slug": "claim-research-and-development-tax-incentives-in-canada-ca"
+    },
+    {
+      "country": "SG",
+      "title": "Claim research-and-development tax incentives in Singapore",
+      "slug": "claim-research-and-development-tax-incentives-in-singapore-sg"
+    },
+    {
+      "country": "AU",
+      "title": "Claim research-and-development tax incentives in Australia",
+      "slug": "claim-research-and-development-tax-incentives-in-australia-au"
+    },
+    {
+      "country": "KR",
+      "title": "Claim research-and-development tax incentives in South Korea",
+      "slug": "claim-research-and-development-tax-incentives-in-south-korea-kr"
+    },
+    {
+      "country": "HK",
+      "title": "Claim research-and-development tax incentives in Hong Kong",
+      "slug": "claim-research-and-development-tax-incentives-in-hong-kong-hk"
+    },
+    {
+      "country": "EE",
+      "title": "Claim research-and-development tax incentives in Estonia",
+      "slug": "claim-research-and-development-tax-incentives-in-estonia-ee",
+      "summary": "Corporate income tax is charged only when profit is distributed (law rule ee.corporate-tax-distributed-profits), so there is no annual profits return and no R&D tax-credit regime attached to one."
+    }
+  ],
+  "aliases": [
+    "claim-the-r-d-tax-credit",
+    "claim-research-and-development-tax-incentives-in-united-kingdom-uk",
+    "claim-research-and-development-tax-incentives-in-india-in",
+    "claim-research-and-development-tax-incentives-in-germany-de",
+    "claim-research-and-development-tax-incentives-in-france-fr",
+    "claim-research-and-development-tax-incentives-in-portugal-pt",
+    "claim-research-and-development-tax-incentives-in-canada-ca",
+    "claim-research-and-development-tax-incentives-in-singapore-sg",
+    "claim-research-and-development-tax-incentives-in-australia-au",
+    "claim-research-and-development-tax-incentives-in-south-korea-kr",
+    "claim-research-and-development-tax-incentives-in-hong-kong-hk",
+    "claim-research-and-development-tax-incentives-in-estonia-ee",
+    "claim-research-and-development-tax-incentives"
   ]
 }

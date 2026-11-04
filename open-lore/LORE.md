@@ -241,7 +241,7 @@ Lesson: Seed the community you want to exist, then get out of its way the moment
 Veracity: first-person
 Sources:
 - [How Reddit Got Huge: Tons of Fake Accounts (Vice/Motherboard, 2012-06-21)](https://www.vice.com/en/article/how-reddit-got-huge-tons-of-fake-accounts-2/) — quotes Huffman's own Udacity course telling: the hidden username field and tone-setting.
-- [How Reddit's cofounders built Reddit with an army of fake accounts (Daily Dot, 2012-06)](https://www.dailydot.com/parsec/steve-huffman-built-reddit-fake-accounts/) — corroborating record of the same first-person lecture.
+- [How Reddit's cofounders built Reddit with an army of fake accounts (Daily Dot, 2012-06)](https://web.archive.org/web/20260606140908/https://www.dailydot.com/parsec/steve-huffman-built-reddit-fake-accounts/) — corroborating record of the same first-person lecture; the original dailydot.com URL returns 404, so this cites the archived copy.
 Related laws: `12`, `13`
 
 ### 11. Zappos ships shoes it doesn't own

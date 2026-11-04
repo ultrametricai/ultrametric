@@ -1,20 +1,20 @@
 {
-  "hash": "52e2baa0c11527b40ef8c0844e18f2b0976d077610701f976b638c40b2fff4b6",
+  "hash": "bd2a82bdf136f1f2e0a089993823a38499fb44c8f93dd6f3ada09e9f1712b8c3",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Stripe's hosted MCP server exposes `stripe_api_write` with a documented supported-method list that includes create/update for products, prices, and payment links. Agents can also spin up a sandbox via the CLI and authenticate with OAuth or restricted keys, so one agent session can chain product → price → payment link through the API. Human-confirmation gating applies to actions like refunds and outbound payments, not to these catalog writes. Missing for 10: independent or hands-on corroboration of the end-to-end product→price→payment-link flow by an agent, and a first-party walkthrough of that exact chained sequence.",
+    "rationale": "Stripe's hosted MCP server exposes `stripe_api_write`, and its documented supported methods explicitly include creating and updating products, prices, and payment links. An agent can therefore chain all three creates in one session. A live probe confirms the OAuth-gated MCP endpoint, and the docs add agent-ready sandboxes, restricted keys scoped for agents, and idempotency keys for safe retries. Missing for 10: independent or hands-on corroboration of the end-to-end product→price→payment link flow completed by an agent in a single session.",
     "evidenceIds": [
       "stripe-supp-mcp-tools",
+      "stripe-probe-6",
       "stripe-docs-13",
       "stripe-docs-4",
       "stripe-docs-16",
-      "stripe-supp-mcp-write-confirmation",
       "stripe-supp-restricted-keys-agents",
-      "stripe-probe-6",
-      "stripe-docs-9"
+      "stripe-docs-25",
+      "stripe-supp-workbench-shell"
     ],
     "productId": "stripe",
     "storyId": "agent-provisions-payment-link"

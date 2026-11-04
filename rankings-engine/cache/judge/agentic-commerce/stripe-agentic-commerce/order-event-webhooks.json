@@ -1,16 +1,15 @@
 {
-  "hash": "159fa460ea955477df533beed5337dfc817f40ded85a28aae391613c79394440",
+  "hash": "af75b19613fb0b7bd608a4979343f1d0031598487b415890024c1102c4311b68",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Stripe pushes order events to sellers through webhooks: a unique `checkout.session.completed` event fires per agent order, and agent builders get `delegated_checkout.requested_session.completed`. In the custom ACP integration, Stripe calls the seller's create/update/confirm endpoints, and sessions move through statuses that include completed and canceled. SPT state-transition webhooks such as `shared_payment.issued_token.used` add payment-side signals, but no dedicated order-updated, fulfilled or canceled event stream is documented. Missing for 10: documented webhook events for order updated/fulfilled/canceled transitions, a unified order-lifecycle event subscription model, independent or hands-on corroboration.",
+    "rationale": "Stripe pushes order-related webhooks: a unique `checkout.session.completed` event for each agent order, and `delegated_checkout.requested_session.completed` for agent builders using embedded checkout. In the custom ACP integration, Stripe also calls the seller's create/update/confirm endpoints as sessions move through statuses that include `completed` and `canceled`. However, no documented event set covers the full created → updated → fulfilled → canceled lifecycle; fulfillment is described as seller-side batch work through the List CheckoutSessions endpoint, not as a pushed event. Missing for 10: documented webhooks for order created/updated/fulfilled/canceled transitions, fulfillment-status events, and independent corroboration.",
     "evidenceIds": [
       "stripe-ac-supp-order-attribution",
       "stripe-ac-supp-embedded-checkout-oca",
-      "stripe-ac-supp-acp-custom-checkout",
-      "stripe-ac-supp-spt-limits"
+      "stripe-ac-supp-acp-custom-checkout"
     ],
     "productId": "stripe-agentic-commerce",
     "storyId": "order-event-webhooks"

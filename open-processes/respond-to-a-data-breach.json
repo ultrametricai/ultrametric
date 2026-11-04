@@ -3,7 +3,7 @@
   "id": "sit_003",
   "kind": "situation",
   "title": "Respond to a data breach",
-  "summary": "In the first hours, contain the breach and preserve the evidence. In the first days, get counsel and count deadlines. Every US state has its own breach-notification law (the NCSL survey maps them), some with deadlines in days: California now sets a hard clock (law rule us-ca.breach-notification-timing, residents within 30 calendar days of discovery). Which laws apply depends on where the affected people live, not where your company is. You cannot unsend a notification, so work out the scope first, then notify whoever the statutes require, with counsel. The geo notes cover the non-US equivalents: the UK GDPR's 72-hour ICO deadline, Germany's Article 33 state authorities, India's six-hour CERT-In directions. Educational guidance, not legal advice. These deadlines are statutes; verify each against the relevant state's law with counsel.",
+  "summary": "Contain the breach, preserve evidence and assess the affected data and people with counsel. Identify the applicable notification duties and deadlines, prepare approved communications and document remediation and follow-up.",
   "outcomes": [],
   "guidance": null,
   "parts": [
@@ -21,7 +21,20 @@
         "route": "person",
         "reversibility": "reversible",
         "riskLevel": "high",
-        "estimatedMinutes": 120
+        "estimatedMinutes": 120,
+        "execution": {
+          "category": "human-online",
+          "basis": "human-work",
+          "rationale": "The incident team uses the actual security and infrastructure controls to revoke credentials, rotate secrets and isolate affected systems under incident authority.",
+          "evidence": [
+            "open-processes/respond-to-a-data-breach.json#/parts/0/title",
+            "open-processes/respond-to-a-data-breach.json#/parts/0"
+          ],
+          "reviewRequired": true,
+          "automationEvidence": {
+            "status": "unverified"
+          }
+        }
       }
     },
     {
@@ -37,7 +50,20 @@
       "metadata": {
         "route": "agent",
         "reversibility": "reversible",
-        "estimatedMinutes": 60
+        "estimatedMinutes": 60,
+        "execution": {
+          "category": "human-online",
+          "basis": "human-work",
+          "rationale": "The incident responder preserves logs, access records and forensic images through the actual digital evidence systems, maintaining provenance and avoiding destructive changes.",
+          "evidence": [
+            "open-processes/respond-to-a-data-breach.json#/parts/1/title",
+            "open-processes/respond-to-a-data-breach.json#/parts/1"
+          ],
+          "reviewRequired": true,
+          "automationEvidence": {
+            "status": "unverified"
+          }
+        }
       }
     },
     {
@@ -53,7 +79,19 @@
       "metadata": {
         "route": "agent",
         "reversibility": "reversible",
-        "estimatedMinutes": 90
+        "estimatedMinutes": 90,
+        "execution": {
+          "category": "agent-native",
+          "basis": "local-work",
+          "rationale": "Reconcile supplied incident records into an evidenced timeline and affected-data scope, preserving unknown counts.",
+          "evidence": [
+            "open-processes/respond-to-a-data-breach.json#/parts/2/title"
+          ],
+          "reviewRequired": false,
+          "automationEvidence": {
+            "status": "documented"
+          }
+        }
       }
     },
     {
@@ -95,7 +133,20 @@
       "metadata": {
         "route": "person",
         "reversibility": "reversible",
-        "estimatedMinutes": 60
+        "estimatedMinutes": 60,
+        "execution": {
+          "category": "human-online",
+          "basis": "human-work",
+          "rationale": "The incident owner contacts breach counsel and the carrier through the supported remote channels and shares only authorized incident information.",
+          "evidence": [
+            "open-processes/respond-to-a-data-breach.json#/parts/3/title",
+            "open-processes/respond-to-a-data-breach.json#/parts/3"
+          ],
+          "reviewRequired": true,
+          "automationEvidence": {
+            "status": "unverified"
+          }
+        }
       }
     },
     {
@@ -169,8 +220,58 @@
             "label": "Under PIPEDA the trigger is a real risk of significant harm, with records of every breach kept for 24 months",
             "actionUrl": "https://www.priv.gc.ca/en/privacy-topics/privacy-for-businesses/privacy-breaches-at-your-business/gd_pb_201810/",
             "actionLabel": "OPC — respond to a privacy breach"
+          },
+          {
+            "country": "SG",
+            "kind": "analog",
+            "label": "The PDPA clock: assess expeditiously, then no later than 3 calendar days from assessing a breach notifiable (law rule sg.pdpa-breach-notification)",
+            "actionUrl": "https://sso.agc.gov.sg/Act/PDPA2012",
+            "actionLabel": "Personal Data Protection Act 2012 (SSO)"
+          },
+          {
+            "country": "AU",
+            "kind": "analog",
+            "label": "The Privacy Act's notifiable data breaches scheme: take all reasonable steps to assess a suspected eligible breach within 30 days (law rule au.notifiable-data-breaches)",
+            "actionUrl": "https://www.oaic.gov.au/privacy/notifiable-data-breaches/report-a-data-breach",
+            "actionLabel": "OAIC: report a data breach"
+          },
+          {
+            "country": "KR",
+            "kind": "analog",
+            "label": "Two 72-hour clocks: data-subject notification and the PIPC/KISA report",
+            "guidance": "PIPA Article 34 with Decree Articles 39 and 40 sets data-subject notification within 72 hours, and a 72-hour regulator report where the leak touches 1,000 or more subjects, sensitive or unique identification data, or unlawful external access (law rule kr.pipa-breach-notification).",
+            "actionUrl": "https://www.privacy.go.kr/",
+            "actionLabel": "Personal information portal (PIPC)"
+          },
+          {
+            "country": "HK",
+            "kind": "analog",
+            "label": "No statutory clock runs: notifying the PCPD is recommended practice, not a duty (law rule hk.pdpo-breach-notification-voluntary)",
+            "guidance": "The PDPO contains no general breach-notification requirement; the PCPD's June 2023 guidance recommends notifying affected data subjects, the PCPD and other relevant parties as soon as practicable, and sector rules (HKMA guidelines, listing obligations) can still compel reports.",
+            "actionUrl": "https://www.pcpd.org.hk/english/enforcement/data_breach_notification/dbn.html",
+            "actionLabel": "PCPD — data breach notification"
+          },
+          {
+            "country": "EE",
+            "kind": "analog",
+            "label": "One 72-hour clock, straight from GDPR Article 33, to the AKI",
+            "guidance": "GDPR applies directly: report a notifiable breach to the Data Protection Inspectorate within 72 hours of awareness (EU rule eu.gdpr-breach-notification-authority), and tell affected data subjects without undue delay where the risk is high; the national layer names AKI as the supervisor (law rule ee.personal-data-protection-national-layer).",
+            "actionUrl": "https://www.aki.ee/en",
+            "actionLabel": "Data Protection Inspectorate (AKI)"
           }
-        ]
+        ],
+        "execution": {
+          "category": "agent-native",
+          "basis": "local-work",
+          "rationale": "Compile a jurisdiction-and-deadline worksheet from supplied affected-person locations for counsel's statutory determination.",
+          "evidence": [
+            "open-processes/respond-to-a-data-breach.json#/parts/4/title"
+          ],
+          "reviewRequired": false,
+          "automationEvidence": {
+            "status": "documented"
+          }
+        }
       }
     },
     {
@@ -245,8 +346,59 @@
             "label": "Report qualifying breaches to the Privacy Commissioner under PIPEDA",
             "actionUrl": "https://www.priv.gc.ca/en/privacy-topics/privacy-for-businesses/privacy-breaches-at-your-business/gd_pb_201810/",
             "actionLabel": "OPC — respond to a privacy breach"
+          },
+          {
+            "country": "SG",
+            "kind": "analog",
+            "label": "Notify the PDPC of a notifiable breach within 3 calendar days of the assessment (law rule sg.pdpa-breach-notification)",
+            "actionUrl": "https://sso.agc.gov.sg/Act/PDPA2012",
+            "actionLabel": "Personal Data Protection Act 2012 (SSO)"
+          },
+          {
+            "country": "AU",
+            "kind": "analog",
+            "label": "Give the OAIC the eligible-data-breach statement as soon as practicable, through its online NDB form",
+            "actionUrl": "https://www.oaic.gov.au/privacy/notifiable-data-breaches/report-a-data-breach",
+            "actionLabel": "OAIC: report a data breach"
+          },
+          {
+            "country": "KR",
+            "kind": "analog",
+            "label": "Report to the PIPC or KISA through the privacy portal",
+            "guidance": "The report carries the same particulars as the subject notice; where details are not yet confirmed, report what is known first and supplement immediately as facts land (Decree Article 40(2); law rule kr.pipa-breach-notification).",
+            "actionUrl": "https://www.privacy.go.kr/",
+            "actionLabel": "Personal information portal (PIPC)"
+          },
+          {
+            "country": "HK",
+            "kind": "analog",
+            "label": "A voluntary notification goes to the PCPD through the e-Data Breach Notification channel",
+            "guidance": "Submit the e-DBN with the breach description, affected data and remediation; notification is recommended practice under law rule hk.pdpo-breach-notification-voluntary rather than a statutory filing.",
+            "actionUrl": "https://www.pcpd.org.hk/english/enforcement/data_breach_notification/dbn.html",
+            "actionLabel": "PCPD — data breach notification"
+          },
+          {
+            "country": "EE",
+            "kind": "analog",
+            "label": "Report to the Data Protection Inspectorate (AKI)",
+            "guidance": "The Data Protection Inspectorate fronts the national notification route for the GDPR Article 33 report; where details are not yet confirmed, notify in phases as the regulation allows.",
+            "actionUrl": "https://www.aki.ee/en",
+            "actionLabel": "Data Protection Inspectorate (AKI)"
           }
-        ]
+        ],
+        "execution": {
+          "category": "human-online",
+          "basis": "human-work",
+          "rationale": "The responsible filer completes the required regulator notices through the applicable digital reporting services after legal review of jurisdiction and content.",
+          "evidence": [
+            "open-processes/respond-to-a-data-breach.json#/parts/5/title",
+            "open-processes/respond-to-a-data-breach.json#/parts/5"
+          ],
+          "reviewRequired": true,
+          "automationEvidence": {
+            "status": "unverified"
+          }
+        }
       }
     },
     {
@@ -293,8 +445,28 @@
             "label": "Notify affected individuals of breaches posing a real risk of significant harm; Quebec's private-sector law adds its own CAI reporting track",
             "actionUrl": "https://www.priv.gc.ca/en/privacy-topics/privacy-for-businesses/privacy-breaches-at-your-business/gd_pb_201810/",
             "actionLabel": "OPC — respond to a privacy breach"
+          },
+          {
+            "country": "AU",
+            "kind": "analog",
+            "label": "Notify the statement's contents to the affected or at-risk individuals as soon as practicable, or publish it where individual notice is impracticable",
+            "actionUrl": "https://www.oaic.gov.au/privacy/notifiable-data-breaches/report-a-data-breach",
+            "actionLabel": "OAIC: report a data breach"
           }
-        ]
+        ],
+        "execution": {
+          "category": "human-online",
+          "basis": "human-work",
+          "rationale": "The communications owner sends approved breach notices through the legally permitted digital delivery plan and retains delivery evidence and failed-recipient follow-up.",
+          "evidence": [
+            "open-processes/respond-to-a-data-breach.json#/parts/6/title",
+            "open-processes/respond-to-a-data-breach.json#/parts/6"
+          ],
+          "reviewRequired": true,
+          "automationEvidence": {
+            "status": "unverified"
+          }
+        }
       }
     },
     {
@@ -310,7 +482,20 @@
       "metadata": {
         "route": "person",
         "reversibility": "reversible",
-        "estimatedMinutes": 90
+        "estimatedMinutes": 90,
+        "execution": {
+          "category": "human-online",
+          "basis": "human-work",
+          "rationale": "The incident owners conduct the review remotely, record findings and implement and verify the approved remediation in the affected systems.",
+          "evidence": [
+            "open-processes/respond-to-a-data-breach.json#/parts/7/title",
+            "open-processes/respond-to-a-data-breach.json#/parts/7"
+          ],
+          "reviewRequired": true,
+          "automationEvidence": {
+            "status": "unverified"
+          }
+        }
       }
     }
   ],
@@ -407,6 +592,48 @@
         "summary": "Under PIPEDA, report breaches posing a real risk of significant harm to the Privacy Commissioner, notify affected individuals, and keep records of every breach for 24 months — Quebec's private-sector law adds its own CAI reporting track.",
         "actionUrl": "https://www.priv.gc.ca/en/privacy-topics/privacy-for-businesses/privacy-breaches-at-your-business/gd_pb_201810/",
         "actionLabel": "OPC — respond to a privacy breach"
+      },
+      {
+        "country": "NZ",
+        "kind": "analog",
+        "summary": "A breach that has caused, or is likely to cause, anyone serious harm must be notified to the Privacy Commissioner and affected people as soon as practicable (Privacy Act 2020) — the Commissioner's NotifyUs tool is the channel, ideally within 72 hours.",
+        "actionUrl": "https://www.privacy.org.nz/responsibilities/privacy-breaches/notify-us/",
+        "actionLabel": "NotifyUs — Privacy Commissioner"
+      },
+      {
+        "country": "SG",
+        "kind": "analog",
+        "summary": "The PDPA clock is concrete: assess suspected breaches expeditiously, notify the PDPC no later than 3 calendar days after assessing a breach notifiable (law rule sg.pdpa-breach-notification), then notify affected individuals of significant-harm breaches.",
+        "actionUrl": "https://sso.agc.gov.sg/Act/PDPA2012",
+        "actionLabel": "Personal Data Protection Act 2012 (SSO)"
+      },
+      {
+        "country": "AU",
+        "kind": "analog",
+        "summary": "The Privacy Act's notifiable data breaches scheme (law rule au.notifiable-data-breaches): assess a suspected eligible breach within 30 days, then give the OAIC a statement and notify affected individuals as soon as practicable — the OAIC's online NDB form is the channel. Small business operators under the $3 million turnover threshold are generally outside the scheme.",
+        "actionUrl": "https://www.oaic.gov.au/privacy/notifiable-data-breaches/report-a-data-breach",
+        "actionLabel": "OAIC: report a data breach"
+      },
+      {
+        "country": "KR",
+        "kind": "analog",
+        "summary": "PIPA runs two 72-hour clocks: notify affected data subjects, and report leaks touching 1,000 or more subjects, sensitive data, or unlawful access to the PIPC or KISA (Act Article 34; Decree Articles 39 and 40).",
+        "actionUrl": "https://www.privacy.go.kr/",
+        "actionLabel": "Personal information portal (PIPC)"
+      },
+      {
+        "country": "HK",
+        "kind": "analog",
+        "summary": "No statutory breach-notification clock runs: notifying the Privacy Commissioner is a recommended practice, not a duty (law rule hk.pdpo-breach-notification-voluntary), made through the PCPD's e-Data Breach Notification — while DPP 4's security obligation is what the breach itself puts in question.",
+        "actionUrl": "https://www.pcpd.org.hk/english/enforcement/data_breach_notification/dbn.html",
+        "actionLabel": "PCPD — data breach notification"
+      },
+      {
+        "country": "EE",
+        "kind": "analog",
+        "summary": "GDPR applies directly: the 72-hour authority notification goes to the Data Protection Inspectorate (AKI), and data subjects are told without undue delay where the risk is high (EU rules eu.gdpr-breach-notification-authority, eu.gdpr-breach-communication-data-subjects); the national layer names AKI as the supervisor (law rule ee.personal-data-protection-national-layer).",
+        "actionUrl": "https://www.aki.ee/en",
+        "actionLabel": "Data Protection Inspectorate (AKI)"
       }
     ],
     "contextNeeded": [
@@ -447,5 +674,90 @@
   },
   "entrySteps": [
     "n1"
+  ],
+  "globalSlug": "respond-to-a-data-breach",
+  "countryViews": [
+    {
+      "country": "US",
+      "title": "Respond to a data breach in United States",
+      "slug": "respond-to-a-data-breach-in-united-states-us",
+      "summary": "In the first hours, contain the breach and preserve the evidence. In the first days, get counsel and count deadlines. Every US state has its own breach-notification law (the NCSL survey maps them), some with deadlines in days: California now sets a hard clock (law rule us-ca.breach-notification-timing, residents within 30 calendar days of discovery). Which laws apply depends on where the affected people live, not where your company is. You cannot unsend a notification, so work out the scope first, then notify whoever the statutes require, with counsel. The geo notes cover the non-US equivalents: the UK GDPR's 72-hour ICO deadline, Germany's Article 33 state authorities, India's six-hour CERT-In directions, New Zealand's serious-harm notification to the Privacy Commissioner (law rule nz.privacy-breach-notification), and Australia's notifiable data breaches scheme (law rule au.notifiable-data-breaches: assess within 30 days, then notify the OAIC and affected individuals as soon as practicable). Educational guidance, not legal advice. These deadlines are statutes; verify each against the relevant state's law with counsel."
+    },
+    {
+      "country": "UK",
+      "title": "Respond to a data breach in United Kingdom",
+      "slug": "respond-to-a-data-breach-in-united-kingdom-uk"
+    },
+    {
+      "country": "IN",
+      "title": "Respond to a data breach in India",
+      "slug": "respond-to-a-data-breach-in-india-in"
+    },
+    {
+      "country": "DE",
+      "title": "Respond to a data breach in Germany",
+      "slug": "respond-to-a-data-breach-in-germany-de"
+    },
+    {
+      "country": "FR",
+      "title": "Respond to a data breach in France",
+      "slug": "respond-to-a-data-breach-in-france-fr"
+    },
+    {
+      "country": "PT",
+      "title": "Respond to a data breach in Portugal",
+      "slug": "respond-to-a-data-breach-in-portugal-pt"
+    },
+    {
+      "country": "CA",
+      "title": "Respond to a data breach in Canada",
+      "slug": "respond-to-a-data-breach-in-canada-ca"
+    },
+    {
+      "country": "NZ",
+      "title": "Respond to a data breach in New Zealand",
+      "slug": "respond-to-a-data-breach-in-new-zealand-nz"
+    },
+    {
+      "country": "SG",
+      "title": "Respond to a data breach in Singapore",
+      "slug": "respond-to-a-data-breach-in-singapore-sg"
+    },
+    {
+      "country": "AU",
+      "title": "Respond to a data breach in Australia",
+      "slug": "respond-to-a-data-breach-in-australia-au"
+    },
+    {
+      "country": "KR",
+      "title": "Respond to a data breach in South Korea",
+      "slug": "respond-to-a-data-breach-in-south-korea-kr"
+    },
+    {
+      "country": "HK",
+      "title": "Respond to a data breach in Hong Kong",
+      "slug": "respond-to-a-data-breach-in-hong-kong-hk"
+    },
+    {
+      "country": "EE",
+      "title": "Respond to a data breach in Estonia",
+      "slug": "respond-to-a-data-breach-in-estonia-ee"
+    }
+  ],
+  "aliases": [
+    "respond-to-a-data-breach",
+    "respond-to-a-data-breach-in-united-states-us",
+    "respond-to-a-data-breach-in-united-kingdom-uk",
+    "respond-to-a-data-breach-in-india-in",
+    "respond-to-a-data-breach-in-germany-de",
+    "respond-to-a-data-breach-in-france-fr",
+    "respond-to-a-data-breach-in-portugal-pt",
+    "respond-to-a-data-breach-in-canada-ca",
+    "respond-to-a-data-breach-in-new-zealand-nz",
+    "respond-to-a-data-breach-in-singapore-sg",
+    "respond-to-a-data-breach-in-australia-au",
+    "respond-to-a-data-breach-in-south-korea-kr",
+    "respond-to-a-data-breach-in-hong-kong-hk",
+    "respond-to-a-data-breach-in-estonia-ee"
   ]
 }

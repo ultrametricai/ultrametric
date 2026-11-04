@@ -84,5 +84,5 @@ export function regionForGeo(decision: ReturnType<typeof regionalDecision>, raw:
   if (option) return { explicit: true, region: option.id }
   // A supported legacy country still wins over a conflicting hash even where no
   // local variant exists. The existing default scope is retained, never relabelled.
-  return { explicit: ['UK', 'IN', 'DE', 'FR', 'PT', 'CA'].includes(country), region: undefined }
+  return { explicit: ['UK', 'IN', 'DE', 'FR', 'PT', 'CA', 'SG'].includes(country), region: undefined }
 }

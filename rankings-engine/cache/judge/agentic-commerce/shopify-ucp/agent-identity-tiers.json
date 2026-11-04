@@ -1,18 +1,18 @@
 {
-  "hash": "c3d3ede4da1e3aecfad4100bb35ef211ac47c3abcd45f0e6613de629f87b2c3f",
+  "hash": "5087e41b7fa2da08cb256da42a1a4f3eebcaf99ae92a6410f3396cb481712016",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Shopify classifies UCP agent traffic into three trust tiers: Token, Signed (RFC 9421 HTTP Message Signatures with ECDSA P-256, verified against the agent's published well-known UCP profile), and Anonymous. Each tier gets different rate limits and tool access, and every catalog request requires a hosted agent profile URL. A runtime probe confirmed that a request with no profile is rejected with invalid_profile_url. Missing for 10: evidence of merchant-facing visibility or reporting that shows which tier or identity an agent's traffic came from (enforcement is Shopify-side), and independent hands-on verification of the Signed and Token tiers.",
+    "rationale": "Shopify documents a three-tier identification model (Token, Signed, Anonymous) for UCP traffic. Signed agents use RFC 9421 HTTP Message Signatures (ECDSA P-256), verified against keys in the agent's hosted well-known UCP profile, and stronger tiers unlock higher rate limits and sensitive tools such as complete_checkout and Order MCP. A runtime probe confirmed the catalog rejects requests without a hosted agent profile (invalid_profile_url). Missing for 10: no evidence of merchant-facing visibility or controls showing which agent or tier generated traffic or orders (classification is enforced Shopify-side), and no hands-on corroboration of signature or token tier verification beyond the profile-URL gate.",
     "evidenceIds": [
       "shopify-ucp-supp-trust-tiers",
-      "shopify-ucp-supp-global-catalog",
-      "shopify-ucp-probe-rt-4",
       "shopify-ucp-supp-agent-profiles",
+      "shopify-ucp-supp-global-catalog",
       "shopify-ucp-supp-order-mcp",
       "shopify-ucp-supp-checkout-mcp",
+      "shopify-ucp-probe-rt-4",
       "shopify-ucp-docs-20"
     ],
     "productId": "shopify-ucp",

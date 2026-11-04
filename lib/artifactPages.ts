@@ -49,7 +49,9 @@ export interface ArtifactPageData {
   producingArea: Area
   // The /artifacts country-view filter flag (founder 2026-10-07, the /processes country rule's
   // sibling): true when EVERY producing process (the canonical producer and the documented
-  // alsoProducedBy exceptions) is geoScope us/us-state. Mixed producers stay false — the
+  // alsoProducedBy exceptions) is geoScope us/us-state, or its own geo entries identify
+  // a US-centric artifact with country analogs. A globalized producer does not turn
+  // an EIN or 83(b) form into a universal artifact. Mixed unscoped producers stay false — the
   // artifact also comes into existence somewhere global, so a country view keeps it.
   usOnlyProducers: boolean
   arenas: ArenaVendors[]
@@ -134,7 +136,7 @@ export function loadArtifactPages(dir?: string): ArtifactPageData[] {
       exceptionProducers: producerTasks.slice(1).map(processLink),
       neededBy: tasks.filter((t) => t.requires.includes(artifact.id)).map(processLink),
       producingArea: producer.area,
-      usOnlyProducers: producerTasks.every((t) => t.geoScope === 'us' || t.geoScope === 'us-state'),
+      usOnlyProducers: Boolean(artifact.geo?.length) || producerTasks.every((t) => t.geoScope === 'us' || t.geoScope === 'us-state'),
       arenas: arenaVendorBlocks(producingStepArenaIds(artifact, byId), dir),
       documents,
       documentFamilies: documentFamilies(documents),

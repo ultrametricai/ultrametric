@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { executionSchema, validateExecution } from '../execution'
 
 const text = z.string().min(1).regex(/\S/)
 const id = z.string().min(1).max(160).regex(/^[a-zA-Z0-9][a-zA-Z0-9._-]*$/)
@@ -7,6 +8,21 @@ const reference = z.union([
   z.strictObject({ kind: z.enum(['vendor', 'category', 'product', 'rule', 'source', 'guidance']), id: text, role: text }),
   z.strictObject({ kind: z.literal('url'), url: webUrl, title: text.nullable(), description: text.nullable(), role: text }),
 ])
+// The state-level services a jurisdiction-conditional step can be. The same set keys the
+// per-state vendor evidence in jurisdictions/vendor-state.json (lib/vendorState.ts), so a step's
+// `service` names the vendor-state rows that describe who can do that step in that state. A
+// step that fits none of these (a state income or gross-receipts tax return, for example)
+// carries no service.
+export const STATE_SERVICES = [
+  'registered-agent',
+  'formation',
+  'foreign-qualification',
+  'annual-report-filing',
+  'payroll-tax-registration',
+  'sales-tax-registration',
+] as const
+export type StateService = (typeof STATE_SERVICES)[number]
+const stepMetadata = z.object({ execution: executionSchema.optional(), service: z.enum(STATE_SERVICES).optional() }).catchall(z.json())
 const note = z.strictObject({ text, references: z.array(reference).optional() })
 export const connectionSchema = z.strictObject({ from: id, to: id, option: id.optional(), when: text.nullable().optional() })
 export type Reference = z.infer<typeof reference>
@@ -37,19 +53,23 @@ export interface Part {
 }
 const optionSchema: z.ZodType<Option> = z.lazy(() => z.strictObject({
   id, title: text, summary: z.string(), when: text.nullable(), parts: z.array(partSchema),
-  links: z.array(connectionSchema).optional(), references: z.array(reference), notes: z.array(note), metadata: z.record(z.string(), z.json()),
+  links: z.array(connectionSchema).optional(), references: z.array(reference), notes: z.array(note), metadata: stepMetadata,
 }))
 const partSchema: z.ZodType<Part> = z.lazy(() => z.strictObject({
   id, kind: z.enum(['step', 'reference', 'decision']), title: text.nullable(), guidance: text.nullable(),
   when: text.nullable(), ref: id.nullable(), options: z.array(optionSchema), references: z.array(reference),
-  notes: z.array(note), metadata: z.record(z.string(), z.json()),
+  notes: z.array(note), metadata: stepMetadata,
 }))
+const routeSlug = z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)
+export const countryViewSchema = z.strictObject({ country: z.enum(['US', 'UK', 'IN', 'DE', 'FR', 'PT', 'CA', 'NZ', 'SG', 'AU', 'KR', 'HK', 'EE', 'NL', 'IE', 'ES', 'SE', 'CH', 'JP', 'BR', 'AE']), title: text, slug: routeSlug, summary: text.optional() })
+
 export const sharedRecordSchema = z.strictObject({
   schemaVersion: z.literal(1), id, kind: z.enum(['situation', 'process']), title: text, summary: z.string(),
+  globalSlug: routeSlug.optional(), countryViews: z.array(countryViewSchema).min(1).optional(),
   outcomes: z.array(text), guidance: text.nullable(), when: text.nullable().optional(), aliases: z.array(id).optional(),
   entrySteps: z.array(id).min(1).optional(), taskIds: z.array(id).min(1).optional(),
   parts: z.array(partSchema), links: z.array(connectionSchema), references: z.array(reference),
-  notes: z.array(note), metadata: z.record(z.string(), z.json()),
+  notes: z.array(note), metadata: stepMetadata,
   source: z.strictObject({ path: text, id: text, revision: z.string().regex(/^[a-f0-9]{40}$/), sha256: z.string().regex(/^[a-f0-9]{64}$/) }).optional(),
 })
 export type SharedRecord = z.infer<typeof sharedRecordSchema>
@@ -85,6 +105,18 @@ export function validateCatalog(input: unknown): SharedRecord[] {
   const records = z.array(sharedRecordSchema).parse(input)
   const byId = new Map(records.map(record => [record.id, record]))
   if (byId.size !== records.length) throw new Error('Duplicate record ID')
+  const routeOwners = new Map(records.map(record => [record.id, record.id]))
+  for (const record of records) {
+    const views = record.countryViews ?? []
+    if (Boolean(record.globalSlug) !== Boolean(views.length)) throw new Error(`${record.id}: globalSlug and countryViews must be authored together`)
+    if (new Set(views.map(view => view.country)).size !== views.length) throw new Error(`${record.id}: duplicate country view`)
+    if (new Set(views.map(view => view.slug)).size !== views.length || views.some(view => view.slug === record.globalSlug)) throw new Error(`${record.id}: duplicate country route`)
+    for (const key of new Set([...(record.aliases ?? []), ...(record.globalSlug ? [record.globalSlug] : []), ...views.map(view => view.slug)])) {
+      const owner = routeOwners.get(key)
+      if (owner && owner !== record.id) throw new Error(`Country route collision: ${key}`)
+      routeOwners.set(key, record.id)
+    }
+  }
   const aliases = new Set(byId.keys())
   const references = new Map<string, string[]>()
   for (const record of records) {
@@ -102,6 +134,8 @@ export function validateCatalog(input: unknown): SharedRecord[] {
       for (const part of parts) {
         if (allParts.has(part.id)) throw new Error(`${record.id}: duplicate nested part ID ${part.id}`)
         allParts.add(part.id)
+        validateExecution(part.metadata, `${scope}/${part.id}`)
+        for (const option of part.options) validateExecution({ ...part.metadata, ...option.metadata }, `${scope}/${part.id}/${option.id}`)
         if (part.kind === 'reference') {
           if (!part.ref || !byId.has(part.ref)) throw new Error(`${scope}/${part.id}: unresolved process reference`)
           children.push(part.ref)

@@ -22,7 +22,8 @@ function runExport(example: boolean) {
 
 beforeEach(() => {
   root = mkdtempSync(path.join(tmpdir(), 'um-shared-export-'))
-  for (const directory of ['schemas', 'open-processes', 'scripts/shared-processes/examples']) mkdirSync(path.join(root, directory), { recursive: true })
+  for (const directory of ['lib', 'schemas', 'open-processes', 'scripts/shared-processes/examples']) mkdirSync(path.join(root, directory), { recursive: true })
+  cpSync(path.join(repo, 'lib/execution.ts'), path.join(root, 'lib/execution.ts'))
   writeFileSync(path.join(root, 'schemas/shared-process.schema.json'), sharedSchemaJson())
   const example = readFileSync(path.join(repo, 'scripts/shared-processes/examples/staging.json'), 'utf8')
   writeFileSync(path.join(root, 'scripts/shared-processes/examples/staging.json'), example)
@@ -39,6 +40,15 @@ beforeEach(() => {
 afterEach(() => rmSync(root, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 }))
 
 describe('pinned catalog export', () => {
+  it.each([false, true])('rejects uncommitted execution validation code (example=%s)', (example) => {
+    const file = path.join(root, 'lib/execution.ts')
+    writeFileSync(file, readFileSync(file, 'utf8') + '\n// Uncommitted validation change.\n')
+    const result = runExport(example)
+    expect(result.status).not.toBe(0)
+    expect(result.stderr).toContain('Commit the shared records and schema before exporting')
+    expect(existsSync(path.join(root, 'catalog.json'))).toBe(false)
+  })
+
   it.each([false, true])('rejects a committed stale schema (example=%s) before writing an artifact', (example) => {
     const stale = JSON.parse(sharedSchemaJson())
     stale.properties.summary.maxLength = 1

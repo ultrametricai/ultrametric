@@ -27,10 +27,13 @@
 // stalenessScore() below; everything pure is exported for rankings-engine/__tests__/staleness-scan.test.ts.
 //
 //   pnpm tsx rankings-engine/scripts/staleness-scan.ts [--category <id>] [--offline]
-//     [--issue-body <path>] [--out <path>]
+//     [--issue-body <path>] [--pr-body <path>] [--out <path>]
 //
-// --offline skips every network check (age + pure-data signatures only); --issue-body writes the
-// accuracy-engine work-queue issue markdown alongside the JSON report.
+// --offline skips every network check (age + pure-data signatures only). --issue-body writes the
+// accuracy-engine work-queue issue markdown alongside the JSON report, and ONLY when the queue
+// holds actionable rows (actionableQueueRows below) — a clean fleet writes no issue body, so the
+// workflow files no issue. --pr-body writes the same ranked tables unconditionally, for the
+// report PR's body: the ordering stays human-readable on every run, actionable or not.
 import fs from 'node:fs'
 import path from 'node:path'
 import { MCP_ENDPOINTS } from '../../lib/mcpEndpoints'
@@ -291,6 +294,16 @@ async function mapPool<T, R>(items: T[], fn: (item: T) => Promise<R>): Promise<R
 // ---------------------------------------------------------------------------------------------
 // Work-queue issue body (consumed by accuracy-engine.yml's `gh issue create`)
 
+// The work queue is non-empty when the scan found something a keyed run or a human must act on:
+// dead cited URLs, crawl-gap signatures, or live flips. Pure evidence age steers story-runner
+// through the committed report on its own, so age alone files no issue (maintainer decision
+// 2026-10-23: generators file issues only when a human call is needed; the ranked staleness
+// tables ride the report PR's body instead).
+export function actionableQueueRows(report: StalenessReport): number {
+  const f = report.fleet
+  return f.deadUrls + f.apiQualityGaps + f.agentDocsContradictions + f.llmsTxtFlips + f.mcpFlips
+}
+
 export function buildIssueBody(report: StalenessReport, top: number = 20): string {
   const lines: string[] = []
   const date = report.generatedAt.slice(0, 10)
@@ -354,6 +367,7 @@ interface CliArgs {
   category?: string
   offline: boolean
   issueBody?: string
+  prBody?: string
   out?: string
 }
 
@@ -363,6 +377,7 @@ function parseArgs(argv: string[]): CliArgs {
     if (argv[i] === '--category') args.category = argv[++i]
     else if (argv[i] === '--offline') args.offline = true
     else if (argv[i] === '--issue-body') args.issueBody = argv[++i]
+    else if (argv[i] === '--pr-body') args.prBody = argv[++i]
     else if (argv[i] === '--out') args.out = argv[++i]
     else throw new Error(`unknown argument: ${argv[i]}`)
   }
@@ -510,10 +525,25 @@ async function run(): Promise<void> {
   writeJson(outFile, report)
   console.log(`staleness-scan: wrote ${path.relative(process.cwd(), outFile)}`)
 
+  // The ranked tables for the report PR's body: written on every run, so the proposed ordering
+  // stays human-readable even when the queue holds nothing actionable.
+  if (args.prBody) {
+    fs.mkdirSync(path.dirname(args.prBody), { recursive: true })
+    fs.writeFileSync(args.prBody, buildIssueBody(report) + '\n')
+    console.log(`staleness-scan: wrote ranked tables for the PR body to ${args.prBody}`)
+  }
+
+  // Written only when the queue holds actionable rows: the workflow files the work-queue issue
+  // iff this file exists, so a clean fleet files no issue.
   if (args.issueBody) {
-    fs.mkdirSync(path.dirname(args.issueBody), { recursive: true })
-    fs.writeFileSync(args.issueBody, buildIssueBody(report) + '\n')
-    console.log(`staleness-scan: wrote work-queue issue body to ${args.issueBody}`)
+    const actionable = actionableQueueRows(report)
+    if (actionable > 0) {
+      fs.mkdirSync(path.dirname(args.issueBody), { recursive: true })
+      fs.writeFileSync(args.issueBody, buildIssueBody(report) + '\n')
+      console.log(`staleness-scan: wrote work-queue issue body to ${args.issueBody} (${actionable} actionable rows)`)
+    } else {
+      console.log('staleness-scan: queue empty (no dead URLs, crawl-gap signatures, or live flips) — no work-queue issue body written')
+    }
   }
 
   // Human-readable summary table, worst first.

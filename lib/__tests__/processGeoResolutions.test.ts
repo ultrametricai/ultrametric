@@ -81,21 +81,23 @@ describe('step geo resolutions', () => {
     const countries = (id: string, nodeId: string) =>
       (byId(id).dag.nodes.find((n) => n.id === nodeId)?.geoResolutions ?? []).map((r) => r.country).sort()
 
-    // Exhibit A: the departing-equity settlement resolves in six countries beside the US.
+    // Exhibit A: the departing-equity settlement resolves in six countries beside the US
+    // (NZ and AU joined both steps in the 2026-10-23 country run).
     expect(byId('sit_007').geoScope).toBe('global')
-    expect(countries('sit_007', 'n4')).toEqual(['CA', 'DE', 'IN', 'PT', 'UK', 'US'])
-    expect(countries('sit_007', 'n3')).toEqual(['FR', 'IN', 'UK', 'US'])
+    expect(countries('sit_007', 'n4')).toEqual(['AU', 'CA', 'DE', 'IN', 'NZ', 'PT', 'SG', 'UK', 'US'])
+    expect(countries('sit_007', 'n3')).toEqual(['AU', 'FR', 'IN', 'NZ', 'SG', 'UK', 'US'])
     // The notice-terms step resolves in every covered country.
     expect(byId('sit_019').geoScope).toBe('global')
-    expect(countries('sit_019', 'n2')).toEqual(['CA', 'DE', 'FR', 'IN', 'PT', 'UK', 'US'])
-    // First-hire formalities: the I-9/W-4 mechanics moved into the US entry. geoScope stays
-    // 'us': the record produces the employment-agreement artifact, whose committed geo entries
-    // require a US-centric producer (lib/__tests__/processArtifacts.test.ts).
-    expect(byId('hr_001').geoScope).toBe('us')
-    expect(countries('hr_001', 'n6')).toEqual(['FR', 'PT', 'UK', 'US'])
+    expect(countries('sit_019', 'n2')).toEqual(['AU', 'CA', 'DE', 'EE', 'FR', 'HK', 'IN', 'KR', 'PT', 'SG', 'UK', 'US'])
+    // First-hire formalities: the I-9/W-4 mechanics moved into the US entry. geoScope flipped
+    // to 'global' with the 2026-10-22 extension of the startup_002 precedent; the
+    // employment-agreement artifact keeps its geo entries under the restructured-global rule
+    // (lib/__tests__/processArtifacts.test.ts).
+    expect(byId('hr_001').geoScope).toBe('global')
+    expect(countries('hr_001', 'n6')).toEqual(['AU', 'EE', 'FR', 'HK', 'KR', 'PT', 'SG', 'UK', 'US'])
     // The register lookup: TSDR is the US resolution, with the committed IN/PT/CA checks beside it.
     expect(byId('sit_001').geoScope).toBe('global')
-    expect(countries('sit_001', 'n3')).toEqual(['CA', 'IN', 'PT', 'US'])
+    expect(countries('sit_001', 'n3')).toEqual(['AU', 'CA', 'IN', 'PT', 'US'])
     // A US-only resolution set on a global record is the design working: no other country's
     // mechanics are committed for the cap-table approval steps, so the abstraction stands.
     expect(countries('qs_052', 'n2b')).toEqual(['US'])
@@ -114,21 +116,22 @@ describe('step geo resolutions', () => {
 
     // The deadline steps resolve in every covered country.
     expect(byId('sit_008').geoScope).toBe('global')
-    expect(countries('sit_008', 'n2')).toEqual(['CA', 'DE', 'FR', 'IN', 'PT', 'UK', 'US'])
+    expect(countries('sit_008', 'n2')).toEqual(['AU', 'CA', 'DE', 'FR', 'HK', 'IN', 'KR', 'PT', 'SG', 'UK', 'US'])
     expect(byId('sit_009').geoScope).toBe('global')
-    expect(countries('sit_009', 'n2')).toEqual(['CA', 'DE', 'FR', 'IN', 'PT', 'UK', 'US'])
+    expect(countries('sit_009', 'n2')).toEqual(['AU', 'CA', 'DE', 'FR', 'IN', 'PT', 'SG', 'UK', 'US'])
     // The claim rides the tax return everywhere a regime exists; India resolves not-applicable.
     expect(byId('tax_010').geoScope).toBe('global')
-    expect(countries('tax_010', 'n5')).toEqual(['CA', 'DE', 'FR', 'IN', 'PT', 'UK', 'US'])
+    expect(countries('tax_010', 'n5')).toEqual(['AU', 'CA', 'DE', 'EE', 'FR', 'HK', 'IN', 'KR', 'PT', 'SG', 'UK', 'US'])
     // The strategy step carries every covered route; the LCA machinery is the US cut.
     expect(byId('hr_011').geoScope).toBe('global')
-    expect(countries('hr_011', 'n1')).toEqual(['CA', 'DE', 'FR', 'IN', 'PT', 'UK', 'US'])
+    expect(countries('hr_011', 'n1')).toEqual(['AU', 'CA', 'DE', 'FR', 'IN', 'PT', 'SG', 'UK', 'US'])
     expect(byId('vc_001').geoScope).toBe('global')
     expect(byId('opp_012').geoScope).toBe('global')
-    // Artifact-geo keeps these US-scoped (the hr_001 precedent): business-address,
-    // executed-safes, priced-round-closing, trademark-serial all carry committed geo entries.
-    for (const id of ['qs_044', 'fund_001', 'fund_002', 'legal_002']) {
-      expect(byId(id).geoScope, `${id} stays us (artifact geo)`).toBe('us')
+    // The startup_002 precedent extended (maintainer decision 2026-10-22): these read as
+    // global abstractions with the US in step geoResolutions, so they carry scope 'global';
+    // their artifacts keep geo entries under the restructured-global rule in processArtifacts.
+    for (const id of ['qs_044', 'fund_001', 'fund_002', 'fund_004', 'legal_002']) {
+      expect(byId(id).geoScope, `${id} is global (restructured abstraction)`).toBe('global')
     }
     // form_011 reclassified (b): no resolutions, the geo decision options stand.
     expect(byId('form_011').geoScope).toBe('us')
@@ -152,6 +155,36 @@ describe('step geo resolutions', () => {
       const resolved = task!.dag.nodes.some((n) => (n.geoResolutions ?? []).length > 0)
       expect(resolved, `${id} carries geoResolutions; remove it from the worklist`).toBe(false)
     }
+  })
+
+  it('completes the PR 125 abstractions without globalizing US-only or conditional steps', () => {
+    const tasks = loadProcesses(DATA_DIR)
+    const globalIds = ['form_001', 'form_002', 'form_012', 'fund_001', 'fund_002', 'fund_004',
+      'fund_006', 'hr_012', 'legal_002', 'opp_002', 'qs_047', 'qs_063', 'scale_002',
+      'shutdown_001', 'sit_022', 'tax_002', 'tax_011', 'vc_002']
+    for (const id of globalIds) {
+      const task = tasks.find(task => task.id === id)!
+      expect(task.geoScope, id).toBe('global')
+      for (const node of task.dag.nodes) {
+        const at = `${id}/${node.id}`
+        expect(node.label, at).not.toMatch(/\b(?:IRS|Delaware|USPTO|SEC|EIN|1099|409A|Carta)\b|83\(b\)|401\(k\)/)
+        if (node.actionUrl) {
+          expect(node.geoResolutions?.length, at).toBeGreaterThan(0)
+          expect(node.geoResolutions?.find(row => row.country === 'US')?.actionUrl, at).toMatch(/^https:\/\//)
+        }
+      }
+    }
+    for (const id of ['sit_002', 'sit_010', 'tax_001', 'qs_043', 'fund_003', 'form_011', 'tax_003']) {
+      expect(tasks.find(task => task.id === id)?.geoScope, id).not.toBe('global')
+    }
+    const taxId = tasks.find(task => task.id === 'form_002')!
+    expect(taxId.dag.nodes.find(node => node.id === 'n3')?.geoResolutions?.find(row => row.country === 'IN')?.kind).toBe('absorbed')
+    const retirement = tasks.find(task => task.id === 'hr_012')!
+    expect(retirement.dag.nodes.find(node => node.id === 'n1')?.geoResolutions?.find(row => row.country === 'FR')?.kind).toBe('absorbed')
+    const preseed = tasks.find(task => task.id === 'fund_001')!
+    expect(preseed.title).toBe('Raise pre-seed funding')
+    expect(preseed.slugAliases).toContainEqual({ slug: 'raise-pre-seed-safes', label: 'Raise pre-seed (SAFEs)' })
+    expect(tasks.find(task => task.id === 'fund_004')?.dag.nodes.find(node => node.id === 'n6')?.label).toBe('Record the grant in the equity register')
   })
 
   it('non-US entries reuse committed geo knowledge: the entry country also has a process geoNote or the process is global', () => {

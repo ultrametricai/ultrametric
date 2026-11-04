@@ -1,18 +1,17 @@
 {
-  "hash": "757b950f95056044829bcca8cb619f81fce6d986b9920abbcfe7d28988cdcc0c",
+  "hash": "6050d3c499697d5e26cb4695a2bd91258cc733d1849937a55c2f742c3e838d0d",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Stripe documents dedicated Financial Connections webhooks for new linked accounts and for completed balance, ownership and transaction refreshes [docs-12, docs-13, docs-24, docs-25]. The same page points to a relink flow for inactive accounts, which implies connection-state events [docs-14]. That covers the core no-polling story, but a community report notes data is pulled only daily, which limits how current the data can be [comm-7]. Missing for 10: evidence that webhooks are signed or how to verify them, an explicit connection-state (inactive/disconnected) event, clarity on whether events carry the changed data or only a refresh-complete notice, and independent hands-on confirmation.",
+    "rationale": "Stripe's dedicated Financial Connections webhooks page documents events for newly linked accounts, completed balance refreshes, completed transaction refreshes and completed ownership refreshes, plus guidance on relinking inactive accounts. That covers the new-transactions, balance-update and connection-state parts of the story. Missing for 10: no evidence in the pack that these webhooks are cryptographically signed, the connection-state (inactive/disconnected) event is only implied by the relink guidance, events signal refresh completion rather than per-transaction pushes, and there is no independent or hands-on corroboration.",
     "evidenceIds": [
       "stripe-financial-connections-docs-12",
       "stripe-financial-connections-docs-13",
-      "stripe-financial-connections-docs-24",
       "stripe-financial-connections-docs-25",
-      "stripe-financial-connections-docs-14",
-      "stripe-financial-connections-comm-7"
+      "stripe-financial-connections-docs-24",
+      "stripe-financial-connections-docs-14"
     ],
     "productId": "stripe-financial-connections",
     "storyId": "webhook-data-events"

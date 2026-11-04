@@ -1,11 +1,11 @@
 {
-  "hash": "7a83abb8b2630da685eb3f4ea61ce4e713b47d1f65bcafd8711c036979691815",
+  "hash": "6530a3a668e43a866686f690f74e57e8f3acaad42be36d611b147d8e28031817",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Agent orders settle on standard Stripe objects: ACS orders arrive as checkout.session.completed with a PaymentIntent, and x402 payments are recorded as PaymentIntents. The machine-payments docs say refunds go through the standard Refunds API and Dashboard, and the MCP server can initiate refunds behind a human approval gate. Refunds for ACS checkout orders are only implied by these shared rails, not documented. missing for 10: explicit refund docs for ACS/ACP agent-placed checkout orders, refund status tracking or webhooks tied to agent orders, refund handling for the third-party-processor custom integration, independent or hands-on corroboration.",
+    "rationale": "The machine-payments docs say agent payments land in the Stripe balance with refunds available through the standard Refunds API and Dashboard. Agent orders flow through standard Stripe rails (checkout.session.completed events, PaymentIntents with agent_details, x402 payments recorded as PaymentIntents), so they are refundable objects. The MCP server also names refunds as agent write actions that require human approval. However, the ACS seller and agent checkout docs never describe refund initiation or status tracking for agent-placed orders. Missing for 10: explicit ACS refund flow documentation, refund status webhooks or tracking for agent orders, refund handling in the custom ACP/third-party-processor integration, and independent or hands-on corroboration.",
     "evidenceIds": [
       "stripe-ac-supp-machine-payments",
       "stripe-ac-supp-order-attribution",

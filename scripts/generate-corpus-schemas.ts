@@ -11,6 +11,7 @@ import path from 'node:path'
 import { z } from 'zod'
 import { CompanyFieldsRegistrySchema } from '../lib/companyFields'
 import { ArtifactRegistrySchema, ProcessTaskSchema, VendorRegistrySchema } from '../lib/processes'
+import { VendorStateEntrySchema } from '../lib/vendorState'
 import { processDefinitionSchema } from '../lib/shared-processes/catalog'
 
 const ROOT = path.resolve(__dirname, '..')
@@ -20,6 +21,7 @@ export const OPERATIONAL_PROCESS_SCHEMA_FILE = path.join(ROOT, 'schemas', 'opera
 export const VENDOR_REGISTRY_SCHEMA_FILE = path.join(ROOT, 'schemas', 'process-vendor-registry.schema.json')
 export const ARTIFACT_REGISTRY_SCHEMA_FILE = path.join(ROOT, 'schemas', 'process-artifacts.schema.json')
 export const COMPANY_FIELDS_SCHEMA_FILE = path.join(ROOT, 'schemas', 'company-fields.schema.json')
+export const VENDOR_STATE_SCHEMA_FILE = path.join(ROOT, 'schemas', 'vendor-state.schema.json')
 
 // Keep the established URL valid for legacy process records while publishing the exact
 // canonical authoring shape. Local references share the document root after composition.
@@ -58,8 +60,8 @@ export function operationalProcessSchemaJson(): string {
     $schema,
     title: 'Ultrametric operational process',
     description:
-      'One operational projection of a canonical founder-process definition: a real startup operating process mapped as a DAG whose steps are routed ' +
-      'agent/form/person, with curated cadence, geo scope, rank axes, and time estimates. ' +
+      'One operational projection of a canonical founder-process definition: a real startup operating process mapped as a DAG with evidenced execution assessments, ' +
+      'legacy route compatibility, curated cadence, geo scope, rank axes, and time estimates. ' +
       'Generated from ProcessTaskSchema in lib/processes.ts by ' +
       'scripts/generate-corpus-schemas.ts — edit the zod schema, never this file.',
     ...rest,
@@ -132,6 +134,28 @@ export function companyFieldsSchemaJson(): string {
   return `${JSON.stringify(doc, null, 2)}\n`
 }
 
+// The vendor state-availability contract (per-state vendors workstream, 2026-10-22): the dated,
+// source-cited (product, state, service) availability rows live in
+// jurisdictions/vendor-state.json; this schema is generated from the same zod source of truth
+// (VendorStateEntrySchema in lib/vendorState.ts) and drift-tested the same way.
+export function vendorStateSchemaJson(): string {
+  const { $schema, ...rest } = z.toJSONSchema(VendorStateEntrySchema.array())
+  const doc = {
+    $schema,
+    title: 'Ultrametric vendor state availability',
+    description:
+      'Vendor US-state service availability evidence (jurisdictions/vendor-state.json): one ' +
+      'row per (product, state, service) with a status, an optional price from the vendor’s ' +
+      'own pricing page, the vendor’s own state page as the primary source, optional ' +
+      'first-party supporting sources for material limits, and the date it was checked. ' +
+      'Display/annotation evidence only; no judged number reads it. Generated from ' +
+      'VendorStateEntrySchema in lib/vendorState.ts by scripts/generate-corpus-schemas.ts — ' +
+      'edit the zod schema, never this file.',
+    ...rest,
+  }
+  return `${JSON.stringify(doc, null, 2)}\n`
+}
+
 function main(): void {
   fs.writeFileSync(PROCESS_SCHEMA_FILE, processSchemaJson())
   console.log(`wrote ${path.relative(ROOT, PROCESS_SCHEMA_FILE)}`)
@@ -143,6 +167,8 @@ function main(): void {
   console.log(`wrote ${path.relative(ROOT, ARTIFACT_REGISTRY_SCHEMA_FILE)}`)
   fs.writeFileSync(COMPANY_FIELDS_SCHEMA_FILE, companyFieldsSchemaJson())
   console.log(`wrote ${path.relative(ROOT, COMPANY_FIELDS_SCHEMA_FILE)}`)
+  fs.writeFileSync(VENDOR_STATE_SCHEMA_FILE, vendorStateSchemaJson())
+  console.log(`wrote ${path.relative(ROOT, VENDOR_STATE_SCHEMA_FILE)}`)
 }
 
 if (require.main === module) main()

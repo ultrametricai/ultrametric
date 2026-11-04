@@ -1,20 +1,18 @@
 {
-  "hash": "474ec34c7164b5be73839f05269495a8f4f67e0dd8b34b4e89c4dd7df6bfb55d",
+  "hash": "cd519d8e23a4caa4850fc982edb90f6ba8ffa1e57cb2b9742d656e444d89b8d0",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "An agent can monitor payments through payment lifecycle webhooks, which can be managed via API, resent, or routed to EventBridge. It can also query payment statuses through the hosted MCP server. It can re-request payments against /payments using idempotency keys and create payment links that could be sent as recovery links. Retry logic and dunning outreach would have to be built by the agent, because the documented idempotent retries cover disrupted API calls, not declined-payment recovery. Missing for 10: native failed-payment retry/smart-retry scheduling, built-in dunning workflows or customer outreach, explicit failed/declined payment event documentation, and independent corroboration.",
+    "rationale": "Checkout.com documents webhooks for payment lifecycle events, with HMAC signatures, management via API, and resend. Its MCP server lets an agent query payment statuses and create payment links, so an agent can monitor failed payments. However, retries depend on the agent re-requesting payments with stored tokens or instruments; the idempotency docs cover safe network retries, not decline-recovery retry logic. No dunning or recovery-outreach capability is documented beyond payment links that could be sent to customers. missing for 10: native failed-payment retry scheduling/smart retries, built-in dunning outreach workflows, explicit documentation of failed-payment webhook events, independent or hands-on corroboration.",
     "evidenceIds": [
       "cko-supp-webhooks",
       "checkout-com-docs-12",
       "cko-supp-mcp-server",
       "cko-supp-mcp-endpoints",
-      "cko-supp-idempotency",
-      "checkout-com-docs-7",
-      "checkout-com-docs-41",
-      "cko-supp-api-keys"
+      "checkout-com-docs-18",
+      "checkout-com-docs-41"
     ],
     "productId": "checkout-com",
     "storyId": "agent-monitors-dunning"
