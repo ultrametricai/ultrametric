@@ -6,8 +6,11 @@
 # probed URL ("PROBE llms.txt: HTTP 404 at ...") are recorded negative observations: the 404 is
 # the evidence, so those rows stay as they are.
 #
-# Two kinds of relink, both keeping ids and excerpts (the judge cache hashes [id, excerpt], so
-# verdicts and rankings are untouched):
+# Two kinds of relink, both keeping ids and excerpts. Committed verdicts and rankings are
+# untouched here. The judge cellHash covers [id, tier, url, excerpt], so a url change does
+# invalidate the affected products' cached judgments; on 2026-11-03 those caches were already
+# keyed to PROMPT_VERSION v5 while the judge runs v6, so every one of these cells re-judges on
+# its next judge touch regardless of this relink.
 #
 # - MOVED: the vendor moved the page. Every excerpt on the affected rows was verified verbatim
 #   on the new URL (HTTP 200) on 2026-11-03, so url moves and fetchedAt restamps to the
