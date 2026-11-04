@@ -1,8 +1,8 @@
 import path from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { loadCategory } from '@/lib/data'
-import { loadProcesses } from '@/lib/processes'
-import { processLeaderboard } from '@/lib/processRankings'
+import { GOVERNMENT_ARENA_ID, loadProcesses } from '@/lib/processes'
+import { crossArenaStepRankings, processLeaderboard, stepRanking, stepRankingFull } from '@/lib/processRankings'
 import { loadStepVendorCalls } from '@/lib/stepVendorCalls'
 import { processesForVendor, VENDOR_PROCESS_KINDS } from '@/lib/vendorProcesses'
 
@@ -44,8 +44,8 @@ describe('processesForVendor — the reverse index over the process pages\' own 
     let cuOnlyRows = 0
     for (const p of products) {
       for (const a of processesForVendor('browser-agents', p.id, DATA_DIR)) {
-        if (a.kinds.includes('computer-use')
-          && !a.kinds.includes('step-ranked') && !a.kinds.includes('cross-arena')) {
+        if (a.kinds.includes('computer-use') && !a.kinds.includes('step-ranked')
+          && !a.kinds.includes('supporting-ranked') && !a.kinds.includes('cross-arena')) {
           cuOnlyRows += 1
           expect(a.stepsServed, `${p.id} ${a.taskId}: computer-use-only appearance must serve 0 steps`).toBe(0)
           expect(a.leaderboardRank).toBeNull()
@@ -100,8 +100,76 @@ describe('processesForVendor — the reverse index over the process pages\' own 
         expect(s.label.length).toBeGreaterThan(0)
       }
       // "Could attempt it" never produces a served-step receipt.
-      if (!a.kinds.includes('step-ranked') && !a.kinds.includes('cross-arena')) {
+      if (!a.kinds.includes('step-ranked') && !a.kinds.includes('supporting-ranked') && !a.kinds.includes('cross-arena')) {
         expect(a.servedSteps).toEqual([])
+      }
+    }
+  })
+
+  it('every vendor a process step card ranks — supporting steps included — lists that process on its product page', () => {
+    // The invariant the site renders against: the step cards show stepRanking chips (plus
+    // cross-arena chips); any vendor visible there must come back from processesForVendor
+    // with a score-bearing kind. Government agencies stay out by doctrine (they are not
+    // competing vendors and keep their own arena rankings).
+    for (const task of loadProcesses(DATA_DIR)) {
+      for (const node of task.dag.nodes) {
+        const primary = stepRanking(task.id, node, DATA_DIR)
+        if (primary && primary.arenaId !== GOVERNMENT_ARENA_ID) {
+          for (const v of primary.vendors) {
+            const row = processesForVendor(primary.arenaId, v.productId, DATA_DIR).find((a) => a.taskId === task.id)
+            expect(row, `${task.id}/${node.id}: ranked vendor ${primary.arenaId}/${v.productId} missing from its product page`).toBeDefined()
+            expect(
+              row!.kinds.includes(node.supporting ? 'supporting-ranked' : 'step-ranked'),
+              `${task.id}/${node.id}: ${v.productId} must carry the ${node.supporting ? 'supporting-ranked' : 'step-ranked'} kind`,
+            ).toBe(true)
+            expect(row!.servedSteps.some((s) => s.nodeId === node.id), `${task.id}/${node.id}: ${v.productId} receipt missing`).toBe(true)
+          }
+        }
+        for (const ranking of crossArenaStepRankings(task.id, node, DATA_DIR)) {
+          for (const v of ranking.vendors) {
+            const row = processesForVendor(ranking.arenaId, v.productId, DATA_DIR).find((a) => a.taskId === task.id)
+            expect(row, `${task.id}/${node.id}: cross-arena vendor ${ranking.arenaId}/${v.productId} missing from its product page`).toBeDefined()
+            expect(row!.kinds).toContain('cross-arena')
+          }
+        }
+      }
+    }
+  })
+
+  it('a vendor ranked only on a supporting step keeps the process link with receipts: tax_002 cloud-storage (the Box case)', () => {
+    const task = loadProcesses(DATA_DIR).find((t) => t.id === 'tax_002')!
+    const node = task.dag.nodes.find((n) => n.supporting)!
+    const ranking = stepRankingFull(task.id, node, DATA_DIR)!
+    expect(ranking.arenaId).toBe('cloud-storage')
+    expect(ranking.vendors.length).toBeGreaterThan(0)
+    for (const v of ranking.vendors) {
+      const row = processesForVendor('cloud-storage', v.productId, DATA_DIR).find((a) => a.taskId === 'tax_002')
+      expect(row, `cloud-storage/${v.productId} must list tax_002`).toBeDefined()
+      expect(row!.kinds).toContain('supporting-ranked')
+      // Supporting appearances confer no leaderboard placement: the step stays out of the
+      // entry aggregation, so rank and process score come only from non-supporting steps.
+      expect(row!.leaderboardRank).toBeNull()
+      expect(row!.processScore).toBeNull()
+      expect(row!.stepsServed).toBeGreaterThan(0)
+      const receipt = row!.servedSteps.find((s) => s.nodeId === node.id)
+      expect(receipt).toBeDefined()
+      expect(receipt!.score).toBe(v.score)
+    }
+  })
+
+  it('supporting appearances never create leaderboard entries: the five supporting steps stay out of entry aggregation', () => {
+    for (const [taskId] of [['tax_001'], ['tax_002'], ['shutdown_001'], ['fund_002'], ['comp_011']] as const) {
+      const task = loadProcesses(DATA_DIR).find((t) => t.id === taskId)!
+      const lb = processLeaderboard(task, DATA_DIR)
+      for (const node of task.dag.nodes.filter((n) => n.supporting)) {
+        const ranking = stepRankingFull(task.id, node, DATA_DIR)
+        if (!ranking) continue
+        for (const v of ranking.vendors) {
+          const entry = lb.entries.find((e) => e.arenaId === ranking.arenaId && e.productId === v.productId)
+          // A vendor may be an entry via OTHER (non-supporting) steps; the supporting step
+          // itself never appears among an entry's served steps.
+          if (entry) expect(entry.steps.some((s) => s.nodeId === node.id)).toBe(false)
+        }
       }
     }
   })
