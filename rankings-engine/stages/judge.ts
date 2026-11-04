@@ -305,6 +305,7 @@ function currentCachedCell(category: string, product: string, story: Story, evid
 export async function runJudge({ category, product, batch }: { category?: string; product?: string; batch?: boolean }): Promise<void> {
 
   let matched = 0
+  const matchedCategories = new Set<string>()
   const cats = resolveCategories(category)
 
   // Collects one category's cache-miss cells (and counts its matched targets).
@@ -315,6 +316,7 @@ export async function runJudge({ category, product, batch }: { category?: string
     const targets = products.filter((p) => !product || p.id === product)
     matched += targets.length
     if (!targets.length) return []
+    matchedCategories.add(cat.id)
 
     // A scoped publication still needs a complete current matrix. Check untouched
     // cells before paying for target judgments or changing any target cache files.
@@ -362,7 +364,9 @@ export async function runJudge({ category, product, batch }: { category?: string
   for (const cat of cats) {
     // Judge, then assemble, one category at a time: a failure in a later category must
     // not cost an earlier, fully judged category its verdicts.json update.
-    await judgeCells(collected.get(cat.id) ?? collectCells(cat), prefilled)
+    const cells = collected.get(cat.id) ?? collectCells(cat)
+    if (!matchedCategories.has(cat.id)) continue
+    await judgeCells(cells, prefilled)
 
     const dataDir = categoryDir(cat.id)
     const products = readJson(ProductSchema.array(), path.join(dataDir, 'products.json'))
