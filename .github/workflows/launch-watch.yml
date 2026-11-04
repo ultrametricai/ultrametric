@@ -5,12 +5,11 @@
 # verified), classifies launch-shaped headlines against the arena taxonomy with the radar's
 # keyword-fit machinery, and nominates (product, arena) pairs for arenas the vendor is NOT yet
 # rostered in. The vendor radar covers new vendors; this covers known vendors entering new
-# arenas. Candidates are keyed launch:<product>:<arena> in the SHARED seen-ledger
-# (rankings-engine/radar-seen.json), so each launch is reported once, and stranded ledgers on
-# open radar or launch-watch branches are folded in via --merge-seen. Then:
+# arenas. Candidates use launch:<product>:<arena> discovery keys. Both workflows reconcile
+# immutable discovery records and original reports from radar and launch-watch branches. Then:
 #
-#   1. commits the dated report (reports/launch-watch/<date>.{json,md}) + triage + the updated
-#      seen-ledger via the usual PR-or-issue flow, with the candidates list on the scan PR body,
+#   1. commits the dated report (reports/launch-watch/runs/<run-id>.{json,md}) + triage + immutable
+#      discovery records via the usual PR-or-issue flow, with the candidates list on the scan PR body,
 #   2. needs-human rows file (or update, on a same-day re-run) a 'launch-watch: needs-human
 #      candidates YYYY-MM-DD' issue (needs-human-issue.ts --generator launch-watch; labels
 #      story-runner + founder-call), then this generator's previous still-open candidates issues
@@ -60,32 +59,22 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      # The ledger is shared with the vendor radar, so stranded updates can live on either
-      # branch family. Same mechanics as vendor-radar.yml: each `git show` gated on its own
-      # exit code, flags handed to the scan via --merge-seen.
-      - name: Collect seen-ledgers from open radar and launch-watch branches
+      # Preserve discoveries AND their source reports from both producer families. A failed
+      # fetch/import fails the run; deduping with incomplete branch history is unsafe.
+      - name: Reconcile radar discoveries and reports
         run: |
           git fetch origin '+refs/heads/vendor-radar/*:refs/remotes/origin/vendor-radar/*' \
-            '+refs/heads/launch-watch/*:refs/remotes/origin/launch-watch/*' || true
-          mkdir -p /tmp/lw-seen
-          : > /tmp/lw-seen/flags
-          for REF in $(git for-each-ref --format='%(refname:short)' 'refs/remotes/origin/vendor-radar/*' 'refs/remotes/origin/launch-watch/*'); do
-            SAFE=$(echo "$REF" | tr '/' '-')
-            if git show "$REF:rankings-engine/radar-seen.json" > "/tmp/lw-seen/$SAFE.json" 2>/dev/null; then
-              printf ' --merge-seen /tmp/lw-seen/%s.json' "$SAFE" >> /tmp/lw-seen/flags
-            else
-              rm -f "/tmp/lw-seen/$SAFE.json"
-            fi
-          done
-          echo "MERGE_SEEN_FLAGS=$(cat /tmp/lw-seen/flags)" >> "$GITHUB_ENV"
+            '+refs/heads/launch-watch/*:refs/remotes/origin/launch-watch/*'
+          pnpm tsx rankings-engine/scripts/reconcile-radar-state.ts
+          echo "RADAR_RUN_ID=$(date -u +%F)-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}" >> "$GITHUB_ENV"
 
       # The scan: keyless, bounded (one GET per committed urls.news surface, 15s timeout,
-      # per-host pacing). Writes reports/launch-watch/<date>.{json,md}, the triage report
-      # (<date>-triage.json), updates the shared seen-ledger, and writes the candidates markdown
+      # per-host pacing). Writes reports/launch-watch/runs/<run-id>.{json,md}, the triage report
+      # (<run-id>-triage.json), writes an immutable discovery record, and writes the candidates markdown
       # ONLY when there are new candidates. A corrupt committed ledger FAILS the run instead of
       # silently wiping the seen-history.
       - name: Launch-watch scan
-        run: pnpm tsx rankings-engine/scripts/launch-watch.ts --issue-body /tmp/launch-watch-candidates.md $MERGE_SEEN_FLAGS
+        run: pnpm tsx rankings-engine/scripts/launch-watch.ts --issue-body /tmp/launch-watch-candidates.md --run-id "$RADAR_RUN_ID"
 
       # needs-human-issue.ts writes the issue body ONLY when a candidate needs a human call.
       - name: Needs-human triage body
@@ -94,9 +83,8 @@ jobs:
             echo "No new candidates — nothing to triage."
             exit 0
           fi
-          DATE=$(date -u +%F)
           pnpm tsx rankings-engine/scripts/needs-human-issue.ts \
-            --triage "reports/launch-watch/$DATE-triage.json" \
+            --triage "reports/launch-watch/runs/$RADAR_RUN_ID-triage.json" \
             --out /tmp/launch-watch-needs-human.md \
             --generator launch-watch
 
@@ -109,7 +97,7 @@ jobs:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
           DATE=$(date -u +%F)
-          TRIAGE="reports/launch-watch/$DATE-triage.json"
+          TRIAGE="reports/launch-watch/runs/$RADAR_RUN_ID-triage.json"
           if [ ! -f "$TRIAGE" ]; then
             echo "No triage output — nothing to apply."
             exit 0
@@ -160,26 +148,25 @@ jobs:
           fi
           exit 1
 
-      - name: Commit report + seen-ledger (+ applied entries) as PR (or compare-link issue)
+      - name: Commit report + discovery records (+ applied entries) as PR (or compare-link issue)
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          RUN_ID: ${{ github.run_id }}
         run: |
           # porcelain, not `git diff --quiet`: a brand-new dated report file is UNTRACKED and
           # invisible to diff. open-rankings and the judge cache only change when --apply ran.
-          if [ -z "$(git status --porcelain -- reports rankings-engine/radar-seen.json open-rankings rankings-engine/cache README.md)" ]; then
-            echo "No report/ledger change — done."
+          if [ -z "$(git status --porcelain -- reports rankings-engine/radar-discoveries open-rankings rankings-engine/cache README.md)" ]; then
+            echo "No report/discovery change — done."
             exit 0
           fi
-          BRANCH="launch-watch/$RUN_ID"
+          BRANCH="launch-watch/$RADAR_RUN_ID"
           git config user.name "ultrametric-launch-watch"
           git config user.email "noreply@ultrametric.ai"
           git checkout -b "$BRANCH"
-          git add reports rankings-engine/radar-seen.json open-rankings rankings-engine/cache README.md
+          git add reports rankings-engine/radar-discoveries open-rankings rankings-engine/cache README.md
           git commit -m "chore(launch-watch): weekly rostered-vendor launch scan"
           git push -u origin "$BRANCH"
           {
-            echo "Automated keyless scan of rostered vendors' own launch surfaces (\`rankings-engine/scripts/launch-watch.ts\`): dated report + triage + seen-ledger update. Needs-human dispositions are in the companion 'launch-watch: needs-human candidates' issue; auto-approved cross-arena entries (if any) are applied on this branch together with their scoped engine run, so every debut score comes from judged evidence."
+            echo "Automated keyless scan of rostered vendors' own launch surfaces (\`rankings-engine/scripts/launch-watch.ts\`): dated report + triage + immutable discovery record. Needs-human dispositions are in the companion 'launch-watch: needs-human candidates' issue; auto-approved cross-arena entries (if any) are applied on this branch together with their scoped engine run, so every debut score comes from judged evidence."
             if [ -f /tmp/launch-watch-candidates.md ]; then
               echo
               cat /tmp/launch-watch-candidates.md
