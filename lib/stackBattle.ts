@@ -14,7 +14,7 @@ export interface StackAggregates {
   productCount: number
   /** Distinct arenas the stack covers. */
   arenaCount: number
-  /** Mean Overall score over products that have one (null when none do). */
+  /** Mean Agentic score over products that have one (null when none do). */
   meanAiEra: number | null
   /** How many products the Overall-score mean rests on — a thin mean must read as thin. */
   aiEraCount: number
@@ -64,7 +64,7 @@ export interface SlotComparison {
   arenaName: string
   a: MyStackProduct[]
   b: MyStackProduct[]
-  /** Which side's best Overall score wins this slot — null when a side is empty or unscored. */
+  /** Which side's best Agentic score wins this slot — null when a side is empty or unscored. */
   winner: 'a' | 'b' | 'tie' | null
   /** `/arena/{arenaId}/battle/{slug}` when exactly one product per side and their judged battle page exists. */
   battleHref: string | null
@@ -136,8 +136,8 @@ export function battleVerdict(
       : ([bLabel, { mean: b.meanAiEra, count: b.aiEraCount }, { mean: a.meanAiEra, count: a.aiEraCount }] as const)
   const head =
     Math.abs(delta) < VERDICT_EVEN_DELTA
-      ? `${aLabel} and ${bLabel} are effectively even on mean Overall score (${a.meanAiEra.toFixed(1)}/100 vs ${b.meanAiEra.toFixed(1)}/100)`
-      : `${leadLabel} leads on mean Overall score, ${lead.mean.toFixed(1)}/100 vs ${trailLead.mean.toFixed(1)}/100 across ${lead.count} vs ${trailLead.count} scored products`
+      ? `${aLabel} and ${bLabel} are effectively even on mean Agentic score (${a.meanAiEra.toFixed(1)}/100 vs ${b.meanAiEra.toFixed(1)}/100)`
+      : `${leadLabel} leads on mean Agentic score, ${lead.mean.toFixed(1)}/100 vs ${trailLead.mean.toFixed(1)}/100 across ${lead.count} vs ${trailLead.count} scored products`
   const interconnect =
     a.possiblePairs > 0 && b.possiblePairs > 0
       ? `; verified interconnects ${a.verifiedInterconnects}/${a.possiblePairs} vs ${b.verifiedInterconnects}/${b.possiblePairs}`

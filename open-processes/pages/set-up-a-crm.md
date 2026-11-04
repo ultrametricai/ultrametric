@@ -42,12 +42,12 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
-| [1. Create your CRM account](#step-1) | manual form/portal; approval required | ~10 min | Entry step |
-| [2. Configure deal pipeline](#step-2) | agent-runnable; approval required | ~10 min | [Step 1](#step-1) |
+| [1. Create your CRM account](#step-1) | manual form/portal; human approval on the first run | ~10 min | Entry step |
+| [2. Configure deal pipeline](#step-2) | agent-runnable; human approval on the first run | ~10 min | [Step 1](#step-1) |
 | [3. Set up custom properties](#step-3) | agent-runnable | ~10 min | [Step 1](#step-1) |
-| [4. Create email templates](#step-4) | agent-runnable; approval required | ~15 min | [Step 2](#step-2) |
-| [5. Connect the email inbox](#step-5) | manual form/portal; approval required | ~5 min | [Step 4](#step-4) |
-| [6. Import existing contacts](#step-6) | agent-runnable; approval required | ~10 min | [Step 3](#step-3) |
+| [4. Create email templates](#step-4) | agent-runnable; human approval on the first run | ~15 min | [Step 2](#step-2) |
+| [5. Connect the email inbox](#step-5) | manual form/portal; human approval on the first run | ~5 min | [Step 4](#step-4) |
+| [6. Import existing contacts](#step-6) | agent-runnable; human approval above a threshold | ~10 min | [Step 3](#step-3) |
 
 <a id="steps"></a>
 
@@ -57,7 +57,7 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 
 ### 1. Create your CRM account
 
-manual form/portal · ~10 min · human approval required
+manual form/portal · ~10 min · human approval on the first run
 
 
 Check for an existing CRM workspace before creating one. Select a plan from the required records, users, integrations, access controls and current cost. Establish company ownership, recovery access and administrators within the sales budget. Set up the workspace, then hand its record structure and access details to the pipeline, field-mapping and import tasks.
@@ -72,7 +72,7 @@ Check for an existing CRM workspace before creating one. Select a plan from the 
 
 ### 2. Configure deal pipeline
 
-agent-runnable · ~10 min · human approval required
+agent-runnable · ~10 min · human approval on the first run
 
 
 Define evidence for entering and leaving each deal stage, including won, lost and stalled outcomes. Agree definitions and update ownership with the sales team. Configure the stages, move a sample deal through them and check the resulting reports. Keep the definitions available where teammates manage deals.
@@ -98,7 +98,7 @@ Compare the sales process's information needs with existing CRM properties befor
 
 ### 4. Create email templates
 
-agent-runnable · ~15 min · human approval required
+agent-runnable · ~15 min · human approval on the first run
 
 
 *Follows step 2.*
@@ -111,7 +111,7 @@ Write templates for specific sales moments, using verified claims and personaliz
 
 ### 5. Connect the email inbox
 
-manual form/portal · ~5 min · human approval required
+manual form/portal · ~5 min · human approval on the first run
 
 
 Choose an individual work inbox or shared team address and check the CRM's current connection method and permissions. Connect only with the mailbox owner's agreed access, sending and logging scope. Test an internal exchange and inspect who can see the logged content, especially personal or confidential messages. Give the connection owner the revocation steps and resulting visibility settings.
@@ -125,7 +125,7 @@ Choose an individual work inbox or shared team address and check the CRM's curre
 
 ### 6. Import existing contacts
 
-agent-runnable · ~10 min · human approval required
+agent-runnable · ~10 min · human approval above a threshold
 
 
 *Follows step 3.*

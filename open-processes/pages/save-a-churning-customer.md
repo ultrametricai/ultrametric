@@ -54,10 +54,10 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | --- | --- | --- | --- |
 | [1. Pull customer usage data](#step-1) | agent-runnable | ~2 min | Entry step |
 | [2. Check CRM health score](#step-2) | agent-runnable | ~2 min | Entry step |
-| [3. Prepare save offer](#step-3) | agent-runnable; approval required | ~5 min | Alternatives: [Step 1](#step-1) (The customer wants help evaluating a remedy rather than a direct cancellation.); [Step 2](#step-2) (The customer wants help evaluating a remedy rather than a direct cancellation.) |
-| [4. Send retention email](#step-4) | agent-runnable; approval required | ~2 min | [Step 3](#step-3) |
+| [3. Prepare save offer](#step-3) | agent-runnable; standing human approval | ~5 min | Alternatives: [Step 1](#step-1) (The customer wants help evaluating a remedy rather than a direct cancellation.); [Step 2](#step-2) (The customer wants help evaluating a remedy rather than a direct cancellation.) |
+| [4. Send retention email](#step-4) | agent-runnable; human approval every run | ~2 min | [Step 3](#step-3) |
 | [5. Schedule call](#step-5) | human; includes waiting | ~30 min | [Step 4](#step-4) (The customer wants a call before deciding.) |
-| [6. Apply discount or cancel](#step-6) | agent-runnable; approval required | ~2 min | Alternatives: [Step 5](#step-5); [Step 1](#step-1) (The customer has made a firm cancellation choice; confirm identity, terms and authority before applying it.); [Step 4](#step-4) (The customer has chosen the outcome and does not need a call.) |
+| [6. Apply discount or cancel](#step-6) | agent-runnable; human approval every run | ~2 min | Alternatives: [Step 5](#step-5); [Step 1](#step-1) (The customer has made a firm cancellation choice; confirm identity, terms and authority before applying it.); [Step 4](#step-4) (The customer has chosen the outcome and does not need a call.) |
 | [7. Log outcome in CRM](#step-7) | agent-runnable | ~2 min | [Step 6](#step-6) |
 
 <a id="steps"></a>
@@ -99,7 +99,7 @@ Inspect the CRM health score's components, update time and owner. Compare it wit
 
 ### 3. Prepare save offer
 
-agent-runnable · ~5 min · human approval required
+agent-runnable · ~5 min · standing human approval
 
 
 *Follows step 1 (when The customer wants help evaluating a remedy rather than a direct cancellation) or step 2 (when The customer wants help evaluating a remedy rather than a direct cancellation).*
@@ -114,7 +114,7 @@ Verify support capacity before proposing an update cadence or delivery date: nam
 
 ### 4. Send retention email
 
-agent-runnable · ~2 min · human approval required
+agent-runnable · ~2 min · human approval every run
 
 
 Send the retention message to the confirmed customer contact within the account team's communication authority. Acknowledge their specific concern, describe the agreed remedy and its limits, and give them a clear way to respond. Use verified account facts and commercial terms. Add the sent message and next follow-up to the CRM so another teammate can continue the conversation accurately.
@@ -145,7 +145,7 @@ Make a call conditional on the customer wanting one. Do not require a meeting to
 
 ### 6. Apply discount or cancel
 
-agent-runnable · ~2 min · human approval required
+agent-runnable · ~2 min · human approval every run
 
 
 *Follows step 1 (when The customer has made a firm cancellation choice; confirm identity, terms and authority before applying it) or step 4 (when The customer has chosen the outcome and does not need a call) or step 5.*

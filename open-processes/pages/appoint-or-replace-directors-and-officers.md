@@ -53,9 +53,9 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Collect the governing documents and proposed change](#step-1) | agent-runnable | Not recorded | Entry step |
-| [2. Confirm eligibility, conflicts and the approval route](#step-2) | human; approval required | Not recorded | [Step 1](#step-1) |
+| [2. Confirm eligibility, conflicts and the approval route](#step-2) | human; human approval every run | Not recorded | [Step 1](#step-1) |
 | [3. Prepare the appointment and handover pack](#step-3) | agent-runnable | Not recorded | [Step 2](#step-2) |
-| [4. Obtain the required consents and authorize the change](#step-4) | human; approval required | Not recorded | [Step 3](#step-3) |
+| [4. Obtain the required consents and authorize the change](#step-4) | human; human approval every run | Not recorded | [Step 3](#step-3) |
 | [5. Reconcile registers and authority changes](#step-5) | agent-runnable | Not recorded | [Step 4](#step-4) |
 
 <a id="steps"></a>
@@ -77,7 +77,7 @@ Gather the current board and officer registers, governing documents, investor ri
 
 ### 2. Confirm eligibility, conflicts and the approval route
 
-human · human approval required
+human · human approval every run
 
 
 Company counsel checks eligibility, nomination rights, consent requirements and any relevant local filings. Record disclosed interests and distinguish appointment authority from authority to sign contracts or access bank accounts.
@@ -99,7 +99,7 @@ Draft the resolutions, consents, role description and register changes for couns
 
 ### 4. Obtain the required consents and authorize the change
 
-human · human approval required
+human · human approval every run
 
 
 The appropriate people review and execute the approved documents. Keep the appointment pending until the required approvals and acceptance are evidenced; counsel coordinates any filings.

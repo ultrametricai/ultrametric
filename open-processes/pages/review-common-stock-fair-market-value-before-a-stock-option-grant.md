@@ -32,8 +32,8 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | [1. Record entity, security class, recipient, proposed grant date, option terms, and governing plan.](#step-1) | Not recorded | Not recorded | Entry step |
 | [2. Assemble current cap table, prior valuation date/report, financials, forecasts, financing terms, and material events since that date.](#step-2) | Not recorded | Not recorded | [Step 1](#step-1) |
 | [3. Ask qualified valuation and tax advisers to evaluate current fair market value, available methods, material changes, and the option exception.](#step-3) | Not recorded | Not recorded | [Step 2](#step-2) |
-| [4. Approve valuation use and proposed option terms through the corporate decision path that counsel confirms is authorized.](#step-4) | Not recorded | Not recorded | [Step 3](#step-3) |
-| [5. Only after counsel and authorized decision-maker approval, issue the specific option and record grant date, exercise price, recipient acceptance, and source report version.](#step-5) | Not recorded | Not recorded | [Step 4](#step-4) (Counsel and the authorized decision-maker approve the specific grant.) |
+| [4. Approve valuation use and proposed option terms through the corporate decision path that counsel confirms is authorized.](#step-4) | Not recorded; human approval every run | Not recorded | [Step 3](#step-3) |
+| [5. Only after counsel and authorized decision-maker approval, issue the specific option and record grant date, exercise price, recipient acceptance, and source report version.](#step-5) | Not recorded; human approval every run | Not recorded | [Step 4](#step-4) (Counsel and the authorized decision-maker approve the specific grant.) |
 | [6. Before subsequent grants, recheck material developments and the valuation date; schedule a case-specific refresh review.](#step-6) | Not recorded | Not recorded | [Step 5](#step-5) |
 
 <a id="steps"></a>
@@ -75,7 +75,7 @@ Ask the valuation adviser and tax counsel to evaluate the proposed option and av
 
 ### 4. Approve valuation use and proposed option terms through the corporate decision path that counsel confirms is authorized.
 
-mode: external effect
+mode: external effect · human approval every run
 
 
 Bring the valuation conclusion, proposed option terms, plan capacity and report version to the board or delegate authorized under the company’s documents. Identify the precise grant scope and any conditions requiring a decision. The resolution should record what was approved and by whom, including the authority of any delegate, so the equity administrator can apply it to the subsequent grant.
@@ -87,7 +87,7 @@ Bring the valuation conclusion, proposed option terms, plan capacity and report 
 
 ### 5. Only after counsel and authorized decision-maker approval, issue the specific option and record grant date, exercise price, recipient acceptance, and source report version.
 
-mode: external effect
+mode: external effect · human approval every run
 
 
 *Follows step 4 (when Counsel and the authorized decision-maker approve the specific grant).*

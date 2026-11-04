@@ -53,7 +53,7 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | [1. Export current cap table](#step-1) | agent-runnable | ~5 min | Entry step |
 | [2. Reconcile recent transactions](#step-2) | human | ~30 min | [Step 1](#step-1) |
 | [3. Draft the corporate approval the changes require](#step-3) | agent-runnable | ~5 min | [Step 2](#step-2) |
-| [4. The required decision-makers sign the approval](#step-4) | human; approval required; signature required; includes waiting | ~10 min | [Step 3](#step-3) |
+| [4. The required decision-makers sign the approval](#step-4) | human; human approval every run; signature required; includes waiting | ~10 min | [Step 3](#step-3) |
 
 <a id="steps"></a>
 
@@ -90,7 +90,7 @@ Use the reconciled transactions to identify with counsel which actions need a co
 
 ### 4. The required decision-makers sign the approval
 
-human (legally required signature) · ~10 min · async wait · human approval required
+human (legally required signature) · ~10 min · async wait · human approval every run
 
 
 The authorized directors or other required decision-makers review and sign the final consent with its transaction schedule. Match revisions to both the resolution and proposed equity entries, and establish when the approval becomes effective. Give the equity administrator the specific authorized changes for entry and reconciliation.

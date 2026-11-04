@@ -47,9 +47,9 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Define the partnership model and economics](#step-1) | agent-runnable | Not recorded | Entry step |
-| [2. Review the partner and commercial risks](#step-2) | human; approval required | Not recorded | [Step 1](#step-1) |
+| [2. Review the partner and commercial risks](#step-2) | human; human approval every run | Not recorded | [Step 1](#step-1) |
 | [3. Prepare the operating and agreement terms](#step-3) | agent-runnable | Not recorded | [Step 2](#step-2) |
-| [4. Approve the agreement and pilot](#step-4) | human; approval required | Not recorded | [Step 3](#step-3) |
+| [4. Approve the agreement and pilot](#step-4) | human; human approval every run | Not recorded | [Step 3](#step-3) |
 | [5. Review results and reconcile obligations](#step-5) | agent-runnable | Not recorded | [Step 4](#step-4) |
 
 <a id="steps"></a>
@@ -71,7 +71,7 @@ Describe the target customers, roles, referral or resale flow, economics and del
 
 ### 2. Review the partner and commercial risks
 
-human · human approval required
+human · human approval every run
 
 
 Verify the counterparty and assess capability, conflicts, data sharing and market fit. Counsel reviews agency, competition, tax and local restrictions for the actual arrangement.
@@ -93,7 +93,7 @@ Draft lead ownership, customer support, payments, branding, data access, success
 
 ### 4. Approve the agreement and pilot
 
-human · human approval required
+human · human approval every run
 
 
 Authorized parties execute the reviewed terms and approve a bounded initial test. Confirm training and access before enabling customer introductions or delegated selling rights.

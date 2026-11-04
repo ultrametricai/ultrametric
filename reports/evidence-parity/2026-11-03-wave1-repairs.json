@@ -1,0 +1,2073 @@
+{
+ "wave": 1,
+ "date": "2026-11-03",
+ "scan": "reports/evidence-parity/2026-11-03.json",
+ "scripts": [
+  "rankings-engine/scripts/append-gusto-parity-evidence-2026-11-03.py",
+  "rankings-engine/scripts/append-vercel-parity-evidence-2026-11-03.py",
+  "rankings-engine/scripts/append-vue-parity-evidence-2026-11-03.py",
+  "rankings-engine/scripts/append-claude-parity-evidence-2026-11-03.py",
+  "rankings-engine/scripts/append-gemini-parity-evidence-2026-11-03.py"
+ ],
+ "judgeStatus": "queued: scoped re-judges are parked pending the maintainer ruling on the v5-to-v6 judge rubric migration (PROMPT_VERSION v6 landed on main 2026-11-03; ACCURACY.md gates bulk re-judging on an explicit review event). Verdicts and rankings in this wave are unchanged.",
+ "rejudgeQueue": [
+  {
+   "product": "claude",
+   "arena": "ai-assistants",
+   "command": "pnpm engine judge --category ai-assistants --product claude --batch"
+  },
+  {
+   "product": "claude",
+   "arena": "frontier-models",
+   "command": "pnpm engine judge --category frontier-models --product claude --batch"
+  },
+  {
+   "product": "gemini",
+   "arena": "ai-assistants",
+   "command": "pnpm engine judge --category ai-assistants --product gemini --batch"
+  },
+  {
+   "product": "gemini",
+   "arena": "frontier-models",
+   "command": "pnpm engine judge --category frontier-models --product gemini --batch"
+  },
+  {
+   "product": "gusto",
+   "arena": "legal-ops",
+   "command": "pnpm engine judge --category legal-ops --product gusto --batch"
+  },
+  {
+   "product": "gusto",
+   "arena": "payroll",
+   "command": "pnpm engine judge --category payroll --product gusto --batch"
+  },
+  {
+   "product": "gusto",
+   "arena": "startup-banking",
+   "command": "pnpm engine judge --category startup-banking --product gusto --batch"
+  },
+  {
+   "product": "vercel",
+   "arena": "edge-platforms",
+   "command": "pnpm engine judge --category edge-platforms --product vercel --batch"
+  },
+  {
+   "product": "vue",
+   "arena": "frontend-frameworks",
+   "command": "pnpm engine judge --category frontend-frameworks --product vue --batch"
+  }
+ ],
+ "cells": [
+  {
+   "product": "gusto",
+   "arena": "legal-ops",
+   "storyId": "agent-monitors-renewals",
+   "disposition": "checked-still-absent",
+   "checked": [
+    "https://docs.gusto.com/llms.txt",
+    "https://docs.gusto.com/app-integrations/llms.txt"
+   ],
+   "note": "Checked both llms.txt API indexes 2026-11-03: the API exposes payroll/HR objects (companies, employees, payrolls, benefits, time off, signatories, documents/forms) with webhooks, but no contract, renewal, or deadline resources an agent could monitor. Adjacent: generic webhooks + public API exist (see agentic-webhooks / agentic-public-api cells)."
+  },
+  {
+   "product": "gusto",
+   "arena": "legal-ops",
+   "storyId": "agentic-agent-docs",
+   "disposition": "evidence-appended",
+   "evidenceId": "gusto-parity-agentic-agent-docs-20261103",
+   "url": "https://docs.gusto.com/llms.txt",
+   "checked": [
+    "https://docs.gusto.com/llms.txt",
+    "https://docs.gusto.com/app-integrations/llms.txt"
+   ],
+   "note": "A second index exists at https://docs.gusto.com/app-integrations/llms.txt for the App Integrations API. Every docs page's .md source carries front matter \"agentTools: siteIndex: https://docs.gusto.com/llms.txt\". Arena relevance: these are payroll/HR developer docs, not legal-ops docs; judge weighs."
+  },
+  {
+   "product": "gusto",
+   "arena": "legal-ops",
+   "storyId": "agentic-autonomous-automation",
+   "disposition": "evidence-appended",
+   "evidenceId": "gusto-parity-agentic-autonomous-automation-20261103",
+   "url": "https://docs.gusto.com/embedded-payroll/docs/webhooks.md",
+   "checked": [
+    "https://docs.gusto.com/embedded-payroll/docs/webhooks.md",
+    "https://gusto.com/payroll (403 bot-walled)"
+   ],
+   "note": "This documents event-driven background automation building blocks (webhooks + API), not an in-product user-defined automation builder. Gusto markets automatic payroll (\"Payroll on AutoPilot\") on gusto.com/payroll, which is bot-walled (403), so that in-product automation is unverifiable this session. Judge decides weight."
+  },
+  {
+   "product": "gusto",
+   "arena": "legal-ops",
+   "storyId": "agentic-builtin-assistant",
+   "disposition": "checked-bot-walled",
+   "checked": [
+    "https://gusto.com/gus (403)",
+    "https://gusto.com (403)",
+    "https://docs.gusto.com/llms.txt",
+    "https://docs.gusto.com/app-integrations/llms.txt"
+   ],
+   "note": "Gusto markets an in-product AI assistant (\"Gus\"), but every gusto.com page returns a Cloudflare challenge (403) for the probe UA, and the reachable developer docs do not document an in-product assistant. gusto.com (and support.gusto.com, embedded.gusto.com, dev.gusto.com) serves a Cloudflare 'Just a moment...' challenge (HTTP 403) to the probe user agent; only docs.gusto.com and github.com/Gusto are reachable. Checked 2026-11-03."
+  },
+  {
+   "product": "gusto",
+   "arena": "legal-ops",
+   "storyId": "agentic-headless",
+   "disposition": "evidence-appended",
+   "evidenceId": "gusto-parity-agentic-headless-20261103",
+   "url": "https://docs.gusto.com/embedded-payroll/docs/api-fundamentals.md",
+   "checked": [
+    "https://docs.gusto.com/embedded-payroll/docs/api-fundamentals.md",
+    "https://github.com/Gusto/gusto-cli"
+   ],
+   "note": "Full REST API (and an official CLI, github.com/Gusto/gusto-cli, \"Agent-friendly developer interface for Gusto payroll.\") permit headless/scripted operation; no CI-specific tooling is documented. Note: Gusto API production access is gated ('The Gusto API is currently restricted to Gusto App Integration and Embedded Payroll partners' per https://docs.gusto.com/app-integrations/docs/introduction.md); demo/dev access is self-serve."
+  },
+  {
+   "product": "gusto",
+   "arena": "legal-ops",
+   "storyId": "agentic-mcp-server",
+   "disposition": "evidence-appended",
+   "evidenceId": "gusto-parity-agentic-mcp-server-20261103",
+   "url": "https://docs.gusto.com/embedded-payroll/docs/dev-assistant-mcp.md",
+   "checked": [
+    "https://docs.gusto.com/embedded-payroll/docs/dev-assistant-mcp.md",
+    "https://docs.gusto.com/app-integrations/docs/introduction.md"
+   ],
+   "note": "Two MCP surfaces: (1) this Dev Assistant MCP (docs/API-reference assistant for developers, Beta); (2) a customer-facing \"Gusto MCP server\": https://docs.gusto.com/app-integrations/docs/introduction.md states 'If you're a Gusto customer looking to connect your own company systems to your Gusto account, use the [Gusto CLI](https://gusto.com/product/integrations/gusto-cli) or [Gusto MCP server](https://gusto.com/product/integrations/gusto-mcp)' - but both gusto.com product pages are bot-walled (403), so only the reference sentence is verifiable. Judge should weigh that the verified page is dev tooling, not account operation. Arena relevance: payroll/HR API, not legal-ops tasks."
+  },
+  {
+   "product": "gusto",
+   "arena": "legal-ops",
+   "storyId": "agentic-nl-commands",
+   "disposition": "checked-bot-walled",
+   "checked": [
+    "https://gusto.com/gus (403)",
+    "https://gusto.com/product/integrations/gusto-mcp (403, linked from reachable https://docs.gusto.com/app-integrations/docs/introduction.md)",
+    "https://github.com/Gusto/gusto-cli"
+   ],
+   "note": "In-product natural-language operation (Gus assistant) and the customer-facing Gusto MCP server product page are both bot-walled. Adjacent reachable evidence: https://docs.gusto.com/app-integrations/docs/introduction.md references the 'Gusto MCP server' for customers, and the gusto-cli README positions the CLI for 'running per-cycle payroll prep in a single chat session' (text embedded in GitHub's JSON payload, awkward as a curl marker). gusto.com (and support.gusto.com, embedded.gusto.com, dev.gusto.com) serves a Cloudflare 'Just a moment...' challenge (HTTP 403) to the probe user agent; only docs.gusto.com and github.com/Gusto are reachable. Checked 2026-11-03."
+  },
+  {
+   "product": "gusto",
+   "arena": "legal-ops",
+   "storyId": "agentic-official-cli",
+   "disposition": "evidence-appended",
+   "evidenceId": "gusto-parity-agentic-official-cli-20261103",
+   "url": "https://github.com/Gusto/gusto-cli",
+   "checked": [
+    "https://github.com/Gusto/gusto-cli",
+    "https://docs.gusto.com/app-integrations/docs/introduction.md"
+   ],
+   "note": "https://docs.gusto.com/app-integrations/docs/introduction.md confirms it as the customer path: 'If you're a Gusto customer looking to connect your own company systems to your Gusto account, use the [Gusto CLI](https://gusto.com/product/integrations/gusto-cli)...'. The gusto.com/product/integrations/gusto-cli page itself is bot-walled. CLI repo is Apache-2.0 (the CLI, not the product). Arena relevance: payroll CLI, not legal-ops tasks; judge weighs."
+  },
+  {
+   "product": "gusto",
+   "arena": "legal-ops",
+   "storyId": "agentic-public-api",
+   "disposition": "evidence-appended",
+   "evidenceId": "gusto-parity-agentic-public-api-20261103",
+   "url": "https://docs.gusto.com/app-integrations/docs/introduction.md",
+   "checked": [
+    "https://docs.gusto.com/app-integrations/docs/introduction.md",
+    "https://docs.gusto.com/embedded-payroll/docs/api-fundamentals.md",
+    "https://docs.gusto.com/llms.txt",
+    "https://docs.gusto.com/app-integrations/llms.txt"
+   ],
+   "note": "Two documented public APIs (App Integrations for connecting to Gusto accounts; Gusto Embedded for white-label payroll). Production access requires partner approval ('Production Pre-Approval and Security Review'); demo access is self-serve. Arena relevance: payroll/HR API, not legal-ops tasks; judge weighs."
+  },
+  {
+   "product": "gusto",
+   "arena": "legal-ops",
+   "storyId": "agentic-sdks",
+   "disposition": "evidence-appended",
+   "evidenceId": "gusto-parity-agentic-sdks-20261103",
+   "url": "https://docs.gusto.com/embedded-payroll/docs/react-sdk.md",
+   "checked": [
+    "https://docs.gusto.com/embedded-payroll/docs/react-sdk.md",
+    "https://github.com/Gusto/gusto-typescript-client",
+    "https://github.com/orgs/Gusto/repositories?q=client"
+   ],
+   "note": "Beyond the React SDK, the Gusto GitHub org publishes autogenerated API client SDKs: gusto-typescript-client (\"Autogenerated typescript clients for Gusto\" + APIs, verified at https://github.com/Gusto/gusto-typescript-client), plus gusto-python-client, gusto-java-client, gusto-csharp-client, gusto-ruby-client (seen in org repo listing). Arena relevance: payroll SDKs, not legal-ops tasks; judge weighs. Note: Gusto API production access is gated ('The Gusto API is currently restricted to Gusto App Integration and Embedded Payroll partners' per https://docs.gusto.com/app-integrations/docs/introduction.md); demo/dev access is self-serve."
+  },
+  {
+   "product": "gusto",
+   "arena": "legal-ops",
+   "storyId": "agentic-webhooks",
+   "disposition": "evidence-appended",
+   "evidenceId": "gusto-parity-agentic-webhooks-20261103",
+   "url": "https://docs.gusto.com/embedded-payroll/docs/webhooks.md",
+   "checked": [
+    "https://docs.gusto.com/embedded-payroll/docs/webhooks.md",
+    "https://docs.gusto.com/llms.txt",
+    "https://docs.gusto.com/app-integrations/llms.txt"
+   ],
+   "note": "The App Integrations API has its own webhooks docs (https://docs.gusto.com/app-integrations/docs/webhooks.md listed in https://docs.gusto.com/app-integrations/llms.txt). Events cover payroll/HR objects (including bank-account events), not legal-ops objects (no contract/e-sign-envelope events). Note: Gusto API production access is gated ('The Gusto API is currently restricted to Gusto App Integration and Embedded Payroll partners' per https://docs.gusto.com/app-integrations/docs/introduction.md); demo/dev access is self-serve."
+  },
+  {
+   "product": "gusto",
+   "arena": "legal-ops",
+   "storyId": "api-machine-spec",
+   "disposition": "evidence-appended",
+   "evidenceId": "gusto-parity-api-machine-spec-20261103",
+   "url": "https://docs.gusto.com/embedded-payroll/openapi/gusto-api.json",
+   "checked": [
+    "https://docs.gusto.com/embedded-payroll/openapi/gusto-api.json",
+    "https://docs.gusto.com/embedded-payroll/openapi"
+   ],
+   "note": "Spec is version-stamped (v2026-06-15 at check time); the index page URL is the stable entry point. Served from the ReadMe-hosted docs site on docs.gusto.com."
+  },
+  {
+   "product": "gusto",
+   "arena": "legal-ops",
+   "storyId": "api-sandbox",
+   "disposition": "evidence-appended",
+   "evidenceId": "gusto-parity-api-sandbox-20261103",
+   "url": "https://docs.gusto.com/embedded-payroll/docs/quickstart.md",
+   "checked": [
+    "https://docs.gusto.com/embedded-payroll/docs/quickstart.md",
+    "https://docs.gusto.com/embedded-payroll/docs/getting-started.md",
+    "https://docs.gusto.com/embedded-payroll/docs/api-versioning.md"
+   ],
+   "note": "Demo environment is fully separate from production (api.gusto-demo.com vs api.gusto.com); demo-only actions exist, e.g. 'Generate a W2 form [DEMO]' endpoint."
+  },
+  {
+   "product": "gusto",
+   "arena": "legal-ops",
+   "storyId": "api-versioning-policy",
+   "disposition": "evidence-appended",
+   "evidenceId": "gusto-parity-api-versioning-policy-20261103",
+   "url": "https://docs.gusto.com/embedded-payroll/docs/api-versioning.md",
+   "checked": [
+    "https://docs.gusto.com/embedded-payroll/docs/api-versioning.md"
+   ],
+   "note": "Date-based versions via X-Gusto-API-Version header; quarterly release cadence; documented 12-month end-of-life and deprecation/sunset headers."
+  },
+  {
+   "product": "gusto",
+   "arena": "legal-ops",
+   "storyId": "bulk-send-envelopes",
+   "disposition": "checked-still-absent",
+   "checked": [
+    "https://docs.gusto.com/llms.txt",
+    "https://docs.gusto.com/app-integrations/llms.txt",
+    "https://gusto.com/product/hr (403 bot-walled)"
+   ],
+   "note": "No e-signature envelope or bulk-send capability in either API index (2026-11-03). The only signing endpoints are for Gusto-generated compliance forms (e.g. 'Sign a company form', employer I-9 sign). gusto.com HR product pages (which market onboarding document e-sign) are bot-walled."
+  },
+  {
+   "product": "gusto",
+   "arena": "legal-ops",
+   "storyId": "legal-template-library",
+   "disposition": "checked-still-absent",
+   "checked": [
+    "https://docs.gusto.com/llms.txt",
+    "https://docs.gusto.com/app-integrations/llms.txt",
+    "https://gusto.com/product/hr (403 bot-walled)"
+   ],
+   "note": "No NDA/agreement/policy template library in any reachable Gusto doc (2026-11-03). Gusto markets HR policy templates and an employee handbook builder on gusto.com (bot-walled), but those are HR policy documents, not vetted legal templates for the legal-ops job."
+  },
+  {
+   "product": "gusto",
+   "arena": "legal-ops",
+   "storyId": "openness-api-parity",
+   "disposition": "checked-still-absent",
+   "checked": [
+    "https://docs.gusto.com/embedded-payroll/docs/api-fundamentals.md",
+    "https://docs.gusto.com/llms.txt",
+    "https://docs.gusto.com/app-integrations/llms.txt"
+   ],
+   "note": "The API surface is broad (companies, employees, payrolls, benefits, reports, documents, signatories) but no vendor statement claims API/UI parity, and the App Integrations intro notes some domains require Gusto-hosted flows/UI. No parity claim found 2026-11-03."
+  },
+  {
+   "product": "gusto",
+   "arena": "legal-ops",
+   "storyId": "openness-full-export",
+   "disposition": "evidence-appended",
+   "evidenceId": "gusto-parity-custom-reports-api-20261103",
+   "url": "https://docs.gusto.com/embedded-payroll/docs/generate-custom-reports.md",
+   "checked": [
+    "https://docs.gusto.com/embedded-payroll/docs/generate-custom-reports.md",
+    "https://docs.gusto.com/embedded-payroll/docs/retrieve-a-general-ledger-report.md",
+    "https://docs.gusto.com/llms.txt"
+   ],
+   "note": "Partial: this documents programmatic export of payroll data via custom reports (plus a General Ledger report in JSON), and the read API covers most objects. No documented full-account takeout/offboarding export. Help-center export articles are bot-walled (support.gusto.com 403). Judge decides weight. Evidence row named for its content after review: the cited support is adjacent to the story (it does not by itself establish the capability); the judge weighs the relation."
+  },
+  {
+   "product": "gusto",
+   "arena": "legal-ops",
+   "storyId": "openness-open-license",
+   "disposition": "checked-still-absent",
+   "checked": [
+    "https://github.com/orgs/Gusto/repositories?q=client",
+    "https://github.com/Gusto/gusto-cli"
+   ],
+   "note": "github.com/Gusto publishes tooling and SDKs (gusto-cli is Apache-2.0; client SDKs; OSS utilities), but the core product source is not published under any license. Confirmed 2026-11-03."
+  },
+  {
+   "product": "gusto",
+   "arena": "legal-ops",
+   "storyId": "openness-self-host",
+   "disposition": "checked-still-absent",
+   "checked": [
+    "https://docs.gusto.com/llms.txt",
+    "https://github.com/orgs/Gusto/repositories?q=client"
+   ],
+   "note": "Hosted multi-tenant SaaS only; no self-host or on-prem option anywhere in the reachable docs or GitHub org (2026-11-03). Gusto Embedded is an API/white-label offering, still Gusto-hosted."
+  },
+  {
+   "product": "gusto",
+   "arena": "legal-ops",
+   "storyId": "post-incorporation-setup",
+   "disposition": "checked-still-absent",
+   "checked": [
+    "https://docs.gusto.com/llms.txt",
+    "https://docs.gusto.com/app-integrations/llms.txt",
+    "https://gusto.com (403 bot-walled)"
+   ],
+   "note": "No founder stock purchase, IP assignment, or 83(b) capability in any reachable Gusto surface (2026-11-03). Gusto is payroll/HR/benefits; closest objects are payroll forms and I-9/W-4 onboarding docs."
+  },
+  {
+   "product": "gusto",
+   "arena": "legal-ops",
+   "storyId": "privacy-data-residency",
+   "disposition": "checked-still-absent",
+   "checked": [
+    "https://docs.gusto.com/llms.txt",
+    "https://docs.gusto.com/app-integrations/llms.txt",
+    "https://gusto.com/privacy (403 bot-walled)"
+   ],
+   "note": "US-only payroll product; no region/residency selection anywhere in the reachable developer docs (2026-11-03). The privacy policy page is bot-walled, but a residency picker would surface in product/API docs if it existed; the only geography in the docs is US state tax locations."
+  },
+  {
+   "product": "gusto",
+   "arena": "legal-ops",
+   "storyId": "privacy-no-training",
+   "disposition": "checked-bot-walled",
+   "checked": [
+    "https://gusto.com/privacy (403)",
+    "https://gusto.com/about/ai (403)",
+    "https://docs.gusto.com/llms.txt"
+   ],
+   "note": "Gusto's privacy policy and any AI/data-use statements live on gusto.com, which is fully bot-walled for the probe UA. Reachable developer docs say nothing about model training on customer data. gusto.com (and support.gusto.com, embedded.gusto.com, dev.gusto.com) serves a Cloudflare 'Just a moment...' challenge (HTTP 403) to the probe user agent; only docs.gusto.com and github.com/Gusto are reachable. Checked 2026-11-03."
+  },
+  {
+   "product": "gusto",
+   "arena": "legal-ops",
+   "storyId": "privacy-telemetry-optout",
+   "disposition": "checked-bot-walled",
+   "checked": [
+    "https://gusto.com/privacy (403)",
+    "https://gusto.com/cookie-policy (403)"
+   ],
+   "note": "Cookie/analytics opt-out controls, if any, are documented in the gusto.com privacy/cookie policies, which are bot-walled. Nothing relevant in reachable docs. gusto.com (and support.gusto.com, embedded.gusto.com, dev.gusto.com) serves a Cloudflare 'Just a moment...' challenge (HTTP 403) to the probe user agent; only docs.gusto.com and github.com/Gusto are reachable. Checked 2026-11-03."
+  },
+  {
+   "product": "gusto",
+   "arena": "legal-ops",
+   "storyId": "send-for-esignature",
+   "disposition": "checked-bot-walled",
+   "checked": [
+    "https://gusto.com/product/hr (403)",
+    "https://docs.gusto.com/embedded-payroll/reference/put-v1-company-form-sign.md (reachable; Gusto-form signing only)",
+    "https://docs.gusto.com/llms.txt"
+   ],
+   "note": "Gusto markets e-signature of offer letters and onboarding documents inside its HR product, but all gusto.com product pages and support.gusto.com are bot-walled. Reachable adjacent evidence: the API signs Gusto-generated compliance forms ('Sign a company form. Company forms must be signed by the company signatory.' scope company_forms:sign; employer I-9 signing) - not arbitrary documents sent to multiple recipients with routing. gusto.com (and support.gusto.com, embedded.gusto.com, dev.gusto.com) serves a Cloudflare 'Just a moment...' challenge (HTTP 403) to the probe user agent; only docs.gusto.com and github.com/Gusto are reachable. Checked 2026-11-03."
+  },
+  {
+   "product": "gusto",
+   "arena": "legal-ops",
+   "storyId": "signing-order-reminders",
+   "disposition": "checked-still-absent",
+   "checked": [
+    "https://docs.gusto.com/llms.txt",
+    "https://docs.gusto.com/app-integrations/llms.txt",
+    "https://gusto.com/product/hr (403 bot-walled)"
+   ],
+   "note": "No signing-order, reminder, or expiration controls on signature requests anywhere in the reachable docs (2026-11-03). Gusto's signing is limited to its own generated forms; it is not an envelope-based e-signature tool."
+  },
+  {
+   "product": "gusto",
+   "arena": "payroll",
+   "storyId": "agentic-ai-insights",
+   "disposition": "checked-bot-walled",
+   "checked": [
+    "https://gusto.com/gus (403)",
+    "https://gusto.com (403)",
+    "https://docs.gusto.com/llms.txt"
+   ],
+   "note": "Gusto markets AI-driven insights/assistant (\"Gus\") on gusto.com, which is entirely bot-walled for the probe UA; reachable developer docs contain no in-product AI insights feature. gusto.com (and support.gusto.com, embedded.gusto.com, dev.gusto.com) serves a Cloudflare 'Just a moment...' challenge (HTTP 403) to the probe user agent; only docs.gusto.com and github.com/Gusto are reachable. Checked 2026-11-03."
+  },
+  {
+   "product": "gusto",
+   "arena": "payroll",
+   "storyId": "automation-bulk-operations",
+   "disposition": "evidence-appended",
+   "evidenceId": "gusto-parity-automation-bulk-operations-20261103",
+   "url": "https://docs.gusto.com/embedded-payroll/docs/people-batch-api.md",
+   "checked": [
+    "https://docs.gusto.com/embedded-payroll/docs/people-batch-api.md",
+    "https://docs.gusto.com/embedded-payroll/docs/bulk-payroll-cancellations.md",
+    "https://docs.gusto.com/embedded-payroll/reference/put-v1-company_benefits-company_benefit_id-employee_benefits.md (bulk update employee benefits)"
+   ],
+   "note": "Further bulk endpoints: Batch Payroll Cancellation API (https://docs.gusto.com/embedded-payroll/docs/bulk-payroll-cancellations.md, 'Cancel multiple payrolls for companies', up to 100 payrolls per call) and 'Bulk update employee benefits for a company benefit'. These are domain-specific bulk endpoints, not a generic bulk framework."
+  },
+  {
+   "product": "gusto",
+   "arena": "payroll",
+   "storyId": "automation-versioned-workflows",
+   "disposition": "checked-still-absent",
+   "checked": [
+    "https://docs.gusto.com/llms.txt",
+    "https://docs.gusto.com/app-integrations/llms.txt"
+   ],
+   "note": "No user-defined automations, and therefore no versioning/review/rollback of automations, in any reachable Gusto doc (2026-11-03). The API's date-based versioning is API versioning, not automation versioning."
+  },
+  {
+   "product": "gusto",
+   "arena": "payroll",
+   "storyId": "global-payroll-eor",
+   "disposition": "checked-bot-walled",
+   "checked": [
+    "https://gusto.com/product/gusto-global (403)",
+    "https://gusto.com/global (403)",
+    "https://docs.gusto.com/llms.txt"
+   ],
+   "note": "Gusto markets 'Gusto Global' employer-of-record (built with Remote) for international hiring, but every gusto.com product page returns a Cloudflare 403 for the probe UA, and the developer docs cover US W-2 employees and contractors only (no EOR/international payroll objects). gusto.com (and support.gusto.com, embedded.gusto.com, dev.gusto.com) serves a Cloudflare 'Just a moment...' challenge (HTTP 403) to the probe user agent; only docs.gusto.com and github.com/Gusto are reachable. Checked 2026-11-03."
+  },
+  {
+   "product": "gusto",
+   "arena": "payroll",
+   "storyId": "openness-self-host",
+   "disposition": "checked-still-absent",
+   "checked": [
+    "https://docs.gusto.com/llms.txt",
+    "https://github.com/orgs/Gusto/repositories?q=client"
+   ],
+   "note": "Hosted SaaS only; no self-host/on-prem deployment documented anywhere reachable (2026-11-03)."
+  },
+  {
+   "product": "gusto",
+   "arena": "payroll",
+   "storyId": "privacy-data-residency",
+   "disposition": "checked-still-absent",
+   "checked": [
+    "https://docs.gusto.com/llms.txt",
+    "https://docs.gusto.com/app-integrations/llms.txt",
+    "https://gusto.com/privacy (403 bot-walled)"
+   ],
+   "note": "US-only product; no storage region or residency selection in any reachable doc (2026-11-03). Privacy policy page bot-walled; the only geography in the docs is US state work locations for tax."
+  },
+  {
+   "product": "gusto",
+   "arena": "payroll",
+   "storyId": "privacy-no-training",
+   "disposition": "checked-bot-walled",
+   "checked": [
+    "https://gusto.com/privacy (403)",
+    "https://gusto.com/about/ai (403)",
+    "https://docs.gusto.com/llms.txt"
+   ],
+   "note": "Any AI-training/data-use commitments would live in gusto.com privacy/AI pages, all bot-walled for the probe UA. Nothing in reachable developer docs. gusto.com (and support.gusto.com, embedded.gusto.com, dev.gusto.com) serves a Cloudflare 'Just a moment...' challenge (HTTP 403) to the probe user agent; only docs.gusto.com and github.com/Gusto are reachable. Checked 2026-11-03."
+  },
+  {
+   "product": "gusto",
+   "arena": "startup-banking",
+   "storyId": "agentic-agent-docs",
+   "disposition": "evidence-appended",
+   "evidenceId": "gusto-parity-agentic-agent-docs-20261103",
+   "url": "https://docs.gusto.com/llms.txt",
+   "checked": [
+    "https://docs.gusto.com/llms.txt",
+    "https://docs.gusto.com/app-integrations/llms.txt"
+   ],
+   "note": "A second index exists at https://docs.gusto.com/app-integrations/llms.txt for the App Integrations API. Every docs page's .md source carries front matter \"agentTools: siteIndex: https://docs.gusto.com/llms.txt\". Arena relevance: this is Gusto's payroll/HR developer platform, not banking-task tooling; per wave brief, reported as evidence that the capability class exists, judge weighs relevance."
+  },
+  {
+   "product": "gusto",
+   "arena": "startup-banking",
+   "storyId": "agentic-ai-insights",
+   "disposition": "checked-bot-walled",
+   "checked": [
+    "https://gusto.com/gus (403)",
+    "https://gusto.com (403)",
+    "https://docs.gusto.com/llms.txt"
+   ],
+   "note": "Gusto's marketed AI assistant/insights (\"Gus\") is only documented on bot-walled gusto.com. No AI insights in reachable docs, and nothing banking-specific. gusto.com (and support.gusto.com, embedded.gusto.com, dev.gusto.com) serves a Cloudflare 'Just a moment...' challenge (HTTP 403) to the probe user agent; only docs.gusto.com and github.com/Gusto are reachable. Checked 2026-11-03."
+  },
+  {
+   "product": "gusto",
+   "arena": "startup-banking",
+   "storyId": "agentic-builtin-assistant",
+   "disposition": "checked-bot-walled",
+   "checked": [
+    "https://gusto.com/gus (403)",
+    "https://gusto.com (403)",
+    "https://docs.gusto.com/llms.txt"
+   ],
+   "note": "Same as legal-ops: \"Gus\" assistant marketing pages bot-walled; no assistant in reachable docs. gusto.com (and support.gusto.com, embedded.gusto.com, dev.gusto.com) serves a Cloudflare 'Just a moment...' challenge (HTTP 403) to the probe user agent; only docs.gusto.com and github.com/Gusto are reachable. Checked 2026-11-03."
+  },
+  {
+   "product": "gusto",
+   "arena": "startup-banking",
+   "storyId": "agentic-mcp-server",
+   "disposition": "evidence-appended",
+   "evidenceId": "gusto-parity-agentic-mcp-server-20261103",
+   "url": "https://docs.gusto.com/embedded-payroll/docs/dev-assistant-mcp.md",
+   "checked": [
+    "https://docs.gusto.com/embedded-payroll/docs/dev-assistant-mcp.md",
+    "https://docs.gusto.com/app-integrations/docs/introduction.md"
+   ],
+   "note": "Two MCP surfaces: (1) this Dev Assistant MCP (docs/API-reference assistant for developers, Beta); (2) a customer-facing \"Gusto MCP server\": https://docs.gusto.com/app-integrations/docs/introduction.md states 'If you're a Gusto customer looking to connect your own company systems to your Gusto account, use the [Gusto CLI](https://gusto.com/product/integrations/gusto-cli) or [Gusto MCP server](https://gusto.com/product/integrations/gusto-mcp)' - but both gusto.com product pages are bot-walled (403), so only the reference sentence is verifiable. Judge should weigh that the verified page is dev tooling, not account operation. Arena relevance: this is Gusto's payroll/HR developer platform, not banking-task tooling; per wave brief, reported as evidence that the capability class exists, judge weighs relevance."
+  },
+  {
+   "product": "gusto",
+   "arena": "startup-banking",
+   "storyId": "agentic-official-cli",
+   "disposition": "evidence-appended",
+   "evidenceId": "gusto-parity-agentic-official-cli-20261103",
+   "url": "https://github.com/Gusto/gusto-cli",
+   "checked": [
+    "https://github.com/Gusto/gusto-cli",
+    "https://docs.gusto.com/app-integrations/docs/introduction.md"
+   ],
+   "note": "https://docs.gusto.com/app-integrations/docs/introduction.md confirms it as the customer path: 'If you're a Gusto customer looking to connect your own company systems to your Gusto account, use the [Gusto CLI](https://gusto.com/product/integrations/gusto-cli)...'. The gusto.com/product/integrations/gusto-cli page itself is bot-walled. CLI repo is Apache-2.0 (the CLI, not the product). Arena relevance: this is Gusto's payroll/HR developer platform, not banking-task tooling; per wave brief, reported as evidence that the capability class exists, judge weighs relevance."
+  },
+  {
+   "product": "gusto",
+   "arena": "startup-banking",
+   "storyId": "agentic-sdks",
+   "disposition": "evidence-appended",
+   "evidenceId": "gusto-parity-agentic-sdks-20261103",
+   "url": "https://docs.gusto.com/embedded-payroll/docs/react-sdk.md",
+   "checked": [
+    "https://docs.gusto.com/embedded-payroll/docs/react-sdk.md",
+    "https://github.com/Gusto/gusto-typescript-client",
+    "https://github.com/orgs/Gusto/repositories?q=client"
+   ],
+   "note": "Beyond the React SDK, the Gusto GitHub org publishes autogenerated API client SDKs: gusto-typescript-client (\"Autogenerated typescript clients for Gusto\" + APIs, verified at https://github.com/Gusto/gusto-typescript-client), plus gusto-python-client, gusto-java-client, gusto-csharp-client, gusto-ruby-client (seen in org repo listing). Arena relevance: this is Gusto's payroll/HR developer platform, not banking-task tooling; per wave brief, reported as evidence that the capability class exists, judge weighs relevance. Note: Gusto API production access is gated ('The Gusto API is currently restricted to Gusto App Integration and Embedded Payroll partners' per https://docs.gusto.com/app-integrations/docs/introduction.md); demo/dev access is self-serve."
+  },
+  {
+   "product": "gusto",
+   "arena": "startup-banking",
+   "storyId": "agentic-webhooks",
+   "disposition": "evidence-appended",
+   "evidenceId": "gusto-parity-agentic-webhooks-20261103",
+   "url": "https://docs.gusto.com/embedded-payroll/docs/webhooks.md",
+   "checked": [
+    "https://docs.gusto.com/embedded-payroll/docs/webhooks.md",
+    "https://docs.gusto.com/llms.txt",
+    "https://docs.gusto.com/app-integrations/llms.txt"
+   ],
+   "note": "The App Integrations API has its own webhooks docs (https://docs.gusto.com/app-integrations/docs/webhooks.md listed in https://docs.gusto.com/app-integrations/llms.txt). Events cover payroll/HR objects (including bank-account events), not banking objects (events include bank-account events for payroll funding, not banking transactions). Note: Gusto API production access is gated ('The Gusto API is currently restricted to Gusto App Integration and Embedded Payroll partners' per https://docs.gusto.com/app-integrations/docs/introduction.md); demo/dev access is self-serve."
+  },
+  {
+   "product": "gusto",
+   "arena": "startup-banking",
+   "storyId": "ai-books-close-automation",
+   "disposition": "checked-bot-walled",
+   "checked": [
+    "https://docs.gusto.com/llms.txt",
+    "https://docs.gusto.com/app-integrations/llms.txt",
+    "https://docs.gusto.com/embedded-payroll/docs/retrieve-a-general-ledger-report.md"
+   ],
+   "note": "Reworded after review: the committed pack already documents Gusto's business bank account and Money Dashboard in early beta (gusto-docs-24..28; banking services provided by Increase Bank, announced 2026-10-22), so the absence claim is scoped to what is readable, not to the offering. Feature-level pages on gusto.com serve a Cloudflare challenge (HTTP 403) to the probe client; docs.gusto.com and github.com/Gusto carry nothing on this capability (checked 2026-11-03). Verdict untouched. Unreadable capability: AI bookkeeping or month-end close automation (Money Dashboard scope unknown behind the wall)."
+  },
+  {
+   "product": "gusto",
+   "arena": "startup-banking",
+   "storyId": "api-machine-spec",
+   "disposition": "evidence-appended",
+   "evidenceId": "gusto-parity-api-machine-spec-20261103",
+   "url": "https://docs.gusto.com/embedded-payroll/openapi/gusto-api.json",
+   "checked": [
+    "https://docs.gusto.com/embedded-payroll/openapi/gusto-api.json",
+    "https://docs.gusto.com/embedded-payroll/openapi"
+   ],
+   "note": "Spec is version-stamped (v2026-06-15 at check time); the index page URL is the stable entry point. Served from the ReadMe-hosted docs site on docs.gusto.com."
+  },
+  {
+   "product": "gusto",
+   "arena": "startup-banking",
+   "storyId": "application-status-tracking",
+   "disposition": "checked-bot-walled",
+   "checked": [
+    "https://docs.gusto.com/llms.txt",
+    "https://gusto.com (403 bot-walled)"
+   ],
+   "note": "Reworded after review: the committed pack already documents Gusto's business bank account and Money Dashboard in early beta (gusto-docs-24..28; banking services provided by Increase Bank, announced 2026-10-22), so the absence claim is scoped to what is readable, not to the offering. Feature-level pages on gusto.com serve a Cloudflare challenge (HTTP 403) to the probe client; docs.gusto.com and github.com/Gusto carry nothing on this capability (checked 2026-11-03). Verdict untouched. Unreadable capability: application status tracking for the beta business bank account."
+  },
+  {
+   "product": "gusto",
+   "arena": "startup-banking",
+   "storyId": "auto-cash-topup-alerts",
+   "disposition": "checked-bot-walled",
+   "checked": [
+    "https://docs.gusto.com/llms.txt",
+    "https://gusto.com (403 bot-walled)"
+   ],
+   "note": "Reworded after review: the committed pack already documents Gusto's business bank account and Money Dashboard in early beta (gusto-docs-24..28; banking services provided by Increase Bank, announced 2026-10-22), so the absence claim is scoped to what is readable, not to the offering. Feature-level pages on gusto.com serve a Cloudflare challenge (HTTP 403) to the probe client; docs.gusto.com and github.com/Gusto carry nothing on this capability (checked 2026-11-03). Verdict untouched. Unreadable capability: auto top-up or low-balance alerts on the beta account."
+  },
+  {
+   "product": "gusto",
+   "arena": "startup-banking",
+   "storyId": "auto-receipt-capture-on-swipe",
+   "disposition": "checked-bot-walled",
+   "checked": [
+    "https://docs.gusto.com/llms.txt",
+    "https://gusto.com (403 bot-walled)"
+   ],
+   "note": "Reworded after review: the committed pack already documents Gusto's business bank account and Money Dashboard in early beta (gusto-docs-24..28; banking services provided by Increase Bank, announced 2026-10-22), so the absence claim is scoped to what is readable, not to the offering. Feature-level pages on gusto.com serve a Cloudflare challenge (HTTP 403) to the probe client; docs.gusto.com and github.com/Gusto carry nothing on this capability (checked 2026-11-03). Verdict untouched. Unreadable capability: business cards or receipt capture on swipe (the announcement documents an account and dashboard, not cards)."
+  },
+  {
+   "product": "gusto",
+   "arena": "startup-banking",
+   "storyId": "bank-verification-letter",
+   "disposition": "checked-bot-walled",
+   "checked": [
+    "https://docs.gusto.com/llms.txt",
+    "https://support.gusto.com (403 bot-walled)"
+   ],
+   "note": "Reworded after review: the committed pack already documents Gusto's business bank account and Money Dashboard in early beta (gusto-docs-24..28; banking services provided by Increase Bank, announced 2026-10-22), so the absence claim is scoped to what is readable, not to the offering. Feature-level pages on gusto.com serve a Cloudflare challenge (HTTP 403) to the probe client; docs.gusto.com and github.com/Gusto carry nothing on this capability (checked 2026-11-03). Verdict untouched. Unreadable capability: account/routing numbers or bank verification letters for the beta business account."
+  },
+  {
+   "product": "gusto",
+   "arena": "startup-banking",
+   "storyId": "card-spend-limits-controls",
+   "disposition": "checked-bot-walled",
+   "checked": [
+    "https://docs.gusto.com/llms.txt",
+    "https://gusto.com (403 bot-walled)"
+   ],
+   "note": "Reworded after review: the committed pack already documents Gusto's business bank account and Money Dashboard in early beta (gusto-docs-24..28; banking services provided by Increase Bank, announced 2026-10-22), so the absence claim is scoped to what is readable, not to the offering. Feature-level pages on gusto.com serve a Cloudflare challenge (HTTP 403) to the probe client; docs.gusto.com and github.com/Gusto carry nothing on this capability (checked 2026-11-03). Verdict untouched. Unreadable capability: business card issuing or per-card spend limits (no business card in the announcement)."
+  },
+  {
+   "product": "gusto",
+   "arena": "startup-banking",
+   "storyId": "dedicated-accounting-api",
+   "disposition": "evidence-appended",
+   "evidenceId": "gusto-parity-dedicated-accounting-api-20261103",
+   "url": "https://docs.gusto.com/embedded-payroll/docs/retrieve-a-general-ledger-report.md",
+   "checked": [
+    "https://docs.gusto.com/embedded-payroll/docs/retrieve-a-general-ledger-report.md",
+    "https://docs.gusto.com/embedded-payroll/docs/generate-custom-reports.md",
+    "https://docs.gusto.com/app-integrations/llms.txt"
+   ],
+   "note": "Partial/adjacent: the API serves accounting-relevant payroll data (general ledger journal per payroll, custom reports; App Integrations hub has a Reports reference section), but this is payroll accounting output, not a banking-arena accounting data API. Judge weighs."
+  },
+  {
+   "product": "gusto",
+   "arena": "startup-banking",
+   "storyId": "earn-yield-on-balances",
+   "disposition": "checked-bot-walled",
+   "checked": [
+    "https://docs.gusto.com/llms.txt",
+    "https://gusto.com (403 bot-walled)"
+   ],
+   "note": "Reworded after review: the committed pack already documents Gusto's business bank account and Money Dashboard in early beta (gusto-docs-24..28; banking services provided by Increase Bank, announced 2026-10-22), so the absence claim is scoped to what is readable, not to the offering. Feature-level pages on gusto.com serve a Cloudflare challenge (HTTP 403) to the probe client; docs.gusto.com and github.com/Gusto carry nothing on this capability (checked 2026-11-03). Verdict untouched. Unreadable capability: yield, sweep, or treasury features on business balances."
+  },
+  {
+   "product": "gusto",
+   "arena": "startup-banking",
+   "storyId": "freeze-replace-card",
+   "disposition": "checked-bot-walled",
+   "checked": [
+    "https://docs.gusto.com/llms.txt",
+    "https://support.gusto.com/article/106622149100000/Gusto-Wallet-app (403 bot-walled)"
+   ],
+   "note": "Reworded after review: the committed pack already documents Gusto's business bank account and Money Dashboard in early beta (gusto-docs-24..28; banking services provided by Increase Bank, announced 2026-10-22), so the absence claim is scoped to what is readable, not to the offering. Feature-level pages on gusto.com serve a Cloudflare challenge (HTTP 403) to the probe client; docs.gusto.com and github.com/Gusto carry nothing on this capability (checked 2026-11-03). Verdict untouched. Unreadable capability: business card freeze/replace controls (no business card in the announcement)."
+  },
+  {
+   "product": "gusto",
+   "arena": "startup-banking",
+   "storyId": "lock-exchange-rate",
+   "disposition": "checked-still-absent",
+   "checked": [
+    "https://docs.gusto.com/llms.txt",
+    "https://docs.gusto.com/app-integrations/llms.txt"
+   ],
+   "note": "No currency conversion or FX features anywhere in reachable docs (2026-11-03); payroll is US-only, USD-only."
+  },
+  {
+   "product": "gusto",
+   "arena": "startup-banking",
+   "storyId": "openness-open-license",
+   "disposition": "checked-still-absent",
+   "checked": [
+    "https://github.com/orgs/Gusto/repositories?q=client",
+    "https://github.com/Gusto/gusto-cli"
+   ],
+   "note": "Core product source is not published; GitHub org hosts SDKs/utilities (gusto-cli Apache-2.0) only. Confirmed 2026-11-03."
+  },
+  {
+   "product": "gusto",
+   "arena": "startup-banking",
+   "storyId": "openness-self-host",
+   "disposition": "checked-still-absent",
+   "checked": [
+    "https://docs.gusto.com/llms.txt",
+    "https://github.com/orgs/Gusto/repositories?q=client"
+   ],
+   "note": "Hosted SaaS only; no self-host/on-prem option documented (2026-11-03)."
+  },
+  {
+   "product": "gusto",
+   "arena": "startup-banking",
+   "storyId": "privacy-data-residency",
+   "disposition": "checked-still-absent",
+   "checked": [
+    "https://docs.gusto.com/llms.txt",
+    "https://docs.gusto.com/app-integrations/llms.txt",
+    "https://gusto.com/privacy (403 bot-walled)"
+   ],
+   "note": "No storage region/residency choice anywhere reachable (2026-11-03); US-only product. Privacy page bot-walled."
+  },
+  {
+   "product": "gusto",
+   "arena": "startup-banking",
+   "storyId": "request-limit-increase",
+   "disposition": "checked-bot-walled",
+   "checked": [
+    "https://docs.gusto.com/llms.txt",
+    "https://gusto.com (403 bot-walled)"
+   ],
+   "note": "Reworded after review: the committed pack already documents Gusto's business bank account and Money Dashboard in early beta (gusto-docs-24..28; banking services provided by Increase Bank, announced 2026-10-22), so the absence claim is scoped to what is readable, not to the offering. Feature-level pages on gusto.com serve a Cloudflare challenge (HTTP 403) to the probe client; docs.gusto.com and github.com/Gusto carry nothing on this capability (checked 2026-11-03). Verdict untouched. Unreadable capability: transaction limits or self-serve limit-increase flows on the beta account."
+  },
+  {
+   "product": "gusto",
+   "arena": "startup-banking",
+   "storyId": "universal-transaction-search",
+   "disposition": "checked-bot-walled",
+   "checked": [
+    "https://docs.gusto.com/llms.txt",
+    "https://gusto.com (403 bot-walled)"
+   ],
+   "note": "Reworded after review: the committed pack already documents Gusto's business bank account and Money Dashboard in early beta (gusto-docs-24..28; banking services provided by Increase Bank, announced 2026-10-22), so the absence claim is scoped to what is readable, not to the offering. Feature-level pages on gusto.com serve a Cloudflare challenge (HTTP 403) to the probe client; docs.gusto.com and github.com/Gusto carry nothing on this capability (checked 2026-11-03). Verdict untouched. Unreadable capability: transaction search over the Money Dashboard (cash in/out view is documented; search is not readable)."
+  },
+  {
+   "product": "vercel",
+   "arena": "edge-platforms",
+   "storyId": "api-versioning-policy",
+   "disposition": "evidence-appended",
+   "evidenceId": "vercel-parity-api-versioning-policy-20261103",
+   "url": "https://vercel.com/docs/rest-api",
+   "checked": [
+    "https://vercel.com/docs/rest-api",
+    "https://vercel.com/docs/rest-api/getting-started",
+    "https://vercel.com/docs/rest-api/versioning",
+    "https://vercel.com/docs/rest-api/deployments/get-deployment-events"
+   ],
+   "note": "Endpoint paths are versioned per resource (/v3/, /v6/, checks-v2 etc.), but I found NO published deprecation/versioning policy page: /docs/rest-api/versioning is 404 and the overview has no versioning or deprecation prose. Evidence supports 'versioned APIs' only; the 'documented deprecation policy' half of the story remains undocumented. Judge decides; likely partial at best."
+  },
+  {
+   "product": "vercel",
+   "arena": "edge-platforms",
+   "storyId": "custom-metrics-dashboards",
+   "disposition": "evidence-appended",
+   "evidenceId": "vercel-parity-custom-metrics-dashboards-20261103",
+   "url": "https://vercel.com/docs/observability/custom-metrics",
+   "checked": [
+    "https://vercel.com/docs/observability",
+    "https://vercel.com/docs/observability/custom-metrics",
+    "https://vercel.com/docs/observability/monitoring"
+   ],
+   "note": "Vercel Observability now has user-emitted custom metrics plus Query, Monitoring and Notebooks sections in the docs nav. This covers custom metrics and querying/analysis inside Vercel; it does NOT show combining metrics from arbitrary external services into one dashboard, so the story is at most partially met. Marker 1 comes from the page's JSON-LD description, which survives the tag-strip verification."
+  },
+  {
+   "product": "vercel",
+   "arena": "edge-platforms",
+   "storyId": "docker-deploy",
+   "disposition": "evidence-appended",
+   "evidenceId": "vercel-parity-docker-deploy-20261103",
+   "url": "https://vercel.com/docs/functions/runtimes/container",
+   "checked": [
+    "https://vercel.com/docs/functions/runtimes/container",
+    "https://vercel.com/docs/limits"
+   ],
+   "note": "This is a significant change from the old 'no Docker on Vercel' state: Vercel Functions now have a Container runtime built from a Dockerfile/Containerfile at the project root. Marker 1 is from the JSON-LD description (present in tag-stripped body). The prior partial verdict's rationale (Git push/CLI only, no Dockerfile) is outdated."
+  },
+  {
+   "product": "vercel",
+   "arena": "edge-platforms",
+   "storyId": "documented-rate-limits",
+   "disposition": "evidence-appended",
+   "evidenceId": "vercel-parity-documented-rate-limits-20261103",
+   "url": "https://vercel.com/docs/limits",
+   "checked": [
+    "https://vercel.com/docs/limits",
+    "https://vercel.com/docs/rest-api"
+   ],
+   "note": "Marker 2 is a table row flattened by the tag-strip + whitespace-collapse procedure; verified verbatim against that exact transformation. Page description is 'Look up account limits, usage summaries, rate limits, and resource constraints for every Vercel plan.'"
+  },
+  {
+   "product": "vercel",
+   "arena": "edge-platforms",
+   "storyId": "edge-websocket-support",
+   "disposition": "evidence-appended",
+   "evidenceId": "vercel-parity-edge-websocket-support-20261103",
+   "url": "https://vercel.com/docs/functions/websockets",
+   "checked": [
+    "https://vercel.com/docs/functions/websockets",
+    "https://vercel.com/docs/functions"
+   ],
+   "note": "The historical 'Vercel Functions do not support WebSockets' position is no longer current: first-class inbound WebSocket support is documented, with framework guides (ws, Socket.IO, Bun, Nitro, FastAPI/ASGI, Django Channels, Flask-Sock). Caveat documented on the page: \"WebSocket connections close when a Vercel Function reaches its maximum duration\", so connections are bounded by the function duration limit and clients must reconnect."
+  },
+  {
+   "product": "vercel",
+   "arena": "edge-platforms",
+   "storyId": "execution-time-limits",
+   "disposition": "evidence-appended",
+   "evidenceId": "vercel-parity-execution-time-limits-20261103",
+   "url": "https://vercel.com/docs/limits",
+   "checked": [
+    "https://vercel.com/docs/limits",
+    "https://vercel.com/docs/functions/limitations"
+   ],
+   "note": "Wall-clock (maximum duration) limits are explicit per plan. CPU-time is billed separately as Active CPU (see /docs/functions/usage-and-pricing); there is no separate CPU-time cutoff documented, duration is the binding limit. Markers are table rows flattened by tag-strip + whitespace collapse, verified against that transformation."
+  },
+  {
+   "product": "vercel",
+   "arena": "edge-platforms",
+   "storyId": "known-overage-pricing",
+   "disposition": "evidence-appended",
+   "evidenceId": "vercel-parity-known-overage-pricing-20261103",
+   "url": "https://vercel.com/docs/pricing",
+   "checked": [
+    "https://vercel.com/docs/pricing",
+    "https://vercel.com/docs/functions/usage-and-pricing"
+   ],
+   "note": "Exact per-unit on-demand (overage) rates for bandwidth, requests, compute, and memory are published. Markers are flattened table rows; verified against the tag-strip + whitespace-collapse transformation."
+  },
+  {
+   "product": "vercel",
+   "arena": "edge-platforms",
+   "storyId": "migration-credits",
+   "disposition": "checked-still-absent",
+   "checked": [
+    "https://vercel.com/enterprise",
+    "https://vercel.com/docs/incremental-migration",
+    "https://vercel.com/docs/pricing",
+    "https://vercel.com/docs/plans/pro-plan"
+   ],
+   "note": "Checked 2026-11-03. The enterprise marketing page has zero mentions of 'migration' or 'credit'; the incremental-migration docs describe technical migration strategies only; pricing and Pro plan docs describe usage credits ($20/month Pro credit) but no migration/switching credits or onboarding discounts. Still absent."
+  },
+  {
+   "product": "vercel",
+   "arena": "edge-platforms",
+   "storyId": "multi-protocol-native-support",
+   "disposition": "checked-still-absent",
+   "checked": [
+    "https://vercel.com/docs/functions/limitations",
+    "https://vercel.com/docs/functions/websockets",
+    "https://vercel.com/docs/functions",
+    "https://vercel.com/docs/functions/runtimes/container"
+   ],
+   "note": "Checked 2026-11-03. HTTP and now WebSocket traffic are served by Vercel Functions (see edge-websocket-support cell), but there is no documentation of inbound raw TCP, UDP, or native gRPC serving; the only TCP mention in functions limitations is outbound TCP sockets counting against the file-descriptor limit. The Container runtime docs describe HTTP port resolution, not arbitrary protocol listeners. The full multi-protocol story (HTTP+TCP+gRPC+WebSocket from one service) remains absent, though the WebSocket half is new evidence."
+  },
+  {
+   "product": "vercel",
+   "arena": "edge-platforms",
+   "storyId": "object-storage-uploads",
+   "disposition": "evidence-appended",
+   "evidenceId": "vercel-parity-object-storage-uploads-20261103",
+   "url": "https://vercel.com/docs/vercel-blob",
+   "checked": [
+    "https://vercel.com/docs/vercel-blob"
+   ],
+   "note": "First-party object storage with server and client (browser) upload flows, SDKs, signed URLs, private/public stores. Marker 1 is from the JSON-LD description, present in tag-stripped body."
+  },
+  {
+   "product": "vercel",
+   "arena": "edge-platforms",
+   "storyId": "openness-full-export",
+   "disposition": "checked-still-absent",
+   "checked": [
+    "https://vercel.com/docs/rest-api",
+    "https://vercel.com/legal/privacy-notice",
+    "https://vercel.com/docs/vercel-blob",
+    "https://vercel.com/docs/logs"
+   ],
+   "note": "Checked 2026-11-03. No documented one-shot 'export all my data' feature. The REST API provides programmatic read access to deployments, projects, env vars, logs, etc., and Log Drains can stream logs out to S3/Datadog/Splunk, and the privacy notice documents individual privacy rights requests, but none of these is a documented full-account data export in open formats. Still absent as a product feature; judge may count REST API access as partial mitigation."
+  },
+  {
+   "product": "vercel",
+   "arena": "edge-platforms",
+   "storyId": "openness-open-license",
+   "disposition": "evidence-appended",
+   "evidenceId": "vercel-parity-openness-open-license-20261103",
+   "url": "https://raw.githubusercontent.com/vercel/vercel/main/LICENSE",
+   "checked": [
+    "https://github.com/vercel/vercel",
+    "https://raw.githubusercontent.com/vercel/vercel/main/LICENSE"
+   ],
+   "note": "This names the previously-missing license for the CLI/builders repo: Apache-2.0. It covers the CLI, builders, and Build Output tooling (plus Next.js is MIT), NOT the hosted platform itself, which remains closed source. The prior partial verdict's gap ('pack never names a license for the CLI repo') is now evidenced. In the tag-stripped raw file, the license title whitespace collapses to 'Apache License Version 2.0, January 2004'."
+  },
+  {
+   "product": "vercel",
+   "arena": "edge-platforms",
+   "storyId": "pay-for-active-compute",
+   "disposition": "evidence-appended",
+   "evidenceId": "vercel-parity-pay-for-active-compute-20261103",
+   "url": "https://vercel.com/docs/functions/usage-and-pricing",
+   "checked": [
+    "https://vercel.com/docs/functions/usage-and-pricing",
+    "https://vercel.com/docs/fluid-compute"
+   ],
+   "note": "Direct hit for the story: Active CPU billing pauses during I/O waits. Caveat for the judge: Provisioned Memory is a second dimension that IS billed for the entire instance lifetime (per GB-hr), so idle wall-clock is not entirely free, but CPU is billed active-time-only."
+  },
+  {
+   "product": "vercel",
+   "arena": "edge-platforms",
+   "storyId": "privacy-data-residency",
+   "disposition": "evidence-appended",
+   "evidenceId": "vercel-parity-privacy-data-residency-20261103",
+   "url": "https://vercel.com/docs/vercel-blob",
+   "checked": [
+    "https://vercel.com/docs/vercel-blob",
+    "https://vercel.com/docs/functions/configuring-functions/region",
+    "https://vercel.com/legal/privacy-notice"
+   ],
+   "note": "Region selection is documented for Blob stores and for function execution. This is region pinning for compute/storage rather than a formal data-residency compliance program (no residency guarantee page found for logs/metadata), so the judge may score partial."
+  },
+  {
+   "product": "vercel",
+   "arena": "edge-platforms",
+   "storyId": "privacy-no-training",
+   "disposition": "evidence-appended",
+   "evidenceId": "vercel-parity-privacy-no-training-20261103",
+   "url": "https://vercel.com/legal/privacy-notice",
+   "checked": [
+    "https://vercel.com/legal/privacy-notice",
+    "https://vercel.com/legal/privacy-policy"
+   ],
+   "note": "A documented team-level opt-out of model training exists. Honesty caveat for the judge: the same notice says Vercel may use information to \"train the AI models that support our Services\" and may share de-identified AI Product Information with AI business partners for model training; the opt-out is a control, not a default no-training guarantee. /legal/privacy-policy 301-redirects to /legal/privacy-notice."
+  },
+  {
+   "product": "vercel",
+   "arena": "edge-platforms",
+   "storyId": "privacy-retention-controls",
+   "disposition": "evidence-appended",
+   "evidenceId": "vercel-parity-privacy-retention-controls-20261103",
+   "url": "https://vercel.com/docs/logs",
+   "checked": [
+    "https://vercel.com/docs/logs",
+    "https://vercel.com/legal/privacy-notice"
+   ],
+   "note": "Partial: retention periods are plan-determined rather than user-configurable, and Log Drains extend rather than shorten retention. Account-level data deletion exists via privacy rights in the privacy notice. No configurable retention/deletion knobs for logs or traces are documented, so the judge will likely score partial. /docs/observability/logs 308-redirects to /docs/logs."
+  },
+  {
+   "product": "vercel",
+   "arena": "edge-platforms",
+   "storyId": "privacy-telemetry-optout",
+   "disposition": "evidence-appended",
+   "evidenceId": "vercel-parity-privacy-telemetry-optout-20261103",
+   "url": "https://vercel.com/docs/cli/about-telemetry",
+   "checked": [
+    "https://vercel.com/docs/cli/about-telemetry"
+   ],
+   "note": "Documented opt-out covers Vercel CLI telemetry (command + env var + status check). It does not cover dashboard/product analytics, so scope is the developer tooling."
+  },
+  {
+   "product": "vercel",
+   "arena": "edge-platforms",
+   "storyId": "public-incident-history",
+   "disposition": "evidence-appended",
+   "evidenceId": "vercel-parity-public-incident-history-20261103",
+   "url": "https://www.vercel-status.com/history.rss",
+   "checked": [
+    "https://www.vercel-status.com/",
+    "https://www.vercel-status.com/history",
+    "https://www.vercel-status.com/history.rss",
+    "https://www.vercel-status.com/incidents/4lgcbsr7l8xn"
+   ],
+   "note": "Important for the repair script: the HTML pages at vercel-status.com/ and /history render incident content via JS (curl body is mostly CSS), so markers must be verified against history.rss (server-rendered XML; tag-strip leaves titles and entity-encoded update text) or an individual incident page title. The RSS feed rotates as new incidents occur, so the two markers chosen are the durable ones (feed title and the incidents URL prefix). Incident updates are status timelines, not deep postmortems."
+  },
+  {
+   "product": "vercel",
+   "arena": "edge-platforms",
+   "storyId": "published-uptime-sla",
+   "disposition": "evidence-appended",
+   "evidenceId": "vercel-parity-published-uptime-sla-20261103",
+   "url": "https://vercel.com/legal/sla",
+   "checked": [
+    "https://vercel.com/legal/sla"
+   ],
+   "note": "Published 99.99% uptime SLA with defined downtime credits; applies to Enterprise ('Enterprise Service Level Agreement'). Quoted terms in the source are wrapped in &quot; entities, so markers avoid crossing quote boundaries."
+  },
+  {
+   "product": "vercel",
+   "arena": "edge-platforms",
+   "storyId": "redis-compatible-cache",
+   "disposition": "evidence-appended",
+   "evidenceId": "vercel-parity-redis-compatible-cache-20261103",
+   "url": "https://vercel.com/docs/redis",
+   "checked": [
+    "https://vercel.com/docs/redis"
+   ],
+   "note": "Redis is available via Vercel Marketplace native integrations (e.g. Upstash), with provisioning and env-var injection handled by Vercel; the first-party Vercel KV product was retired. Judge decides whether marketplace-native counts as built-in; evidence is vendor-official."
+  },
+  {
+   "product": "vercel",
+   "arena": "edge-platforms",
+   "storyId": "regional-deployment",
+   "disposition": "evidence-appended",
+   "evidenceId": "vercel-parity-regional-deployment-20261103",
+   "url": "https://vercel.com/docs/functions/configuring-functions/region",
+   "checked": [
+    "https://vercel.com/docs/functions/configuring-functions/region",
+    "https://vercel.com/docs/functions/usage-and-pricing"
+   ],
+   "note": "Region selection per project and per function is documented, including multi-region (Pro/Enterprise) and failover regions; the fluid compute pricing page lists ~19 selectable regions with per-region rates. Static assets remain served from the global CDN regardless."
+  },
+  {
+   "product": "vercel",
+   "arena": "edge-platforms",
+   "storyId": "seat-based-pricing-minimums",
+   "disposition": "evidence-appended",
+   "evidenceId": "vercel-parity-seat-based-pricing-minimums-20261103",
+   "url": "https://vercel.com/docs/plans/pro-plan",
+   "checked": [
+    "https://vercel.com/docs/plans/pro-plan",
+    "https://vercel.com/docs/pricing"
+   ],
+   "note": "Per-seat pricing is fully documented: minimum 1 paid deploying seat on Pro, $20/month per additional Owner/Member seat, unlimited free viewer seats (so cost scales with deploying members only). Marker 2 preserves the page's literal spacing '$ 20 /month each' after tag-strip; do not normalize it."
+  },
+  {
+   "product": "vercel",
+   "arena": "edge-platforms",
+   "storyId": "serverless-sql-query",
+   "disposition": "evidence-appended",
+   "evidenceId": "vercel-parity-serverless-sql-query-20261103",
+   "url": "https://vercel.com/docs/postgres",
+   "checked": [
+    "https://vercel.com/docs/postgres"
+   ],
+   "note": "Confirms the existing partial: serverless Postgres comes via Marketplace native integrations (Neon etc.), provisioned and credential-injected by Vercel, but the first-party Vercel Postgres product (and its SDK) was retired; no first-party no-connection-management driver is documented on this page. Judge likely keeps partial."
+  },
+  {
+   "product": "vercel",
+   "arena": "edge-platforms",
+   "storyId": "standards-based-runtime-portability",
+   "disposition": "evidence-appended",
+   "evidenceId": "vercel-parity-standards-based-runtime-portability-20261103",
+   "url": "https://vercel.com/docs/build-output-api",
+   "checked": [
+    "https://vercel.com/docs/build-output-api",
+    "https://vercel.com/docs/functions",
+    "https://vercel.com/docs/functions/websockets"
+   ],
+   "note": "Weak/partial evidence: the Build Output API is an open, documented deployment spec, and current Vercel Functions run standard servers (Express, Hono, FastAPI, Bun, standard Node.js http) rather than requiring proprietary handler signatures, which reduces lock-in. But no Vercel page claims code runs unmodified on other edge platforms, and storage/products (Blob, etc.) remain proprietary APIs. Judge decides; probably partial at most."
+  },
+  {
+   "product": "vercel",
+   "arena": "edge-platforms",
+   "storyId": "support-response-sla",
+   "disposition": "evidence-appended",
+   "evidenceId": "vercel-parity-support-response-sla-20261103",
+   "url": "https://vercel.com/legal/support-terms",
+   "checked": [
+    "https://vercel.com/legal/support-terms",
+    "https://vercel.com/docs/support-center"
+   ],
+   "note": "Published per-severity target response times exist, but only for Enterprise support tiers (Standard/Premium) and framed as targets ('We only commit to respond to Customers with an Enterprise subscription'). The '<' signs in the severity table are &lt; entities in the source, so markers avoid them. /docs/support redirects to /docs/support-center, which covers ticketing mechanics only."
+  },
+  {
+   "product": "vercel",
+   "arena": "edge-platforms",
+   "storyId": "visual-infra-canvas",
+   "disposition": "checked-still-absent",
+   "checked": [
+    "https://vercel.com/docs",
+    "https://vercel.com/docs/observability",
+    "https://vercel.com/docs/pricing"
+   ],
+   "note": "Checked 2026-11-03. The full docs product navigation (AI Gateway, Sandbox, Container Registry, Workflows, Functions, Observability, Storage, etc.) contains no visual infrastructure canvas or diagram-based infra editor; infrastructure is configured via dashboard settings, vercel.json, and the Build Output API. Genuinely absent."
+  },
+  {
+   "product": "vue",
+   "arena": "frontend-frameworks",
+   "storyId": "agentic-headless",
+   "disposition": "evidence-appended",
+   "evidenceId": "vue-parity-agentic-headless-20261103",
+   "url": "https://vuejs.org/guide/scaling-up/testing.html",
+   "checked": [
+    "https://vuejs.org/guide/scaling-up/testing.html",
+    "https://vuejs.org/api/ssr.html"
+   ],
+   "note": "Closest official material: headless (Node, no browser) rendering/testing of components and composables, plus CI/CD pipeline guidance for E2E. Vue also runs headlessly in Node via vue/server-renderer (renderToString). There is no distinct 'headless mode' product feature; judge decides whether testing/SSR headless usage satisfies the AI-native automation story."
+  },
+  {
+   "product": "vue",
+   "arena": "frontend-frameworks",
+   "storyId": "agentic-mcp-server",
+   "disposition": "checked-still-absent",
+   "checked": [
+    "https://github.com/vuejs/mcp",
+    "https://vuejs.org/llms.txt",
+    "https://vuejs.org/guide/scaling-up/testing.html"
+   ],
+   "note": "Checked 2026-11-03. github.com/vuejs/mcp returns 404; no MCP server found in the vuejs GitHub org or on vuejs.org. Adjacent-but-different: vuejs.org serves /llms.txt (HTTP 200, Markdown doc index for LLMs) and every docs page carries an 'Are you an LLM? You can read better optimized documentation at ...md' pointer; that is AI-readable docs, not an MCP server. Community vue-mcp projects exist but are not official."
+  },
+  {
+   "product": "vue",
+   "arena": "frontend-frameworks",
+   "storyId": "ai-assisted-type-inference-fixes",
+   "disposition": "checked-still-absent",
+   "checked": [
+    "https://vuejs.org/guide/typescript/overview.html",
+    "https://vuejs.org/guide/typescript/composition-api.html"
+   ],
+   "note": "Checked 2026-11-03. The TypeScript guides document vue-tsc, Volar/Vue Language Tools and IDE feedback, but no AI tooling that automatically resolves type errors. No AI mention anywhere in the TS docs."
+  },
+  {
+   "product": "vue",
+   "arena": "frontend-frameworks",
+   "storyId": "ai-generated-component-tests",
+   "disposition": "checked-still-absent",
+   "checked": [
+    "https://vuejs.org/guide/scaling-up/testing.html"
+   ],
+   "note": "Checked 2026-11-03. The only AI mention in the official testing guide is a sponsor blurb: 'Lambdatest is a cloud platform for running E2E, accessibility, and visual regression tests across all major browsers and real devices, with AI assisted test generation!' That is a third-party ad, not Vue tooling, and not generation from declared props/reactive state. No official AI test generation exists."
+  },
+  {
+   "product": "vue",
+   "arena": "frontend-frameworks",
+   "storyId": "api-versioning-policy",
+   "disposition": "evidence-appended",
+   "evidenceId": "vue-parity-api-versioning-policy-20261103",
+   "url": "https://vuejs.org/about/releases.html",
+   "checked": [
+    "https://vuejs.org/about/releases.html"
+   ],
+   "note": "Directly addresses the flagged gap: semver policy, release cadence, and an explicit deprecation policy on a first-party page."
+  },
+  {
+   "product": "vue",
+   "arena": "frontend-frameworks",
+   "storyId": "browser-support-matrix",
+   "disposition": "evidence-appended",
+   "evidenceId": "vue-parity-browser-support-matrix-20261103",
+   "url": "https://vuejs.org/about/faq.html",
+   "checked": [
+    "https://vuejs.org/about/faq.html"
+   ],
+   "note": "Baseline is stated as an ES2016 capability floor rather than a per-browser version table."
+  },
+  {
+   "product": "vue",
+   "arena": "frontend-frameworks",
+   "storyId": "buildless-script-tag-usage",
+   "disposition": "evidence-appended",
+   "evidenceId": "vue-parity-buildless-script-tag-usage-20261103",
+   "url": "https://vuejs.org/guide/quick-start.html",
+   "checked": [
+    "https://vuejs.org/guide/quick-start.html"
+   ],
+   "note": "Second marker is truncated before the phrase 'build step' because the raw body encodes the quotes as &quot; entities; the full sentence is in the excerpt. Page also documents ES-module CDN usage and import maps."
+  },
+  {
+   "product": "vue",
+   "arena": "frontend-frameworks",
+   "storyId": "builtin-accessibility-linting",
+   "disposition": "checked-still-absent",
+   "checked": [
+    "https://vuejs.org/guide/best-practices/accessibility.html"
+   ],
+   "note": "Checked 2026-11-03. The official accessibility guide covers practices (skip links, semantic forms, ARIA, WCAG resources) but documents no built-in dev-time accessibility warnings and does not mention lint tooling (no 'eslint' or 'lint' occurrence on the page). Vue's dev-mode warnings cover API misuse, not accessibility."
+  },
+  {
+   "product": "vue",
+   "arena": "frontend-frameworks",
+   "storyId": "component-testing-utilities",
+   "disposition": "evidence-appended",
+   "evidenceId": "vue-parity-component-testing-utilities-20261103",
+   "url": "https://vuejs.org/guide/scaling-up/testing.html",
+   "checked": [
+    "https://vuejs.org/guide/scaling-up/testing.html"
+   ],
+   "note": "@vue/test-utils is first-party (vuejs org). Strong repair candidate: the capability is squarely documented."
+  },
+  {
+   "product": "vue",
+   "arena": "frontend-frameworks",
+   "storyId": "cross-platform-desktop-apps",
+   "disposition": "evidence-appended",
+   "evidenceId": "vue-parity-cross-platform-desktop-apps-20261103",
+   "url": "https://vuejs.org/guide/extras/ways-of-using-vue.html",
+   "checked": [
+    "https://vuejs.org/guide/extras/ways-of-using-vue.html"
+   ],
+   "note": "Desktop targets are via third-party tools (Electron, Wails, Quasar, Tauri) that official docs explicitly endorse; there is no first-party desktop renderer. Judge decides weight."
+  },
+  {
+   "product": "vue",
+   "arena": "frontend-frameworks",
+   "storyId": "custom-renderer-targets",
+   "disposition": "evidence-appended",
+   "evidenceId": "vue-parity-custom-renderer-targets-20261103",
+   "url": "https://vuejs.org/api/custom-renderer.html",
+   "checked": [
+    "https://vuejs.org/api/custom-renderer.html",
+    "https://vuejs.org/guide/extras/ways-of-using-vue.html"
+   ],
+   "note": "Ways of Using Vue also says: 'Use Vue's Custom Renderer API to build custom renderers, like those for the terminal'. The apostrophe in \"Vue's\" is an HTML entity in the raw body, so the marker pair is split around it."
+  },
+  {
+   "product": "vue",
+   "arena": "frontend-frameworks",
+   "storyId": "dependency-injection-modules",
+   "disposition": "evidence-appended",
+   "evidenceId": "vue-parity-dependency-injection-modules-20261103",
+   "url": "https://vuejs.org/guide/components/provide-inject.html",
+   "checked": [
+    "https://vuejs.org/guide/components/provide-inject.html"
+   ],
+   "note": "First-party dependency-injection mechanism in core. The earlier community complaint about Vuex predates Pinia and provide/inject patterns; this page directly answers the flagged gap."
+  },
+  {
+   "product": "vue",
+   "arena": "frontend-frameworks",
+   "storyId": "deploy-platform-status-history",
+   "disposition": "checked-still-absent",
+   "checked": [
+    "https://vuejs.org/guide/best-practices/production-deployment.html",
+    "https://vuejs.org/guide/scaling-up/ssr.html"
+   ],
+   "note": "Checked 2026-11-03. Vue has no first-party hosting/deploy platform, so no official status page or incident history exists. The production deployment guide gives generic build/deploy guidance only. Genuinely absent for this vendor."
+  },
+  {
+   "product": "vue",
+   "arena": "frontend-frameworks",
+   "storyId": "e2e-testing-integration",
+   "disposition": "evidence-appended",
+   "evidenceId": "vue-parity-e2e-testing-integration-20261103",
+   "url": "https://vuejs.org/guide/scaling-up/testing.html",
+   "checked": [
+    "https://vuejs.org/guide/scaling-up/testing.html"
+   ],
+   "note": "The guide notes the official create-vue setup is Vite-based and recommends tools that share the Vite config/transform pipeline. E2E tools are third-party but officially recommended and scaffoldable via create-vue; judge decides whether that meets 'official ... out of the box with the dev server'."
+  },
+  {
+   "product": "vue",
+   "arena": "frontend-frameworks",
+   "storyId": "first-party-forms-support",
+   "disposition": "evidence-appended",
+   "evidenceId": "vue-parity-first-party-forms-support-20261103",
+   "url": "https://vuejs.org/guide/essentials/forms.html",
+   "checked": [
+    "https://vuejs.org/guide/essentials/forms.html"
+   ],
+   "note": "First-party coverage is form BINDING (v-model, built into core, with modifiers like .lazy/.number/.trim). There is no first-party form VALIDATION module; validation is left to third parties (VeeValidate etc., not cited in core docs). Judge decides partial vs none given the story asks for building AND validating."
+  },
+  {
+   "product": "vue",
+   "arena": "frontend-frameworks",
+   "storyId": "large-workspace-build-performance",
+   "disposition": "checked-still-absent",
+   "checked": [
+    "https://vuejs.org/guide/best-practices/performance.html",
+    "https://vuejs.org/guide/typescript/overview.html"
+   ],
+   "note": "Checked 2026-11-03. The performance guide covers runtime/bundle perf, not build or type-check scaling in large codebases or monorepos. The TS overview discusses type-check speed in general terms (vue-tsc watch mode, vite-plugin-checker in a separate worker thread) but publishes no large-workspace scaling data or guidance. No monorepo-scale build-performance documentation found."
+  },
+  {
+   "product": "vue",
+   "arena": "frontend-frameworks",
+   "storyId": "local-user-groups",
+   "disposition": "evidence-appended",
+   "evidenceId": "vue-parity-local-user-groups-20261103",
+   "url": "https://events.vuejs.org/meetups/",
+   "checked": [
+    "https://events.vuejs.org/meetups/",
+    "https://vuejs.org/about/community-guide.html"
+   ],
+   "note": "The vuejs.org community guide also points to meetups ('Present at your local meetup. ... Start your own meetup.' and 'check out the resources at events.vuejs.org'). events.vuejs.org is a vuejs.org subdomain (official)."
+  },
+  {
+   "product": "vue",
+   "arena": "frontend-frameworks",
+   "storyId": "no-virtual-dom-overhead",
+   "disposition": "checked-still-absent",
+   "checked": [
+    "https://vuejs.org/guide/extras/rendering-mechanism.html",
+    "https://blog.vuejs.org/"
+   ],
+   "note": "Checked 2026-11-03. Vue's own docs describe a 'Compiler-Informed Virtual DOM': rendering still goes through virtual DOM diffing, optimized at compile time via patch flags and tree flattening (and SSR compiles templates to string concatenation). That does not satisfy the story's defining requirement of updating the DOM without a vdom diffing step. Vapor mode (vdom-free compilation) is in development but is not documented on vuejs.org and has no stable release; blog.vuejs.org's latest release post is Vue 3.5. Honest disposition: absent, with the compiler-optimization material available if the judge wants to weigh partial credit."
+  },
+  {
+   "product": "vue",
+   "arena": "frontend-frameworks",
+   "storyId": "privacy-telemetry-optout",
+   "disposition": "checked-still-absent",
+   "checked": [
+    "https://vuejs.org/guide/quick-start.html",
+    "https://vuejs.org/about/faq.html",
+    "https://vuejs.org/guide/best-practices/production-deployment.html"
+   ],
+   "note": "Checked 2026-11-03. No telemetry or usage tracking is mentioned anywhere in the fetched vuejs.org docs ('telemetry' appears on none of the 20+ pages checked). Vue core ships no telemetry, but the vendor publishes no statement or opt-out to cite, so there is nothing to repair with."
+  },
+  {
+   "product": "vue",
+   "arena": "frontend-frameworks",
+   "storyId": "progressive-hydration",
+   "disposition": "evidence-appended",
+   "evidenceId": "vue-parity-progressive-hydration-20261103",
+   "url": "https://vuejs.org/guide/components/async.html",
+   "checked": [
+    "https://vuejs.org/guide/components/async.html"
+   ],
+   "note": "First-party lazy/progressive hydration landed in Vue 3.5 (defineAsyncComponent hydrate option). Strong repair candidate."
+  },
+  {
+   "product": "vue",
+   "arena": "frontend-frameworks",
+   "storyId": "public-roadmap-visibility",
+   "disposition": "evidence-appended",
+   "evidenceId": "vue-parity-public-roadmap-visibility-20261103",
+   "url": "https://vuejs.org/about/releases.html",
+   "checked": [
+    "https://vuejs.org/about/releases.html",
+    "https://github.com/vuejs/rfcs"
+   ],
+   "note": "github.com/vuejs/rfcs is reachable (HTTP 200) and describes the RFC life-cycle. This is public visibility into planned features via RFCs and pre-release phases rather than a single roadmap page; judge decides whether that satisfies 'public roadmap'."
+  },
+  {
+   "product": "vue",
+   "arena": "frontend-frameworks",
+   "storyId": "security-advisory-history",
+   "disposition": "evidence-appended",
+   "evidenceId": "vue-parity-security-advisory-history-20261103",
+   "url": "https://github.com/vuejs/core/security/advisories",
+   "checked": [
+    "https://github.com/vuejs/core/security/advisories",
+    "https://github.com/vuejs/core/security",
+    "https://vuejs.org/guide/best-practices/security.html"
+   ],
+   "note": "Vendor's own GitHub org hosts the public advisory history (currently one published GHSA for vuejs/core). vuejs.org/guide/best-practices/security.html documents the disclosure process: 'To report a vulnerability, please email security@vuejs.org' and 'When a vulnerability is reported, it immediately becomes our top concern, with a full-time contributor dropping everything to work on it.' Both pages curl-verified HTTP 200."
+  },
+  {
+   "product": "vue",
+   "arena": "frontend-frameworks",
+   "storyId": "server-data-as-reactive-resources",
+   "disposition": "evidence-appended",
+   "evidenceId": "vue-parity-server-data-as-reactive-resources-20261103",
+   "url": "https://vuejs.org/guide/built-ins/suspense.html",
+   "checked": [
+    "https://vuejs.org/guide/built-ins/suspense.html",
+    "https://vuejs.org/guide/components/async.html"
+   ],
+   "note": "Caveat on the same page: '<Suspense> is an experimental feature. It is not guaranteed to reach stable status and the API may change before it does.' Vue has no dedicated 'resource' primitive in core (data-fetching composables live in ecosystem libraries); Suspense + async setup + reactive refs is the first-party pattern. Judge weighs the experimental status."
+  },
+  {
+   "product": "vue",
+   "arena": "frontend-frameworks",
+   "storyId": "serverless-ssr-deployment",
+   "disposition": "evidence-appended",
+   "evidenceId": "vue-parity-serverless-ssr-deployment-20261103",
+   "url": "https://vuejs.org/api/ssr.html",
+   "checked": [
+    "https://vuejs.org/api/ssr.html",
+    "https://vuejs.org/guide/scaling-up/ssr.html"
+   ],
+   "note": "Vue core documents SSR APIs that run on edge/serverless runtimes (Web Streams, Cloudflare Workers example). The 'without custom infrastructure setup' part is delegated: the SSR guide says 'we highly recommend using Vue frameworks if you need SSR since they often have built-in SSR support' (e.g. Nuxt provides zero-config serverless/edge deployment). Judge decides whether core-level runtime support plus framework recommendation meets the story."
+  },
+  {
+   "product": "vue",
+   "arena": "frontend-frameworks",
+   "storyId": "state-logic-unit-testing",
+   "disposition": "evidence-appended",
+   "evidenceId": "vue-parity-state-logic-unit-testing-20261103",
+   "url": "https://vuejs.org/guide/scaling-up/testing.html",
+   "checked": [
+    "https://vuejs.org/guide/scaling-up/testing.html"
+   ],
+   "note": "Directly documents unit testing reactive state/logic without rendering the DOM, including the host-instance case via a withSetup helper on the same page. Strong repair candidate."
+  },
+  {
+   "product": "vue",
+   "arena": "frontend-frameworks",
+   "storyId": "streaming-page-loads",
+   "disposition": "evidence-appended",
+   "evidenceId": "vue-parity-streaming-page-loads-20261103",
+   "url": "https://vuejs.org/api/ssr.html",
+   "checked": [
+    "https://vuejs.org/api/ssr.html",
+    "https://vuejs.org/guide/scaling-up/ssr.html"
+   ],
+   "note": "First-party streaming SSR across both Node and Web stream APIs. Strong repair candidate."
+  },
+  {
+   "product": "vue",
+   "arena": "frontend-frameworks",
+   "storyId": "typed-props-inference",
+   "disposition": "evidence-appended",
+   "evidenceId": "vue-parity-typed-props-inference-20261103",
+   "url": "https://vuejs.org/guide/typescript/composition-api.html",
+   "checked": [
+    "https://vuejs.org/guide/typescript/composition-api.html",
+    "https://vuejs.org/guide/typescript/overview.html"
+   ],
+   "note": "Also documents inference for ref()/reactive()/computed() ('reactive() also implicitly infers the type from its argument') and auto-inferred template refs. Strong repair candidate."
+  },
+  {
+   "product": "vue",
+   "arena": "frontend-frameworks",
+   "storyId": "typescript-version-support-matrix",
+   "disposition": "evidence-appended",
+   "evidenceId": "vue-parity-typescript-version-support-matrix-20261103",
+   "url": "https://vuejs.org/about/releases.html",
+   "checked": [
+    "https://vuejs.org/about/releases.html",
+    "https://vuejs.org/guide/typescript/overview.html"
+   ],
+   "note": "This is a documented TS compatibility POLICY (minimum TS version can rise in Vue minors; pin Vue minor if on TS), not an explicit supported-version matrix. The TS overview adds IDE-level detail (Volar used for TypeScript 5.0 and higher in JetBrains IDEs). Judge decides whether policy-without-matrix is partial."
+  },
+  {
+   "product": "vue",
+   "arena": "frontend-frameworks",
+   "storyId": "web-components-authoring",
+   "disposition": "evidence-appended",
+   "evidenceId": "vue-parity-web-components-authoring-20261103",
+   "url": "https://vuejs.org/guide/extras/web-components.html",
+   "checked": [
+    "https://vuejs.org/guide/extras/web-components.html"
+   ],
+   "note": "First-party API in core. Strong repair candidate."
+  },
+  {
+   "product": "claude",
+   "arena": "ai-assistants",
+   "storyId": "agentic-sdks",
+   "disposition": "evidence-appended",
+   "evidenceId": "claude-parity-agentic-sdks-20261103",
+   "url": "https://platform.claude.com/docs/en/cli-sdks-libraries/overview.md",
+   "checked": [
+    "https://platform.claude.com/docs/en/cli-sdks-libraries/overview.md",
+    "https://platform.claude.com/llms.txt",
+    "https://raw.githubusercontent.com/anthropics/anthropic-sdk-python/main/README.md"
+   ],
+   "note": "Official SDKs are extensively documented: Python, TypeScript, C#, Go, Java, PHP, Ruby, plus the ant CLI. GitHub org anthropics also hosts claude-agent-sdk-python (MIT) and claude-agent-sdk-typescript for agentic/Claude Code use. docs.claude.com 301-redirects to platform.claude.com; use the platform.claude.com URL directly because the verification curl does not follow redirects."
+  },
+  {
+   "product": "claude",
+   "arena": "ai-assistants",
+   "storyId": "agentic-webhooks",
+   "disposition": "evidence-appended",
+   "evidenceId": "claude-parity-agentic-webhooks-20261103",
+   "url": "https://platform.claude.com/docs/en/managed-agents/webhooks.md",
+   "checked": [
+    "https://platform.claude.com/docs/en/managed-agents/webhooks.md",
+    "https://platform.claude.com/docs/en/manage-claude/organization-webhooks.md",
+    "https://platform.claude.com/docs/en/api/beta/webhooks.md"
+   ],
+   "note": "Webhooks now exist on two surfaces, both beta: Managed Agents session webhooks (beta header managed-agents-2026-04-01) and Admin API organization webhooks for enforcement-action events (manage-claude/organization-webhooks, which notes event delivery is not yet live for that surface). These are developer-platform features, not claude.ai consumer features; judge decides fit for the ai-assistants arena. Earlier evidence predated these pages."
+  },
+  {
+   "product": "claude",
+   "arena": "ai-assistants",
+   "storyId": "api-interactive-docs",
+   "disposition": "evidence-appended",
+   "evidenceId": "claude-parity-api-interactive-docs-20261103",
+   "url": "https://platform.claude.com/docs/en/api/overview.md",
+   "checked": [
+    "https://platform.claude.com/docs/en/api/overview.md",
+    "https://platform.claude.com/docs/en/api/messages",
+    "https://platform.claude.com/docs/en/get-started.md"
+   ],
+   "note": "The in-browser playground at platform.claude.com/playground is the vendor's documented try-it surface (login required). The HTML API reference pages themselves are a Next.js app; I found no server-rendered 'Try it' string in the raw reference HTML, so cite the overview page, whose .md body curl-verifies. docs.claude.com 301-redirects to platform.claude.com; use the platform.claude.com URL directly because the verification curl does not follow redirects."
+  },
+  {
+   "product": "claude",
+   "arena": "ai-assistants",
+   "storyId": "api-machine-spec",
+   "disposition": "evidence-appended",
+   "evidenceId": "claude-parity-machine-readable-docs-20261103",
+   "url": "https://platform.claude.com/llms.txt",
+   "checked": [
+    "https://platform.claude.com/llms.txt",
+    "https://platform.claude.com/docs/openapi.json",
+    "https://platform.claude.com/docs/openapi.yaml",
+    "https://api.anthropic.com/openapi.json",
+    "https://raw.githubusercontent.com/anthropics/anthropic-sdk-python/main/.stats.yml",
+    "https://raw.githubusercontent.com/anthropics/anthropic-sdk-python/v0.69.0/.stats.yml"
+   ],
+   "note": "IMPORTANT: no downloadable OpenAPI/Swagger spec was found. Probed openapi.json/yaml paths 404 (or return the docs SPA shell). Current SDK repos' .stats.yml no longer publish openapi_spec_url; the historical Stainless spec URL (in tagged releases like v0.69.0) now returns NoSuchBucket. Evidence offered is the 'or equivalent' machine-readable surface: llms.txt index, per-page .md mirrors of the API reference, the docs MCP server, and sdk-versions.json. Judge decides whether that satisfies the story; if OpenAPI specifically is required, treat as still-absent. Evidence row named for its content after review: the cited support is adjacent to the story (it does not by itself establish the capability); the judge weighs the relation."
+  },
+  {
+   "product": "claude",
+   "arena": "ai-assistants",
+   "storyId": "api-versioning-policy",
+   "disposition": "evidence-appended",
+   "evidenceId": "claude-parity-api-versioning-policy-20261103",
+   "url": "https://platform.claude.com/docs/en/api/versioning.md",
+   "checked": [
+    "https://platform.claude.com/docs/en/api/versioning.md",
+    "https://platform.claude.com/docs/en/about-claude/model-deprecations.md"
+   ],
+   "note": "Date-based API versioning via the anthropic-version header, with documented compatibility guarantees and migration guides. A separate Model deprecations page (about-claude/model-deprecations.md, fetched 200) documents the model retirement/deprecation policy. docs.claude.com 301-redirects to platform.claude.com; use the platform.claude.com URL directly because the verification curl does not follow redirects."
+  },
+  {
+   "product": "claude",
+   "arena": "ai-assistants",
+   "storyId": "automation-rules-engine",
+   "disposition": "evidence-appended",
+   "evidenceId": "claude-parity-automation-rules-engine-20261103",
+   "url": "https://code.claude.com/docs/en/hooks-guide.md",
+   "checked": [
+    "https://code.claude.com/docs/en/hooks-guide.md",
+    "https://code.claude.com/docs/llms.txt"
+   ],
+   "note": "User-defined event->action rules exist in Claude Code (hooks on lifecycle events such as file edits, task completion, notifications; also prompt-based and agent-based hooks). Claude Code docs moved to code.claude.com. Related: channels.md documents pushing external webhook/CI events into a running session. The rationale asked about email/calendar triggers; hooks trigger on Claude Code lifecycle events, not arbitrary external events, so this may remain partial but with stronger evidence."
+  },
+  {
+   "product": "claude",
+   "arena": "ai-assistants",
+   "storyId": "automation-versioned-workflows",
+   "disposition": "evidence-appended",
+   "evidenceId": "claude-parity-automation-versioned-workflows-20261103",
+   "url": "https://code.claude.com/docs/en/claude-directory.md",
+   "checked": [
+    "https://code.claude.com/docs/en/claude-directory.md",
+    "https://code.claude.com/docs/en/skills.md",
+    "https://code.claude.com/docs/en/hooks-guide.md"
+   ],
+   "note": "Automations (hooks in settings.json, skills, subagents) are plain files the vendor explicitly directs you to commit to git, which provides versioning, review via PRs, and rollback through normal git history. There is no built-in version-history/rollback UI for automations; the versioning mechanism is git. Judge decides whether file-based git versioning satisfies the story."
+  },
+  {
+   "product": "claude",
+   "arena": "ai-assistants",
+   "storyId": "openness-open-license",
+   "disposition": "checked-still-absent",
+   "checked": [
+    "https://raw.githubusercontent.com/anthropics/claude-code/main/LICENSE.md",
+    "https://raw.githubusercontent.com/anthropics/claude-code/main/README.md",
+    "https://api.github.com/orgs/anthropics/repos?per_page=100&sort=pushed"
+   ],
+   "note": "Checked 2026-11-03. Claude Code's LICENSE.md reads: \"(c) Anthropic PBC. All rights reserved. Use is subject to Anthropic's Commercial Terms of Service.\" The claude.ai product source is not published. Adjacent open-source exists but is not the product: anthropic-sdk-* client SDKs (Apache-2.0), claude-agent-sdk-python and claude-code-action (MIT), sandbox-runtime and claude-plugins-official (Apache-2.0) in the anthropics GitHub org."
+  },
+  {
+   "product": "claude",
+   "arena": "ai-assistants",
+   "storyId": "privacy-data-residency",
+   "disposition": "evidence-appended",
+   "evidenceId": "claude-parity-privacy-data-residency-20261103",
+   "url": "https://platform.claude.com/docs/en/manage-claude/data-residency.md",
+   "checked": [
+    "https://platform.claude.com/docs/en/manage-claude/data-residency.md",
+    "https://privacy.claude.com/en/articles/7996890-where-are-your-servers-located-do-you-host-your-models-on-eu-servers"
+   ],
+   "note": "This is a Claude API / Console (workspace-level) feature, stable, currently with global/us geos. The consumer claude.ai assistant does not expose a residency picker; judge decides fit for the ai-assistants arena. Same page applies cleanly to the frontier-models arena."
+  },
+  {
+   "product": "claude",
+   "arena": "frontier-models",
+   "storyId": "agentic-webhooks",
+   "disposition": "evidence-appended",
+   "evidenceId": "claude-parity-agentic-webhooks-20261103",
+   "url": "https://platform.claude.com/docs/en/managed-agents/webhooks.md",
+   "checked": [
+    "https://platform.claude.com/docs/en/managed-agents/webhooks.md",
+    "https://platform.claude.com/docs/en/manage-claude/organization-webhooks.md",
+    "https://platform.claude.com/docs/en/api/beta/webhooks.md"
+   ],
+   "note": "Beta (managed-agents-2026-04-01 beta header), scoped to Managed Agents sessions; the Admin API also has beta organization webhooks (enforcement-action events, delivery not yet live). The old 'Batches API has no webhooks' framing is outdated: registrable outbound HTTP callbacks now exist on the platform, in beta."
+  },
+  {
+   "product": "claude",
+   "arena": "frontier-models",
+   "storyId": "api-interactive-docs",
+   "disposition": "evidence-appended",
+   "evidenceId": "claude-parity-api-interactive-docs-20261103",
+   "url": "https://platform.claude.com/docs/en/api/overview.md",
+   "checked": [
+    "https://platform.claude.com/docs/en/api/overview.md",
+    "https://platform.claude.com/docs/en/api/messages",
+    "https://platform.claude.com/docs/en/get-started.md"
+   ],
+   "note": "Vendor-documented in-browser playground (Console login required). The raw HTML of API reference pages is a client-side app with no server-rendered 'Try it' string, so the overview .md page is the curl-verifiable evidence. docs.claude.com 301-redirects to platform.claude.com; use the platform.claude.com URL directly because the verification curl does not follow redirects."
+  },
+  {
+   "product": "claude",
+   "arena": "frontier-models",
+   "storyId": "api-machine-spec",
+   "disposition": "evidence-appended",
+   "evidenceId": "claude-parity-machine-readable-docs-20261103",
+   "url": "https://platform.claude.com/llms.txt",
+   "checked": [
+    "https://platform.claude.com/llms.txt",
+    "https://platform.claude.com/docs/openapi.json",
+    "https://platform.claude.com/docs/openapi.yaml",
+    "https://api.anthropic.com/openapi.json",
+    "https://raw.githubusercontent.com/anthropics/anthropic-sdk-python/main/.stats.yml",
+    "https://raw.githubusercontent.com/anthropics/anthropic-sdk-python/v0.69.0/.stats.yml"
+   ],
+   "note": "Same finding as the ai-assistants cell: no OpenAPI/Swagger download exists today. openapi.json/yaml probes 404 or return the docs SPA; current SDK .stats.yml files dropped openapi_spec_url; the historical Stainless-hosted spec bucket (v0.69.0 .stats.yml URL) now returns NoSuchBucket. Offered evidence is the 'or equivalent' machine-readable docs surface (llms.txt, .md API reference mirrors, docs MCP server, sdk-versions.json). If the story strictly requires OpenAPI, treat as still-absent. Evidence row named for its content after review: the cited support is adjacent to the story (it does not by itself establish the capability); the judge weighs the relation."
+  },
+  {
+   "product": "claude",
+   "arena": "frontier-models",
+   "storyId": "api-sandbox",
+   "disposition": "evidence-appended",
+   "evidenceId": "claude-parity-api-sandbox-20261103",
+   "url": "https://platform.claude.com/docs/en/api/overview.md",
+   "checked": [
+    "https://platform.claude.com/docs/en/api/overview.md",
+    "https://platform.claude.com/docs/en/cli-sdks-libraries/libraries/openai-sdk.md",
+    "https://platform.claude.com/llms.txt"
+   ],
+   "note": "Partial at best: there is no dedicated sandbox/staging environment or free test API keys. Closest documented mechanisms are the Console playground (in-browser trial) and workspaces to separate environments (dev vs prod keys, spend limits). The 'self-hosted sandboxes' and 'cloud sandboxes' pages under Managed Agents are code-execution sandboxes, not an API test environment; do not conflate. Judge decides whether playground+workspaces merits partial."
+  },
+  {
+   "product": "claude",
+   "arena": "frontier-models",
+   "storyId": "drop-in-compat-switch",
+   "disposition": "evidence-appended",
+   "evidenceId": "claude-parity-drop-in-compat-switch-20261103",
+   "url": "https://platform.claude.com/docs/en/cli-sdks-libraries/libraries/openai-sdk.md",
+   "checked": [
+    "https://platform.claude.com/docs/en/cli-sdks-libraries/libraries/openai-sdk.md"
+   ],
+   "note": "Official, stable OpenAI-compatible layer. Caveat the vendor states up front: \"This compatibility layer is primarily intended to test and compare model capabilities, and is not considered a long-term or production-ready solution for most use cases.\" So: drop-in switch path exists and is documented, with an explicit recommendation to migrate to the native API for production."
+  },
+  {
+   "product": "claude",
+   "arena": "frontier-models",
+   "storyId": "independent-eval-presence",
+   "disposition": "evidence-appended",
+   "evidenceId": "claude-parity-independent-eval-presence-20261103",
+   "url": "https://artificialanalysis.ai/models",
+   "checked": [
+    "https://artificialanalysis.ai/models",
+    "https://www.swebench.com/",
+    "https://lmarena.ai/leaderboard"
+   ],
+   "note": "Third-party evaluator pages are in-scope for this story per the brief. Both artificialanalysis.ai/models and www.swebench.com curl-verify with Claude model names present in raw (tag-stripped) HTML. lmarena.ai/leaderboard returned a 301 redirect under plain curl and was not pursued (JS-heavy); the two verified sources suffice."
+  },
+  {
+   "product": "claude",
+   "arena": "frontier-models",
+   "storyId": "known-limitations-honesty",
+   "disposition": "evidence-appended",
+   "evidenceId": "claude-parity-known-limitations-honesty-20261103",
+   "url": "https://platform.claude.com/docs/en/build-with-claude/vision.md",
+   "checked": [
+    "https://platform.claude.com/docs/en/build-with-claude/vision.md",
+    "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations.md",
+    "https://www.anthropic.com/transparency"
+   ],
+   "note": "Developer docs document concrete failure modes (vision limitations above; a whole 'Reduce hallucinations' guardrails section acknowledges hallucination as a failure mode). Model/system cards with fuller limitation discussions are published on anthropic.com but as PDFs, which the tag-strip verifier cannot marker-match; the vision.md page is the curl-verifiable in-docs evidence."
+  },
+  {
+   "product": "claude",
+   "arena": "frontier-models",
+   "storyId": "open-weights-access",
+   "disposition": "evidence-appended",
+   "evidenceId": "claude-parity-open-weights-access-20261103",
+   "url": "https://www.anthropic.com/transparency",
+   "checked": [
+    "https://www.anthropic.com/transparency",
+    "https://platform.claude.com/llms.txt",
+    "https://api.github.com/orgs/anthropics/repos?per_page=100&sort=pushed"
+   ],
+   "note": "Claude weights are closed; no download or weights license exists anywhere on vendor surfaces (docs and GitHub org checked 2026-11-03). The transparency page is the closest vendor statement acknowledging weights are proprietary assets it protects rather than distributes; this satisfies at most the 'platform is honest that weights are closed' arm, indirectly. If the judge wants an explicit 'weights are not available' sentence, none was found; then treat as still-absent."
+  },
+  {
+   "product": "claude",
+   "arena": "frontier-models",
+   "storyId": "openness-full-export",
+   "disposition": "evidence-appended",
+   "evidenceId": "claude-parity-openness-full-export-20261103",
+   "url": "https://privacy.claude.com/en/articles/9450526-export-your-claude-data",
+   "checked": [
+    "https://privacy.claude.com/en/articles/9450526-export-your-claude-data",
+    "https://privacy.claude.com/en/articles/13346720-export-your-organization-s-data",
+    "https://support.claude.com/sitemap.xml"
+   ],
+   "note": "Self-serve account data export exists for claude.ai (Settings > Privacy > Export data); a separate article covers organization-wide export (13346720), and support.claude.com mirrors these articles (plus 12123587 on importing/exporting memory). The article does not state the export file format, so 'open formats' is not explicitly evidenced. privacy.claude.com articles are Intercom pages but the body text is server-rendered and curl-verifies; markers avoid the 'Settings &gt; Privacy' entity and curly-quoted 'Export data'."
+  },
+  {
+   "product": "claude",
+   "arena": "frontier-models",
+   "storyId": "openness-open-license",
+   "disposition": "checked-still-absent",
+   "checked": [
+    "https://raw.githubusercontent.com/anthropics/claude-code/main/LICENSE.md",
+    "https://api.github.com/orgs/anthropics/repos?per_page=100&sort=pushed",
+    "https://platform.claude.com/llms.txt"
+   ],
+   "note": "Checked 2026-11-03. The model/service source is not published under any license; Claude Code's LICENSE.md is \"(c) Anthropic PBC. All rights reserved.\" Open-licensed artifacts in the anthropics org are tooling, not the product: client SDKs (Apache-2.0), claude-agent-sdk-python (MIT), sandbox-runtime (Apache-2.0), skills/plugins repos."
+  },
+  {
+   "product": "claude",
+   "arena": "frontier-models",
+   "storyId": "openness-self-host",
+   "disposition": "checked-still-absent",
+   "checked": [
+    "https://platform.claude.com/docs/en/managed-agents/self-hosted-sandboxes.md",
+    "https://platform.claude.com/docs/en/manage-claude/data-residency.md",
+    "https://platform.claude.com/llms.txt"
+   ],
+   "note": "Checked 2026-11-03. No self-hosting of Claude models exists. Two look-alikes to keep straight: (1) 'Self-hosted sandboxes' under Managed Agents run tool execution/files/network egress in your infrastructure while model inference stays with Anthropic (page description: \"keeping tool execution, files, and network egress in your own infrastructure\"); (2) Claude on Bedrock/Vertex/Foundry is managed cloud hosting by a provider, not self-hosting, though it can matter for residency. Neither is self-hosting the core product."
+  },
+  {
+   "product": "claude",
+   "arena": "frontier-models",
+   "storyId": "privacy-data-residency",
+   "disposition": "evidence-appended",
+   "evidenceId": "claude-parity-privacy-data-residency-20261103",
+   "url": "https://platform.claude.com/docs/en/manage-claude/data-residency.md",
+   "checked": [
+    "https://platform.claude.com/docs/en/manage-claude/data-residency.md"
+   ],
+   "note": "Directly on point for the frontier-models/API arena: per-request inference_geo on POST /v1/messages plus workspace-level storage geo in the Console. Geo options are currently global/us (no EU pin documented on this page). Stable, first-party Claude API; on AWS/Google Cloud variants workspace geo is not configurable per the page's platform notes."
+  },
+  {
+   "product": "claude",
+   "arena": "frontier-models",
+   "storyId": "privacy-no-training",
+   "disposition": "evidence-appended",
+   "evidenceId": "claude-parity-privacy-no-training-20261103",
+   "url": "https://www.anthropic.com/legal/commercial-terms",
+   "checked": [
+    "https://www.anthropic.com/legal/commercial-terms",
+    "https://platform.claude.com/docs/en/manage-claude/api-and-data-retention.md",
+    "https://privacy.claude.com/en/articles/12109829-how-do-i-change-my-model-improvement-privacy-settings"
+   ],
+   "note": "Two-sided and both documented: commercial/API customers are covered by the Commercial Terms no-training clause (quoted; curl-verified on www.anthropic.com, not bot-walled). Consumer claude.ai accounts choose via the model-improvement privacy setting; the Privacy Center article states that if you turn the setting off, \"we will not use any new chats and coding sessions you have with Claude for future model training\" (and that data already in started training runs stays). Quote the consumer default change precisely from article 12109829 if the evidence record needs it. The retention docs page marker also curl-verified: \"Retained data is never used for model training without your express permission.\""
+  },
+  {
+   "product": "claude",
+   "arena": "frontier-models",
+   "storyId": "privacy-telemetry-optout",
+   "disposition": "evidence-appended",
+   "evidenceId": "claude-parity-privacy-telemetry-optout-20261103",
+   "url": "https://privacy.claude.com/en/articles/12109829-how-do-i-change-my-model-improvement-privacy-settings",
+   "checked": [
+    "https://privacy.claude.com/en/articles/12109829-how-do-i-change-my-model-improvement-privacy-settings",
+    "https://privacy.claude.com/en/articles/10023580-is-my-data-used-for-model-training",
+    "https://privacy.claude.com/sitemap.xml"
+   ],
+   "note": "This is the consumer data-use/model-improvement opt-out (a settings toggle), the closest documented control to a telemetry opt-out for the Claude product. Caveat in the quote: previously-started training runs keep already-included data. For API customers, no-training is the contractual default (see privacy-no-training cell). Claude Code additionally documents telemetry env-var opt-outs on code.claude.com if a dev-tool angle is wanted."
+  },
+  {
+   "product": "claude",
+   "arena": "frontier-models",
+   "storyId": "weights-ecosystem-derivatives",
+   "disposition": "checked-still-absent",
+   "checked": [
+    "https://www.anthropic.com/transparency",
+    "https://api.github.com/orgs/anthropics/repos?per_page=100&sort=pushed",
+    "https://platform.claude.com/llms.txt"
+   ],
+   "note": "Checked 2026-11-03. Claude weights are closed (transparency page documents protecting model weights), so no community replicas, fine-tunes, or quantizations of Claude weights can exist on public hubs, and no vendor statement delineating official vs unofficial derivatives was found on docs, anthropic.com, or the GitHub org. Genuinely absent by construction of a closed-weights product."
+  },
+  {
+   "product": "gemini",
+   "arena": "ai-assistants",
+   "storyId": "agentic-mcp-client",
+   "disposition": "evidence-appended",
+   "evidenceId": "gemini-parity-agentic-mcp-client-20261103",
+   "url": "https://raw.githubusercontent.com/google-gemini/gemini-cli/main/docs/tools/mcp-server.md",
+   "checked": [
+    "https://raw.githubusercontent.com/google-gemini/gemini-cli/main/docs/tools/mcp-server.md",
+    "https://github.com/google-gemini/gemini-cli",
+    "https://raw.githubusercontent.com/google-gemini/gemini-cli/main/README.md"
+   ],
+   "note": "Surface distinction for the judge: this is Gemini CLI (Google's official open-source Gemini terminal agent), not the gemini.google.com consumer app, acting as the MCP client. No evidence found that the consumer web/mobile Gemini app accepts user-supplied MCP servers. Raw markdown URL is clean for the tag-strip verifier."
+  },
+  {
+   "product": "gemini",
+   "arena": "ai-assistants",
+   "storyId": "agentic-public-api",
+   "disposition": "evidence-appended",
+   "evidenceId": "gemini-parity-agentic-public-api-20261103",
+   "url": "https://aistudio.google.com/docs.md",
+   "checked": [
+    "https://aistudio.google.com/docs.md",
+    "https://ai.google.dev/gemini-api/docs/models",
+    "https://aistudio.google.com/llms.txt"
+   ],
+   "note": "Assistant-vs-API distinction for the judge: this is the documented public Gemini API (same Gemini model line), not an API that drives the consumer Gemini app or its chat history. Note for the append script: ai.google.dev/gemini-api/* now returns 301 to aistudio.google.com/docs/*; use the aistudio.google.com URL. Appending .md to any docs URL serves clean markdown."
+  },
+  {
+   "product": "gemini",
+   "arena": "ai-assistants",
+   "storyId": "api-machine-spec",
+   "disposition": "evidence-appended",
+   "evidenceId": "gemini-parity-api-machine-spec-20261103",
+   "url": "https://generativelanguage.googleapis.com/$discovery/rest?version=v1beta",
+   "checked": [
+    "https://generativelanguage.googleapis.com/$discovery/rest?version=v1beta",
+    "https://aistudio.google.com/llms.txt"
+   ],
+   "note": "Returned HTTP 200 with a ~388KB JSON discovery document on 2026-11-03. The URL contains a literal $ which must be preserved (quote it in shell). Additionally, the docs site is machine-readable: aistudio.google.com/llms.txt indexes every page and each page serves markdown at URL+.md."
+  },
+  {
+   "product": "gemini",
+   "arena": "ai-assistants",
+   "storyId": "api-sandbox",
+   "disposition": "evidence-appended",
+   "evidenceId": "gemini-parity-free-tier-20261103",
+   "url": "https://aistudio.google.com/docs/pricing.md",
+   "checked": [
+    "https://aistudio.google.com/docs/pricing.md",
+    "https://aistudio.google.com/docs/pricing"
+   ],
+   "note": "Capability is partial/conditional: Google documents a free tier of the Gemini API plus free Google AI Studio usage for testing, not a formally isolated 'sandbox environment'. Free-tier data is used by Google to improve products (see terms), which a judge may weigh. Gemini 4 Argon is not available on the Free tier. Evidence row named for its content after review: the cited support is adjacent to the story (it does not by itself establish the capability); the judge weighs the relation."
+  },
+  {
+   "product": "gemini",
+   "arena": "ai-assistants",
+   "storyId": "automation-bulk-operations",
+   "disposition": "evidence-appended",
+   "evidenceId": "gemini-parity-automation-bulk-operations-20261103",
+   "url": "https://aistudio.google.com/docs/batch-api.md",
+   "checked": [
+    "https://aistudio.google.com/docs/batch-api.md",
+    "https://aistudio.google.com/docs/batch-api"
+   ],
+   "note": "This is a bulk-inference capability of the Gemini API platform rather than bulk operations inside the consumer Gemini app UI; judge decides how it maps to the assistants arena."
+  },
+  {
+   "product": "gemini",
+   "arena": "ai-assistants",
+   "storyId": "computer-use-desktop",
+   "disposition": "evidence-appended",
+   "evidenceId": "gemini-parity-computer-use-desktop-20261103",
+   "url": "https://aistudio.google.com/docs/computer-use.md",
+   "checked": [
+    "https://aistudio.google.com/docs/computer-use.md",
+    "https://aistudio.google.com/docs/computer-use"
+   ],
+   "note": "Distinction for the judge: this is a developer-facing model capability (you must implement the client-side execution environment); it is not the consumer Gemini assistant operating applications on the end user's computer out of the box. Desktop environment is explicitly supported."
+  },
+  {
+   "product": "gemini",
+   "arena": "ai-assistants",
+   "storyId": "export-my-data",
+   "disposition": "evidence-appended",
+   "evidenceId": "gemini-parity-export-my-data-20261103",
+   "url": "https://support.google.com/gemini/answer/13594961",
+   "checked": [
+    "https://support.google.com/gemini/answer/13594961",
+    "https://support.google.com/accounts/answer/3024190"
+   ],
+   "note": "support.google.com served full static HTML to the probe curl (no JS wall), contrary to expectations. The export link target takeout.google.com is visible in the raw HTML href. The companion page support.google.com/accounts/answer/3024190 (How to download your Google data) also curl-renders and describes the Takeout flow."
+  },
+  {
+   "product": "gemini",
+   "arena": "ai-assistants",
+   "storyId": "openness-open-license",
+   "disposition": "checked-still-absent",
+   "checked": [
+    "https://github.com/google-gemini/gemini-cli",
+    "https://raw.githubusercontent.com/google-gemini/gemini-cli/main/README.md",
+    "https://aistudio.google.com/llms.txt",
+    "https://deepmind.google/models/model-cards/gemini-4-argon/"
+   ],
+   "note": "Checked 2026-11-03: the Gemini assistant app and Gemini models remain closed source; no open license found anywhere in the docs index or model card. Two adjacent facts the judge may want: (1) Gemini CLI, a different surface of the same brand, is open source; its GitHub page states \"Gemini CLI is fully open source (Apache 2.0)\" (verifiable at github.com/google-gemini/gemini-cli, fetched 200). (2) Gemma is Google's separate open-weights model family, a different product line from Gemini."
+  },
+  {
+   "product": "gemini",
+   "arena": "frontier-models",
+   "storyId": "agentic-mcp-client",
+   "disposition": "evidence-appended",
+   "evidenceId": "gemini-parity-agentic-mcp-client-20261103",
+   "url": "https://aistudio.google.com/docs/function-calling.md",
+   "checked": [
+    "https://aistudio.google.com/docs/function-calling.md",
+    "https://aistudio.google.com/docs/function-calling",
+    "https://raw.githubusercontent.com/google-gemini/gemini-cli/main/docs/tools/mcp-server.md"
+   ],
+   "note": "First-party API-level MCP client support (model-side tool use via the Interactions API tools config), plus Gemini CLI MCP client support documented in the google-gemini/gemini-cli repo. Strong candidate to flip the verdict."
+  },
+  {
+   "product": "gemini",
+   "arena": "frontier-models",
+   "storyId": "agentic-mcp-server",
+   "disposition": "evidence-appended",
+   "evidenceId": "gemini-parity-agentic-mcp-server-20261103",
+   "url": "https://aistudio.google.com/docs/coding-agents.md",
+   "checked": [
+    "https://aistudio.google.com/docs/coding-agents.md",
+    "https://aistudio.google.com/llms.txt"
+   ],
+   "note": "Honesty caveat for the judge: Google's official MCP server is a documentation-search server (tools gemini_search_docs, gemini_get_doc), not an MCP server exposing Gemini model inference as a tool. No official 'call Gemini via MCP' server found in the docs index or google-gemini GitHub org."
+  },
+  {
+   "product": "gemini",
+   "arena": "frontier-models",
+   "storyId": "agentic-official-cli",
+   "disposition": "evidence-appended",
+   "evidenceId": "gemini-parity-agentic-official-cli-20261103",
+   "url": "https://aistudio.google.com/docs/cli.md",
+   "checked": [
+    "https://aistudio.google.com/docs/cli.md",
+    "https://github.com/google-gemini/gemini-cli",
+    "https://raw.githubusercontent.com/google-gemini/gemini-cli/main/README.md"
+   ],
+   "note": "Two official CLIs exist: the gemini-api CLI (documented on the API docs site, open-source beta, github.com/google-gemini/gemini-api-cli) and Gemini CLI, the open-source terminal agent (github.com/google-gemini/gemini-cli, page fetched 200: \"An open-source AI agent that brings the power of Gemini directly into your terminal\"). Strong candidate to flip the verdict."
+  },
+  {
+   "product": "gemini",
+   "arena": "frontier-models",
+   "storyId": "agentic-webhooks",
+   "disposition": "evidence-appended",
+   "evidenceId": "gemini-parity-agentic-webhooks-20261103",
+   "url": "https://aistudio.google.com/docs/webhooks.md",
+   "checked": [
+    "https://aistudio.google.com/docs/webhooks.md",
+    "https://aistudio.google.com/llms.txt"
+   ],
+   "note": "Page carries a callout: \"This feature is in [preview]\". Webhook REST reference pages are indexed in llms.txt under aistudio.google.com/api-reference/webhooks*. Strong candidate to flip the verdict."
+  },
+  {
+   "product": "gemini",
+   "arena": "frontier-models",
+   "storyId": "documented-context-window",
+   "disposition": "evidence-appended",
+   "evidenceId": "gemini-parity-documented-context-window-20261103",
+   "url": "https://aistudio.google.com/docs/models/gemini-4-argon.md",
+   "checked": [
+    "https://aistudio.google.com/docs/models/gemini-4-argon.md",
+    "https://aistudio.google.com/docs/models",
+    "https://aistudio.google.com/llms.txt"
+   ],
+   "note": "Exact per-model numbers (1,048,576 context; 65,536 default max output), not marketing ranges. The flagship has changed since the pack was built: current flagship is Gemini 4 Argon (gemini-4-argon); gemini-2.5-pro is marked deprecated on the models page. Easy flip."
+  },
+  {
+   "product": "gemini",
+   "arena": "frontier-models",
+   "storyId": "independent-eval-presence",
+   "disposition": "evidence-appended",
+   "evidenceId": "gemini-parity-independent-eval-presence-20261103",
+   "url": "https://artificialanalysis.ai/models",
+   "checked": [
+    "https://artificialanalysis.ai/models",
+    "https://lmarena.ai/leaderboard",
+    "https://arena.ai/leaderboard"
+   ],
+   "note": "Third-party evaluator page is the point for this story (allowed exception). lmarena.ai now 301s to arena.ai, which returned 403 to the probe curl (bot-walled); artificialanalysis.ai served SSR HTML with the markers present. Marker 'Gemini 4 Carbon' reflects the leaderboard text on 2026-11-03 and may drift as rankings update; 'Gemini' presence is the durable fact."
+  },
+  {
+   "product": "gemini",
+   "arena": "frontier-models",
+   "storyId": "known-limitations-honesty",
+   "disposition": "evidence-appended",
+   "evidenceId": "gemini-parity-known-limitations-honesty-20261103",
+   "url": "https://deepmind.google/models/model-cards/gemini-4-argon/",
+   "checked": [
+    "https://deepmind.google/models/model-cards/gemini-4-argon/",
+    "https://aistudio.google.com/docs/models/gemini-4-argon.md",
+    "https://aistudio.google.com/docs/safety-guidance.md"
+   ],
+   "note": "First-party limitations documentation for the current flagship, on the vendor's own domain, HTML (not PDF) and curl-readable. The knowledge-cutoff sentence contains a typographic apostrophe in \"model's\"; markers avoid it."
+  },
+  {
+   "product": "gemini",
+   "arena": "frontier-models",
+   "storyId": "model-card-published",
+   "disposition": "evidence-appended",
+   "evidenceId": "gemini-parity-model-card-published-20261103",
+   "url": "https://deepmind.google/models/model-cards/gemini-4-argon/",
+   "checked": [
+    "https://deepmind.google/models/model-cards/gemini-4-argon/",
+    "https://aistudio.google.com/docs/models/gemini-4-argon.md"
+   ],
+   "note": "The API docs model page links directly to this model card (row \"Model card\" -> deepmind.google/models/model-cards/gemini-4-argon/), tying the card to the flagship API model. Covers capabilities, training approach, evaluation results, and intended use. Strong flip candidate."
+  },
+  {
+   "product": "gemini",
+   "arena": "frontier-models",
+   "storyId": "openness-full-export",
+   "disposition": "evidence-appended",
+   "evidenceId": "gemini-parity-openness-full-export-20261103",
+   "url": "https://support.google.com/gemini/answer/13594961",
+   "checked": [
+    "https://support.google.com/gemini/answer/13594961",
+    "https://support.google.com/accounts/answer/3024190",
+    "https://aistudio.google.com/llms.txt"
+   ],
+   "note": "Scope caveat for the judge: this documents export of consumer Gemini Apps data via Google Takeout (open formats). For the API platform itself, prompts/responses are not retained as a user-exportable corpus (paid-tier logging is abuse-monitoring only, per terms); no API-side bulk data export doc was found in the docs index. Judge decides whether Takeout satisfies the frontier-models framing."
+  },
+  {
+   "product": "gemini",
+   "arena": "frontier-models",
+   "storyId": "privacy-data-residency",
+   "disposition": "evidence-appended",
+   "evidenceId": "gemini-parity-privacy-data-residency-20261103",
+   "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/resources/data-residency",
+   "checked": [
+    "https://docs.cloud.google.com/gemini-enterprise-agent-platform/resources/data-residency",
+    "https://cloud.google.com/vertex-ai/generative-ai/docs/learn/data-residency"
+   ],
+   "note": "Surface: Gemini models consumed through Google Cloud (Gemini Enterprise Agent Platform, the renamed Vertex AI generative docs; old cloud.google.com/vertex-ai URLs 301 here). The consumer Gemini API via AI Studio does not offer residency selection. Marker spans avoid the typographic/entity apostrophes on the page."
+  },
+  {
+   "product": "gemini",
+   "arena": "frontier-models",
+   "storyId": "privacy-no-training",
+   "disposition": "evidence-appended",
+   "evidenceId": "gemini-parity-privacy-no-training-20261103",
+   "url": "https://aistudio.google.com/docs/terms.md",
+   "checked": [
+    "https://aistudio.google.com/docs/terms.md",
+    "https://ai.google.dev/gemini-api/terms"
+   ],
+   "note": "Clear free-vs-paid split: paying for the API is the documented opt-out from product-improvement use. ai.google.dev/gemini-api/terms 301s to aistudio.google.com/docs/terms; the .md URL serves clean markdown with an ASCII apostrophe in \"doesn't\" (verified verbatim)."
+  },
+  {
+   "product": "gemini",
+   "arena": "frontier-models",
+   "storyId": "privacy-retention-controls",
+   "disposition": "evidence-appended",
+   "evidenceId": "gemini-parity-privacy-retention-controls-20261103",
+   "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/resources/zero-data-retention",
+   "checked": [
+    "https://docs.cloud.google.com/gemini-enterprise-agent-platform/resources/zero-data-retention",
+    "https://aistudio.google.com/docs/terms.md",
+    "https://support.google.com/gemini/answer/13594961"
+   ],
+   "note": "Complementary evidence across surfaces: API terms state paid-tier prompts/responses are logged only \"for a limited period of time, solely for detecting and preventing violations\" (aistudio.google.com/docs/terms.md, verified); consumer Gemini Apps document auto-delete controls: \"You can change your auto-delete setting in Gemini Apps Activity from the default of 18 months to 3 months, 36 months, or indefinite.\" (support.google.com/gemini/answer/13594961, verified). Cited URL is the Google Cloud (ex-Vertex) surface, which has the strongest retention controls."
+  },
+  {
+   "product": "gemini",
+   "arena": "frontier-models",
+   "storyId": "privacy-telemetry-optout",
+   "disposition": "evidence-appended",
+   "evidenceId": "gemini-parity-privacy-telemetry-optout-20261103",
+   "url": "https://raw.githubusercontent.com/google-gemini/gemini-cli/main/docs/resources/tos-privacy.md",
+   "checked": [
+    "https://raw.githubusercontent.com/google-gemini/gemini-cli/main/docs/resources/tos-privacy.md",
+    "https://raw.githubusercontent.com/google-gemini/gemini-cli/main/docs/cli/telemetry.md",
+    "https://aistudio.google.com/docs/terms.md"
+   ],
+   "note": "Surface caveat: this documents the official Gemini CLI tooling, not a telemetry toggle on the raw API; on the API itself the paid tier is the documented control over data use (see privacy-no-training). Judge decides the mapping."
+  },
+  {
+   "product": "gemini",
+   "arena": "frontier-models",
+   "storyId": "safety-evaluations-published",
+   "disposition": "evidence-appended",
+   "evidenceId": "gemini-parity-safety-evaluations-published-20261103",
+   "url": "https://deepmind.google/models/model-cards/gemini-4-argon/",
+   "checked": [
+    "https://deepmind.google/models/model-cards/gemini-4-argon/",
+    "https://deepmind.google/responsibility-and-safety/"
+   ],
+   "note": "deepmind.google/responsibility-and-safety/ (fetched 200) corroborates: \"We also introduced, and continue to update, our Frontier Safety Framework\" described as \"a set of protocols to help us stay ahead of possible severe risks from powerful frontier AI models\" (that sentence contains a non-ASCII dash on the page, so markers were taken from the model card instead). Strong flip candidate: red-teaming, safety evals, and a named safety framework, all first-party."
+  },
+  {
+   "product": "gemini",
+   "arena": "frontier-models",
+   "storyId": "self-serve-fine-tuning",
+   "disposition": "evidence-appended",
+   "evidenceId": "gemini-parity-self-serve-fine-tuning-20261103",
+   "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/tuning/supervised-tuning/use",
+   "checked": [
+    "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/tuning/supervised-tuning/use",
+    "https://cloud.google.com/vertex-ai/generative-ai/docs/models/gemini-use-supervised-tuning",
+    "https://aistudio.google.com/llms.txt"
+   ],
+   "note": "Current state, quoted exactly: hosted supervised fine-tuning of Gemini 3.5/3.1/2.5 models is self-serve on Google Cloud (Gemini Enterprise Agent Platform, the renamed Vertex AI generative stack; old vertex-ai URL 301s here). The developer Gemini API (AI Studio) has no tuning docs at all; the llms.txt docs index contains no tuning page, consistent with Gemini API tuning having been retired. Flagship Gemini 4 Argon is not in the supported-models list."
+  }
+ ]
+}

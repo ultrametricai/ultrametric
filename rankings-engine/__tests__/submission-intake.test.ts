@@ -1,0 +1,372 @@
+import { describe, expect, it, vi } from 'vitest'
+import fs from 'node:fs'
+import { readCategories } from '../paths'
+import { MIN_FIT_HITS } from '../scripts/radar-triage'
+import { eventIssue } from '../scripts/submission-intake'
+import { normalizeIssue, assess, digest, submissionIdentity, buildSubmissionVocab, type Catalog, type IntakeReport } from '../intake/submission'
+import { publicIpv4, publicUrl, fetchPublic, resolvePublic, type Page } from '../intake/public-fetch'
+import { publish, parseReport, filesFor, type Publisher, type Pull } from '../intake/publish'
+
+const body = (arena = 'vector-databases', name = 'Acme') => `### Product name\n\n${name}\n\n### Category\n\n${arena}\n\n### URLs\n\nSite: https://acme.io/\n\n### Why it matters\n\nPublic vector database.\n\n### Are you affiliated with this product?\n\nNo\n\n### Affiliation detail (if yes)\n\n_No response_\n`
+const issue = (text = body()) => ({ number: 42, title: 'Submit a product: Acme', body: text, state: 'open', updated_at: '2026-11-01T00:00:00Z', labels: [{ name: 'product-request' }] })
+const catalog: Catalog = { revision: 'a'.repeat(40), categories: [{ id: 'vector-databases', name: 'Vector Databases', description: 'Vector search databases.', personas: ['founder'] }], products: [], roadmap: [{ id: 'realtime-infra', name: 'Realtime infrastructure', status: 'planned', candidateProducts: ['A', 'B'] }] }
+const html = '<h1>Acme vector database</h1> vector search embeddings similarity nearest neighbor ANN HNSW hybrid search index <a href="https://acme.io/docs">Documentation</a> Sign in. REST API.'
+const pages = async (url: string): Promise<Page> => ({ url, status: 200, contentType: 'text/html', html })
+const report = async () => assess(normalizeIssue(issue()), catalog, pages)
+
+function publisher() {
+  let reserved: IntakeReport | null = null
+  const prs: Pull[] = []
+  const io: Publisher = {
+    assertCurrentBase: vi.fn(async () => {}),
+    currentRevision: vi.fn(async () => digest(body())),
+    readBranch: vi.fn(async () => reserved),
+    pulls: vi.fn(async () => prs),
+    createBranch: vi.fn(async r => { if (reserved) throw new Error('reference already exists'); reserved = r }),
+    createPull: vi.fn(async () => { const pr = { number: 10, html_url: 'https://github.com/ultrametricai/ultrametric/pull/10', draft: true, state: 'open' }; prs.push(pr); return pr }),
+  }
+  return { io, prs }
+}
+
+describe('submission normalization', () => {
+  it('parses the current GitHub issue form and keeps asserted disclosure separate', () => {
+    expect(normalizeIssue(issue())).toMatchObject({ name: 'Acme', arena: 'vector-databases', urls: ['https://acme.io/'], affiliated: false, disclosure: '' })
+  })
+  it.each([
+    body().replace('### Category', '### Product name'),
+    body().replace('vector-databases\n', '../../.github/workflows\n'),
+    body().replace('\nNo\n', '\nMaybe\n'),
+    body().replace('\nNo\n', '\nYes\n'),
+    body().replace('Acme\n', '$(touch pwned)\n'),
+    body().replace('https://acme.io/', 'http://acme.io/'),
+    body().replace('https://acme.io/', 'https://github.com/a/b/../../settings'),
+  ])('rejects ambiguous or injected fields', text => expect(() => normalizeIssue(issue(text))).toThrow())
+  it('requires product-request and rejects closed issues and PR payloads', () => {
+    expect(() => normalizeIssue({ ...issue(), labels: [] })).toThrow()
+    expect(() => normalizeIssue({ ...issue(), state: 'closed' })).toThrow()
+    expect(() => normalizeIssue({ ...issue(), pull_request: {} })).toThrow()
+  })
+  it('does not use Pro labels as routing/scoring inputs', () => {
+    expect(normalizeIssue({ ...issue(), labels: [...issue().labels, { name: 'pro' }, { name: 'priority' }] })).toEqual(normalizeIssue(issue()))
+  })
+})
+
+describe('untrusted public URLs', () => {
+  it.each(['http://acme.io', 'file:///etc/passwd', 'https://user:password@acme.io/', 'https://acme.io:8443', 'https://localhost', 'https://a.local', 'https://a.internal', 'https://127.0.0.1', 'https://2130706433', 'https://0x7f000001', 'https://[::1]', 'https://[::ffff:127.0.0.1]', 'https://acme.io\\@localhost'])('blocks %s before transport', url => expect(() => publicUrl(url)).toThrow())
+  it.each(['0.1.2.3', '10.1.1.1', '127.1.2.3', '169.254.169.254', '172.16.1.1', '192.168.1.1', '100.64.0.1', '198.18.0.1', '192.0.2.1', '198.51.100.1', '203.0.113.1', '224.1.1.1', '255.255.255.255', '::1', 'fe80::1', 'fc00::1'])('rejects special address %s', ip => expect(publicIpv4(ip)).toBe(false))
+  it('rejects every address in 192.0.0.0/24 before any outbound request', async () => {
+    const request = vi.fn()
+    for (let last = 0; last < 256; last++) {
+      const address = `192.0.0.${last}`
+      expect(publicIpv4(address), address).toBe(false)
+      await expect(fetchPublic('https://acme.io/', async () => [{ address, family: 4 }], request)).rejects.toThrow('public IPv4')
+    }
+    expect(request).not.toHaveBeenCalled()
+  })
+  it('pins a public DNS answer into the request rather than resolving twice', async () => {
+    const dns = vi.fn(async () => [{ address: '8.8.8.8', family: 4 }])
+    const transport = vi.fn(async (url: URL, address: string) => { expect(address).toBe('8.8.8.8'); return pages(url.href) })
+    await fetchPublic('https://acme.io/', dns, transport)
+    expect(dns).toHaveBeenCalledTimes(1)
+    expect(transport.mock.calls[0][1]).toBe('8.8.8.8')
+  })
+  it('rejects mixed DNS, failures, and empty DNS answers before request', async () => {
+    const request = vi.fn()
+    for (const addresses of [[], [{ address: '127.0.0.1', family: 4 }], [{ address: '8.8.8.8', family: 4 }, { address: '10.0.0.1', family: 4 }]]) {
+      await expect(fetchPublic('https://acme.io', async () => addresses, request)).rejects.toThrow()
+    }
+    await expect(resolvePublic('acme.io', async () => { throw new Error('DNS down') })).rejects.toThrow('DNS down')
+    expect(request).not.toHaveBeenCalled()
+  })
+  it('revalidates every redirect and blocks DNS rebinding at the next hop', async () => {
+    const dns = vi.fn().mockResolvedValueOnce([{ address: '8.8.8.8', family: 4 }]).mockResolvedValueOnce([{ address: '169.254.169.254', family: 4 }])
+    const request = vi.fn(async () => ({ url: 'https://acme.io', status: 302, html: '', contentType: '', location: 'https://metadata.acme.io/' }))
+    await expect(fetchPublic('https://acme.io', dns, request)).rejects.toThrow('public IPv4')
+    expect(request).toHaveBeenCalledTimes(1)
+  })
+  it('bounds redirect loops and blocks redirected credentials', async () => {
+    const dns = async () => [{ address: '8.8.8.8', family: 4 }]
+    const request = vi.fn(async () => ({ url: 'https://acme.io/', status: 302, html: '', contentType: '', location: '/' }))
+    await expect(fetchPublic('https://acme.io', dns, request)).rejects.toThrow('redirect limit')
+    expect(request).toHaveBeenCalledTimes(4)
+    await expect(fetchPublic('https://acme.io', dns, async () => ({ url: '', status: 302, html: '', contentType: '', location: 'https://secret@acme.io/' }))).rejects.toThrow('credential-free')
+  })
+  it('does not accept binary content as documentation', async () => {
+    await expect(fetchPublic('https://acme.io', async () => [{ address: '8.8.8.8', family: 4 }], async () => ({ url: '', status: 200, html: 'abc', contentType: 'image/png' }))).rejects.toThrow('content type')
+  })
+})
+
+describe('policy routing', () => {
+  it('uses fetched evidence and prepares a schema-valid product proposal', async () => {
+    const r = await report()
+    expect(r.route).toBe('draft-bringup')
+    expect(r.proposedProduct?.id).toBe('acme')
+    expect(r.receipts.length).toBe(2)
+    expect(r.receipts[0].sha256).toBe(digest(html))
+    expect(Object.keys(filesFor(r)).every(p => p.startsWith('reports/submission-intake/'))).toBe(true)
+  })
+  it('retains vendor self-disclosure without treating payment as qualification', async () => {
+    const r = await assess(normalizeIssue(issue(body().replace('\nNo\n', '\nYes\n').replace('_No response_', 'Vendor employee'))), catalog, pages)
+    expect(r.route).toBe('draft-bringup')
+    expect(r.proposedProduct?.affiliation).toContain('Vendor employee')
+  })
+  it.each(['Foreloop', 'AFK', 'Ultrametric'])('routes founder product %s without fetching', async name => {
+    const get = vi.fn(pages)
+    expect((await assess(normalizeIssue(issue(body('vector-databases', name))), catalog, get)).route).toBe('needs-human')
+    expect(get).not.toHaveBeenCalled()
+  })
+  it('uses roster affiliation identity even when a submitter renames it', async () => {
+    const r = await assess(normalizeIssue(issue()), { ...catalog, products: [{ arena: 'other', product: { id: 'owner', name: 'Other', vendor: 'Other', type: 'commercial', urls: { site: 'https://acme.io' }, affiliation: 'Founder affiliated' } }] }, pages)
+    expect(r.reason).toContain('Affiliated identity')
+  })
+  it('deduplicates the exact canonical product site', async () => {
+    const r = await assess(normalizeIssue(issue()), { ...catalog, products: [{ arena: 'vector-databases', product: { id: 'different', name: 'Renamed', vendor: 'Acme', type: 'commercial', urls: { site: 'https://www.acme.io/' } } }] }, pages)
+    expect(r.route).toBe('duplicate')
+  })
+  it('routes supporting links to another rostered product to review, not duplicate', async () => {
+    const sub = normalizeIssue(issue(body().replace('Site: https://acme.io/', 'Site: https://acme.io/\nhttps://github.com/other/library')))
+    const get = vi.fn(pages)
+    const r = await assess(sub, { ...catalog, products: [{ arena: 'vector-databases', product: { id: 'library', name: 'Library', vendor: 'Other', type: 'oss', urls: { site: 'https://library.io', github: 'https://github.com/other/library' } } }] }, get)
+    expect(r.route).toBe('needs-human')
+    expect(r.reason).toContain('Supporting link')
+    expect(r.duplicate).toBeUndefined()
+    expect(get).not.toHaveBeenCalled()
+  })
+  it('routes a shared domain with differing paths to identity review', async () => {
+    const r = await assess(normalizeIssue(issue()), { ...catalog, products: [{ arena: 'vector-databases', product: { id: 'different', name: 'Renamed', vendor: 'Acme', type: 'commercial', urls: { site: 'https://www.acme.io/pricing' } } }] }, pages)
+    expect(r.route).toBe('needs-human')
+    expect(r.reason).toContain('different product path')
+  })
+  it('routes planned arenas to reviewed creation without publishing live state', async () => {
+    const r = await assess(normalizeIssue(issue(body('realtime-infra'))), catalog, vi.fn())
+    expect(r.route).toBe('arena-review')
+    expect(r.roadmap?.candidateProducts).toEqual(['A', 'B'])
+    expect(r.proposedProduct).toBeUndefined()
+    expect(Object.entries(filesFor(r)).find(([name]) => name.endsWith('/REVIEW.md'))![1]).toContain('each peer')
+  })
+  it('does not manufacture arena fit from submitter claims', async () => {
+    const r = await assess(normalizeIssue(issue()), catalog, async url => ({ ...await pages(url), html: '<h1>Acme bakery</h1>' }))
+    expect(r.route).toBe('needs-human')
+  })
+  it('rejects ambiguous ties and unknown arenas', async () => {
+    const tied = { ...catalog, categories: [{ ...catalog.categories[0], id: 'one', name: 'Acme Vector Database' }, { ...catalog.categories[0], id: 'two', name: 'Acme Vector Database' }] }
+    expect((await assess(normalizeIssue(issue(body('one'))), tied, pages)).route).toBe('needs-human')
+    expect((await assess(normalizeIssue(issue(body('new'))), catalog, pages)).route).toBe('needs-human')
+  })
+  it('fails closed on fetch failure and preserves a failed receipt', async () => {
+    const r = await assess(normalizeIssue(issue()), catalog, async () => { throw new Error('blocked private address') })
+    expect(r.route).toBe('needs-human')
+    expect(r.receipts[0].error).toContain('blocked private address')
+  })
+  it('does not silently accept a cross-identity redirect', async () => {
+    const r = await assess(normalizeIssue(issue()), catalog, async url => ({ ...await pages(url), url: 'https://another.io/' }))
+    expect(r.reason).toContain('different identity')
+  })
+  it('qualifies an OSS product from its own repository and retains fetched evidence', async () => {
+    const sub = normalizeIssue(issue(body().replace('https://acme.io/', 'https://github.com/acme/vector')))
+    const get = vi.fn(async (url: string): Promise<Page> => {
+      const data = url.includes('/contributors?') ? [{ login: 'maintainer' }]
+        : url.endsWith('/readme') ? { encoding: 'base64', content: Buffer.from(`${html} npm install acme. ${'Usage documentation. '.repeat(100)}`).toString('base64') }
+          : { archived: false, fork: false, description: 'Vector database REST API', stargazers_count: 5, created_at: '2020-01-01T00:00:00Z' }
+      return { url, status: 200, contentType: 'application/json', html: JSON.stringify(data) }
+    })
+    const r = await assess(sub, catalog, get)
+    expect(r.route).toBe('draft-bringup')
+    expect(r.proposedProduct?.urls.github).toBe('https://github.com/acme/vector')
+    expect(get).toHaveBeenCalledTimes(3)
+    expect(get.mock.calls.every(([url]) => url.startsWith('https://api.github.com/repos/acme/vector'))).toBe(true)
+  })
+  it('routes anomalous young repositories to review', async () => {
+    const sub = normalizeIssue(issue(body().replace('https://acme.io/', 'https://github.com/acme/vector')))
+    const get = async (url: string): Promise<Page> => ({ url, status: 200, contentType: 'application/json', html: JSON.stringify(
+      url.includes('/contributors?') ? [{ login: 'maintainer' }] : url.endsWith('/readme') ? { encoding: 'base64', content: Buffer.from(`${html} ${'Usage install. '.repeat(200)}`).toString('base64') }
+        : { archived: false, fork: false, description: 'Vector database API', stargazers_count: 100000, created_at: new Date().toISOString() }) })
+    const r = await assess(sub, catalog, get)
+    expect(r.route).toBe('needs-human')
+    expect(r.disposition?.reason).toContain('star velocity')
+  })
+  it('does not confuse distinct repositories on a shared code host', async () => {
+    const one = normalizeIssue(issue(body().replace('https://acme.io/', 'https://github.com/acme/one')))
+    const two = normalizeIssue(issue(body().replace('https://acme.io/', 'https://github.com/acme/two')))
+    const bad = async (): Promise<Page> => { throw new Error('offline') }
+    const a = await assess(one, catalog, bad); const b = await assess(two, catalog, bad)
+    expect(a.identity).not.toBe(b.identity)
+    expect(a.branch).not.toBe(b.branch)
+  })
+  it('does not promote missing docs or waitlists', async () => {
+    const r = await assess(normalizeIssue(issue()), catalog, async url => ({ ...await pages(url), html: 'vector search embeddings similarity nearest neighbor ANN HNSW hybrid search index coming soon join the waitlist' }))
+    expect(r.route).toBe('needs-human')
+    expect(r.disposition?.criterion).toBe('shipped-product')
+  })
+})
+
+describe('draft publication and retries', () => {
+  it('creates one draft and reuses it on retries and duplicate issues', async () => {
+    const r = await report(); const { io } = publisher()
+    expect((await publish(r, io)).status).toBe('created')
+    expect((await publish(r, io)).status).toBe('existing')
+    expect((await publish({ ...r, submission: { ...r.submission, issue: 43 } }, io)).status).toBe('existing')
+    expect(io.createBranch).toHaveBeenCalledTimes(1)
+    expect(io.createPull).toHaveBeenCalledTimes(1)
+  })
+  it('resumes a pushed branch after a failed PR API call without rewriting evidence', async () => {
+    const r = await report(); const { io } = publisher()
+    const create = io.createPull
+    io.createPull = vi.fn().mockRejectedValueOnce(new Error('PR creation forbidden'))
+    await expect(publish(r, io)).rejects.toThrow('forbidden')
+    io.createPull = create
+    expect((await publish(r, io)).status).toBe('created')
+    expect(io.createBranch).toHaveBeenCalledTimes(1)
+  })
+  it('handles ambiguous PR sends by querying before retrying', async () => {
+    const r = await report(); const { io, prs } = publisher()
+    io.createPull = vi.fn(async () => { prs.push({ number: 10, html_url: 'https://github.com/ultrametricai/ultrametric/pull/10', state: 'open', draft: true }); throw new Error('response lost') })
+    await expect(publish(r, io)).rejects.toThrow('response lost')
+    expect((await publish(r, io)).status).toBe('existing')
+    expect(io.createPull).toHaveBeenCalledTimes(1)
+  })
+  it('never reopens a closed/merged PR or overwrites an edited submission', async () => {
+    const r = await report(); const { io, prs } = publisher()
+    await publish(r, io); prs[0].state = 'closed'
+    expect((await publish(r, io)).status).toBe('existing')
+    io.currentRevision = vi.fn(async () => 'edited')
+    await expect(publish({ ...r, submission: { ...r.submission, revision: 'edited' } }, io)).rejects.toThrow('edited after draft')
+    expect(io.createBranch).toHaveBeenCalledTimes(1)
+  })
+  it.each(['open', 'closed'])('does not recreate a deleted branch for an existing %s PR', async state => {
+    const r = await report(); const { io, prs } = publisher()
+    prs.push({ number: 10, html_url: 'https://github.com/ultrametricai/ultrametric/pull/10', state, draft: true })
+    expect(await publish(r, io)).toEqual({ status: 'existing', url: prs[0].html_url })
+    expect(io.createBranch).not.toHaveBeenCalled()
+    expect(io.createPull).not.toHaveBeenCalled()
+  })
+  it('does not reserve a branch when PR history cannot be read', async () => {
+    const r = await report(); const { io } = publisher()
+    io.pulls = vi.fn(async () => { throw new Error('PR lookup unavailable') })
+    await expect(publish(r, io)).rejects.toThrow('PR lookup unavailable')
+    expect(io.createBranch).not.toHaveBeenCalled()
+  })
+  it('does not interpret failed state reads as a missing branch', async () => {
+    const r = await report(); const { io } = publisher()
+    io.readBranch = vi.fn(async () => { throw new Error('auth unavailable') })
+    await expect(publish(r, io)).rejects.toThrow('auth unavailable')
+    expect(io.createBranch).not.toHaveBeenCalled()
+  })
+  it('blocks issue edit races and nonqualified cases before mutations', async () => {
+    const r = await report(); const { io } = publisher()
+    io.currentRevision = vi.fn(async () => 'changed')
+    await expect(publish(r, io)).rejects.toThrow('changed during intake')
+    expect((await publish({ ...r, route: 'needs-human' }, io)).status).toBe('human-review')
+    expect(io.createBranch).not.toHaveBeenCalled()
+  })
+  it('leaves a competing atomic reservation to a retry, with no force update', async () => {
+    const r = await report(); const { io } = publisher()
+    io.createBranch = vi.fn(async () => { throw new Error('reference already exists') })
+    await expect(publish(r, io)).rejects.toThrow('reference already exists')
+    expect(io.createPull).not.toHaveBeenCalled()
+  })
+})
+
+
+describe('unattended issue admission and review regressions', () => {
+  const event = (action = 'opened') => ({ action, repository: { full_name: 'ultrametricai/ultrametric' }, issue: issue() })
+  it('defaults off, admits supported issue events, and ignores unrelated actions', () => {
+    for (const flag of [undefined, '', 'false', 'TRUE']) expect(eventIssue(event(), flag)).toBeNull()
+    for (const action of ['opened', 'edited', 'reopened', 'labeled', 'unlabeled']) expect(eventIssue(event(action), 'true')).toBe(42)
+    expect(eventIssue(event('closed'), 'true')).toBeNull()
+    expect(eventIssue({ ...event(), repository: { full_name: 'attacker/fork' } }, 'true')).toBeNull()
+  })
+  it('honors manual stops, label removal, closure and PR payloads', () => {
+    for (const patch of [{ labels: [] }, { labels: [{ name: 'product-request' }, { name: 'needs-founder' }] },
+      { labels: [{ name: 'product-request' }, { name: 'intake-paused' }] }, { state: 'closed' }, { pull_request: {} }]) {
+      expect(eventIssue({ ...event(), issue: { ...issue(), ...patch } }, 'true')).toBeNull()
+      expect(() => normalizeIssue({ ...issue(), ...patch })).toThrow()
+    }
+  })
+  it('rejects a paused issue again at publication time', async () => {
+    const r = await report(); const { io } = publisher()
+    io.currentRevision = vi.fn(async () => { throw new Error('submission paused for human review') })
+    await expect(publish(r, io)).rejects.toThrow('paused')
+    expect(io.createBranch).not.toHaveBeenCalled()
+  })
+  it('checks main again on a reserved-branch retry before opening a PR', async () => {
+    const r = await report(); const { io } = publisher()
+    io.createPull = vi.fn().mockRejectedValueOnce(new Error('response lost'))
+    await expect(publish(r, io)).rejects.toThrow('response lost')
+    io.assertCurrentBase = vi.fn(async () => { throw new Error('main advanced') })
+    await expect(publish(r, io)).rejects.toThrow('main advanced')
+    expect(io.createPull).toHaveBeenCalledTimes(1)
+  })
+  it('does not reuse stale receipts after a fresh main checkout', async () => {
+    const r = await report(); const { io } = publisher()
+    io.createPull = vi.fn().mockRejectedValueOnce(new Error('PR forbidden'))
+    await expect(publish(r, io)).rejects.toThrow('PR forbidden')
+    await expect(publish({ ...r, baseRevision: 'b'.repeat(40) }, io)).rejects.toThrow('reserved main revision changed')
+    expect(io.createPull).toHaveBeenCalledTimes(1)
+  })
+  it('distinguishes shared-host package paths, and routes listing sites to review', async () => {
+    const one = normalizeIssue(issue(body().replace('https://acme.io/', 'https://www.npmjs.com/package/one')))
+    const two = normalizeIssue(issue(body().replace('https://acme.io/', 'https://www.npmjs.com/package/two')))
+    expect(submissionIdentity(one).branch).not.toBe(submissionIdentity(two).branch)
+    const get = vi.fn(pages)
+    expect((await assess(one, catalog, get)).reason).toContain('Shared listing host')
+    expect(get).not.toHaveBeenCalled()
+  })
+  it('selects explicit site independently of supporting URL order', () => {
+    for (const urls of ['Docs: https://docs.acme.io/\nSite: https://acme.io/\nGitHub: https://github.com/acme/source', 'GitHub: https://github.com/acme/source\nSite: https://acme.io/\nDocs: https://docs.acme.io/']) {
+      expect(normalizeIssue(issue(body().replace('Site: https://acme.io/', urls))).urls[0]).toBe('https://acme.io/')
+    }
+    const explicit = body().replace('### URLs', '### Product site\n\nhttps://acme.io/\n\n### URLs').replace('Site: https://acme.io/', 'https://github.com/acme/source')
+    expect(normalizeIssue(issue(explicit)).urls[0]).toBe('https://acme.io/')
+    expect(() => normalizeIssue(issue(body().replace('Site: https://acme.io/', 'https://docs.acme.io/\nhttps://github.com/acme/source')))).toThrow('unclear product surface')
+    expect(() => normalizeIssue(issue(body().replace('Site: https://acme.io/', 'https://docs.acme.io/')))).toThrow('unclear product surface')
+  })
+  it('validates prepared artifacts and rejects changed identities or absent revisions', async () => {
+    const r = await report()
+    expect(parseReport(r)).toEqual(r)
+    expect(() => parseReport({ ...r, baseRevision: undefined })).toThrow()
+    expect(() => parseReport({ ...r, branch: 'submission-intake/' + '0'.repeat(24) })).toThrow('identity')
+    expect(() => parseReport({ ...r, submission: { ...r.submission, source: 'https://attacker.io' } })).toThrow('identity')
+  })
+  it('keeps assessment read-only and publication isolated from vendor fetches', () => {
+    const workflow = fs.readFileSync('.github/workflows/submission-intake.yml', 'utf8')
+    const [assessJob, publishJob] = workflow.split('  draft:')
+    expect(assessJob).toContain('UM_SUBMISSION_INTAKE_ENABLED')
+    expect(assessJob).toContain('types: [opened, edited, reopened, labeled, unlabeled]')
+    expect(assessJob).not.toContain('contents: write')
+    expect(publishJob).toContain('needs: assess')
+    expect(publishJob).toContain('--publish-prepared')
+    expect(publishJob).not.toContain('--prepare\n')
+    expect(publishJob).not.toContain('issues: write')
+    expect(workflow).not.toContain('pull_request_target')
+    expect(workflow).not.toContain('secrets.PAT')
+    expect(workflow).toContain('submission-intake-${{ github.event.issue.number || inputs.issue }}')
+  })
+})
+
+
+describe('live arena vocabulary coverage', () => {
+  const categories = readCategories()
+  it('gives every existing arena enough terms to reach the unchanged threshold', () => {
+    for (const [arena, words] of buildSubmissionVocab(categories)) expect(words.length, arena).toBeGreaterThanOrEqual(MIN_FIT_HITS)
+  })
+  it.each([
+    ['accounting', 'Accounting and bookkeeping with a ledger, bank feeds, invoicing and month-end close.'],
+    ['security-scanners', 'Security scanners offer SAST, secret detection and container scanning.'],
+    ['infra-as-code', 'Infrastructure as code with declarative provisioning, state management and plan preview.'],
+    ['vibe-coding', 'Vibe-coding builders offer prompt-to-app, natural language, full-stack app generation.'],
+    ['product-analytics', 'Product analytics with instrumentation, funnels, retention, session replay and experimentation.'],
+    ['crm', 'CRM customer relationship tracking for contacts, deals and the sales pipeline.'],
+    ['legal-ops', 'Startup legal incorporation with board consents, SAFEs, e-signature and compliance filings.'],
+    ['robotics-platforms', 'Robotics middleware for simulating robots, robot simulation and the robot fleet.'],
+    ['ai-assistants', 'General-purpose chat assistants for knowledge work and file analysis.'],
+    ['ai-research-agents', 'Research agents plan searches, read sources and synthesize cited reports.'],
+    ['workflow-automation', 'Workflow triggers, visual builders and durable runs connect apps.'],
+    ['observability', 'Observability monitoring with metrics, logs, traces, SLOs and alerting.'],
+    ['compliance-screening', 'Compliance screening for financial-crime, sanctions, PEP and transaction monitoring investigations.'],
+  ])('can prepare a qualified draft for real arena %s', async (arena, description) => {
+    const r = await assess(normalizeIssue(issue(body(arena))), { ...catalog, categories }, async url => ({ url, status: 200, contentType: 'text/html', html: `<h1>Acme</h1>${description} Sign in. REST API. <a href="https://acme.io/docs">Docs</a>` }))
+    expect(r.route, r.reason).toBe('draft-bringup')
+    expect(r.arena).toBe(arena)
+  })
+})

@@ -47,9 +47,9 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Describe the processing and affected people](#step-1) | agent-runnable | Not recorded | Entry step |
-| [2. Determine the assessment and consultation requirements](#step-2) | human; approval required | Not recorded | [Step 1](#step-1) |
+| [2. Determine the assessment and consultation requirements](#step-2) | human; human approval every run | Not recorded | [Step 1](#step-1) |
 | [3. Evaluate necessity, alternatives and risks](#step-3) | agent-runnable | Not recorded | [Step 2](#step-2) |
-| [4. Approve mitigations and residual risk](#step-4) | human; approval required | Not recorded | [Step 3](#step-3) |
+| [4. Approve mitigations and residual risk](#step-4) | human; human approval every run | Not recorded | [Step 3](#step-3) |
 | [5. Verify implementation and reassessment triggers](#step-5) | agent-runnable | Not recorded | [Step 4](#step-4) |
 
 <a id="steps"></a>
@@ -71,7 +71,7 @@ Document the purpose, data categories, people, recipients, systems and intended 
 
 ### 2. Determine the assessment and consultation requirements
 
-human · human approval required
+human · human approval every run
 
 
 The privacy lead and qualified advisers decide which local assessments, reviews or consultations apply. Record the criteria and applicable scope without treating a global checklist as legal approval.
@@ -93,7 +93,7 @@ Describe less intrusive ways to meet the purpose and assess misuse, access, accu
 
 ### 4. Approve mitigations and residual risk
 
-human · human approval required
+human · human approval every run
 
 
 Accountable owners review the assessment and required advice before authorizing the defined use. Keep launch paused for unresolved mandatory approvals or unacceptable risks and record the exact conditions of acceptance.

@@ -38,8 +38,8 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Generate NDA from template](#step-1) | agent-runnable | ~1 min | Entry step |
-| [2. Review NDA terms](#step-2) | human; approval required | ~10 min | [Step 1](#step-1) |
-| [3. Send for e-signature](#step-3) | agent-runnable; approval required | ~2 min | [Step 2](#step-2) |
+| [2. Review NDA terms](#step-2) | human; standing human approval | ~10 min | [Step 1](#step-1) |
+| [3. Send for e-signature](#step-3) | agent-runnable; human approval every run | ~2 min | [Step 2](#step-2) |
 | [4. Track signature status](#step-4) | agent-runnable; includes waiting | ~1 min | [Step 3](#step-3) |
 | [5. File executed copy](#step-5) | agent-runnable | ~1 min | [Step 4](#step-4) |
 
@@ -62,7 +62,7 @@ Choose the NDA template that fits the disclosure: parties, purpose and whether i
 
 ### 2. Review NDA terms
 
-human · ~10 min · human approval required
+human · ~10 min · standing human approval
 
 
 Check the NDA against the planned discussion: confidential-information scope and exclusions, permitted use, recipient access, compelled disclosure and return or destruction duties. Escalate unfamiliar restrictions or rights beyond confidentiality to counsel. Agree acceptable changes with the business owner and identify the signer, then preserve the final negotiated version for execution.
@@ -71,7 +71,7 @@ Check the NDA against the planned discussion: confidential-information scope and
 
 ### 3. Send for e-signature
 
-agent-runnable · ~2 min · human approval required · hard to undo
+agent-runnable · ~2 min · human approval every run · hard to undo
 
 
 Prepare the approved NDA for the verified entities and signers, with the correct capacities, attachments and signature order. Send that version through the company’s agreed contract-signing process. Track its signature request and return proposed changes for review before signatures are collected on a revised version.

@@ -47,9 +47,9 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Establish the contract timeline and evidence](#step-1) | agent-runnable | Not recorded | Entry step |
-| [2. Review outcomes and future needs with the customer](#step-2) | human; approval required | Not recorded | [Step 1](#step-1) |
+| [2. Review outcomes and future needs with the customer](#step-2) | human; human approval every run | Not recorded | [Step 1](#step-1) |
 | [3. Prepare renewal and expansion alternatives](#step-3) | agent-runnable | Not recorded | [Step 2](#step-2) |
-| [4. Approve and finalize the chosen terms](#step-4) | human; approval required | Not recorded | [Step 3](#step-3) |
+| [4. Approve and finalize the chosen terms](#step-4) | human; human approval every run | Not recorded | [Step 3](#step-3) |
 | [5. Reconcile the agreement with delivery and billing](#step-5) | agent-runnable | Not recorded | [Step 4](#step-4) |
 
 <a id="steps"></a>
@@ -71,7 +71,7 @@ Gather the signed terms, renewal and notice provisions, current usage, support i
 
 ### 2. Review outcomes and future needs with the customer
 
-human · human approval required
+human · human approval every run
 
 
 Discuss actual results, unresolved concerns and the customer's next priorities. Distinguish an agreed need from a sales assumption and identify delivery or security changes requiring review.
@@ -93,7 +93,7 @@ Model the proposed scope, price, implementation and support implications against
 
 ### 4. Approve and finalize the chosen terms
 
-human · human approval required
+human · human approval every run
 
 
 Authorized parties review and execute the final agreement or renewal action. Keep unapproved discounts, custom commitments and notice decisions out of informal correspondence.

@@ -53,14 +53,14 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
-| [1. Create an account with your compliance platform](#step-1) | manual form/portal; approval required | ~15 min | Entry step |
-| [2. Connect integrations](#step-2) | manual form/portal; approval required | ~30 min | [Step 1](#step-1) |
-| [3. Generate security policies](#step-3) | agent-runnable; approval required | ~1 h | [Step 2](#step-2) |
-| [4. Review and customize policies](#step-4) | human; approval required | ~8 h | [Step 3](#step-3) |
-| [5. Configure automated tests](#step-5) | agent-runnable; approval required | ~1 h | [Step 4](#step-4) |
-| [6. Remediate failing tests](#step-6) | agent-runnable; approval required | ~8 h | [Step 5](#step-5) |
+| [1. Create an account with your compliance platform](#step-1) | manual form/portal; human approval on the first run | ~15 min | Entry step |
+| [2. Connect integrations](#step-2) | manual form/portal; human approval above a threshold | ~30 min | [Step 1](#step-1) |
+| [3. Generate security policies](#step-3) | agent-runnable; standing human approval | ~1 h | [Step 2](#step-2) |
+| [4. Review and customize policies](#step-4) | human; human approval every run | ~8 h | [Step 3](#step-3) |
+| [5. Configure automated tests](#step-5) | agent-runnable; human approval on the first run | ~1 h | [Step 4](#step-4) |
+| [6. Remediate failing tests](#step-6) | agent-runnable; human approval every run | ~8 h | [Step 5](#step-5) |
 | [7. Employee security training](#step-7) | human; includes waiting | ~2 d | [Step 5](#step-5) |
-| [8. Engage auditor](#step-8) | human; approval required; includes waiting | ~7 d | All: [Step 6](#step-6); [Step 7](#step-7) |
+| [8. Engage auditor](#step-8) | human; human approval every run; includes waiting | ~7 d | All: [Step 6](#step-6); [Step 7](#step-7) |
 | [9. Complete audit](#step-9) | human; includes waiting | ~14 d | [Step 8](#step-8) |
 
 <a id="steps"></a>
@@ -71,7 +71,7 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 
 ### 1. Create an account with your compliance platform
 
-manual form/portal · ~15 min · human approval required
+manual form/portal · ~15 min · human approval on the first run
 
 | Option | Applies when |
 | --- | --- |
@@ -90,7 +90,7 @@ Identify the assurance report customers have requested and the service it must c
 - Sources: [AICPA SOC suite](https://www.aicpa-cima.com/resources/landing/system-and-organization-controls-soc-suite-of-services)
 
 Options:
-  - **Default — Create an account with your compliance platform** — manual form/portal · ~15 min · human approval required
+  - **Default — Create an account with your compliance platform** — manual form/portal · ~15 min · human approval on the first run
 
     Use this route for a SOC 2 examination of the selected service. Set up the compliance workspace under company ownership, identify who will run the compliance program and verify the features included in the purchased plan. Use the prospective auditor’s scope to choose integrations and evidence work. The software account supports preparation; the separate audit engagement determines what will be examined.
   - **UK - Cyber Essentials first**
@@ -121,7 +121,7 @@ Options:
 
 ### 2. Connect integrations
 
-manual form/portal · ~30 min · human approval required
+manual form/portal · ~30 min · human approval above a threshold
 
 
 Connect the cloud accounts, repositories, identity systems and device inventories inside the proposed audit boundary. Check requested permissions and obtain each system owner’s authorization before granting access. Verify that collection covers the intended accounts and environments, including assets missing from the first import. An empty or stale result needs investigation before it can support a control assessment.
@@ -134,7 +134,7 @@ Connect the cloud accounts, repositories, identity systems and device inventorie
 
 ### 3. Generate security policies
 
-agent-runnable · ~1 h · human approval required
+agent-runnable · ~1 h · standing human approval
 
 
 Draft policies from the company’s actual security procedures and architecture. Name who handles access, incidents, releases and other subjects in the agreed control scope, and link to instructions staff can follow. Distinguish current practice from proposed improvements. Leave unresolved operational choices visible for the people who run those systems to answer before the policies are adopted.
@@ -147,7 +147,7 @@ Draft policies from the company’s actual security procedures and architecture.
 
 ### 4. Review and customize policies
 
-human · ~8 h · human approval required
+human · ~8 h · human approval every run
 
 
 Walk each policy through a realistic new hire, access change, release or incident with the people who would use it. Resolve conflicts with actual tooling, customer commitments and existing agreements. If a promised practice does not exist, revise the policy or assign its implementation. The relevant business and security owners approve the effective version, which staff should be able to find and understand.
@@ -158,7 +158,7 @@ Walk each policy through a realistic new hire, access change, release or inciden
 
 ### 5. Configure automated tests
 
-agent-runnable · ~1 h · human approval required
+agent-runnable · ~1 h · human approval on the first run
 
 
 For each automated check, identify the control objective, assets covered, expected result and person responsible for failures. Test against a known configuration and verify that stale or missing collection triggers attention. Decide which failures create remediation work and how exceptions are reviewed. Document the human evidence still needed where an automated check cannot demonstrate the whole control.
@@ -171,7 +171,7 @@ For each automated check, identify the control objective, assets covered, expect
 
 ### 6. Remediate failing tests
 
-agent-runnable · ~8 h · human approval required
+agent-runnable · ~8 h · human approval every run
 
 
 Investigate failed checks in the underlying system. Distinguish actual control gaps from stale inventory, connector permissions and unsuitable test settings. Fix confirmed gaps through the normal change process, rerun the check and attach the resulting evidence to the issue. Record accepted exceptions with their rationale and reviewer, and link later passing results to the original failure and its remediation.
@@ -196,7 +196,7 @@ Teach staff the security practices they need for their access: handling customer
 
 ### 8. Engage auditor
 
-human · ~7 d · async wait · human approval required · hard to undo
+human · ~7 d · async wait · human approval every run · hard to undo
 
 
 *Follows steps 6 and 7 — both are required first.*

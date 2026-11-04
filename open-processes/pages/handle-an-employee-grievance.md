@@ -47,9 +47,9 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Record the concern and preserve relevant evidence](#step-1) | agent-runnable | Not recorded | Entry step |
-| [2. Choose an impartial and applicable process](#step-2) | human; approval required | Not recorded | [Step 1](#step-1) |
-| [3. Hear the parties and investigate the facts](#step-3) | human; approval required | Not recorded | [Step 2](#step-2) |
-| [4. Review and communicate the decision](#step-4) | human; approval required | Not recorded | [Step 3](#step-3) |
+| [2. Choose an impartial and applicable process](#step-2) | human; human approval every run | Not recorded | [Step 1](#step-1) |
+| [3. Hear the parties and investigate the facts](#step-3) | human; human approval every run | Not recorded | [Step 2](#step-2) |
+| [4. Review and communicate the decision](#step-4) | human; human approval every run | Not recorded | [Step 3](#step-3) |
 | [5. Track remedies and protect against recurrence](#step-5) | agent-runnable | Not recorded | [Step 4](#step-4) |
 
 <a id="steps"></a>
@@ -71,7 +71,7 @@ Capture the employee's account, requested outcome and any immediate safety or re
 
 ### 2. Choose an impartial and applicable process
 
-human · human approval required
+human · human approval every run
 
 
 HR or the designated reviewer confirms conflicts, local requirements, representation and policy steps. Explain who will handle the concern and distinguish an informal discussion from a formal investigation.
@@ -82,7 +82,7 @@ HR or the designated reviewer confirms conflicts, local requirements, representa
 
 ### 3. Hear the parties and investigate the facts
 
-human · human approval required
+human · human approval every run
 
 
 The appointed reviewer gathers relevant accounts and documents fairly, giving people an appropriate opportunity to respond. Protect confidentiality without promising secrecy that prevents a proper review.
@@ -93,7 +93,7 @@ The appointed reviewer gathers relevant accounts and documents fairly, giving pe
 
 ### 4. Review and communicate the decision
 
-human · human approval required
+human · human approval every run
 
 
 The authorized decision maker evaluates findings, proposed remedies and employment-law advice. Communicate the approved outcome and applicable review or appeal route, limiting disclosure of other people's personal information.

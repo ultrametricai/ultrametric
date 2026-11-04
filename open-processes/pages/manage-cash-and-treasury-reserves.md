@@ -53,9 +53,9 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Forecast cash availability and obligations](#step-1) | agent-runnable | Not recorded | Entry step |
-| [2. Approve liquidity and counterparty constraints](#step-2) | human; approval required | Not recorded | [Step 1](#step-1) |
+| [2. Approve liquidity and counterparty constraints](#step-2) | human; human approval every run | Not recorded | [Step 1](#step-1) |
 | [3. Prepare a treasury action proposal](#step-3) | agent-runnable | Not recorded | [Step 2](#step-2) |
-| [4. Authorize specific treasury transactions](#step-4) | human; approval required | Not recorded | [Step 3](#step-3) |
+| [4. Authorize specific treasury transactions](#step-4) | human; human approval every run | Not recorded | [Step 3](#step-3) |
 | [5. Reconcile positions and review liquidity](#step-5) | agent-runnable | Not recorded | [Step 4](#step-4) |
 
 <a id="steps"></a>
@@ -77,7 +77,7 @@ Reconcile bank balances, restricted cash, collections, payroll, taxes and debt c
 
 ### 2. Approve liquidity and counterparty constraints
 
-human · human approval required
+human · human approval every run
 
 
 Finance leadership agrees the operating buffer, permitted accounts or instruments, concentration limits and approval rights. Get qualified advice for deposit protection, investment suitability, tax and currency risks in the relevant jurisdictions.
@@ -99,7 +99,7 @@ Compare the proposed allocations against forecast obligations, access restrictio
 
 ### 4. Authorize specific treasury transactions
 
-human · human approval required
+human · human approval every run
 
 
 The designated approvers review account ownership, counterparties and exact amounts before any transfer or investment. Authorized operators execute through the company payment process and retain independent confirmations.

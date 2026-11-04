@@ -41,7 +41,7 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | --- | --- | --- | --- |
 | [1. Design the referral incentive](#step-1) | human | ~45 min | Entry step |
 | [2. Create promo codes](#step-2) | agent-runnable | ~10 min | [Step 1](#step-1) |
-| [3. Announce to existing users](#step-3) | agent-runnable; approval required | ~15 min | [Step 2](#step-2) |
+| [3. Announce to existing users](#step-3) | agent-runnable; human approval every run | ~15 min | [Step 2](#step-2) |
 | [4. Track referral conversion](#step-4) | agent-runnable | ~10 min | [Step 3](#step-3) |
 
 <a id="steps"></a>
@@ -72,7 +72,7 @@ Translate the incentive into the billing or referral tool's supported settings: 
 
 ### 3. Announce to existing users
 
-agent-runnable · ~15 min · human approval required
+agent-runnable · ~15 min · human approval every run
 
 
 Explain the program's reward, eligibility, qualifying action and participation limits in the announcement. Link to full terms and a tested referral destination. Use the program owner's agreed channel and eligible audience with current communication preferences. After sending or publication, verify the live links and a controlled referral journey, and direct questions to the team that can explain the terms.

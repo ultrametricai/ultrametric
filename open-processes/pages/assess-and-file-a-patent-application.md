@@ -47,9 +47,9 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Capture the invention and disclosure history](#step-1) | agent-runnable | Not recorded | Entry step |
-| [2. Assess the protection strategy with patent counsel](#step-2) | human; approval required | Not recorded | [Step 1](#step-1) |
+| [2. Assess the protection strategy with patent counsel](#step-2) | human; human approval every run | Not recorded | [Step 1](#step-1) |
 | [3. Prepare the technical and commercial evidence](#step-3) | agent-runnable | Not recorded | [Step 2](#step-2) |
-| [4. Approve and submit through qualified representatives](#step-4) | human; approval required | Not recorded | [Step 3](#step-3) |
+| [4. Approve and submit through qualified representatives](#step-4) | human; human approval every run | Not recorded | [Step 3](#step-3) |
 | [5. Maintain the prosecution and disclosure calendar](#step-5) | agent-runnable | Not recorded | [Step 4](#step-4) |
 
 <a id="steps"></a>
@@ -71,7 +71,7 @@ Collect inventors, technical descriptions, experiments, ownership documents and 
 
 ### 2. Assess the protection strategy with patent counsel
 
-human · human approval required
+human · human approval every run
 
 
 Counsel reviews inventorship, ownership, prior art, target markets and disclosure implications. Compare filing, trade-secret protection and publication based on the business case; patentability and freedom to operate are separate questions.
@@ -93,7 +93,7 @@ Provide reproducible technical detail, alternatives, drawings and market priorit
 
 ### 4. Approve and submit through qualified representatives
 
-human · human approval required · hard to undo
+human · human approval every run · hard to undo
 
 
 The authorized applicants review the final scope, jurisdictions, costs and documents with counsel. Counsel coordinates the applicable filing route and required signatures, retaining the official receipt.

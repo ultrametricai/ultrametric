@@ -48,9 +48,9 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | --- | --- | --- | --- |
 | [1. Confirm the role, start conditions and private records](#step-1) | agent-runnable | Not recorded | Entry step |
 | [2. Prepare a role-specific onboarding schedule](#step-2) | agent-runnable | Not recorded | [Step 1](#step-1) |
-| [3. Provision approved equipment and least-privilege access](#step-3) | manual form/portal; approval required | Not recorded | [Step 2](#step-2) |
-| [4. Complete orientation and supervised first work](#step-4) | human; approval required | Not recorded | [Step 3](#step-3) |
-| [5. Review readiness and close onboarding gaps](#step-5) | human; approval required | Not recorded | [Step 4](#step-4) |
+| [3. Provision approved equipment and least-privilege access](#step-3) | manual form/portal; human approval every run | Not recorded | [Step 2](#step-2) |
+| [4. Complete orientation and supervised first work](#step-4) | human; human approval every run | Not recorded | [Step 3](#step-3) |
+| [5. Review readiness and close onboarding gaps](#step-5) | human; human approval every run | Not recorded | [Step 4](#step-4) |
 
 <a id="steps"></a>
 
@@ -82,7 +82,7 @@ Plan introductions, first assignments, equipment, payroll and benefits handoffs,
 
 ### 3. Provision approved equipment and least-privilege access
 
-manual form/portal · human approval required · hard to undo
+manual form/portal · human approval every run · hard to undo
 
 
 Authorized administrators use the workspace-user and device-management processes to grant only the approved role. Verify the employee can access required systems and that account recovery and asset ownership belong to the company.
@@ -93,7 +93,7 @@ Authorized administrators use the workspace-user and device-management processes
 
 ### 4. Complete orientation and supervised first work
 
-human · human approval required
+human · human approval every run
 
 
 The manager introduces the team, expectations, safety and security reporting routes and role-specific practices. The employee completes their own required training and acknowledges policies through the applicable process.
@@ -104,7 +104,7 @@ The manager introduces the team, expectations, safety and security reporting rou
 
 ### 5. Review readiness and close onboarding gaps
 
-human · human approval required
+human · human approval every run
 
 
 Check the employee can perform an agreed initial task and knows how to get help. Record outstanding access or training, assign owners and schedule a manager review of objectives and support needs.

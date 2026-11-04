@@ -53,10 +53,10 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Research the market and target user journeys](#step-1) | agent-runnable | Not recorded | Entry step |
-| [2. Review commercial and local requirements](#step-2) | human; approval required | Not recorded | [Step 1](#step-1) |
+| [2. Review commercial and local requirements](#step-2) | human; human approval every run | Not recorded | [Step 1](#step-1) |
 | [3. Prepare the localized product and operating plan](#step-3) | agent-runnable | Not recorded | [Step 2](#step-2) |
-| [4. Test with representative local users](#step-4) | human; approval required | Not recorded | [Step 3](#step-3) |
-| [5. Approve a bounded launch and monitor outcomes](#step-5) | human; approval required | Not recorded | [Step 4](#step-4) |
+| [4. Test with representative local users](#step-4) | human; human approval every run | Not recorded | [Step 3](#step-3) |
+| [5. Approve a bounded launch and monitor outcomes](#step-5) | human; human approval every run | Not recorded | [Step 4](#step-4) |
 
 <a id="steps"></a>
 
@@ -77,7 +77,7 @@ Collect evidence on demand, language, purchasing, payments, accessibility and su
 
 ### 2. Review commercial and local requirements
 
-human · human approval required
+human · human approval every run
 
 
 Product and qualified legal, tax and security owners assess the actual offer, customer terms, data flows and regulated uses. Assign unresolved licensing, entity, employment or export questions to their specialist processes.
@@ -99,7 +99,7 @@ Adapt content, formats, documentation, support and commercial configuration usin
 
 ### 4. Test with representative local users
 
-human · human approval required
+human · human approval every run
 
 
 Run critical onboarding, product, payment, accessibility and support journeys with authorized test data. Capture defects and comprehension problems and confirm readiness against agreed acceptance criteria.
@@ -110,7 +110,7 @@ Run critical onboarding, product, payment, accessibility and support journeys wi
 
 ### 5. Approve a bounded launch and monitor outcomes
 
-human · human approval required
+human · human approval every run
 
 
 The accountable owners verify required approvals and operating capacity, then authorize the launch scope. Monitor customer outcomes and incidents and assign owners for changes before broad expansion.

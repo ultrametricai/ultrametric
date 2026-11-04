@@ -45,12 +45,12 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
-| [1. Create teams for each department](#step-1) | agent-runnable; approval required | ~10 min | Entry step |
-| [2. Configure workflow states per team](#step-2) | agent-runnable; approval required | ~15 min | [Step 1](#step-1) |
-| [3. Create cross-team projects](#step-3) | agent-runnable; approval required | ~10 min | [Step 2](#step-2) |
-| [4. Set up sprint cycles](#step-4) | agent-runnable; approval required | ~10 min | [Step 3](#step-3) |
-| [5. Create Slack channel integrations](#step-5) | agent-runnable; approval required | ~10 min | [Step 1](#step-1) |
-| [6. Document process in Notion](#step-6) | agent-runnable; approval required | ~15 min | [Step 4](#step-4) |
+| [1. Create teams for each department](#step-1) | agent-runnable; human approval on the first run | ~10 min | Entry step |
+| [2. Configure workflow states per team](#step-2) | agent-runnable; human approval on the first run | ~15 min | [Step 1](#step-1) |
+| [3. Create cross-team projects](#step-3) | agent-runnable; human approval on the first run | ~10 min | [Step 2](#step-2) |
+| [4. Set up sprint cycles](#step-4) | agent-runnable; human approval on the first run | ~10 min | [Step 3](#step-3) |
+| [5. Create Slack channel integrations](#step-5) | agent-runnable; human approval on the first run | ~10 min | [Step 1](#step-1) |
+| [6. Document process in Notion](#step-6) | agent-runnable; standing human approval | ~15 min | [Step 4](#step-4) |
 
 <a id="steps"></a>
 
@@ -60,7 +60,7 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 
 ### 1. Create teams for each department
 
-agent-runnable · ~10 min · human approval required
+agent-runnable · ~10 min · human approval on the first run
 
 
 Map the agreed departments and membership roster onto the tracker, identifying teams that will be retained, renamed, split, or retired. Preserve the ownership of active projects and decide where ongoing work moves before changing the structure. Create the new teams and access groups, then move work using that mapping. Give team leads a view of their resulting backlog and call out tasks that lost an owner or became inaccessible.
@@ -72,7 +72,7 @@ Map the agreed departments and membership roster onto the tracker, identifying t
 
 ### 2. Configure workflow states per team
 
-agent-runnable · ~15 min · human approval required
+agent-runnable · ~15 min · human approval on the first run
 
 
 Map each department's intake, execution, review, and completion stages. Keep common meanings where cross-team reporting depends on them, and allow different states where the work genuinely differs. Build an old-to-new status mapping for active issues before changing workflows. Walk current tasks through the new states with their team leads, resolve ambiguous transitions, and then move the existing queue so work retains an understandable status.
@@ -83,7 +83,7 @@ Map each department's intake, execution, review, and completion stages. Keep com
 
 ### 3. Create cross-team projects
 
-agent-runnable · ~10 min · human approval required
+agent-runnable · ~10 min · human approval on the first run
 
 
 Identify outcomes that require several departments and name one accountable project owner for each. Agree the contributing teams, deliverables, dependencies, and handoff points. Link the contributing teams' existing tasks into the shared project. Give participating leads a view that shows their responsibilities and the next cross-team dependency, and resolve any deliverable that appears to have two owners or none.
@@ -94,7 +94,7 @@ Identify outcomes that require several departments and name one accountable proj
 
 ### 4. Set up sprint cycles
 
-agent-runnable · ~10 min · human approval required
+agent-runnable · ~10 min · human approval on the first run
 
 
 Choose a planning cadence that fits each team's workload and release needs. Agree how it handles unplanned work, dependencies, and tasks left unfinished at the end of a cycle. Configure the supported cycle settings and put the next set of work into them. Check capacity and dates with the team lead, then document how unfinished work moves into the next cycle and affects its plan.
@@ -106,7 +106,7 @@ Choose a planning cadence that fits each team's workload and release needs. Agre
 
 ### 5. Create Slack channel integrations
 
-agent-runnable · ~10 min · human approval required
+agent-runnable · ~10 min · human approval on the first run
 
 
 *Follows step 1.*
@@ -121,7 +121,7 @@ For teams using Slack, choose which tracker events warrant a channel message and
 
 ### 6. Document process in Notion
 
-agent-runnable · ~15 min · human approval required
+agent-runnable · ~15 min · standing human approval
 
 
 *Follows step 4.*

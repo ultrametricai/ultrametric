@@ -47,10 +47,10 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Define the hypothesis and measurement plan](#step-1) | agent-runnable | Not recorded | Entry step |
-| [2. Approve claims, targeting and spend](#step-2) | human; approval required | Not recorded | [Step 1](#step-1) |
-| [3. Configure the approved campaign and tracking](#step-3) | manual form/portal; approval required | Not recorded | [Step 2](#step-2) |
+| [2. Approve claims, targeting and spend](#step-2) | human; human approval every run | Not recorded | [Step 1](#step-1) |
+| [3. Configure the approved campaign and tracking](#step-3) | manual form/portal; human approval every run | Not recorded | [Step 2](#step-2) |
 | [4. Monitor performance and data quality](#step-4) | agent-runnable | Not recorded | [Step 3](#step-3) |
-| [5. Review the commercial outcome](#step-5) | human; approval required | Not recorded | [Step 4](#step-4) |
+| [5. Review the commercial outcome](#step-5) | human; human approval every run | Not recorded | [Step 4](#step-4) |
 
 <a id="steps"></a>
 
@@ -71,7 +71,7 @@ State the segment, message, channel, desired action and attribution window. Reco
 
 ### 2. Approve claims, targeting and spend
 
-human · human approval required
+human · human approval every run
 
 
 The marketing owner approves the budget, creative claims and audience choices. Review privacy, advertising and platform restrictions for the intended markets and leave unsubstantiated claims out of the test.
@@ -82,7 +82,7 @@ The marketing owner approves the budget, creative claims and audience choices. R
 
 ### 3. Configure the approved campaign and tracking
 
-manual form/portal · human approval required · hard to undo
+manual form/portal · human approval every run · hard to undo
 
 
 Authorized operators set spending limits, destinations and consent-aware measurement. Test the landing and payment journey and confirm a clear stop mechanism before launch.
@@ -104,7 +104,7 @@ Reconcile spend, valid conversions and downstream customer outcomes. Investigate
 
 ### 5. Review the commercial outcome
 
-human · human approval required
+human · human approval every run
 
 
 Compare observed acquisition cost and customer value with the hypothesis and cash exposure. Approve any scaling separately, stop weak tests and document the evidence for the next experiment.

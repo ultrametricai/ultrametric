@@ -47,10 +47,10 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Record the request and working arrangements privately](#step-1) | agent-runnable | Not recorded | Entry step |
-| [2. Confirm entitlement, pay and required process](#step-2) | human; approval required | Not recorded | [Step 1](#step-1) |
-| [3. Agree the leave and coverage plan](#step-3) | human; approval required | Not recorded | [Step 2](#step-2) |
-| [4. Implement approved calendar and payroll changes](#step-4) | manual form/portal; approval required | Not recorded | [Step 3](#step-3) |
-| [5. Review the return and reconcile records](#step-5) | human; approval required | Not recorded | [Step 4](#step-4) |
+| [2. Confirm entitlement, pay and required process](#step-2) | human; human approval every run | Not recorded | [Step 1](#step-1) |
+| [3. Agree the leave and coverage plan](#step-3) | human; human approval every run | Not recorded | [Step 2](#step-2) |
+| [4. Implement approved calendar and payroll changes](#step-4) | manual form/portal; human approval every run | Not recorded | [Step 3](#step-3) |
+| [5. Review the return and reconcile records](#step-5) | human; human approval every run | Not recorded | [Step 4](#step-4) |
 
 <a id="steps"></a>
 
@@ -71,7 +71,7 @@ Collect the relevant dates, work location, schedule, contract and applicable pol
 
 ### 2. Confirm entitlement, pay and required process
 
-human · human approval required
+human · human approval every run
 
 
 HR and local advisers check the actual leave type, eligibility, notices and employment protections. Resolve conflicts between policy and applicable rules rather than applying the source country's entitlement globally.
@@ -82,7 +82,7 @@ HR and local advisers check the actual leave type, eligibility, notices and empl
 
 ### 3. Agree the leave and coverage plan
 
-human · human approval required
+human · human approval every run
 
 
 The authorized manager and HR confirm dates, communications, work handover and any review points with the employee. Record adjustments and distinguish consent to share an update from access to sensitive supporting evidence.
@@ -93,7 +93,7 @@ The authorized manager and HR confirm dates, communications, work handover and a
 
 ### 4. Implement approved calendar and payroll changes
 
-manual form/portal · human approval required · hard to undo
+manual form/portal · human approval every run · hard to undo
 
 
 Authorized operators update the relevant systems using the reviewed dates and pay treatment. Check access and communication expectations, retaining evidence of the approved change rather than changing employment terms informally.
@@ -104,7 +104,7 @@ Authorized operators update the relevant systems using the reviewed dates and pa
 
 ### 5. Review the return and reconcile records
 
-human · human approval required
+human · human approval every run
 
 
 Discuss return arrangements and needed support with the employee and HR. Reconcile payroll and leave balances, confirm role coverage and retain only the evidence required under the applicable retention process.

@@ -1,7 +1,7 @@
 import path from 'node:path'
 import { GOVERNMENT_ARENA_ID, loadProcesses, processSlug, VENDOR_ARENA, vendorProductId } from './processes'
 import { processIcon } from './processIcons'
-import { computerUseOptions, crossArenaStepRankings, processLeaderboard } from './processRankings'
+import { computerUseOptions, crossArenaStepRankings, processLeaderboard, stepRankingFull } from './processRankings'
 import { loadStepVendorCalls } from './stepVendorCalls'
 
 // The reverse of lib/processRankings.ts: instead of "which vendors come up in this process?",
@@ -14,16 +14,24 @@ import { loadStepVendorCalls } from './stepVendorCalls'
 // scoring — same contract as lib/processRankings.ts.
 
 // How a vendor "comes up" in a process:
-//   'step-ranked'  — it has a judged step score on at least one step's PRIMARY (function-kind)
-//                    ranking, i.e. it is an entry of the process leaderboard.
-//   'cross-arena'  — it surfaces on a step via crossArenaStepRankings (extra-arena evidence).
-//   'computer-use' — it surfaces as a "could attempt this manual step today" computer-use
-//                    option. Counted separately: NEVER inflates stepsServed.
-//   'canonical'    — a DAG node names it as the canonical call target
-//                    (node.vendor → VENDOR_ARENA / vendorProductId).
-//   'api-calls'    — it has grounded per-step API calls in open-rankings/step-vendor-calls.json.
+//   'step-ranked'       — it has a judged step score on at least one step's PRIMARY
+//                         (function-kind) ranking, i.e. it is an entry of the process
+//                         leaderboard.
+//   'supporting-ranked' — it has a judged step score on a `supporting`-marked step's primary
+//                         ranking. The process page visibly ranks it on that step card, but
+//                         supporting steps never feed the leaderboard (lib/processRankings.ts
+//                         processLeaderboard), so without this kind the vendor's product page
+//                         would omit the process entirely.
+//   'cross-arena'       — it surfaces on a step via crossArenaStepRankings (extra-arena
+//                         evidence).
+//   'computer-use'      — it surfaces as a "could attempt this manual step today" computer-use
+//                         option. Counted separately: NEVER inflates stepsServed.
+//   'canonical'         — a DAG node names it as the canonical call target
+//                         (node.vendor → VENDOR_ARENA / vendorProductId).
+//   'api-calls'         — it has grounded per-step API calls in
+//                         open-rankings/step-vendor-calls.json.
 export const VENDOR_PROCESS_KINDS = [
-  'step-ranked', 'cross-arena', 'computer-use', 'canonical', 'api-calls',
+  'step-ranked', 'supporting-ranked', 'cross-arena', 'computer-use', 'canonical', 'api-calls',
 ] as const
 
 export type VendorProcessKind = (typeof VENDOR_PROCESS_KINDS)[number]
@@ -34,9 +42,9 @@ export interface VendorProcessAppearance {
   title: string
   icon: string
   phase: string
-  kinds: Array<'step-ranked' | 'cross-arena' | 'computer-use' | 'canonical' | 'api-calls'>
-  // Steps where the vendor has a judged step score (function or extra kind). Computer-use
-  // appearances deliberately do NOT count — "could attempt it" is not "serves it".
+  kinds: VendorProcessKind[]
+  // Steps where the vendor has a judged step score (function, supporting, or extra kind).
+  // Computer-use appearances deliberately do NOT count — "could attempt it" is not "serves it".
   stepsServed: number
   // The task's rankable step count (processLeaderboard's rankableSteps), the honest denominator.
   rankableSteps: number
@@ -46,7 +54,8 @@ export interface VendorProcessAppearance {
   /** The receipts (founder 2026-09-23: "add evidence… see why it came up"): the exact steps
    *  this vendor serves with a judged score, best first — node id (for the process page's
    *  #step-<taskId>-<nodeId> anchor), label, story-derived score, and the mapped-story count
-   *  behind it. Function + cross-arena appearances only (never computer-use). Uncapped since the
+   *  behind it. Function, supporting and cross-arena appearances only (never computer-use).
+   *  Uncapped since the
    *  founder's 2026-10-02 depth ask: every judged served step, deduped per node (max score). */
   servedSteps: Array<{ nodeId: string; label: string; score: number; storyCount: number }>
   // From processLeaderboard(task) when the vendor is an entry there: 1-based rank + the
@@ -58,6 +67,7 @@ export interface VendorProcessAppearance {
 interface Acc {
   kinds: Set<VendorProcessKind>
   functionStepsServed: number
+  supportingNodeIds: Set<string>
   extraNodeIds: Set<string>
   servedSteps: Array<{ nodeId: string; label: string; score: number; storyCount: number }>
   bestStepScore: number | null
@@ -103,6 +113,7 @@ function buildIndex(dir: string): Map<string, VendorProcessAppearance[]> {
     const fresh: Acc = {
       kinds: new Set(),
       functionStepsServed: 0,
+      supportingNodeIds: new Set(),
       extraNodeIds: new Set(),
       servedSteps: [],
       bestStepScore: null,
@@ -139,6 +150,22 @@ function buildIndex(dir: string): Map<string, VendorProcessAppearance[]> {
     })
 
     for (const node of task.dag.nodes) {
+      // Supporting steps are excluded from the leaderboard's entries by design, but the process
+      // page still ranks their vendors on the step card — record those appearances under their
+      // own kind so the product page lists every process whose page shows the vendor. Same
+      // government-agency exclusion as the leaderboard pass; same uncapped ranking it reads.
+      if (node.supporting) {
+        const ranking = stepRankingFull(task.id, node, dir)
+        if (ranking && ranking.arenaId !== GOVERNMENT_ARENA_ID) {
+          for (const v of ranking.vendors) {
+            const a = cell(ranking.arenaId, v.productId, task.id)
+            a.kinds.add('supporting-ranked')
+            a.supportingNodeIds.add(node.id)
+            seeScore(a, v.score)
+            a.servedSteps.push({ nodeId: node.id, label: node.label, score: v.score, storyCount: ranking.stories.length })
+          }
+        }
+      }
       // Cross-arena evidence-gated options (the "generate a website → ChatGPT/Framer" surface).
       for (const ranking of crossArenaStepRankings(task.id, node, dir)) {
         for (const v of ranking.vendors) {
@@ -183,7 +210,7 @@ function buildIndex(dir: string): Map<string, VendorProcessAppearance[]> {
         icon: processIcon(taskId),
         phase: task.phase,
         kinds: VENDOR_PROCESS_KINDS.filter((k) => a.kinds.has(k)),
-        stepsServed: a.functionStepsServed + a.extraNodeIds.size,
+        stepsServed: a.functionStepsServed + new Set([...a.supportingNodeIds, ...a.extraNodeIds]).size,
         rankableSteps: rankableOf.get(taskId) ?? 0,
         bestStepScore: a.bestStepScore,
         servedSteps: dedupeServedSteps(a.servedSteps),
