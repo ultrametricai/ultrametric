@@ -130,6 +130,17 @@ test('CI reusable findings status is accepted after the registered CI run succee
   const value = fixture(); value.statuses[0].target_url = `https://github.com/${REPO}/actions/runs/100`
   assert.deepEqual(checkReasons(value), [])
 })
+test('findings link repair must finish in a successful trusted run before eligibility', () => {
+  const value = fixture()
+  value.runs.get(101).conclusion = 'failure'
+  assert.ok(checkReasons(value).length)
+  value.runs.set(102, { ...value.runs.get(101), id: 102, status: 'in_progress', conclusion: null })
+  value.statuses.push({ ...value.statuses[0], id: 301, target_url: `https://github.com/${REPO}/actions/runs/102` })
+  assert.ok(checkReasons(value).length)
+  value.runs.get(102).status = 'completed'
+  value.runs.get(102).conclusion = 'success'
+  assert.deepEqual(checkReasons(value), [])
+})
 
 function fakeApi(value = fixture()) {
   const merges = []
