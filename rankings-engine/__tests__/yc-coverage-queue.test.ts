@@ -140,6 +140,12 @@ describe('compileVocab fit-evidence filter (real DOMAIN_VOCAB)', () => {
     const vocab = compileVocab(new Set(['software-factory']))
     expect(bestVocabArena('Turn any spare computer into agent devboxes or CI runners Machine Learning B2B Infrastructure AI', vocab)).toBeNull()
   })
+
+  it('requires file-storage evidence instead of shared team values (Key Values)', () => {
+    const vocab = compileVocab(new Set(['cloud-storage']))
+    expect(bestVocabArena('Helping software developers find teams that share their values. Recruiting Careers', vocab)).toBeNull()
+    expect(bestVocabArena('Store and share files with your team', vocab)?.arena).toBe('cloud-storage')
+  })
 })
 
 describe('radarReportFromQueue', () => {

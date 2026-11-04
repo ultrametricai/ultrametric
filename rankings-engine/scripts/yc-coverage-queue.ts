@@ -230,6 +230,8 @@ export function bestVocabArena(
   // unrelated products. Reject an unsupported game-engine winner instead of
   // rerouting it into a weaker runner-up arena on the same generic description.
   if (best?.arena === 'game-engines' && !/\b(games?|gaming|gameplay|gamedev)\b/i.test(text)) return null
+  // Sharing values or working in teams does not establish a file-storage product.
+  if (best?.arena === 'cloud-storage' && !/\b(files?|folders?|storage|drives?|data rooms?)\b/i.test(text)) return null
   return best ? { arena: best.arena, hits: best.hits } : null
 }
 
