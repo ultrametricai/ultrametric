@@ -42,6 +42,8 @@ export type EntityChoice =
   | 'nz-ltd' | 'pte-ltd'
   | 'pty-ltd' | 'kr-chusik-hoesa' | 'hk-private-limited'
   | 'ee-osauhing'
+  | 'nl-bv' | 'ie-ltd' | 'ie-dac' | 'es-sl' | 'se-ab' | 'ch-gmbh' | 'ch-ag'
+  | 'jp-kk' | 'jp-gk' | 'br-ltda' | 'ae-llc' | 'ae-fz-llc'
 
 // The entity decision's permalink slots, EXPLICIT rather than options-array positions since the
 // parallel country lanes of 2026-10-23: two lanes appending at once would race for the same
@@ -49,12 +51,16 @@ export type EntityChoice =
 // entity decision only (lib/virtualStartupRun.ts). Slots 0-13 are the shipped history and stay
 // byte-identical to the old findIndex behavior; slot 14 ('e') is Hong Kong (landed from the
 // parallel lane of the same runs); Estonia holds slot
-// 15 ('f'). Append-only, like DECISIONS: a slot, once published, is an immutable permalink fact.
+// 15 ('f'). The 2026-11-03 guide-country entities (NL through AE) hold slots 16-27
+// ('g' through 'r'). Append-only, like DECISIONS: a slot, once published, is an immutable
+// permalink fact.
 export const ENTITY_CODEC_SLOTS: Record<EntityChoice, number> = {
   'c-corp': 0, 'llc': 1, 'ltd': 2, 'gmbh': 3, 'ug': 4, 'sas': 5, 'sarl': 6, 'pvt-ltd': 7,
   'lda': 8, 'ca-corp': 9, 'nz-ltd': 10, 'pte-ltd': 11, 'pty-ltd': 12, 'kr-chusik-hoesa': 13,
   'hk-private-limited': 14,
   'ee-osauhing': 15,
+  'nl-bv': 16, 'ie-ltd': 17, 'ie-dac': 18, 'es-sl': 19, 'se-ab': 20, 'ch-gmbh': 21,
+  'ch-ag': 22, 'jp-kk': 23, 'jp-gk': 24, 'br-ltda': 25, 'ae-llc': 26, 'ae-fz-llc': 27,
 }
 export type FundingChoice = 'bootstrap' | 'seed'
 // Business models (founder round 5, item 2). Codec rule: 'subscriptions'/'invoices' keep indices
@@ -269,6 +275,72 @@ export const ENTITY_META: Record<EntityChoice, EntityMeta> = {
     label: 'Osaühing (OÜ)', suffix: ' OÜ', country: 'EE',
     filing: { label: 'Commercial register entry', register: 'Registry code 00000000 (placeholder)' },
   },
+  // Guide-country entities (2026-11-03). Each register mirrors the official companies registry
+  // behind the country's committed form_001 geoNotes analog:
+  //   NL — KVK Business Register (https://www.kvk.nl/en/)
+  //   IE — Companies Registration Office; cro.ie refuses automated clients (HTTP 403), so the
+  //        reachable official overview is
+  //        https://www.citizensinformation.ie/en/employment/types-of-employment/self-employment/setting-up-a-business-in-ireland/
+  //   ES — Registro Mercantil via the Colegio de Registradores (https://www.registradores.org/)
+  //   SE — Bolagsverket; bolagsverket.se refuses non-browser clients from here, so the reachable
+  //        official route is the Bolagsverket-run Verksamt portal
+  //        (https://verksamt.se/en/setting-up/choose-business-type/limited-company)
+  //   CH — cantonal commercial registers, searchable federally on Zefix
+  //        (https://www.zefix.ch/en/search/entity/welcome)
+  //   JP — Legal Affairs Bureau registration; the registered corporate-number lookup is
+  //        https://www.houjin-bangou.nta.go.jp/en/
+  //   BR — CNPJ/REDESIM, the Receita Federal service integrating the state Juntas Comerciais
+  //        (https://www.gov.br/pt-br/servicos/inscrever-no-cnpj)
+  //   AE — emirate economic departments and free-zone authorities
+  //        (https://u.ae/en/information-and-services/business)
+  'nl-bv': {
+    label: 'BV (besloten vennootschap)', suffix: ' B.V.', country: 'NL',
+    filing: { label: 'Deed of incorporation', register: 'KVK no. 00000000 (placeholder)' },
+  },
+  'ie-ltd': {
+    label: 'LTD (private company limited by shares)', suffix: ' Ltd', country: 'IE',
+    filing: { label: 'Certificate of Incorporation', register: 'CRO company no. 000000 (placeholder)' },
+  },
+  'ie-dac': {
+    label: 'DAC (designated activity company)', suffix: ' DAC', country: 'IE',
+    filing: { label: 'Certificate of Incorporation', register: 'CRO company no. 000000 (placeholder)' },
+  },
+  'es-sl': {
+    label: 'SL (sociedad limitada)', suffix: ', S.L.', country: 'ES',
+    filing: { label: 'Formation filing', register: 'Registro Mercantil NIF B-00000000 (placeholder)' },
+  },
+  'se-ab': {
+    label: 'AB (aktiebolag)', suffix: ' AB', country: 'SE',
+    filing: { label: 'Certificate of registration', register: 'Bolagsverket org.nr 000000-0000 (placeholder)' },
+  },
+  'ch-gmbh': {
+    label: 'GmbH (Switzerland)', suffix: ' GmbH', country: 'CH',
+    filing: { label: 'Commercial register entry', register: 'UID CHE-000.000.000 (placeholder)' },
+  },
+  'ch-ag': {
+    label: 'AG (Aktiengesellschaft)', suffix: ' AG', country: 'CH',
+    filing: { label: 'Commercial register entry', register: 'UID CHE-000.000.000 (placeholder)' },
+  },
+  'jp-kk': {
+    label: 'Kabushiki kaisha (株式会社)', suffix: ' K.K.', country: 'JP',
+    filing: { label: 'Registration of incorporation', register: 'Corporate number 0000000000000 (placeholder)' },
+  },
+  'jp-gk': {
+    label: 'Godo kaisha (合同会社)', suffix: ' G.K.', country: 'JP',
+    filing: { label: 'Registration of incorporation', register: 'Corporate number 0000000000000 (placeholder)' },
+  },
+  'br-ltda': {
+    label: 'Ltda (sociedade limitada)', suffix: ' Ltda.', country: 'BR',
+    filing: { label: 'Registration filing', register: 'CNPJ 00.000.000/0000-00 (placeholder)' },
+  },
+  'ae-llc': {
+    label: 'Mainland LLC', suffix: ' LLC', country: 'AE',
+    filing: { label: 'Trade licence', register: 'Licence no. 000000 (placeholder)' },
+  },
+  'ae-fz-llc': {
+    label: 'Free-zone company (FZ-LLC)', suffix: ' FZ-LLC', country: 'AE',
+    filing: { label: 'Free-zone licence', register: 'Licence no. 000000 (placeholder)' },
+  },
 }
 
 // The Entity dropdown's roster follows the geo selection; the FIRST option per country is the
@@ -288,6 +360,14 @@ export const ENTITY_OPTIONS_BY_COUNTRY: Partial<Record<GeoCountry, EntityChoice[
   KR: ['kr-chusik-hoesa'],
   HK: ['hk-private-limited'],
   EE: ['ee-osauhing'],
+  NL: ['nl-bv'],
+  IE: ['ie-ltd', 'ie-dac'],
+  ES: ['es-sl'],
+  SE: ['se-ab'],
+  CH: ['ch-gmbh', 'ch-ag'],
+  JP: ['jp-kk', 'jp-gk'],
+  BR: ['br-ltda'],
+  AE: ['ae-llc', 'ae-fz-llc'],
 }
 
 export function defaultEntityFor(country: GeoCountry): EntityChoice {
@@ -360,6 +440,22 @@ export const DECISIONS: DecisionDef[] = [
       { value: 'kr-chusik-hoesa', label: 'Chusik hoesa (주식회사)', detail: 'the same corpus incorporation composition as the C-Corp path (form_001), framed for South Korea with the committed court-registry (IROS) analog — the corpus is US-shaped; no steps invented' },
       { value: 'hk-private-limited', label: 'Private company limited by shares', detail: 'the same corpus incorporation composition as the C-Corp path (form_001), framed for Hong Kong with the committed Companies Registry analog — the corpus is US-shaped; no steps invented' },
       { value: 'ee-osauhing', label: 'Osaühing (OÜ)', detail: 'the same corpus incorporation composition as the C-Corp path (form_001), framed for Estonia with the committed e-Business Register analog — the corpus is US-shaped; no steps invented' },
+      // Guide-country entities (2026-11-03): founder-facing plain language. Each runs the same
+      // incorporation steps as the Delaware C-Corp path, framed for its country with the
+      // committed registry analog (see the ENTITY_META citations); the step library is
+      // US-shaped and no steps are invented.
+      { value: 'nl-bv', label: 'BV (besloten vennootschap)', detail: 'the Dutch private limited company, formed by notarial deed and registered with KVK (the Netherlands Chamber of Commerce); the simulation runs the same incorporation steps as the Delaware C-Corp path, framed for the Netherlands' },
+      { value: 'ie-ltd', label: 'LTD (private company limited by shares)', detail: 'the standard Irish private company, registered with the Companies Registration Office (CRO); the simulation runs the same incorporation steps as the Delaware C-Corp path, framed for Ireland' },
+      { value: 'ie-dac', label: 'DAC (designated activity company)', detail: 'an Irish private company whose constitution limits it to stated activities, registered with the Companies Registration Office (CRO) and common in regulated and joint-venture setups; the simulation runs the same incorporation steps as the Delaware C-Corp path, framed for Ireland' },
+      { value: 'es-sl', label: 'SL (sociedad limitada)', detail: 'the standard Spanish private limited company, formed before a notary and entered in the Registro Mercantil; the simulation runs the same incorporation steps as the Delaware C-Corp path, framed for Spain' },
+      { value: 'se-ab', label: 'AB (aktiebolag)', detail: 'the Swedish limited company, registered with Bolagsverket (the Swedish Companies Registration Office); the simulation runs the same incorporation steps as the Delaware C-Corp path, framed for Sweden' },
+      { value: 'ch-gmbh', label: 'GmbH (Switzerland)', detail: 'the Swiss private limited liability company, entered in the cantonal commercial register and searchable federally on Zefix; the simulation runs the same incorporation steps as the Delaware C-Corp path, framed for Switzerland' },
+      { value: 'ch-ag', label: 'AG (Aktiengesellschaft)', detail: 'the Swiss stock corporation, entered in the cantonal commercial register and searchable federally on Zefix; the simulation runs the same incorporation steps as the Delaware C-Corp path, framed for Switzerland' },
+      { value: 'jp-kk', label: 'Kabushiki kaisha (株式会社)', detail: 'the Japanese stock company, registered with the Legal Affairs Bureau, which issues the company a corporate number; the simulation runs the same incorporation steps as the Delaware C-Corp path, framed for Japan' },
+      { value: 'jp-gk', label: 'Godo kaisha (合同会社)', detail: 'the simpler Japanese limited liability company, registered with the Legal Affairs Bureau like the kabushiki kaisha; the simulation runs the same incorporation steps as the Delaware C-Corp path, framed for Japan' },
+      { value: 'br-ltda', label: 'Ltda (sociedade limitada)', detail: 'the standard Brazilian limited liability company, registered with the state Junta Comercial and enrolled in the federal CNPJ register; the simulation runs the same incorporation steps as the Delaware C-Corp path, framed for Brazil' },
+      { value: 'ae-llc', label: 'Mainland LLC', detail: 'a UAE mainland limited liability company, licensed by the economic department of the chosen emirate (the DED in Dubai); the simulation runs the same incorporation steps as the Delaware C-Corp path, framed for the United Arab Emirates' },
+      { value: 'ae-fz-llc', label: 'Free-zone company (FZ-LLC)', detail: 'a company formed in one of the UAE free zones and licensed by that free-zone authority; the simulation runs the same incorporation steps as the Delaware C-Corp path, framed for the United Arab Emirates' },
     ],
   },
   {
