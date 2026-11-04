@@ -7,7 +7,9 @@
 # state (and this PR's vendor-state rows quote); those passages live in this seed.
 #
 # Same verification contract: every seed item carries a `quote` field that MUST be a verbatim
-# substring of the cached crawl page mapped from its `url` (site.md / docs.md / extra-N.md per
+# substring of the cached crawl page, and the entire published `excerpt` must also be a
+# verbatim substring. Summary prose is not accepted as verified evidence. The page is mapped
+# from its `url` (site.md / docs.md / extra-N.md per
 # products.json); the script verifies all of them and refuses to write anything on the first
 # mismatch. The `quote` is verification-only and is not written to evidence.
 import datetime
@@ -38,7 +40,7 @@ def cache_file(pid: str, url: str) -> str:
     raise SystemExit(f'{pid}: url not in products.json corpus: {url}')
 
 
-# Pass 1: verify every quote verbatim against its cached page.
+# Pass 1: verify both the anchor and all published text before any writes.
 failures = []
 for pid, items in seed.items():
     if pid.startswith('$'):
@@ -46,8 +48,10 @@ for pid, items in seed.items():
     for item in items:
         path = cache_file(pid, item['url'])
         text = open(path).read()
-        if item['quote'] not in text:
-            failures.append(f"{pid}/{item['id']}: quote not found in {os.path.basename(path)}")
+        for field in ('quote', 'excerpt'):
+            value = item.get(field)
+            if not isinstance(value, str) or not value.strip() or value not in text:
+                failures.append(f"{pid}/{item['id']}: {field} not found verbatim in {os.path.basename(path)}")
 if failures:
     print('VERIFICATION FAILED — nothing written:')
     for f in failures:
