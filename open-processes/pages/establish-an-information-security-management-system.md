@@ -45,11 +45,11 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Document the intended management-system scope](#step-1) | agent-runnable | Not recorded | Entry step |
-| [2. Approve the applicable framework and risk approach](#step-2) | human; approval required | Not recorded | [Step 1](#step-1) |
+| [2. Approve the applicable framework and risk approach](#step-2) | human; human approval every run | Not recorded | [Step 1](#step-1) |
 | [3. Prepare the risk and control evidence register](#step-3) | agent-runnable | Not recorded | [Step 2](#step-2) |
-| [4. Implement and operate the approved controls](#step-4) | human; approval required | Not recorded | [Step 3](#step-3) |
-| [5. Arrange independent review and management evaluation](#step-5) | human; approval required | Not recorded | [Step 4](#step-4) |
-| [6. Approve assurance claims and the next review](#step-6) | human; approval required | Not recorded | [Step 5](#step-5) |
+| [4. Implement and operate the approved controls](#step-4) | human; human approval every run | Not recorded | [Step 3](#step-3) |
+| [5. Arrange independent review and management evaluation](#step-5) | human; human approval every run | Not recorded | [Step 4](#step-4) |
+| [6. Approve assurance claims and the next review](#step-6) | human; human approval every run | Not recorded | [Step 5](#step-5) |
 
 <a id="steps"></a>
 
@@ -70,7 +70,7 @@ List organizational boundaries, services, information assets, dependencies and i
 
 ### 2. Approve the applicable framework and risk approach
 
-human · human approval required · hard to undo
+human · human approval every run · hard to undo
 
 
 A competent security owner reviews the current standard and applicable obligations. Assign authority and resources; this overview guide does not substitute for the full normative requirements or specialist interpretation.
@@ -92,7 +92,7 @@ Document identified risks, proposed treatments, control owners and supporting ev
 
 ### 4. Implement and operate the approved controls
 
-human · human approval required · hard to undo
+human · human approval every run · hard to undo
 
 
 Accountable control owners perform the approved activities and retain operating evidence. Training, security decisions and production changes remain human work under the relevant approval policies.
@@ -103,7 +103,7 @@ Accountable control owners perform the approved activities and retain operating 
 
 ### 5. Arrange independent review and management evaluation
 
-human · human approval required · hard to undo
+human · human approval every run · hard to undo
 
 
 Competent reviewers assess the implemented system and management evaluates findings and corrective actions. Keep internal review, external certification and customer assurances distinct.
@@ -114,7 +114,7 @@ Competent reviewers assess the implemented system and management evaluates findi
 
 ### 6. Approve assurance claims and the next review
 
-human · human approval required · hard to undo
+human · human approval every run · hard to undo
 
 
 The owner checks the evidence and any actual certificate scope before approving external claims. Record unresolved actions, review dates and who can authorize engagement with a certification body.

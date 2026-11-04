@@ -51,11 +51,11 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
-| [1. Draft SaaS agreement template](#step-1) | agent-runnable; approval required | ~30 min | Entry step |
-| [2. Draft Terms of Service](#step-2) | agent-runnable; approval required | ~30 min | Entry step |
-| [3. Draft Privacy Policy](#step-3) | agent-runnable; approval required | ~30 min | Entry step |
-| [4. Legal counsel review](#step-4) | human; approval required; includes waiting | ~3 d | All: [Step 1](#step-1); [Step 2](#step-2); [Step 3](#step-3) |
-| [5. Publish to website](#step-5) | manual form/portal; approval required | ~15 min | [Step 4](#step-4) |
+| [1. Draft SaaS agreement template](#step-1) | agent-runnable; standing human approval | ~30 min | Entry step |
+| [2. Draft Terms of Service](#step-2) | agent-runnable; standing human approval | ~30 min | Entry step |
+| [3. Draft Privacy Policy](#step-3) | agent-runnable; standing human approval | ~30 min | Entry step |
+| [4. Legal counsel review](#step-4) | human; human approval every run; includes waiting | ~3 d | All: [Step 1](#step-1); [Step 2](#step-2); [Step 3](#step-3) |
+| [5. Publish to website](#step-5) | manual form/portal; human approval every run | ~15 min | [Step 4](#step-4) |
 
 <a id="steps"></a>
 
@@ -65,7 +65,7 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 
 ### 1. Draft SaaS agreement template
 
-agent-runnable · ~30 min · human approval required
+agent-runnable · ~30 min · standing human approval
 
 
 *Entry step — no prerequisite step.*
@@ -80,7 +80,7 @@ Draft around the actual service, customers and commercial model. Resolve choices
 
 ### 2. Draft Terms of Service
 
-agent-runnable · ~30 min · human approval required
+agent-runnable · ~30 min · standing human approval
 
 
 *Entry step — no prerequisite step.*
@@ -95,7 +95,7 @@ Write terms for the actual account and purchase flow: contracting entity, audien
 
 ### 3. Draft Privacy Policy
 
-agent-runnable · ~30 min · human approval required
+agent-runnable · ~30 min · standing human approval
 
 
 *Entry step — no prerequisite step.*
@@ -110,7 +110,7 @@ Describe the service’s data flows through account creation, billing, support, 
 
 ### 4. Legal counsel review
 
-human · ~3 d · async wait · human approval required
+human · ~3 d · async wait · human approval every run
 
 
 *Follows steps 1, 2 and 3 — all are required first.*
@@ -121,7 +121,7 @@ Review the agreement, website terms, privacy notice, order forms and schedules t
 
 ### 5. Publish to website
 
-manual form/portal · ~15 min · human approval required
+manual form/portal · ~15 min · human approval every run
 
 
 Release the approved public documents at the intended signup, checkout and account locations. Verify links, mobile rendering, versions and the acceptance record captured by the flow. Keep negotiated customer agreements in the contract repository. Preserve the published release so later product or pricing changes can be compared with the terms users actually saw.

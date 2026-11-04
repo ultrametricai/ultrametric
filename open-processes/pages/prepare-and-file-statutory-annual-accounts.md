@@ -56,11 +56,11 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Reconcile the entity reporting facts](#step-1) | agent-runnable | Not recorded | Entry step |
-| [2. Confirm the reporting framework and obligations](#step-2) | human; approval required | Not recorded | [Step 1](#step-1) |
+| [2. Confirm the reporting framework and obligations](#step-2) | human; human approval every run | Not recorded | [Step 1](#step-1) |
 | [3. Prepare the statements and supporting schedules](#step-3) | agent-runnable | Not recorded | [Step 2](#step-2) |
-| [4. Approve and sign the final accounts](#step-4) | human; approval required | Not recorded | [Step 3](#step-3) |
-| [5. Distribute and file the approved statements](#step-5) | manual form/portal; approval required | Not recorded | [Step 4](#step-4) |
-| [6. Verify acceptance and calendar the next reporting cycle](#step-6) | human; approval required | Not recorded | [Step 5](#step-5) |
+| [4. Approve and sign the final accounts](#step-4) | human; human approval every run | Not recorded | [Step 3](#step-3) |
+| [5. Distribute and file the approved statements](#step-5) | manual form/portal; human approval every run | Not recorded | [Step 4](#step-4) |
+| [6. Verify acceptance and calendar the next reporting cycle](#step-6) | human; human approval every run | Not recorded | [Step 5](#step-5) |
 
 <a id="steps"></a>
 
@@ -81,7 +81,7 @@ Collect the reporting period, entity records, reconciled ledger, ownership and p
 
 ### 2. Confirm the reporting framework and obligations
 
-human · human approval required · hard to undo
+human · human approval every run · hard to undo
 
 
 The qualified accounting owner confirms the applicable reporting framework, available filing regimes, audit requirement and deadlines for the actual entity. Keep uncertain eligibility or obligations open and obtain specialist advice before choosing a filing route.
@@ -103,7 +103,7 @@ Prepare statements, notes and reconciliations under the reviewed accounting inst
 
 ### 4. Approve and sign the final accounts
 
-human · human approval required · hard to undo
+human · human approval every run · hard to undo
 
 
 The accountant and authorized corporate decision-makers review the complete statements and required signatures. Retain the approved version and resolve material errors before any submission or distribution.
@@ -114,7 +114,7 @@ The accountant and authorized corporate decision-makers review the complete stat
 
 ### 5. Distribute and file the approved statements
 
-manual form/portal · human approval required · hard to undo
+manual form/portal · human approval every run · hard to undo
 
 
 Authorized operators use the applicable recipient and authority routes for the approved documents. Retain delivery evidence, submission references and any rejection; confirm the separate company-tax reporting work with its owner.
@@ -125,7 +125,7 @@ Authorized operators use the applicable recipient and authority routes for the a
 
 ### 6. Verify acceptance and calendar the next reporting cycle
 
-human · human approval required · hard to undo
+human · human approval every run · hard to undo
 
 
 Reconcile accepted filings and required recipient deliveries to the approved statements. Assign corrections and outstanding obligations, retain evidence, and record the next reporting dates without treating a submission attempt as acceptance.

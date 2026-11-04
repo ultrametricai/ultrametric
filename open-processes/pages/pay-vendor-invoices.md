@@ -46,7 +46,7 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | --- | --- | --- | --- |
 | [1. Pull the outstanding bills](#step-1) | agent-runnable | ~2 min | Entry step |
 | [2. Check account balance](#step-2) | agent-runnable | ~1 min | [Step 1](#step-1) |
-| [3. Create the payment run for approved bills](#step-3) | agent-runnable; approval required | ~5 min | [Step 2](#step-2) |
+| [3. Create the payment run for approved bills](#step-3) | agent-runnable; human approval every run | ~5 min | [Step 2](#step-2) |
 | [4. Post the payment summary to the team channel](#step-4) | agent-runnable | ~1 min | [Step 3](#step-3) |
 
 <a id="steps"></a>
@@ -79,7 +79,7 @@ Compare each funding account’s available balance with the proposed run, fees, 
 
 ### 3. Create the payment run for approved bills
 
-agent-runnable · ~5 min · human approval required · irreversible
+agent-runnable · ~5 min · human approval every run · irreversible
 
 
 Create the payment run from approved bills, matching each invoice to verified beneficiary details, currency, amount and funding account. Investigate changed bank instructions and duplicate warnings. The designated finance approver authorizes the run and the permitted bank user releases it. Link payment references and actual statuses back to the bills, leaving held or failed transfers visible for reconciliation.

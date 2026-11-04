@@ -45,11 +45,11 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Inventory usage and customer commitments](#step-1) | agent-runnable | Not recorded | Entry step |
-| [2. Approve the retirement and customer remedy plan](#step-2) | human; approval required | Not recorded | [Step 1](#step-1) |
+| [2. Approve the retirement and customer remedy plan](#step-2) | human; human approval every run | Not recorded | [Step 1](#step-1) |
 | [3. Prepare migration and recovery materials](#step-3) | agent-runnable | Not recorded | [Step 2](#step-2) |
-| [4. Issue approved notices and offer migration support](#step-4) | manual form/portal; approval required | Not recorded | [Step 3](#step-3) |
-| [5. Verify migration and authorize shutdown](#step-5) | human; approval required | Not recorded | [Step 4](#step-4) |
-| [6. Confirm shutdown and close residual obligations](#step-6) | human; approval required | Not recorded | [Step 5](#step-5) |
+| [4. Issue approved notices and offer migration support](#step-4) | manual form/portal; human approval every run | Not recorded | [Step 3](#step-3) |
+| [5. Verify migration and authorize shutdown](#step-5) | human; human approval every run | Not recorded | [Step 4](#step-4) |
+| [6. Confirm shutdown and close residual obligations](#step-6) | human; human approval every run | Not recorded | [Step 5](#step-5) |
 
 <a id="steps"></a>
 
@@ -70,7 +70,7 @@ Identify affected customers, integrations, contracts, data and internal dependen
 
 ### 2. Approve the retirement and customer remedy plan
 
-human · human approval required · hard to undo
+human · human approval every run · hard to undo
 
 
 Product, legal and support owners review obligations, proposed timing, alternatives and refund or migration options. Resolve commitments and material customer risks before approving an announcement.
@@ -92,7 +92,7 @@ Draft migration instructions, compatibility tests, customer notices and an excep
 
 ### 4. Issue approved notices and offer migration support
 
-manual form/portal · human approval required · hard to undo
+manual form/portal · human approval every run · hard to undo
 
 
 Authorized operators send the reviewed communications through approved channels. Retain delivery records and assign owners to customer objections or unsupported migrations.
@@ -103,7 +103,7 @@ Authorized operators send the reviewed communications through approved channels.
 
 ### 5. Verify migration and authorize shutdown
 
-human · human approval required · hard to undo
+human · human approval every run · hard to undo
 
 
 Responsible owners review remaining users, contractual exceptions and recovery options. Stop the affected shutdown when conditions are unmet; obtain explicit approval for production or data changes.
@@ -114,7 +114,7 @@ Responsible owners review remaining users, contractual exceptions and recovery o
 
 ### 6. Confirm shutdown and close residual obligations
 
-human · human approval required · hard to undo
+human · human approval every run · hard to undo
 
 
 Authorized operators perform the approved shutdown and verify monitoring, billing and data handling outcomes. Keep unresolved support or retention duties assigned and publish only verified completion status.

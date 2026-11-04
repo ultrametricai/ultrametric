@@ -47,10 +47,10 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Inventory data categories and copies](#step-1) | agent-runnable | Not recorded | Entry step |
-| [2. Approve retention periods and exceptions](#step-2) | human; approval required | Not recorded | [Step 1](#step-1) |
-| [3. Configure the approved lifecycle rules](#step-3) | manual form/portal; approval required | Not recorded | [Step 2](#step-2) |
+| [2. Approve retention periods and exceptions](#step-2) | human; human approval every run | Not recorded | [Step 1](#step-1) |
+| [3. Configure the approved lifecycle rules](#step-3) | manual form/portal; human approval every run | Not recorded | [Step 2](#step-2) |
 | [4. Test deletion and restoration edge cases](#step-4) | agent-runnable | Not recorded | [Step 3](#step-3) |
-| [5. Review disposal evidence and exceptions](#step-5) | human; approval required | Not recorded | [Step 4](#step-4) |
+| [5. Review disposal evidence and exceptions](#step-5) | human; human approval every run | Not recorded | [Step 4](#step-4) |
 
 <a id="steps"></a>
 
@@ -71,7 +71,7 @@ Map production systems, document stores, exports, logs and backups to owners and
 
 ### 2. Approve retention periods and exceptions
 
-human · human approval required
+human · human approval every run
 
 
 Legal, privacy and business owners determine applicable duties, customer terms and defensible operational needs. Record legal holds and unresolved requirements instead of assigning a single retention period to all data.
@@ -82,7 +82,7 @@ Legal, privacy and business owners determine applicable duties, customer terms a
 
 ### 3. Configure the approved lifecycle rules
 
-manual form/portal · human approval required · hard to undo
+manual form/portal · human approval every run · hard to undo
 
 
 Authorized administrators implement access, expiration and deletion settings with documented exceptions. Confirm backup and vendor constraints and avoid deleting records subject to a hold or required retention.
@@ -104,7 +104,7 @@ Verify representative data expires or is deleted as intended, including exports 
 
 ### 5. Review disposal evidence and exceptions
 
-human · human approval required
+human · human approval every run
 
 
 Approve and retain the permitted disposal evidence without recreating the deleted personal data. Monitor failures, holds and changed purposes and reassess the schedule with the relevant owners.

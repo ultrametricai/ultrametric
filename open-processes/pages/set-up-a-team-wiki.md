@@ -35,11 +35,11 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
-| [1. Create the team wiki workspace](#step-1) | manual form/portal; approval required | ~10 min | Entry step |
-| [2. Create wiki structure](#step-2) | agent-runnable; approval required | ~5 min | [Step 1](#step-1) |
+| [1. Create the team wiki workspace](#step-1) | manual form/portal; human approval on the first run | ~10 min | Entry step |
+| [2. Create wiki structure](#step-2) | agent-runnable; human approval on the first run | ~5 min | [Step 1](#step-1) |
 | [3. Create meeting notes DB](#step-3) | agent-runnable | ~3 min | [Step 2](#step-2) |
 | [4. Create process templates](#step-4) | agent-runnable | ~5 min | [Step 2](#step-2) |
-| [5. Share with team](#step-5) | agent-runnable; approval required | ~2 min | All: [Step 3](#step-3); [Step 4](#step-4) |
+| [5. Share with team](#step-5) | agent-runnable; standing human approval | ~2 min | All: [Step 3](#step-3); [Step 4](#step-4) |
 
 <a id="steps"></a>
 
@@ -49,7 +49,7 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 
 ### 1. Create the team wiki workspace
 
-manual form/portal · ~10 min · human approval required
+manual form/portal · ~10 min · human approval on the first run
 
 
 Choose the wiki's home within the company's documentation platform, checking whether a suitable workspace already exists. Set a company-controlled administrator, a clear landing page, and default access for ordinary teammates. Identify where restricted finance, personnel, or board material will live before adding content. Name a documentation owner and link the wiki from onboarding so the team has a stable starting point for company knowledge.
@@ -62,7 +62,7 @@ Choose the wiki's home within the company's documentation platform, checking whe
 
 ### 2. Create wiki structure
 
-agent-runnable · ~5 min · human approval required
+agent-runnable · ~5 min · human approval on the first run
 
 
 Organize the wiki around questions teammates repeatedly need answered: how to join, find a decision, operate a service, or run a recurring process. Keep durable instructions separate from meeting history and working drafts. Give each main area a maintainer and make the next level of navigation understandable without knowing who wrote a document. Move existing pages into the structure, repairing important links as you go and leaving a visible queue for unsorted material.
@@ -98,7 +98,7 @@ Document one recurring process the team actually performs, starting with its tri
 
 ### 5. Share with team
 
-agent-runnable · ~2 min · human approval required
+agent-runnable · ~2 min · standing human approval
 
 
 *Follows steps 3 and 4 — both are required first.*

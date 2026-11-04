@@ -52,7 +52,7 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | [4. Calculate burn rate and runway](#step-4) | agent-runnable | ~3 min | All: [Step 1](#step-1); [Step 2](#step-2); [Step 3](#step-3) |
 | [5. Compile board report draft](#step-5) | agent-runnable | ~10 min | [Step 4](#step-4) |
 | [6. Founder reviews and edits](#step-6) | human | ~30 min | [Step 5](#step-5) |
-| [7. Send to board members](#step-7) | agent-runnable; approval required | ~2 min | [Step 6](#step-6) |
+| [7. Send to board members](#step-7) | agent-runnable; human approval every run | ~2 min | [Step 6](#step-6) |
 
 <a id="steps"></a>
 
@@ -135,7 +135,7 @@ Review the draft’s explanation of revenue, spending and runway against the fin
 
 ### 7. Send to board members
 
-agent-runnable · ~2 min · human approval required
+agent-runnable · ~2 min · human approval every run
 
 
 Send the final report through the company’s board distribution channel to the current authorized directors and observers. The designated company sender checks access to the report and restricted appendices before distribution. Include the meeting context and any requested preparation, and resolve individual access failures without opening the wider data room.

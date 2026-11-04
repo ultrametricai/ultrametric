@@ -46,7 +46,7 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | [1. Gather all investor documents](#step-1) | agent-runnable | ~15 min | Entry step |
 | [2. Verify cap table accuracy](#step-2) | human | ~1 h | [Step 1](#step-1) |
 | [3. Review board consents](#step-3) | human | ~30 min | [Step 1](#step-1) |
-| [4. Attorney sign-off](#step-4) | human; approval required; includes waiting | ~1 h | All: [Step 2](#step-2); [Step 3](#step-3) |
+| [4. Attorney sign-off](#step-4) | human; human approval every run; includes waiting | ~1 h | All: [Step 2](#step-2); [Step 3](#step-3) |
 
 <a id="steps"></a>
 
@@ -87,7 +87,7 @@ Match issuances, grants and other relevant equity actions to their corporate app
 
 ### 4. Attorney sign-off
 
-human · ~1 h · async wait · human approval required
+human · ~1 h · async wait · human approval every run
 
 
 *Follows steps 2 and 3 — both are required first.*

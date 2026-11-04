@@ -45,10 +45,10 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Assemble the shipment and customs facts](#step-1) | agent-runnable | Not recorded | Entry step |
-| [2. Confirm registration and the customs procedure](#step-2) | human; approval required | Not recorded | [Step 1](#step-1) |
+| [2. Confirm registration and the customs procedure](#step-2) | human; human approval every run | Not recorded | [Step 1](#step-1) |
 | [3. Prepare the declaration and supporting dossier](#step-3) | agent-runnable | Not recorded | [Step 2](#step-2) |
-| [4. Approve the declaration and representation mandate](#step-4) | human; approval required | Not recorded | [Step 3](#step-3) |
-| [5. Submit and coordinate customs release](#step-5) | human; approval required | Not recorded | [Step 4](#step-4) |
+| [4. Approve the declaration and representation mandate](#step-4) | human; human approval every run | Not recorded | [Step 3](#step-3) |
+| [5. Submit and coordinate customs release](#step-5) | human; human approval every run | Not recorded | [Step 4](#step-4) |
 | [6. Reconcile release and retain the audit record](#step-6) | agent-runnable | Not recorded | [Step 5](#step-5) |
 
 <a id="steps"></a>
@@ -70,7 +70,7 @@ Collect origin, destination, transit route, goods descriptions, quantities, valu
 
 ### 2. Confirm registration and the customs procedure
 
-human · human approval required · hard to undo
+human · human approval every run · hard to undo
 
 
 The customs owner or qualified broker confirms the responsible trader, required registrations, classification, origin, valuation, restrictions and procedure for the actual route. EORI registration alone does not clear goods; Northern Ireland, temporary movements and controlled goods require separate assessment.
@@ -92,7 +92,7 @@ Prepare the declaration data and document checklist under the broker-approved cl
 
 ### 4. Approve the declaration and representation mandate
 
-human · human approval required · hard to undo
+human · human approval every run · hard to undo
 
 
 The accountable trader approves the exact declaration data, broker mandate, payment arrangements and shipment instructions. Resolve missing permits and uncertain classifications before submission; do not infer that a carrier accepts importer responsibility.
@@ -103,7 +103,7 @@ The accountable trader approves the exact declaration data, broker mandate, paym
 
 ### 5. Submit and coordinate customs release
 
-human · human approval required · irreversible
+human · human approval every run · irreversible
 
 
 The authorized declarant or broker submits through the applicable customs route, handles official requests and arranges approved duty or tax payment. Retain declaration references and release or hold messages; physical delivery alone does not establish customs acceptance.

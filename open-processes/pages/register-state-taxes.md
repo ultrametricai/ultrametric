@@ -71,8 +71,8 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Identify required state registrations](#step-1) | agent-runnable | ~5 min | Entry step |
-| [2. Register with state tax authority](#step-2) | manual form/portal; approval required | ~30 min | [Step 1](#step-1) |
-| [3. Register for sales tax (if applicable)](#step-3) | manual form/portal; approval required | ~20 min | [Step 1](#step-1) |
+| [2. Register with state tax authority](#step-2) | manual form/portal; human approval every run | ~30 min | [Step 1](#step-1) |
+| [3. Register for sales tax (if applicable)](#step-3) | manual form/portal; human approval every run | ~20 min | [Step 1](#step-1) |
 | [4. Store registration numbers](#step-4) | agent-runnable | ~2 min | All: [Step 2](#step-2); [Step 3](#step-3) |
 | [5. Register where you have sales-tax nexus](#step-5) | human | ~10 min | Entry step |
 | [6. Assess New York Article 9-A nexus and file Form CT-3](#step-6) | manual form/portal | ~30 min | Entry step |
@@ -99,7 +99,7 @@ List the company’s state registrations, employee work locations, property, sal
 
 ### 2. Register with state tax authority
 
-manual form/portal · ~30 min · human approval required · hard to undo
+manual form/portal · ~30 min · human approval every run · hard to undo
 
 
 Prepare the approved account registration with the correct agency, legal entity, EIN, activity dates, address and contact. Resolve uncertain start dates and complete the declaration and submission through the entity’s authorized filing route. Save the filed application and track agency requests until the account is issued. Store credentials securely and pass the issued account details to the team responsible for its returns or payments.
@@ -112,7 +112,7 @@ Prepare the approved account registration with the correct agency, legal entity,
 
 ### 3. Register for sales tax (if applicable)
 
-manual form/portal · ~20 min · human approval required · hard to undo
+manual form/portal · ~20 min · human approval every run · hard to undo
 
 
 *Follows step 1.*

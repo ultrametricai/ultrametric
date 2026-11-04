@@ -53,9 +53,9 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Translate the signed award into a control register](#step-1) | agent-runnable | Not recorded | Entry step |
-| [2. Approve budget ownership and spending controls](#step-2) | human; approval required | Not recorded | [Step 1](#step-1) |
+| [2. Approve budget ownership and spending controls](#step-2) | human; human approval every run | Not recorded | [Step 1](#step-1) |
 | [3. Reconcile project expenditure and progress](#step-3) | agent-runnable | Not recorded | [Step 2](#step-2) |
-| [4. Authorize reports, claims and change requests](#step-4) | human; approval required | Not recorded | [Step 3](#step-3) |
+| [4. Authorize reports, claims and change requests](#step-4) | human; human approval every run | Not recorded | [Step 3](#step-3) |
 | [5. Close the award and retain audit evidence](#step-5) | agent-runnable | Not recorded | [Step 4](#step-4) |
 
 <a id="steps"></a>
@@ -77,7 +77,7 @@ Extract project dates, approved cost categories, matching funds, procurement rul
 
 ### 2. Approve budget ownership and spending controls
 
-human · human approval required
+human · human approval every run
 
 
 Finance and the project lead establish cost codes, time records, purchasing approval and evidence retention. Resolve restrictions with the sponsor before committing costs whose eligibility is uncertain.
@@ -99,7 +99,7 @@ Match payroll, invoices, procurement and project outputs to the award budget and
 
 ### 4. Authorize reports, claims and change requests
 
-human · human approval required
+human · human approval every run
 
 
 The responsible signatory reviews the narrative, cost claim and certifications before delivery. Request required scope or budget changes through the sponsor process instead of assuming an internal reallocation is permitted.

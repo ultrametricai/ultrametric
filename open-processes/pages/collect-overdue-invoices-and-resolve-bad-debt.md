@@ -47,9 +47,9 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Reconcile the receivable and evidence](#step-1) | agent-runnable | Not recorded | Entry step |
-| [2. Choose a proportionate recovery approach](#step-2) | human; approval required | Not recorded | [Step 1](#step-1) |
-| [3. Contact the debtor through the approved channel](#step-3) | human; approval required | Not recorded | [Step 2](#step-2) |
-| [4. Approve escalation or a payment arrangement](#step-4) | human; approval required | Not recorded | [Step 3](#step-3) |
+| [2. Choose a proportionate recovery approach](#step-2) | human; human approval every run | Not recorded | [Step 1](#step-1) |
+| [3. Contact the debtor through the approved channel](#step-3) | human; human approval every run | Not recorded | [Step 2](#step-2) |
+| [4. Approve escalation or a payment arrangement](#step-4) | human; human approval every run | Not recorded | [Step 3](#step-3) |
 | [5. Apply receipts or approved loss treatment](#step-5) | agent-runnable | Not recorded | [Step 4](#step-4) |
 
 <a id="steps"></a>
@@ -71,7 +71,7 @@ Match the signed terms, invoice, delivery evidence, credits and bank receipts. C
 
 ### 2. Choose a proportionate recovery approach
 
-human · human approval required
+human · human approval every run
 
 
 The account owner reviews the customer relationship and finance exposure. Counsel confirms applicable collection rules and any proposed charges, demand, settlement or enforcement; do not apply one country's interest rules globally.
@@ -82,7 +82,7 @@ The account owner reviews the customer relationship and finance exposure. Counse
 
 ### 3. Contact the debtor through the approved channel
 
-human · human approval required
+human · human approval every run
 
 
 Send the authorized reminder or arrange a discussion using verified billing contacts. Ask for the dispute basis or payment commitment and record responses without threatening unapproved legal action.
@@ -93,7 +93,7 @@ Send the authorized reminder or arrange a discussion using verified billing cont
 
 ### 4. Approve escalation or a payment arrangement
 
-human · human approval required
+human · human approval every run
 
 
 Review the documented response, recovery cost and the customer's ability to pay. Obtain authority for revised terms, service restrictions, collection-agent referral or proceedings and keep those actions within contract and local rules.

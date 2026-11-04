@@ -65,7 +65,7 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | --- | --- | --- | --- |
 | [1. Choose a formation service](#step-1) | human | ~10 min | Entry step |
 | [2. Check name availability](#step-2) | agent-runnable | ~2 min | [Step 1](#step-1) |
-| [3. File Articles of Organization and appoint a registered agent](#step-3) | manual form/portal; approval required | ~20 min | [Step 2](#step-2) |
+| [3. File Articles of Organization and appoint a registered agent](#step-3) | manual form/portal; human approval every run | ~20 min | [Step 2](#step-2) |
 | [4. Receive the stamped Certificate of Formation](#step-4) | human; includes waiting | ~2 d | [Step 3](#step-3) |
 | [5. Draft the operating agreement](#step-5) | agent-runnable | ~30 min | [Step 4](#step-4) |
 | [6. Members sign the operating agreement](#step-6) | human; signature required | ~5 min | [Step 5](#step-5) |
@@ -105,7 +105,7 @@ Search the relevant registry for the proposed name and check the entity suffix a
 
 ### 3. File Articles of Organization and appoint a registered agent
 
-manual form/portal · ~20 min · human approval required · hard to undo
+manual form/portal · ~20 min · human approval every run · hard to undo
 
 | Option | Applies when |
 | --- | --- |
@@ -124,7 +124,7 @@ Prepare the filing for the selected legal form and jurisdiction. For a US LLC, u
 - Sources: [SBA register your business](https://legacy.sba.gov/business-guide/launch-your-business/register-your-business)
 
 Options:
-  - **Default — File Articles of Organization and appoint a registered agent** — manual form/portal · ~20 min · human approval required · hard to undo
+  - **Default — File Articles of Organization and appoint a registered agent** — manual form/portal · ~20 min · human approval every run · hard to undo
 
     File the selected state’s Articles of Organization or equivalent form using the approved name and management structure. Confirm the registered agent’s details and consent, and decide any available effective-date option before the organizer approves submission and fees. Track the application through registry acceptance and retain the issued formation record. Identify follow-up required by that state separately from services included in the formation package.
   - **India - LLP via MCA FiLLiP**

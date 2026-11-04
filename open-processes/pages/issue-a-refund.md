@@ -38,7 +38,7 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Locate the charge and check it against the refund policy](#step-1) | agent-runnable | ~2 min | Entry step |
-| [2. Issue the refund (approval)](#step-2) | agent-runnable; approval required | ~1 min | [Step 1](#step-1) |
+| [2. Issue the refund (approval)](#step-2) | agent-runnable; human approval every run | ~1 min | [Step 1](#step-1) |
 | [3. Notify the customer and log the reason](#step-3) | agent-runnable | ~2 min | [Step 2](#step-2) |
 
 <a id="steps"></a>
@@ -63,7 +63,7 @@ Locate the customer’s payment and check settled amount, currency, previous ref
 
 ### 2. Issue the refund (approval)
 
-agent-runnable · ~1 min · human approval required · irreversible
+agent-runnable · ~1 min · human approval every run · irreversible
 
 
 The authorized refund owner decides the amount against the original charge, policy and any prior refund or dispute. Submit the approved refund through the provider’s supported route and follow its actual status. Pending or failed requests need investigation before retrying. Reconcile the final result to the customer balance and books, checking for duplicate reimbursement when a request’s outcome is uncertain.

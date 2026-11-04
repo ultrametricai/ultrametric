@@ -47,10 +47,10 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Inventory tracking and messaging purposes](#step-1) | agent-runnable | Not recorded | Entry step |
-| [2. Determine the applicable permission model](#step-2) | human; approval required | Not recorded | [Step 1](#step-1) |
-| [3. Configure approved notices and preference controls](#step-3) | manual form/portal; approval required | Not recorded | [Step 2](#step-2) |
+| [2. Determine the applicable permission model](#step-2) | human; human approval every run | Not recorded | [Step 1](#step-1) |
+| [3. Configure approved notices and preference controls](#step-3) | manual form/portal; human approval every run | Not recorded | [Step 2](#step-2) |
 | [4. Test consent withdrawal and preference propagation](#step-4) | agent-runnable | Not recorded | [Step 3](#step-3) |
-| [5. Approve release and monitor changes](#step-5) | human; approval required | Not recorded | [Step 4](#step-4) |
+| [5. Approve release and monitor changes](#step-5) | human; human approval every run | Not recorded | [Step 4](#step-4) |
 
 <a id="steps"></a>
 
@@ -71,7 +71,7 @@ List scripts, cookies, device identifiers, audiences and communication channels.
 
 ### 2. Determine the applicable permission model
 
-human · human approval required
+human · human approval every run
 
 
 Privacy and marketing reviewers assess the actual jurisdictions, audience, purposes and channels. Document required consent, permitted alternatives and opt-out handling without reusing one market's rules globally.
@@ -82,7 +82,7 @@ Privacy and marketing reviewers assess the actual jurisdictions, audience, purpo
 
 ### 3. Configure approved notices and preference controls
 
-manual form/portal · human approval required · hard to undo
+manual form/portal · human approval every run · hard to undo
 
 
 Authorized operators implement the reviewed choices, suppression lists and tracking configuration. Avoid loading blocked components before the approved permission and retain the configuration version.
@@ -104,7 +104,7 @@ Exercise first visit, acceptance, refusal, withdrawal and returning-user cases. 
 
 ### 5. Approve release and monitor changes
 
-human · human approval required
+human · human approval every run
 
 
 The accountable owners review test evidence and unresolved exceptions before launch. Reassess new scripts, channels or purposes and keep support and privacy-request routes available.
