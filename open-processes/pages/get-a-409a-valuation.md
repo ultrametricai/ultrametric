@@ -63,7 +63,7 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | --- | --- | --- | --- |
 | [1. Compile financial statements](#step-1) | agent-runnable | ~10 min | Entry step |
 | [2. Gather cap table snapshot](#step-2) | agent-runnable | ~5 min | Entry step |
-| [3. Initiate 409A on Carta](#step-3) | manual form/portal; human approval on the first run | ~15 min | All: [Step 1](#step-1); [Step 2](#step-2) |
+| [3. Initiate 409A on Carta](#step-3) | manual form/portal; human approval every run | ~15 min | All: [Step 1](#step-1); [Step 2](#step-2) |
 | [4. Answer valuation questionnaire](#step-4) | human | ~1 h | [Step 3](#step-3) |
 | [5. Wait for valuation report (2-3 weeks)](#step-5) | human; includes waiting | ~10 d | [Step 4](#step-4) |
 | [6. Review and accept valuation](#step-6) | human; human approval every run | ~30 min | [Step 5](#step-5) |
@@ -102,7 +102,7 @@ Export capitalization at the proposed valuation date, including share classes, i
 
 ### 3. Initiate 409A on Carta
 
-manual form/portal · ~15 min · human approval on the first run
+manual form/portal · ~15 min · human approval every run
 
 | Option | Applies when |
 | --- | --- |
@@ -119,7 +119,7 @@ Choose the valuation engagement for the issuer, security and intended transactio
 - Sources: [26 CFR 1.409A-1](https://www.ecfr.gov/current/title-26/chapter-I/subchapter-A/part-1/section-1.409A-1)
 
 Options:
-  - **Default — Initiate 409A on Carta** — manual form/portal · ~15 min · human approval on the first run
+  - **Default — Initiate 409A on Carta** — manual form/portal · ~15 min · human approval every run
 
     Scope a US option-valuation engagement around the stock class, valuation date and planned grants. Determine what financial, operating and capitalization information the provider needs and how the company expects to use the report. Finance commissions the agreed work and supplies the relevant private records, with questions about regulatory reliance resolved by the appropriate adviser.
   - **UK - EMI valuation with HMRC**
