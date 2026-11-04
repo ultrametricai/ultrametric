@@ -9,7 +9,7 @@ and the verdict is untouched.
 
 | product | flagged cells | evidence appended | still absent | bot-walled |
 |---------|--------------:|------------------:|-------------:|-----------:|
-| gusto | 56 | 20 | 26 | 10 |
+| gusto | 56 | 20 | 16 | 20 |
 | vercel | 26 | 22 | 4 | 0 |
 | vue | 29 | 21 | 8 | 0 |
 | claude | 24 | 20 | 4 | 0 |
