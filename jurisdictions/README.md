@@ -39,7 +39,9 @@ foreign qualification, annual-report filing, payroll and sales-tax registration)
 `lib/vendorState.ts`, published schema `schemas/vendor-state.schema.json`. Evidence only,
 deliberately not a score. Each `state` code must resolve in `registry.json`, the source
 must be the vendor's own state page or availability table, `price` comes only from the
-vendor's own pricing page, and unknown coverage means no row:
+vendor's own pricing page, and unknown coverage means no row. When a row's note includes a
+material limitation documented on a second first-party page, list it in the optional
+`supportingSourceUrls` array rather than attributing both claims to `sourceUrl`:
 
 ```json
 { "productId": "stripe-atlas", "arenaId": "legal-ops", "state": "US-DE", "service": "formation",
