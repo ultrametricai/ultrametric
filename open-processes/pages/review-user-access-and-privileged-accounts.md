@@ -47,9 +47,9 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Collect current identities and entitlements](#step-1) | agent-runnable | Not recorded | Entry step |
-| [2. Validate business need with accountable owners](#step-2) | human; approval required | Not recorded | [Step 1](#step-1) |
-| [3. Approve removals and controlled exceptions](#step-3) | human; approval required | Not recorded | [Step 2](#step-2) |
-| [4. Apply and verify the authorized changes](#step-4) | manual form/portal; approval required | Not recorded | [Step 3](#step-3) |
+| [2. Validate business need with accountable owners](#step-2) | human; human approval every run | Not recorded | [Step 1](#step-1) |
+| [3. Approve removals and controlled exceptions](#step-3) | human; human approval every run | Not recorded | [Step 2](#step-2) |
+| [4. Apply and verify the authorized changes](#step-4) | manual form/portal; human approval every run | Not recorded | [Step 3](#step-3) |
 | [5. Reconcile evidence and the next review](#step-5) | agent-runnable | Not recorded | [Step 4](#step-4) |
 
 <a id="steps"></a>
@@ -71,7 +71,7 @@ Export authorized account, role, service-account and privileged-access informati
 
 ### 2. Validate business need with accountable owners
 
-human · human approval required
+human · human approval every run
 
 
 Each system or data owner checks whether access is still needed at its current level. Identify departed users, shared accounts, dormant access and temporary privileges that have no approved expiry.
@@ -82,7 +82,7 @@ Each system or data owner checks whether access is still needed at its current l
 
 ### 3. Approve removals and controlled exceptions
 
-human · human approval required
+human · human approval every run
 
 
 The designated approvers review proposed changes, operational dependencies and emergency access. Assign owners and expiry dates to exceptions rather than allowing a reviewer to approve their own unnecessary privilege.
@@ -93,7 +93,7 @@ The designated approvers review proposed changes, operational dependencies and e
 
 ### 4. Apply and verify the authorized changes
 
-manual form/portal · human approval required · hard to undo
+manual form/portal · human approval every run · hard to undo
 
 
 Administrators remove or adjust approved access and rotate exposed credentials through the established process. Test critical service accounts and preserve company-controlled recovery paths.

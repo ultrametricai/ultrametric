@@ -55,8 +55,8 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | [1. Confirm the audience and reporting commitments](#step-1) | agent-runnable | Not recorded | Entry step |
 | [2. Assemble reconciled metrics and material developments](#step-2) | agent-runnable | Not recorded | [Step 1](#step-1) |
 | [3. Draft the update and specific requests](#step-3) | agent-runnable | Not recorded | [Step 2](#step-2) |
-| [4. Approve the content and recipients](#step-4) | human; approval required | Not recorded | [Step 3](#step-3) |
-| [5. Deliver the approved update and assign responses](#step-5) | human; approval required | Not recorded | [Step 4](#step-4) |
+| [4. Approve the content and recipients](#step-4) | human; human approval every run | Not recorded | [Step 3](#step-3) |
+| [5. Deliver the approved update and assign responses](#step-5) | human; human approval every run | Not recorded | [Step 4](#step-4) |
 
 <a id="steps"></a>
 
@@ -99,7 +99,7 @@ Summarize progress against prior commitments, setbacks, risks and the next prior
 
 ### 4. Approve the content and recipients
 
-human · human approval required
+human · human approval every run
 
 
 The founder and designated finance or legal reviewer check accuracy, material omissions, confidentiality and recipient permissions. Resolve sensitive issues through the appropriate governance process before distribution.
@@ -110,7 +110,7 @@ The founder and designated finance or legal reviewer check accuracy, material om
 
 ### 5. Deliver the approved update and assign responses
 
-human · human approval required
+human · human approval every run
 
 
 Send the approved version through the agreed channel and retain the recipient list privately. Track introductions, questions and commitments with owners rather than treating delivery as completion of the follow-up work.

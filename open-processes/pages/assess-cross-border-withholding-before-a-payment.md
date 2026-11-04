@@ -53,9 +53,9 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Assemble the payment and counterparty facts](#step-1) | agent-runnable | Not recorded | Entry step |
-| [2. Determine the applicable treatment with local advisers](#step-2) | human; approval required | Not recorded | [Step 1](#step-1) |
+| [2. Determine the applicable treatment with local advisers](#step-2) | human; human approval every run | Not recorded | [Step 1](#step-1) |
 | [3. Prepare the payment calculation and documentation pack](#step-3) | agent-runnable | Not recorded | [Step 2](#step-2) |
-| [4. Approve payment and any authority remittance](#step-4) | human; approval required | Not recorded | [Step 3](#step-3) |
+| [4. Approve payment and any authority remittance](#step-4) | human; human approval every run | Not recorded | [Step 3](#step-3) |
 | [5. Reconcile certificates and reporting obligations](#step-5) | agent-runnable | Not recorded | [Step 4](#step-4) |
 
 <a id="steps"></a>
@@ -77,7 +77,7 @@ Collect the contract, invoice, services or rights supplied, payer and payee enti
 
 ### 2. Determine the applicable treatment with local advisers
 
-human · human approval required
+human · human approval every run
 
 
 Tax advisers assess source, payment character, domestic rules, treaty eligibility and required evidence for the actual payment. Leave missing documentation and conflicting positions unresolved; do not infer a universal rate or exemption.
@@ -99,7 +99,7 @@ Apply the approved treatment to the proposed amount and currency. Separate gross
 
 ### 4. Approve payment and any authority remittance
 
-human · human approval required
+human · human approval every run
 
 
 The designated approvers verify the payee, tax treatment and amounts before authorized operators release funds. Retain bank evidence and any separately required authority submission or remittance receipts.

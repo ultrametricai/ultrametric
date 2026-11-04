@@ -47,9 +47,9 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Inventory data collection and storage points](#step-1) | agent-runnable | Not recorded | Entry step |
-| [2. Confirm purposes, roles and applicable requirements](#step-2) | human; approval required | Not recorded | [Step 1](#step-1) |
+| [2. Confirm purposes, roles and applicable requirements](#step-2) | human; human approval every run | Not recorded | [Step 1](#step-1) |
 | [3. Map recipients, access and retention](#step-3) | agent-runnable | Not recorded | [Step 2](#step-2) |
-| [4. Approve remediation and the processing record](#step-4) | human; approval required | Not recorded | [Step 3](#step-3) |
+| [4. Approve remediation and the processing record](#step-4) | human; human approval every run | Not recorded | [Step 3](#step-3) |
 | [5. Reconcile the inventory with ongoing changes](#step-5) | agent-runnable | Not recorded | [Step 4](#step-4) |
 
 <a id="steps"></a>
@@ -71,7 +71,7 @@ List product, sales, HR, analytics and support systems, data categories and coll
 
 ### 2. Confirm purposes, roles and applicable requirements
 
-human · human approval required
+human · human approval every run
 
 
 Privacy reviewers identify controller or processor roles, purposes, relevant jurisdictions and required records. Record uncertainties and distinguish a technical data flow from a lawful basis or permission.
@@ -93,7 +93,7 @@ Trace transfers, internal access, subprocessors and deletion mechanisms. Identif
 
 ### 4. Approve remediation and the processing record
 
-human · human approval required
+human · human approval every run
 
 
 The responsible owners review undocumented or excessive processing, access and retention. Route high-risk activity to a privacy-impact assessment and approve changes before production implementation.

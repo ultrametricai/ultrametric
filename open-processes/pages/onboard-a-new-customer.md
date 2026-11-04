@@ -47,9 +47,9 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Reconcile the sales-to-delivery handoff](#step-1) | agent-runnable | Not recorded | Entry step |
-| [2. Agree the implementation plan](#step-2) | human; approval required | Not recorded | [Step 1](#step-1) |
-| [3. Configure approved access and implementation settings](#step-3) | manual form/portal; approval required | Not recorded | [Step 2](#step-2) |
-| [4. Guide users to the first agreed outcome](#step-4) | human; approval required | Not recorded | [Step 3](#step-3) |
+| [2. Agree the implementation plan](#step-2) | human; human approval every run | Not recorded | [Step 1](#step-1) |
+| [3. Configure approved access and implementation settings](#step-3) | manual form/portal; human approval every run | Not recorded | [Step 2](#step-2) |
+| [4. Guide users to the first agreed outcome](#step-4) | human; human approval every run | Not recorded | [Step 3](#step-3) |
 | [5. Verify acceptance and transfer ongoing ownership](#step-5) | agent-runnable | Not recorded | [Step 4](#step-4) |
 
 <a id="steps"></a>
@@ -71,7 +71,7 @@ Collect the signed scope, customer sponsor, intended users, promised outcomes, b
 
 ### 2. Agree the implementation plan
 
-human · human approval required
+human · human approval every run
 
 
 The customer and delivery owner confirm milestones, responsibilities, data access, training and acceptance criteria. Route additional scope or sensitive integrations through their approval processes.
@@ -82,7 +82,7 @@ The customer and delivery owner confirm milestones, responsibilities, data acces
 
 ### 3. Configure approved access and implementation settings
 
-manual form/portal · human approval required · hard to undo
+manual form/portal · human approval every run · hard to undo
 
 
 Authorized operators provision the contracted features and least-privilege roles. Test imports or integrations in an appropriate environment and retain evidence of any required customer authorization.
@@ -93,7 +93,7 @@ Authorized operators provision the contracted features and least-privilege roles
 
 ### 4. Guide users to the first agreed outcome
 
-human · human approval required
+human · human approval every run
 
 
 Deliver the agreed training and supervised workflow with the customer. Record actual task completion and user feedback rather than marking onboarding complete because an invitation was sent.

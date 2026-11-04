@@ -36,11 +36,11 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
-| [1. Create your code hosting organization](#step-1) | manual form/portal; approval required | ~5 min | Entry step |
-| [2. Create repositories](#step-2) | agent-runnable; approval required | ~5 min | [Step 1](#step-1) |
-| [3. Configure branch protection](#step-3) | agent-runnable; approval required | ~5 min | [Step 2](#step-2) |
-| [4. Create teams and set access](#step-4) | agent-runnable; approval required | ~5 min | [Step 2](#step-2) |
-| [5. Invite team members](#step-5) | agent-runnable; approval required | ~3 min | [Step 4](#step-4) |
+| [1. Create your code hosting organization](#step-1) | manual form/portal; human approval on the first run | ~5 min | Entry step |
+| [2. Create repositories](#step-2) | agent-runnable; human approval on the first run | ~5 min | [Step 1](#step-1) |
+| [3. Configure branch protection](#step-3) | agent-runnable; human approval on the first run | ~5 min | [Step 2](#step-2) |
+| [4. Create teams and set access](#step-4) | agent-runnable; human approval on the first run | ~5 min | [Step 2](#step-2) |
+| [5. Invite team members](#step-5) | agent-runnable; human approval above a threshold | ~3 min | [Step 4](#step-4) |
 
 <a id="steps"></a>
 
@@ -50,7 +50,7 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 
 ### 1. Create your code hosting organization
 
-manual form/portal · ~5 min · human approval required
+manual form/portal · ~5 min · human approval on the first run
 
 
 Use an existing company organization where appropriate; otherwise create one within the engineering owner's account and spending authority. Establish company-controlled billing and recovery, with more than one authorized person able to maintain administration. Set repository-creation and member access defaults before adding code. Verify that an ordinary contributor can complete the intended work with the assigned role, and test owner access separately.
@@ -65,7 +65,7 @@ Use an existing company organization where appropriate; otherwise create one wit
 
 ### 2. Create repositories
 
-agent-runnable · ~5 min · human approval required
+agent-runnable · ~5 min · human approval on the first run
 
 
 Create repositories for the actual code boundaries, with the visibility and ownership authorized for each. Check the initial files and imported history for secrets and private material before publishing them. Add the ignore rules and setup commands a new contributor needs, then clone into a clean location and try those commands. Fix missing tracked files or undocumented configuration before treating the repository as ready for another developer.
@@ -78,7 +78,7 @@ Create repositories for the actual code boundaries, with the visibility and owne
 
 ### 3. Configure branch protection
 
-agent-runnable · ~5 min · human approval required
+agent-runnable · ~5 min · human approval on the first run
 
 
 Protect the branches used for releases with the team's required reviews and checks. Inspect bypass rights as carefully as the main rule and confirm the chosen repository plan supports the controls. Apply the maintainer's agreed policy, then use test pull requests to check a failed job, a missing review and a normal approved change. Match required check names to real jobs so an accidental mismatch does not block every merge.
@@ -92,7 +92,7 @@ Protect the branches used for releases with the team's required reviews and chec
 
 ### 4. Create teams and set access
 
-agent-runnable · ~5 min · human approval required
+agent-runnable · ~5 min · human approval on the first run
 
 
 *Follows step 2.*
@@ -106,7 +106,7 @@ Map contribution, administration and external collaboration to teams with the ne
 
 ### 5. Invite team members
 
-agent-runnable · ~3 min · human approval required
+agent-runnable · ~3 min · human approval above a threshold
 
 
 Match each invitation to the approved person's account, team and access duration. Reuse existing authorization for those invitations; resolve only changed recipients, roles or external access with the team owner. Track acceptance and identity mismatches, then have a new member try the expected repository and contribution path. Check their effective permissions after joining, particularly whether inherited membership grants unintended administration.

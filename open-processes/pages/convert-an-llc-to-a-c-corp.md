@@ -68,11 +68,11 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | --- | --- | --- | --- |
 | [1. Assess whether and when to convert](#step-1) | human | ~30 min | Entry step |
 | [2. Get tax and legal advice on the conversion](#step-2) | human; includes waiting | ~2 d | [Step 1](#step-1) |
-| [3. Prepare the legal-form change and governing documents](#step-3) | manual form/portal; approval required | ~30 min | [Step 2](#step-2) |
+| [3. Prepare the legal-form change and governing documents](#step-3) | manual form/portal; human approval every run | ~30 min | [Step 2](#step-2) |
 | [4. Owners sign the legal-form change approvals](#step-4) | human; signature required | ~10 min | [Step 3](#step-3) |
-| [5. Submit the legal-form change or business-transfer filings](#step-5) | manual form/portal; approval required | ~20 min | [Step 4](#step-4) |
+| [5. Submit the legal-form change or business-transfer filings](#step-5) | manual form/portal; human approval every run | ~20 min | [Step 4](#step-4) |
 | [6. Receive the accepted legal-form change documents](#step-6) | human; includes waiting | ~2 d | [Step 5](#step-5) |
-| [7. Adopt the governing documents and record the resulting equity](#step-7) | manual form/portal; approval required | ~20 min | [Step 6](#step-6) |
+| [7. Adopt the governing documents and record the resulting equity](#step-7) | manual form/portal; human approval every run | ~20 min | [Step 6](#step-6) |
 | [8. Owners sign the required equity agreements](#step-8) | human; signature required | ~5 min | [Step 7](#step-7) |
 | [9. Sign any tax election the jurisdiction requires on the founder stock issuance](#step-9) | human; signature required | ~5 min | [Step 8](#step-8) |
 | [10. File the tax election the jurisdiction requires on the stock issuance, where one exists](#step-10) | manual form/portal; includes waiting | ~15 min | [Step 9](#step-9) |
@@ -104,7 +104,7 @@ Review the operating agreement, ownership ledger, returns, balance sheet, materi
 
 ### 3. Prepare the legal-form change and governing documents
 
-manual form/portal · ~30 min · human approval required
+manual form/portal · ~30 min · human approval every run
 
 
 Prepare the legal-form change, incorporation or business-transfer documents selected by local counsel. Confirm whether the entity continues or a new entity receives the business, and identify the approvals, registrations and tax work before signing.
@@ -125,7 +125,7 @@ Present the final conversion plan with the ownership changes, effective timing a
 
 ### 5. Submit the legal-form change or business-transfer filings
 
-manual form/portal · ~20 min · human approval required · hard to undo
+manual form/portal · ~20 min · human approval every run · hard to undo
 
 
 Submit only the filings required for the approved local transaction. Confirm the responsible signatories, identity continuity, effective sequence and tax treatment with local counsel. Retain acceptance evidence before treating the transaction as complete.
@@ -150,7 +150,7 @@ Obtain the accepted conversion and incorporation records from the relevant regis
 
 ### 7. Adopt the governing documents and record the resulting equity
 
-manual form/portal · ~20 min · human approval required
+manual form/portal · ~20 min · human approval every run
 
 
 Adopt the required governing documents and record the equity resulting from the approved transaction. Follow local counsel’s issuance, subscription and registration sequence.

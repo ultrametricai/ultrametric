@@ -47,9 +47,9 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Assess business impacts and dependencies](#step-1) | agent-runnable | Not recorded | Entry step |
-| [2. Agree continuity priorities and authority](#step-2) | human; approval required | Not recorded | [Step 1](#step-1) |
+| [2. Agree continuity priorities and authority](#step-2) | human; human approval every run | Not recorded | [Step 1](#step-1) |
 | [3. Prepare alternate operating and communication plans](#step-3) | agent-runnable | Not recorded | [Step 2](#step-2) |
-| [4. Exercise a realistic disruption scenario](#step-4) | human; approval required | Not recorded | [Step 3](#step-3) |
+| [4. Exercise a realistic disruption scenario](#step-4) | human; human approval every run | Not recorded | [Step 3](#step-3) |
 | [5. Close gaps and define return-to-normal checks](#step-5) | agent-runnable | Not recorded | [Step 4](#step-4) |
 
 <a id="steps"></a>
@@ -71,7 +71,7 @@ List critical customer, payment, workforce and supplier activities and the effec
 
 ### 2. Agree continuity priorities and authority
 
-human · human approval required
+human · human approval every run
 
 
 Leadership selects tolerable disruption, minimum operating capability, decision owners and escalation routes. Review safety, legal, financial and customer constraints before choosing workarounds.
@@ -93,7 +93,7 @@ Document approved manual or alternate workflows, contact routes, supplier option
 
 ### 4. Exercise a realistic disruption scenario
 
-human · human approval required
+human · human approval every run
 
 
 Run a tabletop or approved practical test with the relevant owners and alternates. Capture decisions, unavailable dependencies and customer or staff communication issues without causing an unapproved production interruption.

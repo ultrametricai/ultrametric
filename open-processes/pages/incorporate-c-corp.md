@@ -94,11 +94,11 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | --- | --- | --- | --- |
 | [1. Choose formation service](#step-1) | human | ~10 min | Entry step |
 | [2. Check name availability](#step-2) | agent-runnable | ~2 min | [Step 1](#step-1) |
-| [3. Submit incorporation filing](#step-3) | manual form/portal; approval required | ~30 min | [Step 2](#step-2) |
+| [3. Submit incorporation filing](#step-3) | manual form/portal; human approval every run | ~30 min | [Step 2](#step-2) |
 | [4. Receive the accepted formation documents](#step-4) | human; includes waiting | ~2 d | [Step 3](#step-3) |
-| [5. Prepare the governing documents and initial resolutions](#step-5) | manual form/portal; approval required | ~15 min | [Step 4](#step-4) |
+| [5. Prepare the governing documents and initial resolutions](#step-5) | manual form/portal; standing human approval | ~15 min | [Step 4](#step-4) |
 | [6. Sign the governing documents and initial corporate approvals](#step-6) | human; signature required | ~5 min | [Step 5](#step-5) |
-| [7. Prepare the founder equity issuance](#step-7) | manual form/portal; approval required | ~10 min | [Step 6](#step-6) |
+| [7. Prepare the founder equity issuance](#step-7) | manual form/portal; human approval every run | ~10 min | [Step 6](#step-6) |
 | [8. Founders sign the equity subscription or purchase agreements](#step-8) | human; signature required | ~5 min | [Step 7](#step-7) |
 | [9. Sign any tax election the jurisdiction requires on the founder stock issuance](#step-9) | human; signature required | ~5 min | [Step 8](#step-8) |
 | [10. File the tax election the jurisdiction requires on the stock issuance, where one exists](#step-10) | manual form/portal; includes waiting | ~15 min | [Step 9](#step-9) |
@@ -156,7 +156,7 @@ Have the exact proposed legal name, including its corporate ending, and a few al
 
 ### 3. Submit incorporation filing
 
-manual form/portal · ~30 min · human approval required · hard to undo
+manual form/portal · ~30 min · human approval every run · hard to undo
 
 | Option | Applies when |
 | --- | --- |
@@ -176,7 +176,7 @@ Choose the jurisdiction and legal form before preparing the filing. Those choice
 - Sources: [Companies House registration](https://www.gov.uk/limited-company-formation/register-your-company) · [Business.gov.nl starting a business](https://business.gov.nl/starting-your-business/preparations/step-by-step-plan-how-to-start-a-business-in-the-netherlands/) · [Companies Registration Office: registering a company](https://cro.ie/Registration/Company/) · [Spain public administration: create a company](https://administracion.gob.es/tu-espacio-europeo/derechos-obligaciones/empresas/inicio-gestion-cierre/registro-cambio-cierre/crear) · [Verksamt starting a limited company](https://verksamt.se/en/setting-up/choose-business-type/limited-company) · [SECO how to register a company](https://www.kmu.admin.ch/en/how-to-register-a-company) · [JETRO setting up business](https://www.jetro.go.jp/en/invest/setting_up/) · [Brazil register an entity in CNPJ](https://www.gov.br/pt-br/servicos/inscrever-no-cnpj) · [UAE government mainland business setup](https://u.ae/en/information-and-services/business/doing-business/doing-business-on-the-mainland/steps-to-start-a-business-on-the-mainland) · [Delaware incorporation and bylaws law](https://delcode.delaware.gov/title8/c001/sc01/index.html) · [Delaware stock authorization and issuance](https://delcode.delaware.gov/title8/c001/sc05/index.html)
 
 Options:
-  - **United States — Delaware Division of Corporations** — manual form/portal · ~30 min · human approval required · hard to undo
+  - **United States — Delaware Division of Corporations** — manual form/portal · ~30 min · human approval every run · hard to undo
 
     Review the draft Certificate of Incorporation against the agreed formation details and Delaware’s required contents: legal name, registered agent and Delaware office, business purpose, authorized shares and par value or no-par designation, incorporator details, and any required class terms or initial-director details. Confirm the intended share authorization; allocating stock to founders happens separately. Approve the final certificate, arrange for the incorporator’s signature and submission through the chosen provider, and confirm the required fee arrangements. Retain submission evidence for follow-up and receipt of the filed certificate.
   - **India - MCA SPICe+ filing**
@@ -260,7 +260,7 @@ Collect the Certificate of Incorporation bearing Delaware’s “Filed” endors
 
 ### 5. Prepare the governing documents and initial resolutions
 
-manual form/portal · ~15 min · human approval required
+manual form/portal · ~15 min · standing human approval
 
 
 Prepare the governing documents and initial approvals required by the selected entity form and jurisdiction. Have local counsel confirm the documents and decision-makers before signing.
@@ -284,7 +284,7 @@ Review the final bylaws and organizational consents together so the company name
 
 ### 7. Prepare the founder equity issuance
 
-manual form/portal · ~10 min · human approval required
+manual form/portal · ~10 min · human approval every run
 
 
 Prepare the founder equity issuance for the selected entity form, approvals and agreed ownership. Confirm subscription or purchase terms with local counsel before execution.

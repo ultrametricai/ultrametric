@@ -51,9 +51,9 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | [3. Generate P&L from QBO](#step-3) | agent-runnable | ~3 min | Entry step |
 | [4. Calculate KPIs and burn rate](#step-4) | agent-runnable | ~10 min | All: [Step 1](#step-1); [Step 2](#step-2); [Step 3](#step-3) |
 | [5. Draft board deck](#step-5) | agent-runnable | ~30 min | [Step 4](#step-4) |
-| [6. Founder adds strategy and asks](#step-6) | human; approval required | ~3 h | [Step 5](#step-5) |
-| [7. Publish to Notion board room](#step-7) | agent-runnable; approval required | ~5 min | [Step 6](#step-6) |
-| [8. Send to board members](#step-8) | agent-runnable; approval required | ~5 min | [Step 7](#step-7) |
+| [6. Founder adds strategy and asks](#step-6) | human; human approval every run | ~3 h | [Step 5](#step-5) |
+| [7. Publish to Notion board room](#step-7) | agent-runnable; standing human approval | ~5 min | [Step 6](#step-6) |
+| [8. Send to board members](#step-8) | agent-runnable; human approval every run | ~5 min | [Step 7](#step-7) |
 
 <a id="steps"></a>
 
@@ -127,7 +127,7 @@ Build the deck around progress against the last plan, financial performance, mat
 
 ### 6. Founder adds strategy and asks
 
-human · ~3 h · human approval required
+human · ~3 h · human approval every run
 
 
 Add the strategic choices management wants the board to discuss, with recommendations, trade-offs and specific requests for help or authority. Check proposed commitments against the cash plan and resolve inconsistent claims with their owners. Decide which sensitive information the board needs and settle the narrative around the decisions the meeting should produce.
@@ -136,7 +136,7 @@ Add the strategic choices management wants the board to discuss, with recommenda
 
 ### 7. Publish to Notion board room
 
-agent-runnable · ~5 min · human approval required
+agent-runnable · ~5 min · standing human approval
 
 
 The board-workspace owner publishes the final packet with the agenda and meeting version clearly identified. Check page, attachment and inherited permissions for directors and authorized observers, testing access to the actual files. Keep prior meeting packets distinguishable so readers can tell which materials accompanied each discussion.
@@ -147,7 +147,7 @@ The board-workspace owner publishes the final packet with the agenda and meeting
 
 ### 8. Send to board members
 
-agent-runnable · ~5 min · human approval required
+agent-runnable · ~5 min · human approval every run
 
 
 The designated board sender distributes meeting details, the agenda and packet link to the authorized directors, observers and advisers. Identify any preparation or advance decision requested, and restrict sensitive attachments to their intended audience. Resolve access problems individually and collect substantive questions for the meeting owner.

@@ -38,7 +38,7 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Collect payee details and amount](#step-1) | agent-runnable | ~3 min | Entry step |
-| [2. Create the wire/ACH payment in the bank](#step-2) | agent-runnable; approval required | ~2 min | [Step 1](#step-1) |
+| [2. Create the wire/ACH payment in the bank](#step-2) | agent-runnable; human approval every run | ~2 min | [Step 1](#step-1) |
 | [3. Approver releases the payment in the banking dashboard](#step-3) | human | ~2 min | [Step 2](#step-2) |
 | [4. Confirm the payment settled and reconcile it](#step-4) | agent-runnable; includes waiting | ~2 min | [Step 3](#step-3) |
 
@@ -59,7 +59,7 @@ Identify the obligation, payee, amount, currency and intended payment date from 
 
 ### 2. Create the wire/ACH payment in the bank
 
-agent-runnable · ~2 min · human approval required
+agent-runnable · ~2 min · human approval every run
 
 | Option | Applies when |
 | --- | --- |
@@ -74,7 +74,7 @@ Compare the available methods for the beneficiary and currency using the provide
 - Ranked market: [startup-banking](../../open-rankings/startup-banking)
 
 Options:
-  - **Default — Create the wire/ACH payment in the bank** — agent-runnable · ~2 min · human approval required
+  - **Default — Create the wire/ACH payment in the bank** — agent-runnable · ~2 min · human approval every run
 
     Enter the verified beneficiary and account details for the chosen wire or ACH route. Select the funding account and check the bank’s displayed fee, delivery estimate and total against the obligation. Use a reference the payee can reconcile, then leave the completed bank instruction in its draft or pending-approval state for the authorized release step.
   - **Cross-border payout**

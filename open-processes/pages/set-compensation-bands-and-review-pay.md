@@ -48,8 +48,8 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | --- | --- | --- | --- |
 | [1. Inventory roles and current compensation](#step-1) | agent-runnable | Not recorded | Entry step |
 | [2. Build a documented comparison and cost model](#step-2) | agent-runnable | Not recorded | [Step 1](#step-1) |
-| [3. Review fairness and applicable local constraints](#step-3) | human; approval required | Not recorded | [Step 2](#step-2) |
-| [4. Approve bands and individual exceptions](#step-4) | human; approval required | Not recorded | [Step 3](#step-3) |
+| [3. Review fairness and applicable local constraints](#step-3) | human; human approval every run | Not recorded | [Step 2](#step-2) |
+| [4. Approve bands and individual exceptions](#step-4) | human; human approval every run | Not recorded | [Step 3](#step-3) |
 | [5. Record changes and monitor the framework](#step-5) | agent-runnable | Not recorded | [Step 4](#step-4) |
 
 <a id="steps"></a>
@@ -82,7 +82,7 @@ Compare relevant market evidence and internal role scope, and model payroll cost
 
 ### 3. Review fairness and applicable local constraints
 
-human · human approval required
+human · human approval every run
 
 
 HR, finance and advisers assess pay equity, local minimums, disclosure duties and contractual constraints. Investigate unexplained differences and distinguish a performance assessment from a protected personal characteristic.
@@ -93,7 +93,7 @@ HR, finance and advisers assess pay equity, local minimums, disclosure duties an
 
 ### 4. Approve bands and individual exceptions
 
-human · human approval required
+human · human approval every run
 
 
 Leadership approves the framework, budget, exception authority and review cadence. Obtain appropriate approvals before offering, changing or promising compensation or equity to a person.

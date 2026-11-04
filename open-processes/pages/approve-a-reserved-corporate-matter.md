@@ -53,9 +53,9 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Describe the proposed action and commitments](#step-1) | agent-runnable | Not recorded | Entry step |
-| [2. Identify the required decision makers](#step-2) | human; approval required | Not recorded | [Step 1](#step-1) |
+| [2. Identify the required decision makers](#step-2) | human; human approval every run | Not recorded | [Step 1](#step-1) |
 | [3. Assemble the decision materials](#step-3) | agent-runnable | Not recorded | [Step 2](#step-2) |
-| [4. Obtain and record the approvals](#step-4) | human; approval required | Not recorded | [Step 3](#step-3) |
+| [4. Obtain and record the approvals](#step-4) | human; human approval every run | Not recorded | [Step 3](#step-3) |
 | [5. Verify conditions before the execution handoff](#step-5) | agent-runnable | Not recorded | [Step 4](#step-4) |
 
 <a id="steps"></a>
@@ -77,7 +77,7 @@ Prepare the transaction terms, financial exposure, counterparties and intended t
 
 ### 2. Identify the required decision makers
 
-human · human approval required
+human · human approval every run
 
 
 Have counsel check governing documents, shareholder agreements, financing covenants and applicable rules. Record approval thresholds, conflicts and any notice or meeting requirements for the actual matter.
@@ -99,7 +99,7 @@ Draft a clear recommendation, alternatives, risks, supporting calculations and p
 
 ### 4. Obtain and record the approvals
 
-human · human approval required
+human · human approval every run
 
 
 Run the agreed meeting or written-consent process with the required participants. Record recusals, conditions and executed decisions; a favorable discussion alone does not authorize the transaction.

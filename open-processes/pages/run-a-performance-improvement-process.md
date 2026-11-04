@@ -47,10 +47,10 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Assemble factual performance evidence](#step-1) | agent-runnable | Not recorded | Entry step |
-| [2. Assess causes and the appropriate process](#step-2) | human; approval required | Not recorded | [Step 1](#step-1) |
-| [3. Agree a specific improvement and support plan](#step-3) | human; approval required | Not recorded | [Step 2](#step-2) |
-| [4. Deliver support and review evidence](#step-4) | human; approval required | Not recorded | [Step 3](#step-3) |
-| [5. Decide and document the outcome](#step-5) | human; approval required | Not recorded | [Step 4](#step-4) |
+| [2. Assess causes and the appropriate process](#step-2) | human; human approval every run | Not recorded | [Step 1](#step-1) |
+| [3. Agree a specific improvement and support plan](#step-3) | human; human approval every run | Not recorded | [Step 2](#step-2) |
+| [4. Deliver support and review evidence](#step-4) | human; human approval every run | Not recorded | [Step 3](#step-3) |
+| [5. Decide and document the outcome](#step-5) | human; human approval every run | Not recorded | [Step 4](#step-4) |
 
 <a id="steps"></a>
 
@@ -71,7 +71,7 @@ Gather the role expectations, prior feedback, work examples and relevant dates. 
 
 ### 2. Assess causes and the appropriate process
 
-human · human approval required
+human · human approval every run
 
 
 The manager and HR hear the employee's perspective and review support, health, disability or workplace factors with qualified advice where needed. Choose the applicable informal or formal route without prejudging dismissal.
@@ -82,7 +82,7 @@ The manager and HR hear the employee's perspective and review support, health, d
 
 ### 3. Agree a specific improvement and support plan
 
-human · human approval required
+human · human approval every run
 
 
 Set observable expectations, resources, coaching, review points and responsibilities. Check the plan is realistic for the role and circumstances and explain how progress and concerns will be discussed.
@@ -93,7 +93,7 @@ Set observable expectations, resources, coaching, review points and responsibili
 
 ### 4. Deliver support and review evidence
 
-human · human approval required
+human · human approval every run
 
 
 Hold the agreed check-ins, provide the promised resources and record both progress and unresolved barriers. Reassess the plan when facts change rather than manufacturing a record for a predetermined outcome.
@@ -104,7 +104,7 @@ Hold the agreed check-ins, provide the promised resources and record both progre
 
 ### 5. Decide and document the outcome
 
-human · human approval required
+human · human approval every run
 
 
 The authorized manager and HR review the evidence and applicable process before deciding whether to close, extend or escalate. Any contractual change, disciplinary action or termination requires its own reviewed authority and communication.

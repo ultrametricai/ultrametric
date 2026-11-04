@@ -44,13 +44,13 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
-| [1. Define interview stages per role type](#step-1) | human; approval required | ~1 h | Entry step |
-| [2. Create job postings](#step-2) | agent-runnable; approval required | ~30 min | [Step 1](#step-1) |
-| [3. Configure scorecard templates](#step-3) | agent-runnable; approval required | ~20 min | [Step 1](#step-1) |
-| [4. Set up offer approval workflow](#step-4) | agent-runnable; approval required | ~15 min | [Step 1](#step-1) |
-| [5. Connect Calendly for scheduling](#step-5) | manual form/portal; approval required | ~15 min | [Step 2](#step-2) |
-| [6. Configure Slack hiring channels](#step-6) | agent-runnable; approval required | ~10 min | [Step 2](#step-2) |
-| [7. Set up diversity tracking](#step-7) | agent-runnable; approval required | ~15 min | [Step 4](#step-4) |
+| [1. Define interview stages per role type](#step-1) | human; human approval on the first run | ~1 h | Entry step |
+| [2. Create job postings](#step-2) | agent-runnable; human approval every run | ~30 min | [Step 1](#step-1) |
+| [3. Configure scorecard templates](#step-3) | agent-runnable; human approval on the first run | ~20 min | [Step 1](#step-1) |
+| [4. Set up offer approval workflow](#step-4) | agent-runnable; human approval on the first run | ~15 min | [Step 1](#step-1) |
+| [5. Connect Calendly for scheduling](#step-5) | manual form/portal; human approval on the first run | ~15 min | [Step 2](#step-2) |
+| [6. Configure Slack hiring channels](#step-6) | agent-runnable; human approval on the first run | ~10 min | [Step 2](#step-2) |
+| [7. Set up diversity tracking](#step-7) | agent-runnable; human approval on the first run | ~15 min | [Step 4](#step-4) |
 
 <a id="steps"></a>
 
@@ -60,7 +60,7 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 
 ### 1. Define interview stages per role type
 
-human · ~1 h · human approval required
+human · ~1 h · human approval on the first run
 
 
 Design interview stages around the capabilities each role type requires. Assign a purpose, interviewer, evidence and decision owner to every stage, removing duplicate assessments. Define how candidates hear about progress, request accommodations, pause or withdraw. Walk the planned handoffs with hiring managers and recruiting so the process is workable before candidates enter it.
@@ -72,7 +72,7 @@ Design interview stages around the capabilities each role type requires. Assign 
 
 ### 2. Create job postings
 
-agent-runnable · ~30 min · human approval required
+agent-runnable · ~30 min · human approval every run
 
 
 Write each posting from the requisition’s responsibilities, location, compensation guidance and essential requirements. Check questions and disclosures with the people lead for the recruiting locations involved, and have the hiring manager settle factual differences before publication. Verify that applications reach the correct recruiter. Keep postings aligned with changes in role scope, budget or hiring status.
@@ -87,7 +87,7 @@ Write each posting from the requisition’s responsibilities, location, compensa
 
 ### 3. Configure scorecard templates
 
-agent-runnable · ~20 min · human approval required
+agent-runnable · ~20 min · human approval on the first run
 
 
 *Follows step 1.*
@@ -103,7 +103,7 @@ Translate interview criteria into role-specific scorecards, giving each intervie
 
 ### 4. Set up offer approval workflow
 
-agent-runnable · ~15 min · human approval required
+agent-runnable · ~15 min · human approval on the first run
 
 
 *Follows step 1.*
@@ -117,7 +117,7 @@ Map the actual decision rights for headcount, compensation, equity, unusual term
 
 ### 5. Connect Calendly for scheduling
 
-manual form/portal · ~15 min · human approval required
+manual form/portal · ~15 min · human approval on the first run
 
 
 *Follows step 2.*
@@ -132,7 +132,7 @@ Connect the scheduling tool using the calendar access authorized by the intervie
 
 ### 6. Configure Slack hiring channels
 
-agent-runnable · ~10 min · human approval required
+agent-runnable · ~10 min · human approval on the first run
 
 
 *Follows step 2.*
@@ -147,7 +147,7 @@ Set up hiring channels for the people coordinating each role, with candidate eva
 
 ### 7. Set up diversity tracking
 
-agent-runnable · ~15 min · human approval required
+agent-runnable · ~15 min · human approval on the first run
 
 
 *Follows step 4.*

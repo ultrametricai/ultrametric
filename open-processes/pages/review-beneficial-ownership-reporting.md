@@ -53,9 +53,9 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Compile entity, ownership and control facts](#step-1) | agent-runnable | Not recorded | Entry step |
-| [2. Determine which regimes apply now](#step-2) | human; approval required | Not recorded | [Step 1](#step-1) |
+| [2. Determine which regimes apply now](#step-2) | human; human approval every run | Not recorded | [Step 1](#step-1) |
 | [3. Prepare only the required information](#step-3) | agent-runnable | Not recorded | [Step 2](#step-2) |
-| [4. Submit an authorized filing where required](#step-4) | manual form/portal; approval required | Not recorded | [Step 3](#step-3) |
+| [4. Submit an authorized filing where required](#step-4) | manual form/portal; human approval every run | Not recorded | [Step 3](#step-3) |
 | [5. Maintain the decision and change-monitoring record](#step-5) | agent-runnable | Not recorded | [Step 4](#step-4) |
 
 <a id="steps"></a>
@@ -77,7 +77,7 @@ Gather the legal entity, formation and registration locations, ownership chain a
 
 ### 2. Determine which regimes apply now
 
-human · human approval required
+human · human approval every run
 
 
 Local counsel checks each relevant authority for current scope, exemptions, court or rule changes and update duties. Record the dated decision for this entity; incorporation alone does not establish a universal filing requirement.
@@ -99,7 +99,7 @@ Build the authority-specific submission pack from verified identity and ownershi
 
 ### 4. Submit an authorized filing where required
 
-manual form/portal · human approval required · hard to undo
+manual form/portal · human approval every run · hard to undo
 
 
 The authorized filer approves the final declarations and uses the official channel for the applicable regime. Retain the receipt and any rejection or correction request; do not submit for a regime counsel has determined inapplicable.

@@ -45,11 +45,11 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Map the parties and flow of funds](#step-1) | agent-runnable | Not recorded | Entry step |
-| [2. Approve the marketplace operating model](#step-2) | human; approval required | Not recorded | [Step 1](#step-1) |
+| [2. Approve the marketplace operating model](#step-2) | human; human approval every run | Not recorded | [Step 1](#step-1) |
 | [3. Prepare seller intake and exception records](#step-3) | agent-runnable | Not recorded | [Step 2](#step-2) |
-| [4. Configure the approved account integration](#step-4) | manual form/portal; approval required | Not recorded | [Step 3](#step-3) |
-| [5. Test settlement and failure scenarios](#step-5) | human; approval required | Not recorded | [Step 4](#step-4) |
-| [6. Release approved sellers and reconcile operations](#step-6) | manual form/portal; approval required | Not recorded | [Step 5](#step-5) |
+| [4. Configure the approved account integration](#step-4) | manual form/portal; human approval every run | Not recorded | [Step 3](#step-3) |
+| [5. Test settlement and failure scenarios](#step-5) | human; human approval every run | Not recorded | [Step 4](#step-4) |
+| [6. Release approved sellers and reconcile operations](#step-6) | manual form/portal; human approval every run | Not recorded | [Step 5](#step-5) |
 
 <a id="steps"></a>
 
@@ -70,7 +70,7 @@ Document the buyer, seller, platform, payment provider and each intended charge,
 
 ### 2. Approve the marketplace operating model
 
-human · human approval required · hard to undo
+human · human approval every run · hard to undo
 
 
 Qualified advisers and the provider confirm permitted activities, account responsibilities, verification needs and loss exposure. Pause unsupported jurisdictions or funds flows rather than assuming a processor removes regulatory obligations.
@@ -92,7 +92,7 @@ Define required seller evidence, verification status, payout destinations and es
 
 ### 4. Configure the approved account integration
 
-manual form/portal · human approval required · hard to undo
+manual form/portal · human approval every run · hard to undo
 
 
 An authorized operator configures onboarding, permissions and payment flows in the provider test environment. Use the currently supported integration and protect credentials and bank-account changes.
@@ -103,7 +103,7 @@ An authorized operator configures onboarding, permissions and payment flows in t
 
 ### 5. Test settlement and failure scenarios
 
-human · human approval required · hard to undo
+human · human approval every run · hard to undo
 
 
 Finance and engineering verify commissions, refunds, disputes, failed verification and payout failures against sample ledgers. Require approval before enabling a seller whose verification or account status is unresolved.
@@ -114,7 +114,7 @@ Finance and engineering verify commissions, refunds, disputes, failed verificati
 
 ### 6. Release approved sellers and reconcile operations
 
-manual form/portal · human approval required · hard to undo
+manual form/portal · human approval every run · hard to undo
 
 
 Authorized operators activate only approved sellers and payment capabilities. Reconcile settlements to seller balances and retain exception ownership; production payouts need their own transaction-specific authorization.

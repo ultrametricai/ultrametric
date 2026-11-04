@@ -53,9 +53,9 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Collect the transaction and product facts](#step-1) | agent-runnable | Not recorded | Entry step |
-| [2. Obtain a trade-compliance assessment](#step-2) | human; approval required | Not recorded | [Step 1](#step-1) |
+| [2. Obtain a trade-compliance assessment](#step-2) | human; human approval every run | Not recorded | [Step 1](#step-1) |
 | [3. Prepare the authorized documentation and logistics plan](#step-3) | agent-runnable | Not recorded | [Step 2](#step-2) |
-| [4. Authorize the specific delivery](#step-4) | human; approval required | Not recorded | [Step 3](#step-3) |
+| [4. Authorize the specific delivery](#step-4) | human; human approval every run | Not recorded | [Step 3](#step-3) |
 | [5. Reconcile delivery and continuing conditions](#step-5) | agent-runnable | Not recorded | [Step 4](#step-4) |
 
 <a id="steps"></a>
@@ -77,7 +77,7 @@ Identify the parties, ownership, destinations, transit routes, end user, end use
 
 ### 2. Obtain a trade-compliance assessment
 
-human · human approval required
+human · human approval every run
 
 
 Qualified specialists determine classification, applicable export and import controls, sanctions, licenses and screening requirements. Record the current sources and assumptions and pause transactions with unresolved restrictions.
@@ -99,7 +99,7 @@ Assemble the approved licenses, commercial invoice, origin, customs and transpor
 
 ### 4. Authorize the specific delivery
 
-human · human approval required
+human · human approval every run
 
 
 The accountable reviewer confirms screening, approvals, quantities and destination still match the assessed transaction. Authorized operators release the shipment or technical access only within the approved scope.
