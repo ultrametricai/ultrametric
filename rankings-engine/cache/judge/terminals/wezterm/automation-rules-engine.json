@@ -1,18 +1,26 @@
 {
-  "hash": "bbe98b8863fb6158708f087fc7c50830792b0be9f9fe278ae09db3e623c130b9",
+  "hash": "06c657763d1736c55924992198d5ecec12572a3876d272df1ff8ded2b20ffe60",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "The evidence shows only indirect support. WezTerm automatically reloads its config when the file changes, which is a built-in event-triggered action, and it exposes shell-integration user vars via __wezterm_set_user_var. Its configuration is Lua code that users describe as intuitive and programmable, but nothing in the pack shows users defining their own event→action rules. Missing for 10: documented user-definable event hooks/handlers (e.g. event callbacks in Lua config), a list of supported events (pane output, user-var changes, bell, etc.), examples of rules triggering actions, independent or hands-on corroboration of event-driven automation.",
-    "evidenceIds": [
-      "wezterm-docs-24",
-      "wezterm-docs-25",
-      "wezterm-comm-19",
-      "wezterm-comm-2"
-    ],
     "productId": "wezterm",
-    "storyId": "automation-rules-engine"
+    "storyId": "automation-rules-engine",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "WezTerm's own Lua config API provides `wezterm.on`, which registers a user-defined callback that runs automatically when a named event is emitted. That is a first-party event-to-action rule mechanism matching the story's core. The evidence is a single doc line, though: it does not enumerate which events exist or show what actions callbacks can take. Missing for 10: documented catalog of available events, examples of the actions callbacks can trigger, independent or hands-on corroboration of event-driven automation.",
+    "evidenceIds": [
+      "wezterm-review-source-20261104-4-1"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can define rules that trigger actions automatically on events",
+      "citations": [
+        {
+          "evidenceId": "wezterm-review-source-20261104-4-1",
+          "quote": "`wezterm.on` causes your specified `callback` to be called when `event_name` is emitted."
+        }
+      ]
+    }
   }
 }
