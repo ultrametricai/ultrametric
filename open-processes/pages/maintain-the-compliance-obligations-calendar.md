@@ -53,9 +53,9 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Inventory the facts that drive obligations](#step-1) | agent-runnable | Not recorded | Entry step |
-| [2. Confirm obligations and dates with the responsible advisers](#step-2) | human; approval required | Not recorded | [Step 1](#step-1) |
+| [2. Confirm obligations and dates with the responsible advisers](#step-2) | human; human approval every run | Not recorded | [Step 1](#step-1) |
 | [3. Create the owned calendar and evidence register](#step-3) | agent-runnable | Not recorded | [Step 2](#step-2) |
-| [4. Approve reminders and escalation coverage](#step-4) | human; approval required | Not recorded | [Step 3](#step-3) |
+| [4. Approve reminders and escalation coverage](#step-4) | human; human approval every run | Not recorded | [Step 3](#step-3) |
 | [5. Reconcile completed obligations and refresh the calendar](#step-5) | agent-runnable | Not recorded | [Step 4](#step-4) |
 
 <a id="steps"></a>
@@ -77,7 +77,7 @@ Compile entity types, jurisdictions, registrations, workforce locations, contrac
 
 ### 2. Confirm obligations and dates with the responsible advisers
 
-human · human approval required
+human · human approval every run
 
 
 Ask finance, employment, privacy and company-law advisers to identify applicable filings, renewals and reviews. Record the exact authority or agreement and how the date is calculated; unresolved applicability remains an open item.
@@ -99,7 +99,7 @@ Record each obligation, accountable owner, preparation lead time, reviewer and c
 
 ### 4. Approve reminders and escalation coverage
 
-human · human approval required
+human · human approval every run
 
 
 Assign backups for absent owners, specify escalation when evidence is missing and confirm who authorizes filings or payments. Test a representative reminder without submitting an external filing.

@@ -39,7 +39,7 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
-| [1. Create the workspace user (email, profile)](#step-1) | agent-runnable; approval required | ~2 min | Entry step |
+| [1. Create the workspace user (email, profile)](#step-1) | agent-runnable; human approval above a threshold | ~2 min | Entry step |
 | [2. Add the user to groups and shared drives](#step-2) | agent-runnable | ~3 min | [Step 1](#step-1) |
 | [3. Provision app access from the identity provider (SSO/SCIM)](#step-3) | agent-runnable | ~5 min | [Step 2](#step-2) |
 | [4. New hire signs in and enrolls MFA](#step-4) | human | ~5 min | [Step 3](#step-3) |
@@ -52,7 +52,7 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 
 ### 1. Create the workspace user (email, profile)
 
-agent-runnable · ~2 min · human approval required
+agent-runnable · ~2 min · human approval above a threshold
 
 
 Use the onboarding request to verify the person, manager, start date and account name. Check for an existing identity before creating a profile, mailbox or license. Provision through the workspace administrator’s authorized process and deliver activation instructions securely. Coordinate activation with the start conditions so the right person receives one usable company account at the intended time.

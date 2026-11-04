@@ -29,7 +29,7 @@ Start with the applicability facts and evidence listed in the first step. Resolv
 
 An agent can prepare and reconcile the documented inputs. Named people retain decisions, specialist judgments, physical work and authorized external actions.
 
-- Sources: [SBA launch your business](https://www.sba.gov/counseling/launch-your-business/) · [Business.gov.nl permits for your business](https://business.gov.nl/business-location/establishing-or-relocating-a-business/permits-for-your-business/) · [Irish Point of Single Contact](https://enterprise.gov.ie/en/what-we-do/eu-internal-market/point-of-single-contact/) · [Spain business licences and permissions](https://administracion.gob.es/tu-espacio-europeo/derechos-obligaciones/empresas/servicios/permisos) · [Verksamt find permits](https://verksamt.se/en/industry/find-permits) · [SECO setting up overview](https://www.kmu.admin.ch/en/setting-up-overview) · [JETRO setting up business](https://www.jetro.go.jp/en/invest/setting_up/) · [REDESIM registration and licensing guidance](https://www.gov.br/empresas-e-negocios/pt-br/redesim/ajuda/) · [UAE government mainland business setup](https://u.ae/en/information-and-services/business/doing-business-on-the-mainland/steps-to-start-a-business-on-the-mainland)
+- Sources: [SBA launch your business](https://www.sba.gov/counseling/launch-your-business/) · [Business.gov.nl permits for your business](https://business.gov.nl/business-location/establishing-or-relocating-a-business/permits-for-your-business/) · [Irish Point of Single Contact](https://enterprise.gov.ie/en/what-we-do/eu-internal-market/point-of-single-contact/) · [Spain business licences and permissions](https://administracion.gob.es/tu-espacio-europeo/derechos-obligaciones/empresas/servicios/permisos) · [Verksamt find permits](https://verksamt.se/en/industry/find-permits) · [SECO setting up overview](https://www.kmu.admin.ch/en/setting-up-overview) · [JETRO setting up business](https://www.jetro.go.jp/en/invest/setting_up/) · [REDESIM registration and licensing guidance](https://www.gov.br/empresas-e-negocios/pt-br/redesim/ajuda/) · [UAE government mainland business setup](https://u.ae/en/information-and-services/business/doing-business/doing-business-on-the-mainland/steps-to-start-a-business-on-the-mainland)
 
 ## Outcomes
 
@@ -64,10 +64,10 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. List activities, products and operating locations](#step-1) | agent-runnable | Not recorded | Entry step |
-| [2. Determine the competent authorities and requirements](#step-2) | human; approval required | Not recorded | [Step 1](#step-1) |
+| [2. Determine the competent authorities and requirements](#step-2) | human; human approval every run | Not recorded | [Step 1](#step-1) |
 | [3. Prepare a permission-by-permission application pack](#step-3) | agent-runnable | Not recorded | [Step 2](#step-2) |
-| [4. Submit the approved applications and track decisions](#step-4) | manual form/portal; approval required | Not recorded | [Step 3](#step-3) |
-| [5. Release permitted activities and calendar renewals](#step-5) | human; approval required | Not recorded | [Step 4](#step-4) |
+| [4. Submit the approved applications and track decisions](#step-4) | manual form/portal; human approval every run | Not recorded | [Step 3](#step-3) |
+| [5. Release permitted activities and calendar renewals](#step-5) | human; human approval every run | Not recorded | [Step 4](#step-4) |
 
 <a id="steps"></a>
 
@@ -88,7 +88,7 @@ Describe what the business actually does, where staff and customers are located,
 
 ### 2. Determine the competent authorities and requirements
 
-human · human approval required
+human · human approval every run
 
 
 Have a qualified local adviser identify the relevant licensing bodies and assess exemptions, prerequisites and restrictions. Record the authority source and current requirements for the actual activity; leave uncertain permissions unresolved.
@@ -110,7 +110,7 @@ Assemble the required entity, premises, personnel, insurance and product evidenc
 
 ### 4. Submit the approved applications and track decisions
 
-manual form/portal · human approval required · hard to undo
+manual form/portal · human approval every run · hard to undo
 
 
 The authorized applicant reviews the final declarations and fees, submits through the authority channel and retains receipts. Respond to requests through the assigned owner and keep the restricted activity paused while a required permission is pending.
@@ -121,7 +121,7 @@ The authorized applicant reviews the final declarations and fees, submits throug
 
 ### 5. Release permitted activities and calendar renewals
 
-human · human approval required
+human · human approval every run
 
 
 Check the issued license scope, conditions, location and expiry against the intended operation. Assign renewal and change-notification owners and retain evidence of the decision to start each permitted activity.
@@ -203,7 +203,7 @@ Use REDESIM licensing guidance and the relevant local integrator to identify act
 
 Identify the competent emirate economic department or free-zone authority and the approved business activity. Confirm additional activity permissions and the issued licence scope before starting work; a mainland checklist does not authorize a free-zone operation. Launch entry point only; qualified local review is required.
 
-- Identify the competent emirate economic department or free-zone authority and the approved business activity. Confirm additional activity permissions and the issued licence scope before starting work; a mainland checklist does not authorize a free-zone operation. Launch entry point only; qualified local review is required. ([UAE government mainland business setup](https://u.ae/en/information-and-services/business/doing-business-on-the-mainland/steps-to-start-a-business-on-the-mainland))
+- Identify the competent emirate economic department or free-zone authority and the approved business activity. Confirm additional activity permissions and the issued licence scope before starting work; a mainland checklist does not authorize a free-zone operation. Launch entry point only; qualified local review is required. ([UAE government mainland business setup](https://u.ae/en/information-and-services/business/doing-business/doing-business-on-the-mainland/steps-to-start-a-business-on-the-mainland))
 
 ---
 

@@ -45,11 +45,11 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Define the catalogue and selling territories](#step-1) | agent-runnable | Not recorded | Entry step |
-| [2. Approve commercial and customer obligations](#step-2) | human; approval required | Not recorded | [Step 1](#step-1) |
+| [2. Approve commercial and customer obligations](#step-2) | human; human approval every run | Not recorded | [Step 1](#step-1) |
 | [3. Prepare the storefront and order configuration](#step-3) | agent-runnable | Not recorded | [Step 2](#step-2) |
-| [4. Configure the approved selling and payment accounts](#step-4) | manual form/portal; approval required | Not recorded | [Step 3](#step-3) |
-| [5. Verify the complete order journey](#step-5) | human; approval required | Not recorded | [Step 4](#step-4) |
-| [6. Authorize publication and operational handover](#step-6) | manual form/portal; approval required | Not recorded | [Step 5](#step-5) |
+| [4. Configure the approved selling and payment accounts](#step-4) | manual form/portal; human approval every run | Not recorded | [Step 3](#step-3) |
+| [5. Verify the complete order journey](#step-5) | human; human approval every run | Not recorded | [Step 4](#step-4) |
+| [6. Authorize publication and operational handover](#step-6) | manual form/portal; human approval every run | Not recorded | [Step 5](#step-5) |
 
 <a id="steps"></a>
 
@@ -70,7 +70,7 @@ List products, variants, stock sources, customer locations and fulfillment owner
 
 ### 2. Approve commercial and customer obligations
 
-human · human approval required · hard to undo
+human · human approval every run · hard to undo
 
 
 The responsible owner and advisers review selling permissions, pricing, tax treatment, delivery promises and returns. Resolve unsupported territories and products before approving checkout availability.
@@ -92,7 +92,7 @@ Prepare product content, inventory rules, shipping options and support instructi
 
 ### 4. Configure the approved selling and payment accounts
 
-manual form/portal · human approval required · hard to undo
+manual form/portal · human approval every run · hard to undo
 
 
 An authorized operator applies the reviewed account settings and permissions. Record who controls payment access and keep the storefront unpublished while testing the order lifecycle.
@@ -103,7 +103,7 @@ An authorized operator applies the reviewed account settings and permissions. Re
 
 ### 5. Verify the complete order journey
 
-human · human approval required · hard to undo
+human · human approval every run · hard to undo
 
 
 The responsible operators check purchase, failed payment, cancellation, fulfillment, refund and stock reconciliation using safe test cases. Document failures and require fixes before exposing the affected journey.
@@ -114,7 +114,7 @@ The responsible operators check purchase, failed payment, cancellation, fulfillm
 
 ### 6. Authorize publication and operational handover
 
-manual form/portal · human approval required · hard to undo
+manual form/portal · human approval every run · hard to undo
 
 
 The owner approves the final store and public terms. An authorized operator publishes it, confirms production configuration and hands support, fulfillment and reconciliation duties to named owners.

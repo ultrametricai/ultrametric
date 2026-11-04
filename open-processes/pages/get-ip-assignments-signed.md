@@ -49,7 +49,7 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | [1. List all team members](#step-1) | agent-runnable | ~1 min | Entry step |
 | [2. Generate PIIA for each person](#step-2) | agent-runnable | ~5 min | [Step 1](#step-1) |
 | [3. Legal review of template](#step-3) | human; includes waiting | ~1 d | [Step 2](#step-2) |
-| [4. Send PIIAs for signature](#step-4) | agent-runnable; approval required | ~5 min | [Step 3](#step-3) |
+| [4. Send PIIAs for signature](#step-4) | agent-runnable; human approval every run | ~5 min | [Step 3](#step-3) |
 | [5. Track and follow up on unsigned](#step-5) | agent-runnable; includes waiting | ~2 min | [Step 4](#step-4) |
 | [6. File executed copies](#step-6) | agent-runnable | ~2 min | [Step 5](#step-5) |
 
@@ -90,7 +90,7 @@ Review assignment and confidentiality terms against the contributor’s location
 
 ### 4. Send PIIAs for signature
 
-agent-runnable · ~5 min · human approval required · hard to undo
+agent-runnable · ~5 min · human approval every run · hard to undo
 
 
 Send the reviewer-approved contributor agreement and schedules to the correct signers through the company’s agreed signing process. Check company signing capacity and the exact version sent. Route questions or changes to the reviewer, especially additions to an inventions schedule. Keep the final executed version and signature evidence together.

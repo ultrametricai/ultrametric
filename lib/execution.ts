@@ -36,8 +36,61 @@ export type Execution = z.infer<typeof executionSchema>
 
 const scopedApprovalSchema = z.object({ role: z.string().min(1), scope: z.string().min(1) })
 
+// When a human approves an externally effectful step. Every mode except 'none' is a named,
+// scoped human approval: 'every-run' approves each run case by case; 'first-run' approves the
+// first run and the recorded approval stands for repeats; 'threshold' approves runs once the
+// named threshold applies; 'pre-approvable' runs under a recorded STANDING approval, never an
+// absent one. 'none' is reserved for steps with no external effect.
+export const APPROVAL_MODES = ['every-run', 'first-run', 'threshold', 'pre-approvable', 'none'] as const
+export type ApprovalMode = typeof APPROVAL_MODES[number]
+
+export const approvalThresholdSchema = z.strictObject({
+  kind: z.enum(['amount', 'data-sharing', 'recipients', 'irreversible']),
+  value: z.string().min(1).optional(),
+})
+
+export const approvalSchema = z.strictObject({
+  mode: z.enum(APPROVAL_MODES),
+  threshold: approvalThresholdSchema.optional(),
+  // Why the step carries this mode, citing the governing policy (policies/AGENT_POLICY.md).
+  reason: z.string().min(1),
+  // The named approver and approval scope where the record declares them.
+  role: z.string().min(1).optional(),
+  scope: z.string().min(1).optional(),
+})
+export type Approval = z.infer<typeof approvalSchema>
+
+// Every committed approval object carries a mode and reason (the migration added them).
+// The explicit null stays: the preserved legacy projection contract
+// (schemas/legacy-process.schema.json) requires the key on every workflow step.
+// requiresExecutionApproval still tolerates the pre-mode { role, scope } shape at runtime.
+export const metadataApprovalSchema = approvalSchema.nullable()
+
+export function approvalOf(metadata: Record<string, unknown>): Approval | undefined {
+  if (metadata.approval == null) return undefined
+  const parsed = approvalSchema.safeParse(metadata.approval)
+  return parsed.success ? parsed.data : undefined
+}
+
 export function requiresExecutionApproval(metadata: Record<string, unknown>): boolean {
+  const approval = approvalOf(metadata)
+  if (approval) return approval.mode !== 'none'
   return metadata.approvalRequired === true || scopedApprovalSchema.safeParse(metadata.approval).success
+}
+
+export function validateApproval(metadata: Record<string, unknown>, scope: string): void {
+  if (metadata.approval == null) return
+  const parsed = approvalSchema.parse(metadata.approval)
+  if ((parsed.mode === 'threshold') !== (parsed.threshold !== undefined)) {
+    throw new Error(`${scope}: a threshold rides with mode "threshold" and only there`)
+  }
+  // approvalRequired is derived from the mode: true unless the mode is 'none'.
+  if ((metadata.approvalRequired === true) !== (parsed.mode !== 'none')) {
+    throw new Error(`${scope}: approvalRequired must equal (approval.mode !== 'none')`)
+  }
+  if ((metadata.reversibility === 'irreversible' || metadata.legalSignature === true) && parsed.mode !== 'every-run') {
+    throw new Error(`${scope}: irreversible and signature steps carry approval mode "every-run"`)
+  }
 }
 
 export function executionOf(metadata: Record<string, unknown>): Execution | undefined {

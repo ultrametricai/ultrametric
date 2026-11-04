@@ -47,7 +47,7 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | [2. Draft the written application (product, progress, founders, equity)](#step-2) | human | ~3 h | [Step 1](#step-1) |
 | [3. Record the one-minute founder video](#step-3) | human | ~30 min | [Step 2](#step-2) |
 | [4. Review the answers against YC's published application advice](#step-4) | agent-runnable | ~20 min | [Step 3](#step-3) |
-| [5. Submit before the batch deadline](#step-5) | manual form/portal; approval required | ~10 min | [Step 4](#step-4) |
+| [5. Submit before the batch deadline](#step-5) | manual form/portal; human approval every run | ~10 min | [Step 4](#step-4) |
 | [6. Wait for the decision (interview invitations arrive by email)](#step-6) | human; includes waiting | ~14 d | [Step 5](#step-5) |
 
 <a id="steps"></a>
@@ -104,7 +104,7 @@ Read the complete application against YC’s current instructions and the portal
 
 ### 5. Submit before the batch deadline
 
-manual form/portal · ~10 min · human approval required
+manual form/portal · ~10 min · human approval every run
 
 
 Check the current batch and deadline in the official portal, then review the final answers, attachments and contact details. The submitting founder takes responsibility for the application and attestations and sends it through the official route. Verify the resulting status and confirmation; if submission fails, resolve the reported problem before treating the application as received.

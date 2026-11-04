@@ -66,9 +66,9 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | --- | --- | --- | --- |
 | [1. Conduct trademark search](#step-1) | agent-runnable | ~15 min | Entry step |
 | [2. Determine filing classes](#step-2) | agent-runnable | ~10 min | [Step 1](#step-1) |
-| [3. Draft goods/services description](#step-3) | agent-runnable; approval required | ~15 min | [Step 2](#step-2) |
+| [3. Draft goods/services description](#step-3) | agent-runnable; standing human approval | ~15 min | [Step 2](#step-2) |
 | [4. Review with IP attorney](#step-4) | human; includes waiting | ~2 d | [Step 3](#step-3) |
-| [5. File the application with the trademark office](#step-5) | manual form/portal; approval required | ~30 min | [Step 4](#step-4) |
+| [5. File the application with the trademark office](#step-5) | manual form/portal; human approval every run | ~30 min | [Step 4](#step-4) |
 | [6. Track application status](#step-6) | agent-runnable; includes waiting | ~2 min | [Step 5](#step-5) |
 
 <a id="steps"></a>
@@ -103,7 +103,7 @@ Describe what customers buy under the mark and any concrete planned offerings. M
 
 ### 3. Draft goods/services description
 
-agent-runnable · ~15 min · human approval required
+agent-runnable · ~15 min · standing human approval
 
 
 Draft the identification using the actual offering and the office’s accepted terminology. Match it to the intended filing basis and flag uncertain scope or classifications for the adviser. Check product facts with the people who know the service and retain relevant use evidence or development plans. Avoid claiming unrelated products merely to broaden the wording.
@@ -126,7 +126,7 @@ Review the search results, owner, mark representation, territories, goods/servic
 
 ### 5. File the application with the trademark office
 
-manual form/portal · ~30 min · human approval required · hard to undo
+manual form/portal · ~30 min · human approval every run · hard to undo
 
 | Option | Applies when |
 | --- | --- |
@@ -147,7 +147,7 @@ Use the office selected in the filing strategy and prepare the approved owner, m
 - Sources: [USPTO trademark process](https://www.uspto.gov/trademarks/basics/trademark-process) · [USPTO trademark tools](https://www.uspto.gov/trademarks)
 
 Options:
-  - **United States — USPTO trademark application** — manual form/portal · ~30 min · human approval required · hard to undo
+  - **United States — USPTO trademark application** — manual form/portal · ~30 min · human approval every run · hard to undo
 
     Submit the reviewed US owner, mark, filing basis, goods/services and evidence through the current USPTO filing service. The applicant or authorized representative must approve the declarations, signature and fees. Save the filed copy and serial number and monitor official correspondence. The receipt records submission; the examination and any further requirements continue afterward.
   - **India - CGPDTM e-filing**

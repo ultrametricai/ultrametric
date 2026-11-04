@@ -47,10 +47,10 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Select the recovery scenario and critical data](#step-1) | agent-runnable | Not recorded | Entry step |
-| [2. Approve the exercise safeguards and owners](#step-2) | human; approval required | Not recorded | [Step 1](#step-1) |
-| [3. Restore the selected backup in isolation](#step-3) | manual form/portal; approval required | Not recorded | [Step 2](#step-2) |
+| [2. Approve the exercise safeguards and owners](#step-2) | human; human approval every run | Not recorded | [Step 1](#step-1) |
+| [3. Restore the selected backup in isolation](#step-3) | manual form/portal; human approval every run | Not recorded | [Step 2](#step-2) |
 | [4. Verify data integrity and business operation](#step-4) | agent-runnable | Not recorded | [Step 3](#step-3) |
-| [5. Approve remediation and a repeat test](#step-5) | human; approval required | Not recorded | [Step 4](#step-4) |
+| [5. Approve remediation and a repeat test](#step-5) | human; human approval every run | Not recorded | [Step 4](#step-4) |
 
 <a id="steps"></a>
 
@@ -71,7 +71,7 @@ Identify the service, data dependencies, recovery point and outage scenario to t
 
 ### 2. Approve the exercise safeguards and owners
 
-human · human approval required
+human · human approval every run
 
 
 The accountable service and security owners approve the test scope, isolation, communication and stop conditions. Protect production and sensitive data and confirm who may authorize destructive or customer-affecting actions.
@@ -82,7 +82,7 @@ The accountable service and security owners approve the test scope, isolation, c
 
 ### 3. Restore the selected backup in isolation
 
-manual form/portal · human approval required · hard to undo
+manual form/portal · human approval every run · hard to undo
 
 
 Authorized operators recover the approved backup, dependencies and access using the documented runbook. Record actual times, failures and deviations without overwriting the production system.
@@ -104,7 +104,7 @@ Check completeness, consistency and the agreed business transactions in the rest
 
 ### 5. Approve remediation and a repeat test
 
-human · human approval required
+human · human approval every run
 
 
 Owners review the evidence, assign fixes and retest failed controls. Update the runbook and recovery assumptions and retain the exercise result and unresolved risks.

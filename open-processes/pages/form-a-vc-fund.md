@@ -61,8 +61,8 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | [2. Create the GP management entity](#step-2) | manual form/portal | ~30 min | [Step 1](#step-1) |
 | [3. Create the fund vehicle's formation document and file it with the registry](#step-3) | manual form/portal | ~30 min | [Step 2](#step-2) |
 | [4. Receive the stamped formation certificate](#step-4) | human; includes waiting | ~2 d | [Step 3](#step-3) |
-| [5. Create the simple LPA (limited partnership agreement)](#step-5) | agent-runnable; approval required | ~1 h | [Step 4](#step-4) |
-| [6. Create the GP operating agreement](#step-6) | agent-runnable; approval required | ~45 min | [Step 5](#step-5) |
+| [5. Create the simple LPA (limited partnership agreement)](#step-5) | agent-runnable; human approval every run | ~1 h | [Step 4](#step-4) |
+| [6. Create the GP operating agreement](#step-6) | agent-runnable; standing human approval | ~45 min | [Step 5](#step-5) |
 | [7. GP signs the LPA and the operating agreement](#step-7) | human; signature required | ~10 min | [Step 6](#step-6) |
 | [8. Apply for the fund's tax ID](#step-8) | manual form/portal | ~15 min | [Step 7](#step-7) |
 | [9. Open the fund bank account](#step-9) | manual form/portal | ~20 min | [Step 8](#step-8) |
@@ -127,7 +127,7 @@ Retrieve the registry-returned certificate and compare its name, filing details 
 
 ### 5. Create the simple LPA (limited partnership agreement)
 
-agent-runnable · ~1 h · human approval required
+agent-runnable · ~1 h · human approval every run
 
 
 Draft the LPA with fund counsel from the strategy, GP structure, economics and initial investor terms. Work through commitments, investment authority, fees, distributions, governance and amendment provisions, checking consistency across the agreement. Mark terms still open to negotiation so the GP can settle them before the document goes into execution.
@@ -139,7 +139,7 @@ Draft the LPA with fund counsel from the strategy, GP structure, economics and i
 
 ### 6. Create the GP operating agreement
 
-agent-runnable · ~45 min · human approval required
+agent-runnable · ~45 min · standing human approval
 
 
 Draft the GP operating agreement from the principals’ ownership, contributions, decision rights and economic arrangements. Address who can act for the GP, conflicts, departures and allocation of fund-related rights. Reconcile those provisions with the fund agreement and management arrangements, resolving open decisions with the principals and counsel before execution.

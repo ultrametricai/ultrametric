@@ -55,7 +55,7 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | [3. Create the new plans in billing](#step-3) | agent-runnable | ~20 min | [Step 2](#step-2) |
 | [4. Update the site pricing page and docs](#step-4) | agent-runnable | ~20 min | [Step 3](#step-3) |
 | [5. Announce the change to customers](#step-5) | agent-runnable | ~30 min | [Step 3](#step-3) |
-| [6. Migrate or grandfather existing subscriptions](#step-6) | agent-runnable; approval required | ~30 min | [Step 5](#step-5) |
+| [6. Migrate or grandfather existing subscriptions](#step-6) | agent-runnable; human approval every run | ~30 min | [Step 5](#step-5) |
 | [7. Monitor churn and MRR through the transition](#step-7) | agent-runnable | ~15 min | All: [Step 6](#step-6); [Step 4](#step-4) |
 
 <a id="steps"></a>
@@ -143,7 +143,7 @@ Check the actual recipient-to-subscription mapping and fill in the sender, exact
 
 ### 6. Migrate or grandfather existing subscriptions
 
-agent-runnable · ~30 min · human approval required · hard to undo
+agent-runnable · ~30 min · human approval every run · hard to undo
 
 
 Build the exact subscription batch from the migration policy, excluding grandfathered and unresolved accounts. Preview effective dates, billing periods, discounts, credits and immediate charges with the provider's supported tools. Confirm required notices or acceptance and billing authority for that batch. Apply and reconcile each account; inspect partial failures before retrying so a customer is not charged twice or moved outside the policy.

@@ -54,8 +54,8 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | --- | --- | --- | --- |
 | [1. Identify the registered accounts and reporting periods](#step-1) | agent-runnable | Not recorded | Entry step |
 | [2. Reconcile tax transactions and adjustments](#step-2) | agent-runnable | Not recorded | [Step 1](#step-1) |
-| [3. Review classifications and the draft return](#step-3) | human; approval required | Not recorded | [Step 2](#step-2) |
-| [4. Authorize and submit the return and payment](#step-4) | manual form/portal; approval required | Not recorded | [Step 3](#step-3) |
+| [3. Review classifications and the draft return](#step-3) | human; human approval every run | Not recorded | [Step 2](#step-2) |
+| [4. Authorize and submit the return and payment](#step-4) | manual form/portal; human approval every run | Not recorded | [Step 3](#step-3) |
 | [5. Reconcile authority acceptance and the next period](#step-5) | agent-runnable | Not recorded | [Step 4](#step-4) |
 
 <a id="steps"></a>
@@ -88,7 +88,7 @@ Reconcile invoices, refunds, marketplace reports, exemptions, imports and input-
 
 ### 3. Review classifications and the draft return
 
-human · human approval required
+human · human approval every run
 
 
 The responsible tax reviewer confirms rates, sourcing, deduction eligibility and adjustments for the relevant jurisdiction. Record the basis for judgment calls and reconcile the draft liability with the tax-control accounts.
@@ -99,7 +99,7 @@ The responsible tax reviewer confirms rates, sourcing, deduction eligibility and
 
 ### 4. Authorize and submit the return and payment
 
-manual form/portal · human approval required · hard to undo
+manual form/portal · human approval every run · hard to undo
 
 
 The authorized filer approves the declarations and submits through the correct authority account. Payments follow the company payment-approval process; retain separate submission and payment confirmations.

@@ -47,9 +47,9 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Compile the contract and operating evidence](#step-1) | agent-runnable | Not recorded | Entry step |
-| [2. Assess renewal, replacement and exit alternatives](#step-2) | human; approval required | Not recorded | [Step 1](#step-1) |
+| [2. Assess renewal, replacement and exit alternatives](#step-2) | human; human approval every run | Not recorded | [Step 1](#step-1) |
 | [3. Prepare the transition and data plan](#step-3) | agent-runnable | Not recorded | [Step 2](#step-2) |
-| [4. Authorize the commercial decision and implementation](#step-4) | human; approval required | Not recorded | [Step 3](#step-3) |
+| [4. Authorize the commercial decision and implementation](#step-4) | human; human approval every run | Not recorded | [Step 3](#step-3) |
 | [5. Reconcile completion and retained obligations](#step-5) | agent-runnable | Not recorded | [Step 4](#step-4) |
 
 <a id="steps"></a>
@@ -71,7 +71,7 @@ Collect the agreement, notice terms, usage, spending, support history, data acce
 
 ### 2. Assess renewal, replacement and exit alternatives
 
-human · human approval required
+human · human approval every run
 
 
 The owner reviews value, risk, security and migration effort with relevant teams. Counsel confirms termination or data-handling constraints and approves any negotiation or notice strategy.
@@ -93,7 +93,7 @@ List exports, replacement systems, integrations, credentials, user communication
 
 ### 4. Authorize the commercial decision and implementation
 
-human · human approval required
+human · human approval every run
 
 
 The designated approvers finalize renewal terms or the permitted exit action. Authorized operators execute notices and account changes within scope while preserving required service continuity.

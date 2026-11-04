@@ -53,9 +53,9 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Reconcile plan documents and award records](#step-1) | agent-runnable | Not recorded | Entry step |
-| [2. Confirm the administration and reporting rules](#step-2) | human; approval required | Not recorded | [Step 1](#step-1) |
+| [2. Confirm the administration and reporting rules](#step-2) | human; human approval every run | Not recorded | [Step 1](#step-1) |
 | [3. Create an event and evidence calendar](#step-3) | agent-runnable | Not recorded | [Step 2](#step-2) |
-| [4. Review and authorize plan events](#step-4) | human; approval required | Not recorded | [Step 3](#step-3) |
+| [4. Review and authorize plan events](#step-4) | human; human approval every run | Not recorded | [Step 3](#step-3) |
 | [5. Reconcile the plan after each reporting period](#step-5) | agent-runnable | Not recorded | [Step 4](#step-4) |
 
 <a id="steps"></a>
@@ -77,7 +77,7 @@ Gather the approved plan, reserve, amendments, grants and transaction history. C
 
 ### 2. Confirm the administration and reporting rules
 
-human · human approval required
+human · human approval every run
 
 
 Counsel and tax advisers define eligibility, approval rights, event handling and reporting by entity and participant location. Record the specific plan terms and leave unresolved cross-border treatment open.
@@ -99,7 +99,7 @@ Track vesting, exercises, leavers, expiries, valuations and required returns wit
 
 ### 4. Review and authorize plan events
 
-human · human approval required
+human · human approval every run
 
 
 The authorized approvers review each grant, amendment, exercise or cancellation against the plan and reserve. Use the existing grant or exercise process for execution rather than allowing an administrative entry to create rights.

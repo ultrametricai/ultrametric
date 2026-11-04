@@ -47,10 +47,10 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Identify relevant roles and security behaviors](#step-1) | agent-runnable | Not recorded | Entry step |
-| [2. Approve the training and exercise approach](#step-2) | human; approval required | Not recorded | [Step 1](#step-1) |
-| [3. Deliver training and safe practice](#step-3) | human; approval required | Not recorded | [Step 2](#step-2) |
+| [2. Approve the training and exercise approach](#step-2) | human; human approval every run | Not recorded | [Step 1](#step-1) |
+| [3. Deliver training and safe practice](#step-3) | human; human approval every run | Not recorded | [Step 2](#step-2) |
 | [4. Assess understanding and operational follow-through](#step-4) | agent-runnable | Not recorded | [Step 3](#step-3) |
-| [5. Assign targeted follow-up and refresh content](#step-5) | human; approval required | Not recorded | [Step 4](#step-4) |
+| [5. Assign targeted follow-up and refresh content](#step-5) | human; human approval every run | Not recorded | [Step 4](#step-4) |
 
 <a id="steps"></a>
 
@@ -71,7 +71,7 @@ Map workers and contractors to the systems, data and threats they encounter. Inc
 
 ### 2. Approve the training and exercise approach
 
-human · human approval required
+human · human approval every run
 
 
 Security and HR owners select accessible materials and realistic scenarios. Review privacy and employment implications of simulations and avoid collecting credentials or humiliating participants.
@@ -82,7 +82,7 @@ Security and HR owners select accessible materials and realistic scenarios. Revi
 
 ### 3. Deliver training and safe practice
 
-human · human approval required
+human · human approval every run
 
 
 The assigned people complete their own training and practice the reporting process. Provide a supported route for questions and accommodations and record participation without treating an agent-generated answer as employee completion.
@@ -104,7 +104,7 @@ Review permitted assessment results, reported concerns and recurring errors. Che
 
 ### 5. Assign targeted follow-up and refresh content
 
-human · human approval required
+human · human approval every run
 
 
 Owners address gaps with appropriate coaching and control changes. Update the material after incidents, system changes or emerging threats and retain the completion evidence under the approved policy.

@@ -59,7 +59,7 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | [1. Check for employee changes](#step-1) | agent-runnable | ~2 min | Entry step |
 | [2. Verify time entries and PTO](#step-2) | agent-runnable | ~3 min | [Step 1](#step-1) |
 | [3. Preview payroll summary](#step-3) | agent-runnable | ~2 min | [Step 2](#step-2) |
-| [4. Submit payroll](#step-4) | agent-runnable; approval required | ~2 min | [Step 3](#step-3) |
+| [4. Submit payroll](#step-4) | agent-runnable; human approval every run | ~2 min | [Step 3](#step-3) |
 | [5. Verify bank debit](#step-5) | agent-runnable | ~2 min | [Step 4](#step-4) |
 
 <a id="steps"></a>
@@ -105,7 +105,7 @@ Compare the payroll preview with the resolved input changes and previous run. Ex
 
 ### 4. Submit payroll
 
-agent-runnable · ~2 min · human approval required · irreversible
+agent-runnable · ~2 min · human approval every run · irreversible
 
 
 Check that the run still matches the approved preview, employee population, pay date and funding account. Release that specific payroll under the company’s payment approval process. Check the submission result and processing warnings immediately. If status is uncertain or the request fails, investigate the existing run before retrying to avoid duplicate payments.
