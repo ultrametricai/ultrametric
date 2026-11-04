@@ -1,6 +1,7 @@
 name: Review findings gate
 
-# Reads review metadata only. Foreloop is deliberately excluded.
+# Reads review metadata only. Verified Renovate PRs may omit Greptile completion;
+# unresolved Greptile findings still block them. Foreloop is deliberately excluded.
 on:
   workflow_call:
     inputs:
@@ -119,16 +120,28 @@ jobs:
               }
             } }
           }'''
+          def renovate_exempt(pr):
+              # Trust GitHub's bot identity, not a title, label, or branch alone.
+              author = pr.get('user') or {}
+              head = pr.get('head') or {}
+              return (author.get('id') == 29139614
+                      and author.get('login') == 'renovate[bot]'
+                      and author.get('type') == 'Bot'
+                      and (head.get('repo') or {}).get('full_name') == repo
+                      and head.get('ref', '').startswith('renovate/'))
           errors = []
           for number in numbers:
               initial = None
               try:
                   initial = api(f'repos/{repo}/pulls/{number}')
                   sha = initial['head']['sha']
-                  checks = api(f'repos/{repo}/commits/{sha}/check-runs?check_name=Greptile%20Review&per_page=100')
-                  latest = max((check for check in checks['check_runs'] if check['app']['id'] == 867647),
-                               key=lambda check: check['id'], default=None)
-                  reviewed = latest is not None and latest['status'] == 'completed' and latest['conclusion'] == 'success'
+                  exempt = renovate_exempt(initial)
+                  reviewed = False
+                  if not exempt:
+                      checks = api(f'repos/{repo}/commits/{sha}/check-runs?check_name=Greptile%20Review&per_page=100')
+                      latest = max((check for check in checks['check_runs'] if check['app']['id'] == 867647),
+                                   key=lambda check: check['id'], default=None)
+                      reviewed = latest is not None and latest['status'] == 'completed' and latest['conclusion'] == 'success'
                   cursor, blocked = None, 0
                   while True:
                       result = api('graphql', {'query': query, 'variables': {
@@ -151,9 +164,16 @@ jobs:
                   current = api(f'repos/{repo}/pulls/{number}')
                   if current['head']['sha'] != sha or current['state'] != 'open':
                       continue
-                  publish(sha, ('failure' if blocked else 'success') if reviewed else 'pending',
-                          f'{blocked} unresolved Greptile findings; Foreloop excluded'
-                          if reviewed else 'Waiting for Greptile on this revision; Foreloop excluded')
+                  if exempt and not renovate_exempt(current):
+                      raise RuntimeError('Renovate exemption metadata changed; retry')
+                  if exempt:
+                      publish(sha, 'failure' if blocked else 'success',
+                              f'{blocked} unresolved Greptile findings; Renovate completion exempt'
+                              if blocked else 'Greptile completion exempt: verified Renovate PR; no unresolved findings')
+                  else:
+                      publish(sha, ('failure' if blocked else 'success') if reviewed else 'pending',
+                              f'{blocked} unresolved Greptile findings; Foreloop excluded'
+                              if reviewed else 'Waiting for Greptile on this revision; Foreloop excluded')
                   print(f'#{number}: {blocked} unresolved Greptile findings')
               except Exception as error:
                   # Metadata/API failures revoke any stale approval for this head.
@@ -167,3 +187,4 @@ jobs:
                   errors.append(number)
           if errors:
               raise SystemExit(f'Review gates need retry for PRs: {errors}')
+
