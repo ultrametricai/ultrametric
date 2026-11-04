@@ -64,10 +64,10 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. List activities, products and operating locations](#step-1) | agent-runnable | Not recorded | Entry step |
-| [2. Determine the competent authorities and requirements](#step-2) | human; approval required | Not recorded | [Step 1](#step-1) |
+| [2. Determine the competent authorities and requirements](#step-2) | human; human approval every run | Not recorded | [Step 1](#step-1) |
 | [3. Prepare a permission-by-permission application pack](#step-3) | agent-runnable | Not recorded | [Step 2](#step-2) |
-| [4. Submit the approved applications and track decisions](#step-4) | manual form/portal; approval required | Not recorded | [Step 3](#step-3) |
-| [5. Release permitted activities and calendar renewals](#step-5) | human; approval required | Not recorded | [Step 4](#step-4) |
+| [4. Submit the approved applications and track decisions](#step-4) | manual form/portal; human approval every run | Not recorded | [Step 3](#step-3) |
+| [5. Release permitted activities and calendar renewals](#step-5) | human; human approval every run | Not recorded | [Step 4](#step-4) |
 
 <a id="steps"></a>
 
@@ -88,7 +88,7 @@ Describe what the business actually does, where staff and customers are located,
 
 ### 2. Determine the competent authorities and requirements
 
-human · human approval required
+human · human approval every run
 
 
 Have a qualified local adviser identify the relevant licensing bodies and assess exemptions, prerequisites and restrictions. Record the authority source and current requirements for the actual activity; leave uncertain permissions unresolved.
@@ -110,7 +110,7 @@ Assemble the required entity, premises, personnel, insurance and product evidenc
 
 ### 4. Submit the approved applications and track decisions
 
-manual form/portal · human approval required · hard to undo
+manual form/portal · human approval every run · hard to undo
 
 
 The authorized applicant reviews the final declarations and fees, submits through the authority channel and retains receipts. Respond to requests through the assigned owner and keep the restricted activity paused while a required permission is pending.
@@ -121,7 +121,7 @@ The authorized applicant reviews the final declarations and fees, submits throug
 
 ### 5. Release permitted activities and calendar renewals
 
-human · human approval required
+human · human approval every run
 
 
 Check the issued license scope, conditions, location and expiry against the intended operation. Assign renewal and change-notification owners and retain evidence of the decision to start each permitted activity.

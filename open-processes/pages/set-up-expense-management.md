@@ -43,11 +43,11 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
-| [1. Define expense categories and limits](#step-1) | human; approval required | ~30 min | Entry step |
-| [2. Configure card limits per employee](#step-2) | agent-runnable; approval required | ~10 min | [Step 1](#step-1) |
-| [3. Set up approval workflows](#step-3) | agent-runnable; approval required | ~10 min | [Step 1](#step-1) |
+| [1. Define expense categories and limits](#step-1) | human; human approval on the first run | ~30 min | Entry step |
+| [2. Configure card limits per employee](#step-2) | agent-runnable; human approval above a threshold | ~10 min | [Step 1](#step-1) |
+| [3. Set up approval workflows](#step-3) | agent-runnable; human approval on the first run | ~10 min | [Step 1](#step-1) |
 | [4. Configure Slack notifications](#step-4) | agent-runnable | ~5 min | [Step 3](#step-3) |
-| [5. Document policy and share](#step-5) | agent-runnable; approval required | ~10 min | [Step 3](#step-3) |
+| [5. Document policy and share](#step-5) | agent-runnable; standing human approval | ~10 min | [Step 3](#step-3) |
 
 <a id="steps"></a>
 
@@ -57,7 +57,7 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 
 ### 1. Define expense categories and limits
 
-human · ~30 min · human approval required
+human · ~30 min · human approval on the first run
 
 
 Define eligible expenses, documentation, limits and exceptions from the company’s spending patterns and budget. Distinguish card purchases from reimbursement and work through travel, recurring software and shared purchases with finance and team leads. Agree how exceptions are decided, using realistic examples to expose rules that would be unclear in daily use.
@@ -68,7 +68,7 @@ Define eligible expenses, documentation, limits and exceptions from the company�
 
 ### 2. Configure card limits per employee
 
-agent-runnable · ~10 min · human approval required
+agent-runnable · ~10 min · human approval above a threshold
 
 
 Set cardholder limits and permitted categories from role, expected spending and the expense policy, checking for existing cards or overlapping access. The finance owner authorizes limits and temporary exceptions before the administrator applies them. Check the resulting settings, tell the cardholder what they can spend and arrange expiry or review of temporary changes.
@@ -81,7 +81,7 @@ Set cardholder limits and permitted categories from role, expected spending and 
 
 ### 3. Set up approval workflows
 
-agent-runnable · ~10 min · human approval required
+agent-runnable · ~10 min · human approval on the first run
 
 
 *Follows step 1.*
@@ -108,7 +108,7 @@ Choose expense events that need notification and a channel whose membership fits
 
 ### 5. Document policy and share
 
-agent-runnable · ~10 min · human approval required
+agent-runnable · ~10 min · standing human approval
 
 
 *Follows step 3.*

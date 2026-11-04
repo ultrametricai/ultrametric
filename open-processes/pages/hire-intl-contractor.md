@@ -38,10 +38,10 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Determine contractor classification](#step-1) | agent-runnable | ~5 min | Entry step |
-| [2. Draft contractor agreement](#step-2) | agent-runnable; approval required | ~10 min | [Step 1](#step-1) |
+| [2. Draft contractor agreement](#step-2) | agent-runnable; human approval every run | ~10 min | [Step 1](#step-1) |
 | [3. Review agreement with counsel](#step-3) | human; includes waiting | ~2 d | [Step 2](#step-2) |
-| [4. Send for signature](#step-4) | agent-runnable; approval required | ~2 min | [Step 3](#step-3) |
-| [5. Set up payment schedule](#step-5) | manual form/portal; approval required | ~5 min | [Step 4](#step-4) |
+| [4. Send for signature](#step-4) | agent-runnable; human approval every run | ~2 min | [Step 3](#step-3) |
+| [5. Set up payment schedule](#step-5) | manual form/portal; human approval above a threshold | ~5 min | [Step 4](#step-4) |
 | [6. Contractor completes tax info](#step-6) | human; signature required; includes waiting | ~3 d | [Step 5](#step-5) |
 
 <a id="steps"></a>
@@ -63,7 +63,7 @@ Describe the proposed services and actual working arrangement: countries involve
 
 ### 2. Draft contractor agreement
 
-agent-runnable · ~10 min · human approval required
+agent-runnable · ~10 min · human approval every run
 
 
 Draft the engagement around specific deliverables, acceptance criteria, fees, currency, invoicing and expenses. Use the applicable agreement template and identify both legal parties, ownership of work product, confidentiality, data access and the change or termination process. Check that the wording matches how the contractor will actually work. Send unresolved commercial choices and unusual terms to the business owner and counsel.
@@ -84,7 +84,7 @@ Give counsel the agreement, statement of work, classification assessment and cou
 
 ### 4. Send for signature
 
-agent-runnable · ~2 min · human approval required
+agent-runnable · ~2 min · human approval every run
 
 
 Verify the final agreement, legal parties, signer authority and recipient addresses. After the business owner clears the terms, send the package for signature and follow up on unanswered questions. If either party changes the document, return those changes for review. Hand the executed agreement and any outstanding conditions to the service and payment owners so work and invoicing follow the same terms.
@@ -95,7 +95,7 @@ Verify the final agreement, legal parties, signer authority and recipient addres
 
 ### 5. Set up payment schedule
 
-manual form/portal · ~5 min · human approval required
+manual form/portal · ~5 min · human approval above a threshold
 
 
 Translate the signed fee terms into invoice dates or milestones, acceptance evidence and a payment schedule. Agree who confirms delivery, approves invoices and answers payment questions. Check currency, recipient details, transfer method and responsibility for fees with finance, including cross-border requirements. Give the contractor clear invoice instructions; scheduling the arrangement does not authorize an individual transfer.

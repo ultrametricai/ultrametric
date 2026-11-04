@@ -48,9 +48,9 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | --- | --- | --- | --- |
 | [1. Inventory direct, transitive and bundled components](#step-1) | agent-runnable | Not recorded | Entry step |
 | [2. Describe how the components are used](#step-2) | agent-runnable | Not recorded | [Step 1](#step-1) |
-| [3. Review obligations and compatibility](#step-3) | human; approval required | Not recorded | [Step 2](#step-2) |
+| [3. Review obligations and compatibility](#step-3) | human; human approval every run | Not recorded | [Step 2](#step-2) |
 | [4. Prepare notices and the compliance package](#step-4) | agent-runnable | Not recorded | [Step 3](#step-3) |
-| [5. Approve release and maintain the inventory](#step-5) | human; approval required | Not recorded | [Step 4](#step-4) |
+| [5. Approve release and maintain the inventory](#step-5) | human; human approval every run | Not recorded | [Step 4](#step-4) |
 
 <a id="steps"></a>
 
@@ -82,7 +82,7 @@ Distinguish internal use, hosted service, distribution, modifications and linkin
 
 ### 3. Review obligations and compatibility
 
-human · human approval required
+human · human approval every run
 
 
 Qualified counsel or the licensing reviewer evaluates the actual licenses and use model. Approve, replace or isolate components with unresolved rights rather than assuming a public repository grants reuse permission.
@@ -104,7 +104,7 @@ Assemble the approved attribution, license notices and any source or offer mater
 
 ### 5. Approve release and maintain the inventory
 
-human · human approval required
+human · human approval every run
 
 
 The authorized reviewer confirms unresolved blockers are closed or explicitly accepted before release. Integrate dependency changes into review and retain the evidence used for the approved version.

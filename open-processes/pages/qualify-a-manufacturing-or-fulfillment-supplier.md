@@ -48,9 +48,9 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | --- | --- | --- | --- |
 | [1. Define specifications and supplier requirements](#step-1) | agent-runnable | Not recorded | Entry step |
 | [2. Collect supplier capability evidence](#step-2) | agent-runnable | Not recorded | [Step 1](#step-1) |
-| [3. Review quality, commercial and compliance risks](#step-3) | human; approval required | Not recorded | [Step 2](#step-2) |
-| [4. Approve terms and a controlled pilot](#step-4) | human; approval required | Not recorded | [Step 3](#step-3) |
-| [5. Accept the supplier or assign remediation](#step-5) | human; approval required | Not recorded | [Step 4](#step-4) |
+| [3. Review quality, commercial and compliance risks](#step-3) | human; human approval every run | Not recorded | [Step 2](#step-2) |
+| [4. Approve terms and a controlled pilot](#step-4) | human; human approval every run | Not recorded | [Step 3](#step-3) |
+| [5. Accept the supplier or assign remediation](#step-5) | human; human approval every run | Not recorded | [Step 4](#step-4) |
 
 <a id="steps"></a>
 
@@ -82,7 +82,7 @@ Verify the counterparty and gather capacity, quality, test, insurance and releva
 
 ### 3. Review quality, commercial and compliance risks
 
-human · human approval required
+human · human approval every run
 
 
 Engineering, quality, operations and advisers assess samples, manufacturing controls, subcontracting, IP and local requirements. Decide which audit or site checks are needed and leave unverified capability visibly pending.
@@ -93,7 +93,7 @@ Engineering, quality, operations and advisers assess samples, manufacturing cont
 
 ### 4. Approve terms and a controlled pilot
 
-human · human approval required
+human · human approval every run
 
 
 Authorized parties finalize specifications, acceptance, change control, tooling ownership, remedies and continuity arrangements. Approve only a bounded pilot until the required evidence is complete.
@@ -104,7 +104,7 @@ Authorized parties finalize specifications, acceptance, change control, tooling 
 
 ### 5. Accept the supplier or assign remediation
 
-human · human approval required
+human · human approval every run
 
 
 Evaluate the pilot against agreed quality and delivery criteria. Record the approved scope, unresolved corrective actions and review schedule, with an alternative plan for critical dependencies.

@@ -47,10 +47,10 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Build the asset and custody register](#step-1) | agent-runnable | Not recorded | Entry step |
-| [2. Approve purchasing and handling responsibilities](#step-2) | human; approval required | Not recorded | [Step 1](#step-1) |
-| [3. Record approved assignment and configuration](#step-3) | human; approval required | Not recorded | [Step 2](#step-2) |
-| [4. Reconcile physical holdings and changes](#step-4) | human; approval required | Not recorded | [Step 3](#step-3) |
-| [5. Authorize return, reuse or disposal](#step-5) | human; approval required | Not recorded | [Step 4](#step-4) |
+| [2. Approve purchasing and handling responsibilities](#step-2) | human; human approval every run | Not recorded | [Step 1](#step-1) |
+| [3. Record approved assignment and configuration](#step-3) | human; human approval every run | Not recorded | [Step 2](#step-2) |
+| [4. Reconcile physical holdings and changes](#step-4) | human; human approval every run | Not recorded | [Step 3](#step-3) |
+| [5. Authorize return, reuse or disposal](#step-5) | human; human approval every run | Not recorded | [Step 4](#step-4) |
 
 <a id="steps"></a>
 
@@ -71,7 +71,7 @@ Record the equipment, serial or asset identifier, purchase evidence, custodian, 
 
 ### 2. Approve purchasing and handling responsibilities
 
-human · human approval required
+human · human approval every run
 
 
 The accountable owners confirm assignment, physical security, maintenance, insurance and return expectations. Use the payment and purchasing approval process for new commitments.
@@ -82,7 +82,7 @@ The accountable owners confirm assignment, physical security, maintenance, insur
 
 ### 3. Record approved assignment and configuration
 
-human · human approval required · hard to undo
+human · human approval every run · hard to undo
 
 
 Authorized operators tag assets, issue equipment and link it to the relevant access or device-management controls. Verify receipt and document exceptions without exposing credentials in the asset record.
@@ -93,7 +93,7 @@ Authorized operators tag assets, issue equipment and link it to the relevant acc
 
 ### 4. Reconcile physical holdings and changes
 
-human · human approval required
+human · human approval every run
 
 
 Custodians confirm assets, condition and location on the agreed cadence. Investigate missing equipment and coordinate lost-device or security response where needed.
@@ -104,7 +104,7 @@ Custodians confirm assets, condition and location on the agreed cadence. Investi
 
 ### 5. Authorize return, reuse or disposal
 
-human · human approval required
+human · human approval every run
 
 
 Verify ownership, retention needs and data sanitization before transfer or disposal. Retain return or disposal evidence and reconcile the asset, accounting and access records.

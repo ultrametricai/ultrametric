@@ -43,11 +43,11 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
-| [1. Issue a capital call notice to the LPs](#step-1) | agent-runnable; approval required | ~30 min | Entry step |
+| [1. Issue a capital call notice to the LPs](#step-1) | agent-runnable; human approval every run | ~30 min | Entry step |
 | [2. LPs send the capital call wires](#step-2) | human; includes waiting | ~3 d | [Step 1](#step-1) |
 | [3. Verify the capital call wires received](#step-3) | agent-runnable | ~10 min | [Step 2](#step-2) |
-| [4. Charge the management fee](#step-4) | agent-runnable; approval required | ~10 min | [Step 3](#step-3) |
-| [5. Book the investment on the fund ledger](#step-5) | agent-runnable; approval required | ~20 min | [Step 4](#step-4) |
+| [4. Charge the management fee](#step-4) | agent-runnable; human approval every run | ~10 min | [Step 3](#step-3) |
+| [5. Book the investment on the fund ledger](#step-5) | agent-runnable; human approval every run | ~20 min | [Step 4](#step-4) |
 
 <a id="steps"></a>
 
@@ -57,7 +57,7 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 
 ### 1. Issue a capital call notice to the LPs
 
-agent-runnable · ~30 min · human approval required · hard to undo
+agent-runnable · ~30 min · human approval every run · hard to undo
 
 
 Calculate the capital call from the fund agreement, purpose and commitment schedule, applying side letters, exclusions and the relevant due date. Verify the fund’s payment instructions. The authorized GP approves the call amounts and notices before they are issued to investors. Track the resulting obligations against receipts and remaining unfunded commitments.
@@ -93,7 +93,7 @@ Match bank credits to capital calls by investor, amount, currency and reference.
 
 ### 4. Charge the management fee
 
-agent-runnable · ~10 min · human approval required · hard to undo
+agent-runnable · ~10 min · human approval every run · hard to undo
 
 
 Calculate the management fee from the executed fund documents and side letters using the applicable base, rate, period, offsets, waivers and step-downs. Reconcile it to earlier fees. The GP or designated approver authorizes the charge or payment, after which finance posts the transaction to the correct fund and recipient entities with the calculation attached.
@@ -104,7 +104,7 @@ Calculate the management fee from the executed fund documents and side letters u
 
 ### 5. Book the investment on the fund ledger
 
-agent-runnable · ~20 min · human approval required
+agent-runnable · ~20 min · human approval every run
 
 
 Book the investment from executed transaction documents, funding evidence and the approved allocation. Identify the portfolio company, security, cost, currency and effective date, applying the administrator’s treatment of fees. Reconcile cash and holdings, keeping subsequent valuation adjustments separate from original cost so investor reporting can trace the position and its movements.

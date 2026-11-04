@@ -53,9 +53,9 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Identify the shares, parties and proposed terms](#step-1) | agent-runnable | Not recorded | Entry step |
-| [2. Determine transfer restrictions and the legal route](#step-2) | human; approval required | Not recorded | [Step 1](#step-1) |
+| [2. Determine transfer restrictions and the legal route](#step-2) | human; human approval every run | Not recorded | [Step 1](#step-1) |
 | [3. Prepare the diligence and transfer pack](#step-3) | agent-runnable | Not recorded | [Step 2](#step-2) |
-| [4. Approve and execute closing](#step-4) | human; approval required | Not recorded | [Step 3](#step-3) |
+| [4. Approve and execute closing](#step-4) | human; human approval every run | Not recorded | [Step 3](#step-3) |
 | [5. Reconcile the register and reporting follow-up](#step-5) | agent-runnable | Not recorded | [Step 4](#step-4) |
 
 <a id="steps"></a>
@@ -77,7 +77,7 @@ Gather ownership evidence, instrument type, acquisition history, seller and buye
 
 ### 2. Determine transfer restrictions and the legal route
 
-human · human approval required
+human · human approval every run
 
 
 Counsel reviews governing documents, rights of first refusal, approvals, securities restrictions and the affected jurisdictions. Record required waivers, diligence and tax advice; do not treat private shares as freely tradable.
@@ -99,7 +99,7 @@ Reconcile the seller's holding and assemble approved disclosures, transfer docum
 
 ### 4. Approve and execute closing
 
-human · human approval required · hard to undo
+human · human approval every run · hard to undo
 
 
 Authorized parties satisfy the documented approvals and conditions, sign the approved documents and verify settlement instructions independently. Follow the agreed closing sequence and retain evidence before treating funds or shares as transferred.

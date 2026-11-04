@@ -47,9 +47,9 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Map the actual transfer and access paths](#step-1) | agent-runnable | Not recorded | Entry step |
-| [2. Determine the applicable transfer requirements](#step-2) | human; approval required | Not recorded | [Step 1](#step-1) |
+| [2. Determine the applicable transfer requirements](#step-2) | human; human approval every run | Not recorded | [Step 1](#step-1) |
 | [3. Prepare the contract and risk evidence](#step-3) | agent-runnable | Not recorded | [Step 2](#step-2) |
-| [4. Approve and implement the defined transfer](#step-4) | human; approval required | Not recorded | [Step 3](#step-3) |
+| [4. Approve and implement the defined transfer](#step-4) | human; human approval every run | Not recorded | [Step 3](#step-3) |
 | [5. Monitor supplier and legal changes](#step-5) | agent-runnable | Not recorded | [Step 4](#step-4) |
 
 <a id="steps"></a>
@@ -71,7 +71,7 @@ Identify the exporter, importer, data, purpose, storage locations and remote-acc
 
 ### 2. Determine the applicable transfer requirements
 
-human · human approval required
+human · human approval every run
 
 
 Qualified privacy advisers assess the relevant jurisdictions, roles and available transfer mechanisms. Record the basis and conditions for the specific flow, including unresolved local-law or supplier questions.
@@ -93,7 +93,7 @@ Assemble the proposed terms, supplier disclosures, security measures and any req
 
 ### 4. Approve and implement the defined transfer
 
-human · human approval required
+human · human approval every run
 
 
 Authorized owners execute reviewed agreements and configure the approved access and security measures. Keep unapproved destinations and onward transfers blocked and retain the decision evidence.

@@ -47,10 +47,10 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Describe intended use and the complete business model](#step-1) | agent-runnable | Not recorded | Entry step |
-| [2. Obtain a qualified classification and authority map](#step-2) | human; approval required | Not recorded | [Step 1](#step-1) |
+| [2. Obtain a qualified classification and authority map](#step-2) | human; human approval every run | Not recorded | [Step 1](#step-1) |
 | [3. Prepare the approval and evidence workplan](#step-3) | agent-runnable | Not recorded | [Step 2](#step-2) |
-| [4. Authorize specialist submissions and pre-launch controls](#step-4) | human; approval required | Not recorded | [Step 3](#step-3) |
-| [5. Review the exact permitted launch scope](#step-5) | human; approval required | Not recorded | [Step 4](#step-4) |
+| [4. Authorize specialist submissions and pre-launch controls](#step-4) | human; human approval every run | Not recorded | [Step 3](#step-3) |
+| [5. Review the exact permitted launch scope](#step-5) | human; human approval every run | Not recorded | [Step 4](#step-4) |
 
 <a id="steps"></a>
 
@@ -71,7 +71,7 @@ Document claims, users, customer types, technology, funds or data handled and ta
 
 ### 2. Obtain a qualified classification and authority map
 
-human · human approval required
+human · human approval every run
 
 
 Sector and local counsel identify the competent regulators, product or service classifications and possible exemptions. Record evidence and unresolved questions; a general startup guide cannot approve a clinical, financial or other licensed activity.
@@ -93,7 +93,7 @@ List the specific testing, quality, capital, personnel, documentation and applic
 
 ### 4. Authorize specialist submissions and pre-launch controls
 
-human · human approval required
+human · human approval every run
 
 
 Qualified teams prepare and submit the required applications after proper review and authorization. Record authority decisions and operating restrictions and keep unapproved activities and claims blocked.
@@ -104,7 +104,7 @@ Qualified teams prepare and submit the required applications after proper review
 
 ### 5. Review the exact permitted launch scope
 
-human · human approval required
+human · human approval every run
 
 
 The accountable specialists confirm permissions, conditions and operating readiness for each market. Approve only the evidenced scope and establish monitoring and reassessment when the product, claims or business model change.

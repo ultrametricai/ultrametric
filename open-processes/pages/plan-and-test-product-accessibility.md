@@ -47,9 +47,9 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Scope the users, journeys and applicable targets](#step-1) | agent-runnable | Not recorded | Entry step |
-| [2. Agree the accessibility evaluation plan](#step-2) | human; approval required | Not recorded | [Step 1](#step-1) |
+| [2. Agree the accessibility evaluation plan](#step-2) | human; human approval every run | Not recorded | [Step 1](#step-1) |
 | [3. Run technical checks and document reproducible barriers](#step-3) | agent-runnable | Not recorded | [Step 2](#step-2) |
-| [4. Test with qualified people and prioritize fixes](#step-4) | human; approval required | Not recorded | [Step 3](#step-3) |
+| [4. Test with qualified people and prioritize fixes](#step-4) | human; human approval every run | Not recorded | [Step 3](#step-3) |
 | [5. Retest and maintain the accessibility record](#step-5) | agent-runnable | Not recorded | [Step 4](#step-4) |
 
 <a id="steps"></a>
@@ -71,7 +71,7 @@ Identify critical tasks, platforms, assistive technologies and customer commitme
 
 ### 2. Agree the accessibility evaluation plan
 
-human · human approval required
+human · human approval every run
 
 
 Product, design and engineering owners choose the evaluation criteria, representative pages and human testing needs. Include keyboard, screen-reader and usability checks alongside automated tools.
@@ -93,7 +93,7 @@ Collect automated findings and reproducible steps, environment details and affec
 
 ### 4. Test with qualified people and prioritize fixes
 
-human · human approval required
+human · human approval every run
 
 
 Review the product with accessibility specialists or representative users where appropriate. Assign fixes based on task impact and verify design, content and engineering changes together.

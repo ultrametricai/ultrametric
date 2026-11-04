@@ -42,10 +42,10 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
-| [1. Create your transactional email account](#step-1) | manual form/portal; approval required | ~5 min | Entry step |
-| [2. Authenticate sending domain](#step-2) | agent-runnable; approval required; includes waiting | ~10 min | [Step 1](#step-1) |
-| [3. Add DNS records](#step-3) | agent-runnable; approval required | ~5 min | [Step 2](#step-2) |
-| [4. Create email templates](#step-4) | agent-runnable; approval required | ~10 min | [Step 3](#step-3) |
+| [1. Create your transactional email account](#step-1) | manual form/portal; human approval on the first run | ~5 min | Entry step |
+| [2. Authenticate sending domain](#step-2) | agent-runnable; human approval on the first run; includes waiting | ~10 min | [Step 1](#step-1) |
+| [3. Add DNS records](#step-3) | agent-runnable; human approval on the first run | ~5 min | [Step 2](#step-2) |
+| [4. Create email templates](#step-4) | agent-runnable; human approval on the first run | ~10 min | [Step 3](#step-3) |
 | [5. Test email delivery](#step-5) | agent-runnable | ~5 min | [Step 4](#step-4) |
 
 <a id="steps"></a>
@@ -56,7 +56,7 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 
 ### 1. Create your transactional email account
 
-manual form/portal · ~5 min · human approval required
+manual form/portal · ~5 min · human approval on the first run
 
 
 Choose a sending account for the application's message types, expected volume and environments. Check current pricing, data handling and credential controls, and establish company ownership within the agreed budget. Separate development and production access where supported and store credentials privately with a rotation owner. Complete domain authentication and controlled delivery tests before enabling customer sends.
@@ -69,7 +69,7 @@ Choose a sending account for the application's message types, expected volume an
 
 ### 2. Authenticate sending domain
 
-agent-runnable · ~10 min · async wait · human approval required
+agent-runnable · ~10 min · async wait · human approval on the first run
 
 
 Choose the sending domain or subdomain with the email administrator after inspecting existing mail services. Generate the authentication records in the selected provider's current setup flow, capturing the exact hosts, types and values. Identify conflicts or selectors already in use and produce the DNS change set for the domain administrator. Authentication is still pending until those records are applied and verified.
@@ -84,7 +84,7 @@ Choose the sending domain or subdomain with the email administrator after inspec
 
 ### 3. Add DNS records
 
-agent-runnable · ~5 min · human approval required
+agent-runnable · ~5 min · human approval on the first run
 
 
 Apply the mail-authentication change set authorized by the domain administrator to the authoritative DNS zone. Copy the sender's exact record types, hosts and values; check for duplicated domain suffixes and conflicts with existing records. Preserve other website and mail services. Read the records back and run the provider's verification, investigating any failed check before marking the domain authenticated.
@@ -97,7 +97,7 @@ Apply the mail-authentication change set authorized by the domain administrator 
 
 ### 4. Create email templates
 
-agent-runnable · ~10 min · human approval required
+agent-runnable · ~10 min · human approval on the first run
 
 
 Write each transactional message for its application event and the action or confirmation the recipient needs. Define variables, fallbacks and links without exposing secrets or unnecessary personal data. Preview fictional examples, test expired links where relevant, and map finished template versions to their triggers. Review promotional additions separately.

@@ -47,9 +47,9 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Confirm the customer, contract and requested exit](#step-1) | agent-runnable | Not recorded | Entry step |
-| [2. Agree the exit and data-handling plan](#step-2) | human; approval required | Not recorded | [Step 1](#step-1) |
+| [2. Agree the exit and data-handling plan](#step-2) | human; human approval every run | Not recorded | [Step 1](#step-1) |
 | [3. Prepare and validate the authorized export](#step-3) | agent-runnable | Not recorded | [Step 2](#step-2) |
-| [4. Execute the approved service and access changes](#step-4) | manual form/portal; approval required | Not recorded | [Step 3](#step-3) |
+| [4. Execute the approved service and access changes](#step-4) | manual form/portal; human approval every run | Not recorded | [Step 3](#step-3) |
 | [5. Reconcile residual obligations and closure evidence](#step-5) | agent-runnable | Not recorded | [Step 4](#step-4) |
 
 <a id="steps"></a>
@@ -71,7 +71,7 @@ Verify the requester's authority, agreement, service dates and requested data. S
 
 ### 2. Agree the exit and data-handling plan
 
-human · human approval required
+human · human approval every run
 
 
 The account, privacy and contract owners confirm export scope, format, recipients, retention and deletion instructions. Resolve legal holds and third-party data rights before promising removal or disclosure.
@@ -93,7 +93,7 @@ Assemble the approved customer data in a controlled workspace, checking complete
 
 ### 4. Execute the approved service and access changes
 
-manual form/portal · human approval required · hard to undo
+manual form/portal · human approval every run · hard to undo
 
 
 Authorized operators deliver the export, update subscription and billing status and revoke the specified integrations and access. Use the agreed timing and retain evidence of each action.

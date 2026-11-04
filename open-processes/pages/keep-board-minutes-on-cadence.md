@@ -50,7 +50,7 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | [1. Schedule the board cadence](#step-1) | agent-runnable | ~5 min | Entry step |
 | [2. Prepare the minutes template](#step-2) | agent-runnable | ~10 min | [Step 1](#step-1) |
 | [3. Hold the meeting and take minutes](#step-3) | human | ~1 h | [Step 2](#step-2) |
-| [4. Circulate minutes for signature](#step-4) | agent-runnable; approval required | ~5 min | [Step 3](#step-3) |
+| [4. Circulate minutes for signature](#step-4) | agent-runnable; human approval every run | ~5 min | [Step 3](#step-3) |
 | [5. File signed minutes in the data room](#step-5) | agent-runnable | ~5 min | [Step 4](#step-4) |
 
 <a id="steps"></a>
@@ -95,7 +95,7 @@ Record who attended, what was considered and what was decided. Capture approved 
 
 ### 4. Circulate minutes for signature
 
-agent-runnable · ~5 min · human approval required
+agent-runnable · ~5 min · human approval every run
 
 
 Follow the company’s applicable approval and signature process for these minutes. Resolve corrections, freeze the final wording and confirm the required signers and their capacities before sending an approved signature request. Track approval separately from signature completion and keep the execution evidence with the minutes. The correct process may not require every director to sign.

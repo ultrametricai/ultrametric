@@ -45,11 +45,11 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Translate the requested outcome into deliverables](#step-1) | agent-runnable | Not recorded | Entry step |
-| [2. Approve scope capacity and contractual risk](#step-2) | human; approval required | Not recorded | [Step 1](#step-1) |
-| [3. Execute the approved engagement agreement](#step-3) | manual form/portal; approval required | Not recorded | [Step 2](#step-2) |
-| [4. Deliver work and control changes](#step-4) | human; approval required | Not recorded | [Step 3](#step-3) |
+| [2. Approve scope capacity and contractual risk](#step-2) | human; human approval every run | Not recorded | [Step 1](#step-1) |
+| [3. Execute the approved engagement agreement](#step-3) | manual form/portal; human approval every run | Not recorded | [Step 2](#step-2) |
+| [4. Deliver work and control changes](#step-4) | human; human approval every run | Not recorded | [Step 3](#step-3) |
 | [5. Reconcile delivery evidence and open exceptions](#step-5) | agent-runnable | Not recorded | [Step 4](#step-4) |
-| [6. Obtain acceptance and close the engagement](#step-6) | human; approval required | Not recorded | [Step 5](#step-5) |
+| [6. Obtain acceptance and close the engagement](#step-6) | human; human approval every run | Not recorded | [Step 5](#step-5) |
 
 <a id="steps"></a>
 
@@ -70,7 +70,7 @@ Record the customer problem, deliverables, exclusions, dependencies and acceptan
 
 ### 2. Approve scope capacity and contractual risk
 
-human · human approval required · hard to undo
+human · human approval every run · hard to undo
 
 
 The delivery and commercial owners review staffing, milestones, payment terms, intellectual property and liability with relevant advisers. Resolve obligations the team cannot fulfill before proposing the engagement.
@@ -81,7 +81,7 @@ The delivery and commercial owners review staffing, milestones, payment terms, i
 
 ### 3. Execute the approved engagement agreement
 
-manual form/portal · human approval required · hard to undo
+manual form/portal · human approval every run · hard to undo
 
 
 Authorized signatories approve and sign the reviewed statement of work and agreement. Retain the signed scope and approval record before scheduling externally committed work.
@@ -92,7 +92,7 @@ Authorized signatories approve and sign the reviewed statement of work and agree
 
 ### 4. Deliver work and control changes
 
-human · human approval required · hard to undo
+human · human approval every run · hard to undo
 
 
 Named delivery owners perform the engagement and review customer dependencies. Record requested changes with their cost, timing and acceptance impact; obtain approval before taking on additional obligations.
@@ -114,7 +114,7 @@ Compile completed deliverables, time or milestone evidence and unresolved issues
 
 ### 6. Obtain acceptance and close the engagement
 
-human · human approval required · hard to undo
+human · human approval every run · hard to undo
 
 
 The accountable delivery owner confirms acceptance or disputes through the agreed route. Hand remaining obligations, support and approved invoice evidence to their owners and record lessons for future estimates.

@@ -73,8 +73,8 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | --- | --- | --- | --- |
 | [1. Calculate franchise tax](#step-1) | agent-runnable | ~5 min | Entry step |
 | [2. Gather officer and director info](#step-2) | agent-runnable | ~2 min | Entry step |
-| [3. File on Delaware portal](#step-3) | manual form/portal; approval required | ~20 min | All: [Step 1](#step-1); [Step 2](#step-2) |
-| [4. Pay franchise tax](#step-4) | manual form/portal; approval required | ~5 min | [Step 3](#step-3) |
+| [3. File on Delaware portal](#step-3) | manual form/portal; human approval every run | ~20 min | All: [Step 1](#step-1); [Step 2](#step-2) |
+| [4. Pay franchise tax](#step-4) | manual form/portal; human approval every run | ~5 min | [Step 3](#step-3) |
 | [5. Save confirmation receipt](#step-5) | agent-runnable | ~1 min | [Step 4](#step-4) |
 | [6. Pay the California minimum franchise tax ($800, FTB)](#step-6) | manual form/portal | ~15 min | Entry step |
 | [7. File the Texas franchise tax report (May 15)](#step-7) | manual form/portal | ~20 min | Entry step |
@@ -114,7 +114,7 @@ Collect the officer, director, business-address and other details requested for 
 
 ### 3. File on Delaware portal
 
-manual form/portal · ~20 min · human approval required · hard to undo
+manual form/portal · ~20 min · human approval every run · hard to undo
 
 
 *Follows steps 1 and 2 — both are required first.*
@@ -130,7 +130,7 @@ Identify the corporation and reporting year in the official Delaware service usi
 
 ### 4. Pay franchise tax
 
-manual form/portal · ~5 min · human approval required · hard to undo
+manual form/portal · ~5 min · human approval every run · hard to undo
 
 
 Match the tax, report fee, adjustments and prior payments to the state account and reviewed calculation. Verify the entity, period and funding account through the company’s payment-approval process, then submit the payment and check settlement. If filing already collected the amount, reconcile that receipt before paying again. Resolve unexplained balances with the tax adviser or state.

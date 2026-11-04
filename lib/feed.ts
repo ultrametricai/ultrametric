@@ -52,7 +52,7 @@ export function eventToItem(e: ChangeEvent): FeedItem {
         title: `${e.productName} overtook ${e.overtookName} in ${e.categoryName}`,
         link: arenaLink,
         date: e.date,
-        description: `${e.productName} (${e.productAiEra}) moved ahead of ${e.overtookName} (${e.overtookAiEra}) on Overall score — driven by re-derived evidence, never editorial.`,
+        description: `${e.productName} (${e.productAiEra}) moved ahead of ${e.overtookName} (${e.overtookAiEra}) on Agentic score — driven by re-derived evidence, never editorial.`,
         guid: `overtake:${e.categoryId}:${e.productId}:${e.overtookId}:${e.date}`,
       }
     case 'score-move': {
@@ -61,7 +61,7 @@ export function eventToItem(e: ChangeEvent): FeedItem {
         title: `${e.productName} ${dir}${e.delta} to ${e.to} in ${e.categoryName}`,
         link: `${arenaLink}/product/${e.productId}`,
         date: e.date,
-        description: `${e.productName}'s Overall score moved ${dir}${e.delta} to ${e.to} after evidence re-derivation in ${e.categoryName}.`,
+        description: `${e.productName}'s Agentic score moved ${dir}${e.delta} to ${e.to} after evidence re-derivation in ${e.categoryName}.`,
         guid: `score-move:${e.categoryId}:${e.productId}:${e.date}`,
       }
     }

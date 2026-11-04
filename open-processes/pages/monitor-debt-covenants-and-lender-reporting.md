@@ -54,8 +54,8 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | --- | --- | --- | --- |
 | [1. Extract the operative obligations from signed agreements](#step-1) | agent-runnable | Not recorded | Entry step |
 | [2. Recompute tests from reconciled financial data](#step-2) | agent-runnable | Not recorded | [Step 1](#step-1) |
-| [3. Review headroom and potential noncompliance](#step-3) | human; approval required | Not recorded | [Step 2](#step-2) |
-| [4. Approve and deliver the required lender reports](#step-4) | human; approval required | Not recorded | [Step 3](#step-3) |
+| [3. Review headroom and potential noncompliance](#step-3) | human; human approval every run | Not recorded | [Step 2](#step-2) |
+| [4. Approve and deliver the required lender reports](#step-4) | human; human approval every run | Not recorded | [Step 3](#step-3) |
 | [5. Track responses and the next measurement cycle](#step-5) | agent-runnable | Not recorded | [Step 4](#step-4) |
 
 <a id="steps"></a>
@@ -88,7 +88,7 @@ Apply each agreement's definitions to the correct period and show the calculatio
 
 ### 3. Review headroom and potential noncompliance
 
-human · human approval required
+human · human approval every run
 
 
 Finance leadership and counsel resolve interpretation questions and assess projected headroom. Route an actual default to the covenant-default response process instead of assuming a waiver or netting a breach against another metric.
@@ -99,7 +99,7 @@ Finance leadership and counsel resolve interpretation questions and assess proje
 
 ### 4. Approve and deliver the required lender reports
 
-human · human approval required
+human · human approval every run
 
 
 The designated signatory reviews the final certificate and attachments before delivery through the agreed channel. Retain the submitted version and evidence of receipt, with confidential materials access-controlled.

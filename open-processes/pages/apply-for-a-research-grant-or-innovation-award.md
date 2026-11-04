@@ -53,10 +53,10 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | Step | Handled by | Time estimate | Incoming dependencies |
 | --- | --- | --- | --- |
 | [1. Match the actual project to published opportunities](#step-1) | agent-runnable | Not recorded | Entry step |
-| [2. Confirm eligibility and the funding commitment](#step-2) | human; approval required | Not recorded | [Step 1](#step-1) |
+| [2. Confirm eligibility and the funding commitment](#step-2) | human; human approval every run | Not recorded | [Step 1](#step-1) |
 | [3. Prepare the technical, budget and delivery proposal](#step-3) | agent-runnable | Not recorded | [Step 2](#step-2) |
-| [4. Approve and submit the application](#step-4) | manual form/portal; approval required | Not recorded | [Step 3](#step-3) |
-| [5. Assess the award decision and accept conditions](#step-5) | human; approval required | Not recorded | [Step 4](#step-4) |
+| [4. Approve and submit the application](#step-4) | manual form/portal; human approval every run | Not recorded | [Step 3](#step-3) |
+| [5. Assess the award decision and accept conditions](#step-5) | human; human approval every run | Not recorded | [Step 4](#step-4) |
 
 <a id="steps"></a>
 
@@ -77,7 +77,7 @@ Record the official sponsor, call, applicant rules, project scope, submission da
 
 ### 2. Confirm eligibility and the funding commitment
 
-human · human approval required
+human · human approval every run
 
 
 The project owner and finance adviser check entity, geography, research and matching-fund conditions. Decide whether the project can proceed if no award is made; an application is not cash or permission to incur reimbursable costs.
@@ -99,7 +99,7 @@ Write the research question, milestones, team capability, evidence and cost basi
 
 ### 4. Approve and submit the application
 
-manual form/portal · human approval required · hard to undo
+manual form/portal · human approval every run · hard to undo
 
 
 The authorized applicant checks certifications, budget and final attachments before submitting through the official portal. Retain the submitted copy and receipt and keep requested clarification work in an owned register.
@@ -110,7 +110,7 @@ The authorized applicant checks certifications, budget and final attachments bef
 
 ### 5. Assess the award decision and accept conditions
 
-human · human approval required
+human · human approval every run
 
 
 Review the actual award terms, restrictions, milestones, IP provisions and reporting with advisers. Obtain authority before acceptance and hand the agreement to the grant-compliance owner rather than treating selection as unrestricted revenue.
