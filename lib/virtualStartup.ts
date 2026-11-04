@@ -1005,7 +1005,15 @@ export function journeyTaskIds(choices: Choices, chains: VsChain[]): string[] {
 export function unionTaskIds(chains: VsChain[]): string[] {
   const out: string[] = []
   const seen = new Set<string>()
+  // Entity choices beyond the C-Corp/LLC composition fork never change task membership: every
+  // other entity keeps the exact C-Corp task set (the entity honesty test proves task-identity
+  // per entity), so the sweep composes journeys for those two entity values only. Order is
+  // unchanged — allChoiceCombos enumerates all c-corp combos first, then llc, so the skipped
+  // combos could only re-reach already-seen tasks. The superset test in
+  // lib/__tests__/virtualStartup.test.ts still sweeps EVERY combo against this union, so an
+  // entity that ever grew its own tasks would fail there rather than silently fall out.
   for (const combo of allChoiceCombos()) {
+    if (combo.entity !== 'c-corp' && combo.entity !== 'llc') continue
     for (const id of journeyTaskIds(combo, chains)) {
       if (!seen.has(id)) {
         seen.add(id)
