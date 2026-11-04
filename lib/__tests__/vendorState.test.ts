@@ -51,6 +51,12 @@ describe('vendor-state corpus', () => {
     expect(entries.length).toBeGreaterThan(0)
     for (const e of entries) {
       expect(e.sourceUrl).toMatch(/^https:\/\//)
+      const supportingSources = e.supportingSourceUrls ?? []
+      expect(
+        new Set([e.sourceUrl, ...supportingSources]).size,
+        `${e.productId}/${e.state}/${e.service} sources`,
+      ).toBe(1 + supportingSources.length)
+      for (const source of supportingSources) expect(source).toMatch(/^https:\/\//)
       expect(e.note.length, `${e.productId}/${e.state}/${e.service} note`).toBeGreaterThan(15)
     }
   })
@@ -130,10 +136,7 @@ describe('vendor-state corpus', () => {
       [
         'gusto',
         'annual-report-filing',
-        [
-          'https://gusto.com/product/business-compliance',
-          'https://support.gusto.com/article/106732676100000/california-registration-and-tax-info',
-        ],
+        ['https://gusto.com/product/business-compliance'],
       ],
       [
         'rippling',
@@ -167,13 +170,16 @@ describe('vendor-state corpus', () => {
       (entry) => entry.productId === 'gusto' && entry.service === 'annual-report-filing',
     )
     expect(gustoAnnualReportRows).toHaveLength(US_STATE_CODES.length)
-    expect(
-      gustoAnnualReportRows.find((entry) => entry.state === 'US-CA')?.sourceUrl,
-      'the California row must retain Gusto help evidence for the service-wide eligibility rules',
-    ).toBe(
-      'https://support.gusto.com/article/106732676100000/california-registration-and-tax-info',
-    )
+    const gustoEligibilitySource =
+      'https://support.gusto.com/article/178974266922487/use-gusto-business-compliance-to-stay-compliant-in-your-states'
     for (const row of gustoAnnualReportRows) {
+      expect(row.sourceUrl, `${row.state} must retain the nationwide availability source`).toBe(
+        'https://gusto.com/product/business-compliance',
+      )
+      expect(
+        row.supportingSourceUrls,
+        `${row.state} must cite the separate source for material eligibility limits`,
+      ).toEqual([gustoEligibilitySource])
       expect(row.note, `${row.state} must disclose the Gusto payroll prerequisite`).toMatch(
         /requires Gusto payroll/,
       )
@@ -246,6 +252,11 @@ describe('vendorStateLookup', () => {
     const ca = vendorStateLookup(['stripe-atlas'], 'US-CA', DATA_DIR)['stripe-atlas']
     expect(ca.formation?.status).toBe('unavailable')
     expect(Object.keys(ca)).toEqual(['formation'])
+
+    const gusto = vendorStateLookup(['gusto'], 'US-CA', DATA_DIR).gusto
+    expect(gusto['annual-report-filing']?.supportingSourceUrls).toEqual([
+      'https://support.gusto.com/article/178974266922487/use-gusto-business-compliance-to-stay-compliant-in-your-states',
+    ])
   })
 
   it('uncovered products and states are simply absent — annotations never invent a row', () => {

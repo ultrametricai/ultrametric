@@ -146,8 +146,9 @@ export function vendorStateSchemaJson(): string {
     description:
       'Vendor US-state service availability evidence (jurisdictions/vendor-state.json): one ' +
       'row per (product, state, service) with a status, an optional price from the vendor’s ' +
-      'own pricing page, the vendor’s own state page as the source, and the date it was ' +
-      'checked. Display/annotation evidence only; no judged number reads it. Generated from ' +
+      'own pricing page, the vendor’s own state page as the primary source, optional ' +
+      'first-party supporting sources for material limits, and the date it was checked. ' +
+      'Display/annotation evidence only; no judged number reads it. Generated from ' +
       'VendorStateEntrySchema in lib/vendorState.ts by scripts/generate-corpus-schemas.ts — ' +
       'edit the zod schema, never this file.',
     ...rest,
