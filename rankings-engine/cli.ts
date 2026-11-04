@@ -24,7 +24,9 @@ async function main() {
   if (rest.includes('--preview')) throw new Error('Use the judge-preview stage with explicit --category, --product and --story')
 
   // --force is only meaningful to stages with a freshness cache (screenshots); others ignore it.
-  const opts = { category, product, force: rest.includes('--force') }
+  // --batch is only meaningful to judge: it routes first verdicts through the Message
+  // Batches API at half the interactive per-token price. Interactive stays the default.
+  const opts = { category, product, force: rest.includes('--force'), batch: rest.includes('--batch') }
 
   switch (stage as Stage) {
     case 'derive':

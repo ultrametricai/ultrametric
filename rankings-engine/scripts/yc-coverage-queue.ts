@@ -30,7 +30,7 @@ import path from 'node:path'
 import { z } from 'zod'
 import { ProductSchema, YcMapSchema } from '../../lib/schemas'
 import { readJson, resolveCategories, writeJson, ROOT } from '../paths'
-import { batchCode, normalizeDomain, YC_ALL_COMPANIES_URL, type YcRawCompany } from '../yc-shared'
+import { batchCode, canonicalYcDomain, normalizeDomain, YC_ALL_COMPANIES_URL, type YcRawCompany } from '../yc-shared'
 import { DOMAIN_VOCAB } from './tag-story-scopes'
 import { RadarReportSchema, type RadarReport } from './vendor-radar'
 
@@ -119,43 +119,156 @@ async function ensureFeed(refetch: boolean): Promise<YcRawCompany[]> {
   return all
 }
 
+// Deployment and form-factor descriptors say HOW software ships, not which market it competes
+// in. Inside an arena they are legitimate story-scoping vocab (authenticator-apps really does
+// compare open-source, self-hostable authenticators), but as cross-arena FIT evidence they
+// misfire: "The modern, open source, self-hosted AI customer support platform" (Chatwoot) is an
+// ai-support-agents description, and "Open source agent generation framework" (Aden) is not an
+// authenticator (PR #528 re-review). Listed by exact DOMAIN_VOCAB spelling; entries that appear
+// in no list are harmless.
+const DEPLOYMENT_VOCAB_STOPLIST = new Set([
+  'open source', 'open-source', 'self-host', 'self-hosted', 'on-prem', 'on-premise',
+  'cross-platform', 'desktop app', 'mobile app', 'browser extension',
+])
+
+// A keyword carried by more than this share of ALL arena vocab lists names the agentic-software
+// genre rather than any arena ('agent' sits in 44 of the 83 lists, five times the runner-up) and
+// earns no fit hit. The share is measured over the whole DOMAIN_VOCAB table so it does not move
+// when a category is added or retired from categories.json.
+const GENERIC_VOCAB_ARENA_SHARE = 0.25
+
 // Compiled per-arena vocab: for each arena, one regex per keyword so we can count DISTINCT
 // keyword hits (a single regex with alternation only says "matched", not how many concepts).
-function compileVocab(arenaIds: Set<string>): Map<string, { word: string; re: RegExp }[]> {
+// Keywords that are deployment descriptors or genre-generic (see above) are dropped at compile
+// time, so every downstream hit count only measures arena-distinctive evidence.
+export function compileVocab(arenaIds: Set<string>): Map<string, { word: string; re: RegExp }[]> {
+  // Boundary assertions and a listed singular/plural pair name the same concept.
+  // Count each concept once per arena: agent, agent\b and agents\b must all share
+  // the generic-word threshold, while the original regex still controls matching.
+  const bareWord = (word: string) => word.replace(/\\b/g, '').toLowerCase()
+  const knownWords = new Set(Object.values(DOMAIN_VOCAB).flat().map(bareWord))
+  const concept = (word: string) => {
+    const bare = bareWord(word)
+    return bare.endsWith('s') && knownWords.has(bare.slice(0, -1)) ? bare.slice(0, -1) : bare
+  }
+  const arenasPerWord = new Map<string, number>()
+  for (const words of Object.values(DOMAIN_VOCAB)) {
+    for (const w of new Set(words.map(concept))) arenasPerWord.set(w, (arenasPerWord.get(w) ?? 0) + 1)
+  }
+  const genericLimit = Object.keys(DOMAIN_VOCAB).length * GENERIC_VOCAB_ARENA_SHARE
+  const isFitEvidence = (w: string) =>
+    !DEPLOYMENT_VOCAB_STOPLIST.has(concept(w)) && (arenasPerWord.get(concept(w)) ?? 0) <= genericLimit
+
   const compiled = new Map<string, { word: string; re: RegExp }[]>()
   for (const [arena, words] of Object.entries(DOMAIN_VOCAB)) {
     if (!arenaIds.has(arena)) continue
     compiled.set(
       arena,
-      words.map((w) => ({ word: w, re: new RegExp(`\\b(${w})`, 'i') })),
+      words.filter(isFitEvidence).map((w) => ({ word: w, re: new RegExp(`\\b(${w})`, 'i') })),
     )
   }
   return compiled
 }
 
-function bestVocabArena(
+// Distinct vocab CONCEPT match offsets (ascending), not distinct regexes: singular/plural and
+// prefix pairs in the vocab ('device'/'devices', 'credit'/'credits',
+// 'transcript'/'transcription') all match at the same text offset, and counting each regex
+// separately let ONE occurrence satisfy MIN_VOCAB_HITS=2 — exactly how the "Medical Devices"
+// tag nominated catheter and hydrogel makers into device-agents, "tax credits" put a
+// bookkeeping service in ai-video, and "transcription factors" put a therapeutics company in
+// business-phone (PR #528 review). Deduping hits by first-match offset makes a hit count a
+// count of distinct matched words.
+export function vocabHitOffsets(text: string, words: { word: string; re: RegExp }[]): number[] {
+  const offsets = new Set<number>()
+  for (const { re } of words) {
+    const m = re.exec(text)
+    if (m) offsets.add(m.index)
+  }
+  return Array.from(offsets).sort((a, b) => a - b)
+}
+
+export function countVocabHits(text: string, words: { word: string; re: RegExp }[]): number {
+  return vocabHitOffsets(text, words).length
+}
+
+// The vocab match text: the company's own one-liner first, then its curated tags — the
+// "one-liner + tags" match the lane header has always specified. YC's coarse industry labels
+// ("B2B", "Engineering, Product and Design", "Finance and Accounting") are sector taxonomy, not
+// product description; matching arena keywords against them minted junk hits ('product', 'b2b',
+// 'engine') for unrelated arenas (PR #528 re-review: zeroheight landing in ecommerce-platforms),
+// so they stay out of the text.
+function vocabText(c: YcRawCompany): string {
+  return `${c.one_liner ?? ''} ${(c.tags ?? []).join(' ')}`
+}
+
+export function bestVocabArena(
   text: string,
   vocab: Map<string, { word: string; re: RegExp }[]>,
 ): { arena: string; hits: number } | null {
-  let best: { arena: string; hits: number } | null = null
+  let best: { arena: string; hits: number; first: number } | null = null
   for (const [arena, words] of vocab) {
-    let hits = 0
-    for (const { re } of words) if (re.test(text)) hits++
+    const offsets = vocabHitOffsets(text, words)
+    const hits = offsets.length
     if (hits < MIN_VOCAB_HITS) continue
-    // Deterministic tiebreak: more hits wins, then alphabetical arena id.
-    if (!best || hits > best.hits || (hits === best.hits && arena < best.arena)) {
-      best = { arena, hits }
+    // Deterministic tiebreak: more hits wins; at equal hits the arena whose FIRST match sits
+    // earliest in the text wins — the match text starts with the company's own one-liner, so
+    // evidence from the product description outranks evidence that only starts in the trailing
+    // tag labels ("The design system layer for coding agents" reads design-tools even though
+    // 'agent' plus generic tag words also graze other arenas; PR #528 re-review). Then
+    // alphabetical arena id.
+    const first = offsets[0]
+    if (
+      !best ||
+      hits > best.hits ||
+      (hits === best.hits && first < best.first) ||
+      (hits === best.hits && first === best.first && arena < best.arena)
+    ) {
+      best = { arena, hits, first }
     }
   }
-  return best
+  // Story-scoping terms such as platform, engine, build and editor also describe
+  // unrelated products. Reject an unsupported game-engine winner instead of
+  // rerouting it into a weaker runner-up arena on the same generic description.
+  if (best?.arena === 'game-engines' && !/\b(games?|gaming|gameplay|gamedev)\b/i.test(text)) return null
+  // Sharing values or working in teams does not establish a file-storage product.
+  if (best?.arena === 'cloud-storage' && !/\b(files?|folders?|storage|drives?|data rooms?)\b/i.test(text)) return null
+  return best ? { arena: best.arena, hits: best.hits } : null
+}
+
+// Registry suffixes that sell names under a second-level label, so the registrable apex is the
+// LAST THREE labels, not two. Without this, the docs-subdomain probe turned digistain.co.uk into
+// https://docs.co.uk/ — a third-party host — and credited/denied the wrong site (PR #528
+// review). A short static list covering the ccTLD patterns that actually occur in company
+// domains keeps the probe keyless and dependency-free; an unlisted suffix falls back to the old
+// two-label apex.
+const MULTI_LABEL_PUBLIC_SUFFIXES = new Set([
+  'ac.uk', 'co.uk', 'gov.uk', 'ltd.uk', 'me.uk', 'net.uk', 'org.uk', 'plc.uk',
+  'com.au', 'id.au', 'net.au', 'org.au',
+  'ac.nz', 'co.nz', 'net.nz', 'org.nz',
+  'co.jp', 'ne.jp', 'or.jp',
+  'co.kr', 'or.kr',
+  'co.in', 'firm.in', 'gen.in', 'ind.in', 'net.in', 'org.in',
+  'co.za', 'org.za', 'web.za',
+  'co.id', 'co.il', 'co.ke', 'co.th',
+  'com.ar', 'com.br', 'net.br', 'org.br', 'com.cn', 'net.cn', 'org.cn',
+  'com.co', 'com.eg', 'com.gh', 'com.hk', 'com.mx', 'com.my', 'com.ng',
+  'com.pe', 'com.ph', 'com.pk', 'com.sa', 'com.sg', 'com.tr', 'com.tw',
+  'com.ua', 'com.ve', 'com.vn', 'org.il',
+])
+
+// Registrable apex of a normalized domain: app.foo.com -> foo.com, digistain.co.uk stays
+// digistain.co.uk, app.digistain.co.uk -> digistain.co.uk.
+export function registrableApex(domain: string): string {
+  const parts = domain.split('.')
+  if (parts.length <= 2) return domain
+  const keep = MULTI_LABEL_PUBLIC_SUFFIXES.has(parts.slice(-2).join('.')) ? 3 : 2
+  return parts.slice(-keep).join('.')
 }
 
 function probeUrl(domain: string, probe: (typeof DOCS_PROBE_PATHS)[number]): string {
   if (probe === 'docs-subdomain') {
-    // docs.<apex>: strip one subdomain level if the site itself lives on one (app.foo.com -> docs.foo.com).
-    const parts = domain.split('.')
-    const apex = parts.length > 2 ? parts.slice(-2).join('.') : domain
-    return `https://docs.${apex}/`
+    // docs.<apex>: strip subdomain levels if the site itself lives on one (app.foo.com -> docs.foo.com).
+    return `https://docs.${registrableApex(domain)}/`
   }
   return `https://${domain}${probe}`
 }
@@ -366,7 +479,9 @@ async function main() {
         noFit++
         continue
       }
-      if (trackedDomains.has(domain)) {
+      // canonicalYcDomain: a verified rebrand (yc-shared.ts YC_DOMAIN_ALIASES) is the tracked
+      // product under a new name, not a new candidate.
+      if (trackedDomains.has(canonicalYcDomain(domain))) {
         alreadyTracked++
         continue
       }
@@ -385,8 +500,7 @@ async function main() {
         // these candidates exactly as it does to radar candidates.
         const words = vocab.get(arena)
         if (words) {
-          const text = `${c.one_liner ?? ''} ${(c.tags ?? []).join(' ')} ${(c.industries ?? []).join(' ')}`
-          vocabHits = words.filter(({ re }) => re.test(text)).length
+          vocabHits = countVocabHits(vocabText(c), words)
         }
       } else if (cls && !cls.pending && (cls.proposedArena || (!cls.mappedArena && !cls.proposedArena))) {
         // yc-classify already judged this one: software-without-an-existing-arena, or not
@@ -396,8 +510,7 @@ async function main() {
         noFit++
         continue
       } else {
-        const text = `${c.one_liner ?? ''} ${(c.tags ?? []).join(' ')} ${(c.industries ?? []).join(' ')}`
-        const best = bestVocabArena(text, vocab)
+        const best = bestVocabArena(vocabText(c), vocab)
         if (!best) {
           noFit++
           continue
