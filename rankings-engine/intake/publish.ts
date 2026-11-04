@@ -59,12 +59,13 @@ export async function publish(report: IntakeReport, io: Publisher): Promise<Publ
     if (existing.submission.issue === report.submission.issue && existing.submission.revision !== report.submission.revision) throw new Error('submission edited after draft reservation; update through review, do not overwrite')
     // Keep the original receipts and submission. Retrying after PR API failure resumes the
     // reserved branch; it never regenerates evidence or force-pushes another revision.
-  } else {
-    await io.createBranch(report, filesFor(report))
   }
-  const reserved = existing ?? report
+  // A closed PR remains authoritative even after its branch was deleted.
+  // Read PR history before reserving a missing branch, including failure retries.
   const pulls = await io.pulls(report.branch)
   if (pulls.length) return { status: 'existing', url: pulls[0].html_url }
+  if (!existing) await io.createBranch(report, filesFor(report))
+  const reserved = existing ?? report
   if (reserved.baseRevision !== report.baseRevision) throw new Error('reserved main revision changed; human reassessment required')
   if (await io.currentRevision(reserved.submission.issue) !== reserved.submission.revision) throw new Error('reserved source issue changed; human review required')
   await io.assertCurrentBase(reserved.baseRevision)

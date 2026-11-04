@@ -169,8 +169,9 @@ export async function assess(submission: Submission, catalog: Catalog, get = fet
   }
   const duplicate = catalog.products.find(({ arena, product }) => arena === submission.arena &&
     (product.id === slugify(submission.name) || product.name.toLowerCase() === submission.name.toLowerCase() ||
-      submission.urls.some(url => [product.urls.site, product.urls.github].some(known => known && productIdentity(known) === productIdentity(url)))))
+      [product.urls.site, product.urls.github].some(known => known && productIdentity(known) === productIdentity(submission.urls[0]))))
   if (duplicate) { report.route = 'duplicate'; report.duplicate = { arena: duplicate.arena, id: duplicate.product.id }; return stop('Product already rostered in the requested arena; use the correction flow for new evidence.') }
+  if (catalog.products.some(({ product }) => submission.urls.slice(1).some(url => [product.urls.site, product.urls.github].some(known => known && productIdentity(known) === productIdentity(url))))) return stop('Supporting link identifies another rostered product; confirm identity before bring-up.')
   if (catalog.products.some(({ arena, product }) => arena === submission.arena && rosterDedupeKey(product.urls.site) === rosterDedupeKey(submission.urls[0]))) return stop('Existing roster shares this host but has a different product path; confirm identity before adding a product.')
   if (/^(?:www\.)?(?:npmjs\.com|pypi\.org|huggingface\.co|apps\.apple\.com|play\.google\.com|producthunt\.com)$/.test(new URL(submission.urls[0]).hostname)) return stop('Shared listing host: confirm the vendor product site or source repository before bring-up.')
   const roadmap = catalog.roadmap.find(r => r.id === submission.arena && r.status !== 'live')

@@ -123,6 +123,15 @@ describe('policy routing', () => {
     const r = await assess(normalizeIssue(issue()), { ...catalog, products: [{ arena: 'vector-databases', product: { id: 'different', name: 'Renamed', vendor: 'Acme', type: 'commercial', urls: { site: 'https://www.acme.io/' } } }] }, pages)
     expect(r.route).toBe('duplicate')
   })
+  it('routes supporting links to another rostered product to review, not duplicate', async () => {
+    const sub = normalizeIssue(issue(body().replace('Site: https://acme.io/', 'Site: https://acme.io/\nhttps://github.com/other/library')))
+    const get = vi.fn(pages)
+    const r = await assess(sub, { ...catalog, products: [{ arena: 'vector-databases', product: { id: 'library', name: 'Library', vendor: 'Other', type: 'oss', urls: { site: 'https://library.io', github: 'https://github.com/other/library' } } }] }, get)
+    expect(r.route).toBe('needs-human')
+    expect(r.reason).toContain('Supporting link')
+    expect(r.duplicate).toBeUndefined()
+    expect(get).not.toHaveBeenCalled()
+  })
   it('routes a shared domain with differing paths to identity review', async () => {
     const r = await assess(normalizeIssue(issue()), { ...catalog, products: [{ arena: 'vector-databases', product: { id: 'different', name: 'Renamed', vendor: 'Acme', type: 'commercial', urls: { site: 'https://www.acme.io/pricing' } } }] }, pages)
     expect(r.route).toBe('needs-human')
@@ -223,6 +232,19 @@ describe('draft publication and retries', () => {
     io.currentRevision = vi.fn(async () => 'edited')
     await expect(publish({ ...r, submission: { ...r.submission, revision: 'edited' } }, io)).rejects.toThrow('edited after draft')
     expect(io.createBranch).toHaveBeenCalledTimes(1)
+  })
+  it.each(['open', 'closed'])('does not recreate a deleted branch for an existing %s PR', async state => {
+    const r = await report(); const { io, prs } = publisher()
+    prs.push({ number: 10, html_url: 'https://github.com/ultrametricai/ultrametric/pull/10', state, draft: true })
+    expect(await publish(r, io)).toEqual({ status: 'existing', url: prs[0].html_url })
+    expect(io.createBranch).not.toHaveBeenCalled()
+    expect(io.createPull).not.toHaveBeenCalled()
+  })
+  it('does not reserve a branch when PR history cannot be read', async () => {
+    const r = await report(); const { io } = publisher()
+    io.pulls = vi.fn(async () => { throw new Error('PR lookup unavailable') })
+    await expect(publish(r, io)).rejects.toThrow('PR lookup unavailable')
+    expect(io.createBranch).not.toHaveBeenCalled()
   })
   it('does not interpret failed state reads as a missing branch', async () => {
     const r = await report(); const { io } = publisher()
