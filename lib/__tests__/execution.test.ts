@@ -566,8 +566,8 @@ describe('execution assessments', () => {
       }
     }
   })
-  it('leaves v2 executor kinds and approval semantics unchanged across the corpus', () => {
-    expect(MANIFEST_VERSION).toBe(2)
+  it('keeps route-derived kinds and approval semantics unchanged in manifest v3', () => {
+    expect(MANIFEST_VERSION).toBe(3)
     for (const task of loadProcesses()) for (const node of task.dag.nodes) {
       const { execution: assessment, ...legacyNode } = node
       const { execution: projected, ...step } = buildManifestStep(node)

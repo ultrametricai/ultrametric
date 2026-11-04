@@ -72,6 +72,7 @@ describe('validateVerdictRules', () => {
 
 describe('scoped judge execution', () => {
   let directory: string
+  let categoryIds: string[]
   let judge: typeof import('../stages/judge')
   let create: ReturnType<typeof vi.fn>
   const pack = [ev('e1', 'claimed-docs')]
@@ -88,6 +89,7 @@ describe('scoped judge execution', () => {
 
   beforeEach(async () => {
     directory = fs.mkdtempSync(path.join(os.tmpdir(), 'um-scoped-judge-'))
+    categoryIds = ['fixture']
     vi.resetModules()
     vi.doMock('@/rankings-engine/paths', async () => {
       const actual = await vi.importActual<typeof import('../paths')>('@/rankings-engine/paths')
@@ -95,7 +97,7 @@ describe('scoped judge execution', () => {
         categoryDir: (id: string) => path.join(directory, id),
         resolveCategories: (id?: string) => {
           if (id && id !== 'fixture') throw new Error(`unknown category: ${id}`)
-          return [{ id: 'fixture', name: 'Fixture', description: '', personas: ['developer'] }]
+          return (id ? [id] : categoryIds).map(id => ({ id, name: id, description: '', personas: ['developer'] }))
         } }
     })
     judge = await import('../stages/judge')
@@ -191,6 +193,27 @@ describe('scoped judge execution', () => {
     expect(create).toHaveBeenCalledTimes(1)
     expect(JSON.parse(fs.readFileSync(path.join(directory, 'fixture/verdicts.json'), 'utf8'))).toEqual([response, untouched])
     expect(fs.readFileSync(path.join(directory, `cache/judge/fixture/untouched/${story.id}.json`), 'utf8')).toBe(before)
+  })
+
+  for (const batch of [false, true]) it(`skips unrelated categories but assembles a fully cached target (batch=${batch})`, async () => {
+    categoryIds = ['unrelated', 'fixture']
+    write('unrelated/products.json', [{ id: 'other', name: 'Other', vendor: 'Other', type: 'oss', urls: { site: 'https://example.invalid' } }])
+    write('unrelated/stories.json', [story])
+    write('unrelated/verdicts.json', [verdict({ productId: 'other' })])
+    write('unrelated/evidence/other.json', pack)
+    write(`cache/judge/unrelated/other/${story.id}.json`, { hash: 'stale', keyVersion: judge.CELL_HASH_VERSION, verdict: verdict({ productId: 'other' }) })
+    for (const productId of ['p', 'untouched']) write(`cache/judge/fixture/${productId}/${story.id}.json`, {
+      hash: judge.cellHash(story, pack, judge.PROMPT_VERSION), keyVersion: judge.CELL_HASH_VERSION,
+      verdict: { ...response, productId },
+    })
+    write('fixture/verdicts.json', [])
+    const before = snapshot()
+    await judge.runJudge({ product: 'p', batch })
+    expect(create).not.toHaveBeenCalled()
+    expect(JSON.parse(fs.readFileSync(path.join(directory, 'fixture/verdicts.json'), 'utf8'))).toEqual([response, { ...response, productId: 'untouched' }])
+    for (const [file, contents] of Object.entries(before)) if (file.includes('unrelated')) {
+      expect(fs.readFileSync(path.join(directory, file), 'utf8')).toBe(contents)
+    }
   })
 
   it('still refreshes and assembles every cell in an explicitly unscoped category run', async () => {
