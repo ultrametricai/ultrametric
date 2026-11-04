@@ -12,7 +12,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { ProductSchema } from '../../lib/schemas'
 import { readJson, resolveCategories, writeJson } from '../paths'
-import { batchCode, normalizeDomain, type YcRawCompany } from '../yc-shared'
+import { batchCode, canonicalYcDomain, normalizeDomain, type YcRawCompany } from '../yc-shared'
 
 const ROOT = path.resolve(__dirname, '..', '..')
 const CACHE_DIR = path.join(ROOT, 'rankings-engine', 'cache', 'yc')
@@ -27,7 +27,10 @@ function main() {
   const byDomain = new Map<string, YcRawCompany>()
   const collisions: string[] = []
   for (const c of all) {
-    const d = normalizeDomain(c.website)
+    // canonicalYcDomain: a verified rebrand (YC_DOMAIN_ALIASES) keys the renamed directory entry
+    // under the tracked product's domain, so the existing product keeps its ycBatch stamp.
+    const d0 = normalizeDomain(c.website)
+    const d = d0 ? canonicalYcDomain(d0) : null
     if (!d) continue
     if (byDomain.has(d) && byDomain.get(d)!.slug !== c.slug) {
       collisions.push(`${d}: ${byDomain.get(d)!.slug} vs ${c.slug}`)
