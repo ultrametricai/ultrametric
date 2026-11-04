@@ -6,8 +6,8 @@
 # re-judge stability policy (see README) can be applied before merge.
 #
 # Also runs the keyless agent-surface SLO check (rankings-engine/scripts/slo-check.ts) on every
-# 6-hourly run — that step needs no secrets, so it runs (and its open-rankings/slo-history.jsonl
-# appends get committed) even while the LLM stages below are gated.
+# 6-hourly run — that step needs no secrets, so it runs (and its open-rankings/slo-history/*.jsonl
+# runs get committed) even while the LLM stages below are gated.
 #
 # The LLM stages require the ANTHROPIC_API_KEY repo secret; until it exists those steps are
 # skipped (the SLO check still runs).
@@ -23,6 +23,7 @@ on:
         required: false
 
 permissions:
+  actions: write # explicitly dispatch CI for GITHUB_TOKEN-created PRs
   contents: write
   pull-requests: write
   issues: write # the PR-fallback `gh issue create` below needs it (daily-snapshot/cert-sweep already grant it)
@@ -37,6 +38,8 @@ jobs:
     timeout-minutes: 90
     steps:
       - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
 
       - name: Check for API key
         id: gate
@@ -103,6 +106,10 @@ jobs:
           # taxonomy changes stay a deliberate, human-triggered act.
           for stage in crawl extract collect-community probe judge claims popularity derive; do
             echo "::group::$stage"
+            if [ "$stage" = "judge" ]; then
+              # Keep changed source content distinct, including same-ID extraction refreshes.
+              pnpm exec tsx rankings-engine/scripts/normalize-refresh-evidence.ts "$CATEGORY"
+            fi
             pnpm tsx rankings-engine/cli.ts "$stage" --category "$CATEGORY"
             echo "::endgroup::"
           done
@@ -156,29 +163,30 @@ jobs:
           pnpm test
           pnpm tsx rankings-engine/scripts/recompute-check.ts
 
-      # Keyless and cheap (~300 HTTP checks, ≤3 concurrent): appends one uptime line per
+      # Keyless and cheap (~300 HTTP checks, ≤3 concurrent): writes one immutable run with a line per
       # documented agent surface (llms.txt / remote MCP / openapi.json) to
-      # open-rankings/slo-history.jsonl — see rankings-engine/scripts/slo-check.ts and lib/slo.ts. Deliberately
+      # open-rankings/slo-history/*.jsonl — see rankings-engine/scripts/slo-check.ts and lib/slo.ts. Deliberately
       # ungated so the 6-hourly cadence builds a real uptime series even without the API key.
       - name: Agent-surface SLO check
         run: pnpm tsx rankings-engine/scripts/slo-check.ts
 
+      - name: Validate combined SLO history
+        run: pnpm test lib/__tests__/slo.test.ts --maxWorkers=2
+
       - name: Open PR if anything changed
         env:
-          # Prefer the fine-grained PAT when the secret exists: a PR created with the
-          # workflow's GITHUB_TOKEN does not trigger pull_request workflows (GitHub's
-          # recursion guard — bot PRs #430/#433 carry no validation check), so the
-          # required checks never report and the auto-merge opt-in below never
-          # completes. Falls back to GITHUB_TOKEN when the secret is absent; no
-          # secrets are created here.
-          GH_TOKEN: ${{ secrets.UM_BOT_PR_PAT || secrets.GITHUB_TOKEN }}
+          # Recovery/review/repair authenticate generated PRs by the Actions bot
+          # author. Use that identity consistently; explicit dispatch starts CI.
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CATEGORY: ${{ steps.pick.outputs.category }}
           RUN_ID: ${{ github.run_id }}
         run: |
           # When the API-key gate skipped the LLM stages, only the SLO check ran and CATEGORY is
           # empty — branch/PR naming falls back accordingly.
           CATEGORY="${CATEGORY:-slo-only}"
-          if git diff --quiet -- open-rankings rankings-engine/cache; then
+          # Stage first so a new SLO shard alone is detected.
+          git add open-rankings rankings-engine/cache
+          if git diff --cached --quiet -- open-rankings rankings-engine/cache; then
             echo "No changes for $CATEGORY — done."
             exit 0
           fi
@@ -189,27 +197,24 @@ jobs:
           git checkout -b "$BRANCH"
           git add open-rankings rankings-engine/cache README.md
           git commit -m "chore(story-runner): refresh $CATEGORY evidence + verdicts"
+          # Check the committed candidate before any remote branch, PR, or review exists.
+          node rankings-engine/scripts/check-refresh-stability.mjs HEAD^ HEAD
           git push -u origin "$BRANCH"
-          # Org policy currently forbids Actions from creating PRs ("Write permissions for
-          # workflows are disabled by the organization") — fall back to an issue carrying the
-          # compare link so the refresh is never silently stranded on a branch.
+          # If organization policy prevents PR creation, leave the compare link
+          # in an issue for maintainer attention.
           # Auto-merge opt-in (maintainer authorization 2026-10-23): branch protection
           # on main holds the merge until validation/ci + Greptile Review pass and
           # every thread resolves — a reviewer applying the re-judge stability policy
           # opens a thread, which blocks the merge until it is resolved. Greptile does
-          # not review bot PRs unprompted (PRs #430/#433 each needed a maintainer's
-          # '@greptileai review'), so the comment requests it. Both follow-ups are
-          # best-effort; a failure leaves the PR open for a manual merge.
+          # not review bot PRs unprompted. Recovery requests review through the
+          # serialized reservation worker after ordinary CI passes.
           if PR_URL=$(gh pr create \
             --title "story-runner: $CATEGORY refresh" \
-            --body "Automated evidence/verdict refresh for \`$CATEGORY\`. Review verdict flips against the re-judge stability policy (README) before merging — no-new-citation flips should be reverted." \
+            --body "Automated evidence/verdict refresh for \`$CATEGORY\`. Review verdict flips against the re-judge stability policy (README) before merging: revert no-new-citation flips when prior support is unchanged; verified downgrades after support loss follow the documented exception." \
             --base main --head "$BRANCH"); then
-            # Auto-merge opt-in paused 2026-10-26: the required-status-checks ruleset is disabled,
-            # so auto-merge lands PRs without CI (observed on a merged bot PR). Re-enable this line
-            # once the ruleset requiring ci/validation/Greptile is active.
-            true # paused: gh pr merge --auto --merge "$PR_URL" || echo "auto-merge opt-in failed (org settings may block GITHUB_TOKEN; fallback: fine-grained PAT secret) — merge $PR_URL manually once checks pass"
-            gh pr comment "$PR_URL" --body "@greptileai review" \
-              || echo "Greptile review request failed — comment '@greptileai review' on $PR_URL manually"
+            # Explicit dispatch is allowed by GitHub's workflow recursion guard.
+            gh workflow run ci.yml --ref "$BRANCH"
+            gh pr merge --auto --merge "$PR_URL"
           else
             gh issue create \
               --title "story-runner: $CATEGORY refresh ready on $BRANCH" \

@@ -135,7 +135,25 @@ export const FEASIBILITY_ICONS: Record<'drivable' | 'assist' | 'policy-gate' | '
 // pick as the semantic guide each glyph was drawn from.
 
 export const PROCESS_ICONS: Record<string, string> = {
+  'startup-coverage.prepare-and-manage-a-temporary-cross-border-worker-posting': pi('world', 'orange'),
+  'startup-coverage.review-competitor-collaboration-and-information-exchange': pi('scales', 'amber'),
+  'startup-coverage.assess-distress-and-manage-formal-restructuring': pi('ledger', 'emerald'),
+  'startup-coverage.determine-and-review-worker-status': pi('people', 'orange'),
+  'startup-coverage.assess-and-operate-packaging-producer-responsibilities': pi('shield-check', 'sky'),
+  'startup-coverage.prepare-and-clear-a-customs-shipment': pi('world', 'orange'),
+  'startup-coverage.handle-consumer-guarantees-and-statutory-remedies': pi('lifebuoy', 'fuchsia'),
+  'startup-coverage.prepare-and-file-statutory-annual-accounts': pi('ledger', 'emerald'),
   // Startup lifecycle expansion, grouped by the task domain.
+  'startup-coverage.launch-an-online-storefront': pi('handshake', 'fuchsia'),
+  'startup-coverage.set-up-marketplace-seller-onboarding-and-payouts': pi('handshake', 'fuchsia'),
+  'startup-coverage.configure-metered-usage-billing': pi('handshake', 'fuchsia'),
+  'startup-coverage.scope-and-deliver-a-professional-services-engagement': pi('handshake', 'fuchsia'),
+  'startup-coverage.design-prototype-and-validate-a-physical-product': pi('warehouse', 'sky'),
+  'startup-coverage.establish-an-information-security-management-system': pi('shield-check', 'sky'),
+  'startup-coverage.prepare-and-submit-a-public-procurement-bid': pi('handshake', 'fuchsia'),
+  'startup-coverage.approve-and-pay-a-shareholder-distribution': pi('pie', 'emerald'),
+  'startup-coverage.retire-a-product-feature-or-api': pi('code', 'violet'),
+  'startup-coverage.review-revenue-recognition-and-deferred-revenue': pi('ledger', 'emerald'),
   'startup-coverage.define-the-business-model-and-unit-economics': pi('target', 'emerald'),
   'startup-coverage.obtain-business-licenses-and-operating-permits': pi('certificate', 'amber'),
   'startup-coverage.maintain-the-compliance-obligations-calendar': pi('columns', 'amber'),

@@ -86,8 +86,18 @@ score built entirely from zero-evidence none/na cells renders italic *untested*,
 
 ## Human review points
 
-1. **story-runner PRs** — every refresh lands as a PR. Apply the re-judge stability policy
-   before merging: a verdict flip citing NO evidence id new to the pack is re-roll noise —
+1. **story-runner PRs** — every refresh passes the deterministic stability check locally
+   before its branch is pushed or PR opened, then explicitly dispatches CI on its branch. The metadata-only refresh-auto-merge recovery workflow updates generated branches
+   when an active ruleset requires a current base, and dispatches missing CI on main
+   pushes, twice hourly, or by manual dispatch. Auto-merge waits for validation, ci, Greptile Review, and
+   resolved Greptile review threads via the metadata-only `review-findings` gate.
+   Foreloop checks and threads are outside the merge requirements. The CI stability
+   gate rejects upgrades without verified new cited source support. A fresh row ID or
+   model paraphrase alone does not establish new facts. A verified
+   downgrade may instead follow changed or lost prior support; quality cannot increase and
+   applicability cannot change through that path. Review semantic findings under the re-judge
+   stability policy before merging: when prior cited support is unchanged, a verdict flip
+   citing NO evidence id new to the pack is re-roll noise —
    revert it (`rankings-engine/scripts/revert-churn.ts` pattern, METHODOLOGY.md). Exception: a
    labeled judge-model migration wave (e.g. 2026-09-30, sonnet-5 → opus-5-5) is exempt — under
    a judge change every flip cites no new evidence by construction, so the wave is labeled in
@@ -100,10 +110,143 @@ score built entirely from zero-evidence none/na cells renders italic *untested*,
 3. **The work-queue issue** (labels `story-runner` + `founder-call`, Wednesdays, filed only when
    the queue is non-empty) — the ranked to-do list. Close it once the listed rankings have been
    through keyed runs (the next week's issue also closes it automatically, naming its successor);
-   flips that survive a re-judge become verdict changes with new citations, which is the only way
-   a flip may move a score.
+   score changes require new supporting citations, or a verified non-upward judgment after
+   previously cited support changes or disappears. Unchanged-support rerolls are reverted.
 4. **Contest / vendor-response issues** — external correction channels; vendor responses enter
    the evidence pool but never change a verdict by themselves.
+
+## Repair and recheck
+
+The recovery controller dispatches `refresh-repair.yml` for failing generated story-runner
+PRs, unresolved Greptile findings on verdict cells, and merge conflicts. CI completion also
+wakes recovery. Drafts and PRs whose auto-merge opt-in was removed are skipped. Recovery
+and repair retain existing opt-in and never re-enable it. Recovery waits for ordinary CI,
+independent review, and resolved findings before advancing a stale base, and only updates
+it when an active required-check ruleset demands a current base. With loose rules, a
+conflict-free head keeps its existing checks and review. GitHub still enforces every merge
+requirement; the controller reads applied rulesets without changing them. Unknown
+mergeability or an unreadable freshness policy stops recovery for that PR. Real conflicts
+remain visible and reach bounded repair once checks and findings permit changing the head.
+Missing CI and reviews are recovered on the same head even while it conflicts. Active
+CI runs keep their head, including runs whose checks have not appeared yet. Pending reviews
+and repairs keep a stable head. Repair dispatch waits for every active Greptile review on
+that head; the worker rechecks before model calls and before publishing, discarding its
+unpublished candidate if a review started during repair. Foreloop remains outside this loop.
+
+Story-runner publishes with `GITHUB_TOKEN`, matching the Actions-bot author accepted by
+recovery, repair, and review. Its optional PAT publication override is retired. Existing
+PRs created under a PAT account require maintainer attention; automation does not widen
+its author allowlist to adopt them.
+
+GitHub marks `pull_request` runs created by `GITHUB_TOKEN` as `action_required` until a
+maintainer approves them. Generated PRs explicitly dispatch the same CI workflow on their
+head branch. Recovery treats an approval-required run with no dispatched result as missing
+CI. It preserves active runs from either event and the latest success/failure result within
+each event. Older completed runs cannot mask a newer cancelled run of the same event. It retries runs that
+ended without a result up to three dispatches per head. Exhausting that budget reports an
+error for human review. An approval-required run appearing after a successful dispatch
+does not trigger another dispatch. See [GitHub's workflow-trigger rules](https://docs.github.com/en/actions/concepts/security/github_token#when-github_token-triggers-workflow-runs).
+
+Recovery, repair routing, and review requests select the same usable result: the newest
+success or failure among the latest runs per event. A newer cancelled dispatch cannot
+hide an approved PR result. Validation and review still bind checks to that exact suite.
+
+The worker executes the current main branch only. It fetches the proposed branch as data,
+accepts changes only in its arena and declared generated projections, and rejects code,
+workflow, symlink, and cross-arena source edits. Concurrent canonical source edits remain
+blocked; generated rankings, graphs, reviews, intervals, predictions, and history are rebuilt
+from merged inputs. Append-only uptime observations are combined without rewriting history.
+
+Evidence content changes receive distinct deterministic IDs before future judgments;
+repeated extraction of the same content retains the same identity. Timestamp-only updates
+create no new evidence. Repairs reconcile older PRs that reused an ID for changed text and
+remap their citations. A cache may migrate across label-only changes only after its original
+payload hash and exact original judgment are verified.
+
+Fetched first-party and community text carries a SHA-256 source digest computed before
+model extraction. Same-source score changes require a changed digest as well as changed
+cited content. Legacy same-source records without digests require review; the runner cannot
+infer changed facts from a fresh label or paraphrase. Equivalent Hacker News API/discussion
+URLs and whitespace-only changes do not establish new support or support loss. Real probe
+observations can record changed behavior at the same endpoint. Runtime/audit probes and
+preservation markers survive scheduled refreshes, and publication rejects their removal.
+Community extraction appends dated observations and preserves prior reports when a model
+omits them. An unchanged source digest cannot produce another community paraphrase row.
+
+The current judge response requires structured support: the exact story subject, direct
+versus adjacent relation, complete versus partial coverage, and verbatim cited quotations.
+Full credit requires complete direct support; partial credit requires the named capability
+itself. Questions cannot establish an affirmative claim. Extraction verifies its quotations
+against the fetched source. These checks enforce the response contract, not semantic truth;
+independent review still checks whether a quotation actually entails the named capability.
+The new prompt version invalidates older judge caches on the next scoped judge run. This
+source change does not rewrite the published corpus or authorize a bulk re-judge. Review
+legacy same-source transitions and the rubric migration before resuming scheduled runs.
+
+### Scoped judge verification
+
+`judge --product` publishes through the category matrix. Before any model call or cache
+write, it checks that every untouched product already has current input/rubric caches.
+A missing, old-format, stale, corrupt or mismatched untouched cache blocks that scoped
+publication. This preserves the complete-matrix requirement during a rubric migration.
+
+Use `judge-preview` for a separately approved, non-publishing live pilot:
+
+```sh
+pnpm engine judge-preview --category ai-video --product reelmimic --story api-sandbox
+```
+
+Run from an isolated checkout pinned to the reviewed source commit and capture stdout
+outside that checkout. The stage requires one explicit category, product and story;
+affiliated products follow the separate bias-audit process. It reads the existing evidence
+pack, skips all caches and matrix assembly, and returns the proposed verdict with model,
+prompt version and input/prompt hashes. It writes no caches, verdicts, rankings or projections.
+
+The pilot permits one provider request, with SDK, parse and correction retries disabled,
+a 60-second request timeout, at most 40,000 input bytes and 4,096 output tokens. An invalid,
+truncated or unsupported result stops the pilot. A retry requires another explicit decision.
+Normal scheduled judging retains its existing retry policy.
+
+Before and after the pilot, compare the tracked evidence, verdict, ranking and cache files
+and confirm the checkout remains clean. Review the returned quotations against the selected
+evidence and exact story, including adjacent-feature boundaries, before accepting the result.
+Keep all content workflows disabled throughout. This pilot checks judge behavior only;
+it neither exercises publication/recovery nor authorizes an arena migration or restart.
+Those require a separate reviewed rollout after the stack's checks and findings are cleared.
+
+Unsupported grade churn restores the previously published judgment when its cited content
+is unchanged and its rules remain valid. Changed or missing source content requires a verified current-input judgment, or a
+scoped re-judge within the worker's cell budget. Such source loss may lower full/partial
+credit toward none with no quality increase, and cannot justify an upgrade or applicability
+change. Failed-worker budgets are scoped to the deployed repair policy version, so a
+policy correction can retry heads that exhausted an older worker implementation. Reviewed cells may use the configured judge to reconsider the evidence and audit
+the reported concern. Review text is diagnostic context, never evidence. Missing evidence,
+unknown citations, rubric violations, and affiliated-product review needs stay blocked.
+
+Unsupported findings (including claims, projections, unmappable lines, and affiliated
+products) stop repair and name the blocker. Every finding must have a successful audit
+before publication. A repair must change canonical verdict or evidence content compared
+with the PR head; timestamps, reordered evidence, cache rewrites, and projection-only changes
+do not establish progress. A no-op stops before projection regeneration or a commit.
+
+Every repair runs the repository gates before a non-force push, launches CI, and checks
+the new head again. Story-runner, recovery, and repair route review requests through
+`refresh-review.yml`. Its per-PR concurrency group serializes callers and its trusted bot
+comment reserves each attempt before sending the review mention. Exact-head CI must pass
+first. An ambiguous send consumes the reservation; checks that have not appeared yet do
+not cause an immediate retry. At most two requests are permitted per head, at least one
+hour apart. A completed successful review never triggers another request on that head,
+even if findings remain. Exhaustion and unmanaged failed reviews require human attention.
+The request worker honors drafts, removed auto-merge opt-in, and paused recovery.
+ An old thread may close only for an audited
+cell after CI and independent review pass, with no new verdict-matrix findings. All other
+threads remain open. A changed head discards the repair. Attempts are bounded to three
+published repair commits, three failed-worker retries per head, and two concurrent workers. Pending checks resume
+the saved audit for the same published head, without another judgment or repair commit.
+Only artifacts from the trusted main repair workflow with matching PR, head, run, and base
+bindings can resume. Audits are bound to the exact review discussion; edited findings or
+new replies require another assessment. Foreloop replies are excluded from that context. Failed stages are appended to the retained report.
+Reports are retained as workflow artifacts; exhausted or ambiguous repairs require review.
 
 ## Invariants
 

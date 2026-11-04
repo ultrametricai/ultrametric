@@ -29,7 +29,7 @@ const node = (over: Partial<DagNode>): DagNode => ({
 describe('corpus', () => {
   it('loads the expanded operational catalog (197 processes + 33 situations) with unique, non-empty slugs', () => {
     const tasks = loadProcesses(DATA_DIR)
-    expect(tasks.length).toBe(230)
+    expect(tasks.length).toBe(248)
     const slugs = tasks.map((t) => processSlug(t.title))
     expect(new Set(slugs).size).toBe(tasks.length)
     for (const s of slugs) expect(s).toMatch(/^[a-z0-9]+(-[a-z0-9]+)*$/)
@@ -266,8 +266,8 @@ describe('corpus', () => {
     // data protection, accounting…). Honest coverage, not completeness theater — a country
     // with no real analog carries no note, so the band stays wide.
     expect(total).toBeGreaterThanOrEqual(120)
-    // Re-probed 2026-10-26 at the HK+EE lane merge: 563 committed notes.
-    expect(total).toBeLessThanOrEqual(600)
+    // The scoped UK payroll and statutory-accounts guides add two authored notes.
+    expect(total).toBeLessThanOrEqual(602)
     // Both camps stay populated: the geo-resolution restructures moved most note-carriers to
     // global scope, and the US-scoped core (EIN, payroll setup, state work) keeps its notes.
     expect(globalWithNotes).toBeGreaterThan(0)
@@ -278,7 +278,9 @@ describe('corpus', () => {
     // no India note") carries all four too — stamp duty in India, share classes in the UK.
     for (const id of ['form_001', 'startup_002']) {
       const t = tasks.find((x) => x.id === id)!
-      expect((t.geoNotes ?? []).map((n) => n.country).sort(), id).toEqual(['AU', 'CA', 'DE', 'EE', 'FR', 'HK', 'IN', 'KR', 'NZ', 'PT', 'SG', 'UK'])
+      const expected = ['AU', 'CA', 'DE', 'EE', 'FR', 'HK', 'IN', 'KR', 'NZ', 'PT', 'SG', 'UK']
+      if (id === 'form_001') expected.push('NL', 'IE', 'ES', 'SE', 'CH', 'JP', 'BR', 'AE')
+      expect((t.geoNotes ?? []).map((n) => n.country).sort(), id).toEqual(expected.sort())
     }
   })
 

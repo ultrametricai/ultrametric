@@ -160,6 +160,7 @@ describe('decision → journey mapping (against the live corpus)', () => {
     expect(defaultEntityFor('KR')).toBe('kr-chusik-hoesa')
     expect(defaultEntityFor('HK')).toBe('hk-private-limited')
     expect(defaultEntityFor('EE')).toBe('ee-osauhing')
+    expect(() => defaultEntityFor('NL')).toThrow('no startup simulation entity is authored')
     // Every DECISIONS entity value exists in exactly one country roster, and vice versa.
     const rosterValues = Object.values(ENTITY_OPTIONS_BY_COUNTRY).flat()
     expect([...rosterValues].sort()).toEqual(entity.options.map((o) => o.value).sort())
@@ -246,15 +247,15 @@ describe('decision → journey mapping (against the live corpus)', () => {
       const note = journeyPhases(combo, chains).find((p) => p.id === 'revenue')!.note!
       expect(note).toContain(value === 'marketplace' ? 'take-rate' : 'e-commerce')
       // The honest absence is SAID, not papered over.
-      expect(note).toMatch(/no take-rate billing steps|no storefront step/)
+      expect(note).toMatch(/guide is available separately/)
       const arts = buildJourneyArtifacts(combo, ids)
       expect(arts.qs_021?.[0].value).toContain(value === 'marketplace' ? 'take-rate routing' : 'checkout live')
     }
     // The option details are honest about arena support: the marketplace/e-commerce corpus has
     // no mapped steps for those arenas, and the details never claim any.
     const detailOf = (v: string) => product.options.find((o) => o.value === v)!.detail
-    expect(detailOf('marketplace')).toContain('nothing is invented')
-    expect(detailOf('ecommerce')).toContain('no storefront step')
+    expect(detailOf('marketplace')).toContain('guide is available separately')
+    expect(detailOf('ecommerce')).toContain('guide is available separately')
     expect(detailOf('usage')).toContain('identical corpus steps')
   })
 
@@ -340,7 +341,7 @@ describe('decision → journey mapping (against the live corpus)', () => {
       // The comp_001 artifact names the framework honestly and stays SIMULATED.
       const arts = buildJourneyArtifacts(combo, journeyTaskIds(combo, chains))
       expect(arts.comp_001?.[0].label).toBe(value === 'hipaa' ? 'HIPAA readiness' : 'ISO 27001 readiness')
-      expect(arts.comp_001?.[0].value).toContain('no dedicated')
+      expect(arts.comp_001?.[0].value).toContain(value === 'hipaa' ? 'no dedicated' : 'ISMS guide available separately')
       expect(arts.comp_001?.[0].simulated).toBe(true)
     }
     // 'None' skips the chain entirely — its tasks appear only via the enterprise motion (comp_002…).
