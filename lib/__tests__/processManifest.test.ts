@@ -74,8 +74,10 @@ describe('manifestVendorOption', () => {
   })
 
   it('yields honest nulls for untracked vendors', () => {
-    const opt = manifestVendorOption('doola', DATA_DIR)
-    expect(opt.name).toBe('Doola')
+    // (doola graduated to a judged product at the registered-agents bring-up —
+    // fondo is the current untracked example.)
+    const opt = manifestVendorOption('fondo', DATA_DIR)
+    expect(opt.name).toBe('Fondo')
     expect(opt.productId).toBeNull()
     expect(opt.arena).toBeNull()
     expect(opt.agentReady).toBeNull()
