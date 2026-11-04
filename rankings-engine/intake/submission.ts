@@ -128,6 +128,35 @@ export function submissionIdentity(submission: Submission): { identity: string; 
   return { identity, branch: `submission-intake/${digest(`${submission.arena}\n${identity}`).slice(0, 24)}` }
 }
 
+// The radar taxonomy has sparse vocabularies for some live categories. These
+// intake-only additions come from those categories' definitions; they do not lower
+// the qualification threshold or change the existing radar/launch workflows.
+const INTAKE_VOCAB: Record<string, string[]> = {
+  accounting: ['ledger', 'bank feeds', 'invoicing', 'month-end close'],
+  'security-scanners': ['secret detection', 'sast', 'sca', 'container scanning'],
+  'infra-as-code': ['declarative', 'provisioning', 'state management', 'plan preview'],
+  'vibe-coding': ['prompt-to-app', 'natural language', 'full-stack', 'app generation'],
+  'product-analytics': ['instrumentation', 'funnels', 'retention', 'session replay', 'experimentation'],
+  crm: ['crm', 'contacts', 'deals', 'sales pipeline', 'customer relationship'],
+  'legal-ops': ['board consents', 'safes', 'e-signature', 'compliance filings'],
+  'robotics-platforms': ['robots', 'simulating', 'middleware', 'robot simulation', 'robot fleet'],
+  'ai-assistants': ['chat', 'file analysis', 'knowledge work', 'general-purpose'],
+  'ai-research-agents': ['cited reports', 'sources', 'searches', 'synthesize'],
+  'workflow-automation': ['triggers', 'visual builders', 'durable runs', 'connect apps'],
+  observability: ['metrics', 'logs', 'traces', 'slos', 'alerting'],
+  'compliance-screening': ['sanctions', 'pep', 'transaction monitoring', 'financial-crime', 'investigations'],
+}
+
+export function buildSubmissionVocab(categories: Category[]): ReturnType<typeof buildArenaVocab> {
+  const vocabulary = buildArenaVocab(categories, new Map())
+  for (const [arena, additions] of Object.entries(INTAKE_VOCAB)) {
+    const words = vocabulary.get(arena)
+    if (!words) continue
+    for (const word of additions) if (!words.some(w => w.word === word)) words.push({ word, re: new RegExp(`\\b(?:${word})\\b`, 'i') })
+  }
+  return vocabulary
+}
+
 export async function assess(submission: Submission, catalog: Catalog, get = fetchPublic): Promise<IntakeReport> {
   // Per product + requested arena, not per issue: duplicate issues share one draft.
   const { identity, branch } = submissionIdentity(submission)
@@ -167,7 +196,7 @@ export async function assess(submission: Submission, catalog: Catalog, get = fet
       verifiedText = page.html.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, ' ').replace(/<[^>]+>/g, ' ')
     }
     // Submission rationale is not evidence and cannot manufacture placement keyword hits.
-    const matches = matchArenas(verifiedText, buildArenaVocab(catalog.categories, new Map()))
+    const matches = matchArenas(verifiedText, buildSubmissionVocab(catalog.categories))
     if (!matches[0] || matches[0].hits < MIN_FIT_HITS || matches[0].arena !== submission.arena || matches[1]?.hits === matches[0].hits) return stop('Fetched surface does not uniquely support the requested arena; human placement review required.')
     const candidate: RadarCandidate = { key: identity, name: submission.name, url: primary,
       // The issue source lives in submission.source, not radar.sources: the radar's

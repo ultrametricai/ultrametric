@@ -1,7 +1,9 @@
 import { describe, expect, it, vi } from 'vitest'
 import fs from 'node:fs'
+import { readCategories } from '../paths'
+import { MIN_FIT_HITS } from '../scripts/radar-triage'
 import { eventIssue } from '../scripts/submission-intake'
-import { normalizeIssue, assess, digest, submissionIdentity, type Catalog, type IntakeReport } from '../intake/submission'
+import { normalizeIssue, assess, digest, submissionIdentity, buildSubmissionVocab, type Catalog, type IntakeReport } from '../intake/submission'
 import { publicIpv4, publicUrl, fetchPublic, resolvePublic, type Page } from '../intake/public-fetch'
 import { publish, parseReport, filesFor, type Publisher, type Pull } from '../intake/publish'
 
@@ -52,6 +54,15 @@ describe('submission normalization', () => {
 describe('untrusted public URLs', () => {
   it.each(['http://acme.io', 'file:///etc/passwd', 'https://user:password@acme.io/', 'https://acme.io:8443', 'https://localhost', 'https://a.local', 'https://a.internal', 'https://127.0.0.1', 'https://2130706433', 'https://0x7f000001', 'https://[::1]', 'https://[::ffff:127.0.0.1]', 'https://acme.io\\@localhost'])('blocks %s before transport', url => expect(() => publicUrl(url)).toThrow())
   it.each(['0.1.2.3', '10.1.1.1', '127.1.2.3', '169.254.169.254', '172.16.1.1', '192.168.1.1', '100.64.0.1', '198.18.0.1', '192.0.2.1', '198.51.100.1', '203.0.113.1', '224.1.1.1', '255.255.255.255', '::1', 'fe80::1', 'fc00::1'])('rejects special address %s', ip => expect(publicIpv4(ip)).toBe(false))
+  it('rejects every address in 192.0.0.0/24 before any outbound request', async () => {
+    const request = vi.fn()
+    for (let last = 0; last < 256; last++) {
+      const address = `192.0.0.${last}`
+      expect(publicIpv4(address), address).toBe(false)
+      await expect(fetchPublic('https://acme.io/', async () => [{ address, family: 4 }], request)).rejects.toThrow('public IPv4')
+    }
+    expect(request).not.toHaveBeenCalled()
+  })
   it('pins a public DNS answer into the request rather than resolving twice', async () => {
     const dns = vi.fn(async () => [{ address: '8.8.8.8', family: 4 }])
     const transport = vi.fn(async (url: URL, address: string) => { expect(address).toBe('8.8.8.8'); return pages(url.href) })
@@ -308,5 +319,32 @@ describe('unattended issue admission and review regressions', () => {
     expect(workflow).not.toContain('pull_request_target')
     expect(workflow).not.toContain('secrets.PAT')
     expect(workflow).toContain('submission-intake-${{ github.event.issue.number || inputs.issue }}')
+  })
+})
+
+
+describe('live arena vocabulary coverage', () => {
+  const categories = readCategories()
+  it('gives every existing arena enough terms to reach the unchanged threshold', () => {
+    for (const [arena, words] of buildSubmissionVocab(categories)) expect(words.length, arena).toBeGreaterThanOrEqual(MIN_FIT_HITS)
+  })
+  it.each([
+    ['accounting', 'Accounting and bookkeeping with a ledger, bank feeds, invoicing and month-end close.'],
+    ['security-scanners', 'Security scanners offer SAST, secret detection and container scanning.'],
+    ['infra-as-code', 'Infrastructure as code with declarative provisioning, state management and plan preview.'],
+    ['vibe-coding', 'Vibe-coding builders offer prompt-to-app, natural language, full-stack app generation.'],
+    ['product-analytics', 'Product analytics with instrumentation, funnels, retention, session replay and experimentation.'],
+    ['crm', 'CRM customer relationship tracking for contacts, deals and the sales pipeline.'],
+    ['legal-ops', 'Startup legal incorporation with board consents, SAFEs, e-signature and compliance filings.'],
+    ['robotics-platforms', 'Robotics middleware for simulating robots, robot simulation and the robot fleet.'],
+    ['ai-assistants', 'General-purpose chat assistants for knowledge work and file analysis.'],
+    ['ai-research-agents', 'Research agents plan searches, read sources and synthesize cited reports.'],
+    ['workflow-automation', 'Workflow triggers, visual builders and durable runs connect apps.'],
+    ['observability', 'Observability monitoring with metrics, logs, traces, SLOs and alerting.'],
+    ['compliance-screening', 'Compliance screening for financial-crime, sanctions, PEP and transaction monitoring investigations.'],
+  ])('can prepare a qualified draft for real arena %s', async (arena, description) => {
+    const r = await assess(normalizeIssue(issue(body(arena))), { ...catalog, categories }, async url => ({ url, status: 200, contentType: 'text/html', html: `<h1>Acme</h1>${description} Sign in. REST API. <a href="https://acme.io/docs">Docs</a>` }))
+    expect(r.route, r.reason).toBe('draft-bringup')
+    expect(r.arena).toBe(arena)
   })
 })
