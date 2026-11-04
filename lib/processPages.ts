@@ -194,6 +194,19 @@ const COUNTRY_ORDER: string[] = ['US', ...GEO_NOTE_COUNTRIES]
 const countryLabel = (code: string): string =>
   code === 'US' ? 'United States' : (GEO_COUNTRY_META as Record<string, { label: string }>)[code]?.label ?? code
 
+// Approval marker: the mode where the record declares one, else the generic fallback.
+const APPROVAL_MODE_MARKERS: Record<string, string> = {
+  'every-run': 'human approval every run',
+  'first-run': 'human approval on the first run',
+  'threshold': 'human approval above a threshold',
+  'pre-approvable': 'standing human approval',
+}
+
+function approvalMarker(m: Meta, fallback: string): string {
+  const mode = m.approval && typeof m.approval === 'object' ? (m.approval as { mode?: unknown }).mode : undefined
+  return (typeof mode === 'string' ? APPROVAL_MODE_MARKERS[mode] : undefined) ?? fallback
+}
+
 // The inline marker string after a step title: routing, clock, and the doors that close.
 function stepMarkers(m: Meta): string[] {
   const markers: string[] = []
@@ -207,7 +220,7 @@ function stepMarkers(m: Meta): string[] {
   const minutes = num(m, 'estimatedMinutes')
   if (minutes !== null) markers.push(`~${formatMinutes(minutes)}`)
   if (m.async === true) markers.push('async wait')
-  if (m.approvalRequired === true) markers.push('human approval required')
+  if (m.approvalRequired === true) markers.push(approvalMarker(m, 'human approval required'))
   const reversibility = str(m, 'reversibility')
   if (reversibility && reversibility !== 'reversible') {
     markers.push(REVERSIBILITY_META[reversibility as keyof typeof REVERSIBILITY_META]?.label ?? reversibility)
@@ -628,7 +641,7 @@ function stepsOverview(walk: WalkContext, ctx: PageContext): string[] {
     '| Step | Handled by | Time estimate | Incoming dependencies |', '| --- | --- | --- | --- |']
   for (const [i, p] of walk.ordered.entries()) {
     const m: Meta = { ...p.metadata, ...p.options.find((o) => o.id === 'default')?.metadata }
-    const markers = [m.approvalRequired === true ? 'approval required' : '', m.legalSignature === true ? 'signature required' : '', m.async === true ? 'includes waiting' : ''].filter(Boolean)
+    const markers = [m.approvalRequired === true ? approvalMarker(m, 'approval required') : '', m.legalSignature === true ? 'signature required' : '', m.async === true ? 'includes waiting' : ''].filter(Boolean)
     const route = str(m, 'route')
     const owner = route ? ROUTE_LABELS[route] ?? route : 'Not recorded'
     const into = walk.links.filter((l) => l.to === p.id)

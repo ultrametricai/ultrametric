@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { executionSchema, validateExecution } from '../execution'
+import { executionSchema, metadataApprovalSchema, validateApproval, validateExecution } from '../execution'
 
 const text = z.string().min(1).regex(/\S/)
 const id = z.string().min(1).max(160).regex(/^[a-zA-Z0-9][a-zA-Z0-9._-]*$/)
@@ -22,7 +22,14 @@ export const STATE_SERVICES = [
   'sales-tax-registration',
 ] as const
 export type StateService = (typeof STATE_SERVICES)[number]
-const stepMetadata = z.object({ execution: executionSchema.optional(), service: z.enum(STATE_SERVICES).optional() }).catchall(z.json())
+const stepMetadata = z.object({
+  execution: executionSchema.optional(),
+  service: z.enum(STATE_SERVICES).optional(),
+  // When a human approves this step (lib/execution.ts approvalSchema). approvalRequired is the
+  // derived compatibility alias: true unless approval.mode is 'none'.
+  approval: metadataApprovalSchema.optional(),
+  approvalRequired: z.boolean().optional(),
+}).catchall(z.json())
 const note = z.strictObject({ text, references: z.array(reference).optional() })
 export const connectionSchema = z.strictObject({ from: id, to: id, option: id.optional(), when: text.nullable().optional() })
 export type Reference = z.infer<typeof reference>
@@ -135,7 +142,11 @@ export function validateCatalog(input: unknown): SharedRecord[] {
         if (allParts.has(part.id)) throw new Error(`${record.id}: duplicate nested part ID ${part.id}`)
         allParts.add(part.id)
         validateExecution(part.metadata, `${scope}/${part.id}`)
-        for (const option of part.options) validateExecution({ ...part.metadata, ...option.metadata }, `${scope}/${part.id}/${option.id}`)
+        validateApproval(part.metadata, `${scope}/${part.id}`)
+        for (const option of part.options) {
+          validateExecution({ ...part.metadata, ...option.metadata }, `${scope}/${part.id}/${option.id}`)
+          validateApproval({ ...part.metadata, ...option.metadata }, `${scope}/${part.id}/${option.id}`)
+        }
         if (part.kind === 'reference') {
           if (!part.ref || !byId.has(part.ref)) throw new Error(`${scope}/${part.id}: unresolved process reference`)
           children.push(part.ref)
