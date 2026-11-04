@@ -60,9 +60,11 @@ export const approvalSchema = z.strictObject({
 })
 export type Approval = z.infer<typeof approvalSchema>
 
-// Transitional: records authored before approval modes carry the bare { role, scope } shape
-// or an explicit null. The migration adds mode and reason everywhere; this union retires with it.
-export const metadataApprovalSchema = z.union([approvalSchema, scopedApprovalSchema.strict()]).nullable()
+// Every committed approval object carries a mode and reason (the migration added them).
+// The explicit null stays: the preserved legacy projection contract
+// (schemas/legacy-process.schema.json) requires the key on every workflow step.
+// requiresExecutionApproval still tolerates the pre-mode { role, scope } shape at runtime.
+export const metadataApprovalSchema = approvalSchema.nullable()
 
 export function approvalOf(metadata: Record<string, unknown>): Approval | undefined {
   if (metadata.approval == null) return undefined
@@ -78,8 +80,7 @@ export function requiresExecutionApproval(metadata: Record<string, unknown>): bo
 
 export function validateApproval(metadata: Record<string, unknown>, scope: string): void {
   if (metadata.approval == null) return
-  const parsed = metadataApprovalSchema.parse(metadata.approval)
-  if (!parsed || !('mode' in parsed)) return
+  const parsed = approvalSchema.parse(metadata.approval)
   if ((parsed.mode === 'threshold') !== (parsed.threshold !== undefined)) {
     throw new Error(`${scope}: a threshold rides with mode "threshold" and only there`)
   }
