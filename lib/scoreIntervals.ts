@@ -1,5 +1,5 @@
-// Analytic score intervals (v1) — honest 68% confidence bands on every Overall score, derived
-// WITHOUT any new judging. See README "Score intervals" for the full writeup; the model, exactly:
+// Analytic score intervals (v1) — point-containing uncertainty intervals on every Overall score,
+// derived WITHOUT any new judging. See README "Score intervals" for the full writeup; the model, exactly:
 //
 //   Per product, each verdict cell gets a noise distribution built from the MEASURED re-roll
 //   statistics in open-rankings/*/uncertainty.json (the multi-judge uncertainty pass re-judged 650+
@@ -22,9 +22,12 @@
 //
 //   Each of `draws` (default 500) Monte Carlo draws resamples every relevant cell and
 //   recomputes the score through the EXACT published formula — lib/scoring.ts's weightedPercent
-//   per component and computeAiEra for the blend, roundings included. The 68% band is the
-//   16th/84th percentile of the resulting distribution. The PRNG is seeded (mulberry32 over an
-//   FNV-1a hash of a per-product key) — never Math.random — so builds are byte-reproducible.
+//   per component and computeAiEra for the blend, roundings included. The nominal 68% sampled
+//   band is the 16th/84th percentile of the resulting distribution. The reported interval is the
+//   envelope of those quantiles and the published point score, so its coverage can be wider and
+//   the score shown beside it is always inside it. The PRNG is seeded (mulberry32 over an FNV-1a
+//   hash of a per-product key) —
+//   never Math.random — so builds are byte-reproducible.
 //
 // This measures propagated JUDGE-SAMPLING noise plus untested-cell ignorance — NOT model-family
 // disagreement (that upgrade needs a second judge model; see README future work).
@@ -170,12 +173,14 @@ function sampleTier(row: Record<NoiseTier, number>, r: number): NoiseTier {
 
 const percentile = (sorted: number[], q: number): number => sorted[Math.round((sorted.length - 1) * q)]
 
-// Simulates `draws` re-rolls of one product's verdict matrix under `model` and returns the 68%
-// (16th–84th percentile) band on the Overall score and agent-readiness, each recomputed per draw
-// through lib/scoring.ts's exact weightedPercent + computeAiEra. Deterministic for a given
-// (cells, model, seedKey, draws) — see the seeded-PRNG section above. Null bounds exactly when
-// the corresponding published score is null (nullness only depends on the na-pattern, which is
-// pinned, so it never varies across draws).
+// Simulates `draws` re-rolls of one product's verdict matrix under `model` and returns the reported
+// point-containing interval on the Overall score and agent-readiness, each recomputed per draw
+// through lib/scoring.ts's exact weightedPercent + computeAiEra. Its nominal 68% (16th–84th
+// percentile) sampled band expands only when needed to contain the corresponding published point
+// score. Deterministic for a given
+// (cells, model, seedKey, draws) — see the seeded-PRNG section above. Null bounds exactly when the
+// corresponding published score is null (nullness only depends on the na-pattern, which is pinned,
+// so it never varies across draws).
 export function simulateScoreInterval(
   cells: SimCell[],
   model: VerdictNoiseModel,
@@ -191,6 +196,15 @@ export function simulateScoreInterval(
   const openness = cells.filter((c) => c.story.theme === 'openness')
   const automation = cells.filter((c) => c.story.theme === 'automation-depth')
   const relevant = [...agentAccess, ...agenticFeatures, ...apiQuality, ...openness, ...automation]
+
+  const publishedAgentReady = weightedPercent(agentAccess)
+  const publishedAiEra = computeAiEra({
+    agentReady: publishedAgentReady,
+    apiQuality: weightedPercent(apiQuality),
+    openness: weightedPercent(openness),
+    agenticApp: weightedPercent(agenticFeatures),
+    automation: weightedPercent(automation),
+  })
 
   // One draw = resample every relevant cell in place (na pinned), recompute both scores exactly.
   const sampled = new Map(relevant.map((c) => [c, { verdict: c.verdict, story: c.story }]))
@@ -239,13 +253,13 @@ export function simulateScoreInterval(
     if (agentReady !== null) agentReadyDraws.push(agentReady)
   }
 
-  const band = (xs: number[]): [number | null, number | null] => {
-    if (xs.length === 0) return [null, null]
+  const band = (xs: number[], point: number | null): [number | null, number | null] => {
+    if (xs.length === 0 || point === null) return [null, null]
     const sorted = [...xs].sort((a, b) => a - b)
-    return [percentile(sorted, 0.16), percentile(sorted, 0.84)]
+    return [Math.min(percentile(sorted, 0.16), point), Math.max(percentile(sorted, 0.84), point)]
   }
-  const [aiEraLow, aiEraHigh] = band(aiEraDraws)
-  const [agentReadyLow, agentReadyHigh] = band(agentReadyDraws)
+  const [aiEraLow, aiEraHigh] = band(aiEraDraws, publishedAiEra)
+  const [agentReadyLow, agentReadyHigh] = band(agentReadyDraws, publishedAgentReady)
   return { aiEraLow, aiEraHigh, agentReadyLow, agentReadyHigh }
 }
 

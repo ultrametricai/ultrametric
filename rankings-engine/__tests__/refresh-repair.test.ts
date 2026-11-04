@@ -43,6 +43,8 @@ describe('refresh repair policy', () => {
     expect(allowed('rankings-engine/cache/judge/email/vendor/story.json', 'email')).toBe(true)
     for (const file of ['.github/workflows/ci.yml', 'package.json', 'open-rankings/email/../../lib/schemas.ts', 'open-rankings/email/evil.ts', 'open-rankings/payments/verdicts.json']) expect(allowed(file, 'email')).toBe(false)
     expect(projection('open-rankings/email/score-history.jsonl', 'email')).toBe(true)
+    expect(projection('open-rankings/payments/score-intervals.json', 'email')).toBe(true)
+    expect(allowed('open-rankings/payments/score-intervals.json', 'email')).toBe(true)
     expect(projection('open-rankings/email/evidence/vendor.json', 'email')).toBe(false)
     expect(allowed('README.md', 'email')).toBe(true)
     expect(projection('README.md', 'email')).toBe(false)
