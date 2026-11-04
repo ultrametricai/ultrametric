@@ -656,13 +656,16 @@
   {
     "productId": "ghostty",
     "storyId": "agentic-headless",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Ghostty is a GUI terminal emulator, and the evidence documents no headless mode or CI usage of the application itself. AppleScript and Shortcuts automation drive GUI windows and tabs, and `+show-config` only prints configuration. libghostty/libghostty-vt is a developer library for building or embedding terminal functionality, so it earns no credit under the partial-credit rules.",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Nothing in the pack shows the Ghostty app running headlessly or in CI. The runtime probe found only config/+action CLI commands and no remote-control or IPC interface. AppleScript automation (macOS only) still drives a GUI instance. The only headless-capable path is the embeddable `libghostty-vt` library (C/Zig, including WebAssembly), which provides terminal functionality such as parsing without the GUI. That gives glancing, build-it-yourself support. Missing for 10: a documented headless/no-GUI mode for the app, CI usage docs or examples, a remote-control/IPC interface for scripts or agents to send input and read output, and hands-on evidence of CI use.",
     "evidenceIds": [
-      "ghostty-gh-6",
-      "ghostty-docs-46"
+      "ghostty-gh-4",
+      "ghostty-gh-3",
+      "ghostty-probe-rt-1",
+      "ghostty-docs-9",
+      "ghostty-docs-37"
     ]
   },
   {
@@ -1306,11 +1309,16 @@
   {
     "productId": "iterm2",
     "storyId": "agentic-headless",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "The evidence shows iTerm2 is a macOS GUI terminal that can be scripted through its Python API and AppleScript, including an AutoLaunch script. These are automation features for the running desktop app, an adjacent capability rather than a documented headless or CI execution mode. Nothing in the pack shows iTerm2 running without its GUI or inside a CI pipeline, so this applicable axis is unevidenced.",
-    "evidenceIds": []
+    "rationale": "iTerm2 is a GUI terminal app, but it does support scripted automation. Its Python API offers full control (gh-15, docs-13, corroborated by comm-5), and AppleScript can launch the app and open sessions from stand-alone scripts (docs-14). Nothing shows it running without a GUI or inside CI pipelines, so this is automation of the desktop app rather than true headless execution. Missing for 10: a headless or no-GUI run mode, documented CI usage, and independent hands-on evidence of unattended or CI automation.",
+    "evidenceIds": [
+      "iterm2-gh-15",
+      "iterm2-docs-13",
+      "iterm2-docs-14",
+      "iterm2-comm-5"
+    ]
   },
   {
     "productId": "iterm2",
@@ -2114,14 +2122,16 @@
   {
     "productId": "kitty",
     "storyId": "api-interactive-docs",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "kitty has a programmatic surface: remote-control commands and a terminal graphics protocol. An API reference is therefore a fair question for it, but the evidence shows only static documentation pages, with no interactive explorer or runnable in-browser examples. Probes for an OpenAPI/Swagger spec all returned 404, so there is no evidence of an interactive API reference.",
+    "rationale": "kitty documents a remote-control interface for scripts and the shell. Its commands can be run directly, and a hands-on probe showed `kitten @ ls/send-text/get-text` working against a live instance. That makes the reference effectively runnable from a terminal, but it is a static docs page rather than an interactive API explorer, and no OpenAPI/Swagger spec was found. Missing for 10: an interactive in-browser API reference, an OpenAPI or other machine-readable spec, embedded runnable examples in the docs.",
     "evidenceIds": [
-      "kitty-docs-31",
-      "kitty-probe-3",
-      "kitty-probe-4"
+      "kitty-docs-1",
+      "kitty-docs-23",
+      "kitty-probe-4",
+      "kitty-probe-rt-1",
+      "kitty-probe-3"
     ]
   },
   {
@@ -3223,11 +3233,14 @@
   {
     "productId": "warp",
     "storyId": "prompt-marks-navigation",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Warp is a terminal, so jumping between prompts and command marks in scrollback is a fair question to ask. However, nothing in the evidence documents navigating between prompts, command marks, or Blocks. Mentions of output being chunked into Blocks and of Blocks being restored on relaunch are adjacent features, not evidence of scrollback navigation via shell integration.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The evidence shows Warp splits terminal output into per-command Blocks, which is the structural equivalent of prompt/command marks: a user praises 'chunking the output into blocks', and the docs mention restoring recent Blocks. Nothing in the pack documents keyboard or UI navigation for jumping between those blocks or prompts in scrollback, and nothing describes the shell-integration mechanism behind them. Missing for 10: documented jump-to-previous/next prompt or block navigation, a description of how shell integration produces the marks, and hands-on corroboration of scrollback navigation.",
+    "evidenceIds": [
+      "warp-comm-8",
+      "warp-docs-21"
+    ]
   },
   {
     "productId": "warp",
@@ -3290,11 +3303,15 @@
   {
     "productId": "warp",
     "storyId": "ssh-integration",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Nothing in the evidence documents a Warp SSH integration that carries terminfo, shell integration, or config to remote hosts. The SSH mentions in the docs (warp-docs-59, warp-docs-79) describe running the `warp` agent CLI inside any terminal, which is a different capability. Community remarks about using SSH, including one user bypassing an SSH issue with 'command ssh', only hint that Warp wraps ssh and are not first-party documentation of the capability.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "There are no first-party docs on Warp's SSH integration; the only signs of it are indirect community reports. One user says Warp feels like magic when SSHing into a home server; another notes SSH issues on one machine that they work around with `command ssh`, which implies Warp wraps ssh. A third reports code indexing and the file explorer failing over SSH. The agent CLI working over SSH (warp-docs-59, warp-docs-23) is a separate capability and is not credited here. Missing for 10: documented SSH integration, terminfo propagation, remote shell-integration setup, config carry-over, and reliable hands-on corroboration.",
+    "evidenceIds": [
+      "warp-comm-3",
+      "warp-comm-14",
+      "warp-comm-10"
+    ]
   },
   {
     "productId": "warp",
@@ -3542,22 +3559,37 @@
   {
     "productId": "wezterm",
     "storyId": "automation-bulk-operations",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Bulk operations, such as broadcasting input or acting on many panes or tabs at once, are a fair question for a terminal multiplexer. The evidence only shows a `cli` subcommand that can spawn programs and manipulate tabs and panes. That is a building block a user could script around, not a documented bulk-operation capability, and nothing mentions broadcast input or multi-item actions.",
+    "rationale": "WezTerm's `cli` subcommand can enumerate all windows, tabs and panes (`wezterm cli list`) and send text to or read text from individual panes by pane-id. A hands-on probe verified this works headlessly, so a script could loop over many panes to approximate bulk operations. However, every documented operation targets a single pane, and nothing shows a native bulk or broadcast capability. Missing for 10: native multi-pane/broadcast input or batch commands, documented bulk-operation workflows, and independent evidence of bulk use across many items.",
     "evidenceIds": [
-      "wezterm-docs-35"
+      "wezterm-docs-7",
+      "wezterm-probe-rt-1",
+      "wezterm-probe-4"
     ]
   },
   {
     "productId": "wezterm",
     "storyId": "automation-rules-engine",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Applicable axis. The evidence shows a Lua config file, automatic config reload when that file changes, and shell-integration user vars that can inform tab titles or the status area. None of it documents user-defined rules or event handlers that trigger actions automatically. Config auto-reload is built-in behavior, and user vars are building blocks, so neither counts as an event-to-action rules capability.",
-    "evidenceIds": []
+    "rationale": "WezTerm's own Lua config API provides `wezterm.on`, which registers a user-defined callback that runs automatically when a named event is emitted. That is a first-party event-to-action rule mechanism matching the story's core. The evidence is a single doc line, though: it does not enumerate which events exist or show what actions callbacks can take. Missing for 10: documented catalog of available events, examples of the actions callbacks can trigger, independent or hands-on corroboration of event-driven automation.",
+    "evidenceIds": [
+      "wezterm-review-source-20261104-4-1"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can define rules that trigger actions automatically on events",
+      "citations": [
+        {
+          "evidenceId": "wezterm-review-source-20261104-4-1",
+          "quote": "`wezterm.on` causes your specified `callback` to be called when `event_name` is emitted."
+        }
+      ]
+    }
   },
   {
     "productId": "wezterm",
@@ -3571,11 +3603,16 @@
   {
     "productId": "wezterm",
     "storyId": "automation-versioned-workflows",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "WezTerm's automations live in a plain Lua config file that auto-reloads, so the axis applies. However, the evidence shows no first-party way to version, review, or roll back those automations. Users report diffing and syncing the config with chezmoi or nix, but these are external workarounds and earn no credit.",
-    "evidenceIds": []
+    "rationale": "WezTerm's automation lives in a plain Lua config file. A user reports it is \"just Lua code, easy to diff and easy to apply\" when synced with chezmoi, and WezTerm watches and auto-reloads the file on change. So versioning, review and rollback are possible, but only through external tools like git or chezmoi rather than anything built in. Missing for 10: native versioning or history of automations, built-in review/diff or rollback, and first-party docs on managing config revisions.",
+    "evidenceIds": [
+      "wezterm-comm-19",
+      "wezterm-docs-6",
+      "wezterm-docs-24",
+      "wezterm-comm-2"
+    ]
   },
   {
     "productId": "wezterm",
