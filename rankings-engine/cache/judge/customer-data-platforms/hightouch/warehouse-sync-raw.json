@@ -1,20 +1,41 @@
 {
-  "hash": "97ee9aa3ed99c3027acfa286feb7d8b3faf68b4c57baacffc640e22c3374cdd2",
+  "hash": "b60148c0a0844ca29a98afb3170b64617b64d7e9542ca1c5bebdc39ebd6ded78",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Hightouch Events collects behavioral events from SDKs, the HTTP API and streaming sources, and stores them in the customer's warehouse. Identity Resolution writes unified identities and a one-row-per-identity Golden Record table into the warehouse. Community evidence corroborates that data stays in the customer's own warehouse or S3 bucket rather than in Hightouch. Missing for 10: documentation that event/profile loading into the warehouse runs on a user-controlled schedule (documented schedules apply to outbound syncs), and an explicit list of supported landing destinations (Snowflake, BigQuery, ClickHouse, S3) for Events.",
+    "rationale": "Hightouch Events documents that it collects behavioral events and stores them in the customer's warehouse. Identity Resolution writes unified identities and a one-row-per-identity Golden Record into the warehouse. A community source says data stays in the customer's own warehouse/S3 bucket. However, the documented schedule and trigger controls apply to outbound syncs, not to how events land, and no specific warehouse support is named. Missing for 10: documented user-controlled load schedule for event/profile landing, explicit support for Snowflake/BigQuery/ClickHouse/S3 as event destinations, independent hands-on corroboration.",
     "evidenceIds": [
       "hightouch-docs-5",
-      "hightouch-docs-41",
       "hightouch-docs-8",
       "hightouch-docs-9",
       "hightouch-docs-40",
-      "hightouch-docs-44",
       "hightouch-comm-3"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a data engineer, raw events and profiles land in my own warehouse or lake (Snowflake, BigQuery, ClickHouse, S3) on a schedule I control",
+      "citations": [
+        {
+          "evidenceId": "hightouch-docs-5",
+          "quote": "Hightouch Events collects customer behavior from websites, mobile apps, and backend systems, then stores that data in your warehouse."
+        },
+        {
+          "evidenceId": "hightouch-docs-8",
+          "quote": "Identity Resolution links related customer records into unified identities in your warehouse"
+        },
+        {
+          "evidenceId": "hightouch-docs-9",
+          "quote": "Golden Record — a one-row-per-identity table of canonical field values"
+        },
+        {
+          "evidenceId": "hightouch-comm-3",
+          "quote": "it all stays in the customer's own warehouse/S3 bucket"
+        }
+      ]
+    },
     "productId": "hightouch",
     "storyId": "warehouse-sync-raw"
   }

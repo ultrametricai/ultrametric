@@ -1,20 +1,41 @@
 {
-  "hash": "4f064347908519552948a8a859f268c0393f62b3c9bb290ea2bce2d84b4d7294",
+  "hash": "8885be590eb485d30344b23b52ff43da70b1cd94fc74cfb1207a48c4860c57a4",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Marqeta documents sandbox simulation endpoints (/simulations/cardtransactions/*), one per transaction event type, and explicitly names authorizations and reversals among them. A Quick Start walks through simulating a transaction, and the JIT funding docs describe approving or denying funding requests with your own rules, so the core auth-testing loop is supported. Only two of the five named lifecycle events are explicitly evidenced. missing for 10: explicit evidence of clearing/settlement simulation, refund simulation, simulated declines driven by spend controls or JIT responses, and independent or hands-on corroboration.",
+    "rationale": "Marqeta's own sandbox has dedicated /simulations/cardtransactions/* endpoints for simulating card network events, explicitly naming authorizations and reversals. It is the product's own capability, but the evidence does not confirm the rest of the lifecycle the story names. Missing for 10: explicit evidence of clearing simulation, refund simulation, and decline-path simulation (e.g., declines triggered by JIT funding or spend controls in the sandbox), plus independent or hands-on corroboration.",
     "evidenceIds": [
       "marqeta-docs-10",
       "marqeta-docs-19",
       "marqeta-docs-27",
       "marqeta-docs-14",
-      "marqeta-docs-35",
-      "marqeta-docs-25",
-      "marqeta-docs-2"
+      "marqeta-docs-35"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can simulate the whole transaction lifecycle in the sandbox — authorizations, clearings, reversals, refunds, and declines — so my auth logic is tested before a real card ever swipes",
+      "citations": [
+        {
+          "evidenceId": "marqeta-docs-10",
+          "quote": "The sandbox environments provide a set of endpoints that let you simulate various types of card network transactions, such as authorizations, reversals, and balance inquiries."
+        },
+        {
+          "evidenceId": "marqeta-docs-19",
+          "quote": "Use the /simulations/cardtransactions/* endpoints to simulate transaction event types. Each endpoint is its own event type."
+        },
+        {
+          "evidenceId": "marqeta-docs-27",
+          "quote": "Unlike the production environment, a sandbox does not communicate with a card network, so the cards you create within them cannot be used to conduct real-world transactions."
+        },
+        {
+          "evidenceId": "marqeta-docs-14",
+          "quote": "Create the objects you use in sandbox transactions: a card product, a user, and a card. Simulate a transaction."
+        }
+      ]
+    },
     "productId": "marqeta",
     "storyId": "auth-simulation-testing"
   }

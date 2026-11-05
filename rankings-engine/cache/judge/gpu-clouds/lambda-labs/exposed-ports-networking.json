@@ -1,17 +1,36 @@
 {
-  "hash": "f1a44c5964a9f83de53a4ba9e939c9451593f94b892b64ebca3ac005f4477eaa",
+  "hash": "b81a2bca6f4d991b8a0af0366c3c34754d79fd65e28ce7bb06707611037bfd12",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Lambda documents workspace firewall rules that control incoming traffic to instances, including 1-Click Cluster head nodes, which implies instances can be reached and ports managed for serving. Inter-node connectivity is evidenced only inside 1-Click Clusters and managed Kubernetes (InfiniBand/GPUDirect RDMA up to 3200 Gb/s), not as general private networking between on-demand instances. Missing for 10: explicit port-exposure/inbound-rule documentation for serving apps, private networking/VPC between standalone on-demand instances, independent or hands-on corroboration.",
+    "rationale": "Lambda documents workspace firewall rules that control incoming traffic to instances, globally or per instance, which covers managing which ports are reachable for serving apps. Node-to-node connectivity is documented only within 1-Click Clusters (GPUDirect RDMA interconnect), not as general private networking between standalone instances. Missing for 10: explicit port-exposure/inbound-allow documentation, private networking or VPC between ODC instances, independent hands-on corroboration.",
     "evidenceIds": [
-      "lambda-labs-docs-11",
       "lambda-labs-docs-45",
+      "lambda-labs-docs-55",
       "lambda-labs-docs-36",
-      "lambda-labs-docs-33"
+      "lambda-labs-docs-48"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can expose ports to serve applications from my instance and connect instances over private networking",
+      "citations": [
+        {
+          "evidenceId": "lambda-labs-docs-45",
+          "quote": "You can restrict incoming traffic to the instances in a workspace, including 1-Click Cluster management (head) nodes, by creating firewall rules on the Firewall page"
+        },
+        {
+          "evidenceId": "lambda-labs-docs-55",
+          "quote": "You can create global rules that apply to all of the instances in the workspace, or rulesets scoped to individual instances and their regions."
+        },
+        {
+          "evidenceId": "lambda-labs-docs-36",
+          "quote": "enabling peer-to-peer GPUDirect RDMA at up to 3200 Gb/s"
+        }
+      ]
+    },
     "productId": "lambda-labs",
     "storyId": "exposed-ports-networking"
   }

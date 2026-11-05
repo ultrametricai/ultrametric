@@ -1,18 +1,36 @@
 {
-  "hash": "e6161f67364cd076b945064ac570066f26ef846afe7d0c80d81257f88c44387f",
+  "hash": "61d5f8fe14ad8b932f614e27c00739ef8843d8cc23afb757d9b06fddea1db065",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 8,
-    "confidence": "high",
-    "rationale": "OpenRouter documents management endpoints for programmatically creating, distributing and rotating API keys for applications (docs-8). These are OpenRouter-issued keys sitting in front of pooled provider access, with optional BYOK so raw provider keys stay at the gateway (docs-9, docs-45). A community user independently confirms that minting keys with per-key expiry and limits is easy (comm-12), and workspace budgets support team-level spend scoping (docs-10). Missing for 10: explicit documentation that BYOK provider keys are never exposed to key holders, and detail on team/app-scoped key assignment such as workspace-to-key mapping and permissions.",
+    "verdict": "partial",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "OpenRouter documents endpoints for programmatically creating and managing its own API keys so apps can distribute or rotate them. A community user confirms that minting keys with per-key expiry and limits is easy, and BYOK means provider keys sit behind OpenRouter rather than in client code. However, team-level scoping of keys is not explicitly documented; workspaces appear only in the context of budgets, and nothing states outright that provider keys are never exposed to key holders. Missing for 10: explicit documentation of per-team/per-app key scoping or workspace-bound key assignment, an explicit statement that BYOK provider keys stay hidden from downstream key holders, and hands-on corroboration beyond one community comment.",
     "evidenceIds": [
       "openrouter-docs-8",
+      "openrouter-comm-12",
       "openrouter-docs-9",
-      "openrouter-docs-45",
-      "openrouter-docs-10",
-      "openrouter-comm-12"
+      "openrouter-docs-10"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform engineer, I can mint gateway-managed keys for teams and apps without exposing raw provider keys",
+      "citations": [
+        {
+          "evidenceId": "openrouter-docs-8",
+          "quote": "OpenRouter provides endpoints to programmatically manage your API keys, enabling key creation and management for applications that need to distribute or rotate keys automatically."
+        },
+        {
+          "evidenceId": "openrouter-comm-12",
+          "quote": "One thing that OpenRouter makes easy is the ability to manage API keys (mint new ones, expiry/limits per key, etc.)"
+        },
+        {
+          "evidenceId": "openrouter-docs-9",
+          "quote": "OpenRouter supports both OpenRouter credits and the option to bring your own provider keys (BYOK)"
+        }
+      ]
+    },
     "productId": "openrouter",
     "storyId": "virtual-keys"
   }

@@ -1,16 +1,36 @@
 {
-  "hash": "e9611f93f7496113cebe4668f7518800b06c78e63f3e33f7ec7b4ad64ca6dacf",
+  "hash": "b83f017d0ea9024fed0c12dc8615b0dfcfa796c2d309129f0469d4afbe8c09c2",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
-    "confidence": "low",
-    "rationale": "The private-networking half is supported: each CKS cluster runs in its own private VPC, and VPC networking can be managed through Terraform and API access tokens. Nothing in the evidence shows how to expose ports or publicly serve applications from nodes or instances. missing for 10: documentation of port exposure, load balancers or ingress for serving apps; detail on instance-to-instance private connectivity within or across VPCs; independent or hands-on corroboration.",
+    "confidence": "medium",
+    "rationale": "CoreWeave documents private networking: each CKS cluster runs in its own private VPC, nodes use InfiniBand networking, and VPC networking can be managed through Terraform. That covers the 'connect instances over private networking' half of the story. Nothing in the pack documents exposing ports or public endpoints to serve applications from an instance (the inference gateways are a separate managed-inference feature), so roughly half the story is evidenced. Missing for 10: documented port exposure or public service endpoints for instance workloads, detail on private connectivity between nodes or clusters within the VPC, and independent or hands-on corroboration.",
     "evidenceIds": [
       "coreweave-docs-32",
+      "coreweave-docs-45",
       "coreweave-docs-6",
       "coreweave-docs-17"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can expose ports to serve applications from my instance and connect instances over private networking",
+      "citations": [
+        {
+          "evidenceId": "coreweave-docs-32",
+          "quote": "Each CKS cluster operates within its own private Virtual Private Cloud (VPC)."
+        },
+        {
+          "evidenceId": "coreweave-docs-45",
+          "quote": "with DPU isolation, per-cluster VPCs, and InfiniBand networking"
+        },
+        {
+          "evidenceId": "coreweave-docs-6",
+          "quote": "including CKS clusters, VPC networking"
+        }
+      ]
+    },
     "productId": "coreweave",
     "storyId": "exposed-ports-networking"
   }

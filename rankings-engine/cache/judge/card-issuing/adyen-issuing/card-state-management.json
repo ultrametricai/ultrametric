@@ -1,20 +1,34 @@
 {
-  "hash": "868fecdbf838975304317307738b3796d47e68dbc110e0095c0973669fd85772",
+  "hash": "64cf35121f342295adbbdb28da0d252cdf968c1fa5b5575dba7ccfc67d4ac9c1",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Adyen's manage-cards docs cover activating, suspending (pausing) and permanently closing cards. Cards are paymentInstrument resources updated via /paymentInstruments/{id}, so the core status lifecycle appears API-driven. Unpausing is only implied by suspend being temporary, and lost-card reporting appears only in the context of the Raise disputes API rather than as a card-status action. missing for 10: explicit unpause/reactivate API, a dedicated lost/stolen card-status operation, reissue with a replacement linked to the original card, explicit API references for each status transition, independent corroboration.",
+    "rationale": "Adyen's card-management docs cover activating, suspending (temporarily stopping payment processing) and permanently closing a card. The same page shows API-based updates via /paymentInstruments/{id}, so the core lifecycle is plausibly API-driven, but several steps of the story are unevidenced. Lost-card reporting only appears inside the Raise disputes API, which is a dispute flow rather than a card-status transition. Missing for 10: an explicit unpause/reactivate-after-suspend operation, a lost/stolen card status, reissue with a replacement linked to the original, explicit API endpoints for each status change, and independent or hands-on corroboration.",
     "evidenceIds": [
       "adyen-issuing-docs-10",
       "adyen-issuing-docs-17",
       "adyen-issuing-docs-18",
       "adyen-issuing-docs-19",
       "adyen-issuing-docs-11",
-      "adyen-issuing-docs-15",
-      "adyen-issuing-docs-7"
+      "adyen-issuing-docs-16"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, the full card lifecycle is API-driven — activate, pause, unpause, report lost or stolen, reissue with a replacement linked to the original, and permanently close",
+      "citations": [
+        {
+          "evidenceId": "adyen-issuing-docs-10",
+          "quote": "Activating a card to enable payment processing. Suspending a card to temporarily stop payment processing. Permanently closing a card."
+        },
+        {
+          "evidenceId": "adyen-issuing-docs-11",
+          "quote": "To update the balance account ID, make a /paymentInstruments/{id} request and send the new balanceAccountId."
+        }
+      ]
+    },
     "productId": "adyen-issuing",
     "storyId": "card-state-management"
   }

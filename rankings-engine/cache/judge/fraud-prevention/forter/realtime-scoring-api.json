@@ -1,17 +1,35 @@
 {
-  "hash": "f83e040c8f5cf64625f815f3d091512728a89e47696e3877bf677249581ca27e",
+  "hash": "65cb32ce2f2f9a3bc0a52be2acc399be3e155d69b10e96102d7742013c99da33",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Forter documents an Order API (v3) that merchants call at checkout to receive a fraud or abuse decision [forter-docs-1]. A separate order-status API reports payment authorization afterward [forter-docs-2], which implies the decision call comes before authorization. The evidence describes a decision rather than an explicit machine-learning risk score, and never states the call is synchronous or gives latency figures, so the story is only partly evidenced. Missing for 10: explicit ML risk score values in the response, documented synchronous/pre-authorization timing and latency guarantees, independent or hands-on corroboration.",
+    "rationale": "Forter documents an Order API that takes order data at checkout and returns a fraud decision, so real-time checkout scoring is documented. However, the evidence describes a decision (approve/decline-style) rather than an exposed machine-learning risk score. It also never states that the call is synchronous and completes before payment authorization; that is only implied by the separate order-status updates covering authorization. Missing for 10: explicit numeric or ML risk score in the response, documented synchronous pre-authorization flow and latency, independent corroboration.",
     "evidenceIds": [
       "forter-docs-1",
       "forter-docs-2",
-      "forter-docs-19",
-      "forter-docs-4"
+      "forter-docs-19"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can get a machine-learning risk score for a transaction in real time — synchronously, before authorization completes — through a documented API",
+      "citations": [
+        {
+          "evidenceId": "forter-docs-1",
+          "quote": "Send order information at checkout to receive a fraud or abuse decision."
+        },
+        {
+          "evidenceId": "forter-docs-2",
+          "quote": "Inform of updates to the status of an order, including payment authorization"
+        },
+        {
+          "evidenceId": "forter-docs-19",
+          "quote": "This additional data improves Forter's risk decisions"
+        }
+      ]
+    },
     "productId": "forter",
     "storyId": "realtime-scoring-api"
   }

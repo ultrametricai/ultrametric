@@ -1,19 +1,46 @@
 {
-  "hash": "14032b4e3c286c9c7c4a6192cfb1b31a885e333e4df973d27421db1d4627f51c",
+  "hash": "347669978b951dc778fe96797ad970cff26bb709477afa8cec3d709cde7837de",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "LiteLLM is headless by design. It is a Python SDK with a programmatic completion() interface, plus a self-hosted proxy launched and configured from a documented CLI (e.g. --workers). A community user runs it via the litellm/litellm docker image, and MCP tools can be called directly over REST with curl. missing for 10: explicit CI/CD pipeline documentation or examples, independent reports of running it inside CI automation.",
+    "rationale": "LiteLLM is a programmatic Python library and a self-hosted proxy with a documented official CLI (worker-process flags) and a Docker image, so it can run headlessly for automation. MCP tools can also be called with curl without an LLM. However, nothing in the evidence documents CI usage specifically. Missing for 10: documented CI/CD usage guidance (e.g., CI pipeline examples), non-interactive config/auth guidance for automation, independent hands-on corroboration of CI runs.",
     "evidenceIds": [
-      "litellm-docs-1",
-      "litellm-docs-13",
       "litellm-probe-4",
+      "litellm-docs-13",
+      "litellm-docs-1",
+      "litellm-docs-5",
       "litellm-comm-6",
-      "litellm-docs-33",
-      "litellm-docs-5"
+      "litellm-docs-33"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
+      "citations": [
+        {
+          "evidenceId": "litellm-probe-4",
+          "quote": "official CLI documented at https://docs.litellm.ai/docs/proxy/cli"
+        },
+        {
+          "evidenceId": "litellm-docs-13",
+          "quote": "The number of worker processes to spin up (uvicorn, gunicorn, or Granian --workers)."
+        },
+        {
+          "evidenceId": "litellm-docs-1",
+          "quote": "Call any provider using the same completion() interface, with no API to re-learn for each one"
+        },
+        {
+          "evidenceId": "litellm-docs-5",
+          "quote": "Self-hosted LLM Gateway (Proxy) with virtual keys, cost tracking, and an admin UI"
+        },
+        {
+          "evidenceId": "litellm-docs-33",
+          "quote": "call tools with curl without an LLM"
+        }
+      ]
+    },
     "productId": "litellm",
     "storyId": "agentic-headless"
   }

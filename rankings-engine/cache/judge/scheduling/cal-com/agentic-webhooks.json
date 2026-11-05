@@ -1,19 +1,37 @@
 {
-  "hash": "a50d4c85784d8007133a620dbeee90acd63f5aaec2389f8da14d94b1dacfbae5",
+  "hash": "e02b92feb6ecd16fc4602724a6502051bbbd0708c6b92f180a36429d1b47239d",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Cal.com's API v2 documents a create-webhook endpoint. It takes a subscriberUrl, a customizable payload template, and a triggers enum covering booking lifecycle events (BOOKING_CREATED, PAID, RESCHEDULED, REQUESTED, CANCELLED, PAYMENT_INITIATED), and it works with OAuth via the EVENT_TYPE_WRITE scope. Zapier event automation is also offered as an alternative. Missing for 10: independent or hands-on corroboration, docs on webhook signing/secret verification and retry behavior, and evidence of user- or org-level webhooks beyond the event-type-scoped endpoint.",
+    "rationale": "Cal.com's v2 API documents a create-a-webhook endpoint where a programmatic consumer registers a subscriberUrl, chooses booking lifecycle triggers (BOOKING_CREATED, BOOKING_RESCHEDULED, BOOKING_CANCELLED, payment events), and can set a custom payload template, with OAuth scope requirements stated. This is a genuine registrable outbound HTTP callback, not a chat-app integration. missing for 10: documentation of signing/verification secrets, retry and delivery semantics, and user- or org-level (vs. event-type) webhook scope, plus independent or hands-on corroboration.",
     "evidenceIds": [
       "cal-com-docs-5",
       "cal-com-docs-26",
       "cal-com-docs-42",
       "cal-com-docs-52",
-      "cal-com-docs-60",
-      "cal-com-intdir-7"
+      "cal-com-docs-60"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can subscribe to events via webhooks",
+      "citations": [
+        {
+          "evidenceId": "cal-com-docs-42",
+          "quote": "triggers: type: array items: type: string enum: - BOOKING_CREATED - BOOKING_PAYMENT_INITIATED - BOOKING_PAID - BOOKING_RESCHEDULED - BOOKING_REQUESTED - BOOKING_CANCELLED"
+        },
+        {
+          "evidenceId": "cal-com-docs-52",
+          "quote": "The template of the payload that will be sent to the subscriberUrl"
+        },
+        {
+          "evidenceId": "cal-com-docs-60",
+          "quote": "If accessed using an OAuth access token, the `EVENT_TYPE_WRITE` scope is required."
+        }
+      ]
+    },
     "productId": "cal-com",
     "storyId": "agentic-webhooks"
   }

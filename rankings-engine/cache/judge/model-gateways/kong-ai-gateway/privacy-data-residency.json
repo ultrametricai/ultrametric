@@ -1,16 +1,31 @@
 {
-  "hash": "6260e4703eabfa933cd79360dc1b6e098082875ded7a670d9a48aa64b6b763c1",
+  "hash": "72b6147ae5638efaf689cb6d8b23ae9184f045a7b5e37f4cd8a77aa8e344c456",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 4,
+    "quality": 3,
     "confidence": "low",
-    "rationale": "Residency control is only implied: the data plane can be self-hosted or on-prem (Docker, local log paths), and the hybrid-mode control plane stays out of the data path and by default doesn't see LLM/MCP traffic. That suggests payloads stay in infrastructure the user chooses. However, no evidence documents explicit region or data-residency selection. Missing for 10: explicit region/residency selection for the Konnect control plane and analytics/log storage, a documented data-residency policy, and independent corroboration.",
+    "rationale": "Kong's hybrid architecture keeps the control plane out of the data path, and the data plane can be configured on-prem, with logs written locally. This implies you control where LLM traffic and logs live. However, there is no documented region or residency selection for hosted Konnect components such as analytics and logs. Missing for 10: explicit region/data-residency selection for hosted Konnect data, documentation of where control-plane analytics are stored, independent corroboration.",
     "evidenceIds": [
       "kong-ai-gateway-docs-50",
       "kong-ai-gateway-docs-27",
       "kong-ai-gateway-docs-48"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can choose where my data is stored (region/residency)",
+      "citations": [
+        {
+          "evidenceId": "kong-ai-gateway-docs-50",
+          "quote": "the control plane stays out of the data path: by default it doesn't see the LLM"
+        },
+        {
+          "evidenceId": "kong-ai-gateway-docs-48",
+          "quote": "By default, you can view AI Gateway logs at `/usr/local/kong/logs/error.log`. If you're running an AI Gateway data plane in Docker, you can also view them from your Docker container."
+        }
+      ]
+    },
     "productId": "kong-ai-gateway",
     "storyId": "privacy-data-residency"
   }

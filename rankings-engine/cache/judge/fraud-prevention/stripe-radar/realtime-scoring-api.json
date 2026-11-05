@@ -1,19 +1,40 @@
 {
-  "hash": "d68bd48f26fae704fe456a890475984778820597696ecdb7a32093b8b6520f61",
+  "hash": "54e36603e90cd5975619880618fee75ea0759048eb617b8c53b3102ad4977fca",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 4,
-    "confidence": "medium",
-    "rationale": "Radar screens every payment attempt in real time and attaches a risk level to the resulting charge, which can be exercised with sandbox test cards (e.g. one that yields `highest`). That is ML scoring inline with the payment flow. However, nothing in the evidence documents an API that returns a risk score synchronously before authorization completes, or exposes a numeric score as an API field. A community report also cites lack of easy programmatic control over Radar. Missing for 10: documented pre-authorization scoring endpoint, API reference for the risk score/level field on charges, evidence of synchronous retrieval timing, independent hands-on corroboration.",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Radar's docs say it provides real-time fraud protection and screens every payment attempt. The testing docs show charges carry a Radar-assigned risk level (e.g. `highest`), so a risk assessment is attached to transactions. Nothing documents a standalone, synchronous scoring API that returns an ML score to the developer before authorization completes. Missing for 10: a documented API endpoint for requesting a risk score pre-authorization, evidence of synchronous return timing, numeric score detail beyond risk-level labels, and independent hands-on corroboration.",
     "evidenceIds": [
       "stripe-radar-docs-5",
-      "stripe-radar-docs-20",
       "stripe-radar-docs-22",
       "stripe-radar-docs-27",
-      "stripe-radar-docs-6",
-      "stripe-radar-comm-2"
+      "stripe-radar-docs-19"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can get a machine-learning risk score for a transaction in real time — synchronously, before authorization completes — through a documented API",
+      "citations": [
+        {
+          "evidenceId": "stripe-radar-docs-5",
+          "quote": "4000000000004954 | Results in a charge with a risk level of `highest`"
+        },
+        {
+          "evidenceId": "stripe-radar-docs-22",
+          "quote": "Radar provides several plans for you to choose from, based on your business needs for real-time fraud protection"
+        },
+        {
+          "evidenceId": "stripe-radar-docs-27",
+          "quote": "Radar screens all payment attempt types (for example, successful, declined, blocked, and flagged for review)"
+        },
+        {
+          "evidenceId": "stripe-radar-docs-19",
+          "quote": "Risk insights shows you the risk factors that power Stripe Radar."
+        }
+      ]
+    },
     "productId": "stripe-radar",
     "storyId": "realtime-scoring-api"
   }

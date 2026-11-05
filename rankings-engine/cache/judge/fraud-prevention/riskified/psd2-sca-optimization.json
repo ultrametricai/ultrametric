@@ -1,16 +1,31 @@
 {
-  "hash": "ceb62756e5820ade1b866cea84c7e0f22b9795784a9a7b19b691a76e5d9a3b34",
+  "hash": "142437c2c1e46fdc4936710221804252d5c1470b2daff311aa5234f4bcf3a1c7",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Riskified's `/advise` endpoint returns CVV/3DS recommendations, prompting step-up when risk is medium or confirming the order is safe. It also adds a TRA/SCA exemption recommendation for regulated markets, which covers the core risk-based SCA decision. It is advisory only: the merchant must trigger 3DS or request the exemption through their own gateway, and the docs coverage is brief. Missing for 10: Riskified itself executing 3DS or submitting exemption requests, documentation of exemption types and EU 'when required' logic, gateway or PSP orchestration details, and independent or hands-on corroboration.",
+    "rationale": "Riskified's /advise endpoint documents 3DS recommendations based on risk and TRA/SCA exemption recommendations for regulated markets. That covers the decisioning half of SCA routing. However, Riskified only recommends: actually triggering 3DS or requesting exemptions through the gateway is left to the merchant's integration, and the docs mention the capability only briefly. Missing for 10: Riskified itself executing 3DS triggering or exemption requests, detail on exemption types and regulatory-requirement handling, and independent or hands-on corroboration of conversion and compliance outcomes.",
     "evidenceIds": [
       "riskified-docs-3",
-      "riskified-docs-15",
-      "riskified-docs-36"
+      "riskified-docs-36",
+      "riskified-docs-15"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, European traffic is routed intelligently through SCA — 3DS triggered when required or risky, exemptions requested when safe — to protect both compliance and conversion",
+      "citations": [
+        {
+          "evidenceId": "riskified-docs-3",
+          "quote": "TRA/SCA exemption recommendation is added for the regulated markets"
+        },
+        {
+          "evidenceId": "riskified-docs-36",
+          "quote": "CVV/3DS recommendations can be provided: if there is a medium risk for saved credit cards, and CVV/3DS should be requested, or the order is safe."
+        }
+      ]
+    },
     "productId": "riskified",
     "storyId": "psd2-sca-optimization"
   }

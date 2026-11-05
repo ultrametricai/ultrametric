@@ -1,11 +1,11 @@
 {
-  "hash": "d75d52551b9eda3ea11e40caddf98aea557c5e83716766a3f50fb078257b10ca",
+  "hash": "8f84b8435b33d6b561ab9693ee6d027aedd7d2338f0ae747b1a045231ef10847",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 9,
-    "confidence": "high",
-    "rationale": "Lium documents several first-party ways to keep a forgotten pod from running up a bill. The CLI takes `--ttl` to auto-remove a pod after a set time. Pod creation offers three auto-delete triggers: hours, an end time, or a USD spend cap. API keys carry daily, monthly and lifetime USD budgets that the server enforces. `lium spend` shows hourly burn and remaining runway. Missing for 10: independent or hands-on corroboration that the TTL and spend-cap auto-deletion actually triggers reliably.",
+    "confidence": "medium",
+    "rationale": "Lium documents pod-level termination triggers: a CLI `--ttl` that auto-removes the pod, and at pod creation a choice of Hours, End time or a USD spend cap after which the pod is deleted. It also offers server-enforced daily, monthly and lifetime USD budgets per API key, so a forgotten instance cannot keep billing. missing for 10: independent or hands-on corroboration that the timers and spend caps fire reliably (all evidence is vendor docs).",
     "evidenceIds": [
       "lium-docs-1",
       "lium-docs-15",
@@ -13,6 +13,25 @@
       "lium-docs-2",
       "lium-gh-2"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an ML engineer, I can set auto-shutdown timers or spend limits so a forgotten instance can't silently run up a huge bill",
+      "citations": [
+        {
+          "evidenceId": "lium-docs-1",
+          "quote": "lium up --gpu H100 --ttl 1h# auto-removes after 1h"
+        },
+        {
+          "evidenceId": "lium-docs-15",
+          "quote": "Pick one, and the pod is deleted when it is reached: Hours... End time... Spend cap: a budget in USD"
+        },
+        {
+          "evidenceId": "lium-docs-7",
+          "quote": "API keys with scopes and per-key daily, monthly and lifetime USD budgets enforced by the server"
+        }
+      ]
+    },
     "productId": "lium",
     "storyId": "auto-shutdown-spend-guards"
   }

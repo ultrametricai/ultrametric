@@ -1,17 +1,35 @@
 {
-  "hash": "a910551236608aeb755acba7a541ee58dfc9cb76e89e91a5d9287f2b219d72f6",
+  "hash": "6808089b753392adc7e0fc4dd508cfb4739de73c76fc04f9018ed0f366bbc995",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "A hands-on probe found a live llms.txt at docs.mesh.complyadvantage.com that indexes the Mesh guides. Docs pages are served as raw markdown, and their frontmatter includes an `agentTools.projectIndex` pointer back to llms.txt, so agents can follow the docs directly. A machine-readable OpenAPI 3.0.3 schema was also retrieved unauthenticated, adding agent-consumable API docs. Missing for 10: no first-party guidance on using these docs with agents (e.g. an llms-full.txt or agent setup page), and no independent corroboration beyond probes.",
+    "rationale": "A probe confirmed a live llms.txt at docs.mesh.complyadvantage.com (HTTP 200) that indexes the Mesh documentation. The docs pages are also served as raw .md files, and their frontmatter declares agentTools.projectIndex pointing back to llms.txt, so an agent can be pointed at agent-oriented docs directly. An OpenAPI 3.0.3 schema is also retrievable without authentication. Missing for 10: no independent or hands-on corroboration that an agent consumes these docs effectively, and no first-party documentation describing the agent-docs offering.",
     "evidenceIds": [
       "complyadvantage-probe-1",
       "complyadvantage-probe-2",
-      "complyadvantage-scope-openapi-retrieval",
-      "complyadvantage-docs-10"
+      "complyadvantage-scope-openapi-retrieval"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can point an agent at llms.txt or agent-oriented docs",
+      "citations": [
+        {
+          "evidenceId": "complyadvantage-probe-1",
+          "quote": "PROBE llms.txt: HTTP 200 at https://docs.mesh.complyadvantage.com/llms.txt # Mesh Documentation"
+        },
+        {
+          "evidenceId": "complyadvantage-probe-2",
+          "quote": "agentTools:\n  projectIndex: https://docs.mesh.complyadvantage.com/llms.txt"
+        },
+        {
+          "evidenceId": "complyadvantage-scope-openapi-retrieval",
+          "quote": "Observed unauthenticated documentation GET HTTP 200; parsed OpenAPI 3.0.3."
+        }
+      ]
+    },
     "productId": "complyadvantage",
     "storyId": "agentic-agent-docs"
   }

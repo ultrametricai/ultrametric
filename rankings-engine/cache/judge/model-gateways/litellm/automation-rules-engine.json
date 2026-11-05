@@ -1,19 +1,37 @@
 {
-  "hash": "19db2b699b092f6ca882d51247d7eda5d44f58decb6649b3d6c5ba33d3fa3d05",
+  "hash": "be6548e4fb4587293707e40292bccfa6c9074925c285cfb5edce4f9508721998",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "LiteLLM lets users configure event-driven behaviors within the gateway. It falls back to another model group when a call fails after num_retries, and it has a content-policy-specific fallback for ContentPolicyViolationError. It also supports cooldowns and retries on failure, and Custom Callbacks run custom code or hit API endpoints on logged request events. These are fixed, domain-specific triggers rather than a general rules engine, so it only partly matches the story. Missing for 10: a general user-defined event→action rule system (arbitrary triggers, conditions and actions such as webhooks or workflows), documentation of event-triggered alerting or actions beyond fallback, logging callbacks and budget enforcement, and independent or hands-on corroboration.",
+    "rationale": "LiteLLM lets users configure specific event-triggered actions. Fallback rules reroute to another model group when a call fails after num_retries or raises a ContentPolicyViolationError, and logging supports custom callbacks that run custom code or hit API endpoints on request/exception events. These are fixed failure-handling and logging hooks, not a general rule engine where users define arbitrary event-to-action rules. Missing for 10: a general user-defined event→action rule engine, documented event types beyond failures and logging, and independent or hands-on corroboration.",
     "evidenceIds": [
       "litellm-docs-4",
       "litellm-docs-18",
       "litellm-docs-22",
-      "litellm-docs-30",
       "litellm-docs-32",
-      "litellm-docs-25"
+      "litellm-docs-30"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can define rules that trigger actions automatically on events",
+      "citations": [
+        {
+          "evidenceId": "litellm-docs-4",
+          "quote": "If a call fails after num_retries, LiteLLM falls back to another model group, so a failing model or provider automatically fails over to a healthy backup."
+        },
+        {
+          "evidenceId": "litellm-docs-18",
+          "quote": "content_policy_fallbacks: For litellm.ContentPolicyViolationError - LiteLLM maps content policy violation errors across providers"
+        },
+        {
+          "evidenceId": "litellm-docs-32",
+          "quote": "Custom Callbacks - Custom code and API endpoints"
+        }
+      ]
+    },
     "productId": "litellm",
     "storyId": "automation-rules-engine"
   }

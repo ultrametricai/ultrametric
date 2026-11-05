@@ -1,20 +1,42 @@
 {
-  "hash": "6cb595d74b3e2dfe4f32ead1ea6f622398f10b187e7ec5a249eff574d0b33238",
+  "hash": "45df67d46806cccda8e0e2365927884f271de622e65f73bed1c4859729f5c548",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "OpenRouter automatically fails over across providers when one is down, and the `models` array lets you set an ordered fallback list that is tried on errors or rate limits. The `provider` object also lets you customize routing, and a community user confirms fallback works by default without custom wrappers. This is failover rather than a configurable retry policy: no evidence shows retry counts, backoff, or per-error-class retry rules. Missing for 10: configurable retry count/backoff settings, same-provider retry controls for transient errors, documentation of which error classes trigger retries.",
+    "rationale": "OpenRouter documents automatic fallback when providers are down, rate-limited, or return errors. Users configure it with a priority-ordered `models` array, and provider load balancing is on by default, which community users corroborate. This is failover to alternate models or providers, not an explicitly configurable retry policy: nothing documents same-provider retries, retry counts, backoff, or per-error-class rules. missing for 10: configurable retry count/backoff settings, same-provider retry on transient errors, per-error-type retry rules, independent hands-on verification of retry behavior.",
     "evidenceIds": [
       "openrouter-docs-3",
       "openrouter-docs-19",
-      "openrouter-docs-4",
       "openrouter-docs-17",
-      "openrouter-docs-21",
+      "openrouter-docs-4",
       "openrouter-docs-36",
       "openrouter-comm-2"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform engineer, I can set automatic retry policies for transient provider errors",
+      "citations": [
+        {
+          "evidenceId": "openrouter-docs-3",
+          "quote": "The models parameter lets you automatically try other models if the primary model's providers are down, rate-limited, or refuse to reply due to content moderation."
+        },
+        {
+          "evidenceId": "openrouter-docs-19",
+          "quote": "Provide an array of model IDs in priority order. If the first model returns an error, OpenRouter will automatically try the next model in the list."
+        },
+        {
+          "evidenceId": "openrouter-docs-17",
+          "quote": "Fall back to other providers when one goes down."
+        },
+        {
+          "evidenceId": "openrouter-comm-2",
+          "quote": "They also support fallback by default so you don't have to write wrappers."
+        }
+      ]
+    },
     "productId": "openrouter",
     "storyId": "retry-policies"
   }

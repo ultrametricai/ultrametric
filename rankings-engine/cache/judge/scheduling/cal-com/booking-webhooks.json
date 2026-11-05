@@ -1,18 +1,32 @@
 {
-  "hash": "0ac81b971cc2ec03952d2faa0cd0b648f29baae9cfb6a211e299dca365327300",
+  "hash": "ab759a51e47f4891ea72137457f6a0eb2dd1b319c03037dcb0ae0376c15c0e0e",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 8,
-    "confidence": "medium",
-    "rationale": "Cal.com's API v2 has a create-webhook endpoint. Its trigger enum explicitly includes BOOKING_CREATED, BOOKING_RESCHEDULED and BOOKING_CANCELLED, and payloads are sent to a configurable subscriberUrl using a payload template, which covers the three booking lifecycle events in the story. The evidence shown is scoped to event-type webhooks, with OAuth EVENT_TYPE_WRITE scope required. Missing for 10: documentation of delivery semantics (signing/verification, retries, latency guarantees), evidence of account- or org-level webhooks beyond event-type scope, and independent or hands-on corroboration.",
+    "confidence": "high",
+    "rationale": "Cal.com's API v2 has a documented create-a-webhook endpoint. Its trigger enum includes BOOKING_CREATED, BOOKING_RESCHEDULED and BOOKING_CANCELLED, and a payload template is sent to a registered subscriberUrl, so it covers created, rescheduled and canceled bookings with programmatic HTTP callbacks. Missing for 10: documentation of delivery semantics (signing/verification, retries, latency guarantees) and independent or hands-on corroboration.",
     "evidenceIds": [
-      "cal-com-docs-5",
-      "cal-com-docs-26",
       "cal-com-docs-42",
+      "cal-com-docs-5",
       "cal-com-docs-52",
       "cal-com-docs-60"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, webhooks notify my systems in real time when bookings are created, rescheduled, or canceled",
+      "citations": [
+        {
+          "evidenceId": "cal-com-docs-42",
+          "quote": "triggers: type: array items: type: string enum: - BOOKING_CREATED - BOOKING_PAYMENT_INITIATED - BOOKING_PAID - BOOKING_RESCHEDULED - BOOKING_REQUESTED - BOOKING_CANCELLED"
+        },
+        {
+          "evidenceId": "cal-com-docs-52",
+          "quote": "The template of the payload that will be sent to the subscriberUrl"
+        }
+      ]
+    },
     "productId": "cal-com",
     "storyId": "booking-webhooks"
   }

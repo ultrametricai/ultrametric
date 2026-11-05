@@ -1,19 +1,47 @@
 {
-  "hash": "e667d0aa04e2b0a61a8498b7362437c2933f5ab026ac32dc7fcae19e1dfdb0c2",
+  "hash": "d8d5b4f48471088d8e9fba244c449b1d17b005ab9695d3115d76ca12056fbf16",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Vast.ai documents key-based SSH access to instances, with password authentication disabled (vast-ai-docs-9, vast-ai-docs-43). Users can manage their own SSH keys through the tooling (vast-ai-docs-4) and connect via the CLI workflow (vast-ai-docs-34). Docker run options with custom ports suggest control over the container environment (vast-ai-docs-52). Missing for 10: explicit evidence of root-level access inside instances, step-by-step docs on adding user-supplied public keys, and independent hands-on corroboration of SSH and root use.",
+    "rationale": "Vast.ai documents SSH access to instances using key-only authentication, and it can manage SSH keys. Community evidence says renters get a full Linux shell, and users can override the image entrypoint and open custom ports, which implies broad control of the environment. Root access, however, is never stated explicitly. Missing for 10: explicit documentation of root/sudo privileges inside the instance, and first-party detail on how users upload their own public keys.",
     "evidenceIds": [
       "vast-ai-docs-9",
-      "vast-ai-docs-43",
-      "vast-ai-docs-36",
       "vast-ai-docs-4",
-      "vast-ai-docs-34",
-      "vast-ai-docs-52"
+      "vast-ai-docs-43",
+      "vast-ai-docs-63",
+      "vast-ai-docs-64",
+      "vast-ai-docs-59",
+      "vast-ai-comm-9-refresh-465387f38e3aabfb"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can SSH into my GPU instance with my own keys and get root-level control of the environment",
+      "citations": [
+        {
+          "evidenceId": "vast-ai-docs-9",
+          "quote": "Vast.ai instances are configured to accept keys only - Password authentication is disabled for improved security."
+        },
+        {
+          "evidenceId": "vast-ai-docs-4",
+          "quote": "create instances, deploy endpoints, manage SSH keys, check balances, and more"
+        },
+        {
+          "evidenceId": "vast-ai-docs-59",
+          "quote": "Connects via SSH, Jupyter, or custom entrypoint"
+        },
+        {
+          "evidenceId": "vast-ai-docs-64",
+          "quote": "The docker image entrypoint is the main run process, which you can override in the GUI or CLI (--entrypoint)."
+        },
+        {
+          "evidenceId": "vast-ai-comm-9-refresh-465387f38e3aabfb",
+          "quote": "Renters get a full Linux shell and can deploy images"
+        }
+      ]
+    },
     "productId": "vast-ai",
     "storyId": "ssh-root-access"
   }

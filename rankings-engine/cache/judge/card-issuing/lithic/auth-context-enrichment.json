@@ -1,16 +1,35 @@
 {
-  "hash": "0c7e6a7d34b2402f66a246e809510a925b5d527f98d9f36fc5182699a486d7de",
+  "hash": "e6f8dad69169af9dabc3c85fb732a61623ea1c5f15d16af48d00c7462f61cc96",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 3,
-    "confidence": "medium",
-    "rationale": "Lithic's ASA delivers each authorization as an HTTP POST from the ISO 8583 stream, with a body that includes 'transaction metadata'. Auth Rules can decision on attributes like MCC, country, currency and risk score, so MCC-level context is evidenced. The rest of the story's specific fields are not documented in the pack. Missing for 10: merchant name field, enhanced merchant data, wallet and entry-mode details in the auth payload, partial-approval and incremental-auth signals, a documented ASA payload schema, independent corroboration.",
+    "confidence": "low",
+    "rationale": "Lithic's ASA delivers authorization requests whose body includes \"transaction metadata\", and Auth Rules decision on attributes such as MCC, country, currency and risk score. That shows some decision context, at least MCC, travels with authorization events. The digital-wallet tokenization stream is a separate event flow and does not show wallet details on card authorizations. Missing for 10: documented merchant name fields, enhanced merchant data, wallet and entry-mode details on authorizations, partial-approval signals, incremental-auth signals, field-level schema evidence, and independent corroboration.",
     "evidenceIds": [
       "lithic-docs-2",
       "lithic-docs-16",
       "lithic-docs-17"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, every authorization event carries decision-grade context — merchant name and MCC, enhanced merchant data, wallet and entry-mode details, partial-approval and incremental-auth signals",
+      "citations": [
+        {
+          "evidenceId": "lithic-docs-2",
+          "quote": "ASA requests are delivered as an HTTP POST request during authorization. The request body includes transaction metadata"
+        },
+        {
+          "evidenceId": "lithic-docs-17",
+          "quote": "By defining rules based on high-signal attributes like MCC, country, currency, and risk score, you can enforce business-specific authorization logic"
+        },
+        {
+          "evidenceId": "lithic-docs-16",
+          "quote": "Authorization Stream Access (ASA) provides the ability to make custom transaction approval decisions through an HTTP interface to the ISO 8583 message stream."
+        }
+      ]
+    },
     "productId": "lithic",
     "storyId": "auth-context-enrichment"
   }

@@ -1,19 +1,40 @@
 {
-  "hash": "a9cc5b667cef1515aaf3965c90fffc08cc0b7317e40d17ff506ab64b5c6b1ee4",
+  "hash": "6f8a5c455c61ebb9f100172ce7d709b0cc8641f0f9cf4d43706a5c2531558b38",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Kong AI Gateway centralizes provider credentials and keeps them away from clients: they are managed at the gateway, can be referenced from external secret backends through AI Vault, and clients are shielded from provider specifics. AI Auth Strategy adds a separate inbound authentication layer, including OIDC/IdP, that can be attached to models, agents and MCP servers. However, the evidence never explicitly describes minting or issuing gateway-managed API keys per team or app. missing for 10: explicit documentation of creating or issuing per-team/per-app gateway keys, key lifecycle (rotation/revocation) for those keys, independent or hands-on corroboration.",
+    "rationale": "Kong AI Gateway centralizes provider credentials and can store them in an AI Vault rather than as literal values. It also lets platform teams declare inbound authentication through an AI Auth Strategy, so clients authenticate to the gateway rather than holding raw provider keys. However, the evidence never shows actually minting or issuing gateway-managed keys scoped to individual teams or apps. missing for 10: documented minting/issuance of gateway-scoped keys per team or app, key lifecycle (rotation/revocation) details, explicit statement that provider keys are never exposed to clients, independent corroboration.",
     "evidenceIds": [
       "kong-ai-gateway-docs-30",
       "kong-ai-gateway-docs-22",
-      "kong-ai-gateway-docs-29",
       "kong-ai-gateway-docs-39",
-      "kong-ai-gateway-docs-23",
-      "kong-ai-gateway-docs-5"
+      "kong-ai-gateway-docs-23"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform engineer, I can mint gateway-managed keys for teams and apps without exposing raw provider keys",
+      "citations": [
+        {
+          "evidenceId": "kong-ai-gateway-docs-30",
+          "quote": "Centralized AI Provider credential management"
+        },
+        {
+          "evidenceId": "kong-ai-gateway-docs-22",
+          "quote": "so that AI Model Providers, AI Auth Strategies, AI Models, AI Agents, and AI MCP Servers can reference secrets instead of storing them as literal values."
+        },
+        {
+          "evidenceId": "kong-ai-gateway-docs-39",
+          "quote": "An AI Auth Strategy lets you declare an inbound authentication mechanism at the gateway level and attach it to specific AI Models, AI Agents, or AI MCP Servers."
+        },
+        {
+          "evidenceId": "kong-ai-gateway-docs-23",
+          "quote": "Authenticate enterprise users through an existing identity provider (Okta, Azure AD, Google, or any OIDC-compliant IdP) without managing keys manually"
+        }
+      ]
+    },
     "productId": "kong-ai-gateway",
     "storyId": "virtual-keys"
   }

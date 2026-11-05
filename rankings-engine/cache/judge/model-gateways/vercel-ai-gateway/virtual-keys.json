@@ -1,21 +1,51 @@
 {
-  "hash": "20965ab2bf2aa69c03192a2a65d1c693ae7be88a0fbd8f7aa641cadb3462affe",
+  "hash": "1398a38133fd46bfc36c651b3bfad9edf0f1799e80d343e39e8050eb00705746",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "AI Gateway issues its own team-owned API keys that work across local, CI, external servers and Vercel deployments, plus auto-provisioned OIDC tokens. Provider credentials stay centralized in the gateway via BYOK, so apps never hold raw provider keys. Multiple keys appear to be supported, since requests are summarized and budgets are set per API key. Missing for 10: explicit docs on the key-minting workflow and per-app/per-project key scoping, key rotation/revocation details, and independent hands-on corroboration.",
+    "rationale": "Vercel AI Gateway documents team-owned AI Gateway API keys and per-project OIDC tokens. These centralize credentials so apps call many providers through one gateway key instead of raw provider keys. Per-key budgets and per-key request summaries suggest multiple keys per team. However, the evidence never documents the minting workflow or explicit per-app key scoping. missing for 10: documented key creation/minting workflow (UI/API), explicit per-app or per-team-member key scoping and revocation/rotation controls, independent or hands-on corroboration.",
     "evidenceIds": [
       "vercel-ai-gateway-docs-40",
-      "vercel-ai-gateway-docs-38",
       "vercel-ai-gateway-docs-32",
-      "vercel-ai-gateway-docs-14",
-      "vercel-ai-gateway-docs-37",
-      "vercel-ai-gateway-docs-12",
+      "vercel-ai-gateway-docs-38",
       "vercel-ai-gateway-docs-16",
+      "vercel-ai-gateway-docs-12",
+      "vercel-ai-gateway-docs-14",
       "vercel-ai-gateway-docs-1"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform engineer, I can mint gateway-managed keys for teams and apps without exposing raw provider keys",
+      "citations": [
+        {
+          "evidenceId": "vercel-ai-gateway-docs-40",
+          "quote": "AI Gateway API keys belong to a Vercel team and work in local development, CI, external servers, and Vercel deployments."
+        },
+        {
+          "evidenceId": "vercel-ai-gateway-docs-32",
+          "quote": "Use one managed gateway from any infrastructure to centralize credentials, log requests, control spend, and fail over across providers."
+        },
+        {
+          "evidenceId": "vercel-ai-gateway-docs-38",
+          "quote": "Every request to AI Gateway requires Vercel authentication. Use an AI Gateway API key or OpenID Connect (OIDC) token."
+        },
+        {
+          "evidenceId": "vercel-ai-gateway-docs-16",
+          "quote": "To cap how much your team, a project, an API key, or a team member can spend, set [budgets]"
+        },
+        {
+          "evidenceId": "vercel-ai-gateway-docs-12",
+          "quote": "The Requests section displays summaries by project, API key, and a detailed log of all requests."
+        },
+        {
+          "evidenceId": "vercel-ai-gateway-docs-14",
+          "quote": "For applications deployed on Vercel, OIDC tokens are automatically available as `VERCEL_OIDC_TOKEN`. No secrets to manage, no keys to rotate."
+        }
+      ]
+    },
     "productId": "vercel-ai-gateway",
     "storyId": "virtual-keys"
   }

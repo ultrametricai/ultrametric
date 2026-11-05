@@ -1,11 +1,11 @@
 {
-  "hash": "c43227c478aa181f11eeea192e37f1f1d6d7b5f32bb15bc036f6ee1adcbe6812",
+  "hash": "38805a3b29f5ff39c163cea17a33ecfd0adf34261f4a00f140dd09793f7e68d8",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 8,
-    "confidence": "high",
-    "rationale": "Runpod's docs say Pods are billed by the second for compute and storage, and that all compute and storage charges on the account are billed per second. Serverless is billed only from when a worker starts until it fully stops, rounded up to the nearest second, and Flex workers scale to zero when idle. Missing for 10: an explicit statement that stopped Pods stop accruing compute charges (storage is billed per second separately, so it may continue while a Pod is stopped), and independent or hands-on corroboration of the billing behavior.",
+    "verdict": "partial",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Runpod documents per-second billing for Pods compute and storage and for all compute charges. For Serverless, it explicitly bills only from worker start until full stop and scales Flex workers to zero when idle. For Pods (dedicated instances), the docs say Pods can be stopped but never state that compute charges halt while a Pod is stopped, and storage is billed per second regardless, so the 'only while running' part is unproven for instances. Missing for 10: explicit documentation that stopped Pods incur no compute charges, clarity on storage charges for idle or stopped instances, independent or hands-on corroboration of billing granularity.",
     "evidenceIds": [
       "runpod-docs-50",
       "runpod-docs-58",
@@ -13,6 +13,29 @@
       "runpod-docs-25",
       "runpod-docs-46"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an ML engineer, I am billed at per-second or per-minute granularity and only while my instance is actually running",
+      "citations": [
+        {
+          "evidenceId": "runpod-docs-50",
+          "quote": "Pods are billed by the second for compute and storage, with no fees for data ingress or egress."
+        },
+        {
+          "evidenceId": "runpod-docs-58",
+          "quote": "All compute and storage charges are billed per second, with no fees for data transfer."
+        },
+        {
+          "evidenceId": "runpod-docs-20",
+          "quote": "You're billed from when a worker starts until it fully stops, rounded up to the nearest second."
+        },
+        {
+          "evidenceId": "runpod-docs-25",
+          "quote": "Flex workers | Scale to zero when idle | Standard per-second rate"
+        }
+      ]
+    },
     "productId": "runpod",
     "storyId": "per-second-billing"
   }

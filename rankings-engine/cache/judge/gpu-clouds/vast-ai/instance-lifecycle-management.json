@@ -1,19 +1,42 @@
 {
-  "hash": "2a9ee28cb3fb382f0c75d403d575b1366711755376a33b5263bed1f71e506111",
+  "hash": "9dc99ca12c8d3758a2b72f5d052119292b8035cca4d87b5ee59b58eb426a9176",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "The docs say the CLI covers \"instance lifecycle\" and that the REST API (backed by a live OpenAPI spec) and a Python SDK give programmatic control of the whole platform. The CLI hello-world also walks through renting an instance and cleaning it up. However, the evidence never names separate start, stop, restart or destroy operations, and nothing describes how stopped or terminated instances are billed. Missing for 10: explicit documentation of stop/start/restart/destroy commands or endpoints, evidence that billing stops (or what is still charged, e.g. storage) when an instance is stopped or destroyed, and independent hands-on corroboration.",
+    "rationale": "Vast.ai's official CLI, SDK and REST API document programmatic instance lifecycle control. Specifically, the SDK shows `start_instance`, a runtime probe confirmed `create instance` and `destroy instance` in the CLI, and docs state instances bill by the second for actual usage. Stop and restart are not explicitly shown, and billing for stopped instances is not documented. missing for 10: explicit stop/restart commands or endpoints, documentation of what (if anything) is charged while an instance is stopped (e.g., storage), hands-on corroboration of the full start/stop/destroy cycle.",
     "evidenceIds": [
+      "vast-ai-gh-3",
+      "vast-ai-probe-rt-1",
       "vast-ai-docs-2",
       "vast-ai-docs-3",
-      "vast-ai-docs-29",
-      "vast-ai-docs-34",
-      "vast-ai-probe-2",
-      "vast-ai-gh-2"
+      "vast-ai-docs-59",
+      "vast-ai-docs-55"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can start, stop, restart, and terminate instances programmatically and keep paying only for what is running",
+      "citations": [
+        {
+          "evidenceId": "vast-ai-gh-3",
+          "quote": "vast.start_instance(id=12345)"
+        },
+        {
+          "evidenceId": "vast-ai-probe-rt-1",
+          "quote": "`vastai --help` prints the full command surface including search offers, create instance, and destroy instance."
+        },
+        {
+          "evidenceId": "vast-ai-docs-2",
+          "quote": "The Vast.ai CLI gives you command-line access to the entire platform, authentication, GPU search, instance lifecycle, templates, volumes, serverless endpoints, and more."
+        },
+        {
+          "evidenceId": "vast-ai-docs-59",
+          "quote": "Bills by the second for actual usage"
+        }
+      ]
+    },
     "productId": "vast-ai",
     "storyId": "instance-lifecycle-management"
   }

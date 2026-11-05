@@ -1,18 +1,41 @@
 {
-  "hash": "c79a29050b334bc60fafb66b45374393a2167e1337ed3f8e92865c86afc9430f",
+  "hash": "f79183bcc09469b17891d0d9f7030b34b08ee16f981341fd634fb94bb8cab427",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "CoreWeave AI Object Storage is documented for storing training data, checkpoints, and model weights with S3-compatible access from GPU compute. It adds LOTA caching, Terraform-managed buckets, and lifecycle policies, so datasets live in a durable service separate from compute. However, the evidence only covers object storage. Nothing shows mountable persistent volumes or a shared network filesystem that attaches to instances, and nothing explicitly states that data survives node teardown. Missing for 10: attachable block or shared-filesystem storage, explicit documentation of persistence across node or cluster deletion, independent hands-on corroboration.",
+    "rationale": "CoreWeave documents its own AI Object Storage, an S3-compatible service for storing training data, checkpoints, and model weights with fast access from GPU compute. It is managed separately from clusters, through Terraform buckets and the Cloud Console, so data plausibly outlives node pools. However, the evidence shows only object storage accessed over S3, not network volumes attached or mounted to instances, and it never explicitly states that data persists after teardown. Missing for 10: attachable or mountable persistent network volumes (block or shared file system), explicit documentation that storage survives node or cluster teardown, and independent or hands-on corroboration.",
     "evidenceIds": [
       "coreweave-docs-10",
       "coreweave-docs-6",
-      "coreweave-docs-41",
       "coreweave-docs-43",
-      "coreweave-docs-40"
+      "coreweave-docs-56",
+      "coreweave-docs-39"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can attach persistent network storage that survives instance teardown, so datasets and checkpoints outlive any single GPU rental",
+      "citations": [
+        {
+          "evidenceId": "coreweave-docs-10",
+          "quote": "Store training data, checkpoints, and model weights with efficient S3-compatible access directly to your GPU compute resources."
+        },
+        {
+          "evidenceId": "coreweave-docs-6",
+          "quote": "including CKS clusters, VPC networking, AI Object Storage policies and buckets"
+        },
+        {
+          "evidenceId": "coreweave-docs-43",
+          "quote": "Training jobs that start with a warm cache can see a 30-50% faster first epoch compared to cold reads."
+        },
+        {
+          "evidenceId": "coreweave-docs-56",
+          "quote": "CPU-only clusters can now use the LOTA endpoint for accelerated object storage access."
+        }
+      ]
+    },
     "productId": "coreweave",
     "storyId": "persistent-network-storage"
   }

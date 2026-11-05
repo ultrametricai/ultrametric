@@ -1,20 +1,36 @@
 {
-  "hash": "bf90d7cd478f8f91c0379c3fc603921e5efecabb8d888d847600c7fdc4204d3f",
+  "hash": "ec9888aa8534da6ef18f43a695d9dfae8da33fe216592b5aab485fdef5ba0299",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Lithic documents registrable outbound webhooks through its Events API, with replay, subscription secrets and searchable past events. It also migrated legacy transaction webhooks to that API with the same schema, and its sandbox can simulate merchant-acquirer transaction events end-to-end. However, the evidence never names clearing, refund, reversal or chargeback event types, and it never documents stable transaction identifiers across the lifecycle. Disputes and chargebacks are mentioned only as a filing service, not as webhook events. Missing for 10: explicit post-auth event types (clearing, refund, reversal, chargeback) delivered as webhooks, documented stable transaction IDs linking auth to settlement, ledger-reconciliation guidance, independent or hands-on corroboration.",
+    "rationale": "Lithic documents its own registrable webhooks through the Events API, with replay and past-event search. The migration doc shows transaction webhooks moving to the Events API under the same schema, and the Disputes API handles chargeback filing. However, the pack never names clearing, refund, or reversal event types, never shows chargebacks arriving as webhooks, and never mentions stable transaction identifiers for ledger reconciliation. missing for 10: documented post-auth event types (clearing/settlement, refund, reversal), chargeback/dispute webhook events, stable transaction identifiers linking auth to later events, independent corroboration.",
     "evidenceIds": [
       "lithic-docs-20",
-      "lithic-docs-6",
       "lithic-docs-23",
       "lithic-docs-31",
-      "lithic-docs-5",
-      "lithic-docs-15",
       "lithic-docs-10"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, post-auth events are as programmatic as auth — clearings, refunds, reversals, and chargebacks arrive as webhooks with stable transaction identifiers, so my own ledger never drifts",
+      "citations": [
+        {
+          "evidenceId": "lithic-docs-20",
+          "quote": "With Lithic Events, you can register and manage webhook URLs, replay webhook messages, control event subscription secrets, and search past events."
+        },
+        {
+          "evidenceId": "lithic-docs-23",
+          "quote": "we ensure a smooth transition by maintaining the same schema and temporarily sharing the same HMAC headers"
+        },
+        {
+          "evidenceId": "lithic-docs-10",
+          "quote": "Lithic can help power your cardholders' disputes by handling networking filing for chargebacks and representment responses."
+        }
+      ]
+    },
     "productId": "lithic",
     "storyId": "clearing-settlement-events"
   }

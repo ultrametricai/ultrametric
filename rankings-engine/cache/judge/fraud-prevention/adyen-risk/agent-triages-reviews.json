@@ -1,18 +1,35 @@
 {
-  "hash": "524276e98102c7303558104cecc5151bc27e6032f3d70a0e7df67e5ec4156257",
+  "hash": "f8f8ea947d799460393edfd215a7399f32b758085ac844f7823100e5af29462b",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "partial",
-    "quality": 4,
-    "confidence": "low",
-    "rationale": "Adyen has a review outcome and case management, but the review step is documented only as a human working in the Customer Area UI (docs-9). An agent could see which payments were sent to case management, and which risk rules triggered, through webhooks and the payment response (docs-16). From that it could build its own flagged-case feed and context, then recommend a decision for a human to confirm in the Customer Area. An official MCP server exists (docs-17, probe-4), but nothing shows it exposes case-management or review-queue data. Missing for 10: an API or MCP tool to list and pull review-queue cases with full context, a programmatic way to record or propose an accept/reject recommendation, and evidence the MCP server covers risk cases.",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Case management exists, but the documented review flow is a human reviewer working cases in the Customer Area UI. Nothing shows an API or MCP tool that lets an agent pull flagged cases with context or submit a recommended decision for confirmation. Webhooks flagging that a payment went to case management, and a general-purpose MCP server with no documented case-management scope, are only building blocks, not the agent review-queue capability itself.",
     "evidenceIds": [
-      "adyen-risk-docs-1",
       "adyen-risk-docs-9",
       "adyen-risk-docs-16",
-      "adyen-risk-docs-17",
-      "adyen-risk-probe-4"
+      "adyen-risk-docs-17"
     ],
+    "support": {
+      "relation": "adjacent",
+      "coverage": "none",
+      "subject": "As an AI-native user, an agent can work the review queue — pull flagged cases with their context, summarize the evidence, and recommend a decision for a human to confirm",
+      "citations": [
+        {
+          "evidenceId": "adyen-risk-docs-9",
+          "quote": "A reviewer then accesses the case in the Customer Area and accepts or rejects the transaction."
+        },
+        {
+          "evidenceId": "adyen-risk-docs-16",
+          "quote": "You can include risk information, such as whether a payment was sent to case management, and which risk rules triggered in these webhooks"
+        },
+        {
+          "evidenceId": "adyen-risk-docs-17",
+          "quote": "Our Model Context Protocol (MCP) server lets you use natural language with your chosen Large Language Model (LLM) client."
+        }
+      ]
+    },
     "productId": "adyen-risk",
     "storyId": "agent-triages-reviews"
   }

@@ -1,16 +1,30 @@
 {
-  "hash": "75b5bedc9939a85255b0579e1968d771290c2dc3a21cd6c180b6fdd99b6a8eb7",
+  "hash": "32ee46115f4ac6b812d217d5833f4c12fcda2c5d96ba902d7e2c7f691e1309fd",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
-    "confidence": "medium",
-    "rationale": "Pomelo documents that Reversal and Refund transactions are delivered to the developer through the Adjustments endpoint, alongside the API for authorizing and adjusting transactions. That gives programmatic post-auth delivery for at least two of the four event types. Chargebacks appear only as a dispute-escalation process, not as programmatic events, and clearings are not mentioned at all. Missing for 10: clearing/settlement event delivery, chargeback webhooks, documented stable transaction identifiers linking auth to post-auth events, and independent corroboration.",
+    "confidence": "low",
+    "rationale": "Pomelo documents that reversal and refund transactions are delivered to the developer through an Adjustments endpoint. This is a product-native push for some post-auth events, consistent with the 'authorize and adjust transactions' API. The evidence does not cover clearings/settlement or chargeback events, and nothing shows stable transaction identifiers linking adjustments to the original authorization. The 3DS webhook is a different flow, and dispute escalation is not an event feed. Missing for 10: clearing/settlement event delivery, chargeback event webhooks, documented stable transaction IDs for ledger reconciliation, payload and retry details, independent corroboration.",
     "evidenceIds": [
       "pomelo-docs-28",
-      "pomelo-docs-18",
-      "pomelo-docs-12"
+      "pomelo-docs-18"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, post-auth events are as programmatic as auth — clearings, refunds, reversals, and chargebacks arrive as webhooks with stable transaction identifiers, so my own ledger never drifts",
+      "citations": [
+        {
+          "evidenceId": "pomelo-docs-28",
+          "quote": "Recibirás las transacciones de tipo Reversal y Refund a través del endpoint de Ajustes."
+        },
+        {
+          "evidenceId": "pomelo-docs-18",
+          "quote": "Autorizar y ajustar transacciones sin usar nuestro Core de crédito o Autorizador."
+        }
+      ]
+    },
     "productId": "pomelo",
     "storyId": "clearing-settlement-events"
   }

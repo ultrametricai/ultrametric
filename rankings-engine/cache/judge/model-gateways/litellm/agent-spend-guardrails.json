@@ -1,21 +1,47 @@
 {
-  "hash": "58c6d65776ac2b37e879e3cd0f9cd7df58da49af54b3b60f6b5a94c69ded7d22",
+  "hash": "4e0b901a94ac539bc24c7ad73cc79cd2334fa1b2718e2ab085fcb6e9699bb807",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 8,
+    "verdict": "partial",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "LiteLLM's proxy issues virtual keys with per-key spend tracking and access control. Keys can be created without a team to carry individual spending limits, with max_budget and budget_duration resets, and the product claims you can 'cap it before it runs'. That covers giving an agent its own capped key. An rpm_limit is shown in the team config, so rate guardrails exist. Missing for 10: explicit evidence of rpm/tpm limits set directly on an individual virtual key rather than a team, and independent or hands-on confirmation that budget enforcement blocks runaway spend.",
+    "rationale": "LiteLLM's proxy issues virtual keys that can carry individual spending limits, with max_budget and budget_duration resets, so an agent can get its own capped key. Rate guardrails appear only as an rpm_limit on a team object, so per-key rate limiting is not directly shown. missing for 10: explicit per-key rpm/tpm rate-limit documentation, documented enforcement behavior when a key exceeds its budget or rate (e.g. blocking/rejection), independent or hands-on corroboration of key-level guardrails.",
     "evidenceIds": [
       "litellm-docs-5",
-      "litellm-docs-8",
       "litellm-docs-7",
-      "litellm-docs-6",
+      "litellm-docs-8",
       "litellm-docs-25",
       "litellm-docs-35",
       "litellm-docs-26",
       "litellm-docs-15"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can give an autonomous agent its own key with budget and rate guardrails so it cannot run away on spend",
+      "citations": [
+        {
+          "evidenceId": "litellm-docs-7",
+          "quote": "Personal budgets: Create virtual keys without team_id for individual spending limits"
+        },
+        {
+          "evidenceId": "litellm-docs-35",
+          "quote": "max_budget: 0 # (float) sets max budget as $0 USD  budget_duration: 30d # (str) frequency of reset"
+        },
+        {
+          "evidenceId": "litellm-docs-26",
+          "quote": "\"rpm_limit\": 99"
+        },
+        {
+          "evidenceId": "litellm-docs-15",
+          "quote": "See who is driving spend, cap it before it runs"
+        },
+        {
+          "evidenceId": "litellm-docs-5",
+          "quote": "Self-hosted LLM Gateway (Proxy) with virtual keys, cost tracking, and an admin UI"
+        }
+      ]
+    },
     "productId": "litellm",
     "storyId": "agent-spend-guardrails"
   }

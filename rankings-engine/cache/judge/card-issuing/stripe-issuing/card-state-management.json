@@ -1,18 +1,35 @@
 {
-  "hash": "1a248e71ebab3e44855dab26197ab1eed89cf7c6b25760df3243efd7e45fe344",
+  "hash": "33a0c5158ef02abfed5e5376dc3a3a9958a61930fd722b624efa27be8ac495ea",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 3,
-    "confidence": "medium",
-    "rationale": "Stripe documents card creation through its Issuing API and states the API is used to 'create, manage, and distribute payment cards.' It also documents replacing cards that are expired, damaged, lost, or stolen. However, the evidence never shows the individual lifecycle transitions as API operations, and the replacement mention does not say it is API-driven or linked to the original card. missing for 10: API evidence for activate, pause/unpause and permanent close status transitions, an API call to report a card lost or stolen, replacement cards linked to the original via the API, and independent or hands-on corroboration of the lifecycle flow.",
+    "confidence": "low",
+    "rationale": "The evidence shows card creation through the Issuing API, a general statement that the API manages cards, and a documented ability to replace expired, damaged, lost, or stolen cards. That covers only fragments of the lifecycle, and nothing explicitly shows the other transitions as API operations. Missing for 10: documented API activation, pause/unpause (inactive/active status toggling), explicit lost/stolen reporting via API, replacement linked to the original card, permanent cancellation/close, and independent or hands-on corroboration.",
     "evidenceIds": [
       "stripe-issuing-docs-1",
       "stripe-issuing-docs-7",
-      "stripe-issuing-probe-2",
-      "stripe-issuing-docs-12",
-      "stripe-issuing-comm-1"
+      "stripe-issuing-probe-2"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, the full card lifecycle is API-driven — activate, pause, unpause, report lost or stolen, reissue with a replacement linked to the original, and permanently close",
+      "citations": [
+        {
+          "evidenceId": "stripe-issuing-docs-1",
+          "quote": "Creates an Issuing `Card` object."
+        },
+        {
+          "evidenceId": "stripe-issuing-docs-7",
+          "quote": "Get replacement cards: Replace cards that are expired, damaged, lost, or stolen."
+        },
+        {
+          "evidenceId": "stripe-issuing-probe-2",
+          "quote": "Use the Stripe Issuing API to create, manage, and distribute payment cards for your business."
+        }
+      ]
+    },
     "productId": "stripe-issuing",
     "storyId": "card-state-management"
   }

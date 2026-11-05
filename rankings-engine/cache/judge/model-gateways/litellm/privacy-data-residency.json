@@ -1,20 +1,35 @@
 {
-  "hash": "4840c6fcae799abb679c9169e924e9df4acda20b80f5d0fb22c45d46b37aa8ea",
+  "hash": "1852c690d3fefe7dad1acd986de72a46e2d064c5eebfd4f3740f2c32bc66d7d6",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "LiteLLM is a self-hosted gateway (litellm-docs-5), so the operator decides where the proxy and its data run. Logs can go to customer-chosen stores such as GCS, S3, or Azure Blob buckets (litellm-docs-32), message/response logging can be turned off (litellm-docs-12), and the enterprise tier supports multi-region deployment (litellm-docs-38). Residency control is therefore implied by self-hosting rather than offered as an explicit, documented region-selection or data-residency feature. missing for 10: explicit data-residency/region-pinning documentation, controls to route requests to region-specific provider endpoints, residency guarantees for cache/spend data, independent or hands-on corroboration.",
+    "rationale": "LiteLLM is a self-hosted proxy, so the operator decides where it and its data live. Its docs also list multi-region deployment (an enterprise feature) and logging of inputs and outputs to buckets the user picks (GCS, S3, Azure Blob), which together let users place stored data where they choose. Missing for 10: an explicit data-residency or region-selection control documented as such, documentation of where cached or spend data is stored by region, and independent or hands-on confirmation of residency handling.",
     "evidenceIds": [
       "litellm-docs-5",
-      "litellm-docs-23",
-      "litellm-docs-10",
-      "litellm-docs-32",
-      "litellm-docs-12",
       "litellm-docs-38",
-      "litellm-comm-6"
+      "litellm-docs-10"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can choose where my data is stored (region/residency)",
+      "citations": [
+        {
+          "evidenceId": "litellm-docs-5",
+          "quote": "Self-hosted LLM Gateway (Proxy) with virtual keys, cost tracking, and an admin UI"
+        },
+        {
+          "evidenceId": "litellm-docs-38",
+          "quote": "Multi-region deployment under one license, admin/worker split"
+        },
+        {
+          "evidenceId": "litellm-docs-10",
+          "quote": "Log Proxy input, output, and exceptions using: Langfuse, OpenTelemetry, GCS, s3, Azure (Blob) Buckets"
+        }
+      ]
+    },
     "productId": "litellm",
     "storyId": "privacy-data-residency"
   }

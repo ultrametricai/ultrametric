@@ -1,17 +1,32 @@
 {
-  "hash": "88d764d5fa551929341ff5e9d998d3a601120b76a40a40a10888e449affc9577",
+  "hash": "5a5d0067cea8d200f457e1fc14e6553b6b3a7d2520b9b7e339cfc715200ef96a",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Stripe documents virtual cards scoped to a single task or session that are automatically invalidated after use. Spending controls can restrict merchant IDs and categories and set per-authorization limits. Real-time authorization webhooks let you approve or decline each charge, for example against an expected merchant and amount. missing for 10: explicit documentation of exact-amount locking rather than a per-authorization cap, explicit merchant allow-listing (the evidence only describes blocking merchant IDs), more detail than a single sentence on single-use invalidation, and independent or hands-on corroboration.",
+    "rationale": "Stripe documents virtual cards scoped to a single task or session that are automatically invalidated after use, which covers the single-use core. Spending controls add per-authorization limits and merchant-ID blocking, but the evidence shows only blocking lists and caps, not locking a card to one merchant or an exact amount. Real-time authorization webhooks could enforce tighter rules, but that is a build-it-yourself primitive. Missing for 10: documented single-merchant allow-locking, exact-amount matching (rather than a per-authorization cap), single-use documentation outside the agents context, and independent or hands-on corroboration.",
     "evidenceIds": [
       "stripe-issuing-docs-12",
       "stripe-issuing-docs-5",
       "stripe-issuing-docs-4",
       "stripe-issuing-docs-22"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can issue single-use and tightly scoped cards — one purchase, one merchant, an exact amount — so a leaked number is worthless the moment it's used",
+      "citations": [
+        {
+          "evidenceId": "stripe-issuing-docs-12",
+          "quote": "Issue virtual cards scoped to a single task or session. Cards are automatically invalidated after use."
+        },
+        {
+          "evidenceId": "stripe-issuing-docs-5",
+          "quote": "You can use spending controls to block merchant categories (for example, bakeries), countries, merchant IDs, or card presence, and to set spending limits per authorization or per month."
+        }
+      ]
+    },
     "productId": "stripe-issuing",
     "storyId": "single-use-scoped-cards"
   }

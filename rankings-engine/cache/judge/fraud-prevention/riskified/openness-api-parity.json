@@ -1,23 +1,43 @@
 {
-  "hash": "efce9d4fc3483dc6a8bef3950f2fc27ff373fc48fe01859a63a98b4e007a20fb",
+  "hash": "49e2425ddcdc888e9b9c09bb685be3a92e33b0ab7226df6300639adb3948f974",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Riskified's core fraud workflow runs entirely through a documented REST API: order review via /decide, /submit and advise, chargeback reporting, login decisions, and webhook notifications. SDKs are optional, and every endpoint can be called with plain HTTP. However, nothing in the evidence shows that the account and dashboard functions (reached via SSO) are exposed through the API, and onboarding and model calibration are run by the Riskified team rather than through any self-serve interface. Missing for 10: evidence of API coverage for dashboard and UI functions (order review and override, settings, reporting, user management), a self-serve API for onboarding and configuration, a published OpenAPI spec, and an explicit API/UI parity statement.",
+    "rationale": "Riskified documents a REST API covering its core operational flows: order decisioning (/decide, /submit, advise), chargeback reporting, login decisions and decision notifications, all reachable over plain HTTP. Nothing shows that UI functions such as account administration, SSO setup, the Integration Console or onboarding are exposed through the API, and Shopify onboarding relies on the Riskified team doing the heavy lifting. missing for 10: documented API–UI parity statement, API coverage of dashboard/admin/configuration functions (users, SSO, settings, Integration Console), a published OpenAPI spec (all probed paths 404), and independent corroboration.",
     "evidenceIds": [
       "riskified-docs-24",
       "riskified-docs-5",
       "riskified-docs-1",
-      "riskified-docs-2",
       "riskified-docs-16",
-      "riskified-docs-9",
       "riskified-docs-8",
-      "riskified-docs-30",
-      "riskified-docs-12",
+      "riskified-docs-9",
       "riskified-probe-2"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can do everything through the API that I can do in the UI",
+      "citations": [
+        {
+          "evidenceId": "riskified-docs-24",
+          "quote": "The Riskified API is a REST-based API that supports direct integration using standard HTTP requests."
+        },
+        {
+          "evidenceId": "riskified-docs-5",
+          "quote": "SDK usage is optional, and all API endpoints can also be accessed directly using HTTP requests."
+        },
+        {
+          "evidenceId": "riskified-docs-1",
+          "quote": "Riskified's decision is returned synchronously"
+        },
+        {
+          "evidenceId": "riskified-docs-16",
+          "quote": "Notifies Riskified that a chargeback has been submitted for a specific order."
+        }
+      ]
+    },
     "productId": "riskified",
     "storyId": "openness-api-parity"
   }

@@ -1,17 +1,36 @@
 {
-  "hash": "5dc97f48a11fa533fd3150cc58281160dea443324eb4ee56536be32b206c4177",
+  "hash": "a59719b3095796e0de82c34603e58428a5cc76253ffb36a8e933576b558f42cd",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Adyen documents issuing a virtual card through the API by creating a paymentInstrument resource, though an account holder and balance account must be created first, so it is not a single call. Cardholders can see PAN, CVC and expiry through an in-app iOS SDK, which is not the same as the developer receiving them in the API response. Missing for 10: a one-call issuance flow, PAN/CVV/expiry returned programmatically at issuance (only a cardholder-facing reveal SDK is documented), and any evidence of self-serve sandbox-to-live activation without a sales cycle.",
+    "rationale": "Adyen documents issuing a virtual card through the API by creating a paymentInstrument resource. This requires an account holder and balance account to exist first. Card details (PAN, CVC, expiry) can be revealed to cardholders through an iOS SDK, but there is no evidence they are returned programmatically to the developer at issuance. Missing for 10: evidence that PAN/CVV/expiry are available via API the moment the card is issued, a documented sandbox-to-live path without a sales cycle, a true single-call flow (prerequisite resources are required), and independent hands-on corroboration.",
     "evidenceIds": [
       "adyen-issuing-docs-15",
       "adyen-issuing-docs-29",
       "adyen-issuing-docs-33",
       "adyen-issuing-docs-1"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can create a virtual card through the API in one call — PAN, CVV, and expiry available programmatically the moment it's issued — and go from sandbox to a live card without a sales cycle",
+      "citations": [
+        {
+          "evidenceId": "adyen-issuing-docs-15",
+          "quote": "To issue a card, create a **paymentInstrument** resource. In the request, specify whether the card is: **Virtual**"
+        },
+        {
+          "evidenceId": "adyen-issuing-docs-29",
+          "quote": "After you create an account holder and a balance account, you can start issuing cards. Cards can either be virtual or physical."
+        },
+        {
+          "evidenceId": "adyen-issuing-docs-33",
+          "quote": "Allow your cardholders to see their card verification code (CVC), primary account number (PAN), and expiration date."
+        }
+      ]
+    },
     "productId": "adyen-issuing",
     "storyId": "virtual-card-creation"
   }

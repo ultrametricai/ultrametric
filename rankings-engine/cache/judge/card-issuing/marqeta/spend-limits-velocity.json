@@ -1,17 +1,35 @@
 {
-  "hash": "8a524602891041616f080c75a13cdd2c6786e99bee0b890d791e17975464f8d9",
+  "hash": "8feb9aa0bf10e2808a749f301db055d2f21e1017a48128ca76d23817c9549269",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Marqeta's Core API documents velocity controls that the platform enforces. They limit both how much users can spend and how many transactions they can make in a given span of time, and when several controls apply to one user, every limit is enforced. This covers per-cardholder amount caps and transaction-count velocity rules without custom code. Missing for 10: explicit evidence of per-card (vs per-user) scoping, documentation naming the specific daily/monthly/all-time windows, and independent or hands-on corroboration.",
+    "rationale": "Marqeta documents platform-side velocity controls that cap both spend amount and transaction count per user over a time span. When several controls apply, the platform blocks spending past any of them, so the core of the story is native and not left to the integrator's code. missing for 10: explicit per-card (vs. per-user) scoping of velocity controls, documented window options (daily, monthly, all-time), and independent or hands-on corroboration of enforcement.",
     "evidenceIds": [
       "marqeta-docs-5",
       "marqeta-docs-26",
-      "marqeta-docs-13",
-      "marqeta-docs-15"
+      "marqeta-docs-13"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an ops user, I can set spend limits per card and per cardholder — amount caps over daily, monthly, or all-time windows, and transaction-count velocity rules — enforced by the platform, not my code",
+      "citations": [
+        {
+          "evidenceId": "marqeta-docs-26",
+          "quote": "You can configure velocity controls to limit how much users can spend and the number of transactions they can make in a given span of time."
+        },
+        {
+          "evidenceId": "marqeta-docs-5",
+          "quote": "If multiple velocity controls apply to the same user, the user cannot exceed any of the defined spending limits."
+        },
+        {
+          "evidenceId": "marqeta-docs-13",
+          "quote": "Spend controls: Set customizable velocity limits, spending caps, and merchant restrictions."
+        }
+      ]
+    },
     "productId": "marqeta",
     "storyId": "spend-limits-velocity"
   }

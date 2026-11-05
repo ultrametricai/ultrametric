@@ -1,21 +1,47 @@
 {
-  "hash": "2e8616deae2bcf14a72c824d2e37673b6f6f2b8171ab09cdf2e3e4a73caa2ed1",
+  "hash": "b72f124a51395dabe490d3eef4c3b54726d054d69933f68ca64a8d6fa93f5e23",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "OpenRouter documents a `models` parameter that takes model IDs in priority order. If the first model errors, or its providers are down, rate-limited or moderation-refused, it automatically tries the next one. Provider-level fallback is on by default through load balancing across top providers, and the `provider` request object lets you customize routing. A community user independently confirms that fallback works by default without custom wrappers. Missing for 10: detailed documentation of provider-level fallback configuration options (e.g. explicit provider ordering or disabling fallbacks), and hands-on evidence of failover behavior during real outages.",
+    "rationale": "OpenRouter documents configurable model fallback: the `models` parameter takes an array of model IDs in priority order, and if the first model errors, OpenRouter automatically tries the next. It also falls back across providers by default, load-balancing to maximize uptime, and a community user confirms that fallback works by default without custom wrappers. Missing for 10: explicit documentation of the per-request provider-level fallback settings (the `provider` object is described only as customizing routing), and hands-on reports of failover behavior under real outages.",
     "evidenceIds": [
-      "openrouter-docs-3",
       "openrouter-docs-19",
+      "openrouter-docs-38",
+      "openrouter-docs-17",
       "openrouter-docs-4",
       "openrouter-docs-21",
-      "openrouter-docs-17",
       "openrouter-docs-44",
-      "openrouter-docs-36",
       "openrouter-comm-2"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a platform engineer, I can configure automatic fallback to another model or provider when one fails",
+      "citations": [
+        {
+          "evidenceId": "openrouter-docs-19",
+          "quote": "Provide an array of model IDs in priority order. If the first model returns an error, OpenRouter will automatically try the next model in the list."
+        },
+        {
+          "evidenceId": "openrouter-docs-38",
+          "quote": "The `models` parameter lets you automatically try other models if the primary model's providers are down, rate-limited, or refuse to reply due to content moderation."
+        },
+        {
+          "evidenceId": "openrouter-docs-17",
+          "quote": "Fall back to other providers when one goes down."
+        },
+        {
+          "evidenceId": "openrouter-docs-21",
+          "quote": "You can customize how your requests are routed using the `provider` object in the request body"
+        },
+        {
+          "evidenceId": "openrouter-comm-2",
+          "quote": "They also support fallback by default so you don't have to write wrappers."
+        }
+      ]
+    },
     "productId": "openrouter",
     "storyId": "automatic-fallbacks"
   }

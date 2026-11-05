@@ -1,18 +1,37 @@
 {
-  "hash": "caace9c7017d4300115ff98697c33b2dade1cd30bd710065670d981530617fbb",
+  "hash": "18b349fe05a7a97aaaf541837fc1a6b884084d1a5761d847e606bdc6812c7e4b",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 8,
-    "confidence": "medium",
-    "rationale": "LiteLLM's proxy logging docs say it can send proxy input, output and exceptions to many destinations, including OpenTelemetry, DataDog, Langfuse, Langsmith, S3/GCS/Azure buckets and custom callbacks. A per-request call_id supports tracing, and message redaction can be configured while metadata is still tracked. Missing for 10: independent or hands-on corroboration that the exports work in practice, and detailed evidence on trace structure and span content beyond a list of supported destinations.",
+    "confidence": "high",
+    "rationale": "LiteLLM's proxy logging docs state it can log proxy input, output, and exceptions to many external sinks: OpenTelemetry, Langfuse, DataDog, S3/GCS/Azure buckets, SQS, Langsmith, and custom callbacks to your own API endpoints. Each request gets a call_id for tracking it across the system, and message content can be redacted while spend metadata is still tracked. missing for 10: independent or hands-on corroboration of the export pipeline, and detailed documentation of trace/span structure beyond the OpenTelemetry listing.",
     "evidenceIds": [
-      "litellm-docs-10",
       "litellm-docs-32",
+      "litellm-docs-10",
       "litellm-docs-11",
       "litellm-docs-12",
       "litellm-docs-34"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can export gateway logs and traces to my own observability stack",
+      "citations": [
+        {
+          "evidenceId": "litellm-docs-32",
+          "quote": "Log Proxy input, output, and exceptions using: Langfuse OpenTelemetry GCS, s3, Azure (Blob) Buckets AWS SQS Lunary MLflow Deepeval Custom Callbacks - Custom code and API endpoints Langsmith DataDog Azure Sentinel DynamoDB"
+        },
+        {
+          "evidenceId": "litellm-docs-11",
+          "quote": "LiteLLM generates a unique call_id for each request. This call_id can be used to track the request across the system."
+        },
+        {
+          "evidenceId": "litellm-docs-12",
+          "quote": "This will prevent the messages and responses from being logged to your logging provider, but request metadata - e.g. spend, will still be tracked."
+        }
+      ]
+    },
     "productId": "litellm",
     "storyId": "tracing-integrations"
   }

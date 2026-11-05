@@ -1,19 +1,37 @@
 {
-  "hash": "5c808f4549b3fdd7f0e72c52182f6337f59eeb1210360a75405d36caa0199d07",
+  "hash": "a2f1b537ea3b1d7354f11f656b638dacb135601d686050d95871ed9137a767c9",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Vast.ai documents overlay networks that let instances on different machines on the same physical LAN share a private virtual LAN, and has a multi-node torch/NCCL training guide. Provisioning is self-serve: sign up, add credit, then search for multi-GPU offers via the CLI or API, with no sales contact. There is no evidence of a fast interconnect such as InfiniBand or RDMA, multi-node is limited to machines on the same LAN, and community reports of bandwidth that differs from what is listed lower confidence. Missing for 10: documented high-speed interconnect specs (InfiniBand, RDMA, NVLink across nodes), a one-step cluster provisioning workflow, and independent hands-on confirmation of multi-node training performance.",
+    "rationale": "Vast.ai documents its own overlay-network feature for multi-node training with torch/NCCL, which gives instances on different machines a private virtual LAN. Self-serve signup with credit-card top-up means no sales cycle is needed. However, the overlay only works across machines on the same physical LAN, and nothing documents a high-speed interconnect such as InfiniBand or RDMA, or a one-step cluster provisioning flow. missing for 10: documented fast interconnect (InfiniBand/RoCE/NVLink across nodes) for multi-node, a first-class cluster provisioning workflow, independent hands-on corroboration of multi-node training performance.",
     "evidenceIds": [
       "vast-ai-docs-12",
       "vast-ai-docs-18",
       "vast-ai-docs-42",
-      "vast-ai-docs-2",
-      "vast-ai-gh-1",
-      "vast-ai-comm-6"
+      "vast-ai-docs-53",
+      "vast-ai-gh-1"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an ML engineer, I can provision a multi-node GPU cluster with fast interconnect for distributed training without a sales cycle",
+      "citations": [
+        {
+          "evidenceId": "vast-ai-docs-12",
+          "quote": "Vast now supports creating *overlay* networks for instances, allowing client instances on different machines on the same physical LAN to share a private, virtual LAN"
+        },
+        {
+          "evidenceId": "vast-ai-docs-42",
+          "quote": "Create an account on vast.ai. Verify your email address. ... Go to Billing → Add Credit and top up"
+        },
+        {
+          "evidenceId": "vast-ai-gh-1",
+          "quote": "vast.search_offers(query='gpu_name=RTX_4090 num_gpus>=4')"
+        }
+      ]
+    },
     "productId": "vast-ai",
     "storyId": "multi-node-clusters"
   }

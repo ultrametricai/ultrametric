@@ -1,16 +1,35 @@
 {
-  "hash": "fb7e64d0b979ad4725ff57d273224997d382651c61791c805f6e45a93befb251",
+  "hash": "607a9a53a8ceaf33ff8540b9c7d639b1aac18422a0f4163bf36e36dd5cfa1713",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "A live probe found llms.txt returning HTTP 200 at developer.konghq.com, and it explicitly covers Kong AI Gateway documentation. The cited doc pages are themselves served as markdown (.md URLs such as ai-gateway.md and ai-gateway/mcp.md), giving agents clean, agent-readable docs. The 404 probe hit a malformed path (/ai-gateway/.md), not the real .md pages, so it does not contradict this. Missing for 10: independent or hands-on corroboration of agents actually consuming these docs, and evidence of an llms-full.txt or similar full-content bundle.",
+    "rationale": "A hands-on probe found a live llms.txt (HTTP 200) at developer.konghq.com that explicitly covers Kong AI Gateway documentation. The docs are also served as markdown pages (e.g., ai-gateway.md, ai-providers.md), which gives agents machine-friendly docs to point at. The 404 on the malformed /ai-gateway/.md path does not contradict this, since the properly formed .md URLs are the cited sources. Missing for 10: independent or community corroboration of agents actually consuming these docs, and no evidence of how deep or complete the llms.txt index is.",
     "evidenceIds": [
       "kong-ai-gateway-probe-1",
       "kong-ai-gateway-docs-2",
-      "kong-ai-gateway-docs-36"
+      "kong-ai-gateway-docs-1"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can point an agent at llms.txt or agent-oriented docs",
+      "citations": [
+        {
+          "evidenceId": "kong-ai-gateway-probe-1",
+          "quote": "PROBE llms.txt: HTTP 200 at https://developer.konghq.com/llms.txt # developer.konghq.com"
+        },
+        {
+          "evidenceId": "kong-ai-gateway-probe-1",
+          "quote": "Kong's developer documentation for Kong Gateway, Kong Konnect, Kong AI Gateway, Kong Mesh, and"
+        },
+        {
+          "evidenceId": "kong-ai-gateway-docs-2",
+          "quote": "You can use the quickstart script to get a demo instance of AI Gateway running almost instantly."
+        }
+      ]
+    },
     "productId": "kong-ai-gateway",
     "storyId": "agentic-agent-docs"
   }

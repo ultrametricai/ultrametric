@@ -1,15 +1,30 @@
 {
-  "hash": "901ea258e4c3f44646cfd2ae93fd3c463f6d47b35a04eac2d4a9277f80e1d4cf",
+  "hash": "bbca5667b45c0b7443db5d898259bcba06fa8c62af5277cda40fb0d1056397c2",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Lium's docs describe a first-party Volume feature, \"storage that outlives your pods,\" which attaches to a pod at /mnt. That matches the core of the story: datasets and checkpoints persisting beyond a single GPU rental. Separately, pod-local volumes are backed up every 6 hours and kept 2 days, so they can be restored on another node. missing for 10: confirmation that volumes are network-attached and reattachable across nodes/regions, details on capacity/pricing/lifecycle, independent or hands-on corroboration.",
+    "rationale": "Lium documents Volumes as storage that outlives pods and can be attached to a pod, mounted at /mnt. That directly covers keeping datasets and checkpoints beyond a single GPU rental. Separately, local-volume backups every 6 hours with 2-day retention can be restored on another node. missing for 10: explicit confirmation that volumes are network-attached and reattachable across different nodes or regions, documented size and pricing limits, independent or hands-on corroboration.",
     "evidenceIds": [
       "lium-docs-18",
       "lium-docs-16"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can attach persistent network storage that survives instance teardown, so datasets and checkpoints outlive any single GPU rental",
+      "citations": [
+        {
+          "evidenceId": "lium-docs-18",
+          "quote": "A **Volume** is storage that outlives your pods. Attach one to a pod and it is mounted at **`/mnt`**."
+        },
+        {
+          "evidenceId": "lium-docs-16",
+          "quote": "the pod's local volume is backed up every 6 hours and kept 2 days, so you can restore it on another node"
+        }
+      ]
+    },
     "productId": "lium",
     "storyId": "persistent-network-storage"
   }

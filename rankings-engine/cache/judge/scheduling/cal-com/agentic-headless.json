@@ -1,20 +1,42 @@
 {
-  "hash": "5613ce956321ff47cf855fb6f12814d1505d807016fdee79bc11394560551c47",
+  "hash": "529caf6667014bd05134e47ab6c9d2f17349516220e0fae504bdf3d50cfaa438",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Cal.com can be driven without its UI. API v2 supports API-key authentication through the Authorization header, and keys are managed in settings. The docs tell agents that can execute commands on a machine to use an official Cal.com CLI rather than calling the API directly. Bookings, availability, event types, schedules and webhooks are all exposed for scripted automation. Missing for 10: CI-specific documentation or examples, any depth on the CLI's commands and non-interactive behavior, and independent or hands-on confirmation of headless/CI use.",
+    "rationale": "Cal.com documents non-interactive automation primitives of its own. API v2 accepts API-key Bearer auth, provides test-mode secret keys (prefix `cal_`) and publishes rate limits. It also has an official CLI for agents that run commands on a machine, which 'handles authentication, versioning, and common workflows automatically.' The CLI itself is described only in one passage, and nothing shows the product running in a CI pipeline. Missing for 10: CI-specific documentation (pipeline examples, non-interactive CLI flags, env-var auth), CLI install/command reference, independent hands-on corroboration.",
     "evidenceIds": [
+      "cal-com-docs-68",
       "cal-com-docs-45",
+      "cal-com-docs-61",
+      "cal-com-docs-63",
       "cal-com-docs-13",
-      "cal-com-docs-14",
-      "cal-com-docs-20",
-      "cal-com-docs-12",
-      "cal-com-docs-37",
-      "cal-com-docs-42"
+      "cal-com-docs-64"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
+      "citations": [
+        {
+          "evidenceId": "cal-com-docs-68",
+          "quote": "For agents that can execute commands on a machine, use the official Cal.com CLI instead of calling the API directly. The CLI handles authentication, versioning, and common workflows automatically."
+        },
+        {
+          "evidenceId": "cal-com-docs-61",
+          "quote": "Authentication to the API is performed via the Authorization header. For example, the request would go something like: 'Authorization': 'Bearer YOUR_API_KEY'"
+        },
+        {
+          "evidenceId": "cal-com-docs-63",
+          "quote": "Test mode secret keys have the prefix `cal_` and live mode secret keys have the prefix `cal_live_`."
+        },
+        {
+          "evidenceId": "cal-com-docs-64",
+          "quote": "API Key - 120 requests per minute."
+        }
+      ]
+    },
     "productId": "cal-com",
     "storyId": "agentic-headless"
   }

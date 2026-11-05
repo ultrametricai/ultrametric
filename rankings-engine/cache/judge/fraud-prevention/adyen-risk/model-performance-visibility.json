@@ -1,16 +1,30 @@
 {
-  "hash": "031dfa5de645780aed27722435aea602e987251914c4c1b86b9010cf4a3bea75",
+  "hash": "595f1a4be173daf402bf1b3388cfb881479a8f43f8cfa24bc6530ada09cf623f",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Adyen documents risk experiments that A/B test two risk profiles to see which performs better, and markets rule backtesting against historical data before go-live. Together these cover pre-deployment evaluation of rules, but not explicit model metrics or true shadow mode. missing for 10: explicit precision/recall (or equivalent model-performance) metrics on the merchant's own traffic, shadow-mode trials that score without affecting decisions, evaluation of new ML models (not just rules or profiles), in-depth docs on experiment metrics, independent corroboration.",
+    "rationale": "Adyen documents its own ways to evaluate risk configurations before rollout: risk experiments that A/B test two risk profiles, and rule backtesting against historical data before going live. However, A/B tests let both profiles make real decisions, and backtesting is a historical replay; neither is a shadow-mode trial on live traffic. No precision or recall metrics for the model are evidenced. Missing for 10: precision/recall measurement on merchant traffic, true shadow-mode trials where new models or rules score live traffic without taking decisions, ML-model-level performance reporting, and independent corroboration.",
     "evidenceIds": [
       "adyen-risk-docs-14",
-      "adyen-risk-docs-19",
-      "adyen-risk-docs-5"
+      "adyen-risk-docs-19"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a finance lead, I can measure the model itself — precision and recall on my traffic, shadow-mode trials of new models or rules before they take over decisions",
+      "citations": [
+        {
+          "evidenceId": "adyen-risk-docs-14",
+          "quote": "Risk experiments let you A/B test two risk profiles against each other to determine which performs better."
+        },
+        {
+          "evidenceId": "adyen-risk-docs-19",
+          "quote": "Risk Rule Backtesting. Test and optimize risk rules against historical data before going live."
+        }
+      ]
+    },
     "productId": "adyen-risk",
     "storyId": "model-performance-visibility"
   }

@@ -1,17 +1,36 @@
 {
-  "hash": "518fedc08ec5ff5a84e817d9a035d6f8a6d145e10c828b28ff06d1c11fdf57f4",
+  "hash": "9f31151ec58a32a8f612ca9c087b518de34edc357b864c30d97ff4eeb824d33a",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Stripe Issuing's spending controls are its own declarative rules: they automatically decline authorizations by merchant category, country, merchant ID or card presence, and enforce per-authorization or monthly limits. Single-use agent cards are also automatically invalidated after use. Beyond those fixed actions, custom event-driven behavior requires developers to write their own logic behind the synchronous authorization webhook, which is a building block rather than a rules engine. Missing for 10: general-purpose rule definition across event types, configurable actions beyond decline/limit/invalidate, no-code or AI-native rule authoring, independent or hands-on corroboration.",
+    "rationale": "Stripe Issuing ships its own declarative spending controls. These rules block merchant categories, countries, merchant IDs or card presence and enforce per-authorization or monthly limits, so authorization events are declined automatically. Single-use agent cards are also invalidated automatically after use. However, the only automated action is approve/decline at authorization time. Anything broader requires the developer to build their own logic behind the synchronous authorization webhook, which is a building block rather than a rule engine. Missing for 10: a general event-to-action rule engine beyond authorization blocking, rules covering other event types (disputes, funding, card lifecycle), and independent or hands-on corroboration.",
     "evidenceIds": [
       "stripe-issuing-docs-5",
-      "stripe-issuing-docs-4",
       "stripe-issuing-docs-12",
+      "stripe-issuing-docs-4",
       "stripe-issuing-docs-22"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can define rules that trigger actions automatically on events",
+      "citations": [
+        {
+          "evidenceId": "stripe-issuing-docs-5",
+          "quote": "You can use spending controls to block merchant categories (for example, bakeries), countries, merchant IDs, or card presence, and to set spending limits per authorization or per month."
+        },
+        {
+          "evidenceId": "stripe-issuing-docs-12",
+          "quote": "Cards are automatically invalidated after use."
+        },
+        {
+          "evidenceId": "stripe-issuing-docs-22",
+          "quote": "with spend controls, real-time authorization decisioning, and full transaction visibility"
+        }
+      ]
+    },
     "productId": "stripe-issuing",
     "storyId": "automation-rules-engine"
   }

@@ -1,17 +1,25 @@
 {
-  "hash": "887103d7e7ef4af0425d698f03cbba54e14339268a0811fb1695d07bd3eb7869",
+  "hash": "eb0b2828e15d83113debba170229c6a3506c6c9bac9e4962241f4e909980f898",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "The docs claim you can define request retries alongside model fallbacks when an error occurs (docs-7), and fallbacks can fire on request errors or set timeouts (docs-20, docs-33, docs-8). However, retry is only a one-line overview mention; the detailed evidence covers fallback to another provider rather than configurable retries against the same provider. missing for 10: documented retry-policy configuration (retry count, backoff, which errors count as transient), detailed retry docs beyond the overview line, and independent or hands-on confirmation.",
+    "rationale": "Cloudflare's overview docs say AI Gateway lets users define request retries in case of an error, so the product itself claims the capability. The pack documents no retry-policy configuration, such as attempt counts, backoff, or which transient error codes trigger a retry. The well-documented fallback feature (switching providers on errors or timeouts) is a different capability and does not count as retry policy. Missing for 10: documented retry configuration parameters (max attempts, backoff/delay), selection of retryable error classes, and independent or hands-on corroboration that retries work.",
     "evidenceIds": [
-      "cloudflare-ai-gateway-docs-7",
-      "cloudflare-ai-gateway-docs-20",
-      "cloudflare-ai-gateway-docs-33",
-      "cloudflare-ai-gateway-docs-8"
+      "cloudflare-ai-gateway-docs-7"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform engineer, I can set automatic retry policies for transient provider errors",
+      "citations": [
+        {
+          "evidenceId": "cloudflare-ai-gateway-docs-7",
+          "quote": "Improve resilience by defining request retry and model fallbacks in case of an error."
+        }
+      ]
+    },
     "productId": "cloudflare-ai-gateway",
     "storyId": "retry-policies"
   }

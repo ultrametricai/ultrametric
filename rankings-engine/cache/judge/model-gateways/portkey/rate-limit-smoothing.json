@@ -1,20 +1,41 @@
 {
-  "hash": "3608e6d5b5aed24d6b0a7e543df206e5ca26cc58a84b4e5c933b88eeb96dfe0c",
+  "hash": "2035ccbd367e1edd26e70e954f64a37fba9e7c745585ac35bee53a2b4496d02a",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Portkey's load balancing spreads traffic across multiple provider targets so no single provider becomes a bottleneck. Retries use exponential backoff or honor the provider's retry-after headers, fallbacks can trigger on specific status codes such as 429, and admins can set per-minute, hourly, or daily request and token rate limits. Missing for 10: explicit request queuing, evidence that load balancing spreads load across multiple keys of the same provider specifically to avoid provider limits (the rate limits shown are Portkey-key governance controls), and independent or hands-on corroboration.",
+    "rationale": "Portkey documents load balancing that distributes traffic across multiple LLMs, retries that honor provider retry-after headers, and per-minute/hourly/daily rate limits on requests or tokens. Together these cover the spreading and throttling parts of the story, but there is no evidence of request queuing, and spreading is described across LLMs/providers rather than explicitly across multiple keys for one provider. Missing for 10: documented request queuing, explicit multi-key distribution for a single provider to absorb rate limits, independent or hands-on corroboration.",
     "evidenceIds": [
       "portkey-docs-7",
-      "portkey-docs-5",
       "portkey-docs-6",
-      "portkey-docs-21",
       "portkey-docs-38",
       "portkey-docs-13",
-      "portkey-docs-18"
+      "portkey-docs-5"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform engineer, I can smooth provider rate limits by spreading traffic across keys and queuing or throttling requests",
+      "citations": [
+        {
+          "evidenceId": "portkey-docs-7",
+          "quote": "Distribute traffic across multiple LLMs to prevent any single provider from becoming a bottleneck."
+        },
+        {
+          "evidenceId": "portkey-docs-6",
+          "quote": "Enable `use_retry_after_headers` to use the provider’s `retry-after-ms`, `x-ms-retry-after-ms`, or `retry-after` headers instead of exponential backoff."
+        },
+        {
+          "evidenceId": "portkey-docs-38",
+          "quote": "Set hourly, daily, or per minute rate limits on requests or tokens sent"
+        },
+        {
+          "evidenceId": "portkey-docs-13",
+          "quote": "Configure budget and rate limits on API keys to effectively manage AI spending and usage across your organization"
+        }
+      ]
+    },
     "productId": "portkey",
     "storyId": "rate-limit-smoothing"
   }

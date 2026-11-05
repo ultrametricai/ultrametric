@@ -1,17 +1,35 @@
 {
-  "hash": "004193d983e064dcafdf7bc1875274741a9de5a3572d788e7f38627d4dd477ba",
+  "hash": "b4f0fbfed39cf1fc6e42ce7726736cab08d2ea9099d6661ffb31f4f168eb0dba",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Kong documents a dedicated streaming capability. It states that models can stream words or tokens back to the client for real-time rendering, and that request streaming runs through the AI Model entity. This sits on top of a documented provider-agnostic API that hides provider-specific details from clients. Missing for 10: explicit evidence that streaming works across every supported provider (the docs say only \"most models\"), detail on how streaming formats are normalized across providers, and any independent or hands-on corroboration.",
+    "rationale": "Kong documents a dedicated streaming capability: requests stream word- or token-level output back to the client in real time, configured through the AI Model entity. The provider-agnostic API suggests this works across providers, but the docs only say 'most models' can stream and never confirm streaming for every provider. missing for 10: explicit per-provider streaming support matrix or statement that streaming works across all providers, protocol/format details (e.g. SSE normalization), independent or hands-on corroboration.",
     "evidenceIds": [
       "kong-ai-gateway-docs-16",
       "kong-ai-gateway-docs-32",
-      "kong-ai-gateway-docs-1",
-      "kong-ai-gateway-docs-29"
+      "kong-ai-gateway-docs-1"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can stream token-by-token responses through the gateway from any provider",
+      "citations": [
+        {
+          "evidenceId": "kong-ai-gateway-docs-16",
+          "quote": "most models can stream each word (or sets of words and tokens) back to the client. This allows the chat response to be rendered in real time."
+        },
+        {
+          "evidenceId": "kong-ai-gateway-docs-32",
+          "quote": "Request streaming in AI Gateway uses the AI Model entity."
+        },
+        {
+          "evidenceId": "kong-ai-gateway-docs-1",
+          "quote": "The core of AI Gateway is the ability to serve AI Models from various AI Model Providers via a provider-agnostic API."
+        }
+      ]
+    },
     "productId": "kong-ai-gateway",
     "storyId": "streaming-passthrough"
   }

@@ -1,20 +1,46 @@
 {
-  "hash": "7c0042970c5d63c2461264e84438d5a60f74870f2a81c1b5633706cbc7a25495",
+  "hash": "6ac8f28510048c44722e9a0332c2815b90d49785f4649d1002a5aef11f59c830",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Forter's core Order and Order Status APIs take order and payment-authorization data straight from the merchant, which implies a processor-neutral design. Docs show integrations across several surfaces: a Shopify quickstart, a Salesforce Commerce Cloud-style extension (Merchant Tools > Site Preferences), and a Stripe dispute webhook framed as one way to \"integrate your PSP\" via a generic processorTransactionId. Tokenization also preserves \"control over payment processing.\" However, the evidence never explicitly states multi-PSP or gateway-agnostic support, and Stripe is the only PSP shown. Missing for 10: explicit documentation of support for multiple PSPs/gateways (e.g., Adyen, Braintree, Checkout.com), a list of supported processors or orchestration routing, and independent corroboration of cross-stack deployments.",
+    "rationale": "Forter's integration is through its own order API (an order decision is returned at checkout, and a generic processorTransactionId field is used). The docs show several integration surfaces: a Stripe dispute webhook, a Shopify quickstart, a commerce-platform extension, and tokenization that lets merchants keep 'control over payment processing'. Together these suggest it is not tied to one processor, but nothing explicitly documents broad multi-PSP or gateway coverage. Missing for 10: an explicit processor-agnostic or multi-PSP statement, a list of supported gateways beyond Stripe, independent or hands-on corroboration of multi-processor deployments.",
     "evidenceIds": [
       "forter-docs-1",
-      "forter-docs-2",
       "forter-docs-17",
       "forter-docs-35",
+      "forter-docs-27",
       "forter-docs-29",
-      "forter-docs-34",
-      "forter-docs-27"
+      "forter-docs-34"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can use the product across whatever payment stack I run — multiple PSPs, gateways, and platforms — rather than being locked to one processor's rails",
+      "citations": [
+        {
+          "evidenceId": "forter-docs-1",
+          "quote": "Send order information at checkout to receive a fraud or abuse decision."
+        },
+        {
+          "evidenceId": "forter-docs-35",
+          "quote": "To enable Forter to process your chargebacks, please integrate your PSP with Forter by following these steps."
+        },
+        {
+          "evidenceId": "forter-docs-27",
+          "quote": "you can tokenize and store payment card data, minimizing PCI compliance scope while maintaining control over payment processing."
+        },
+        {
+          "evidenceId": "forter-docs-29",
+          "quote": "You provide: Shopify Admin API Access Token"
+        },
+        {
+          "evidenceId": "forter-docs-17",
+          "quote": "Map Stripe's PaymentIntent ID (the value that starts with pi_) to the processorTransactionId field"
+        }
+      ]
+    },
     "productId": "forter",
     "storyId": "psp-agnostic-coverage"
   }

@@ -1,20 +1,42 @@
 {
-  "hash": "1ba078e12325260b8f8dc216e286a83d789fd5acbdf73efeed7a233f240af6bf",
+  "hash": "80ac6c1af714f328870d2ac53c699c6da8df90322af4124bac83f48e1a267cb4",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Adyen documents its own cardholder-credential capabilities. An in-app PIN change flow is offered through its iOS SDK. Cards can be enrolled in 3D Secure through one-time password or out-of-band authentication, the latter via the Authentication SDK routing challenges to the cardholder's device. Card detail reveal is also documented. However, the evidence shows only PIN 'change', not initial PIN set or a forgotten-PIN reset flow. It also does not show that 3DS enrollment is done through an explicit API call rather than other configuration. missing for 10: documented PIN set/reset (not just change) flows, explicit API endpoints for 3DS enrollment, region-specific 3DS requirement handling, non-iOS PIN coverage, independent hands-on corroboration.",
+    "rationale": "Adyen documents its own cardholder credential flows: an iOS SDK lets cardholders change their PIN in-app, and Adyen-issued cards can be enrolled in 3D Secure via one-time password or out-of-band authentication. The evidence does not show a server-side API for setting the initial PIN or resetting a forgotten one, and does not explicitly show 3DS enrollment is fully API-driven rather than configured through Adyen. Missing for 10: documented PIN set-at-issuance and PIN reset API flows, explicit API endpoints for 3DS enrollment, region-specific 3DS handling, independent or hands-on corroboration.",
     "evidenceIds": [
       "adyen-issuing-docs-34",
       "adyen-issuing-docs-9",
       "adyen-issuing-docs-26",
       "adyen-issuing-docs-31",
-      "adyen-issuing-docs-27",
       "adyen-issuing-docs-32",
-      "adyen-issuing-docs-33"
+      "adyen-issuing-docs-27"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, cardholder credentials are manageable through the API — PIN set and reset flows, 3DS enrollment for online use where the region requires it — without support tickets",
+      "citations": [
+        {
+          "evidenceId": "adyen-issuing-docs-34",
+          "quote": "Allow your cardholders change their personal identification number (PIN) within your app."
+        },
+        {
+          "evidenceId": "adyen-issuing-docs-9",
+          "quote": "There are two ways to enroll your Adyen-issued cards in 3D Secure: One-time password authentication ... Out-of-band authentication"
+        },
+        {
+          "evidenceId": "adyen-issuing-docs-26",
+          "quote": "Learn how to enroll cards in 3D Secure to authenticate the cardholder during online transactions."
+        },
+        {
+          "evidenceId": "adyen-issuing-docs-32",
+          "quote": "With OOB authentication, you can direct the transaction authentication requests to your application on an eligible cardholder's device, such as a mobile phone."
+        }
+      ]
+    },
     "productId": "adyen-issuing",
     "storyId": "pin-3ds-management"
   }

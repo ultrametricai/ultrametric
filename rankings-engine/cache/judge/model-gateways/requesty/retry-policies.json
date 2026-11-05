@@ -1,15 +1,30 @@
 {
-  "hash": "a05cd4e3147f647076352d07774f4674af7d560ef03787780f5f14f20b5b4db0",
+  "hash": "42a2e1d8a93515b74199b25001d333f372d3cb14ff65962c03a75366c2d01e02",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Requesty's Fallback Policies automatically retry a failed request when the primary model hits a timeout, rate limit or error. However, the docs describe this only as immediately moving to the next model in a configured chain, not as configurable retries against the same provider. Missing for 10: same-model/provider retry configuration, retry count and backoff settings, per-error-class retry rules, and independent or hands-on corroboration.",
+    "rationale": "Requesty's Fallback Policies are a documented, first-party mechanism that automatically retries a failed request (timeout, rate limit, error) by moving to the next model in a configured chain. That covers automatic handling of transient provider errors. However, the evidence only describes failover to different models. Nothing shows configurable retries against the same provider. Missing for 10: same-model/same-provider retry configuration, retry count and backoff settings, per-error-class retry rules, and independent or hands-on corroboration.",
     "evidenceIds": [
       "requesty-docs-3",
       "requesty-docs-4"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform engineer, I can set automatic retry policies for transient provider errors",
+      "citations": [
+        {
+          "evidenceId": "requesty-docs-3",
+          "quote": "Fallback Policies automatically retry your requests with different models if one fails, ensuring your application stays reliable even when individual providers have issues."
+        },
+        {
+          "evidenceId": "requesty-docs-4",
+          "quote": "If it fails (timeout, rate limit, error, etc.), the router immediately tries the next model in the chain."
+        }
+      ]
+    },
     "productId": "requesty",
     "storyId": "retry-policies"
   }

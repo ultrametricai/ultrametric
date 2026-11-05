@@ -1,20 +1,36 @@
 {
-  "hash": "4ed1d5359121952333077493a5e6e3a571f471fd313b6ac8b2e0de17638f434b",
+  "hash": "fae9ae940d5e1f7e958e8d1b0599c12cb49756be188f46a236fde3649260dad2",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "SavvyCal documents a REST API with OAuth 2.0 and personal access token auth, a 'meetings API' reference page, and webhooks, so programmatic access for an agent exists in principle. Nothing in the evidence shows endpoints for checking availability, creating bookings, rescheduling, or cancelling, and there is no MCP server. Probes also found no llms.txt and no public OpenAPI spec. Missing for 10: documented availability-query, booking, reschedule and cancel endpoints; an official MCP server; a machine-readable OpenAPI spec; hands-on corroboration of an end-to-end agent flow.",
+    "quality": 6,
+    "confidence": "medium",
+    "rationale": "SavvyCal's REST API documents three of the four steps: an available-slots endpoint, a create-event endpoint, and a cancel-event endpoint. Its official MCP integration lets agents find open times and book meetings from a chat. Neither the API nor the MCP evidence documents a reschedule operation, so an agent would have to cancel and rebook, which is a workaround rather than the capability. missing for 10: a documented reschedule endpoint or MCP tool, MCP coverage of cancel/reschedule, an OpenAPI spec (the probe returned 404), and independent hands-on corroboration of agent flows.",
     "evidenceIds": [
-      "savvycal-docs-1",
-      "savvycal-docs-52",
-      "savvycal-docs-61",
-      "savvycal-docs-50",
-      "savvycal-docs-3",
-      "savvycal-probe-1",
-      "savvycal-probe-2"
+      "savvycal-docs-70",
+      "savvycal-docs-68",
+      "savvycal-docs-65",
+      "savvycal-docs-61"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, my agent can check availability, book, reschedule, and cancel meetings end to end through the API or MCP — no dashboard needed",
+      "citations": [
+        {
+          "evidenceId": "savvycal-docs-70",
+          "quote": "Get available time slots GET /v1/links/{link_id}/slots"
+        },
+        {
+          "evidenceId": "savvycal-docs-68",
+          "quote": "Cancel event POST /v1/events/{event_id}/cancel ... Create event POST /v1/links/{link_id}/events"
+        },
+        {
+          "evidenceId": "savvycal-docs-65",
+          "quote": "Connect Claude, ChatGPT, Cursor, VS Code, or another MCP client to check your calendar, find open times, book meetings, and manage your links from a chat."
+        }
+      ]
+    },
     "productId": "savvycal",
     "storyId": "agent-books-meeting"
   }

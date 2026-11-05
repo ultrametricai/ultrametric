@@ -1,18 +1,40 @@
 {
-  "hash": "50653ebb91b53cd9f277d67076bd22c0925f3767898ac5e39c8c353290dff644",
+  "hash": "88713ef3db172a47a403007d8aac22837caa42fe0d8b3ec5100ad5c0687a16b0",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "LiteLLM's Router load-balances traffic across multiple deployments, such as Azure/OpenAI. It also offers request prioritization (queueing), cooldowns, retries with fixed and exponential backoff, and per-team rpm_limit throttling. Together these cover the core of smoothing provider rate limits. Missing for 10: explicit docs on spreading load across multiple API keys for the same provider and on rate-limit-aware (TPM/RPM-based) routing, detail on how the queue behaves, and independent hands-on corroboration.",
+    "rationale": "LiteLLM's Router documents load-balancing across multiple deployments, request prioritization via queueing, and cooldowns and retries with exponential backoff. Teams can also be given rpm_limit throttles, which together cover the core of smoothing provider rate limits. Evidence is thin on spreading traffic across multiple API keys for the same provider and on provider-aware throttling. missing for 10: explicit documentation of distributing traffic across multiple API keys, rate-limit-aware (tpm/rpm per deployment) routing details, depth on queue behavior and configuration, independent or hands-on corroboration.",
     "evidenceIds": [
       "litellm-docs-3",
       "litellm-docs-29",
       "litellm-docs-30",
-      "litellm-docs-26",
-      "litellm-docs-28"
+      "litellm-docs-26"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform engineer, I can smooth provider rate limits by spreading traffic across keys and queuing or throttling requests",
+      "citations": [
+        {
+          "evidenceId": "litellm-docs-3",
+          "quote": "Load-balance across multiple deployments (e.g. Azure/OpenAI)"
+        },
+        {
+          "evidenceId": "litellm-docs-29",
+          "quote": "Prioritizing important requests to ensure they don't fail (i.e. Queueing)"
+        },
+        {
+          "evidenceId": "litellm-docs-30",
+          "quote": "Basic reliability logic - cooldowns, fallbacks, timeouts and retries (fixed + exponential backoff) across multiple deployments/providers."
+        },
+        {
+          "evidenceId": "litellm-docs-26",
+          "quote": "\"rpm_limit\": 99"
+        }
+      ]
+    },
     "productId": "litellm",
     "storyId": "rate-limit-smoothing"
   }

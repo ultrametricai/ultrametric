@@ -1,18 +1,35 @@
 {
-  "hash": "b59a03414085a01a060e4b2a05b7aa3cb96733d6614b368198182517847076f7",
+  "hash": "644aa2a7d731987a78f1e5963e8712c94d21042bd131a63cff2aa19b34e74892",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 8,
-    "confidence": "medium",
-    "rationale": "LiteLLM's docs describe built-in retry logic in the Router, configurable via num_retries. The docs also list timeouts, cooldowns and retries with fixed or exponential backoff across deployments and providers, with automatic fallback to another model group once retries are used up. Missing for 10: documentation of per-error-type retry policies (which transient errors trigger retries), and independent or hands-on confirmation that retries behave as described.",
+    "confidence": "high",
+    "rationale": "LiteLLM's Router documents built-in retries across deployments and providers, with fixed and exponential backoff, a configurable num_retries setting, and cooldowns and timeouts. Calls that still fail after retries fall back automatically to another model group. Missing for 10: documentation of per-error-type retry policies (which transient errors trigger retries, e.g. rate limits vs timeouts), and independent or hands-on corroboration of retry behavior.",
     "evidenceIds": [
-      "litellm-docs-28",
       "litellm-docs-30",
-      "litellm-docs-4",
-      "litellm-docs-21",
-      "litellm-docs-22"
+      "litellm-docs-28",
+      "litellm-docs-4"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a platform engineer, I can set automatic retry policies for transient provider errors",
+      "citations": [
+        {
+          "evidenceId": "litellm-docs-30",
+          "quote": "Basic reliability logic - cooldowns, fallbacks, timeouts and retries (fixed + exponential backoff) across multiple deployments/providers."
+        },
+        {
+          "evidenceId": "litellm-docs-28",
+          "quote": "Built-in retry / fallback logic across multiple deployments via the [Router](/docs/routing)"
+        },
+        {
+          "evidenceId": "litellm-docs-4",
+          "quote": "If a call fails after num_retries, LiteLLM falls back to another model group"
+        }
+      ]
+    },
     "productId": "litellm",
     "storyId": "retry-policies"
   }

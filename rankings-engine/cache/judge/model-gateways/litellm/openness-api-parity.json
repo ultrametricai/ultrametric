@@ -1,23 +1,39 @@
 {
-  "hash": "15dca81f60479bd6f0968a45a1020075b8b08d37f40f6073dec76e1c61a602ad",
+  "hash": "5ecdd80deb0069066d1635cb96d9d2bc5bbc317c21f6092371633f7071479a77",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "low",
-    "rationale": "LiteLLM's proxy ships an admin UI, and the docs show many admin functions also exposed programmatically: virtual key creation, team creation with fields like team_alias and rpm_limit, budgets, spend tracking by key, user, team and tag, and MCP tool listing and calls over REST endpoints. Nothing in the pack states that the API matches the UI, though, and some workflows are documented only through the UI (adding MCP servers). The probes also found no published OpenAPI spec on the docs domain. Missing for 10: an explicit API/UI parity statement, API docs for UI-documented flows such as MCP server registration, a discoverable OpenAPI spec, and independent hands-on confirmation of parity.",
+    "rationale": "LiteLLM documents programmatic management for several functions the admin UI also covers: creating virtual keys, creating teams with JSON payloads including rate limits, configuring budgets, and calling MCP tools over REST with curl. However, nothing in the evidence claims or shows full UI/API parity. MCP server registration is documented only as a UI flow, and the OpenAPI probes returned 404 at all docs paths. missing for 10: an explicit API-parity statement, API equivalents for UI-only flows such as adding MCP servers, a published OpenAPI spec for the management API, and independent hands-on confirmation of parity.",
     "evidenceIds": [
       "litellm-docs-5",
-      "litellm-docs-6",
       "litellm-docs-7",
-      "litellm-docs-8",
-      "litellm-docs-24",
-      "litellm-docs-25",
       "litellm-docs-26",
-      "litellm-docs-27",
+      "litellm-docs-25",
       "litellm-docs-33",
+      "litellm-docs-27",
       "litellm-probe-3"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can do everything through the API that I can do in the UI",
+      "citations": [
+        {
+          "evidenceId": "litellm-docs-7",
+          "quote": "Create virtual keys without team_id for individual spending limits"
+        },
+        {
+          "evidenceId": "litellm-docs-26",
+          "quote": "\"team_alias\": \"my-new-team_4\", ... \"rpm_limit\": 99"
+        },
+        {
+          "evidenceId": "litellm-docs-33",
+          "quote": "call tools with curl without an LLM"
+        }
+      ]
+    },
     "productId": "litellm",
     "storyId": "openness-api-parity"
   }

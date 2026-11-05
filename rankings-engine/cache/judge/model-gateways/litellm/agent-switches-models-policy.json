@@ -1,22 +1,47 @@
 {
-  "hash": "2dafe89e9b7d2bfde0c2ab7b101777868574d946adc751a48a1c93f93e89e95f",
+  "hash": "4c7169cfa49a21130c3c1b16fb174b9d6cb43e1a4b5ce3a126164262d9347791",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "LiteLLM's proxy and Router document gateway-level rules that switch models when availability fails: fallbacks across model groups after retries, automatic failover to healthy backups, cooldowns and timeouts, and load-balancing across deployments. Content-policy fallbacks also reroute based on error type, and the Show HN launch corroborates reliable model switching as the core purpose. Missing for 10: explicit cost-based routing rules (budgets and spend tracking exist, but nothing shown that routes by cost), capability-based routing beyond the marketing line about sending each request to the right model, and independent hands-on corroboration of mid-task switching.",
+    "rationale": "LiteLLM's proxy/router documents availability-driven policy routing. It retries, then falls back to another model group, so a failing model fails over to a healthy backup. It also offers content-policy fallbacks, load-balancing across deployments, and cooldowns and timeouts. Cost- or capability-based routing rules are only implied by a marketing line about sending each request to 'the model that should handle it'. Missing for 10: documented cost-based routing rules, documented capability-based routing rules, and independent hands-on corroboration of mid-task switching.",
     "evidenceIds": [
-      "litellm-docs-3",
       "litellm-docs-4",
-      "litellm-docs-18",
-      "litellm-docs-21",
       "litellm-docs-22",
-      "litellm-docs-28",
       "litellm-docs-30",
+      "litellm-docs-18",
+      "litellm-docs-3",
       "litellm-docs-15",
       "litellm-comm-12"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, my agent can switch models mid-task by policy — cost, capability, or availability — through gateway routing rules",
+      "citations": [
+        {
+          "evidenceId": "litellm-docs-4",
+          "quote": "If a call fails after num_retries, LiteLLM falls back to another model group, so a failing model or provider automatically fails over to a healthy backup."
+        },
+        {
+          "evidenceId": "litellm-docs-22",
+          "quote": "litellm proxy will loop through all the model_groups specified in `fallbacks=[\"gpt-3.5-turbo\"]`"
+        },
+        {
+          "evidenceId": "litellm-docs-30",
+          "quote": "Basic reliability logic - cooldowns, fallbacks, timeouts and retries (fixed + exponential backoff) across multiple deployments/providers."
+        },
+        {
+          "evidenceId": "litellm-docs-18",
+          "quote": "content_policy_fallbacks: For litellm.ContentPolicyViolationError - LiteLLM maps content policy violation errors across providers"
+        },
+        {
+          "evidenceId": "litellm-docs-15",
+          "quote": "send each request to the model that should handle it"
+        }
+      ]
+    },
     "productId": "litellm",
     "storyId": "agent-switches-models-policy"
   }

@@ -1,16 +1,30 @@
 {
-  "hash": "a90102ab8fd81422ebf5d6b00d7dded90fb87e65eeba24dacf491b970bbd6f2f",
+  "hash": "ef5e5a54bd47bfe19a5d2f6081c37a0bf9304fa099d049a35cd8940df4cf59df",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 4,
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "Lium has built-in termination rules: you set an hours limit, end time, or USD spend cap and the pod is deleted when it is reached (also `--ttl` in the CLI), and per-key budgets are enforced server-side. These are fixed conditions with a single action, not a general user-defined event→action rule system. The availability WebSocket is only an event feed that users must script against themselves, so it earns no credit. Missing for 10: user-definable custom rules/triggers, a choice of actions beyond pod deletion, event-driven automation on events such as GPU availability or job completion, webhooks or outbound callbacks, and independent corroboration.",
+    "rationale": "Lium's own pod-creation settings let a user set a single kind of rule: a time limit, end time or USD spend cap, after which the pod is deleted automatically (also exposed as `--ttl` on the CLI). Beyond this fixed auto-termination, there is no general rules engine for linking user-chosen events to user-chosen actions. The availability WebSocket is only a building block a developer would have to wire up, so it earns no credit. Missing for 10: general user-definable event→action rules, triggers beyond time and spend thresholds, configurable actions other than pod deletion, independent corroboration.",
     "evidenceIds": [
       "lium-docs-15",
-      "lium-docs-1",
-      "lium-docs-7"
+      "lium-docs-1"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can define rules that trigger actions automatically on events",
+      "citations": [
+        {
+          "evidenceId": "lium-docs-15",
+          "quote": "Pick one, and the pod is deleted when it is reached: Hours... End time... Spend cap: a budget in USD"
+        },
+        {
+          "evidenceId": "lium-docs-1",
+          "quote": "lium up --gpu H100 --ttl 1h# auto-removes after 1h"
+        }
+      ]
+    },
     "productId": "lium",
     "storyId": "automation-rules-engine"
   }
