@@ -4,15 +4,17 @@ import json
 import runpy
 import unittest
 from pathlib import Path
-from unittest.mock import patch
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / 'scripts'))
+from unittest.mock import patch, Mock
 
 MODULE = runpy.run_path(str(Path(__file__).resolve().parents[2] / 'scripts/refresh-review.py'))
 GLOBALS = MODULE['request'].__globals__
 SHA = 'a' * 40
 NOW = dt.datetime(2026, 11, 3, tzinfo=dt.timezone.utc)
-PR = {'state':'open', 'draft':False, 'auto_merge':{'enabled_by':{'login':'maintainer'}},
+PR = {'labels':[], 'state':'open', 'draft':False, 'auto_merge':{'enabled_by':{'login':'maintainer'}},
       'base':{'ref':'main'}, 'head':{'sha':SHA, 'ref':'story-runner/ai-video-567', 'repo':{'full_name':'owner/repo'}},
-      'user':{'login':'github-actions[bot]'}}
+      'user':{'id':41898282,'login':'github-actions[bot]','type':'Bot'}}
 
 
 def review(conclusion='success', status='completed'):
@@ -21,14 +23,14 @@ def review(conclusion='success', status='completed'):
 
 class ReviewTests(unittest.TestCase):
     def run_worker(self, comments, *, now=NOW, extra_checks=None, fail_mention=False,
-                   paused=False, pr=PR, suite=123, validation='success', change_after_reserve=False, runs=None):
+                   paused=False, pr=PR, suite=123, validation='success', change_after_reserve=False, runs=None, proof_error=False):
         writes = []
         def api(repo, endpoint, data=None):
             if endpoint.endswith('/comments'):
                 writes.append(data['body'])
                 if data['body'].startswith('@') and fail_mention:
                     raise RuntimeError('ambiguous send outcome')
-                comments.append({'user':{'login':'github-actions[bot]'}, 'body':data['body'],
+                comments.append({'user':{'id':41898282,'login':'github-actions[bot]','type':'Bot'}, 'body':data['body'],
                                  'created_at':now.isoformat()})
                 return {}
             if endpoint == 'pulls/567':
@@ -43,9 +45,55 @@ class ReviewTests(unittest.TestCase):
                      'conclusion':validation, 'check_suite':{'id':suite}}
                     for i,name in enumerate(['validation','ci'])] + (extra_checks or [])}
             raise AssertionError(endpoint)
-        with patch.dict(GLOBALS, {'api':api}), patch('subprocess.check_output', side_effect=lambda *a,**k:json.dumps([comments])):
+        with patch.dict(GLOBALS, {'api':api, 'verify_provenance':Mock(side_effect=RuntimeError('Untrusted head') if proof_error else None)}), patch('subprocess.check_output', side_effect=lambda *a,**k:json.dumps([comments])):
             MODULE['request']('owner/repo', 567, SHA, now)
         return writes
+
+    def test_unattested_head_cannot_spend_a_review_request(self):
+        comments=[]
+        with self.assertRaisesRegex(RuntimeError,'Untrusted head'):
+            self.run_worker(comments,proof_error=True)
+        self.assertEqual(comments,[])
+
+    def test_manual_holds_and_spoofed_bot_identity_make_no_review_requests(self):
+        for candidate in [{**PR,'labels':[{'name':'hold'}]},
+                          {**PR,'user':{**PR['user'],'id':1}},
+                          {**PR,'user':{**PR['user'],'type':'User'}}]:
+            self.assertEqual(self.run_worker([],pr=candidate),[])
+
+    def test_configured_radar_app_uses_existing_ci_review_reservation_and_budget(self):
+        for family in ['vendor-radar','vendor-radar-bringup']:
+            pr={**PR,'head':{**PR['head'],'ref':f'{family}/fixture-123'},
+                'user':{'login':'fixture-content[bot]','type':'Bot'}}
+            with patch.dict('os.environ',{'CONTENT_BOT_LOGIN':'fixture-content[bot]'}):
+                comments=[]
+                self.assertEqual(self.run_worker(comments,pr=pr,validation='failure'),[])
+                self.assertEqual(self.run_worker(comments,pr=pr,suite=999),[])
+                self.assertEqual(len(self.run_worker(comments,pr=pr)),2)
+                self.assertEqual(self.run_worker(comments,pr=pr),[])
+                self.assertEqual(len(self.run_worker(comments,pr=pr,now=NOW+dt.timedelta(hours=1))),2)
+                with self.assertRaisesRegex(RuntimeError,'budget exhausted'):
+                    self.run_worker(comments,pr=pr,now=NOW+dt.timedelta(hours=2))
+
+    def test_app_identity_is_explicit_and_only_accepts_bot_radar_prs(self):
+        pr={**PR,'head':{**PR['head'],'ref':'vendor-radar/fixture-123'},
+            'user':{'login':'fixture-content[bot]','type':'Bot'}}
+        cases=[(pr,''),({**pr,'user':{'login':'other[bot]','type':'Bot'}},'fixture-content[bot]'),
+               ({**pr,'user':{'login':'fixture-content[bot]','type':'User'}},'fixture-content[bot]'),
+               ({**pr,'head':PR['head']},'fixture-content[bot]'),
+               ({**pr,'draft':True},'fixture-content[bot]'),({**pr,'auto_merge':None},'fixture-content[bot]'),
+               ({**pr,'head':{**pr['head'],'repo':{'full_name':'fork/repo'}}},'fixture-content[bot]')]
+        for candidate,login in cases:
+            with patch.dict('os.environ',{'CONTENT_BOT_LOGIN':login}):
+                self.assertEqual(self.run_worker([],pr=candidate),[])
+        with patch.dict('os.environ',{'CONTENT_BOT_LOGIN':'not a bot'}):
+            self.assertEqual(self.run_worker([],pr=pr),[])
+
+    def test_malformed_app_config_preserves_existing_actions_review_requests(self):
+        with patch.dict('os.environ',{'CONTENT_BOT_LOGIN':'not a bot'}):
+            comments=[]
+            self.assertEqual(len(self.run_worker(comments)),2)
+            self.assertEqual(self.run_worker(comments),[])
 
     def test_second_caller_reads_durable_reservation_and_does_not_repeat_request(self):
         comments=[]

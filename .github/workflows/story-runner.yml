@@ -34,6 +34,7 @@ concurrency:
 
 jobs:
   run:
+    if: github.repository == 'ultrametricai/ultrametric' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 90
     steps:
@@ -174,6 +175,7 @@ jobs:
         run: pnpm test lib/__tests__/slo.test.ts --maxWorkers=2
 
       - name: Open PR if anything changed
+        id: publication
         env:
           # Recovery/review/repair authenticate generated PRs by the Actions bot
           # author. Use that identity consistently; explicit dispatch starts CI.
@@ -199,6 +201,7 @@ jobs:
           git commit -m "chore(story-runner): refresh $CATEGORY evidence + verdicts"
           # Check the committed candidate before any remote branch, PR, or review exists.
           node rankings-engine/scripts/check-refresh-stability.mjs HEAD^ HEAD
+          python3 scripts/refresh_policy.py story-runner
           git push -u origin "$BRANCH"
           # If organization policy prevents PR creation, leave the compare link
           # in an issue for maintainer attention.
@@ -212,12 +215,26 @@ jobs:
             --title "story-runner: $CATEGORY refresh" \
             --body "Automated evidence/verdict refresh for \`$CATEGORY\`. Review verdict flips against the re-judge stability policy (README) before merging: revert no-new-citation flips when prior support is unchanged; verified downgrades after support loss follow the documented exception." \
             --base main --head "$BRANCH"); then
-            # Explicit dispatch is allowed by GitHub's workflow recursion guard.
+            python3 scripts/refresh_policy.py story-runner --published "$PR_URL"
+            # Preserve recovery opt-in if dispatch fails; opt-in failure must not skip CI.
+            AUTOMERGE_STATUS=0
+            gh pr merge --auto --merge --match-head-commit "$(git rev-parse HEAD)" "$PR_URL" || AUTOMERGE_STATUS=$?
             gh workflow run ci.yml --ref "$BRANCH"
-            gh pr merge --auto --merge "$PR_URL"
+            if [ "$AUTOMERGE_STATUS" -ne 0 ]; then
+              exit "$AUTOMERGE_STATUS"
+            fi
           else
             gh issue create \
               --title "story-runner: $CATEGORY refresh ready on $BRANCH" \
               --body "The scheduled refresh for \`$CATEGORY\` is committed on [\`$BRANCH\`](https://github.com/${GITHUB_REPOSITORY}/compare/main...$BRANCH) but Actions may not open PRs (org policy). Open the PR from the compare link and review flips per the re-judge stability policy. Enable org Settings → Actions → General → 'Allow GitHub Actions to create and approve pull requests' to remove this manual step." \
               --label "story-runner" || echo "issue creation also failed — branch $BRANCH is pushed; see run logs"
           fi
+
+      - name: Record story-runner output provenance
+        if: always() && steps.publication.outputs.published_head != ''
+        uses: actions/upload-artifact@v7
+        with:
+          name: internal-refresh-story-runner-${{ steps.publication.outputs.published_pr }}-${{ steps.publication.outputs.published_head }}
+          path: ${{ runner.temp }}/story-runner-head.json
+          if-no-files-found: error
+          retention-days: 90

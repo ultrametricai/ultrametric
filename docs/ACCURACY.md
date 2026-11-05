@@ -136,7 +136,67 @@ unpublished candidate if a review started during repair. Foreloop remains outsid
 Story-runner publishes with `GITHUB_TOKEN`, matching the Actions-bot author accepted by
 recovery, repair, and review. Its optional PAT publication override is retired. Existing
 PRs created under a PAT account require maintainer attention; automation does not widen
-its author allowlist to adopt them.
+its author allowlist to adopt them. Radar additionally accepts its explicitly configured
+Content App bot on scan and bring-up branches; see [radar publication identity](VENDOR-RADAR.md#automatic-checks-and-publication-identity).
+Its data-repair scope remains separate from story-runner.
+
+## Internal refresh merge policy
+
+Story-runner and vendor-radar use the existing native auto-merge path with the repository's
+workflow token. An App is optional for radar publication, and the separate two-maintainer
+Author automerge controller remains under its own configuration. Required `ci`, `validation`,
+`Greptile Review`, and `review-findings` checks remain enforced. These workflows enroll only
+the locally verified head, and recovery preserves a maintainer's removal of native auto-merge.
+
+The producers run only from this repository's `main`. Before publication, the shared
+`scripts/refresh_policy.py` checks the committed diff against each generator's content scope.
+The required findings gate checks the complete current diff again, including Git file modes.
+Executable files, symlinks, deletions, renames, workflow/code changes and taxonomy changes
+stay outside this automatic path. Bring-up may update existing arena product rosters; scan
+PRs may contain only radar reports, their reconciled source records and discovery records.
+
+Internal identity requires GitHub's authenticated Actions account ID, login and Bot type,
+or the explicitly configured radar App identity. A branch prefix or label grants no trust.
+Each published head also needs a GitHub-hosted artifact whose name binds the PR, generator
+family and exact commit. The gate verifies the artifact's canonical workflow ID/path,
+repository, main-branch source and ancestry in protected main. Artifact contents are never
+executed or downloaded. A manual replacement of an old generated branch, or a record from
+an unrelated workflow, does not qualify. Existing heads without these records require a
+fresh canonical generation or an ordinary maintainer PR; their provenance is not inferred.
+
+Repair verifies the previous head's record before processing it, then records only the
+locally computed, successfully pushed head. For a required base update, recovery creates an
+immutable commit with the inspected GitHub merge tree and ordered previous-head/main parents.
+It uploads a separate intent naming that exact commit before changing the branch. Application
+rechecks eligibility, the previous head and current main, then uses an atomic expected-head
+update with force disabled. A delayed response or failed receipt upload can be recovered on a
+later sweep: the current head must exactly match the canonical intent, its previous head must
+have an ordinary receipt, and its recorded main must remain in main history. Recovery restores
+the ordinary receipt before dispatching checks. The findings gate accepts only ordinary
+receipts; a different commit with the same tree and parents cannot replay an intent. Expired
+or foreign intents remain blocked. These checks preserve the existing repair bounds and do
+not grant radar any story-runner data-repair capability.
+A scan remains valid when its later bring-up fails: its own publication must have completed
+before its record is uploaded, and its required checks must independently pass.
+
+The labels `automerge-hold`, `do-not-merge`, `hold` and `manual-merge`, draft state and reviewer
+requests for changes block the required findings gate. Recovery, repair and review requests
+also honor holds. Label events and a final metadata read revoke a previously green result.
+GitHub does not atomically lock labels with a native merge: disable auto-merge or convert the
+PR to draft for an immediate server-side stop. A removed native opt-in is never restored by
+recovery. The trust boundary assumes repository administrators and privileged workflow code
+remain trusted; a workflow with permission to forge required statuses is outside this gate's
+ability to isolate without changing repository protections. Statuses are also scoped to a
+commit rather than a PR: a privileged caller can reuse an already-green SHA on another PR
+before its PR-specific provenance gate reevaluates. The gate rejects the missing PR receipt;
+native merging cannot atomically prevent that privileged replay.
+
+Bot merges suppress normal push-triggered workflows. The existing recovery sweep therefore
+checks current main for a recorded internal merge and starts missing registered CI. It
+confirms the observed SHA, retains failed runs, limits retries, and dispatches only `main`.
+If main advances during dispatch, the next sweep evaluates its new tip; this does not promise
+a separate run for every historical merge. No new credential, App installation, branch-rule
+change or bypass is needed for native merging or this continuation.
 
 GitHub marks `pull_request` runs created by `GITHUB_TOKEN` as `action_required` until a
 maintainer approves them. Generated PRs explicitly dispatch the same CI workflow on their

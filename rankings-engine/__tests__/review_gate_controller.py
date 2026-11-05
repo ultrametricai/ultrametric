@@ -1,7 +1,10 @@
 """Review gate regressions using recorded metadata shapes and no network calls."""
 import json
+import hashlib
 import os
 from pathlib import Path
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / 'scripts'))
 import unittest
 import tempfile
 from unittest.mock import patch
@@ -23,7 +26,8 @@ class ReviewGateTests(unittest.TestCase):
     def run_gate(self, *, target='513', head='', checks=None, threads=None, status=None,
                  pages=None, changed=False, metadata_error=False, status_read_error=False,
                  author=None, pr_head=None, final_head=None, final_state='open',
-                 status_runs=None, poll_run_ids=None):
+                 status_runs=None, poll_run_ids=None, internal=None, files=None,
+                 file_mode="100644", reviews=None, final_override=None, proof_error=False):
         source = (Path(__file__).resolve().parents[2] / '.github/workflows/review-findings.yml').read_text()
         selection = source.split('        run: |\n', 1)[1].split('\n  findings:', 1)[0]
         selection = '\n'.join(line[10:] if line.startswith('          ') else line for line in selection.splitlines())
@@ -36,8 +40,22 @@ class ReviewGateTests(unittest.TestCase):
         threads = threads if threads is not None else [{'nodes': [], 'pageInfo': {'hasNextPage': False, 'endCursor': None}}]
         prs = [{'number': 513, 'head': {'sha': SHA}}, {'number': 999, 'head': {'sha': OTHER}}]
 
+        files = files if files is not None else [{'filename':'open-rankings/email/verdicts.json','status':'modified'}]
+        tree_nodes={SHA:{}}
+        for file in files:
+            parts=file['filename'].split('/');parent=SHA
+            for index,part in enumerate(parts):
+                child=hashlib.sha256('/'.join(parts[:index+1]).encode()).hexdigest()
+                final=index==len(parts)-1
+                tree_nodes[parent][part]={'path':part,'sha':child,'type':'blob' if final else 'tree',
+                                         'mode':file_mode if final else '040000'}
+                tree_nodes.setdefault(child,{})
+                parent=child
+
         def output(args, input=None, **_kwargs):
             if '--slurp' in args:
+                if '/files?' in args[-1]:return json.dumps([files])
+                if '/reviews?' in args[-1]:return json.dumps([reviews or []])
                 return json.dumps([prs])
             endpoint = args[2]
             reads.append(endpoint)
@@ -49,7 +67,8 @@ class ReviewGateTests(unittest.TestCase):
                 return json.dumps({'head': (final_head if final and final_head is not None
                                            else pr_head or {'sha': SHA}),
                                    'user': author or {'id': 1, 'login': 'contributor', 'type': 'User'},
-                                   'state': final_state if final else 'open'})
+                                   'state': final_state if final else 'open',
+                                   **(internal or {}), **((final_override or {}) if final else {})})
             if endpoint == 'graphql':
                 if metadata_error:
                     raise RuntimeError('metadata unavailable')
@@ -57,6 +76,8 @@ class ReviewGateTests(unittest.TestCase):
                 page = threads[0 if cursor is None else 1]
                 return json.dumps({'data': {'repository': {'pullRequest': {
                     'headRefOid': OTHER if changed else SHA, 'reviewThreads': page}}}})
+            if '/git/trees/' in endpoint:
+                return json.dumps({'truncated':False,'tree':list(tree_nodes[endpoint.rsplit('/',1)[1]].values())})
             if '/check-runs?' in endpoint:
                 return json.dumps({'check_runs': checks})
             if endpoint.endswith('/status'):
@@ -79,7 +100,7 @@ class ReviewGateTests(unittest.TestCase):
         env = {'REPO': 'owner/repo', 'SERVER_URL': 'https://github.com', 'RUN_ID': '123',
                'TARGET_PR': target, 'TARGET_HEAD': head}
         namespace = {}
-        with patch.dict(os.environ, env), patch('subprocess.check_output', side_effect=output):
+        with patch.dict(os.environ, env), patch('subprocess.check_output', side_effect=output), patch('refresh_policy.verify_provenance',side_effect=RuntimeError('No canonical receipt') if proof_error else None):
             try:
                 with tempfile.NamedTemporaryFile(mode='r+') as selected:
                     with patch.dict(os.environ, {'GITHUB_OUTPUT': selected.name}):
@@ -98,6 +119,40 @@ class ReviewGateTests(unittest.TestCase):
                 with patch.dict(os.environ, {'RUN_ID': str(run_id)}):
                     namespace['publish'](SHA, 'success', DESC)
         return posts, reads
+
+    def internal_pr(self):
+        return {'number':513,'head':{'sha':SHA,'ref':'story-runner/email-123','repo':{'full_name':'owner/repo'}},
+                'base':{'ref':'main','repo':{'full_name':'owner/repo'}},'changed_files':1,'draft':False,'labels':[],
+                'user':{'id':41898282,'login':'github-actions[bot]','type':'Bot'}}
+
+    def test_authenticated_scoped_internal_head_passes_all_existing_review_gates(self):
+        posts,_=self.run_gate(internal=self.internal_pr())
+        self.assertEqual(posts[0]['state'],'success')
+
+    def test_internal_hold_revokes_prior_green_even_if_it_arrives_on_final_read(self):
+        for label in ['hold','manual-merge','automerge-hold','do-not-merge']:
+            for final in [False,True]:
+                pr=self.internal_pr();changes={'labels':[{'name':label}]}
+                posts,_=self.run_gate(internal=pr if final else {**pr,**changes},
+                    final_override=changes if final else {},status=[successful_status()])
+                self.assertEqual(posts[0]['state'],'pending')
+
+    def test_untrusted_current_heads_and_incomplete_scopes_cannot_reuse_success(self):
+        base=self.internal_pr()
+        cases=[{'internal':{**base,'user':{**base['user'],'id':1}}},
+               {'internal':{**base,'head':{**base['head'],'repo':{'full_name':'fork/repo'}}}},
+               {'internal':{**base,'draft':True}}, {'internal':{**base,'changed_files':2}},
+               {'proof_error':True}, {'file_mode':'120000'}, {'file_mode':'100755'},
+               {'files':[{'filename':'.github/workflows/ci.yml','status':'modified'}]},
+               {'files':[{'filename':'open-rankings/email/verdicts.json','status':'renamed','previous_filename':'code.py'}]}]
+        for case in cases:
+            posts,_=self.run_gate(**{'internal':base,**case},status=[successful_status()])
+            self.assertEqual(posts[0]['state'],'pending')
+
+    def test_human_change_request_is_an_internal_manual_stop(self):
+        posts,_=self.run_gate(internal=self.internal_pr(),reviews=[
+            {'id':1,'user':{'id':7,'type':'User'},'state':'CHANGES_REQUESTED'}])
+        self.assertEqual(posts[0]['state'],'pending')
 
     def test_unchanged_success_creates_no_status_and_never_resets_pending(self):
         posts, _ = self.run_gate(status=[successful_status()])

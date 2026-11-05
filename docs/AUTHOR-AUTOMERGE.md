@@ -25,7 +25,8 @@ Foreloop exclusion is preserved.
 Drafts, conflicts, unknown mergeability, incomplete metadata, and the labels
 `automerge-hold`, `do-not-merge`, `hold`, or `manual-merge` block automation.
 Changes under `.github/` or `scripts/config/`, to `scripts/author-automerge.*`, or to
-`scripts/docs-fast-path.mjs` require manual merging. Renames check the old path too.
+`scripts/docs-fast-path.mjs` require manual merging. The internal refresh policy,
+main-CI continuation, repair and review-request controllers also require manual merging. Renames check the old path too.
 PRs with existing native auto-merge enrollment remain under their existing control.
 
 Only PRs created strictly after the configured activation timestamp qualify. The

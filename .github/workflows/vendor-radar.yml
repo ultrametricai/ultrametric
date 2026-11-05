@@ -18,7 +18,7 @@
 #
 # Scan PRs are never auto-closed as superseded: the seen-ledger makes daily reports ADDITIVE
 # (each dated report holds only candidates absent from every earlier one), so no newer scan PR
-# regenerates an older one's content. Merges stay human everywhere.
+# regenerates an older one's content. Required CI and review gate every merge.
 #
 # HONESTY: the scan itself changes nothing under open-rankings/, the radar NEVER creates a new
 # ranking, and it NEVER touches a founder-affiliated product autonomously. Approval is
@@ -31,8 +31,8 @@
 # collect-community → probe → judge --product → derive → logos; LLM stages only when the
 # ANTHROPIC_API_KEY repo secret exists — without it, passers stay approved-pending in the triage
 # report) and lands as a PR, never a direct push to main. The scan is keyless;
-# secrets.GITHUB_TOKEN is auto-provided and only used for git push / gh issue|pr create / the
-# higher authenticated GitHub search limit.
+# GITHUB_TOKEN supplies engine reads, issues, and fallback publication. An explicitly
+# configured Content App can publish PRs that start ordinary CI without approval.
 #
 # Cron offset from the other loops: story-runner '17 */6 * * *', daily-snapshot '43 5 * * *',
 # cert-sweep '29 7 * * 1' (Mondays), accuracy-engine '41 6 * * 3' (Wednesdays), yc-coverage
@@ -56,10 +56,16 @@ concurrency:
 
 jobs:
   scan:
+    if: github.repository == 'ultrametricai/ultrametric' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 30 # shorter than the installation token lifetime
+    env:
+      HAS_CONTENT_BOT: ${{ secrets.CONTENT_BOT_APP_ID != '' && secrets.CONTENT_BOT_PRIVATE_KEY != '' }}
+      CONTENT_BOT_LOGIN: ${{ vars.CONTENT_BOT_LOGIN }}
     steps:
       - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
 
       - uses: pnpm/action-setup@v6
       - uses: actions/setup-node@v7
@@ -113,15 +119,42 @@ jobs:
       - name: Tests
         run: pnpm test
 
-      - name: Commit report + discovery records as PR (or compare-link issue)
+      # Scoped publication identity only. Repository installation/secrets are configured
+      # separately; absent credentials retain the explicit Actions-token CI path.
+      - name: Mint content publication token
+        id: content-app
+        if: env.HAS_CONTENT_BOT == 'true'
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
+        with:
+          client-id: ${{ secrets.CONTENT_BOT_APP_ID }}
+          private-key: ${{ secrets.CONTENT_BOT_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+          repositories: ${{ github.event.repository.name }}
+          permission-contents: write
+          permission-pull-requests: write
+
+      - name: Report Actions-token fallback
+        if: env.HAS_CONTENT_BOT != 'true'
+        run: |
+          echo '::notice::Content App publication is not configured. Explicit CI dispatch remains enabled; the separate PR run can still require approval.'
+
+      - name: Verify content publication identity
+        if: env.HAS_CONTENT_BOT == 'true'
         env:
-          # Prefer the fine-grained PAT when the secret exists: a PR created with the
-          # workflow's GITHUB_TOKEN does not trigger pull_request workflows (GitHub's
-          # recursion guard — bot PRs #430/#433 carry no validation check), so the
-          # required checks never report and the auto-merge opt-in below never
-          # completes. Falls back to GITHUB_TOKEN when the secret is absent; no
-          # secrets are created here.
-          GH_TOKEN: ${{ secrets.UM_BOT_PR_PAT || secrets.GITHUB_TOKEN }}
+          APP_SLUG: ${{ steps.content-app.outputs.app-slug }}
+        run: |
+          if [ -z "$APP_SLUG" ] || [ "$CONTENT_BOT_LOGIN" != "${APP_SLUG}[bot]" ]; then
+            echo '::error::CONTENT_BOT_LOGIN must match the configured content App bot login.'
+            exit 1
+          fi
+
+      - name: Commit report + discovery records as PR (or compare-link issue)
+        id: scan-publication
+        env:
+          # The configured App starts ordinary PR CI. Recovery accepts that exact
+          # bot only for radar branches; the fallback keeps the Actions identity.
+          GH_TOKEN: ${{ steps.content-app.outputs.token || secrets.GITHUB_TOKEN }}
+          GH_ACTIONS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           # porcelain, not `git diff --quiet`: a brand-new dated report file is UNTRACKED and
           # invisible to diff.
@@ -135,7 +168,8 @@ jobs:
           git checkout -b "$BRANCH"
           git add reports rankings-engine/radar-discoveries
           git commit -m "chore(vendor-radar): daily launch-surface scan"
-          git push -u origin "$BRANCH"
+          python3 scripts/refresh_policy.py vendor-radar
+          git -c credential.helper= -c 'credential.helper=!gh auth git-credential' push -u origin "$BRANCH"
           # The PR body carries the candidates list and the full triage disposition table —
           # auto-approved and skipped rows are recorded here, not in an issue.
           {
@@ -166,11 +200,19 @@ jobs:
             --base main --head "$BRANCH"); then
             gh pr comment "$PR_URL" --body "@greptileai review" \
               || echo "Greptile review request failed — comment '@greptileai review' on $PR_URL manually"
-            # Explicit dispatch is allowed by GitHub's workflow recursion guard.
-            gh workflow run ci.yml --ref "$BRANCH"
-            gh pr merge --auto --merge "$PR_URL"
+            python3 scripts/refresh_policy.py vendor-radar --published "$PR_URL"
+            # Record opt-in first so dispatch failures remain recoverable. A failed
+            # opt-in must still allow CI to start, then remain a visible failure.
+            AUTOMERGE_STATUS=0
+            gh pr merge --auto --merge --match-head-commit "$(git rev-parse HEAD)" "$PR_URL" || AUTOMERGE_STATUS=$?
+            if [ "$HAS_CONTENT_BOT" != 'true' ]; then
+              GH_TOKEN="$GH_ACTIONS_TOKEN" gh workflow run ci.yml --ref "$BRANCH"
+            fi
+            if [ "$AUTOMERGE_STATUS" -ne 0 ]; then
+              exit "$AUTOMERGE_STATUS"
+            fi
           else
-            gh issue create \
+            GH_TOKEN="$GH_ACTIONS_TOKEN" gh issue create \
               --title "vendor-radar: report ready on $BRANCH" \
               --body "The daily radar report is committed on [\`$BRANCH\`](https://github.com/${GITHUB_REPOSITORY}/compare/main...$BRANCH) but Actions may not open PRs (org policy). Open the PR from the compare link — the report only records detections, it never changes a score or verdict. Enable org Settings → Actions → General → 'Allow GitHub Actions to create and approve pull requests' to remove this manual step." \
               --label "story-runner" || echo "issue creation also failed — branch $BRANCH is pushed; see run logs"
@@ -184,6 +226,15 @@ jobs:
       # the dispositions stay in the committed reports/vendor-radar/ triage files).
       # if: always() — a failure in the tests or the report-PR step must not swallow the issue;
       # the step itself exits 0 when there is no body file to post.
+      - name: Record vendor-radar output provenance
+        if: always() && steps.scan-publication.outputs.published_head != ''
+        uses: actions/upload-artifact@v7
+        with:
+          name: internal-refresh-vendor-radar-${{ steps.scan-publication.outputs.published_pr }}-${{ steps.scan-publication.outputs.published_head }}
+          path: ${{ runner.temp }}/vendor-radar-head.json
+          if-no-files-found: error
+          retention-days: 90
+
       - name: File or update needs-human issue
         if: always()
         env:
@@ -232,14 +283,13 @@ jobs:
       # committed triage report. Branches from the scanned commit, not the report branch, so the
       # bring-up PR carries only roster + engine output.
       - name: Bring-up PR for auto-approved passers
+        id: bringup-publication
         env:
-          # Prefer the fine-grained PAT when the secret exists: a PR created with the
-          # workflow's GITHUB_TOKEN does not trigger pull_request workflows (GitHub's
-          # recursion guard — bot PRs #430/#433 carry no validation check), so the
-          # required checks never report and the auto-merge opt-in below never
-          # completes. Falls back to GITHUB_TOKEN when the secret is absent; no
-          # secrets are created here.
-          GH_TOKEN: ${{ secrets.UM_BOT_PR_PAT || secrets.GITHUB_TOKEN }}
+          # Engine stages use the Actions token. Switch to the publication identity
+          # only after generation and tests have completed.
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CONTENT_TOKEN: ${{ steps.content-app.outputs.token }}
+          GH_ACTIONS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
           DATE=$(date -u +%F)
@@ -281,7 +331,9 @@ jobs:
           # vendors/reviews/generated — both gone; git add on a missing pathspec fails the step).
           git add open-rankings rankings-engine/cache public/badges README.md
           git commit -m "feat(vendor-radar): scoped bring-up of auto-approved candidates ($DATE)"
-          git push -u origin "$BRANCH"
+          python3 scripts/refresh_policy.py vendor-radar-bringup
+          export GH_TOKEN="${CONTENT_TOKEN:-$GH_TOKEN}"
+          git -c credential.helper= -c 'credential.helper=!gh auth git-credential' push -u origin "$BRANCH"
           {
             echo "Automated bring-up of auto-approved radar candidates (criteria: \`policies/AGENT_POLICY.md\` \"Vendor-radar candidate approval\", founder authorization 2026-10-13). Products added:"
             sed 's/^/- /' /tmp/bringups.txt
@@ -298,12 +350,29 @@ jobs:
             --base main --head "$BRANCH"); then
             gh pr comment "$PR_URL" --body "@greptileai review" \
               || echo "Greptile review request failed — comment '@greptileai review' on $PR_URL manually"
-            # Explicit dispatch is allowed by GitHub's workflow recursion guard.
-            gh workflow run ci.yml --ref "$BRANCH"
-            gh pr merge --auto --merge "$PR_URL"
+            python3 scripts/refresh_policy.py vendor-radar-bringup --published "$PR_URL"
+            # Record opt-in first so dispatch failures remain recoverable. A failed
+            # opt-in must still allow CI to start, then remain a visible failure.
+            AUTOMERGE_STATUS=0
+            gh pr merge --auto --merge --match-head-commit "$(git rev-parse HEAD)" "$PR_URL" || AUTOMERGE_STATUS=$?
+            if [ "$HAS_CONTENT_BOT" != 'true' ]; then
+              GH_TOKEN="$GH_ACTIONS_TOKEN" gh workflow run ci.yml --ref "$BRANCH"
+            fi
+            if [ "$AUTOMERGE_STATUS" -ne 0 ]; then
+              exit "$AUTOMERGE_STATUS"
+            fi
           else
-            gh issue create \
+            GH_TOKEN="$GH_ACTIONS_TOKEN" gh issue create \
               --title "vendor-radar: bring-up ready on $BRANCH" \
               --body "The bring-up is committed on [\`$BRANCH\`](https://github.com/${GITHUB_REPOSITORY}/compare/main...$BRANCH) but PR creation failed — open the PR from the compare link." \
               --label "story-runner" || echo "issue creation also failed — branch $BRANCH is pushed; see run logs"
           fi
+
+      - name: Record vendor-radar-bringup output provenance
+        if: always() && steps.bringup-publication.outputs.published_head != ''
+        uses: actions/upload-artifact@v7
+        with:
+          name: internal-refresh-vendor-radar-bringup-${{ steps.bringup-publication.outputs.published_pr }}-${{ steps.bringup-publication.outputs.published_head }}
+          path: ${{ runner.temp }}/vendor-radar-bringup-head.json
+          if-no-files-found: error
+          retention-days: 90

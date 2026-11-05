@@ -9,6 +9,8 @@ import tempfile
 import unittest
 from contextlib import redirect_stdout
 from pathlib import Path
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / 'scripts'))
 from unittest.mock import Mock, patch
 
 with patch.dict(os.environ, {'REPO':'owner/repo','PR_NUMBER':'536','PR_HEAD':'a'*40}):
@@ -16,7 +18,7 @@ with patch.dict(os.environ, {'REPO':'owner/repo','PR_NUMBER':'536','PR_HEAD':'a'
 GLOBALS = MODULE['recheck'].__globals__
 SHA = 'a'*40
 BRANCH = 'story-runner/email-123'
-PR = {'state':'open','draft':False,'auto_merge':{'enabled_by':{'login':'maintainer'}},'base':{'ref':'main'},'head':{'sha':SHA,'ref':BRANCH,'repo':{'full_name':'owner/repo'}},'user':{'login':'github-actions[bot]'}}
+PR = {'number':536,'labels':[], 'state':'open','draft':False,'auto_merge':{'enabled_by':{'login':'maintainer'}},'base':{'ref':'main'},'head':{'sha':SHA,'ref':BRANCH,'repo':{'full_name':'owner/repo'}},'user':{'id':41898282,'login':'github-actions[bot]','type':'Bot'}}
 REPORT = {'originalThreads':['old'],'audits':[{'thread':'old','addressed':True}],
           'findingSnapshots':{'old':MODULE['finding_fingerprint']({'id':'old'})}}
 
@@ -110,7 +112,7 @@ class ControllerTests(unittest.TestCase):
                 if args[:2]==['git','merge-base']:return 'c'*40
                 raise AssertionError(args)
             command=Mock(); resume=Mock(return_value={**REPORT,'publishedHead':SHA,'main':'b'*40})
-            with patch.dict(GLOBALS, {'current':lambda:PR,'output':output,'command':command,'load_resume_report':resume,'recheck':lambda *_:'waiting-checks'}),patch.dict(os.environ,{'RUNNER_TEMP':directory}):
+            with patch.dict(GLOBALS, {'verify_provenance':lambda *_:None, 'current':lambda:PR,'output':output,'command':command,'load_resume_report':resume,'recheck':lambda *_:'waiting-checks'}),patch.dict(os.environ,{'RUNNER_TEMP':directory}):
                 MODULE['main']()
             resume.assert_called_once()
             self.assertFalse(any(call.args[0][0]=='pnpm' for call in command.call_args_list))
@@ -144,7 +146,7 @@ class RepairReviewBoundaryTests(unittest.TestCase):
                 calls.append(args)
                 if 'rankings-engine/scripts/repair-refresh.ts' in args:
                     report_file.write_text(json.dumps({'restored':[],'audits':[]}))
-            with patch.dict(GLOBALS,{'api':api,'current':lambda:PR,'output':output,'command':command,
+            with patch.dict(GLOBALS,{'verify_provenance':lambda *_:None,'api':api,'current':lambda:({**PR,'head':{**PR['head'],'sha':'e'*40}} if any(c[:2]==['git','push'] for c in calls) else PR),'output':output,'command':command,
                                     'threads':lambda:(SHA,[{'id':'finding'}]),'load_resume_report':lambda *_:None,
                                     'recheck':lambda *_:'rechecked'}),patch.dict(os.environ,{'RUNNER_TEMP':directory}):
                 MODULE['main']()
@@ -177,8 +179,8 @@ class RepairReviewBoundaryTests(unittest.TestCase):
 
 class DispatcherTests(unittest.TestCase):
     def controller(self):
-        source=(Path(__file__).resolve().parents[2]/'.github/workflows/refresh-automerge.yml').read_text().split('        run: |\n',1)[1]
-        code='\n'.join(line[10:] if line.startswith('          ') else line for line in source.splitlines())
+        source=(Path(__file__).resolve().parents[2]/'scripts/refresh-automerge.py').read_text()
+        code=source
         namespace={}
         with patch.dict(os.environ,{'REPO':'owner/repo'}),patch('subprocess.check_output',return_value='[[]]'):
             exec(code,namespace)
@@ -336,13 +338,19 @@ class RecoveryCITests(unittest.TestCase):
     def recover(self, runs, *, pr=None, updated_head=None, pending_review=False,
                 strict=True, behind=None, mergeable=True, current_override=None,
                 rules_error=False, unresolved=False, later_runs=None, finding_path='README.md',
-                review_history=None):
+                review_history=None, content_bot='', content_token='', content_slug='',
+                update_tokens=None, provenance_error=False, bad_tree=False, phase='apply',
+                delayed=False, commit_read_error=False, update_response_error=False,
+                intent_error=False, stale_plan=False, graphql_error=False,
+                late_override=None, main_changed=False, replacement_head=None, plan_override=None):
         pr = pr or {**PR,'number':536,'auto_merge':{'enabled_by':{'login':'maintainer'}}}
         calls = []
         branch_updated = False
         ci_reads = 0
+        initial_sha = pr['head']['sha']
+        pull_reads = main_reads = 0
         def run(args, **kwargs):
-            nonlocal branch_updated, ci_reads
+            nonlocal branch_updated, ci_reads, pull_reads, main_reads
             calls.append(args)
             result = None
             if args[:3] == ['gh','api','graphql']:
@@ -353,19 +361,41 @@ class RecoveryCITests(unittest.TestCase):
                 endpoint = args[4]
                 if '/compare/main...' in endpoint:
                     result = {'behind_by':behind if behind is not None else (1 if updated_head else 0)}
-                elif endpoint.endswith('/update-branch'):
-                    branch_updated = True
-                    result = {}
+                elif endpoint.endswith('/update-branch') or endpoint == 'graphql':
+                    if endpoint == 'graphql':
+                        mutation = json.loads(kwargs['input'])['variables']['input']['refUpdates'][0]
+                        self.assertEqual(mutation, {'name':f"refs/heads/{pr['head']['ref']}",
+                            'beforeOid':initial_sha, 'afterOid':updated_head, 'force':False})
+                    if update_tokens is not None:
+                        update_tokens.append(kwargs.get('env', {}).get('GH_TOKEN'))
+                    branch_updated = not graphql_error
+                    if update_response_error:
+                        raise subprocess.CalledProcessError(1,args,stderr='response lost after update')
+                    result = {'errors':[{'message':'expected head mismatch'}]} if graphql_error else {'data':{'updateRefs':{'clientMutationId':None}}}
                 elif endpoint.endswith('/pulls/536'):
-                    result = {**pr,'mergeable':mergeable,
-                              'head':{**pr['head'],'sha':updated_head if branch_updated else SHA},
-                              **(current_override or {})}
+                    pull_reads += 1
+                    result = {**pr,'mergeable':mergeable,'merge_commit_sha':'d'*40,
+                              'head':{**pr['head'],'sha':(replacement_head or updated_head) if branch_updated and not delayed else initial_sha},
+                              **(current_override or {}),
+                              **(late_override or {} if pull_reads >= 2 and not branch_updated else {})}
+                elif endpoint == 'repos/owner/repo/':
+                    result = {'node_id':'repository-id'}
+                elif endpoint.endswith('/git/ref/heads/main'):
+                    main_reads += 1
+                    result = {'object':{'sha':('f' if main_changed and main_reads > 1 else 'c')*40}}
+                elif endpoint.endswith('/git/commits') or '/git/commits/' in endpoint:
+                    before = endpoint.endswith('d'*40)
+                    if commit_read_error and branch_updated:
+                        raise subprocess.CalledProcessError(1,args,stderr='commit read unavailable')
+                    result = {'sha':'d'*40 if before else updated_head,
+                              'tree':{'sha':('f' if bad_tree and not before else 'e')*40},
+                              'parents':[{'sha':x} for x in (['c'*40,initial_sha] if before else [initial_sha,'c'*40])]}
                 elif '/rules/branches/main?' in endpoint:
                     if rules_error:
                         raise subprocess.CalledProcessError(1,args,stderr='policy lookup failed')
                     result = [{'type':'required_status_checks','parameters':{'strict_required_status_checks_policy':strict}}]
                 elif '/workflows/ci.yml/runs?' in endpoint:
-                    self.assertIn(f'head_sha={(updated_head if branch_updated else None) or SHA}&', endpoint)
+                    self.assertIn(f'head_sha={(updated_head if branch_updated else None) or initial_sha}&', endpoint)
                     ci_reads += 1
                     result = {'workflow_runs':later_runs if later_runs is not None and ci_reads > 1 else runs}
                 elif '/check-runs?' in endpoint:
@@ -379,12 +409,23 @@ class RecoveryCITests(unittest.TestCase):
                 else:
                     raise AssertionError(endpoint)
             return subprocess.CompletedProcess(args, 0, json.dumps(result) if result is not None else '')
-        source = (Path(__file__).resolve().parents[2]/'.github/workflows/refresh-automerge.yml').read_text().split('        run: |\n',1)[1]
-        code = '\n'.join(line[10:] if line.startswith('          ') else line for line in source.splitlines())
+        source = (Path(__file__).resolve().parents[2]/'scripts/refresh-automerge.py').read_text()
+        code = source
         error = None
-        with patch.dict(os.environ,{'REPO':'owner/repo'}), \
+        plan = {'family':pr['head']['ref'].split('/')[0], 'pr':536, 'branch':pr['head']['ref'],
+                'previous':initial_sha, 'main':('f' if stale_plan else 'c')*40, 'tree':'e'*40,
+                'head':updated_head, 'app':pr['user']['login'] != 'github-actions[bot]'}
+        plan.update(plan_override or {})
+        from refresh_policy import MissingProvenance
+        provenance_exception = MissingProvenance('No receipt') if provenance_error == 'missing' else RuntimeError('Untrusted head')
+        with patch.dict(os.environ,{'REPO':'owner/repo','CONTENT_BOT_LOGIN':content_bot,
+                                    'CONTENT_BOT_TOKEN':content_token,'CONTENT_BOT_SLUG':content_slug,
+                                    'REFRESH_UPDATE':json.dumps(plan) if updated_head and phase=='apply' else ''}), \
                 patch('subprocess.check_output',return_value=json.dumps([[pr]])), \
-                patch('subprocess.run',side_effect=run), patch('time.sleep'), redirect_stdout(io.StringIO()):
+                patch('subprocess.run',side_effect=run), patch('time.sleep'), \
+                patch('refresh_policy.verify_provenance',side_effect=provenance_exception if provenance_error else None), \
+                patch('refresh_update.verify_update_intent',side_effect=RuntimeError('Invalid intent') if intent_error else None), \
+                redirect_stdout(io.StringIO()):
             try:
                 exec(code,{})
             except SystemExit as exc:
@@ -392,16 +433,195 @@ class RecoveryCITests(unittest.TestCase):
         ci = [call for call in calls if call[:4] == ['gh','workflow','run','ci.yml']]
         return ci, calls, error
 
+    def radar_pr(self, family='vendor-radar', app=False):
+        return {**PR, 'number':536, 'head':{**PR['head'], 'ref':f'{family}/fixture-123'},
+                'user':{'id':999 if app else 41898282,'login':'fixture-content[bot]' if app else 'github-actions[bot]', 'type':'Bot'}}
+
+    def test_manual_hold_skips_all_recovery_and_repair_actions(self):
+        for label in ['hold','manual-merge','do-not-merge','automerge-hold']:
+            ci,calls,error=self.recover([],pr={**PR,'number':536,'labels':[{'name':label}]})
+            self.assertEqual(calls,[])
+            self.assertIsNone(error)
+
+    def test_hold_arriving_before_dispatch_prevents_work_on_the_head(self):
+        ci,calls,error=self.recover([],current_override={'labels':[{'name':'hold'}]})
+        self.assertEqual(ci,[])
+        self.assertFalse(any(call[:3]==['gh','workflow','run'] for call in calls))
+
+    def test_unattested_parent_cannot_be_laundered_through_base_update(self):
+        ci,calls,error=self.recover([self.run_record('workflow_dispatch','success')],
+                                   updated_head='b'*40,provenance_error=True)
+        self.assertIn('Refresh PRs need attention',error)
+        self.assertFalse(any(('/update-branch' in str(call) or 'graphql' in call[4:5]) for call in calls))
+        self.assertEqual(ci,[])
+
+    def test_unexpected_update_tree_does_not_receive_a_provenance_output(self):
+        with tempfile.NamedTemporaryFile(mode='r+') as output,patch.dict(os.environ,{'GITHUB_OUTPUT':output.name}):
+            _,_,error=self.recover([self.run_record('workflow_dispatch','success')],
+                                  updated_head='b'*40,bad_tree=True)
+            output.seek(0)
+            self.assertIn('updated=[]',output.read())
+            self.assertIn('Refresh PRs need attention',error)
+
+    def test_verified_base_update_records_head_despite_different_parent_order(self):
+        with tempfile.NamedTemporaryFile(mode='r+') as output,patch.dict(os.environ,{'GITHUB_OUTPUT':output.name}):
+            _,_,error=self.recover([self.run_record('workflow_dispatch','success')],updated_head='b'*40)
+            output.seek(0)
+            record=json.loads(output.read().splitlines()[0].split('=',1)[1])
+            self.assertIsNone(error)
+            self.assertEqual(record,[{'family':'story-runner','head':'b'*40,'pr':536}])
+
+    def test_planning_creates_only_an_object_before_durable_intent_upload(self):
+        with tempfile.NamedTemporaryFile(mode='r+') as output,patch.dict(os.environ,{'GITHUB_OUTPUT':output.name}):
+            ci,calls,error=self.recover([self.run_record('workflow_dispatch','success')],updated_head='b'*40,phase='plan')
+            output.seek(0); fields=dict(line.rstrip().split('=',1) for line in output)
+            self.assertIsNone(error)
+            self.assertEqual(json.loads(fields['updated']),[])
+            self.assertEqual(json.loads(fields['planned'])[0]['head'],'b'*40)
+            self.assertFalse(any('graphql' in call[4:5] or '/update-branch' in str(call) for call in calls))
+            self.assertFalse(ci)
+        source=(Path(__file__).resolve().parents[2]/'.github/workflows/refresh-automerge.yml').read_text()
+        apply=source.split('\n  apply-updates:',1)[1]
+        self.assertLess(apply.index('name: Upload durable update intent'),apply.index('name: Apply exact planned update'))
+        before_apply=apply.split('name: Apply exact planned update',1)[0]
+        self.assertNotIn('continue-on-error',before_apply)
+        self.assertNotIn('if: always()',apply.split('name: Apply exact planned update',1)[1].split('run: python3',1)[0])
+
+    def test_interrupted_update_restores_receipt_on_later_sweep_without_republishing(self):
+        for failure in ['delayed','commit_read_error','update_response_error']:
+            with self.subTest(failure=failure),tempfile.NamedTemporaryFile(mode='r+') as output,patch.dict(os.environ,{'GITHUB_OUTPUT':output.name}):
+                _,calls,error=self.recover([self.run_record('workflow_dispatch','success')],updated_head='b'*40,**{failure:True})
+                self.assertIn('need attention',error)
+                self.assertEqual(sum('graphql' in call[4:5] for call in calls),1)
+                output.seek(0); self.assertIn('updated=[]',output.read())
+                output.seek(0); output.truncate()
+                changed={**PR,'head':{**PR['head'],'sha':'b'*40}}
+                ci,calls,error=self.recover([],pr=changed,provenance_error='missing')
+                self.assertIsNone(error)
+                self.assertFalse(ci)
+                self.assertFalse(any(call[:3]==['gh','workflow','run'] or 'graphql' in call[4:5] for call in calls))
+                output.seek(0)
+                self.assertEqual(json.loads(output.readline().split('=',1)[1]),[{'family':'story-runner','head':'b'*40,'pr':536}])
+
+    def test_untrusted_intent_and_stale_unapplied_plan_never_mutate_or_dispatch(self):
+        for options in [{'provenance_error':'missing','intent_error':True},
+                        {'updated_head':'b'*40,'stale_plan':True}]:
+            with self.subTest(options=options):
+                ci,calls,error=self.recover([self.run_record('workflow_dispatch','success')],**options)
+                self.assertIn('need attention',error)
+                self.assertFalse(ci)
+                self.assertFalse(any('graphql' in call[4:5] or '/update-branch' in str(call) for call in calls))
+
+    def test_hold_during_receipt_restoration_prevents_attestation(self):
+        with tempfile.NamedTemporaryFile(mode='r+') as output,patch.dict(os.environ,{'GITHUB_OUTPUT':output.name}):
+            _,_,error=self.recover([],provenance_error='missing',current_override={'labels':[{'name':'hold'}]})
+            self.assertIsNone(error)
+            output.seek(0);self.assertIn('updated=[]',output.read())
+
+    def test_fresh_hold_opt_out_head_or_main_change_prevents_atomic_update(self):
+        options=[{'late_override':{'labels':[{'name':'hold'}]}},
+                 {'late_override':{'auto_merge':None}},
+                 {'late_override':{'head':{**PR['head'],'sha':'f'*40}}},
+                 {'main_changed':True}]
+        for option in options:
+            with self.subTest(option=option):
+                ci,calls,error=self.recover([self.run_record('workflow_dispatch','success')],updated_head='b'*40,**option)
+                self.assertIn('need attention',error)
+                self.assertFalse(ci)
+                self.assertFalse(any('graphql' in call[4:5] for call in calls))
+
+    def test_graphql_http_success_with_errors_and_manual_replacement_do_not_attest(self):
+        for option in [{'graphql_error':True},{'replacement_head':'f'*40}]:
+            with self.subTest(option=option),tempfile.NamedTemporaryFile(mode='r+') as output,patch.dict(os.environ,{'GITHUB_OUTPUT':output.name}):
+                ci,calls,error=self.recover([self.run_record('workflow_dispatch','success')],updated_head='b'*40,**option)
+                self.assertIn('need attention',error)
+                self.assertFalse(ci)
+                self.assertEqual(sum('graphql' in call[4:5] for call in calls),1)
+                output.seek(0);self.assertIn('updated=[]',output.read())
+
+    def test_apply_job_cannot_fall_through_to_another_branch_family_or_head(self):
+        for override in [{'branch':'story-runner/other'}, {'family':'vendor-radar'}, {'previous':'f'*40}]:
+            with self.subTest(override=override):
+                ci,calls,error=self.recover([],updated_head='b'*40,plan_override=override)
+                self.assertIn('need attention',error)
+                self.assertEqual(calls,[])
+                self.assertFalse(ci)
+
+    def test_radar_families_recover_missing_ci_for_both_author_paths(self):
+        for family in ['vendor-radar','vendor-radar-bringup']:
+            for app in [False,True]:
+                with self.subTest(family=family,app=app):
+                    pr=self.radar_pr(family,app)
+                    ci,calls,error=self.recover([self.run_record()],pr=pr,content_bot='fixture-content[bot]')
+                    self.assertIsNone(error)
+                    self.assertEqual(ci,[['gh','workflow','run','ci.yml','--repo','owner/repo','--ref',pr['head']['ref']]])
+                    self.assertNotIn('refresh-repair.yml',[c[3] for c in calls if c[:3]==['gh','workflow','run']])
+
+    def test_radar_real_failure_never_enters_story_data_repair(self):
+        for family in ['vendor-radar','vendor-radar-bringup']:
+            ci,calls,error=self.recover([self.run_record('workflow_dispatch','failure')],
+                pr=self.radar_pr(family,True),content_bot='fixture-content[bot]')
+            self.assertIsNone(error)
+            self.assertEqual(ci,[])
+            self.assertNotIn('refresh-repair.yml',[c[3] for c in calls if c[:3]==['gh','workflow','run']])
+
+    def test_app_radar_current_base_update_uses_only_matching_app_token(self):
+        for family in ['vendor-radar','vendor-radar-bringup']:
+            tokens=[]
+            _,_,error=self.recover([self.run_record('pull_request','success')],
+                pr=self.radar_pr(family,True),updated_head='b'*40,content_bot='fixture-content[bot]',
+                content_token='fixture-installation-token',content_slug='fixture-content',update_tokens=tokens)
+            self.assertIsNone(error)
+            self.assertEqual(tokens,['fixture-installation-token'])
+
+    def test_app_radar_missing_or_mismatched_token_cannot_fall_back_for_base_update(self):
+        for token,slug in [('', 'fixture-content'), ('fixture-token','wrong-app')]:
+            tokens=[]
+            _,_,error=self.recover([self.run_record('pull_request','success')],
+                pr=self.radar_pr(app=True),updated_head='b'*40,content_bot='fixture-content[bot]',
+                content_token=token,content_slug=slug,update_tokens=tokens)
+            self.assertIn('need attention',error)
+            self.assertEqual(tokens,[])
+
+    def test_configured_app_does_not_adopt_other_authors_families_or_manual_stops(self):
+        pr=self.radar_pr(app=True)
+        cases=[(pr,''),({**pr,'user':{'login':'other[bot]','type':'Bot'}},'fixture-content[bot]'),
+               ({**pr,'user':{'login':'fixture-content[bot]','type':'User'}},'fixture-content[bot]'),
+               (self.radar_pr('story-runner',True),'fixture-content[bot]'),
+               ({**pr,'draft':True},'fixture-content[bot]'),({**pr,'auto_merge':None},'fixture-content[bot]'),
+               ({**pr,'head':{**pr['head'],'repo':{'full_name':'fork/repo'}}},'fixture-content[bot]')]
+        for candidate,login in cases:
+            with self.subTest(candidate=candidate,login=login):
+                ci,calls,error=self.recover([],pr=candidate,content_bot=login)
+                self.assertIsNone(error)
+                self.assertEqual(calls,[])
+                self.assertEqual(ci,[])
+
+    def test_malformed_app_config_preserves_actions_recovery_and_rejects_app_author(self):
+        for app in [False,True]:
+            with self.subTest(app=app):
+                ci,calls,error=self.recover([],pr=self.radar_pr(app=app),content_bot='not a bot')
+                self.assertIsNone(error)
+                self.assertEqual(len(ci),0 if app else 1)
+                if app:
+                    self.assertEqual(calls,[])
+
+    def test_radar_retries_keep_the_existing_budget(self):
+        ci,_,error=self.recover([self.run_record('workflow_dispatch','cancelled',id=i) for i in range(3)],
+            pr=self.radar_pr(app=True),content_bot='fixture-content[bot]')
+        self.assertEqual(ci,[])
+        self.assertIn('need attention',error)
+
     def test_approval_event_winning_branch_update_race_still_dispatches_ci(self):
         ci, calls, error = self.recover([self.run_record()], updated_head='b'*40)
         self.assertIsNone(error)
         self.assertEqual(ci, [['gh','workflow','run','ci.yml','--repo','owner/repo','--ref',BRANCH]])
-        self.assertTrue(any('/update-branch' in ' '.join(call) for call in calls))
+        self.assertTrue(any(('/update-branch' in ' '.join(call) or 'graphql' in call[4:5]) for call in calls))
         self.assertFalse(any('approve' in call for call in calls))
 
     def test_main_advance_does_not_replace_a_head_while_review_is_pending(self):
         _, calls, error = self.recover([self.run_record('workflow_dispatch','success')], updated_head='b'*40, pending_review=True)
-        self.assertFalse(any('/update-branch' in ' '.join(call) for call in calls))
+        self.assertFalse(any(('/update-branch' in ' '.join(call) or 'graphql' in call[4:5]) for call in calls))
         self.assertIsNone(error)
 
     def test_base_update_waits_for_active_review_hidden_by_latest_completed_check(self):
@@ -409,23 +629,29 @@ class RecoveryCITests(unittest.TestCase):
             updated_head='b'*40, review_history=[{'id':1,'name':'Greptile Review',
                 'app':{'id':867647},'status':'in_progress','conclusion':None}])
         self.assertIsNone(error)
-        self.assertFalse(any('/update-branch' in ' '.join(call) for call in calls))
+        self.assertFalse(any(('/update-branch' in ' '.join(call) or 'graphql' in call[4:5]) for call in calls))
 
     def test_loose_policy_keeps_a_reviewed_behind_head_unchanged(self):
         ci, calls, error = self.recover([self.run_record('workflow_dispatch','success')],
-                                        updated_head='b'*40, strict=False)
+                                        updated_head='b'*40, strict=False, phase='plan')
         self.assertIsNone(error)
         self.assertEqual(ci, [])
-        self.assertFalse(any('/update-branch' in ' '.join(call) for call in calls))
+        self.assertFalse(any(('/update-branch' in ' '.join(call) or 'graphql' in call[4:5]) for call in calls))
         reviews = [call for call in calls if call[:4] == ['gh','workflow','run','refresh-review.yml']]
         self.assertEqual(reviews[0][-1], f'head={SHA}')
+
+    def test_apply_job_defers_without_dispatch_when_base_update_is_no_longer_required(self):
+        ci,calls,error=self.recover([self.run_record('workflow_dispatch','success')],updated_head='b'*40,strict=False)
+        self.assertIsNone(error)
+        self.assertFalse(ci)
+        self.assertFalse(any('graphql' in call[4:5] or call[:3]==['gh','workflow','run'] for call in calls))
 
     def test_real_conflict_reaches_bounded_repair_even_with_loose_policy(self):
         ci, calls, error = self.recover([self.run_record('workflow_dispatch','success')],
                                         behind=1, strict=False, mergeable=False)
         self.assertIn('need attention', error)
         self.assertEqual(ci, [])
-        self.assertFalse(any('/update-branch' in ' '.join(call) for call in calls))
+        self.assertFalse(any(('/update-branch' in ' '.join(call) or 'graphql' in call[4:5]) for call in calls))
         workers = [call[3] for call in calls if call[:3] == ['gh','workflow','run']]
         self.assertEqual(workers, ['refresh-review.yml','review-findings.yml','refresh-repair.yml'])
 
@@ -433,7 +659,7 @@ class RecoveryCITests(unittest.TestCase):
         _, calls, error = self.recover([], behind=1, strict=False, mergeable=None)
         self.assertIn('need attention', error)
         self.assertFalse(any(call[:3] == ['gh','workflow','run'] for call in calls))
-        self.assertFalse(any('/update-branch' in ' '.join(call) for call in calls))
+        self.assertFalse(any(('/update-branch' in ' '.join(call) or 'graphql' in call[4:5]) for call in calls))
 
     def test_conflict_does_not_replace_a_head_awaiting_review_or_findings(self):
         for waiting in [{'pending_review':True}, {'unresolved':True}]:
@@ -443,7 +669,7 @@ class RecoveryCITests(unittest.TestCase):
                 self.assertIn('need attention', error)
                 workers = [call[3] for call in calls if call[:3] == ['gh','workflow','run']]
                 self.assertEqual(workers, ['refresh-review.yml','review-findings.yml'])
-                self.assertFalse(any('/update-branch' in ' '.join(call) for call in calls))
+                self.assertFalse(any(('/update-branch' in ' '.join(call) or 'graphql' in call[4:5]) for call in calls))
 
     def test_conflict_keeps_missing_or_cancelled_ci_and_review_recoverable(self):
         for runs in [[], [self.run_record()], [self.run_record('workflow_dispatch','cancelled')]]:
@@ -453,7 +679,7 @@ class RecoveryCITests(unittest.TestCase):
                 self.assertEqual(len(ci),1)
                 workers = [call[3] for call in calls if call[:3] == ['gh','workflow','run']]
                 self.assertEqual(workers,['ci.yml','refresh-review.yml','review-findings.yml'])
-                self.assertFalse(any('/update-branch' in ' '.join(call) for call in calls))
+                self.assertFalse(any(('/update-branch' in ' '.join(call) or 'graphql' in call[4:5]) for call in calls))
 
     def test_verdict_findings_keep_same_head_recovery_but_wait_for_review_to_finish(self):
         for conflict in [False,True]:
@@ -472,14 +698,14 @@ class RecoveryCITests(unittest.TestCase):
     def test_failed_policy_lookup_keeps_the_existing_head(self):
         _, calls, error = self.recover([], updated_head='b'*40, rules_error=True)
         self.assertIn('need attention', error)
-        self.assertFalse(any('/update-branch' in ' '.join(call) for call in calls))
+        self.assertFalse(any(('/update-branch' in ' '.join(call) or 'graphql' in call[4:5]) for call in calls))
         self.assertFalse(any(call[:3] == ['gh','workflow','run'] for call in calls))
 
     def test_strict_policy_does_not_update_with_unresolved_findings(self):
         _, calls, error = self.recover([self.run_record('workflow_dispatch','success')],
                                        updated_head='b'*40, unresolved=True)
         self.assertIsNone(error)
-        self.assertFalse(any('/update-branch' in ' '.join(call) for call in calls))
+        self.assertFalse(any(('/update-branch' in ' '.join(call) or 'graphql' in call[4:5]) for call in calls))
 
     def test_manual_stop_or_head_change_after_listing_prevents_branch_update(self):
         for override in [{'draft':True}, {'auto_merge':None}, {'state':'closed'},
@@ -487,7 +713,7 @@ class RecoveryCITests(unittest.TestCase):
             with self.subTest(override=override):
                 _, calls, error = self.recover([], updated_head='b'*40, current_override=override)
                 self.assertIsNone(error)
-                self.assertFalse(any('/update-branch' in ' '.join(call) for call in calls))
+                self.assertFalse(any(('/update-branch' in ' '.join(call) or 'graphql' in call[4:5]) for call in calls))
                 self.assertFalse(any(call[:3] == ['gh','workflow','run'] for call in calls))
 
     def test_no_run_or_approval_only_history_dispatches(self):
@@ -512,7 +738,7 @@ class RecoveryCITests(unittest.TestCase):
                     _, calls, error = self.recover([self.run_record(event,None,status=status)],
                                                    updated_head='b'*40)
                     self.assertIsNone(error)
-                    self.assertFalse(any('/update-branch' in ' '.join(call) for call in calls))
+                    self.assertFalse(any(('/update-branch' in ' '.join(call) or 'graphql' in call[4:5]) for call in calls))
                     self.assertFalse(any(call[:3] == ['gh','workflow','run'] for call in calls))
 
     def test_pending_ci_prevents_conflict_repair_from_replacing_an_active_head(self):
@@ -608,6 +834,103 @@ class RecoveryCITests(unittest.TestCase):
 
 
 class PublicationTests(unittest.TestCase):
+    def radar_step(self, name):
+        source=(Path(__file__).resolve().parents[2]/'.github/workflows/vendor-radar.yml').read_text()
+        step=source.split(f'      - name: {name}\n',1)[1].split('\n      - name:',1)[0]
+        lines=step.split('        run: |\n',1)[1].split('\n      - name: Continue main CI',1)[0].splitlines()
+        return step, '\n'.join(line[10:] for line in lines if line.startswith('          '))
+
+    def publish_radar(self, bringup, app, *, fail_dispatch=False, fail_create=False, fail_merge=False):
+        name='Bring-up PR for auto-approved passers' if bringup else 'Commit report + discovery records as PR (or compare-link issue)'
+        source,script=self.radar_step(name)
+        self.assertNotIn('UM_BOT_PR_PAT',source)
+        with tempfile.TemporaryDirectory() as directory:
+            cwd=Path(directory); binaries=cwd/'bin'; binaries.mkdir()
+            reports=cwd/'reports/vendor-radar/runs'; reports.mkdir(parents=True)
+            (reports/'fixture-123-triage.json').write_text('{}')
+            (cwd/'vendor-radar-triage.md').write_text('Fixture triage')
+            # Only executable workflow commands are replayed; all git/GitHub/engine
+            # commands below are local fixtures with no network or model access.
+            stub="""#!/usr/bin/python3
+import json, os, sys
+from pathlib import Path
+name=Path(sys.argv[0]).name
+args=sys.argv[1:]
+with open(os.environ['CALL_LOG'],'a') as log:
+    log.write(json.dumps([name,args,os.environ.get('GH_TOKEN')])+'\\n')
+if name=='git' and args[:2]==['status','--porcelain']: print(' M reports/fixture.json')
+if name=='pnpm' and 'rankings-engine/scripts/radar-bringup.ts' in args: print('fixture vendor')
+if name=='gh' and args[:2]==['pr','create']:
+    if os.environ['FAIL_CREATE']=='true': sys.exit(18)
+    print('https://github.com/owner/repo/pull/1')
+if name=='gh' and args[:3]==['workflow','run','ci.yml'] and os.environ['FAIL_DISPATCH']=='true': sys.exit(17)
+if name=='gh' and args[:2]==['pr','merge'] and os.environ['FAIL_MERGE']=='true': sys.exit(19)
+"""
+            for name in ['git','gh','pnpm','python3']:
+                binary=binaries/name; binary.write_text(stub); binary.chmod(0o755)
+            result=subprocess.run(['bash','-e','-c',script.replace('/tmp/',directory+'/')],cwd=cwd,
+                text=True,capture_output=True,env={'PATH':str(binaries)+os.pathsep+os.environ['PATH'],
+                'CALL_LOG':str(cwd/'calls.jsonl'),'RADAR_RUN_ID':'fixture-123','GITHUB_SHA':'baseline',
+                'GITHUB_REPOSITORY':'owner/repo','ANTHROPIC_API_KEY':'fixture',
+                'GH_TOKEN':'app-fixture' if app and not bringup else 'actions-fixture',
+                'CONTENT_TOKEN':'app-fixture' if app else '', 'GH_ACTIONS_TOKEN':'actions-fixture',
+                'HAS_CONTENT_BOT':'true' if app else 'false',
+                'FAIL_DISPATCH':str(fail_dispatch).lower(),'FAIL_CREATE':str(fail_create).lower(),
+                'FAIL_MERGE':str(fail_merge).lower()})
+            calls=[json.loads(line) for line in (cwd/'calls.jsonl').read_text().splitlines()]
+            return result,calls
+
+    def test_radar_app_publishes_with_one_identity_and_ordinary_pr_ci(self):
+        for bringup in [False,True]:
+            result,calls=self.publish_radar(bringup,True)
+            self.assertEqual(result.returncode,0,result.stderr)
+            publications=[c for c in calls if (c[0]=='git' and 'push' in c[1]) or (c[0]=='gh' and c[1][0]=='pr')]
+            self.assertTrue(publications)
+            self.assertTrue(all(c[2]=='app-fixture' for c in publications))
+            self.assertTrue(any('credential.helper=!gh auth git-credential' in c[1] for c in publications))
+            self.assertFalse(any(c[0]=='gh' and c[1][0]=='workflow' for c in calls))
+            self.assertTrue(all(c[2]=='actions-fixture' for c in calls if c[0]=='pnpm'))
+
+    def test_radar_dispatch_failure_preserves_recovery_opt_in(self):
+        for bringup in [False,True]:
+            result,calls=self.publish_radar(bringup,False,fail_dispatch=True)
+            self.assertEqual(result.returncode,17,result.stderr)
+            merge=next(i for i,c in enumerate(calls) if c[0]=='gh' and c[1][:2]==['pr','merge'])
+            dispatch=next(i for i,c in enumerate(calls) if c[0]=='gh' and c[1][:3]==['workflow','run','ci.yml'])
+            self.assertLess(merge,dispatch)
+            self.assertEqual(calls[dispatch][2],'actions-fixture')
+            self.assertIn('--auto',calls[merge][1])
+
+    def test_radar_opt_in_failure_still_starts_ci_and_remains_visible(self):
+        for bringup in [False,True]:
+            for app in [False,True]:
+                with self.subTest(bringup=bringup,app=app):
+                    result,calls=self.publish_radar(bringup,app,fail_merge=True)
+                    self.assertEqual(result.returncode,19,result.stderr)
+                    dispatches=[c for c in calls if c[0]=='gh' and c[1][:3]==['workflow','run','ci.yml']]
+                    self.assertEqual(len(dispatches),0 if app else 1)
+                    if dispatches:
+                        self.assertEqual(dispatches[0][2],'actions-fixture')
+                    self.assertFalse(any(c[0]=='gh' and c[1][:2]==['issue','create'] for c in calls))
+
+    def test_radar_issue_fallback_uses_actions_token_with_app_publication(self):
+        for bringup in [False,True]:
+            result,calls=self.publish_radar(bringup,True,fail_create=True)
+            self.assertEqual(result.returncode,0,result.stderr)
+            issues=[c for c in calls if c[0]=='gh' and c[1][:2]==['issue','create']]
+            self.assertEqual(len(issues),1)
+            self.assertEqual(issues[0][2],'actions-fixture')
+            self.assertFalse(any(c[0]=='gh' and c[1][0]=='workflow' for c in calls))
+
+    def test_radar_publication_rejects_missing_or_wrong_app_identity(self):
+        _,script=self.radar_step('Verify content publication identity')
+        for slug,login,success in [('fixture-content','fixture-content[bot]',True),
+                                   ('','fixture-content[bot]',False),('other','fixture-content[bot]',False),
+                                   ('fixture-content','',False)]:
+            result=subprocess.run(['bash','-e','-c',script],capture_output=True,text=True,
+                env={'APP_SLUG':slug,'CONTENT_BOT_LOGIN':login})
+            self.assertEqual(result.returncode==0,success,result.stderr)
+
     def test_publication_uses_the_bot_identity_accepted_by_recovery(self):
         root=Path(__file__).resolve().parents[2]
         source=(root/'.github/workflows/story-runner.yml').read_text().split('      - name: Open PR if anything changed\n',1)[1]
@@ -617,7 +940,7 @@ class PublicationTests(unittest.TestCase):
     def test_unsupported_grade_change_stops_before_remote_push_pr_or_review(self):
         root=Path(__file__).resolve().parents[2]
         source=(root/'.github/workflows/story-runner.yml').read_text().split('      - name: Open PR if anything changed\n',1)[1]
-        script='\n'.join(line[10:] for line in source.split('        run: |\n',1)[1].splitlines())
+        script='\n'.join(line[10:] for line in source.split('        run: |\n',1)[1].split('\n      - name: Continue main CI',1)[0].splitlines())
         with tempfile.TemporaryDirectory() as directory:
             cwd=Path(directory)
             arena=cwd/'open-rankings/fixture'; (arena/'evidence').mkdir(parents=True)
