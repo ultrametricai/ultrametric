@@ -71,8 +71,8 @@ against `2026-11-04-v6-preview.json`.
 |---|---|---|---|
 | 1 | ai-assistants, cloud-platforms, edge-platforms, frontend-frameworks, frontier-models, legal-ops, payroll, startup-banking, web-scraping | 4,936 | merged (PR #612) |
 | 2 | card-issuing, customer-data-platforms, docs-platforms, fraud-prevention, government-services, gpu-clouds, model-gateways, scheduling | 4,766 | merged (PR #614) |
-| 3 | ai-coding, applicant-tracking, crm, email-marketing, expense-management, incident-management, inference-providers, speech-to-text, sso-identity, terminals, vibe-coding | 4,775 | this PR |
-| 4 | ai-support-agents, browser-agents, data-pipelines, desktop-os, device-agents, domain-registrars, equity-management, error-tracking, game-engines, infra-as-code, local-llm-runtimes, mcp-infrastructure, robotics-platforms | 4,943 | queued |
+| 3 | ai-coding, applicant-tracking, crm, email-marketing, expense-management, incident-management, inference-providers, speech-to-text, sso-identity, terminals, vibe-coding | 4,775 | merged (PR #615) |
+| 4 | ai-support-agents, browser-agents, data-pipelines, desktop-os, device-agents, domain-registrars, equity-management, error-tracking, game-engines, infra-as-code, local-llm-runtimes, mcp-infrastructure, robotics-platforms | 4,943 | this PR |
 | 5 | agent-frameworks, agent-skills, ai-search-apis, ai-video, compliance-automation, data-warehouses, design-tools, identity-verification, marketplace-payments, mobile-payments, notes-knowledge, startup-law-firms | 4,774 | queued |
 | 6 | ai-memory, billing-subscriptions, cloud-storage, compliance-screening, durable-workflows, ecommerce-platforms, email-apis, fp-a, gpus, payments, self-hosted-assistants, stablecoin-payments, voice-agents | 4,941 | queued |
 | 7 | agent-sandboxes, banking-as-a-service, banking-data-apis, llm-evals-observability, meeting-ai, product-feedback, screen-sharing, security-keys, security-scanners, serverless-databases, software-factory, tax-automation | 4,778 | queued |
@@ -233,3 +233,46 @@ Own-vendor and disclosed-row audits (convention item 5), both document-only:
 Spend: about $62 batched plus correction rounds (ai-coding needed nine resume runs; its
 stubborn cells repeatedly failed the verbatim-quote rule before converging). Wave total
 about $80; cumulative about $230.
+
+## Wave 4 (2026-11-05)
+
+4,943 cells re-judged across the thirteen arenas. 885 verdict flips: 828 down, 9 up, 48
+lateral relabels, plus 542 quality-only moves (net -346). Fleet transition profile:
+
+`full→partial` 448 · `partial→none` 378 · `na→none` 40 · `none→partial` 7 ·
+`none→na` 6 · `partial→disputed` 2 · `partial→full` 2 · other 2
+
+| arena | cells | flips | down / up / lateral | quality-only (net) |
+|---|---|---|---|---|
+| ai-support-agents | 318 | 81 | 81 / 0 / 0 | 48 (-35) |
+| browser-agents | 364 | 52 | 51 / 0 / 1 | 40 (-30) |
+| data-pipelines | 265 | 77 | 76 / 0 / 1 | 45 (-38) |
+| desktop-os | 390 | 60 | 54 / 0 / 6 | 33 (-22) |
+| device-agents | 200 | 19 | 18 / 0 / 1 | 19 (-15) |
+| domain-registrars | 294 | 76 | 71 / 0 / 5 | 33 (-20) |
+| equity-management | 504 | 52 | 47 / 1 / 4 | 37 (-19) |
+| error-tracking | 330 | 52 | 48 / 1 / 3 | 49 (-28) |
+| game-engines | 456 | 85 | 75 / 2 / 8 | 41 (-18) |
+| infra-as-code | 216 | 59 | 57 / 0 / 2 | 25 (-21) |
+| local-llm-runtimes | 920 | 110 | 99 / 2 / 9 | 82 (-45) |
+| mcp-infrastructure | 416 | 98 | 98 / 0 / 0 | 58 (-43) |
+| robotics-platforms | 270 | 64 | 53 / 3 / 8 | 32 (-12) |
+
+No arena in this wave carries an owner, affiliated, or self-submitted row (the
+cloudflare-registrar affiliation field is a scope note, not an ownership disclosure), so
+no favorable-flip audit applies. Notable rank moves, all pure-rubric: babylonjs #5 → #1
+in game-engines (phaser #1 → #2, playcanvas #2 → #4, unreal #6 → #8), localai #2 → #1 and
+cactus-compute #1 → #3 in local-llm-runtimes, parahelp #2 ↔ intercom-fin #3 in
+ai-support-agents, rollbar #3 → #2 over bugsnag in error-tracking, windows #3 → #5 in
+desktop-os.
+
+Legacy-audit closure: error-tracking/glitchtip:openness-open-license, the top standing
+unsupported-churn upgrade in `2026-11-04-legacy-transitions.md` (none q0 to full q7 at
+eaed1da46e with no machine-verifiable new support), was re-judged from scratch under v6
+and the fresh judge independently reached full q7 on the quoted first-party open-source
+claim. The cell's published verdict now rests on this labeled wave instead of the
+unsupported flip. glitchtip itself moved #5 to #4 in the arena while its aiEra fell with
+the fleet-wide tightening.
+
+Spend: about $62 batched plus correction rounds (one to three resume runs per arena).
+Wave total about $75; cumulative about $305.
