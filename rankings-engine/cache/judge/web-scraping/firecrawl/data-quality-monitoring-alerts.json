@@ -1,19 +1,31 @@
 {
-  "hash": "db8dc3e95ffffd051a4fc1531cca1191cfdeb0cff1cd32c9f09ef3aa43f01a9c",
+  "hash": "852299abfd8aac5e956bc8b2faba317742ee96c614fe8befe2687130efc8c10e",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Firecrawl documents webhooks that report when crawl, batch scrape, extract, agent, and monitor jobs start, progress, or finish, with HMAC-signed delivery, plus a per-scrape audit event stream. These cover job-status notification and some monitoring. Data-quality validation is only implied by schema-based structured extraction, and there is no explicit failure-alerting or performance-metrics capability. missing for 10: job performance metrics/dashboard, explicit failure alerts (e.g. failed-job events or alert rules), data-quality validation beyond schema extraction, independent corroboration.",
+    "rationale": "Firecrawl documents its own webhooks that notify an HTTPS endpoint when crawl, batch scrape, extract, agent or monitor-check jobs start, progress or finish, signed with HMAC-SHA256. That covers job-status monitoring and a callback path that could carry alerts. Explicit failure alerts, performance metrics and data-quality validation are not documented; schema-based extraction shapes the output but does not validate it. Missing for 10: explicit failure/error alerting, job performance metrics or dashboards, data-quality validation checks, and independent corroboration.",
     "evidenceIds": [
       "firecrawl-docs-11",
-      "firecrawl-docs-7",
       "firecrawl-docs-12",
-      "firecrawl-docs-20",
-      "firecrawl-gh-7",
-      "firecrawl-docs-16"
+      "firecrawl-docs-7"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a data-engineer, I can monitor job performance, validate data quality, and receive alerts when something fails",
+      "citations": [
+        {
+          "evidenceId": "firecrawl-docs-11",
+          "quote": "Get notified the moment a crawl, batch scrape, extract, agent job, or monitor check starts, progresses, or finishes. Instead of polling for status, you provide an HTTPS endpoint"
+        },
+        {
+          "evidenceId": "firecrawl-docs-12",
+          "quote": "Verify that every webhook request actually came from Firecrawl by checking its HMAC-SHA256 signature."
+        }
+      ]
+    },
     "productId": "firecrawl",
     "storyId": "data-quality-monitoring-alerts"
   }

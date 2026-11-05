@@ -1,14 +1,25 @@
 {
-  "hash": "e16ba6f74ea746858e824e3859fcdd2b895ace349a4197cad6411e1bba76de00",
+  "hash": "8bd6331861b036d65c3e1f292c330229d54ecdb906eb2e5fe432a8da5f7b42c4",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "partial",
-    "quality": 3,
+    "verdict": "none",
+    "quality": 0,
     "confidence": "medium",
-    "rationale": "Reader lets you forward session cookies on each request via the `X-Set-Cookie` header, so you can reach authenticated pages by resending login cookies every time. Nothing in the evidence shows a persistent browser profile or server-side session that keeps cookies and login state across requests; the S3 and 5-minute caches store fetched page content, not browser state. Missing for 10: a persistent or reusable browser profile, server-side cookie and login-state storage across requests, profile management docs, and hands-on corroboration that authenticated fetching works.",
+    "rationale": "The only related evidence is per-request cookie forwarding via the `X-Set-Cookie` header. The caller must resupply cookies on every request, so this is an adjacent control, not a persistent browser profile that keeps cookies and login state across requests. The S3 cache stores fetched pages, not browser session state, and nothing in the pack documents persistent profiles or sessions.",
     "evidenceIds": [
       "jina-reader-docs-1"
     ],
+    "support": {
+      "relation": "adjacent",
+      "coverage": "none",
+      "subject": "As a developer, I can reuse a persistent browser profile with saved cookies and login state across multiple requests",
+      "citations": [
+        {
+          "evidenceId": "jina-reader-docs-1",
+          "quote": "Pass your session cookies with the `X-Set-Cookie` header and the Reader forwards them when fetching the URL"
+        }
+      ]
+    },
     "productId": "jina-reader",
     "storyId": "persistent-authenticated-session"
   }

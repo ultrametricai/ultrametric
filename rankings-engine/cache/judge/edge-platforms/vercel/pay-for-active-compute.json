@@ -1,12 +1,35 @@
 {
-  "hash": "bbeb017b6a7c89a6f5a56bf33c6a10b661c4e427c7078a0af6c1e6918f2ea315",
+  "hash": "4d0e34e1b5df441698be46fa90fc8ee3ac9bf1cd9b2c5d3b879b00d5630e41d5",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Billing granularity is a fair question for a serverless cloud platform like Vercel, so the axis applies. However, nothing in the evidence pack describes paying only for active compute time instead of idle wall-clock time. The Fluid compute entry mentions only on-demand execution and concurrency scaling for I/O-heavy workloads, not how compute is billed.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 6,
+    "confidence": "high",
+    "rationale": "Vercel's Fluid compute pricing bills Active CPU only during actual code execution, not during I/O waits such as database or AI model calls, which directly addresses idle-time billing for CPU. However, Provisioned Memory is billed for the entire instance lifetime, including I/O waits, so part of the compute bill still tracks wall-clock time. Missing for 10: memory billed only on active time rather than instance lifetime, independent or hands-on corroboration of the billing behavior.",
+    "evidenceIds": [
+      "vercel-parity-pay-for-active-compute-20261103",
+      "vercel-docs-19",
+      "vercel-parity-known-overage-pricing-20261103"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a devops-lead, I can pay only for active compute time rather than idle wall-clock time",
+      "citations": [
+        {
+          "evidenceId": "vercel-parity-pay-for-active-compute-20261103",
+          "quote": "You are only billed during actual code execution and not during I/O operations"
+        },
+        {
+          "evidenceId": "vercel-parity-pay-for-active-compute-20261103",
+          "quote": "If your function takes 100ms to process data but spends 400ms waiting for a database query, you're only billed for the 100ms of active CPU time."
+        },
+        {
+          "evidenceId": "vercel-docs-19",
+          "quote": "Run server-side code on demand with Fluid compute, which scales concurrency for AI and I/O-heavy workloads."
+        }
+      ]
+    },
     "productId": "vercel",
     "storyId": "pay-for-active-compute"
   }

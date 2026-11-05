@@ -1,17 +1,35 @@
 {
-  "hash": "fafa83a1249e81be9c85b2f9fb8c6d68787c7c6d6d1e081a0d77985126b4c420",
+  "hash": "4cb4abc7a58a28d6c5dcaa86e0b0761f71710700d994d00e59c8d1784999ba82",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "The API is path-versioned (`POST /v1/systemone`, `GET /v1/models`). Models carry versioned IDs (`jev-1.13.0`) with documented `jev-latest`/`jev-preview` aliases, guidance to pin a version and migrate on your own schedule, and the answering version reported in each response. An SDK changelog also exists. However, nothing documents a deprecation or sunset policy for API versions or pinned models. Missing for 10: a documented deprecation/sunset policy with notice periods for API and model versions, an API versioning policy beyond the /v1 path, and independent corroboration.",
+    "rationale": "Jev exposes a versioned API surface: endpoints under /v1 such as POST /v1/systemone and GET /v1/models. It also documents versioned model IDs with alias semantics (jev-latest, jev-preview) and tells users to pin a version and migrate on their own schedule. However, no deprecation policy is documented: there are no sunset timelines, notice periods, or retirement rules for old API or model versions. missing for 10: a documented deprecation/sunset policy with notice periods, API-version lifecycle docs beyond the /v1 path, independent corroboration of version stability.",
     "evidenceIds": [
       "jev-supp-versioning",
       "jev-docs-30",
-      "jev-supp-models-endpoint",
-      "jev-docs-27"
+      "jev-supp-models-endpoint"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
+      "citations": [
+        {
+          "evidenceId": "jev-supp-versioning",
+          "quote": "If you have tuned confidence thresholds against a specific version, pin that version's ID instead of the alias and move to the new one on your own schedule."
+        },
+        {
+          "evidenceId": "jev-docs-30",
+          "quote": "Every model on this page is served by the same endpoint, `POST /v1/systemone`."
+        },
+        {
+          "evidenceId": "jev-supp-models-endpoint",
+          "quote": "`GET /v1/models` returns the names your account can send in the `model` field, with a description and release date for each"
+        }
+      ]
+    },
     "productId": "jev",
     "storyId": "api-versioning-policy"
   }

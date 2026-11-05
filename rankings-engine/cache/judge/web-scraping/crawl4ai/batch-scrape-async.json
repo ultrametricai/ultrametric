@@ -1,20 +1,45 @@
 {
-  "hash": "a81b0f619bd50b237c3c628ef331f96cd86fbbd23e3e1607a04320edd258120d",
+  "hash": "bd2c1e1cabf11f6cecf7583798de533bdecf2087e06e965f158919956cdc680c",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Crawl4AI ships an async-first crawler (AsyncWebCrawler/arun) and claims parallel crawling. It also documents multi-URL batch configuration and browser-pool monitoring. Reliability features such as automatic retry with proxy fallback and resume_state crash recovery support long-running, large-scale jobs. Missing for 10: an explicitly documented batch-crawl API with concurrency/rate-limit controls, evidence of throughput at the thousands-of-URLs scale, and independent hands-on corroboration of batch performance.",
+    "rationale": "Crawl4AI documents an async crawler (AsyncWebCrawler with await arun), parallel crawling, and multi-URL batches with per-pattern strategies. It also documents supporting reliability pieces: automatic retry and a browser pool. However, the evidence shows only a single-URL async call, and nothing demonstrates batch scraping at the scale of thousands of URLs. missing for 10: an explicit batch/many-URL async API example, documented concurrency/rate-limit controls for large batches, evidence of thousands-of-URL scale, independent hands-on corroboration of large batch runs",
     "evidenceIds": [
       "crawl4ai-docs-1",
       "crawl4ai-docs-7",
       "crawl4ai-gh-10",
-      "crawl4ai-gh-6",
       "crawl4ai-gh-4",
-      "crawl4ai-gh-30",
-      "crawl4ai-gh-17"
+      "crawl4ai-gh-6"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a data-engineer, I can batch scrape thousands of URLs asynchronously",
+      "citations": [
+        {
+          "evidenceId": "crawl4ai-docs-1",
+          "quote": "async with AsyncWebCrawler() as crawler: result = await crawler.arun(url=\"https://crawl4ai.com\")"
+        },
+        {
+          "evidenceId": "crawl4ai-docs-7",
+          "quote": "High Performance: Parallel crawling, chunk-based extraction, real-time use cases."
+        },
+        {
+          "evidenceId": "crawl4ai-gh-10",
+          "quote": "Multi-URL Configuration: Different strategies for different URL patterns in one batch"
+        },
+        {
+          "evidenceId": "crawl4ai-gh-4",
+          "quote": "Automatic retry with proxy chain and fallback fetch function"
+        },
+        {
+          "evidenceId": "crawl4ai-gh-6",
+          "quote": "Real-time Monitoring Dashboard with live system metrics and browser pool visibility"
+        }
+      ]
+    },
     "productId": "crawl4ai",
     "storyId": "batch-scrape-async"
   }

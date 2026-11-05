@@ -1,14 +1,25 @@
 {
-  "hash": "7faee23ad1d7366c28649328f7e8752cf02a74ad705d91fcb3fdb8108de06e78",
+  "hash": "c3631c4415015872f1d2bff58629b78709486c2f7290b76eccdd5875814f1bd1",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Setting `x-proxy: auto` (API key required) routes requests through Reader's hosted proxy pool, which rotates residential and datacenter IPs and handles common anti-bot challenges automatically. That covers the rotation and anti-bot parts of the story. However, the evidence does not show block-triggered automatic retries across successive proxies, and there is no way to define your own proxy chain. Missing for 10: documented retry-on-block failover across proxies, user-configurable proxy chain or ordering, independent or hands-on corroboration that rotation defeats anti-bot blocks.",
+    "rationale": "Reader's own SaaS proxy mode (`x-proxy: auto`) rotates residential and datacenter IPs and handles common anti-bot challenges automatically, which comes close to the story. However, nothing documents retry-on-block behavior or an ordered fallback chain across different proxies, and it requires an API key. Missing for 10: documented automatic retry when a request is blocked, a configurable chain or ordered fallback of distinct proxies (including user-supplied ones), and independent or hands-on corroboration of block-recovery behavior.",
     "evidenceIds": [
       "jina-reader-gh-9"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a data-engineer, I can automatically retry through a chain of different proxies when anti-bot detection blocks a request",
+      "citations": [
+        {
+          "evidenceId": "jina-reader-gh-9",
+          "quote": "Reader's hosted proxy pool rotates residential / datacenter IPs and handles common anti-bot challenges automatically."
+        }
+      ]
+    },
     "productId": "jina-reader",
     "storyId": "auto-retry-proxy-chain"
   }

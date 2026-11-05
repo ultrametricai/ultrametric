@@ -1,16 +1,36 @@
 {
-  "hash": "eb440805a20e7afe44647c740f2c1144c40357aa0dc81f501c4409e706123ba3",
+  "hash": "c65cbe4aa4f17c0db6c34c73e4ac2cedb8311b90a4456509f84e320089a7811d",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Riveter offers basic run tracking: webhooks fire on run.completed, run.stopped and run.finished, and the SDK can list runs filtered by status. However, there is no documented performance monitoring, no data-quality validation (dry_run only validates the request and estimates credits), and no failure-specific alerting. Missing for 10: job performance metrics/dashboards, output data-quality validation or checks, explicit failure alerts/notifications, independent corroboration.",
+    "rationale": "Riveter lets you check run status (/runs/{id}, Runs.List filtered by status) and register a webhook_url that receives POSTs on run.completed, run.stopped and run.finished events. That gives basic job monitoring and completion notifications, but there is no documented failure-specific alert, no performance metrics, and no data-quality validation (dry_run only validates the request and estimates credits). missing for 10: job performance metrics or dashboards, data-quality validation of results, explicit failure alerting, independent corroboration.",
     "evidenceIds": [
       "riveter-docs-6",
       "riveter-docs-27",
-      "riveter-docs-22"
+      "riveter-docs-22",
+      "riveter-docs-25"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a data-engineer, I can monitor job performance, validate data quality, and receive alerts when something fails",
+      "citations": [
+        {
+          "evidenceId": "riveter-docs-6",
+          "quote": "Pass webhook_url in the JSON body when starting a run and Riveter POSTs the full results to your URL when it finishes (events: run.completed, run.stopped, run.finished)."
+        },
+        {
+          "evidenceId": "riveter-docs-22",
+          "quote": "page, err := client.Runs.List(ctx, &riveter.ListRunsParams{Status: \"success\"})"
+        },
+        {
+          "evidenceId": "riveter-docs-25",
+          "quote": "/run_status → /runs/{id}"
+        }
+      ]
+    },
     "productId": "riveter",
     "storyId": "data-quality-monitoring-alerts"
   }

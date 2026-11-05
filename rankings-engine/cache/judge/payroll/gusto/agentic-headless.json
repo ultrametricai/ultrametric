@@ -1,20 +1,37 @@
 {
-  "hash": "5a94541b329b0d0a8dea52e2dfb86d73b54eedffe56b775f06a73a56f892ebe6",
+  "hash": "5f6083a98429acc8d1c2373985bcc8b8ba20ee9a35070da93202c35870d9863c",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
-    "quality": 8,
+    "quality": 9,
     "confidence": "high",
-    "rationale": "Gusto ships an official CLI that is documented for headless and CI use. It authenticates non-interactively via GUSTO_ACCESS_TOKEN/GUSTO_COMPANY_UUID env vars or --token-stdin, supports separate sandbox and production credential slots, and auto-enables a stable JSON envelope when output is piped. It also has documented exit codes, structured auth errors, --dry-run, and a checksummed keyless installer. The underlying REST API adds system access tokens, idempotency keys, and webhooks for unattended automation. Missing for 10: independent hands-on corroboration of CI usage, and the CLI is pre-1.0 (v0.3.0) with no payroll submit command, so writes require an explicit --confirm.",
+    "rationale": "Gusto's official CLI documents first-class headless and scripted use. CI can authenticate via GUSTO_ACCESS_TOKEN and GUSTO_COMPANY_UUID env vars or --token-stdin, and gets a stable JSON envelope automatically when stdout is piped, documented exit codes, --dry-run previews and a separate sandbox environment. This is backed by verified install endpoints and releases. Missing for 10: independent hands-on corroboration of an actual CI pipeline run, and the CLI only drafts payroll (no submit command; agent-mode writes need --confirm).",
     "evidenceIds": [
+      "gusto-contest-61-6",
       "gusto-contest-61-1",
       "gusto-contest-61-2",
       "gusto-contest-61-3",
-      "gusto-contest-61-4",
-      "gusto-contest-61-6",
-      "gusto-docs-70",
-      "gusto-docs-8"
+      "gusto-contest-61-4"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
+      "citations": [
+        {
+          "evidenceId": "gusto-contest-61-6",
+          "quote": "Headless/scripted operation is first-class: besides interactive OAuth (gusto auth login / gusto auth whoami), CI and scripted environments can pass GUSTO_ACCESS_TOKEN + GUSTO_COMPANY_UUID env vars or pipe the token on stdin (--token-stdin, keeping the secret out of argv, shell history, and set -x/audit logs)."
+        },
+        {
+          "evidenceId": "gusto-contest-61-1",
+          "quote": "--agent/--json (auto-on when stdout is piped) emits a stable JSON envelope {ok, data|error}; documented exit codes 0-9; --dry-run previews any create request"
+        },
+        {
+          "evidenceId": "gusto-contest-61-3",
+          "quote": "installs to ~/.gusto/bin/gusto with no sudo, and updates PATH; GUSTO_CLI_VERSION pins a release, GUSTO_INSTALL_DIR relocates."
+        }
+      ]
+    },
     "productId": "gusto",
     "storyId": "agentic-headless"
   }

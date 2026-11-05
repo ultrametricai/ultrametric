@@ -1,18 +1,37 @@
 {
-  "hash": "3acd7dba5f4eda939f3afa1a82139723c5960d30011b47e424df8fb65d0b8c18",
+  "hash": "c59425adbdf67b8f0d1fa0b2b116b9b7358f5f2d8a94bb719525a93040633bc1",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "proa",
-    "storyId": "explicit-unidirectional-state-flow",
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Proa's documented data-passing is explicit: components take compile-time-checked props, and render state comes through a typed WebContext. Interactive islands use signals and event handlers with emitted seed state, which points to explicit reactivity rather than implicit bindings. The evidence never states a unidirectional data-flow model or contrasts it with two-way binding, so the story's core claim is only implied. Missing for 10: explicit documentation of one-way data flow, a statement that two-way binding is absent or avoided, tooling or guidance for tracing state changes, and independent or hands-on corroboration.",
+    "rationale": "Proa documents explicit, typed data passing: compile-time-checked props, signals plus event handlers for interactive islands, and typed access to request and route state through WebContext. Together these suggest explicit data flow, but the evidence never states a one-way data-flow model, never rules out two-way bindings, and shows no state-change tracing or debugging tools. Missing for 10: an explicit unidirectional data-flow or no-two-way-binding guarantee, documentation of how signal state changes propagate and can be traced, debugging or devtools for state changes, and independent or hands-on corroboration.",
     "evidenceIds": [
       "proa-docs-32",
       "proa-gh-3",
-      "proa-docs-16",
-      "proa-docs-18"
-    ]
+      "proa-docs-18",
+      "proa-docs-16"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can trace state changes through explicit, predictable data flow instead of debugging implicit two-way bindings",
+      "citations": [
+        {
+          "evidenceId": "proa-docs-32",
+          "quote": "the fields passed to AboutPage are compile-time-checked props."
+        },
+        {
+          "evidenceId": "proa-gh-3",
+          "quote": "Add signals and event handlers, and Proa emits the server-rendered HTML plus the JavaScript required for that island"
+        },
+        {
+          "evidenceId": "proa-docs-18",
+          "quote": "Every render has typed access to request-scoped data, response metadata, route state, and loader caching through the same WebContext"
+        }
+      ]
+    },
+    "productId": "proa",
+    "storyId": "explicit-unidirectional-state-flow"
   }
 }

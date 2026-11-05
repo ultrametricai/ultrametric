@@ -1,15 +1,30 @@
 {
-  "hash": "7bd509bf56fc20d5f9d7dee01ec3df499b95ec58297240d954f2e9f68c31f6db",
+  "hash": "a3ab319f72acfde55031e8ae7eb135776514c2a81009106333daf74dc2527e87",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Riveter documents webhook delivery: pass `webhook_url` when starting a run, and it POSTs the full results to your URL on run.completed, run.stopped and run.finished events. Its docs also explicitly recommend webhooks over polling. Scope is narrow, though: subscriptions are per-run callbacks covering only run lifecycle events, not a standing account-level subscription. Missing for 10: account-level webhook subscription/management, event types beyond run lifecycle, documented signature verification and delivery retries, independent hands-on corroboration.",
+    "rationale": "Riveter documents outbound HTTP webhooks. You pass `webhook_url` when starting a run, and Riveter POSTs the full results to that URL with named events (run.completed, run.stopped, run.finished). The OpenAPI guidance recommends webhooks over polling, so a programmatic consumer can receive run-completion events. Missing for 10: account-level or standing webhook subscriptions beyond per-run registration, documented signature verification and delivery retries, a broader event catalog (e.g. scheduled monitor changes), and independent or hands-on corroboration.",
     "evidenceIds": [
       "riveter-docs-6",
       "riveter-docs-27"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can subscribe to events via webhooks",
+      "citations": [
+        {
+          "evidenceId": "riveter-docs-6",
+          "quote": "Pass webhook_url in the JSON body when starting a run and Riveter POSTs the full results to your URL when it finishes (events: run.completed, run.stopped, run.finished)."
+        },
+        {
+          "evidenceId": "riveter-docs-27",
+          "quote": "Prefer webhooks over polling: pass `webhook_url` on kickoff and Riveter POSTs the results to you when the run finishes."
+        }
+      ]
+    },
     "productId": "riveter",
     "storyId": "agentic-webhooks"
   }

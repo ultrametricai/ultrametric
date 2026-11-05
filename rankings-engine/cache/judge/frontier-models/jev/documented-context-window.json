@@ -1,17 +1,40 @@
 {
-  "hash": "12592fbe1a95eb091e98cff05a88634c5f52d20ce6dfd45085c9da9210008b9d",
+  "hash": "55b70804450beb0026a870b7f88c92cf6d4f4a259580accfbb9579b46dfde13c",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "The models page states the context budget precisely: 64k tokens per request, 32k tokens for `state` plus the longest question, and the 64k budget covers state plus all questions combined. That is exact token accounting, not a marketing range. The SDK also exposes per-call input-token usage, and one endpoint serves every listed model, selected by the `model` field. Missing for 10: an explicit output-token limit (the docs only say output tokens are free), confirmation that limits are stated separately for each versioned model ID, and independent hands-on corroboration of the limits.",
+    "rationale": "The models page gives exact context budgets rather than ranges: 64k tokens per request, a 32k sub-budget for state plus the longest question, and states that the 64k covers state plus all questions combined. Output tokens are free typed answers, and the Usage interface reports input tokens used. Missing for 10: an explicit per-model output-token limit, a clear per-version breakdown across jev-latest, jev-preview and jev-1.13.0, and independent or hands-on corroboration.",
     "evidenceIds": [
       "jev-supp-context",
-      "jev-docs-30",
+      "jev-supp-pricing",
       "jev-docs-34",
-      "jev-supp-pricing"
+      "jev-supp-versioning"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, every model's context window and token budgets are documented precisely — input/output limits per model, not marketing ranges",
+      "citations": [
+        {
+          "evidenceId": "jev-supp-context",
+          "quote": "Context length — 64k tokens per request; 32k tokens for `state` plus the longest question"
+        },
+        {
+          "evidenceId": "jev-supp-context",
+          "quote": "the 64k budget covers the `state` plus all questions combined"
+        },
+        {
+          "evidenceId": "jev-supp-pricing",
+          "quote": "Charged per input token. Output tokens are free."
+        },
+        {
+          "evidenceId": "jev-docs-34",
+          "quote": "Number of input tokens used."
+        }
+      ]
+    },
     "productId": "jev",
     "storyId": "documented-context-window"
   }

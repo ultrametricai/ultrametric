@@ -1,19 +1,41 @@
 {
-  "hash": "eae472b921e2e3e1b464281f7680fdc2c0bfc7d7a883a93fe023d74070041ad2",
+  "hash": "eef2393ad8b74fb9b1800f66926950e968aa06845f119872203aa7b4832fcd1e",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 8,
+    "verdict": "partial",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Reader is a pure HTTP API you can drive non-interactively with curl and request headers such as x-wait-for-selector, x-engine and x-respond-with, which suits scripts and CI jobs. A prebuilt GHCR container bundling headless Chrome lets you self-host it in automated pipelines, and the API key is passed as a header, which works with CI secrets. missing for 10: explicit CI-specific docs or examples (e.g. a GitHub Actions recipe), independent hands-on corroboration of CI/headless use.",
+    "rationale": "Reader is a plain HTTP API driven entirely by URLs and request headers, with curl examples. It also ships a prebuilt container image that bundles headless Chrome, so it can be scripted non-interactively or self-hosted inside automation pipelines. However, the evidence never explicitly documents CI usage, so headless operation is shown but in-CI automation is only implied. missing for 10: explicit CI/pipeline integration docs or examples (e.g. GitHub Actions), documented non-interactive auth and rate-limit guidance for automated runs, independent hands-on corroboration of CI use.",
     "evidenceIds": [
       "jina-reader-gh-1",
       "jina-reader-gh-8",
       "jina-reader-gh-14",
       "jina-reader-gh-16",
-      "jina-reader-gh-21",
-      "jina-reader-gh-9"
+      "jina-reader-gh-21"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
+      "citations": [
+        {
+          "evidenceId": "jina-reader-gh-8",
+          "quote": "It bundles headless Chrome, LibreOffice, and CJK fonts, so you can run Reader without building it yourself."
+        },
+        {
+          "evidenceId": "jina-reader-gh-1",
+          "quote": "It converts any URL to an **LLM-friendly** input with `https://r.jina.ai/https://your.url`."
+        },
+        {
+          "evidenceId": "jina-reader-gh-21",
+          "quote": "curl 'https://r.jina.ai/https://example.com/' -H 'x-wait-for-selector: #content'"
+        },
+        {
+          "evidenceId": "jina-reader-gh-16",
+          "quote": "`x-engine` — enforces a fetching engine: `browser` (headless Chrome), `curl` (lightweight, no JS), or `auto`"
+        }
+      ]
+    },
     "productId": "jina-reader",
     "storyId": "agentic-headless"
   }

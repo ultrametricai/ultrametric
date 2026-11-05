@@ -1,18 +1,36 @@
 {
-  "hash": "dd872ba3c8af9caa1832252fb43e01f4a0d40987b85cd627b85a80b756a9a083",
+  "hash": "042704fb21ac9580679ada6f240e1ce6ff41fb2b14c263733cb0851e2d47f7db",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "DeepSeek has a dedicated \"Rate Limit & Isolation\" page. It lists per-model concurrency limits (e.g. 2500/500 in the pricing tables), describes SSE keep-alive behavior under load, and points to an error-codes page that documents 429 semantics. Scaling is handled through a documented, free capacity-expansion request, and per-user isolation through `user_id`. Missing for 10: limits are stated as concurrency rather than requests/tokens per unit time; there is no published tier ladder, since scaling is case-by-case on request; and there is no independent or hands-on corroboration of the 429 behavior.",
+    "rationale": "DeepSeek has a dedicated Rate Limit & Isolation page. It documents per-model concurrency limits (e.g. 2500/500), SSE keep-alive behavior under load, and 429 semantics on the error-codes page. Higher limits come through a free capacity-expansion request rather than published tiers. The limits are concurrency-based, not requests or tokens per unit time, and the evidence does not show the actual 429 response body. Missing for 10: documented requests/tokens-per-minute limits, a published tier scaling schedule, a concrete 429 response example, and independent corroboration.",
     "evidenceIds": [
       "deepseek-supp-concurrency",
-      "deepseek-docs-9",
       "deepseek-docs-17",
-      "deepseek-docs-5",
-      "deepseek-docs-14"
+      "deepseek-docs-9",
+      "deepseek-docs-5"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can read documented rate limits — requests and tokens per unit time, how tiers scale, and what a 429 looks like — before I hit them in production",
+      "citations": [
+        {
+          "evidenceId": "deepseek-supp-concurrency",
+          "quote": "A dedicated \"Rate Limit & Isolation\" page documents concurrency limits (pricing page tables show per-model concurrency, e.g. 2500/500)"
+        },
+        {
+          "evidenceId": "deepseek-supp-concurrency",
+          "quote": "the error-codes page documents 429 semantics"
+        },
+        {
+          "evidenceId": "deepseek-docs-17",
+          "quote": "If you need higher concurrency, you can submit a capacity expansion request. We will match the appropriate concurrency based on your actual business needs. There is no additional cost for capacity expansion."
+        }
+      ]
+    },
     "productId": "deepseek",
     "storyId": "documented-rate-limits"
   }

@@ -1,21 +1,42 @@
 {
-  "hash": "9924d0c3cd4b1a65a34df2e377ec4c22b3e8f4bded58f14958e470e5965edd8b",
+  "hash": "6b9d4362dbe1774ebbb90a0d6c37b6763197c725bb3d2ef552e92456b5210dd1",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Gusto's own agent-facing CLI ships a payroll-prep skill that puts per-cycle inputs onto a draft payroll for review. It also offers --dry-run previews and an agent-mode confirmation gate that keeps a human approving writes, and the CLI cannot submit a payroll itself. The API exposes unprocessed regular payrolls and a contractor payment preview endpoint that returns submission_blockers. However, nothing documents a regular-payroll preview/calculation endpoint or any anomaly detection that flags unusual payroll amounts for review. Missing for 10: documented regular-payroll preview/calculate API, anomaly or outlier detection surfaced to the reviewer, hands-on or independent corroboration of an agent-driven preview-and-review flow.",
+    "rationale": "Gusto's official agent-friendly CLI has a payroll-prep skill that maps an owner's inputs onto a draft payroll for review. It also offers `--dry-run` previews of create requests and a `--confirm` gate that keeps a human in the loop, and the API can list unprocessed payrolls. A preview endpoint with submission blockers is documented only for contractor payment groups, not regular payroll runs, and nothing shows automated anomaly detection. missing for 10: a documented regular-payroll preview/calculate API, automated anomaly detection and surfacing, independent hands-on corroboration.",
     "evidenceIds": [
       "gusto-contest-61-1",
-      "gusto-contest-61-2",
       "gusto-contest-61-5",
-      "gusto-docs-27",
-      "gusto-docs-10",
+      "gusto-contest-61-2",
       "gusto-docs-46",
       "gusto-docs-62",
-      "gusto-contest-52-1"
+      "gusto-docs-27"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an ai-native user, I can have an agent run a payroll preview via the API and surface anomalies for review before I approve the run",
+      "citations": [
+        {
+          "evidenceId": "gusto-contest-61-5",
+          "quote": "payroll-prep (maps an owner's per-cycle inputs onto a draft payroll for review)"
+        },
+        {
+          "evidenceId": "gusto-contest-61-1",
+          "quote": "--dry-run previews any create request; writes in agent mode are blocked with a confirmation_required envelope (exit 8) until re-run with --confirm, keeping a human in the loop."
+        },
+        {
+          "evidenceId": "gusto-docs-46",
+          "quote": "Upcoming regular payrolls can be retrieved by calling GET /v1/companies/{company_uuid}/payrolls with processing_statuses=unprocessed."
+        },
+        {
+          "evidenceId": "gusto-docs-27",
+          "quote": "You can use the POST /v1/companies/{company_id}/contractor_payment_groups/preview to validate inputs, determine how fast a payment can be made for a company, and handle any submission blockers."
+        }
+      ]
+    },
     "productId": "gusto",
     "storyId": "agent-payroll-preview-anomalies"
   }

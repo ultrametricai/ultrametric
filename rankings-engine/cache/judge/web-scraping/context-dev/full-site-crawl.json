@@ -1,18 +1,41 @@
 {
-  "hash": "c4303d62f790a659e3eaf05424ddc573db8e4cc6c788b595e29ef2deb07d7e01",
+  "hash": "068e3d07a29d7475c9a1961878dbd61b5238395ddf4b2b7929579269f3aaffc6",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Context.dev documents a crawl endpoint that returns Markdown for linked pages in one response, up to 500 pages. A background batch crawl handles up to 25,000 pages and lets you track progress and retrieve results. A vendor-cited customer (SiteGPT) uses it to scrape entire websites. Missing for 10: single-request crawling is capped at 500 pages and framed as for 'a small website section', larger sites need the async submit-and-poll flow, and no independent hands-on evidence confirms full-site crawl reliability.",
+    "rationale": "Context.dev has its own crawl capability. The synchronous crawl returns page Markdown in one response but is capped at 500 pages and framed as a 'small website section'. Larger crawls of up to 25,000 pages run as an async background batch that needs progress tracking and a separate retrieval step, so 'entire website in one request' holds only within that cap or across multiple calls. missing for 10: single-request coverage of whole sites beyond 500 pages, independent or hands-on corroboration of full-site crawl completeness (the SiteGPT migration is a vendor-published claim).",
     "evidenceIds": [
-      "context-dev-docs-1",
       "context-dev-docs-2",
       "context-dev-docs-3",
       "context-dev-docs-34",
+      "context-dev-docs-1",
       "context-dev-docs-16"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can crawl an entire website and get content from all its pages with one request",
+      "citations": [
+        {
+          "evidenceId": "context-dev-docs-2",
+          "quote": "Crawl a small website section and return page Markdown in one response, with a maximum of 500 pages."
+        },
+        {
+          "evidenceId": "context-dev-docs-3",
+          "quote": "Crawl up to 25,000 pages in a background batch, track progress, and retrieve Markdown or HTML when the job finishes."
+        },
+        {
+          "evidenceId": "context-dev-docs-34",
+          "quote": "Scrape 25K URLs or crawl large websites asynchronously."
+        },
+        {
+          "evidenceId": "context-dev-docs-16",
+          "quote": "switched from Firecrawl to Context.dev to scrape entire websites and turn them into the knowledge base behind its customers' bots"
+        }
+      ]
+    },
     "productId": "context-dev",
     "storyId": "full-site-crawl"
   }

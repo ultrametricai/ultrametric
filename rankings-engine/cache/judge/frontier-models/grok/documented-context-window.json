@@ -1,17 +1,36 @@
 {
-  "hash": "462147fefc04e04ab0eef47c2eb8b40eb0f832eefc52833d40bab973f81d1ba7",
+  "hash": "a09897726b9ac25873e09e36590d29a4f2e9f11b09ac1b166e05c0ab060b4c7e",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "The docs give a precise context window for each model: the grok-4.7 page states \"Context window: 500,000 tokens\", and the models/pricing tables carry a per-model Context column (500k, 1M, 256k). GET /v1/models also returns a `context_length` field, and the pricing docs state the 200k-token long-context billing threshold. Nothing in the evidence documents per-model maximum output tokens, so only the input side of the story's \"input/output limits\" is covered. Missing for 10: per-model max output token limits, a separate input vs. output budget breakdown, independent or hands-on confirmation of the stated limits.",
+    "rationale": "Context windows are documented precisely per model: the grok-4.7 page states 500,000 tokens, the models/pricing tables carry a Context column per model, and GET /v1/models returns `context_length`. The pack does not document maximum output tokens per model, and there is no separate input-vs-output split, so the output half of the story is unevidenced. missing for 10: per-model maximum output token limits, explicit input/output budget breakdown, independent corroboration of the documented limits.",
     "evidenceIds": [
       "grok-supp-context",
-      "grok-supp-model-page",
       "grok-supp-models-endpoint",
+      "grok-supp-model-page",
       "grok-supp-pricing"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, every model's context window and token budgets are documented precisely — input/output limits per model, not marketing ranges",
+      "citations": [
+        {
+          "evidenceId": "grok-supp-context",
+          "quote": "the grok-4.7 model page states \"Context window: 500,000 tokens\" under \"At a glance\", and the models/pricing tables carry a Context column per model"
+        },
+        {
+          "evidenceId": "grok-supp-models-endpoint",
+          "quote": "with a documented response schema carrying `aliases`, `context_length`, per-token prices, and a `capabilities` object"
+        },
+        {
+          "evidenceId": "grok-supp-pricing",
+          "quote": "requests whose prompt reaches the listed token threshold are billed at the higher rate for all tokens in the request"
+        }
+      ]
+    },
     "productId": "grok",
     "storyId": "documented-context-window"
   }

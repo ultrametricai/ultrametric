@@ -1,20 +1,36 @@
 {
-  "hash": "34e4be107d8f06da3b3cee0710fd683bb400f71a9cc2a798370062ae50513fa6",
+  "hash": "4b46213cb87527667f949c5d093b4b3b5cbfa2020d5e0967bd51c7efa595f720",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Crawl4AI documents a single-command deep crawl (`crwl <url> --deep-crawl bfs --max-pages N`) that follows a site's links and returns content from many pages. It also supports parallel crawling, fast URL discovery via prefetch, and crash recovery for long-running deep crawls via resume_state. missing for 10: in-depth docs on Python deep-crawl strategies and whole-site scope controls (limits, domain filters, sitemap use), and independent or hands-on corroboration of crawling an entire site end to end.",
+    "rationale": "Crawl4AI ships its own deep-crawl capability: a single CLI command (`--deep-crawl bfs --max-pages 10`) crawls outward from a start URL across multiple pages, and crash recovery (`resume_state`) and fast URL discovery (`prefetch=True`) are documented for long-running deep crawls. However, the evidence only shows a capped multi-page crawl, not a demonstrated whole-site crawl that returns aggregated content from every page in one request. missing for 10: explicit documentation of whole-site coverage (unbounded or sitemap-driven crawling of all pages), documentation of how per-page content is returned in one aggregated response, and independent hands-on corroboration of full-site crawls.",
     "evidenceIds": [
       "crawl4ai-gh-2",
       "crawl4ai-gh-30",
-      "crawl4ai-gh-8",
       "crawl4ai-gh-31",
-      "crawl4ai-docs-7",
-      "crawl4ai-docs-3",
-      "crawl4ai-probe-4"
+      "crawl4ai-gh-8"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can crawl an entire website and get content from all its pages with one request",
+      "citations": [
+        {
+          "evidenceId": "crawl4ai-gh-2",
+          "quote": "crwl https://docs.crawl4ai.com --deep-crawl bfs --max-pages 10"
+        },
+        {
+          "evidenceId": "crawl4ai-gh-30",
+          "quote": "Deep crawl crash recovery with `resume_state` and `on_state_change` callbacks for long-running crawls."
+        },
+        {
+          "evidenceId": "crawl4ai-gh-31",
+          "quote": "New `prefetch=True` mode for 5-10x faster URL discovery."
+        }
+      ]
+    },
     "productId": "crawl4ai",
     "storyId": "full-site-crawl"
   }

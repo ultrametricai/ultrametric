@@ -1,20 +1,37 @@
 {
-  "hash": "5830be2c814a7a53057647497c264d59fdaafbbbf97061358a83020e18a4e171",
+  "hash": "9a199ed46facf4fc4f948be2fa019114be3b9ccea4b2ef9fb52f57b3b35b8b97",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "react",
-    "storyId": "fine-grained-reactivity",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "React's own docs show that components manage their own state and that React updates the screen when data changes (react-gh-1, react-docs-3, react-docs-24). React Compiler's automatic memoization, which removes the need for manual useMemo, useCallback and React.memo, reduces unnecessary re-execution, but it is an opt-in build step that safely skips optimization on rule-breaking code (react-docs-15, react-docs-36, react-docs-43). The evidence does not show that only the dependent UI code re-runs; updates happen at component level. Missing for 10: fine-grained dependency tracking so only dependent code re-runs, explicit docs on the state declaration API (e.g., useState), independent corroboration of re-render scope.",
+    "rationale": "React documents components that manage their own state, with React updating the screen when that data changes. React Compiler adds automatic memoization that limits unnecessary recomputation. The evidence does not show fine-grained dependency tracking where only the dependent UI code re-runs. React's documented model is component-level updates, with granularity coming from build-time memoization rather than reactive subscriptions. Missing for 10: documented fine-grained dependency tracking (signals/observables) that re-runs only dependent code, explicit docs on state hooks and re-render scope, independent corroboration of update granularity.",
     "evidenceIds": [
       "react-gh-1",
       "react-docs-3",
-      "react-docs-24",
       "react-docs-15",
-      "react-docs-36",
-      "react-docs-43"
-    ]
+      "react-docs-36"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can declare reactive state and have only the dependent UI code re-run when it changes",
+      "citations": [
+        {
+          "evidenceId": "react-gh-1",
+          "quote": "Build encapsulated components that manage their own state, then compose them to make complex UIs."
+        },
+        {
+          "evidenceId": "react-docs-3",
+          "quote": "React will then update the screen to match the new data."
+        },
+        {
+          "evidenceId": "react-docs-15",
+          "quote": "React Compiler automatically optimizes your React application at build time... eliminating the need for manual useMemo, useCallback, and React.memo."
+        }
+      ]
+    },
+    "productId": "react",
+    "storyId": "fine-grained-reactivity"
   }
 }

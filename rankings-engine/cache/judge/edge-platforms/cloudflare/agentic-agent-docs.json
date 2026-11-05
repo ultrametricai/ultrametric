@@ -1,19 +1,41 @@
 {
-  "hash": "9841d41d1ee263f383e49dc02e1ccf274aca0e5326fc693cf4cbe53666417279",
+  "hash": "5db151b3da1843be4b66d96ba2e120147a55bcc99e0ab2a8cda980e32a67d4e4",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
-    "quality": 9,
+    "quality": 10,
     "confidence": "high",
-    "rationale": "A live probe confirms developers.cloudflare.com/llms.txt returns HTTP 200. First-party docs describe per-product llms.txt indexes, a whole-corpus llms-full.txt, /index.md Markdown mirrors of every page, `Accept: text/markdown` content negotiation, and a dedicated agent-setup hub with per-agent guides. A keyless docs MCP server is also live-verified, so an agent can consume the docs directly. Missing for 10: hands-on verification of llms-full.txt and the Markdown content negotiation, which are documented but not probed.",
+    "rationale": "Cloudflare's docs are built for agents: a root llms.txt (confirmed live at HTTP 200 by probe) links to per-product llms.txt indexes, and there is a whole-corpus llms-full.txt. Every page is also available as Markdown via an /index.md mirror or an `Accept: text/markdown` header. On top of that, a dedicated agent-setup hub and a keyless Documentation MCP server (confirmed live by probe) let agents consume the docs directly.",
     "evidenceIds": [
       "cloudflare-probe-1",
       "cloudflare-supp-llms-md-mirrors",
       "cloudflare-supp-agent-setup",
-      "cloudflare-docs-48",
       "cloudflare-probe-4",
       "cloudflare-supp-mcp-fleet"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can point an agent at llms.txt or agent-oriented docs",
+      "citations": [
+        {
+          "evidenceId": "cloudflare-probe-1",
+          "quote": "PROBE llms.txt: HTTP 200 at https://developers.cloudflare.com/llms.txt"
+        },
+        {
+          "evidenceId": "cloudflare-supp-llms-md-mirrors",
+          "quote": "Any page can also be retrieved as Markdown by sending an `Accept: text/markdown` header to the page's URL without the `index.md` suffix"
+        },
+        {
+          "evidenceId": "cloudflare-supp-agent-setup",
+          "quote": "Every docs page also carries \"Copy as Markdown\", \"View as Markdown\", and \"Agent setup\" links."
+        },
+        {
+          "evidenceId": "cloudflare-probe-4",
+          "quote": "a live remote MCP server usable with NO credentials at all"
+        }
+      ]
+    },
     "productId": "cloudflare",
     "storyId": "agentic-agent-docs"
   }

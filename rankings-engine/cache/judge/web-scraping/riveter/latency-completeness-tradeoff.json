@@ -1,19 +1,41 @@
 {
-  "hash": "5d4b3673f678b4d47ba03ede9916aade5b92112ccf2659e00f7d70cfe5889ba2",
+  "hash": "f7b99b6bda3979d05bd63904b290ba685199caaa1636faef26b41248ee75149c",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
-    "confidence": "medium",
-    "rationale": "Riveter lets developers choose between a fast synchronous quick_search and slower AI-researched runs (search_agent, enrichments). It also lets them control when run results arrive: via the `wait` long-poll, polling with wait_for_result, or webhooks on run.completed, run.stopped or run.finished. This is a coarse latency-versus-depth choice rather than fine-grained control over returning partial or incomplete content early. Missing for 10: documented timeout or partial-result return semantics, explicit parameters for trading completeness against latency within one request, and hands-on corroboration.",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "Riveter documents some first-party control over when results come back. A synchronous quick_search is offered alongside the slower AI-researched search_agent. Async runs can be retrieved via a `wait` long-poll, polling until finished (wait_for_result), or a webhook POST on completion. However, nothing documents an explicit knob for returning partial or incomplete results earlier, or for setting exactly when content is returned. missing for 10: an explicit wait/timeout parameter with documented semantics, early return of partial results, a documented latency-vs-completeness tradeoff, independent or hands-on corroboration.",
     "evidenceIds": [
       "riveter-docs-4",
       "riveter-docs-5",
-      "riveter-docs-6",
-      "riveter-docs-11",
+      "riveter-docs-30",
       "riveter-docs-27",
-      "riveter-docs-30"
+      "riveter-docs-6"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can trade off latency against completeness by controlling exactly when content is returned",
+      "citations": [
+        {
+          "evidenceId": "riveter-docs-4",
+          "quote": "A quick_search lets you quickly web search a query, and pull structured results with urls, titles, and snippets — synchronously, in one request."
+        },
+        {
+          "evidenceId": "riveter-docs-5",
+          "quote": "A search_agent call asks one question and gets one AI-researched answer back"
+        },
+        {
+          "evidenceId": "riveter-docs-30",
+          "quote": "the SDKs handle auth, retries (429s and transient GET failures), the `wait` long-poll, polling until a run finishes (`wait_for_result`), and pagination"
+        },
+        {
+          "evidenceId": "riveter-docs-27",
+          "quote": "Prefer webhooks over polling: pass `webhook_url` on kickoff and Riveter POSTs the results to you when the run finishes."
+        }
+      ]
+    },
     "productId": "riveter",
     "storyId": "latency-completeness-tradeoff"
   }

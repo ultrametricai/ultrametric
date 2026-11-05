@@ -1,16 +1,18 @@
 {
-  "hash": "65623211063dfa1bf8e29f1da7f07453a3a8945033e8a01885eac2849afefc11",
+  "hash": "33d3401921767cae3f0ea7ccae5d05014d081614ad064e87d7701dca7da9eb50",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Vercel documents separate local, preview, production, and custom environments, each with its own variables. That lets a devops lead keep production credentials and endpoints out of preview deployments, but this is configuration-level separation rather than enforced network isolation. Deployment protection (Vercel Authentication, passwords, trusted IPs) controls who can reach preview URLs, not what those environments can reach outbound. Missing for 10: network-level egress isolation of non-production from production services, a private networking or secure-compute boundary per environment, documented guarantees that preview cannot reach production resources, and independent corroboration.",
-    "evidenceIds": [
-      "vercel-docs-23",
-      "vercel-docs-26",
-      "vercel-docs-1"
-    ],
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence shows no documented way to network-isolate preview or other non-production deployments from production services, such as a private network or egress controls per environment. Per-environment variables (vercel-docs-23) and inbound deployment protection (vercel-docs-26) are adjacent controls: one separates configuration, the other restricts who can open URLs, and neither enforces isolation from production services. Project-scoped tokens limit API reach, not network access between environments.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "adjacent",
+      "coverage": "none",
+      "subject": "As a devops-lead, I can isolate non-production environments from accessing production services",
+      "citations": []
+    },
     "productId": "vercel",
     "storyId": "prod-nonprod-isolation"
   }

@@ -1,17 +1,25 @@
 {
-  "hash": "cd71bc8dee1c8b1ebd238e3209b4c7bb7126506c1093b97d0d6ff4f58e95b0ee",
+  "hash": "a4e19bd67f27d935742fb09e261224f84294db25b473e1a805ae7bd2afd86337",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "partial",
-    "quality": 5,
+    "verdict": "none",
+    "quality": 0,
     "confidence": "medium",
-    "rationale": "Cloudflare documents event subscriptions: KV, Workers AI, Workers builds and similar products publish structured events, with a schema catalog, to a Queue. You consume them with a Worker or an HTTP pull consumer, not via push webhooks to an arbitrary URL. The Agents SDK also says it can connect incoming webhooks to a durable agent runtime, and Workflows can pause for external events, so a webhook-like flow is possible but takes extra building. Missing for 10: native outbound webhook delivery of account events to a user-supplied endpoint, webhook signing/retry documentation, and independent or hands-on corroboration.",
+    "rationale": "Cloudflare's event subscriptions publish account events to a Queue, which is consumed by Workers or HTTP pull consumers. That is a pull/queue model, not registrable outbound HTTP callbacks pushed to a subscriber URL. The Agents SDK mention of connecting webhooks describes inbound webhooks into an agent runtime, not outbound event delivery, so it is adjacent rather than the webhook-subscription capability.",
     "evidenceIds": [
-      "cloudflare-supp-event-subscriptions",
-      "cloudflare-docs-30",
-      "cloudflare-supp-agents-sdk",
-      "cloudflare-docs-42"
+      "cloudflare-supp-event-subscriptions"
     ],
+    "support": {
+      "relation": "adjacent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can subscribe to events via webhooks",
+      "citations": [
+        {
+          "evidenceId": "cloudflare-supp-event-subscriptions",
+          "quote": "Cloudflare products (e.g., KV, Workers AI, Workers) can publish structured events to a queue, which you can then consume with Workers or HTTP pull consumers to build custom workflows, integrations, or logic"
+        }
+      ]
+    },
     "productId": "cloudflare",
     "storyId": "agentic-webhooks"
   }

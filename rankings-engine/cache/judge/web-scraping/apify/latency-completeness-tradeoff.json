@@ -1,18 +1,40 @@
 {
-  "hash": "78f455ed5475c9996c99c0a26c12c964eb8ac34424361b02bb1ac8d85b6c8dae",
+  "hash": "51a3ec4a8cd0d497b95e5e8caf5f79421318a174dff713b328d602e557bcfedd",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
-    "confidence": "medium",
-    "rationale": "Apify gives developers indirect levers over when results come back. They can block until a run finishes with the convenience call (apify-docs-23), or be notified asynchronously via webhooks when a run finishes or fails (apify-docs-14, apify-docs-29). They can also bound completeness up front with input caps such as maxCrawlPages (apify-docs-15) and cap retrieved results with the limit parameter (apify-docs-28). However, the evidence never shows precise control over the return point, such as a wait timeout or reading partial results from a run still in progress. Missing for 10: documented wait-timeout control, incremental or partial result retrieval while a run is in progress, an explicit latency-vs-completeness configuration, and independent hands-on corroboration.",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Apify documents a convenience call that starts an Actor and waits for it to finish, webhooks that fire when a run finishes, and an Actor input (maxCrawlPages) plus a retrieval limit parameter that cap how much is gathered. Together these give coarse control over when results arrive and how complete they are, but there is no documented, explicit latency-versus-completeness control such as a configurable wait timeout or returning partial results early. Missing for 10: explicit wait/timeout parameters for returning partial results, documented guidance on the latency/completeness tradeoff, platform-level (not Actor-specific) crawl-size controls, independent corroboration.",
     "evidenceIds": [
       "apify-docs-23",
-      "apify-docs-14",
-      "apify-docs-29",
       "apify-docs-15",
-      "apify-docs-28"
+      "apify-docs-28",
+      "apify-docs-14"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can trade off latency against completeness by controlling exactly when content is returned",
+      "citations": [
+        {
+          "evidenceId": "apify-docs-23",
+          "quote": "Starts an Actor and waits for it to finish."
+        },
+        {
+          "evidenceId": "apify-docs-15",
+          "quote": "maxCrawlPages: 10,"
+        },
+        {
+          "evidenceId": "apify-docs-28",
+          "quote": "Use the limit parameter to retrieve a specific number of results."
+        },
+        {
+          "evidenceId": "apify-docs-14",
+          "quote": "you can use webhooks to start another Actor when an Actor run finishes or fails."
+        }
+      ]
+    },
     "productId": "apify",
     "storyId": "latency-completeness-tradeoff"
   }

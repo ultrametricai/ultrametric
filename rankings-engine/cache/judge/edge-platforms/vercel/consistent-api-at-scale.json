@@ -1,19 +1,43 @@
 {
-  "hash": "0cfd9ce2dc54b3e928f36777dfaff596927249d5125a02d0e287599bc00b8b62",
+  "hash": "dbafd346d969855faad8b0314c11c2675eca4556f38197de48224bce0c401955",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 4,
-    "confidence": "low",
-    "rationale": "Vercel describes itself as a platform for \"building, deploying, and scaling\" web apps and AI workloads. Fluid compute scales concurrency, production workloads can run in isolated containers, and the same Git-push, preview and production primitives (env management, gradual rollouts) apply across stages. That implies continuity from prototype to production. However, nothing explicitly documents that the same APIs carry an app to massive scale without rearchitecting, and there are no scale case studies or independent corroboration. Missing for 10: explicit first-party statement or docs on prototype-to-scale continuity without migration, evidence of behaviour at massive scale, independent or hands-on corroboration.",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Vercel documents one set of primitives that scales: Fluid compute auto-scales concurrency, and the same Functions run across Hobby, Pro and Enterprise with only the limits rising (duration, memory/CPU, concurrent deployments up to 500), backed by a 99.99% Enterprise SLA. But there is no explicit commitment or evidence that apps move from prototype to massive scale without rearchitecting. Vercel KV and Vercel Postgres were also discontinued and moved to Upstash and Neon, so some storage primitives did change over time. Missing for 10: an explicit no-rearchitect or API-stability guarantee across scale, independent case evidence of apps scaling on unchanged primitives, and stable first-party data primitives.",
     "evidenceIds": [
-      "vercel-probe-1",
       "vercel-docs-19",
-      "vercel-docs-12",
-      "vercel-docs-1",
-      "vercel-docs-23",
-      "vercel-docs-28"
+      "vercel-probe-1",
+      "vercel-parity-execution-time-limits-20261103",
+      "vercel-parity-documented-rate-limits-20261103",
+      "vercel-parity-published-uptime-sla-20261103",
+      "vercel-parity-redis-compatible-cache-20261103",
+      "vercel-parity-serverless-sql-query-20261103"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can rely on the same core APIs and primitives from prototype through massive scale, without rearchitecting or migrating platforms as usage grows",
+      "citations": [
+        {
+          "evidenceId": "vercel-docs-19",
+          "quote": "Run server-side code on demand with Fluid compute, which scales concurrency for AI and I/O-heavy workloads."
+        },
+        {
+          "evidenceId": "vercel-probe-1",
+          "quote": "Vercel is a cloud platform for building, deploying, and scaling web applications and AI workloads."
+        },
+        {
+          "evidenceId": "vercel-parity-execution-time-limits-20261103",
+          "quote": "Vercel Functions run on Fluid compute, which is enabled by default for new projects."
+        },
+        {
+          "evidenceId": "vercel-parity-published-uptime-sla-20261103",
+          "quote": "available 99.99% of the time, excluding any Excused Downtime events"
+        }
+      ]
+    },
     "productId": "vercel",
     "storyId": "consistent-api-at-scale"
   }

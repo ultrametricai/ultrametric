@@ -1,16 +1,35 @@
 {
-  "hash": "2dcdb8f27060df57da2dc6910439052056c05716056f27ff03c51c22aa467d7d",
+  "hash": "cc1c71559ce3db5fd4f1a2534afa4123a0d74f2044d6e24039fda93b65743abd",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Check documents registrable outbound HTTP webhooks that fire on payroll state changes, employee information updates, and bank information changes. Each request carries a `Check-Topic` header identifying the event type, and delivery attempts are summarized in the Console's Developer tab, which is enough to drive downstream automations. Missing for 10: explicit evidence of 'employee onboarded' and 'payment failed' event topics, details on delivery retries and signature verification, and independent or hands-on corroboration.",
+    "rationale": "Check documents registrable webhooks that send HTTP updates when a payroll state changes or an employee updates their information, with a Check-Topic header identifying the event type and delivery attempts visible in the Console. The evidence does not name the specific 'employee onboarded' or 'payment failed' events the story asks for, so coverage is incomplete. missing for 10: explicit employee-onboarded event, explicit payment-failed event, full enumerated event-type list, independent or hands-on corroboration.",
     "evidenceIds": [
       "check-docs-17",
       "check-docs-18",
       "check-docs-19"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can subscribe to payroll lifecycle events (payroll processed, employee onboarded, payment failed) via webhooks to drive downstream automations",
+      "citations": [
+        {
+          "evidenceId": "check-docs-17",
+          "quote": "Use Check API's webhooks to automatically receive HTTP updates when a payroll state changes, an employee updates their information, bank information is changed"
+        },
+        {
+          "evidenceId": "check-docs-19",
+          "quote": "Each webhook request has a `Check-Topic` header that represents which type of API event the webhook is associated with."
+        },
+        {
+          "evidenceId": "check-docs-18",
+          "quote": "Once configured, your webhooks and their delivery attempts will be summarized in the Check Console under the ‘Developer’ tab."
+        }
+      ]
+    },
     "productId": "check",
     "storyId": "payroll-event-webhooks"
   }

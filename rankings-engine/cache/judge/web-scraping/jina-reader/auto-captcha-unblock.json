@@ -1,16 +1,30 @@
 {
-  "hash": "300fb66e03881fdb074ec3a0aa604b50d44eee9efccb1072b2ab111744f03d74",
+  "hash": "40e085e8176e111fe465f477199c98245ecd8ca376e0bb0adb6834f70d8afd08",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Reader's hosted proxy (`x-proxy: auto`, API key required) rotates residential and datacenter IPs and says it \"handles common anti-bot challenges automatically\" (gh-9). Login walls are handled only by passing session cookies through `X-Set-Cookie` (docs-1), which means the user must obtain those cookies, so it is not fully hands-off. Missing for 10: explicit CAPTCHA-solving evidence, automated login or form filling without user-supplied cookies, and independent or hands-on confirmation that the anti-bot handling works.",
+    "rationale": "Reader's own hosted proxy pool (x-proxy: auto) is documented to rotate residential and datacenter IPs and handle common anti-bot challenges automatically, which covers part of the CAPTCHA case. Login walls are only addressed by forwarding session cookies you supply via X-Set-Cookie, which is not automatic login, and form walls are not covered at all. Missing for 10: explicit CAPTCHA-solving documentation, automated login or credential handling, form-wall submission, and independent or hands-on corroboration that the challenge bypass works.",
     "evidenceIds": [
       "jina-reader-gh-9",
-      "jina-reader-docs-1",
-      "jina-reader-gh-16"
+      "jina-reader-docs-1"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an ai-native user, I can have an agent automatically get past a CAPTCHA, login, or form wall without my manual intervention",
+      "citations": [
+        {
+          "evidenceId": "jina-reader-gh-9",
+          "quote": "Reader's hosted proxy pool rotates residential / datacenter IPs and handles common anti-bot challenges automatically."
+        },
+        {
+          "evidenceId": "jina-reader-docs-1",
+          "quote": "Pass your session cookies with the `X-Set-Cookie` header and the Reader forwards them when fetching the URL"
+        }
+      ]
+    },
     "productId": "jina-reader",
     "storyId": "auto-captcha-unblock"
   }

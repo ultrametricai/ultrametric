@@ -1,20 +1,41 @@
 {
-  "hash": "a7e6e0020a16ceca254d93eb9a902e51431ee76f8b5b7a17fd41818678aff83c",
+  "hash": "b2abc5d19f30963d35443145bf67f67304788240daa2946a997657b74c88ea61",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Vercel documents automatic preview environments for testing changes before production, with separate local, preview, and production variables that can point tests at non-production backends. It also offers Vercel Sandbox microVMs for agent-generated code, and Vercel Agent uses secure sandboxes to validate changes before they reach production. Missing for 10: explicit first-party documentation that preview or sandbox environments isolate production data by default (separation depends on per-environment variable setup, and data branching comes from the third-party Neon integration), and independent or hands-on corroboration.",
+    "rationale": "Vercel documents its own isolated test surfaces: automatic preview environments for testing changes before production, per-environment variables separating preview from production config, and Vercel Sandbox microVMs for agent-generated code. Vercel Agent also uses secure sandboxes to validate changes before they reach production. However, no evidence explicitly guarantees that preview or sandbox runs are kept off production data; that depends on the user pointing each environment at separate data stores. Neon branching is a marketplace partner capability and earns no credit. Missing for 10: an explicit documented guarantee of production-data isolation for preview or sandbox runs, first-party test-data or seeded-database provisioning, and independent hands-on corroboration.",
     "evidenceIds": [
       "vercel-docs-1",
-      "vercel-docs-27",
       "vercel-docs-23",
       "vercel-docs-34",
-      "vercel-docs-17",
       "vercel-supp-vercel-agent",
-      "vercel-intdir-1"
+      "vercel-docs-17"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
+      "citations": [
+        {
+          "evidenceId": "vercel-docs-1",
+          "quote": "automatic preview environments for testing changes before production"
+        },
+        {
+          "evidenceId": "vercel-docs-23",
+          "quote": "Manage local, preview, production, and custom environments and the variables each one uses."
+        },
+        {
+          "evidenceId": "vercel-docs-34",
+          "quote": "Run untrusted or agent-generated code in isolated Linux microVMs. Use Vercel Sandbox for agent workflows, debugging, and one-off commands."
+        },
+        {
+          "evidenceId": "vercel-supp-vercel-agent",
+          "quote": "It can use secure sandboxes to reproduce issues, validate generated code, and run checks before suggested changes reach production."
+        }
+      ]
+    },
     "productId": "vercel",
     "storyId": "api-sandbox"
   }

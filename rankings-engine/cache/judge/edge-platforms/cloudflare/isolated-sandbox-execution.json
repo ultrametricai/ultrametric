@@ -1,16 +1,31 @@
 {
-  "hash": "f562333f81bbf7be60ff80cd037ca481d23f65d8ca8bfd882b62a2fd37f62248",
+  "hash": "1f47aeecf2e3521f0cc09e9d7be211500a086036df640268cc01a49f646e4085",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Cloudflare's Sandbox SDK is documented as letting Workers apps run untrusted code securely in isolated environments. It is built on Containers, gives each sandbox its own isolated container with a full Linux environment, and exposes an exec/file API (e.g. getSandbox + sandbox.exec). The evidence describes container isolation, though, not hardware or VM-level isolation, and says nothing about sandboxes being ephemeral or torn down after use. missing for 10: explicit hardware/VM-level isolation guarantee, documented disposable/ephemeral sandbox lifecycle, independent or hands-on corroboration.",
+    "rationale": "Cloudflare documents a first-party Sandbox SDK, usable from Workers, that runs untrusted code in isolated containers, each with its own full Linux environment. The evidence never says the isolation is hardware-level (VM or microVM rather than container), and it never shows sandboxes being created and destroyed per task; the example uses a stable per-user sandbox ID, so disposability is unproven. missing for 10: evidence of hardware/VM-level isolation, documented disposable/ephemeral sandbox lifecycle, independent or hands-on corroboration.",
     "evidenceIds": [
       "cloudflare-supp-sandbox-sdk",
       "cloudflare-docs-26",
       "cloudflare-docs-28"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can run untrusted code in hardware-isolated, disposable sandboxes",
+      "citations": [
+        {
+          "evidenceId": "cloudflare-docs-26",
+          "quote": "The Sandbox SDK enables you to run untrusted code securely in isolated environments."
+        },
+        {
+          "evidenceId": "cloudflare-supp-sandbox-sdk",
+          "quote": "Each sandbox runs in its own isolated container with a full Linux environment"
+        }
+      ]
+    },
     "productId": "cloudflare",
     "storyId": "isolated-sandbox-execution"
   }
