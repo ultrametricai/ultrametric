@@ -192,7 +192,10 @@ const qualityOnly = { total: 0, supported: 0, labeled: 0, unsupported: 0 }
 // Cells a labeled wave re-judged (new rationale) while keeping the verdict: the wave's judge
 // independently reproduced the published verdict. Wave steps re-judge every cell and rewrite
 // every rationale (verified on the 2026-09-30 wave: zero byte-identical rows).
-const waveReconfirmedAt = new Map<string, string[]>()
+// Compare first-parent positions, not calendar dates or timestamps: two commits can
+// share a date, and commit clocks need not increase along the lineage.
+const waveReconfirmedAt = new Map<string, number[]>()
+const transitionPosition = new Map<string, number>()
 
 for (const arena of arenas) {
   const pathspecs = PATH_ERAS.map((era) => `${era}/${arena}/verdicts.json`)
@@ -208,6 +211,7 @@ for (const arena of arenas) {
 
   let prev = showAt<Row[]>(log[0].hash, arena, 'verdicts.json')
   for (let i = 1; i < log.length; i++) {
+    transitionPosition.set(`${arena}:${log[i].hash.slice(0, 10)}`, i)
     const cur = showAt<Row[]>(log[i].hash, arena, 'verdicts.json')
     if (!prev || !cur) {
       prev = cur ?? prev
@@ -233,7 +237,7 @@ for (const arena of arenas) {
         // row is a cache hit, not a re-judgment, and does not reconfirm.
         if (old && old.verdict === row.verdict && old.rationale !== row.rationale) {
           const key = `${arena}:${row.productId}:${row.storyId}`
-          waveReconfirmedAt.set(key, [...(waveReconfirmedAt.get(key) ?? []), log[i].date])
+          waveReconfirmedAt.set(key, [...(waveReconfirmedAt.get(key) ?? []), i])
         }
       }
     }
@@ -319,7 +323,9 @@ for (const seq of byCell.values()) {
     // reproduced the judgment; keep those out of the actionable standing set.
     if (t.class === 'unsupported-churn:standing') {
       const rec = waveReconfirmedAt.get(`${t.arena}:${t.productId}:${t.storyId}`) ?? []
-      if (rec.some((d) => d > t.date)) t.class = 'unsupported-churn:standing-wave-reconfirmed'
+      if (rec.some((position) => position > transitionPosition.get(`${t.arena}:${t.commit}`)!)) {
+        t.class = 'unsupported-churn:standing-wave-reconfirmed'
+      }
     }
   })
 }
