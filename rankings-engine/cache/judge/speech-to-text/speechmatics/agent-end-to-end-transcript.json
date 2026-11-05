@@ -1,19 +1,41 @@
 {
-  "hash": "e76784889561834a7e849a171ac015d7221f65dd34f9018146148fcee364353b",
+  "hash": "909ce59ca1031d1e15c6729c5b7fda8fcb75dbd5dd4935d69d7265b16056440b",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Speechmatics documents a batch API for turning audio files into text, with job resources that can be deleted. It also offers SDKs, an agent-readable llms.txt (probe HTTP 200), and markdown API reference pages, so an agent with a key plausibly has a docs-only path from submission to transcript. However, the pack never shows the batch job-creation call, status polling, transcript retrieval or the auth header format, and no OpenAPI spec was found at any probed path. Missing for 10: explicit documented batch job-creation and transcript-retrieval endpoints, documented API-key auth scheme for batch, a machine-readable OpenAPI spec, hands-on corroboration that an agent completed the flow unaided.",
+    "rationale": "Speechmatics documents a batch API for turning audio files into text, with job resources that can be deleted, and agent-readable docs at llms.txt. The pack does not show the actual auth scheme, job-creation call, or transcript-retrieval endpoint, and no OpenAPI spec was found, so it is unproven that an agent can do the whole flow from the docs alone. API keys are created in the web platform, but the story already assumes the agent holds a key. missing for 10: documented auth header usage, a job-submission endpoint, polling or result-retrieval steps, a machine-readable OpenAPI spec, and hands-on confirmation of an unattended end-to-end run.",
     "evidenceIds": [
       "speechmatics-docs-2",
-      "speechmatics-docs-5",
       "speechmatics-docs-23",
-      "speechmatics-docs-24",
       "speechmatics-probe-1",
+      "speechmatics-docs-5",
       "speechmatics-probe-3"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, an agent holding an API key can take a recording from submission to finished transcript (auth, job creation, result retrieval) from the public docs alone, with no human step in between",
+      "citations": [
+        {
+          "evidenceId": "speechmatics-docs-2",
+          "quote": "Use Batch processing to accurately turn your audio files into text"
+        },
+        {
+          "evidenceId": "speechmatics-docs-23",
+          "quote": "Delete a job and remove all associated resources."
+        },
+        {
+          "evidenceId": "speechmatics-probe-1",
+          "quote": "Developer documentation for Speechmatics APIs"
+        },
+        {
+          "evidenceId": "speechmatics-docs-5",
+          "quote": "Integrate Speechmatics quickly with SDKs for your language"
+        }
+      ]
+    },
     "productId": "speechmatics",
     "storyId": "agent-end-to-end-transcript"
   }

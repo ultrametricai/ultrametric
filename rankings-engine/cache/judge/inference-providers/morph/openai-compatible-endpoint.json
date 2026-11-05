@@ -1,19 +1,42 @@
 {
-  "hash": "f207fda2ad6bed57c89c552fe3f9d016a6d878eb97317c1fc86d139f3ded921a",
+  "hash": "06d332189937ddd02727ab3fa0a5932de2dc53a488335de26773eed77645f17d",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Morph's docs explicitly say to point any OpenAI SDK at https://api.morphllm.com/v1 with one API key. Existing OpenAI code needs only a new model string, and dedicated endpoints also connect via an OpenAI client. A community user independently confirmed the OpenAI-compatible endpoint worked with their existing CLI tool. Missing for 10: no published OpenAPI spec or detailed compatibility matrix showing which OpenAI SDK parameters and endpoints beyond chat completions are supported.",
+    "rationale": "Morph's docs say to point any OpenAI SDK at https://api.morphllm.com/v1 with one API key, and say existing OpenAI code only needs a new model string. The llms.txt probe confirms the endpoint is OpenAI-compatible, and a community user independently got it working through an OpenAI-compatible client. Missing for 10: detailed documentation of which OpenAI API parameters and features are compatible, and acknowledgment that a model-name change is also required beyond the base URL and key.",
     "evidenceIds": [
-      "morph-docs-1",
       "morph-docs-17",
+      "morph-docs-1",
       "morph-docs-18",
-      "morph-docs-23",
       "morph-probe-1",
-      "morph-comm-5"
+      "morph-comm-5",
+      "morph-docs-23"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can point an existing OpenAI SDK client at the provider by changing only the base URL and API key",
+      "citations": [
+        {
+          "evidenceId": "morph-docs-17",
+          "quote": "Point any OpenAI SDK at https://api.morphllm.com/v1. One API key covers the open-weight chat models and the specialized tools"
+        },
+        {
+          "evidenceId": "morph-docs-18",
+          "quote": "Kimi K3 serves 1M context through the standard chat completions endpoint, so existing OpenAI code only needs a new `model` string"
+        },
+        {
+          "evidenceId": "morph-comm-5",
+          "quote": "This uses an OpenAI-compatible endpoint, so got this working with my llm.datasette.io CLI tool"
+        },
+        {
+          "evidenceId": "morph-docs-23",
+          "quote": "connect an OpenAI client using the endpoint's URL and served model name"
+        }
+      ]
+    },
     "productId": "morph",
     "storyId": "openai-compatible-endpoint"
   }

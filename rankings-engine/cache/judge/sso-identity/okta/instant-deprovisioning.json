@@ -1,16 +1,30 @@
 {
-  "hash": "480972a181dba9bd816dc755f63fb344691bc8f15f853c22e020ef277d90e8a0",
+  "hash": "2003ca13202a98280bbc58b5b3d8a4e19dd474daeb6e355816696a203b63aa36",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 4,
+    "quality": 3,
     "confidence": "low",
-    "rationale": "Okta's own docs show that it drives user provisioning to connected apps over SCIM, including a RESTful API for CRUD operations on user resources. That implies it can push deprovisioning to downstream apps, but the evidence never describes the deactivation flow itself. Nothing shows a single deactivate action that revokes sessions or deprovisions every connected app immediately. missing for 10: documented user-deactivation flow, session revocation on deactivate, evidence of automatic deprovisioning across all connected apps, timing/immediacy guarantees, independent or hands-on corroboration.",
+    "rationale": "Okta documents a SCIM-based provisioning integration in which Okta manages user lifecycle in connected apps, and SCIM supports CRUD on user resources, which implies deprovisioning is possible. Nothing in the evidence shows that deactivating a user is a single action that kills active sessions and immediately deprovisions accounts across all connected apps. Missing for 10: documented deactivation-triggered deprovisioning across apps, session revocation on deactivation, immediacy/timing guarantees, independent or hands-on corroboration.",
     "evidenceIds": [
-      "okta-docs-3",
       "okta-docs-16",
-      "okta-docs-2"
+      "okta-docs-3"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a security engineer, offboarding is one action — deactivating a user kills their sessions and deprovisions their accounts across connected apps immediately",
+      "citations": [
+        {
+          "evidenceId": "okta-docs-16",
+          "quote": "build an Okta integration that uses the System for Cross-domain Identity Management (SCIM) protocol to handle user provisioning"
+        },
+        {
+          "evidenceId": "okta-docs-3",
+          "quote": "a RESTful API to run CRUD operations on those user and group resources"
+        }
+      ]
+    },
     "productId": "okta",
     "storyId": "instant-deprovisioning"
   }

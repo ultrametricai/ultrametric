@@ -1,19 +1,41 @@
 {
-  "hash": "3a1d8c36ce4bdbcf341e9b002fbf4143612fbeefb17880bfc9409e28a309dedc",
+  "hash": "396638b47ba3202fb62cc6b0e2002490925ce67b65da3719d7cfa9c26174a5b8",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "partial",
-    "quality": 5,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Community users say WezTerm's configuration is written in Lua, which makes it real code that is easy to diff and apply (comm-2, comm-19). The config file auto-reloads, shell integration exposes user vars, and the CLI was hands-on verified as a scriptable control loop (spawn, send-text, get-text). However, no first-party evidence shows a plugin system or a Lua extension API that goes beyond setting options. missing for 10: first-party docs on Lua scripting or event hooks, a plugin mechanism, evidence of custom actions or extensions beyond configuration values.",
+    "rationale": "WezTerm is configured with a real language: a `.wezterm.lua` file whose first-party `wezterm.on` API lets user Lua callbacks run when terminal events are emitted, which is scripting beyond static options. Community users confirm the config is \"just Lua code\". missing for 10: documentation of a plugin loading or distribution mechanism, breadth of the Lua API surface (e.g. available events and objects), independent hands-on evidence of event-driven scripting.",
     "evidenceIds": [
-      "wezterm-comm-2",
+      "wezterm-review-source-20261104-4-1",
+      "wezterm-docs-31",
       "wezterm-comm-19",
-      "wezterm-docs-24",
-      "wezterm-docs-25",
-      "wezterm-docs-7",
-      "wezterm-probe-rt-1"
+      "wezterm-comm-2",
+      "wezterm-docs-43"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can extend the terminal with scripts or plugins in a real language (Lua, Python, kittens) beyond built-in options",
+      "citations": [
+        {
+          "evidenceId": "wezterm-review-source-20261104-4-1",
+          "quote": "`wezterm.on` causes your specified `callback` to be called when `event_name` is emitted."
+        },
+        {
+          "evidenceId": "wezterm-docs-31",
+          "quote": "Create a file named `.wezterm.lua` in your home directory"
+        },
+        {
+          "evidenceId": "wezterm-comm-19",
+          "quote": "With Wezterm it's just Lua code, easy to diff and easy to apply."
+        },
+        {
+          "evidenceId": "wezterm-comm-2",
+          "quote": "The Lua configuration is very intuitive as well."
+        }
+      ]
+    },
     "productId": "wezterm",
     "storyId": "extensibility-plugins"
   }

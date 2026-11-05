@@ -1,23 +1,45 @@
 {
-  "hash": "e684661f095360565c94ea5a3568aeca9cdcd6b1aa6c0b1ebb638239128e2bad",
+  "hash": "326d9d8bcdbffff77011a30103b05b2689f3956d7035e748e4c94a09475bdedd",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Whisper is API- and library-first, with no first-party UI evidenced, so its documented capabilities are all exposed programmatically. These include hosted transcription with file upload, streaming, prompt/keywords/languages controls and JSON output, plus an official CLI. The open-source Python package covers transcription, translation and lower-level decode/detect_language access. Missing for 10: an explicit first-party statement of API/UI parity, a discoverable OpenAPI spec (probes returned 404), evidence that hosted-API translation matches the open-source capabilities, and independent corroboration of parity.",
+    "rationale": "Whisper is exposed programmatically. The hosted API supports upload-and-transcribe with streaming, JSON output with detected languages, and prompt/keyword/language controls. The API also has a CLI (`openai audio:transcriptions create`). The open-source package offers a CLI and a Python API, including lower-level `detect_language()`/`decode()` access. However, no evidence explicitly documents a UI or confirms parity between it and the API, and translation is shown only in the open-source CLI, not the hosted API. Missing for 10: explicit documentation of API/UI feature parity, hosted-API coverage of translation, and a published machine-readable API spec (OpenAPI probes returned 404).",
     "evidenceIds": [
       "whisper-docs-1",
       "whisper-docs-2",
       "whisper-docs-4",
       "whisper-docs-5",
       "whisper-docs-6",
-      "whisper-gh-2",
-      "whisper-gh-5",
       "whisper-gh-6",
       "whisper-gh-7",
+      "whisper-gh-5",
       "whisper-probe-3"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can do everything through the API that I can do in the UI",
+      "citations": [
+        {
+          "evidenceId": "whisper-docs-2",
+          "quote": "Upload the audio and receive a final transcript, or stream text while the model processes the file."
+        },
+        {
+          "evidenceId": "whisper-docs-6",
+          "quote": "openai audio:transcriptions create --model gpt-transcribe --file /path/to/file/audio.mp3"
+        },
+        {
+          "evidenceId": "whisper-gh-6",
+          "quote": "Transcription can also be performed within Python: model = whisper.load_model(\"turbo\") result = model.transcribe(\"audio.mp3\")"
+        },
+        {
+          "evidenceId": "whisper-gh-7",
+          "quote": "`whisper.detect_language()` and `whisper.decode()` which provide lower-level access to the model."
+        }
+      ]
+    },
     "productId": "whisper",
     "storyId": "openness-api-parity"
   }

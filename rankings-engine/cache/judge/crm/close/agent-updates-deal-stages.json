@@ -1,22 +1,52 @@
 {
-  "hash": "9e1bc394c45aa4f151c4e93001b758c3b1aaa4152356d2b3bcf3848ca5178191",
+  "hash": "463cb11bc688b9049f61dbabcf39ce4a3d0cf1674458fb4079f59fa60de56c38",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Close documents an official MCP server with write scopes (mcp.write_safe) usable from Claude and ChatGPT, plus a REST API where opportunities have a customizable status (deal stage). PUT behaves as a patch for targeted field updates, and opportunities carry note/note_html fields that could hold next steps. Webhooks and the Event Log let an agent pick up email and activity signals to act on. Missing for 10: no explicit documentation of a dedicated next-step field, no documented meeting-signal ingestion via API/MCP, no worked example of an agent updating stages from email or meeting data, and no independent or hands-on corroboration.",
+    "rationale": "Close documents an official MCP server with a write scope and a REST API where opportunities have a customizable status and PUT acts as a patch, so an agent can plausibly update deal stages and notes. Webhooks and the event log can stream activity changes as signals. However, nothing explicitly shows the MCP server updating opportunity status or next steps, or exposing meeting signals to drive those updates. Missing for 10: explicit docs that MCP tools write opportunity stage or next-step fields, a documented next-steps field, meeting-signal ingestion via API/MCP, and hands-on or independent corroboration.",
     "evidenceIds": [
       "close-docs-5",
       "close-docs-9",
-      "close-docs-10",
+      "close-docs-23",
       "close-docs-13",
       "close-docs-18",
-      "close-docs-23",
       "close-docs-25",
       "close-docs-12",
       "close-probe-4"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an ai-native user, I can have an agent update deal stages and next steps from email and meeting signals via the API or MCP server",
+      "citations": [
+        {
+          "evidenceId": "close-docs-9",
+          "quote": "mcp.write_safe — can read and write data"
+        },
+        {
+          "evidenceId": "close-docs-5",
+          "quote": "Give Claude, ChatGPT, Cursor, and other tools direct access to Close data via the MCP server — no code required."
+        },
+        {
+          "evidenceId": "close-docs-23",
+          "quote": "Opportunities have a customizable status (which always has a `status_type` of either `active`, `won`, or `lost`)"
+        },
+        {
+          "evidenceId": "close-docs-13",
+          "quote": "PUT requests behave as patches — send only the fields you want to update."
+        },
+        {
+          "evidenceId": "close-docs-18",
+          "quote": "Opportunities now support a `note_html` field for rich text notes"
+        },
+        {
+          "evidenceId": "close-docs-25",
+          "quote": "Webhooks allow a subscription URL to be configured that we will POST event data to as it is added to the Event Log."
+        }
+      ]
+    },
     "productId": "close",
     "storyId": "agent-updates-deal-stages"
   }

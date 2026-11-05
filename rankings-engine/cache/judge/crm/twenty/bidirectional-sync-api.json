@@ -1,19 +1,46 @@
 {
-  "hash": "16d574f733afb290c4ee3ea150d399010de8d281782c4f2af474345acde2fc11",
+  "hash": "63798299b48afc7f2892683171af5d6e67dd4960e5598baae54c0b3404e373f7",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Twenty documents REST and GraphQL batching of up to 60 records per request, with batch upsert on GraphQL only (twenty-docs-25). Outbound webhooks fire on record create, update and delete, which covers change detection (twenty-docs-62). API import is listed as unlimited for large-scale migrations and automation (twenty-docs-59), and one community user reports the REST API 'worked ok' (twenty-comm-1). missing for 10: documented API rate limits, upsert on the REST API, incremental change queries or a cursor/delta feed for polling-based sync, and independent evidence of bidirectional sync at scale.",
+    "rationale": "Twenty documents REST and GraphQL APIs with batch create, update and delete of up to 60 records per request, plus GraphQL batch upsert. It also documents outbound webhooks on record create, update and delete, which give change detection for syncing from Twenty to another system. Rate limits are never documented in the evidence, upsert is only stated for GraphQL, and scale guidance is thin beyond 'Unlimited' API import and the 60-record batch cap. Missing for 10: documented API rate limits, REST upsert, cursor- or timestamp-based incremental change queries, explicit guidance for bidirectional sync at scale, independent hands-on corroboration of sync at volume.",
     "evidenceIds": [
       "twenty-docs-25",
       "twenty-docs-62",
-      "twenty-docs-59",
       "twenty-docs-8",
       "twenty-docs-22",
+      "twenty-docs-59",
       "twenty-comm-1"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can sync records bidirectionally through the API at scale, with documented rate limits, upserts, and change detection",
+      "citations": [
+        {
+          "evidenceId": "twenty-docs-25",
+          "quote": "Both REST and GraphQL support batching up to 60 records per request — create, update, or delete. GraphQL also supports batch upsert"
+        },
+        {
+          "evidenceId": "twenty-docs-62",
+          "quote": "Twenty sends an HTTP POST to your URL whenever a record is created, updated, or deleted."
+        },
+        {
+          "evidenceId": "twenty-docs-8",
+          "quote": "Both GraphQL and REST endpoints, with auto-generated documentation per workspace."
+        },
+        {
+          "evidenceId": "twenty-docs-59",
+          "quote": "API Import — Large-scale migrations, automation — Unlimited"
+        },
+        {
+          "evidenceId": "twenty-comm-1",
+          "quote": "the REST API worked ok"
+        }
+      ]
+    },
     "productId": "twenty",
     "storyId": "bidirectional-sync-api"
   }

@@ -1,11 +1,11 @@
 {
-  "hash": "3550c56785c6477f190f50f2b9112a3428d2dba3d83d5ce8241fe70415f763cd",
+  "hash": "9b71994b894d5786328e688c17ab5df8ac7f9ceba89eb7e5fe57de22d31f52c3",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
-    "quality": 8,
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "OpenAI's speech-to-text API guide documents uploading audio and receiving a final or streamed transcript, file limits and formats, JSON responses, and tunable parameters, with an official CLI wrapper. The open-source package also exposes a documented Python API (load_model/transcribe plus lower-level detect_language/decode), and an llms.txt docs hub is available. missing for 10: a machine-readable OpenAPI spec (all probed paths returned 404), explicit endpoint/auth reference details in the evidence, independent hands-on corroboration of driving the hosted API, and an explicit mapping of the Whisper model name to the documented API (the docs reference gpt-transcribe).",
+    "rationale": "OpenAI's speech-to-text docs describe a public API: you upload audio and get a final or streamed transcript, files are capped at 25 MB with listed formats, results come back as JSON, request parameters are documented, and there is a CLI invocation of `audio:transcriptions create`. The open-source package also documents a Python API (`load_model`, `transcribe`, `detect_language`, `decode`). Missing for 10: explicit HTTP endpoint and authentication reference in the evidence, a reachable machine-readable OpenAPI spec (all probed paths returned 404), and independent hands-on corroboration of driving the hosted API.",
     "evidenceIds": [
       "whisper-docs-1",
       "whisper-docs-2",
@@ -18,6 +18,29 @@
       "whisper-probe-1",
       "whisper-probe-3"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can drive the product through a documented public API",
+      "citations": [
+        {
+          "evidenceId": "whisper-docs-2",
+          "quote": "Upload the audio and receive a final transcript, or stream text while the model processes the file."
+        },
+        {
+          "evidenceId": "whisper-docs-4",
+          "quote": "The model returns the transcript and the detected languages as JSON"
+        },
+        {
+          "evidenceId": "whisper-docs-6",
+          "quote": "openai audio:transcriptions create --model gpt-transcribe --file /path/to/file/audio.mp3"
+        },
+        {
+          "evidenceId": "whisper-gh-6",
+          "quote": "Transcription can also be performed within Python: model = whisper.load_model(\"turbo\") result = model.transcribe(\"audio.mp3\")"
+        }
+      ]
+    },
     "productId": "whisper",
     "storyId": "agentic-public-api"
   }

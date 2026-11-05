@@ -1,22 +1,44 @@
 {
-  "hash": "5e86b475475c6e5a75a1c966ec6ea857c97819f6add74efb2b750693b5e95314",
+  "hash": "211c1e341166d532fe6210817940d750b98ac471e531f8031ab13b4999154d4f",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Batch mode lets one job transcribe up to 10,000 files, or 1,000 from a manifest. Input can be an S3 prefix with glob include/exclude filters, and each transcript can be placed next to its input file. The full job lifecycle is documented: submit, list, status with per-state file counts, cancel, list files and get file. Files succeed or fail independently with PARTIAL job states, and a signed webhook fires on completion. Missing for 10: independent or hands-on corroboration of large batch runs, and bulk operations beyond transcription (e.g., vocabulary assets are managed one at a time).",
+    "rationale": "Scribe's batch mode is a first-party bulk operation. One job can transcribe up to 10,000 files (or 1,000 from a manifest), select files by S3 prefix with glob filters, and process each file independently with PARTIAL states and per-file counts. The documented job lifecycle covers list, status, cancel, list-files and get-file, plus signed completion webhooks, and the OpenAPI probe confirms the batch-job paths exist. Missing for 10: independent hands-on corroboration of large-scale batch runs, and bulk operations beyond transcription (e.g., bulk asset management).",
     "evidenceIds": [
       "zoom-scribe-docs-4",
       "zoom-scribe-docs-5",
       "zoom-scribe-docs-6",
       "zoom-scribe-supp-batch-lifecycle",
-      "zoom-scribe-supp-batch-input-metadata",
       "zoom-scribe-supp-batch-failures",
+      "zoom-scribe-supp-batch-input-metadata",
       "zoom-scribe-supp-batch-webhooks",
-      "zoom-scribe-supp-openapi-docs",
       "zoom-scribe-supp-openapi-probe"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can perform bulk operations across many items at once",
+      "citations": [
+        {
+          "evidenceId": "zoom-scribe-docs-4",
+          "quote": "Transcribes up to 10,000 audio files in a single job, or 1,000 files from a manifest"
+        },
+        {
+          "evidenceId": "zoom-scribe-docs-5",
+          "quote": "All files under a shared S3 prefix/container. Supports glob filters to include or exclude files."
+        },
+        {
+          "evidenceId": "zoom-scribe-supp-batch-lifecycle",
+          "quote": "Jobs expose QUEUED, PROCESSING, SUCCEEDED, PARTIAL, FAILED, and CANCELED states, while status responses include per-state file counts and result locations."
+        },
+        {
+          "evidenceId": "zoom-scribe-supp-batch-failures",
+          "quote": "Files are processed independently: mixed success and failure yields a PARTIAL job with succeeded, failed, skipped, and canceled counts."
+        }
+      ]
+    },
     "productId": "zoom-scribe",
     "storyId": "automation-bulk-operations"
   }

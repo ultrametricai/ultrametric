@@ -1,23 +1,43 @@
 {
-  "hash": "a3d2464c93a1b64e33c55d303f0ddd57cd2c4310a13caa1c5bf7d76af0a6e9fb",
+  "hash": "305edb27230318200a1c58701c19f1c88a5db424dd14b25addef70682eaaae0f",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Baseten documents deploying open-source, fine-tuned, or custom models on dedicated GPUs. This is separate from its shared per-token Model APIs. Hardware is specified in config.yaml and deployed via truss push or baseten model push. The autoscaling half of the story is not evidenced: the only related claim is MCM rerouting and reprovisioning workloads on capacity loss, which is failover, not traffic-based scaling. Missing for 10: documented autoscaling (replica min/max, scale-to-zero, concurrency targets), explicit statement of traffic isolation from the shared pool, independent or hands-on corroboration.",
+    "rationale": "Baseten documents deploying open-source, fine-tuned, or custom models on dedicated GPUs, separate from its shared, per-token Model APIs. Hardware is specified in a config.yaml and pushed via `truss push`. The evidence never describes autoscaling for these deployments: MCM rerouting and reprovisioning on capacity loss is failover, not traffic-driven scaling. Missing for 10: documented replica autoscaling (min/max replicas, scale-to-zero, concurrency targets), explicit isolation guarantees versus the shared pool, independent or hands-on corroboration.",
     "evidenceIds": [
       "baseten-docs-2",
       "baseten-docs-17",
       "baseten-docs-30",
       "baseten-docs-1",
-      "baseten-docs-10",
+      "baseten-docs-43",
       "baseten-gh-2",
-      "baseten-docs-18",
-      "baseten-docs-47",
-      "baseten-docs-15",
-      "baseten-docs-43"
+      "baseten-docs-15"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an ml-engineer, I can deploy a model on dedicated GPU capacity with autoscaling so my traffic is isolated from the shared serverless pool",
+      "citations": [
+        {
+          "evidenceId": "baseten-docs-2",
+          "quote": "Deploy an open-source, fine-tuned, or custom model on dedicated GPUs."
+        },
+        {
+          "evidenceId": "baseten-docs-30",
+          "quote": "Call hosted models through an OpenAI-compatible API, deploy your own models on dedicated infrastructure"
+        },
+        {
+          "evidenceId": "baseten-docs-43",
+          "quote": "Migrate to a dedicated deployment with the deprecated model weights."
+        },
+        {
+          "evidenceId": "baseten-gh-2",
+          "quote": "You write a `config.yaml` that specifies the model, the hardware, and the engine, then `uvx truss push` builds a TensorRT-optimized container and deploys it."
+        }
+      ]
+    },
     "productId": "baseten",
     "storyId": "dedicated-endpoints-autoscale"
   }

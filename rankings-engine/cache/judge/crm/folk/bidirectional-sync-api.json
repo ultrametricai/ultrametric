@@ -1,21 +1,42 @@
 {
-  "hash": "4809e9b0e80ebd619b9d6eba4b2857fee1553a0237761abc280079b3f775c5f3",
+  "hash": "ec68cfd90fe8844345d40913879275a0f9ef26170f7f5f1c8eb36a9b8e312800",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Folk documents a REST API with create, update and delete on people. It also documents IETF RateLimit headers, batch endpoints for up to 100 records per request, and standard-webhooks event subscriptions with signatures, which give change detection and support bidirectional sync. However, the evidence never mentions upsert or idempotent create-or-update semantics, which is an explicit part of the story. Missing for 10: documented upsert/idempotency support, incremental change queries (e.g. updated-since filters or cursors), a published OpenAPI spec (probe 404), and independent or hands-on corroboration of sync at scale.",
+    "rationale": "Folk's REST API documents rate limits through IETF RateLimit headers and batch endpoints of up to 100 records. It also supports create, update and delete on records, and registrable, signed webhooks give event-based change detection for inbound sync. There is no evidence of upsert semantics or of incremental or delta queries, so the bidirectional-sync-at-scale story is only partly covered. missing for 10: documented upsert/idempotent create-or-update, incremental change queries (e.g., updated-since filters or cursors), specific rate-limit quotas, independent or hands-on corroboration of sync at scale.",
     "evidenceIds": [
-      "folk-docs-1",
       "folk-docs-5",
       "folk-docs-6",
       "folk-docs-7",
       "folk-docs-9",
       "folk-docs-10",
-      "folk-docs-11",
-      "folk-probe-3"
+      "folk-docs-11"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can sync records bidirectionally through the API at scale, with documented rate limits, upserts, and change detection",
+      "citations": [
+        {
+          "evidenceId": "folk-docs-5",
+          "quote": "folk implements the IETF RateLimit header fields, which describe every policy in a single header"
+        },
+        {
+          "evidenceId": "folk-docs-6",
+          "quote": "Batch endpoints let you act on up to **100 records** in a single request."
+        },
+        {
+          "evidenceId": "folk-docs-9",
+          "quote": "When you create a webhook, you specify a URL and subscribe to events that occur on folk."
+        },
+        {
+          "evidenceId": "folk-docs-7",
+          "quote": "Create a person: Create a new person in the workspace. ... Update a person ... Delete a person"
+        }
+      ]
+    },
     "productId": "folk",
     "storyId": "bidirectional-sync-api"
   }

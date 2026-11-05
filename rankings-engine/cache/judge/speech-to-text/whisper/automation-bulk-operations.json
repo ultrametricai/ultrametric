@@ -1,17 +1,31 @@
 {
-  "hash": "321924a946e13a674d07aad627eb9cb1dad66d353c251851f4e3023fdff31ea7",
+  "hash": "b24b0fff61539f1e0939e7678746900a0d97db7a8309e130f71e48f15bae9d1a",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "The open-source Whisper CLI accepts several audio files in one command (`whisper audio.flac audio.mp3 audio.wav --model turbo`), so it does support basic multi-item batch transcription. The hosted API and its CLI example are documented only for one file per request, with a 25 MB per-file limit. Missing for 10: a documented bulk/batch endpoint for the hosted API, guidance on batching at scale (concurrency, progress, failure handling), bulk operations beyond transcription, and independent corroboration of multi-file batch use.",
+    "rationale": "The open-source Whisper CLI accepts multiple audio files in a single command, so it can transcribe several items in one invocation. That is a first-party bulk capability, but a thin one. The API docs only describe single-file uploads capped at 25 MB, and nothing documents batch jobs, parallelism, or large-scale bulk management. Missing for 10: documented batch/bulk API endpoint, glob or directory-level processing, parallel/concurrent bulk execution, bulk result handling and error reporting, independent corroboration of bulk use.",
     "evidenceIds": [
       "whisper-gh-2",
-      "whisper-docs-6",
       "whisper-docs-3",
-      "whisper-docs-1"
+      "whisper-docs-6"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can perform bulk operations across many items at once",
+      "citations": [
+        {
+          "evidenceId": "whisper-gh-2",
+          "quote": "The following command will transcribe speech in audio files, using the `turbo` model: whisper audio.flac audio.mp3 audio.wav --model turbo"
+        },
+        {
+          "evidenceId": "whisper-docs-3",
+          "quote": "Files can be up to 25 MB."
+        }
+      ]
+    },
     "productId": "whisper",
     "storyId": "automation-bulk-operations"
   }

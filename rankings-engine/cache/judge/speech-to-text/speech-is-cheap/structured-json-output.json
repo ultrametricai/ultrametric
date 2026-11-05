@@ -1,21 +1,42 @@
 {
-  "hash": "7b2e5c84c95f2dffc7184315f16bd5768979cb09793249d50e62c73b2221c209",
+  "hash": "01b8de317604eed70025a0aed7f8bde65f70a3fb0fa2cc57aec70086f5e489ba",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "The read endpoint returns JSON by default, with SRT/VTT as alternatives. The docs describe segment-level structure: chronological segments streamed via SSE, a configurable segment_duration, speaker_id added per segment, per-word start/end times, and audio-type labels. A segment confidence threshold filter implies each segment carries a confidence score. Missing for 10: an explicit output schema showing confidence fields returned in the JSON, and independent or hands-on corroboration of the response structure.",
+    "rationale": "The read endpoint returns JSON by default, and the docs describe segment-based output: chronological segments, speaker_id added per segment, configurable segment_duration and word-level start/end times. Confidence appears only as a filter that drops segments below a threshold, which implies segment confidence scores exist but does not document that they are returned in the payload. Missing for 10: explicit documentation that confidence values appear in the JSON response, a published response schema or example, and independent or hands-on corroboration.",
     "evidenceIds": [
       "speech-is-cheap-docs-10",
-      "speech-is-cheap-docs-9",
       "speech-is-cheap-docs-8",
       "speech-is-cheap-docs-11",
+      "speech-is-cheap-docs-17",
       "speech-is-cheap-docs-13",
-      "speech-is-cheap-docs-14",
-      "speech-is-cheap-docs-16",
-      "speech-is-cheap-docs-17"
+      "speech-is-cheap-docs-16"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, results come back as structured JSON with utterances or segments and confidence values, not just a text blob",
+      "citations": [
+        {
+          "evidenceId": "speech-is-cheap-docs-10",
+          "quote": "If not provided, the output will be in JSON format."
+        },
+        {
+          "evidenceId": "speech-is-cheap-docs-11",
+          "quote": "When enabled, adds speaker_id to each segment based on the speaker's voice."
+        },
+        {
+          "evidenceId": "speech-is-cheap-docs-8",
+          "quote": "streams progress and chronological transcription segments using SSE"
+        },
+        {
+          "evidenceId": "speech-is-cheap-docs-16",
+          "quote": "Filter out segments that fall below this confidence threshold."
+        }
+      ]
+    },
     "productId": "speech-is-cheap",
     "storyId": "structured-json-output"
   }

@@ -1,23 +1,45 @@
 {
-  "hash": "1e1a164e405bf9113b6ed2d0562512827aac1ed47f453f6214b021a6de0bc49f",
+  "hash": "f3c34df1b73e5639d4c6580b68741125dc624af955179265b86d5cfc3eee946d",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "The public, machine-readable docs cover the whole agent loop. Auth uses API credentials with scopes and short-lived JWTs. Jobs can be created either synchronously (POST /aiservices/scribe/transcribe) or as batch jobs (POST /aiservices/scribe/jobs). Results come back via status, list-files and get-file endpoints with defined job states, or via signed completion webhooks. All of this is backed by a live OpenAPI spec, llms.txt and .md doc pages that probes confirmed. Missing for 10: the exact steps for minting a JWT from the API key/secret are only lightly documented in the evidence, and there is no independent or hands-on report of an agent running submission-to-transcript end to end.",
+    "rationale": "Zoom's public, machine-readable docs cover the whole agent loop. There is an OpenAPI spec, llms.txt and markdown pages. A synchronous POST /aiservices/scribe/transcribe returns the transcript directly, and batch mode documents job creation, status polling, per-file retrieval and signed completion webhooks, so a key-holding agent needs no human step after submission. Missing for 10: step-by-step detail on turning the API key into a JWT and calling with it (only briefly mentioned), and any hands-on or independent report of an agent completing the flow end to end.",
     "evidenceIds": [
-      "zoom-scribe-docs-26",
-      "zoom-scribe-docs-25",
-      "zoom-scribe-docs-1",
+      "zoom-scribe-supp-openapi-docs",
+      "zoom-scribe-supp-openapi-probe",
       "zoom-scribe-supp-sync-api-schema",
       "zoom-scribe-supp-batch-lifecycle",
       "zoom-scribe-supp-batch-webhooks",
-      "zoom-scribe-supp-openapi-docs",
-      "zoom-scribe-supp-openapi-probe",
+      "zoom-scribe-docs-1",
+      "zoom-scribe-docs-26",
       "zoom-scribe-probe-1",
       "zoom-scribe-probe-2"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, an agent holding an API key can take a recording from submission to finished transcript (auth, job creation, result retrieval) from the public docs alone, with no human step in between",
+      "citations": [
+        {
+          "evidenceId": "zoom-scribe-supp-batch-lifecycle",
+          "quote": "Batch mode documents POST /aiservices/scribe/jobs plus get-status, list-jobs, cancel-job, list-files, and get-file endpoints."
+        },
+        {
+          "evidenceId": "zoom-scribe-docs-1",
+          "quote": "Fast mode provides synchronous transcription for individual audio files. The response returns immediately after the transcription completes."
+        },
+        {
+          "evidenceId": "zoom-scribe-docs-26",
+          "quote": "Use a short-lived JWT for client-to-backend API calls."
+        },
+        {
+          "evidenceId": "zoom-scribe-supp-openapi-probe",
+          "quote": "six Scribe paths covering synchronous, live, batch-job, status, and per-file operations"
+        }
+      ]
+    },
     "productId": "zoom-scribe",
     "storyId": "agent-end-to-end-transcript"
   }

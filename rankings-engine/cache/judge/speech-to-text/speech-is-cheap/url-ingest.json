@@ -1,17 +1,35 @@
 {
-  "hash": "bc7ba6674e75701abd4e07f8e42ec91334144abeeaa159ecac3e3d73eb4c7571",
+  "hash": "c8e577d255fd8ce351f17e4e1a617bd8a4d32be5ad8acc10cb12b33d38501585",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 8,
-    "confidence": "high",
-    "rationale": "The Jobs API documents submitting a URL to a publicly accessible audio file as the standard ingestion method, distinct from direct upload. A documented custom user-agent option for fetching the file and an option to redact the original input_url confirm the service fetches remote media itself. Missing for 10: explicit documentation that signed/pre-signed URLs (e.g., S3/GCS) are supported, and independent or hands-on corroboration of URL-based ingestion.",
+    "verdict": "partial",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "The Jobs API's standard ingestion method accepts a URL to a publicly accessible audio file, which the service fetches itself. A custom user-agent option for the fetch and redaction of the input_url corroborate server-side fetching, so no upload is needed for public URLs. Signed or pre-authenticated URLs (e.g., S3/GCS presigned links with query-string credentials) are never explicitly documented, so only the public-URL half of the story is confirmed. missing for 10: explicit documentation of signed/presigned URL support, independent or hands-on corroboration of URL fetching.",
     "evidenceIds": [
       "speech-is-cheap-docs-2",
-      "speech-is-cheap-docs-3",
       "speech-is-cheap-docs-19",
       "speech-is-cheap-docs-18"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can pass a public or signed URL and the service fetches and transcribes the recording without my uploading it",
+      "citations": [
+        {
+          "evidenceId": "speech-is-cheap-docs-2",
+          "quote": "Submit a URL to a publicly accessible audio file. This is the standard method and is suitable for most use cases."
+        },
+        {
+          "evidenceId": "speech-is-cheap-docs-19",
+          "quote": "Custom user agent header to fetch the audio file."
+        },
+        {
+          "evidenceId": "speech-is-cheap-docs-18",
+          "quote": "immediately redacts the original input_url"
+        }
+      ]
+    },
     "productId": "speech-is-cheap",
     "storyId": "url-ingest"
   }

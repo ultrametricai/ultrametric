@@ -1,18 +1,40 @@
 {
-  "hash": "67d0e5b731f3b1a3abdd19697f64d6fa14068c3eb9f114659134a80e006d9112",
+  "hash": "b171d59090cf5585903e219f72f1b8d3a0f6592200b0c0db93edba5eae04fa40",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "WezTerm's multiplexer keeps tabs alive. The docs say a connection to a remote wezterm instance \"preserves your tabs\", and a runtime probe shows a daemonized wezterm-mux-server holding windows, tabs and panes independently of the GUI. That lets a developer reattach after closing or losing the GUI, but nothing shows layouts or working directories surviving a restart of the mux server, a machine reboot or a crash. The OSC 7 working-directory feature only seeds the directory of newly spawned tabs; it does not restore them. Missing for 10: restoring sessions after a reboot or mux-server crash, persisting working directories across restarts, saving and loading layouts, and independent corroboration of session restore.",
+    "rationale": "WezTerm's built-in multiplexer (unix/SSH domains, a daemonizable mux server) keeps tabs and panes alive so a GUI client can reconnect after closing or disconnecting. That covers surviving a GUI restart or disconnect, but not true save-and-restore of layout after a full machine restart or a crash of the multiplexer itself. missing for 10: documented session save/restore of windows, tabs and layout across a full restart or crash, restoration of each pane's working directory, and hands-on corroboration of recovery after a crash.",
     "evidenceIds": [
       "wezterm-docs-14",
-      "wezterm-docs-3",
-      "wezterm-docs-8",
-      "wezterm-probe-rt-1",
-      "wezterm-docs-10"
+      "wezterm-docs-36",
+      "wezterm-comm-10-refresh-8c7fab3bf93de00f",
+      "wezterm-probe-rt-1"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can restore my windows, tabs, and working directories after a restart or crash",
+      "citations": [
+        {
+          "evidenceId": "wezterm-docs-14",
+          "quote": "an alternative configuration that connects to a remote wezterm instance and preserves your tabs."
+        },
+        {
+          "evidenceId": "wezterm-docs-36",
+          "quote": "you can enable local terminal multiplexing with features similar to those in tmux or screen."
+        },
+        {
+          "evidenceId": "wezterm-comm-10-refresh-8c7fab3bf93de00f",
+          "quote": "Uses it as mosh+tmux-like reconnectable sessions with panes and tabs from a Mac laptop to a Linux work machine"
+        },
+        {
+          "evidenceId": "wezterm-probe-rt-1",
+          "quote": "`wezterm-mux-server --daemonize`, then `wezterm cli spawn --new-window` returned a pane-id"
+        }
+      ]
+    },
     "productId": "wezterm",
     "storyId": "session-restore"
   }

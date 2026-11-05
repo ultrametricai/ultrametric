@@ -1,18 +1,32 @@
 {
-  "hash": "a546976ae32e7e83fec881b3a448093466ad6f950ad168fd3af051c408910aa0",
+  "hash": "d1574ade3864a7d1ad4c08832b39e20f6d0dc2991c6f2f6139c54436e8585dce",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "DeepInfra documents a dedicated latency feature: setting service_tier to \"priority\" on supported models gives faster time-to-first-token and higher throughput during peak demand. It also documents dedicated autoscaling instances on A100–B300 GPUs and a fail_fast option that returns an immediate 429 instead of queuing. A community report notes cold starts of under 10s, likely avoided on popular models, which is a caveat rather than a contradiction. missing for 10: published TTFT/throughput benchmarks or latency figures, independent hands-on speed corroboration, documentation of streaming behavior, and clarity on which models support priority (it only applies 'during peak demand' on 'supported models').",
+    "rationale": "DeepInfra documents a priority service tier (service_tier=\"priority\") that it says gives faster time-to-first-token and higher throughput during peak demand. It also offers dedicated autoscaling instances on high-end GPUs. However, the speed claim is qualitative and tied to peak-demand prioritization on supported models, and a community comment notes cold-start latency can reach up to about 10s on less popular models. missing for 10: published TTFT/tokens-per-second figures or benchmarks, independent hands-on latency corroboration, guarantees beyond 'during peak demand' on 'supported models'.",
     "evidenceIds": [
-      "deepinfra-docs-4",
       "deepinfra-docs-26",
-      "deepinfra-docs-6",
+      "deepinfra-docs-4",
       "deepinfra-docs-9",
       "deepinfra-comm-1"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can serve latency-sensitive workloads with fast time-to-first-token and high-throughput generation",
+      "citations": [
+        {
+          "evidenceId": "deepinfra-docs-26",
+          "quote": "Set service_tier to \"priority\" to request priority inference on supported models. Priority requests get faster time-to-first-token and higher throughput during peak demand."
+        },
+        {
+          "evidenceId": "deepinfra-docs-9",
+          "quote": "Deploy a dedicated instance on A100/H100/H200/B200/B300 with autoscaling and a private endpoint"
+        }
+      ]
+    },
     "productId": "deepinfra",
     "storyId": "low-latency-serving"
   }

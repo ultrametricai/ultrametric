@@ -1,19 +1,36 @@
 {
-  "hash": "809e93337a3ff2e5923e7a7082ff4cb19a2e6b63f6f27e079bac72b02a75ebb7",
+  "hash": "bc08114a97b252ffb8bc66ae77e5d4369f741c7dde9419a3f34ba0615dab58fe",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "cubic",
-    "storyId": "automation-versioned-workflows",
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "cubic's review automations (review behavior, ignore patterns, PR descriptions, custom agents) are defined in a repo-root `cubic.yaml` that serves as the source of truth. An org-wide `cubic-config` repository can supply defaults. Because this config lives in Git, it can be versioned and reviewed through normal PRs, and auto-approval can be trialed in shadow mode before going live. Versioning, review and rollback are implied by Git rather than provided as a documented cubic capability. Missing for 10: explicit documentation of versioning, review or rollback for automation config (e.g. history, diff, revert of rules), config validation or preview beyond auto-approval shadow mode, and independent corroboration.",
+    "rationale": "cubic stores its automation configuration (AI review behavior, ignore patterns, PR descriptions, custom agents) in a repo-root `cubic.yaml` that acts as the source of truth, so automations are config-as-code and can be versioned alongside code. Auto-approval also offers a shadow mode for reviewing what the automation would do before switching it live. However, cubic documents no automation version history, change review, or rollback feature of its own; those depend on the user's Git workflow. Missing for 10: first-party version history for automations, a documented review/approval flow for config changes, explicit rollback capability, independent corroboration.",
     "evidenceIds": [
       "cubic-docs-16",
       "cubic-docs-17",
-      "cubic-docs-36",
-      "cubic-docs-12",
-      "cubic-docs-34"
-    ]
+      "cubic-docs-12"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can version, review, and roll back my automations",
+      "citations": [
+        {
+          "evidenceId": "cubic-docs-16",
+          "quote": "`cubic.yaml` lives in the root of your repository and becomes the source of truth for AI review behavior, ignore patterns, PR descriptions, and custom agents."
+        },
+        {
+          "evidenceId": "cubic-docs-17",
+          "quote": "Create a repository named `cubic-config` in your organization and add a `cubic.yaml` file to the root directory. cubic automatically applies these settings to any repository that doesn't have its own configuration."
+        },
+        {
+          "evidenceId": "cubic-docs-12",
+          "quote": "Start in shadow mode to see which PRs cubic would approve, then switch to live mode"
+        }
+      ]
+    },
+    "productId": "cubic",
+    "storyId": "automation-versioned-workflows"
   }
 }

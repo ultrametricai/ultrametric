@@ -1,20 +1,37 @@
 {
-  "hash": "fe307e8c298f4109e08fdbf9302cf99e688012c158dc419762150e7f04ce50e8",
+  "hash": "02bf74ba6bc91f6fa4812d811a397105dc4e9f26c2522d3181fe60ef7aab9466",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "bill-spend-expense",
-    "storyId": "automation-bulk-operations",
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "BILL's v3 API documents real bulk endpoints: POST /v3/payments/bulk pays up to 50 bills, POST /v3/payments/mass pays up to 2000 bills asynchronously, and POST /v3/bills/bulk creates multiple bills in one request. However, all of these sit in the Accounts Payable module, and nothing shows bulk operations on Spend & Expense objects such as cards, budgets, users, transactions or reimbursements. Missing for 10: bulk endpoints for S&E-specific items, bulk update/delete operations beyond creation and payment, independent or hands-on corroboration.",
+    "rationale": "The BILL v3 API, which the docs say covers AP, AR and S&E, documents real bulk endpoints: POST /v3/payments/bulk pays up to 50 bills, POST /v3/payments/mass pays up to 2000 bills asynchronously, and POST /v3/bills/bulk creates multiple bills in one request. These bulk endpoints are all on the AP side, though, and none is shown for Spend & Expense objects such as cards, budgets, users, transactions or reimbursements. Missing for 10: bulk operations on S&E entities, bulk update/delete beyond payments and bill creation, and independent or hands-on corroboration.",
     "evidenceIds": [
       "bill-spend-expense-docs-40",
-      "bill-spend-expense-docs-41",
       "bill-spend-expense-docs-54",
-      "bill-spend-expense-docs-55",
       "bill-spend-expense-docs-58",
       "bill-spend-expense-docs-1"
-    ]
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can perform bulk operations across many items at once",
+      "citations": [
+        {
+          "evidenceId": "bill-spend-expense-docs-40",
+          "quote": "Use `POST /v3/payments/bulk` to pay up to 50 bills with one API request."
+        },
+        {
+          "evidenceId": "bill-spend-expense-docs-54",
+          "quote": "Use POST /v3/payments/mass to pay up to 2000 bills with one API request. BILL processes each payment in the mass payment request asynchronously."
+        },
+        {
+          "evidenceId": "bill-spend-expense-docs-58",
+          "quote": "You can also use POST /v3/bills/bulk to create multiple bills with one request."
+        }
+      ]
+    },
+    "productId": "bill-spend-expense",
+    "storyId": "automation-bulk-operations"
   }
 }

@@ -1,17 +1,35 @@
 {
-  "hash": "52e0d6a68a3ce73df73c994bc8e0b3d004c038bb5d995d30a513b5b56b2de441",
+  "hash": "32ff4961617af9712c45f06a0989ab21eb18cc0c674604f6534179a6c5dec773",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 4,
+    "quality": 3,
     "confidence": "low",
-    "rationale": "Mailchimp Transactional documents a rejection denylist with an allowlist override (docs-17). Its webhooks emit hard-bounce, spam, unsub and reject events (docs-18), which implies suppressed addresses are rejected. A community report describes Mailchimp itself removing list members over spam complaints (comm-11), but nothing documents automatic suppression shared across Marketing and Transactional sends, and comm-6 notes the two services remain unintegrated. Missing for 10: explicit docs on automatic bounce/unsubscribe/complaint suppression in Marketing campaigns, a suppression list shared across all send types (marketing, transactional, SMS), CAN-SPAM/GDPR default-compliance documentation, and hands-on corroboration.",
+    "rationale": "Mailchimp Transactional documents its own email rejection denylist and allowlist, and its webhooks emit hard-bounce, spam, unsub and reject events, which implies some suppression handling. A community report also says Mailchimp removed list members over spam complaints. Nothing documents that unsubscribes, bounces and complaints are added to suppression automatically, or that suppression is shared across Marketing and Transactional sends. Missing for 10: documented automatic suppression of bounces, complaints and unsubscribes; cross-send-type (marketing plus transactional plus SMS) honoring; explicit CAN-SPAM/GDPR default-hygiene documentation; independent corroboration.",
     "evidenceIds": [
       "mailchimp-docs-17",
       "mailchimp-docs-18",
-      "mailchimp-comm-11",
-      "mailchimp-comm-6"
+      "mailchimp-comm-11"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an ops user, unsubscribes, bounces, and spam complaints are suppressed automatically and honored across every send type — CAN-SPAM/GDPR hygiene by default",
+      "citations": [
+        {
+          "evidenceId": "mailchimp-docs-17",
+          "quote": "Adds an email to your email rejection allowlist. If the address is currently on your denylist, that denylist entry will be removed automatically."
+        },
+        {
+          "evidenceId": "mailchimp-docs-18",
+          "quote": "Message events**: send, deferral, hard-bounce, soft-bounce, delivered, open, click, spam, unsub, reject"
+        },
+        {
+          "evidenceId": "mailchimp-comm-11",
+          "quote": "MailChimp removed half the users from a list I hadn't mailed recently, citing unverified sign-ups and spam complaints"
+        }
+      ]
+    },
     "productId": "mailchimp",
     "storyId": "suppression-compliance"
   }

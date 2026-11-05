@@ -1,11 +1,11 @@
 {
-  "hash": "e54b37ec0c31be862b11212a0b020c55189b6bde6c46ed871d306a95232ad452",
+  "hash": "4e76293247a80a3d93cc7feb729b5c957fed494fee7a7a1e89e443318ef85ca5",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Pipedrive documents a stateless REST API in v1 and v2 with OpenAPI specs, so records can be read and written in both directions. It also documents rate limiting with per-endpoint token costs, and registrable webhooks that POST event notifications for change detection. Nothing in the evidence shows upsert semantics: the person merge endpoint is a different operation. Scale features such as bulk or batch endpoints and incremental-sync cursors are also unevidenced. missing for 10: documented upsert/idempotent create-or-update, bulk/batch endpoints for at-scale sync, concrete rate-limit figures and backoff guidance, independent or hands-on corroboration of sync at scale.",
+    "rationale": "Pipedrive's own REST API (v1/v2, with OpenAPI specs) documents token-based rate limiting with per-endpoint costs. Its registrable outbound webhooks give event-based change detection, so the core sync building blocks exist. Upserts are not evidenced anywhere, and the person-merge endpoint is a different capability. Missing for 10: documented upsert/idempotent write semantics, concrete rate-limit numbers or burst/daily quotas, bulk/batch endpoints for at-scale sync, incremental/delta polling (e.g. updated-since filters), and independent hands-on corroboration of large-scale bidirectional sync.",
     "evidenceIds": [
       "pipedrive-docs-9",
       "pipedrive-docs-10",
@@ -13,9 +13,31 @@
       "pipedrive-docs-13",
       "pipedrive-docs-14",
       "pipedrive-docs-15",
-      "pipedrive-docs-16",
       "pipedrive-docs-17"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can sync records bidirectionally through the API at scale, with documented rate limits, upserts, and change detection",
+      "citations": [
+        {
+          "evidenceId": "pipedrive-docs-12",
+          "quote": "You can view the token costs for each API endpoint in our API Reference."
+        },
+        {
+          "evidenceId": "pipedrive-docs-13",
+          "quote": "When one of those events is triggered (for example a new deal is added), Pipedrive will send this notification as an HTTP `POST` request, with a JSON body, to the endpoint(s) you specify."
+        },
+        {
+          "evidenceId": "pipedrive-docs-15",
+          "quote": "You can create a webhook programmatically by making a `POST` request to the webhook’s endpoint."
+        },
+        {
+          "evidenceId": "pipedrive-docs-10",
+          "quote": "you can always import our OpenAPI 3 specification files (available for both v1 and v2 APIs) into your tool of choice"
+        }
+      ]
+    },
     "productId": "pipedrive",
     "storyId": "bidirectional-sync-api"
   }

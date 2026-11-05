@@ -1,23 +1,40 @@
 {
-  "hash": "e8656f977912da065d81e1cd1eaf3bc2afbf4528bcd3001321f504095c9f05e1",
+  "hash": "3028b8d25be67c5ba39f0f57a72fdead250c6e06fe1ea2fc6a8d8be982aecfb9",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "ramp",
-    "storyId": "programmatic-card-issuance",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Ramp documents programmatic card issuance in its Developer API. The Vault API lets a backend create a card and retrieve its PAN, CVV and expiry in one call. The cards guide covers issuing cards and attaching controls, and funds carry configurable restrictions on amount, interval, merchants, categories and countries. Locking is documented through Ramp's own CLI (`funds lock`) and MCP (\"Lock my card\"), and the cards:write, limits:write and funds:write scopes appear among Ramp's published OAuth scopes. Missing for 10: an explicit Developer API endpoint for locking a card, an explicit endpoint for updating limits or controls on an existing card, independent hands-on corroboration, and server-side PAN retrieval being gated behind Ramp approval.",
+    "rationale": "Ramp's developer docs say a backend can create a card through the Vault API, and the cards guide covers issuing cards and attaching controls. Fund restrictions (amount, interval, merchants, categories, countries) serve as the limit. Card locking is shown only through the MCP and CLI (funds lock), not a documented public API endpoint, and Vault card creation is gated behind Ramp approval. Missing for 10: a documented public API endpoint to lock a card, explicit API reference for updating card controls after issuance, and independent or hands-on corroboration.",
     "evidenceIds": [
       "ramp-supp-virtual-cards-vault",
       "ramp-docs-37",
       "ramp-docs-7",
-      "ramp-supp-spend-controls-agents",
       "ramp-docs-41",
+      "ramp-supp-spend-controls-agents",
       "ramp-supp-cli-agent-mode",
-      "ramp-docs-30",
-      "ramp-probe-4",
-      "ramp-supp-oauth-scopes"
-    ]
+      "ramp-docs-30"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can issue and manage cards programmatically — create a card with a limit, lock it, update controls — via the public API",
+      "citations": [
+        {
+          "evidenceId": "ramp-docs-37",
+          "quote": "Vault API (server-side) — your backend creates a card and retrieves the PAN, CVV, and expiration in one synchronous call."
+        },
+        {
+          "evidenceId": "ramp-docs-7",
+          "quote": "Issue cards, attach controls, and watch spend in real time"
+        },
+        {
+          "evidenceId": "ramp-docs-41",
+          "quote": "Funds. A budget with restrictions — amount, interval (daily, monthly, total), allowed merchant categories, allowed merchants, allowed countries."
+        }
+      ]
+    },
+    "productId": "ramp",
+    "storyId": "programmatic-card-issuance"
   }
 }

@@ -1,21 +1,43 @@
 {
-  "hash": "36596c7136119e06bd1e47a034018383dd9a5a096e68afa180c33c3634f6d5f0",
+  "hash": "5004df4aaaa3823e74ffabfb0dad23790c2d81b780f2a23fc96391877b9a96d2",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Grok Build documents a permissions system with per-tool allow/deny rules and command patterns (e.g. denying `rm -rf *` on bash), approval modes, and hooks that can block dangerous commands. External integrations come only from explicitly configured MCP servers, which `grok inspect` lists, and an OS-level sandbox limits file and network reach. missing for 10: evidence that permission rules can target specific MCP servers or their individual tools, team- or admin-enforced managed policy for an engineering lead, a way to stop auto-loading of MCP configs from `.claude.json`/`.cursor`/`.mcp.json`, and independent hands-on corroboration.",
+    "rationale": "Grok Build documents a permissions system with per-tool rules (e.g. a deny action keyed on tool and pattern) and an auto mode that only auto-approves safe tools. Integrations are explicitly configured MCP servers added via `grok mcp add`, and `grok inspect` shows which MCP servers were discovered, so the lead can govern which external tools are present. However, the evidence only shows rule examples for bash, not allow/deny rules scoped to MCP servers or plugin tools, and nothing on team-wide or managed policy enforcement. missing for 10: documented allow/deny rules for specific MCP/integration tools, centrally managed or team-enforced policy, independent hands-on corroboration.",
     "evidenceIds": [
-      "grok-build-docs-10",
+      "grok-build-docs-44",
       "grok-build-docs-43",
-      "grok-build-docs-30",
       "grok-build-docs-27",
       "grok-build-docs-50",
-      "grok-build-docs-25",
       "grok-build-docs-42",
-      "grok-build-docs-32"
+      "grok-build-docs-25",
+      "grok-build-docs-30"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an engineering-lead, I can control which external tools and integrations the agent is allowed to access",
+      "citations": [
+        {
+          "evidenceId": "grok-build-docs-44",
+          "quote": "{ action = \"deny\",  tool = \"bash\", pattern = \"rm -rf *\" }"
+        },
+        {
+          "evidenceId": "grok-build-docs-43",
+          "quote": "Classifier auto-approves safe tools; dangerous ones may still prompt"
+        },
+        {
+          "evidenceId": "grok-build-docs-50",
+          "quote": "MCP servers expose external tools to Grok. Once configured, their tools are available alongside the built-in ones"
+        },
+        {
+          "evidenceId": "grok-build-docs-42",
+          "quote": "use `grok inspect` to see what Grok discovered in the current directory, including config sources, instructions, skills, plugins, hooks, and MCP servers"
+        }
+      ]
+    },
     "productId": "grok-build",
     "storyId": "configurable-tool-permissions"
   }

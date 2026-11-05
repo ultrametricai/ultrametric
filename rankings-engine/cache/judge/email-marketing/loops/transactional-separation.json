@@ -1,19 +1,36 @@
 {
-  "hash": "4e2b479780c546fdab0073bc9eb4be996a4f1dc1216d00c25883dcdb9dbaf702",
+  "hash": "061fe0e32540b14ba085b499d0040905ae72df05c7aa23fc61034f949bb3a9da",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 4,
-    "confidence": "medium",
-    "rationale": "Loops documents transactional email as its own send type for receipts, password resets and login codes, with a dedicated POST /transactional endpoint that takes data variables, and sends it alongside marketing and product email. That supports the core idea of a distinct transactional channel, but the evidence describes \"one API, one contact model\" and never says that transactional suppression or reputation is kept apart from marketing. Missing for 10: evidence that transactional sends ignore marketing unsubscribes (a receipt reaching an unsubscribed contact), separate suppression rules, separate sending reputation (IP or domain), explicitly separate template management, and any independent corroboration.",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Loops documents transactional email as its own send type, with a dedicated POST /transactional endpoint and data variables, for receipts and password resets, sent alongside marketing campaigns. Nothing in the evidence shows unsubscribed contacts still receive transactional mail, separate suppression handling, or a separate sending reputation, and the 'one contact model' framing points to shared infrastructure. Missing for 10: documented delivery of transactional email to unsubscribed contacts, separate suppression rules, separate IP/domain reputation, explicit separate transactional template management, independent corroboration.",
     "evidenceIds": [
+      "loops-docs-34",
       "loops-docs-22",
       "loops-docs-50",
-      "loops-docs-34",
-      "loops-docs-21",
-      "loops-docs-32",
-      "loops-docs-2"
+      "loops-docs-32"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an ops user, transactional email is kept separate from marketing — its own templates, suppression rules, and reputation — so a receipt still delivers to an unsubscribed contact",
+      "citations": [
+        {
+          "evidenceId": "loops-docs-34",
+          "quote": "POST /transactional Send a transactional email with data variables and attachments"
+        },
+        {
+          "evidenceId": "loops-docs-22",
+          "quote": "Automated messages your app sends after an action: password resets, login codes, receipts."
+        },
+        {
+          "evidenceId": "loops-docs-50",
+          "quote": "Send them from Loops alongside your marketing and product email"
+        }
+      ]
+    },
     "productId": "loops",
     "storyId": "transactional-separation"
   }

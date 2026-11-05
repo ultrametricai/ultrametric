@@ -1,20 +1,37 @@
 {
-  "hash": "774a41697cfad618cba8fb2ed2cdffdb44fe26a72f16a6c8f6dabdef9e43f276",
+  "hash": "8db3e39b719a2aac1714970f6a0771ab20587a135e4b2a7dbc6a3e15fd5108c9",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "codex",
-    "storyId": "sandboxed-agent-execution",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Codex documents sandboxed operation in two places. Locally, the CLI's /permissions command controls when the agent can edit files or run commands, and it shows the active sandbox and writable roots. In the cloud, tasks run in isolated environments. A community comment linking a GitHub issue about reading sensitive files without asking lowers confidence, but it does not concretely disprove the documented sandbox. Missing for 10: explicit evidence of network-access restrictions inside the sandbox, detailed sandbox-mechanism documentation, independent hands-on corroboration of sandbox enforcement.",
+    "rationale": "Codex documents its own sandboxing: cloud tasks run in isolated environments, and the CLI's /permissions command lets you choose when Codex can edit files or run commands without asking, and inspect the active sandbox and writable roots. Sandboxing of network access and of tool and MCP calls is not documented. Community comments only raise questions or worries, so they do not create a dispute. Missing for 10: documented network-egress sandboxing or controls, explicit sandbox scope for tool and MCP calls, details of the sandbox mechanism and platform support, independent hands-on corroboration.",
     "evidenceIds": [
       "codex-docs-1",
-      "codex-docs-17",
       "codex-docs-39",
-      "codex-docs-31",
-      "codex-docs-3",
-      "codex-comm-10"
-    ]
+      "codex-docs-17",
+      "codex-docs-31"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an engineering-lead, I can have the agent operate inside a sandbox when interacting with code, tools, and network resources",
+      "citations": [
+        {
+          "evidenceId": "codex-docs-1",
+          "quote": "Run tasks in isolated cloud environments"
+        },
+        {
+          "evidenceId": "codex-docs-39",
+          "quote": "Choose when Codex can edit files or run commands without asking, and inspect the active sandbox and writable roots before you continue."
+        },
+        {
+          "evidenceId": "codex-docs-31",
+          "quote": "Choose the model, reasoning effort, permissions, and commands that fit the task."
+        }
+      ]
+    },
+    "productId": "codex",
+    "storyId": "sandboxed-agent-execution"
   }
 }

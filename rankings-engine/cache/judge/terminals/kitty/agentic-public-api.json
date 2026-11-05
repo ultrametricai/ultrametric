@@ -1,20 +1,37 @@
 {
-  "hash": "4d433568a995f01b5132e2f1364f24a563c8de669d42b728b51e77e4f909eafb",
+  "hash": "c2502deb2db626dc0011921216d855b7a5f000bb678ee9c362f1c4479c072ac7",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "kitty documents a remote-control interface for scripts and the shell: opening windows, sending text, changing titles, and more. A hands-on probe confirmed a complete external agent loop over a socket: `kitten @ ls` returned window and tab state as JSON, then send-text, get-text and close-window all worked against a live window. Missing for 10: the pack does not cite the underlying wire-protocol documentation itself, and there is no machine-readable spec or llms.txt (both probes returned 404), though OpenAPI matters little for a local terminal.",
+    "rationale": "kitty documents a remote-control interface that lets scripts open windows, send text to any window and retitle windows and tabs. A hands-on runtime probe confirmed a complete external control loop: `kitten @ ls` returned JSON state, and send-text, get-text and close-window all worked over a listen socket. missing for 10: evidence in the pack detailing the underlying wire/JSON protocol specification beyond the CLI command surface.",
     "evidenceIds": [
-      "kitty-docs-1",
       "kitty-docs-23",
-      "kitty-docs-27",
-      "kitty-probe-4",
+      "kitty-docs-1",
       "kitty-probe-rt-1",
-      "kitty-probe-1",
-      "kitty-probe-3"
+      "kitty-probe-4",
+      "kitty-docs-27"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can drive the product through a documented public API",
+      "citations": [
+        {
+          "evidenceId": "kitty-docs-23",
+          "quote": "kitty can be controlled from scripts or the shell prompt. You can open new windows, send arbitrary text input to any window, change the title of windows and tabs, etc."
+        },
+        {
+          "evidenceId": "kitty-probe-rt-1",
+          "quote": "`kitten @ ls` returned full window/tab/layout state as JSON, `kitten @ send-text \"echo PA_PROBE_OK\"` executed in the live window, `kitten @ get-text` read the output back, `kitten @ close-window` tore it down — complete external agent-control loop verified hands-on."
+        },
+        {
+          "evidenceId": "kitty-docs-27",
+          "quote": "Control it from scripts or the shell"
+        }
+      ]
+    },
     "productId": "kitty",
     "storyId": "agentic-public-api"
   }

@@ -1,11 +1,11 @@
 {
-  "hash": "b6ce0c327284d420437b9b6c24a054e26850eceef6557f3b235ff2445d7fbbde",
+  "hash": "f2707f3d212b37384a58cc7bd4dd3c1c783718df54deeba78b9d6cc6505e25ab",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Public, agent-readable docs (llms.txt and .md pages both return HTTP 200) document an async pre-recorded quickstart where a method takes a local file, binary data, or remote URL and handles the rest. The official CLI goes from key to transcript in one command (`gladia transcribe audio.mp3`) with machine-readable JSON output for scripts, so an agent holding a key can complete the flow without a human step. missing for 10: explicit evidence of the raw REST auth header, job-creation and result-polling endpoints; a machine-readable OpenAPI spec (all probed paths 404); independent or hands-on confirmation of an end-to-end agent run.",
+    "rationale": "Gladia's public docs show an agent-usable path from recording to transcript: an async API, an SDK quickstart method that takes a local file, binary or URL and 'handles the rest', and a CLI where you set your key and run `gladia transcribe audio.mp3` with machine-readable output for scripts. Machine-readable docs (llms.txt, .md pages) are also published. However, the evidence does not separately document the authentication header, the job-creation endpoint, or result polling/retrieval, and no OpenAPI spec was found (all probed paths returned 404). missing for 10: explicit documentation of API-key auth mechanics, raw job-creation and result-retrieval/polling endpoints, a machine-readable OpenAPI spec, hands-on corroboration of an unattended end-to-end run.",
     "evidenceIds": [
       "gladia-docs-1",
       "gladia-docs-16",
@@ -14,9 +14,31 @@
       "gladia-docs-25",
       "gladia-probe-1",
       "gladia-probe-2",
-      "gladia-probe-3",
-      "gladia-probe-5"
+      "gladia-probe-3"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, an agent holding an API key can take a recording from submission to finished transcript (auth, job creation, result retrieval) from the public docs alone, with no human step in between",
+      "citations": [
+        {
+          "evidenceId": "gladia-docs-1",
+          "quote": "We offer a simple API to get transcription from your audios and videos, in both Real-time and asynchronous ways"
+        },
+        {
+          "evidenceId": "gladia-docs-16",
+          "quote": "Pass in a local file, binary data, or a remote URL — and let the method handle the rest."
+        },
+        {
+          "evidenceId": "gladia-docs-23",
+          "quote": "One command: install, set your key, run `gladia transcribe audio.mp3`"
+        },
+        {
+          "evidenceId": "gladia-docs-25",
+          "quote": "Pipe-friendly: machine-readable output for scripts and CI"
+        }
+      ]
+    },
     "productId": "gladia",
     "storyId": "agent-end-to-end-transcript"
   }

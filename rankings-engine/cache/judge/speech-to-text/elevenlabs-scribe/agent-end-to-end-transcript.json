@@ -1,22 +1,47 @@
 {
-  "hash": "f8c8468b58b6130aca8f48722323d54d5b5cbafdbbdb0bce0c1c1b452276976b",
+  "hash": "c0165d1f7148bba217804b63974b190c0533155e7b734f05cd5f2d4b2f5b1c2f",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "The public convert endpoint docs cover the core flow an agent needs. Auth is by API key or bearer token, a file or hosted URL is submitted to a single transcription call, and the transcript comes back with timestamps and export formats. The docs are machine-readable (llms.txt and .md pages both return HTTP 200), and official SDKs and an MCP server exist. The async path sends results to 'configured webhooks', so a webhook setup step may be needed, and no polling or retrieval endpoint is evidenced. missing for 10: a documented job-status/result-retrieval endpoint for async jobs, evidence that webhook configuration needs no human dashboard step, independent or hands-on corroboration of an agent completing the flow end-to-end.",
+    "rationale": "The public docs describe a single convert endpoint that takes a file or hosted URL and returns the transcript, authenticated by API key or bearer token. They also offer an async mode that pushes results to configured webhooks, and agent-readable docs (llms.txt, .md pages) are confirmed by probes, so the core submit-to-transcript path is self-serve. However, the evidence never documents a polling or retrieval endpoint for async jobs, and no hands-on report shows an agent completing the flow end to end. Missing for 10: a documented async job-status/result-retrieval endpoint (only webhook push is shown), explicit API-key auth setup docs in the pack, and hands-on or independent confirmation of an unattended agent run.",
     "evidenceIds": [
       "elevenlabs-scribe-docs-1",
       "elevenlabs-scribe-docs-13",
       "elevenlabs-scribe-docs-14",
       "elevenlabs-scribe-docs-16",
-      "elevenlabs-scribe-docs-18",
       "elevenlabs-scribe-docs-24",
       "elevenlabs-scribe-probe-1",
-      "elevenlabs-scribe-probe-2",
-      "elevenlabs-scribe-probe-3"
+      "elevenlabs-scribe-probe-2"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, an agent holding an API key can take a recording from submission to finished transcript (auth, job creation, result retrieval) from the public docs alone, with no human step in between",
+      "citations": [
+        {
+          "evidenceId": "elevenlabs-scribe-docs-1",
+          "quote": "Transcribe an audio or video file."
+        },
+        {
+          "evidenceId": "elevenlabs-scribe-docs-14",
+          "quote": "If webhook is set to true, the request will be processed asynchronously and results sent to configured webhooks."
+        },
+        {
+          "evidenceId": "elevenlabs-scribe-docs-16",
+          "quote": "Alternative to API key or bearer token authentication for frontend clients."
+        },
+        {
+          "evidenceId": "elevenlabs-scribe-docs-24",
+          "quote": "HTTP and WebSocket support, official Python and Node.js SDKs."
+        },
+        {
+          "evidenceId": "elevenlabs-scribe-probe-2",
+          "quote": "This is a page from the ElevenLabs documentation. For a complete page index, fetch https://elevenlabs.io/docs/llms.txt"
+        }
+      ]
+    },
     "productId": "elevenlabs-scribe",
     "storyId": "agent-end-to-end-transcript"
   }

@@ -1,17 +1,31 @@
 {
-  "hash": "e71119d40e99fd305b3f1cdf26d682a83dd30cd380b0ecb75d28e5e8b4f88b5d",
+  "hash": "729b15fa035c95ecad3478995c1f0f331e08298246b35c81855c8a9b56a12df4",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "cursor",
-    "storyId": "agentic-webhooks",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Cursor documents outbound webhooks for cloud agent runs. When an agent is created with a webhook URL, Cursor POSTs HMAC-SHA256-signed statusChange events (ERROR/FINISHED) with a documented payload and verification snippets. However, this only exists on the legacy v0 API; the current v1 API says \"Webhooks are coming soon,\" and the only event type is agent status change. Automations can be triggered by incoming webhooks, but that is inbound triggering rather than event subscription. Missing for 10: webhook support on the current v1 API, a broader event catalog beyond agent status changes (e.g. PR, Bugbot, usage or admin events), subscription management endpoints, and independent or hands-on corroboration.",
+    "rationale": "Cursor documents real outbound webhooks. When you create a cloud agent with a webhook URL, Cursor sends HMAC-SHA256-signed HTTP POST status-change notifications, with documented headers, payload and verification snippets. The limits are significant: webhooks exist only on the legacy v0 API (the v1 page says \"Webhooks are coming soon\"), they cover only statusChange on ERROR/FINISHED, and they are set per agent rather than as a general event subscription. Automations' incoming-webhook triggers are inbound, not outbound subscriptions, and earn no credit. Missing for 10: webhook support in the current v1 API, a broader event catalog beyond agent status changes, team-level webhook registration/management, independent or hands-on corroboration.",
     "evidenceIds": [
       "cursor-supp-agent-webhooks",
-      "cursor-docs-24",
-      "cursor-supp-automations"
-    ]
+      "cursor-docs-24"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can subscribe to events via webhooks",
+      "citations": [
+        {
+          "evidenceId": "cursor-docs-24",
+          "quote": "Cursor will send HTTP POST requests to notify you about status changes."
+        },
+        {
+          "evidenceId": "cursor-supp-agent-webhooks",
+          "quote": "When you create an agent with a webhook URL, Cursor will send HTTP POST requests to notify you about status changes"
+        }
+      ]
+    },
+    "productId": "cursor",
+    "storyId": "agentic-webhooks"
   }
 }

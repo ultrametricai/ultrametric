@@ -1,19 +1,37 @@
 {
-  "hash": "458efa4a54452a4bd3e72182189cecd9c1a78c02c2e8edb2fbb9f52c93ae0e7c",
+  "hash": "99d1b4233ae058a302e2537ea56e52c51a9cf6b8abb922f22e4e005e6c9cd9fe",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "devin",
-    "storyId": "api-sandbox",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Devin sessions run in their own cloud VM with shell, browser and repo access, booting into a configured known-good environment. The CLI offers a `--sandbox` flag that enforces OS-level isolation of writable paths and can restrict network traffic. Together these give the agent an isolated place to build and test away from the user's live systems. missing for 10: explicit documentation on keeping production data out of sandboxes (e.g. test/staging databases or seeded fixtures, especially since VPN access can reach internal databases), and independent or hands-on corroboration of the isolation.",
+    "rationale": "Devin documents real execution isolation: each cloud session runs in its own VM, and the CLI's --sandbox flag enforces OS-level write and deny rules with optional network restriction. That is genuine sandbox isolation rather than a dry run. However, nothing documents separating test data from production data. The VPN feature (devin-docs-28) actually lets sessions reach internal databases, so keeping production data out of reach is left to the user. Missing for 10: documented isolation of test or staging data from production, environment-level guardrails against production access, and independent hands-on corroboration.",
     "evidenceIds": [
-      "devin-docs-13",
       "devin-docs-12",
       "devin-docs-37",
-      "devin-docs-31",
-      "devin-docs-36"
-    ]
+      "devin-docs-13",
+      "devin-docs-31"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
+      "citations": [
+        {
+          "evidenceId": "devin-docs-12",
+          "quote": "The --sandbox flag runs the CLI with OS-level isolation, enforcing writable paths and deny rules at the operating-system level and optionally restricting network traffic."
+        },
+        {
+          "evidenceId": "devin-docs-13",
+          "quote": "The cloud session gets its own VM with a shell, browser, and full repo access"
+        },
+        {
+          "evidenceId": "devin-docs-31",
+          "quote": "Configure it once, and every session boots into that known-good state."
+        }
+      ]
+    },
+    "productId": "devin",
+    "storyId": "api-sandbox"
   }
 }

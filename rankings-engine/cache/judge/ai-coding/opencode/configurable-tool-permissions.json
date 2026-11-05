@@ -1,22 +1,46 @@
 {
-  "hash": "42992fe072a8e7ca88d670c0c5f8c2cf6cccdb1535d04e30c43b74445b0bef5c",
+  "hash": "9d200aa90e8da4c53311e57e5a11bd31ac7489b96c27e8b9af0290cb79341890",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "opencode",
-    "storyId": "configurable-tool-permissions",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "OpenCode documents a `permission` config that sets each action to run automatically, prompt, or be blocked. Rules can vary by tool input, `external_directory` governs paths outside the working directory, and custom agents can carry their own permission configuration. External tools are added explicitly via MCP, and the enterprise central config can restrict users to an internal AI gateway. Missing for 10: explicit evidence that permissions can allow or deny individual MCP servers or tools, evidence that an org-wide tool policy can be centrally enforced so users cannot override it, and independent or hands-on corroboration.",
+    "rationale": "OpenCode has a first-party permission config that decides whether each action runs automatically, prompts, or is blocked. Rules can vary by tool input and be set per agent, and explicit denies hold even under --auto. External tools come in through local or remote MCP servers, but the evidence never shows the permission rules covering MCP servers or integrations, so control over external integrations specifically is only implied. Missing for 10: explicit documentation that permissions gate MCP servers or integration tools, org-level enforced tool allowlists via central enterprise config, independent or hands-on corroboration.",
     "evidenceIds": [
       "opencode-docs-13",
       "opencode-docs-43",
-      "opencode-docs-57",
-      "opencode-docs-5",
-      "opencode-docs-4",
       "opencode-docs-14",
-      "opencode-docs-33",
-      "opencode-docs-61"
-    ]
+      "opencode-docs-4",
+      "opencode-docs-5"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an engineering-lead, I can control which external tools and integrations the agent is allowed to access",
+      "citations": [
+        {
+          "evidenceId": "opencode-docs-13",
+          "quote": "OpenCode uses the `permission` config to decide whether a given action should run automatically, prompt you, or be blocked."
+        },
+        {
+          "evidenceId": "opencode-docs-43",
+          "quote": "For most permissions, you can use an object to apply different actions based on the tool input."
+        },
+        {
+          "evidenceId": "opencode-docs-14",
+          "quote": "Start OpenCode with `--auto` to automatically approve permission requests that are not explicitly denied."
+        },
+        {
+          "evidenceId": "opencode-docs-4",
+          "quote": "You can add external tools to OpenCode using the _Model Context Protocol_, or MCP. OpenCode supports both local and remote servers."
+        },
+        {
+          "evidenceId": "opencode-docs-5",
+          "quote": "This command will guide you through creating a new agent with a custom system prompt and permission configuration."
+        }
+      ]
+    },
+    "productId": "opencode",
+    "storyId": "configurable-tool-permissions"
   }
 }

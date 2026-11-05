@@ -1,17 +1,32 @@
 {
-  "hash": "4c87aa86cc26f1354f288621579ccc0be651c1cd2c90bb8bb9c239831ebdbd1e",
+  "hash": "ffd2a2e7927bc72ff4facb9fbf830206fc1ce77cd05669e911ee9563d956ca64",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Entra documents device-based Conditional Access policies built on registered or joined device identities (docs-8, docs-22). Conditional Access is the policy engine that gates access to apps like Microsoft 365 (docs-2, docs-16), so device checks before an app session are a documented first-party capability. However, the specific posture attributes (managed, encrypted, screen-locked) are never shown being evaluated. The evidence ties MDM to the separate Intune product, so the depth of posture checking within Entra itself is unproven. Missing for 10: explicit documentation of compliance or posture conditions (encryption, screen lock) in Conditional Access, clarity on whether posture evaluation needs Intune, and independent or hands-on corroboration.",
+    "rationale": "Entra documents Conditional Access as its auth-policy engine, and it explicitly references device-based Conditional Access policies built on device identities, so device trust can be checked before an app session is granted. The pack never shows which posture signals are evaluated (managed, encrypted, screen-locked). It ties device management to the separate Intune family rather than to Entra itself. Missing for 10: documented posture checks for encryption and screen lock, details of a device-compliance or managed-device grant control, and independent or hands-on corroboration.",
     "evidenceIds": [
-      "microsoft-entra-docs-8",
       "microsoft-entra-docs-22",
+      "microsoft-entra-docs-8",
       "microsoft-entra-docs-2",
       "microsoft-entra-docs-16"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a security engineer, only healthy devices get in — device posture (managed, encrypted, screen-locked) is checked in the auth policy before an app session is granted",
+      "citations": [
+        {
+          "evidenceId": "microsoft-entra-docs-22",
+          "quote": "Device identities are a prerequisite for scenarios like device-based Conditional Access policies and Mobile Device Management with the Microsoft Intune family of products."
+        },
+        {
+          "evidenceId": "microsoft-entra-docs-16",
+          "quote": "Secure the application – Manage configuration of permissions, multifactor authentication, Conditional Access, tokens, and certificates."
+        }
+      ]
+    },
     "productId": "microsoft-entra",
     "storyId": "device-trust-policies"
   }

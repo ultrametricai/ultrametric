@@ -1,18 +1,30 @@
 {
-  "hash": "fad764dae1bfd39f1dee4b7c40483cfe3db0da3b52b507ce54b8792f53bb4984",
+  "hash": "57ec732147c7b71ee78f9ae992e0a04146caf86072a374d2eba590a89d983c76",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Grok Build documents an OS-level sandbox (Landlock on Linux, Seatbelt on macOS) that limits what the agent and its child processes can read, write and reach on the network. It also offers isolated worktree sessions, file-restoring checkpoints, and deny rules for dangerous commands. Together these let an agent run and test without reaching production resources. However, all of this is local process and workspace isolation; nothing describes a dedicated sandbox or test environment with non-production data to test against. missing for 10: a documented sandbox/test environment with mock or non-production data, guidance on configuring sandbox network rules to block production endpoints, independent hands-on corroboration of the sandbox.",
+    "rationale": "Grok Build documents its own OS-level sandbox (Landlock on Linux, Seatbelt on macOS). The sandbox limits what the agent process and its children can read, write, and reach on the network. Worktree sessions also run in an isolated copy of the repo. This is real sandbox isolation, not a dry-run, but the docs say nothing about a dedicated test environment kept separate from production data or services. missing for 10: documented test/staging environment separation from production data, details on sandbox configuration (allowed paths/hosts), independent hands-on corroboration of sandbox effectiveness.",
     "evidenceIds": [
       "grok-build-docs-32",
-      "grok-build-docs-33",
-      "grok-build-docs-14",
-      "grok-build-docs-10",
-      "grok-build-docs-8"
+      "grok-build-docs-33"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
+      "citations": [
+        {
+          "evidenceId": "grok-build-docs-32",
+          "quote": "The sandbox limits what the agent process and its children can read, write, and reach on the network (Landlock on Linux, Seatbelt on macOS)."
+        },
+        {
+          "evidenceId": "grok-build-docs-33",
+          "quote": "A worktree session runs in an isolated copy of your repository, so parallel agents cannot overwrite each other's files."
+        }
+      ]
+    },
     "productId": "grok-build",
     "storyId": "api-sandbox"
   }

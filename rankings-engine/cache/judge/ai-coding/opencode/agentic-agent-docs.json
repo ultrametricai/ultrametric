@@ -1,17 +1,32 @@
 {
-  "hash": "20abfada10556cbff26294276e1011bee8379f4d3eff6ea6110f9c6f4edef40e",
+  "hash": "88af0cb26cb0b5280bb1e41d06df001f7dffd5d8d16c3484a52546b21c559caa",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "opencode",
-    "storyId": "agentic-agent-docs",
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Probes show no llms.txt (HTTP 404). However, a raw markdown/MDX variant of the docs is served at /docs/.md, and a machine-readable OpenAPI spec is available at /openapi.json, so an agent can still ingest some docs. The .md output is unrendered Astro/Starlight MDX source with component imports, not a curated agent-oriented format. Missing for 10: an llms.txt or llms-full.txt index, clean agent-oriented markdown docs, first-party documentation of agent-readable docs, and hands-on corroboration.",
+    "rationale": "OpenCode has no llms.txt (the probe returned HTTP 404). Its docs do serve a markdown variant at /docs/.md, but that is raw Astro/MDX source with component imports rather than a clean agent-oriented digest. A machine-readable openapi.json is also served, which offers some agent-consumable documentation. Missing for 10: a published llms.txt index, clean agent-oriented markdown docs (not raw MDX), and documentation or corroboration that pointing an agent at these docs works well.",
     "evidenceIds": [
       "opencode-probe-1",
       "opencode-probe-2",
       "opencode-probe-3"
-    ]
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can point an agent at llms.txt or agent-oriented docs",
+      "citations": [
+        {
+          "evidenceId": "opencode-probe-2",
+          "quote": "PROBE docs-md: HTTP 200 at https://opencode.ai/docs/.md"
+        },
+        {
+          "evidenceId": "opencode-probe-3",
+          "quote": "PROBE openapi: HTTP 200 at https://opencode.ai/openapi.json — contains \"openapi\" key"
+        }
+      ]
+    },
+    "productId": "opencode",
+    "storyId": "agentic-agent-docs"
   }
 }

@@ -1,23 +1,44 @@
 {
-  "hash": "7c53e84e8b133b1366111a75b6f2d88d8917bb8906bfdb7252d1b496dcd161ad",
+  "hash": "28615063864ab690220539b394f9826e084014d452c5683534861a91964676b4",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Scribe is itself a documented public API. The AI Services reference publishes an OpenAPI spec, confirmed live by a probe, covering synchronous transcription, batch job submit/status/list/cancel/files, and the Live WebSocket. Vocabulary assets have CRUD endpoints, credentials are scoped and support JWT, and batch jobs can send signed webhooks, so the product can be driven entirely through the API. Missing for 10: independent or hands-on corroboration of real API calls beyond the docs and spec probes; the reference and the probed payload also disagree on the OpenAPI version (3.1.1 vs 3.0.0).",
+    "rationale": "Zoom Scribe is itself an API product. It has a documented public REST and WebSocket API with an OpenAPI spec (confirmed by a live probe), synchronous, live and batch endpoints, job lifecycle and status operations, auth credentials with scopes, and signed webhooks. An AI-native user can drive it fully in code. Missing for 10: independent or hands-on corroboration of real-world API use beyond vendor docs and spec probes.",
     "evidenceIds": [
       "zoom-scribe-supp-openapi-docs",
       "zoom-scribe-supp-openapi-probe",
       "zoom-scribe-supp-sync-api-schema",
       "zoom-scribe-supp-batch-lifecycle",
-      "zoom-scribe-supp-batch-webhooks",
-      "zoom-scribe-docs-15",
       "zoom-scribe-docs-2",
-      "zoom-scribe-docs-25",
       "zoom-scribe-docs-26",
+      "zoom-scribe-docs-15",
       "zoom-scribe-probe-1"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can drive the product through a documented public API",
+      "citations": [
+        {
+          "evidenceId": "zoom-scribe-supp-openapi-docs",
+          "quote": "Zoom's AI Services API reference identifies OpenAPI 3.1.1 and API version 2, then documents the Scribe operation catalog"
+        },
+        {
+          "evidenceId": "zoom-scribe-supp-openapi-probe",
+          "quote": "the payload declares OpenAPI 3.0.0, AI Services API version 2, and six Scribe paths covering synchronous, live, batch-job, status, and per-file operations"
+        },
+        {
+          "evidenceId": "zoom-scribe-supp-batch-lifecycle",
+          "quote": "Batch mode documents POST /aiservices/scribe/jobs plus get-status, list-jobs, cancel-job, list-files, and get-file endpoints."
+        },
+        {
+          "evidenceId": "zoom-scribe-docs-26",
+          "quote": "Use a short-lived JWT for client-to-backend API calls."
+        }
+      ]
+    },
     "productId": "zoom-scribe",
     "storyId": "agentic-public-api"
   }

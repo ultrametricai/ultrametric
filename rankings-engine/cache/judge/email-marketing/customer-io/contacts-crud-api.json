@@ -1,19 +1,41 @@
 {
-  "hash": "f6467132b49c1a02d427db8021518a6eaf319c410efc4a8c54f56484e647c257",
+  "hash": "e0bd2001a008769077c37747a2cdfa04120428cb4bf8add190f419edd0354f8c",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Customer.io documents the Pipelines and Track APIs for sending customer data and identifying people, publishes an OpenAPI spec, and explicitly supports suppressing (and deleting) profiles via API through a 'Suppress Person' event. That covers the create/update/suppress core of the story. Missing for 10: explicit documentation of setting custom attributes on identify calls (only implied via attribute-based segments), evidence of production-scale throughput such as batch endpoints or rate limits, and independent hands-on corroboration.",
+    "rationale": "Customer.io's own Pipelines API and Track API bring customer data in, including customer identification. The docs explicitly say a profile is suppressed by sending a 'Suppress Person' event. A published OpenAPI spec backs this up. However, the evidence never explicitly says custom attributes can be set on profiles, and nothing addresses production scale (rate limits, batching, throughput). Missing for 10: explicit documentation of setting custom properties on contact create/update, evidence of production-scale throughput or batch limits, independent or hands-on corroboration.",
     "evidenceIds": [
       "customer-io-docs-3",
       "customer-io-docs-5",
       "customer-io-docs-7",
-      "customer-io-docs-12",
       "customer-io-docs-45",
       "customer-io-probe-2"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can create, update, and suppress contacts with custom properties through the API at production scale",
+      "citations": [
+        {
+          "evidenceId": "customer-io-docs-3",
+          "quote": "To get data into Customer.io, use an SDK or the Pipelines API. This is the API that most of our integrations are based on and likely the API you'll use the most."
+        },
+        {
+          "evidenceId": "customer-io-docs-5",
+          "quote": "If you want to suppress a profile, you'd send an event called Suppress Person."
+        },
+        {
+          "evidenceId": "customer-io-docs-7",
+          "quote": "Our Track API provides ways to send real-time customer data to your Customer.io workspace including customer identification and event tracking."
+        },
+        {
+          "evidenceId": "customer-io-docs-45",
+          "quote": "Primary OpenAPI spec for the Track (ingress), App, and Design Studio APIs together, at the conventional path"
+        }
+      ]
+    },
     "productId": "customer-io",
     "storyId": "contacts-crud-api"
   }

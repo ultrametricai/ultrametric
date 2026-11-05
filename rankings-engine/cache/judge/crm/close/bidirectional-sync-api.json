@@ -1,20 +1,46 @@
 {
-  "hash": "f8a9663f0e16a414d554255d8b015347bdab7009ca1cc940967f1a86ddb71db1",
+  "hash": "1a8e24033a9b5977a86a3972125e31807fd6317ebc1ad09d5f3e859105a6964a",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Close documents the core of bidirectional sync: writing records via the REST API (with PUT behaving as a patch) and change detection through webhooks that POST Event Log entries plus a queryable 30-day Event Log. Rate limiting is documented via a `ratelimit` response header, but no actual limit values or scale guidance appear, and there is no evidence of upsert semantics. Missing for 10: documented upsert/idempotent create-or-update, concrete rate-limit values and high-volume sync guidance, independent or hands-on corroboration of sync at scale.",
+    "rationale": "Close documents the main pieces of bidirectional sync. You can push data via the REST API, detect changes through webhooks and a 30-day Event Log, and read documented rate-limit headers. PUT behaves as a patch, but that is a partial update, not a true create-or-update upsert. Missing for 10: documented upsert or idempotent create-or-update semantics, explicit numeric rate limits and guidance for high-volume sync, and independent or hands-on corroboration of sync at scale.",
     "evidenceIds": [
       "close-docs-1",
       "close-docs-2",
       "close-docs-12",
       "close-docs-13",
       "close-docs-16",
-      "close-docs-25",
-      "close-docs-14"
+      "close-docs-25"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can sync records bidirectionally through the API at scale, with documented rate limits, upserts, and change detection",
+      "citations": [
+        {
+          "evidenceId": "close-docs-1",
+          "quote": "Push leads, contacts, activities, and custom data into Close from your website or other systems via the REST API."
+        },
+        {
+          "evidenceId": "close-docs-12",
+          "quote": "Event Log — Query the last 30 days of changes to any object."
+        },
+        {
+          "evidenceId": "close-docs-25",
+          "quote": "Webhooks allow a subscription URL to be configured that we will POST event data to as it is added to the Event Log."
+        },
+        {
+          "evidenceId": "close-docs-16",
+          "quote": "Most API responses will have the `ratelimit` header to provide rate limiting statistics about the limit it's closest to hitting."
+        },
+        {
+          "evidenceId": "close-docs-13",
+          "quote": "PUT requests behave as patches — send only the fields you want to update."
+        }
+      ]
+    },
     "productId": "close",
     "storyId": "bidirectional-sync-api"
   }

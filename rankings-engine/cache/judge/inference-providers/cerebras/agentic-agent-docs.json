@@ -1,18 +1,31 @@
 {
-  "hash": "8430449a1f00fea0a03ebd0f8ff7d75dfdf20a9128602fd79d86ec041786540c",
+  "hash": "66ddb357b2e55727b70ded317cb8364d33d69b78d4d70897e27f71f4ed411220",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "A live probe confirms https://inference-docs.cerebras.ai/llms.txt returns HTTP 200 with a structured index of markdown doc links. Individual pages are served as .md files whose headers tell agents to fetch the complete index from llms.txt, which shows deliberately agent-oriented docs. Missing for 10: no evidence of a full-content llms-full.txt variant, and no independent or community report of agents actually consuming these docs.",
+    "rationale": "Live probes confirm a working llms.txt at inference-docs.cerebras.ai/llms.txt that indexes the docs as Markdown pages. Each Markdown page also tells agents to fetch the complete documentation index from llms.txt, so an agent can be pointed directly at agent-oriented docs. Missing for 10: no evidence of an llms-full.txt or other agent-docs guidance beyond the index, and no published OpenAPI spec (all probed paths returned 404).",
     "evidenceIds": [
       "cerebras-probe-1",
       "cerebras-probe-2",
-      "cerebras-docs-3",
-      "cerebras-docs-5",
-      "cerebras-docs-7"
+      "cerebras-docs-3"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can point an agent at llms.txt or agent-oriented docs",
+      "citations": [
+        {
+          "evidenceId": "cerebras-probe-1",
+          "quote": "PROBE llms.txt: HTTP 200 at https://inference-docs.cerebras.ai/llms.txt # Cerebras Inference"
+        },
+        {
+          "evidenceId": "cerebras-probe-2",
+          "quote": "Fetch the complete documentation index at: https://inference-docs.cerebras.ai/llms.txt"
+        }
+      ]
+    },
     "productId": "cerebras",
     "storyId": "agentic-agent-docs"
   }

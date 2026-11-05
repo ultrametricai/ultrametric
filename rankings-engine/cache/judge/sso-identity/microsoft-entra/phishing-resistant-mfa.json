@@ -1,20 +1,37 @@
 {
-  "hash": "9b6140aa076073e5a07a3f54ad8435f670d3a328b708cf33deeceacb96e7dcaf",
+  "hash": "6f9fa4d8549b57d3e5d56d8187ea17943da439ffef8c2f7dc7095941a6ff20eb",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "First-party docs clearly show FIDO2 security keys and passkeys (hardware keys, native or third-party providers, and Microsoft Authenticator) can be registered and used to sign in to Entra. Conditional Access can require MFA for specific apps like Microsoft 365, and MFA and Conditional Access can be configured per application. However, nothing in the pack shows a policy that requires FIDO2 or passkeys specifically rather than generic MFA, and community reports of a downgrade attack against FIDO auth (where alternative methods remain) raise questions about how strictly it can be enforced. missing for 10: documented policy that requires FIDO2/passkeys specifically (not just any MFA) for sensitive apps, guidance on preventing fallback to weaker methods, independent hands-on corroboration of enforcement.",
+    "rationale": "Entra ID's own docs show FIDO2 security keys and passkeys (hardware keys, third-party providers, Microsoft Authenticator) can be registered and used for sign-in. Conditional Access can require MFA to access an app. However, nothing in the pack shows a policy that requires specifically FIDO2/passkeys, rather than any MFA, for chosen sensitive apps. Community reports of a downgrade attack, which relies on fallback methods remaining available, lower confidence that FIDO-only enforcement holds. missing for 10: documented policy to require FIDO2/passkeys specifically (e.g., phishing-resistant method enforcement) per app, independent hands-on corroboration of that enforcement.",
     "evidenceIds": [
       "microsoft-entra-docs-6",
-      "microsoft-entra-docs-7",
       "microsoft-entra-docs-21",
-      "microsoft-entra-docs-2",
+      "microsoft-entra-docs-19",
       "microsoft-entra-docs-16",
-      "microsoft-entra-comm-6",
       "microsoft-entra-comm-7"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a security engineer, MFA goes beyond push codes — FIDO2 security keys and passkeys are supported and can be REQUIRED by policy for sensitive apps",
+      "citations": [
+        {
+          "evidenceId": "microsoft-entra-docs-21",
+          "quote": "users in your organization can then register and sign in to their Microsoft Entra account using a passkey stored on a FIDO2 security key, a native or third-party passkey provider, or in Microsoft Authenticator"
+        },
+        {
+          "evidenceId": "microsoft-entra-docs-19",
+          "quote": "If a user wants to access an application or service like Microsoft 365, then they must perform multifactor authentication to gain access."
+        },
+        {
+          "evidenceId": "microsoft-entra-docs-16",
+          "quote": "Secure the application – Manage configuration of permissions, multifactor authentication, Conditional Access, tokens, and certificates."
+        }
+      ]
+    },
     "productId": "microsoft-entra",
     "storyId": "phishing-resistant-mfa"
   }

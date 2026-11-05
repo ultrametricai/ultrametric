@@ -1,18 +1,36 @@
 {
-  "hash": "fbb50c1a7df6789af74bdb6f8cd097ef0f61812c397afe657b39dd09e2f883e2",
+  "hash": "359e74915649e64d179fd631370603d05320dc552207bdf738689e21dbe93dcd",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "OpenAI's speech-to-text docs describe uploading a completed recording to get a final transcript returned as JSON. They show a file-upload command (`audio:transcriptions create --file /path/to/file/audio.mp3`) and publish a 25 MB size limit plus accepted formats, including the video containers mp4 and webm. missing for 10: an explicit raw HTTP endpoint path and request schema in the cited excerpts (no OpenAPI spec was found at the probed paths), and independent or hands-on corroboration of API file uploads.",
+    "rationale": "OpenAI's speech-to-text docs describe uploading a completed recording to get a final transcript, and they publish a 25 MB file limit and the accepted formats, including video containers mp4 and webm. A documented CLI call (`audio:transcriptions create --file /path/to/file/audio.mp3`) shows a local file being submitted to the transcriptions API. Missing for 10: the raw HTTP endpoint path or request schema is not shown in the evidence (the OpenAPI probes returned 404), and there is no independent or hands-on corroboration of the hosted API upload flow.",
     "evidenceIds": [
       "whisper-docs-1",
-      "whisper-docs-2",
       "whisper-docs-3",
-      "whisper-docs-4",
-      "whisper-docs-6"
+      "whisper-docs-6",
+      "whisper-docs-4"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can submit a local audio or video file for transcription through a documented API endpoint, with accepted formats and size limits published",
+      "citations": [
+        {
+          "evidenceId": "whisper-docs-1",
+          "quote": "Upload the audio and receive a final transcript"
+        },
+        {
+          "evidenceId": "whisper-docs-3",
+          "quote": "Files can be up to 25 MB. Supported input formats are `mp3`, `mp4`, `mpeg`, `mpga`, `m4a`, `wav`, and `webm`."
+        },
+        {
+          "evidenceId": "whisper-docs-6",
+          "quote": "openai audio:transcriptions create --model gpt-transcribe --file /path/to/file/audio.mp3"
+        }
+      ]
+    },
     "productId": "whisper",
     "storyId": "file-upload-transcribe"
   }

@@ -1,19 +1,41 @@
 {
-  "hash": "c8e80ca214f8604b384eb652d1e96a797b38bb90bf89b377ca9e7bf409a18d7e",
+  "hash": "b3e318dfaeeb6da430782229128b2e1ba0d5401f17e9a000cad210bb925f9c70",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "The Jobs API documents asynchronous job creation by URL or file upload, and a read endpoint that checks an existing job's status and returns its results when available, which covers the core create-then-poll workflow. The only hint of the state model is a 'pending' job mentioned in the MCP cancel tool. missing for 10: an explicit enumeration of documented job states and their transitions, polling guidance (intervals/rate limits), independent or hands-on corroboration of the polling flow.",
+    "rationale": "Speech is Cheap documents an asynchronous Jobs API. Developers create jobs by URL or file upload, and a read endpoint lets them check an existing job's status and retrieve results when available, which covers the create-then-poll loop. The evidence does not enumerate the job states; only 'pending' and 'canceled' are implied, by the MCP cancel tool and a changelog webhook. missing for 10: an explicitly documented job-state lifecycle (e.g. queued/processing/completed/failed), polling guidance or examples, and independent or hands-on corroboration of polling.",
     "evidenceIds": [
       "speech-is-cheap-docs-2",
       "speech-is-cheap-docs-3",
       "speech-is-cheap-docs-9",
-      "speech-is-cheap-docs-10",
       "speech-is-cheap-probe-1",
       "speech-is-cheap-supp-mcp-tools"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I create a transcription job and poll its status through documented job states until the result is ready",
+      "citations": [
+        {
+          "evidenceId": "speech-is-cheap-docs-9",
+          "quote": "This endpoint allows you to check the status of an existing transcription job and retrieve its results if available."
+        },
+        {
+          "evidenceId": "speech-is-cheap-docs-2",
+          "quote": "Submit a URL to a publicly accessible audio file. This is the standard method and is suitable for most use cases."
+        },
+        {
+          "evidenceId": "speech-is-cheap-probe-1",
+          "quote": "The Jobs API transcribes audio and video asynchronously"
+        },
+        {
+          "evidenceId": "speech-is-cheap-supp-mcp-tools",
+          "quote": "`cancel_job`: Cancels a pending transcription job."
+        }
+      ]
+    },
     "productId": "speech-is-cheap",
     "storyId": "async-job-lifecycle"
   }

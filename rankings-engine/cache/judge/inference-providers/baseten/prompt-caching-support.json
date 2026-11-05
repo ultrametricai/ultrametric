@@ -1,16 +1,35 @@
 {
-  "hash": "e33bdd1589db166a585954812b10893c415190c6fa6347400327e8ee101a6e25",
+  "hash": "6fcc784a8c1e2d82dfe31468edc6fdaec0204bd9b0f7ed8851885caf2d354c20",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 9,
     "confidence": "medium",
-    "rationale": "Baseten's first-party docs say cached input tokens are served from the KV cache at a discounted rate. The docs add that caching is automatic and needs no request flags, and that session-ID routing sends requests to the same replica so a shared prefix is more likely to stay cached. Together these cover the cost and latency benefit for repeated context. Missing for 10: independent or hands-on corroboration of the cost and latency savings, and evidence of prefix caching on dedicated (non-Model-API) deployments.",
+    "rationale": "Baseten's Model APIs documentation states that prompt tokens reused from a cached prefix are served from the KV cache at a discounted rate. Caching is automatic and needs no request flags, and requests sharing a session ID are routed to the same replica so the prefix is more likely to stay cached, which directly delivers the cost reduction on repeated context. Missing for 10: explicit documentation of latency reduction from cache hits (the docs cover cost only), and independent or hands-on corroboration.",
     "evidenceIds": [
       "baseten-docs-11",
       "baseten-docs-41",
       "baseten-docs-42"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an ml-engineer, I can benefit from prompt/prefix caching that reduces latency or cost on repeated context",
+      "citations": [
+        {
+          "evidenceId": "baseten-docs-11",
+          "quote": "Cached input tokens are prompt tokens served from the KV cache at a discounted rate. Caching is automatic and requires no request flags."
+        },
+        {
+          "evidenceId": "baseten-docs-42",
+          "quote": "Baseten serves prompt tokens from the KV cache at a discounted rate when a request reuses a cached prefix."
+        },
+        {
+          "evidenceId": "baseten-docs-41",
+          "quote": "Baseten routes requests with the same session ID to the same replica, where the shared prompt prefix is more likely to remain in the KV cache."
+        }
+      ]
+    },
     "productId": "baseten",
     "storyId": "prompt-caching-support"
   }

@@ -1,20 +1,41 @@
 {
-  "hash": "2945ec2123ce5c476929c555cef8787ae67d25d3d3d0fbabdde896f3bd9c20a5",
+  "hash": "3d4ff18758bdb445e889a139e2f21c4575077da1a19752194653993a4b9baaf1",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "PagerDuty's docs cover each part of the story. Events API integrations deduplicate alerts that share a `dedup_key` (pagerduty-docs-3), and Event Orchestration can deduplicate or suppress alerts (pagerduty-docs-43). Intelligent Alert Grouping uses machine learning to merge related alerts into a single incident (pagerduty-docs-4), and escalation policies notify one target at a time until someone acknowledges (pagerduty-docs-37). Missing for 10: independent or hands-on corroboration of how well deduplication and grouping work in practice (the 91% noise-reduction figure is vendor marketing only).",
+    "rationale": "PagerDuty documents dedup_key-based deduplication on Events API integrations, Event Orchestration rules that deduplicate or suppress alerts, and ML-driven Intelligent Alert Grouping that consolidates related alerts into a single incident. Escalation policies then notify a single target at a time until one person acknowledges, which covers the 'one incident pages one human' part. missing for 10: independent or hands-on corroboration that grouping and dedup actually cut pages in practice, and detail on grouping configuration and limits.",
     "evidenceIds": [
       "pagerduty-docs-3",
-      "pagerduty-docs-43",
       "pagerduty-docs-4",
-      "pagerduty-docs-25",
+      "pagerduty-docs-43",
       "pagerduty-docs-37",
-      "pagerduty-docs-18",
-      "pagerduty-docs-61"
+      "pagerduty-docs-18"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an SRE, duplicate and related alerts are deduplicated and grouped so one incident pages one human, not fifty",
+      "citations": [
+        {
+          "evidenceId": "pagerduty-docs-3",
+          "quote": "Services with Events API integrations deduplicate alerts with matching `dedup_key` values."
+        },
+        {
+          "evidenceId": "pagerduty-docs-4",
+          "quote": "Intelligent Alert Grouping automatically consolidates related alerts into a single, actionable incident, using machine learning to reduce alert noise for DevOps teams and SREs."
+        },
+        {
+          "evidenceId": "pagerduty-docs-43",
+          "quote": "Event Orchestration: Automatically deduplicate or suppress alerts."
+        },
+        {
+          "evidenceId": "pagerduty-docs-37",
+          "quote": "They are designed to notify a single target at a time until one individual acknowledges the incident."
+        }
+      ]
+    },
     "productId": "pagerduty",
     "storyId": "alert-dedup-grouping"
   }

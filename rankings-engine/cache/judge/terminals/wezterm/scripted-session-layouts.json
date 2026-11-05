@@ -1,19 +1,36 @@
 {
-  "hash": "b77712f74c87fe41de1248b5fca4f28ddfab214aba916e2329cc3f552d0f1972",
+  "hash": "3ab5d03f763dd7a7e9038f1b600859882eb440c2674adb22642e06d44441ea61",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "The official `wezterm cli` can spawn programs and manipulate tabs and panes in a running GUI or mux instance. A runtime probe confirmed scripted `spawn --new-window`, `send-text` and `list` working, so a workspace can be scripted into one command. The evidence only shows this via external scripting against the CLI, not a declarative startup-session or layout definition in the Lua config. Missing for 10: documented config-level startup/session hooks, explicit pane-split layout definitions, named workspace/session restore, and independent reports of one-command project workspaces.",
+    "rationale": "WezTerm's own CLI can spawn programs and manipulate tabs and panes, and a runtime probe confirmed `wezterm cli spawn --new-window`, `send-text` and `list` working headlessly. A user could script a workspace layout with it, and the Lua config exposes event callbacks via `wezterm.on`. However, the evidence never documents declaring a startup session or layout in config, so the one-command workspace is only implied. Missing for 10: documented config-level startup layout/session definitions (e.g. a startup event that builds splits/tabs), explicit evidence of pane-split scripting, a named workspace concept, and independent corroboration of layout-on-launch workflows.",
     "evidenceIds": [
       "wezterm-docs-7",
-      "wezterm-docs-19",
       "wezterm-probe-rt-1",
-      "wezterm-docs-3",
-      "wezterm-comm-17",
-      "wezterm-comm-19"
+      "wezterm-review-source-20261104-4-1",
+      "wezterm-docs-31"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a power-user, I can define startup sessions and window layouts in config or scripts so a project workspace opens in one command",
+      "citations": [
+        {
+          "evidenceId": "wezterm-docs-7",
+          "quote": "can be used to spawn programs and manipulate tabs and panes"
+        },
+        {
+          "evidenceId": "wezterm-probe-rt-1",
+          "quote": "`wezterm cli spawn --new-window` returned a pane-id"
+        },
+        {
+          "evidenceId": "wezterm-review-source-20261104-4-1",
+          "quote": "`wezterm.on` causes your specified `callback` to be called when `event_name` is emitted."
+        }
+      ]
+    },
     "productId": "wezterm",
     "storyId": "scripted-session-layouts"
   }

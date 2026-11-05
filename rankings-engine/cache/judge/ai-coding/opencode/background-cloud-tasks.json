@@ -1,22 +1,37 @@
 {
-  "hash": "cd80dd7af41cd0d9614cfa3d41bf1898b66224d2e85224b65602f50edf00ee1a",
+  "hash": "81db3d2775da43532ca2bcbcae6ed97f35a890ed83b8872b593b5fe6935b312f",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "opencode",
-    "storyId": "background-cloud-tasks",
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "OpenCode can hand tasks off asynchronously through its GitHub integration: mentioning /opencode or /oc makes it run the task inside a GitHub Actions runner, work on a new branch and open a PR. It can also run headless via `opencode serve` on a remote backend that clients attach to. Both routes need your own CI or self-hosted infrastructure rather than a first-party managed cloud sandbox. missing for 10: a first-party hosted isolated cloud execution environment, documented background task queue/monitoring for long-running jobs, and independent corroboration of reliability for long tasks run this way.",
+    "rationale": "OpenCode's own GitHub integration lets a developer delegate a task by commenting /opencode or /oc. The agent then runs inside a GitHub Actions runner, works on a new branch and submits a PR, which is a form of background, off-machine execution. However, it relies on the user's GitHub Actions infrastructure rather than an OpenCode-managed isolated cloud environment, and nothing documents isolation guarantees or suitability for long-running tasks. The remote 'serve' backend is a self-hosting arrangement and is not credited. Missing for 10: a first-party managed cloud sandbox, documented isolation and long-running task handling, and independent hands-on corroboration of background delegation.",
     "evidenceIds": [
-      "opencode-docs-12",
       "opencode-docs-49",
       "opencode-docs-58",
-      "opencode-docs-62",
-      "opencode-docs-30",
-      "opencode-docs-10",
-      "opencode-docs-40",
-      "opencode-comm-7"
-    ]
+      "opencode-docs-12",
+      "opencode-docs-62"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can delegate longer-running coding tasks to run in the background in an isolated cloud environment",
+      "citations": [
+        {
+          "evidenceId": "opencode-docs-49",
+          "quote": "Mention `/opencode` or `/oc` in your comment, and OpenCode will execute tasks within your GitHub Actions runner."
+        },
+        {
+          "evidenceId": "opencode-docs-12",
+          "quote": "Ask OpenCode to fix an issue or implement a feature. And it will work in a new branch and submits a PR with all the changes."
+        },
+        {
+          "evidenceId": "opencode-docs-62",
+          "quote": "This will walk you through installing the GitHub app, creating the workflow, and setting up secrets."
+        }
+      ]
+    },
+    "productId": "opencode",
+    "storyId": "background-cloud-tasks"
   }
 }

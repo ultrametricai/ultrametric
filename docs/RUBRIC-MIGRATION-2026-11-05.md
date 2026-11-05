@@ -70,8 +70,8 @@ against `2026-11-04-v6-preview.json`.
 | wave | arenas | cells | status |
 |---|---|---|---|
 | 1 | ai-assistants, cloud-platforms, edge-platforms, frontend-frameworks, frontier-models, legal-ops, payroll, startup-banking, web-scraping | 4,936 | merged (PR #612) |
-| 2 | card-issuing, customer-data-platforms, docs-platforms, fraud-prevention, government-services, gpu-clouds, model-gateways, scheduling | 4,766 | this PR |
-| 3 | ai-coding, applicant-tracking, crm, email-marketing, expense-management, incident-management, inference-providers, speech-to-text, sso-identity, terminals, vibe-coding | 4,775 | queued |
+| 2 | card-issuing, customer-data-platforms, docs-platforms, fraud-prevention, government-services, gpu-clouds, model-gateways, scheduling | 4,766 | merged (PR #614) |
+| 3 | ai-coding, applicant-tracking, crm, email-marketing, expense-management, incident-management, inference-providers, speech-to-text, sso-identity, terminals, vibe-coding | 4,775 | this PR |
 | 4 | ai-support-agents, browser-agents, data-pipelines, desktop-os, device-agents, domain-registrars, equity-management, error-tracking, game-engines, infra-as-code, local-llm-runtimes, mcp-infrastructure, robotics-platforms | 4,943 | queued |
 | 5 | agent-frameworks, agent-skills, ai-search-apis, ai-video, compliance-automation, data-warehouses, design-tools, identity-verification, marketplace-payments, mobile-payments, notes-knowledge, startup-law-firms | 4,774 | queued |
 | 6 | ai-memory, billing-subscriptions, cloud-storage, compliance-screening, durable-workflows, ecommerce-platforms, email-apis, fp-a, gpus, payments, self-hosted-assistants, stablecoin-payments, voice-agents | 4,941 | queued |
@@ -185,3 +185,51 @@ changed by the audit.
 Spend: about $60 batched plus correction rounds (five resume runs for
 government-services, one to three for the others). Wave total about $75; cumulative about
 $150 of the roughly $690 full-migration budget.
+
+## Wave 3 (2026-11-05)
+
+4,775 cells re-judged across the eleven arenas (terminals already held one v6-current
+contested cell, which the judge skipped). 876 verdict flips: 842 down, 18 up, 16 lateral,
+plus 580 quality-only moves (net -312). Fleet transition profile:
+
+`full→partial` 449 · `partial→none` 392 · `na→none` 11 · `none→partial` 11 ·
+`partial→full` 4 · `disputed→partial` 3 · `none→na` 3 · other 3
+
+| arena | cells | flips | down / up / lateral | quality-only (net) |
+|---|---|---|---|---|
+| ai-coding | 1,332 | 315 | 311 / 3 / 1 | 187 (-128) |
+| applicant-tracking | 260 | 54 | 54 / 0 / 0 | 34 (-21) |
+| crm | 408 | 57 | 57 / 0 / 0 | 51 (-32) |
+| email-marketing | 348 | 53 | 53 / 0 / 0 | 41 (-19) |
+| expense-management | 371 | 55 | 54 / 0 / 1 | 44 (-13) |
+| incident-management | 270 | 47 | 47 / 0 / 0 | 32 (-19) |
+| inference-providers | 424 | 54 | 53 / 0 / 1 | 43 (-26) |
+| speech-to-text | 477 | 63 | 54 / 3 / 6 | 53 (-26) |
+| sso-identity | 250 | 30 | 27 / 2 / 1 | 17 (-16) |
+| terminals | 324 | 78 | 62 / 10 / 6 | 38 (+2) |
+| vibe-coding | 312 | 70 | 70 / 0 / 0 | 40 (-14) |
+
+This is the purest rubric wave so far: no arena carried unjudged appended evidence, and
+96% of flips are demotions. Notable rank moves, all pure-rubric: codex #7 → #10 in
+ai-coding (the top three, cursor, opencode, and grok-build, hold), fireworks-ai #2 → #1 over
+together-ai in inference-providers, replit #4 → #2 and floot #2 → #4 in vibe-coding,
+whisper #4 → #7 and gladia #7 → #4 in speech-to-text, zoho-crm #5 → #3 in crm.
+
+Own-vendor and disclosed-row audits (convention item 5), both document-only:
+
+- **claude-code (ai-coding, Anthropic row)**: 3 favorable moves re-read against their
+  citations, 18 unfavorable kept, rank unchanged at #4. The one favorable verdict flip,
+  desktop-visual-diff-review partial to full at q6, quotes first-party lines covering both
+  story elements ("Review diffs visually, run multiple sessions side by side"); the
+  rationale itself flags the thin support and holds quality at q6. It is the weakest
+  favorable credit in the wave and is named here for the record.
+- **speech-is-cheap (speech-to-text, disclosed founder self-submission)**: entered the
+  wave already at #1 from its pre-wave evidence-parity repair. This wave: 3 favorable
+  moves (agentic-scoped-keys none to partial q4 citing documented per-agent key creation
+  and revocation; two single-point quality bumps on already-credited cells), 11
+  unfavorable moves kept, rank unchanged at #1. Each favorable rationale states what is
+  still missing.
+
+Spend: about $62 batched plus correction rounds (ai-coding needed nine resume runs; its
+stubborn cells repeatedly failed the verbatim-quote rule before converging). Wave total
+about $80; cumulative about $230.

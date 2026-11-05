@@ -1,16 +1,30 @@
 {
-  "hash": "2e1fb3a05a3030cdafc4139a16fda60a816cfa202cb211b030803c6d9f74d894",
+  "hash": "95a52c4c97f33f86667caaabf718bde6ba827beb55e5a6eb23198197eb3d4ab2",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Batch jobs accept a caller-supplied reference_id, and the docs say it is preserved for tracking and correlation across the job and status schemas. That covers attaching your own identifier and getting it back in job/status results. However, the webhook documentation describes signing and delivery but never says reference_id is echoed in the webhook payload, and no free-form metadata object is documented. Missing for 10: confirmation that reference_id appears in webhook payloads, support for arbitrary key-value metadata beyond a single reference_id, and independent or hands-on corroboration.",
+    "rationale": "Batch jobs accept a caller-supplied reference_id that is kept for tracking and correlation in the job and status schemas, so the core of the story is documented. Webhook notifications on job completion are documented, but the evidence does not say the webhook payload echoes the reference_id. Only a single identifier field is evidenced, not arbitrary metadata, and nothing covers the sync or live modes. Missing for 10: confirmation that reference_id or other metadata appears in webhook payloads, support for arbitrary key-value metadata, identifier passthrough in fast/live modes, independent or hands-on corroboration.",
     "evidenceIds": [
       "zoom-scribe-supp-batch-input-metadata",
-      "zoom-scribe-supp-batch-webhooks",
-      "zoom-scribe-supp-batch-lifecycle"
+      "zoom-scribe-supp-batch-webhooks"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can attach my own identifiers or metadata to a job and get them back in results and webhook payloads",
+      "citations": [
+        {
+          "evidenceId": "zoom-scribe-supp-batch-input-metadata",
+          "quote": "A caller-supplied reference_id is preserved for tracking and correlation across the job and status schemas."
+        },
+        {
+          "evidenceId": "zoom-scribe-supp-batch-webhooks",
+          "quote": "A batch submission can register notifications.webhook_url and a secret to receive an outbound POST when the job finishes."
+        }
+      ]
+    },
     "productId": "zoom-scribe",
     "storyId": "job-metadata"
   }

@@ -1,18 +1,36 @@
 {
-  "hash": "d79c5ccdf0ae4d7046e360e61dd9699ca9986a808c25ccd4c30c85dfe08743b5",
+  "hash": "4ddb35b128f41f6455be31ce1842aa6d486547f15e7ed05e724a941b4d8a9f6b",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Cerebras has a dedicated rate-limits docs page covering uncached TPM limits and how cached tokens don't count against them. The pricing page says the paid self-serve tier gets 10x higher rate limits than the free tier, which shows limits scale across tiers. However, the pack shows no concrete per-tier RPM/TPM figures or a full tier table, so a developer can't confirm actual numbers before hitting them; a community report of hitting the RPM limit instantly suggests the limits matter in practice. missing for 10: concrete numeric RPM/TPM values per tier, a documented tier-by-tier scaling table beyond the relative '10x' claim, and independent corroboration that the docs are sufficient for production planning.",
+    "rationale": "Cerebras has a dedicated rate-limits docs page that describes an uncached TPM limit and how prompt caching affects it. Its pricing page says paid self-serve gets \"10x higher rate limits than free tier,\" which gives a coarse sense of how limits scale across tiers. missing for 10: actual per-model RPM/TPM figures for each tier, documented limits for higher tiers (enterprise/dedicated), and independent corroboration that the documented numbers match production behavior.",
     "evidenceIds": [
       "cerebras-docs-12",
       "cerebras-docs-22",
       "cerebras-docs-14",
-      "cerebras-docs-26",
-      "cerebras-comm-11"
+      "cerebras-docs-26"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can read documented rate limits and how they scale across usage tiers before I hit them in production",
+      "citations": [
+        {
+          "evidenceId": "cerebras-docs-12",
+          "quote": "Cached tokens don't count toward your uncached TPM limit, so a higher cache hit rate lets you process far more total tokens within the same uncached limit."
+        },
+        {
+          "evidenceId": "cerebras-docs-26",
+          "quote": "10x higher rate limits than free tier"
+        },
+        {
+          "evidenceId": "cerebras-docs-14",
+          "quote": "Self-serve payment starting at just $10 * 10x higher rate limits than free tier * Higher priority processing"
+        }
+      ]
+    },
     "productId": "cerebras",
     "storyId": "documented-rate-limits"
   }

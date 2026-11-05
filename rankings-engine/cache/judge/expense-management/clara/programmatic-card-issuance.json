@@ -1,22 +1,48 @@
 {
-  "hash": "2622e835a4b0dacad38d1bef1e15d6f015b57eb5552a24f608709dece0b37b7b",
+  "hash": "bdee4e96b4032fcc144add696fcfb8e5f21fccd6e2033284c1b3616a164ce7e8",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "clara",
-    "storyId": "programmatic-card-issuance",
     "verdict": "full",
     "quality": 9,
-    "confidence": "medium",
-    "rationale": "Clara's public REST API documents creating, updating, locking/unlocking and deleting cards. The docs cover virtual cards active on creation, limits with a monthly, weekly or daily reset periodicity, and a Card Configurations API for time, day-of-week and merchant-category controls. Lock semantics are specified, including that configurations and thresholds can still be updated while a card is locked, and a probed OpenAPI schema backs the reference. Missing for 10: independent or hands-on corroboration that card issuance and control updates work as documented.",
+    "confidence": "high",
+    "rationale": "Clara's public API docs explicitly cover creating, updating, locking/unlocking and deleting cards. They also document virtual card creation, limit periodicity, updates to configurations while a card is locked, and a Card Configurations API for time, day and merchant-category controls, which covers every element of the story. Missing for 10: independent or hands-on corroboration of the card-management endpoints (the probes only confirm the docs and OpenAPI schema exist).",
     "evidenceIds": [
       "clara-docs-11",
       "clara-docs-10",
       "clara-docs-31",
       "clara-docs-32",
       "clara-docs-15",
-      "clara-docs-16",
       "clara-docs-1",
-      "clara-probe-3"
-    ]
+      "clara-docs-16"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can issue and manage cards programmatically — create a card with a limit, lock it, update controls — via the public API",
+      "citations": [
+        {
+          "evidenceId": "clara-docs-11",
+          "quote": "Create, update, lock/unlock, and delete cards."
+        },
+        {
+          "evidenceId": "clara-docs-10",
+          "quote": "`\"VIRTUAL\"` creates a virtual card, active immediately (no activation step needed)."
+        },
+        {
+          "evidenceId": "clara-docs-31",
+          "quote": "`periodicity`: `\"MONTHLY\"`, `\"WEEKLY\"`, or `\"DAILY\"` — determines when the limit resets"
+        },
+        {
+          "evidenceId": "clara-docs-32",
+          "quote": "Lock card: Must be active (card locked - Configurations and threshold can still be updated)."
+        },
+        {
+          "evidenceId": "clara-docs-15",
+          "quote": "Use the Card Configurations API to add time, day-of-week, or merchant category restrictions. All fields are optional and can be combined."
+        }
+      ]
+    },
+    "productId": "clara",
+    "storyId": "programmatic-card-issuance"
   }
 }

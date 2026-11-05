@@ -1,13 +1,36 @@
 {
-  "hash": "e1887e106da541493dcce12c98efbeef975cc8867bfaf2def2a926ef4c93f571",
+  "hash": "7f182e45506387f6ab9545b288827ed037497650a5a07d5654a26e68d7bc8fcb",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "zoom-scribe",
-    "storyId": "batch-concurrency",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Concurrent-job limits and queueing are fair capabilities to ask of a batch transcription API, so the axis applies. The evidence documents only how many files fit in one batch and the lifecycle of one job; it does not show multiple jobs running concurrently, concurrency limits, or queue and backpressure behavior. Batch capacity and a QUEUED state are adjacent primitives, so they earn no credit for this story.",
-    "evidenceIds": []
+    "rationale": "Scribe's batch mode handles large-scale work: up to 10,000 files per job, files processed independently, and a job lifecycle that includes a QUEUED state with list and status endpoints. However, no concurrency limits, parallel-job caps, rate limits or queue semantics (ordering, wait times, throttling) are documented. missing for 10: documented concurrency limits on parallel jobs or requests, documented queueing behavior beyond a QUEUED state label, independent or hands-on corroboration of parallel throughput.",
+    "evidenceIds": [
+      "zoom-scribe-docs-4",
+      "zoom-scribe-supp-batch-lifecycle",
+      "zoom-scribe-supp-batch-failures"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can run many transcription jobs in parallel, with concurrency limits and queueing behavior documented",
+      "citations": [
+        {
+          "evidenceId": "zoom-scribe-docs-4",
+          "quote": "Transcribes up to 10,000 audio files in a single job, or 1,000 files from a manifest"
+        },
+        {
+          "evidenceId": "zoom-scribe-supp-batch-lifecycle",
+          "quote": "Jobs expose QUEUED, PROCESSING, SUCCEEDED, PARTIAL, FAILED, and CANCELED states"
+        },
+        {
+          "evidenceId": "zoom-scribe-supp-batch-failures",
+          "quote": "Files are processed independently"
+        }
+      ]
+    },
+    "productId": "zoom-scribe",
+    "storyId": "batch-concurrency"
   }
 }

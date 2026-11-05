@@ -1,22 +1,39 @@
 {
-  "hash": "9967b1ef325975af561d1dbe2fed09a45137c3bd35d63b23c4186974ba3d20d5",
+  "hash": "48b568046f33b44b69d8ab3719172d80232d8389a965e6734af466317d6ff6e4",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "aider",
-    "storyId": "openness-api-parity",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Aider's primary UI is the CLI, and it offers two programmatic paths. The `--message` flag runs one instruction non-interactively and exits (aider-docs-6, aider-docs-33), and a Python `Coder.create`/`coder.run` scripting interface executes instructions (aider-docs-7, aider-docs-34). Most options can also be set via CLI switches, config file or `AIDER_xxx` env vars (aider-docs-18), and the community confirms it is scriptable (aider-comm-15). However, nothing shows that the many in-chat commands and UI modes (e.g. /undo, /test, /architect, /ask, /model, voice, browser UI) are programmatically exposed, and probes found no OpenAPI spec (aider-probe-3). Missing for 10: documented parity mapping of in-chat commands and modes to the scripting API, a formal or stable API reference or spec, and hands-on corroboration of full parity.",
+    "rationale": "Aider documents its own programmatic interfaces: a `--message` CLI mode that applies one instruction and exits, and a Python scripting API (`Coder.create` / `coder.run`). Most options can also be set by switch, config file or environment variable. Nothing shows these interfaces reach parity with the interactive chat (/add, /undo, /architect, /voice, /web, the browser UI), and probes found no OpenAPI or HTTP API surface. missing for 10: documented parity of the scripting API with all in-chat commands and modes, a formal API reference or HTTP API spec, independent corroboration of full programmatic coverage.",
     "evidenceIds": [
       "aider-docs-6",
-      "aider-docs-33",
       "aider-docs-7",
-      "aider-docs-34",
+      "aider-docs-33",
       "aider-docs-18",
-      "aider-docs-42",
-      "aider-comm-15",
-      "aider-probe-3"
-    ]
+      "aider-probe-3",
+      "aider-comm-15"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can do everything through the API that I can do in the UI",
+      "citations": [
+        {
+          "evidenceId": "aider-docs-6",
+          "quote": "Aider takes a `--message` argument, where you can give it a natural language instruction. It will do that one thing, apply the edits to the files and then exit."
+        },
+        {
+          "evidenceId": "aider-docs-7",
+          "quote": "coder = Coder.create(main_model=model, fnames=fnames)"
+        },
+        {
+          "evidenceId": "aider-docs-18",
+          "quote": "Aider has many options which can be set with command line switches. Most options can also be set in an `.aider.conf.yml` file... Or by setting environment variables like `AIDER_xxx`"
+        }
+      ]
+    },
+    "productId": "aider",
+    "storyId": "openness-api-parity"
   }
 }

@@ -61,13 +61,14 @@ describe('generated vendor-review interchange records', () => {
   it('spot-pin: cursor (ai-coding) — dimensions from the committed rankings, probe-first evidence', () => {
     const r = JSON.parse(committed.get('ai-coding--cursor.json')!)
     expect(r.vendor).toBe('Cursor')
-    expect(r.dimensions.agentReady).toBe(76.2)
-    expect(r.dimensions.agentic).toBe(78)
-    expect(r.dimensions.aiEra).toBe(59.8)
-    // tested_on tracks the arena's rankings generatedAt — re-pinned 2026-10-13 when the
-    // yc-coverage bring-up (issue #239, stagewise) re-derived ai-coding.
-    expect(r.tested_on).toBe('2026-10-13')
-    expect(r.recheck_due).toBe('2027-01-11') // tested_on + 90 days
+    expect(r.dimensions.agentReady).toBe(77.3)
+    expect(r.dimensions.agentic).toBe(76.7)
+    expect(r.dimensions.aiEra).toBe(55.7)
+    // tested_on tracks the arena's rankings generatedAt — re-pinned 2026-11-05 at the v6
+    // rubric-migration wave 3, which re-judged and re-derived ai-coding
+    // (docs/RUBRIC-MIGRATION-2026-11-05.md).
+    expect(r.tested_on).toBe('2026-11-05')
+    expect(r.recheck_due).toBe('2027-02-03') // tested_on + 90 days
     expect(r.evidence[0].kind).toBe('probe')
     expect(r.jurisdictions).toEqual([]) // no geo spike rows for ai-coding
   })

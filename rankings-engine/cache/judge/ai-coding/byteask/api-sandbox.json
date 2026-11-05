@@ -1,19 +1,37 @@
 {
-  "hash": "bd8921f9bdbd712f8481b9f16ca10b5ad9eadedb9ce8664287994b1e8fa22b71",
+  "hash": "fc4b9abf3ea3fe0829db14970a1e9517ac9a585892f3e30885109709a633c175",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "byteask",
-    "storyId": "api-sandbox",
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "ByteAsk documents sandbox policies: a read-only run can still build and run under AddressSanitizer, and `--sandbox workspace-write` is required before it writes files. It also asks for approval before acting and presents a diff for review before making permanent changes, so testing is gated rather than acting directly on your real state. However, the sandbox limits what the agent may touch in your own workspace; it is not an isolated test environment separated from production data, and the docs never describe what the sandbox isolates. Missing for 10: an isolated sandbox environment distinct from production data, documentation of sandbox isolation boundaries (network, filesystem, data), and independent or hands-on corroboration.",
+    "rationale": "ByteAsk documents its own sandbox policy modes. The headless default is read-only and can still build and run under AddressSanitizer, and `--sandbox workspace-write` permits building, testing and writing files. Changes are presented as a diff, with approval required, before anything becomes permanent. However, the evidence never explains what the sandbox actually isolates (filesystem scope, network, external services or data), so separation from production data is only implied. The diff and approval flow is a review gate, not sandbox isolation. Missing for 10: documentation of the sandbox's isolation boundaries (network, filesystem, external data access), an explicit separate test or staging environment for production data, and independent or hands-on corroboration.",
     "evidenceIds": [
       "byteask-docs-20",
       "byteask-docs-17",
       "byteask-docs-1",
-      "byteask-docs-7",
-      "byteask-docs-2"
-    ]
+      "byteask-docs-7"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
+      "citations": [
+        {
+          "evidenceId": "byteask-docs-20",
+          "quote": "If you want the agent to build, test, or write files, pass `--sandbox workspace-write`."
+        },
+        {
+          "evidenceId": "byteask-docs-17",
+          "quote": "A read-only run can still build your program under AddressSanitizer and run it."
+        },
+        {
+          "evidenceId": "byteask-docs-1",
+          "quote": "presents a diff for your review before making permanent changes"
+        }
+      ]
+    },
+    "productId": "byteask",
+    "storyId": "api-sandbox"
   }
 }

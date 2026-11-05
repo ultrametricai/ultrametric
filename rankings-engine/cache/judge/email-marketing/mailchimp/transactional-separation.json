@@ -1,17 +1,36 @@
 {
-  "hash": "4db06f405b41b067635fd52f8b5c58ee47d207593f8f2394d283d918a868fc63",
+  "hash": "cfa934fa0d1d8b210d4ea07133412fc2e0d8a32626d6041a6d4bae55a92f04e6",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Mailchimp Transactional (formerly Mandrill) is documented as a separate API/SMTP sending product (mailchimp-docs-2). It has its own rejection allowlist/denylist for suppression (mailchimp-docs-17) and dedicated IPs that can isolate sending reputation (mailchimp-docs-7). However, nothing in the pack shows transactional-specific templates or explicitly states that a receipt reaches a contact who unsubscribed from marketing. One hands-on report also says a single marketing complaint led Mailchimp/Mandrill to shut off the user's incoming support-ticket email (mailchimp-comm-8), which undercuts full account-level isolation. missing for 10: documented separate transactional templates, explicit marketing-unsubscribe bypass for transactional sends, evidence that marketing enforcement and reputation don't spill over to transactional, independent corroboration.",
+    "rationale": "Mailchimp Transactional (formerly Mandrill) is documented as a separate API/SMTP product for event-driven messages. It has its own rejection allowlist/denylist and dedicated IPs, which gives it separate suppression and reputation controls. The pack never documents transactional templates or states that a receipt reaches a contact who unsubscribed from marketing, and one user reports a marketing-email complaint shutting off their Mandrill inbound support email, which casts doubt on full isolation. missing for 10: documented transactional-specific templates, explicit statement that marketing unsubscribes don't suppress transactional sends, documented reputation isolation between marketing and transactional, independent corroboration.",
     "evidenceIds": [
       "mailchimp-docs-2",
       "mailchimp-docs-7",
       "mailchimp-docs-17",
       "mailchimp-comm-8"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an ops user, transactional email is kept separate from marketing — its own templates, suppression rules, and reputation — so a receipt still delivers to an unsubscribed contact",
+      "citations": [
+        {
+          "evidenceId": "mailchimp-docs-2",
+          "quote": "Mailchimp Transactional (formerly Mandrill) sends targeted and event-driven messages via the API or SMTP, fast—with best-in-class deliverability."
+        },
+        {
+          "evidenceId": "mailchimp-docs-17",
+          "quote": "Adds an email to your email rejection allowlist. If the address is currently on your denylist, that denylist entry will be removed automatically."
+        },
+        {
+          "evidenceId": "mailchimp-docs-7",
+          "quote": "Requests an additional dedicated IP for your account."
+        }
+      ]
+    },
     "productId": "mailchimp",
     "storyId": "transactional-separation"
   }

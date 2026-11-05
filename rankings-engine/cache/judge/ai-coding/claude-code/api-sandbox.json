@@ -1,17 +1,30 @@
 {
-  "hash": "110d901b4b866d9951e5baf161001754fa5d956fd351d199aa3a3621ea9bfa23",
+  "hash": "f83e53e42fd5a6a1c7328bc4ce56da9afbf3bd4522ae8507f700d1158efaaca2",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "claude-code",
-    "storyId": "api-sandbox",
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Claude Code documents a sandboxed Bash tool. The operating system enforces filesystem and network isolation, so you can limit which files and network domains commands can touch and keep production systems out of reach while testing. Browser-based cloud sessions (no local setup) and custom skills like `/deploy-staging` also suggest isolated or staging workflows. However, this is an execution sandbox, not a documented test environment with non-production data. missing for 10: a dedicated sandbox/staging data environment or test-data isolation feature, docs on keeping production credentials and data separate during testing, independent or hands-on corroboration of the sandbox.",
+    "rationale": "Claude Code documents its own sandboxed Bash tool, which enforces OS-level filesystem and network isolation for every command and its child processes. That lets users bound what agent-run tests can touch, so production files and hosts can be kept out of reach. However, this is execution isolation, not a dedicated test or sandbox environment with separate non-production data, and nothing corroborates it independently. missing for 10: a documented test/staging environment or mock-data separation from production, explicit guidance on keeping production data untouched during testing, and independent or hands-on corroboration of the sandbox.",
     "evidenceIds": [
-      "claude-code-docs-50",
-      "claude-code-docs-26",
-      "claude-code-docs-32"
-    ]
+      "claude-code-docs-50"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
+      "citations": [
+        {
+          "evidenceId": "claude-code-docs-50",
+          "quote": "Claude Code's sandboxed Bash tool provides filesystem and network isolation for safer, more autonomous agent execution."
+        },
+        {
+          "evidenceId": "claude-code-docs-50",
+          "quote": "you define which files and network domains commands can touch, and the operating system enforces that boundary for every Bash command and its child processes."
+        }
+      ]
+    },
+    "productId": "claude-code",
+    "storyId": "api-sandbox"
   }
 }
