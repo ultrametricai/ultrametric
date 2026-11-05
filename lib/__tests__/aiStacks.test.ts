@@ -24,10 +24,16 @@ describe('ai-stacks data', () => {
     const stackIds = new Set(loadAiStacks(DATA_DIR).map((stack) => stack.id))
     const searchAliases = JSON.parse(
       fs.readFileSync(path.join(DATA_DIR, 'search-aliases.json'), 'utf8'),
-    ) as { stacks: Record<string, string[]> }
+    ) as { stacks: Record<string, unknown> }
 
     for (const id of stackIds) {
-      expect(searchAliases.stacks[id], `stack ${id} has no aliases`).toBeDefined()
+      const aliases = searchAliases.stacks[id]
+      expect(
+        Array.isArray(aliases)
+          && aliases.length > 0
+          && aliases.every((alias) => typeof alias === 'string' && alias.trim().length > 0),
+        `stack ${id} must have a nonempty array of nonblank aliases`,
+      ).toBe(true)
     }
     for (const id of Object.keys(searchAliases.stacks)) {
       expect(stackIds.has(id), `unknown stack alias id ${id}`).toBe(true)
