@@ -11,9 +11,8 @@ import { PopularitySchema } from './schemas'
 import type { SeriesPoint } from './scoreTrend'
 
 // One appended line: a Popularity record plus which product it belongs to and when the pipeline
-// run happened. `runAt` advances every run; `fetchedAt` only advances when the numbers were
-// actually re-fetched (a <7-day-old cache hit re-appends the same fetch) — which is why series
-// extraction below dedupes on fetchedAt, not runAt.
+// run happened. Per-source dates preserve partial-refresh provenance; legacy rows fall back
+// to fetchedAt. Series extraction dedupes on the metric measurement date, not runAt.
 export const PopularityHistoryLineSchema = PopularitySchema.extend({
   productId: z.string().min(1),
   runAt: z.string().datetime(),
@@ -57,14 +56,15 @@ export type PopularityMetric = 'stars' | 'npmWeekly' | 'pypiWeekly'
 
 // One metric's plottable series for one product: lines without the metric are dropped, repeated
 // appends of the SAME fetch (identical fetchedAt — the 7-day cache re-appending on every run)
-// collapse to one point so a flat line means "measured again, didn't move", never "measured
-// once, copied twice". Sorted by fetchedAt — when the numbers were actually true.
+// collapse to one point. Per-source dates take precedence over the legacy fetchedAt field.
+// Sorted by measurement time.
 export function popularitySeries(lines: PopularityHistoryLine[], metric: PopularityMetric): SeriesPoint[] {
   const byFetch = new Map<string, number>()
   for (const line of lines) {
     const value = line[metric]
     if (typeof value !== 'number') continue
-    if (!byFetch.has(line.fetchedAt)) byFetch.set(line.fetchedAt, value)
+    const date = (metric === 'stars' ? line.githubFetchedAt : metric === 'npmWeekly' ? line.npmFetchedAt : line.pypiFetchedAt) ?? line.fetchedAt
+    if (!byFetch.has(date)) byFetch.set(date, value)
   }
   return [...byFetch.entries()]
     .map(([date, value]) => ({ date, value }))

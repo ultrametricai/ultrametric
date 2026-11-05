@@ -23,6 +23,19 @@ describe('parsePopularityHistoryJsonl', () => {
 })
 
 describe('popularitySeries', () => {
+  it('keeps cached stars at their measurement date while downloads advance', () => {
+    const old = '2026-09-02T00:00:00Z'
+    const fresh = '2026-09-09T00:00:00Z'
+    const lines = [
+      line({ stars: 100, npmWeekly: 800, fetchedAt: old }),
+      line({ stars: 100, npmWeekly: 900, fetchedAt: fresh, githubFetchedAt: old, npmFetchedAt: fresh }),
+    ]
+    expect(popularitySeries(lines, 'stars')).toEqual([{ date: old, value: 100 }])
+    expect(popularitySeries(lines, 'npmWeekly')).toEqual([{ date: old, value: 800 }, { date: fresh, value: 900 }])
+    expect(popularitySeries([line({ pypiWeekly: 42, pypiFetchedAt: old, fetchedAt: fresh })], 'pypiWeekly'))
+      .toEqual([{ date: old, value: 42 }])
+  })
+
   it('collapses repeated appends of the same fetch (cache hits share fetchedAt) into one point', () => {
     const lines = [
       line({ stars: 100, fetchedAt: '2026-09-02T00:00:00Z', runAt: '2026-09-02T00:00:00Z' }),
