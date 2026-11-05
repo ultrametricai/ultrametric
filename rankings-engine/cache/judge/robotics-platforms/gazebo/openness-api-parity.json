@@ -1,23 +1,47 @@
 {
-  "hash": "5a4be3aa8b607ace197a19ccb1d9306ae9fb2082dde4ce65e3d3c45eeb6f0d94",
+  "hash": "6d5dfd4850bbff5e9d7afa2cf1a3a34f97dbaae320c5e5de8999a5c0da8a1a7e",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Gazebo's architecture separates the simulation server from the GUI: the server runs headless (-s), and the GUI runs separately (-g) and connects to a server instance. Gazebo Transport provides pub/sub, service calls and discovery for interfacing with Gazebo Sim, alongside 'extensive command line tools for simulation introspection and control', so much of what the GUI does is reachable programmatically. However, no evidence explicitly states that every GUI action has an API or CLI equivalent. Missing for 10: an explicit documented claim of full UI/API parity, a reference listing the transport services/topics that cover GUI actions (e.g. entity creation and editing), and independent or hands-on confirmation of parity.",
+    "rationale": "Gazebo has a client-server design. The GUI is a separate client that connects to a server, the server runs headless, and running simulations are reached through Gazebo Transport pub/sub and service calls plus command-line tools for introspection and control. This points to a programmatic interface underneath what the UI does, but no evidence states that every UI action has an API equivalent. Probes found no OpenAPI spec. Missing for 10: an explicit documented claim of API/UI parity, a mapping of GUI actions to transport services or CLI commands, and independent hands-on corroboration that UI-only workflows can be fully scripted.",
     "evidenceIds": [
-      "gazebo-docs-2",
-      "gazebo-docs-3",
-      "gazebo-docs-25",
       "gazebo-gh-6",
-      "gazebo-gh-9",
+      "gazebo-docs-3",
+      "gazebo-docs-2",
       "gazebo-docs-36",
       "gazebo-gh-3",
-      "gazebo-gh-10",
       "gazebo-docs-17",
-      "gazebo-docs-30"
+      "gazebo-gh-20"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can do everything through the API that I can do in the UI",
+      "citations": [
+        {
+          "evidenceId": "gazebo-gh-6",
+          "quote": "Run simulation on remote servers and interface to Gazebo Sim through socket-based message passing using Gazebo Transport."
+        },
+        {
+          "evidenceId": "gazebo-docs-3",
+          "quote": "the GUI can be run independently using the -g (gui only) flag. On start, the GUI will attempt to connect to a server instance."
+        },
+        {
+          "evidenceId": "gazebo-docs-36",
+          "quote": "Asynchronous message publication and subscription is provided along with service calls and discovery."
+        },
+        {
+          "evidenceId": "gazebo-gh-3",
+          "quote": "Extensive command line tools for increased simulation introspection and control."
+        },
+        {
+          "evidenceId": "gazebo-docs-2",
+          "quote": "Gazebo Sim can also be run headless, i.e. without the GUI, by using the -s (server only) flag."
+        }
+      ]
+    },
     "productId": "gazebo",
     "storyId": "openness-api-parity"
   }

@@ -1,19 +1,36 @@
 {
-  "hash": "e3c14084275a2c07440526fcd8caf87caadd8e9b94ee8beb3870f9c1299ac5e6",
+  "hash": "0e553d87ac38ca928a6580c99ecbafdc913d86c2b6d604d0d821ceaea30d72b2",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Terraform ships a native `terraform test` framework for validating module changes. Tests run against test-specific, short-lived resources, \"preventing any risk to your existing infrastructure or state.\" Since v1.7, provider mocking lets tests run without real resources at all, and test runs can emit machine-readable JSON for automation. Missing for 10: independent or hands-on corroboration of the test framework (no community evidence discusses `terraform test`).",
+    "rationale": "Terraform ships a native `terraform test` framework that runs against test-specific, short-lived resources, preventing any risk to existing infrastructure or state. Since v1.7.0 it can also mock provider data, so tests can run without real infrastructure, and `-json` output supports automation of test runs. Missing for 10: independent or hands-on community corroboration of the test framework, and deeper first-party detail on test authoring (assertions, run blocks).",
     "evidenceIds": [
       "terraform-docs-27",
-      "terraform-docs-7",
-      "terraform-docs-21",
       "terraform-docs-28",
-      "terraform-docs-22",
-      "terraform-docs-43"
+      "terraform-docs-7",
+      "terraform-docs-22"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can write automated tests for my infrastructure code and run them without touching production",
+      "citations": [
+        {
+          "evidenceId": "terraform-docs-27",
+          "quote": "Tests run against test-specific, short-lived resources, preventing any risk to your existing infrastructure or state."
+        },
+        {
+          "evidenceId": "terraform-docs-28",
+          "quote": "Terraform v1.7.0 introduced the ability to mock data returned by the providers during a `terraform test` execution."
+        },
+        {
+          "evidenceId": "terraform-docs-22",
+          "quote": "For long-running commands such as `plan`, `apply`, `refresh`, and `test`, the `-json` flag outputs a stream of JSON UI messages."
+        }
+      ]
+    },
     "productId": "terraform",
     "storyId": "unit-integration-tests"
   }

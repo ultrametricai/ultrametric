@@ -1,18 +1,45 @@
 {
-  "hash": "475bae5501e06d56b2a6b01dc9b727c6a16393a3e30099aa2dff845522fda68d",
+  "hash": "3c438d628c60f3aac06b88338c95b73c41d381d0304e6699273f8a79a971f976",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 4,
-    "confidence": "low",
-    "rationale": "ROS 2's documented model of drivers publishing standardized message types over topics gives application code a stable interface to code against, so a sensor can be swapped by replacing the driver node. Topics are documented for streaming sensor data (ros2-docs-45), static name remapping is supported (ros2-docs-31), and the project positions itself as spanning 'drivers to state-of-the-art algorithms' (ros2-gh-1). A community user confirms that shared message definitions let components interoperate without constant glue code (ros2-comm-19). However, the evidence never describes a dedicated hardware-abstraction layer or a documented driver-swap workflow, and actuator abstraction is not covered at all. missing for 10: an explicit hardware-abstraction/controller interface for actuators, first-party docs on swapping hardware without code changes, standardized sensor/actuator interface definitions, and hands-on corroboration of real hardware swaps.",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "ROS 2 provides typed topic interfaces meant for streaming sensor data, shared message definitions that let packages interoperate without glue code, a driver ecosystem, and name remapping. Together these let a component that publishes the same standard messages stand in for another without application changes. However, the pack never documents a dedicated hardware-abstraction layer for sensors and actuators, nor a hands-on driver swap. Missing for 10: a documented hardware-abstraction or controller framework for actuators, explicit docs on swapping hardware drivers without app changes, and hands-on corroboration of such a swap.",
     "evidenceIds": [
       "ros2-docs-45",
-      "ros2-docs-31",
+      "ros2-docs-59",
+      "ros2-comm-20-refresh-c48a26fb85e0300d",
       "ros2-gh-1",
-      "ros2-comm-19",
-      "ros2-docs-66"
+      "ros2-docs-31"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a robotics engineer, I can swap sensors and actuators behind stable hardware-abstraction interfaces without rewriting application code",
+      "citations": [
+        {
+          "evidenceId": "ros2-docs-45",
+          "quote": "The topic interface is meant for continuous data streams, for example, streaming sensor data or the status of your robot."
+        },
+        {
+          "evidenceId": "ros2-docs-59",
+          "quote": "Nodes written using different client libraries are able to share messages with each other because all client libraries implement code generators"
+        },
+        {
+          "evidenceId": "ros2-comm-20-refresh-c48a26fb85e0300d",
+          "quote": "like a big collection of .proto files for complex robotics datatypes that everyone agrees to use"
+        },
+        {
+          "evidenceId": "ros2-gh-1",
+          "quote": "From drivers to state-of-the-art algorithms"
+        },
+        {
+          "evidenceId": "ros2-docs-31",
+          "quote": "Static remapping of ROS names"
+        }
+      ]
+    },
     "productId": "ros2",
     "storyId": "hardware-abstraction"
   }

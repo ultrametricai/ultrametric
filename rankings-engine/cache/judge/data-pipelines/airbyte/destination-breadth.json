@@ -1,18 +1,35 @@
 {
-  "hash": "85cc6b822246c1a82a984914a0d150646589b721a5ff001f2573b3dc9b5a94de",
+  "hash": "3385fa81406d144f27f4d5c55cd0e1d4c475afda9a0a7b33235b2d2773ddfca9",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Airbyte's docs and GitHub describe consolidating data from hundreds of sources into data warehouses, data lakes and databases, backed by a 600+/700+ connector catalog. They also model each sync as a source mode plus a destination mode, with one-to-one stream-to-table mapping in the warehouse, which implies destinations can be swapped. However, the evidence is generic and never names the specific targets in the story or shows retargeting without pipeline changes. Missing for 10: explicit evidence of Snowflake, BigQuery, Databricks, Postgres and object-storage destination connectors; documentation that a pipeline can be pointed at a different destination unchanged; independent or hands-on corroboration of multi-destination portability.",
+    "rationale": "Airbyte's own docs and repo say it loads into data warehouses, data lakes and databases through a large connector catalog, and typing/deduping describes consistent one-to-one table mapping in the warehouse. However, none of the named destinations is explicitly evidenced, and nothing shows that switching destinations leaves the pipeline unchanged. missing for 10: explicit evidence of Snowflake, BigQuery, Databricks, Postgres and object-storage destination connectors, documentation that destinations can be swapped without changing pipelines, independent or hands-on corroboration of multi-destination loading.",
     "evidenceIds": [
       "airbyte-gh-1",
       "airbyte-docs-32",
-      "airbyte-docs-51",
-      "airbyte-docs-7",
       "airbyte-docs-24"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a data engineer, I load to the major warehouses and lakes — Snowflake, BigQuery, Databricks, Postgres, object storage — without changing pipelines",
+      "citations": [
+        {
+          "evidenceId": "airbyte-gh-1",
+          "quote": "Airbyte provides a catalog of 600+ connectors for APIs, databases, data warehouses, data lakes"
+        },
+        {
+          "evidenceId": "airbyte-docs-32",
+          "quote": "Consolidate data from hundreds of sources into your data warehouses, data lakes, and databases."
+        },
+        {
+          "evidenceId": "airbyte-docs-24",
+          "quote": "One-to-one table mapping: Data in one stream will always be mapped to one table in your data warehouse. No more sub-tables."
+        }
+      ]
+    },
     "productId": "airbyte",
     "storyId": "destination-breadth"
   }

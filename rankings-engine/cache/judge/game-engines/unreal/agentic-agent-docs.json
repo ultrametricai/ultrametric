@@ -1,16 +1,31 @@
 {
-  "hash": "3d0d6da5e4bdd45405ca5641b76843813240f134a7393f9b9e68ec2bc9351e9d",
+  "hash": "50bf26ccdbdff02b64f290cca8df411d55806683f5361788b27da72ed43295e5",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "A live probe confirmed Epic serves llms.txt on both www.unrealengine.com and dev.epicgames.com. However, the CDN intermittently returns HTTP 403 WAF challenges to curl, node, and python clients, so agents without a browser-grade client cannot rely on it. Appending .md to docs URLs returns the HTML SPA shell rather than markdown, though the Python API reference and the Remote Control and automation docs are fetchable keylessly as HTML. Missing for 10: reliable non-browser access to llms.txt, markdown or agent-formatted doc variants, evidence of llms.txt depth and coverage, first-party docs describing the agent-oriented surface.",
+    "rationale": "A live probe confirms Epic serves llms.txt on both www.unrealengine.com and dev.epicgames.com, so an agent can be pointed at it. However, the same probe shows the CDN intermittently returns HTTP 403 challenges to non-browser clients, and appending .md to docs URLs returns an HTML SPA shell rather than markdown. Some reference docs, such as the Python API reference, are fetchable as plain HTML. Missing for 10: reliable agent access to llms.txt without a browser-grade client, markdown or agent-oriented doc variants, first-party documentation describing the llms.txt surface, and independent corroboration.",
     "evidenceIds": [
       "unreal-probe-rt-2",
       "unreal-probe-rt-1",
       "unreal-supp-python-api-reference"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can point an agent at llms.txt or agent-oriented docs",
+      "citations": [
+        {
+          "evidenceId": "unreal-probe-rt-2",
+          "quote": "Epic now serves llms.txt on BOTH www.unrealengine.com ('# Unreal Engine — Epic Games' real-time 3D creation tool...') and dev.epicgames.com ('# Epic Developer Community'), verified live."
+        },
+        {
+          "evidenceId": "unreal-probe-rt-1",
+          "quote": "the Python editor-scripting docs, Remote Control API references, and UAT/automation CLI docs on dev.epicgames.com/documentation ARE fetchable keylessly."
+        }
+      ]
+    },
     "productId": "unreal",
     "storyId": "agentic-agent-docs"
   }

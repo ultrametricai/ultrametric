@@ -1,19 +1,40 @@
 {
-  "hash": "457dcbe0e1525f53782e893ef63bee8721ed784e5408c7a35d5363c87f2f1201",
+  "hash": "67bd48515b305e3d58c630bed0d14e1e67da4582b0ed8c41abeab44cf2226b42",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Manufact creates a preview environment for each branch, each with its own MCP URL, so changes can be tested against real clients before merging. A configurable production branch serves the canonical production URL. Servers can also run locally with hot reload and an inspector, which keeps testing off the production deployment. Missing for 10: explicit evidence that preview environments isolate data, secrets or env vars from production, documentation of a dedicated sandbox mode, and independent or hands-on corroboration.",
+    "rationale": "Manufact creates per-branch preview environments, each with its own MCP URL separate from the production branch's canonical URL, so changes can be tested with real clients before merging. It also supports running servers locally with an inspector. However, nothing in the evidence shows that previews are isolated from production data, such as separate environment variables, secrets or backing data stores. Previews therefore isolate deployments, not demonstrably data. Missing for 10: documented data or secret isolation between preview and production environments, per-environment variable scoping, independent or hands-on corroboration.",
     "evidenceIds": [
       "manufact-docs-4",
       "manufact-docs-25",
       "manufact-docs-21",
-      "manufact-docs-24",
-      "manufact-docs-15",
-      "manufact-docs-5"
+      "manufact-docs-15"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
+      "citations": [
+        {
+          "evidenceId": "manufact-docs-4",
+          "quote": "Preview environments are created per branch. Each gets its own MCP URL"
+        },
+        {
+          "evidenceId": "manufact-docs-25",
+          "quote": "so you can test changes against real clients before merging."
+        },
+        {
+          "evidenceId": "manufact-docs-21",
+          "quote": "Set which Git branch serves your canonical production URL from the Deployment paths & triggers section"
+        },
+        {
+          "evidenceId": "manufact-docs-15",
+          "quote": "Run your MCP server locally with hot reload + inspector"
+        }
+      ]
+    },
     "productId": "manufact",
     "storyId": "api-sandbox"
   }

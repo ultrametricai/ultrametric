@@ -1,18 +1,36 @@
 {
-  "hash": "1af2e8a06e637366ec6e4ea9312119abcc8b77b2f3b5ce0b35ee6458962623e1",
+  "hash": "31907b408e99f833e2639fa5f7c48a3e43883cd775cbecb102689fd4974697db",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Meltano documents that its transformations are implemented with dbt (meltano-docs-6) and that `meltano run` executes EL(T) pipelines (meltano-docs-37, meltano-docs-33). It also claims to run dbt workflows alongside other pipelines in one place (meltano-docs-25). Together this implies dbt can run as a step after loading, not just on a timer, but no item states that dbt waits for and runs against the just-loaded data. The orchestration evidence (meltano-docs-7) mentions only scheduled runs via Airflow. Missing for 10: explicit docs showing a tap → target → dbt sequence in a single run, dependency gating on load completion, and independent or hands-on corroboration.",
+    "rationale": "Meltano documents dbt as its transformation layer and says `meltano run` executes EL(T) pipelines that include workflows like dbt. This suggests transformations run inside the same pipeline as extraction and loading, rather than on a separate timer. However, no evidence explicitly shows dbt being sequenced to run after a load completes. Missing for 10: explicit documentation of chaining dbt steps after extractor/loader steps in a single run, dependency or trigger semantics that guarantee transforms only run on freshly loaded data, and hands-on corroboration.",
     "evidenceIds": [
       "meltano-docs-6",
       "meltano-docs-37",
-      "meltano-docs-33",
       "meltano-docs-25",
-      "meltano-docs-7"
+      "meltano-docs-33"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an analytics engineer, dbt transformations run against freshly loaded data as part of the pipeline, not on a blind timer",
+      "citations": [
+        {
+          "evidenceId": "meltano-docs-6",
+          "quote": "Transformations in Meltano are implemented using dbt."
+        },
+        {
+          "evidenceId": "meltano-docs-37",
+          "quote": "You can run EL(T) pipelines using [`meltano run`]"
+        },
+        {
+          "evidenceId": "meltano-docs-25",
+          "quote": "Run all pipelines in one place, across databases, files, SaaS tools, internal systems, and workflows like dbt."
+        }
+      ]
+    },
     "productId": "meltano",
     "storyId": "dbt-integration"
   }

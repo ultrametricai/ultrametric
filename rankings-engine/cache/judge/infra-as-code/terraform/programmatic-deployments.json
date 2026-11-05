@@ -1,20 +1,42 @@
 {
-  "hash": "3a4f290c4932df337d2b7b2d77a94ad1bb014a6e66982e5d0055d86065f8310f",
+  "hash": "d309b1887c3e7b93db4c90d43eea4ddfa6c8c239a8f1d74569317f7ba4cafee4",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Terraform documents interfaces meant for machine consumption: `-json` streams machine-readable UI messages for plan and apply, `-auto-approve` skips interactive approval, saved plans can be applied later with `-out`, and `show -json` returns the plan as JSON. Together these let application code orchestrate deployments by wrapping the CLI, and the official MCP server adds workspace and run management for AI clients. However, everything evidenced still goes through the CLI or an agent-facing MCP layer, and no OpenAPI spec was found. missing for 10: a first-party SDK or library for driving plan/apply from application code, a documented HTTP run API (OpenAPI probe returned 404), and hands-on corroboration of embedding Terraform in an application.",
+    "rationale": "Terraform's own docs show machine-oriented interfaces: a streaming `-json` output for plan and apply, `-auto-approve` for non-interactive applies, and JSON plan output from `terraform show -json`. Its official MCP server also supports workspace creation and run management. However, these paths still wrap the CLI or are aimed at AI models, and no programmatic API or SDK for application code appears (the OpenAPI probe returned 404). missing for 10: a documented programmatic API/SDK callable from application code, a non-CLI way to trigger plan/apply, independent corroboration of embedding Terraform in apps.",
     "evidenceIds": [
       "terraform-docs-22",
       "terraform-docs-34",
       "terraform-docs-17",
-      "terraform-docs-30",
       "terraform-docs-48",
       "terraform-docs-56",
       "terraform-probe-3"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can drive deployments programmatically from my own application code rather than only through the CLI",
+      "citations": [
+        {
+          "evidenceId": "terraform-docs-22",
+          "quote": "For long-running commands such as `plan`, `apply`, `refresh`, and `test`, the `-json` flag outputs a stream of JSON UI messages."
+        },
+        {
+          "evidenceId": "terraform-docs-34",
+          "quote": "The ouptut messages appear one per line so that you can process the messages"
+        },
+        {
+          "evidenceId": "terraform-docs-17",
+          "quote": "You can pass the `-auto-approve` option to instruct Terraform to apply the plan without asking for confirmation."
+        },
+        {
+          "evidenceId": "terraform-docs-56",
+          "quote": "Workspace operations: Create, update, delete workspaces with support for variables, tags, and run management."
+        }
+      ]
+    },
     "productId": "terraform",
     "storyId": "programmatic-deployments"
   }

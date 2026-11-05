@@ -1,20 +1,50 @@
 {
-  "hash": "9183ec75ece2434687a0f15e1be6dec1c3be6ced8de30d9f045b2fb2cb78b576",
+  "hash": "68dff5ec8014ca12594285b4bed7328209b491589fe795d97dc4008a9baa9d83",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Edge0 runs without a GUI: `edge0 serve` exposes an OpenAI-compatible /v1/chat/completions endpoint you can curl, and there is a one-shot CLI chat mode, a macOS CLI/daemon, and a Python `AutoEngine` API. These cover headless server-style use. missing for 10: explicit Linux/server deployment docs (the listed platforms are macOS, Windows, iOS and Android, and the CUDA backend is only a reserved slot), container/daemonization guidance for servers, CI-pipeline usage docs beyond weightless unit tests, and independent hands-on corroboration.",
+    "rationale": "Edge0 ships GUI-free entry points: an `edge0 serve` command that exposes an OpenAI-compatible /v1/chat/completions endpoint, a one-shot chat CLI, a macOS CLI/daemon, and a Python `AutoEngine` API. Together these make headless operation plausible. However, nothing documents running in server or CI environments specifically, and the only listed native GPU-server backend (CUDA) is a reserved, unimplemented slot. Missing for 10: explicit headless server/CI deployment docs, documented Linux/server-platform support (CUDA backend not yet implemented), and independent hands-on corroboration of headless operation in CI.",
     "evidenceIds": [
       "edge0-gh-6",
       "edge0-gh-7",
       "edge0-gh-8",
       "edge0-gh-11",
       "edge0-gh-19",
-      "edge0-gh-20",
-      "edge0-gh-21"
+      "edge0-gh-20"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can run the runtime headlessly with no GUI for use in servers or CI pipelines",
+      "citations": [
+        {
+          "evidenceId": "edge0-gh-6",
+          "quote": "edge0 serve edge0-35b"
+        },
+        {
+          "evidenceId": "edge0-gh-7",
+          "quote": "curl http://127.0.0.1:8000/v1/chat/completions"
+        },
+        {
+          "evidenceId": "edge0-gh-8",
+          "quote": "One-shot chat (pass --max-new to cap length; add --show-thinking to print the model's reasoning block too)"
+        },
+        {
+          "evidenceId": "edge0-gh-19",
+          "quote": "macOS: local CLI / daemon / desktop app (Rust)"
+        },
+        {
+          "evidenceId": "edge0-gh-11",
+          "quote": "engine = AutoEngine.from_pretrained(\"/path/to/model\")"
+        },
+        {
+          "evidenceId": "edge0-gh-20",
+          "quote": "`backends/cuda/` is a reserved slot"
+        }
+      ]
+    },
     "productId": "edge0",
     "storyId": "headless-server-mode"
   }

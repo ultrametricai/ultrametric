@@ -1,19 +1,41 @@
 {
-  "hash": "61887e6f43f0c8d73abdc4bdee8782a2fea5dfa54a0c67e290cdd60fbfc3dfda",
+  "hash": "44980bb57651320937af386f5bed4c369faffcc7013b175f5365163feb8ad93f",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Composio lets you narrow what an agent can reach, but the evidence shows tool-level allowlists rather than issuing least-privilege API credentials. Sessions are scoped per user_id and can be limited with `toolkits` (default is the full catalog). MCP servers can be created with a specific auth_config and an `allowed_tools` list, giving one URL that serves exactly the tools you list. The leaked-key report suggests a Composio key can expose live Gmail, GitHub and CircleCI tokens, which points to coarse key privileges, though it does not directly contradict the tool scoping. Missing for 10: scoped or least-privilege API keys for agents, control over per-credential OAuth scopes, expiry or revocation of agent credentials, and independent hands-on confirmation of the scoping.",
+    "rationale": "Composio documents scoping what an agent can reach. Sessions can be limited to specific toolkits, and MCP servers or URLs can be created that serve only an explicit allowed_tools list, giving the agent least-privilege tool access instead of the default full catalog. The evidence does not show issuing scoped API keys or tokens as credentials in their own right; scoping lives in session and server configuration. missing for 10: documented scoped or least-privilege API keys for agents, per-credential permission scopes (e.g. OAuth scope restriction), credential expiry and revocation controls, independent corroboration.",
     "evidenceIds": [
       "composio-docs-3",
-      "composio-docs-35",
       "composio-docs-5",
       "composio-docs-23",
-      "composio-docs-20",
-      "composio-comm-2"
+      "composio-docs-35",
+      "composio-docs-20"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
+      "citations": [
+        {
+          "evidenceId": "composio-docs-3",
+          "quote": "To restrict the set, pass `toolkits` when you create the session."
+        },
+        {
+          "evidenceId": "composio-docs-5",
+          "quote": "Combine `mcp: true` with the direct-tools preset to get one MCP URL that serves exactly the tools you list"
+        },
+        {
+          "evidenceId": "composio-docs-23",
+          "quote": "allowed_tools=[\"GMAIL_FETCH_EMAILS\", \"GMAIL_SEND_EMAIL\"]"
+        },
+        {
+          "evidenceId": "composio-docs-35",
+          "quote": "Use the options below to restrict or customize what's available."
+        }
+      ]
+    },
     "productId": "composio",
     "storyId": "agentic-scoped-keys"
   }

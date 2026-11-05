@@ -1,21 +1,37 @@
 {
-  "hash": "c91df81eaecbc44e8afa0cc0cd0a3b3c84eeb6b0dea18533383626237775b737",
+  "hash": "d836e496864f65badbff130fba93e14f141b37fd16579aac32f77254d396a41b",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "OpenTofu's CLI delivers the core plan-review loop. `tofu plan` previews changes before they are made, speculative plans let changes be checked before review, and `-out=FILE` saves a plan that is applied only after approval. That gives an agent a documented CLI and container image to drive the workflow. However, nothing in the evidence documents agent-oriented or non-interactive use, and the probes found no llms.txt, Markdown docs or OpenAPI spec. Missing for 10: documented headless/non-interactive plan flags, machine-readable plan JSON output for an agent to parse and present, agent-oriented guidance or AI-native docs, and independent hands-on corroboration of agent-driven plan/approve workflows.",
+    "rationale": "OpenTofu's own CLI covers the plan-and-approve core. `tofu plan` previews changes, speculative plans verify a change before review, and `-out=FILE` saves the plan so `tofu apply` executes only the reviewed plan, giving a natural approval gate. Nothing in the evidence covers agent authoring or agent integration, headless or non-interactive plan flags, or machine-readable plan diff output (the probes found no llms.txt or API). Missing for 10: documented agent-facing workflow, explicit non-interactive/headless plan options, machine-readable plan diff output, hands-on corroboration of an agent-driven plan/approve loop.",
     "evidenceIds": [
       "opentofu-docs-3",
       "opentofu-docs-4",
       "opentofu-docs-21",
-      "opentofu-docs-34",
       "opentofu-docs-39",
-      "opentofu-probe-4",
-      "opentofu-probe-1",
-      "opentofu-probe-3"
+      "opentofu-probe-4"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an ai-native user, I can have an agent author an infrastructure change, run a plan headlessly, and present the diff for my approval",
+      "citations": [
+        {
+          "evidenceId": "opentofu-docs-3",
+          "quote": "The `tofu plan` command creates an execution plan, which lets you preview the changes that OpenTofu plans to make to your infrastructure."
+        },
+        {
+          "evidenceId": "opentofu-docs-4",
+          "quote": "developers can use speculative plans to verify the effect of their changes before submitting them for code review"
+        },
+        {
+          "evidenceId": "opentofu-docs-21",
+          "quote": "You can use the optional `-out=FILE` option to save the generated plan to a file on disk, which you can later execute by passing the file to `tofu apply` as an extra argument."
+        }
+      ]
+    },
     "productId": "opentofu",
     "storyId": "agent-authors-change"
   }

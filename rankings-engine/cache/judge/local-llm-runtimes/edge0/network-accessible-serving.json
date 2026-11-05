@@ -1,16 +1,30 @@
 {
-  "hash": "4f44280ec39b4678aeb3bd3ad557803a4a36c106bf2dc3cc3786837aa08c20c4",
+  "hash": "b0496939e22a019c1787c31550037e7b2d99189c4c25a5d830fedee068c4b3dd",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
-    "confidence": "medium",
-    "rationale": "Edge0 ships its own server mode: `edge0 serve` exposes an OpenAI-compatible /v1/chat/completions endpoint. However, the only documented usage is via localhost (127.0.0.1:8000), and nothing shows binding to a LAN interface or access from other devices. missing for 10: documented host/bind option (e.g. 0.0.0.0) for LAN exposure, evidence of access from other devices, auth/security guidance for network serving, independent or hands-on corroboration.",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "Edge0 ships its own `edge0 serve` command that exposes an OpenAI-compatible /v1/chat/completions HTTP endpoint, so the serving capability itself is first-party. The only documented access example targets 127.0.0.1 (localhost), and nothing shows the server can bind to a LAN interface or be reached from other devices. Missing for 10: documented host/bind option (e.g. 0.0.0.0) for local-network exposure, evidence of access from other devices, network auth/security guidance, independent corroboration.",
     "evidenceIds": [
       "edge0-gh-6",
-      "edge0-gh-7",
-      "edge0-gh-19"
+      "edge0-gh-7"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a power-user, I can serve models over my local network for access from other devices",
+      "citations": [
+        {
+          "evidenceId": "edge0-gh-6",
+          "quote": "# serve (OpenAI-compatible /v1/chat/completions)\nedge0 serve edge0-35b"
+        },
+        {
+          "evidenceId": "edge0-gh-7",
+          "quote": "curl http://127.0.0.1:8000/v1/chat/completions"
+        }
+      ]
+    },
     "productId": "edge0",
     "storyId": "network-accessible-serving"
   }

@@ -1,17 +1,32 @@
 {
-  "hash": "2f47b9cbe065f15c603d3fd6d0cb3181f813a42b313a761193cb7a17cc36e2c3",
+  "hash": "43f2b96b7255e1355e0a91b1ba3a693e7e18bd20f52e0581eadb05dc4be62e38",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Porkbun's first-party docs say each API key can be restricted to specific source IPs (CIDR supported) and/or specific domains, so a leaked key can only touch the listed domains from the expected network. Separate sandbox keys (pk1_sb_) and a spend-limit pre-flight check further support least-privilege agent use. missing for 10: action-level permission scopes (e.g., read-only or DNS-only keys) are not documented, nor is any independent or hands-on confirmation that the key restrictions work as claimed.",
+    "rationale": "Porkbun's own docs say each API key can be limited to specific source IPs (CIDR) and/or specific domains, so a leaked scoped key 'can only touch the domains you listed.' Separate sandbox keys (`pk1_sb_`) also let an agent run against a simulated environment, which is a dry-run style isolation, not a privilege scope on real resources. Missing for 10: operation-level permission scopes (e.g. read-only or DNS-only keys), key expiry/rotation controls, and independent or hands-on corroboration of the scoping.",
     "evidenceIds": [
       "porkbun-docs-15",
       "porkbun-docs-43",
-      "porkbun-docs-18",
-      "porkbun-docs-44"
+      "porkbun-docs-4",
+      "porkbun-docs-37"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
+      "citations": [
+        {
+          "evidenceId": "porkbun-docs-15",
+          "quote": "each key can be limited to specific source IPs (CIDR supported) and/or specific domains from the gear icon next to the key. A leaked scoped key can only touch the domains you listed, from the network you expect."
+        },
+        {
+          "evidenceId": "porkbun-docs-4",
+          "quote": "a `pk1_sb_` key runs every operation against a simulated environment with fake credit"
+        }
+      ]
+    },
     "productId": "porkbun",
     "storyId": "agentic-scoped-keys"
   }

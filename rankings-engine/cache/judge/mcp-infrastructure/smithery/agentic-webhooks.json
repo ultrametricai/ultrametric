@@ -1,16 +1,35 @@
 {
-  "hash": "20a6fcc3bc08e4e0d3993f5f53e941a4be6b0e5bb1cb58ab7679756be3b139e9",
+  "hash": "ddfc6bc6dc0006cc08a275ad2be410d0308a6605f997adece901f400bc4decd5",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Smithery documents Triggers: a consumer activates a trigger through Smithery, the subscribe call is proxied to the MCP server, and the server then POSTs events directly to the consumer. Trigger schemas also appear in the generated typed SDKs. This is webhook-style event subscription, but it only works for servers that implement triggers, Smithery is not in the delivery path, and no platform-level webhooks (e.g. for connection status changes) are evidenced. Missing for 10: platform-level webhook events, documented signing/retry/delivery guarantees, independent or hands-on corroboration of trigger delivery.",
+    "rationale": "Smithery documents a first-party Triggers feature: a consumer activates a trigger through Smithery, Smithery proxies the subscribe call to the MCP server, and the server POSTs events directly to the consumer. Trigger schemas are also part of the generated typed SDK. Delivery depends on each upstream server implementing triggers, and Smithery is explicitly not in the delivery path. Missing for 10: details on how consumers register callback URLs, signing and verification, retry and delivery guarantees, a list of which servers support triggers, and independent or hands-on corroboration.",
     "evidenceIds": [
       "smithery-docs-12",
       "smithery-docs-25",
       "smithery-docs-16"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can subscribe to events via webhooks",
+      "citations": [
+        {
+          "evidenceId": "smithery-docs-12",
+          "quote": "When a consumer activates a trigger via Smithery, Smithery proxies the subscribe call straight through to your server"
+        },
+        {
+          "evidenceId": "smithery-docs-25",
+          "quote": "When the upstream provider fires, your server POSTs the event **directly to the consumer** — Smithery is not in the delivery path."
+        },
+        {
+          "evidenceId": "smithery-docs-16",
+          "quote": "Every MCP server published on Smithery gets a typed TypeScript SDK generated from its tool and trigger schemas."
+        }
+      ]
+    },
     "productId": "smithery",
     "storyId": "agentic-webhooks"
   }

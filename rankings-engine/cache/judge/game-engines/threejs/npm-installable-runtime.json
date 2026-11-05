@@ -1,19 +1,40 @@
 {
-  "hash": "da47fa359749eac149f6bc4598b7496a2248958268630ba5113e00ab18838b57",
+  "hash": "fc8dc249c8f705a2dc2c66b7afb617808b4a0a2befcb832cbb3c82a3698f3c21",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 7,
-    "confidence": "medium",
-    "rationale": "A runtime probe confirms three.js is published on npm as `three` (v0.186.0, about 12.2M weekly downloads, MIT license verified), and notes that coding agents drive it directly through npm as an imported library. A community report adds that it works with TypeScript, a sign it slots into standard toolchains. Missing for 10: no evidence of tree-shaking or ES-module side-effect-free packaging, no documented bundler integration (the docs push import maps instead), and some @types/three signature mismatches were reported.",
+    "confidence": "high",
+    "rationale": "A runtime probe confirms three.js is published on the npm registry as the package `three` (v0.186.0, MIT, ~12.2M weekly downloads), and the probe notes that coding agents drive the library directly through npm. The README shows it used as an imported library (`new THREE.WebGLRenderer`), and addons such as SVG and CSS3D renderers are available as separate imports. missing for 10: explicit evidence of tree-shaking/ES-module side-effect-free builds, documented bundler integration (e.g. Vite/webpack setup).",
     "evidenceIds": [
       "threejs-probe-rt-1",
       "threejs-probe-rt-2",
       "threejs-gh-1",
-      "threejs-comm-5",
-      "threejs-comm-6",
-      "threejs-docs-20"
+      "threejs-gh-3"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a web developer, the engine installs from a package registry into my existing toolchain — a library I import, bundle, and tree-shake like any dependency",
+      "citations": [
+        {
+          "evidenceId": "threejs-probe-rt-1",
+          "quote": "`npm view three version` → 0.186.0, and the public npm downloads API reports 12,206,532 weekly downloads"
+        },
+        {
+          "evidenceId": "threejs-probe-rt-2",
+          "quote": "coding agents drive the library directly through npm"
+        },
+        {
+          "evidenceId": "threejs-gh-1",
+          "quote": "const renderer = new THREE.WebGLRenderer( { antialias: true } );"
+        },
+        {
+          "evidenceId": "threejs-gh-3",
+          "quote": "SVG and CSS3D renderers are also available as addons"
+        }
+      ]
+    },
     "productId": "threejs",
     "storyId": "npm-installable-runtime"
   }

@@ -1,19 +1,45 @@
 {
-  "hash": "9877d111d96dc849b25241acced00c08bdee01f5764aa0c521e39e792b7915f6",
+  "hash": "36c3a736057a8f78438993ad1cbab65c3a9258cdcdeec7852c3e9503faf6772d",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "The evidence implies a screenshot-plus-vision-model approach: any OpenAI-compatible vision endpoint, a mirroring link, a self-calibrating AssistiveTouch pointer, and separate planner and actor models. Run replay draws taps and swipes on the screenshots, and traces of screenshots and actions can be exported, so misclicks can be inspected. However, the evidence never states how UI elements are actually located (raw coordinates vs. OCR vs. set-of-marks vs. accessibility tree); the user-editable prompts are the only hint at the grounding logic. Missing for 10: an explicit description of the element-locating method, how model outputs map to pointer coordinates, any calibration or grounding accuracy notes, and independent corroboration.",
+    "rationale": "The docs suggest a vision-model approach: screenshots go to an OpenAI-compatible vision endpoint, and a calibrated AssistiveTouch pointer clicks. Misclicks can be debugged by replaying runs with taps and swipes drawn on top, or by exporting traces. The perception and grounding method itself is only implied, not explicitly documented. Missing for 10: an explicit statement of the element-location method (coordinates vs set-of-marks vs OCR vs accessibility tree), documentation of how model output maps to pointer coordinates, and independent corroboration of debugging misclicks.",
     "evidenceIds": [
       "esp32-iphone-agent-gh-3",
-      "esp32-iphone-agent-docs-4",
       "esp32-iphone-agent-docs-7",
       "esp32-iphone-agent-docs-8",
       "esp32-iphone-agent-gh-6",
       "esp32-iphone-agent-docs-5"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, the approach to locating UI elements (accessibility tree, OCR, set-of-marks, coordinates) is documented, so misclicks are debuggable",
+      "citations": [
+        {
+          "evidenceId": "esp32-iphone-agent-gh-3",
+          "quote": "Any OpenAI-compatible vision endpoint works (vLLM, SGLang, llama.cpp, Ollama, cloud APIs)."
+        },
+        {
+          "evidenceId": "esp32-iphone-agent-docs-7",
+          "quote": "turn on AssistiveTouch; the app calibrates the pointer by itself."
+        },
+        {
+          "evidenceId": "esp32-iphone-agent-docs-8",
+          "quote": "replay it step by step with the taps and swipes drawn on top."
+        },
+        {
+          "evidenceId": "esp32-iphone-agent-gh-6",
+          "quote": "Export the screenshots, actions and saved annotations from Runs"
+        },
+        {
+          "evidenceId": "esp32-iphone-agent-docs-5",
+          "quote": "The prompts are plain text in prompts/ and bundled with the app"
+        }
+      ]
+    },
     "productId": "esp32-iphone-agent",
     "storyId": "element-grounding-accuracy"
   }

@@ -1,19 +1,40 @@
 {
-  "hash": "af33cc2dd0270ff9380280d0ac5413ae3ca9ae264d0fc323ccef7a289d2de56a",
+  "hash": "8ed389f1671e445410e596699d3a93e1994bb18704efb1d1548cdecc290a235a",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Runtime probes confirm a live llms.txt at metorial.com/llms.txt that indexes the full docs tree, covering build, platform and API reference. It also documents that every docs page mirrors as clean markdown at URL + .mdx, and a fetch of the quickstart .mdx confirms the mirror works. An OpenAPI spec is served at /openapi.json, so an agent can be pointed at machine-readable docs directly. Missing for 10: independent or community corroboration of agents actually consuming these docs, and the /docs.md convention returns 404.",
+    "rationale": "Runtime probes confirm a live llms.txt that indexes the full docs tree (build, platform and API reference) and documents that every docs page mirrors as markdown at URL + .mdx. A follow-up probe confirmed the quickstart .mdx mirror returns clean markdown, and a machine-readable OpenAPI spec is also served. Missing for 10: no evidence of a consolidated full-content file (e.g. llms-full.txt), the /docs.md path returns 404, and there is no independent community corroboration of agents consuming these docs.",
     "evidenceIds": [
       "metorial-probe-1",
       "metorial-probe-rt-1",
       "metorial-probe-rt-2",
-      "metorial-probe-3",
-      "metorial-probe-2",
-      "metorial-docs-3"
+      "metorial-probe-3"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can point an agent at llms.txt or agent-oriented docs",
+      "citations": [
+        {
+          "evidenceId": "metorial-probe-1",
+          "quote": "PROBE llms.txt: HTTP 200 at https://metorial.com/llms.txt # Metorial"
+        },
+        {
+          "evidenceId": "metorial-probe-rt-1",
+          "quote": "indexing the full docs tree (build/platform/API reference) and documenting that every docs page mirrors as markdown at URL + .mdx."
+        },
+        {
+          "evidenceId": "metorial-probe-rt-2",
+          "quote": "the documented .mdx mirror convention works, and unknown .mdx paths answer a real 404."
+        },
+        {
+          "evidenceId": "metorial-probe-3",
+          "quote": "PROBE openapi: HTTP 200 at https://metorial.com/openapi.json — contains \"openapi\" key"
+        }
+      ]
+    },
     "productId": "metorial",
     "storyId": "agentic-agent-docs"
   }

@@ -1,19 +1,41 @@
 {
-  "hash": "db8438bfe714beeba3d79c3bd1740ec0f8200f86451396e1c2dcfd04c9ea81a7",
+  "hash": "47722a2268ecbfd207b99164c5b578289046e6d6f2d69c78bac642a53925d73c",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Fivetran ships an official MCP server that answers sync-status questions such as \"was my last postgres sync successful\" and \"are any of my connections broken\". Setting FIVETRAN_SCOPE to read/write unlocks write operations, and the REST API manages pipelines programmatically, so status checks and re-triggering are reachable by an agent. Diagnosis beyond flagging a broken connection is only implied, and no evidence names a sync-trigger call explicitly. Missing for 10: an explicitly documented sync/re-sync trigger via API or MCP, failure-diagnosis detail (error logs, failure reasons), and independent hands-on corroboration of the agent workflow.",
+    "rationale": "Fivetran ships an official MCP server that lets an agent ask about sync status (\"was my last postgres sync successful\", \"are any of my connections broken\"). A write scope can be enabled, and the REST API manages the account programmatically. However, no evidence explicitly shows re-triggering a sync or retrieving failure details to diagnose a run. Missing for 10: explicit documented sync-trigger/re-run endpoint or MCP tool, documented failure-diagnosis detail (error logs, root cause) via API/MCP, independent hands-on corroboration of the agent workflow.",
     "evidenceIds": [
+      "fivetran-probe-4",
       "fivetran-docs-28",
       "fivetran-docs-59",
       "fivetran-docs-29",
-      "fivetran-docs-3",
-      "fivetran-probe-4",
-      "fivetran-docs-48"
+      "fivetran-docs-3"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, an agent can check sync status, diagnose a failed run, and re-trigger it through an API or MCP server",
+      "citations": [
+        {
+          "evidenceId": "fivetran-probe-4",
+          "quote": "official MCP server documented at https://github.com/fivetran/fivetran-mcp"
+        },
+        {
+          "evidenceId": "fivetran-docs-28",
+          "quote": "It allows you to ask read-only questions like \"when was the last time my postgres connection completed a sync?\" and \"are any of my connections broken?\""
+        },
+        {
+          "evidenceId": "fivetran-docs-29",
+          "quote": "Set `FIVETRAN_SCOPE` to `read/write` or `read/write/delete` to unlock write and delete operations"
+        },
+        {
+          "evidenceId": "fivetran-docs-3",
+          "quote": "Set up and scale your data pipeline, and manage your Fivetran account programmatically using the Fivetran REST API."
+        }
+      ]
+    },
     "productId": "fivetran",
     "storyId": "agent-operates-pipelines"
   }

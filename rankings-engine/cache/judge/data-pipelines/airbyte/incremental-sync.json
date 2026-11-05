@@ -1,20 +1,37 @@
 {
-  "hash": "c3acebe8863c573474061e0f9e0897dc60d47d260b7098c8d808792acef3d40a",
+  "hash": "6794ae78cc969bcde16032df710fbe1607ee371cd8c0cc04d423a105e70e1c86",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
-    "quality": 8,
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Airbyte documents incremental sync as pulling only data changed since the previous sync, alongside configurable sync modes. Its CDC docs describe Airbyte tracking its current position in database logs to capture inserts, updates and deletes. A community user reports that once the initial sync was marked done, Airbyte 'continued to sync happily', which corroborates ongoing incremental state handling. Missing for 10: explicit evidence on how cursor fields and state are persisted and managed automatically outside the Connector Builder context, clarity on hard-delete handling in cursor-based incremental mode (raised as an open community question), and stronger independent hands-on corroboration.",
+    "rationale": "Airbyte documents incremental syncs that pull only data changed since the previous sync, and CDC replication that reads database change logs while tracking its current position, so new and changed records move without full reloads. A community user reports Airbyte continued syncing incrementally after the initial load. Missing for 10: explicit docs on how cursor fields and state are stored and managed automatically per connection, incremental mode docs beyond the Connector Builder context, and documented handling of hard deletes in cursor-based incremental mode.",
     "evidenceIds": [
       "airbyte-docs-22",
-      "airbyte-docs-7",
-      "airbyte-docs-23",
       "airbyte-docs-15",
-      "airbyte-docs-38",
-      "airbyte-docs-54",
+      "airbyte-docs-25",
+      "airbyte-docs-23",
       "airbyte-comm-3"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a data engineer, syncs move only new and changed records — cursor and state management handled for me, not full reloads",
+      "citations": [
+        {
+          "evidenceId": "airbyte-docs-22",
+          "quote": "An incremental sync is a sync which pulls only the data that has changed since the previous sync"
+        },
+        {
+          "evidenceId": "airbyte-docs-15",
+          "quote": "A consumer of these log files (such as Airbyte) can read these logs while keeping track of the current position within the logs in order to read all record changes coming from DELETE/INSERT/UPDATE statements."
+        },
+        {
+          "evidenceId": "airbyte-comm-3",
+          "quote": "'tricked' Airbyte into thinking it had done the first sync. After that, it continued to sync happily."
+        }
+      ]
+    },
     "productId": "airbyte",
     "storyId": "incremental-sync"
   }

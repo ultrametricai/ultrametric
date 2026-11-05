@@ -1,20 +1,46 @@
 {
-  "hash": "d3a151d7c814b3c7af7e261e0bd07b97cfb032d0de8c139f53efddded0baf859",
+  "hash": "e67e8b2410670fda089e59a8d3f2bf023116a62b75bb5b381707500ba08795cf",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Terraform's configurations are documented as human-readable files you can version and share. Review is well covered: `terraform plan` previews changes, saved plans (`-out`) can be applied later, speculative plans are meant for checking changes before code review, `show -json` gives machine-readable plans, and policy enforcement validates runs. However, nothing in the evidence documents a native rollback mechanism. The only state-recovery approaches cited are user workarounds (manual state backups, S3 object versioning), which earn no credit. Missing for 10: a documented first-party rollback/revert capability, first-party version history for configs or state (versioning is implied via external VCS), and independent corroboration of rollback workflows.",
+    "rationale": "Terraform documents versionable configuration files and a review step: `terraform plan` previews changes, saved plan files can be applied later, and speculative plans support code review. HCP Terraform adds version control. No first-party rollback is documented; the only evidence is users hand-copying state files or relying on S3 versioning, which earns no credit. Missing for 10: a documented native rollback or revert mechanism, first-party docs on version history of applied runs, and independent hands-on corroboration of the review-to-rollback workflow.",
     "evidenceIds": [
-      "terraform-docs-1",
-      "terraform-docs-2",
+      "terraform-docs-14",
+      "terraform-docs-15",
       "terraform-docs-30",
       "terraform-docs-43",
-      "terraform-docs-48",
-      "terraform-docs-9",
+      "terraform-docs-67",
       "terraform-comm-11"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can version, review, and roll back my automations",
+      "citations": [
+        {
+          "evidenceId": "terraform-docs-14",
+          "quote": "define both cloud and on-prem resources in human-readable configuration files that you can version, reuse, and share"
+        },
+        {
+          "evidenceId": "terraform-docs-15",
+          "quote": "The `terraform plan` command creates an execution plan, which lets you preview the changes that Terraform plans to make to your infrastructure."
+        },
+        {
+          "evidenceId": "terraform-docs-43",
+          "quote": "developers can use speculative plans to verify the effect of their changes before submitting them for code review."
+        },
+        {
+          "evidenceId": "terraform-docs-30",
+          "quote": "You can use the optional `-out=FILE` option to save the generated plan to a file on disk, which you can later execute by passing the file to `terraform apply`"
+        },
+        {
+          "evidenceId": "terraform-docs-67",
+          "quote": "HCP Terraform helps teams use Terraform together, with version control, state sharing, governance, and more."
+        }
+      ]
+    },
     "productId": "terraform",
     "storyId": "automation-versioned-workflows"
   }

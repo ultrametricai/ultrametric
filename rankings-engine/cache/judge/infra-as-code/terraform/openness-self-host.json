@@ -1,20 +1,41 @@
 {
-  "hash": "eeed2f5de3c808e535300741dd2bf79bf01d60fa543bd777618d694ee0df0aa0",
+  "hash": "0ccd7764861324da9575531b1a4f7b3c434868967409f2083808cd21f37dc394",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Terraform's core product is a CLI whose source is published on GitHub, and it runs on the user's own machine. It keeps state locally or in a remote backend of the user's choosing, and the plan/apply workflow needs no vendor-hosted service, so the core is self-hostable by design. The evidence never states this outright, and community discussion flags the BUSL license's vague 'competitive offering' wording as a constraint on openness. missing for 10: explicit first-party self-hosting/installation docs, clarity on BUSL license terms for self-hosted use, evidence of self-hosted equivalents to HCP Terraform features (policy enforcement, workspaces)",
+    "rationale": "Terraform's core is a CLI with a public GitHub source repository, and it runs on the user's own machine against local or user-chosen remote state backends, so it can be run without a vendor service. However, the evidence never explicitly documents self-hosting or self-managed deployment. The collaboration layer (HCP Terraform) is presented as a hosted service, and a community note flags the BUSL license change. missing for 10: explicit first-party self-hosting/installation docs, documented self-hosted option for the collaboration/run platform (e.g. Terraform Enterprise deployment), clear licensing terms for self-hosting, independent hands-on corroboration.",
     "evidenceIds": [
       "terraform-gh-1",
-      "terraform-gh-2",
       "terraform-probe-5",
       "terraform-docs-33",
       "terraform-comm-16",
-      "terraform-docs-16",
       "terraform-comm-19"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can self-host the core product",
+      "citations": [
+        {
+          "evidenceId": "terraform-gh-1",
+          "quote": "Terraform builds a graph of all your resources, and parallelizes the creation and modification of any non-dependent resources."
+        },
+        {
+          "evidenceId": "terraform-probe-5",
+          "quote": "official CLI documented at https://developer.hashicorp.com/terraform/cli"
+        },
+        {
+          "evidenceId": "terraform-docs-33",
+          "quote": "We recommend storing state in HCP Terraform or a remote backend to securely store state and collaborate with team members."
+        },
+        {
+          "evidenceId": "terraform-comm-16",
+          "quote": "You must create resources with local state first, then re-run terraform init after adding the backend block."
+        }
+      ]
+    },
     "productId": "terraform",
     "storyId": "openness-self-host"
   }

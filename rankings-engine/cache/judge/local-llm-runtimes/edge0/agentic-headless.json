@@ -1,21 +1,47 @@
 {
-  "hash": "66bc54cc860f6bf3cdd91ce44ca884152b4d3d924cbfd7e410df859b15a7b8b3",
+  "hash": "47c98f3413a55389476b26bb36f16f861f52b44efd88bef91a363d5da0bff6af",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Edge0 has its own non-interactive interfaces: an `edge0 serve` command that exposes an OpenAI-compatible /v1/chat/completions endpoint you can curl, a one-shot chat CLI with flags like --max-new, a macOS CLI/daemon, a scriptable model-fetch script and env-var-driven benchmark script, and a Python `AutoEngine` API. Together these clearly support headless, scripted automation. missing for 10: explicit CI/pipeline documentation or examples (e.g., GitHub Actions, containers), guidance on running on CI hardware (the CUDA backend is only a reserved slot), and independent or hands-on corroboration of headless/CI use.",
+    "rationale": "Edge0 can be driven without a GUI in several ways: an `edge0 serve` command exposing an OpenAI-compatible /v1/chat/completions endpoint that can be scripted with curl, a one-shot chat CLI with flags like --max-new, a Python AutoEngine API, scriptable model fetch and bench scripts, and a macOS CLI/daemon. However, nothing in the evidence documents running it in CI or in a non-interactive automation pipeline. Missing for 10: documented CI usage (e.g. pipeline examples or caching of model weights in CI), explicit headless/non-interactive mode docs such as exit codes and output formats, and independent hands-on corroboration of automated use.",
     "evidenceIds": [
-      "edge0-gh-5",
       "edge0-gh-6",
       "edge0-gh-7",
       "edge0-gh-8",
       "edge0-gh-11",
-      "edge0-gh-15",
+      "edge0-gh-5",
       "edge0-gh-19",
-      "edge0-gh-20"
+      "edge0-gh-15"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
+      "citations": [
+        {
+          "evidenceId": "edge0-gh-6",
+          "quote": "# serve (OpenAI-compatible /v1/chat/completions)\nedge0 serve edge0-35b"
+        },
+        {
+          "evidenceId": "edge0-gh-7",
+          "quote": "curl http://127.0.0.1:8000/v1/chat/completions"
+        },
+        {
+          "evidenceId": "edge0-gh-8",
+          "quote": "One-shot chat (pass --max-new to cap length; add --show-thinking to print the model's reasoning block too)"
+        },
+        {
+          "evidenceId": "edge0-gh-19",
+          "quote": "macOS: local CLI / daemon / desktop app (Rust)"
+        },
+        {
+          "evidenceId": "edge0-gh-11",
+          "quote": "engine = AutoEngine.from_pretrained(\"/path/to/model\")  # tier auto-detected"
+        }
+      ]
+    },
     "productId": "edge0",
     "storyId": "agentic-headless"
   }

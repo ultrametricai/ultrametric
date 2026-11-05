@@ -1,20 +1,32 @@
 {
-  "hash": "b5b1ee80088a0e7493dd347bd1e255bc149eed70530f011c273d59e4a8d00264",
+  "hash": "092494030145a06fb99935345fe21d7db435b015d2e2b2cc8582f4cf8c61cb61",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
-    "confidence": "medium",
-    "rationale": "Dagster models each table or connector as an individual asset, so a single asset can be updated on its own. The docs explicitly say you can use the UI or APIs to run subsets of dbt models. Fivetran, Airbyte and dlt connectors appear as assets that can be triggered individually, and the changelog mentions partitioned assets, which implies partition-level history handling. However, nothing in the pack explicitly documents backfills. Missing for 10: explicit backfill/partition-range rerun documentation, a documented single-table resync for ingestion connectors, and independent or hands-on corroboration.",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "Dagster's own docs say you can use its UI or APIs to run subsets of dbt models, which covers re-running a single table without rebuilding everything. Its asset model, including Fivetran and dlt connectors represented as individual assets, implies per-table materialization. Partitions appear only in a changelog note about wiping dynamic partitions, and nothing documents backfilling history. Missing for 10: explicit backfill/partition-range re-run documentation, documented single-asset resync for Fivetran/Airbyte/dlt syncs, independent or hands-on corroboration.",
     "evidenceIds": [
-      "dagster-docs-1",
       "dagster-docs-7",
-      "dagster-docs-28",
+      "dagster-docs-1",
       "dagster-docs-39",
-      "dagster-docs-40",
-      "dagster-docs-25",
-      "dagster-docs-26"
+      "dagster-docs-25"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a data engineer, I can backfill history or resync a single table without rebuilding the whole pipeline",
+      "citations": [
+        {
+          "evidenceId": "dagster-docs-7",
+          "quote": "Use Dagster's UI or APIs to run subsets of your dbt models, seeds, and snapshots."
+        },
+        {
+          "evidenceId": "dagster-docs-39",
+          "quote": "The dagster-fivetran library provides a FivetranAccountComponent which can be used to easily represent Fivetran connectors as assets in Dagster."
+        }
+      ]
+    },
     "productId": "dagster",
     "storyId": "backfill-resync"
   }

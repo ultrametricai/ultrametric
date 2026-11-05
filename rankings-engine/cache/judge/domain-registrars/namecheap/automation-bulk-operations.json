@@ -1,18 +1,25 @@
 {
-  "hash": "f5d1a59dc55e099e2340be16f645f6cc844a32f66298c1643ed6a1a65852d818",
+  "hash": "07bb754c459aa0b30cbd77a6bdaf7a35c40638e7ced32bc1b2f1744ed9f0d9d2",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 4,
-    "confidence": "medium",
-    "rationale": "Namecheap offers a programmatic API with an official Go SDK and Terraform provider. These allow scripted and declarative management of many domains and DNS records, and the SDK's availability check accepts one or more domains in a single call. However, the only explicitly evidenced native batch operation is that multi-domain availability check. Applying actions such as renew, lock or DNS changes across many items would mean looping through per-domain SDK calls or declaring many Terraform resources. Missing for 10: documented native bulk endpoints for renew/lock/DNS/transfer across many domains, documented batch limits or behavior, independent or hands-on corroboration of bulk workflows.",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Namecheap's first-party Go SDK documents one genuinely multi-item operation: checking availability of one or more domains in a single call. That is real but narrow bulk support. The other SDK operations listed (register, renew, lock) are per-domain, and the Terraform provider evidence describes per-record management rather than a bulk action. missing for 10: bulk operations beyond availability checks (bulk renew, DNS edits or lock changes across many domains), documentation of batch limits or behavior, independent or hands-on corroboration.",
     "evidenceIds": [
-      "namecheap-docs-18",
-      "namecheap-docs-15",
-      "namecheap-docs-17",
-      "namecheap-docs-20",
-      "namecheap-docs-21"
+      "namecheap-docs-18"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can perform bulk operations across many items at once",
+      "citations": [
+        {
+          "evidenceId": "namecheap-docs-18",
+          "quote": "CheckWithContext(ctx, domains...) | Check availability of one or more domains"
+        }
+      ]
+    },
     "productId": "namecheap",
     "storyId": "automation-bulk-operations"
   }

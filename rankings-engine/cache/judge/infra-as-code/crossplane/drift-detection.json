@@ -1,16 +1,30 @@
 {
-  "hash": "a52f9550283f124d77f3c1dd1716b0a25a02447a770cb886be80a9779ca74170",
+  "hash": "29a51f12c628b69b8b98729746f0ef203115b7cfe822e7e296ad3e015c7de90c",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Crossplane's docs say the control plane continuously reconciles and 'automatically corrects the drift' when resources diverge from desired state, so drift detection is inherent to its reconciliation loop. A community comment contrasts this control-plane enforcement favorably with Terraform's drift problems, and the CLI supports troubleshooting managed resources. missing for 10: documentation of how detected drift is surfaced or reported (status conditions, events, diffs), a detect-only/no-auto-correct mode, and independent hands-on corroboration of drift detection.",
+    "rationale": "Crossplane's docs say its control plane automatically corrects drift from the desired state, which means it detects drift between declared configuration and actual resources. A community comment adds that its control plane enforces declared state. However, the evidence never shows how drift is surfaced to the platform engineer for detection or inspection, as opposed to silently corrected. Missing for 10: documented drift detection or reporting visible to users (status conditions, events, observe-only mode), details on reconciliation frequency, and independent hands-on corroboration of drift handling.",
     "evidenceIds": [
       "crossplane-docs-18",
-      "crossplane-comm-12",
-      "crossplane-docs-8"
+      "crossplane-comm-12"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform-engineer, I can detect drift between my declared configuration and the actual cloud resources",
+      "citations": [
+        {
+          "evidenceId": "crossplane-docs-18",
+          "quote": "If your software ever drifts from your desired state, the control plane automatically corrects the drift."
+        },
+        {
+          "evidenceId": "crossplane-comm-12",
+          "quote": "its control plane for enforcement seems easier than setting up Atlantis"
+        }
+      ]
+    },
     "productId": "crossplane",
     "storyId": "drift-detection"
   }

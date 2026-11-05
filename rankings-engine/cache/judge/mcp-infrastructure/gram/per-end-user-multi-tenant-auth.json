@@ -1,19 +1,37 @@
 {
-  "hash": "beb7a76721ef375a2946469b40112cb6453ebe8e112e576e1618a41da4b0bd05",
+  "hash": "97634ffbe56059283dc03e3fde245d474da6fe2575fdc4a7580fc6a82f0b808a",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
     "confidence": "low",
-    "rationale": "Gram documents building MCP servers that authenticate through any external OAuth 2.0 provider (Auth0, Okta, Keycloak, or your own), which implies user-delegated tokens. It also brokers connections through the customer's IdP with permissions scoped per server, tool, and team, and ties each tool call to a named employee. However, the evidence frames this around internal employees and teams, not separate connected accounts for each end user of the customer's product, and it never documents per-user credential storage or isolation. Missing for 10: explicit per-end-user connected-account management, per-user scoped token issuance and isolation, documentation of end-user (rather than employee) credential flows, and independent corroboration.",
+    "rationale": "Gram documents building MCP servers that authenticate through an external OAuth 2.0 provider (Auth0, Okta, Keycloak, or a custom server). That implies tool calls run with an authenticated user's own OAuth credentials, and tool calls are tied to a named employee. The evidence does not describe a per-end-user connected-accounts store or per-user scoped token issuance for a platform's own customers; other permission scoping is per team, server and tool, not per end user. Missing for 10: explicit per-end-user connected-account management, per-user scoped token issuance and isolation, documentation of per-user upstream credential storage, and independent corroboration.",
     "evidenceIds": [
-      "gram-docs-2",
       "gram-docs-15",
+      "gram-docs-2",
       "gram-docs-3",
       "gram-docs-28",
-      "gram-docs-29",
-      "gram-gh-2"
+      "gram-docs-29"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform-engineer, I can maintain separate connected accounts and scoped tokens per end user of my product, so each user's agent acts only on that user's credentials",
+      "citations": [
+        {
+          "evidenceId": "gram-docs-15",
+          "quote": "This guide shows you how to build an MCP server with external OAuth authentication."
+        },
+        {
+          "evidenceId": "gram-docs-2",
+          "quote": "you can use any OAuth 2.0 provider you have set up (such as Auth0, Okta, Keycloak, or your own OAuth server)"
+        },
+        {
+          "evidenceId": "gram-docs-29",
+          "quote": "Every tool call in one exportable record, tied to a named employee"
+        }
+      ]
+    },
     "productId": "gram",
     "storyId": "per-end-user-multi-tenant-auth"
   }

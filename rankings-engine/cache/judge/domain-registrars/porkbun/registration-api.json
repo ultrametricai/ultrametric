@@ -1,21 +1,41 @@
 {
-  "hash": "1f8ec9813a91dfe4aa27657f6092eea540961f083de265ae22ab4ab85a450c49",
+  "hash": "1df10798ae2182b31fbb63b83e4ec07556fb33a782578bd90884a68c560d245a",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Porkbun documents programmatic domain registration in a dedicated register-a-domain guide. The guide includes script-friendly safeguards: availability and pricing checks, a dryRun pre-flight, Idempotency-Key retries, and a sandbox key that runs every operation with fake credit, so registration fits cleanly into a deploy script. Nameserver control is only implied, through NS record CRUD and the Cloudflare nameserver-repoint flow, and contact handling during registration is never documented. missing for 10: documented contact/registrant data calls in the registration flow, an explicit set/update-nameservers endpoint, independent or hands-on corroboration of the end-to-end flow.",
+    "rationale": "Porkbun documents programmatic domain registration through its REST API. A dedicated register-a-domain guide covers a dryRun pre-flight check and an Idempotency-Key header that stops a retry from registering or charging twice, both well suited to a deploy script. The evidence does not show documented calls for setting registrant contacts or for setting registry nameservers during registration; the NS records in the DNS CRUD and the Cloudflare nameserver repointing are adjacent features. Missing for 10: documented contact-setting calls, documented nameserver assignment at or after registration, independent hands-on corroboration of an end-to-end scripted registration.",
     "evidenceIds": [
       "porkbun-docs-1",
       "porkbun-docs-27",
       "porkbun-docs-44",
-      "porkbun-docs-45",
-      "porkbun-docs-35",
-      "porkbun-docs-4",
-      "porkbun-docs-2",
-      "porkbun-docs-47"
+      "porkbun-docs-22",
+      "porkbun-docs-35"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can register a domain end to end via the API — purchase, contacts, and nameservers in documented calls, so registration can be part of a deploy script",
+      "citations": [
+        {
+          "evidenceId": "porkbun-docs-1",
+          "quote": "Register, renew, and transfer-in domain names programmatically"
+        },
+        {
+          "evidenceId": "porkbun-docs-27",
+          "quote": "A clean REST/JSON API to register, renew, transfer and fully manage domains"
+        },
+        {
+          "evidenceId": "porkbun-docs-44",
+          "quote": "Pass dryRun: true to run every pre-flight check (availability, price match, eligibility, funds, spend limit) without charging or creating anything"
+        },
+        {
+          "evidenceId": "porkbun-docs-22",
+          "quote": "a retry within 24h replays the original result instead of registering (or charging) twice."
+        }
+      ]
+    },
     "productId": "porkbun",
     "storyId": "registration-api"
   }

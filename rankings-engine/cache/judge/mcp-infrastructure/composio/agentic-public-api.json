@@ -1,21 +1,42 @@
 {
-  "hash": "386630128f2a6dcb8de3de7cf230ea1bd2708b518c989c50c5ca54a42f5253ba",
+  "hash": "71a1fcbe5ab3807321a5f527a822f929480a8fd6b57fe0f019981a88aeee578f",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
-    "quality": 9,
-    "confidence": "high",
-    "rationale": "Composio is driven programmatically through documented SDK calls such as `composio.sessions.create` and `composio.mcp.create`, plus session configuration options and signed webhook trigger delivery. A probe confirms a published OpenAPI spec at docs.composio.dev/openapi.json and an llms.txt, so the public API surface is machine-readable and documented. Missing for 10: independent hands-on corroboration of driving the REST API end-to-end, and evidence of the OpenAPI spec's actual endpoint coverage beyond its existence.",
+    "quality": 8,
+    "confidence": "medium",
+    "rationale": "Composio publishes an OpenAPI spec (openapi.json returns HTTP 200 with an \"openapi\" key) and documents programmatic control through its SDK: creating sessions, configuring toolkits, and creating MCP servers via composio.mcp.create. It also documents registering a signed webhook destination for trigger events. Missing for 10: quoted REST endpoint reference content beyond the spec's existence (auth scheme, endpoint listings), and independent or hands-on corroboration of driving the platform through the raw API.",
     "evidenceIds": [
       "composio-probe-2",
-      "composio-probe-1",
       "composio-docs-1",
       "composio-docs-3",
       "composio-docs-23",
-      "composio-docs-35",
       "composio-docs-9",
-      "composio-docs-29"
+      "composio-probe-1"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can drive the product through a documented public API",
+      "citations": [
+        {
+          "evidenceId": "composio-probe-2",
+          "quote": "PROBE openapi: HTTP 200 at https://docs.composio.dev/openapi.json — contains \"openapi\" key"
+        },
+        {
+          "evidenceId": "composio-docs-1",
+          "quote": "session = composio.sessions.create(user_id=\"user_123\")"
+        },
+        {
+          "evidenceId": "composio-docs-23",
+          "quote": "server = composio.mcp.create(name=\"my-gmail-server\", toolkits=[{\"toolkit\": \"gmail\", \"auth_config\": \"ac_xyz123\"}], allowed_tools=[\"GMAIL_FETCH_EMAILS\", \"GMAIL_SEND_EMAIL\"])"
+        },
+        {
+          "evidenceId": "composio-docs-9",
+          "quote": "You register it once per project, and Composio `POST`s every trigger event there, signed so you can verify it."
+        }
+      ]
+    },
     "productId": "composio",
     "storyId": "agentic-public-api"
   }

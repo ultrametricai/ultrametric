@@ -1,19 +1,31 @@
 {
-  "hash": "618c30728da36f3ba52d4b39e38d2c20ae9b718734bce2700c027b841add5f5c",
+  "hash": "d7f6b4fbf7b6d7858d6cc0aa14ddbacf4c3a3aada15bebea24f87c902dcc6b4b",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 8,
+    "verdict": "partial",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Skyvern has a dedicated CAPTCHA docs page stating that its vision model automatically detects and solves reCAPTCHA v2/v3, hCaptcha, Cloudflare Turnstile, FunCaptcha/ArkoseLabs, MTCaptcha and image CAPTCHAs. That is an explicit, documented stance, and the same page describes a terminal-status webhook. Separately documented VNC take-control, human-in-the-loop pauses and failure categories mean a stuck run can be surfaced and handled rather than failing silently, though these are not tied specifically to CAPTCHAs. Missing for 10: documentation of what happens when automatic solving fails (a CAPTCHA-specific human fallback or failure category), independent or hands-on corroboration of solving reliability.",
+    "rationale": "Skyvern has a dedicated CAPTCHA page stating that it detects CAPTCHAs with its vision model and solves them automatically. It names the supported types: reCAPTCHA v2/v3, hCaptcha, Cloudflare Turnstile, FunCaptcha/ArkoseLabs, MTCaptcha, and image CAPTCHAs. That is a clear, documented stance, but the docs never say what happens when solving fails, so the 'no silent failures' part of the story is unproven. Missing for 10: documented behavior when a CAPTCHA can't be solved (a captcha-specific failure category or escalation), human handoff explicitly tied to CAPTCHAs (the VNC take-control feature is documented only as general session control), and independent or hands-on corroboration of solve reliability.",
     "evidenceIds": [
       "skyvern-docs-9",
       "skyvern-docs-27",
-      "skyvern-docs-44",
-      "skyvern-docs-38",
-      "skyvern-docs-10",
-      "skyvern-docs-41"
+      "skyvern-docs-44"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an automation-engineer, I can rely on a documented captcha stance — automatic solving, human fallback, or explicit non-support — instead of silent task failures",
+      "citations": [
+        {
+          "evidenceId": "skyvern-docs-9",
+          "quote": "Skyvern detects CAPTCHAs using its vision model and solves them automatically. This works for reCAPTCHA v2/v3, hCaptcha, Cloudflare Turnstile, FunCaptcha/ArkoseLabs, MTCaptcha, and standard text/number image CAPTCHAs."
+        },
+        {
+          "evidenceId": "skyvern-docs-44",
+          "quote": "Automatic CAPTCHA solving for reCAPTCHA, hCaptcha, and image challenges. Runs transparently — your automations never get stuck on verification."
+        }
+      ]
+    },
     "productId": "skyvern",
     "storyId": "captcha-handling"
   }

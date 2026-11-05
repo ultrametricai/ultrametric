@@ -1,21 +1,46 @@
 {
-  "hash": "df220bf8ea81cd1a272e03e3ca5124827760bc6cd4325f83d711aaf084e28f45",
+  "hash": "f8e73037d53d86c242bd4cd837cda936919b9129ca24cc7a28589514d55bab1c",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
-    "quality": 9,
-    "confidence": "medium",
-    "rationale": "treg runs a hosted MCP endpoint at https://treg.to/mcp, and a documented Claude connector authenticates via OAuth with PKCE, so no token or provider key needs to be pasted in. Through that endpoint the client reaches thousands of catalogued downstream provider endpoints, with credentials injected server-side, so the user deploys no infrastructure; the GitHub plugin also installs with no token and no configuration. Missing for 10: hands-on or independent verification that the /mcp endpoint works from an MCP client (the probe only confirms the documentation exists), and setup docs for MCP clients other than Claude.",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "treg documents a hosted MCP endpoint at https://treg.to/mcp and runs live at treg.to. It injects credentials server-side and proxies calls to thousands of catalogued provider endpoints, so a developer reaches downstream tools without deploying anything. A Claude connector with OAuth PKCE is also documented. Missing for 10: independent hands-on corroboration that the remote MCP endpoint works, and documented transport or compatibility details for MCP clients other than Claude.",
     "evidenceIds": [
       "treg-docs-7",
-      "treg-docs-32",
-      "treg-probe-4",
+      "treg-gh-3",
       "treg-docs-1",
       "treg-docs-2",
-      "treg-docs-12",
-      "treg-gh-1",
-      "treg-docs-33"
+      "treg-docs-32",
+      "treg-probe-4"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can point my MCP-compatible client at a hosted remote server URL and reach downstream tools without deploying any infrastructure",
+      "citations": [
+        {
+          "evidenceId": "treg-docs-7",
+          "quote": "The MCP endpoint is at `https://treg.to/mcp`."
+        },
+        {
+          "evidenceId": "treg-gh-3",
+          "quote": "live at [treg.to](https://treg.to)"
+        },
+        {
+          "evidenceId": "treg-docs-2",
+          "quote": "treg injects the credential server-side and relays the answer verbatim."
+        },
+        {
+          "evidenceId": "treg-docs-1",
+          "quote": "proxy a real request to any of 3,800+ catalogued provider endpoints through `/call/`."
+        },
+        {
+          "evidenceId": "treg-docs-32",
+          "quote": "Authentication uses OAuth with PKCE; do not paste a Treg token or provider API key into Claude."
+        }
+      ]
+    },
     "productId": "treg",
     "storyId": "one-endpoint-hosted-connection"
   }

@@ -1,21 +1,47 @@
 {
-  "hash": "c84811d5a61ffcb878b197a5928bac1f9350ac1dafb0f29d89b1ff5b09085957",
+  "hash": "49f28293aa323196e5a99a8156ffc511accab12ba8a3a88d561b7a158e40de19",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Pulumi documents most of the pieces this story needs. `pulumi preview` shows planned changes without applying them, which gives a plan step. Pulumi Policies enforces guardrails as code, and policy violations surface in pull request comments and checks, which acts as a review gate. ESC can serve as an OIDC provider that issues short-lived tokens, so the agent never needs long-lived credentials. Marketing also says Neo has 'enterprise controls built in' and that agents won't 'go off the rails'. Missing for 10: no documented approval workflow that blocks an agent's apply until a human signs off; no explicit least-privilege scoping of agent credentials (short-lived tokens are not the same as minimal permissions); no detail on how Neo's controls work; no independent or hands-on corroboration.",
+    "rationale": "Pulumi documents several pieces of this story. `pulumi preview` is a plan step that makes no changes, ESC acts as an OIDC provider issuing short-lived cloud credentials, and Pulumi Policies define guardrails whose violations surface in pull request checks. The site also claims agents can work 'without letting them go off the rails.' However, nothing in the evidence shows an explicit approval gate that blocks an agent's apply until a human signs off, or scoping of agent credentials to least privilege. missing for 10: documented human approval/review gate before an agent applies changes, explicit least-privilege scoping of agent credentials, agent-specific enforcement docs, independent or hands-on corroboration",
     "evidenceIds": [
       "pulumi-docs-8",
+      "pulumi-docs-69",
       "pulumi-docs-5",
-      "pulumi-docs-16",
       "pulumi-docs-40",
-      "pulumi-docs-56",
-      "pulumi-docs-36",
+      "pulumi-docs-30",
       "pulumi-docs-9",
-      "pulumi-docs-30"
+      "pulumi-docs-67"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an ai-native user, I can let an agent plan and apply with least-privilege credentials and review gates so it cannot make unapproved changes",
+      "citations": [
+        {
+          "evidenceId": "pulumi-docs-8",
+          "quote": "Show a preview of updates to a stack’s resources... No changes to the stack will actually take place."
+        },
+        {
+          "evidenceId": "pulumi-docs-69",
+          "quote": "Pulumi ESC can act as an OpenID Connect (OIDC) provider for AWS, Azure, and Google Cloud, issuing short-lived, signed tokens that these clouds exchange for temporary credentials."
+        },
+        {
+          "evidenceId": "pulumi-docs-40",
+          "quote": "Policy violations now appear in pull request comments and checks"
+        },
+        {
+          "evidenceId": "pulumi-docs-30",
+          "quote": "Ship infrastructure faster with tools that let agents do what they do best — without letting them go off the rails."
+        },
+        {
+          "evidenceId": "pulumi-docs-67",
+          "quote": "write, preview, and deploy code with Claude Code, Codex, Cursor, and other coding agents."
+        }
+      ]
+    },
     "productId": "pulumi",
     "storyId": "agent-least-privilege-gates"
   }

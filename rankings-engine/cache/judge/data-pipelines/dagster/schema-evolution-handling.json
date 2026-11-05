@@ -1,17 +1,35 @@
 {
-  "hash": "5f1a62862c855bef2495c0235919d199397e1ab695f61ce9c7a34a5bd4f82e5f",
+  "hash": "e10bfb4ada4202f0b12c29d9a1047c479f9fa42c0e75d53f01fe7861eb108ab1",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 3,
-    "confidence": "medium",
-    "rationale": "Dagster's asset checks can verify that a tabular asset adheres to a specified schema. Severity levels and UI-surfaced results give some control over how a detected mismatch is treated, so schema drift need not break loads silently. dbt column lineage adds visibility into which downstream columns are affected. However, the evidence shows only detection; nothing shows Dagster propagating or evolving schema changes downstream under a selectable policy such as evolve, fail, or ignore. Missing for 10: a documented schema-change propagation/evolution policy mechanism, automatic upstream schema-change detection (beyond user-written checks), and hands-on or independent corroboration.",
+    "confidence": "low",
+    "rationale": "Dagster's own asset checks can verify that a tabular asset matches a specified schema, and results surface in the UI with severity levels. That gives first-party detection of schema mismatches, so breakage need not be silent. Nothing in the evidence shows automatic detection of upstream schema drift or a user-chosen propagation policy such as evolve, fail, or quarantine. missing for 10: automatic upstream schema-change detection, configurable propagation/evolution policies (e.g., add columns vs. fail vs. ignore), documentation of how a failed schema check blocks or alters downstream loads, independent corroboration.",
     "evidenceIds": [
       "dagster-docs-3",
       "dagster-docs-27",
-      "dagster-docs-37",
-      "dagster-docs-43"
+      "dagster-docs-37"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a data engineer, upstream schema changes are detected and propagated by a policy I choose, instead of silently breaking loads",
+      "citations": [
+        {
+          "evidenceId": "dagster-docs-3",
+          "quote": "Verify that a tabular asset adheres to a specified schema"
+        },
+        {
+          "evidenceId": "dagster-docs-27",
+          "quote": "Asset checks are tests that verify specific properties of your data assets, allowing you to execute data quality checks on your data."
+        },
+        {
+          "evidenceId": "dagster-docs-37",
+          "quote": "Asset check results will appear in the UI and can be customized through the use of metadata and severity levels"
+        }
+      ]
+    },
     "productId": "dagster",
     "storyId": "schema-evolution-handling"
   }

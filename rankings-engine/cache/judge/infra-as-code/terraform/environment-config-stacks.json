@@ -1,19 +1,41 @@
 {
-  "hash": "02eee7752f8794190ab2a9c352643286cb5f6cfea9866376192f76bd2568aca6",
+  "hash": "24236efbd51d01a96e98a5451fcf83ac0b4d36d6b459e547d39a3f929cb3a441",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Terraform's docs show it has workspaces, each with its own state (docs-20, docs-35), and that HCP Terraform workspaces can be created and updated with their own variables (docs-56). Per-run variable files via -var-file (docs-46) can supply different values per environment, and a hands-on user reports managing dev/qa/prod infrastructure with Terraform (comm-1). However, none of the documentation explicitly describes setting up dev/staging/prod as separate workspaces or stacks, and one user complains of no phased workspaces even in commercial products (comm-10). Missing for 10: first-party docs on a per-environment workspace or stack workflow, CLI workspace commands, environment promotion between workspaces, and independent corroboration of the workspace-per-environment pattern.",
+    "rationale": "The evidence shows Terraform has workspaces that each carry their own state. HCP Terraform workspaces support variables, and `-var-file` input variables can carry per-environment values; a community user reports managing dev/qa/prod infrastructure with it. However, no evidence explicitly documents the per-environment dev/staging/prod workspace workflow, and one community comment notes the lack of phased workspaces. Missing for 10: first-party docs on CLI workspace commands (create/select) for environment separation, an explicit per-environment configuration pattern (stacks or workspaces per dev/staging/prod), and hands-on corroboration of environment isolation.",
     "evidenceIds": [
       "terraform-docs-20",
-      "terraform-docs-35",
       "terraform-docs-56",
       "terraform-docs-46",
-      "terraform-comm-1",
-      "terraform-comm-10"
+      "terraform-docs-67",
+      "terraform-comm-1"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can manage per-environment configuration (dev, staging, prod) as separate stacks or workspaces",
+      "citations": [
+        {
+          "evidenceId": "terraform-docs-20",
+          "quote": "Terraform uses your workspace's state to map real world resources to your configuration"
+        },
+        {
+          "evidenceId": "terraform-docs-56",
+          "quote": "Workspace operations: Create, update, delete workspaces with support for variables, tags, and run management."
+        },
+        {
+          "evidenceId": "terraform-docs-46",
+          "quote": "setting Terraform input variables (`-var` and `-var-file`)"
+        },
+        {
+          "evidenceId": "terraform-comm-1",
+          "quote": "Terraform user of a couple of years managing dev/qa/prod infra"
+        }
+      ]
+    },
     "productId": "terraform",
     "storyId": "environment-config-stacks"
   }

@@ -1,19 +1,36 @@
 {
-  "hash": "eb78d5213989e935c8d55001e289012de1260c4183c5fed87f5620d42cb52b9c",
+  "hash": "8e28045d95540111eb13d4c6ccd8078574c483885d15f14aa094f83f093eeb84",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "OpenTofu ships a first-party `tofu test` command. It runs assertions against your configuration, provisions temporary real infrastructure, destroys it afterward, and can emit machine-readable JSON output for automation. Speculative plans also let developers preview changes before review without applying them. However, the docs say tests create real infrastructure, and the evidence shows no explicit isolation from production. Missing for 10: documented mocking/offline test mode or explicit isolation from production environments, independent or hands-on corroboration of the test workflow.",
+    "rationale": "OpenTofu ships a first-party `tofu test` command that runs assertions against configuration, destroys the resources it created afterward, and can emit machine-readable JSON output. However, the documented tests create real infrastructure, and the evidence shows no mocking or sandboxed isolation from production. Speculative plans offer a dry-run preview, but that is a no-change check, not isolated test execution. Missing for 10: documented mock/override providers or another way to test without provisioning real infrastructure, explicit guidance on keeping test runs away from production accounts, and hands-on corroboration.",
     "evidenceIds": [
       "opentofu-docs-7",
       "opentofu-docs-25",
       "opentofu-docs-37",
-      "opentofu-docs-36",
-      "opentofu-docs-4",
-      "opentofu-docs-3"
+      "opentofu-docs-4"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can write automated tests for my infrastructure code and run them without touching production",
+      "citations": [
+        {
+          "evidenceId": "opentofu-docs-7",
+          "quote": "The `tofu test` command lets you test your OpenTofu configuration by creating real infrastructure and checking that the required conditions (assertions) are met. Once the test is complete, OpenTofu destroys the resources it created."
+        },
+        {
+          "evidenceId": "opentofu-docs-37",
+          "quote": "`-json-into=out.json` - Produces the same output as -json, but redirected to a file."
+        },
+        {
+          "evidenceId": "opentofu-docs-4",
+          "quote": "developers can use speculative plans to verify the effect of their changes before submitting them for code review"
+        }
+      ]
+    },
     "productId": "opentofu",
     "storyId": "unit-integration-tests"
   }

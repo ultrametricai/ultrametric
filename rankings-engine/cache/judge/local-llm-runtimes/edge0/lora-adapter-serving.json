@@ -1,19 +1,37 @@
 {
-  "hash": "a9304b93af6e8e575c51ab4cbf1d05d6ae9e6ba2461cacffbc1623c1dafa765a",
+  "hash": "82c02dd96a3c087a75ea328f1bd89088845e89521d10d74e31ecae5cbf569f67",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Edge0 documents that LoRA adapters stay unmerged, so one read-only base serves multiple adapter sets. Upgrading swaps only the adapter files, and there is an OpenAI-compatible `edge0 serve` endpoint plus a `--no-lora` toggle. However, the evidence is a single-line claim, and the adapters shown are Edge0's own quantization-recovery LoRAs bundled per model rather than arbitrary user adapters. Nothing shows how multiple adapters are selected or served at runtime. Missing for 10: per-request or concurrent adapter selection in the server, runtime hot-swap or loading of custom adapters, efficiency or benchmark evidence for multi-adapter serving, independent corroboration.",
+    "rationale": "Edge0 documents that LoRA adapters stay unmerged, so one read-only base serves multiple adapter sets. Upgrading swaps only adapter files, and serving runs through an OpenAI-compatible `edge0 serve` endpoint. The evidence does not show how multiple adapters are selected or served together at runtime, and the shipped adapters are tied to quantization recovery rather than arbitrary user LoRAs. Missing for 10: per-request adapter selection in the serve API, concurrent or batched multi-adapter serving, loading custom user LoRAs, efficiency benchmarks for multi-adapter serving, independent corroboration.",
     "evidenceIds": [
       "edge0-gh-13",
       "edge0-gh-12",
-      "edge0-gh-3",
       "edge0-gh-4",
       "edge0-gh-6",
-      "edge0-gh-14"
+      "edge0-gh-3"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can efficiently serve multiple LoRA adapters on top of a base model",
+      "citations": [
+        {
+          "evidenceId": "edge0-gh-13",
+          "quote": "Adapters stay unmerged: one read-only base serves multiple adapter sets."
+        },
+        {
+          "evidenceId": "edge0-gh-12",
+          "quote": "upgrading adapters swaps adapter files only — the base stays read-only and is never merged."
+        },
+        {
+          "evidenceId": "edge0-gh-6",
+          "quote": "edge0 serve edge0-35b"
+        }
+      ]
+    },
     "productId": "edge0",
     "storyId": "lora-adapter-serving"
   }

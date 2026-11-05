@@ -1,16 +1,31 @@
 {
-  "hash": "d9dc126fa751ace56b50b02c15b9e03de100cd75b35a3f1988f250eeaa8bbabe",
+  "hash": "fa597ba0b6781063ab6141ab9962625e6289d1327d702150928e55add3853484",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Raygun documents automatic grouping of errors by exception type, class name, method name and stack-trace location, which covers the fingerprinting half of the story. The evidence shows no way to customize grouping when it is wrong: the hasher-version setting only selects which built-in algorithm is used, and ignore rules are an adjacent triage control, not a grouping override. Missing for 10: custom grouping keys/fingerprints or merge/split of error groups, depth on how duplicates are collapsed at scale, independent corroboration of grouping accuracy.",
+    "rationale": "Raygun's docs say it automatically groups errors using exception type, class name, method name and stack-trace location, and that a selectable hasher version in application settings governs this grouping. Nothing in the pack shows a way to customize grouping when it is wrong, such as custom fingerprints, grouping keys or merging groups. Ignore rules are a status control, not a grouping override, so they earn no credit. Missing for 10: documented custom grouping/fingerprint overrides, a way to merge or split groups, independent corroboration of grouping quality at scale.",
     "evidenceIds": [
       "raygun-docs-7",
       "raygun-docs-33",
       "raygun-docs-40"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, the platform groups thousands of duplicate events into one issue via stack-trace fingerprinting, and I can customize the grouping when it gets it wrong",
+      "citations": [
+        {
+          "evidenceId": "raygun-docs-7",
+          "quote": "Raygun groups errors based on the `exception type`, `class name`, `method name`, and the location within the `stack trace`."
+        },
+        {
+          "evidenceId": "raygun-docs-40",
+          "quote": "You can check which hasher version is being used in the application settings, and it's recommended to always use the latest version"
+        }
+      ]
+    },
     "productId": "raygun",
     "storyId": "error-grouping-dedup"
   }

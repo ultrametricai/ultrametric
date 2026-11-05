@@ -1,21 +1,42 @@
 {
-  "hash": "c278c980f40fcdacab4caa121bc493762645e0a996d469ca65915f9c5ac5128d",
+  "hash": "523d1876ce5691b1722681bc91cdbf5a67bb93cac66337b516787614ae0a3316",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Cactus explicitly documents running the platform from \"a coding agent with your API key.\" It backs this with agent-oriented material: an llms.txt (confirmed live by probe), a REST API reference (generations, tool_schemas, uploads, billing), and an OpenAPI spec at /v1/openapi.json. The local engine also exposes OpenAI-compatible APIs. Missing for 10: no hands-on or independent corroboration of a coding agent actually driving the platform end-to-end, no dedicated agent integration such as an MCP server, and the probe found no OpenAPI spec at root-level paths, though one is documented under /v1.",
+    "rationale": "Cactus's own docs list 'a coding agent with your API key' as a supported way to run the platform. It backs this with an agent-oriented llms.txt (probe-confirmed live), a /v1/openapi.json spec, and REST endpoints for generating data, fine-tuning, uploading, and checking billing. An agent can therefore drive the product as a real backend. The probe 404s were only on root-level OpenAPI paths and do not contradict the /v1 spec. Missing for 10: a dedicated agent setup guide or MCP/agent integration docs, and independent hands-on reports of a coding agent actually using the platform.",
     "evidenceIds": [
       "cactus-compute-docs-9",
       "cactus-compute-docs-1",
       "cactus-compute-probe-1",
       "cactus-compute-docs-10",
       "cactus-compute-docs-4",
-      "cactus-compute-docs-5",
-      "cactus-compute-docs-8",
-      "cactus-compute-gh-2"
+      "cactus-compute-docs-8"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can connect a coding agent to this product as a working backend",
+      "citations": [
+        {
+          "evidenceId": "cactus-compute-docs-9",
+          "quote": "The dashboard, CLI, Python, or a coding agent with your API key."
+        },
+        {
+          "evidenceId": "cactus-compute-docs-10",
+          "quote": "Generate tool-calling training data, fine-tune Needle 3, and download the resulting models."
+        },
+        {
+          "evidenceId": "cactus-compute-docs-8",
+          "quote": "GET /billing returns your plan, its limits and what this period has used. Check it before you submit anything that spends allowance."
+        },
+        {
+          "evidenceId": "cactus-compute-docs-4",
+          "quote": "POST /generations with your tools, a count of 100 to 10,000 examples"
+        }
+      ]
+    },
     "productId": "cactus-compute",
     "storyId": "coding-agent-backend-integration"
   }

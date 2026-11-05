@@ -1,16 +1,31 @@
 {
-  "hash": "0501762e17a3bed164afe2d4f583ea922ca055dcfd59e6b3d88703024844a3c6",
+  "hash": "3a60393df3915165d4fbef696c9b3b997ef398176e85d5b2b2148b2e8e274dd7",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Edge0's own evidence implies it runs 4-bit quantized base models: LoRA adapters are distilled to recover quantization loss at 4-bit, and bundled checkpoints are ready to run. However, it appears limited to Edge0's own tiered checkpoints, auto-detected from config.json, and no specific quantization format is named. missing for 10: explicit support for loading FP8, INT4, GPTQ, or AWQ checkpoints, documentation of which quantization formats the loader accepts, ability to load arbitrary third-party quantized models, independent corroboration.",
+    "rationale": "Edge0 runs 4-bit quantized base checkpoints and uses LoRA adapters distilled from the FP teacher to recover quantization loss. However, the evidence only shows its own bundled tier checkpoints being loaded, auto-detected from config.json, and never names FP8, GPTQ, AWQ or arbitrary third-party quantized formats. Missing for 10: documented support for FP8, GPTQ and AWQ formats, loading of external quantized checkpoints, a list of supported quantization schemes, and independent corroboration.",
     "evidenceIds": [
       "edge0-gh-3",
       "edge0-gh-4",
       "edge0-gh-9"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can load models quantized in formats like FP8, INT4, GPTQ, or AWQ",
+      "citations": [
+        {
+          "evidenceId": "edge0-gh-3",
+          "quote": "recovering most of the quantization loss at 4-bit"
+        },
+        {
+          "evidenceId": "edge0-gh-9",
+          "quote": "the tier is auto-detected from the checkpoint's `config.json`"
+        }
+      ]
+    },
     "productId": "edge0",
     "storyId": "modern-quant-format-support"
   }

@@ -1,18 +1,35 @@
 {
-  "hash": "d25885f45de67be21e966b179a8f38ec36c3e14deb24250077f7e6ea65d24fca",
+  "hash": "461c1b3cd66ff7576002d596eab412fe6191e17328457e64f7f3db84b126695f",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "vLLM's docs list integer quantization formats including INT8, INT4, GPTQ/AWQ, GGUF and compressed-tensors, and state that quantization trades precision for a smaller memory footprint. A community post also credits its low-precision model library. One early HN comment said 4-bit wasn't supported, but it comes from the launch-era thread and doesn't concretely contradict the current documented INT4/GPTQ/AWQ support. Missing for 10: explicit evidence of sub-4-bit (2–3 bit) integer support, which GGUF/GPTQ only imply, and recent independent hands-on corroboration of the integer formats' memory savings.",
+    "rationale": "vLLM's docs list integer quantization formats (INT8, INT4, GPTQ/AWQ, GGUF) and say quantization trades precision for a smaller memory footprint, so the 4-bit to 8-bit range is covered. The 'very low-bit' end of the story (below 4-bit, e.g. 2–3 bit) is not explicitly documented. An early community comment said 4-bit was unsupported, but current docs list INT4, so it is not a concrete contradiction. missing for 10: explicit documentation of sub-4-bit integer quantization, independent hands-on corroboration of memory savings across the INT range",
     "evidenceIds": [
       "vllm-docs-4",
       "vllm-docs-22",
-      "vllm-docs-30",
-      "vllm-comm-4",
-      "vllm-comm-1"
+      "vllm-comm-4"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a power-user, I can reduce memory footprint using integer quantization ranging from very low-bit to 8-bit precision",
+      "citations": [
+        {
+          "evidenceId": "vllm-docs-4",
+          "quote": "Quantization: FP8, MXFP8/MXFP4, NVFP4, INT8, INT4, GPTQ/AWQ, GGUF, compressed-tensors, ModelOpt, TorchAO, and more"
+        },
+        {
+          "evidenceId": "vllm-docs-22",
+          "quote": "Quantization trades off model precision for smaller memory footprint, allowing large models to be run on a wider range of devices."
+        },
+        {
+          "evidenceId": "vllm-comm-4",
+          "quote": "a huge model library including low precision mattered more"
+        }
+      ]
+    },
     "productId": "vllm",
     "storyId": "flexible-integer-quantization"
   }

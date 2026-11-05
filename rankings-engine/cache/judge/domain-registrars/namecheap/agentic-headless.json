@@ -1,22 +1,50 @@
 {
-  "hash": "34f5aa237dde53c7a484d6aa91f1c680a930d3608287c3d137a76f6ce156acce",
+  "hash": "e31be01c8f91968450258ef1a8bae22fec10775ac1ef19589299837de5385963",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Namecheap exposes a programmatic XML API with a separate sandbox endpoint for safe testing. An official Terraform provider manages DNS as code and can auto-detect the caller's IP, which helps on CI runners. An official Go SDK covers domain check, register, renew and lock operations, and a documented HTTPS dynamic-DNS update endpoint is corroborated by a community user. Missing for 10: an official CLI, explicit CI/headless setup guidance (e.g. API key and IP-whitelisting in ephemeral runners), and independent hands-on reports of CI pipeline use.",
+    "rationale": "Namecheap documents its own headless automation surfaces: an XML API with a sandbox endpoint, an official Terraform provider for DNS configuration, and a Go SDK that can check, register, renew and lock domains. These can run non-interactively, but nothing in the evidence documents CI usage itself, such as pipeline setup, non-interactive credential handling, or the IP-whitelisting implications for ephemeral runners. missing for 10: explicit CI/pipeline documentation or examples, an official CLI, guidance on API credential and IP whitelisting for CI runners, and independent hands-on corroboration of CI automation.",
     "evidenceIds": [
-      "namecheap-docs-1",
       "namecheap-docs-2",
       "namecheap-docs-15",
       "namecheap-docs-16",
-      "namecheap-docs-17",
       "namecheap-docs-18",
       "namecheap-docs-19",
-      "namecheap-docs-23",
-      "namecheap-comm-10"
+      "namecheap-docs-20"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
+      "citations": [
+        {
+          "evidenceId": "namecheap-docs-15",
+          "quote": "A Terraform Provider for Namecheap domain DNS configuration."
+        },
+        {
+          "evidenceId": "namecheap-docs-16",
+          "quote": "client_ip is optional: when it is left unset the provider auto-detects the caller's public IP over HTTPS."
+        },
+        {
+          "evidenceId": "namecheap-docs-18",
+          "quote": "Check availability of one or more domains"
+        },
+        {
+          "evidenceId": "namecheap-docs-19",
+          "quote": "Register a new domain (charge-bearing)"
+        },
+        {
+          "evidenceId": "namecheap-docs-20",
+          "quote": "Renew an expiring domain (charge-bearing)"
+        },
+        {
+          "evidenceId": "namecheap-docs-2",
+          "quote": "api.sandbox.namecheap.com/xml.response"
+        }
+      ]
+    },
     "productId": "namecheap",
     "storyId": "agentic-headless"
   }

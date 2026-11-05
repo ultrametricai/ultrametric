@@ -1,20 +1,41 @@
 {
-  "hash": "bf94afc916d2b1134a06c7f07f66e14b301e4078a5c9fd55230c9774c1f07684",
+  "hash": "e760f15575636613ea5388332cc8a869bec7d22e4219b5f24f95aa11803df68a",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "dlt ships a dbt runner that runs dbt from inside a dlt pipeline (it can create a dbt virtual environment on the fly) and advertises end-to-end dlt→dbt pipelines, so transformations can run in the same Python flow straight after the load. dltHub orchestration adds chaining and lineage-aware pipeline runs, and the dbt generator scaffolds staging and fact models from the loaded schema. missing for 10: explicit docs showing dbt is triggered on load completion (e.g. only when new data arrives), detail on passing load state or incremental context to dbt, independent or hands-on corroboration.",
+    "rationale": "dlt ships its own dbt runner and advertises end-to-end dlt→dbt pipelines, so dbt can run inside the same Python pipeline as the load. dltHub orchestration also claims chaining and lineage-aware runs, which points to load-triggered sequencing rather than a timer. However, the evidence never states that dbt runs automatically after a successful load, or only on newly loaded data, so the event-driven half of the story is only implied. Missing for 10: explicit documentation that dbt runs are triggered by load completion rather than a schedule, detail on how loaded data or incremental state is passed to dbt, and hands-on or independent corroboration.",
     "evidenceIds": [
       "dlt-docs-8",
       "dlt-docs-30",
       "dlt-docs-67",
-      "dlt-docs-77",
       "dlt-docs-59",
-      "dlt-docs-70",
-      "dlt-docs-34"
+      "dlt-docs-70"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an analytics engineer, dbt transformations run against freshly loaded data as part of the pipeline, not on a blind timer",
+      "citations": [
+        {
+          "evidenceId": "dlt-docs-8",
+          "quote": "You can run dbt with `dlt` by using the dbt runner."
+        },
+        {
+          "evidenceId": "dlt-docs-67",
+          "quote": "End-to-end cross-db compatibility for dlt→dbt pipelines."
+        },
+        {
+          "evidenceId": "dlt-docs-59",
+          "quote": "teams schedule, backfill, and chain their pipelines with dltHub."
+        },
+        {
+          "evidenceId": "dlt-docs-70",
+          "quote": "Schedule lineage-aware pipeline runs with agents, all in Python"
+        }
+      ]
+    },
     "productId": "dlt",
     "storyId": "dbt-integration"
   }

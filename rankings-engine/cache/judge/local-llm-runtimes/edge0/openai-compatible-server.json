@@ -1,16 +1,30 @@
 {
-  "hash": "f7edacaaf6428bed326b7d02e4936e165312e9fbe922bd0cf6e8d4f2b6057c03",
+  "hash": "4d3672f802c8e4579192d239ce3034828e8153ca53405986e2c068d3328c7223",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "The README documents a first-party `edge0 serve edge0-35b` command that exposes an OpenAI-compatible /v1/chat/completions endpoint, with a curl example against http://127.0.0.1:8000. Passing a model directory auto-detects the tier from config.json, though that is not shown for `serve` specifically. Missing for 10: evidence that serve works for any arbitrary loaded model beyond Edge0 tiers, other OpenAI endpoints (completions/embeddings/models, streaming), documented server options such as port and host, and independent or hands-on corroboration.",
+    "rationale": "Edge0 ships its own `edge0 serve` command that exposes an OpenAI-compatible /v1/chat/completions endpoint on 127.0.0.1:8000. That covers the core of launching a local OpenAI-compatible server. The docs only show serving the edge0-35b tier, so serving 'any loaded model' (arbitrary directories or other checkpoints) is not shown for the serve command, and only the chat-completions endpoint is documented. Missing for 10: evidence that serve works with any loaded model or directory, documentation of other OpenAI endpoints (models, completions, streaming), configuration options for the server, and independent or hands-on corroboration.",
     "evidenceIds": [
       "edge0-gh-6",
-      "edge0-gh-7",
-      "edge0-gh-9"
+      "edge0-gh-7"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can launch a local OpenAI-compatible API server for any loaded model",
+      "citations": [
+        {
+          "evidenceId": "edge0-gh-6",
+          "quote": "# serve (OpenAI-compatible /v1/chat/completions)\nedge0 serve edge0-35b"
+        },
+        {
+          "evidenceId": "edge0-gh-7",
+          "quote": "curl http://127.0.0.1:8000/v1/chat/completions"
+        }
+      ]
+    },
     "productId": "edge0",
     "storyId": "openai-compatible-server"
   }

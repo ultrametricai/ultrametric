@@ -1,20 +1,41 @@
 {
-  "hash": "3e1a89830c3bede664fd435940d80bb3413e0cace2411bd7938685bef0d143bc",
+  "hash": "16aba67f8784c69dac8e62abe1b9dcf1f8308d038d3c1767bd68b72aaa163795",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Rollbar documents account- and project-level access tokens with explicit scopes. For example, a post_client_item-only token can only send events and cannot read data. Tokens can be disabled and replaced at any time, and new tokens are encrypted after creation. That gives a user what they need to issue least-privilege credentials, such as for the documented MCP server an agent runs. A community note criticizes a default never-expiring read token, but that is a default-configuration concern, not a contradiction of scoping. Missing for 10: full documented scope list (read/write/server scopes), token expiry or time-bounded credentials, agent-specific guidance on scoping tokens for the MCP server, independent hands-on corroboration.",
+    "rationale": "Rollbar documents its own project and account access tokens with scopes. A client-side token is limited to the post_client_item scope and \"can't be used to read any data\", and tokens can be disabled and replaced at any time, so least-privilege credentials exist natively. Evidence on the full scope set is thin, and nothing ties scoped tokens to agent use such as the MCP server. Missing for 10: documented full scope catalog (read/write/server scopes), agent- or MCP-specific credential guidance, token expiry/TTL controls, independent corroboration.",
     "evidenceIds": [
-      "rollbar-docs-36",
-      "rollbar-docs-16",
       "rollbar-docs-41",
       "rollbar-docs-62",
       "rollbar-docs-63",
-      "rollbar-docs-60",
-      "rollbar-comm-1"
+      "rollbar-docs-36",
+      "rollbar-docs-16"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
+      "citations": [
+        {
+          "evidenceId": "rollbar-docs-41",
+          "quote": "Use a separate client-side token with post_client_item scope only."
+        },
+        {
+          "evidenceId": "rollbar-docs-62",
+          "quote": "The client-side access token can only be used to send events and only from client-side platforms. It can't be used to read any data"
+        },
+        {
+          "evidenceId": "rollbar-docs-63",
+          "quote": "Tokens can be disabled and replaced at any time."
+        },
+        {
+          "evidenceId": "rollbar-docs-36",
+          "quote": "Managing Account & Project Access Tokens"
+        }
+      ]
+    },
     "productId": "rollbar",
     "storyId": "agentic-scoped-keys"
   }

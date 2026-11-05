@@ -1,21 +1,42 @@
 {
-  "hash": "cf95092fe5bf51f7abe3934a8bdef94d6060e3a5cdfaffc46ee2946c9c8681dd",
+  "hash": "5effb8548f9c4c60ddb83edeaca786786f11d61ea6b19c7b1b8ff6f416ccfe1a",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
     "confidence": "low",
-    "rationale": "Unreal has extensive first-party API documentation: C++ gameplay programming, a generated per-class Unreal Python API reference served to non-browser clients, Python autocomplete stubs, and Remote Control HTTP/WebSocket references. Epic also serves llms.txt, though intermittently. But nothing shows LLM-generated code works on the first try. API stability is undercut by the Python API's Experimental label and a community report that new engine versions break things. Public examples are limited because engine source is EULA/account-gated and returns 'Not Found' to unauthenticated GitHub API requests. Missing for 10: any evidence of LLM first-try code success, evidence of stable APIs across versions, abundant publicly crawlable examples or source, and reliable agent access to docs (WAF 403s, no markdown docs).",
+    "rationale": "Unreal documents its own APIs: a generated per-class Python API reference, Python stub generation for autocomplete, C++ programming guides and Remote Control HTTP/WebSocket references, much of it fetchable by non-browser clients. That is partial support for the 'well-documented APIs' part of the story. Nothing in the pack shows LLM-generated Unreal code working on the first try or a large body of public examples. The Python API is marked Experimental, and probes report source access is EULA-gated, docs are not served as markdown, and the CDN intermittently blocks agents. missing for 10: evidence that LLM-generated code works first-try, evidence of abundant public code examples, evidence of API stability across versions, reliable machine-readable docs and source access.",
     "evidenceIds": [
       "unreal-supp-python-api-reference",
       "unreal-supp-python-stubs",
-      "unreal-docs-2",
-      "unreal-docs-20",
       "unreal-docs-24",
       "unreal-probe-rt-1",
       "unreal-probe-rt-2",
-      "unreal-comm-15"
+      "unreal-docs-2"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, LLM-generated code mostly works on the first try — stable, well-documented APIs with abundant public examples the models have seen",
+      "citations": [
+        {
+          "evidenceId": "unreal-supp-python-api-reference",
+          "quote": "Python API sections: Modules, Native Types, Struct Types, Class Types, Enum Types"
+        },
+        {
+          "evidenceId": "unreal-supp-python-stubs",
+          "quote": "The generated stub file will be located at PROJECT_DIRECTORY/Intermediate/PythonStub"
+        },
+        {
+          "evidenceId": "unreal-probe-rt-1",
+          "quote": "the Python editor-scripting docs, Remote Control API references, and UAT/automation CLI docs on dev.epicgames.com/documentation ARE fetchable keylessly"
+        },
+        {
+          "evidenceId": "unreal-docs-24",
+          "quote": "You can call any function that is callable from Blueprint. This includes any function defined in C++ with the BlueprintCallable specifier"
+        }
+      ]
+    },
     "productId": "unreal",
     "storyId": "codegen-friendly-apis"
   }

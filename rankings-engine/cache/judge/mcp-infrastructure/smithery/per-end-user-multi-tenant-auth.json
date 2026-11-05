@@ -1,20 +1,41 @@
 {
-  "hash": "35c9e8f4b321fd02f4231ab78ed73a0d5fcf45bf3a398ebd1885217946dd5957",
+  "hash": "24aabd7c2126229f5fe20b792eab40d6e3b453124689b4e2221b74d6ae4cfde7",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Smithery's token-scoping docs describe service tokens restricted to connections whose `metadata.userId` matches a specific end user, so a token can only list and call tools on that user's connections. Smithery also manages per-connection OAuth, encrypted credential storage and automatic token refresh, which together cover per-user connected accounts acting only on that user's credentials. Missing for 10: explicit documentation of the workflow for creating and tagging a separate connection per end user (only implied through the metadata filter), and independent or hands-on corroboration of tenant isolation.",
+    "rationale": "Smithery's token-scoping docs describe service tokens restricted to connections tagged with a specific end user's metadata.userId. Combined with Smithery-managed OAuth and credential storage for connections, this delivers per-user connected accounts and per-user scoped tokens, so each user's agent acts only on that user's connections. missing for 10: detailed docs on creating and managing per-user connections at scale, independent or hands-on corroboration of the isolation.",
     "evidenceIds": [
       "smithery-docs-6",
       "smithery-docs-7",
       "smithery-docs-1",
       "smithery-docs-3",
-      "smithery-docs-13",
-      "smithery-docs-21",
       "smithery-docs-22"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a platform-engineer, I can maintain separate connected accounts and scoped tokens per end user of my product, so each user's agent acts only on that user's credentials",
+      "citations": [
+        {
+          "evidenceId": "smithery-docs-7",
+          "quote": "This token can list and call tools on connections in `my-app` where `metadata.userId` is `user-123` — nothing else."
+        },
+        {
+          "evidenceId": "smithery-docs-6",
+          "quote": "Service tokens let you safely expose Smithery to browsers, mobile apps, and AI agents without leaking your API key."
+        },
+        {
+          "evidenceId": "smithery-docs-1",
+          "quote": "Instead of implementing the MCP protocol directly, handling OAuth flows, and managing credentials yourself, Smithery handles all of it for you."
+        },
+        {
+          "evidenceId": "smithery-docs-3",
+          "quote": "Encrypted, write-only storage for API keys and tokens"
+        }
+      ]
+    },
     "productId": "smithery",
     "storyId": "per-end-user-multi-tenant-auth"
   }

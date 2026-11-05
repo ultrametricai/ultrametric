@@ -1,16 +1,30 @@
 {
-  "hash": "2f7ff0a37846e8903508da8c775e1ced19e22067b7a94546fd50b4af0c5a53b4",
+  "hash": "82c76e9f2fa3049618fce4b61feedb0dd00a4d9721d7baff124294ebab24eac9",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Edge0 ships a first-party Python API with transformers-style `AutoModel`/`AutoConfig`/`AutoEngine` classes, including `AutoEngine.from_pretrained(...)`, so developers can call the runtime directly from Python. It also exposes an OpenAI-compatible HTTP server. However, the evidence shows only a loading snippet, with no documented generation API, packaging or reference docs. There is no official JavaScript or other-language client library, and OpenAI compatibility alone is not an official client. missing for 10: official JavaScript/other-language SDKs, documented Python inference/generation API surface and install/package docs, independent corroboration of the Python library in use.",
+    "rationale": "Edge0 ships its own Python API: transformers-style AutoModel/AutoConfig/AutoEngine, with AutoEngine.from_pretrained loading a model in-process. That lets a developer call the runtime from Python. There is no evidence of a JavaScript or other-language library, or of an official client SDK for the HTTP server. The OpenAI-compatible endpoint only lets third-party clients connect, so it earns no credit here. Missing for 10: official JavaScript/other-language client libraries, a dedicated client SDK for the served endpoint, in-depth API reference docs, independent corroboration.",
     "evidenceIds": [
       "edge0-gh-10",
-      "edge0-gh-11",
-      "edge0-gh-6"
+      "edge0-gh-11"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can call the runtime from official client libraries in languages like Python or JavaScript",
+      "citations": [
+        {
+          "evidenceId": "edge0-gh-10",
+          "quote": "transformers-style usage: `AutoModel` / `AutoConfig` / `AutoEngine` resolve the tier from the model name"
+        },
+        {
+          "evidenceId": "edge0-gh-11",
+          "quote": "engine = AutoEngine.from_pretrained(\"/path/to/model\")  # tier auto-detected"
+        }
+      ]
+    },
     "productId": "edge0",
     "storyId": "client-library-bindings"
   }

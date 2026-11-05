@@ -1,22 +1,53 @@
 {
-  "hash": "805cf21474b3cbb02f8b215de71343912a86dd93d700505509c7d83ec1f4f5f2",
+  "hash": "873bf5ddfafd0077e29eb2fb16c1208954c76fdb68d9a4ee342484bfd8d24675",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Browser Use Cloud offers a hosted v4 HTTP API at api.browser-use.com with an API-key-secured POST Create Run endpoint (client.runs.create with a natural-language task). Results come back as run.result, and run progress can be polled via runs.events() with a cursor. Browsers are managed cloud Chromium with stealth, proxies and CAPTCHA solving by default, so the agent never runs a browser itself. Missing for 10: no evidence of registrable webhook callbacks for run completion, no independent or hands-on corroboration of the hosted run-and-poll flow.",
+    "rationale": "Browser Use Cloud exposes a hosted, API-key-authenticated REST API at api.browser-use.com/api/v4 with a documented 'Create Run' POST endpoint. Results come back as `run.result`, and runs can be monitored by polling `runs.events()` with a cursor. Browsers are managed in the cloud, with stealth, proxies and CAPTCHA solving on by default, so the agent never runs a browser itself. Polling alone satisfies the story; no webhook delivery is documented. missing for 10: documented webhook callbacks for run completion, independent hands-on corroboration of the hosted run/poll flow",
     "evidenceIds": [
       "browser-use-docs-1",
       "browser-use-docs-41",
       "browser-use-supp-openapi-spec",
+      "browser-use-docs-3",
       "browser-use-docs-5",
       "browser-use-docs-14",
-      "browser-use-docs-3",
       "browser-use-docs-20",
       "browser-use-docs-6",
       "browser-use-docs-27"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI agent, I can submit a browser task over a hosted HTTP API and receive the result by polling or webhook, without managing any browser myself",
+      "citations": [
+        {
+          "evidenceId": "browser-use-docs-41",
+          "quote": "\"summary\": \"Create Run\", \"operationId\": \"create_run_runs_post\", \"security\": [{\"APIKeyHeader\": []}]"
+        },
+        {
+          "evidenceId": "browser-use-supp-openapi-spec",
+          "quote": "servers https://api.browser-use.com/api/v4"
+        },
+        {
+          "evidenceId": "browser-use-docs-5",
+          "quote": "Poll `runs.events()` with the previous cursor to receive only new events"
+        },
+        {
+          "evidenceId": "browser-use-docs-3",
+          "quote": "V4 returns `run.result` as a string."
+        },
+        {
+          "evidenceId": "browser-use-docs-20",
+          "quote": "Give a high-accuracy browser agent a goal and get the result."
+        },
+        {
+          "evidenceId": "browser-use-docs-6",
+          "quote": "Every cloud browser session runs in a hardened Chromium fork with stealth enabled by default — no configuration needed."
+        }
+      ]
+    },
     "productId": "browser-use",
     "storyId": "hosted-task-api"
   }

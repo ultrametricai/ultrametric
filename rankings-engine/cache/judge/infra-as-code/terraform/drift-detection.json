@@ -1,19 +1,40 @@
 {
-  "hash": "2315b29d5d5f139e0e34e2afbf5b48b0cb8c0e9746597089a1dc9c4c0cf6a3af",
+  "hash": "e931de5ea85683a6682e2326f7a9c5414ebb925c242e93451fd110c043123ac9",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Terraform's state maps real-world resources to the configuration, and `terraform plan` previews the changes needed to reconcile them. The `-refresh-only` plan mode updates state from remote objects, and `terraform show -json` exposes the plan and current state in machine-readable form, so differences between declared and actual infrastructure can be surfaced. missing for 10: evidence explicitly framing plan or refresh-only as drift detection, continuous or scheduled drift detection, independent or hands-on corroboration of drift reporting.",
+    "rationale": "Terraform's own CLI provides the core pieces: state maps real-world resources to the configuration, `terraform plan` previews the changes needed to reconcile them, and the `-refresh-only` mode builds a plan that updates state from the real resources. Together these let a platform engineer surface differences between declared configuration and actual cloud resources. However, the evidence never describes this as drift detection, nor shows how drift is reported or how it is monitored on a recurring basis. missing for 10: explicit documentation of drift detection, scheduled or continuous drift checks (e.g. HCP Terraform health assessments), drift reporting and alerting, independent or hands-on corroboration",
     "evidenceIds": [
+      "terraform-docs-45",
       "terraform-docs-20",
       "terraform-docs-15",
-      "terraform-docs-45",
-      "terraform-docs-47",
-      "terraform-docs-48",
-      "terraform-docs-43"
+      "terraform-docs-47"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform-engineer, I can detect drift between my declared configuration and the actual cloud resources",
+      "citations": [
+        {
+          "evidenceId": "terraform-docs-45",
+          "quote": "`-refresh-only`, which creates a plan to update Terraform state and root module output values."
+        },
+        {
+          "evidenceId": "terraform-docs-20",
+          "quote": "Terraform uses your workspace's state to map real world resources to your configuration"
+        },
+        {
+          "evidenceId": "terraform-docs-15",
+          "quote": "The `terraform plan` command creates an execution plan, which lets you preview the changes that Terraform plans to make to your infrastructure."
+        },
+        {
+          "evidenceId": "terraform-docs-47",
+          "quote": "inspect the current state as Terraform sees it."
+        }
+      ]
+    },
     "productId": "terraform",
     "storyId": "drift-detection"
   }

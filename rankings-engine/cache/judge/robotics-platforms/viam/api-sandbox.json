@@ -1,15 +1,35 @@
 {
-  "hash": "d8fae0bab4f53eed5e420408f364af2c9140e49e3f87f0f719127b12d59b6363",
+  "hash": "2cbb087327982d582110341b0e32257a9282c09ffff1fd6f2d0c6c7e9a95f788",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 4,
-    "confidence": "low",
-    "rationale": "The RDK repo documents running viam-server against a dummy configuration (`etc/configs/fake.json`), which lets you exercise the machine API against fake components instead of real hardware. The motion docs also describe computing and inspecting an arm trajectory with PlanMotion before the arm moves, a limited dry-run capability. Nothing documents an isolated sandbox environment or separation from production data and fleets; canary testing and rollbacks address deployment safety rather than sandboxing. Missing for 10: a documented sandbox/test environment or simulation workflow, explicit isolation from production data and machines, agent-oriented guidance for testing safely, and independent corroboration.",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Viam documents a cloud-hosted simulated machine for configuring and testing without hardware, simulation-based training, and an RDK dummy 'fake' configuration. These give real isolation from physical hardware rather than a dry run. However, the docs frame simulation mainly as onboarding for users without hardware, not as a sandbox that keeps production data separate. missing for 10: documented separation of sandbox data from production org data, an explicit staging/sandbox environment alongside a production fleet, independent or hands-on corroboration.",
     "evidenceIds": [
-      "viam-gh-2",
-      "viam-docs-39"
+      "viam-docs-77",
+      "viam-docs-78",
+      "viam-gh-2"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
+      "citations": [
+        {
+          "evidenceId": "viam-docs-77",
+          "quote": "the setup wizard can also run your machine in a simulated environment in the cloud, so you can start configuring and testing right away"
+        },
+        {
+          "evidenceId": "viam-docs-78",
+          "quote": "Build a palletizing cell in simulation and learn the core concepts behind every Viam machine. 90 minutes · No hardware required"
+        },
+        {
+          "evidenceId": "viam-gh-2",
+          "quote": "Example with a dummy configuration: `go run ./web/cmd/server -config etc/configs/fake.json`."
+        }
+      ]
+    },
     "productId": "viam",
     "storyId": "api-sandbox"
   }

@@ -1,20 +1,46 @@
 {
-  "hash": "89782041af7cdab0bb8db36a5acd6cf6fbc41363e817b4d956a8d80ef388e157",
+  "hash": "7d7893db7cf012eaff4b90946fc4c02fcd1545754977f8f04872e56da224fa59",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Ollama ships a shell-script install (`curl | sh`) and a REST API for running and managing models. Community users report running it on Linux for inference \"for ages\" even though the GUI app did not exist on Linux, and others note ROCm containers and server-style deployments such as a Discord bot backend, which together show it runs as a GUI-less server runtime. missing for 10: explicit first-party docs for headless/server mode (e.g. a documented serve daemon or official container image), any evidence of CI-pipeline usage, documented server configuration options.",
+    "rationale": "Ollama ships a REST API for running and managing models, a shell install script, and (per community reports) ROCm containers. Users also report running it as a long-lived server on Linux, where the GUI app was not available, which implies headless operation. However, no first-party doc explicitly describes headless or daemon mode or CI-pipeline usage, and one user complains that server configuration is hidden behind defaults. Missing for 10: explicit first-party documentation of headless/daemon (serve) operation, documented official container images, CI-pipeline usage guidance, and exposed server configuration controls.",
     "evidenceIds": [
-      "ollama-docs-14",
       "ollama-gh-4",
-      "ollama-docs-9",
-      "ollama-comm-16",
+      "ollama-docs-14",
       "ollama-comm-9",
+      "ollama-comm-16",
       "ollama-comm-4",
       "ollama-comm-13"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can run the runtime headlessly with no GUI for use in servers or CI pipelines",
+      "citations": [
+        {
+          "evidenceId": "ollama-gh-4",
+          "quote": "Ollama has a REST API for running and managing models."
+        },
+        {
+          "evidenceId": "ollama-docs-14",
+          "quote": "curl -fsSL https://ollama.com/install.sh | sh"
+        },
+        {
+          "evidenceId": "ollama-comm-9",
+          "quote": "They have shipped ROCm containers since 0.1.27."
+        },
+        {
+          "evidenceId": "ollama-comm-16",
+          "quote": "I've been using it in Linux for inference for ages."
+        },
+        {
+          "evidenceId": "ollama-comm-4",
+          "quote": "the ability to 'hotswap' models with different utility instead of restarting the server"
+        }
+      ]
+    },
     "productId": "ollama",
     "storyId": "headless-server-mode"
   }

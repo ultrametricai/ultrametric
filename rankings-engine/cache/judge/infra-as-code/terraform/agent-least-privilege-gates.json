@@ -1,21 +1,51 @@
 {
-  "hash": "c3d6fefb4f1267322f0a3bc29b865af8dfcfd672b429336ded38bbe912471c28",
+  "hash": "7a27ace467aad379cd08009f4c925c65c9ddddde3d2490aafcdaff2aeb93ae25",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Terraform documents review gates an agent workflow can rely on. Apply prompts for approval before acting, and plans can be saved with -out and applied later after review. HCP Terraform adds policy enforcement (Sentinel/OPA/Terraform policy), and policy results can be overridden in the UI. The official MCP server exposes workspace run management to agents. However, nothing shows least-privilege or scoped credentials for an agent, and the approval prompt can be bypassed with -auto-approve. Missing for 10: documented least-privilege or scoped agent credentials, a documented agent-specific approval gate that cannot be bypassed, and independent or hands-on corroboration of agent plan/apply under policy gates.",
+    "rationale": "Terraform provides review gates for plan and apply. Apply prompts for approval of the plan, saved plan files (-out) let you apply exactly what was reviewed, and HCP Terraform policy enforcement (Sentinel/OPA) validates plans, with results viewable and overridable in the UI. The MCP server exposes workspace run management to agents. However, nothing in the evidence covers least-privilege or scoped credentials for an agent, and -auto-approve can bypass the interactive gate. missing for 10: documented least-privilege/scoped agent credentials, agent-specific approval workflow ensuring the agent cannot self-approve, independent or hands-on corroboration.",
     "evidenceIds": [
       "terraform-docs-25",
       "terraform-docs-30",
-      "terraform-docs-3",
       "terraform-docs-9",
       "terraform-docs-54",
       "terraform-docs-35",
       "terraform-docs-56",
       "terraform-docs-43"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an ai-native user, I can let an agent plan and apply with least-privilege credentials and review gates so it cannot make unapproved changes",
+      "citations": [
+        {
+          "evidenceId": "terraform-docs-25",
+          "quote": "prompts you to approve that plan, and performs the indicated operations"
+        },
+        {
+          "evidenceId": "terraform-docs-30",
+          "quote": "You can use the optional `-out=FILE` option to save the generated plan to a file on disk, which you can later execute by passing the file to `terraform apply`"
+        },
+        {
+          "evidenceId": "terraform-docs-9",
+          "quote": "Policies are rules for Terraform runs that let you validate that Terraform plans comply with security rules and best practices."
+        },
+        {
+          "evidenceId": "terraform-docs-54",
+          "quote": "Write custom policies using Terraform policy, Sentinel, or OPA"
+        },
+        {
+          "evidenceId": "terraform-docs-35",
+          "quote": "View and override policy enforcement results in the workspace UI."
+        },
+        {
+          "evidenceId": "terraform-docs-56",
+          "quote": "Workspace operations: Create, update, delete workspaces with support for variables, tags, and run management."
+        }
+      ]
+    },
     "productId": "terraform",
     "storyId": "agent-least-privilege-gates"
   }

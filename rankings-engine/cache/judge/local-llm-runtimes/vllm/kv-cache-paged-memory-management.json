@@ -1,17 +1,35 @@
 {
-  "hash": "a8d12dc1681a201c9348a513922289ed1a62805071fd74830233afbc88cff510",
+  "hash": "4a8eefc29fa2392653ad5a2d47a9b206690ba830a7738f953224896623bc4d4d",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "vLLM's own docs list efficient management of attention key/value memory with PagedAttention as a core feature. Community users independently confirm that vLLM's KV cache serves as a foundation for batched requests and that the engine is known for paged attention. One commenter argues other features mattered more, but that does not contradict the capability. Missing for 10: in-depth docs stating that fragmentation is eliminated, and evidence or benchmarks quantifying the gain in concurrent request capacity.",
+    "rationale": "vLLM's own docs state that it manages attention key/value memory with PagedAttention, which is the paged KV-cache capability this story asks for. Community comments confirm that vLLM's KV cache and paged attention are core to the product and used in production. missing for 10: first-party detail explaining how paging avoids memory fragmentation, evidence quantifying the gain in concurrent request capacity, independent hands-on benchmarks of memory efficiency.",
     "evidenceIds": [
       "vllm-docs-2",
-      "vllm-comm-3",
       "vllm-comm-4",
-      "vllm-docs-3"
+      "vllm-comm-3"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can rely on paged memory management for attention key/value cache to maximize concurrent request capacity without memory fragmentation",
+      "citations": [
+        {
+          "evidenceId": "vllm-docs-2",
+          "quote": "Efficient management of attention key and value memory with PagedAttention"
+        },
+        {
+          "evidenceId": "vllm-comm-4",
+          "quote": "vLLM is originally marketed as paged attention"
+        },
+        {
+          "evidenceId": "vllm-comm-3",
+          "quote": "We use vLLM kv cache and continuous batching as a foundation for requests in ScalarLM"
+        }
+      ]
+    },
     "productId": "vllm",
     "storyId": "kv-cache-paged-memory-management"
   }

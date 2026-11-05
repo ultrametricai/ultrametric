@@ -1,17 +1,32 @@
 {
-  "hash": "992dfd112e10f5818eab16fe3cf52390e870642081127692a264afd51457a1ec",
+  "hash": "2bd63cad105c2cff875810b2ebd14dfcac7d8bdebdab75fa2207c94a7c58f2f5",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Airbyte's CDC docs say it reads database replication logs and tracks its position in them, capturing every record change from INSERT/UPDATE/DELETE statements. That covers the core of log-based change capture, including deletes. A community question about hard deletes in incremental mode is only an open question, not a contradiction. Missing for 10: connector-specific evidence for MySQL binlog and Postgres WAL, documentation of reduced source load, and independent or hands-on corroboration that CDC works as claimed.",
+    "rationale": "Airbyte's own CDC documentation says it consumes database replication logs, tracks its position in them, and reads all record changes from INSERT, UPDATE and DELETE statements. That covers the core of capturing updates and deletes via log-based CDC. The community question about hard deletes is only a question, not contradicting evidence, so it does not create a dispute. Missing for 10: which databases are supported (MySQL binlog / Postgres WAL), explicit evidence of reduced load on the source, and independent hands-on corroboration.",
     "evidenceIds": [
       "airbyte-docs-15",
       "airbyte-docs-25",
       "airbyte-docs-54",
       "airbyte-docs-38"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a data engineer, I replicate databases with log-based CDC (binlog/WAL) so I capture updates and deletes without hammering the source",
+      "citations": [
+        {
+          "evidenceId": "airbyte-docs-15",
+          "quote": "A consumer of these log files (such as Airbyte) can read these logs while keeping track of the current position within the logs in order to read all record changes coming from DELETE/INSERT/UPDATE statements."
+        },
+        {
+          "evidenceId": "airbyte-docs-25",
+          "quote": "Many common databases support writing all record changes to log files for the purpose of replication."
+        }
+      ]
+    },
     "productId": "airbyte",
     "storyId": "cdc-log-replication"
   }

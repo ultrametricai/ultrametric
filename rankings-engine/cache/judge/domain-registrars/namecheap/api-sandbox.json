@@ -1,17 +1,36 @@
 {
-  "hash": "d9336fc560bbf4b94d9529a3f958856789edbd0799e9a335ebb54f27658862fa",
+  "hash": "bff64156513ab0e5912d8497a6143e3066e15943739414c326efaf1f4a1ca5a5",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 6,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Namecheap runs a dedicated sandbox API endpoint (api.sandbox.namecheap.com) that is separate from the production endpoint (api.namecheap.com). The sandbox answers live requests with the same API error format, so callers can test without touching production accounts or data. The evidence, however, is only raw endpoint responses rather than descriptive documentation. Missing for 10: docs on sandbox account signup and credentials, data isolation and parity with production, whether the Go SDK and Terraform provider can target the sandbox, and independent hands-on corroboration.",
+    "rationale": "Namecheap runs a live, separate sandbox API endpoint (api.sandbox.namecheap.com/xml.response) alongside the production endpoint (api.namecheap.com), and it answers API calls on its own server. That is first-party evidence of a distinct test environment. However, the pack shows only that the endpoint exists and responds. Nothing documents how sandbox accounts, data isolation from production, or non-charging behaviour for operations like Create/Renew work. missing for 10: documentation of sandbox account setup and data isolation from production, confirmation that charge-bearing calls are simulated in sandbox, SDK/Terraform sandbox toggles, hands-on or independent corroboration.",
     "evidenceIds": [
       "namecheap-docs-2",
       "namecheap-docs-9",
       "namecheap-docs-13",
-      "namecheap-docs-1"
+      "namecheap-docs-8"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
+      "citations": [
+        {
+          "evidenceId": "namecheap-docs-9",
+          "quote": "https://api.sandbox.namecheap.com/xml.response"
+        },
+        {
+          "evidenceId": "namecheap-docs-13",
+          "quote": "Parameter APIUser is missing Server -151154064"
+        },
+        {
+          "evidenceId": "namecheap-docs-8",
+          "quote": "Parameter APIUser is missing Server 1360233663"
+        }
+      ]
+    },
     "productId": "namecheap",
     "storyId": "api-sandbox"
   }

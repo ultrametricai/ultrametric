@@ -1,17 +1,32 @@
 {
-  "hash": "7a3b76110921c63df4589a98eb7fa7b5638cb8501ee50e4a938beadc5356cedc",
+  "hash": "caf34d69a2a681f90e1ba162e3ba1bf400713b0661ddb6feba7126af92b0a1b3",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Raygun documents SDK-level filtering that removes sensitive data such as credit card details before errors are sent (raygun-docs-12/24/47). On the server side, the only documented control is a narrow 'Disable IP address storage' application setting (raygun-docs-13), not configurable scrubbing rules. missing for 10: configurable server-side scrubbing rules for arbitrary fields/patterns, detail on SDK filter configuration (field names, patterns, per-language), independent or hands-on corroboration.",
+    "rationale": "Raygun documents client/SDK-side filtering of sensitive data before errors are sent, such as removing credit card details. The only server-side control evidenced is a single application-setting flag that disables IP address storage, not configurable scrubbing rules. missing for 10: configurable server-side scrubbing rules beyond IP storage, detail on SDK filter mechanisms (field/key lists, per-SDK coverage), independent or hands-on corroboration.",
     "evidenceIds": [
       "raygun-docs-12",
       "raygun-docs-24",
       "raygun-docs-47",
       "raygun-docs-13"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an SRE, I can scrub PII from error events — server-side scrubbing rules plus SDK-level filtering — before sensitive payloads ever persist",
+      "citations": [
+        {
+          "evidenceId": "raygun-docs-12",
+          "quote": "You can filter out sensitive information from error data, meaning before errors are sent to Raygun. This enables you to remove sensitive data such as credit card details when sending errors from your application."
+        },
+        {
+          "evidenceId": "raygun-docs-13",
+          "quote": "To stop the storage of IP addresses you can go to your \"Application settings\" page in Raygun and then enabling the \"Disable IP address storage\" flag."
+        }
+      ]
+    },
     "productId": "raygun",
     "storyId": "server-side-data-scrubbing"
   }

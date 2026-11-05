@@ -1,20 +1,41 @@
 {
-  "hash": "5d5a131bdc713d10ef0122f100969ffad577522b303a346bae9d31161841dcae",
+  "hash": "b9317cc5051a03e5534838e1c8dc021ceebd446703f6380058290e1a03799cf3",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
-    "quality": 8,
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "The ESP32 board acts as the AirPlay receiver, which captures the live screen over a mirroring link. That feed drives an OpenAI-compatible vision model with separate planner and actor roles. Each run records screenshots alongside the taps and swipes drawn on top, and pointer self-calibration ties actions to on-screen coordinates, so actions are grounded on what is displayed. Missing for 10: explicit documentation of how each captured frame is fed to the model and how tap coordinates are derived from it, and independent or hands-on corroboration of grounding accuracy.",
+    "rationale": "The board acts as an AirPlay receiver that captures the mirrored screen. The agent needs an OpenAI-compatible vision endpoint, and each run records the screenshots alongside the taps and swipes drawn on top, so its actions are tied to the captured display. missing for 10: an explicit description of how the model maps screenshot content to tap coordinates (grounding mechanism), and independent or hands-on corroboration of perception accuracy.",
     "evidenceIds": [
       "esp32-iphone-agent-docs-11",
       "esp32-iphone-agent-gh-3",
-      "esp32-iphone-agent-gh-5",
       "esp32-iphone-agent-gh-6",
       "esp32-iphone-agent-docs-8",
-      "esp32-iphone-agent-docs-7",
-      "esp32-iphone-agent-docs-4"
+      "esp32-iphone-agent-gh-5"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, the agent perceives the live screen (capture or vision input) and grounds its actions on what is actually displayed",
+      "citations": [
+        {
+          "evidenceId": "esp32-iphone-agent-docs-11",
+          "quote": "The board is now the AirPlay receiver and the mouse, and the agent runs in an iPhone app on the same phone."
+        },
+        {
+          "evidenceId": "esp32-iphone-agent-gh-3",
+          "quote": "Any OpenAI-compatible vision endpoint works (vLLM, SGLang, llama.cpp, Ollama, cloud APIs)."
+        },
+        {
+          "evidenceId": "esp32-iphone-agent-gh-6",
+          "quote": "Export the screenshots, actions and saved annotations from Runs"
+        },
+        {
+          "evidenceId": "esp32-iphone-agent-docs-8",
+          "quote": "replay it step by step with the taps and swipes drawn on top."
+        }
+      ]
+    },
     "productId": "esp32-iphone-agent",
     "storyId": "screen-understanding"
   }

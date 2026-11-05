@@ -1,20 +1,33 @@
 {
-  "hash": "bbb0d81bc285003a99c2e11bdeb46ae3ab52977e2f42c56d5d1095dc0d1694fa",
+  "hash": "a044884f3f19c32b2b2e0d910ff4511b58fe2d6372f60946d1e0900b1fd54b8e",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Composio's docs say the platform runs the OAuth flow for you: the agent posts a Connect Link, the user signs in, and there is 'no auth UI for you to build.' The flow supports a callback_url and white-labeling, and Composio 'stores and refreshes those credentials' per userID, which covers the hosted OAuth, vaulting and automatic-refresh core of the story. One community report of a failed Instagram connection (400 error) is a single-toolkit failure, not a contradiction of the general capability. A report that a leaked API key exposed live tokens raises vault-security questions but does not disprove encrypted storage. missing for 10: explicit documentation that stored credentials are encrypted at rest, detail on how token refresh works, independent hands-on corroboration of reliable OAuth connections.",
+    "rationale": "Composio documents a platform-run auth flow: the agent posts a Connect Link, the user signs in, and the developer builds no auth UI. It also documents that Composio stores and refreshes per-user credentials against a userID, which covers OAuth orchestration, credential custody and automatic refresh. The evidence never says the stored credentials are encrypted, and one community report describes an Instagram connection failing with a 400 error. Missing for 10: documented encryption of vaulted credentials, explicit OAuth/token-refresh mechanics detail, independent hands-on corroboration of successful refresh.",
     "evidenceIds": [
       "composio-docs-6",
-      "composio-docs-7",
-      "composio-docs-8",
       "composio-docs-20",
       "composio-docs-27",
-      "composio-comm-1",
-      "composio-comm-2"
+      "composio-docs-7",
+      "composio-comm-1"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can let the platform run OAuth flows for downstream tools and vault the resulting credentials encrypted, with automatic token refresh",
+      "citations": [
+        {
+          "evidenceId": "composio-docs-6",
+          "quote": "The agent posts the Connect Link straight into the conversation. The user clicks it, signs in, and the agent retries the tool and continues. No auth UI for you to build."
+        },
+        {
+          "evidenceId": "composio-docs-20",
+          "quote": "Each user connects their own accounts, their Gmail, their GitHub, their Slack, and Composio stores and refreshes those credentials against that userID."
+        }
+      ]
+    },
     "productId": "composio",
     "storyId": "managed-oauth-vaulting"
   }

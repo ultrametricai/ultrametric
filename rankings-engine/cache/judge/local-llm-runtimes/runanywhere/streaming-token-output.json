@@ -1,15 +1,30 @@
 {
-  "hash": "4b9d7d737564c173b4a35fd4c4690b1b8aa8b955ca39580bdfb5836f468989e4",
+  "hash": "705e85bcd5a50a3c56be1420fef6f82a79fd8c220bf9339c4ac869112fe07349",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 8,
-    "confidence": "high",
-    "rationale": "The quickstart shows `RunAnywhere.llm.generateStream` yielding `.token` events that the app consumes as they are produced. A dedicated Swift stream page recommends it for anything a user is waiting on, which squarely delivers incremental token streaming to the application. missing for 10: explicit documentation of streaming (e.g. SSE) on the OpenAI-compatible hosted endpoint, independent or hands-on corroboration of token streaming.",
+    "confidence": "medium",
+    "rationale": "RunAnywhere's own SDK documents `RunAnywhere.llm.generateStream`, with a quickstart example that iterates `.token` events and prints each token as it arrives. A dedicated streaming page recommends it 'for anything a person is waiting on', so the product directly delivers token streaming to the app. Missing for 10: independent or hands-on corroboration of token streaming, explicit documentation of streaming on the OpenAI-compatible cloud endpoint and on non-Swift bindings, and detail on stream lifecycle such as cancellation and completion events.",
     "evidenceIds": [
       "runanywhere-docs-8",
       "runanywhere-docs-18"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can stream generated tokens back to my application as they are produced",
+      "citations": [
+        {
+          "evidenceId": "runanywhere-docs-8",
+          "quote": "for try await event in try await RunAnywhere.llm.generateStream(prompt: \"Write a haiku\") { if case .token(let token) = event { print(token.text, terminator: \"\") } }"
+        },
+        {
+          "evidenceId": "runanywhere-docs-18",
+          "quote": "Use it for anything a person is waiting on."
+        }
+      ]
+    },
     "productId": "runanywhere",
     "storyId": "streaming-token-output"
   }

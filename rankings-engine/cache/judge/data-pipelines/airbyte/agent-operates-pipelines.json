@@ -1,22 +1,31 @@
 {
-  "hash": "d40e60bf3f58c92aa6aeffeae484677d8bc77e1fa4cf0b18c881acd24d686aa2",
+  "hash": "1de4528066b18ab1c507ec3d03c0a3625811bfbc237a0e41099099487c79304e",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Airbyte documents a programmatic API with access tokens for controlling it alongside orchestrators like Airflow, which implies triggering syncs. It also offers a Connection Timeline with downloadable logs and errors, plus webhook notifications for failure events. Its documented MCP server is aimed at connecting agents to data through Airbyte Agents, not at operating pipelines, and the evidence never shows API endpoints for job status, failure diagnosis or re-runs. Missing for 10: explicit API/MCP endpoints for sync/job status and re-triggering, programmatic (non-UI) access to failure logs, a discoverable OpenAPI spec (probes returned 404), and independent hands-on corroboration of an agent doing this loop.",
+    "rationale": "Airbyte documents its own API for programmatically controlling Airbyte, including from orchestrators like Airflow, which implies agents can drive syncs. However, nothing explicitly documents checking job status, retrieving failure logs or errors, or re-triggering a failed sync through the API. The MCP server evidence is about agents accessing data, not operating pipelines, and the Connection Timeline's logs and errors are shown as a UI feature. missing for 10: explicit API/MCP endpoints for sync status, programmatic retrieval of failure logs and errors for diagnosis, documented sync re-trigger call, an MCP server exposing pipeline-ops tools, hands-on corroboration.",
     "evidenceIds": [
       "airbyte-docs-3",
       "airbyte-docs-17",
-      "airbyte-docs-46",
-      "airbyte-docs-57",
-      "airbyte-docs-9",
-      "airbyte-docs-53",
-      "airbyte-docs-6",
-      "airbyte-probe-3",
-      "airbyte-probe-2"
+      "airbyte-docs-57"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, an agent can check sync status, diagnose a failed run, and re-trigger it through an API or MCP server",
+      "citations": [
+        {
+          "evidenceId": "airbyte-docs-3",
+          "quote": "Use the Airbyte API to programmatically interact with Airbyte. For example, you can control Airbyte in conjunction with orchestration tools like Airflow."
+        },
+        {
+          "evidenceId": "airbyte-docs-17",
+          "quote": "Most programmatic interactions with Airbyte require an access token."
+        }
+      ]
+    },
     "productId": "airbyte",
     "storyId": "agent-operates-pipelines"
   }

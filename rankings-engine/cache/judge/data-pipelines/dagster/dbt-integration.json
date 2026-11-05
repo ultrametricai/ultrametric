@@ -1,23 +1,47 @@
 {
-  "hash": "0869a619c5c84c572ad384b5c95263af3faffada4532d8a1d403ee36815df3e2",
+  "hash": "a99312e557d8bb51f6690258c3489722eaf764e77cbe0e7da8fbd190e772337d",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 8,
+    "verdict": "partial",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Dagster models dbt projects as assets (dagster-docs-7) and represents loaders like Fivetran, dlt and Airbyte as assets that chain with downstream steps (dagster-docs-21, dagster-docs-22, dagster-docs-28). Declarative Automation launches runs based on upstream asset status, and on_cron only fires after all upstream dependencies have updated (dagster-docs-6, dagster-docs-38), so transformations follow fresh loads rather than a blind timer. A community user reports the Dagster + dbt stack works well together (dagster-comm-9). Missing for 10: explicit documentation that dbt sources are automatically wired as downstream dependencies of ingestion assets, and hands-on corroboration of load-triggered dbt runs specifically.",
+    "rationale": "Dagster documents most of this story. Its dbt integration runs dbt models as assets. Ingestion tools (Fivetran, dlt, Airbyte) can be represented as upstream assets and chained with downstream steps. Declarative Automation launches assets based on dependency status, for example on_cron runs only 'after all upstream dependencies have updated.' The evidence never explicitly shows dbt models wired to loader assets and triggered by their completion, so coverage of the end-to-end flow is inferred from separate pieces. missing for 10: explicit documentation of dbt assets depending on and auto-triggering from ingestion-asset materializations, independent or hands-on corroboration of freshness-driven dbt runs.",
     "evidenceIds": [
       "dagster-docs-7",
       "dagster-docs-6",
       "dagster-docs-38",
       "dagster-docs-28",
-      "dagster-docs-21",
-      "dagster-docs-22",
-      "dagster-docs-5",
-      "dagster-docs-17",
-      "dagster-docs-36",
-      "dagster-comm-9"
+      "dagster-docs-39",
+      "dagster-docs-40",
+      "dagster-docs-17"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an analytics engineer, dbt transformations run against freshly loaded data as part of the pipeline, not on a blind timer",
+      "citations": [
+        {
+          "evidenceId": "dagster-docs-7",
+          "quote": "Use Dagster's UI or APIs to run subsets of your dbt models, seeds, and snapshots."
+        },
+        {
+          "evidenceId": "dagster-docs-6",
+          "quote": "Declarative Automation is a framework that uses information about the status of your assets and their dependencies to launch executions of your assets."
+        },
+        {
+          "evidenceId": "dagster-docs-38",
+          "quote": "The AutomationCondition.on_cron will execute an asset once per cron schedule tick, after all upstream dependencies have updated."
+        },
+        {
+          "evidenceId": "dagster-docs-28",
+          "quote": "making it easy to chain an Airbyte sync with upstream or downstream steps in your workflow."
+        },
+        {
+          "evidenceId": "dagster-docs-39",
+          "quote": "The dagster-fivetran library provides a FivetranAccountComponent which can be used to easily represent Fivetran connectors as assets in Dagster."
+        }
+      ]
+    },
     "productId": "dagster",
     "storyId": "dbt-integration"
   }

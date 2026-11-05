@@ -1,19 +1,42 @@
 {
-  "hash": "94e6cc269ca843f67cd69e8b431b3d703ef555ec89e2644174a8ffb3aa84bd29",
+  "hash": "f0d54e2757445e9ed784aa96352b4db5560498dde95ed76fb17a0a1df198c16b",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "OpenTofu's automations are plain-text configuration files that its docs explicitly describe as versionable like any other code (opentofu-gh-2, opentofu-docs-28, opentofu-docs-16). Review is well covered: `tofu plan` previews changes, speculative plans are meant for code review, and saved plans via `-out` let the reviewed plan be the one that gets applied (opentofu-docs-3, opentofu-docs-4, opentofu-docs-21). No evidence shows a native rollback capability; rollback would depend on reverting in an external VCS and re-applying, which is a user-side workaround. Versioning itself also relies on external source control rather than a built-in history. missing for 10: native rollback or state-revert capability, built-in version history (rather than external VCS), independent hands-on corroboration of a review/rollback workflow.",
+    "rationale": "OpenTofu's own docs say configurations are code that can be versioned. Its speculative `tofu plan` lets developers preview changes before code review, and plans can be saved with `-out` and applied later. That covers the version and review parts of the story. Rollback is not documented: destroy mode tears down everything rather than restoring a prior state, and reverting via git is a user-side workaround. missing for 10: a documented rollback or restore-to-previous-state capability, independent hands-on corroboration of version/review workflows.",
     "evidenceIds": [
       "opentofu-gh-2",
       "opentofu-docs-28",
       "opentofu-docs-16",
-      "opentofu-docs-3",
       "opentofu-docs-4",
+      "opentofu-docs-3",
       "opentofu-docs-21"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can version, review, and roll back my automations",
+      "citations": [
+        {
+          "evidenceId": "opentofu-gh-2",
+          "quote": "This allows a blueprint of your datacenter to be versioned and treated as you would any other code."
+        },
+        {
+          "evidenceId": "opentofu-docs-28",
+          "quote": "human-readable configuration files that you can version, reuse, and share"
+        },
+        {
+          "evidenceId": "opentofu-docs-4",
+          "quote": "developers can use speculative plans to verify the effect of their changes before submitting them for code review"
+        },
+        {
+          "evidenceId": "opentofu-docs-21",
+          "quote": "You can use the optional `-out=FILE` option to save the generated plan to a file on disk, which you can later execute by passing the file to `tofu apply` as an extra argument."
+        }
+      ]
+    },
     "productId": "opentofu",
     "storyId": "automation-versioned-workflows"
   }

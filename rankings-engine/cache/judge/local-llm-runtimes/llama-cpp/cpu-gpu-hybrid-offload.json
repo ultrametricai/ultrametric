@@ -1,17 +1,35 @@
 {
-  "hash": "8b802f064d5aad7113211d6756820699301eed235d6d73fada2eae23cc19d8c3",
+  "hash": "61d8b94567168abcbff34521ad46a2eb3648be371b93d262a8a0114180aa88e9",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
-    "quality": 8,
+    "quality": 9,
     "confidence": "high",
-    "rationale": "The README explicitly advertises CPU+GPU hybrid inference to partially accelerate models larger than total VRAM (gh-10). Community users corroborate it: one describes GPU/CPU model splitting that lets 70B models run on desktops (comm-11), and another reports tuning N_GPU_LAYERS for partial offload (comm-9). One report notes only modest speedups in early versions (comm-10), a performance caveat rather than a contradiction. Missing for 10: in-depth first-party documentation of offload configuration (layer and tensor-split controls), and current benchmarks quantifying hybrid-offload performance.",
+    "rationale": "llama.cpp's own README documents CPU+GPU hybrid inference for running models larger than total VRAM. Community reports corroborate this: users describe splitting models across GPU and CPU to run 70B models on a desktop, and tuning offload with N_GPU_LAYERS. Missing for 10: in-depth first-party documentation of the offload controls (e.g., layer-offload flags and tuning guidance) in the evidence, plus concrete performance figures for hybrid offload.",
     "evidenceIds": [
       "llama-cpp-gh-10",
       "llama-cpp-comm-11",
-      "llama-cpp-comm-9",
-      "llama-cpp-comm-10"
+      "llama-cpp-comm-9"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a power-user, I can run models larger than my available VRAM using combined CPU+GPU offload",
+      "citations": [
+        {
+          "evidenceId": "llama-cpp-gh-10",
+          "quote": "CPU+GPU hybrid inference to partially accelerate models larger than the total VRAM capacity"
+        },
+        {
+          "evidenceId": "llama-cpp-comm-11",
+          "quote": "model splitting across GPU/CPU lets users run 70B models on desktop or 33B on a 16GB RAM laptop that otherwise couldn't run them"
+        },
+        {
+          "evidenceId": "llama-cpp-comm-9",
+          "quote": "seemed limited to a max of 40 N_GPU_LAYERS before updating"
+        }
+      ]
+    },
     "productId": "llama-cpp",
     "storyId": "cpu-gpu-hybrid-offload"
   }

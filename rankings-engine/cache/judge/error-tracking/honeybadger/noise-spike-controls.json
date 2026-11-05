@@ -1,18 +1,35 @@
 {
-  "hash": "afb8e0a3d32dddde947b88db1215c3d31f49768a13f518187f6ea1be8b7b047a",
+  "hash": "5d822eae98f08bfebde909cc676a2347f85bb8fea4db11b03f3707ae4935bd5a",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 3,
-    "confidence": "medium",
-    "rationale": "Honeybadger documents some first-party noise controls: grouping and deduplication of identical errors (a user specifically praises the deduping), and choosing which error events trigger a notification or ticket. That loosely covers the mute/ignore part of the story. Nothing in the evidence documents spike protection, per-key or per-error rate limits, or explicit mute/ignore rules for a bad deploy; the threshold alarms and anomaly detection create alerts rather than suppress them. missing for 10: spike protection, per-key rate limiting of notifications, explicit mute/ignore/snooze rules, independent corroboration of alert-fatigue handling",
+    "confidence": "low",
+    "rationale": "Honeybadger documents some of its own noise controls: it groups identical errors so they are not reported separately, users can customize grouping with fingerprints, and users can choose which error events trigger a notification. These loosely approximate mute rules, but the evidence never shows spike protection, per-key rate limits, or explicit mute/ignore rules. Missing for 10: spike protection, per-key rate limiting, explicit mute/ignore/snooze rules, notification throttling during a bad deploy, and independent corroboration of alert-noise reduction.",
     "evidenceIds": [
       "honeybadger-docs-57",
       "honeybadger-docs-3",
-      "honeybadger-docs-47",
-      "honeybadger-docs-2",
-      "honeybadger-comm-1"
+      "honeybadger-docs-2"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an SRE, I can fight alert fatigue with spike protection, per-key rate limits, and mute/ignore rules so one bad deploy doesn't page the whole team all night",
+      "citations": [
+        {
+          "evidenceId": "honeybadger-docs-57",
+          "quote": "You get to choose which error events result in a notification or ticket being created"
+        },
+        {
+          "evidenceId": "honeybadger-docs-3",
+          "quote": "Honeybadger groups identical errors together."
+        },
+        {
+          "evidenceId": "honeybadger-docs-2",
+          "quote": "You can customize the grouping for each exception by changing the error class name, component, or stack trace—or by sending a custom fingerprint."
+        }
+      ]
+    },
     "productId": "honeybadger",
     "storyId": "noise-spike-controls"
   }

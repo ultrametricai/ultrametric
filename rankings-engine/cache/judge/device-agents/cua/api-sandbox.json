@@ -1,22 +1,38 @@
 {
-  "hash": "c2ac723bd35055daf03be3aece52930bc51098a1ce3fa4efd9169db4c11ce0c6",
+  "hash": "888374ee06bc404d4e0aa21308533edc2e7b636e4958a4a55e7d71063b466987",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Cua's core purpose is giving agents their own isolated computers. Spaces and the SDK provision Docker/Podman (gVisor when installed), QEMU or Lume VMs, and coding agents can be started inside a Space or sandbox, so testing happens away from the host. A hands-on user also reports using Lume to sandbox Claude on a Mac with reasonable results. Missing for 10: explicit documentation of isolation from production data or snapshot/reset of sandbox state, a documented ephemeral one-shot VM mode (a community member requested this), and clarity on how moving signed-in apps into a Space interacts with real account data.",
+    "rationale": "Cua documents isolated environments for agents: the SDK creates computers on Docker/Podman (with gVisor when installed), QEMU, or Lume VMs. Its docs describe starting coding agents 'inside a Space or sandbox', and a community user reports sandboxing Claude in a Lume VM. However, no evidence says these environments are kept away from production data or credentials, and moving signed-in apps into a Space suggests real accounts can be reached. A user's request for an ephemeral one-shot VM mode suggests disposable throwaway test environments are not documented. missing for 10: documented separation from production data and credentials, ephemeral/disposable sandbox mode, explicit test-vs-production environment guidance.",
     "evidenceIds": [
-      "cua-docs-1",
-      "cua-docs-7",
       "cua-docs-8",
-      "cua-docs-15",
       "cua-docs-23",
-      "cua-docs-12",
+      "cua-docs-15",
       "cua-comm-7",
-      "cua-comm-5",
-      "cua-comm-6"
+      "cua-gh-1",
+      "cua-comm-5"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
+      "citations": [
+        {
+          "evidenceId": "cua-docs-8",
+          "quote": "the SDK uses Docker or Podman (gVisor when installed), QEMU, or Lume on Apple silicon. Any OCI image works."
+        },
+        {
+          "evidenceId": "cua-docs-23",
+          "quote": "Start Claude Code, Codex and other coding agents inside a Space or sandbox"
+        },
+        {
+          "evidenceId": "cua-docs-15",
+          "quote": "Lume: macOS and Linux VMs on Apple silicon."
+        }
+      ]
+    },
     "productId": "cua",
     "storyId": "api-sandbox"
   }

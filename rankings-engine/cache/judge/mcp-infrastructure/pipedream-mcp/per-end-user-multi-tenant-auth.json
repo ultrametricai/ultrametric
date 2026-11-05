@@ -1,22 +1,51 @@
 {
-  "hash": "2c2ac93fbe121582255e4fbd0731a78fc327a1e954185c5fa67d216b55092584",
+  "hash": "daa30633b087d969a37812310fe0f10b8a58ca454d9c4d2525b1b961d0d7f473",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Pipedream MCP is built for making tool calls on behalf of your users, with managed auth for each user's connected accounts. Every MCP request is keyed to a specific end user through the `x-pd-external-user-id` header, and the proxy attaches that connected user's credentials. Users can revoke their own connected accounts, and credentials stay on Pipedream's servers rather than being exposed to models. Missing for 10: explicit evidence of per-user scoped or short-lived tokens (the documented Bearer token looks project-level), documentation of how cross-user isolation is enforced, and independent or hands-on corroboration.",
+    "rationale": "Pipedream MCP is built for acting on behalf of each of your users. Each request carries an x-pd-external-user-id header, and the proxy attaches that connected user's credentials, with managed token storage and refresh and user-revocable access. That covers the core per-user connected-account model. The documented Bearer token, however, sits alongside project-level headers, and nothing shows tokens scoped per end user or states an isolation guarantee between users. missing for 10: documented per-end-user scoped tokens, explicit cross-user isolation guarantee, independent/hands-on corroboration.",
     "evidenceIds": [
       "pipedream-mcp-docs-1",
       "pipedream-mcp-docs-2",
       "pipedream-mcp-docs-7",
-      "pipedream-mcp-docs-10",
       "pipedream-mcp-docs-12",
       "pipedream-mcp-docs-17",
       "pipedream-mcp-docs-19",
-      "pipedream-mcp-docs-20",
-      "pipedream-mcp-docs-28"
+      "pipedream-mcp-docs-20"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform-engineer, I can maintain separate connected accounts and scoped tokens per end user of my product, so each user's agent acts only on that user's credentials",
+      "citations": [
+        {
+          "evidenceId": "pipedream-mcp-docs-1",
+          "quote": "Add Pipedream MCP to your app or agent to make tool calls on behalf of your users to 3,000+ APIs and 10,000+ tools."
+        },
+        {
+          "evidenceId": "pipedream-mcp-docs-12",
+          "quote": "\"x-pd-external-user-id\": \"sarah@acme.com\","
+        },
+        {
+          "evidenceId": "pipedream-mcp-docs-20",
+          "quote": "the proxy forwards your request with the connected user's credentials attached."
+        },
+        {
+          "evidenceId": "pipedream-mcp-docs-2",
+          "quote": "you don’t need to build any authorization flows or deal with token storage and refresh"
+        },
+        {
+          "evidenceId": "pipedream-mcp-docs-7",
+          "quote": "Users can revoke access to their connected accounts at any time"
+        },
+        {
+          "evidenceId": "pipedream-mcp-docs-17",
+          "quote": "never directly exposing credentials to AI models"
+        }
+      ]
+    },
     "productId": "pipedream-mcp",
     "storyId": "per-end-user-multi-tenant-auth"
   }

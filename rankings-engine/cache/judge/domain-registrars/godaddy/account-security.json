@@ -1,18 +1,36 @@
 {
-  "hash": "73e079455de284e88672e28c28d24cb9610e83c860099edb5894c5dcfeb32e82",
+  "hash": "611264b7807be043b6ff520f8b15f5d64e83621b4bbb189da5c968c3fce352a8",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 4,
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "GoDaddy's docs show that API access uses Personal Access Tokens tied to specific capability scopes, required for v3 Domains APIs. Per-operation scopes such as `commerce.order:*` and `commerce.channel:read` are documented, and tokens can be created and revoked. That covers the scoped-credentials part of the story, but the pack has no evidence on account 2FA or on IP allowlisting for API access. Missing for 10: account-level 2FA (real/phishing-resistant), IP allowlisting on API/PAT access, independent or hands-on corroboration of scope enforcement.",
+    "rationale": "GoDaddy documents scoped API credentials: Personal Access Tokens tied to capability scopes, with per-operation scopes such as commerce.order:* and documented revocation. That covers only one of the story's three pillars, since the evidence never mentions account 2FA or IP allowlisting for API access. Missing for 10: documented 2FA on the registrar account, IP allowlisting on API access, independent or hands-on corroboration of scope enforcement.",
     "evidenceIds": [
       "godaddy-docs-9",
-      "godaddy-docs-25",
-      "godaddy-docs-31",
       "godaddy-docs-40",
-      "godaddy-docs-45"
+      "godaddy-docs-31",
+      "godaddy-docs-25"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a security engineer, the registrar account itself is defensible — real 2FA, scoped API credentials, and IP allowlisting on API access",
+      "citations": [
+        {
+          "evidenceId": "godaddy-docs-9",
+          "quote": "GoDaddy APIs use Bearer token authentication through a Personal Access Token (PAT) tied to specific capability scopes."
+        },
+        {
+          "evidenceId": "godaddy-docs-40",
+          "quote": "Personal Access Tokens must include the `commerce.order:*` scope that matches the GraphQL operation (read, create, update, cancel, complete, or archive)."
+        },
+        {
+          "evidenceId": "godaddy-docs-31",
+          "quote": "Generate a PAT — create, store, use, and revoke a Personal Access Token (Bearer credential)"
+        }
+      ]
+    },
     "productId": "godaddy",
     "storyId": "account-security"
   }

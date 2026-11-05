@@ -1,19 +1,42 @@
 {
-  "hash": "03d56c03754e3ed0f57e85c7ed94c1a270042b72be5c31b3fcc74e4c0597f471",
+  "hash": "31fc056e919032f20b83c400e717d431aa0957fe613f6b8e791b22df1f095be1",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
-    "confidence": "low",
-    "rationale": "ROS 2 ships its own credential mechanism through SROS2. You create a keystore with `ros2 security create_keystore`, and each security enclave encapsulates a single policy for protecting communications, with participant authentication and control over communications across the ROS graph. That makes per-participant, policy-scoped credentials plausible for a node acting as an agent. However, the evidence never shows fine-grained least-privilege permissions such as per-topic or per-service allow/deny, and it says nothing about agent-oriented credential issuance or API tokens. Missing for 10: documented per-topic/service permission scoping, credential issuance framed for AI agents, revocation/expiry of scoped credentials, independent or hands-on corroboration.",
+    "confidence": "medium",
+    "rationale": "ROS 2 ships its own SROS2/DDS-Security tooling. With it you create a keystore and security enclaves, each of which encapsulates a single policy and can be mapped to processes, users, or devices. That works as scoped, per-participant credentials that could be issued to an agent node. The evidence does not show these as API credentials built for agents, nor does it detail granular least-privilege permissions. Missing for 10: explicit per-topic/service least-privilege permission scoping in evidence, agent-oriented credential issuance/rotation/revocation workflow, independent or hands-on corroboration.",
     "evidenceIds": [
       "ros2-docs-13",
-      "ros2-docs-15",
-      "ros2-docs-42",
+      "ros2-docs-76",
       "ros2-docs-65",
-      "ros2-docs-40",
-      "ros2-docs-29"
+      "ros2-docs-42",
+      "ros2-docs-49",
+      "ros2-docs-15"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
+      "citations": [
+        {
+          "evidenceId": "ros2-docs-13",
+          "quote": "A security enclave encapsulates a single policy for protecting ROS communications."
+        },
+        {
+          "evidenceId": "ros2-docs-76",
+          "quote": "Security enclaves can be flexibly mapped to processes, users, or devices at deployment."
+        },
+        {
+          "evidenceId": "ros2-docs-65",
+          "quote": "Use the sros2 utilities to create the keystore. Files in the keystore will be used to enable security for all the participants in the ROS 2 graph."
+        },
+        {
+          "evidenceId": "ros2-docs-49",
+          "quote": "enables authentication of participants sending data"
+        }
+      ]
+    },
     "productId": "ros2",
     "storyId": "agentic-scoped-keys"
   }

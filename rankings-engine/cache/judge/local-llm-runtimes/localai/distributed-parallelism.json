@@ -1,15 +1,30 @@
 {
-  "hash": "2c875d2b81d393c54ceaa305647c6e0fab93bdd557219fd7557f6fdc39b90c2b",
+  "hash": "d0fac3b225e46069c6afe0036f7446f9087988751bce3bc17f8640bb865bef36",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 4,
+    "quality": 3,
     "confidence": "low",
-    "rationale": "LocalAI documents a distributed mode where GPU worker nodes self-register with a frontend coordinator and scale horizontally. That amounts to spreading inference load across multiple GPU machines, roughly data-parallel scaling. The evidence never mentions tensor or pipeline parallelism, nor splitting a single model across GPUs. Missing for 10: tensor-parallel support, pipeline-parallel support, multi-GPU within a single node, configuration docs for parallelism strategy, independent or hands-on corroboration.",
+    "rationale": "LocalAI documents its own distributed mode, in which GPU worker nodes self-register with a frontend coordinator and scale horizontally. That plausibly spreads inference load across multiple GPUs, roughly data-parallel style. The evidence never mentions tensor or pipeline parallelism, splitting a single model across GPUs, or multi-GPU configuration within one node. missing for 10: tensor parallelism, pipeline parallelism, explicit data-parallel/replica semantics, multi-GPU-per-node configuration docs, independent or hands-on corroboration.",
     "evidenceIds": [
       "localai-docs-8",
       "localai-docs-34"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can distribute inference across multiple GPUs using tensor, pipeline, or data parallelism",
+      "citations": [
+        {
+          "evidenceId": "localai-docs-8",
+          "quote": "Distributed nodes: Add GPU worker nodes that self-register with a frontend coordinator"
+        },
+        {
+          "evidenceId": "localai-docs-34",
+          "quote": "LocalAI supports distributed mode with horizontal scaling"
+        }
+      ]
+    },
     "productId": "localai",
     "storyId": "distributed-parallelism"
   }

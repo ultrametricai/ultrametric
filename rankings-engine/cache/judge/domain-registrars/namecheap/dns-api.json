@@ -1,20 +1,36 @@
 {
-  "hash": "d8d2532ab9feee5796f1728a307976f14b8cc82e912e4c5e2f4158d9017fadc1",
+  "hash": "80ec1dad8b20429721185887b1b22601528506103112da060d60a09a1273c1c8",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Namecheap exposes an API endpoint with a sandbox, and its official Terraform provider manages DNS configuration with one resource per record, which implies programmatic create, update and delete of records. A dynamic-DNS HTTPS update method also exists. However, the pack never shows the raw API's DNS record methods or their documentation, and the Go SDK excerpts cover only domain registration, renewal and lock operations. Missing for 10: explicit documentation of DNS record create/update/delete API endpoints, evidence of individual record update/delete (rather than whole-zone replacement) at the API level, any mention of ACME/TXT challenge automation, and independent hands-on corroboration.",
+    "rationale": "Namecheap runs an XML API endpoint, and its first-party Terraform provider manages DNS records programmatically, including one resource per record. That implies records can be created, updated and deleted through automation. However, the evidence never documents the API's DNS record methods directly or mentions ACME challenge use. Missing for 10: explicit API reference for create/update/delete record operations, documented per-record update/delete semantics, ACME/DNS-01 challenge support or examples, independent hands-on corroboration.",
     "evidenceIds": [
-      "namecheap-docs-2",
-      "namecheap-docs-8",
       "namecheap-docs-15",
-      "namecheap-docs-16",
       "namecheap-docs-17",
-      "namecheap-docs-23",
+      "namecheap-docs-1",
       "namecheap-comm-10"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, DNS records are CRUD-able via a documented API — create, update, and delete records programmatically for automation and ACME challenges",
+      "citations": [
+        {
+          "evidenceId": "namecheap-docs-15",
+          "quote": "A Terraform Provider for Namecheap domain DNS configuration."
+        },
+        {
+          "evidenceId": "namecheap-docs-17",
+          "quote": "To manage records individually — one resource per record, so different owners can share a domain"
+        },
+        {
+          "evidenceId": "namecheap-comm-10",
+          "quote": "you can use an update client to regularly update the IP Namecheap servers point to."
+        }
+      ]
+    },
     "productId": "namecheap",
     "storyId": "dns-api"
   }

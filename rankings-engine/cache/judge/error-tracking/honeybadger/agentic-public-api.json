@@ -1,20 +1,42 @@
 {
-  "hash": "1964f3c4bee8d669651ad461b6579c1f01eb0af357dac1d3adf8143ed596d97a",
+  "hash": "3614ccb6a21be12fb023d70a364ddcefd6fcbc8ffef4540fb4d8ec8e8ed77ad2",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Honeybadger documents a public REST API. It has data-access endpoints that return faults and projects, plus write endpoints for reporting exceptions (POST to api.honeybadger.io/v1/notices), deployments and source maps, so a programmatic agent can drive both reading and writing core product data. Breadth is only partly evidenced, and probes found no machine-readable OpenAPI spec at any candidate path. Missing for 10: an OpenAPI/Swagger spec, evidence of management actions via API (e.g. resolving or assigning faults, configuring projects), auth/rate-limit documentation, and independent hands-on corroboration of API use.",
+    "rationale": "Honeybadger documents a public REST API. Read endpoints return faults and projects, and write endpoints accept exception notices, deploy notifications, and source-map uploads. Evidence of driving the full product this way is thinner: no machine-readable OpenAPI spec was found (all probed paths 404), and no documented management endpoints were shown for actions like resolving errors or managing alarms and dashboards. missing for 10: published OpenAPI/machine-readable spec, evidence of broad management/write endpoints (e.g., resolve/assign faults, dashboards, alarms), authentication/rate-limit documentation, independent hands-on corroboration of API use.",
     "evidenceIds": [
       "honeybadger-docs-19",
       "honeybadger-docs-50",
       "honeybadger-docs-15",
       "honeybadger-docs-17",
       "honeybadger-docs-16",
-      "honeybadger-docs-36",
       "honeybadger-probe-2"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can drive the product through a documented public API",
+      "citations": [
+        {
+          "evidenceId": "honeybadger-docs-19",
+          "quote": "Returns a list of faults or a single fault for the given project"
+        },
+        {
+          "evidenceId": "honeybadger-docs-50",
+          "quote": "Returns a list or a single project with the following format"
+        },
+        {
+          "evidenceId": "honeybadger-docs-15",
+          "quote": "Your JSON payload should be submitted as the body of a POST request to https://api.honeybadger.io/v1/notices"
+        },
+        {
+          "evidenceId": "honeybadger-docs-17",
+          "quote": "Use this endpoint to notify Honeybadger when a deploy occurs."
+        }
+      ]
+    },
     "productId": "honeybadger",
     "storyId": "agentic-public-api"
   }

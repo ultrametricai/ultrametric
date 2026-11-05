@@ -1,17 +1,36 @@
 {
-  "hash": "ba256dac849b470e6a645b8a14b02b7b0b0b335ddffe82295f79c47d47903acb",
+  "hash": "1ceabbaea5b777255491ee36ede948e31efcdd8d7524f62bed692bdfa77490e3",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
-    "quality": 8,
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "llamafile's docs say models run entirely on-device with no cloud and no data sharing, and that it works fully offline. The security reference states the server sandbox blocks outbound connect(), so the server can only answer connections it received. A community user also observed it running with zero network connection. Together this means there is no usage tracking to opt out of. Missing for 10: an explicit first-party statement that no telemetry or analytics are collected, and clarity on whether the no-outbound guarantee extends beyond the sandboxed server mode to CLI and other modes.",
+    "rationale": "llamafile runs models entirely on-device and states there is \"no data sharing.\" Its security docs say the server sandbox blocks outbound connect() calls, and a hands-on user observed it running with zero network connection. With nothing sent out, there is nothing to opt out of. missing for 10: an explicit first-party statement that no telemetry or usage analytics is collected, confirmation that the no-outbound-network guarantee covers non-server (--cli) modes, and independent audit-level corroboration.",
     "evidenceIds": [
       "llamafile-docs-2",
-      "llamafile-docs-15",
       "llamafile-docs-10",
+      "llamafile-docs-15",
       "llamafile-comm-6"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can opt out of telemetry and usage tracking",
+      "citations": [
+        {
+          "evidenceId": "llamafile-docs-2",
+          "quote": "Models run entirely on your device. No cloud, no data sharing, no external dependencies."
+        },
+        {
+          "evidenceId": "llamafile-docs-10",
+          "quote": "No outbound network. `anet` allows `accept()` but not `connect()`, so the only networking the server can do is answer connections it received."
+        },
+        {
+          "evidenceId": "llamafile-comm-6",
+          "quote": "It appears to execute with zero network connection"
+        }
+      ]
+    },
     "productId": "llamafile",
     "storyId": "privacy-telemetry-optout"
   }

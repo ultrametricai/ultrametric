@@ -1,19 +1,41 @@
 {
-  "hash": "ddeaa7b7a4bfb18f245b12972195e4bee453387e53eb6feb575eeea34f3a5faf",
+  "hash": "a34ff5cc19128d83a6bdf7af59d6b78c4322399f410daa0a9e21875c0a2e718c",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Sentry has a documented public REST API (v0) with an official OpenAPI 3.0.3 spec in getsentry/sentry-api-schema. Its API reference includes listing a project's issues and bulk-mutating them, which covers listing, querying and updating issues. Organization Tokens and token-based CLI auth are documented for authentication. The OpenAPI probe 404s only on docs.sentry.io paths, and the spec is published on GitHub, so this is not a contradiction. Missing for 10: explicit evidence of an endpoint for fetching raw event payloads, documentation of token scope granularity, and independent or hands-on corroboration of API use.",
+    "rationale": "Sentry documents a public REST API (v0, with an official OpenAPI spec). The pack shows only the endpoint title \"Bulk Mutate a List of Issues\", filed under the list-a-project's-issues page, which suggests issue list and update support but shows no endpoint detail. Organization Tokens are documented for authentication. Fetching raw events and token scoping are not evidenced, and the docs-path OpenAPI probe 404 only reflects where the spec is hosted, not missing API capability. Missing for 10: documented issue query/search parameters, endpoints for fetching raw event payloads, documentation of token scopes, and independent hands-on corroboration.",
     "evidenceIds": [
       "sentry-docs-23",
       "sentry-supp-openapi-schema",
       "sentry-supp-api-versioning",
-      "sentry-docs-11",
       "sentry-docs-88",
-      "sentry-docs-76"
+      "sentry-docs-11"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can list, query, and update issues and fetch raw events through a documented REST API with scoped tokens",
+      "citations": [
+        {
+          "evidenceId": "sentry-docs-23",
+          "quote": "Bulk Mutate a List of Issues"
+        },
+        {
+          "evidenceId": "sentry-supp-openapi-schema",
+          "quote": "Sentry Public API"
+        },
+        {
+          "evidenceId": "sentry-supp-api-versioning",
+          "quote": "Our public endpoints are generally stable, but beta endpoints are subject to change."
+        },
+        {
+          "evidenceId": "sentry-docs-88",
+          "quote": "manually via Organization Tokens"
+        }
+      ]
+    },
     "productId": "sentry",
     "storyId": "issues-api-read"
   }

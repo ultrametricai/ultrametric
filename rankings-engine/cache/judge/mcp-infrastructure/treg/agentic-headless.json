@@ -1,18 +1,36 @@
 {
-  "hash": "0164d15e1c0fb8ea088782744358d9c027c44e2fbc32e0c36b6b4de2da198c3a",
+  "hash": "1c2f61afd41f0cb39a357ecef31fd9a185168704b0cdefc2767bc0683292ad49",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "treg is a token-authenticated HTTP API: one base URL and one token give access to 159 operations plus the `/call/` proxy. A live OpenAPI spec is published and the CLI installs with a one-line curl script, so non-interactive, scripted use is the product's core mode. The docs never address CI pipelines directly, and the documented sign-in paths (GitHub, emailed OTP, invite code) look interactive. missing for 10: explicit CI/headless documentation (e.g. CI examples, non-interactive CLI auth via env-var token or service accounts), independent hands-on corroboration of automated pipeline use.",
+    "rationale": "treg's core interface is a token-authenticated HTTP API with 159 documented operations and an OpenAPI spec. It also ships a CLI installed by a one-line shell script. Both are usable without a UI, so scripts and pipelines can call it headlessly. However, the evidence never documents CI usage directly. The CLI login paths shown (GitHub, emailed OTP, invite code) look interactive, and no non-interactive CI auth is described. missing for 10: explicit CI/headless documentation (e.g. GitHub Actions example), non-interactive CLI auth via env var or service token, independent hands-on confirmation of pipeline use.",
     "evidenceIds": [
       "treg-docs-1",
       "treg-docs-6",
       "treg-probe-3",
-      "treg-docs-10",
       "treg-docs-29"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
+      "citations": [
+        {
+          "evidenceId": "treg-docs-1",
+          "quote": "One base URL, one token. Call any of 159 documented operations"
+        },
+        {
+          "evidenceId": "treg-docs-6",
+          "quote": "`curl -fsSL https://treg.to/install.sh | sh` installs the CLI."
+        },
+        {
+          "evidenceId": "treg-probe-3",
+          "quote": "HTTP 200 at https://treg.to/openapi.json — contains \"openapi\" key"
+        }
+      ]
+    },
     "productId": "treg",
     "storyId": "agentic-headless"
   }

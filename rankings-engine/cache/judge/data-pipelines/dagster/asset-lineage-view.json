@@ -1,22 +1,42 @@
 {
-  "hash": "a6cc295e1e2cd720ccaf46c855f07742ae7048cd4c15853e269878c30202363b",
+  "hash": "a4a835d93c9c7512ad00075feee52abfbda00fdbeddbd5baeec223eadbc34b06",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Dagster models pipelines as assets with declared upstream dependencies (`deps`). Ingestion sources such as Fivetran, dlt and Airbyte, and dbt models, are represented as assets, and the changelog notes that column lineage is emitted for dbt snapshots. Together these imply a dependency-based lineage model linking sources, transformation steps and tables. However, the pack never shows how a user actually views end-to-end lineage, so the 'I see' part of the story is only implied. Missing for 10: documentation of a lineage graph view in the UI, general column-level lineage beyond dbt snapshots, and independent or hands-on corroboration of lineage visibility.",
+    "rationale": "Dagster models datasets as code-defined assets with declared upstream dependencies. Its Fivetran and dlt integrations represent ingestion sources as assets, and the changelog shows it emits column lineage for dbt snapshots, so the building blocks of source-to-table lineage are first-party. However, no evidence shows a user-facing end-to-end lineage view that traces each table back through its sources and transformations. Missing for 10: documented UI or graph view of end-to-end asset lineage, table-level lineage across non-dbt steps, independent or hands-on corroboration.",
     "evidenceIds": [
-      "dagster-docs-1",
       "dagster-docs-17",
-      "dagster-docs-26",
+      "dagster-docs-1",
       "dagster-docs-6",
-      "dagster-docs-9",
-      "dagster-docs-10",
-      "dagster-docs-28",
-      "dagster-docs-7",
+      "dagster-docs-39",
+      "dagster-docs-40",
       "dagster-docs-43"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a data engineer, I see end-to-end lineage of my datasets — which sources, steps, and transformations produced each table",
+      "citations": [
+        {
+          "evidenceId": "dagster-docs-43",
+          "quote": "`fetch_column_metadata()` now emits column lineage for dbt snapshots on dbt 1.12 and later"
+        },
+        {
+          "evidenceId": "dagster-docs-17",
+          "quote": "@dg.asset(deps=[hello])"
+        },
+        {
+          "evidenceId": "dagster-docs-6",
+          "quote": "uses information about the status of your assets and their dependencies to launch executions of your assets"
+        },
+        {
+          "evidenceId": "dagster-docs-39",
+          "quote": "The dagster-fivetran library provides a FivetranAccountComponent which can be used to easily represent Fivetran connectors as assets in Dagster."
+        }
+      ]
+    },
     "productId": "dagster",
     "storyId": "asset-lineage-view"
   }

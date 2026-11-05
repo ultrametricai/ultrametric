@@ -1,17 +1,32 @@
 {
-  "hash": "32d5c14abdba9195c8e62e0505ed89a9820ae1387f047b303d0a9035f94b2472",
+  "hash": "f414bdeb62375a87b0c3beddb7035157d086d32ac2d543367c2c8ca56b6c5329",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Parahelp's guardrails page shows topic-based handoff rules, e.g. \"when a ticket is about an enterprise account, transfer it to the enterprise team with a summary note\" (docs-7). Separately, any tool can be gated behind Slack human approval, so nothing runs until someone approves (docs-31, docs-6). That covers routing sensitive topics to humans and blocking risky actions, but the evidence doesn't show these topic rules are strictly enforced rather than natural-language instructions the agent could stray from. Missing for 10: proof that human-only topics are hard-enforced so the agent never replies on them, examples for categories like legal threats, cancellations or security, and independent or hands-on corroboration.",
+    "rationale": "Parahelp's Customer Agent guardrails document topic-based routing to humans: a ticket about a given subject (enterprise accounts) is transferred to a team with a summary note. Separately, any tool can be gated behind Slack human approval, so sensitive actions cannot run on their own. Simulations let you check how the agent handles scenarios before release, but the evidence shows only a single routing example and no hard guarantee that the agent never responds on flagged topics. Missing for 10: explicit human-only topic designation (e.g. legal threats, cancellations, security), documented enforcement that the agent never replies on those topics, independent or hands-on corroboration.",
     "evidenceIds": [
       "parahelp-docs-7",
       "parahelp-docs-31",
       "parahelp-docs-6",
-      "parahelp-docs-1"
+      "parahelp-docs-2"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a support ops lead, I mark topics as human-only — legal threats, cancellations, security — and the agent never freelances on them",
+      "citations": [
+        {
+          "evidenceId": "parahelp-docs-7",
+          "quote": "When a ticket is about an enterprise account, transfer it to the enterprise team with a summary note."
+        },
+        {
+          "evidenceId": "parahelp-docs-31",
+          "quote": "Any tool can be gated behind human approval. Gated actions are sent to Slack with approve and deny buttons, and nothing runs until someone on your team approves."
+        }
+      ]
+    },
     "productId": "parahelp",
     "storyId": "restricted-topic-controls"
   }

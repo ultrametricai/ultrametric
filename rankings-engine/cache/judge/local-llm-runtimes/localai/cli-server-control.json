@@ -1,20 +1,50 @@
 {
-  "hash": "6faa871dd5c6be852127e911044364bc3f3015c41965b9633b9dfc21ceeb0d0f",
+  "hash": "fe4f513813906406facf707baa156bac2c53c2b44f2c6fe1b4214518d9c285b9",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "LocalAI ships its own CLI binary that starts the server from the command line: `local-ai run <model>` loads a model and serves it, documented server flags include `--preload-models` and `--external-grpc-backends`, and `local-ai models list` manages models. A Docker run command is also documented. Stopping the server is never explicitly covered; it is only implied by the foreground process model. missing for 10: documented stop/shutdown or daemon-management command, independent hands-on corroboration of the CLI lifecycle",
+    "rationale": "The product's own CLI clearly starts the server: `local-ai run <model>` and `docker run -p 8080:8080 ... localai/localai`, with server flags such as --preload-models and --external-grpc-backends, after which the API is reachable at localhost:8080. Nothing in the evidence documents a stop, shutdown or lifecycle command, so only half the story is shown. Missing for 10: documented CLI stop/shutdown or service-management commands, an explicit statement that `local-ai run` launches the API server, and hands-on corroboration.",
     "evidenceIds": [
       "localai-docs-21",
       "localai-gh-3",
-      "localai-docs-7",
-      "localai-docs-11",
-      "localai-docs-12",
       "localai-docs-31",
-      "localai-docs-32"
+      "localai-docs-12",
+      "localai-docs-11",
+      "localai-docs-1"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can start and stop the local model server from the command line",
+      "citations": [
+        {
+          "evidenceId": "localai-docs-21",
+          "quote": "local-ai run huggingface://TheBloke/phi-2-GGUF/phi-2.Q8_0.gguf"
+        },
+        {
+          "evidenceId": "localai-gh-3",
+          "quote": "local-ai run ollama://gemma:2b"
+        },
+        {
+          "evidenceId": "localai-docs-31",
+          "quote": "docker run -p 8080:8080 --name local-ai -ti localai/localai:latest"
+        },
+        {
+          "evidenceId": "localai-docs-12",
+          "quote": "PRELOAD_MODELS (or --preload-models) takes a list in JSON with the same parameter of the API calls of the /models/apply endpoint."
+        },
+        {
+          "evidenceId": "localai-docs-11",
+          "quote": "The --external-grpc-backends parameter in the CLI can be used either to specify a local backend (a file) or a remote URL."
+        },
+        {
+          "evidenceId": "localai-docs-1",
+          "quote": "You can use it with any OpenAI SDK or client by pointing it to http://localhost:8080."
+        }
+      ]
+    },
     "productId": "localai",
     "storyId": "cli-server-control"
   }
