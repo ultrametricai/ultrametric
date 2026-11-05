@@ -67,17 +67,17 @@ the gusto, vercel, vue, claude, and gemini rows), so the migration itself satisf
 queue, plus the two pilot arenas, whose preview data lets reviewers cross-check flips
 against `2026-11-04-v6-preview.json`.
 
-| wave | arenas | cells |
-|---|---|---|
-| 1 | ai-assistants, cloud-platforms, edge-platforms, frontend-frameworks, frontier-models, legal-ops, payroll, startup-banking, web-scraping | 4,936 |
-| 2 | card-issuing, customer-data-platforms, docs-platforms, fraud-prevention, government-services, gpu-clouds, model-gateways, scheduling | 4,766 |
-| 3 | ai-coding, applicant-tracking, crm, email-marketing, expense-management, incident-management, inference-providers, speech-to-text, sso-identity, terminals, vibe-coding | 4,775 |
-| 4 | ai-support-agents, browser-agents, data-pipelines, desktop-os, device-agents, domain-registrars, equity-management, error-tracking, game-engines, infra-as-code, local-llm-runtimes, mcp-infrastructure, robotics-platforms | 4,943 |
-| 5 | agent-frameworks, agent-skills, ai-search-apis, ai-video, compliance-automation, data-warehouses, design-tools, identity-verification, marketplace-payments, mobile-payments, notes-knowledge, startup-law-firms | 4,774 |
-| 6 | ai-memory, billing-subscriptions, cloud-storage, compliance-screening, durable-workflows, ecommerce-platforms, email-apis, fp-a, gpus, payments, self-hosted-assistants, stablecoin-payments, voice-agents | 4,941 |
-| 7 | agent-sandboxes, banking-as-a-service, banking-data-apis, llm-evals-observability, meeting-ai, product-feedback, screen-sharing, security-keys, security-scanners, serverless-databases, software-factory, tax-automation | 4,778 |
-| 8 | ai-research-agents, auth-platforms, authenticator-apps, code-hosting, document-extraction, email, mobile-dev, observability, project-management, search-infra, vector-databases, virtual-mailboxes, workflow-automation | 4,911 |
-| 9 | accounting, agentic-commerce, ai-code-review, api-platforms, backend-as-a-service, business-phone, feature-flags, file-converters, package-managers, processors, product-analytics, startup-immigration, team-chat | 4,913 |
+| wave | arenas | cells | status |
+|---|---|---|---|
+| 1 | ai-assistants, cloud-platforms, edge-platforms, frontend-frameworks, frontier-models, legal-ops, payroll, startup-banking, web-scraping | 4,936 | merged (PR #612) |
+| 2 | card-issuing, customer-data-platforms, docs-platforms, fraud-prevention, government-services, gpu-clouds, model-gateways, scheduling | 4,766 | this PR |
+| 3 | ai-coding, applicant-tracking, crm, email-marketing, expense-management, incident-management, inference-providers, speech-to-text, sso-identity, terminals, vibe-coding | 4,775 | queued |
+| 4 | ai-support-agents, browser-agents, data-pipelines, desktop-os, device-agents, domain-registrars, equity-management, error-tracking, game-engines, infra-as-code, local-llm-runtimes, mcp-infrastructure, robotics-platforms | 4,943 | queued |
+| 5 | agent-frameworks, agent-skills, ai-search-apis, ai-video, compliance-automation, data-warehouses, design-tools, identity-verification, marketplace-payments, mobile-payments, notes-knowledge, startup-law-firms | 4,774 | queued |
+| 6 | ai-memory, billing-subscriptions, cloud-storage, compliance-screening, durable-workflows, ecommerce-platforms, email-apis, fp-a, gpus, payments, self-hosted-assistants, stablecoin-payments, voice-agents | 4,941 | queued |
+| 7 | agent-sandboxes, banking-as-a-service, banking-data-apis, llm-evals-observability, meeting-ai, product-feedback, screen-sharing, security-keys, security-scanners, serverless-databases, software-factory, tax-automation | 4,778 | queued |
+| 8 | ai-research-agents, auth-platforms, authenticator-apps, code-hosting, document-extraction, email, mobile-dev, observability, project-management, search-infra, vector-databases, virtual-mailboxes, workflow-automation | 4,911 | queued |
+| 9 | accounting, agentic-commerce, ai-code-review, api-platforms, backend-as-a-service, business-phone, feature-flags, file-converters, package-managers, processors, product-analytics, startup-immigration, team-chat | 4,913 | queued |
 
 Later waves may be re-chunked as evidence packs grow; each wave PR states its final arena
 list. Arenas with affiliated or own-vendor rows (product-feedback, software-factory,
@@ -148,3 +148,40 @@ Spend: about $62 batched (pilot batch rate over 4,936 cells) plus interactive co
 rounds for first-attempt contract violations (several per-arena resume runs after cells
 exhausted their three correction rounds; the re-runs reuse cached cells and retained
 batch results, so no cell was paid for twice at batch price). Wave total about $75.
+
+## Wave 2 (2026-11-05)
+
+4,766 cells re-judged across the eight arenas. 651 verdict flips: 549 down, 31 up, 71
+lateral relabels, plus 398 quality-only moves (net -190). Fleet transition profile:
+
+`full→partial` 283 · `partial→none` 265 · `none→na` 46 · `na→none` 24 ·
+`none→partial` 21 · `partial→full` 7 · `none→full` 3 · other 2
+
+| arena | cells | flips | down / up / lateral | quality-only (net) |
+|---|---|---|---|---|
+| card-issuing | 318 | 42 | 40 / 2 / 0 | 41 (-24) |
+| customer-data-platforms | 255 | 48 | 47 / 0 / 1 | 31 (-25) |
+| docs-platforms | 265 | 83 | 79 / 1 / 3 | 40 (-26) |
+| fraud-prevention | 378 | 64 | 60 / 0 / 4 | 54 (-48) |
+| government-services | 2,601 | 184 | 119 / 8 / 57 | 103 (-52) |
+| gpu-clouds | 324 | 75 | 65 / 9 / 1 | 49 (-6) |
+| model-gateways | 350 | 91 | 87 / 0 / 4 | 40 (-24) |
+| scheduling | 275 | 64 | 52 / 11 / 1 | 40 (+15) |
+
+government-services carries most of the wave's lateral moves: 46 `none→na` relabels, the
+v6 judge marking agency-inapplicable stories not applicable instead of absent. Its many
+small rank moves sit in the near-zero score band where fractional aiEra differences
+re-order agencies. Notable top-of-table moves elsewhere, all pure-rubric:
+hightouch #2 → #1 over jitsu in customer-data-platforms, runpod #2 → #1 over vast-ai in
+gpu-clouds, marqeta #3 → #2 and stripe-issuing #2 → #4 in card-issuing.
+
+Disclosed-row audit: gpu-clouds includes lium, a disclosed vendor self-submission whose
+evidence was first judged under v5 days before this wave, so its v6 deltas are
+pure-rubric. Its one favorable move (serverless-gpu-endpoints none to partial q3) cites
+documented SDK behavior with the limitation stated in the rationale; its other eight
+moves are unfavorable, kept as-is, and its rank is unchanged at #3. No verdicts were
+changed by the audit.
+
+Spend: about $60 batched plus correction rounds (five resume runs for
+government-services, one to three for the others). Wave total about $75; cumulative about
+$150 of the roughly $690 full-migration budget.
