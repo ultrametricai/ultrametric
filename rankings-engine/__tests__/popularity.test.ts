@@ -237,6 +237,31 @@ describe('runPopularity (integration, fake fetchers, isolated data dir)', () => 
     )
     expect(written.react.stars).toBe(222) // fresh fetch wins
     expect(written.react.npmWeekly).toBe(333_466) // failed source falls back to last measurement
+    expect(written.react.npmFetchedAt).toBe('2026-08-01T00:00:00.000Z')
+    expect(written.react.githubFetchedAt).toBe('2026-08-27T00:00:00.000Z')
+  })
+
+  it('retains GitHub provenance across repeated partial refreshes and retries the stale source', async () => {
+    const dataDir = path.join(tmpDir, 'frontend-frameworks')
+    const old = '2026-08-01T00:00:00.000Z'
+    fs.writeFileSync(path.join(dataDir, 'popularity.json'), JSON.stringify({
+      react: { stars: 111, starsPerYear: 20, npmWeekly: 100, fetchedAt: old },
+    }))
+    const { runPopularity } = await import('@/rankings-engine/stages/popularity')
+    let calls = 0
+    for (const date of ['2026-08-27T00:00:00.000Z', '2026-08-28T00:00:00.000Z']) {
+      await runPopularity({ category: 'frontend-frameworks', product: 'react' }, {
+        github: async () => { calls++; return null },
+        npm: async () => 200, pypi: async () => null, now: () => new Date(date), delayMs: 0,
+      })
+      const written = PopularityMapSchema.parse(JSON.parse(fs.readFileSync(path.join(dataDir, 'popularity.json'), 'utf8')))
+      expect(written.react.githubFetchedAt).toBe(old)
+      expect(written.react.npmFetchedAt).toBe(date)
+      expect(written.react.stars).toBe(111)
+      const history = fs.readFileSync(path.join(dataDir, 'popularity-history.jsonl'), 'utf8').trim().split('\n').map((row) => JSON.parse(row))
+      expect(history.at(-1).githubFetchedAt).toBe(old)
+    }
+    expect(calls).toBe(2)
   })
 
   it('throws for an unknown --product filter', async () => {

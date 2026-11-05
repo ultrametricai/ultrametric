@@ -259,7 +259,12 @@ export async function runPopularity(
 
       const now = deps.now()
       const cached = existingMap[p.id]
-      if (cached && now.getTime() - new Date(cached.fetchedAt).getTime() < SEVEN_DAYS_MS) {
+      const sourceDates = cached ? [
+        ...(hasGithub ? [cached.githubFetchedAt ?? cached.fetchedAt] : []),
+        ...(pkgs.npm ? [cached.npmFetchedAt ?? cached.fetchedAt] : []),
+        ...(pkgs.pypi ? [cached.pypiFetchedAt ?? cached.fetchedAt] : []),
+      ] : []
+      if (cached && sourceDates.every((date) => now.getTime() - new Date(date).getTime() < SEVEN_DAYS_MS)) {
         console.log(`popularity: ${cat.id}/${p.id} → cached (fetched ${cached.fetchedAt}, <7d old); skipping refetch`)
         historyLines.push({ productId: p.id, ...cached, runAt: now.toISOString() })
         continue
@@ -297,6 +302,15 @@ export async function runPopularity(
         if (pkgs.pypi && pypiWeekly === null && cached.pypiWeekly !== undefined) derived.pypiWeekly = cached.pypiWeekly
       }
       const entry: Popularity = { ...derived, fetchedAt: now.toISOString() }
+      if (derived.stars !== undefined) {
+        entry.githubFetchedAt = github ? now.toISOString() : cached!.githubFetchedAt ?? cached!.fetchedAt
+      }
+      if (derived.npmWeekly !== undefined) {
+        entry.npmFetchedAt = npmWeekly !== null ? now.toISOString() : cached!.npmFetchedAt ?? cached!.fetchedAt
+      }
+      if (derived.pypiWeekly !== undefined) {
+        entry.pypiFetchedAt = pypiWeekly !== null ? now.toISOString() : cached!.pypiFetchedAt ?? cached!.fetchedAt
+      }
       nextMap[p.id] = entry
       historyLines.push({ productId: p.id, ...entry, runAt: now.toISOString() })
       console.log(`popularity: ${cat.id}/${p.id} → ${JSON.stringify(derived)}`)
