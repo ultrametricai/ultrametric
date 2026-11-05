@@ -181,8 +181,9 @@ merged c0beaa0e47) carries 36 flips against its v5 baseline (b13ddb3211): 31 dow
 evidence after the settle script (2ace6d1cd1) reverted the two no-new-support upgrades. It
 was reviewed and settled in its PR, and the arena landed as a single merge, so none of this
 is published transition churn; it is listed here because a decision to stay on v5 (Option B)
-would strand it on v6 verdicts unless it is re-settled to the b13ddb3211 baseline or
-explicitly carved out.
+requires a separate decision for its v6 verdicts. The b13ddb3211 baseline is a candidate
+for review under the citation and rubric checks below; an explicit carve-out is another
+option.
 
 ## Correction estimates
 
@@ -203,11 +204,28 @@ baseline needs the same settlement treatment the registered-agents pilot got.
 Re-judging the 20,902 stale cells against current published baselines corrects none of the
 171 by itself: the stability policy settles unsupported flips back to the pre-roll baseline,
 and the pre-roll baseline here is the churned value. Clearing the legacy debt under Option B
-therefore needs a scripted settlement first, restoring each standing cell's pre-churn
-verdict from this report's per-cell baselines at zero model cost (the settle-registered-agents
-cache-patch mechanism): directly for the 121 v5-current cells, and before the backlog wave
-for the 50 v5-stale cells so the wave settles against restored baselines. The
-registered-agents island needs its own call either way.
+therefore needs a per-cell review before any scripted settlement. The companion JSON
+identifies historical candidate baselines; it does not establish that they are safe to
+restore against today's evidence and rubric. For each candidate, verify that every cited
+evidence item still exists with unchanged supporting content, that the baseline's rules
+remain valid under the selected rubric, and that no later reviewed correction or
+founder-affiliation bias audit would be undone. Missing citations, changed content,
+unknown provenance, and rubric incompatibility block restoration and cache patching.
+Those cells require review or a separately authorized, scoped current-input re-judge under
+`docs/ACCURACY.md`; they cannot be repaired by copying an old judgment into a current cache.
+
+Only candidates that pass those checks may use a scripted baseline restore and verified
+cache patch at zero model cost. A current v5 input hash establishes cache currency, not the
+validity of the historical judgment or its surviving citations. The 121 v5-current and 50
+v5-stale counts therefore describe input currency, not restore eligibility. Eligible stale
+cells need validated baselines before any separately approved backlog wave; the number
+eligible for zero-cost restoration and the cost of resolving blocked cells remain unknown.
+The registered-agents island needs its own call either way, with the same citation and
+rubric checks on any proposed baseline restore.
+
+This audit authorizes no verdict or cache changes, rubric migration, paid model calls, or
+restart of scheduled judging. Accepting it leaves those decisions and the accuracy work
+queue open.
 
 Under both options the 49 post-gate cells and the 12 upgrade cells in the table above are
 the first review candidates, and the 1,098 unlabeled rollout cells need either retroactive
