@@ -40,6 +40,40 @@ engine run (`crawl → extract → collect-community → probe → judge --produ
 landing as a reviewed PR, with the skipped list in the PR body. Nothing merges to `main` without
 that review.
 
+## Automatic checks and publication identity
+
+Both `vendor-radar/` scan PRs and `vendor-radar-bringup/` PRs use the generated-PR CI
+and review recovery controllers. The Content App used by the private site's content-update
+workflow is a separate publication identity; it does not run the rankings engine or repair
+radar data.
+
+The radar can use that App after a maintainer configures its installation for this public
+repository, the `CONTENT_BOT_APP_ID` and `CONTENT_BOT_PRIVATE_KEY` repository secrets,
+and the exact `CONTENT_BOT_LOGIN` repository variable (for example,
+`ultrametric-content-bot[bot]`). Installation and credential setup are separate maintainer
+operations. The workflows request only repository-scoped contents and pull-request write
+permissions. They validate the minted App slug against the configured login before publishing.
+The App pushes and opens both radar PR families, so ordinary PR CI starts without the
+approval-required run created by `GITHUB_TOKEN`. Recovery also uses that App when a required
+freshness rule calls for updating an App-authored radar branch.
+
+Without the App credentials, radar publishes as `github-actions[bot]` and explicitly dispatches
+`ci.yml`. That dispatched run supplies the required validation checks even when GitHub shows
+a separate approval-required PR run. An unapproved PR run can expire as a failure with no
+jobs; inspect the dispatched run on the same commit. See
+[GitHub's token-trigger rules](https://docs.github.com/en/actions/concepts/security/github_token#when-github_token-triggers-workflow-runs).
+The optional PAT publication override is retired because its author could fall outside the
+recovery allowlist. Existing PAT-authored PRs need maintainer attention.
+
+Recovery accepts the configured App bot only on these same-repository radar branches.
+Drafts, removed auto-merge opt-in, and unrelated authors remain excluded. A malformed App
+login disables App recovery and review requests while preserving the Actions-bot path. Missing CI keeps
+the existing per-head retry budget; reviews retain exact-suite checks and durable request
+reservations. Auto-merge opt-in is recorded before fallback CI dispatch so a dispatch failure
+remains recoverable. Engine repair stays scoped to story-runner; radar extraction, judging,
+and review findings still require their own evidence-backed correction. No workflow here
+changes App installation, credentials, branch rules, or the paused state of another workflow.
+
 ## How it works
 
 `rankings-engine/scripts/vendor-radar.ts`, run daily by `.github/workflows/vendor-radar.yml`

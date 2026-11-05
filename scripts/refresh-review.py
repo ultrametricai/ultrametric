@@ -26,10 +26,17 @@ def api(repo, path, data=None):
 
 
 def eligible(pr, repo, head):
+    content_bot = os.environ.get('CONTENT_BOT_LOGIN', '')
+    if content_bot and not re.fullmatch(r'[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\[bot\]', content_bot):
+        print('::warning::Invalid CONTENT_BOT_LOGIN; configured App review requests are disabled')
+        content_bot = ''
+    radar_app = (bool(content_bot) and pr['user']['login'] == content_bot
+                 and pr['user'].get('type') == 'Bot'
+                 and re.fullmatch(r'vendor-radar(?:-bringup)?/[A-Za-z0-9_-]+', pr['head']['ref']))
     return (pr['state'] == 'open' and not pr['draft'] and bool(pr['auto_merge'])
             and pr['base']['ref'] == 'main' and pr['head']['sha'] == head
             and pr['head']['repo'] is not None and pr['head']['repo']['full_name'] == repo
-            and pr['user']['login'] == BOT
+            and (pr['user']['login'] == BOT or radar_app)
             and re.fullmatch(r'(story-runner|accuracy-engine|vendor-radar|vendor-radar-bringup|yc-coverage)/[A-Za-z0-9_-]+', pr['head']['ref']))
 
 

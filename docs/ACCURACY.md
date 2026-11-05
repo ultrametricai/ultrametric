@@ -136,7 +136,9 @@ unpublished candidate if a review started during repair. Foreloop remains outsid
 Story-runner publishes with `GITHUB_TOKEN`, matching the Actions-bot author accepted by
 recovery, repair, and review. Its optional PAT publication override is retired. Existing
 PRs created under a PAT account require maintainer attention; automation does not widen
-its author allowlist to adopt them.
+its author allowlist to adopt them. Radar additionally accepts its explicitly configured
+Content App bot on scan and bring-up branches; see [radar publication identity](VENDOR-RADAR.md#automatic-checks-and-publication-identity).
+Its data-repair scope remains separate from story-runner.
 
 GitHub marks `pull_request` runs created by `GITHUB_TOKEN` as `action_required` until a
 maintainer approves them. Generated PRs explicitly dispatch the same CI workflow on their

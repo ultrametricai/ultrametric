@@ -47,6 +47,40 @@ class ReviewTests(unittest.TestCase):
             MODULE['request']('owner/repo', 567, SHA, now)
         return writes
 
+    def test_configured_radar_app_uses_existing_ci_review_reservation_and_budget(self):
+        for family in ['vendor-radar','vendor-radar-bringup']:
+            pr={**PR,'head':{**PR['head'],'ref':f'{family}/fixture-123'},
+                'user':{'login':'fixture-content[bot]','type':'Bot'}}
+            with patch.dict('os.environ',{'CONTENT_BOT_LOGIN':'fixture-content[bot]'}):
+                comments=[]
+                self.assertEqual(self.run_worker(comments,pr=pr,validation='failure'),[])
+                self.assertEqual(self.run_worker(comments,pr=pr,suite=999),[])
+                self.assertEqual(len(self.run_worker(comments,pr=pr)),2)
+                self.assertEqual(self.run_worker(comments,pr=pr),[])
+                self.assertEqual(len(self.run_worker(comments,pr=pr,now=NOW+dt.timedelta(hours=1))),2)
+                with self.assertRaisesRegex(RuntimeError,'budget exhausted'):
+                    self.run_worker(comments,pr=pr,now=NOW+dt.timedelta(hours=2))
+
+    def test_app_identity_is_explicit_and_only_accepts_bot_radar_prs(self):
+        pr={**PR,'head':{**PR['head'],'ref':'vendor-radar/fixture-123'},
+            'user':{'login':'fixture-content[bot]','type':'Bot'}}
+        cases=[(pr,''),({**pr,'user':{'login':'other[bot]','type':'Bot'}},'fixture-content[bot]'),
+               ({**pr,'user':{'login':'fixture-content[bot]','type':'User'}},'fixture-content[bot]'),
+               ({**pr,'head':PR['head']},'fixture-content[bot]'),
+               ({**pr,'draft':True},'fixture-content[bot]'),({**pr,'auto_merge':None},'fixture-content[bot]'),
+               ({**pr,'head':{**pr['head'],'repo':{'full_name':'fork/repo'}}},'fixture-content[bot]')]
+        for candidate,login in cases:
+            with patch.dict('os.environ',{'CONTENT_BOT_LOGIN':login}):
+                self.assertEqual(self.run_worker([],pr=candidate),[])
+        with patch.dict('os.environ',{'CONTENT_BOT_LOGIN':'not a bot'}):
+            self.assertEqual(self.run_worker([],pr=pr),[])
+
+    def test_malformed_app_config_preserves_existing_actions_review_requests(self):
+        with patch.dict('os.environ',{'CONTENT_BOT_LOGIN':'not a bot'}):
+            comments=[]
+            self.assertEqual(len(self.run_worker(comments)),2)
+            self.assertEqual(self.run_worker(comments),[])
+
     def test_second_caller_reads_durable_reservation_and_does_not_repeat_request(self):
         comments=[]
         writes=self.run_worker(comments)
