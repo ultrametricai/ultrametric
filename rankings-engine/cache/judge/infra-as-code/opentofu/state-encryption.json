@@ -1,11 +1,11 @@
 {
-  "hash": "4615eadae81a7f3c55f16bbba1a7c168d5bd9ed4235e60ec1fc540472115bef8",
+  "hash": "44bb6103d0b7014eebf28c1a85ce28e2b8dac83ea84d0fd0ca14ef5ab37df152",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "OpenTofu's first-party docs say it encrypts state and plan files at rest, for both local storage and backends, and for the terraform_remote_state data source. Configuration covers an AES-GCM method, AWS KMS, GCP Cloud KMS, Azure Key Vault and OpenBao key providers, set either in code or via the TF_ENCRYPTION environment variable. Community commenters greeted the feature with enthusiasm, though their open question about committing encrypted state publicly is not a hands-on test. Missing for 10: independent hands-on corroboration that encrypted state files actually hide credentials in practice.",
+    "rationale": "OpenTofu's first-party docs describe native encryption of state and plan files at rest, for both local storage and backends. Configuration can live in code or in the TF_ENCRYPTION environment variable, using AES-GCM with KMS key providers (AWS KMS, GCP Cloud KMS, Azure Key Vault, OpenBao). A community user's enthusiasm for the feature in 1.7 adds light corroboration, and their question about committing encrypted state publicly is not a contradiction. Missing for 10: independent hands-on verification that encrypted state files are unreadable in practice.",
     "evidenceIds": [
       "opentofu-docs-9",
       "opentofu-docs-20",
@@ -14,6 +14,29 @@
       "opentofu-docs-33",
       "opentofu-comm-13"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a devops-lead, I can encrypt state at rest so credentials and sensitive values are not readable in plaintext state files",
+      "citations": [
+        {
+          "evidenceId": "opentofu-docs-9",
+          "quote": "OpenTofu supports encrypting state and plan files at rest, both for local storage and when using a backend."
+        },
+        {
+          "evidenceId": "opentofu-docs-32",
+          "quote": "If you use a key management system (AWS KMS, GCP Cloud KMS, Azure Key Vault, or OpenBao), use a separate key for each state file"
+        },
+        {
+          "evidenceId": "opentofu-docs-33",
+          "quote": "You can configure encryption in OpenTofu either by specifying the configuration in the OpenTofu code, or using the `TF_ENCRYPTION` environment variable."
+        },
+        {
+          "evidenceId": "opentofu-docs-19",
+          "quote": "Configure AES-GCM encryption method"
+        }
+      ]
+    },
     "productId": "opentofu",
     "storyId": "state-encryption"
   }

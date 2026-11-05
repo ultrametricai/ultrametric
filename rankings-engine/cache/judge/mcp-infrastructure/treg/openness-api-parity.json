@@ -1,24 +1,42 @@
 {
-  "hash": "c6ee05f1f0cd01dc9cc62e8d0ddee85f19ddd35259253dad95e7aacdb5e3e754",
+  "hash": "9b1c043554aaae43a1c5b787ce9ef35066b4cf10863f7e37e34d21f9019dd596",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "treg is built API-first: one base URL and token expose 159 documented operations plus a proxy to 3,800+ provider endpoints, and a probe confirms a live OpenAPI spec. The same surface is reachable through a CLI (tool listing, credential health, reviews, feedback, CLI uploads) and an MCP endpoint (balance, review), and llms.txt teaches agents the whole protocol. Missing for 10: an explicit statement or audit that every UI action (e.g., team member permissions, invites, billing top-up) is available via API, and independent hands-on confirmation of parity.",
+    "rationale": "treg is API-first: one base URL and token expose 159 documented operations, a live OpenAPI spec, and matching CLI and MCP surfaces for catalog search, calls, reviews and balance. However, no evidence explicitly claims or demonstrates that every UI action (team member permissions, invites, top-ups, OAuth connections) is reachable through the API. missing for 10: an explicit UI/API parity statement, documented API coverage of team admin, billing and OAuth-connection flows, and independent hands-on corroboration of parity.",
     "evidenceIds": [
       "treg-docs-1",
-      "treg-docs-5",
-      "treg-docs-7",
-      "treg-docs-12",
-      "treg-docs-27",
-      "treg-docs-28",
-      "treg-docs-33",
-      "treg-gh-4",
       "treg-probe-3",
-      "treg-probe-4",
-      "treg-probe-5"
+      "treg-docs-3",
+      "treg-docs-12",
+      "treg-docs-33",
+      "treg-docs-28"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can do everything through the API that I can do in the UI",
+      "citations": [
+        {
+          "evidenceId": "treg-docs-1",
+          "quote": "One base URL, one token. Call any of 159 documented operations"
+        },
+        {
+          "evidenceId": "treg-probe-3",
+          "quote": "HTTP 200 at https://treg.to/openapi.json — contains \"openapi\" key"
+        },
+        {
+          "evidenceId": "treg-docs-12",
+          "quote": "rate that one call after using it with `treg review CALL_ID USEFULNESS [--reason \"...\"]` or MCP `review(call_id, usefulness, reason?)`"
+        },
+        {
+          "evidenceId": "treg-docs-33",
+          "quote": "`balance` reports the selected team's prepaid balance and daily usage."
+        }
+      ]
+    },
     "productId": "treg",
     "storyId": "openness-api-parity"
   }

@@ -1,19 +1,41 @@
 {
-  "hash": "7cf1f34641af6b12f2a2e113a6d83990d500c6e1c1adbae00eca426854b1075f",
+  "hash": "62c50223e44329dac6e8caf3ddffddf900d39ac257c28f1f3c0a0640c6c037e1",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
-    "confidence": "medium",
-    "rationale": "Notte documents generating workflow code from agent or CLI runs (\"Generate it with the CLI first, then edit it\", MCP can \"build scripts\"). That code can then be deployed as serverless functions, and the GitHub README pitches scripting deterministic parts and using AI only when needed, \"cutting costs by 50%+\". This amounts to replaying generated code instead of re-prompting, but there is no documented automatic action cache or replay mechanism. Missing for 10: an explicit cache of resolved actions or selectors with automatic replay, documented cache invalidation or self-healing on cache misses, and independent corroboration of the cost and latency savings.",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "Notte documents generating workflow code that can be edited, deployed and rerun as scripts, plus a hybrid mode where deterministic parts are scripted and AI is used only when needed, which it says cuts costs by 50%+. That approximates replaying generated code instead of re-prompting the LLM, but there is no explicit caching of resolved agent actions. missing for 10: an explicit action/code cache or replay mechanism for agent runs, documentation of deterministic replay from a prior LLM-resolved run, latency/cost evidence specific to cached replays, independent or hands-on corroboration.",
     "evidenceIds": [
       "notte-gh-2",
       "notte-docs-30",
       "notte-docs-8",
       "notte-docs-29",
-      "notte-docs-2",
-      "notte-docs-26"
+      "notte-docs-2"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can cache resolved actions or generated code so repeat runs replay deterministically at lower cost and latency than re-prompting the LLM",
+      "citations": [
+        {
+          "evidenceId": "notte-gh-2",
+          "quote": "letting you script deterministic parts and use AI only when needed, cutting costs by 50%+ while improving reliability"
+        },
+        {
+          "evidenceId": "notte-docs-30",
+          "quote": "Generate it with the CLI first, then edit it."
+        },
+        {
+          "evidenceId": "notte-docs-8",
+          "quote": "or generated workflow code"
+        },
+        {
+          "evidenceId": "notte-docs-29",
+          "quote": "Notte MCP lets it start cloud browser sessions, interact with the pages, fetch data, build scripts, and more."
+        }
+      ]
+    },
     "productId": "notte",
     "storyId": "deterministic-replay-caching"
   }

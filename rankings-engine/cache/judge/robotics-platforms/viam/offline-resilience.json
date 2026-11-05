@@ -1,17 +1,35 @@
 {
-  "hash": "8c7a348e364a30e647926b619f0fae0e7d0618037b3e8115e5b66d814dd90817",
+  "hash": "44d79c184c9d7884a0011ad9467ec1d5cbe3f5bd86314a5c445b7c7682a86dc5",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Viam documents that data queues locally during network outages and low-bandwidth conditions, then syncs when connectivity returns, with restarts and storage constraints handled automatically (viam-docs-7). SDKs reconnect automatically when the network drops (viam-docs-70), and models run inference locally on the machine (viam-docs-9), which supports continued operation at the edge. A community comment that robot firmware needs internet access (viam-comm-3) is general and not a concrete hands-on failure, so it lowers confidence rather than creating a dispute. Missing for 10: explicit documentation that control logic keeps running while offline, details on buffer limits and sync-recovery behavior, and independent or hands-on corroboration.",
+    "rationale": "Viam documents local data queuing during network outages, automatic sync when connectivity returns, and automatic handling of restarts and storage constraints. Its SDKs also reconnect automatically when the network drops, and ML models run inference locally on the machine. However, no evidence explicitly states that machine control logic keeps operating fully while the cloud is unreachable. A community comment that the robot firmware assumes internet access is an early read rather than a concrete hands-on failure, so it lowers confidence without creating a dispute. Missing for 10: explicit documentation that robots continue autonomous operation offline, details on buffer limits and recovery behavior, and independent or hands-on corroboration of offline buffering and clean recovery.",
     "evidenceIds": [
       "viam-docs-7",
       "viam-docs-70",
-      "viam-docs-9",
-      "viam-comm-3"
+      "viam-docs-9"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an ops lead, my robots keep operating and buffer data locally when cloud connectivity drops, then recover cleanly",
+      "citations": [
+        {
+          "evidenceId": "viam-docs-7",
+          "quote": "Data queues locally during network outages and in low-bandwidth environments, and syncs when connectivity returns. Viam handles restarts and storage constraints automatically."
+        },
+        {
+          "evidenceId": "viam-docs-70",
+          "quote": "reconnect automatically when the network drops"
+        },
+        {
+          "evidenceId": "viam-docs-9",
+          "quote": "Machines pull them automatically and run inference locally."
+        }
+      ]
+    },
     "productId": "viam",
     "storyId": "offline-resilience"
   }

@@ -1,20 +1,41 @@
 {
-  "hash": "0c04370136961cd4ace2564eb7fd4d9c3e9ae01b55d433a56d24047ed6e2c5ff",
+  "hash": "440572e199a4a2064b93f31d3b1e29e5442952ef6fc972c0ed8394c28db007ff",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
-    "quality": 8,
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Dagster's docs show schedules that run jobs at intervals from hourly, daily or weekly up to arbitrary cron expressions, plus AutomationCondition.on_cron, sensors for event-driven runs, and UI/API-triggered runs, including triggering Airbyte syncs. Together these give per-pipeline control over run frequency. Missing for 10: explicit documentation of sub-hour intervals (only implied by cron support), dedicated manual-trigger docs beyond the dbt/Airbyte integration mentions, and independent or hands-on corroboration.",
+    "rationale": "Dagster's documented schedules run jobs at intervals ranging from hourly, daily and weekly to arbitrary cron expressions. Declarative Automation adds per-asset on_cron conditions and sensors add event-driven triggers, so frequency is set per pipeline. On-demand runs appear in the docs only through running dbt subsets from the UI/APIs and triggering Airbyte syncs. missing for 10: explicit documentation of sub-hour (e.g. every-15-minute) scheduling, first-party docs for generic manual/ad-hoc run launching beyond integration examples, independent hands-on corroboration.",
     "evidenceIds": [
-      "dagster-docs-4",
       "dagster-docs-31",
       "dagster-docs-38",
       "dagster-docs-5",
-      "dagster-docs-6",
       "dagster-docs-7",
       "dagster-docs-28"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a data engineer, I control sync frequency per pipeline — from sub-hour schedules to cron expressions and manual triggers",
+      "citations": [
+        {
+          "evidenceId": "dagster-docs-31",
+          "quote": "These intervals can range from common frequencies like hourly, daily, or weekly, to more complex patterns defined using cron expressions."
+        },
+        {
+          "evidenceId": "dagster-docs-38",
+          "quote": "The AutomationCondition.on_cron will execute an asset once per cron schedule tick, after all upstream dependencies have updated."
+        },
+        {
+          "evidenceId": "dagster-docs-7",
+          "quote": "Use Dagster's UI or APIs to run subsets of your dbt models, seeds, and snapshots."
+        },
+        {
+          "evidenceId": "dagster-docs-28",
+          "quote": "you can trigger Airbyte syncs and orchestrate your Airbyte connections from within Dagster"
+        }
+      ]
+    },
     "productId": "dagster",
     "storyId": "sync-scheduling-frequency"
   }

@@ -1,16 +1,31 @@
 {
-  "hash": "270619ae478f28ff4758a09a5af508c1737d1582aeffb4dfa892c6cdb938dcda",
+  "hash": "7a654d54984803b2f2ae5f75b1bfebda06016bf3874671241a290bc3efc86ca3",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Pulumi's own docs show remote state storage in managed Pulumi Cloud or a DIY object-store backend (AWS S3, Azure Blob Storage, Google Cloud Storage), which covers the remote-backend half of the story. Nothing in the pack mentions state locking or protection against concurrent runs, so the corruption-prevention half is unproven. missing for 10: documented state locking/concurrency protection for Pulumi Cloud and DIY backends, independent or hands-on corroboration of safe concurrent runs.",
+    "rationale": "Pulumi's docs show remote state backends: managed Pulumi Cloud, plus DIY object stores (AWS S3, Azure Blob Storage, Google Cloud Storage). Nothing in the evidence mentions state locking or protection against concurrent runs, which is the core safety guarantee this story asks for. missing for 10: documented state locking/concurrency protection for Pulumi Cloud and DIY backends, independent or hands-on corroboration that concurrent runs are safely blocked.",
     "evidenceIds": [
       "pulumi-docs-4",
       "pulumi-docs-14",
       "pulumi-docs-23"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform-engineer, I can store state in a remote backend with locking so concurrent runs cannot corrupt it",
+      "citations": [
+        {
+          "evidenceId": "pulumi-docs-4",
+          "quote": "DIY backend: a “Do It Yourself” backend that stores state in an object store you manage—AWS S3, Azure Blob Storage, Google Cloud Storage"
+        },
+        {
+          "evidenceId": "pulumi-docs-23",
+          "quote": "Backend options include Pulumi Cloud, an easy-to-use, secure, and reliable hosted application"
+        }
+      ]
+    },
     "productId": "pulumi",
     "storyId": "remote-state-locking"
   }

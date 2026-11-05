@@ -1,19 +1,41 @@
 {
-  "hash": "4fc0d2f7da8a1f9a95217677549a3315c2fb393b4b216f0e3b92d484e702caf2",
+  "hash": "0c395e29bdf297bc281ad56fa8710e73a0e3bd9c628bb093def2a5bc2a9fcc2a",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "low",
-    "rationale": "Ledgy documents per-integration service accounts that a company creates in its settings. Each authenticates via the OAuth 2.0 client_credentials grant and receives short-lived tokens that can be revoked immediately, so an authorized integration can call the API without admin credentials. However, nothing shows the delegated access can be limited to a slice of equity data: 'scoped per integration' refers to the credentials, and companyCaptable returns the company's whole cap table. The 'segment permissions' and access-control mentions refer to in-app team members, not third parties, so they earn no credit. Missing for 10: delegated third-party authorization (e.g., an OAuth consent or authorization-code flow for partners like law firms or wealth managers), documented permission scopes restricting which data a credential can read, and any independent or hands-on corroboration.",
+    "rationale": "Ledgy documents API service accounts that use OAuth 2.0 client_credentials, are scoped per integration, and can be revoked immediately. An authorized integration can therefore get its own non-admin credential rather than full admin access. However, nothing shows a delegated third-party authorization flow, or data-level scoping that limits a party to a slice of the equity data. The 'segment permissions' claims apply to team members, not external API consumers. Missing for 10: a delegated/partner OAuth flow for third parties, documented per-scope or per-dataset permission controls for service accounts, and independent or hands-on corroboration.",
     "evidenceIds": [
       "ledgy-docs-4",
       "ledgy-docs-1",
-      "ledgy-docs-18",
       "ledgy-docs-27",
       "ledgy-docs-3",
-      "ledgy-docs-6"
+      "ledgy-docs-18"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, third parties my company authorizes — law firms, HRIS vendors, wealth managers — can access scoped slices of equity data on our behalf without full admin credentials",
+      "citations": [
+        {
+          "evidenceId": "ledgy-docs-4",
+          "quote": "the credentials are scoped per integration, the tokens are short-lived, and revocation takes effect immediately"
+        },
+        {
+          "evidenceId": "ledgy-docs-1",
+          "quote": "Requests are authenticated with an OAuth 2.0 access token belonging to a service account."
+        },
+        {
+          "evidenceId": "ledgy-docs-27",
+          "quote": "Create one in the Ledgy app under Company Settings → General → API service accounts"
+        },
+        {
+          "evidenceId": "ledgy-docs-3",
+          "quote": "Revoke deletes the service account and invalidates its outstanding access tokens right away."
+        }
+      ]
+    },
     "productId": "ledgy",
     "storyId": "partner-scoped-equity-access"
   }

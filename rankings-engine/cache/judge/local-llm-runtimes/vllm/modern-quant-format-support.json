@@ -1,11 +1,11 @@
 {
-  "hash": "90f9fd11a7526379e42fb2f6638db90849199a2ff7d3fd211bd4964296920afc",
+  "hash": "2ff18718ccf26deb390d99e900b3c21f8c781945113cd32775319de1858c2814",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
-    "quality": 9,
+    "quality": 8,
     "confidence": "high",
-    "rationale": "vLLM's docs explicitly list FP8, INT4, GPTQ/AWQ quantization support, along with MXFP4, NVFP4, INT8, GGUF and compressed-tensors. A dedicated quantization docs page covers per-scheme backend overrides and custom quantization methods. A community comment credits its low-precision model library. The one community complaint about missing 4-bit support is from an early (2023) thread and is superseded by the current documented INT4/GPTQ/AWQ support, so it is not a concrete contradiction. Missing for 10: independent hands-on corroboration of loading specific FP8/GPTQ/AWQ checkpoints.",
+    "rationale": "vLLM's docs explicitly list FP8, INT8, INT4, GPTQ/AWQ, GGUF, compressed-tensors and more as supported quantization formats. They also describe per-scheme backend overrides and registration of custom quantization methods, and a community comment cites its large model library including low-precision models. An early launch-era comment said 4-bit was unsupported, but that predates the current documented INT4/GPTQ/AWQ support and does not contradict it. Missing for 10: per-format loading instructions (e.g. flags or examples for loading a GPTQ/AWQ checkpoint), and current hands-on corroboration that each listed format loads successfully.",
     "evidenceIds": [
       "vllm-docs-4",
       "vllm-docs-22",
@@ -13,6 +13,29 @@
       "vllm-docs-30",
       "vllm-comm-4"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can load models quantized in formats like FP8, INT4, GPTQ, or AWQ",
+      "citations": [
+        {
+          "evidenceId": "vllm-docs-4",
+          "quote": "Quantization: FP8, MXFP8/MXFP4, NVFP4, INT8, INT4, GPTQ/AWQ, GGUF, compressed-tensors, ModelOpt, TorchAO, and more"
+        },
+        {
+          "evidenceId": "vllm-docs-23",
+          "quote": "use `linear_backend_per_quant` to override the backend for individual schemes"
+        },
+        {
+          "evidenceId": "vllm-docs-30",
+          "quote": "vLLM supports registering custom, out-of-tree quantization methods using the `@register_quantization_config` decorator."
+        },
+        {
+          "evidenceId": "vllm-comm-4",
+          "quote": "a huge model library including low precision mattered more"
+        }
+      ]
+    },
     "productId": "vllm",
     "storyId": "modern-quant-format-support"
   }

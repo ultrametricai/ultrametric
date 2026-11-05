@@ -1,17 +1,26 @@
 {
-  "hash": "d2d76aaf60143d23558d85f86a48cd5882c17f6696685cb08f4faecc3d3c8107",
+  "hash": "c579359ea41c10e563d559d09b51ebefadcf21fa7f2191b39fa1f3e213cff19c",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Airbyte has a dedicated first-party Typing and Deduping doc page promising one-to-one stream-to-table mapping in the warehouse with no sub-tables. Its sync-mode docs govern how data is written to destinations, which points to typed, deduplicated final tables rather than raw JSON. However, the quoted snippets only cover the table-mapping point, and the typing and dedup behaviour is inferred mostly from the page's title and URL. missing for 10: explicit evidence of typed column casting and primary-key deduplication behaviour in the snippets, independent or hands-on corroboration that final tables are query-ready.",
+    "rationale": "Airbyte has a first-party Typing and Deduping doc page stating that each stream maps to exactly one warehouse table with no sub-tables, so this is a product capability aimed directly at query-ready destination tables. The quoted text, however, only covers the one-to-one table mapping. It does not show column typing, deduplication behavior or how raw JSON is avoided. Missing for 10: explicit evidence of typed columns, documented deduplication semantics (e.g., primary-key-based dedup), confirmation that tables are not raw JSON blobs, and independent or hands-on corroboration.",
     "evidenceIds": [
       "airbyte-docs-24",
-      "airbyte-docs-41",
-      "airbyte-docs-7",
-      "airbyte-docs-23"
+      "airbyte-docs-41"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an analytics engineer, loaded data lands as typed, deduplicated destination tables ready to query, not raw JSON blobs",
+      "citations": [
+        {
+          "evidenceId": "airbyte-docs-24",
+          "quote": "One-to-one table mapping: Data in one stream will always be mapped to one table in your data warehouse. No more sub-tables."
+        }
+      ]
+    },
     "productId": "airbyte",
     "storyId": "typed-deduped-tables"
   }

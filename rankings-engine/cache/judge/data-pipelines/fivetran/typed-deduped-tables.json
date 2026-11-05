@@ -1,19 +1,36 @@
 {
-  "hash": "2f796efc6b470357a9d3977ad41ab754fc9e4cd33d38750b96be32d412d9e80b",
+  "hash": "92c8812e6fcbb47bd343ceee28ab5b5aa71b8d800a7f5ce1763b90b055d9fe1f",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Fivetran's docs say connectors sync 'query-ready, fully-managed data', handle schema changes automatically, and offer Custom Data Type Mapping and Live/Soft Delete/History sync modes. That implies typed, maintained destination tables rather than raw blobs, but most of this support comes from feature headings, not detailed explanations. missing for 10: explicit evidence of primary-key deduplication or upsert semantics in destination tables, documentation of how source types map to destination column types (versus JSON landing), and independent or hands-on confirmation that the tables are typed and ready to query.",
+    "rationale": "Fivetran's docs say it syncs \"query-ready, fully-managed data\" in open table formats. They also list Custom Data Type Mapping, which implies typed destination columns, and connectors handle schema changes automatically. However, the pack never explicitly documents deduplication or primary-key merge behavior, and never states that data lands as structured tables rather than raw JSON. Missing for 10: explicit documentation of deduplication/upsert semantics, confirmation that nested source data is normalized into typed columns rather than JSON blobs, and independent or hands-on corroboration.",
     "evidenceIds": [
       "fivetran-docs-6",
-      "fivetran-docs-18",
       "fivetran-docs-33",
-      "fivetran-docs-35",
-      "fivetran-docs-13",
-      "fivetran-docs-25"
+      "fivetran-docs-1",
+      "fivetran-docs-35"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an analytics engineer, loaded data lands as typed, deduplicated destination tables ready to query, not raw JSON blobs",
+      "citations": [
+        {
+          "evidenceId": "fivetran-docs-6",
+          "quote": "Automatically sync query‑ready, fully‑managed data to your data lake in open table formats."
+        },
+        {
+          "evidenceId": "fivetran-docs-33",
+          "quote": "Custom Data Type Mapping"
+        },
+        {
+          "evidenceId": "fivetran-docs-1",
+          "quote": "Each connector handles schema changes, API updates, and incremental syncs automatically"
+        }
+      ]
+    },
     "productId": "fivetran",
     "storyId": "typed-deduped-tables"
   }

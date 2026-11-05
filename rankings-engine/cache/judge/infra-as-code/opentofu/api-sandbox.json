@@ -1,19 +1,35 @@
 {
-  "hash": "8a0711239932f02aeab8bddf77532a367d05ba1710941f085cef8adf931cbea0",
+  "hash": "f44d6711037344235aa07f5f0d457d4b10c922e7dc0aadd4258602afbac46714",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "OpenTofu has its own safe-testing primitives. `tofu plan` and speculative plans preview changes without applying them. `tofu test` provisions temporary real infrastructure, runs assertions and then destroys it, and destroy mode is documented for transient development environments. However, keeping tests away from production depends on how the user sets up credentials, accounts and environments (dev/staging/prod via provider for_each), not on a sandbox the product supplies. missing for 10: a product-provided isolated sandbox or mock/offline test mode, documented guarantees that tests cannot reach production resources, independent or hands-on corroboration.",
+    "rationale": "OpenTofu's own `tofu test` command creates real, temporary infrastructure, checks assertions, and then destroys what it created. That gives an ephemeral test environment separate from long-lived resources. Docs also mention multi-environment provider setups (dev/staging/prod) and destroy mode for transient development environments. `tofu plan` is only a dry-run preview, not sandbox isolation, and nothing documents a built-in guarantee that tests cannot reach production. Isolation depends on how the user configures providers and credentials. Missing for 10: a documented built-in sandbox or isolation guarantee separating test runs from production data, mock or isolated test backends, and independent hands-on corroboration.",
     "evidenceIds": [
-      "opentofu-docs-3",
-      "opentofu-docs-4",
       "opentofu-docs-7",
       "opentofu-docs-35",
-      "opentofu-docs-18",
-      "opentofu-docs-37"
+      "opentofu-docs-18"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
+      "citations": [
+        {
+          "evidenceId": "opentofu-docs-7",
+          "quote": "The `tofu test` command lets you test your OpenTofu configuration by creating real infrastructure and checking that the required conditions (assertions) are met. Once the test is complete, OpenTofu destroys the resources it created."
+        },
+        {
+          "evidenceId": "opentofu-docs-35",
+          "quote": "Destroy mode can be useful for situations like transient development environments, where the managed objects cease to be useful once the development task is complete."
+        },
+        {
+          "evidenceId": "opentofu-docs-18",
+          "quote": "Perfect for multi-region deployments, multi-environment setups (dev/staging/prod)"
+        }
+      ]
+    },
     "productId": "opentofu",
     "storyId": "api-sandbox"
   }

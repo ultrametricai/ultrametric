@@ -1,17 +1,36 @@
 {
-  "hash": "379ddd29c17c0575fea2935b58484ce25a5b940805cfadfb020333f27066c62a",
+  "hash": "57cb8380a21bbf09ee793e8261595d4eab048add5c55ed28d2703d6b3d76dab4",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Bevy is a library dependency installed from a package registry: the docs say it is 'just a normal Rust dependency' you can add to an existing project, and a probe confirms it resolves on crates.io (0.19.1, heavy download volume). It also targets the web via WASM. However, that registry and toolchain is Rust/Cargo, not a web developer's existing npm/bundler toolchain, and nothing shows it being imported, bundled, or tree-shaken like a JS dependency. missing for 10: npm/JS-registry distribution, integration with web bundlers, evidence of tree-shaking or dead-code elimination in a web build pipeline.",
+    "rationale": "Bevy is a library installed from a package registry: the docs call it 'just a normal Rust dependency' that can be added to an existing project, and a probe confirms it resolves on crates.io (0.19.1, heavily downloaded). It also targets the web through WASM. However, the evidence shows no npm/JS-registry package and no integration with a web developer's bundler or tree-shaking, so it fits only a Rust/Cargo toolchain, and it is pre-1.0 with breaking changes each release. Missing for 10: npm or JS-registry distribution, documented bundler integration, tree-shaking or dead-code elimination evidence, and stable versioning.",
     "evidenceIds": [
       "bevy-docs-21",
       "bevy-probe-rt-1",
       "bevy-docs-6",
       "bevy-docs-34"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a web developer, the engine installs from a package registry into my existing toolchain — a library I import, bundle, and tree-shake like any dependency",
+      "citations": [
+        {
+          "evidenceId": "bevy-docs-21",
+          "quote": "Bevy is just a normal Rust dependency. You can either add it to an existing Rust project or create a new one."
+        },
+        {
+          "evidenceId": "bevy-probe-rt-1",
+          "quote": "bevy resolves on crates.io — `cargo search bevy` → 'bevy = \"0.19.1\" # A refreshingly simple data-driven game engine and app framework'"
+        },
+        {
+          "evidenceId": "bevy-docs-34",
+          "quote": "Click an example below to run it in your browser (using WASM + WebGL) and view the source code."
+        }
+      ]
+    },
     "productId": "bevy",
     "storyId": "npm-installable-runtime"
   }

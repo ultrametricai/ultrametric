@@ -1,16 +1,30 @@
 {
-  "hash": "105349c8847d54e2edf9a65de0ed8184fffcf602c502e7a38b56f77a8d4b097b",
+  "hash": "e5fd208394a5b884990449d2f1e3eacbfa69222100678bafe4bee10538b38c8b",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "The documented `lms load` command exposes some low-level engine load parameters: GPU offload ratio (`--gpu=max|auto|0.0-1.0`) and context length. That shows the product lets users override some engine defaults, though nothing in the evidence covers memory locking or mmap specifically. An older community report says CUDA acceleration could not be set before loading a model, which suggests engine controls have historically been limited. Missing for 10: documented mlock/mmap toggles, a broader catalog of llama.cpp/MLX engine parameters exposed via the app, CLI or API, and hands-on corroboration that such overrides take effect.",
+    "rationale": "LM Studio's CLI documents per-load engine overrides for GPU offload ratio and context length (`lms load [--gpu=max|auto|0.0-1.0] [--context-length=1-N]`), so it does expose some low-level engine settings beyond fixed defaults. Nothing in the evidence shows memory locking (mlock) or mmap controls. missing for 10: documented mlock/memory-locking toggle, documented mmap toggle, broader engine-parameter reference, independent hands-on corroboration of low-level overrides.",
     "evidenceIds": [
       "lm-studio-docs-13",
-      "lm-studio-docs-6",
-      "lm-studio-comm-1"
+      "lm-studio-docs-6"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a power-user, I can override low-level engine settings like memory locking or mmap behavior instead of being limited to opinionated defaults",
+      "citations": [
+        {
+          "evidenceId": "lm-studio-docs-13",
+          "quote": "lms load [--gpu=max|auto|0.0-1.0] [--context-length=1-N]"
+        },
+        {
+          "evidenceId": "lm-studio-docs-6",
+          "quote": "Manage your local models, prompts, and configurations"
+        }
+      ]
+    },
     "productId": "lm-studio",
     "storyId": "low-level-server-tuning-flags"
   }

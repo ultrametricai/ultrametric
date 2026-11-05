@@ -1,24 +1,44 @@
 {
-  "hash": "0ffc0a509593b42555377b73e135042d9f6630dd48734a5eea85f375c67a932e",
+  "hash": "24ab4680a7b9451dc00aff30b33aeaa99e2d96861b0efac167f329fc0dd02623",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Airbyte documents several headless paths an agent could use. The Airbyte API controls Airbyte programmatically with access tokens and alongside orchestrators like Airflow. The Terraform provider manages configuration as code, PyAirbyte extracts and loads data from Python, and abctl is a CLI for standing up instances. Together these cover configuring and running pipelines without the UI. missing for 10: explicit evidence that a complete source→destination connection can be created and triggered end-to-end via API or CLI, headless connector scaffolding (Connector Builder and its AI Assistant are UI-only), a discoverable OpenAPI spec (probed paths returned 404), and independent or hands-on corroboration of agent-driven setup.",
+    "rationale": "Airbyte documents its own programmatic surfaces: an API to programmatically control Airbyte alongside orchestrators like Airflow, a Terraform provider for configuration as code, PyAirbyte for extracting data from Python, and the abctl CLI. These give an agent a headless route to configure and run syncs. However, abctl only creates and manages local Airbyte instances, not pipelines, and connector scaffolding (Connector Builder and its AI Assistant) lives in the UI. No end-to-end headless scaffold-configure-run workflow is shown, and the OpenAPI spec probes returned 404. missing for 10: a documented CLI for creating and running pipelines, headless connector scaffolding outside the UI, explicit API docs for creating sources, destinations and connections and triggering syncs, a machine-readable OpenAPI spec, hands-on corroboration of an agent driving a full pipeline.",
     "evidenceIds": [
       "airbyte-docs-3",
-      "airbyte-docs-18",
-      "airbyte-docs-46",
-      "airbyte-docs-17",
       "airbyte-docs-2",
       "airbyte-docs-1",
       "airbyte-docs-47",
-      "airbyte-docs-13",
       "airbyte-docs-52",
-      "airbyte-docs-4",
+      "airbyte-docs-17",
+      "airbyte-docs-20",
       "airbyte-probe-2"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, a coding agent can scaffold, configure, and run a complete pipeline headlessly through the CLI or API",
+      "citations": [
+        {
+          "evidenceId": "airbyte-docs-3",
+          "quote": "Use the Airbyte API to programmatically interact with Airbyte. For example, you can control Airbyte in conjunction with orchestration tools like Airflow."
+        },
+        {
+          "evidenceId": "airbyte-docs-2",
+          "quote": "you can use Airbyte's Terraform provider to automate and version control your Airbyte configuration as code"
+        },
+        {
+          "evidenceId": "airbyte-docs-47",
+          "quote": "Data can be extracted from sources and loaded into caches"
+        },
+        {
+          "evidenceId": "airbyte-docs-52",
+          "quote": "abctl is Airbyte's open source command line tool to create and manage local instances of Airbyte running in Docker."
+        }
+      ]
+    },
     "productId": "airbyte",
     "storyId": "agent-builds-pipeline"
   }

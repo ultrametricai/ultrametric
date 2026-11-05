@@ -1,17 +1,31 @@
 {
-  "hash": "7d46ff7f950b4edc066c06a7df346caf1830e733c8f4ba66e3f30bd14f9ee0cb",
+  "hash": "34505f8c84fa877a7f04e8bdf5a496bf908191721a4fa06316e217912150c44b",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Pulumi's documented `pulumi preview` command shows a preview of updates to a stack's resources, and the docs state that no changes to the stack actually take place. That covers the core plan-before-apply workflow. `pulumi preview --import-file` can also list every resource the program would create. missing for 10: explicit documentation of the per-resource create/update/destroy breakdown and diff detail, independent or hands-on corroboration of preview accuracy.",
+    "rationale": "Pulumi's own `pulumi preview` command shows a preview of updates to a stack's resources, and no changes take place, so it is a true dry run before applying. The `--import-file` option also confirms preview can list every resource the program would create. The docs in this pack do not explicitly show a per-resource breakdown of creates, updates, and destroys. missing for 10: explicit documentation of the create/update/delete (and replace) diff breakdown, evidence of destroy visibility in preview, independent or hands-on corroboration of preview accuracy.",
     "evidenceIds": [
       "pulumi-docs-8",
       "pulumi-docs-19",
-      "pulumi-docs-55",
       "pulumi-docs-21"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform-engineer, I can preview exactly what will change — creates, updates, and destroys — before applying",
+      "citations": [
+        {
+          "evidenceId": "pulumi-docs-8",
+          "quote": "Show a preview of updates to a stack’s resources... No changes to the stack will actually take place."
+        },
+        {
+          "evidenceId": "pulumi-docs-21",
+          "quote": "run `pulumi preview --import-file` to generate an import file listing every resource the program would otherwise create"
+        }
+      ]
+    },
     "productId": "pulumi",
     "storyId": "preview-before-apply"
   }

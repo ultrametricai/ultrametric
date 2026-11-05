@@ -1,23 +1,43 @@
 {
-  "hash": "fdca270180ae839b8f5b3580be030d8acfc9b0ad8c3e26983fe89db652832f10",
+  "hash": "8fcecb6b572e792ee91c22d1e6f04451a08d7e36bf2b6888cd3327ca589be282",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Terraform documents a `terraform state` command for modifying state from the CLI and `terraform show` for inspecting current state. Community users confirm `state mv` and `rm`/`import` for refactoring, and one reports that recent declarative state moves are now 'quite simple and safe'. Other users find large refactors hard and back up state by hand, which points to gaps in depth and safety rather than to a contradiction of the capability. missing for 10: first-party docs detailing the move/remove/rename subcommands or declarative move blocks, documented built-in safety such as automatic state backups or a dry-run for state edits, and evidence that large-scale refactors are easy.",
+    "rationale": "Terraform's own docs show a `terraform state` command for basic state modifications and `terraform show` for inspecting current state. Community users confirm `terraform state mv`, `rm`, and `import` for refactoring, and one says declarative state moves are now 'quite simple and safe.' But first-party docs never spell out move, remove, or rename, and other users call large refactors hard, with backups done by hand. missing for 10: first-party docs for state mv/rm/rename subcommands, documented declarative move (moved-block) refactoring, built-in safety such as automatic state backups or a dry-run for state edits, evidence that large-scale refactors are smooth.",
     "evidenceIds": [
       "terraform-docs-6",
       "terraform-docs-51",
       "terraform-docs-47",
-      "terraform-docs-26",
-      "terraform-docs-5",
       "terraform-comm-4",
       "terraform-comm-18",
-      "terraform-comm-3",
       "terraform-comm-5",
       "terraform-comm-6"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform-engineer, I can safely inspect and modify state — moving, removing, or renaming resources — when refactoring",
+      "citations": [
+        {
+          "evidenceId": "terraform-docs-6",
+          "quote": "Terraform provides the terraform state command to perform basic modifications of the state using the CLI."
+        },
+        {
+          "evidenceId": "terraform-docs-47",
+          "quote": "inspect the current state as Terraform sees it"
+        },
+        {
+          "evidenceId": "terraform-comm-4",
+          "quote": "use 'terraform state mv'. After the first handful of moves it feels almost as natural as refactoring modules in any codebase. If it's a big mess, you can 'rm' and 'import'."
+        },
+        {
+          "evidenceId": "terraform-comm-18",
+          "quote": "These used to require very careful coordination in large active configurations and are now 'quite simple and safe.'"
+        }
+      ]
+    },
     "productId": "terraform",
     "storyId": "state-surgery"
   }

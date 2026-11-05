@@ -1,22 +1,52 @@
 {
-  "hash": "9e692e8ff88de43445fae32502c0f75c3cb34cae931e3aee4931944b5841dc04",
+  "hash": "6e8073db1b18152ee30735d646a297305a3e5a9a05e226e7f1fcdee33d80d24b",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "`terraform plan` creates an execution plan that previews the changes before anything is applied. `-out` saves that plan for an exact later `terraform apply`, and `apply` itself generates a plan and prompts for approval. `terraform show` (including `-json`) lets you inspect the planned operations, and `-destroy` and `-replace` produce destroy and replacement plans. A long-time user independently credits Terraform's 'meaningful diffs'. missing for 10: an explicit documented breakdown of how plan output labels creates vs. updates vs. destroys, and hands-on corroboration that the plan matches what apply actually does.",
+    "rationale": "Terraform's `terraform plan` creates an execution plan that previews changes before apply. `apply` prompts for approval of that plan. Plans can be saved with `-out` and applied exactly as reviewed, inspected via `terraform show` (human-readable or JSON), and include destroy (`-destroy`) and replace (`-replace`) operations. A long-time user independently corroborates its 'meaningful diffs'. Missing for 10: explicit first-party documentation that plan output itemizes each create, update, and destroy action per resource.",
     "evidenceIds": [
       "terraform-docs-15",
-      "terraform-docs-30",
       "terraform-docs-25",
+      "terraform-docs-30",
       "terraform-docs-47",
       "terraform-docs-48",
       "terraform-docs-45",
-      "terraform-docs-46",
       "terraform-docs-43",
       "terraform-comm-11"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a platform-engineer, I can preview exactly what will change — creates, updates, and destroys — before applying",
+      "citations": [
+        {
+          "evidenceId": "terraform-docs-15",
+          "quote": "The `terraform plan` command creates an execution plan, which lets you preview the changes that Terraform plans to make to your infrastructure."
+        },
+        {
+          "evidenceId": "terraform-docs-25",
+          "quote": "Terraform automatically creates a new execution plan as if you had run terraform plan, prompts you to approve that plan, and performs the indicated operations."
+        },
+        {
+          "evidenceId": "terraform-docs-30",
+          "quote": "You can use the optional `-out=FILE` option to save the generated plan to a file on disk, which you can later execute by passing the file to `terraform apply`"
+        },
+        {
+          "evidenceId": "terraform-docs-47",
+          "quote": "Use the command to inspect a plan to ensure that the planned operations are expected"
+        },
+        {
+          "evidenceId": "terraform-docs-45",
+          "quote": "These include `-destroy`, which creates a plan to destroy all remote objects"
+        },
+        {
+          "evidenceId": "terraform-docs-43",
+          "quote": "developers can use speculative plans to verify the effect of their changes before submitting them for code review."
+        }
+      ]
+    },
     "productId": "terraform",
     "storyId": "preview-before-apply"
   }

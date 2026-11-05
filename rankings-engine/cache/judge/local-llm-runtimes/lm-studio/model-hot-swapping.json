@@ -1,19 +1,37 @@
 {
-  "hash": "6a24ab1c84ea9c6e95fbca48d659716315a2a3e04c73c8b0a615aa4adaec610c",
+  "hash": "d29c0bc170e1a9f3eabda7f798625a9499f2e534121305cc9c1d66960a83d1ce",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "LM Studio's docs show models loaded via `lms load` with custom identifiers while the server runs separately via `lms server start/stop`. On-demand loading means sending an inference request to an unloaded model loads it before the request returns, so models can be switched through the API without restarting the server. A community user also mentions an eject button for unloading models in the app. Missing for 10: explicit documentation that several models can stay loaded at the same time, a documented unload command or API, and independent hands-on confirmation of switching under the server.",
+    "rationale": "LM Studio documents loading models into a running server with `lms load`, including custom identifiers. Its on-demand loading also loads a requested model before the inference request returns, which lets you switch models via API calls without restarting the server. The evidence never states that several models can stay resident at once, and documents no unload or eviction behavior, so coverage of the 'multiple models' part is incomplete. Missing for 10: explicit documentation of multiple models loaded concurrently, documented unload/eviction and memory management when switching, and independent hands-on corroboration of switching without a restart.",
     "evidenceIds": [
       "lm-studio-docs-13",
       "lm-studio-docs-14",
       "lm-studio-docs-30",
-      "lm-studio-docs-12",
       "lm-studio-docs-29",
-      "lm-studio-comm-19"
+      "lm-studio-docs-22"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a power-user, I can load and switch between multiple models without restarting the server",
+      "citations": [
+        {
+          "evidenceId": "lm-studio-docs-30",
+          "quote": "to use a model, simply send an inferencing request to it. If the model is not yet loaded, it'll be loaded before your request returns."
+        },
+        {
+          "evidenceId": "lm-studio-docs-14",
+          "quote": "lms load openai/gpt-oss-20b --identifier=\"my-model-name\""
+        },
+        {
+          "evidenceId": "lm-studio-docs-13",
+          "quote": "lms load [--gpu=max|auto|0.0-1.0] [--context-length=1-N]"
+        }
+      ]
+    },
     "productId": "lm-studio",
     "storyId": "model-hot-swapping"
   }

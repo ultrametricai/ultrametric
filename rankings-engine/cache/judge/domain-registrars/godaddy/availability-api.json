@@ -1,21 +1,42 @@
 {
-  "hash": "c209ab35ced7989f072666e66011c98e299152f0ac9f8ddaa0fb0c863ab1ce11",
+  "hash": "7ebc4757aaa367465cc1f2cfdd6ad4e888c5afbb915a81068fb83a8db10a7f1c",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 8,
-    "confidence": "high",
-    "rationale": "GoDaddy documents search operations for checking availability and suggesting alternative names, a concrete v3 check-availability endpoint (curl example), and a machine-readable Domains v3 OpenAPI spec. A rate-limits page says every response carries a RateLimit-Remaining header, and an official MCP server gives agents availability checks. Missing for 10: the actual rate-limit quotas or window sizes (only the header is evidenced), and any independent or hands-on corroboration of the availability API.",
+    "verdict": "partial",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "GoDaddy documents an availability-check and search API, including a concrete v3 check-availability endpoint and a machine-readable OpenAPI spec, so code can call it directly; an official MCP server also exposes availability checks to agents. Rate limiting is documented only through a RateLimit-Remaining response header, and the evidence never states actual request quotas or window sizes, so the 'clear rate limits' part of the story is only partly covered. missing for 10: explicit published rate-limit numbers or windows for the check/search endpoints, independent or hands-on corroboration of the availability API.",
     "evidenceIds": [
       "godaddy-docs-1",
       "godaddy-docs-27",
-      "godaddy-docs-10",
-      "godaddy-docs-33",
       "godaddy-docs-8",
-      "godaddy-docs-12",
-      "godaddy-docs-9",
-      "godaddy-docs-37"
+      "godaddy-docs-33",
+      "godaddy-docs-10",
+      "godaddy-docs-12"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can check domain availability programmatically — a documented check/search API my code or agent can call with clear rate limits",
+      "citations": [
+        {
+          "evidenceId": "godaddy-docs-1",
+          "quote": "Search operations let you check whether a specific domain is available for registration, and discover alternative names based on keywords or natural-language queries."
+        },
+        {
+          "evidenceId": "godaddy-docs-27",
+          "quote": "curl -s \"https://api.godaddy.com/v3/domains/check-availability?domain=my-awesome-domain.com\""
+        },
+        {
+          "evidenceId": "godaddy-docs-10",
+          "quote": "The `RateLimit-Remaining` header on every response shows how many requests remain in the current window."
+        },
+        {
+          "evidenceId": "godaddy-docs-12",
+          "quote": "The GoDaddy MCP server lets AI assistants search for domain names and check domain availability directly from a conversation"
+        }
+      ]
+    },
     "productId": "godaddy",
     "storyId": "availability-api"
   }

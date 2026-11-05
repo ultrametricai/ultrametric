@@ -1,18 +1,31 @@
 {
-  "hash": "dcda920d7e5f520a09c7906a84df7c1f88e47f18ce18ff1d7ee3539474ef02e0",
+  "hash": "484fac20d429368d94626dcbfc891470bdd5e39fd35f93fa2538d9d64854d142",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Honeybadger documents first-party JavaScript un-minification and a Source Map Upload API, which a CI job can call (docs-16, docs-28). Its servers can also fetch source maps (docs-25). However, the evidence shows no source-map upload command in the documented CLI, which lists only deploy and exec (docs-31, docs-51), and no bundler plugin, so the story's stated CLI-or-plugin path is unproven. Missing for 10: a documented CLI source-map upload command, an official bundler plugin (webpack/Vite/etc.), CI workflow docs, and independent or hands-on corroboration that stack traces resolve to original source.",
+    "rationale": "Honeybadger documents automatic un-minification of JavaScript using uploaded source maps through its own Source Map Upload API, so the core outcome is supported. However, the evidence shows no CLI command or bundler plugin for uploading source maps; the documented CLI commands are deploy and exec, not source map upload. missing for 10: documented CLI source-map upload command, bundler plugin (e.g. webpack/Vite), CI workflow guidance, independent or hands-on corroboration of symbolicated stack traces.",
     "evidenceIds": [
       "honeybadger-docs-16",
       "honeybadger-docs-28",
-      "honeybadger-docs-25",
-      "honeybadger-docs-31",
-      "honeybadger-docs-51"
+      "honeybadger-docs-25"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can upload JavaScript source maps from CI — via CLI or bundler plugin — so production stack traces show my original source, not minified frames",
+      "citations": [
+        {
+          "evidenceId": "honeybadger-docs-16",
+          "quote": "Honeybadger can automatically un-minify your JavaScript code if you provide a source map along with your minified files. Use the Source Map Upload API to upload your source maps to Honeybadger."
+        },
+        {
+          "evidenceId": "honeybadger-docs-25",
+          "quote": "Requests sent from Honeybadger servers for source maps, web hooks, and uptime checks include the header Honeybadger-Token"
+        }
+      ]
+    },
     "productId": "honeybadger",
     "storyId": "js-sourcemap-unminify"
   }

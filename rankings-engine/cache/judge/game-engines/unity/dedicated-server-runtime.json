@@ -1,17 +1,31 @@
 {
-  "hash": "03f5efc1eca37fc78d6588d430c499d6858b789590874c284473569a0a936e1e",
+  "hash": "8a118da4f8cebd753fd168994ac540f42448c7f5a783d1919d2ddd37f89ef6c8",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Unity's player command-line docs document a headless mode in which the built application displays nothing and accepts no user input, so game logic can run without rendering. Unity also documents multiplayer packages and services, and build profiles for platform-specific build configurations. Missing for 10: explicit evidence of a dedicated-server build target or server-runtime build profile, documentation of server-specific stripping of rendering and assets, and independent or hands-on corroboration of running headless server builds in production.",
+    "rationale": "Unity's Player command-line docs describe a headless mode in which the application 'doesn't display anything or accept user input'. That lets game logic run without a display. A probe also notes that -batchmode/-nographics are documented, though for headless CI builds rather than game servers. The evidence never shows a dedicated-server build target or a server-optimized runtime with rendering stripped, so only the headless-run part of the story is documented. Missing for 10: an explicit dedicated-server build target/profile, documented stripping of rendering from server builds, and independent or hands-on corroboration of running game servers headless.",
     "evidenceIds": [
       "unity-docs-8",
-      "unity-docs-6",
-      "unity-docs-9",
-      "unity-docs-4"
+      "unity-probe-rt-3",
+      "unity-docs-9"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a game developer, game logic runs headless on servers — a dedicated-server or server-runtime build without rendering",
+      "citations": [
+        {
+          "evidenceId": "unity-docs-8",
+          "quote": "Run the application in headless mode. In this mode, the application doesn’t display anything or accept user input."
+        },
+        {
+          "evidenceId": "unity-probe-rt-3",
+          "quote": "the editor whose -batchmode/-nographics CLI is documented for headless CI builds"
+        }
+      ]
+    },
     "productId": "unity",
     "storyId": "dedicated-server-runtime"
   }

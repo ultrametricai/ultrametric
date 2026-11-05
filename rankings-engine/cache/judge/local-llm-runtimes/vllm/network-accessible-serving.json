@@ -1,18 +1,36 @@
 {
-  "hash": "35e92493a65a24befe34fa647511e6596283623dd51723d72b363616ad278360",
+  "hash": "0b3b5ed3b3765ec9c896e347f08754c23c1611db16b96ef8494f67cef2ba7af3",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "vLLM ships its own OpenAI-compatible HTTP API server, started from the CLI, plus an official Docker image for deploying it. That is a network-facing service other devices can call. Anthropic Messages API and gRPC endpoints are also documented. missing for 10: explicit documentation of binding to a LAN interface (host/port options) or of access and authentication controls for remote clients, and independent hands-on reports of serving to other devices on a local network.",
+    "rationale": "vLLM ships its own OpenAI-compatible API server, started from the CLI or the official vllm/vllm-openai Docker image, which is the core way to expose models to other clients. However, the evidence never documents host or port binding, LAN exposure, or access from other devices, so the network-serving part of the story is only implied. Missing for 10: documented host/port binding for network access, guidance on reaching the server from other devices on the LAN, authentication/API-key options for network clients, hands-on corroboration of multi-device access.",
     "evidenceIds": [
-      "vllm-docs-9",
-      "vllm-docs-15",
-      "vllm-docs-26",
       "vllm-docs-27",
-      "vllm-comm-2"
+      "vllm-docs-9",
+      "vllm-docs-26",
+      "vllm-docs-15"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a power-user, I can serve models over my local network for access from other devices",
+      "citations": [
+        {
+          "evidenceId": "vllm-docs-27",
+          "quote": "Starts the vLLM OpenAI Compatible API server."
+        },
+        {
+          "evidenceId": "vllm-docs-9",
+          "quote": "OpenAI-compatible API server, plus Anthropic Messages API and gRPC support"
+        },
+        {
+          "evidenceId": "vllm-docs-26",
+          "quote": "The image can be used to run OpenAI compatible server and is available on Docker Hub as vllm/vllm-openai"
+        }
+      ]
+    },
     "productId": "vllm",
     "storyId": "network-accessible-serving"
   }

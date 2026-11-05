@@ -1,19 +1,36 @@
 {
-  "hash": "1d2003aaac742da9f8812c3bfc3253fbdec543101649cfc1916e37184434cfef",
+  "hash": "0e6bfd5486c2f3a3fa5a0950bcfb095bd5109e1c05d16d95bad82a99b2fce560",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 9,
-    "confidence": "medium",
-    "rationale": "Porkbun's first-party docs describe an isolated sandbox. A `pk1_sb_` key runs every API operation against a simulated environment with fake credit, with no real registry actions, DNS changes or charges, and it even delivers signed webhooks. Beyond the sandbox, every path is mirrored under `/mock` with zero setup, and registration supports `dryRun: true` pre-flight checks. Missing for 10: independent or hands-on corroboration that the sandbox behaves as documented; all evidence is vendor-claimed and the probes did not exercise the sandbox.",
+    "confidence": "high",
+    "rationale": "Porkbun documents a dedicated sandbox: a `pk1_sb_` key runs every API operation against an isolated simulated environment with fake credit. It makes no real registry actions, DNS changes, or charges, and it still delivers signed webhooks. This is true sandbox isolation, separate from the per-call dryRun pre-flight check and the /mock response-shape endpoints. Missing for 10: independent or hands-on corroboration that the sandbox behaves as documented.",
     "evidenceIds": [
       "porkbun-docs-4",
       "porkbun-docs-18",
       "porkbun-docs-34",
-      "porkbun-docs-19",
-      "porkbun-docs-5",
-      "porkbun-docs-44"
+      "porkbun-docs-19"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
+      "citations": [
+        {
+          "evidenceId": "porkbun-docs-4",
+          "quote": "Test the whole API end-to-end in an isolated **sandbox** — a `pk1_sb_` key runs every operation against a simulated environment with fake credit"
+        },
+        {
+          "evidenceId": "porkbun-docs-18",
+          "quote": "a `pk1_sb_` key runs every operation against a simulated environment with fake credit (no real registry actions, DNS changes, or charges), including delivering signed webhooks"
+        },
+        {
+          "evidenceId": "porkbun-docs-19",
+          "quote": "Every real path is mirrored under `/mock`"
+        }
+      ]
+    },
     "productId": "porkbun",
     "storyId": "api-sandbox"
   }

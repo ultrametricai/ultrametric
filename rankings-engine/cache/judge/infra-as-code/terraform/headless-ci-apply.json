@@ -1,20 +1,46 @@
 {
-  "hash": "3a0c9f1c60527600ad84823e3eb87cd230bf03ace775733ac3593af6ce3e981c",
+  "hash": "5efae3dd6b9eebb9db2215d833ac6714ca1782c332813aff83b5719f90a15546",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "First-party docs cover the core workflow: `terraform plan -out=FILE` saves a plan artifact that `terraform apply` later executes. `-auto-approve` skips interactive approval, and `-json` and `terraform show -json` provide machine-readable output that CI can consume. Missing for 10: documentation of other non-interactive controls such as disabling input prompts or CI-specific automation guidance, and independent or hands-on corroboration of the CI workflow.",
+    "rationale": "Terraform's first-party docs cover the core workflow. `terraform plan -out=FILE` saves a plan artifact that can later be passed to `terraform apply`. `-auto-approve` skips the interactive approval prompt. `-json` streams machine-readable output for plan/apply, which suits CI pipelines. Missing for 10: explicit documentation of other non-interactive CI controls (e.g. disabling input prompts or automation-mode guidance), and independent or hands-on corroboration of CI usage.",
     "evidenceIds": [
       "terraform-docs-30",
-      "terraform-docs-3",
       "terraform-docs-17",
-      "terraform-docs-16",
+      "terraform-docs-3",
       "terraform-docs-22",
       "terraform-docs-48",
-      "terraform-docs-43"
+      "terraform-docs-25"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a devops-lead, I can run plan and apply non-interactively in CI using saved plan artifacts and approval flags",
+      "citations": [
+        {
+          "evidenceId": "terraform-docs-30",
+          "quote": "You can use the optional `-out=FILE` option to save the generated plan to a file on disk, which you can later execute by passing the file to `terraform apply`"
+        },
+        {
+          "evidenceId": "terraform-docs-17",
+          "quote": "You can pass the `-auto-approve` option to instruct Terraform to apply the plan without asking for confirmation."
+        },
+        {
+          "evidenceId": "terraform-docs-3",
+          "quote": "-auto-approve - Skips interactive approval of the plan before applying"
+        },
+        {
+          "evidenceId": "terraform-docs-22",
+          "quote": "For long-running commands such as `plan`, `apply`, `refresh`, and `test`, the `-json` flag outputs a stream of JSON UI messages."
+        },
+        {
+          "evidenceId": "terraform-docs-48",
+          "quote": "For Terraform plan files, `terraform show -json` shows a JSON representation of the plan, configuration, and current state."
+        }
+      ]
+    },
     "productId": "terraform",
     "storyId": "headless-ci-apply"
   }

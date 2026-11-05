@@ -1,16 +1,35 @@
 {
-  "hash": "4e16d0321a449ad26708e9f607d2a06dd4b9a5bd5741aa25f2af08fdd0bf2d5f",
+  "hash": "8d9fa411c95a84fca8bc5a83459af6b87d5488b0ae2876d21373b6cec6533399",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 4,
-    "confidence": "medium",
-    "rationale": "Meltano documents scheduled pipelines orchestrated through Apache Airflow, which is an external tool. It also offers `meltano run` for executing EL(T) pipelines and claims to run all pipelines, including dbt workflows, in one place. Nothing in the evidence shows a native way to declare dependencies between steps or datasets and have Meltano resolve the run order itself, so dependency-aware ordering relies on Airflow. Missing for 10: native step/dataset dependency declaration, documented run ordering based on dependencies, dataset-level lineage triggers, independent corroboration.",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Meltano's docs say pipelines can be scheduled and orchestrated with Apache Airflow, and that `meltano run` executes EL(T) pipelines that can include dbt workflows. That gives thin evidence of run orchestration, but nothing shows the user defining dependencies between steps or datasets, or Meltano resolving run order from them; the orchestration itself is delegated to Airflow. Missing for 10: documented dependency declaration between pipeline steps and datasets, dependency-aware ordering by Meltano itself, dataset-level (data-aware) triggering, and independent or hands-on corroboration.",
     "evidenceIds": [
       "meltano-docs-7",
       "meltano-docs-37",
       "meltano-docs-25"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a data engineer, I define dependencies between pipeline steps and datasets, and the platform orchestrates runs in the right order",
+      "citations": [
+        {
+          "evidenceId": "meltano-docs-7",
+          "quote": "Meltano supports scheduled pipelines that can be orchestrated using Apache Airflow."
+        },
+        {
+          "evidenceId": "meltano-docs-37",
+          "quote": "You can run EL(T) pipelines using [`meltano run`]"
+        },
+        {
+          "evidenceId": "meltano-docs-25",
+          "quote": "Run all pipelines in one place, across databases, files, SaaS tools, internal systems, and workflows like dbt."
+        }
+      ]
+    },
     "productId": "meltano",
     "storyId": "dag-orchestration"
   }

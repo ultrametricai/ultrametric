@@ -1,18 +1,40 @@
 {
-  "hash": "9812f200b919c46b95e9557758d74c3595804c362aa40a6ca135dbf64a47b304",
+  "hash": "7cc3728c6b968b513f65a9e8ae62ad2783b70214abc374dbb6f58199e8485028",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "OpenTofu's first-party docs describe `tofu plan` as creating an execution plan to preview infrastructure changes before applying. They also cover speculative plans for verifying changes before code review, a destroy mode that plans removal of all objects, and `-out=FILE` to save a plan that `tofu apply` later executes exactly as reviewed. Missing for 10: evidence explicitly describing the per-resource create/update/destroy breakdown in plan output, and independent or hands-on corroboration of plan accuracy.",
+    "rationale": "OpenTofu's `tofu plan` command creates an execution plan to preview infrastructure changes before applying them. A destroy mode previews teardown, and `-out=FILE` saves the plan so `tofu apply` executes exactly what was previewed. Speculative plans also let developers verify effects before code review. Missing for 10: explicit documentation that plan output breaks down create/update/destroy actions per resource, and independent hands-on corroboration of plan previews.",
     "evidenceIds": [
       "opentofu-docs-3",
       "opentofu-docs-4",
       "opentofu-docs-5",
-      "opentofu-docs-21",
-      "opentofu-docs-34"
+      "opentofu-docs-21"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a platform-engineer, I can preview exactly what will change — creates, updates, and destroys — before applying",
+      "citations": [
+        {
+          "evidenceId": "opentofu-docs-3",
+          "quote": "The `tofu plan` command creates an execution plan, which lets you preview the changes that OpenTofu plans to make to your infrastructure."
+        },
+        {
+          "evidenceId": "opentofu-docs-4",
+          "quote": "developers can use speculative plans to verify the effect of their changes before submitting them for code review"
+        },
+        {
+          "evidenceId": "opentofu-docs-5",
+          "quote": "Destroy mode: creates a plan whose goal is to destroy all remote objects that currently exist, leaving an empty OpenTofu state."
+        },
+        {
+          "evidenceId": "opentofu-docs-21",
+          "quote": "You can use the optional `-out=FILE` option to save the generated plan to a file on disk, which you can later execute by passing the file to `tofu apply` as an extra argument."
+        }
+      ]
+    },
     "productId": "opentofu",
     "storyId": "preview-before-apply"
   }

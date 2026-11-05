@@ -1,11 +1,11 @@
 {
-  "hash": "592d598f291f3381c93a05b8a8a2a30ea8d1b41ade73e4fbaaa88dde201a9780",
+  "hash": "404311c50cd898a869e56afab10b8e002c0b11d66935a24a897472b31b2cb168",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "vLLM's docs explicitly list continuous batching and chunked prefill as core features ([vllm-docs-3]), and the site says advanced scheduling and continuous batching keep GPU utilization at its peak ([vllm-docs-16]). Community users independently confirm that continuous batching and KV caching/chunking are central to its performance ([vllm-comm-3], [vllm-comm-4]), and a built-in benchmark CLI measures serving throughput ([vllm-docs-29]). missing for 10: in-depth first-party docs on chunked prefill configuration and tuning, quantified throughput results in the evidence.",
+    "rationale": "vLLM's docs list both continuous batching and chunked prefill as core engine features and tie its scheduling and continuous batching to peak GPU utilization. Community users independently confirm they rely on continuous batching and KV caching/chunking as a throughput foundation, and the CLI ships throughput benchmarking. Missing for 10: in-depth first-party documentation on configuring or tuning chunked prefill, and quantified independent throughput results.",
     "evidenceIds": [
       "vllm-docs-3",
       "vllm-docs-16",
@@ -13,6 +13,33 @@
       "vllm-comm-3",
       "vllm-comm-4"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a power-user, I can achieve high serving throughput via continuous batching and chunked prefill",
+      "citations": [
+        {
+          "evidenceId": "vllm-docs-3",
+          "quote": "Continuous batching of incoming requests, chunked prefill, prefix caching"
+        },
+        {
+          "evidenceId": "vllm-docs-16",
+          "quote": "Advanced scheduling and continuous batching ensure peak GPU utilization."
+        },
+        {
+          "evidenceId": "vllm-docs-29",
+          "quote": "Run benchmark tests for latency online serving throughput and offline inference throughput."
+        },
+        {
+          "evidenceId": "vllm-comm-3",
+          "quote": "We use vLLM kv cache and continuous batching as a foundation for requests in ScalarLM"
+        },
+        {
+          "evidenceId": "vllm-comm-4",
+          "quote": "continuous batching, kv caching / chunking, and a huge model library including low precision mattered more."
+        }
+      ]
+    },
     "productId": "vllm",
     "storyId": "continuous-batching-throughput"
   }

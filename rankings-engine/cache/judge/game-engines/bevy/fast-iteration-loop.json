@@ -1,17 +1,36 @@
 {
-  "hash": "604fe5a14e80844e7585599be531739410c0248f9e63a0144de4c89f93aef1c5",
+  "hash": "de1594925bfabf7e947d66a127c12c127b753d63245c30371578f6869e74a7d1",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Bevy documents hot reloading for scenes, textures, and meshes, with \"instant feedback\" and no restarts. For code changes, though, game logic is Rust, so it still needs a recompile; Bevy claims 0.8-3.0 seconds with its \"fast compiles\" configuration. That makes the loop near-instant for assets and only reasonably fast for logic. Missing for 10: true hot reload of game logic/code without recompiling, and independent or hands-on confirmation of the claimed compile times.",
+    "rationale": "Bevy's own docs claim 0.8-3.0 second iterative compiles with its \"fast compiles\" configuration, and hot reload without restarts or recompiles. However, hot reload is documented only for scenes, textures, and meshes, not for game logic. Since logic is Rust code, a code change still needs a recompile, so the loop is fast but not true code hot reload. Missing for 10: hot reload of game logic/code changes, independent or hands-on corroboration of the compile-time claims, and detail on what the fast-compiles setup requires.",
     "evidenceIds": [
-      "bevy-docs-10",
       "bevy-docs-11",
+      "bevy-docs-10",
       "bevy-docs-30",
-      "bevy-docs-42"
+      "bevy-docs-1"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a game developer, the edit-run loop is fast — hot reload or near-instant preview after a script change",
+      "citations": [
+        {
+          "evidenceId": "bevy-docs-11",
+          "quote": "With Bevy you can expect 0.8-3.0 seconds with the \"fast compiles\" configuration"
+        },
+        {
+          "evidenceId": "bevy-docs-10",
+          "quote": "Get instant feedback on your changes without app restarts or recompiles"
+        },
+        {
+          "evidenceId": "bevy-docs-30",
+          "quote": "You can currently hot-reload scenes, textures, and meshes"
+        }
+      ]
+    },
     "productId": "bevy",
     "storyId": "fast-iteration-loop"
   }

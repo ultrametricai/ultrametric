@@ -1,22 +1,42 @@
 {
-  "hash": "aa49cf01a69415eb90c890aa3c0570af5dbfc0b9a5b61fdcad4465b423e154f3",
+  "hash": "93f6615f86d6a2895669a8983b98ed08739600f40707d13f7506b302385a4b12",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Terraform's core workflow is bulk operations. A single plan/apply covers every defined resource across providers: it builds a resource graph and parallelizes creation and modification of non-dependent resources, and `-destroy` plans removal of all remote objects. Users also report adding infrastructure in bulk via for_each and dynamic blocks, and say declarative moves and imports are now simple and safe. missing for 10: first-party docs on for_each/count-style bulk instancing, a smooth path for bulk state refactoring (users describe merging hundreds or thousands of resources via state mv as a big job), and evidence that performance holds up at large scale (users report having to split stacks).",
+    "rationale": "Terraform acts on many resources in one run: plan and apply cover the whole configuration, parallelize non-dependent resources, can destroy all remote objects with -destroy, and one import block can import several resources at once. Bulk refactoring is weaker, though: a community user reports that moving hundreds or thousands of resources via state mv is a big job, and there are no documented first-party bulk selectors or filters for state operations. missing for 10: documented bulk/filtered state manipulation (mass move or remove), first-party docs for for_each-style fan-out, independent hands-on corroboration of large-scale bulk runs.",
     "evidenceIds": [
       "terraform-gh-1",
-      "terraform-docs-44",
+      "terraform-docs-64",
       "terraform-docs-45",
-      "terraform-docs-42",
-      "terraform-docs-51",
-      "terraform-comm-12",
-      "terraform-comm-18",
-      "terraform-comm-5",
-      "terraform-comm-2"
+      "terraform-docs-44",
+      "terraform-docs-17",
+      "terraform-comm-5"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can perform bulk operations across many items at once",
+      "citations": [
+        {
+          "evidenceId": "terraform-gh-1",
+          "quote": "Terraform builds a graph of all your resources, and parallelizes the creation and modification of any non-dependent resources."
+        },
+        {
+          "evidenceId": "terraform-docs-64",
+          "quote": "You can specify multiple resources in the `import` block to import more than one resource at a time."
+        },
+        {
+          "evidenceId": "terraform-docs-45",
+          "quote": "These include `-destroy`, which creates a plan to destroy all remote objects"
+        },
+        {
+          "evidenceId": "terraform-docs-17",
+          "quote": "You can pass the `-auto-approve` option to instruct Terraform to apply the plan without asking for confirmation."
+        }
+      ]
+    },
     "productId": "terraform",
     "storyId": "automation-bulk-operations"
   }

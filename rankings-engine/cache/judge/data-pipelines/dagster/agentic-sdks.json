@@ -1,21 +1,41 @@
 {
-  "hash": "9d8407d7cdcd2dc4a0497c61b282c33e81365072c0dc99e07bcce6da4373d8bc",
+  "hash": "415d2f22af9a4390d1b661d4b5bcc9456b9a87adb186cde86504e6b40221e813",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Dagster is built around an official Python library: the docs show `import dagster as dg` with `@dg.asset` definitions, and the README describes declaring assets as Python functions. First-party integration libraries (dagster-fivetran, dagster-dlt, dbt) extend it, and community users praise the developer experience of building against these APIs. missing for 10: evidence of SDKs beyond Python (or a typed client SDK for the Dagster+ API, since no OpenAPI spec was found), and SDK-specific reference documentation or versioning details in the pack.",
+    "rationale": "Dagster's official `dagster` Python package is the documented way to build. Code imports it directly (`import dagster as dg`, `@dg.asset`), and pipelines are declared as Python functions. Official integration libraries such as dagster-fivetran and dagster-dlt extend it. However, the evidence shows only a Python authoring library. No OpenAPI spec was found (all candidate paths 404), and nothing documents client SDKs for programmatically driving a Dagster or Dagster+ deployment, so coverage is partial. Missing for 10: documented client SDKs for the platform/deployment API, an OpenAPI or REST spec, multi-language SDK coverage, and independent hands-on corroboration of SDK use.",
     "evidenceIds": [
       "dagster-docs-17",
       "dagster-docs-26",
-      "dagster-docs-1",
       "dagster-docs-39",
       "dagster-docs-40",
-      "dagster-docs-7",
-      "dagster-comm-5",
-      "dagster-comm-8"
+      "dagster-probe-2"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can build against official SDKs",
+      "citations": [
+        {
+          "evidenceId": "dagster-docs-17",
+          "quote": "import dagster as dg@dg.assetdef hello(context: dg.AssetExecutionContext):    context.log.info(\"Hello!\")"
+        },
+        {
+          "evidenceId": "dagster-docs-26",
+          "quote": "With Dagster, you declare—as Python functions—the data assets that you want to build."
+        },
+        {
+          "evidenceId": "dagster-docs-39",
+          "quote": "The dagster-fivetran library provides a FivetranAccountComponent which can be used to easily represent Fivetran connectors as assets in Dagster."
+        },
+        {
+          "evidenceId": "dagster-docs-40",
+          "quote": "The dagster-dlt library provides a DltLoadCollectionComponent which can be used to easily represent a collection of dlt sources and pipelines as assets in Dagster."
+        }
+      ]
+    },
     "productId": "dagster",
     "storyId": "agentic-sdks"
   }

@@ -1,18 +1,26 @@
 {
-  "hash": "387cd14488d6ede4f3da905f7af8f1df5fbab47c4b5a82dd3419d4e982b0a07b",
+  "hash": "338ebbc609937546fe96f1b66979b96e3f50b1cec084b30e60a6e319483feec7",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 3,
     "confidence": "medium",
-    "rationale": "Airbyte schedules each connection on its own (scheduled, cron, or manual), and its dbt Cloud integration can run transformations immediately after a sync, which is a single fixed post-sync dependency. For real cross-step ordering, the docs point users to external orchestrators like Airflow via the API. Missing for 10: native definition of dependencies between connections or datasets, built-in DAG-style orchestration that runs steps in the right order, and independent or hands-on corroboration of multi-step dependency handling.",
+    "rationale": "Airbyte's own dbt Cloud integration chains one downstream step: dbt transformations run immediately after a sync. That is a narrow, fixed form of step ordering, not a general way to define dependencies between pipeline steps and datasets. Its schedules are time-based, and the docs send cross-pipeline ordering to external orchestrators like Airflow, which earns no credit here. Missing for 10: user-defined dependencies between connections or steps, dataset-aware dependency graphs (DAGs), multi-step ordered orchestration, and independent or hands-on corroboration.",
     "evidenceIds": [
-      "airbyte-docs-53",
-      "airbyte-docs-30",
       "airbyte-docs-11",
-      "airbyte-docs-3",
-      "airbyte-docs-46"
+      "airbyte-docs-27"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a data engineer, I define dependencies between pipeline steps and datasets, and the platform orchestrates runs in the right order",
+      "citations": [
+        {
+          "evidenceId": "airbyte-docs-11",
+          "quote": "By using the dbt Cloud integration, you can create and run dbt transformations immediately following syncs in Airbyte Cloud."
+        }
+      ]
+    },
     "productId": "airbyte",
     "storyId": "dag-orchestration"
   }

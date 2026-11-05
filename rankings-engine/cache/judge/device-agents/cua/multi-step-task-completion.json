@@ -1,11 +1,11 @@
 {
-  "hash": "815bf521db2b5b809ef29b9f25bb506616f92fb0b7dfb167a61867b7627cf84e",
+  "hash": "ee137d11187c79aa2dc91a146305915ba430d7537e2228fe49679488f7db946d",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "partial",
-    "quality": 5,
+    "verdict": "disputed",
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Cua documents the plumbing for unattended multi-app work. Cua Driver lets an agent drive native apps in the background with its own cursor. Unattended access can be granted for saved credentials. Named agents can run daemon-fired routines with notifications and pause/resume. However, how reliably tasks complete depends on the agent driving it. The one hands-on report (an older 0.1.29 build with a small local model) describes the agent typing in the wrong place and runs failing to connect, so hands-off completion is unproven. Missing for 10: documented cross-app task success rates or published benchmark results, independent corroboration that long multi-step tasks finish unattended, and documented recovery from mid-task failures such as popups or loading states.",
+    "rationale": "Cua's docs say agents drive native apps in the background while the user keeps working, including building and testing a Windows app, with unattended access and daemon-fired routines. A hands-on report contradicts this: one run typed in the wrong place and created a stray Finder file, and the next two runs could not connect to the Computer API Server WebSocket. That report is on an early version (cua-agent 0.1.29) with a small model, which limits how much weight it carries. Missing for 10: independent evidence of a multi-step, cross-app task finishing reliably without intervention; documented error recovery or retry behavior; published success rates on cross-app tasks.",
     "evidenceIds": [
       "cua-docs-2",
       "cua-docs-3",
@@ -13,10 +13,35 @@
       "cua-docs-5",
       "cua-docs-17",
       "cua-docs-24",
-      "cua-comm-1",
-      "cua-comm-8",
-      "cua-comm-9"
+      "cua-comm-1"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a power user, a multi-step task that crosses several apps completes without me babysitting every step",
+      "citations": [
+        {
+          "evidenceId": "cua-docs-2",
+          "quote": "It works in the background, so you can keep using your mouse and keyboard while the agent works."
+        },
+        {
+          "evidenceId": "cua-docs-5",
+          "quote": "Your agent builds and tests a Windows app in the background while you keep working."
+        },
+        {
+          "evidenceId": "cua-docs-3",
+          "quote": "ask the agent to do things in your apps"
+        },
+        {
+          "evidenceId": "cua-docs-24",
+          "quote": "routines the daemon fires, notifications, pause and resume"
+        },
+        {
+          "evidenceId": "cua-comm-1",
+          "quote": "got ahead of itself and typed in the wrong place"
+        }
+      ]
+    },
     "productId": "cua",
     "storyId": "multi-step-task-completion"
   }

@@ -1,17 +1,18 @@
 {
-  "hash": "a5c6e623c42816a5ef927969f291e2c27faac4cb16d72e22cf38075a838f7bb3",
+  "hash": "85fc0fed2963153e010a5f4a94fd6b3813bc33bdea07b0901fe40dd57fc5c006",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "partial",
-    "quality": 5,
+    "verdict": "none",
+    "quality": 0,
     "confidence": "medium",
-    "rationale": "Edge0 documents its own offload mechanism for running models larger than available memory: expert weights stream from SSD on demand, so peak memory is bounded by the active set (35B MoE in ~2.5 GB). A trained prerouter overlaps those loads with the forward pass for up to +59% decode throughput. However, this is SSD-to-memory expert streaming rather than the CPU+GPU split the story names, and the CUDA backend is only a reserved slot. missing for 10: documented CPU+GPU layer/tensor split offload, user-configurable GPU layer allocation, discrete-GPU (CUDA) support, independent or hands-on corroboration of larger-than-VRAM runs.",
-    "evidenceIds": [
-      "edge0-docs-1",
-      "edge0-gh-1",
-      "edge0-gh-2",
-      "edge0-gh-20"
-    ],
+    "rationale": "Edge0 documents a different offload mechanism: MoE expert weights are streamed from SSD on demand, so peak memory tracks the active expert set. Nothing in the evidence describes splitting a model's layers or weights between CPU RAM and GPU VRAM, and the CUDA backend is only a reserved slot. SSD expert streaming is a related but different capability, so it earns no credit toward combined CPU+GPU offload.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "adjacent",
+      "coverage": "none",
+      "subject": "As a power-user, I can run models larger than my available VRAM using combined CPU+GPU offload",
+      "citations": []
+    },
     "productId": "edge0",
     "storyId": "cpu-gpu-hybrid-offload"
   }

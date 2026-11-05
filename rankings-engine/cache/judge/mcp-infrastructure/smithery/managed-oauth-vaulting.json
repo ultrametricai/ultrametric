@@ -1,19 +1,45 @@
 {
-  "hash": "51e8f5e5c50728ced3295f1f74413a430d2e51d7be174348dc4e67afa15315cf",
+  "hash": "c2c700f593f7016cfcfb9da00a4f46306bcb5463a328de4b6a4468a17b00543f",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "First-party docs say Smithery runs OAuth flows for downstream MCP servers using its own maintained OAuth apps, with no redirect URIs or client secrets to configure. It stores API keys and tokens in encrypted, write-only storage and refreshes tokens before expiry, setting the connection status to `auth_required` if a refresh fails. Missing for 10: independent or hands-on corroboration of the OAuth/vault/refresh behavior, and detail on encryption and key management for the credential store.",
+    "rationale": "Smithery's docs say it handles OAuth flows for downstream MCP servers, maintains its own OAuth apps so no redirect URIs or secrets need configuring, stores API keys and tokens in encrypted write-only storage, and refreshes tokens automatically before expiry (falling back to `auth_required` if a refresh fails). missing for 10: independent or hands-on corroboration of the OAuth and vault behavior, and detailed documentation of the encryption and key-management model beyond a one-line claim.",
     "evidenceIds": [
       "smithery-docs-1",
       "smithery-docs-21",
-      "smithery-docs-3",
-      "smithery-docs-2",
       "smithery-docs-22",
+      "smithery-docs-3",
       "smithery-docs-13"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can let the platform run OAuth flows for downstream tools and vault the resulting credentials encrypted, with automatic token refresh",
+      "citations": [
+        {
+          "evidenceId": "smithery-docs-1",
+          "quote": "Instead of implementing the MCP protocol directly, handling OAuth flows, and managing credentials yourself, Smithery handles all of it for you."
+        },
+        {
+          "evidenceId": "smithery-docs-21",
+          "quote": "Zero OAuth configuration — No redirect URIs, client IDs, or secrets to configure. Smithery maintains OAuth apps for popular integrations."
+        },
+        {
+          "evidenceId": "smithery-docs-3",
+          "quote": "Secure credential storage — Encrypted, write-only storage for API keys and tokens"
+        },
+        {
+          "evidenceId": "smithery-docs-22",
+          "quote": "Tokens refresh automatically before expiry. If a refresh fails, the connection status changes to `auth_required`."
+        },
+        {
+          "evidenceId": "smithery-docs-13",
+          "quote": "Smithery handles OAuth, token refresh, and connection management automatically."
+        }
+      ]
+    },
     "productId": "smithery",
     "storyId": "managed-oauth-vaulting"
   }

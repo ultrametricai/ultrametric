@@ -1,22 +1,46 @@
 {
-  "hash": "9ccb46d322d1589e908e8c55ae949be0519b2bb424fde7fe4cc49ffa92a773a3",
+  "hash": "69ed77eab7e124bd8e9f82fdea2b30da99bbf0ee66d787ad872bb0e74ca41cd1",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Terraform's native format is the Terraform-format codebase and state, so an existing codebase works without conversion. Configuration files are versioned HCL (terraform-docs-1). State maps real-world resources to configuration and can be stored in remote backends and edited with `terraform state` (terraform-docs-20, terraform-docs-33, terraform-docs-6). Resources not yet in state can be brought in with import and import blocks (terraform-docs-5, terraform-docs-50, terraform-comm-18). Community reports confirm codebases carry across versions with only minor HCL changes (terraform-comm-1), and that backend state is adopted by re-running `terraform init` (terraform-comm-16). missing for 10: first-party docs on migrating state between backends or Terraform versions, explicit compatibility guarantees for older codebases and state files, and hands-on accounts of a full migration.",
+    "rationale": "Terraform natively consumes its own configuration format and state file, and documents state manipulation (`terraform state`), importing existing resources into state, and remote/HCP state storage. A community user also reports that import and state moves are now 'quite simple and safe.' However, the evidence never documents an end-to-end flow for bringing an existing Terraform codebase and its state into this installation, such as backend/state migration steps or version-compatibility handling. missing for 10: a documented migration path for an existing codebase plus state (e.g., state backend migration or `init` migration guidance), version/upgrade compatibility guidance for older codebases and state files, and independent hands-on corroboration of a full codebase+state migration.",
     "evidenceIds": [
-      "terraform-docs-1",
-      "terraform-docs-20",
-      "terraform-docs-33",
       "terraform-docs-6",
+      "terraform-docs-20",
       "terraform-docs-5",
+      "terraform-docs-33",
       "terraform-docs-50",
-      "terraform-comm-18",
-      "terraform-comm-1",
-      "terraform-comm-16"
+      "terraform-comm-18"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform-engineer, I can migrate an existing Terraform-format codebase and its state into this tool",
+      "citations": [
+        {
+          "evidenceId": "terraform-docs-6",
+          "quote": "Terraform provides the terraform state command to perform basic modifications of the state using the CLI."
+        },
+        {
+          "evidenceId": "terraform-docs-20",
+          "quote": "Terraform uses your workspace's state to map real world resources to your configuration"
+        },
+        {
+          "evidenceId": "terraform-docs-5",
+          "quote": "You can import an existing resource to state from the Terraform CLI."
+        },
+        {
+          "evidenceId": "terraform-docs-33",
+          "quote": "We recommend storing state in HCP Terraform or a remote backend to securely store state and collaborate with team members."
+        },
+        {
+          "evidenceId": "terraform-comm-18",
+          "quote": "Impressed by recent declarative handling of imperative actions such as import and state moves."
+        }
+      ]
+    },
     "productId": "terraform",
     "storyId": "migrate-from-terraform"
   }

@@ -1,23 +1,52 @@
 {
-  "hash": "731877cd2e9cedc6353a272a1cbcdd8adafcf728724a5c000f168861a580a235",
+  "hash": "595996a64dccc816c3e569055249011dcfb9f781922ab45804cb584e5d1bb93d",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 8,
-    "confidence": "high",
-    "rationale": "Edge0 is a local inference engine. Weights stream from the local SSD to run 35B MoE models in about 2.5 GB of RAM, and a single fetched download is a ready-to-run model. It serves an OpenAI-compatible API on 127.0.0.1 and ships on-device apps for iOS, Android, Windows and macOS, so inference runs on the user's own hardware. Missing for 10: an explicit first-party statement that no telemetry or prompt data leaves the device, and independent or hands-on corroboration of fully offline operation.",
+    "confidence": "medium",
+    "rationale": "Edge0 is a local inference engine. Weights stream from the local SSD, the server runs on localhost (127.0.0.1:8000), and it ships on-device apps or a local CLI/daemon for iOS, Android, Windows and macOS, so prompts are processed on the user's own machine. The 'data never leaves my device' guarantee is implied by the local architecture but never stated outright. missing for 10: explicit offline/no-telemetry privacy statement, independent or hands-on corroboration of fully local operation.",
     "evidenceIds": [
-      "edge0-docs-1",
       "edge0-gh-1",
-      "edge0-gh-4",
-      "edge0-gh-5",
       "edge0-gh-6",
       "edge0-gh-7",
       "edge0-gh-16",
       "edge0-gh-17",
       "edge0-gh-18",
-      "edge0-gh-19"
+      "edge0-gh-19",
+      "edge0-docs-1"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a power-user, I can run inference entirely on my own machine so my data and prompts never leave my device",
+      "citations": [
+        {
+          "evidenceId": "edge0-gh-1",
+          "quote": "expert weights are streamed from storage on demand; peak memory is bounded by the active set, not the parameter count"
+        },
+        {
+          "evidenceId": "edge0-gh-7",
+          "quote": "curl http://127.0.0.1:8000/v1/chat/completions"
+        },
+        {
+          "evidenceId": "edge0-gh-16",
+          "quote": "iOS: on-device iPhone app (Swift + MLX Swift)"
+        },
+        {
+          "evidenceId": "edge0-gh-17",
+          "quote": "Android: on-device app + native engine (Kotlin)"
+        },
+        {
+          "evidenceId": "edge0-gh-19",
+          "quote": "macOS: local CLI / daemon / desktop app (Rust)"
+        },
+        {
+          "evidenceId": "edge0-gh-18",
+          "quote": "Windows: desktop app + native engine (C++ + Vulkan)"
+        }
+      ]
+    },
     "productId": "edge0",
     "storyId": "private-local-inference-guarantee"
   }

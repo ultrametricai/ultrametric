@@ -1,18 +1,41 @@
 {
-  "hash": "cf06ebe3da88887ea3f15222e0fb8c91ccdbfc79a31cbdac8f9964c3cb010afa",
+  "hash": "447ed0b61d805b69771072e04004d251ed3a0ac49b13f233a998553befe06b9b",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
     "confidence": "low",
-    "rationale": "LM Studio's docs show it runs inference through llama.cpp and Apple MLX engines (MLX being Apple-specific acceleration) and supports GPU offload via `lms load --gpu`. A community report mentions a CUDA acceleration setting, implying NVIDIA support, but another user wishes it worked better on AMD Radeon. That AMD comment is a wish, not a concrete failure, so it does not create a dispute. Missing for 10: first-party documentation of NVIDIA CUDA, AMD ROCm/Vulkan or other vendor-specific kernels, evidence of runtime/engine selection per GPU vendor, and hands-on corroboration of good non-Apple GPU performance.",
+    "rationale": "First-party docs show LM Studio runs models through `llama.cpp` or the vendor-specific `Apple MLX` engine and exposes a GPU offload control (`lms load --gpu`). Community posts corroborate MLX on Apple Silicon and imply CUDA acceleration on NVIDIA. However, there is no first-party documentation of NVIDIA CUDA or AMD ROCm/Vulkan kernels, and one user reports AMD/Radeon support is not seamless. missing for 10: first-party documentation of NVIDIA CUDA and AMD (ROCm/Vulkan) acceleration backends, a vendor runtime-selection mechanism, and hands-on corroboration on non-Apple GPUs.",
     "evidenceIds": [
       "lm-studio-docs-29",
       "lm-studio-docs-13",
-      "lm-studio-comm-12",
       "lm-studio-comm-1",
+      "lm-studio-comm-12",
       "lm-studio-comm-20"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a power-user, I can run models on NVIDIA, AMD, or other GPU vendors using vendor-specific acceleration kernels",
+      "citations": [
+        {
+          "evidenceId": "lm-studio-docs-29",
+          "quote": "structured outputs via `llama.cpp` or `Apple MLX`"
+        },
+        {
+          "evidenceId": "lm-studio-docs-13",
+          "quote": "lms load [--gpu=max|auto|0.0-1.0]"
+        },
+        {
+          "evidenceId": "lm-studio-comm-1",
+          "quote": "no way to set CUDA acceleration before loading a model"
+        },
+        {
+          "evidenceId": "lm-studio-comm-12",
+          "quote": "Now that LM Studio supports MLX models, it's one of the most efficient too."
+        }
+      ]
+    },
     "productId": "lm-studio",
     "storyId": "multi-vendor-gpu-support"
   }

@@ -1,17 +1,35 @@
 {
-  "hash": "81ba72a01864f46ca4057a7714daca51fdd5ed6622f28d5971bb2dbc539da8e5",
+  "hash": "f5782b7991fffb529a678efd3854599d277df3a29fe7428c89944087ed54f8d7",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Notte's scraping docs show structured extraction driven by a Pydantic `BaseModel` schema (`HackerNewsFeed`), and say Fetch returns either markdown or LLM-extracted structured data, which goes beyond raw text. One community user reported extraction failing on hyatt.com, but that is a single-site anecdote that does not contradict the documented schema-typed capability. Missing for 10: Zod/TypeScript schema support, documentation of validation and error behaviour, examples of extraction within agent runs, independent corroboration.",
+    "rationale": "Notte's scraping docs show structured extraction driven by a Pydantic model (class HackerNewsFeed(BaseModel)). Fetch is documented as returning page content \"as markdown or structured data using LLM-powered extraction,\" so typed output beyond raw text is a first-party capability. The docs excerpts do not show schema validation behavior or error handling, a Zod/TypeScript equivalent, or extraction tied to agent runs specifically, and one community user reported extraction failing on a specific site. Missing for 10: documented schema-validation and error semantics, a Zod/TypeScript typed-extraction path, explicit typed extraction from agent-visited pages, and independent hands-on corroboration of successful typed extraction.",
     "evidenceIds": [
       "notte-docs-15",
       "notte-docs-25",
-      "notte-docs-3",
-      "notte-comm-1"
+      "notte-docs-3"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can extract typed, schema-validated data (Zod/Pydantic-style) from pages the agent visits, not just raw text",
+      "citations": [
+        {
+          "evidenceId": "notte-docs-15",
+          "quote": "Extract structured data from a page: ... class HackerNewsFeed(BaseModel):"
+        },
+        {
+          "evidenceId": "notte-docs-25",
+          "quote": "Fetch extracts web page content as markdown or structured data using LLM-powered extraction."
+        },
+        {
+          "evidenceId": "notte-docs-3",
+          "quote": "Extract structured data with AI. Turn any website into structured data."
+        }
+      ]
+    },
     "productId": "notte",
     "storyId": "schema-structured-extraction"
   }

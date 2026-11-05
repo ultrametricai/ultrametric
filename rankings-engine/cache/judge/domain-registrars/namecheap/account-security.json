@@ -1,18 +1,30 @@
 {
-  "hash": "262285b8843a2d0b67cd9e38e53b15306974ddc661dbc7c06c28685283036f35",
+  "hash": "3c09bdaf05bd6c4bd35785690006831384e0d29568aac3d29e79619e55a5ee7c",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 3,
+    "quality": 2,
     "confidence": "low",
-    "rationale": "Account 2FA exists only per a community remark, and a concrete report says a 4-digit support PIN lets live chat act on a 2FA-protected account (namecheap-comm-1), with account takeovers described in namecheap-comm-2 and namecheap-comm-3. The Terraform provider's client_ip parameter hints that the API ties calls to a caller IP, which suggests allowlisting, but this is only implied. Missing for 10: first-party 2FA documentation, any evidence of scoped or least-privilege API credentials, explicit IP-whitelist documentation for the API, and evidence that support channels cannot bypass 2FA.",
+    "rationale": "The only evidence of account 2FA is a community report that confirms it exists, but says a 4-digit support PIN via live chat can bypass it. That undercuts the 'real 2FA' part of the story, though there is no first-party claim to formally dispute. The Terraform provider's client_ip parameter hints that the API checks the caller's IP, but it is never documented as allowlisting. missing for 10: first-party 2FA documentation, evidence that 2FA cannot be bypassed via support, scoped or least-privilege API credentials, documented IP allowlisting for API access, independent hands-on corroboration.",
     "evidenceIds": [
       "namecheap-comm-1",
-      "namecheap-comm-2",
-      "namecheap-comm-3",
-      "namecheap-docs-16",
-      "namecheap-docs-1"
+      "namecheap-docs-16"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a security engineer, the registrar account itself is defensible — real 2FA, scoped API credentials, and IP allowlisting on API access",
+      "citations": [
+        {
+          "evidenceId": "namecheap-comm-1",
+          "quote": "even if the account is protected with 2FA"
+        },
+        {
+          "evidenceId": "namecheap-docs-16",
+          "quote": "client_ip is optional: when it is left unset the provider auto-detects the caller's public IP over HTTPS."
+        }
+      ]
+    },
     "productId": "namecheap",
     "storyId": "account-security"
   }

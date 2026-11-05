@@ -1,11 +1,11 @@
 {
-  "hash": "18bc6051eb5820148106088292a5ee1972be3742ac0031708b6e2ddaf200bebf",
+  "hash": "50c54bdb2867e56e9ffdfec12ea924415c4a8c7e7feedc1f2e6d75df5899484e",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Rollbar documents a RESTful API to its data, including a list-items endpoint (GET /api/1/items) with filtering by level, environment, status and pagination. Its OpenAPI 3.1 spec at api.rollbar.com includes Item and Occurrence resources, which covers raw event access. Token scoping is documented: a post_client_item token can only send events and cannot read data, alongside account and project access-token management. missing for 10: an explicit documented endpoint for updating items (status, owner) via the API, explicit occurrence-fetch endpoint details, a full enumeration of read/write token scopes, and independent hands-on corroboration of API usage.",
+    "rationale": "Rollbar documents a RESTful API with a list-items endpoint that supports filtering by level, environment, status and pagination. Its published OpenAPI 3.1 spec has Item and Occurrence resource tags, and tokens are scoped (e.g. a post_client_item token that cannot read data). However, updating items via the API and fetching raw occurrence payloads are only implied by the spec tags, not shown in endpoint documentation. missing for 10: explicit documentation of item update (status/owner) endpoints, explicit occurrence/raw-event fetch endpoints, detail on read/write scopes, independent hands-on corroboration",
     "evidenceIds": [
       "rollbar-docs-14",
       "rollbar-docs-34",
@@ -13,12 +13,41 @@
       "rollbar-docs-35",
       "rollbar-docs-75",
       "rollbar-supp-openapi-spec",
-      "rollbar-docs-59",
-      "rollbar-docs-36",
-      "rollbar-docs-16",
       "rollbar-docs-41",
-      "rollbar-docs-62"
+      "rollbar-docs-62",
+      "rollbar-docs-59"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can list, query, and update issues and fetch raw events through a documented REST API with scoped tokens",
+      "citations": [
+        {
+          "evidenceId": "rollbar-docs-14",
+          "quote": "The Rollbar API provides a RESTful interface to much of the data in the system."
+        },
+        {
+          "evidenceId": "rollbar-docs-15",
+          "quote": "Get the first page of items that are error or critical, in the production environment"
+        },
+        {
+          "evidenceId": "rollbar-docs-75",
+          "quote": "get https://api.rollbar.com/api/1/items"
+        },
+        {
+          "evidenceId": "rollbar-supp-openapi-spec",
+          "quote": "\"tags\":[{\"name\":\"Item\"},{\"name\":\"Occurrence\"},{\"name\":\"Metrics\"},{\"name\":\"Deploy\"}]"
+        },
+        {
+          "evidenceId": "rollbar-docs-41",
+          "quote": "Use a separate client-side token with post_client_item scope only."
+        },
+        {
+          "evidenceId": "rollbar-docs-62",
+          "quote": "The client-side access token can only be used to send events and only from client-side platforms. It can't be used to read any data"
+        }
+      ]
+    },
     "productId": "rollbar",
     "storyId": "issues-api-read"
   }

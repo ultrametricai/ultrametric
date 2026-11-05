@@ -1,22 +1,40 @@
 {
-  "hash": "9304a54c23cb154f4e7243c453a655cf214dce904439d67918d80194576f2870",
+  "hash": "c5c19e9595913e0aaee4c9dbf13e47ffeb514aa06b98d16a2d61956b31c9ad5f",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Ledgy documents a `companyCaptable` API operation that returns a company's cap table data. Access uses OAuth 2.0 client-credentials service accounts, and responses can be paged and limited to rows changed since an earlier request, so an agent can pull the current cap table programmatically. The evidence does not show any data-room integration or reconciliation feature; the only related item is that transactions can carry attached documents, so the reconciliation step would fall to the user's agent. Machine-readable discovery is also weak, since the probes found no llms.txt and no OpenAPI spec. Missing for 10: any data-room connection or reconciliation capability, a published OpenAPI/llms.txt for agent consumption, a documented cap table response schema, and independent or hands-on corroboration.",
+    "rationale": "Ledgy documents programmatic cap-table retrieval. The companyCaptable operation is authenticated through OAuth 2.0 client_credentials service accounts and supports paging and changed-since deltas, so an agent can pull the current cap table. Nothing in the evidence covers reconciling against a data room or supplying the supporting documents to compare against. Probes also found no OpenAPI spec or llms.txt for agents to consume. Missing for 10: data-room or document export via API for reconciliation, a published machine-readable API schema, agent-oriented docs (llms.txt), and hands-on corroboration of the cap table pull.",
     "evidenceIds": [
       "ledgy-docs-6",
       "ledgy-docs-21",
-      "ledgy-docs-30",
       "ledgy-docs-1",
       "ledgy-docs-18",
       "ledgy-docs-27",
-      "ledgy-docs-7",
+      "ledgy-docs-30",
       "ledgy-probe-1",
       "ledgy-probe-2"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can have an agent pull my current cap table programmatically and reconcile it against my data room before a financing",
+      "citations": [
+        {
+          "evidenceId": "ledgy-docs-6",
+          "quote": "The companyCaptable operation is a Ledgy interface for one specific company. The operation user can retrieve cap table data about the queried company."
+        },
+        {
+          "evidenceId": "ledgy-docs-30",
+          "quote": "companyTransactions and companyCaptable can return a company's rows in pages, and only the rows that changed since an earlier request."
+        },
+        {
+          "evidenceId": "ledgy-docs-18",
+          "quote": "Exchange the credentials for an access token using the OAuth 2.0 `client_credentials` grant"
+        }
+      ]
+    },
     "productId": "ledgy",
     "storyId": "agent-reconciles-ownership"
   }

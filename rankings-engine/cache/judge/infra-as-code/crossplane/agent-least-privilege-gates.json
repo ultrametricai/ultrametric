@@ -1,18 +1,36 @@
 {
-  "hash": "f85a3557295e0f6ccced11d1d3dbc6dc703747228b5c0915d0fa512dc3527be7",
+  "hash": "21686a6bafe4c658e164f3bcd9d144a897bb186d1ab89ab027ca7251bd3aa248",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Crossplane's own documentation says it exposes declarative APIs that \"humans, automation, and AI systems can safely act on\". It also says it encapsulates policies, permissions and guardrails behind a custom API layer, extending Kubernetes RBAC to every managed resource. Together these give an agent a narrow, least-privilege interface. However, nothing documents an agent-facing plan/preview step or an approval gate that blocks unapproved changes: the CLI's render and test only covers Composition Functions offline, and the helm dry-run applies to installing Crossplane itself. Missing for 10: plan/diff preview of infrastructure changes before apply, documented review/approval gates, any agent-specific credential-scoping guidance, independent or hands-on corroboration.",
+    "rationale": "Crossplane documents encapsulating permissions and guardrails behind a custom API layer that AI agents can self-service through, and extends Kubernetes RBAC to everything it orchestrates. This gives agents a scoped, least-privilege surface. There is no evidence of a plan or preview step for agent changes, or of a review or approval gate that blocks unapproved applies; the only dry-run cited is for the Helm install. missing for 10: documented plan/diff of agent-proposed changes, review/approval gates before apply, concrete least-privilege credential scoping guidance for agents, independent or hands-on corroboration.",
     "evidenceIds": [
+      "crossplane-docs-54",
       "crossplane-docs-16",
-      "crossplane-docs-44",
-      "crossplane-docs-17",
-      "crossplane-docs-29",
-      "crossplane-docs-7"
+      "crossplane-docs-30",
+      "crossplane-docs-29"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an ai-native user, I can let an agent plan and apply with least-privilege credentials and review gates so it cannot make unapproved changes",
+      "citations": [
+        {
+          "evidenceId": "crossplane-docs-54",
+          "quote": "Encapsulate policies, permissions, and other guardrails behind a custom API layer to enable consumers, whether human users, automated workflows, or AI agents, to self-service"
+        },
+        {
+          "evidenceId": "crossplane-docs-16",
+          "quote": "Expose declarative APIs that humans, automation, and AI systems can safely act on"
+        },
+        {
+          "evidenceId": "crossplane-docs-30",
+          "quote": "extending its battle hardened reliability and security features like Role Based Access Control (RBAC) to orchestrate everything"
+        }
+      ]
+    },
     "productId": "crossplane",
     "storyId": "agent-least-privilege-gates"
   }

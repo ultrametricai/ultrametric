@@ -1,19 +1,40 @@
 {
-  "hash": "fe3ad7f0bf288a3ad150f94ef60add6913c2dddbc145eb18cee7895d9e0936c6",
+  "hash": "4c43da87b34199237745a827d18c072c6edaf4b5fef6a50984fb8cde25c63adb",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "GoDaddy APIs authenticate with Personal Access Tokens tied to specific capability scopes. The docs cover creating, storing, using and revoking PATs, and show granular per-operation scopes such as `commerce.order:*` (read/create/update/cancel) and `commerce.channel:read`, which supports issuing least-privilege tokens for an agent. However, the gddy agent skill runs on the user's own authenticated session rather than a dedicated scoped credential. Missing for 10: domain-API scope granularity and per-resource restrictions, token expiry/TTL controls, agent-specific credential guidance, independent or hands-on corroboration.",
+    "rationale": "GoDaddy documents Personal Access Tokens tied to specific capability scopes. Those scopes are granular in places, such as per-operation commerce.order scopes and commerce.channel:read, and the token lifecycle includes create and revoke. However, nothing documents issuing these credentials specifically for an agent: the agent skill runs on the user's own authenticated session. The scope granularity for the Domains APIs is also undocumented. missing for 10: agent-specific or delegated credential issuance, documented Domains scope granularity (e.g., per-domain or read-only DNS scopes), expiry/TTL controls, independent or hands-on corroboration",
     "evidenceIds": [
       "godaddy-docs-9",
-      "godaddy-docs-25",
       "godaddy-docs-31",
       "godaddy-docs-40",
-      "godaddy-docs-45",
-      "godaddy-docs-13"
+      "godaddy-docs-45"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
+      "citations": [
+        {
+          "evidenceId": "godaddy-docs-9",
+          "quote": "GoDaddy APIs use Bearer token authentication through a Personal Access Token (PAT) tied to specific capability scopes."
+        },
+        {
+          "evidenceId": "godaddy-docs-31",
+          "quote": "Generate a PAT — create, store, use, and revoke a Personal Access Token (Bearer credential)"
+        },
+        {
+          "evidenceId": "godaddy-docs-40",
+          "quote": "Personal Access Tokens must include the `commerce.order:*` scope that matches the GraphQL operation (read, create, update, cancel, complete, or archive)."
+        },
+        {
+          "evidenceId": "godaddy-docs-45",
+          "quote": "Required scopes: `commerce.channel:read`."
+        }
+      ]
+    },
     "productId": "godaddy",
     "storyId": "agentic-scoped-keys"
   }

@@ -1,20 +1,43 @@
 {
-  "hash": "e13d3fb7f3743c93888843ecaf175d3dc37b067cec3031e1a2c56d99c31d90ed",
+  "hash": "42e31cb9f1f192afd33d365a67d47df6171d7ab1718c36ae32587f78f9206857",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "ROS 2 has built-in DDS-Security support through sros2. Security enclaves each encapsulate a policy for protecting ROS communications, and participants are authenticated and their traffic encrypted using a keystore. That is first-party, communication-level access control, which can restrict which participants interact with a robot's graph. It is not an operator-facing roles-and-permissions system for people commanding, configuring, or viewing individual robots. missing for 10: human user/role-based access management, documented per-topic/service/parameter permission mapping to command/configure/view actions, per-robot permission administration, independent or hands-on corroboration.",
+    "rationale": "ROS 2 ships its own SROS2/DDS-Security layer that controls communications across the ROS graph. Security enclaves each hold a single protection policy and can be mapped to processes, users, or devices, which gives a graph-level way to govern who can participate. This is not an operator-facing roles-and-permissions system, and the evidence never shows per-robot command, configure, or view privileges assigned to human roles. Missing for 10: role definitions for human operators, documented separation of command vs. configure vs. view permissions per robot, any management UI or workflow, and independent or hands-on corroboration.",
     "evidenceIds": [
       "ros2-docs-12",
       "ros2-docs-13",
       "ros2-docs-15",
       "ros2-docs-29",
       "ros2-docs-40",
-      "ros2-docs-42",
-      "ros2-docs-65"
+      "ros2-docs-65",
+      "ros2-docs-76"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an ops lead, I can control with roles and permissions who is allowed to command, configure, or view each robot",
+      "citations": [
+        {
+          "evidenceId": "ros2-docs-13",
+          "quote": "A security enclave encapsulates a single policy for protecting ROS communications."
+        },
+        {
+          "evidenceId": "ros2-docs-76",
+          "quote": "Security enclaves can be flexibly mapped to processes, users, or devices at deployment."
+        },
+        {
+          "evidenceId": "ros2-docs-40",
+          "quote": "Built-in ROS 2 security features enable control over communications throughout the ROS graph."
+        },
+        {
+          "evidenceId": "ros2-docs-15",
+          "quote": "The `sros2` package provides the tools and instructions to use ROS 2 on top of DDS-Security."
+        }
+      ]
+    },
     "productId": "ros2",
     "storyId": "command-access-control"
   }

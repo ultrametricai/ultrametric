@@ -1,21 +1,43 @@
 {
-  "hash": "16270253675b70218bb8b9d7738d0210114fbd9c85ad6b895ce844ad93d130c9",
+  "hash": "b17c8523725ebdf8e82161df826c2534dfaf2c1323e5b817bf96eb6efb5e665d",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "LocalAI runs as a headless server, launched from Docker or the CLI (`docker run`, `local-ai run`). It is configured through flags and environment variables such as `--preload-models`/`PRELOAD_MODELS` and `LOCALAI_AUTH`, then driven programmatically through its OpenAI- and Anthropic-compatible APIs, which suits scripted automation. missing for 10: explicit documentation of use inside CI pipelines (the CI mention covers the vendor's own testing), a documented non-interactive mode for the `local-ai chat` agent, a published OpenAPI spec (the probe returned 404), and independent hands-on corroboration.",
+    "rationale": "LocalAI clearly runs headlessly. It ships as a single binary or Docker container that serves an OpenAI-compatible API, can be launched from the CLI with a model, and accepts a `--preload-models` flag or env var to set up models without the web UI, so it suits scripted automation. CI use specifically is only implied: the 'tested in CI' claim refers to the vendor's own CI, not a documented pattern for running LocalAI inside a user's pipeline. missing for 10: documented CI-pipeline usage (e.g. GitHub Actions/service-container recipe), a non-interactive or approval-free mode for the `local-ai chat` agent, an OpenAPI spec (probe 404), independent/hands-on corroboration of headless CI runs.",
     "evidenceIds": [
       "localai-docs-31",
       "localai-docs-21",
       "localai-docs-12",
-      "localai-docs-1",
       "localai-docs-32",
+      "localai-docs-1",
       "localai-docs-7",
-      "localai-docs-22",
-      "localai-gh-3"
+      "localai-docs-27"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
+      "citations": [
+        {
+          "evidenceId": "localai-docs-31",
+          "quote": "docker run -p 8080:8080 --name local-ai -ti localai/localai:latest"
+        },
+        {
+          "evidenceId": "localai-docs-12",
+          "quote": "PRELOAD_MODELS (or --preload-models) takes a list in JSON with the same parameter of the API calls of the /models/apply endpoint."
+        },
+        {
+          "evidenceId": "localai-docs-32",
+          "quote": "One binary with an OpenAI-compatible API in front of it. Point an existing client at it and the calls keep working"
+        },
+        {
+          "evidenceId": "localai-docs-21",
+          "quote": "local-ai run huggingface://TheBloke/phi-2-GGUF/phi-2.Q8_0.gguf"
+        }
+      ]
+    },
     "productId": "localai",
     "storyId": "agentic-headless"
   }

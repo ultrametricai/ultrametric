@@ -1,23 +1,42 @@
 {
-  "hash": "f82a085db4b5fa4b78d6a3ee1ef5f1d850282590ee2d70bb23ab4bcef0e95ca4",
+  "hash": "e52f7f3819db46be58ebdc1486fc355f71e8730bae89722373b5febda14410b9",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Sentry's official MCP server lets AI assistants search errors and triage issues, optionally scoped to an organization or project. A public, versioned API with an OpenAPI schema exposes project issue listing and bulk mutation, so the pull-and-triage half of the story is clearly documented. The pack does not show Sentry itself filing triaged bugs into an external tracker; its coding-agent integrations route root-cause analysis to agents for PRs, which is a different capability. Missing for 10: documented filing of issues into a tracker (Jira/GitHub Issues/Linear) via API or MCP, explicit confirmation that stack traces are returned through MCP/API, and independent hands-on corroboration of the agent workflow.",
+    "rationale": "Sentry's official MCP server lets AI assistants search errors and triage issues. Its public API (OpenAPI spec) lists project issues and supports bulk mutation, so the pull-and-triage part of the story is directly supported. Nothing in the evidence shows an agent filing bugs into an external tracker via API or MCP; the coding-agent integrations create pull requests, not tracker tickets. Missing for 10: documented filing of issues into an external tracker (Jira/GitHub Issues) via API or MCP, explicit evidence that stack traces are returned through MCP/API, and hands-on corroboration of the end-to-end agent workflow.",
     "evidenceIds": [
       "sentry-docs-8",
-      "sentry-docs-62",
-      "sentry-docs-63",
-      "sentry-probe-3",
       "sentry-docs-38",
       "sentry-docs-23",
       "sentry-supp-openapi-schema",
-      "sentry-supp-api-versioning",
-      "sentry-docs-20",
-      "sentry-docs-86"
+      "sentry-docs-86",
+      "sentry-probe-3"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, an agent can pull my top production issues with stack traces via API or MCP, triage them, and file the real bugs into my tracker",
+      "citations": [
+        {
+          "evidenceId": "sentry-docs-8",
+          "quote": "Connects AI assistants to Sentry for searching errors, analyzing performance, triaging issues, reading documentation, and managing projects — all via the Model Context Protocol."
+        },
+        {
+          "evidenceId": "sentry-docs-38",
+          "quote": "Sentry MCP: fix production issues right from your LLM"
+        },
+        {
+          "evidenceId": "sentry-docs-23",
+          "quote": "Bulk Mutate a List of Issues"
+        },
+        {
+          "evidenceId": "sentry-docs-86",
+          "quote": "the interactive developer CLI with issue management, AI-powered analysis, and API access for humans and agents"
+        }
+      ]
+    },
     "productId": "sentry",
     "storyId": "agent-triages-errors"
   }

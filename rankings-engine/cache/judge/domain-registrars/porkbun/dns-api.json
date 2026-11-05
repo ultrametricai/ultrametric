@@ -1,22 +1,37 @@
 {
-  "hash": "ad3ce9dcc3333334c46a319a58948688fff89bc2e3c623f5eda3b1b85db32288",
+  "hash": "9f51b4a5bf4181c028832b8ac9ac7e20f8f33c63bf0b0b960f25c749cc0084b8",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 8,
-    "confidence": "medium",
-    "rationale": "Porkbun's first-party API docs explicitly promise full create/read/update/delete over DNS records, including the TXT records needed for ACME DNS-01. Surrounding automation support is strong: a sandbox key, keyless /mock endpoints, per-domain and per-IP scoped keys, and signed webhooks for DNS changes. missing for 10: independent or hands-on corroboration that DNS CRUD works as documented, explicit ACME/DNS-01 challenge guidance (TXT support is only implied for this use), and a machine-readable OpenAPI spec (the probe returned 404s).",
+    "confidence": "high",
+    "rationale": "Porkbun's first-party API docs state full create, read, update, and delete over DNS records across many types, including TXT. TXT CRUD is the mechanism ACME DNS-01 challenges need, and the docs also cover dynamic-DNS automation and a sandbox key for testing. Missing for 10: explicit ACME/DNS-01 challenge guidance in the docs, independent or hands-on corroboration of the DNS API, and a machine-readable OpenAPI spec (probes returned 404).",
     "evidenceIds": [
       "porkbun-docs-2",
       "porkbun-docs-28",
       "porkbun-docs-27",
-      "porkbun-docs-4",
-      "porkbun-docs-19",
-      "porkbun-docs-15",
-      "porkbun-docs-33",
-      "porkbun-docs-49",
-      "porkbun-probe-3"
+      "porkbun-docs-17",
+      "porkbun-docs-4"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, DNS records are CRUD-able via a documented API — create, update, and delete records programmatically for automation and ACME challenges",
+      "citations": [
+        {
+          "evidenceId": "porkbun-docs-2",
+          "quote": "Create, read, update, and delete DNS records (A, AAAA, CNAME, MX, TXT, NS, SRV, CAA, TLSA, SSHFP, ALIAS, HTTPS, SVCB)"
+        },
+        {
+          "evidenceId": "porkbun-docs-28",
+          "quote": "Full CRUD over records (A, AAAA, CNAME, MX, TXT, SRV, CAA, ALIAS, …) and DNSSEC DS records on Porkbun's nameservers"
+        },
+        {
+          "evidenceId": "porkbun-docs-17",
+          "quote": "detect caller IP for dynamic DNS"
+        }
+      ]
+    },
     "productId": "porkbun",
     "storyId": "dns-api"
   }

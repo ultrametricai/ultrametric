@@ -1,16 +1,36 @@
 {
-  "hash": "77a116007e860040ff65196e8ad11ca8b6efa961f3592bfe7d1231566571d89a",
+  "hash": "0aaadc6b75511c561d09b008cffefd47fae4b349255f391c57c57afc5a1ff0b2",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Honeybadger documents a public exceptions-reporting API: a JSON payload POSTed to https://api.honeybadger.io/v1/notices. Its docs point users of unsupported languages and frameworks to that API, so custom clients can report errors without an official SDK. The evidence only shows the endpoint and the fallback guidance, not the full payload schema or wider event ingestion, and no OpenAPI spec was found. missing for 10: documented payload schema/field reference in evidence, a documented ingestion endpoint for non-error (Insights) events, a machine-readable spec (OpenAPI paths 404), independent corroboration of third-party or compatible clients sending events.",
+    "rationale": "Honeybadger documents a public exceptions API: clients POST a JSON payload to https://api.honeybadger.io/v1/notices. Its docs point users of unsupported languages to that API, so a custom client can report errors without an official SDK. missing for 10: the full payload schema and auth details are not shown in the evidence, there is no machine-readable spec (OpenAPI probes returned 404), there is no evidence of third-party compatible SDKs or independent hands-on use, and the evidence covers only error notices, not other event types such as Insights events.",
     "evidenceIds": [
       "honeybadger-docs-15",
       "honeybadger-docs-36",
-      "honeybadger-docs-65"
+      "honeybadger-docs-65",
+      "honeybadger-probe-2"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, the event-ingestion protocol is documented and open enough that custom clients and compatible SDKs can send events without an official SDK",
+      "citations": [
+        {
+          "evidenceId": "honeybadger-docs-15",
+          "quote": "Your JSON payload should be submitted as the body of a POST request to https://api.honeybadger.io/v1/notices"
+        },
+        {
+          "evidenceId": "honeybadger-docs-36",
+          "quote": "Report errors using our [exceptions API](/api/reporting-exceptions/)"
+        },
+        {
+          "evidenceId": "honeybadger-docs-65",
+          "quote": "Are you using a language or framework that we don’t officially support yet? You still have a few options"
+        }
+      ]
+    },
     "productId": "honeybadger",
     "storyId": "open-ingest-protocol"
   }

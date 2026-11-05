@@ -1,15 +1,14 @@
 {
-  "hash": "09878689153398378f4e8711196007f29d6d5253d4a2c491a7d03fcdb7e47ed3",
+  "hash": "38e67d5c195aab8c8068d73bf426e8ee0950025c979ffbab02f0b07c01f13ca3",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 8,
-    "confidence": "high",
-    "rationale": "Cua's own SDK creates and drives sandboxed computers on Docker/Podman (gVisor when installed), QEMU, or Lume VMs, and it can start agents inside a Space or sandbox. Cua Driver and connected owned machines then cover pointing the agent at a real device. A hands-on user sandboxed Claude in a Lume VM for days with good results, though an earlier user saw VM connection failures on an old release (0.1.29). Missing for 10: a documented workflow for promoting the same agent from sandbox to real device, and consistent hands-on reliability (WebSocket connection failures, disk-resize not reaching the guest).",
+    "confidence": "medium",
+    "rationale": "Cua's SDK creates and drives sandboxed computers on Docker/Podman (with gVisor when installed), QEMU, or Lume VMs. Its docs say coding agents can be started inside a Space or sandbox, and Cua Driver plus connectable owned machines cover the later real-device step. A hands-on user reports sandboxing Claude in a Lume VM worked reasonably well, though another early-version user hit VM connection failures. Missing for 10: a documented workflow for moving the same agent from sandbox to a real device, and more consistent hands-on reliability evidence (cua-comm-1 reports WebSocket connection failures on cua-agent 0.1.29).",
     "evidenceIds": [
-      "cua-docs-7",
       "cua-docs-8",
-      "cua-docs-10",
+      "cua-docs-7",
       "cua-docs-15",
       "cua-docs-23",
       "cua-docs-4",
@@ -17,6 +16,29 @@
       "cua-comm-7",
       "cua-comm-1"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can run the agent against a sandboxed VM or container before pointing it at a real device",
+      "citations": [
+        {
+          "evidenceId": "cua-docs-8",
+          "quote": "the SDK uses Docker or Podman (gVisor when installed), QEMU, or Lume on Apple silicon. Any OCI image works."
+        },
+        {
+          "evidenceId": "cua-docs-23",
+          "quote": "Start Claude Code, Codex and other coding agents inside a Space or sandbox"
+        },
+        {
+          "evidenceId": "cua-docs-15",
+          "quote": "Lume: macOS and Linux VMs on Apple silicon."
+        },
+        {
+          "evidenceId": "cua-docs-4",
+          "quote": "Cua Driver: lets an agent drive native apps on macOS, Windows and Linux in the background, through MCP or a CLI."
+        }
+      ]
+    },
     "productId": "cua",
     "storyId": "sandboxed-environments"
   }

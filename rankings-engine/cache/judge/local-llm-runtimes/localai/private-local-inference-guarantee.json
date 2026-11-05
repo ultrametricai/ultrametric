@@ -1,21 +1,42 @@
 {
-  "hash": "a5ef93de1d14f024cd93ad949f7777717c3fce6bf1334321d6d319a1092308d5",
+  "hash": "16f46824f5a6f349b90534d16f6866a8a81fe7cd44da40cd36bb8228afc49040",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 8,
-    "confidence": "high",
-    "rationale": "LocalAI runs models on the user's own hardware: a single binary or Docker container serves the API at localhost:8080, pulls models such as GGUF files, auto-detects local GPUs, and ships a first-class CPU path, so no external inference service is needed. Optional features such as external MCP servers or remote gRPC backends are opt-in. missing for 10: an explicit first-party privacy/no-telemetry statement that prompts and data never leave the device, and independent or hands-on corroboration of fully offline operation.",
+    "verdict": "partial",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "LocalAI's docs show it runs as a local server you start yourself (docker run, local-ai run), serving an API at localhost:8080 with a CPU-first path and no GPU required, so inference on your own machine is clearly documented. However, the pack has no explicit statement that prompts and data never leave the device, such as a no-telemetry or offline guarantee, so the privacy half of the story is only implied. missing for 10: explicit documentation that no prompt/data egress or telemetry occurs, documented fully offline/air-gapped operation, independent or hands-on corroboration.",
     "evidenceIds": [
       "localai-docs-1",
       "localai-docs-31",
-      "localai-docs-21",
-      "localai-gh-1",
       "localai-docs-27",
-      "localai-docs-23",
-      "localai-docs-32",
-      "localai-docs-11"
+      "localai-gh-1",
+      "localai-docs-21",
+      "localai-gh-2"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a power-user, I can run inference entirely on my own machine so my data and prompts never leave my device",
+      "citations": [
+        {
+          "evidenceId": "localai-docs-1",
+          "quote": "You can use it with any OpenAI SDK or client by pointing it to http://localhost:8080."
+        },
+        {
+          "evidenceId": "localai-docs-31",
+          "quote": "docker run -p 8080:8080 --name local-ai -ti localai/localai:latest"
+        },
+        {
+          "evidenceId": "localai-docs-27",
+          "quote": "Every feature ships a CPU path first. That path is tested in CI, on the hardware most people already have, and it is not a degraded fallback."
+        },
+        {
+          "evidenceId": "localai-gh-1",
+          "quote": "No GPU required."
+        }
+      ]
+    },
     "productId": "localai",
     "storyId": "private-local-inference-guarantee"
   }

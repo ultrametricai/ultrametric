@@ -1,21 +1,36 @@
 {
-  "hash": "7ff644ed6c272564564b509d744aa3681d5fe9aa217985de0b7893018bdb2a46",
+  "hash": "b279be571c9ff34dfcec063ef202b1da01310520f4d18f2b145c3f7972538365",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Namecheap exposes an XML API (production and sandbox endpoints), and its official Go SDK documents a charge-bearing domain-registration call (CreateWithContext), plus availability check, renew, registrar lock and per-TLD capability listing. That covers the scriptable purchase core of the story, and the sandbox allows safe testing in a deploy pipeline. Missing for 10: explicit evidence of contact-setting parameters/calls, explicit nameserver-assignment calls (the Terraform provider covers DNS records, not registration nameservers), and independent hands-on corroboration of an end-to-end scripted registration.",
+    "rationale": "Namecheap's first-party Go SDK documents availability checks and a charge-bearing domain registration call against its XML API, and a sandbox endpoint exists for safe script testing. The evidence does not show documented calls for setting registrant contacts or nameservers; the Terraform provider covers DNS records, not registrar nameservers. missing for 10: documented contact-setting calls, documented nameserver-setting calls, end-to-end registration docs or hands-on corroboration.",
     "evidenceIds": [
       "namecheap-docs-19",
       "namecheap-docs-18",
-      "namecheap-docs-20",
-      "namecheap-docs-21",
-      "namecheap-docs-22",
-      "namecheap-docs-1",
       "namecheap-docs-2",
-      "namecheap-docs-15"
+      "namecheap-docs-1"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can register a domain end to end via the API — purchase, contacts, and nameservers in documented calls, so registration can be part of a deploy script",
+      "citations": [
+        {
+          "evidenceId": "namecheap-docs-19",
+          "quote": "CreateWithContext(ctx, args) | Register a new domain (charge-bearing)"
+        },
+        {
+          "evidenceId": "namecheap-docs-18",
+          "quote": "CheckWithContext(ctx, domains...) | Check availability of one or more domains"
+        },
+        {
+          "evidenceId": "namecheap-docs-2",
+          "quote": "api.sandbox.namecheap.com/xml.response"
+        }
+      ]
+    },
     "productId": "namecheap",
     "storyId": "registration-api"
   }

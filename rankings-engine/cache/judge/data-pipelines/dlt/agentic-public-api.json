@@ -1,21 +1,42 @@
 {
-  "hash": "49da9191f40836960451fc23c2dca0a54168357519720fff6f20af43981a1cdc",
+  "hash": "92b193ed60c42e49705eb4e9469ceddb1274314b118f30e7abca56d0cbf7e59a",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "dlt is driven through a documented public Python API: `dlt.pipeline()`, `pipeline.run()`, and `pipeline.dataset()` for querying, plus a decorator-based Python API for scheduling and deploying on dltHub. A community user corroborates that everything can be done via code, and machine-readable docs (llms.txt, .md pages) make the API easy for agents to consume. Missing for 10: no HTTP/REST API or OpenAPI spec for the managed dltHub platform (all OpenAPI probe paths returned 404), and no in-depth API reference excerpts in the evidence.",
+    "rationale": "dlt is an open-source Python library driven entirely through its documented Python API: `dlt.pipeline(...)` and `pipeline.run(...)` load data, `pipeline.dataset()` queries it, and dltHub adds a decorator-based Python API for scheduling and runs. An agent can therefore drive the product programmatically. However, the probe found no public HTTP/OpenAPI spec for the hosted dltHub service, so the managed platform cannot be driven over a language-agnostic web API. missing for 10: documented public HTTP/REST API with OpenAPI spec for dltHub, API reference depth evidence, independent corroboration of programmatic control of the managed platform.",
     "evidenceIds": [
       "dlt-docs-29",
-      "dlt-docs-12",
       "dlt-docs-11",
+      "dlt-docs-12",
       "dlt-docs-50",
-      "dlt-comm-11",
-      "dlt-probe-1",
-      "dlt-probe-2",
-      "dlt-probe-3"
+      "dlt-probe-3",
+      "dlt-comm-11"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can drive the product through a documented public API",
+      "citations": [
+        {
+          "evidenceId": "dlt-docs-29",
+          "quote": "pipeline = dlt.pipeline(    pipeline_name=\"quick_start\", destination=\"duckdb\", dataset_name=\"mydata\")load_info = pipeline.run(data, table_name=\"users\")"
+        },
+        {
+          "evidenceId": "dlt-docs-11",
+          "quote": "Schedule, refresh, backfill, and observe runs with a familiar decorator-based Python API."
+        },
+        {
+          "evidenceId": "dlt-docs-12",
+          "quote": "use `pipeline.dataset()` to query the data. You can build the query with data frame expressions, Ibis, or SQL."
+        },
+        {
+          "evidenceId": "dlt-comm-11",
+          "quote": "I can do everything via code, which makes things more maintainable, for me."
+        }
+      ]
+    },
     "productId": "dlt",
     "storyId": "agentic-public-api"
   }

@@ -1,18 +1,42 @@
 {
-  "hash": "1be248a337c5c7dccbb228b40efd571ef90e2498bb8b541ddf508aac509a68db",
+  "hash": "4cd6c74ae700d4d8113c739a642f41c8e38a93e3aca5f3ecbd1e831c83cf7522",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 8,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Bevy is a code-first engine with no editor UI. It is a normal Rust dependency whose engine and game logic all run through its ECS API, with full reference docs. The runtime probe confirms the cargo workflow \"needs no editor for an agent to drive\" and points to a first-party Bevy Remote Protocol, so the API is effectively the whole surface. Missing for 10: no first-party documentation of the Remote Protocol's coverage for driving a running app, and no independent hands-on corroboration of agent-driven parity; parity holds only because no editor UI exists.",
+    "rationale": "Bevy is code-first, and its own docs and runtime probe show the whole engine is driven through its Rust API: all engine and game logic runs through Bevy ECS, and the cargo workflow needs no editor for an agent to drive. Because Bevy has no editor UI (community members are still asking for one), API/UI parity holds only implicitly rather than as a documented guarantee. Pre-1.0 breaking changes each release also weaken the API surface as a stable programmatic contract. missing for 10: an explicit documented parity guarantee between any UI/editor and the API, a stable (post-1.0) API surface, and independent hands-on corroboration of agent-driven full coverage.",
     "evidenceIds": [
       "bevy-docs-1",
-      "bevy-docs-8",
       "bevy-docs-21",
       "bevy-docs-27",
-      "bevy-probe-rt-2"
+      "bevy-probe-rt-2",
+      "bevy-probe-rt-1",
+      "bevy-comm-6"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can do everything through the API that I can do in the UI",
+      "citations": [
+        {
+          "evidenceId": "bevy-docs-1",
+          "quote": "All engine and game logic uses Bevy ECS, a custom Entity Component System"
+        },
+        {
+          "evidenceId": "bevy-docs-21",
+          "quote": "Bevy is just a normal Rust dependency."
+        },
+        {
+          "evidenceId": "bevy-probe-rt-2",
+          "quote": "the code-first cargo workflow needs no editor for an agent to drive"
+        },
+        {
+          "evidenceId": "bevy-probe-rt-1",
+          "quote": "Pre-1.0 with breaking changes each release — a real caveat for agents trained on older APIs."
+        }
+      ]
+    },
     "productId": "bevy",
     "storyId": "openness-api-parity"
   }

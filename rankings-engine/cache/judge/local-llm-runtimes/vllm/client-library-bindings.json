@@ -1,18 +1,30 @@
 {
-  "hash": "a67a5fb4ef83ebf088b261cc2049143e4d28cfc305a8253ed694ea9b1e33d0c5",
+  "hash": "c7300dd6a81e866a7b3da63f682cfbdc246d9838159b7186eec54faa56ba884d",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 4,
+    "quality": 3,
     "confidence": "low",
-    "rationale": "vLLM installs as a Python package via pip/uv and documents an offline-inference mode configured with Python-style arguments such as `trust_remote_code=True`, which points to an in-process Python API. Its OpenAI-compatible server (plus Anthropic Messages and gRPC) means existing OpenAI-style clients can call it, but the pack shows no dedicated vLLM client SDK. missing for 10: documented official vLLM client libraries (especially JavaScript), explicit Python client/API reference docs, independent corroboration of client-library usage.",
+    "rationale": "vLLM installs as a pip/uv Python package and documents an in-process Python offline-inference interface (e.g., passing trust_remote_code=True), so it has its own Python way to call the runtime. Its OpenAI-compatible and Anthropic-compatible servers let developers use other vendors' SDKs, but those are not vLLM's own client libraries and earn no credit. missing for 10: a documented official vLLM client SDK for calling a running server, any official JavaScript/TypeScript library, client API reference docs, independent hands-on corroboration.",
     "evidenceIds": [
       "vllm-gh-1",
-      "vllm-docs-25",
-      "vllm-docs-9",
-      "vllm-docs-15",
-      "vllm-comm-2"
+      "vllm-docs-25"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can call the runtime from official client libraries in languages like Python or JavaScript",
+      "citations": [
+        {
+          "evidenceId": "vllm-gh-1",
+          "quote": "Install vLLM with uv (recommended) or pip:"
+        },
+        {
+          "evidenceId": "vllm-docs-25",
+          "quote": "simply set `trust_remote_code=True` for offline-inference"
+        }
+      ]
+    },
     "productId": "vllm",
     "storyId": "client-library-bindings"
   }

@@ -1,17 +1,31 @@
 {
-  "hash": "39405c93f19f278293728ba08a64db7a7eed3adbc1e7345fa544e6d5a3aba1e5",
+  "hash": "7c8e00ac2e44a45f82c4208294b6e5b1b164f2bd850b7b27283be0c7bc7241d6",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "The docs say `tofu plan -out=FILE` saves a plan to disk, which `tofu apply` can later execute when passed the file. That is the saved-plan-artifact core of the story, and plan files can also be encrypted at rest, which helps with storing CI artifacts. The pack never documents approval flags (e.g. auto-approve) or explicit non-interactive/CI behavior. missing for 10: documented approval/auto-approve flag, explicit non-interactive CI mode documentation, hands-on corroboration of CI pipelines using saved plans",
+    "rationale": "OpenTofu documents saving a plan to a file with `-out=FILE` and later executing that saved plan by passing it to `tofu apply`, which covers the saved-plan-artifact half of the story. Nothing in the pack documents approval flags (e.g. auto-approve), disabling input prompts, or CI-specific non-interactive operation. Missing for 10: documented approval/auto-approve flags, documented non-interactive (no-prompt) mode for CI, hands-on or independent corroboration of CI pipeline usage.",
     "evidenceIds": [
       "opentofu-docs-21",
       "opentofu-docs-34",
-      "opentofu-docs-3",
-      "opentofu-docs-20"
+      "opentofu-docs-3"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a devops-lead, I can run plan and apply non-interactively in CI using saved plan artifacts and approval flags",
+      "citations": [
+        {
+          "evidenceId": "opentofu-docs-21",
+          "quote": "You can use the optional `-out=FILE` option to save the generated plan to a file on disk, which you can later execute by passing the file to `tofu apply` as an extra argument."
+        },
+        {
+          "evidenceId": "opentofu-docs-3",
+          "quote": "The `tofu plan` command creates an execution plan, which lets you preview the changes that OpenTofu plans to make to your infrastructure."
+        }
+      ]
+    },
     "productId": "opentofu",
     "storyId": "headless-ci-apply"
   }

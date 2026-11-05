@@ -1,15 +1,30 @@
 {
-  "hash": "7d0e9696682782e0e6ca6f527a630e9d65ba814be58554d40d922876d61fa74f",
+  "hash": "47e5269f211e4dbd1fd626002517ced08b79cb72f12cedc7f3a416518d76524d",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "LM Studio's CLI documents `lms load --gpu=max|auto|0.0-1.0`, a fractional GPU offload control that splits a model between GPU and CPU. Its llama.cpp backend is also documented, which supports the split-offload mechanism. However, nothing in the evidence explicitly states that this lets you run models larger than available VRAM, or describes the behavior or performance when doing so. Missing for 10: explicit documentation of running models that exceed VRAM via CPU+GPU split, GUI offload controls, performance or memory guidance, and independent hands-on corroboration.",
+    "rationale": "The documented CLI flag `lms load --gpu=max|auto|0.0-1.0` lets users offload a fractional share of a model to the GPU, which implies a CPU+GPU split. LM Studio also runs on llama.cpp. However, no evidence explicitly describes splitting layers between CPU and GPU or running models larger than VRAM. missing for 10: explicit docs on CPU+GPU layer splitting, confirmation that models exceeding VRAM load and run, GUI offload controls, hands-on corroboration of performance with partial offload.",
     "evidenceIds": [
       "lm-studio-docs-13",
       "lm-studio-docs-29"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a power-user, I can run models larger than my available VRAM using combined CPU+GPU offload",
+      "citations": [
+        {
+          "evidenceId": "lm-studio-docs-13",
+          "quote": "lms load [--gpu=max|auto|0.0-1.0] [--context-length=1-N]"
+        },
+        {
+          "evidenceId": "lm-studio-docs-29",
+          "quote": "structured outputs via `llama.cpp` or `Apple MLX`"
+        }
+      ]
+    },
     "productId": "lm-studio",
     "storyId": "cpu-gpu-hybrid-offload"
   }

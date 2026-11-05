@@ -1,19 +1,40 @@
 {
-  "hash": "2c9269df44c09cf5e1cc808d4aebe080140c7c84952d6d80221c95e926f57ebd",
+  "hash": "ec1dc54a92ae47d82fd63bf101069d85ee9d42db4584ba1c06c5d1464ac55730",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 4,
-    "confidence": "medium",
-    "rationale": "The catalog says some downstream tools connect \"your own account via OAuth\" (treg-docs-25, treg-docs-26), and the Search Console use case implies account connection (treg-docs-18). treg stores credentials and injects them server-side (treg-docs-2, treg-docs-10), and offers a `treg health` credential check (treg-gh-4). However, the OAuth flow mechanics are mentioned only in passing, and nothing describes encryption at rest or automatic token refresh. Missing for 10: documented downstream OAuth flow mechanics, encrypted credential vaulting, automatic token refresh, independent corroboration.",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The catalog says some downstream providers can be connected to your own account via OAuth. treg also stores credentials and injects them server-side, with a `treg health` check on credential status. Nothing in the pack shows encrypted vaulting or automatic token refresh, and the Claude-connector OAuth/PKCE item covers auth to treg itself, not downstream tools. missing for 10: documented treg-run OAuth flow mechanics for downstream tools, encrypted credential storage, automatic token refresh, independent or hands-on corroboration",
     "evidenceIds": [
       "treg-docs-25",
       "treg-docs-26",
-      "treg-docs-18",
       "treg-docs-2",
-      "treg-docs-10",
       "treg-gh-4"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can let the platform run OAuth flows for downstream tools and vault the resulting credentials encrypted, with automatic token refresh",
+      "citations": [
+        {
+          "evidenceId": "treg-docs-25",
+          "quote": "plus your own account via OAuth"
+        },
+        {
+          "evidenceId": "treg-docs-26",
+          "quote": "plus your own Pages' insights and publishing via official OAuth"
+        },
+        {
+          "evidenceId": "treg-docs-2",
+          "quote": "treg injects the credential server-side and relays the answer verbatim."
+        },
+        {
+          "evidenceId": "treg-gh-4",
+          "quote": "check credential health: `treg health`"
+        }
+      ]
+    },
     "productId": "treg",
     "storyId": "managed-oauth-vaulting"
   }

@@ -1,19 +1,35 @@
 {
-  "hash": "eebaa0156723732f783a2ca5145e1c93531710b8c02b3a67117693f9cece968e",
+  "hash": "990d66f60750b6ceb04c2524cbdfa9d3e35918ddc1f6e289bc2b1e99f7f44c81",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Porkbun's llms.txt documents an availability and pricing check across hundreds of TLDs that needs no auth, so code can call it directly. Agents can reach it through the official MCP server (96 tools) and the zero-setup /mock mirror of every endpoint. The registration dryRun also runs availability pre-flight checks. Missing for 10: any documented rate limits for the check endpoint, a machine-readable OpenAPI spec (probes returned 404), and independent or hands-on corroboration that the check API works as described.",
+    "rationale": "Porkbun's llms.txt documents a programmatic availability check with pricing across hundreds of TLDs that requires no auth, and the register flow's dryRun pre-flight also covers availability, so code or agents can call it directly. Nothing in the pack documents rate limits for the check endpoint, which is an explicit part of the story. The only evidence is a one-line vendor summary, with no hands-on corroboration. missing for 10: documented rate limits for availability checks, detailed endpoint reference for the check/search call, independent or hands-on corroboration.",
     "evidenceIds": [
       "porkbun-docs-35",
       "porkbun-docs-44",
-      "porkbun-docs-31",
-      "porkbun-docs-19",
-      "porkbun-docs-27",
-      "porkbun-probe-3"
+      "porkbun-docs-19"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can check domain availability programmatically — a documented check/search API my code or agent can call with clear rate limits",
+      "citations": [
+        {
+          "evidenceId": "porkbun-docs-35",
+          "quote": "Check domain availability and pricing across hundreds of TLDs (no auth required)"
+        },
+        {
+          "evidenceId": "porkbun-docs-44",
+          "quote": "Pass dryRun: true to run every pre-flight check (availability, price match, eligibility, funds, spend limit) without charging or creating anything"
+        },
+        {
+          "evidenceId": "porkbun-docs-19",
+          "quote": "Every real path is mirrored under `/mock`"
+        }
+      ]
+    },
     "productId": "porkbun",
     "storyId": "availability-api"
   }

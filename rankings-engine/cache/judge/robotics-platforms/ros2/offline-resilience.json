@@ -1,20 +1,38 @@
 {
-  "hash": "4fbd4e04c24c72434bcb35a72e691b18af81828e0efabfbc392797f7833822e7",
+  "hash": "f9660c3eea1de25bda5a7e1a540d81ee5ebac3f978db442863104bb42b04bf96",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
     "confidence": "low",
-    "rationale": "ROS 2 documents QoS settings explicitly for handling non-ideal networks, including reliability tuning and transient-local durability, plus rosbag recording to persist topic data locally. A user also confirms data bagging comes 'for free'. These are the product's own capabilities for local operation and on-robot data capture, but nothing documents cloud-disconnect handling, store-and-forward upload, or clean resync after connectivity returns. missing for 10: documented offline/cloud-disconnect operation mode, store-and-forward buffering with automatic upload on reconnect, documented recovery/resync behavior, hands-on corroboration in fleet deployments",
+    "rationale": "ROS 2 documents QoS settings built for non-ideal networks. Its transient-local durability has publishers persist samples for late-joining subscribers, and rosbag lets nodes record data locally, which together give some local buffering and reconnection behaviour. Nothing in the evidence addresses cloud connectivity loss, store-and-forward upload, or clean recovery as a packaged capability; operators must assemble it from these primitives. missing for 10: documented offline/cloud-disconnect operation, store-and-forward sync of buffered data to cloud on reconnect, documented recovery semantics after network partitions, hands-on corroboration.",
     "evidenceIds": [
       "ros2-docs-3",
-      "ros2-docs-14",
+      "ros2-docs-47",
+      "ros2-docs-73",
       "ros2-docs-67",
-      "ros2-docs-17",
       "ros2-docs-23",
-      "ros2-docs-39",
-      "ros2-comm-13"
+      "ros2-docs-39"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an ops lead, my robots keep operating and buffer data locally when cloud connectivity drops, then recover cleanly",
+      "citations": [
+        {
+          "evidenceId": "ros2-docs-3",
+          "quote": "Quality of service settings for handling non-ideal networks"
+        },
+        {
+          "evidenceId": "ros2-docs-73",
+          "quote": "Transient local: the publisher becomes responsible for persisting samples for \"late-joining\" subscriptions."
+        },
+        {
+          "evidenceId": "ros2-docs-23",
+          "quote": "This allows you to subscribe to a topic and save the received data to a bag at the same time as performing any other processing of your choice on that data."
+        }
+      ]
+    },
     "productId": "ros2",
     "storyId": "offline-resilience"
   }

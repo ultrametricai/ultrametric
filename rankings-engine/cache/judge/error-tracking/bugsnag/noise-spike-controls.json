@@ -1,19 +1,41 @@
 {
-  "hash": "4a543dc725416d2caabd065fa99de3971ed1d53859a06e85ac77106ebb1dddb4",
+  "hash": "4613eeae1b33b6c09eed60bb19af59f53cac4c5d2af691088c5204de432b391b",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "BugSnag documents the mute/ignore part of the story: errors can be snoozed or ignored, dashboard discard rules can be synced to SDKs, and before-notify callbacks can drop events. Daily-quota 'rate limiting' and event-usage controls exist, but they govern billing quota rather than alert noise, so they are only adjacent to spike protection. missing for 10: alert-level spike protection or notification throttling, per-key/per-project rate limits, evidence that snooze/ignore suppresses PagerDuty/Slack pages, hands-on corroboration.",
+    "rationale": "BugSnag documents its own mute/ignore controls: errors can be snoozed or ignored, dashboard discard rules can be synced to SDKs, and there is a quota-overage rate-limiting option. That covers the ignore/mute part of the story and loosely touches spike handling, but nothing ties these controls to alert or page suppression. missing for 10: explicit spike protection, per-key or per-project rate limits, alert/notification throttling rules that stop paging during a bad deploy, independent or hands-on corroboration.",
     "evidenceIds": [
       "bugsnag-docs-28",
       "bugsnag-docs-35",
-      "bugsnag-docs-52",
-      "bugsnag-docs-46",
+      "bugsnag-docs-47",
       "bugsnag-docs-14",
-      "bugsnag-docs-47"
+      "bugsnag-docs-46"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an SRE, I can fight alert fatigue with spike protection, per-key rate limits, and mute/ignore rules so one bad deploy doesn't page the whole team all night",
+      "citations": [
+        {
+          "evidenceId": "bugsnag-docs-28",
+          "quote": "All errors except those that are fixed, snoozed or ignored"
+        },
+        {
+          "evidenceId": "bugsnag-docs-35",
+          "quote": "Remote SDK Source-Side Discard Enforcement now syncs active dashboard discard rules directly to upgraded Android and iOS SDKs"
+        },
+        {
+          "evidenceId": "bugsnag-docs-47",
+          "quote": "We provide two options for handling daily event quota overages, _capture every event_ and _rate limiting_."
+        },
+        {
+          "evidenceId": "bugsnag-docs-14",
+          "quote": "Take control over which events we save and count towards your event quota."
+        }
+      ]
+    },
     "productId": "bugsnag",
     "storyId": "noise-spike-controls"
   }

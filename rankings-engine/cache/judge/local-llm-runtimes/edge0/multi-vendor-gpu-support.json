@@ -1,12 +1,35 @@
 {
-  "hash": "32acd1caa94222087dca91baf765e370c8a3099f295eb1be5a700437ebc3c6c0",
+  "hash": "bb01305b77872d73b806ffe27c9cc7a44db26a80d6a24697a547b862f3c05bb9",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence does not show vendor-specific GPU kernels for NVIDIA or AMD, and the CUDA backend is described only as a 'reserved slot', so it is not implemented. The Windows engine uses cross-vendor Vulkan and iOS uses Apple's MLX Swift. Neither counts as the vendor-specific NVIDIA/AMD acceleration this story asks for.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Edge0 ships its own GPU-accelerated engines: a Windows native engine on Vulkan, a cross-vendor API that runs on NVIDIA and AMD GPUs, and an iOS app on Apple's MLX Swift. There is no NVIDIA- or AMD-specific kernel path, though: the CUDA backend is only a 'reserved slot', and Vulkan is vendor-agnostic rather than vendor-specific. Missing for 10: an implemented CUDA backend, any ROCm/AMD-specific kernels, documented per-vendor GPU support or benchmarks, and independent corroboration.",
+    "evidenceIds": [
+      "edge0-gh-18",
+      "edge0-gh-16",
+      "edge0-gh-20"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a power-user, I can run models on NVIDIA, AMD, or other GPU vendors using vendor-specific acceleration kernels",
+      "citations": [
+        {
+          "evidenceId": "edge0-gh-18",
+          "quote": "Windows: desktop app + native engine (C++ + Vulkan)"
+        },
+        {
+          "evidenceId": "edge0-gh-16",
+          "quote": "iOS: on-device iPhone app (Swift + MLX Swift)"
+        },
+        {
+          "evidenceId": "edge0-gh-20",
+          "quote": "a new backend implements the same facade (`backends/cuda/` is a reserved slot) with zero changes to core code"
+        }
+      ]
+    },
     "productId": "edge0",
     "storyId": "multi-vendor-gpu-support"
   }

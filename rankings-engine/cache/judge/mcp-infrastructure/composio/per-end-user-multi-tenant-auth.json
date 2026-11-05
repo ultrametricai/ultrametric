@@ -1,19 +1,36 @@
 {
-  "hash": "b6b019096fd7fafb6f5c726246e68b95e03748cd8d1b6d595c4e6f8e546595ec",
+  "hash": "fa80443ce26a91910cb8d73f47ee8329ff1d7e0fba8404bfdb50130a4cc48ffb",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Composio stores and refreshes each end user's connected accounts (Gmail, GitHub, Slack) against that user's userID. Sessions are created per user_id, and toolkit or auth-config restrictions narrow what each session can reach. The core story of a user's agent acting on that user's own credentials is clearly documented. Missing for 10: explicit documentation of per-user scoped tokens or credential-isolation guarantees, details on per-user account management and revocation, and independent hands-on corroboration.",
+    "rationale": "Composio documents per-user sessions keyed by user_id. Each user connects their own accounts, and Composio stores and refreshes those credentials against that userID. Sessions can also be restricted to specific toolkits or allowed tools. The docs do not explicitly describe per-user scoped tokens or an enforced guarantee that an agent cannot act on another user's credentials, so coverage is partial. missing for 10: documented per-end-user scoped/limited tokens, explicit enforcement of cross-user credential isolation, independent or hands-on corroboration of per-user isolation.",
     "evidenceIds": [
-      "composio-docs-20",
       "composio-docs-1",
+      "composio-docs-20",
       "composio-docs-3",
-      "composio-docs-35",
-      "composio-docs-23",
-      "composio-docs-6"
+      "composio-docs-23"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform-engineer, I can maintain separate connected accounts and scoped tokens per end user of my product, so each user's agent acts only on that user's credentials",
+      "citations": [
+        {
+          "evidenceId": "composio-docs-1",
+          "quote": "session = composio.sessions.create(user_id=\"user_123\")"
+        },
+        {
+          "evidenceId": "composio-docs-20",
+          "quote": "Each user connects their own accounts, their Gmail, their GitHub, their Slack, and Composio stores and refreshes those credentials against that userID."
+        },
+        {
+          "evidenceId": "composio-docs-3",
+          "quote": "To restrict the set, pass `toolkits` when you create the session."
+        }
+      ]
+    },
     "productId": "composio",
     "storyId": "per-end-user-multi-tenant-auth"
   }

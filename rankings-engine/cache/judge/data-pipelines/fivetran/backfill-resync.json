@@ -1,15 +1,30 @@
 {
-  "hash": "4dd5be0c2978c6006799999d530a2d4e6752a273579308197acf1fc3b9b1c6d6",
+  "hash": "0ddc4e8bafa955a1d32640c7605b42e85ab4fee5f55bee9bf81db7699357c248",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 6,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Fivetran's connector docs list re-sync at both the connection level and the table level, with a parent-table re-sync including its child tables. That lets an engineer resync a single table without rebuilding the pipeline. A community user also confirms full re-syncs are performed in practice. The evidence is thin, though: it comes from one connector's feature table (Akamai) rather than a platform-wide guide. Missing for 10: explicit backfill-history controls (e.g., historical start date or re-import window), evidence that table-level re-sync works across connectors generally, step-by-step documentation of the re-sync workflow, and independent hands-on reports of table-level re-sync.",
+    "rationale": "Fivetran's own connector docs list re-sync at both connection level and table level, so a single table can be resynced without rebuilding the pipeline. A community report also confirms full re-syncs were performed. However, the table-level evidence comes from a single connector page (Akamai), and nothing documents backfilling history over a chosen range. missing for 10: evidence that table-level resync is available across connectors, a documented historical backfill capability, details on how to trigger a resync via the UI or API, and independent hands-on corroboration of a table-level resync.",
     "evidenceIds": [
       "fivetran-docs-48",
       "fivetran-comm-14"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a data engineer, I can backfill history or resync a single table without rebuilding the whole pipeline",
+      "citations": [
+        {
+          "evidenceId": "fivetran-docs-48",
+          "quote": "Re-sync | YES | Connection level and table level. A parent table re-sync includes all associated child tables."
+        },
+        {
+          "evidenceId": "fivetran-comm-14",
+          "quote": "We even had to do a full re-sync on a couple of occasions (which to their credit they did for no charge)."
+        }
+      ]
+    },
     "productId": "fivetran",
     "storyId": "backfill-resync"
   }

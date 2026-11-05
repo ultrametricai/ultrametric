@@ -1,20 +1,37 @@
 {
-  "hash": "00c73b65f3a3ab95ea3741d6c6f7b374983d018e81db9681369225fef9c7495f",
+  "hash": "18203cc39979ef34ec9078ead8de01755ec3f4a7438bac5b092f15c1b410b702",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "pulumi",
-    "storyId": "automation-bulk-operations",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Pulumi treats many resources as one unit of work. Programs use loops and functions to declare resources at scale, and Automation API can create, update, configure and destroy infrastructure programmatically. `pulumi preview --import-file` builds a single import file covering every resource, and policies apply across all managed resources. A community user reports deployments of around 500 resources each. missing for 10: explicit first-party docs on bulk operations across many stacks, a bulk workflow evidenced for AI agents (MCP or Neo), and independent hands-on corroboration of bulk import or multi-stack operations.",
+    "rationale": "Pulumi's own docs show some bulk-style capability. `pulumi preview --import-file` generates an import file listing every resource a program would create, and policies apply guardrails consistently across all resources. Its code-first model also lets loops define many resources at once, and users report managing environments of about 500 resources. However, no dedicated bulk-operation feature (such as batch update or delete across stacks or resources) is documented as such. Automation API is only a building block for orchestrating many stacks, so it earns no credit here. Missing for 10: an explicitly documented bulk or batch operation command across many stacks or resources, a documented bulk import workflow end-to-end, and hands-on corroboration of bulk operations at scale.",
     "evidenceIds": [
-      "pulumi-gh-1",
-      "pulumi-docs-34",
       "pulumi-docs-21",
+      "pulumi-gh-1",
       "pulumi-docs-16",
-      "pulumi-docs-32",
-      "pulumi-comm-7"
-    ]
+      "pulumi-comm-9"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can perform bulk operations across many items at once",
+      "citations": [
+        {
+          "evidenceId": "pulumi-docs-21",
+          "quote": "run `pulumi preview --import-file` to generate an import file listing every resource the program would otherwise create"
+        },
+        {
+          "evidenceId": "pulumi-gh-1",
+          "quote": "use standard language features like loops, functions, classes, and package management"
+        },
+        {
+          "evidenceId": "pulumi-docs-16",
+          "quote": "You define guardrails in code and apply them consistently across resources managed by Pulumi IaC"
+        }
+      ]
+    },
+    "productId": "pulumi",
+    "storyId": "automation-bulk-operations"
   }
 }

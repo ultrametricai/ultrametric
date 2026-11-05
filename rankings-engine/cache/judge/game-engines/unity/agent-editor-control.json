@@ -1,23 +1,47 @@
 {
-  "hash": "aaae9c2724f06bdb3bbcec30a669a68861df3e4d2bea44dd2e24ceb742d705a9",
+  "hash": "a7b48d72afd66009de0a98ea51696cb67f515cf1fce6b894e54ffeb0e3f04a5c",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Unity documents several first-party ways for an agent to drive the Editor. An official MCP server connects agents like Claude Code and Cursor to the Editor to perform project actions. The newer Unity CLI offers `unity <command>`/`unity eval` to drive the Editor directly, plus a `unity mcp` mode, and Editor command-line arguments automate headless workflows and builds on top of the public scripting APIs. missing for 10: explicit documentation that these agent interfaces create scenes and objects and edit properties (only implied by 'project actions' and `eval`), stability (the CLI is experimental and the in-editor MCP server is deprecated), independent hands-on corroboration of an agent driving the Editor end-to-end.",
+    "rationale": "Unity documents first-party scriptable interfaces through which agents can drive the Editor. An MCP server connects LLM agents such as Claude Code and Cursor to the Unity Editor to 'perform project actions'. The newer first-party Unity CLI's `unity <command>`/`unity eval` drive the Editor directly. Editor command-line arguments automate workflows and support headless CI builds. However, the CLI is experimental and the in-editor MCP server is deprecated, and no evidence documents scene/node creation or property editing as specific agent operations. missing for 10: explicit documentation of creating scenes/GameObjects and editing properties via the agent interface, a non-experimental stable CLI surface, independent hands-on corroboration of an agent triggering builds end-to-end.",
     "evidenceIds": [
       "unity-docs-23",
       "unity-docs-24",
-      "unity-probe-4",
       "unity-probe-rt-4",
-      "unity-docs-6",
       "unity-docs-7",
       "unity-probe-rt-3",
       "unity-docs-11",
-      "unity-docs-12",
       "unity-docs-9"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, an agent can drive the editor and project programmatically — create scenes and nodes, edit properties, trigger builds — through a documented scriptable interface",
+      "citations": [
+        {
+          "evidenceId": "unity-docs-23",
+          "quote": "MCP server connects large language model (LLM)-based agents, such as Claude Code and Cursor, to the Unity Editor through standardized MCP tools."
+        },
+        {
+          "evidenceId": "unity-docs-24",
+          "quote": "Use it to create assets, automate workflows, analyze performance, and perform project actions using natural-language prompts."
+        },
+        {
+          "evidenceId": "unity-probe-rt-4",
+          "quote": "`unity <command>`/`unity eval` drive the Editor directly without MCP"
+        },
+        {
+          "evidenceId": "unity-docs-7",
+          "quote": "You can launch the Unity Editor and Player with additional command line arguments to control startup behavior, configure settings, or automate workflows."
+        },
+        {
+          "evidenceId": "unity-probe-rt-3",
+          "quote": "the editor whose -batchmode/-nographics CLI is documented for headless CI builds"
+        }
+      ]
+    },
     "productId": "unity",
     "storyId": "agent-editor-control"
   }

@@ -1,15 +1,30 @@
 {
-  "hash": "dd7f52a92d6552c13464fc37c276f7ecc7141ae0f377b25e0680579622cc4e2b",
+  "hash": "4e34a3b23c10678db78dc158568db63e00f9714d99e0ca7dc6cd55178a3ac44c",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Meltano's docs say it tracks incremental replication state, so later runs with the same state ID resume where the previous run stopped instead of doing full reloads. That covers the core of the story: state management is handled for you. Missing for 10: detail on how cursors or replication keys are chosen and how changed (not just new) records are detected per connector; independent or hands-on corroboration that incremental syncs work in practice.",
+    "rationale": "Meltano's own docs say it tracks incremental replication state, so later runs with the same state ID resume where the previous run stopped instead of reloading everything. That covers the state-management core of the story. The evidence does not say how cursors are chosen or whether changed (not just new) records are captured, and the claim comes only from vendor docs. missing for 10: documentation of cursor/replication-key handling, explicit coverage of changed-record (update/CDC) detection, independent or hands-on corroboration of incremental syncs.",
     "evidenceIds": [
       "meltano-docs-20",
       "meltano-docs-30"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a data engineer, syncs move only new and changed records — cursor and state management handled for me, not full reloads",
+      "citations": [
+        {
+          "evidenceId": "meltano-docs-20",
+          "quote": "keeps track of the incremental replication state, so that subsequent pipeline runs with the same state ID will always pick up right where the previous run left off"
+        },
+        {
+          "evidenceId": "meltano-docs-30",
+          "quote": "makes it easy to select which streams and properties to extract, and keeps track of the incremental replication state"
+        }
+      ]
+    },
     "productId": "meltano",
     "storyId": "incremental-sync"
   }

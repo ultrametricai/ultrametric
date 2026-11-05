@@ -1,15 +1,30 @@
 {
-  "hash": "0860766bd46c3873579fe95caf9fddec0a09851e68e0f080ab2436be9170ca13",
+  "hash": "afc45f6f670bd43570b973808719f00d8d22f1dd21ce55a497d0cfe892cb2b8c",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "The CLI documents per-load control of context length and GPU offload (`lms load --gpu=... --context-length=...`), plus custom `--identifier` names that suggest several loaded instances can be addressed separately. Together these let a user set context size per instance. However, nothing explicitly documents concurrent multi-instance operation or how context/KV memory is allocated or shared across instances. Missing for 10: explicit documentation of running multiple instances concurrently, memory/KV-cache allocation controls across instances, hands-on or independent corroboration.",
+    "rationale": "LM Studio's CLI lets you set context length per model load (`--context-length`), control GPU offload (`--gpu`) and name loaded instances (`--identifier`), so a power-user can size context memory for each instance. However, the evidence never explicitly documents running several instances at once or managing how context memory is shared among them. Missing for 10: explicit documentation of concurrent multi-instance loading, controls for KV-cache or context memory across simultaneous instances, hands-on corroboration.",
     "evidenceIds": [
       "lm-studio-docs-13",
       "lm-studio-docs-14"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a power-user, I can control how context memory is allocated when running multiple model instances concurrently",
+      "citations": [
+        {
+          "evidenceId": "lm-studio-docs-13",
+          "quote": "lms load [--gpu=max|auto|0.0-1.0] [--context-length=1-N]"
+        },
+        {
+          "evidenceId": "lm-studio-docs-14",
+          "quote": "lms load openai/gpt-oss-20b --identifier=\"my-model-name\""
+        }
+      ]
+    },
     "productId": "lm-studio",
     "storyId": "multi-instance-memory-budgeting"
   }

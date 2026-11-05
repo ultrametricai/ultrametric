@@ -1,21 +1,38 @@
 {
-  "hash": "4bd4ba9263130a20684e1b17357187d78836ccf6b100ccfb0f6e57096eeaaed7",
+  "hash": "4c57104a11dc0de267755f1aef963def9338bc9fbc5beb09356f695526a6842f",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Fivetran's docs say every connector handles incremental syncs automatically with no pipelines to maintain, and they document delete capture, sync modes (soft delete, live, history), and table-level re-syncs, so cursor and state management is handled by the platform. Community reports call syncing very reliable, though one user hit occasional out-of-sync states that needed a full re-sync. missing for 10: in-depth docs on how cursors, state and change detection work per source type (e.g. log-based CDC vs. API cursors), independent hands-on confirmation that only new or changed records move.",
+    "rationale": "Fivetran's docs state that each pre-built connector handles incremental syncs automatically with no pipelines to maintain, and that deletes are captured. Community users describe syncing as very reliable, though one reports occasional out-of-sync states that required full re-syncs, which Fivetran did for free. Missing for 10: detailed first-party documentation of the cursor/state mechanism (e.g., how it works per connector type), and independent hands-on confirmation that only changed rows move.",
     "evidenceIds": [
-      "fivetran-docs-1",
       "fivetran-docs-18",
+      "fivetran-docs-1",
       "fivetran-docs-13",
-      "fivetran-docs-35",
-      "fivetran-docs-48",
       "fivetran-docs-51",
       "fivetran-comm-3",
       "fivetran-comm-14"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a data engineer, syncs move only new and changed records — cursor and state management handled for me, not full reloads",
+      "citations": [
+        {
+          "evidenceId": "fivetran-docs-18",
+          "quote": "Each connector handles schema changes, API updates, and incremental syncs automatically — no data pipelines to maintain."
+        },
+        {
+          "evidenceId": "fivetran-docs-51",
+          "quote": "Capture deletes | YES | `ENTITY` table and its child tables"
+        },
+        {
+          "evidenceId": "fivetran-comm-3",
+          "quote": "Fivetran's syncing has been very reliable (compared to others we tried)"
+        }
+      ]
+    },
     "productId": "fivetran",
     "storyId": "incremental-sync"
   }

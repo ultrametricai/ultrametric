@@ -1,19 +1,45 @@
 {
-  "hash": "81b0e9990ef7039cdc9a5b16f410d9511f7d5bbdf2b43d0f61c08eebc289cab5",
+  "hash": "eecf5621bc72a2926060de62c72c368fb9520a84975037cad749acdba7ba15bb",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Terraform documents saving a plan with `-out=FILE` and then running `terraform show -json` to get a JSON representation of the plan, configuration and current state. Separately, `plan` and `apply` accept `-json` to stream line-delimited machine-readable UI messages, so an agent can parse a proposed change directly. Missing for 10: independent or hands-on corroboration of agents parsing plan JSON, and no evidence in the pack of the JSON plan schema's detail or stability.",
+    "rationale": "Terraform's own docs show that a plan saved with `-out=FILE` can be rendered by `terraform show -json` as a JSON representation of the plan, configuration and current state. `plan -json` also streams machine-readable JSON UI messages, one per line, so an agent can parse a proposed change directly. Missing for 10: independent or hands-on corroboration of agents parsing plan JSON, and documentation in the pack of the JSON schema detail.",
     "evidenceIds": [
       "terraform-docs-48",
       "terraform-docs-39",
       "terraform-docs-30",
       "terraform-docs-22",
-      "terraform-docs-34",
-      "terraform-docs-47"
+      "terraform-docs-34"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an ai-native user, I can get machine-readable plan output (JSON) that an agent can parse to reason about a proposed change",
+      "citations": [
+        {
+          "evidenceId": "terraform-docs-48",
+          "quote": "For Terraform plan files, `terraform show -json` shows a JSON representation of the plan, configuration, and current state."
+        },
+        {
+          "evidenceId": "terraform-docs-39",
+          "quote": "Add the `-json` command-line flag to generate machine-readable output."
+        },
+        {
+          "evidenceId": "terraform-docs-30",
+          "quote": "You can use the optional `-out=FILE` option to save the generated plan to a file on disk"
+        },
+        {
+          "evidenceId": "terraform-docs-22",
+          "quote": "For long-running commands such as `plan`, `apply`, `refresh`, and `test`, the `-json` flag outputs a stream of JSON UI messages."
+        },
+        {
+          "evidenceId": "terraform-docs-34",
+          "quote": "The ouptut messages appear one per line so that you can process the messages"
+        }
+      ]
+    },
     "productId": "terraform",
     "storyId": "structured-plan-output"
   }

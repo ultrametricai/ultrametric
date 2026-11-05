@@ -1,15 +1,30 @@
 {
-  "hash": "f45f81ab78035983fd97863e54bae7c0aac64fccb7dedf0c188c4364dedd8a35",
+  "hash": "4ad2c61a4bcd5c140cbbe71a8f3fd3435c8509efaadabbc06d7b43669e927710",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 3,
     "confidence": "medium",
-    "rationale": "GlitchTip has two noise controls of its own. Alert rules can fire based on error frequency (docs-29), and individual issues can be ignored (update_issue: resolve, unresolve, or ignore, docs-37). That only touches the mute/ignore part of the story. The spike item (docs-48) is about on-demand billing that keeps collecting events past the plan, which is not spike protection. The 1% sampling setting (tracesSampleRate) is configured in the client SDK for performance transactions, not a per-key rate limit in GlitchTip. Missing for 10: spike protection, per-key/DSN rate limits, rule-based mute/snooze (e.g. ignore until N events or for a time window), and any hands-on corroboration of alert-noise reduction.",
+    "rationale": "GlitchTip documents frequency-based alert conditions and the ability to ignore an issue (shown through its MCP update_issue tool), which covers part of the anti-noise story. There is no evidence of spike protection or per-key rate limits; the spike-related pricing text describes billing for overage rather than throttling, and SDK trace sampling is an adjacent client-side control. Missing for 10: spike protection, per-DSN/per-key rate limits, documented mute/snooze rules in the alerting UI, independent corroboration.",
     "evidenceIds": [
       "glitchtip-docs-29",
       "glitchtip-docs-37"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an SRE, I can fight alert fatigue with spike protection, per-key rate limits, and mute/ignore rules so one bad deploy doesn't page the whole team all night",
+      "citations": [
+        {
+          "evidenceId": "glitchtip-docs-29",
+          "quote": "Here you can specify when you want to receive alerts based on the frequency of errors."
+        },
+        {
+          "evidenceId": "glitchtip-docs-37",
+          "quote": "update_issue — Resolve, unresolve, or ignore an issue"
+        }
+      ]
+    },
     "productId": "glitchtip",
     "storyId": "noise-spike-controls"
   }

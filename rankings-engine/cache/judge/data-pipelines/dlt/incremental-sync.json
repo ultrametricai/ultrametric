@@ -1,18 +1,40 @@
 {
-  "hash": "dbf88f6b0babfc3aa559e5a5b2f3ed0af437bdcb4c6c06f35135e35d48c7bc82",
+  "hash": "99b6fc6c12d4b1074c7827918cba09484d804dc6188ce52f9f3a55dd692a75e3",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "dlt's docs define incremental loading as loading only new or changed data rather than records already loaded, and say the product automates it. A merge disposition upserts and deduplicates on primary_key or merge_key, with full load available as a separate alternative. missing for 10: explicit documentation of cursor fields and automatic persisted state tracking between runs, and independent or hands-on corroboration that incremental syncs work as claimed.",
+    "rationale": "dlt's docs define incremental loading as loading only new or changed data, and describe a merge disposition that upserts and deduplicates on primary_key or merge_key, so it avoids full reloads. However, the evidence never shows how cursors or state are tracked and persisted automatically between runs, so the 'handled for me' part is only implied. Missing for 10: explicit documentation of automatic cursor/state tracking and persistence across runs, and independent or hands-on corroboration of incremental syncs in practice.",
     "evidenceIds": [
       "dlt-docs-27",
       "dlt-docs-18",
-      "dlt-docs-4",
       "dlt-docs-35",
-      "dlt-docs-49"
+      "dlt-docs-4"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a data engineer, syncs move only new and changed records — cursor and state management handled for me, not full reloads",
+      "citations": [
+        {
+          "evidenceId": "dlt-docs-27",
+          "quote": "Incremental loading is the act of loading only new or changed data and not old records that we have already loaded."
+        },
+        {
+          "evidenceId": "dlt-docs-18",
+          "quote": "Merge: Merges new data into the destination using merge_key and/or deduplicates/upserts new data using primary_key."
+        },
+        {
+          "evidenceId": "dlt-docs-35",
+          "quote": "Incrementally load new data and deduplicate existing data."
+        },
+        {
+          "evidenceId": "dlt-docs-4",
+          "quote": "dlt automates pipeline maintenance with incremental loading, schema evolution, and schema and data contracts."
+        }
+      ]
+    },
     "productId": "dlt",
     "storyId": "incremental-sync"
   }

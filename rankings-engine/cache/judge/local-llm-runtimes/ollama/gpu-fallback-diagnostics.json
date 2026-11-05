@@ -1,14 +1,25 @@
 {
-  "hash": "f7a14c1b6b37802a7bb85732fab446780ce85ab85b4acb01f21bcdec9b23455f",
+  "hash": "d6b54df7ab54eb09e24dd0d63add27499c6843ba341b9a93e06f8c7901bed590",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
     "confidence": "low",
-    "rationale": "A community-quoted Ollama log ([ollama-comm-11]) shows that when GPU acceleration fails, Ollama emits a specific reason: 'amdgpu detected, but no compatible rocm library found... will use cpu: no suitable rocm found, falling back to CPU'. This is the product's own diagnostic output explaining the fallback. However, the only support is a single community snippet for one AMD/ROCm case. It is unclear whether the message reaches the user anywhere beyond the server logs. Missing for 10: first-party documentation of GPU-detection and fallback diagnostics, evidence that the output covers NVIDIA, Apple, and other failure modes, evidence that the fallback is surfaced to the user rather than buried in logs, and hands-on corroboration across platforms.",
+    "rationale": "A community-quoted Ollama log line shows the product's own diagnostic output naming the cause of the fallback (AMD GPU detected, no compatible ROCm library found) and stating that it is falling back to CPU. That is direct evidence of reason-specific fallback messaging, but it is a single log excerpt with no first-party documentation of the diagnostics. missing for 10: first-party docs on GPU-detection and fallback diagnostics, evidence the reason is surfaced beyond server logs (e.g. in the CLI or API), coverage of other GPU backends (CUDA, Metal) and failure modes, independent corroboration that the output is consistently clear",
     "evidenceIds": [
       "ollama-comm-11"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a power-user, I know why GPU acceleration failed and silently fell back to CPU through clear diagnostic output",
+      "citations": [
+        {
+          "evidenceId": "ollama-comm-11",
+          "quote": "amdgpu detected, but no compatible rocm library found... unable to verify rocm library, will use cpu: no suitable rocm found, falling back to CPU."
+        }
+      ]
+    },
     "productId": "ollama",
     "storyId": "gpu-fallback-diagnostics"
   }

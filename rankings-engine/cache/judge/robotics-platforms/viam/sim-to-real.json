@@ -1,18 +1,46 @@
 {
-  "hash": "038cb13096cfea7bfd5d2b43ac59c238bf48e47e2fd22753f6afa7fa2d2a067a",
+  "hash": "2a5555fdf9d803c542b2246c3721247a40852b5cc504b40b1aad95a91b97fb2c",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 4,
-    "confidence": "low",
-    "rationale": "Viam's hardware abstraction gives every component the same API regardless of model, and swapping hardware in config is documented to leave code working (viam-docs-41, viam-docs-19, viam-docs-55). The RDK also ships a dummy 'fake' configuration that runs viam-server without real hardware (viam-gh-2), and Viam 101 needs no hardware (viam-docs-66), so the same code could plausibly target fake components and then real ones by changing config. The evidence never describes a simulation capability or a sim-to-real workflow. Missing for 10: documented simulator or physics-simulation integration, explicit guidance on swapping fake/simulated components for real ones, and hands-on corroboration that unchanged code runs in both.",
+    "quality": 6,
+    "confidence": "medium",
+    "rationale": "Viam ships its own simulation: the setup wizard can run a machine in a cloud simulated environment, Viam 101 builds a palletizing cell in simulation, and the RDK supports fake configs. Its uniform component APIs let code keep working when hardware changes in config. The evidence never explicitly says that code written against a simulated machine runs unchanged on the real robot, so sim-to-real portability is only implied. Missing for 10: explicit documentation of a sim-to-real workflow with the same code, details on simulation fidelity (physics, sensors), and independent or hands-on corroboration.",
     "evidenceIds": [
+      "viam-docs-77",
+      "viam-docs-78",
       "viam-gh-2",
-      "viam-docs-41",
+      "viam-docs-54",
       "viam-docs-19",
-      "viam-docs-55",
-      "viam-docs-66"
+      "viam-docs-55"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a robotics engineer, I can run the same robot code against simulation and the real robot without a rewrite",
+      "citations": [
+        {
+          "evidenceId": "viam-docs-77",
+          "quote": "the setup wizard can also run your machine in a simulated environment in the cloud, so you can start configuring and testing right away"
+        },
+        {
+          "evidenceId": "viam-docs-78",
+          "quote": "Build a palletizing cell in simulation and learn the core concepts behind every Viam machine."
+        },
+        {
+          "evidenceId": "viam-gh-2",
+          "quote": "Example with a dummy configuration: `go run ./web/cmd/server -config etc/configs/fake.json`."
+        },
+        {
+          "evidenceId": "viam-docs-54",
+          "quote": "That means you can swap hardware without rewriting your code."
+        },
+        {
+          "evidenceId": "viam-docs-19",
+          "quote": "If you change a camera or motor in your config, your code keeps working."
+        }
+      ]
+    },
     "productId": "viam",
     "storyId": "sim-to-real"
   }

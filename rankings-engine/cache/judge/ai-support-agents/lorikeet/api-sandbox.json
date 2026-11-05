@@ -1,22 +1,41 @@
 {
-  "hash": "f685aaef9f780f38d13dfeb992d3824122ec5c5a10586845b49dd7f04958ae33",
+  "hash": "a7083707795accbe1195afa4174a1b10c6e2330b05b47ca562d5562d64e47ae0",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Lorikeet's simulations let users replay historical tickets and synthetic or adversarial scenarios in bulk and compare outcomes before deploying a workflow change. AI-native users can trigger these runs from an assistant via the MCP server (e.g. /lorikeet:create-simulations, \"Run simulations\"). However, nothing documents a separate sandbox or staging environment or test credentials, and simulations draw on real tickets. Direct tool testing (e.g. get-order-status with a real order ID) may call live integrations, so isolation from production data is only implied. Missing for 10: an explicit sandbox/staging environment, documentation that simulations and tool tests do not read or write production systems, mock/test-mode integrations, and independent or hands-on corroboration.",
+    "rationale": "Lorikeet's own Simulations feature lets users test workflow changes against replayed historical tickets and synthetic or adversarial scenarios before deploying, including from AI assistants via MCP. That is a pre-production test harness kept away from live customers. However, nothing documents a separate sandbox environment, and nothing says simulations or tool tests avoid calling real APIs or production systems. Simulations are even built from actual tickets, so this reads as simulation or dry-run testing rather than proven sandbox isolation. Missing for 10: a documented sandbox or staging environment, an explicit guarantee that tool calls in tests do not touch production data or systems, and independent or hands-on corroboration.",
     "evidenceIds": [
       "lorikeet-docs-6",
-      "lorikeet-docs-7",
-      "lorikeet-docs-18",
       "lorikeet-docs-21",
       "lorikeet-docs-37",
       "lorikeet-docs-47",
-      "lorikeet-docs-24",
-      "lorikeet-docs-5",
-      "lorikeet-docs-19"
+      "lorikeet-docs-24"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
+      "citations": [
+        {
+          "evidenceId": "lorikeet-docs-6",
+          "quote": "Generate simulations straight from your actual tickets and run them in bulk batches, so every workflow change is tested against the conversations your customers actually have."
+        },
+        {
+          "evidenceId": "lorikeet-docs-21",
+          "quote": "Replay historical tickets and synthetic scenarios in bulk to see projected resolution quality and knowledge gaps, then deploy on the topics the agent is trained for"
+        },
+        {
+          "evidenceId": "lorikeet-docs-37",
+          "quote": "run them as guardrail test scenarios so you know how the agent responds before a real user tries the same tricks."
+        },
+        {
+          "evidenceId": "lorikeet-docs-47",
+          "quote": "Run simulations - test workflows against different customer scenarios"
+        }
+      ]
+    },
     "productId": "lorikeet",
     "storyId": "api-sandbox"
   }

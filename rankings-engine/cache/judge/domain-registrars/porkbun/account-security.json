@@ -1,17 +1,36 @@
 {
-  "hash": "737fae2f457386f90a3853ca17e7aaf4a74b550e7e900b925b84cea540cc3680",
+  "hash": "c6979f9b32ddd3298dc710828c5ed8a15496e11405e3100bcdc576af09bce409",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 8,
-    "confidence": "high",
-    "rationale": "Porkbun's docs say each API key can be limited to specific source IPs (CIDR supported) and/or specific domains, so a leaked key only touches listed domains from expected networks. Account two-factor authentication exists, API keys work without disabling it, and a community user confirms protecting their account with a passkey. Missing for 10: detailed first-party documentation of 2FA methods (TOTP/WebAuthn specifics); evidence of permission or operation-level key scoping beyond per-domain restriction.",
+    "verdict": "partial",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Porkbun documents scoped API keys that can be restricted to specific domains and to source IPs/CIDRs, which covers scoped credentials and IP allowlisting directly. The 2FA leg is thin: the docs only mention in passing that account two-factor authentication exists, and one community user reports using a passkey, with no first-party detail on supported factors or enforcement. missing for 10: first-party documentation of the account 2FA methods (TOTP/WebAuthn/passkeys) and enforcement options, documentation of key permission scopes beyond domain restriction, independent hands-on corroboration of IP/domain key scoping.",
     "evidenceIds": [
       "porkbun-docs-15",
       "porkbun-docs-43",
       "porkbun-docs-37",
       "porkbun-comm-6"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a security engineer, the registrar account itself is defensible — real 2FA, scoped API credentials, and IP allowlisting on API access",
+      "citations": [
+        {
+          "evidenceId": "porkbun-docs-15",
+          "quote": "each key can be limited to specific source IPs (CIDR supported) and/or specific domains from the gear icon next to the key. A leaked scoped key can only touch the domains you listed, from the network you expect."
+        },
+        {
+          "evidenceId": "porkbun-docs-37",
+          "quote": "Porkbun API keys work regardless of whether account two-factor authentication is enabled — you never have to weaken account security to automate."
+        },
+        {
+          "evidenceId": "porkbun-comm-6",
+          "quote": "I use them for all my domains, albeit with a passkey for my account."
+        }
+      ]
+    },
     "productId": "porkbun",
     "storyId": "account-security"
   }

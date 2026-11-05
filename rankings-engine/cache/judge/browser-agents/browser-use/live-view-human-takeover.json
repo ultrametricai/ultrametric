@@ -1,20 +1,36 @@
 {
-  "hash": "303123628bda6bfa84bac2400adfd9cea1623f0bdfea5502e1ecaf16d2cbefdc",
+  "hash": "d5f0ed104fd34437da540b609041d79852c8fd6621ab3b48122288fde03bc05b",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "The docs describe a live preview \"for human control\" when a CAPTCHA challenge persists. They also describe a `live_view_url` from the `browser.ready` event, used to have a human enter a 2FA code before continuing in the same session. Event polling supports monitoring a run live. Missing for 10: in-depth live-preview documentation, an explicit pause/resume handoff during an active run (the 2FA pattern requires stopping the run at a checkpoint), and independent or hands-on corroboration.",
+    "rationale": "Browser Use Cloud documents a live preview and a `live_view_url` that let a human watch the browser and take control. The documented flows are CAPTCHA fallback and a planned 2FA checkpoint, where the run is asked to stop and the same session then continues. There is no documented live takeover of a running agent at the moment it gets stuck. missing for 10: documented takeover of a run in progress with pause/resume of the agent, handback semantics after human intervention, a general stuck-agent intervention flow beyond CAPTCHA/2FA, and independent or hands-on corroboration.",
     "evidenceIds": [
       "browser-use-docs-9",
       "browser-use-docs-11",
-      "browser-use-docs-16",
       "browser-use-docs-4",
-      "browser-use-docs-5",
-      "browser-use-docs-14",
       "browser-use-docs-25"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an automation-engineer, I can watch a session live and take human control mid-run when the agent gets stuck",
+      "citations": [
+        {
+          "evidenceId": "browser-use-docs-9",
+          "quote": "If the challenge remains, open the [live preview](/cloud/browser/live-preview) for human control."
+        },
+        {
+          "evidenceId": "browser-use-docs-11",
+          "quote": "Ask the first run to stop at the 2FA screen, get its `live_view_url` from the [`browser.ready` event], and have the user enter the code. Then continue with the same session"
+        },
+        {
+          "evidenceId": "browser-use-docs-25",
+          "quote": "The most reliable options are a saved profile or a human checkpoint."
+        }
+      ]
+    },
     "productId": "browser-use",
     "storyId": "live-view-human-takeover"
   }

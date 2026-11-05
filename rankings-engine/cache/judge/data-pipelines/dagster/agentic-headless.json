@@ -1,22 +1,47 @@
 {
-  "hash": "d49e89dffa02bd2abdc86062961407534d7f3c0a15a443274addc1c2a8216adc",
+  "hash": "1f478a281cd2a9f6ea5f20af8fdd71e0cc4a5c77542c6ea90010cb82ddcea0d9",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Dagster is built for unattended execution. Schedules, sensors and Declarative Automation launch runs without a user present, a long-running daemon container drives them in Docker deployments, and an official `dg` CLI plus APIs allow scripted triggering of runs (e.g., dbt subsets). Missing for 10: explicit documentation of running Dagster inside CI pipelines (e.g., a CLI command to execute jobs or materialize assets from a CI runner, or a CI/branch-deployment guide), and independent hands-on corroboration of headless/CI use.",
+    "rationale": "Dagster ships its own CLI tooling (dg, create-dagster) and programmatic APIs for launching runs. It also has a daemon-driven deployment that runs schedules, sensors and declarative automation without user interaction, so non-interactive automation is a first-party capability. However, the cited CLI usage is scaffolding and `dg dev` (which starts a webserver), and nothing documents launching runs from a CI pipeline. Missing for 10: documented headless run/launch CLI commands, explicit CI integration guidance (e.g., running jobs or asset checks in GitHub Actions), exit-code/non-interactive behavior docs, independent hands-on corroboration.",
     "evidenceIds": [
-      "dagster-docs-4",
-      "dagster-docs-31",
-      "dagster-docs-5",
-      "dagster-docs-6",
-      "dagster-docs-38",
-      "dagster-docs-12",
-      "dagster-docs-7",
       "dagster-probe-4",
-      "dagster-docs-15"
+      "dagster-docs-41",
+      "dagster-docs-18",
+      "dagster-docs-7",
+      "dagster-docs-12",
+      "dagster-docs-31",
+      "dagster-docs-6"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
+      "citations": [
+        {
+          "evidenceId": "dagster-probe-4",
+          "quote": "official CLI documented at https://docs.dagster.io/api/clis/dg-cli/dg-cli-configuration"
+        },
+        {
+          "evidenceId": "dagster-docs-41",
+          "quote": "You can scaffold Dagster Component definitions in your project from the command line with the `dg scaffold defs` command"
+        },
+        {
+          "evidenceId": "dagster-docs-7",
+          "quote": "Use Dagster's UI or APIs to run subsets of your dbt models, seeds, and snapshots."
+        },
+        {
+          "evidenceId": "dagster-docs-12",
+          "quote": "A typical Dagster Docker deployment includes a several long-running containers: one for the webserver, one for the daemon, and one for each code location."
+        },
+        {
+          "evidenceId": "dagster-docs-31",
+          "quote": "Schedules enable automated execution of jobs at specified intervals."
+        }
+      ]
+    },
     "productId": "dagster",
     "storyId": "agentic-headless"
   }

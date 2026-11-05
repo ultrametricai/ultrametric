@@ -1,18 +1,36 @@
 {
-  "hash": "d6b87b20bcf674c1a7927df3a345b9fb3522c9aa1af94b0468aa60c560e1c3f7",
+  "hash": "7de9ab4bec61e04139644f18913fb847b808adaef76fa6f52629b0a901d417e5",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "llama.cpp loads models from the command line (`llama cli -hf ...`, `llama serve -hf ...`) and documents CPU+GPU hybrid inference that partially offloads models larger than VRAM. Community reports confirm GPU/CPU model splitting and a configurable GPU-layer count, though the N_GPU_LAYERS mention comes via Python wrappers rather than the CLI itself. missing for 10: explicit documentation of a CLI flag for GPU layer offload, any evidence of a command-line context-length setting.",
+    "rationale": "llama.cpp documents loading a model from the command line (`llama cli -hf ...`) and CPU+GPU hybrid inference that partially offloads a model to the GPU. Community reports confirm a configurable GPU-layer setting (N_GPU_LAYERS) and GPU/CPU model splitting, though the setting was used via Python wrappers rather than the CLI. missing for 10: a documented CLI flag for setting the number of offloaded GPU layers, any evidence of a context-length setting, and hands-on corroboration of configuring these from the CLI.",
     "evidenceIds": [
       "llama-cpp-gh-1",
-      "llama-cpp-gh-2",
       "llama-cpp-gh-10",
       "llama-cpp-comm-9",
       "llama-cpp-comm-11"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can load a model with custom GPU offload and context length settings from the command line",
+      "citations": [
+        {
+          "evidenceId": "llama-cpp-gh-1",
+          "quote": "llama cli -hf ggml-org/Qwen3.5-0.8B-GGUF"
+        },
+        {
+          "evidenceId": "llama-cpp-gh-10",
+          "quote": "CPU+GPU hybrid inference to partially accelerate models larger than the total VRAM capacity"
+        },
+        {
+          "evidenceId": "llama-cpp-comm-9",
+          "quote": "seemed limited to a max of 40 N_GPU_LAYERS before updating"
+        }
+      ]
+    },
     "productId": "llama-cpp",
     "storyId": "cli-runtime-config"
   }

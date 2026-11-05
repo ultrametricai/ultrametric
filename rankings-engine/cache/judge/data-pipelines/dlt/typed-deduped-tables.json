@@ -1,21 +1,51 @@
 {
-  "hash": "cabbf5721e6ef8615c91265d789626db4aca04bda877c058731b02b5182d852f",
+  "hash": "26f72dc364e8acc7b28fc9d640b0202d381e5bfd0160af46d144f91ab1f04bf3",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "dlt's docs say it infers schemas and data types, normalizes and unnests nested data into well-structured datasets, and deduplicates/upserts via the merge disposition with a primary_key. The resulting tables can be queried with SQL, Ibis, or data frames, and a community user praises the schema auto-generation and flattening for producing cleaner tables. Missing for 10: deduplication is opt-in (it requires configuring merge with a primary_key rather than happening by default), there is little detail on type-mapping fidelity per destination, and no hands-on corroboration of typed, deduplicated output.",
+    "rationale": "dlt's docs say it infers schemas and data types, normalizes and unnests nested data into well-structured datasets, and deduplicates or upserts by primary_key under the merge disposition. The loaded tables can then be queried via pipeline.dataset() with SQL, Ibis or dataframes, and a community user praises the schema auto-generation and flattening for producing cleaner tables. missing for 10: detailed docs on destination type mapping and column typing, evidence that deduplication works by default rather than only when merge is configured with a primary_key, hands-on corroboration of deduplicated typed tables.",
     "evidenceIds": [
       "dlt-docs-2",
       "dlt-docs-37",
       "dlt-docs-50",
       "dlt-docs-18",
       "dlt-docs-35",
-      "dlt-docs-36",
       "dlt-docs-12",
       "dlt-comm-4"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an analytics engineer, loaded data lands as typed, deduplicated destination tables ready to query, not raw JSON blobs",
+      "citations": [
+        {
+          "evidenceId": "dlt-docs-2",
+          "quote": "dlt infers schemas and data types, normalizes the data, and handles nested data structures."
+        },
+        {
+          "evidenceId": "dlt-docs-37",
+          "quote": "dlt will take care of the rest: unnesting the data, inferring the schema, etc., and writing to the destination."
+        },
+        {
+          "evidenceId": "dlt-docs-18",
+          "quote": "Merge: Merges new data into the destination using merge_key and/or deduplicates/upserts new data using primary_key."
+        },
+        {
+          "evidenceId": "dlt-docs-50",
+          "quote": "dlt is an open-source Python library that loads data from various, often messy data sources into well-structured datasets."
+        },
+        {
+          "evidenceId": "dlt-docs-12",
+          "quote": "use `pipeline.dataset()` to query the data. You can build the query with data frame expressions, Ibis, or SQL."
+        },
+        {
+          "evidenceId": "dlt-comm-4",
+          "quote": "especially the schema auto-generation and flattening will make many raw data tables look much cleaner."
+        }
+      ]
+    },
     "productId": "dlt",
     "storyId": "typed-deduped-tables"
   }

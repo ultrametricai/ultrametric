@@ -1,16 +1,30 @@
 {
-  "hash": "deff840b5c3c96d8bb96a52dd36603ab3402d5ef2310bdf7f7fb3dd7bbecc057",
+  "hash": "1625d6e67baf0107d123fa8e6c31a376b8917ce745ab82abf756a52e9d06e8cd",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "The Smithery CLI lets an agent search tools by name or intent (`smithery tool find`), call a specific tool on a connection (`smithery tool call`), and search the registry (`smithery mcp search`). That supports runtime discovery and invocation without preloading every definition. However, this is delivered through CLI commands, not documented meta-tools exposed inside the agent's tool context, and the Vercel AI SDK integration describes aggregating tools rather than lazy-loading them. Missing for 10: documented search/load meta-tools exposed to agents via MCP, an explicit context-saving or lazy-load design, and independent hands-on corroboration.",
+    "rationale": "Smithery's own CLI provides runtime tool discovery and invocation: `smithery tool find` searches tools by name or intent and `smithery tool call` invokes one on a connection. An agent could therefore search for and call tools on demand rather than preloading every definition. However, nothing documents these as MCP meta-tools exposed inside an agent's context, or explicitly frames them as a context-saving alternative to loading full tool lists. The probe noting an official MCP server gives no detail on search or load meta-tools. Missing for 10: documented in-context meta-tools (search/load tools) exposed to agents via MCP or API, explicit context-reduction design, independent or hands-on corroboration.",
     "evidenceIds": [
       "smithery-gh-2",
-      "smithery-gh-1",
-      "smithery-docs-14"
+      "smithery-gh-1"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI agent, I can search and load tools at runtime through meta-tools instead of having thousands of tool definitions stuffed into my context",
+      "citations": [
+        {
+          "evidenceId": "smithery-gh-2",
+          "quote": "smithery tool find [query]             # Search tools by name or intent"
+        },
+        {
+          "evidenceId": "smithery-gh-2",
+          "quote": "smithery tool call <connection> <tool> [args]  # Call a tool"
+        }
+      ]
+    },
     "productId": "smithery",
     "storyId": "runtime-tool-search"
   }

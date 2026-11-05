@@ -1,13 +1,12 @@
 {
-  "hash": "a9f5103d6ead91e407ecae583ecf1e1510113db372673e90772dd0b2f2f31611",
+  "hash": "0bb3d37983e33d69affcfaa68cf0c5f39c197c4de7c6802883e1ec232999f4ab",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Rollbar ships both access paths the story names, so an agent can pull production issues. The REST API can list items filtered to error/critical in the production environment. There is also an official stdio MCP server that AI tools like Claude and Cursor can run, and the OpenAPI spec covers Item and Occurrence resources, through which stack-trace data is exposed. Missing for 10: documented MCP tool list showing issue and stack-trace retrieval, explicit API docs for fetching full stack traces per occurrence, any first-party issue-tracker integration for filing bugs (PagerDuty incidents and webhooks don't qualify), and independent hands-on corroboration.",
+    "rationale": "Rollbar documents an official stdio MCP server and a REST API that can list production error/critical items. Its OpenAPI spec covers Item and Occurrence resources, and item statuses and owners support triage. The evidence pack never shows a Rollbar issue-tracker integration that files bugs (only PagerDuty incidents and generic webhooks), so the tracker-filing leg is unsupported. missing for 10: documented issue-tracker integration (e.g. Jira/GitHub Issues) for filing bugs, explicit retrieval of stack traces through the API/MCP, an enumerated MCP tool list, independent or hands-on corroboration of agent workflows.",
     "evidenceIds": [
-      "rollbar-docs-14",
       "rollbar-docs-15",
       "rollbar-docs-75",
       "rollbar-docs-18",
@@ -16,8 +15,31 @@
       "rollbar-supp-openapi-spec",
       "rollbar-docs-5",
       "rollbar-docs-12",
-      "rollbar-docs-13"
+      "rollbar-docs-14"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, an agent can pull my top production issues with stack traces via API or MCP, triage them, and file the real bugs into my tracker",
+      "citations": [
+        {
+          "evidenceId": "rollbar-docs-15",
+          "quote": "Get the first page of items that are error or critical, in the production environment"
+        },
+        {
+          "evidenceId": "rollbar-docs-60",
+          "quote": "This MCP server implements the `stdio` server type, which means your AI tool (e.g. Claude, Cursor) will run it directly"
+        },
+        {
+          "evidenceId": "rollbar-docs-12",
+          "quote": "There are four statuses: Active, Resolved, Muted, and Archived."
+        },
+        {
+          "evidenceId": "rollbar-docs-5",
+          "quote": "Stack traces will contain the original source filename, line number, method name, and code coordinates"
+        }
+      ]
+    },
     "productId": "rollbar",
     "storyId": "agent-triages-errors"
   }

@@ -1,22 +1,44 @@
 {
-  "hash": "15f97fd861118d626394eb625f8cad9063490c19a57acdd7c10e3f4c74e42d51",
+  "hash": "6af7777e4fe977bd29c9dbc5e1df4a85350aeb01cde6e1f62be456a891789e43",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Treg is API-first: one base URL and token expose 159 documented operations plus a `/call/` proxy to 3,800+ provider endpoints. Documented endpoints include `/catalog/search` and `/catalog/platforms/{slug}`, and every catalogued endpoint lists its price, parameters and an example response. A probe confirmed a live OpenAPI spec at /openapi.json, and llms.txt teaches the protocol to agents. Missing for 10: independent hands-on reports of successfully driving the API end-to-end (the community only describes it as a set of stateless APIs).",
+    "rationale": "treg documents a public HTTP API with one base URL and one token, 159 documented operations, and catalog/search endpoints. A probe confirms a live OpenAPI spec at /openapi.json, and llms.txt teaches the protocol to agents. Missing for 10: independent hands-on corroboration of authenticated API calls working end-to-end.",
     "evidenceIds": [
       "treg-docs-1",
       "treg-docs-3",
       "treg-docs-4",
       "treg-docs-5",
-      "treg-docs-10",
       "treg-docs-30",
-      "treg-probe-1",
       "treg-probe-3",
+      "treg-probe-1",
       "treg-comm-4"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can drive the product through a documented public API",
+      "citations": [
+        {
+          "evidenceId": "treg-docs-1",
+          "quote": "One base URL, one token. Call any of 159 documented operations"
+        },
+        {
+          "evidenceId": "treg-probe-3",
+          "quote": "HTTP 200 at https://treg.to/openapi.json — contains \"openapi\" key"
+        },
+        {
+          "evidenceId": "treg-docs-3",
+          "quote": "`GET /catalog/search?q=backlinks`"
+        },
+        {
+          "evidenceId": "treg-docs-5",
+          "quote": "[/llms.txt](/llms.txt) is the file to point a coding agent at — it teaches the whole protocol in one fetch."
+        }
+      ]
+    },
     "productId": "treg",
     "storyId": "agentic-public-api"
   }

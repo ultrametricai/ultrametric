@@ -1,17 +1,37 @@
 {
-  "hash": "692048c5c3daee0213e2666cd30741295c58c441d3eb5a9ddd3997975e4f66ac",
+  "hash": "9bd593a0c13b43bfe7dd92103490a03241d8f8eabc76937be9ef59fa971871c9",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Pulumi documents `pulumi import`, which adds an existing cloud resource to the stack's state and generates the code needed to manage it. It also documents adoption/import as a migration workflow and an import-file mechanism via `pulumi preview --import-file` for handling multiple resources. Missing for 10: independent hands-on corroboration of import/codegen quality, deeper documentation of bulk import (generated code must be manually copied into the program).",
+    "rationale": "Pulumi's own docs say `pulumi import` adopts an existing cloud resource into stack state and generates the code to manage it, and `pulumi preview --import-file` builds an import file for many resources. The community complaint about tf2pulumi concerns converting Terraform code, not importing cloud resources, so it does not contradict this capability. Missing for 10: independent or hands-on corroboration that import and code generation work at scale; the generated code must be copied into the program by hand; little documented depth on bulk-import workflows.",
     "evidenceIds": [
       "pulumi-docs-25",
       "pulumi-docs-6",
       "pulumi-docs-17",
-      "pulumi-docs-21"
+      "pulumi-docs-21",
+      "pulumi-docs-66"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a platform-engineer, I can import existing cloud resources under management and generate matching configuration code",
+      "citations": [
+        {
+          "evidenceId": "pulumi-docs-25",
+          "quote": "you run `pulumi import` against a specific cloud resource. Pulumi adds the resource to your stack’s state and generates the code needed to manage it, which you then copy into your Pulumi program."
+        },
+        {
+          "evidenceId": "pulumi-docs-6",
+          "quote": "Adopting the existing resource to bring it under management by Pulumi... is called adoption or import."
+        },
+        {
+          "evidenceId": "pulumi-docs-21",
+          "quote": "run `pulumi preview --import-file` to generate an import file listing every resource the program would otherwise create"
+        }
+      ]
+    },
     "productId": "pulumi",
     "storyId": "import-existing-infra"
   }

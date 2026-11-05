@@ -1,20 +1,50 @@
 {
-  "hash": "0a2b0e6e50ab8c20d0640889823c4a622d4fe987bec6cf6f6fbf4e28d74f5b6d",
+  "hash": "328b2ee179d9929e875203b6b58a5b0b802bd32e5202d7fc090b63aa1d6780c2",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "OpenTofu is a documented CLI tool built for scripted use. The evidence shows several CI-relevant features: plans saved with `-out` and later applied non-interactively, speculative plans run before code review, machine-readable JSON output via `-json-into`, an official OCI container image, configuration through environment variables like `TF_ENCRYPTION`, and a nightly build feed meant for automation tooling. missing for 10: an explicit CI/automation guide, documented non-interactive flags such as `-auto-approve`/`-input=false`, independent or hands-on corroboration of CI usage.",
+    "rationale": "OpenTofu is a documented official CLI that can plausibly run headlessly. It ships an official OCI container image, emits machine-readable JSON output to files, saves plans with -out for a later apply, accepts configuration through environment variables, and publishes a nightly build JSON 'for those who want to automate with tooling'. However, no evidence explicitly documents non-interactive or CI pipeline usage. missing for 10: explicit non-interactive/auto-approve flags, CI integration guides or examples, independent hands-on corroboration of headless CI runs.",
     "evidenceIds": [
       "opentofu-probe-4",
-      "opentofu-docs-21",
-      "opentofu-docs-4",
-      "opentofu-docs-37",
       "opentofu-docs-39",
+      "opentofu-docs-37",
+      "opentofu-docs-21",
       "opentofu-docs-33",
       "opentofu-gh-3"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
+      "citations": [
+        {
+          "evidenceId": "opentofu-probe-4",
+          "quote": "official CLI documented at https://opentofu.org/docs/cli/"
+        },
+        {
+          "evidenceId": "opentofu-docs-39",
+          "quote": "Use official OCI container image available on GitHub Container Registry."
+        },
+        {
+          "evidenceId": "opentofu-docs-37",
+          "quote": "This allows for simultaneous capture of both human readable and machine readable logs."
+        },
+        {
+          "evidenceId": "opentofu-docs-21",
+          "quote": "You can use the optional `-out=FILE` option to save the generated plan to a file on disk, which you can later execute by passing the file to `tofu apply` as an extra argument."
+        },
+        {
+          "evidenceId": "opentofu-docs-33",
+          "quote": "using the `TF_ENCRYPTION` environment variable"
+        },
+        {
+          "evidenceId": "opentofu-gh-3",
+          "quote": "For those who want to automate with tooling, `https://nightlies.opentofu.org/nightlies/latest.json` will be kept up to date with the latest build information."
+        }
+      ]
+    },
     "productId": "opentofu",
     "storyId": "agentic-headless"
   }

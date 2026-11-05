@@ -1,19 +1,37 @@
 {
-  "hash": "44b1fab5b3bf915342bcddb386a191ec6dfde84c2dec53966d675280e66164e3",
+  "hash": "3ecf5fd697e24175e5492f0c9beceb5d2783c5515c8ea4a0e4b206550cd1146b",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Fivetran is a managed SaaS whose pre-built connectors are configured through the dashboard. Some code-first paths exist: custom connectors can be written in Python with the Connector SDK and deployed, transformation models can be imported into your own dbt project, and accounts and pipelines can be managed programmatically through the REST API. However, nothing shows that standard pipeline definitions live as versioned config in your repository, and portability is limited because pipelines run as Fivetran-hosted extensions. Missing for 10: declarative config-as-code or IaC (e.g., a Terraform provider) for standard connectors, a documented Git or code-review workflow, portability of pipelines outside Fivetran, and independent corroboration.",
+    "rationale": "Fivetran does let some pipeline logic live as code: custom connectors are written in Python with the Connector SDK, and Fivetran data models can be imported into your own dbt project. Its core product, though, is fully managed pre-built connectors configured in the dashboard or via the REST API, not config files kept in a repo. The custom-connector code also deploys only as an extension of Fivetran, so it is not portable. Missing for 10: declarative config-as-code for standard connectors, documented git/repo versioning and review workflow, portability outside Fivetran's hosted runtime, independent corroboration.",
     "evidenceIds": [
       "fivetran-docs-2",
-      "fivetran-docs-3",
       "fivetran-docs-25",
       "fivetran-docs-5",
-      "fivetran-intdir-5",
-      "fivetran-docs-1"
+      "fivetran-docs-1",
+      "fivetran-intdir-6"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a data engineer, my pipelines are plain code and config in my own repository — versioned, reviewed, and portable like any software",
+      "citations": [
+        {
+          "evidenceId": "fivetran-docs-2",
+          "quote": "Fivetran’s Connector SDK allows you to develop a custom data connector using Python and deploy it as an extension of Fivetran."
+        },
+        {
+          "evidenceId": "fivetran-docs-25",
+          "quote": "You can either add the models in the Fivetran dashboard (Quickstart data models) or import them into your dbt project (Fivetran data models)."
+        },
+        {
+          "evidenceId": "fivetran-intdir-6",
+          "quote": "These skills let you build, test, and deploy connectors using natural language prompts."
+        }
+      ]
+    },
     "productId": "fivetran",
     "storyId": "pipelines-as-code"
   }
