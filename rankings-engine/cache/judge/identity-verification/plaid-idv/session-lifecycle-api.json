@@ -1,19 +1,31 @@
 {
-  "hash": "d48e365915c9be05a2feec4a6a9b52c35016880dcdba71a121b71fed1e18c3f0",
+  "hash": "29824321e1fac5986b1163dd73adc7e8de3f5da635c26955793f00d9a9b6a379",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 3,
     "confidence": "medium",
-    "rationale": "Plaid has a dedicated Identity Verification API reference that documents a /identity_verification/retry endpoint. STATUS_UPDATED and STEP_UPDATED webhooks provide programmatic lifecycle signals. However, the evidence shows session start through Link client-side flows, and status viewing and failure overrides through the Dashboard, not API calls. Missing for 10: documented API endpoints to create a session, get its status, retrieve results and captured media, and cancel or redact a session, plus any hands-on corroboration.",
+    "rationale": "The evidence shows Plaid has a documented Identity Verification API reference. One documented endpoint is /identity_verification/retry, and STATUS_UPDATED and STEP_UPDATED webhooks report session progress, so part of the lifecycle is API-drivable. Session status and risk results are otherwise shown as Dashboard views, not API reads, and no other lifecycle endpoints are evidenced. missing for 10: documented create-session endpoint, get/list status endpoint, retrieval of results and captured media via API, cancel or redact endpoints, and evidence that every lifecycle step is documented.",
     "evidenceIds": [
       "plaid-idv-docs-18",
       "plaid-idv-docs-3",
-      "plaid-idv-docs-14",
-      "plaid-idv-docs-15",
-      "plaid-idv-docs-19",
-      "plaid-idv-docs-7"
+      "plaid-idv-docs-25"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, the whole verification lifecycle is drivable through the API — create a session, get its status, retrieve results and captured media, and cancel or redact it — with every step documented",
+      "citations": [
+        {
+          "evidenceId": "plaid-idv-docs-18",
+          "quote": "/identity_verification/retry | Allow a user to retry an identity verification"
+        },
+        {
+          "evidenceId": "plaid-idv-docs-3",
+          "quote": "For Identity Verification, there are three events: STEP_UPDATED, STATUS_UPDATED, RETRIED"
+        }
+      ]
+    },
     "productId": "plaid-idv",
     "storyId": "session-lifecycle-api"
   }

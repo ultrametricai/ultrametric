@@ -1,17 +1,35 @@
 {
-  "hash": "8fbae18a122591fe0a56fa4ab556f5b1a5d91264a18bbbdcc42c38a79a9e014c",
+  "hash": "c5c2dd327ae087ff24ca441c290c74a3d8f5be6b608d8b13c59485ae7bfafdef",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "The docs describe webhooks that notify you of changes in workflow status, so results can be retrieved by webhook instead of polling. Signatures can be verified by computing an HMAC-SHA256 of the request body with the webhook's secret token, which covers the core of the story: signed, push-based lifecycle notifications. Missing for 10: an explicit list of event types matching created/processing/verified/requires-input, documentation of delivery and retry semantics, and independent or hands-on corroboration.",
+    "rationale": "First-party docs show that registrable webhooks notify you of changes in workflow status, so results can arrive by webhook instead of polling. Each webhook is signed with an HMAC-SHA256 of the request body, keyed by the webhook's secret token. missing for 10: explicit enumeration of lifecycle event types (created, processing, verified, requires-input), independent or hands-on corroboration of delivery and signing behavior.",
     "evidenceIds": [
       "entrust-onfido-docs-4",
-      "entrust-onfido-docs-3",
       "entrust-onfido-docs-5",
-      "entrust-onfido-docs-24"
+      "entrust-onfido-docs-3"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, verification lifecycle events arrive as signed webhooks — created, processing, verified, requires-input — so my system reacts to outcomes without polling",
+      "citations": [
+        {
+          "evidenceId": "entrust-onfido-docs-4",
+          "quote": "asynchronously monitor the status of identity verification workflows by configuring webhook events to notify you of changes in workflow status"
+        },
+        {
+          "evidenceId": "entrust-onfido-docs-5",
+          "quote": "You can get the expected signature of the webhook by computing the HMAC of the event request body using the SHA256 algorithm, using the webhook's secret token as the key."
+        },
+        {
+          "evidenceId": "entrust-onfido-docs-3",
+          "quote": "retrieve results via webhook or polling"
+        }
+      ]
+    },
     "productId": "entrust-onfido",
     "storyId": "verification-webhooks"
   }

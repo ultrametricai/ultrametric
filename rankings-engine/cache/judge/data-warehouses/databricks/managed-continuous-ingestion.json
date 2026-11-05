@@ -1,20 +1,41 @@
 {
-  "hash": "6f35df60a655351adb4f0477456cf1cb6def6dc4d260d61f9672fa3ca9644490",
+  "hash": "9b3a0bf4521590992beda0099f832a66151bed46a114d57e0680d885a6456720",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Databricks documents Lakeflow pipelines with Auto Loader for ETL and says it can incrementally process new data files as they arrive in cloud storage. It also documents standard ingestion connectors and Structured Streaming with low latency and exactly-once Delta sinks. A community report that Databricks saves configuration and infra wiring corroborates the managed aspect only in general terms. missing for 10: explicit documentation that ingestion pipelines run on fully managed/serverless infrastructure, named event-stream sources (e.g., message buses) for event ingestion, independent hands-on corroboration of continuous ingestion specifically",
+    "rationale": "Databricks documents its own incremental file ingestion: Auto Loader processes new files as they arrive in cloud storage. It also offers Lakeflow pipelines, managed ingestion connectors, and Structured Streaming / real-time mode that process records as they arrive, so the continuous-ingestion core is directly provided. The evidence does not clearly show that this runs as a fully managed, serverless service where the engineer operates no pipeline infrastructure, and 'managed' appears only in the name of the connector tier. missing for 10: explicit docs that file/event ingestion runs serverless with no user-managed compute or pipeline infrastructure, details on event-source (message bus) ingestion, and independent hands-on corroboration of continuous managed ingestion.",
     "evidenceIds": [
-      "databricks-docs-1",
       "databricks-docs-13",
+      "databricks-docs-1",
       "databricks-docs-20",
-      "databricks-docs-36",
-      "databricks-docs-68",
-      "databricks-docs-51",
-      "databricks-comm-7"
+      "databricks-docs-107",
+      "databricks-docs-118"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a data-engineer, a managed service continuously ingests new files or events as they arrive, without me running my own pipeline infrastructure",
+      "citations": [
+        {
+          "evidenceId": "databricks-docs-13",
+          "quote": "Incrementally and efficiently process new data files as they arrive in cloud storage."
+        },
+        {
+          "evidenceId": "databricks-docs-1",
+          "quote": "Create and deploy an ETL (extract, transform, and load) pipeline for data orchestration using Lakeflow pipelines and Auto Loader."
+        },
+        {
+          "evidenceId": "databricks-docs-107",
+          "quote": "SQL and Spark APIs, which offer higher levels of ingestion pipeline customization compared to the managed connectors."
+        },
+        {
+          "evidenceId": "databricks-docs-118",
+          "quote": "RTM processes records as they arrive, with end-to-end latency as low as five milliseconds."
+        }
+      ]
+    },
     "productId": "databricks",
     "storyId": "managed-continuous-ingestion"
   }

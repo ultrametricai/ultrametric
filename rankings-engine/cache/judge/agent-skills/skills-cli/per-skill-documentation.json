@@ -1,20 +1,40 @@
 {
-  "hash": "aff456dfc0a239b8395a0bb23c39526d20bf8b9ca18a718dee7027f819d758fb",
+  "hash": "e1e957ffc56d1f381492aaf24cd76a9ab6d8444fbcd59e8e506fd7459546151b",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 8,
+    "verdict": "partial",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "The Agent Skills spec requires every SKILL.md to have YAML frontmatter, and agents load each skill's name and description at startup to decide when it is relevant, so the description doubles as the activation trigger. A hands-on probe confirmed that `skills add --list` shows every skill's name and full trigger description before anything is installed, which lets a developer predict behavior up front. missing for 10: evidence that the description field is mandatory and validated (the spec citations shown only cover optional fields), and the skills.sh website list not surfacing descriptions inline per community feedback.",
+    "rationale": "Skills carry YAML frontmatter, and agents load each skill's name and description to decide when it is relevant. A hands-on probe confirmed `skills add --list` shows every skill's name and full trigger description before install, so developers can preview what a skill does and when it fires. However, nothing shows that a description is mandatory or validated for every skill, and the skills.sh listing UI reportedly doesn't surface descriptions inline. missing for 10: evidence that a what/when description is required and enforced for every published skill, validation of description quality or trigger accuracy, descriptions surfaced directly in the skills.sh directory UI",
     "evidenceIds": [
-      "skills-cli-docs-3",
+      "skills-cli-probe-rt-2",
       "skills-cli-docs-12",
       "skills-cli-docs-16",
-      "skills-cli-docs-4",
-      "skills-cli-probe-rt-2",
-      "skills-cli-gh-19",
-      "skills-cli-comm-6"
+      "skills-cli-docs-4"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, every skill documents what it does and when it activates, so I can predict my agent's new behavior before it surprises me",
+      "citations": [
+        {
+          "evidenceId": "skills-cli-probe-rt-2",
+          "quote": "enumerated all 9 skills in a public repo — each with its name and full trigger description — WITHOUT installing anything"
+        },
+        {
+          "evidenceId": "skills-cli-docs-12",
+          "quote": "At startup, agents load only the name and description of each available skill, just enough to know when it might be relevant."
+        },
+        {
+          "evidenceId": "skills-cli-docs-16",
+          "quote": "The SKILL.md file must contain YAML frontmatter followed by Markdown content."
+        },
+        {
+          "evidenceId": "skills-cli-docs-4",
+          "quote": "skills-ref validate ./my-skill"
+        }
+      ]
+    },
     "productId": "skills-cli",
     "storyId": "per-skill-documentation"
   }

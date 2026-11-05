@@ -1,11 +1,11 @@
 {
-  "hash": "8166ae79d530c1607abf31229c1cd9783927a81a338c8d1c190c2af8925f66d4",
+  "hash": "126be988b9ba58fd306838b56956b48687a79eed030e2cb063d2199d29dc1906",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
-    "quality": 7,
-    "confidence": "medium",
-    "rationale": "The GitHub README says the SDK is provider-agnostic, supporting the OpenAI Responses and Chat Completions APIs plus 100+ other LLMs. The models docs let you select providers per run or per agent, mix them across agents, and set a default model through OPENAI_DEFAULT_MODEL. The docs also flag feature differences: built-in hosted tools (web search, file search, code interpreter) are tied to OpenAIResponsesModel, so swapping providers can cost those capabilities. Missing for 10: detailed documentation of how non-OpenAI providers are configured, parity guidance for hosted tools on other providers, and independent or hands-on corroboration of provider swapping.",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "The SDK itself is documented as provider-agnostic, supporting OpenAI's Responses and Chat Completions APIs plus 100+ other LLMs. Docs describe choosing providers per run or per agent, mixing models across agents, and setting a default model through the `OPENAI_DEFAULT_MODEL` environment variable, so the model can change without rewriting agent logic. One caveat: OpenAI-hosted tools are tied to OpenAIResponsesModel, and the docs point to feature differences between providers. Missing for 10: detailed docs on how a non-OpenAI provider is configured, independent or hands-on evidence of a provider swap working, and clarity on which features degrade when leaving OpenAI models.",
     "evidenceIds": [
       "openai-agents-gh-1",
       "openai-agents-docs-38",
@@ -13,6 +13,25 @@
       "openai-agents-docs-11",
       "openai-agents-docs-21"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can swap the underlying LLM provider or model without rewriting my agent",
+      "citations": [
+        {
+          "evidenceId": "openai-agents-gh-1",
+          "quote": "It is provider-agnostic, supporting the OpenAI Responses and Chat Completions APIs, as well as 100+ other LLMs."
+        },
+        {
+          "evidenceId": "openai-agents-docs-38",
+          "quote": "Select providers per run or per agent and review feature differences"
+        },
+        {
+          "evidenceId": "openai-agents-docs-28",
+          "quote": "if you want to consistently use a specific model for all agents that do not set a custom model, set the `OPENAI_DEFAULT_MODEL` environment variable before running your agents."
+        }
+      ]
+    },
     "productId": "openai-agents",
     "storyId": "model-agnostic-swap"
   }

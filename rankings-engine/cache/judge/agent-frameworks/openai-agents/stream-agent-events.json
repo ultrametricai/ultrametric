@@ -1,18 +1,36 @@
 {
-  "hash": "955b79d59e8769c7b4c95f6b47267db24d258052a85dcc0751e4e587021214a1",
+  "hash": "f336625ad33b025ce83865c413e520de596b4cb20255f48079337114b7c8139a",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "The SDK documents a dedicated streaming mode: `Runner.run_streamed()` returns a `RunResultStreaming`, calls the LLM in streaming mode and streams events as they arrive. The streaming guide says you can subscribe to run updates to show end users progress and partial responses, which covers real-time token output. Missing for 10: explicit documentation that tool-call and step events appear in the stream (only implied by 'updates of the agent run'), and independent or hands-on corroboration of streaming to a UI.",
+    "rationale": "The SDK documents a first-party streaming mode: Runner.run_streamed() calls the LLM in streaming mode and streams events as they arrive, so developers can show progress updates and partial responses in their UI. The evidence does not show that tool-call or step events are part of that stream; tool calls appear only under tracing, which is a separate debugging feature and does not count here. missing for 10: explicit documentation that tool calls, handoffs and steps are emitted as stream events, token-level delta event types, and independent or hands-on corroboration of real-time UI streaming.",
     "evidenceIds": [
       "openai-agents-docs-6",
-      "openai-agents-docs-7",
-      "openai-agents-docs-32",
+      "openai-agents-docs-37",
       "openai-agents-docs-34",
-      "openai-agents-docs-37"
+      "openai-agents-docs-7"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can stream tokens and intermediate agent events (tool calls, steps) to my UI in real time",
+      "citations": [
+        {
+          "evidenceId": "openai-agents-docs-6",
+          "quote": "Streaming lets you subscribe to updates of the agent run as it proceeds. This can be useful for showing the end-user progress updates and partial responses."
+        },
+        {
+          "evidenceId": "openai-agents-docs-37",
+          "quote": "It calls the LLM in streaming mode, and streams those events to you as they are received."
+        },
+        {
+          "evidenceId": "openai-agents-docs-34",
+          "quote": "Runner.run_streamed(), which runs async and returns a RunResultStreaming"
+        }
+      ]
+    },
     "productId": "openai-agents",
     "storyId": "stream-agent-events"
   }

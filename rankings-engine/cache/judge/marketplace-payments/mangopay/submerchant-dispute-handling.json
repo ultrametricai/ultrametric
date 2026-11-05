@@ -1,16 +1,30 @@
 {
-  "hash": "db558bfe112df43741a9be8320e20628050ad5f92e6da59367384804196d1638",
+  "hash": "bc76ca9f1045404a22704d088486f21432a029dbcbae3cafbb1e57a9bf5b869b",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Mangopay's docs say that on a chargeback the funds are automatically deducted from the wallet and returned to the payer. A dispute object is created, and the platform can contest it by providing proof. This covers the core of per-wallet chargeback handling and evidence-based contestation. Missing for 10: explicit confirmation that disputes attach to the specific seller/sub-merchant wallet rather than a platform wallet, documented evidence-submission channels (API endpoint or dashboard flow), automatic re-crediting of seller balances when a dispute is won, dispute-specific webhook events, and independent or hands-on corroboration.",
+    "rationale": "Mangopay's docs say chargeback funds are automatically deducted from the wallet and a dispute is created, which the platform can contest by providing proof. This covers wallet-level chargeback attribution and a contest path. The evidence does not show how evidence is submitted, by API or dashboard, or how dispute outcomes are reflected back into seller balances. Missing for 10: an explicit evidence-submission mechanism via API or dashboard, automatic crediting of won dispute outcomes back to seller wallets, explicit per-sub-merchant dispute management, and independent or hands-on corroboration.",
     "evidenceIds": [
       "mangopay-docs-12",
-      "mangopay-docs-13",
-      "mangopay-docs-14"
+      "mangopay-docs-13"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an ops user, disputes are managed per seller — chargebacks land against the right sub-merchant, evidence is submitted via API or dashboard, and outcomes flow back into seller balances automatically",
+      "citations": [
+        {
+          "evidenceId": "mangopay-docs-12",
+          "quote": "The funds are automatically deducted from this wallet and sent back to the user. A dispute is created which can be contested by the platform in some cases."
+        },
+        {
+          "evidenceId": "mangopay-docs-13",
+          "quote": "The platform may have the opportunity to contest the chargeback by providing proof prior to being requested to settle their credit to Mangopay."
+        }
+      ]
+    },
     "productId": "mangopay",
     "storyId": "submerchant-dispute-handling"
   }

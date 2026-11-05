@@ -1,18 +1,37 @@
 {
-  "hash": "f2f337328a0589589a9d0deb79b20357eb7c2e957630a5c1095a5999f8aa701e",
+  "hash": "1b6b539616a92e5d8d2b61937a3ea9e6332f28e5d1aa1fe2854ded66575fbcb2",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "A recorded runtime probe ran a real, keyless, end-to-end install headlessly: `npx -y skills add obra/superpowers --skill test-driven-development -a claude-code -y --copy` fetched the repo and placed a readable SKILL.md with no prompts (probe-rt-1). Superpowers also documents agent-driven install paths, such as telling Codex/OpenCode to fetch and follow a raw INSTALL.md (comm-5) and single-command installs like `devin plugins install obra/superpowers` and `/plugin install`. missing for 10: the headless probe relies on a third-party `skills` installer rather than a first-party Superpowers CLI; no first-party docs explicitly guarantee promptless, non-interactive installs across harnesses; the INSTALL.md agent path is evidenced only by a community report.",
+    "rationale": "Superpowers' own install path for Codex and OpenCode has the agent fetch and follow a raw GitHub INSTALL.md, which is an agent-run install route. A recorded runtime probe also shows a fully headless, flag-driven (`-y`) install of one skill completing end to end, though it used the generic `skills` CLI rather than a Superpowers-owned installer. Other documented paths are harness-native commands (Claude Code `/plugin`, `devin plugins install`), and docs say everything ships through the harness's own install mechanism. missing for 10: first-party documentation of a promptless, non-interactive install mode; evidence that the agent-driven INSTALL.md path runs without human confirmation; a first-party headless installer rather than the host `skills` CLI.",
     "evidenceIds": [
-      "superpowers-probe-rt-1",
       "superpowers-comm-5",
+      "superpowers-probe-rt-1",
+      "superpowers-docs-48",
       "superpowers-docs-7",
-      "superpowers-docs-36",
-      "superpowers-docs-48"
+      "superpowers-gh-5"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, my coding agent can install a skill by itself — a non-interactive, promptless install path an agent can run headlessly end to end",
+      "citations": [
+        {
+          "evidenceId": "superpowers-comm-5",
+          "quote": "you tell the agent to fetch and follow instructions from a raw GitHub INSTALL.md"
+        },
+        {
+          "evidenceId": "superpowers-probe-rt-1",
+          "quote": "a REAL end-to-end keyless install into a scratch project dir — `npx -y skills add obra/superpowers --skill test-driven-development -a claude-code -y --copy` fetched the repo, copied the skill to ./.claude/skills/test-driven-development/"
+        },
+        {
+          "evidenceId": "superpowers-docs-7",
+          "quote": "`devin plugins install obra/superpowers` now works, and skills auto-trigger at session start."
+        }
+      ]
+    },
     "productId": "superpowers",
     "storyId": "agent-installs-skill"
   }

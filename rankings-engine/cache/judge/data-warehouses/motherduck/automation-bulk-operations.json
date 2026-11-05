@@ -1,22 +1,37 @@
 {
-  "hash": "449855e31009f78189881c5e952e799c863e321e984fa46d73cf89f5a901eff6",
+  "hash": "e7341213997ba339890a1746c0b0bc4d0dbf803164fe3e90391f2be431ec3a7f",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "MotherDuck's remote MCP server exposes a read-write `query_rw` tool, so agents can run INSERT, UPDATE, DELETE and schema changes in SQL. Those statements act on whole sets of rows at once. Bulk-scale work is also backed by whole-database uploads, table loads from Postgres/MySQL, scheduled Python Flights jobs for ingest and transformation, and backfills on large Mega instances. Missing for 10: no explicit docs framing these as bulk or batch operations (no limits, transactional guarantees or batch semantics described), and no independent or hands-on corroboration of agent-driven bulk modifications.",
+    "rationale": "MotherDuck's remote MCP server gives agents a read-write `query_rw` tool that can run INSERT, UPDATE and DELETE and modify schemas. As SQL statements, these act on whole sets of rows at once. Bulk data loading from other databases and from local DuckDB files is also documented. However, the evidence never explicitly describes or demonstrates bulk or batch operations as a feature. Missing for 10: explicit docs on bulk or batch operations across many items, limits and safety of mass updates or deletes, and hands-on corroboration of agent-driven bulk changes.",
     "evidenceIds": [
       "motherduck-docs-63",
-      "motherduck-docs-51",
       "motherduck-docs-49",
       "motherduck-docs-38",
-      "motherduck-docs-50",
-      "motherduck-docs-62",
-      "motherduck-docs-3",
-      "motherduck-docs-29",
-      "motherduck-docs-42"
+      "motherduck-docs-6",
+      "motherduck-docs-29"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can perform bulk operations across many items at once",
+      "citations": [
+        {
+          "evidenceId": "motherduck-docs-63",
+          "quote": "Your agents can now INSERT, UPDATE, DELETE, create tables, and modify schemas through the MCP — not just SELECT."
+        },
+        {
+          "evidenceId": "motherduck-docs-49",
+          "quote": "Execute read-only and read-write SQL against your databases"
+        },
+        {
+          "evidenceId": "motherduck-docs-6",
+          "quote": "Load your data from other databases and object storage"
+        }
+      ]
+    },
     "productId": "motherduck",
     "storyId": "automation-bulk-operations"
   }

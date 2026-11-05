@@ -1,21 +1,47 @@
 {
-  "hash": "25719e9e8fe9cf9d6a477dbed12ea611df6406974bb0fadaf7d00b6123bd60bb",
+  "hash": "4961c0c2ef6475d2ec390cde061262865fbe06969c926573f6a72b9ef6cffbfa",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Snowflake documents a SQL API, a REST API for running queries and managing the deployment, plus a Snowflake-managed MCP server that lets AI agents securely retrieve data, including SQL executions as tools. Governance comes from role-based access control, where privileges are assigned to roles. Together these cover the core of a dashboard-free agent querying loop. missing for 10: explicit documentation of the authentication flow for programmatic or agent identities, explicit schema-discovery endpoints or tools, evidence that the Snowflake CLI itself executes SQL (its cited docs cover only app management), details on result retrieval or formats, and independent or hands-on corroboration.",
+    "rationale": "Snowflake documents a first-party SQL API: a REST API that can submit SQL statements, check their execution status and perform queries. It also documents a Snowflake-managed MCP server that lets AI agents retrieve data and can serve SQL executions as tools, with role-based access control governing privileges. These cover the query and governance core of the story without a dashboard. However, the evidence does not explicitly document how the agent authenticates, how it discovers schemas, or how result sets are read back, and the CLI evidence covers app management rather than running SQL. Missing for 10: documented programmatic authentication flow (key-pair/OAuth), explicit schema-discovery endpoints or commands, documented result-set retrieval/pagination, evidence that the Snowflake CLI itself runs SQL queries, independent or hands-on corroboration of an end-to-end agent workflow.",
     "evidenceIds": [
       "snowflake-docs-66",
       "snowflake-docs-73",
+      "snowflake-docs-90",
       "snowflake-docs-14",
       "snowflake-docs-57",
-      "snowflake-docs-65",
-      "snowflake-supp-openapi-specs",
       "snowflake-docs-8",
-      "snowflake-probe-3"
+      "snowflake-docs-100"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, my agent can run governed SQL end to end — authenticate, discover schemas, query, and read results back through a CLI or API with no dashboard in the loop",
+      "citations": [
+        {
+          "evidenceId": "snowflake-docs-66",
+          "quote": "The Snowflake SQL API is a REST API that you can use to access and update data in a Snowflake database."
+        },
+        {
+          "evidenceId": "snowflake-docs-90",
+          "quote": "Submit SQL statements for execution. Check the status of the execution of a statement."
+        },
+        {
+          "evidenceId": "snowflake-docs-57",
+          "quote": "You can configure the MCP server to serve Cortex Analyst, Cortex Search, and Cortex Agents as tools, along with custom tools and SQL executions"
+        },
+        {
+          "evidenceId": "snowflake-docs-14",
+          "quote": "The Snowflake-managed MCP server lets AI agents securely retrieve data from Snowflake accounts without needing to deploy separate infrastructure."
+        },
+        {
+          "evidenceId": "snowflake-docs-8",
+          "quote": "Access privileges are assigned to roles, which are in turn assigned to users."
+        }
+      ]
+    },
     "productId": "snowflake",
     "storyId": "agent-runs-sql-headless"
   }

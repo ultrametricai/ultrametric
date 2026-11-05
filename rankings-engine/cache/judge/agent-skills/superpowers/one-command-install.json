@@ -1,11 +1,11 @@
 {
-  "hash": "86f656db201a725a134c758ab7eba82772808ceed285ca805faebb8540d2d9fd",
+  "hash": "0521f09e20de3ecfd6447420ca7e546e967e697377fd7ff2b9fa3878f2932125",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "The docs give one-command, in-agent installs: `devin plugins install obra/superpowers` with skills auto-triggering at session start, and the Claude Code marketplace `/plugin install superpowers@superpowers-marketplace`. Antigravity runs the session-start hook so Superpowers is active from the first message. A real hands-on probe confirmed `npx skills add obra/superpowers` fetches and installs skills cleanly. Missing for 10: hands-on confirmation that skills activate in the next session (the probe only verified the files were installed), a true one-liner on every harness (Claude Code needs a marketplace-add step first, and Codex/OpenCode installs go through the agent fetching an INSTALL.md).",
+    "rationale": "Superpowers documents single-command installs that are active at session start. Devin CLI uses `devin plugins install obra/superpowers`, and skills auto-trigger at session start. Claude Code uses in-agent `/plugin marketplace add` plus `/plugin install`. On Antigravity the session-start hook makes it active from the first message. A real runtime probe confirmed `npx skills add obra/superpowers` fetches and installs skills cleanly. Missing for 10: hands-on verification that skills activate in the next session, a uniform one-liner across harnesses (install differs per harness; Codex/OpenCode use a fetch-and-follow INSTALL.md and Hermes uses a git clone), and Claude Code's marketplace flow being two commands rather than one.",
     "evidenceIds": [
       "superpowers-docs-7",
       "superpowers-docs-36",
@@ -17,6 +17,29 @@
       "superpowers-comm-5",
       "superpowers-docs-20"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can install a skill collection with one documented command — a package-manager one-liner, CLI, or in-agent marketplace command — and it is active in my next session",
+      "citations": [
+        {
+          "evidenceId": "superpowers-docs-7",
+          "quote": "`devin plugins install obra/superpowers` now works, and skills auto-trigger at session start."
+        },
+        {
+          "evidenceId": "superpowers-docs-36",
+          "quote": "/plugin marketplace add obra/superpowers-marketplace\n/plugin install superpowers@superpowers-marketplace"
+        },
+        {
+          "evidenceId": "superpowers-gh-8",
+          "quote": "Antigravity runs the plugin's session-start hook, so Superpowers is active from the first message. Reinstall with the same command to update."
+        },
+        {
+          "evidenceId": "superpowers-probe-rt-1",
+          "quote": "a REAL end-to-end keyless install into a scratch project dir — `npx -y skills add obra/superpowers --skill test-driven-development -a claude-code -y --copy` fetched the repo, copied the skill to ./.claude/skills/test-driven-development/"
+        }
+      ]
+    },
     "productId": "superpowers",
     "storyId": "one-command-install"
   }

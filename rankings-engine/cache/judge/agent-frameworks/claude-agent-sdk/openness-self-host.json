@@ -1,19 +1,42 @@
 {
-  "hash": "71ba7f687f2673a94dcd7d3e3b9c0d632b9be7f53c5915cdb6bf0d2fce1767b6",
+  "hash": "7cf646e95b0d4c0029a1ca71a41c40323b9b10d951cea32f39399d5dedb43b55",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "The SDK harness runs on your own infrastructure. Hosting docs cover deploying it on Docker, Kubernetes and sandbox providers, including subprocess architecture, scaling and multi-tenant isolation. It bundles the Claude Code binary, and a SessionStore adapter lets transcripts live in your own backend. However, the agent is billed through Anthropic (the community billing-change reports show usage depends on Anthropic's plans), and nothing shows the model itself can be self-hosted, so only the orchestration layer is truly self-hostable. Missing for 10: self-hostable or offline model inference, evidence of running without Anthropic's service, independent hands-on self-hosting reports.",
+    "rationale": "The SDK's own hosting docs cover deploying the agent runtime on your own infrastructure: Docker, Kubernetes and sandbox providers, with a bundled Claude Code CLI subprocess and pluggable session storage. However, community reports that SDK usage is billed by Anthropic imply the agent still depends on Anthropic's hosted service, so the full product is not self-contained. Missing for 10: self-hostable model inference or an offline/air-gapped mode, an explicit statement of what must stay vendor-hosted, and independent hands-on corroboration of self-hosted deployments.",
     "evidenceIds": [
       "claude-agent-sdk-docs-11",
       "claude-agent-sdk-docs-20",
-      "claude-agent-sdk-docs-29",
       "claude-agent-sdk-gh-1",
       "claude-agent-sdk-docs-36",
+      "claude-agent-sdk-docs-29",
       "claude-agent-sdk-comm-1"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can self-host the core product",
+      "citations": [
+        {
+          "evidenceId": "claude-agent-sdk-docs-11",
+          "quote": "Deploy the Agent SDK in production: subprocess architecture, session persistence, scaling, observability, and multi-tenant isolation for Docker, Kubernetes, and sandbox providers."
+        },
+        {
+          "evidenceId": "claude-agent-sdk-docs-20",
+          "quote": "The Agent SDK spawns and supervises a claude CLI subprocess that owns a shell, a working directory, and session files on disk."
+        },
+        {
+          "evidenceId": "claude-agent-sdk-gh-1",
+          "quote": "The Claude Code CLI is automatically bundled with the package - no separate installation required!"
+        },
+        {
+          "evidenceId": "claude-agent-sdk-docs-29",
+          "quote": "A `SessionStore` adapter lets you mirror those transcripts to your own backend, such as an object store, a key-value store, or a database"
+        }
+      ]
+    },
     "productId": "claude-agent-sdk",
     "storyId": "openness-self-host"
   }

@@ -1,17 +1,37 @@
 {
-  "hash": "17b6fa292fe8e019da672bac443f5e2661bda92c2d3fcbd491295b3fa0f45e99",
+  "hash": "1c4071b7d45a9710163631a5a59d866ba1c9748a6e9b05d3ff1306d13c4981a2",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "The evidence shows Snowflake's own file-loading path. COPY INTO is referenced as the manual load statement, Snowpipe loads files from a stage in micro-batches, and a community user confirms the COPY command loads JSON Lines files and skips files it already loaded. Semi-structured loading is also documented. However, the pack never names CSV or Parquet as supported formats, never ties stages to cloud object storage, and never shows the single-command syntax. missing for 10: explicit COPY INTO documentation covering CSV/JSON/Parquet, evidence that stages map to external cloud object storage (S3/GCS/Azure), command syntax/reference detail, independent hands-on corroboration for CSV and Parquet.",
+    "rationale": "Snowflake documents COPY INTO for bulk copying data into tables, with stages and file formats for ingestion. A hands-on community user confirms the COPY command loads many JSON Lines files from a bucket and skips files it has already loaded. The evidence never names CSV or Parquet as supported formats and does not detail which cloud object stores work, so only part of the story is shown. Missing for 10: explicit documentation of CSV and Parquet format support, explicit cloud object storage (S3/GCS/Azure) stage coverage, and command-level reference detail for COPY INTO.",
     "evidenceIds": [
+      "snowflake-docs-88",
+      "snowflake-docs-92",
+      "snowflake-comm-5-refresh-74eef2cc02b09e5e",
       "snowflake-docs-6",
-      "snowflake-docs-7",
-      "snowflake-supp-sql-semistructured",
-      "snowflake-comm-4"
+      "snowflake-supp-sql-semistructured"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a data-engineer, I can bulk-load CSV, JSON, and Parquet from cloud object storage with a single documented command",
+      "citations": [
+        {
+          "evidenceId": "snowflake-docs-88",
+          "quote": "Bulk copying data into and out of Snowflake tables."
+        },
+        {
+          "evidenceId": "snowflake-docs-92",
+          "quote": "Stages, COPY INTO, Snowpipe, file formats, and connectors for ingesting and exporting data."
+        },
+        {
+          "evidenceId": "snowflake-comm-5-refresh-74eef2cc02b09e5e",
+          "quote": "You can have as many files in your bucket as you like. Just make them JSON Lines... The COPY command will even skip files it has already loaded."
+        }
+      ]
+    },
     "productId": "snowflake",
     "storyId": "bulk-load-object-storage"
   }

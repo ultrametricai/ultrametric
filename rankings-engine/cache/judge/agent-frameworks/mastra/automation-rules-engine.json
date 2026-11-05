@@ -1,18 +1,41 @@
 {
-  "hash": "53cdca267bdb1f06966b7eabaf8561ad9c389e8c5790f55a3737f733dc08427d",
+  "hash": "ff74e5624bf276840e0a54bac366ddf0ba8735bc6933fed1db570d85f3495736",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Mastra documents automatic triggering via cron schedules on workflows and agents. Workflows can branch with `.branch()`, wait on API callbacks through suspend/resume, and be created dynamically by external systems. These cover time-based triggers and conditional logic inside code-defined workflows. There is no evidence of a declarative rules or event-trigger system that fires actions on arbitrary events; the PubSub mention only concerns streaming delivery. Missing for 10: event-based triggers such as webhooks or app events, a declarative rule definition layer, and independent hands-on corroboration of trigger automation.",
+    "rationale": "Mastra documents its own automatic triggers: a workflow `schedule` field fires on a cron, agents can run on a cron cadence, and workflows can pause to wait for an API callback and then resume or bail based on the input. These are time-based triggers and in-run conditional logic, not a general rule engine that starts actions when arbitrary events occur. missing for 10: declarative event-to-action rules, documented event-source triggers (e.g. starting a workflow on incoming events or webhooks), a rule-definition interface for AI-native users, and independent hands-on corroboration.",
     "evidenceIds": [
       "mastra-docs-43",
       "mastra-docs-47",
-      "mastra-gh-3",
       "mastra-docs-12",
-      "mastra-docs-38"
+      "mastra-docs-40",
+      "mastra-gh-3"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can define rules that trigger actions automatically on events",
+      "citations": [
+        {
+          "evidenceId": "mastra-docs-43",
+          "quote": "Declare a `schedule` field on a workflow and Mastra will fire it on the cron you specify."
+        },
+        {
+          "evidenceId": "mastra-docs-47",
+          "quote": "A schedule runs an agent on a cron cadence."
+        },
+        {
+          "evidenceId": "mastra-docs-12",
+          "quote": "Pause a workflow at any step to collect additional data, wait for an API callback"
+        },
+        {
+          "evidenceId": "mastra-docs-40",
+          "quote": "The workflow can then either resume or bail based on the input received."
+        }
+      ]
+    },
     "productId": "mastra",
     "storyId": "automation-rules-engine"
   }

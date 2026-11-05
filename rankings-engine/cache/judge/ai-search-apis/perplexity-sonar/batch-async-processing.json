@@ -1,18 +1,26 @@
 {
-  "hash": "66959e3dc9f6ba73a389641d603742456b3f67b143353416f1d5748be3bc3cfa",
+  "hash": "59bdb0721cf681e87b05efd01031beb09f146856eb41b071998d085ad90d2e64",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "perplexity-sonar",
-    "storyId": "batch-async-processing",
     "verdict": "partial",
     "quality": 3,
-    "confidence": "medium",
-    "rationale": "The evidence shows only client-side and in-request batching. The official Python SDK offers an asynchronous client, with an optional aiohttp backend for concurrency (gh-4, gh-5), and the Search API advertises multi-query search (docs-17). Tier-based rate limits that rise with spend also support higher volume (docs-16). There is no documented server-side batch endpoint or asynchronous job submission with polling or callbacks for high-volume workloads. Missing for 10: a dedicated batch/async job API with job status and retrieval, batch pricing or limits documentation, and hands-on corroboration of high-volume throughput.",
+    "confidence": "low",
+    "rationale": "The only product-side batching evidence is a single mention that the Search API supports \"multi-query search,\" which lets several queries go in one request. The SDK's asynchronous client is a client-side concurrency building block and the flex service tier is a pricing control, so neither counts as an asynchronous job system. missing for 10: a documented batch/async job submission endpoint with job IDs and result retrieval, batch-specific limits or pricing, depth on how multi-query search handles high-volume workloads, independent or hands-on corroboration.",
     "evidenceIds": [
-      "perplexity-sonar-gh-4",
-      "perplexity-sonar-gh-5",
-      "perplexity-sonar-docs-17",
-      "perplexity-sonar-docs-16"
-    ]
+      "perplexity-sonar-docs-17"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a data engineer, I can submit batched or asynchronous jobs for high-volume query workloads",
+      "citations": [
+        {
+          "evidenceId": "perplexity-sonar-docs-17",
+          "quote": "Get ranked results, domain filtering, multi-query search, and content extraction for developers."
+        }
+      ]
+    },
+    "productId": "perplexity-sonar",
+    "storyId": "batch-async-processing"
   }
 }

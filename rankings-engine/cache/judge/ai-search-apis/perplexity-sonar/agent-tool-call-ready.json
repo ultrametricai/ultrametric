@@ -1,21 +1,48 @@
 {
-  "hash": "8000d5b04e1daefd3b2b7f51c69e93798c763506c84a803c9a7c8f94cb454906",
+  "hash": "7b0827e4de6c9e74d3b4dc265d773c541352b94a3199b5562082db96e86ab4b1",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Perplexity ships an official MCP server, both remote-hosted at api.perplexity.ai/mcp and local over stdio, so AI assistants can call its search tools directly. It documents per-tool enable/disable, an MCP-connector example for Anthropic Messages API requests, and a pplx CLI that returns JSON 'ready for shell pipelines and agent tool calls'. That covers the core of a ready-made agent tool. Missing for 10: explicitly published function-calling/JSON tool schemas for non-MCP use, named agent-framework integrations (e.g., LangChain/LlamaIndex), independent hands-on corroboration.",
+    "rationale": "Perplexity ships an official MCP server, both remote-hosted at api.perplexity.ai/mcp and as a local stdio server, that exposes its search and reasoning as ready-made tools for AI assistants. It also offers a pplx CLI that returns JSON 'ready for shell pipelines and agent tool calls', so the core plug-in-as-a-tool part of the story is directly covered. However, the evidence shows no published function-calling schemas for other agents to consume. docs-62 describes custom function tools inside Perplexity's own Agent API, which is a different capability. There are also no named agent-framework integrations such as LangChain or LlamaIndex, so coverage is incomplete. missing for 10: published function-calling/tool schemas for direct consumption by external agents, documented agent-framework integrations (e.g., LangChain/LlamaIndex packages), independent or hands-on corroboration of MCP tool-call use.",
     "evidenceIds": [
       "perplexity-sonar-docs-4",
       "perplexity-sonar-docs-18",
       "perplexity-sonar-docs-19",
-      "perplexity-sonar-docs-10",
       "perplexity-sonar-docs-20",
+      "perplexity-sonar-docs-10",
       "perplexity-sonar-docs-8",
       "perplexity-sonar-docs-53",
       "perplexity-sonar-probe-4"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can plug the API into an agent as a ready-made tool, with function-calling schemas and agent-framework integrations designed for direct tool-call consumption",
+      "citations": [
+        {
+          "evidenceId": "perplexity-sonar-docs-4",
+          "quote": "The Perplexity MCP Server enables AI assistants to access Perplexity's powerful search and reasoning capabilities directly within their workflows."
+        },
+        {
+          "evidenceId": "perplexity-sonar-docs-18",
+          "quote": "Remote MCP server (recommended): hosted by Perplexity at `https://api.perplexity.ai/mcp`. No installation, nothing to update, works with any client that supports remote MCP servers."
+        },
+        {
+          "evidenceId": "perplexity-sonar-docs-19",
+          "quote": "Local MCP server: run the open-source server on your machine over stdio."
+        },
+        {
+          "evidenceId": "perplexity-sonar-docs-8",
+          "quote": "The Perplexity CLI returns the same ranked results as JSON, ready for shell pipelines and agent tool calls, with no code to write."
+        },
+        {
+          "evidenceId": "perplexity-sonar-docs-10",
+          "quote": "To restrict which tools the model can call, disable tools by default and enable the ones you want"
+        }
+      ]
+    },
     "productId": "perplexity-sonar",
     "storyId": "agent-tool-call-ready"
   }

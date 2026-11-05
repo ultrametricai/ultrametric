@@ -1,20 +1,38 @@
 {
-  "hash": "c53dfffcd0302228965f721264d3de4160c8dd2b15a8f82f79e9f85054fe9ced",
+  "hash": "7e6c199700e307a25abdf8ffc8ab60444fb4fca428b755a2d260decd8f0a8250",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 8,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "First-party docs show `$skill-installer` installing individual curated skills by name from the openai/skills collection (e.g. `$skill-installer linear`, `gh-address-comments`) or by a specific GitHub directory URL, so a developer picks single skills rather than the whole collection. A recorded hands-on probe also installed just one skill (`--skill plugin-creator`) from the openai/plugins catalog, but it used third-party tooling, so it corroborates selective installation without exercising the product's own installer. Missing for 10: any documented way to pick a subset of skills inside a bundled plugin (plugins install as a unit), and hands-on corroboration of `$skill-installer` itself.",
+    "rationale": "First-party docs show `$skill-installer` installing individual curated or experimental skills by name or by GitHub directory URL from the openai/skills collection. That is genuine per-skill selection rather than taking the whole collection. However, plugins install as units, and their bundled skills become available after install, with no documented way to choose individual skills within a plugin bundle. The per-skill install from the openai/plugins catalog in the probe used third-party tooling, so it is not credited. missing for 10: documented per-skill selection inside a plugin bundle, independent hands-on corroboration of first-party `$skill-installer` selective install, and documentation of excluding or uninstalling individual skills.",
     "evidenceIds": [
+      "codex-plugins-docs-34",
       "codex-plugins-docs-14",
       "codex-plugins-docs-21",
-      "codex-plugins-docs-34",
-      "codex-plugins-docs-42",
       "codex-plugins-docs-61",
-      "codex-plugins-docs-8",
-      "codex-plugins-probe-rt-2"
+      "codex-plugins-docs-42",
+      "codex-plugins-docs-25"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can install only the specific skills I want from a collection instead of taking the whole bundle",
+      "citations": [
+        {
+          "evidenceId": "codex-plugins-docs-34",
+          "quote": "Curated skills can be installed by name (defaults to `skills/.curated`)"
+        },
+        {
+          "evidenceId": "codex-plugins-docs-61",
+          "quote": "Or provide the GitHub directory URL: $skill-installer install https://github.com/openai/skills/tree/main/skills/.experimental/create-plan"
+        },
+        {
+          "evidenceId": "codex-plugins-docs-14",
+          "quote": "To add curated skills beyond the built-ins for your own local Codex setup, use `$skill-installer`. For example, to install the `$linear` skill"
+        }
+      ]
+    },
     "productId": "codex-plugins",
     "storyId": "selective-install"
   }

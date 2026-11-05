@@ -1,19 +1,36 @@
 {
-  "hash": "8fc0d23dc87b4bb2f994fddfca85886b3fd1b5e2c637315fbc4faf542406d364",
+  "hash": "9747e2a165498eba570c405067a095257d7b81308a640822408d1519000c20c4",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "LangGraph's docs describe sync and async stream/astream iterators with stream modes including messages, updates, values, custom, tasks, checkpoints and debug. They also describe separate event-streaming iterators per projection, which covers streaming tokens and step-level events. Community users note the client-side streaming implementation is largely left to each developer, which is a caveat about UI integration rather than a contradiction. Missing for 10: explicit evidence of token-level LLM streaming and tool-call events in the stream, a documented first-party UI/client streaming integration, and independent hands-on corroboration.",
+    "rationale": "LangGraph's own docs describe stream/astream iterators with stream modes including messages, updates, tasks, custom and debug, plus per-projection event iterators, so token and intermediate-step streaming is a first-party capability. The evidence does not explicitly show tool-call events being streamed, and community reports say delivering the stream to a UI is a full implementation every client must build themselves, so coverage of the story is incomplete. missing for 10: explicit documentation of tool-call event streaming, a documented first-party path for delivering streams to a UI client, independent hands-on corroboration of real-time UI streaming.",
     "evidenceIds": [
       "langgraph-docs-6",
       "langgraph-docs-18",
       "langgraph-docs-35",
-      "langgraph-docs-8",
-      "langgraph-comm-4",
       "langgraph-comm-13"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can stream tokens and intermediate agent events (tool calls, steps) to my UI in real time",
+      "citations": [
+        {
+          "evidenceId": "langgraph-docs-18",
+          "quote": "LangGraph graphs expose the stream (sync) and astream (async) methods to yield streamed outputs as iterators."
+        },
+        {
+          "evidenceId": "langgraph-docs-6",
+          "quote": "It exposes graph execution through stream modes such as updates, values, messages, custom, checkpoints, tasks, and debug."
+        },
+        {
+          "evidenceId": "langgraph-docs-35",
+          "quote": "Event streaming gives you separate iterators per projection (messages, values, subgraphs, output) so you can consume them independently"
+        }
+      ]
+    },
     "productId": "langgraph",
     "storyId": "stream-agent-events"
   }

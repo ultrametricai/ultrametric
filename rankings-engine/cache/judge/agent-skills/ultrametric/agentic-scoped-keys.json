@@ -1,16 +1,35 @@
 {
-  "hash": "b6fae5ec47cbf21d211780b9c8947fd5c340694f7ec3d0832a6443fbcd41e5c1",
+  "hash": "b77370c64d0040aaac35fa47c9bdf6874065f55e4d9b566191bfcf16dbf23f20",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "The MCP authentication docs list a named permission scope (`context:protected:read`) for reading protected context. The hosted MCP sits behind an OAuth/RFC 9728 bearer-token wall with a separate authorization server, and the CLI uses device-code login. Together this suggests agent credentials carry scopes, but nothing shows a user choosing or issuing least-privilege credentials. missing for 10: documented user-facing issuance of scoped API keys/tokens, a full scope catalog and how to restrict an agent to a subset, revocation/expiry controls, hands-on verification of a scoped token.",
+    "rationale": "Ultrametric's MCP authentication docs list a named permission scope (`context:protected:read`), and probes confirm an OAuth-protected MCP endpoint and a device-code CLI login. Together these suggest scoped, per-agent authorization, but nothing shows a user deliberately issuing narrowly scoped credentials. missing for 10: documented user-facing issuance of scoped API keys or tokens for an agent, a full scope catalog and least-privilege selection at grant time, credential revocation or rotation, and hands-on corroboration that scopes restrict access.",
     "evidenceIds": [
       "ultrametric-docs-25",
       "ultrametric-selfeval-5",
       "ultrametric-selfeval-3"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
+      "citations": [
+        {
+          "evidenceId": "ultrametric-docs-25",
+          "quote": "Read protected context | Also `context:protected:read`"
+        },
+        {
+          "evidenceId": "ultrametric-selfeval-5",
+          "quote": "Headers carry `www-authenticate: Bearer resource_metadata=\"https://api.ultrametric.ai/.well-known/oauth-protected-resource\"`"
+        },
+        {
+          "evidenceId": "ultrametric-selfeval-3",
+          "quote": "A device-code login an agent can drive end to end up to the human approval step"
+        }
+      ]
+    },
     "productId": "ultrametric",
     "storyId": "agentic-scoped-keys"
   }

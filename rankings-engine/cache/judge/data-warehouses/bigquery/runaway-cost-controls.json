@@ -1,16 +1,36 @@
 {
-  "hash": "e798eb479c19b495bae5e2e2464fd0e2f1fd53128a5d7fd83c29aab45f6c0062",
+  "hash": "56fd98ac60804a1a4423e84ed457a4e77ba059b60ad13235fdde8cf75bee7f99",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "BigQuery documents custom quotas that cap the amount of data processed per day, which is a native control that stops runaway on-demand query spend across projects and users. Nothing in the evidence covers idle-compute auto-suspend, budget enforcement, or slot-reservation resource monitors. A community report of a $14,000 bill with no warning shows that protection is not on by default, but it does not contradict the quota feature. missing for 10: auto-suspend or scale-to-zero for reserved slot compute, budget alerts or enforcement, per-query cost caps, independent corroboration that custom quotas halt overnight runaway spend.",
+    "rationale": "BigQuery documents custom quotas that cap the data processed per day at project or user level, which stops runaway on-demand queries from running up costs. A community comment confirms per-query byte limits exist, but notes a looping script can still get around a per-query cap. The $14k-bill anecdote shows the risk when no limits are set; it does not contradict the quota feature. Missing for 10: documented controls for idle or reserved slot compute (auto-suspend or reservation caps), budget alerts or notifications, and independent hands-on proof that quotas actually halted a runaway job.",
     "evidenceIds": [
-      "bigquery-docs-63",
       "bigquery-docs-76",
-      "bigquery-comm-1"
+      "bigquery-docs-118",
+      "bigquery-docs-63",
+      "bigquery-comm-6-refresh-635c5c074a7df888"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform-engineer, budgets, resource monitors, or auto-suspend stop a runaway query or idle compute from burning money overnight",
+      "citations": [
+        {
+          "evidenceId": "bigquery-docs-76",
+          "quote": "you can manage costs by requesting a custom quota that specifies a limit on the amount of data processed per day"
+        },
+        {
+          "evidenceId": "bigquery-docs-118",
+          "quote": "Creating a custom quota on processed data lets you control costs at the project level or at the user level."
+        },
+        {
+          "evidenceId": "bigquery-comm-6-refresh-635c5c074a7df888",
+          "quote": "you can set a byte-size limit for individual queries plus custom quotas"
+        }
+      ]
+    },
     "productId": "bigquery",
     "storyId": "runaway-cost-controls"
   }

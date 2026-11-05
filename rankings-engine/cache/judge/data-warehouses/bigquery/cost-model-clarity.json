@@ -1,24 +1,44 @@
 {
-  "hash": "1eee36469979a9da999c683adeb9d555a99ad460f32f8ce9f4002a232cb45f66",
+  "hash": "d58c9646b5eed1ffbf1e214670435d79f25f47fb68698a41c959b595b9d1acae",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "BigQuery publishes a pricing page describing two compute models: on-demand billing per TiB processed with the first 1 TiB free each month, and capacity billing via reserved slots measured over time. The monthly free tier of 10 GiB storage and 1 TiB of queries is also stated. Community users confirm a dry-run option and a bytes-to-be-scanned preview for estimating cost before running a query, but others say the TB-scanned and slot abstractions make costs hard to predict, and one user reports an unexpected $14,000 bill. missing for 10: documented storage and slot unit rates and a pricing calculator in the evidence, plus clearer guidance that removes community confusion about how bills accrue.",
+    "rationale": "BigQuery's pricing page documents two compute pricing models: on-demand billing per TiB processed with 1 TiB free each month, and capacity billing in slots over time. Community users confirm the console shows bytes to be scanned before a query runs, so on-demand cost per query is 'comprehensible' at $6.25/TB. However, other users report that the bytes-scanned and slots abstraction makes costs hard to anticipate, citing a $14k surprise bill from a script. Missing for 10: first-party published unit rates and storage pricing detail in the evidence, a documented pricing calculator or monthly-estimation guidance, and clear guidance for predicting slot/capacity spend.",
     "evidenceIds": [
       "bigquery-docs-19",
       "bigquery-docs-28",
-      "bigquery-docs-46",
       "bigquery-docs-89",
+      "bigquery-docs-46",
       "bigquery-docs-83",
-      "bigquery-docs-59",
-      "bigquery-comm-3",
-      "bigquery-comm-4",
-      "bigquery-comm-10",
-      "bigquery-comm-2",
-      "bigquery-comm-1"
+      "bigquery-comm-3-refresh-9edaa221a2b878cc",
+      "bigquery-comm-4-refresh-dd21f9a7127f8033",
+      "bigquery-comm-10"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform-engineer, the pricing model is documented clearly enough that I can estimate a monthly bill for my workload before committing",
+      "citations": [
+        {
+          "evidenceId": "bigquery-docs-19",
+          "quote": "With this pricing model, you are charged for the number of bytes processed by each query. The first 1 TiB of query data processed per month is free."
+        },
+        {
+          "evidenceId": "bigquery-docs-28",
+          "quote": "BigQuery offers a choice of two compute pricing models for running queries"
+        },
+        {
+          "evidenceId": "bigquery-docs-89",
+          "quote": "you are charged for compute capacity used to run queries, measured in slots (virtual CPUs) over time"
+        },
+        {
+          "evidenceId": "bigquery-docs-83",
+          "quote": "Store 10 GiB of data and run up to 1 TiB of queries for free per month."
+        }
+      ]
+    },
     "productId": "bigquery",
     "storyId": "cost-model-clarity"
   }

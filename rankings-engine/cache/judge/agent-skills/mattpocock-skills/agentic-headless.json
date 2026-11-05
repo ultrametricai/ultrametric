@@ -1,18 +1,31 @@
 {
-  "hash": "fefe1e598f012b9dc4a66ce150da0e407a74110189b43e656bfe4c6af9c1b99a",
+  "hash": "7b6c47ca0033d3583c6e5c67ef8862a8b6ce2d2812fa2b96bf496d39ca5e0be5",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 3,
     "confidence": "medium",
-    "rationale": "A hands-on probe confirms the product's own installer runs fully non-interactively (`npx -y skills add mattpocock/skills --skill tdd -a claude-code -y --copy`), so the skills can be provisioned in automated or CI environments. The triage skill also defines a `ready-for-agent` state for AFK agents. However, the core skills are explicitly interactive: they interview the user relentlessly and require user confirmation of test seams before writing tests. Running them headlessly would rely on the host agent's own modes, which earns no credit here. Missing for 10: documented headless/CI execution of the skills themselves, non-interactive modes for interview-driven skills, CI pipeline examples, and independent corroboration of automated use.",
+    "rationale": "A hands-on probe confirms the documented install path runs fully non-interactively (`-y`, `--copy`, agent and skill selected by flag), so it can be scripted in CI. The triage skill also labels issues `ready-for-agent` for an AFK agent, which points to unattended agent use. However, the skills themselves are built around interactive user confirmation (grilling, confirming test seams), and nothing documents running them headlessly or in a CI pipeline. Missing for 10: documented headless/CI execution of the skills, non-interactive modes for skills that require user confirmation, CI examples or independent corroboration of automated runs.",
     "evidenceIds": [
       "mattpocock-skills-probe-rt-1",
       "mattpocock-skills-docs-55",
-      "mattpocock-skills-docs-48",
-      "mattpocock-skills-docs-51",
-      "mattpocock-skills-docs-45"
+      "mattpocock-skills-docs-48"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
+      "citations": [
+        {
+          "evidenceId": "mattpocock-skills-probe-rt-1",
+          "quote": "the documented skills.sh install path works non-interactively, exactly as the README promises"
+        },
+        {
+          "evidenceId": "mattpocock-skills-docs-55",
+          "quote": "`ready-for-agent`: fully specified, ready for an AFK agent"
+        }
+      ]
+    },
     "productId": "mattpocock-skills",
     "storyId": "agentic-headless"
   }

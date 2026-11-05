@@ -1,23 +1,42 @@
 {
-  "hash": "f1aecae495e85279a2eb85a4429601299e9cf9c68bad399654cd4b39159f63d1",
+  "hash": "b01eb4edfda5aad4a78914b4ea653fb35121aafe8ddac78db22d620a8fe348ed",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Persona's API covers most of the agent pipeline. Agents can pre-create inquiries (sessions), poll inquiry statuses, fetch verification details, and run Watchlist/PEP reports via the API, with webhooks for real-time outcomes and simulate actions for programmatic testing. However, scoped credentials are not evidenced: the only key control shown is IP allowlisting. There is also no MCP surface, and an on-demand re-check of a past verification via API is only implied through reports and workflows. missing for 10: scoped/least-privilege API key permissions, an MCP server or agent-specific surface, explicit API-triggered re-verification, independent hands-on corroboration.",
+    "rationale": "Persona's own API lets a programmatic client pre-create inquiries and poll statuses or fetch verification details, which covers creating sessions, polling outcomes and retrieving data. Re-checks are documented only as recurring scheduled reports and workflow-triggered reports, not as an on-demand API re-check. Credential scoping is evidenced only by an API-key IP allowlist, and the llms.txt agent instructions cover reading docs, not operating the pipeline. missing for 10: an MCP server or agent-specific operational surface, API-key permission scoping beyond IP allowlisting, an explicitly documented on-demand re-check API, and independent or hands-on corroboration.",
     "evidenceIds": [
       "persona-docs-18",
       "persona-docs-27",
-      "persona-docs-21",
-      "persona-docs-25",
       "persona-docs-28",
       "persona-docs-23",
-      "persona-docs-26",
-      "persona-docs-33",
       "persona-docs-36",
-      "persona-probe-1"
+      "persona-docs-33"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, an agent can operate the verification pipeline — create sessions, poll outcomes, retrieve extracted data, and trigger re-checks through the API or an MCP surface with scoped credentials",
+      "citations": [
+        {
+          "evidenceId": "persona-docs-18",
+          "quote": "Use the API to pre-create inquiries before directing users through the inquiry flow for information collection and verification."
+        },
+        {
+          "evidenceId": "persona-docs-27",
+          "quote": "Poll the API for the latest inquiry statuses or fetch specific verification details without disrupting your primary integration."
+        },
+        {
+          "evidenceId": "persona-docs-28",
+          "quote": "Reports can be configured to run in regular intervals against an account. For example, you can run a Watchlist Report against your accounts each month or once a year."
+        },
+        {
+          "evidenceId": "persona-docs-36",
+          "quote": "you can restrict the IPs that Persona accepts requests from."
+        }
+      ]
+    },
     "productId": "persona",
     "storyId": "agent-runs-verification"
   }

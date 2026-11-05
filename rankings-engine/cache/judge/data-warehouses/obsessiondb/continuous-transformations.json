@@ -1,17 +1,37 @@
 {
-  "hash": "6e808ed90dee9d7b8ed2fa9c813ef8f3975dfe1c023046af756e60814b3ac631",
+  "hash": "33ca255c5e2b88df372681c77bbb2fa25f5b5f160849fc68349820fcd75c0610",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "ObsessionDB's feature-status docs list materialized views and refreshable materialized views as supported. Its ingestion docs say the Kafka table engine and materialized views work as documented. Together these give incremental insert-triggered transformations, scheduled refresh-style transformations, and stream ingestion inside the platform, and CHKit adds deploying pipelines as code. Missing for 10: in-depth first-party documentation of continuous transformation behavior on the separated storage layer (only feature-list mentions), and independent or hands-on corroboration.",
+    "rationale": "ObsessionDB's feature-status and ingestion docs say materialized views (incremental, insert-triggered transformations) and refreshable materialized views work inside the platform, including over Kafka table engine ingestion. Batch SQL tasks and CHKit 'pipelines as code' add adjacent support. This is direct support, but coverage is only partial because the evidence consists of single-line feature-list mentions. missing for 10: in-depth documentation of continuous/incremental transformation behavior on the compute–storage-separated architecture (e.g., MV semantics, refresh scheduling, failure/retry handling), clarity on whether CHKit pipelines execute in-platform, and independent or hands-on corroboration.",
     "evidenceIds": [
       "obsessiondb-docs-34",
       "obsessiondb-docs-36",
       "obsessiondb-docs-45",
+      "obsessiondb-docs-15",
       "obsessiondb-docs-11"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a data-engineer, I can run continuous or incremental transformations — streams, tasks, declarative pipelines, or continuous queries — inside the platform",
+      "citations": [
+        {
+          "evidenceId": "obsessiondb-docs-34",
+          "quote": "Materialized views, refreshable materialized views..., projections"
+        },
+        {
+          "evidenceId": "obsessiondb-docs-36",
+          "quote": "INSERT, the Kafka table engine, the s3() and url() table functions, materialized views, all work as documented"
+        },
+        {
+          "evidenceId": "obsessiondb-docs-15",
+          "quote": "Run large SQL operations as batches of retryable tasks against your service, with live progress and controls to pause, retry, or cancel while the job runs."
+        }
+      ]
+    },
     "productId": "obsessiondb",
     "storyId": "continuous-transformations"
   }

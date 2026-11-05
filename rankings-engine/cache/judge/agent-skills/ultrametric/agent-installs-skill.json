@@ -1,19 +1,43 @@
 {
-  "hash": "a255dc220d0f5778ba6e3f3998ad9235f461b6ffef5910f99170f88d9c13e98d",
+  "hash": "90f1fefe851cd466397d561f461e9845f5a4bd62edca21f2cbbc50c7d49980f6",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 8,
+    "verdict": "partial",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "The documented skill-install path is headless. The CLI installs via `npm install -g ultrametric@0.4.1` (or `npx -y`). `ultrametric init --dry-run --json` previews the change, and a second command writes the selected skill files for Codex and Claude Code. A recorded keyless probe confirms the dry run previews both `.agents/skills` and `.claude/skills` targets with exit 0, no login and no prompt. missing for 10: hands-on verification of the actual non-dry-run write step, and the exact flags of the write command, which the docs elide.",
+    "rationale": "Ultrametric documents its own agent-runnable skill install. The CLI installs via `npm install -g`, `ultrametric init --dry-run --json` previews the change, and a second `init` command writes the skill files for Codex and Claude Code. A keyless probe confirmed the dry run exits 0 and previews both harness targets without writing anything. However, the actual write step was never observed running headlessly, and the docs do not explicitly state that the full install completes with no prompt or login gate. The `--json` no-prompt guarantee is documented for the install/login link flow, and that login is a device-code flow needing human approval. missing for 10: hands-on verification of the non-dry-run `init` write completing promptlessly, explicit documentation that skill install needs no interactive auth or confirmation, independent corroboration of a headless end-to-end install.",
     "evidenceIds": [
       "ultrametric-docs-6",
+      "ultrametric-docs-7",
       "ultrametric-docs-8",
       "ultrametric-docs-30",
       "ultrametric-docs-22",
-      "ultrametric-selfeval-1",
-      "ultrametric-selfeval-2"
+      "ultrametric-selfeval-2",
+      "ultrametric-selfeval-1"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, my coding agent can install a skill by itself — a non-interactive, promptless install path an agent can run headlessly end to end",
+      "citations": [
+        {
+          "evidenceId": "ultrametric-docs-8",
+          "quote": "The first command previews changes. The second writes the selected skill files."
+        },
+        {
+          "evidenceId": "ultrametric-docs-7",
+          "quote": "With `--json`, the agent gets the link and controls completion without an interactive prompt."
+        },
+        {
+          "evidenceId": "ultrametric-docs-30",
+          "quote": "The CLI can add Ultrametric instructions to a project for Codex and Claude Code."
+        },
+        {
+          "evidenceId": "ultrametric-docs-6",
+          "quote": "npm install -g ultrametric@0.4.1"
+        }
+      ]
+    },
     "productId": "ultrametric",
     "storyId": "agent-installs-skill"
   }

@@ -1,20 +1,41 @@
 {
-  "hash": "44fe27f94057c0a5a87696e134551701615129b97fd31da355f8cf293931256e",
+  "hash": "106e6af79353a749a3519e43950b6b09b5a0c3eef7894628877aae5cb1108694",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "The SDK automatically writes sessions to disk and can resume or fork them with full prior context. A SessionStore adapter can mirror transcripts to a database or object store so sessions resume across hosts. CLAUDE.md project instructions and file read/write tools provide a filesystem-based way to carry knowledge across sessions. However, this is per-session transcript persistence plus DIY file-based notes, not a dedicated long-term memory layer shared across threads. Missing for 10: a first-class memory store or tool shared across separate sessions/threads, memory retrieval/management APIs, and independent hands-on corroboration.",
+    "rationale": "The SDK writes session transcripts to disk automatically. Resuming a session restores its full prior context, and a SessionStore adapter can mirror transcripts to a database or object store so a session can be resumed on another host. That gives durable memory within a single thread, which can also be forked. Evidence for memory shared across separate threads is limited to filesystem project instructions (CLAUDE.md), which are not documented as an agent-writable long-term memory store. Missing for 10: a documented cross-session/cross-thread long-term memory store the agent can write to and recall from, semantic retrieval of past knowledge, and independent or hands-on corroboration.",
     "evidenceIds": [
       "claude-agent-sdk-docs-7",
       "claude-agent-sdk-docs-24",
-      "claude-agent-sdk-docs-21",
       "claude-agent-sdk-docs-29",
-      "claude-agent-sdk-docs-31",
-      "claude-agent-sdk-docs-2",
-      "claude-agent-sdk-docs-11"
+      "claude-agent-sdk-docs-21",
+      "claude-agent-sdk-docs-31"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can give agents long-term memory that persists across sessions and threads",
+      "citations": [
+        {
+          "evidenceId": "claude-agent-sdk-docs-7",
+          "quote": "The SDK writes it to disk automatically so you can return to it later."
+        },
+        {
+          "evidenceId": "claude-agent-sdk-docs-24",
+          "quote": "Returning to a session means the agent has full context from before: files it already read, analysis it already performed, decisions it already made."
+        },
+        {
+          "evidenceId": "claude-agent-sdk-docs-29",
+          "quote": "A `SessionStore` adapter lets you mirror those transcripts to your own backend, such as an object store, a key-value store, or a database, so a session created on one host can be resumed on another host running from a matching working directory."
+        },
+        {
+          "evidenceId": "claude-agent-sdk-docs-21",
+          "quote": "Fork is different: it creates a new session that starts with a copy of the original's history."
+        }
+      ]
+    },
     "productId": "claude-agent-sdk",
     "storyId": "long-term-memory"
   }

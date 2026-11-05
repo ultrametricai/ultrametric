@@ -1,19 +1,45 @@
 {
-  "hash": "3eb0097cd0ddac61e3e92795e316cfe42b6966c70e6e1cc7eb40880250121463",
+  "hash": "5e7c5e0fafacdd90cdf7f626e858c913e46742799fbeed0806e3aee10993f9df",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Framer's docs describe staging environments for testing changes on a framer.app domain before going live. They also describe branching that keeps the main project untouched, and say every external-agent change automatically lands on a reviewable branch that you merge when ready, with publishing kept under user control. Together these let an AI-native user trial agent work away from the live site. Missing for 10: explicit confirmation that CMS data writes are isolated on branches or staging rather than shared with production; a sandbox or test mode for the Server API; independent or hands-on corroboration.",
+    "rationale": "Framer documents real isolation primitives: external-agent changes automatically land on a branch that can be reviewed, undone or merged, branches keep the original project clean, and staging environments let you test on a framer.app domain before going live. This is true sandbox-style isolation, not just a dry-run. However, nothing explicitly says CMS data written by an agent (creates, updates, deletes) is isolated from production content, and there is no hands-on or independent confirmation. Missing for 10: explicit documentation that branch or staging isolation covers CMS/production data, a documented separate test-data sandbox, independent or hands-on corroboration.",
     "evidenceIds": [
+      "framer-docs-36",
       "framer-docs-10",
       "framer-docs-11",
-      "framer-docs-25",
-      "framer-docs-36",
-      "framer-docs-35",
-      "framer-docs-47"
+      "framer-docs-47",
+      "framer-docs-35"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
+      "citations": [
+        {
+          "evidenceId": "framer-docs-36",
+          "quote": "every change made by an external agent automatically happens on a branch. You can undo changes, review the branch, and decide when to merge it back into your main branch."
+        },
+        {
+          "evidenceId": "framer-docs-10",
+          "quote": "Staging environments. Test changes securely on a framer.app domain before pushing live."
+        },
+        {
+          "evidenceId": "framer-docs-11",
+          "quote": "Explore ideas in a branch without touching the main project. Merge when it’s ready to ship."
+        },
+        {
+          "evidenceId": "framer-docs-47",
+          "quote": "Work on a copy of your project and keep the original clean."
+        },
+        {
+          "evidenceId": "framer-docs-35",
+          "quote": "You stay in control of what gets published."
+        }
+      ]
+    },
     "productId": "framer",
     "storyId": "api-sandbox"
   }

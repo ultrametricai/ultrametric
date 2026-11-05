@@ -1,11 +1,11 @@
 {
-  "hash": "8239109f6c0f34a12bb424a6567ddee9f18a20b1474421404df07781ef98ec97",
+  "hash": "f6acde70df39e1529093e06057a8cb1d9231df442c49607b7c2938b5fc9663a6",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Adyen documents split instructions on payment endpoints that divide funds between one or more users' balance accounts and the platform's liable balance account, which covers both routing to multiple sellers and taking the platform's cut. The same split instructions apply to chargebacks, with three documented ways to handle them, and balance accounts are created through the Configuration API. Missing for 10: evidence of adjusting or re-splitting funds after capture (e.g. split refunds or post-hoc transfers), evidence that splits are standalone first-class objects rather than inline request instructions, and independent or hands-on corroboration.",
+    "rationale": "Adyen documents splitting a payment across one or more users' balance accounts. The platform takes its cut through the marketplace's liable balance account, and split instructions can be passed on payment and chargeback endpoints. Chargeback splitting covers part of the reversal story, but adjusting a split after capture is not documented, and splits are request instructions rather than standalone API objects. Missing for 10: documented post-capture split adjustment, refund/reversal split handling beyond chargebacks, evidence that splits are first-class addressable API objects, and independent hands-on corroboration.",
     "evidenceIds": [
       "adyen-for-platforms-docs-2",
       "adyen-for-platforms-docs-10",
@@ -14,6 +14,29 @@
       "adyen-for-platforms-docs-24",
       "adyen-for-platforms-docs-9"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can split one charge among any set of parties — route funds to multiple sellers, take my cut, and reverse or adjust the split later, all as first-class API objects",
+      "citations": [
+        {
+          "evidenceId": "adyen-for-platforms-docs-2",
+          "quote": "You can split the payments between one or more users, deduct costs as needed, and hold funds until payout."
+        },
+        {
+          "evidenceId": "adyen-for-platforms-docs-22",
+          "quote": "you have to include instructions on how to split the funds between your user's balance accounts and your marketplace's liable balance account."
+        },
+        {
+          "evidenceId": "adyen-for-platforms-docs-10",
+          "quote": "you can provide instructions to split payments and chargebacks when you make calls to the following endpoints"
+        },
+        {
+          "evidenceId": "adyen-for-platforms-docs-11",
+          "quote": "You can choose between three different ways to handle potential chargeback events"
+        }
+      ]
+    },
     "productId": "adyen-for-platforms",
     "storyId": "split-payments-routing"
   }

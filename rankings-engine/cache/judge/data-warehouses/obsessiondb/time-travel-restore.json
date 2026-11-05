@@ -1,16 +1,35 @@
 {
-  "hash": "49b3f5b52a01eddef49028b54088cb3fdc3aba81430f292926b337d7b3e2647c",
+  "hash": "0df4812eace236fb3b6f85df107245364e35d6dc9c90de71d859bbca1af8e4bb",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "ObsessionDB documents point-in-time recovery that rolls back \"to any moment\" so an accidental drop is a quick cleanup. Its feature-status page describes time travel as restoring the database to an earlier point, alongside automated daily backups and a defined recovery model. This covers the restore half of the story. Nothing shows querying data as of a past point without restoring, and recovery is described at database level rather than per table. missing for 10: query-as-of-past-timestamp capability, table-level restore granularity, detailed recovery-window/retention docs, independent or hands-on corroboration",
+    "rationale": "ObsessionDB documents point-in-time recovery and a time-travel feature that restores the database to an earlier point, which covers recovering from accidental drops. There is no evidence of read-only querying of data as of a past timestamp; the documented time travel is a restore operation, not an as-of query. missing for 10: querying data as of a past point without restoring, documented per-table restore granularity, hands-on or independent corroboration of recovery.",
     "evidenceIds": [
       "obsessiondb-docs-23",
       "obsessiondb-docs-35",
       "obsessiondb-docs-31"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a data-engineer, I can time-travel — query data as of a past point and restore dropped or corrupted tables from history",
+      "citations": [
+        {
+          "evidenceId": "obsessiondb-docs-23",
+          "quote": "Point-in-time recovery rolls you back to any moment, so an accidental drop is a quick cleanup, not an incident."
+        },
+        {
+          "evidenceId": "obsessiondb-docs-35",
+          "quote": "Time travel restores the database to an earlier point, backed by object-storage durability for the data."
+        },
+        {
+          "evidenceId": "obsessiondb-docs-31",
+          "quote": "Automated daily backups, the recovery model, and why there is no manual BACKUP/RESTORE."
+        }
+      ]
+    },
     "productId": "obsessiondb",
     "storyId": "time-travel-restore"
   }

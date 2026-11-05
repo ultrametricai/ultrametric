@@ -1,20 +1,41 @@
 {
-  "hash": "6e90c0a9100d2652419133a881f00a9dc2328e83a93ce534e9802f381af3db6d",
+  "hash": "3c68278aa84483416c2a9da0524996c31ddca3b64a9d7101355c439b873222a0",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Stripe Identity is driven through a secret-key REST API: sessions are created via curl, results are retrieved programmatically, and webhooks trigger automated reactions. Stripe also documents an official CLI and an MCP server, so the integration side runs headlessly without a dashboard. The ID capture itself still needs an end user. Missing for 10: CI-specific guidance (e.g., test-mode or simulated verification outcomes for pipelines), Identity-specific CLI usage evidence, and independent hands-on corroboration of headless/CI automation.",
+    "rationale": "Stripe Identity can be driven headlessly through its own API. Sessions are created with a secret key via curl, results can be read programmatically, and webhooks let an integration react automatically; an official Stripe CLI is also documented. However, nothing in the evidence documents CI usage, test-mode automation for Identity, or completing a verification without an end user doing the capture flow. missing for 10: documented CI/test-mode workflows, Identity-specific CLI commands, a headless way to complete verifications, independent hands-on corroboration of automation use.",
     "evidenceIds": [
       "stripe-identity-docs-5",
-      "stripe-identity-docs-6",
       "stripe-identity-docs-7",
+      "stripe-identity-docs-6",
       "stripe-identity-docs-13",
-      "stripe-identity-docs-15",
-      "stripe-identity-probe-5",
-      "stripe-identity-docs-12"
+      "stripe-identity-probe-5"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
+      "citations": [
+        {
+          "evidenceId": "stripe-identity-docs-5",
+          "quote": "curl https://api.stripe.com/v1/identity/verification_sessions \\\n  -u \"<<YOUR_SECRET_KEY>>:\" \\\n  -d type=document"
+        },
+        {
+          "evidenceId": "stripe-identity-docs-7",
+          "quote": "You can access most verification details programmatically... using your secret key."
+        },
+        {
+          "evidenceId": "stripe-identity-docs-6",
+          "quote": "Listen for verification results so your integration can automatically trigger reactions."
+        },
+        {
+          "evidenceId": "stripe-identity-probe-5",
+          "quote": "official CLI documented at https://docs.stripe.com/stripe-cli"
+        }
+      ]
+    },
     "productId": "stripe-identity",
     "storyId": "agentic-headless"
   }

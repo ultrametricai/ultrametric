@@ -1,21 +1,42 @@
 {
-  "hash": "e8e99b0879367f06bfde899fa8672b7985d2fd1c91b34187a4052ca324c43eae",
+  "hash": "d771f9c2cb4f4e8993d6d3fb4f3f29a75bec3b012ced073edc63b732d6958972",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Skills are plain markdown (`skills/*/SKILL.md`) and the porting guide says everything in `skills/` is shared verbatim by every harness, with porting never touching SKILL.md files (docs-13, docs-37). A hands-on probe copied a skill folder into `.claude/skills/` via `npx skills add --copy`, and its SKILL.md frontmatter read back cleanly. Cross-runtime paths like `~/.agents/skills/` and a long list of supported harnesses back portability (docs-31, gh-19). Missing for 10: full auto-trigger behavior in a new harness still needs a per-harness bootstrap injector and tool-mapping reference plus a separate install per harness (docs-28, gh-5), and no hands-on test of moving a skill from one harness to another.",
+    "rationale": "First-party docs say everything in `skills/` is the source of truth, shared verbatim by every harness, and that porting never rewrites `SKILL.md` files. A hands-on probe copied a skill as a plain markdown folder into `.claude/skills/` and its frontmatter read back cleanly, and docs note a cross-runtime `~/.agents/skills/` alias recognized by Codex, Copilot CLI and Gemini CLI. missing for 10: carrying skills to a new harness with auto-triggering still needs a per-harness bootstrap injector and tool-mapping reference, so plain copying alone does not give full parity.",
     "evidenceIds": [
       "superpowers-docs-13",
       "superpowers-docs-37",
-      "superpowers-docs-31",
       "superpowers-probe-rt-1",
+      "superpowers-docs-31",
       "superpowers-gh-19",
-      "superpowers-docs-28",
-      "superpowers-gh-5",
-      "superpowers-docs-59"
+      "superpowers-docs-28"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, skills are plain markdown files and folders I can read, copy, and carry to another harness — not a proprietary binary format",
+      "citations": [
+        {
+          "evidenceId": "superpowers-docs-13",
+          "quote": "Everything in `skills/` is the source of truth, shared verbatim by every harness."
+        },
+        {
+          "evidenceId": "superpowers-docs-37",
+          "quote": "it never reaches into `skills/*/SKILL.md` to swap tool names."
+        },
+        {
+          "evidenceId": "superpowers-probe-rt-1",
+          "quote": "Skills are plain, selectively-installable markdown folders."
+        },
+        {
+          "evidenceId": "superpowers-docs-31",
+          "quote": "Codex, Copilot CLI, and Gemini CLI all also recognize `~/.agents/skills/` as a cross-runtime alias."
+        }
+      ]
+    },
     "productId": "superpowers",
     "storyId": "plain-files-portability"
   }

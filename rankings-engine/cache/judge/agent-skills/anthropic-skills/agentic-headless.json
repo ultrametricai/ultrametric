@@ -1,22 +1,46 @@
 {
-  "hash": "b8f33f9a2fda78e2bf378c7529c4fa2be904a317e061e26ec5e782375cf8745d",
+  "hash": "d83bd4034f0ffccce2ed062554b18b9f2da320f2e9d2543ad2699360881df850",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Skills can be run with no interactive UI through the Messages API: they are passed in the `container` parameter (up to 20 per request) and executed in the code-execution environment. Custom skills are uploaded and versioned via the Skills API. The Agent SDK also documents programmatic control over which skills sessions can invoke and can load skill plugins from local directories. Separately, the CLI accepts piped, non-interactive input (`claude -p`), and a runtime probe confirmed a scripted, keyless skill install. missing for 10: explicit CI-pipeline guidance or examples for skills, and independent hands-on corroboration of skills running in unattended CI automation.",
+    "rationale": "Skills can run without an interactive UI. The Messages API takes skills through the `container` parameter and runs them in the code execution environment, and custom skills can be uploaded and managed through the Skills API. The Claude Agent SDK can also control which skills a session may invoke and dispatch them by name. However, nothing in the evidence documents CI pipeline usage or a non-interactive skill invocation flow. missing for 10: explicit CI/CD integration docs or examples, a documented headless invocation of skills via the CLI (e.g. `claude -p` with skills), and independent hands-on corroboration of automated skill runs.",
     "evidenceIds": [
       "anthropic-skills-docs-10",
       "anthropic-skills-docs-23",
       "anthropic-skills-docs-24",
-      "anthropic-skills-docs-49",
       "anthropic-skills-docs-63",
       "anthropic-skills-docs-78",
-      "anthropic-skills-docs-77",
-      "anthropic-skills-docs-83",
-      "anthropic-skills-probe-rt-1"
+      "anthropic-skills-docs-49"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
+      "citations": [
+        {
+          "evidenceId": "anthropic-skills-docs-10",
+          "quote": "You specify Skills in the `container` parameter with a `skill_id`, `type`, and optional `version`, and they run in the code execution environment."
+        },
+        {
+          "evidenceId": "anthropic-skills-docs-23",
+          "quote": "Skills are specified using the `container` parameter in the Messages API. You can include up to 20 Skills for each request."
+        },
+        {
+          "evidenceId": "anthropic-skills-docs-24",
+          "quote": "Upload and manage through the [Skills API]"
+        },
+        {
+          "evidenceId": "anthropic-skills-docs-63",
+          "quote": "Control which skills Claude can invoke in Claude Agent SDK sessions, dispatch commands by name, and author skills your sessions discover"
+        },
+        {
+          "evidenceId": "anthropic-skills-docs-78",
+          "quote": "Through the Agent SDK, you can programmatically load plugins from local directories to add capabilities to your agent sessions."
+        }
+      ]
+    },
     "productId": "anthropic-skills",
     "storyId": "agentic-headless"
   }

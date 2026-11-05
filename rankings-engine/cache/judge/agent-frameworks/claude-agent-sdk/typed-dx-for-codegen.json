@@ -1,18 +1,36 @@
 {
-  "hash": "4a18807941b571c84fe1c3daa9f034d062ed8a7389d521c1da0ba3d1277a8be0",
+  "hash": "76e4354ca6d9bf354be369e62d838b7d23c54f32e5929ca7750ae13cee343bc9",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "The SDK ships in TypeScript with typed option objects (`Options` / `ClaudeAgentOptions`) and typed message classes such as `AssistantMessage`, which gives some static typing. Structured outputs validate agent results against a defined schema and re-prompt on mismatch. However, that validation happens at runtime, not at build time, and nothing documents strict type-checking that lets an agent catch its own mistakes before running. Missing for 10: documented strict static typing or type-checking guarantees, build-time schema validation of tool definitions and inputs, and independent or hands-on corroboration.",
+    "rationale": "The SDK ships its own schema validation: structured outputs return validated JSON matching a defined schema and re-prompt the agent on mismatch, so the agent corrects its own output errors. It also exposes typed APIs (TypeScript `Options`, Python `ClaudeAgentOptions`). However, that validation runs at runtime rather than build time, and nothing documents strict compile-time typing that catches agent mistakes. missing for 10: documented build-time/compile-time type checking of agent outputs or tool inputs, evidence of strict typed tool schemas, independent or hands-on corroboration.",
     "evidenceIds": [
-      "claude-agent-sdk-docs-1",
-      "claude-agent-sdk-docs-48",
-      "claude-agent-sdk-gh-2",
+      "claude-agent-sdk-docs-56",
       "claude-agent-sdk-docs-10",
-      "claude-agent-sdk-docs-56"
+      "claude-agent-sdk-docs-48",
+      "claude-agent-sdk-docs-1"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an ai-native user, I can rely on strict typing and schema validation so a coding agent catches its own mistakes at build time",
+      "citations": [
+        {
+          "evidenceId": "claude-agent-sdk-docs-56",
+          "quote": "the SDK validates the output against it, re-prompting on mismatch."
+        },
+        {
+          "evidenceId": "claude-agent-sdk-docs-10",
+          "quote": "you still get validated JSON matching your schema at the end."
+        },
+        {
+          "evidenceId": "claude-agent-sdk-docs-48",
+          "quote": "Every `query()` call accepts an options object: `Options` in TypeScript, `ClaudeAgentOptions` in Python."
+        }
+      ]
+    },
     "productId": "claude-agent-sdk",
     "storyId": "typed-dx-for-codegen"
   }

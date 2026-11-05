@@ -1,19 +1,37 @@
 {
-  "hash": "a505ad1c225d6adc674f41849ed7d2a35b635e8a74d61213bcbca12c81bf7394",
+  "hash": "5ce67edf4bc44b65c358a26ec63c9b24a34acc370648793f2c3930fc289d3092",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "The first-party durable execution docs state directly that Pydantic AI agents can preserve their progress across transient API failures, application errors or restarts, and can handle long-running workflows. Supporting evidence includes the documented message history for continuing runs and a community note that conversations can be serialized and deserialized as JSON. missing for 10: documented mechanism and granularity for checkpointing (how and where state is persisted and resumed), evidence that resumption happens exactly at the interrupted step, and independent or hands-on corroboration of crash recovery.",
+    "rationale": "Pydantic AI's first-party durable execution docs say agents can preserve their progress across application errors or restarts and support long-running workflows, which is the core of this story. Separately, serializable message history lets a conversation be continued. Missing for 10: documentation of the checkpointing mechanism and the exact-resume semantics (which step or tool call execution resumes from), and independent or hands-on corroboration of crash recovery.",
     "evidenceIds": [
       "pydantic-ai-docs-10",
       "pydantic-ai-docs-37",
       "pydantic-ai-docs-54",
       "pydantic-ai-docs-25",
-      "pydantic-ai-docs-7",
-      "pydantic-ai-comm-11"
+      "pydantic-ai-docs-7"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can checkpoint agent state so a run can resume exactly where it left off after a crash or restart",
+      "citations": [
+        {
+          "evidenceId": "pydantic-ai-docs-37",
+          "quote": "Pydantic AI allows you to build durable agents that can preserve their progress across transient API failures and application errors or restarts, and handle long-running, asynchronous, and human-in-the-loop workflows with production-grade reliability."
+        },
+        {
+          "evidenceId": "pydantic-ai-docs-25",
+          "quote": "on a durable background queue"
+        },
+        {
+          "evidenceId": "pydantic-ai-docs-7",
+          "quote": "These messages can be used both to continue a coherent conversation, and to understand how an agent performed."
+        }
+      ]
+    },
     "productId": "pydantic-ai",
     "storyId": "checkpoint-resume"
   }

@@ -1,17 +1,31 @@
 {
-  "hash": "16606691f8ad0fa921c7d7b333a74499dd13921cfaca9c23fcd6e09f20d259d8",
+  "hash": "c145731eccae49c4cbe701ca54a36f19e9d290136a16b0f268fa0f7e0502025b",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "ObsessionDB documents its own ingestion page stating that the s3() and url() table functions and INSERT 'work as documented', and its migration docs describe bridging data through object storage. That is a single-command path for bulk-loading from cloud object storage. However, the evidence never names CSV, JSON, or Parquet, nor any storage beyond S3, so format coverage is only implied by ClickHouse compatibility. Missing for 10: explicit documentation of CSV/JSON/Parquet format support, a concrete documented bulk-load command example, coverage of GCS/Azure object storage, and independent or hands-on corroboration.",
+    "rationale": "ObsessionDB's ingestion docs say the s3() and url() table functions 'work as documented', and its migration docs describe bridging data through object storage. That is a first-party, single-SQL-statement path for loading from cloud object storage. The evidence never names CSV, JSON, or Parquet, nor shows a worked bulk-load command or cloud stores beyond S3. Missing for 10: explicit CSV/JSON/Parquet format support, a documented example bulk-load command, coverage of GCS/Azure object storage, and independent or hands-on corroboration.",
     "evidenceIds": [
       "obsessiondb-docs-36",
       "obsessiondb-docs-45",
-      "obsessiondb-docs-2",
-      "obsessiondb-docs-29"
+      "obsessiondb-docs-2"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a data-engineer, I can bulk-load CSV, JSON, and Parquet from cloud object storage with a single documented command",
+      "citations": [
+        {
+          "evidenceId": "obsessiondb-docs-36",
+          "quote": "INSERT, the Kafka table engine, the s3() and url() table functions, materialized views, all work as documented"
+        },
+        {
+          "evidenceId": "obsessiondb-docs-2",
+          "quote": "Recreate the schema, bridge the data through object storage, repoint, and cut the cost."
+        }
+      ]
+    },
     "productId": "obsessiondb",
     "storyId": "bulk-load-object-storage"
   }

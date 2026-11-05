@@ -1,22 +1,45 @@
 {
-  "hash": "86b512b7941fda69a68623ac39ffe790dbf6debb87271d9d4b25206836955b9d",
+  "hash": "d713616cf363dda429aede4475c8b90d9d36346ae2ebc600318bc606c43b5b4d",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
-    "quality": 8,
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Brave's own API covers each step of the flow. The LLM Context endpoint returns pre-extracted, token-budgeted page content from search results, so no scraping is needed (docs-39, docs-55, docs-58). The Answers endpoint synthesizes grounded answers over single or multiple searches, with an iterative deep-research mode (docs-17, docs-27, docs-62). The summarizer API and the official MCP server expose these tools to agents (docs-15, docs-16). missing for 10: independent or hands-on corroboration of the deep-research flow, a documented standalone extraction step for arbitrary agent-chosen URLs (extraction is tied to search results), and detail on deep research beyond its streaming requirement.",
+    "rationale": "Brave Search API covers the whole search, extract and synthesize flow under one API. The LLM Context endpoint returns pre-extracted, token-budgeted page content with no scraping. The Answers endpoint offers a research mode that runs \"iterative deep research instead of a single search\" and grounds answers across multiple searches, and the official MCP server exposes search, LLM context and summarization tools to agents. Research mode requires streaming and does not support inline citations, and the evidence describes its multi-step behavior only thinly. Missing for 10: detailed documentation of research-mode iteration and its controls, inline citations in research mode, independent or hands-on corroboration.",
     "evidenceIds": [
-      "brave-search-api-docs-39",
-      "brave-search-api-docs-55",
-      "brave-search-api-docs-58",
-      "brave-search-api-docs-17",
-      "brave-search-api-docs-27",
       "brave-search-api-docs-62",
+      "brave-search-api-docs-17",
+      "brave-search-api-docs-39",
+      "brave-search-api-docs-56",
+      "brave-search-api-docs-26",
       "brave-search-api-docs-15",
       "brave-search-api-docs-16",
-      "brave-search-api-docs-26"
+      "brave-search-api-docs-70",
+      "brave-search-api-docs-55"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can have an agent run a multi-step research flow — search, extract contents, and synthesize — through one API",
+      "citations": [
+        {
+          "evidenceId": "brave-search-api-docs-62",
+          "quote": "Whether to answer with iterative deep research instead of a single search. Requires `stream=true`."
+        },
+        {
+          "evidenceId": "brave-search-api-docs-17",
+          "quote": "Answers grounded on a single search or multiple searches for better accuracy & reduced hallucinations."
+        },
+        {
+          "evidenceId": "brave-search-api-docs-39",
+          "quote": "Pre-extracted page content for your LLM — no scraping, token-budgeted. This is the default for RAG, tools, and chatbots."
+        },
+        {
+          "evidenceId": "brave-search-api-docs-15",
+          "quote": "providing comprehensive search capabilities including web search, local business search, place search, image search, video search, news search, LLM context, and AI-powered summarization."
+        }
+      ]
+    },
     "productId": "brave-search-api",
     "storyId": "agent-research-pipeline"
   }

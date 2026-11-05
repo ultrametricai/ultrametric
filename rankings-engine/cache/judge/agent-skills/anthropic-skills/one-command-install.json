@@ -1,20 +1,42 @@
 {
-  "hash": "d6804e49059849a9e7f1aa74440ea1262dd471cea7890af69dffac853876c03c",
+  "hash": "b03fce6bc98adad0c1c7a05569907dce209fb76fd2507085bb44e33bcf5be4ce",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 8,
-    "confidence": "high",
-    "rationale": "The official anthropics/skills repo documents in-agent marketplace commands: `/plugin marketplace add anthropics/skills` followed by `/plugin install document-skills@anthropic-agent-skills`. Claude Code docs state a plugin is installed and loaded as one unit, and that a marketplace is registered with one command and plugins are installed from it. A hands-on probe also confirmed a real one-line install of a skill from the repo via `npx skills add`, though that used third-party tooling. Missing for 10: the documented flow takes two steps (marketplace add, then install) rather than a single command, and there is no explicit documentation or hands-on evidence that installed skills become active in the next session.",
+    "verdict": "partial",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "The repo documents an in-agent marketplace flow: register the marketplace with `/plugin marketplace add anthropics/skills`, then install a collection with `/plugin install document-skills@anthropic-agent-skills`. The docs say a plugin is something Claude Code \"installs and loads as one unit.\" A hands-on probe also confirmed the repo's skills install cleanly into ./.claude/skills via the third-party `npx skills add` tool, but that tool is not the product's own install path. Missing for 10: the documented path takes two commands (marketplace add plus install) rather than a true one-liner, no evidence explicitly confirms the skills are active in the next session, and there is no first-party hands-on corroboration of the /plugin install path.",
     "evidenceIds": [
       "anthropic-skills-gh-1",
       "anthropic-skills-gh-4",
-      "anthropic-skills-docs-9",
       "anthropic-skills-docs-70",
       "anthropic-skills-docs-71",
-      "anthropic-skills-docs-36",
+      "anthropic-skills-docs-9",
       "anthropic-skills-probe-rt-1"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can install a skill collection with one documented command — a package-manager one-liner, CLI, or in-agent marketplace command — and it is active in my next session",
+      "citations": [
+        {
+          "evidenceId": "anthropic-skills-gh-1",
+          "quote": "/plugin marketplace add anthropics/skills"
+        },
+        {
+          "evidenceId": "anthropic-skills-gh-4",
+          "quote": "/plugin install document-skills@anthropic-agent-skills"
+        },
+        {
+          "evidenceId": "anthropic-skills-docs-70",
+          "quote": "A Claude Code plugin is a directory of skills, agents, hooks, MCP servers, or other components that Claude Code installs and loads as one unit."
+        },
+        {
+          "evidenceId": "anthropic-skills-docs-71",
+          "quote": "anyone with access registers it in Claude Code with one command and installs your plugins from it."
+        }
+      ]
+    },
     "productId": "anthropic-skills",
     "storyId": "one-command-install"
   }

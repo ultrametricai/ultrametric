@@ -1,14 +1,30 @@
 {
-  "hash": "58176058de1c186fd6ac53d9a86f67ba5f1bb5a8cda83768a49f67af23612791",
+  "hash": "5c54033afc886568dcdbc1d72de0871a0f60c9cd76145e8045b11d0de5973386",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
-    "quality": 7,
+    "quality": 9,
     "confidence": "high",
-    "rationale": "A live probe confirms Databricks serves an llms.txt at https://docs.databricks.com/llms.txt (HTTP 200) with a structured header describing its platform documentation, so an agent can be pointed at it directly. The evidence covers only the existence and heading of this file, not its depth or any further agent-oriented doc formats. Missing for 10: evidence of the llms.txt's coverage and depth, an llms-full.txt or per-page markdown variants, and first-party documentation describing agent-oriented docs usage.",
+    "rationale": "A live probe confirms Databricks serves an llms.txt at docs.databricks.com that describes the platform documentation for agents. A runtime probe also shows the official CLI installs vendor agent skills, including a databricks-docs skill, for Claude Code, Codex, Cursor and others, so agents can consume the docs directly. missing for 10: first-party documentation describing the llms.txt's scope and structure (e.g. full-text or per-page markdown variants).",
     "evidenceIds": [
-      "databricks-probe-1"
+      "databricks-probe-1",
+      "databricks-probe-rt-2"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can point an agent at llms.txt or agent-oriented docs",
+      "citations": [
+        {
+          "evidenceId": "databricks-probe-1",
+          "quote": "PROBE llms.txt: HTTP 200 at https://docs.databricks.com/llms.txt # Databricks Documentation"
+        },
+        {
+          "evidenceId": "databricks-probe-rt-2",
+          "quote": "keylessly wrote 29 plain SKILL.md skill folders (databricks-docs, databricks-dbsql, databricks-lakeflow-connect, databricks-vector-search, …) with agentskills-style frontmatter, installable for Claude Code, Codex, Cursor, Copilot, and more"
+        }
+      ]
+    },
     "productId": "databricks",
     "storyId": "agentic-agent-docs"
   }

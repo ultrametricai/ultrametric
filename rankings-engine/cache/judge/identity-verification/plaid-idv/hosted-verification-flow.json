@@ -1,22 +1,43 @@
 {
-  "hash": "092fcf9c6714ce28e69c2bed1dc4334450a8ed4796ec797c232141c7ae4f8c9c",
+  "hash": "98faab12effbab7f319a95bc89e1898be9a5cf8e557fb424db85aee7d9b4872a",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Plaid IDV runs as a drop-in flow inside Plaid Link, with client callbacks (onEvent, onSuccess) and STATUS_UPDATED/STEP_UPDATED webhooks for tracking progress and results. The product page covers ID document authentication plus liveness/face match against the ID, and templates combine these checks without custom capture UI. Missing for 10: explicit evidence of the server-side session/token creation call, a hosted redirect (non-embedded) option, a documented API for retrieving verification results, and independent hands-on corroboration.",
+    "rationale": "Plaid documents a drop-in flow: Identity Verification runs inside Link, with client callbacks (onEvent, onSuccess). It covers documentary ID authentication and liveness/face-match, so the developer does not build capture UI, and results arrive via STATUS_UPDATED webhooks and the Dashboard. However, the pack never shows the server-side session creation call, a hosted redirect option, or an API call that reads the verification result. Missing for 10: documented server-side session/token creation, hosted redirect URL flow, explicit result-retrieval API, independent hands-on corroboration.",
     "evidenceIds": [
       "plaid-idv-docs-15",
       "plaid-idv-docs-28",
       "plaid-idv-docs-5",
-      "plaid-idv-docs-3",
-      "plaid-idv-docs-12",
       "plaid-idv-docs-21",
-      "plaid-idv-docs-2",
-      "plaid-idv-docs-18",
-      "plaid-idv-docs-19"
+      "plaid-idv-docs-12",
+      "plaid-idv-docs-14",
+      "plaid-idv-docs-2"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can launch a complete document-plus-selfie verification with a hosted or drop-in flow — create a session server-side, redirect or embed, and read the result — without building capture UI myself",
+      "citations": [
+        {
+          "evidenceId": "plaid-idv-docs-15",
+          "quote": "After integrating Identity Verification using Link, you can use Link's client-side callbacks to see how your users are progressing through the flow."
+        },
+        {
+          "evidenceId": "plaid-idv-docs-28",
+          "quote": "onSuccess will fire when a user has successfully completed the Link flow."
+        },
+        {
+          "evidenceId": "plaid-idv-docs-21",
+          "quote": "Ensure a person is present and their face matches the image on the provided ID."
+        },
+        {
+          "evidenceId": "plaid-idv-docs-14",
+          "quote": "For Identity Verification, there are three events: STEP_UPDATED, STATUS_UPDATED, RETRIED"
+        }
+      ]
+    },
     "productId": "plaid-idv",
     "storyId": "hosted-verification-flow"
   }

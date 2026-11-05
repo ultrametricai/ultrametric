@@ -1,18 +1,32 @@
 {
-  "hash": "cb8badc81e1d3823997cb9bd3ae2c6ce43a4b37def8bd3ce1486665b4b7df0a5",
+  "hash": "1d9d1f14bb6262ab3effa0019bc65145f01740c1b744cdf775720fd5167a97c9",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "obsessiondb",
-    "storyId": "managed-continuous-ingestion",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "ObsessionDB's ingestion docs say the Kafka table engine, s3()/url() table functions and materialized views all work as documented. That gives server-side, continuous consumption of events from a Kafka stream into tables, and CHKit deploys \"pipelines as code.\" However, the Kafka path still requires the user to run or supply the Kafka broker, and nothing shows a managed connector that watches for new files and ingests them automatically. missing for 10: a managed ingestion service or connectors that run with no user pipeline infrastructure, continuous file/object-storage arrival ingestion (e.g. auto-detecting new files), details on what CHKit pipelines actually do, and hands-on or independent corroboration.",
+    "rationale": "The managed service documents the Kafka table engine and materialized views working as documented, so the cluster can keep consuming events from a Kafka topic without a separate pipeline layer. However, the user still supplies the Kafka source, and the s3()/url() table functions are one-off pulls rather than continuous file ingestion. missing for 10: continuous ingestion of new files as they land in object storage, a managed connector or pipeline service that needs no user-run broker, and hands-on corroboration of streaming ingestion.",
     "evidenceIds": [
       "obsessiondb-docs-36",
-      "obsessiondb-docs-37",
-      "obsessiondb-docs-34",
-      "obsessiondb-docs-11"
-    ]
+      "obsessiondb-docs-45",
+      "obsessiondb-docs-30"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a data-engineer, a managed service continuously ingests new files or events as they arrive, without me running my own pipeline infrastructure",
+      "citations": [
+        {
+          "evidenceId": "obsessiondb-docs-36",
+          "quote": "INSERT, the Kafka table engine, the s3() and url() table functions, materialized views, all work as documented"
+        },
+        {
+          "evidenceId": "obsessiondb-docs-30",
+          "quote": "Run ObsessionDB fully managed on AWS, Google Cloud or Azure"
+        }
+      ]
+    },
+    "productId": "obsessiondb",
+    "storyId": "managed-continuous-ingestion"
   }
 }

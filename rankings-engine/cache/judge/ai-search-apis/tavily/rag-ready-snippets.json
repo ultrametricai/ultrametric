@@ -1,18 +1,36 @@
 {
-  "hash": "6e82e975250bb06d15a78565909eaa5287f4d56114ac51b56839087e80ea02d2",
+  "hash": "916190e95f1dc1eda85623030b534e6379d3804af499f4a808a2afffd201cf0f",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Tavily's SDK documents `get_search_context`, which returns a context string the README says you can 'feed directly into your RAG Application'. The search endpoint exposes a parameter that controls the latency-vs-relevance tradeoff and how `results[].content` is generated, and `qna_search` returns concise answers billed as 'perfect for usage by LLMs'. Missing for 10: explicit documentation of context sizing controls (e.g., token or character limits on the returned context), detail on how results are relevance-ranked or scored, and independent or hands-on corroboration of RAG-readiness.",
+    "rationale": "Tavily's SDK provides `get_search_context`, which returns a context string the docs say can be fed directly into a RAG application. The Search endpoint also documents a latency-versus-relevance control over how `results[].content` is generated, so results are shaped and ranked for LLM use. However, no documented controls exist for sizing the context (token or length limits, number of results), and ranking behavior is only briefly described. missing for 10: documented context-size/token-limit controls, explicit relevance-score/ranking documentation, independent or hands-on corroboration of RAG context quality",
     "evidenceIds": [
       "tavily-gh-4",
       "tavily-gh-9",
       "tavily-docs-44",
-      "tavily-gh-10",
-      "tavily-gh-5"
+      "tavily-gh-10"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can get results sized and ranked for direct use as LLM context in a RAG pipeline",
+      "citations": [
+        {
+          "evidenceId": "tavily-gh-9",
+          "quote": "you now have a context string that you can feed directly into your RAG Application"
+        },
+        {
+          "evidenceId": "tavily-gh-4",
+          "quote": "context = tavily_client.get_search_context(query=\"What happened during the Burning Man floods?\")"
+        },
+        {
+          "evidenceId": "tavily-docs-44",
+          "quote": "Controls the latency vs. relevance tradeoff and how `results[].content` is generated"
+        }
+      ]
+    },
     "productId": "tavily",
     "storyId": "rag-ready-snippets"
   }

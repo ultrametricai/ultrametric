@@ -1,19 +1,40 @@
 {
-  "hash": "bc3a29d7c3794feac80019212456acf2106eefd57e485460e148b4a7404f2ef3",
+  "hash": "e8bcd3fc59768c2842c4624f537b954bfff621a0c6ba80f84a7a1cb23fb6712a",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 8,
+    "verdict": "partial",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Mastra's docs say agents and workflows stream incremental output in real time, and `toAISdkStream()` converts those streams into AI SDK formats for UI consumption. Tool-related events appear in the stream as `tool-call-approval` chunks, and events flow through PubSub so clients can reconnect without missing chunks. Missing for 10: explicit documentation of tool-call and step event chunk types beyond the approval chunk, and independent hands-on corroboration of UI streaming.",
+    "rationale": "Mastra documents real-time incremental streaming from agents and workflows, conversion of its streams to AI SDK formats for UI consumption, and PubSub-backed delivery so reconnecting clients don't miss chunks. Evidence that intermediate events reach the stream is limited to the `tool-call-approval` chunk; general tool-call and step events are not explicitly shown. missing for 10: explicit documentation of tool-call and workflow-step event chunks in the stream, independent or hands-on corroboration of UI streaming.",
     "evidenceIds": [
       "mastra-docs-6",
-      "mastra-docs-23",
       "mastra-docs-27",
-      "mastra-docs-55",
       "mastra-docs-31",
       "mastra-docs-44"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can stream tokens and intermediate agent events (tool calls, steps) to my UI in real time",
+      "citations": [
+        {
+          "evidenceId": "mastra-docs-6",
+          "quote": "Mastra supports real-time, incremental responses from agents and workflows, allowing users to see output as it's generated instead of waiting for completion."
+        },
+        {
+          "evidenceId": "mastra-docs-27",
+          "quote": "Use `toAISdkStream()` and `toAISdkMessages()` to convert Mastra streams and stored messages to AI SDK-compatible formats."
+        },
+        {
+          "evidenceId": "mastra-docs-31",
+          "quote": "check for the `tool-call-approval` chunk in the stream to approve or decline the action"
+        },
+        {
+          "evidenceId": "mastra-docs-44",
+          "quote": "Events flow through PubSub, which means a client can disconnect and reconnect without missing chunks."
+        }
+      ]
+    },
     "productId": "mastra",
     "storyId": "stream-agent-events"
   }

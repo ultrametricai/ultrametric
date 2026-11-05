@@ -1,12 +1,36 @@
 {
-  "hash": "e89d4b206b3005ecbcf2419d27ccdd159046ea0ae61eee783bcec7df0ed62718",
+  "hash": "b9180b9c3fc6f150c9247db686fb528b3f9ad9e82a8f1fb779d9af313de15747",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "ComplyAdvantage's documented API covers sanctions/PEP/adverse-media screening of customer records, cases, alerts, exports and audit trails. The evidence shows no identity-verification session that can be created, polled for status, have captured media retrieved, or be cancelled or redacted. Customer screening is an adjacent capability and earns no credit toward this verification-session lifecycle story.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "ComplyAdvantage Mesh documents API-driven customer screening, both synchronous and asynchronous. Completion is signalled through a WORKFLOW_COMPLETED webhook, and cases, alerts and risks can be reviewed through the API, so part of a create → status → results flow exists. However, it is an AML screening workflow, not a verification-session lifecycle with captured media. missing for 10: a verification-session resource, a documented session status endpoint, retrieval of captured media (documents/selfies), cancel and redact/delete operations, and step-by-step lifecycle documentation tying these together.",
+    "evidenceIds": [
+      "complyadvantage-docs-11",
+      "complyadvantage-docs-13",
+      "complyadvantage-docs-14",
+      "complyadvantage-docs-10"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, the whole verification lifecycle is drivable through the API — create a session, get its status, retrieve results and captured media, and cancel or redact it — with every step documented",
+      "citations": [
+        {
+          "evidenceId": "complyadvantage-docs-11",
+          "quote": "Synchronous screening: Ideal for real-time onboarding workflows where low latency is critical. Asynchronous screening: Suitable for high-volume screening scenarios"
+        },
+        {
+          "evidenceId": "complyadvantage-docs-13",
+          "quote": "Refer to the `customer-screening.step_output.screening_result` field in the webhook payload to determine if any hits were found"
+        },
+        {
+          "evidenceId": "complyadvantage-docs-14",
+          "quote": "Cases, alerts and risks can be reviewed and remediated either via the ComplyAdvantage Mesh web application or by integrating with the API for use in your own case management system."
+        }
+      ]
+    },
     "productId": "complyadvantage",
     "storyId": "session-lifecycle-api"
   }

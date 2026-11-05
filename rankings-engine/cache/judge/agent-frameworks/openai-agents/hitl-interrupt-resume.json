@@ -1,15 +1,30 @@
 {
-  "hash": "1bb7274c7bbffed59d12cd7fa55435481489d44fd66307864338fbb8dc71d170",
+  "hash": "51d385f8189262488045dd5130267874e131197857f6479413f11cab1c53fbbd",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "The first-party human-in-the-loop guide says that when a tool call requires approval, the SDK pauses the run, returns `interruptions`, and lets you resume later from the same `RunState`. That covers the core pause, approve and resume flow. Missing for 10: evidence of pausing for free-form human input beyond tool-call approval, detail on how the approve/reject decision is applied and how RunState is serialized, confirmation that the Python SDK has this too (the evidence cites only the JS guide), and independent or hands-on corroboration.",
+    "rationale": "The SDK documents a built-in human-in-the-loop flow: when a tool call requires approval, the run pauses, returns `interruptions`, and can be resumed later from the same `RunState`. This covers approval-gated pauses, but the evidence comes only from the JS guide and is limited to tool-call approvals. Missing for 10: evidence of pausing for free-form human input (not just tool approval), explicit documentation of passing the approve/reject decision back on resume, Python-SDK parity evidence, and independent or hands-on corroboration.",
     "evidenceIds": [
       "openai-agents-docs-12",
       "openai-agents-docs-20"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can pause an agent mid-run for human input or approval and resume with the human's decision",
+      "citations": [
+        {
+          "evidenceId": "openai-agents-docs-20",
+          "quote": "When a tool call requires approval, the SDK pauses the run, returns `interruptions`, and lets you resume later from the same `RunState`."
+        },
+        {
+          "evidenceId": "openai-agents-docs-12",
+          "quote": "When a tool call requires approval, the SDK pauses the run, returns interruptions, and lets you resume later from the same RunState."
+        }
+      ]
+    },
     "productId": "openai-agents",
     "storyId": "hitl-interrupt-resume"
   }

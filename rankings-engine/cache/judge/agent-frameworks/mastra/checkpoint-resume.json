@@ -1,11 +1,11 @@
 {
-  "hash": "ecca2eaadc59bdb119b4473ef0ad465c2edb679b0a635c5927b52caf0a0503bc",
+  "hash": "1ac102c77be84d350017155e70bb0d4e7bf6b0638776bb94b4461fae508b5312",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Mastra documents storage-backed execution state for agents and workflows that lets a run 'resume where you left off' (mastra-gh-4). Workflow snapshots 'capture all the information needed to resume a workflow from exactly where it left off' (mastra-docs-39), and suspend()/resume() plus time travel can restart from a step using stored snapshot data (mastra-docs-53, mastra-docs-41). However, the documented flows centre on deliberate pauses and workflows, not unplanned failures. Missing for 10: explicit documentation of automatic recovery after a crash or process restart (rather than a deliberate suspend), clear agent-loop-level (non-workflow) checkpointing details, and independent or hands-on corroboration.",
+    "rationale": "Mastra documents persisting execution state to storage: snapshots capture what is needed to resume a workflow exactly where it left off, and agents or workflows can be suspended and later resumed. Time travel can also re-execute from any step using stored snapshot data. However, the evidence frames resume around deliberate suspend/resume rather than automatic recovery after a crash or process restart, and snapshots are described mainly for workflows rather than general agent runs. Missing for 10: explicit documentation of crash/restart recovery of in-flight runs, agent-level (non-workflow) checkpointing, independent or hands-on corroboration.",
     "evidenceIds": [
       "mastra-gh-4",
       "mastra-docs-39",
@@ -13,6 +13,29 @@
       "mastra-docs-41",
       "mastra-docs-12"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can checkpoint agent state so a run can resume exactly where it left off after a crash or restart",
+      "citations": [
+        {
+          "evidenceId": "mastra-gh-4",
+          "quote": "Mastra uses storage to remember execution state, so you can pause indefinitely and resume where you left off."
+        },
+        {
+          "evidenceId": "mastra-docs-39",
+          "quote": "Snapshots capture all the information needed to resume a workflow from exactly where it left off"
+        },
+        {
+          "evidenceId": "mastra-docs-53",
+          "quote": "Use resume() to restart a suspended workflow from the step where it paused."
+        },
+        {
+          "evidenceId": "mastra-docs-41",
+          "quote": "Time travel allows you to re-execute a workflow starting from any specific step, using either stored snapshot data or custom context you provide."
+        }
+      ]
+    },
     "productId": "mastra",
     "storyId": "checkpoint-resume"
   }

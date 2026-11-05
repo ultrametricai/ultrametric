@@ -1,18 +1,35 @@
 {
-  "hash": "154bbcf4edd173688bcc5f4ed4f5a274a5d709cbe13584eec4f160b261a7f067",
+  "hash": "6f0dd0453b85edf3c4b3a09d424899ed1c57f7f2a27a6389f1adbb378f03a090",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "A hands-on probe shows Superpowers skills are plain, selectively installable markdown folders. They are copied verbatim into ./.claude/skills/, the installed SKILL.md can be read back cleanly, and the installer warns to 'Review skills before use'. The docs also say skills/ is the source of truth, shared verbatim across harnesses. Together this makes post-install reading straightforward, but Superpowers itself documents no pre-install content listing or review workflow. Its SessionStart hooks and bootstrap injection add behavior beyond the visible skill files, and no review path for that is documented. Missing for 10: a documented pre-install listing of files, instructions and scripts; review guidance covering hooks and bootstrap injection, not just SKILL.md; first-party docs (rather than a generic installer probe) on auditing installed content.",
+    "rationale": "Superpowers ships its skills as plain markdown folders in `skills/`, shared verbatim with every harness. A hands-on probe confirmed a selective install copied a skill into `./.claude/skills/` as readable files, with a warning to review skills before use, so reading what was installed afterward is supported. Listing contents before install is not a documented Superpowers feature: the probe used the separate `npx skills` installer, and community notes say the Codex and OpenCode installs are agent-driven fetch-and-follow flows that are harder to audit in advance. missing for 10: a first-party pre-install listing or preview of skill files and scripts, documentation of where installed files land and how to audit them across all harnesses, and independent corroboration beyond one probe.",
     "evidenceIds": [
       "superpowers-probe-rt-1",
       "superpowers-docs-13",
-      "superpowers-docs-20",
-      "superpowers-gh-8",
-      "superpowers-docs-28"
+      "superpowers-comm-5"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an engineering-lead, I can review exactly what instructions and scripts a skill will add — list contents before installing and read every file afterward",
+      "citations": [
+        {
+          "evidenceId": "superpowers-probe-rt-1",
+          "quote": "Skills are plain, selectively-installable markdown folders."
+        },
+        {
+          "evidenceId": "superpowers-probe-rt-1",
+          "quote": "copied the skill to ./.claude/skills/test-driven-development/, and the installed SKILL.md frontmatter (name: test-driven-development) read back cleanly"
+        },
+        {
+          "evidenceId": "superpowers-docs-13",
+          "quote": "Everything in `skills/` is the source of truth, shared verbatim by every harness."
+        }
+      ]
+    },
     "productId": "superpowers",
     "storyId": "inspect-before-install"
   }

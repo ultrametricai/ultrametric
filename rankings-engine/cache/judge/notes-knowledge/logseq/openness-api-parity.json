@@ -1,21 +1,42 @@
 {
-  "hash": "6639c62be2a2f4cebfcd37f401bce96d66070901f411775a8f16c52cf3eed5ea",
+  "hash": "fdc280702f303e734ae3c72e6fc74b4dc8bcf8ef0346f03f0ce90d48a578d150",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Logseq's local HTTP API server exposes a single `/api` dispatch endpoint that can call any plugin-API method. Those methods span the logseq.App, Editor, DB, Git, UI, Assets and FileStorage namespaces, giving programmatic access to a broad slice of what the UI does, such as inserting blocks via curl with a bearer token. Nothing documents true UI parity, though: the plugin API docs are community-driven, the server must be enabled in the running desktop app, and no OpenAPI spec or llms.txt exists. Missing for 10: documented UI/API parity for features like whiteboards, sync, publishing and export, official first-party API reference, OpenAPI/machine-readable spec, independent hands-on corroboration of coverage.",
+    "rationale": "Logseq has an opt-in local HTTP API server that exposes the plugin API methods (App, Editor, DB, Git, UI, Assets, FileStorage) through a single bearer-token-authenticated POST /api endpoint. This gives broad programmatic access to the graph, but no document claims or shows that the API matches everything the UI can do. The API is local-only and community-documented, with no OpenAPI spec (probes returned 404). Missing for 10: an explicit API/UI parity statement, coverage evidence for UI features such as whiteboards, sync, publishing and export, a machine-readable spec, versioning, and independent hands-on corroboration.",
     "evidenceIds": [
       "logseq-supp-local-api-server-details",
-      "logseq-docs-6",
-      "logseq-docs-21",
       "logseq-docs-37",
       "logseq-docs-38",
+      "logseq-docs-21",
       "logseq-docs-12",
-      "logseq-probe-1",
       "logseq-probe-2"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can do everything through the API that I can do in the UI",
+      "citations": [
+        {
+          "evidenceId": "logseq-supp-local-api-server-details",
+          "quote": "POST `/api` - `method` can be any of the ones listed in https://plugins-doc.logseq.com/."
+        },
+        {
+          "evidenceId": "logseq-docs-37",
+          "quote": "logseq.App logseq.Editor logseq.DB logseq.Git logseq.UI logseq.Assets logseq.FileStorage"
+        },
+        {
+          "evidenceId": "logseq-docs-21",
+          "quote": "we developed the local HTTP server to support external access to the database through authorization."
+        },
+        {
+          "evidenceId": "logseq-docs-38",
+          "quote": "-d '{\"method\": \"logseq.Editor.insertBlock\", \"args\": [\"Test page\", \"This is a new block\", {\"isPageBlock\": true}]}'"
+        }
+      ]
+    },
     "productId": "logseq",
     "storyId": "openness-api-parity"
   }

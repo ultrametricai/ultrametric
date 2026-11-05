@@ -1,18 +1,32 @@
 {
-  "hash": "e23310d4da097932c2ea388157bb09503e04865de1834c299553be32de3bd512",
+  "hash": "e52887c675ce5d6b1415d897c9be889d7d1b67cc129f6c197d353bcaaf762233",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 3,
     "confidence": "medium",
-    "rationale": "ObsessionDB documents first-party ingestion paths on an ingesting-data page: INSERT, the Kafka table engine, the s3() and url() table functions, and async inserts. Its ClickHouse wire compatibility means existing ClickHouse clients and drivers connect unchanged, but that is a general compatibility claim, not a connector catalog. The evidence names no connectors for SaaS apps or source databases, and no ETL/ELT partner integrations. Missing for 10: SaaS-app connectors, database source connectors (e.g. CDC), named ETL/ELT partner integrations with documented setup, independent corroboration.",
+    "rationale": "ObsessionDB's ingestion docs say native ClickHouse ingestion paths work: INSERT, the Kafka table engine, and the s3() and url() table functions. Any ClickHouse client or driver also connects unchanged. That covers streaming and object-storage sources only. The evidence names no SaaS-app connectors, no database CDC connectors, and no ETL/ELT partners such as Fivetran or Airbyte, and per-source setup guides are only implied. The listed BI tools are query consumers, not ingestion sources. Missing for 10: SaaS-app connectors, database-source connectors, named ETL/ELT partner integrations, per-connector setup documentation, independent corroboration.",
     "evidenceIds": [
       "obsessiondb-docs-36",
       "obsessiondb-docs-45",
-      "obsessiondb-docs-37",
       "obsessiondb-docs-43",
       "obsessiondb-docs-5"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a data-engineer, first-party and partner connectors cover my sources — SaaS apps, databases, and ETL/ELT tools — with documented setup",
+      "citations": [
+        {
+          "evidenceId": "obsessiondb-docs-36",
+          "quote": "INSERT, the Kafka table engine, the s3() and url() table functions, materialized views, all work as documented"
+        },
+        {
+          "evidenceId": "obsessiondb-docs-43",
+          "quote": "every ClickHouse client and driver works against ObsessionDB unchanged. You change the host and credentials, nothing else."
+        }
+      ]
+    },
     "productId": "obsessiondb",
     "storyId": "connector-ecosystem"
   }

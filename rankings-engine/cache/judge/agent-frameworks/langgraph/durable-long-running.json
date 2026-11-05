@@ -1,23 +1,42 @@
 {
-  "hash": "96ca8eab63555dab7de3629693acee43c847e993bda880bdf66a1e6e649f9974",
+  "hash": "cb6972515aa2b19e426dc98fa8741a454ffcc802b04d4f048b256448b48a7e7d",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 8,
+    "verdict": "partial",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "LangGraph advertises native durable execution: agents persist through failures and resume from where they left off. Database-backed checkpointers (PostgresSaver) make thread state survive process restarts, the checkpointer writes exact state so runs can resume even from an error state, and the Agent Server includes a managed checkpointing database. Community comments confirm checkpointing is a core framework feature, while noting persistence could be better developed. Missing for 10: explicit documentation of resuming in-flight runs across deploys/version changes, any evidence of third-party durable-execution integrations (e.g. Temporal-style), and hands-on corroboration of restart recovery.",
+    "rationale": "LangGraph natively documents durable execution: agents persist through failures and resume where they left off, checkpointers write exact graph state (even in error states), and a Postgres-backed checkpointer is recommended for production. That implies state survives outside the process, but the evidence never explicitly shows resumption after a process restart or a redeploy. missing for 10: explicit documentation of resuming runs after process restarts and deploys, any evidence of durable-execution integrations (e.g., external workflow engines), independent hands-on corroboration of crash/restart recovery.",
     "evidenceIds": [
       "langgraph-gh-6",
-      "langgraph-gh-1",
       "langgraph-docs-2",
-      "langgraph-docs-13",
       "langgraph-docs-25",
-      "langgraph-docs-30",
-      "langgraph-gh-9",
+      "langgraph-docs-13",
       "langgraph-gh-12",
-      "langgraph-comm-7",
-      "langgraph-comm-4"
+      "langgraph-docs-30"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an engineering-lead, I can run long-lived agents durably across process restarts and deploys, natively or via durable-execution integrations",
+      "citations": [
+        {
+          "evidenceId": "langgraph-gh-6",
+          "quote": "Durable execution — Build agents that persist through failures and can run for extended periods, automatically resuming from exactly where they left off."
+        },
+        {
+          "evidenceId": "langgraph-docs-25",
+          "quote": "Checkpointing keeps your place: the checkpointer writes the exact graph state so you can resume later, even when in an error state."
+        },
+        {
+          "evidenceId": "langgraph-docs-13",
+          "quote": "In production, use a checkpointer backed by a database: from langgraph.checkpoint.postgres import PostgresSaver"
+        },
+        {
+          "evidenceId": "langgraph-docs-2",
+          "quote": "Use them for short-term, thread-scoped memory, including conversation continuity, human-in-the-loop workflows, time travel, and fault tolerance."
+        }
+      ]
+    },
     "productId": "langgraph",
     "storyId": "durable-long-running"
   }

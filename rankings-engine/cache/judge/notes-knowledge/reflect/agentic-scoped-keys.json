@@ -1,18 +1,36 @@
 {
-  "hash": "0184422d3a367b6aa8575f73de72c58ad939ea224d3d2a5ca971d4fde5b0cebe",
+  "hash": "d7a99fe58c0180a77ea3604121feecd8d0ad2b59849e43854441cbc9553960cc",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Reflect's own API uses OAuth 2 with PKCE, and users create their own client credentials. The published OpenAPI spec defines separate read:graph and write:graph scopes, so a user can grant an agent read-only or write access. The scoping is coarse, though: just two graph-wide scopes, with no documented finer-grained limits or credential lifecycle controls. Missing for 10: fine-grained per-resource or per-graph scopes, documented token revocation/expiry and per-agent credential management, independent or hands-on corroboration.",
+    "rationale": "Reflect documents OAuth 2 credentials, including PKCE support, and its OpenAPI spec defines two OAuth2 scopes (read:graph / write:graph). An agent can therefore get a read-only or read-write token, which is real but coarse least-privilege scoping. missing for 10: finer-grained scopes (per-graph or per-endpoint limits), documented token lifetime, expiry and revocation controls, agent-specific credential guidance, and independent or hands-on corroboration.",
     "evidenceIds": [
       "reflect-docs-2",
       "reflect-docs-18",
-      "reflect-docs-45",
       "reflect-supp-openpm-spec",
-      "reflect-supp-api-surface-bounds"
+      "reflect-docs-45"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
+      "citations": [
+        {
+          "evidenceId": "reflect-docs-2",
+          "quote": "For authentication, we support OAuth 2. You will need to create credentials here."
+        },
+        {
+          "evidenceId": "reflect-supp-openpm-spec",
+          "quote": "GET /users/me with OAuth2 scopes read:graph / write:graph"
+        },
+        {
+          "evidenceId": "reflect-docs-18",
+          "quote": "We do support OAuth's PKCE extension which means you can build a client to Reflect without shipping secret keys around."
+        }
+      ]
+    },
     "productId": "reflect",
     "storyId": "agentic-scoped-keys"
   }

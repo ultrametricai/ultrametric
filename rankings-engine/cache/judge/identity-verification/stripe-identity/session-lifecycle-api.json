@@ -1,20 +1,46 @@
 {
-  "hash": "a29a87d1bdb1fcffa4c03eb80bdbd6642a97ec0122dc838bbeb7a9c19369479a",
+  "hash": "4c24bd53c28c289487b5133908a71387370277fa15de17519423160c0f1420b5",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 7,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "The VerificationSessions API is documented as tracking a verification from creation through completion: a curl example creates a session, status-change events and webhooks report its status, and results plus collected images can be retrieved programmatically with the secret key. Nothing in the pack documents cancelling or redacting a session; the only status control shown is a manual override in the review tools. missing for 10: documented cancel endpoint, documented redact endpoint, independent or hands-on corroboration of the API lifecycle.",
+    "rationale": "Stripe's docs cover creating a VerificationSession through the API, tracking its status through the lifecycle with webhook events on each status change, and retrieving sensitive results such as document images programmatically with the secret key. Nothing in the pack documents cancelling or redacting a session through the API, and the review tools (override status, blocklist) are manual controls, not cancel or redact. missing for 10: documented API cancel endpoint, documented API redact endpoint, explicit retrieve/status endpoint reference for sessions, independent hands-on corroboration of the full lifecycle.",
     "evidenceIds": [
       "stripe-identity-docs-5",
       "stripe-identity-docs-13",
       "stripe-identity-docs-15",
-      "stripe-identity-docs-6",
       "stripe-identity-docs-7",
       "stripe-identity-docs-16",
       "stripe-identity-docs-4"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, the whole verification lifecycle is drivable through the API — create a session, get its status, retrieve results and captured media, and cancel or redact it — with every step documented",
+      "citations": [
+        {
+          "evidenceId": "stripe-identity-docs-5",
+          "quote": "curl https://api.stripe.com/v1/identity/verification_sessions"
+        },
+        {
+          "evidenceId": "stripe-identity-docs-13",
+          "quote": "This API tracks a verification, from initial creation through the entire verification process, and shows verification results upon completion."
+        },
+        {
+          "evidenceId": "stripe-identity-docs-15",
+          "quote": "Stripe generates events every time a session changes status."
+        },
+        {
+          "evidenceId": "stripe-identity-docs-7",
+          "quote": "You can access most verification details programmatically... using your secret key."
+        },
+        {
+          "evidenceId": "stripe-identity-docs-16",
+          "quote": "You might need to access the sensitive verification results, such as your user’s date of birth or pictures of the collected document, at a later date."
+        }
+      ]
+    },
     "productId": "stripe-identity",
     "storyId": "session-lifecycle-api"
   }

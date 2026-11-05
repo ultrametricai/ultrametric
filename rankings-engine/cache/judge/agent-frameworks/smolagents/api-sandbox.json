@@ -1,19 +1,35 @@
 {
-  "hash": "47c92256141a5b68c94c639d6c19e822d7d64c6a62390fbea7fdf9d9b54b75db",
+  "hash": "c013f4c4797c7ee8ef9a614cc0391250dc28c543b78bf395f9ea0f16705b1633",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "smolagents documents sandboxed execution of agent code via Modal, Blaxel, E2B, or Docker, plus a hardened LocalPythonExecutor with an import allowlist. A hands-on report shows that allowlist blocking a non-authorized import (matplotlib). This isolates agent-generated code from the host, but nothing shows a separate test environment or protection of production data, which is the core of the story. Missing for 10: explicit test/staging environment or mock-data separation from production data, detailed sandbox setup docs in evidence, and independent corroboration of the remote sandboxes.",
+    "rationale": "smolagents documents running agent-generated code in sandboxed environments (Modal, Blaxel, E2B, Docker) and ships a hardened LocalPythonExecutor. That gives real execution isolation from the host, but the evidence never shows a test or staging mode that keeps agents away from production data: tools can still call live systems, and isolating data is left to the user. missing for 10: a documented test/staging environment separating agent runs from production data, guidance on keeping tools off live systems, and independent hands-on corroboration of the sandbox integrations.",
     "evidenceIds": [
       "smolagents-docs-6",
       "smolagents-gh-7",
-      "smolagents-gh-9",
-      "smolagents-docs-19",
-      "smolagents-docs-3",
-      "smolagents-comm-2"
+      "smolagents-docs-19"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
+      "citations": [
+        {
+          "evidenceId": "smolagents-docs-6",
+          "quote": "To make it secure, we support executing in sandboxed environment via Modal, Blaxel, E2B, or Docker."
+        },
+        {
+          "evidenceId": "smolagents-gh-7",
+          "quote": "To make it secure, we support executing in sandboxed environments via Blaxel, E2B, Modal, or Docker."
+        },
+        {
+          "evidenceId": "smolagents-docs-19",
+          "quote": "we have re-built a more secure `LocalPythonExecutor` from the ground up."
+        }
+      ]
+    },
     "productId": "smolagents",
     "storyId": "api-sandbox"
   }

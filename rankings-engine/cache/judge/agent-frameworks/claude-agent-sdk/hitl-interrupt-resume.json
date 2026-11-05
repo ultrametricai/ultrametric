@@ -1,23 +1,43 @@
 {
-  "hash": "f40b6dabc7f041c2afaf54237e9e88f169d966bd4a972b2a2e0dbc95e3811032",
+  "hash": "095b9ed44b123f38b4fdc6c9769e591fccd41301858f427771eedd2b41e98f9f",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "First-party docs state that the canUseTool callback fires when Claude needs permission or asks clarifying questions via AskUserQuestion. The callback pauses execution until you return a response, and the decision goes back to the SDK. Streaming mode also documents interrupts and surfaced permission requests, and sessions can be resumed later with full context. Missing for 10: independent or hands-on corroboration of the approval flow, and explicit documentation of a durable pause that survives a process restart (persisting a pending approval and resuming it from a stored session).",
+    "rationale": "The SDK documents a dedicated human-in-the-loop mechanism. The canUseTool callback fires when Claude needs permission or has clarifying questions via AskUserQuestion, and it pauses execution until the developer returns the human's decision, which the agent then continues with. Session persistence and SessionStore also allow returning to a run later with full context. missing for 10: independent or hands-on corroboration that pause and resume works in practice, explicit documentation of long-lived or asynchronous approvals that survive a process restart mid-pause.",
     "evidenceIds": [
-      "claude-agent-sdk-docs-9",
-      "claude-agent-sdk-docs-18",
-      "claude-agent-sdk-docs-28",
       "claude-agent-sdk-docs-37",
+      "claude-agent-sdk-docs-28",
+      "claude-agent-sdk-docs-18",
+      "claude-agent-sdk-docs-9",
       "claude-agent-sdk-docs-6",
       "claude-agent-sdk-docs-26",
-      "claude-agent-sdk-docs-35",
-      "claude-agent-sdk-docs-7",
-      "claude-agent-sdk-docs-24",
-      "claude-agent-sdk-docs-29"
+      "claude-agent-sdk-docs-24"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can pause an agent mid-run for human input or approval and resume with the human's decision",
+      "citations": [
+        {
+          "evidenceId": "claude-agent-sdk-docs-37",
+          "quote": "Both trigger your `canUseTool` callback, which pauses execution until you return a response."
+        },
+        {
+          "evidenceId": "claude-agent-sdk-docs-28",
+          "quote": "Surface Claude's approval requests and clarifying questions to users, then return their decisions to the SDK."
+        },
+        {
+          "evidenceId": "claude-agent-sdk-docs-18",
+          "quote": "Claude requests user input in two situations: when it needs permission to use a tool (like deleting files or running commands), and when it has clarifying questions (via the AskUserQuestion tool)."
+        },
+        {
+          "evidenceId": "claude-agent-sdk-docs-9",
+          "quote": "The callback fires whenever Claude needs user input, receiving the tool name and input as arguments"
+        }
+      ]
+    },
     "productId": "claude-agent-sdk",
     "storyId": "hitl-interrupt-resume"
   }

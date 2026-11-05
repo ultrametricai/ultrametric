@@ -1,20 +1,43 @@
 {
-  "hash": "594f92facd48e6eb7f606136988463163715146376f3c839e4b2d84966c02722",
+  "hash": "b7c2417cfff6037695ee66db23737e3025d6ae4cf8c5a9c53675cd86689b2b36",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "First-party docs show fine-grained tool permissions. These include permission modes and rules, a runtime canUseTool callback, hooks that block destructive shell commands or unauthorized file access, and subagents with specific tool access and independent permissions. Sandboxed execution is covered only through hosting guidance on multi-tenant isolation with Docker, Kubernetes and sandbox providers, not a documented built-in sandbox. missing for 10: a documented built-in sandbox (filesystem/network isolation details), concrete permission-rule syntax examples, independent or hands-on corroboration.",
+    "rationale": "Fine-grained tool permissions are well documented as first-party features: permission modes and rules, a runtime canUseTool callback, hooks that block destructive commands or unauthorized file access, and per-subagent tool access with independent permissions. Sandboxed execution is weaker: the only evidence is hosting guidance for isolation via Docker, Kubernetes and external sandbox providers, while the SDK itself runs a CLI subprocess that owns a shell. That isolation comes from the host platform, not a sandbox the SDK provides. missing for 10: a documented first-party sandbox (filesystem/network isolation of executed commands), detailed permission-rule syntax evidence, independent or hands-on corroboration.",
     "evidenceIds": [
       "claude-agent-sdk-docs-6",
       "claude-agent-sdk-docs-9",
-      "claude-agent-sdk-docs-18",
       "claude-agent-sdk-docs-22",
       "claude-agent-sdk-docs-40",
+      "claude-agent-sdk-docs-18",
       "claude-agent-sdk-docs-11",
       "claude-agent-sdk-docs-20"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an engineering-lead, I can restrict what an agent may do with fine-grained tool permissions and sandboxed execution",
+      "citations": [
+        {
+          "evidenceId": "claude-agent-sdk-docs-6",
+          "quote": "Use permission modes and rules to define what's allowed automatically, and the canUseTool callback to handle everything else at runtime."
+        },
+        {
+          "evidenceId": "claude-agent-sdk-docs-22",
+          "quote": "Block dangerous operations before they execute, like destructive shell commands or unauthorized file access"
+        },
+        {
+          "evidenceId": "claude-agent-sdk-docs-40",
+          "quote": "Each subagent runs in its own context window with a custom system prompt, specific tool access, and independent permissions."
+        },
+        {
+          "evidenceId": "claude-agent-sdk-docs-11",
+          "quote": "multi-tenant isolation for Docker, Kubernetes, and sandbox providers"
+        }
+      ]
+    },
     "productId": "claude-agent-sdk",
     "storyId": "tool-permission-limits"
   }

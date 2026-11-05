@@ -1,19 +1,35 @@
 {
-  "hash": "fe1f992d30b6ad94ec5eaf2bc82c655d8077abfbf1fa520d054e03c73209e05b",
+  "hash": "92d8ac267af9a911e2b8faafd208190db344741ba4ffc7352b58296bfbf496bb",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
-    "quality": 8,
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Mastra's docs say you can mark a specific tool with `requireApproval: true` and then approve or decline it via a `tool-call-approval` stream chunk, which is per-tool approval gating. The GitHub README and workflow docs back this with suspend/resume that pauses agents or workflows until a human approves, persisted via storage snapshots so execution can resume or bail. Missing for 10: in-depth documentation of the tool-approval API (e.g., conditional or policy-based approval rules and how durable agent tool approvals are), and independent or hands-on corroboration that approval gating works as described.",
+    "rationale": "Mastra documents a per-tool `requireApproval: true` flag. The stream then emits a `tool-call-approval` chunk so a human can approve or decline the action before it runs, and suspend/resume lets execution pause for approval. missing for 10: in-depth documentation of the approval flow (decline handling, conditional or policy-based approval rules, persistence of pending approvals for agent tool calls), independent or hands-on corroboration.",
     "evidenceIds": [
       "mastra-docs-31",
       "mastra-gh-4",
-      "mastra-docs-12",
-      "mastra-docs-53",
-      "mastra-docs-39",
-      "mastra-docs-40"
+      "mastra-docs-12"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an engineering-lead, I can require human approval before specific sensitive tool calls execute",
+      "citations": [
+        {
+          "evidenceId": "mastra-docs-31",
+          "quote": "Mark a tool with `requireApproval: true`, then check for the `tool-call-approval` chunk in the stream to approve or decline the action"
+        },
+        {
+          "evidenceId": "mastra-gh-4",
+          "quote": "Suspend an agent or workflow and await user input or approval before resuming."
+        },
+        {
+          "evidenceId": "mastra-docs-12",
+          "quote": "request human-in-the-loop input"
+        }
+      ]
+    },
     "productId": "mastra",
     "storyId": "tool-approval-gates"
   }

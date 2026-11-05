@@ -1,18 +1,38 @@
 {
-  "hash": "a80ce54db442df3461adcb18be118229382e1f14f60c50e87a39f04faa04869b",
+  "hash": "098be10fff47addbd99007bbe6afb18cc9f7dcdd8f15a73d8fe01adb33a46222",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Tavily's own docs show some batch and async support. Extract accepts up to 20 URLs per request and reports per-URL failures, Research tasks can be retrieved by request ID (an asynchronous job pattern), and the Python SDK ships an asynchronous client class. However, nothing shows a batch or async job endpoint for high-volume search queries, and throughput is capped by per-minute rate limits. missing for 10: batch submission of many search queries in one job, async job queue/callbacks for bulk query workloads, documented high-volume batch limits or pricing, independent corroboration.",
+    "rationale": "Tavily documents some first-party batch and async patterns. Extract accepts batches of up to 20 URLs per request, and Research tasks can be retrieved later by request ID, which is an asynchronous job model. The Python SDK also ships an asynchronous client for concurrent calls. However, nothing shows a batch or async job endpoint for high-volume search queries, and per-minute rate limits still cap throughput. Missing for 10: batch submission for search queries, a general async job queue with higher-volume limits, callbacks or completion notifications, and independent hands-on corroboration at scale.",
     "evidenceIds": [
       "tavily-docs-23",
       "tavily-docs-48",
       "tavily-docs-28",
       "tavily-docs-52",
+      "tavily-docs-66",
       "tavily-docs-17"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a data engineer, I can submit batched or asynchronous jobs for high-volume query workloads",
+      "citations": [
+        {
+          "evidenceId": "tavily-docs-23",
+          "quote": "Extract content from one URL or batch up to 20 URLs in one request."
+        },
+        {
+          "evidenceId": "tavily-docs-28",
+          "quote": "Retrieve the status and results of a research task using its request ID."
+        },
+        {
+          "evidenceId": "tavily-docs-52",
+          "quote": "For greater flexibility, we provide both a synchronous and an asynchronous client class."
+        }
+      ]
+    },
     "productId": "tavily",
     "storyId": "batch-async-processing"
   }
