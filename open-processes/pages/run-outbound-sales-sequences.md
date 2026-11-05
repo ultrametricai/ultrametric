@@ -97,7 +97,7 @@ Ground the sequence in a verified reason the offer may help its target group. Ma
 Include the verified sender name/company and reply route, plus a proposed interval and timezone for each touch. Use a simple progression: relevant observed problem and offer, a new useful detail, then a concrete next step or close. Reuse approved positioning and proof; flag missing evidence instead of inventing revenue loss, testimonials or customer results. If identity or cadence is unknown, deliver labeled drafts and list the exact decisions needed for activation.
 
 - Canonical vendor: HubSpot
-- Cross-arena options: ChatGPT, Claude, Gemini (ai-assistants)
+- Cross-arena options: ChatGPT, Claude (ai-assistants)
 - Sources: [CAN-SPAM Act: A Compliance Guide for Business](https://www.ftc.gov/business-guidance/resources/can-spam-act-compliance-guide-business)
 
 <a id="step-3"></a>

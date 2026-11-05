@@ -1,16 +1,35 @@
 {
-  "hash": "9f5b940d5c35e6bb14043365a367cff2aff5f801b895fd8fc1216d2761b4ba29",
+  "hash": "5b7e16f14bf82e93d5662cd18c461056e5f9b16f811162271ad5a82fe964a814",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Mistral's docs include a standing \"Known limitations\" page. The only content evidenced from it, though, is an API-level constraint: requests exceeding the context window return a 400 error. That is not documentation of model behavior weaknesses, i.e. what the models are bad at. Labs models are also labeled as experimental releases, which is a light signal of maturity rather than a documented failure mode. Missing for 10: vendor-documented model capability weaknesses (e.g. tasks, languages or document types where models underperform), evidence that model cards list limitations, and independent corroboration that the limitations page covers behavioral jagged edges.",
+    "rationale": "Mistral ships its own \"Known limitations\" page in the docs resources section. However, the only quoted content is an API-level constraint (requests exceeding the context window return a 400 error), not documentation of what the models are bad at. Community reports of OCR weaknesses show users finding jagged edges themselves, but they neither prove nor contradict vendor documentation, so the verdict stays partial. Missing for 10: evidence that the docs describe model-behavior weaknesses (reasoning, hallucination, language or task gaps), per-model-card limitation sections, and independent corroboration of the limitations page's depth.",
     "evidenceIds": [
-      "mistral-docs-14",
       "mistral-supp-known-limitations",
+      "mistral-docs-14",
       "mistral-docs-16"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, the vendor documents the model's failure modes and jagged edges — what it is bad at, in its own docs, not just what it aces",
+      "citations": [
+        {
+          "evidenceId": "mistral-supp-known-limitations",
+          "quote": "A standing \"Known limitations\" page ships in the docs resources section alongside an error glossary"
+        },
+        {
+          "evidenceId": "mistral-docs-14",
+          "quote": "Requests exceeding the model's context window return a 400 Bad Request error."
+        },
+        {
+          "evidenceId": "mistral-docs-16",
+          "quote": "Labs models are experimental releases intended to collect feedback before we commit to a production model."
+        }
+      ]
+    },
     "productId": "mistral",
     "storyId": "known-limitations-honesty"
   }

@@ -1,16 +1,35 @@
 {
-  "hash": "124f5995b458485b3a3fb8ee86e5f44766388ffa4306cb19a9f87797eb193019",
+  "hash": "4fdc814dbf6dd43f2262c413e4733ed3a6d328f9ad77b9b79a487c6d8d74734e",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Apify documents smart rotation of datacenter and residential IPs to avoid blocking. Its SDK SessionPool rotates proxy IPs together with cookies, and you can mix Apify Proxy with your own or third-party proxies. The evidence does not show requests being automatically retried through an escalating chain of proxies when a block is detected, so this is rotation rather than block-triggered failover. Missing for 10: explicit block-detection-triggered retry, tiered proxy fallback chain (e.g., datacenter→residential escalation), independent or hands-on corroboration.",
+    "rationale": "Apify's own docs describe rotating datacenter and residential IPs to avoid blocking, and a SessionPool that handles proxy IP rotation, with support for Apify Proxy, your own proxies, or third-party proxies. That is direct proxy-rotation support for anti-bot evasion. The evidence does not show automatic retry triggered by block detection, nor escalation through an ordered chain of different proxy types; the client retry docs cover API request retries, not scraping proxy fallback. missing for 10: documented automatic retry-on-block behavior, tiered/chained proxy fallback (e.g. datacenter→residential escalation), block-detection triggers, independent or hands-on corroboration",
     "evidenceIds": [
       "apify-docs-8",
       "apify-docs-31",
       "apify-docs-34"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a data-engineer, I can automatically retry through a chain of different proxies when anti-bot detection blocks a request",
+      "citations": [
+        {
+          "evidenceId": "apify-docs-8",
+          "quote": "Avoid blocking by smartly rotating datacenter and residential IP addresses."
+        },
+        {
+          "evidenceId": "apify-docs-31",
+          "quote": "SessionPool is a class that allows you to handle the rotation of proxy IP addresses along with cookies and other custom settings in Apify SDK."
+        },
+        {
+          "evidenceId": "apify-docs-34",
+          "quote": "you can use your own proxy servers, proxy servers acquired from third-party providers, or you can rely on Apify Proxy for your scraping needs."
+        }
+      ]
+    },
     "productId": "apify",
     "storyId": "auto-retry-proxy-chain"
   }

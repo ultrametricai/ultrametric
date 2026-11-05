@@ -1,15 +1,30 @@
 {
-  "hash": "0645f1d7c2c18627f896062e4ad6e92b87a7a0d31aa6b4dc45d0b3cfc715cd6c",
+  "hash": "b2f266c87bfa3f0a8484ee0fa7dedd16f7f1025e5829f926b89b4b894bd33b7e",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Riveter documents a per-request `max_credits` ceiling. A request whose maximum estimated cost exceeds it is refused with 422 credit_cap_exceeded and nothing is charged, and `dry_run` returns a credit estimate before you commit. That is a real spending guard, but only per request, so ongoing usage such as scheduled monitoring runs is not capped against an overall budget. Missing for 10: account-level or monthly spending caps, usage/threshold alerts or notifications, independent or hands-on corroboration that the cap works as described.",
+    "rationale": "Riveter documents a per-request `max_credits` ceiling: if the estimated maximum cost exceeds it, the request is refused with 422 credit_cap_exceeded and nothing is charged. `dry_run` returns a credit estimate up front. Both are the product's own controls, but they work per request, not as an account-wide budget, and no usage alerts or notifications are documented. Missing for 10: account- or org-level spending cap, usage/threshold alerts, visibility into cumulative consumption, independent or hands-on confirmation that the cap is enforced.",
     "evidenceIds": [
       "riveter-docs-8",
       "riveter-docs-7"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can set a spending cap or usage alert so proxy/credit consumption doesn't silently blow past my budget",
+      "citations": [
+        {
+          "evidenceId": "riveter-docs-8",
+          "quote": "max_credits — a ceiling. When the estimate's maximum exceeds it, the request is refused with 422 credit_cap_exceeded and nothing is charged."
+        },
+        {
+          "evidenceId": "riveter-docs-7",
+          "quote": "dry_run: true — validate the request and return a credit estimate without creating or charging anything."
+        }
+      ]
+    },
     "productId": "riveter",
     "storyId": "spend-cap-alerts"
   }

@@ -1,17 +1,35 @@
 {
-  "hash": "cb6e5873b80b749054575192ac5ec2ee9bafa47a4bd43b7011c5b3ab353af948",
+  "hash": "5fbb470438a0bd692fecafe893141533376d13094916b04a2d0bec5ee1f084d3",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Crawl4AI documents a Browser Profiler that creates persistent profiles with saved authentication states and cookies (crawl4ai-gh-3). It also supports session re-use and session management (crawl4ai-docs-6, crawl4ai-gh-18) and user-owned managed browsers (crawl4ai-gh-16), so authenticated pages can be fetched. However, the evidence never shows a developer passing their own cookies directly into a crawl or API request; it only shows reusing profile or session state. Missing for 10: an explicit, documented way to supply your own cookies per request (library or Docker API), and hands-on corroboration of authenticated crawling.",
+    "rationale": "Crawl4AI's Browser Profiler creates and manages persistent profiles with saved authentication states and cookies, and the docs mention session re-use. That is a first-party route to crawling authenticated pages, but the evidence never documents passing arbitrary user-supplied session cookies directly in a crawl or API request. Missing for 10: an explicit cookie-injection parameter or header option in the crawl/API config, documentation of cookie use through the Docker/FastAPI server, and hands-on corroboration of authenticated fetches.",
     "evidenceIds": [
       "crawl4ai-gh-3",
-      "crawl4ai-docs-6",
       "crawl4ai-gh-18",
-      "crawl4ai-gh-16"
+      "crawl4ai-docs-6"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can pass my own session cookies so the API fetches pages requiring authentication",
+      "citations": [
+        {
+          "evidenceId": "crawl4ai-gh-3",
+          "quote": "Browser Profiler: Create and manage persistent profiles with saved authentication states, cookies, and settings."
+        },
+        {
+          "evidenceId": "crawl4ai-gh-18",
+          "quote": "Session Management: Preserve browser states and reuse them for multi-step crawling."
+        },
+        {
+          "evidenceId": "crawl4ai-docs-6",
+          "quote": "Advanced Browser Control: Hooks, proxies, stealth modes, session re-use—fine-grained control."
+        }
+      ]
+    },
     "productId": "crawl4ai",
     "storyId": "pass-session-cookies"
   }

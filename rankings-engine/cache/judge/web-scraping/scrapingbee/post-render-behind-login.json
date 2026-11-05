@@ -1,18 +1,32 @@
 {
-  "hash": "87614740a6223445891a74c37070200a00212bac6039ca547403c3be8969689e",
+  "hash": "8646d79c2b279c6987e02ee64c3d8c804211c33174a11acd8f8fd2f62ff29194",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "ScrapingBee's JavaScript scenario feature lets a single API call click and fill form fields before the HTML is returned, so a login form can be submitted within one request. Custom cookies can carry an authenticated session forward, and session_id keeps the same IP across requests. However, nothing shows a persistent browser session that lets you keep interacting with a page you have already scraped; each call appears to be a fresh, pre-scripted run. Missing for 10: stateful continuation of an existing browser session across calls, documented login-wall walkthrough, independent hands-on corroboration.",
+    "rationale": "ScrapingBee's own JavaScript scenario feature can click and fill form fields before the HTML is returned, so a single API call could log in and reach gated content. However, there is no evidence of a persistent browser session for continuing to interact with a page that was already scraped. session_id only keeps the same IP across requests, and cookies are just passed in. Missing for 10: stateful continued interaction with an already-scraped page across calls, documented login-wall or authentication flows, independent or hands-on corroboration.",
     "evidenceIds": [
       "scrapingbee-docs-3",
       "scrapingbee-docs-21",
-      "scrapingbee-docs-43",
       "scrapingbee-docs-12",
-      "scrapingbee-docs-4"
+      "scrapingbee-docs-43"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can keep interacting with an already-scraped page, clicking and filling forms to reach content behind a login wall",
+      "citations": [
+        {
+          "evidenceId": "scrapingbee-docs-3",
+          "quote": "If you want to interact with pages you want to scrape before we return your the HTML you can add JavaScript scenario to your API call."
+        },
+        {
+          "evidenceId": "scrapingbee-docs-21",
+          "quote": "{\"instructions\": [{\"wait_for_and_click\": \"#accept\"}, {\"fill\": [\"#search\", \"ScrapingBee\"]}, {\"wait\": 1000}, {\"scroll_y\": 800}]}"
+        }
+      ]
+    },
     "productId": "scrapingbee",
     "storyId": "post-render-behind-login"
   }

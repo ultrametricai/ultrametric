@@ -1,17 +1,39 @@
 {
-  "hash": "84bf3307fceef5267b35f8abf643b95c1d99162976232b6a885976ddadfc72cc",
+  "hash": "215590a8eff234de1c12cf40cd3345b82ae06525424561b287e217b5809e5ba2",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Vercel's official MCP server exposes build logs (`get_deployment_build_logs` with an errorsOnly filter), deployment details (`list_deployments`/`get_deployment`), and runtime logs and grouped runtime errors (`get_runtime_logs`, `get_runtime_errors`, up to 7 days) through a single interface. The CLI is documented to retrieve logs, and the platform offers observability for traffic, function performance, and errors. Missing for 10: no first-party docs describing a unified dashboard log view that combines build, deploy, and runtime logs; no detail on CLI log coverage, retention, or filtering beyond the MCP tools; no independent or hands-on corroboration.",
+    "rationale": "Vercel documents its own access to both build and runtime logs: a Logs overview covering runtime logs, CLI log retrieval, and official MCP tools for deployment build logs and runtime logs/errors, all exposed through one server interface. However, no evidence shows a single unified dashboard view combining build, deploy, and runtime logs. Missing for 10: explicit documentation of a single consolidated log view spanning build, deploy and runtime; deploy-event logs specifically; hands-on or independent corroboration.",
     "evidenceIds": [
       "vercel-supp-mcp-tools",
-      "vercel-docs-47",
-      "vercel-docs-30",
-      "vercel-supp-vercel-agent"
+      "vercel-parity-privacy-retention-controls-20261103",
+      "vercel-docs-47"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can view all my build, deploy, and runtime logs in one place",
+      "citations": [
+        {
+          "evidenceId": "vercel-supp-mcp-tools",
+          "quote": "`get_runtime_logs` and `get_runtime_errors`"
+        },
+        {
+          "evidenceId": "vercel-supp-mcp-tools",
+          "quote": "Use `errorsOnly` to return only failing lines"
+        },
+        {
+          "evidenceId": "vercel-parity-privacy-retention-controls-20261103",
+          "quote": "For longer log storage, you can use Log Drains."
+        },
+        {
+          "evidenceId": "vercel-docs-47",
+          "quote": "enabling you to retrieve logs"
+        }
+      ]
+    },
     "productId": "vercel",
     "storyId": "unified-log-view"
   }

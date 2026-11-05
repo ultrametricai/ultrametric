@@ -1,16 +1,30 @@
 {
-  "hash": "abff450e17fd799ba2506da27dd1a1ccf66cb272cced48fa08baf8aa93f88fce",
+  "hash": "3c75d21b22e52e19c93ec0b15dc570d552cda4ea0bb81a4ea341bdf7dbf692ef",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Reader offers opt-in semantic chunking of its markdown output into a JSON array of chunks (x-markdown-chunking) and a token cap (x-max-tokens), and it accepts Excel files via POST. Together these can split large content to fit processing limits. Nothing in the evidence shows the chunking is table-aware, such as keeping rows intact or repeating headers per chunk, and x-max-tokens trims content rather than splitting it. missing for 10: table-aware chunking that preserves row/header structure, documentation or examples of very large table extraction, independent or hands-on corroboration of chunking quality on tables.",
+    "rationale": "Reader documents opt-in semantic chunking of its markdown output (`x-markdown-chunking`), which returns an array of chunks instead of one blob, and it accepts Excel files directly. Nothing documents table-aware chunking, and `x-max-tokens` only trims output rather than chunking it. missing for 10: table-specific chunking behavior (e.g. preserving headers or rows across chunks), documented limits for very large tables, hands-on corroboration of chunking on large tabular data.",
     "evidenceIds": [
       "jina-reader-gh-10",
-      "jina-reader-gh-17",
       "jina-reader-gh-3"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a data-engineer, I can extract data from very large tables using intelligent chunking so it fits within processing limits",
+      "citations": [
+        {
+          "evidenceId": "jina-reader-gh-10",
+          "quote": "`x-markdown-chunking` — opt-in semantic chunking of the markdown response. Returns a JSON array (or ``-delimited text) of chunks instead of one blob"
+        },
+        {
+          "evidenceId": "jina-reader-gh-3",
+          "quote": "PDFs and MS Office documents (Word, Excel, PowerPoint) can now be POSTed directly via the `file` body field"
+        }
+      ]
+    },
     "productId": "jina-reader",
     "storyId": "large-table-chunked-extraction"
   }

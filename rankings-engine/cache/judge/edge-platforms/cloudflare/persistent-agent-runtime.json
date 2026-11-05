@@ -1,19 +1,36 @@
 {
-  "hash": "eb49f2a167f47569479ff5ca7248e70e8e643025c395edff748c922666341f91",
+  "hash": "07d421085e0fce56fe1cdcf73c6df61c808be8b65f0136c21c05c35b0e031d55",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "The Agents SDK describes agents as \"persistent, stateful execution environments\" with their own state and storage that hibernate and wake on demand. The Think harness automatically persists messages and offers stream resumption on Durable Object SQLite, with workspace and bash tools. Workflows persist state across steps with automatic retries, and the Sandbox SDK provides a full Linux container for code execution. However, automatic checkpointing of the coding agent's working environment (filesystem or process state) is not documented; the builder has to assemble it from several primitives. missing for 10: documented automatic snapshot/checkpoint of sandbox or workspace state, persistence guarantees for Sandbox containers, independent or hands-on corroboration that long-running coding agents resume from checkpoints",
+    "rationale": "Cloudflare's Agents SDK provides persistent, stateful agent environments on Durable Objects with their own state, storage and lifecycle, plus hibernate/wake. The Think harness automatically persists messages in Durable Object SQLite and offers workspace and bash tools, and Workflows persist state across retried steps. However, nothing documents automatic checkpointing of a coding agent's working environment (filesystem or sandbox snapshots) while it works. Missing for 10: explicit automatic checkpoint/snapshot of the agent's workspace or sandbox state, restore-from-checkpoint docs, hands-on corroboration.",
     "evidenceIds": [
       "cloudflare-supp-agents-sdk",
       "cloudflare-supp-think-harness",
-      "cloudflare-supp-sandbox-sdk",
       "cloudflare-docs-27",
-      "cloudflare-docs-32",
-      "cloudflare-docs-39"
+      "cloudflare-supp-sandbox-sdk"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an ai-native builder, I can give my coding agent a persistent runtime environment that checkpoints its state automatically while working",
+      "citations": [
+        {
+          "evidenceId": "cloudflare-supp-agents-sdk",
+          "quote": "Agents are persistent, stateful execution environments for agentic workloads, powered by Cloudflare Durable Objects."
+        },
+        {
+          "evidenceId": "cloudflare-supp-think-harness",
+          "quote": "message persistence, streaming, client tools, stream resumption, and extensions — all backed by Durable Object SQLite"
+        },
+        {
+          "evidenceId": "cloudflare-docs-27",
+          "quote": "automatically retry failed tasks, and persist state for minutes, hours, or even weeks"
+        }
+      ]
+    },
     "productId": "cloudflare",
     "storyId": "persistent-agent-runtime"
   }

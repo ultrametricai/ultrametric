@@ -1,20 +1,38 @@
 {
-  "hash": "7676212961bb75fa704beb3f9fedb2852ca7aa321b9837a25e3863a790e7883b",
+  "hash": "d68005aa270298a55230f35cb690f570533dca80876cca586d0a4a08ae72191f",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "proa",
-    "storyId": "server-rendering-streaming",
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Proa renders server-side on Axum and documents both in-order HTML flushing and out-of-order streaming of ready chunks through Suspense boundaries, so slow data does not block the page. Interactivity comes from hydrated islands that ship a small vanilla-JS module plus seed state on a runtime of about 1.3 KB gzipped, and GitHub confirms the server-rendered HTML plus island JS. Missing for 10: in-depth streaming documentation beyond homepage one-liners (e.g., API details, examples), and independent or hands-on corroboration that streaming works as claimed.",
+    "rationale": "Proa renders on the server through an Axum backend. It documents streaming in two modes: in-order HTML flushing, and Suspense boundaries that stream ready chunks out of order so slow data does not block the page. Interactivity comes from hydrated islands that ship server-rendered HTML plus a small JS module. Missing for 10: in-depth first-party documentation of the streaming API (the evidence is homepage-level claims), and independent or hands-on corroboration that streaming speeds up time-to-interactive.",
     "evidenceIds": [
       "proa-docs-35",
       "proa-docs-17",
-      "proa-docs-4",
       "proa-gh-3",
       "proa-docs-16",
-      "proa-docs-18"
-    ]
+      "proa-docs-4"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can render my application on the server with streaming support to reach interactivity faster",
+      "citations": [
+        {
+          "evidenceId": "proa-docs-35",
+          "quote": "Flush HTML in document order when sequence matters, or let Suspense boundaries stream ready chunks out of order when slow data should not block the page."
+        },
+        {
+          "evidenceId": "proa-gh-3",
+          "quote": "Proa emits the server-rendered HTML plus the JavaScript required for that island"
+        },
+        {
+          "evidenceId": "proa-docs-16",
+          "quote": "Each hydrated RSJS island emits a small vanilla-JS module plus seed state, served with a shared runtime around 1.3 KB gzipped."
+        }
+      ]
+    },
+    "productId": "proa",
+    "storyId": "server-rendering-streaming"
   }
 }

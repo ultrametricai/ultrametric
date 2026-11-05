@@ -1,19 +1,36 @@
 {
-  "hash": "4eac7be94621af3c421016f89572cfa36315f683989035cf48ab1b83aac7b211",
+  "hash": "1f1c340a4a7c989573758c30e0042e317fd251489fcaaac407dcbe04e30c3f59",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "AWS documents first-party bulk handling of resources: CloudFormation provisions everything described in a template, and deleting a stack removes all of its resources at once. Resource Groups can gather resources by tag or stack membership, and the CLI supports scripting across services. However, the evidence never shows a general-purpose batch action applied to an arbitrary set of items, such as running one operation against a whole tag-based group. Missing for 10: documented batch/bulk APIs or actions across arbitrary selected items, evidence that Resource Groups support bulk actions rather than just grouping, independent or hands-on corroboration.",
+    "rationale": "AWS's own CloudFormation acts on many resources at once: one template provisions and configures all the resources it describes, and deleting a stack deletes every resource in it. Resource Groups can gather resources by tag or stack membership, but the evidence only shows organizing them, not acting on them in bulk. CLI scripting is a user-built workaround and earns no credit. Missing for 10: documented batch actions on arbitrary sets of items (e.g., by tag or group), bulk operations beyond whole-stack create/delete, and any hands-on or independent corroboration.",
     "evidenceIds": [
       "aws-docs-6",
       "aws-docs-7",
-      "aws-docs-27",
       "aws-docs-36",
-      "aws-docs-49",
-      "aws-docs-1"
+      "aws-docs-49"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can perform bulk operations across many items at once",
+      "citations": [
+        {
+          "evidenceId": "aws-docs-7",
+          "quote": "You can delete the stack just as easily, which deletes all the resources in the stack."
+        },
+        {
+          "evidenceId": "aws-docs-6",
+          "quote": "You create a template that describes all the AWS resources that you want (like Amazon EC2 instances or Amazon RDS DB instances), and CloudFormation takes care of provisioning and configuring those resources for you."
+        },
+        {
+          "evidenceId": "aws-docs-49",
+          "quote": "AWS Resource Groups let you organize your AWS resources into groups, based on their attached tags, or their CloudFormation stack membership."
+        }
+      ]
+    },
     "productId": "aws",
     "storyId": "automation-bulk-operations"
   }

@@ -1,19 +1,25 @@
 {
-  "hash": "878f560e34bf83678d808a3cdcb185aebe53f2bd54a75e7b144f5a478dd7a168",
+  "hash": "8b9232998f7232d5bef43c68a778e9f8d3d90ceeeff8076456af2a7f8d3827e5",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 4,
+    "quality": 3,
     "confidence": "low",
-    "rationale": "Render offers managed databases and key-value storage, environment variables, a single-YAML Blueprint for the whole architecture, and private networking. Its managed OIDC issues short-lived, auto-rotated identity tokens so services can call Anthropic and OpenAI without storing long-lived keys, which removes some credential wiring. However, nothing in the evidence shows a native binding model that injects datastore or storage clients into code; connections still appear to rely on SDKs plus environment variables. Missing for 10: documented native bindings or automatic injection of database/storage connections into code, explicit evidence that Blueprints wire datastore credentials into services, object-storage bindings, and independent hands-on corroboration.",
+    "rationale": "Render's managed OIDC lets services authenticate to external providers without storing long-lived API keys, which is a first-party way to avoid hand-wiring credentials. It is documented only for Anthropic and OpenAI, though. Managed databases, environment variables and Blueprint YAML are adjacent features, not documented native code bindings. Missing for 10: native in-code bindings to databases, storage and APIs; documented automatic credential injection between services and datastores; credential-free auth beyond Anthropic/OpenAI; hands-on corroboration.",
     "evidenceIds": [
-      "render-docs-3",
-      "render-docs-4",
-      "render-docs-7",
-      "render-docs-9",
-      "render-docs-10",
       "render-docs-30"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can connect my code to external services like databases, APIs, and storage through native bindings with minimal boilerplate instead of hand-wiring SDKs and credentials",
+      "citations": [
+        {
+          "evidenceId": "render-docs-30",
+          "quote": "Render services can authenticate to both providers without storing long-lived API keys. Render instead issues short-lived identity tokens for each service and automatically rotates them as needed."
+        }
+      ]
+    },
     "productId": "render",
     "storyId": "external-service-bindings"
   }

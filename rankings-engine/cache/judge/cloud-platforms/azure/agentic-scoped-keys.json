@@ -1,17 +1,40 @@
 {
-  "hash": "0510a6c88df4cb4ebef2fa0a1ffc6984214c3e50dbb0473fd7aabeb8d357729a",
+  "hash": "bca5d9fb02aa3bee738a10d9ba8066f7aeab6ca52a6261d50c6ccfc6d6ce83b6",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Azure documents its own building blocks for least-privilege credentials. Azure RBAC provides fine-grained access management scoped to specific resources (e.g., one identity manages VMs, another manages networks). Managed identities let workloads obtain Entra tokens without handling secrets, and client applications can be registered with Entra ID to secure REST calls. Together these let a user give an agent its own narrowly scoped identity. missing for 10: explicit documentation linking a service principal or app credential to a scoped role assignment, credential expiry/rotation details, agent-specific guidance, independent or hands-on corroboration.",
+    "rationale": "Azure's own docs describe three pieces that together deliver scoped agent credentials: RBAC for fine-grained, per-resource authorization; managed identities that let applications get Entra tokens without handling secrets; and Entra ID client app registration for authenticating REST calls. The pack does not show these assembled into an agent-specific credential workflow. missing for 10: explicit docs on creating a service principal with a narrowly scoped role assignment for an agent, details on credential expiry and rotation, and independent or hands-on corroboration.",
     "evidenceIds": [
       "azure-docs-10",
       "azure-docs-11",
       "azure-docs-12",
       "azure-docs-23"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
+      "citations": [
+        {
+          "evidenceId": "azure-docs-10",
+          "quote": "Azure RBAC is an authorization system built on Azure Resource Manager that provides fine-grained access management to Azure resources."
+        },
+        {
+          "evidenceId": "azure-docs-11",
+          "quote": "Allow one user to manage virtual machines in a subscription and another user to manage virtual networks"
+        },
+        {
+          "evidenceId": "azure-docs-12",
+          "quote": "Applications can use managed identities to obtain Microsoft Entra tokens without having to manage any credentials."
+        },
+        {
+          "evidenceId": "azure-docs-23",
+          "quote": "How to register your client application with Microsoft Entra ID to secure your REST requests."
+        }
+      ]
+    },
     "productId": "azure",
     "storyId": "agentic-scoped-keys"
   }

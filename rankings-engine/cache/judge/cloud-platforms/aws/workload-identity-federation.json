@@ -1,18 +1,41 @@
 {
-  "hash": "dff82101fe30c282bfd2ac7b4eeeb9d89a4f5bcd150d01eb43c2dd2b5084504d",
+  "hash": "f49d9937c219193d42e28073782de1bb5bcf466c287e2bac1fe6f8705d30e797",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "AWS IAM documents OIDC identity providers that connect external CI such as GitHub Actions to AWS resources ([aws-docs-13], [aws-docs-29]). Assuming a role issues temporary security credentials, and roles carry no long-term access keys ([aws-docs-12], [aws-docs-46]); AWS also recommends federation over IAM users ([aws-docs-47]). Missing for 10: an evidenced end-to-end CI OIDC walkthrough (trust policy, token exchange, session duration), workload-identity coverage for services running on AWS, controls to enforce that no long-lived keys exist, and independent or hands-on corroboration.",
+    "rationale": "AWS documents OIDC identity providers that connect external CI such as GitHub Actions to AWS, and role assumption that returns temporary session credentials, since roles carry no long-term access keys. That covers the core short-lived-credential federation path for CI. The 'nothing ships a long-lived key' guarantee and the end-to-end documentation are not shown in the evidence, so this is partial rather than full. missing for 10: an end-to-end setup walkthrough for OIDC trust and role assumption from CI, workload identity for services running on AWS, a mechanism to enforce or block long-lived access keys, and independent or hands-on corroboration.",
     "evidenceIds": [
       "aws-docs-13",
-      "aws-docs-29",
       "aws-docs-12",
       "aws-docs-46",
+      "aws-docs-29",
       "aws-docs-47"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a security engineer, nothing ships a long-lived key — OIDC/workload identity federation issues short-lived credentials to CI and services, documented end to end",
+      "citations": [
+        {
+          "evidenceId": "aws-docs-13",
+          "quote": "OIDC connects applications, like GitHub Actions, that do not run on AWS to AWS resources."
+        },
+        {
+          "evidenceId": "aws-docs-12",
+          "quote": "when you assume a role, it provides you with temporary security credentials for your role session."
+        },
+        {
+          "evidenceId": "aws-docs-46",
+          "quote": "a role does not have standard long-term credentials such as a password or access keys associated with it."
+        },
+        {
+          "evidenceId": "aws-docs-29",
+          "quote": "With an identity provider (IdP), you can manage your user identities outside of AWS and give these external user identities permissions to use AWS resources in your account."
+        }
+      ]
+    },
     "productId": "aws",
     "storyId": "workload-identity-federation"
   }

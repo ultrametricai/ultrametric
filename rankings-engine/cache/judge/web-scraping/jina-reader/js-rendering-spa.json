@@ -1,19 +1,41 @@
 {
-  "hash": "80c33e25cb2835ec06216f19376ad87d600147556de892ebd3e65dd8f5152dca",
+  "hash": "fbe986faa2ae9cf953f60a44e34361183e9bfae86b409d76241314e1d66267fb",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Reader clearly renders JavaScript pages: `x-engine: browser` enforces headless Chrome, `x-wait-for-selector` waits for dynamic elements, the self-host image bundles headless Chrome, and the docs say it handles dynamic pages. However, the evidence only shows LLM-friendly Markdown and frontmatter output, not a raw fully rendered HTML response. The HN question about JS support is an open question, not a contradiction. Missing for 10: an explicit rendered-HTML output mode, hands-on or independent confirmation of SPA rendering quality.",
+    "rationale": "Reader documents a headless-Chrome fetching engine (`x-engine: browser`), a `x-wait-for-selector` header for dynamic content, and browser-locale rendering, so it can render JS-heavy pages. However, the evidence never shows it returning the fully rendered HTML: `x-respond-with` is documented only with a Markdown/frontmatter option, and the product is positioned around LLM-friendly text. Missing for 10: explicit evidence of a raw rendered-HTML output mode, independent or hands-on confirmation of SPA rendering quality.",
     "evidenceIds": [
       "jina-reader-gh-16",
       "jina-reader-gh-21",
+      "jina-reader-docs-5",
       "jina-reader-gh-8",
-      "jina-reader-docs-2",
-      "jina-reader-gh-5",
-      "jina-reader-gh-7"
+      "jina-reader-gh-5"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can render JavaScript-heavy single-page applications and get the fully rendered HTML",
+      "citations": [
+        {
+          "evidenceId": "jina-reader-gh-16",
+          "quote": "`x-engine` — enforces a fetching engine: `browser` (headless Chrome), `curl` (lightweight, no JS), or `auto`"
+        },
+        {
+          "evidenceId": "jina-reader-gh-21",
+          "quote": "curl 'https://r.jina.ai/https://example.com/' -H 'x-wait-for-selector: #content'"
+        },
+        {
+          "evidenceId": "jina-reader-docs-5",
+          "quote": "sets the browser locale used when rendering"
+        },
+        {
+          "evidenceId": "jina-reader-gh-8",
+          "quote": "It bundles headless Chrome, LibreOffice, and CJK fonts"
+        }
+      ]
+    },
     "productId": "jina-reader",
     "storyId": "js-rendering-spa"
   }

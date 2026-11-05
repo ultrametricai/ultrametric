@@ -1,16 +1,31 @@
 {
-  "hash": "241977e8e63f10ffac2b838b4150d27a828286c47f7f93f26a6781306234701c",
+  "hash": "daa13d5bc21d4c6403320ce3f72ca2ed60e081caceadc32c7e4d71063eca4fda",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Firecrawl's webhook docs list \"monitor check\" events alongside crawl and scrape jobs, so a monitoring feature exists and can push notifications to an HTTPS endpoint, with HMAC-SHA256 signature verification. However, the pack never describes how monitors detect content changes (diffing, field-level price or listing tracking) or how checks are scheduled. Missing for 10: documented change-detection or diff semantics, scheduling and frequency configuration, change-specific notification payloads, independent or hands-on corroboration.",
+    "rationale": "Firecrawl's webhook docs list 'monitor check' as an event type that can notify an HTTPS endpoint when it starts, progresses, or finishes. That implies a first-party page-monitoring feature with push notifications, though the pack never describes how the monitor works. missing for 10: documentation of how monitors detect content changes (diffs, price or listing comparison), recurring check scheduling and frequency, notifications that fire specifically on detected changes rather than on check lifecycle, and any independent or hands-on corroboration.",
     "evidenceIds": [
       "firecrawl-docs-11",
       "firecrawl-docs-7",
       "firecrawl-docs-12"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a data-engineer, I can monitor target pages for content changes, such as price or listing updates, and get notified as they happen",
+      "citations": [
+        {
+          "evidenceId": "firecrawl-docs-11",
+          "quote": "Get notified the moment a crawl, batch scrape, extract, agent job, or monitor check starts, progresses, or finishes. Instead of polling for status, you provide an HTTPS endpoint"
+        },
+        {
+          "evidenceId": "firecrawl-docs-12",
+          "quote": "Verify that every webhook request actually came from Firecrawl by checking its HMAC-SHA256 signature."
+        }
+      ]
+    },
     "productId": "firecrawl",
     "storyId": "content-change-monitoring"
   }

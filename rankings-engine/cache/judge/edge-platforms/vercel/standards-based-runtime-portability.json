@@ -1,12 +1,36 @@
 {
-  "hash": "f20bde44584b7160732243e289d3f48bdea31940bfd3d879024bc95b22f2cb62",
+  "hash": "c9263704a592451e614de97f1b02dfa26655c81d89dfc42b34d4460b0ef5fa0e",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Portability across edge platforms through standard runtime APIs is a fair question for a deployment platform like Vercel, so the axis applies. However, the evidence pack never mentions Web-standard runtime APIs or running the same code unmodified on other edge platforms. Middleware [vercel-docs-20] and support for 40+ frameworks [vercel-docs-14] say nothing about API standardization or freedom from lock-in.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "Vercel documents some portability through standard interfaces. Functions can run any code from an OCI container image built from a Dockerfile. WebSocket handling works with standard libraries like `ws` 'with no additional configuration'. Storage moved away from proprietary Vercel KV/Postgres to standard external Redis/Postgres providers. However, the Build Output API is a Vercel-specific spec, and nothing shows code written against standard web runtime APIs running unmodified across multiple edge platforms. Missing for 10: documented support for standard (e.g., Web-standard) runtime APIs in edge/function code, explicit cross-platform portability claims, evidence that code runs unmodified on other edge platforms, and independent corroboration.",
+    "evidenceIds": [
+      "vercel-parity-docker-deploy-20261103",
+      "vercel-parity-standards-based-runtime-portability-20261103",
+      "vercel-parity-redis-compatible-cache-20261103",
+      "vercel-parity-serverless-sql-query-20261103"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can write code against standard runtime APIs so it runs unmodified across multiple edge platforms instead of being locked into proprietary storage/runtime APIs",
+      "citations": [
+        {
+          "evidenceId": "vercel-parity-docker-deploy-20261103",
+          "quote": "Run any code and library on Vercel Functions with an OCI container image built from a Dockerfile or Containerfile at the project root."
+        },
+        {
+          "evidenceId": "vercel-parity-standards-based-runtime-portability-20261103",
+          "quote": "WebSockets in Vercel Functions work exactly like any distributed WebSocket server, so you can use libraries like ws to upgrade connections with no additional configuration"
+        },
+        {
+          "evidenceId": "vercel-parity-redis-compatible-cache-20261103",
+          "quote": "Vercel lets you connect external Redis databases through the Marketplace"
+        }
+      ]
+    },
     "productId": "vercel",
     "storyId": "standards-based-runtime-portability"
   }

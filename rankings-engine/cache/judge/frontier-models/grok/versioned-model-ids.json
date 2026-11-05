@@ -1,17 +1,35 @@
 {
-  "hash": "be8a59ad34edd3aedf785679d3a15400387ebcdcd8fc01aea4c8d83fc53b7f5d",
+  "hash": "cbc58dc4f7ea4d6ea29af6167a030fbbcc7aba26c4fa53fa38e08473991421f5",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "The Model Aliases docs state the policy explicitly: `<modelname>` points to the latest stable version, `<modelname>-latest` points to the latest version, and pinned versioned model IDs sit alongside these moving aliases. GET /v1/models returns an `aliases` field for programmatic resolution, and dated migration guides cover lifecycle. One caveat to pinning: retired slugs automatically redirect to a different model (grok-4.3), so a pinned ID is not guaranteed to stay on its exact version forever. Missing for 10: a guarantee that pinned IDs never silently redirect at retirement, a concrete example of the versioned-ID naming format, and independent or hands-on corroboration.",
+    "rationale": "xAI's models docs have a 'Model Aliases' section stating that `<modelname>` tracks the latest stable version and `<modelname>-latest` tracks the latest version, alongside pinned versioned IDs. The GET /v1/models endpoint exposes an `aliases` field, and dated migration guides document what happens to retired slugs (they redirect to grok-4.3). Missing for 10: independent or hands-on confirmation that pinned IDs stay stable, explicit examples mapping each alias to its current versioned ID, and a guarantee that pinned versions are not silently redirected once retired.",
     "evidenceIds": [
       "grok-supp-aliases",
       "grok-supp-models-endpoint",
-      "grok-supp-deprecation",
-      "grok-docs-19"
+      "grok-supp-deprecation"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can pin an exact versioned model ID while aliases track the latest release, with the alias-to-version policy documented",
+      "citations": [
+        {
+          "evidenceId": "grok-supp-aliases",
+          "quote": "`<modelname>` is aliased to the latest stable version. `<modelname>-latest` is aliased to the latest version"
+        },
+        {
+          "evidenceId": "grok-supp-models-endpoint",
+          "quote": "List all models available to the authenticating API key, including model names (ID), creation times, and pricing"
+        },
+        {
+          "evidenceId": "grok-supp-deprecation",
+          "quote": "requests to the retired model slugs above will automatically redirect to `grok-4.3`"
+        }
+      ]
+    },
     "productId": "grok",
     "storyId": "versioned-model-ids"
   }

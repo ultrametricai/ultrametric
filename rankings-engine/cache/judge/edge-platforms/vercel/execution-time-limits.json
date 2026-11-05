@@ -1,12 +1,35 @@
 {
-  "hash": "68c9a314c27dfba6c27fef20546b3e1f23e3b06a00e6ff268c57200c4840477f",
+  "hash": "c9596450e75a35bc5a738b8b0b3a46f0b91c0973f137f88d70377485560b0fec",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Function execution limits are a fair question for a serverless hosting platform, so the axis applies. However, nothing in the pack states CPU-time or wall-clock duration limits for Vercel Functions. The Fluid compute item [vercel-docs-19] describes concurrency scaling, and the Workflows item [vercel-docs-37] describes durable execution, but neither gives timeout or CPU caps that would show whether long-running or agentic workloads fit.",
-    "evidenceIds": [],
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "Vercel's Limits page documents per-plan wall-clock maximum duration for Functions: 300s on Hobby, and 300s default / 800s max / up to 1800s in beta on Pro and Enterprise. It also documents CPU and memory allocation per plan, and the pricing page explains that Active CPU time is billed separately from I/O wait, which helps size long-running or agentic workloads. Missing for 10: an explicit CPU-time cap distinct from vCPU allocation, and independent or hands-on corroboration of the limits in practice.",
+    "evidenceIds": [
+      "vercel-parity-execution-time-limits-20261103",
+      "vercel-parity-documented-rate-limits-20261103",
+      "vercel-parity-pay-for-active-compute-20261103"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a devops-lead, I know the CPU and wall-clock execution time limits for functions so I can tell whether long-running or agentic workloads will fit",
+      "citations": [
+        {
+          "evidenceId": "vercel-parity-execution-time-limits-20261103",
+          "quote": "Maximum duration: 300s (5 minutes) default and max [Hobby] / 300s default, 800s max, up to 1800s (30 minutes) in beta [Pro and Enterprise]"
+        },
+        {
+          "evidenceId": "vercel-parity-execution-time-limits-20261103",
+          "quote": "Memory and CPU: 2 GB / 1 vCPU default and max [Hobby] / 2 GB / 1 vCPU default, up to 4 GB / 2 vCPU max [Pro and Enterprise]"
+        },
+        {
+          "evidenceId": "vercel-parity-pay-for-active-compute-20261103",
+          "quote": "This is the CPU time your code actively consumes in milliseconds. You are only billed during actual code execution and not during I/O operations"
+        }
+      ]
+    },
     "productId": "vercel",
     "storyId": "execution-time-limits"
   }

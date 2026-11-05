@@ -1,21 +1,40 @@
 {
-  "hash": "9ee0c920886ad824cf42ad977afff525085d6fdebefa7d92363430fc74b97f10",
+  "hash": "e8190d1da8929f7adb4d066c7bbf5760940455ae37b78787597a8ef85c013166",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Netlify gives every PR an isolated Deploy Preview URL, offers shareable preview environments, and lets you run local dev servers from the CLI. Community users confirm the PR preview builds work. That covers testing code changes away from production, but data isolation is thin: the only data-side evidence is the vague claim that Netlify Database lets you \"safely iterate on managed Postgres\", and team-scoped env vars might separate preview credentials from production. Missing for 10: explicit documentation of database branching or sandboxed data for previews, per-deploy-context env var or secret scoping that keeps preview data separate from production, and hands-on corroboration that previews don't touch production data.",
+    "rationale": "Netlify gives every PR its own preview environment through Deploy Previews, so changes can be tested before they go live, and it claims Netlify Database supports 'safely iterating' on managed Postgres. Nothing documents that previews use isolated or branched data rather than production data, so the 'without touching production data' half of the story is only implied. Missing for 10: explicit preview-scoped database branching or data isolation, per-environment secrets/env var separation for previews, independent hands-on corroboration of sandboxed data testing.",
     "evidenceIds": [
       "netlify-docs-1",
       "netlify-docs-25",
       "netlify-docs-19",
-      "netlify-docs-13",
-      "netlify-docs-8",
-      "netlify-docs-15",
-      "netlify-comm-10",
-      "netlify-comm-7"
+      "netlify-docs-13"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
+      "citations": [
+        {
+          "evidenceId": "netlify-docs-1",
+          "quote": "Every PR gets a preview URL."
+        },
+        {
+          "evidenceId": "netlify-docs-25",
+          "quote": "Review every change before it goes live with Deploy Previews"
+        },
+        {
+          "evidenceId": "netlify-docs-19",
+          "quote": "Share a customizable preview environment where you and key collaborators can preview content updates alongside code updates in real-time."
+        },
+        {
+          "evidenceId": "netlify-docs-13",
+          "quote": "Deploy and safely iterate on managed Postgres with **Netlify Database**"
+        }
+      ]
+    },
     "productId": "netlify",
     "storyId": "api-sandbox"
   }

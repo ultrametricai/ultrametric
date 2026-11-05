@@ -1,18 +1,45 @@
 {
-  "hash": "7761104f475e4116824fd7bf0e753690034663e385ee7e3bc3b4d6977a94c4d6",
+  "hash": "6498c93512cb25a7aa0c04c74b3386af47c4baf6bdf19d71310c23d790afa9e3",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Crawl4AI offers several levers that trade speed against completeness. Dynamic crawling can wait for async or sync content (gh-21), and full-page scrolling captures infinite-scroll content (gh-25). Adaptive crawling stops once enough information is gathered (docs-3), max-pages bounds deep crawls (gh-2), and prefetch mode speeds up URL discovery (gh-31). However, the evidence never shows fine-grained control over exactly when content is returned. Missing for 10: documented wait-condition or timeout parameters (e.g. wait-for selector or page-load event choices), streaming or partial-result return, and independent hands-on corroboration of these latency/completeness controls.",
+    "rationale": "Crawl4AI documents several of its own controls over when content is captured and how much is gathered. It can execute JS and wait for async or sync dynamic content, cap a deep crawl with --max-pages, and use adaptive crawling that stops once enough information is gathered. It also offers a faster prefetch mode for URL discovery and full-page scrolling for completeness. However, the evidence never shows fine-grained control over exactly when content is returned. missing for 10: documented wait-condition or timeout parameters (e.g. selector or network-idle waits), streaming or early-return of partial results, explicit latency-vs-completeness guidance or benchmarks, independent hands-on corroboration.",
     "evidenceIds": [
       "crawl4ai-gh-21",
-      "crawl4ai-gh-25",
       "crawl4ai-docs-3",
       "crawl4ai-gh-2",
-      "crawl4ai-gh-31"
+      "crawl4ai-gh-31",
+      "crawl4ai-gh-25"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can trade off latency against completeness by controlling exactly when content is returned",
+      "citations": [
+        {
+          "evidenceId": "crawl4ai-gh-21",
+          "quote": "Dynamic Crawling: Execute JS and wait for async or sync for dynamic content extraction."
+        },
+        {
+          "evidenceId": "crawl4ai-docs-3",
+          "quote": "it determines when sufficient information has been gathered to answer your query."
+        },
+        {
+          "evidenceId": "crawl4ai-gh-2",
+          "quote": "crwl https://docs.crawl4ai.com --deep-crawl bfs --max-pages 10"
+        },
+        {
+          "evidenceId": "crawl4ai-gh-31",
+          "quote": "New `prefetch=True` mode for 5-10x faster URL discovery."
+        },
+        {
+          "evidenceId": "crawl4ai-gh-25",
+          "quote": "Full-Page Scanning: Simulates scrolling to load and capture all dynamic content, perfect for infinite scroll pages."
+        }
+      ]
+    },
     "productId": "crawl4ai",
     "storyId": "latency-completeness-tradeoff"
   }

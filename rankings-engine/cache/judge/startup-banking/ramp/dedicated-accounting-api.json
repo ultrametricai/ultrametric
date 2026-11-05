@@ -1,20 +1,50 @@
 {
-  "hash": "b7eaae4e8fff0d76cfbf0de15d43f7618f97d417f8d5c4ddce8ebc5e8672079a",
+  "hash": "2b7ab477339715ecd59a96de6cb10bc1aceab049a1022d47e19b38788bc3e1e2",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Ramp ships a Developer API (an OpenAPI spec with 174 paths) and documents several accounting touchpoints. The Banking API exposes a syncable-transactions endpoint for transactions bound for an accounting provider. The live MCP server lists accounting:read and accounting:write OAuth scopes, the Ramp CLI has an accounting resource, and agents can load accounting and tracking categories. However, no dedicated accounting endpoint set (GL accounts, sync management, coding rules) is explicitly documented in the Developer API reference. missing for 10: explicit Developer API accounting endpoints for reading and writing GL/coding data, accounting sync management via API, independent or hands-on corroboration",
+    "rationale": "Ramp ships a documented Developer API (an OpenAPI spec with 174 paths) and exposes accounting data through its own surfaces. The CLI has an accounting resource, the MCP server publishes accounting:read and accounting:write scopes, and the Banking API returns transactions available to sync to an accounting provider. However, the evidence never documents dedicated Developer API accounting endpoints such as GL accounts, accounting categories or sync status. missing for 10: explicit documentation of Developer API accounting endpoints (GL accounts, categories, sync management), write/manage operations on accounting data via the REST API, independent or hands-on corroboration.",
     "evidenceIds": [
+      "ramp-docs-12",
       "ramp-probe-5",
       "ramp-supp-banking-api",
-      "ramp-probe-4",
       "ramp-supp-cli-agent-mode",
-      "ramp-supp-ai-agents-channels",
-      "ramp-supp-oauth-scopes",
-      "ramp-docs-12"
+      "ramp-probe-4",
+      "ramp-supp-ai-agents-channels"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can view and manage accounting data through a dedicated API",
+      "citations": [
+        {
+          "evidenceId": "ramp-docs-12",
+          "quote": "Ramp also supports custom CSV exports and an open API for flexible connectivity."
+        },
+        {
+          "evidenceId": "ramp-supp-banking-api",
+          "quote": "GET /developer/v1/banking/syncable-transactions returns banking transactions available to sync to an accounting provider."
+        },
+        {
+          "evidenceId": "ramp-supp-cli-agent-mode",
+          "quote": "12 resources cover accounting"
+        },
+        {
+          "evidenceId": "ramp-probe-4",
+          "quote": "accounting:read"
+        },
+        {
+          "evidenceId": "ramp-probe-5",
+          "quote": "a parseable OpenAPI document titled \"Ramp Developer API\" (v1) with 174 documented paths"
+        },
+        {
+          "evidenceId": "ramp-supp-ai-agents-channels",
+          "quote": "Load vendor lists, accounting categories, tracking categories, departments, entities, treasury balances, and the org chart"
+        }
+      ]
+    },
     "productId": "ramp",
     "storyId": "dedicated-accounting-api"
   }

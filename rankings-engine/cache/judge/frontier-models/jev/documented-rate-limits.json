@@ -1,17 +1,40 @@
 {
-  "hash": "960c89a3c79ef9bdf2bfd357ae8a4d452574e707bf1ef9ddd504ce995d0de3e6",
+  "hash": "82d7d56a7826bd737d868f83f9bfe413d6331fcaed84d1d3c8389436b3e83bb7",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "The models page documents concrete limits of 250,000 tokens per second and 1,200 requests per minute. It states that exceeding either returns `429 Too Many Requests` with a `retry-after` header, which the SDKs honor through default backoff. The SDK docs add a typed RateLimitError for HTTP 429 and a configurable RetryPolicy that handles retry headers. Missing for 10: any tier-by-tier scaling table (only a mention of higher limits on enterprise plans), the 429 response body/error schema, stable limits (the docs warn they can change without notice), and independent or hands-on corroboration.",
+    "rationale": "The Models page documents concrete limits of 250,000 tokens per second and 1,200 requests per minute. It says a request over either limit returns 429 Too Many Requests, that SDKs retry with backoff and honor retry-after, and the JS SDK has a dedicated RateLimitError class for HTTP 429. Tier scaling gets only a brief mention that enterprise plans offer higher limits, and the docs warn the limits can change without notice. missing for 10: a per-tier rate-limit table showing how limits scale, documented 429 response body/headers beyond retry-after, independent corroboration of the limits.",
     "evidenceIds": [
       "jev-supp-rate-limits",
       "jev-docs-36",
       "jev-docs-4",
       "jev-docs-26"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can read documented rate limits — requests and tokens per unit time, how tiers scale, and what a 429 looks like — before I hit them in production",
+      "citations": [
+        {
+          "evidenceId": "jev-supp-rate-limits",
+          "quote": "250,000 tokens per second / 1,200 requests per minute"
+        },
+        {
+          "evidenceId": "jev-supp-rate-limits",
+          "quote": "A request over either limit returns `429 Too Many Requests`. Our client SDKs retry with backoff by default and honor the `retry-after` header"
+        },
+        {
+          "evidenceId": "jev-docs-36",
+          "quote": "HTTP 429: the rate limit was exceeded."
+        },
+        {
+          "evidenceId": "jev-docs-4",
+          "quote": "Configure retries with RetryPolicy — attempt count, retryable statuses, backoff, and retry headers handling."
+        }
+      ]
+    },
     "productId": "jev",
     "storyId": "documented-rate-limits"
   }

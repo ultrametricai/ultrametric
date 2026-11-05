@@ -1,16 +1,36 @@
 {
-  "hash": "ce83c4648b3a75558365a9754fe1166720d10cd44408f55ac175f47c19e463ba",
+  "hash": "5571d0b7b136c741e684e75742d30f9b3b9835ea5f7de6d5d3faa078d0a947f4",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
-    "confidence": "medium",
-    "rationale": "Fly.io runs standard Docker images as VMs globally (fly-io-docs-32, fly-io-docs-14), and its database is standard PostgreSQL (fly-io-docs-19). This implies application code targets ordinary Linux/container runtimes rather than a proprietary edge runtime or storage API. However, the evidence never states portability across other edge platforms. Missing for 10: explicit documentation of standards-based runtime APIs, evidence that the same code runs unmodified on other edge platforms, and independent corroboration of avoiding lock-in.",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "Fly.io runs standard Docker images as VMs and Linux boxes, and offers standard PostgreSQL rather than proprietary runtime or storage APIs. That implies code is not tied to Fly-specific APIs, but the evidence never states that the same code runs unmodified on other edge platforms, and it does not address any standard edge runtime API set. Missing for 10: explicit documentation of portability across multiple edge platforms, a standards-based runtime API (e.g. Web-standard APIs) commitment, independent or hands-on corroboration of unmodified cross-platform deployment.",
     "evidenceIds": [
       "fly-io-docs-32",
       "fly-io-docs-14",
+      "fly-io-docs-4",
       "fly-io-docs-19"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can write code against standard runtime APIs so it runs unmodified across multiple edge platforms instead of being locked into proprietary storage/runtime APIs",
+      "citations": [
+        {
+          "evidenceId": "fly-io-docs-32",
+          "quote": "Fly.io converts Docker images to fast-booting VMs and runs them globally."
+        },
+        {
+          "evidenceId": "fly-io-docs-4",
+          "quote": "Every agent gets its own Linux box."
+        },
+        {
+          "evidenceId": "fly-io-docs-19",
+          "quote": "Fly.io's Managed Postgres is our fully-managed database service that handles all aspects of running production PostgreSQL databases"
+        }
+      ]
+    },
     "productId": "fly-io",
     "storyId": "standards-based-runtime-portability"
   }

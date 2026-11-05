@@ -69,7 +69,7 @@ Describe who needs the feature, the task they are trying to complete and what cu
 - Canonical vendor: Notion
 - Vendor options: Notion, Linear
 - Ranked market: [project-management](../../open-rankings/project-management)
-- Cross-arena options: ChatGPT, Claude, Gemini (ai-assistants)
+- Cross-arena options: ChatGPT, Claude (ai-assistants)
 
 <a id="step-2"></a>
 

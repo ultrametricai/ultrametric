@@ -1,23 +1,49 @@
 {
-  "hash": "bc051bcbb609c95053d5fb1f06cd094119b5ecc543e67906eb91aca1ea01f8b0",
+  "hash": "86d4e28eff65100e3670f45a37d592549a22115566f79113c06a2bc494623161",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "proa",
-    "storyId": "meta-framework-fullstack",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Proa ships its own first-party full-stack layer on top of its core rendering crate. `proa new site` scaffolds an Axum-backed app [proa-docs-2, proa-docs-28], and a separate proa_framework_core crate handles serving [proa-gh-8]. Routing is documented through `src/routes.rs` registration, `proa site routes` and route-level page caching [proa-docs-10, proa-docs-11, proa-docs-12]. Data fetching is covered by loader caching and request-scoped data via WebContext, plus Suspense streaming for slow data [proa-docs-18, proa-docs-35]. missing for 10: in-depth docs on the data-loader API (only a one-line mention of loader caching), an explicit description of the meta-framework/core layering, independent or hands-on corroboration.",
+    "rationale": "Proa ships a first-party site layer that is Axum-backed and scaffolded with `proa new site`. It provides a generator-maintained route registry and a `proa site routes` route table. Renders get typed access to route state and loader caching through WebContext, and Suspense lets slow data stream without blocking the page. All of this is vendor-claimed only, and data fetching is mentioned in a single line, with no documented loader API or data-loading conventions. missing for 10: detailed data-fetching/loader documentation, a clear separately packaged meta-framework layer, independent or hands-on corroboration.",
     "evidenceIds": [
       "proa-docs-2",
-      "proa-docs-28",
       "proa-docs-10",
       "proa-docs-11",
       "proa-docs-12",
       "proa-docs-18",
       "proa-docs-35",
       "proa-docs-36",
-      "proa-gh-8"
-    ]
+      "proa-docs-28"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can use an official full-stack meta-framework built on top of the framework for routing and data fetching",
+      "citations": [
+        {
+          "evidenceId": "proa-docs-2",
+          "quote": "A minimal Axum-backed application with the core boundaries in place: proa new site hello-proa --yes"
+        },
+        {
+          "evidenceId": "proa-docs-10",
+          "quote": "Register it in `src/routes.rs`, between the markers the generator maintains"
+        },
+        {
+          "evidenceId": "proa-docs-11",
+          "quote": "Check the route table: proa site routes"
+        },
+        {
+          "evidenceId": "proa-docs-18",
+          "quote": "Every render has typed access to request-scoped data, response metadata, route state, and loader caching through the same WebContext"
+        },
+        {
+          "evidenceId": "proa-docs-35",
+          "quote": "let Suspense boundaries stream ready chunks out of order when slow data should not block the page"
+        }
+      ]
+    },
+    "productId": "proa",
+    "storyId": "meta-framework-fullstack"
   }
 }

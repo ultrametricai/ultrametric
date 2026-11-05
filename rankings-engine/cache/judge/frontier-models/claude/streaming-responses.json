@@ -1,21 +1,50 @@
 {
-  "hash": "f3ab20a4e01f30fbf99b0a81418d81e9a6fc864ff60b5d3c93909e0c493c4fdb",
+  "hash": "6b8b2e2e9182733ea5bd2d757f52712b6cd899eeaf1f07ba45a592c3374979f4",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "The Messages API documents token-incremental streaming via server-sent events with `\"stream\": true`, and every client SDK has built-in streaming support. Fine-grained tool streaming also delivers tool inputs as they are generated. Latency is addressed through documented levers: fast mode (up to 2.5x output speed), the effort parameter (trading intelligence for latency), and prompt caching (reduced processing time). Missing for 10: concrete latency figures (time-to-first-token or sub-second response guarantees), a documented description of streaming latency behavior itself, and independent or hands-on corroboration of streaming speed.",
+    "rationale": "The Messages API documents incremental token streaming via SSE with `\"stream\": true`, and the SDKs ship built-in streaming support, including fine-grained tool-input streaming. Latency behavior is documented through several levers: fast mode gives up to 2.5x output speed, the effort parameter trades intelligence for latency, and prompt caching cuts latency. missing for 10: concrete published latency figures (time-to-first-token or sub-second full-answer guarantees), independent or hands-on latency corroboration.",
     "evidenceIds": [
       "claude-docs-7",
-      "claude-docs-32",
       "claude-docs-16",
       "claude-docs-59",
       "claude-docs-60",
       "claude-docs-61",
-      "claude-docs-30",
-      "claude-docs-5"
+      "claude-docs-30"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can stream responses token by token (or get sub-second full answers) with the latency behavior documented",
+      "citations": [
+        {
+          "evidenceId": "claude-docs-7",
+          "quote": "When creating a Message, you can set \"stream\": true to incrementally stream the response using server-sent events (SSE)"
+        },
+        {
+          "evidenceId": "claude-docs-16",
+          "quote": "built-in support for streaming, retries, and error handling"
+        },
+        {
+          "evidenceId": "claude-docs-59",
+          "quote": "Fine-grained tool streaming delivers a tool's input to your client as Claude generates it, without server-side buffering or JSON validation."
+        },
+        {
+          "evidenceId": "claude-docs-60",
+          "quote": "support fast mode (research preview), which delivers up to 2.5x higher output speed at premium pricing"
+        },
+        {
+          "evidenceId": "claude-docs-61",
+          "quote": "Several Claude models support an effort parameter that trades intelligence for latency and cost"
+        },
+        {
+          "evidenceId": "claude-docs-30",
+          "quote": "Cache prompt prefixes with `cache_control` to cut costs and latency"
+        }
+      ]
+    },
     "productId": "claude",
     "storyId": "streaming-responses"
   }

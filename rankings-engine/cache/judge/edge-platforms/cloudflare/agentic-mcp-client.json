@@ -1,18 +1,36 @@
 {
-  "hash": "21837321043667750b424b4dc0b9a8d77a60c07861a956c379fd0df87ade5116",
+  "hash": "6b325ed7af5a0bb409400f85df0dc3f39b1daa6a446f842e3cc9fa09be2bea65",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 6,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Cloudflare's first-party Agents SDK, which runs on Workers and Durable Objects, lists built-in MCP support. The Think harness includes 'MCP tools' among its built-ins, and the mppx SDK handles payment retries for MCP tool calls made from agents, so agents built on Workers can consume external MCP servers' tools. The capability lives in the Agents SDK rather than the bare Workers runtime, and the server-side MCP fleet and probes are not relevant here. Missing for 10: explicit client-connection docs (how to register or connect a remote MCP server, transports, auth handling), hands-on or independent corroboration of MCP-client use.",
+    "rationale": "Cloudflare's first-party agent tooling on Workers documents MCP consumption: the Agents SDK has built-in MCP support, the Think harness lists 'MCP tools' among its built-ins, and the mppx SDK handles agent-side payment retries for MCP tool calls. However, the evidence never explicitly documents how to connect an external MCP server to a Worker or agent and use its tools. Most MCP evidence (the managed server fleet, Code Mode server, building MCP servers) is server-side and does not count toward this client story. Missing for 10: explicit docs on registering or connecting external MCP servers (URL, transport, auth) from a Worker or agent, tool discovery and invocation details, and independent hands-on corroboration of client-side use.",
     "evidenceIds": [
+      "cloudflare-supp-think-harness",
       "cloudflare-supp-agents-sdk",
       "cloudflare-docs-39",
-      "cloudflare-supp-think-harness",
-      "cloudflare-supp-agent-payments",
       "cloudflare-docs-34"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can plug MCP servers into this product so it can use their tools",
+      "citations": [
+        {
+          "evidenceId": "cloudflare-supp-think-harness",
+          "quote": "Built-ins include \"workspace tools (including bash), custom tools, approvals, MCP tools, code execution, browser tools\"."
+        },
+        {
+          "evidenceId": "cloudflare-docs-39",
+          "quote": "Each agent has its own state, storage, and lifecycle — with built-in support for real-time communication, scheduling, AI model calls, MCP, workflows, and more."
+        },
+        {
+          "evidenceId": "cloudflare-docs-34",
+          "quote": "The `mppx` SDK handles payment retries for HTTP requests and Model Context Protocol (MCP) tool calls."
+        }
+      ]
+    },
     "productId": "cloudflare",
     "storyId": "agentic-mcp-client"
   }

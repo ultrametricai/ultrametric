@@ -1,20 +1,42 @@
 {
-  "hash": "3228f2c9ea5a47051b768583057efb9701ff9c32122bed36bc8e80a910ccee19",
+  "hash": "394947f3f983b73bba23da648557615303d98677c9667896bb8c717dd6251154",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "The dedicated scrape endpoint turns a single URL into text. For batch work, enrichments fill columns from input rows using web scrapes, accept up to 10,000 rows per /enrich request, and run asynchronously with webhook delivery or SDK polling (wait_for_result). That covers thousands of URLs asynchronously, but only through the AI enrichment workflow rather than a native bulk-scrape API. Missing for 10: a documented batch/async mode for the raw scrape endpoint, throughput or concurrency details for large URL lists, and independent or hands-on corroboration of scraping at scale.",
+    "rationale": "Riveter's scrape endpoint converts a single URL to text, so it is not documented as a batch operation. Its enrichment runs can apply web scrapes across input rows, up to 10,000 rows per /enrich request, and execute asynchronously with webhook delivery or polling. That gives an asynchronous, large-batch path, but it goes through AI enrichment rather than a dedicated bulk-scrape API. Missing for 10: a documented batch or async mode for the scrape endpoint itself, explicit confirmation that enrichment rows can be raw URL lists returning scraped text, and independent or hands-on corroboration of throughput at thousands of URLs.",
     "evidenceIds": [
-      "riveter-docs-3",
       "riveter-docs-1",
+      "riveter-docs-3",
       "riveter-docs-31",
       "riveter-docs-6",
       "riveter-docs-27",
-      "riveter-docs-11",
-      "riveter-docs-26"
+      "riveter-docs-11"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a data-engineer, I can batch scrape thousands of URLs asynchronously",
+      "citations": [
+        {
+          "evidenceId": "riveter-docs-1",
+          "quote": "An enrichment takes rows of input data and fills in new columns using AI, web searches, web scrapes, and other tools."
+        },
+        {
+          "evidenceId": "riveter-docs-31",
+          "quote": "up to 10,000 rows per `/enrich` request with `enrichment_id`"
+        },
+        {
+          "evidenceId": "riveter-docs-6",
+          "quote": "Pass webhook_url in the JSON body when starting a run and Riveter POSTs the full results to your URL when it finishes"
+        },
+        {
+          "evidenceId": "riveter-docs-3",
+          "quote": "A scrape lets you turn a URL into easily parseable text."
+        }
+      ]
+    },
     "productId": "riveter",
     "storyId": "batch-scrape-async"
   }

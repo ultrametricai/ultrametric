@@ -1,20 +1,46 @@
 {
-  "hash": "d265d986d0740d7aef1deeaa0525e1dc028cb41248e9f40259c5193427f28021",
+  "hash": "bc1ea5f73e87fcc431baf6536d8da19a118ebaa89665542042239ef9efd5bc19",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "AWS ships both parts of the first-party IaC surface. CloudFormation provides templates that describe resources and handles provisioning and configuration (aws-docs-6). The CDK is an open-source typed framework in TypeScript, Python, Java, C#, Go and more, which deploys through CloudFormation to provision or update stacks (aws-docs-8, aws-docs-26, aws-docs-27). Stack-level lifecycle is documented through stack deletion (aws-docs-7) and stack membership (aws-docs-49), but rollback behavior is never described. Missing for 10: explicit documentation of rollback-on-failure and state/drift semantics, independent or hands-on corroboration.",
+    "rationale": "AWS clearly ships a first-party IaC surface: CloudFormation templates that describe and provision resources, and the typed, multi-language CDK that deploys through CloudFormation as stacks. The state semantics are only implied (stack membership, update, delete-the-stack-deletes-all-resources), and rollback behavior is not documented anywhere in the evidence. Missing for 10: documented rollback semantics on failed deploys, explicit state/drift model documentation, independent or hands-on corroboration.",
     "evidenceIds": [
       "aws-docs-6",
       "aws-docs-7",
       "aws-docs-8",
       "aws-docs-9",
       "aws-docs-26",
-      "aws-docs-27",
-      "aws-docs-49"
+      "aws-docs-27"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform engineer, infrastructure is code on day one — a first-party IaC surface (templates plus a typed CDK-style framework) with documented state/rollback semantics",
+      "citations": [
+        {
+          "evidenceId": "aws-docs-6",
+          "quote": "You create a template that describes all the AWS resources that you want (like Amazon EC2 instances or Amazon RDS DB instances), and CloudFormation takes care of provisioning and configuring those resources for you."
+        },
+        {
+          "evidenceId": "aws-docs-8",
+          "quote": "The AWS CDK supports TypeScript, JavaScript, Python, Java, C#/.Net, and Go."
+        },
+        {
+          "evidenceId": "aws-docs-26",
+          "quote": "The AWS Cloud Development Kit (AWS CDK) is an open-source software development framework for defining cloud infrastructure in code and provisioning it through AWS CloudFormation."
+        },
+        {
+          "evidenceId": "aws-docs-27",
+          "quote": "You compose these together into stacks and apps. Then, you deploy your CDK applications through AWS CloudFormation to provision or update your resources."
+        },
+        {
+          "evidenceId": "aws-docs-7",
+          "quote": "You can delete the stack just as easily, which deletes all the resources in the stack."
+        }
+      ]
+    },
     "productId": "aws",
     "storyId": "first-party-iac"
   }

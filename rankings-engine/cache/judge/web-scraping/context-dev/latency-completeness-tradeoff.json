@@ -1,18 +1,40 @@
 {
-  "hash": "8e498db928b21acb2e5ea82bfe641600024fcda5517639013f55d6c84f219a69",
+  "hash": "d7189d5d8abecb223e69812107238270a1d5c1cf7056a784beb623fbef1fa7bc",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
-    "quality": 8,
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "The timeouts docs let developers set an API deadline and choose how unfinished work is handled. A `return-partial` mode returns usable completed work with a completion marker, and fails without a charge if nothing usable exists. This directly lets callers trade latency for completeness. The choice between a synchronous crawl (up to 500 pages, one response) and an async background batch (up to 25K pages), plus screenshot deadlines, extends that control. Missing for 10: independent or hands-on corroboration that deadlines and partial returns behave as documented, and full documentation of the other unfinished-work modes beyond `return-partial`.",
+    "rationale": "Context.dev's timeouts documentation lets a developer set an API deadline and choose how unfinished work is handled. Its `return-partial` mode returns usable completed work with a completion marker, which trades completeness for latency at a developer-chosen cutoff. The choice between a one-response sync crawl and a background async batch adds a further latency-versus-scale choice. Missing for 10: full documentation of every unfinished-work mode beyond `return-partial` and how the deadline parameter behaves per endpoint, plus independent or hands-on corroboration that partial returns work as claimed.",
     "evidenceIds": [
       "context-dev-docs-25",
       "context-dev-docs-17",
       "context-dev-docs-2",
-      "context-dev-docs-3",
-      "context-dev-docs-23"
+      "context-dev-docs-3"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can trade off latency against completeness by controlling exactly when content is returned",
+      "citations": [
+        {
+          "evidenceId": "context-dev-docs-25",
+          "quote": "Set an API deadline, choose how to handle unfinished work, and preserve partial-result markers."
+        },
+        {
+          "evidenceId": "context-dev-docs-17",
+          "quote": "`return-partial` | Return usable completed work with a completion marker. If no usable result exists, fail without a charge."
+        },
+        {
+          "evidenceId": "context-dev-docs-2",
+          "quote": "Crawl a small website section and return page Markdown in one response, with a maximum of 500 pages."
+        },
+        {
+          "evidenceId": "context-dev-docs-3",
+          "quote": "Crawl up to 25,000 pages in a background batch, track progress, and retrieve Markdown or HTML when the job finishes."
+        }
+      ]
+    },
     "productId": "context-dev",
     "storyId": "latency-completeness-tradeoff"
   }

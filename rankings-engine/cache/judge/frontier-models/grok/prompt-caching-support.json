@@ -1,16 +1,30 @@
 {
-  "hash": "17e86209e3e58d137fd199ec3d099da4fc76e25ba504cb0c057ab3c19f96b26f",
+  "hash": "2662c74dcd3585151cddfa655b414d28c4a64fe65414527e8930d8cf1f7dfcdc",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 8,
-    "confidence": "medium",
-    "rationale": "xAI documents automatic prompt caching: consecutive requests that share the same starting messages are cached. The pricing page lists a separate cached-input rate per model (grok-4.7: $0.50 vs $2.00 per 1M input tokens), and per-request `cost_in_usd_ticks` reflects the actual amount billed after discounts. Missing for 10: any documented latency benefit, cache mechanics such as TTL, minimum prefix length and cache-hit reporting, and independent or hands-on confirmation of the savings.",
+    "confidence": "high",
+    "rationale": "xAI documents automatic prompt caching for requests that share the same starting messages. The pricing docs publish a separate cached-input rate per model (e.g. grok-4.7: $0.50 cached vs $2.00 input per 1M tokens), which gives a clear cost reduction on repeated context. Missing for 10: explicit documentation of the latency benefit, cache-hit reporting and TTL/eligibility details in the evidence, and independent hands-on corroboration.",
     "evidenceIds": [
       "grok-docs-14",
-      "grok-supp-pricing",
-      "grok-supp-cost-tracking"
+      "grok-supp-pricing"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an ml-engineer, I can cut cost and latency on repeated context with documented prompt/prefix caching and its pricing",
+      "citations": [
+        {
+          "evidenceId": "grok-docs-14",
+          "quote": "When consecutive requests share the same starting messages, the xAI API automatically caches them."
+        },
+        {
+          "evidenceId": "grok-supp-pricing",
+          "quote": "grok-4.7 (< 200k prompt tokens) | 500k | $2.00 | $0.50 | $6.00"
+        }
+      ]
+    },
     "productId": "grok",
     "storyId": "prompt-caching-support"
   }

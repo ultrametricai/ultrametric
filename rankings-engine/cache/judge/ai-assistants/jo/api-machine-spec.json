@@ -1,15 +1,30 @@
 {
-  "hash": "b607ebcd26a03fff87ed2c9410a86cbea3279831ede776b9ac74e441eae984e4",
+  "hash": "f4f693afa7cc49ae70682bc8fb452941dce97af20f2bd5d2734837fbf2a2a081",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Hands-on probes confirm that a keyless GET of https://askjo.ai/openapi.json returns a real OpenAPI 3.1.0 spec (FastAPI, about 405 paths including /v1/auth, /v1/users and /v1/apple-messages), with Swagger UI served at /docs. That meets the literal story of downloading a machine-readable API spec. However, it appears to be the internal app/bridge backend spec rather than a documented public developer API. missing for 10: first-party documentation advertising or explaining the spec, a public developer program or API keys to actually use the described endpoints, and independent corroboration beyond probes.",
+    "rationale": "Runtime probes show a keyless, downloadable OpenAPI 3.1 spec at askjo.ai/openapi.json with about 405 paths, plus Swagger UI at /docs, so a machine-readable spec is retrievable. However, it appears to be the internal app/bridge backend spec, with no developer program or public API keys documented around it, and none of the first-party docs present it as a supported surface. missing for 10: first-party documentation presenting the spec as a supported public API, documented public API access/keys for using the spec, independent corroboration.",
     "evidenceIds": [
       "jo-probe-2",
       "jo-probe-rt-2"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
+      "citations": [
+        {
+          "evidenceId": "jo-probe-2",
+          "quote": "PROBE openapi: HTTP 200 at https://askjo.ai/openapi.json — contains \"openapi\" key"
+        },
+        {
+          "evidenceId": "jo-probe-rt-2",
+          "quote": "keyless GET of https://askjo.ai/openapi.json returned the backend's OpenAPI 3.1 spec"
+        }
+      ]
+    },
     "productId": "jo",
     "storyId": "api-machine-spec"
   }

@@ -1,22 +1,41 @@
 {
-  "hash": "905006bc7075af8c34b66793cd93d356f5a766ab194eaee761d0f3a138e539e1",
+  "hash": "2e6ed5999a64133dcac1a27c8e3f0038f047c35236c9b7fb24e704e115041353",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Apify documents launching Actor runs programmatically through JS/Python clients with asyncio support, storing multiple input configurations as tasks, and managing sessions through SessionPool with datacenter/residential proxy rotation. Together these suggest many scraping sessions can run at scale, but no item explicitly documents running many runs concurrently or scaling behavior. Missing for 10: explicit documentation of concurrent/parallel Actor runs and concurrency limits, autoscaling or crawler concurrency controls, and independent or hands-on corroboration of large-scale concurrent scraping.",
+    "rationale": "Apify documents its own scraping-scale building blocks: SessionPool for rotating sessions with proxy IPs and cookies, smart IP rotation to avoid blocking, and creating multiple tasks with different inputs that can be run via the API clients. However, nothing in the pack explicitly documents running many sessions or Actor runs concurrently, autoscaling, or concurrency limits, so 'at scale' is only implied. Missing for 10: explicit documentation of concurrent run/session parallelism and autoscaling, concurrency limits, and hands-on corroboration of large-scale concurrent scraping.",
     "evidenceIds": [
-      "apify-docs-15",
-      "apify-docs-21",
-      "apify-docs-23",
-      "apify-docs-25",
-      "apify-docs-17",
-      "apify-docs-19",
       "apify-docs-31",
       "apify-docs-8",
+      "apify-docs-25",
+      "apify-docs-17",
       "apify-docs-34"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a data-engineer, I can spin up many concurrent scraping sessions to gather data at scale",
+      "citations": [
+        {
+          "evidenceId": "apify-docs-31",
+          "quote": "SessionPool is a class that allows you to handle the rotation of proxy IP addresses along with cookies and other custom settings in Apify SDK."
+        },
+        {
+          "evidenceId": "apify-docs-8",
+          "quote": "Avoid blocking by smartly rotating datacenter and residential IP addresses."
+        },
+        {
+          "evidenceId": "apify-docs-25",
+          "quote": "the most convenient approach is to create multiple tasks, each with different input configurations"
+        },
+        {
+          "evidenceId": "apify-docs-17",
+          "quote": "Tasks are saved in the Apify platform and can be run multiple times."
+        }
+      ]
+    },
     "productId": "apify",
     "storyId": "concurrent-sessions-at-scale"
   }

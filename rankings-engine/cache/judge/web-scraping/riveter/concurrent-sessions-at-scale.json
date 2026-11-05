@@ -1,19 +1,41 @@
 {
-  "hash": "2fe3fc409fec37541577ee5d8bb9b9e9d5bdcceab179ea7dbbed7871120fa6c6",
+  "hash": "0d12393e2918f5bc1965a23ae40e9c777e30128e3881d4f254accd8a7186023d",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Riveter delivers scale through batch jobs rather than user-managed concurrent sessions. A single /enrich request can cover up to 10,000 rows, and enrichments fill columns using web scrapes and searches. One request can also fan out across many pages, such as every dental practice and then every dentist. There is a scrape endpoint for individual URLs, and the SDKs handle 429 retries, which implies rate limits exist. missing for 10: documented concurrency limits or parallel scrape session control, throughput/rate-limit figures, independent or hands-on evidence of large-scale concurrent runs.",
+    "rationale": "Riveter documents large-scale, batch-oriented data gathering. Enrichments fill columns using web scrapes across up to 10,000 rows per /enrich request, a single request can fan out across a whole city's practices, and there is a standalone scrape endpoint. However, nothing documents concurrent scraping sessions as such: no parallelism controls, concurrency limits, or session model, and the SDK's handling of 429 retries implies rate limits whose levels are unstated. Missing for 10: documented concurrency/parallel-session limits, rate-limit or throughput figures for scraping, independent or hands-on corroboration of performance at scale.",
     "evidenceIds": [
       "riveter-docs-1",
       "riveter-docs-3",
-      "riveter-docs-31",
       "riveter-docs-16",
-      "riveter-docs-11",
-      "riveter-docs-26"
+      "riveter-docs-31",
+      "riveter-docs-11"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a data-engineer, I can spin up many concurrent scraping sessions to gather data at scale",
+      "citations": [
+        {
+          "evidenceId": "riveter-docs-31",
+          "quote": "up to 10,000 rows per `/enrich` request with `enrichment_id`"
+        },
+        {
+          "evidenceId": "riveter-docs-1",
+          "quote": "An enrichment takes rows of input data and fills in new columns using AI, web searches, web scrapes, and other tools."
+        },
+        {
+          "evidenceId": "riveter-docs-16",
+          "quote": "It can find every dental practice in a city, then pull every dentist from each one, in a single request."
+        },
+        {
+          "evidenceId": "riveter-docs-3",
+          "quote": "A scrape lets you turn a URL into easily parseable text."
+        }
+      ]
+    },
     "productId": "riveter",
     "storyId": "concurrent-sessions-at-scale"
   }

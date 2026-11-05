@@ -88,9 +88,10 @@ describe('generated vendor-review interchange records', () => {
     const r = JSON.parse(committed.get('payroll--gusto.json')!)
     expect(r.jurisdictions[0]).toBe('US:available')
     expect(r.jurisdictions).toContain('IN:unavailable')
-    // tested_on tracks the arena's rankings generatedAt — re-pinned at the 2026-10-22 payroll
-    // bring-up (seven debuts plus the v5 re-judge the stale incumbent caches demanded).
-    expect(r.tested_on).toBe('2026-10-23')
+    // tested_on tracks the arena's rankings generatedAt — re-pinned at the 2026-11-05 v6
+    // rubric-migration wave 1, which re-judged and re-derived the arena
+    // (docs/RUBRIC-MIGRATION-2026-11-05.md).
+    expect(r.tested_on).toBe('2026-11-05')
     expect(r.evidence.length).toBeGreaterThan(0)
   })
 })

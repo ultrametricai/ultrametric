@@ -1,18 +1,35 @@
 {
-  "hash": "7aac2bd55ecbae44a41dc8b12a3afb404d994df8699d2171daeaeff6c2b5faa5",
+  "hash": "dd850262d7b43fe35866ea368058f3a5842a98b88bcc828d79ac52a52ef4d254",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Scraped and enriched results can be pulled out programmatically: /runs/{id}/result returns run data, webhooks POST full results on completion, and the SDK lists runs with pagination. That gives a de facto JSON export path for data. Nothing documents exporting job or enrichment configurations, a dedicated bulk export, or any portability or anti-lock-in guarantee. Missing for 10: documented export of job/enrichment configurations, bulk data export in a standard format (e.g. CSV/JSON dumps), explicit migration/portability guidance, independent corroboration.",
+    "rationale": "Riveter's own API lets developers pull run results out programmatically. There is a /runs/{id}/result endpoint, and webhooks POST the full results to your URL, so scraped data can be extracted. Nothing documents exporting job or enrichment configurations, a portable export format, or migration tooling. Missing for 10: export of job/enrichment/schedule configurations, a documented portable export format (e.g. CSV/JSON bulk export), migration or anti-lock-in guidance, independent corroboration.",
     "evidenceIds": [
       "riveter-docs-25",
       "riveter-docs-6",
-      "riveter-docs-27",
-      "riveter-docs-22",
-      "riveter-docs-2"
+      "riveter-docs-22"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can export my scraped data and job configurations in a portable format to migrate to another provider without lock-in",
+      "citations": [
+        {
+          "evidenceId": "riveter-docs-25",
+          "quote": "/run_data → /runs/{id}/result"
+        },
+        {
+          "evidenceId": "riveter-docs-6",
+          "quote": "Riveter POSTs the full results to your URL when it finishes"
+        },
+        {
+          "evidenceId": "riveter-docs-22",
+          "quote": "page, err := client.Runs.List(ctx, &riveter.ListRunsParams{Status: \"success\"})"
+        }
+      ]
+    },
     "productId": "riveter",
     "storyId": "data-export-portability"
   }
