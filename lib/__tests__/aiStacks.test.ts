@@ -1,3 +1,4 @@
+import fs from 'node:fs'
 import path from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { loadAiStacks, resolveStack } from '@/lib/aiStacks'
@@ -16,6 +17,26 @@ describe('ai-stacks data', () => {
           expect(arenaIds.has(slot.pick.arenaId), `${stack.id}/${slot.role}: unknown arena ${slot.pick.arenaId}`).toBe(true)
         }
       }
+    }
+  })
+
+  it('keeps search aliases in sync with every stack id', () => {
+    const stackIds = new Set(loadAiStacks(DATA_DIR).map((stack) => stack.id))
+    const searchAliases = JSON.parse(
+      fs.readFileSync(path.join(DATA_DIR, 'search-aliases.json'), 'utf8'),
+    ) as { stacks: Record<string, unknown> }
+
+    for (const id of stackIds) {
+      const aliases = searchAliases.stacks[id]
+      expect(
+        Array.isArray(aliases)
+          && aliases.length > 0
+          && aliases.every((alias) => typeof alias === 'string' && alias.trim().length > 0),
+        `stack ${id} must have a nonempty array of nonblank aliases`,
+      ).toBe(true)
+    }
+    for (const id of Object.keys(searchAliases.stacks)) {
+      expect(stackIds.has(id), `unknown stack alias id ${id}`).toBe(true)
     }
   })
 })
