@@ -1,17 +1,32 @@
 {
-  "hash": "906c8e38e692037a7d13c7ca4290071c8580ebe8f10d365d3f31e8a16f6e65d1",
+  "hash": "af6e4fe24a2fe928eb0af6498b2cfa47b9d7ff272c0e63cf2d4c7d061aa1889b",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 3,
     "confidence": "medium",
-    "rationale": "Alacritty documents a basic IPC channel, `alacritty msg`, that can create new windows. However, it explicitly omits splits, which it leaves to a window manager or multiplexer, and nothing in the evidence shows it can send commands into a terminal or read output back programmatically. The runtime probe could not exercise `alacritty msg` because the macOS install failed, so the IPC claim is untested rather than contradicted. Missing for 10: pane creation, command injection via IPC, reading terminal output via API, a documented control protocol spec, hands-on corroboration.",
+    "rationale": "Alacritty documents its own IPC channel (`alacritty msg`), and the docs show a program can use it to create windows (`alacritty msg create-window`). That makes it a thin, real control surface. However, Alacritty explicitly has no splits or panes, and nothing in the evidence shows the IPC can send commands into a session or read terminal output back. The runtime probe could not test `alacritty msg` because of a macOS install failure, which leaves its behavior unverified but does not contradict the docs. Missing for 10: pane creation (explicitly unsupported), running commands in an existing terminal via the API, reading output or scrollback programmatically, a documented control protocol reference, hands-on corroboration.",
     "evidenceIds": [
       "alacritty-docs-5",
       "alacritty-docs-11",
       "alacritty-docs-16",
       "alacritty-gh-3"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can let a coding agent programmatically drive the terminal itself — create panes, run commands, read output — through a documented control protocol or API",
+      "citations": [
+        {
+          "evidenceId": "alacritty-docs-5",
+          "quote": "New windows can be created either by using the `CreateNewWindow` keybinding action, or by executing the `alacritty msg create-window` subcommand."
+        },
+        {
+          "evidenceId": "alacritty-docs-11",
+          "quote": "Offer IPC using _alacritty msg_"
+        }
+      ]
+    },
     "productId": "alacritty",
     "storyId": "agent-drives-terminal"
   }

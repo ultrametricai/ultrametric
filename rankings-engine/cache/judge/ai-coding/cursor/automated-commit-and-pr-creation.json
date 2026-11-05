@@ -1,21 +1,42 @@
 {
-  "hash": "1958b2c9973d72755451a44610202931e5948e064a53c41b0937b0669f5136ec",
+  "hash": "b22361ce7fa5db9e7a4f0e57f464e6d46ef540e963716bb3a94919a95dce8836",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "cursor",
-    "storyId": "automated-commit-and-pr-creation",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Cloud Agents are documented to make changes and open pull requests in the repos they change. The Cloud Agents API supports branch/PR targeting with `autoCreatePR`, and webhook payloads carry `branchName` and `prUrl`. Agents also verify changes before pushing a PR and attach artifacts to it. Missing for 10: explicit documentation of staging and agent-written commit messages (only implied via git shell permissions), local IDE-agent git/PR workflow details, and independent or hands-on corroboration.",
+    "rationale": "Cursor's Cloud Agents clearly open pull requests: they open PRs in the repos they change, support branch/PR targeting with `autoCreatePR`, verify work before pushing a PR, and report the target `branchName` and `prUrl` in webhook payloads. The evidence never explicitly documents the agent staging changes or writing commit messages, and branch creation is only implied. missing for 10: explicit documentation of staging changes, agent-authored commit messages, an explicit branch-creation workflow in the local IDE/CLI agent, and independent hands-on corroboration.",
     "evidenceIds": [
-      "cursor-supp-cloud-agents",
       "cursor-supp-cloud-agents-api",
-      "cursor-supp-agent-webhooks",
+      "cursor-supp-cloud-agents",
       "cursor-docs-28",
-      "cursor-docs-29",
-      "cursor-supp-cli-permissions",
-      "cursor-supp-origin"
-    ]
+      "cursor-supp-agent-webhooks",
+      "cursor-docs-29"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can have the agent stage changes, write commit messages, create branches, and open pull requests",
+      "citations": [
+        {
+          "evidenceId": "cursor-supp-cloud-agents",
+          "quote": "inspect the full workspace, make coordinated changes, and open pull requests in the repos it changes"
+        },
+        {
+          "evidenceId": "cursor-supp-cloud-agents-api",
+          "quote": "up to 20 `repos` (branch/PR targeting, `autoCreatePR`)"
+        },
+        {
+          "evidenceId": "cursor-docs-28",
+          "quote": "Agents can start dev servers, open the app in a browser, click through UI flows, and verify their changes work before pushing a PR."
+        },
+        {
+          "evidenceId": "cursor-supp-agent-webhooks",
+          "quote": "a JSON payload carrying repository/ref source, target url/branchName/prUrl, and a summary"
+        }
+      ]
+    },
+    "productId": "cursor",
+    "storyId": "automated-commit-and-pr-creation"
   }
 }

@@ -1,21 +1,38 @@
 {
-  "hash": "a20a19c2a5969073d2d6d81804f6fc41181856cd8a606fd90d2090225da62869",
+  "hash": "e107cb18adf5ae9fc3efbde57900b5a0b6d2b5569df0337e7ba17e9e2c9c580f",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "expensify",
-    "storyId": "agentic-scoped-keys",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Expensify documents its own API credentials: partnerUserID/partnerUserSecret pairs bound to a single Expensify account, which can be rotated by regenerating the secret. It also documents an OAuth2 authorization-code flow that issues short-lived access tokens to act on behalf of individual users, giving user-bound, time-limited access. Nothing shows the permissions themselves can be narrowed, so least-privilege scoping is unproven. Missing for 10: documented permission scopes or read-only/limited-action credentials, per-credential restriction to specific workspaces or operations, agent-specific credential issuance, and independent corroboration.",
+    "rationale": "Expensify documents its own credential issuance in two forms: server-to-server partnerUserID/partnerUserSecret pairs tied to a single account, and an OAuth2 authorization code flow that yields short-lived access tokens to act on behalf of individual users. This gives some per-user, time-limited bounding, but no permission scopes or least-privilege controls are documented. Missing for 10: documented permission scopes or granular per-credential permissions, read-only or limited-action credentials, agent-specific credential guidance, and independent corroboration.",
     "evidenceIds": [
-      "expensify-docs-1",
       "expensify-docs-2",
       "expensify-docs-12",
       "expensify-docs-19",
       "expensify-docs-24",
-      "expensify-docs-20",
-      "expensify-docs-25"
-    ]
+      "expensify-docs-20"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
+      "citations": [
+        {
+          "evidenceId": "expensify-docs-2",
+          "quote": "To act on behalf of individual Expensify users, use the OAuth2 authorization code flow to obtain a short-lived access token."
+        },
+        {
+          "evidenceId": "expensify-docs-24",
+          "quote": "Credential based `partnerUserID` + `partnerUserSecret` Server-to-server integrations with a single Expensify account"
+        },
+        {
+          "evidenceId": "expensify-docs-19",
+          "quote": "A pair of credentials: `partnerUserID` and `partnerUserSecret` will be generated and shown on the page."
+        }
+      ]
+    },
+    "productId": "expensify",
+    "storyId": "agentic-scoped-keys"
   }
 }

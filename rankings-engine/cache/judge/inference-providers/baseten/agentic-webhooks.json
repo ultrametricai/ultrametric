@@ -1,17 +1,31 @@
 {
-  "hash": "3be27bd5502280168538cc1b669dcf8b909e3b27e298af0460acfb06ea6f66f3",
+  "hash": "22ec5c7f60e01bcce2a8cea3edbc50c5e77de29cf4070dd58db574090abd87b1",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Baseten documents outbound webhooks for async inference: a request returns an ID immediately and the result is delivered later by webhook or polling. That is a real programmatic HTTP callback, but the evidence covers only async-inference completion, not a general event-subscription system. missing for 10: registrable event subscriptions beyond async inference results (e.g. deployment, training-job or billing events), webhook payload/signing/retry documentation, independent or hands-on corroboration.",
+    "rationale": "Baseten's own docs say async inference can deliver results via an outbound webhook callback, which is a real HTTP callback a program can receive. It is scoped to completion of individual async inference requests, not a general event-subscription system. missing for 10: subscribable events beyond async inference (deployments, training jobs, billing), webhook registration/management docs, signing/retry/delivery semantics, independent or hands-on corroboration.",
     "evidenceIds": [
-      "baseten-docs-9",
       "baseten-docs-27",
-      "baseten-docs-35",
+      "baseten-docs-9",
       "baseten-docs-45"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can subscribe to events via webhooks",
+      "citations": [
+        {
+          "evidenceId": "baseten-docs-27",
+          "quote": "Async inference returns a request ID quickly and completes later through webhook or polling, which suits batch work, long documents, or any case where the caller should not hold a connection open for minutes."
+        },
+        {
+          "evidenceId": "baseten-docs-45",
+          "quote": "Run asynchronous inference on deployed models"
+        }
+      ]
+    },
     "productId": "baseten",
     "storyId": "agentic-webhooks"
   }

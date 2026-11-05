@@ -1,19 +1,32 @@
 {
-  "hash": "6f65221d7936fbe7dbc6b25cc7d5a89128171a59d85212c8aab177d6294f150e",
+  "hash": "c5c63b14e7fdfbdfa5df6950beab0159276c5791bedca3a16a830d6766e88066",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 8,
-    "confidence": "high",
-    "rationale": "Groq's Chat Completions docs say that setting stream=True returns an iterator of completion deltas, so applications can display the response as it is generated. This delivers token-by-token streaming for responsive UX, and the OpenAI-compatible endpoint supports existing streaming clients. missing for 10: explicit documentation of the SSE wire format/event structure, independent or hands-on corroboration of the streaming API specifically.",
+    "verdict": "partial",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Groq's Chat Completions docs show first-party streaming: setting stream=True returns an iterator of completion deltas, so applications can display the response as it is generated. The evidence never names SSE as the wire transport or describes the event format, and no independent hands-on report confirms streaming behavior. missing for 10: explicit documentation that streaming uses Server-Sent Events (event/chunk format, termination signal), independent or hands-on corroboration of token-by-token streaming via the API.",
     "evidenceIds": [
       "groq-docs-10",
       "groq-docs-15",
       "groq-docs-22",
-      "groq-docs-26",
-      "groq-docs-25",
-      "groq-docs-33"
+      "groq-docs-26"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can stream completions token by token over SSE for responsive user experiences",
+      "citations": [
+        {
+          "evidenceId": "groq-docs-26",
+          "quote": "To enable streaming, set the parameter stream=True. The completion function will then return an iterator of completion deltas rather than a single, full completion."
+        },
+        {
+          "evidenceId": "groq-docs-22",
+          "quote": "you can stream the model's response in real-time. This allows your application to display the response as it's being generated"
+        }
+      ]
+    },
     "productId": "groq",
     "storyId": "streaming-responses"
   }

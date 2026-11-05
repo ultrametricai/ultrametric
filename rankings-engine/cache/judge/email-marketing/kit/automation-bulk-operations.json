@@ -1,19 +1,45 @@
 {
-  "hash": "226f746afc7c38036a9b2c24555fce0248e205817a6e82072192287668b03874",
+  "hash": "9dc5cf8a962758944174166d1d58d3907080b853363dc9d26dbff83c3d91ab6e",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Kit's V4 API documents dedicated bulk endpoints, including bulk subscriber creation, bulk updates of custom field values for many subscribers in one request, and bulk custom field creation. Large batches are processed asynchronously, with a `callback_url` POSTed when processing completes, and broadcast stats can be fetched for a whole page in one call. Kit itself says bulk support covers only \"some common use cases\" and requires OAuth. Missing for 10: bulk coverage beyond select resources (e.g. bulk tagging/deletion), evidence that bulk actions are exposed through the Kit MCP for AI clients, and independent or hands-on corroboration.",
+    "rationale": "Kit documents a dedicated bulk and async processing API. It covers bulk subscriber creation, bulk custom-field creation and bulk custom-field value updates across many subscribers in one request, and large batches run asynchronously with a callback_url. A broadcast-stats endpoint also returns a whole page of broadcasts in a single request. Bulk support is limited to \"some common use cases\" and requires OAuth. missing for 10: bulk coverage across all resource types (e.g. tags, broadcasts), evidence that the Kit MCP exposes bulk actions to AI clients, independent or hands-on corroboration.",
     "evidenceIds": [
       "kit-docs-23",
       "kit-docs-35",
       "kit-docs-39",
       "kit-docs-73",
-      "kit-docs-68",
-      "kit-docs-54"
+      "kit-docs-68"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can perform bulk operations across many items at once",
+      "citations": [
+        {
+          "evidenceId": "kit-docs-23",
+          "quote": "We support bulk processing for some common use cases, e.g. create subscribers, requiring OAuth authentication."
+        },
+        {
+          "evidenceId": "kit-docs-35",
+          "quote": "For large batch sizes, we use an asynchronous callback design. If you include a `callback_url` in your request body, we'll `POST` to that URL when our processing has completed."
+        },
+        {
+          "evidenceId": "kit-docs-39",
+          "quote": "Creates or updates custom field values for many subscribers in one request."
+        },
+        {
+          "evidenceId": "kit-docs-73",
+          "quote": "Bulk create custom fields"
+        },
+        {
+          "evidenceId": "kit-docs-68",
+          "quote": "for a page of broadcasts in a single request, avoiding a call per broadcast."
+        }
+      ]
+    },
     "productId": "kit",
     "storyId": "automation-bulk-operations"
   }

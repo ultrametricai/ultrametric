@@ -1,19 +1,37 @@
 {
-  "hash": "35253c1f2d8882bc034d6489d6be2fc3cf2d234e2fece90778b606222e088375",
+  "hash": "9af1c2c160a252a064f69eb75132d8db8ed56359b3cfe8282e4c682cddd71e97",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "conductor",
-    "storyId": "sandboxed-agent-execution",
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Conductor's cloud offering runs agents in sandboxes that spin up in seconds (conductor-docs-20), where the agent can run builds and edit setup scripts without per-step confirmation (conductor-docs-17, conductor-docs-32). Local mode only isolates work in a separate git worktree on the user's machine, not a container (conductor-docs-29, conductor-comm-17), so sandboxing covers the cloud path only. missing for 10: documented network egress controls, tool/permission restrictions inside the sandbox, sandboxing for local workspaces, and independent hands-on corroboration of the cloud sandbox's isolation guarantees.",
+    "rationale": "Conductor's cloud offering documents sandboxes in which agents run, test repositories, edit setup scripts and run builds without per-step confirmation, so the agent can operate inside a sandboxed environment. Local workspaces are only separate git worktrees, not containers, as the developer notes, so worktree file isolation is not counted as a sandbox. Missing for 10: documented isolation boundaries for tools and network access (egress controls, allowlists), sandboxing for local runs, and independent hands-on corroboration of the cloud sandbox's isolation.",
     "evidenceIds": [
       "conductor-docs-20",
       "conductor-docs-17",
       "conductor-docs-32",
-      "conductor-docs-29",
       "conductor-comm-17"
-    ]
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an engineering-lead, I can have the agent operate inside a sandbox when interacting with code, tools, and network resources",
+      "citations": [
+        {
+          "evidenceId": "conductor-docs-20",
+          "quote": "Sandboxes spin up in seconds, and agents keep working after you close your laptop."
+        },
+        {
+          "evidenceId": "conductor-docs-17",
+          "quote": "The agent can test your repositories, update install and setup scripts, and run builds — without asking you to confirm each step."
+        },
+        {
+          "evidenceId": "conductor-docs-32",
+          "quote": "You can also have an agent configure the computer for you: it can test your repositories, edit setup scripts, and run builds."
+        }
+      ]
+    },
+    "productId": "conductor",
+    "storyId": "sandboxed-agent-execution"
   }
 }

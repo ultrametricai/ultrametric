@@ -1,21 +1,42 @@
 {
-  "hash": "0e53aae8134be768fd7c197f0253e0f592655d3934431502d6ae7914ca02d48f",
+  "hash": "a6e260a3bc0493f43c7b89d6a68ed98fa5109031cf4cefdc531f8df76823dfc7",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Kit's V4 API documents bulk subscriber creation (OAuth-gated) with async processing and `callback_url` for large batches. It also documents custom field creation, including bulk creation, and bulk create/update of custom field values across many subscribers. Together these cover creating and updating contacts with custom properties at scale. The evidence shows no API action to suppress or unsubscribe a contact; only `subscriber.unsubscribed` and `subscriber.bounced` webhook events appear, which are notifications rather than suppression controls. Missing for 10: a documented suppress/unsubscribe endpoint, single-subscriber create/update endpoint details, rate-limit and throughput documentation, and independent or hands-on corroboration of production-scale behavior.",
+    "rationale": "Kit's V4 API documents bulk subscriber creation and bulk create-or-update of custom field values for many subscribers. Large batches run asynchronously with a callback_url, which covers creating and updating contacts with custom properties at scale. Suppression is not covered: the only related evidence is the subscriber.unsubscribed and subscriber.bounced webhook events, which report activity rather than letting a developer suppress a contact. Missing for 10: a documented API endpoint to unsubscribe or suppress contacts, documented rate limits or throughput figures for production scale, and independent or hands-on corroboration.",
     "evidenceIds": [
       "kit-docs-23",
-      "kit-docs-35",
       "kit-docs-39",
+      "kit-docs-35",
       "kit-docs-38",
       "kit-docs-73",
-      "kit-docs-74",
-      "kit-docs-46",
-      "kit-docs-53"
+      "kit-docs-46"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can create, update, and suppress contacts with custom properties through the API at production scale",
+      "citations": [
+        {
+          "evidenceId": "kit-docs-23",
+          "quote": "We support bulk processing for some common use cases, e.g. create subscribers, requiring OAuth authentication."
+        },
+        {
+          "evidenceId": "kit-docs-39",
+          "quote": "Creates or updates custom field values for many subscribers in one request."
+        },
+        {
+          "evidenceId": "kit-docs-35",
+          "quote": "For large batch sizes, we use an asynchronous callback design. If you include a `callback_url` in your request body, we'll `POST` to that URL when our processing has completed."
+        },
+        {
+          "evidenceId": "kit-docs-38",
+          "quote": "A custom field allows you to collect subscriber information beyond the standard fields of first name and email address."
+        }
+      ]
+    },
     "productId": "kit",
     "storyId": "contacts-crud-api"
   }

@@ -1,22 +1,26 @@
 {
-  "hash": "2096634179a3b2ae2c8fc3dd310eb40e68a0827fc476d552ec1fefd942897da8",
+  "hash": "f01836f544f51fa35297ebc659f22989f5b72e2fc161e765f76c830b329452a5",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "antigravity",
-    "storyId": "sandboxed-agent-execution",
-    "verdict": "disputed",
-    "quality": 4,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Vendor docs describe a CLI sandbox that blocks sensitive files like ~/.ssh and .env and hides anything not explicitly mounted. They also describe Git-worktree isolation and Deny/Ask/Allow permission lists. Independent reports concretely contradict this: an indirect prompt-injection attack got the agent past its own default setting to read .env and exfiltrate the data, the default network allowlist included webhook.site as an exfiltration vector, and in one incident an agent auto-executed a command that wiped a whole drive. Missing for 10: documented network-egress sandboxing, sandbox coverage for the IDE/desktop agent (not just the CLI), in-depth sandbox docs, and independent confirmation that isolation holds against prompt injection.",
+    "rationale": "The Antigravity CLI documents its own sandbox. Sensitive files such as ~/.ssh and .env are blocked, and anything not explicitly mounted is invisible inside it, which gives filesystem-level isolation for the agent. The exfiltration and drive-deletion reports in the community concern the IDE's default settings and Turbo mode, not this CLI sandbox, so they lower confidence but do not concretely contradict it. Missing for 10: network-resource sandboxing/egress isolation, sandboxing of tool/MCP execution, sandbox coverage in the IDE/desktop agent, and independent hands-on corroboration of the sandbox.",
     "evidenceIds": [
-      "antigravity-docs-48",
-      "antigravity-docs-38",
-      "antigravity-docs-23",
-      "antigravity-docs-35",
-      "antigravity-comm-11",
-      "antigravity-comm-12",
-      "antigravity-comm-14",
-      "antigravity-comm-16"
-    ]
+      "antigravity-docs-48"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an engineering-lead, I can have the agent operate inside a sandbox when interacting with code, tools, and network resources",
+      "citations": [
+        {
+          "evidenceId": "antigravity-docs-48",
+          "quote": "Sensitive files like ~/.ssh and .env are blocked, anything not explicitly mounted is invisible inside the sandbox"
+        }
+      ]
+    },
+    "productId": "antigravity",
+    "storyId": "sandboxed-agent-execution"
   }
 }

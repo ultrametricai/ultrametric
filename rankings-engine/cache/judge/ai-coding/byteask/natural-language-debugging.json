@@ -1,20 +1,46 @@
 {
-  "hash": "90c8ca5afb7ddcc82bc68d343f2593f48d598ad488687368d35885468581f3bd",
+  "hash": "1333d57e2949ab5eaf5052917edcf2d0813d508a44b25d448806f8be3f844a05",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "byteask",
-    "storyId": "natural-language-debugging",
-    "verdict": "full",
-    "quality": 8,
+    "verdict": "partial",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "ByteAsk is a terminal AI agent that debugs C/C++ code. It joins a live gdb session through a bridge and reads the program state, drives sanitizers such as AddressSanitizer (usable even in read-only runs), and returns raw reports with frames, files and line numbers so the developer can check the agent's reasoning. Missing for 10: independent or hands-on corroboration (all evidence is vendor docs), and explicit documentation of the natural-language query workflow itself, which is only implied by the conversational agent/TUI framing.",
+    "rationale": "ByteAsk documents its own debugging workflow. It joins a running gdb session through a bridge and reads live state, drives sanitizers and the test suite, and returns raw reports with frames, files and line numbers intact. It also takes conversational input via messages into a session. The natural-language querying side of troubleshooting is only implied by the conversational agent design, not explicitly documented, and all evidence is vendor-claimed. missing for 10: explicit documentation of asking debugging questions in natural language (e.g. 'why does this crash?'), worked troubleshooting examples, independent or hands-on corroboration of debugging quality.",
     "evidenceIds": [
-      "byteask-docs-1",
       "byteask-docs-2",
       "byteask-docs-3",
-      "byteask-docs-17",
       "byteask-docs-18",
-      "byteask-probe-rt-1"
-    ]
+      "byteask-docs-17",
+      "byteask-docs-22"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can debug issues and troubleshoot using natural-language queries",
+      "citations": [
+        {
+          "evidenceId": "byteask-docs-2",
+          "quote": "ByteAsk joins through a bridge you start in your gdb, reads the live state, and asks before it changes anything."
+        },
+        {
+          "evidenceId": "byteask-docs-3",
+          "quote": "It hands back the raw report with the frames, files and line numbers intact, so you can check the agent's reasoning against the same evidence."
+        },
+        {
+          "evidenceId": "byteask-docs-18",
+          "quote": "drives the real toolchain - sanitizers, your test suite, and any gdb session you already have open - and hands you a diff that survived the debugger."
+        },
+        {
+          "evidenceId": "byteask-docs-17",
+          "quote": "A read-only run can still build your program under AddressSanitizer and run it."
+        },
+        {
+          "evidenceId": "byteask-docs-22",
+          "quote": "sends a message into a running session from another terminal."
+        }
+      ]
+    },
+    "productId": "byteask",
+    "storyId": "natural-language-debugging"
   }
 }

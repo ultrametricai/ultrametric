@@ -1,22 +1,46 @@
 {
-  "hash": "c9d416f83788830b47289e3357f0407231abd8e7a0e3339f04abe8c40d345352",
+  "hash": "a7ce1fb210302edaaf152d1eba008822478813b7d8db4aa5c9b5f5efcd3ffb07",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Whisper ships a pip-installable command-line tool (`whisper audio.mp3 --model turbo`, with language and translate flags) and a Python API (`whisper.load_model(...).transcribe(...)`). The hosted API also has a command-line path (`openai audio:transcriptions create`) that returns JSON, so it can be scripted non-interactively for automation. However, nothing documents CI usage specifically, and community reports note CPU-only inference of larger models is very slow, which matters on typical GPU-less CI runners. Missing for 10: explicit CI/headless documentation (non-interactive auth, exit codes, runner setup), guidance for running on CPU-only CI hardware, independent reports of CI pipeline use.",
+    "rationale": "Whisper runs headlessly from the command line through a pip-installable `whisper` CLI and a Python API. The hosted API also has an `openai audio:transcriptions create` CLI command that returns JSON, so it can be scripted for automation. The evidence never shows CI use, and community reports note that larger models are impractically slow on CPU-only machines, which typical CI runners are. Missing for 10: explicit CI/pipeline documentation or examples, guidance on non-interactive auth and exit codes, and independent reports of running in CI.",
     "evidenceIds": [
       "whisper-gh-1",
       "whisper-gh-2",
-      "whisper-gh-4",
-      "whisper-gh-5",
       "whisper-gh-6",
       "whisper-docs-6",
       "whisper-docs-4",
-      "whisper-comm-1",
-      "whisper-comm-8"
+      "whisper-comm-1"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
+      "citations": [
+        {
+          "evidenceId": "whisper-gh-2",
+          "quote": "The following command will transcribe speech in audio files, using the `turbo` model: whisper audio.flac audio.mp3 audio.wav --model turbo"
+        },
+        {
+          "evidenceId": "whisper-gh-1",
+          "quote": "pip install -U openai-whisper"
+        },
+        {
+          "evidenceId": "whisper-gh-6",
+          "quote": "model = whisper.load_model(\"turbo\") result = model.transcribe(\"audio.mp3\")"
+        },
+        {
+          "evidenceId": "whisper-docs-6",
+          "quote": "openai audio:transcriptions create --model gpt-transcribe --file /path/to/file/audio.mp3"
+        },
+        {
+          "evidenceId": "whisper-docs-4",
+          "quote": "The model returns the transcript and the detected languages as JSON"
+        }
+      ]
+    },
     "productId": "whisper",
     "storyId": "agentic-headless"
   }

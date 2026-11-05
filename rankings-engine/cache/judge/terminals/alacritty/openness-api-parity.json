@@ -1,16 +1,31 @@
 {
-  "hash": "23b8ea0f97c285ff9904c1fa79a743a9af4ec5d967ca14ffb52b98c21863f2fc",
+  "hash": "c4afd8c70d5f5c03b3fa58179166acbb8186e9ae4579d2d99b6b15dc07c65d55",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 3,
     "confidence": "medium",
-    "rationale": "Alacritty documents an IPC channel via `alacritty msg`. The only evidenced command is `create-window`, which mirrors the `CreateNewWindow` keybinding. The many UI interactions (vi mode, search, selection, hints, URL opening) are documented only as keyboard or mouse actions, with no evidence they are reachable programmatically. The runtime probe failed at install time, so it neither confirms nor contradicts IPC behavior. Missing for 10: documented IPC coverage of search, selection, vi mode, hints and config actions; a full IPC command reference; hands-on verification that `alacritty msg` works.",
+    "rationale": "Alacritty documents its own programmatic control surface, IPC via the `alacritty msg` subcommand, but the only documented action is creating a new window (`alacritty msg create-window`), which mirrors the `CreateNewWindow` keybinding. There is no evidence that vi mode, search, selection, hints or other UI actions can be driven through it. The runtime probe could not exercise `alacritty msg` because of a macOS install failure, which leaves the capability unverified but does not contradict it. Missing for 10: documented IPC coverage of UI actions beyond window creation (search, selection, scrollback, hints, config changes), a full IPC command reference, and hands-on or independent verification of `alacritty msg`.",
     "evidenceIds": [
       "alacritty-docs-5",
       "alacritty-docs-11",
       "alacritty-docs-16"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can do everything through the API that I can do in the UI",
+      "citations": [
+        {
+          "evidenceId": "alacritty-docs-5",
+          "quote": "New windows can be created either by using the `CreateNewWindow` keybinding action, or by executing the `alacritty msg create-window` subcommand."
+        },
+        {
+          "evidenceId": "alacritty-docs-11",
+          "quote": "Offer IPC using _alacritty msg_"
+        }
+      ]
+    },
     "productId": "alacritty",
     "storyId": "openness-api-parity"
   }

@@ -1,17 +1,32 @@
 {
-  "hash": "5696774a54b051de10b187bcf8ba08aec414b12939383d1c364b1e66b93091ae",
+  "hash": "6b6d1fbaf7d4a7ede426981dc5df700084cee51958386e6d1433489e65aa00ce",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Recruitee offers a dedicated, labeled Careers API token that is limited to the careers endpoints (/offers, /offers/:id, /offers/:offer_slug/candidates). This is a narrow, least-privilege credential an agent could use for job listing and application flows. The main company API, by contrast, uses a bearer token from token settings, and the evidence shows no configurable scopes, read-only modes, or per-resource permissions for it, so scoping is coarse and limited to one fixed token type. Missing for 10: configurable per-scope or read/write permissions on the full company API, token expiry or rotation controls, per-agent permission granularity beyond the fixed Careers token, and independent corroboration.",
+    "rationale": "Recruitee offers a separate Careers API token type, created via '+Add token > Careers API token'. Its docs say it only covers the /offers, /offers/:id and /offers/:offer_slug/candidates endpoints, so it is a first-party, restricted-scope credential. This is a coarse, fixed scope tied to careers-site use, not configurable least-privilege scoping of the main API's bearer tokens. Missing for 10: granular per-resource or per-action scopes on the main API token, read-only vs write permission selection, token expiry or rotation controls, and independent or hands-on corroboration.",
     "evidenceIds": [
       "recruitee-docs-44",
       "recruitee-docs-32",
       "recruitee-docs-24",
       "recruitee-docs-1"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
+      "citations": [
+        {
+          "evidenceId": "recruitee-docs-44",
+          "quote": "The token only covers the endpoints mentioned in the documentation: /offers /offers/:id /offers/:offer_slug/candidates"
+        },
+        {
+          "evidenceId": "recruitee-docs-32",
+          "quote": "Click on +Add token > Careers API token and provide the API Token label."
+        }
+      ]
+    },
     "productId": "recruitee",
     "storyId": "agentic-scoped-keys"
   }

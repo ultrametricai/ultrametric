@@ -1,13 +1,11 @@
 {
-  "hash": "442ad309d5d75a0e9f821e487407460a04959bc5170a0567660b1be203a6acc8",
+  "hash": "8b9cdee21152c734e9559fb9d82f83a97515ca071e380f90131d107211f6d95c",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "cursor",
-    "storyId": "api-key-auth",
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "The docs say the CLI authenticates non-interactively with `export CURSOR_API_KEY`, including in headless scripts and GitHub Actions secrets. The Cloud Agents API and SDK accept user or service-account API keys via Basic/Bearer auth, and Enterprise service accounts provide keys not tied to a personal login. A live probe confirms the API host is key-gated. missing for 10: independent hands-on corroboration of CLI key-based auth, and keys must still be generated from a Cursor Dashboard account (ACP's documented flow also uses cursor_login).",
+    "rationale": "Cursor documents API-key authentication as an alternative to the interactive browser login. The CLI takes a CURSOR_API_KEY for scripts and CI, the Cloud Agents API and SDK accept user or service-account API keys, and a live probe confirms the API is gated by API key. Bring-your-own model-provider keys are a separate capability and are not credited here. missing for 10: independent community or hands-on corroboration of the CLI key flow; service-account keys are Enterprise-only, so non-human credentials are not available on every plan.",
     "evidenceIds": [
       "cursor-supp-cli-headless",
       "cursor-supp-cli-github-actions",
@@ -15,9 +13,32 @@
       "cursor-supp-cloud-agents-openapi",
       "cursor-supp-sdk",
       "cursor-supp-apis-overview",
-      "cursor-probe-4",
-      "cursor-docs-33",
-      "cursor-docs-49"
-    ]
+      "cursor-probe-4"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can authenticate with an API key instead of an account login",
+      "citations": [
+        {
+          "evidenceId": "cursor-supp-cli-headless",
+          "quote": "Set API key for scripts: export CURSOR_API_KEY=your_api_key_here; agent -p 'Analyze this code'"
+        },
+        {
+          "evidenceId": "cursor-supp-service-accounts",
+          "quote": "Service accounts can authenticate the Cursor CLI by setting the API key as CURSOR_API_KEY. This is the recommended way to run the CLI in CI/CD pipelines, cron jobs, and other non-interactive environments."
+        },
+        {
+          "evidenceId": "cursor-supp-cloud-agents-openapi",
+          "quote": "a user API key from Cursor Dashboard → API Keys, or a service account API key"
+        },
+        {
+          "evidenceId": "cursor-probe-4",
+          "quote": "keyless GET https://api.cursor.com/v1/me answers HTTP 401 {\"code\":\"error\",\"message\":\"Invalid User API Key\"}"
+        }
+      ]
+    },
+    "productId": "cursor",
+    "storyId": "api-key-auth"
   }
 }

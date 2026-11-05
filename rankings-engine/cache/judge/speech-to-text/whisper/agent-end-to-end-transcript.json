@@ -1,20 +1,43 @@
 {
-  "hash": "5fa2e18f46603b048f97f8beb4eb5f0c32fe1d3dfb8d8841d243f6fc6f463e27",
+  "hash": "a2672b16d73bae3a41e46178365a41d005c317be170b742be42ebfdf5742ad67",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "The public docs describe a single-call, synchronous flow: upload a completed recording and receive the final transcript, plus detected languages, as JSON. A ready CLI command (`openai audio:transcriptions create`) also exists, so job creation and result retrieval collapse into one step with no human in between. The docs are agent-readable: there is an llms.txt hub and markdown versions of the docs pages. Missing for 10: the auth/API-key header is not explicitly documented in the evidence, no machine-readable OpenAPI spec was found at the probed paths, the 25 MB limit is stated with no large-file or async path shown, and there is no hands-on confirmation of an agent completing the flow end to end.",
+    "rationale": "OpenAI's public speech-to-text docs describe a synchronous flow: upload the audio and receive a final transcript as JSON, with a documented CLI command. An agent could plausibly go from recording to transcript in one call with no human step, and an llms.txt index exists for machine-readable discovery. However, the evidence never documents the authentication step (how the API key is supplied), and no OpenAPI spec was reachable, so the full end-to-end path cannot be confirmed from the docs alone. Missing for 10: documented API-key authentication flow, a reachable machine-readable OpenAPI spec, independent or hands-on corroboration of an agent completing the flow unassisted, and documented handling of files over the 25 MB limit.",
     "evidenceIds": [
       "whisper-docs-1",
       "whisper-docs-2",
-      "whisper-docs-3",
       "whisper-docs-4",
       "whisper-docs-6",
+      "whisper-docs-3",
       "whisper-probe-1",
       "whisper-probe-3"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, an agent holding an API key can take a recording from submission to finished transcript (auth, job creation, result retrieval) from the public docs alone, with no human step in between",
+      "citations": [
+        {
+          "evidenceId": "whisper-docs-1",
+          "quote": "Upload the audio and receive a final transcript"
+        },
+        {
+          "evidenceId": "whisper-docs-4",
+          "quote": "The model returns the transcript and the detected languages as JSON"
+        },
+        {
+          "evidenceId": "whisper-docs-6",
+          "quote": "openai audio:transcriptions create --model gpt-transcribe --file /path/to/file/audio.mp3"
+        },
+        {
+          "evidenceId": "whisper-probe-1",
+          "quote": "Complete documentation hub for OpenAI API"
+        }
+      ]
+    },
     "productId": "whisper",
     "storyId": "agent-end-to-end-transcript"
   }

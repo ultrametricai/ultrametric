@@ -1,21 +1,42 @@
 {
-  "hash": "4b83515d230b12b4106a5672ebea6d82cc0a565f084c4e41ef492eb7a96787aa",
+  "hash": "d3586c302f99f8c1aadf4ad02a73980adcd1ab4516c14cbb52dba6f08c93e07c",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Attio documents a public JSON REST API for reading and writing workspace records. Webhooks give real-time change notifications to a target URL, signed with an `Attio-Signature` header, and a rate-limiting guide documents 429 responses with a `Retry-After` header. Together these cover two-way sync and change detection, but upserts and scale are not shown. Missing for 10: documented upsert/assert endpoint, specific rate-limit quotas, bulk or high-volume sync guidance, independent or hands-on corroboration of sync at scale.",
+    "rationale": "Attio documents a public REST API that reads and writes workspace data. It documents rate-limit responses (429 with Retry-After) and offers signed webhooks that push real-time change events, covering bidirectional sync, rate limits and change detection. Nothing in the evidence shows an upsert endpoint or any bulk or high-volume sync capability. missing for 10: documented upsert/assert-by-matching-attribute endpoint, bulk/batch or at-scale sync guidance (specific rate-limit quotas, pagination for large syncs), independent hands-on corroboration",
     "evidenceIds": [
       "attio-docs-2",
       "attio-docs-65",
-      "attio-docs-5",
-      "attio-docs-80",
-      "attio-docs-28",
       "attio-docs-32",
-      "attio-supp-openapi-document",
-      "attio-docs-6"
+      "attio-docs-5",
+      "attio-docs-28",
+      "attio-supp-openapi-document"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can sync records bidirectionally through the API at scale, with documented rate limits, upserts, and change detection",
+      "citations": [
+        {
+          "evidenceId": "attio-docs-2",
+          "quote": "This allows developers to build apps that read and write information to and from Attio workspaces. You can also subscribe to events in realtime using webhooks."
+        },
+        {
+          "evidenceId": "attio-docs-32",
+          "quote": "Rate limit responses always have the HTTP status code `429`. They also always include a `Retry-After` header"
+        },
+        {
+          "evidenceId": "attio-docs-5",
+          "quote": "Webhooks allow you to subscribe to changes that happen in Attio and then receive real-time HTTP requests to a chosen target URL to notify you of these changes."
+        },
+        {
+          "evidenceId": "attio-docs-65",
+          "quote": "Attio provides a public REST API which exchanges JSON over HTTPS."
+        }
+      ]
+    },
     "productId": "attio",
     "storyId": "bidirectional-sync-api"
   }

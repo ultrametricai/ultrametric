@@ -1,22 +1,38 @@
 {
-  "hash": "812ad928068c80c622f8ff2774d3aecaf9a3925893d6d4d0174c1816e7823756",
+  "hash": "359b14bd59055f4b9bc15e58baf8be8a511810b0468c04d7c629e8caea135b62",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Recruitee has a documented REST API with bearer-token authentication that can create and list candidates, create offers, and add profile fields. Its webhooks push events to external endpoints and keep 30 days of request logs. Together these allow non-interactive scripted automation, but only through raw HTTP calls, with no headless or CI-specific tooling. Tokens are created manually in the UI, and the probe found no machine-readable OpenAPI spec (all candidate paths returned 404). Missing for 10: official CLI or SDK, CI/headless usage guidance, OpenAPI spec, programmatic token provisioning, independent or hands-on corroboration of automated use.",
+    "rationale": "Recruitee documents a token-authenticated REST API that any application can call without the UI, including creating candidates and offers and listing candidates. That allows scripted, non-interactive automation, but nothing is documented specifically for headless or CI use. Missing for 10: official CLI or SDK, CI/pipeline usage guidance, machine-readable OpenAPI spec (probe returned 404), sandbox or test environment for safe CI runs, independent hands-on corroboration.",
     "evidenceIds": [
       "recruitee-docs-24",
       "recruitee-docs-1",
-      "recruitee-docs-2",
       "recruitee-docs-28",
       "recruitee-docs-29",
-      "recruitee-docs-31",
-      "recruitee-docs-5",
-      "recruitee-docs-6",
+      "recruitee-docs-2",
       "recruitee-probe-3"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
+      "citations": [
+        {
+          "evidenceId": "recruitee-docs-24",
+          "quote": "a client (any application that would like to use the API) needs to authenticate first with a header `Authorization: Bearer <token>`"
+        },
+        {
+          "evidenceId": "recruitee-docs-28",
+          "quote": "Calling this endpoint will return a collection of the company's candidates."
+        },
+        {
+          "evidenceId": "recruitee-docs-29",
+          "quote": "Create a company offer (job or talent pool)."
+        }
+      ]
+    },
     "productId": "recruitee",
     "storyId": "agentic-headless"
   }

@@ -1,18 +1,36 @@
 {
-  "hash": "c9898dcfd4c92f75e8ae0991c075b3451da2abed7f2f6f04f54a6d22267b8259",
+  "hash": "1feb0945bc5703ae912790bd0365d75cf4c628f5b098848262f958ebe93cb5d6",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "The docs show a structured response rather than a plain text blob: word- and character-level timestamps (docs-12), speaker labels from diarization (docs-5, docs-7), and separate fields such as 'edited_transcript' returned alongside the original transcript (docs-8). A community user also describes editing text inside the word-timestamp objects (comm-1), which corroborates per-word structure. However, the pack never mentions confidence values or utterance/segment-level grouping. Missing for 10: documented per-word or per-segment confidence scores, explicit utterance/segment objects in the JSON schema, an example response payload.",
+    "rationale": "The Scribe API returns structured output beyond a plain text blob: word-level and per-word character-level timestamps, a separate 'edited_transcript' field alongside the original, and speaker labels from diarization. A community user's mention of editing text inside the word timestamps corroborates the structured word objects. However, no evidence shows confidence values, and utterance or segment grouping is not documented for the file API. Missing for 10: documented per-word or per-segment confidence scores, explicit utterance/segment objects in the response schema, a full JSON response example.",
     "evidenceIds": [
       "elevenlabs-scribe-docs-12",
       "elevenlabs-scribe-docs-8",
-      "elevenlabs-scribe-docs-5",
       "elevenlabs-scribe-docs-7",
       "elevenlabs-scribe-comm-1"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, results come back as structured JSON with utterances or segments and confidence values, not just a text blob",
+      "citations": [
+        {
+          "evidenceId": "elevenlabs-scribe-docs-12",
+          "quote": "'word' provides word-level timestamps and 'character' provides character-level timestamps per word."
+        },
+        {
+          "evidenceId": "elevenlabs-scribe-docs-8",
+          "quote": "The edited text is returned in 'edited_transcript' alongside the original transcript."
+        },
+        {
+          "evidenceId": "elevenlabs-scribe-comm-1",
+          "quote": "they also have to edit the text in the word timestamps"
+        }
+      ]
+    },
     "productId": "elevenlabs-scribe",
     "storyId": "structured-json-output"
   }

@@ -1,19 +1,45 @@
 {
-  "hash": "79be68d1cf583565a2906e8baf6d158de65c0ac0c02a713cdf191aa5129a1a26",
+  "hash": "d55f41781986acded4e9ce3439643c785c361d8cfa35a59caf109a93dd625e6f",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Bento documents dedicated batch endpoints: POST /batch/subscribers bulk-creates or updates 1–1000 subscribers per request without triggering automations, and POST /batch/events tracks events in batches. The CLI supports CSV imports, and Bento Skills gives agents safety guidance specifically for bulk subscriber imports, so the AI-native path is covered. missing for 10: bulk operations beyond subscriber/event create-update (e.g., bulk tagging, deletion, or edits across other item types), evidence that the MCP server itself performs batch actions, independent or hands-on corroboration.",
+    "rationale": "Bento documents real bulk endpoints: POST /batch/subscribers bulk creates or updates 1 to 1000 subscribers per request, POST /batch/events tracks events in batch, and the CLI imports subscribers from CSV. However, the evidence covers only bulk create, update, and import. Other bulk operations across many items are not shown. missing for 10: documented bulk tag/field/delete/unsubscribe operations across existing items, bulk actions via MCP for AI agents, independent or hands-on corroboration of bulk operations at scale.",
     "evidenceIds": [
       "bento-docs-50",
       "bento-docs-2",
-      "bento-docs-14",
       "bento-docs-52",
       "bento-docs-49",
       "bento-docs-29"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can perform bulk operations across many items at once",
+      "citations": [
+        {
+          "evidenceId": "bento-docs-50",
+          "quote": "POST`/batch/subscribers` Import Subscribers Bulk create or update subscribers without triggering automations."
+        },
+        {
+          "evidenceId": "bento-docs-2",
+          "quote": "Request supports 1 to 1000 subscribers per post."
+        },
+        {
+          "evidenceId": "bento-docs-52",
+          "quote": "POST`/batch/events` Create Events Track user activity, update profile fields, and trigger automations."
+        },
+        {
+          "evidenceId": "bento-docs-49",
+          "quote": "Search subscribers, import from CSV, manage tags and fields"
+        },
+        {
+          "evidenceId": "bento-docs-29",
+          "quote": "It also carries safety guidance for API keys, bulk subscriber imports, live account operations"
+        }
+      ]
+    },
     "productId": "bento",
     "storyId": "automation-bulk-operations"
   }

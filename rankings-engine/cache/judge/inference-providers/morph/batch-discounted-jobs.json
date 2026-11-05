@@ -1,14 +1,29 @@
 {
-  "hash": "c8b9c1804a7bf6803958592577c1b3abcdbaaf0494b18a62b6d8b51731c8bc80",
+  "hash": "00369829a573b22773c2c665d0e0c3b8bc9cb1e63a4d2c9ea42b1c134efb0d77",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Morph documents a first-party `service_tier: \"standby\"` option at half price that is explicitly \"built for batch and background workloads\", so the discount versus real-time pricing is clearly documented. However, standby is a deprioritized synchronous request tier that sheds a fast 429 when a region is busy instead of queuing work, not an asynchronous batch-job API where you submit jobs and collect results later. Missing for 10: async batch job submission/polling/result retrieval, queued (not shed) execution guarantees, independent or hands-on corroboration of the standby discount.",
+    "rationale": "Morph documents a `service_tier: \"standby\"` option at half price, explicitly \"built for batch and background workloads.\" That covers the documented-discount half of the story. However, standby is a deprioritized tier on ordinary requests that returns a fast 429 when a region is busy, not an asynchronous batch-job API where you submit and later poll. Missing for 10: an asynchronous batch-job submission and retrieval workflow (job creation, polling, result files), and independent or hands-on corroboration of the standby discount.",
     "evidenceIds": [
       "morph-docs-13"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an ml-engineer, I can submit asynchronous batch inference jobs at a documented discount versus real-time pricing",
+      "citations": [
+        {
+          "evidenceId": "morph-docs-13",
+          "quote": "Send `service_tier: \"standby\"` and pay half price."
+        },
+        {
+          "evidenceId": "morph-docs-13",
+          "quote": "Built for batch and background workloads where a retry costs nothing."
+        }
+      ]
+    },
     "productId": "morph",
     "storyId": "batch-discounted-jobs"
   }

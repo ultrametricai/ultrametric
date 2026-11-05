@@ -1,21 +1,46 @@
 {
-  "hash": "b041569ade8cc12d0ae37b1a25df288c6217e931f37474c05b8e91cd20739414",
+  "hash": "71960ff58c6505ea5b6f4b370291e916a6888d7ac3f99f04e1896ed29a6252e3",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "cursor",
-    "storyId": "sandboxed-agent-execution",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Cursor's Run Modes docs say Auto-review sandboxes shell commands under file and network limits. Cloud Agents run in isolated VMs, and Self-Hosted Machines add network allowlists and private connectivity for tool execution. Worktrees and CLI permission tokens add file, shell and network-command scoping. Missing for 10: sandboxing applies only 'when it can' for local shell commands, with no evidence that MCP and other tool calls are sandboxed; details of sandbox configuration and network policy are thin; no independent or hands-on corroboration.",
+    "rationale": "Cursor documents real sandboxing. Auto-review sandboxes shell commands under file and network limits, and Cloud Agents run in isolated VMs, with network allowlists noted for managed cloud. But local sandboxing applies only 'when it can'. Other calls, including MCP tools, go to a classifier rather than a sandbox, and the docs state Auto-review 'is not a security boundary', so the story is covered only in part. Missing for 10: guaranteed sandboxing of all local agent actions, sandbox isolation for MCP and tool calls, detailed docs on the network-restriction configuration, and independent or hands-on corroboration.",
     "evidenceIds": [
-      "cursor-supp-run-modes",
       "cursor-docs-39",
+      "cursor-supp-run-modes",
       "cursor-supp-cloud-agents",
       "cursor-supp-privacy-governance",
-      "cursor-supp-self-hosted",
-      "cursor-supp-worktrees",
-      "cursor-supp-cli-permissions"
-    ]
+      "cursor-supp-self-hosted"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an engineering-lead, I can have the agent operate inside a sandbox when interacting with code, tools, and network resources",
+      "citations": [
+        {
+          "evidenceId": "cursor-docs-39",
+          "quote": "It runs known-safe calls, sandboxes shell commands when it can, and asks a classifier to review anything else."
+        },
+        {
+          "evidenceId": "cursor-supp-run-modes",
+          "quote": "when it works under the sandbox's file and network limits"
+        },
+        {
+          "evidenceId": "cursor-supp-cloud-agents",
+          "quote": "run in isolated VMs in the cloud with full development environments"
+        },
+        {
+          "evidenceId": "cursor-supp-privacy-governance",
+          "quote": "Agents run in isolated virtual machines"
+        },
+        {
+          "evidenceId": "cursor-supp-self-hosted",
+          "quote": "managed-cloud alternatives via network allowlists and private connectivity"
+        }
+      ]
+    },
+    "productId": "cursor",
+    "storyId": "sandboxed-agent-execution"
   }
 }

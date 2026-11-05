@@ -1,20 +1,47 @@
 {
-  "hash": "2c7b7d294c41c1994f5aea26f22d09b6aad51478d3f6dbf8aff1b97f8a56f880",
+  "hash": "edf02b93d9c03b2c1e0c779e54c372ec98bacc391d4c9def123d4a2a2cb746e4",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "byteask",
-    "storyId": "root-cause-analysis",
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "The docs describe the whole loop. ByteAsk builds and runs programs under AddressSanitizer to surface issues, which covers reproduction. It joins a live gdb session through a bridge and reports frames, files and line numbers, which covers narrowing down root causes. It then compiles, runs the test suite and hands back a diff that 'survived the debugger', which covers verifying fixes. Missing for 10: independent or hands-on corroboration (all evidence is vendor-authored), and in-depth documentation of the reproduction step itself (e.g., building a minimal repro from a bug report).",
+    "rationale": "ByteAsk's own docs describe the whole debug loop. It builds and runs programs under AddressSanitizer to reproduce faults, attaches to a live gdb session through a bridge to read program state, and returns raw reports with frames, files and line numbers for root-cause analysis. It then reruns tests and the debugger so the diff it hands back has been verified. missing for 10: independent or hands-on corroboration that the workflow works as claimed, and in-depth documentation of how root-cause narrowing proceeds beyond the sanitizer and gdb report.",
     "evidenceIds": [
-      "byteask-docs-1",
+      "byteask-docs-18",
       "byteask-docs-2",
       "byteask-docs-3",
       "byteask-docs-17",
-      "byteask-docs-18",
+      "byteask-docs-1",
       "byteask-probe-rt-1"
-    ]
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can reproduce issues, narrow down root causes, and verify fixes",
+      "citations": [
+        {
+          "evidenceId": "byteask-docs-18",
+          "quote": "then drives the real toolchain - sanitizers, your test suite, and any gdb session you already have open - and hands you a diff that survived the debugger."
+        },
+        {
+          "evidenceId": "byteask-docs-2",
+          "quote": "ByteAsk joins through a bridge you start in your gdb, reads the live state, and asks before it changes anything."
+        },
+        {
+          "evidenceId": "byteask-docs-3",
+          "quote": "It hands back the raw report with the frames, files and line numbers intact, so you can check the agent's reasoning against the same evidence."
+        },
+        {
+          "evidenceId": "byteask-docs-17",
+          "quote": "A read-only run can still build your program under AddressSanitizer and run it."
+        },
+        {
+          "evidenceId": "byteask-docs-1",
+          "quote": "edits files, compiles, runs tests, and presents a diff for your review before making permanent changes"
+        }
+      ]
+    },
+    "productId": "byteask",
+    "storyId": "root-cause-analysis"
   }
 }

@@ -1,18 +1,32 @@
 {
-  "hash": "20c8e4aecab857923b8eddad7a6e11302d05dff872aae3a0b868785c5ffd9108",
+  "hash": "a7463927c7790ffaa1e0f382fe2fc0b9f64b31a5d46f08eda62a56c15f51efbd",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Batch jobs accept cloud URIs, prefixes, or manifests, explicitly including pre-signed object URLs. Zoom fetches and transcribes those files, with documented job lifecycle and per-file results. The console also lets users enter a URL for a public audio or video file. However, the synchronous transcribe endpoint only accepts a locally uploaded file, and API support for arbitrary public HTTP URLs (as opposed to cloud-storage URIs) is not explicit. Missing for 10: URL input on the synchronous/fast API, explicit API documentation for arbitrary public (non-cloud-storage) URLs, independent or hands-on corroboration.",
+    "rationale": "Scribe's batch API documents cloud URI, prefix and manifest inputs, explicitly including pre-signed object URLs, so the service fetches and transcribes remote recordings without a direct upload. The console also accepts a URL for a public audio or video file. The synchronous transcribe endpoint, however, takes only a single local file. missing for 10: URL ingestion in synchronous Fast mode, explicit API-level docs for arbitrary public HTTP URLs (public URLs are only documented in the console), independent or hands-on corroboration.",
     "evidenceIds": [
       "zoom-scribe-supp-batch-input-metadata",
       "zoom-scribe-docs-23",
-      "zoom-scribe-supp-batch-lifecycle",
-      "zoom-scribe-docs-5",
-      "zoom-scribe-supp-sync-api-schema"
+      "zoom-scribe-supp-sync-api-schema",
+      "zoom-scribe-docs-5"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can pass a public or signed URL and the service fetches and transcribes the recording without my uploading it",
+      "citations": [
+        {
+          "evidenceId": "zoom-scribe-supp-batch-input-metadata",
+          "quote": "Batch jobs accept cloud URI, prefix, or manifest inputs, including pre-signed object URLs, and return output locations per file."
+        },
+        {
+          "evidenceId": "zoom-scribe-docs-23",
+          "quote": "enter a URL for a public audio or video file"
+        }
+      ]
+    },
     "productId": "zoom-scribe",
     "storyId": "url-ingest"
   }

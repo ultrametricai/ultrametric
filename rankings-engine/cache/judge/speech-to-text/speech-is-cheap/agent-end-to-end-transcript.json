@@ -1,24 +1,50 @@
 {
-  "hash": "646ff66758306fd6e8eadef4c3e94adc02e4a4e0e96127ffb70e08ff6f756e8f",
+  "hash": "7fc145beb56b6e5e1300e8864efa999c88d931700cc6522779f706df1a8b6038",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
-    "quality": 9,
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "The public, machine-readable docs cover each step an agent needs with an API key. It can test the key (GET /v2/jobs/auth), create a job from a URL or a direct upload of up to 2 GiB, and then poll the read endpoint or receive webhooks or SSE to get results as JSON, SRT or VTT. The docs are also served as llms.txt, Markdown pages and an OpenAPI spec, which supports discovery from docs alone with no human step. Missing for 10: the exact auth header scheme is not quoted in the evidence, and there is no hands-on or independent end-to-end run of submit-to-transcript via the Jobs API.",
+    "rationale": "The public Jobs API docs cover every step an agent holding a key needs. It can test the key (GET /v2/jobs/auth), create a job from a URL or a direct upload, and poll the read endpoint for status and results, or get completion via webhooks or SSE. Machine-readable docs (llms.txt, .md pages, openapi.json) are probed live, so no human step is required once the key exists. Missing for 10: the exact auth header scheme is not quoted, and there is no hands-on or independent end-to-end run from submission to finished transcript.",
     "evidenceIds": [
       "speech-is-cheap-docs-2",
       "speech-is-cheap-docs-3",
-      "speech-is-cheap-docs-7",
-      "speech-is-cheap-docs-8",
       "speech-is-cheap-docs-9",
       "speech-is-cheap-docs-10",
       "speech-is-cheap-docs-21",
+      "speech-is-cheap-docs-7",
+      "speech-is-cheap-docs-8",
       "speech-is-cheap-probe-1",
-      "speech-is-cheap-probe-2",
       "speech-is-cheap-probe-3",
       "speech-is-cheap-supp-api-keys"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, an agent holding an API key can take a recording from submission to finished transcript (auth, job creation, result retrieval) from the public docs alone, with no human step in between",
+      "citations": [
+        {
+          "evidenceId": "speech-is-cheap-docs-21",
+          "quote": "GET /v2/jobs/auth endpoint to test the authentication"
+        },
+        {
+          "evidenceId": "speech-is-cheap-docs-2",
+          "quote": "Submit a URL to a publicly accessible audio file. This is the standard method and is suitable for most use cases."
+        },
+        {
+          "evidenceId": "speech-is-cheap-docs-9",
+          "quote": "This endpoint allows you to check the status of an existing transcription job and retrieve its results if available."
+        },
+        {
+          "evidenceId": "speech-is-cheap-docs-7",
+          "quote": "Applications create transcription jobs and can receive completion updates through webhooks."
+        },
+        {
+          "evidenceId": "speech-is-cheap-probe-3",
+          "quote": "PROBE openapi: HTTP 200 at https://docs.speechischeap.com/openapi.json — contains \"openapi\" key"
+        }
+      ]
+    },
     "productId": "speech-is-cheap",
     "storyId": "agent-end-to-end-transcript"
   }

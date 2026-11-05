@@ -1,18 +1,36 @@
 {
-  "hash": "d233c203815f8878cc6d63f879d7e85f2f8a39943a0d1c663660f7892bc45099",
+  "hash": "410afa2a1fb468906b31fa77f478f565012ef8df054e576f383f3fb80536ee5c",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Kitty's first-party remote-control docs say scripts can open new windows and send arbitrary text to any window, and it advertises programmable tabs and splits. A recorded hands-on probe confirmed the full external control loop: `kitten @ ls` returned window and tab state as JSON, `send-text` ran a command in the live window, `get-text` read the output back, and `close-window` tore it down. Missing for 10: hands-on verification of creating a new pane/split via remote control (the probe launched kitty itself rather than a new split), and evidence documenting the underlying wire protocol beyond the CLI.",
+    "rationale": "kitty's documented remote-control facility lets scripts open new windows and send arbitrary text to any window. A hands-on probe verified a complete external control loop: `kitten @ ls` returned window and layout state as JSON, `send-text` ran a command, `get-text` read the output back, and `close-window` tore the window down. Missing for 10: hands-on verification of creating a new pane or split via remote control (only documented as \"open new windows\" and \"programmable splits\"), and no wire-level protocol spec in the evidence.",
     "evidenceIds": [
-      "kitty-docs-1",
       "kitty-docs-23",
+      "kitty-probe-rt-1",
       "kitty-docs-27",
-      "kitty-probe-4",
-      "kitty-probe-rt-1"
+      "kitty-docs-1"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can let a coding agent programmatically drive the terminal itself — create panes, run commands, read output — through a documented control protocol or API",
+      "citations": [
+        {
+          "evidenceId": "kitty-docs-23",
+          "quote": "kitty can be controlled from scripts or the shell prompt. You can open new windows, send arbitrary text input to any window, change the title of windows and tabs, etc."
+        },
+        {
+          "evidenceId": "kitty-probe-rt-1",
+          "quote": "`kitten @ ls` returned full window/tab/layout state as JSON, `kitten @ send-text \"echo PA_PROBE_OK\"` executed in the live window, `kitten @ get-text` read the output back, `kitten @ close-window` tore it down — complete external agent-control loop verified hands-on."
+        },
+        {
+          "evidenceId": "kitty-docs-27",
+          "quote": "Control it from scripts or the shell; Extend with kittens using the Python language; Use startup sessions to specify working environments; Programmable tabs, splits and multiple layouts to manage windows."
+        }
+      ]
+    },
     "productId": "kitty",
     "storyId": "agent-drives-terminal"
   }

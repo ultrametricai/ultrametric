@@ -1,11 +1,11 @@
 {
-  "hash": "de791de7cd15407c076375003fc98e9205c7868132613ca1543bd81064ec944f",
+  "hash": "36f8168049f0399268b02c72f862f4cef08f698eadc783b642fb4148e356ecc9",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 8,
-    "confidence": "high",
-    "rationale": "The API docs say the model returns the transcript along with the detected languages as JSON. The README describes Whisper as performing language identification and exposes `whisper.detect_language()`. CLI and Python examples transcribe without declaring a language, and specifying one is presented as optional (\"you can specify the language\"). missing for 10: an explicit statement that language is auto-detected by default when omitted, and independent hands-on corroboration of auto-detection accuracy.",
+    "confidence": "medium",
+    "rationale": "Whisper is documented as performing language identification. The API returns \"the detected languages as JSON\", and the open-source package exposes `whisper.detect_language()`. Basic `model.transcribe(\"audio.mp3\")` calls work without a language argument, so declaring the language is optional rather than required. missing for 10: independent or hands-on corroboration of detection accuracy, and documentation of how auto-detection behaves by default (e.g. which segment is sampled, confidence scores, mixed-language handling).",
     "evidenceIds": [
       "whisper-docs-4",
       "whisper-docs-7",
@@ -13,6 +13,29 @@
       "whisper-gh-4",
       "whisper-gh-6"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, the service can detect the spoken language automatically instead of requiring me to declare it",
+      "citations": [
+        {
+          "evidenceId": "whisper-docs-4",
+          "quote": "The model returns the transcript and the detected languages as JSON"
+        },
+        {
+          "evidenceId": "whisper-docs-7",
+          "quote": "a multitasking model that can perform multilingual speech recognition, speech translation, and language identification."
+        },
+        {
+          "evidenceId": "whisper-gh-7",
+          "quote": "`whisper.detect_language()` and `whisper.decode()` which provide lower-level access to the model."
+        },
+        {
+          "evidenceId": "whisper-gh-6",
+          "quote": "model = whisper.load_model(\"turbo\") result = model.transcribe(\"audio.mp3\")"
+        }
+      ]
+    },
     "productId": "whisper",
     "storyId": "language-detection"
   }

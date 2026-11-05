@@ -1,21 +1,46 @@
 {
-  "hash": "b0875dab33c78df2d3f9a20f784bc3ce360d107ae1e025364264a2969140838a",
+  "hash": "cb72e4969aa7b264fa73baddbc05ae0235cdea051e4a0f1c16f5bbd679336c8e",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "ramp",
-    "storyId": "agent-closes-the-books",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Ramp exposes transactions to agents through the Transactions API, an OAuth-gated MCP server with transactions:read/write and accounting:read/write scopes, and the agent-mode CLI. The CLI's transactions commands include list/get/edit/missing/flag-missing/explain-missing/memo-suggestions, and the agents guide documents loading accounting and tracking categories, editing, and approving transactions, with every action landing in the audit log. Missing for 10: an explicitly documented 'uncoded transactions' filter (only missing receipts/memos is shown), an explicit agent workflow for proposing policy flags, a documented review queue for agent-proposed coding (as opposed to direct edits), and independent hands-on corroboration.",
+    "rationale": "Ramp documents the agent channels for this workflow. Agents can retrieve transactions via the Transactions API and MCP, load accounting and tracking categories, and use CLI transaction subcommands including list, edit, missing and memo-suggestions. The live MCP server also exposes transactions:write and accounting:write scopes, so an agent can read and write transaction coding. However, no evidence shows an explicit uncoded-transaction filter, agent-proposed policy flags, or a staged review queue for agent-pushed coding, as opposed to direct edits. Missing for 10: an explicit uncoded-transaction query, documented agent-set policy flags, a propose-then-review flow for pushed GL coding, and hands-on corroboration.",
     "evidenceIds": [
       "ramp-docs-1",
       "ramp-supp-cli-agent-mode",
       "ramp-supp-ai-agents-channels",
       "ramp-probe-4",
-      "ramp-docs-29",
-      "ramp-supp-mcp-server",
-      "ramp-probe-6"
-    ]
+      "ramp-supp-mcp-server"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, an agent can pull uncoded transactions via API or MCP, propose categorizations and policy flags, and push clean coding back for review",
+      "citations": [
+        {
+          "evidenceId": "ramp-docs-1",
+          "quote": "call the Transactions API to retrieve transaction data"
+        },
+        {
+          "evidenceId": "ramp-supp-cli-agent-mode",
+          "quote": "transactions (list/get/approve/edit/missing/flag-missing/explain-missing/memo-suggestions/trips)"
+        },
+        {
+          "evidenceId": "ramp-supp-ai-agents-channels",
+          "quote": "Load vendor lists, accounting categories, tracking categories, departments, entities, treasury balances, and the org chart"
+        },
+        {
+          "evidenceId": "ramp-probe-4",
+          "quote": "\"accounting:write\""
+        },
+        {
+          "evidenceId": "ramp-probe-4",
+          "quote": "\"transactions:write\""
+        }
+      ]
+    },
+    "productId": "ramp",
+    "storyId": "agent-closes-the-books"
   }
 }

@@ -1,18 +1,40 @@
 {
-  "hash": "e933d1befbfbafaec3060d813c4be620bacaa8d0e87c57c3ef6bb32bd1472268",
+  "hash": "d1f748c6723803f981a47f77a237af05b110b10f6f715a07f88d56ebf2c2ccf2",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 8,
-    "confidence": "high",
-    "rationale": "The docs say the `wezterm cli` subcommand can drive a running GUI or multiplexer instance to spawn programs and manipulate tabs and panes. A hands-on runtime probe confirmed a fully headless control loop with no GUI session: `wezterm-mux-server --daemonize`, then CLI spawn, send-text, get-text and list. A community user also corroborates using get-text to dump pane contents to stdout. Missing for 10: first-party documentation of the mux-server headless mode itself, and CI-specific guidance or examples (containers, exit-code and scripting behavior).",
+    "verdict": "partial",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "A recorded runtime probe shows WezTerm working headlessly: `wezterm-mux-server --daemonize` plus `wezterm cli spawn/send-text/get-text/list` ran with no GUI session. The docs confirm the cli subcommand drives a multiplexer instance and that config values can be overridden on the command line. CI use itself is not documented, so coverage of the story is incomplete. missing for 10: first-party docs on headless/CI operation, documented CI recipes or exit-code/automation guidance, independent community corroboration of CI usage.",
     "evidenceIds": [
-      "wezterm-docs-7",
-      "wezterm-docs-19",
-      "wezterm-probe-4",
       "wezterm-probe-rt-1",
-      "wezterm-comm-1"
+      "wezterm-docs-7",
+      "wezterm-docs-35",
+      "wezterm-docs-23"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
+      "citations": [
+        {
+          "evidenceId": "wezterm-probe-rt-1",
+          "quote": "fully headless control loop verified"
+        },
+        {
+          "evidenceId": "wezterm-probe-rt-1",
+          "quote": "no GUI session required"
+        },
+        {
+          "evidenceId": "wezterm-docs-35",
+          "quote": "interacts with a running wezterm GUI or multiplexer instance, and can be used to spawn programs and manipulate tabs and panes."
+        },
+        {
+          "evidenceId": "wezterm-docs-23",
+          "quote": "wezterm allows overriding configuration values via the command line"
+        }
+      ]
+    },
     "productId": "wezterm",
     "storyId": "agentic-headless"
   }

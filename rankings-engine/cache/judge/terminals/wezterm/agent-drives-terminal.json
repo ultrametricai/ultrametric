@@ -1,19 +1,37 @@
 {
-  "hash": "1294ecce13ab467312233736098c1c44871bdbb6ae1521fc10bcfd7787ec5500",
+  "hash": "c83a34a130a9459195ef7de5286622c8837417bb625c983c97366c21f84a7479",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "WezTerm's documented `wezterm cli` subcommand controls a running GUI or mux instance to spawn programs and manipulate tabs and panes. A runtime probe confirmed a fully headless agent loop: `spawn` returned a pane-id, `send-text` ran a command, `get-text` read the output back, and `list` enumerated windows, tabs and panes. A community user also independently cites `get-text` for dumping scrollback. Missing for 10: in-depth first-party documentation of the individual subcommands (e.g. pane splitting and machine-readable output formats) beyond the summary-level docs snippet.",
+    "rationale": "WezTerm's documented `wezterm cli` subcommand talks to a running GUI or mux instance to spawn programs and manipulate tabs and panes. A recorded runtime probe confirmed a full headless agent loop: spawn returned a pane-id, send-text ran a command, get-text read the output back, and list enumerated panes. A community user independently confirms get-text dumps scrollback. Missing for 10: the pack has no in-depth first-party docs for individual subcommands (send-text/get-text arguments, output formats); first-party evidence is limited to the CLI overview line.",
     "evidenceIds": [
       "wezterm-docs-7",
-      "wezterm-docs-19",
+      "wezterm-docs-35",
       "wezterm-probe-4",
       "wezterm-probe-rt-1",
-      "wezterm-comm-1",
-      "wezterm-docs-3"
+      "wezterm-comm-1"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can let a coding agent programmatically drive the terminal itself — create panes, run commands, read output — through a documented control protocol or API",
+      "citations": [
+        {
+          "evidenceId": "wezterm-docs-7",
+          "quote": "The _cli_ subcommand interacts with a running wezterm GUI or multiplexer instance, and can be used to spawn programs and manipulate tabs and panes."
+        },
+        {
+          "evidenceId": "wezterm-probe-rt-1",
+          "quote": "`wezterm cli spawn --new-window` returned a pane-id, `wezterm cli send-text --pane-id N \"echo PA_PROBE_OK\"` delivered, `wezterm cli get-text` read the pane content back, `wezterm cli list` enumerated windows/tabs/panes; no GUI session required."
+        },
+        {
+          "evidenceId": "wezterm-comm-1",
+          "quote": "wezterm does with get-text."
+        }
+      ]
+    },
     "productId": "wezterm",
     "storyId": "agent-drives-terminal"
   }

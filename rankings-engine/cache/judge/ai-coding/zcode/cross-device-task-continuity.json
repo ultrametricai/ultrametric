@@ -1,19 +1,36 @@
 {
-  "hash": "f63720b6ea89b1c5b2d8153ea139c33dd4faad8f9619706610ac3081ec14bd70",
+  "hash": "82877ce4a9c3f8270f11f8bdd5c7cb00a78cbde03abcd8d9a27e40f48254e354",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
-    "confidence": "medium",
-    "rationale": "ZCode ships a desktop app, a browser interface and a terminal agent. `zcode --web` can listen on the LAN (`--host 0.0.0.0`) with token-authenticated links, so a session running on one machine can be reached from another device's browser. Its site also says tasks can be triggered remotely via WeChat, Feishu or Telegram. However, nothing documents that a task or session started on one device can be resumed later on another: access depends on the original host staying up and reachable, and there is no cloud session sync. Missing for 10: documented cross-device session sync and resume, access without self-hosting a reachable web server, and independent hands-on corroboration.",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "ZCode ships its own browser interface (`zcode --web`). It can listen on a LAN address with token-authenticated links, so other devices' browsers can reach a running instance, and tasks can be woken remotely via WeChat, Feishu or Telegram. Nothing documents that a task or session started on one device carries over to another device or browser. missing for 10: documented session handoff or sync across devices, cloud-backed session continuity beyond LAN access to a single host, hands-on corroboration of cross-device continuation.",
     "evidenceIds": [
       "zcode-gh-1",
       "zcode-gh-2",
-      "zcode-gh-3",
       "zcode-gh-4",
-      "zcode-docs-1",
       "zcode-docs-3"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can start a task on one device and continue it later from another device or browser",
+      "citations": [
+        {
+          "evidenceId": "zcode-gh-1",
+          "quote": "提供桌面应用、浏览器界面和终端 Agent"
+        },
+        {
+          "evidenceId": "zcode-gh-4",
+          "quote": "局域网访问可使用 `--host 0.0.0.0`；监听非本机地址时默认生成访问令牌，使用终端输出的带令牌链接。"
+        },
+        {
+          "evidenceId": "zcode-docs-3",
+          "quote": "通过微信、飞书或 Telegram 远程唤起 ZCode，让任务随时进入执行状态。"
+        }
+      ]
+    },
     "productId": "zcode",
     "storyId": "cross-device-task-continuity"
   }

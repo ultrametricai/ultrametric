@@ -1,19 +1,36 @@
 {
-  "hash": "36f8fa68d9c67606c51d9745b8bd40039f28b4da4eed7a3ce447393c5bb50f65",
+  "hash": "77b0ac838d2697e465b75074d0c97c719cc6db1a662afeac892ffea000ca78b2",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "claude-code",
-    "storyId": "configurable-tool-permissions",
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "The evidence shows several relevant control points. Integrations are added explicitly per server via `claude mcp add` (docs-35, docs-29). The Bash sandbox lets you define which files and network domains commands can reach, with OS enforcement (docs-50). Claude for Enterprise offers managed policy settings for organization-wide Claude Code configuration (docs-41). The Agent SDK advertises full control over tool access and permissions (docs-18). However, none of this directly documents a lead-level allowlist or denylist of MCP servers or tools for Claude Code itself. Missing for 10: explicit documentation of per-tool/MCP-server allow/deny permission rules, evidence that managed policies can restrict which integrations are allowed, and independent or hands-on corroboration.",
+    "rationale": "Claude Code's own docs give leads two levers: managed policy settings for organization-wide configuration (Enterprise), and a Bash sandbox where you define which network domains commands can reach, with OS enforcement. External integrations are attached explicitly via `claude mcp add`. However, no evidence describes per-tool or per-MCP-server allow/deny lists, or exactly what managed policies can restrict. Missing for 10: documented per-tool/MCP-server allowlists or denylists, detail on which integrations managed policy settings can restrict, and independent or hands-on corroboration.",
     "evidenceIds": [
-      "claude-code-docs-35",
-      "claude-code-docs-29",
-      "claude-code-docs-50",
       "claude-code-docs-41",
-      "claude-code-docs-18"
-    ]
+      "claude-code-docs-50",
+      "claude-code-docs-35"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an engineering-lead, I can control which external tools and integrations the agent is allowed to access",
+      "citations": [
+        {
+          "evidenceId": "claude-code-docs-41",
+          "quote": "managed policy settings for organization-wide Claude Code configurations"
+        },
+        {
+          "evidenceId": "claude-code-docs-50",
+          "quote": "you define which files and network domains commands can touch, and the operating system enforces that boundary for every Bash command and its child processes"
+        },
+        {
+          "evidenceId": "claude-code-docs-35",
+          "quote": "claude mcp add --transport http notion https://mcp.notion.com/mcp"
+        }
+      ]
+    },
+    "productId": "claude-code",
+    "storyId": "configurable-tool-permissions"
   }
 }

@@ -1,22 +1,46 @@
 {
-  "hash": "a289e85b92d6951139785cf37e35a0cc529823da999ebe04dba4d27c4f12fb71",
+  "hash": "8967b0964f8b409f944fdae89eed3ddbe31977829dce216c18f2406ec1c4ab74",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "cursor",
-    "storyId": "api-sandbox",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Cursor documents isolated execution environments where agents can test changes. Cloud Agents run in isolated VMs with full dev environments, and they can start dev servers, click through UI flows and verify changes before pushing a PR. Auto-review sandboxes shell commands under file and network limits, and worktrees keep the main checkout untouched. Hooks can gate risky operations such as SQL writes, and permission tokens can deny reads of `.env*` secrets. Missing for 10: an explicit guarantee or documented pattern that separates test runs from production data or credentials (e.g., a sandbox/test-mode data tier; session envVars could still carry production credentials), independent or hands-on corroboration, and the docs' own note that 'Auto-review is not a security boundary.'",
+    "rationale": "Cursor documents real execution isolation: Cloud Agents run in isolated VMs with full dev environments where they build and test changes, and Auto-review run mode sandboxes shell commands under file and network limits. This is sandbox isolation, not just a dry run (print mode without --force only proposes changes). However, nothing documents separating test data from production data, and the docs say Auto-review is not a security boundary. missing for 10: explicit production-data separation or a staging/test-data environment, any guarantee that sandboxed runs cannot reach production systems, independent hands-on corroboration.",
     "evidenceIds": [
       "cursor-supp-cloud-agents",
-      "cursor-docs-28",
       "cursor-supp-run-modes",
-      "cursor-supp-worktrees",
-      "cursor-supp-hooks",
-      "cursor-supp-cli-permissions",
       "cursor-supp-privacy-governance",
-      "cursor-supp-self-hosted"
-    ]
+      "cursor-docs-28",
+      "cursor-supp-worktrees"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
+      "citations": [
+        {
+          "evidenceId": "cursor-supp-cloud-agents",
+          "quote": "run in isolated VMs in the cloud with full development environments"
+        },
+        {
+          "evidenceId": "cursor-supp-cloud-agents",
+          "quote": "cloud agents can build, test, and interact with the changed software"
+        },
+        {
+          "evidenceId": "cursor-supp-run-modes",
+          "quote": "A shell command 'can run in the sandbox' when it works under the sandbox's file and network limits"
+        },
+        {
+          "evidenceId": "cursor-docs-28",
+          "quote": "Agents can start dev servers, open the app in a browser, click through UI flows, and verify their changes work before pushing a PR."
+        },
+        {
+          "evidenceId": "cursor-supp-worktrees",
+          "quote": "Each task gets its own files, dependencies, and changes while your main checkout stays untouched."
+        }
+      ]
+    },
+    "productId": "cursor",
+    "storyId": "api-sandbox"
   }
 }

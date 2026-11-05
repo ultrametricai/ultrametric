@@ -1,16 +1,34 @@
 {
-  "hash": "0b3aecdeb96d5709fdd655c21fb518b5c3d2b06f3e13b9e4630f2f312c7b34ab",
+  "hash": "ca3b4a229e92c48663742530571e276452a77b1bd567dfeca464b9a850d7d516",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 8,
+    "verdict": "partial",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Batch job submissions can register `notifications.webhook_url` with a secret, and Zoom sends an outbound POST when the job finishes. Each request carries an HMAC-SHA256 `x-zm-signature` and a timestamp, and the docs give verification guidance, so callers need not poll the status endpoint. Terminal states are documented (SUCCEEDED, PARTIAL, FAILED, CANCELED), but the docs only say the webhook fires 'when the job finishes', so firing on failure is implied rather than stated. Missing for 10: explicit confirmation the webhook fires on FAILED/PARTIAL outcomes, documented payload schema and retry/delivery guarantees, independent or hands-on corroboration.",
+    "rationale": "Scribe batch submissions can register notifications.webhook_url with a secret. Zoom then sends an outbound POST when the job finishes, signed with an x-zm-signature HMAC-SHA256 value, so a developer does not need to poll get-status. The docs say only that the webhook fires when the job 'finishes'; they do not explicitly confirm that FAILED, PARTIAL or CANCELED jobs trigger it, and webhooks appear to apply only to batch jobs. missing for 10: explicit documentation that failed, partial or canceled terminal states trigger the callback, the webhook payload schema, retry and delivery guarantees, and independent or hands-on corroboration.",
     "evidenceIds": [
       "zoom-scribe-supp-batch-webhooks",
-      "zoom-scribe-supp-batch-lifecycle",
-      "zoom-scribe-supp-batch-failures"
+      "zoom-scribe-supp-batch-lifecycle"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, a webhook or callback fires when a job completes or fails, so nothing in my system has to poll",
+      "citations": [
+        {
+          "evidenceId": "zoom-scribe-supp-batch-webhooks",
+          "quote": "A batch submission can register notifications.webhook_url and a secret to receive an outbound POST when the job finishes."
+        },
+        {
+          "evidenceId": "zoom-scribe-supp-batch-webhooks",
+          "quote": "Zoom signs each request with an x-zm-signature HMAC-SHA256 value and timestamp"
+        },
+        {
+          "evidenceId": "zoom-scribe-supp-batch-lifecycle",
+          "quote": "Jobs expose QUEUED, PROCESSING, SUCCEEDED, PARTIAL, FAILED, and CANCELED states"
+        }
+      ]
+    },
     "productId": "zoom-scribe",
     "storyId": "webhook-completion"
   }

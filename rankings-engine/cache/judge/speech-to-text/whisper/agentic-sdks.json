@@ -1,18 +1,40 @@
 {
-  "hash": "fa68a52e49f9c1c596a6f803b2eb4fa7322492c88899fca989902c15f8b0f123",
+  "hash": "07b8094f767c76d926e86db402d4f7f520b4f89f7231cbcb5e13633286e57408",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "OpenAI ships an official Python package (`pip install -U openai-whisper`) with a programmatic API: `whisper.load_model()` and `model.transcribe()`, plus lower-level `detect_language()` and `decode()`. The API docs also show an official `openai audio:transcriptions create` CLI command. However, the evidence shows only a Python library for local inference, and nothing documents multi-language SDKs for the hosted transcription API. missing for 10: documented official SDKs for the hosted speech-to-text API across languages (e.g. Python/Node), SDK reference docs, a published OpenAPI spec (probes returned 404), independent hands-on corroboration of building against the SDK.",
+    "rationale": "OpenAI ships an official, pip-installable `openai-whisper` Python package with a programmatic API: `load_model`/`transcribe` plus lower-level `detect_language()` and `decode()`. The API docs also show an official `openai` CLI command for transcription. However, the evidence covers only one language binding for the local model, with no documented multi-language SDKs for the hosted transcription API. Missing for 10: documented official SDKs in multiple languages for the speech-to-text API, SDK reference docs, and independent corroboration of building against them.",
     "evidenceIds": [
       "whisper-gh-1",
       "whisper-gh-6",
       "whisper-gh-7",
-      "whisper-docs-6",
-      "whisper-probe-3"
+      "whisper-docs-6"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can build against official SDKs",
+      "citations": [
+        {
+          "evidenceId": "whisper-gh-1",
+          "quote": "pip install -U openai-whisper"
+        },
+        {
+          "evidenceId": "whisper-gh-6",
+          "quote": "Transcription can also be performed within Python: model = whisper.load_model(\"turbo\") result = model.transcribe(\"audio.mp3\")"
+        },
+        {
+          "evidenceId": "whisper-gh-7",
+          "quote": "`whisper.detect_language()` and `whisper.decode()` which provide lower-level access to the model."
+        },
+        {
+          "evidenceId": "whisper-docs-6",
+          "quote": "openai audio:transcriptions create --model gpt-transcribe --file /path/to/file/audio.mp3"
+        }
+      ]
+    },
     "productId": "whisper",
     "storyId": "agentic-sdks"
   }

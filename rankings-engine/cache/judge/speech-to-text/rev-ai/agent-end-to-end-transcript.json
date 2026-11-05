@@ -1,11 +1,11 @@
 {
-  "hash": "0a3878c5ddce5cfb14a7da7ad517793c85c95a85caa8b9ae34bbcd9f4e51cdd0",
+  "hash": "ffea85d82f688911263f85422132473321c5965723520e70e71d5526d4aa8572",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "The public get-started tutorial walks through submitting an audio file to the Asynchronous Speech-to-Text API and retrieving the transcript, including a plaintext retrieval command. Webhooks can signal job completion, and the docs are machine-readable via llms.txt and .md pages, so an agent can follow the flow end to end without a human step. missing for 10: explicit evidence of the API-key auth step in the docs, a published OpenAPI spec (all probed paths 404), independent or hands-on corroboration of an agent completing the flow.",
+    "rationale": "Rev AI's public get-started tutorial walks through the async Speech to Text API: submit an audio file, then retrieve the transcript (including a plaintext command). Webhooks can signal completion with no human polling, and an llms.txt index makes the docs agent-readable. However, the evidence pack never shows the API-key auth step, and there is no machine-readable OpenAPI spec (all candidate paths return 404). missing for 10: explicit evidence of API-key authentication in the flow, a published OpenAPI spec, independent/hands-on confirmation that an agent completes the flow from docs alone.",
     "evidenceIds": [
       "rev-ai-docs-1",
       "rev-ai-docs-2",
@@ -13,6 +13,29 @@
       "rev-ai-probe-1",
       "rev-ai-probe-3"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, an agent holding an API key can take a recording from submission to finished transcript (auth, job creation, result retrieval) from the public docs alone, with no human step in between",
+      "citations": [
+        {
+          "evidenceId": "rev-ai-docs-1",
+          "quote": "This tutorial uses the Asynchronous Speech to Text API to produce a transcript of an audio file submitted by you."
+        },
+        {
+          "evidenceId": "rev-ai-docs-2",
+          "quote": "Alternatively, you can get the plaintext version by running the command below"
+        },
+        {
+          "evidenceId": "rev-ai-docs-3",
+          "quote": "use webhooks to asynchronously receive notifications once the transcription job completes."
+        },
+        {
+          "evidenceId": "rev-ai-probe-1",
+          "quote": "PROBE llms.txt: HTTP 200 at https://docs.rev.ai/llms.txt # Rev AI Developer Documentation"
+        }
+      ]
+    },
     "productId": "rev-ai",
     "storyId": "agent-end-to-end-transcript"
   }

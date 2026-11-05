@@ -1,21 +1,42 @@
 {
-  "hash": "9159ac94d8a878fa3218b22e1b27ee4c2c79adf648ff5da61f1ece9c0c542e79",
+  "hash": "656525c6b3fc8f0e7a3ca28cbaccbd9f6b6188d1c3dba423ea536e808cad2e5e",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Workable's API is scope-based: each endpoint documents a required scope (e.g. r_jobs, r_candidates, w_candidates, w_members, w_departments). Scopes such as r_account are enabled per token through Settings > Integrations, and multiple token types exist (account and user tokens), so an agent can be given a least-privilege token. Missing for 10: a documented step-by-step token-creation flow showing scope selection, finer-than-scope restrictions (per-job or per-resource), guidance on how MCP-server or agent credentials are scoped, and independent hands-on corroboration.",
+    "rationale": "Workable's API uses granular per-endpoint scopes such as r_jobs, r_candidates, w_candidates, w_members and r_account, and its docs say scopes can be enabled through the Settings > Integrations section, so least-privilege tokens appear possible. The pack does not show the token-generation flow where scopes are chosen, and nothing ties credentials to agents or the MCP server. Missing for 10: documented scope selection at token creation, agent- or MCP-specific credential scoping, token expiry/revocation details, and independent hands-on corroboration.",
     "evidenceIds": [
+      "workable-docs-35",
       "workable-docs-5",
       "workable-docs-6",
       "workable-docs-13",
-      "workable-docs-17",
       "workable-docs-27",
-      "workable-docs-32",
-      "workable-docs-35",
-      "workable-probe-2"
+      "workable-docs-17"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
+      "citations": [
+        {
+          "evidenceId": "workable-docs-35",
+          "quote": "This endpoint uses `r_account` scope which can be enabled through the Integrations section found within the Settings menu."
+        },
+        {
+          "evidenceId": "workable-docs-5",
+          "quote": "Required scope: `r_jobs`. Accessible with all token types."
+        },
+        {
+          "evidenceId": "workable-docs-13",
+          "quote": "Creates a rating for a candidate. Required scope: `w_candidates`. Accessible with all token types."
+        },
+        {
+          "evidenceId": "workable-docs-17",
+          "quote": "Accessible with account tokens and user tokens."
+        }
+      ]
+    },
     "productId": "workable",
     "storyId": "agentic-scoped-keys"
   }

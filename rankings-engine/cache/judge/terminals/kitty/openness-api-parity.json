@@ -1,19 +1,36 @@
 {
-  "hash": "bfb8780c3cfcb3417674c3ead208865e454dbbb3364dc941603415845b3b89fb",
+  "hash": "8eadd0ea5c34f119c32907d26af8ea7cbe8f69913ac4994b9ca09fc67e1c2886",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "kitty's documented remote-control interface lets scripts open windows, send arbitrary text to any window, and change window and tab titles; tabs, splits and layouts are described as programmable. A hands-on probe confirmed a full external control loop: `kitten @ ls` returned window, tab and layout state as JSON, then send-text, get-text and close-window all worked. Missing for 10: an explicit statement or mapping showing remote control covers every UI and mappable action (true parity), and independent community corroboration of API completeness.",
+    "rationale": "kitty ships its own remote-control interface (`kitten @`). The docs say it can open new windows, send arbitrary text to any window and change window/tab titles. A hands-on probe confirmed a full external control loop: listing window/tab/layout state as JSON, sending text, reading output back and closing windows. Nothing in the evidence shows that every UI action (layouts, resizing, themes, fonts, all mappable actions) is reachable through this interface, so UI parity is unproven. missing for 10: documented mapping showing every UI/mappable action is exposed via remote control, evidence of parity for layout, resize, theme and font changes, independent community corroboration of API completeness.",
     "evidenceIds": [
       "kitty-docs-23",
       "kitty-docs-27",
-      "kitty-docs-1",
-      "kitty-probe-4",
       "kitty-probe-rt-1",
-      "kitty-docs-22"
+      "kitty-probe-4"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can do everything through the API that I can do in the UI",
+      "citations": [
+        {
+          "evidenceId": "kitty-docs-23",
+          "quote": "kitty can be controlled from scripts or the shell prompt. You can open new windows, send arbitrary text input to any window, change the title of windows and tabs, etc."
+        },
+        {
+          "evidenceId": "kitty-probe-rt-1",
+          "quote": "`kitten @ ls` returned full window/tab/layout state as JSON, `kitten @ send-text \"echo PA_PROBE_OK\"` executed in the live window, `kitten @ get-text` read the output back, `kitten @ close-window` tore it down"
+        },
+        {
+          "evidenceId": "kitty-docs-27",
+          "quote": "Control it from scripts or the shell"
+        }
+      ]
+    },
     "productId": "kitty",
     "storyId": "openness-api-parity"
   }

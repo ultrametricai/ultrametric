@@ -1,20 +1,42 @@
 {
-  "hash": "9d58c7f65e072bcab6d822a6ac3bb7afe798320854e665accc6db33963ebf4bd",
+  "hash": "8d4c426a69249d66d7058c9a028a8353494e44e7519baf84a312251f9bf80450",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
-    "quality": 9,
-    "confidence": "high",
-    "rationale": "Baseten Model APIs document OpenAI Chat Completions compatibility, which lets existing clients point their base_url at Baseten without provider-specific code (docs-21, docs-30, docs-39, docs-33). Baseten Switch routes coding agents (Claude Code, Codex CLI, Pi) to Baseten and back to Anthropic/OpenAI (docs-16, docs-34), directly supporting switching mid-workflow. Missing for 10: independent or hands-on corroboration that the compatibility holds across features without code changes.",
+    "quality": 8,
+    "confidence": "medium",
+    "rationale": "Baseten's first-party docs say Model APIs support the OpenAI Chat Completions API and expose an OpenAI-compatible endpoint. Existing clients such as LangChain's ChatOpenAI can switch by pointing `base_url` at Baseten, so no provider-specific code is needed, and Baseten Switch can route agent requests back to Anthropic or OpenAI. missing for 10: independent or hands-on confirmation that the compatibility holds in practice, and documentation of any compatibility deviations or edge cases (the Anthropic Messages support is labeled beta).",
     "evidenceIds": [
       "baseten-docs-21",
       "baseten-docs-30",
-      "baseten-docs-39",
       "baseten-docs-33",
+      "baseten-docs-39",
       "baseten-docs-16",
-      "baseten-docs-34",
-      "baseten-docs-22"
+      "baseten-docs-44"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can have an agent switch to or away from this provider mid-workflow because it speaks the standard chat-completions API without provider-specific code changes",
+      "citations": [
+        {
+          "evidenceId": "baseten-docs-21",
+          "quote": "They support the OpenAI Chat Completions API and the Anthropic Messages API in beta, so you can use familiar client SDKs."
+        },
+        {
+          "evidenceId": "baseten-docs-33",
+          "quote": "Because Baseten exposes an OpenAI-compatible endpoint, you can use LangChain's `ChatOpenAI` with `with_structured_output` by pointing `base_url` at Baseten"
+        },
+        {
+          "evidenceId": "baseten-docs-30",
+          "quote": "Call hosted models through an OpenAI-compatible API"
+        },
+        {
+          "evidenceId": "baseten-docs-16",
+          "quote": "route requests back to those providers"
+        }
+      ]
+    },
     "productId": "baseten",
     "storyId": "drop-in-provider-switch"
   }

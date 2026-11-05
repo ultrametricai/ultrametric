@@ -1,22 +1,47 @@
 {
-  "hash": "fdaeeb2d1f670c305306f8ada2d089eeb366ef921875073fed46d28e6a74e34a",
+  "hash": "fc2174abe5678fb43e7aa833db1f4df728ee803bc64c81d1cf7a27bd0b6a52a7",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Baseten documents several performance features for this story: Truss builds TensorRT-optimized containers and supports vLLM, SGLang and TensorRT-LLM engines. It also offers token-by-token streaming over SSE, session-based routing that reuses the KV-cache prefix, \"high-performance LLMs\" via Model APIs, and a Performance Client for concurrent requests. A community report also says Baseten's server was fast enough that the client became the throughput bottleneck. missing for 10: explicit time-to-first-token or tokens/sec figures or benchmarks, documented latency SLAs or tuning guidance for latency-sensitive workloads, independent hands-on latency measurements.",
+    "rationale": "Baseten documents its own performance mechanisms. These include token streaming over SSE, TensorRT-optimized containers built by Truss, \"high-performance LLMs\" via Model APIs, and session-based routing that keeps shared prompt prefixes in the KV cache. A community report that the client, not the server, became the throughput bottleneck lends indirect support. However, no time-to-first-token or throughput figures are documented. missing for 10: quantified TTFT/latency benchmarks, documented throughput figures or tuning guidance, independent hands-on latency measurements.",
     "evidenceIds": [
-      "baseten-gh-2",
-      "baseten-gh-6",
-      "baseten-gh-5",
-      "baseten-docs-8",
       "baseten-docs-26",
+      "baseten-docs-8",
+      "baseten-gh-6",
       "baseten-docs-39",
       "baseten-docs-41",
       "baseten-docs-49",
       "baseten-comm-3"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can serve latency-sensitive workloads with fast time-to-first-token and high-throughput generation",
+      "citations": [
+        {
+          "evidenceId": "baseten-docs-26",
+          "quote": "Streaming sends tokens as they are generated over server-sent events, which suits long generations and UIs where partial output beats a blank wait."
+        },
+        {
+          "evidenceId": "baseten-gh-6",
+          "quote": "`uvx truss push` builds a TensorRT-optimized container and deploys it."
+        },
+        {
+          "evidenceId": "baseten-docs-39",
+          "quote": "OpenAI- and Anthropic-compatible endpoints for high-performance LLMs"
+        },
+        {
+          "evidenceId": "baseten-docs-41",
+          "quote": "Baseten routes requests with the same session ID to the same replica, where the shared prompt prefix is more likely to remain in the KV cache."
+        },
+        {
+          "evidenceId": "baseten-docs-49",
+          "quote": "The Performance Client sends concurrent requests from Python, JavaScript, or Rust."
+        }
+      ]
+    },
     "productId": "baseten",
     "storyId": "low-latency-serving"
   }

@@ -1,17 +1,36 @@
 {
-  "hash": "7748207246f31124562e54dff83e75872252f29a9f472dcbf916702cb7d9b2ce",
+  "hash": "60f08cf123808f7f552def6b3e75764dcf70f240e48f7c698c9e7f57934cbc92",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Baseten documents its own capabilities for high-volume work. Async inference returns request IDs and completes via webhook or polling, explicitly described as suited to batch work. The first-party Performance Client sends concurrent requests from Python, JavaScript, or Rust, and a community developer corroborates the high-throughput embedding use case. However, there is no documented batch endpoint or single bulk-operation API that acts on many items at once, and no bulk management actions over deployments or resources. Missing for 10: a native batch/bulk API that submits many items in one operation, bulk management operations across workspace resources, and independent hands-on evidence of bulk workflows.",
+    "rationale": "Baseten documents its own Performance Client, which sends concurrent requests from Python, JavaScript, or Rust. It also documents async inference that returns a request ID and completes later via webhook or polling, explicitly positioned for batch work. Together these give a first-party path to processing many inference items at once, but the evidence is thin and inference-specific. missing for 10: a documented batch/bulk job API that accepts many items in one submission, bulk management operations across workspace resources (deployments, models, keys), documented limits/throughput details, and independent hands-on corroboration.",
     "evidenceIds": [
+      "baseten-docs-49",
       "baseten-docs-27",
       "baseten-docs-45",
-      "baseten-docs-49",
       "baseten-comm-3"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can perform bulk operations across many items at once",
+      "citations": [
+        {
+          "evidenceId": "baseten-docs-49",
+          "quote": "The Performance Client sends concurrent requests from Python, JavaScript, or Rust."
+        },
+        {
+          "evidenceId": "baseten-docs-27",
+          "quote": "Async inference returns a request ID quickly and completes later through webhook or polling, which suits batch work, long documents, or any case where the caller should not hold a connection open for minutes."
+        },
+        {
+          "evidenceId": "baseten-comm-3",
+          "quote": "prompting them to build a Rust-based client that releases the GIL during requests to improve throughput"
+        }
+      ]
+    },
     "productId": "baseten",
     "storyId": "automation-bulk-operations"
   }

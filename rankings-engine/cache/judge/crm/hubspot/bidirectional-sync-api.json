@@ -1,19 +1,41 @@
 {
-  "hash": "b8e5512e8f1735cb5cba67c7c226186c42bfc8e8cb4f029e2266cab651589315",
+  "hash": "8bb7a0a0675b251e26d7c3da7e9903ddc4b5cc7946236b3941a75b80ce3ad8ac",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "HubSpot's own API docs cover syncing contact data with other systems, creating and updating records (including custom objects), batch retrieval, and change detection through the webhooks journal API (real-time events, historical event data, object snapshots). The pack has no documented rate limits and no API upsert semantics; email/domain deduplication and the add-or-update import are UI and knowledge-base features, not API upserts. Missing for 10: documented API rate limits, explicit upsert/batch-upsert endpoints, evidence of performance at scale, independent or hands-on corroboration.",
+    "rationale": "HubSpot's API docs say the contacts endpoints support syncing contact data between HubSpot and other systems. They also document batch retrieval of records and a webhooks journal API for real-time events and object snapshots, which covers change detection. The pack does not document rate limits or API-level upserts; the email-based deduplication and the 'add or update' behavior belong to the UI import feature, not the API. Missing for 10: documented API rate limits, documented API upsert/idempotent write endpoints, batch write evidence at scale, independent corroboration of bidirectional sync.",
     "evidenceIds": [
       "hubspot-docs-2",
       "hubspot-docs-3",
       "hubspot-docs-4",
-      "hubspot-docs-18",
       "hubspot-docs-31",
       "hubspot-docs-41"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can sync records bidirectionally through the API at scale, with documented rate limits, upserts, and change detection",
+      "citations": [
+        {
+          "evidenceId": "hubspot-docs-2",
+          "quote": "the contacts endpoints allow you to create and manage contact records in your HubSpot account, as well as sync contact data between HubSpot and other systems"
+        },
+        {
+          "evidenceId": "hubspot-docs-3",
+          "quote": "You can retrieve custom object records individually or in batches."
+        },
+        {
+          "evidenceId": "hubspot-docs-4",
+          "quote": "the webhooks journal API enables third-party integrators to subscribe to real-time events, retrieve historical event data, and manage snapshots of CRM objects"
+        },
+        {
+          "evidenceId": "hubspot-docs-41",
+          "quote": "Create and update custom object records with the custom objects API."
+        }
+      ]
+    },
     "productId": "hubspot",
     "storyId": "bidirectional-sync-api"
   }

@@ -1,16 +1,30 @@
 {
-  "hash": "a5aa6f3a86e24d03548ad76ba0dd3a9752ea23c9db4649662d3f89ca5bc47484",
+  "hash": "6848eb47394f043645069b49175bae1dc016021e333faff47a01adf1b4ad5d82",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Cerebras has a dedicated streaming capability doc stating that the API sends responses back in chunks and displays them incrementally as the model generates them. Its OpenAI API compatibility suggests the standard streaming pattern works as a drop-in, but the evidence does not explicitly name SSE. Missing for 10: explicit documentation of the SSE transport and event format, confirmation of token-level chunk granularity, and independent hands-on corroboration of streaming behavior.",
+    "rationale": "Cerebras documents first-party streaming: responses are sent back in chunks and displayed incrementally as the model generates them. OpenAI API compatibility suggests the standard streaming wire format, but the evidence never explicitly confirms SSE transport or per-token chunk granularity, and no hands-on report demonstrates streaming. missing for 10: explicit documentation of SSE as the transport, confirmation of token-by-token chunking, independent or hands-on corroboration of streaming behavior.",
     "evidenceIds": [
       "cerebras-docs-5",
-      "cerebras-docs-3",
-      "cerebras-docs-4"
+      "cerebras-docs-3"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can stream completions token by token over SSE for responsive user experiences",
+      "citations": [
+        {
+          "evidenceId": "cerebras-docs-5",
+          "quote": "The Cerebras API supports streaming responses, which send messages back in chunks and display them incrementally as the model generates them."
+        },
+        {
+          "evidenceId": "cerebras-docs-3",
+          "quote": "Existing applications can use Cerebras by changing the API key, base URL, and model ID."
+        }
+      ]
+    },
     "productId": "cerebras",
     "storyId": "streaming-responses"
   }

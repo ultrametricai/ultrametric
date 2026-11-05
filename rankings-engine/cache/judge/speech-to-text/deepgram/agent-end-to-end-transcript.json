@@ -1,22 +1,51 @@
 {
-  "hash": "61a2e0d1a3366d8917e465afb169fbb46165fd23a21783b18092825a4afd15b8",
+  "hash": "7331df597e08e9ad7e4f53c0003aa086cd88659aad58e71baba8f4eb4111403c",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 8,
+    "verdict": "partial",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Deepgram documents a single-call pre-recorded transcription endpoint (POST /v1/listen with model=nova-3) that returns the transcript directly, plus an optional callback URL for async delivery. Its docs are agent-readable: llms.txt with explicit AI-agent instructions, clean .md pages and a live openapi.json all probe at HTTP 200. A dg CLI that transcribes files and auto-detects agent environments, plus an MCP server, offer further no-human paths. The 2018 broken-docs-link report is superseded by the current HTTP 200 probes and does not dispute this. Missing for 10: the API-key auth header scheme is not explicitly shown in the evidence, and there is no independent hands-on report of an agent running submission to transcript unassisted.",
+    "rationale": "The public docs give an agent a clear path for recorded audio: POST to /v1/listen with nova-3, a Callback feature that returns transcripts to a supplied URL, a machine-readable OpenAPI spec and llms.txt with agent instructions, and a dg CLI that transcribes files and detects agent environments. However, the evidence does not explicitly document the API-key auth header or synchronous result retrieval end to end, so the full submission-to-transcript flow is implied rather than proven. missing for 10: explicit documentation of API-key authentication on the request, explicit synchronous result-retrieval or response format for pre-recorded jobs, hands-on or independent corroboration of an unattended agent run.",
     "evidenceIds": [
       "deepgram-docs-1",
       "deepgram-docs-11",
-      "deepgram-docs-12",
+      "deepgram-docs-17",
       "deepgram-docs-18",
       "deepgram-docs-24",
-      "deepgram-docs-23",
       "deepgram-probe-1",
-      "deepgram-probe-2",
       "deepgram-probe-3"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, an agent holding an API key can take a recording from submission to finished transcript (auth, job creation, result retrieval) from the public docs alone, with no human step in between",
+      "citations": [
+        {
+          "evidenceId": "deepgram-docs-1",
+          "quote": "Transcribe recorded files (interviews, podcasts, meetings, support calls): POST https://api.deepgram.com/v1/listen with model=nova-3"
+        },
+        {
+          "evidenceId": "deepgram-docs-11",
+          "quote": "Deepgram's Callback feature allows you to supply a callback URL to which transcriptions can be returned."
+        },
+        {
+          "evidenceId": "deepgram-docs-17",
+          "quote": "Generates a temporary JSON Web Token (JWT) with a 30-second TTL (Time To Live) for Deepgram APIs."
+        },
+        {
+          "evidenceId": "deepgram-docs-18",
+          "quote": "The dg CLI lets you transcribe files, stream live audio, synthesize speech, analyze text, and manage your Deepgram account from the terminal."
+        },
+        {
+          "evidenceId": "deepgram-docs-24",
+          "quote": "The CLI auto-detects AI agent environments, including Claude Code, Aider, and OpenAI Codex, and adjusts its behavior"
+        },
+        {
+          "evidenceId": "deepgram-probe-3",
+          "quote": "PROBE openapi: HTTP 200 at https://developers.deepgram.com/openapi.json — contains \"openapi\" key"
+        }
+      ]
+    },
     "productId": "deepgram",
     "storyId": "agent-end-to-end-transcript"
   }

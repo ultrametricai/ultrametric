@@ -1,18 +1,36 @@
 {
-  "hash": "2a244a671c8ddf664afe8ac425e1559b81f209ee021de62ee7d73da818a124b4",
+  "hash": "0242ecba260aded0fa2f416e8d95b2ae16ef0dea4832e566839ed8aa7481bb15",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Batch mode documents creating a job via POST /aiservices/scribe/jobs and polling a get-status endpoint. Jobs move through documented states (QUEUED, PROCESSING, SUCCEEDED, PARTIAL, FAILED, CANCELED), with per-file states, file counts and result locations, and the OpenAPI probe confirms the status and per-file paths. Missing for 10: independent or hands-on corroboration of the polling workflow.",
+    "rationale": "Zoom Scribe's batch mode documents creating a job via POST /aiservices/scribe/jobs and polling a get-status endpoint. Jobs move through documented states (QUEUED, PROCESSING, SUCCEEDED, PARTIAL, FAILED, CANCELED), and status responses include per-state file counts and result locations, with per-file states and a get-file retrieval endpoint. The OpenAPI probe corroborates that the batch-job and status paths exist. Missing for 10: independent hands-on corroboration of polling behavior, and documented polling guidance (intervals, rate limits).",
     "evidenceIds": [
       "zoom-scribe-supp-batch-lifecycle",
-      "zoom-scribe-supp-openapi-docs",
-      "zoom-scribe-supp-openapi-probe",
       "zoom-scribe-supp-batch-failures",
-      "zoom-scribe-supp-batch-input-metadata"
+      "zoom-scribe-supp-openapi-docs",
+      "zoom-scribe-supp-openapi-probe"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I create a transcription job and poll its status through documented job states until the result is ready",
+      "citations": [
+        {
+          "evidenceId": "zoom-scribe-supp-batch-lifecycle",
+          "quote": "Jobs expose QUEUED, PROCESSING, SUCCEEDED, PARTIAL, FAILED, and CANCELED states, while status responses include per-state file counts and result locations."
+        },
+        {
+          "evidenceId": "zoom-scribe-supp-batch-lifecycle",
+          "quote": "Batch mode documents POST /aiservices/scribe/jobs plus get-status, list-jobs, cancel-job, list-files, and get-file endpoints."
+        },
+        {
+          "evidenceId": "zoom-scribe-supp-batch-failures",
+          "quote": "Per-file states include FILE_FAILED and FILE_SKIPPED"
+        }
+      ]
+    },
     "productId": "zoom-scribe",
     "storyId": "async-job-lifecycle"
   }

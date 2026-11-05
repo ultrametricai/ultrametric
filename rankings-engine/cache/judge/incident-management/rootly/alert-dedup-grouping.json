@@ -1,16 +1,35 @@
 {
-  "hash": "ba6b76940196764c4d0aca5d275b0ea8f352892a22d082423506329a57bfadc7",
+  "hash": "4677d2fa3866c2abd551743ec1cf1d92f0023d5a7e480c1e49f0ea83635b0ef2",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Rootly's own docs describe Alert Deduplication: repeat events from the same monitor collapse onto a single open alert using a stable identifier, so the responder sees a climbing count instead of being paged again. The alerts overview also states that Rootly groups related alerts together before routing. missing for 10: detailed documentation of how related (non-identical) alerts are grouped into one incident or page, independent or hands-on corroboration of dedup and grouping behavior.",
+    "rationale": "Rootly documents alert deduplication in depth: repeat events from the same monitor collapse onto a single open alert via a stable identifier, so responders see a climbing count instead of being re-paged. Grouping of related, non-identical alerts appears only as one summary line on the alerts overview, with no documented grouping rules or behavior, so that half of the story is thin. missing for 10: documented related-alert grouping mechanics (rules, time windows, cross-source correlation), evidence that grouped alerts produce a single page, independent or hands-on corroboration.",
     "evidenceIds": [
       "rootly-docs-9",
       "rootly-docs-36",
       "rootly-docs-65"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an SRE, duplicate and related alerts are deduplicated and grouped so one incident pages one human, not fifty",
+      "citations": [
+        {
+          "evidenceId": "rootly-docs-9",
+          "quote": "Collapse repeat events from the same monitor into a single open Rootly alert using a stable identifier, so responders aren't paged twice."
+        },
+        {
+          "evidenceId": "rootly-docs-36",
+          "quote": "Alert Deduplication collapses those repeat events onto a single open alert, so the responder sees the count climbing instead of getting paged again."
+        },
+        {
+          "evidenceId": "rootly-docs-65",
+          "quote": "Rootly deduplicates repeats, groups related alerts together, routes each one to the right team"
+        }
+      ]
+    },
     "productId": "rootly",
     "storyId": "alert-dedup-grouping"
   }

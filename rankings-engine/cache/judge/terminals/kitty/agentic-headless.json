@@ -1,17 +1,32 @@
 {
-  "hash": "d2a566d65478c4dfb8255c50371f2cdb890edb16ea774a673afbf300b87c775f",
+  "hash": "74a224ca81815f0ed4eb5bdd35673c5617c694ca58bc057913550c689d5c939a",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "kitty is strongly scriptable: the remote-control docs describe driving it from scripts, and a hands-on probe ran `kitty --detach --listen-on` with `kitten @ ls/send-text/get-text/close-window` as a full external automation loop. Nothing shows it running truly headless (no display) or inside a CI pipeline, so it supports scripted automation of a live GUI instance rather than the story as written. Missing for 10: documented headless/no-display mode, CI usage guidance or examples, independent corroboration of CI or headless runs.",
+    "rationale": "kitty documents scripted control of the terminal, and a hands-on probe launched it detached with remote control enabled. That probe then drove a full send-text/get-text/close loop through `kitten @`, so non-interactive automation of kitty itself is verified. The evidence never shows kitty running without a display or inside a CI pipeline; the probe ran against a live window. missing for 10: documented headless/no-display mode, evidence of running in CI environments, independent corroboration of CI usage.",
     "evidenceIds": [
       "kitty-docs-23",
       "kitty-docs-27",
-      "kitty-probe-4",
-      "kitty-probe-rt-1"
+      "kitty-probe-rt-1",
+      "kitty-probe-4"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
+      "citations": [
+        {
+          "evidenceId": "kitty-docs-23",
+          "quote": "kitty can be controlled from scripts or the shell prompt. You can open new windows, send arbitrary text input to any window, change the title of windows and tabs, etc."
+        },
+        {
+          "evidenceId": "kitty-probe-rt-1",
+          "quote": "launched `kitty --detach -o allow_remote_control=socket-only --listen-on unix:/tmp/...`; `kitten @ ls` returned full window/tab/layout state as JSON"
+        }
+      ]
+    },
     "productId": "kitty",
     "storyId": "agentic-headless"
   }

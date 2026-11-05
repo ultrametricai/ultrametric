@@ -1,20 +1,31 @@
 {
-  "hash": "582cc2c5bc422a39931a740ae0b8089b482f1d11d8ac3a5ca7c77a9006521c24",
+  "hash": "c38678dff4cafefeafe27ac03f300c2933396c4713caa436967733986998d9ec",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "antigravity",
-    "storyId": "api-sandbox",
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Antigravity CLI documents a sandbox mode that blocks sensitive files like ~/.ssh and .env and hides anything not explicitly mounted, and Git worktrees plus Deny/Ask/Allow permissions and Project folder boundaries further isolate what agents can reach. This isolates the agent's local filesystem, but nothing describes a dedicated test environment separated from production data or services. Hands-on reports of the agent reading .env via prompt injection and deleting a drive in auto-execute mode concern the IDE rather than the documented CLI sandbox, so they lower confidence rather than dispute the claim. Missing for 10: an explicit sandbox or staging environment for data and services separate from production, in-depth sandbox documentation beyond one line, independent confirmation that the sandbox isolation holds.",
+    "rationale": "Antigravity documents its own CLI sandbox: files that are not explicitly mounted are invisible, and sensitive files like .env are blocked. Git worktree support also lets agents work in isolated folders, which keeps test runs away from the main working tree. The evidence only covers filesystem isolation for the CLI and gives no detail on separating production data or databases. Community reports of .env access concern the IDE's default settings, not the documented CLI sandbox. missing for 10: documented separation of production versus test data and services, sandbox coverage beyond the CLI (IDE/desktop), in-depth sandbox docs, and independent hands-on corroboration that the sandbox holds.",
     "evidenceIds": [
       "antigravity-docs-48",
-      "antigravity-docs-38",
-      "antigravity-docs-35",
-      "antigravity-docs-23",
-      "antigravity-comm-11",
-      "antigravity-comm-14"
-    ]
+      "antigravity-docs-38"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
+      "citations": [
+        {
+          "evidenceId": "antigravity-docs-48",
+          "quote": "Sensitive files like ~/.ssh and .env are blocked, anything not explicitly mounted is invisible inside the sandbox"
+        },
+        {
+          "evidenceId": "antigravity-docs-38",
+          "quote": "Projects natively support Git worktrees, allowing agents to operate in isolated background folders."
+        }
+      ]
+    },
+    "productId": "antigravity",
+    "storyId": "api-sandbox"
   }
 }

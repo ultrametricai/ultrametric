@@ -1,16 +1,31 @@
 {
-  "hash": "ba2d816f9121eb17ec6dfe69175e623e63569347379e99a0c3055d8055aafa66",
+  "hash": "8861e83ff97c1828ff62ef8fcccf3156605ab439ce83cff5ccf219140dbfa237",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Alacritty documents an IPC interface through the `alacritty msg` subcommand, with an `ipc_socket`-style config option, and documents `alacritty msg create-window` for spawning windows programmatically. The evidence shows only that narrow window-creation surface, not a broad documented API for driving the terminal. The runtime probe could not test `alacritty msg` because the macOS install failed, so this neither confirms nor contradicts the capability. Missing for 10: a documented API covering more than window creation (sending input, reading output, controlling sessions), a full IPC command reference, and hands-on corroboration that the IPC works.",
+    "rationale": "Alacritty documents its own IPC control surface: the config can 'Offer IPC using alacritty msg', and the `alacritty msg create-window` subcommand opens new windows programmatically. That is a real first-party way to drive the product, but the documented scope is narrow and it is a CLI-based IPC, not a full public API. The OpenAPI and llms.txt probes returned 404, and the runtime probe could not exercise `alacritty msg` because install failed, which leaves the capability unverified rather than contradicted. Missing for 10: a documented, comprehensive API reference covering commands beyond window creation, any machine-readable API spec, and hands-on confirmation that the IPC works.",
     "evidenceIds": [
-      "alacritty-docs-5",
       "alacritty-docs-11",
-      "alacritty-docs-16"
+      "alacritty-docs-16",
+      "alacritty-docs-5"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can drive the product through a documented public API",
+      "citations": [
+        {
+          "evidenceId": "alacritty-docs-16",
+          "quote": "Offer IPC using alacritty msg"
+        },
+        {
+          "evidenceId": "alacritty-docs-5",
+          "quote": "New windows can be created either by using the `CreateNewWindow` keybinding action, or by executing the `alacritty msg create-window` subcommand."
+        }
+      ]
+    },
     "productId": "alacritty",
     "storyId": "agentic-public-api"
   }

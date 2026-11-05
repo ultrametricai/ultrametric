@@ -1,21 +1,38 @@
 {
-  "hash": "e47527f0f13bf95050c0e5edfcdd26661a23a33c66bb532e03594558732750a8",
+  "hash": "9344ac9457600328e0f56b968b87134df1f4cf262effa7f3de1088b84d5096e3",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "ramp",
-    "storyId": "expenses-api-read",
-    "verdict": "full",
-    "quality": 8,
+    "verdict": "partial",
+    "quality": 7,
     "confidence": "high",
-    "rationale": "Ramp documents a REST Developer API with a Transactions API. Probe-6 confirms a live OpenAPI schema with 174 paths, including /developer/v1/transactions. The API uses OAuth 2.0 (client credentials, authorization code, refresh) with granular resource:permission scopes such as transactions:read and least-privilege guidance. Missing for 10: explicit REST endpoint evidence for retrieving receipts and reimbursements/expenses (shown only via CLI/MCP scopes such as receipts:write and reimbursements:read), and independent developer corroboration of pulling that data.",
+    "rationale": "Ramp documents a REST Developer API with a Transactions API. It uses OAuth 2.0 with client-credentials, authorization-code and refresh grants, plus resource:permission scopes such as transactions:read. A live probe confirmed a 174-path OpenAPI schema that includes /developer/v1/transactions. The pack does not show REST endpoints for pulling expenses/reimbursements or receipts; those appear only through the CLI or MCP scopes. Missing for 10: documented REST endpoints for retrieving expenses/reimbursements and receipts, and independent hands-on corroboration of authenticated data pulls.",
     "evidenceIds": [
       "ramp-docs-1",
       "ramp-docs-33",
       "ramp-supp-oauth-scopes",
       "ramp-probe-6",
-      "ramp-supp-machine-docs",
-      "ramp-supp-cli-agent-mode",
-      "ramp-probe-4"
-    ]
+      "ramp-supp-machine-docs"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can pull transactions, expenses, and receipts through a documented REST API with OAuth and scoped tokens",
+      "citations": [
+        {
+          "evidenceId": "ramp-docs-1",
+          "quote": "You'll create an access token and call the Transactions API to retrieve transaction data."
+        },
+        {
+          "evidenceId": "ramp-supp-oauth-scopes",
+          "quote": "Ramp's permission model uses OAuth 2.0 scopes to control access to different resources and operations. Most resource scopes follow the pattern resource:permission"
+        },
+        {
+          "evidenceId": "ramp-probe-6",
+          "quote": "a parseable OpenAPI document titled \"Ramp Developer API\" (v1) with 174 documented paths, including /developer/v1/transactions"
+        }
+      ]
+    },
+    "productId": "ramp",
+    "storyId": "expenses-api-read"
   }
 }

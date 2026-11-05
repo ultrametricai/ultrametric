@@ -1,19 +1,41 @@
 {
-  "hash": "e9a606cae75f191c2e0605a9ccb2597fa21e858bec06870e37ad9dec277988ea",
+  "hash": "d4fc3dc86c2a87fed81bab59b9817dd076508fb90906e882dc6ab8148e71d736",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "DeepInfra is an API-first inference cloud with no UI dependency. The docs show token-authenticated, OpenAI-compatible HTTP endpoints driven by an `api_key` and `base_url` from existing SDK code, so it runs headlessly in any script or CI job. It also has automation-friendly controls: `fail_fast` returns an immediate 429, and the flex tier is pitched at asynchronous workloads and evaluations. missing for 10: an official CLI or CI-specific integration docs (e.g., GitHub Actions examples), a machine-readable OpenAPI spec (probe returned 404), and independent hands-on corroboration of CI usage.",
+    "rationale": "DeepInfra is an API-first inference cloud. Its OpenAI-compatible endpoint uses API-token auth and needs only base_url, api_key and model changes, so it can be called non-interactively from scripts. It also offers automation-friendly controls: fail_fast returns an immediate HTTP 429, and the flex tier is aimed at asynchronous workloads. However, nothing in the evidence documents CI usage or headless tooling, and the OpenAPI spec probes returned 404. missing for 10: explicit CI/headless automation documentation, an official CLI, a published OpenAPI spec, independent hands-on corroboration of CI usage.",
     "evidenceIds": [
-      "deepinfra-docs-1",
       "deepinfra-docs-15",
+      "deepinfra-docs-1",
       "deepinfra-docs-28",
       "deepinfra-docs-5",
-      "deepinfra-docs-27",
       "deepinfra-probe-3"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
+      "citations": [
+        {
+          "evidenceId": "deepinfra-docs-15",
+          "quote": "Set `api_key` to your DeepInfra token"
+        },
+        {
+          "evidenceId": "deepinfra-docs-1",
+          "quote": "Point your existing OpenAI SDK to `https://api.deepinfra.com/v1/openai` and your code works without changes."
+        },
+        {
+          "evidenceId": "deepinfra-docs-28",
+          "quote": "Set the optional fail_fast parameter to true to get an immediate HTTP 429 instead of waiting."
+        },
+        {
+          "evidenceId": "deepinfra-docs-5",
+          "quote": "It’s ideal for non-production or lower-priority tasks such as model evaluations, data enrichment, and asynchronous workloads."
+        }
+      ]
+    },
     "productId": "deepinfra",
     "storyId": "agentic-headless"
   }

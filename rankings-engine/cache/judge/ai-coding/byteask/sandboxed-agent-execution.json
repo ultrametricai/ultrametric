@@ -1,17 +1,31 @@
 {
-  "hash": "64dce3767688ec273ae0658603280d4bc7cd32ad39c195640b5a394cce8331d5",
+  "hash": "e62830a471da9cb3e2c51412d6846732f3285629063c728f6a05c0a361b385a2",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "byteask",
-    "storyId": "sandboxed-agent-execution",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "ByteAsk ships a `--sandbox` flag. The default read-only mode can still build and run code under AddressSanitizer, and `--sandbox workspace-write` is required before the agent may build, test, or write files. An `--ask-for-approval` policy adds a second gate on actions. Missing for 10: any evidence of network-access restrictions inside the sandbox, detailed docs on sandbox modes and isolation mechanism, independent or hands-on corroboration.",
+    "rationale": "ByteAsk documents its own sandbox modes: a `--sandbox workspace-write` flag, and a read-only run that can still build and run code under AddressSanitizer. Together these show the agent's file and tool actions run under a sandbox policy. The approval policy (`--ask-for-approval`) is a related control, not sandbox isolation, so it earns no credit here. The docs never describe what the sandbox actually isolates, and say nothing about network restrictions. Missing for 10: documented network-resource sandboxing, a description of the isolation boundaries and mechanism, sandbox coverage beyond the headless/exec docs, independent or hands-on corroboration.",
     "evidenceIds": [
       "byteask-docs-20",
-      "byteask-docs-17",
-      "byteask-docs-7"
-    ]
+      "byteask-docs-17"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an engineering-lead, I can have the agent operate inside a sandbox when interacting with code, tools, and network resources",
+      "citations": [
+        {
+          "evidenceId": "byteask-docs-20",
+          "quote": "If you want the agent to build, test, or write files, pass `--sandbox workspace-write`."
+        },
+        {
+          "evidenceId": "byteask-docs-17",
+          "quote": "A read-only run can still build your program under AddressSanitizer and run it."
+        }
+      ]
+    },
+    "productId": "byteask",
+    "storyId": "sandboxed-agent-execution"
   }
 }

@@ -1,16 +1,31 @@
 {
-  "hash": "b292aac03f03310b79106bddadda660439f0ab7531ec694fab5f19d8b7b270d4",
+  "hash": "b5a8838e1a5b8c9731a86d451a8ad0022db1d0a6656ed7bdb8ed8205bc7629b2",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Alacritty documents an IPC interface through the `alacritty msg` subcommand and a config option to offer it. The only documented use is opening new windows with `alacritty msg create-window`, which covers the window-opening part of the story. The runtime probe could not exercise `alacritty msg` because macOS installation failed, so this neither confirms nor contradicts the capability. Missing for 10: documented ability to send text/input to a terminal via CLI/IPC, documented ability to query terminal state, in-depth IPC reference docs, hands-on or independent corroboration of the msg interface.",
+    "rationale": "Alacritty documents a first-party IPC interface via the `alacritty msg` subcommand and shows it opening new windows with `alacritty msg create-window`, so the core CLI/IPC control path exists. Nothing in the evidence shows sending text to a terminal or querying terminal state through it, and the runtime probe could not exercise the interface (an install blocker, not a contradiction). Missing for 10: documented send-text capability, documented state-query capability, a full IPC command reference, hands-on verification of `alacritty msg`.",
     "evidenceIds": [
       "alacritty-docs-5",
       "alacritty-docs-11",
       "alacritty-docs-16"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can script and control the terminal from the command line — open windows, send text, query state — via a documented CLI or IPC interface",
+      "citations": [
+        {
+          "evidenceId": "alacritty-docs-5",
+          "quote": "New windows can be created either by using the `CreateNewWindow` keybinding action, or by executing the `alacritty msg create-window` subcommand."
+        },
+        {
+          "evidenceId": "alacritty-docs-16",
+          "quote": "Offer IPC using alacritty msg"
+        }
+      ]
+    },
     "productId": "alacritty",
     "storyId": "cli-remote-control"
   }

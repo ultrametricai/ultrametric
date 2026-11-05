@@ -1,24 +1,43 @@
 {
-  "hash": "e2a90277daaf254c12d3bb2d9becc3810a95083934eaac5ec78b656526113e79",
+  "hash": "8f31e5da3bbb7d43747447e13da1a80ff988abecabcc6c82a96e94c17bd240fb",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Morph documents an OpenAI-compatible base URL that any OpenAI SDK can point at. Existing OpenAI code only needs a new `model` string, and Morph also serves the Anthropic Messages API natively, so agents can move on or off without provider-specific code. Migration and canary flows that keep the current provider while routing a slice of traffic are also documented, and hands-on community reports confirm the OpenAI-compatible endpoint works with third-party tools and alongside other providers. Missing for 10: no published OpenAPI spec (all probe paths 404) and no detailed documentation of parameter-level compatibility such as tool calling or streaming parity.",
+    "rationale": "Morph documents a standard OpenAI-compatible chat-completions endpoint: you point any OpenAI SDK at its base URL, and existing OpenAI code needs only a new model string. It also natively serves the Anthropic Messages API and documents moving agents off Anthropic/OpenAI. A community user independently confirms the OpenAI-compatible endpoint worked with a third-party CLI tool. missing for 10: documented parity of chat-completions parameters such as tool calling and streaming, and explicit evidence of switching mid-workflow within a single agent session.",
     "evidenceIds": [
-      "morph-docs-17",
+      "morph-docs-1",
       "morph-docs-18",
       "morph-docs-7",
       "morph-docs-16",
       "morph-docs-3",
-      "morph-docs-4",
-      "morph-probe-1",
       "morph-comm-5",
-      "morph-comm-1",
-      "morph-docs-23",
-      "morph-probe-3"
+      "morph-probe-1"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can have an agent switch to or away from this provider mid-workflow because it speaks the standard chat-completions API without provider-specific code changes",
+      "citations": [
+        {
+          "evidenceId": "morph-docs-1",
+          "quote": "Point any OpenAI SDK at `https://api.morphllm.com/v1`."
+        },
+        {
+          "evidenceId": "morph-docs-18",
+          "quote": "Kimi K3 serves 1M context through the standard chat completions endpoint, so existing OpenAI code only needs a new `model` string"
+        },
+        {
+          "evidenceId": "morph-docs-7",
+          "quote": "Claude Code speaks the Anthropic Messages API, which Morph serves natively at `/v1/messages`."
+        },
+        {
+          "evidenceId": "morph-comm-5",
+          "quote": "This uses an OpenAI-compatible endpoint, so got this working with my llm.datasette.io CLI tool"
+        }
+      ]
+    },
     "productId": "morph",
     "storyId": "drop-in-provider-switch"
   }

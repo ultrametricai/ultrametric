@@ -1,15 +1,34 @@
 {
-  "hash": "f9fbee8f0e12984333398fe98bcdb0953faec78e582f340e0935a894ca178112",
+  "hash": "a8e719de359c4b4fcd37b49e4a1fa26d56a8b7ed6db501c26fb098964c6d249d",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Batch mode documents FAILED and PARTIAL job states and per-file FILE_FAILED and FILE_SKIPPED states. Unsupported extensions are skipped with a documented UNSUPPORTED_MEDIA error code, and files are processed independently, so one bad file doesn't sink the job. Missing for 10: a documented error-code catalog beyond UNSUPPORTED_MEDIA, retry guidance (retryable vs. permanent errors, backoff), explicit fail-fast/timeout behavior for corrupt files, and independent or hands-on corroboration.",
+    "rationale": "Batch mode documents per-file failure handling. Files are processed independently, failures surface as FILE_FAILED or FILE_SKIPPED, and unsupported extensions are skipped with the UNSUPPORTED_MEDIA error code, so one bad file is isolated rather than blocking the job. Missing for 10: a documented error-code catalog beyond UNSUPPORTED_MEDIA, retry guidance (which errors are retryable, backoff advice), explicit fail-fast or timeout behavior for corrupt files, and hands-on corroboration.",
     "evidenceIds": [
       "zoom-scribe-supp-batch-failures",
       "zoom-scribe-supp-batch-lifecycle"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, failed jobs return documented error codes with retry guidance, and a bad file fails fast instead of hanging",
+      "citations": [
+        {
+          "evidenceId": "zoom-scribe-supp-batch-failures",
+          "quote": "unsupported extensions are skipped with the UNSUPPORTED_MEDIA error code"
+        },
+        {
+          "evidenceId": "zoom-scribe-supp-batch-failures",
+          "quote": "Per-file states include FILE_FAILED and FILE_SKIPPED"
+        },
+        {
+          "evidenceId": "zoom-scribe-supp-batch-lifecycle",
+          "quote": "Jobs expose QUEUED, PROCESSING, SUCCEEDED, PARTIAL, FAILED, and CANCELED states"
+        }
+      ]
+    },
     "productId": "zoom-scribe",
     "storyId": "job-failure-handling"
   }

@@ -1,17 +1,36 @@
 {
-  "hash": "e31ad622e09c9cdf58ccf155dc4bc656ce2dc7b016fcb3feb51d8da772c99af1",
+  "hash": "ea3ec8be578d20a35eafd39848db155c75fe975e5cf7468dea53280ec6a760af",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "AssemblyAI documents asynchronous transcription of recorded audio (docs-1), and its SDK \"uploads, submits, and polls for you\" (docs-18). Docs-3 also implies the standard path uses polling or webhooks, and a community member saw a polling loop in an example (comm-3), so a create-then-poll job workflow clearly exists. However, the evidence never names the job states or the raw status-polling endpoint and its semantics, and the SDK hides the polling. missing for 10: documented job-state lifecycle (e.g. queued/processing/completed/error), explicit REST status-polling endpoint docs, independent hands-on corroboration of the polling flow.",
+    "rationale": "AssemblyAI documents asynchronous transcription of recorded audio, and its SDK submits the job and then polls for the result. The docs also contrast a synchronous endpoint that needs 'no polling or webhooks', which implies the async path is poll-based, and a community post mentions a polling loop in an example. However, the evidence never names the job states or documents a raw status endpoint. missing for 10: documented job-state names or lifecycle, an explicit status-polling endpoint reference, and independent hands-on corroboration of polling behavior.",
     "evidenceIds": [
       "assemblyai-docs-1",
       "assemblyai-docs-18",
       "assemblyai-docs-3",
       "assemblyai-comm-3"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I create a transcription job and poll its status through documented job states until the result is ready",
+      "citations": [
+        {
+          "evidenceId": "assemblyai-docs-18",
+          "quote": "The SDK uploads, submits, and polls for you in a single call."
+        },
+        {
+          "evidenceId": "assemblyai-docs-1",
+          "quote": "Transcribes recorded audio and video asynchronously across 99 languages"
+        },
+        {
+          "evidenceId": "assemblyai-comm-3",
+          "quote": "The polling loop in the example screenshot"
+        }
+      ]
+    },
     "productId": "assemblyai",
     "storyId": "async-job-lifecycle"
   }

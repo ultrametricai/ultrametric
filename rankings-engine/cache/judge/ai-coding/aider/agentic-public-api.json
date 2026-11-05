@@ -1,21 +1,33 @@
 {
-  "hash": "630e610997e7be30fcace51cc9f8c60f734caca9f756b594377c5c9a829942ae",
+  "hash": "a73fc2d13f302225cd6f134802c8bea7ae4e55dc662f03ca328c31cba5cfab85",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "aider",
-    "storyId": "agentic-public-api",
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Aider documents a scripting surface: a `--message` flag for one-shot non-interactive runs, and an in-process Python API (`Coder.create(...)`, `coder.run(...)`) that executes an instruction and returns. Configuration can also be set through `AIDER_xxx` environment variables and `.aider.conf.yml`, and a community user refers to using Aider in a 'scriptable' sense. The documented programmatic interface is thin, though, and there is no network API: all OpenAPI probe paths returned 404. Missing for 10: a comprehensive API reference beyond a code snippet, a stable/versioned API contract, an HTTP/REST or OpenAPI-described remote API, and independent hands-on corroboration of programmatic driving.",
+    "rationale": "Aider documents its own programmatic interfaces: a Python scripting API (`Coder.create(...)` then `coder.run(...)` to execute an instruction and return) and a non-interactive `--message` CLI mode that applies edits and exits. That lets an agent or script drive the product directly. However, there is no network or REST API, and probes for an OpenAPI spec all returned 404, so the API is a thin, single-page, in-process Python interface rather than a fully specified public API. Missing for 10: a full API reference with method and parameter docs, an HTTP/REST or OpenAPI-described endpoint, stability/versioning guarantees for the Python API, and independent hands-on corroboration of programmatic use.",
     "evidenceIds": [
-      "aider-docs-6",
       "aider-docs-7",
+      "aider-docs-6",
       "aider-docs-33",
-      "aider-docs-34",
-      "aider-docs-18",
-      "aider-comm-15",
       "aider-probe-3"
-    ]
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can drive the product through a documented public API",
+      "citations": [
+        {
+          "evidenceId": "aider-docs-7",
+          "quote": "coder = Coder.create(main_model=model, fnames=fnames)"
+        },
+        {
+          "evidenceId": "aider-docs-6",
+          "quote": "Aider takes a `--message` argument, where you can give it a natural language instruction. It will do that one thing, apply the edits to the files and then exit."
+        }
+      ]
+    },
+    "productId": "aider",
+    "storyId": "agentic-public-api"
   }
 }

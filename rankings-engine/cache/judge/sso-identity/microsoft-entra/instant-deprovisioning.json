@@ -1,19 +1,41 @@
 {
-  "hash": "ae8cd44d8c1707848cc461a2be69c5eb611fa65dd7242abc42aaf1db19f1e958",
+  "hash": "756b1a875743aa1700d2c7b440b4d07625b547412a5c6a0a3f18aa98e36ff665",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Entra ID documents automatic SCIM provisioning of users into SaaS and on-premises apps (Dropbox, Salesforce, ServiceNow). It also documents Lifecycle Workflows that run automated processes across the user lifecycle phases, which plausibly covers an offboarding step. However, the evidence never states that disabling a user deprovisions their accounts downstream, never mentions session or token revocation, and never addresses timing. missing for 10: documented session/token revocation on deactivation, explicit deprovisioning on user disable, evidence of immediate (non-scheduled) propagation, a single-action leaver workflow tying these together, hands-on corroboration.",
+    "rationale": "Entra documents its own SCIM-based automatic provisioning of users into connected SaaS and on-premises apps, plus lifecycle workflows that run automatically as users move through their lifecycle phases, which covers the deprovisioning-across-apps part of offboarding. Nothing in the evidence shows that deactivating a user revokes their sessions, that deprovisioning is explicitly triggered by disabling the account, or that any of it happens immediately. Missing for 10: documented session/token revocation on deactivation, explicit deprovisioning on user disable, evidence of immediate (not cycle-based) propagation, a single-action offboarding flow, hands-on corroboration.",
     "evidenceIds": [
       "microsoft-entra-docs-3",
       "microsoft-entra-docs-4",
-      "microsoft-entra-docs-17",
       "microsoft-entra-docs-26",
       "microsoft-entra-docs-5",
       "microsoft-entra-docs-18"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a security engineer, offboarding is one action — deactivating a user kills their sessions and deprovisions their accounts across connected apps immediately",
+      "citations": [
+        {
+          "evidenceId": "microsoft-entra-docs-3",
+          "quote": "Common scenarios include provisioning a Microsoft Entra user into SaaS applications like Dropbox, Salesforce, ServiceNow, and many more."
+        },
+        {
+          "evidenceId": "microsoft-entra-docs-4",
+          "quote": "you can use the System for Cross-Domain Identity Management (SCIM) user management API to enable automatic provisioning of users and groups between your application and Microsoft Entra ID"
+        },
+        {
+          "evidenceId": "microsoft-entra-docs-5",
+          "quote": "Lifecycle workflows (LCW) are identity governance capabilities that enable organizations to manage Microsoft Entra users across the three phases of a user's lifecycle with an organization"
+        },
+        {
+          "evidenceId": "microsoft-entra-docs-18",
+          "quote": "Workflows contain specific processes that run automatically against users as they move through their lifecycle."
+        }
+      ]
+    },
     "productId": "microsoft-entra",
     "storyId": "instant-deprovisioning"
   }
