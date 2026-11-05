@@ -69,7 +69,7 @@ agent-runnable · ~10 min · human approval every run
 Draft the engagement around specific deliverables, acceptance criteria, fees, currency, invoicing and expenses. Use the applicable agreement template and identify both legal parties, ownership of work product, confidentiality, data access and the change or termination process. Check that the wording matches how the contractor will actually work. Send unresolved commercial choices and unusual terms to the business owner and counsel.
 
 - Canonical vendor: Deel
-- Cross-arena options: ChatGPT, Claude, Gemini (ai-assistants)
+- Cross-arena options: ChatGPT, Claude (ai-assistants)
 
 <a id="step-3"></a>
 

@@ -121,7 +121,7 @@ agent-runnable · ~30 min
 Build the deck around progress against the last plan, financial performance, material risks and decisions needed. Explain significant movements with the reviewed metrics and their business causes. Set out management’s recommendations, alternatives and unresolved questions, with supporting detail in an appendix so directors can focus the meeting on the choices that matter.
 
 - Canonical vendor: Google Slides
-- Cross-arena options: ChatGPT, Claude, Gemini (ai-assistants)
+- Cross-arena options: ChatGPT, Claude (ai-assistants)
 
 <a id="step-6"></a>
 

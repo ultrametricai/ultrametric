@@ -83,7 +83,7 @@ Map personal information collected through the product, billing, support, analyt
 
 - Canonical vendor: Vanta
 - Vendor options: Vanta, Termly, iubenda
-- Cross-arena options: ChatGPT, Claude, Gemini (ai-assistants)
+- Cross-arena options: ChatGPT, Claude (ai-assistants)
 
 Options:
   - **Default — Generate privacy policy and terms** — agent-runnable · ~20 min
