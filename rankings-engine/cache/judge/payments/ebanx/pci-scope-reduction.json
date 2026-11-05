@@ -1,18 +1,36 @@
 {
-  "hash": "4a9199187817e2f33ab028aa3393877e6ed6a25b92179f3dc992209180f0009d",
+  "hash": "1f2616eda2e5fc21d62c127667d14c21b8617e6dbdfd3c24fa19fbc3cfd4eb9f",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "EBANX documents its own ways to keep card data off merchant servers: EBANX.js handles client-side card tokenization, a pre-built UI component where 'EBANX handles sensitive data', a hosted checkout that runs the full payment flow, and tokenized card payments for recurring billing. However, the evidence is only short snippets and never explicitly ties these options to reduced PCI DSS scope. missing for 10: explicit PCI DSS scope/SAQ guidance (e.g., SAQ A eligibility), detailed tokenization flow documentation confirming raw PAN never reaches merchant servers, independent or hands-on corroboration.",
+    "rationale": "EBANX documents client-side card tokenization via EBANX.js, a hosted checkout that handles the full payment flow, and a pre-built UI component where EBANX handles sensitive data. Together these support keeping raw card data off merchant servers. However, the evidence never mentions PCI DSS scope reduction, SAQ levels, or an explicit guarantee that card data never reaches the merchant. missing for 10: explicit PCI DSS scope/SAQ documentation, a detailed tokenization flow showing card data bypasses merchant servers, independent corroboration.",
     "evidenceIds": [
       "ebanx-docs-30",
       "ebanx-docs-14",
       "ebanx-docs-12",
-      "ebanx-docs-34",
-      "ebanx-docs-11"
+      "ebanx-docs-34"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can keep my systems out of most of PCI DSS scope because card data is tokenized and never touches my servers",
+      "citations": [
+        {
+          "evidenceId": "ebanx-docs-30",
+          "quote": "Used with EBANX.js for card tokenization and device fingerprinting."
+        },
+        {
+          "evidenceId": "ebanx-docs-14",
+          "quote": "Pre-built UI component that embeds payment methods into your checkout while EBANX handles sensitive data and payment logic."
+        },
+        {
+          "evidenceId": "ebanx-docs-12",
+          "quote": "Hosted checkout page managed by EBANX. You send the payment parameters, and EBANX handles the full payment flow, including UI, validation, and processing."
+        }
+      ]
+    },
     "productId": "ebanx",
     "storyId": "pci-scope-reduction"
   }

@@ -1,18 +1,36 @@
 {
-  "hash": "6032d88f25b85c3dc5e8a4a85e9f2e19dbde570f64cadfdb30b877b50f158935",
+  "hash": "f42964beb0c9c3fe07a2d117dc63cd335865efb5f31d1486864fe985e0c63f04",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 3,
     "confidence": "medium",
-    "rationale": "Adyen documents part of this story. Its API returns `resultCode`, `refusalReason` and `refusalReasonCode` on failed payments, and webhooks push asynchronous status changes, so an agent can observe failures. Nothing in the evidence shows a payment-retry or dunning capability: idempotency keys only make a repeated API request safe, and payment links and the MCP link tools are building blocks a developer would have to assemble into outreach. missing for 10: documented automatic or agent-driven retry of failed payments, dunning workflows or customer outreach, MCP tools for querying failed payments, independent corroboration.",
+    "rationale": "Adyen documents part of this story itself: webhooks for asynchronous status changes, and resultCode/refusalReason fields that describe unsuccessful payments, so an agent can monitor failed payments via API and webhooks. The pack has no first-party payment-retry or dunning capability. Idempotency covers safely retrying an API request, not re-attempting a declined charge, and the MCP tools cover sessions, payment links, refunds and cancels rather than retries. missing for 10: documented automatic or agent-driven failed-payment retry logic, dunning/customer outreach, failed-payment-specific webhook events, MCP tools for retry/dunning, hands-on corroboration.",
     "evidenceIds": [
-      "adyen-docs-7",
       "adyen-docs-3",
+      "adyen-docs-7",
       "adyen-docs-45",
-      "adyen-docs-25",
       "adyen-supp-mcp-tools"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an ai-native user, I can have an agent monitor failed payments via API and webhooks and drive retries and dunning outreach",
+      "citations": [
+        {
+          "evidenceId": "adyen-docs-7",
+          "quote": "When the payment or modification request is unsuccessful, the `resultCode`, `refusalReason`, and `refusalReasonCode` describe the issue."
+        },
+        {
+          "evidenceId": "adyen-docs-3",
+          "quote": "With webhooks, you can avoid having to continuously poll an API endpoint, waiting for a change in status for an asynchronous process"
+        },
+        {
+          "evidenceId": "adyen-docs-45",
+          "quote": "In your Customer Area, you can find a log of all webhook events sent to your server."
+        }
+      ]
+    },
     "productId": "adyen",
     "storyId": "agent-monitors-dunning"
   }

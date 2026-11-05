@@ -1,16 +1,35 @@
 {
-  "hash": "2940001ba9dd2bd00aaffaee357d47aa9703f98152b5bf889e301fd5836921e5",
+  "hash": "a0601182828838f11a94dff511b9b24371691555d12f64f68464698b7418e206",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Temporal's Worker Versioning lets each Workflow type be declared Pinned or Auto-Upgrade, and it is organized around Worker Deployments and Worker Deployment Versions. The Pinned behavior directly addresses keeping in-flight runs on the code version they started with while new code is deployed, and a community user confirms that determinism is the core constraint versioning must preserve. Missing for 10: no explicit evidence in the pack stating that Pinned runs complete on their original version, no detail on patching or replay-safety tooling for determinism, no hands-on corroboration of the versioning workflow.",
+    "rationale": "Temporal's own Worker Versioning feature lets each Workflow type declare a Versioning Behavior of Pinned or Auto-Upgrade, built on Worker Deployments and Worker Deployment Versions. Pinned is the mechanism for letting in-flight runs finish on the version they started with while new code is deployed. A community user confirms that determinism is the core constraint this feature addresses. missing for 10: an explicit documented statement that Pinned executions stay on their starting version through completion, rollout/ramp and patching details, and independent hands-on corroboration of safe deploys without non-determinism errors.",
     "evidenceIds": [
       "temporal-docs-7",
       "temporal-docs-39",
       "temporal-comm-7"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a platform engineer, I deploy new workflow code while in-flight runs finish on the version they started with — versioning without breaking determinism",
+      "citations": [
+        {
+          "evidenceId": "temporal-docs-7",
+          "quote": "You can declare each Workflow type to have a Versioning Behavior, either Pinned or Auto-Upgrade, in your Workflow config"
+        },
+        {
+          "evidenceId": "temporal-docs-39",
+          "quote": "Worker Deployments ... Worker Deployment Versions ... Versioning Behaviors"
+        },
+        {
+          "evidenceId": "temporal-comm-7",
+          "quote": "What it requires in exchange is full determinism."
+        }
+      ]
+    },
     "productId": "temporal",
     "storyId": "safe-workflow-versioning"
   }

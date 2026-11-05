@@ -1,11 +1,11 @@
 {
-  "hash": "ff8c2b445a98c273d33d3a96a58e119c97137e4b213e47768264be9d4de490c0",
+  "hash": "d3e8f0b005108cc5bcc1cfd7146357277b64f99dbd538d862baf2975769690ac",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Vapi documents a Server URL events mechanism: your endpoint receives webhook messages such as `tool-calls` during calls. The CLI's `vapi listen --forward-to` forwards those webhooks to a local server for debugging, which shows webhook event delivery is a first-class, supported workflow. Missing for 10: a documented catalog of event types beyond tool-calls, any evidence of choosing or filtering which events to subscribe to, webhook signing/retry details, and independent or hands-on corroboration.",
+    "rationale": "Vapi documents a Server URL that receives event messages over HTTP, such as a `tool-calls` message when tools fire. Its CLI also forwards webhooks to a local endpoint, so outbound HTTP callbacks a programmatic consumer can receive clearly exist. However, the evidence only shows the tool-call event and does not document how to choose which events to subscribe to, so full coverage of the story is not established. Missing for 10: a documented catalog of subscribable event types (e.g. call status, end-of-call reports), per-event subscription/registration configuration, webhook signing/verification and retry semantics, and independent or hands-on corroboration.",
     "evidenceIds": [
       "vapi-docs-17",
       "vapi-docs-23",
@@ -13,6 +13,29 @@
       "vapi-docs-27",
       "vapi-docs-7"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can subscribe to events via webhooks",
+      "citations": [
+        {
+          "evidenceId": "vapi-docs-17",
+          "quote": "When tools are triggered, your Server URL receives a `tool-calls` message"
+        },
+        {
+          "evidenceId": "vapi-docs-27",
+          "quote": "Forward webhooks to your local server for debugging"
+        },
+        {
+          "evidenceId": "vapi-docs-3",
+          "quote": "vapi listen --forward-to localhost:3000/webhook"
+        },
+        {
+          "evidenceId": "vapi-docs-23",
+          "quote": "Assistants can ping your server to perform actions."
+        }
+      ]
+    },
     "productId": "vapi",
     "storyId": "agentic-webhooks"
   }

@@ -1,18 +1,40 @@
 {
-  "hash": "d67fd38e8c43d8f8a87009a285a10517ada80b6357abbebe136d71d259adec4e",
+  "hash": "23bff163f95835721613f8a8da4a70e8dfec2d7bc55f9c447cf729fa08c8f89f",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Resend's create-API-key endpoint supports a `sending_access` permission that can only send emails. That key can be further restricted to a single domain, so a user can issue a least-privilege credential programmatically for an agent. The Vercel integration also auto-creates domain-linked keys, and key rotation is documented. Missing for 10: fine-grained per-resource scopes beyond the send-only vs full tiers, agent-specific credential guidance (e.g. for the MCP server), and independent hands-on corroboration of scoped-key use.",
+    "rationale": "Resend's own API-key creation supports least-privilege scoping: a `sending_access` permission limits a key to sending emails only, and that key can be further restricted to a single domain. Key rotation is also documented. The scoping is coarse, though: only a send-only tier with a domain restriction is evidenced, with no fine-grained per-resource or per-endpoint scopes, expiry or TTL, or agent-specific credential flow, so coverage is partial. missing for 10: fine-grained per-resource/per-endpoint scopes, key expiry/short-lived credentials, agent-specific credential issuance guidance, independent or hands-on corroboration.",
     "evidenceIds": [
       "resend-docs-8",
       "resend-docs-25",
       "resend-docs-33",
-      "resend-docs-31",
-      "resend-comm-14"
+      "resend-docs-31"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
+      "citations": [
+        {
+          "evidenceId": "resend-docs-25",
+          "quote": "sending_access`: Can only send emails."
+        },
+        {
+          "evidenceId": "resend-docs-8",
+          "quote": "Restrict an API key to send emails only from a specific domain. This is only used when the `permission` is set to `sending_access`."
+        },
+        {
+          "evidenceId": "resend-docs-33",
+          "quote": "Add a new API key to authenticate communications with Resend."
+        },
+        {
+          "evidenceId": "resend-docs-31",
+          "quote": "rotate API keys"
+        }
+      ]
+    },
     "productId": "resend",
     "storyId": "agentic-scoped-keys"
   }

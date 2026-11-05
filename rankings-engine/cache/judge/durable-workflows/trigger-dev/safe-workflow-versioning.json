@@ -1,19 +1,37 @@
 {
-  "hash": "745678523afb9f489d885105f7f7731bef2004ae65afa3e4bd3ccdc078f9fc34",
+  "hash": "328cb50bba1554a70671ed5e448ff83bd72ef98e1d5c4b26200c6dec5656dff5",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
-    "quality": 9,
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Trigger.dev's versioning docs say a run is locked to the latest code version for its environment when it starts and never changes versions, even after new deploys. Its checkpoint-resume model runs plain TypeScript with no determinism constraints, so new deploys cannot break in-flight replay. Deploys are documented via the CLI and GitHub Actions, and durable chat tasks are described as surviving deploys. Missing for 10: independent or hands-on corroboration that in-flight runs stay pinned across deploys.",
+    "rationale": "Trigger.dev's versioning docs state that a run is locked to the code version it started on and will not change when new versions are deployed, so in-flight runs finish on their original version. Its checkpoint-resume model runs normal TypeScript with no determinism constraints, so deploying new code does not create replay or determinism hazards. Missing for 10: independent or hands-on corroboration of version locking across deploys, and deeper documentation of version-pinning controls such as explicitly targeting or migrating versions.",
     "evidenceIds": [
       "trigger-dev-docs-7",
       "trigger-dev-docs-38",
-      "trigger-dev-docs-10",
       "trigger-dev-docs-13",
-      "trigger-dev-docs-18",
+      "trigger-dev-docs-10",
       "trigger-dev-docs-35"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a platform engineer, I deploy new workflow code while in-flight runs finish on the version they started with — versioning without breaking determinism",
+      "citations": [
+        {
+          "evidenceId": "trigger-dev-docs-7",
+          "quote": "When a task run starts it is locked to the latest version of the code (for that environment). Once locked it won't change versions, even if you deploy new versions."
+        },
+        {
+          "evidenceId": "trigger-dev-docs-38",
+          "quote": "Trigger.dev uses checkpoint-resume to run normal TypeScript with no determinism constraints"
+        },
+        {
+          "evidenceId": "trigger-dev-docs-13",
+          "quote": "surviving refreshes, deploys, and crashes"
+        }
+      ]
+    },
     "productId": "trigger-dev",
     "storyId": "safe-workflow-versioning"
   }

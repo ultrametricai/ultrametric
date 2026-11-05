@@ -1,24 +1,42 @@
 {
-  "hash": "5c7a7f97c6bb79b63f89711f1c459e1e6384d958012b696d56d006109be8d07e",
+  "hash": "c931e94aa89be4f66f6199b89d3ddf0205a6c7e0e2de49447e0237a5108cb348",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 8,
+    "verdict": "partial",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Postmark is an API-first service that runs headlessly by design. Every operation is a token-authenticated REST call: sending, templates, servers, message streams, domains and bounces. It also offers official SDKs in several languages, and a community user reports driving it with plain curl. For CI it provides a `POSTMARK_API_TEST` token for testing without sending, server sandbox mode, and fake-bounce generation. Missing for 10: no official CLI or CI-specific integration guide in evidence, no machine-readable OpenAPI spec (probes returned 404), and little independent hands-on corroboration of CI usage.",
+    "rationale": "Postmark works as a headless, API-only service. Every operation is a token-authenticated REST call, official SDKs exist across languages, and the docs provide a non-sending test token plus server sandbox mode, which fit automated pipelines. However, nothing in the evidence documents CI usage itself, so coverage of the story is partial. Missing for 10: an official CLI or documented CI/CD integration guide (e.g., GitHub Actions usage), a published OpenAPI spec (probe returned 404), and independent hands-on corroboration of CI usage beyond a community note about using plain curl.",
     "evidenceIds": [
-      "postmark-docs-12",
       "postmark-docs-37",
+      "postmark-docs-12",
       "postmark-docs-43",
-      "postmark-docs-19",
       "postmark-docs-21",
-      "postmark-docs-51",
-      "postmark-docs-52",
-      "postmark-docs-13",
-      "postmark-docs-62",
       "postmark-comm-1",
       "postmark-probe-3"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
+      "citations": [
+        {
+          "evidenceId": "postmark-docs-37",
+          "quote": "All API requests require authentication using the `X-Postmark-Server-Token` header with your Server API Token"
+        },
+        {
+          "evidenceId": "postmark-docs-12",
+          "quote": "For testing without actually sending emails, use `POSTMARK_API_TEST` as your token."
+        },
+        {
+          "evidenceId": "postmark-docs-43",
+          "quote": "Sandbox mode \\- Server sandbox mode \\- Generate fake bounces"
+        },
+        {
+          "evidenceId": "postmark-comm-1",
+          "quote": "Just old fashioned curl and POST requests to send emails with Postmark."
+        }
+      ]
+    },
     "productId": "postmark",
     "storyId": "agentic-headless"
   }

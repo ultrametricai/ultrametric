@@ -1,19 +1,36 @@
 {
-  "hash": "c65b34c2814fbf1bb05d55845bc072d697204b2328f2dab4ff3ca2961ecac507",
+  "hash": "a23a5e87d57bc38af33842a5154c2c56d6ec673d60e0033f79f221dc2f13c621",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "SES is an API-first service that runs without a UI: the docs say email can be sent from code through an AWS SDK, the SMTP interface, or direct API calls, with IAM controlling access. Sending events can be published to EventBridge, SNS and CloudWatch, which supports automated pipelines. Missing for 10: explicit CLI or CI-pipeline documentation, guidance on non-interactive credentials for CI runners, and independent hands-on corroboration of CI usage.",
+    "rationale": "Amazon SES is used programmatically by design. Its docs describe sending through an AWS SDK, the SMTP interface, or direct API calls, with IAM controlling access, so headless, non-interactive automation is directly supported. However, nothing in the evidence addresses CI pipelines specifically. Missing for 10: documented CLI or CI usage, guidance on CI credentials or non-interactive auth, and independent hands-on corroboration of CI automation.",
     "evidenceIds": [
       "amazon-ses-docs-1",
       "amazon-ses-docs-2",
       "amazon-ses-docs-37",
-      "amazon-ses-docs-16",
-      "amazon-ses-docs-28",
-      "amazon-ses-docs-6"
+      "amazon-ses-docs-16"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
+      "citations": [
+        {
+          "evidenceId": "amazon-ses-docs-1",
+          "quote": "you can send email from Amazon EC2 by using an AWS SDK, by using the Amazon SES SMTP interface, or by making calls directly to the Amazon SES API"
+        },
+        {
+          "evidenceId": "amazon-ses-docs-37",
+          "quote": "You can use the Amazon SES API v2 to send the following types of messages: Simple ... Raw ... Templated"
+        },
+        {
+          "evidenceId": "amazon-ses-docs-16",
+          "quote": "Control user access to your email sending by using AWS Identity and Access Management (IAM)."
+        }
+      ]
+    },
     "productId": "amazon-ses",
     "storyId": "agentic-headless"
   }

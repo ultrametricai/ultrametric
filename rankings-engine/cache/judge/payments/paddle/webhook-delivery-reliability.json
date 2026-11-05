@@ -1,11 +1,11 @@
 {
-  "hash": "e37f90fe9c051b39318c58c570922d8853e43f81020ab7db031068e732f5cff1",
+  "hash": "c1c8b33dafd2b8e063fff6b49ac3b550aaf13bd536df5d1c8982d7037c0ded48",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Paddle documents signed webhook delivery well: every webhook carries a `Paddle-Signature` header generated from a shared secret, and the official Node.js and Python SDKs include signature-verification helpers. IP allowlisting is also recommended. The evidence never mentions automatic retries of failed webhook deliveries, a webhook event log, or replay; the 'simulate events' capability is for testing and the retries in the evidence are payment dunning, not webhook redelivery. missing for 10: automatic webhook delivery retries, webhook event/delivery logs, event replay/redelivery, independent corroboration.",
+    "rationale": "Paddle documents webhook push notifications signed with a `Paddle-Signature` header and a shared secret. Its Node.js and Python SDKs ship signature-verification helpers, and an IP allowlist is recommended. The evidence never documents automatic webhook redelivery, an event/delivery log, or replay; payment dunning retries are a different capability and are not credited. Missing for 10: automatic webhook delivery retries, webhook event/delivery logs, event replay/redelivery, independent corroboration.",
     "evidenceIds": [
       "paddle-docs-11",
       "paddle-docs-12",
@@ -14,6 +14,29 @@
       "paddle-docs-50",
       "paddle-docs-45"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can rely on signed webhook deliveries with automatic retries, event logs, and replay to keep my system consistent with payment state",
+      "citations": [
+        {
+          "evidenceId": "paddle-docs-11",
+          "quote": "Paddle uses webhooks to push real-time notifications to your server when things happen in your account."
+        },
+        {
+          "evidenceId": "paddle-docs-28",
+          "quote": "All webhooks sent by Paddle include a `Paddle-Signature` header. Paddle generates this header using a secret key that only you and Paddle know."
+        },
+        {
+          "evidenceId": "paddle-docs-49",
+          "quote": "It ships with TypeScript definitions, iterator-based pagination, and helpers for webhook signature verification."
+        },
+        {
+          "evidenceId": "paddle-docs-50",
+          "quote": "includes a webhook signature verifier that works with Flask, Django, and anything speaking the request protocol."
+        }
+      ]
+    },
     "productId": "paddle",
     "storyId": "webhook-delivery-reliability"
   }

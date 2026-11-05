@@ -1,16 +1,30 @@
 {
-  "hash": "b4d155afd4db1eecb1a4f925ec2b45be7a3f11214534d81aa63fcfe61f63ad33",
+  "hash": "6190ba3e3500379799f43ef35f9c87acad0dfaafcebc8afe6abd33811d72a01c",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 4,
-    "confidence": "medium",
-    "rationale": "Stripe Invoicing documents webhooks emitted on invoice workflow transitions [docs-12], and payment failures on invoices trigger automatic retries and reminders [docs-13]. Invoice-level lifecycle events are therefore evidenced. However, the product is framed around one-time-payment invoices [probe-2], and nothing in the pack shows subscription-specific events. Missing for 10: evidence of webhooks for subscription renewal, upgrade, and cancellation; documentation of webhook delivery reliability (retries, signatures, ordering); independent or hands-on corroboration.",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Stripe Invoicing documents that its invoice workflow transitions emit webhooks, which are real-time HTTPS JSON pushes, and it documents handling of failed invoice payments. That covers part of the payment-failure leg of the story. The evidence frames Invoicing around one-time invoices and never ties events to subscription renewals, upgrades or cancellations, and nothing addresses delivery reliability such as retries or ordering. Missing for 10: documented subscription-lifecycle events (renewal, upgrade, cancellation), an explicit payment-failure webhook event, webhook delivery reliability guarantees, and independent or hands-on corroboration.",
     "evidenceIds": [
       "stripe-invoicing-docs-12",
-      "stripe-invoicing-docs-13",
-      "stripe-invoicing-probe-2"
+      "stripe-invoicing-docs-13"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, every subscription state change — renewal, upgrade, payment failure, cancellation — emits a webhook or event my systems can act on reliably",
+      "citations": [
+        {
+          "evidenceId": "stripe-invoicing-docs-12",
+          "quote": "It also lists the webhooks (A webhook is a real-time push notification sent to your application as a JSON payload through HTTPS requests) that are emitted by the endpoint"
+        },
+        {
+          "evidenceId": "stripe-invoicing-docs-13",
+          "quote": "If the invoice becomes overdue, or payment on the invoice fails, Stripe can automatically send reminders or retry the payment for you."
+        }
+      ]
+    },
     "productId": "stripe-invoicing",
     "storyId": "lifecycle-event-stream"
   }

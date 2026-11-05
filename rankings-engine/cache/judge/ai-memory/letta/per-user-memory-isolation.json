@@ -1,21 +1,41 @@
 {
-  "hash": "7ef1a85fb5cd899f786a2740d2f1016f55a7af15d63d4402dca3d080e528826a",
+  "hash": "7f083971b013e2ca014b54d8d7d509bfaf51698506f8a7be0382091c98a45a1c",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "letta",
-    "storyId": "per-user-memory-isolation",
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Letta scopes memory at the agent level: each agent has its own identity and long-term memory, and cross-agent sharing happens only through explicitly created shared-memory repositories. At the organization level, teammates' agents and conversations are private by default, with roles and sharing controls governing access. Memory is not documented as being partitioned by end user or by application inside one deployment, so tenant isolation in practice means one agent per tenant. Missing for 10: documented per-end-user and per-application memory scoping, explicit guarantees that retrieval and search never cross tenant boundaries, and independent or hands-on corroboration of isolation.",
+    "rationale": "Letta scopes memory per agent: each agent has its own identity and long-term memory, and sharing memory across agents requires an explicit shared-memory repository. For teammates, agents and conversations are private by default within an organization, with sharing controls. There is no documented per-application or per-end-user tenant scope, and nothing states that retrieval is isolated across tenants. Missing for 10: documented per-user/end-user tenant scoping for apps built on the SDK, application-level memory scoping, explicit retrieval-isolation guarantees, independent or hands-on corroboration.",
     "evidenceIds": [
       "letta-docs-89",
       "letta-docs-21",
-      "letta-docs-8",
       "letta-docs-97",
-      "letta-docs-98",
-      "letta-docs-87",
-      "letta-docs-48"
-    ]
+      "letta-docs-98"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can scope memories per user, agent, or application so one tenant's memories never leak into another's retrieval",
+      "citations": [
+        {
+          "evidenceId": "letta-docs-89",
+          "quote": "Each agent has its own identity and long-term memory"
+        },
+        {
+          "evidenceId": "letta-docs-21",
+          "quote": "Shared memory gives multiple agents access to the same files and working context."
+        },
+        {
+          "evidenceId": "letta-docs-97",
+          "quote": "Membership lets teammates use the same organization while keeping each person's agents and conversations private by default."
+        },
+        {
+          "evidenceId": "letta-docs-98",
+          "quote": "Letta combines organization roles with sharing controls so teammates can collaborate without making all agent activity visible to the entire organization."
+        }
+      ]
+    },
+    "productId": "letta",
+    "storyId": "per-user-memory-isolation"
   }
 }

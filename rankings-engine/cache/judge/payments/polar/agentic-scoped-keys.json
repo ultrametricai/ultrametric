@@ -1,16 +1,30 @@
 {
-  "hash": "3cfb9eec0123539350e568195a3b29491744dee9ddfc974244d19cab10bc78a1",
+  "hash": "d1e330c178979609d9c04930ae4e1404f1e7015a2765df93296ffb46868242d0",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Polar's official remote MCP server issues agent access through OAuth: the user signs in and authorizes the agent for a specific organization, so no raw API key is copied into the agent. That is a first-party, organization-bounded delegated credential for an agent. The evidence never shows selectable permission scopes or least-privilege restrictions. Missing for 10: documented granular token/OAuth scopes, ability to restrict an agent to read-only or specific resources, scoped API key (organization access token) issuance docs, and independent or hands-on corroboration.",
+    "rationale": "Polar's official remote MCP server issues agent access through an OAuth flow, so the agent gets its own credential bound to one organization instead of a copied API key. That is a first-party, agent-specific credential mechanism. The evidence never documents scope selection, permission granularity, read-only modes or other least-privilege controls, so the 'scoped' part of the story is unproven. missing for 10: documented OAuth scopes or permission sets for agent credentials, least-privilege or read-only token options, scoped API key (organization access token) documentation, independent corroboration.",
     "evidenceIds": [
       "polar-supp-mcp",
-      "polar-docs-24",
-      "polar-probe-4"
+      "polar-docs-24"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
+      "citations": [
+        {
+          "evidenceId": "polar-supp-mcp",
+          "quote": "Polar MCP uses OAuth. When you connect a client, your browser opens so you can sign in and authorize access to your organization. You never need to copy an API key into your agent."
+        },
+        {
+          "evidenceId": "polar-docs-24",
+          "quote": "Use Polar's remote Model Context Protocol (MCP) server to give AI agents secure access to your Polar organization."
+        }
+      ]
+    },
     "productId": "polar",
     "storyId": "agentic-scoped-keys"
   }

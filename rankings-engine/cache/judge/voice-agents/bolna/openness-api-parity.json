@@ -1,24 +1,44 @@
 {
-  "hash": "b79c9e586aeddd7179011245efda3697717cd3dad9435fccaca593e6cc86674d",
+  "hash": "1ae11b513630d4f3ea0ecd40ca4f86d220b2afa0d09f0c890db5753731ddf2e7",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Bolna exposes a substantial API surface. Agent create and update APIs carry settings like call_summary_enabled, extraction categories have their own endpoints, and multi-step workflows are 'driven entirely through the Bolna API'. A CLI and an MCP server also manage agents, calls, numbers and batches with 'no dashboard tab required'. However, provider integrations are documented as connected from the dashboard (Settings → Integrations), API keys are created via a UI button, and no OpenAPI spec was found to verify full parity. Missing for 10: evidence that provider/integration setup and API-key management are possible via API, API equivalents for UI features like Agent Studio and template import, a published OpenAPI spec, and independent confirmation of UI/API parity.",
+    "rationale": "Bolna documents a real API covering agent create/update (including call summary toggles), extraction categories, placing calls and fetching transcripts, and workflows run entirely through the API, plus a CLI and MCP server for agents, calls, numbers and batches. However, nothing documents full UI parity: provider integrations are connected from the dashboard's Settings → Integrations, API keys are created via a dashboard button, Agent Studio is presented as a UI feature, and no OpenAPI spec was found. missing for 10: an explicit API/UI parity statement, API coverage of provider integrations, API-key management and Agent Studio, and a published OpenAPI spec.",
     "evidenceIds": [
       "bolna-docs-1",
       "bolna-docs-2",
       "bolna-docs-12",
       "bolna-docs-14",
-      "bolna-docs-16",
       "bolna-docs-24",
-      "bolna-docs-17",
       "bolna-docs-28",
       "bolna-docs-15",
-      "bolna-docs-29",
       "bolna-probe-2"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can do everything through the API that I can do in the UI",
+      "citations": [
+        {
+          "evidenceId": "bolna-docs-12",
+          "quote": "driven entirely through the Bolna API"
+        },
+        {
+          "evidenceId": "bolna-docs-2",
+          "quote": "call_summary_enabled (boolean, off by default) on the agent create and update APIs"
+        },
+        {
+          "evidenceId": "bolna-docs-1",
+          "quote": "POST /agent/{agent_id}/extraction-categories — create a category (name + model) and attach it to an agent"
+        },
+        {
+          "evidenceId": "bolna-docs-24",
+          "quote": "lets you manage agents, calls, phone numbers, and batches directly from your terminal — no dashboard tab required."
+        }
+      ]
+    },
     "productId": "bolna",
     "storyId": "openness-api-parity"
   }

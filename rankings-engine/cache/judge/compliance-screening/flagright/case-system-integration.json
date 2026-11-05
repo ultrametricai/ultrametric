@@ -1,24 +1,53 @@
 {
-  "hash": "c64578422090375a59d7ea5e679fb1ce49e649e43d5c2f478f268ab9865dbce1",
+  "hash": "cf7407cb70c75d52acd4036b8dd18775f85e2ba344a52791a21c3f57ca178a22",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Flagright's Management API covers the core of two-way case sync for a developer. It can create cases, list them with status filters, and post status changes (including custom statuses). It also exposes alerts and alert hits with OPEN/CLEARED/ESCALATED states. Signed, retried webhooks can push events outward, though only SAR events are shown explicitly. Missing for 10: documented webhook events for case/alert status changes, sync of investigation notes/comments/evidence, and any independent or hands-on corroboration of an integration with an external case-management system.",
+    "rationale": "Flagright's Management API lets a developer create cases, list them with status filters, set case statuses (including custom ones), and read alerts and their statuses. Signed, retried webhooks can push events to an external system. Together these support two-way syncing of case state and decisions, but the pack shows no documented sync integration and no webhook events for case or alert decisions. Missing for 10: a documented case/alert decision webhook event, sync of investigation notes/comments/evidence, a first-party integration or guide for external case-management systems, and independent corroboration.",
     "evidenceIds": [
-      "flagright-docs-25",
       "flagright-docs-26",
       "flagright-docs-27",
+      "flagright-docs-25",
       "flagright-docs-28",
       "flagright-docs-29",
       "flagright-docs-5",
       "flagright-docs-6",
-      "flagright-docs-7",
       "flagright-docs-8",
-      "flagright-docs-9",
-      "flagright-docs-13"
+      "flagright-docs-9"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can synchronize investigations and decisions with another case-management system",
+      "citations": [
+        {
+          "evidenceId": "flagright-docs-26",
+          "quote": "Case - Create POST https://sandbox.api.flagright.com/management/cases"
+        },
+        {
+          "evidenceId": "flagright-docs-27",
+          "quote": "The status can be one of the following values: `OPEN`, `CLOSED`, `REOPENED`, `IN_PROGRESS`, `ON_HOLD`, or a custom status ID (e.g. `CS-1`)."
+        },
+        {
+          "evidenceId": "flagright-docs-25",
+          "quote": "`filterCaseStatus` (list of enum, optional) - Allowed values: `OPEN`, `CLOSED`, `REOPENED`, `IN_REVIEW`, `ESCALATED`, `IN_PROGRESS`, `ON_HOLD`"
+        },
+        {
+          "evidenceId": "flagright-docs-28",
+          "quote": "Alert - Get GET https://sandbox.api.flagright.com/management/alerts/{alertId}"
+        },
+        {
+          "evidenceId": "flagright-docs-29",
+          "quote": "`status` (enum, optional) - Allowed values: `OPEN`, `CLEARED`, `ESCALATED`"
+        },
+        {
+          "evidenceId": "flagright-docs-5",
+          "quote": "A webhook enables Flagright to push real-time notifications to your app. Flagright uses HTTPS to send these notifications to your app as a JSON payload."
+        }
+      ]
+    },
     "productId": "flagright",
     "storyId": "case-system-integration"
   }

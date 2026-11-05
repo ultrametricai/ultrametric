@@ -1,26 +1,49 @@
 {
-  "hash": "3c179443fc287c0ed8b662b0d6a2d5a561effb93b4220172c80dcfddb73f0d6b",
+  "hash": "b67f7a08057da1be9e2c78e50218a5cbd5c54bba0fa08cfd0cfa75256d61c354",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Restate's docs say every LLM call, tool execution and routing decision is durably persisted, and that agents survive crashes and recover automatically. `ctx.run` journals non-deterministic steps with configurable retries, and the default is infinite retries with exponential backoff. Agent-specific patterns are documented, including checkpointed evaluator loops, parallel tool calls, sessions, and integrations with the OpenAI Agents SDK and Vercel AI SDK. missing for 10: independent or hands-on corroboration that agent loops actually recover mid-run after crashes (community evidence only describes the general journal and orchestration architecture).",
+    "rationale": "Restate's first-party docs say every LLM call, tool execution and routing decision in an agent is durably persisted. Steps are wrapped with `ctx.run`, which stores results in the execution log, and transient errors are retried with configurable exponential backoff. Agent loops such as evaluator iterations are checkpointed and recover after crashes, with integrations for the OpenAI Agents SDK and Vercel AI SDK. missing for 10: independent or hands-on corroboration of crash recovery for agent loops specifically (community evidence covers only general setup and architecture).",
     "evidenceIds": [
-      "restate-docs-1",
       "restate-docs-15",
       "restate-docs-17",
       "restate-docs-18",
       "restate-docs-19",
       "restate-docs-30",
-      "restate-docs-36",
-      "restate-docs-50",
       "restate-docs-53",
-      "restate-docs-60",
-      "restate-docs-88",
       "restate-docs-89",
-      "restate-comm-9"
+      "restate-docs-1",
+      "restate-docs-36"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an agent builder, I run LLM agent loops as durable workflows — model and tool calls as checkpointed, retried steps that survive crashes mid-run",
+      "citations": [
+        {
+          "evidenceId": "restate-docs-17",
+          "quote": "Build AI agents that survive crashes and recover automatically. Every LLM call, tool execution, and routing decision is durably persisted."
+        },
+        {
+          "evidenceId": "restate-docs-15",
+          "quote": "Automatically retry transient errors like rate limits and network failures. Persist steps (LLM calls, tools) and recover previous progress after failures."
+        },
+        {
+          "evidenceId": "restate-docs-18",
+          "quote": "Use `ctx.run` to safely wrap any non-deterministic operation, like HTTP calls or database responses, and have Restate store its result in the execution log."
+        },
+        {
+          "evidenceId": "restate-docs-53",
+          "quote": "Have an agent generate output, evaluate it with a second LLM call, and loop until quality meets your criteria. Each iteration is checkpointed."
+        },
+        {
+          "evidenceId": "restate-docs-30",
+          "quote": "By default, Restate does infinite retries with an exponential backoff strategy."
+        }
+      ]
+    },
     "productId": "restate",
     "storyId": "durable-agent-loops"
   }

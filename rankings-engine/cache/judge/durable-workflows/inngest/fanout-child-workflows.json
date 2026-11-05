@@ -1,17 +1,40 @@
 {
-  "hash": "475fe5daba503b0f8b041d1cbde6145837ad33ae63a01facaae9f2de00934d67",
+  "hash": "a097b6852551aeed58a5025966017774b2a20d3c434dd3340c10e827cb73abeb",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "The evidence supports child workflows: steps can hold function invocations (inngest-docs-2), child runs triggered via event or invoke inherit parent sessions (inngest-docs-4), and sub-agents can run as separate Inngest functions (inngest-docs-35). Inngest also handles coordination and flow control for you (inngest-docs-1). However, nothing in the pack documents parallel step execution or fan-out/fan-in over dynamic batches. Missing for 10: documented parallel steps, fan-out/fan-in over dynamic batches with result aggregation, independent hands-on corroboration of composed workflows.",
+    "rationale": "Inngest documents function invocations as durable steps, and child runs triggered by invoke inherit parent context, so child workflows are a first-party capability with memoized, independently retried steps and no hand-rolled coordination. The pack never documents parallel step execution or fan-out/fan-in over dynamic batches, which are two of the story's three parts. Missing for 10: documented parallel steps, fan-out/fan-in over dynamic batches with result aggregation, independent corroboration.",
     "evidenceIds": [
-      "inngest-docs-1",
       "inngest-docs-2",
       "inngest-docs-4",
-      "inngest-docs-35"
+      "inngest-docs-35",
+      "inngest-docs-1"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a backend developer, I compose workflows from parallel steps, fan-out/fan-in over dynamic batches, and child workflows without hand-rolling coordination",
+      "citations": [
+        {
+          "evidenceId": "inngest-docs-2",
+          "quote": "Put side effects, API calls, sleeps, waits, and function invocations in steps so Inngest can memoize results, retry failures independently"
+        },
+        {
+          "evidenceId": "inngest-docs-4",
+          "quote": "Any run triggered by another run (via event, invoke, or defer) inherits its parent's sessions."
+        },
+        {
+          "evidenceId": "inngest-docs-35",
+          "quote": "A sub-agent can be modeled as a separate Inngest function that runs its own agent loop"
+        },
+        {
+          "evidenceId": "inngest-docs-1",
+          "quote": "Inngest handles execution durability, state persistence, retries, and flow control for you."
+        }
+      ]
+    },
     "productId": "inngest",
     "storyId": "fanout-child-workflows"
   }

@@ -1,16 +1,31 @@
 {
-  "hash": "c84f8086f126d74eba916e9aa6855ef77fdc308f9493ea713efb339aaeb63b97",
+  "hash": "3cf35efff7d4ec2b0457d1e74131874a45e33c1a2fec0daf8909747c090f89e9",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Pipecat documents in-pipeline capture of both sides' audio via AudioBufferProcessor and transcript collection via turn events, so recordings and transcripts can be obtained programmatically in the bot code. However, it gives you capture primitives only: the evidence shows no built-in storage or retrieval API for pulling every call's recording and transcript after the fact, so the platform engineer has to build persistence and retrieval themselves. Missing for 10: managed storage or retrieval API for past calls, evidence of automatic coverage of every call, independent or hands-on corroboration.",
+    "rationale": "Pipecat documents its own capture features: the AudioBufferProcessor records both user and bot audio, and turn events collect user and assistant messages for saving transcripts. Programmatic access to recordings and transcripts happens inside the developer's pipeline. The evidence shows no hosted store or retrieval API that returns recordings and transcripts for every call, and the OpenAPI probe found no API spec. Developers must persist and serve the data themselves. missing for 10: a documented API or hosted archive for retrieving recordings and transcripts per call, automatic capture across all calls (including Pipecat Cloud), independent or hands-on corroboration.",
     "evidenceIds": [
       "pipecat-docs-3",
-      "pipecat-docs-21",
-      "pipecat-docs-4"
+      "pipecat-docs-4",
+      "pipecat-probe-2"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform-engineer, I can retrieve full call recordings and transcripts programmatically for every call",
+      "citations": [
+        {
+          "evidenceId": "pipecat-docs-3",
+          "quote": "Pipecat's \\`AudioBufferProcessor\\` makes it easy to capture high-quality audio recordings of both the user and bot during interactions."
+        },
+        {
+          "evidenceId": "pipecat-docs-4",
+          "quote": "Pipecat's turn events make it easy to collect both user and assistant messages as they occur."
+        }
+      ]
+    },
     "productId": "pipecat",
     "storyId": "recordings-transcripts-api"
   }

@@ -1,18 +1,36 @@
 {
-  "hash": "ea2b69bda5de8f2b3205756d10cce135d5f2533f2cf1135c8c63be4749d5ba11",
+  "hash": "f87604bb9551806f8131894e21ea2cebde8312693ff1530b1edb1d0a3193b148",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Mollie documents a Balances API that returns real-time and historical balance data for bookkeeping, and a Settlement Report that breaks each payout down into all transactions, fees and deductions to support reconciliation. Its hosted MCP server exposes both the Balances API and the Settlements API to agents such as Claude and Cursor, so an agent can pull this data directly. missing for 10: explicit evidence that the Settlements API (not just the report) lists the individual payments in each payout, documented balance-transaction-level endpoints, and independent or hands-on corroboration of agent-driven reconciliation.",
+    "rationale": "Mollie documents a Balances API for real-time and historical balance data, aimed at bookkeeping. Its MCP server exposes both the Balances API and a Settlements API to AI agents. Per-payout breakdown of transactions, fees and deductions is documented for the Settlement Report, but the evidence does not show that this deposit-to-charges mapping is available via API. Missing for 10: documented API-level balance-transaction listing linking each settlement/payout to its underlying payments, explicit Settlements API reconciliation docs, and independent or hands-on corroboration of agent-driven reconciliation.",
     "evidenceIds": [
-      "mollie-docs-10",
-      "mollie-docs-27",
-      "mollie-docs-11",
       "mollie-docs-28",
-      "mollie-supp-mcp-server"
+      "mollie-docs-27",
+      "mollie-supp-mcp-server",
+      "mollie-docs-10"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an ai-native user, I can have an agent pull payout and balance-transaction data via the API and reconcile each bank deposit to its underlying charges",
+      "citations": [
+        {
+          "evidenceId": "mollie-docs-28",
+          "quote": "The Balances API allows you to retrieve real-time as well as historical information about your Mollie balance. This may be useful to for example integrate Mollie into your bookkeeping."
+        },
+        {
+          "evidenceId": "mollie-docs-27",
+          "quote": "Settlement Report gives you a complete breakdown of the data included in a specific payout. It shows all transactions, fees and deductions that are part of a single settlement."
+        },
+        {
+          "evidenceId": "mollie-supp-mcp-server",
+          "quote": "Currently, the following APIs are available: Balances API, Captures API, Customers API, Invoices API, Mandates API, Methods API, Payments API, Payment Links API, Settlements API, Subscriptions API, Terminals API, Webhooks API, Webhook Events API."
+        }
+      ]
+    },
     "productId": "mollie",
     "storyId": "agent-reconciles-payouts"
   }

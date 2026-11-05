@@ -1,14 +1,25 @@
 {
-  "hash": "8680c0912c878e34c8ae572423b4e71ec5b5212659c828068e54495a638c7264",
+  "hash": "27fac8f22ec410170fe0117da3d691d15bed96425729af81659b975bdfa73ea8",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Resend has a dedicated idempotency-keys doc stating that an idempotency key on any email request ensures the request is processed only once, even if sent multiple times. That directly covers safe retries after a network timeout. The evidence is a single one-line claim with no further detail. Missing for 10: documented key retention window and conflict/error semantics, explicit confirmation of batch-endpoint support, and independent or hands-on corroboration of duplicate suppression.",
+    "rationale": "Resend's own docs describe idempotency keys that can be added to any email request so the same request is processed only once even if it is sent multiple times, which covers the core of safe retries after a network timeout. The evidence is a single-sentence summary, so the full guarantee the story asks for is not shown. Missing for 10: the idempotency key retention/expiry window, behavior when a reused key arrives with a different payload, explicit coverage of the batch endpoint and SMTP sends, and any independent or hands-on corroboration that retries never double-send.",
     "evidenceIds": [
       "resend-docs-3"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform engineer, I can retry a failed send safely — idempotency keys or documented duplicate-suppression semantics guarantee a network timeout never double-sends a receipt",
+      "citations": [
+        {
+          "evidenceId": "resend-docs-3",
+          "quote": "Include an idempotency key in any email requests to ensure that the same email request is processed only once, even if it's sent multiple times."
+        }
+      ]
+    },
     "productId": "resend",
     "storyId": "idempotent-retry-safety"
   }

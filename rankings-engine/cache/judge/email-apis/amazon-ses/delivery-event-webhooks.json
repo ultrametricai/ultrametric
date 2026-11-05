@@ -1,17 +1,35 @@
 {
-  "hash": "49fdece63311cbb3253c6bd0fccb70c8fdd20205e9b51721b55b1951234e4cc4",
+  "hash": "a8d2f2a9dc59e9a5783f56c90a328a4251cd933d8a097d5ee43e616f4a99c9c1",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "SES documents notifications for bounced, complained, and delivered emails through Amazon SNS. It also documents event publishing to SNS, EventBridge, Firehose, and CloudWatch through configuration sets. However, no direct HTTP webhook appears in the evidence: you must route events through another AWS service to reach your app. Missing for 10: native HTTP webhook delivery to an app endpoint, documented retry/redelivery behavior, and hands-on corroboration of real-time event handling.",
+    "rationale": "SES documents its own event notifications for bounced, complained, and delivered emails, published to Amazon SNS or EventBridge through configuration sets. The evidence never shows SES registering an HTTP endpoint for callbacks; that delivery would depend on SNS or EventBridge, and no retry behavior is documented. missing for 10: documented direct HTTP webhook endpoint registration, documented retry/backoff behavior, payload/signature documentation, independent or hands-on corroboration.",
     "evidenceIds": [
       "amazon-ses-docs-23",
-      "amazon-ses-docs-10",
       "amazon-ses-docs-28",
       "amazon-ses-docs-29"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform engineer, I can receive webhooks for delivered, bounced, and complained events with documented retry behavior, so my app reacts to email outcomes in real time",
+      "citations": [
+        {
+          "evidenceId": "amazon-ses-docs-23",
+          "quote": "Set up Amazon Simple Notification Service (Amazon SNS) to notify you of your emails that bounced, produced a complaint, or were successfully delivered to the recipient's mail server."
+        },
+        {
+          "evidenceId": "amazon-ses-docs-28",
+          "quote": "You can set up Amazon SES to publish email sending events to Amazon CloudWatch, Amazon Data Firehose, Amazon Pinpoint, Amazon Simple Notification Service, or Amazon EventBridge based on characteristics that you define."
+        },
+        {
+          "evidenceId": "amazon-ses-docs-29",
+          "quote": "To use event publishing, you first set up one or more configuration sets"
+        }
+      ]
+    },
     "productId": "amazon-ses",
     "storyId": "delivery-event-webhooks"
   }

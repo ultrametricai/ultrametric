@@ -1,20 +1,35 @@
 {
-  "hash": "564325a5f2ac5023119812de9a633e0fa5fdd2d171a7192ebab2ef412fc9c331",
+  "hash": "065a82e9767af476588786daa8ad17784d525e5e609c4e0dcb247fe2fe887692",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Temporal Cloud is a vendor-managed SaaS orchestration service with mTLS and end-to-end encryption. Temporal states it orchestrates encrypted workflows \"without ever accessing your sensitive data\" (temporal-docs-31, temporal-docs-13). Workers and Activities are your own code, run and tuned as \"your Worker fleet\" (temporal-docs-3, temporal-docs-49), including serverless Workers on Lambda and Cloud Run (temporal-docs-22, temporal-docs-28). missing for 10: an explicit statement that Workers and code run only in customer infrastructure, a documented hybrid architecture or network-boundary explanation, and independent or hands-on corroboration of the data-isolation model.",
+    "rationale": "Temporal Cloud is documented as a vendor-managed SaaS that orchestrates encrypted workflows 'without ever accessing your sensitive data', and lists end-to-end encryption and mTLS. That covers the managed control plane and data confidentiality. The pack never explicitly states that workers and code run in the customer's own infrastructure, so that half of the story is only implied by the separate worker-tuning docs. missing for 10: explicit documentation that workers run in customer infrastructure while Cloud hosts only the control plane, network-boundary or private-connectivity details, independent hands-on corroboration.",
     "evidenceIds": [
       "temporal-docs-31",
       "temporal-docs-13",
-      "temporal-docs-49",
-      "temporal-docs-3",
-      "temporal-docs-22",
-      "temporal-docs-28",
-      "temporal-docs-20"
+      "temporal-docs-29"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform engineer, I run workers in my own infrastructure while the vendor manages the orchestration control plane — code and data stay inside my network",
+      "citations": [
+        {
+          "evidenceId": "temporal-docs-31",
+          "quote": "Learn how Temporal Cloud provides provable security by design - orchestrating encrypted workflows without ever accessing your sensitive data."
+        },
+        {
+          "evidenceId": "temporal-docs-13",
+          "quote": "Explore the security features of our SaaS offering, including mTLS, end-to-end encryption, and enterprise compliance."
+        },
+        {
+          "evidenceId": "temporal-docs-29",
+          "quote": "strategies for tuning Workers and Task Queue processing so you manage your resources effectively"
+        }
+      ]
+    },
     "productId": "temporal",
     "storyId": "hybrid-managed-workers"
   }

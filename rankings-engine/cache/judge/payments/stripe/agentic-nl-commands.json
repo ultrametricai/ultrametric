@@ -1,21 +1,43 @@
 {
-  "hash": "3da95db9670c0d07b20996bb2fcea22b4b67407614c8fbffc129bc1ef1b38513",
+  "hash": "40b0f1fc7f3b224d633dbb6076d186cfe842242e527b6fea4e8d03106d279778",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 8,
-    "confidence": "high",
-    "rationale": "Stripe's official hosted MCP server lets AI agents read and write across most of the API (refunds, invoices, subscriptions, payment links, payouts and more). It adds analytics and report tools driven by documented natural-language prompts such as \"What's my MRR for the last 6 months, by month?\", and Stripe Projects is run by telling an agent what to set up, with human confirmation for risky writes. Missing for 10: a native in-Dashboard natural-language interface (natural-language operation depends on an external agent client connected via MCP or plugins), and independent hands-on corroboration of natural-language operation in practice.",
+    "verdict": "partial",
+    "quality": 6,
+    "confidence": "medium",
+    "rationale": "Stripe ships a first-party hosted MCP server and official agent plugins that let an AI agent read and write account data across a broad API surface. Its docs give natural-language example prompts such as \"What's my MRR for the last 6 months, by month?\", and sensitive writes require human approval. However, the natural-language layer comes from an external agent client (Claude Code, Codex, Cursor), and the evidence shows no built-in natural-language command interface in the product itself. Missing for 10: a native natural-language command surface in the Dashboard, natural-language examples for write operations beyond analytics and provisioning, and independent hands-on corroboration.",
     "evidenceIds": [
       "stripe-supp-mcp-tools",
-      "stripe-supp-mcp-write-confirmation",
       "stripe-supp-analytics-ai",
-      "stripe-supp-projects-provisioning",
+      "stripe-supp-mcp-write-confirmation",
       "stripe-supp-agent-plugin",
-      "stripe-docs-13",
-      "stripe-docs-74",
-      "stripe-probe-6"
+      "stripe-supp-projects-provisioning",
+      "stripe-probe-6",
+      "stripe-docs-28"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can operate the product with natural-language commands",
+      "citations": [
+        {
+          "evidenceId": "stripe-docs-28",
+          "quote": "Let your AI agents interact with the Stripe API by using our MCP server."
+        },
+        {
+          "evidenceId": "stripe-supp-analytics-ai",
+          "quote": "Example prompts: \"What's my MRR for the last 6 months, by month?\", \"Run the balance summary report for last month.\""
+        },
+        {
+          "evidenceId": "stripe-supp-projects-provisioning",
+          "quote": "tell your agent e.g. \"Use Stripe Projects to set up a Next.js app with Supabase, Vercel, and PostHog\""
+        },
+        {
+          "evidenceId": "stripe-supp-mcp-write-confirmation",
+          "quote": "Stripe requires human confirmation before it takes certain stripe_api_write actions, such as refunds and outbound payments."
+        }
+      ]
+    },
     "productId": "stripe",
     "storyId": "agentic-nl-commands"
   }

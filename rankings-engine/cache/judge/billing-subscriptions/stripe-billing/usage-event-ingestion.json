@@ -1,17 +1,35 @@
 {
-  "hash": "1238aa73e356ef1ce2c468e111c2129614eea99ad83e8469ea8639d2bdbc3fb4",
+  "hash": "95e85d13816af5d5b7e8f62b253c6f8b226581686dcce487096405af9025392f",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Stripe documents meter events as records of customer actions used to bill on usage, built on the Billing Meters API within its usage-based billing models. This covers the core of sending usage events into a metering pipeline. The evidence says nothing about high-volume streaming throughput, idempotent ingestion, or backdated event timestamps. missing for 10: evidence of high-volume/streaming ingestion, idempotency keys or deduplication for meter events, backdating support, independent hands-on corroboration.",
+    "rationale": "Stripe Billing documents its own Meter Events API (Billing Meters) for recording customer actions and billing on usage. That covers the core of sending usage events into a metering pipeline, but the pack does not evidence the story's specific requirements. missing for 10: high-volume or streaming ingestion throughput, idempotent ingestion (e.g., idempotency keys or deduplication), backdated event timestamps, independent or hands-on corroboration.",
     "evidenceIds": [
       "stripe-billing-docs-29",
       "stripe-billing-docs-28",
-      "stripe-billing-docs-3",
-      "stripe-billing-probe-2"
+      "stripe-billing-docs-3"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can stream high-volume usage events — API calls, tokens, compute-seconds — into a metering pipeline with idempotent ingestion and backdating support",
+      "citations": [
+        {
+          "evidenceId": "stripe-billing-docs-29",
+          "quote": "Meter events represent actions that customers take in your system. You can use meter events to bill a customer based on their usage."
+        },
+        {
+          "evidenceId": "stripe-billing-docs-28",
+          "quote": "Basic usage-based billing, built on the Billing Meters API, is a lower-level primitive that remains fully supported for existing integrations."
+        },
+        {
+          "evidenceId": "stripe-billing-docs-3",
+          "quote": "you can set up and integrate different types of usage-based pricing models with your SaaS product."
+        }
+      ]
+    },
     "productId": "stripe-billing",
     "storyId": "usage-event-ingestion"
   }

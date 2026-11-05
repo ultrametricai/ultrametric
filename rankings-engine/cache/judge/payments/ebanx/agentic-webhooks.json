@@ -1,15 +1,30 @@
 {
-  "hash": "ea76b19cd22c076d4f7dd8151cc528cb8b2a97b50c39f84f6c76d408acb4b386",
+  "hash": "a3dd0449ed71e8c4c16eb1f57abef72f372a7ecd32d4d22eeb417f0476e3aab5",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "EBANX documents outbound webhooks: it sends an HTTP POST to a merchant-configured Notification URL with payment and status data plus digital-signature headers, and retries failed deliveries multiple times. That is a registrable callback a programmatic consumer can receive. missing for 10: evidence of per-event-type subscription or event coverage beyond payment status (e.g., payouts, chargebacks, refunds), documentation of how the URL is registered (API vs dashboard), independent or hands-on corroboration.",
+    "rationale": "EBANX documents real outbound webhooks: it sends a signed HTTP POST to a configured Notification URL when payment status changes, and retries failed deliveries. The evidence covers only payment status notifications, though, and does not show event-type subscription or how the URL is registered, so the story is only partly covered. Missing for 10: documented event catalog or per-event subscription selection, programmatic (API) webhook registration, webhook coverage for payouts/refunds/chargebacks, and independent or hands-on corroboration.",
     "evidenceIds": [
       "ebanx-docs-21",
       "ebanx-docs-22"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can subscribe to events via webhooks",
+      "citations": [
+        {
+          "evidenceId": "ebanx-docs-21",
+          "quote": "EBANX sends an HTTP POST request to the configured Notification URL. The request includes basic payment and status information, along with headers containing a digital signature"
+        },
+        {
+          "evidenceId": "ebanx-docs-22",
+          "quote": "If your system fails to process a notification (e.g., due to a server error), EBANX will retry sending it multiple times."
+        }
+      ]
+    },
     "productId": "ebanx",
     "storyId": "agentic-webhooks"
   }

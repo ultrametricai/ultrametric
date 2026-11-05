@@ -1,28 +1,54 @@
 {
-  "hash": "d1609f579f264cbaa4f0d9c0bd2c5f62f6d0c4c40a8208910ce52be742f5cc6a",
+  "hash": "ede8f1f04b61b3379b19fa178eaab1f8866135d57a60a9495f220b8698003737",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "cognee",
-    "storyId": "agent-self-managed-memory",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Cognee documents agent-invokable memory operations as single API calls: `remember` to add (including mid-session writes into a session cache), `recall` to search with automatic strategy selection, and `forget` to delete at item, dataset or full scope. An official MCP server lets assistants like Claude, Cursor and Cline call these as tools. Update is only implied: `improve` enriches the graph and bridges session memory into permanent memory, but is not an explicit edit of an existing memory. missing for 10: explicit update/edit-memory operation, documented list of MCP tools showing which operations agents can invoke, independent hands-on corroboration of agent self-managed memory.",
+    "rationale": "Cognee documents agent-invocable memory operations: `remember` for adding (including into a per-session cache mid-conversation), `recall` for searching, and `forget` for deleting items or datasets. It also ships an official MCP server that MCP-compatible assistants can call, so an agent can drive its own memory through tools or API calls. However, there is no documented operation for editing or updating a specific memory (`improve` only enriches the graph), and the evidence does not list which operations the MCP server exposes as tools. missing for 10: explicit update/edit-memory operation, documented MCP tool list covering add/search/update/delete, independent hands-on corroboration of agent self-managed memory.",
     "evidenceIds": [
       "cognee-docs-1",
       "cognee-docs-13",
-      "cognee-docs-38",
       "cognee-docs-37",
-      "cognee-docs-2",
       "cognee-docs-4",
       "cognee-docs-30",
-      "cognee-docs-43",
-      "cognee-docs-31",
-      "cognee-docs-6",
       "cognee-docs-21",
       "cognee-docs-34",
-      "cognee-probe-3",
-      "cognee-docs-41"
-    ]
+      "cognee-docs-31",
+      "cognee-docs-38"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, my agent can manage its own memory mid-conversation — adding, searching, updating, and deleting memories through tools or API calls it invokes itself",
+      "citations": [
+        {
+          "evidenceId": "cognee-docs-1",
+          "quote": "It stores information in memory with a single API call."
+        },
+        {
+          "evidenceId": "cognee-docs-13",
+          "quote": "cognee.remember(data, session_id=\"my_session\") — writes content directly into the session cache for fast retrieval."
+        },
+        {
+          "evidenceId": "cognee-docs-37",
+          "quote": "The `.recall` operation is the main retrieval entry point in Cognee v1.0. It searches memory using the best available source for the request."
+        },
+        {
+          "evidenceId": "cognee-docs-30",
+          "quote": "Single data item deletion: remove one data item from a dataset."
+        },
+        {
+          "evidenceId": "cognee-docs-21",
+          "quote": "Cognee MCP brings persistent AI memory to your workflow through the Model Context Protocol."
+        },
+        {
+          "evidenceId": "cognee-docs-34",
+          "quote": "You access them through MCP-compatible AI assistants like Cursor, Claude Desktop, Continue, Cline, and Codex."
+        }
+      ]
+    },
+    "productId": "cognee",
+    "storyId": "agent-self-managed-memory"
   }
 }

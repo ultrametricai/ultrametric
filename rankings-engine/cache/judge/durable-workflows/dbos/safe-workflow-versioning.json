@@ -1,16 +1,31 @@
 {
-  "hash": "b0ba1f58aad70d58d44b3582b79b64a670432b69f1952b8282ba6b320b7a76de",
+  "hash": "4781d8afe70af08e4c519396d8e0770ac7e93ef18f97bda71869479520961650",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 5,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "DBOS has a dedicated upgrade guide stating it supports two strategies for safely upgrading workflow code, patching and versioning (dbos-docs-10). Conductor is also marketed as able to version durable workflows (dbos-docs-21), and the docs acknowledge that long-waiting workflows must survive software upgrades (dbos-docs-12). However, the pack contains only one-line claims, with no detail on how in-flight runs are pinned to their starting version or how determinism is preserved. Missing for 10: documented mechanics of routing in-flight runs to the old code version, how patching keeps replay deterministic, rollout/retirement of old versions, and independent or hands-on corroboration.",
+    "rationale": "DBOS's own docs name two strategies for safely upgrading workflow code, patching and versioning, and Conductor lists 'version' as a management capability. This shows a first-party mechanism for deploying new code against durable in-flight workflows. However, the evidence is a single summary line and does not explain how in-flight runs are kept on their original version or how determinism is preserved. missing for 10: explicit documentation that in-flight workflows complete on the code version they started with, details of the patching/versioning mechanics and determinism guarantees, independent or hands-on corroboration of safe upgrades.",
     "evidenceIds": [
       "dbos-docs-10",
       "dbos-docs-21",
       "dbos-docs-12"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform engineer, I deploy new workflow code while in-flight runs finish on the version they started with — versioning without breaking determinism",
+      "citations": [
+        {
+          "evidenceId": "dbos-docs-10",
+          "quote": "DBOS supports two strategies for safely upgrading workflow code: patching and versioning."
+        },
+        {
+          "evidenceId": "dbos-docs-21",
+          "quote": "Monitor, version, fork, replay, and observe durable workflows with DBOS Conductor console."
+        }
+      ]
+    },
     "productId": "dbos",
     "storyId": "safe-workflow-versioning"
   }

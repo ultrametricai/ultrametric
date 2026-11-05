@@ -1,16 +1,30 @@
 {
-  "hash": "d0f71c4a491637a3a471e3c2cb159925c84d6e00922f3410cd0cff5f7b6ff635",
+  "hash": "13bc6821f92e2a2c86d777cdb7663b2ed8f6104cb6754624a1022725003937a4",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "The alerting half is documented: Trigger.dev sends alerts by email, Slack and webhooks when tasks fail, and it has a real-time trace and log view in its own dashboard. Nothing in the evidence shows failure rates, latencies or queue depths being exported to an external observability stack. The management API's runs.list is the only programmatic route to run data, which would need custom work to turn into metrics. Missing for 10: metrics export (OpenTelemetry/Prometheus/Datadog), queue-depth and latency metrics, alerts on conditions beyond task failure, independent corroboration.",
+    "rationale": "Trigger.dev documents its own failure alerting through email, Slack and webhooks, and a real-time trace view with logs in its dashboard. There is no evidence that failure rates, latencies or queue depths can be exported to an external observability stack. Alerting is documented only for task failures, not broader misbehavior. Missing for 10: metrics export to external observability tools (e.g., OpenTelemetry/Prometheus/Datadog), documented failure-rate/latency/queue-depth metrics, alerts on conditions beyond task failure, independent corroboration.",
     "evidenceIds": [
       "trigger-dev-docs-29",
-      "trigger-dev-docs-28",
-      "trigger-dev-docs-19"
+      "trigger-dev-docs-28"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform engineer, failure rates, latencies, and queue depths export to my observability stack, and alerts fire when workflows misbehave",
+      "citations": [
+        {
+          "evidenceId": "trigger-dev-docs-29",
+          "quote": "Receive alerts via email, Slack notification and webhooks when your tasks fail."
+        },
+        {
+          "evidenceId": "trigger-dev-docs-28",
+          "quote": "the run page will show a trace view of each task executing in real-time along with any logs it produces."
+        }
+      ]
+    },
     "productId": "trigger-dev",
     "storyId": "metrics-alerts-export"
   }

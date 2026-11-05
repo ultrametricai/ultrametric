@@ -1,17 +1,36 @@
 {
-  "hash": "3e13454959d45cb41b2126ddeb0a4b0fe6245bde294ed9b5e8e6a831ed0cd9ad",
+  "hash": "0fac883aaf7253ff0de11884b4627937ca4ce8057308b98350020bf48821d897",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 3,
-    "confidence": "medium",
-    "rationale": "The SES docs confirm you can create a domain-level identity and verify a sending domain, which then covers all its subdomains and addresses. However, nothing in the pack shows SES generating SPF, DKIM or DMARC DNS records, or exposing verification status through the API. Missing for 10: evidence that SES generates exact SPF/DKIM/DMARC records, documentation of how verification is checked, API-exposed verification status, and independent or hands-on corroboration.",
+    "confidence": "low",
+    "rationale": "SES's own docs show it supports creating and verifying domain identities, which is the core of sending-domain authentication. The pack says nothing about generating the specific SPF/DKIM/DMARC records, how verification is performed, or reading verification status through the API. missing for 10: generation of exact SPF/DKIM/DMARC DNS records, documented DNS verification mechanics, API exposure of verification status, independent or hands-on corroboration.",
     "evidenceIds": [
       "amazon-ses-docs-5",
       "amazon-ses-docs-21",
       "amazon-ses-docs-34",
       "amazon-ses-docs-35"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can authenticate my sending domain end to end — the product generates the exact SPF/DKIM/DMARC DNS records, verifies them, and exposes verification status via the API",
+      "citations": [
+        {
+          "evidenceId": "amazon-ses-docs-5",
+          "quote": "when you verify a domain identity, you can send email from any subdomain or email address of the verified domain without having to verify each one individually"
+        },
+        {
+          "evidenceId": "amazon-ses-docs-21",
+          "quote": "In Amazon SES, you can create an identity at the domain level or you can create an email address identity."
+        },
+        {
+          "evidenceId": "amazon-ses-docs-34",
+          "quote": "Get started with SES by verifying an email address and sending domain so that you can start sending email through SES"
+        }
+      ]
+    },
     "productId": "amazon-ses",
     "storyId": "guided-domain-auth"
   }

@@ -1,19 +1,45 @@
 {
-  "hash": "f7db1c0f1298049b4b79834b29f2e81e4a6d5e15808cb7a85326f5cc5fee8451",
+  "hash": "b41d5c8d9d330604f85069b3365afc65f279c9df700723d9355e71b837adc660",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Restate's docs describe deduplicating incoming events on an idempotency key and processing them exactly once across failures and restarts. They also describe exactly-once semantics for service calls, and `ctx.run` persisting the results of non-deterministic operations (such as HTTP or payment calls) in the execution log so completed steps are not re-run on recovery. Missing for 10: detail on idempotency-key mechanics (how keys are passed, retention window), explicit guidance on side effects inside a step that fails mid-way, and independent or hands-on corroboration that duplicates are actually prevented.",
+    "rationale": "Restate's docs say it can deduplicate incoming events on an idempotency key and process them exactly once across failures and restarts. Service calls carry exactly-once semantics, and side effects wrapped in ctx.run have their results stored in the execution log, so completed steps are not re-executed on recovery. missing for 10: idempotency-key details beyond the durable-webhooks guide (deduplication window/retention, how keys are attached to HTTP invocations), any independent or hands-on corroboration that duplicates are prevented in practice.",
     "evidenceIds": [
       "restate-docs-37",
       "restate-docs-81",
       "restate-docs-3",
       "restate-docs-18",
-      "restate-docs-80",
       "restate-docs-1"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a backend developer, idempotency keys and exactly-once step semantics stop duplicate triggers from double-charging or double-sending",
+      "citations": [
+        {
+          "evidenceId": "restate-docs-37",
+          "quote": "Let Restate deduplicate events on an idempotency key."
+        },
+        {
+          "evidenceId": "restate-docs-81",
+          "quote": "Restate persists all incoming events, and ensures that they are **processed exactly once**, across failures and restarts."
+        },
+        {
+          "evidenceId": "restate-docs-3",
+          "quote": "Call services sync or async with guaranteed execution and exactly-once semantics."
+        },
+        {
+          "evidenceId": "restate-docs-18",
+          "quote": "Use `ctx.run` to safely wrap any non-deterministic operation, like HTTP calls or database responses, and have Restate store its result in the execution log."
+        },
+        {
+          "evidenceId": "restate-docs-1",
+          "quote": "Code automatically stores completed steps and resumes from where it left off when recovering from failures."
+        }
+      ]
+    },
     "productId": "restate",
     "storyId": "idempotency-exactly-once"
   }

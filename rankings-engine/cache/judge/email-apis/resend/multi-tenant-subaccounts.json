@@ -1,20 +1,32 @@
 {
-  "hash": "81de593a0a24506e9147c94696f2fcd4225a455aae2752317ec74d59481b67a4",
+  "hash": "7a65aaff8628fdd7981076050f56586abce5d3feb850c36f27999f54945af9fb",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Resend supports multiple verified domains per account, each with its own DKIM keys. API keys can be restricted to sending_access for one specific domain, which gives a form of per-tenant credential isolation via multiple domains. A suppression list API exists, but nothing shows it can be scoped per domain or tenant, and dedicated-IP warmup is not shown to separate reputation per tenant. Missing for 10: subaccount/subuser constructs, per-tenant suppression lists, per-tenant reputation isolation (e.g., per-tenant IP pools), independent corroboration of multi-tenant use.",
+    "rationale": "Resend documents managing multiple domains and creating API keys restricted to send only from a specific domain, which gives per-domain credential separation for tenants. The evidence does not show subaccounts or subusers, per-tenant suppression lists (the suppression list appears account-level), or per-tenant reputation isolation. Missing for 10: subaccount/subuser model, per-tenant suppression lists, per-tenant reputation/IP isolation, independent corroboration of multi-tenant use.",
     "evidenceIds": [
       "resend-docs-5",
       "resend-docs-8",
       "resend-docs-25",
-      "resend-docs-20",
-      "resend-docs-7",
-      "resend-docs-36",
-      "resend-comm-14"
+      "resend-docs-7"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform engineer, I can isolate tenants — subaccounts, subusers, or multiple domains with separate credentials, suppression lists, and reputation — for the platform I'm building",
+      "citations": [
+        {
+          "evidenceId": "resend-docs-8",
+          "quote": "Restrict an API key to send emails only from a specific domain. This is only used when the `permission` is set to `sending_access`."
+        },
+        {
+          "evidenceId": "resend-docs-5",
+          "quote": "You can add and verify a domain you own in four ways: in the Domains Dashboard page, using the Resend API, with a Resend CLI command, or with the Resend MCP server"
+        }
+      ]
+    },
     "productId": "resend",
     "storyId": "multi-tenant-subaccounts"
   }

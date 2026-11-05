@@ -1,20 +1,18 @@
 {
-  "hash": "284df9f8f45dbb2c6fad566ed674eb6e2617be69a823d7c9db4d0aacdaedb775",
+  "hash": "3e85a2c08ba901e84369d4f4bcf04e3daf8d6931d45063af346f4e399a211033",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "partial",
-    "quality": 5,
+    "verdict": "none",
+    "quality": 0,
     "confidence": "medium",
-    "rationale": "SES publishes sending events (bounces, complaints, deliveries) to Amazon SNS, EventBridge, CloudWatch, Firehose or Pinpoint through configuration sets, and receipt rules can publish incoming mail to SNS or trigger Lambda. That gives event subscription, but only through other AWS services rather than native webhooks. A community user built a Lambda to forward inbound email to their own HTTP endpoint, which confirms this kind of glue code is needed. Missing for 10: native webhook endpoint registration, documented direct HTTP delivery of events (no evidence that SNS HTTP subscriptions are offered), and webhook signing/retry details.",
-    "evidenceIds": [
-      "amazon-ses-docs-10",
-      "amazon-ses-docs-23",
-      "amazon-ses-docs-28",
-      "amazon-ses-docs-29",
-      "amazon-ses-docs-6",
-      "amazon-ses-docs-7",
-      "amazon-ses-comm-2"
-    ],
+    "rationale": "SES documents publishing sending events to other AWS services (SNS, EventBridge, CloudWatch, Firehose, Pinpoint) and routing inbound mail to SNS or Lambda. None of the evidence shows registrable outbound HTTP callbacks that SES itself delivers to a user endpoint. Any HTTP delivery would rely on a host-platform service (SNS or EventBridge) or a user-built Lambda forwarder, as one community user describes; neither earns credit, so the verdict stays at none.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "adjacent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can subscribe to events via webhooks",
+      "citations": []
+    },
     "productId": "amazon-ses",
     "storyId": "agentic-webhooks"
   }

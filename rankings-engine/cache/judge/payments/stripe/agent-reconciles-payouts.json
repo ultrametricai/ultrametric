@@ -1,18 +1,40 @@
 {
-  "hash": "b0201dd4830e17b8bcc2c54d8a3771b5b27ee1e8a49e0056ccb487a768369a95",
+  "hash": "a57ee44ef3a5a4b87421946a9cbf13e9828bff7ccbbc09e1a756eb45c1f1d1ed",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Stripe's hosted MCP server lets an agent read any Stripe API GET method, and its documented supported-method list explicitly includes payouts and balance transactions. The `stripe_report` tool can generate balance and payouts report runs as downloadable CSVs, and the payouts docs confirm that payouts move funds from the Stripe balance to the bank account. The evidence does not show the per-deposit linkage, i.e. listing a payout's balance transactions back to their source charges, so reconciliation is only implied. Missing for 10: documented payout-to-charge reconciliation (e.g. filtering balance transactions by payout or a payout reconciliation report), an end-to-end agent reconciliation workflow, and independent or hands-on corroboration.",
+    "rationale": "Stripe's documented MCP server lets an agent read payouts and balance transactions through any API GET method. Its `stripe_report` tool can also create payouts and balance report runs as downloadable CSVs, so the data-pulling half of the story is directly supported. The evidence does not show how a payout is linked to the specific charges it settled, so the deposit-to-charge reconciliation itself is only implied. Missing for 10: documented payout-to-charge linkage (e.g. listing balance transactions by payout or a payout reconciliation report), any reconciliation workflow, and hands-on or independent corroboration.",
     "evidenceIds": [
       "stripe-supp-mcp-tools",
       "stripe-supp-analytics-ai",
       "stripe-docs-34",
-      "stripe-docs-52",
-      "stripe-docs-13"
+      "stripe-supp-restricted-keys-agents"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an ai-native user, I can have an agent pull payout and balance-transaction data via the API and reconcile each bank deposit to its underlying charges",
+      "citations": [
+        {
+          "evidenceId": "stripe-supp-mcp-tools",
+          "quote": "`stripe_api_read` (\"Read data with any Stripe API GET method\")"
+        },
+        {
+          "evidenceId": "stripe-supp-mcp-tools",
+          "quote": "Connect accounts, Issuing, tax registrations/calculations, payouts, and balance transactions"
+        },
+        {
+          "evidenceId": "stripe-supp-analytics-ai",
+          "quote": "`stripe_report` \"searches available financial report types and creates report runs for reports such as balance, payouts, activity, tax, and Revenue Recognition. Report runs generate downloadable CSV files.\""
+        },
+        {
+          "evidenceId": "stripe-docs-34",
+          "quote": "Stripe sends funds from your available balance to your bank account as payouts"
+        }
+      ]
+    },
     "productId": "stripe",
     "storyId": "agent-reconciles-payouts"
   }

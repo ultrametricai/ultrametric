@@ -1,20 +1,46 @@
 {
-  "hash": "8e57313306c190ec469b1b8c818470f59df231cdf9c1cda580ae31725e5c3181",
+  "hash": "e66dc26ff28a1d412e686dc431b9ea25f96c8b3ab0707301bcd30ad97f1d0820",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 9,
     "confidence": "medium",
-    "rationale": "Orb documents an Ingest Usage Events endpoint, per-event idempotency that prevents duplicates within the account grace period, and high-volume ingestion of 1M+ events per second. Backdating is covered by event backfills plus late-data handling that automatically recalculates affected invoices. Missing for 10: independent or hands-on corroboration of throughput, idempotency, and backfill behavior (all evidence is vendor docs).",
+    "rationale": "Orb documents an Ingest Usage Events endpoint, throughput of 1M+ billing events per second, per-event idempotency that prevents duplicates within the account grace period, and backdating through late-data handling with automatic invoice recalculation plus historical event backfills. Missing for 10: independent or hands-on corroboration of the throughput and idempotency claims, and documented limits on how far back late events can be backdated.",
     "evidenceIds": [
       "orb-docs-24",
-      "orb-docs-17",
-      "orb-docs-25",
       "orb-docs-3",
+      "orb-docs-17",
       "orb-docs-2",
       "orb-docs-14",
       "orb-docs-35"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can stream high-volume usage events — API calls, tokens, compute-seconds — into a metering pipeline with idempotent ingestion and backdating support",
+      "citations": [
+        {
+          "evidenceId": "orb-docs-24",
+          "quote": "Use the Ingest Usage Events endpoint to send usage events into Orb."
+        },
+        {
+          "evidenceId": "orb-docs-3",
+          "quote": "Handle 1M+ billing events per second in production deployments."
+        },
+        {
+          "evidenceId": "orb-docs-17",
+          "quote": "Orb provides per-event idempotency through the API to guarantee that duplicates are never processed within the account grace period."
+        },
+        {
+          "evidenceId": "orb-docs-2",
+          "quote": "Late data handled safely. Orb recalculates affected invoices automatically."
+        },
+        {
+          "evidenceId": "orb-docs-35",
+          "quote": "Orb is fundamentally architected to support event backfills, which makes it easy to replay historical usage"
+        }
+      ]
+    },
     "productId": "orb",
     "storyId": "usage-event-ingestion"
   }

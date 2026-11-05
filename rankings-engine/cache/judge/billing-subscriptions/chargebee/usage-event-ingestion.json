@@ -1,16 +1,35 @@
 {
-  "hash": "6e68c290c80d735d9f19002eba5ec14eb664a27ad2be23a5b2fb7b97e0bf7d7c",
+  "hash": "a021802e57004c1773536cd477f1d586c78e6468e03caf0e4836db13541d383d",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Chargebee documents a usage_events resource for usage-based billing, with endpoints for single and batch ingestion. Its API supports idempotent requests via the `chargebee-idempotency-key` header, though the docs do not tie that header specifically to usage event ingestion. Nothing in the evidence shows backdated event timestamps, and nothing shows high-volume streaming throughput. Missing for 10: backdating support for late or historical events, evidence of high-volume streaming throughput or rate limits, idempotency documented specifically for usage event ingestion, independent or hands-on corroboration.",
+    "rationale": "Chargebee documents a first-party usage events resource with single-event and batch ingestion endpoints for usage-based billing, and a general `chargebee-idempotency-key` header for idempotent requests. Nothing in the evidence shows backdated event timestamps, throughput limits for high volume, or idempotency applied specifically to usage ingestion. Missing for 10: backdating/historical timestamp support, documented high-volume throughput or streaming limits, usage-specific idempotency/deduplication docs, independent hands-on corroboration.",
     "evidenceIds": [
       "chargebee-docs-3",
       "chargebee-docs-19",
       "chargebee-docs-18"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can stream high-volume usage events — API calls, tokens, compute-seconds — into a metering pipeline with idempotent ingestion and backdating support",
+      "citations": [
+        {
+          "evidenceId": "chargebee-docs-3",
+          "quote": "This resource allows you to record usage events, which are essential for usage-based billing."
+        },
+        {
+          "evidenceId": "chargebee-docs-19",
+          "quote": "You can send usage data to Chargebee using two endpoints: Ingest a Usage Event for individual events and Ingest Usage Events in Batch for bulk submissions."
+        },
+        {
+          "evidenceId": "chargebee-docs-18",
+          "quote": "provide the `chargebee-idempotency-key` header with a unique value for each request"
+        }
+      ]
+    },
     "productId": "chargebee",
     "storyId": "usage-event-ingestion"
   }

@@ -1,20 +1,41 @@
 {
-  "hash": "3f71e570276b61df72148193ed54a02e9982167fbd77261663662d9025c2ff78",
+  "hash": "614b8b36ac689623db145da627d4c075e679026a4580bf320072c5dae7e3c66c",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Paddle documents payout reconciliation reports that can be generated via the API. They reconcile payouts to the underlying transactions and adjustments, sum balance movements against remittance advice, and itemize gross, tax, fee and chargeback amounts. Its hosted MCP server, using codemode search/execute across the full API, explicitly lets agents generate reports. This covers the core of an agent reconciling deposits to charges. Missing for 10: no evidence of direct payout or balance-transaction list endpoints (access is report-based); report generation mechanics and output format are undocumented in the pack; no hands-on or independent corroboration of agent-driven reconciliation.",
+    "rationale": "Paddle documents payout reconciliation reports that can be generated via the API and that reconcile payouts to transactions and adjustments, with itemized fees and balance movements. Its hosted MCP server lets agents generate reports and chain any API call, so an agent can plausibly pull this data. However, reconciliation is delivered as a generated report rather than documented payout or balance-transaction endpoints an agent can query per bank deposit, so depth is unproven. Missing for 10: documented payout and balance-transaction API resources for direct per-deposit lookup, evidence that an agent can match each individual bank deposit to its charges end-to-end, independent or hands-on corroboration.",
     "evidenceIds": [
-      "paddle-supp-payout-reconciliation",
       "paddle-docs-19",
-      "paddle-docs-37",
+      "paddle-supp-payout-reconciliation",
       "paddle-docs-70",
       "paddle-supp-mcp-server",
-      "paddle-supp-mcp-codemode",
-      "paddle-docs-55"
+      "paddle-supp-mcp-codemode"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an ai-native user, I can have an agent pull payout and balance-transaction data via the API and reconcile each bank deposit to its underlying charges",
+      "citations": [
+        {
+          "evidenceId": "paddle-docs-19",
+          "quote": "Generate reports via API to feed into accounting and BI systems so monthly reconciliations, checks, and dashboards"
+        },
+        {
+          "evidenceId": "paddle-supp-payout-reconciliation",
+          "quote": "Payout reconciliation reports help you reconcile payouts to transactions and adjustments to understand how your payout amounts are calculated"
+        },
+        {
+          "evidenceId": "paddle-docs-70",
+          "quote": "Generate detailed reports that connect your Paddle payouts to the underlying transaction movements for accurate financial reconciliation."
+        },
+        {
+          "evidenceId": "paddle-supp-mcp-server",
+          "quote": "Generate reports and analyze revenue, refunds, and transaction patterns."
+        }
+      ]
+    },
     "productId": "paddle",
     "storyId": "agent-reconciles-payouts"
   }

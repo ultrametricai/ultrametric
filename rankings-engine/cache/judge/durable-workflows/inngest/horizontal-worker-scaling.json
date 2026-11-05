@@ -1,19 +1,37 @@
 {
-  "hash": "e1016531a5e5d4e2f70123524a45ce647fc094023246288cc865375334a2eaf5",
+  "hash": "a46bd542f51e129909bc40e4026af3c6144e74ddf1522d6bef5ebc86927e4e30",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Inngest says it handles queueing, scaling and concurrency for you with \"no workers to deploy\". Step checkpointing and retries let work resume after a process dies, which covers tolerance of worker loss. A community report notes Inngest runs on your own compute, so scale comes from your hosting rather than an Inngest-managed worker fleet. missing for 10: explicit documentation of horizontal scaling by adding workers or app instances, evidence of load-balancing tasks across a fleet, independent or hands-on corroboration of throughput scaling.",
+    "rationale": "Inngest says it handles queueing, scaling and concurrency itself. Its step checkpointing means a run whose process dies resumes from the last completed step, which covers tolerance of worker loss. However, no evidence describes scaling throughput by adding workers or load-balancing tasks across a worker fleet; the docs say there are \"no workers to deploy\", and a community user notes execution runs on the user's own compute. Missing for 10: documented horizontal scaling by adding workers or app instances, load-balancing of tasks across a fleet, throughput or scale benchmarks, and independent corroboration of failover behavior.",
     "evidenceIds": [
-      "inngest-docs-1",
       "inngest-docs-24",
+      "inngest-docs-1",
       "inngest-docs-21",
-      "inngest-docs-33",
-      "inngest-docs-15",
+      "inngest-docs-2",
       "inngest-comm-6"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform engineer, throughput scales by adding workers — the platform load-balances tasks across the fleet and tolerates worker loss",
+      "citations": [
+        {
+          "evidenceId": "inngest-docs-24",
+          "quote": "We handle the backend infra, queueing, scaling, concurrency, throttling, rate limiting, and observability for you."
+        },
+        {
+          "evidenceId": "inngest-docs-21",
+          "quote": "If the process dies at step 7 of 12, the agent picks up at step 7 — not step 1."
+        },
+        {
+          "evidenceId": "inngest-docs-2",
+          "quote": "resume long-running work from the last successful checkpoint"
+        }
+      ]
+    },
     "productId": "inngest",
     "storyId": "horizontal-worker-scaling"
   }

@@ -1,22 +1,43 @@
 {
-  "hash": "38c99d6d793eeee66b079d7640277200556cbeb5ba516c3f1ff70077c5e6dc34",
+  "hash": "0ed118b13b948e6beb5b99b5e212842eea4e8ca8aad08dbd39d23e894aa4b859",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Stripe documents broad API coverage across the core payments surface. Refunds can be issued 'by using the Refunds API or the Dashboard', disputes can be managed fully via API, and the hosted MCP server's generic tools can call 'any Stripe API GET' and 'any Stripe API POST, PATCH, PUT and DELETE method' across customers, invoices, subscriptions, payment links, webhooks, Connect, Issuing, tax, and payouts. A published OpenAPI spec and an in-browser Workbench Shell further show the Dashboard sitting on the same API. However, the evidence never states UI/API parity, and some functions are described only as Dashboard actions: creating restricted API keys, managing and revoking MCP access and OAuth sessions, and no-code invoice and revenue-recovery configuration. missing for 10: an explicit parity commitment or coverage statement, evidence that admin/settings functions (key creation, MCP access governance, revenue-recovery settings) are API-accessible, and independent hands-on corroboration of parity.",
+    "rationale": "Stripe documents API equivalents for many Dashboard actions. Refunds can be issued via the API or the Dashboard, disputes can be managed programmatically, and the MCP server can call any Stripe API GET/POST/PATCH/PUT/DELETE method across customers, invoices, subscriptions, payment links, webhooks, Connect, payouts and more. An OpenAPI spec is also published. However, the pack never states UI/API parity, and several capabilities are described only as Dashboard flows, such as RAK creation, MCP access management and revenue-recovery settings. missing for 10: an explicit documented UI/API parity guarantee, API equivalents for Dashboard-only admin and settings flows (key creation, MCP access governance, no-code revenue recovery), independent corroboration of parity.",
     "evidenceIds": [
       "stripe-docs-33",
       "stripe-docs-41",
       "stripe-supp-mcp-tools",
       "stripe-docs-46",
-      "stripe-supp-workbench-shell",
+      "stripe-docs-50",
       "stripe-supp-restricted-keys-agents",
-      "stripe-supp-mcp-sessions-governance",
-      "stripe-docs-21",
-      "stripe-docs-56"
+      "stripe-supp-mcp-sessions-governance"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can do everything through the API that I can do in the UI",
+      "citations": [
+        {
+          "evidenceId": "stripe-docs-33",
+          "quote": "You can issue refunds by using the Refunds API or the Dashboard"
+        },
+        {
+          "evidenceId": "stripe-docs-41",
+          "quote": "You can programmatically manage disputes using the API. With the API, you can upload evidence, respond to disputes, and receive dispute events using webhooks."
+        },
+        {
+          "evidenceId": "stripe-supp-mcp-tools",
+          "quote": "`stripe_api_write` (\"Write data with any Stripe API POST, PATCH, PUT and DELETE method\")"
+        },
+        {
+          "evidenceId": "stripe-docs-46",
+          "quote": "Use these files to generate SDKs or client libraries that support Stripe's API."
+        }
+      ]
+    },
     "productId": "stripe",
     "storyId": "openness-api-parity"
   }

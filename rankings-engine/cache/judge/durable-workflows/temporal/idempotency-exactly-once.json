@@ -1,17 +1,31 @@
 {
-  "hash": "eb4ccc85e58d657d49aea53f7b4110a35ed3cfc60736fc45d82d6ba5adb18c2c",
+  "hash": "00ab811c2c50d4d5e5fe5015d9dadfe25b980a351b9f86b7c637f25690fd5cf1",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 4,
-    "confidence": "medium",
-    "rationale": "Temporal's docs say Workflows resume exactly where they left off after crashes. They also say Activity results are not re-executed during Workflow replay, which prevents completed steps such as sends or charges from repeating on recovery. However, Activities are retried automatically by default, and the pack never documents idempotency keys, deduplication of duplicate triggers, or exactly-once Activity guarantees. That leaves the double-charge and double-send scenario only partly addressed. Missing for 10: documented idempotency-key or Workflow-ID-based duplicate-trigger deduplication, an explicit exactly-once (versus at-least-once) Activity semantics statement, guidance on idempotent Activities for payments and sends, and independent hands-on corroboration.",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Temporal documents that completed Activity steps are not repeated during Workflow replay and that executions resume exactly where they left off after crashes. That gives some step-level duplicate protection, but nothing in the pack covers idempotency keys or rejecting duplicate triggers. The docs also note that Activities are retried automatically, which raises the double-execution risk the story is about rather than addressing it. Missing for 10: idempotency key or duplicate-start deduplication, documented exactly-once guarantees for side-effecting Activities, protection against double-charging or double-sending on retries, and independent or hands-on corroboration.",
     "evidenceIds": [
-      "temporal-docs-1",
       "temporal-docs-25",
-      "temporal-docs-4",
-      "temporal-docs-3"
+      "temporal-docs-1",
+      "temporal-docs-41"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a backend developer, idempotency keys and exactly-once step semantics stop duplicate triggers from double-charging or double-sending",
+      "citations": [
+        {
+          "evidenceId": "temporal-docs-25",
+          "quote": "model calls are executed as Activities, so they retry durably and are not repeated during Workflow replay."
+        },
+        {
+          "evidenceId": "temporal-docs-1",
+          "quote": "guaranteeing that applications resume exactly where they left off after crashes, network failures, or infrastructure outages"
+        }
+      ]
+    },
     "productId": "temporal",
     "storyId": "idempotency-exactly-once"
   }

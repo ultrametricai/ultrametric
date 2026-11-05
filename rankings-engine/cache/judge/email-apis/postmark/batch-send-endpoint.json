@@ -1,19 +1,37 @@
 {
-  "hash": "f67ac8ed0a3eee9c838c1ed923dc385379aee589467825b42c58936b2219fdd4",
+  "hash": "1395763fd7a1eb46d5d2d04bfe06f358358c380f1478d0ee2a3bcd6ec1ac9529",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Postmark documents a dedicated `/email/batch` endpoint with a user guide, plus `/email/batchWithTemplates` for sending many template-personalized messages in one request. The llms.txt also references batch handling with per-recipient `MessageID` and error reporting. However, that example uses `Promise.allSettled`, which suggests client-side fan-out rather than a documented per-message response array from the batch endpoint. Missing for 10: explicit documentation of the batch endpoint's per-message status/error response shape, batch size/limit details, independent or hands-on corroboration of batch sending.",
+    "rationale": "Postmark documents a batch send endpoint (`/email/batch`) and a batch-with-templates endpoint (`/email/batchWithTemplates`), so many personalized messages can go out in one API request instead of one call per recipient. However, the evidence never documents per-message status in the batch response. The only per-recipient MessageID and error example uses a `Promise.allSettled` pattern, which suggests parallel calls rather than a single batch response. missing for 10: documented per-message status/error array in the batch response, batch size limits, independent hands-on corroboration.",
     "evidenceIds": [
       "postmark-docs-29",
       "postmark-docs-31",
       "postmark-docs-54",
       "postmark-docs-56",
-      "postmark-docs-11",
-      "postmark-docs-62"
+      "postmark-docs-11"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can send a batch of personalized emails in a single API request with per-message status in the response, instead of looping one call per recipient",
+      "citations": [
+        {
+          "evidenceId": "postmark-docs-29",
+          "quote": "Send batch emails]: POST to `/email/batch` endpoint"
+        },
+        {
+          "evidenceId": "postmark-docs-31",
+          "quote": "Send batch with templates]: POST to `/email/batchWithTemplates` endpoint"
+        },
+        {
+          "evidenceId": "postmark-docs-54",
+          "quote": "Sending email with API - Send batch emails"
+        }
+      ]
+    },
     "productId": "postmark",
     "storyId": "batch-send-endpoint"
   }

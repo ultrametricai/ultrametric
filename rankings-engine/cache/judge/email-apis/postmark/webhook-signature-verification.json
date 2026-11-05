@@ -1,18 +1,30 @@
 {
-  "hash": "4ad75f8297833c1186e5d6e2bfbe0ffc48eb09eb6bc5856ed654f571f3dd0a99",
+  "hash": "e635b9391fc9d64b37f18943cfdb73c9ae0363d0bf38c58bc05881cbeacec5db",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "partial",
-    "quality": 4,
+    "verdict": "none",
+    "quality": 0,
     "confidence": "medium",
-    "rationale": "Postmark documents ways to protect webhooks: HTTP Basic Authentication on the webhook URL, IP allowlisting of Postmark's senders, payload shape validation and an idempotency pattern, with Node/TypeScript code for each. Nothing in the pack shows cryptographically signed payloads (e.g. an HMAC signature header) or signature-verification code, so authenticity relies on shared credentials and source IPs rather than per-payload signatures. Missing for 10: signed webhook payloads, documented signature verification code, independent corroboration of the webhook protection approach.",
+    "rationale": "Postmark's documented webhook protection relies on HTTP Basic Authentication, IP allowlisting, and payload shape validation. The evidence never shows signed payloads or signature-verification code. Those mechanisms are adjacent authenticity controls, not the signed-payload verification this story requires, so they earn no credit.",
     "evidenceIds": [
       "postmark-docs-10",
-      "postmark-docs-60",
-      "postmark-docs-18",
-      "postmark-docs-62",
-      "postmark-docs-36"
+      "postmark-docs-60"
     ],
+    "support": {
+      "relation": "adjacent",
+      "coverage": "none",
+      "subject": "As a platform engineer, I can verify webhook authenticity — signed payloads with documented signature verification code — so spoofed events can't poison my delivery state",
+      "citations": [
+        {
+          "evidenceId": "postmark-docs-10",
+          "quote": "Node/TypeScript HTTP Basic Authentication, IP allowlisting, payload shape validation"
+        },
+        {
+          "evidenceId": "postmark-docs-60",
+          "quote": "Webhooks overview - Protecting your webhook"
+        }
+      ]
+    },
     "productId": "postmark",
     "storyId": "webhook-signature-verification"
   }

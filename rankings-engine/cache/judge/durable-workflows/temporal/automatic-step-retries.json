@@ -1,19 +1,40 @@
 {
-  "hash": "95b5668820afde1d166dabdf5feabab1ec524876a053e4a66a35e4678d84c86f",
+  "hash": "650d4da9213e4f6e39e2aa43b48b74f60552a4f7fb2e851294875572272b0597",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 8,
-    "confidence": "high",
-    "rationale": "Temporal's docs say failed Activities retry automatically by default, so transient failures need no handling code. A configurable Retry Policy controls how and when to retry, and the platform takes over failure handling from application code. A hands-on user independently confirms that any unit retries easily and that specific errors can be marked non-retryable. Missing for 10: explicit evidence of configurable backoff parameters (interval/coefficient/max attempts), evidence of Activity/Workflow timeout configuration.",
+    "verdict": "partial",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Temporal's docs say failed Activities are retried automatically by default, governed by a configurable Retry Policy. They also say the platform takes over failure handling so developers write less code, and a hands-on user confirms you can retry any unit and specify non-retryable errors. However, the evidence never explicitly shows backoff settings or per-step timeout configuration. missing for 10: explicit documentation of configurable backoff coefficients/intervals, configurable Activity timeouts, independent corroboration of the timeout/backoff behavior",
     "evidenceIds": [
       "temporal-docs-4",
       "temporal-docs-36",
       "temporal-docs-18",
-      "temporal-docs-46",
-      "temporal-docs-25",
       "temporal-comm-7"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a backend developer, every step retries automatically with configurable backoff, timeouts, and failure policies — no try/catch scaffolding",
+      "citations": [
+        {
+          "evidenceId": "temporal-docs-4",
+          "quote": "Temporal's default behavior is to automatically retry an Activity that fails, so transient or intermittent failures require no action on your part."
+        },
+        {
+          "evidenceId": "temporal-docs-36",
+          "quote": "A Retry Policy is a collection of settings that tells Temporal how and when to try again after something fails"
+        },
+        {
+          "evidenceId": "temporal-docs-18",
+          "quote": "By shifting the burden of failure handling from the application to the platform, there is less code for application developers to write, test, an"
+        },
+        {
+          "evidenceId": "temporal-comm-7",
+          "quote": "You can retry any unit easily on failure and specify non-retryable errors."
+        }
+      ]
+    },
     "productId": "temporal",
     "storyId": "automatic-step-retries"
   }

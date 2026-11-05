@@ -1,19 +1,36 @@
 {
-  "hash": "25cb9a4c254521f6e57ab16e24897878e0572f12d00f3619fb3fe39e59cada0d",
+  "hash": "5b5c47fac03f55e57acd53e9355d9d8a86c4cdc8885aa9c06f2634b18828c533",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Worker-loss tolerance is documented: Conductor detects when an executor disconnects or crashes and recovers the workflow onto another healthy executor (dbos-docs-31), and checkpointing lets work resume without re-running completed steps (dbos-docs-36, dbos-docs-4). Postgres-backed queues provide managed concurrency (dbos-docs-6), and a distributing-agents guide exists, but the evidence never explicitly says tasks are load-balanced across a fleet or that throughput scales linearly as workers are added. A community critique raises worker contention and global rate-limit coordination as concerns (dbos-comm-6), but that is skepticism, not a demonstrated failure. Missing for 10: explicit documentation of distributing queue tasks across multiple workers, evidence of horizontal throughput scaling, cross-executor recovery without Conductor, independent scale benchmarks.",
+    "rationale": "DBOS documents two relevant pieces. Conductor detects interrupted workflows, for example when an executor crashes, and recovers them to another healthy executor, which covers tolerating worker loss. Queues run many workflows with managed concurrency. However, no evidence explicitly documents that throughput scales by adding workers or that tasks are load-balanced across a fleet. Community mentions of workers contending on Postgres hint at a multi-worker design, but this is not first-party documentation. Missing for 10: explicit docs on horizontal scaling by adding workers, documented load-balancing of queued tasks across a fleet, independent or hands-on scaling corroboration.",
     "evidenceIds": [
       "dbos-docs-31",
       "dbos-docs-6",
-      "dbos-docs-36",
-      "dbos-docs-4",
       "dbos-docs-2",
-      "dbos-comm-6"
+      "dbos-docs-36"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform engineer, throughput scales by adding workers — the platform load-balances tasks across the fleet and tolerates worker loss",
+      "citations": [
+        {
+          "evidenceId": "dbos-docs-31",
+          "quote": "Conductor automatically detects when a workflow is interrupted (for example, if its executor disconnects or crashes) and recovers the workflow to another healthy executor."
+        },
+        {
+          "evidenceId": "dbos-docs-6",
+          "quote": "You can use queues to run many workflows at once with managed concurrency."
+        },
+        {
+          "evidenceId": "dbos-docs-2",
+          "quote": "The open-source DBOS library uses Postgres to orchestrate durable workflows and queues."
+        }
+      ]
+    },
     "productId": "dbos",
     "storyId": "horizontal-worker-scaling"
   }

@@ -1,18 +1,36 @@
 {
-  "hash": "efe52a01b91d52a87ef25929ee7071034ae6cbc3de2c334f1ee871cca3ab56e1",
+  "hash": "b7041a9470e869bd8fdb5fc78765f8bbe5e9d4559bc720d0022f607edad079ad",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "The evidence shows Hatchet's architecture separates the orchestration control plane from workers: the founder describes Hatchet as a separate service that runs independently of your workers. Workers can run in your own environment (`hatchet worker dev` runs them locally), and the paid pricing tiers imply a vendor-hosted control plane. However, no evidence explicitly documents the hybrid cloud-control-plane plus customer-hosted-worker deployment, or what data passes through the managed control plane. missing for 10: explicit docs on running Hatchet Cloud with self-hosted workers in a private network, evidence that code and task payload data stay inside the customer network, independent corroboration of the hybrid deployment.",
+    "rationale": "Hatchet's architecture separates a central control plane that coordinates worker execution from the workers themselves, which run independently as part of the user's application. Paid hosted tiers on the pricing page suggest a vendor-managed control plane, so workers in your own infrastructure with code staying local is implied, though not stated as a documented hybrid mode. missing for 10: explicit documentation of a managed-cloud control plane connecting to customer-hosted workers, any evidence that task payloads/data stay inside the customer network, network/connectivity requirements for remote workers, independent hands-on corroboration.",
     "evidenceIds": [
+      "hatchet-docs-17",
       "hatchet-comm-6",
-      "hatchet-docs-8",
-      "hatchet-docs-13",
-      "hatchet-docs-21",
-      "hatchet-docs-22"
+      "hatchet-docs-22",
+      "hatchet-docs-21"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform engineer, I run workers in my own infrastructure while the vendor manages the orchestration control plane — code and data stay inside my network",
+      "citations": [
+        {
+          "evidenceId": "hatchet-docs-17",
+          "quote": "the Hatchet Control Plane - the central orchestration system that manages workflows, schedules tasks, and coordinates worker execution."
+        },
+        {
+          "evidenceId": "hatchet-comm-6",
+          "quote": "Hatchet is a separate service which runs independently of your workers"
+        },
+        {
+          "evidenceId": "hatchet-docs-21",
+          "quote": "When you’re ready to scale, upgrade anytime and only pay for what you use."
+        }
+      ]
+    },
     "productId": "hatchet",
     "storyId": "hybrid-managed-workers"
   }

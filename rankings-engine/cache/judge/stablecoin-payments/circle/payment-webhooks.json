@@ -1,16 +1,35 @@
 {
-  "hash": "7712a41851d2f167358d283b3762ef3918a2ad007db3270c257999a284e472cd",
+  "hash": "88861b6f26212466251fd9dbfdeccedb5982bee0db0d966bcdfdd9204c994a44",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Circle documents registrable outbound webhooks: it sends an HTTP POST to your configured endpoint when a resource changes state, and it offers webhook subscription management for Gateway events. CPN notifications are signed and verifiable via a public-key endpoint, so a system can track money-movement state without polling. Missing for 10: the specific event types (payment confirmed, payout settled, conversion executed) are not enumerated, signature verification is evidenced only for CPN rather than across all products, StableFX conversion webhooks are not shown, and there is no independent or hands-on corroboration.",
+    "rationale": "Circle documents registrable webhooks: an HTTP POST goes to your configured endpoint when a resource changes state, and Gateway has webhook subscription management. CPN notifications are signed, with a public key endpoint for verification. However, the specific money-movement events the story names are not enumerated, and signing is documented only for CPN. missing for 10: documented event types for payment confirmed, payout settled and conversion executed; evidence that signing applies across all products; independent or hands-on corroboration.",
     "evidenceIds": [
       "circle-docs-10",
       "circle-docs-41",
       "circle-docs-46"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, money movement emits signed webhooks — payment confirmed, payout settled, conversion executed — so my system tracks state without polling chains or dashboards",
+      "citations": [
+        {
+          "evidenceId": "circle-docs-10",
+          "quote": "When a resource changes state, Circle sends an HTTP POST to the endpoint you configure so your application can react."
+        },
+        {
+          "evidenceId": "circle-docs-41",
+          "quote": "Manage webhook subscriptions for Gateway event notifications."
+        },
+        {
+          "evidenceId": "circle-docs-46",
+          "quote": "Verify each notification's signature before you trust it. Fetch the public key with `GET /v2/cpn/notifications/publicKey/{id}`."
+        }
+      ]
+    },
     "productId": "circle",
     "storyId": "payment-webhooks"
   }

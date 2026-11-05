@@ -1,20 +1,42 @@
 {
-  "hash": "2658c4a4f8c78aa5c9c52cd02c3e6a23236a74aa7b02bb60a35936b38b3091f4",
+  "hash": "e64e7945bf2ea600bd2d8cac0d8f5d001b8a4f366e8cd4ec00d484704ba7f475",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Vapi documents OpenAI-style function calling: custom webhook-based Function Tools send a `tool-calls` message to your Server URL during the call, for actions such as looking up a customer record or booking an appointment. That covers calling external APIs and custom functions mid-conversation. The evidence does not show how the assistant fills the wait while a tool runs or speaks the result back. Idle messages and the latency docs cover user inactivity and model speed, not tool latency. Missing for 10: documented filler/acknowledgement messages during tool execution, explicit handling of how tool results are spoken back, independent or hands-on corroboration of low-latency tool calls.",
+    "rationale": "Vapi documents OpenAI-style function calling and custom webhook-based Function Tools: the assistant pings your server URL with a `tool-calls` message mid-call to do things like look up a customer record. Nothing in the pack shows how tool results are spoken back, or any filler or wait message that covers tool latency. Idle messages address user inactivity, not tool-call dead air, so they earn no credit. missing for 10: documented mechanism for speaking tool results, request-start/filler messages to avoid dead air during tool execution, independent hands-on corroboration of tool-call latency handling.",
     "evidenceIds": [
       "vapi-docs-23",
       "vapi-docs-17",
       "vapi-docs-20",
-      "vapi-docs-7",
       "vapi-docs-6",
-      "vapi-docs-34",
+      "vapi-docs-7",
       "vapi-docs-38"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, my agent can call external APIs and custom functions mid-conversation and speak the result without awkward dead air",
+      "citations": [
+        {
+          "evidenceId": "vapi-docs-23",
+          "quote": "Vapi supports OpenAI-style tool/function calling. Assistants can ping your server to perform actions."
+        },
+        {
+          "evidenceId": "vapi-docs-17",
+          "quote": "When tools are triggered, your Server URL receives a `tool-calls` message"
+        },
+        {
+          "evidenceId": "vapi-docs-20",
+          "quote": "This guide shows you how to create custom tools, including Function Tools, for your Vapi assistants."
+        },
+        {
+          "evidenceId": "vapi-docs-38",
+          "quote": "transfer the call, look up a customer record, book an appointment, or end the call"
+        }
+      ]
+    },
     "productId": "vapi",
     "storyId": "mid-call-tool-calling"
   }

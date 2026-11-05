@@ -1,19 +1,40 @@
 {
-  "hash": "72b2bf34354540f7b8b869ae88d64fd17ff5791b437f45c8f52ddd0a0f2d8e0d",
+  "hash": "dd8b52649ae2157c69624d49e9bb66f8f45b6d0de4707833460f12578ee7cb23",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Agents can be exercised away from production in two documented ways. A built-in test framework runs behavioral tests in pytest/Vitest, and agent simulations hold end-to-end conversations against an LLM-driven user. A hands-on probe also showed `livekit-server --dev` booting locally with placeholder keys and no account, which gives an isolated environment separate from any production deployment. Missing for 10: explicit documentation that tests or simulations are isolated from production data or tools (e.g. mocking of tool calls or external APIs), a documented hosted sandbox or staging project on LiveKit Cloud, and independent corroboration of the test framework in use.",
+    "rationale": "LiveKit ships its own testing tools: pytest/Vitest behavioral tests, LLM-driven agent simulations, and a built-in test framework with judges. A hands-on probe also confirmed that `livekit-server --dev` boots a local development-mode server with placeholder keys and no account, which is a real isolated environment rather than a dry-run. However, nothing in the pack explicitly documents a sandbox that is guaranteed separate from production data or production rooms and telephony. missing for 10: documented sandbox/staging environment with explicit production-data isolation, guidance on isolating tool or API calls during tests, independent corroboration of tests running isolated from production.",
     "evidenceIds": [
       "livekit-agents-docs-9",
       "livekit-agents-docs-10",
-      "livekit-agents-docs-25",
       "livekit-agents-gh-4",
-      "livekit-agents-probe-rt-2",
-      "livekit-agents-probe-rt-3"
+      "livekit-agents-probe-rt-2"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
+      "citations": [
+        {
+          "evidenceId": "livekit-agents-docs-10",
+          "quote": "Agent simulations run end-to-end conversations between your agent and an LLM-driven user, then evaluate the results across the full interaction."
+        },
+        {
+          "evidenceId": "livekit-agents-docs-9",
+          "quote": "Behavioral tests verify specific interactions and expected outcomes. They integrate with your existing test suite using pytest (Python) or Vitest (Node.js)"
+        },
+        {
+          "evidenceId": "livekit-agents-gh-4",
+          "quote": "Builtin test framework: Write tests and use judges to ensure your agent is performing as expected."
+        },
+        {
+          "evidenceId": "livekit-agents-probe-rt-2",
+          "quote": "booted on this machine with NO account or key — logs show 'starting in development mode' with placeholder keys"
+        }
+      ]
+    },
     "productId": "livekit-agents",
     "storyId": "api-sandbox"
   }

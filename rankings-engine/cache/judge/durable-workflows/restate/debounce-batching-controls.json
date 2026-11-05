@@ -1,21 +1,35 @@
 {
-  "hash": "26d3d5da2a75c45be8368f57d86c5fa0ed1d9ce6c1f9e90c4b0b2407e246beb9",
+  "hash": "954f68f0b5f01fcbed88254e430d84422f05674b78b2af40632ba8591410612c",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Restate documents durable timers with delayed messages (the 'delay' part of the story) and idempotency-key deduplication of incoming events, which collapses duplicate triggers. Per-scope concurrency limits shape traffic from noisy streams. Debounce or batching would have to be hand-built from these primitives plus Kafka-driven handlers or a cancel-and-restart pattern. missing for 10: a native debounce primitive, a native batching/windowing primitive for collapsing event streams, and independent hands-on corroboration.",
+    "rationale": "Restate documents delayed triggers through durable timers that can send delayed messages. Its idempotency-key deduplication collapses duplicate incoming events, which covers part of the noise-reduction goal. However, no first-party debounce or batching primitive is documented; concurrency-limit flow control is related traffic shaping rather than debounce or batch. Missing for 10: native debounce of triggers, batching of events into a single run, hands-on or independent corroboration.",
     "evidenceIds": [
       "restate-docs-29",
       "restate-docs-5",
-      "restate-docs-37",
-      "restate-docs-4",
-      "restate-docs-32",
-      "restate-docs-28",
-      "restate-docs-84",
-      "restate-docs-58"
+      "restate-docs-37"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a backend developer, I debounce, batch, or delay triggers so noisy event streams collapse into the runs I actually want",
+      "citations": [
+        {
+          "evidenceId": "restate-docs-29",
+          "quote": "Restate provides durable, fault-tolerant timers that allow you to: Sleep... Send delayed messages..."
+        },
+        {
+          "evidenceId": "restate-docs-5",
+          "quote": "Sleep, schedule, and wait for external events with durable timers."
+        },
+        {
+          "evidenceId": "restate-docs-37",
+          "quote": "Let Restate deduplicate events on an idempotency key."
+        }
+      ]
+    },
     "productId": "restate",
     "storyId": "debounce-batching-controls"
   }

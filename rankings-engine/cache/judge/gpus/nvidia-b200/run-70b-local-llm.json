@@ -1,19 +1,41 @@
 {
-  "hash": "249850a144ae049d2e0f633ce4335ab51fbac2637e1786930185d5cb87e692e1",
+  "hash": "feda559552b01967dc4daa66c32325c1d8af3e39763d4f8b5dacf2a1a251ee40",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "NVIDIA documents 8 B200 GPUs with 1,440 GB total GPU memory in a single DGX B200 node, about 180 GB per GPU. That is ample capacity for a 70B-class quantized model on a single node. The product is positioned for LLM inference with a claimed 15X inference uplift, and a community commenter on LLM inference benchmarks rates B200 well above H200. Missing for 10: per-GPU HBM memory bandwidth (only the 14.4 TB/s NVLink interconnect figure is given), an explicit per-GPU VRAM figure, and any hands-on 70B-class quantized inference results.",
+    "rationale": "NVIDIA documents 1,440 GB of total GPU memory across 8 B200 GPUs in a single DGX node. It also markets LLM inference performance, so a 70B-class quantized model plainly fits for single-node inference. However, the only bandwidth figure given is the 14.4 TB/s NVLink switch aggregate, which is interconnect bandwidth, not per-GPU HBM memory bandwidth. Missing for 10: published per-GPU HBM memory bandwidth spec, explicit per-GPU VRAM figure, hands-on or independent evidence of running a 70B quantized model.",
     "evidenceIds": [
       "nvidia-b200-docs-20",
-      "nvidia-b200-docs-23",
       "nvidia-b200-docs-21",
       "nvidia-b200-docs-16",
       "nvidia-b200-docs-19",
       "nvidia-b200-comm-1"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can run a 70B-class quantized LLM on this GPU — published VRAM capacity and memory bandwidth that make local or single-node inference practical",
+      "citations": [
+        {
+          "evidenceId": "nvidia-b200-docs-20",
+          "quote": "8 x NVIDIA B200 GPUs that provide 1,440 GB total GPU memory"
+        },
+        {
+          "evidenceId": "nvidia-b200-docs-21",
+          "quote": "2 x 5th generation NVLink switches that provide 14.4 TB/s aggregate bandwidth"
+        },
+        {
+          "evidenceId": "nvidia-b200-docs-19",
+          "quote": "DGX B200 can handle diverse workloads—including large language models, recommender systems, and chatbots"
+        },
+        {
+          "evidenceId": "nvidia-b200-docs-16",
+          "quote": "NVIDIA DGX B200 delivers 3X the training performance and 15X the inference performance of previous-generation systems."
+        }
+      ]
+    },
     "productId": "nvidia-b200",
     "storyId": "run-70b-local-llm"
   }

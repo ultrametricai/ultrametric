@@ -1,19 +1,40 @@
 {
-  "hash": "1cf3ae70534f7a131808be2f450e87b15e25aa8b51c966481723e68140d6183c",
+  "hash": "857f45e5977306434e6bf2af8407a5be9714092739e90840e4f1ae3caeb95801",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Probes confirm a live llms.txt at lobehub.com/llms.txt with an explicit 'When to use this site (AI agents)' section, and markdown docs routes (e.g. /docs/usage/start.md) built for AI consumption. Further agent-oriented artifacts include MCP discovery guidance inside llms.txt (/.well-known/mcp, /api/mcp), a skill.md for publishing MCP listings, and a machine-readable openapi.json. missing for 10: independent or community corroboration of agents actually consuming these docs in practice.",
+    "rationale": "A hands-on probe confirms LobeHub serves a live llms.txt with an explicit 'When to use this site (AI agents)' section. Its docs are also served as agent-readable markdown (.md routes), and llms.txt points agents to `/.well-known/mcp` discovery and the WebMCP endpoint. Agent-oriented skill.md files, such as the one for publishing MCP listings, are also published. Missing for 10: no first-party documentation describing the llms.txt/markdown-docs convention or its coverage (e.g., a full-docs llms-full variant), and the sampled llms.txt content is partly marketing copy.",
     "evidenceIds": [
       "lobe-chat-probe-1",
       "lobe-chat-probe-2",
-      "lobe-chat-probe-3",
       "lobe-chat-docs-61",
-      "lobe-chat-docs-51",
-      "lobe-chat-docs-15"
+      "lobe-chat-docs-51"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can point an agent at llms.txt or agent-oriented docs",
+      "citations": [
+        {
+          "evidenceId": "lobe-chat-probe-1",
+          "quote": "PROBE llms.txt: HTTP 200 at https://lobehub.com/llms.txt # LobeHub\n\n## When to use this site (AI agents)"
+        },
+        {
+          "evidenceId": "lobe-chat-probe-2",
+          "quote": "PROBE docs-md: HTTP 200 at https://lobehub.com/docs/usage/start.md"
+        },
+        {
+          "evidenceId": "lobe-chat-docs-61",
+          "quote": "start from `/.well-known/mcp` (discovery), then call `/api/mcp` for WebMCP (`initialize`, `resources/list`, `resources/read`)."
+        },
+        {
+          "evidenceId": "lobe-chat-docs-51",
+          "quote": "Publish, version, and manage MCP plugin listings on the LobeHub Marketplace via the lhm CLI."
+        }
+      ]
+    },
     "productId": "lobe-chat",
     "storyId": "agentic-agent-docs"
   }

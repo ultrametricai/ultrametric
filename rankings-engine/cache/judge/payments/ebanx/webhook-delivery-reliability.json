@@ -1,15 +1,30 @@
 {
-  "hash": "911f1ee8c957308b09f8d27042dcb8ac087c02995e8f7151b8347e5397195159",
+  "hash": "9cda856a30795ae2ea6bfd0099bbc6c7032b5245b372260b588f64ad994592e5",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "EBANX documents HTTP POST notifications to a configured Notification URL with digital-signature headers (ebanx-docs-21), and automatic retries when the merchant's system fails to process one (ebanx-docs-22). That covers signed delivery and retries, about half the story. Missing for 10: any evidence of a webhook event log or delivery history, manual or programmatic replay/redelivery of events, details of the retry schedule, and independent corroboration.",
+    "rationale": "EBANX documents payment notifications sent as HTTP POST requests to a configured Notification URL, with a digital signature in the headers, and says it retries failed deliveries multiple times. That covers signed delivery and automatic retries. Nothing in the pack shows a delivery event log or a way to replay notifications. Missing for 10: webhook event/delivery logs, manual or programmatic replay of notifications, retry schedule details, independent corroboration.",
     "evidenceIds": [
       "ebanx-docs-21",
       "ebanx-docs-22"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can rely on signed webhook deliveries with automatic retries, event logs, and replay to keep my system consistent with payment state",
+      "citations": [
+        {
+          "evidenceId": "ebanx-docs-21",
+          "quote": "EBANX sends an HTTP POST request to the configured Notification URL. The request includes basic payment and status information, along with headers containing a digital signature"
+        },
+        {
+          "evidenceId": "ebanx-docs-22",
+          "quote": "If your system fails to process a notification (e.g., due to a server error), EBANX will retry sending it multiple times."
+        }
+      ]
+    },
     "productId": "ebanx",
     "storyId": "webhook-delivery-reliability"
   }

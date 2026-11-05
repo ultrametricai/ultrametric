@@ -1,16 +1,30 @@
 {
-  "hash": "e84c7e61448a951321c9868d40809b620eb6e49ed366247262e29a6aac76ca59",
+  "hash": "77b6da4a10af3cfc60f61bcad096f46f995afd7c0efe65156f1f7be030f94d54",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Trigger.dev documents a per-task `concurrencyLimit` on queues, which caps concurrency per workflow (docs-8). Its concurrency keys support per-user or per-tenant queue logic, so one hot customer can be isolated (docs-27). However, the evidence shows no user-configurable rate limiting per task, key, or tenant; the Limits page only displays platform quotas and rate-limit usage (docs-9). Missing for 10: user-defined rate limits per workflow/key/tenant, in-depth docs on concurrency-key semantics, independent or hands-on corroboration of tenant isolation.",
+    "rationale": "Trigger.dev documents per-task concurrency caps through the queue's `concurrencyLimit` and per-user/per-tenant queueing through concurrency keys, which covers the core 'one hot customer can't starve the rest' need. The evidence shows no user-configurable rate limiting per workflow, key, or tenant; the Limits page only shows the platform's own rate-limit usage. missing for 10: configurable per-workflow/per-key/per-tenant rate limits, in-depth docs on concurrency-key fairness behavior, independent hands-on corroboration.",
     "evidenceIds": [
       "trigger-dev-docs-8",
-      "trigger-dev-docs-27",
-      "trigger-dev-docs-9"
+      "trigger-dev-docs-27"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform engineer, I cap concurrency and set rate limits per workflow, per key, or per tenant so one hot customer can't starve the rest",
+      "citations": [
+        {
+          "evidenceId": "trigger-dev-docs-8",
+          "quote": "You can set the concurrency limit for a task by setting the `concurrencyLimit` property on the task's queue. This limits the number of runs that can be executing at any one time"
+        },
+        {
+          "evidenceId": "trigger-dev-docs-27",
+          "quote": "With concurrency keys you can create bespoke queue logic for each of your users."
+        }
+      ]
+    },
     "productId": "trigger-dev",
     "storyId": "concurrency-rate-controls"
   }

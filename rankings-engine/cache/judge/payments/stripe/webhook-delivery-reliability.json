@@ -1,19 +1,41 @@
 {
-  "hash": "61e267a034777a71b320bb240e5e502aaab8219f78936f1e9a34e37839179f62",
+  "hash": "829c5a91622a0c17e41f9e73a241cf89dbcafdf55d084521e5d69d02d210fcf6",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Stripe's docs show registrable HTTPS webhook endpoints that receive real-time events. Event destinations extend delivery to EventBridge and Azure Event Grid with snapshot or thin event formats, and Workbench can listen for webhook events. That covers the core outbound-callback capability for keeping a system in sync with payment state, but the pack never documents signed deliveries, automatic webhook retries, delivery/event logs, or replay. (Smart Retries applies to failed payments, not webhook delivery, so it earns no credit here.) Missing for 10: webhook signature verification, automatic delivery retries, event/delivery logs, event replay/resend, independent corroboration.",
+    "rationale": "Stripe documents registrable HTTPS webhook endpoints that receive real-time events about payment state, including event destinations that also deliver to EventBridge and Event Grid. However, none of the story's specific reliability features (signatures, automatic retries, event logs, replay) appear in the evidence. Idempotency keys and Smart Retries cover API requests and failed payments, not webhook delivery, so they are not credited. missing for 10: webhook signature verification, automatic delivery retries, event delivery logs, event replay/resend, independent corroboration",
     "evidenceIds": [
-      "stripe-docs-8",
-      "stripe-docs-35",
-      "stripe-docs-53",
       "stripe-docs-63",
+      "stripe-docs-53",
+      "stripe-docs-8",
       "stripe-supp-event-destinations",
       "stripe-supp-workbench-shell"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can rely on signed webhook deliveries with automatic retries, event logs, and replay to keep my system consistent with payment state",
+      "citations": [
+        {
+          "evidenceId": "stripe-docs-63",
+          "quote": "After you register a webhook endpoint, Stripe pushes real-time data to it when events happen in your Stripe account."
+        },
+        {
+          "evidenceId": "stripe-docs-53",
+          "quote": "You can create an HTTPS webhook endpoint to receive events."
+        },
+        {
+          "evidenceId": "stripe-docs-8",
+          "quote": "Receiving webhook events helps you respond to asynchronous events, such as when a customer's bank confirms a payment, a customer disputes a charge, or a recurring payment succeeds."
+        },
+        {
+          "evidenceId": "stripe-supp-event-destinations",
+          "quote": "across multiple destination types, including webhook endpoints, Amazon EventBridge, and Azure Event Grid"
+        }
+      ]
+    },
     "productId": "stripe",
     "storyId": "webhook-delivery-reliability"
   }

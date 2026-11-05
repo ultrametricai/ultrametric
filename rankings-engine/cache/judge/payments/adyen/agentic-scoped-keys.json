@@ -1,17 +1,40 @@
 {
-  "hash": "814d86860e50292f05003b1909b224ddd4751d12443d51f0c97d25554475984e",
+  "hash": "23e9867e44575cf113b0f7602f8159dcb325e50c4de69a3fe762a77ddfdb51df",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Adyen documents scoped API credentials. Each credential carries roles that define what it may do, and merchants can create multiple credentials for finer permission control, such as splitting payment initiation from capture. Credentials created on a merchant account can only access that account. The MCP server docs list the exact roles an agent's credential needs, and its `--tools` flag can limit the agent to a subset of tools. Missing for 10: independent or hands-on corroboration, and documented short-lived or expiring agent tokens.",
+    "rationale": "Adyen documents role-scoped API credentials. Each credential carries permission roles, and you can create multiple credentials, including ones restricted to a single merchant account, for finer least-privilege control. Its MCP server docs tie agent access to a specific role list assigned per credential, and its tool-subsetting advice limits what the agent can call. Missing for 10: independent or hands-on corroboration, and evidence of agent-specific controls such as short-lived or expiring tokens and documented rotation or revocation.",
     "evidenceIds": [
       "adyen-supp-api-credential-scoping",
       "adyen-docs-26",
       "adyen-supp-mcp-credential-roles",
       "adyen-supp-mcp-tools"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
+      "citations": [
+        {
+          "evidenceId": "adyen-supp-api-credential-scoping",
+          "quote": "Roles: Permissions that define what the credential is allowed to do"
+        },
+        {
+          "evidenceId": "adyen-supp-api-credential-scoping",
+          "quote": "Credentials created on a merchant account can only access that merchant account."
+        },
+        {
+          "evidenceId": "adyen-docs-26",
+          "quote": "You can also create multiple API credentials to improve security and control access."
+        },
+        {
+          "evidenceId": "adyen-supp-mcp-credential-roles",
+          "quote": "Make sure that your API credential has the following roles"
+        }
+      ]
+    },
     "productId": "adyen",
     "storyId": "agentic-scoped-keys"
   }

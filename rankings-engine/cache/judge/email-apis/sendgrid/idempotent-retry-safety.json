@@ -1,12 +1,18 @@
 {
-  "hash": "d0b951e82768f5b1e692fa6f2c0ed4617225a5b1859668ce68a7abe8689ee72a",
+  "hash": "8c1847c10cdacea19c854da6d911d6a36e723919b11868802763612ba9f55ee9",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The send-API retry-safety axis applies to SendGrid's Mail Send API. The evidence pack documents POST /v3/mail/send, SDKs, sandbox mode and webhooks, but never mentions idempotency keys or duplicate-suppression semantics for retried requests. With no evidence that a timed-out send can be retried without double-sending, the verdict is none.",
+    "rationale": "Retry safety is a fair question for a transactional email send API, so the axis applies. The pack documents the v3 Mail Send endpoint, SMTP, sandbox mode, and webhooks, but nothing about idempotency keys or duplicate-suppression semantics on retries. Sandbox mode only validates a request without delivering it; it is a dry-run feature and does not prevent double-sends after a network timeout.",
     "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a platform engineer, I can retry a failed send safely — idempotency keys or documented duplicate-suppression semantics guarantee a network timeout never double-sends a receipt",
+      "citations": []
+    },
     "productId": "sendgrid",
     "storyId": "idempotent-retry-safety"
   }

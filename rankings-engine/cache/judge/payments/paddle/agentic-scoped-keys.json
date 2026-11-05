@@ -1,11 +1,11 @@
 {
-  "hash": "b49a664dd2f45f72d7329a42f19250f2440bd1de64b7146866a14a4a6ab22229",
+  "hash": "4755436794ccf0b5e41b576d3bfb5bb2de93a212b33aa00c2156d244ecde81f3",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 8,
-    "confidence": "high",
-    "rationale": "Paddle documents API keys with granular permissions that grant access only to specific entities or actions, plus documented default scopes. The MCP docs explicitly recommend least-permission API keys to scope agents, because the MCP server does not gate destructive operations. Live OAuth MCP connections start with read access, and sandbox keys (pdl_sdbx_) only authenticate against sandbox endpoints, which further limits what an agent credential can reach. Missing for 10: no independent or hands-on corroboration, and no detail on the specific permission list or on how OAuth access is widened beyond read.",
+    "confidence": "medium",
+    "rationale": "Paddle's own docs describe API keys with granular permissions that limit a key to specific entities and actions. The MCP docs recommend least-permission API keys for agents, live OAuth MCP connections start with read-only access, and sandbox keys only authenticate against sandbox endpoints. Missing for 10: independent or hands-on corroboration of scoped agent keys, and evidence of key expiry/TTL or per-agent credential lifecycle controls beyond rotation.",
     "evidenceIds": [
       "paddle-docs-9",
       "paddle-supp-auth-permissions",
@@ -14,6 +14,29 @@
       "paddle-supp-sandbox",
       "paddle-docs-44"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
+      "citations": [
+        {
+          "evidenceId": "paddle-docs-9",
+          "quote": "Permissions grant an API key access to specific entities or allow it to take specific actions in Paddle."
+        },
+        {
+          "evidenceId": "paddle-supp-mcp-codemode",
+          "quote": "with hard scoping via least-permission API keys recommended"
+        },
+        {
+          "evidenceId": "paddle-supp-mcp-server",
+          "quote": "Live OAuth connections start with read access"
+        },
+        {
+          "evidenceId": "paddle-supp-sandbox",
+          "quote": "Sandbox API keys are prefixed `pdl_sdbx_` and only authenticate against sandbox endpoints"
+        }
+      ]
+    },
     "productId": "paddle",
     "storyId": "agentic-scoped-keys"
   }

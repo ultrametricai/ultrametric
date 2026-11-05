@@ -1,20 +1,36 @@
 {
-  "hash": "75c581446c8373e51dab268a8f9685942eb1413165bf3465d29c9951118bc55f",
+  "hash": "5b491939bdc98563d3ab49836bccc4f7557134cbe30aa1eb3d8556e96bef71c9",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "OpenClaw is self-hosted by design. The Gateway runs on your own machine or container, memory is plain Markdown in a local workspace (default ~/.openclaw/workspace), and session history is SQLite in per-agent state directories, so the user decides where core data lives by choosing the host. Users can also choose their LLM provider, including local models, which affects where prompts are processed. However, nothing in the docs explicitly addresses residency, and conversations still pass through third-party chat channels and any remote LLM provider the user selects. Missing for 10: explicit data-residency/region documentation, guidance on data flows to chat platforms and LLM providers, configurable workspace/state location documented as a residency control, independent corroboration.",
+    "rationale": "OpenClaw is documented as a self-hosted gateway that runs on your own machine. Memory and session state are written to local disk (Markdown workspace, SQLite session history), so data stays wherever you choose to host the Gateway. This residency control comes from where you deploy it, not from a region or residency setting. missing for 10: explicit region/residency selection or documentation, data-residency guarantees for data sent to LLM providers, a configurable storage location beyond the default workspace path, and independent corroboration.",
     "evidenceIds": [
       "openclaw-docs-68",
       "openclaw-docs-2",
       "openclaw-docs-58",
-      "openclaw-docs-25",
-      "openclaw-docs-49",
-      "openclaw-docs-26",
-      "openclaw-comm-13"
+      "openclaw-docs-25"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can choose where my data is stored (region/residency)",
+      "citations": [
+        {
+          "evidenceId": "openclaw-docs-68",
+          "quote": "Run one Gateway process on your own machine and message your AI assistant from anywhere."
+        },
+        {
+          "evidenceId": "openclaw-docs-58",
+          "quote": "OpenClaw remembers things by writing plain Markdown files in your agent's\nworkspace (default `~/.openclaw/workspace`)."
+        },
+        {
+          "evidenceId": "openclaw-docs-25",
+          "quote": "Run multiple _isolated_ agents in one Gateway process, each with its own workspace, state directory (`agentDir`), and SQLite-backed session history"
+        }
+      ]
+    },
     "productId": "openclaw",
     "storyId": "privacy-data-residency"
   }

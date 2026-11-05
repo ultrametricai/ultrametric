@@ -1,23 +1,48 @@
 {
-  "hash": "62fb7d558e3cf0da679156e752efd610830f83180b8db783d56e5d25ca6e2f9d",
+  "hash": "0a12672121862210770dd9c61bcc702f2856eb719a07dd071085b0e106f2fb13",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "CDP's docs say it removes chain mechanics. Checkout works \"without onchain complexity\" with \"no gas fees\" for payers. CDP handles signing and broadcasting for onchain sends. Payment flows use familiar card-style primitives (auth, capture, refund, void) via an API reference and the CDP SDK client libraries. missing for 10: explicit list of supported SDK languages, an explicit statement that node infrastructure is fully managed, a published OpenAPI spec (probed paths returned 404), independent or hands-on corroboration.",
+    "rationale": "The evidence directly documents abstraction of chain mechanics: stablecoin checkout 'without onchain complexity', CDP 'handles signing and broadcasting', payers pay 'with no gas fees', and REST-style API endpoints exist (e.g., create checkout) alongside a CDP SDK of client libraries that secure keys for you. Coverage is incomplete, so this is partial rather than full: the pack never says which languages the SDK supports, never explicitly states that node operation is abstracted, and the OpenAPI probe returned 404. missing for 10: documented list of client-library languages, explicit statement that developers never run nodes, published OpenAPI/REST spec (probe 404), independent or hands-on corroboration.",
     "evidenceIds": [
       "coinbase-payments-docs-4",
       "coinbase-payments-docs-7",
-      "coinbase-payments-docs-21",
-      "coinbase-payments-docs-39",
+      "coinbase-payments-docs-40",
       "coinbase-payments-docs-33",
+      "coinbase-payments-docs-31",
       "coinbase-payments-gh-1",
       "coinbase-payments-gh-2",
-      "coinbase-payments-docs-19",
-      "coinbase-payments-docs-20",
       "coinbase-payments-probe-2"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I never operate blockchain infrastructure — the platform abstracts nodes, gas, and chain mechanics behind a conventional REST API with client libraries in my language",
+      "citations": [
+        {
+          "evidenceId": "coinbase-payments-docs-4",
+          "quote": "Accept stablecoin payments at checkout with a two-step auth and capture flow, without onchain complexity"
+        },
+        {
+          "evidenceId": "coinbase-payments-docs-7",
+          "quote": "Send crypto onchain from a non-custodial wallet where CDP handles signing and broadcasting"
+        },
+        {
+          "evidenceId": "coinbase-payments-docs-40",
+          "quote": "let them pay from any wallet or their Coinbase account, in USDC or USDT, with no gas fees."
+        },
+        {
+          "evidenceId": "coinbase-payments-docs-33",
+          "quote": "Creates a new checkout. Returns a payment URL to redirect your customer to."
+        },
+        {
+          "evidenceId": "coinbase-payments-gh-1",
+          "quote": "Client libraries for managing EVM and Solana wallets while relying on CDP to secure private keys."
+        }
+      ]
+    },
     "productId": "coinbase-payments",
     "storyId": "no-node-integration"
   }

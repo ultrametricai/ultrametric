@@ -1,19 +1,36 @@
 {
-  "hash": "c014475792e4f06bb53585e57edbfa306590dad10871a3586bd7deddb59c2986",
+  "hash": "24ec9e185482db4b1c3e7166fe133aaafdf50624f8b3d49e7fb72dfb8cb9c28f",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 4,
+    "quality": 3,
     "confidence": "low",
-    "rationale": "PayPal's own flows imply card data stays off merchant servers. Buyers pay through the PayPal button with funding sources stored in their PayPal account, invoices are paid on a secure PayPal-hosted page without merchants building their own payment flow, and Braintree supports vaulting payment methods and processing delegated or tokenized credentials. However, no evidence explicitly addresses PCI DSS scope reduction, and the Expanded Checkout card fields are not described as tokenized or hosted. Missing for 10: explicit PCI DSS scope or SAQ-A documentation, confirmation that card fields are hosted or tokenized iframes so raw card data never touches merchant servers, independent or hands-on corroboration.",
+    "rationale": "The evidence only indirectly supports this story. PayPal documents hosted flows where buyers pay on PayPal's own secure page or button (\"without building their own payment flow\"). It also documents tokenized and delegated payment credentials processed by Braintree, which implies card data can stay with PayPal. However, nothing in the pack mentions PCI DSS scope reduction or states that raw card data never reaches merchant servers. Missing for 10: explicit PCI DSS scope or SAQ-eligibility documentation, docs on hosted card fields or tokenization for direct card payments (Expanded Checkout card fields are mentioned only for branding), and independent or hands-on corroboration.",
     "evidenceIds": [
-      "paypal-docs-2",
       "paypal-docs-22",
-      "paypal-docs-27",
-      "paypal-supp-braintree-graphql",
+      "paypal-docs-2",
       "paypal-supp-acp-ucp-guides",
       "paypal-supp-agent-ready-protocols"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can keep my systems out of most of PCI DSS scope because card data is tokenized and never touches my servers",
+      "citations": [
+        {
+          "evidenceId": "paypal-docs-22",
+          "quote": "get paid through a secure PayPal payment page, without building their own payment flow"
+        },
+        {
+          "evidenceId": "paypal-supp-acp-ucp-guides",
+          "quote": "where Google Pay returns a tokenized credential that Braintree can process"
+        },
+        {
+          "evidenceId": "paypal-supp-agent-ready-protocols",
+          "quote": "Enable instant checkout in ChatGPT Apps using delegated payment tokens through Braintree"
+        }
+      ]
+    },
     "productId": "paypal",
     "storyId": "pci-scope-reduction"
   }

@@ -1,19 +1,36 @@
 {
-  "hash": "e97c3ff73619c17bb60ee5a0b462331324964b0331a9cf6cd8475d9bbefc42e6",
+  "hash": "2bf2a88eba8ae2a302d5250e5c5436e488aae7110f5283b7b4cbe11527d548d0",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Square documents a scope-controlled OAuth access-token model with per-permission scopes. Its hosted remote MCP server explicitly supports OAuth login with \"granular permissions,\" so an agent can be authorized for \"only the scopes your application needs\" without manual token handling. The local MCP server also offers a documented read-only restriction (DISALLOW_WRITES). Missing for 10: detailed documentation of the scope catalog and of token expiry/revocation for agent credentials, and independent or hands-on corroboration that scoped agent credentials work as described.",
+    "rationale": "Square's own docs say its remote MCP server uses OAuth login with granular permissions, so an agent can be authorized for 'only the scopes your application needs'. The underlying OAuth API provides per-permission scopes for access tokens, which makes this a first-party scoped-credential path for agents. Missing for 10: an enumerated scope catalog or least-privilege configuration guide in the evidence, token expiry/revocation details, and independent or hands-on corroboration.",
     "evidenceIds": [
-      "square-supp-oauth-scopes",
       "square-supp-mcp-remote",
+      "square-supp-oauth-scopes",
       "square-docs-52",
-      "square-docs-42",
-      "square-supp-mcp-tools",
-      "square-docs-51"
+      "square-docs-42"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
+      "citations": [
+        {
+          "evidenceId": "square-supp-mcp-remote",
+          "quote": "Square recommends using the remote MCP server, which supports OAuth login with more control and granular permissions. This lets you securely sign in with your Square account and authorize only the scopes your application needs, with no manual token management required."
+        },
+        {
+          "evidenceId": "square-supp-oauth-scopes",
+          "quote": "An access token authenticates your application and authorizes access to resources in a Square account"
+        },
+        {
+          "evidenceId": "square-docs-52",
+          "quote": "The remote MCP is recommended as it uses OAuth authentication, allowing you to log in with your Square account directly without having to create or manage access tokens manually."
+        }
+      ]
+    },
     "productId": "square",
     "storyId": "agentic-scoped-keys"
   }

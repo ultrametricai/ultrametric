@@ -1,17 +1,40 @@
 {
-  "hash": "312e767daaf3a8492f2d6a3628027c8b7a245db3bc371b1e82919f0214e8d9be",
+  "hash": "54be46c62c978a42beec2161c929df96460fdbbb8d654a13a58f882d2655bde7",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Subusers exist: the docs reference 'EU regional subusers' as an API base-URL target, and a long-time user reports running one main account with 3 sub-accounts. A community comment says SendGrid makes it easy to send on behalf of clients while passing SPF/DKIM, which pairs with the documented domain authentication. Missing for 10: first-party docs on subuser/subaccount management, per-tenant credential or API key scoping, per-tenant suppression lists, per-tenant reputation or IP isolation, and multi-domain-per-tenant setup.",
+    "rationale": "First-party docs mention 'EU regional subusers', and a long-time user reports running 'one main account, 3 sub-accounts', so SendGrid has its own subuser/sub-account construct. Community evidence also says it is easy to send on behalf of clients with passing SPF/DKIM, alongside documented domain authentication. However, nothing documents what is actually isolated per tenant. missing for 10: documentation of per-subuser API credentials, separate suppression lists, isolated sender reputation/IPs, multi-domain-per-tenant management, and subuser provisioning APIs.",
     "evidenceIds": [
       "sendgrid-docs-16",
       "sendgrid-comm-9",
       "sendgrid-comm-2",
       "sendgrid-docs-9"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform engineer, I can isolate tenants — subaccounts, subusers, or multiple domains with separate credentials, suppression lists, and reputation — for the platform I'm building",
+      "citations": [
+        {
+          "evidenceId": "sendgrid-docs-16",
+          "quote": "Base url: https://api.eu.sendgrid.com (for EU regional subusers)"
+        },
+        {
+          "evidenceId": "sendgrid-comm-9",
+          "quote": "my accounts (one main account, 3 sub-accounts) were not put under review"
+        },
+        {
+          "evidenceId": "sendgrid-comm-2",
+          "quote": "One thing Sendgrid is good at is letting people easily send emails on behalf of their clients while still passing SPF/DKIM checks"
+        },
+        {
+          "evidenceId": "sendgrid-docs-9",
+          "quote": "Domain authentication verifies the legitimacy of your email servers, messages, and sending addresses."
+        }
+      ]
+    },
     "productId": "sendgrid",
     "storyId": "multi-tenant-subaccounts"
   }

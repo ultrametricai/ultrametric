@@ -1,21 +1,47 @@
 {
-  "hash": "e0b8e97d2ae16495998cb346f8294aceefff5a922bb4aa5b4a7bed4741925685",
+  "hash": "a6fc33951eb7e727c65bbf2d01908a6db709894ea35958a16e3dc04402b30f85",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Polar documents failed-payment handling: subscriptions move to `past_due`, with `past_due_at` and `next_payment_attempt_at` stamped. It runs automated dunning on its own schedule (retries at 2, 5, 7 and 7 days) and emails the customer a Customer Portal link. An agent can watch this state through the Customer State API/webhook, general webhooks and the MCP server, which acts on subscriptions and orders. However, retries and outreach run on Polar's fixed schedule, and nothing shows an agent can trigger a retry or customize dunning outreach. Missing for 10: a documented failed-payment-specific webhook event, an API to trigger or reschedule payment retries, agent-controllable dunning communications, and independent hands-on corroboration.",
+    "rationale": "Polar documents a failed-payment flow: subscriptions move to `past_due`, carry `past_due_at` and `next_payment_attempt_at`, and enter automated dunning with retries on a fixed schedule and customer emails. Webhooks, typed SDKs and an MCP server that lets agents act on subscriptions give an agent ways to watch this state. However, retries and outreach run on Polar's own fixed schedule, so there is no evidence an agent can trigger or reschedule retries or customize dunning outreach. missing for 10: a documented failed-payment or past_due webhook event type, an API to trigger or adjust payment retries, agent-controllable dunning outreach, independent or hands-on corroboration.",
     "evidenceIds": [
-      "polar-supp-dunning",
       "polar-docs-43",
       "polar-docs-11",
-      "polar-docs-34",
-      "polar-supp-webhooks",
+      "polar-supp-dunning",
       "polar-docs-21",
-      "polar-supp-mcp",
-      "polar-supp-openapi-llms"
+      "polar-supp-webhooks",
+      "polar-docs-34",
+      "polar-supp-mcp"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an ai-native user, I can have an agent monitor failed payments via API and webhooks and drive retries and dunning outreach",
+      "citations": [
+        {
+          "evidenceId": "polar-docs-43",
+          "quote": "If that charge fails, the subscription moves to past_due and enters Polar's automated payment recovery (dunning) flow instead of being canceled straight away."
+        },
+        {
+          "evidenceId": "polar-docs-11",
+          "quote": "Polar then retries the charge on a fixed schedule, starting from the time of the first failure"
+        },
+        {
+          "evidenceId": "polar-docs-21",
+          "quote": "Get notifications asynchronously when events occur instead of having to poll for updates"
+        },
+        {
+          "evidenceId": "polar-docs-34",
+          "quote": "query for the current state of a customer, including their active subscriptions and granted benefits, in a single API call or single webhook event"
+        },
+        {
+          "evidenceId": "polar-supp-mcp",
+          "quote": "Agents can look up data and take actions across your products, customers, subscriptions, orders, benefits, and more."
+        }
+      ]
+    },
     "productId": "polar",
     "storyId": "agent-monitors-dunning"
   }

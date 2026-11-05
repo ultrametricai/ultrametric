@@ -1,18 +1,35 @@
 {
-  "hash": "7d9e6ebc5ec1bcd6970fcd9d9cc20e1e80cc32dace5785dbf137ff59aa606f60",
+  "hash": "ae3e76622ab9cc115f6cf01a75b7936090b05ac3da1a53d635a2655dbd7a378b",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "DBOS lets code start workflows in the background (DBOS.start_workflow) and enqueue many workflows on queues with managed concurrency, which supports imperative fan-out. External code can interact with a DBOS app through DBOSClient, and a community user built an exactly-once Kafka event pipeline. However, nothing shows declarative event or webhook trigger bindings or a built-in one-event-to-many-functions subscription model. Messages go to one specific workflow, not broadcast. Missing for 10: declarative event/webhook trigger annotations, documented pub/sub fan-out of one event to multiple handlers, first-party docs on queue- or event-source-triggered workflows (Kafka evidence is community-only).",
+    "rationale": "DBOS documents queues that run many workflows at once with managed concurrency, and `DBOS.start_workflow` for background launches. That gives queue-based triggering and a form of fan-out, but triggering is imperative code calls rather than declarative event or webhook bindings. A community report of a Kafka-consumer pipeline that ran exactly-once per message adds some corroboration for event-driven use. Missing for 10: declarative event/webhook trigger bindings, documented first-party event-source integrations (e.g. Kafka), explicit one-event-to-many-functions fan-out docs, independent hands-on corroboration of fan-out.",
     "evidenceIds": [
-      "dbos-docs-5",
       "dbos-docs-6",
-      "dbos-docs-27",
-      "dbos-docs-42",
+      "dbos-docs-5",
       "dbos-comm-15"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a backend developer, events from my app, webhooks, or queues trigger workflows declaratively, and one event can fan out to many functions",
+      "citations": [
+        {
+          "evidenceId": "dbos-docs-6",
+          "quote": "You can use queues to run many workflows at once with managed concurrency."
+        },
+        {
+          "evidenceId": "dbos-docs-5",
+          "quote": "You can use DBOS.start_workflow to start a workflow in the background."
+        },
+        {
+          "evidenceId": "dbos-comm-15",
+          "quote": "a Kafka-consumer customer used DBOS to build an event processing pipeline that ran exactly-once per Kafka message"
+        }
+      ]
+    },
     "productId": "dbos",
     "storyId": "event-driven-triggers"
   }

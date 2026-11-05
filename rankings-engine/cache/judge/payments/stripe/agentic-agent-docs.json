@@ -1,21 +1,46 @@
 {
-  "hash": "809a7aa13233dc589a86a7ac9d9d931bb8be1ee46e0812e27ac4e5dca4aff055",
+  "hash": "333753dc5ab34f5c8eb593f349ca9d8e156717d697a66367d49219db1e6fa0c3",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
-    "quality": 10,
+    "quality": 9,
     "confidence": "high",
-    "rationale": "Live probes confirm Stripe serves a real llms.txt at docs.stripe.com/llms.txt with agent-directed instructions, and every docs page is available as a raw .md file (payments.md, mcp.md, etc.). Stripe also publishes agent-oriented material on top of that: a keyless .well-known skills index with 8 maintained skills, a docs-search tool in its MCP server, and copy-paste coding-agent prompts that point agents at .md docs. That covers the story as written, with both first-party documentation and hands-on corroboration.",
+    "rationale": "Live probes confirm Stripe serves an llms.txt at docs.stripe.com/llms.txt (with agent-directed instructions) and Markdown versions of doc pages (e.g., payments.md). Stripe also publishes a keyless machine-readable skills index at /.well-known/skills/index.json, and its docs tell coding agents to read .md pages directly. Missing for 10: independent or community corroboration of agents successfully using these llms.txt/.md docs in practice, and no evidence of what the full llms.txt index covers beyond its opening line.",
     "evidenceIds": [
       "stripe-probe-1",
       "stripe-probe-2",
       "stripe-probe-7",
       "stripe-supp-skills-catalog",
       "stripe-supp-mpp-protocol",
-      "stripe-docs-13",
-      "stripe-supp-link-cli-wallet",
-      "stripe-docs-16"
+      "stripe-supp-link-cli-wallet"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can point an agent at llms.txt or agent-oriented docs",
+      "citations": [
+        {
+          "evidenceId": "stripe-probe-1",
+          "quote": "PROBE llms.txt: HTTP 200 at https://docs.stripe.com/llms.txt # Stripe Documentation"
+        },
+        {
+          "evidenceId": "stripe-probe-2",
+          "quote": "PROBE docs-md: HTTP 200 at https://docs.stripe.com/payments.md # Payments"
+        },
+        {
+          "evidenceId": "stripe-probe-7",
+          "quote": "GET https://docs.stripe.com/.well-known/skills/index.json returns HTTP 200 with 8 Stripe-maintained agent skills"
+        },
+        {
+          "evidenceId": "stripe-supp-mpp-protocol",
+          "quote": "Docs ship a one-prompt coding-agent path (\"Read https://docs.stripe.com/payments/machine/mpp.md?lang=node, and monetize my API using MPP to charge 0.50 USD per API call."
+        },
+        {
+          "evidenceId": "stripe-supp-link-cli-wallet",
+          "quote": "Your agent can inspect the full CLI documentation with `link-cli --llms-full`"
+        }
+      ]
+    },
     "productId": "stripe",
     "storyId": "agentic-agent-docs"
   }

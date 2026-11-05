@@ -1,15 +1,30 @@
 {
-  "hash": "42912e16d1dac16ef000716ab4fe988faa4cf871debb36eafe3073c62c3caa05",
+  "hash": "a16098c08e9bc3b5673de0903c6c61491a48c7ffc29c9486124ce3191ad3e267",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "The webhooks docs cover both halves of the story. Every webhook carries a `webhook-id` header that ComplyAdvantage tells you to use as an idempotency key for deduplication, and webhook signing is available to verify authenticity, though it is opt-in per account. The evidence shows these features exist but gives little detail on how they work. Missing for 10: the signature algorithm and verification procedure, timestamp/replay protection, explicit retry-schedule documentation, and independent or hands-on corroboration.",
+    "rationale": "ComplyAdvantage Mesh documents a `webhook-id` header on every webhook, intended as an idempotency key for deduplicating retried deliveries. It also documents webhook signing, enabled per account, so developers can verify that events are authentic. missing for 10: details of the signature scheme and verification procedure (algorithm, header names, secret handling), explicit retry/redelivery policy documentation, independent or hands-on corroboration.",
     "evidenceIds": [
       "complyadvantage-docs-8",
       "complyadvantage-scope-webhook-signing-opt-in"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can verify alert-event authenticity and deduplicate retried notifications",
+      "citations": [
+        {
+          "evidenceId": "complyadvantage-docs-8",
+          "quote": "Every webhook we send carries a `webhook-id` header... Use it as your idempotency key."
+        },
+        {
+          "evidenceId": "complyadvantage-scope-webhook-signing-opt-in",
+          "quote": "Webhook signing is opt-in per account."
+        }
+      ]
+    },
     "productId": "complyadvantage",
     "storyId": "signed-alert-events"
   }

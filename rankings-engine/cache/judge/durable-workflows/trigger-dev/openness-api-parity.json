@@ -1,24 +1,40 @@
 {
-  "hash": "fd5093900a99dd6fce56ab9533d03d05844d671ebedb3bb656f7c210df5f9599",
+  "hash": "918a6661570c7df540a9e7c8975480e72aae86ff6e2409919cb1967bfcd645fa",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Trigger.dev has a programmatic surface beyond its dashboard: an SDK management API (e.g. `runs.list` with status filters), run handles for checking status, cancelling and retrying, an official MCP server, a CLI for dev and deploy, and scoped per-environment API keys. However, the evidence never claims full UI/API parity. Several actions are documented only in the dashboard: viewing limits, purchasing extra concurrency, managing schedules without redeploying, and configuring runs-list columns. The OpenAPI probe also returned 404 on every candidate path. Missing for 10: documented API parity for dashboard-only actions (schedule CRUD, limits/quota views, concurrency purchase, alert configuration), a published OpenAPI spec, and independent confirmation that the API covers the full UI surface.",
+    "rationale": "Trigger.dev documents its own management API in the SDK (for example `runs.list`), run handles for status, cancel and retry, and an official MCP server that lets AI assistants act on projects, so substantial programmatic control exists. However, nothing claims API parity with the UI, and some actions are documented as dashboard-only (viewing limits, buying extra concurrency, creating or editing schedules without deploying); the probe also found no public OpenAPI spec. missing for 10: a documented guarantee of UI/API parity, API equivalents for dashboard-only actions (limits, concurrency purchase, schedule management), a published OpenAPI spec, independent corroboration.",
     "evidenceIds": [
       "trigger-dev-docs-19",
       "trigger-dev-docs-36",
       "trigger-dev-docs-3",
       "trigger-dev-docs-12",
-      "trigger-dev-docs-16",
-      "trigger-dev-docs-42",
-      "trigger-dev-docs-9",
       "trigger-dev-docs-21",
+      "trigger-dev-docs-9",
       "trigger-dev-docs-26",
-      "trigger-dev-docs-1",
       "trigger-dev-probe-3"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can do everything through the API that I can do in the UI",
+      "citations": [
+        {
+          "evidenceId": "trigger-dev-docs-19",
+          "quote": "const completedRuns = await runs.list({"
+        },
+        {
+          "evidenceId": "trigger-dev-docs-3",
+          "quote": "You can use the handle to check the status of the task, cancel and retry it."
+        },
+        {
+          "evidenceId": "trigger-dev-docs-12",
+          "quote": "enables AI assistants to interact directly with your Trigger.dev projects."
+        }
+      ]
+    },
     "productId": "trigger-dev",
     "storyId": "openness-api-parity"
   }

@@ -1,18 +1,35 @@
 {
-  "hash": "ea5f9a15cbf65f58f919eef27d8e7e6d5e28050c14588667b5f06240ef36f8ad",
+  "hash": "d5088891095d6461dcae49ac3983892ff0adcafcef0fb570859ce1c2d2e502e6",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 4,
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "SES offers a sandbox described as 'an area where new users can test the capabilities of Amazon SES,' in which all features are usable (including event publishing to SNS/EventBridge/CloudWatch). However, sandbox sends still go out as real email, just restricted to verified identities, so it is an onboarding restriction rather than a no-delivery test mode. missing for 10: a documented no-delivery test mode or simulator, test API keys or a sandbox domain that accept messages without delivering them, evidence that test sends fire events, CI/agent-safety guidance, independent corroboration.",
+    "rationale": "SES documents its own sandbox, described as an area where new users can test SES capabilities while keeping access to all features. However, that sandbox only restricts sending to verified identities; mail is still really delivered to those addresses, so it is not a non-delivering test mode. missing for 10: evidence of a non-delivering test mode, simulator addresses or test API keys, documentation that test sends fire events without real delivery, CI/agent-safe guidance, and independent corroboration.",
     "evidenceIds": [
       "amazon-ses-docs-13",
-      "amazon-ses-docs-22",
       "amazon-ses-docs-41",
-      "amazon-ses-docs-14",
-      "amazon-ses-docs-10"
+      "amazon-ses-docs-22"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can test sends without delivering real email — a sandbox domain, test mode, or test API keys that accept messages and fire events, safe for CI and agents",
+      "citations": [
+        {
+          "evidenceId": "amazon-ses-docs-13",
+          "quote": "The Amazon SES sandbox is an area where new users can test the capabilities of Amazon SES."
+        },
+        {
+          "evidenceId": "amazon-ses-docs-41",
+          "quote": "While your account is in the sandbox, you can use all of the features of Amazon SES."
+        },
+        {
+          "evidenceId": "amazon-ses-docs-22",
+          "quote": "When your account is in the sandbox, you can only send email to verified identities."
+        }
+      ]
+    },
     "productId": "amazon-ses",
     "storyId": "sandbox-test-mode"
   }

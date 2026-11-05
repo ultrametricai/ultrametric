@@ -1,22 +1,44 @@
 {
-  "hash": "537fe0406d5770b7b7f1d7ee55e374f40f161604a24954ef2d666db31698b5dc",
+  "hash": "a4e6ca3479dd384ce50bfef61928809bccaa249a0a1dbe38ab16732fa2098ec7",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Temporal documents Worker fleets pulling from Task Queues, with tuning guidance (temporal-docs-29, temporal-docs-49) and serverless Workers that autoscale to available work (temporal-docs-22, temporal-docs-28). It also claims execution resumes after crashes and survives Worker restarts (temporal-docs-1, temporal-docs-25), and users confirm it distributes work across machines with retry on failure (temporal-comm-7, temporal-comm-8). Missing for 10: an explicit doc statement that tasks are load-balanced across Workers polling a shared Task Queue, evidence that throughput scales roughly linearly as Workers are added (benchmarks or hands-on reports), and documented reassignment of in-flight tasks when a Worker dies (e.g., timeouts).",
+    "rationale": "Temporal documents tuning a Worker fleet and Task Queue processing, Serverless Workers that autoscale on available work, and execution that survives Worker restarts and crashes. Users also describe it as distributing work across machines. However, the first-party evidence never explicitly states that tasks are load-balanced across a horizontally added Worker fleet, so the core scaling mechanism rests partly on community testimony. missing for 10: first-party documentation of task distribution across multiple Workers polling a Task Queue, explicit docs that throughput scales linearly by adding Workers, independent hands-on benchmarks of scaling and Worker-loss failover.",
     "evidenceIds": [
-      "temporal-docs-29",
       "temporal-docs-49",
+      "temporal-docs-29",
       "temporal-docs-22",
       "temporal-docs-28",
-      "temporal-docs-1",
       "temporal-docs-25",
-      "temporal-docs-4",
+      "temporal-docs-1",
       "temporal-comm-7",
       "temporal-comm-8"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform engineer, throughput scales by adding workers — the platform load-balances tasks across the fleet and tolerates worker loss",
+      "citations": [
+        {
+          "evidenceId": "temporal-docs-49",
+          "quote": "This guide covers metrics and configurations that drive the efficiency of your Worker fleet."
+        },
+        {
+          "evidenceId": "temporal-docs-22",
+          "quote": "Serverless Workers for AWS Lambda allows Temporal to control the scaling and lifecycle of Workers running as Lambda functions, enabling direct responses to available work and automatic autoscaling without any infrastructure to manage."
+        },
+        {
+          "evidenceId": "temporal-docs-25",
+          "quote": "Your agents survive Worker restarts and can run for extended periods without losing state."
+        },
+        {
+          "evidenceId": "temporal-comm-7",
+          "quote": "the whole point of Temporal is to distribute work across machines without worrying too much about orchestration."
+        }
+      ]
+    },
     "productId": "temporal",
     "storyId": "horizontal-worker-scaling"
   }

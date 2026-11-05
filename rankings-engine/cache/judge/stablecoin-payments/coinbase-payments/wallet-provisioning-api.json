@@ -1,19 +1,45 @@
 {
-  "hash": "0b88de289c9b9f51c9f631aa8c68a348d27aefdbd97594f0af2ece9be464d2fe",
+  "hash": "7051f69682d635063ff33cda1a13cabfb40b5b16b8903fe3c25092f02cdd81cc",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 8,
+    "verdict": "partial",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "The CDP SDK is documented to programmatically create, manage, and use EVM and Solana wallets, with CDP securing the private keys (gh-1, gh-2). CDP also signs and broadcasts for non-custodial wallets (docs-7). Separately, deposit destinations let developers provision stable onchain addresses for customers or external parties that auto-credit a custodial account, with an optional liquidation mode (docs-1, docs-22, docs-50). missing for 10: detailed key-custody documentation (only summary statements in the pack), explicit per-customer wallet provisioning patterns, independent or hands-on corroboration.",
+    "rationale": "The CDP SDK lets developers programmatically create EVM/Solana wallets while CDP secures the private keys, and the Payments API provisions deposit-destination addresses that auto-credit a custodial account. That covers the core of the story, but the evidence on custody semantics is thin. missing for 10: explicit documentation of per-customer or per-purpose wallet and address provisioning patterns, detailed key-custody semantics (who holds or can export keys, custodial vs. non-custodial boundaries), and independent or hands-on corroboration.",
     "evidenceIds": [
       "coinbase-payments-gh-2",
       "coinbase-payments-gh-1",
-      "coinbase-payments-docs-7",
       "coinbase-payments-docs-1",
       "coinbase-payments-docs-22",
-      "coinbase-payments-docs-50"
+      "coinbase-payments-docs-7"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can create wallets programmatically — per-customer or per-purpose wallets and deposit addresses provisioned through the API with documented key custody semantics",
+      "citations": [
+        {
+          "evidenceId": "coinbase-payments-gh-2",
+          "quote": "enables developers to programmatically create, manage, and use crypto wallets while relying on CDP to secure private keys."
+        },
+        {
+          "evidenceId": "coinbase-payments-gh-1",
+          "quote": "Client libraries for managing EVM and Solana wallets while relying on CDP to secure private keys."
+        },
+        {
+          "evidenceId": "coinbase-payments-docs-1",
+          "quote": "Provision stable onchain addresses that auto-credit a custodial account, with optional auto-liquidation"
+        },
+        {
+          "evidenceId": "coinbase-payments-docs-22",
+          "quote": "Deposit destinations are crypto addresses that your customers or external parties can use to send funds directly. When a deposit arrives, the corresponding account's balance is credited automatically."
+        },
+        {
+          "evidenceId": "coinbase-payments-docs-7",
+          "quote": "Send crypto onchain from a non-custodial wallet where CDP handles signing and broadcasting"
+        }
+      ]
+    },
     "productId": "coinbase-payments",
     "storyId": "wallet-provisioning-api"
   }

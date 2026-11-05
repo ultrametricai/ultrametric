@@ -1,15 +1,30 @@
 {
-  "hash": "46aeb4a66cc0c2da98e89a0672216ef9e85a72709cf8434d8965af8c6d4dbde6",
+  "hash": "1752a88b422fd290f74e50035974b7e032338d9004e4a1e4b4535992ca743e05",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Drive's API documents OAuth scopes that must be defined in the Google Cloud console and in the app (docs-34). It also offers a narrow least-privilege scope limited to \"only the specific Google Drive files you use with this app\" (docs-8), so an agent can be given restricted credentials rather than full-drive access. The evidence is thin: two short snippets with nothing agent-specific. missing for 10: documented flow for issuing per-agent credentials (e.g., service accounts or delegated tokens), credential expiry/revocation controls, finer-grained per-folder or read-only scope details, independent or hands-on corroboration.",
+    "rationale": "The Drive API's own authorization model supports least-privilege OAuth scopes, defined in both the Cloud console and the app. One narrow scope limits access to only the specific files used with the app, so a credential granted to an agent can be scoped down. However, the evidence documents scope definition rather than issuing distinct credentials for an agent, and nothing shows agent-specific credential management. missing for 10: documented flow for issuing per-agent credentials (e.g. service accounts or tokens), revocation and rotation controls, a full scope catalog, independent or hands-on corroboration.",
     "evidenceIds": [
       "google-drive-docs-34",
       "google-drive-docs-8"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
+      "citations": [
+        {
+          "evidenceId": "google-drive-docs-34",
+          "quote": "To authorize your app, the Google Drive API requires you to define OAuth scopes in two places: the Google Cloud console and your app."
+        },
+        {
+          "evidenceId": "google-drive-docs-8",
+          "quote": "See, edit, create, and delete only the specific Google Drive files you use with this app"
+        }
+      ]
+    },
     "productId": "google-drive",
     "storyId": "agentic-scoped-keys"
   }

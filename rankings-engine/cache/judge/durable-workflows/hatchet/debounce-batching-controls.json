@@ -1,19 +1,36 @@
 {
-  "hash": "9173a743ffd6ed2028a181f2322d5bc87a751dfd22650a57922f79d5f3988649",
+  "hash": "fb0ccb50c38372c8b1a029c3a8329384e2db3d4339e2aecac112fb21c516ab96",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Hatchet offers debounce-like collapsing through the `CANCEL_QUEUED_EXCEPT_NEWEST`/`OLDEST` concurrency strategies with configurable queue depth per key. Scheduled Runs cover delayed triggers, and CEL event filters, per-key concurrency and rate limits help suppress noisy events. However, none of this is documented as a first-class debounce or batch trigger, and the delay and rate-limit evidence is only page titles. Missing for 10: explicit debounce/batch trigger primitives, any evidence of event batching (collapsing many events into one run), detailed docs on delayed triggers, independent or hands-on corroboration.",
+    "rationale": "Hatchet documents concurrency strategies `CANCEL_QUEUED_EXCEPT_NEWEST` and `CANCEL_QUEUED_EXCEPT_OLDEST` with a configurable per-key queue depth, which collapses bursts of queued runs into the latest or earliest one, giving debounce-like behavior. It also documents CEL event filters and a Scheduled Runs feature that may provide delayed triggers, though that page appears only as a title. There is no explicit debounce primitive and no evidence of trigger batching. Missing for 10: explicit debounce/time-window semantics, batching of multiple events into one run, detailed documentation of delayed or scheduled triggers, and independent or hands-on corroboration.",
     "evidenceIds": [
       "hatchet-docs-18",
-      "hatchet-docs-27",
       "hatchet-docs-10",
-      "hatchet-docs-28",
-      "hatchet-docs-29",
+      "hatchet-docs-27",
       "hatchet-docs-5"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a backend developer, I debounce, batch, or delay triggers so noisy event streams collapse into the runs I actually want",
+      "citations": [
+        {
+          "evidenceId": "hatchet-docs-18",
+          "quote": "Two new concurrency strategies, `CANCEL_QUEUED_EXCEPT_NEWEST` and `CANCEL_QUEUED_EXCEPT_OLDEST`: configure the queue depth for each concurrency key"
+        },
+        {
+          "evidenceId": "hatchet-docs-10",
+          "quote": "Evaluate and debug CEL expressions used in event filters and concurrency keys"
+        },
+        {
+          "evidenceId": "hatchet-docs-27",
+          "quote": "Scheduled Runs"
+        }
+      ]
+    },
     "productId": "hatchet",
     "storyId": "debounce-batching-controls"
   }

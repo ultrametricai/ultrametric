@@ -1,25 +1,52 @@
 {
-  "hash": "8f4cfd2e46a59fce953214db703e3f64cec500964ae62d0754b84151d29643c5",
+  "hash": "35b103f227c31ef5faace29df5f9966fbb25571c2e06d006c690d81bc1c9972a",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "mem0",
-    "storyId": "long-term-memory-add-search",
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "The docs describe the exact loop in the story. You send conversation turns to `add` (`client.add(messages, user_id=...)`), Mem0 extracts the individual facts, and you call semantic `search` with optional reranking before the next model request, with scoping by user and session so context persists across sessions. Community users independently describe it as conversation-fact storage with semantic search and report using it in a hackathon and in production. Missing for 10: independent hands-on measurement of retrieval or recall quality, since one hackathon user said the interface between structured and unstructured memory still needs work.",
+    "rationale": "Mem0's docs describe the full loop: send conversation turns to `add`, which extracts individual facts and stores them, then call `search` for semantic, natural-language retrieval, with reranking and user/session scoping so context persists across sessions. Community users report hands-on and production use, and one independently describes it as memory with semantic search. Missing for 10: independent, measured evidence of recall quality across sessions; one hands-on user also notes the structured/unstructured memory interface still needs work.",
     "evidenceIds": [
-      "mem0-docs-35",
       "mem0-docs-26",
+      "mem0-docs-35",
       "mem0-docs-43",
       "mem0-docs-56",
       "mem0-docs-7",
       "mem0-docs-10",
       "mem0-docs-30",
       "mem0-probe-1",
-      "mem0-comm-7",
       "mem0-comm-1",
-      "mem0-comm-2"
-    ]
+      "mem0-comm-2",
+      "mem0-comm-7"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can add memories from conversations and retrieve them later with semantic search, so context persists across sessions",
+      "citations": [
+        {
+          "evidenceId": "mem0-docs-43",
+          "quote": "You send conversation turns to `add`, then call `search` before the next model request to fetch relevant context."
+        },
+        {
+          "evidenceId": "mem0-docs-26",
+          "quote": "Mem0 pulls the individual facts out of the conversation and stores each one separately"
+        },
+        {
+          "evidenceId": "mem0-docs-56",
+          "quote": "Retrieve relevant memories from Mem0 using powerful semantic and filtered search capabilities."
+        },
+        {
+          "evidenceId": "mem0-probe-1",
+          "quote": "Mem0 is a memory layer for LLM agents - persistent, self-improving context that survives across sessions."
+        },
+        {
+          "evidenceId": "mem0-comm-7",
+          "quote": "That's key-value memory with semantic search."
+        }
+      ]
+    },
+    "productId": "mem0",
+    "storyId": "long-term-memory-add-search"
   }
 }

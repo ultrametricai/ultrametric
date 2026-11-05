@@ -1,17 +1,40 @@
 {
-  "hash": "71cb0611bcb0e15535c395b1f095d9bc66cbfc447cc1d26593f5b077d290023f",
+  "hash": "60afac163a28e56b68429dd7916e0677cc9e2e33e00fe9bf931b07fc903a4730",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Retell documents its concurrency model: Pay-As-You-Go workspaces get a default quota of 20 concurrent calls, a configurable reserved_inbound_concurrency setting stops outbound traffic from crowding out inbound calls, and analytics dashboards track concurrency. Nothing in the pack shows how to raise the limit beyond the default, so the second half of the story (scaling to many simultaneous calls without manual capacity requests) is unevidenced. Missing for 10: a documented self-serve way to raise concurrency, published limits above the default tier, and independent or hands-on corroboration of behavior at scale.",
+    "rationale": "Retell documents its concurrency model: Pay-As-You-Go workspaces get a default quota of 20 concurrent calls, and a reserved inbound concurrency setting caps outbound calls at the limit minus the reserved amount. The analytics dashboard also tracks concurrency. However, nothing in the evidence shows how to raise the limit beyond 20, or whether scaling to many simultaneous calls is self-serve rather than a request to the vendor. missing for 10: documented self-serve concurrency increase or auto-scaling path, limits for non-PAYG tiers, independent evidence of high-concurrency operation.",
     "evidenceIds": [
       "retell-docs-51",
       "retell-docs-41",
       "retell-docs-11",
       "retell-docs-13"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform-engineer, I can see documented concurrency limits and scale to many simultaneous calls without manual capacity begging",
+      "citations": [
+        {
+          "evidenceId": "retell-docs-51",
+          "quote": "Pay-As-You-Go workspaces are allocated a quota of 20 concurrent calls by default."
+        },
+        {
+          "evidenceId": "retell-docs-41",
+          "quote": "When `reserved_inbound_concurrency` is configured, outbound calls can use at most your concurrency limit minus the reserved amount."
+        },
+        {
+          "evidenceId": "retell-docs-11",
+          "quote": "Reserved inbound concurrency protects inbound calls from being crowded out by outbound traffic."
+        },
+        {
+          "evidenceId": "retell-docs-13",
+          "quote": "track call and chat metrics like success rate, latency, cost, and concurrency"
+        }
+      ]
+    },
     "productId": "retell",
     "storyId": "concurrency-scaling-limits"
   }

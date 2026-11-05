@@ -1,18 +1,35 @@
 {
-  "hash": "8c7b04c6effc3781c812f3cbbb33826e6a87df857254584792410f8542f029d0",
+  "hash": "e4b2537ae8d449b70d60ba967dbd3e2cb7334766c3e816acc0a1393c2c7a195a",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "DBOS.start_workflow returns a handle you can wait on for the result, and queues run many workflows concurrently with managed flow control. Together these imply a fan-out/fan-in pattern over workflows without a separate orchestrator. However, the evidence never explicitly documents parallel steps within a workflow, child-workflow semantics, or dynamic batch fan-in. Missing for 10: explicit parallel-step execution, documented child/sub-workflow composition, a dynamic fan-out/fan-in example, and hands-on corroboration.",
+    "rationale": "DBOS documents starting workflows in the background with `DBOS.start_workflow`, which returns handles you can wait on for results. It also documents queues that run many workflows at once with managed concurrency. Together these give a documented basis for child workflows and fan-out/fan-in. However, the evidence never explicitly describes parallel steps within a workflow, fan-out over dynamically sized batches, or a fan-in pattern, so composition is only implied. missing for 10: explicit parallel-step execution docs, documented dynamic-batch fan-out/fan-in pattern, explicit child-workflow (parent/child) semantics, independent hands-on corroboration.",
     "evidenceIds": [
       "dbos-docs-5",
       "dbos-docs-6",
-      "dbos-docs-26",
-      "dbos-docs-36",
-      "dbos-gh-1"
+      "dbos-docs-36"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a backend developer, I compose workflows from parallel steps, fan-out/fan-in over dynamic batches, and child workflows without hand-rolling coordination",
+      "citations": [
+        {
+          "evidenceId": "dbos-docs-5",
+          "quote": "You can use DBOS.start_workflow to start a workflow in the background. If you start a workflow this way, it returns a workflow handle, from which you can access information about the workflow or wait for it to complete and retrieve its result."
+        },
+        {
+          "evidenceId": "dbos-docs-6",
+          "quote": "You can use queues to run many workflows at once with managed concurrency."
+        },
+        {
+          "evidenceId": "dbos-docs-36",
+          "quote": "Because every task is checkpointed, your agent can recover from any failure mid-flight without re-running work that already succeeded."
+        }
+      ]
+    },
     "productId": "dbos",
     "storyId": "fanout-child-workflows"
   }

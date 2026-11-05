@@ -1,16 +1,35 @@
 {
-  "hash": "dbf4a0d996ebb4131ffc98b5b725ea6e23901404cb95a6ad1d8c0de71f573c80",
+  "hash": "3c7a2eeebb4f18cd8e42a5604867556fe32bdcb3c86225d1fcf67b051c6401ad",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "airwallex",
-    "storyId": "webhook-delivery-reliability",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Airwallex's first-party webhook docs require a 200 acknowledgment and give each event a stable id so retries can be handled safely. The web app lets you inspect delivery status (success, queued, failed) and re-deliver events after downtime or for debugging, which covers retries, event logs and replay. missing for 10: documentation of webhook signature verification, an explicit automatic retry schedule or policy, programmatic (API) replay, and independent or hands-on corroboration.",
+    "rationale": "Airwallex documents real-time webhooks that require a 200 acknowledgement, stable event IDs for handling retries idempotently, and a web-app view of delivery status (success, queued, failed) with re-delivery after downtime. That covers event logs, replay and implied retries. However, the evidence never mentions signed deliveries or signature verification, and the retry schedule is only implied. Missing for 10: documented webhook signature verification, an explicit automatic retry policy or schedule, and independent or hands-on corroboration.",
     "evidenceIds": [
       "awx-supp-webhooks",
       "airwallex-docs-15"
-    ]
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can rely on signed webhook deliveries with automatic retries, event logs, and replay to keep my system consistent with payment state",
+      "citations": [
+        {
+          "evidenceId": "awx-supp-webhooks",
+          "quote": "Each event has a stable `id` so you can safely handle retries and avoid processing the same event twice."
+        },
+        {
+          "evidenceId": "awx-supp-webhooks",
+          "quote": "inspect delivery status (success, queued, or failed) and re-deliver events after downtime or for debugging."
+        },
+        {
+          "evidenceId": "airwallex-docs-15",
+          "quote": "Webhooks enable Airwallex to send instant, real-time push notifications to your application when events occur in your Airwallex account."
+        }
+      ]
+    },
+    "productId": "airwallex",
+    "storyId": "webhook-delivery-reliability"
   }
 }

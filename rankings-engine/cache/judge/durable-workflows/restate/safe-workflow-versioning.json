@@ -1,17 +1,35 @@
 {
-  "hash": "6a3ef8e599223c56fb6cfe0fd4ae41bafcdd603f44329dbcc418e205b20dbda4",
+  "hash": "8ba33796a81e708418af0b4b0b598079b4065f7f966f272567d6f6bb4f63ab82",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Restate's versioning docs describe immutable deployments, and state that it 'makes sure that requests start and end on the same version' by routing retry attempts to the same endpoint. That directly delivers in-flight runs finishing on their original code while new deployments take new traffic. The CLI manages deployments, and ctx.run journaling supports determinism. Missing for 10: independent or hands-on corroboration of version pinning, and detailed evidence on draining and retiring old deployments (the immutable-deployment doc excerpt is truncated).",
+    "rationale": "Restate documents immutable deployments: each code version is registered as a separate deployment, and Restate guarantees that requests start and end on the same version by routing retries to the same endpoint. That is exactly the in-flight pinning the story asks for, and it avoids replaying old journals against changed code. Deployments can also be managed through the CLI. missing for 10: independent or hands-on corroboration of version pinning during live rollouts, and detail on draining and removing old deployments once in-flight runs complete.",
     "evidenceIds": [
       "restate-docs-24",
       "restate-docs-41",
-      "restate-docs-43",
-      "restate-docs-18"
+      "restate-docs-43"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a platform engineer, I deploy new workflow code while in-flight runs finish on the version they started with — versioning without breaking determinism",
+      "citations": [
+        {
+          "evidenceId": "restate-docs-24",
+          "quote": "Restate then makes sure that requests start and end on the same version, by sending any retry attempts always to the same endpoint."
+        },
+        {
+          "evidenceId": "restate-docs-41",
+          "quote": "Restate helps via the concept of immutable deployments."
+        },
+        {
+          "evidenceId": "restate-docs-43",
+          "quote": "You can use the CLI to interact with Restate, and manage your services, deployments and invocations."
+        }
+      ]
+    },
     "productId": "restate",
     "storyId": "safe-workflow-versioning"
   }

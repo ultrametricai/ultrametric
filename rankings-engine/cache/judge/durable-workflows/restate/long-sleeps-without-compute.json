@@ -1,19 +1,41 @@
 {
-  "hash": "88b5ad36f117081d4be0a1957daff7888edce5a9043ee502e1c3b884c06728de",
+  "hash": "0f463f146b91999869f135e10559a0491efdc647fb2caaa64b21f1597ccdc4c2",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Restate documents durable timers for sleeping, scheduling and waiting on external events (restate-docs-5, restate-docs-29). It also says it suspends handlers while they sleep to free up resources and suspends idle long-running agents to save costs (restate-docs-21, restate-docs-36), and its invocations list shows suspended invocations (restate-docs-65). Waits for human approval survive restarts and infrastructure changes (restate-docs-48). Missing for 10: explicit evidence of multi-day-to-month wait durations, documented release of connections and compute on non-FaaS (container/VM) deployments rather than only on platforms like Lambda, and independent or hands-on corroboration.",
+    "rationale": "Restate documents durable timers for sleeping and waiting on external events. It explicitly suspends handlers on FaaS platforms like AWS Lambda while they sleep, which frees resources, and it suspends idle long-running agents to save costs. That covers the core of not holding compute during waits. The suspension guarantee is documented only for function-as-a-service deployments, and no evidence confirms waits lasting days to months. missing for 10: explicit evidence of multi-day-to-month sleep durations, documented release of server, connection and compute for non-FaaS deployments (containers, VMs, Kubernetes), independent or hands-on corroboration of zero-cost long waits.",
     "evidenceIds": [
       "restate-docs-5",
-      "restate-docs-29",
       "restate-docs-21",
+      "restate-docs-29",
       "restate-docs-36",
-      "restate-docs-65",
-      "restate-docs-48"
+      "restate-docs-65"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a backend developer, a workflow can sleep or wait for days to months without holding a server, connection, or billable compute",
+      "citations": [
+        {
+          "evidenceId": "restate-docs-21",
+          "quote": "If your handler runs on function-as-a-service platforms like AWS Lambda, Restate suspends the handler while it is sleeping, to free up resources."
+        },
+        {
+          "evidenceId": "restate-docs-5",
+          "quote": "Sleep, schedule, and wait for external events with durable timers."
+        },
+        {
+          "evidenceId": "restate-docs-36",
+          "quote": "Suspend long-running agents when idle to save costs"
+        },
+        {
+          "evidenceId": "restate-docs-65",
+          "quote": "Invocations list: See all running, suspended, and completed agent invocations"
+        }
+      ]
+    },
     "productId": "restate",
     "storyId": "long-sleeps-without-compute"
   }

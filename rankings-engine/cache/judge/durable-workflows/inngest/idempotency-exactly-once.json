@@ -1,17 +1,30 @@
 {
-  "hash": "7607e3dc39b8cd9b57f3f4a6bcb82e6f48306077046691ecec2cf350af28e164",
+  "hash": "ef11b824deea6367f56683b14d01c7743d049d331f180dbe626ef6565ab3cebb",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Inngest documents step memoization: side effects placed in steps have their results memoized, failures are retried independently, and runs resume from the last successful checkpoint. That implies completed steps such as a charge or a send are not re-run on retry. However, nothing in the pack documents idempotency keys or deduplication of duplicate triggering events, and nothing explicitly states exactly-once guarantees. Missing for 10: documented idempotency keys or event deduplication for duplicate triggers, an explicit exactly-once step guarantee, and independent or hands-on corroboration of duplicate-prevention behavior.",
+    "rationale": "Inngest documents step memoization: completed steps are checkpointed and not re-run when a function retries or resumes. That covers part of the exactly-once step story, keeping side effects such as charges or sends from repeating on retry. Nothing in the pack documents idempotency keys or event deduplication for duplicate triggers. Rate-limiting and concurrency keys are adjacent controls and earn no credit here. Missing for 10: documented idempotency keys or event-level deduplication for duplicate triggers, explicit exactly-once guarantees for steps, independent or hands-on corroboration.",
     "evidenceIds": [
       "inngest-docs-2",
-      "inngest-docs-26",
-      "inngest-docs-15",
-      "inngest-docs-1"
+      "inngest-docs-21"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a backend developer, idempotency keys and exactly-once step semantics stop duplicate triggers from double-charging or double-sending",
+      "citations": [
+        {
+          "evidenceId": "inngest-docs-2",
+          "quote": "Put side effects, API calls, sleeps, waits, and function invocations in steps so Inngest can memoize results, retry failures independently, and resume long-running work from the last successful checkpoint."
+        },
+        {
+          "evidenceId": "inngest-docs-21",
+          "quote": "If the process dies at step 7 of 12, the agent picks up at step 7 — not step 1."
+        }
+      ]
+    },
     "productId": "inngest",
     "storyId": "idempotency-exactly-once"
   }

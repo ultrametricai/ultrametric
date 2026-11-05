@@ -1,21 +1,37 @@
 {
-  "hash": "2e89ea22a4b49a037445a0808ccb9a37970ce1471bc0f440b06465394d0555f5",
+  "hash": "99211a685b2c022dc678475c0ee3418aef4f86bf7303759d9053f1493c56c930",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "letta",
-    "storyId": "api-sandbox",
     "verdict": "partial",
-    "quality": 5,
-    "confidence": "medium",
-    "rationale": "Letta has several isolation mechanisms that approximate safe testing. The web app runs agents in a managed cloud sandbox. Headless `--ephemeral` runs a one-shot task without creating or persisting an agent, memory blocks or MemFS. `/fork` branches a conversation without changing the original thread. Local mode keeps all state on-device. However, none of this is documented as a dedicated test/staging environment separate from production agents and data. missing for 10: an explicit sandbox or staging environment (e.g. separate test projects or keys) isolated from production, documented guidance on testing without affecting production agents and memory, independent or hands-on corroboration.",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "Letta documents a managed cloud sandbox where web-app agents run without local setup, which isolates tool execution from your machine. Its headless --ephemeral flag runs one-shot tasks without creating or persisting agent state, and /fork branches a conversation without changing the original. These are execution isolation and non-persistence, not a documented test or staging environment separated from production data, so delivery is only partial. Missing for 10: an explicit test/staging environment, documented separation of sandbox data from production data, guarantees that ephemeral or sandboxed runs cannot reach real resources, and independent corroboration.",
     "evidenceIds": [
-      "letta-docs-14",
       "letta-docs-33",
       "letta-docs-16",
-      "letta-docs-19",
-      "letta-docs-31",
-      "letta-docs-74",
-      "letta-docs-96"
-    ]
+      "letta-docs-14",
+      "letta-docs-19"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
+      "citations": [
+        {
+          "evidenceId": "letta-docs-33",
+          "quote": "The web app uses a managed cloud sandbox by default, so you can start without configuring a computer."
+        },
+        {
+          "evidenceId": "letta-docs-14",
+          "quote": "Use --ephemeral to run a one-shot task without creating, resuming, or persisting an agent, memory blocks, or MemFS"
+        },
+        {
+          "evidenceId": "letta-docs-19",
+          "quote": "The new conversation can take a different direction without changing the original thread"
+        }
+      ]
+    },
+    "productId": "letta",
+    "storyId": "api-sandbox"
   }
 }

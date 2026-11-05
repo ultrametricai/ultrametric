@@ -1,21 +1,47 @@
 {
-  "hash": "ba0063d82999b04d5b00b9d3523748b727e96a4442cb769646a1be1e1774f432",
+  "hash": "48211702418b727a9c147ed7c560c010b9f2616ee1fdf418c80c8b0a32c5110c",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Paddle documents signed webhooks for real-time account events, a Bearer-auth API, and a hosted MCP server whose stated purpose includes letting agents \"investigate failed payments and resolve billing issues\", so an agent can plausibly monitor payment failures. Retries and dunning are built in: automatic retries up to seven times over 30 days, plus Retain Payment Recovery with Tactical Retries and email notifications. However, that recovery is configured by the merchant and run by Paddle, not driven by the agent, and Retain cannot be tested in sandbox. Missing for 10: documented failed-payment webhook event types, API or MCP endpoints for an agent to trigger retries or send dunning outreach, sandbox testability of Payment Recovery, and independent or hands-on corroboration.",
+    "rationale": "Paddle documents real-time webhooks, a hosted MCP server that lets agents read and act on the account (explicitly including investigating failed payments), and built-in dunning: retries up to seven times over 30 days, plus Retain's Tactical Retries and failed-payment emails. The evidence does not show an agent programmatically triggering retries or dunning outreach. Dunning runs automatically under its configured settings, and Retain cannot be tested in sandbox. Missing for 10: documented failed-payment webhook event types, API/MCP control over retry and dunning actions, sandbox testability of Retain, independent hands-on corroboration.",
     "evidenceIds": [
       "paddle-docs-11",
-      "paddle-docs-12",
       "paddle-supp-mcp-server",
       "paddle-docs-30",
-      "paddle-supp-mcp-codemode",
+      "paddle-docs-62",
       "paddle-supp-dunning",
       "paddle-docs-18",
-      "paddle-supp-auth-permissions"
+      "paddle-supp-mcp-codemode"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an ai-native user, I can have an agent monitor failed payments via API and webhooks and drive retries and dunning outreach",
+      "citations": [
+        {
+          "evidenceId": "paddle-docs-11",
+          "quote": "Paddle uses webhooks to push real-time notifications to your server when things happen in your account."
+        },
+        {
+          "evidenceId": "paddle-docs-30",
+          "quote": "Build pricing models, investigate failed payments, integrate Paddle features, or process customer refunds — all in natural language."
+        },
+        {
+          "evidenceId": "paddle-supp-dunning",
+          "quote": "failed payments for automatically-collected subscriptions are retried up to seven times over a 30-day window before they're canceled."
+        },
+        {
+          "evidenceId": "paddle-docs-18",
+          "quote": "You can configure how Payment Recovery notifies customers about failed payments, turn on Tactical Retries, and choose what happens to past due subscriptions when the payment isn't recovered."
+        },
+        {
+          "evidenceId": "paddle-docs-62",
+          "quote": "Lets AI agents read data and take actions in your Paddle account."
+        }
+      ]
+    },
     "productId": "paddle",
     "storyId": "agent-monitors-dunning"
   }

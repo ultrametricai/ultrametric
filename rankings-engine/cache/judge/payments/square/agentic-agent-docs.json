@@ -1,19 +1,36 @@
 {
-  "hash": "61fc8f06e82e9caaff8461c5ea55f7348adb1cca40da1f3c3d2a16f0262818cd",
+  "hash": "c2d5184cba537dfc495e91b4f65ebfae0d8895bfe43483e5bbc43549384a2bc1",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "A probe confirms Square serves an llms.txt (HTTP 200) that declares itself 'consumable by both human developers and AI agents.' It includes explicit 'For agents' guidance and points to an llms-full.txt corpus, and individual docs pages render as raw markdown via the .md suffix (e.g., mcp.md, graphql.md, api-explorer.md). Missing for 10: the root docs.md index returns 404, and there is no independent community corroboration of agents successfully consuming these docs.",
+    "rationale": "Square publishes a developer llms.txt, confirmed live by an HTTP 200 probe. It is explicitly designed for AI agents, includes agent guidance, and points to a full llms-full.txt corpus; individual docs pages also render as raw markdown by appending `.md`. The /docs.md root returned 404, but per-page .md URLs such as /docs/mcp.md are cited, so this does not undercut the claim. Missing for 10: independent hands-on corroboration of an agent consuming the llms.txt/markdown docs, and a working markdown version of the docs root (/docs.md returned 404).",
     "evidenceIds": [
-      "square-probe-1",
       "square-supp-llms-agent-guidance",
+      "square-probe-1",
       "square-docs-49",
-      "square-docs-44",
-      "square-docs-41",
-      "square-probe-2"
+      "square-docs-44"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can point an agent at llms.txt or agent-oriented docs",
+      "citations": [
+        {
+          "evidenceId": "square-supp-llms-agent-guidance",
+          "quote": "Designed to be consumable by both human developers and AI agents"
+        },
+        {
+          "evidenceId": "square-supp-llms-agent-guidance",
+          "quote": "Docs pages also render as raw markdown by appending `.md` to the URL."
+        },
+        {
+          "evidenceId": "square-probe-1",
+          "quote": "PROBE llms.txt: HTTP 200 at https://developer.squareup.com/llms.txt"
+        }
+      ]
+    },
     "productId": "square",
     "storyId": "agentic-agent-docs"
   }

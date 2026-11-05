@@ -1,20 +1,41 @@
 {
-  "hash": "2c3fbe5a8764208ce3c097c0fd7216ee0b02cabd209ecc046d0d86f2db83f41a",
+  "hash": "f0c25f89b6efde2c30a117362a476325bc6bf7750cc68dd1e2397c5049800731",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "DBOS checkpoints each step's outcome to Postgres and recovers interrupted workflows from the last completed step without re-running work that already succeeded. Its @DBOS.Transaction decorator runs database steps inside a Postgres transaction for exactly-once execution, and a user report describes exactly-once processing per Kafka message. However, the pack never documents idempotency keys or deduplication of duplicate workflow triggers, which is the mechanism the story asks for. DBOS also concedes that steps could re-run if Postgres replication loses a journaled step on failover. Missing for 10: documented idempotency keys or workflow-ID deduplication of duplicate triggers, explicit exactly-once guarantees for external side effects such as payment or email calls, and in-depth docs or hands-on corroboration of duplicate-trigger prevention.",
+    "rationale": "DBOS documents step checkpointing so recovery resumes from the last completed step without re-running succeeded work. Community reports describe @DBOS.Transaction giving exactly-once execution and a Kafka pipeline processed exactly once per message. However, no first-party evidence documents idempotency keys or deduplication of duplicate external triggers, and durability is bounded by the Postgres configuration. Missing for 10: documented idempotency-key or workflow-ID deduplication for duplicate triggers, first-party docs on exactly-once guarantees for non-transactional side effects such as payments or emails, and hands-on corroboration that double-charging or double-sending is prevented.",
     "evidenceIds": [
       "dbos-docs-4",
       "dbos-docs-36",
-      "dbos-docs-38",
       "dbos-comm-2",
-      "dbos-comm-13",
       "dbos-comm-15",
-      "dbos-comm-3"
+      "dbos-comm-13"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a backend developer, idempotency keys and exactly-once step semantics stop duplicate triggers from double-charging or double-sending",
+      "citations": [
+        {
+          "evidenceId": "dbos-docs-36",
+          "quote": "Because every task is checkpointed, your agent can recover from any failure mid-flight without re-running work that already succeeded."
+        },
+        {
+          "evidenceId": "dbos-docs-4",
+          "quote": "DBOS uses this checkpointed state to recover each of your workflows from its last completed step."
+        },
+        {
+          "evidenceId": "dbos-comm-2",
+          "quote": "its @DBOS.Transaction decorator runs steps inside a Postgres transaction for exactly-once execution"
+        },
+        {
+          "evidenceId": "dbos-comm-15",
+          "quote": "ran exactly-once per Kafka message"
+        }
+      ]
+    },
     "productId": "dbos",
     "storyId": "idempotency-exactly-once"
   }

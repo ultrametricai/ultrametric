@@ -1,24 +1,51 @@
 {
-  "hash": "7fd3e3f63c3f6b80c243dd4c4d09294ae9297657202ee37ee437b2db8dbbe553",
+  "hash": "857d396588e306d318c2f5a4c32790dc8621a6415d0b2643fce2a61d15d1d591",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
-    "confidence": "high",
-    "rationale": "Google Drive has a documented REST v3 API for its resources (docs-5, docs-29), with a dedicated upload guide covering simple, multipart and resumable uploads (docs-6, docs-23, docs-24, docs-18). Files can be listed via the files.list method (docs-10, docs-26), and the discovery document's OAuth scopes cover create and delete (docs-8). Community users report pulling Drive content programmatically with rclone (comm-13, comm-5), which corroborates retrieval outside the desktop client. Missing for 10: explicit docs for download/export endpoints, explicit docs for moving files between folders, a dedicated delete endpoint reference beyond the scope description.",
+    "verdict": "partial",
+    "quality": 6,
+    "confidence": "medium",
+    "rationale": "Google Drive documents a REST v3 API with three upload types (simple, multipart, resumable) and a files.list method, and its OAuth scope text covers creating and deleting files. Download and move operations are not explicitly documented in the pack. Third-party tools like rclone pulling all content out of Drive indirectly corroborate programmatic retrieval. Missing for 10: explicit download (files.get/alt=media) endpoint docs, documented move (parent change) operation, dedicated delete endpoint reference beyond scope wording, independent hands-on API corroboration.",
     "evidenceIds": [
       "google-drive-docs-5",
-      "google-drive-docs-29",
-      "google-drive-docs-6",
-      "google-drive-docs-23",
       "google-drive-docs-24",
-      "google-drive-docs-18",
+      "google-drive-docs-23",
+      "google-drive-docs-6",
       "google-drive-docs-10",
-      "google-drive-docs-26",
       "google-drive-docs-8",
-      "google-drive-comm-13",
-      "google-drive-comm-5"
+      "google-drive-comm-13"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, files move through a real API — upload, download, list, move, and delete over documented REST endpoints, not just a desktop client",
+      "citations": [
+        {
+          "evidenceId": "google-drive-docs-5",
+          "quote": "The Google Drive API allows clients to access resources from Google Drive."
+        },
+        {
+          "evidenceId": "google-drive-docs-24",
+          "quote": "Simple upload (`uploadType=media`): Use this upload type to transfer a small media file (5 MB or less) without supplying metadata."
+        },
+        {
+          "evidenceId": "google-drive-docs-23",
+          "quote": "Resumable upload (`uploadType=resumable`): Use this upload type for large files (greater than 5 MB)"
+        },
+        {
+          "evidenceId": "google-drive-docs-10",
+          "quote": "You can use the list method on the files resource to return all or some of a Drive user's files and folders."
+        },
+        {
+          "evidenceId": "google-drive-docs-8",
+          "quote": "See, edit, create, and delete only the specific Google Drive files you use with this app"
+        },
+        {
+          "evidenceId": "google-drive-comm-13",
+          "quote": "rclone is a great cli tool that can let you easily pull all content out of a Google drive"
+        }
+      ]
+    },
     "productId": "google-drive",
     "storyId": "files-upload-download-api"
   }

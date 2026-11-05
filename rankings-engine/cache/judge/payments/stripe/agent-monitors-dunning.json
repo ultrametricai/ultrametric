@@ -1,22 +1,43 @@
 {
-  "hash": "7b91f71c25c32d4531892e7cd35d90e52f522b3f0e4d94799e7d4a24a9d9b7fa",
+  "hash": "4d63119a9aa56d393e97495cb2cf4c9e05529d337ddb79b5ae45bd9b84b80dd8",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Stripe documents registrable webhook endpoints and event destinations for asynchronous payment events. It also documents Smart Retries that automatically retry failed payments, plus recovery analytics on failure and recovery rates. Its hosted MCP server lets an agent read and write any Stripe API method, including invoices and subscriptions. Missing for 10: explicit failed-payment event types (e.g. invoice.payment_failed) in the evidence, documented dunning/customer outreach (failed-payment emails), an explicit agent-driven retry flow (Smart Retries is framed as no-code automation), and independent or hands-on corroboration.",
+    "rationale": "Stripe documents registrable HTTPS webhook endpoints that push real-time events, an MCP server that gives agents read and write access to the API, and built-in Smart Retries plus recovery analytics on failed payments. An agent can therefore monitor payment activity and lean on automatic retries. However, the evidence never names payment-failure webhook events, shows no agent-triggered retry action (MCP invoice methods cover create, finalize and void, not pay), and gives no documented dunning-outreach capability. Missing for 10: documented failed-payment webhook events, an agent-driven invoice payment retry via API, dunning email/outreach automation, and hands-on corroboration.",
     "evidenceIds": [
-      "stripe-docs-8",
-      "stripe-docs-53",
       "stripe-docs-63",
-      "stripe-supp-event-destinations",
+      "stripe-docs-53",
+      "stripe-docs-8",
       "stripe-docs-14",
       "stripe-docs-15",
-      "stripe-docs-56",
       "stripe-supp-mcp-tools",
       "stripe-docs-13"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an ai-native user, I can have an agent monitor failed payments via API and webhooks and drive retries and dunning outreach",
+      "citations": [
+        {
+          "evidenceId": "stripe-docs-63",
+          "quote": "After you register a webhook endpoint, Stripe pushes real-time data to it when events happen in your Stripe account."
+        },
+        {
+          "evidenceId": "stripe-docs-14",
+          "quote": "Smart Retries: Automatically retry failed payments to prevent involuntary churn due to temporary issues."
+        },
+        {
+          "evidenceId": "stripe-docs-15",
+          "quote": "Recovery analytics: Analyze subscription payment failure rates, recovery rates, and recent failed payments for top customers."
+        },
+        {
+          "evidenceId": "stripe-supp-mcp-tools",
+          "quote": "`stripe_api_read` (\"Read data with any Stripe API GET method\")"
+        }
+      ]
+    },
     "productId": "stripe",
     "storyId": "agent-monitors-dunning"
   }

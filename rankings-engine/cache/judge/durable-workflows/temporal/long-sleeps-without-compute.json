@@ -1,20 +1,35 @@
 {
-  "hash": "0ba76e23fcf500753665194f77ecc07afda17528adb9cbbde5cc4c499c75c51c",
+  "hash": "8c5a5adfd427025b6697e936af2e2ca0fb53bb062b23643d6439cd8121044404",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Temporal's docs say a Workflow resumes automatically after a multi-day wait for a human approval, and that agent loops wait on humans and pick up exactly where they left off. The test server's time-skipping implies durable timers, and serverless Lambda and Cloud Run workers suggest compute need not be held between work. Missing for 10: an explicit statement that sleeping workflows hold no worker, connection, or billable compute, evidence of month-scale waits or a durable sleep/timer API, and independent hands-on corroboration.",
+    "rationale": "Temporal's docs say a Workflow resumes automatically after a multi-day wait for human approval. They also say long-running workflows can wait on humans and run for extended periods without losing state. That shows durable long waits are a first-party capability, but the docs never state that the wait releases servers, connections, or billable compute, and never document month-scale durations or a durable sleep/timer primitive. Missing for 10: explicit durable timer/sleep documentation, evidence that waits release worker, connection and compute resources, month-scale duration evidence, independent hands-on corroboration.",
     "evidenceIds": [
       "temporal-docs-41",
       "temporal-docs-9",
-      "temporal-docs-1",
-      "temporal-docs-15",
-      "temporal-docs-22",
-      "temporal-docs-28",
-      "temporal-comm-1"
+      "temporal-docs-25"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a backend developer, a workflow can sleep or wait for days to months without holding a server, connection, or billable compute",
+      "citations": [
+        {
+          "evidenceId": "temporal-docs-41",
+          "quote": "a Workflow resumes automatically after a crash, a network timeout, or a multi-day wait for a human to approve a step"
+        },
+        {
+          "evidenceId": "temporal-docs-9",
+          "quote": "Long-running, stateful agent loops that call LLMs and tools, wait on humans, and pick up exactly where they left off after a failure."
+        },
+        {
+          "evidenceId": "temporal-docs-25",
+          "quote": "Your agents survive Worker restarts and can run for extended periods without losing state."
+        }
+      ]
+    },
     "productId": "temporal",
     "storyId": "long-sleeps-without-compute"
   }

@@ -1,18 +1,36 @@
 {
-  "hash": "a70e14878338ceeacc731e3ad309825a39d17c6f346b81b484a5b580b42d5942",
+  "hash": "535627af1a37c691a862756478ab32d0899c200e92613e4f950c6d5c074307b5",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Docs show that steps are retried independently and automatically, with a default of 4 retries beyond the initial attempt, and that Inngest handles retries and durability so developers don't build their own retry scaffolding. The evidence does not document the configurable parts of the story: backoff strategy, per-step timeouts, or failure policies (the only timeout shown is on waitForEvent). Missing for 10: configurable backoff evidence, step/function timeout configuration, failure-handler/policy documentation, independent hands-on corroboration of retry behavior.",
+    "rationale": "Inngest's docs show that every step retries automatically and independently, with a default of up to 4 retries beyond the first attempt, so developers don't need try/catch scaffolding for retries. The pack does not document the configurable parts of the story: backoff settings, per-step timeouts, and failure policies such as failure handlers or dead-lettering. The waitForEvent timeout is a different feature and doesn't count. Missing for 10: configurable backoff evidence, step execution timeout configuration, failure-policy/on-failure handler documentation, independent corroboration of retry behavior.",
     "evidenceIds": [
-      "inngest-docs-2",
       "inngest-docs-15",
-      "inngest-docs-25",
-      "inngest-docs-26",
-      "inngest-probe-1"
+      "inngest-docs-2",
+      "inngest-probe-1",
+      "inngest-docs-25"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a backend developer, every step retries automatically with configurable backoff, timeouts, and failure policies — no try/catch scaffolding",
+      "citations": [
+        {
+          "evidenceId": "inngest-docs-15",
+          "quote": "By default, in addition to the initial attempt, Inngest will retry a function or a step up to 4 times until it succeeds."
+        },
+        {
+          "evidenceId": "inngest-docs-2",
+          "quote": "Put side effects, API calls, sleeps, waits, and function invocations in steps so Inngest can memoize results, retry failures independently"
+        },
+        {
+          "evidenceId": "inngest-docs-25",
+          "quote": "Inngest handles execution durability, state persistence, retries, and flow control for you"
+        }
+      ]
+    },
     "productId": "inngest",
     "storyId": "automatic-step-retries"
   }

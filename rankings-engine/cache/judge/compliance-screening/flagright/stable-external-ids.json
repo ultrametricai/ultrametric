@@ -1,19 +1,37 @@
 {
-  "hash": "89ee38f7b2094d27cf51b79402c4496e17abc9b7e13019a6d4b71652daa57cac",
+  "hash": "dbff4a69c3d0a5994e12395124d8a483d97fc49e91f94c804bdcfd2a82140983",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Customer records are keyed by a mandatory, client-supplied unique `userId`, which can be fetched directly via `GET /consumer/user/{userId}` and bulk-loaded through batch endpoints that report `failedRecords`. Together these give a solid reconciliation path for users. Cases can be created and listed with status filters through the Management API, but nothing shows that cases carry a caller-supplied or stable external identifier usable for reconciliation. missing for 10: evidence of external/stable IDs on case records, case lookup by external reference, an explicit reconciliation or idempotency guidance for users and cases, independent corroboration.",
+    "rationale": "Flagright documents a mandatory caller-supplied `userId` as the unique identifier for consumer users. That same `userId` retrieves the full user record, so customer records can be reconciled against your own stable IDs. Case records have create and list endpoints, but the evidence does not show cases accepting or exposing a caller-supplied external identifier, nor any lookup that links cases back to your IDs. missing for 10: documented external/stable identifiers on case records, a documented mapping between cases and customer IDs, business-user ID semantics, independent corroboration",
     "evidenceIds": [
       "flagright-docs-15",
       "flagright-docs-17",
       "flagright-docs-18",
-      "flagright-docs-19",
-      "flagright-docs-25",
-      "flagright-docs-26"
+      "flagright-docs-26",
+      "flagright-docs-25"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can reconcile customer and case records with stable external identifiers",
+      "citations": [
+        {
+          "evidenceId": "flagright-docs-15",
+          "quote": "`userId` - Unique identifier for the user"
+        },
+        {
+          "evidenceId": "flagright-docs-17",
+          "quote": "Calling `GET /consumer/user/{userId}` will return the entire user payload and rule execution results for the user with the corresponding `userId`"
+        },
+        {
+          "evidenceId": "flagright-docs-26",
+          "quote": "Case - Create POST https://sandbox.api.flagright.com/management/cases"
+        }
+      ]
+    },
     "productId": "flagright",
     "storyId": "stable-external-ids"
   }

@@ -1,18 +1,36 @@
 {
-  "hash": "11809ca5fb9c6f472430f9aeba69fadd1dd227fffc51d5cbdf12551c97d96df1",
+  "hash": "64105e43a5915db57ca81b7275da86c263e24f190c4c8443ccc418bf85b431fb",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Hatchet documents per-key concurrency limits set with CEL expressions (e.g. premium-tier users get 10 concurrent runs, others get 1). It also supports shared concurrency rules across workflows and per-key queue-depth strategies, so runs are not held in a single FIFO queue and each tenant or user key can be capped. However, nothing in the evidence shows assigning priorities to individual runs or an explicit fair-scheduling algorithm (such as round-robin across tenants). Missing for 10: explicit run-priority assignment, documented fair or round-robin scheduling across tenants, independent or hands-on corroboration.",
+    "rationale": "Hatchet documents per-key concurrency limits defined with CEL expressions, including tiered limits per user and shared concurrency rules. This keeps any one tenant or user from monopolizing execution, a form of fairness beyond a single FIFO queue. The pack has no evidence of assigning priorities to runs, and it never describes a fair-scheduling algorithm (such as round-robin across tenants) as such. missing for 10: run-level priority assignment, explicit fair/round-robin scheduling across tenants, independent or hands-on corroboration",
     "evidenceIds": [
       "hatchet-docs-5",
       "hatchet-docs-6",
       "hatchet-docs-18",
-      "hatchet-docs-10",
       "hatchet-docs-28"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform engineer, I assign priorities to runs and get fair scheduling across tenants instead of a single FIFO queue",
+      "citations": [
+        {
+          "evidenceId": "hatchet-docs-5",
+          "quote": "set concurrency limits on a per-key basis using a CEL expression. For example, let premium-tier users run 10 workflows simultaneously while other users run one"
+        },
+        {
+          "evidenceId": "hatchet-docs-6",
+          "quote": "create concurrency rules that many tasks and workflows consume simultaneously, e.g. limiting `workflow_a` and `workflow_b` to 10 concurrent runs per user total"
+        },
+        {
+          "evidenceId": "hatchet-docs-18",
+          "quote": "configure the queue depth for each concurrency key"
+        }
+      ]
+    },
     "productId": "hatchet",
     "storyId": "queue-priority-fairness"
   }

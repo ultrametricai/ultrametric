@@ -1,23 +1,49 @@
 {
-  "hash": "d6e08977918fcd5a7204ee6327543771946690f8a8c6f615aa93558f4b2d0507",
+  "hash": "ef60c67e23f0be884c92472eac89ea433f07bc4eb38552211c64e4cef6c97f6f",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Stripe documents sandboxes as isolated test environments that do not affect the live integration. Test transactions there use test values and test cards and move no funds, and team members can be invited to sandboxes without access to live-mode data. Agent-specific support is explicit: `stripe sandbox create` provisions an anonymous sandbox with working API keys for coding agents, MCP access is configured separately for sandbox and live mode, and the Workbench Shell is read-only in live mode while writes go to a sandbox. Missing for 10: independent or hands-on corroboration of sandbox isolation in agent workflows.",
+    "rationale": "Stripe documents real sandbox isolation, not a dry-run mode: sandboxes are isolated test environments that don't affect the live integration, simulated transactions don't move funds, and test cards cover success and decline scenarios. It is also agent-oriented: coding agents can provision an anonymous sandbox with working API keys through the CLI, MCP access is configured separately for sandbox and live mode, and the Workbench Shell is read-only in live mode while allowing writes in a sandbox. Missing for 10: independent or hands-on corroboration that sandbox provisioning and isolation work as documented.",
     "evidenceIds": [
-      "stripe-docs-10",
       "stripe-docs-32",
+      "stripe-docs-10",
       "stripe-docs-16",
-      "stripe-docs-43",
-      "stripe-docs-49",
       "stripe-docs-57",
       "stripe-docs-65",
+      "stripe-docs-49",
       "stripe-supp-cli-agent-setup",
       "stripe-supp-mcp-sessions-governance",
       "stripe-supp-workbench-shell"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
+      "citations": [
+        {
+          "evidenceId": "stripe-docs-32",
+          "quote": "A sandbox is an isolated test environment. You can use your sandbox to test Stripe functionality in your account, and experiment with new features without affecting your live integration."
+        },
+        {
+          "evidenceId": "stripe-docs-10",
+          "quote": "by simulating transactions with test values—these transactions don't move funds."
+        },
+        {
+          "evidenceId": "stripe-docs-16",
+          "quote": "Coding agents should install the Stripe CLI (npm i -g @stripe/cli) and run the command stripe sandbox create --help to provision an anonymous Stripe sandbox with working API keys. No account registration required."
+        },
+        {
+          "evidenceId": "stripe-docs-57",
+          "quote": "Your team can test in separate sandboxes to make sure that data and actions are completely isolated from other sandboxes."
+        },
+        {
+          "evidenceId": "stripe-supp-workbench-shell",
+          "quote": "Shell is read-only in live mode. Switch to a sandbox to run API requests that create, modify, or delete API objects."
+        }
+      ]
+    },
     "productId": "stripe",
     "storyId": "api-sandbox"
   }

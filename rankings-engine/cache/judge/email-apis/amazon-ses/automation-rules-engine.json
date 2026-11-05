@@ -1,19 +1,43 @@
 {
-  "hash": "9125593f91017a81dda9dbe78d7a509ade445cbacc01a8723a2165bbe9e3c6ad",
+  "hash": "732981ecfd0c86584a87b31d0cbcec2b9036000956624af0213263e95677544e",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "SES receipt rules automatically act on incoming mail: they can store it in S3, publish to SNS, trigger Lambda functions, deliver to WorkMail, or send bounces. Configuration sets also publish sending events to SNS or EventBridge based on characteristics you define. A community user confirms running a Lambda on inbound email. missing for 10: automation on sending events (bounces, deliveries) requires downstream AWS services like EventBridge or Lambda rather than SES-native rule actions, and the docs shown do not cover rule conditions or ordering.",
+    "rationale": "SES's own receipt rules fire automatically when email arrives and perform actions: deliver to S3, publish to SNS, send to WorkMail, send bounces, or trigger Lambda functions. Separately, configuration-set event publishing routes sending events (bounces, complaints, deliveries) to SNS or EventBridge based on characteristics the user defines, and a community user confirms building an inbound-email Lambda pipeline. Missing for 10: documented detail on rule conditions and matching criteria, any built-in rule actions for sending-side events beyond publishing to downstream services (custom logic needs Lambda), and independent corroboration beyond a single hands-on report.",
     "evidenceIds": [
-      "amazon-ses-docs-6",
+      "amazon-ses-docs-7",
       "amazon-ses-docs-24",
+      "amazon-ses-docs-6",
       "amazon-ses-docs-28",
       "amazon-ses-docs-29",
       "amazon-ses-docs-33",
       "amazon-ses-comm-2"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can define rules that trigger actions automatically on events",
+      "citations": [
+        {
+          "evidenceId": "amazon-ses-docs-24",
+          "quote": "Receipt rules can do advanced processing such as deliver incoming mail to an Amazon S3 bucket, publish it to an Amazon SNS topic, send it to Amazon WorkMail, or automatically send bounce messages."
+        },
+        {
+          "evidenceId": "amazon-ses-docs-6",
+          "quote": "Take action on your received emails by triggering AWS Lambda functions."
+        },
+        {
+          "evidenceId": "amazon-ses-docs-28",
+          "quote": "You can set up Amazon SES to publish email sending events to Amazon CloudWatch, Amazon Data Firehose, Amazon Pinpoint, Amazon Simple Notification Service, or Amazon EventBridge based on characteristics that you define."
+        },
+        {
+          "evidenceId": "amazon-ses-comm-2",
+          "quote": "I wrote a small Lambda function which dissects the email and forwards it to my HTTP endpoint."
+        }
+      ]
+    },
     "productId": "amazon-ses",
     "storyId": "automation-rules-engine"
   }

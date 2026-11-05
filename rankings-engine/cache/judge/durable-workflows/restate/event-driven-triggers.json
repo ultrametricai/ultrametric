@@ -1,20 +1,45 @@
 {
-  "hash": "ca809db8128bdeea362947dde666634157623b25606353a7da6455ecb46b6abb",
+  "hash": "1123ac6b2e495db1054605972bce63511bebcdb7ea0a301bc363e6e6c4850c9e",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Restate handlers can be triggered over HTTP, from typed clients in the app, or from Kafka topics, and any handler can act as a durable webhook endpoint with exactly-once processing and idempotency-key deduplication. Fan-out is shown only as in-code orchestration (one handler dispatching to many agents or services), not as a declarative event-to-many-subscribers mapping. Missing for 10: evidence of declarative trigger/subscription configuration, native one-event-to-many-functions fan-out (pub/sub-style), queue sources beyond Kafka, and independent hands-on corroboration.",
+    "rationale": "Restate documents that handlers can be invoked over HTTP, through typed clients, or from Kafka topics. Any handler can act as a durable webhook endpoint with exactly-once processing and idempotency-key deduplication. Fan-out is documented only as an in-code pattern (dispatching work to multiple agents and combining results), not as one event routed to many subscribed functions, and declarative trigger configuration is not shown. Missing for 10: declarative trigger/subscription configuration, documented one-event-to-many-functions fan-out at the trigger level, independent corroboration of the Kafka/webhook triggers.",
     "evidenceIds": [
       "restate-docs-28",
       "restate-docs-38",
       "restate-docs-37",
       "restate-docs-84",
-      "restate-docs-52",
-      "restate-docs-6",
-      "restate-docs-8"
+      "restate-docs-52"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a backend developer, events from my app, webhooks, or queues trigger workflows declaratively, and one event can fan out to many functions",
+      "citations": [
+        {
+          "evidenceId": "restate-docs-28",
+          "quote": "There are three ways to invoke a handler: over HTTP, using typed clients, or through Kafka topics."
+        },
+        {
+          "evidenceId": "restate-docs-38",
+          "quote": "Any handler can be a durable webhook endpoint. No need to do anything special or extra!"
+        },
+        {
+          "evidenceId": "restate-docs-37",
+          "quote": "Restate persists all incoming events, and ensures that they are processed exactly once, across failures and restarts... Let Restate deduplicate events on an idempotency key."
+        },
+        {
+          "evidenceId": "restate-docs-84",
+          "quote": "Restate eliminates this complexity by providing **lightweight, transactional event processing** with zero consumer management and built-in state."
+        },
+        {
+          "evidenceId": "restate-docs-52",
+          "quote": "Fan out work to multiple agents, then combine the results."
+        }
+      ]
+    },
     "productId": "restate",
     "storyId": "event-driven-triggers"
   }

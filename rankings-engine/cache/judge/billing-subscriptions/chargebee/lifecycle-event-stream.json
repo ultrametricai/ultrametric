@@ -1,16 +1,35 @@
 {
-  "hash": "8b8ea737b297b31a2bb2ba93681c4d7232409b74f8f2f5a5b01f74e7c63c730e",
+  "hash": "b7cc0c0a192a80e1b6d4f71d95c259bd0274e50cba2b8b143240db1840b96004",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Chargebee's docs say subscription state changes are recorded as events (e.g. `subscription_cancelled` when a subscription is canceled for non-payment), and configured webhooks fire on those events. A community user independently confirms using multiple webhook URLs so that all events reach each environment. missing for 10: explicit documentation of the renewal, upgrade, and payment-failure event types, and of reliability guarantees (webhook retries, ordering, signature verification, deduplication)",
+    "rationale": "Chargebee's own docs say recorded events trigger configured webhooks, with a cancellation event (`subscription_cancelled`) given as an example. A hands-on community report confirms you can register multiple webhook URLs and that all events are sent to them. However, the pack doesn't show that every listed lifecycle change emits an event, or that delivery is reliable. missing for 10: documented renewal, upgrade and payment-failure event types, delivery reliability guarantees (retries, signing, ordering/idempotent consumption), and a full event catalog for subscription state changes.",
     "evidenceIds": [
       "chargebee-docs-5",
       "chargebee-docs-21",
       "chargebee-comm-3"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, every subscription state change — renewal, upgrade, payment failure, cancellation — emits a webhook or event my systems can act on reliably",
+      "citations": [
+        {
+          "evidenceId": "chargebee-docs-5",
+          "quote": "If webhooks are configured in Chargebee, events trigger those webhooks."
+        },
+        {
+          "evidenceId": "chargebee-docs-21",
+          "quote": "when a subscription is canceled due to non-payment, an event such as `subscription_cancelled` is recorded."
+        },
+        {
+          "evidenceId": "chargebee-comm-3",
+          "quote": "with Chargebee I can add multiple webhook URLs, so all events get sent to both dev and staging"
+        }
+      ]
+    },
     "productId": "chargebee",
     "storyId": "lifecycle-event-stream"
   }

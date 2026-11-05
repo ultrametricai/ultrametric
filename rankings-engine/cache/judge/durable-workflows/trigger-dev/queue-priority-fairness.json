@@ -1,15 +1,30 @@
 {
-  "hash": "f8160c460ff9887a7dcf5743f959faf850cbd00d5617d797c67fbe741f61760c",
+  "hash": "30cf4240d1235f6bc5c221c874915f2d841a0767d5c0569821e4dc2297720817",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Concurrency keys let you create per-user queue logic (docs-27), and per-queue `concurrencyLimit` caps how many runs execute at once (docs-8). Together these give a form of tenant isolation rather than a single shared FIFO. The pack has no evidence of assigning priorities to individual runs, and no explicit description of a fair-scheduling algorithm across tenants. Missing for 10: per-run priority assignment, documented fair-scheduling semantics across tenants, independent or hands-on corroboration.",
+    "rationale": "Trigger.dev documents concurrency keys that create per-user queue logic and per-queue concurrency limits. This covers part of the tenant-isolation and fairness side of the story rather than a single FIFO queue. Nothing in the evidence shows assigning priorities to runs or an explicit fair-scheduling algorithm across tenants. Missing for 10: run-level priority assignment, documented fair-scheduling semantics across tenants, hands-on corroboration.",
     "evidenceIds": [
       "trigger-dev-docs-27",
       "trigger-dev-docs-8"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform engineer, I assign priorities to runs and get fair scheduling across tenants instead of a single FIFO queue",
+      "citations": [
+        {
+          "evidenceId": "trigger-dev-docs-27",
+          "quote": "With concurrency keys you can create bespoke queue logic for each of your users."
+        },
+        {
+          "evidenceId": "trigger-dev-docs-8",
+          "quote": "You can set the concurrency limit for a task by setting the `concurrencyLimit` property on the task's queue. This limits the number of runs that can be executing at any one time"
+        }
+      ]
+    },
     "productId": "trigger-dev",
     "storyId": "queue-priority-fairness"
   }

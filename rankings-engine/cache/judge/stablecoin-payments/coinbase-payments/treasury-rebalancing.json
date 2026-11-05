@@ -1,19 +1,37 @@
 {
-  "hash": "79462d6100edf09f733ab2b12b2c02996203141a4ee0880813d8820e68bf23e8",
+  "hash": "38f73d3ce4e67a9526719db026bbf3c679c6de1c9cea7f48cc7d75206d0e8ce2",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "The docs show fiat/stablecoin conversion inside CDP's custodial accounts. Liquidation deposit destinations auto-convert incoming funds into another asset before crediting the account, and documented CLI/SDK guides cover accepting USDC with auto-conversion to a USD treasury and funding a USD treasury to pay out USDC. Transfers come with fee quotes and lifecycle tracking. However, these conversions are tied to deposit and payout flows. Nothing shows an on-demand internal transfer or rebalancing operation between fiat and stablecoin balances, and dashboard support is unevidenced. Missing for 10: an explicit internal transfer/rebalance API between fiat and stablecoin balances, dashboard-based rebalancing, end-to-end treasury rebalancing documentation, independent or hands-on corroboration.",
+    "rationale": "CDP documents conversion between fiat and stablecoin inside custodial accounts: liquidation-style deposit destinations auto-convert incoming USDC to USD, and a guide covers funding a USD treasury and paying out USDC, both via the CLI or SDK. These conversions are tied to inbound deposits and outbound payouts, not a documented standalone internal transfer or rebalancing operation between balances. Missing for 10: an explicit internal transfer/rebalance endpoint between fiat and stablecoin balances, any dashboard workflow, end-to-end treasury rebalancing documentation, and independent or hands-on corroboration.",
     "evidenceIds": [
-      "coinbase-payments-docs-1",
       "coinbase-payments-docs-19",
       "coinbase-payments-docs-20",
       "coinbase-payments-docs-50",
-      "coinbase-payments-docs-23",
-      "coinbase-payments-docs-54"
+      "coinbase-payments-docs-1",
+      "coinbase-payments-docs-22"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a finance lead, I can move value between fiat and stablecoin balances on the platform — internal transfers and rebalancing through the API or dashboard, documented end to end",
+      "citations": [
+        {
+          "evidenceId": "coinbase-payments-docs-19",
+          "quote": "Accept customer USDC, auto-convert it to USD, and collect it in your treasury, with the CDP CLI or SDK."
+        },
+        {
+          "evidenceId": "coinbase-payments-docs-20",
+          "quote": "Fund a USD treasury and pay out USDC onchain to any wallet, with the CDP CLI or SDK."
+        },
+        {
+          "evidenceId": "coinbase-payments-docs-50",
+          "quote": "A destination can also act as a liquidation address, automatically converting incoming funds into a different asset before crediting the account."
+        }
+      ]
+    },
     "productId": "coinbase-payments",
     "storyId": "treasury-rebalancing"
   }

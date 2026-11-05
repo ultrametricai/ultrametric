@@ -1,17 +1,36 @@
 {
-  "hash": "79adff0b3d3076ff05e57bdd56da92389c9da7950ed484d87a1f6f68cdacdc50",
+  "hash": "1d870c3abbdb8de3895a52659a5212c2689ebfb94e4e47333b4c04071f2e545a",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Trigger.dev documents waitpoint tokens, which pause a running task until the token is completed externally; the docs present this as the mechanism for approval workflows and external confirmation. That is the core of signaling a specific running workflow from outside, and tool-level `needsApproval` pauses plus durable multi-turn chat tasks that receive conversation turns reinforce it. Missing for 10: explicit evidence that tokens can be completed via a REST API call or webhook URL, workflow-to-workflow signaling, arbitrary event or message payloads beyond token completion, and independent hands-on corroboration.",
+    "rationale": "Trigger.dev documents waitpoint tokens that pause a run until the token is completed, which is used for approval workflows and waiting on external confirmation. That is a first-party way to signal a specific running workflow from outside. Durable chat tasks (one task per conversation) also suggest messages can be fed into a live run. Missing for 10: documented ways to complete a token via API call, webhook URL, or another workflow; passing a payload with the signal; general named signals or events beyond token completion; independent hands-on corroboration.",
     "evidenceIds": [
       "trigger-dev-docs-6",
       "trigger-dev-docs-31",
       "trigger-dev-docs-22",
       "trigger-dev-docs-13"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a backend developer, I send signals, events, or messages into a specific running workflow from outside — an API call, webhook, or another workflow",
+      "citations": [
+        {
+          "evidenceId": "trigger-dev-docs-6",
+          "quote": "Waitpoint tokens pause task runs until you complete the token. They're commonly used for approval workflows and other scenarios where you need to wait for external confirmation"
+        },
+        {
+          "evidenceId": "trigger-dev-docs-22",
+          "quote": "needsApproval: true, // pauses for human approval; the run stays alive"
+        },
+        {
+          "evidenceId": "trigger-dev-docs-13",
+          "quote": "Durable multi-turn AI chats — one Trigger.dev task per conversation, surviving refreshes, deploys, and crashes."
+        }
+      ]
+    },
     "productId": "trigger-dev",
     "storyId": "external-signal-injection"
   }

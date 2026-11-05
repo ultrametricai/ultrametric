@@ -1,20 +1,41 @@
 {
-  "hash": "341507535c0fece1adcf9b0cee32e7f3681fa11c2b72bdb8bb2e8e1009d27575",
+  "hash": "4790cc66468f6e533f4faf45191ba5c4ebac5c5bfecfc41401ebe25333711236",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "DBOS runs as a library inside your own application processes, backed by your own Postgres, so execution and workflow state live in your infrastructure. DBOS also offers a vendor-managed Conductor that monitors and controls workflows and recovers interrupted ones to healthy executors (it can alternatively be self-hosted). The evidence never states that code and workflow data stay inside your network when the DBOS-managed Conductor is used, and orchestration itself happens in the library and Postgres rather than in Conductor. missing for 10: documented data-residency guarantees for managed Conductor, an explanation of how executors connect to the managed control plane, and independent corroboration of the hybrid deployment model.",
+    "rationale": "DBOS runs as a library inside your own application, backed by your Postgres, with no separate orchestration server. A DBOS-managed Conductor can act as the control plane: it detects interrupted workflows, recovers them to healthy executors, and lets you pause, restart or fork workflows. That matches the hybrid split of your workers plus a vendor-managed control plane. However, the evidence never states that application code and workflow data stay inside your network when the managed Conductor is used. missing for 10: explicit documentation of the data boundary and network connectivity model between self-run executors and DBOS-managed Conductor, security/privacy guarantees that workflow inputs and outputs are not sent to the vendor, independent hands-on corroboration of the hybrid deployment.",
     "evidenceIds": [
       "dbos-docs-2",
-      "dbos-docs-20",
       "dbos-docs-31",
       "dbos-docs-16",
       "dbos-docs-33",
-      "dbos-docs-34",
-      "dbos-comm-14"
+      "dbos-docs-20"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform engineer, I run workers in my own infrastructure while the vendor manages the orchestration control plane — code and data stay inside my network",
+      "citations": [
+        {
+          "evidenceId": "dbos-docs-2",
+          "quote": "The open-source DBOS library uses Postgres to orchestrate durable workflows and queues. There's no separate orchestration server and no infrastructure required besides Postgres."
+        },
+        {
+          "evidenceId": "dbos-docs-31",
+          "quote": "Conductor automatically detects when a workflow is interrupted (for example, if its executor disconnects or crashes) and recovers the workflow to another healthy executor."
+        },
+        {
+          "evidenceId": "dbos-docs-33",
+          "quote": "It manages workflows, queues, schedules, applications, and API keys against DBOS-managed Conductor or a self-hosted Conductor"
+        },
+        {
+          "evidenceId": "dbos-docs-16",
+          "quote": "From the Conductor dashboard, you can pause any workflow execution, start any stopped or enqueued workflow, or restart any workflow from a specific step."
+        }
+      ]
+    },
     "productId": "dbos",
     "storyId": "hybrid-managed-workers"
   }

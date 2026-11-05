@@ -1,19 +1,31 @@
 {
-  "hash": "88bd8bc76b1ffc0b9bf167d134ce193212afa758ca3975656833ffe679793c9d",
+  "hash": "352fc7a909724ed96a6afde8eabca25876a5ab2fad2fd48edf28c6b0e47ad425",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "The docs show runs can pause on waitpoint tokens until an external completion (approval flows), and Trigger.dev describes a checkpoint-resume model, which implies a paused run need not hold a live process. The pack never states how long waits can last or that paused time is free of compute billing; community wish-list posts asking for wait/resume read as feature requests, not concrete failures, so they lower confidence rather than create a dispute. Missing for 10: explicit wait.for/sleep durations of days to months, documentation that waiting runs incur no billable compute or held connections, independent hands-on corroboration of long waits.",
+    "rationale": "Trigger.dev documents waitpoint tokens that pause task runs until they are completed, and describes a checkpoint-resume execution model. Together these suggest a paused run is checkpointed rather than holding a live process. The evidence does not show time-based sleeps, waits lasting days to months, or that a paused run releases the server and stops billing. Missing for 10: a documented duration-based sleep/wait API, explicit support for multi-day to multi-month waits, an explicit statement that no compute or billing accrues while paused, and independent hands-on corroboration.",
     "evidenceIds": [
       "trigger-dev-docs-6",
       "trigger-dev-docs-31",
-      "trigger-dev-docs-38",
-      "trigger-dev-docs-22",
-      "trigger-dev-docs-23",
-      "trigger-dev-docs-10"
+      "trigger-dev-docs-38"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a backend developer, a workflow can sleep or wait for days to months without holding a server, connection, or billable compute",
+      "citations": [
+        {
+          "evidenceId": "trigger-dev-docs-6",
+          "quote": "Waitpoint tokens pause task runs until you complete the token."
+        },
+        {
+          "evidenceId": "trigger-dev-docs-38",
+          "quote": "Trigger.dev uses checkpoint-resume to run normal TypeScript with no determinism constraints"
+        }
+      ]
+    },
     "productId": "trigger-dev",
     "storyId": "long-sleeps-without-compute"
   }

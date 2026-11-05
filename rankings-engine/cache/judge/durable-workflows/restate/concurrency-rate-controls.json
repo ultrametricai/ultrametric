@@ -1,18 +1,41 @@
 {
-  "hash": "5536221cbb509578308444b265f240ace969fd6ccf84717b0dd4f78509b2c6a5",
+  "hash": "7aa593d0b7a027c10bd27910045c1b73c3976781cd461749e84d38b58d4b652e",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Restate documents flow control that caps concurrent invocations per scope, aimed at controlling cost, protecting downstream services and keeping scheduling fair. Virtual-object sessions keyed by ID add built-in per-key concurrency control. However, nothing in the evidence shows time-based rate limits, and per-tenant scoping is only implied by the generic \"per scope\" wording. Missing for 10: documented request-rate limiting, explicit per-workflow/per-tenant scope configuration details, independent or hands-on corroboration of fairness under a hot tenant.",
+    "rationale": "Restate's own flow-control feature documents concurrency limits applied per scope to protect downstream services and keep scheduling fair. That directly addresses capping concurrency so one hot customer can't starve others. However, the evidence never documents rate limits (requests per time window), and it does not spell out which scopes exist (workflow, key, tenant). missing for 10: documented rate limiting, explicit per-workflow/per-key/per-tenant scope definitions, independent or hands-on corroboration.",
     "evidenceIds": [
       "restate-docs-4",
-      "restate-docs-11",
       "restate-docs-32",
       "restate-docs-67",
+      "restate-docs-11",
       "restate-docs-60"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform engineer, I cap concurrency and set rate limits per workflow, per key, or per tenant so one hot customer can't starve the rest",
+      "citations": [
+        {
+          "evidenceId": "restate-docs-4",
+          "quote": "Shape traffic with concurrency limits per scope to control cost, protect downstream services, and keep scheduling fair."
+        },
+        {
+          "evidenceId": "restate-docs-32",
+          "quote": "Flow control lets you shape the traffic flowing through Restate instead of letting invocations run unbounded."
+        },
+        {
+          "evidenceId": "restate-docs-67",
+          "quote": "Shape and limit concurrent invocations with scope"
+        },
+        {
+          "evidenceId": "restate-docs-11",
+          "quote": "A concurrency limit puts a ceiling on that cost."
+        }
+      ]
+    },
     "productId": "restate",
     "storyId": "concurrency-rate-controls"
   }

@@ -1,20 +1,41 @@
 {
-  "hash": "d0d6c6f5343c591cf979c5f73341888a96308d43850e832bd88d9cc9a03de4bb",
+  "hash": "9b45daeb105f9fae8010178fd9ac836c920b02a2545b41092f173ccbb6083245",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Pipecat is a pip-installable Python framework and CLI that runs without a UI: the runtime probe shows `pipecat-ai` installing and importing keylessly, and `pipecat --help` running via uvx with init, cloud, eval and context-hub subcommands. Bots launch from the command line (`python bot.py -t twilio ...`), and Pipecat Evals runs scripted conversations against the real agent pipeline, which suits automated testing. missing for 10: explicit CI documentation (e.g. CI pipeline examples, non-interactive eval exit codes/reporting), and independent hands-on reports of running Pipecat or its evals in CI.",
+    "rationale": "Pipecat is a pip-installable Python framework whose bots launch from the command line. Its official CLI ran keylessly via uvx in a runtime probe and includes an `eval` command that runs behavioral tests against the real agent, which are the building blocks for headless or CI automation. However, no first-party documentation describes running in CI, non-interactive eval exit codes, or pipeline integration. missing for 10: documented CI/headless workflow guidance (e.g., CI pipeline examples, non-interactive eval pass/fail reporting), independent hands-on corroboration of CI usage",
     "evidenceIds": [
       "pipecat-probe-rt-1",
       "pipecat-probe-rt-2",
-      "pipecat-docs-8",
       "pipecat-docs-25",
       "pipecat-docs-40",
-      "pipecat-probe-3",
-      "pipecat-docs-32"
+      "pipecat-docs-8"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
+      "citations": [
+        {
+          "evidenceId": "pipecat-probe-rt-1",
+          "quote": "the official Pipecat CLI (pypi pipecat-ai[cli]) ran keylessly via uvx"
+        },
+        {
+          "evidenceId": "pipecat-docs-25",
+          "quote": "Pipecat runs it against your real agent (the same pipeline, the same services, the same code) and tells you whether the expectation still holds."
+        },
+        {
+          "evidenceId": "pipecat-docs-40",
+          "quote": "python bot.py -t twilio -x your-name.ngrok.io"
+        },
+        {
+          "evidenceId": "pipecat-probe-rt-2",
+          "quote": "installs and `import pipecat` succeeds with no key"
+        }
+      ]
+    },
     "productId": "pipecat",
     "storyId": "agentic-headless"
   }

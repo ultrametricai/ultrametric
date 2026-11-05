@@ -1,16 +1,31 @@
 {
-  "hash": "799b2bbe1b6ea7160cdbdd61c722fca9b332c370c808e4bdb60d62012f062c5a",
+  "hash": "b762383a4ff8bfb33653670218e2abdd08bbc35a4b62dcb7cdecc09620bf69d5",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 7,
-    "confidence": "high",
-    "rationale": "A live probe found a working llms.txt (HTTP 200) at help.hummingbird.co that indexes the Help Center as markdown links, and the help pages are served as .md URLs, so an agent can be pointed at them directly. The .md.md probe returning 'Page Not Found' only reflects a doubled extension and does not contradict this. missing for 10: no llms-full.txt or other consolidated agent bundle in evidence, no machine-readable OpenAPI spec (all candidate paths 404), coverage limited to help-center articles rather than full API reference docs, no independent corroboration of agent usage.",
+    "confidence": "medium",
+    "rationale": "A live probe found an llms.txt (HTTP 200) at help.hummingbird.co that indexes the Help Center as markdown links, and the help pages themselves are served as .md URLs, so an agent can be pointed at agent-readable docs. The scope is thin: the llms.txt covers the help center only, and no OpenAPI or swagger spec was found at any probed path. missing for 10: machine-readable API reference/OpenAPI spec, first-party documentation describing the agent-oriented docs, evidence of an llms-full.txt or developer-docs coverage, independent corroboration.",
     "evidenceIds": [
       "hummingbird-probe-1",
-      "hummingbird-docs-1",
-      "hummingbird-probe-3"
+      "hummingbird-probe-3",
+      "hummingbird-docs-1"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can point an agent at llms.txt or agent-oriented docs",
+      "citations": [
+        {
+          "evidenceId": "hummingbird-probe-1",
+          "quote": "PROBE llms.txt: HTTP 200 at https://help.hummingbird.co/llms.txt # Hummingbird Help Center"
+        },
+        {
+          "evidenceId": "hummingbird-probe-1",
+          "quote": "- [General](https://help.hummingbird.co/general.md)"
+        }
+      ]
+    },
     "productId": "hummingbird",
     "storyId": "agentic-agent-docs"
   }

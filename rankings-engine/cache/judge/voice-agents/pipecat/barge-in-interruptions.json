@@ -1,18 +1,35 @@
 {
-  "hash": "5812c496ee620ff214a5e9ac43b1b66c4bd194d56097debaea2650e35e92ab58",
+  "hash": "c82d23244bc73180dfd785392f307a227ec3e77148718f563f111c13cbbbc47f",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Pipecat has a dedicated interruptions (barge-in) doc. It states that when the user talks over the bot, the bot stops immediately, in-flight work is cancelled, and the pipeline is ready for new user input. Supporting features include Smart Turn Detection for turn-taking and Krisp noise filtering to prevent false interruptions. Missing for 10: explicit evidence of how conversation context is updated after an interruption (e.g., truncating unspoken bot text), and independent or hands-on corroboration that barge-in recovery works reliably.",
+    "rationale": "Pipecat's own interruptions docs say that on barge-in the bot stops immediately, in-flight work is cancelled, and the pipeline is ready for the new user input. That covers stopping speech and recovering the turn, and Pipecat Cloud adds Krisp filtering against false interruptions. The evidence never shows how conversation context is updated after an interruption, such as truncating the assistant message to what was actually spoken. Missing for 10: documented context updating on interruption, independent or hands-on corroboration of barge-in behavior.",
     "evidenceIds": [
       "pipecat-docs-19",
       "pipecat-docs-2",
-      "pipecat-docs-9",
-      "pipecat-docs-31",
       "pipecat-docs-36"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can rely on the agent to handle interruptions (barge-in) gracefully — stopping speech, updating context, and recovering the turn",
+      "citations": [
+        {
+          "evidenceId": "pipecat-docs-19",
+          "quote": "Interruptions (also called barge-in) let the user talk over the bot. When the user starts speaking while the bot is talking, the bot stops immediately, in-flight work is cancelled"
+        },
+        {
+          "evidenceId": "pipecat-docs-2",
+          "quote": "the pipeline is ready for the new user input"
+        },
+        {
+          "evidenceId": "pipecat-docs-36",
+          "quote": "Eliminates background noise and voices that cause false interruptions, powered by Krisp."
+        }
+      ]
+    },
     "productId": "pipecat",
     "storyId": "barge-in-interruptions"
   }

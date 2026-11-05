@@ -1,17 +1,36 @@
 {
-  "hash": "e1a319e19882ed94a8c6e7cb94acb594df2ffd6b00006e253f1e4743203640a6",
+  "hash": "9efef8ebc58d67d92e1006b1501f306cfc6214f1ec8a586fe2592d71c1908aae",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "MoonPay documents its own webhooks that notify your application of account activity and asynchronous transaction status updates, plus a specific sell_transaction_requote_required off-ramp event. Together these give server-side state tracking without polling. However, nothing in the pack shows signature verification, and the requested event types (payment confirmed, payout settled, conversion executed) are not enumerated. missing for 10: evidence that webhooks are signed/verifiable, a documented event catalog covering payment confirmation, payout settlement and swap/conversion execution, independent or hands-on corroboration.",
+    "rationale": "MoonPay documents webhook events that notify your application of account activity, including asynchronous transaction-status updates, plus a specific sell_transaction_requote_required webhook. That covers the core idea of avoiding polling. The pack does not show signature verification or a named event catalog matching payment confirmed, payout settled, and conversion executed. A community question about the webhook event list is not a contradiction. Missing for 10: documented webhook signing/verification, explicit event types for payment confirmation, payout settlement and conversion execution, full event catalog, independent corroboration.",
     "evidenceIds": [
       "moonpay-docs-11",
       "moonpay-docs-65",
       "moonpay-docs-12",
       "moonpay-docs-66"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, money movement emits signed webhooks — payment confirmed, payout settled, conversion executed — so my system tracks state without polling chains or dashboards",
+      "citations": [
+        {
+          "evidenceId": "moonpay-docs-11",
+          "quote": "MoonPay can send webhook events that notify your application whenever an activity occurs on your account."
+        },
+        {
+          "evidenceId": "moonpay-docs-65",
+          "quote": "They allow you to receive alerts for asynchronous updates to transaction statuses."
+        },
+        {
+          "evidenceId": "moonpay-docs-12",
+          "quote": "Handle the sell_transaction_requote_required webhook to surface in-app requote notifications when a sell price changes."
+        }
+      ]
+    },
     "productId": "moonpay",
     "storyId": "payment-webhooks"
   }

@@ -1,25 +1,53 @@
 {
-  "hash": "0e1abef98976fefd64da06c38869de161796bf7c7ce1e6753cfc012a0be22cf6",
+  "hash": "116e54d214a5a00278c556ccefd7595629d3f7c37f4fcd6e35de76b41a8c9438",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Restate's first-party docs describe this story directly: completed steps are stored in an execution log via `ctx.run`, and code resumes where it left off after failures, including infrastructure crashes [restate-docs-1, restate-docs-18, restate-docs-82]. State persists with strong consistency and survives crashes, restarts and infrastructure changes [restate-docs-2, restate-docs-60, restate-docs-48], and immutable deployments keep in-flight retries on the same version across deploys [restate-docs-24, restate-docs-41]. Missing for 10: independent hands-on corroboration of crash/deploy recovery (community comments do not test resume behavior).",
+    "rationale": "Restate's first-party docs describe durable execution as the core capability. Completed steps are stored in an execution log via ctx.run, and code resumes from where it left off after failures, including infrastructure crashes and restarts. Deploys are covered by immutable deployments that route retries to the same endpoint, and state persists with strong consistency. Missing for 10: independent or hands-on corroboration of crash/deploy recovery behavior (community evidence only confirms the server holds the journal).",
     "evidenceIds": [
       "restate-docs-1",
       "restate-docs-18",
-      "restate-docs-80",
       "restate-docs-82",
-      "restate-docs-2",
-      "restate-docs-60",
-      "restate-docs-48",
       "restate-docs-24",
       "restate-docs-41",
-      "restate-docs-37",
-      "restate-docs-30",
+      "restate-docs-2",
+      "restate-docs-48",
+      "restate-docs-60",
       "restate-comm-9"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a backend developer, a workflow interrupted by a process crash, deploy, or infrastructure failure resumes from its last completed step with state intact",
+      "citations": [
+        {
+          "evidenceId": "restate-docs-1",
+          "quote": "Code automatically stores completed steps and resumes from where it left off when recovering from failures."
+        },
+        {
+          "evidenceId": "restate-docs-18",
+          "quote": "Use `ctx.run` to safely wrap any non-deterministic operation, like HTTP calls or database responses, and have Restate store its result in the execution log."
+        },
+        {
+          "evidenceId": "restate-docs-82",
+          "quote": "Automatically retry transient errors like infrastructure crashes and network failures"
+        },
+        {
+          "evidenceId": "restate-docs-24",
+          "quote": "Restate then makes sure that requests start and end on the same version, by sending any retry attempts always to the same endpoint."
+        },
+        {
+          "evidenceId": "restate-docs-48",
+          "quote": "resume when it arrives, even across restarts and infrastructure changes"
+        },
+        {
+          "evidenceId": "restate-docs-60",
+          "quote": "Conversation state survives crashes and restarts with built-in concurrency control."
+        }
+      ]
+    },
     "productId": "restate",
     "storyId": "crash-resume-checkpointing"
   }

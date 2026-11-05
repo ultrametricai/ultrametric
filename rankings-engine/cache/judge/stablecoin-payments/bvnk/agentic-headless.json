@@ -1,20 +1,46 @@
 {
-  "hash": "e191f618613bfdbb98a07a1a18be6b17b732e69327a7c0b4b6f59355f10176cf",
+  "hash": "227d82433104b91712fcc134fe642b8ac671e0710691066b8488653a940a8e47",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "BVNK is API-first. Programmatic Hawk-authenticated API keys let scripts call it non-interactively. A sandbox that mirrors production, with simulation endpoints such as POST /payment/v2/payins/simulation, supports automated testing of integrations, and mandatory idempotency suits automated pipelines. A probe also found an official CLI repo (bvnk/agent-wallet-cli), though its content is undocumented here. Missing for 10: explicit CI/headless guidance (env-var credentials, non-interactive CLI flags, CI examples), documented CLI capabilities, and independent or hands-on corroboration.",
+    "rationale": "BVNK is API-first, so it can run without a UI: API keys with Hawk signatures authenticate each request, and a sandbox with a pay-in simulation endpoint lets automated tests run without financial risk. A probe also found an official agent-wallet CLI, but the pack gives no detail on it, and nothing documents CI pipelines or non-interactive tooling. Missing for 10: explicit CI/CD usage guidance, documented CLI capabilities for headless runs, independent or hands-on corroboration of automated pipeline usage.",
     "evidenceIds": [
       "bvnk-docs-29",
-      "bvnk-docs-36",
+      "bvnk-docs-35",
       "bvnk-docs-31",
       "bvnk-docs-39",
-      "bvnk-docs-50",
-      "bvnk-docs-25",
+      "bvnk-docs-54",
       "bvnk-probe-2"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
+      "citations": [
+        {
+          "evidenceId": "bvnk-docs-29",
+          "quote": "you use your Hawk Auth ID and Secret Key to generate a signature for each API request."
+        },
+        {
+          "evidenceId": "bvnk-docs-31",
+          "quote": "The sandbox environment mirrors production but operates with test data, allowing you to build and validate your integration without financial risk."
+        },
+        {
+          "evidenceId": "bvnk-docs-39",
+          "quote": "To simulate pay-ins with different currencies and payment methods, in the sandbox environment, send the POST /payment/v2/payins/simulation"
+        },
+        {
+          "evidenceId": "bvnk-docs-54",
+          "quote": "access payment capabilities through the BVNK portal or API for your own use"
+        },
+        {
+          "evidenceId": "bvnk-probe-2",
+          "quote": "official CLI documented at https://github.com/bvnk/agent-wallet-cli"
+        }
+      ]
+    },
     "productId": "bvnk",
     "storyId": "agentic-headless"
   }

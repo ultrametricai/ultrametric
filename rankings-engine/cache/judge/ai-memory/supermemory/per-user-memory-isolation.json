@@ -1,13 +1,11 @@
 {
-  "hash": "24503764b95cc7919c9fbcbcf980a37cd6ce572519d8dfee68e07c98beedfadc",
+  "hash": "00a6a6e9947d27ed6e7ea8bdb72c62427b4a99794c7d281a0808f44cb52e5213",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "supermemory",
-    "storyId": "per-user-memory-isolation",
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Supermemory's docs describe container tags as the primary isolation mechanism and a hard namespace boundary: memories in one tag are never returned by a search scoped to another. Developers are told to scope each end-user or tenant to its own tag, and code examples pass `containerTag` on both add and search. Missing for 10: explicit documentation of per-agent or per-application scoping (the docs only show per-user/tenant tags and team spaces), and independent or hands-on corroboration that cross-tag leakage never occurs.",
+    "rationale": "Supermemory's container tags are documented as a hard namespace boundary. Memories in one tag are never returned by a search scoped to another, and both `add` and `search` take a `containerTag`. The docs explicitly recommend scoping each end-user or tenant to its own tag. Missing for 10: explicit documentation of per-agent or per-application scoping (only user/tenant examples are shown), evidence that isolation is enforced server-side beyond the client-supplied tag, and independent or hands-on corroboration that no leakage occurs.",
     "evidenceIds": [
       "supermemory-docs-4",
       "supermemory-docs-38",
@@ -16,6 +14,35 @@
       "supermemory-docs-24",
       "supermemory-docs-27",
       "supermemory-docs-36"
-    ]
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can scope memories per user, agent, or application so one tenant's memories never leak into another's retrieval",
+      "citations": [
+        {
+          "evidenceId": "supermemory-docs-4",
+          "quote": "A container tag is a hard boundary — its own namespace. Memories in one tag are never returned by a search scoped to another tag."
+        },
+        {
+          "evidenceId": "supermemory-docs-38",
+          "quote": "every memory tagged with `user_alex` lives in its own isolated space, completely separate from memories tagged `user_jordan`"
+        },
+        {
+          "evidenceId": "supermemory-docs-25",
+          "quote": "Scope each end-user (or tenant) to a container tag."
+        },
+        {
+          "evidenceId": "supermemory-docs-27",
+          "quote": "const results = await client.search({ q: \"where does Alex work?\", containerTag: \"user_123\", include: { relatedMemories: true }, });"
+        },
+        {
+          "evidenceId": "supermemory-docs-36",
+          "quote": "A space keeps a team's documents, memories, and profile context focused, so AI retrieves the right knowledge without mixing unrelated work."
+        }
+      ]
+    },
+    "productId": "supermemory",
+    "storyId": "per-user-memory-isolation"
   }
 }

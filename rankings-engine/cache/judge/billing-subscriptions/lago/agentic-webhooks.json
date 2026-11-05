@@ -1,17 +1,40 @@
 {
-  "hash": "7a7f7a4c7463a863226122b8db341ee7e6aa3bf05367e09478a382fd411abaac",
+  "hash": "e81c135ad05f6838771f55b0e8dc47eb2960c1fd5146af091fc4937648cdae3a",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Lago's first-party docs describe a dedicated webhooks feature. It covers signed payloads (HMAC among signature options), automatic retries on non-2xx responses or network errors (3 attempts), and a log for inspecting and retrying generated events. Webhook event types are also treated as part of the versioned v1 API contract. missing for 10: explicit documentation of registering an endpoint and choosing specific event types, a catalogue of available webhook events, independent or hands-on corroboration.",
+    "rationale": "Lago documents outbound webhooks. The docs cover HMAC signature verification, automatic re-delivery up to 3 times on non-2xx or network errors, a log for inspecting and retrying generated webhook events, and a versioning policy that covers new webhook event types. missing for 10: an explicit quote showing how a webhook endpoint URL is registered, an enumerated catalog of subscribable event types, and independent or hands-on corroboration.",
     "evidenceIds": [
-      "lago-docs-7",
       "lago-docs-21",
+      "lago-docs-7",
       "lago-docs-22",
       "lago-docs-8"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can subscribe to events via webhooks",
+      "citations": [
+        {
+          "evidenceId": "lago-docs-21",
+          "quote": "If you return an error (other than a 2xx's HTTP response) or if there is a network issue, the webhook will be sent again. Lago will try to send the webhook 3 times."
+        },
+        {
+          "evidenceId": "lago-docs-7",
+          "quote": "The second is `HMAC`, which features a shorter payload header and no size restrictions."
+        },
+        {
+          "evidenceId": "lago-docs-22",
+          "quote": "This allows you to take a closer look at the generated events, detect possible errors, and retry them."
+        },
+        {
+          "evidenceId": "lago-docs-8",
+          "quote": "Clients should tolerate additive changes within v1, including new response fields, enum values, endpoints, optional request fields, and webhook event types."
+        }
+      ]
+    },
     "productId": "lago",
     "storyId": "agentic-webhooks"
   }
