@@ -72,8 +72,8 @@ against `2026-11-04-v6-preview.json`.
 | 1 | ai-assistants, cloud-platforms, edge-platforms, frontend-frameworks, frontier-models, legal-ops, payroll, startup-banking, web-scraping | 4,936 | merged (PR #612) |
 | 2 | card-issuing, customer-data-platforms, docs-platforms, fraud-prevention, government-services, gpu-clouds, model-gateways, scheduling | 4,766 | merged (PR #614) |
 | 3 | ai-coding, applicant-tracking, crm, email-marketing, expense-management, incident-management, inference-providers, speech-to-text, sso-identity, terminals, vibe-coding | 4,775 | merged (PR #615) |
-| 4 | ai-support-agents, browser-agents, data-pipelines, desktop-os, device-agents, domain-registrars, equity-management, error-tracking, game-engines, infra-as-code, local-llm-runtimes, mcp-infrastructure, robotics-platforms | 4,943 | this PR |
-| 5 | agent-frameworks, agent-skills, ai-search-apis, ai-video, compliance-automation, data-warehouses, design-tools, identity-verification, marketplace-payments, mobile-payments, notes-knowledge, startup-law-firms | 4,774 | queued |
+| 4 | ai-support-agents, browser-agents, data-pipelines, desktop-os, device-agents, domain-registrars, equity-management, error-tracking, game-engines, infra-as-code, local-llm-runtimes, mcp-infrastructure, robotics-platforms | 4,943 | merged (PR #616) |
+| 5 | agent-frameworks, agent-skills, ai-search-apis, ai-video, compliance-automation, data-warehouses, design-tools, identity-verification, marketplace-payments, mobile-payments, notes-knowledge, startup-law-firms | 4,774 | this PR |
 | 6 | ai-memory, billing-subscriptions, cloud-storage, compliance-screening, durable-workflows, ecommerce-platforms, email-apis, fp-a, gpus, payments, self-hosted-assistants, stablecoin-payments, voice-agents | 4,941 | queued |
 | 7 | agent-sandboxes, banking-as-a-service, banking-data-apis, llm-evals-observability, meeting-ai, product-feedback, screen-sharing, security-keys, security-scanners, serverless-databases, software-factory, tax-automation | 4,778 | queued |
 | 8 | ai-research-agents, auth-platforms, authenticator-apps, code-hosting, document-extraction, email, mobile-dev, observability, project-management, search-infra, vector-databases, virtual-mailboxes, workflow-automation | 4,911 | queued |
@@ -276,3 +276,55 @@ the fleet-wide tightening.
 
 Spend: about $62 batched plus correction rounds (one to three resume runs per arena).
 Wave total about $75; cumulative about $305.
+
+## Wave 5 (2026-11-05)
+
+4,774 cells re-judged across the twelve arenas. 992 verdict flips: 892 down, 27 up, 73
+lateral relabels, plus 571 quality-only moves (net -288). Fleet transition profile:
+
+`full→partial` 485 · `partial→none` 404 · `na→none` 53 · `none→na` 18 ·
+`none→partial` 17 · `partial→full` 7 · other 8
+
+| arena | cells | flips | down / up / lateral | quality-only (net) |
+|---|---|---|---|---|
+| agent-frameworks | 459 | 168 | 161 / 2 / 5 | 67 (-43) |
+| agent-skills | 520 | 104 | 79 / 4 / 21 | 56 (-38) |
+| ai-search-apis | 250 | 57 | 55 / 1 / 1 | 23 (-6) |
+| ai-video | 408 | 56 | 44 / 10 / 2 | 45 (-2) |
+| compliance-automation | 324 | 71 | 71 / 0 / 0 | 56 (-44) |
+| data-warehouses | 270 | 52 | 48 / 4 / 0 | 53 (0) |
+| design-tools | 424 | 87 | 85 / 1 / 1 | 66 (-48) |
+| identity-verification | 371 | 70 | 66 / 2 / 2 | 39 (-31) |
+| marketplace-payments | 318 | 63 | 63 / 0 / 0 | 46 (-26) |
+| mobile-payments | 260 | 54 | 54 / 0 / 0 | 37 (-27) |
+| notes-knowledge | 330 | 46 | 44 / 2 / 0 | 37 (-17) |
+| startup-law-firms | 840 | 164 | 122 / 1 / 41 | 46 (-6) |
+
+Notable rank moves, all pure-rubric: identity-verification re-ordered (complyadvantage
+#3 → #1, sumsub #1 → #4), mattpocock-skills #3 → #1 in agent-skills while
+logo-design-skill fell #2 → #8, canva #4 → #2 and penpot #2 → #4 in design-tools,
+runway #2 → #1 over heygen in ai-video, bird-bird #5 → #3 and fenwick #3 → #5 in
+startup-law-firms.
+
+Own-vendor and disclosed-row audits (convention item 5), all document-only, none changed
+a verdict:
+
+- **claude-agent-sdk (agent-frameworks, Anthropic row)**: 3 favorable moves re-read
+  (an llms.txt probe-backed quality bump, and two none-to-partial q3 credits whose
+  rationales state what is missing), 22 unfavorable kept, rank unchanged at #1 while its
+  absolute score fell with the fleet.
+- **anthropic-skills (agent-skills, Anthropic row)**: 1 favorable move (per-skill-
+  documentation disputed q5 to partial q6, quoting the spec's required description
+  field), 16 unfavorable kept, and the row lost #1 to mattpocock-skills under its own
+  vendor's judge.
+- **claude-design (design-tools, Anthropic row)**: 2 favorable moves (nl-design-
+  generation quality bump on first-party plus hands-on quotes; vector-editing-craft none
+  to partial q2 crediting only the documented alignment controls), 10 unfavorable kept,
+  rank unchanged at #8.
+- **ultrametric (agent-skills, Ultrametric's own row)**: zero favorable moves, 12
+  unfavorable, and its #6 to #3 rise is purely relative: the rows above it fell harder.
+- **yylo-skills (agent-skills, disclosed self-submission)**: 1 favorable quality bump
+  with the gap stated, 16 unfavorable kept, rank unchanged at #10.
+
+Spend: about $61 batched plus correction rounds (design-tools needed seven resume runs).
+Wave total about $75; cumulative about $380.
