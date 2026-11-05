@@ -1,18 +1,36 @@
 {
-  "hash": "6b66af454e8a0110c8e32763f290e7cd7deb548e2ab1b26e1004e3c472af04d7",
+  "hash": "57e4a558d013ff16925c89348f6c7701902c9ae86b5d8373553b831099217701",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "xAI documents a model versioning scheme: pinned versioned model IDs, plus `<modelname>` aliased to latest stable and `<modelname>-latest` aliased to latest. It also handles lifecycle through dated retirement guides that give advance notice, list the retired slugs, and auto-redirect them to `grok-4.3` so existing code keeps resolving. The evidence shows per-event migration guides rather than a standing written policy, and the auto-redirect means a pinned slug can silently become a different model. Missing for 10: a general deprecation policy with committed minimum notice periods, a documented API-surface versioning and compatibility policy beyond the `/v1` endpoint, and independent or hands-on corroboration of how retirements played out.",
+    "rationale": "xAI documents a model versioning scheme: pinned model IDs plus `<modelname>` (latest stable) and `<modelname>-latest` aliases. It also publishes a dated retirement guide that names the retired slugs and redirects them to `grok-4.3`, so code keeps working without changes. However, deprecation is shown only as a single event-specific migration guide, not a standing policy. missing for 10: a general written deprecation policy with guaranteed notice periods and support windows, documented API-surface versioning and compatibility guarantees beyond model slugs, independent corroboration of how retirements played out.",
     "evidenceIds": [
       "grok-supp-aliases",
       "grok-supp-deprecation",
       "grok-docs-19",
-      "grok-supp-models-endpoint",
-      "grok-docs-17"
+      "grok-supp-models-endpoint"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
+      "citations": [
+        {
+          "evidenceId": "grok-supp-aliases",
+          "quote": "`<modelname>` is aliased to the latest stable version. `<modelname>-latest` is aliased to the latest version"
+        },
+        {
+          "evidenceId": "grok-docs-19",
+          "quote": "requests to the retired model slugs above will automatically redirect to `grok-4.3`. The slugs themselves continue to resolve, so you do not need to change your code"
+        },
+        {
+          "evidenceId": "grok-supp-deprecation",
+          "quote": "Grok Model Retirement on May 15, 2026"
+        }
+      ]
+    },
     "productId": "grok",
     "storyId": "api-versioning-policy"
   }

@@ -1,17 +1,35 @@
 {
-  "hash": "aaa8c52a7182c10643aee122f5488776049ea7f50af359a93d9f21cbc70110a5",
+  "hash": "515b53847c24e94f4464ed540d635124e05555a2c9f02b4844602de75cce5d0a",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Cloudflare documents Workers as having 'no cold starts' on its global network with no servers to manage, which covers sub-second boot. For scale, the Agents runtime built on Workers/Durable Objects claims 'scaling to tens of millions of instances' and 'millions of them' that hibernate and wake on demand, and a community user describes Workers as 'very quick'. Missing for 10: a quantified boot-time figure, an explicit scale-under-load claim for plain Workers rather than Agents, and independent load-test corroboration.",
+    "rationale": "Cloudflare's docs claim Workers run with 'No cold starts', which implies near-instant boot. The scale claim ('scaling to tens of millions of instances', 'run millions of them') is made for Agents SDK instances built on Durable Objects on the Workers platform, not explicitly for plain Worker autoscaling under load. Missing for 10: explicit sub-second boot-time figures, documented autoscaling behavior for Workers under traffic spikes, and independent or hands-on corroboration of either boot latency or scale.",
     "evidenceIds": [
       "cloudflare-docs-1",
       "cloudflare-supp-agents-sdk",
-      "cloudflare-docs-32",
-      "cloudflare-comm-11"
+      "cloudflare-docs-32"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a devops-lead, I can deploy instances that boot in under a second and scale to tens of thousands under load",
+      "citations": [
+        {
+          "evidenceId": "cloudflare-docs-1",
+          "quote": "No servers to manage. No cold starts or region complexity."
+        },
+        {
+          "evidenceId": "cloudflare-supp-agents-sdk",
+          "quote": "Deploy once and Cloudflare runs your agents across its global network, scaling to tens of millions of instances."
+        },
+        {
+          "evidenceId": "cloudflare-docs-32",
+          "quote": "Agents hibernate when idle and wake on demand. You can run millions of them"
+        }
+      ]
+    },
     "productId": "cloudflare",
     "storyId": "fast-boot-scaling"
   }

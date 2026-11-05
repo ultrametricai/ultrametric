@@ -1,18 +1,40 @@
 {
-  "hash": "dfc4bdf850e2825aad0cd3a6765f14cf46504a93b1b9c79b4de2d7a383491969",
+  "hash": "b018da6f277fd8944ed8bfd09aa1e0d95f660ed90b20428467603116bba09915",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Apify's JS client docs show a single `client.actor('apify/web-scraper').call({ startUrls, maxCrawlPages })` that starts a multi-page crawl from a seed URL and waits for it to finish. The Python docs show running an Actor and retrieving its results, and Crawlee is offered as the underlying web-crawling library. missing for 10: explicit documentation of whole-site link-following/discovery (e.g. sitemap or same-domain crawling), confirmation that results come back in the same request rather than via a separate dataset fetch, independent hands-on corroboration of full-site crawls.",
+    "rationale": "Apify's JS client docs show a single `call()` to the first-party `apify/web-scraper` Actor, given start URLs and a `maxCrawlPages` crawl limit, which starts the Actor and waits for it to finish. The docs also show how to run an Actor and retrieve its results, so a multi-page crawl can be launched in one call. Retrieving the content is a separate dataset fetch, and whole-site crawl settings are not documented beyond a page cap. Missing for 10: documentation that crawling covers all pages of an entire site (link-following or scope configuration), a single request that returns page content directly, and independent or hands-on corroboration of full-site crawl results.",
     "evidenceIds": [
       "apify-docs-15",
       "apify-docs-23",
       "apify-docs-16",
-      "apify-docs-4",
-      "apify-docs-32"
+      "apify-docs-4"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can crawl an entire website and get content from all its pages with one request",
+      "citations": [
+        {
+          "evidenceId": "apify-docs-15",
+          "quote": "const run = await client.actor('apify/web-scraper').call({"
+        },
+        {
+          "evidenceId": "apify-docs-15",
+          "quote": "maxCrawlPages: 10,"
+        },
+        {
+          "evidenceId": "apify-docs-23",
+          "quote": "Starts an Actor and waits for it to finish."
+        },
+        {
+          "evidenceId": "apify-docs-16",
+          "quote": "The following example shows how to run an Actor and retrieve its results"
+        }
+      ]
+    },
     "productId": "apify",
     "storyId": "full-site-crawl"
   }

@@ -1,12 +1,35 @@
 {
-  "hash": "a933f1cf0c030bcfad38282b8feda07fcf341d9452d13af33c5fb4a8d48ddee2",
+  "hash": "959c33d7d23b5301317f59a8332bf6c0f1d3ed6052bdfb8bd62ef965097e1aff",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Documenting rate limits and concurrency caps is a fair question for a cloud platform like Vercel, but nothing in the evidence pack documents specific API rate limits or function concurrency caps. The only related item says Fluid compute 'scales concurrency', which describes scaling behavior rather than documented limits a developer could plan around.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 7,
+    "confidence": "high",
+    "rationale": "Vercel's Limits page documents hard API rate limits with a per-action table, platform caps such as concurrent deployments, and per-plan function duration and memory/CPU limits. The REST API also exposes X-RateLimit-Limit/Remaining/Reset headers, so API rate limits are well covered. Function concurrency caps, however, are not documented as a concrete limit: Fluid compute is only described as scaling concurrency. missing for 10: a documented per-function concurrency cap (max concurrent instances or invocations per plan), and independent or hands-on corroboration of the published limits.",
+    "evidenceIds": [
+      "vercel-parity-documented-rate-limits-20261103",
+      "vercel-parity-execution-time-limits-20261103",
+      "vercel-docs-19"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I know the documented rate limits and concurrency caps for APIs and functions so I can plan for scale",
+      "citations": [
+        {
+          "evidenceId": "vercel-parity-documented-rate-limits-20261103",
+          "quote": "Rate limits are hard limits that apply to the platform when performing actions that require a response from our API."
+        },
+        {
+          "evidenceId": "vercel-parity-documented-rate-limits-20261103",
+          "quote": "Rate limits are specified via response headers: X-RateLimit-Limit, X-RateLimit-Remaining, and X-RateLimit-Reset"
+        },
+        {
+          "evidenceId": "vercel-parity-execution-time-limits-20261103",
+          "quote": "Memory and CPU: 2 GB / 1 vCPU default and max [Hobby] / 2 GB / 1 vCPU default, up to 4 GB / 2 vCPU max [Pro and Enterprise]"
+        }
+      ]
+    },
     "productId": "vercel",
     "storyId": "documented-rate-limits"
   }

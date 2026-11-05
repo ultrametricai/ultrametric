@@ -1,23 +1,47 @@
 {
-  "hash": "3bd4756ef152f7d9b46b6f8d4f4957a03d5d2505697d3f0cd3aaaaac737eab89",
+  "hash": "3c2b975e0d2022f216d4bea405d9668b9ffaa0ac6008ac6843095b37b17edccd",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "svelte",
-    "storyId": "fine-grained-reactivity",
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Svelte's docs show the `$state` rune creating reactive state as plain variables that the UI reacts to. `$derived` recomputes from tracked dependencies, `$effect` re-runs when state changes, and the compiler 'surgically updates the DOM', so only dependent code updates. Missing for 10: explicit first-party documentation that only the dependent template fragments re-run (this is implied by 'surgically' and dependency tracking rather than spelled out), and independent hands-on corroboration of runes-based fine-grained updates.",
+    "rationale": "Svelte's `$state` rune declares reactive state that the UI reacts to, and `$derived` and `$effect` re-compute or re-run based on tracked dependencies. The compiler emits JavaScript that 'surgically updates the DOM', which supports the claim that only dependent code updates. missing for 10: an explicit first-party statement that only the dependent UI code re-runs (fine-grained granularity is implied by dependency tracking and surgical updates rather than spelled out), independent or hands-on corroboration of fine-grained updates.",
     "evidenceIds": [
       "svelte-docs-22",
-      "svelte-docs-23",
       "svelte-docs-6",
       "svelte-docs-7",
-      "svelte-docs-42",
-      "svelte-docs-8",
       "svelte-gh-1",
-      "svelte-docs-1",
-      "svelte-docs-12"
-    ]
+      "svelte-docs-23",
+      "svelte-docs-44"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can declare reactive state and have only the dependent UI code re-run when it changes",
+      "citations": [
+        {
+          "evidenceId": "svelte-docs-22",
+          "quote": "The `$state` rune allows you to create _reactive state_, which means that your UI _reacts_ when it changes."
+        },
+        {
+          "evidenceId": "svelte-docs-6",
+          "quote": "$derived computes reactive values based on dependencies."
+        },
+        {
+          "evidenceId": "svelte-docs-7",
+          "quote": "$effect executes functions when reactive state changes."
+        },
+        {
+          "evidenceId": "svelte-gh-1",
+          "quote": "converts them into efficient JavaScript that surgically updates the DOM."
+        },
+        {
+          "evidenceId": "svelte-docs-44",
+          "quote": "`$state.raw` creates shallow state where mutations are not tracked."
+        }
+      ]
+    },
+    "productId": "svelte",
+    "storyId": "fine-grained-reactivity"
   }
 }

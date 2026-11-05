@@ -1,20 +1,48 @@
 {
-  "hash": "17c38f9f0cb3458c2cfc049f29602bd18432dec3b90996b0f517276066725da0",
+  "hash": "ac72d3e25dcd0d4e3714945eddfca75f86d8dad79e8ef0c6a782f10a710cb1d6",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Vercel documents a public REST API that can be used through an SDK or direct HTTP requests. Access tokens authenticate it and can be scoped to an account, team or project. A live probe confirms the published OpenAPI description at vercel.com/openapi.json. Agents can find the API through llms.txt guidance, which points to the OpenAPI spec and auth docs, and through the live ai-catalog.json, which lists the REST API. Webhooks add event-driven integration. Missing for 10: independent or hands-on corroboration of actually driving operations through the API (the probes only confirm the spec exists), and detail on endpoint coverage or rate limits in the pack.",
+    "rationale": "Vercel documents a public REST API at api.vercel.com with versioned endpoints, token authentication, rate-limit headers and an SDK. A live OpenAPI description confirms it, and llms.txt and the ai-catalog explicitly direct agents to read the OpenAPI spec before making REST calls. Missing for 10: independent hands-on or community corroboration of driving the product end to end through the API.",
     "evidenceIds": [
       "vercel-docs-45",
       "vercel-docs-43",
-      "vercel-supp-scoped-tokens",
       "vercel-probe-3",
+      "vercel-parity-api-versioning-policy-20261103",
       "vercel-supp-llms-agent-guidance",
+      "vercel-parity-documented-rate-limits-20261103",
       "vercel-probe-6",
-      "vercel-supp-webhooks"
+      "vercel-supp-scoped-tokens"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can drive the product through a documented public API",
+      "citations": [
+        {
+          "evidenceId": "vercel-docs-45",
+          "quote": "Interact programmatically with your Vercel account using the SDK or direct HTTP requests."
+        },
+        {
+          "evidenceId": "vercel-docs-43",
+          "quote": "Vercel access tokens authenticate requests to the Vercel REST API and the Vercel CLI on your behalf."
+        },
+        {
+          "evidenceId": "vercel-parity-api-versioning-policy-20261103",
+          "quote": "All endpoints live under the URL https://api.vercel.com and follow the REST architecture."
+        },
+        {
+          "evidenceId": "vercel-probe-3",
+          "quote": "PROBE openapi: HTTP 200 at https://vercel.com/openapi.json — contains \"openapi\" key"
+        },
+        {
+          "evidenceId": "vercel-supp-llms-agent-guidance",
+          "quote": "For REST API calls, read the OpenAPI description and authentication documentation before choosing an operation."
+        }
+      ]
+    },
     "productId": "vercel",
     "storyId": "agentic-public-api"
   }

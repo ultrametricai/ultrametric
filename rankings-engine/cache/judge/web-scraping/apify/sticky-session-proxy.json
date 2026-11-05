@@ -1,16 +1,35 @@
 {
-  "hash": "8c7e30a18d17f6172118bfca527a3a5228bee0dc7576c50cdccd2435804e2b23",
+  "hash": "bacc44571e5d3599d23b1440020122b7ceb950c8256ea90df5fa0e550534a57d",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 6,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Apify's SDK documents a SessionPool class that manages proxy IP rotation together with cookies and other per-session settings. That implies each session keeps a consistent identity (IP plus cookies) across its requests. Proxy management docs confirm that Apify Proxy or custom proxies can be used underneath. Missing for 10: an explicit description of passing a session identifier to pin requests to the same proxy IP, details on sticky-session duration and limits, and independent or hands-on corroboration.",
+    "rationale": "Apify's SDK documents a SessionPool class that manages proxy IP rotation together with cookies and other session settings, and Apify Proxy is a first-party proxy service. Together these indicate session-bound proxy identity, but no item explicitly says a session identifier pins multiple requests to the same IP. missing for 10: explicit documentation of a session ID parameter that keeps the same proxy IP across requests, details on session lifetime and stickiness guarantees, independent or hands-on corroboration.",
     "evidenceIds": [
       "apify-docs-31",
       "apify-docs-34",
       "apify-docs-8"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can route multiple requests through the same proxy IP using a session identifier to maintain a consistent identity",
+      "citations": [
+        {
+          "evidenceId": "apify-docs-31",
+          "quote": "SessionPool is a class that allows you to handle the rotation of proxy IP addresses along with cookies and other custom settings in Apify SDK."
+        },
+        {
+          "evidenceId": "apify-docs-34",
+          "quote": "you can rely on Apify Proxy for your scraping needs."
+        },
+        {
+          "evidenceId": "apify-docs-8",
+          "quote": "Avoid blocking by smartly rotating datacenter and residential IP addresses."
+        }
+      ]
+    },
     "productId": "apify",
     "storyId": "sticky-session-proxy"
   }

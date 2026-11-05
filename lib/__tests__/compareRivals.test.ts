@@ -44,9 +44,11 @@ function arena(
   }
 }
 
-// ---- real data: startup-banking (leaderboard ramp, mercury, airwallex, brex, jeeves, wise,
-// relay, gusto; battle mercury-vs-ramp stored as a=mercury, b=ramp, record 19–30, 23 drawn —
-// re-pinned 2026-10-23 at the gusto debut, whose v5 freshness cascade re-judged the arena) ----
+// ---- real data: startup-banking (leaderboard ramp, mercury, airwallex, gusto, brex, jeeves,
+// wise, relay; battle mercury-vs-ramp stored as a=mercury, b=ramp, record 18–27, 29 drawn —
+// re-pinned 2026-11-05 at the v6 rubric-migration wave 1, which re-judged the arena and first
+// judged gusto's parity-repair evidence, moving gusto #8 → #4; see
+// docs/RUBRIC-MIGRATION-2026-11-05.md) ----
 
 const banking = loadCategory('startup-banking', path.resolve(__dirname, '../../open-rankings'))
 
@@ -60,7 +62,7 @@ describe('compareRivalsFor', () => {
     expect(rows[0].battleSlug).toBeNull()
     expect(rows[0].record).toBeNull()
     // 1 above + 3 below (edge-fill: only one product ranks above #2), in rank order.
-    expect(rows.slice(1).map((r) => r.productId)).toEqual(['ramp', 'airwallex', 'brex', 'jeeves'])
+    expect(rows.slice(1).map((r) => r.productId)).toEqual(['ramp', 'airwallex', 'gusto', 'brex'])
     expect(rows.slice(1).map((r) => r.rank)).toEqual([1, 3, 4, 5])
     expect(rows.slice(1).every((r) => !r.isSelf)).toBe(true)
   })
@@ -70,24 +72,23 @@ describe('compareRivalsFor', () => {
     expect(first[0]).toMatchObject({ productId: 'ramp', isSelf: true, rank: 1 })
     expect(first.slice(1).map((r) => r.rank)).toEqual([2, 3, 4, 5])
 
-    const last = compareRivalsFor(banking, 'gusto') // rank #8 of 8 (the scoped 2026-10-23 debut)
-    expect(last[0]).toMatchObject({ productId: 'gusto', isSelf: true, rank: 8 })
+    const last = compareRivalsFor(banking, 'relay') // rank #8 of 8 since the 2026-11-05 v6 wave
+    expect(last[0]).toMatchObject({ productId: 'relay', isSelf: true, rank: 8 })
     expect(last.slice(1).map((r) => r.rank)).toEqual([4, 5, 6, 7])
   })
 
   it('links each rival to the stored battle slug with the record oriented self-first', () => {
     // open-rankings/startup-banking/rankings.json stores the pair as a=mercury, b=ramp with
-    // record { aWins: 18, bWins: 29, draws: 25 } — assert both orientations read from it.
-    // Re-pinned 2026-10-27 (was 19/30/23): the mercury evidence-parity repair re-judge moved
-    // 14 mercury cells (fdic-insurance-sweep none → full, api-machine-spec full → disputed)
-    // and derive recomputed the stored record.
+    // record { aWins: 18, bWins: 27, draws: 29 } — assert both orientations read from it.
+    // Re-pinned 2026-11-05 (was 18/29/25): the v6 rubric-migration wave 1 re-judged the arena
+    // and derive recomputed the stored record (docs/RUBRIC-MIGRATION-2026-11-05.md).
     const fromMercury = compareRivalsFor(banking, 'mercury').find((r) => r.productId === 'ramp')!
     expect(fromMercury.battleSlug).toBe('mercury-vs-ramp')
-    expect(fromMercury.record).toEqual({ wins: 18, losses: 29, draws: 25 })
+    expect(fromMercury.record).toEqual({ wins: 18, losses: 27, draws: 29 })
 
     const fromRamp = compareRivalsFor(banking, 'ramp').find((r) => r.productId === 'mercury')!
     expect(fromRamp.battleSlug).toBe('mercury-vs-ramp') // stored (a, b) order, either direction
-    expect(fromRamp.record).toEqual({ wins: 29, losses: 18, draws: 25 })
+    expect(fromRamp.record).toEqual({ wins: 27, losses: 18, draws: 29 })
   })
 
   it('a 3-product arena yields self + 2 rivals', () => {

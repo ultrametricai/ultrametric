@@ -1,17 +1,40 @@
 {
-  "hash": "5bf0a68158770667fe42cf6f6f838a44b1beadb9a685d23cb85b244e9bd8fd6b",
+  "hash": "affbb71ed227121a28839445e11472fc98669171eddea413e5ae088f498d5fa1",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Warp documents registrable outbound webhooks: it sends an HTTPS POST to your endpoint for each subscribed event. Deliveries follow the Standard Webhooks spec, retry up to 12 times with exponential backoff, and can be verified with the TypeScript or Go SDKs, which is enough to drive downstream automations. The docs only say webhooks fire 'when data changes in Warp' and never list the specific events this story names. Missing for 10: a documented event catalog confirming payroll-processed, employee-onboarded and payment-failed events, and independent or hands-on corroboration of webhook delivery.",
+    "rationale": "Warp documents first-party outbound webhooks. It sends an HTTPS POST to a registered endpoint for each subscribed event, follows the Standard Webhooks spec for verification, retries with exponential backoff, and supports SDK-side verification. However, the evidence never lists the event catalog, so the specific payroll lifecycle events in the story are unconfirmed. Missing for 10: a documented event catalog covering payroll processed, employee onboarded and payment failed events, subscription management details, and independent or hands-on corroboration.",
     "evidenceIds": [
       "warp-payroll-docs-8",
       "warp-payroll-docs-9",
       "warp-payroll-docs-10",
       "warp-payroll-docs-3"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can subscribe to payroll lifecycle events (payroll processed, employee onboarded, payment failed) via webhooks to drive downstream automations",
+      "citations": [
+        {
+          "evidenceId": "warp-payroll-docs-8",
+          "quote": "Webhooks let your application react when data changes in Warp. Warp sends an HTTPS `POST` request to your endpoint for each event you subscribe to."
+        },
+        {
+          "evidenceId": "warp-payroll-docs-9",
+          "quote": "Warp implements the Standard Webhooks specification."
+        },
+        {
+          "evidenceId": "warp-payroll-docs-10",
+          "quote": "It makes up to 12 delivery attempts with exponential backoff starting at 30 seconds."
+        },
+        {
+          "evidenceId": "warp-payroll-docs-3",
+          "quote": "authentication, pagination, retries, error handling, and webhook verification"
+        }
+      ]
+    },
     "productId": "warp-payroll",
     "storyId": "payroll-event-webhooks"
   }

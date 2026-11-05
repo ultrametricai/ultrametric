@@ -1,13 +1,31 @@
 {
-  "hash": "0fa3a893c6e5c660ea5b32828c4f92b05e90c6b4c3f4aa24b2b61881f75fca1b",
+  "hash": "fad4de1eb7b6244ddd27cb40560393ccf8be19dc4cc71f7da2739016f848898e",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "claude",
-    "storyId": "api-sandbox",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "The evidence pack documents a sandboxed code-execution tool for running code within a session, but there is no mention of a distinct sandbox/staging environment, test API keys, or a way to validate integrations against Claude's API without affecting production usage/billing. [2026-09-30 judge-migration owner-product bias audit: reverted opus-5-5 partial q3 -> the committed sonnet-5 baseline none q0. The rationale concedes no documented test mode or sandbox environment exists for the API; the code-execution sandbox is a different mechanism (a container for running generated code, not an API test environment), and workspace separation 'by convention' is inference, not evidence ABOUT a sandbox. Anthropic-affiliation governance, README §9.]",
-    "evidenceIds": []
+    "rationale": "The API docs say you can try the API in the browser playground and use Console workspaces to separate environments, so a test workspace can be kept apart from production. That separation is thinly documented, and there is no dedicated sandbox or test mode with isolated mock data. The sandboxed code-execution container isolates code execution, not a test environment, so it is not credited. Missing for 10: a dedicated sandbox or test mode with isolated non-production data, in-depth docs on workspace-based environment isolation, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "claude-parity-api-sandbox-20261103",
+      "claude-parity-api-interactive-docs-20261103"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
+      "citations": [
+        {
+          "evidenceId": "claude-parity-api-sandbox-20261103",
+          "quote": "Use workspaces in the Console to separate environments and control spend by use case."
+        },
+        {
+          "evidenceId": "claude-parity-api-interactive-docs-20261103",
+          "quote": "In the Console, you can use playground (platform.claude.com/playground) to try out the API in the browser and then generate API keys on the API keys page"
+        }
+      ]
+    },
+    "productId": "claude",
+    "storyId": "api-sandbox"
   }
 }

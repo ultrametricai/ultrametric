@@ -232,8 +232,13 @@ itself. Questions cannot establish an affirmative claim. Extraction verifies its
 against the fetched source. These checks enforce the response contract, not semantic truth;
 independent review still checks whether a quotation actually entails the named capability.
 The new prompt version invalidates older judge caches on the next scoped judge run. This
-source change does not rewrite the published corpus or authorize a bulk re-judge. Review
-legacy same-source transitions and the rubric migration before resuming scheduled runs.
+source change does not rewrite the published corpus or authorize a bulk re-judge. The
+review that gated scheduled runs is complete: the rubric-migration preview and the legacy
+same-source transitions audit are published in `reports/rubric-migration/`, and the
+maintainer ratified the v6 rubric migration after that two-part review. The published
+corpus migrates to v6 in labeled waves per docs/RUBRIC-MIGRATION-2026-11-05.md; an arena
+not yet migrated still carries its prior-version verdicts until its wave or its next
+labeled judge touch.
 
 ### Scoped judge verification
 

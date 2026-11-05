@@ -1,19 +1,47 @@
 {
-  "hash": "044f314aa98f464ee1266d9c854693f471c90676abb138a2d4e27d56b4f73958",
+  "hash": "4e78f77140bc61b3f8ec08a3d2b1e547b13cb2f50eecf8ff45a34153f9d67ef0",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
-    "confidence": "high",
-    "rationale": "Gusto Embedded documents registrable outbound webhooks. Developers create a subscription for chosen subscription_types, verify it with a verification_token, and receive HMAC-signed event payloads. A health-check endpoint covers the webhooks system, and a documented payroll.paid event fires when payroll is paid out, so downstream automation on payroll lifecycle is clearly supported. missing for 10: evidence of employee-onboarded and payment-failed event types, a fuller event catalog, retry/delivery semantics, independent or hands-on corroboration.",
+    "verdict": "partial",
+    "quality": 6,
+    "confidence": "medium",
+    "rationale": "Gusto Embedded documents registrable webhooks. Developers create subscriptions for chosen subscription_types, verify them with a verification_token, and check HMAC signatures, and a webhooks health-check endpoint exists. Of the payroll lifecycle events, only payroll.paid (payroll processed) is explicitly documented. missing for 10: documented employee-onboarded event, documented payment-failed event, full event catalog, independent/hands-on corroboration.",
     "evidenceIds": [
       "gusto-docs-5",
-      "gusto-docs-16",
-      "gusto-docs-23",
       "gusto-docs-56",
+      "gusto-docs-71",
+      "gusto-docs-23",
+      "gusto-docs-49",
       "gusto-docs-57",
-      "gusto-docs-71"
+      "gusto-parity-automation-bulk-operations-20261103"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can subscribe to payroll lifecycle events (payroll processed, employee onboarded, payment failed) via webhooks to drive downstream automations",
+      "citations": [
+        {
+          "evidenceId": "gusto-docs-56",
+          "quote": "Create a webhook subscription to receive events of the specified subscription_types whenever there is a state change."
+        },
+        {
+          "evidenceId": "gusto-docs-49",
+          "quote": "Gusto will publish this webhook event when payroll credits have been generated and payments will be made."
+        },
+        {
+          "evidenceId": "gusto-docs-71",
+          "quote": "This `verify` endpoint needs to be called with `verification_token` before webhook events can be sent to the registered webhook URL."
+        },
+        {
+          "evidenceId": "gusto-docs-23",
+          "quote": "Gusto computes a hash message authentication code (HMAC) of the event payload using the verification_token"
+        },
+        {
+          "evidenceId": "gusto-docs-5",
+          "quote": "We recommend that you integrate with Gusto's webhooks infrastructure so that your application can perform subsequent business logic after it receives a webhook event."
+        }
+      ]
+    },
     "productId": "gusto",
     "storyId": "payroll-event-webhooks"
   }

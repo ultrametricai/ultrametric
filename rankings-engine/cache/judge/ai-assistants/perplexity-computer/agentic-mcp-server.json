@@ -1,11 +1,11 @@
 {
-  "hash": "38ca52d1aebe50226eee98271dfb9254c7937f6b65f3a863024d24eef6592b9f",
+  "hash": "43db0dd4cb76ae82ac1d270e6ef6b3cf6347f8ae602cfb673ef91fe33d8be99e",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
-    "quality": 9,
+    "quality": 10,
     "confidence": "high",
-    "rationale": "Perplexity Computer is an agent, but it ships a first-party hosted MCP server, so the server axis applies. The docs give a one-line `claude mcp add` HTTP-transport setup and say any HTTP-capable MCP client can connect. They also cover OAuth via a Perplexity account, session continuation via `thread_id`, progress notifications, approvals, and `auth_required` flows. Runtime probes confirm the endpoint is live, returning a clean OAuth 401 challenge and RFC 9728 protected-resource metadata. Missing for 10: hands-on or independent confirmation of a full authenticated end-to-end task run through the MCP server, and community reports of real-world use.",
+    "rationale": "Perplexity Computer is an agent, but it ships its own first-party hosted MCP server, so the server axis applies. The docs give a concrete `claude mcp add` command and an HTTP-transport URL usable by any MCP client, and describe OAuth with a Perplexity account, thread-based sessions, progress notifications and approval/input relay tools. Independent runtime probes confirm the live endpoint returns a structured OAuth challenge and serves RFC 9728 discovery metadata.",
     "evidenceIds": [
       "perplexity-computer-docs-1",
       "perplexity-computer-docs-2",
@@ -13,12 +13,37 @@
       "perplexity-computer-docs-4",
       "perplexity-computer-docs-5",
       "perplexity-computer-docs-6",
-      "perplexity-computer-docs-9",
-      "perplexity-computer-docs-22",
       "perplexity-computer-probe-4",
       "perplexity-computer-probe-rt-1",
       "perplexity-computer-probe-rt-2"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can connect an agent via an official MCP server",
+      "citations": [
+        {
+          "evidenceId": "perplexity-computer-docs-1",
+          "quote": "your MCP client can delegate complex, multi-step work to Computer and receive structured results."
+        },
+        {
+          "evidenceId": "perplexity-computer-docs-2",
+          "quote": "claude mcp add perplexity-computer --transport http https://www.perplexity.ai/rest/computer/mcp"
+        },
+        {
+          "evidenceId": "perplexity-computer-docs-3",
+          "quote": "Any MCP client that supports the HTTP transport can connect using the server URL"
+        },
+        {
+          "evidenceId": "perplexity-computer-docs-4",
+          "quote": "The Computer MCP Server authenticates users via OAuth 2.0 using your Perplexity account. No API key is required."
+        },
+        {
+          "evidenceId": "perplexity-computer-probe-rt-1",
+          "quote": "live proof the hosted Perplexity Computer MCP server exists and enforces OAuth with a Perplexity account (no API key), exactly as the docs claim."
+        }
+      ]
+    },
     "productId": "perplexity-computer",
     "storyId": "agentic-mcp-server"
   }

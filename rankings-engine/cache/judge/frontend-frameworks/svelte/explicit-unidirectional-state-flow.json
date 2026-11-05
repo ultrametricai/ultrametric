@@ -1,22 +1,43 @@
 {
-  "hash": "b956fe648b31f1ef4ae9d9a89b9020f1eb283c4798e355f2d2fa86855e5bd17d",
+  "hash": "79a9c0046461df579780f7c3868a676c1db75ba1eaa55808f77077282b642420",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "svelte",
-    "storyId": "explicit-unidirectional-state-flow",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Svelte's runes make reactive state and its dependencies explicit: `$state` declares reactive state, `$derived`/`$derived.by` compute values from dependencies, `$effect` runs when state changes, and `$state.raw` opts out of deep tracking. A hands-on user also traced a performance problem by stepping through readable compiled component code. However, the evidence never describes one-way data flow or how Svelte limits two-way bindings, and plain variable assignment (no state API) leaves update paths less explicit. Missing for 10: documentation of unidirectional data flow and how it relates to two-way bindings, state-change tracing/inspection tooling, and independent corroboration that runes make state changes easier to trace.",
+    "rationale": "Svelte's runes give explicit reactive primitives. $state declares reactive state, $derived computes values from their dependencies, and $effect runs when reactive state changes, so the data-flow building blocks are named and declared. One community report also describes tracing a performance issue through readable compiled code. The pack says nothing about one-way prop flow, avoiding two-way bindings, or state-tracing and debugging tooling, and the reassignable-derived behaviour adds some implicitness. Missing for 10: documentation of one-way data flow and binding semantics, a state-change tracing or inspection tool, and independent corroboration that data flow is predictable to debug.",
     "evidenceIds": [
       "svelte-docs-22",
       "svelte-docs-6",
-      "svelte-docs-9",
       "svelte-docs-7",
       "svelte-docs-42",
-      "svelte-docs-8",
-      "svelte-docs-5",
+      "svelte-docs-10",
       "svelte-comm-6-refresh-bac734f092ee7d86"
-    ]
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can trace state changes through explicit, predictable data flow instead of debugging implicit two-way bindings",
+      "citations": [
+        {
+          "evidenceId": "svelte-docs-22",
+          "quote": "The `$state` rune allows you to create _reactive state_, which means that your UI _reacts_ when it changes."
+        },
+        {
+          "evidenceId": "svelte-docs-6",
+          "quote": "$derived computes reactive values based on dependencies."
+        },
+        {
+          "evidenceId": "svelte-docs-7",
+          "quote": "$effect executes functions when reactive state changes."
+        },
+        {
+          "evidenceId": "svelte-comm-6-refresh-bac734f092ee7d86",
+          "quote": "they stepped through compiled component code while profiling a layout-per-frame issue and traced it to their own function"
+        }
+      ]
+    },
+    "productId": "svelte",
+    "storyId": "explicit-unidirectional-state-flow"
   }
 }

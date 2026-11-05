@@ -1,16 +1,30 @@
 {
-  "hash": "503d03b1dfcfb6212aa396ac5cd50f43a31a8e0da0fa057aca1c5cbfe6bb4246",
+  "hash": "1345ba0bbe33bb66be27c5ab07930adf830316351a32c746ffcec16b51542728",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 4,
+    "quality": 3,
     "confidence": "low",
-    "rationale": "Probes show jo publicly serves an OpenAPI 3.1 spec of its backend, with about 405 paths covering auth, users and Apple Messages, plus Swagger UI at /docs. That suggests the app's functionality is exposed over HTTP. However, the spec appears to be the internal app/bridge API: no developer program, public API keys or documented API–UI parity is offered. The llms.txt describes the conversational surfaces (macOS, Telegram, WhatsApp, email) rather than a supported programmatic API. Missing for 10: a documented public API with key-based access, an explicit parity guarantee between API and UI, developer docs mapping UI features to endpoints, and independent or hands-on confirmation of usable API access.",
+    "rationale": "A keyless probe found jo's own backend OpenAPI 3.1 spec, with about 405 paths covering auth, users and apple-messages, so a machine-readable API behind the app does exist. However, nothing documents it as a public developer API or shows it matches what the UI and chat surfaces can do. Missing for 10: documented UI-to-API parity, public API keys or a developer program, documentation of agent actions (briefings, schedules, integrations) through the API, and hands-on confirmation of programmatic use.",
     "evidenceIds": [
-      "jo-probe-2",
       "jo-probe-rt-2",
-      "jo-probe-rt-1"
+      "jo-probe-2"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can do everything through the API that I can do in the UI",
+      "citations": [
+        {
+          "evidenceId": "jo-probe-rt-2",
+          "quote": "returned the backend's OpenAPI 3.1 spec ('\"openapi\":\"3.1.0\"', FastAPI, ~405 paths incl. /v1/auth/*, /v1/users/*, /v1/apple-messages/*) with the Swagger UI served at /docs"
+        },
+        {
+          "evidenceId": "jo-probe-2",
+          "quote": "PROBE openapi: HTTP 200 at https://askjo.ai/openapi.json — contains \"openapi\" key"
+        }
+      ]
+    },
     "productId": "jo",
     "storyId": "openness-api-parity"
   }

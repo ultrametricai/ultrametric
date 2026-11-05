@@ -1,21 +1,41 @@
 {
-  "hash": "2edca671a600164b1832eca1666f7dae2148e36013d97d0310eda9c333537c9b",
+  "hash": "99416c5eee6695390083ea572057fc7aacece4a02be504557645c3376b80cf17",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Netlify documents first-party, low-boilerplate access to storage via `getStore(\"file-uploads\")` with no credential wiring, managed Postgres through Netlify Database, and \"instant databases and file storage.\" AI Gateway connects to models without managing API keys, and team-scoped secrets/env vars plus directory integrations (Turso, Supabase) cover third-party services. missing for 10: detailed docs showing how databases bind to code without connection strings or credentials, evidence that arbitrary third-party APIs get native bindings rather than env-var/SDK wiring, independent or hands-on corroboration.",
+    "rationale": "Netlify documents first-party, low-boilerplate access to its own data services. Blob storage is reached through a one-line `getStore(\"file-uploads\")` call, \"instant databases and file storage\" and managed Postgres (Netlify Database) are offered, and AI models can be called through AI Gateway \"without managing API keys\". How code connects to the database, and whether credentials are injected for it, is never shown, and third-party services (Turso, Supabase) appear only as directory listings and starters, not native bindings. Missing for 10: documented credential-free database binding usage, native bindings for arbitrary external APIs/third-party services, independent or hands-on corroboration.",
     "evidenceIds": [
       "netlify-docs-12",
       "netlify-docs-13",
       "netlify-docs-23",
       "netlify-docs-24",
-      "netlify-docs-7",
-      "netlify-docs-8",
-      "netlify-intdir-5",
-      "netlify-intdir-12"
+      "netlify-docs-7"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can connect my code to external services like databases, APIs, and storage through native bindings with minimal boilerplate instead of hand-wiring SDKs and credentials",
+      "citations": [
+        {
+          "evidenceId": "netlify-docs-12",
+          "quote": "const uploads = getStore(\"file-uploads\");"
+        },
+        {
+          "evidenceId": "netlify-docs-23",
+          "quote": "Add instant databases and file storage"
+        },
+        {
+          "evidenceId": "netlify-docs-13",
+          "quote": "Deploy and safely iterate on managed Postgres with **Netlify Database**"
+        },
+        {
+          "evidenceId": "netlify-docs-24",
+          "quote": "Connect to popular AI models within your project code and connect to them seamlessly without managing API keys."
+        }
+      ]
+    },
     "productId": "netlify",
     "storyId": "external-service-bindings"
   }

@@ -1,21 +1,43 @@
 {
-  "hash": "13547358b6476fc6946450c5ab6ea575e4add4e7235d12f4b645535e0593e998",
+  "hash": "f9b640b0b1bafca39c31806913aec8a0990bd991fdc3f77b2952f4a8a543b641",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Crawl4AI is API-first: its core capabilities are exposed programmatically through the Python `AsyncWebCrawler.arun` API, a Dockerized FastAPI server, an official CLI and an official MCP server. Its only UI surfaces are an interactive playground that itself generates request code and a monitoring dashboard, so the UI largely mirrors the API. Missing for 10: an explicit API/UI parity statement, evidence that monitoring-dashboard metrics are exposed via the API, a published OpenAPI spec (the openapi probes returned 404), and independent hands-on corroboration.",
+    "rationale": "Crawl4AI is API-first. Its core capabilities (crawling, deep crawl, extraction, sessions, browser control) are exposed through the Python `arun` API, the `crwl` CLI and a Dockerized FastAPI server. Its UI surfaces are thin: the interactive playground explicitly generates request code, which shows UI actions map to API calls. However, nothing shows that the real-time monitoring dashboard's metrics and browser-pool views are available programmatically, and the OpenAPI probes all returned 404, so no published API spec confirms parity. Missing for 10: an explicit API-parity statement, API access to the monitoring dashboard data, a published OpenAPI spec, independent corroboration.",
     "evidenceIds": [
       "crawl4ai-docs-1",
       "crawl4ai-gh-5",
       "crawl4ai-gh-26",
       "crawl4ai-gh-6",
-      "crawl4ai-probe-3",
-      "crawl4ai-probe-4",
       "crawl4ai-probe-2",
-      "crawl4ai-gh-27"
+      "crawl4ai-probe-4",
+      "crawl4ai-docs-6"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can do everything through the API that I can do in the UI",
+      "citations": [
+        {
+          "evidenceId": "crawl4ai-gh-26",
+          "quote": "Interactive playground to test and generate request code"
+        },
+        {
+          "evidenceId": "crawl4ai-gh-5",
+          "quote": "Dockerized Setup: Optimized Docker image with FastAPI server for easy deployment."
+        },
+        {
+          "evidenceId": "crawl4ai-docs-1",
+          "quote": "async with AsyncWebCrawler() as crawler: result = await crawler.arun(url=\"https://crawl4ai.com\") print(result.markdown)"
+        },
+        {
+          "evidenceId": "crawl4ai-docs-6",
+          "quote": "Advanced Browser Control: Hooks, proxies, stealth modes, session re-use—fine-grained control."
+        }
+      ]
+    },
     "productId": "crawl4ai",
     "storyId": "openness-api-parity"
   }

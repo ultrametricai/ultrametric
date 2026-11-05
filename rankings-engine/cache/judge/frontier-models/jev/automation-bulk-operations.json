@@ -1,20 +1,41 @@
 {
-  "hash": "4efc48b31ff77b1a3383edfb065b9905b564779f273a5a1bcafa8231085de7e2",
+  "hash": "4ad1d351e80cfdd0fb7937869df8720e93422efed469d84018be3ba9d979b239",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "The docs show batching many typed questions into a single TypeSafe call. The parallel-questions cookbook claims this is 12.2x cheaper and 10.0x faster, the fan-out pattern sends many questions per call, and one guardrails request screens every message. An AsyncTypeSafeClient and published rate limits support high-volume concurrent requests. However, batching is per-request (many questions against one state), not a dedicated bulk job over many items. missing for 10: a documented batch/bulk endpoint for processing many separate items/states in one job, explicit guidance on bulk throughput across large item sets, independent hands-on corroboration of bulk usage.",
+    "rationale": "Jev documents sending many questions in a single API call (fan-out and parallel-question batching, claimed 12.2x cheaper and 10x faster), and a guardrails cookbook screens every message with one request, so multi-item evaluation per call is a first-party capability. Bulk is bounded by a 64k-token per-request budget, and there is no documented batch or job API for processing many separate states or items at once. Missing for 10: a dedicated bulk/batch endpoint across many states, documented item-count limits, and independent hands-on corroboration of bulk usage.",
     "evidenceIds": [
-      "jev-docs-6",
       "jev-docs-11",
-      "jev-docs-22",
+      "jev-docs-6",
       "jev-docs-17",
-      "jev-docs-5",
-      "jev-docs-40",
-      "jev-supp-rate-limits"
+      "jev-docs-22",
+      "jev-supp-context"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can perform bulk operations across many items at once",
+      "citations": [
+        {
+          "evidenceId": "jev-docs-11",
+          "quote": "Send many questions in a single call, including speculative ones, and let your code decide what's relevant."
+        },
+        {
+          "evidenceId": "jev-docs-6",
+          "quote": "batching every question into one TypeSafe call is 12.2x cheaper and 10.0x faster with no change in answers"
+        },
+        {
+          "evidenceId": "jev-docs-17",
+          "quote": "Screen every message going into and out of an LLM app with one TypeSafe request"
+        },
+        {
+          "evidenceId": "jev-supp-context",
+          "quote": "the 64k budget covers the `state` plus all questions combined"
+        }
+      ]
+    },
     "productId": "jev",
     "storyId": "automation-bulk-operations"
   }

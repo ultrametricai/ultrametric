@@ -1,17 +1,35 @@
 {
-  "hash": "a48132b835786d9bdefdc5f55fe263318e6293a29970cb1438b643320aa31572",
+  "hash": "b544c87f27c719c995f49e105864c9a352f01c053313c5d9eb7de64d600a23f7",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "The evidence shows Vercel runs on-demand server-side code through Fluid compute [vercel-docs-19] and production workloads in isolated containers [vercel-docs-12]. Community comments describe Vercel as a 'nodejs as a service' provider [vercel-comm-10] that supports JS/TS/Go [vercel-comm-14]. Nothing explicitly says the functions run unmodified Node.js with full npm package compatibility rather than a restricted runtime subset. Missing for 10: explicit documentation of a full Node.js runtime in functions, npm package and native-module compatibility details, a comparison of edge versus serverless runtime restrictions, and independent hands-on corroboration.",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Vercel's Container Runtime docs say you can \"Run any code and library on Vercel Functions\" from a Dockerfile-built OCI image. The WebSockets docs show npm libraries like ws working \"with no additional configuration.\" Together these indicate serverless functions are not limited to a restricted runtime subset. Missing for 10: an explicit statement of full Node.js API compatibility for the standard functions runtime, evidence about edge/middleware runtime compatibility, and independent hands-on corroboration.",
     "evidenceIds": [
-      "vercel-docs-19",
-      "vercel-docs-12",
-      "vercel-comm-10",
-      "vercel-comm-14"
+      "vercel-parity-docker-deploy-20261103",
+      "vercel-parity-standards-based-runtime-portability-20261103",
+      "vercel-docs-19"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can run unmodified Node.js code and npm packages in edge/serverless functions instead of a restricted runtime subset",
+      "citations": [
+        {
+          "evidenceId": "vercel-parity-docker-deploy-20261103",
+          "quote": "Run any code and library on Vercel Functions with an OCI container image built from a Dockerfile or Containerfile at the project root."
+        },
+        {
+          "evidenceId": "vercel-parity-standards-based-runtime-portability-20261103",
+          "quote": "WebSockets in Vercel Functions work exactly like any distributed WebSocket server, so you can use libraries like ws to upgrade connections with no additional configuration"
+        },
+        {
+          "evidenceId": "vercel-docs-19",
+          "quote": "Run server-side code on demand with Fluid compute, which scales concurrency for AI and I/O-heavy workloads."
+        }
+      ]
+    },
     "productId": "vercel",
     "storyId": "full-nodejs-runtime-support"
   }

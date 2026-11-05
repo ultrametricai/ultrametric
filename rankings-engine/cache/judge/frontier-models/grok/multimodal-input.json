@@ -1,19 +1,40 @@
 {
-  "hash": "74bc58367083651e083a61bbf881a8b9ba958aff97b5b58d18334d1957386e3f",
+  "hash": "306f1e09bc16ee5c14d78736b28491fbdeba3077b677ec8cd0e35e4f177e94a2",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 8,
-    "confidence": "high",
-    "rationale": "The docs clearly scope multimodal input. The grok-4.7 model card lists modalities as \"text, image → text\", and the image-understanding docs say \"Some models allow images in the input\". Documents can be attached to chat messages and searched via attachment_search. Audio is handled through dedicated speech-to-text models supporting 12 formats, plus image and video inputs for the generation and editing endpoints. Missing for 10: audio input goes to a separate transcription model rather than directly to the chat model; no detail on image input limits (formats, size); no independent or hands-on corroboration.",
+    "confidence": "medium",
+    "rationale": "Grok's docs show the model accepts image input: image understanding is documented, and the grok-4.7 spec card scopes modalities as \"text, image → text\". Documents can be attached to chat messages and searched via attachment_search, and audio is handled through a separate speech-to-text API. Because the spec card honestly states the model's input modalities, the story's 'or honestly scoped' clause is met. Missing for 10: native audio input to the chat model itself (audio goes only through the separate STT endpoint), documented image input limits such as formats and sizes, and independent hands-on corroboration of multimodal input.",
     "evidenceIds": [
-      "grok-supp-model-page",
       "grok-docs-7",
+      "grok-supp-model-page",
       "grok-docs-26",
-      "grok-docs-37",
-      "grok-docs-29",
-      "grok-docs-4"
+      "grok-docs-37"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can send images, audio, or documents to the model — or the docs honestly scope the model to text-only input",
+      "citations": [
+        {
+          "evidenceId": "grok-docs-7",
+          "quote": "Some models allow images in the input. The model will consider the image context when generating the response."
+        },
+        {
+          "evidenceId": "grok-supp-model-page",
+          "quote": "text, image → text"
+        },
+        {
+          "evidenceId": "grok-docs-26",
+          "quote": "Grok can search through and reason over documents you attach to chat messages"
+        },
+        {
+          "evidenceId": "grok-docs-37",
+          "quote": "Transcribe audio files into text with a single API call, or stream audio in real time over WebSocket."
+        }
+      ]
+    },
     "productId": "grok",
     "storyId": "multimodal-input"
   }

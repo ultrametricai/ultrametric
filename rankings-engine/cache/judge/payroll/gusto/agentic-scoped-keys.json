@@ -1,16 +1,29 @@
 {
-  "hash": "2ac166fcad53e560cdecc15b1903f1af07eb7db077bc66d0138f68a23493da95",
+  "hash": "ce529c246647e2bb4c9f176bf74435a8dca1acd60c7bd7e836b1235772d339fd",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Gusto's official remote MCP server (mcp.api.gusto.com) uses an OAuth2 connection that lets the user choose which categories of data the connected LLM can access, described as scoped, least-privilege access per connection. This is supplemented by distinct system-level access tokens in the API auth docs and separate sandbox/production credential slots in the agent-friendly CLI. missing for 10: a detailed list of scopes or permission granularity (e.g., read vs. write), credential revocation/expiry controls, and independent or hands-on corroboration of the scoping behavior.",
+    "rationale": "Gusto's official remote MCP server uses an OAuth2 connection flow that lets the user choose which categories of data the connected LLM can access, which is a product-native way to grant an agent scoped, least-privilege access. The evidence for this is a single docs summary, and scoping is limited to per-connection data categories rather than documented fine-grained credential issuance. missing for 10: documented granular scope definitions such as read-only versus write or per-endpoint permissions, credential lifecycle controls like revocation, expiry and rotation for agent connections, scoped token issuance outside the MCP connection flow, and independent or hands-on corroboration.",
     "evidenceIds": [
-      "gusto-contest-52-1",
-      "gusto-docs-70",
-      "gusto-contest-61-6"
+      "gusto-contest-52-1"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
+      "citations": [
+        {
+          "evidenceId": "gusto-contest-52-1",
+          "quote": "Our MCP server provides an OAuth2 based connection process and allows you to select the categories of data to which your chosen LLM will have access."
+        },
+        {
+          "evidenceId": "gusto-contest-52-1",
+          "quote": "scoped, least-privilege access per connection."
+        }
+      ]
+    },
     "productId": "gusto",
     "storyId": "agentic-scoped-keys"
   }

@@ -1,16 +1,30 @@
 {
-  "hash": "49bdedcd2d3ba96b426e973ef99f5ded5b9ce5d6b5d42c6bad3a8974f8a8e42d",
+  "hash": "b4a5d7fdf6aa3fcee24c56e1cadf8191dc1f952705a149a044f2715e2e6506b1",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
-    "quality": 8,
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "The GitHub README documents an `x-respond-timing` header that gives explicit control over when Reader returns, framed directly as trading latency against completeness. Supporting knobs include `x-wait-for-selector`, which waits for a specific element, and `x-engine`, which chooses between full headless browser and lightweight curl fetching. Missing for 10: the specific timing modes and their behavior are not documented in the evidence, and there is no independent or hands-on corroboration that the timing control works as described.",
+    "rationale": "Reader documents a dedicated `x-respond-timing` header for explicit control over when it returns, framed as a latency-versus-completeness trade-off. `x-wait-for-selector` adds element-level control over when the page is considered ready. missing for 10: documentation of the specific timing modes or values and their behavior, independent or hands-on corroboration that the timing control works as described.",
     "evidenceIds": [
       "jina-reader-gh-7",
-      "jina-reader-gh-21",
-      "jina-reader-gh-16"
+      "jina-reader-gh-21"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can trade off latency against completeness by controlling exactly when content is returned",
+      "citations": [
+        {
+          "evidenceId": "jina-reader-gh-7",
+          "quote": "`x-respond-timing` — explicit control over *when* Reader is willing to return. Trade off latency against completeness"
+        },
+        {
+          "evidenceId": "jina-reader-gh-21",
+          "quote": "curl 'https://r.jina.ai/https://example.com/' -H 'x-wait-for-selector: #content'"
+        }
+      ]
+    },
     "productId": "jina-reader",
     "storyId": "latency-completeness-tradeoff"
   }

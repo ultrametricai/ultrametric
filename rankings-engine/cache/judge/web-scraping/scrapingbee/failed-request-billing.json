@@ -1,17 +1,31 @@
 {
-  "hash": "c3bd6c0ddbecfa326b44a7d47d27e9a0259663c05cdd54523f4adb40306b5773",
+  "hash": "3b836eb6a62bfb90f4bf59c093a0c36a15f803421afcc880db66457df60123a4",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "The docs state that `mode=auto` charges only the configuration that succeeds and that a total failure costs 0. The Usage API lets a developer read real-time credit consumption to verify charges. However, the evidence only covers failure billing for auto mode; proxy mode simply defers to the normal HTML API's 'request cost, return codes' without stating them. Missing for 10: an explicit billing policy for failed or errored requests outside auto mode, rules for blocked (e.g. 403/CAPTCHA) and empty-result responses, a status-code-to-credit mapping, and independent corroboration.",
+    "rationale": "ScrapingBee's own docs state that in auto mode escalation it \"charges only the configuration that succeeds; a total failure costs 0,\" which tells developers how failures are billed in that mode. The pack does not document billing for failed, blocked, or empty-result requests on the standard HTML API or other endpoints. The usage API shows credit consumption but does not explain the billing rules. Missing for 10: a general billing policy for failed/blocked requests outside auto mode, treatment of empty-result or non-2xx responses, a per-status-code credit table, and independent corroboration.",
     "evidenceIds": [
       "scrapingbee-docs-18",
       "scrapingbee-docs-14",
-      "scrapingbee-docs-23",
-      "scrapingbee-docs-29"
+      "scrapingbee-docs-23"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I know whether failed, blocked, or empty-result requests still consume my billing quota",
+      "citations": [
+        {
+          "evidenceId": "scrapingbee-docs-18",
+          "quote": "Charges only the configuration that succeeds; a total failure costs 0."
+        },
+        {
+          "evidenceId": "scrapingbee-docs-14",
+          "quote": "Let ScrapingBee pick the cheapest configuration that succeeds. Only value is auto"
+        }
+      ]
+    },
     "productId": "scrapingbee",
     "storyId": "failed-request-billing"
   }

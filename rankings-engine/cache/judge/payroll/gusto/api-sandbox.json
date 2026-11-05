@@ -1,16 +1,30 @@
 {
-  "hash": "d6ec7ab111197407d8138b9bdefdb6172f96ff20ae525215ac3db0e09cccf805",
+  "hash": "f101b984b1087be8d53f122d5e7bd2af5deb2c860903ed6b207135c33b00b9d3",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Gusto has a separate sandbox environment at api.gusto-demo.com, distinct from production at api.gusto.com. The first-party CLI gives each environment its own credential slot via `--env sandbox` versus `--env production`. Demo companies are auto-generated with company info, employees and past payrolls so testing can start without real data. Missing for 10: a dedicated sandbox guide in the pack (account provisioning, data reset/seeding, behavioral differences from production), explicit coverage of sandbox for the Embedded Payroll API beyond the CLI, and independent or hands-on corroboration.",
+    "rationale": "Gusto documents a separate sandbox environment. The CLI's `--env sandbox` targets api.gusto-demo.com with its own credential slot, separate from production api.gusto.com, and demo companies are auto-generated with employees and past payrolls so testing can start right away. Coverage is still partial: the separation is shown through the CLI's per-environment configuration and integration-partner docs, not a dedicated sandbox guide stating isolation guarantees. The CLI's `--dry-run` is only a request preview, not sandbox isolation, so it earns no credit here. missing for 10: dedicated first-party sandbox environment docs for the Embedded Payroll API with explicit production-data isolation guarantees, documented sandbox limitations/behavior (e.g., simulated money movement), independent or hands-on corroboration of sandbox use.",
     "evidenceIds": [
       "gusto-contest-61-6",
-      "gusto-docs-13",
-      "gusto-contest-61-1"
+      "gusto-docs-13"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
+      "citations": [
+        {
+          "evidenceId": "gusto-contest-61-6",
+          "quote": "Per-environment credential slots: --env production (api.gusto.com) vs --env sandbox (api.gusto-demo.com), each with its own slot in credentials.toml"
+        },
+        {
+          "evidenceId": "gusto-docs-13",
+          "quote": "Demo companies are automatically generated with company info, employees, and previous payrolls so you can begin testing right away."
+        }
+      ]
+    },
     "productId": "gusto",
     "storyId": "api-sandbox"
   }

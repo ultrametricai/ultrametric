@@ -1,21 +1,43 @@
 {
-  "hash": "6ce6a1367e69cbc19f4c09afd3492bfa62ca5e35432643d2e4c29569236e6a2d",
+  "hash": "982b7560c30872a1b25811e3335418525bf1453eebc7be75d8f12774f68e7b78",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "react",
-    "storyId": "compiler-driven-updates",
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "React ships its own build-time React Compiler, which automatically optimizes components and removes the need for manual useMemo, useCallback and React.memo. It can be adopted incrementally and safely skips code that breaks the Rules of React. Separately, React's runtime updates the screen to match new data, so developers never write diffing code. However, the evidence shows the compiler only automates memoization on top of runtime reconciliation; nothing shows it compiles components into surgical, fine-grained DOM operations. Missing for 10: evidence the compiler emits direct/surgical DOM updates rather than memoized re-renders, independent or hands-on corroboration of performance gains.",
+    "rationale": "React ships its own React Compiler, which optimizes components at build time and removes the need for manual memoization. React also updates the screen to match new data, so developers don't write diffing code themselves. However, the evidence never says the compiler emits surgical, fine-grained DOM updates: it handles memoization, while DOM updates still go through React's runtime reconciliation. Missing for 10: evidence of compiler output targeting direct or surgical DOM updates, independent or hands-on corroboration of the compiler's real-world efficiency.",
     "evidenceIds": [
       "react-docs-15",
       "react-docs-36",
       "react-docs-37",
-      "react-docs-16",
-      "react-docs-17",
+      "react-docs-3",
       "react-docs-43",
-      "react-docs-3"
-    ]
+      "react-docs-16"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can rely on a compiler to translate my components into efficient, surgical DOM updates instead of writing manual diffing code",
+      "citations": [
+        {
+          "evidenceId": "react-docs-15",
+          "quote": "React Compiler automatically optimizes your React application at build time... eliminating the need for manual useMemo, useCallback, and React.memo."
+        },
+        {
+          "evidenceId": "react-docs-36",
+          "quote": "automatically optimizes your React application by handling memoization for you, eliminating the need for manual `useMemo`, `useCallback`, and `React.memo`."
+        },
+        {
+          "evidenceId": "react-docs-3",
+          "quote": "React will then update the screen to match the new data."
+        },
+        {
+          "evidenceId": "react-docs-43",
+          "quote": "When it encounters code that might break these rules, it safely skips optimization rather than risk changing your app's behavior."
+        }
+      ]
+    },
+    "productId": "react",
+    "storyId": "compiler-driven-updates"
   }
 }

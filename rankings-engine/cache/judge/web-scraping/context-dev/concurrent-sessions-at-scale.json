@@ -1,17 +1,35 @@
 {
-  "hash": "f1515655916e22bdf5d6e745dd8d6a3b3464e9569e48058d83145cfc2646f0f4",
+  "hash": "30f4c7774970a12d47ec33fffc8694059273d195d93a47da30883fdec4d24bb0",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Context.dev documents large-scale asynchronous batch jobs that scrape up to 25K URLs or crawl up to 25,000 pages in the background with progress tracking (docs-3, docs-34). It also documents per-minute rate-limit headers for managing throughput (docs-18), which covers the core need of gathering data at scale. missing for 10: explicit documentation of concurrent session or job limits, details on parallelism within batches, and independent or hands-on corroboration of high-volume throughput.",
+    "rationale": "Context.dev documents large-scale asynchronous batch jobs: scraping 25K URLs or crawling up to 25,000 pages in the background with progress tracking. That covers gathering data at scale. It does not document spinning up many concurrent scraping sessions; the only related evidence is a per-minute rate limit. missing for 10: documented concurrency limits or parallel session/job counts, guidance on running many simultaneous batches, independent or hands-on corroboration of throughput at scale.",
     "evidenceIds": [
-      "context-dev-docs-3",
       "context-dev-docs-34",
-      "context-dev-docs-18",
-      "context-dev-docs-2"
+      "context-dev-docs-3",
+      "context-dev-docs-18"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a data-engineer, I can spin up many concurrent scraping sessions to gather data at scale",
+      "citations": [
+        {
+          "evidenceId": "context-dev-docs-34",
+          "quote": "Scrape 25K URLs or crawl large websites asynchronously."
+        },
+        {
+          "evidenceId": "context-dev-docs-3",
+          "quote": "Crawl up to 25,000 pages in a background batch, track progress, and retrieve Markdown or HTML when the job finishes."
+        },
+        {
+          "evidenceId": "context-dev-docs-18",
+          "quote": "Authenticated API responses expose these headers when a per-minute limit applies"
+        }
+      ]
+    },
     "productId": "context-dev",
     "storyId": "concurrent-sessions-at-scale"
   }

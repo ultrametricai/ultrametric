@@ -1,17 +1,30 @@
 {
-  "hash": "73e9c393c752c57596771c9442eec281c5f89dbfbd31b1e71e15c684c57515ad",
+  "hash": "e92947f9626da67baeeb1df8cd261930412b8cf3bcb2ee90f6e8a3fc7265471b",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
-    "quality": 8,
+    "quality": 9,
     "confidence": "high",
-    "rationale": "A live probe found an llms.txt at platform.claude.com/llms.txt (HTTP 200) describing the Anthropic developer documentation. The cited doc pages are themselves served as plain .md URLs, so an agent can be pointed at both an index and markdown docs. The intro.md.md 404 only reflects a malformed double-extension probe and does not undercut this. Missing for 10: no machine-readable OpenAPI spec at any probed path, no evidence of an llms-full.txt or similar full-corpus file, and no independent or hands-on corroboration of agents using these docs.",
+    "rationale": "A live probe returned HTTP 200 for platform.claude.com/llms.txt, which describes the API docs and developer resources. It points agents to further machine-readable surfaces: an MCP docs server, JSON SDK/CLI version metadata, and .md mirrors of the full API reference. The 404 on the doubled '.md.md' path is a malformed probe URL, not evidence against the .md mirrors. missing for 10: independent or hands-on corroboration of agents actually consuming these docs surfaces (e.g., MCP docs server usage).",
     "evidenceIds": [
       "claude-probe-1",
-      "claude-docs-1",
-      "claude-docs-12",
-      "claude-probe-3"
+      "claude-parity-machine-readable-docs-20261103"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can point an agent at llms.txt or agent-oriented docs",
+      "citations": [
+        {
+          "evidenceId": "claude-probe-1",
+          "quote": "PROBE llms.txt: HTTP 200 at https://platform.claude.com/llms.txt # Anthropic Developer Documentation"
+        },
+        {
+          "evidenceId": "claude-parity-machine-readable-docs-20261103",
+          "quote": "It points to machine-readable surfaces: an MCP docs server at https://platform.claude.com/docs/mcp, SDK/CLI version metadata \"at https://platform.claude.com/docs/sdk-versions.json, as JSON\", and .md mirrors of the full API reference"
+        }
+      ]
+    },
     "productId": "claude",
     "storyId": "agentic-agent-docs"
   }

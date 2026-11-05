@@ -1,15 +1,30 @@
 {
-  "hash": "6da410dc35df9e577901699ecec7db5efe6b5e2f01638a73d1d1a7d68ab074f2",
+  "hash": "cb722680658a791b1c08afab0f1842a32ea0ae4bce1f560c3bd324f91a1409d3",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 4,
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "The docs state explicitly that requests refused by a max_credits ceiling (422 credit_cap_exceeded) are not charged, and that dry_run validation returns a credit estimate without charging, so a developer knows blocked or validation-only requests consume nothing. The evidence never says whether failed runs, errored calls, or empty-result enrichments, searches, or scrapes still consume credits. Missing for 10: documented billing behavior for failed/errored requests, documented billing behavior for empty-result requests, independent or hands-on corroboration.",
+    "rationale": "Riveter's docs say one kind of blocked request is not billed: when the credit estimate exceeds max_credits, the request is refused with 422 credit_cap_exceeded and nothing is charged. Dry runs are also uncharged, but that is a validation mode, not a failed or blocked request. missing for 10: billing behavior for failed runs (errors, 429s, stopped runs), billing for empty-result requests, other blocked or refused responses such as validation errors, and independent corroboration.",
     "evidenceIds": [
-      "riveter-docs-7",
-      "riveter-docs-8"
+      "riveter-docs-8",
+      "riveter-docs-7"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I know whether failed, blocked, or empty-result requests still consume my billing quota",
+      "citations": [
+        {
+          "evidenceId": "riveter-docs-8",
+          "quote": "When the estimate's maximum exceeds it, the request is refused with 422 credit_cap_exceeded and nothing is charged."
+        },
+        {
+          "evidenceId": "riveter-docs-7",
+          "quote": "validate the request and return a credit estimate without creating or charging anything."
+        }
+      ]
+    },
     "productId": "riveter",
     "storyId": "failed-request-billing"
   }

@@ -1,26 +1,51 @@
 {
-  "hash": "d20f117c032f2543b9ce724148859075a89f52fb55edd18c4ac05f7e8306b971",
+  "hash": "639f4f92898b266bd6e729eb17ec0570c88c8083d69db4884b3a47bf1b29bf05",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "proa",
-    "storyId": "scales-with-app-size",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Proa documents several of its own mechanisms for keeping apps fast and maintainable. Maintainability comes from compile-time-checked props and template validation, editor rename and go-to-definition, a formatter that verifies rendered output is preserved, and generator-maintained route registration with a route table. Speed comes from a `--deny warnings` lint that catches performance problems, small island JS with a ~1.3 KB runtime, out-of-order Suspense streaming, and reproducible benchmarks. missing for 10: evidence about scaling to large teams and codebases (build times, modularity, multi-team structure), and independent or hands-on corroboration of performance beyond the vendor's own benchmark repo.",
+    "rationale": "Proa documents its own tooling for performance and maintainability. Compile-time template validation and typed props, `--deny warnings` lints that catch rendering performance problems, `fmt --check --verify`, and paired HTML/Markdown views that flag missing fields all help keep a codebase correct and fast. Tiny island runtimes, streaming Suspense and page caching support speed. Nothing shows these hold up as an application, team or codebase grows. missing for 10: evidence of scaling to large codebases or teams (modular project structure, workspace or multi-crate guidance, build-time behavior at scale), and independent or hands-on corroboration of large production apps.",
     "evidenceIds": [
-      "proa-docs-32",
       "proa-gh-2",
-      "proa-docs-13",
-      "proa-docs-14",
-      "proa-docs-10",
-      "proa-docs-11",
-      "proa-docs-26",
+      "proa-docs-32",
+      "proa-docs-33",
+      "proa-docs-34",
       "proa-docs-27",
       "proa-docs-16",
-      "proa-docs-17",
-      "proa-gh-7",
-      "proa-docs-21"
-    ]
+      "proa-docs-35",
+      "proa-docs-12",
+      "proa-docs-18",
+      "proa-gh-7"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can build large applications that stay fast and maintainable as my team and codebase grow",
+      "citations": [
+        {
+          "evidenceId": "proa-gh-2",
+          "quote": "The macro validates the template at compile time, consolidates adjacent static markup, and preserves the correct escaping behavior for dynamic slots."
+        },
+        {
+          "evidenceId": "proa-docs-33",
+          "quote": "--deny warnings catches performance problems such as intermediate rendered strings, avoidable allocations, and async renderers that never await."
+        },
+        {
+          "evidenceId": "proa-docs-32",
+          "quote": "the fields passed to AboutPage are compile-time-checked props."
+        },
+        {
+          "evidenceId": "proa-docs-27",
+          "quote": "Adding a field or child to HTML can immediately flag its absence in a paired Markdown view, including when that view is not open."
+        },
+        {
+          "evidenceId": "proa-docs-16",
+          "quote": "Each hydrated RSJS island emits a small vanilla-JS module plus seed state, served with a shared runtime around 1.3 KB gzipped."
+        }
+      ]
+    },
+    "productId": "proa",
+    "storyId": "scales-with-app-size"
   }
 }

@@ -1,22 +1,42 @@
 {
-  "hash": "12d63885ebf7a78d3f5dc208c94ebb8570f84fbf60c25a6e51339d15a4a2e1f7",
+  "hash": "d717f73cdea85dedf78dc155f4efa8c356baa034d8d96701ad339820c3b64171",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Jev is an HTTP API (`POST /v1/systemone`) with Python and JS/TS SDKs, so it runs headlessly by design. Automation is supported by a sync/async client, default retry with backoff on 429s, a programmatic `GET /v1/models` endpoint, and version pinning for reproducible runs. A hands-on community report describes wiring the API into a real-time loop, which corroborates unattended programmatic use. Missing for 10: a CI-specific guide or examples, a first-party CLI, documented non-interactive auth (API key or env var) setup, and independent reports of CI pipeline usage.",
+    "rationale": "Jev is an API-first service: callers send state and questions to `POST /v1/systemone` and get structured answers back. Official Python and JavaScript SDKs add async clients, automatic retries and model discovery, so it runs headlessly from code by design. Nothing in the evidence documents CI usage specifically, so the CI half of the story is unproven. Missing for 10: documented CI/CD integration or examples (e.g. GitHub Actions, API-key handling in CI environments), a headless CLI, and independent hands-on evidence of automated CI runs.",
     "evidenceIds": [
+      "jev-docs-20",
       "jev-docs-30",
-      "jev-docs-31",
-      "jev-docs-5",
-      "jev-docs-4",
       "jev-docs-26",
-      "jev-supp-rate-limits",
+      "jev-docs-5",
       "jev-supp-models-endpoint",
-      "jev-supp-versioning",
-      "jev-comm-4"
+      "jev-supp-rate-limits"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
+      "citations": [
+        {
+          "evidenceId": "jev-docs-20",
+          "quote": "Send state and typed questions; get structured answers your code can use directly."
+        },
+        {
+          "evidenceId": "jev-docs-30",
+          "quote": "Every model on this page is served by the same endpoint, `POST /v1/systemone`."
+        },
+        {
+          "evidenceId": "jev-docs-26",
+          "quote": "Our client SDKs provide typed questions and answers for the TypeSafe API and handle retries automatically with their default retry policy."
+        },
+        {
+          "evidenceId": "jev-docs-5",
+          "quote": "Use AsyncTypeSafeClient to ask questions, list models, and configure asynchronous TypeSafe API requests."
+        }
+      ]
+    },
     "productId": "jev",
     "storyId": "agentic-headless"
   }

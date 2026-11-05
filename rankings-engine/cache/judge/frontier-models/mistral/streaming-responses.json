@@ -1,11 +1,11 @@
 {
-  "hash": "95ccd7182eadd59fc8885b8fccda9736cdce47b50346336fb8a31ce32d91bcc7",
+  "hash": "f97371ddefc7a8afcff14e94dd71d255229418ecb9cb694a29fbc2f4b1a08b09",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "The pack has no evidence of token-by-token streaming. It does show some documented latency levers: Predicted Outputs \"optimizes response time\", prompt-cache hits \"can reduce response latency\", and Priority Tier queues requests ahead of Standard traffic under high load. Community reports describe answers in about 1s versus 5-8s for other models, though the speed advantage does not hold for web-search queries. Missing for 10: documented streaming/SSE support, published latency figures or time-to-first-token behavior, and corroboration that answers are reliably sub-second.",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "The pack never documents token-by-token streaming. Mistral does document its own latency features: Predicted Outputs optimizes response time, prompt-cache hits reduce latency, and Priority Tier gives more predictable access under load. Hands-on community reports corroborate fast answers of about 1s versus 5-8s for other models, though not for web-search queries. Missing for 10: documented streaming (SSE/token-by-token) support, published latency figures or SLAs, and first-party evidence of sub-second full responses.",
     "evidenceIds": [
       "mistral-docs-6",
       "mistral-docs-25",
@@ -14,6 +14,29 @@
       "mistral-comm-7",
       "mistral-comm-8"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can stream responses token by token (or get sub-second full answers) with the latency behavior documented",
+      "citations": [
+        {
+          "evidenceId": "mistral-docs-6",
+          "quote": "Predicted Outputs optimizes response time by leveraging known or predictable content."
+        },
+        {
+          "evidenceId": "mistral-docs-25",
+          "quote": "cache hits can reduce response latency by reusing part of the previous prompt computation."
+        },
+        {
+          "evidenceId": "mistral-docs-35",
+          "quote": "Priority Tier gives eligible API requests priority queueing for workloads that need more predictable access to shared infrastructure."
+        },
+        {
+          "evidenceId": "mistral-comm-7",
+          "quote": "Mistral's edge is speed—it answers in ~1s what takes other models 5-8s"
+        }
+      ]
+    },
     "productId": "mistral",
     "storyId": "streaming-responses"
   }

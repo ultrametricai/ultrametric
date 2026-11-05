@@ -1,22 +1,36 @@
 {
-  "hash": "52ee58a852db67e115ea28294ed18d00288d12237fbc341be7306b7ac8458af2",
+  "hash": "81aa6b6b461b7d21d2d716de6310d8b114a2da3e31cfff50fe081fce0f222c88",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Apify Actors take a `startUrls` list as input (apify-docs-15), and runs can be driven asynchronously through the Python client's asyncio support (apify-docs-19). Webhooks fire follow-up actions when a run finishes or fails (apify-docs-14, apify-docs-29), and client retries plus proxy rotation support reliability at scale (apify-docs-27, apify-docs-8, apify-docs-31). Missing for 10: explicit evidence or benchmarks of runs handling thousands of URLs, documentation of a fire-and-forget start call or a dedicated batch endpoint (only call-and-wait is shown in apify-docs-23), and independent hands-on corroboration of large-batch scraping.",
+    "rationale": "Apify's own Actors accept a list of start URLs (e.g. apify/web-scraper's startUrls array), the Python client has asyncio support, and webhooks can fire when a run finishes, so the product does provide batch scraping with async-style orchestration. Nothing documents scale to thousands of URLs or a non-blocking batch-run pattern; the cited convenience call actually waits for the run to finish. missing for 10: documented scale to thousands of URLs per batch, explicit fire-and-forget async run-start semantics, throughput/concurrency limits, independent hands-on corroboration of large batch jobs.",
     "evidenceIds": [
       "apify-docs-15",
       "apify-docs-19",
       "apify-docs-14",
-      "apify-docs-29",
-      "apify-docs-27",
-      "apify-docs-8",
-      "apify-docs-31",
-      "apify-docs-23",
-      "apify-docs-4"
+      "apify-docs-23"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a data-engineer, I can batch scrape thousands of URLs asynchronously",
+      "citations": [
+        {
+          "evidenceId": "apify-docs-15",
+          "quote": "startUrls: [{ url: 'https://example.com' }],"
+        },
+        {
+          "evidenceId": "apify-docs-19",
+          "quote": "async with log_client.stream() as async_log_stream:"
+        },
+        {
+          "evidenceId": "apify-docs-14",
+          "quote": "you can use webhooks to start another Actor when an Actor run finishes or fails."
+        }
+      ]
+    },
     "productId": "apify",
     "storyId": "batch-scrape-async"
   }

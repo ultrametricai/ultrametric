@@ -1,17 +1,35 @@
 {
-  "hash": "4c451aacd90c515a570c41ef0e171163a16b711309f5200d28bcd30489a4c381",
+  "hash": "49a505b801971b704f68bd9bb3b5ced210f9eaa5f2dff231f9d29bdd84575cf0",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "ScrapingBee documents `mode=auto`, which picks the cheapest configuration that succeeds. Its docs describe this as automatic escalation through a cost ladder, charging only the configuration that succeeds, and premium and stealth proxy tiers exist as rungs to escalate through. The scope is limited: escalation works for GET requests only, and the ladder's exact proxy steps are not shown in the evidence. Missing for 10: explicit listing of the proxy tiers in the escalation ladder, support beyond GET requests, and independent or hands-on confirmation that retries trigger on anti-bot blocks.",
+    "rationale": "ScrapingBee documents its own automatic escalation mode: `mode=auto` picks the cheapest configuration that succeeds and escalates through a cost ladder, billing only the successful configuration. This closely matches automatic retry when a request is blocked. However, the evidence does not show what the ladder steps are, so it is unclear whether they are distinct proxy tiers (e.g., standard to premium to stealth). The mode is also limited to GET requests. Missing for 10: the documented contents of the escalation ladder showing distinct proxy types, confirmation that escalation is triggered by anti-bot blocks, support beyond GET, and independent or hands-on corroboration.",
     "evidenceIds": [
       "scrapingbee-docs-14",
       "scrapingbee-docs-18",
-      "scrapingbee-docs-10",
-      "scrapingbee-docs-22"
+      "scrapingbee-docs-10"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a data-engineer, I can automatically retry through a chain of different proxies when anti-bot detection blocks a request",
+      "citations": [
+        {
+          "evidenceId": "scrapingbee-docs-14",
+          "quote": "Let ScrapingBee pick the cheapest configuration that succeeds. Only value is auto"
+        },
+        {
+          "evidenceId": "scrapingbee-docs-18",
+          "quote": "GET-only automatic escalation through the cost ladder below. Charges only the configuration that succeeds; a total failure costs 0."
+        },
+        {
+          "evidenceId": "scrapingbee-docs-10",
+          "quote": "Use premium proxies to bypass difficult to scrape websites"
+        }
+      ]
+    },
     "productId": "scrapingbee",
     "storyId": "auto-retry-proxy-chain"
   }
