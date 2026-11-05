@@ -1,19 +1,41 @@
 {
-  "hash": "220c367f0c5ab6d5e12e8d7d33b35db98e8e07e229001912fb1e60ddc12b4fba",
+  "hash": "a3b408992d59a5cf5d0561ec142731aef8630a06ce9eab42e78accc821f4fa87",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "LiteLLM logs proxy inputs, outputs and exceptions to many backends (Langfuse, OpenTelemetry, S3, DataDog and others). It gives each request a unique call_id and tracks spend metadata per request, even when message content is redacted. However, the evidence never says latency or token counts are attached to logged entries. Inspection appears to depend on external logging providers rather than a documented built-in request log viewer. Missing for 10: explicit evidence of per-request latency and token counts in logs, a documented in-product view for browsing logged requests and responses, and independent or hands-on corroboration.",
+    "rationale": "LiteLLM's proxy documents logging request input, output, and exceptions to many destinations (Langfuse, OpenTelemetry, S3, DataDog and others), and it tracks per-request metadata such as spend alongside those logs. Inspecting the logs relies on those downstream tools, and latency and token counts are never shown attached to logged requests. missing for 10: evidence that latency and token counts are recorded per logged request, a first-party view in the admin UI for inspecting logged requests and responses, independent or hands-on corroboration.",
     "evidenceIds": [
-      "litellm-docs-10",
       "litellm-docs-32",
-      "litellm-docs-11",
+      "litellm-docs-10",
       "litellm-docs-12",
       "litellm-docs-6",
-      "litellm-docs-5"
+      "litellm-docs-11"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform engineer, I can inspect logged requests and responses with latency, token counts, and cost attached",
+      "citations": [
+        {
+          "evidenceId": "litellm-docs-32",
+          "quote": "Log Proxy input, output, and exceptions using: Langfuse OpenTelemetry GCS, s3, Azure (Blob) Buckets"
+        },
+        {
+          "evidenceId": "litellm-docs-12",
+          "quote": "request metadata - e.g. spend, will still be tracked"
+        },
+        {
+          "evidenceId": "litellm-docs-6",
+          "quote": "Track spend for keys, users, and teams across 100+ LLMs."
+        },
+        {
+          "evidenceId": "litellm-docs-11",
+          "quote": "LiteLLM generates a unique call_id for each request. This call_id can be used to track the request across the system."
+        }
+      ]
+    },
     "productId": "litellm",
     "storyId": "request-logging"
   }

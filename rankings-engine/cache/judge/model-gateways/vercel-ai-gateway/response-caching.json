@@ -1,16 +1,31 @@
 {
-  "hash": "555c5d4e24418b818610d7de62ceb2aba0d7687a84ec50a195ebc8f461693bb5",
+  "hash": "eb411d791e5983d6e908b141d43828fb7198afbbc771d7e52297f3a7dec17ced",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "The docs offer `caching: 'auto'` in providerOptions.gateway, which lets AI Gateway automatically apply each provider's caching strategy. Community discussion of Vercel's discounted cache-read pricing suggests this is provider-side prompt caching that lowers cost on repeated prompt content, not a cache at the gateway that returns stored responses for repeated requests. missing for 10: true gateway-level response caching that skips the provider call, cache key/TTL controls, evidence of latency gains on cache hits, detailed caching docs, independent hands-on corroboration.",
+    "rationale": "AI Gateway documents its own caching control, `caching: 'auto'` in providerOptions.gateway, which applies a provider-appropriate caching strategy. Community discussion of Vercel cache-read pricing suggests this is provider-side prompt caching that cuts cost on repeated prompts. That covers part of the story but is not clearly gateway-level response caching. missing for 10: explicit gateway-side response caching of full outputs, TTL/cache-key configuration, documented latency benefits, cache hit observability, independent hands-on corroboration.",
     "evidenceIds": [
       "vercel-ai-gateway-docs-11",
       "vercel-ai-gateway-docs-21",
       "vercel-ai-gateway-comm-2"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can cache responses at the gateway to cut cost and latency on repeated requests",
+      "citations": [
+        {
+          "evidenceId": "vercel-ai-gateway-docs-11",
+          "quote": "You can use `caching: 'auto'` in `providerOptions.gateway` to let AI Gateway automatically apply the appropriate caching strategy based on the provider."
+        },
+        {
+          "evidenceId": "vercel-ai-gateway-comm-2",
+          "quote": "Vercel cache read pricing for DeepSeek-v4: $0.01/M for flash, $0.14/M for pro"
+        }
+      ]
+    },
     "productId": "vercel-ai-gateway",
     "storyId": "response-caching"
   }

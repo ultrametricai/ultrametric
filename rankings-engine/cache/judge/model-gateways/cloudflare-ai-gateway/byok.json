@@ -1,16 +1,31 @@
 {
-  "hash": "0a27282c2542c90ce9e37f90ec48d26482d4443df0b67c4f3d6d17a76622566b",
+  "hash": "daf40dbb917fa220841ec5529f01766e9eee3e1b60fa8b2c840e5bd08872a224",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "The docs show requests going through the gateway's OpenAI-compatible endpoint with your own `apiKey` parameter, and you switch providers by changing `model` and `apiKey`. That implies the gateway forwards your traffic using provider keys you supply. The evidence covers only per-request key passing, not a managed BYOK feature where the gateway stores keys and applies them for you. Missing for 10: stored or managed provider-key configuration in the gateway, documentation of how keys are secured and rotated, independent or hands-on corroboration.",
+    "rationale": "The chat-completion docs show developers sending requests through the gateway with their own provider `apiKey` parameter, so the gateway forwards traffic using the developer's provider credentials across supported providers. The evidence covers only per-request key pass-through. It does not show the gateway storing or managing BYO keys on the developer's behalf, which this key-management story implies. Missing for 10: documented stored-key (BYOK) management in the gateway, key rotation or scoping details, and independent or hands-on corroboration.",
     "evidenceIds": [
       "cloudflare-ai-gateway-docs-22",
       "cloudflare-ai-gateway-docs-18",
       "cloudflare-ai-gateway-docs-23"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can bring my own provider API keys and have the gateway use them for my traffic",
+      "citations": [
+        {
+          "evidenceId": "cloudflare-ai-gateway-docs-22",
+          "quote": "Switch providers by changing the \\`model\\` and \\`apiKey\\` parameters."
+        },
+        {
+          "evidenceId": "cloudflare-ai-gateway-docs-23",
+          "quote": "Connect to AI providers using their native API formats through AI Gateway."
+        }
+      ]
+    },
     "productId": "cloudflare-ai-gateway",
     "storyId": "byok"
   }

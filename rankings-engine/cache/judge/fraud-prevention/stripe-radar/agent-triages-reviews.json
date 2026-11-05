@@ -1,21 +1,40 @@
 {
-  "hash": "43c5dd9aa568f746b89915f3ac9b22dfe34f62f348865b819968635919a7da66",
+  "hash": "66237b241c9ceaba8fe651007fc3674d87db6335196b598c022b9b0d1ece0542",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Stripe documents a Reviews API (POST /v1/reviews/:id/approve), an early-fraud-warnings API, an official MCP server, a CLI and LLM-readable docs, so an agent can reach review objects and act on them, with summarizing and recommending done on the agent side. The rich case context, such as risk insights and the related-payments network, is documented only as a Dashboard feature, and no evidence shows the MCP server exposes Radar reviews. missing for 10: documented API/MCP endpoint for listing and pulling flagged reviews with full context, risk-insight data exposed programmatically, MCP tool coverage of Radar reviews, any human-confirm workflow for agent recommendations, hands-on corroboration.",
+    "rationale": "Radar has its own Reviews API, including an approve endpoint, and a review queue for examining flagged payments, so an agent could programmatically act on reviews with a human confirming. However, the evidence only shows the approve action. Listing or pulling flagged reviews with their risk context via API is not documented; risk insights and the related-payments network are shown only in the Dashboard. The MCP server and CLI are not shown to cover reviews. Summarizing and recommending would be done entirely by the external agent. Missing for 10: documented API or MCP retrieval of the review queue with risk-insight context, any agent-assisted summarization or recommendation workflow, and hands-on corroboration of agent-driven review handling.",
     "evidenceIds": [
       "stripe-radar-docs-8",
       "stripe-radar-docs-21",
-      "stripe-radar-docs-9",
-      "stripe-radar-docs-12",
       "stripe-radar-docs-18",
-      "stripe-radar-probe-4",
-      "stripe-radar-probe-5",
-      "stripe-radar-probe-1"
+      "stripe-radar-docs-12"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, an agent can work the review queue — pull flagged cases with their context, summarize the evidence, and recommend a decision for a human to confirm",
+      "citations": [
+        {
+          "evidenceId": "stripe-radar-docs-21",
+          "quote": "Approve a review"
+        },
+        {
+          "evidenceId": "stripe-radar-docs-8",
+          "quote": "POST /v1/reviews/:id/approve"
+        },
+        {
+          "evidenceId": "stripe-radar-docs-18",
+          "quote": "the review queue allows you to examine unusual payments, without having to review each payment individually"
+        },
+        {
+          "evidenceId": "stripe-radar-docs-12",
+          "quote": "You can also view the network of related payments, which includes any other payments made to your business using the same customer ID, IP address, or card number"
+        }
+      ]
+    },
     "productId": "stripe-radar",
     "storyId": "agent-triages-reviews"
   }

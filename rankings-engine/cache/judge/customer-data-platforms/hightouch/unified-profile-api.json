@@ -1,21 +1,42 @@
 {
-  "hash": "b139b3c990f5af909396e6d1a9f162ba72bb18ddfd94b984673442afdd55fcd6",
+  "hash": "a2d63db515cffa1e95ef87cecaa9ae4d88b02a4964d2f54355079b98cd04438b",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Hightouch Identity Resolution writes unified identities and a one-row-per-identity Golden Record table into the customer's warehouse, and the docs say these can be queried directly or used to build models (docs-8, docs-9, docs-43). Hightouch Events also lands behavioral events in the warehouse (docs-5). That makes the warehouse a documented profile store, but the docs say Hightouch does not store or serve profiles itself (docs-17, docs-40), and its REST API covers only syncs, models, sources and destinations (docs-13, supp-openapi-spec). Missing for 10: a documented profile lookup API, an explicit joined profile view of traits plus identifiers plus event history, and documentation of the identity-resolution output table schema.",
+    "rationale": "Hightouch Identity Resolution writes unified identities and a one-row-per-identity Golden Record table into the customer's warehouse, and the docs say these can be queried directly, so a documented profile store exists. However, the public REST API covers only syncs, models, sources and destinations, and the docs say profile-serving logic moves to the warehouse, so there is no documented profile lookup API. missing for 10: a documented profile API for querying individual profiles, documentation of a joined profile schema combining traits, identifiers and event history, and independent or hands-on corroboration.",
     "evidenceIds": [
       "hightouch-docs-8",
       "hightouch-docs-9",
       "hightouch-docs-43",
-      "hightouch-docs-5",
       "hightouch-docs-40",
-      "hightouch-docs-17",
-      "hightouch-docs-13",
+      "hightouch-docs-5",
       "hightouch-supp-openapi-spec"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a data engineer, I can query unified customer profiles — traits, identifiers, event history — through a documented profile API or store",
+      "citations": [
+        {
+          "evidenceId": "hightouch-docs-9",
+          "quote": "Golden Record — a one-row-per-identity table of canonical field values (selected by survivorship rules) that many teams use as their source-of-truth customer or account view."
+        },
+        {
+          "evidenceId": "hightouch-docs-43",
+          "quote": "Query these directly, build models on them in Customer Studio, or sync them downstream."
+        },
+        {
+          "evidenceId": "hightouch-docs-40",
+          "quote": "Identity Resolution unifies a person's identifiers into one resolved identity, and Customer Studio builds traits and audiences on top."
+        },
+        {
+          "evidenceId": "hightouch-docs-5",
+          "quote": "Hightouch Events collects customer behavior from websites, mobile apps, and backend systems, then stores that data in your warehouse."
+        }
+      ]
+    },
     "productId": "hightouch",
     "storyId": "unified-profile-api"
   }

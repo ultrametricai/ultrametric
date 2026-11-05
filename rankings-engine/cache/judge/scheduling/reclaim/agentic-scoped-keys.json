@@ -1,15 +1,30 @@
 {
-  "hash": "37cb26e634bfa7e965768c1f5f51b978819309661245453ea2277b270a918786",
+  "hash": "d6f19b588d0c380d1839d6669f3c858df8e7be794cfef655338e5a2fc066cb7c",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
-    "confidence": "medium",
-    "rationale": "Runtime probes show Reclaim's first-party MCP endpoint is auth-gated with MCP-spec OAuth. Its RFC 9728 discovery document advertises coarse 'read', 'write' and 'mcp' scopes, so an agent could plausibly be granted a read-only, scoped token. However, no vendor documentation describes this, and there is no evidence of user-facing controls for issuing, scoping or revoking agent credentials. Missing for 10: first-party docs on credential scoping, fine-grained per-resource scopes, a user-facing token/API-key management UI with revocation, and hands-on confirmation that the scopes are actually enforced.",
+    "confidence": "low",
+    "rationale": "Runtime probes show Reclaim's first-party MCP endpoint uses an MCP OAuth flow. It publishes RFC 9728 resource metadata with distinct read, write and mcp scopes, so an agent can be granted a token with limited scope (e.g. read-only). However, no vendor docs describe this, and there is no evidence of user-facing controls for issuing, scoping or revoking agent credentials. missing for 10: vendor documentation of the OAuth/scope model, user-facing scope selection when issuing agent credentials, finer-grained least-privilege scopes beyond read/write, credential revocation/management, independent hands-on corroboration",
     "evidenceIds": [
-      "reclaim-probe-rt-1",
-      "reclaim-probe-rt-2"
+      "reclaim-probe-rt-2",
+      "reclaim-probe-rt-1"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
+      "citations": [
+        {
+          "evidenceId": "reclaim-probe-rt-2",
+          "quote": "{\"scopes_supported\":[\"read\",\"write\",\"mcp\"],\"authorization_servers\":[\"https://mcp.reclaim.ai\"],\"bearer_methods_supported\":[\"header\"],\"resource\":\"https://mcp.reclaim.ai\"}"
+        },
+        {
+          "evidenceId": "reclaim-probe-rt-1",
+          "quote": "a live, auth-gated MCP endpoint on the vendor's own domain speaking the per-spec MCP OAuth flow"
+        }
+      ]
+    },
     "productId": "reclaim",
     "storyId": "agentic-scoped-keys"
   }

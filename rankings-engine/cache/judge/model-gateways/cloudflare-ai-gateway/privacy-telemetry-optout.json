@@ -1,17 +1,36 @@
 {
-  "hash": "08f9949bb98b1898bb41a993c554d8cd7a4d2c6dde96eed5167f39d736e9aced",
+  "hash": "7a3a8811818e22ea810f9a8762e3236ee64d9b9127776cd0ee4bf4e96258872b",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "AI Gateway lets you change the default log setting and bypass it per request with the `cf-aig-collect-log` header. The `cf-aig-collect-log-payload` header separately stops prompt and response bodies from being stored. However, the docs frame payload opt-out as keeping usage metrics and request metadata, so usage tracking itself still runs, and nothing covers opting out of Cloudflare's own product telemetry. Missing for 10: a documented way to fully disable usage metrics and analytics collection, an opt-out for vendor or platform telemetry, and independent or hands-on confirmation that disabled logging is honored.",
+    "rationale": "AI Gateway documents its own controls for limiting request logging. The `cf-aig-collect-log` header overrides the gateway's default log setting, and `cf-aig-collect-log-payload` stops raw prompt and completion bodies from being stored. However, the docs frame payload opt-out as keeping usage metrics and request metadata visible, so there is no evidence that usage metrics or analytics collection can be turned off entirely. Missing for 10: a documented opt-out from usage metrics and analytics tracking, an account-wide telemetry opt-out, and independent or hands-on corroboration.",
     "evidenceIds": [
       "cloudflare-ai-gateway-docs-25",
       "cloudflare-ai-gateway-docs-35",
       "cloudflare-ai-gateway-docs-15",
       "cloudflare-ai-gateway-docs-34"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can opt out of telemetry and usage tracking",
+      "citations": [
+        {
+          "evidenceId": "cloudflare-ai-gateway-docs-25",
+          "quote": "The \\`cf-aig-collect-log\\` header allows you to bypass the default log setting for the gateway."
+        },
+        {
+          "evidenceId": "cloudflare-ai-gateway-docs-35",
+          "quote": "The `cf-aig-collect-log-payload` header allows you to control whether the raw request and response bodies (payloads) are stored for a given request."
+        },
+        {
+          "evidenceId": "cloudflare-ai-gateway-docs-15",
+          "quote": "This is useful when you want to maintain visibility into usage metrics and request metadata without persisting sensitive prompt or completion data."
+        }
+      ]
+    },
     "productId": "cloudflare-ai-gateway",
     "storyId": "privacy-telemetry-optout"
   }

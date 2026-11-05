@@ -1,15 +1,30 @@
 {
-  "hash": "715ebeb5f6dbb53ee0918dc3f7cf5bb93188eb6ef237eb969fe0d66ff33e35c1",
+  "hash": "dc2d64aca5ebdd694ae03b8b31625afaff5fb8346e56c73110905304930c75f6",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Runtime probes, re-verified a month apart, show a live first-party remote MCP server at mcp.reclaim.ai. It returns a spec-compliant 401 Bearer challenge and publishes RFC 9728 OAuth protected-resource metadata with read/write/mcp scopes, so a standard MCP client can plausibly connect. However, the vendor publishes no documentation for the server, and the probes stop at the auth gate, so the exposed tools and an end-to-end agent connection are unverified. Missing for 10: vendor documentation of the MCP server and its setup, a published tool list or capabilities, hands-on evidence of an authenticated session with working tool calls, and independent community corroboration.",
+    "rationale": "Runtime probes show a live, auth-gated MCP endpoint on Reclaim's own domain (mcp.reclaim.ai). It answers MCP initialize with a per-spec OAuth Bearer challenge and publishes RFC 9728 resource metadata with read/write/mcp scopes, so a first-party MCP server exists. However, no vendor documentation for it was found, and its tools and behavior after authentication are unverified. Missing for 10: first-party docs for the MCP server, an evidenced tool list and capabilities, an authenticated end-to-end agent connection, and independent corroboration.",
     "evidenceIds": [
       "reclaim-probe-rt-1",
       "reclaim-probe-rt-2"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can connect an agent via an official MCP server",
+      "citations": [
+        {
+          "evidenceId": "reclaim-probe-rt-1",
+          "quote": "a live, auth-gated MCP endpoint on the vendor's own domain speaking the per-spec MCP OAuth flow"
+        },
+        {
+          "evidenceId": "reclaim-probe-rt-2",
+          "quote": "the server publishes its own OAuth discovery document with read/write/mcp scopes"
+        }
+      ]
+    },
     "productId": "reclaim",
     "storyId": "agentic-mcp-server"
   }

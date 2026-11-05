@@ -1,19 +1,36 @@
 {
-  "hash": "34ad7dd0b6e325596844ed4ce0b39b199cc22b6d3c303e0896eb3e19be3cfa05",
+  "hash": "0fc0974509bcf0c578002d89c0c737b26867d3b856b787f1fb7d977eb6d7ae3e",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Kong AI Gateway documents centralized AI Provider credential management. AI Model Provider entities hold the provider credentials, and they can reference secrets from external backends via AI Vault (AWS Secrets Manager, HashiCorp Vault, environment variables). It also supports Azure Managed Identity for provider auth, so operators supply their own provider credentials and the gateway uses them to proxy traffic, for example to Anthropic. Missing for 10: explicit documentation of per-developer or per-request client-supplied key passthrough, concrete configuration examples showing the API key field, and independent or hands-on corroboration.",
+    "rationale": "Kong AI Gateway documents centralized provider credential management. AI Model Provider entities can reference secrets held in an AI Vault backend (AWS Secrets Manager, HashiCorp Vault, environment variables), so operator-supplied provider credentials can authenticate proxied traffic. However, the evidence never explicitly describes configuring a developer's own provider API key, nor per-developer or per-request key passthrough, so coverage of the story as written is incomplete. missing for 10: explicit documentation of supplying one's own provider API key on an AI Model Provider, per-developer/per-request BYOK passthrough, independent or hands-on corroboration.",
     "evidenceIds": [
       "kong-ai-gateway-docs-30",
       "kong-ai-gateway-docs-22",
-      "kong-ai-gateway-docs-38",
-      "kong-ai-gateway-docs-4",
       "kong-ai-gateway-docs-47",
-      "kong-ai-gateway-docs-1"
+      "kong-ai-gateway-docs-4"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can bring my own provider API keys and have the gateway use them for my traffic",
+      "citations": [
+        {
+          "evidenceId": "kong-ai-gateway-docs-30",
+          "quote": "Centralized AI Provider credential management"
+        },
+        {
+          "evidenceId": "kong-ai-gateway-docs-22",
+          "quote": "An AI Vault entity lets you register an external secret backend (AWS Secrets Manager, HashiCorp Vault, environment variables, or others) so that AI Model Providers, AI Auth Strategies, AI Models, AI Agents, and AI MCP Servers can reference secrets instead of storing them as literal values."
+        },
+        {
+          "evidenceId": "kong-ai-gateway-docs-47",
+          "quote": "You can proxy requests to Anthropic AI models through AI Gateway by creating AI Model Provider and AI Model entities."
+        }
+      ]
+    },
     "productId": "kong-ai-gateway",
     "storyId": "byok"
   }

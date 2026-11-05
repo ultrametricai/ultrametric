@@ -1,19 +1,42 @@
 {
-  "hash": "d4df56a4765e789bd92a2bff0c25a3831b9ef34843f0e9bae7bf8bee0c0cd2c3",
+  "hash": "6fdd32fdf7e8b587a7ed4f803e2861d68ded7d8c05d4c034a0836daeba15d3c4",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Adyen's relayed authorisation sends a webhook with transaction data for each authorisation request, and your server approves or refuses it in real time. The docs set a 2000 ms response budget and a configurable fallback (default approval or default refusal) if you don't reply in time; the endpoint is set up under Customer Area > Financial products > Relayed authorisation. Missing for 10: independent or hands-on corroboration of latency and fallback behavior, and details of the response payload format.",
+    "rationale": "Adyen's relayed authorisation sends a webhook with transaction data for each authorisation request. Your server replies with an approval or refusal within a documented 2000 ms window, and if it doesn't reply in time you configure the fallback yourself (default approval or default refusal). Every element of the story is covered by first-party docs. Missing for 10: independent or hands-on corroboration of the relayed authorisation flow and its timeout behavior.",
     "evidenceIds": [
       "adyen-issuing-docs-2",
       "adyen-issuing-docs-5",
-      "adyen-issuing-docs-6",
       "adyen-issuing-docs-21",
       "adyen-issuing-docs-22",
-      "adyen-issuing-docs-28"
+      "adyen-issuing-docs-28",
+      "adyen-issuing-docs-6"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can approve or decline each authorization in real time — a webhook or auth-stream endpoint my code answers inside the network's time budget, with a documented timeout fallback I control",
+      "citations": [
+        {
+          "evidenceId": "adyen-issuing-docs-5",
+          "quote": "With each relayed authorisation webhook we send, you have up to 2000 milliseconds to reply with an approval or a refusal."
+        },
+        {
+          "evidenceId": "adyen-issuing-docs-22",
+          "quote": "If you do not respond within 2000 milliseconds, you can specify which fallback logic you want: Default approval, Default refusal"
+        },
+        {
+          "evidenceId": "adyen-issuing-docs-28",
+          "quote": "When we receive a payment authorisation request, we send you a relayed authorisation webhook with the relevant transaction data, including transaction rules and validation checks."
+        },
+        {
+          "evidenceId": "adyen-issuing-docs-21",
+          "quote": "Relayed authorisation allows you to make a real-time decision on whether to approve or decline a transaction."
+        }
+      ]
+    },
     "productId": "adyen-issuing",
     "storyId": "realtime-auth-decisioning"
   }

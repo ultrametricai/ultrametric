@@ -1,18 +1,40 @@
 {
-  "hash": "fd7edb8a4fb510aeb992c5764886f2f44897fdee4160f5323f2c884ac04e8f55",
+  "hash": "ab6c0d274c5938c3868b36dd4baeca16763869122e3071ff0aab96f89256bb8a",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Forter takes merchant-supplied data into its decisioning. The Order API sends checkout information for a fraud decision, and order status updates feed it post-order outcomes. The mobile SDK collects location updates, and agentic-order transaction metadata is explicitly said to improve Forter's risk decisions. However, nothing shows that developers can send arbitrary custom fields, their own device fingerprints, or behavioral signals that tailor scoring to their business rather than Forter's network models. Missing for 10: documented custom-metadata or custom-field ingestion, merchant-supplied device fingerprint or behavioral signal inputs, evidence that merchant signals reweight or customize the model, independent corroboration.",
+    "rationale": "Forter's own Order API takes merchant-supplied order data for its fraud decision. Its agentic-order docs say merchant-sent source and transaction metadata \"improves Forter's risk decisions\", and the mobile SDK collects location updates as a signal. That shows some merchant-supplied signals do feed scoring, but only in narrow forms. Missing for 10: explicit device-fingerprint ingestion, documented behavioral-data feeds, general custom-metadata fields that shape scoring, and any independent or hands-on corroboration.",
     "evidenceIds": [
       "forter-docs-1",
-      "forter-docs-2",
       "forter-docs-19",
       "forter-docs-28",
       "forter-docs-33"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can feed the model my own signals — device fingerprints, behavioral data, custom metadata — so scoring reflects my business, not just network defaults",
+      "citations": [
+        {
+          "evidenceId": "forter-docs-1",
+          "quote": "Send order information at checkout to receive a fraud or abuse decision."
+        },
+        {
+          "evidenceId": "forter-docs-19",
+          "quote": "This additional data improves Forter's risk decisions and provides the merchant better reporting on agentic traffic."
+        },
+        {
+          "evidenceId": "forter-docs-28",
+          "quote": "they should call the Forter API with additional data, signaling Forter the transaction source as well as transaction metadata"
+        },
+        {
+          "evidenceId": "forter-docs-33",
+          "quote": "Forter *strongly* recommends that you provide us with this data on **every location update**."
+        }
+      ]
+    },
     "productId": "forter",
     "storyId": "custom-signals-enrichment"
   }

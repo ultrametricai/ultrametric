@@ -1,20 +1,41 @@
 {
-  "hash": "3017a2959ae54c6f0198db756235180c52f7d74a379a86f341d33690d5a4bf1b",
+  "hash": "a61ceb0f7a8807af1e140e921c9b8c02cd4e919996a23708eaf45b62644c9ff2",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "The docs say AI Gateway automatically retries failed requests on other providers. Engineers can shape that failover with `order`, `only` and `sort`, and with per-provider timeouts that trigger fast failover. BYOK failures are also retried with system credentials. However, the evidence shows no policy controls specific to retries, and the documented retries are cross-provider failover rather than configurable retries of transient errors. Missing for 10: configurable retry counts/backoff, error-class (transient vs. permanent) retry rules, same-provider retry options, independent or hands-on corroboration.",
+    "rationale": "AI Gateway automatically retries failed requests on other providers. Engineers can shape that failover through provider `order`/`only`/`sort` and per-provider timeouts, and BYOK failures retry with system credentials. It is failover routing, not a configurable retry policy for transient errors. Missing for 10: configurable retry counts, backoff/jitter settings, selection of which error classes count as transient, same-provider retries, independent or hands-on corroboration.",
     "evidenceIds": [
       "vercel-ai-gateway-docs-3",
       "vercel-ai-gateway-docs-10",
       "vercel-ai-gateway-docs-9",
-      "vercel-ai-gateway-docs-29",
       "vercel-ai-gateway-docs-13",
-      "vercel-ai-gateway-docs-24",
-      "vercel-ai-gateway-docs-32"
+      "vercel-ai-gateway-docs-29"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform engineer, I can set automatic retry policies for transient provider errors",
+      "citations": [
+        {
+          "evidenceId": "vercel-ai-gateway-docs-3",
+          "quote": "Automatically retries requests to other providers if one fails"
+        },
+        {
+          "evidenceId": "vercel-ai-gateway-docs-10",
+          "quote": "You can set per-provider timeouts to trigger fast failover when a provider is slow to respond."
+        },
+        {
+          "evidenceId": "vercel-ai-gateway-docs-9",
+          "quote": "You can use `order`, `only`, and `sort` in `providerOptions.gateway` to control which providers handle your requests, in what order, and how they are ranked."
+        },
+        {
+          "evidenceId": "vercel-ai-gateway-docs-13",
+          "quote": "If a query using your credentials fails, AI Gateway will retry the query with its system credentials to improve service availability."
+        }
+      ]
+    },
     "productId": "vercel-ai-gateway",
     "storyId": "retry-policies"
   }

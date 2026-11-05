@@ -1,18 +1,35 @@
 {
-  "hash": "38ac8905c87287290593416e095b3c60d48e6288857b895061bd03dc2a1ef3ae",
+  "hash": "b49523ffc8a76a90d6068d95b45dbc6b69660a7a4c8840159b3b3e292af57730",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 4,
-    "confidence": "medium",
-    "rationale": "Signifyd documents a device-profiling script for the checkout page and mobile SDKs, so device data reaches its scoring, and the Checkout and Sale APIs submit order and payment details for fraud review. Decision Center policies at the Sale checkpoint let merchants apply their own rules to decisions. However, the device data is collected by Signifyd's own script rather than supplied from the developer's fingerprinting. Nothing shows merchants can pass custom metadata or behavioral signals into the model. Missing for 10: documented custom-metadata or custom-field submission, merchant-supplied behavioral or fingerprint data ingestion, evidence that custom signals change model scoring beyond rule policies, independent corroboration.",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Signifyd documents a device-profiling script for the merchant's checkout page, and its Checkout and Sale APIs let developers submit order and payment details for fraud review, so merchant-side device and order data does reach scoring. Nothing in the pack shows developers can supply their own fingerprints, behavioral data or arbitrary custom metadata that tunes the model. Missing for 10: custom metadata or custom-field submission, merchant-supplied behavioral signals, bring-your-own device fingerprints, evidence that submitted signals change model scoring, independent corroboration.",
     "evidenceIds": [
       "signifyd-docs-10",
-      "signifyd-docs-12",
       "signifyd-docs-21",
-      "signifyd-docs-22",
-      "signifyd-docs-23"
+      "signifyd-docs-22"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can feed the model my own signals — device fingerprints, behavioral data, custom metadata — so scoring reflects my business, not just network defaults",
+      "citations": [
+        {
+          "evidenceId": "signifyd-docs-10",
+          "quote": "Place the following script just before the closing `</head>` tag on your checkout page. The script loads asynchronously and does not affect page load time."
+        },
+        {
+          "evidenceId": "signifyd-docs-21",
+          "quote": "use the Checkout API to submit the order and payment details to Signifyd for fraud review."
+        },
+        {
+          "evidenceId": "signifyd-docs-22",
+          "quote": "use the Sale API to submit the order and transaction details to Signifyd for fraud review."
+        }
+      ]
+    },
     "productId": "signifyd",
     "storyId": "custom-signals-enrichment"
   }

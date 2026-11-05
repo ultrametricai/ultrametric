@@ -1,18 +1,36 @@
 {
-  "hash": "7e3f1dca25ab2a86f1857025d086ff44682b1eb45543bb0d338707e7a5f3d3b4",
+  "hash": "8357baf2e794065322abf4f6e027fe55152b1d07cfe01fb8d755e41fce0769b1",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "USPTO operates a real machine endpoint at api.uspto.gov, which returns a structured API-key auth challenge, and serves a developer portal at developer.uspto.gov. Patent Center docs also acknowledge users making direct API calls to its Workbench/view-application surfaces, so a public API exists. However, the evidence never shows which operations the API covers; the documented core workflows (filing, payment, responding to correspondence) are described only through web UIs behind MFA and identity verification. The developer docs are also unreadable without JavaScript, and no OpenAPI spec was found. missing for 10: evidence of what operations the API documents (especially filing, status tracking and payment), a machine-readable spec (OpenAPI) or plain-text docs, a documented key-issuance and auth flow, independent or hands-on corroboration of driving workflows via the API.",
+    "rationale": "Patent Center documents direct, versioned API calls against its Workbench and view-applications surfaces. Probes confirm a live api.uspto.gov endpoint using an API-key model and a developer portal, so a public API exists. The documented scope appears limited to viewing applications, and the portal's docs only render after JavaScript runs. Missing for 10: evidence that filing, payment or other core actions can be driven via API, a machine-readable OpenAPI spec (all probed paths 404), API docs readable without JavaScript, and independent hands-on corroboration of driving workflows end to end.",
     "evidenceIds": [
       "uspto-supp-3",
       "uspto-probe-4",
       "uspto-probe-5",
-      "uspto-probe-3",
-      "uspto-supp-1"
+      "uspto-probe-3"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can drive the product through a documented public API",
+      "citations": [
+        {
+          "evidenceId": "uspto-supp-3",
+          "quote": "For users making direct API calls to Workbench/view applications, this update required a change to the version level of the APIs within Workbench/view applications."
+        },
+        {
+          "evidenceId": "uspto-probe-4",
+          "quote": "a real machine endpoint that answers unauthenticated requests with a structured auth challenge: an API-key model, not a bot wall."
+        },
+        {
+          "evidenceId": "uspto-probe-5",
+          "quote": "HTTP 200 at https://developer.uspto.gov/"
+        }
+      ]
+    },
     "productId": "uspto",
     "storyId": "agentic-public-api"
   }

@@ -1,18 +1,35 @@
 {
-  "hash": "b9fe6cc19bec738b9b0c2bc36f9ff0c5e35d54846b829b0dd954adf74da8629b",
+  "hash": "45489010569031ec32f7519c8377daf927ddc286637fb325ce034525493b44bc",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 4,
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "Runpod ships an explicitly versioned REST API v1 and documents a migration path to it (an agent-driven `/runpod:migrate rest` command), alongside the older GraphQL API, which suggests managed API transitions. However, no evidence shows a formal deprecation policy with timelines, sunset notices, or compatibility guarantees, and no OpenAPI spec was found at the probed paths. Missing for 10: documented deprecation policy and timelines, versioning and compatibility guarantees, a published OpenAPI spec, and independent corroboration.",
+    "rationale": "Runpod documents a versioned REST API (v1), and a runtime probe confirms the live endpoint at rest.runpod.io/v1 with an OpenAPI spec. The docs also point to an agent-driven migration path to REST, which implies an older API surface is being superseded. However, no deprecation policy, sunset timelines or version-support guarantees are documented. Missing for 10: a documented deprecation policy, deprecation/sunset timelines for the GraphQL API, a version lifecycle or support-window commitments, and independent corroboration.",
     "evidenceIds": [
       "runpod-docs-8",
       "runpod-docs-9",
-      "runpod-docs-26",
-      "runpod-docs-63",
-      "runpod-probe-2"
+      "runpod-probe-rt-4"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
+      "citations": [
+        {
+          "evidenceId": "runpod-docs-8",
+          "quote": "The Runpod REST API v1 provides programmatic access to all Runpod compute resources."
+        },
+        {
+          "evidenceId": "runpod-docs-9",
+          "quote": "To migrate automatically, ask your coding agent to run `/runpod:migrate rest` once you've installed the Runpod skills plugin."
+        },
+        {
+          "evidenceId": "runpod-probe-rt-4",
+          "quote": "https://rest.runpod.io/v1/openapi.json serves the REST API's OpenAPI spec keylessly"
+        }
+      ]
+    },
     "productId": "runpod",
     "storyId": "api-versioning-policy"
   }

@@ -1,17 +1,36 @@
 {
-  "hash": "bf49a4e9dcb9785166b5d612120b0c650d119f234a20f31069ca353c9d550699",
+  "hash": "3504f1c0f97bdd2cecd3d6e15bdf70a10dcb2621b1659f7bf6c9804553e61856",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "The docs show real control over what data is kept. The `cf-aig-collect-log` header overrides the gateway's default logging per request, and the `cf-aig-collect-log-payload` header controls whether raw prompt and response bodies are stored, keeping metrics without persisting sensitive content. Missing for 10: any documented way to delete stored logs or cached data, configurable retention periods or automatic expiry, and independent or hands-on corroboration.",
+    "rationale": "AI Gateway documents its own per-request controls over what it retains. The `cf-aig-collect-log` header overrides the gateway's default logging, and `cf-aig-collect-log-payload` decides whether raw prompt and response bodies are stored, so usage metadata can be kept without persisting sensitive content. This covers the retention-control half of the story, but nothing in the pack shows log deletion or retention periods. Missing for 10: documented log deletion (manual or via API), configurable retention periods or auto-expiry, and independent or hands-on corroboration.",
     "evidenceIds": [
       "cloudflare-ai-gateway-docs-25",
       "cloudflare-ai-gateway-docs-35",
       "cloudflare-ai-gateway-docs-15",
       "cloudflare-ai-gateway-docs-34"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can control data retention and deletion",
+      "citations": [
+        {
+          "evidenceId": "cloudflare-ai-gateway-docs-25",
+          "quote": "The \\`cf-aig-collect-log\\` header allows you to bypass the default log setting for the gateway."
+        },
+        {
+          "evidenceId": "cloudflare-ai-gateway-docs-35",
+          "quote": "The `cf-aig-collect-log-payload` header allows you to control whether the raw request and response bodies (payloads) are stored for a given request."
+        },
+        {
+          "evidenceId": "cloudflare-ai-gateway-docs-15",
+          "quote": "This is useful when you want to maintain visibility into usage metrics and request metadata without persisting sensitive prompt or completion data."
+        }
+      ]
+    },
     "productId": "cloudflare-ai-gateway",
     "storyId": "privacy-retention-controls"
   }

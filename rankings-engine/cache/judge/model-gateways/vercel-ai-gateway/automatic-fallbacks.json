@@ -1,21 +1,46 @@
 {
-  "hash": "6d919f4e29fd36ecc050ceb8c6f6df8f53a4dffec42a1575140afcef23adc055",
+  "hash": "48a7745845370c41f55d889390b2ff842857d17e1120ba5f8736909b20359321",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "The docs say AI Gateway automatically retries requests on other providers when one fails. Platform engineers can set the provider failover order with `order`, `only`, and `sort` in `providerOptions.gateway`, and per-provider timeouts trigger fast failover. BYOK requests also fall back to system credentials. Missing for 10: explicit documentation of fallback to a different model (not just a different provider), and independent or hands-on corroboration that failover works as claimed.",
+    "rationale": "First-party docs show configurable provider-level failover: the gateway automatically retries other providers when one fails, `order`/`only`/`sort` in `providerOptions.gateway` set which providers are tried and in what order, and per-provider timeouts trigger fast failover. Coverage is partial because no cited item documents configuring fallback to a different model, and all evidence is vendor-claimed. missing for 10: documented configuration for fallback to a different model (beyond the generic 'manages fallbacks' mention), independent or hands-on corroboration that failover works as described.",
     "evidenceIds": [
       "vercel-ai-gateway-docs-3",
       "vercel-ai-gateway-docs-9",
       "vercel-ai-gateway-docs-10",
       "vercel-ai-gateway-docs-29",
       "vercel-ai-gateway-docs-24",
-      "vercel-ai-gateway-docs-32",
-      "vercel-ai-gateway-docs-13",
-      "vercel-ai-gateway-docs-35"
+      "vercel-ai-gateway-docs-32"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform engineer, I can configure automatic fallback to another model or provider when one fails",
+      "citations": [
+        {
+          "evidenceId": "vercel-ai-gateway-docs-3",
+          "quote": "Automatically retries requests to other providers if one fails"
+        },
+        {
+          "evidenceId": "vercel-ai-gateway-docs-9",
+          "quote": "You can use `order`, `only`, and `sort` in `providerOptions.gateway` to control which providers handle your requests, in what order, and how they are ranked."
+        },
+        {
+          "evidenceId": "vercel-ai-gateway-docs-10",
+          "quote": "You can set per-provider timeouts to trigger fast failover when a provider is slow to respond."
+        },
+        {
+          "evidenceId": "vercel-ai-gateway-docs-29",
+          "quote": "The gateway sorts providers by the chosen metric and tries them in that order"
+        },
+        {
+          "evidenceId": "vercel-ai-gateway-docs-24",
+          "quote": "AI Gateway routes requests, manages fallbacks and budgets"
+        }
+      ]
+    },
     "productId": "vercel-ai-gateway",
     "storyId": "automatic-fallbacks"
   }

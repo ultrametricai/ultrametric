@@ -1,20 +1,42 @@
 {
-  "hash": "14e58b1a1a545506464f071e122993a7e1f4b6ea6749cf5e26e9bb44d6e06c2f",
+  "hash": "e48056848acd22868e3ed6f94d60ccf51aa2cff325f4a169f824ee5c016459e5",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Vast.ai is fully self-serve. Its search page and CLI `search offers` expose live hourly offers per GPU type, which you can filter by gpu_name. However, prices are marketplace-set by hosts rather than fixed published rates, and the pricing docs say hosts compete instead of 'locking you into fixed rates.' A community user also complains it takes many clicks to find even an approximate price. Missing for 10: a single public per-GPU-type price list, stable published per-GPU-hour rates, and evidence that prices are viewable without an account.",
+    "rationale": "Vast.ai publishes live per-hour GPU prices that anyone can see without an account or a sales call. The keyless `vastai search offers` CLI query and the public `/bundles/` REST endpoint both returned real per-hour prices, and the docs include a pricing guide pointing to the marketplace search. However, prices are set by individual hosts in a dynamic marketplace rather than listed as one fixed rate per GPU type on a static pricing page, and a community user found it took many clicks to find even an approximate price. Missing for 10: a static public pricing page listing one per-GPU-hour rate for every GPU type, and evidence that browsing prices in the web console is easy.",
     "evidenceIds": [
+      "vast-ai-probe-rt-2",
+      "vast-ai-probe-rt-3",
+      "vast-ai-docs-70",
       "vast-ai-docs-33",
-      "vast-ai-docs-26",
       "vast-ai-docs-41",
-      "vast-ai-docs-51",
-      "vast-ai-docs-20",
-      "vast-ai-gh-1",
-      "vast-ai-comm-3"
+      "vast-ai-comm-5-refresh-8d6bb9920c9a2e52"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an ML engineer, I can see the published per-GPU-hour price for every GPU type on a public pricing page without talking to sales",
+      "citations": [
+        {
+          "evidenceId": "vast-ai-probe-rt-3",
+          "quote": "a bare keyless GET to https://console.vast.ai/api/v0/bundles/ returned live marketplace offers as JSON including `dph_total` (per-GPU-hour price), gpu_name, cpu specs, and reliability fields — the offer-search REST endpoint is public."
+        },
+        {
+          "evidenceId": "vast-ai-probe-rt-2",
+          "quote": "searched the LIVE GPU marketplace with NO account and NO API key, returning real RTX 4090 offers with CUDA versions, vCPUs, RAM, disk, and per-hour prices"
+        },
+        {
+          "evidenceId": "vast-ai-docs-70",
+          "quote": "CLI: Use vastai search offers to query prices programmatically"
+        },
+        {
+          "evidenceId": "vast-ai-docs-33",
+          "quote": "hosts compete for your business rather than locking you into fixed rates."
+        }
+      ]
+    },
     "productId": "vast-ai",
     "storyId": "transparent-gpu-pricing"
   }

@@ -1,20 +1,42 @@
 {
-  "hash": "08706dbfa3797119da4086d67cfc5ef4dfad69d488def8c85eae8ddfb341206d",
+  "hash": "d68782a2c2be9d222ce4e52a60835bcf7656667f52ad28b6e258e6ccb703668e",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "LiteLLM's reliability docs describe configurable fallbacks. After num_retries a failing call moves to another model group (e.g. fallbacks=[\"gpt-3.5-turbo\"]), and specialized content_policy_fallbacks are also documented. The Router adds cooldowns, timeouts and retries across deployments and providers. Missing for 10: independent hands-on corroboration that fallback works in production (the community evidence only cites the maintainers' motivation for reliable model switching).",
+    "rationale": "LiteLLM's reliability docs describe configurable fallbacks. After num_retries a failed call falls back to another model group, configured via `fallbacks=[...]`, with the proxy looping through the specified groups. The Router adds cooldowns, timeouts, retries, and specialized content_policy_fallbacks across deployments and providers. missing for 10: independent hands-on corroboration that fallback works reliably in production.",
     "evidenceIds": [
       "litellm-docs-4",
       "litellm-docs-21",
       "litellm-docs-22",
       "litellm-docs-18",
       "litellm-docs-28",
-      "litellm-docs-30",
-      "litellm-comm-12"
+      "litellm-docs-30"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a platform engineer, I can configure automatic fallback to another model or provider when one fails",
+      "citations": [
+        {
+          "evidenceId": "litellm-docs-4",
+          "quote": "If a call fails after num_retries, LiteLLM falls back to another model group, so a failing model or provider automatically fails over to a healthy backup."
+        },
+        {
+          "evidenceId": "litellm-docs-22",
+          "quote": "litellm proxy will loop through all the model_groups specified in `fallbacks=[\"gpt-3.5-turbo\"]`"
+        },
+        {
+          "evidenceId": "litellm-docs-30",
+          "quote": "Basic reliability logic - cooldowns, fallbacks, timeouts and retries (fixed + exponential backoff) across multiple deployments/providers."
+        },
+        {
+          "evidenceId": "litellm-docs-18",
+          "quote": "content_policy_fallbacks: For litellm.ContentPolicyViolationError - LiteLLM maps content policy violation errors across providers"
+        }
+      ]
+    },
     "productId": "litellm",
     "storyId": "automatic-fallbacks"
   }

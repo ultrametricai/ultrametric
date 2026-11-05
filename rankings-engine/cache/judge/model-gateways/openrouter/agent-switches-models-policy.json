@@ -1,22 +1,43 @@
 {
-  "hash": "341aa42fd2a7ab84d925a88c7cc322940a1620e57064b97d0deda71133a23f4c",
+  "hash": "d318c66c25c31fc3e9ef8155925b5c037ab40cf721b3637d1e088543ebf2ad97",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "OpenRouter documents per-request routing: an ordered `models` fallback list that switches models when providers are down, rate-limited or refuse to reply, plus a `provider` object for customizing provider routing and load balancing. Its docs say it picks the most cost-effective option per request, and community users confirm default fallbacks and an auto-routing 'meta' model that sends prompts to an appropriately capable model. Availability-based switching is strongly evidenced; cost and capability policies are thinner. Missing for 10: first-party docs for capability-based auto-routing, explicit cost-threshold routing rules, evidence of declarative gateway-level policy rules beyond per-request parameters, hands-on corroboration of mid-task switching in agent loops.",
+    "rationale": "OpenRouter documents gateway-level model fallbacks: a priority-ordered `models` array is retried automatically when providers are down, rate-limited, or refuse. Request-level `provider` routing rules exist, the docs claim cost-effective selection per request, and a community user confirms a meta router that sends prompts to an appropriately capable model. Availability-based switching is well covered, but cost- and capability-based switching are thinner. missing for 10: first-party docs for a capability-based auto router, an explicit configurable cost-policy rule for model switching, and hands-on corroboration of switching mid-task.",
     "evidenceIds": [
       "openrouter-docs-3",
       "openrouter-docs-19",
-      "openrouter-docs-4",
       "openrouter-docs-21",
       "openrouter-docs-36",
-      "openrouter-docs-41",
-      "openrouter-comm-2",
+      "openrouter-docs-4",
       "openrouter-comm-13",
-      "openrouter-docs-44"
+      "openrouter-comm-2"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, my agent can switch models mid-task by policy — cost, capability, or availability — through gateway routing rules",
+      "citations": [
+        {
+          "evidenceId": "openrouter-docs-3",
+          "quote": "The models parameter lets you automatically try other models if the primary model's providers are down, rate-limited, or refuse to reply due to content moderation."
+        },
+        {
+          "evidenceId": "openrouter-docs-19",
+          "quote": "Provide an array of model IDs in priority order. If the first model returns an error, OpenRouter will automatically try the next model in the list."
+        },
+        {
+          "evidenceId": "openrouter-docs-36",
+          "quote": "It handles fallbacks automatically and picks the most cost-effective option for each request."
+        },
+        {
+          "evidenceId": "openrouter-comm-13",
+          "quote": "their 'meta' model that automatically routes the prompt to an appropriately capable model"
+        }
+      ]
+    },
     "productId": "openrouter",
     "storyId": "agent-switches-models-policy"
   }

@@ -1,17 +1,40 @@
 {
-  "hash": "5463b6ad01aaf17cc6a486796addb9555dc953d74bc23b02178b70aef6134140",
+  "hash": "f6d0d14aff8f158bc8c48d77c42a7e83a3527ae075e1ce313b125cf2461055b9",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Adyen documents an ML-driven risk engine that evaluates and scores every transaction (adyen-risk-docs-5, adyen-risk-docs-20) and reaches a block/allow/review decision (adyen-risk-docs-1). Risk information, such as which rules triggered and whether the payment went to case management, can be included in the payment response (adyen-risk-docs-16), which implies in-flow synchronous results. However, the evidence shows no standalone scoring endpoint and does not show an explicit ML score being exposed to developers before authorization completes. missing for 10: a documented standalone or pre-authorization risk-scoring API, explicit return of the ML risk score value in the API response, latency or synchronous-flow documentation, and independent hands-on corroboration.",
+    "rationale": "Adyen documents an ML-based risk engine that scores every transaction and reaches a block/allow/review decision. It can return risk information, such as which rules triggered, in the synchronous payment response, so real-time evaluation happens inside the payment flow. The evidence does not show a standalone scoring API that returns a numeric ML risk score before authorization completes. Missing for 10: explicit documentation that the payment response exposes the ML risk score itself, a documented standalone pre-authorization risk-scoring endpoint, latency or synchronous-timing details, and independent or hands-on corroboration.",
     "evidenceIds": [
       "adyen-risk-docs-5",
       "adyen-risk-docs-20",
       "adyen-risk-docs-1",
       "adyen-risk-docs-16"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can get a machine-learning risk score for a transaction in real time — synchronously, before authorization completes — through a documented API",
+      "citations": [
+        {
+          "evidenceId": "adyen-risk-docs-5",
+          "quote": "Our risk engine uses machine learning and Adyen's global transaction data to evaluate the fraud risk of transactions."
+        },
+        {
+          "evidenceId": "adyen-risk-docs-20",
+          "quote": "Protect's AI scores every transaction against trillions of global data points"
+        },
+        {
+          "evidenceId": "adyen-risk-docs-16",
+          "quote": "You can include risk information, such as whether a payment was sent to case management, and which risk rules triggered in these webhooks, as well as in the payment response."
+        },
+        {
+          "evidenceId": "adyen-risk-docs-1",
+          "quote": "The risk evaluation reaches a decision that results in an action to block, allow, or review the transaction."
+        }
+      ]
+    },
     "productId": "adyen-risk",
     "storyId": "realtime-scoring-api"
   }

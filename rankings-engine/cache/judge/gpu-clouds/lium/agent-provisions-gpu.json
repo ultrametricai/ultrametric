@@ -1,11 +1,11 @@
 {
-  "hash": "5d6a76f4432724674c63c9ef7c2f5fc53283ca41a143e3b84a94ac1a7bf61d60",
+  "hash": "4bfb5dc21f56919f09ad2b28e66128ed5bb7329dd0eb0d575c683bb97f9939e9",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 8,
+    "verdict": "partial",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Lium documents a browser-free agent lifecycle. It covers renting via `lium up --gpu H100 --ttl 1h` or `POST /executors/rent-by-spec`, running workloads with `lium exec` (which returns the remote exit code), and teardown through TTL, end-time or spend-cap auto-delete or the SDK's rent-run-remove flow. The agents page states an agent can 'sign up, fund, rent, connect and remove pods' with no browser. The OpenAPI probe 404s only cover docs.lium.io paths, not the documented lium.io/api/openapi.json, so they do not contradict the API claim. The MCP server only covers docs and prices, but the CLI and API paths are enough for this story. Missing for 10: pod health and status monitoring is only thinly evidenced (spend/runway and nvidia-smi via exec), and there is no independent hands-on corroboration of the end-to-end flow.",
+    "rationale": "Lium's own docs and CLI cover most of the agent lifecycle without a console. An agent can provision a pod with `lium up --gpu H100 --ttl 1h` or rent-by-spec via the API, run workloads with `lium exec` (which returns the remote exit code) or the SDK, and tear down through explicit removal, TTL, or spend-cap auto-deletion; the agents doc states this all works with no browser. Monitoring a running pod's status and health is only thinly evidenced: `lium spend` reports cost per pod, and the WebSocket covers marketplace availability rather than pod health. The OpenAPI probe at docs.lium.io returned 404, though the docs point to a spec at lium.io/api/openapi.json. Missing for 10: documented pod status/health/utilization monitoring via API, CLI or MCP; an MCP server that manages pods (the documented one only covers docs and prices); independent hands-on corroboration of the end-to-end agent flow.",
     "evidenceIds": [
       "lium-docs-1",
       "lium-docs-2",
@@ -16,8 +16,39 @@
       "lium-docs-23",
       "lium-docs-24",
       "lium-gh-2",
-      "lium-probe-3"
+      "lium-docs-3"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI agent, I can provision a GPU, monitor it, run a workload, and tear it down end to end through documented APIs, CLI, or MCP without a human in the console",
+      "citations": [
+        {
+          "evidenceId": "lium-docs-22",
+          "quote": "An agent can do everything on Lium with no browser: sign up, fund, rent, connect and remove pods."
+        },
+        {
+          "evidenceId": "lium-docs-1",
+          "quote": "lium up --gpu H100 --ttl 1h# auto-removes after 1h"
+        },
+        {
+          "evidenceId": "lium-docs-23",
+          "quote": "lium exec job \"nvidia-smi\"                              # exits with the remote command's exit code"
+        },
+        {
+          "evidenceId": "lium-docs-24",
+          "quote": "The SDK rents the cheapest matching node, runs the function there, returns the result and removes the pod (or keeps it warm)."
+        },
+        {
+          "evidenceId": "lium-docs-6",
+          "quote": "rent-by-spec (`POST /executors/rent-by-spec`) that rents the cheapest node matching a GPU spec under a `max_price_per_gpu_hour` ceiling"
+        },
+        {
+          "evidenceId": "lium-gh-2",
+          "quote": "lium spend                                     # burn per hour, spend per pod, runway"
+        }
+      ]
+    },
     "productId": "lium",
     "storyId": "agent-provisions-gpu"
   }

@@ -1,18 +1,35 @@
 {
-  "hash": "5e4d845afd784d9fd55de2795883252b59261360c0dbeee5b17550eef86428c0",
+  "hash": "d7c3e9a5994730b131c9e1cbd969a79ae6c869e291910475efad4a48fbae186b",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "AI Gateway lets you rank and constrain providers with `order`, `only`, and `sort` (by a performance or cost metric). By default it picks providers dynamically from recent uptime and latency. However, the docs describe this as ordered selection with failover, not distributing traffic across multiple targets. Missing for 10: weighted traffic splitting, load-balancing across multiple keys or deployments of the same provider, explicit evidence of concurrent load distribution versus ranked try-in-order, and independent or hands-on corroboration.",
+    "rationale": "AI Gateway has its own provider-routing controls. `sort` ranks providers by a performance or cost metric, `order` and `only` constrain provider choice, and default routing picks providers by recent uptime and latency. This is ranked, ordered selection with failover, though, not documented distribution of traffic across targets. missing for 10: weighted traffic splitting, load balancing across deployments or multiple keys, evidence that traffic is actually spread across providers rather than tried in ranked order, independent corroboration.",
     "evidenceIds": [
-      "vercel-ai-gateway-docs-9",
       "vercel-ai-gateway-docs-29",
       "vercel-ai-gateway-docs-35",
-      "vercel-ai-gateway-docs-10",
-      "vercel-ai-gateway-docs-3"
+      "vercel-ai-gateway-docs-9"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform engineer, I can load-balance traffic across providers, deployments, or keys by weight, latency, or cost",
+      "citations": [
+        {
+          "evidenceId": "vercel-ai-gateway-docs-29",
+          "quote": "You can also use `sort` to rank providers by a performance or cost metric. The gateway sorts providers by the chosen metric and tries them in that order"
+        },
+        {
+          "evidenceId": "vercel-ai-gateway-docs-35",
+          "quote": "By default, Vercel AI Gateway dynamically chooses the default providers to give you the best experience based on a combination of recent uptime and latency."
+        },
+        {
+          "evidenceId": "vercel-ai-gateway-docs-9",
+          "quote": "You can use `order`, `only`, and `sort` in `providerOptions.gateway` to control which providers handle your requests, in what order, and how they are ranked."
+        }
+      ]
+    },
     "productId": "vercel-ai-gateway",
     "storyId": "load-balancing-routing"
   }

@@ -1,20 +1,40 @@
 {
-  "hash": "ec5500d572e82f8d9e3dac3ef75c0af2bbf3b2d42c905e8f9dc2bde78e7c5bb9",
+  "hash": "b9e20efaf979dcdac2011956f98de86735ac100c3ace4fa010e8c5d847ca2517",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Riskified documents a pre-authorization synchronous integration type in which the `/decide` and `/advise` endpoints of its REST API return a fraud decision synchronously, with CVV/3DS and TRA/SCA recommendations, before payment authorization. The response is framed as an approve/decline decision rather than an explicit numeric risk score, and the machine-learning basis appears only implicitly (models are calibrated during onboarding). Missing for 10: an explicit numeric risk score field, documented latency or real-time performance figures, a machine-readable OpenAPI spec (probe returned 404), and independent or hands-on corroboration.",
+    "rationale": "Riskified documents a pre-authorization synchronous integration: /decide and /advise return a fraud decision synchronously via a documented REST API. That covers the real-time, pre-auth, API parts of the story. However, the output is documented as a categorical decision (or a decision only for clear fraud), not an exposed machine-learning risk score, and the ML basis is not described for these endpoints. missing for 10: an exposed numeric ML risk score in the API response, explicit documentation that the synchronous decision is ML-driven, a published OpenAPI spec (probe returned 404), and independent or hands-on latency corroboration.",
     "evidenceIds": [
-      "riskified-docs-23",
       "riskified-docs-1",
+      "riskified-docs-23",
       "riskified-docs-3",
-      "riskified-docs-36",
-      "riskified-docs-24",
-      "riskified-docs-12",
-      "riskified-probe-2"
+      "riskified-docs-24"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can get a machine-learning risk score for a transaction in real time — synchronously, before authorization completes — through a documented API",
+      "citations": [
+        {
+          "evidenceId": "riskified-docs-1",
+          "quote": "Riskified's decision is returned synchronously"
+        },
+        {
+          "evidenceId": "riskified-docs-23",
+          "quote": "Review orders before payment authorization"
+        },
+        {
+          "evidenceId": "riskified-docs-3",
+          "quote": "we provide a synchronous decision if it is clear fraud"
+        },
+        {
+          "evidenceId": "riskified-docs-24",
+          "quote": "The Riskified API is a REST-based API that supports direct integration using standard HTTP requests."
+        }
+      ]
+    },
     "productId": "riskified",
     "storyId": "realtime-scoring-api"
   }

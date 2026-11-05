@@ -1,22 +1,46 @@
 {
-  "hash": "ac92e4b8d6404e504cb43e6f7c8a984d2ef772ef49be6ccff92eddfabac23017",
+  "hash": "f34c771d91c141d3ae996e78253196bb8d015861bfa43e5cc80df7f3f842720c",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 8,
-    "confidence": "high",
-    "rationale": "Jitsu documents delivery of raw events to ClickHouse, BigQuery, Snowflake, Redshift, Postgres, S3 and GCS, either streamed or micro-batched, with automatic table and column creation. Profile Builder writes customer profile records into your warehouse, and a community user reports hands-on success loading events into BigQuery. Missing for 10: explicit documentation of user-configurable batch schedules or frequency (only 'optional batching' and destination-dependent micro-batching are described), and independent corroboration of profile delivery and lake (S3) delivery.",
+    "verdict": "partial",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Jitsu documents delivering raw events to ClickHouse, BigQuery, Snowflake and S3, with tables auto-created. Profile Builder writes customer profiles into your warehouse, and a community user confirms collecting data into BigQuery. The 'schedule I control' part is not shown: delivery is real-time streaming or micro-batching chosen by what the destination prefers, and 'optional batching' is mentioned without any user-configurable cadence. The cron-based connector syncs pull third-party sources in, which is not scheduled event or profile delivery. missing for 10: documented user-controlled delivery schedule or batch frequency for event/profile loads, independent corroboration of Snowflake/ClickHouse/S3 delivery and of profiles landing in the warehouse.",
     "evidenceIds": [
       "jitsu-gh-2",
       "jitsu-docs-7",
       "jitsu-docs-10",
       "jitsu-docs-39",
       "jitsu-docs-53",
-      "jitsu-docs-11",
-      "jitsu-docs-35",
-      "jitsu-comm-2",
-      "jitsu-docs-8"
+      "jitsu-comm-2"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a data engineer, raw events and profiles land in my own warehouse or lake (Snowflake, BigQuery, ClickHouse, S3) on a schedule I control",
+      "citations": [
+        {
+          "evidenceId": "jitsu-gh-2",
+          "quote": "Delivery to destinations — ClickHouse, BigQuery, Snowflake, Redshift, Postgres, S3, GCS, and dozens of SaaS tools, streamed or micro-batched depending on what the destination prefers."
+        },
+        {
+          "evidenceId": "jitsu-docs-7",
+          "quote": "Sub-second speed of data delivery to your warehouse. Optional batching is also supported"
+        },
+        {
+          "evidenceId": "jitsu-docs-39",
+          "quote": "Profiles are customer records stored in your warehouse, based on the events data you send to Jitsu."
+        },
+        {
+          "evidenceId": "jitsu-docs-10",
+          "quote": "Jitsu will automatically create tables and columns in your warehouse based on the data you send"
+        },
+        {
+          "evidenceId": "jitsu-comm-2",
+          "quote": "It was very easy and straightforward to get started, deploy and start collecting things (into BigQuery)."
+        }
+      ]
+    },
     "productId": "jitsu",
     "storyId": "warehouse-sync-raw"
   }

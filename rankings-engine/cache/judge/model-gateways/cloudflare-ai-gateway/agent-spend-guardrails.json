@@ -1,19 +1,40 @@
 {
-  "hash": "6daf2da11ab38b6b48211c7c01e7409b4f581cca47d9c18044bdedc889d5e71f",
+  "hash": "8193f236d04b0c8f7fc5f4c9c9ad94c3b99b7f27fdd2d497f489d6f0fb470bfe",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "AI Gateway documents request rate limiting with fixed or sliding windows (e.g. 100 requests per 60 seconds), explicitly framed as preventing expensive bills. Dynamic Routing claims it can restrict each user, project or team with budget and rate limits and enforce quotas, so spend guardrails per segment are plausible. However, the evidence never shows issuing a dedicated key per agent, and the budget enforcement mechanics (hard dollar caps, what happens at the cap) appear only as one-line claims. missing for 10: per-agent key issuance scoped to its own limits, detailed documentation of budget-cap enforcement, independent or hands-on corroboration.",
+    "rationale": "AI Gateway documents its own rate limiting to prevent expensive bills, and Dynamic Routing flows that enforce quotas and restrict each user, project or team with budget or rate limits. Those guardrails could be scoped to an agent treated as a user or project. However, nothing documents issuing a dedicated per-agent key that carries those limits, and the budget mechanics are thinly described. Missing for 10: documented per-agent/scoped API key issuance, detail on how budget caps are configured and enforced, independent or hands-on corroboration.",
     "evidenceIds": [
       "cloudflare-ai-gateway-docs-5",
-      "cloudflare-ai-gateway-docs-6",
       "cloudflare-ai-gateway-docs-19",
       "cloudflare-ai-gateway-docs-13",
-      "cloudflare-ai-gateway-docs-37",
-      "cloudflare-ai-gateway-docs-41"
+      "cloudflare-ai-gateway-docs-37"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can give an autonomous agent its own key with budget and rate guardrails so it cannot run away on spend",
+      "citations": [
+        {
+          "evidenceId": "cloudflare-ai-gateway-docs-5",
+          "quote": "Rate limiting controls the traffic that reaches your application, which prevents expensive bills and suspicious activity."
+        },
+        {
+          "evidenceId": "cloudflare-ai-gateway-docs-19",
+          "quote": "you can limit your application to 100 requests per 60 seconds."
+        },
+        {
+          "evidenceId": "cloudflare-ai-gateway-docs-13",
+          "quote": "Restricting each user/project/team with budget/rate limits"
+        },
+        {
+          "evidenceId": "cloudflare-ai-gateway-docs-37",
+          "quote": "you compose a small flow that evaluates conditions, enforces quotas, and chooses models with fallbacks."
+        }
+      ]
+    },
     "productId": "cloudflare-ai-gateway",
     "storyId": "agent-spend-guardrails"
   }

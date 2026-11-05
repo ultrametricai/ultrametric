@@ -1,19 +1,41 @@
 {
-  "hash": "57e0dfc04a9354dadf2a71001d77c3b9ab9ff2278766d40234e58626fa1ebe78",
+  "hash": "c4ab19cb249e5f4efddf402433b1082e2b66741b2b2841f4120b4a11477f7031",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Text was extracted from the public guidance pages on www.twc.texas.gov (homepage, register-tax, unemployment-tax), and probes against that host returned ordinary HTTP 404s rather than a bot wall or challenge. Together these indicate the public reading surface serves content to a keyless agent. The connection reset on apps.twc.texas.gov affects the transactional application host, not the published guidance pages. Missing for 10: an explicit probe recording HTTP 200 with the identified user agent on guidance pages, confirmation that content is server-rendered rather than a JS shell, and the readable robots.txt policy for www.twc.texas.gov.",
+    "rationale": "Text was extracted from the public guidance pages at www.twc.texas.gov (register-tax, unemployment-tax, homepage). The same host returned ordinary HTTP 404 responses to probes rather than a bot-wall or CAPTCHA response, so the reading surface appears reachable by a keyless agent. The apps.twc.texas.gov connection reset affects the transactional application host, not the published guidance pages, so it does not count against this story. There is no explicit probe confirming the absence of a bot wall, JS-only shell or CAPTCHA, and no record of the user agent and HTTP 200 status on the guidance fetches, so coverage is not complete. Missing for 10: an explicit hands-on probe showing HTTP 200 server-rendered HTML for the guidance pages under an identified standard UA, confirmation that no CAPTCHA or JS challenge appears, and independent corroboration.",
     "evidenceIds": [
       "tx-twc-docs-1",
       "tx-twc-docs-6",
       "tx-twc-docs-11",
       "tx-twc-probe-1",
-      "tx-twc-probe-2",
       "tx-twc-probe-4"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native founder, the service's published guidance pages are reachable by a keyless agent with a standard identified user agent — no bot wall, JS-only shell, or CAPTCHA in front of the public reading surface",
+      "citations": [
+        {
+          "evidenceId": "tx-twc-docs-1",
+          "quote": "Registering is easy with Unemployment Tax Registration (UTR), TWC's quick and free online service."
+        },
+        {
+          "evidenceId": "tx-twc-docs-6",
+          "quote": "Learn about UTS to file wage reports, pay taxes, or manage an existing tax account online."
+        },
+        {
+          "evidenceId": "tx-twc-docs-11",
+          "quote": "Parents can search for available child care near their home or work, by Zip Code and by the age of their child."
+        },
+        {
+          "evidenceId": "tx-twc-probe-1",
+          "quote": "PROBE llms.txt: HTTP 404 at https://www.twc.texas.gov/llms.txt"
+        }
+      ]
+    },
     "productId": "tx-twc",
     "storyId": "keyless-page-reachability"
   }

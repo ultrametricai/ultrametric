@@ -1,18 +1,36 @@
 {
-  "hash": "f9f2e15a79a4f0debe38c651f9976d91c85aa5949464bbe5894fc6b12c0e49bf",
+  "hash": "0072290c263bf6e115f425de7142ae9a3a9ccc88bf80148138c88e1f2a89ff80",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "The gateway offers a unified API and OpenAI Chat Completions-compatible endpoints for switching providers without rewrites (docs-2, docs-33, docs-34, docs-28). Its docs also show a tool-calling example: a ToolLoopAgent with a getWeather tool on an Anthropic model (docs-26). However, the evidence never states that tool or function-call schemas are normalized across providers, and the tool example relies on AI SDK helpers. Missing for 10: explicit documentation of cross-provider tool-call schema normalization, examples of tool calls across multiple providers, documented provider-specific tool-calling limitations, and independent or hands-on corroboration.",
+    "rationale": "The gateway documents a unified API and OpenAI-compatible Chat Completions endpoints that reach multiple providers through one interface. The AI Gateway docs also show a tool-calling agent example (tools: { getWeather: tool(...) }) running against a gateway-routed model. Consistent tool and function-call schema normalization across providers is only implied by the unified-API claims, never documented explicitly. missing for 10: explicit documentation that tool/function-call schemas are normalized across providers, per-provider tool-calling support matrix, streaming tool-call details, independent or hands-on corroboration.",
     "evidenceIds": [
       "vercel-ai-gateway-docs-26",
-      "vercel-ai-gateway-docs-2",
-      "vercel-ai-gateway-docs-33",
       "vercel-ai-gateway-docs-34",
-      "vercel-ai-gateway-docs-28"
+      "vercel-ai-gateway-docs-33",
+      "vercel-ai-gateway-docs-2"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can make tool and function calls across different providers with a consistent schema",
+      "citations": [
+        {
+          "evidenceId": "vercel-ai-gateway-docs-26",
+          "quote": "const agent = new ToolLoopAgent({\n  model: 'anthropic/claude-sonnet-5',\n  tools: {\n    getWeather: tool({"
+        },
+        {
+          "evidenceId": "vercel-ai-gateway-docs-34",
+          "quote": "AI Gateway provides OpenAI Chat Completions API endpoints, letting you use multiple AI providers through a familiar interface."
+        },
+        {
+          "evidenceId": "vercel-ai-gateway-docs-33",
+          "quote": "The AI Gateway's unified API provides flexibility, allowing you to switch between different AI models and providers without rewriting parts of your application."
+        }
+      ]
+    },
     "productId": "vercel-ai-gateway",
     "storyId": "tool-call-fidelity"
   }

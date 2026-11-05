@@ -1,23 +1,48 @@
 {
-  "hash": "5f3a3df8baaf598c0c25f4673feb925a67020fe57fa4bc880d721b4cbcf7b867",
+  "hash": "e2d95b4e719734c5ee67397139d226fddc2b18790a189387d3d55223c9f28fd4",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Lium documents several first-party ways to rent a GPU on demand: CLI `lium up --gpu H100`, the API `POST /executors/rent-by-spec`, a create-pod flow with Jupyter, and an SDK that runs a function on a rented node. Code can then run via `lium exec`, root and Docker-in-Docker, so the provisioning-to-running path is clearly covered. The OpenAPI probe 404s only hit docs.lium.io paths; the spec is documented at lium.io/api/openapi.json, so it is not a contradiction. missing for 10: evidence of time-to-running (the 'within minutes' claim), independent or hands-on corroboration of the provisioning flow.",
+    "rationale": "Lium documents on-demand GPU provisioning through the CLI (`lium up --gpu H100`), the API (`POST /executors/rent-by-spec`) and a create-pod flow. It also documents running code on the pod right away via `lium exec`, the SDK and Jupyter. The openapi probe 404s only hit docs.lium.io paths, while the docs point to lium.io/api/openapi.json, so they do not contradict the API claim. Missing for 10: any evidence of actual time-to-running (the \"within minutes\" part), and independent or hands-on corroboration of the provisioning flow.",
     "evidenceIds": [
       "lium-docs-1",
       "lium-docs-6",
       "lium-docs-15",
-      "lium-docs-17",
-      "lium-docs-20",
-      "lium-docs-22",
       "lium-docs-23",
       "lium-docs-24",
-      "lium-docs-8",
+      "lium-docs-17",
+      "lium-docs-22",
       "lium-probe-3"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can provision an on-demand GPU instance from the console or API and be running code on it within minutes",
+      "citations": [
+        {
+          "evidenceId": "lium-docs-1",
+          "quote": "pip install lium.io && lium up --gpu H100 --ttl 1h"
+        },
+        {
+          "evidenceId": "lium-docs-6",
+          "quote": "rent-by-spec (`POST /executors/rent-by-spec`) that rents the cheapest node matching a GPU spec under a `max_price_per_gpu_hour` ceiling"
+        },
+        {
+          "evidenceId": "lium-docs-23",
+          "quote": "lium exec job \"nvidia-smi\"                              # exits with the remote command's exit code"
+        },
+        {
+          "evidenceId": "lium-docs-24",
+          "quote": "The SDK rents the cheapest matching node, runs the function there, returns the result and removes the pod (or keeps it warm)."
+        },
+        {
+          "evidenceId": "lium-docs-22",
+          "quote": "An agent can do everything on Lium with no browser: sign up, fund, rent, connect and remove pods."
+        }
+      ]
+    },
     "productId": "lium",
     "storyId": "on-demand-gpu-provisioning"
   }

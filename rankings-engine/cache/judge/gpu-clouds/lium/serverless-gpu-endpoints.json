@@ -1,13 +1,33 @@
 {
-  "hash": "7530bc61a95cafab76f1409be05b93fcd5205354a809e1ce55c5c4bdc12c885f",
+  "hash": "b4d6bcaa1a94203316ef0f0d1ccbc2eae381f05c1fe606310ac97d3b10959d60",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "lium",
-    "storyId": "serverless-gpu-endpoints",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "Lium's SDK can rent a node, run a function and remove the pod, but Lium does not offer a serverless worker or endpoint product; renting-and-running a pod is a related feature, which earns no credit under the judge's partial-credit boundary.",
-    "evidenceIds": []
+    "rationale": "Lium's SDK can run a function on an ephemeral GPU node and remove the pod afterward, so you pay nothing once the job ends. That is a serverless-like, scale-to-zero pattern for one-off jobs, but it is not an autoscaling worker pool. The rest of the product is pod rental with TTL or spend-cap auto-deletion. Missing for 10: autoscaling worker pools that scale with request load, persistent serverless endpoints or queues, cold-start and scaling configuration, and independent corroboration.",
+    "evidenceIds": [
+      "lium-docs-24",
+      "lium-docs-2",
+      "lium-docs-1",
+      "lium-docs-13"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can deploy code to autoscaling serverless GPU workers that scale to zero, instead of managing always-on instances",
+      "citations": [
+        {
+          "evidenceId": "lium-docs-24",
+          "quote": "The SDK rents the cheapest matching node, runs the function there, returns the result and removes the pod (or keeps it warm)."
+        },
+        {
+          "evidenceId": "lium-docs-2",
+          "quote": "Your agent starts a pod, runs the job and removes it, within a budget you set."
+        }
+      ]
+    },
+    "productId": "lium",
+    "storyId": "serverless-gpu-endpoints"
   }
 }

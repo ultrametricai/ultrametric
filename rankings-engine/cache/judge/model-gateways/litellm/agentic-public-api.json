@@ -1,11 +1,11 @@
 {
-  "hash": "c90f5725dffe43088f63b051ade4e0e8f55b4f264fd7b196c694f2c3d0044af0",
+  "hash": "b0c39bfc289003bf6796911b2fb5dcd07c8d1d54fc4ddaefd895989118929816",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
-    "quality": 7,
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "LiteLLM documents a unified `completion()` interface and an OpenAI-compatible proxy API. A maintainer confirms streaming and function-calling work the same as with the openai-python SDK. The docs also cover REST endpoints such as `/mcp-rest/tools/list` and `/mcp-rest/tools/call`, callable with curl, plus JSON-driven team, key and budget management on the proxy. Missing for 10: a published OpenAPI/Swagger spec (all probed paths returned 404), explicit reference docs for the admin/management API endpoints (only implied by JSON payload examples), and independent hands-on corroboration of driving the full product via API.",
+    "rationale": "LiteLLM is built around a documented programmatic interface. Its docs cover a single completion() interface across providers and OpenAI-format responses. They also document a drop-in OpenAI-compatible proxy, REST endpoints for MCP tools callable with curl, and JSON payloads for team and budget management, and a maintainer confirmed the proxy supports streaming and function-calling like the openai-python SDK. missing for 10: no machine-readable OpenAPI/Swagger spec was found (all probed paths returned 404), admin endpoints for keys, teams and users are only thinly evidenced through config/JSON snippets, and there is no independent hands-on verification of the API surface.",
     "evidenceIds": [
       "litellm-docs-1",
       "litellm-docs-2",
@@ -16,6 +16,33 @@
       "litellm-comm-13",
       "litellm-probe-3"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can drive the product through a documented public API",
+      "citations": [
+        {
+          "evidenceId": "litellm-docs-1",
+          "quote": "Call any provider using the same completion() interface, with no API to re-learn for each one"
+        },
+        {
+          "evidenceId": "litellm-docs-2",
+          "quote": "Every response follows the OpenAI Chat Completions format, regardless of provider."
+        },
+        {
+          "evidenceId": "litellm-gh-1",
+          "quote": "Drop-in OpenAI compatibility — swap providers without rewriting your code"
+        },
+        {
+          "evidenceId": "litellm-docs-33",
+          "quote": "call tools with curl without an LLM"
+        },
+        {
+          "evidenceId": "litellm-docs-8",
+          "quote": "Track Spend, and control model access via virtual keys for the proxy"
+        }
+      ]
+    },
     "productId": "litellm",
     "storyId": "agentic-public-api"
   }

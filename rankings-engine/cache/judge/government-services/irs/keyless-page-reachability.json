@@ -1,23 +1,45 @@
 {
-  "hash": "47711802d2e164b3c7fcd10953e21590a8d26fb3eb2ceb5bb74362a451a1f7ef",
+  "hash": "6203b6e2d36b95cfb8c4b5d8445feb51ca4555d6dc22e8e83729b6edc0e1e619",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Many irs.gov guidance pages yielded verbatim quoted content to the pipeline: the EIN page, SS-4 filing addresses, the MeF overview, the e-file provider page, IRIS, the account-creation page, the Pub 525 update and mobile-friendly forms. That indicates the public reading surface serves server-rendered text without a bot wall or CAPTCHA. The content host also returns ordinary 404s rather than challenge pages. The only 403 observed was the signed Form 15620 application flow, which sits behind sign-in and is not part of the guidance reading surface. Missing for 10: an explicit probe recording HTTP 200 on a guidance page with an identified user agent, the robots.txt policy for the www.irs.gov content host, and direct confirmation that the pages are not JS-dependent.",
+    "rationale": "The pipeline retrieved verbatim body text from many irs.gov guidance pages: the EIN page, the SS-4 filing addresses, the MeF overview, the e-file provider enrollment page, IRIS, the Pub 525 update and mobile-friendly forms. That shows the public reading surface served real HTML content to a keyless agent, not a JS-only shell or CAPTCHA. The only denials observed were the 403 on the /dmaf signed-form entry and the 503 on the app-host robots.txt; both are transactional or app hosts, not guidance pages, and the 404s on llms.txt and .md were normal server responses rather than bot walls. Missing for 10: an explicit HTTP-200 probe record of a guidance page under the identified UA, independent corroboration across repeated or bulk fetches, and confirmation that no rate-based bot challenge appears at scale.",
     "evidenceIds": [
+      "irs-docs-1",
+      "irs-docs-2",
+      "irs-docs-3",
+      "irs-docs-8",
       "irs-supp-1",
       "irs-supp-4",
       "irs-supp-5",
-      "irs-supp-8",
-      "irs-supp-9",
       "irs-supp-11",
-      "irs-supp-12",
-      "irs-probe-1",
-      "irs-probe-2",
       "irs-probe-5"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native founder, the service's published guidance pages are reachable by a keyless agent with a standard identified user agent — no bot wall, JS-only shell, or CAPTCHA in front of the public reading surface",
+      "citations": [
+        {
+          "evidenceId": "irs-supp-1",
+          "quote": "This tool is available during the following times (Eastern Time): Mon–Fri: 6:00 a.m. – 1:00 a.m. (next day)"
+        },
+        {
+          "evidenceId": "irs-supp-4",
+          "quote": "Internal Revenue Service, Attn: EIN Operation, Cincinnati, OH 45999, Fax: 855-641-6935"
+        },
+        {
+          "evidenceId": "irs-supp-11",
+          "quote": "You can make the choice by filing a written statement, or Form 15620, Section 83(b) Election, with the Internal Revenue Service Center where you file your return."
+        },
+        {
+          "evidenceId": "irs-supp-5",
+          "quote": "MeF uses the widely accepted Extensible Markup Language (XML) format."
+        }
+      ]
+    },
     "productId": "irs",
     "storyId": "keyless-page-reachability"
   }

@@ -1,11 +1,11 @@
 {
-  "hash": "cfdb874c8c8384e06d7ed7461918bc36cd04d9dfb033a90f55b42a72ad99ab6d",
+  "hash": "91af0db102ed4261e01c26a8c6d81395070aeeefe4b8407c01a9e26b850ebf27",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
-    "quality": 7,
-    "confidence": "medium",
-    "rationale": "The BYOK docs say AI Gateway can authenticate requests with your own provider credentials at no markup, and the `byok` option in `providerOptions.gateway` lets you pass different credentials per request. Two caveats temper this: the docs say failed queries are retried with Vercel's system credentials, so not all traffic is guaranteed to use your keys, and a community report says BYOK requests appear to be blocked when the Vercel account balance hits $0. missing for 10: documentation of team/project-level key configuration, a way to force BYOK-only traffic with no fallback to system credentials, independent hands-on confirmation, and clarity on whether BYOK depends on account balance.",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "First-party BYOK docs say AI Gateway authenticates requests with your own provider credentials at no markup, and that credentials can also be passed per request via the byok option in providerOptions.gateway. Two caveats: failed queries are retried with Vercel's system credentials, and a community report says BYOK requests are blocked when the Vercel account balance hits $0. Missing for 10: details on how keys are stored and configured at team level, a guarantee that traffic stays on the user's keys without system-credential fallback, and independent hands-on confirmation that BYOK works without dependence on account balance.",
     "evidenceIds": [
       "vercel-ai-gateway-docs-37",
       "vercel-ai-gateway-docs-27",
@@ -13,6 +13,25 @@
       "vercel-ai-gateway-docs-6",
       "vercel-ai-gateway-comm-1"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can bring my own provider API keys and have the gateway use them for my traffic",
+      "citations": [
+        {
+          "evidenceId": "vercel-ai-gateway-docs-37",
+          "quote": "Using your own credentials with an external AI provider allows AI Gateway to authenticate requests on your behalf with no added markup."
+        },
+        {
+          "evidenceId": "vercel-ai-gateway-docs-27",
+          "quote": "you can pass provider credentials on a per-request basis using the byok option in providerOptions.gateway."
+        },
+        {
+          "evidenceId": "vercel-ai-gateway-docs-6",
+          "quote": "Tokens cost the same as they would from the provider directly, with zero markup, including with [Bring Your Own Key (BYOK)]"
+        }
+      ]
+    },
     "productId": "vercel-ai-gateway",
     "storyId": "byok"
   }

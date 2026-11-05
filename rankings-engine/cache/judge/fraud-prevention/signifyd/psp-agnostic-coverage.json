@@ -1,18 +1,36 @@
 {
-  "hash": "bdf91e2d26ba64cb02cc42da2b29aaa5e8ec87002bae4f365e29ba448e01b8a0",
+  "hash": "94d947a239be3d71952bdac3f1dd4d0bcf3c5e8462d906b0ab220c38e5783485",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 6,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Signifyd's REST API is processor-independent. Merchants call Checkout before sending authorization to \"your payment processor\"/\"your Payment Gateway\" (pre-auth), or call Sale after the processor authorizes (post-auth), so integration does not depend on any one processor's rails. Missing for 10: no named list of supported PSPs, gateways, or e-commerce platform integrations; no explicit documentation of multi-PSP setups; no independent or hands-on corroboration.",
+    "rationale": "Signifyd's REST API sits outside the payment flow. Docs say to call Checkout before \"your Payment Gateway\" (pre-auth) or Sale after \"your payment processor\" authorizes (post-auth), which implies it is not tied to any one processor's rails. Multi-PSP support is only implied by this generic wording, not stated outright. missing for 10: an explicit list of supported PSPs/gateways or e-commerce platform connectors, documentation of running multiple processors at once, and independent or hands-on corroboration.",
     "evidenceIds": [
       "signifyd-docs-21",
       "signifyd-docs-22",
       "signifyd-docs-3",
-      "signifyd-docs-2",
       "signifyd-docs-1"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can use the product across whatever payment stack I run — multiple PSPs, gateways, and platforms — rather than being locked to one processor's rails",
+      "citations": [
+        {
+          "evidenceId": "signifyd-docs-21",
+          "quote": "prior to sending the payment authorization to your payment processor use the Checkout API to submit the order and payment details to Signifyd for fraud review"
+        },
+        {
+          "evidenceId": "signifyd-docs-22",
+          "quote": "after the order has been authorized by your payment processor use the Sale API to submit the order and transaction details to Signifyd for fraud review"
+        },
+        {
+          "evidenceId": "signifyd-docs-3",
+          "quote": "This call should be made _before_ calling your Payment Gateway."
+        }
+      ]
+    },
     "productId": "signifyd",
     "storyId": "psp-agnostic-coverage"
   }

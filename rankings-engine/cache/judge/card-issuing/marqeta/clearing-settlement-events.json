@@ -1,19 +1,42 @@
 {
-  "hash": "95c6b0dcd1f439d312dada7182b7760b46cfc2faddfcc2b55c264077f0c650e1",
+  "hash": "c39e8aa4495e8677daf5569bfa71ba3a4b5ec3d8fd1f16711fdc1bf06a9f926b",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Marqeta documents first-party webhooks delivered to an endpoint you host [marqeta-docs-9, marqeta-docs-20]. It also treats reversals as distinct transaction event types [marqeta-docs-10, marqeta-docs-19], offers transaction retrieval endpoints [marqeta-docs-7], and has a dispute /cases API [marqeta-docs-22]. That shows the programmatic foundation for post-auth handling, but nothing confirms which post-auth events are pushed as webhooks. Missing for 10: explicit webhook event types for clearing, refund, reversal and chargeback; documented stable transaction identifiers linking auth to post-auth events; any reconciliation or ledger-drift guidance; independent or hands-on corroboration.",
+    "rationale": "Marqeta documents registrable outbound webhooks that send notifications about API events to an endpoint in your environment. Reversals are documented as distinct transaction event types, and disputes are managed through the /cases endpoint. However, the evidence never shows clearings, refunds, or chargebacks delivered as webhooks, and never shows stable transaction identifiers linking post-auth events back to the original authorization. Missing for 10: documented webhook event types for clearing, refund, reversal, and chargeback; stable transaction identifiers or lineage across events; reconciliation guidance; independent or hands-on corroboration.",
     "evidenceIds": [
-      "marqeta-docs-9",
       "marqeta-docs-20",
+      "marqeta-docs-9",
       "marqeta-docs-10",
       "marqeta-docs-19",
-      "marqeta-docs-7",
-      "marqeta-docs-22"
+      "marqeta-docs-22",
+      "marqeta-docs-7"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, post-auth events are as programmatic as auth — clearings, refunds, reversals, and chargebacks arrive as webhooks with stable transaction identifiers, so my own ledger never drifts",
+      "citations": [
+        {
+          "evidenceId": "marqeta-docs-20",
+          "quote": "Webhooks are notifications about API events, sent as they occur. The Marqeta platform sends these notifications to an endpoint that is hosted in your environment"
+        },
+        {
+          "evidenceId": "marqeta-docs-10",
+          "quote": "simulate various types of card network transactions, such as authorizations, reversals, and balance inquiries"
+        },
+        {
+          "evidenceId": "marqeta-docs-19",
+          "quote": "Each endpoint is its own event type."
+        },
+        {
+          "evidenceId": "marqeta-docs-22",
+          "quote": "Use the `/cases` endpoint to manage transaction disputes on the Mastercard network."
+        }
+      ]
+    },
     "productId": "marqeta",
     "storyId": "clearing-settlement-events"
   }

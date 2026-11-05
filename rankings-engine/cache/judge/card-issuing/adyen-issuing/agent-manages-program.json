@@ -1,24 +1,43 @@
 {
-  "hash": "e813e262a0dbe6c8509a598d875100cc9d64990bad8c95c47db52254b55218ef",
+  "hash": "6b9d55ca1c11df34e3f9d0cfe572c0afe566b18b569ee7be26c278c9c64e817a",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Adyen documents API-driven card creation (paymentInstrument resource) and card updates via /paymentInstruments/{id}, including activate, suspend, close and relinking the balance account. Transaction rules give spend controls, and per-card balances plus payment webhooks exist, so an agent could drive the core of a card program through the API. However, transaction viewing is documented only in the Customer Area UI, there is no MCP surface or scoped-credential model in evidence, and no OpenAPI spec was found by the probe (an llms.txt does exist). Missing for 10: an MCP server, scoped/least-privilege API credentials, explicit API endpoints for reading balances and transactions, explicit API management of transaction rules, and independent corroboration of agent use.",
+    "rationale": "Adyen Issuing documents API-driven card creation (paymentInstrument resource), card updates via /paymentInstruments/{id}, card lifecycle states, and transaction rules for spend controls, so an agent could operate much of the card program through the API. Transaction visibility is documented only through the Customer Area UI and payment/transfer webhooks, not a read API. missing for 10: an MCP surface, documented scoped or least-privilege API credentials for agents, explicit API endpoints for reading balances and transactions, and independent or hands-on corroboration.",
     "evidenceIds": [
       "adyen-issuing-docs-15",
       "adyen-issuing-docs-11",
       "adyen-issuing-docs-16",
       "adyen-issuing-docs-10",
-      "adyen-issuing-docs-3",
       "adyen-issuing-docs-23",
       "adyen-issuing-docs-4",
-      "adyen-issuing-docs-35",
-      "adyen-issuing-docs-20",
-      "adyen-issuing-probe-1",
-      "adyen-issuing-probe-3"
+      "adyen-issuing-docs-35"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, an agent can operate my card program — read balances and transactions, create and update cards, and adjust spend controls through the API or an MCP surface with scoped credentials",
+      "citations": [
+        {
+          "evidenceId": "adyen-issuing-docs-15",
+          "quote": "To issue a card, create a **paymentInstrument** resource."
+        },
+        {
+          "evidenceId": "adyen-issuing-docs-11",
+          "quote": "To update the balance account ID, make a /paymentInstruments/{id} request and send the new balanceAccountId."
+        },
+        {
+          "evidenceId": "adyen-issuing-docs-23",
+          "quote": "You can use transaction rules to configure a logic that automatically declines an authorization that does not meet your business' requirements."
+        },
+        {
+          "evidenceId": "adyen-issuing-docs-35",
+          "quote": "These webhooks inform you when a merchant initiates a payment, and when funds have been added to or deducted from balance accounts."
+        }
+      ]
+    },
     "productId": "adyen-issuing",
     "storyId": "agent-manages-program"
   }

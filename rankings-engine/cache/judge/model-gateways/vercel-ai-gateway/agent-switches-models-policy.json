@@ -1,20 +1,46 @@
 {
-  "hash": "d534ff02791bbd62a3de67f4344771f622b7f39624242e41d4654883c653c30b",
+  "hash": "fcbcf2d0b0849c2db1bb1c5fa3f8e44992becc85e4f24cab73501c953abcee8c",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "The gateway documents policy-driven routing rules at the provider level. `order`, `only`, and `sort` in providerOptions.gateway can rank providers by a cost or performance metric. It also automatically retries other providers when one fails, supports per-provider timeouts for fast failover, and by default picks providers by uptime and latency. However, these rules route among providers serving a chosen model; switching the model itself is shown only as the caller changing the model ID through the unified API, not as a gateway rule. Missing for 10: gateway-level model fallback or model-switching rules, capability-based routing policy, evidence of mid-task model switching for agents, independent or hands-on corroboration.",
+    "rationale": "AI Gateway documents its own routing controls. `order`, `only`, and `sort` in providerOptions.gateway can rank providers by cost or performance, and it automatically retries or fails over to other providers when one fails or times out, which covers the cost and availability policies at the provider level. The evidence describes provider selection for a request, though, not switching to a different model mid-task by policy, and there is no capability-based routing. Missing for 10: documented model-level (not just provider-level) fallback or switching rules, capability-based routing policies, and independent or hands-on corroboration of policy-driven switching mid-task.",
     "evidenceIds": [
       "vercel-ai-gateway-docs-9",
       "vercel-ai-gateway-docs-29",
-      "vercel-ai-gateway-docs-10",
       "vercel-ai-gateway-docs-3",
+      "vercel-ai-gateway-docs-10",
       "vercel-ai-gateway-docs-35",
-      "vercel-ai-gateway-docs-24",
-      "vercel-ai-gateway-docs-33"
+      "vercel-ai-gateway-docs-24"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, my agent can switch models mid-task by policy — cost, capability, or availability — through gateway routing rules",
+      "citations": [
+        {
+          "evidenceId": "vercel-ai-gateway-docs-9",
+          "quote": "You can use `order`, `only`, and `sort` in `providerOptions.gateway` to control which providers handle your requests, in what order, and how they are ranked."
+        },
+        {
+          "evidenceId": "vercel-ai-gateway-docs-29",
+          "quote": "You can also use `sort` to rank providers by a performance or cost metric. The gateway sorts providers by the chosen metric and tries them in that order"
+        },
+        {
+          "evidenceId": "vercel-ai-gateway-docs-3",
+          "quote": "Automatically retries requests to other providers if one fails"
+        },
+        {
+          "evidenceId": "vercel-ai-gateway-docs-10",
+          "quote": "You can set per-provider timeouts to trigger fast failover when a provider is slow to respond."
+        },
+        {
+          "evidenceId": "vercel-ai-gateway-docs-24",
+          "quote": "AI Gateway routes requests, manages fallbacks and budgets"
+        }
+      ]
+    },
     "productId": "vercel-ai-gateway",
     "storyId": "agent-switches-models-policy"
   }

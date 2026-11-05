@@ -1,19 +1,36 @@
 {
-  "hash": "25494dc620244c83940c732b3b0c17b7abbd3d11b0743d1d39b21493d9d557a8",
+  "hash": "03174397ddf30666af0b1809e12adfbec82ca486b3bebd46021f1490a1b00131",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 4,
-    "confidence": "medium",
-    "rationale": "CoreWeave documents creating and managing API Access Tokens that grant access to resources like CKS clusters and VPCs, plus per-cluster kubeconfigs. It also supports exchanging an API token for temporary AI Object Storage credentials and group-based bucket policies, which give some scoping at the storage layer. Nothing shows tokens themselves being permission-scoped or least-privilege, or any agent or service-account identity. Missing for 10: token-level permission scoping or roles, service/machine identities for agents, token expiry/rotation controls beyond storage credentials, independent or hands-on corroboration.",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "CoreWeave documents API Access Tokens that grant access to resources such as CKS clusters and VPCs. It also documents exchanging a token for temporary AI Object Storage credentials, with bucket policies that can restrict principals by group membership. That is a narrow, storage-only form of scoped, short-lived credential, not general least-privilege token issuance for an agent. Missing for 10: documented per-token permission scopes or roles, least-privilege restriction of API tokens across services (CKS, Inference, VPC), agent or service-account credential guidance, and any independent corroboration.",
     "evidenceIds": [
       "coreweave-docs-17",
-      "coreweave-docs-26",
-      "coreweave-docs-7",
       "coreweave-docs-38",
       "coreweave-docs-37",
-      "coreweave-docs-35"
+      "coreweave-docs-26"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
+      "citations": [
+        {
+          "evidenceId": "coreweave-docs-17",
+          "quote": "API Access Tokens authenticate users and grant access to resources such as CKS clusters and VPCs."
+        },
+        {
+          "evidenceId": "coreweave-docs-38",
+          "quote": "you can now exchange that token directly for temporary AI Object Storage credentials through the container credentials endpoint."
+        },
+        {
+          "evidenceId": "coreweave-docs-37",
+          "quote": "letting you grant or restrict access based on a principal's group memberships rather than listing individual users."
+        }
+      ]
+    },
     "productId": "coreweave",
     "storyId": "agentic-scoped-keys"
   }

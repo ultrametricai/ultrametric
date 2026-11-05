@@ -1,17 +1,35 @@
 {
-  "hash": "e496080f727bd3df05288d19c1f4250bcc1eb7f671e6f10bc2b9e297ed4ceed4",
+  "hash": "9fd0e49605528fa68b4644fe50dc878e8add00e6aea0c5042a3134b23f202afe",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Jitsu documents recovery when a pipeline breaks: a dead-letter queue with a reprocessing worker lets failed events be replayed instead of lost, Kafka buffers data while a warehouse is in maintenance and delivers it once the warehouse is back, and resent data is deduplicated. Nothing in the evidence shows replaying archived history into a newly added destination. Missing for 10: replay or backfill of archived events into a new destination, documented replay controls such as time ranges and target selection, and independent or hands-on corroboration.",
+    "rationale": "Jitsu documents recovery when a pipeline breaks. A dead-letter queue with a reprocessing worker lets failed events be replayed, and Kafka buffers data while a warehouse is offline and delivers it once the warehouse is back. Deduplication makes resending the same data safe. Nothing in the evidence shows replaying archived history into a newly added destination. Missing for 10: replay of archived events into a new destination, backfill of historical data when a tool is added, documented replay controls such as time ranges, independent hands-on corroboration.",
     "evidenceIds": [
       "jitsu-docs-16",
       "jitsu-docs-8",
-      "jitsu-docs-72",
       "jitsu-docs-9"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a data engineer, I can replay archived events into a new destination or backfill history when a tool is added or a pipeline breaks",
+      "citations": [
+        {
+          "evidenceId": "jitsu-docs-16",
+          "quote": "Dead-letter queue with a reprocessing worker: failed events can be replayed instead of lost."
+        },
+        {
+          "evidenceId": "jitsu-docs-8",
+          "quote": "Jitsu will keep your data in a Kafka and deliver it once the warehouse is back online"
+        },
+        {
+          "evidenceId": "jitsu-docs-9",
+          "quote": "Send same data as many times as you want. Jitsu will deduplicate it for you"
+        }
+      ]
+    },
     "productId": "jitsu",
     "storyId": "event-replay-backfill"
   }

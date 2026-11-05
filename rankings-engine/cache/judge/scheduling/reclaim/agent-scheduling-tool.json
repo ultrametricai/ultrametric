@@ -1,15 +1,30 @@
 {
-  "hash": "7dc0d661388ec9d6aebb1d34aaa956a9f7ddf4505a7a50850a43917ea9523551",
+  "hash": "d3b4c45eba7f6c81ab83af37bda2b25067aefb0297e290e8f985716a47e6e8e9",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Runtime probes confirm a live, first-party remote MCP server at mcp.reclaim.ai. It is OAuth-gated per the MCP spec and publishes RFC 9728 discovery metadata with read/write/mcp scopes, so agents can plausibly use the scheduling account as a tool. However, no vendor documentation was found, and the probes stop at the auth handshake, so the exposed tools are unverified. Missing for 10: documentation of the MCP server, evidence of which tools it exposes (availability, bookings, scheduling-link/event types), and hands-on or independent confirmation of tool calls working end to end.",
+    "rationale": "Runtime probes show Reclaim runs a live, first-party remote MCP server at mcp.reclaim.ai. It is gated by the spec-compliant MCP OAuth flow and publishes discovery metadata with read/write/mcp scopes, so agents can plausibly connect to the account as a tool. However, no vendor documentation describes the server, and the evidence never shows which tools it exposes. missing for 10: documented tool list covering availability, bookings, and event types; first-party docs for the MCP server; independent hands-on corroboration of tool calls working.",
     "evidenceIds": [
       "reclaim-probe-rt-1",
       "reclaim-probe-rt-2"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, agents can use my scheduling account as a tool — an MCP server or tool-calling surface exposes availability, bookings, and event types",
+      "citations": [
+        {
+          "evidenceId": "reclaim-probe-rt-1",
+          "quote": "a live, auth-gated MCP endpoint on the vendor's own domain speaking the per-spec MCP OAuth flow"
+        },
+        {
+          "evidenceId": "reclaim-probe-rt-2",
+          "quote": "the server publishes its own OAuth discovery document with read/write/mcp scopes"
+        }
+      ]
+    },
     "productId": "reclaim",
     "storyId": "agent-scheduling-tool"
   }

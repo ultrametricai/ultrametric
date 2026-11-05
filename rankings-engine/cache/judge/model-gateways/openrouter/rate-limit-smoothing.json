@@ -1,20 +1,31 @@
 {
-  "hash": "b58c9cb4010ca4bacaaff240831cf0c366a4e9b71bdb592b548e058d89be3755",
+  "hash": "22a58dcab9d88d9851a7ec5db18e7b905ca7e12e0e2424857fd36426a0d81ec0",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "OpenRouter softens provider rate limits by load-balancing requests across the top providers by default and by falling back to other models when a provider is rate-limited. BYOK gives direct control over provider rate limits, and the key-management API supports minting and rotating keys. However, nothing shows traffic being spread across multiple keys for the same provider, or any request queuing or throttling. Missing for 10: multi-key traffic distribution per provider, request queuing/throttling controls, independent hands-on corroboration of rate-limit smoothing.",
+    "rationale": "OpenRouter itself mitigates provider rate limits by load balancing requests across top providers and by automatically falling back when a primary model's providers are rate-limited. Nothing documents spreading traffic across multiple keys or any request queuing or throttling, so only the rate-limit-smoothing core is covered. Missing for 10: multi-key traffic distribution, request queuing, client/server-side throttling controls, independent corroboration of rate-limit handling.",
     "evidenceIds": [
       "openrouter-docs-4",
       "openrouter-docs-3",
-      "openrouter-docs-19",
-      "openrouter-docs-9",
-      "openrouter-docs-8",
-      "openrouter-docs-44",
-      "openrouter-comm-2"
+      "openrouter-docs-38"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform engineer, I can smooth provider rate limits by spreading traffic across keys and queuing or throttling requests",
+      "citations": [
+        {
+          "evidenceId": "openrouter-docs-4",
+          "quote": "By default, requests are load balanced across the top providers to maximize uptime."
+        },
+        {
+          "evidenceId": "openrouter-docs-3",
+          "quote": "The models parameter lets you automatically try other models if the primary model's providers are down, rate-limited, or refuse to reply due to content moderation."
+        }
+      ]
+    },
     "productId": "openrouter",
     "storyId": "rate-limit-smoothing"
   }

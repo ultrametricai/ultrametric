@@ -1,21 +1,46 @@
 {
-  "hash": "488d344bbcf9a336fa17ab32aa7b3c76f49648d5a60cb125f961f700fb9dd704",
+  "hash": "1ccbc20f219a07c3b472d28fe1c1f7c2cf779e275479281f9564848cf4cbbcad",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "First-party docs describe a dedicated fallbacks feature on the Universal endpoint. It sends a request to one provider (e.g. Workers AI) and proceeds to another (e.g. OpenAI) on failure. Fallback triggers on request errors or predetermined timeouts, and the `cf-aig-step` header reports which step served the request. Dynamic Routing adds configurable fallback flows, set up through a visual or JSON configuration, that can be changed without touching application code. Missing for 10: independent or hands-on corroboration that fallback works as documented.",
+    "rationale": "First-party docs describe configurable model and provider fallbacks on the Universal endpoint. Fallback triggers on request errors or predetermined timeouts, with an ordered chain (e.g. Workers AI, then OpenAI). The cf-aig-step response header reports which step served the request, and Dynamic Routing can also compose fallbacks without code changes. Missing for 10: independent or hands-on corroboration that fallback behaves as documented.",
     "evidenceIds": [
-      "cloudflare-ai-gateway-docs-7",
-      "cloudflare-ai-gateway-docs-8",
-      "cloudflare-ai-gateway-docs-20",
-      "cloudflare-ai-gateway-docs-17",
       "cloudflare-ai-gateway-docs-33",
-      "cloudflare-ai-gateway-docs-37",
-      "cloudflare-ai-gateway-docs-11",
-      "cloudflare-ai-gateway-docs-38"
+      "cloudflare-ai-gateway-docs-20",
+      "cloudflare-ai-gateway-docs-8",
+      "cloudflare-ai-gateway-docs-17",
+      "cloudflare-ai-gateway-docs-7",
+      "cloudflare-ai-gateway-docs-37"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a platform engineer, I can configure automatic fallback to another model or provider when one fails",
+      "citations": [
+        {
+          "evidenceId": "cloudflare-ai-gateway-docs-33",
+          "quote": "Specify model or provider fallbacks with your Universal endpoint to handle request failures and ensure reliability."
+        },
+        {
+          "evidenceId": "cloudflare-ai-gateway-docs-20",
+          "quote": "Cloudflare can trigger your fallback provider in response to request errors or predetermined request timeouts."
+        },
+        {
+          "evidenceId": "cloudflare-ai-gateway-docs-8",
+          "quote": "If that request fails, proceeds to OpenAI."
+        },
+        {
+          "evidenceId": "cloudflare-ai-gateway-docs-17",
+          "quote": "the response header `cf-aig-step` indicates which model successfully processed the request by returning the step number."
+        },
+        {
+          "evidenceId": "cloudflare-ai-gateway-docs-37",
+          "quote": "with Dynamic Routing you compose a small flow that evaluates conditions, enforces quotas, and chooses models with fallbacks."
+        }
+      ]
+    },
     "productId": "cloudflare-ai-gateway",
     "storyId": "automatic-fallbacks"
   }

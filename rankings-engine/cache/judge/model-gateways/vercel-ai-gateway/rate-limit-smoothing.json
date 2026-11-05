@@ -1,18 +1,18 @@
 {
-  "hash": "0165ef6ba15e62cd721cfce02838c0369075d927ccf8cdcd85a036147f636eb4",
+  "hash": "a6d0818362df1342ea096ecaf0ae100a449a73058957cf22187f905a2ffa0407",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "partial",
-    "quality": 3,
+    "verdict": "none",
+    "quality": 0,
     "confidence": "medium",
-    "rationale": "AI Gateway softens provider failures indirectly. It retries failed requests on other providers, falls back to its own system credentials when a BYOK request fails, and lets you pass different credentials per request, so key spreading is possible only if your application handles it. Nothing in the evidence shows rate-limit-aware load balancing across a key pool, or any request queuing or throttling. Missing for 10: native multi-key pooling or round-robin across keys, request queuing, throttling or rate shaping, explicit handling of provider 429 rate-limit errors, independent corroboration.",
-    "evidenceIds": [
-      "vercel-ai-gateway-docs-3",
-      "vercel-ai-gateway-docs-13",
-      "vercel-ai-gateway-docs-27",
-      "vercel-ai-gateway-docs-9",
-      "vercel-ai-gateway-docs-35"
-    ],
+    "rationale": "The evidence documents provider failover, provider ordering and sorting, per-request BYOK credentials, and spend budgets. None of these is rate-limit smoothing. There is no documented pooling or spreading of traffic across multiple keys, and no request queuing or throttling. Per-request BYOK credentials are only a building block a developer could use to rotate keys manually, and failover belongs to a separate resilience story.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a platform engineer, I can smooth provider rate limits by spreading traffic across keys and queuing or throttling requests",
+      "citations": []
+    },
     "productId": "vercel-ai-gateway",
     "storyId": "rate-limit-smoothing"
   }

@@ -1,19 +1,37 @@
 {
-  "hash": "20811790b00df216dc45a69896d4b0b697a80b4dee44f49eb5e1341f70354f51",
+  "hash": "19f82ac04edf3f40ab503b6b94a8a60b1392ed09323727b642c578b867c54f29",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Riskified documents automated decision notifications pushed to a merchant-defined endpoint when orders are approved or declined, with retries on non-2xx responses. The post-auth /submit and Magento flows rely on this pre-configured notification URL, and requests carry an HMAC-SHA256 verification header. Missing for 10: a broader event catalog beyond order decisions (e.g. chargeback or login events), self-service subscription management per event type, explicit confirmation that HMAC signing applies to outbound notifications, and independent hands-on corroboration.",
+    "rationale": "Riskified documents real outbound HTTP callbacks. It sends automated decision notifications to a merchant-defined, pre-configured notification URL and retries delivery on non-2xx responses, and the async /submit flow relies on this. However, the event scope is limited to order approve/decline decisions, and how a consumer registers or manages subscriptions is not documented. Missing for 10: a broader event catalog beyond order decisions, documented self-service webhook registration and subscription management, explicit signature verification for outbound notifications, and independent or hands-on corroboration.",
     "evidenceIds": [
       "riskified-docs-8",
       "riskified-docs-18",
       "riskified-docs-2",
-      "riskified-docs-23",
-      "riskified-docs-34",
-      "riskified-docs-7"
+      "riskified-docs-14",
+      "riskified-docs-34"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can subscribe to events via webhooks",
+      "citations": [
+        {
+          "evidenceId": "riskified-docs-8",
+          "quote": "Riskified can send automated decision notifications to a merchant-defined endpoint when an order is approved or declined... If the endpoint responds with a non-2xx HTTP status code, Riskified retries delivery"
+        },
+        {
+          "evidenceId": "riskified-docs-2",
+          "quote": "the fraud decision is returned via your pre-configured notification URL"
+        },
+        {
+          "evidenceId": "riskified-docs-34",
+          "quote": "A complete Magento integration includes two core components: Riskified Magento Extension ... Notification Endpoint"
+        }
+      ]
+    },
     "productId": "riskified",
     "storyId": "agentic-webhooks"
   }

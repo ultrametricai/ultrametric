@@ -1,12 +1,31 @@
 {
-  "hash": "7b4306ff762d069a5e5a9a0f65abb83dd216b8d2d283e4527f9b3729c364fe08",
+  "hash": "5229adbe1324866e84daa10a061372332016b1f9867e206ab0e1aab60ffd2918",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Runpod documents a REST API v1 and a GraphQL API, but nothing in the evidence shows a downloadable OpenAPI, Swagger, GraphQL SDL or equivalent spec file. The probe found all common OpenAPI/Swagger paths on docs.runpod.io returning 404. The llms.txt file is documentation for LLMs, not a machine-readable API specification.",
-    "evidenceIds": [],
+    "rationale": "A runtime probe confirms Runpod serves an OpenAPI spec for its REST API v1 at https://rest.runpod.io/v1/openapi.json without needing an API key, and the docs describe that REST API as covering all compute resources. The probe finding 404s on docs.runpod.io candidate paths does not contradict this, since the spec lives on the API host rather than the docs host. Missing for 10: first-party documentation advertising the spec URL or download, independent corroboration beyond the single probe, and evidence about the spec's completeness or versioning (e.g., GraphQL schema coverage).",
+    "evidenceIds": [
+      "runpod-probe-rt-4",
+      "runpod-docs-8",
+      "runpod-probe-2"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
+      "citations": [
+        {
+          "evidenceId": "runpod-probe-rt-4",
+          "quote": "https://rest.runpod.io/v1/openapi.json serves the REST API's OpenAPI spec keylessly"
+        },
+        {
+          "evidenceId": "runpod-docs-8",
+          "quote": "The Runpod REST API v1 provides programmatic access to all Runpod compute resources."
+        }
+      ]
+    },
     "productId": "runpod",
     "storyId": "api-machine-spec"
   }

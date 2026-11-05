@@ -1,20 +1,37 @@
 {
-  "hash": "277aee5fada4fdd2fa3967065e9972d314a340cc07503285f016005d67bf3315",
+  "hash": "7383a53c8d9c259a3cb481c6de94427e00d2f2ce215c86ab83ac340735c1dec0",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "AI Gateway documents gateway-level rate limiting (requests per time window, fixed or sliding), and Dynamic Routing can enforce per-user, project or team quotas and split traffic for A/B or gradual rollouts. Fallbacks on errors or timeouts can absorb provider failures. This throttles traffic and spreads it across models or providers, but nothing in the evidence covers distributing load across multiple API keys for one provider or queuing requests. missing for 10: multi-key load balancing/rotation for a single provider, request queuing/backoff behavior, explicit handling of provider 429 rate-limit responses, independent or hands-on corroboration.",
+    "rationale": "AI Gateway documents its own request rate limiting, such as 100 requests per 60 seconds with fixed or sliding windows. Dynamic routing can also enforce per-user, project or team quotas, so you can throttle traffic before it reaches providers. There is no evidence of spreading traffic across multiple API keys, or of queuing rather than rejecting excess requests; fallbacks and A/B routing spread traffic across models or providers, not keys. Missing for 10: multi-key load balancing, request queuing or backpressure, provider-rate-limit-aware smoothing, hands-on corroboration.",
     "evidenceIds": [
       "cloudflare-ai-gateway-docs-5",
       "cloudflare-ai-gateway-docs-6",
       "cloudflare-ai-gateway-docs-19",
       "cloudflare-ai-gateway-docs-13",
-      "cloudflare-ai-gateway-docs-24",
-      "cloudflare-ai-gateway-docs-37",
-      "cloudflare-ai-gateway-docs-20"
+      "cloudflare-ai-gateway-docs-30"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform engineer, I can smooth provider rate limits by spreading traffic across keys and queuing or throttling requests",
+      "citations": [
+        {
+          "evidenceId": "cloudflare-ai-gateway-docs-19",
+          "quote": "You can define rate limits as the number of requests that get sent in a specific time frame. For example, you can limit your application to 100 requests per 60 seconds."
+        },
+        {
+          "evidenceId": "cloudflare-ai-gateway-docs-6",
+          "quote": "You can also select if you would like a **fixed** or **sliding** rate limiting technique."
+        },
+        {
+          "evidenceId": "cloudflare-ai-gateway-docs-13",
+          "quote": "Restricting each user/project/team with budget/rate limits"
+        }
+      ]
+    },
     "productId": "cloudflare-ai-gateway",
     "storyId": "rate-limit-smoothing"
   }

@@ -1,21 +1,47 @@
 {
-  "hash": "0df025fa1bbc02487a82aa6af1b757807c3b42e191a97bc9b2ae036e310b9bac",
+  "hash": "7b541c6902bde92b23003b794974d12398493d46237cc52e2c17fb68b63d8fcb",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Lium documents programmatic create and terminate: `lium up` with a TTL, `POST /executors/rent-by-spec`, and agents that \"rent, connect and remove pods\". It also bills per second with no minimum and auto-deletes pods by hours, end time or spend cap, so you pay only while a pod exists. There is no evidence of stop/pause or restart; persistent volumes and 6-hourly backups are only a workaround for preserving state between rentals. Missing for 10: documented stop/pause and restart operations, billing behavior for stopped instances, and independent hands-on corroboration of the lifecycle API.",
+    "rationale": "Lium documents starting pods programmatically through the CLI (`lium up`) and API (`rent-by-spec`), and removing them via agents, the SDK, or TTL/spend-cap auto-deletion. Per-second billing with no minimum supports paying only for runtime. However, the evidence never shows a stop/pause or restart operation, and never says how a stopped instance would be billed. Missing for 10: documented stop/pause and restart operations, billing behavior for stopped instances, independent or hands-on corroboration of the lifecycle API.",
     "evidenceIds": [
       "lium-docs-1",
-      "lium-docs-2",
       "lium-docs-6",
-      "lium-docs-13",
-      "lium-docs-15",
       "lium-docs-22",
       "lium-docs-24",
-      "lium-docs-18"
+      "lium-docs-15",
+      "lium-docs-13",
+      "lium-docs-2"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can start, stop, restart, and terminate instances programmatically and keep paying only for what is running",
+      "citations": [
+        {
+          "evidenceId": "lium-docs-1",
+          "quote": "lium up --gpu H100 --ttl 1h# auto-removes after 1h"
+        },
+        {
+          "evidenceId": "lium-docs-22",
+          "quote": "An agent can do everything on Lium with no browser: sign up, fund, rent, connect and remove pods."
+        },
+        {
+          "evidenceId": "lium-docs-6",
+          "quote": "rent-by-spec (`POST /executors/rent-by-spec`) that rents the cheapest node matching a GPU spec under a `max_price_per_gpu_hour` ceiling"
+        },
+        {
+          "evidenceId": "lium-docs-13",
+          "quote": "You pay **per second**: `hourly price × seconds / 3600`, with no minimum."
+        },
+        {
+          "evidenceId": "lium-docs-24",
+          "quote": "The SDK rents the cheapest matching node, runs the function there, returns the result and removes the pod (or keeps it warm)."
+        }
+      ]
+    },
     "productId": "lium",
     "storyId": "instance-lifecycle-management"
   }

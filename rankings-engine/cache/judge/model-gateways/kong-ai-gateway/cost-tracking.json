@@ -1,21 +1,47 @@
 {
-  "hash": "0ba6bf486e0f8d68858c91170215aef396b65c0bef7bbebfdf4002f13ef9cafa",
+  "hash": "abe6d12fc370f281cdbcdeaa046f7b857c1c5959929f2a24344a77dbc01517d5",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Kong's docs say AI Gateway calculates a provider-matching cost for every request and logs it alongside model details and token usage. It aggregates usage analytics across providers in a standardized format, which can be analyzed in Konnect or any OpenTelemetry tool. The docs also cite tracking costs across teams, per-consumer spend limits and chargeback. Missing for 10: explicit documentation of spend breakdowns by API key and by individual user, a documented unified cost dashboard view, and independent or hands-on corroboration.",
+    "rationale": "Kong AI Gateway calculates a provider-matching cost for every LLM request. It records cost alongside model details in standardized logs that aggregate usage analytics across providers, and it documents tracking costs across teams and per-consumer spend and chargeback. However, the docs never show a single view that breaks spend down by model, key, team, and user; the Konnect analytics citation lists requests, tokens, errors, and latency but not cost. missing for 10: explicit per-key and per-user spend breakdown documentation, a documented unified cost dashboard in Konnect (rather than logs or OTel export to other tools), independent or hands-on corroboration.",
     "evidenceIds": [
       "kong-ai-gateway-docs-18",
       "kong-ai-gateway-docs-33",
       "kong-ai-gateway-docs-10",
       "kong-ai-gateway-docs-49",
-      "kong-ai-gateway-docs-9",
       "kong-ai-gateway-docs-21",
-      "kong-ai-gateway-docs-3",
+      "kong-ai-gateway-docs-9",
       "kong-ai-gateway-docs-34"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform engineer, I can track spend per model, key, team, or user across all providers in one place",
+      "citations": [
+        {
+          "evidenceId": "kong-ai-gateway-docs-18",
+          "quote": "AI Gateway calculates that figure for every request to a large language model (LLM) provider, matching what the provider actually bills."
+        },
+        {
+          "evidenceId": "kong-ai-gateway-docs-10",
+          "quote": "AI Gateway logs capture detailed information about the request and response payloads, token usage, model details, latency, and cost metrics."
+        },
+        {
+          "evidenceId": "kong-ai-gateway-docs-49",
+          "quote": "facilitating the aggregation of AI usage analytics across various providers"
+        },
+        {
+          "evidenceId": "kong-ai-gateway-docs-21",
+          "quote": "track costs across teams"
+        },
+        {
+          "evidenceId": "kong-ai-gateway-docs-33",
+          "quote": "budget enforcement, per-consumer spend limits, and chargeback all depend on an accurate cost figure for each request"
+        }
+      ]
+    },
     "productId": "kong-ai-gateway",
     "storyId": "cost-tracking"
   }

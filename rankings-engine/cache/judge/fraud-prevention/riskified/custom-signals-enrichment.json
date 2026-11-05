@@ -1,20 +1,41 @@
 {
-  "hash": "25ae47bdd322147bfccb5f18e33f36655344d07f0298c97730a97f2ddca483e4",
+  "hash": "9151a1acce1405418520bba0ff331536a594ef0ab251e0e43ec48a06c572e8a3",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Riskified ingests device and session data through its own Beacon (web JS and Android) linked by session ID. Merchants send order and transaction data via /decide and /submit. Plaid account data can be added, and Riskified's analytics team calibrates models per account during onboarding. However, there is no evidence that developers can supply their own device fingerprints or arbitrary custom metadata fields that the model then weights. Missing for 10: documented custom-field or merchant-signal ingestion, ability to bring third-party or own device fingerprints, developer-controlled influence on scoring, independent corroboration.",
+    "rationale": "Riskified documents its own Beacon (web and Android) that collects session and device data to feed fraud decisions, and order data sent via /submit or /decide is analyzed. Plaid account data can also be used, and Riskified's analytics team calibrates the models per merchant account. However, nothing shows a developer can supply their own custom fingerprints, behavioral signals or arbitrary metadata fields that change scoring; the device data is collected by Riskified's own tooling, and calibration is done by Riskified staff, not configured by the developer. Missing for 10: documented custom metadata/custom signal fields, a way to bring your own device fingerprints or behavioral data, developer-controlled influence on scoring, and independent corroboration.",
     "evidenceIds": [
       "riskified-docs-6",
-      "riskified-docs-19",
       "riskified-docs-27",
       "riskified-docs-12",
       "riskified-docs-35",
-      "riskified-docs-1",
-      "riskified-docs-2"
+      "riskified-docs-26"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can feed the model my own signals — device fingerprints, behavioral data, custom metadata — so scoring reflects my business, not just network defaults",
+      "citations": [
+        {
+          "evidenceId": "riskified-docs-27",
+          "quote": "providing Riskified with additional user session and device data required for optimal fraud detection"
+        },
+        {
+          "evidenceId": "riskified-docs-6",
+          "quote": "It collects fundamental data required to decide on the legitimacy of an order."
+        },
+        {
+          "evidenceId": "riskified-docs-12",
+          "quote": "your account is handed over to our analytics team who will be transferring and calibrating the models"
+        },
+        {
+          "evidenceId": "riskified-docs-35",
+          "quote": "Riskified has partnered with Plaid to use account data as part of our fraud decisioning."
+        }
+      ]
+    },
     "productId": "riskified",
     "storyId": "custom-signals-enrichment"
   }

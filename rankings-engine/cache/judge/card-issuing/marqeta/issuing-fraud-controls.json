@@ -1,15 +1,30 @@
 {
-  "hash": "a2506963937033405e3af2270970ac2914dc3d6882f334caae24cf7ff27f804b",
+  "hash": "f52fd049e4538e7511433b679ceabb360a12e69567ded015357d4178f68739a1",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 2,
+    "quality": 3,
     "confidence": "low",
-    "rationale": "The only evidence touching this story is the /cardtransitions API, which sets the state of an existing card and is plausibly usable to block a compromised card, though the docs shown do not explicitly mention suspend or terminate states. Velocity controls, authorization controls and JIT funding are spend-control or developer building blocks, not fraud detection, so they earn no credit. Missing for 10: network fraud scores or Marqeta fraud models surfaced at auth time, suspicious-activity alerts, documented card reissue for compromised cards, explicit block/suspend states, and any independent corroboration.",
+    "rationale": "Marqeta's own card-transitions API lets ops change an existing card's state, which plausibly covers blocking a compromised card. Velocity and authorization controls are spend limits rather than fraud detection, and the webhooks are generic API-event notifications rather than suspicious-activity alerts, so neither earns credit. Missing for 10: network or proprietary fraud scores surfaced at auth time, suspicious-activity or fraud alerting, documented card reissue for compromised cards, explicit block/suspend semantics, independent corroboration.",
     "evidenceIds": [
       "marqeta-docs-29",
       "marqeta-docs-30"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an ops user, the platform fights fraud on my issued cards — network fraud scores or its own models surfaced at auth time, suspicious-activity alerts, and tooling to block and reissue compromised cards",
+      "citations": [
+        {
+          "evidenceId": "marqeta-docs-29",
+          "quote": "Use the `/cardtransitions` API to set the state of an existing card."
+        },
+        {
+          "evidenceId": "marqeta-docs-30",
+          "quote": "Creates a card state transition to set the state of an existing card."
+        }
+      ]
+    },
     "productId": "marqeta",
     "storyId": "issuing-fraud-controls"
   }

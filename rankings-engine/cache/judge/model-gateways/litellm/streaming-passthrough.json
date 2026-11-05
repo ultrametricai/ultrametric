@@ -1,18 +1,36 @@
 {
-  "hash": "46fef5acb942fbd7d882dcd121035db80317f72a740fa4dd945d51a16ce1222d",
+  "hash": "dfd5b08105103c0f77adf03f0b2dc6f324914f3397404b29e74e7864a33b15b3",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 6,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "A LiteLLM maintainer confirmed the proxy supports streaming the same way as the openai-python SDK (litellm-comm-13). The docs describe a single completion() interface and OpenAI-format responses across providers (litellm-docs-1, litellm-docs-2, litellm-gh-1), which supports streaming through one gateway regardless of provider. Missing for 10: first-party streaming documentation, explicit evidence that token-by-token streaming works for every provider, and independent hands-on corroboration.",
+    "rationale": "A LiteLLM maintainer confirmed the proxy supports streaming the same way the openai-python SDK does. First-party docs show a unified completion() interface and OpenAI-format responses across providers, which implies streaming works uniformly, but no first-party doc in the pack describes streaming itself. Missing for 10: first-party documentation of streaming through the gateway, evidence that token-by-token streaming works for every provider (chunk normalization), independent hands-on corroboration.",
     "evidenceIds": [
       "litellm-comm-13",
       "litellm-docs-1",
       "litellm-docs-2",
-      "litellm-gh-1",
       "litellm-docs-17"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can stream token-by-token responses through the gateway from any provider",
+      "citations": [
+        {
+          "evidenceId": "litellm-comm-13",
+          "quote": "LiteLLM maintainer confirmed proxy supports streaming and function-calling in the same way as the openai-python SDK"
+        },
+        {
+          "evidenceId": "litellm-docs-1",
+          "quote": "Call any provider using the same completion() interface, with no API to re-learn for each one"
+        },
+        {
+          "evidenceId": "litellm-docs-2",
+          "quote": "Every response follows the OpenAI Chat Completions format, regardless of provider."
+        }
+      ]
+    },
     "productId": "litellm",
     "storyId": "streaming-passthrough"
   }

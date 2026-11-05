@@ -1,16 +1,35 @@
 {
-  "hash": "d5e0fd98aa11b37d8d660383dda01363b9bf862bfb515565e35fc2141b7c2168",
+  "hash": "8013d86308a54c4eba4223b57cbe50a9673bf5b3ee3f8da9c127979ab0a22fea",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Lithic's Authorization Stream Access (ASA) sends each authorization as an HTTP POST, live from the ISO 8583 stream, to a developer endpoint. That endpoint answers with HTTP 200 and its approve/decline decision, which delivers the core real-time decisioning loop. The pack never states the response time budget or a timeout/stand-in fallback the developer can configure. Missing for 10: documented network time budget for the ASA response, documented timeout fallback behavior under developer control, independent or hands-on corroboration.",
+    "rationale": "Lithic's Authorization Stream Access (ASA) delivers each authorization as an HTTP POST to the developer's endpoint, which responds with the approval decision. That covers real-time approve/decline in code. However, the evidence never states the network response time budget or a documented timeout fallback the developer can configure. missing for 10: documented response-time budget, a configurable timeout/stand-in fallback behavior, independent or hands-on corroboration.",
     "evidenceIds": [
       "lithic-docs-2",
       "lithic-docs-16",
       "lithic-docs-19"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can approve or decline each authorization in real time — a webhook or auth-stream endpoint my code answers inside the network's time budget, with a documented timeout fallback I control",
+      "citations": [
+        {
+          "evidenceId": "lithic-docs-2",
+          "quote": "ASA requests are delivered as an HTTP POST request during authorization."
+        },
+        {
+          "evidenceId": "lithic-docs-2",
+          "quote": "Your endpoint should respond with HTTP status 200 and the approval decision"
+        },
+        {
+          "evidenceId": "lithic-docs-16",
+          "quote": "Authorization Stream Access (ASA) provides the ability to make custom transaction approval decisions through an HTTP interface to the ISO 8583 message stream."
+        }
+      ]
+    },
     "productId": "lithic",
     "storyId": "realtime-auth-decisioning"
   }

@@ -1,20 +1,46 @@
 {
-  "hash": "bce0dcddf7fe46843fc2d314e8da450682161049c13ba46a2b39bec2126f0fe7",
+  "hash": "4adb28742c75e127eb97b74737587ecc1d52440d5f3996cbddec32b856f5b3e5",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "LiteLLM's proxy documents spend limits through virtual keys: personal budgets on keys without a team_id, a `max_budget` setting with a `budget_duration` reset, and a proxy-wide budget. It also tracks spend for keys, users and teams, and markets the ability to 'cap it before it runs', which points to enforcement rather than tracking alone. Missing for 10: an explicit team-level `max_budget` example (the team evidence shows only an `rpm_limit`), detailed docs on hard-stop behaviour when a budget is exceeded, and independent or hands-on confirmation that the limits are enforced.",
+    "rationale": "LiteLLM's proxy documents its own spending limits: personal budgets on virtual keys, a proxy-wide max_budget with a budget_duration reset, and marketing that spend is capped 'before it runs'. Spend tracking covers keys, users and teams, but the evidence only shows a team-level rpm_limit, which is a rate limit rather than a dollar budget. Missing for 10: explicit team-level and user-level max_budget configuration, documentation that limits are hard-enforced (requests rejected once over budget), and independent or hands-on corroboration.",
     "evidenceIds": [
       "litellm-docs-7",
       "litellm-docs-25",
       "litellm-docs-35",
-      "litellm-docs-6",
       "litellm-docs-15",
-      "litellm-docs-26",
-      "litellm-docs-8"
+      "litellm-docs-6",
+      "litellm-docs-26"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform engineer, I can set hard budgets and spend limits per key, team, or user",
+      "citations": [
+        {
+          "evidenceId": "litellm-docs-7",
+          "quote": "Personal budgets: Create virtual keys without team_id for individual spending limits"
+        },
+        {
+          "evidenceId": "litellm-docs-35",
+          "quote": "max_budget: 0 # (float) sets max budget as $0 USD  budget_duration: 30d # (str) frequency of reset"
+        },
+        {
+          "evidenceId": "litellm-docs-25",
+          "quote": "Apply a budget across all calls on the proxy"
+        },
+        {
+          "evidenceId": "litellm-docs-15",
+          "quote": "See who is driving spend, cap it before it runs"
+        },
+        {
+          "evidenceId": "litellm-docs-6",
+          "quote": "Track spend for keys, users, and teams across 100+ LLMs."
+        }
+      ]
+    },
     "productId": "litellm",
     "storyId": "budgets-limits"
   }

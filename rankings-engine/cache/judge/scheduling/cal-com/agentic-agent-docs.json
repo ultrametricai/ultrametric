@@ -1,22 +1,43 @@
 {
-  "hash": "5d581f40641df3e63411996087b846dc030f0cc9f212af5bb8e92cf6683ef072",
+  "hash": "2c7764b250d7ec3e31c67a147daccd3e6babece0c19b5c165e3d7165f818c865",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "A probe confirms https://cal.com/llms.txt returns HTTP 200 with a curated product summary aimed at evaluators. Docs pages are served as .md, each pointing to a documentation index at cal.com/docs/llms.txt. A dedicated agents.md page explains how AI agents should check availability, book and use the CLI. Missing for 10: no direct probe of the docs-level llms.txt index itself, and no independent report of an agent actually consuming these files.",
+    "rationale": "Cal.com serves a curated llms.txt, verified live by probe (HTTP 200). Its docs pages are published as .md files that point to a documentation index at cal.com/docs/llms.txt. It also has a dedicated agents.md guide that tells AI agents how to use the API and CLI. Missing for 10: no machine-readable OpenAPI spec at the standard probed paths, and no independent community report of agents actually consuming these docs.",
     "evidenceIds": [
       "cal-com-probe-1",
       "cal-com-probe-2",
       "cal-com-intdir-1",
-      "cal-com-docs-16",
-      "cal-com-docs-43",
       "cal-com-docs-12",
-      "cal-com-docs-18",
       "cal-com-docs-45",
-      "cal-com-docs-46"
+      "cal-com-docs-65",
+      "cal-com-probe-3"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can point an agent at llms.txt or agent-oriented docs",
+      "citations": [
+        {
+          "evidenceId": "cal-com-probe-1",
+          "quote": "PROBE llms.txt: HTTP 200 at https://cal.com/llms.txt"
+        },
+        {
+          "evidenceId": "cal-com-intdir-1",
+          "quote": "Fetch the complete documentation index at: https://cal.com/docs/llms.txt > Use this file to discover all available pages before exploring further."
+        },
+        {
+          "evidenceId": "cal-com-docs-12",
+          "quote": "Cal.com API v2 enables AI agents to: Check availability - Query available time slots for any user or team, Create bookings - Schedule meetings on behalf of users"
+        },
+        {
+          "evidenceId": "cal-com-docs-45",
+          "quote": "For agents that can execute commands on a machine, use the official Cal.com CLI instead of calling the API directly."
+        }
+      ]
+    },
     "productId": "cal-com",
     "storyId": "agentic-agent-docs"
   }

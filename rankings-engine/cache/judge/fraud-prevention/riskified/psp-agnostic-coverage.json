@@ -1,21 +1,47 @@
 {
-  "hash": "2bb9307257a036965b4bdf39edd33c54bd3fb4d84b4d05a6216dde193a01f4cf",
+  "hash": "126b21f005e0dc31d832691e500a821f1c663cacf30cf13ae53bfaac9d098227",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Riskified's REST API (pre-auth, post-auth sync and async flows) sits alongside whatever gateway authorizes the transaction rather than on one processor's rails. Chargeback gateway integrations cover Adyen, Stripe, Braintree and PayPal, and platform integrations exist for Shopify, SFCC and Magento. Missing for 10: an explicit first-party statement of PSP/gateway agnosticism, documentation of running multiple PSPs at once for the same merchant, and independent or hands-on corroboration.",
+    "rationale": "Riskified's documentation shows it is not tied to one processor's rails. It offers a REST API with pre-auth and post-auth flows that sit around any gateway's authorization step. It has platform integrations for Shopify, Salesforce Commerce Cloud and Magento, and chargeback gateway integrations for Adyen, Stripe, Braintree and PayPal. However, the docs never explicitly state that it is processor-agnostic or describe multi-PSP setups, and the named gateway integrations cover chargebacks only, not fraud decisioning. missing for 10: an explicit processor-agnostic or multi-PSP statement, documented gateway coverage for fraud decisioning (not just chargebacks), and independent or hands-on corroboration of multi-PSP deployments.",
     "evidenceIds": [
       "riskified-docs-23",
-      "riskified-docs-2",
       "riskified-docs-24",
+      "riskified-docs-26",
       "riskified-docs-17",
-      "riskified-docs-4",
       "riskified-docs-10",
-      "riskified-docs-11",
-      "riskified-docs-34"
+      "riskified-docs-34",
+      "riskified-docs-33"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can use the product across whatever payment stack I run — multiple PSPs, gateways, and platforms — rather than being locked to one processor's rails",
+      "citations": [
+        {
+          "evidenceId": "riskified-docs-24",
+          "quote": "The Riskified API is a REST-based API that supports direct integration using standard HTTP requests."
+        },
+        {
+          "evidenceId": "riskified-docs-26",
+          "quote": "The `/submit` endpoint sends transaction data to Riskified after the gateway authorizes the transaction for fraud analysis."
+        },
+        {
+          "evidenceId": "riskified-docs-17",
+          "quote": "The Chargeback Gateway Integration (CGI) framework enables seamless connectivity with leading payment gateways, including Adyen, Stripe, Braintree, and PayPal"
+        },
+        {
+          "evidenceId": "riskified-docs-10",
+          "quote": "Agentforce Commerce (formerly Salesforce Commerce Cloud / SFCC) fraud protection cartridge provides a structured integration process tailored to SFCC's platform architecture."
+        },
+        {
+          "evidenceId": "riskified-docs-34",
+          "quote": "A complete Magento integration includes two core components: Riskified Magento Extension"
+        }
+      ]
+    },
     "productId": "riskified",
     "storyId": "psp-agnostic-coverage"
   }
