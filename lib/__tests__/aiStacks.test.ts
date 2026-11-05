@@ -57,6 +57,26 @@ describe('gstack (Garry Tan) curated stack', () => {
   })
 })
 
+describe('SageOx community stack', () => {
+  it('preserves every submitted role and leaves planned arenas unscored', () => {
+    const stack = loadAiStacks(DATA_DIR).find((s) => s.id === 'sageox-coworker-team')!
+    const resolved = resolveStack(stack, loadAll(DATA_DIR))
+    expect(resolved.slots).toHaveLength(stack.slots.length)
+    expect(resolved.slots.filter((s) => s.kind === 'product').map((s) => s.productId))
+      .toEqual(['buzz', 'turbopuffer', 'zoom-scribe', 'deepgram'])
+    for (const role of ['Realtime transport', 'CI runners']) {
+      const slot = resolved.slots.find((s) => s.role === role)!
+      expect(slot.kind).toBe('editorial')
+      expect(slot.metricValue).toBeNull()
+      expect(slot.rank).toBeNull()
+      expect(slot.editorialNote).toContain('planned')
+      expect(slot.editorialNote).toContain('https://github.com/ultrametricai/ultrametric/issues/493')
+    }
+    expect(stack.tagline).toContain('SageOx founder/CEO')
+    expect(stack.tagline).toContain('paying customer')
+  })
+})
+
 describe('resolveStack', () => {
   it('resolves arena-top slots to the metric leader and keeps editorial slots labeled', () => {
     const categories = loadAll(DATA_DIR)
