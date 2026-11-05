@@ -137,6 +137,13 @@ moves across the two arenas, kept as-is, and gemini, a non-affiliated row with t
 parity treatment, received more favorable moves than claude in both arenas (15 vs 14 and
 22 vs 20) and the larger rank move. No verdicts were changed by the audit.
 
+Downstream honest exclusions: the v6 demotion of
+ai-assistants/gemini:create-edit-documents to none removed the judged support behind five
+additional-candidate process references (hire-intl-contractor, prepare-a-board-meeting,
+publish-privacy-policy-dpa, run-outbound-sales-sequences,
+ship-a-feature-spec-to-deploy). The references were pruned per the cross-arena evidence
+gate; the none verdict stays published, and the refs can return if evidence lands.
+
 Spend: about $62 batched (pilot batch rate over 4,936 cells) plus interactive correction
 rounds for first-attempt contract violations (several per-arena resume runs after cells
 exhausted their three correction rounds; the re-runs reuse cached cells and retained
