@@ -210,8 +210,8 @@ plus 580 quality-only moves (net -312). Fleet transition profile:
 | vibe-coding | 312 | 70 | 70 / 0 / 0 | 40 (-14) |
 
 This is the purest rubric wave so far: no arena carried unjudged appended evidence, and
-98% of flips are demotions. Notable rank moves, all pure-rubric: codex #7 → #10 in
-ai-coding (the top three, cursor, opencode, and cline, hold), fireworks-ai #2 → #1 over
+96% of flips are demotions. Notable rank moves, all pure-rubric: codex #7 → #10 in
+ai-coding (the top three, cursor, opencode, and grok-build, hold), fireworks-ai #2 → #1 over
 together-ai in inference-providers, replit #4 → #2 and floot #2 → #4 in vibe-coding,
 whisper #4 → #7 and gladia #7 → #4 in speech-to-text, zoho-crm #5 → #3 in crm.
 
