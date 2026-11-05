@@ -1,20 +1,45 @@
 {
-  "hash": "f4fe9fe8a401c96d5bf6d98fd49bdf3ffe83ddb858e3a09909f6715b1c207979",
+  "hash": "243f183067d69a45559768525bb38a100a33efe88a05fe381b8adaafe5575796",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Pydantic AI documents deferred tools, including a dedicated 'tools that require approval' flavor for calls that must be approved by the user before running. The docs also cover tool calls that cannot execute within the same agent run, and durable execution explicitly targets long-running human-in-the-loop workflows that survive restarts. Message history can be used to continue a run afterward. Missing for 10: an explicit description of how the human's approve/deny decision is passed back to resume the run, and independent or hands-on corroboration that the approval flow works in practice.",
+    "rationale": "Pydantic AI documents deferred tools, a first-party mechanism for tools that need user approval or must run outside the current agent run. Its durable execution explicitly targets human-in-the-loop workflows, and message history lets a later run continue the conversation, which together cover pausing and resuming. missing for 10: explicit documentation of how the human's approve/deny decision is passed back to resume the run, a free-form human-input (non-tool) pause, and independent or hands-on corroboration.",
     "evidenceIds": [
-      "pydantic-ai-docs-11",
-      "pydantic-ai-docs-20",
       "pydantic-ai-docs-38",
-      "pydantic-ai-docs-46",
       "pydantic-ai-docs-55",
+      "pydantic-ai-docs-20",
       "pydantic-ai-docs-37",
       "pydantic-ai-docs-7"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can pause an agent mid-run for human input or approval and resume with the human's decision",
+      "citations": [
+        {
+          "evidenceId": "pydantic-ai-docs-38",
+          "quote": "it may need to be approved by the user first... Pydantic AI provides the concept of deferred tools"
+        },
+        {
+          "evidenceId": "pydantic-ai-docs-55",
+          "quote": "Pydantic AI provides the concept of deferred tools, which come in two flavors documented below: tools that require approval, tools that are executed externally"
+        },
+        {
+          "evidenceId": "pydantic-ai-docs-20",
+          "quote": "There are a few scenarios where the model should be able to call a tool that should not or cannot be executed during the same agent run inside the same Python process"
+        },
+        {
+          "evidenceId": "pydantic-ai-docs-37",
+          "quote": "handle long-running, asynchronous, and human-in-the-loop workflows with production-grade reliability"
+        },
+        {
+          "evidenceId": "pydantic-ai-docs-7",
+          "quote": "These messages can be used both to continue a coherent conversation, and to understand how an agent performed."
+        }
+      ]
+    },
     "productId": "pydantic-ai",
     "storyId": "hitl-interrupt-resume"
   }

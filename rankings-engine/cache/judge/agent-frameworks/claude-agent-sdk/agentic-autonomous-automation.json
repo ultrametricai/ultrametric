@@ -1,21 +1,46 @@
 {
-  "hash": "c2a72a001026d9dfa30da17fc2b8217665cd1443a89b83777b4d225c10a6de03",
+  "hash": "a122b6b991d44c1c826b3858213472387d65e9580a234042cf51c65b7f11d3c6",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "The SDK runs an autonomous agent loop that repeats tool calls until the task is complete, with no manual intervention (docs-50, docs-32). Permission modes pre-authorize actions so runs don't block on approvals (docs-55), and production hosting on Docker, Kubernetes and sandbox providers supports long-lived background processes (docs-11, docs-26). A community user corroborates building a full headless automated workflow on `claude -p` (comm-4). Missing for 10: no built-in scheduler or event triggers (cron, webhooks), so users must wire up triggering and hosting themselves; background-session management (agent view) is documented for Claude Code rather than the SDK itself.",
+    "rationale": "The SDK documents autonomous agent execution: the loop repeats until the task is complete without manual intervention, it can run as a long-lived process, it can be hosted in production on Docker or Kubernetes, and permission modes pre-approve actions. A community user also reports building a headless automated workflow on `claude -p`. However, nothing documents a scheduler, trigger, or recurring-run mechanism, so background automations that recur would have to be orchestrated externally. Missing for 10: built-in scheduling or recurring triggers, documented background or daemon run setup within the SDK itself, and independent hands-on corroboration of unattended background operation.",
     "evidenceIds": [
-      "claude-agent-sdk-docs-50",
       "claude-agent-sdk-docs-32",
-      "claude-agent-sdk-docs-55",
-      "claude-agent-sdk-docs-11",
+      "claude-agent-sdk-docs-50",
       "claude-agent-sdk-docs-26",
-      "claude-agent-sdk-docs-20",
-      "claude-agent-sdk-docs-41",
+      "claude-agent-sdk-docs-11",
+      "claude-agent-sdk-docs-55",
       "claude-agent-sdk-comm-4"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can set up automations that run autonomously in the background",
+      "citations": [
+        {
+          "evidenceId": "claude-agent-sdk-docs-32",
+          "quote": "Use the Agent SDK to build an AI agent that reads your code, finds bugs, and fixes them, all without manual intervention."
+        },
+        {
+          "evidenceId": "claude-agent-sdk-docs-26",
+          "quote": "It allows the agent to operate as a long lived process that takes in user input, handles interruptions, surfaces permission requests, and handles session management."
+        },
+        {
+          "evidenceId": "claude-agent-sdk-docs-11",
+          "quote": "Deploy the Agent SDK in production: subprocess architecture, session persistence, scaling, observability, and multi-tenant isolation for Docker, Kubernetes, and sandbox providers."
+        },
+        {
+          "evidenceId": "claude-agent-sdk-docs-55",
+          "quote": "Use permission modes and rules to define what's allowed automatically"
+        },
+        {
+          "evidenceId": "claude-agent-sdk-comm-4",
+          "quote": "I built an entire headless automated workflow around `claude -p`"
+        }
+      ]
+    },
     "productId": "claude-agent-sdk",
     "storyId": "agentic-autonomous-automation"
   }

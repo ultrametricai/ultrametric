@@ -1,19 +1,41 @@
 {
-  "hash": "1aab9e88841cf7f0f4be16a10431098b26b8f3243fa66d604c7a55c0e453b15e",
+  "hash": "b8bd31d1ead4f0dd96b10a935126f399f36d14d66f99112d95dfc7c7cc71a6bc",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "high",
-    "rationale": "Reflect documents an OAuth2 (PKCE) REST API with write:graph scope. An agent can headlessly create notes (POST /graphs/{graphId}/notes) and append to daily notes (PUT daily-notes), but the read side is explicitly blocked: 'Our servers can't read the contents of your notes, so we can't serve them up in the API.' Reads are limited to graphs, bookmarked links and user info, so only the write half of the story is delivered. Missing for 10: API read access to note contents, an official MCP server or local API, versioning/sandbox documentation, independent hands-on corroboration.",
+    "rationale": "Reflect's documented OAuth2 REST API lets an agent write headlessly: it can create notes and append to daily notes. However, the vendor states plainly that note contents are end-to-end encrypted and cannot be served through the API, so agents cannot read notes. Read access is limited to graphs, bookmarked links and the user profile. missing for 10: API read access to note contents, an MCP server or local API, full note editing/update endpoints, and independent hands-on corroboration.",
     "evidenceIds": [
-      "reflect-docs-2",
-      "reflect-docs-17",
-      "reflect-docs-18",
       "reflect-supp-openpm-spec",
       "reflect-supp-api-surface-bounds",
-      "reflect-docs-59"
+      "reflect-docs-17",
+      "reflect-docs-59",
+      "reflect-docs-45"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, my coding agent or assistant can read AND write my notes headlessly — through a documented local API, vendor API, or MCP server — without me touching the GUI",
+      "citations": [
+        {
+          "evidenceId": "reflect-supp-openpm-spec",
+          "quote": "PUT /graphs/{graphId}/daily-notes, POST /graphs/{graphId}/notes, and GET /users/me with OAuth2 scopes read:graph / write:graph"
+        },
+        {
+          "evidenceId": "reflect-supp-api-surface-bounds",
+          "quote": "Your notes contents are end-to-end encrypted. Our servers can't read the contents of your notes, so we can't serve them up in the API."
+        },
+        {
+          "evidenceId": "reflect-docs-17",
+          "quote": "Our supports appending data to your notes, returning a list of the links you've bookmarked, and a few other things."
+        },
+        {
+          "evidenceId": "reflect-docs-45",
+          "quote": "For authentication, we support OAuth 2."
+        }
+      ]
+    },
     "productId": "reflect",
     "storyId": "agent-reads-writes-notes"
   }

@@ -1,18 +1,41 @@
 {
-  "hash": "7b21e5ab0d00cffc5d4cd4a24023b57e37c2777a58202fc93a274cf48bc079d0",
+  "hash": "5c778dddac1075bf06a05c0d91fdb452fa9a36480a1e5b95b79499275f51f7e8",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "SerpApi documents real-time results: each request runs immediately in a full browser against the live search engine, rather than a stale index. However, the evidence never documents a date-range or recency filter parameter. Results may also be served from a 1-hour cache, and the pack does not show how to bypass it. missing for 10: documented date-range/recency filter parameters (e.g., time-based search parameters for Google/News), documented cache-bypass control for guaranteed freshness, independent corroboration of result freshness",
+    "rationale": "SerpApi documents real-time results: requests run immediately against live search engines, and the cache expires after 1 hour, so freshness comes from live scraping rather than a stored index. The pack documents no date-range or recency filter parameter. Only general Google query operators and 'advanced search query parameters such as as_dt and as_eq' are mentioned, and neither is described as a date filter. Missing for 10: documented date-range/recency filter parameters, an explicit freshness or update-frequency guarantee, and independent hands-on corroboration of result freshness.",
     "evidenceIds": [
-      "serpapi-docs-32",
       "serpapi-probe-1",
+      "serpapi-docs-32",
       "serpapi-docs-13",
-      "serpapi-docs-10",
-      "serpapi-docs-29"
+      "serpapi-docs-29",
+      "serpapi-docs-10"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a data engineer, I can get fresh results with date-range and recency filters backed by a frequently updated index",
+      "citations": [
+        {
+          "evidenceId": "serpapi-probe-1",
+          "quote": "SerpApi provides a real-time JSON API for accessing structured search engine results"
+        },
+        {
+          "evidenceId": "serpapi-docs-32",
+          "quote": "Each API request runs immediately – no waiting for results."
+        },
+        {
+          "evidenceId": "serpapi-docs-13",
+          "quote": "Cache expires after 1h."
+        },
+        {
+          "evidenceId": "serpapi-docs-29",
+          "quote": "We also support advanced search query parameters such as as_dt and as_eq."
+        }
+      ]
+    },
     "productId": "serpapi",
     "storyId": "fresh-results-recency"
   }

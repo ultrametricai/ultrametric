@@ -1,17 +1,35 @@
 {
-  "hash": "3a4dbd803ee0db0955a93eb6e42c563af6ab88c42227fa85cf98714005afe2ea",
+  "hash": "c098eb466c86cba32fa3440bcd5c010cee746f3d6cf9ef0347284373a4c9de37",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Mastra's docs show per-tool approval gating: marking a tool `requireApproval: true` surfaces a `tool-call-approval` chunk to approve or decline. They also describe a 'code mode' that runs multi-tool computations in an isolated sandbox, and processors that can control messages passing through an agent. These cover the core of the story only thinly: the gating is a human-in-the-loop check rather than a declarative permission model, and the sandbox is scoped to code mode rather than general tool execution. Missing for 10: a fine-grained tool permission/policy system (allow/deny scopes, per-user or per-agent tool ACLs), sandboxing of arbitrary tool execution with documented isolation guarantees, and independent or hands-on corroboration.",
+    "rationale": "Mastra documents per-tool approval gating (`requireApproval: true` with an approve/decline stream chunk) and a code mode that runs multi-tool computations in an isolated sandbox, so the agent's own capabilities cover both halves of the story. Both are thin, single-line mentions: approval gating is not a fine-grained permission model, and the sandbox is limited to code mode. Missing for 10: a fine-grained tool permission/allowlist policy model (scopes, per-user or per-agent tool access), documented sandbox isolation details and limits for general tool execution, and independent or hands-on corroboration.",
     "evidenceIds": [
       "mastra-docs-31",
       "mastra-docs-34",
-      "mastra-docs-33",
-      "mastra-gh-4"
+      "mastra-docs-33"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an engineering-lead, I can restrict what an agent may do with fine-grained tool permissions and sandboxed execution",
+      "citations": [
+        {
+          "evidenceId": "mastra-docs-31",
+          "quote": "Mark a tool with `requireApproval: true`, then check for the `tool-call-approval` chunk in the stream to approve or decline the action"
+        },
+        {
+          "evidenceId": "mastra-docs-34",
+          "quote": "Code mode lets an agent run multi-tool computations in an isolated sandbox and return the result as a single, more accurate response."
+        },
+        {
+          "evidenceId": "mastra-docs-33",
+          "quote": "Processors transform, validate, or control messages as they pass through an agent."
+        }
+      ]
+    },
     "productId": "mastra",
     "storyId": "tool-permission-limits"
   }

@@ -1,24 +1,43 @@
 {
-  "hash": "c43692ca7f1b5dc874f3a577bdf359b46eeef452cafb2da2b9cdf020452fe5d6",
+  "hash": "324046eaf0aa74616593758971582e079cdc11a2cf61412477b51fd0c528ac05",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "The documented public API covers the core loop: creating sessions via the v1/sessions endpoint, polling `GET /v1/sessions/{id}/decision`, and receiving decision and event webhooks. Calls are authenticated with a shared-secret HMAC signature, and separate test integrations give a degree of credential separation. However, the evidence shows no MCP surface, no fine-grained scoped credentials beyond a per-integration shared secret, no explicit endpoint for retrieving extracted data, and no re-check trigger (decisions can only be triggered for test sessions). The OpenAPI spec probe returned 404, though llms.txt exists. Missing for 10: MCP server, scoped/least-privilege API credentials, documented extracted-data retrieval endpoints, re-check/resubmission API, machine-readable OpenAPI spec.",
+    "rationale": "Veriff's public API documents creating verification sessions (POST /v1/sessions) and polling outcomes (GET /v1/sessions/{id}/decision). Requests are authenticated with a shared-secret HMAC signature, and separate test integrations isolate development use. Retrieving extracted data and triggering re-checks are not clearly documented: decision triggering is limited to test integrations, and there is no MCP surface or published OpenAPI spec. Missing for 10: documented extracted-data retrieval endpoints, an API re-check/resubmission trigger for live sessions, fine-grained scoped credentials beyond per-integration keys, an MCP server, a machine-readable OpenAPI spec, independent hands-on corroboration.",
     "evidenceIds": [
       "veriff-docs-6",
       "veriff-docs-7",
       "veriff-docs-5",
       "veriff-docs-10",
-      "veriff-docs-9",
-      "veriff-docs-18",
-      "veriff-docs-41",
       "veriff-docs-25",
-      "veriff-docs-44",
-      "veriff-probe-1",
+      "veriff-docs-9",
       "veriff-probe-2"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, an agent can operate the verification pipeline — create sessions, poll outcomes, retrieve extracted data, and trigger re-checks through the API or an MCP surface with scoped credentials",
+      "citations": [
+        {
+          "evidenceId": "veriff-docs-6",
+          "quote": "Use this endpoint to **initiate a new verification session** for an end-user. Every verification flow begins with creating a session."
+        },
+        {
+          "evidenceId": "veriff-docs-7",
+          "quote": "Secondary: Poll `GET /v1/sessions/{id}/decision` endpoint"
+        },
+        {
+          "evidenceId": "veriff-docs-5",
+          "quote": "the shared secret key, used to create the X-HMAC-SIGNATURE header"
+        },
+        {
+          "evidenceId": "veriff-docs-25",
+          "quote": "Test integrations are **used for development**."
+        }
+      ]
+    },
     "productId": "veriff",
     "storyId": "agent-runs-verification"
   }

@@ -1,17 +1,31 @@
 {
-  "hash": "407397e05270e7f48a57c67421e137ce8b72d3767a0fecc5d703225cc47bc4ea",
+  "hash": "4725af8106a425c5442f98af2fb2a39e12cd056cea737eaa09dd60551437b5a5",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "obsessiondb",
-    "storyId": "audit-lineage",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "ObsessionDB documents full query logging, with column-level replay of what each agent run read (docs-14). It also exposes the stock ClickHouse observability surface, queryable cluster-wide (docs-20), plus per-execution query stats drill-downs (docs-32), which together cover much of the 'who ran what' audit trail. Column-level lineage of where data came from (upstream provenance across tables and pipelines) is not documented; column-level read logging covers access, not lineage. Missing for 10: documented column-level data lineage/provenance, explicit user-identity audit logs beyond agent queries, independent or hands-on corroboration.",
+    "rationale": "ObsessionDB documents full logging of every query an agent runs, replayable down to the columns it read, which gives a first-party audit trail of what was run and read. That audit claim is scoped to agent queries, and column-read tracing is not lineage of where data came from through transformations. The stock ClickHouse observability surface and the stats table are about monitoring, not explicitly auditing. Missing for 10: audit logs of who ran what across all users and clients (not just agents), user identity attribution in the logs, true column-level data lineage across tables and pipelines, and independent corroboration.",
     "evidenceIds": [
       "obsessiondb-docs-14",
-      "obsessiondb-docs-20",
-      "obsessiondb-docs-32"
-    ]
+      "obsessiondb-docs-20"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform-engineer, I get audit logs of who ran what and column-level lineage of where data came from",
+      "citations": [
+        {
+          "evidenceId": "obsessiondb-docs-14",
+          "quote": "Every query an agent runs is logged in full, so you can replay exactly what it read, down to the column"
+        },
+        {
+          "evidenceId": "obsessiondb-docs-20",
+          "quote": "The full ClickHouse observability surface, unchanged from stock ClickHouse, plus how to query it across the whole cluster at once"
+        }
+      ]
+    },
+    "productId": "obsessiondb",
+    "storyId": "audit-lineage"
   }
 }

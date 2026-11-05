@@ -1,19 +1,35 @@
 {
-  "hash": "b0c9083e3292c53042669b024329e00fdf9004abde93c9e7f9577ffcc0c79e37",
+  "hash": "59f559c1472f77f2714503f712919621f93c8fbb88ca52c191bc30e569a4a326",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
-    "confidence": "medium",
-    "rationale": "Plaid IDV exposes server-side API endpoints such as /identity_verification/retry, webhooks for status changes, and a Sandbox with fixed test inputs and custom test users, which together allow scripted, automated testing against the service. However, the core verification flow runs through the client-side Link UI, and the docs never describe running sessions fully headlessly or inside CI pipelines. missing for 10: documented headless/non-UI session completion, explicit CI integration guidance or tooling (e.g. a CLI), published OpenAPI spec (probe found none), independent hands-on corroboration of automated pipelines.",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Plaid IDV documents a server-side API (e.g. /identity_verification/retry) and a Sandbox mode that accepts a fixed set of test inputs and custom test users, which supports some automated, non-production testing. The core verification flow, however, runs through the user-facing Link UI, and nothing documents running the full flow headlessly or in CI pipelines. Missing for 10: documented headless or no-UI execution of the verification flow, CI integration guidance or tooling, programmatic session creation without Link, independent hands-on corroboration.",
     "evidenceIds": [
-      "plaid-idv-docs-18",
       "plaid-idv-docs-4",
       "plaid-idv-docs-17",
-      "plaid-idv-docs-3",
-      "plaid-idv-docs-15",
-      "plaid-idv-probe-3"
+      "plaid-idv-docs-18"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
+      "citations": [
+        {
+          "evidenceId": "plaid-idv-docs-4",
+          "quote": "In Sandbox mode, Identity Verification accepts the fixed set of inputs below in order to result in successful Data Source and Documentary Verification checks."
+        },
+        {
+          "evidenceId": "plaid-idv-docs-17",
+          "quote": "Plaid supports creating custom test users from your organization directly in Sandbox."
+        },
+        {
+          "evidenceId": "plaid-idv-docs-18",
+          "quote": "/identity_verification/retry | Allow a user to retry an identity verification"
+        }
+      ]
+    },
     "productId": "plaid-idv",
     "storyId": "agentic-headless"
   }

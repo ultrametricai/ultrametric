@@ -1,11 +1,11 @@
 {
-  "hash": "40c140a561628b4095ba4525a725bb2f53dd1555b7c79a29b40df05b5bbcd165",
+  "hash": "78f3d637fde2a9a1f1ffaa6d324764a20600c2d26e9964e64ef8f976aee9d977",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 8,
-    "confidence": "medium",
-    "rationale": "The CLI documents several bulk operations. Users can install every skill in a repo with `'*'`, pass repeated `--skill` and `-a` flags to install many skills to many agents at once, run `skills update` with no arguments to update everything or name several skills, remove a skill from several agents in one command, and restore a whole set from `skills-lock.json`. A runtime probe confirms it enumerates all skills in a repo and runs non-interactively when driven by an agent. Community complaints about updates are general skepticism, not a concrete failure. Missing for 10: hands-on corroboration of bulk install, update and remove actually running across many items, and an explicit remove-all or bulk-uninstall option.",
+    "confidence": "high",
+    "rationale": "The skills CLI documents real bulk operations in a single command. You can install every skill in a repo with '*', pass multiple --skill and -a flags to install many skills across many agents at once, and run update with no args or several names. Removal can target multiple agents at once, and a whole skill set can be restored from skills-lock.json, all in a CI-friendly non-interactive mode. missing for 10: hands-on corroboration of bulk install/update runs (the runtime probe only exercised --list and non-interactive detection), and documented bulk removal of multiple skills in one command (the remove example covers multiple agents but a single skill).",
     "evidenceIds": [
       "skills-cli-gh-4",
       "skills-cli-gh-20",
@@ -14,11 +14,40 @@
       "skills-cli-gh-42",
       "skills-cli-gh-27",
       "skills-cli-docs-22",
-      "skills-cli-docs-9",
       "skills-cli-gh-31",
-      "skills-cli-probe-rt-1",
-      "skills-cli-probe-rt-2"
+      "skills-cli-probe-rt-1"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can perform bulk operations across many items at once",
+      "citations": [
+        {
+          "evidenceId": "skills-cli-gh-4",
+          "quote": "Install specific skills by name (use `'*'` for all skills)"
+        },
+        {
+          "evidenceId": "skills-cli-gh-20",
+          "quote": "npx skills add vercel-labs/agent-skills --skill frontend-design --skill skill-creator"
+        },
+        {
+          "evidenceId": "skills-cli-gh-21",
+          "quote": "npx skills add vercel-labs/agent-skills -a claude-code -a opencode"
+        },
+        {
+          "evidenceId": "skills-cli-gh-42",
+          "quote": "npx skills update frontend-design web-design-guidelines"
+        },
+        {
+          "evidenceId": "skills-cli-gh-27",
+          "quote": "npx skills remove --agent claude-code cursor my-skill"
+        },
+        {
+          "evidenceId": "skills-cli-docs-22",
+          "quote": "`skills i`, `skills install` (no args) restore from `skills-lock.json`."
+        }
+      ]
+    },
     "productId": "skills-cli",
     "storyId": "automation-bulk-operations"
   }

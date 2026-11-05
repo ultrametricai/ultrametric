@@ -1,17 +1,31 @@
 {
-  "hash": "468aed4b001cc6239967092b78b18f52a51bcdeb5a345edcf89675c70241e2c3",
+  "hash": "b9dd07413fbc0e69624097e0fda28a2acd82fc48a7dcbdb1e35a19a2c9a8221e",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "A recorded end-to-end probe shows `npx skills add obra/superpowers --skill test-driven-development` installing just that one skill into ./.claude/skills/, so the collection's per-skill folder packaging does allow selective installs. However, Superpowers' own documented install paths are all whole-bundle (`/plugin install superpowers@superpowers-marketplace`, `devin plugins install obra/superpowers`, git clone), and selective install depends on a generic external installer rather than a first-party feature. missing for 10: first-party documented per-skill install option in Superpowers' own install docs, selective install through the official marketplace/plugin paths, independent corroboration beyond the single probe",
+    "rationale": "A recorded hands-on install used `npx skills add obra/superpowers --skill test-driven-development`. It copied only that one skill into ./.claude/skills/ and read it back cleanly, because Superpowers ships each skill as a separate markdown folder. The product's own documented install path is the whole plugin (`/plugin install superpowers@superpowers-marketplace`, `devin plugins install obra/superpowers`), and selective install relies on a general-purpose `skills` installer that may not be Superpowers' own tooling. missing for 10: first-party documentation of per-skill selective install, a native per-skill option in the plugin/marketplace install, guidance on skill inter-dependencies when installing a subset.",
     "evidenceIds": [
       "superpowers-probe-rt-1",
-      "superpowers-docs-13",
       "superpowers-docs-36",
-      "superpowers-docs-7"
+      "superpowers-docs-13"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can install only the specific skills I want from a collection instead of taking the whole bundle",
+      "citations": [
+        {
+          "evidenceId": "superpowers-probe-rt-1",
+          "quote": "`npx -y skills add obra/superpowers --skill test-driven-development -a claude-code -y --copy` fetched the repo, copied the skill to ./.claude/skills/test-driven-development/"
+        },
+        {
+          "evidenceId": "superpowers-probe-rt-1",
+          "quote": "Skills are plain, selectively-installable markdown folders."
+        }
+      ]
+    },
     "productId": "superpowers",
     "storyId": "selective-install"
   }

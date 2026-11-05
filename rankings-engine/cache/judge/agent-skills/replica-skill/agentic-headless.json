@@ -1,17 +1,35 @@
 {
-  "hash": "27b2710e364db5c0086fa14ebf2d3795d91ca267fca6e1308c031b0ae2a21370",
+  "hash": "f5f5cf4ce492d713d14ce539be48c0f68416bde8e7c682119b3d498cd90086d6",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "The product ships its own standard-library Python scripts that need no network. One is invoked from the command line (`python3 replica-design/contrast.py replica/design/tokens.json`), and the sweep step reportedly blocks the deploy until the code is clean, so parts of it can run non-interactively as automation gates. However, the main workflow is a set of skills run interactively inside Claude Code or a chat, and nothing documents headless or CI execution of the skills themselves. Missing for 10: documented headless/non-interactive mode for the skills, CI integration guidance or examples (e.g. GitHub Actions), exit-code/gating semantics for the scripts, independent corroboration.",
+    "rationale": "The product ships its own standard-library Python check scripts, such as WCAG contrast on tokens, that run from the command line without network access, so parts of it can run unattended. The core skills, though, are invoked interactively inside Claude Code or a chat, and no headless or CI mode is documented for them. Missing for 10: a documented headless/non-interactive mode for the skill pipeline, CI integration examples (e.g. GitHub Actions), exit-code or gating semantics for the preflight/sweep, and independent hands-on corroboration.",
     "evidenceIds": [
       "replica-skill-gh-9",
       "replica-skill-docs-5",
-      "replica-skill-gh-13",
-      "replica-skill-docs-4"
+      "replica-skill-gh-13"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
+      "citations": [
+        {
+          "evidenceId": "replica-skill-gh-9",
+          "quote": "python3 replica-design/contrast.py replica/design/tokens.json           # WCAG contrast on your tokens"
+        },
+        {
+          "evidenceId": "replica-skill-docs-5",
+          "quote": "Six of them, all standard-library Python. None touch the network."
+        },
+        {
+          "evidenceId": "replica-skill-gh-13",
+          "quote": "blocks the deploy until it is clean"
+        }
+      ]
+    },
     "productId": "replica-skill",
     "storyId": "agentic-headless"
   }

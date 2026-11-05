@@ -1,22 +1,39 @@
 {
-  "hash": "bb0dcdaf497a05a3eee5019fe953d76090f548dc5b348c80cc099f38c03d7ad7",
+  "hash": "4fd87e132ea7cd8ba7db5205bfff6517a15c5a9a4484134030d872525d718a01",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "The docs say agents are generic in their dependency and output types (e.g. `Agent[Foobar, list[str]]`), so 'your IDE can tell you when you have the right type'. Pydantic models used as `output_type` force model responses to match a validated schema. Together these give typed, schema-checked code that tooling and a coding agent can verify before runtime. Community reports of flaky structured output on some providers and of LLMs tripping over Pydantic's 'magic' temper confidence, but they do not show the type checking failing. Missing for 10: explicit documentation of static type-checker (mypy/pyright) enforcement at build time, and independent corroboration that typing catches agent-authored mistakes in practice.",
+    "rationale": "Pydantic AI documents agents that are generic in their dependency and output types (`Agent[Foobar, list[str]]`), so an IDE or type checker can flag type mismatches. It also documents Pydantic-model output types that force responses to match a schema. Together these give a coding agent typed signals to catch mistakes before runtime. The evidence does not show an explicit build-time or CI type-check workflow, typed tool signatures, or independent confirmation that coding agents benefit. Community reports of broken structured output on some providers and LLMs \"tripping over Pydantic's magic\" temper confidence. missing for 10: an explicit build-time/static type-checking workflow (e.g. mypy/pyright integration guidance), documented typed tool-argument validation, and independent hands-on corroboration that coding agents catch their own errors this way.",
     "evidenceIds": [
       "pydantic-ai-docs-24",
       "pydantic-ai-docs-26",
-      "pydantic-ai-docs-4",
       "pydantic-ai-docs-6",
       "pydantic-ai-docs-1",
-      "pydantic-ai-docs-35",
       "pydantic-ai-comm-5",
       "pydantic-ai-comm-7",
       "pydantic-ai-comm-8"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an ai-native user, I can rely on strict typing and schema validation so a coding agent catches its own mistakes at build time",
+      "citations": [
+        {
+          "evidenceId": "pydantic-ai-docs-24",
+          "quote": "In typing terms, agents are generic in their dependency and output types...your IDE can tell you when you have the right type"
+        },
+        {
+          "evidenceId": "pydantic-ai-docs-26",
+          "quote": "an agent which required dependencies of type Foobar and produced outputs of type list[str] would have type Agent[Foobar, list[str]]"
+        },
+        {
+          "evidenceId": "pydantic-ai-docs-6",
+          "quote": "Here's an example using a Pydantic model as the `output_type`, forcing the model to respond with data matching our specification"
+        }
+      ]
+    },
     "productId": "pydantic-ai",
     "storyId": "typed-dx-for-codegen"
   }

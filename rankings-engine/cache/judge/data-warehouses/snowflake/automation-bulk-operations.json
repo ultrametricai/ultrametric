@@ -1,21 +1,41 @@
 {
-  "hash": "9dd5dcea781553b8ae6fe5c8ac306441d3f0190ff7704b7d791b550c3bdc693f",
+  "hash": "635cfc7b6d50b2da126a95aa31a2ea44926dfeed48351708751930af63692cf9",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Snowflake's own documented features act on many items at once. COPY INTO loads many files and skips ones already loaded, and Snowpipe loads files in micro-batches. Time Travel can restore all objects inside a container, and cloning a database or schema carries over all child objects with their privileges. Programmatic paths (SQL API, Snowpark, Cortex AI Functions) run set-based operations at scale. Missing for 10: an explicit dedicated bulk-operations doc page, any evidence of bulk actions driven through the CLI, REST API or MCP agent surfaces, and independent hands-on corroboration beyond one community note on COPY.",
+    "rationale": "Snowflake's own docs cover bulk operations in several places: bulk copying of data into and out of tables, restoring all objects inside a container at once, and cloning a database or schema together with all its child objects. A community user confirms that COPY loads many files in one pass and skips files already loaded. The evidence does not show a general bulk-action capability for managing many arbitrary items at once, so full story coverage is not established. Missing for 10: documented bulk/batch management of arbitrary objects (e.g. bulk user/role/grant changes via REST API, CLI or MCP), an explicit agent-facing batch execution path, and independent corroboration beyond data loading.",
     "evidenceIds": [
-      "snowflake-comm-4",
-      "snowflake-docs-7",
-      "snowflake-docs-6",
+      "snowflake-docs-88",
       "snowflake-docs-35",
       "snowflake-docs-71",
-      "snowflake-docs-73",
-      "snowflake-docs-75",
-      "snowflake-docs-12"
+      "snowflake-comm-5-refresh-74eef2cc02b09e5e",
+      "snowflake-docs-92"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can perform bulk operations across many items at once",
+      "citations": [
+        {
+          "evidenceId": "snowflake-docs-88",
+          "quote": "Bulk copying data into and out of Snowflake tables."
+        },
+        {
+          "evidenceId": "snowflake-docs-35",
+          "quote": "You can restore individual objects, such as tables, or restore all the objects inside a container object"
+        },
+        {
+          "evidenceId": "snowflake-docs-71",
+          "quote": "If the source object is a database or schema, the clone inherits all granted privileges on the clones of all child objects contained in the source object"
+        },
+        {
+          "evidenceId": "snowflake-comm-5-refresh-74eef2cc02b09e5e",
+          "quote": "The COPY command will even skip files it has already loaded."
+        }
+      ]
+    },
     "productId": "snowflake",
     "storyId": "automation-bulk-operations"
   }

@@ -1,17 +1,35 @@
 {
-  "hash": "2eea7e652bd90a879b32e9017daccf8fc85b1ead5554c07e3cf0548d7f0e5016",
+  "hash": "05c861ae9531d7cf510f6bd6adc8103e5d60484e750f2fe6d006e3845950160c",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "The evidence shows a decision retrieval path: a `GET /v1/sessions/{id}/decision` polling endpoint and decision webhooks sent right after a decision. The only explicit mention of extracted data is the iOS SDK NFC listener, which gives client-side access to \"extracted NFC data\" from identity documents. None of the evidence shows that the decision payload contains structured document fields rather than a status, so support for the story is only implied. Missing for 10: documented decision/webhook payload schema listing name, date of birth, document number, address and expiry fields; server-side API retrieval of extracted fields beyond NFC SDK callbacks; independent or hands-on corroboration.",
+    "rationale": "Veriff documents a decision endpoint (`GET /v1/sessions/{id}/decision`) and decision webhooks. Its native SDKs also give the app access to extracted NFC data from identity documents through real-time callbacks. However, nothing in the pack shows the API decision payload carrying structured document fields rather than just a status. Missing for 10: evidence that the decision API/webhook payload includes name, date of birth, document number, address and expiry as structured fields; a documented response schema; and independent or hands-on corroboration.",
     "evidenceIds": [
       "veriff-docs-7",
       "veriff-docs-18",
-      "veriff-docs-36",
-      "veriff-docs-22"
+      "veriff-docs-36"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, verified sessions return the extracted document fields as structured data — name, date of birth, document number, address, expiry — retrievable via the API, not just a pass/fail flag",
+      "citations": [
+        {
+          "evidenceId": "veriff-docs-7",
+          "quote": "Secondary: Poll `GET /v1/sessions/{id}/decision` endpoint"
+        },
+        {
+          "evidenceId": "veriff-docs-18",
+          "quote": "Veriff sends decision webhooks immediately after making a decision"
+        },
+        {
+          "evidenceId": "veriff-docs-36",
+          "quote": "This allows your app to get access to extracted NFC data"
+        }
+      ]
+    },
     "productId": "veriff",
     "storyId": "structured-data-extraction"
   }

@@ -1,17 +1,36 @@
 {
-  "hash": "78706eb1500e0b0e232791925d6e59ec304d4bb022a62d1ddc022deffdfa3a28",
+  "hash": "9c3d6d7a50fcb288d63a548bdd2fd54ff00a373f5e3adb67d4fe75fd190684f5",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "`ultrametric init --dry-run` previews which skill files will be created before anything is written, and a hands-on probe confirmed it listed both SKILL.md targets (.agents/skills and .claude/skills) without writing them. The skills are then written as plain local project files that can be committed and shared, so every file can be read and reviewed afterward. missing for 10: evidence that the dry-run shows file contents rather than just paths, explicit documentation that installed skills are fully inspectable, clarity on whether any scripts (beyond SKILL.md instructions) are added, independent corroboration.",
+    "rationale": "Ultrametric's own `init --dry-run` previews the skill files it will create, and a keyless probe confirmed it lists the exact SKILL.md targets for Codex and Claude Code without writing anything. The real install then writes plain skill files into the project, where they can be committed and read. This is a no-write dry-run preview, not a sandboxed install. The preview shows file paths, not file contents, so a reviewer cannot read the instructions before they are written. missing for 10: evidence that the dry run shows file contents or diffs before install, documentation of exactly which instructions/scripts each skill contains, and independent corroboration of post-install review.",
     "evidenceIds": [
       "ultrametric-docs-8",
       "ultrametric-selfeval-2",
       "ultrametric-docs-9",
       "ultrametric-docs-30"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an engineering-lead, I can review exactly what instructions and scripts a skill will add — list contents before installing and read every file afterward",
+      "citations": [
+        {
+          "evidenceId": "ultrametric-docs-8",
+          "quote": "The first command previews changes. The second writes the selected skill files."
+        },
+        {
+          "evidenceId": "ultrametric-selfeval-2",
+          "quote": "the dry run previews both harness targets (Codex .agents/skills and Claude Code .claude/skills) without writing anything."
+        },
+        {
+          "evidenceId": "ultrametric-docs-9",
+          "quote": "You can commit the skill files to share the setup with your team."
+        }
+      ]
+    },
     "productId": "ultrametric",
     "storyId": "inspect-before-install"
   }

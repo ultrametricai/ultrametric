@@ -1,18 +1,41 @@
 {
-  "hash": "b3618beffe48769661ee9f069e11476a3c2d1f8d00daf99fe05ce7e8ac853c0c",
+  "hash": "b0a2124b735f9277cbdcef63b1d60ab62f4bd0798c4ca44a63eab560c14cc691",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Reflect's only headless automation path is its first-party REST API. It uses OAuth2/PKCE and bearer-token curl access, with documented endpoints to append to daily notes, create notes, and list or add links, so a script or CI job can drive part of the product without the UI. However, the API cannot serve note contents because of end-to-end encryption, and deep links require the app, so automation is largely write-only. Missing for 10: a CLI or headless runtime, any CI/automation guidance, read access to note contents, a sandbox/test environment, versioning policy, and hands-on corroboration.",
+    "rationale": "Reflect documents a REST API with OAuth2 bearer-token auth and a curl example. It can create notes, append to daily notes and manage links, so scripts or CI jobs can automate writes without the app UI. However, there is no CLI, no headless mode and no CI guidance. End-to-end encryption also means the API cannot serve note contents, which limits automation to a narrow write-mostly surface. Missing for 10: an official CLI or headless runner, documented CI usage, read access to note contents, a sandbox/test environment, and independent hands-on corroboration.",
     "evidenceIds": [
-      "reflect-supp-openpm-spec",
       "reflect-supp-api-surface-bounds",
+      "reflect-supp-openpm-spec",
       "reflect-docs-17",
       "reflect-docs-45",
       "reflect-docs-59"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
+      "citations": [
+        {
+          "evidenceId": "reflect-supp-api-surface-bounds",
+          "quote": "curl 'https://reflect.app/api/graphs' -H 'Authorization: Bearer YOUR_ACCESS_TOKEN'"
+        },
+        {
+          "evidenceId": "reflect-supp-api-surface-bounds",
+          "quote": "Our servers can't read the contents of your notes, so we can't serve them up in the API."
+        },
+        {
+          "evidenceId": "reflect-docs-17",
+          "quote": "Our supports appending data to your notes, returning a list of the links you've bookmarked, and a few other things."
+        },
+        {
+          "evidenceId": "reflect-docs-59",
+          "quote": "Appends to daily noteput ... Creates a new notepost"
+        }
+      ]
+    },
     "productId": "reflect",
     "storyId": "agentic-headless"
   }

@@ -1,20 +1,41 @@
 {
-  "hash": "d7843fee5dab69de74482a581584dbab57371bd2cccfe473948d73cff643321e",
+  "hash": "26d6b7896d9cb9a07a427b15f96321d84678d4f9d9a5c5474bde43f616dc1804",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "BigQuery's docs say it supports open table formats including Apache Iceberg, Delta and Apache Hudi. Iceberg managed tables keep data in customer-owned storage buckets, as a single copy that open-source and third-party engines can also use. A community user independently confirms BigQuery external tables can query object-storage data, comparing them favourably to Athena on S3. Missing for 10: explicit evidence of querying raw Parquet files, any detail on how Delta tables are queried in place, and documentation of external/BigLake table setup over object storage.",
+    "rationale": "BigQuery docs say it supports open table formats including Apache Iceberg, Delta and Hudi. Iceberg managed tables keep data in customer-owned storage buckets and allow interoperable access on a single copy, and community users describe querying object-storage data through BigQuery external tables. Missing for 10: any evidence of querying Parquet files directly, detail on how Delta tables are queried in place, and documented external-table mechanics for querying data in object storage without loading it.",
     "evidenceIds": [
       "bigquery-docs-57",
-      "bigquery-docs-86",
-      "bigquery-docs-69",
       "bigquery-docs-10",
       "bigquery-docs-53",
-      "bigquery-docs-26",
+      "bigquery-comm-15-refresh-bc81337ef65cea10",
       "bigquery-comm-8"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a data-engineer, I can query open table formats and files in object storage — Iceberg, Delta, Parquet — without first loading them into proprietary storage",
+      "citations": [
+        {
+          "evidenceId": "bigquery-docs-57",
+          "quote": "supports open table formats like Apache Iceberg, Delta, and Apache Hudi"
+        },
+        {
+          "evidenceId": "bigquery-docs-10",
+          "quote": "Iceberg managed tables offer the same fully managed experience as standard BigQuery tables, but store data in customer-owned storage buckets."
+        },
+        {
+          "evidenceId": "bigquery-docs-53",
+          "quote": "Iceberg managed tables support the open Iceberg table format for better interoperability with open-source and third-party compute engines on a single copy of data."
+        },
+        {
+          "evidenceId": "bigquery-comm-8",
+          "quote": "Athena lets you query S3 data like BQ external tables, but BQ is much faster"
+        }
+      ]
+    },
     "productId": "bigquery",
     "storyId": "open-table-formats"
   }

@@ -1,19 +1,46 @@
 {
-  "hash": "99804ff447d801d9349b028004d23d05c9ba9f83c179e1b05ec438fe212d5b71",
+  "hash": "87598b7c82e463b17f38a9b3340278ec65c439fd2be2dd91164de0a9a2b78825",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "First-party docs and the GitHub README describe suspending an agent or workflow to await user input or approval. Execution state is persisted to storage, so a run can pause indefinitely and resume where it left off (mastra-gh-4, mastra-docs-39). Workflows expose suspend()/resume() for human-in-the-loop input and can resume or bail based on that input (mastra-docs-12, mastra-docs-53, mastra-docs-40). Agent tools can be marked requireApproval: true and approved or declined via a tool-call-approval stream chunk (mastra-docs-31). Missing for 10: no independent or hands-on corroboration that pause/resume and approval work in practice.",
+    "rationale": "Mastra documents suspending an agent or workflow to await user input or approval, with storage-backed state so execution can pause indefinitely and resume where it left off. Tool-level approval (`requireApproval: true` plus a `tool-call-approval` stream chunk to approve or decline) and workflow `suspend()`/`resume()` with snapshots let the run continue or bail based on the human's decision. Missing for 10: independent or hands-on corroboration of agent-level suspend/resume behavior.",
     "evidenceIds": [
       "mastra-gh-4",
+      "mastra-docs-31",
       "mastra-docs-12",
       "mastra-docs-53",
-      "mastra-docs-40",
       "mastra-docs-39",
-      "mastra-docs-31"
+      "mastra-docs-40"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can pause an agent mid-run for human input or approval and resume with the human's decision",
+      "citations": [
+        {
+          "evidenceId": "mastra-gh-4",
+          "quote": "Suspend an agent or workflow and await user input or approval before resuming. Mastra uses storage to remember execution state, so you can pause indefinitely and resume where you left off."
+        },
+        {
+          "evidenceId": "mastra-docs-31",
+          "quote": "Mark a tool with `requireApproval: true`, then check for the `tool-call-approval` chunk in the stream to approve or decline the action"
+        },
+        {
+          "evidenceId": "mastra-docs-12",
+          "quote": "Pause a workflow at any step to collect additional data, wait for an API callback, throttle a costly operation, or request human-in-the-loop input."
+        },
+        {
+          "evidenceId": "mastra-docs-53",
+          "quote": "Use resume() to restart a suspended workflow from the step where it paused."
+        },
+        {
+          "evidenceId": "mastra-docs-40",
+          "quote": "The workflow can then either resume or bail based on the input received."
+        }
+      ]
+    },
     "productId": "mastra",
     "storyId": "hitl-interrupt-resume"
   }

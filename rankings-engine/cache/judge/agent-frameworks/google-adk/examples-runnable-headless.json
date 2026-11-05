@@ -1,19 +1,41 @@
 {
-  "hash": "e0e3bf8de8a2d8fc0114ad77e50778e4ad09a34791af5946f4b2bce5249f9993",
+  "hash": "fca30a7ed52cec62183d3a474bae7e0ceb2ef59b3298c1360e179143c1dfdb72",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "The GitHub README documents terminal commands that run agents without the web UI: `adk run path/to/my_agent`, plus `adk eval` against bundled samples (samples_for_testing/hello_world, contributing/samples/evaluation/home_automation_agent) with evalset files. An agent could use these to run example agents and check behavior from the shell, and the docs also promote Agents CLI for scaffold/build/test/evaluate in AI-enabled environments. missing for 10: explicit documentation that `adk run` works non-interactively or scriptably (single-prompt or piped input), machine-readable output and exit-code semantics for automated verification, and independent or hands-on corroboration of headless use.",
+    "rationale": "ADK ships its own CLI that runs agents from a terminal (`adk run path/to/my_agent`). Its `adk eval` command runs bundled sample agents (e.g. samples_for_testing/hello_world, contributing/samples/evaluation/home_automation_agent) against evalset files, which gives a terminal-driven way to check agent behavior. The evidence does not show that `adk run` works non-interactively (piped input, machine-readable output, exit codes), so whether an AI agent can fully script it headlessly is unproven. missing for 10: documented non-interactive/scriptable mode for `adk run` (stdin input, structured output, exit codes), explicit docs on running the shipped example agents headlessly for agent self-verification, independent hands-on corroboration.",
     "evidenceIds": [
       "google-adk-gh-5",
       "google-adk-gh-12",
       "google-adk-gh-13",
       "google-adk-gh-18",
-      "google-adk-docs-10",
       "google-adk-docs-21"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an ai-native user, I can run the framework's example agents headlessly from a terminal so an agent can verify what it just built",
+      "citations": [
+        {
+          "evidenceId": "google-adk-gh-5",
+          "quote": "adk run path/to/my_agent"
+        },
+        {
+          "evidenceId": "google-adk-gh-13",
+          "quote": "adk eval \\\n    samples_for_testing/hello_world \\\n    samples_for_testing/hello_world/hello_world_eval_set_001.evalset.json"
+        },
+        {
+          "evidenceId": "google-adk-gh-18",
+          "quote": "adk eval \\\n    contributing/samples/evaluation/home_automation_agent \\\n    contributing/samples/evaluation/basic_criteria/home_automation.evalset.json"
+        },
+        {
+          "evidenceId": "google-adk-docs-21",
+          "quote": "It's most effective during active agent development, serving as a form of unit testing."
+        }
+      ]
+    },
     "productId": "google-adk",
     "storyId": "examples-runnable-headless"
   }

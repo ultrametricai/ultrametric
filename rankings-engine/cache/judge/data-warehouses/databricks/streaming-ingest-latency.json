@@ -1,18 +1,42 @@
 {
-  "hash": "8cf93f8adc6ce17dac0fad9ed3fa532498a717bd83ea4ca47b30f3dd1eafa6bd",
+  "hash": "b88b4128acfb41459a5f7ae78c44ded4936d7e740a3a0aa4da09dfbb6d60a709",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Databricks documents Structured Streaming with Delta Lake tables as streaming sinks with exactly-once guarantees, end-to-end latency as low as five milliseconds, and Auto Loader for incremental ingestion of files as they arrive. Together these support streaming writes landing in queryable tables quickly. However, the evidence shows a stream-processing engine and file-based ingestion, not a documented push-style ingestion API that external producers write to. Missing for 10: a documented streaming ingestion API or endpoint for producers to push records, an explicit statement that streamed writes become queryable within seconds, and independent or hands-on corroboration of that freshness.",
+    "rationale": "Databricks documents Structured Streaming and Auto Loader as streaming ingestion paths. Delta Lake tables serve as streaming sinks with exactly-once guarantees, and Real-Time Mode claims end-to-end latency as low as five milliseconds, which covers the core of low-latency streaming writes into tables. However, the evidence never states that sink data becomes queryable within seconds, and it shows no push-style ingestion endpoint for external producers. missing for 10: explicit documentation of query freshness on landed streaming data, a documented direct push/streaming ingestion API for external clients, independent or hands-on corroboration of seconds-level queryability",
     "evidenceIds": [
-      "databricks-docs-13",
-      "databricks-docs-36",
       "databricks-docs-51",
       "databricks-docs-68",
-      "databricks-docs-1"
+      "databricks-docs-118",
+      "databricks-docs-36",
+      "databricks-docs-13",
+      "databricks-docs-107"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a data-engineer, streaming writes land queryable within seconds through a documented streaming ingestion API",
+      "citations": [
+        {
+          "evidenceId": "databricks-docs-68",
+          "quote": "Use Delta Lake tables as streaming sources and sinks with exactly-once processing guarantees."
+        },
+        {
+          "evidenceId": "databricks-docs-118",
+          "quote": "RTM processes records as they arrive, with end-to-end latency as low as five milliseconds."
+        },
+        {
+          "evidenceId": "databricks-docs-51",
+          "quote": "Structured Streaming lets you express computation on streaming data in the same way you express a batch computation on static data."
+        },
+        {
+          "evidenceId": "databricks-docs-13",
+          "quote": "Incrementally and efficiently process new data files as they arrive in cloud storage."
+        }
+      ]
+    },
     "productId": "databricks",
     "storyId": "streaming-ingest-latency"
   }

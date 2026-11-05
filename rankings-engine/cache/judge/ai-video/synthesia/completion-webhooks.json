@@ -1,16 +1,31 @@
 {
-  "hash": "0824612e755efb1d06b37aa689a32623e57c528468976932e054cc1ef20b3442",
+  "hash": "42e54f371670edec2ea465d30892f1f807a2c497f8025198e60a088308a8a0f8",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Synthesia's API quickstart documents configuring a webhook that Synthesia calls when a video completes. It also refers to polling the API as the alternative, with the retrieved response carrying a time-limited `download` link once the video is ready. Together these give a developer a documented way to learn that a render finished. Missing for 10: explicit documentation of failure states (webhook events or job status values for failed renders), detailed docs on the polling status field and webhook payload, and independent or hands-on corroboration.",
+    "rationale": "Synthesia's Video API is documented as asynchronous: you submit a job and then either poll for it or receive a webhook when it is ready. The quickstart says a webhook notifies you when a video completes successfully. However, the evidence never shows failure notification by webhook, nor the documented status values (such as a failed state) that a poller would read, so only the success half of the story is covered. Missing for 10: documented failure/error signaling via webhook or job status, an explicit job-status field and its values, and independent or hands-on corroboration.",
     "evidenceIds": [
+      "synthesia-docs-31",
       "synthesia-docs-18",
-      "synthesia-docs-19",
-      "synthesia-docs-15"
+      "synthesia-docs-19"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, my system learns a render finished or failed through a webhook or a documented pollable job status",
+      "citations": [
+        {
+          "evidenceId": "synthesia-docs-31",
+          "quote": "Asynchronous — you submit a job and poll or get a webhook when it's ready."
+        },
+        {
+          "evidenceId": "synthesia-docs-18",
+          "quote": "rather than polling Synthesia API, it is possible to configure a webhook to which Synthesia sends a notification when a video completes successfully."
+        }
+      ]
+    },
     "productId": "synthesia",
     "storyId": "completion-webhooks"
   }

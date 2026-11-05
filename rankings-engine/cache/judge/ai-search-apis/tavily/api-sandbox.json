@@ -1,17 +1,35 @@
 {
-  "hash": "662dda80db91edfa6462576f7f6ccd45be1a7c9a82b1aac283ca1af95961ecaa",
+  "hash": "cce945c47c204ad9a0c51cdcb1388f6a96ecccf82178e2252b6d85b508f41b08",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Tavily's docs distinguish Development and Production API-key environments (100 vs 1,000 RPM). That gives a documented way to separate testing from production keys, and keyless mode lets you try search/extract without account credentials. The evidence only describes rate-limit differences, not an isolated sandbox, mock responses or separation of usage and billing data. Missing for 10: a documented sandbox/test mode with isolated or mock data, confirmation that dev keys don't consume production credits or logs, and independent corroboration.",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence shows Development and Production API-key environments, but they differ only in rate limits. Nothing documents a sandbox that isolates tests from production data or returns mock responses. Keyless mode is a trial path against the public Tavily API, not an isolated test environment, so both items are adjacent controls rather than the sandbox capability itself.",
     "evidenceIds": [
-      "tavily-docs-17",
       "tavily-docs-61",
-      "tavily-gh-2",
+      "tavily-docs-17",
       "tavily-gh-6"
     ],
+    "support": {
+      "relation": "adjacent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
+      "citations": [
+        {
+          "evidenceId": "tavily-docs-61",
+          "quote": "We offer two types of rate limits based on the environment associated with your API key."
+        },
+        {
+          "evidenceId": "tavily-docs-17",
+          "quote": "Environment Requests per minute (RPM) Development 100 Production 1,000"
+        },
+        {
+          "evidenceId": "tavily-gh-6",
+          "quote": "Instantiate `TavilyClient()` with no arguments and the SDK runs in keyless mode against the public Tavily API."
+        }
+      ]
+    },
     "productId": "tavily",
     "storyId": "api-sandbox"
   }

@@ -1,16 +1,32 @@
 {
-  "hash": "0d6df716e8dede829106ba3086d237fab9abe9da9509bbeab75931c8074eee4a",
+  "hash": "cf84cbfb7df2d6ddd74e02a1203bc4bf025cca83ad4332043a686a5d3779a3fd",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 8,
-    "confidence": "medium",
-    "rationale": "Runway's developer docs describe a pollable job-status flow: a request returns a task id, and the developer polls `GET /v1/tasks/{id}` until the task reaches `SUCCEEDED` or `FAILED`. That satisfies the story's 'documented pollable job status' branch. A machine-readable OpenAPI 3.1 spec, confirmed reachable by probe, backs the API surface. Missing for 10: any evidence of registrable webhook callbacks, details on intermediate statuses and failure reasons, and independent or hands-on corroboration of the polling flow.",
+    "confidence": "high",
+    "rationale": "Runway Dev documents an asynchronous task model: you submit a request, receive a task id, then poll `GET /v1/tasks/{id}` until it reaches `SUCCEEDED` or `FAILED`. That is a documented, pollable job status covering both success and failure, which satisfies the story's 'webhook or pollable status' requirement, and a machine-readable OpenAPI 3.1 spec is published and probe-confirmed. Missing for 10: deeper documentation of the status lifecycle (intermediate states, failure-reason fields, polling/backoff guidance), no webhook option in evidence, and no independent hands-on corroboration of the polling flow.",
     "evidenceIds": [
       "runway-docs-5",
+      "runway-docs-44",
       "runway-docs-6",
       "runway-probe-2"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, my system learns a render finished or failed through a webhook or a documented pollable job status",
+      "citations": [
+        {
+          "evidenceId": "runway-docs-44",
+          "quote": "send a request to receive a task id, then poll `GET /v1/tasks/{id}` until the task reaches `SUCCEEDED` or `FAILED`."
+        },
+        {
+          "evidenceId": "runway-docs-6",
+          "quote": "/openapi.json is the machine-readable OpenAPI 3.1 specification."
+        }
+      ]
+    },
     "productId": "runway",
     "storyId": "completion-webhooks"
   }

@@ -1,20 +1,41 @@
 {
-  "hash": "b837520941036964cccd450798010a04f34511c8b5a18a5279c95274a592e44a",
+  "hash": "f0416bdfc32eb07910edd52d9fe7053d8be1d31aeff9195b23c943590e653735",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "LangGraph is a pip-installable, low-level orchestration library whose core features (scheduling, checkpointing, state management) live in the framework itself. Production persistence can use your own Postgres via PostgresSaver, and the LangGraph CLI builds and runs the Agent Server locally with its own database, so agents can run on your own infrastructure. A community question about production deployment beyond running `langgraph serve` locally is an open question, not a contradiction. Missing for 10: explicit documentation of a self-hosted production deployment path independent of LangSmith (the Agent Server/CLI docs sit under LangSmith), a stated open-source licensing/self-hosting guarantee, and independent hands-on corroboration of fully vendor-free production operation.",
+    "rationale": "LangGraph installs as a library via pip and runs graphs in your own process. It persists state to a database you run, such as PostgresSaver. The CLI builds and runs the Agent Server locally, with all run/thread/assistant endpoints. The evidence never explicitly says there is no dependence on the vendor's platform, and a community question asks how to deploy production-grade beyond running `langgraph serve` locally. missing for 10: documented production self-hosting of the Agent Server on own infrastructure, explicit statement that no LangSmith/vendor service is required, independent hands-on corroboration of fully self-hosted deployment.",
     "evidenceIds": [
       "langgraph-gh-5",
       "langgraph-gh-12",
       "langgraph-docs-13",
       "langgraph-docs-30",
-      "langgraph-docs-23",
-      "langgraph-comm-7",
-      "langgraph-comm-11"
+      "langgraph-docs-23"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an engineering-lead, I can run my agents entirely on my own infrastructure with no dependence on the vendor's platform",
+      "citations": [
+        {
+          "evidenceId": "langgraph-gh-5",
+          "quote": "pip install -U langgraph"
+        },
+        {
+          "evidenceId": "langgraph-docs-13",
+          "quote": "In production, use a checkpointer backed by a database: from langgraph.checkpoint.postgres import PostgresSaver"
+        },
+        {
+          "evidenceId": "langgraph-docs-30",
+          "quote": "LangGraph CLI is a command-line tool for building and running the Agent Server locally. The resulting server exposes all API endpoints for runs, threads, assistants, etc., and includes supporting services such as a managed database for checkpointing and storage."
+        },
+        {
+          "evidenceId": "langgraph-gh-12",
+          "quote": "LangGraph is a low-level orchestration framework for building, managing, and deploying long-running, stateful agents."
+        }
+      ]
+    },
     "productId": "langgraph",
     "storyId": "run-on-own-infra"
   }

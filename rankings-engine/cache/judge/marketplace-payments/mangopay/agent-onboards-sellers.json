@@ -1,20 +1,36 @@
 {
-  "hash": "2b9b9b8b5ebab9afb094d18b33b045377a1cf3c63272dfe5061804ffca8f7bfd",
+  "hash": "5e870d7d8100c6f8c990923e3f4b4a4b6594a19aecd63414e8fc18f4d1b39e30",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 4,
-    "confidence": "medium",
-    "rationale": "Mangopay offers a full REST API with an OpenAPI spec, official SDKs, user management, and webhooks, so an agent could plausibly create users and react to events programmatically. However, KYC/KYB must go through a hosted flow, which points to user-driven rather than agent-driven onboarding. The MCP server sits at a /_mcp path that looks like a docs-assistant surface, not an operations one. Missing for 10: explicit API endpoints for creating seller accounts, agent-drivable onboarding to completion without the hosted UI, handling of requirements-due/verification states, scoped or restricted API credentials for agents, and evidence that the MCP server exposes operational tools.",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Mangopay's own API covers user management, with a published OpenAPI spec and SDKs. Its verification docs say platforms must integrate hosted KYC/KYB for all user types, so onboarding runs through a Mangopay-hosted flow rather than being clearly completable end to end by an agent over the API. The probed MCP server lives on the docs domain, and there is no evidence it exposes seller-operation tools. Missing for 10: explicit API endpoints for creating seller accounts, programmatic tracking of requirements-due or verification states, an MCP surface for operations (not just docs), scoped/restricted API credentials, and hands-on corroboration.",
     "evidenceIds": [
-      "mangopay-probe-2",
-      "mangopay-probe-3",
       "mangopay-docs-4",
       "mangopay-docs-34",
-      "mangopay-docs-14",
-      "mangopay-docs-2",
-      "mangopay-docs-3"
+      "mangopay-probe-2",
+      "mangopay-docs-21"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, an agent can run seller operations — create accounts, drive onboarding to completion, and answer requirements-due states through the API or an MCP surface with scoped credentials",
+      "citations": [
+        {
+          "evidenceId": "mangopay-docs-4",
+          "quote": "Manage your community of paying users in full compliance"
+        },
+        {
+          "evidenceId": "mangopay-docs-34",
+          "quote": "Mangopay's [hosted KYC/KYB](/guides/users/verification/hosted) solution, which your platform must integrate for all user types"
+        },
+        {
+          "evidenceId": "mangopay-probe-2",
+          "quote": "PROBE openapi: HTTP 200 at https://docs.mangopay.com/openapi.json — contains \"openapi\" key"
+        }
+      ]
+    },
     "productId": "mangopay",
     "storyId": "agent-onboards-sellers"
   }

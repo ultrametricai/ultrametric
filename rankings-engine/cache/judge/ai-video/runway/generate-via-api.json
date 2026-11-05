@@ -1,21 +1,43 @@
 {
-  "hash": "bde8622386f46ad8f59068cb2e53a98226d9215b308636677683f18a24935122",
+  "hash": "14800f0b5a2cc2904989afb6cd96967e3d1562c2a2a73897c31c4d2c3c658cd4",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
-    "quality": 9,
+    "quality": 8,
     "confidence": "high",
-    "rationale": "Runway Dev documents an async HTTP job flow: you submit a generation request, get a task id, and poll `GET /v1/tasks/{id}` until it reaches SUCCEEDED or FAILED. This applies to text-to-video and image-to-video, backed by a published OpenAPI 3.1 spec that a probe confirmed is live, plus cURL and Playground guides. Missing for 10: explicit documentation of how the finished asset URL or download is returned in the task output, and independent or hands-on developer corroboration of the API workflow.",
+    "rationale": "Runway Dev documents an HTTP API for video generation. Text-only requests go to `POST /v1/text_to_video` and return a task id, which is polled at `GET /v1/tasks/{id}` until it reaches SUCCEEDED or FAILED. The docs also cover an npm SDK and cURL examples, and a probe confirmed the OpenAPI 3.1 spec is published. Missing for 10: an explicit description of how the finished asset is returned or downloaded (e.g. output URLs in the task response), independent hands-on corroboration of the API workflow.",
     "evidenceIds": [
+      "runway-docs-49",
+      "runway-docs-44",
       "runway-docs-5",
       "runway-docs-6",
       "runway-probe-2",
-      "runway-probe-1",
-      "runway-docs-13",
-      "runway-docs-11",
-      "runway-docs-10",
-      "runway-docs-1"
+      "runway-docs-47",
+      "runway-docs-48"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can submit a video generation job through a documented API and retrieve the finished asset",
+      "citations": [
+        {
+          "evidenceId": "runway-docs-49",
+          "quote": "Send text-only requests to `POST /v1/text_to_video`"
+        },
+        {
+          "evidenceId": "runway-docs-44",
+          "quote": "send a request to receive a task id, then poll `GET /v1/tasks/{id}` until the task reaches `SUCCEEDED` or `FAILED`."
+        },
+        {
+          "evidenceId": "runway-docs-6",
+          "quote": "/openapi.json is the machine-readable OpenAPI 3.1 specification."
+        },
+        {
+          "evidenceId": "runway-docs-47",
+          "quote": "First, you’ll want to install the Runway SDK. You can do this with npm"
+        }
+      ]
+    },
     "productId": "runway",
     "storyId": "generate-via-api"
   }

@@ -1,25 +1,52 @@
 {
-  "hash": "c5f830fd4414ce8f161283937dd79ff79f1544832515524d89f340146ae098e0",
+  "hash": "9ede3a73dabd4505d1e86e609f8bd43a46d242244b3f72645d1190db0e571e16",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "BigQuery documents an official `bq` CLI that creates datasets, loads data and queries tables, plus ODBC/JDBC drivers and SDKs that connect applications programmatically, so an agent can run SQL with no dashboard. Governance comes from predefined IAM roles on datasets, tables, views and routines and from custom daily quotas, and an official MCP Toolbox server gives agents another access path. Missing for 10: explicit evidence of headless/service-account authentication, programmatic schema discovery (listing tables and columns), result-retrieval and format details, and independent hands-on corroboration of an agent workflow.",
+    "rationale": "BigQuery documents its own headless path for querying. The `bq` CLI creates datasets, loads data and queries tables, and ODBC/JDBC drivers connect applications. Query results can be retrieved in Apache Arrow format, IAM predefined roles and granular permissions govern access, and custom quotas cap the data processed. Google's open-source MCP Toolbox also offers an agent-facing MCP server for databases, though the pack does not tie it to BigQuery. Missing for 10: explicit documentation of the programmatic authentication flow (service accounts or credentials for the CLI/API), explicit schema-discovery/metadata-listing via the CLI or API, and independent hands-on corroboration of an agent running the full loop.",
     "evidenceIds": [
-      "bigquery-docs-12",
       "bigquery-docs-49",
       "bigquery-probe-2",
       "bigquery-docs-55",
-      "bigquery-docs-92",
-      "bigquery-docs-14",
-      "bigquery-docs-31",
-      "bigquery-docs-65",
-      "bigquery-docs-76",
+      "bigquery-docs-108",
+      "bigquery-docs-122",
+      "bigquery-docs-118",
       "bigquery-docs-98",
-      "bigquery-probe-1",
-      "bigquery-docs-23"
+      "bigquery-probe-1"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, my agent can run governed SQL end to end — authenticate, discover schemas, query, and read results back through a CLI or API with no dashboard in the loop",
+      "citations": [
+        {
+          "evidenceId": "bigquery-docs-49",
+          "quote": "learn how to use bq, the Python-based command-line interface (CLI) tool for BigQuery to create a dataset, load sample data, and query tables"
+        },
+        {
+          "evidenceId": "bigquery-docs-108",
+          "quote": "You can now retrieve query results directly in the Apache Arrow format for faster retrieval speed and improved serialization efficiency."
+        },
+        {
+          "evidenceId": "bigquery-docs-122",
+          "quote": "Identity and Access Management (IAM) lets you control access to BigQuery resources by using predefined roles and granular permissions."
+        },
+        {
+          "evidenceId": "bigquery-docs-55",
+          "quote": "The Simba Open Database Connectivity (ODBC) and Java Database Connectivity (JDBC) drivers for BigQuery connect your applications to BigQuery"
+        },
+        {
+          "evidenceId": "bigquery-docs-118",
+          "quote": "Creating a custom quota on processed data lets you control costs at the project level or at the user level."
+        },
+        {
+          "evidenceId": "bigquery-docs-98",
+          "quote": "MCP Toolbox for Databases is an open source MCP server for databases."
+        }
+      ]
+    },
     "productId": "bigquery",
     "storyId": "agent-runs-sql-headless"
   }

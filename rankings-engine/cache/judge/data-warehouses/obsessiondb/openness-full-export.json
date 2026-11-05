@@ -1,20 +1,43 @@
 {
-  "hash": "b54b8159439b97cbec55183bf2115318bf0363f55ece683c103ad2ef4b3cf587",
+  "hash": "22036f38c3d38d784c3a18005dcdac3b8f00329a51c8e66f53dd29f25f851a2c",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "obsessiondb",
-    "storyId": "openness-full-export",
     "verdict": "partial",
     "quality": 4,
     "confidence": "low",
-    "rationale": "ObsessionDB documents full native ClickHouse protocol and SQL compatibility, plain MergeTree DDL, and working s3()/url() table functions, so data and schema stay in a portable, standard ClickHouse form that any ClickHouse client or tool can read. However, the docs only describe migration onto ObsessionDB and ingestion; they never describe exporting data out or offboarding. missing for 10: explicit documented export to open formats (e.g., Parquet/CSV to object storage), a documented exit or offboarding path, and independent or hands-on corroboration of a full data export.",
+    "rationale": "ObsessionDB runs the official ClickHouse engine. Every standard query, client and driver works unchanged, the s3()/url() table functions work as documented, and data sits in plain MergeTree on object storage, so leaving looks plausible via standard ClickHouse tooling. However, the docs only describe migrating onto ObsessionDB, list s3() as an ingestion path, and state there is no manual BACKUP/RESTORE. missing for 10: an explicitly documented full-data export or off-boarding path, a named list of supported open export formats (e.g. Parquet/CSV), confirmation that s3()/url() can write data out, and independent hands-on evidence of exiting the service.",
     "evidenceIds": [
-      "obsessiondb-docs-5",
       "obsessiondb-docs-29",
+      "obsessiondb-docs-43",
+      "obsessiondb-docs-45",
       "obsessiondb-docs-9",
-      "obsessiondb-docs-36",
-      "obsessiondb-docs-1",
-      "obsessiondb-docs-8"
-    ]
+      "obsessiondb-docs-2",
+      "obsessiondb-docs-31"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can export all of my data in open formats and leave",
+      "citations": [
+        {
+          "evidenceId": "obsessiondb-docs-29",
+          "quote": "Every query, every client, every tool you already use works unchanged."
+        },
+        {
+          "evidenceId": "obsessiondb-docs-43",
+          "quote": "every ClickHouse client and driver works against ObsessionDB unchanged."
+        },
+        {
+          "evidenceId": "obsessiondb-docs-45",
+          "quote": "the `s3()` and `url()` table functions, materialized views, all work as documented"
+        },
+        {
+          "evidenceId": "obsessiondb-docs-9",
+          "quote": "it takes plain MergeTree DDL on the surface, with metadata in the coordination layer and data on object storage underneath."
+        }
+      ]
+    },
+    "productId": "obsessiondb",
+    "storyId": "openness-full-export"
   }
 }

@@ -1,21 +1,50 @@
 {
-  "hash": "6c88a054294a6ff63467947af8805107a00ee0972de7a7f6b150d922c119a4a1",
+  "hash": "4f4687d560880c79864fca1c8bf38c435c67c94b024392e2277031ff1d4ce74c",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "The first-party docs describe how to gate specific tool calls on human approval. Permission modes and rules decide what is auto-allowed, and the canUseTool callback handles everything else at runtime. It receives the tool name and input and pauses execution until the app returns a decision. The SDK surfaces approval requests (e.g. deleting files, running commands) to users and relays their decisions back, and hooks can block dangerous operations before they execute. Missing for 10: independent or hands-on corroboration of the approval flow in practice.",
+    "rationale": "The SDK's own permission system uses modes and rules to auto-allow some tools and routes everything else to a canUseTool callback. That callback receives the tool name and input and pauses execution until the app returns an approval decision, so sensitive calls can be gated selectively. Hooks can also block dangerous operations before they execute. missing for 10: independent or hands-on corroboration that approval gating works in practice.",
     "evidenceIds": [
       "claude-agent-sdk-docs-6",
       "claude-agent-sdk-docs-9",
+      "claude-agent-sdk-docs-37",
       "claude-agent-sdk-docs-18",
       "claude-agent-sdk-docs-28",
-      "claude-agent-sdk-docs-37",
-      "claude-agent-sdk-docs-22",
-      "claude-agent-sdk-docs-26",
-      "claude-agent-sdk-docs-55"
+      "claude-agent-sdk-docs-22"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an engineering-lead, I can require human approval before specific sensitive tool calls execute",
+      "citations": [
+        {
+          "evidenceId": "claude-agent-sdk-docs-6",
+          "quote": "Use permission modes and rules to define what's allowed automatically, and the canUseTool callback to handle everything else at runtime."
+        },
+        {
+          "evidenceId": "claude-agent-sdk-docs-9",
+          "quote": "The callback fires whenever Claude needs user input, receiving the tool name and input as arguments"
+        },
+        {
+          "evidenceId": "claude-agent-sdk-docs-37",
+          "quote": "Both trigger your `canUseTool` callback, which pauses execution until you return a response."
+        },
+        {
+          "evidenceId": "claude-agent-sdk-docs-18",
+          "quote": "when it needs permission to use a tool (like deleting files or running commands)"
+        },
+        {
+          "evidenceId": "claude-agent-sdk-docs-28",
+          "quote": "Surface Claude's approval requests and clarifying questions to users, then return their decisions to the SDK."
+        },
+        {
+          "evidenceId": "claude-agent-sdk-docs-22",
+          "quote": "Block dangerous operations before they execute, like destructive shell commands or unauthorized file access"
+        }
+      ]
+    },
     "productId": "claude-agent-sdk",
     "storyId": "tool-approval-gates"
   }

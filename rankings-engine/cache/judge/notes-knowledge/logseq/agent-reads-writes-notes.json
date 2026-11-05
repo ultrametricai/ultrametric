@@ -1,20 +1,42 @@
 {
-  "hash": "9ad130057b023947d01a3bf4130539e5288831d50513a17c63b5661dd52d1d48",
+  "hash": "e1ddee9767427f925e17cbf6d62933a1f4e252b44d063f57b0fa81211c025c40",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Logseq ships a documented local HTTP API server that gives authorized external access to the graph: a single POST /api endpoint dispatches any plugin-API method, including the logseq.Editor and logseq.DB namespaces, with bearer-token auth and worked curl examples. A coding agent can therefore read the graph and write to it (e.g. logseq.Editor.insertBlock) programmatically without driving the GUI. missing for 10: an official MCP server, a truly app-independent headless mode (the server must first be enabled in the desktop app's Features settings), first-party rather than community-driven method docs, an OpenAPI spec or versioning policy, and independent hands-on corroboration of agent use.",
+    "rationale": "Logseq documents a local HTTP API server for external access to the graph. A single POST /api endpoint dispatches any plugin-API method (logseq.Editor, logseq.DB, and others) with bearer-token auth and a worked write example (logseq.Editor.insertBlock), so an agent can read and write notes programmatically. However, the server must be enabled from the desktop app's Features menu, and evidence only shows it running as part of the app, so a truly GUI-free headless setup is not demonstrated. missing for 10: evidence it runs without the desktop GUI or GUI setup, an explicit documented read example, an OpenAPI/machine-readable spec (probes 404), an official MCP server, and independent or hands-on corroboration of agent read/write use.",
     "evidenceIds": [
       "logseq-docs-6",
       "logseq-docs-21",
       "logseq-supp-local-api-server-details",
       "logseq-docs-38",
       "logseq-docs-37",
-      "logseq-docs-12",
       "logseq-probe-2"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, my coding agent or assistant can read AND write my notes headlessly — through a documented local API, vendor API, or MCP server — without me touching the GUI",
+      "citations": [
+        {
+          "evidenceId": "logseq-docs-21",
+          "quote": "we developed the local HTTP server to support external access to the database through authorization."
+        },
+        {
+          "evidenceId": "logseq-docs-6",
+          "quote": "Enable HTTP APIs server in `Features > HTTP APIs server`"
+        },
+        {
+          "evidenceId": "logseq-docs-38",
+          "quote": "-d '{\"method\": \"logseq.Editor.insertBlock\", \"args\": [\"Test page\", \"This is a new block\", {\"isPageBlock\": true}]}'"
+        },
+        {
+          "evidenceId": "logseq-docs-37",
+          "quote": "logseq.App logseq.Editor logseq.DB logseq.Git logseq.UI logseq.Assets logseq.FileStorage"
+        }
+      ]
+    },
     "productId": "logseq",
     "storyId": "agent-reads-writes-notes"
   }

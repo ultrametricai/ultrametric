@@ -1,19 +1,45 @@
 {
-  "hash": "c3b30e717c6de25e2994df9947221ade1e81dea3b24b5f87ec9e45a291390542",
+  "hash": "1dd0c156c88c4fc645f885f5ab076da5fe15d2bb23425cbec9cac9fef66349b6",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Pydantic AI is a code-first Python framework, so its programmatic API is the primary surface. The same agent object can be called with run(), launched as a CLI via to_cli_sync(), or served as a browser chat UI through clai, and evals are defined entirely in Python. Its optional UI surfaces therefore sit on top of the API rather than adding capabilities the API lacks. Missing for 10: no explicit documented statement of UI/API feature parity, unclear scope of the probed openapi.json, and no independent hands-on corroboration that the browser chat UI exposes nothing beyond the API.",
+    "rationale": "Pydantic AI is a code-first Python framework: agents are its primary interface, evals are defined entirely in Python, and its interactive surfaces (the clai CLI and the browser chat server) are launched from Agent objects in code. That makes the programmatic API the superset of its UI-like surfaces, but no evidence explicitly states or verifies API/UI parity. missing for 10: an explicit documented parity guarantee between the browser/CLI chat surfaces and the API, coverage of the adjacent Logfire/Gateway UIs via API, independent hands-on corroboration.",
     "evidenceIds": [
+      "pydantic-ai-docs-43",
+      "pydantic-ai-docs-13",
       "pydantic-ai-docs-25",
       "pydantic-ai-docs-39",
-      "pydantic-ai-docs-33",
-      "pydantic-ai-docs-13",
-      "pydantic-ai-docs-43",
-      "pydantic-ai-probe-3"
+      "pydantic-ai-docs-33"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can do everything through the API that I can do in the UI",
+      "citations": [
+        {
+          "evidenceId": "pydantic-ai-docs-43",
+          "quote": "Agents are Pydantic AI’s primary interface for interacting with LLMs."
+        },
+        {
+          "evidenceId": "pydantic-ai-docs-13",
+          "quote": "Pydantic Evals follows a code-first philosophy where all evaluation components are defined in Python."
+        },
+        {
+          "evidenceId": "pydantic-ai-docs-25",
+          "quote": "or as a plain object you call run() on."
+        },
+        {
+          "evidenceId": "pydantic-ai-docs-39",
+          "quote": "spin up a uvicorn server to chat with your Pydantic AI agents from your browser."
+        },
+        {
+          "evidenceId": "pydantic-ai-docs-33",
+          "quote": "you can directly launch CLI mode from an Agent instance using Agent.to_cli_sync()."
+        }
+      ]
+    },
     "productId": "pydantic-ai",
     "storyId": "openness-api-parity"
   }

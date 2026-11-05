@@ -1,21 +1,43 @@
 {
-  "hash": "84b0cdd780049814400ef642205cce55e4cfefc794db5a80f19c331a7245c5d4",
+  "hash": "a294a247c63176310d9e85ef598a8eda7bf70661516e39f41278413e46701eb0",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "The docs show interrupts pausing graph execution at specific points to wait for external input. Execution resumes by re-invoking the graph with Command, whose value becomes the return value of interrupt(). Checkpointers persist the exact state so the run can pick up later, and breakpoints are configured at compile time. A community user independently confirms LangGraph's human-in-the-loop state machine lets an analyst correct a step and continue. Missing for 10: explicit documentation of approve/reject/edit patterns for approving tool calls, and hands-on verification of the pause/resume flow.",
+    "rationale": "LangGraph's first-party docs describe interrupts that pause graph execution at specific points to wait for external input. Execution resumes by re-invoking the graph with Command, whose value becomes the return value of interrupt() inside the node. Checkpointers persist the paused state, and the docs name human-in-the-loop as a supported use, which community comments on human-in-the-loop with time travel corroborate. Missing for 10: no hands-on or independent walkthrough of an approval/resume cycle specifically (community corroboration is general, not a tested pause-approve-resume run).",
     "evidenceIds": [
       "langgraph-docs-4",
       "langgraph-docs-5",
       "langgraph-docs-15",
       "langgraph-docs-25",
       "langgraph-docs-2",
-      "langgraph-docs-10",
       "langgraph-gh-7",
       "langgraph-comm-2"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can pause an agent mid-run for human input or approval and resume with the human's decision",
+      "citations": [
+        {
+          "evidenceId": "langgraph-docs-4",
+          "quote": "Interrupts allow you to pause graph execution at specific points and wait for external input before continuing."
+        },
+        {
+          "evidenceId": "langgraph-docs-5",
+          "quote": "you resume execution by re-invoking the graph using Command, which then becomes the return value of the interrupt() call from inside the node"
+        },
+        {
+          "evidenceId": "langgraph-docs-25",
+          "quote": "Checkpointing keeps your place: the checkpointer writes the exact graph state so you can resume later, even when in an error state."
+        },
+        {
+          "evidenceId": "langgraph-gh-7",
+          "quote": "Human-in-the-loop — Seamlessly incorporate human oversight by inspecting and modifying agent state at any point during execution."
+        }
+      ]
+    },
     "productId": "langgraph",
     "storyId": "hitl-interrupt-resume"
   }

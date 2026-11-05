@@ -1,11 +1,11 @@
 {
-  "hash": "bc7a28feacf82f062d2e974ca1753415abb66ce6d20dfba003faa72d0bcd041b",
+  "hash": "958b64f77da50af620de7f1a8793a146641aea9e63935ea829594f5e869635b1",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
-    "quality": 9,
+    "quality": 10,
     "confidence": "high",
-    "rationale": "The CLI documents a `--skill` flag that installs only named skills from a collection, repeatable for several (e.g. `--skill frontend-design --skill skill-creator`), with `'*'` for all. It also supports a direct path to a single skill in a repo, and `--list` shows a repo's skills before installing, which a runtime probe confirmed (9 skills listed, nothing installed). Missing for 10: hands-on or independent corroboration that a `--skill`-filtered install itself installs only the chosen skills (the probe only exercised `--list`).",
+    "rationale": "The skills CLI documents selective installation from a collection in three ways: the `--skill` flag, which can be repeated to name individual skills, with `'*'` reserved for installing everything; direct URL paths to a single skill inside a repo; and a `--list` option that shows what a repo contains without installing anything. A hands-on runtime probe confirmed the `--list` path, enumerating all 9 skills in a repo without installing any of them, and the per-skill flag also works in non-interactive CI mode.",
     "evidenceIds": [
       "skills-cli-gh-4",
       "skills-cli-gh-20",
@@ -14,6 +14,29 @@
       "skills-cli-gh-19",
       "skills-cli-probe-rt-2"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can install only the specific skills I want from a collection instead of taking the whole bundle",
+      "citations": [
+        {
+          "evidenceId": "skills-cli-gh-4",
+          "quote": "Install specific skills by name (use `'*'` for all skills)"
+        },
+        {
+          "evidenceId": "skills-cli-gh-20",
+          "quote": "npx skills add vercel-labs/agent-skills --skill frontend-design --skill skill-creator"
+        },
+        {
+          "evidenceId": "skills-cli-gh-48",
+          "quote": "npx skills add https://github.com/vercel-labs/agent-skills/tree/main/skills/web-design-guidelines"
+        },
+        {
+          "evidenceId": "skills-cli-probe-rt-2",
+          "quote": "enumerated all 9 skills in a public repo — each with its name and full trigger description — WITHOUT installing anything"
+        }
+      ]
+    },
     "productId": "skills-cli",
     "storyId": "selective-install"
   }

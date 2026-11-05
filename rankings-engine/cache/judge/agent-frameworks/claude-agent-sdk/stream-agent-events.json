@@ -1,18 +1,36 @@
 {
-  "hash": "bb0a461508ed19bc5d1c40fe514128ddaa70dc5465ac27c8ad93d1a0a3714e1d",
+  "hash": "0f72db4e5f3846c00d24fcafe6a10670723348d5d2ad0222fcbfc7b5395b2b49",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "The SDK has a dedicated streaming-output guide where setting `include_partial_messages`/`includePartialMessages` enables token-level partial messages. `query()` is an async iterator yielding typed messages such as AssistantMessage, which lets a UI consume agent output as it arrives. Hooks also fire on agent events like tool calls and session start/stop, giving further real-time event surfacing. Missing for 10: explicit documentation of the streamed event types for tool calls and steps (e.g. tool_use/tool_result message shapes), and independent hands-on corroboration of real-time UI streaming.",
+    "rationale": "The SDK documents real-time token streaming through `include_partial_messages`/`includePartialMessages`, and it exposes agent activity as an async message stream plus hook callbacks that fire on events such as tool calls. That covers the core of the story. However, streaming intermediate tool-call and step events to a UI is only implied by the message iterator and hooks, not explicitly documented as a UI event stream. missing for 10: explicit documentation of streamed tool-call/step event types, a worked example of piping events to a UI, independent hands-on corroboration.",
     "evidenceIds": [
       "claude-agent-sdk-docs-30",
       "claude-agent-sdk-gh-2",
       "claude-agent-sdk-docs-3",
-      "claude-agent-sdk-docs-12",
-      "claude-agent-sdk-docs-13"
+      "claude-agent-sdk-docs-26"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can stream tokens and intermediate agent events (tool calls, steps) to my UI in real time",
+      "citations": [
+        {
+          "evidenceId": "claude-agent-sdk-docs-30",
+          "quote": "To enable streaming, set `include_partial_messages` (Python) or `includePartialMessages` (TypeScript) to `true` in your options."
+        },
+        {
+          "evidenceId": "claude-agent-sdk-gh-2",
+          "quote": "async for message in query(prompt=\"Hello Claude\"):\n    if isinstance(message, AssistantMessage):"
+        },
+        {
+          "evidenceId": "claude-agent-sdk-docs-3",
+          "quote": "Hooks are callback functions that run your code in response to agent events, like a tool being called, a session starting, or execution stopping."
+        }
+      ]
+    },
     "productId": "claude-agent-sdk",
     "storyId": "stream-agent-events"
   }

@@ -1,22 +1,47 @@
 {
-  "hash": "007511857239084eb3c3841ada58bec491960e3cedd172d0599848d716ebcb01",
+  "hash": "8885052afd8a91b3ce90f272fff7f07d175b157678eec1ed6911308efd3de99c",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "LangGraph's docs say checkpointers persist a thread's graph state for fault tolerance, and the checkpointer writes the exact graph state so a run can resume later, even from an error state. The README advertises durable execution that resumes from exactly where it left off, and production use is backed by a database checkpointer (PostgresSaver) or the Agent Server's managed checkpoint database. Community comments independently confirm that checkpointing and state management are core framework features. Missing for 10: hands-on or independent evidence of a run actually recovering after a process crash or restart, and documentation of how mid-step (partially completed node) work is handled on resume.",
+    "rationale": "LangGraph's own docs describe checkpointers that persist a thread's graph state for fault tolerance and write the exact graph state so a run can resume even from an error state. A Postgres-backed checkpointer is documented for production, the GitHub README advertises durable execution that resumes exactly where it left off, and community comments confirm checkpointing is a core framework feature. Community wishes that persistence were better developed are general, not a concrete failure. Missing for 10: hands-on or independent evidence of resuming after an actual process crash or restart, and detailed docs on the resume-after-failure invocation mechanics.",
     "evidenceIds": [
       "langgraph-docs-2",
       "langgraph-docs-25",
-      "langgraph-gh-6",
-      "langgraph-gh-1",
       "langgraph-docs-13",
-      "langgraph-docs-30",
+      "langgraph-gh-6",
       "langgraph-docs-10",
       "langgraph-comm-7",
-      "langgraph-comm-11"
+      "langgraph-docs-30"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can checkpoint agent state so a run can resume exactly where it left off after a crash or restart",
+      "citations": [
+        {
+          "evidenceId": "langgraph-docs-2",
+          "quote": "Checkpointers persist a thread's graph state as checkpoints. Use them for short-term, thread-scoped memory, including conversation continuity, human-in-the-loop workflows, time travel, and fault tolerance."
+        },
+        {
+          "evidenceId": "langgraph-docs-25",
+          "quote": "Checkpointing keeps your place: the checkpointer writes the exact graph state so you can resume later, even when in an error state."
+        },
+        {
+          "evidenceId": "langgraph-gh-6",
+          "quote": "Durable execution — Build agents that persist through failures and can run for extended periods, automatically resuming from exactly where they left off."
+        },
+        {
+          "evidenceId": "langgraph-docs-13",
+          "quote": "In production, use a checkpointer backed by a database: from langgraph.checkpoint.postgres import PostgresSaver"
+        },
+        {
+          "evidenceId": "langgraph-comm-7",
+          "quote": "scheduling, checkpointing, and state management are core LangGraph framework features"
+        }
+      ]
+    },
     "productId": "langgraph",
     "storyId": "checkpoint-resume"
   }

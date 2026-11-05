@@ -1,19 +1,37 @@
 {
-  "hash": "a01dc439682c024095e359f947355ba3e808b7c5e057c594145b900f800beb90",
+  "hash": "3e36ed09cefccc87b1352d1ac4fba4d69c66571b3a7804f007300a5626466483",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "secureframe",
-    "storyId": "agentic-scoped-keys",
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Secureframe's MCP docs show agent-specific credentials. An MCP client signs in through an OAuth-style approval and \"receives its own token,\" and an API key option exists for headless CI, script and server setups. However, nothing in the evidence shows these credentials can be scoped or restricted to least privilege (e.g., read-only, per-resource permissions, or role limits). Missing for 10: documented permission scopes or role restrictions on agent tokens and API keys, read-only versus write limits, token expiry and revocation controls, and independent or hands-on corroboration.",
+    "rationale": "Secureframe's MCP docs show that an agent client gets its own credential: through an OAuth-style sign-in the client \"receives its own token\", and an API key option covers browserless CI or scripts. That gives each agent a distinct credential rather than a shared user secret, but nothing in the evidence shows the scope or permissions can be restricted to least privilege. Missing for 10: documented per-credential scopes or permission limits, read-only or resource-restricted tokens, credential revocation and rotation controls, and independent or hands-on corroboration.",
     "evidenceIds": [
       "secureframe-docs-59",
       "secureframe-docs-79",
       "secureframe-docs-80",
-      "secureframe-docs-38",
       "secureframe-docs-58"
-    ]
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
+      "citations": [
+        {
+          "evidenceId": "secureframe-docs-59",
+          "quote": "you sign in to Secureframe and approve access, and the client receives its own token. There is nothing to generate, copy, or store yourself, and no secret ends up in a config file."
+        },
+        {
+          "evidenceId": "secureframe-docs-80",
+          "quote": "API key For setups with no browser — CI jobs, scripts, serv"
+        },
+        {
+          "evidenceId": "secureframe-docs-58",
+          "quote": "Any MCP-capable client (Claude Code, Claude Desktop, Cursor, and others) can connect, letting you ask an assistant to look things up and take actions on your behalf."
+        }
+      ]
+    },
+    "productId": "secureframe",
+    "storyId": "agentic-scoped-keys"
   }
 }

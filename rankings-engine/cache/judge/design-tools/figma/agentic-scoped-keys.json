@@ -1,17 +1,35 @@
 {
-  "hash": "08e4e4ae8f7c49736d71888fe08773b0baeef36b62d2c7576308fefce2878cec",
+  "hash": "a9498e3e5e81b85cd15bed1ab2262b2aa0b5a414366a41fd48706b1d1270b526",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Figma's REST API authentication docs describe plan access tokens. They are scoped to an organization or enterprise plan, are not tied to a personal account, and are meant for CI/CD, logging and user-agnostic tasks, which suits issuing a non-personal credential to an agent. However, the pack shows only plan-level scoping, not fine-grained least-privilege permission scopes. Missing for 10: documented per-permission scopes (e.g. read-only or per-resource), agent-specific credential guidance, token expiry/revocation controls, independent corroboration.",
+    "rationale": "Figma documents plan access tokens that are scoped to an organization or enterprise plan. These tokens are user-agnostic, so requests are not made with a personal account, which suits agent or CI/CD credentials. The evidence does not show fine-grained permission scopes or least-privilege controls; it shows only plan-level scoping. Missing for 10: documented granular permission scopes (read-only vs write, per-resource), agent-specific credential issuance guidance, revocation/expiry controls, independent corroboration.",
     "evidenceIds": [
       "figma-docs-48",
       "figma-docs-57",
-      "figma-docs-66",
-      "figma-docs-76"
+      "figma-docs-66"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
+      "citations": [
+        {
+          "evidenceId": "figma-docs-48",
+          "quote": "A plan access token provides API access scoped to an organization or enterprise plan."
+        },
+        {
+          "evidenceId": "figma-docs-57",
+          "quote": "useful for needs like CI/CD implementations, logging, creating user-agnostic webhooks, and other tasks that you normally wouldn't want gated by a single individual"
+        },
+        {
+          "evidenceId": "figma-docs-66",
+          "quote": "you can make requests on behalf of other users, and the requests themselves aren’t made using your personal Figma account."
+        }
+      ]
+    },
     "productId": "figma",
     "storyId": "agentic-scoped-keys"
   }

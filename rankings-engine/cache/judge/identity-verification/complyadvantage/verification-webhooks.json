@@ -1,16 +1,35 @@
 {
-  "hash": "c29422a94b6a0b21d7760343d76e5ed6d912cc728d4ed07744157460398e3719",
+  "hash": "62dc4fe741848cd1e26209cdcc9dfd49e6534d83ea249eb8b3f1c724cadd8517",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "ComplyAdvantage documents outbound webhooks with a `webhook-id` idempotency header, opt-in per-account webhook signing, and a `WORKFLOW_COMPLETED` webhook whose payload carries the screening result, so a system can react to screening outcomes without polling. The evidence only shows a completion-type event, not the full created/processing/verified/requires-input lifecycle the story asks for. Missing for 10: documented intermediate lifecycle event types (created, processing, requires-input), details of the signature verification scheme, and independent or hands-on corroboration.",
+    "rationale": "ComplyAdvantage Mesh documents outbound webhooks with a `webhook-id` idempotency header, opt-in webhook signing, and a `WORKFLOW_COMPLETED` webhook whose payload carries the screening result, so a system can react to outcomes without polling. Only the completion outcome is evidenced, not the full lifecycle the story asks for. Missing for 10: documented created/processing/requires-input lifecycle event types, signing verification details (algorithm, secret handling), a full event catalog, and independent or hands-on corroboration.",
     "evidenceIds": [
       "complyadvantage-docs-8",
       "complyadvantage-docs-13",
       "complyadvantage-scope-webhook-signing-opt-in"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, verification lifecycle events arrive as signed webhooks — created, processing, verified, requires-input — so my system reacts to outcomes without polling",
+      "citations": [
+        {
+          "evidenceId": "complyadvantage-docs-8",
+          "quote": "Every webhook we send carries a `webhook-id` header... Use it as your idempotency key."
+        },
+        {
+          "evidenceId": "complyadvantage-docs-13",
+          "quote": "Set up a webhook of type `WORKFLOW_COMPLETED`"
+        },
+        {
+          "evidenceId": "complyadvantage-scope-webhook-signing-opt-in",
+          "quote": "Webhook signing is opt-in per account."
+        }
+      ]
+    },
     "productId": "complyadvantage",
     "storyId": "verification-webhooks"
   }

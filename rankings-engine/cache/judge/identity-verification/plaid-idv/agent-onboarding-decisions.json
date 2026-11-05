@@ -1,24 +1,38 @@
 {
-  "hash": "274232524f72929905a6d8de1c67b098f71d5a8ea9b22b178e4adc1a6d2f6fea",
+  "hash": "c8b3cbb0fd5dc9a19e0b89779adc1545a26add7c122c59932e2f8cf0d6e3c10e",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Plaid has machine-facing status signals: STATUS_UPDATED, STEP_UPDATED and RETRIED webhooks, Link onEvent and onSuccess callbacks, and a /identity_verification/retry endpoint. It also runs per-check verification (data source, documentary, liveness, phone and address risk), and its workflow editor can branch on failures or high-risk sessions. However, the evidence presents granular risk assessments, the overall risk score and the top risk factors as Dashboard displays rather than documented API fields. Failure handling is described as human guidance and Dashboard overrides, so it is unclear whether an external agent can branch on structured reasons. Missing for 10: documented API or JSON schema exposing per-check results, risk scores and risk factors; machine-readable failure reason codes; independent or hands-on corroboration.",
+    "rationale": "Plaid IDV exposes some machine-consumable outcome signals. Subscribable STATUS_UPDATED and STEP_UPDATED webhooks and Link onEvent/onSuccess callbacks let an automated flow react to session status and step changes. However, the granular risk assessments, overall risk score and largest risk factors are documented only as Dashboard displays, and the failure-reason guidance is human-facing (including a Dashboard override), so there is no evidence these reach an agent as structured API fields. Missing for 10: documented API response schema with per-check results, machine-readable risk scores and signals via API, structured failure reason codes, and independent or hands-on corroboration.",
     "evidenceIds": [
-      "plaid-idv-docs-3",
       "plaid-idv-docs-14",
       "plaid-idv-docs-5",
       "plaid-idv-docs-28",
-      "plaid-idv-docs-18",
-      "plaid-idv-docs-2",
       "plaid-idv-docs-11",
       "plaid-idv-docs-20",
-      "plaid-idv-docs-26",
-      "plaid-idv-docs-7",
-      "plaid-idv-docs-22"
+      "plaid-idv-docs-26"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, verification outcomes come back structured enough for an agent to decide on — machine-readable check results, risk signals, and failure reasons an automated onboarding flow can branch on",
+      "citations": [
+        {
+          "evidenceId": "plaid-idv-docs-14",
+          "quote": "You can select which events you want to subscribe to. For Identity Verification, there are three events: STEP_UPDATED, STATUS_UPDATED, RETRIED"
+        },
+        {
+          "evidenceId": "plaid-idv-docs-5",
+          "quote": "onEvent will fire at certain points throughout the IDV flow with updates on the user's progress at each point."
+        },
+        {
+          "evidenceId": "plaid-idv-docs-11",
+          "quote": "Identity Verification will also display a set of granular risk assessments (email risk, phone risk, etc.) in the Dashboard for each session, along with an overall risk score"
+        }
+      ]
+    },
     "productId": "plaid-idv",
     "storyId": "agent-onboarding-decisions"
   }

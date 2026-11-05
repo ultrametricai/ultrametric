@@ -1,17 +1,35 @@
 {
-  "hash": "22434c596cf7a412dff1177b13cdab8d8a59b6882f6670b840b5ba44e821171a",
+  "hash": "7119c05e6fb5a334fef0f6e882c373fc0571d86b5ed80a66fd46dcb2462420e8",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "SerpApi documents an `async` parameter that submits a search and returns immediately so results can be retrieved later via its Searches Archive API, which satisfies the asynchronous half of the story. High-volume plans of up to 1M searches/month back the workload scale. Missing for 10: a native batch submission endpoint, documented async throughput, rate-limit and polling or callback semantics, and independent or hands-on corroboration of async use at high volume.",
+    "rationale": "SerpApi documents an async parameter on its search endpoints that submits a search without holding the HTTP connection open, with results retrieved later through the Searches Archive API. That satisfies the 'asynchronous jobs' branch of the story as a first-party capability. Missing for 10: no documented multi-query batch submission endpoint, no detail on async throughput or concurrency limits for high-volume workloads, no independent or hands-on corroboration of async at scale.",
     "evidenceIds": [
       "serpapi-docs-9",
-      "serpapi-docs-14",
-      "serpapi-docs-36",
-      "serpapi-docs-35"
+      "serpapi-docs-65",
+      "serpapi-docs-14"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a data engineer, I can submit batched or asynchronous jobs for high-volume query workloads",
+      "citations": [
+        {
+          "evidenceId": "serpapi-docs-9",
+          "quote": "It can be set to `false` (default) to open an HTTP connection and keep it open until you got your search results, or `true` to just submit your search to SerpApi and retrieve them later."
+        },
+        {
+          "evidenceId": "serpapi-docs-14",
+          "quote": "you'll need to use our Searches Archive API to retrieve your results"
+        },
+        {
+          "evidenceId": "serpapi-docs-65",
+          "quote": "It can be set to `false` (default) to open an HTTP connection and keep it open until you got your search results, or `true` to just submit your"
+        }
+      ]
+    },
     "productId": "serpapi",
     "storyId": "batch-async-processing"
   }

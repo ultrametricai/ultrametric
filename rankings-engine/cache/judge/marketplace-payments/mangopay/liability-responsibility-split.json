@@ -1,18 +1,40 @@
 {
-  "hash": "8e65172d86045365ea4f4646261aa3a78b736b9b7a666e042711a76de00d704e",
+  "hash": "37c666728af0547c8777d3a2c2191281bec154eca4fc0b0a16a3e734f71aab50",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 4,
-    "confidence": "medium",
-    "rationale": "The docs imply parts of the split without stating it as a matrix. The platform must integrate Mangopay's hosted KYC/KYB (mangopay-docs-34). Chargeback amounts are deducted from wallets, and the platform settles its credit to Mangopay unless it contests successfully, which implies the platform bears dispute losses (mangopay-docs-12, mangopay-docs-13). Card-data handling via the vault gives PCI-DSS compliance (mangopay-docs-31), and the platform defines its own fraud rules (mangopay-docs-7). Missing for 10: an explicit responsibility matrix, AML ownership stated outright, card-network compliance ownership beyond PCI, explicit fraud-loss liability, seller-misconduct liability, and independent corroboration.",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Mangopay's docs show pieces of the liability split rather than an explicit responsibility matrix. Platforms must integrate Mangopay's hosted KYC/KYB, platforms settle chargeback debts to Mangopay after contesting them, PCI-DSS scope is reduced via the card vault, and platforms define their own fraud rules. missing for 10: an explicit documented ownership split covering AML, card-network compliance obligations, fraud-loss allocation and seller misconduct, plus independent corroboration.",
     "evidenceIds": [
       "mangopay-docs-34",
       "mangopay-docs-13",
-      "mangopay-docs-12",
       "mangopay-docs-31",
       "mangopay-docs-7"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an ops user, the responsibility split is explicit — who owns KYC/AML, card-network compliance, fraud losses, and seller misconduct between me and the provider, in the docs rather than the contract's fine print",
+      "citations": [
+        {
+          "evidenceId": "mangopay-docs-34",
+          "quote": "Mangopay's [hosted KYC/KYB](/guides/users/verification/hosted) solution, which your platform must integrate for all user types"
+        },
+        {
+          "evidenceId": "mangopay-docs-13",
+          "quote": "The platform may have the opportunity to contest the chargeback by providing proof prior to being requested to settle their credit to Mangopay."
+        },
+        {
+          "evidenceId": "mangopay-docs-31",
+          "quote": "Avoid sensitive card details transiting your system\n* Benefit from PCI-DSS compliance"
+        },
+        {
+          "evidenceId": "mangopay-docs-7",
+          "quote": "Define custom logic to detect and mitigate fraud attempts on your platform"
+        }
+      ]
+    },
     "productId": "mangopay",
     "storyId": "liability-responsibility-split"
   }

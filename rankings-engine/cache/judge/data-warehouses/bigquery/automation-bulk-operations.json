@@ -1,19 +1,35 @@
 {
-  "hash": "89cbdf8e23bdb583b2f8652f4f261c998cc15593a57b55ff1497e5ceb880dad4",
+  "hash": "7921ccef8c45c57b9bb2570c8aa840bfb6b3fe82bdbcdc91813bf7dac2eabdd6",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "BigQuery's own docs cover set-based bulk operations: DML statements update, insert and delete data across tables, procedural language runs multiple SQL statements together, load jobs can be scheduled as batch transfers, and AI functions apply enrichment across data in SQL workflows. The scale claims (terabytes in seconds) and the `bq` CLI support scripted, programmatic execution. missing for 10: explicit documentation of bulk-DML semantics and limits, bulk operations across resources (e.g., many tables or datasets at once), agent-driven bulk workflows for the AI-native persona, and independent hands-on corroboration.",
+    "rationale": "BigQuery's own docs describe bulk data operations: the Storage Write API can batch an arbitrarily large number of records and commit them in one atomic operation, DML updates, inserts and deletes table data, and procedural statements run multiple SQL statements in one request. Coverage is partial because the evidence never explicitly documents set-based bulk edits across many items, nor bulk operations driven from an AI-native or agent workflow. missing for 10: explicit documentation of bulk UPDATE/DELETE across many rows or tables in one operation, documented AI- or agent-driven bulk operations, and independent hands-on corroboration of bulk-operation workflows.",
     "evidenceIds": [
+      "bigquery-docs-121",
       "bigquery-docs-2",
-      "bigquery-docs-70",
-      "bigquery-docs-41",
-      "bigquery-docs-51",
-      "bigquery-docs-47",
-      "bigquery-docs-12"
+      "bigquery-docs-112"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can perform bulk operations across many items at once",
+      "citations": [
+        {
+          "evidenceId": "bigquery-docs-121",
+          "quote": "procesar por lotes una gran cantidad arbitraria de registros y confirmarlos en una sola operación atómica"
+        },
+        {
+          "evidenceId": "bigquery-docs-2",
+          "quote": "Data Manipulation Language (DML) statements enable you to update, insert, and delete data from your BigQuery tables."
+        },
+        {
+          "evidenceId": "bigquery-docs-112",
+          "quote": "Procedural language statements are procedural extensions to GoogleSQL that let you execute multiple SQL statements in one request."
+        }
+      ]
+    },
     "productId": "bigquery",
     "storyId": "automation-bulk-operations"
   }

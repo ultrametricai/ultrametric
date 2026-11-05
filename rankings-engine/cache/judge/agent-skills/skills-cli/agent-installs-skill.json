@@ -1,21 +1,39 @@
 {
-  "hash": "73bc0016d2c39c7a42b4c959e5378ada465d32df669940cd38102aeb33edbc30",
+  "hash": "c2d1b63b302993329ae35f371ce2b5058ae343e1764efc71bbd2c61582bdebb6",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "The official README documents a non-interactive, CI/CD-friendly install path (`npx skills add vercel-labs/agent-skills --skill frontend-design -g -a claude-code -y`) with flags for selecting skills, agents and scope. A runtime probe confirms the CLI runs keylessly via `npx -y`, detects when a coding agent is driving it, and switches to promptless mode on its own ('installing non-interactively'). missing for 10: hands-on confirmation of a completed headless install with the resulting skill files verified in the agent directory.",
+    "rationale": "The skills CLI documents a non-interactive, CI/CD-friendly install path (`npx skills add ... --skill frontend-design -g -a claude-code -y`) that selects the skill, agent and scope by flag. A runtime probe shows it runs keylessly via `npx -y` and detects when a coding agent is driving it, switching itself to promptless mode. Private repos reuse existing auth, so no interactive login is needed. missing for 10: hands-on confirmation of a complete headless install run end to end (files written and verified), not just version output and the non-interactive detection message.",
     "evidenceIds": [
       "skills-cli-gh-8",
-      "skills-cli-gh-22",
       "skills-cli-gh-31",
-      "skills-cli-gh-20",
-      "skills-cli-gh-21",
-      "skills-cli-gh-9",
+      "skills-cli-gh-22",
       "skills-cli-probe-rt-1",
-      "skills-cli-probe-rt-2"
+      "skills-cli-gh-9",
+      "skills-cli-gh-20",
+      "skills-cli-gh-21"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, my coding agent can install a skill by itself — a non-interactive, promptless install path an agent can run headlessly end to end",
+      "citations": [
+        {
+          "evidenceId": "skills-cli-gh-31",
+          "quote": "# Non-interactive installation (CI/CD friendly)\nnpx skills add vercel-labs/agent-skills --skill frontend-design -g -a claude-code -y"
+        },
+        {
+          "evidenceId": "skills-cli-probe-rt-1",
+          "quote": "it auto-detected it was being driven by a coding agent ('claude-code_2-1-245_agent — installing non-interactively'), switching to promptless mode by itself"
+        },
+        {
+          "evidenceId": "skills-cli-gh-9",
+          "quote": "The CLI uses the authentication already configured for the repository URL"
+        }
+      ]
+    },
     "productId": "skills-cli",
     "storyId": "agent-installs-skill"
   }

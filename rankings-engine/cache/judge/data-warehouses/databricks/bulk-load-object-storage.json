@@ -1,16 +1,36 @@
 {
-  "hash": "4560eacfb4bc85af3a0aa96975efd4cddc59e24593b1582b3a3e7a64ad265aec",
+  "hash": "410ca12146de694a97a1b50aa9cc68dddad6707f4b4ebf53e7795477e80b1112",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
-    "confidence": "medium",
-    "rationale": "Databricks documents its own capability for loading files from cloud object storage: Auto Loader is named as part of its ETL pipelines and described as incrementally processing new data files as they arrive in cloud storage. A standard ingestion connector guide is also documented. However, the evidence never names CSV, JSON, or Parquet support, and never shows a single bulk-load command. missing for 10: explicit CSV/JSON/Parquet format support, a documented single bulk-load command (e.g. a SQL load statement), batch/bulk (vs. incremental-only) loading evidence, independent or hands-on corroboration.",
+    "confidence": "low",
+    "rationale": "Databricks documents its own file-ingestion capability from cloud storage: Auto Loader in Lakeflow pipelines processes new data files as they arrive, and the ingestion docs cite SQL and Spark APIs. The pack never names the CSV, JSON, or Parquet formats or a single documented bulk-load command, and the documented behavior is incremental arrival-based processing rather than an explicit one-shot bulk load. Missing for 10: an explicit single bulk-load command (e.g. a documented SQL statement), documented support for the CSV, JSON, and Parquet formats, evidence of one-shot bulk loading of existing files rather than incremental arrival processing, and independent or hands-on corroboration.",
     "evidenceIds": [
       "databricks-docs-1",
       "databricks-docs-13",
+      "databricks-docs-107",
       "databricks-docs-20"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a data-engineer, I can bulk-load CSV, JSON, and Parquet from cloud object storage with a single documented command",
+      "citations": [
+        {
+          "evidenceId": "databricks-docs-13",
+          "quote": "Incrementally and efficiently process new data files as they arrive in cloud storage."
+        },
+        {
+          "evidenceId": "databricks-docs-1",
+          "quote": "Create and deploy an ETL (extract, transform, and load) pipeline for data orchestration using Lakeflow pipelines and Auto Loader."
+        },
+        {
+          "evidenceId": "databricks-docs-107",
+          "quote": "SQL and Spark APIs, which offer higher levels of ingestion pipeline customization compared to the managed connectors."
+        }
+      ]
+    },
     "productId": "databricks",
     "storyId": "bulk-load-object-storage"
   }

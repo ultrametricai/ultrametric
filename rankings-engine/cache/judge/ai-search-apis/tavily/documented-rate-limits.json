@@ -1,20 +1,41 @@
 {
-  "hash": "14d93a15cd3f2f3df2079f913bc79c03e16c0e4a1ce2f5cb7372e0715fe3225a",
+  "hash": "c8f8c0faa2486d78379959176fb039193af94b746235517ea392c9be6129b3ee",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Tavily has a dedicated rate-limits page with per-environment RPM caps (Development 100, Production 1,000) and documents 429 responses that carry a `retry-after` header. Its pricing page shows a no-card free tier of 1,000 credits/month and pay-as-you-go billing, which implies but does not explicitly document a self-serve upgrade path. missing for 10: documented concurrency caps (distinct from RPM), an explicit self-serve upgrade flow from Development to Production limits, and independent corroboration of the limits in practice.",
+    "rationale": "Tavily has a dedicated rate-limits page with per-environment RPM caps (Development 100, Production 1,000) and documents 429 responses with a retry-after header. The pricing page lists a no-card free tier and pay-as-you-go credits, which points to a self-serve path, though the evidence never explicitly describes upgrading or how a key moves to Production limits. Concurrency caps (as distinct from requests per minute) are not documented. missing for 10: documented concurrency caps, explicit self-serve upgrade flow tying plan or environment to higher limits, independent corroboration.",
     "evidenceIds": [
       "tavily-docs-17",
-      "tavily-docs-20",
-      "tavily-docs-61",
       "tavily-docs-6",
-      "tavily-docs-7",
-      "tavily-docs-8",
-      "tavily-docs-39"
+      "tavily-docs-61",
+      "tavily-docs-70",
+      "tavily-docs-71"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can read documented rate limits and concurrency caps with a self-serve upgrade path",
+      "citations": [
+        {
+          "evidenceId": "tavily-docs-17",
+          "quote": "Environment Requests per minute (RPM) Development 100 Production 1,000"
+        },
+        {
+          "evidenceId": "tavily-docs-6",
+          "quote": "the API returns a `429 Too Many Requests` response with a `retry-after` header indicating the number of seconds to wait before making another request"
+        },
+        {
+          "evidenceId": "tavily-docs-61",
+          "quote": "We offer two types of rate limits based on the environment associated with your API key."
+        },
+        {
+          "evidenceId": "tavily-docs-71",
+          "quote": "$0.008 / credit · For flexible usage · Pay only for what you use"
+        }
+      ]
+    },
     "productId": "tavily",
     "storyId": "documented-rate-limits"
   }

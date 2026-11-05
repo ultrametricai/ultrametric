@@ -1,15 +1,31 @@
 {
-  "hash": "fd0bc3a911ce485f5bae719aa7fa78e83a8b248c99e9ebcc07ca2e1da4fd5d98",
+  "hash": "4252eead2035791ca63399788ee0751301507b64263b895b2c9c4ab383583051",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
     "confidence": "low",
-    "rationale": "Snowflake documents object cloning of databases and schemas, which is the product's own way to create a copy for testing apart from production objects. However, the evidence only describes how clones inherit privileges. It never says a clone is isolated from the source or that cloning is meant for sandbox or test environments. Time Travel restore and RBAC are adjacent safety controls, not a sandbox, so they earn no credit. Missing for 10: explicit documentation of clone-based or dev/test sandbox environments, confirmation that changes to a clone do not affect production data, agent-oriented sandbox workflows, and hands-on corroboration.",
+    "rationale": "Snowflake documents object cloning, including database- and schema-level clones that carry their own privilege grants, and a user praises its \"cloning\" feature. This implies you can spin up a separate copy of production objects to test against, but the evidence never states that clones are isolated from the source or meant as sandbox or dev environments. missing for 10: explicit documentation that clones are isolated from production data, documented sandbox/dev-environment or zero-copy test workflows, agent-oriented sandbox guidance, hands-on corroboration of safe testing.",
     "evidenceIds": [
+      "snowflake-docs-71",
       "snowflake-docs-67",
-      "snowflake-docs-71"
+      "snowflake-comm-2-refresh-1c0783a04048e85b"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
+      "citations": [
+        {
+          "evidenceId": "snowflake-docs-71",
+          "quote": "If the source object is a database or schema, the clone inherits all granted privileges on the clones of all child objects contained in the source object"
+        },
+        {
+          "evidenceId": "snowflake-comm-2-refresh-1c0783a04048e85b",
+          "quote": "definitely has some nice features (cloning, storage integrations, etc)."
+        }
+      ]
+    },
     "productId": "snowflake",
     "storyId": "api-sandbox"
   }

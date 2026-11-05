@@ -1,11 +1,11 @@
 {
-  "hash": "155c47573bfd516802612c9f8bd0453c05b238c88d113122bfadb4425edfcb16",
+  "hash": "ae9e84f26e852f788d28ad6d4283ae414691084d02664075936924d889c3835a",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Sandboxed execution is well documented: remote sandboxes via Modal, Blaxel, E2B or Docker, plus a rebuilt, more secure LocalPythonExecutor. A Python-import allowlist (`additional_authorized_imports`) is documented, and a community hands-on report confirms it was enforced when matplotlib was blocked. Restricting tools, however, appears limited to choosing which tools to pass to the agent, with no documented per-tool permission model. Missing for 10: fine-grained per-tool permissions (scopes, approvals, argument-level policies), and independent corroboration of the sandbox integrations.",
+    "rationale": "smolagents documents sandboxed code execution through Modal, Blaxel, E2B or Docker, plus a hardened LocalPythonExecutor. It also enforces an import allowlist via `additional_authorized_imports`, and a hands-on community report confirms disallowed imports are blocked. Fine-grained per-tool permission policies are not documented; the only tool-level restriction shown is choosing which tools to pass to the agent. missing for 10: documented fine-grained per-tool permission or policy controls (e.g. per-tool allow/deny or approval gates), in-depth sandbox isolation documentation, independent corroboration of the remote sandbox backends.",
     "evidenceIds": [
       "smolagents-docs-6",
       "smolagents-gh-7",
@@ -14,6 +14,29 @@
       "smolagents-comm-2",
       "smolagents-docs-25"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an engineering-lead, I can restrict what an agent may do with fine-grained tool permissions and sandboxed execution",
+      "citations": [
+        {
+          "evidenceId": "smolagents-docs-6",
+          "quote": "To make it secure, we support executing in sandboxed environment via Modal, Blaxel, E2B, or Docker."
+        },
+        {
+          "evidenceId": "smolagents-docs-19",
+          "quote": "we have re-built a more secure `LocalPythonExecutor` from the ground up."
+        },
+        {
+          "evidenceId": "smolagents-docs-3",
+          "quote": "You can authorize additional imports by passing the authorized modules as a list of strings in argument `additional_authorized_imports`"
+        },
+        {
+          "evidenceId": "smolagents-comm-2",
+          "quote": "step 1's Python code failed because matplotlib wasn't in the allowed imports"
+        }
+      ]
+    },
     "productId": "smolagents",
     "storyId": "tool-permission-limits"
   }

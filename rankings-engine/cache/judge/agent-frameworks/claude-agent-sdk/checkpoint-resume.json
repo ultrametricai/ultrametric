@@ -1,20 +1,41 @@
 {
-  "hash": "005e8b3927cc665d053af5485b0fc4e3dfeb049ea21fd7d12c5d3f5e3c1cc951",
+  "hash": "8820ebfbe0a688e2951c0ebed9452e02d3e7cd1bb2bcfa8d9f54fc7bf0d1e9c8",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "The SDK automatically writes session history to disk, and returning to a session restores full prior context: files read, analysis done, decisions made. A SessionStore adapter can mirror transcripts to your own database or object store so another host can resume the session, and the hosting docs cover session persistence for production. missing for 10: explicit documentation of crash-recovery semantics (e.g. resuming mid-turn or mid-tool-call rather than at conversation-history granularity), checkpointing of non-transcript state such as the working directory or shell, and independent or hands-on corroboration of resume after a crash.",
+    "rationale": "The SDK automatically writes session transcripts to disk and can resume them with full prior context. A SessionStore adapter can mirror those transcripts to a durable backend, so a session can be resumed on another host. However, this persistence is conversation history, not a documented mid-run checkpoint, and nothing shows a crashed run resuming exactly where it stopped, such as mid-tool-call or with in-flight state restored. missing for 10: documented crash-recovery semantics for interrupted in-progress runs, explicit checkpoint granularity (per-turn or per-tool-call state including working directory/subprocess state), independent or hands-on corroboration of resume after a crash.",
     "evidenceIds": [
       "claude-agent-sdk-docs-7",
       "claude-agent-sdk-docs-24",
       "claude-agent-sdk-docs-29",
-      "claude-agent-sdk-docs-53",
       "claude-agent-sdk-docs-11",
-      "claude-agent-sdk-docs-20",
-      "claude-agent-sdk-docs-21"
+      "claude-agent-sdk-docs-20"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can checkpoint agent state so a run can resume exactly where it left off after a crash or restart",
+      "citations": [
+        {
+          "evidenceId": "claude-agent-sdk-docs-7",
+          "quote": "The SDK writes it to disk automatically so you can return to it later."
+        },
+        {
+          "evidenceId": "claude-agent-sdk-docs-24",
+          "quote": "Returning to a session means the agent has full context from before: files it already read, analysis it already performed, decisions it already made."
+        },
+        {
+          "evidenceId": "claude-agent-sdk-docs-29",
+          "quote": "A `SessionStore` adapter lets you mirror those transcripts to your own backend, such as an object store, a key-value store, or a database, so a session created on one host can be resumed on another host running from a matching working directory."
+        },
+        {
+          "evidenceId": "claude-agent-sdk-docs-11",
+          "quote": "Deploy the Agent SDK in production: subprocess architecture, session persistence, scaling, observability, and multi-tenant isolation"
+        }
+      ]
+    },
     "productId": "claude-agent-sdk",
     "storyId": "checkpoint-resume"
   }

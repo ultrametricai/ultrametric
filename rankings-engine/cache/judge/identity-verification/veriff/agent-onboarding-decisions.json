@@ -1,21 +1,41 @@
 {
-  "hash": "e1afbafce31b1a433e48829e0a816459cb9a7fc4b46fcb2e1c5d7119dc439fd0",
+  "hash": "98ae5ce6860ed2139980a73e7726e92acb6dd6616000a6437661642bfa06f36e",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Veriff returns verification outcomes in machine-consumable form: decision webhooks fire immediately after a decision, the `GET /v1/sessions/{id}/decision` endpoint can be polled, and an event webhook reports flow progress. A separate watchlist-screening webhook delivers PEP, sanctions and adverse-media results, and the native SDKs give NFC read success or failure callbacks. However, the pack never shows the decision payload itself, so there is no evidence of per-check result fields, risk scores or enumerated failure and decline reason codes an agent could branch on. The OpenAPI probe also returned 404, so no machine-readable schema is available. Missing for 10: documented decision payload schema, explicit failure/decline reason codes, risk-score or risk-signal fields, published OpenAPI spec, independent hands-on corroboration.",
+    "rationale": "Veriff documents programmatic delivery of verification outcomes. Decision webhooks fire immediately after a decision, and a GET /v1/sessions/{id}/decision endpoint can be polled. A separate watchlist-screening webhook returns PEP, sanctions and adverse-media data, which an automated flow could branch on. However, the pack never shows the decision payload's structure, reason/failure codes, or risk-score fields, so how machine-readable the results are is unproven. missing for 10: documented decision payload schema, explicit failure reason codes, risk signals/scores in decision data, independent or hands-on corroboration.",
     "evidenceIds": [
       "veriff-docs-18",
       "veriff-docs-7",
       "veriff-docs-41",
-      "veriff-docs-27",
       "veriff-docs-28",
-      "veriff-docs-22",
-      "veriff-docs-23",
-      "veriff-probe-2"
+      "veriff-docs-27"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, verification outcomes come back structured enough for an agent to decide on — machine-readable check results, risk signals, and failure reasons an automated onboarding flow can branch on",
+      "citations": [
+        {
+          "evidenceId": "veriff-docs-18",
+          "quote": "Veriff sends decision webhooks immediately after making a decision"
+        },
+        {
+          "evidenceId": "veriff-docs-7",
+          "quote": "Secondary: Poll `GET /v1/sessions/{id}/decision` endpoint"
+        },
+        {
+          "evidenceId": "veriff-docs-41",
+          "quote": "webhooks are needed to handle responses from Veriff services about: Events happening in the verification session, Verification session decisions"
+        },
+        {
+          "evidenceId": "veriff-docs-28",
+          "quote": "This webhook returns data from Veriff PEP and Sanctions, adverse media (AM) checks and ongoing monitoring (OGM) services"
+        }
+      ]
+    },
     "productId": "veriff",
     "storyId": "agent-onboarding-decisions"
   }

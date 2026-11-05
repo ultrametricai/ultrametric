@@ -1,23 +1,42 @@
 {
-  "hash": "4b446f852be7615984b8da26bf8cfd2a607dd14bcc6d58c4ef4ab5868bf4a622",
+  "hash": "6d8e3bb5b40f34c5115fe6656acca476072c2ad9d25346a8509e69bd00fc94ee",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Mastra persists workflow and agent execution state to storage. Snapshots capture everything needed to resume from exactly where a run left off, and suspended runs can pause indefinitely. Durable thread-scoped goals, PubSub-based reconnects, background tasks and cron schedules add long-running support. However, the evidence frames this as explicit suspend/resume rather than automatic recovery from crashes, restarts or deploys mid-run. Missing for 10: documented automatic crash/restart recovery of in-flight runs, durable-execution integrations (e.g., Temporal/Inngest-style engines), and independent hands-on corroboration of durability across deploys.",
+    "rationale": "Mastra natively persists execution state to storage, so suspended agents and workflows can pause indefinitely and resume from a snapshot exactly where they left off. It also documents durable thread-scoped goals for long-lived agents. However, no evidence explicitly covers automatic recovery of in-flight runs after a crash, process restart or redeploy, and no durable-execution engine integration is evidenced. missing for 10: explicit crash/restart/deploy recovery of running agents, durable-execution integrations (e.g. external workflow engines), independent hands-on corroboration.",
     "evidenceIds": [
       "mastra-gh-4",
-      "mastra-docs-12",
-      "mastra-docs-53",
       "mastra-docs-39",
-      "mastra-docs-41",
+      "mastra-docs-53",
       "mastra-docs-46",
       "mastra-docs-44",
-      "mastra-docs-45",
-      "mastra-docs-43",
-      "mastra-docs-47"
+      "mastra-docs-41"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an engineering-lead, I can run long-lived agents durably across process restarts and deploys, natively or via durable-execution integrations",
+      "citations": [
+        {
+          "evidenceId": "mastra-gh-4",
+          "quote": "Mastra uses storage to remember execution state, so you can pause indefinitely and resume where you left off."
+        },
+        {
+          "evidenceId": "mastra-docs-39",
+          "quote": "Snapshots capture all the information needed to resume a workflow from exactly where it left off"
+        },
+        {
+          "evidenceId": "mastra-docs-46",
+          "quote": "A goal is a durable, thread-scoped objective: a standing instruction the agent keeps working toward across loop iterations"
+        },
+        {
+          "evidenceId": "mastra-docs-44",
+          "quote": "Events flow through PubSub, which means a client can disconnect and reconnect without missing chunks."
+        }
+      ]
+    },
     "productId": "mastra",
     "storyId": "durable-long-running"
   }

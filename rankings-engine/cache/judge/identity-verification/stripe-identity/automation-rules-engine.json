@@ -1,17 +1,35 @@
 {
-  "hash": "5d8c7a944efcbf2cbd6d5a5802ebc3a9e0c8c5ac5db831ae375d77c160f71326",
+  "hash": "ee1758f801bdc189fcc18bab2fc5b9c0273dd7165ee5d5fa7f64f149e3d47171",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "partial",
-    "quality": 5,
+    "verdict": "none",
+    "quality": 0,
     "confidence": "medium",
-    "rationale": "Stripe Identity emits events on every verification-session status change, and its webhooks let an integration automatically trigger reactions (docs-6, docs-15). Blocklisting a document automatically blocks future verifications that use it (docs-11), and flows save reusable verification configuration (docs-8). However, the trigger logic must be written as webhook-handling code; the evidence shows no built-in rule builder for defining conditions and actions. Missing for 10: a native rules/automation engine for defining event-to-action rules, configurable conditional logic beyond blocklists, and independent or hands-on corroboration of event-driven automation.",
+    "rationale": "Stripe Identity emits events and webhooks so a developer's own integration can react to verification outcomes. That is a developer building block, not a product-native rules engine where users define event-triggered automations. The document blocklist is a related but narrower control, a single fixed block action rather than user-defined rules, so it earns no credit.",
     "evidenceIds": [
       "stripe-identity-docs-6",
       "stripe-identity-docs-15",
-      "stripe-identity-docs-11",
-      "stripe-identity-docs-8"
+      "stripe-identity-docs-11"
     ],
+    "support": {
+      "relation": "adjacent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can define rules that trigger actions automatically on events",
+      "citations": [
+        {
+          "evidenceId": "stripe-identity-docs-6",
+          "quote": "Listen for verification results so your integration can automatically trigger reactions."
+        },
+        {
+          "evidenceId": "stripe-identity-docs-15",
+          "quote": "Stripe generates events every time a session changes status."
+        },
+        {
+          "evidenceId": "stripe-identity-docs-11",
+          "quote": "Add the document to a blocklist to programmatically block future verifications completed with the same document."
+        }
+      ]
+    },
     "productId": "stripe-identity",
     "storyId": "automation-rules-engine"
   }

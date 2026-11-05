@@ -1,20 +1,39 @@
 {
-  "hash": "7cda17ca7df7c238a300242d60b4c171251264c337271e7f0e899d145a6635ce",
+  "hash": "9dc7db997348f192196579a6daab874b10958a5d73b142f8316a341e02067792",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Docs show schema-validated structured output: a Pydantic model passed as `output_type` forces the model to return data matching the spec, and agents are typed by output type (e.g. `Agent[Foobar, list[str]]`). Automatic retries on validation failure are never documented in the pack; they are only implied by a community comment that mentions retries. Hands-on reports are mixed: one user says structured output is on par with instructor, while others report frequent object-creation failures despite retries and broken structured output on Azure OpenAI. Missing for 10: first-party documentation of automatic validation-failure retries (configuration, retry limits, error feedback to the model), and consistent independent confirmation that validation and retries work reliably across providers.",
+    "rationale": "First-party docs show schema-validated structured output: a Pydantic model set as `output_type` forces the model to return data matching the specification, and agents are typed by output type. The automatic-retry-on-validation-failure part is not documented in the pack; it is only implied by a community remark about retries. Hands-on reports are mixed: one user says structured output is on par with instructor, while others report Azure structured output breaking and objects rarely parsing despite retries. missing for 10: first-party documentation of automatic retries on validation failure, retry configuration details, independent corroboration that validation-driven retries reliably succeed across providers",
     "evidenceIds": [
       "pydantic-ai-docs-6",
-      "pydantic-ai-docs-44",
-      "pydantic-ai-docs-35",
       "pydantic-ai-docs-26",
+      "pydantic-ai-docs-35",
+      "pydantic-ai-docs-44",
       "pydantic-ai-comm-11",
       "pydantic-ai-comm-7",
       "pydantic-ai-comm-5"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can get schema-validated structured output from an agent, with automatic retries when validation fails",
+      "citations": [
+        {
+          "evidenceId": "pydantic-ai-docs-6",
+          "quote": "Here's an example using a Pydantic model as the `output_type`, forcing the model to respond with data matching our specification"
+        },
+        {
+          "evidenceId": "pydantic-ai-docs-26",
+          "quote": "agents are generic in their dependency and output types, e.g., an agent which required dependencies of type Foobar and produced outputs of type list[str] would have type Agent[Foobar, list[str]]"
+        },
+        {
+          "evidenceId": "pydantic-ai-comm-11",
+          "quote": "For structured output, pydantic-ai and instructor are about the same"
+        }
+      ]
+    },
     "productId": "pydantic-ai",
     "storyId": "structured-output-schema"
   }

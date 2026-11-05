@@ -1,20 +1,46 @@
 {
-  "hash": "406c6e1fa1a48e74e9346842800d892741ce34796f006433c9985de08e5f4497",
+  "hash": "4638d6cf67e6e6ac504bfedeff9b4f79c07b114e3c99f33fe58f538f44b2309b",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "The SDK writes sessions to disk automatically, and resuming a session restores full prior context. A SessionStore adapter can mirror transcripts to object, KV, or database backends, so a session created on one host can resume on another, which lets conversation state outlive a process restart or deploy. However, this is resume-from-transcript, not durable execution of in-flight runs, and the resuming host must have a matching working directory. missing for 10: evidence of durable-execution integrations (e.g. Temporal-style workflow engines), checkpointing and replay of in-flight tool calls across crashes, independent or hands-on corroboration of cross-deploy resume.",
+    "rationale": "The SDK natively persists sessions to disk and lets you resume them with full prior context. A documented SessionStore adapter mirrors transcripts to an external backend so a session created on one host can be resumed on another, which covers restarts and deploys at the conversation level. However, this is transcript-based resume rather than durable execution, and there is no evidence of integrations with durable-execution engines. Missing for 10: durable-execution integrations (e.g., workflow engines), mid-execution checkpointing or automatic recovery of in-flight tool calls after a crash, and independent hands-on corroboration of cross-deploy resume.",
     "evidenceIds": [
       "claude-agent-sdk-docs-7",
       "claude-agent-sdk-docs-24",
       "claude-agent-sdk-docs-29",
       "claude-agent-sdk-docs-11",
-      "claude-agent-sdk-docs-20",
       "claude-agent-sdk-docs-26",
-      "claude-agent-sdk-docs-21"
+      "claude-agent-sdk-docs-20"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an engineering-lead, I can run long-lived agents durably across process restarts and deploys, natively or via durable-execution integrations",
+      "citations": [
+        {
+          "evidenceId": "claude-agent-sdk-docs-7",
+          "quote": "The SDK writes it to disk automatically so you can return to it later."
+        },
+        {
+          "evidenceId": "claude-agent-sdk-docs-24",
+          "quote": "Returning to a session means the agent has full context from before: files it already read, analysis it already performed, decisions it already made."
+        },
+        {
+          "evidenceId": "claude-agent-sdk-docs-29",
+          "quote": "A `SessionStore` adapter lets you mirror those transcripts to your own backend, such as an object store, a key-value store, or a database, so a session created on one host can be resumed on another host running from a matching working directory."
+        },
+        {
+          "evidenceId": "claude-agent-sdk-docs-11",
+          "quote": "Deploy the Agent SDK in production: subprocess architecture, session persistence, scaling, observability, and multi-tenant isolation for Docker, Kubernetes, and sandbox providers."
+        },
+        {
+          "evidenceId": "claude-agent-sdk-docs-26",
+          "quote": "It allows the agent to operate as a long lived process that takes in user input, handles interruptions, surfaces permission requests, and handles session management."
+        }
+      ]
+    },
     "productId": "claude-agent-sdk",
     "storyId": "durable-long-running"
   }

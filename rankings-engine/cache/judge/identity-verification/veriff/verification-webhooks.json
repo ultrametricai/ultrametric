@@ -1,21 +1,47 @@
 {
-  "hash": "5d3fb55da6e48c5914885b0c104a09d68e7e3846cdd982b9b7aa2787ea396417",
+  "hash": "fa26886ac8d17508483e4a8cd509431c28ee31920545fe1da2c69c958f8ad190",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 8,
-    "confidence": "medium",
-    "rationale": "Veriff's docs describe two webhook types. A decision webhook is sent immediately after a decision is made, and an optional event webhook reports progress while verification data is being gathered. Both are secured with HMAC signatures (X-HMAC-SIGNATURE / VRF-HMAC-SIGNATURE) plus IP allowlists, and polling the decision endpoint is documented only as a secondary fallback. Missing for 10: the evidence does not list the exact lifecycle states the story names (created, processing, requires-input/resubmission), and there is no independent or hands-on corroboration of webhook delivery.",
+    "confidence": "high",
+    "rationale": "Veriff documents registrable decision webhooks sent immediately after a decision and an optional event webhook that reports verification progress. Webhooks are signed with HMAC (`x-hmac-signature` / `VRF-HMAC-SIGNATURE`) using a shared secret, and polling the decision endpoint is documented only as the secondary option, so outcome-driven reaction without polling is the primary design. Missing for 10: an explicit enumeration of the lifecycle states (created, processing, requires-input/resubmission) in the evidence, and independent hands-on corroboration of webhook delivery and signing.",
     "evidenceIds": [
       "veriff-docs-18",
       "veriff-docs-27",
       "veriff-docs-41",
       "veriff-docs-10",
-      "veriff-docs-5",
       "veriff-docs-42",
-      "veriff-docs-7",
-      "veriff-docs-46"
+      "veriff-docs-5",
+      "veriff-docs-7"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, verification lifecycle events arrive as signed webhooks — created, processing, verified, requires-input — so my system reacts to outcomes without polling",
+      "citations": [
+        {
+          "evidenceId": "veriff-docs-18",
+          "quote": "Veriff sends decision webhooks immediately after making a decision"
+        },
+        {
+          "evidenceId": "veriff-docs-27",
+          "quote": "This webhook is **optional** and should be configured if you are interested in getting **info about the progress of the verification data gathering**."
+        },
+        {
+          "evidenceId": "veriff-docs-41",
+          "quote": "webhooks are needed to handle responses from Veriff services about: Events happening in the verification session, Verification session decisions"
+        },
+        {
+          "evidenceId": "veriff-docs-10",
+          "quote": "Veriff uses the HMAC-SIGNATURES (as `x-hmac-signature` header or `VRF-HMAC-SIGNATURE` header) and allowed IP lists and ranges for that purpose."
+        },
+        {
+          "evidenceId": "veriff-docs-7",
+          "quote": "Secondary: Poll `GET /v1/sessions/{id}/decision` endpoint"
+        }
+      ]
+    },
     "productId": "veriff",
     "storyId": "verification-webhooks"
   }

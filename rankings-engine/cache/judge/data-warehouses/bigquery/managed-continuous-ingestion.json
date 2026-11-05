@@ -1,18 +1,41 @@
 {
-  "hash": "e47cc7ea5860190c5bb315562b3dd1ac4caf3ef79023b0f0d059c9d8b35556d6",
+  "hash": "9af24012ad6ca03030ffadaf65660f427bc4955c3962ce54dde9221827d6377c",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "BigQuery's loading docs describe a managed Pub/Sub BigQuery subscription that streams data in real time, \"loading data as it's generated\" at high throughput, so the user runs no pipeline of their own. The docs also describe near-real-time replication from databases and scheduled recurring transfers. The event-streaming core of the story is clearly delivered, but continuous ingestion of new files as they land is only evidenced as scheduled batch transfers at intervals. Missing for 10: event-driven file-arrival ingestion, detail on the Pub/Sub subscription and replication setup, and independent or hands-on corroboration.",
+    "rationale": "BigQuery's loading docs describe managed, real-time event ingestion through a BigQuery subscription in Pub/Sub that loads data as it is generated, with no user-run pipeline. Data Transfer Service automates file and data loads, but only as scheduled or batch transfers at regular intervals, not as files arrive. Near-real-time database replication is mentioned only briefly. Missing for 10: event-driven ingestion of new files on arrival (only scheduled transfers are documented), detail on how the Pub/Sub path stays fully managed since it relies on a separate GCP service, and independent hands-on corroboration of continuous managed ingestion.",
     "evidenceIds": [
       "bigquery-docs-18",
       "bigquery-docs-42",
-      "bigquery-docs-29",
-      "bigquery-docs-36",
-      "bigquery-docs-41"
+      "bigquery-docs-120",
+      "bigquery-docs-41",
+      "bigquery-docs-36"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a data-engineer, a managed service continuously ingests new files or events as they arrive, without me running my own pipeline infrastructure",
+      "citations": [
+        {
+          "evidenceId": "bigquery-docs-42",
+          "quote": "It supports real-time data streaming, loading data as it's generated."
+        },
+        {
+          "evidenceId": "bigquery-docs-18",
+          "quote": "To stream data into BigQuery, you can use a BigQuery subscription in Pub/Sub."
+        },
+        {
+          "evidenceId": "bigquery-docs-120",
+          "quote": "With the BigQuery Data Transfer Service, to automate data loading pipelines into BigQuery, you can schedule load jobs."
+        },
+        {
+          "evidenceId": "bigquery-docs-36",
+          "quote": "This method enables replicating data from databases to BigQuery in near real time."
+        }
+      ]
+    },
     "productId": "bigquery",
     "storyId": "managed-continuous-ingestion"
   }

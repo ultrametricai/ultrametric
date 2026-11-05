@@ -1,20 +1,43 @@
 {
-  "hash": "2e070fb75074a7f1ed74ef5ef30cca60e368ef57600b422f13597a92b7b24f72",
+  "hash": "1d2ba70f7839c4eec82f5d79e9d2c3d3d64814a8278fbe44081e0ddd5bbc6062",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "The API supports the core agent loop: create an applicant, create a workflow run that returns a token, then retrieve results by webhook or polling (docs-3, docs-4). Auth uses short-lived OAuth client-credentials tokens with granular control over scope of access (docs-6, docs-14, docs-29), and an llms.txt index aids agent consumption (probe-1). Missing for 10: explicit evidence of triggering re-checks, detailed docs on retrieving extracted document data, any MCP surface, and independent or hands-on corroboration.",
+    "rationale": "The API documents most of the agent pipeline: create an applicant, create a workflow run (which returns an SDK token), then retrieve results via webhook or polling. Authentication uses short-lived OAuth client-credentials tokens that the docs say give more granular control over the scope of access. Missing for 10: documented retrieval of extracted data fields via API, any re-check/re-run trigger, an MCP surface, and independent or hands-on corroboration of agent-driven use.",
     "evidenceIds": [
       "entrust-onfido-docs-3",
-      "entrust-onfido-docs-4",
       "entrust-onfido-docs-6",
-      "entrust-onfido-docs-14",
       "entrust-onfido-docs-29",
+      "entrust-onfido-docs-14",
       "entrust-onfido-docs-15",
+      "entrust-onfido-docs-4",
       "entrust-onfido-probe-1"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, an agent can operate the verification pipeline — create sessions, poll outcomes, retrieve extracted data, and trigger re-checks through the API or an MCP surface with scoped credentials",
+      "citations": [
+        {
+          "evidenceId": "entrust-onfido-docs-3",
+          "quote": "create an applicant → create a workflow run (returns an SDK token) → collect captures via SDK → retrieve results via webhook or polling"
+        },
+        {
+          "evidenceId": "entrust-onfido-docs-6",
+          "quote": "Entrust recommends generating short-lived OAuth access tokens for API authentication using client credentials grant."
+        },
+        {
+          "evidenceId": "entrust-onfido-docs-29",
+          "quote": "This authentication method gives you more granular control over the scope of access."
+        },
+        {
+          "evidenceId": "entrust-onfido-docs-15",
+          "quote": "Now you're ready to create an applicant from your backend server, using a valid API token."
+        }
+      ]
+    },
     "productId": "entrust-onfido",
     "storyId": "agent-runs-verification"
   }

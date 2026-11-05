@@ -1,18 +1,36 @@
 {
-  "hash": "54fe53b3cff67155b1e9c21dfdea55bf907c373f5d90b35e5d1f9d147b5b819b",
+  "hash": "b3751c3d59e929c092f20ae9c276e5dc2b97f3133aaffe1df812e465996f5450",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Hooks run your code on agent events and can block dangerous operations, such as destructive shell commands, before they execute. The canUseTool callback and permission rules gate tool use at runtime, and structured outputs validate the final output against a schema. These controls are aimed mainly at tool actions rather than at the content of prompts and responses. Missing for 10: input guardrails that inspect or block user prompt content, output guardrails that transform or redact unsafe model text, any documented transform/rewrite capability, and independent or hands-on corroboration.",
+    "rationale": "The SDK's own hooks are callbacks that run on agent events and are documented to block dangerous operations before they execute. The canUseTool callback receives each tool's name and input for runtime allow/deny decisions, so the SDK does provide guardrails at the tool-call level. Structured outputs validate response shape against a schema, but that is format validation, not safety filtering. missing for 10: documented content-level input/output guardrails on prompts and model responses, documented transformation/redaction of unsafe content, independent or hands-on corroboration.",
     "evidenceIds": [
       "claude-agent-sdk-docs-3",
       "claude-agent-sdk-docs-22",
       "claude-agent-sdk-docs-6",
-      "claude-agent-sdk-docs-9",
-      "claude-agent-sdk-docs-56"
+      "claude-agent-sdk-docs-9"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can attach input/output guardrails that validate, transform, or block unsafe content",
+      "citations": [
+        {
+          "evidenceId": "claude-agent-sdk-docs-22",
+          "quote": "With hooks, you can: Block dangerous operations before they execute, like destructive shell commands or unauthorized file access"
+        },
+        {
+          "evidenceId": "claude-agent-sdk-docs-3",
+          "quote": "Hooks are callback functions that run your code in response to agent events, like a tool being called, a session starting, or execution stopping."
+        },
+        {
+          "evidenceId": "claude-agent-sdk-docs-9",
+          "quote": "Pass a canUseTool callback in your query options. The callback fires whenever Claude needs user input, receiving the tool name and input as arguments"
+        }
+      ]
+    },
     "productId": "claude-agent-sdk",
     "storyId": "io-guardrails"
   }

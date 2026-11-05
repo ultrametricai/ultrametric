@@ -1,18 +1,36 @@
 {
-  "hash": "d06f07b7793719bcfd8a72608c2b86070ee7b520e47d7eb9e34a28ce9a41d111",
+  "hash": "7399e2d4efc5167f4466b1e27e0e8e235d74ead2de6ec87d2c59270f4a594631",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
-    "confidence": "medium",
-    "rationale": "The SDK can pause a run on tool-approval interruptions and resume later from the same RunState. Sessions persist conversation history across runs, and sandbox sessions are described as resumable. A community report, however, frames crash-durable execution as coming from a separate Temporal-based version, which points to an extra tool rather than built-in crash recovery. Missing for 10: documented automatic checkpointing of in-flight runs, explicit RunState serialization to durable storage, evidence of resuming after a process crash or restart without an external orchestrator, and hands-on corroboration.",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "The SDK's own docs show it can pause a run and later resume from the same RunState, and it also offers session memory for conversation history and resumable sandbox sessions. That is a first-party state-resume mechanism, but it is only documented for human-in-the-loop approval interruptions. Nothing shows arbitrary checkpointing or recovery after a crash or restart. Durable execution via Temporal (comm-3) is an external integration, so it earns no credit. Missing for 10: documented checkpointing at arbitrary points, evidence that RunState survives a process crash or restart, documented serialization and persistence of run state, and independent hands-on corroboration.",
     "evidenceIds": [
-      "openai-agents-docs-12",
       "openai-agents-docs-20",
-      "openai-agents-docs-8",
+      "openai-agents-docs-12",
       "openai-agents-docs-14",
-      "openai-agents-comm-3"
+      "openai-agents-docs-8"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can checkpoint agent state so a run can resume exactly where it left off after a crash or restart",
+      "citations": [
+        {
+          "evidenceId": "openai-agents-docs-20",
+          "quote": "When a tool call requires approval, the SDK pauses the run, returns `interruptions`, and lets you resume later from the same `RunState`."
+        },
+        {
+          "evidenceId": "openai-agents-docs-14",
+          "quote": "Sandbox agents support manifest-defined files, sandbox client selection, and resumable sandbox sessions."
+        },
+        {
+          "evidenceId": "openai-agents-docs-8",
+          "quote": "The Agents SDK provides built-in session memory to automatically maintain conversation history across multiple agent runs"
+        }
+      ]
+    },
     "productId": "openai-agents",
     "storyId": "checkpoint-resume"
   }

@@ -1,20 +1,40 @@
 {
-  "hash": "393a4f057e3bfcbc43c7cca5c507dc50438ac72e5605156103136e6eadde45ac",
+  "hash": "274314ed1cbaf578865051630313d4507cff93397698a228ca2137969762ae99",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "The repo registers as a plugin marketplace, so you can install the `document-skills` or `example-skills` plugin separately, and the Messages API lets you pick individual skills by `skill_id` (e.g. `pptx`, `pdf`). But in Claude Code a plugin installs and loads as one unit, so first-party selection inside a plugin bundle is not documented. The single-skill install in the probe used third-party `npx skills` tooling, so it earns no credit here. Missing for 10: first-party per-skill install from the anthropics/skills collection in Claude Code, and independent corroboration of granular selection with first-party tooling.",
+    "rationale": "The official marketplace splits the collection into separately installable plugins (document-skills vs example-skills), and the Claude API lets you pick individual skills by skill_id per request. However, each Claude Code plugin installs 'as one unit', so per-skill selection inside a plugin is not a documented first-party feature. The probe's single-skill install used the third-party `npx skills` CLI, which is not credited. Missing for 10: first-party per-skill install from the anthropics/skills marketplace in Claude Code, and independent corroboration of selective install via official tooling.",
     "evidenceIds": [
-      "anthropic-skills-gh-1",
       "anthropic-skills-gh-4",
       "anthropic-skills-docs-70",
-      "anthropic-skills-docs-9",
       "anthropic-skills-docs-10",
-      "anthropic-skills-docs-11",
-      "anthropic-skills-docs-23"
+      "anthropic-skills-docs-11"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can install only the specific skills I want from a collection instead of taking the whole bundle",
+      "citations": [
+        {
+          "evidenceId": "anthropic-skills-gh-4",
+          "quote": "/plugin install document-skills@anthropic-agent-skills\n/plugin install example-skills@anthropic-agent-skills"
+        },
+        {
+          "evidenceId": "anthropic-skills-docs-70",
+          "quote": "A Claude Code plugin is a directory of skills, agents, hooks, MCP servers, or other components that Claude Code installs and loads as one unit."
+        },
+        {
+          "evidenceId": "anthropic-skills-docs-10",
+          "quote": "You specify Skills in the `container` parameter with a `skill_id`, `type`, and optional `version`, and they run in the code execution environment."
+        },
+        {
+          "evidenceId": "anthropic-skills-docs-11",
+          "quote": "Short names: `pptx`, `xlsx`, `docx`, `pdf`"
+        }
+      ]
+    },
     "productId": "anthropic-skills",
     "storyId": "selective-install"
   }

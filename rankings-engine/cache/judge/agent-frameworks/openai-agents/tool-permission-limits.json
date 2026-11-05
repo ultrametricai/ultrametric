@@ -1,20 +1,40 @@
 {
-  "hash": "6293ee46b7b8a979373ae5a8b347e6ca21387e030a54134a6c7a6ee643b51cc1",
+  "hash": "25d7eb3ffb7bab75c76af50f271b458b9b25d682b4f90e36bd1ff449f810410a",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "The SDK documents per-tool-call approval gating that pauses the run and resumes from RunState, plus input/output guardrails. For sandboxing, it offers sandbox agents that run in isolated workspaces with manifest-defined files and selectable sandbox clients, and the hosted CodeInterpreterTool runs code in a sandboxed environment. Missing for 10: an explicit fine-grained permission model (per-tool scopes or allow/deny policies beyond approval prompts), detailed documentation of sandbox isolation guarantees, and independent or hands-on corroboration.",
+    "rationale": "The SDK documents sandboxed execution: Sandbox agents run inside real isolated workspaces with manifest-defined files, and the CodeInterpreterTool executes code in a sandboxed environment. On the permissions side, the only documented control is approval gating, where a tool call that requires approval pauses the run until someone resumes it. Guardrails validate input and output but are not tool permissions. Missing for 10: documented fine-grained per-tool allow/deny permission policies or scopes, details on sandbox isolation boundaries and restrictions, independent or hands-on corroboration.",
     "evidenceIds": [
-      "openai-agents-docs-12",
-      "openai-agents-docs-20",
-      "openai-agents-docs-5",
       "openai-agents-docs-14",
       "openai-agents-docs-36",
-      "openai-agents-docs-39",
-      "openai-agents-docs-21"
+      "openai-agents-docs-21",
+      "openai-agents-docs-20"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an engineering-lead, I can restrict what an agent may do with fine-grained tool permissions and sandboxed execution",
+      "citations": [
+        {
+          "evidenceId": "openai-agents-docs-14",
+          "quote": "Sandbox agents: Run specialists inside real isolated workspaces."
+        },
+        {
+          "evidenceId": "openai-agents-docs-21",
+          "quote": "The CodeInterpreterTool lets the LLM execute code in a sandboxed environment."
+        },
+        {
+          "evidenceId": "openai-agents-docs-20",
+          "quote": "When a tool call requires approval, the SDK pauses the run, returns `interruptions`, and lets you resume later from the same `RunState`."
+        },
+        {
+          "evidenceId": "openai-agents-docs-36",
+          "quote": "If the agent should run inside an isolated workspace with manifest-defined files and sandbox-native capabilities, read Sandbox agent concepts."
+        }
+      ]
+    },
     "productId": "openai-agents",
     "storyId": "tool-permission-limits"
   }

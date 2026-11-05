@@ -1,20 +1,48 @@
 {
-  "hash": "db9fd21df57263bbea35f84ec58039f80ce9dd2135f2f15f91bc6464bafb8398",
+  "hash": "422a3a3ba0d06b9453a458fc2326cf969c1a16b76a19d82299d8de77f7acb65d",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "The docs are agent-oriented and confirmed by probes: llms.txt returns HTTP 200 and an official MCP server is documented. They show text-prompt video creation, webhooks for job notification, and an endpoint that returns the user's credit balance, so an agent can submit and watch a job and infer spend from the balance. However, the pack never shows a status-polling or asset-download endpoint, and cost is only a balance lookup rather than a per-job cost report. The claimed typed schemas are also not exposed as a discoverable OpenAPI spec (all probed paths 404). Missing for 10: documented job-status/poll endpoint, documented asset fetch/download URL retrieval, per-job cost reporting, machine-readable OpenAPI spec, hands-on corroboration of an agent completing the loop.",
+    "rationale": "HeyGen documents agent-readable docs (llms.txt confirmed by probe, official MCP server) and prompt-to-video submission endpoints, so an agent can submit a prompt and receive webhooks on batch jobs. Cost is covered only indirectly through a credit-balance endpoint, not a per-job cost, and no evidence shows an endpoint for polling job status or fetching the rendered asset. The OpenAPI spec probe also returned 404. Missing for 10: documented job-status polling, documented asset retrieval/download endpoint, per-job cost reporting, a reachable OpenAPI spec, and hands-on corroboration of the end-to-end loop.",
     "evidenceIds": [
-      "heygen-docs-10",
-      "heygen-docs-1",
-      "heygen-docs-9",
       "heygen-docs-4",
       "heygen-probe-1",
       "heygen-probe-3",
+      "heygen-docs-10",
+      "heygen-docs-33",
+      "heygen-docs-1",
+      "heygen-docs-9",
       "heygen-probe-2"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, an agent can run the full video loop from docs alone: submit the prompt, watch the job, fetch the asset, and report the cost",
+      "citations": [
+        {
+          "evidenceId": "heygen-docs-4",
+          "quote": "Every endpoint ships with an MCP server, llms.txt, and typed schemas — so Claude, Cursor, and your own agents can generate video without glue code."
+        },
+        {
+          "evidenceId": "heygen-docs-10",
+          "quote": "Create videos from a text prompt with full control over avatar, voice, style, and file inputs."
+        },
+        {
+          "evidenceId": "heygen-docs-1",
+          "quote": "Batch APIs — up to 100 requests per call, webhooks included"
+        },
+        {
+          "evidenceId": "heygen-docs-9",
+          "quote": "Retrieve the authenticated user's profile, credit balance, and plan tier"
+        },
+        {
+          "evidenceId": "heygen-probe-3",
+          "quote": "official MCP server documented at https://developers.heygen.com/mcp/overview"
+        }
+      ]
+    },
     "productId": "heygen",
     "storyId": "agent-video-pipeline"
   }

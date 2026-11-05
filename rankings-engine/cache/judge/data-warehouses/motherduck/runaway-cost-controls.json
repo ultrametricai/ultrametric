@@ -1,18 +1,32 @@
 {
-  "hash": "1e50677dbf01f5bc598f1d7795a918ad3ffbdc0f77ac430ad396312fd17c788e",
+  "hash": "19891d27fd39cee87a8e0c2b3b900fbdc8852e49ef98880d3842397e2d5e86bd",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "MotherDuck's billing docs say idle Ducklings shut down automatically (zero idle cost), and per-second billing with sub-100ms cold starts means idle compute should not burn money overnight. Fixed per-workload instance sizes also cap the resources any one workload can use, and SQL usage views plus a billing dashboard give visibility into consumption. However, nothing in the evidence shows a budget, spend cap, alerting resource monitor, or query timeout that would actively stop a runaway query; the monitoring tools only report usage after the fact. Missing for 10: budgets/spend caps, alerting resource monitors, runaway-query timeouts or kill controls, detailed auto-suspend configuration docs, independent corroboration.",
+    "rationale": "MotherDuck documents automatic shutdown of idle instances (zero idle cost), which covers the idle-compute half of the story. Its per-user Ducklings are pinned to fixed instance sizes and billed by the second, and usage can be reviewed through SQL views and a billing dashboard. Missing for 10: budgets or spend caps, resource monitors that act on usage, query timeouts or kill rules for runaway queries, and independent corroboration of the auto-shutdown behavior.",
     "evidenceIds": [
       "motherduck-supp-cost-controls",
       "motherduck-docs-44",
       "motherduck-docs-41",
-      "motherduck-docs-34",
-      "motherduck-docs-39"
+      "motherduck-docs-73"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform-engineer, budgets, resource monitors, or auto-suspend stop a runaway query or idle compute from burning money overnight",
+      "citations": [
+        {
+          "evidenceId": "motherduck-supp-cost-controls",
+          "quote": "idle instances shut down automatically (zero idle cost)"
+        },
+        {
+          "evidenceId": "motherduck-docs-44",
+          "quote": "MotherDuck provides SQL views and a billing dashboard to help you understand your compute and storage consumption."
+        }
+      ]
+    },
     "productId": "motherduck",
     "storyId": "runaway-cost-controls"
   }

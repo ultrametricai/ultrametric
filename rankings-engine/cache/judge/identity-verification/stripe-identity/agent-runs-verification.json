@@ -1,22 +1,46 @@
 {
-  "hash": "2c51dd55be2447f47e68257cd788ba6331a4849d0ee393e4dd784a57cf79ed0c",
+  "hash": "a84655a7b3c4b42b1a4ea338b24002c79dbeb0d154934c39c6433930fe062692",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "The Stripe API documents an agent-operable core pipeline: you can create verification sessions with a secret key, track a session from creation through results with webhook events on each status change, and retrieve extracted data and collected images programmatically. A general Stripe MCP server exists for AI agents, but the evidence does not show it exposing Identity tools, and only full secret-key access is documented. Missing for 10: a documented API for triggering re-checks or re-verification, scoped or restricted credentials for Identity, confirmation that the MCP server covers Identity sessions, and independent hands-on corroboration of agent use.",
+    "rationale": "Stripe Identity's own API documents creating verification sessions, tracking status through completion, webhook outcome events, and programmatic retrieval of extracted data with a secret key. Stripe also documents an official MCP server for the Stripe API, but no evidence shows it exposes Identity tools. Re-checks and scoped (restricted) credentials are also unevidenced; the docs mention only a full secret key. Missing for 10: documented API re-check/re-verify trigger, scoped/restricted-key credentials for Identity, evidence the MCP server covers Identity sessions, independent hands-on corroboration of agent use.",
     "evidenceIds": [
       "stripe-identity-docs-5",
       "stripe-identity-docs-13",
-      "stripe-identity-docs-6",
       "stripe-identity-docs-15",
       "stripe-identity-docs-7",
-      "stripe-identity-docs-16",
       "stripe-identity-docs-4",
-      "stripe-identity-docs-12",
-      "stripe-identity-probe-4"
+      "stripe-identity-docs-12"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, an agent can operate the verification pipeline — create sessions, poll outcomes, retrieve extracted data, and trigger re-checks through the API or an MCP surface with scoped credentials",
+      "citations": [
+        {
+          "evidenceId": "stripe-identity-docs-5",
+          "quote": "curl https://api.stripe.com/v1/identity/verification_sessions"
+        },
+        {
+          "evidenceId": "stripe-identity-docs-13",
+          "quote": "This API tracks a verification, from initial creation through the entire verification process, and shows verification results upon completion."
+        },
+        {
+          "evidenceId": "stripe-identity-docs-15",
+          "quote": "Stripe generates events every time a session changes status."
+        },
+        {
+          "evidenceId": "stripe-identity-docs-7",
+          "quote": "You can access most verification details programmatically... using your secret key."
+        },
+        {
+          "evidenceId": "stripe-identity-docs-12",
+          "quote": "The Stripe Model Context Protocol (MCP) server provides tools that AI agents can use to interact with the Stripe API"
+        }
+      ]
+    },
     "productId": "stripe-identity",
     "storyId": "agent-runs-verification"
   }

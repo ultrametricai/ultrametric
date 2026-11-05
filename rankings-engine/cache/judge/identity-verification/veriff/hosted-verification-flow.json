@@ -1,22 +1,57 @@
 {
-  "hash": "71cbf5a6ac3036167a81bda81a03f0985a001d52d3278ca8072f90a027d734c0",
+  "hash": "e5d8b632315612c5f37780479b157a624b51a36dad8a40aa72857a0fef720463",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 8,
-    "confidence": "high",
-    "rationale": "Veriff's docs cover the full loop. Sessions are created server-side via POST /v1/sessions. The JS SDK produces a session URL to redirect to, the InContext SDK embeds the flow in your page, and native, React Native and Flutter SDKs provide a built-in flow so you never collect media yourself. Results come back through decision webhooks or by polling /v1/sessions/{id}/decision. Missing for 10: independent or hands-on corroboration, and explicit documentation that the hosted flow captures both document and selfie in one session (only implied by the liveness and document/NFC docs).",
+    "confidence": "medium",
+    "rationale": "Veriff documents the whole hosted path. You create a session server-side, send the user through its built-in front-end via a session URL, web/native SDKs or the in-page InContext embed, then read the result from a decision webhook or by polling the decision endpoint. Biometric liveness capture is available in the web flow and native SDKs, and the SDKs handle identity-document capture (NFC callbacks are mentioned). missing for 10: explicit documentation that one hosted flow combines document and selfie capture, and independent or hands-on corroboration.",
     "evidenceIds": [
       "veriff-docs-6",
+      "veriff-docs-2",
       "veriff-docs-19",
       "veriff-docs-21",
       "veriff-docs-39",
-      "veriff-docs-2",
       "veriff-docs-18",
       "veriff-docs-7",
       "veriff-docs-29",
-      "veriff-docs-17"
+      "veriff-docs-36"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can launch a complete document-plus-selfie verification with a hosted or drop-in flow — create a session server-side, redirect or embed, and read the result — without building capture UI myself",
+      "citations": [
+        {
+          "evidenceId": "veriff-docs-6",
+          "quote": "Use this endpoint to **initiate a new verification session** for an end-user. Every verification flow begins with creating a session."
+        },
+        {
+          "evidenceId": "veriff-docs-19",
+          "quote": "you prefer leveraging **Veriff's front-end solution**, wish to maximize the benefits of our **built-in verification flow**, and have **no plans to independently collect end-user media**"
+        },
+        {
+          "evidenceId": "veriff-docs-21",
+          "quote": "Veriff InContext solution allows your **end-users to go through the verification process within your web page**, maintaining uninterrupted workflow and reducing friction."
+        },
+        {
+          "evidenceId": "veriff-docs-39",
+          "quote": "The purpose of the JS SDK is to create the session URL for your end-user's verification session."
+        },
+        {
+          "evidenceId": "veriff-docs-18",
+          "quote": "Veriff sends decision webhooks immediately after making a decision"
+        },
+        {
+          "evidenceId": "veriff-docs-7",
+          "quote": "Secondary: Poll `GET /v1/sessions/{id}/decision` endpoint"
+        },
+        {
+          "evidenceId": "veriff-docs-29",
+          "quote": "It is available via API, web flow, and native SDKs."
+        }
+      ]
+    },
     "productId": "veriff",
     "storyId": "hosted-verification-flow"
   }

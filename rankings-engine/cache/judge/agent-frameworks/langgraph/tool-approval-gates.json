@@ -1,20 +1,42 @@
 {
-  "hash": "479755014ac543207138d47ea193915b4fb11e243ae91ed473fb41ea87bd469e",
+  "hash": "f3c18d4b66ee898c9b1f4c5c32a8c67cb3cc47d8ba54c4e3f45c69f5bfae5c44",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "LangGraph documents interrupts that pause graph execution at specific points and wait for external input. Execution resumes by re-invoking the graph with Command, whose value becomes the return of interrupt(). Breakpoints are set at compile time, and checkpointers persist state for human-in-the-loop workflows. Together these let a team gate sensitive tool-executing nodes behind human approval, and community commentary confirms human-in-the-loop is a core strength. Missing for 10: explicit documentation of per-tool approval gating (approve/edit/reject of a specific tool call), a policy-level way to designate which tools require approval, and hands-on corroboration of tool-call approval specifically.",
+    "rationale": "LangGraph ships interrupts as a first-party feature. They pause graph execution at specific points and wait for external input, and the graph resumes via Command, backed by checkpointer persistence for human-in-the-loop workflows and compile-time breakpoints. That gives a native way to gate a node, such as a sensitive tool step, on human input. The evidence never explicitly documents approving or rejecting individual tool calls, so the per-tool approval policy has to be wired by the developer. Missing for 10: explicit documentation of per-tool-call approval gating (approve/edit/reject of specific tool invocations), a worked example of interrupting before a sensitive tool executes, and independent hands-on corroboration of approval gating.",
     "evidenceIds": [
       "langgraph-docs-4",
       "langgraph-docs-5",
-      "langgraph-docs-10",
       "langgraph-docs-2",
-      "langgraph-docs-25",
+      "langgraph-docs-10",
       "langgraph-gh-7",
       "langgraph-comm-2"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an engineering-lead, I can require human approval before specific sensitive tool calls execute",
+      "citations": [
+        {
+          "evidenceId": "langgraph-docs-4",
+          "quote": "Interrupts allow you to pause graph execution at specific points and wait for external input before continuing."
+        },
+        {
+          "evidenceId": "langgraph-docs-5",
+          "quote": "you resume execution by re-invoking the graph using Command, which then becomes the return value of the interrupt() call from inside the node"
+        },
+        {
+          "evidenceId": "langgraph-docs-10",
+          "quote": "It is also where you can specify runtime args like checkpointers and breakpoints."
+        },
+        {
+          "evidenceId": "langgraph-gh-7",
+          "quote": "Human-in-the-loop — Seamlessly incorporate human oversight by inspecting and modifying agent state at any point during execution."
+        }
+      ]
+    },
     "productId": "langgraph",
     "storyId": "tool-approval-gates"
   }

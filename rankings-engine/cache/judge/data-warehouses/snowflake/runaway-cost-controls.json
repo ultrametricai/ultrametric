@@ -1,22 +1,38 @@
 {
-  "hash": "a0df268d33dc165dc924f16da7987ba1fba26182051f96e9dd4e9f94bcd81e60",
+  "hash": "ac594e8c0cde6097922a5fe925aea09964e111e95b71d2dab584c7ada967553b",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 8,
-    "confidence": "high",
-    "rationale": "Snowflake's docs say resource monitors track warehouse credit usage and can suspend a standard virtual warehouse when it hits a credit limit. That is a native hard stop on runaway spend. Supporting pieces include GA per-user quotas, cost anomaly monitors (preview) with GA notification integrations, and user-controlled warehouse start/stop. A community user also independently recommends resource monitors to keep costs from ballooning. Missing for 10: explicit evidence of warehouse auto-suspend on idle, per-query timeouts that kill a single runaway query, and detail on how per-user quotas enforce limits.",
+    "verdict": "partial",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Snowflake's own docs show resource monitors can suspend a standard virtual warehouse when it hits a credit limit, which stops runaway credit burn. A trial user independently reports setting a resource monitor to stop all warehouses at 20 credits. Missing for 10: idle-warehouse auto-suspend is not evidenced (only manual start/stop), per-query timeouts that kill a single runaway query are not evidenced, and budgets are not evidenced (cost anomaly monitors are preview and only alert).",
     "evidenceIds": [
       "snowflake-docs-53",
       "snowflake-docs-60",
       "snowflake-docs-64",
-      "snowflake-docs-16",
-      "snowflake-docs-17",
-      "snowflake-docs-33",
-      "snowflake-docs-36",
-      "snowflake-docs-37",
-      "snowflake-comm-1"
+      "snowflake-comm-1-refresh-1c2d34399269f014",
+      "snowflake-comm-1",
+      "snowflake-docs-36"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform-engineer, budgets, resource monitors, or auto-suspend stop a runaway query or idle compute from burning money overnight",
+      "citations": [
+        {
+          "evidenceId": "snowflake-docs-53",
+          "quote": "You can also set up a resource monitor to suspend a standard virtual warehouse or disable an Adaptive Warehouse when it reaches a credit limit."
+        },
+        {
+          "evidenceId": "snowflake-comm-1-refresh-1c2d34399269f014",
+          "quote": "set up a resource monitor to stop all warehouses at 20 credits"
+        },
+        {
+          "evidenceId": "snowflake-docs-36",
+          "quote": "Virtual Warehouses are user-managed, which means you can directly control credit consumption of these resources."
+        }
+      ]
+    },
     "productId": "snowflake",
     "storyId": "runaway-cost-controls"
   }

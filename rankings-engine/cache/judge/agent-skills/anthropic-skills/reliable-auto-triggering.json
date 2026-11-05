@@ -1,22 +1,49 @@
 {
-  "hash": "dd437a88e323b5295a9fb67dc8af394f2d942a6891708c3b20d0f5a88974a98b",
+  "hash": "d901dcc2c5bea5acea0a528b023dfe02f99c1327b94b9b04c71068771ffaa0cb",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "disputed",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Anthropic's docs say Claude loads a skill automatically when it judges it relevant (docs-2, docs-3, docs-25). The spec requires descriptions to state what a skill does and when to use it (docs-17, docs-32), and skill-creator can optimize a description for triggering accuracy (docs-14). Hands-on reports concretely contradict reliable auto-triggering: users say skills aren't invoked from expected keywords even with proper frontmatter and must be called explicitly (comm-12, comm-13). Cited Vercel evals found the skill was never invoked in 56% of cases (comm-14). Missing for 10: independent confirmation that auto-triggering works reliably, and documented guarantees or metrics for activation accuracy.",
+    "rationale": "Anthropic's docs say Claude loads skills automatically when they are relevant to the task, the spec requires descriptions that state what a skill does and when to use it, and skill-creator offers to optimize a description for triggering accuracy. Hands-on community reports contradict this concretely: several users say skills are not triggered by expected keywords and must be invoked explicitly, and Vercel's evals found the skill was never invoked in 56% of cases. missing for 10: independent evidence that automatic triggering works reliably in practice, quantitative first-party data on triggering accuracy.",
     "evidenceIds": [
       "anthropic-skills-docs-2",
       "anthropic-skills-docs-3",
       "anthropic-skills-docs-25",
       "anthropic-skills-docs-17",
       "anthropic-skills-docs-32",
-      "anthropic-skills-docs-14",
+      "anthropic-skills-docs-74",
       "anthropic-skills-comm-12",
       "anthropic-skills-comm-13",
       "anthropic-skills-comm-14"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, installed skills trigger automatically from task context, with descriptions engineered so the agent activates the right skill at the right moment",
+      "citations": [
+        {
+          "evidenceId": "anthropic-skills-docs-2",
+          "quote": "Claude uses skills when relevant, or you can invoke one directly with `/skill-name`."
+        },
+        {
+          "evidenceId": "anthropic-skills-docs-25",
+          "quote": "If Claude thinks the skill is relevant to the current task, it will load the skill by reading its full `SKILL.md` into context."
+        },
+        {
+          "evidenceId": "anthropic-skills-docs-17",
+          "quote": "Should describe both what the skill does and when to use it"
+        },
+        {
+          "evidenceId": "anthropic-skills-docs-74",
+          "quote": "optimize a skill's description for better triggering accuracy."
+        },
+        {
+          "evidenceId": "anthropic-skills-comm-14",
+          "quote": "the skill was never invoked in 56% of cases, and adding it gave no improvement over baseline."
+        }
+      ]
+    },
     "productId": "anthropic-skills",
     "storyId": "reliable-auto-triggering"
   }
