@@ -79,8 +79,8 @@ against `2026-11-04-v6-preview.json`.
 | 2 | card-issuing, customer-data-platforms, docs-platforms, fraud-prevention, government-services, gpu-clouds, model-gateways, scheduling | 4,766 | merged (PR #614) |
 | 3 | ai-coding, applicant-tracking, crm, email-marketing, expense-management, incident-management, inference-providers, speech-to-text, sso-identity, terminals, vibe-coding | 4,775 | merged (PR #615) |
 | 4 | ai-support-agents, browser-agents, data-pipelines, desktop-os, device-agents, domain-registrars, equity-management, error-tracking, game-engines, infra-as-code, local-llm-runtimes, mcp-infrastructure, robotics-platforms | 4,943 | merged (PR #616) |
-| 5 | agent-frameworks, agent-skills, ai-search-apis, ai-video, compliance-automation, data-warehouses, design-tools, identity-verification, marketplace-payments, mobile-payments, notes-knowledge, startup-law-firms | 4,774 | this PR |
-| 6 | ai-memory, billing-subscriptions, cloud-storage, compliance-screening, durable-workflows, ecommerce-platforms, email-apis, fp-a, gpus, payments, self-hosted-assistants, stablecoin-payments, voice-agents | 4,941 | queued |
+| 5 | agent-frameworks, agent-skills, ai-search-apis, ai-video, compliance-automation, data-warehouses, design-tools, identity-verification, marketplace-payments, mobile-payments, notes-knowledge, startup-law-firms | 4,774 | merged (PR #618) |
+| 6 | ai-memory, billing-subscriptions, cloud-storage, compliance-screening, durable-workflows, ecommerce-platforms, email-apis, fp-a, gpus, payments, self-hosted-assistants, stablecoin-payments, voice-agents | 4,941 | this PR |
 | 7 | agent-sandboxes, banking-as-a-service, banking-data-apis, llm-evals-observability, meeting-ai, product-feedback, screen-sharing, security-keys, security-scanners, serverless-databases, software-factory, tax-automation | 4,778 | queued |
 | 8 | ai-research-agents, auth-platforms, authenticator-apps, code-hosting, document-extraction, email, mobile-dev, observability, project-management, search-infra, vector-databases, virtual-mailboxes, workflow-automation | 4,911 | queued |
 | 9 | accounting, agentic-commerce, ai-code-review, api-platforms, backend-as-a-service, business-phone, feature-flags, file-converters, package-managers, processors, product-analytics, startup-immigration, team-chat | 4,913 | queued |
@@ -334,3 +334,36 @@ a verdict:
 
 Spend: about $61 batched plus correction rounds (design-tools needed seven resume runs).
 Wave total about $75; cumulative about $380.
+
+## Wave 6 (2026-11-05)
+
+4,941 cells re-judged across the thirteen arenas. 963 verdict flips: 923 down, 11 up, 29
+lateral relabels, plus 627 quality-only moves (net -423). Fleet transition profile:
+
+`full→partial` 493 · `partial→none` 430 · `na→none` 21 · `none→partial` 7 ·
+`none→na` 5 · `partial→full` 4 · other 3
+
+| arena | cells | flips | down / up / lateral | quality-only (net) |
+|---|---|---|---|---|
+| ai-memory | 399 | 105 | 100 / 0 / 5 | 57 (-39) |
+| billing-subscriptions | 424 | 94 | 92 / 0 / 2 | 66 (-49) |
+| cloud-storage | 196 | 23 | 21 / 2 / 0 | 25 (-11) |
+| compliance-screening | 366 | 42 | 42 / 0 / 0 | 40 (-24) |
+| durable-workflows | 318 | 84 | 84 / 0 / 0 | 60 (-45) |
+| ecommerce-platforms | 270 | 63 | 61 / 1 / 1 | 34 (-31) |
+| email-apis | 260 | 60 | 60 / 0 / 0 | 44 (-32) |
+| fp-a | 216 | 24 | 23 / 1 / 0 | 26 (-11) |
+| gpus | 473 | 60 | 40 / 1 / 19 | 37 (-30) |
+| payments | 810 | 98 | 96 / 2 / 0 | 97 (-62) |
+| self-hosted-assistants | 342 | 99 | 96 / 2 / 1 | 46 (-34) |
+| stablecoin-payments | 318 | 65 | 63 / 1 / 1 | 31 (-21) |
+| voice-agents | 549 | 146 | 145 / 1 / 0 | 64 (-34) |
+
+No owner, affiliated, or self-submitted rows in this wave, so no favorable-flip audit
+applies. Notable rank moves, all pure-rubric: gpus re-ordered hard (amd-rx-9070-xt
+#1 → #5, amd-mi355x #2 → #1, nvidia-b200 #7 → #3), letta #2 → #1 over mem0 in ai-memory,
+complyadvantage #2 → #1 over flagright in compliance-screening, shopify #3 → #2 over
+medusa in ecommerce-platforms, revenuecat #3 → #5 in billing-subscriptions.
+
+Spend: about $63 batched plus correction rounds (one to four resume runs per arena).
+Wave total about $75; cumulative about $455.
