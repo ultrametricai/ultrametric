@@ -309,6 +309,10 @@ export const ScoreHistoryEntrySchema = z.object({
 // scoring (see lib/scoring.ts, which never imports this schema) — so it stays lenient rather
 // than mirroring VerdictSchema's strictness.
 export const PopularitySchema = z.object({
+  // Legacy rows use fetchedAt; mixed-source refreshes retain each measurement date.
+  githubFetchedAt: z.string().datetime().optional(),
+  npmFetchedAt: z.string().datetime().optional(),
+  pypiFetchedAt: z.string().datetime().optional(),
   stars: z.number().int().min(0).optional(),
   starsPerYear: z.number().min(0).optional(),
   forks: z.number().int().min(0).optional(),
