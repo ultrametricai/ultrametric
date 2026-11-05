@@ -63,19 +63,15 @@ def check_scope(kind, files, expected_count, mode):
             raise RuntimeError('Generated content must be regular non-executable files')
 
 
-def verify_provenance(api, repo, pr):
-    """Artifact names are immutable run-bound receipts, not PR-supplied labels."""
-    kind, head = family(pr), pr['head']['sha']
-    if kind is None or not re.fullmatch(r'[a-f0-9]{40}', head):
-        raise RuntimeError('Invalid internal refresh head')
-    name = f"internal-refresh-{kind}-{pr['number']}-{head}"
+class MissingProvenance(RuntimeError):
+    """No canonical receipt; API failures must not enter the intent fallback."""
+
+
+def canonical_artifact(api, repo, name, allowed):
+    """Authenticate immutable artifact metadata without downloading its content."""
     records = api(f'repos/{repo}/actions/artifacts?name={name}&per_page=100')
     if records.get('total_count', 100) >= 100:
         raise RuntimeError('Provenance artifact listing exceeds inspection limit')
-    allowed = {'.github/workflows/refresh-automerge.yml',
-               '.github/workflows/story-runner.yml' if kind == 'story-runner' else '.github/workflows/vendor-radar.yml'}
-    if kind == 'story-runner':
-        allowed.add('.github/workflows/refresh-repair.yml')
     for artifact in records['artifacts']:
         if artifact.get('name') != name or artifact.get('expired') is not False:
             continue
@@ -94,8 +90,21 @@ def verify_provenance(api, repo, pr):
             continue
         source = api(f"repos/{repo}/compare/{run['head_sha']}...main")
         if source.get('status') in ('ahead', 'identical'):
-            return
-    raise RuntimeError('No canonical main workflow receipt for this exact head; manual review required')
+            return True
+    return False
+
+
+def verify_provenance(api, repo, pr):
+    """Artifact names are immutable run-bound receipts, not PR-supplied labels."""
+    kind, head = family(pr), pr['head']['sha']
+    if kind is None or not re.fullmatch(r'[a-f0-9]{40}', head):
+        raise RuntimeError('Invalid internal refresh head')
+    allowed = {'.github/workflows/refresh-automerge.yml',
+               '.github/workflows/story-runner.yml' if kind == 'story-runner' else '.github/workflows/vendor-radar.yml'}
+    if kind == 'story-runner':
+        allowed.add('.github/workflows/refresh-repair.yml')
+    if not canonical_artifact(api, repo, f"internal-refresh-{kind}-{pr['number']}-{head}", allowed):
+        raise MissingProvenance('No canonical main workflow receipt for this exact head; manual review required')
 
 
 if __name__ == '__main__':

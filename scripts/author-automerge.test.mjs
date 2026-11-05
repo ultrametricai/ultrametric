@@ -68,6 +68,8 @@ const denyCases = {
   'local Action': (f) => { f.files = [{ filename: '.github/actions/test/action.yml' }] },
   'controller change': (f) => { f.files = [{ filename: 'scripts/author-automerge.mjs' }] },
   'internal merge policy change': (f) => { f.files = [{ filename: 'scripts/refresh_policy.py' }] },
+  'internal recovery controller change': (f) => { f.files = [{ filename: 'scripts/refresh-automerge.py' }] },
+  'internal update intent change': (f) => { f.files = [{ filename: 'scripts/refresh_update.py' }] },
   'internal continuation change': (f) => { f.files = [{ filename: 'scripts/refresh_main_ci.py' }] },
   'internal repair change': (f) => { f.files = [{ filename: 'scripts/refresh-repair.py' }] },
   'internal review change': (f) => { f.files = [{ filename: 'scripts/refresh-review.py' }] },

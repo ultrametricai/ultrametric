@@ -165,9 +165,17 @@ an unrelated workflow, does not qualify. Existing heads without these records re
 fresh canonical generation or an ordinary maintainer PR; their provenance is not inferred.
 
 Repair verifies the previous head's record before processing it, then records only the
-locally computed, successfully pushed head. A base update must match the previously inspected
-GitHub merge tree and both expected parents before recovery records it. These checks preserve
-the existing repair bounds and do not grant radar any story-runner data-repair capability.
+locally computed, successfully pushed head. For a required base update, recovery creates an
+immutable commit with the inspected GitHub merge tree and ordered previous-head/main parents.
+It uploads a separate intent naming that exact commit before changing the branch. Application
+rechecks eligibility, the previous head and current main, then uses an atomic expected-head
+update with force disabled. A delayed response or failed receipt upload can be recovered on a
+later sweep: the current head must exactly match the canonical intent, its previous head must
+have an ordinary receipt, and its recorded main must remain in main history. Recovery restores
+the ordinary receipt before dispatching checks. The findings gate accepts only ordinary
+receipts; a different commit with the same tree and parents cannot replay an intent. Expired
+or foreign intents remain blocked. These checks preserve the existing repair bounds and do
+not grant radar any story-runner data-repair capability.
 A scan remains valid when its later bring-up fails: its own publication must have completed
 before its record is uploaded, and its required checks must independently pass.
 

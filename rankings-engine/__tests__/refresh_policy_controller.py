@@ -11,6 +11,7 @@ from unittest.mock import patch
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / 'scripts'))
 import refresh_policy as policy
 import refresh_main_ci as continuation
+import refresh_update as update
 
 REPO = 'ultrametricai/ultrametric'
 HEAD, SOURCE, MERGE = 'a'*40, 'b'*40, 'c'*40
@@ -83,6 +84,74 @@ class ProvenanceTests(unittest.TestCase):
 def change_repair(d):
     name='.github/workflows/refresh-repair.yml'
     d['run'].update(path=name); d['workflow'].update(path=name)
+
+
+class UpdateIntentTests(unittest.TestCase):
+    def proof(self, mutate=lambda _:None, *, pr=None, ordinary=False):
+        plan = {'family':'story-runner','pr':613,'head':'d'*40,'previous':HEAD,'main':MERGE,'tree':'e'*40}
+        pr = pr or {**PR,'head':{**PR['head'],'sha':plan['head']}}
+        path = '.github/workflows/refresh-automerge.yml'
+        data = {'intent':{'name':update.intent_name(plan),'expired':False,'workflow_run':{'id':123}},
+                'commit':{'sha':pr['head']['sha'],'tree':{'sha':plan['tree']},
+                          'parents':[{'sha':HEAD},{'sha':MERGE}]},
+                'run':{'id':123,'path':path,'head_branch':'main','head_sha':SOURCE,'event':'schedule',
+                       'status':'completed','conclusion':'failure','workflow_id':42,
+                       'repository':{'full_name':REPO},'head_repository':{'full_name':REPO}},
+                'workflow':{'id':42,'path':path,'state':'active'},
+                'prior_receipt':True,'base_status':'ahead'}
+        mutate(data)
+        def api(endpoint):
+            if '/git/commits/' in endpoint: return data['commit']
+            if '/actions/artifacts?' in endpoint:
+                if 'name=internal-refresh-update-' in endpoint: artifact=data['intent']
+                elif endpoint.endswith(f'name=internal-refresh-story-runner-613-{HEAD}&per_page=100') and data['prior_receipt']:
+                    artifact={**data['intent'],'name':f'internal-refresh-story-runner-613-{HEAD}'}
+                else: return {'total_count':0,'artifacts':[]}
+                return {'total_count':1,'artifacts':[artifact]}
+            if '/actions/runs/' in endpoint:return data['run']
+            if '/actions/workflows/' in endpoint:return data['workflow']
+            if f'/compare/{MERGE}...main' in endpoint:return {'status':data['base_status']}
+            if '/compare/' in endpoint:return {'status':'ahead'}
+            raise AssertionError(endpoint)
+        if ordinary: return policy.verify_provenance(api,REPO,pr)
+        return update.verify_update_intent(api,REPO,pr)
+
+    def test_completed_failed_run_can_recover_only_its_exact_planned_head(self):
+        self.assertEqual(self.proof()['head'],'d'*40)
+
+    def test_intent_is_not_an_ordinary_published_head_receipt(self):
+        with self.assertRaises(policy.MissingProvenance): self.proof(ordinary=True)
+
+    def test_manual_replacement_with_identical_tree_and_parents_cannot_replay_intent(self):
+        with self.assertRaisesRegex(RuntimeError,'No canonical intent'):
+            self.proof(pr={**PR,'head':{**PR['head'],'sha':'f'*40}})
+
+    def test_wrong_pr_family_tree_parents_and_order_reject_saved_intent(self):
+        cases = [lambda d:d['commit']['tree'].update(sha='f'*40),
+                 lambda d:d['commit'].update(parents=[{'sha':MERGE},{'sha':HEAD}]),
+                 lambda d:d['commit'].update(parents=[{'sha':HEAD},{'sha':'f'*40}]),
+                 lambda d:d['commit'].update(parents=[{'sha':HEAD}])]
+        for mutate in cases:
+            with self.subTest(mutate=mutate),self.assertRaises(RuntimeError):self.proof(mutate)
+        for pr in [{**PR,'number':614,'head':{**PR['head'],'sha':'d'*40}},
+                   {**PR,'head':{**PR['head'],'sha':'d'*40,'ref':'vendor-radar/fixture'}}]:
+            with self.subTest(pr=pr),self.assertRaises(RuntimeError):self.proof(pr=pr)
+
+    def test_missing_prior_provenance_or_rewritten_main_cannot_be_recovered(self):
+        for mutate in [lambda d:d.update(prior_receipt=False),lambda d:d.update(base_status='diverged')]:
+            with self.subTest(mutate=mutate),self.assertRaises(RuntimeError):self.proof(mutate)
+
+    def test_foreign_active_expired_or_modified_source_intents_fail_closed(self):
+        for mutate in [lambda d:d['intent'].update(expired=True),
+                       lambda d:d['run'].update(path='.github/workflows/unrelated.yml'),
+                       lambda d:d['run'].update(status='in_progress'),
+                       lambda d:d['run'].update(head_branch='feature'),
+                       lambda d:d['run'].update(workflow_id=43),
+                       lambda d:d['run'].update(head_repository={'full_name':'other/repo'})]:
+            with self.subTest(mutate=mutate),self.assertRaises(RuntimeError):self.proof(mutate)
+
+    def test_applied_intent_remains_recoverable_when_main_advances(self):
+        self.assertEqual(self.proof(lambda d:d.update(base_status='ahead'))['main'],MERGE)
 
 
 class ScopeTests(unittest.TestCase):

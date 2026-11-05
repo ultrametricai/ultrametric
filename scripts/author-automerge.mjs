@@ -49,7 +49,7 @@ export function candidateReasons(pr, settings) {
 
 function manualFile(path) {
   return path.startsWith('.github/') || path.startsWith('scripts/author-automerge.') ||
-    ['scripts/refresh_policy.py', 'scripts/refresh_main_ci.py', 'scripts/refresh-review.py', 'scripts/refresh-repair.py'].includes(path) ||
+    ['scripts/refresh_policy.py', 'scripts/refresh_main_ci.py', 'scripts/refresh_update.py', 'scripts/refresh-automerge.py', 'scripts/refresh-review.py', 'scripts/refresh-repair.py'].includes(path) ||
     path.startsWith('scripts/config/') || path === 'scripts/docs-fast-path.mjs'
 }
 

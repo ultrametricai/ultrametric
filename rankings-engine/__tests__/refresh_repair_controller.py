@@ -179,8 +179,8 @@ class RepairReviewBoundaryTests(unittest.TestCase):
 
 class DispatcherTests(unittest.TestCase):
     def controller(self):
-        source=(Path(__file__).resolve().parents[2]/'.github/workflows/refresh-automerge.yml').read_text().split('        run: |\n',1)[1].split('\n      - name: Continue main CI',1)[0]
-        code='\n'.join(line[10:] if line.startswith('          ') else line for line in source.splitlines())
+        source=(Path(__file__).resolve().parents[2]/'scripts/refresh-automerge.py').read_text()
+        code=source
         namespace={}
         with patch.dict(os.environ,{'REPO':'owner/repo'}),patch('subprocess.check_output',return_value='[[]]'):
             exec(code,namespace)
@@ -339,13 +339,18 @@ class RecoveryCITests(unittest.TestCase):
                 strict=True, behind=None, mergeable=True, current_override=None,
                 rules_error=False, unresolved=False, later_runs=None, finding_path='README.md',
                 review_history=None, content_bot='', content_token='', content_slug='',
-                update_tokens=None, provenance_error=False, bad_tree=False):
+                update_tokens=None, provenance_error=False, bad_tree=False, phase='apply',
+                delayed=False, commit_read_error=False, update_response_error=False,
+                intent_error=False, stale_plan=False, graphql_error=False,
+                late_override=None, main_changed=False, replacement_head=None, plan_override=None):
         pr = pr or {**PR,'number':536,'auto_merge':{'enabled_by':{'login':'maintainer'}}}
         calls = []
         branch_updated = False
         ci_reads = 0
+        initial_sha = pr['head']['sha']
+        pull_reads = main_reads = 0
         def run(args, **kwargs):
-            nonlocal branch_updated, ci_reads
+            nonlocal branch_updated, ci_reads, pull_reads, main_reads
             calls.append(args)
             result = None
             if args[:3] == ['gh','api','graphql']:
@@ -356,27 +361,41 @@ class RecoveryCITests(unittest.TestCase):
                 endpoint = args[4]
                 if '/compare/main...' in endpoint:
                     result = {'behind_by':behind if behind is not None else (1 if updated_head else 0)}
-                elif endpoint.endswith('/update-branch'):
+                elif endpoint.endswith('/update-branch') or endpoint == 'graphql':
+                    if endpoint == 'graphql':
+                        mutation = json.loads(kwargs['input'])['variables']['input']['refUpdates'][0]
+                        self.assertEqual(mutation, {'name':f"refs/heads/{pr['head']['ref']}",
+                            'beforeOid':initial_sha, 'afterOid':updated_head, 'force':False})
                     if update_tokens is not None:
                         update_tokens.append(kwargs.get('env', {}).get('GH_TOKEN'))
-                    branch_updated = True
-                    result = {}
+                    branch_updated = not graphql_error
+                    if update_response_error:
+                        raise subprocess.CalledProcessError(1,args,stderr='response lost after update')
+                    result = {'errors':[{'message':'expected head mismatch'}]} if graphql_error else {'data':{'updateRefs':{'clientMutationId':None}}}
                 elif endpoint.endswith('/pulls/536'):
+                    pull_reads += 1
                     result = {**pr,'mergeable':mergeable,'merge_commit_sha':'d'*40,
-                              'head':{**pr['head'],'sha':updated_head if branch_updated else SHA},
-                              **(current_override or {})}
+                              'head':{**pr['head'],'sha':(replacement_head or updated_head) if branch_updated and not delayed else initial_sha},
+                              **(current_override or {}),
+                              **(late_override or {} if pull_reads >= 2 and not branch_updated else {})}
+                elif endpoint == 'repos/owner/repo/':
+                    result = {'node_id':'repository-id'}
                 elif endpoint.endswith('/git/ref/heads/main'):
-                    result = {'object':{'sha':'c'*40}}
-                elif '/git/commits/' in endpoint:
+                    main_reads += 1
+                    result = {'object':{'sha':('f' if main_changed and main_reads > 1 else 'c')*40}}
+                elif endpoint.endswith('/git/commits') or '/git/commits/' in endpoint:
                     before = endpoint.endswith('d'*40)
-                    result = {'tree':{'sha':('f' if bad_tree and not before else 'e')*40},
-                              'parents':[{'sha':x} for x in (['c'*40,SHA] if before else [SHA,'c'*40])]}
+                    if commit_read_error and branch_updated:
+                        raise subprocess.CalledProcessError(1,args,stderr='commit read unavailable')
+                    result = {'sha':'d'*40 if before else updated_head,
+                              'tree':{'sha':('f' if bad_tree and not before else 'e')*40},
+                              'parents':[{'sha':x} for x in (['c'*40,initial_sha] if before else [initial_sha,'c'*40])]}
                 elif '/rules/branches/main?' in endpoint:
                     if rules_error:
                         raise subprocess.CalledProcessError(1,args,stderr='policy lookup failed')
                     result = [{'type':'required_status_checks','parameters':{'strict_required_status_checks_policy':strict}}]
                 elif '/workflows/ci.yml/runs?' in endpoint:
-                    self.assertIn(f'head_sha={(updated_head if branch_updated else None) or SHA}&', endpoint)
+                    self.assertIn(f'head_sha={(updated_head if branch_updated else None) or initial_sha}&', endpoint)
                     ci_reads += 1
                     result = {'workflow_runs':later_runs if later_runs is not None and ci_reads > 1 else runs}
                 elif '/check-runs?' in endpoint:
@@ -390,13 +409,23 @@ class RecoveryCITests(unittest.TestCase):
                 else:
                     raise AssertionError(endpoint)
             return subprocess.CompletedProcess(args, 0, json.dumps(result) if result is not None else '')
-        source = (Path(__file__).resolve().parents[2]/'.github/workflows/refresh-automerge.yml').read_text().split('        run: |\n',1)[1].split('\n      - name: Continue main CI',1)[0]
-        code = '\n'.join(line[10:] if line.startswith('          ') else line for line in source.splitlines())
+        source = (Path(__file__).resolve().parents[2]/'scripts/refresh-automerge.py').read_text()
+        code = source
         error = None
+        plan = {'family':pr['head']['ref'].split('/')[0], 'pr':536, 'branch':pr['head']['ref'],
+                'previous':initial_sha, 'main':('f' if stale_plan else 'c')*40, 'tree':'e'*40,
+                'head':updated_head, 'app':pr['user']['login'] != 'github-actions[bot]'}
+        plan.update(plan_override or {})
+        from refresh_policy import MissingProvenance
+        provenance_exception = MissingProvenance('No receipt') if provenance_error == 'missing' else RuntimeError('Untrusted head')
         with patch.dict(os.environ,{'REPO':'owner/repo','CONTENT_BOT_LOGIN':content_bot,
-                                    'CONTENT_BOT_TOKEN':content_token,'CONTENT_BOT_SLUG':content_slug}), \
+                                    'CONTENT_BOT_TOKEN':content_token,'CONTENT_BOT_SLUG':content_slug,
+                                    'REFRESH_UPDATE':json.dumps(plan) if updated_head and phase=='apply' else ''}), \
                 patch('subprocess.check_output',return_value=json.dumps([[pr]])), \
-                patch('subprocess.run',side_effect=run), patch('time.sleep'), patch('refresh_policy.verify_provenance',side_effect=RuntimeError('Untrusted head') if provenance_error else None), redirect_stdout(io.StringIO()):
+                patch('subprocess.run',side_effect=run), patch('time.sleep'), \
+                patch('refresh_policy.verify_provenance',side_effect=provenance_exception if provenance_error else None), \
+                patch('refresh_update.verify_update_intent',side_effect=RuntimeError('Invalid intent') if intent_error else None), \
+                redirect_stdout(io.StringIO()):
             try:
                 exec(code,{})
             except SystemExit as exc:
@@ -423,7 +452,7 @@ class RecoveryCITests(unittest.TestCase):
         ci,calls,error=self.recover([self.run_record('workflow_dispatch','success')],
                                    updated_head='b'*40,provenance_error=True)
         self.assertIn('Refresh PRs need attention',error)
-        self.assertFalse(any('/update-branch' in str(call) for call in calls))
+        self.assertFalse(any(('/update-branch' in str(call) or 'graphql' in call[4:5]) for call in calls))
         self.assertEqual(ci,[])
 
     def test_unexpected_update_tree_does_not_receive_a_provenance_output(self):
@@ -438,9 +467,85 @@ class RecoveryCITests(unittest.TestCase):
         with tempfile.NamedTemporaryFile(mode='r+') as output,patch.dict(os.environ,{'GITHUB_OUTPUT':output.name}):
             _,_,error=self.recover([self.run_record('workflow_dispatch','success')],updated_head='b'*40)
             output.seek(0)
-            record=json.loads(output.read().split('=',1)[1])
+            record=json.loads(output.read().splitlines()[0].split('=',1)[1])
             self.assertIsNone(error)
             self.assertEqual(record,[{'family':'story-runner','head':'b'*40,'pr':536}])
+
+    def test_planning_creates_only_an_object_before_durable_intent_upload(self):
+        with tempfile.NamedTemporaryFile(mode='r+') as output,patch.dict(os.environ,{'GITHUB_OUTPUT':output.name}):
+            ci,calls,error=self.recover([self.run_record('workflow_dispatch','success')],updated_head='b'*40,phase='plan')
+            output.seek(0); fields=dict(line.rstrip().split('=',1) for line in output)
+            self.assertIsNone(error)
+            self.assertEqual(json.loads(fields['updated']),[])
+            self.assertEqual(json.loads(fields['planned'])[0]['head'],'b'*40)
+            self.assertFalse(any('graphql' in call[4:5] or '/update-branch' in str(call) for call in calls))
+            self.assertFalse(ci)
+        source=(Path(__file__).resolve().parents[2]/'.github/workflows/refresh-automerge.yml').read_text()
+        apply=source.split('\n  apply-updates:',1)[1]
+        self.assertLess(apply.index('name: Upload durable update intent'),apply.index('name: Apply exact planned update'))
+        before_apply=apply.split('name: Apply exact planned update',1)[0]
+        self.assertNotIn('continue-on-error',before_apply)
+        self.assertNotIn('if: always()',apply.split('name: Apply exact planned update',1)[1].split('run: python3',1)[0])
+
+    def test_interrupted_update_restores_receipt_on_later_sweep_without_republishing(self):
+        for failure in ['delayed','commit_read_error','update_response_error']:
+            with self.subTest(failure=failure),tempfile.NamedTemporaryFile(mode='r+') as output,patch.dict(os.environ,{'GITHUB_OUTPUT':output.name}):
+                _,calls,error=self.recover([self.run_record('workflow_dispatch','success')],updated_head='b'*40,**{failure:True})
+                self.assertIn('need attention',error)
+                self.assertEqual(sum('graphql' in call[4:5] for call in calls),1)
+                output.seek(0); self.assertIn('updated=[]',output.read())
+                output.seek(0); output.truncate()
+                changed={**PR,'head':{**PR['head'],'sha':'b'*40}}
+                ci,calls,error=self.recover([],pr=changed,provenance_error='missing')
+                self.assertIsNone(error)
+                self.assertFalse(ci)
+                self.assertFalse(any(call[:3]==['gh','workflow','run'] or 'graphql' in call[4:5] for call in calls))
+                output.seek(0)
+                self.assertEqual(json.loads(output.readline().split('=',1)[1]),[{'family':'story-runner','head':'b'*40,'pr':536}])
+
+    def test_untrusted_intent_and_stale_unapplied_plan_never_mutate_or_dispatch(self):
+        for options in [{'provenance_error':'missing','intent_error':True},
+                        {'updated_head':'b'*40,'stale_plan':True}]:
+            with self.subTest(options=options):
+                ci,calls,error=self.recover([self.run_record('workflow_dispatch','success')],**options)
+                self.assertIn('need attention',error)
+                self.assertFalse(ci)
+                self.assertFalse(any('graphql' in call[4:5] or '/update-branch' in str(call) for call in calls))
+
+    def test_hold_during_receipt_restoration_prevents_attestation(self):
+        with tempfile.NamedTemporaryFile(mode='r+') as output,patch.dict(os.environ,{'GITHUB_OUTPUT':output.name}):
+            _,_,error=self.recover([],provenance_error='missing',current_override={'labels':[{'name':'hold'}]})
+            self.assertIsNone(error)
+            output.seek(0);self.assertIn('updated=[]',output.read())
+
+    def test_fresh_hold_opt_out_head_or_main_change_prevents_atomic_update(self):
+        options=[{'late_override':{'labels':[{'name':'hold'}]}},
+                 {'late_override':{'auto_merge':None}},
+                 {'late_override':{'head':{**PR['head'],'sha':'f'*40}}},
+                 {'main_changed':True}]
+        for option in options:
+            with self.subTest(option=option):
+                ci,calls,error=self.recover([self.run_record('workflow_dispatch','success')],updated_head='b'*40,**option)
+                self.assertIn('need attention',error)
+                self.assertFalse(ci)
+                self.assertFalse(any('graphql' in call[4:5] for call in calls))
+
+    def test_graphql_http_success_with_errors_and_manual_replacement_do_not_attest(self):
+        for option in [{'graphql_error':True},{'replacement_head':'f'*40}]:
+            with self.subTest(option=option),tempfile.NamedTemporaryFile(mode='r+') as output,patch.dict(os.environ,{'GITHUB_OUTPUT':output.name}):
+                ci,calls,error=self.recover([self.run_record('workflow_dispatch','success')],updated_head='b'*40,**option)
+                self.assertIn('need attention',error)
+                self.assertFalse(ci)
+                self.assertEqual(sum('graphql' in call[4:5] for call in calls),1)
+                output.seek(0);self.assertIn('updated=[]',output.read())
+
+    def test_apply_job_cannot_fall_through_to_another_branch_family_or_head(self):
+        for override in [{'branch':'story-runner/other'}, {'family':'vendor-radar'}, {'previous':'f'*40}]:
+            with self.subTest(override=override):
+                ci,calls,error=self.recover([],updated_head='b'*40,plan_override=override)
+                self.assertIn('need attention',error)
+                self.assertEqual(calls,[])
+                self.assertFalse(ci)
 
     def test_radar_families_recover_missing_ci_for_both_author_paths(self):
         for family in ['vendor-radar','vendor-radar-bringup']:
@@ -511,12 +616,12 @@ class RecoveryCITests(unittest.TestCase):
         ci, calls, error = self.recover([self.run_record()], updated_head='b'*40)
         self.assertIsNone(error)
         self.assertEqual(ci, [['gh','workflow','run','ci.yml','--repo','owner/repo','--ref',BRANCH]])
-        self.assertTrue(any('/update-branch' in ' '.join(call) for call in calls))
+        self.assertTrue(any(('/update-branch' in ' '.join(call) or 'graphql' in call[4:5]) for call in calls))
         self.assertFalse(any('approve' in call for call in calls))
 
     def test_main_advance_does_not_replace_a_head_while_review_is_pending(self):
         _, calls, error = self.recover([self.run_record('workflow_dispatch','success')], updated_head='b'*40, pending_review=True)
-        self.assertFalse(any('/update-branch' in ' '.join(call) for call in calls))
+        self.assertFalse(any(('/update-branch' in ' '.join(call) or 'graphql' in call[4:5]) for call in calls))
         self.assertIsNone(error)
 
     def test_base_update_waits_for_active_review_hidden_by_latest_completed_check(self):
@@ -524,23 +629,29 @@ class RecoveryCITests(unittest.TestCase):
             updated_head='b'*40, review_history=[{'id':1,'name':'Greptile Review',
                 'app':{'id':867647},'status':'in_progress','conclusion':None}])
         self.assertIsNone(error)
-        self.assertFalse(any('/update-branch' in ' '.join(call) for call in calls))
+        self.assertFalse(any(('/update-branch' in ' '.join(call) or 'graphql' in call[4:5]) for call in calls))
 
     def test_loose_policy_keeps_a_reviewed_behind_head_unchanged(self):
         ci, calls, error = self.recover([self.run_record('workflow_dispatch','success')],
-                                        updated_head='b'*40, strict=False)
+                                        updated_head='b'*40, strict=False, phase='plan')
         self.assertIsNone(error)
         self.assertEqual(ci, [])
-        self.assertFalse(any('/update-branch' in ' '.join(call) for call in calls))
+        self.assertFalse(any(('/update-branch' in ' '.join(call) or 'graphql' in call[4:5]) for call in calls))
         reviews = [call for call in calls if call[:4] == ['gh','workflow','run','refresh-review.yml']]
         self.assertEqual(reviews[0][-1], f'head={SHA}')
+
+    def test_apply_job_defers_without_dispatch_when_base_update_is_no_longer_required(self):
+        ci,calls,error=self.recover([self.run_record('workflow_dispatch','success')],updated_head='b'*40,strict=False)
+        self.assertIsNone(error)
+        self.assertFalse(ci)
+        self.assertFalse(any('graphql' in call[4:5] or call[:3]==['gh','workflow','run'] for call in calls))
 
     def test_real_conflict_reaches_bounded_repair_even_with_loose_policy(self):
         ci, calls, error = self.recover([self.run_record('workflow_dispatch','success')],
                                         behind=1, strict=False, mergeable=False)
         self.assertIn('need attention', error)
         self.assertEqual(ci, [])
-        self.assertFalse(any('/update-branch' in ' '.join(call) for call in calls))
+        self.assertFalse(any(('/update-branch' in ' '.join(call) or 'graphql' in call[4:5]) for call in calls))
         workers = [call[3] for call in calls if call[:3] == ['gh','workflow','run']]
         self.assertEqual(workers, ['refresh-review.yml','review-findings.yml','refresh-repair.yml'])
 
@@ -548,7 +659,7 @@ class RecoveryCITests(unittest.TestCase):
         _, calls, error = self.recover([], behind=1, strict=False, mergeable=None)
         self.assertIn('need attention', error)
         self.assertFalse(any(call[:3] == ['gh','workflow','run'] for call in calls))
-        self.assertFalse(any('/update-branch' in ' '.join(call) for call in calls))
+        self.assertFalse(any(('/update-branch' in ' '.join(call) or 'graphql' in call[4:5]) for call in calls))
 
     def test_conflict_does_not_replace_a_head_awaiting_review_or_findings(self):
         for waiting in [{'pending_review':True}, {'unresolved':True}]:
@@ -558,7 +669,7 @@ class RecoveryCITests(unittest.TestCase):
                 self.assertIn('need attention', error)
                 workers = [call[3] for call in calls if call[:3] == ['gh','workflow','run']]
                 self.assertEqual(workers, ['refresh-review.yml','review-findings.yml'])
-                self.assertFalse(any('/update-branch' in ' '.join(call) for call in calls))
+                self.assertFalse(any(('/update-branch' in ' '.join(call) or 'graphql' in call[4:5]) for call in calls))
 
     def test_conflict_keeps_missing_or_cancelled_ci_and_review_recoverable(self):
         for runs in [[], [self.run_record()], [self.run_record('workflow_dispatch','cancelled')]]:
@@ -568,7 +679,7 @@ class RecoveryCITests(unittest.TestCase):
                 self.assertEqual(len(ci),1)
                 workers = [call[3] for call in calls if call[:3] == ['gh','workflow','run']]
                 self.assertEqual(workers,['ci.yml','refresh-review.yml','review-findings.yml'])
-                self.assertFalse(any('/update-branch' in ' '.join(call) for call in calls))
+                self.assertFalse(any(('/update-branch' in ' '.join(call) or 'graphql' in call[4:5]) for call in calls))
 
     def test_verdict_findings_keep_same_head_recovery_but_wait_for_review_to_finish(self):
         for conflict in [False,True]:
@@ -587,14 +698,14 @@ class RecoveryCITests(unittest.TestCase):
     def test_failed_policy_lookup_keeps_the_existing_head(self):
         _, calls, error = self.recover([], updated_head='b'*40, rules_error=True)
         self.assertIn('need attention', error)
-        self.assertFalse(any('/update-branch' in ' '.join(call) for call in calls))
+        self.assertFalse(any(('/update-branch' in ' '.join(call) or 'graphql' in call[4:5]) for call in calls))
         self.assertFalse(any(call[:3] == ['gh','workflow','run'] for call in calls))
 
     def test_strict_policy_does_not_update_with_unresolved_findings(self):
         _, calls, error = self.recover([self.run_record('workflow_dispatch','success')],
                                        updated_head='b'*40, unresolved=True)
         self.assertIsNone(error)
-        self.assertFalse(any('/update-branch' in ' '.join(call) for call in calls))
+        self.assertFalse(any(('/update-branch' in ' '.join(call) or 'graphql' in call[4:5]) for call in calls))
 
     def test_manual_stop_or_head_change_after_listing_prevents_branch_update(self):
         for override in [{'draft':True}, {'auto_merge':None}, {'state':'closed'},
@@ -602,7 +713,7 @@ class RecoveryCITests(unittest.TestCase):
             with self.subTest(override=override):
                 _, calls, error = self.recover([], updated_head='b'*40, current_override=override)
                 self.assertIsNone(error)
-                self.assertFalse(any('/update-branch' in ' '.join(call) for call in calls))
+                self.assertFalse(any(('/update-branch' in ' '.join(call) or 'graphql' in call[4:5]) for call in calls))
                 self.assertFalse(any(call[:3] == ['gh','workflow','run'] for call in calls))
 
     def test_no_run_or_approval_only_history_dispatches(self):
@@ -627,7 +738,7 @@ class RecoveryCITests(unittest.TestCase):
                     _, calls, error = self.recover([self.run_record(event,None,status=status)],
                                                    updated_head='b'*40)
                     self.assertIsNone(error)
-                    self.assertFalse(any('/update-branch' in ' '.join(call) for call in calls))
+                    self.assertFalse(any(('/update-branch' in ' '.join(call) or 'graphql' in call[4:5]) for call in calls))
                     self.assertFalse(any(call[:3] == ['gh','workflow','run'] for call in calls))
 
     def test_pending_ci_prevents_conflict_repair_from_replacing_an_active_head(self):
