@@ -57,6 +57,7 @@ jobs:
         run: |
           python3 rankings-engine/__tests__/refresh_repair_controller.py
           python3 rankings-engine/__tests__/refresh_review_controller.py
+          python3 rankings-engine/__tests__/refresh_policy_controller.py
 
       - name: Refresh verdict stability
         if: startsWith(github.head_ref || github.ref_name, 'story-runner/')
@@ -176,6 +177,7 @@ jobs:
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
     needs: [ci]
     permissions:
+      contents: read
       actions: read # the reusable gate verifies linked workflow outcomes
       checks: read
       pull-requests: read

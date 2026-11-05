@@ -9,6 +9,8 @@ import tempfile
 import unittest
 from contextlib import redirect_stdout
 from pathlib import Path
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / 'scripts'))
 from unittest.mock import Mock, patch
 
 with patch.dict(os.environ, {'REPO':'owner/repo','PR_NUMBER':'536','PR_HEAD':'a'*40}):
@@ -16,7 +18,7 @@ with patch.dict(os.environ, {'REPO':'owner/repo','PR_NUMBER':'536','PR_HEAD':'a'
 GLOBALS = MODULE['recheck'].__globals__
 SHA = 'a'*40
 BRANCH = 'story-runner/email-123'
-PR = {'state':'open','draft':False,'auto_merge':{'enabled_by':{'login':'maintainer'}},'base':{'ref':'main'},'head':{'sha':SHA,'ref':BRANCH,'repo':{'full_name':'owner/repo'}},'user':{'login':'github-actions[bot]'}}
+PR = {'number':536,'labels':[], 'state':'open','draft':False,'auto_merge':{'enabled_by':{'login':'maintainer'}},'base':{'ref':'main'},'head':{'sha':SHA,'ref':BRANCH,'repo':{'full_name':'owner/repo'}},'user':{'id':41898282,'login':'github-actions[bot]','type':'Bot'}}
 REPORT = {'originalThreads':['old'],'audits':[{'thread':'old','addressed':True}],
           'findingSnapshots':{'old':MODULE['finding_fingerprint']({'id':'old'})}}
 
@@ -110,7 +112,7 @@ class ControllerTests(unittest.TestCase):
                 if args[:2]==['git','merge-base']:return 'c'*40
                 raise AssertionError(args)
             command=Mock(); resume=Mock(return_value={**REPORT,'publishedHead':SHA,'main':'b'*40})
-            with patch.dict(GLOBALS, {'current':lambda:PR,'output':output,'command':command,'load_resume_report':resume,'recheck':lambda *_:'waiting-checks'}),patch.dict(os.environ,{'RUNNER_TEMP':directory}):
+            with patch.dict(GLOBALS, {'verify_provenance':lambda *_:None, 'current':lambda:PR,'output':output,'command':command,'load_resume_report':resume,'recheck':lambda *_:'waiting-checks'}),patch.dict(os.environ,{'RUNNER_TEMP':directory}):
                 MODULE['main']()
             resume.assert_called_once()
             self.assertFalse(any(call.args[0][0]=='pnpm' for call in command.call_args_list))
@@ -144,7 +146,7 @@ class RepairReviewBoundaryTests(unittest.TestCase):
                 calls.append(args)
                 if 'rankings-engine/scripts/repair-refresh.ts' in args:
                     report_file.write_text(json.dumps({'restored':[],'audits':[]}))
-            with patch.dict(GLOBALS,{'api':api,'current':lambda:PR,'output':output,'command':command,
+            with patch.dict(GLOBALS,{'verify_provenance':lambda *_:None,'api':api,'current':lambda:({**PR,'head':{**PR['head'],'sha':'e'*40}} if any(c[:2]==['git','push'] for c in calls) else PR),'output':output,'command':command,
                                     'threads':lambda:(SHA,[{'id':'finding'}]),'load_resume_report':lambda *_:None,
                                     'recheck':lambda *_:'rechecked'}),patch.dict(os.environ,{'RUNNER_TEMP':directory}):
                 MODULE['main']()
@@ -177,7 +179,7 @@ class RepairReviewBoundaryTests(unittest.TestCase):
 
 class DispatcherTests(unittest.TestCase):
     def controller(self):
-        source=(Path(__file__).resolve().parents[2]/'.github/workflows/refresh-automerge.yml').read_text().split('        run: |\n',1)[1]
+        source=(Path(__file__).resolve().parents[2]/'.github/workflows/refresh-automerge.yml').read_text().split('        run: |\n',1)[1].split('\n      - name: Continue main CI',1)[0]
         code='\n'.join(line[10:] if line.startswith('          ') else line for line in source.splitlines())
         namespace={}
         with patch.dict(os.environ,{'REPO':'owner/repo'}),patch('subprocess.check_output',return_value='[[]]'):
@@ -337,7 +339,7 @@ class RecoveryCITests(unittest.TestCase):
                 strict=True, behind=None, mergeable=True, current_override=None,
                 rules_error=False, unresolved=False, later_runs=None, finding_path='README.md',
                 review_history=None, content_bot='', content_token='', content_slug='',
-                update_tokens=None):
+                update_tokens=None, provenance_error=False, bad_tree=False):
         pr = pr or {**PR,'number':536,'auto_merge':{'enabled_by':{'login':'maintainer'}}}
         calls = []
         branch_updated = False
@@ -360,9 +362,15 @@ class RecoveryCITests(unittest.TestCase):
                     branch_updated = True
                     result = {}
                 elif endpoint.endswith('/pulls/536'):
-                    result = {**pr,'mergeable':mergeable,
+                    result = {**pr,'mergeable':mergeable,'merge_commit_sha':'d'*40,
                               'head':{**pr['head'],'sha':updated_head if branch_updated else SHA},
                               **(current_override or {})}
+                elif endpoint.endswith('/git/ref/heads/main'):
+                    result = {'object':{'sha':'c'*40}}
+                elif '/git/commits/' in endpoint:
+                    before = endpoint.endswith('d'*40)
+                    result = {'tree':{'sha':('f' if bad_tree and not before else 'e')*40},
+                              'parents':[{'sha':x} for x in (['c'*40,SHA] if before else [SHA,'c'*40])]}
                 elif '/rules/branches/main?' in endpoint:
                     if rules_error:
                         raise subprocess.CalledProcessError(1,args,stderr='policy lookup failed')
@@ -382,13 +390,13 @@ class RecoveryCITests(unittest.TestCase):
                 else:
                     raise AssertionError(endpoint)
             return subprocess.CompletedProcess(args, 0, json.dumps(result) if result is not None else '')
-        source = (Path(__file__).resolve().parents[2]/'.github/workflows/refresh-automerge.yml').read_text().split('        run: |\n',1)[1]
+        source = (Path(__file__).resolve().parents[2]/'.github/workflows/refresh-automerge.yml').read_text().split('        run: |\n',1)[1].split('\n      - name: Continue main CI',1)[0]
         code = '\n'.join(line[10:] if line.startswith('          ') else line for line in source.splitlines())
         error = None
         with patch.dict(os.environ,{'REPO':'owner/repo','CONTENT_BOT_LOGIN':content_bot,
                                     'CONTENT_BOT_TOKEN':content_token,'CONTENT_BOT_SLUG':content_slug}), \
                 patch('subprocess.check_output',return_value=json.dumps([[pr]])), \
-                patch('subprocess.run',side_effect=run), patch('time.sleep'), redirect_stdout(io.StringIO()):
+                patch('subprocess.run',side_effect=run), patch('time.sleep'), patch('refresh_policy.verify_provenance',side_effect=RuntimeError('Untrusted head') if provenance_error else None), redirect_stdout(io.StringIO()):
             try:
                 exec(code,{})
             except SystemExit as exc:
@@ -398,7 +406,41 @@ class RecoveryCITests(unittest.TestCase):
 
     def radar_pr(self, family='vendor-radar', app=False):
         return {**PR, 'number':536, 'head':{**PR['head'], 'ref':f'{family}/fixture-123'},
-                'user':{'login':'fixture-content[bot]' if app else 'github-actions[bot]', 'type':'Bot'}}
+                'user':{'id':999 if app else 41898282,'login':'fixture-content[bot]' if app else 'github-actions[bot]', 'type':'Bot'}}
+
+    def test_manual_hold_skips_all_recovery_and_repair_actions(self):
+        for label in ['hold','manual-merge','do-not-merge','automerge-hold']:
+            ci,calls,error=self.recover([],pr={**PR,'number':536,'labels':[{'name':label}]})
+            self.assertEqual(calls,[])
+            self.assertIsNone(error)
+
+    def test_hold_arriving_before_dispatch_prevents_work_on_the_head(self):
+        ci,calls,error=self.recover([],current_override={'labels':[{'name':'hold'}]})
+        self.assertEqual(ci,[])
+        self.assertFalse(any(call[:3]==['gh','workflow','run'] for call in calls))
+
+    def test_unattested_parent_cannot_be_laundered_through_base_update(self):
+        ci,calls,error=self.recover([self.run_record('workflow_dispatch','success')],
+                                   updated_head='b'*40,provenance_error=True)
+        self.assertIn('Refresh PRs need attention',error)
+        self.assertFalse(any('/update-branch' in str(call) for call in calls))
+        self.assertEqual(ci,[])
+
+    def test_unexpected_update_tree_does_not_receive_a_provenance_output(self):
+        with tempfile.NamedTemporaryFile(mode='r+') as output,patch.dict(os.environ,{'GITHUB_OUTPUT':output.name}):
+            _,_,error=self.recover([self.run_record('workflow_dispatch','success')],
+                                  updated_head='b'*40,bad_tree=True)
+            output.seek(0)
+            self.assertIn('updated=[]',output.read())
+            self.assertIn('Refresh PRs need attention',error)
+
+    def test_verified_base_update_records_head_despite_different_parent_order(self):
+        with tempfile.NamedTemporaryFile(mode='r+') as output,patch.dict(os.environ,{'GITHUB_OUTPUT':output.name}):
+            _,_,error=self.recover([self.run_record('workflow_dispatch','success')],updated_head='b'*40)
+            output.seek(0)
+            record=json.loads(output.read().split('=',1)[1])
+            self.assertIsNone(error)
+            self.assertEqual(record,[{'family':'story-runner','head':'b'*40,'pr':536}])
 
     def test_radar_families_recover_missing_ci_for_both_author_paths(self):
         for family in ['vendor-radar','vendor-radar-bringup']:
@@ -684,7 +726,7 @@ class PublicationTests(unittest.TestCase):
     def radar_step(self, name):
         source=(Path(__file__).resolve().parents[2]/'.github/workflows/vendor-radar.yml').read_text()
         step=source.split(f'      - name: {name}\n',1)[1].split('\n      - name:',1)[0]
-        lines=step.split('        run: |\n',1)[1].splitlines()
+        lines=step.split('        run: |\n',1)[1].split('\n      - name: Continue main CI',1)[0].splitlines()
         return step, '\n'.join(line[10:] for line in lines if line.startswith('          '))
 
     def publish_radar(self, bringup, app, *, fail_dispatch=False, fail_create=False, fail_merge=False):
@@ -698,7 +740,7 @@ class PublicationTests(unittest.TestCase):
             (cwd/'vendor-radar-triage.md').write_text('Fixture triage')
             # Only executable workflow commands are replayed; all git/GitHub/engine
             # commands below are local fixtures with no network or model access.
-            stub="""#!/usr/bin/env python3
+            stub="""#!/usr/bin/python3
 import json, os, sys
 from pathlib import Path
 name=Path(sys.argv[0]).name
@@ -713,7 +755,7 @@ if name=='gh' and args[:2]==['pr','create']:
 if name=='gh' and args[:3]==['workflow','run','ci.yml'] and os.environ['FAIL_DISPATCH']=='true': sys.exit(17)
 if name=='gh' and args[:2]==['pr','merge'] and os.environ['FAIL_MERGE']=='true': sys.exit(19)
 """
-            for name in ['git','gh','pnpm']:
+            for name in ['git','gh','pnpm','python3']:
                 binary=binaries/name; binary.write_text(stub); binary.chmod(0o755)
             result=subprocess.run(['bash','-e','-c',script.replace('/tmp/',directory+'/')],cwd=cwd,
                 text=True,capture_output=True,env={'PATH':str(binaries)+os.pathsep+os.environ['PATH'],
@@ -787,7 +829,7 @@ if name=='gh' and args[:2]==['pr','merge'] and os.environ['FAIL_MERGE']=='true':
     def test_unsupported_grade_change_stops_before_remote_push_pr_or_review(self):
         root=Path(__file__).resolve().parents[2]
         source=(root/'.github/workflows/story-runner.yml').read_text().split('      - name: Open PR if anything changed\n',1)[1]
-        script='\n'.join(line[10:] for line in source.split('        run: |\n',1)[1].splitlines())
+        script='\n'.join(line[10:] for line in source.split('        run: |\n',1)[1].split('\n      - name: Continue main CI',1)[0].splitlines())
         with tempfile.TemporaryDirectory() as directory:
             cwd=Path(directory)
             arena=cwd/'open-rankings/fixture'; (arena/'evidence').mkdir(parents=True)

@@ -21,6 +21,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   repair:
+    if: github.repository == 'ultrametricai/ultrametric' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
@@ -35,6 +36,7 @@ jobs:
           node-version: 24.22.2
       - run: pnpm install --frozen-lockfile
       - name: Repair, validate, publish, and independently recheck
+        id: repair
         env:
           REPO: ${{ github.repository }}
           PR_NUMBER: ${{ inputs.pr }}
@@ -52,3 +54,11 @@ jobs:
           name: refresh-repair-${{ inputs.pr }}-${{ github.run_id }}
           path: ${{ runner.temp }}/refresh-repair-report.json
           if-no-files-found: ignore
+      - name: Record repaired head provenance
+        if: always() && steps.repair.outputs.published_head != ''
+        uses: actions/upload-artifact@v7
+        with:
+          name: internal-refresh-story-runner-${{ inputs.pr }}-${{ steps.repair.outputs.published_head }}
+          path: ${{ runner.temp }}/refresh-repair-report.json
+          if-no-files-found: error
+          retention-days: 90

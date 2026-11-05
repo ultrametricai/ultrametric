@@ -12,7 +12,7 @@ on:
         type: string
         default: ''
   pull_request_target:
-    types: [opened, synchronize, reopened, ready_for_review]
+    types: [opened, synchronize, reopened, ready_for_review, converted_to_draft, labeled, unlabeled, edited]
   pull_request_review:
     types: [submitted, dismissed]
   schedule:
@@ -27,6 +27,7 @@ on:
         type: string
 
 permissions:
+  contents: read # read only the trusted main policy, never candidate code
   actions: read # recover a success status linked to a failed shared workflow run
   checks: read # inspect Greptile completion on the current head
   pull-requests: read
@@ -79,7 +80,14 @@ jobs:
       (github.event_name != 'pull_request_review' || github.event.pull_request.head.repo.full_name == github.repository)
     runs-on: ubuntu-latest
     steps:
-      # No checkout or PR-code execution, including for pull_request_target.
+      - name: Read trusted main content policy
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: main
+          persist-credentials: false
+          sparse-checkout: scripts/refresh_policy.py
+          sparse-checkout-cone-mode: false
+      # Only trusted main policy code executes; candidate files are Git metadata.
       - name: Gate unresolved Greptile findings
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -87,9 +95,12 @@ jobs:
           SERVER_URL: ${{ github.server_url }}
           RUN_ID: ${{ github.run_id }}
           TARGET_PR: ${{ matrix.pr }}
+          CONTENT_BOT_LOGIN: ${{ vars.CONTENT_BOT_LOGIN }}
+          PYTHONPATH: scripts
         shell: python
         run: |
           import json, os, re, subprocess
+          from urllib.parse import quote
           repo = os.environ['REPO']
           owner, name = repo.split('/')
           numbers = [int(os.environ['TARGET_PR'])]
@@ -146,12 +157,68 @@ jobs:
                       and author.get('type') == 'Bot'
                       and (head.get('repo') or {}).get('full_name') == repo
                       and head.get('ref', '').startswith('renovate/'))
+          def internal_policy(pr, inspect_files=True):
+              match = re.fullmatch(r'(story-runner|vendor-radar|vendor-radar-bringup)/[A-Za-z0-9_-]+', pr.get('head', {}).get('ref', ''))
+              if match is None:
+                  return
+              from refresh_policy import actions_author, held, check_scope, verify_provenance
+              kind = match.group(1)
+              if held(pr) or pr.get('draft') is not False:
+                  raise RuntimeError('Internal refresh is held or draft; automatic merge is stopped')
+              if (pr.get('base', {}).get('ref') != 'main' or
+                  (pr.get('base', {}).get('repo') or {}).get('full_name') != repo or
+                  (pr['head'].get('repo') or {}).get('full_name') != repo):
+                  raise RuntimeError('Internal refresh must stay within this repository and target main')
+              author = pr.get('user') or {}
+              if not actions_author(author):
+                  login = os.environ.get('CONTENT_BOT_LOGIN', '')
+                  if (kind == 'story-runner' or not re.fullmatch(r'[a-z0-9][a-z0-9-]*\[bot\]', login)
+                      or author.get('type') != 'Bot' or author.get('login') != login):
+                      raise RuntimeError('Internal refresh author is not authenticated')
+                  expected = api('users/' + quote(login, safe=''))
+                  if expected.get('id') != author.get('id') or expected.get('type') != 'Bot':
+                      raise RuntimeError('Configured content bot identity mismatch')
+              verify_provenance(api, repo, pr)
+              reviews = json.loads(subprocess.check_output(['gh', 'api', '--paginate', '--slurp',
+                        f"repos/{repo}/pulls/{pr['number']}/reviews?per_page=100"], text=True))
+              latest = {}
+              for review in sorted([review for page in reviews for review in page], key=lambda review: review['id']):
+                  user = review.get('user') or {}
+                  if (user.get('type') == 'User' or user.get('login') in ['greptile-apps', 'greptile-apps[bot]', 'greptileai']) and review['state'] in ['APPROVED', 'CHANGES_REQUESTED', 'DISMISSED']:
+                      latest[user['id']] = review['state']
+              if 'CHANGES_REQUESTED' in latest.values():
+                  raise RuntimeError('A reviewer requested changes; automatic merge is stopped')
+              if not inspect_files:
+                  return
+              files = json.loads(subprocess.check_output(['gh', 'api', '--paginate', '--slurp',
+                      f"repos/{repo}/pulls/{pr['number']}/files?per_page=100"], text=True))
+              files = [file for page in files for file in page]
+              trees = {}
+              def mode(path):
+                  tree = pr['head']['sha']
+                  parts = path.split('/')
+                  for index, part in enumerate(parts):
+                      if tree not in trees:
+                          data = api(f'repos/{repo}/git/trees/{tree}')
+                          if data.get('truncated') is not False:
+                              raise RuntimeError('Git tree inspection was truncated or unavailable')
+                          trees[tree] = {entry['path']: entry for entry in data['tree']}
+                      entry = trees[tree].get(part)
+                      if entry is None:
+                          return None
+                      if index == len(parts) - 1:
+                          return entry['mode'] if entry['type'] == 'blob' else None
+                      if entry['type'] != 'tree' or entry['mode'] != '040000':
+                          return None
+                      tree = entry['sha']
+              check_scope(kind, files, pr.get('changed_files'), mode)
           errors = []
           for number in numbers:
               initial = None
               try:
                   initial = api(f'repos/{repo}/pulls/{number}')
                   sha = initial['head']['sha']
+                  internal_policy(initial)
                   exempt = renovate_exempt(initial)
                   reviewed = False
                   if not exempt:
@@ -181,6 +248,7 @@ jobs:
                   current = api(f'repos/{repo}/pulls/{number}')
                   if current['head']['sha'] != sha or current['state'] != 'open':
                       continue
+                  internal_policy(current, inspect_files=False)
                   if exempt and not renovate_exempt(current):
                       raise RuntimeError('Renovate exemption metadata changed; retry')
                   if exempt:

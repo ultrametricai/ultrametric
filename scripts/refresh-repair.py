@@ -1,5 +1,6 @@
 """Trusted-main repair controller. PR refs are read only as allowlisted JSON data."""
 import json
+from refresh_policy import actions_author, held, verify_provenance
 import hashlib
 import os
 import re
@@ -41,7 +42,7 @@ def current():
 def identity(pr):
     return (pr['state'] == 'open' and not pr['draft'] and bool(pr['auto_merge']) and pr['base']['ref'] == 'main'
             and pr['head']['repo'] is not None and pr['head']['repo']['full_name'] == REPO
-            and pr['user']['login'] == 'github-actions[bot]'
+            and actions_author(pr['user']) and not held(pr)
             and re.fullmatch(r'story-runner/([a-z0-9-]+)-[0-9]+', pr['head']['ref']))
 
 def diagnostic_comments(comments):
@@ -248,6 +249,7 @@ def main():
     match = identity(pr)
     if not match or pr['head']['sha'] != EXPECTED or not re.fullmatch('[0-9a-f]{40}', EXPECTED):
         raise RuntimeError('PR identity or expected head changed; no repair performed')
+    verify_provenance(api, REPO, pr)
     branch, arena = pr['head']['ref'], match.group(1)
     trusted = output(['git', 'rev-parse', 'HEAD'])
     command(['git', 'fetch', '--no-tags', 'origin', f'refs/heads/{branch}:refs/repair/head'])
@@ -320,6 +322,11 @@ def main():
         return
     # Non-force push rejects a concurrent update, including one after the preceding check.
     command(['git', 'push', 'origin', f'{new_sha}:refs/heads/{branch}'])
+    if current()['head']['sha'] != new_sha:
+        raise RuntimeError('Remote head changed after repair publication; no receipt emitted')
+    if os.environ.get('GITHUB_OUTPUT'):
+        with open(os.environ['GITHUB_OUTPUT'], 'a') as receipt:
+            receipt.write(f'published_head={new_sha}\n')
     report['publishedHead'] = new_sha
     report_file.write_text(json.dumps(report, indent=2))
     report['phase'] = recheck(report, branch, new_sha)

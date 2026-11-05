@@ -6,6 +6,7 @@ GitHub's per-PR workflow concurrency serializes all callers of this controller.
 """
 import datetime as dt
 import json
+from refresh_policy import actions_author, held, family, verify_provenance
 import os
 import re
 import subprocess
@@ -36,14 +37,14 @@ def eligible(pr, repo, head):
     return (pr['state'] == 'open' and not pr['draft'] and bool(pr['auto_merge'])
             and pr['base']['ref'] == 'main' and pr['head']['sha'] == head
             and pr['head']['repo'] is not None and pr['head']['repo']['full_name'] == repo
-            and (pr['user']['login'] == BOT or radar_app)
+            and (actions_author(pr['user']) or radar_app) and not held(pr)
             and re.fullmatch(r'(story-runner|accuracy-engine|vendor-radar|vendor-radar-bringup|yc-coverage)/[A-Za-z0-9_-]+', pr['head']['ref']))
 
 
 def reservations(comments, head):
     result = []
     for comment in comments:
-        if comment['user']['login'] != BOT:
+        if not actions_author(comment['user']):
             continue
         match = re.search(r'<!-- ' + MARKER + r' (\{[^\n]+\}) -->', comment['body'])
         if not match:
@@ -88,9 +89,12 @@ def request(repo, number, head, now=None):
     if api(repo, 'actions/workflows/refresh-automerge.yml')['state'] != 'active':
         print('Refresh recovery is paused; no review requested')
         return
-    if not eligible(api(repo, f'pulls/{number}'), repo, head):
+    current = api(repo, f'pulls/{number}')
+    if not eligible(current, repo, head):
         print('PR changed or automation opt-in was removed; no review requested')
         return
+    if family(current):
+        verify_provenance(lambda path: api(repo, path.removeprefix(f'repos/{repo}/')), repo, current)
     runs = api(repo, f'actions/workflows/ci.yml/runs?head_sha={head}&per_page=100')['workflow_runs']
     newest = usable_ci_run(runs)
     if newest is None:

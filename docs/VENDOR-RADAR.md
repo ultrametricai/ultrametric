@@ -74,6 +74,11 @@ remains recoverable. Engine repair stays scoped to story-runner; radar extractio
 and review findings still require their own evidence-backed correction. No workflow here
 changes App installation, credentials, branch rules, or the paused state of another workflow.
 
+The [internal refresh merge policy](ACCURACY.md#internal-refresh-merge-policy) adds
+canonical workflow receipts, current-head content scope checks and manual stops to the
+existing native auto-merge path. App setup is optional; required CI and review remain
+mandatory for both scan and bring-up PRs.
+
 ## How it works
 
 `rankings-engine/scripts/vendor-radar.ts`, run daily by `.github/workflows/vendor-radar.yml`

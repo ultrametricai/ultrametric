@@ -56,6 +56,7 @@ concurrency:
 
 jobs:
   scan:
+    if: github.repository == 'ultrametricai/ultrametric' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 30 # shorter than the installation token lifetime
     env:
@@ -148,6 +149,7 @@ jobs:
           fi
 
       - name: Commit report + discovery records as PR (or compare-link issue)
+        id: scan-publication
         env:
           # The configured App starts ordinary PR CI. Recovery accepts that exact
           # bot only for radar branches; the fallback keeps the Actions identity.
@@ -166,6 +168,7 @@ jobs:
           git checkout -b "$BRANCH"
           git add reports rankings-engine/radar-discoveries
           git commit -m "chore(vendor-radar): daily launch-surface scan"
+          python3 scripts/refresh_policy.py vendor-radar
           git -c credential.helper= -c 'credential.helper=!gh auth git-credential' push -u origin "$BRANCH"
           # The PR body carries the candidates list and the full triage disposition table —
           # auto-approved and skipped rows are recorded here, not in an issue.
@@ -197,10 +200,11 @@ jobs:
             --base main --head "$BRANCH"); then
             gh pr comment "$PR_URL" --body "@greptileai review" \
               || echo "Greptile review request failed — comment '@greptileai review' on $PR_URL manually"
+            python3 scripts/refresh_policy.py vendor-radar --published "$PR_URL"
             # Record opt-in first so dispatch failures remain recoverable. A failed
             # opt-in must still allow CI to start, then remain a visible failure.
             AUTOMERGE_STATUS=0
-            gh pr merge --auto --merge "$PR_URL" || AUTOMERGE_STATUS=$?
+            gh pr merge --auto --merge --match-head-commit "$(git rev-parse HEAD)" "$PR_URL" || AUTOMERGE_STATUS=$?
             if [ "$HAS_CONTENT_BOT" != 'true' ]; then
               GH_TOKEN="$GH_ACTIONS_TOKEN" gh workflow run ci.yml --ref "$BRANCH"
             fi
@@ -222,6 +226,15 @@ jobs:
       # the dispositions stay in the committed reports/vendor-radar/ triage files).
       # if: always() — a failure in the tests or the report-PR step must not swallow the issue;
       # the step itself exits 0 when there is no body file to post.
+      - name: Record vendor-radar output provenance
+        if: always() && steps.scan-publication.outputs.published_head != ''
+        uses: actions/upload-artifact@v7
+        with:
+          name: internal-refresh-vendor-radar-${{ steps.scan-publication.outputs.published_pr }}-${{ steps.scan-publication.outputs.published_head }}
+          path: ${{ runner.temp }}/vendor-radar-head.json
+          if-no-files-found: error
+          retention-days: 90
+
       - name: File or update needs-human issue
         if: always()
         env:
@@ -270,6 +283,7 @@ jobs:
       # committed triage report. Branches from the scanned commit, not the report branch, so the
       # bring-up PR carries only roster + engine output.
       - name: Bring-up PR for auto-approved passers
+        id: bringup-publication
         env:
           # Engine stages use the Actions token. Switch to the publication identity
           # only after generation and tests have completed.
@@ -317,6 +331,7 @@ jobs:
           # vendors/reviews/generated — both gone; git add on a missing pathspec fails the step).
           git add open-rankings rankings-engine/cache public/badges README.md
           git commit -m "feat(vendor-radar): scoped bring-up of auto-approved candidates ($DATE)"
+          python3 scripts/refresh_policy.py vendor-radar-bringup
           export GH_TOKEN="${CONTENT_TOKEN:-$GH_TOKEN}"
           git -c credential.helper= -c 'credential.helper=!gh auth git-credential' push -u origin "$BRANCH"
           {
@@ -335,10 +350,11 @@ jobs:
             --base main --head "$BRANCH"); then
             gh pr comment "$PR_URL" --body "@greptileai review" \
               || echo "Greptile review request failed — comment '@greptileai review' on $PR_URL manually"
+            python3 scripts/refresh_policy.py vendor-radar-bringup --published "$PR_URL"
             # Record opt-in first so dispatch failures remain recoverable. A failed
             # opt-in must still allow CI to start, then remain a visible failure.
             AUTOMERGE_STATUS=0
-            gh pr merge --auto --merge "$PR_URL" || AUTOMERGE_STATUS=$?
+            gh pr merge --auto --merge --match-head-commit "$(git rev-parse HEAD)" "$PR_URL" || AUTOMERGE_STATUS=$?
             if [ "$HAS_CONTENT_BOT" != 'true' ]; then
               GH_TOKEN="$GH_ACTIONS_TOKEN" gh workflow run ci.yml --ref "$BRANCH"
             fi
@@ -351,3 +367,12 @@ jobs:
               --body "The bring-up is committed on [\`$BRANCH\`](https://github.com/${GITHUB_REPOSITORY}/compare/main...$BRANCH) but PR creation failed — open the PR from the compare link." \
               --label "story-runner" || echo "issue creation also failed — branch $BRANCH is pushed; see run logs"
           fi
+
+      - name: Record vendor-radar-bringup output provenance
+        if: always() && steps.bringup-publication.outputs.published_head != ''
+        uses: actions/upload-artifact@v7
+        with:
+          name: internal-refresh-vendor-radar-bringup-${{ steps.bringup-publication.outputs.published_pr }}-${{ steps.bringup-publication.outputs.published_head }}
+          path: ${{ runner.temp }}/vendor-radar-bringup-head.json
+          if-no-files-found: error
+          retention-days: 90

@@ -24,11 +24,23 @@ concurrency:
 
 jobs:
   recover:
+    if: github.repository == 'ultrametricai/ultrametric' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     env:
       HAS_CONTENT_BOT: ${{ secrets.CONTENT_BOT_APP_ID != '' && secrets.CONTENT_BOT_PRIVATE_KEY != '' }}
+    outputs:
+      updated: ${{ steps.recover.outputs.updated }}
     steps:
+      - name: Read trusted main content policy
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: main
+          persist-credentials: false
+          sparse-checkout: |
+            scripts/refresh_policy.py
+            scripts/refresh_main_ci.py
+          sparse-checkout-cone-mode: false
       # Only App-authored radar branch updates use this token. CI/review dispatches
       # retain GITHUB_TOKEN, so the App needs no Actions or workflow-write access.
       - name: Mint radar branch-update token
@@ -43,17 +55,20 @@ jobs:
           repositories: ${{ github.event.repository.name }}
           permission-contents: write
           permission-pull-requests: write
-      # Metadata-only controller. No checkout, dependencies, or PR code execution.
+      # Trusted-main policy only. No dependencies or PR code execution.
       - name: Recover opted-in refresh PRs after CI
+        id: recover
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPO: ${{ github.repository }}
+          PYTHONPATH: scripts
           CONTENT_BOT_LOGIN: ${{ vars.CONTENT_BOT_LOGIN }}
           CONTENT_BOT_TOKEN: ${{ steps.content-app.outputs.token }}
           CONTENT_BOT_SLUG: ${{ steps.content-app.outputs.app-slug }}
         shell: python
         run: |
           import json, os, re, subprocess, time
+          from refresh_policy import family, verify_provenance
           repo = os.environ['REPO']
           def api(path, method='GET', data=None, token=None):
               args = ['gh', 'api', '--method', method, f'repos/{repo}/{path}']
@@ -63,6 +78,13 @@ jobs:
                                       text=True, capture_output=True, check=True,
                                       **({'env': {**os.environ, 'GH_TOKEN': token}} if token else {}))
               return json.loads(result.stdout) if result.stdout.strip() else None
+          def actions_author(author):
+              return (author.get('id') == 41898282 and author.get('login') == 'github-actions[bot]'
+                      and author.get('type') == 'Bot')
+          def held(pr):
+              labels = pr.get('labels')
+              return (not isinstance(labels, list) or any(label.get('name', '').lower() in
+                      ['automerge-hold', 'do-not-merge', 'hold', 'manual-merge'] for label in labels))
           content_bot = os.environ.get('CONTENT_BOT_LOGIN', '')
           if content_bot and not re.fullmatch(r'[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\[bot\]', content_bot):
               print('::warning::Invalid CONTENT_BOT_LOGIN; configured App recovery is disabled', flush=True)
@@ -195,15 +217,18 @@ jobs:
                   page += 1
 
           errors = []
+          updated = []
           for pr in sorted([pr for page in prs for pr in page], key=lambda pr: pr['number']):
               branch = pr['head']['ref']
-              if (pr['draft'] or not pr['auto_merge'] or pr['base']['ref'] != 'main'
+              if (pr['draft'] or held(pr) or not pr['auto_merge'] or pr['base']['ref'] != 'main'
                   or pr['head']['repo'] is None or pr['head']['repo']['full_name'] != repo
-                  or not (pr['user']['login'] == 'github-actions[bot]' or radar_app_author(pr))
+                  or not (actions_author(pr['user']) or radar_app_author(pr))
                   or not re.fullmatch(r'(story-runner|accuracy-engine|vendor-radar|vendor-radar-bringup|yc-coverage)/[A-Za-z0-9_-]+', branch)):
                   continue
               number, sha = pr['number'], pr['head']['sha']
               try:
+                  if family(pr):
+                      verify_provenance(lambda path: api(path.removeprefix(f'repos/{repo}/')), repo, pr)
                   # New CI runs may not have created check records yet. Preserve
                   # their head before considering a base update or conflict repair.
                   active_runs = api(f'actions/workflows/ci.yml/runs?head_sha={sha}&per_page=100')['workflow_runs']
@@ -215,7 +240,7 @@ jobs:
                   conflict = False
                   if comparison['behind_by']:
                       current = api(f'pulls/{number}')
-                      if (current['state'] != 'open' or current['draft'] or not current['auto_merge']
+                      if (current['state'] != 'open' or current['draft'] or held(current) or not current['auto_merge']
                           or current['head']['sha'] != sha or current['base']['ref'] != 'main'):
                           continue # a manual stop or concurrent edit wins over the listing
                       conflict = current.get('mergeable') is False
@@ -226,6 +251,15 @@ jobs:
                   if (comparison['behind_by'] and not conflict and checks_allow_update(head_checks)
                       and not has_findings(number, verdict_only=False) and rules_require_current_base()
                       and not review_active(sha)):
+                      kind = family(current)
+                      expected_merge = None
+                      if kind:
+                          verify_provenance(lambda path: api(path.removeprefix(f'repos/{repo}/')), repo, current)
+                          main_sha = api('git/ref/heads/main')['object']['sha']
+                          expected_merge = api(f"git/commits/{current['merge_commit_sha']}")
+                          expected_parents = [parent['sha'] for parent in expected_merge['parents']]
+                          if len(expected_parents) != 2 or set(expected_parents) != {sha, main_sha}:
+                              raise RuntimeError('Synthetic merge does not match the current internal head')
                       update_token = None
                       if radar_app_author(current):
                           update_token = os.environ.get('CONTENT_BOT_TOKEN', '')
@@ -244,6 +278,18 @@ jobs:
                           raise RuntimeError('branch update has not completed; retry on next run')
                       if current['state'] != 'open':
                           continue
+                      if expected_merge is not None:
+                          actual = api(f'git/commits/{sha}')
+                          if (actual['tree']['sha'] != expected_merge['tree']['sha'] or
+                              len(actual['parents']) != 2 or {parent['sha'] for parent in actual['parents']} != set(expected_parents)):
+                              raise RuntimeError('Updated head differs from the verified merge tree; no provenance recorded')
+                          updated.append({'family': kind, 'head': sha, 'pr': number})
+                  current = api(f'pulls/{number}')
+                  if (current['state'] != 'open' or current['draft'] or held(current) or not current['auto_merge']
+                      or current['head']['sha'] != sha or current['base']['ref'] != 'main'
+                      or current['head']['repo'] is None or current['head']['repo']['full_name'] != repo
+                      or not (actions_author(current['user']) or radar_app_author(current))):
+                      continue
                   runs = api(f'actions/workflows/ci.yml/runs?head_sha={sha}&per_page=100')
                   ci_requested = needs_ci_dispatch(runs['workflow_runs'])
                   if ci_requested:
@@ -271,5 +317,37 @@ jobs:
                           print(f'::warning::#{number}: repair dispatch failed: {repair_error}', flush=True)
                   print(f'::warning::#{number}: {detail}', flush=True)
                   errors.append(number)
+          if os.environ.get('GITHUB_OUTPUT'):
+              with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
+                  output.write('updated=' + json.dumps(updated) + '\n')
           if errors:
               raise SystemExit(f'Refresh PRs need attention or retry: {errors}')
+
+      - name: Continue main CI after internal merges
+        if: always()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+        run: python3 scripts/refresh_main_ci.py
+
+  attest-updates:
+    needs: recover
+    if: always() && !cancelled() && needs.recover.outputs.updated != '' && needs.recover.outputs.updated != '[]'
+    runs-on: ubuntu-latest
+    permissions: {}
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        update: ${{ fromJSON(needs.recover.outputs.updated) }}
+    steps:
+      - name: Write verified update receipt
+        env:
+          RECORD: ${{ toJSON(matrix.update) }}
+        run: printf '%s\n' "$RECORD" > head.json
+      - uses: actions/upload-artifact@v7
+        with:
+          name: internal-refresh-${{ matrix.update.family }}-${{ matrix.update.pr }}-${{ matrix.update.head }}
+          path: head.json
+          if-no-files-found: error
+          retention-days: 90
