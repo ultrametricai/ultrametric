@@ -50,6 +50,12 @@ The audit's residual-risk note stands: v6 re-rolls are still re-rolls, and the
 post-migration baseline gets the same settlement treatment the registered-agents pilot
 got on its next refresh.
 
+Score-interval bands during the migration rest on the committed pre-v6 re-roll
+measurements (the `uncertainty.json` noise model), the same interim treatment the
+2026-09-30 wave used before its ~100-cell re-roll sample re-measured the noise under the
+new judge. A post-migration v6 re-roll sample is queued for after the final wave; until
+it lands, interval widths describe pre-v6 judge noise around v6 point scores.
+
 ## Inventory at the wave-1 baseline
 
 Computed against main (2891f5d9e8) with the committed cellHash (key v2, prompt v6,
