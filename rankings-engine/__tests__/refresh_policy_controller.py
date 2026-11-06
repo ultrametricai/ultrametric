@@ -75,6 +75,8 @@ class ProvenanceTests(unittest.TestCase):
             d['artifacts']['artifacts'][0]['name'] = 'story-refresh-diagnostics-123-1'
         with self.assertRaises(policy.MissingProvenance):
             self.proof(mutate=change)
+        for kind in ['story-runner', 'vendor-radar', 'vendor-radar-bringup']:
+            self.assertFalse(policy.allowed_path(kind, '.pa-tmp/judge-failures/fixture/terminal.json'))
 
     def test_retention_sidecar_is_story_runner_only_and_path_bounded(self):
         path = 'rankings-engine/cache/refresh-retention/fixture/decisions.json'
