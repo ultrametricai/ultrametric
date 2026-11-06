@@ -4757,17 +4757,17 @@
     "productId": "statsig",
     "storyId": "ab-experiments",
     "verdict": "full",
-    "quality": 8,
+    "quality": 9,
     "confidence": "high",
-    "rationale": "Statsig documents A/B and A/B/n randomized experiments. It splits users into control and test groups, reports metric lifts with confidence intervals, and requires a scorecard with primary and secondary metrics. Autotune adds multi-armed-bandit selection of a winning variant, and Layers manage experiments and feature flags together. Community comments praise its statistical rigor. Missing for 10: explicit documentation of running an experiment directly on an existing feature gate, explicit factorial multivariate testing beyond A/B/n, and hands-on corroboration of the results/winner view.",
+    "rationale": "Statsig documents randomized A/B and A/B/n experiments. Each experiment has a scorecard of primary and secondary metrics, and results report metric lifts with confidence intervals; Autotune bandits also identify a winning variant. Community users praise its statistical rigor. Missing for 10: explicit documentation of running an experiment directly on an existing feature gate (only Layers, which manage experiments and flags together, are shown).",
     "evidenceIds": [
       "statsig-docs-4",
-      "statsig-docs-26",
       "statsig-docs-33",
       "statsig-docs-5",
       "statsig-docs-34",
       "statsig-docs-35",
       "statsig-docs-30",
+      "statsig-docs-16",
       "statsig-comm-1"
     ],
     "support": {
@@ -4802,15 +4802,15 @@
     "productId": "statsig",
     "storyId": "agent-experiment-analysis",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Statsig ships its own MCP server that lets AI clients such as Claude Code and Cursor 'explore experiments, and access your Statsig data'. It also has a Console API that does programmatically what the web console does, so an agent can read experiment configurations. The docs only imply, rather than state, that experiment results (metric lifts and confidence intervals) can be read through these interfaces, and nothing documents ship/rollback decision support. Missing for 10: explicit docs for reading experiment scorecard results via API or MCP, any documented ship/rollback decision workflow, and hands-on or independent corroboration of agents summarizing results.",
+    "rationale": "Statsig documents an official MCP server that lets AI tools 'explore experiments, and access your Statsig data', plus a versioned Console CRUD API with a public OpenAPI spec, so an agent can read experiment configurations programmatically. Programmatic retrieval of experiment results (metric lifts, confidence intervals) is only implied, not explicitly documented. missing for 10: explicit documentation of an API/MCP tool returning experiment results or scorecard metrics, documented agent workflows for summarizing outcomes and recommending ship/rollback, independent hands-on corroboration.",
     "evidenceIds": [
       "statsig-docs-13",
       "statsig-docs-11",
-      "statsig-docs-9",
+      "statsig-console-openapi-20261106",
       "statsig-docs-33",
-      "statsig-probe-3"
+      "statsig-api-versioning-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -4838,12 +4838,13 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Statsig documents programmatic flag management: the Console API is a CRUD API for console actions, and the CLI manages Feature Gates and can run in CI/CD. The governance half of the story, forcing agent changes through approval or review before production, has no evidence in the pack, and the MCP server is described only for asking questions and exploring data, not for writing flags. Missing for 10: documented approval/review workflows for flag changes, evidence the MCP server can create or toggle flags, explicit API endpoint docs for creating or toggling gates.",
+    "rationale": "Statsig documents programmatic flag management: the Console API is a CRUD API for console actions, and the Statsig CLI manages Feature Gates and can run in CI/CD pipelines. There is also an official MCP server, though its docs describe asking questions and exploring data rather than writing changes. Nothing in the evidence shows approval or review workflows that force agent-made flag changes through sign-off before reaching production; environment-tier isolation is a different control. Missing for 10: documented approval/review workflows gating flag changes, evidence that the MCP server can create or toggle flags, and hands-on corroboration of agent-driven flag writes.",
     "evidenceIds": [
       "statsig-docs-11",
       "statsig-docs-9",
       "statsig-docs-31",
-      "statsig-docs-13"
+      "statsig-docs-13",
+      "statsig-console-openapi-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -4871,7 +4872,7 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "A live probe confirms Statsig serves an llms.txt at docs.statsig.com that returns HTTP 200 and describes the official documentation. Statsig also documents a Docs MCP server that lets AI clients read public documentation directly from /api/mcp, with no API key required. Missing for 10: independent community or hands-on reports of agents actually consuming these docs, and evidence of how complete the llms.txt index is (e.g., a full-text variant).",
+    "rationale": "A live probe confirms Statsig serves an llms.txt at docs.statsig.com/llms.txt (HTTP 200) describing its official documentation. Statsig also documents a Docs MCP server that lets AI clients read public documentation directly from /api/mcp with no API key, so agents can consume the docs directly. Missing for 10: independent or community corroboration of how well agents use these docs, and evidence of how deep the llms.txt coverage goes (e.g., a full-content variant or per-page markdown).",
     "evidenceIds": [
       "statsig-probe-1",
       "statsig-docs-14",
@@ -4903,10 +4904,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack does not document any in-product AI-generated insights or suggestions drawn from the user's data. The MCP server only exposes Statsig data to external AI tools such as Cursor and Claude Code, which is a different story. AI Evals and the OpenAI/Azure integrations are for experimenting on the customer's own AI models, and Autotune is a bandit traffic allocator, not an insights assistant.",
+    "rationale": "The evidence pack does not document any in-console feature that uses AI to generate insights or suggestions from a user's Statsig data. The closest item is the official MCP server, which lets external AI clients such as Cursor or Claude Code query Statsig data. That is a different, adjacent capability, since the AI runs outside the product. Autotune's bandit allocation and the AI-model experimentation integrations are also not AI-generated insights inside the product.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can get AI-generated insights and suggestions from my data inside the product",
       "citations": []
@@ -4918,12 +4919,12 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Statsig documents some of its own features that keep running in the background once configured. Scheduled Rollouts gradually deploy a feature over time, Autotune shifts traffic toward the winning variant automatically, and Infra Analytics alerts catch regressions. These are narrow, feature-specific behaviors rather than a general automation capability. CLI use in CI/CD relies on an external pipeline and earns no credit. Missing for 10: a general-purpose automation/workflow builder, user-defined triggers and actions, recurring schedules beyond rollouts, autonomous agent-driven background tasks, and independent or hands-on corroboration.",
+    "rationale": "Statsig documents its own background automations for specific domain tasks. Scheduled Rollouts gradually deploy a feature gate over time, Autotune automatically reallocates traffic toward the winning variant, and alerts catch regressions. There is no evidence of a general automation builder where users define their own autonomous background workflows. CLI-in-CI/CD is a user-side arrangement and earns no credit. Missing for 10: a general user-configurable automation/workflow engine, documented triggers and actions, details on how scheduled rollouts are configured, and independent or hands-on corroboration.",
     "evidenceIds": [
       "statsig-docs-3",
       "statsig-docs-25",
-      "statsig-docs-6",
       "statsig-docs-47",
+      "statsig-docs-6",
       "statsig-docs-18"
     ],
     "support": {
@@ -4952,7 +4953,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "An in-product AI assistant is a reasonable thing to ask of an experimentation and feature-flag SaaS, so the axis applies. The evidence pack documents no built-in assistant inside the Statsig console. The MCP server only exposes Statsig to external AI clients (Codex, Cursor, Claude Code), and the OpenAI and AI-evals features help users experiment with their own AI apps; both are adjacent capabilities, not an embedded assistant you can delegate tasks to.",
+    "rationale": "Nothing in the evidence documents an AI assistant built into the Statsig console that users can hand tasks to. The MCP server lets external AI clients such as Codex, Cursor and Claude Code query Statsig data, which is a separate MCP-server capability, not an in-product assistant. The OpenAI, Azure AI and AI Evals features are for experimenting on the customer's own AI applications, so they are adjacent and earn no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4967,12 +4968,14 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Statsig documents an official CLI that can be integrated into CI/CD pipelines to automate Feature Gate and Experiment management, plus a Console API for CRUD actions without the web UI, so headless, scripted automation is a first-party capability. A probe independently confirms the CLI docs exist. Missing for 10: in-depth CI setup documentation (non-interactive auth, example pipeline configs), independent or hands-on corroboration of CI usage.",
+    "rationale": "Statsig's own docs say its CLI can be integrated into CI/CD pipelines to automate management of Feature Gates and Experiments. A versioned Console API with a public OpenAPI spec performs console actions without the web UI, and an HTTP API works without an SDK, so headless and CI automation are directly supported. missing for 10: independent or hands-on corroboration of CI usage, documented CI-specific details such as non-interactive auth and example pipeline configs.",
     "evidenceIds": [
-      "statsig-docs-9",
       "statsig-docs-31",
+      "statsig-docs-9",
       "statsig-docs-11",
       "statsig-docs-10",
+      "statsig-console-openapi-20261106",
+      "statsig-api-versioning-20261106",
       "statsig-probe-4"
     ],
     "support": {
@@ -4985,12 +4988,12 @@
           "quote": "You can integrate the CLI into CI/CD pipelines to automate the management of Feature Gates and Experiments."
         },
         {
-          "evidenceId": "statsig-docs-9",
-          "quote": "The Statsig CLI is a command-line interface that helps manage Feature Gates, Experiments, and Dynamic Configs within the Statsig platform."
-        },
-        {
           "evidenceId": "statsig-docs-11",
           "quote": "The Console API is the CRUD API for performing the actions available on console.statsig.com without using the web UI."
+        },
+        {
+          "evidenceId": "statsig-docs-9",
+          "quote": "The Statsig CLI is a command-line interface that helps manage Feature Gates, Experiments, and Dynamic Configs within the Statsig platform."
         }
       ]
     }
@@ -4998,10 +5001,10 @@
   {
     "productId": "statsig",
     "storyId": "agentic-mcp-client",
-    "verdict": "na",
+    "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Statsig is a feature-flag, experimentation and analytics platform, not an AI agent or MCP client, so plugging third-party MCP servers into it to consume their tools is outside its product role. The evidence only shows Statsig acting as an MCP server: it exposes its own data and docs to clients like Cursor, Codex and Claude Code. That is the opposite role and does not make the client axis applicable.",
+    "rationale": "The evidence documents only Statsig's own MCP servers: a data MCP server for Codex, Cursor and Claude Code, and a Docs MCP server. Those are the server role. Nothing shows Statsig acting as an MCP client that can plug in external MCP servers and use their tools. A SaaS platform with AI features could plausibly offer this, so the axis applies, but there is no evidence it does.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5016,7 +5019,7 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Statsig documents an official MCP server that connects its platform to AI clients such as Codex, Cursor, and Claude Code, letting users ask questions, explore experiments, and access Statsig data. It also offers a separate keyless Docs MCP server for documentation, and a probe confirms the official MCP docs page exists. Missing for 10: independent or hands-on corroboration of the MCP server working, and documentation of the exposed tool set, write capabilities, and auth/setup details.",
+    "rationale": "Statsig documents an official MCP server that brings Statsig into agent clients like Codex, Cursor, and Claude Code, so users can query experiments and Statsig data. It also runs a separate Docs MCP server at /api/mcp, and a probe confirms the official MCP documentation page exists. Missing for 10: detailed documentation of the MCP tool set, authentication setup, and whether it supports write actions, plus independent hands-on corroboration.",
     "evidenceIds": [
       "statsig-docs-13",
       "statsig-docs-28",
@@ -5050,7 +5053,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Statsig ships an official MCP server that lets users ask questions, explore experiments, and access Statsig data in natural language through AI clients like Codex, Cursor, and Claude Code. The evidence describes read and explore use, not natural-language operation of the product such as creating or changing gates and experiments, and it depends on external AI clients rather than a native natural-language interface. Missing for 10: documented natural-language write/control actions through the MCP server, a native in-product natural-language interface, and hands-on or independent corroboration.",
+    "rationale": "Statsig ships an official MCP server that lets users of AI clients such as Codex, Cursor, and Claude Code \"ask questions, explore experiments, and access your Statsig data using AI.\" That is first-party natural-language access to the product. The documented scope is querying and exploring data, not issuing commands that create or change gates and experiments. The natural-language path also runs only through external AI clients, with no built-in assistant. missing for 10: documented natural-language write/operate actions (creating or toggling gates, launching experiments), an in-product natural-language interface, hands-on or independent corroboration.",
     "evidenceIds": [
       "statsig-docs-13",
       "statsig-docs-28",
@@ -5078,7 +5081,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Statsig documents its own official CLI for managing Feature Gates, Experiments, and Dynamic Configs, and the docs say it can run in CI/CD pipelines to automate that management. A probe confirms the official CLI documentation exists. missing for 10: a command reference or installation/auth details, CLI features aimed at AI agents (e.g. machine-readable output), and independent hands-on corroboration of CLI use.",
+    "rationale": "Statsig documents an official CLI for managing Feature Gates, Experiments, and Dynamic Configs, and says it can be integrated into CI/CD pipelines for automation. A probe confirms the official CLI documentation page exists. Missing for 10: command reference and installation details, evidence of agent-friendly features such as machine-readable output or non-interactive auth, and independent or hands-on corroboration.",
     "evidenceIds": [
       "statsig-docs-9",
       "statsig-docs-31",
@@ -5108,16 +5111,18 @@
     "productId": "statsig",
     "storyId": "agentic-public-api",
     "verdict": "full",
-    "quality": 8,
+    "quality": 9,
     "confidence": "high",
-    "rationale": "Statsig documents a Console API, a CRUD API for doing anything available in the web console without the UI. It also documents an HTTP API with reference endpoints for checking feature gates and logging events, so the product itself can be driven programmatically. Probes found no OpenAPI spec at the common paths, which limits machine-readable discovery but does not contradict that the API exists. Missing for 10: a machine-readable OpenAPI spec, independent or hands-on corroboration of driving the product through the API, and documented auth and rate-limit details.",
+    "rationale": "Statsig documents a Console API, a CRUD API for performing console.statsig.com actions without the web UI. It ships a versioned, machine-readable OpenAPI 3.0.0 spec, a header-selected versioning scheme with a non-breaking guarantee, and in-page live 'Try it' runners. A separate HTTP API covers gate/experiment evaluation and event logging. The probe's 404s on docs-site OpenAPI paths do not contradict this, since the spec is published at a versioned api.statsig.com path. Missing for 10: independent or hands-on corroboration of driving the product end-to-end through the Console API.",
     "evidenceIds": [
       "statsig-docs-11",
+      "statsig-console-openapi-20261106",
+      "statsig-openapi-reference-20261106",
+      "statsig-api-versioning-20261106",
+      "statsig-api-tryit-20261106",
       "statsig-docs-10",
       "statsig-docs-49",
-      "statsig-docs-50",
-      "statsig-docs-37",
-      "statsig-probe-2"
+      "statsig-docs-50"
     ],
     "support": {
       "relation": "direct",
@@ -5129,12 +5134,16 @@
           "quote": "The Console API is the CRUD API for performing the actions available on console.statsig.com without using the web UI."
         },
         {
-          "evidenceId": "statsig-docs-10",
-          "quote": "Overview of the Statsig HTTP API for retrieving feature gate, experiment, and dynamic config values and logging events directly without an SDK."
+          "evidenceId": "statsig-openapi-reference-20261106",
+          "quote": "Statsig keeps the OpenAPI spec for this API version up-to-date."
         },
         {
-          "evidenceId": "statsig-docs-49",
-          "quote": "Evaluates one or more feature gates for a user and returns pass/fail results."
+          "evidenceId": "statsig-api-versioning-20261106",
+          "quote": "Statsig guarantees that each version won't break existing usage"
+        },
+        {
+          "evidenceId": "statsig-docs-10",
+          "quote": "Overview of the Statsig HTTP API for retrieving feature gate, experiment, and dynamic config values and logging events directly without an SDK."
         }
       ]
     }
@@ -5145,7 +5154,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Scoped API credentials are a fair question for a SaaS experimentation platform with a Console API and MCP server, so the axis applies. However, the evidence never documents issuing API keys with restricted scopes, roles, or least-privilege permissions. SSO/SCIM user provisioning, target apps for scoping gates to applications, and the Docs MCP server needing no API key are adjacent features, not scoped credential issuance.",
+    "rationale": "The evidence pack does not document issuing scoped or least-privilege API credentials for an agent, such as read-only or permission-limited Console API keys or per-agent keys. The closest items are adjacent rather than direct: environment-specific SDK keys that isolate dev, staging and prod rule sets; SSO and SCIM for human user accounts; and a Docs MCP server that needs no key. None of these is permission scoping of API credentials.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5160,23 +5169,31 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Statsig documents official Client and Server SDKs, including on-device evaluation SDKs, a JavaScript SDK tutorial, a React StatsigProvider quickstart, and server SDKs for retrieving prompts. Its HTTP API docs recommend the SDKs by default, and community users report implementing Statsig integrations. Missing for 10: an enumeration of supported languages/platforms in the evidence, and independent hands-on corroboration specific to SDK quality.",
+    "rationale": "Statsig documents official client and server SDKs. These include a quickstart with the React StatsigProvider, a JavaScript SDK tutorial, on-device eval client SDKs, and server SDKs for retrieving prompts. The SDKs evaluate locally in under 1ms and handle caching, retries and networking, and the HTTP API docs tell developers to prefer an SDK where one exists. Missing for 10: an enumerated list of supported languages/platforms with SDK versioning details, and independent hands-on corroboration specific to SDK quality.",
     "evidenceIds": [
+      "statsig-docs-36",
+      "statsig-docs-54",
+      "statsig-docs-55",
       "statsig-docs-39",
       "statsig-docs-8",
       "statsig-docs-24",
-      "statsig-docs-36",
       "statsig-docs-37",
       "statsig-docs-44",
-      "statsig-docs-55",
-      "statsig-docs-54",
-      "statsig-comm-3-refresh-4004e782335af5b1"
+      "statsig-docs-7"
     ],
     "support": {
       "relation": "direct",
       "coverage": "complete",
       "subject": "As an AI-native user, I can build against official SDKs",
       "citations": [
+        {
+          "evidenceId": "statsig-docs-36",
+          "quote": "Update your app's default function (typically App.tsx or Layout.tsx) so that the StatsigProvider component identifier wraps all child components."
+        },
+        {
+          "evidenceId": "statsig-docs-55",
+          "quote": "Abstract the complexity: Statsig handles caching, retry mechanisms, and networking."
+        },
         {
           "evidenceId": "statsig-docs-39",
           "quote": "After initialization, both Client and Server SDKs evaluate experiments/gates _without a network request_, and typically in less than 1ms."
@@ -5188,10 +5205,6 @@
         {
           "evidenceId": "statsig-docs-24",
           "quote": "checks it live with the JavaScript SDK in your browser console"
-        },
-        {
-          "evidenceId": "statsig-docs-55",
-          "quote": "Abstract the complexity: Statsig handles caching, retry mechanisms, and networking."
         },
         {
           "evidenceId": "statsig-docs-44",
@@ -5206,7 +5219,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Webhooks are a fair axis for a SaaS feature-flag and experimentation platform, but the evidence pack never documents registrable outbound HTTP callbacks. The HTTP API, Console API and event-logging endpoints are all inbound, and the alerts mention is not a webhook subscription, so none of these count.",
+    "rationale": "Webhooks are a fair axis for an experimentation and feature-flag SaaS platform, but the evidence pack never documents registrable outbound HTTP callbacks for event subscription. The Console API, HTTP API, CLI, MCP server and Infra Analytics alerts are inbound APIs or adjacent features, not webhooks.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5218,61 +5231,121 @@
   {
     "productId": "statsig",
     "storyId": "api-interactive-docs",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "The evidence shows Statsig publishes API reference pages describing endpoints, such as checking feature gates and logging custom events. Nothing shows those pages are interactive or offer runnable or try-it examples, and the OpenAPI spec probes all returned 404. A static reference is an adjacent capability, not the interactive, runnable reference this story asks for.",
-    "evidenceIds": [],
+    "rationale": "Statsig's Console API reference gives each endpoint an in-page \"Try it\" control that sends a live request to that endpoint. It is backed by a public, versioned OpenAPI 3.0.0 spec that Statsig commits to keeping up to date, and API-reference pages also exist for HTTP API endpoints such as checking gates and logging events. The 404s from the docs-site OpenAPI probe do not contradict this, because the spec is published at api.statsig.com. Missing for 10: explicit evidence of copyable multi-language code samples on reference pages, confirmation that the live runner also covers the HTTP API reference, independent hands-on corroboration.",
+    "evidenceIds": [
+      "statsig-api-tryit-20261106",
+      "statsig-console-openapi-20261106",
+      "statsig-openapi-reference-20261106",
+      "statsig-docs-49",
+      "statsig-docs-50"
+    ],
     "support": {
-      "relation": "adjacent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can explore an interactive API reference with runnable examples",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "statsig-api-tryit-20261106",
+          "quote": "Send a live request to the API endpoint shown on this page."
+        },
+        {
+          "evidenceId": "statsig-openapi-reference-20261106",
+          "quote": "Statsig keeps the OpenAPI spec for this API version up-to-date."
+        },
+        {
+          "evidenceId": "statsig-docs-49",
+          "quote": "Evaluates one or more feature gates for a user and returns pass/fail results."
+        }
+      ]
     }
   },
   {
     "productId": "statsig",
     "storyId": "api-machine-spec",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Statsig documents an HTTP API, a Console CRUD API and per-endpoint API reference pages, but nothing in the evidence shows a downloadable OpenAPI or equivalent spec. The probe found every common OpenAPI/Swagger path returning 404. llms.txt is a docs index rather than an API spec, and the human-readable reference pages do not count as a machine-readable spec.",
-    "evidenceIds": [],
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "Statsig publishes a machine-readable OpenAPI 3.0.0 document for its Console API at a versioned public path, and the Console API docs link the spec and commit to keeping it current. The probe 404s were on docs-domain paths, so they do not contradict the api.statsig.com artifact. Missing for 10: no evidenced OpenAPI spec for the HTTP evaluation/event-logging API (only the Console API), and no independent or hands-on corroboration of downloading the spec.",
+    "evidenceIds": [
+      "statsig-console-openapi-20261106",
+      "statsig-openapi-reference-20261106",
+      "statsig-api-versioning-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "statsig-console-openapi-20261106",
+          "quote": "api.statsig.com publishes the Console API's machine-readable OpenAPI 3.0.0 document at the versioned path /openapi/20240601.json"
+        },
+        {
+          "evidenceId": "statsig-openapi-reference-20261106",
+          "quote": "Statsig keeps the OpenAPI spec for this API version up-to-date."
+        }
+      ]
     }
   },
   {
     "productId": "statsig",
     "storyId": "api-sandbox",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Statsig plausibly could offer an isolated test environment, but the evidence pack never documents one: no dev/staging environments, test API keys, or a sandbox project separated from production data. The related items describe different things. Target apps scope configs to applications within a single project, overrides force specific users into variants for QA, and offline AI evals grade outputs on a fixed test set; none of these is an isolated sandbox environment, so they earn no credit.",
-    "evidenceIds": [],
+    "rationale": "Statsig documents its own environment-tier isolation. SDKs evaluate gates and experiments differently in development or staging using environment-specific SDK keys, and development, staging and production data are kept separate, so testing outside production is a first-party capability. The evidence states this isolation is by tier and key within the same project, not a separate sandbox account. No sandboxed target is documented for the Console API, CLI or MCP server that agents would drive. Per-user overrides for QA are adjacent and not credited. Missing for 10: a fully isolated sandbox project or account, a sandbox mode for Console API/MCP/CLI agent actions, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "statsig-environments-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "statsig-environments-20261106",
+          "quote": "evaluate feature gates, dynamic configs, and experiments differently in non-production environments like development or staging"
+        },
+        {
+          "evidenceId": "statsig-environments-20261106",
+          "quote": "Isolation is by environment tier and key, not a separate sandbox account."
+        }
+      ]
     }
   },
   {
     "productId": "statsig",
     "storyId": "api-versioning-policy",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "The evidence documents a Console API and an HTTP API, but none of it mentions API versioning, version pinning, or a deprecation policy. The existence of APIs alone does not show that this story is delivered.",
-    "evidenceIds": [],
+    "rationale": "Statsig explicitly versions the Console API, selected through a `STATSIG-API-VERSION` header, and promises that each version won't break existing usage. It also publishes a versioned OpenAPI spec that it commits to keep up to date. However, no deprecation policy is documented: there are no sunset timelines, notice periods, or support windows for old versions, and the only hint is that the version header 'becomes required in the future.' missing for 10: a documented deprecation/sunset policy with timelines, versioning evidence for the HTTP evaluation API, independent corroboration.",
+    "evidenceIds": [
+      "statsig-api-versioning-20261106",
+      "statsig-console-openapi-20261106",
+      "statsig-openapi-reference-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "statsig-api-versioning-20261106",
+          "quote": "Statsig versions the Console API. Statsig guarantees that each version won't break existing usage; each new version introduces breaking changes."
+        },
+        {
+          "evidenceId": "statsig-api-versioning-20261106",
+          "quote": "Pass the version in the `STATSIG-API-VERSION` field in the header."
+        },
+        {
+          "evidenceId": "statsig-openapi-reference-20261106",
+          "quote": "Statsig keeps the OpenAPI spec for this API version up-to-date."
+        }
+      ]
     }
   },
   {
@@ -5281,7 +5354,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Approval workflows are a fair question for a feature-flag platform like Statsig, so the axis applies. However, the evidence pack never mentions approvals, reviews or change requests gating production flag changes. SSO/SCIM access management, overrides and scheduled rollouts are adjacent controls and earn no credit.",
+    "rationale": "The evidence pack does not document any approval workflow, change-request review, or required sign-off before production feature gate changes go live. The nearby evidence covers other things: SSO/SCIM access management, environment-tier SDK keys, scheduled rollouts, and CLI/Console API automation. These are adjacent controls, not an approval gate, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5296,7 +5369,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Audit logging of flag changes is a fair question for a feature-flag platform, but nothing in the evidence pack documents a change history or audit log recording who changed a gate, when, and to what value. The feature-gate exposures view covers which users encounter a gate, not changes to it, and the SSO/SCIM material covers access management rather than change auditing.",
+    "rationale": "Audit logging of flag changes is a fair governance question for a feature-flag platform, but the evidence pack never mentions an audit log or change history recording who changed what, when, and to which value. The only related items cover exposure monitoring and SSO/SCIM access management, which are adjacent controls and earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5308,16 +5381,28 @@
   {
     "productId": "statsig",
     "storyId": "automation-bulk-operations",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence shows Statsig has a CRUD Console API and a CLI for managing gates and experiments, which could be scripted for automation. Neither is documented as offering bulk operations across many items at once; these are developer building blocks for building that capability. The multi-gate evaluation and multi-event logging endpoints are runtime batching, and Layers group experiments, but these are adjacent features rather than bulk management operations.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Statsig's API reference documents multi-item calls: one request can evaluate one or more feature gates, or log one or more custom events. That is genuine batch handling, but only for evaluation and event ingestion. The Console API and CLI give CRUD and CI/CD automation but document no bulk edit, archive or update across many gates or experiments, so building that is left to the user. Missing for 10: documented bulk management operations (bulk update/archive/delete of gates and experiments), bulk actions via MCP or CLI, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "statsig-docs-49",
+      "statsig-docs-50"
+    ],
     "support": {
-      "relation": "adjacent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can perform bulk operations across many items at once",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "statsig-docs-49",
+          "quote": "Evaluates one or more feature gates for a user and returns pass/fail results."
+        },
+        {
+          "evidenceId": "statsig-docs-50",
+          "quote": "Logs one or more custom events for analytics and metric calculation."
+        }
+      ]
     }
   },
   {
@@ -5326,10 +5411,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack documents no user-defined event-triggered automation rules, such as auto-disabling a gate when a metric regresses. What it does show is adjacent: Scheduled Rollouts are time-based rather than event-triggered, Autotune is a built-in bandit algorithm rather than a user-defined rule, Infra Analytics alerts only notify, and CLI use in CI/CD is a user-side workaround.",
+    "rationale": "The pack documents no user-defined rule engine in Statsig that fires actions automatically when events occur. Nearby features do not count: Scheduled Rollouts run on a time schedule, Autotune is a fixed traffic-allocation algorithm, Infra Analytics alerts only notify, targeting rules decide who sees a flag, and CLI-in-CI/CD automation is a user-built workaround.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As an AI-native user, I can define rules that trigger actions automatically on events",
       "citations": []
@@ -5341,7 +5426,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Scheduling recurring jobs or workflows is a fair question for an experimentation and feature-flag platform, so the axis applies. However, the evidence only shows Scheduled Rollouts: a one-off gradual deployment of a single feature gate over time, not a recurring job or workflow schedule. Running the CLI from CI/CD pipelines is a user-side workaround that depends on external schedulers, so neither earns credit.",
+    "rationale": "Statsig is an experimentation platform, so scheduled recurring jobs are a fair capability to ask about, but the evidence pack documents none. The only scheduling evidence is a Feature Gate Scheduled Rollout, which is a one-off gradual rollout rather than a recurring schedule. Running the CLI from CI/CD is a user-side workaround and earns no credit. missing for 10: a first-party capability to define recurring jobs or workflows (cron-style or interval triggers), schedule management via the UI, API or MCP, and run history or monitoring of scheduled executions.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5356,7 +5441,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack documents no first-party versioning, review, or rollback of automations such as scheduled rollouts or CLI and CI/CD pipelines. Prompt versioning (statsig-docs-44) covers AI prompts, not automations. The emergency kill switch turns off a feature, not an automation. Managing gates through the CLI in CI/CD would only give git-based versioning as a user-side workaround.",
+    "rationale": "Nothing in the evidence shows Statsig itself versioning, reviewing, or rolling back automations, so the verdict is none. A buyer could fairly ask this of a feature-flag and experimentation platform, for example about config change history, approvals, and revert, so the axis applies. The nearby evidence does not qualify: prompt versioning is about prompts, the gate kill switch disables code branches, Console API versioning covers API stability, and using the CLI in CI/CD is a user-built pipeline rather than a product feature for versioning automations.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5368,20 +5453,21 @@
   {
     "productId": "statsig",
     "storyId": "create-toggle-flag-fast",
-    "verdict": "partial",
+    "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Statsig's own docs show you can create a Feature Gate and toggle product behavior in real time without deploying code, including an emergency disable switch for production users. A first-feature tutorial creates a gate and checks it live via the JavaScript SDK. Feature flags are included free, and the quickstart claims only a few lines of code. However, the 'within minutes of signing up' time-to-value is not evidenced by any measured onboarding time or hands-on report, and one community comment mentions spending 'quite some time' on an integration. missing for 10: evidence of signup-to-live-toggle time (minutes), independent hands-on corroboration of the onboarding flow.",
+    "rationale": "Statsig's own docs say Feature Gates toggle product behavior in real time without deploying new code, including an emergency switch that turns a code branch off for users in production. A first-feature tutorial walks through creating a gate and checking it live, and the free tier includes feature flags, so a new signup can start immediately. missing for 10: no explicit or measured time-to-first-flag claim backing 'within minutes of signing up', and no independent hands-on corroboration of how fast onboarding is.",
     "evidenceIds": [
       "statsig-docs-1",
       "statsig-docs-2",
       "statsig-docs-24",
       "statsig-docs-17",
-      "statsig-docs-54"
+      "statsig-docs-54",
+      "statsig-docs-19"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As a developer, I can create a feature flag and toggle it live in production within minutes of signing up",
       "citations": [
         {
@@ -5413,7 +5499,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack documents local, in-memory evaluation in client On-Device Eval SDKs and in server SDKs. Nothing mentions evaluating flags at the edge, such as in CDN workers or through an edge or relay proxy layer. Local SDK evaluation is a related but different capability and does not show edge delivery, so this applicable axis gets no credit.",
+    "rationale": "The evidence pack documents local evaluation in server SDKs and on-device client SDKs, plus an HTTP API. Nothing mentions edge or CDN-worker SDKs, edge-config integrations, or a relay/proxy layer that evaluates flags close to users. Generic local SDK evaluation is an adjacent capability, not the edge-delivery capability this story asks for.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5425,21 +5511,21 @@
   {
     "productId": "statsig",
     "storyId": "experiment-stats-engine",
-    "verdict": "partial",
-    "quality": 6,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Statsig documents its own stats engine. It reports metric lifts with confidence intervals and offers variance-reduction tools such as CUPED and stratified sampling, along with power analysis, and a community comment praises its statistical rigor. However, the evidence never explicitly documents whether the methodology is frequentist or Bayesian, and CUPED appears only in the Warehouse Native context. Missing for 10: explicit documentation of the frequentist/Bayesian methodology, in-depth stats-engine docs, confirmation that CUPED/variance reduction applies beyond Warehouse Native, and independent hands-on corroboration of result validity.",
+    "rationale": "Statsig documents its own stats engine. Experiments report metric lifts with confidence intervals and support power analysis. The docs name CUPED and stratified sampling as measurement tools, and a community comment praises its statistical rigor. missing for 10: explicit documentation of the statistical methodology (frequentist vs Bayesian choice, sequential testing details), variance-reduction docs beyond a single Warehouse Native mention, in-depth first-party methodology pages, independent hands-on verification.",
     "evidenceIds": [
       "statsig-docs-33",
       "statsig-docs-16",
       "statsig-docs-53",
-      "statsig-docs-59",
       "statsig-docs-46",
+      "statsig-docs-59",
       "statsig-comm-1"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As a product manager, I can trust a documented statistics engine (Bayesian or frequentist, with variance-reduction options) behind experiment results",
       "citations": [
         {
@@ -5455,12 +5541,12 @@
           "quote": "Modern statistical engine for running analyses on existing experiments from third-party or internal systems."
         },
         {
-          "evidenceId": "statsig-docs-59",
-          "quote": "Using Statsig's stats engine, you gain real-time insights into model performance across metrics such as cost, accuracy, and latency."
-        },
-        {
           "evidenceId": "statsig-docs-46",
           "quote": "A power analysis tells you how much traffic and how many days it needs"
+        },
+        {
+          "evidenceId": "statsig-comm-1",
+          "quote": "we were impressed how they balanced dev velocity & stat rigor"
         }
       ]
     }
@@ -5468,16 +5554,32 @@
   {
     "productId": "statsig",
     "storyId": "flag-environments",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Nothing in the evidence pack documents dev/staging/prod environments, per-environment flag states, or environment-scoped SDK keys. The closest items are adjacent features: target apps, which scope gates to applications within a project, and overrides for QA. Neither is environment separation, so neither earns credit.",
-    "evidenceIds": [],
+    "rationale": "Statsig's environments guide documents per-environment evaluation of gates, configs and experiments in dev/staging versus production. Environment-specific SDK keys control which rule sets download, and dev, staging and production data are kept separate, which covers independent flag states and scoped keys. Target apps add further SDK-level scoping within a project. Missing for 10: in-depth first-party detail on creating and managing environments (e.g. custom tiers, per-environment toggling workflow), and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "statsig-environments-20261106",
+      "statsig-docs-41"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As a developer, I can manage separate environments (dev/staging/prod) with independent flag states and scoped SDK keys",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "statsig-environments-20261106",
+          "quote": "evaluate feature gates, dynamic configs, and experiments differently in non-production environments like development or staging"
+        },
+        {
+          "evidenceId": "statsig-environments-20261106",
+          "quote": "environment-specific SDK keys determining which rule sets download and separated development/staging/production data"
+        },
+        {
+          "evidenceId": "statsig-docs-41",
+          "quote": "Use target apps in Statsig SDKs to scope feature gates, experiments, and dynamic configs to specific applications inside a single project."
+        }
+      ]
     }
   },
   {
@@ -5486,7 +5588,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows scheduled gradual rollouts, a manual emergency disable switch, and Infra Analytics alerts that catch regressions. Nothing documents a rollout guarded by metrics that rolls back automatically when a regression is detected. Alerts plus a manual kill switch are adjacent features, not the capability itself, and Autotune's traffic shifting is a bandit optimisation, not a regression-triggered rollback.",
+    "rationale": "The evidence shows Scheduled Rollouts, a manual emergency disable switch, and Infra Analytics alerts that \"catch regressions\". None of these documents a rollout guarded by metrics that rolls back on its own when a regression is detected. Pairing separate alerts with a manual kill switch is a user-side arrangement, and Autotune's bandit traffic shifting is a different capability, so neither earns credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -5498,10 +5600,10 @@
   {
     "productId": "statsig",
     "storyId": "individual-user-targeting",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Statsig documents Feature Gate overrides that let specific users bypass a gate or be forced into a variant for testing or QA. Its first-feature tutorial explicitly targets internal testers, which covers individual-user targeting for allowlists and beta testers. Missing for 10: explicit documentation of excluding specific users (deny-list overrides), details on managing override lists (e.g., by ID or email, bulk upload), and independent hands-on corroboration.",
+    "rationale": "Statsig documents Feature Gate overrides that let specific users bypass a gate or be forced into a variant for testing/QA. A tutorial also shows targeting internal testers, so per-user inclusion (allowlists, beta testers, internal accounts) is directly supported. Missing for 10: explicit documentation of excluding specific individual users from a flag, in-depth docs on override/allowlist mechanics (e.g. ID lists, limits), and independent hands-on corroboration.",
     "evidenceIds": [
       "statsig-docs-29",
       "statsig-docs-56",
@@ -5509,7 +5611,7 @@
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As a developer, I can target or exclude specific individual users for a flag (allowlists, beta testers, internal accounts)",
       "citations": [
         {
@@ -5518,7 +5620,7 @@
         },
         {
           "evidenceId": "statsig-docs-56",
-          "quote": "set overrides to force specific users into a variant for testing or QA"
+          "quote": "set overrides to force specific users into a variant for testing or QA."
         },
         {
           "evidenceId": "statsig-docs-24",
@@ -5530,18 +5632,19 @@
   {
     "productId": "statsig",
     "storyId": "local-evaluation-latency",
-    "verdict": "partial",
-    "quality": 7,
-    "confidence": "medium",
-    "rationale": "Statsig's docs say server SDKs evaluate gates without a network request after initialization, typically in under 1ms, and that the SDKs handle caching. That covers the core of local, no-network-per-check evaluation. However, the docs never describe the server SDKs holding a downloaded ruleset in memory (only the client On-Device Eval SDKs are described that way), and they claim sub-millisecond rather than microsecond latency. missing for 10: explicit documentation that server SDKs download and cache the full ruleset locally, a documented microsecond-level latency figure, independent or hands-on corroboration of evaluation performance",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "Statsig's docs state directly that after initialization, server SDKs evaluate gates and experiments without a network request, typically in under 1ms. Environment-specific SDK keys determine which rule sets the SDK downloads, and the SDKs handle caching and networking themselves, so flag checks run locally against a downloaded ruleset. Missing for 10: explicit microsecond-level latency figures (docs only say <1ms), documentation of how the cached ruleset is synced or refreshed, and independent or hands-on corroboration.",
     "evidenceIds": [
       "statsig-docs-39",
       "statsig-docs-57",
-      "statsig-docs-55"
+      "statsig-docs-55",
+      "statsig-environments-20261106"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As a platform engineer, my server SDKs evaluate flags locally from a cached ruleset — microsecond decisions with no network call per flag check",
       "citations": [
         {
@@ -5551,6 +5654,10 @@
         {
           "evidenceId": "statsig-docs-55",
           "quote": "Statsig handles caching, retry mechanisms, and networking."
+        },
+        {
+          "evidenceId": "statsig-environments-20261106",
+          "quote": "environment-specific SDK keys determining which rule sets download"
         }
       ]
     }
@@ -5561,11 +5668,11 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Statsig documents both data sources the story names. Warehouse Native runs experiment analysis directly in the customer's data warehouse, and custom events logged through the API are used for metric calculation and experiment outcomes. However, the pack never documents how a PM actually defines a metric from a warehouse table or event (for example metric sources or SQL definitions), so the 'define my own metrics' part is only implied. Missing for 10: explicit docs on creating metric definitions from warehouse tables or events, and independent or hands-on corroboration.",
+    "rationale": "Statsig documents Warehouse Native, which runs experiment analysis directly in the customer's data warehouse. It also documents custom ingested events that are explicitly used for metric calculation and experiment outcomes, so experiment metrics can draw on the team's own data. However, the pack never shows how a metric is actually defined from a warehouse table or event, such as a metric-source or SQL definition workflow. missing for 10: explicit docs on defining metrics from warehouse tables or SQL, metric definition workflow for events, independent or hands-on corroboration.",
     "evidenceIds": [
       "statsig-docs-15",
-      "statsig-docs-53",
       "statsig-docs-50",
+      "statsig-docs-53",
       "statsig-docs-5"
     ],
     "support": {
@@ -5584,10 +5691,6 @@
         {
           "evidenceId": "statsig-docs-53",
           "quote": "Modern statistical engine for running analyses on existing experiments from third-party or internal systems."
-        },
-        {
-          "evidenceId": "statsig-docs-5",
-          "quote": "letting you enter your hypothesis and select both primary and secondary metrics"
         }
       ]
     }
@@ -5598,13 +5701,15 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Statsig documents Dynamic Configs as a first-class entity alongside Feature Gates, with values retrievable through the HTTP API and scoped per target app. Experiments also serve different variants to test groups, so non-boolean configuration is clearly a product capability. However, no evidence describes the value types (strings, numbers, JSON) or how multivariate flag values are defined, and Feature Gates themselves return only pass/fail. Missing for 10: documentation of supported value types (string/number/JSON), explicit multivariate flag definitions, SDK getter examples for typed config values, independent hands-on corroboration.",
+    "rationale": "Statsig documents Dynamic Configs as a first-class entity alongside boolean Feature Gates. They can be retrieved via the HTTP API, scoped by target app, evaluated per environment, and managed via the CLI. The founders describe them as \"realtime targeted config\", and experiments serve different variants to groups. The evidence never states what value types Dynamic Configs hold, and Feature Gates themselves return only pass/fail. missing for 10: explicit documentation of string/number/JSON value types for dynamic configs, documented multivariate flag variants outside experiments, SDK getter examples for typed values, independent hands-on corroboration.",
     "evidenceIds": [
       "statsig-docs-9",
       "statsig-docs-10",
       "statsig-docs-41",
+      "statsig-environments-20261106",
+      "statsig-comm-4",
       "statsig-docs-33",
-      "statsig-comm-4"
+      "statsig-docs-49"
     ],
     "support": {
       "relation": "direct",
@@ -5613,19 +5718,19 @@
       "citations": [
         {
           "evidenceId": "statsig-docs-10",
-          "quote": "Overview of the Statsig HTTP API for retrieving feature gate, experiment, and dynamic config values and logging events directly without an SDK."
+          "quote": "Overview of the Statsig HTTP API for retrieving feature gate, experiment, and dynamic config values"
         },
         {
           "evidenceId": "statsig-docs-41",
           "quote": "Use target apps in Statsig SDKs to scope feature gates, experiments, and dynamic configs to specific applications inside a single project."
         },
         {
-          "evidenceId": "statsig-docs-9",
-          "quote": "The Statsig CLI is a command-line interface that helps manage Feature Gates, Experiments, and Dynamic Configs within the Statsig platform."
+          "evidenceId": "statsig-comm-4",
+          "quote": "realtime targeted config to reduce code churn"
         },
         {
           "evidenceId": "statsig-docs-33",
-          "quote": "serves each group a different variant"
+          "quote": "Statsig splits users into a control group and one or more test groups, serves each group a different variant"
         }
       ]
     }
@@ -5636,7 +5741,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Statsig is a feature-flag platform, so OpenFeature provider support is a fair question to ask of it. However, the evidence pack never mentions OpenFeature or any vendor-neutral provider. The React 'StatsigProvider' component and the HTTP API are Statsig-specific interfaces, not OpenFeature providers, so they earn no credit here.",
+    "rationale": "Statsig is a feature-flag vendor, so OpenFeature provider support is a fair question for it. However, nothing in the evidence pack mentions OpenFeature or a vendor-neutral flag API. The 'StatsigProvider' React component is Statsig's own SDK wrapper, the HTTP API is a vendor-specific alternative to its SDKs, and the OpenTelemetry ingestion covers observability rather than flag evaluation. None of these count toward this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5649,15 +5754,16 @@
     "productId": "statsig",
     "storyId": "openness-api-parity",
     "verdict": "full",
-    "quality": 7,
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Statsig's docs describe the Console API as \"the CRUD API for performing the actions available on console.statsig.com without using the web UI,\" which directly states API parity with the UI. A CLI for CI/CD management and an MCP server back this up. The probe found no OpenAPI spec at the standard paths, so the breadth of that parity rests on the vendor's claim alone. Missing for 10: endpoint-level evidence that every console action (e.g., access management, analytics, warehouse-native settings) is exposed, a published machine-readable OpenAPI spec, and independent or hands-on corroboration of parity.",
+    "rationale": "Statsig documents the Console API as the CRUD API for performing the actions available on console.statsig.com without using the web UI. It is backed by a published, versioned OpenAPI 3.0 spec with a stability guarantee, an in-page live request runner, plus an official CLI and MCP server. missing for 10: independent or hands-on corroboration that every UI action has an API equivalent, and explicit documented coverage of non-config surfaces such as analytics, Warehouse Native, and access management.",
     "evidenceIds": [
       "statsig-docs-11",
-      "statsig-docs-9",
-      "statsig-docs-31",
-      "statsig-docs-13",
-      "statsig-probe-2"
+      "statsig-console-openapi-20261106",
+      "statsig-openapi-reference-20261106",
+      "statsig-api-versioning-20261106",
+      "statsig-api-tryit-20261106",
+      "statsig-docs-9"
     ],
     "support": {
       "relation": "direct",
@@ -5669,8 +5775,12 @@
           "quote": "The Console API is the CRUD API for performing the actions available on console.statsig.com without using the web UI."
         },
         {
-          "evidenceId": "statsig-docs-31",
-          "quote": "You can integrate the CLI into CI/CD pipelines to automate the management of Feature Gates and Experiments."
+          "evidenceId": "statsig-openapi-reference-20261106",
+          "quote": "Statsig keeps the OpenAPI spec for this API version up-to-date."
+        },
+        {
+          "evidenceId": "statsig-api-versioning-20261106",
+          "quote": "Statsig guarantees that each version won't break existing usage"
         }
       ]
     }
@@ -5681,10 +5791,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never documents a data-export feature, open export formats, or an offboarding path. The Console API (CRUD over console actions) and the MCP server are developer building blocks that could be used to pull data, not an export capability. Warehouse Native describes running analysis in your own warehouse, which is adjacent and not a documented export of all Statsig-held data.",
+    "rationale": "The evidence pack documents no data-export feature, open export format, or offboarding path for Statsig. The Console API's CRUD access to configs and Warehouse Native's in-warehouse analysis are adjacent building blocks, not a documented capability to export all of a user's data and leave.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can export all of my data in open formats and leave",
       "citations": []
@@ -5696,7 +5806,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Asking whether a SaaS feature-flag and experimentation platform publishes its source under an open license is a fair question for this kind of product, so the axis applies. Nothing in the evidence pack mentions an open-source license, a public source repository, or open-source SDKs. The SDK, CLI, MCP server, and API documentation describe how to use the product, not licensing or source availability.",
+    "rationale": "Whether a product's source is available under an open license is a fair question for a feature-flag and experimentation platform, so the axis applies. Nothing in the evidence pack mentions open-source repositories, source availability, or any license (MIT, Apache, etc.) for Statsig's platform or SDKs. The CLI, MCP server, APIs and OpenAPI spec are other capabilities and do not transfer to this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5711,7 +5821,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Self-hosting is a fair question for a feature-flag and experimentation platform, but the evidence pack never documents a self-hosted deployment of Statsig's core product. Warehouse Native runs analysis in your own warehouse, and the SDKs evaluate gates locally after initialization. Both are adjacent features that still rely on the Statsig-hosted console and platform, so neither counts as self-hosting.",
+    "rationale": "Self-hosting is a fair question for a SaaS feature-flag and experimentation platform, but nothing in the evidence documents a self-hosted deployment of the core Statsig product. Warehouse Native runs analysis in the customer's warehouse and SDKs evaluate on-device, but both are adjacent capabilities, not self-hosting the platform or console.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5726,10 +5836,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack has no documentation of choosing a data storage region or residency, such as EU or US hosting or region selection at project creation. Warehouse Native runs analysis in the customer's own data warehouse, but the evidence never frames this as a residency or region control. That makes it an adjacent feature, not the capability the story asks for.",
+    "rationale": "Choosing data region or residency is a fair question for a SaaS experimentation platform, so the axis applies. However, no evidence documents a region or residency selection option. Warehouse Native running analysis in the customer's own warehouse is an adjacent architecture choice, not a documented residency control, so it earns no credit.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As an AI-native user, I can choose where my data is stored (region/residency)",
       "citations": []
@@ -5741,7 +5851,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Statsig is a SaaS analytics and experimentation platform that ingests customer event data, so a training opt-out or no-training policy is a fair privacy question for it. The evidence pack documents no setting, policy or contractual commitment that prevents customer data from being used to train AI models. The AI-related docs cover experimenting on prompts and models and the MCP servers, which are adjacent features, not a training opt-out.",
+    "rationale": "Statsig is a SaaS platform that ingests customer event and user data, so whether that data can be excluded from AI model training is a fair privacy question for it. Nothing in the evidence pack addresses an AI-training opt-out, a no-training commitment, or any data-use policy. The MCP, OpenAI and AI-evals items are about using AI with Statsig, not about protecting data from training.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5756,7 +5866,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Statsig is an analytics and experimentation SaaS that ingests user and event data, so data retention and deletion controls are a fair axis for it. Nothing in the evidence pack documents retention periods, deletion requests, or data purge controls. Items about SSO/SCIM, event logging, and Warehouse Native are adjacent features, not retention or deletion controls.",
+    "rationale": "Statsig ingests and stores user event and exposure data, so data retention and deletion controls are a fair axis for it. The evidence pack documents no retention settings, retention periods, or user/event data deletion capability. The Console API's CRUD actions cover console entities such as gates and experiments, not ingested data, so they are only adjacent and earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5771,7 +5881,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Telemetry opt-out is a fair question for an SDK-based analytics and experimentation platform, so the axis applies. The evidence pack documents no setting to disable usage tracking or event logging. The only related evidence says gate checks 'automatically log exposure events' and the SDKs are built to send data into Statsig, which describes tracking rather than an opt-out.",
+    "rationale": "Opting out of telemetry is a fair question for an analytics and feature-flag platform with SDKs and a CLI, but the evidence pack never documents a telemetry or usage-tracking opt-out. The only related item says gate checks automatically log exposure events, which does not show any opt-out.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5783,10 +5893,10 @@
   {
     "productId": "statsig",
     "storyId": "progressive-percentage-rollouts",
-    "verdict": "partial",
+    "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Statsig documents gradual rollouts of Feature Gates via Scheduled Rollouts, changes made in real time without deploying new code, and deterministic evaluation that returns the same result for the same user across platforms, which gives consistent bucketing. The evidence never states that rollouts are set by explicit percentages, so ramping from 1% to 100% is only implied by 'gradual'. Missing for 10: explicit documentation of percentage-based allocation and ramp granularity, and independent or hands-on corroboration of progressive rollouts.",
+    "rationale": "Statsig Feature Gates change behavior in real time without deploying new code. The docs describe gradual rollouts through Scheduled Rollouts, and evaluation is deterministic: the same user and gate state always return the same result across client and server, which gives consistent bucketing. The evidence implies percentage-based ramping through gradual rollouts but never spells it out. missing for 10: explicit documentation of percentage allocation controls and the 1%-to-100% ramp steps, independent or hands-on corroboration of rollout ramping.",
     "evidenceIds": [
       "statsig-docs-1",
       "statsig-docs-3",
@@ -5795,16 +5905,16 @@
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As a developer, I can roll a flag out progressively by percentage with consistent bucketing, ramping from 1% to 100% without redeploying",
       "citations": [
         {
-          "evidenceId": "statsig-docs-3",
-          "quote": "Gradually deploy a feature over time by setting up a Feature Gate as a Scheduled Rollout."
-        },
-        {
           "evidenceId": "statsig-docs-1",
           "quote": "Feature Gates, commonly known as feature flags, allow you to toggle the behavior of your product in real time without deploying new code."
+        },
+        {
+          "evidenceId": "statsig-docs-3",
+          "quote": "Gradually deploy a feature over time by setting up a Feature Gate as a Scheduled Rollout."
         },
         {
           "evidenceId": "statsig-docs-7",
@@ -5820,16 +5930,29 @@
   {
     "productId": "statsig",
     "storyId": "rbac-scoped-access",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence covers only Statsig's access-management basics: SSO login, SCIM provisioning and auto-adding users by email domain. The SCIM passages describe what SCIM does in general, not Statsig roles or permissions that limit who can change which flags. Nothing documents per-flag or per-resource permissions, change restrictions, or scoped API tokens, so this is adjacent identity management rather than the capability itself.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Statsig's access-management docs cover SSO and SCIM, and describe SCIM as managing user accounts and permissions by role. That is a thin, generic sign of role-based access control, but nothing shows restricting changes to specific flags or issuing scoped API tokens. missing for 10: per-flag or per-resource change permissions, documented role definitions within Statsig, scoped/limited-permission Console API tokens, independent corroboration",
+    "evidenceIds": [
+      "statsig-docs-12",
+      "statsig-docs-38",
+      "statsig-docs-51"
+    ],
     "support": {
-      "relation": "adjacent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As a platform engineer, I can restrict who can change which flags with roles, permissions, and scoped API tokens",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "statsig-docs-38",
+          "quote": "SCIM ensures consistent management of user accounts and permissions across those applications."
+        },
+        {
+          "evidenceId": "statsig-docs-51",
+          "quote": "SCIM: Automatically provisions the employee’s user accounts in all necessary applications based on their role."
+        }
+      ]
     }
   },
   {
@@ -5838,11 +5961,12 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "low",
-    "rationale": "Statsig's docs say gates toggle product behavior \"in real time\" and can serve as an emergency disable switch that \"immediately\" turns off a code branch, so the kill-switch capability is first-party. However, nothing explains how changes reach connected SDKs (streaming vs. polling) or how fast. SDKs evaluating locally after initialization implies cached config whose refresh behavior is undocumented here. Missing for 10: documented streaming or polling propagation mechanism, stated propagation latency in seconds, SDK config refresh intervals, independent or hands-on confirmation that the kill switch takes effect promptly.",
+    "rationale": "Statsig's docs say feature gates toggle behavior 'in real time without deploying new code' and describe an emergency disable switch that 'immediately' turns off a code branch in production, so the kill-switch capability is first-party. The pack never explains how changes reach connected SDKs (streaming vs. polling, update intervals, propagation latency), and SDKs evaluate locally from cached definitions after initialization, so the 'in seconds' guarantee is unproven. Missing for 10: documented streaming or polling propagation mechanism, stated propagation latency or polling interval, hands-on or independent corroboration that a kill switch reaches live SDKs within seconds.",
     "evidenceIds": [
       "statsig-docs-1",
       "statsig-docs-2",
-      "statsig-docs-39"
+      "statsig-comm-4",
+      "statsig-docs-55"
     ],
     "support": {
       "relation": "direct",
@@ -5856,6 +5980,10 @@
         {
           "evidenceId": "statsig-docs-2",
           "quote": "Have an emergency disable switch that lets you immediately turn off a particular code branch for users in production"
+        },
+        {
+          "evidenceId": "statsig-comm-4",
+          "quote": "realtime targeted config to reduce code churn"
         }
       ]
     }
@@ -5866,7 +5994,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never mentions a relay, edge proxy, or self-hosted forwarding component for Statsig. The closest items are SDK local evaluation after initialization and SDK-managed caching. Those are adjacent SDK behaviors: they do not show a deployable proxy that keeps flags served during a vendor outage or keeps SDK traffic inside the user's network.",
+    "rationale": "The evidence pack never documents a relay, edge, or forward proxy that a platform engineer can self-host to serve flags during a vendor outage or keep SDK traffic inside the network. SDK local evaluation after initialization and SDK-managed caching are adjacent SDK behaviors, not a deployable proxy, so they earn no credit. The axis applies to a feature-flag platform, so absence of evidence yields none.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5881,7 +6009,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Statsig documents its own Scheduled Rollouts feature, which deploys a Feature Gate gradually over time. That is first-party scheduling of release changes. However, the evidence only describes gradual percentage ramps. It does not show setting a flag change or release to occur at a chosen future date and time, or scheduling other kinds of flag changes. Missing for 10: explicit specific-future-time scheduling, scheduling of arbitrary flag/config changes beyond gradual rollouts, detailed docs on schedule configuration, independent corroboration.",
+    "rationale": "Statsig documents Scheduled Rollouts, which let a Feature Gate be deployed gradually over time on a schedule. That is the product's own scheduling capability for releases. The evidence does not show setting an arbitrary flag change, such as an on/off toggle or a rule edit, to fire at a specific future date and time. Missing for 10: explicit one-off flag changes at a chosen future timestamp, details on configuring schedule start times and steps, scheduling of non-rollout changes (experiments, configs), and independent or hands-on corroboration.",
     "evidenceIds": [
       "statsig-docs-3",
       "statsig-docs-25"
@@ -5906,17 +6034,17 @@
     "productId": "statsig",
     "storyId": "sdk-language-breadth",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Statsig documents its own client and server SDKs, including a JavaScript/React web SDK and on-device evaluation SDKs, and states that evaluation is deterministic, returning the same result across client and server platforms. That covers the backend, web, and consistency parts of the story. A mobile-specific SDK is never explicitly named: the mobile tutorial only targets mobile platforms by rule and then checks the gate with the JavaScript SDK. missing for 10: explicit documentation of official mobile (iOS/Android/React Native) SDKs, a list of supported backend languages, independent or hands-on corroboration of cross-platform consistency.",
+    "rationale": "Statsig documents official client and server SDKs that evaluate locally, and states that evaluation is deterministic, returning the same result across client and server platforms. Web coverage is shown through the JavaScript SDK and the React StatsigProvider, and server SDKs are referenced. Mobile SDKs are not explicitly evidenced: the tutorial only targets mobile platforms with a gate rule, which is not a mobile SDK. missing for 10: explicit documentation of official mobile (iOS/Android/React Native) SDKs, a full SDK language list, independent hands-on corroboration of cross-platform consistency.",
     "evidenceIds": [
       "statsig-docs-7",
       "statsig-docs-39",
       "statsig-docs-36",
-      "statsig-docs-8",
       "statsig-docs-24",
       "statsig-docs-37",
-      "statsig-docs-41"
+      "statsig-docs-8",
+      "statsig-docs-44"
     ],
     "support": {
       "relation": "direct",
@@ -5932,12 +6060,12 @@
           "quote": "After initialization, both Client and Server SDKs evaluate experiments/gates _without a network request_, and typically in less than 1ms."
         },
         {
-          "evidenceId": "statsig-docs-36",
-          "quote": "Update your app's default function (typically App.tsx or Layout.tsx) so that the StatsigProvider component identifier wraps all child components."
+          "evidenceId": "statsig-docs-24",
+          "quote": "checks it live with the JavaScript SDK in your browser console"
         },
         {
-          "evidenceId": "statsig-docs-8",
-          "quote": "Statsig's client-side On-Device Eval SDKs provide an alternate client-side architecture."
+          "evidenceId": "statsig-docs-44",
+          "quote": "retrieve prompts in production using the Statsig server SDKs"
         }
       ]
     }
@@ -5948,7 +6076,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Self-hosting a flag platform is a fair question for a feature-flag product, but the evidence pack never documents an open-source distribution or a self-hosted deployment of Statsig. Warehouse Native runs analysis in your own warehouse, and the SDKs evaluate flags locally without a network request. Both are adjacent features, not a self-hosted full flag platform, so they earn no credit.",
+    "rationale": "Self-hosting is a fair question for a feature-flag platform, but the evidence pack never documents an open-source or self-hosted distribution of Statsig. Local SDK evaluation and Warehouse Native (analysis that runs in your own data warehouse) are adjacent features. Neither one lets you self-host the flag platform itself, so neither earns credit for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5963,7 +6091,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Statsig is a feature-flag platform, so stale-flag cleanup is a fair question for it. However, the evidence pack never documents stale-flag detection, flag lifecycle status, or code-reference scanning. Gate exposure monitoring and CLI/Console API gate management are related features, not the capability itself, so they earn no credit.",
+    "rationale": "Stale-flag cleanup is a fair question for a feature-flag platform like Statsig, so the axis applies. However, the evidence pack documents no stale-flag detection, flag lifecycle status, or code-reference scanning. The Console API's List Gates endpoint and the CLI are only developer building blocks a team could use to build such tooling, and they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5978,12 +6106,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Statsig documents layered targeting rules on gates, and its tutorial targets gates by platform and to internal testers, so attribute-based rule targeting is evidenced. Reusable segments are never explicitly documented, which leaves half the story unproven. Missing for 10: documented reusable segments, detail on the supported attribute and operator types in targeting rules, and independent or hands-on corroboration.",
+    "rationale": "Statsig documents targeting rules on gates: a tutorial targets mobile platforms and internal testers, and the docs say multiple targeting rules can be layered with per-user overrides. That shows attribute-based targeting, but nothing in the pack describes reusable segments shared across flags. missing for 10: documented reusable segments, detail on the attribute/operator rule model, independent or hands-on corroboration of targeting.",
     "evidenceIds": [
-      "statsig-docs-56",
       "statsig-docs-24",
-      "statsig-docs-29",
-      "statsig-comm-4"
+      "statsig-docs-56",
+      "statsig-docs-29"
     ],
     "support": {
       "relation": "direct",
@@ -5991,12 +6118,12 @@
       "subject": "As a developer, I can target flags with attribute-based rules and reusable segments so the right users see the right variation",
       "citations": [
         {
-          "evidenceId": "statsig-docs-56",
-          "quote": "You can also layer multiple targeting rules and set overrides to force specific users into a variant for testing or QA."
+          "evidenceId": "statsig-docs-24",
+          "quote": "This tutorial creates a feature gate, targets mobile platforms and internal testers"
         },
         {
-          "evidenceId": "statsig-docs-24",
-          "quote": "This tutorial creates a feature gate, targets mobile platforms and internal testers, then checks it live with the JavaScript SDK in your browser console."
+          "evidenceId": "statsig-docs-56",
+          "quote": "You can also layer multiple targeting rules and set overrides to force specific users into a variant for testing or QA."
         },
         {
           "evidenceId": "statsig-docs-29",
@@ -6011,7 +6138,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "The only pricing-related evidence is a first-party doc line saying feature flags and 2 million metered events are free, which hints that metered events drive cost. There is no published price list, no paid-tier pricing, and no explanation of how seats, MAUs or requests affect cost. Missing for 10: published pricing page with paid tier prices, documentation of cost drivers beyond metered events (seats, MAUs, requests), overage rates, independent corroboration.",
+    "rationale": "Statsig's own docs state that feature flags and 2 million metered events are free, which shows that metered events drive cost and that a free tier exists. Nothing in the pack shows a published price list or paid tiers, so a product manager could not fully understand costs before committing. Missing for 10: published pricing page with paid-tier prices, explanation of whether seats/MAUs/requests factor into cost, overage rates, plan comparison, independent corroboration.",
     "evidenceIds": [
       "statsig-docs-17"
     ],

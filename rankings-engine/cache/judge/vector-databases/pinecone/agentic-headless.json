@@ -1,25 +1,26 @@
 {
-  "hash": "3970fdf3b020466f40558377bbc9969629d4c12d664ae6a05c56b03f7087c642",
+  "hash": "85277249fdb8dadb4acb6ccb8f4cfacf6233a6a95bec73838075fb524ecde241",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "partial",
-    "quality": 5,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Pinecone is a managed service driven through its own SDK and API. The docs say indexes can be managed from the console 'or stay in the terminal', operations like backups can be done 'using the Pinecone SDK, API', and the security overview lists API keys and service accounts, which together suggest non-interactive automation is possible. There is no explicit documentation of headless/CI usage, a named CLI, or CI pipeline integration. Missing for 10: documented CLI with non-interactive flags, CI/CD integration guides or examples, independent hands-on corroboration of CI automation.",
+    "rationale": "Pinecone is an API-first managed service. Its documentation supports headless use: SDK and API management of indexes and backups, service accounts and API keys for non-interactive auth, a 'stay in the terminal' option, and a dedicated guide on using a Prism-based mock of its public OpenAPI specs 'in unit tests and CI'. The CI mock is limited: no write-then-read or real-search tests, and Pinecone Local is end-of-life, so stateful CI tests must run against a separate real project. missing for 10: first-party CLI documentation for CI pipelines, a stateful local emulator for CI, independent hands-on corroboration of CI automation.",
     "evidenceIds": [
-      "pinecone-docs-16",
+      "pinecone-mock-the-api-20261106",
       "pinecone-docs-12",
       "pinecone-docs-34",
-      "pinecone-docs-14"
+      "pinecone-docs-16",
+      "pinecone-openapi-specs-20261106"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
       "citations": [
         {
-          "evidenceId": "pinecone-docs-16",
-          "quote": "Monitor performance, explore your data, and manage indexes from a clean, fast console — or stay in the terminal. Your call."
+          "evidenceId": "pinecone-mock-the-api-20261106",
+          "quote": "Use it in unit tests and CI to confirm that your code builds valid requests and handles responses and errors, without a Pinecone account or calls to Pinecone."
         },
         {
           "evidenceId": "pinecone-docs-12",
@@ -27,7 +28,11 @@
         },
         {
           "evidenceId": "pinecone-docs-34",
-          "quote": "Overview of Pinecone security features for production: API keys, SSO, service accounts, audit logs, CMEK encryption, backups, and Private Endpoints."
+          "quote": "API keys, SSO, service accounts, audit logs"
+        },
+        {
+          "evidenceId": "pinecone-docs-16",
+          "quote": "manage indexes from a clean, fast console — or stay in the terminal"
         }
       ]
     },

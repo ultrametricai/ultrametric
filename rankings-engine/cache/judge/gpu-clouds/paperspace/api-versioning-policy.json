@@ -1,17 +1,29 @@
 {
-  "hash": "35f4bdda24e0850541ccc41905f87b8e11708ff218647f5c5c57208d21b97476",
+  "hash": "128235e2320416bda85c2b6fb7bbdf6ca3789bb861ac3844f8783c6d6e32e7d5",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Paperspace documents a Core RESTful API, a JavaScript SDK and a CLI. However, nothing in the evidence mentions API versioning, version pinning, or a deprecation policy, and the OpenAPI probe returned 404 on every candidate path. Simply having an API does not satisfy a story about versioned APIs with a deprecation policy, so the axis applies but is unevidenced.",
-    "evidenceIds": [],
+    "rationale": "Paperspace serves a versioned API: the production OpenAPI 3.0.3 document is at /v1/openapi.json with version \"1\" and the server base is https://api.paperspace.com/v1, and the published API reference is generated from it. Nothing in the pack documents a deprecation policy, sunset timelines, or version-change guarantees, so only half the story is delivered. missing for 10: a documented deprecation/sunset policy, a changelog or versioning guarantees beyond the /v1 path, and independent corroboration of API stability.",
+    "evidenceIds": [
+      "paperspace-openapi-spec-20261106",
+      "paperspace-api-reference-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "paperspace-openapi-spec-20261106",
+          "quote": "The production API domain serves a machine-readable OpenAPI 3.0.3 document at /v1/openapi.json (info title \"Paperspace OpenAPI\", version \"1\", 61 paths; servers https://api.paperspace.com/v1)."
+        },
+        {
+          "evidenceId": "paperspace-openapi-spec-20261106",
+          "quote": "The path without /v1 answers 404; the versioned path is the artifact."
+        }
+      ]
     },
     "productId": "paperspace",
     "storyId": "api-versioning-policy"

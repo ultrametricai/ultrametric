@@ -11941,7 +11941,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never mentions TPU, Gaudi, or any specialized-accelerator backend. Documented hardware detection covers only NVIDIA, AMD and Intel GPUs. The `--external-grpc-backends` flag is a generic plugin mechanism, a developer building block that could be used to build such support, not evidence that LocalAI ships it, so it earns no credit.",
+    "rationale": "The evidence pack never mentions TPUs, Gaudi, or any other specialized accelerator. Hardware detection is documented only for NVIDIA, AMD and Intel GPUs. The `--external-grpc-backends` option is a generic backend-loading mechanism, so it counts only as a developer building block that someone could use to construct accelerator support. It is not a documented TPU or Gaudi capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -11953,16 +11953,30 @@
   {
     "productId": "localai",
     "storyId": "agentic-agent-docs",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "high",
-    "rationale": "LocalAI has a public documentation site, so offering llms.txt or agent-oriented docs is a fair question for it. Direct probes found no such docs: llms.txt, the markdown variant of the getting-started doc, and all candidate OpenAPI spec paths each returned HTTP 404. The pack's MCP, agent and OpenAI-compatible API material concerns other capabilities and does not show machine-readable docs meant for agents.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "Probes show no llms.txt and no markdown docs mirror (both 404). LocalAI does document its own machine-readable discovery surfaces on every server: an \"API Discovery & Instructions\" page covering /.well-known/localai.json, /api/instructions and a Swagger tree, plus a full Swagger 2.0 spec in the repo, which an agent could be pointed at. This is partial agent-oriented documentation, not the llms.txt-style site docs the story names. Missing for 10: an llms.txt file, markdown or agent-readable versions of the docs site, evidence that /api/instructions content is written for agents, and hands-on corroboration of agents consuming these endpoints.",
+    "evidenceIds": [
+      "localai-probe-1",
+      "localai-probe-2",
+      "localai-swagger-ui-20261106",
+      "localai-swagger-spec-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can point an agent at llms.txt or agent-oriented docs",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "localai-swagger-ui-20261106",
+          "quote": "The same \"API Discovery & Instructions\" page documents the unauthenticated discovery endpoints (/.well-known/localai.json, /api/instructions, and the /swagger tree)."
+        },
+        {
+          "evidenceId": "localai-swagger-spec-20261106",
+          "quote": "The server advertises it at runtime: the documented /.well-known/localai.json discovery response lists \"swagger\": \"/swagger/index.html\"."
+        }
+      ]
     }
   },
   {
@@ -11971,7 +11985,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "LocalAI's own `local-ai chat` agent reads your files and answers questions about them, and its built-in web interface lets you chat with models. That is first-party AI analysis of user data, but nothing documents dedicated proactive insights or suggestions drawn from data held in the product. Missing for 10: a documented insights/suggestions feature over user data, depth of data analysis, and independent or hands-on corroboration.",
+    "rationale": "LocalAI's own built-in web interface and its `local-ai chat` agent can read the user's files, answer questions about them, and pull live data through MCP servers, so users can get AI-generated answers about their data inside the product. However, this is general-purpose chat or agent prompting rather than a dedicated feature that proactively surfaces insights or suggestions. Missing for 10: a dedicated or proactive insights and suggestions feature over the user's data, documentation of the quality and depth of data analysis, and independent or hands-on corroboration.",
     "evidenceIds": [
       "localai-gh-2",
       "localai-docs-10",
@@ -11985,7 +11999,7 @@
       "citations": [
         {
           "evidenceId": "localai-gh-2",
-          "quote": "It answers questions, reads your files and runs commands on your machine"
+          "quote": "It answers questions, reads your files and runs commands on your machine, asking you to approve anything that changes state."
         },
         {
           "evidenceId": "localai-docs-10",
@@ -11993,7 +12007,11 @@
         },
         {
           "evidenceId": "localai-docs-20",
-          "quote": "LocalAI comes with a **built-in web interface** for chatting with models"
+          "quote": "LocalAI comes with a **built-in web interface** for chatting with models, managing installations, configuring AI agents, and more, with no extra tools needed."
+        },
+        {
+          "evidenceId": "localai-docs-33",
+          "quote": "Connect to external MCP servers for live data"
         }
       ]
     }
@@ -12004,10 +12022,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "LocalAI documents a built-in agent platform with MCP tool support, but nothing in the evidence shows automations that run autonomously in the background. There is no scheduling, triggers, recurring jobs, or unattended execution. The documented `local-ai chat` agent is interactive and gates state-changing actions behind user approval, so agent creation is only adjacent to this story.",
+    "rationale": "LocalAI documents a built-in agent platform with MCP tool support, but nothing in the evidence shows agents running autonomously in the background, on a schedule, or from triggers. The only execution mode described in detail, `local-ai chat`, is an interactive shell agent behind a user-controlled approval gate. That is a different capability from background automation, so the axis applies but is unevidenced.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As an AI-native user, I can set up automations that run autonomously in the background",
       "citations": []
@@ -12017,9 +12035,9 @@
     "productId": "localai",
     "storyId": "agentic-builtin-assistant",
     "verdict": "full",
-    "quality": 8,
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "LocalAI ships its own built-in assistant. `local-ai chat` is described as an agent in your shell that answers questions, reads your files and runs commands behind an approval gate you control. The docs also describe a built-in agent platform, with agents created and configured in the bundled web UI and given MCP tools. missing for 10: independent or hands-on corroboration of task delegation, and documentation of how deep delegation goes (e.g., whether the assistant can operate LocalAI itself, such as managing models, or chain multi-step tasks).",
+    "rationale": "LocalAI ships its own built-in assistant. `local-ai chat` is an agent in your shell that answers questions, reads your files and runs commands behind an approval gate, and the built-in web interface lets you create and configure AI agents with MCP tool support. That is a real delegation surface inside the product. missing for 10: independent or hands-on corroboration of how well the agent completes delegated tasks, and in-depth documentation of the agent's task scope, workflows and limits beyond short feature mentions.",
     "evidenceIds": [
       "localai-docs-10",
       "localai-docs-19",
@@ -12036,7 +12054,7 @@
       "citations": [
         {
           "evidenceId": "localai-docs-10",
-          "quote": "local-ai chat reads your files and runs commands on your machine, behind an approval gate you control."
+          "quote": "an agent in your own shell. local-ai chat reads your files and runs commands on your machine, behind an approval gate you control."
         },
         {
           "evidenceId": "localai-gh-2",
@@ -12059,15 +12077,15 @@
     "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "LocalAI clearly runs headlessly. It ships as a single binary or Docker container that serves an OpenAI-compatible API, can be launched from the CLI with a model, and accepts a `--preload-models` flag or env var to set up models without the web UI, so it suits scripted automation. CI use specifically is only implied: the 'tested in CI' claim refers to the vendor's own CI, not a documented pattern for running LocalAI inside a user's pipeline. missing for 10: documented CI-pipeline usage (e.g. GitHub Actions/service-container recipe), a non-interactive or approval-free mode for the `local-ai chat` agent, an OpenAPI spec (probe 404), independent/hands-on corroboration of headless CI runs.",
+    "rationale": "LocalAI runs as a headless server that automation can drive. It has a docker run command, a `local-ai run` CLI, models preloaded at startup via the PRELOAD_MODELS env var or flag, and an OpenAI-compatible API with a shipped Swagger spec. However, nothing documents running it inside a user's CI pipeline: the only 'CI' mention is the vendor's own testing of CPU paths. Missing for 10: documented CI-pipeline usage (e.g. a CI workflow example or service-container recipe), non-interactive scripted mode for `local-ai chat` given its approval gate, and independent hands-on corroboration of headless/CI automation.",
     "evidenceIds": [
       "localai-docs-31",
       "localai-docs-21",
       "localai-docs-12",
-      "localai-docs-32",
       "localai-docs-1",
-      "localai-docs-7",
-      "localai-docs-27"
+      "localai-docs-32",
+      "localai-swagger-spec-20261106",
+      "localai-docs-7"
     ],
     "support": {
       "relation": "direct",
@@ -12083,12 +12101,12 @@
           "quote": "PRELOAD_MODELS (or --preload-models) takes a list in JSON with the same parameter of the API calls of the /models/apply endpoint."
         },
         {
-          "evidenceId": "localai-docs-32",
-          "quote": "One binary with an OpenAI-compatible API in front of it. Point an existing client at it and the calls keep working"
-        },
-        {
           "evidenceId": "localai-docs-21",
           "quote": "local-ai run huggingface://TheBloke/phi-2-GGUF/phi-2.Q8_0.gguf"
+        },
+        {
+          "evidenceId": "localai-docs-32",
+          "quote": "One binary with an OpenAI-compatible API in front of it. Point an existing client at it and the calls keep working"
         }
       ]
     }
@@ -12097,16 +12115,16 @@
     "productId": "localai",
     "storyId": "agentic-mcp-client",
     "verdict": "full",
-    "quality": 8,
+    "quality": 9,
     "confidence": "high",
-    "rationale": "LocalAI's own MCP docs say it connects models to external MCP servers. Servers can be selected per request via `metadata.mcp_servers` or attached to an individual agent, so the product itself acts as an MCP client using those servers' tools. missing for 10: independent or hands-on corroboration, detailed evidence on how servers are defined and configured (transports, server config format).",
+    "rationale": "LocalAI's first-party docs state that it connects AI models to external MCP servers. Servers can be selected per request via `metadata.mcp_servers` or attached to individual agents, so the client-side MCP capability is directly documented. Missing for 10: independent or hands-on corroboration of MCP server integration, and detailed docs on configuration and transport support beyond these brief mentions.",
     "evidenceIds": [
       "localai-docs-4",
       "localai-docs-33",
       "localai-docs-24",
       "localai-docs-25",
-      "localai-docs-36",
-      "localai-docs-5"
+      "localai-docs-5",
+      "localai-docs-36"
     ],
     "support": {
       "relation": "direct",
@@ -12138,7 +12156,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "LocalAI is primarily an inference runtime and platform, not just an agent, so shipping an official MCP server is a fair question and the axis applies. Every MCP mention in the evidence is client-side: LocalAI connects models and agents to external MCP servers. No evidence shows LocalAI itself running as an MCP server that other agents can connect to, so the verdict is none.",
+    "rationale": "LocalAI is an inference server and platform, not purely an agent, so shipping an official MCP server is a plausible capability and the axis applies. All of the MCP evidence is client-side: LocalAI connects its models and agents to external MCP servers. Nothing documents LocalAI itself exposing an MCP server endpoint for outside agents to connect to.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -12153,7 +12171,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "LocalAI ships a first-party natural-language agent, `local-ai chat`, which runs in the user's shell, reads files and runs commands on the machine behind an approval gate. In principle that lets a user drive LocalAI's own CLI by describing tasks in plain language. However, the evidence never shows the agent being used to administer LocalAI itself, such as installing models, configuring backends or managing nodes, so operating the product this way is only implied. Missing for 10: documented natural-language control of LocalAI's own management functions (model install, config, users, nodes), examples of the product operated via NL commands, independent or hands-on corroboration.",
+    "rationale": "LocalAI ships its own natural-language agent, `local-ai chat`. It runs in the user's shell, reads files and executes commands behind an approval gate, so the product can be driven conversationally. However, no evidence shows that this agent is meant to administer LocalAI itself, such as installing models, configuring backends or managing nodes through natural language. That use is only implied by its general shell-command ability. Missing for 10: documented natural-language control of LocalAI's own management functions (model gallery, configuration, agents), examples of NL-driven product operations, independent or hands-on corroboration.",
     "evidenceIds": [
       "localai-docs-10",
       "localai-docs-19",
@@ -12185,15 +12203,16 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "LocalAI ships an official `local-ai` binary with documented subcommands: `models list`, `run` for gallery, HuggingFace and Ollama models, and `chat`, an agent in your shell that runs commands behind an approval gate. It also takes CLI flags such as `--external-grpc-backends`, so the CLI directly serves AI-native workflows. Missing for 10: a comprehensive CLI command reference in the evidence, independent hands-on corroboration of the CLI.",
+    "rationale": "LocalAI ships an official `local-ai` binary CLI with subcommands for gallery model management (`local-ai models list`), running models from huggingface:// or ollama:// URIs (`local-ai run`), and an agentic `local-ai chat` that reads files and runs shell commands behind an approval gate. Its documented CLI flags include `--external-grpc-backends` and `--preload-models`. Missing for 10: a comprehensive CLI command reference, documentation of machine-readable/scriptable output modes, and independent hands-on corroboration of the CLI.",
     "evidenceIds": [
       "localai-docs-7",
-      "localai-docs-10",
-      "localai-docs-19",
       "localai-docs-21",
       "localai-gh-3",
+      "localai-docs-10",
+      "localai-docs-19",
+      "localai-gh-2",
       "localai-docs-11",
-      "localai-gh-2"
+      "localai-docs-12"
     ],
     "support": {
       "relation": "direct",
@@ -12205,12 +12224,16 @@
           "quote": "local-ai models list          # List available models in the gallery"
         },
         {
-          "evidenceId": "localai-docs-10",
-          "quote": "local-ai chat reads your files and runs commands on your machine, behind an approval gate you control."
-        },
-        {
           "evidenceId": "localai-docs-21",
           "quote": "local-ai run huggingface://TheBloke/phi-2-GGUF/phi-2.Q8_0.gguf"
+        },
+        {
+          "evidenceId": "localai-docs-10",
+          "quote": "an agent in your own shell. local-ai chat reads your files and runs commands on your machine, behind an approval gate you control."
+        },
+        {
+          "evidenceId": "localai-docs-19",
+          "quote": "`local-ai chat`, an agent in your shell that runs commands behind an approval gate."
         },
         {
           "evidenceId": "localai-docs-11",
@@ -12223,17 +12246,17 @@
     "productId": "localai",
     "storyId": "agentic-public-api",
     "verdict": "full",
-    "quality": 8,
+    "quality": 9,
     "confidence": "high",
-    "rationale": "LocalAI's core interface is a documented public HTTP API. It is OpenAI-compatible and works with any OpenAI SDK or client, and it also supports the Anthropic Messages API, the Open Responses API and functions/tools calling. Model management is reachable through the /models/apply endpoint, with per-user API keys when auth is enabled. Probes found no machine-readable OpenAPI spec on the docs site, and docs for the management endpoints are thin. Missing for 10: a published OpenAPI/Swagger spec, fuller documentation of the management/admin endpoints, independent hands-on corroboration.",
+    "rationale": "LocalAI is itself an API server: its docs describe an OpenAI-compatible REST API usable with any OpenAI SDK, plus the Anthropic Messages and Open Responses APIs. The repository ships a full Swagger 2.0 spec, and every server exposes an interactive Swagger UI and unauthenticated discovery endpoints, with per-user API keys for authenticated access. The website probes returning 404 for openapi.json do not contradict this, because the spec is served from the repo and the running server. Missing for 10: independent or hands-on corroboration that the full API surface works as documented.",
     "evidenceIds": [
       "localai-docs-1",
       "localai-docs-16",
-      "localai-docs-17",
-      "localai-docs-12",
       "localai-docs-32",
-      "localai-docs-9",
-      "localai-probe-3"
+      "localai-swagger-spec-20261106",
+      "localai-swagger-ui-20261106",
+      "localai-docs-22",
+      "localai-docs-12"
     ],
     "support": {
       "relation": "direct",
@@ -12245,20 +12268,20 @@
           "quote": "LocalAI exposes an OpenAI-compatible API. You can use it with any OpenAI SDK or client by pointing it to http://localhost:8080."
         },
         {
+          "evidenceId": "localai-swagger-spec-20261106",
+          "quote": "The official mudler/LocalAI repository ships a full Swagger 2.0 specification of the REST API (info title \"LocalAI API\", description \"The LocalAI Rest API.\") at swagger/swagger.json"
+        },
+        {
+          "evidenceId": "localai-swagger-ui-20261106",
+          "quote": "The full interactive API documentation is available without authentication at /swagger/index.html."
+        },
+        {
           "evidenceId": "localai-docs-16",
           "quote": "LocalAI also supports the **Anthropic Messages API**, the **Open Responses API**, and more."
         },
         {
-          "evidenceId": "localai-docs-17",
-          "quote": "LocalAI supports running the OpenAI functions and tools API across multiple backends."
-        },
-        {
-          "evidenceId": "localai-docs-12",
-          "quote": "PRELOAD_MODELS (or --preload-models) takes a list in JSON with the same parameter of the API calls of the /models/apply endpoint."
-        },
-        {
-          "evidenceId": "localai-docs-32",
-          "quote": "One binary with an OpenAI-compatible API in front of it. Point an existing client at it and the calls keep working"
+          "evidenceId": "localai-docs-22",
+          "quote": "Run with `LOCALAI_AUTH=true` for multi-user support with admin/user roles, OAuth login, per-user API keys, and usage tracking."
         }
       ]
     }
@@ -12269,7 +12292,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "LocalAI documents its own credential system: with LOCALAI_AUTH=true it issues per-user API keys under admin/user roles, which allows a coarse least-privilege setup such as giving an agent a non-admin user's key. There is no documentation of per-key scopes or agent-specific credentials. Missing for 10: fine-grained per-key scopes or permissions, credentials issued to agents rather than users, model or endpoint restriction per key, key expiry or revocation docs, and independent corroboration.",
+    "rationale": "With LOCALAI_AUTH=true, LocalAI documents per-user API keys and admin/user roles. That gives coarse privilege separation, since an agent could hold a non-admin user's key. Nothing shows scoping individual keys to specific endpoints, models, or agents. Missing for 10: per-key scope or permission controls, agent-specific credential issuance, documentation of how roles restrict API access, independent or hands-on corroboration.",
     "evidenceIds": [
       "localai-docs-9",
       "localai-docs-22"
@@ -12292,7 +12315,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "LocalAI documents an OpenAI-compatible and Anthropic Messages-compatible API that works with third-party OpenAI or Claude SDKs and clients. That is API compatibility, not a LocalAI-published official SDK, so it is an adjacent capability that earns no credit here. No evidence shows LocalAI shipping its own first-party client libraries for any language.",
+    "rationale": "The evidence shows no first-party LocalAI SDK. Developers are told to use third-party OpenAI or Anthropic-compatible clients pointed at the server. The Swagger spec is only a building block from which an SDK could be generated. These are adjacent compatibility and spec features, not official SDKs shipped by LocalAI, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -12307,7 +12330,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "LocalAI is a self-hosted AI runtime and API server, so outbound event webhooks are a fair capability to ask about. Nothing in the evidence documents registrable outbound HTTP callbacks or event subscriptions. The pack covers OpenAI/Anthropic-compatible APIs, MCP client connections, agents and distributed nodes, none of which are webhooks.",
+    "rationale": "Subscribing to events via webhooks is a fair question for a self-hosted AI API server, so the axis applies. Nothing in the evidence pack documents registrable outbound HTTP callbacks for event subscription. The pack covers OpenAI-compatible endpoints, MCP client support, agents, Swagger docs and discovery endpoints, but none of these is a webhook mechanism.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -12322,7 +12345,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "LocalAI's own docs state that it supports the Anthropic Messages API and that this API is compatible with Claude clients, which covers the core of the story. The evidence is limited to two brief first-party mentions. Missing for 10: documented endpoint path and request/response details (streaming, tool use, feature coverage), independent or hands-on corroboration.",
+    "rationale": "LocalAI's own docs state it supports the Anthropic Messages API and that this API is compatible with Claude clients. That directly covers calling the server through an Anthropic-compatible messages endpoint. The documentation is thin, though: only one-line mentions, with no endpoint path, request examples or feature-parity details. Missing for 10: documented endpoint path and request/response examples, details on streaming and tool-use parity, independent or hands-on corroboration.",
     "evidenceIds": [
       "localai-docs-2",
       "localai-docs-16"
@@ -12346,31 +12369,56 @@
   {
     "productId": "localai",
     "storyId": "api-interactive-docs",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "LocalAI is an API server, so an interactive API reference is a fair question for it. The evidence shows only an OpenAI-compatible API and a built-in chat web UI, with no interactive reference or runnable API examples. Probes for OpenAPI/Swagger specs at all candidate paths returned 404, and the chat UI is an adjacent feature, not an API explorer.",
-    "evidenceIds": [],
+    "rationale": "LocalAI documents a built-in Swagger UI at /swagger/index.html on every server, backed by a full Swagger 2.0 spec in the official repo and advertised through the /.well-known/localai.json discovery endpoint. Requests can be sent from Swagger, which makes it an interactive, runnable API reference. The website's own OpenAPI paths return 404, but that only shows no publicly hosted copy exists; it does not contradict the per-server explorer. Missing for 10: independent or hands-on corroboration that the explorer works, evidence of prefilled example payloads, and a publicly hosted interactive reference that works without running a server.",
+    "evidenceIds": [
+      "localai-swagger-ui-20261106",
+      "localai-swagger-spec-20261106",
+      "localai-probe-3"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can explore an interactive API reference with runnable examples",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "localai-swagger-ui-20261106",
+          "quote": "Swagger UI — The full interactive API documentation is available without authentication at /swagger/index.html. Requests sent to protected endpoints from Swagger still require credentials."
+        },
+        {
+          "evidenceId": "localai-swagger-spec-20261106",
+          "quote": "The official mudler/LocalAI repository ships a full Swagger 2.0 specification of the REST API"
+        }
+      ]
     }
   },
   {
     "productId": "localai",
     "storyId": "api-machine-spec",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "LocalAI documents an OpenAI-compatible API, plus Anthropic Messages and Open Responses support. None of the evidence shows LocalAI publishing its own downloadable OpenAPI or equivalent spec. Probes of the standard OpenAPI and Swagger paths on localai.io all returned 404. Compatibility with OpenAI's API is adjacent at best and does not count as a LocalAI-provided machine-readable spec.",
-    "evidenceIds": [],
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "The official LocalAI repository ships a full Swagger 2.0 spec ('LocalAI API') at swagger/swagger.json, with a YAML twin, covering the /v1 OpenAI-compatible and LocalAI-specific endpoints. Every server also exposes an unauthenticated Swagger UI at /swagger/index.html, advertised via /.well-known/localai.json. The probe 404s are for openapi paths on the localai.io marketing site, not the server or repo, so they do not contradict this. Missing for 10: a documented raw-spec download URL on the running server (only the UI page is documented), and independent hands-on corroboration that the spec is complete and current.",
+    "evidenceIds": [
+      "localai-swagger-spec-20261106",
+      "localai-swagger-ui-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "localai-swagger-spec-20261106",
+          "quote": "The official mudler/LocalAI repository ships a full Swagger 2.0 specification of the REST API (info title \"LocalAI API\", description \"The LocalAI Rest API.\") at swagger/swagger.json (with a YAML twin)"
+        },
+        {
+          "evidenceId": "localai-swagger-ui-20261106",
+          "quote": "The full interactive API documentation is available without authentication at /swagger/index.html."
+        }
+      ]
     }
   },
   {
@@ -12379,7 +12427,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Sandbox or test environments are a fair question for a self-hosted AI runtime, so the axis applies, but the evidence documents no sandbox, test mode, or isolated environment separate from production data. The `local-ai chat` approval gate is a related control: it asks for confirmation before state-changing commands but does not isolate execution from real files. Running a separate local instance would be a user-side arrangement, which earns no credit.",
+    "rationale": "The evidence pack does not document a sandbox, test mode, or isolated environment for testing without touching production data. The closest item is the approval gate in `local-ai chat`, which asks before state-changing commands run on the user's real machine. That is an adjacent control, not sandbox isolation. Running LocalAI locally or in Docker is a deployment arrangement, not a product sandbox feature.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -12391,16 +12439,28 @@
   {
     "productId": "localai",
     "storyId": "api-versioning-policy",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence shows LocalAI exposes OpenAI-compatible and Anthropic-compatible APIs and claims that existing clients keep working. However, nothing documents API versioning or a deprecation policy, and probes found no published OpenAPI spec. API compatibility with other vendors' APIs is an adjacent property, not a versioning or deprecation guarantee.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "LocalAI's own Swagger 2.0 spec covers versioned \"/v1\" OpenAI-compatible endpoints, so a versioned API surface exists and is documented. However, the evidence never mentions a deprecation policy, versioning guarantees, or a changelog commitment, and the /v1 prefix may simply mirror OpenAI's path rather than reflect LocalAI's own versioning scheme. missing for 10: a documented deprecation policy, stated API versioning/stability guarantees, changelog or migration guidance, and independent corroboration.",
+    "evidenceIds": [
+      "localai-swagger-spec-20261106",
+      "localai-swagger-ui-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "localai-swagger-spec-20261106",
+          "quote": "covering the OpenAI-compatible /v1 endpoints and LocalAI-specific surfaces"
+        },
+        {
+          "evidenceId": "localai-swagger-ui-20261106",
+          "quote": "The full interactive API documentation is available without authentication at /swagger/index.html."
+        }
+      ]
     }
   },
   {
@@ -12409,7 +12469,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Hardware acceleration on Apple Silicon is a fair question for a local inference runtime like LocalAI, so the axis applies. However, nothing in the evidence mentions Apple Silicon, ARM or Metal. The GPU auto-detection claim names only NVIDIA, AMD and Intel, and the other hardware claims cover only the CPU path and the fact that no GPU is required.",
+    "rationale": "Hardware acceleration on Apple Silicon is a fair question for a local inference runtime like LocalAI, so the axis applies. The evidence pack never mentions Apple Silicon, ARM, or Metal. GPU auto-detection is documented only for NVIDIA, AMD, and Intel, and the CPU-first path is a different capability, so neither counts toward this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -12421,23 +12481,16 @@
   {
     "productId": "localai",
     "storyId": "automation-bulk-operations",
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "The only first-party evidence of multi-item handling is PRELOAD_MODELS (--preload-models), which takes a JSON list of models to install in one go using the /models/apply parameters. That is a narrow, startup-time bulk install rather than general bulk operations across many items. The other evidence covers single-request APIs, agents and MCP, none of which describe batch actions. Missing for 10: on-demand bulk or batch API operations (e.g., batch inference, bulk delete or update of models, agents or users), bulk actions in the UI or CLI, and independent or hands-on corroboration.",
-    "evidenceIds": [
-      "localai-docs-12"
-    ],
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Bulk operations are a fair axis for an inference server, for example a batch API or bulk model management, but the evidence documents no bulk or batch capability. PRELOAD_MODELS only accepts a JSON list of models to install at startup. That is a startup configuration setting, not a user-facing bulk operation across items, so it is adjacent and earns no credit.",
+    "evidenceIds": [],
     "support": {
-      "relation": "direct",
-      "coverage": "partial",
+      "relation": "adjacent",
+      "coverage": "none",
       "subject": "As an AI-native user, I can perform bulk operations across many items at once",
-      "citations": [
-        {
-          "evidenceId": "localai-docs-12",
-          "quote": "PRELOAD_MODELS (or --preload-models) takes a list in JSON with the same parameter of the API calls of the /models/apply endpoint."
-        }
-      ]
+      "citations": []
     }
   },
   {
@@ -12446,7 +12499,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "LocalAI ships a built-in agent platform with MCP tool support, so event-triggered automation is a fair question for it. However, the evidence pack documents no user-defined rules, triggers, or event-driven actions. Agents, tool calling, MCP connections and approval-gated shell commands are all invoked on demand, and model preloading is startup configuration rather than a rule engine.",
+    "rationale": "LocalAI is a self-hosted AI runtime with a built-in agent platform, so event-triggered automation rules are a fair question to ask of it. The evidence shows on-demand agents, MCP tool connections and an approval-gated shell agent, but nothing documents user-defined rules or triggers that fire actions automatically when events occur. Startup model preloading is a configuration setting, not an event-rule system, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -12461,7 +12514,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Scheduling recurring jobs is a fair question for LocalAI, since it ships a built-in agent platform. However, nothing in the evidence documents cron-style or recurring scheduling of jobs, agents or workflows. The agent and MCP features and the interactive `local-ai chat` shell agent are one-off, on-demand capabilities, not recurring schedules.",
+    "rationale": "Scheduling recurring jobs is a fair question for an AI runtime with a built-in agent platform, so the axis applies. The evidence covers the agent platform, MCP tools, the CLI, distributed mode and the APIs, but nothing documents cron-like or recurring scheduling of jobs or workflows. One-off agent runs and the `local-ai chat` shell agent are not recurring schedules.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -12476,7 +12529,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "LocalAI documents a built-in agent platform, so versioning and rolling back automations is a fair question for this product. The evidence pack never mentions versioning, change review, history, or rollback of agent or automation configurations. The shell agent's approval gate and the chat message Edit feature are adjacent behaviours, not versioning or rollback of automations.",
+    "rationale": "LocalAI documents a built-in agent platform, so versioning, reviewing and rolling back automations is a fair question for it. The evidence pack shows no version history, diff/review workflow or rollback for agents or automations. The chat message Edit feature and the command approval gate are adjacent features, not automation versioning.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -12489,16 +12542,16 @@
     "productId": "localai",
     "storyId": "broad-model-architecture-support",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "LocalAI documents running a range of models from one runtime: text, vision, images, video and voice, plus loading arbitrary GGUF models from HuggingFace or Ollama, a built-in gallery, and multiple backends. That covers LLMs and multi-modal workloads. missing for 10: evidence of support for hundreds of distinct architectures, explicit MoE model support, explicit embedding-model support, independent or hands-on corroboration.",
+    "rationale": "LocalAI documents a single runtime that serves text, vision, image, video, voice and 3D models across multiple backends, from a gallery, Hugging Face GGUF files or Ollama, so broad multi-modal model support is evidenced. The breadth claimed in the story is not: there is no evidence of 'hundreds of architectures' and nothing about MoE or embedding models. Missing for 10: evidence of hundreds of supported architectures, explicit MoE support, explicit embedding-model support, independent or hands-on corroboration.",
     "evidenceIds": [
       "localai-docs-26",
+      "localai-docs-17",
       "localai-docs-21",
       "localai-gh-3",
       "localai-docs-6",
-      "localai-docs-17",
-      "localai-docs-35"
+      "localai-docs-11"
     ],
     "support": {
       "relation": "direct",
@@ -12508,6 +12561,10 @@
         {
           "evidenceId": "localai-docs-26",
           "quote": "Text, voice, vision, images, video, 3D and agents, from one open runtime."
+        },
+        {
+          "evidenceId": "localai-docs-17",
+          "quote": "LocalAI supports running the OpenAI functions and tools API across multiple backends."
         },
         {
           "evidenceId": "localai-docs-21",
@@ -12520,10 +12577,6 @@
         {
           "evidenceId": "localai-docs-6",
           "quote": "Install models from the built-in gallery (Discover page)"
-        },
-        {
-          "evidenceId": "localai-docs-17",
-          "quote": "LocalAI supports running the OpenAI functions and tools API across multiple backends."
         }
       ]
     }
@@ -12534,7 +12587,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Building a runtime from source is a fair question for an open-source local inference server like LocalAI, but the evidence pack has no build-from-source instructions or dependency information. The 'one binary' and Docker run items describe how prebuilt artifacts are distributed and run, not compiling from source with minimal dependencies, so they earn no credit.",
+    "rationale": "Building from source is a fair question for an open-source AI runtime like LocalAI, so the axis applies. However, nothing in the pack documents a from-source build process or its dependency footprint. The evidence covers only prebuilt distribution (Docker image, a single binary, auto-downloaded backends) and runtime features, which do not count as building from source.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -12549,11 +12602,11 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "LocalAI's docs state it ships a built-in web interface for chatting with models with no extra tools needed. They also describe GUI chat interactions such as hovering over a saved message to edit it, and a built-in Discover page for installing models. missing for 10: independent or hands-on corroboration of the web chat UI, and deeper documentation of chat UI features such as conversation history management and in-UI model switching.",
+    "rationale": "LocalAI's own docs describe a built-in web interface for chatting with models that needs no extra tools. They also describe in-UI chat features such as editing saved messages without re-running the model. Missing for 10: detailed documentation of the chat UI's features (model switching, conversation history), independent or hands-on corroboration.",
     "evidenceIds": [
       "localai-docs-20",
       "localai-docs-28",
-      "localai-docs-6"
+      "localai-docs-14"
     ],
     "support": {
       "relation": "direct",
@@ -12567,10 +12620,6 @@
         {
           "evidenceId": "localai-docs-28",
           "quote": "To correct an earlier prompt or response without running the model again, hover over the saved message and select **Edit**."
-        },
-        {
-          "evidenceId": "localai-docs-6",
-          "quote": "Install models from the built-in gallery (Discover page)"
         }
       ]
     }
@@ -12581,7 +12630,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "LocalAI ships a first-party `local-ai chat` command, described as an agent in your own shell that answers questions, reads files and runs commands behind an approval gate. That directly provides terminal-based chat with a model. The evidence is brief, though: it does not document the interactive session flow, how to pick a model, or how conversation history works. Missing for 10: detailed docs on session usage and model selection for `local-ai chat`, independent or hands-on corroboration.",
+    "rationale": "LocalAI ships a first-party `local-ai chat` command that runs as an agent in your own shell, answering questions conversationally and asking approval before state-changing commands. That directly delivers a terminal chat session with a local model. missing for 10: documentation of how to pick a specific model and session options for `local-ai chat`, and independent or hands-on corroboration of the interactive terminal experience.",
     "evidenceIds": [
       "localai-docs-10",
       "localai-docs-19",
@@ -12594,7 +12643,7 @@
       "citations": [
         {
           "evidenceId": "localai-docs-10",
-          "quote": "local-ai chat reads your files and runs commands on your machine, behind an approval gate you control."
+          "quote": "an agent in your own shell. local-ai chat reads your files and runs commands on your machine, behind an approval gate you control."
         },
         {
           "evidenceId": "localai-docs-19",
@@ -12613,11 +12662,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "LocalAI's own CLI can list gallery models (`local-ai models list`) and fetch and run models directly from Hugging Face or Ollama URIs (`local-ai run ...`). That covers browsing and downloading, but there is no evidence of a dedicated search command or of managing installed models from the CLI, such as removing, updating or listing local installs. missing for 10: CLI search/filter command, CLI management of installed models (delete/update/inspect), independent hands-on corroboration.",
+    "rationale": "LocalAI's own CLI can list models in the gallery (`local-ai models list`) and pull and run models directly from Hugging Face or Ollama URIs via `local-ai run`. That covers browsing and downloading from the command line, but nothing shows keyword search or ongoing management such as removing or updating models. Missing for 10: CLI search/filter of models, CLI model removal/update/management commands, in-depth CLI docs and independent hands-on corroboration.",
     "evidenceIds": [
       "localai-docs-7",
       "localai-docs-21",
-      "localai-gh-3"
+      "localai-gh-3",
+      "localai-docs-12"
     ],
     "support": {
       "relation": "direct",
@@ -12635,6 +12685,10 @@
         {
           "evidenceId": "localai-gh-3",
           "quote": "local-ai run ollama://gemma:2b"
+        },
+        {
+          "evidenceId": "localai-docs-12",
+          "quote": "PRELOAD_MODELS (or --preload-models) takes a list in JSON with the same parameter of the API calls of the /models/apply endpoint."
         }
       ]
     }
@@ -12645,7 +12699,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows LocalAI can load and run a model from the command line (`local-ai run huggingface://...`, `local-ai run ollama://...`). Nothing documents CLI flags or options for GPU layer offload or context length. Automatic GPU backend detection is a different capability and does not let the user customize offload, and the --preload-models parameter is not shown to cover these settings.",
+    "rationale": "The evidence shows LocalAI can load models from the CLI (`local-ai run huggingface://...`, `local-ai run ollama://...`) and preload them via `--preload-models`. Nothing documents a CLI flag or setting for GPU layer offload or context length. Automatic GPU backend detection is an adjacent feature and does not show user control over offload or context size.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -12660,14 +12714,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "The product's own CLI clearly starts the server: `local-ai run <model>` and `docker run -p 8080:8080 ... localai/localai`, with server flags such as --preload-models and --external-grpc-backends, after which the API is reachable at localhost:8080. Nothing in the evidence documents a stop, shutdown or lifecycle command, so only half the story is shown. Missing for 10: documented CLI stop/shutdown or service-management commands, an explicit statement that `local-ai run` launches the API server, and hands-on corroboration.",
+    "rationale": "LocalAI documents its own CLI command for launching the server with a model (`local-ai run ...`) and describes itself as one binary serving an OpenAI-compatible API on localhost:8080, which covers the start half of the story. Nothing in the evidence documents a CLI stop, shutdown or daemon-management command. missing for 10: documented CLI stop/shutdown command, background/daemon start-stop lifecycle management, independent hands-on corroboration.",
     "evidenceIds": [
       "localai-docs-21",
       "localai-gh-3",
-      "localai-docs-31",
-      "localai-docs-12",
-      "localai-docs-11",
-      "localai-docs-1"
+      "localai-docs-32",
+      "localai-docs-1",
+      "localai-docs-12"
     ],
     "support": {
       "relation": "direct",
@@ -12683,20 +12736,12 @@
           "quote": "local-ai run ollama://gemma:2b"
         },
         {
-          "evidenceId": "localai-docs-31",
-          "quote": "docker run -p 8080:8080 --name local-ai -ti localai/localai:latest"
+          "evidenceId": "localai-docs-32",
+          "quote": "One binary with an OpenAI-compatible API in front of it."
         },
         {
           "evidenceId": "localai-docs-12",
           "quote": "PRELOAD_MODELS (or --preload-models) takes a list in JSON with the same parameter of the API calls of the /models/apply endpoint."
-        },
-        {
-          "evidenceId": "localai-docs-11",
-          "quote": "The --external-grpc-backends parameter in the CLI can be used either to specify a local backend (a file) or a remote URL."
-        },
-        {
-          "evidenceId": "localai-docs-1",
-          "quote": "You can use it with any OpenAI SDK or client by pointing it to http://localhost:8080."
         }
       ]
     }
@@ -12705,9 +12750,9 @@
     "productId": "localai",
     "storyId": "client-library-bindings",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "LocalAI's docs say developers can call it from any OpenAI SDK or client by pointing it at the local endpoint, and that it supports the Anthropic Messages API for Claude clients. The pack shows no LocalAI-published Python or JavaScript libraries, so language-library access comes only through third-party SDK compatibility. Missing for 10: first-party LocalAI client libraries, language-specific SDK docs or examples for Python/JavaScript, and independent hands-on confirmation that existing SDKs work without issues.",
+    "rationale": "LocalAI does not document SDKs of its own. Its documented approach is to expose OpenAI-compatible and Anthropic Messages APIs, so developers can call the runtime from existing OpenAI or Claude client libraries by pointing them at the local server. Its Swagger spec could also be used to generate clients, but that is only a building block. missing for 10: first-party LocalAI-maintained Python/JavaScript client libraries, language-specific SDK docs or examples, independent hands-on corroboration of SDK usage.",
     "evidenceIds": [
       "localai-docs-1",
       "localai-docs-32",
@@ -12740,7 +12785,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows LocalAI serving OpenAI- and Anthropic-compatible APIs to clients, not acting as a client of cloud AI providers. Remote gRPC backends and MCP connections to external tools are adjacent features, not cloud-provider model integration. Nothing shows cloud models used alongside local ones in the same interface.",
+    "rationale": "Nothing in the evidence shows LocalAI connecting to cloud AI providers (such as hosted OpenAI or Anthropic models) alongside local models in its web interface. Its OpenAI- and Anthropic-compatible APIs are endpoints LocalAI serves to clients, not connections it makes to cloud providers. Remote gRPC backends, MCP tool servers and distributed worker nodes are adjacent features and earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -12755,7 +12800,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Offloading to a hosted cloud tier is a fair question for a local inference runtime, but the evidence shows no vendor-hosted cloud tier. The closest items are self-hosted distributed GPU worker nodes and the option to point external gRPC backends at a remote URL. Both are user-run infrastructure or developer building blocks, not a hosted offload service, so they earn no credit.",
+    "rationale": "Offloading to a hosted cloud tier is a fair question for a local inference runtime, but the evidence shows no LocalAI-hosted cloud tier for running large models without downloading them. The closest items are self-managed distributed GPU worker nodes and the option to point --external-grpc-backends at a remote URL. Both are building blocks the user would have to host themselves, not a hosted offload tier.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -12770,7 +12815,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Hosted-cloud offload with published pricing, rate limits, and usage caps is a fair question for local inference runtimes, since peers can offer such tiers. LocalAI's evidence describes only a self-hosted runtime (localhost API, distributed self-registered worker nodes, per-user usage tracking on your own deployment). Nothing documents a vendor-hosted cloud tier or its pricing, limits, or caps.",
+    "rationale": "A hosted cloud tier for offloading inference is a plausible offering for a local inference runtime, so the axis applies. However, the evidence pack documents no vendor-hosted cloud tier and no pricing, rate limits or usage caps. The per-user usage tracking it does document is a self-hosted multi-user feature, which is adjacent and earns no credit for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -12785,13 +12830,13 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "LocalAI documents the building blocks a coding agent backend needs: an OpenAI-compatible API that existing clients can point at, an Anthropic Messages API described as compatible with Claude clients, and OpenAI-style function and tool calling across backends. However, no evidence names a coding agent connected to it or documents a setup for one. missing for 10: explicit documentation of connecting coding agents (e.g. setup guides for specific agents), hands-on or independent confirmation that coding-agent tool-call loops work reliably against LocalAI, a published OpenAPI spec (probes returned 404).",
+    "rationale": "LocalAI documents its own OpenAI-compatible and Anthropic Messages APIs, which it describes as compatible with Claude clients. It also documents tool/function calling with automatic tool-call format detection. Together these are the backend surfaces a coding agent would use, but no evidence shows a coding agent actually configured and working against LocalAI. missing for 10: documented setup for a specific coding agent (e.g., a Claude-style or OpenAI-based coding CLI) pointed at LocalAI, evidence that agentic coding loops work reliably with tool calls against local models, independent or hands-on corroboration.",
     "evidenceIds": [
       "localai-docs-1",
       "localai-docs-2",
-      "localai-docs-32",
-      "localai-docs-17",
       "localai-docs-3",
+      "localai-docs-17",
+      "localai-docs-32",
       "localai-docs-16"
     ],
     "support": {
@@ -12808,12 +12853,12 @@
           "quote": "LocalAI supports the Anthropic Messages API, which is compatible with Claude clients."
         },
         {
-          "evidenceId": "localai-docs-32",
-          "quote": "Point an existing client at it and the calls keep working"
+          "evidenceId": "localai-docs-3",
+          "quote": "No configuration required - the autoparser detects the tool call format for any ggml/gguf model that was trained with tool support."
         },
         {
-          "evidenceId": "localai-docs-17",
-          "quote": "LocalAI supports running the OpenAI functions and tools API across multiple backends."
+          "evidenceId": "localai-docs-32",
+          "quote": "Point an existing client at it and the calls keep working"
         }
       ]
     }
@@ -12824,10 +12869,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "LocalAI is a local inference runtime, so cold-start speed is a fair axis. The evidence only says it ships as 'one binary' and can preload models. Nothing documents a fast cold start or how long it takes before inference begins, and preloading is a different control from startup speed.",
+    "rationale": "The evidence describes LocalAI as \"one binary\" with an OpenAI-compatible API, but nothing documents startup or cold-start latency, binary footprint, or time-to-first-inference. Model preloading (PRELOAD_MODELS) is a related startup control, not evidence of a fast cold start. Cold-start performance is a fair question for a local inference runtime, so the verdict is none rather than na.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As a power-user, I can get a fast cold start from a lightweight runtime binary instead of waiting seconds before inference begins",
       "citations": []
@@ -12839,7 +12884,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack documents an OpenAI-compatible server, distributed nodes and horizontal scaling. None of it states a maximum number of concurrent requests or connections, or the point where throughput degrades. Horizontal scaling is an adjacent feature and does not document a concurrency limit, so the axis applies but is unevidenced.",
+    "rationale": "Nothing in the evidence pack documents a maximum number of concurrent requests or connections, or the point at which throughput degrades. Distributed mode with horizontal scaling and GPU worker nodes are adjacent scaling features, not a documented concurrency limit. The Swagger API spec describes endpoints, not capacity.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -12852,9 +12897,9 @@
     "productId": "localai",
     "storyId": "container-deployment",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "LocalAI's own docs give an official container image and a docker run command (localai/localai:latest), so the core of running the runtime in a container is directly supported. PRELOAD_MODELS supports declarative model setup at startup. The reproducibility side is thin, though: the only documented example uses the floating :latest tag. Missing for 10: documented pinned or versioned image tags for reproducible deploys, compose/Kubernetes deployment guidance, GPU-specific container variants, and independent or hands-on corroboration.",
+    "rationale": "LocalAI's own getting-started docs give an official container image and a `docker run` command, so running the runtime in a container is a first-party capability. The reproducibility half of the story is thin: the only documented example uses the floating `latest` tag. PRELOAD_MODELS (`--preload-models`) offers declarative model setup, but its docs never tie it to containers. missing for 10: documented version-pinned image tags or digests, compose/Kubernetes deployment guidance, GPU-variant container images, persistent volume/model-path configuration for containers, and independent hands-on corroboration.",
     "evidenceIds": [
       "localai-docs-31",
       "localai-docs-12"
@@ -12881,7 +12926,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "LocalAI is a local inference server, so throughput via continuous batching and chunked prefill is a fair question to ask of it. However, nothing in the evidence pack mentions continuous batching, chunked prefill, or serving-throughput tuning. GPU auto-detection, distributed worker nodes and horizontal scaling are adjacent scaling features, not the named batching or prefill capabilities, so they earn no credit.",
+    "rationale": "LocalAI is an inference-serving runtime, so serving throughput via continuous batching and chunked prefill is a fair axis, but nothing in the evidence pack mentions continuous batching, chunked prefill, or throughput tuning. Distributed GPU worker nodes and horizontal scaling are a different capability and earn no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -12896,7 +12941,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Combined CPU+GPU offload is a fair question for a local inference runtime like LocalAI, so the axis applies. The evidence only covers CPU-only operation, automatic GPU backend detection and distributed GPU worker nodes. Nothing documents splitting a single model's layers between GPU VRAM and system RAM so that models larger than VRAM can run.",
+    "rationale": "The evidence shows LocalAI can run CPU-only ('No GPU required', a CPU path for every feature) and auto-detects GPUs to pick a backend. Nothing documents splitting a model across GPU VRAM and system RAM, such as partial layer offload, to run models larger than available VRAM. Distributed GPU worker nodes are a different capability and cannot be credited here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -12911,7 +12956,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "CPU architecture support is a fair question for a local inference runtime like LocalAI, so the axis applies. The evidence only says LocalAI runs without a GPU and ships a CPU path first. It never mentions PowerPC or any CPU architecture beyond x86/ARM, and generic CPU support does not show multi-architecture support.",
+    "rationale": "CPU architecture support is a fair question for a local inference runtime like LocalAI. The evidence only says inference runs on CPU without a GPU and that features ship a CPU path first. Nothing names architectures beyond x86 and ARM, such as PowerPC, so the applicable capability is unevidenced.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -12923,10 +12968,10 @@
   {
     "productId": "localai",
     "storyId": "custom-assistant-creation",
-    "verdict": "partial",
-    "quality": 6,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "LocalAI documents a built-in agent platform. Users can create and manage AI agents, configure them in the web UI, and attach MCP servers to an individual agent independent of its model, which supports task-specific assistants. The evidence is brief one-liners and does not show how agents are specialized beyond tool attachment. Missing for 10: documented per-agent instructions or system prompts, detail on agent configuration options, independent or hands-on corroboration.",
+    "rationale": "LocalAI documents a built-in agent platform where users create, manage and configure AI agents from the web UI. Each agent can have its own MCP servers attached independently of its model, which lets a user specialize agents for specific tasks. missing for 10: documentation of per-agent instructions/system prompts or persona configuration, depth of agent configuration options, and independent or hands-on corroboration.",
     "evidenceIds": [
       "localai-docs-5",
       "localai-docs-20",
@@ -12935,7 +12980,7 @@
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As a power-user, I can create specialized custom assistants configured for specific tasks",
       "citations": [
         {
@@ -12961,12 +13006,11 @@
     "productId": "localai",
     "storyId": "custom-model-identifier",
     "verdict": "full",
-    "quality": 6,
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "LocalAI's own docs describe Model Aliasing, which lets a developer set a custom nickname for a model and call it by that name through its OpenAI-compatible API. The evidence is a single announcement-level line, with no configuration details. Missing for 10: documentation of how aliases are defined (config file, CLI, or API), confirmation that aliases persist across reloads, and independent or hands-on corroboration.",
+    "rationale": "LocalAI's own docs describe a Model Aliasing feature that lets developers give a model a simpler, custom nickname and call it by that name, which matches assigning a custom identifier for API reference. The evidence is a single homepage announcement with no configuration or API-usage detail. missing for 10: documentation of how aliases are configured (config file/field syntax), explicit confirmation that aliases resolve in OpenAI-compatible API model parameters, and independent or hands-on corroboration.",
     "evidenceIds": [
-      "localai-docs-13",
-      "localai-docs-1"
+      "localai-docs-13"
     ],
     "support": {
       "relation": "direct",
@@ -12976,10 +13020,6 @@
         {
           "evidenceId": "localai-docs-13",
           "quote": "Model Aliasing: You can now set up model aliases, meaning you can call your favorite complex model name by a simpler, custom nickname."
-        },
-        {
-          "evidenceId": "localai-docs-1",
-          "quote": "LocalAI exposes an OpenAI-compatible API."
         }
       ]
     }
@@ -12990,7 +13030,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "LocalAI is an LLM inference server, so prefill/decode disaggregation is a fair axis for it. The evidence only shows distributed GPU worker nodes and horizontal scaling. Nothing documents splitting the prefill and decode phases across separate workers, so the scaling features are adjacent and earn no credit.",
+    "rationale": "LocalAI is an LLM inference server, so prefill/decode disaggregation is a fair axis to judge it on. The evidence only documents distributed GPU worker nodes and horizontal scaling. That is general distribution, not a capability that splits the prefill and decode phases across separate resources, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -13003,9 +13043,9 @@
     "productId": "localai",
     "storyId": "distributed-parallelism",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "low",
-    "rationale": "LocalAI documents its own distributed mode, in which GPU worker nodes self-register with a frontend coordinator and scale horizontally. That plausibly spreads inference load across multiple GPUs, roughly data-parallel style. The evidence never mentions tensor or pipeline parallelism, splitting a single model across GPUs, or multi-GPU configuration within one node. missing for 10: tensor parallelism, pipeline parallelism, explicit data-parallel/replica semantics, multi-GPU-per-node configuration docs, independent or hands-on corroboration.",
+    "rationale": "LocalAI's own docs describe a distributed mode: GPU worker nodes self-register with a frontend coordinator and scale horizontally. That roughly matches spreading inference across multiple GPUs, closest to data parallelism. Nothing documents tensor or pipeline parallelism, or splitting one model across GPUs. missing for 10: explicit tensor-parallel support, pipeline-parallel support, multi-GPU model sharding configuration within a node, explicit documentation that horizontal scaling distributes inference load (data parallelism), hands-on corroboration",
     "evidenceIds": [
       "localai-docs-8",
       "localai-docs-34"
@@ -13032,10 +13072,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "LocalAI is a local, offline-capable inference runtime, so document RAG is a fair question for it. However, the pack never documents automatic retrieval-augmented generation: no document ingestion, embeddings-based retrieval, or vector store is mentioned. The `local-ai chat` shell agent that \"reads your files\" is tool-driven file access behind an approval gate, which is an adjacent feature rather than automatic RAG over a user's document collection.",
+    "rationale": "The evidence shows LocalAI running locally with a built-in chat UI. Its `local-ai chat` shell agent can read files on your machine behind an approval gate, but that is agentic tool use, not automatic retrieval-augmented generation. Nothing in the pack documents document ingestion, embeddings, vector indexing or automatic retrieval over a user's documents, so the applicable RAG axis has no direct support.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As an ai-native user, I can chat with my own documents entirely offline using automatic retrieval-augmented generation",
       "citations": []
@@ -13047,7 +13087,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "LocalAI documents a built-in web UI for chatting and configuring agents, and a shell agent (`local-ai chat`) that reads files and runs commands. Nothing in the evidence describes an integrated document workspace where an agent drafts and edits documents with automatic saving. Editing saved chat messages and running shell commands are adjacent features, not this capability.",
+    "rationale": "LocalAI ships a built-in web UI and an agent platform, so an integrated document workspace is a fair question for it, but the evidence never describes one. The closest items are a shell agent (`local-ai chat`) that reads files and runs commands behind an approval gate, and the ability to edit saved chat messages. Neither is an integrated document drafting and editing workspace with automatic saving.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -13059,21 +13099,27 @@
   {
     "productId": "localai",
     "storyId": "download-models-from-huggingface",
-    "verdict": "partial",
-    "quality": 6,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "LocalAI's getting-started docs show a first-party CLI command that pulls a GGUF model straight from a Hugging Face URI and runs it, so the core story is directly supported. The only evidence, though, is a single command example with no explanation of supported repos, formats, file selection or authentication. Missing for 10: documentation of the huggingface:// scheme's scope (formats beyond GGUF, gated/private repos, quantization selection), and independent or hands-on corroboration that HF downloads work as shown.",
+    "rationale": "LocalAI's getting-started docs show a first-party CLI command that pulls a GGUF model straight from a Hugging Face repo by URI and runs it, which covers both the download and the run parts of the story. Support for other model sources (the built-in gallery and ollama:// URIs) shows the run command accepts remote model references generally. Missing for 10: detailed docs on the Hugging Face integration (supported formats beyond GGUF, gated or private repo authentication, file selection), and independent or hands-on corroboration that the huggingface:// flow works.",
     "evidenceIds": [
-      "localai-docs-21"
+      "localai-docs-21",
+      "localai-gh-3",
+      "localai-docs-6"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As a power-user, I can download and run open models directly from Hugging Face",
       "citations": [
         {
           "evidenceId": "localai-docs-21",
           "quote": "local-ai run huggingface://TheBloke/phi-2-GGUF/phi-2.Q8_0.gguf"
+        },
+        {
+          "evidenceId": "localai-gh-3",
+          "quote": "local-ai run ollama://gemma:2b"
         }
       ]
     }
@@ -13084,7 +13130,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Serving embedding models is a fair question for a local model-serving runtime like LocalAI, so the axis applies. The pack never mentions embeddings, an /embeddings endpoint, or retrieval/search use. A general OpenAI-compatible API and a list of text, voice, vision, image and video modalities do not show that embedding models are served, so no credit is given.",
+    "rationale": "Serving embedding models is a fair question for a local model-serving runtime, so the axis applies. However, no evidence item mentions embeddings, an /embeddings endpoint, or retrieval/search use. The general OpenAI-compatible API claim and the Swagger spec covering '/v1 endpoints' do not specifically document embedding support, so they cannot be credited here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -13099,7 +13145,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Licensing terms are a fair question for any self-hosted AI runtime, so the axis applies. However, nothing in the evidence pack states LocalAI's license or whether commercial or enterprise use needs a paid tier. The phrase \"one open runtime\" is marketing wording, not a documented license or commercial-use policy.",
+    "rationale": "Licensing terms are a fair question for any self-hostable AI runtime, but the evidence pack never states LocalAI's license, whether commercial or enterprise use is free, or whether any paid edition or subscription exists. The phrase \"one open runtime\" is marketing language, not a documented licensing statement. The other items cover API compatibility, MCP, authentication and distributed mode, none of which address licensing.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -13114,7 +13160,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "LocalAI's own docs show it loading a Q8_0 GGUF quantized model and handling ggml/gguf models, so it can run 8-bit integer-quantized weights. Nothing in the evidence covers the lower-bit end of the range or memory-footprint savings. Missing for 10: evidence of very low-bit (e.g., 2–4-bit) quantization support, documentation of the supported quantization formats/range, memory-footprint reduction claims, independent corroboration.",
+    "rationale": "LocalAI's own getting-started docs show it running an 8-bit quantized GGUF model (phi-2.Q8_0.gguf) and reference ggml/gguf models, so it runs at least 8-bit integer quantization. Nothing in the pack shows the very-low-bit end of the range or makes any memory-footprint claim. missing for 10: evidence of very-low-bit (e.g., 2-4 bit) quantization support, documentation of the range of supported quant levels, memory-footprint reduction claims or measurements, independent corroboration.",
     "evidenceIds": [
       "localai-docs-21",
       "localai-docs-3"
@@ -13141,7 +13187,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Whether a runtime upgrade can break previously downloaded quantized models is a fair question for a local inference runtime like LocalAI. However, the evidence never covers version compatibility, upgrade notes or quantized-format breakage policy. The only nearby items are GGUF model run commands and automatic backend download, which are adjacent features and do not address upgrade compatibility.",
+    "rationale": "LocalAI is a local model runtime that runs GGUF quantized models, so whether runtime upgrades break previously downloaded model files is a fair question for it. The evidence pack contains nothing on this: no compatibility policy, no release or migration notes, no format-versioning guarantees, and no breakage warnings. Mentions of GGUF loading and automatic backend downloads do not address upgrade compatibility.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -13156,7 +13202,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "LocalAI's docs show it directly running a GGUF file, with `local-ai run huggingface://TheBloke/phi-2-GGUF/phi-2.Q8_0.gguf`. They also reference tool-call autodetection for 'any ggml/gguf model', which confirms GGUF is a supported model format. Missing for 10: in-depth first-party docs on GGUF loading (backend, supported quantization levels, local-file loading) and independent or hands-on corroboration.",
+    "rationale": "LocalAI's getting-started docs show a GGUF file being run directly with `local-ai run huggingface://TheBloke/phi-2-GGUF/phi-2.Q8_0.gguf`. Its functions docs also state that tool-call formats are auto-detected \"for any ggml/gguf model\", which confirms GGUF is a natively supported model format. Missing for 10: in-depth documentation of GGUF loading options (local file paths, model config, quantization-level handling), backend details for GGUF, and independent or hands-on corroboration.",
     "evidenceIds": [
       "localai-docs-21",
       "localai-docs-3"
@@ -13183,7 +13229,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows only that LocalAI automatically detects GPU capabilities and downloads a matching backend, and that it ships a CPU path. Nothing documents diagnostic output, logs or warnings that explain why GPU acceleration failed or that a CPU fallback happened. Auto-detection is an adjacent feature, not the diagnostic capability this story asks for.",
+    "rationale": "The evidence shows LocalAI auto-detects GPU capabilities and downloads a matching backend, and that it ships a first-class CPU path. Nothing in the pack documents diagnostic output, logs or warnings that explain why GPU acceleration failed or that a silent CPU fallback happened. GPU detection is an adjacent feature, not the diagnostics this story asks for.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -13196,16 +13242,15 @@
     "productId": "localai",
     "storyId": "headless-server-mode",
     "verdict": "partial",
-    "quality": 7,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "LocalAI is documented as a single binary or Docker container that serves an OpenAI-compatible HTTP API, driven by CLI flags and environment variables such as PRELOAD_MODELS. That clearly supports headless server deployment. However, the docs never explicitly describe a no-GUI or headless mode (the built-in web interface ships by default), and they don't document use inside CI pipelines. The 'tested in CI' quote refers to LocalAI's own testing, not user pipelines. Missing for 10: an explicit headless/no-UI mode or flag to disable the web interface, documented CI-pipeline usage, and independent or hands-on corroboration.",
+    "rationale": "LocalAI ships as a single binary and a Docker image that serves an OpenAI-compatible HTTP API, and it can be launched and configured entirely from the CLI or environment (for example, preloading models with --preload-models). That points to server-side, non-interactive deployment. However, no doc explicitly states that it runs headless or that the built-in web UI can be turned off, and nothing shows use inside a CI pipeline. missing for 10: explicit headless/no-UI mode documentation, option to disable the built-in web interface, documented CI pipeline usage, independent hands-on corroboration.",
     "evidenceIds": [
       "localai-docs-31",
       "localai-docs-32",
-      "localai-docs-12",
       "localai-docs-21",
-      "localai-docs-1",
-      "localai-docs-29"
+      "localai-docs-12",
+      "localai-docs-1"
     ],
     "support": {
       "relation": "direct",
@@ -13218,15 +13263,15 @@
         },
         {
           "evidenceId": "localai-docs-32",
-          "quote": "One binary with an OpenAI-compatible API in front of it. Point an existing client at it and the calls keep working"
-        },
-        {
-          "evidenceId": "localai-docs-12",
-          "quote": "PRELOAD_MODELS (or --preload-models) takes a list in JSON with the same parameter of the API calls of the /models/apply endpoint."
+          "quote": "One binary with an OpenAI-compatible API in front of it."
         },
         {
           "evidenceId": "localai-docs-21",
           "quote": "local-ai run huggingface://TheBloke/phi-2-GGUF/phi-2.Q8_0.gguf"
+        },
+        {
+          "evidenceId": "localai-docs-12",
+          "quote": "PRELOAD_MODELS (or --preload-models) takes a list in JSON with the same parameter of the API calls of the /models/apply endpoint."
         }
       ]
     }
@@ -13237,7 +13282,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Paged attention KV-cache management is a fair question for an LLM inference runtime like LocalAI, so the axis applies. The evidence pack covers API compatibility, MCP, agents, GPU auto-detection and distributed nodes, but never mentions paged or block-based KV-cache memory management, fragmentation avoidance, or concurrent-request capacity.",
+    "rationale": "Paged KV-cache memory management is a fair axis for a local inference runtime like LocalAI, so the story applies. Nothing in the evidence pack mentions paged attention, KV-cache management, or memory-fragmentation handling. The items on GPU detection, distributed nodes and CPU paths are about other capabilities and do not transfer to this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -13252,7 +13297,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "LocalAI is a local runtime, and its own site claims voice support with real-time-feeling \"speech in ... over WebRTC\", which implies on-device speech recognition. However, the evidence never documents a transcription endpoint, a dictation-to-text flow, or which speech-to-text models are used; the speech-in claim is framed as a voice-agent conversation rather than dictation. missing for 10: explicit speech-to-text/transcription documentation, a streaming dictation workflow that outputs text, named on-device STT models, independent hands-on corroboration.",
+    "rationale": "LocalAI, a local runtime, documents real-time speech input over WebRTC as part of its voice pipeline, which implies on-device speech recognition at conversational speed. However, the evidence never explicitly describes transcription or dictation output, a transcription endpoint, or a speech-to-text model. Missing for 10: explicit speech-to-text/transcription documentation, a dictation workflow returning text, named on-device STT models, and independent hands-on corroboration of real-time transcription.",
     "evidenceIds": [
       "localai-docs-30",
       "localai-docs-26",
@@ -13284,7 +13329,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Serving LoRA adapters on a base model is a fair question for a local inference server like LocalAI. However, nothing in the evidence pack mentions LoRA adapters, adapter loading, or multi-adapter serving. Model aliasing, the gallery and distributed nodes are adjacent features and do not deliver this capability.",
+    "rationale": "Serving LoRA adapters is a fair question for a local inference server like LocalAI, so the axis applies. The evidence pack never mentions LoRA adapters, adapter loading, or multi-adapter serving on a shared base model. Model aliasing, the model gallery and distributed nodes are adjacent features and do not deliver this capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -13299,7 +13344,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Low-level engine tuning is a fair question for a local model-serving runtime like LocalAI, so the axis applies. However, nothing in the evidence documents overriding memory locking, mmap, or similar engine settings. The cited advanced options (external gRPC backends, model preloading) and automatic GPU backend detection are adjacent features, not the requested overrides.",
+    "rationale": "The axis applies to a local inference server like LocalAI, but the evidence pack never mentions memory locking, mmap, or any per-model low-level engine parameter overrides. The nearest items, --external-grpc-backends and PRELOAD_MODELS, are related CLI options rather than engine-tuning controls, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -13314,7 +13359,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Patch cadence for critical bugs and security vulnerabilities is a fair question for an open-source runtime like LocalAI. However, the evidence pack contains no release history, changelog, security advisories, or patch timelines; every item covers API compatibility, MCP, agents, models, or deployment features.",
+    "rationale": "Patch cadence and public release history are a fair question for an open-source runtime like LocalAI, so the axis applies. However, nothing in the evidence pack covers releases, changelogs, security advisories, or how fast critical bugs and vulnerabilities get fixed. The pack only documents API compatibility, MCP, agents, and Swagger.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -13329,7 +13374,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows LocalAI can fetch models from Hugging Face and Ollama sources (huggingface:// and ollama:// URIs) and run GGUF files. Nothing documents whether its downloaded model files or caches are stored in a layout other runtimes can reuse, or whether it can reuse another runtime's existing cache without re-downloading or re-converting. Fetching from a registry is a different capability from cache interoperability, so it earns no credit here.",
+    "rationale": "Nothing in the evidence documents whether LocalAI's downloaded model files or caches can be shared with other runtimes, or whether it can reuse another runtime's existing cache without re-downloading or re-converting. The `huggingface://` and `ollama://` run commands show LocalAI pulling models from external sources, which is a different capability. The `--external-grpc-backends` option concerns backends, not model storage.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -13342,13 +13387,13 @@
     "productId": "localai",
     "storyId": "model-config-management",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "LocalAI's built-in web interface manages model installations and agent configuration, and it lets you install models from a gallery Discover page. That covers the downloaded-models part of the story in one place. Model aliasing touches on per-model settings, but there is no documented saved-prompt library, and editing saved chat messages is chat history rather than reusable prompts. missing for 10: saved/reusable prompt management, per-model configuration editing in the same UI, independent or hands-on corroboration of the unified management view.",
+    "rationale": "LocalAI documents a built-in web interface for managing model installations, plus a gallery (Discover page) for installing models, so the downloaded-models part of the story is covered. There is no evidence of a saved-prompt library or a place to edit per-model configuration. The 'saved message' edit feature applies to chat history, and model aliasing is a related but different feature. missing for 10: saved prompt management, per-model configuration editing in the same UI, any single unified management view covering all three, independent or hands-on corroboration.",
     "evidenceIds": [
       "localai-docs-20",
       "localai-docs-6",
-      "localai-docs-13"
+      "localai-docs-7"
     ],
     "support": {
       "relation": "direct",
@@ -13364,8 +13409,8 @@
           "quote": "Install models from the built-in gallery (Discover page)"
         },
         {
-          "evidenceId": "localai-docs-13",
-          "quote": "You can now set up model aliases, meaning you can call your favorite complex model name by a simpler, custom nickname."
+          "evidenceId": "localai-docs-7",
+          "quote": "local-ai models list          # List available models in the gallery"
         }
       ]
     }
@@ -13375,11 +13420,12 @@
     "storyId": "model-hot-swapping",
     "verdict": "partial",
     "quality": 4,
-    "confidence": "low",
-    "rationale": "LocalAI's docs mention a /models/apply API endpoint and installing models from the built-in gallery, which implies models can be added to a running server. Nothing explicitly documents switching between multiple loaded models per request, or confirms that no restart is needed. Missing for 10: explicit docs on multi-model concurrent loading and per-request switching, confirmation that no restart is required, model unload/memory management details, and independent or hands-on corroboration.",
+    "confidence": "medium",
+    "rationale": "The docs reference a `/models/apply` API endpoint and in-UI gallery installation and management of models. Both suggest models can be added to a running server, but no evidence explicitly says multiple models stay loaded together or that clients switch between them per request without a restart. missing for 10: explicit documentation of hot-loading and unloading models at runtime, per-request model switching among several loaded models, behaviour when concurrent models are loaded, and independent or hands-on corroboration.",
     "evidenceIds": [
       "localai-docs-12",
-      "localai-docs-6"
+      "localai-docs-6",
+      "localai-docs-20"
     ],
     "support": {
       "relation": "direct",
@@ -13393,6 +13439,10 @@
         {
           "evidenceId": "localai-docs-6",
           "quote": "Install models from the built-in gallery (Discover page)"
+        },
+        {
+          "evidenceId": "localai-docs-20",
+          "quote": "LocalAI comes with a **built-in web interface** for chatting with models, managing installations, configuring AI agents, and more, with no extra tools needed."
         }
       ]
     }
@@ -13403,7 +13453,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows a model gallery (Discover page, `local-ai models list`), automatic GPU detection for choosing a backend, and a `local-ai chat` shell agent. None of it documents an AI assistant that recommends a model to fit the user's hardware and task before download. GPU auto-detection picks a backend, not a model, and the chat agent is a general-purpose assistant, so both are adjacent features rather than this capability.",
+    "rationale": "Recommending a model that fits the user's hardware and task is a fair question for a local model runtime, so the axis applies. The evidence shows a model gallery (Discover page, `local-ai models list`), automatic GPU detection that picks a backend, and a shell agent (`local-ai chat`). None of these is documented as an assistant that recommends which model to download based on hardware and task. Backend auto-selection and gallery browsing are adjacent features, not the recommendation capability itself.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -13418,7 +13468,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "The only evidence of quantized-model loading is a documented example that runs a GGUF Q8_0 quantized model directly from Hugging Face, plus a note that the autoparser handles ggml/gguf models. Nothing documents support for the named formats (FP8, INT4, GPTQ, AWQ). Missing for 10: documented FP8 support, INT4 support, GPTQ support, AWQ support, a list of supported quantization formats per backend, and independent or hands-on corroboration.",
+    "rationale": "The only quantization evidence is LocalAI running a GGUF model with Q8_0 quantization pulled from Hugging Face, plus mentions of ggml/gguf models. That shows it loads quantized GGUF models, but none of the formats the story names are documented. Missing for 10: documented support for FP8, INT4, GPTQ and AWQ models, a list of supported quantization formats per backend, and independent or hands-on corroboration.",
     "evidenceIds": [
       "localai-docs-21",
       "localai-docs-3"
@@ -13445,7 +13495,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Reserving capacity for concurrent requests is a fair question for a local inference runtime like LocalAI, so the axis applies. The pack only shows distributed mode with horizontal scaling, self-registering GPU worker nodes, and multi-user auth with usage tracking. These are related scaling and multi-tenancy features, not documented capacity reservation, parallel request slots, or steady throughput under concurrent agents or sessions.",
+    "rationale": "Concurrency and capacity reservation are fair questions for a local inference runtime, so the axis applies. However, the evidence never documents reserved or dedicated capacity, parallel request slots, or throughput guarantees under concurrent load. Distributed GPU worker nodes, horizontal scaling and multi-user auth are adjacent scaling and access features, not capacity reservation for steady concurrent throughput.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -13460,7 +13510,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "LocalAI is a local model-serving runtime, so controlling context memory allocation across concurrent model instances is a fair axis. The evidence pack documents nothing about context size settings, per-instance memory limits, or concurrent-instance memory management. GPU auto-detection and distributed worker nodes are related features, not this capability, so they earn no credit.",
+    "rationale": "Controlling context memory allocation is a fair question for a local inference runtime, so the axis applies. However, nothing in the evidence pack covers context-size settings, KV-cache or memory allocation, or running multiple model instances concurrently. Distributed GPU worker nodes and automatic GPU detection are adjacent features and earn no credit for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -13475,9 +13525,10 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "LocalAI's own docs state that it detects NVIDIA, AMD and Intel GPUs and downloads the matching backend, which directly covers running models across GPU vendors with vendor-tailored acceleration. Missing for 10: the specific kernel stacks (e.g. CUDA, ROCm, SYCL/oneAPI) are never named, there is no in-depth per-vendor setup or performance documentation, and there is no independent or hands-on corroboration.",
+    "rationale": "LocalAI's docs say it auto-detects NVIDIA, AMD and Intel GPUs and downloads the matching backend, so it runs models across several GPU vendors with vendor-specific acceleration. The support rests on a single doc line, with no detail on which kernels or backend builds each vendor gets. missing for 10: explicit naming of vendor kernels/backends (e.g., CUDA, ROCm, SYCL/Vulkan), per-vendor configuration or override docs, independent hands-on corroboration of GPU acceleration performance.",
     "evidenceIds": [
-      "localai-docs-23"
+      "localai-docs-23",
+      "localai-docs-8"
     ],
     "support": {
       "relation": "direct",
@@ -13487,6 +13538,10 @@
         {
           "evidenceId": "localai-docs-23",
           "quote": "LocalAI automatically detects your system's GPU capabilities (NVIDIA, AMD, Intel) and downloads the appropriate backend."
+        },
+        {
+          "evidenceId": "localai-docs-8",
+          "quote": "Distributed nodes: Add GPU worker nodes that self-register with a frontend coordinator"
         }
       ]
     }
@@ -13497,12 +13552,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "LocalAI runs as an HTTP server with an OpenAI-compatible API, published on port 8080 in the Docker quickstart. Multi-user auth with per-user API keys and OAuth strongly implies other clients reach it over the network. However, the docs only show `localhost:8080` and never explicitly document binding to a LAN address or connecting from other devices. Missing for 10: explicit docs on listen/bind address configuration for LAN exposure, a documented walkthrough of access from other devices, independent hands-on corroboration.",
+    "rationale": "LocalAI is itself an HTTP API server: it exposes an OpenAI-compatible API on port 8080, its Docker quickstart publishes that port, and it documents multi-user auth with per-user API keys and OAuth login, which fits other users and devices reaching the server. However, the docs only reference http://localhost:8080 and never explicitly describe LAN access or bind-address configuration. Missing for 10: explicit documentation of binding to a network interface or address for LAN access, guidance on reaching the server from other devices, and hands-on or independent corroboration.",
     "evidenceIds": [
       "localai-docs-1",
       "localai-docs-31",
-      "localai-docs-32",
-      "localai-docs-22"
+      "localai-docs-22",
+      "localai-docs-32"
     ],
     "support": {
       "relation": "direct",
@@ -13510,8 +13565,8 @@
       "subject": "As a power-user, I can serve models over my local network for access from other devices",
       "citations": [
         {
-          "evidenceId": "localai-docs-32",
-          "quote": "One binary with an OpenAI-compatible API in front of it. Point an existing client at it and the calls keep working"
+          "evidenceId": "localai-docs-1",
+          "quote": "LocalAI exposes an OpenAI-compatible API. You can use it with any OpenAI SDK or client by pointing it to http://localhost:8080."
         },
         {
           "evidenceId": "localai-docs-31",
@@ -13520,10 +13575,6 @@
         {
           "evidenceId": "localai-docs-22",
           "quote": "Run with `LOCALAI_AUTH=true` for multi-user support with admin/user roles, OAuth login, per-user API keys, and usage tracking."
-        },
-        {
-          "evidenceId": "localai-docs-1",
-          "quote": "LocalAI exposes an OpenAI-compatible API. You can use it with any OpenAI SDK or client by pointing it to http://localhost:8080."
         }
       ]
     }
@@ -13534,7 +13585,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows LocalAI exposes OpenAI- and Anthropic-compatible APIs that third-party clients can be pointed at manually, and it ships its own `local-ai chat` shell agent. Neither is a single-command launcher that starts popular third-party coding agent CLIs pre-configured for local models. API compatibility is only a building block that requires user-side configuration, and the first-party agent is a different feature, so no credit applies.",
+    "rationale": "The evidence shows OpenAI- and Anthropic-compatible APIs that third-party clients can be pointed at manually, plus LocalAI's own `local-ai chat` shell agent. Nothing documents a single command that launches third-party coding agent CLIs pre-configured for local models. API compatibility only enables a manual user-side setup, and the first-party chat agent is a different feature, so neither earns credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -13549,7 +13600,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Contributor pathways are a fair question for an open-source runtime like LocalAI, so the axis applies. The evidence pack only shows a GitHub repo and a description of 'one open runtime'. It never documents a contribution guide, PR or review process, or a path to collaborator or maintainer status.",
+    "rationale": "LocalAI is an open-source project hosted on GitHub, so a contribution and collaborator path is a fair question for it. However, the evidence pack contains nothing about contribution guidelines, pull-request review, maintainer status or contributor recognition. The repository references and the \"open runtime\" phrasing do not document any contribution process.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -13564,14 +13615,15 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "LocalAI's docs say it exposes an OpenAI-compatible API at http://localhost:8080 that works with any OpenAI SDK or client, launched via a single binary or a docker run command. Models can be loaded with `local-ai run` from Hugging Face or Ollama sources and are then served through that API. missing for 10: independent or hands-on corroboration that the endpoint serves arbitrary loaded models as claimed.",
+    "rationale": "LocalAI's first-party docs show it launching a local server (docker run -p 8080:8080, or local-ai run for Hugging Face and Ollama models) that exposes an OpenAI-compatible API at localhost:8080. Any OpenAI SDK or client can be pointed at it, and the repo ships a Swagger spec of the OpenAI-compatible /v1 endpoints. The llms.txt and openapi.json probes returning 404 do not contradict this, because the spec is served at /swagger on the running server. Missing for 10: independent hands-on corroboration that the API works with any loaded model across all backends.",
     "evidenceIds": [
       "localai-docs-1",
       "localai-docs-32",
       "localai-docs-31",
       "localai-docs-21",
       "localai-gh-3",
-      "localai-docs-16"
+      "localai-swagger-spec-20261106",
+      "localai-swagger-ui-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -13595,8 +13647,8 @@
           "quote": "local-ai run huggingface://TheBloke/phi-2-GGUF/phi-2.Q8_0.gguf"
         },
         {
-          "evidenceId": "localai-gh-3",
-          "quote": "local-ai run ollama://gemma:2b"
+          "evidenceId": "localai-swagger-spec-20261106",
+          "quote": "covering the OpenAI-compatible /v1 endpoints and LocalAI-specific surfaces"
         }
       ]
     }
@@ -13605,15 +13657,15 @@
     "productId": "localai",
     "storyId": "openness-api-parity",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "LocalAI documents a broad OpenAI-compatible API (plus the Anthropic Messages and Open Responses APIs) and a /models/apply endpoint for installing models, so core inference and model installation are reachable programmatically. However, the built-in web UI also manages agents and other configuration, and nothing documents API parity for those, or states that the UI is a thin layer over the API. Probes also found no published OpenAPI spec. Missing for 10: an explicit UI/API parity statement, documented API endpoints for agent configuration and user/admin management, a published OpenAPI spec, and independent hands-on corroboration.",
+    "rationale": "LocalAI ships a full Swagger REST spec covering OpenAI-compatible and LocalAI-specific endpoints, with a runtime discovery endpoint and interactive Swagger UI. A /models/apply endpoint shows that gallery model installation, which the UI's Discover page also does, is reachable via the API. However, no evidence explicitly claims UI-to-API parity or shows that UI functions such as agent configuration, user/role administration and message editing are exposed through the API. Missing for 10: explicit UI/API parity statement, documented API coverage of agent management and admin/user management, independent hands-on corroboration.",
     "evidenceIds": [
-      "localai-docs-1",
-      "localai-docs-16",
+      "localai-swagger-spec-20261106",
+      "localai-swagger-ui-20261106",
       "localai-docs-12",
       "localai-docs-20",
-      "localai-docs-32"
+      "localai-docs-1"
     ],
     "support": {
       "relation": "direct",
@@ -13621,20 +13673,20 @@
       "subject": "As an AI-native user, I can do everything through the API that I can do in the UI",
       "citations": [
         {
-          "evidenceId": "localai-docs-1",
-          "quote": "LocalAI exposes an OpenAI-compatible API. You can use it with any OpenAI SDK or client by pointing it to http://localhost:8080."
+          "evidenceId": "localai-swagger-spec-20261106",
+          "quote": "covering the OpenAI-compatible /v1 endpoints and LocalAI-specific surfaces"
+        },
+        {
+          "evidenceId": "localai-swagger-ui-20261106",
+          "quote": "The full interactive API documentation is available without authentication at /swagger/index.html."
         },
         {
           "evidenceId": "localai-docs-12",
-          "quote": "PRELOAD_MODELS (or --preload-models) takes a list in JSON with the same parameter of the API calls of the /models/apply endpoint."
+          "quote": "takes a list in JSON with the same parameter of the API calls of the /models/apply endpoint"
         },
         {
-          "evidenceId": "localai-docs-16",
-          "quote": "LocalAI also supports the **Anthropic Messages API**, the **Open Responses API**, and more."
-        },
-        {
-          "evidenceId": "localai-docs-20",
-          "quote": "LocalAI comes with a **built-in web interface** for chatting with models, managing installations, configuring AI agents, and more, with no extra tools needed."
+          "evidenceId": "localai-docs-1",
+          "quote": "LocalAI exposes an OpenAI-compatible API."
         }
       ]
     }
@@ -13645,7 +13697,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data export and portability is a fair question for a self-hosted AI runtime with chat history, agents and multi-user accounts, so the axis applies. However, the evidence pack documents no export feature for user data in open formats. OpenAI-compatible APIs, open model formats and self-hosting are adjacent openness traits, not a documented export capability.",
+    "rationale": "Data portability is a fair question for a self-hosted AI runtime that stores chats, agents, users and usage data. However, the evidence never documents an export feature or open export formats for that data. OpenAI-compatible APIs, GGUF and Hugging Face model loading, and the Swagger spec are about interoperability and importing models, not about exporting a user's data, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -13659,11 +13711,12 @@
     "storyId": "openness-open-license",
     "verdict": "partial",
     "quality": 5,
-    "confidence": "low",
-    "rationale": "LocalAI calls itself an \"open runtime\", and several evidence items come from a public GitHub repository (github.com/mudler/LocalAI), which suggests the source can be read. However, no item names an actual open-source license or confirms the full source is published under one. missing for 10: explicit license identification (e.g. MIT/Apache), first-party statement that the full source is openly licensed, independent corroboration of license terms.",
+    "confidence": "medium",
+    "rationale": "The evidence shows a public official GitHub repository (mudler/LocalAI) whose files can be read directly, and the vendor calls LocalAI \"one open runtime\", so the source is readable. However, no evidence names the license or confirms it is an OSI-style open license. missing for 10: explicit license identification (e.g., a LICENSE file or SPDX name), first-party statement that the code is open source under that license, independent corroboration.",
     "evidenceIds": [
       "localai-docs-26",
-      "localai-gh-2"
+      "localai-swagger-spec-20261106",
+      "localai-gh-1"
     ],
     "support": {
       "relation": "direct",
@@ -13675,8 +13728,8 @@
           "quote": "Text, voice, vision, images, video, 3D and agents, from one open runtime."
         },
         {
-          "evidenceId": "localai-gh-2",
-          "quote": "It answers questions, reads your files and runs commands on your machine, asking you to approve anything that changes state."
+          "evidenceId": "localai-swagger-spec-20261106",
+          "quote": "The official mudler/LocalAI repository ships a full Swagger 2.0 specification of the REST API"
         }
       ]
     }
@@ -13687,16 +13740,16 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "LocalAI is built to be self-hosted. The docs give a one-line Docker deployment, a single binary serving an OpenAI-compatible API on localhost, and a tested CPU path that needs no GPU. Distributed mode, multi-user auth and a GitHub repo show the core product runs entirely on the user's own infrastructure. Missing for 10: independent hands-on corroboration of a self-hosted deployment beyond first-party docs and the README.",
+    "rationale": "LocalAI is built to be self-hosted. The docs give a one-line Docker run command, describe a single binary serving an OpenAI-compatible API at localhost:8080, and state that no GPU is required and that a CPU path is tested in CI. They also document self-hosted extras such as distributed worker nodes and multi-user auth. Missing for 10: independent or hands-on corroboration of real-world self-hosting beyond vendor docs and the project's own repo.",
     "evidenceIds": [
       "localai-docs-31",
-      "localai-docs-1",
       "localai-docs-32",
+      "localai-docs-1",
       "localai-gh-1",
       "localai-docs-27",
-      "localai-docs-26",
-      "localai-docs-34",
-      "localai-docs-9"
+      "localai-docs-8",
+      "localai-docs-22",
+      "localai-docs-26"
     ],
     "support": {
       "relation": "direct",
@@ -13708,10 +13761,6 @@
           "quote": "docker run -p 8080:8080 --name local-ai -ti localai/localai:latest"
         },
         {
-          "evidenceId": "localai-docs-1",
-          "quote": "You can use it with any OpenAI SDK or client by pointing it to http://localhost:8080."
-        },
-        {
           "evidenceId": "localai-docs-32",
           "quote": "One binary with an OpenAI-compatible API in front of it."
         },
@@ -13721,7 +13770,11 @@
         },
         {
           "evidenceId": "localai-docs-27",
-          "quote": "Every feature ships a CPU path first."
+          "quote": "Every feature ships a CPU path first. That path is tested in CI, on the hardware most people already have"
+        },
+        {
+          "evidenceId": "localai-docs-8",
+          "quote": "Distributed nodes: Add GPU worker nodes that self-register with a frontend coordinator"
         }
       ]
     }
@@ -13732,10 +13785,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence documents installation only through a Docker container run command and describes the product as 'one binary'. Neither is a standard package manager such as Homebrew, apt, pip, npm or winget. A container image is a related but different distribution channel, so it earns no credit, and no package-manager install is shown.",
+    "rationale": "The evidence pack shows LocalAI distributed as a Docker image (`docker run ... localai/localai:latest`) and described as 'one binary', but nothing documents installation through a standard package manager such as Homebrew, apt, pip, or npm. A container image pull is a different distribution method, not a package-manager install, so it earns no credit for this story.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As a developer, I can install the runtime quickly using a standard package manager",
       "citations": []
@@ -13747,7 +13800,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "LocalAI documents installation from a prebuilt Docker image (`localai/localai:latest`), with no compiling from source. It also describes itself as \"one binary\" and automatically downloads the right prebuilt GPU backend, which supports the prebuilt-artifact story. missing for 10: explicit documentation of downloadable prebuilt binaries or OS packages (e.g. release assets, Homebrew/apt), install instructions beyond the Docker one-liner, independent hands-on corroboration.",
+    "rationale": "LocalAI documents a prebuilt Docker image (`docker run ... localai/localai:latest`) that installs without compiling. It describes itself as 'one binary' and auto-downloads the right prebuilt backend for the detected GPU. However, no evidence documents downloadable release binaries, OS packages, package-manager installs or an install script, so the 'binaries or packages' part is only implied. missing for 10: documented prebuilt binary downloads per OS/arch, package-manager or install-script options, independent or hands-on corroboration of non-source installs",
     "evidenceIds": [
       "localai-docs-31",
       "localai-docs-32",
@@ -13779,7 +13832,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Prefix caching is a fair performance axis for a local inference server like LocalAI, but nothing in the evidence pack mentions prefix caching, prompt caching, KV-cache reuse or any speedup for repeated prompts. The UI option to edit a saved message without re-running the model is a different feature and earns no credit here.",
+    "rationale": "Prefix caching is a fair performance axis for a local LLM inference server, so the story applies. Nothing in the evidence pack mentions prefix caching, prompt caching or KV-cache reuse. GPU detection, distributed nodes and the CPU-first path are adjacent performance features, not prefix caching, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -13792,14 +13845,14 @@
     "productId": "localai",
     "storyId": "privacy-data-residency",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "LocalAI is a self-hosted runtime. Its docs show it running on your own machine at localhost and deployable via Docker, so you decide where data lives by deciding where you run it. However, the evidence never explicitly addresses where data is stored or how to configure that location. Missing for 10: explicit documentation of where data, models and chat history are stored, configurable storage paths or locations, any stated residency or no-telemetry guarantee, and independent corroboration.",
+    "rationale": "LocalAI is a self-hosted runtime that serves its API from the user's own machine (localhost, a Docker container, or self-registered worker nodes). So data residency is effectively whatever location the user deploys it to, which is a property of the product's own local-first design. The evidence never explicitly addresses where data is stored, offers no residency or region controls, and does not describe where chats, models or agent data are persisted. missing for 10: explicit documentation of data storage location or persistence paths, documented residency guarantees (no external calls by default), and independent or hands-on corroboration.",
     "evidenceIds": [
       "localai-docs-1",
-      "localai-docs-31",
       "localai-gh-2",
-      "localai-docs-10"
+      "localai-docs-31",
+      "localai-docs-8"
     ],
     "support": {
       "relation": "direct",
@@ -13811,12 +13864,16 @@
           "quote": "You can use it with any OpenAI SDK or client by pointing it to http://localhost:8080."
         },
         {
+          "evidenceId": "localai-gh-2",
+          "quote": "It answers questions, reads your files and runs commands on your machine"
+        },
+        {
           "evidenceId": "localai-docs-31",
           "quote": "docker run -p 8080:8080 --name local-ai -ti localai/localai:latest"
         },
         {
-          "evidenceId": "localai-gh-2",
-          "quote": "It answers questions, reads your files and runs commands on your machine"
+          "evidenceId": "localai-docs-8",
+          "quote": "Distributed nodes: Add GPU worker nodes that self-register with a frontend coordinator"
         }
       ]
     }
@@ -13827,10 +13884,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows LocalAI is a self-hosted runtime serving an API at localhost and running agents on the user's machine. However, nothing in the pack documents a no-training guarantee, a data-usage policy, a training opt-out, or a no-telemetry statement. Local execution is only adjacent to this story and does not by itself document that user data is kept out of model training, so the applicable axis is unevidenced.",
+    "rationale": "LocalAI is a self-hosted runtime that serves models at localhost, so a data-training privacy question applies to it. However, nothing in the evidence pack states that user prompts or data are never sent off-machine or used for training, and no opt-out or privacy policy is documented. Local deployment alone is an architectural implication, not a documented guarantee, so it earns no credit.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As an AI-native user, I can prevent my data from being used to train AI models",
       "citations": []
@@ -13842,7 +13899,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data retention and deletion is a fair privacy question for a self-hosted AI runtime like LocalAI, so the axis applies. The evidence pack documents no retention settings, deletion controls, or data-purge capability. Editing saved chat messages and running the product locally are adjacent features, not documented retention or deletion controls, so they earn no credit.",
+    "rationale": "Data retention and deletion is a fair privacy-posture question for a self-hosted AI runtime, but the evidence pack documents no retention policy, history purge, or deletion controls. The only nearby feature is editing saved chat messages, which is a different capability and earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -13857,7 +13914,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Telemetry opt-out is a fair question for a self-hosted AI runtime like LocalAI, but the evidence pack never documents any telemetry setting or opt-out control. The only 'usage tracking' mention describes a per-user tracking feature turned on with LOCALAI_AUTH=true. That is an adjacent multi-user accounting capability, not a way to opt out of vendor telemetry, so it earns no credit.",
+    "rationale": "The evidence pack never documents a telemetry or usage-tracking opt-out for LocalAI. The only mention of 'usage tracking' is a multi-user admin feature enabled with LOCALAI_AUTH=true, which is an adjacent capability and not an opt-out control. A privacy opt-out is a fair question for a self-hosted AI runtime, so the axis applies and the absence of evidence is 'none'.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -13872,14 +13929,13 @@
     "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "LocalAI's docs show it runs as a local server you start yourself (docker run, local-ai run), serving an API at localhost:8080 with a CPU-first path and no GPU required, so inference on your own machine is clearly documented. However, the pack has no explicit statement that prompts and data never leave the device, such as a no-telemetry or offline guarantee, so the privacy half of the story is only implied. missing for 10: explicit documentation that no prompt/data egress or telemetry occurs, documented fully offline/air-gapped operation, independent or hands-on corroboration.",
+    "rationale": "LocalAI's docs show it running inference on the user's own hardware: a local server on localhost:8080, a local Docker or binary runtime, and a tested CPU path that needs no GPU. However, no cited item explicitly says prompts and data never leave the device or that it runs fully offline, so the privacy half of the story is only implied. Missing for 10: an explicit first-party guarantee that data and prompts stay on the device, documented fully offline or air-gapped operation, and independent or hands-on corroboration of local-only inference.",
     "evidenceIds": [
       "localai-docs-1",
       "localai-docs-31",
       "localai-docs-27",
       "localai-gh-1",
-      "localai-docs-21",
-      "localai-gh-2"
+      "localai-docs-21"
     ],
     "support": {
       "relation": "direct",
@@ -13911,7 +13967,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Speculative decoding is a fair performance axis for a local LLM inference runtime like LocalAI. Nothing in the evidence pack mentions speculative decoding, draft models or similar acceleration. GPU auto-detection and distributed nodes are adjacent performance features and earn no credit for this story.",
+    "rationale": "Speculative decoding is a fair performance axis for a local inference runtime like LocalAI, but nothing in the evidence pack mentions speculative decoding, draft models, or any similar generation-acceleration technique. GPU auto-detection and distributed nodes are adjacent hardware features and are not speculative decoding.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -13926,7 +13982,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Token streaming is a fair question for an inference server like LocalAI, but nothing in the evidence pack mentions streaming responses, server-sent events, or a `stream` parameter. The OpenAI-compatible API claims do not say that streaming is supported, and the WebRTC item describes real-time speech, not streaming generated text tokens to an application. Without first-party evidence of this capability, the verdict is none.",
+    "rationale": "The evidence pack documents an OpenAI-compatible API and Anthropic Messages API support, but no item mentions token streaming, server-sent events, or a stream parameter. Inferring streaming from general OpenAI compatibility would rely on outside knowledge. The WebRTC speech-out claim concerns real-time voice, not token streaming to an application, so it does not count toward this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -13941,7 +13997,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack contains no mention of grammar-constrained generation, JSON mode, or schema-enforced output for LocalAI. The closest items cover OpenAI-compatible function/tool calling and tool-call format auto-parsing, which is a related feature and not documented output constraint via grammars. Constrained output is a fair axis for an LLM serving runtime, so absence of evidence means none rather than na.",
+    "rationale": "Constrained decoding is a fair question for a model-serving runtime, but nothing in the evidence pack mentions grammars, JSON mode, or schema-constrained output. The OpenAI functions/tools support and the tool-call autoparser are related features, not documented grammar-based output constraints, so they earn no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -13956,7 +14012,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "LocalAI documents native tool calling: it serves the OpenAI functions/tools API across multiple backends, and an autoparser detects the tool-call format of GGUF models trained with tool support, with no configuration needed. Nothing in the evidence covers reasoning-parser support, such as separating thinking or reasoning content in responses, so only about half the story is evidenced. Missing for 10: any documentation of reasoning-parser support, and independent or hands-on corroboration of tool-call parsing.",
+    "rationale": "LocalAI documents native tool calling through the OpenAI functions and tools API across multiple backends. An autoparser detects the tool-call format for GGUF models trained with tool support, with no configuration needed. Nothing in the pack covers reasoning-parser support (e.g., extracting reasoning or thinking content), so only half the story is evidenced. Missing for 10: reasoning-parser support, independent or hands-on corroboration of tool calling, per-backend depth and limits of the autoparser.",
     "evidenceIds": [
       "localai-docs-17",
       "localai-docs-3",
@@ -13984,7 +14040,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "LocalAI's homepage lists 'vision' among the modalities its runtime serves, a first-party claim that it supports vision models. Nothing in the pack documents how images are passed alongside text or which vision-language models or backends are supported. missing for 10: dedicated vision/VLM documentation, an image-plus-text input API example (e.g. OpenAI-style image content in chat), a list of supported vision-language models or backends, hands-on or independent corroboration.",
+    "rationale": "LocalAI's homepage lists \"vision\" among the modalities its runtime supports, which is a first-party claim of vision capability. Nothing in the pack shows how image inputs are passed alongside text, which vision-language models or backends are supported, or how to use them through the OpenAI-compatible API. missing for 10: documentation of image+text multimodal chat input, list of supported VLM models/backends, API usage examples, hands-on or independent corroboration.",
     "evidenceIds": [
       "localai-docs-26"
     ],
@@ -14006,7 +14062,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never mentions a Vulkan backend or AMD acceleration that avoids a ROCm install. The only related item says LocalAI auto-detects AMD GPUs and downloads an 'appropriate backend', which does not establish Vulkan support or freedom from ROCm. That is adjacent at best and earns no credit.",
+    "rationale": "The evidence pack never mentions a Vulkan backend. Auto-detecting AMD GPUs and downloading an appropriate backend is adjacent: it does not show Vulkan acceleration or avoiding a ROCm install. The axis applies to a local inference runtime, but the capability is unevidenced.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -14021,7 +14077,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows LocalAI runs on CPU ('No GPU required', 'Every feature ships a CPU path first') and auto-detects GPU capabilities. Nothing in the pack mentions AVX, AVX2, AVX512, AMX, or any instruction-set-specific builds or detection. Generic CPU support is adjacent and does not show the product exploits these instruction sets for faster inference.",
+    "rationale": "The evidence shows LocalAI runs on CPU ('No GPU required', a CI-tested CPU path) and auto-detects GPUs, but nothing mentions AVX, AVX2, AVX512, AMX or CPU instruction-set detection or optimization. General CPU support is an adjacent capability and does not show that LocalAI uses these instruction sets for faster inference.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",

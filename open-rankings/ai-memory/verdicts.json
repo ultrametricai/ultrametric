@@ -8921,15 +8921,16 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Zep documents API calls an agent could invoke to add memory (thread.add_messages ingests into the graph), search it (hybrid semantic plus BM25 graph search), and delete it (edge and node delete). It also offers a Memory MCP Server and framework integrations that give agents direct access to their memory and Context Graph search. However, no update operation is evidenced, and the specific tool set exposed to agents through MCP or the integrations is not documented in the pack. Missing for 10: a documented update/edit memory operation, an explicit list of agent-invocable add/search/update/delete tools in the MCP server or integrations, and hands-on corroboration of agents self-managing memory mid-conversation.",
+    "rationale": "Zep documents API calls an agent could invoke itself to add memory (thread.add_messages ingests into the Context Graph), search it (hybrid semantic plus BM25 graph search), and delete it (edge, node, and user deletion). A Memory MCP Server and framework integrations expose this memory to agents and MCP clients, but the evidence never lists which tools the MCP server provides or shows an explicit update operation. missing for 10: documented explicit memory update/edit operation, evidence of which add/search/update/delete tools the Memory MCP Server exposes for mid-conversation agent self-invocation, independent hands-on corroboration.",
     "evidenceIds": [
       "zep-docs-20",
-      "zep-docs-22",
+      "zep-docs-9",
       "zep-docs-21",
       "zep-docs-13",
-      "zep-docs-42",
+      "zep-docs-6",
       "zep-docs-51",
-      "zep-docs-49"
+      "zep-docs-52",
+      "zep-docs-45"
     ],
     "support": {
       "relation": "direct",
@@ -8941,20 +8942,16 @@
           "quote": "Chat messages are added to threads using `thread.add_messages`, which both adds those messages to the thread history and ingests those messages into the user-level knowledge graph."
         },
         {
-          "evidenceId": "zep-docs-22",
+          "evidenceId": "zep-docs-9",
           "quote": "Zep graph search combines semantic similarity with BM25 full-text search."
         },
         {
           "evidenceId": "zep-docs-21",
-          "quote": "client.graph.edge.delete(uuid_=\"your_edge_uuid\")"
+          "quote": "Here's how to delete an edge from a graph: client.graph.edge.delete(uuid_=\"your_edge_uuid\")"
         },
         {
-          "evidenceId": "zep-docs-13",
-          "quote": "Deleting a node will also delete all edges connected to that node."
-        },
-        {
-          "evidenceId": "zep-docs-42",
-          "quote": "The Memory MCP Server lets an end user connect an [MCP](https://modelcontextprotocol.io) client (Claude, ChatGPT, Claude Code, Codex, Cursor, and others) to their own agent memory in Zep."
+          "evidenceId": "zep-docs-6",
+          "quote": "The Memory MCP Server lets an end user connect an MCP client (Claude, ChatGPT, Claude Code, Codex, Cursor, and others) to their own agent memory in Zep."
         },
         {
           "evidenceId": "zep-docs-51",
@@ -8967,13 +8964,14 @@
     "productId": "zep",
     "storyId": "agentic-agent-docs",
     "verdict": "full",
-    "quality": 8,
+    "quality": 9,
     "confidence": "high",
-    "rationale": "A live probe confirms an llms.txt file returns HTTP 200 at help.getzep.com/llms.txt with a structured Zep Documentation index, and a versioned /v3/llms.txt also exists. The docs pages are served as raw .md URLs, which makes them agent-readable. Missing for 10: no evidence of an llms-full.txt or first-party guidance on pointing agents at the docs, and no independent community corroboration of agents consuming them.",
+    "rationale": "A live probe returned HTTP 200 for https://help.getzep.com/llms.txt, which serves an agent-oriented doc index. A versioned v3/llms.txt also exists, and the v4 llms.txt points agents to the raw OpenAPI 3.1 spec. Doc pages are also served as raw .md files that agents can read directly. Missing for 10: no first-party guidance on how to point an agent at these docs, and no independent community confirmation of agents using them.",
     "evidenceIds": [
       "zep-probe-1",
       "zep-docs-43",
-      "zep-docs-18"
+      "zep-openapi-spec-20261106",
+      "zep-docs-1"
     ],
     "support": {
       "relation": "direct",
@@ -8983,6 +8981,10 @@
         {
           "evidenceId": "zep-probe-1",
           "quote": "PROBE llms.txt: HTTP 200 at https://help.getzep.com/llms.txt # Zep Documentation"
+        },
+        {
+          "evidenceId": "zep-openapi-spec-20261106",
+          "quote": "The v4 docs llms.txt advertises it under an \"## OpenAPI Specification\" heading"
         },
         {
           "evidenceId": "zep-docs-43",
@@ -8996,12 +8998,11 @@
     "storyId": "agentic-ai-insights",
     "verdict": "partial",
     "quality": 4,
-    "confidence": "medium",
-    "rationale": "Zep itself generates AI-derived output from the user's data. It produces natural-language thread summaries that it updates incrementally, and with scope=\"auto\" it composes a ready-to-use context block from edges, nodes, observations and summaries. This is summarization and retrieval delivered through the API for agents; there is no evidence of proactive insights or suggestions surfaced to the user inside the product. Missing for 10: actionable AI suggestions or recommendations, an in-product (dashboard) insights experience, insight generation beyond summaries and context assembly, independent or hands-on corroboration.",
+    "confidence": "low",
+    "rationale": "Zep generates and incrementally updates natural-language thread summaries from ingested messages. That is an AI-generated digest of the user's data produced by the product itself. Its auto-scoped Context Block composes relevant context automatically, but this is retrieval rather than insight generation. There is no evidence of suggestions, recommendations or in-dashboard insight surfaces. missing for 10: AI-generated suggestions/recommendations, insights surfaced inside the product UI/dashboard, analysis beyond per-thread summaries, independent or hands-on corroboration",
     "evidenceIds": [
       "zep-docs-8",
-      "zep-docs-10",
-      "zep-docs-49"
+      "zep-docs-10"
     ],
     "support": {
       "relation": "direct",
@@ -9014,7 +9015,7 @@
         },
         {
           "evidenceId": "zep-docs-10",
-          "quote": "let Zep dynamically compose the most relevant context across edges, nodes, episodes, observations, and thread summaries into a single ready-to-use block."
+          "quote": "let Zep dynamically compose the most relevant context across edges, nodes, episodes, observations, and thread summaries into a single ready-to-use block"
         }
       ]
     }
@@ -9025,7 +9026,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Zep is a context and memory platform, and a SaaS platform of this kind could plausibly offer user-configurable background automations, so the axis applies. The evidence shows no documented way for users to set up autonomous or scheduled automations. Zep-managed background processing, such as incrementally updated thread summaries and graph ingestion on add_messages, is adjacent internal behavior, not user-defined automation.",
+    "rationale": "The evidence pack documents no user-configurable automations, scheduled jobs, triggers, or recurring background workflows that a user can set up in Zep. The closest item is Zep's own incremental thread-summary generation, which is internal processing rather than a user-defined automation. It is an adjacent behavior and earns no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9040,7 +9041,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Zep is a SaaS context and memory platform with a dashboard, so a built-in assistant is a fair capability to ask about, but the evidence never documents an in-product AI assistant that users can delegate tasks to. The Memory MCP Server, the zepctl CLI and auto-generated thread summaries are adjacent features: they let external agents or developers use Zep, rather than providing an assistant inside the product.",
+    "rationale": "Zep is a SaaS context and memory platform with a dashboard, so an in-product AI assistant is a fair question for this kind of product. The evidence pack never documents a built-in assistant that users can delegate tasks to. The Memory MCP Server lets external MCP clients reach Zep memory, and Zep generates thread summaries itself, but both are adjacent features, not an in-product assistant.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9053,14 +9054,16 @@
     "productId": "zep",
     "storyId": "agentic-headless",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Zep documents its own terminal CLI, zepctl, which provides full access to users, threads, Context Graphs and data operations. It also offers a pip-installable SDK, so it can be driven programmatically without a UI. However, nothing in the evidence shows CI or pipeline use, non-interactive auth, or scripted automation workflows. Missing for 10: documented CI/pipeline usage, non-interactive/headless authentication (e.g., API key via env vars), machine-readable output or exit-code semantics, and independent hands-on corroboration.",
+    "rationale": "Zep is API-first: it ships a Python SDK, a full OpenAPI 3.1 REST API, and the zepctl CLI, which gives \"full access to Zep\" from the terminal, so scripted, headless use is directly supported. Graph cloning also supports isolated test data. However, nothing in the evidence documents CI pipelines, non-interactive or token-based auth for automation, or zepctl scripting and exit-code behavior. missing for 10: explicit CI/CD usage docs, non-interactive auth guidance for zepctl, independent hands-on corroboration of headless/CI automation.",
     "evidenceIds": [
       "zep-docs-7",
       "zep-docs-23",
       "zep-probe-3",
-      "zep-docs-47"
+      "zep-openapi-spec-20261106",
+      "zep-docs-47",
+      "zep-graph-clone-testing-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -9072,12 +9075,16 @@
           "quote": "It provides full access to Zep, enabling you to manage users, threads, Context Graphs, and data operations from the terminal."
         },
         {
-          "evidenceId": "zep-probe-3",
-          "quote": "official CLI documented at https://help.getzep.com/zepctl-cli"
+          "evidenceId": "zep-openapi-spec-20261106",
+          "quote": "help.getzep.com serves a full OpenAPI 3.1 document (info title \"SDK Reference\", 148 paths, servers https://api.getzep.com/api/v4)."
         },
         {
           "evidenceId": "zep-docs-47",
           "quote": "pip install zep-cloud"
+        },
+        {
+          "evidenceId": "zep-graph-clone-testing-20261106",
+          "quote": "Clone a shared Context Graph to create an isolated test copy of an account, project, product, or business-domain graph"
         }
       ]
     }
@@ -9085,10 +9092,10 @@
   {
     "productId": "zep",
     "storyId": "agentic-mcp-client",
-    "verdict": "none",
+    "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Zep is a context and memory layer. Its own data-ingestion pipeline could plausibly consume MCP servers as tool or data sources, so this MCP-client axis applies. The evidence only documents Zep acting as an MCP server (the Memory MCP Server and the experimental Graphiti MCP server) that external clients connect to. That server-side role is not credited here, and nothing shows Zep connecting to third-party MCP servers or using their tools.",
+    "rationale": "Zep is a memory and context-graph service that agents call. It is not an agent or tool-using runtime, so plugging in MCP servers so the product can use their tools is outside its role. The evidence documents only MCP server offerings (the Memory MCP Server and the Graphiti MCP server), which expose Zep to MCP clients. That is the opposite role and does not make the client axis applicable.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9103,9 +9110,9 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Zep documents an official Memory MCP Server that lets users connect MCP clients such as Claude, ChatGPT, Claude Code, Codex and Cursor to their Zep agent memory. It supports sign-in through Google Workspace or an enterprise identity provider, and ABAC policies govern what Memory MCP users can reach. The open-source Graphiti framework also ships an MCP server, though it is labelled experimental. Missing for 10: documentation of the specific MCP tools and operations exposed, and independent or hands-on corroboration of the Memory MCP Server.",
+    "rationale": "Zep documents an official Memory MCP Server that lets users connect MCP clients such as Claude, ChatGPT, Claude Code, Codex and Cursor to their Zep agent memory. It supports sign-in through Google Workspace or an enterprise identity provider, and governance docs cover ABAC least-privilege policies for Memory MCP users. A separate, experimental Graphiti MCP server also exists. Missing for 10: documentation of the specific tools and operations the Memory MCP server exposes, and independent or hands-on corroboration of the connection working.",
     "evidenceIds": [
-      "zep-docs-42",
+      "zep-docs-6",
       "zep-docs-53",
       "zep-docs-38",
       "zep-docs-54",
@@ -9119,8 +9126,12 @@
       "subject": "As an AI-native user, I can connect an agent via an official MCP server",
       "citations": [
         {
+          "evidenceId": "zep-docs-6",
+          "quote": "The Memory MCP Server lets an end user connect an MCP client (Claude, ChatGPT, Claude Code, Codex, Cursor, and others) to their own agent memory in Zep."
+        },
+        {
           "evidenceId": "zep-docs-53",
-          "quote": "The Memory MCP Server lets an end user connect an MCP client (Claude, ChatGPT, Claude Code, Codex, Cursor, and others) to their own agent memory in Zep. The user signs in through Google Workspace or your enterprise identity provider."
+          "quote": "The user signs in through Google Workspace or your enterprise identity provider."
         },
         {
           "evidenceId": "zep-docs-38",
@@ -9129,10 +9140,6 @@
         {
           "evidenceId": "zep-probe-2",
           "quote": "official MCP server documented at https://help.getzep.com/memory-mcp-server"
-        },
-        {
-          "evidenceId": "zep-docs-16",
-          "quote": "Connect Graphiti's Context Graphs to Claude, Cursor, and other MCP clients via the Graphiti MCP server."
         }
       ]
     }
@@ -9141,15 +9148,15 @@
     "productId": "zep",
     "storyId": "agentic-nl-commands",
     "verdict": "partial",
-    "quality": 5,
-    "confidence": "medium",
-    "rationale": "Zep ships a first-party Memory MCP Server that lets end users connect MCP clients such as Claude, ChatGPT and Cursor to their Zep memory, which allows natural-language operation of memory through those assistants. The Graphiti MCP server offers similar access but is labeled experimental. Zep itself has no native natural-language command interface: its primary surfaces are the SDK API and the zepctl CLI, and the language understanding comes from the external MCP client. Missing for 10: a native natural-language command interface, evidence of which operations (admin, deletion, graph management) can be done via natural language, and hands-on corroboration.",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "Zep has no native natural-language command interface. Its official Memory MCP Server does let end users reach their agent memory in Zep through MCP clients such as Claude, ChatGPT and Cursor, so they can work with memory conversationally through those assistants. The separate Graphiti MCP server, which lets assistants interact with Context Graph capabilities, is explicitly experimental. missing for 10: a first-party natural-language command surface for operating or administering Zep, evidence that MCP access covers operations beyond memory reads and writes, hands-on or independent corroboration of natural-language operation.",
     "evidenceIds": [
-      "zep-docs-6",
+      "zep-docs-42",
       "zep-docs-53",
       "zep-docs-32",
       "zep-docs-45",
-      "zep-docs-25"
+      "zep-probe-2"
     ],
     "support": {
       "relation": "direct",
@@ -9157,8 +9164,8 @@
       "subject": "As an AI-native user, I can operate the product with natural-language commands",
       "citations": [
         {
-          "evidenceId": "zep-docs-6",
-          "quote": "The Memory MCP Server lets an end user connect an MCP client (Claude, ChatGPT, Claude Code, Codex, Cursor, and others) to their own agent memory in Zep."
+          "evidenceId": "zep-docs-42",
+          "quote": "The Memory MCP Server lets an end user connect an [MCP](https://modelcontextprotocol.io) client (Claude, ChatGPT, Claude Code, Codex, Cursor, and others) to their own agent memory in Zep."
         },
         {
           "evidenceId": "zep-docs-32",
@@ -9175,9 +9182,9 @@
     "productId": "zep",
     "storyId": "agentic-official-cli",
     "verdict": "full",
-    "quality": 7,
-    "confidence": "medium",
-    "rationale": "Zep documents an official command-line tool, zepctl, that provides full access to administer users, threads, Context Graphs and data operations from the terminal, and a probe confirms the dedicated CLI docs page exists. The evidence establishes the CLI and its scope but says little about how it suits AI-native or agent-driven use. missing for 10: evidence of agent-friendly CLI features (machine-readable/JSON output, non-interactive auth, scripting), installation/command reference details, independent or hands-on corroboration.",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "Zep documents an official CLI, zepctl, for administering Zep projects. It claims full access to manage users, threads, Context Graphs, and data operations from the terminal, and a probe confirms the official CLI documentation page exists. missing for 10: details of commands, auth and installation in the evidence, AI-native/agent-oriented CLI features (e.g. machine-readable output), independent or hands-on corroboration.",
     "evidenceIds": [
       "zep-docs-7",
       "zep-docs-23",
@@ -9204,18 +9211,18 @@
     "productId": "zep",
     "storyId": "agentic-public-api",
     "verdict": "full",
-    "quality": 8,
+    "quality": 9,
     "confidence": "high",
-    "rationale": "Zep is driven programmatically through its documented API and SDK. The docs show a \"three-line API\" installed via `pip install zep-cloud`, concrete calls such as `thread.add_messages` and `client.graph.edge.delete`, single-call user deletion, API keys governed by ABAC, and API Logs of request activity. missing for 10: an explicit REST endpoint reference or OpenAPI spec in the evidence, and independent hands-on corroboration of driving the API.",
+    "rationale": "Zep publishes a full OpenAPI 3.1 spec covering 148 paths at api.getzep.com/api/v4. It also has Fern-rendered SDK reference pages with an in-page \"Try it\" API explorer, official SDKs, a versioned API, deprecation notices and migration maps. Everyday operations such as thread.add_messages, graph edge deletion and user deletion are documented as API calls. Missing for 10: independent or hands-on community corroboration of using the API in practice.",
     "evidenceIds": [
-      "zep-docs-39",
-      "zep-docs-47",
-      "zep-docs-48",
-      "zep-docs-21",
+      "zep-openapi-spec-20261106",
+      "zep-api-explorer-20261106",
       "zep-docs-5",
-      "zep-docs-49",
-      "zep-docs-12",
-      "zep-docs-55"
+      "zep-docs-21",
+      "zep-docs-48",
+      "zep-docs-47",
+      "zep-deprecation-wave-20261106",
+      "zep-migration-map-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -9223,28 +9230,20 @@
       "subject": "As an AI-native user, I can drive the product through a documented public API",
       "citations": [
         {
-          "evidenceId": "zep-docs-39",
-          "quote": "With a simple three-line API and sub-200ms retrieval, Zep helps you build personalized, reliable agents without building a context pipeline."
+          "evidenceId": "zep-openapi-spec-20261106",
+          "quote": "help.getzep.com serves a full OpenAPI 3.1 document (info title \"SDK Reference\", 148 paths, servers https://api.getzep.com/api/v4)."
         },
         {
-          "evidenceId": "zep-docs-47",
-          "quote": "pip install zep-cloud"
-        },
-        {
-          "evidenceId": "zep-docs-48",
-          "quote": "Chat messages are added to threads using thread.add_messages, which adds the messages to the thread history and ingests them into the user's Context Graph."
-        },
-        {
-          "evidenceId": "zep-docs-21",
-          "quote": "client.graph.edge.delete(uuid_=\"your_edge_uuid\")"
+          "evidenceId": "zep-api-explorer-20261106",
+          "quote": "each carry a \"Try it\" in-page API explorer alongside per-language code samples"
         },
         {
           "evidenceId": "zep-docs-5",
           "quote": "Deleting a User will delete all Threads and thread artifacts associated with that User with a single API call"
         },
         {
-          "evidenceId": "zep-docs-55",
-          "quote": "API Logs record supported API request activity."
+          "evidenceId": "zep-docs-48",
+          "quote": "Chat messages are added to threads using thread.add_messages, which adds the messages to the thread history and ingests them into the user's Context Graph."
         }
       ]
     }
@@ -9255,13 +9254,13 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Zep's governance docs say ABAC policies attach to API keys and UserGroups. These policies limit which actions and context each agent and Memory MCP user can reach, and are explicitly positioned for least-privilege agent access. missing for 10: documented workflow for issuing or rotating scoped keys, detail on policy granularity and attribute options, independent or hands-on corroboration.",
+    "rationale": "Zep's governance docs say ABAC policies attach to API keys, and these policies limit which actions and context each agent can reach. The docs explicitly frame this as least-privilege access for agents, so the product directly provides scoped credentials for agents. Missing for 10: detailed documentation of how keys are issued and scoped (policy syntax, per-key scope granularity, expiry/rotation), and independent or hands-on corroboration.",
     "evidenceIds": [
       "zep-docs-38",
-      "zep-docs-25",
       "zep-docs-54",
       "zep-docs-31",
-      "zep-docs-12"
+      "zep-docs-12",
+      "zep-docs-25"
     ],
     "support": {
       "relation": "direct",
@@ -9273,7 +9272,7 @@
           "quote": "Limit which actions and context each agent and Memory MCP user can reach with ABAC policies attached to API keys and UserGroups."
         },
         {
-          "evidenceId": "zep-docs-25",
+          "evidenceId": "zep-docs-54",
           "quote": "Use policies when you need least-privilege access to context for agents and Memory MCP users."
         },
         {
@@ -9287,15 +9286,16 @@
     "productId": "zep",
     "storyId": "agentic-sdks",
     "verdict": "full",
-    "quality": 7,
-    "confidence": "medium",
-    "rationale": "Zep documents an official Python SDK, installed with `pip install zep-cloud`. The quick start says you can add memory in three lines of code, and the docs show concrete client methods such as `client.graph.edge.delete` and `thread.add_messages(return_context=True)`. missing for 10: evidence of SDKs beyond Python (e.g. TypeScript/Go), an SDK reference or versioning documentation, and independent hands-on corroboration of SDK quality.",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Zep documents official SDKs: an installable Python package (`pip install zep-cloud`) with client methods such as `client.graph.edge.delete`, and an SDK Reference with per-language code samples across about 150 endpoints. A versioned SDK migration map covers Python, TypeScript and Go, and dated deprecation waves are published. missing for 10: independent or hands-on corroboration of SDK quality and usage.",
     "evidenceIds": [
       "zep-docs-47",
-      "zep-docs-1",
       "zep-docs-50",
-      "zep-docs-49",
-      "zep-docs-20"
+      "zep-api-explorer-20261106",
+      "zep-migration-map-20261106",
+      "zep-deprecation-wave-20261106",
+      "zep-openapi-spec-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -9307,16 +9307,16 @@
           "quote": "pip install zep-cloud"
         },
         {
-          "evidenceId": "zep-docs-1",
-          "quote": "Add agent memory to your app in three lines of code."
+          "evidenceId": "zep-migration-map-20261106",
+          "quote": "A method-by-method map from the Zep v3 SDK to v4, plus the behavior changes that need more than a rename"
+        },
+        {
+          "evidenceId": "zep-deprecation-wave-20261106",
+          "quote": "The V2 SDK is being deprecated in favor of the V3 SDK"
         },
         {
           "evidenceId": "zep-docs-50",
           "quote": "client.graph.edge.delete(uuid_=\"your_edge_uuid\")"
-        },
-        {
-          "evidenceId": "zep-docs-49",
-          "quote": "you can pass in the return_context=True flag to the thread.add_messages() method."
         }
       ]
     }
@@ -9327,7 +9327,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Zep is a hosted context and memory service, so event webhooks are a fair axis for it. The evidence pack documents an MCP server, a CLI, SDK calls, and audit and API logs, but nothing about registrable outbound HTTP callbacks or event subscriptions.",
+    "rationale": "Zep is a SaaS context/memory service, so registrable outbound webhooks are a fair axis for this kind of product. Nothing in the evidence pack documents webhooks or event subscriptions. The pack covers the API, CLI, MCP server and SDK reference, but no outbound HTTP callbacks.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9339,61 +9339,113 @@
   {
     "productId": "zep",
     "storyId": "api-interactive-docs",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 9,
     "confidence": "medium",
-    "rationale": "Zep is an API-first SaaS, so an interactive API reference is a fair question to ask of it. The evidence pack only shows static code snippets in guides (e.g., client.graph.edge.delete) and an llms.txt index. Nothing documents an interactive API explorer, playground or runnable examples, so the verdict is none.",
-    "evidenceIds": [],
+    "rationale": "Zep's Fern-rendered SDK Reference covers about 150 endpoints. Each page carries a \"Try it\" in-page API explorer with runnable requests and per-language code samples, and it is backed by a published OpenAPI 3.1 spec. missing for 10: independent or hands-on corroboration that the explorer works as described.",
+    "evidenceIds": [
+      "zep-api-explorer-20261106",
+      "zep-openapi-spec-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can explore an interactive API reference with runnable examples",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "zep-api-explorer-20261106",
+          "quote": "each carry a \"Try it\" in-page API explorer alongside per-language code samples"
+        },
+        {
+          "evidenceId": "zep-openapi-spec-20261106",
+          "quote": "help.getzep.com serves a full OpenAPI 3.1 document (info title \"SDK Reference\", 148 paths, servers https://api.getzep.com/api/v4)"
+        }
+      ]
     }
   },
   {
     "productId": "zep",
     "storyId": "api-machine-spec",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Zep is an API-driven SaaS, so a downloadable machine-readable API spec is a fair question for it. However, nothing in the evidence pack mentions an OpenAPI or equivalent spec file. The llms.txt file, MCP server, CLI and SDK install are adjacent machine-readable or programmatic surfaces, not an API specification, so they earn no credit.",
-    "evidenceIds": [],
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Zep serves a downloadable OpenAPI 3.1 document (148 paths, servers at api.getzep.com/api/v4). The v4 llms.txt advertises it under an \"OpenAPI Specification\" heading, and an openapi.json index links the spec files for each API version. The Fern-rendered reference with a \"Try it\" explorer is built from the same spec. Missing for 10: independent or hands-on corroboration that the spec is complete and stays in sync with the live API.",
+    "evidenceIds": [
+      "zep-openapi-spec-20261106",
+      "zep-api-explorer-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "zep-openapi-spec-20261106",
+          "quote": "help.getzep.com serves a full OpenAPI 3.1 document (info title \"SDK Reference\", 148 paths, servers https://api.getzep.com/api/v4)"
+        },
+        {
+          "evidenceId": "zep-openapi-spec-20261106",
+          "quote": "The raw OpenAPI 3.1 specification for this API is available at:"
+        }
+      ]
     }
   },
   {
     "productId": "zep",
     "storyId": "api-sandbox",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "A sandbox or test environment is a fair question for a hosted memory/context SaaS like Zep, so the axis applies. Nothing in the evidence describes a sandbox, test-mode, or dev environment isolated from production data. Mentions of administering 'Zep projects', running open-source Graphiti locally, and VPC deployment are adjacent workarounds or deployment options, not a documented sandbox capability.",
-    "evidenceIds": [],
+    "rationale": "Zep documents `graph.clone` as a way to create an isolated test copy of a Context Graph. That lets a user test against copied data without modifying the original production graph. However, the evidence says this is per-graph copying inside an account, not a separate sandbox environment or account-level test mode. missing for 10: a dedicated sandbox or test environment or mode, sandbox API keys or endpoints isolated from production, and independent or hands-on corroboration of the testing workflow.",
+    "evidenceIds": [
+      "zep-graph-clone-testing-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "zep-graph-clone-testing-20261106",
+          "quote": "Clone a shared Context Graph to create an isolated test copy of an account, project, product, or business-domain graph"
+        }
+      ]
     }
   },
   {
     "productId": "zep",
     "storyId": "api-versioning-policy",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Zep is an API-based SaaS memory service, so API versioning and a deprecation policy are fair questions to ask of it. Nothing in the evidence pack documents an API versioning scheme or a deprecation policy. The only hint is a 'v3' segment in a docs URL (zep-docs-43), and that page's content is about migrating from Mem0, not about API versioning or deprecation.",
-    "evidenceIds": [],
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "Zep's API is path-versioned (/api/v4 in the OpenAPI servers block) and its docs switch between v2, v3 and v4. It publishes dated deprecation waves that list removed methods with their replacements, plus a method-by-method v3-to-v4 migration map for Python, TypeScript and Go. Missing for 10: a standing deprecation policy stating guaranteed notice periods or support windows (the evidence shows individual dated waves, not a general policy), and independent or hands-on confirmation of how version transitions are handled.",
+    "evidenceIds": [
+      "zep-deprecation-wave-20261106",
+      "zep-migration-map-20261106",
+      "zep-openapi-spec-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "zep-deprecation-wave-20261106",
+          "quote": "This page covers four deprecation categories that take effect in February 2026"
+        },
+        {
+          "evidenceId": "zep-deprecation-wave-20261106",
+          "quote": "The API is path-versioned (/api/v4 in the spec servers block) and the docs are version-switchable (v2/v3/v4)."
+        },
+        {
+          "evidenceId": "zep-migration-map-20261106",
+          "quote": "A method-by-method map from the Zep v3 SDK to v4, plus the behavior changes that need more than a rename"
+        },
+        {
+          "evidenceId": "zep-openapi-spec-20261106",
+          "quote": "servers https://api.getzep.com/api/v4"
+        }
+      ]
     }
   },
   {
@@ -9402,16 +9454,15 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Zep documents an official Memory MCP Server that lets an end user connect Claude, ChatGPT, Claude Code, Codex, Cursor and other MCP clients to their own agent memory, so multiple off-the-shelf assistants share one Context Graph. ABAC policies also cover Memory MCP users. The separate Graphiti MCP server offers a self-hosted, experimental route to the same goal. Missing for 10: independent or hands-on corroboration that cross-client sharing works in practice, and detail on setup for individual users, since sign-in goes through Google Workspace or an enterprise identity provider.",
+    "rationale": "Zep's first-party Memory MCP Server lets an end user connect MCP clients (Claude, ChatGPT, Claude Code, Codex, Cursor and others) to their own agent memory in Zep, so multiple off-the-shelf assistants can share one memory. The open-source Graphiti MCP server, which is experimental, offers a similar path for Claude, Cursor and VS Code Copilot. Sign-in goes through Google Workspace or an enterprise identity provider, which suggests an organization-provisioned setup. missing for 10: independent or hands-on corroboration that memory is actually shared across tools, documented setup steps and the tools exposed per client.",
     "evidenceIds": [
       "zep-docs-6",
-      "zep-docs-42",
       "zep-docs-53",
+      "zep-probe-2",
       "zep-docs-38",
       "zep-docs-16",
       "zep-docs-32",
-      "zep-docs-45",
-      "zep-probe-2"
+      "zep-docs-45"
     ],
     "support": {
       "relation": "direct",
@@ -9421,10 +9472,6 @@
         {
           "evidenceId": "zep-docs-53",
           "quote": "The Memory MCP Server lets an end user connect an MCP client (Claude, ChatGPT, Claude Code, Codex, Cursor, and others) to their own agent memory in Zep. The user signs in through Google Workspace or your enterprise identity provider."
-        },
-        {
-          "evidenceId": "zep-docs-38",
-          "quote": "Limit which actions and context each agent and Memory MCP user can reach with ABAC policies attached to API keys and UserGroups."
         },
         {
           "evidenceId": "zep-docs-32",
@@ -9439,7 +9486,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence documents ingestion through thread.add_messages and the supported data types (JSON, text, message). zepctl mentions generic 'data operations'. Nothing documents async or batch ingestion at scale, or any way to check the status of background memory operations. The axis applies to a memory service, so the missing evidence yields none.",
+    "rationale": "The evidence shows ingestion through thread.add_messages and graph data types, but nothing documents batch ingestion, asynchronous background processing, or any API for checking the status of background memory operations. zepctl's vague mention of \"data operations\" does not establish this capability. This is an applicable axis for a memory service, so the absence of evidence yields none.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9452,15 +9499,16 @@
     "productId": "zep",
     "storyId": "automatic-memory-extraction",
     "verdict": "partial",
-    "quality": 7,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Zep automatically ingests raw chat messages into the user's Context Graph via thread.add_messages. Its Graphiti engine performs entity and edge extraction and fact invalidation, tracking how facts change over time, and Zep incrementally updates thread summaries. Together these cover autonomous fact extraction and consolidation from raw conversation. The evidence does not explicitly show that this consolidation runs in the background or that Zep judges which facts are salient enough to keep. missing for 10: explicit documentation of asynchronous/background consolidation, explicit salience filtering (deciding what is worth remembering), independent hands-on corroboration of extraction quality.",
+    "rationale": "Zep automatically ingests chat messages into a user-level Context Graph, and Graphiti documents entity and edge extraction, fact invalidation and tracking how facts change over time. Thread summaries are generated and incrementally updated by Zep, which shows some consolidation. However, the docs never say the system judges salience (what is worth remembering) or that consolidation runs asynchronously in the background. Missing for 10: explicit documentation of salience-based selection of facts, explicit background/asynchronous consolidation, and independent hands-on corroboration of extraction quality.",
     "evidenceIds": [
-      "zep-docs-48",
       "zep-docs-20",
+      "zep-docs-48",
       "zep-docs-52",
+      "zep-gh-1",
       "zep-docs-8",
-      "zep-gh-1"
+      "zep-docs-27"
     ],
     "support": {
       "relation": "direct",
@@ -9468,20 +9516,20 @@
       "subject": "As an AI-native user, the memory layer decides for itself what is worth remembering — extracting salient facts from raw conversation and consolidating them in the background",
       "citations": [
         {
-          "evidenceId": "zep-docs-48",
-          "quote": "Chat messages are added to threads using thread.add_messages, which adds the messages to the thread history and ingests them into the user's Context Graph."
+          "evidenceId": "zep-docs-20",
+          "quote": "Chat messages are added to threads using `thread.add_messages`, which both adds those messages to the thread history and ingests those messages into the user-level knowledge graph."
         },
         {
           "evidenceId": "zep-docs-52",
-          "quote": "entity and edge extraction, the bi-temporal model, fact invalidation, and hybrid retrieval"
+          "quote": "entity and edge extraction, the bi-temporal model, fact invalidation, and hybrid retrieval."
+        },
+        {
+          "evidenceId": "zep-gh-1",
+          "quote": "Graphiti's context graphs track how facts change over time, maintain provenance to source data, and support both prescribed and learned ontology"
         },
         {
           "evidenceId": "zep-docs-8",
           "quote": "A thread summary is a natural-language summary of the messages in a single thread, generated and incrementally updated by Zep."
-        },
-        {
-          "evidenceId": "zep-gh-1",
-          "quote": "Graphiti's context graphs track how facts change over time, maintain provenance to source data"
         }
       ]
     }
@@ -9489,34 +9537,16 @@
   {
     "productId": "zep",
     "storyId": "automation-bulk-operations",
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Zep documents a few single-call operations that affect many items. Deleting a User removes all associated Threads and thread artifacts in one API call, deleting a node cascades to all connected edges, and `thread.add_messages` ingests multiple messages at once. These are narrow cascade and batch behaviors, not a general bulk-operations capability. missing for 10: general bulk/batch APIs for selecting and acting on arbitrary sets of items (e.g. bulk delete or update of many users, edges or nodes), documented batch-ingestion limits, bulk operations via zepctl, and independent or hands-on corroboration.",
-    "evidenceIds": [
-      "zep-docs-5",
-      "zep-docs-35",
-      "zep-docs-13",
-      "zep-docs-48"
-    ],
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The pack documents no batch or bulk endpoint, such as bulk ingest, bulk update, or bulk delete across chosen items. What it does show is adjacent behavior: cascading deletes when a user or node is removed, a single-graph clone, and zepctl's vaguely described \"data operations\". None of these is a user-directed bulk operation across many items, so they earn no credit under the adjacent-feature rule.",
+    "evidenceIds": [],
     "support": {
-      "relation": "direct",
-      "coverage": "partial",
+      "relation": "adjacent",
+      "coverage": "none",
       "subject": "As an AI-native user, I can perform bulk operations across many items at once",
-      "citations": [
-        {
-          "evidenceId": "zep-docs-5",
-          "quote": "Deleting a User will delete all Threads and thread artifacts associated with that User with a single API call"
-        },
-        {
-          "evidenceId": "zep-docs-13",
-          "quote": "Deleting a node will also delete all edges connected to that node."
-        },
-        {
-          "evidenceId": "zep-docs-48",
-          "quote": "Chat messages are added to threads using thread.add_messages, which adds the messages to the thread history and ingests them into the user's Context Graph."
-        }
-      ]
+      "citations": []
     }
   },
   {
@@ -9525,7 +9555,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Event-driven automation rules are a reasonable capability for a context/memory platform, so the axis applies. However, the evidence pack documents no user-definable rules, triggers, or event-based actions. The return_context flag on thread.add_messages is a fixed per-call option rather than a configurable rule, and the quick start puts the burden of triggering Zep user creation on the developer's own application.",
+    "rationale": "Zep is a context and memory platform, so user-defined event-triggered automation is a fair question for it. The evidence pack documents no rule engine, triggers, or event-driven actions. The nearest items are adjacent and earn no credit: the quick start says the developer must create Zep users from their own app, and Zep's built-in automatic behaviors (thread summaries, return_context on add_messages) are fixed, not user-defined rules.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9540,7 +9570,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Zep is a context and memory platform, and a buyer could fairly ask whether it supports scheduled recurring jobs, such as periodic ingestion. Nothing in the evidence pack documents a scheduler, cron triggers or recurring workflows. Incrementally updated thread summaries and zepctl admin operations are adjacent features, not user-defined recurring schedules.",
+    "rationale": "Zep is a context and memory platform with an API, CLI, and MCP server. Scheduled recurring ingestion or maintenance jobs are a plausible automation feature for this kind of product, so the axis applies. Nothing in the evidence pack documents scheduling, cron-style triggers, or recurring workflows; the only automation shown is one-off API calls such as thread.add_messages and graph.clone.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9555,7 +9585,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Zep is an agent memory and context-graph service, not an automation or workflow platform, so versioning, reviewing and rolling back automations falls outside its product role. Nothing in the evidence shows it ships automations at all. Graphiti's temporal fact tracking, the audit and API logs, and zepctl administration concern memory data and access, not automation definitions, so they do not make the axis apply.",
+    "rationale": "Zep is an agent-memory and Context Graph service with no user-defined automations or workflows, so versioning, reviewing, and rolling back automations is a category error for this product type. The evidence on API path versioning, SDK deprecation waves, and graph cloning concerns API and data versions, not user automations, so it does not make this axis apply.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9570,7 +9600,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Zep's docs list JSON, text, and message as data types that can be ingested into a Context Graph, and state that the graph is built from chat messages, business data, documents, and JSON. This directly covers non-chat ingestion. The 2023 community comment about a conversation-history focus predates this and does not contradict current docs. missing for 10: documented ingestion API details for documents and JSON (method, size limits, chunking), hands-on or independent corroboration of document and business-data ingestion",
+    "rationale": "Zep's first-party docs say JSON, text, and messages are all ingestible data types for a Context Graph, and that it builds the graph from chat messages, business data, documents, and JSON. An older community note that Zep focused on conversation history describes earlier positioning; it does not show that non-chat ingestion fails. Missing for 10: documentation of the specific non-message ingestion API and its limits (e.g. document size or chunking), and independent or hands-on corroboration of document and JSON ingestion.",
     "evidenceIds": [
       "zep-docs-2",
       "zep-docs-27",
@@ -9602,7 +9632,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Zep's concepts docs list a Custom Entity/Edge Types feature that uses Pydantic-like classes to customize how entities and relations are created and retrieved. The Graphiti repo also says it supports both prescribed and learned ontology. An older HN thread (zep-comm-3) records devs calling custom schema a high priority but not yet implemented; that dates from before the feature shipped and does not contradict the current documentation. Missing for 10: in-depth docs showing how to define and register custom types and their limits, and independent hands-on corroboration of domain ontology customization.",
+    "rationale": "Zep's concepts docs list a first-party \"Custom Entity/Edge Types\" feature that uses Pydantic-like classes to customize how entities and relations are created and retrieved. Graphiti's GitHub README adds that it supports \"prescribed and learned ontology\". An older HN thread in which developers said custom schema support was not yet implemented predates these docs and concerned RDF/OWL import, so it does not concretely contradict the current feature. Missing for 10: in-depth documentation of how to define and register custom types, details on ontology scope and limits, and independent hands-on corroboration.",
     "evidenceIds": [
       "zep-docs-33",
       "zep-docs-3",
@@ -9627,40 +9657,40 @@
   {
     "productId": "zep",
     "storyId": "entity-graph-memory",
-    "verdict": "full",
-    "quality": 8,
-    "confidence": "high",
-    "rationale": "Zep's docs show messages and data are ingested into a user-level knowledge graph (Context Graph) with entity and edge extraction. Custom Pydantic-like entity and edge types are supported, and retrieval runs over nodes and edges. Community evidence confirms the deliberate shift to graph-based memory to fix poor recall. Missing for 10: explicit documentation or benchmarks showing multi-hop graph traversal or multi-hop question answering (search is described as semantic plus BM25), and independent hands-on corroboration of entity-centric query quality.",
+    "verdict": "partial",
+    "quality": 6,
+    "confidence": "medium",
+    "rationale": "Zep documents a Context Graph built from ingested messages and data. Its nodes and edges come from entity and relationship extraction, with custom entity and edge types, and search can return edges and nodes. Community discussion confirms the move to graph-based memory. The evidence does not show multi-hop traversal or entity-centric query answering. Documented retrieval is semantic plus BM25 hybrid search, not graph traversal, so the story's stated purpose is only implied. Missing for 10: documented multi-hop or graph-traversal querying, explicit entity-centric query APIs (such as neighborhood or entity lookup), and independent hands-on evidence that multi-hop questions are answered.",
     "evidenceIds": [
-      "zep-docs-20",
       "zep-docs-52",
       "zep-docs-33",
+      "zep-docs-48",
       "zep-docs-10",
       "zep-docs-13",
-      "zep-gh-2",
-      "zep-comm-1",
-      "zep-docs-27"
+      "zep-docs-9",
+      "zep-gh-1",
+      "zep-comm-1"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As an ml-engineer, I can store memories as a knowledge graph of entities and relationships so multi-hop and entity-centric questions are answerable",
       "citations": [
         {
-          "evidenceId": "zep-docs-20",
-          "quote": "ingests those messages into the user-level knowledge graph"
-        },
-        {
           "evidenceId": "zep-docs-52",
-          "quote": "entity and edge extraction, the bi-temporal model, fact invalidation, and hybrid retrieval"
+          "quote": "entity and edge extraction, the bi-temporal model, fact invalidation, and hybrid retrieval."
         },
         {
           "evidenceId": "zep-docs-33",
           "quote": "Feature allowing use of Pydantic-like classes to customize creation/retrieval of entities and relations in the Context Graph."
         },
         {
+          "evidenceId": "zep-docs-48",
+          "quote": "ingests them into the user's Context Graph"
+        },
+        {
           "evidenceId": "zep-docs-10",
-          "quote": "let Zep dynamically compose the most relevant context across edges, nodes, episodes, observations, and thread summaries into a single ready-to-use block"
+          "quote": "compose the most relevant context across edges, nodes, episodes, observations, and thread summaries into a single ready-to-use block"
         },
         {
           "evidenceId": "zep-docs-13",
@@ -9675,7 +9705,7 @@
     "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Zep documents first-party agent-framework integrations that persist conversation turns and retrieve Context Graph data. The docs explicitly name LangGraph, CrewAI and the Vercel AI SDK, but LangChain itself is never named, so the story's framework list is not completely covered. missing for 10: an explicit LangChain integration, per-framework integration docs showing setup depth, and independent or hands-on corroboration that the integrations work.",
+    "rationale": "Zep documents first-party agent-framework integrations that name LangGraph, CrewAI, and the Vercel AI SDK, among others. These integrations persist conversation turns and retrieve Context Graph data, search, and context placement. LangChain itself is not named in the evidence, so the story is not completely covered, and the integration docs are only summarized at the overview level. missing for 10: explicit documented LangChain integration, per-framework integration depth/setup detail, independent or hands-on corroboration of the integrations working.",
     "evidenceIds": [
       "zep-docs-41",
       "zep-docs-24",
@@ -9708,10 +9738,10 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Zep's docs say graph search combines semantic similarity with BM25 full-text search, so retrieval is hybrid rather than a single fixed vector search. A scope parameter (e.g. scope=\"auto\") lets developers steer which graph elements are searched, and Graphiti also documents hybrid retrieval. However, the evidence shows no metadata filters, no reranker options, and no way to pick keyword-only versus semantic-only modes. Missing for 10: documented metadata/attribute filters, reranking options, selectable search modes, independent hands-on corroboration.",
+    "rationale": "Zep documents graph search that combines semantic similarity with BM25 full-text search, so hybrid and keyword matching are built in. It also exposes a `scope` parameter, including `scope=\"auto\"`, which steers retrieval across edges, nodes, episodes, observations and thread summaries. The pack does not show that a developer can choose a keyword-only or semantic-only mode, apply metadata filters, or pick a reranker, so only part of the story is evidenced. missing for 10: documented metadata/attribute filters, selectable search modes, configurable reranking options, independent or hands-on corroboration.",
     "evidenceIds": [
-      "zep-docs-9",
       "zep-docs-22",
+      "zep-docs-9",
       "zep-docs-10",
       "zep-docs-52"
     ],
@@ -9727,10 +9757,6 @@
         {
           "evidenceId": "zep-docs-10",
           "quote": "set scope=\"auto\" and let Zep dynamically compose the most relevant context across edges, nodes, episodes, observations, and thread summaries into a single ready-to-use block."
-        },
-        {
-          "evidenceId": "zep-docs-52",
-          "quote": "entity and edge extraction, the bi-temporal model, fact invalidation, and hybrid retrieval."
         }
       ]
     }
@@ -9739,14 +9765,14 @@
     "productId": "zep",
     "storyId": "local-embedded-mode",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Zep's own open-source Graphiti framework is documented as a way to build and query a Context Graph locally, with entity extraction, temporal modeling and hybrid retrieval. The pricing page also lists a 'Your VPC' deployment option alongside Cloud. However, the main Zep memory product is installed as `zep-cloud`, and nothing in the evidence shows fully offline operation. missing for 10: evidence that Graphiti or Zep works with local LLMs and embedding models, documentation of an embedded in-process mode or its local storage requirements, confirmation that no cloud dependency remains, independent hands-on corroboration of fully local deployment.",
+    "rationale": "Zep's own open-source Graphiti framework is documented as building and querying a Context Graph \"locally\". The main Zep product, however, installs as `zep-cloud`, and its deployment options are listed only as Cloud or the customer's VPC. Nothing in the pack shows local or embedded LLM and embedding models, or a fully offline setup with no cloud dependency. Missing for 10: documented local or self-hosted model support (e.g. local LLMs and embedders), an explicit no-cloud or offline guarantee, an embedded in-process mode for the core Zep memory layer, and independent hands-on corroboration.",
     "evidenceIds": [
-      "zep-docs-52",
       "zep-docs-15",
+      "zep-docs-52",
       "zep-docs-17",
-      "zep-gh-2"
+      "zep-docs-47"
     ],
     "support": {
       "relation": "direct",
@@ -9768,17 +9794,17 @@
     "productId": "zep",
     "storyId": "long-term-memory-add-search",
     "verdict": "full",
-    "quality": 8,
+    "quality": 9,
     "confidence": "high",
-    "rationale": "Zep documents adding conversation messages with thread.add_messages, which ingests them into a user-level Context Graph. It also documents graph search that combines semantic similarity with BM25 to retrieve that context later, including context returned right after ingestion. Because the graph is per user rather than per thread, memory persists across sessions. Missing for 10: independent hands-on corroboration of recall quality, and explicit documentation that memory from one thread is retrieved in a later, separate session (this is only implied by the user-level graph design).",
+    "rationale": "Zep documents adding conversation messages via thread.add_messages, which ingests them into the user-level Context Graph. It also documents retrieving them later through graph search that combines semantic similarity with BM25, or through a Context Block. Because the graph is held per user rather than per thread, context carries across sessions. missing for 10: independent hands-on corroboration of recall quality, explicit documentation of cross-thread/session retrieval behavior.",
     "evidenceIds": [
       "zep-docs-20",
       "zep-docs-48",
       "zep-docs-22",
+      "zep-docs-9",
       "zep-docs-10",
       "zep-docs-49",
-      "zep-docs-24",
-      "zep-comm-5"
+      "zep-docs-24"
     ],
     "support": {
       "relation": "direct",
@@ -9794,12 +9820,12 @@
           "quote": "Zep graph search combines semantic similarity with BM25 full-text search. Semantic search finds conceptual matches, and full-text search finds exact terms."
         },
         {
-          "evidenceId": "zep-docs-49",
-          "quote": "Zep will perform a user graph search right after persisting the data and return the context relevant to the recently added messages."
-        },
-        {
           "evidenceId": "zep-docs-24",
           "quote": "The integrations persist conversation turns and retrieve data from the user's Context Graph."
+        },
+        {
+          "evidenceId": "zep-docs-49",
+          "quote": "Zep will perform a user graph search right after persisting the data and return the context relevant to the recently added messages."
         }
       ]
     }
@@ -9808,9 +9834,9 @@
     "productId": "zep",
     "storyId": "low-latency-retrieval-claims",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Zep's docs state a concrete latency target: \"sub-200ms context retrieval regardless of graph size or number of graphs\" on the performance page, repeated in the quick start. But this is a headline marketing figure, not percentile-based numbers or published measurements that back the claim, and nothing independent corroborates it. Missing for 10: p50/p95/p99 percentile figures, a published benchmark methodology or measured results, test conditions (graph size, load, region), independent or hands-on latency corroboration.",
+    "rationale": "Zep's performance docs state a retrieval-latency target of \"sub-200ms context retrieval regardless of graph size or number of graphs,\" and the quick start repeats the under-200ms figure. That is a documented target, but it is a marketing-level bound with no measured percentiles, benchmark methodology or independent measurements behind it. Missing for 10: measured p50/p95/p99 numbers, benchmark methodology and conditions, independent or hands-on latency corroboration.",
     "evidenceIds": [
       "zep-docs-34",
       "zep-docs-18",
@@ -9842,15 +9868,14 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Zep's governance docs describe authorization and audit controls on Context Graph operations. RBAC governs dashboard users, and ABAC policies attached to API keys and UserGroups limit which actions and context agents and Memory MCP users can reach (least-privilege). Audit Logs record dashboard activity and API Logs record API request activity. Missing for 10: independent or hands-on corroboration; explicit documentation of separate read vs. write permission rules; confirmation that API Logs cover all memory operations rather than only \"supported\" requests.",
+    "rationale": "Zep's governance docs describe RBAC for dashboard users and ABAC policies on API keys and UserGroups that limit which actions and context agents and Memory MCP users can reach. They also state that Context Graph operations are subject to authorization and audit controls, with Audit Logs for dashboard activity and API Logs for API requests. missing for 10: explicit documentation of read-versus-write permission granularity in policies, audit coverage beyond 'supported' API requests, independent or hands-on corroboration.",
     "evidenceIds": [
-      "zep-docs-44",
       "zep-docs-31",
       "zep-docs-38",
       "zep-docs-54",
-      "zep-docs-25",
+      "zep-docs-44",
       "zep-docs-55",
-      "zep-docs-12"
+      "zep-docs-25"
     ],
     "support": {
       "relation": "direct",
@@ -9858,16 +9883,16 @@
       "subject": "As a platform-engineer, I can govern who and what can read or write memory with roles, policies, or access-control lists, and audit that access",
       "citations": [
         {
-          "evidenceId": "zep-docs-44",
-          "quote": "Zep applies authorization and audit controls to Context Graph operations. Role-based access control governs dashboard users."
+          "evidenceId": "zep-docs-31",
+          "quote": "Role-based access control governs dashboard users. Attribute-based access control governs API keys and UserGroups."
         },
         {
           "evidenceId": "zep-docs-38",
           "quote": "Limit which actions and context each agent and Memory MCP user can reach with ABAC policies attached to API keys and UserGroups."
         },
         {
-          "evidenceId": "zep-docs-54",
-          "quote": "Use RBAC for humans. Use policies when you need least-privilege access to context for agents and Memory MCP users."
+          "evidenceId": "zep-docs-44",
+          "quote": "Zep applies authorization and audit controls to Context Graph operations."
         },
         {
           "evidenceId": "zep-docs-55",
@@ -9880,14 +9905,14 @@
     "productId": "zep",
     "storyId": "memory-deletion-erasure",
     "verdict": "full",
-    "quality": 9,
-    "confidence": "high",
-    "rationale": "Zep's docs cover all three granularities. A single fact (edge) can be deleted via client.graph.edge.delete, deleting an entity node also deletes all its connected edges, and deleting a User removes all threads and artifacts in one API call, which Zep explicitly frames for Right To Be Forgotten compliance. missing for 10: independent or hands-on corroboration that erasure is complete, explicit confirmation that user deletion purges the user's Context Graph data.",
+    "quality": 8,
+    "confidence": "medium",
+    "rationale": "Zep documents deletion at all three levels the story asks for. A single memory (fact) can be removed with `client.graph.edge.delete`. Deleting a node deletes the entity and all edges connected to it. Deleting a User removes all Threads and thread artifacts in one API call, which the docs explicitly frame as handling Right To Be Forgotten requests. Missing for 10: explicit confirmation that user deletion also purges the user's Context Graph data and not only threads; independent or hands-on corroboration of the deletion behavior.",
     "evidenceIds": [
-      "zep-docs-21",
-      "zep-docs-13",
       "zep-docs-5",
-      "zep-docs-35"
+      "zep-docs-35",
+      "zep-docs-13",
+      "zep-docs-21"
     ],
     "support": {
       "relation": "direct",
@@ -9919,7 +9944,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Zep's own Graphiti temporal graph documents a bi-temporal model with fact invalidation and tracks how facts change over time, which plausibly retires superseded facts. However, nothing shows a developer can set a TTL, assign expiration dates, or apply recency-weighted decay to retrieval. Manual node and edge deletion is only an adjacent control and earns no credit. Missing for 10: developer-configurable TTL or expiry dates on memories, recency weighting or decay in search ranking, documentation that invalidated facts are excluded from Zep Cloud retrieval, independent or hands-on corroboration.",
+    "rationale": "Zep's Graphiti framework documents a bi-temporal model and fact invalidation, tracking how facts change over time. This is a first-party mechanism for retiring stale facts, but the evidence describes it only in one-line mentions. No developer-configurable TTL, expiration date, or recency-weighted decay is documented, and manual node/edge deletion is an adjacent control that earns no credit. missing for 10: developer-set TTL or expiration dates on memories, recency weighting or decay in retrieval, documentation that invalidated facts are excluded from search results, hands-on corroboration",
     "evidenceIds": [
       "zep-docs-52",
       "zep-gh-1",
@@ -9947,7 +9972,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Exporting memories is a fair question for a memory store, so the axis applies. The evidence pack has no documented export or bulk-dump capability for memories or Context Graphs in any machine-readable format. The nearby items do not count: zepctl's generic 'data operations', the Mem0 migration guide (import into Zep), deletion APIs, and the open-source Graphiti and VPC deployment options are adjacent features, not an export capability.",
+    "rationale": "The evidence pack documents no export or bulk-download capability for memories or Context Graphs in a machine-readable format. The Mem0 migration guide covers import into Zep, not export out of it. graph.clone copies a graph within the same account, and zepctl's generic \"data operations\" never mentions export. The open-source Graphiti framework and the OpenAPI spec are adjacent building blocks, not a documented export feature.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9962,7 +9987,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Zep's own Graphiti temporal knowledge graph framework documents fact invalidation and a bi-temporal model that tracks how facts change over time, which directly addresses superseding contradicted memories. However, the evidence is only a brief feature listing, with no detail on how contradictions are detected or resolved, and nothing on merging. The community note that Zep moved to graph memory because fact reconciliation was hard provides context, not proof of the behavior. Missing for 10: documented contradiction-detection and supersession mechanics, evidence of memory/entity merging or deduplication, explicit confirmation that the hosted Zep service applies this automatically, independent hands-on corroboration.",
+    "rationale": "Zep's first-party Graphiti framework documents a bi-temporal model with \"fact invalidation\" and context graphs that \"track how facts change over time\". That amounts to superseding stale facts when contradicting information arrives, and the Zep team says it moved to graph-based memory precisely because reconciling facts was hard. The evidence is a single thin mention, though, and is framed around Graphiti rather than the managed Zep cloud. missing for 10: explicit documentation of contradiction detection and update behavior in Zep cloud, evidence of merging or deduplicating memories, details on how invalidated facts are handled at retrieval, independent or hands-on corroboration.",
     "evidenceIds": [
       "zep-docs-52",
       "zep-gh-1",
@@ -9979,12 +10004,12 @@
           "quote": "entity and edge extraction, the bi-temporal model, fact invalidation, and hybrid retrieval"
         },
         {
-          "evidenceId": "zep-gh-1",
-          "quote": "Graphiti's context graphs track how facts change over time, maintain provenance to source data"
-        },
-        {
           "evidenceId": "zep-gh-2",
           "quote": "Unlike static knowledge graphs, Graphiti's context graphs track how facts change over time"
+        },
+        {
+          "evidenceId": "zep-gh-1",
+          "quote": "Graphiti's context graphs track how facts change over time, maintain provenance to source data"
         }
       ]
     }
@@ -9992,19 +10017,19 @@
   {
     "productId": "zep",
     "storyId": "multi-language-sdks",
-    "verdict": "partial",
-    "quality": 4,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "The evidence shows an official Python SDK (`pip install zep-cloud`) with memory APIs such as `thread.add_messages`, `thread.get_user_context` and `client.graph.edge.delete`. Nothing in the pack documents an official TypeScript SDK; the Vercel AI SDK entry is a framework integration, not a first-party TS client. Missing for 10: an evidenced official TypeScript SDK, documentation showing memory-API parity between Python and TypeScript, and independent or hands-on corroboration.",
+    "rationale": "Zep documents an official Python SDK (`pip install zep-cloud`). A method-by-method v3-to-v4 migration map covers Python, TypeScript, and Go, and the SDK Reference pages carry per-language code samples, which implies the same memory API surface across languages. missing for 10: explicit TypeScript SDK install/quick-start evidence, an explicit statement of API parity between the Python and TypeScript SDKs, independent or hands-on corroboration.",
     "evidenceIds": [
       "zep-docs-47",
-      "zep-docs-49",
-      "zep-docs-21",
-      "zep-docs-26"
+      "zep-migration-map-20261106",
+      "zep-api-explorer-20261106",
+      "zep-deprecation-wave-20261106"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As a developer, I can build against official SDKs in at least Python and TypeScript with equivalent memory APIs",
       "citations": [
         {
@@ -10012,12 +10037,12 @@
           "quote": "pip install zep-cloud"
         },
         {
-          "evidenceId": "zep-docs-49",
-          "quote": "you can pass in the return_context=True flag to the thread.add_messages() method"
+          "evidenceId": "zep-migration-map-20261106",
+          "quote": "A method-by-method map from the Zep v3 SDK to v4, plus the behavior changes that need more than a rename\", covering Python, TypeScript, and Go."
         },
         {
-          "evidenceId": "zep-docs-21",
-          "quote": "client.graph.edge.delete(uuid_=\"your_edge_uuid\")"
+          "evidenceId": "zep-api-explorer-20261106",
+          "quote": "each carry a \"Try it\" in-page API explorer alongside per-language code samples"
         }
       ]
     }
@@ -10025,48 +10050,29 @@
   {
     "productId": "zep",
     "storyId": "multimodal-memory-ingestion",
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Zep says it builds a Context Graph from documents and can recall that content later through hybrid graph search. However, the documented ingestible data types are only JSON, text, and messages, so there is no evidence of direct file upload. Images are not supported, and PDFs or other file formats are not shown as memory inputs. missing for 10: native image ingestion, PDF/file upload or parsing, documented file-to-memory workflow, independent or hands-on corroboration",
-    "evidenceIds": [
-      "zep-docs-27",
-      "zep-docs-2",
-      "zep-docs-9"
-    ],
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Zep documents only three ingestible data types: JSON, text, and message. No evidence shows it accepts images, PDFs, or other files as memory inputs. The passing mention that the Context Graph is built from \"documents\" does not show file or image ingestion, and converting files to text first would be a user-side workaround.",
+    "evidenceIds": [],
     "support": {
-      "relation": "direct",
-      "coverage": "partial",
+      "relation": "absent",
+      "coverage": "none",
       "subject": "As a developer, I can store images, PDFs, or other files as memory inputs and recall information from them later",
-      "citations": [
-        {
-          "evidenceId": "zep-docs-27",
-          "quote": "Zep builds a Context Graph from chat messages, business data, documents, and JSON."
-        },
-        {
-          "evidenceId": "zep-docs-2",
-          "quote": "JSON, text, and message | Data types that you can ingest into a Context Graph."
-        },
-        {
-          "evidenceId": "zep-docs-9",
-          "quote": "Zep graph search combines semantic similarity with BM25 full-text search."
-        }
-      ]
+      "citations": []
     }
   },
   {
     "productId": "zep",
     "storyId": "openness-api-parity",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Zep documents a broad programmatic surface: SDK calls for users, threads, messages, graph search and edge/node deletion, plus the zepctl CLI, which claims \"full access to Zep\" for users, threads, Context Graphs and data operations. Nothing in the evidence states that every dashboard capability is exposed through the API, and dashboard users are governed separately by RBAC, so parity is not shown. Missing for 10: an explicit API/UI parity statement, API coverage of dashboard administration (dashboard RBAC, API key management, audit logs), and independent hands-on corroboration.",
+    "rationale": "Zep exposes a broad programmatic surface: a full OpenAPI 3.1 spec with 148 paths and about 150 SDK reference endpoints. Its zepctl CLI is described as providing \"full access to Zep\" for users, threads, Context Graphs and data operations. However, no evidence explicitly states API/UI parity, and dashboard-specific functions (RBAC for dashboard users, dashboard audit logs) are not shown to be API-reachable. missing for 10: explicit documented API-to-dashboard parity, evidence that admin/governance functions (dashboard RBAC, audit logs) are available via API, independent hands-on corroboration",
     "evidenceIds": [
+      "zep-openapi-spec-20261106",
+      "zep-api-explorer-20261106",
       "zep-docs-7",
-      "zep-docs-5",
-      "zep-docs-20",
-      "zep-docs-21",
-      "zep-docs-9",
       "zep-docs-31",
       "zep-docs-55"
     ],
@@ -10076,20 +10082,16 @@
       "subject": "As an AI-native user, I can do everything through the API that I can do in the UI",
       "citations": [
         {
+          "evidenceId": "zep-openapi-spec-20261106",
+          "quote": "help.getzep.com serves a full OpenAPI 3.1 document (info title \"SDK Reference\", 148 paths, servers https://api.getzep.com/api/v4)"
+        },
+        {
           "evidenceId": "zep-docs-7",
           "quote": "It provides full access to Zep, enabling you to manage users, threads, Context Graphs, and data operations from the terminal."
         },
         {
-          "evidenceId": "zep-docs-5",
-          "quote": "Deleting a User will delete all Threads and thread artifacts associated with that User with a single API call"
-        },
-        {
-          "evidenceId": "zep-docs-20",
-          "quote": "Chat messages are added to threads using `thread.add_messages`, which both adds those messages to the thread history and ingests those messages into the user-level knowledge graph."
-        },
-        {
-          "evidenceId": "zep-docs-21",
-          "quote": "client.graph.edge.delete(uuid_=\"your_edge_uuid\")"
+          "evidenceId": "zep-api-explorer-20261106",
+          "quote": "The Fern-rendered SDK Reference pages (about 150 endpoints under help.getzep.com/v4/sdk-reference) each carry a \"Try it\" in-page API explorer"
         }
       ]
     }
@@ -10100,7 +10102,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data export and portability is a fair question for a hosted memory and context-graph service, but the evidence never documents a bulk export of users, threads, or graphs in open formats. What the pack does show is adjacent: deletion and right-to-be-forgotten APIs, a CLI for vague 'data operations', an open-source Graphiti framework, VPC deployment, and an inbound Mem0 migration guide. None of these is an export-and-leave capability.",
+    "rationale": "Exporting data is a fair question for a hosted memory/context service like Zep, but the evidence pack documents no bulk export or open-format download. The nearby evidence does not count toward this story. Deletion APIs (RTBF) and graph.clone keep or remove data inside Zep rather than exporting it. The Mem0 migration guide covers moving data into Zep, not out of it. zepctl's vague \"data operations\" and the open-source Graphiti framework are adjacent features, not a documented export path.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -10113,9 +10115,9 @@
     "productId": "zep",
     "storyId": "openness-open-license",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Zep's docs describe Graphiti, its temporal knowledge graph framework, as open source, with a public GitHub repo (getzep/graphiti) and community thanks for open-sourcing it. The managed Zep platform itself (zep-cloud, Memory MCP Server, governance features) is not shown to have open source, so only a component is readable. missing for 10: evidence that the core Zep service source is open, the specific open license named, independent confirmation of license terms.",
+    "rationale": "Zep's own docs call Graphiti, the temporal knowledge-graph framework Zep is built around, \"open-source\", and its code is on GitHub at getzep/graphiti; a community member thanks Zep for open-sourcing it. The managed Zep service itself (zep-cloud SDK, Cloud or VPC deployment) has no evidence of public source, and no license is named. Missing for 10: evidence that the core Zep platform source is public, the specific open license terms, and independent hands-on corroboration.",
     "evidenceIds": [
       "zep-docs-15",
       "zep-docs-52",
@@ -10146,12 +10148,11 @@
     "productId": "zep",
     "storyId": "openness-self-host",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 3,
     "confidence": "low",
-    "rationale": "Zep's pricing page lists 'Your VPC' next to Cloud under 'Deploy anywhere', which is a first-party option to run the core product in the customer's own environment. Nothing documents how that deployment works or who can get it, and the quick start points to the cloud SDK (zep-cloud). The open-source Graphiti framework runs locally, but it is the underlying graph engine rather than the full Zep platform, so it adds little credit here. Missing for 10: self-hosting/VPC deployment docs, installation or packaging details for the core platform, availability terms, and independent or hands-on corroboration of a self-hosted Zep.",
+    "rationale": "Zep's pricing page lists a \"Your VPC\" option under \"Deploy anywhere\", which points to a first-party deployment path outside Zep's cloud. That is the only evidence, and it is a single thin mention with no deployment docs, packaging, or licensing details. The open-source Graphiti framework is a separate developer building block for building graphs locally, not the core Zep product, so it earns no credit here. Missing for 10: documented self-hosting/VPC installation guide, clarity on whether the full Zep service (not just Graphiti) can run on user infrastructure, availability/tier terms for VPC deployment, independent or hands-on corroboration.",
     "evidenceIds": [
-      "zep-docs-17",
-      "zep-docs-52"
+      "zep-docs-17"
     ],
     "support": {
       "relation": "direct",
@@ -10163,8 +10164,8 @@
           "quote": "Deploy anywhere"
         },
         {
-          "evidenceId": "zep-docs-52",
-          "quote": "Graphiti is the open-source temporal knowledge graph framework. Use it to build and query a single Context Graph per subject locally"
+          "evidenceId": "zep-docs-17",
+          "quote": "Your VPC"
         }
       ]
     }
@@ -10175,16 +10176,15 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Zep documents per-user scoping: each app user maps to a Zep user, and messages are ingested into that user's own Context Graph. ABAC policies on API keys and UserGroups limit which context each agent and Memory MCP user can reach. However, the evidence never explicitly guarantees that retrieval cannot cross tenants, and per-application or per-project scoping is not described. Missing for 10: explicit documentation of tenant isolation guarantees in search and retrieval, application- or project-level memory scoping, and independent or hands-on corroboration that no cross-tenant leakage occurs.",
+    "rationale": "Zep documents per-user scoping: messages are ingested into each user's own Context Graph, and retrieval runs a user graph search. ABAC policies on API keys and UserGroups limit which context each agent and Memory MCP user can reach, which gives least-privilege scoping beyond the user level. Missing for 10: an explicit application- or tenant-level memory namespace, any documented guarantee that one tenant's data never appears in another's retrieval, and independent or hands-on corroboration of that isolation.",
     "evidenceIds": [
-      "zep-docs-19",
-      "zep-docs-20",
       "zep-docs-48",
+      "zep-docs-49",
       "zep-docs-38",
       "zep-docs-25",
-      "zep-docs-12",
-      "zep-docs-5",
-      "zep-docs-34"
+      "zep-docs-53",
+      "zep-docs-19",
+      "zep-docs-5"
     ],
     "support": {
       "relation": "direct",
@@ -10192,20 +10192,20 @@
       "subject": "As a developer, I can scope memories per user, agent, or application so one tenant's memories never leak into another's retrieval",
       "citations": [
         {
-          "evidenceId": "zep-docs-19",
-          "quote": "Whenever users are created in your application, you need to trigger the creation of a Zep user."
-        },
-        {
           "evidenceId": "zep-docs-48",
           "quote": "ingests them into the user's Context Graph"
+        },
+        {
+          "evidenceId": "zep-docs-49",
+          "quote": "Zep will perform a user graph search right after persisting the data and return the context relevant to the recently added messages."
         },
         {
           "evidenceId": "zep-docs-38",
           "quote": "Limit which actions and context each agent and Memory MCP user can reach with ABAC policies attached to API keys and UserGroups."
         },
         {
-          "evidenceId": "zep-docs-25",
-          "quote": "Use policies when you need least-privilege access to context for agents and Memory MCP users."
+          "evidenceId": "zep-docs-53",
+          "quote": "connect an MCP client (Claude, ChatGPT, Claude Code, Codex, Cursor, and others) to their own agent memory in Zep"
         }
       ]
     }
@@ -10216,7 +10216,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Zep's pricing page lists a \"Deploy anywhere\" option covering Cloud or \"Your VPC\". Running Zep in your own VPC would let a customer control where their data lives, but this is a single thin marketing mention with no detail on how it works. missing for 10: documented region selection for Zep Cloud, explicit data-residency commitments (e.g. EU/US regions), VPC deployment documentation, and independent corroboration.",
+    "rationale": "Zep's pricing page offers a deployment choice between its Cloud and the customer's own VPC. That implies customers can control where their data lives by running Zep in their own infrastructure, but it is a single thin marketing mention with no residency detail. Missing for 10: documented region selection for Zep Cloud (e.g., US/EU), explicit data-residency guarantees, documentation of how VPC deployment pins data location, and independent or hands-on corroboration.",
     "evidenceIds": [
       "zep-docs-17"
     ],
@@ -10238,7 +10238,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Zep is a SaaS context and memory layer that ingests user data and runs LLM processing, so a no-training guarantee or opt-out is a fair question to ask of it. The evidence pack never mentions model-training use, opt-outs or training exclusions. The closest items are adjacent rather than direct: RTBF user deletion, graph edge and node deletion, ABAC/RBAC access controls, audit logs, and VPC deployment.",
+    "rationale": "Zep is a hosted SaaS memory service that ingests user conversations, so a training opt-out or no-training commitment is a fair question to ask of it. The evidence pack contains no statement about model training on customer data and no opt-out control. User deletion and Right To Be Forgotten handling, VPC deployment, and access controls are adjacent privacy features, not a no-training guarantee, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -10253,7 +10253,7 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Zep documents first-party deletion controls. Deleting a user cascades to all of that user's threads and thread artifacts in one API call, explicitly framed for Right To Be Forgotten requests. Graph nodes and edges can also be deleted individually. However, the pack shows no configurable retention policy, such as TTLs, automatic expiry or retention windows, so the retention half of the story is unevidenced. missing for 10: configurable data retention periods/automatic expiry, independent or hands-on corroboration of deletion completeness.",
+    "rationale": "Zep documents first-party deletion controls. Deleting a User cascades to all Threads and thread artifacts in one API call, aimed at Right To Be Forgotten requests, and nodes and edges can be deleted individually, with node deletion also removing connected edges. Nothing in the evidence describes configurable retention periods or automatic expiry, so only the deletion half of the story is covered. missing for 10: configurable data retention policies/TTLs, automatic expiry of threads or graph data, independent or hands-on corroboration of deletion behavior",
     "evidenceIds": [
       "zep-docs-5",
       "zep-docs-35",
@@ -10290,7 +10290,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Opting out of telemetry is a fair question for a memory SaaS and open-source framework like Zep and Graphiti, so the axis applies. The evidence pack never mentions telemetry, usage tracking or any opt-out control. Data-deletion and RTBF features, audit and API logs, and access controls are adjacent privacy capabilities, not a telemetry opt-out, so they earn no credit.",
+    "rationale": "Opting out of telemetry is a fair question for a cloud memory service with an open-source framework, so the axis applies. However, nothing in the evidence pack documents a telemetry or usage-tracking opt-out for Zep or Graphiti. Related privacy features, such as user deletion for Right To Be Forgotten requests, ABAC policies and audit/API logs, are different capabilities and earn no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -10305,13 +10305,12 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Zep documents a prompt-ready Context Block that can be retrieved in one call. It comes from `thread.get_user_context()`, from `return_context=True` on `thread.add_messages()`, or from graph search with `scope=\"auto\"`, which composes the most relevant edges, nodes, episodes, observations and thread summaries into a single ready-to-use block. Nothing in the evidence shows that the block can be capped to a caller-specified token budget, which is a named part of the story. Missing for 10: a documented token-budget or max-token parameter for the context block, and independent hands-on corroboration of context-block retrieval.",
+    "rationale": "Zep documents a prompt-ready Context Block assembled from relevant memories. One option is graph search with scope=\"auto\", which composes edges, nodes, episodes, observations and thread summaries into a single ready-to-use block. Another is a single call, either `thread.get_user_context()` or `return_context=True` on `thread.add_messages()`. Nothing in the evidence shows a token budget or size limit for that block. missing for 10: a documented token-budget/max-token control on the context block, independent hands-on corroboration of block assembly.",
     "evidenceIds": [
       "zep-docs-10",
       "zep-docs-26",
       "zep-docs-49",
-      "zep-docs-18",
-      "zep-docs-34"
+      "zep-docs-18"
     ],
     "support": {
       "relation": "direct",
@@ -10339,7 +10338,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack has no published memory-quality benchmark results for Zep, such as LongMemEval, LoCoMo or any recall-accuracy figures. The only performance claims are about latency (sub-200ms retrieval), which is a different axis from recall accuracy. Benchmarking is a fair question for a memory product, so the lack of evidence makes this none rather than na.",
+    "rationale": "Nothing in the evidence pack shows Zep publishing memory-quality benchmark results such as LongMemEval or LoCoMo, or any recall-accuracy figures. The performance docs cover only retrieval latency (sub-200ms), which is a speed claim and not a recall-quality benchmark. The community thread on Zep's move to graph memory describes poor recall in its earlier pipeline but cites no published benchmarks.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -10354,11 +10353,11 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Zep's pricing page advertises deployment in 'Your VPC', which suggests running on infrastructure you control. Separately, Zep ships Graphiti, its open-source temporal knowledge graph framework that runs locally, and the community acknowledges it as open source. However, nothing shows the full Zep memory layer (users, threads, Context Blocks) can be self-hosted from open-source code, and there are no Docker or self-hosting instructions. missing for 10: open-source self-hostable Zep server (not just the Graphiti library), Docker or deployment documentation, VPC deployment details, independent hands-on self-host corroboration",
+    "rationale": "Zep's open-source Graphiti framework lets you build and query a Context Graph locally, and the pricing page lists a \"Your VPC\" deployment option. But the evidence never shows the full Zep memory service (users, threads, Context Blocks) being self-hosted from open-source code, and gives no Docker or deployment instructions. The VPC option appears to be a commercial tier rather than open-source self-hosting. missing for 10: Docker or container deployment docs, evidence that the full Zep memory service (not just the Graphiti framework) is open-source and self-hostable, self-host setup or infra guidance, independent hands-on corroboration of self-hosting.",
     "evidenceIds": [
-      "zep-docs-17",
       "zep-docs-52",
       "zep-docs-15",
+      "zep-docs-17",
       "zep-comm-2"
     ],
     "support": {
@@ -10367,12 +10366,12 @@
       "subject": "As a platform-engineer, I can self-host the memory layer from open-source code (e.g. via Docker) on infrastructure I control",
       "citations": [
         {
-          "evidenceId": "zep-docs-17",
-          "quote": "Deploy anywhere"
-        },
-        {
           "evidenceId": "zep-docs-52",
           "quote": "Graphiti is the open-source temporal knowledge graph framework. Use it to build and query a single Context Graph per subject locally"
+        },
+        {
+          "evidenceId": "zep-docs-17",
+          "quote": "Deploy anywhere"
         },
         {
           "evidenceId": "zep-comm-2",
@@ -10387,13 +10386,12 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Zep documents thread summaries as natural-language summaries of a thread's messages that Zep generates and updates incrementally. With scope=\"auto\", it folds thread summaries into a single ready-to-use context block, and that block can be returned directly on thread.add_messages, letting an agent resume with prior conversation context. Missing for 10: explicit documentation of an API to fetch a specific past thread's summary, detail on how summaries carry across separate sessions, and independent hands-on corroboration (the only community mention comes from the Zep creator).",
+    "rationale": "Zep documents thread summaries as natural-language summaries of a thread's messages that Zep itself generates and incrementally updates. Its auto-scope search can fold those summaries into a ready-to-use context block for an agent, and the creator's description of Zep as conversation-history memory with summaries independently corroborates this. missing for 10: explicit documentation of the endpoint for fetching a specific past thread's summary, hands-on confirmation that an agent can resume a prior session from that summary.",
     "evidenceIds": [
       "zep-docs-8",
       "zep-docs-10",
-      "zep-docs-49",
-      "zep-docs-26",
-      "zep-comm-5"
+      "zep-comm-5",
+      "zep-docs-26"
     ],
     "support": {
       "relation": "direct",
@@ -10406,11 +10404,7 @@
         },
         {
           "evidenceId": "zep-docs-10",
-          "quote": "set scope=\"auto\" and let Zep dynamically compose the most relevant context across edges, nodes, episodes, observations, and thread summaries into a single ready-to-use block."
-        },
-        {
-          "evidenceId": "zep-docs-49",
-          "quote": "Zep will perform a user graph search right after persisting the data and return the context relevant to the recently added messages."
+          "quote": "let Zep dynamically compose the most relevant context across edges, nodes, episodes, observations, and thread summaries into a single ready-to-use block"
         }
       ]
     }
@@ -10419,14 +10413,15 @@
     "productId": "zep",
     "storyId": "shared-team-memory",
     "verdict": "partial",
-    "quality": 4,
-    "confidence": "low",
-    "rationale": "Zep documents per-user Context Graphs and ABAC policies attached to API keys and UserGroups that limit which context each agent and Memory MCP user can reach. That gives selective access across agents and users while keeping other context restricted. However, the evidence never explicitly describes a shared team or group memory graph, or how selected memory is shared versus kept private. missing for 10: explicit documented shared/group memory graphs, a mechanism for marking selected memory as shared versus private, examples of multi-agent or multi-user sharing, independent corroboration.",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Zep documents per-user Context Graphs, which keep a user's memory separate. It also mentions shared Context Graphs (account, project, or business-domain graphs) and ABAC policies on API keys and UserGroups that limit which context each agent or Memory MCP user can reach, which together imply selective sharing with private boundaries. However, the evidence never shows an explicit group-memory workflow: how a shared graph is created, how agents or users are assigned to it, or how specific memories are selected for sharing while others stay private. Missing for 10: explicit shared/group graph creation and membership docs, a mechanism for choosing which memory is shared versus private, policy examples scoping shared versus private graphs, independent or hands-on corroboration.",
     "evidenceIds": [
       "zep-docs-38",
-      "zep-docs-25",
       "zep-docs-31",
-      "zep-docs-20"
+      "zep-docs-54",
+      "zep-graph-clone-testing-20261106",
+      "zep-docs-48"
     ],
     "support": {
       "relation": "direct",
@@ -10438,8 +10433,12 @@
           "quote": "Limit which actions and context each agent and Memory MCP user can reach with ABAC policies attached to API keys and UserGroups."
         },
         {
-          "evidenceId": "zep-docs-25",
-          "quote": "Use policies when you need least-privilege access to context for agents and Memory MCP users."
+          "evidenceId": "zep-graph-clone-testing-20261106",
+          "quote": "Clone a shared Context Graph to create an isolated test copy of an account, project, product, or business-domain graph"
+        },
+        {
+          "evidenceId": "zep-docs-48",
+          "quote": "ingests them into the user's Context Graph"
         },
         {
           "evidenceId": "zep-docs-31",
@@ -10452,9 +10451,9 @@
     "productId": "zep",
     "storyId": "temporal-fact-memory",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Zep's own Graphiti temporal context-graph framework documents a bi-temporal model and fact invalidation, and its GitHub README says the graphs track how facts change over time. That is direct support for separating current from outdated facts. However, the evidence is only brief overview statements, so how validity and invalidity timestamps are recorded, queried, or exposed in Zep's managed Context Graph API is not documented. Missing for 10: detailed docs on valid/invalid timestamp fields and querying facts as of a point in time, confirmation that temporal invalidation is exposed in Zep Cloud search/context retrieval rather than only in Graphiti, and independent or hands-on corroboration.",
+    "rationale": "Zep's own docs describe Graphiti, its open-source temporal knowledge graph framework, as providing a bi-temporal model and fact invalidation. Graphiti's GitHub also says its context graphs track how facts change over time. That is first-party support for temporal fact validity, but the evidence names the capability without showing how it works, and none of it ties temporal validity to the hosted Zep Context Graph. missing for 10: documented valid/invalid timestamp fields on facts or edges, how retrieval separates current from outdated facts, explicit confirmation that hosted Zep Context Graphs (not only Graphiti) expose temporal validity, independent or hands-on corroboration.",
     "evidenceIds": [
       "zep-docs-52",
       "zep-gh-1",
@@ -10477,6 +10476,10 @@
         {
           "evidenceId": "zep-gh-1",
           "quote": "Graphiti's context graphs track how facts change over time, maintain provenance to source data"
+        },
+        {
+          "evidenceId": "zep-docs-15",
+          "quote": "Graphiti is the open-source temporal knowledge graph framework."
         }
       ]
     }
@@ -10487,7 +10490,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Zep is a hosted SaaS memory service, so published pricing is a fair question. The only pricing-page evidence (zep-docs-17) mentions deployment options (Cloud, Your VPC) and says nothing about a free tier or per-unit rates. No evidence shows costs can be projected before committing.",
+    "rationale": "The only pricing-related evidence is a snippet from Zep's pricing page listing deployment options (Cloud, Your VPC). It does not mention a free tier, per-unit rates, or anything that would let an engineer project memory costs. Pricing is a fair axis for a hosted memory service, so the lack of evidence yields none rather than na.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -10502,7 +10505,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Zep's agent-framework integrations page lists LiveKit among supported frameworks, and the integrations persist conversation turns and retrieve Context Graph data. Latency is supported by documented sub-200ms context retrieval and a return_context option on add_messages that saves a round-trip. Evidence for voice pipelines is otherwise thin: missing for 10: Pipecat and ElevenLabs integrations, a detailed LiveKit integration guide, voice-specific latency guidance or benchmarks, and independent hands-on corroboration of real-time voice use.",
+    "rationale": "Zep's agent-framework integrations page lists LiveKit as a supported framework. Separate performance docs claim sub-200ms context retrieval and a return_context option on add_messages that removes a round-trip, which supports live-conversation speed. However, LiveKit appears only as a name in a list, and no voice-specific latency or integration detail is shown. Missing for 10: Pipecat and ElevenLabs integrations, in-depth LiveKit/voice integration docs, voice-pipeline latency guidance or benchmarks, independent or hands-on corroboration.",
     "evidenceIds": [
       "zep-docs-41",
       "zep-docs-24",

@@ -1,17 +1,24 @@
 {
-  "hash": "5497a333cf8b664877fc5d6213ae3a8c66737cd82404090d59658c51d78060e9",
+  "hash": "f9f0624f28e7d4e3b02c15d7394333eb07ced193b46b606f4bc77a266880ae64",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Pipecat ships a hosted platform (Pipecat Cloud) and a CLI with a `cloud` deploy command, so issuing scoped, least-privilege API credentials is a fair question for this product. However, nothing in the evidence pack documents API keys, token scopes, or permission controls for agents, so the verdict is none rather than na.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Pipecat Cloud's own REST API has two credential tiers. A public API key is limited to the /v1/public surface (starting agent sessions and proxying requests to them). Agent, secret, build and organization management sits on the separate private API. That is a coarse, built-in least-privilege split, but the pack does not document custom scopes, per-agent credentials, or how keys are issued. missing for 10: user-definable fine-grained scopes, per-agent or expiring credential issuance, documented key-management workflow, independent corroboration.",
+    "evidenceIds": [
+      "pipecat-cloud-openapi-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "pipecat-cloud-openapi-20261106",
+          "quote": "The public API (/v1/public, authenticated with a public API key) starts agent sessions and proxies requests to them. The private API (/v1...) manages agents, secrets, builds, regions, and organization settings."
+        }
+      ]
     },
     "productId": "pipecat",
     "storyId": "agentic-scoped-keys"

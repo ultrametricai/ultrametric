@@ -55,6 +55,9 @@ Wave-2 specifics worth reading before the diffs:
   the Prism mock (Pinecone Local reached end of life 2026-10-07).
 
 Scoped re-judges run under the ratified v6 rubric, then `derive` per touched arena and
-the dependent generators. Engine output is accepted as-is; honest negatives ship.
+the dependent generators. Engine output is accepted as-is; honest negatives ship. Four
+checked-absent cells publish as engine partials on adjacent evidence (paperspace
+interactive-docs and versioning, localai versioning, otter versioning); each ledger row
+records both readings, the PR #623 browserbase convention.
 
 Row-level output: `2026-11-06-api-quality-wave2.json`.

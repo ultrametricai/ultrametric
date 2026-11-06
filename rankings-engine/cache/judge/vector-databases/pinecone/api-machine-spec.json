@@ -1,17 +1,35 @@
 {
-  "hash": "7a1cc64ed6abb1303d931052537029051d3ed08cc711261b0187790ad454f8d0",
+  "hash": "b44240dba72db75ba08bae1452361762c3779bef609377f6e9ba186dabf266dc",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The probe found no downloadable OpenAPI or Swagger spec: every candidate path returned 404. The llms.txt file is a documentation index, not a machine-readable API spec, so it is only adjacent and earns no credit. The API reference docs describe endpoints but offer no spec download.",
-    "evidenceIds": [],
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Pinecone's llms.txt lists an \"OpenAPI Specs\" index of dated, machine-readable specs for every API surface: data plane, control plane, inference, admin and oauth. The official pinecone-io/pinecone-api GitHub repo serves these as OpenAPI 3.0.3 YAML files, and Pinecone's mock guide calls them its public OpenAPI specs. The probe 404s at conventional docs paths only mean the specs live on GitHub, not that they are unavailable. missing for 10: no spec served at a conventional well-known path on docs.pinecone.io, no independent community corroboration of using the downloaded specs.",
+    "evidenceIds": [
+      "pinecone-openapi-specs-20261106",
+      "pinecone-data-plane-spec-20261106",
+      "pinecone-mock-the-api-20261106",
+      "pinecone-probe-2"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "pinecone-openapi-specs-20261106",
+          "quote": "docs.pinecone.io publishes an \"## OpenAPI Specs\" index listing dated machine-readable specs for every API surface (data plane, control plane, inference, admin, oauth)"
+        },
+        {
+          "evidenceId": "pinecone-data-plane-spec-20261106",
+          "quote": "the 2026-07 Data Plane spec (OpenAPI 3.0.3, info title \"Pinecone Data Plane API\", version 2026-07)"
+        },
+        {
+          "evidenceId": "pinecone-mock-the-api-20261106",
+          "quote": "You can run a local mock of the Pinecone API from Pinecone's public OpenAPI specs using Prism"
+        }
+      ]
     },
     "productId": "pinecone",
     "storyId": "api-machine-spec"
