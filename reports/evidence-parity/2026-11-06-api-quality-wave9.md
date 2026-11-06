@@ -103,3 +103,8 @@ partial q4 with the counter row quoted in its own support — the engine weighed
 assistant's documented file upload, the API-side image support, and the explicit
 counter, and held a reduced partial. Per the #546 convention that verdict stands, with
 both readings carried here.
+
+Reviewer follow-up accepted the inputs and the re-judge process; the one open question
+(whether generic assistant file Q&A clears the image-understanding bar at partial q4,
+given the counter row's API-only scoping) is escalated to a maintainer ruling and the
+cell ships as judged pending it.
