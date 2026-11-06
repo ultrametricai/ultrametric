@@ -233,7 +233,8 @@ ITEMS = {
         ('puzzle-ar-aging-20261106', 'claimed-docs',
          'https://help.puzzle.io/en/articles/17631957-ai-for-accounts-receivable-in-puzzle.md',
          ["it shows what's overdue by customer",
-          'ask Claude, ChatGPT or another AI assistant through the Puzzle MCP'],
+          'ask Claude, ChatGPT or another AI assistant through the Puzzle MCP',
+          'grouped into **Current**, **1-30**, **31-60**, **61-90** and **91+** days'],
          'Puzzle documents an AR aging report with per-customer balances: "it shows what\'s overdue by customer, finds the payments that most likely pay your open invoices, and flags the receivables that need attention before you close the month. You can work in the app, run AI tasks, or ask Claude, ChatGPT or another AI assistant through the Puzzle MCP." Under Revenue → AR aging, "Each customer\'s unpaid invoices are grouped into Current, 1-30, 31-60, 61-90 and 91+ days" with unapplied payments; the FAQ adds the report "includes all of your outstanding invoices" wherever created.'),
         # PR #632 review (P1 agent-answers-affordability): the re-judged full cited
         # conversational MCP access plus runway metrics while its rationale noted the
