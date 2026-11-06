@@ -42,7 +42,7 @@ import {
   EvidenceSchema, ProductSchema, StorySchema, VerdictSchema,
   type Evidence, type Product, type Story, type Verdict,
 } from '../../lib/schemas'
-import { DATA_DIR, readJson, resolveCategories, writeJson } from '../paths'
+import { DATA_DIR, ROOT, readJson, resolveCategories, writeJson } from '../paths'
 
 export const STALENESS_REPORT_FILE = 'staleness-report.json'
 
@@ -128,15 +128,65 @@ const verdictFor = (verdicts: Verdict[], productId: string, storyId: string): Ve
 
 // The 54-product audit signature: public API judged real, yet every api-quality story is a
 // zero-evidence none — the api-quality crawl never covered the API surface it needed to.
-export function hasApiQualityGap(stories: Story[], verdicts: Verdict[], productId: string): boolean {
+//
+// A product whose api-quality cells were repaired by a dated backlog wave no longer trips
+// the signature, even when the honest outcome is still none: the judge can leave a
+// checked absence uncited, so the cells look zero-evidence forever and the queue would
+// re-flag repaired products on every scan (orama, buzz, spline, working-copy after
+// PRs #630/#632). The record of those dated checks is the wave ledgers
+// (reports/evidence-parity/*api-quality*.json): every cell a wave touched appears there
+// with its disposition, `checked-still-absent` included — exactly the honest-none case a
+// pack row cannot express. `repairedStories` carries the ledger-covered story ids for the
+// product; the gap is suppressed only when every api-quality story is covered, so a
+// partially checked product still surfaces.
+export function hasApiQualityGap(
+  stories: Story[], verdicts: Verdict[], productId: string, repairedStories?: Set<string>,
+): boolean {
   const publicApi = verdictFor(verdicts, productId, 'agentic-public-api')
   if (!publicApi || (publicApi.verdict !== 'full' && publicApi.verdict !== 'partial')) return false
   const apiStories = stories.filter((s) => s.group === 'api-quality')
   if (apiStories.length === 0) return false
+  if (repairedStories && apiStories.every((s) => repairedStories.has(s.id))) return false
   return apiStories.every((s) => {
     const v = verdictFor(verdicts, productId, s.id)
     return v !== undefined && v.verdict === 'none' && v.evidenceIds.length === 0
   })
+}
+
+// Reads the api-quality wave ledgers into `${arena}/${productId}` -> covered story ids.
+// Pure-data: the ledgers are committed JSON; a missing reports directory yields an empty
+// map (the signature then behaves exactly as before the repair waves existed).
+export function loadApiQualityRepairCoverage(
+  reportsDir: string = path.join(ROOT, 'reports', 'evidence-parity'),
+): Map<string, Set<string>> {
+  const coverage = new Map<string, Set<string>>()
+  if (!fs.existsSync(reportsDir)) return coverage
+  for (const name of fs.readdirSync(reportsDir)) {
+    if (!/api-quality.*\.json$/.test(name)) continue
+    let parsed: unknown
+    try {
+      parsed = JSON.parse(fs.readFileSync(path.join(reportsDir, name), 'utf8'))
+    } catch {
+      console.warn(`staleness-scan: skipping unparseable api-quality ledger ${name}`)
+      continue
+    }
+    // Parsed-but-non-object shapes (null, arrays, primitives) are as unusable as parse
+    // failures; accessing .cells on them must not crash the scan.
+    if (typeof parsed !== 'object' || parsed === null || Array.isArray(parsed)) {
+      console.warn(`staleness-scan: skipping malformed api-quality ledger ${name} (non-object root)`)
+      continue
+    }
+    const cells = (parsed as { cells?: Array<{ arena?: string; product?: string; storyId?: string }> }).cells
+    if (!Array.isArray(cells)) continue
+    for (const cell of cells) {
+      if (!cell?.arena || !cell.product || !cell.storyId) continue
+      const key = `${cell.arena}/${cell.product}`
+      const set = coverage.get(key) ?? new Set<string>()
+      set.add(cell.storyId)
+      coverage.set(key, set)
+    }
+  }
+  return coverage
 }
 
 // The cline signature: a positive llms.txt probe already sits in the evidence pack, but the
@@ -387,6 +437,7 @@ function parseArgs(argv: string[]): CliArgs {
 async function run(): Promise<void> {
   const args = parseArgs(process.argv.slice(2))
   const now = new Date()
+  const repairCoverage = loadApiQualityRepairCoverage()
 
   interface Loaded {
     arena: string
@@ -468,7 +519,7 @@ async function run(): Promise<void> {
       oldestAgeDays: age.oldest,
       deadCitedUrls,
       checkedUrls: sampled.length,
-      apiQualityGap: hasApiQualityGap(stories, verdicts, product.id),
+      apiQualityGap: hasApiQualityGap(stories, verdicts, product.id, repairCoverage.get(`${arena}/${product.id}`)),
       agentDocsContradiction: hasAgentDocsContradiction(evidence, verdicts, product.id),
       llmsTxtFlip,
       mcpFlip: mcpEndpoint ? { endpoint: mcpEndpoint } : null,
