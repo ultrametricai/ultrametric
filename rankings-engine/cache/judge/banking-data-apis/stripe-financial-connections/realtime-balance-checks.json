@@ -1,18 +1,40 @@
 {
-  "hash": "8f0a9d7bc617f90ccc5a85b0413422bf533cf590d695f67759a6af6b9a395daa",
+  "hash": "f9a849cee9331a88ba87f650a6296279f93089f3194577b297451bddf02080a3",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Stripe documents first-party access to an account's current and available balances, offered alongside ACH Direct Debit collection and positioned for risk reduction. A 'balance refresh complete' webhook implies refreshes are asynchronous rather than a synchronous real-time read. One community report also cites a limit to 'only daily pulls', which weakens the 'real-time before payment' part of the story, though it falls short of a concrete contradiction of a documented claim. Missing for 10: an explicitly documented real-time or on-demand balance endpoint with freshness guarantees, documentation of NSF-check use before payment initiation, and independent hands-on corroboration of balance retrieval.",
+    "rationale": "Financial Connections documents access to an account's current and available balances. It frames that balance data as a way to reduce underwriting risk, ties it to ACH Direct Debit payment collection, and emits a balance-refresh-complete event, so a developer can pull balance data around a payment. The evidence never shows an explicit on-demand or real-time balance endpoint or names NSF checks, and a community comment about 'only daily pulls' leaves freshness unclear. missing for 10: explicit real-time/on-demand balance refresh endpoint documentation, explicit NSF-check use case, independent hands-on corroboration of pre-payment balance checks.",
     "evidenceIds": [
       "stripe-financial-connections-docs-2",
+      "stripe-financial-connections-docs-1",
       "stripe-financial-connections-docs-8",
-      "stripe-financial-connections-docs-20",
-      "stripe-financial-connections-docs-13",
-      "stripe-financial-connections-comm-7"
+      "stripe-financial-connections-docs-13"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can fetch a real-time balance for a connected account before initiating a payment — a documented balance endpoint intended for NSF and risk checks",
+      "citations": [
+        {
+          "evidenceId": "stripe-financial-connections-docs-2",
+          "quote": "Access an account’s current and available balances."
+        },
+        {
+          "evidenceId": "stripe-financial-connections-docs-1",
+          "quote": "reduce underwriting risk with balances data"
+        },
+        {
+          "evidenceId": "stripe-financial-connections-docs-8",
+          "quote": "Collect a bank account for ACH Direct Debit payments while using account data, including balances."
+        },
+        {
+          "evidenceId": "stripe-financial-connections-docs-13",
+          "quote": "Sent after a balance refresh is complete."
+        }
+      ]
+    },
     "productId": "stripe-financial-connections",
     "storyId": "realtime-balance-checks"
   }

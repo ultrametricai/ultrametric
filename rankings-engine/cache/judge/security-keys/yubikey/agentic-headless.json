@@ -1,21 +1,41 @@
 {
-  "hash": "c9b62cd09395d668b6bde48449c7bc5164a0bb94e7d4ac4d8ca053767ffad76d",
+  "hash": "bef3b8bc1b3aedf9eac2cfae819af79ae0cd8949076945c0f7982295b2a40cf7",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Yubico ships an official, scriptable ykman CLI that installs non-interactively from public registries (uvx, Homebrew) and handles device management (applications, PINs, PIV/OATH/OTP slots). It also offers python-fido2 and other SDKs plus a public YubiEnterprise REST API for fleet operations, so automation from scripts and code is real. However, it is a physical device: FIDO2 operations require a user-presence touch, though the community notes touch can be turned off for most modes, so unattended headless or CI use is constrained. missing for 10: documented headless/CI usage guidance, a way to satisfy touch/user presence unattended for FIDO2, evidence of running in CI pipelines without attached hardware, independent hands-on corroboration of CI automation.",
+    "rationale": "Yubico ships an official, keylessly installable CLI (ykman) with fully scriptable device management, so the device can be driven headlessly from scripts. However, FIDO2 cryptographic operations require a physical touch for user presence, and CI use needs a physically attached key; touch can reportedly be disabled only for some modes. Missing for 10: documented CI or headless-runner guidance, an evidenced way to perform crypto operations without physical presence, and hands-on CI corroboration.",
     "evidenceIds": [
       "yubikey-docs-4",
-      "yubikey-probe-4",
       "yubikey-probe-rt-1",
-      "yubikey-probe-rt-2",
-      "yubikey-probe-rt-3",
+      "yubikey-probe-4",
       "yubikey-docs-6",
-      "yubikey-comm-10",
-      "yubikey-docs-13"
+      "yubikey-comm-10"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
+      "citations": [
+        {
+          "evidenceId": "yubikey-docs-4",
+          "quote": "Configure your YubiKey via the command line."
+        },
+        {
+          "evidenceId": "yubikey-probe-rt-1",
+          "quote": "Full scriptable device management: enable applications, PINs, PIV/OATH/OTP slots, device info."
+        },
+        {
+          "evidenceId": "yubikey-docs-6",
+          "quote": "FIDO2 also requires user presence (a touch on your YubiKey) for cryptographic operations"
+        },
+        {
+          "evidenceId": "yubikey-comm-10",
+          "quote": "you can just turn it off for most modes."
+        }
+      ]
+    },
     "productId": "yubikey",
     "storyId": "agentic-headless"
   }

@@ -1,18 +1,36 @@
 {
-  "hash": "3e3fa84d562b0603720d6e3e44c569525f74e82e4003609449a90c8c4386ade4",
+  "hash": "a385e9b5613237956cca8e44490d11e052443fa780fe62db2887444b41476d8b",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Turso documents database branching via `turso db create <branch> --from-db <existing>`. The docs describe a branch as a separate database instance created from an existing database, recommend it for development and testing without affecting the original, and suggest automating a branch per pull request. Missing for 10: evidence that branches are instant or copy-on-write (the docs describe a separate instance, not CoW semantics), explicit confirmation that both schema and data carry over, and independent or hands-on corroboration.",
+    "rationale": "Turso documents database branching as a first-party feature. A branch is a separate database instance created from an existing database via `turso db create --from-db`, and the docs explicitly recommend it for development, testing and per-PR databases. The evidence never says branches are instant or copy-on-write, and it does not explicitly state that both schema and data are carried over. Missing for 10: evidence of instant/copy-on-write semantics, explicit confirmation that schema and data are copied, independent or hands-on corroboration.",
     "evidenceIds": [
-      "turso-docs-18",
-      "turso-docs-32",
       "turso-docs-41",
-      "turso-docs-3",
-      "turso-docs-11"
+      "turso-docs-18",
+      "turso-docs-11",
+      "turso-docs-32"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can create an instant copy-on-write branch of my database — schema and data — to develop and test against production-shaped data",
+      "citations": [
+        {
+          "evidenceId": "turso-docs-41",
+          "quote": "A branch is a separate database instance that is created from an existing database... Branches are useful for development and testing, because they allow you to make changes to the database without affecting the original database."
+        },
+        {
+          "evidenceId": "turso-docs-18",
+          "quote": "turso db create my-new-database-branch --from-db my-existing-database"
+        },
+        {
+          "evidenceId": "turso-docs-11",
+          "quote": "Automating branching is useful for creating a new database for each pull request."
+        }
+      ]
+    },
     "productId": "turso",
     "storyId": "database-branching"
   }

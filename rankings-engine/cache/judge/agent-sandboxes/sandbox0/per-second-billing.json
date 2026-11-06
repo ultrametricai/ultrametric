@@ -1,18 +1,41 @@
 {
-  "hash": "af41499714004f6081010e62d4f0ad61a8d00291e69f5cbe5e5ca4efb81e0b90",
+  "hash": "447ea4d92b4249a89ad29de0b36f5c69398f8e9f079b18555a69a36b503fc295",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "sandbox0",
-    "storyId": "per-second-billing",
     "verdict": "full",
     "quality": 8,
-    "confidence": "high",
-    "rationale": "The pricing page says compute is billed by the second at about $0.000004167 per GiB-second, with no one-hour compute minimum, and that paused sandboxes incur storage charges only. The sandbox docs separately confirm that paused sandboxes incur no compute charges on Sandbox0 Cloud, and pause/resume lets compute stop between tasks. Missing for 10: clarity on whether billing tracks actual resource use or allocated template resources (and how CPU is metered), and independent or hands-on corroboration of billing behavior.",
+    "confidence": "medium",
+    "rationale": "Sandbox0's pricing page says compute is \"Billed by the second\" at a GiB-second rate with \"No one-hour compute minimum,\" and paused sandboxes incur storage charges only. The docs add that paused sandboxes cost no compute and that a soft TTL can pause a sandbox when it goes idle, so you pay only while it runs. Missing for 10: no independent or hands-on confirmation of the billing behavior, and no clarity on whether the GiB-second meter counts allocated resources or actual consumption.",
     "evidenceIds": [
       "sandbox0-docs-36",
       "sandbox0-docs-3",
-      "sandbox0-docs-2",
-      "sandbox0-probe-1"
-    ]
+      "sandbox0-docs-38",
+      "sandbox0-docs-2"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a platform-engineer, I can pay per second only for the compute a sandbox actually uses",
+      "citations": [
+        {
+          "evidenceId": "sandbox0-docs-36",
+          "quote": "Compute Billed by the second · ≈$0.000004167/GiB-second"
+        },
+        {
+          "evidenceId": "sandbox0-docs-36",
+          "quote": "No one-hour compute minimum. Paused sandboxes incur storage charges only."
+        },
+        {
+          "evidenceId": "sandbox0-docs-3",
+          "quote": "On Sandbox0 Cloud, paused sandboxes incur no compute charges."
+        },
+        {
+          "evidenceId": "sandbox0-docs-38",
+          "quote": "claim a sandbox with a soft ttl; refresh the soft deadline while work continues, then let it expire when idle"
+        }
+      ]
+    },
+    "productId": "sandbox0",
+    "storyId": "per-second-billing"
   }
 }

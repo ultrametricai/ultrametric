@@ -1,18 +1,35 @@
 {
-  "hash": "7fd6bd132f296071fdce5261474621f89582aac7f3cadc0cc252d06164467c38",
+  "hash": "68d17ff4dc782d9f431081003efc06854a68be1d42e51d3b13ecc5241f7968eb",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "CockroachDB's docs describe full and incremental backups, and a restore to an arbitrary point in time within a backup's revision history. That covers the core point-in-time recovery from bad writes. Community comments say backup/restore was historically gated behind enterprise licensing, which is a licensing caveat rather than evidence the capability fails. Missing for 10: any evidence of branching/forking the database to a point in time, detail on how the retention window is configured and its limits, and hands-on or independent corroboration of point-in-time restore.",
+    "rationale": "CockroachDB's own backup docs describe restoring from an arbitrary point in time within a backup's revision history, built on full and incremental backups. That covers the restore half of the story, which is enough because the story says \"restore or branch\". Community complaints about enterprise licensing of backups concern pricing, not whether the feature works, so they do not change the verdict. Missing for 10: in-depth documentation of how point-in-time restore is configured and how the revision-history retention window works, any branching or cloning capability, and independent or hands-on corroboration.",
     "evidenceIds": [
       "cockroachdb-docs-15",
       "cockroachdb-docs-6",
-      "cockroachdb-docs-30",
-      "cockroachdb-comm-8",
-      "cockroachdb-comm-1"
+      "cockroachdb-docs-30"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a platform-engineer, I can restore or branch the database to any point in time within the retention window to recover from bad writes",
+      "citations": [
+        {
+          "evidenceId": "cockroachdb-docs-15",
+          "quote": "A restore from an arbitrary point in time within the revision history of a backup."
+        },
+        {
+          "evidenceId": "cockroachdb-docs-6",
+          "quote": "You can create full or incremental backups of a , , or ."
+        },
+        {
+          "evidenceId": "cockroachdb-docs-30",
+          "quote": "CockroachDB self-hosted clusters provide a range of backup and restore features."
+        }
+      ]
+    },
     "productId": "cockroachdb",
     "storyId": "point-in-time-recovery"
   }

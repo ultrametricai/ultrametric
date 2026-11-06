@@ -1,19 +1,46 @@
 {
-  "hash": "78c4560e1d270596ea90b062bfda1375ab5763cd42f36743f61f12ba79173478",
+  "hash": "285b3d89081217f10d3f66850758926f0a094ecec36bd69bf130e93e4ab432c1",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
-    "quality": 7,
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Blaxel's core product is cloud sandboxes for code execution, so AI-generated code runs on Blaxel's hosted infrastructure rather than the developer's own. Its docs cover running shell commands and processes in sandboxes, per-domain egress allow/deny lists to prevent data exfiltration, a proxy with secret injection, and running workloads as an unprivileged non-root user. Missing for 10: documentation of the underlying isolation boundary (e.g. microVM vs container) and resource limits, plus independent or hands-on corroboration of the security claims.",
+    "rationale": "Blaxel's own docs describe hosted cloud sandboxes built for running code. AI-generated code therefore runs on Blaxel's infrastructure rather than yours, and you can run shell commands and processes inside it. The docs also describe dropping privileges to an unprivileged user and egress allowlists or denylists that prevent data exfiltration, which together cover executing untrusted code without exposing your own systems. missing for 10: documentation of the underlying isolation boundary (e.g., microVM or kernel-level separation between tenants), independent or hands-on corroboration of the sandbox security claims.",
     "evidenceIds": [
-      "blaxel-docs-15",
+      "blaxel-docs-1",
       "blaxel-docs-17",
-      "blaxel-docs-27",
-      "blaxel-docs-28",
       "blaxel-docs-30",
-      "blaxel-docs-24"
+      "blaxel-docs-28",
+      "blaxel-docs-27",
+      "blaxel-probe-1"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can execute untrusted, AI-generated code without risking my own infrastructure",
+      "citations": [
+        {
+          "evidenceId": "blaxel-docs-1",
+          "quote": "create sandboxes for code execution"
+        },
+        {
+          "evidenceId": "blaxel-docs-17",
+          "quote": "Execute and manage processes in your sandboxes with Blaxel SDK. Run shell commands, retrieve process information, and control process execution."
+        },
+        {
+          "evidenceId": "blaxel-docs-30",
+          "quote": "Scope everything a sandbox runs on your behalf to an unprivileged user while the sandbox API keeps the privileges it needs."
+        },
+        {
+          "evidenceId": "blaxel-docs-28",
+          "quote": "Restrict which external domains, HTTP methods, and URL paths a Blaxel sandbox can reach using allowlists and denylists to prevent data exfiltration and unwanted outbound traffic."
+        },
+        {
+          "evidenceId": "blaxel-probe-1",
+          "quote": "Blaxel documentation: cloud sandboxes"
+        }
+      ]
+    },
     "productId": "blaxel",
     "storyId": "run-untrusted-code"
   }

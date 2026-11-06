@@ -1,22 +1,47 @@
 {
-  "hash": "f81b5b31e5f3966f1034b4355a067bf28b3f420429704aedca017b4954651e1d",
+  "hash": "1d47071a0f72ece90c10f9fdd3b8abcb0ae7be5deba286e6b729c75f93994d6a",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Token2's official open-source fido2-manage (libfido2-based) provides command-line tools for FIDO2 keys. It covers setting and changing PINs and minimum PIN length, passkey list/delete/edit, biometric enrollment and SSH resident keys. It also dumps device info and relying parties to JSON/CSV, which makes reading device state scriptable. However, PIV configuration is handled through the Windows miniDriver or the GUI Companion App rather than a documented CLI, and there is no evidence of CLI commands to enable or disable applications/interfaces or to manage PIV/OTP slots. Missing for 10: CLI to enable/disable applications, CLI management of PIV/OTP slots, independent hands-on corroboration of scripted use.",
+    "rationale": "Token2 ships an official open-source CLI, fido2-manage, built on libfido2. It handles PIN set/change and minimum PIN length, resident credential and bio-template management, and device info dumps to JSON/CSV, which supports scripting. However, it is scoped to FIDO2 only. PIV/OTP configuration is handled by the GUI Companion App or the Windows miniDriver, not the CLI. missing for 10: CLI enabling/disabling of applications or interfaces, PIV/OTP slot management from the CLI, independent hands-on corroboration of scripted use.",
     "evidenceIds": [
       "token2-docs-19",
       "token2-probe-4",
       "token2-gh-2",
       "token2-gh-3",
       "token2-gh-1",
-      "token2-gh-4",
       "token2-gh-6",
-      "token2-docs-3",
       "token2-docs-12"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can configure and manage the key from an official CLI — enable applications, set PINs, manage slots, read device state — scriptably",
+      "citations": [
+        {
+          "evidenceId": "token2-docs-19",
+          "quote": "Open-source FIDO2 management utility based on `libfido2`, providing command-line tools and an optional graphical interface for advanced key management operations."
+        },
+        {
+          "evidenceId": "token2-gh-3",
+          "quote": "PIN management: set, change, set minimum PIN length, min-PIN-length RP allow-list"
+        },
+        {
+          "evidenceId": "token2-gh-6",
+          "quote": "Audit/export: dump device info + relying parties to JSON or CSV"
+        },
+        {
+          "evidenceId": "token2-gh-1",
+          "quote": "Resident credentials (passkeys): list (with user handle), delete, edit metadata"
+        },
+        {
+          "evidenceId": "token2-probe-4",
+          "quote": "official CLI documented at https://github.com/token2/fido2-manage"
+        }
+      ]
+    },
     "productId": "token2",
     "storyId": "cli-key-management"
   }

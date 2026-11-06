@@ -1,23 +1,46 @@
 {
-  "hash": "5922b527de332454c1f06031e687ff1560b2361ad038ee3760452c3301617951",
+  "hash": "23c322a2570238fcbb278a2191846f204130088599208514cb12ca0c35396285",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 8,
-    "confidence": "high",
-    "rationale": "Modal's docs cover executing arbitrary commands in sandboxes: a 'Running commands' guide, the `sb.exec([...])` example, an asyncio.subprocess-like Sandbox API, and the JS/Go SDK framed as a way 'to safely execute arbitrary commands'. Dependencies are handled through custom images ('Custom images, any dependency'), and the CLI can open an interactive shell inside a container. Community builds such as GitHub Actions runners on Sandboxes corroborate real-world command execution. Missing for 10: an explicit example of installing packages at runtime inside a running sandbox (e.g. pip/apt via exec), and independent hands-on corroboration of package installation specifically.",
+    "verdict": "partial",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Modal's docs show Sandboxes running arbitrary commands, for example \"safely execute arbitrary commands\" and the `sb.exec([...])` example, and that dependencies can be supplied through custom images (\"Custom images, any dependency\"). However, nothing shows packages being installed from inside a running sandbox via shell commands, as opposed to being baked into the image beforehand. missing for 10: explicit documentation or example of in-sandbox package installation (e.g., running pip/apt via exec), independent hands-on corroboration of shell command execution and package installs.",
     "evidenceIds": [
-      "modal-docs-13",
       "modal-docs-19",
       "modal-docs-21",
-      "modal-docs-25",
-      "modal-docs-2",
-      "modal-docs-20",
-      "modal-docs-15",
       "modal-docs-22",
-      "modal-probe-2",
-      "modal-comm-1"
+      "modal-docs-2",
+      "modal-docs-25",
+      "modal-docs-15"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can run arbitrary shell commands and install packages inside the sandbox",
+      "citations": [
+        {
+          "evidenceId": "modal-docs-19",
+          "quote": "Using Sandboxes in JS/Go projects, to safely execute arbitrary commands, run untrusted user code, or as a safe environment for AI agents."
+        },
+        {
+          "evidenceId": "modal-docs-21",
+          "quote": "const p = await sb.exec([\"cat\", \"/mnt/volume/message.txt\"]);"
+        },
+        {
+          "evidenceId": "modal-docs-22",
+          "quote": "We execute the agent's code in a Modal Sandbox, which allows us to run arbitrary code in a safe environment."
+        },
+        {
+          "evidenceId": "modal-docs-2",
+          "quote": "Custom images, any dependency"
+        },
+        {
+          "evidenceId": "modal-docs-25",
+          "quote": "A `Sandbox` object lets you interact with a running sandbox. This API is similar to Python's asyncio.subprocess.Process"
+        }
+      ]
+    },
     "productId": "modal",
     "storyId": "shell-and-packages"
   }

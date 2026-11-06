@@ -80,8 +80,8 @@ against `2026-11-04-v6-preview.json`.
 | 3 | ai-coding, applicant-tracking, crm, email-marketing, expense-management, incident-management, inference-providers, speech-to-text, sso-identity, terminals, vibe-coding | 4,775 | merged (PR #615) |
 | 4 | ai-support-agents, browser-agents, data-pipelines, desktop-os, device-agents, domain-registrars, equity-management, error-tracking, game-engines, infra-as-code, local-llm-runtimes, mcp-infrastructure, robotics-platforms | 4,943 | merged (PR #616) |
 | 5 | agent-frameworks, agent-skills, ai-search-apis, ai-video, compliance-automation, data-warehouses, design-tools, identity-verification, marketplace-payments, mobile-payments, notes-knowledge, startup-law-firms | 4,774 | merged (PR #618) |
-| 6 | ai-memory, billing-subscriptions, cloud-storage, compliance-screening, durable-workflows, ecommerce-platforms, email-apis, fp-a, gpus, payments, self-hosted-assistants, stablecoin-payments, voice-agents | 4,941 | this PR |
-| 7 | agent-sandboxes, banking-as-a-service, banking-data-apis, llm-evals-observability, meeting-ai, product-feedback, screen-sharing, security-keys, security-scanners, serverless-databases, software-factory, tax-automation | 4,778 | queued |
+| 6 | ai-memory, billing-subscriptions, cloud-storage, compliance-screening, durable-workflows, ecommerce-platforms, email-apis, fp-a, gpus, payments, self-hosted-assistants, stablecoin-payments, voice-agents | 4,941 | merged (PR #619) |
+| 7 | agent-sandboxes, banking-as-a-service, banking-data-apis, llm-evals-observability, meeting-ai, product-feedback, screen-sharing, security-keys, security-scanners, serverless-databases, software-factory, tax-automation | 4,778 | this PR |
 | 8 | ai-research-agents, auth-platforms, authenticator-apps, code-hosting, document-extraction, email, mobile-dev, observability, project-management, search-infra, vector-databases, virtual-mailboxes, workflow-automation | 4,911 | queued |
 | 9 | accounting, agentic-commerce, ai-code-review, api-platforms, backend-as-a-service, business-phone, feature-flags, file-converters, package-managers, processors, product-analytics, startup-immigration, team-chat | 4,913 | queued |
 
@@ -370,3 +370,68 @@ medusa in ecommerce-platforms, revenuecat #3 → #5 in billing-subscriptions.
 
 Spend: about $63 batched plus correction rounds (one to four resume runs per arena).
 Wave total about $75; cumulative about $455.
+
+## Wave 7 (2026-11-06)
+
+4,778 cells re-judged across the twelve arenas. 960 verdict flips: 926 down, 7 up, 27
+lateral relabels, plus 572 quality-only moves (net -419). Fleet transition profile:
+
+`full→partial` 473 · `partial→none` 453 · `na→none` 15 · `none→na` 6 ·
+`none→partial` 4 · `partial→na` 4 · `partial→full` 3 · `full→na` 2
+
+| arena | cells | flips | down / up / lateral | quality-only (net) |
+|---|---|---|---|---|
+| agent-sandboxes | 459 | 71 | 69 / 0 / 2 | 66 (-37) |
+| banking-as-a-service | 371 | 36 | 35 / 0 / 1 | 30 (-22) |
+| banking-data-apis | 424 | 57 | 52 / 2 / 3 | 37 (-19) |
+| llm-evals-observability | 572 | 152 | 150 / 2 / 0 | 79 (-75) |
+| meeting-ai | 270 | 39 | 39 / 0 / 0 | 29 (-15) |
+| product-feedback | 260 | 56 | 56 / 0 / 0 | 32 (-30) |
+| screen-sharing | 255 | 27 | 24 / 2 / 1 | 19 (-7) |
+| security-keys | 324 | 65 | 54 / 0 / 11 | 27 (-21) |
+| security-scanners | 330 | 70 | 65 / 0 / 5 | 45 (-28) |
+| serverless-databases | 392 | 99 | 98 / 0 / 1 | 58 (-42) |
+| software-factory | 803 | 219 | 217 / 1 / 1 | 116 (-100) |
+| tax-automation | 318 | 69 | 67 / 0 / 2 | 34 (-23) |
+
+Notable rank moves, all pure-rubric: maritime #3 → #1 over daytona and e2b in
+agent-sandboxes, fathom #3 → #1 over fireflies in meeting-ai, stark-bank #2 → #1 over
+column in banking-as-a-service, truelayer #6 → #3 in banking-data-apis, nitrokey #3 → #1
+and solokeys #2 → #4 in security-keys, jules #7 → #9 in software-factory.
+
+### Protected hand-adjudicated cells (the 09-30 worklist convention)
+
+product-feedback carries the 16 committed human adjudications from the 2026-09-21/24
+Foreloop bias audits, protected by docs/JUDGE-MIGRATION-2026-09-30-worklist.json, whose
+rule is that human adjudications outrank any model. The wave followed the worklist's
+documented mechanics exactly, via the committed
+`rankings-engine/scripts/reapply-protected-adjudications.ts` (the 09-30 driver's
+finalizeArena step): the v6 judge ran every cell, the worklist's preservedVerdict was
+re-applied verbatim to the cache and verdicts.json, and the worklist now records what the
+fresh v6 judge said per cell. The fresh judge independently reached the adjudicated
+verdict and quality on 9 of 16. The 7 overrides cut both ways on the house's own product:
+on four cells the fresh judge proposed HIGHER grades that the adjudications hold down
+(agentic-mcp-server fresh partial q3, preserved none q0 on the probe-gated bar;
+agentic-headless, agentic-official-cli, and embed-feedback-widget fresh q9, preserved
+q7), and on two cells the adjudications hold grades ABOVE the fresh judge
+(agentic-nl-commands preserved partial q4 over a fresh none q0; agentic-public-api
+preserved partial q5 over a fresh none q0), with one quality-only difference
+(agentic-builtin-assistant preserved q4 over fresh q5). These two upward preservations
+are the only cells in the migration so far where a published verdict sits above the v6
+judgment; they rest on the dated bracketed human adjudications in their rationales, and
+re-adjudicating them is a maintainer call outside this wave's convention.
+
+### Own-row audits (foreloop, both arenas; document-only)
+
+- **product-feedback/foreloop**: zero favorable migration moves survive (the preserved
+  adjudications override the fresh judge in both directions, as above); 8 unfavorable
+  moves on unprotected cells kept; its #4 to #3 rise is relative, from rows above falling
+  harder.
+- **software-factory/foreloop**: 3 favorable moves re-read against their citations
+  (official-cli and approve-plan-before-execution quality bumps on quoted first-party
+  docs; ai-issue-triage none to partial q3 with the "limited form" scoping stated), 19
+  unfavorable kept, and its #9 to #7 rise is relative: jules fell past it.
+
+Spend: about $62 batched plus correction rounds (software-factory needed 23 resume runs
+across two retry rounds; its stubborn cells repeatedly failed the verbatim-quote rule
+before converging). Wave total about $82; cumulative about $537.

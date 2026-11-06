@@ -1,19 +1,41 @@
 {
-  "hash": "3fd7714d02ad9928eb67b7587c8d01fc642b6feebb6e9953396ac276140382a3",
+  "hash": "47bc7e8e6d744554c341a50f61b5a539aae164b05af017bc9a91d9017ea36e97",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Anrok's docs describe a createEphemeral endpoint built for showing a tax preview on the checkout page. It takes transaction details, returns the tax to collect, and should be refreshed whenever the customer changes something. The Transactions API also calculates tax for new invoices. An Address Resolution endpoint normalizes a customer address and returns its taxable jurisdiction(s), which implies address-level determination. Missing for 10: an explicit rooftop-vs-ZIP accuracy claim, documented latency or performance figures for checkout use, and independent or hands-on corroboration.",
+    "rationale": "Anrok documents a real-time tax calculation API: createEphemeral returns the tax to collect for checkout previews. It also has an Address Resolution endpoint that normalizes a customer address and returns its taxable jurisdictions, which implies address-based rather than ZIP-based lookup. Missing for 10: an explicit rooftop/address-level accuracy claim (vs ZIP approximation), documented latency or performance figures suitable for inline checkout, and independent or hands-on corroboration.",
     "evidenceIds": [
       "anrok-docs-23",
       "anrok-docs-36",
-      "anrok-docs-5",
-      "anrok-docs-33",
       "anrok-docs-11",
+      "anrok-docs-33",
       "anrok-docs-38"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can calculate the right sales tax for a transaction through an API in real time — address-level (rooftop) accuracy, not ZIP-code approximations — fast enough to sit inside checkout",
+      "citations": [
+        {
+          "evidenceId": "anrok-docs-23",
+          "quote": "It's common to show a preview of the tax amount on a checkout page before the customer completes their order. This tax amount can be estimated using Anrok's createEphemeral endpoint"
+        },
+        {
+          "evidenceId": "anrok-docs-36",
+          "quote": "This endpoint accepts the details of your transaction and returns the tax amount to collect."
+        },
+        {
+          "evidenceId": "anrok-docs-11",
+          "quote": "The Anrok Address Resolution endpoint resolves a customer address to its normalized form, suitable for sales tax calculations, as well as taxable jurisdiction(s)."
+        },
+        {
+          "evidenceId": "anrok-docs-33",
+          "quote": "Use Anrok's Transactions API to synchronize transactions between Anrok and your billing system, as well as calculate sales tax for new invoices."
+        }
+      ]
+    },
     "productId": "anrok",
     "storyId": "realtime-tax-calculation"
   }

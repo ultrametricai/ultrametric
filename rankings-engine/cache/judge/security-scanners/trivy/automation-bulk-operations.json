@@ -1,17 +1,30 @@
 {
-  "hash": "b27f027e63555455583f87c474614aa9b3cc3bfaec5b31e52dba4c09ef9132ad",
+  "hash": "c3f53aebcae76ca88a88f958fa702eb9e3589aa74fdb0f349ee6186d868a402a",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 4,
+    "quality": 3,
     "confidence": "low",
-    "rationale": "Trivy can scan many targets in a single invocation. `trivy k8s --report summary cluster` scans a whole Kubernetes cluster, and filesystem scans pick up all lock files in a project. A community user also notes it is easy to write automation around. However, nothing documents explicit bulk operations, such as batch-scanning lists of images or acting on many findings at once. missing for 10: documented batch/multi-target scanning of arbitrary item lists, bulk actions on results, an agent-facing (MCP) bulk workflow, independent hands-on corroboration of bulk usage.",
+    "rationale": "The only first-party evidence of acting on many items at once is the cluster-wide scan command `trivy k8s --report summary cluster`, which scans a whole Kubernetes cluster in one invocation. Filesystem scanning across multiple lock files is a weaker form of the same thing. Missing for 10: documented batch or multi-target scanning of many images or repos in one operation, any description of how many items a bulk run covers or what it reports, and independent or hands-on corroboration of bulk use.",
     "evidenceIds": [
       "trivy-gh-1",
-      "trivy-docs-2",
-      "trivy-docs-3",
-      "trivy-comm-11"
+      "trivy-docs-2"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can perform bulk operations across many items at once",
+      "citations": [
+        {
+          "evidenceId": "trivy-gh-1",
+          "quote": "trivy k8s --report summary cluster"
+        },
+        {
+          "evidenceId": "trivy-docs-2",
+          "quote": "Trivy will look for vulnerabilities based on lock files such as Gemfile.lock and package-lock.json."
+        }
+      ]
+    },
     "productId": "trivy",
     "storyId": "automation-bulk-operations"
   }

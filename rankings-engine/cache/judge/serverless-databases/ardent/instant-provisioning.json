@@ -1,24 +1,42 @@
 {
-  "hash": "227e049e5c3b61b083065b3021f9c2e02cee42734693b4505ffdd4b33e3a5212",
+  "hash": "4b81085cd0448dc29ca9caf4943b83d682a5590dfeda3eb4bea4bd45c50fb39f",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Ardent's CLI creates a branch database and prints a ready-to-use connection URL (`ardent branch create pr-123 --print-url`, with direct, pooled or prisma URL types). The docs claim clones load in about 6s, scale to zero, autoscale compute and need 'zero management', and an API exists for CI and agent workflows. The main caveat is that each database is a copy of an existing Postgres source reached through a connector that must be set up first (preflight, retry-setup), not a fresh standalone database. Missing for 10: creating a blank database without a source, documented API endpoints for branch creation (the OpenAPI probe returned 404), and independent hands-on corroboration of the seconds-level provisioning and autoscaling claims.",
+    "rationale": "Ardent's own CLI creates a ready-to-connect Postgres branch in seconds: `ardent branch create --print-url` prints the connection URL, and the vendor claims clones load in 6s, scale to 0 and autoscale compute with zero management, so no capacity planning is needed. The significant caveat is that every database is a branch cloned from an already-connected source Postgres, which needs connector setup first, so this is not a from-scratch database. The API is documented for CI and agent workflows, but no branch-creation endpoint is evidenced. missing for 10: standalone database creation without a pre-connected source, a documented API endpoint for creating a database or branch, independent or hands-on corroboration of the seconds-level provisioning and autoscaling claims.",
     "evidenceIds": [
       "ardent-docs-1",
-      "ardent-docs-3",
-      "ardent-docs-6",
-      "ardent-docs-7",
       "ardent-docs-8",
-      "ardent-docs-12",
-      "ardent-docs-14",
       "ardent-docs-27",
-      "ardent-docs-28",
-      "ardent-probe-2",
-      "ardent-probe-3"
+      "ardent-docs-14",
+      "ardent-docs-20",
+      "ardent-docs-6"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can create a ready-to-connect database in seconds through the CLI or API without capacity planning",
+      "citations": [
+        {
+          "evidenceId": "ardent-docs-1",
+          "quote": "Ardent creates instant, isolated copies of your production Postgres database — in seconds, right from your terminal."
+        },
+        {
+          "evidenceId": "ardent-docs-8",
+          "quote": "ardent branch create pr-123 --print-url    # prints only the connection URL"
+        },
+        {
+          "evidenceId": "ardent-docs-27",
+          "quote": "Clones load in 6s, scale to 0, autoscale compute and do not duplicate storage. Zero management needed"
+        },
+        {
+          "evidenceId": "ardent-docs-20",
+          "quote": "Every PR runs against its own fresh database branch cloned from your connected source"
+        }
+      ]
+    },
     "productId": "ardent",
     "storyId": "instant-provisioning"
   }

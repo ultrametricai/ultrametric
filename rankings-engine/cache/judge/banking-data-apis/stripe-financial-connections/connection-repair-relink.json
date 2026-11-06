@@ -1,14 +1,25 @@
 {
-  "hash": "6697fa9909c26826ee1503cd2f7fa948982b7e95496d005821951961dff37a87",
+  "hash": "71a700190e817b3a6a3269c19200c3d39103c7a75531a77566cbc55808f0f94d",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Stripe's webhooks docs mention a relink API for helping users reconnect an inactive account. That is a first-party repair flow, and it implies an inactive state is surfaced via webhooks. The evidence is one thin line, though: it gives no list of statuses (expired vs. revoked) and no detail on how relinking keeps the existing account instead of starting over. Missing for 10: a documented list of connection statuses and their transitions, specifics of the relink/update flow and what it preserves, and independent or hands-on corroboration that repair works.",
+    "rationale": "The Financial Connections webhooks docs reference a relink API to help users reconnect an inactive account. That implies a documented inactive state and a first-party repair flow, but the evidence is a single line and does not detail the statuses or confirm users avoid starting over. Community remarks about connection flakiness are general and do not contradict the relink capability. Missing for 10: an enumerated list of connection statuses (expired vs revoked vs inactive), documentation of the relink/update flow's mechanics and that it preserves the existing account link, and independent or hands-on corroboration.",
     "evidenceIds": [
       "stripe-financial-connections-docs-14"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an ops lead, broken connections are repairable — expired or revoked links surface as documented statuses, and users can re-authenticate in an update flow without starting over",
+      "citations": [
+        {
+          "evidenceId": "stripe-financial-connections-docs-14",
+          "quote": "Use the relink API to help your user reconnect their inactive account."
+        }
+      ]
+    },
     "productId": "stripe-financial-connections",
     "storyId": "connection-repair-relink"
   }

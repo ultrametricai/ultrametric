@@ -1,22 +1,37 @@
 {
-  "hash": "8040aee5aa14aa7194bc664ccc2c4d0d136adef698a12c435312a8918c0a8f3f",
+  "hash": "86b21676ad08bb706553e77abb136d310784c5da56001ae7d3f9d2cc557ea046",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Gitleaks is a documented headless CLI. It has `git`, `dir` and `stdin` scan commands that an agent can invoke directly, and it writes a JSON report (findings.json). Baselines restrict that report to new issues, and allowlists cut false positives, which helps an agent separate real findings to file as issues. Missing for 10: explicit documentation of report-format flags and exit-code semantics, a native issue-filing capability (gitleaks-action only comments on PRs and alerts listed accounts), and independent hands-on corroboration of agent-driven parsing.",
+    "rationale": "Gitleaks ships an official CLI with headless scan commands (`git`, `dir`, `stdin`) that an agent can invoke. Its report output (findings.json), combined with baselines, yields a machine-readable list of only new findings for an agent to parse. However, the JSON report format and flags are only implied, not documented here. Nothing in the evidence shows the product filing issues: gitleaks-action only comments on PRs and alerts accounts, which is a different capability. missing for 10: documented report-format/output flags and schema, exit-code semantics for automation, native issue-filing for findings, independent hands-on corroboration of agent-driven use.",
     "evidenceIds": [
       "gitleaks-probe-3",
       "gitleaks-gh-10",
       "gitleaks-gh-11",
-      "gitleaks-gh-9",
       "gitleaks-gh-13",
-      "gitleaks-gh-6",
-      "gitleaks-gh-20",
-      "gitleaks-docs-6",
-      "gitleaks-docs-10"
+      "gitleaks-gh-6"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an ai-native user, I can have an agent run a scan headlessly via the CLI, parse machine-readable results, and file issues for real findings",
+      "citations": [
+        {
+          "evidenceId": "gitleaks-gh-10",
+          "quote": "Example: `gitleaks dir -v path_to_directory_or_file`."
+        },
+        {
+          "evidenceId": "gitleaks-gh-13",
+          "quote": "After running the detect command with the --baseline-path parameter, report output (findings.json) will only contain new issues."
+        },
+        {
+          "evidenceId": "gitleaks-probe-3",
+          "quote": "official CLI documented at https://github.com/gitleaks/gitleaks"
+        }
+      ]
+    },
     "productId": "gitleaks",
     "storyId": "agent-runs-scan-headless"
   }

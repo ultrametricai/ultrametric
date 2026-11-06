@@ -1,18 +1,36 @@
 {
-  "hash": "48e68210ea1ddaeaf2fdbf0814942d11974a45e4377e92eda89def25e3a44cc1",
+  "hash": "973d3a03b45e88ca470d05bf57f5b523f1d1e99d33fcd65e1a3f57a5034663d4",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Runloop documents suspending a devbox to preserve its state and resuming it later \"exactly where you left off\", including a dedicated suspend/resume workflow tutorial and idle/shutdown controls. Snapshots separately save disk state. That covers the core pause-and-resume story with filesystem persistence. Memory preservation is only implied by the \"exactly where you left off\" wording and is never stated explicitly. Missing for 10: explicit documentation that in-memory/process state survives suspend, in-depth API reference for suspend/resume semantics, independent or hands-on corroboration.",
+    "rationale": "Runloop's own docs describe suspending a devbox and resuming it later \"exactly where you left off.\" A tutorial shows suspending to preserve state while waiting for PR feedback, then resuming. However, these mentions come from tutorials. No dedicated doc spells out that both filesystem and in-memory process state survive. Snapshots are documented only as saving disk state. Missing for 10: explicit documentation that memory/process state is preserved across suspend/resume, dedicated first-party suspend/resume API docs, and independent or hands-on corroboration.",
     "evidenceIds": [
       "runloop-docs-27",
       "runloop-docs-55",
       "runloop-docs-64",
-      "runloop-docs-4",
-      "runloop-docs-32"
+      "runloop-docs-4"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can pause a running sandbox and resume it later with filesystem and memory state intact",
+      "citations": [
+        {
+          "evidenceId": "runloop-docs-27",
+          "quote": "**Suspend and resume**: Pause sandboxes to save state and costs, then resume exactly where you left off"
+        },
+        {
+          "evidenceId": "runloop-docs-55",
+          "quote": "Suspend your devbox to preserve state, wait for PR feedback, and resume to continue working iterativ"
+        },
+        {
+          "evidenceId": "runloop-docs-4",
+          "quote": "Snapshots can be used to save the current disk state of a Devbox, and to create new Devboxes from a previously saved state."
+        }
+      ]
+    },
     "productId": "runloop",
     "storyId": "pause-resume-state"
   }

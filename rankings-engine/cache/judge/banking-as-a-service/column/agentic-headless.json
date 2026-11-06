@@ -1,21 +1,43 @@
 {
-  "hash": "2bca5057aa325a7d688a5a4a86a003c0f539b8556e90d77c83ac0a3d2df79db9",
+  "hash": "eb5eb39df3a24c12ab5efc40222af137a3a042495a263fb67359b1a74882f0aa",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Column is API-first, so every workflow runs headlessly over HTTP. Several documented features support CI automation: a fully sandboxed API where data persists like production, `/simulate/*` endpoints to drive test transfers, API keys scoped to sandbox or live mode, idempotency keys for safe retries, and a published OpenAPI spec (confirmed by probe) for generating clients. Missing for 10: explicit CI/CD integration guidance, an official CLI or first-party SDKs (an engineer says customers use raw HTTP), and independent hands-on reports of running Column in CI pipelines.",
+    "rationale": "Column is entirely API-driven, so it can be automated without a UI. It also offers a persistent sandbox where every route is sandboxed, plus simulate endpoints and sandbox-only API keys, which together let automated test pipelines run against it. However, nothing in the evidence documents CI usage specifically, and there is no CLI or official SDK; an engineer says customers use raw HTTP APIs. Missing for 10: a documented CLI or headless tooling, CI integration guides or examples, official SDKs, and independent hands-on reports of CI automation.",
     "evidenceIds": [
       "column-docs-13",
       "column-docs-3",
       "column-docs-20",
-      "column-docs-22",
       "column-docs-10",
-      "column-probe-2",
-      "column-docs-7",
-      "column-comm-1"
+      "column-docs-22",
+      "column-comm-1",
+      "column-probe-2"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
+      "citations": [
+        {
+          "evidenceId": "column-docs-13",
+          "quote": "Every route is sandboxed and data persists exactly like in production."
+        },
+        {
+          "evidenceId": "column-docs-3",
+          "quote": "To simulate incoming ACHs, we have a `/simulate/receive-ach-credit` and a `/simulate/receive-ach-debit` endpoint."
+        },
+        {
+          "evidenceId": "column-docs-20",
+          "quote": "When you create an API key, you must specify if that key can access sandbox or live mode."
+        },
+        {
+          "evidenceId": "column-docs-10",
+          "quote": "Column's API is defined by an OpenAPI spec (also available as JSON). Use it to generate type-safe client SDKs in any language"
+        }
+      ]
+    },
     "productId": "column",
     "storyId": "agentic-headless"
   }

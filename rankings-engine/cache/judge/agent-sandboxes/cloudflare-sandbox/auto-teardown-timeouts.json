@@ -1,12 +1,26 @@
 {
-  "hash": "54c73ba78d0eab4449d1af724f4c75b8d9f924653a45146d829d822d8ff74f51",
+  "hash": "1e62c2436fd611df18de5de2ccff7c13f9b2a6c9469f1205396557d9ed21374f",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack has no first-party Sandbox documentation of an idle or lifetime timeout that automatically shuts down or destroys a sandbox and stops billing. The only timeout documented is a default command timeout for a session (docs-19), which is an adjacent control and does not cover sandbox lifecycle. A community comment reports that the docs do not seem to allow auto-destroying a sandbox after idle time. Another comment's mention of Containers auto-shutdown is a secondhand, host-platform remark, not a documented Sandbox capability.",
-    "evidenceIds": [],
+    "rationale": "The only first-party timeout evidence is a default per-command timeout within a session. That bounds how long a single command runs, not how long the sandbox lives, so it is an adjacent control that does not shut down or stop billing for an idle sandbox. A community reviewer who browsed the docs reports that auto-destroying a sandbox after idle time does not appear possible. Another commenter's remark about Containers auto-shutdown is a host-platform behavior, not a documented, configurable Sandbox timeout.",
+    "evidenceIds": [
+      "cloudflare-sandbox-docs-19",
+      "cloudflare-sandbox-comm-7"
+    ],
+    "support": {
+      "relation": "adjacent",
+      "coverage": "none",
+      "subject": "As a developer, I can set timeouts so sandboxes shut down automatically and stop billing when idle or done",
+      "citations": [
+        {
+          "evidenceId": "cloudflare-sandbox-docs-19",
+          "quote": "You can also set a default command timeout for all commands in a session"
+        }
+      ]
+    },
     "productId": "cloudflare-sandbox",
     "storyId": "auto-teardown-timeouts"
   }

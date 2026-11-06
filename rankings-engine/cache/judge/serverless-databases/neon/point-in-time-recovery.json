@@ -1,19 +1,40 @@
 {
-  "hash": "449e685f961ebdadad78ce4d234a2d871c0b38cff2a87ebfdfab10e82146309c",
+  "hash": "fb160286bd94a5e7d9c2f2fbf3506fd647df7622e7954438517a0397f2a42260",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Neon documents an 'Instant restore' capability for branch restore. Its AI database-versioning docs describe restoring without changing the connection string via the `finalize_restore: true` flag. The MCP tool surface exposes restore/reset branch and snapshot-restore operations, so recovery from bad writes via branch restore is clearly supported. However, the evidence snippets never explicitly state restoring to an arbitrary point in time or describe the retention window. missing for 10: explicit evidence of arbitrary point-in-time (timestamp/LSN) restore, documented retention-window limits, independent or hands-on corroboration of a restore after bad writes.",
+    "rationale": "Neon documents its own restore capability: an 'Instant restore' docs page, branch restore that moves compute endpoints to a new branch without changing the connection string (`finalize_restore: true`), and MCP tools to restore branches and snapshots. The evidence never states restoring to an arbitrary point in time within a retention window; the documented restores are tied to branches and snapshots. missing for 10: explicit point-in-time (timestamp/LSN) restore documentation, retention-window definition, independent or hands-on corroboration of recovery from bad writes.",
     "evidenceIds": [
-      "neon-docs-8",
       "neon-docs-29",
       "neon-docs-44",
       "neon-supp-mcp-tool-surface",
-      "neon-supp-branching-for-agents",
-      "neon-docs-25"
+      "neon-supp-branching-for-agents"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform-engineer, I can restore or branch the database to any point in time within the retention window to recover from bad writes",
+      "citations": [
+        {
+          "evidenceId": "neon-docs-29",
+          "quote": "Instant restore"
+        },
+        {
+          "evidenceId": "neon-docs-44",
+          "quote": "restores them without changing the connection string, by transferring compute endpoints to a new branch via the `finalize_restore: true` flag"
+        },
+        {
+          "evidenceId": "neon-supp-mcp-tool-surface",
+          "quote": "create/reset/restore branches, \"Finalize branch restore from snapshot\""
+        },
+        {
+          "evidenceId": "neon-supp-branching-for-agents",
+          "quote": "Restores allow platforms to move between versions instantly."
+        }
+      ]
+    },
     "productId": "neon",
     "storyId": "point-in-time-recovery"
   }

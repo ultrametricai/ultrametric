@@ -1,21 +1,44 @@
 {
-  "hash": "3b965fc56c540370ecb291b9aed2443c1bfce296522ed27c3a855ec720a9bbb8",
+  "hash": "eb9bdea44e56c8490e2d13626976e8150b3c418bdf41f5541076947068a2f974",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 9,
-    "confidence": "medium",
-    "rationale": "First-party docs show a single SDK call (`sandbox = daytona.create()`) that returns a ready sandbox for immediate command execution. Each sandbox is isolated with its own kernel, filesystem and network stack. Daytona claims spin-up in milliseconds and documents warm pools that hand out pre-created sandboxes instantly; Python and TypeScript SDKs and a published OpenAPI spec back the programmatic path. Missing for 10: independent or hands-on corroboration of the startup-latency claims (the speed evidence is vendor marketing only).",
+    "confidence": "high",
+    "rationale": "Daytona's Python SDK documents a single `daytona.create()` call that returns a sandbox ready for commands. The docs describe each sandbox as isolated with a dedicated kernel, filesystem and network stack, and claim startup in milliseconds, helped by warm pools that hand out pre-created sandboxes instantly. TypeScript SDK, OpenAPI and CLI interfaces are also documented. Missing for 10: independent or hands-on corroboration of the claimed millisecond/seconds-level startup times.",
     "evidenceIds": [
       "daytona-docs-33",
-      "daytona-docs-28",
-      "daytona-docs-1",
       "daytona-docs-14",
+      "daytona-docs-28",
       "daytona-docs-23",
-      "daytona-docs-10",
+      "daytona-docs-1",
       "daytona-docs-11",
+      "daytona-docs-10",
       "daytona-probe-3"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can spin up an isolated sandbox with one API/SDK call and get a live environment in seconds",
+      "citations": [
+        {
+          "evidenceId": "daytona-docs-33",
+          "quote": "sandbox = daytona.create()"
+        },
+        {
+          "evidenceId": "daytona-docs-14",
+          "quote": "Daytona lets you spin up sandboxes in milliseconds and shut them down just as fast."
+        },
+        {
+          "evidenceId": "daytona-docs-28",
+          "quote": "Each sandbox runs in isolation, giving it a dedicated kernel, filesystem, network stack, and allocated vCPU, RAM, and disk."
+        },
+        {
+          "evidenceId": "daytona-docs-23",
+          "quote": "matching sandbox create requests claim one warm sandbox from the pool instantly instead of provisioning a new sandbox"
+        }
+      ]
+    },
     "productId": "daytona",
     "storyId": "spinup-via-api"
   }

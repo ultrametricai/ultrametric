@@ -1,20 +1,38 @@
 {
-  "hash": "f72c9c8510a78c3a991d88b37671d00c990eeb199caebec3e56ae71f5c89e6b1",
+  "hash": "be4c3301ed7bef2a19d0d9cd24644bc509b561798a5757cf5d1e6a0cdb980387",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Yapily publishes an OpenAPI v3 specification (the same one it uses to generate its own server-side libraries), which gives documented schemas for its account, balance and transaction endpoints. It also documents transaction categorisation with merchant detection and spending insights, the kind of enrichment an automated workflow can reason over. The probe found no spec at the guessed public URLs, which suggests it is not at a predictable machine-discoverable path but does not contradict that it exists. Missing for 10: explicit documentation of JSON response structure and field-level schemas for the enrichment output, independent or hands-on corroboration of response cleanliness, and a publicly discoverable OpenAPI endpoint.",
+    "rationale": "Yapily documents an OpenAPI v3 specification covering its API, which gives programmatic consumers documented schemas. It also documents account, balance and transaction retrieval endpoints and claims transaction categorisation with merchant detection, so the core of the story is present. Probes of common OpenAPI paths returned 404, but the docs say the spec is provided, so this does not contradict it; it only means the spec could not be confirmed at a well-known machine-readable URL. Missing for 10: explicit documentation that responses are clean structured JSON, published field-level schemas for enrichment output (categories and merchant fields), a confirmed fetchable OpenAPI URL, and independent or hands-on confirmation that the data is consumable without heuristic parsing.",
     "evidenceIds": [
       "yapily-docs-22",
       "yapily-docs-8",
       "yapily-docs-3",
       "yapily-docs-27",
       "yapily-docs-28",
-      "yapily-docs-15",
       "yapily-probe-2"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, the data comes back agent-consumable — clean structured JSON, documented schemas, and enrichment an automated financial workflow can reason over without heuristic parsing",
+      "citations": [
+        {
+          "evidenceId": "yapily-docs-22",
+          "quote": "we provide an OpenAPI Specification (OAS) version 3 file...This is the same OAS that we consume ourselves to generate our server-side libraries"
+        },
+        {
+          "evidenceId": "yapily-docs-3",
+          "quote": "Categorise and analyse transaction data with merchant detection and spending insights."
+        },
+        {
+          "evidenceId": "yapily-docs-28",
+          "quote": "Returns the account transactions for an account."
+        }
+      ]
+    },
     "productId": "yapily",
     "storyId": "agent-ready-financial-data"
   }

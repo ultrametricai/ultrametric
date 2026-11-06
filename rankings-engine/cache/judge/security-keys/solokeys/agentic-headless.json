@@ -1,20 +1,37 @@
 {
-  "hash": "f0f2bf60753a611fc38d42ea8b2a68a4f91822007d4ea2fa51d7cd4af05b51ed",
+  "hash": "502d638f01d7d4d79eef5ab6ec79a5d452ec65dc8441e7155f3477a2641d88bc",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 4,
-    "confidence": "medium",
-    "rationale": "The Solo 2 ships a scriptable `solo2` CLI (`list`, `update` with SHA-256 verification, `app admin set led`), works with standard tooling like `fido2-token -R`, and firmware can be built and tested with cargo. These pieces could be wired into automation, but credential operations require a physical touch on the capacitive sensor, which limits true headless use. The legacy Python Solo CLI (solo-python, used with Solo 1) was also found broken against current python-fido2. Missing for 10: documented headless/CI mode or touch-free automation path, CI integration guidance, independent hands-on evidence that the solo2 CLI works unattended, a maintained Python tooling path.",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Solo 2 ships a command-line tool (`solo2`) whose subcommands, such as `list`, `update` (download, SHA-256 verification and flashing) and `admin set led`, could be scripted. The firmware repo also documents compile/flash/test against the EVK. However, nothing documents a headless or CI mode, and the product asks the user to physically touch the sensor to confirm. The runtime probe showing the older solo-python CLI failing to run concerns the Solo 1 tool, not the Solo 2 CLI cited here, so it only lowers confidence rather than creating a dispute. Missing for 10: documented headless/CI usage, non-interactive operation without physical touch, machine-readable output or exit-code guidance, CI examples, and independent hands-on corroboration that the solo2 CLI works in automation.",
     "evidenceIds": [
+      "solokeys-gh-4",
       "solokeys-gh-2",
       "solokeys-gh-3",
-      "solokeys-gh-4",
-      "solokeys-docs-10",
       "solokeys-gh-10",
-      "solokeys-docs-1",
-      "solokeys-probe-rt-1"
+      "solokeys-docs-1"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
+      "citations": [
+        {
+          "evidenceId": "solokeys-gh-4",
+          "quote": "solo2 list                   # list connected devices  (alias: solo2 ls)"
+        },
+        {
+          "evidenceId": "solokeys-gh-2",
+          "quote": "`update` downloads the signed release, **verifies its SHA-256**, and flashes it."
+        },
+        {
+          "evidenceId": "solokeys-gh-10",
+          "quote": "Compile, flash, and test against the EVK:"
+        }
+      ]
+    },
     "productId": "solokeys",
     "storyId": "agentic-headless"
   }

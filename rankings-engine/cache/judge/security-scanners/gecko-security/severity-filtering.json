@@ -1,18 +1,41 @@
 {
-  "hash": "10c415edcd95487c55f37c0515a23df6172efb9e4e4ad62ec0fcdf521c4f7bd9",
+  "hash": "0bb939c9060df0ed9de947be31c9a041bd09b384e3a9c0d65c9481300682b3ca",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "The PR check posts pass/fail status to GitHub/GitLab with a configurable fail-on severity threshold (e.g. High and above), and it separates PR-introduced findings from pre-existing ones, so low-severity noise need not block merges. Each finding also carries a CVSS 4.0 severity and a confidence score. A community report of 100%-confidence findings that proved false suggests confidence scores may be unreliable as a filter. Missing for 10: documented gating or filtering by confidence score, dashboard/API filtering of findings by severity or confidence, and independent hands-on corroboration of the severity gate.",
+    "rationale": "Gecko documents a 'Fail-on severity' threshold that controls whether its pass/fail PR check fails, so lower-severity findings need not block merges. It also separates PR-introduced findings from pre-existing ones. Findings carry a confidence score, but nothing documents gating or filtering on confidence, and a hands-on report of 100%-confidence false positives makes that score a weak noise filter. missing for 10: gating or threshold on confidence score, documented severity/confidence filtering of findings in the UI or API, CI build-gate usage beyond PR checks, independent corroboration of the severity gate.",
     "evidenceIds": [
       "gecko-security-docs-29",
       "gecko-security-docs-5",
-      "gecko-security-docs-28",
       "gecko-security-docs-2",
+      "gecko-security-docs-28",
       "gecko-security-comm-3"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can filter and gate on findings by severity or confidence so low-value noise does not block builds",
+      "citations": [
+        {
+          "evidenceId": "gecko-security-docs-29",
+          "quote": "**Fail-on severity**: the severity threshold that fails the check (for example, fail on High and above)."
+        },
+        {
+          "evidenceId": "gecko-security-docs-5",
+          "quote": "Gecko posts a pass/fail check back to GitHub or GitLab so reviewers see the security status inline."
+        },
+        {
+          "evidenceId": "gecko-security-docs-28",
+          "quote": "Findings introduced by the PR are separated from pre-existing ones, so reviewers focus on what the change adds."
+        },
+        {
+          "evidenceId": "gecko-security-docs-2",
+          "quote": "Each finding includes a severity (CVSS 4.0), a confidence score"
+        }
+      ]
+    },
     "productId": "gecko-security",
     "storyId": "severity-filtering"
   }

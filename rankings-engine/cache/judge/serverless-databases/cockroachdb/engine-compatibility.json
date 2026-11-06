@@ -1,17 +1,36 @@
 {
-  "hash": "fa197087a1e09d845a371fc0e14f3afb94b62b92e89a3382eb5be14ef02c61e1",
+  "hash": "2aeaea3e27db94e066117d989e3423a48e1867b6b5d6538eef1c2fe3cf477925",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "CockroachDB speaks the PostgreSQL wire protocol, works with standard Postgres drivers, markets itself as \"PostgreSQL compatible\", and its VECTOR type is compatible with pgvector. However, it is a Postgres-compatible reimplementation rather than the real engine, and a hands-on user reported a concrete gap (no array columns), which suggests a subset rather than full dialect parity. Missing for 10: documented full Postgres dialect and extension parity beyond pgvector, an explicit list of supported versus unsupported features, independent confirmation that existing Postgres code runs unmodified, and current evidence that the reported gaps such as array columns are closed.",
+    "rationale": "CockroachDB documents PostgreSQL compatibility: it speaks the Postgres wire protocol so existing Postgres drivers connect, and its VECTOR type is compatible with pgvector. However, it is a reimplementation rather than the Postgres engine itself, and a hands-on community report cites missing Postgres features (array columns), so it delivers a compatible subset rather than real engine parity. Missing for 10: evidence of full Postgres dialect/extension parity, a documented compatibility matrix, MySQL/SQLite dialect support, and current independent confirmation that gaps such as array columns are closed.",
     "evidenceIds": [
       "cockroachdb-gh-1",
       "cockroachdb-docs-13",
       "cockroachdb-docs-23",
       "cockroachdb-comm-13"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I get real engine compatibility — the Postgres, MySQL, or SQLite dialect and extensions my existing code expects — not a lookalike subset",
+      "citations": [
+        {
+          "evidenceId": "cockroachdb-gh-1",
+          "quote": "CockroachDB supports the PostgreSQL wire protocol, so you can use any available PostgreSQL client drivers to connect from various languages."
+        },
+        {
+          "evidenceId": "cockroachdb-docs-13",
+          "quote": "CockroachDB is a cloud-agnostic, PostgreSQL compatible database built for modern applications"
+        },
+        {
+          "evidenceId": "cockroachdb-docs-23",
+          "quote": "`VECTOR` functionality is compatible with the [`pgvector`](https://github.com/pgvector/pgvector) extension for PostgreSQL."
+        }
+      ]
+    },
     "productId": "cockroachdb",
     "storyId": "engine-compatibility"
   }

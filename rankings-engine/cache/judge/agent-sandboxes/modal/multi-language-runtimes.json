@@ -1,21 +1,46 @@
 {
-  "hash": "a6bde33385e29eb7c49cd0f0cb50c5c5941b84ea7911dae752c5e32dff053043",
+  "hash": "c48d9a2b2f132242054f956d5474730f6e139b9f0a2b6ba919223585b93f92ee",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Modal Sandboxes support custom images with any dependency and arbitrary command execution via `exec`, so you can run Python, JavaScript or other runtimes inside them. The agent example also shows generated Python code being executed. Results come back process-style (a subprocess-like API returning output) plus filesystem access, with no structured rich-output layer such as charts, dataframes or typed results. missing for 10: a documented multi-language code-interpreter API (runtimes are user-assembled via images and shell commands), rich or structured result types beyond process output and files, independent hands-on corroboration of multi-runtime execution.",
+    "rationale": "Modal Sandboxes run arbitrary commands and untrusted code inside containers built from custom images with any dependency, so multiple language runtimes are possible. The documented results are only process output from exec and logs; the JS/Go SDKs are client libraries, not evidence of runtimes inside the sandbox. missing for 10: explicit documentation of multi-language runtime support (e.g., a JavaScript runtime example inside a sandbox), rich result types (structured outputs, charts/images, display data) beyond process output, independent hands-on corroboration.",
     "evidenceIds": [
       "modal-docs-2",
-      "modal-docs-13",
       "modal-docs-19",
       "modal-docs-21",
       "modal-docs-25",
-      "modal-docs-8",
       "modal-docs-30",
       "modal-probe-2"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can execute code in multiple language runtimes (Python, JavaScript, and more) and get rich results back",
+      "citations": [
+        {
+          "evidenceId": "modal-docs-2",
+          "quote": "Custom images, any dependency"
+        },
+        {
+          "evidenceId": "modal-docs-19",
+          "quote": "safely execute arbitrary commands, run untrusted user code, or as a safe environment for AI agents"
+        },
+        {
+          "evidenceId": "modal-docs-21",
+          "quote": "const p = await sb.exec([\"cat\", \"/mnt/volume/message.txt\"]);"
+        },
+        {
+          "evidenceId": "modal-docs-25",
+          "quote": "This API is similar to Python's asyncio.subprocess.Process"
+        },
+        {
+          "evidenceId": "modal-docs-30",
+          "quote": "build an LLM coding \"agent\" that can generate and execute Python code"
+        }
+      ]
+    },
     "productId": "modal",
     "storyId": "multi-language-runtimes"
   }

@@ -1,22 +1,45 @@
 {
-  "hash": "1c75bcbd6666305c9c658b6dbb71b3d81eba81d9f8735f1e4f93410450a2b046",
+  "hash": "b2d638ffa8309a50b32b8027f8472621e9328b946ceb6e926c4e03242f7ade56",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Modal Sandboxes are themselves fresh, isolated, ephemeral containers for running untrusted user or agent code. Network controls (block_network, outbound and inbound allowlists) and opt-in volume mounts let a user test without exposing production systems or data, and snapshots allow repeatable test states. Missing for 10: no explicit documentation of separate dev/test vs production environments or data isolation guarantees, and no independent hands-on corroboration that production data stays untouched.",
+    "rationale": "Modal Sandboxes provide fresh, isolated, ephemeral containers for running untrusted agent code. The SDK also exposes network controls (block_network, CIDR and domain allowlists) that can wall a sandbox off from outside systems, so the core of safe testing is delivered by the product itself. However, the evidence never explicitly addresses keeping sandbox testing separate from production data: there is no documented test-versus-production environment separation or data-isolation guarantee, so coverage is only partial. missing for 10: explicit documentation of separating sandbox tests from production data or environments, guidance on data isolation for mounted volumes and secrets, independent or hands-on corroboration of the isolation.",
     "evidenceIds": [
       "modal-docs-1",
       "modal-docs-2",
-      "modal-docs-3",
-      "modal-docs-19",
       "modal-docs-22",
       "modal-docs-31",
-      "modal-docs-20",
-      "modal-docs-9",
       "modal-probe-2"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
+      "citations": [
+        {
+          "evidenceId": "modal-docs-2",
+          "quote": "Spin up fresh, isolated sandboxes programmatically."
+        },
+        {
+          "evidenceId": "modal-docs-1",
+          "quote": "Programmatically scale secure, ephemeral environments for running untrusted code."
+        },
+        {
+          "evidenceId": "modal-docs-22",
+          "quote": "We execute the agent's code in a Modal Sandbox, which allows us to run arbitrary code in a safe environment."
+        },
+        {
+          "evidenceId": "modal-docs-31",
+          "quote": "block_network=False, outbound_cidr_allowlist=None, outbound_domain_allowlist=None"
+        },
+        {
+          "evidenceId": "modal-probe-2",
+          "quote": "secure containers for executing untrusted user or agent code"
+        }
+      ]
+    },
     "productId": "modal",
     "storyId": "api-sandbox"
   }

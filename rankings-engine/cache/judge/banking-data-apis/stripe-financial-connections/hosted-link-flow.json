@@ -1,11 +1,11 @@
 {
-  "hash": "d44208011e46f222a75816e2269f3d33a341e1739c5d98cad2f6fa3b29e6c842",
+  "hash": "3fedc2b6e6cc563f82f99fe3366c688cd586f8a92f998ba887e857e201fc5b51",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Stripe documents the drop-in pattern directly: the server returns a client_secret and the client calls collectFinancialConnectionsAccounts to launch Stripe's authentication flow. In that flow users pick from frequently chosen institutions or search 12,000+ banks, so the developer builds no institution UI or custom bank form, and a beta integrator reports moving from Plaid Auth onto it. missing for 10: explicit evidence of the account object/ID returned to the client after linking (only the account-linked webhook is shown), and explicit documentation of the server-side session-creation call itself.",
+    "rationale": "Stripe documents a hosted flow: the server returns a client_secret and the client calls collectFinancialConnectionsAccounts to launch authentication. The flow itself handles bank search across 12,000+ institutions, so no custom bank-collection form is needed, and an account-linked webhook fires per connected account. A beta integrator on HN corroborates using it in production. missing for 10: explicit documentation of the session-creation endpoint and of the account ID/token returned to the client after linking.",
     "evidenceIds": [
       "stripe-financial-connections-docs-6",
       "stripe-financial-connections-docs-7",
@@ -14,6 +14,29 @@
       "stripe-financial-connections-docs-15",
       "stripe-financial-connections-comm-6"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can let a user connect their bank with a drop-in hosted flow — create a session server-side, open the widget, and get back a token for the connected account — without building institution UI myself",
+      "citations": [
+        {
+          "evidenceId": "stripe-financial-connections-docs-6",
+          "quote": "Use collectFinancialConnectionsAccounts to launch the authentication flow from your client using the client_secret returned by your server"
+        },
+        {
+          "evidenceId": "stripe-financial-connections-docs-7",
+          "quote": "Users select their bank from frequently chosen institutions or by searching more than 12,000 supported banks."
+        },
+        {
+          "evidenceId": "stripe-financial-connections-docs-29",
+          "quote": "Save development time by eliminating the need to create a custom bank account collection form"
+        },
+        {
+          "evidenceId": "stripe-financial-connections-docs-12",
+          "quote": "Sent when a customer links a new account. If they link multiple accounts, it emits multiple events (one per account)."
+        }
+      ]
+    },
     "productId": "stripe-financial-connections",
     "storyId": "hosted-link-flow"
   }

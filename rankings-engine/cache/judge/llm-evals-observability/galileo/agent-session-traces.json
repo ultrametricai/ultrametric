@@ -1,21 +1,47 @@
 {
-  "hash": "2205d6a2a6ab972b85fec8e84ccb364ac5af09c02716a0f59a452df5ce20b6ca",
+  "hash": "1f13c8b70d7da3c08f6b8fd68f26441394462c451e3de9f7f21678bf1bf01e9e",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "galileo",
-    "storyId": "agent-session-traces",
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Galileo's logging docs say it captures every session, trace, and span. Spans that share a trace ID are joined into one trace, even across agents running in different processes via OTel. The Python SDK's @log decorator logs spans, and cookbooks show multi-agent LangGraph tracing with session-level metrics. missing for 10: explicit documentation of parent/child span nesting for agent steps, independent or hands-on corroboration of the session/thread grouping.",
+    "rationale": "Galileo's docs state it captures every session, trace, and span, and its SDK `@log` decorator logs spans. Spans sharing a trace ID are joined into one trace, and multi-agent LangGraph tutorials cover session-level views. Together this documents a session → trace → span hierarchy for multi-step agent runs. missing for 10: explicit documentation of parent-child span nesting depth, independent or hands-on corroboration of the session/thread grouping UI.",
     "evidenceIds": [
       "galileo-docs-6",
-      "galileo-docs-7",
-      "galileo-docs-17",
       "galileo-gh-1",
-      "galileo-docs-24",
+      "galileo-docs-7",
+      "galileo-docs-56",
       "galileo-docs-26",
       "galileo-docs-40"
-    ]
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can trace multi-step agent runs as nested spans grouped into sessions or threads",
+      "citations": [
+        {
+          "evidenceId": "galileo-docs-6",
+          "quote": "Once instrumented, Galileo captures every session, trace, and span, producing a structured stream of real-time data."
+        },
+        {
+          "evidenceId": "galileo-gh-1",
+          "quote": "You can also use the `@log` decorator to log spans."
+        },
+        {
+          "evidenceId": "galileo-docs-7",
+          "quote": "Galileo joins all spans that share a trace ID into a single trace."
+        },
+        {
+          "evidenceId": "galileo-docs-56",
+          "quote": "Add Galileo evaluations to a multi-agent LangGraph app; View and understand session level metrics"
+        },
+        {
+          "evidenceId": "galileo-docs-26",
+          "quote": "Learn how to instrument a LangGraph agent with OpenTelemetry and OpenInference to capture detailed traces, spans, and metrics."
+        }
+      ]
+    },
+    "productId": "galileo",
+    "storyId": "agent-session-traces"
   }
 }

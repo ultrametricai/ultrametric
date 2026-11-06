@@ -1,21 +1,41 @@
 {
-  "hash": "6eab7b02424497e7137ba182bef4e315a13530a1551d4152a274200ca3081e64",
+  "hash": "29be8989473aa1e8324512eb79b0777ab091c4b7e4c9f83b4a4df8560f45e748",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Neon ships an official CLI that a runtime probe confirmed runs from npm. It can provision a project and write `DATABASE_URL` to `.env` (`neon claim create`, `neon init`), and it can inspect a database with `neon inspect db`, which runs 15 read-only checks. However, no evidence shows a command that opens an interactive SQL shell, and project creation is only shown through the temporary claim flow and init linking. Missing for 10: a documented shell-into-database (psql) command, an explicit persistent project/branch create command, and independent hands-on corroboration of the full daily loop.",
+    "rationale": "Neon ships an official CLI that runs keylessly from npm. It can provision a project via `neon claim create`, which writes `DATABASE_URL` to `.env` for connecting, and it can inspect a database via `neon inspect db` (15 read-only checks). The evidence does not show an interactive SQL shell command or a general authenticated create/connect workflow. missing for 10: documented shell-into/psql command, documented general database/branch create and connection-string commands beyond the temporary claim flow, independent hands-on corroboration of the daily loop.",
     "evidenceIds": [
-      "neon-docs-11",
-      "neon-probe-5",
       "neon-probe-rt-1",
+      "neon-docs-11",
       "neon-docs-47",
       "neon-supp-agent-claim-flow",
-      "neon-supp-cli-agent-setup",
-      "neon-supp-mcp-transport",
-      "neon-supp-neon-ts-config"
+      "neon-supp-mcp-transport"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, the official CLI covers my daily loop — create, connect, shell into, and inspect databases — without opening the dashboard",
+      "citations": [
+        {
+          "evidenceId": "neon-probe-rt-1",
+          "quote": "the official Neon CLI ran keylessly from npm"
+        },
+        {
+          "evidenceId": "neon-docs-47",
+          "quote": "creates a temporary Neon project when there is no Neon account yet"
+        },
+        {
+          "evidenceId": "neon-supp-agent-claim-flow",
+          "quote": "The CLI writes `DATABASE_URL` (and granted service URLs) to `.env` or `.env.local`"
+        },
+        {
+          "evidenceId": "neon-supp-mcp-transport",
+          "quote": "exposes the same 15 read-only checks as `neon inspect db`"
+        }
+      ]
+    },
     "productId": "neon",
     "storyId": "cli-daily-workflow"
   }

@@ -1,25 +1,48 @@
 {
-  "hash": "a54571fe1d6abd69be1a557748c257e09ee8bee54000a16fe3b100200972b157",
+  "hash": "2853a6df8ab5156d03040146ded632e8eaabb124541be6ac168be82ba10f44bb",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "An agent can read and act on much of the tax posture through the REST API and official SDKs. Documented endpoints list nexuses for the org, create registrations, and get filings (filterable, or by registration ID). However, the MCP server only reads public docs and the OpenAPI spec and never proxies API calls. Credentials are an org-wide API key plus organization ID with expiry and rotation options, but no documented permission scoping. Missing for 10: an MCP surface that acts on account data, scoped/least-privilege credentials, an accrued liability endpoint, explicit upcoming-filing deadlines, and independent hands-on corroboration.",
+    "rationale": "Kintsugi's REST API lets an agent read nexus (Get Nexus for Org), create registrations, and list filings by date, status, or registration ID, so the core read-and-act loop exists through the API. The official MCP server is docs-only: it never proxies API calls or sees credentials, so it cannot read or act on tax posture. API keys support expiry and rotation, but there is no evidence of permission-scoped credentials. missing for 10: accrued-liability read evidence, an MCP surface that acts on account data, scoped/least-privilege API credentials, independent corroboration.",
     "evidenceIds": [
-      "kintsugi-docs-2",
-      "kintsugi-docs-10",
       "kintsugi-docs-11",
       "kintsugi-docs-12",
       "kintsugi-docs-13",
       "kintsugi-docs-38",
       "kintsugi-docs-35",
-      "kintsugi-docs-5",
-      "kintsugi-docs-17",
-      "kintsugi-docs-28",
       "kintsugi-docs-30",
-      "kintsugi-docs-6"
+      "kintsugi-docs-5",
+      "kintsugi-docs-28"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, an agent can read my tax posture — nexus status, registrations, accrued liability, upcoming filings — and act on it through the API or an MCP surface with scoped credentials",
+      "citations": [
+        {
+          "evidenceId": "kintsugi-docs-11",
+          "quote": "Get a list of all nexuses for the organization."
+        },
+        {
+          "evidenceId": "kintsugi-docs-12",
+          "quote": "The Create Registration API allows users to create a new registration for tracking and managing tax filings efficiently across multiple jurisdictions."
+        },
+        {
+          "evidenceId": "kintsugi-docs-13",
+          "quote": "The Get Filings API retrieves a paginated list of filings based on filters such as dates, jurisdiction, Country, status, etc."
+        },
+        {
+          "evidenceId": "kintsugi-docs-38",
+          "quote": "The Get Filings By Registration ID API retrieves all filings associated with a specific registration ID."
+        },
+        {
+          "evidenceId": "kintsugi-docs-5",
+          "quote": "Choose when the key should expire: Never, One Month, Six Month, or One Year."
+        }
+      ]
+    },
     "productId": "kintsugi",
     "storyId": "agent-reads-tax-state"
   }

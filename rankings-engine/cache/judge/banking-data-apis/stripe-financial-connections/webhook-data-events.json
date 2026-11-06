@@ -1,11 +1,11 @@
 {
-  "hash": "6050d3c499697d5e26cb4695a2bd91258cc733d1849937a55c2f742c3e838d0d",
+  "hash": "dda4805f0babf7979a1fa5507c251c2b465bf77540b6cfa5a0af838ea228cd9a",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Stripe's dedicated Financial Connections webhooks page documents events for newly linked accounts, completed balance refreshes, completed transaction refreshes and completed ownership refreshes, plus guidance on relinking inactive accounts. That covers the new-transactions, balance-update and connection-state parts of the story. Missing for 10: no evidence in the pack that these webhooks are cryptographically signed, the connection-state (inactive/disconnected) event is only implied by the relink guidance, events signal refresh completion rather than per-transaction pushes, and there is no independent or hands-on corroboration.",
+    "rationale": "Stripe Financial Connections' own webhooks documentation lists events for newly linked accounts, completed balance refreshes, completed transaction refreshes and ownership refreshes, and it covers inactive-account handling through relink. That supports push-based updates instead of polling for the core data types. However, the events signal that a refresh has completed rather than delivering individual new transactions, and nothing in the pack shows the webhooks are signed. missing for 10: evidence of webhook signature verification, a documented explicit event for connection state changes (only implied by the relink/inactive guidance), per-transaction change events, and independent or hands-on corroboration.",
     "evidenceIds": [
       "stripe-financial-connections-docs-12",
       "stripe-financial-connections-docs-13",
@@ -13,6 +13,29 @@
       "stripe-financial-connections-docs-24",
       "stripe-financial-connections-docs-14"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, data changes arrive as signed webhooks — new transactions, balance updates, connection state changes — so my system stays current without polling",
+      "citations": [
+        {
+          "evidenceId": "stripe-financial-connections-docs-12",
+          "quote": "Sent when a customer links a new account. If they link multiple accounts, it emits multiple events (one per account)."
+        },
+        {
+          "evidenceId": "stripe-financial-connections-docs-13",
+          "quote": "Sent after a balance refresh is complete."
+        },
+        {
+          "evidenceId": "stripe-financial-connections-docs-25",
+          "quote": "Sent after a transaction refresh is complete."
+        },
+        {
+          "evidenceId": "stripe-financial-connections-docs-14",
+          "quote": "Use the relink API to help your user reconnect their inactive account."
+        }
+      ]
+    },
     "productId": "stripe-financial-connections",
     "storyId": "webhook-data-events"
   }

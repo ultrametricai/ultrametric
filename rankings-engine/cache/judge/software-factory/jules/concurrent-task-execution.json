@@ -1,21 +1,38 @@
 {
-  "hash": "a71fc2f6a14797ec62f66ca2d8ec7725500283c9ab8b1bc8b29f8b5c2d9ac381",
+  "hash": "fd10cc1f37761af84ecfd10ffae2e15db79d39d05a1c0078769ef673fda438a9",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Jules runs each task asynchronously in its own cloud VM and notifies you on completion. Its usage-limits page has a 'Power users & agent-heavy workflows' tier showing figures of 300 and 60, which plausibly are daily and concurrent task caps, though the snippet is fragmentary. The API allows programmatic task dispatch. Community users report it 'handles large quantities of tasks very well' and that several PRs pile up for review, while the free plan's daily cap was cut from 60 to 15, which limits scale on lower tiers. Missing for 10: explicit documentation of concurrent-task limits and how parallel sessions are managed, independent hands-on evidence of many tasks running simultaneously, and clarity on caps per plan tier.",
+    "rationale": "Jules' usage-limits docs list a 'Power users & agent-heavy workflows' tier with numeric limits (300 and 60). A community user says it 'handles large quantities of tasks very well', and VM-per-task execution plus async notifications suggest parallel dispatch. The evidence never explicitly says these numbers are concurrent-task limits, and free-tier limits reportedly dropped to 15 daily tasks. Missing for 10: explicit documentation of the concurrent-task count and how parallel sessions run, orchestration/management of many simultaneous tasks, independent hands-on corroboration of concurrency at scale.",
     "evidenceIds": [
-      "jules-docs-3",
-      "jules-docs-6",
-      "jules-docs-9",
       "jules-docs-13",
       "jules-docs-15",
-      "jules-comm-8",
+      "jules-docs-3",
+      "jules-docs-6",
       "jules-comm-11",
-      "jules-comm-12"
+      "jules-comm-8"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an engineering-lead, I can run many agent tasks concurrently to scale delivery throughput",
+      "citations": [
+        {
+          "evidenceId": "jules-docs-13",
+          "quote": "Power users & agent-heavy workflows ... 300 ... 60"
+        },
+        {
+          "evidenceId": "jules-comm-11",
+          "quote": "It handles large quantities of tasks very well"
+        },
+        {
+          "evidenceId": "jules-docs-3",
+          "quote": "Jules runs in a virtual machine where it clones your code, installs dependencies, and modifies files."
+        }
+      ]
+    },
     "productId": "jules",
     "storyId": "concurrent-task-execution"
   }

@@ -1,17 +1,35 @@
 {
-  "hash": "bd105323ee3e635b68936dcc8e01f01b7e13b0a62d136763e72dd16c97f288f2",
+  "hash": "a0ec0de819073d8044c9ec3ca363fb9382717ea3cb34fe7f4886a8b888881379",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Foreloop's claim-based task model lets multiple agents work in parallel: each agent runs in a checkout, claims one approved task, and opens a PR. The Agents view lists one row per worker with the task it holds, which implies several concurrent workers are supported. However, the user must launch and manage each agent on their own machine, and every task is gated by human approval, so the scaling comes from the user rather than from Foreloop orchestrating parallel runs. Missing for 10: explicit documentation of concurrent or parallel execution, product-managed spawning or orchestration of multiple agents, concurrency limits or scaling guidance, and independent or hands-on corroboration.",
+    "rationale": "Foreloop's own design implies multiple concurrent workers: each agent claims one approved task, and the Agents view lists one row per worker with the task it holds. However, concurrency is never stated outright. The agents run in checkouts the user operates on their own machine, so Foreloop coordinates parallel work but does not run or scale it. Missing for 10: an explicit statement of concurrent multi-agent execution, documented limits or behaviour when tasks are contested, hosted or managed parallel execution, and independent or hands-on corroboration of throughput scaling.",
     "evidenceIds": [
       "foreloop-docs-8",
       "foreloop-docs-3",
-      "foreloop-docs-37",
-      "foreloop-docs-36"
+      "foreloop-docs-37"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an engineering-lead, I can run many agent tasks concurrently to scale delivery throughput",
+      "citations": [
+        {
+          "evidenceId": "foreloop-docs-8",
+          "quote": "Development, under Agents, lists one row per worker: which agent it is running as, the name that checkout gave itself, the task it holds, and the last thing it said."
+        },
+        {
+          "evidenceId": "foreloop-docs-3",
+          "quote": "That agent asks Foreloop for approved tasks in that repository, claims one, does the work, and opens a pull request from your GitHub account."
+        },
+        {
+          "evidenceId": "foreloop-docs-37",
+          "quote": "The agent then checks Foreloop for approved tasks on a cadence and works them as they arrive."
+        }
+      ]
+    },
     "productId": "foreloop",
     "storyId": "concurrent-task-execution"
   }

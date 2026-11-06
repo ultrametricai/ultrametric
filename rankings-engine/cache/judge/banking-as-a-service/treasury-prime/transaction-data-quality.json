@@ -1,16 +1,35 @@
 {
-  "hash": "97d79a31690690ef14a13f68106737d7ccfbbc50f21f61478fe88210d9e84b3f",
+  "hash": "16ebb5306d00368957df39042ac91a045840179a490af3e60659e4c24a7c9e2e",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "The evidence shows only glancing rail-specific metadata on Treasury Prime's own objects. ACH objects carry a `returned` status with return codes in the `error` field, card events include a `decline_reason`, and wires expose a `status` attribute. Nothing documents a rich transaction feed. missing for 10: counterparty details on transactions, stable transaction identifiers, merchant/category enrichment, a documented transaction object schema, independent or hands-on corroboration.",
+    "rationale": "The evidence shows a few rail-specific fields on payment objects: ACH objects carry a `returned` status with return codes in the `error` field, card events include a `decline_reason`, and wire objects expose a `status`. Nothing documents a transaction feed with counterparty details, stable identifiers, or enrichment. missing for 10: counterparty fields on transactions, a documented transaction object schema, stable or idempotent transaction identifiers, merchant/category enrichment, broader rail metadata (wire/FedNow details), independent corroboration.",
     "evidenceIds": [
       "treasury-prime-docs-21",
       "treasury-prime-docs-27",
       "treasury-prime-docs-22"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, transaction data is rich enough to build on — counterparty details, rail-specific metadata, stable identifiers, and enrichment that makes a raw bank feed usable in-product",
+      "citations": [
+        {
+          "evidenceId": "treasury-prime-docs-21",
+          "quote": "Treasury Prime updates the [ACH object](/reference/ach) status to `returned` and populates the `error` field with the appropriate return code."
+        },
+        {
+          "evidenceId": "treasury-prime-docs-27",
+          "quote": "Card events in this status will contain a value in the `decline_reason` field which outlines the reason the transaction was declined."
+        },
+        {
+          "evidenceId": "treasury-prime-docs-22",
+          "quote": "You can track the progress of a wire by checking the `status` attribute on the Wire Transfer object."
+        }
+      ]
+    },
     "productId": "treasury-prime",
     "storyId": "transaction-data-quality"
   }

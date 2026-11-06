@@ -1,19 +1,42 @@
 {
-  "hash": "abbc51718f6138d7437fbb11459182718a6232a277e0131630422cdcb75de563",
+  "hash": "6478f23ea0d4f051b00f95151c7c10d6553d7440b5a8e03d25bbae77411fab69",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "sandbox0",
-    "storyId": "pause-resume-state",
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Sandbox0 documents pausing compute and resuming the same sandbox with the whole writable root filesystem preserved, plus auto_resume on inbound access. Memory state can also be kept by opting in with `memory: true`, and pricing lists retained memory as a billed storage item. Missing for 10: memory pause/resume is marked experimental and covers only 'supported' process state, filesystem preservation is tied to successful checkpoints, and there is no independent or hands-on corroboration.",
+    "rationale": "Sandbox0 documents first-party pause and resume of the same sandbox, preserving the writable root filesystem across checkpoints. Paused sandboxes incur storage charges only, and auto-resume and soft-TTL-driven pause are also documented. Memory preservation is only an experimental opt-in (`memory: true`) that covers \"supported process state\", so the memory half of the story carries documented limitations. Missing for 10: memory pause/resume beyond experimental status with all process state supported, and independent or hands-on corroboration of state surviving a resume.",
     "evidenceIds": [
       "sandbox0-docs-2",
       "sandbox0-docs-6",
-      "sandbox0-docs-4",
       "sandbox0-docs-36",
-      "sandbox0-docs-3"
-    ]
+      "sandbox0-docs-4",
+      "sandbox0-docs-38"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can pause a running sandbox and resume it later with filesystem and memory state intact",
+      "citations": [
+        {
+          "evidenceId": "sandbox0-docs-2",
+          "quote": "Preserve the whole writable root filesystem across successful checkpoints, pause compute between tasks, and resume the same sandbox when work returns."
+        },
+        {
+          "evidenceId": "sandbox0-docs-6",
+          "quote": "Experimental memory pause/resume explicitly opts into preserving supported process state with `memory: true`."
+        },
+        {
+          "evidenceId": "sandbox0-docs-36",
+          "quote": "Incremental RootFS · retained memory · shared data counted once"
+        },
+        {
+          "evidenceId": "sandbox0-docs-4",
+          "quote": "With auto_resume enabled, supported inbound access can wake a paused sandbox; resume takes time and requires available capacity."
+        }
+      ]
+    },
+    "productId": "sandbox0",
+    "storyId": "pause-resume-state"
   }
 }

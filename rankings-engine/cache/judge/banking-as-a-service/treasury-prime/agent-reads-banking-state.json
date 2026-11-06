@@ -1,22 +1,47 @@
 {
-  "hash": "4e031abd4bc21054123cff2f9a1a58b2302bd5189990b23ee452e71d6210b5b9",
+  "hash": "e04797c979c6edf0ea0f71494b0228ec8dd32361fedf4c7c3e991bb6c59f301c",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Treasury Prime is an API-first banking platform: API-key auth, an `account` endpoint listing accounts, statement generation and retrieval for documents, and status tracking on ACH, wire and card-event objects that covers in-flight activity. Registrable webhooks and an llms.txt add agent-friendly access, so an agent can read the banking picture without scraping a dashboard. Missing for 10: an explicitly evidenced transaction-history/ledger endpoint, explicit pending-vs-posted balance data, a first-party MCP server, a discoverable OpenAPI spec (all probed paths returned 404), and independent hands-on corroboration.",
+    "rationale": "Treasury Prime's own authenticated REST API covers several parts of the story. It lists accounts through the `account` endpoint, returns statements as documents, and exposes status attributes on wire and ACH objects plus card event decline details, so an agent can read the data without scraping a dashboard. An llms.txt file is also published. However, the evidence never shows a unified transaction-history endpoint or an explicit pending-activity view, no MCP server is documented, and the probe found no public OpenAPI spec. missing for 10: explicit transaction-listing endpoint, documented pending/hold activity reads, official MCP server, machine-readable OpenAPI spec, independent hands-on corroboration",
     "evidenceIds": [
-      "treasury-prime-docs-2",
       "treasury-prime-docs-3",
       "treasury-prime-docs-13",
-      "treasury-prime-docs-21",
+      "treasury-prime-docs-17",
       "treasury-prime-docs-22",
+      "treasury-prime-docs-21",
       "treasury-prime-docs-27",
-      "treasury-prime-docs-28",
-      "treasury-prime-probe-1",
-      "treasury-prime-probe-2"
+      "treasury-prime-probe-1"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, an agent can read the full banking picture — accounts, transactions, pending activity, documents — through a clean API or MCP surface without screen-scraping a dashboard",
+      "citations": [
+        {
+          "evidenceId": "treasury-prime-docs-3",
+          "quote": "Get a list of all the available accounts using the `account` endpoint."
+        },
+        {
+          "evidenceId": "treasury-prime-docs-13",
+          "quote": "Generate and retrieve branded monthly account statements for your customers."
+        },
+        {
+          "evidenceId": "treasury-prime-docs-22",
+          "quote": "You can track the progress of a wire by checking the `status` attribute on the Wire Transfer object."
+        },
+        {
+          "evidenceId": "treasury-prime-docs-21",
+          "quote": "Treasury Prime updates the [ACH object](/reference/ach) status to `returned` and populates the `error` field with the appropriate return code."
+        },
+        {
+          "evidenceId": "treasury-prime-docs-27",
+          "quote": "Card events in this status will contain a value in the `decline_reason` field which outlines the reason the transaction was declined."
+        }
+      ]
+    },
     "productId": "treasury-prime",
     "storyId": "agent-reads-banking-state"
   }

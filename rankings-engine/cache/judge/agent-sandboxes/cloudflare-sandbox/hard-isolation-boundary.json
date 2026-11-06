@@ -1,16 +1,35 @@
 {
-  "hash": "fcfc54b912819efb4da7483c7fb8eca4683df19b81db14c773545f04d4780e5a",
+  "hash": "89e67ec610ae62393bd81055ddb18e054a886f61d8e06c2cd5cce935b2811080",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Cloudflare's architecture docs state outright \"VM-based isolation - Each sandbox runs in its own VM.\" The overview adds that each sandbox runs in its own isolated container with \"strong security boundaries\" for running untrusted code. That is a documented VM-level boundary, and no community evidence contradicts it. However, the docs mostly describe it as a container and give little detail on the boundary itself. missing for 10: in-depth documentation of the VM/hypervisor technology and threat model, clarification of the container-vs-VM layering, independent or hands-on corroboration of the isolation boundary.",
+    "rationale": "Cloudflare's architecture docs state VM-based isolation with each sandbox running in its own VM, and the overview promises strong security boundaries for running untrusted code. That is a documented hard isolation boundary, but it rests on a single short line and the docs elsewhere describe the unit as an 'isolated container'. Missing for 10: detailed documentation of the VM/hypervisor technology and threat model, explicit description of the boundary between sandboxes and the customer's own systems/bindings, consistent VM-vs-container terminology, and independent or hands-on corroboration of the isolation.",
     "evidenceIds": [
       "cloudflare-sandbox-docs-38",
       "cloudflare-sandbox-docs-50",
       "cloudflare-sandbox-docs-34"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform-engineer, I can rely on a documented hard isolation boundary (microVM or equivalent) between sandboxes and my systems",
+      "citations": [
+        {
+          "evidenceId": "cloudflare-sandbox-docs-38",
+          "quote": "VM-based isolation - Each sandbox runs in its own VM"
+        },
+        {
+          "evidenceId": "cloudflare-sandbox-docs-50",
+          "quote": "Each sandbox runs in its own isolated container with a full Linux environment, providing strong security boundaries while maintaining performance."
+        },
+        {
+          "evidenceId": "cloudflare-sandbox-docs-34",
+          "quote": "The Sandbox SDK enables you to run untrusted code securely in isolated environments."
+        }
+      ]
+    },
     "productId": "cloudflare-sandbox",
     "storyId": "hard-isolation-boundary"
   }

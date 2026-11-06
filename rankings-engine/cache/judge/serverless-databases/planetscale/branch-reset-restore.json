@@ -1,17 +1,35 @@
 {
-  "hash": "c50e3f93c7a2e1f6916de2d751fc1a14c7665841ce82491fd3637e035445a0ca",
+  "hash": "aeb8c3c824c68682fd5137191578545f06d9e75baa1064064fa58f1fd1468cd3",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "The docs cover the restore half of the story. You can create a Postgres branch restored to a point-in-time timestamp with --restore-point, and backups (daily scheduled plus manual) can be restored for both production and development branches, so no dump rebuild is needed. Nothing shows resetting a branch from its parent, and restores appear to produce a new branch rather than rewinding the existing one in place. missing for 10: reset/refresh-from-parent capability, in-place branch restore, detailed restore workflow docs, independent or hands-on corroboration.",
+    "rationale": "PlanetScale documents restoring to an earlier state without a dump: you can restore backups for development branches and create a Postgres branch restored to a point-in-time timestamp with --restore-point. However, this restore creates a new branch rather than resetting an existing one, and there is no evidence of resetting a branch from its parent. missing for 10: documented in-place reset of a branch from its parent, in-place restore of an existing branch, point-in-time restore for Vitess branches, independent hands-on corroboration.",
     "evidenceIds": [
       "planetscale-docs-5",
       "planetscale-docs-10",
-      "planetscale-docs-12",
-      "planetscale-docs-33"
+      "planetscale-docs-12"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can reset a branch from its parent or restore it to an earlier state without rebuilding from a dump",
+      "citations": [
+        {
+          "evidenceId": "planetscale-docs-5",
+          "quote": "You can now create a PostgreSQL branch restored to a point-in-time timestamp with --restore-point."
+        },
+        {
+          "evidenceId": "planetscale-docs-12",
+          "quote": "PlanetScale provides the ability to create, schedule, and restore backups for production and development database branches."
+        },
+        {
+          "evidenceId": "planetscale-docs-10",
+          "quote": "Branches on PlanetScale Postgres are isolated database deployments that provide you with separate environments for development and testing, as well as restoring from backups."
+        }
+      ]
+    },
     "productId": "planetscale",
     "storyId": "branch-reset-restore"
   }

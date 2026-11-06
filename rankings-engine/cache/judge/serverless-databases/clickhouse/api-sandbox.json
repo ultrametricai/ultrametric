@@ -1,21 +1,41 @@
 {
-  "hash": "efcefc838ed75961c2ba3fca6aab3b157759181314ecda1707c7470577232ea7",
+  "hash": "5aab068faa7a621b8c93a31e0133ddeb02942711144d5ec047122dc059d5c021",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "ClickHouse documents an isolated local environment kept separate from production. clickhousectl can install local ClickHouse versions and launch and manage local servers, then push local development to cloud. The install docs say to run it on your own machine to build, test, and experiment, and clickhouse-local and chDB offer lightweight in-process testing without a full server. Missing for 10: a cloud-side sandbox or branch/clone of production data for realistic testing, agent-specific guardrails (e.g. a read-only MCP mode) tying the sandbox to AI workflows, and independent hands-on corroboration of the local-to-cloud workflow.",
+    "rationale": "ClickHouse's own first-party tooling supports isolated local test environments: clickhousectl can launch and manage local servers and push local development to cloud, and the install docs explicitly position local ClickHouse for building, testing and experimenting. clickhouse-local adds a serverless local SQL engine. This is real environment isolation rather than a dry-run mode, but it rests on separate local instances, not a documented sandbox or staging tier tied to production. missing for 10: documented cloud sandbox/staging or branch environments, safe cloning or masking of production data into a test environment, explicit agent-oriented sandbox guidance, independent hands-on corroboration.",
     "evidenceIds": [
       "clickhouse-docs-16",
-      "clickhouse-docs-32",
       "clickhouse-docs-17",
-      "clickhouse-docs-23",
       "clickhouse-docs-27",
       "clickhouse-docs-15",
-      "clickhouse-docs-35",
-      "clickhouse-comm-4"
+      "clickhouse-docs-29"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
+      "citations": [
+        {
+          "evidenceId": "clickhouse-docs-16",
+          "quote": "Launch and manage local ClickHouse servers"
+        },
+        {
+          "evidenceId": "clickhouse-docs-27",
+          "quote": "Run ClickHouse on your own machine to build, test, and experiment."
+        },
+        {
+          "evidenceId": "clickhouse-docs-17",
+          "quote": "Push your local ClickHouse development to cloud"
+        },
+        {
+          "evidenceId": "clickhouse-docs-15",
+          "quote": "clickhouse-local is an easy-to-use version of ClickHouse that is ideal for developers who need to perform fast processing on local and remote files using SQL without having to install a full database server"
+        }
+      ]
+    },
     "productId": "clickhouse",
     "storyId": "api-sandbox"
   }

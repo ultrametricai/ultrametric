@@ -1,20 +1,40 @@
 {
-  "hash": "5283f508b394082185418f0b9b5788c8a3df941a6ffc51dd1bf152e39219c824",
+  "hash": "9b94c7172b6070e873184ef26a7898958d7892f8b39426e976879c85ec3e03ed",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "CockroachDB's first-party multi-region docs say its multi-region capabilities make it easier to run global applications. Table locality settings determine how CockroachDB optimizes access to a table's data, and survival goals control replica fault tolerance. Community comments describe it as a worldwide cluster with global transactions and mention follower reads, though some note multi-region and follower-read features have been gated behind enterprise licensing. Missing for 10: explicit documentation of specific locality options (e.g., regional-by-row or global tables) and their read-latency effects, first-party docs on follower reads, and independent hands-on latency benchmarks.",
+    "rationale": "CockroachDB's own multi-region docs describe a table-locality setting that controls how a table's data is accessed, framed as making global applications easier to run. Community comments confirm worldwide clusters and mention a Follower-Reads feature, though one says it was released as an enterprise feature. The evidence never explicitly says data or replicas can be pinned near users or that reads become low-latency, so coverage is partial. Missing for 10: explicit documentation of placing data or replicas in specific regions near users, documented low-latency local or follower reads with no licensing ambiguity, and independent hands-on corroboration of worldwide read latency.",
     "evidenceIds": [
       "cockroachdb-docs-31",
       "cockroachdb-docs-16",
-      "cockroachdb-docs-24",
-      "cockroachdb-docs-7",
       "cockroachdb-comm-6",
-      "cockroachdb-comm-9",
-      "cockroachdb-comm-2"
+      "cockroachdb-comm-9"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can place data or replicas in regions close to my users to keep read latency low worldwide",
+      "citations": [
+        {
+          "evidenceId": "cockroachdb-docs-31",
+          "quote": "CockroachDB multi-region capabilities make it easier to run global applications."
+        },
+        {
+          "evidenceId": "cockroachdb-docs-16",
+          "quote": "_Table locality_ determines how CockroachDB optimizes access to a table's data."
+        },
+        {
+          "evidenceId": "cockroachdb-comm-6",
+          "quote": "So global transaction with cluster world wide."
+        },
+        {
+          "evidenceId": "cockroachdb-comm-9",
+          "quote": "they released Follower-Reads as an enterprise feature"
+        }
+      ]
+    },
     "productId": "cockroachdb",
     "storyId": "global-low-latency"
   }

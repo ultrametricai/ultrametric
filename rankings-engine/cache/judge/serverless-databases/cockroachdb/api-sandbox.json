@@ -1,19 +1,35 @@
 {
-  "hash": "ac8cd6d72cb021c28c07d3af0f2df1c070b05e3df92ef610e3495fd1f68446bf",
+  "hash": "ac5b4e54d9c3f2df5173480c99679bc4bdede2a104a4908c5b3d4b3f5503b219",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "CockroachDB documents several ways to get an isolated test environment. `cockroach demo` spins up a temporary in-memory cluster, optionally with a preloaded dataset, and a single-node cluster is described as suitable for quick SQL testing. Separate free-trial cloud clusters can be created via `ccloud quickstart`, and Continuum virtual clusters are pitched for developers and agents. Missing for 10: a documented branch or clone of production data into a sandbox, explicit guidance on scoping the MCP server or agents to non-production clusters, and independent or hands-on corroboration.",
+    "rationale": "CockroachDB ships its own sandbox-style environments: `cockroach demo` spins up a temporary, in-memory cluster with an optional preloaded dataset, single-node clusters are documented for quick SQL testing, and Cockroach Continuum lets developers and agents deploy virtual clusters on a host cluster. These are separate from production by construction, but the evidence does not document an agent workflow that targets a sandbox rather than production, or explicit guarantees that production data is never touched. missing for 10: documented isolation or guardrails keeping agents (e.g. via the MCP server) off production, a sandbox seeded from production-like data (branching or cloning), and independent or hands-on corroboration of agent sandbox use.",
     "evidenceIds": [
       "cockroachdb-docs-1",
       "cockroachdb-docs-2",
-      "cockroachdb-docs-17",
-      "cockroachdb-docs-8",
-      "cockroachdb-docs-32",
-      "cockroachdb-docs-28"
+      "cockroachdb-docs-32"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
+      "citations": [
+        {
+          "evidenceId": "cockroachdb-docs-1",
+          "quote": "The `cockroach demo` starts a temporary, in-memory CockroachDB cluster of one or more nodes, with or without a preloaded dataset, and opens an interactive SQL shell to the cluster."
+        },
+        {
+          "evidenceId": "cockroachdb-docs-2",
+          "quote": "A single-node cluster is appropriate for quick SQL testing or app development."
+        },
+        {
+          "evidenceId": "cockroachdb-docs-32",
+          "quote": "Cockroach Continuum supports cluster virtualization, allowing application developers and agents to deploy virtual clusters on a dedicated host cluster."
+        }
+      ]
+    },
     "productId": "cockroachdb",
     "storyId": "api-sandbox"
   }

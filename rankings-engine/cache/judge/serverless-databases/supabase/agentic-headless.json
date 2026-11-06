@@ -1,22 +1,42 @@
 {
-  "hash": "7e3aad8ff4f8387c5a2907c8d2039bddf39512e51694dde0950cb6bf693a4743",
+  "hash": "f57486fee1a90fc85bbe3d6a831097fccb5fe535ac800bc190d8ab884cc40b24",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Supabase provides a scriptable official CLI that a runtime probe ran keylessly via `npx -y supabase --version`, with `supabase init`/`supabase start` for local stacks. It also offers version-controlled migration files, per-pull-request preview branches, and a Management API with an OpenAPI spec for programmatic project management. Together these clearly support headless and CI-driven automation. Missing for 10: explicit CI pipeline documentation (e.g. GitHub Actions setup or non-interactive token auth for the CLI), and hands-on evidence of a full CI run beyond a version check.",
+    "rationale": "Supabase ships an official CLI that a runtime probe ran non-interactively via npx with no login, plus a Management API for managing projects programmatically, so headless automation is directly supported. Per-pull-request branching environments and version-controlled migrations point toward CI workflows, but the evidence never explicitly documents running the CLI inside a CI pipeline. missing for 10: explicit CI pipeline documentation (e.g. GitHub Actions setup or non-interactive auth via access-token environment variables), hands-on evidence of authenticated headless deploys or migrations in CI, independent corroboration of CI usage.",
     "evidenceIds": [
       "supabase-docs-5",
       "supabase-probe-rt-1",
+      "supabase-docs-28",
       "supabase-docs-25",
       "supabase-docs-36",
-      "supabase-docs-26",
-      "supabase-docs-28",
-      "supabase-probe-3",
-      "supabase-docs-6",
-      "supabase-comm-7"
+      "supabase-probe-3"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
+      "citations": [
+        {
+          "evidenceId": "supabase-probe-rt-1",
+          "quote": "the official Supabase CLI ran keylessly from npm — `npx -y supabase --version` printed `2.117.0` with no account or login."
+        },
+        {
+          "evidenceId": "supabase-docs-28",
+          "quote": "Manage your Supabase organizations and projects programmatically."
+        },
+        {
+          "evidenceId": "supabase-docs-36",
+          "quote": "Branching takes this further, adding isolated preview environments for each pull request."
+        },
+        {
+          "evidenceId": "supabase-docs-25",
+          "quote": "capture your changes in schema migration files, which can be saved in version control."
+        }
+      ]
+    },
     "productId": "supabase",
     "storyId": "agentic-headless"
   }

@@ -1,20 +1,36 @@
 {
-  "hash": "cc907cfb2419180fb6c4e4c39ae4aa46718ccb0ade642fc043fafd21c80bb404",
+  "hash": "bdbbde71a9bf5a500e4ecfdc4c9f244da42cb2633eed9e39e39ab50320f0e443",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Belvo documents registrable outbound webhooks: you supply a URL and an optional authorization token (belvo-docs-25). Recurrent links refresh weekly and notify you via webhook (belvo-docs-26), async workflows cut out follow-up POST calls (belvo-docs-10, belvo-docs-11), and Smart Collections notifies you when balance conditions are met (belvo-docs-4). However, the only protection evidenced is a bearer-style auth token, not signed payloads, and the event coverage is not enumerated. missing for 10: cryptographic payload signing (HMAC/signature verification), explicit transaction-level and connection-state-change event types, near-real-time rather than weekly refresh cadence, independent corroboration.",
+    "rationale": "Belvo documents registrable outbound webhooks with a destination URL and an optional authorization token. Recurrent links refresh data weekly and notify via webhook, and Smart Collections notify when the balance meets the set conditions. The evidence does not show payload signing (the auth token protects the receiving URL; it does not sign messages), nor specific new-transaction or connection-state event types. Missing for 10: documented webhook signature verification, explicit transaction/balance/connection-status event types, and independent corroboration.",
     "evidenceIds": [
       "belvo-docs-25",
       "belvo-docs-26",
       "belvo-docs-4",
-      "belvo-docs-24",
-      "belvo-docs-10",
-      "belvo-docs-11",
       "belvo-docs-9"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, data changes arrive as signed webhooks — new transactions, balance updates, connection state changes — so my system stays current without polling",
+      "citations": [
+        {
+          "evidenceId": "belvo-docs-25",
+          "quote": "URL: the URL to receive the webhook notifications. Authorization: an optional authorization token to use if your URL is protected."
+        },
+        {
+          "evidenceId": "belvo-docs-26",
+          "quote": "With recurrent links, Belvo automatically refreshes information weekly and notifies you via webhook so you always have up-to-date data."
+        },
+        {
+          "evidenceId": "belvo-docs-4",
+          "quote": "Belvo monitors your user's balance and notifies you the moment there are enough funds to collect."
+        }
+      ]
+    },
     "productId": "belvo",
     "storyId": "webhook-data-events"
   }

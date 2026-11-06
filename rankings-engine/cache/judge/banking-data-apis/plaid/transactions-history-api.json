@@ -1,16 +1,35 @@
 {
-  "hash": "2b28fb9c7bc96b0e19b504e81cae8aa13990c5149be038b3671c868be0717729",
+  "hash": "a89cd1f79268e646c1f7294d6186f5331e329543517ff1f328758f7537d08bca",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Plaid's Transactions product documents retrieving up to 24 months of transaction history and staying current via webhooks, and the official Node SDK exposes a `transactionsSync` call, which points to a sync pattern for fetching changes. Pagination and the cursor/delta semantics of sync are only implied, not documented, in the evidence. Missing for 10: explicit pagination documentation, documented cursor-based 'only what changed' semantics for /transactions/sync, independent hands-on corroboration.",
+    "rationale": "Plaid's Transactions docs say it retrieves up to 24 months of transaction data and stays current via webhooks, which covers history depth. The official Node SDK exposes a transactionsSync call, which points to a first-party sync endpoint. However, nothing in the pack describes pagination or cursor-based incremental 'only what changed' semantics. Missing for 10: documented pagination/cursor mechanics, explicit description of incremental change-only sync semantics (added/modified/removed), independent hands-on corroboration.",
     "evidenceIds": [
       "plaid-docs-4",
       "plaid-gh-1",
       "plaid-docs-8"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can pull transaction history for a connected account through the API — paginated, with documented history depth and a sync pattern for fetching only what changed",
+      "citations": [
+        {
+          "evidenceId": "plaid-docs-4",
+          "quote": "Retrieve up to 24 months of transaction data and stay up-to-date with webhooks"
+        },
+        {
+          "evidenceId": "plaid-gh-1",
+          "quote": "await plaidClient.transactionsSync(request);"
+        },
+        {
+          "evidenceId": "plaid-docs-8",
+          "quote": "Plaid sends webhooks to programmatically inform you about changes to Plaid Items or the status of asynchronous processes."
+        }
+      ]
+    },
     "productId": "plaid",
     "storyId": "transactions-history-api"
   }

@@ -1,11 +1,11 @@
 {
-  "hash": "a85ce3f532b8efe3b2aa27e9f7d9ccef1006a534994164e0d07648f37b3bb2b3",
+  "hash": "51ec92b7a8c520905af11ee95af97a115a286d35633fc9018510397e0b1d723e",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Semgrep ships a well-documented official CLI. It installs via pipx or uv, offers `semgrep scan` for local scans without an account and `semgrep ci` for platform scans, and supports machine-readable SARIF export, `--autofix` and `--dry-run`, with no login required. Independent hands-on use confirms the CLI fits automated LLM pipelines: a team at Microsoft fed its SARIF output to LLMs to prioritise triage. Missing for 10: explicit documentation of agent-oriented CLI behaviour (e.g., guidance for non-interactive or agent invocation, or structured JSON output aimed at AI tooling) beyond SARIF export.",
+    "rationale": "Semgrep ships an official, documented CLI. It installs via pipx or uv, offers `semgrep scan` and `semgrep ci` commands, exports machine-readable SARIF, supports `--dry-run` and `--autofix`, and needs no login, all of which suit scripted and agent-driven use. A community user independently reports feeding the CLI's SARIF output to LLMs for triage. Missing for 10: explicit documentation of agent- or AI-oriented CLI usage patterns (e.g., JSON output for agents), plus one reported Windows pip install failure.",
     "evidenceIds": [
       "semgrep-probe-4",
       "semgrep-docs-26",
@@ -18,6 +18,33 @@
       "semgrep-docs-50",
       "semgrep-comm-14"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can use an official CLI",
+      "citations": [
+        {
+          "evidenceId": "semgrep-probe-4",
+          "quote": "official CLI documented at https://docs.semgrep.dev/getting-started/cli"
+        },
+        {
+          "evidenceId": "semgrep-docs-27",
+          "quote": "semgrep scan - This is the recommended command for scanning local codebases or scanning a project when you don't have a Semgrep account"
+        },
+        {
+          "evidenceId": "semgrep-docs-20",
+          "quote": "semgrep ci --sarif --sarif-output=semgrep.sarif"
+        },
+        {
+          "evidenceId": "semgrep-docs-50",
+          "quote": "You can run local Semgrep CLI scans with the Semgrep command-line tool."
+        },
+        {
+          "evidenceId": "semgrep-comm-14",
+          "quote": "Built a tool using Semgrep's SARIF output plus prompted LLMs to help prioritize triage"
+        }
+      ]
+    },
     "productId": "semgrep",
     "storyId": "agentic-official-cli"
   }

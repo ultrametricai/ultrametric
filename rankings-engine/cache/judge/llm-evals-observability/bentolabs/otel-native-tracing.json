@@ -1,18 +1,42 @@
 {
-  "hash": "3c006d228fd7d0e91a125cb61c2c3c7ff3a856e29cff2d4d4a0f1e778238bac3",
+  "hash": "ced2da3533ea8b1e152f54bcecb1f4ec6f535f1f4dac65ef05e195591906641d",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "bentolabs",
-    "storyId": "otel-native-tracing",
-    "verdict": "full",
-    "quality": 8,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Bento's docs say spans are captured over OpenTelemetry (bentolabs-docs-3, bentolabs-docs-29). You can point any OTel exporter at a single Bento endpoint with one auth header, and in TypeScript this needs no Bento package at all (bentolabs-docs-21). Bento can also wire directly into an existing OTel pipeline (bentolabs-docs-20), so ingestion is clearly standards-based rather than proprietary. Missing for 10: evidence of exporting or forwarding traces out of Bento over OTLP, explicit OTLP protocol/transport details (gRPC vs HTTP), and independent or hands-on corroboration.",
+    "rationale": "Bento documents OpenTelemetry trace ingestion: you point an OTel exporter at one endpoint with one auth header, and in TypeScript no Bento package is needed. It also offers a Python OTel transport for existing pipelines. However, the evidence covers only the sending side. Nothing shows Bento emitting or forwarding traces back out over OTLP to other backends. Running alongside another observability stack is not the same as exporting traces from Bento. missing for 10: documented OTLP export/egress of traces from Bento (the 'receive' side), explicit OTLP protocol/endpoint specs (gRPC vs HTTP, protobuf vs JSON), independent or hands-on corroboration.",
     "evidenceIds": [
       "bentolabs-docs-3",
       "bentolabs-docs-20",
       "bentolabs-docs-21",
+      "bentolabs-docs-40",
       "bentolabs-docs-29"
-    ]
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can send and receive traces over OpenTelemetry (OTLP) instead of a proprietary format",
+      "citations": [
+        {
+          "evidenceId": "bentolabs-docs-21",
+          "quote": "point its exporter at one endpoint with one auth header and the traces land in Bento. In TypeScript you can do this with no Bento package at all."
+        },
+        {
+          "evidenceId": "bentolabs-docs-40",
+          "quote": "JavaScript's OpenTelemetry exporters can emit JSON, so you can send traces to Bento without installing any Bento package."
+        },
+        {
+          "evidenceId": "bentolabs-docs-3",
+          "quote": "Every span from every framework, captured over OpenTelemetry."
+        },
+        {
+          "evidenceId": "bentolabs-docs-20",
+          "quote": "Wire it into an OpenTelemetry pipeline directly when you already have one configured, and skip the analytics layer entirely."
+        }
+      ]
+    },
+    "productId": "bentolabs",
+    "storyId": "otel-native-tracing"
   }
 }

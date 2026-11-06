@@ -1,20 +1,42 @@
 {
-  "hash": "80f64bfa9a6957cd45cb06c1f8dabc22148b6547c7570cdd41ccd7f8b48f2f13",
+  "hash": "6c76598eb05ac3e91b1c228866e98e7924dab897adc0a391c15edd4c9d327a66",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Anrok's API docs give explicit refund workflows. Full refunds use createOrUpdate with a negative transaction, and partial refunds use createNegation plus a new transaction version. Transactions are saved and associated with the appropriate tax return, void removes finalized transactions from a return, and filings are handled and fetchable. missing for 10: explicit documentation that negative amounts net against liability in the next filing period after a return is finalized, explicit credit-note terminology or handling, independent or hands-on corroboration.",
+    "rationale": "Anrok documents refund handling through its own Transactions API. Full refunds are posted as negative transactions via createOrUpdate, and partial refunds use createNegation plus a new transaction version. Saved transactions are associated with the appropriate tax return, and void removes a transaction from a finalized return. Missing for 10: explicit documentation that negative amounts carry into the next filing period's liability after a return is filed, named credit-note support, reporting-level treatment of refunds, and independent or hands-on corroboration.",
     "evidenceIds": [
       "anrok-docs-8",
       "anrok-docs-9",
       "anrok-docs-6",
       "anrok-docs-35",
-      "anrok-docs-24",
       "anrok-docs-12",
       "anrok-docs-28"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, refunds and credit notes adjust tax correctly — negative amounts flow through liability, reporting, and the next filing without manual journal fixes",
+      "citations": [
+        {
+          "evidenceId": "anrok-docs-8",
+          "quote": "Use createOrUpdate endpoint to create a negative transaction representing the refund."
+        },
+        {
+          "evidenceId": "anrok-docs-9",
+          "quote": "Use createNegation endpoint to negate the original transaction. Use createOrUpdate endpoint to create a new version of the partially refunded transaction."
+        },
+        {
+          "evidenceId": "anrok-docs-6",
+          "quote": "this endpoint also saves the transaction in Anrok and associates it with the appropriate tax return"
+        },
+        {
+          "evidenceId": "anrok-docs-35",
+          "quote": "If a transaction needs to be removed from a tax return after it has been finalized, void can be used to remove the transaction from an Anrok tax return."
+        }
+      ]
+    },
     "productId": "anrok",
     "storyId": "refund-adjustment-handling"
   }

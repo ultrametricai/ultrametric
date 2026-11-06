@@ -1,18 +1,37 @@
 {
-  "hash": "223038fa1bbace9f0c785cf1bbdb2a2a3549bd72cb050906deeabe7baa947832",
+  "hash": "7182b6119654d7cd95798a6b8fdae09ebb83de860e2282901d4e6fe2add72ef1",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Blaxel documents sandboxes that go to standby and resume in under 25ms 'even after weeks', so sessions persist across hours or days. Archive and unarchive, configurable expiration and TTL policies, and persistent volumes further support long-lived agent sessions. Missing for 10: documented limits on continuous active runtime for long-running processes (scale-to-zero after 5s of inactivity implies idle sessions are suspended rather than kept running), and independent or hands-on corroboration of multi-day sessions.",
+    "rationale": "Blaxel's own docs show sandboxes persisting over long periods: they go to standby and resume in under 25ms \"even after weeks\". Configurable expiration policies (inactivity, TTL) and archive/unarchive control how long a sandbox lives. However, the evidence describes persistence through standby and scale-to-zero after a few seconds of inactivity, not a sandbox that stays actively running for hours or days. No maximum session or runtime limit is documented. missing for 10: explicit documentation that active processes can run continuously for hours or days without being suspended, documented maximum runtime or session limits, independent or hands-on corroboration of multi-day agent sessions",
     "evidenceIds": [
       "blaxel-docs-2",
       "blaxel-docs-16",
-      "blaxel-docs-22",
       "blaxel-docs-25",
-      "blaxel-docs-29"
+      "blaxel-docs-22",
+      "blaxel-docs-17"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can keep a sandbox session running for hours or days for long agent tasks",
+      "citations": [
+        {
+          "evidenceId": "blaxel-docs-2",
+          "quote": "resume from standby under 25ms even after weeks"
+        },
+        {
+          "evidenceId": "blaxel-docs-25",
+          "quote": "Configure expiration policies to automatically delete Blaxel sandboxes after inactivity, a TTL, or other conditions"
+        },
+        {
+          "evidenceId": "blaxel-docs-22",
+          "quote": "Archive a sandbox to keep its filesystem while shutting it down, and unarchive it later to get it back."
+        }
+      ]
+    },
     "productId": "blaxel",
     "storyId": "long-running-sessions"
   }

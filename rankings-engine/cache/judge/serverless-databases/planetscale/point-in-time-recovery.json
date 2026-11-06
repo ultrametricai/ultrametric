@@ -1,18 +1,36 @@
 {
-  "hash": "a7c9fa1ebf8f7ea9c2e504e5d3474e5178eb0bd2dd3b08838b2b1d8b7d36820d",
+  "hash": "035b338bce1d32abac4cd623818fc239b9647260815462e7adc5c2181f298f8a",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "A changelog entry shows a PostgreSQL branch can be created restored to a point-in-time timestamp via --restore-point, and the Postgres docs say branches can be restored from backups. For Vitess, the evidence only shows daily scheduled backups, manual backups and backup restore, not arbitrary point-in-time recovery. Missing for 10: documented PITR retention window and granularity, point-in-time recovery for Vitess databases, in-depth first-party PITR docs beyond a changelog line, independent or hands-on corroboration of recovery from bad writes.",
+    "rationale": "PlanetScale documents creating a PostgreSQL branch restored to a point-in-time timestamp via `--restore-point`, and says Postgres branches can be used for restoring from backups. That is the core of recovering from bad writes. For Vitess, the evidence shows only scheduled, daily and manual backup restores, not arbitrary point-in-time recovery, and nothing describes the retention window. missing for 10: documented PITR retention window and limits, point-in-time restore for Vitess/MySQL databases, in-place restore (not just branch) workflow detail, independent or hands-on corroboration of PITR recovery.",
     "evidenceIds": [
       "planetscale-docs-5",
       "planetscale-docs-10",
       "planetscale-docs-12",
-      "planetscale-docs-33",
-      "planetscale-docs-4"
+      "planetscale-docs-33"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform-engineer, I can restore or branch the database to any point in time within the retention window to recover from bad writes",
+      "citations": [
+        {
+          "evidenceId": "planetscale-docs-5",
+          "quote": "You can now create a PostgreSQL branch restored to a point-in-time timestamp with --restore-point."
+        },
+        {
+          "evidenceId": "planetscale-docs-10",
+          "quote": "Branches on PlanetScale Postgres are isolated database deployments that provide you with separate environments for development and testing, as well as restoring from backups."
+        },
+        {
+          "evidenceId": "planetscale-docs-12",
+          "quote": "PlanetScale provides the ability to create, schedule, and restore backups for production and development database branches."
+        }
+      ]
+    },
     "productId": "planetscale",
     "storyId": "point-in-time-recovery"
   }

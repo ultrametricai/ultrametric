@@ -1,25 +1,43 @@
 {
-  "hash": "5969a67749caee8f72507544ee5ab97a428fec77785e33089d15ccc50516270d",
+  "hash": "a84a1a69194a6ddc158e1e3d9c80e022640a329394ecb93f32a2a1b832aa7a64",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "The evidence points to genuine engines rather than a lookalike. There are real PostgreSQL branches with PgBouncer, replicas, point-in-time restore, a PostgreSQL shell and a web console that runs DDL. There is also MySQL served via Vitess, with no-downtime MySQL/MariaDB imports, external MySQL keyspaces, and Neki extensions managed by name. However, community reports say Vitess does not support foreign keys and that PlanetScale's non-blocking schema-change workflow does not support them either, so the MySQL path is a subset for apps that rely on them. Those reports are dated, but no evidence in the pack shows the limitation was lifted. Missing for 10: an explicit first-party compatibility or extension list for Postgres, documented MySQL dialect parity (foreign keys, unsupported syntax), current evidence that the foreign-key limitation is resolved, and independent hands-on confirmation that existing code runs unchanged.",
+    "rationale": "PlanetScale's own docs describe Postgres instances fronted by PgBouncer, a secure MySQL or PostgreSQL shell, a web console that runs PostgreSQL queries and DDL, and no-downtime import of existing MySQL/MariaDB databases. Together these point to real engines rather than emulations. However, the pack never explicitly documents dialect or extension compatibility, and community reports say the Vitess-based MySQL offering does not support foreign keys, a concrete subset limitation. Those reports are old, so they cap the score but are not a contradiction of an explicit vendor claim. missing for 10: explicit documentation of Postgres extension support and dialect parity, current evidence that MySQL/Vitess foreign keys and other features match stock MySQL, independent hands-on confirmation that existing code runs unmodified.",
     "evidenceIds": [
       "planetscale-docs-2",
-      "planetscale-docs-5",
-      "planetscale-docs-10",
-      "planetscale-docs-13",
       "planetscale-docs-24",
-      "planetscale-docs-37",
-      "planetscale-docs-38",
       "planetscale-docs-48",
+      "planetscale-docs-13",
       "planetscale-comm-1",
       "planetscale-comm-7",
-      "planetscale-comm-8",
       "planetscale-comm-10"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I get real engine compatibility — the Postgres, MySQL, or SQLite dialect and extensions my existing code expects — not a lookalike subset",
+      "citations": [
+        {
+          "evidenceId": "planetscale-docs-2",
+          "quote": "Postgres instance, storage, and PgBouncer graphs now live on their own tabs with shareable URLs."
+        },
+        {
+          "evidenceId": "planetscale-docs-24",
+          "quote": "Open a secure MySQL or PostgreSQL shell instance"
+        },
+        {
+          "evidenceId": "planetscale-docs-48",
+          "quote": "Interactive interface for running PostgreSQL queries and DDL against PlanetScale Postgres database branches."
+        },
+        {
+          "evidenceId": "planetscale-docs-13",
+          "quote": "import an existing internet-accessible MySQL or MariaDB database with **no downtime**"
+        }
+      ]
+    },
     "productId": "planetscale",
     "storyId": "engine-compatibility"
   }

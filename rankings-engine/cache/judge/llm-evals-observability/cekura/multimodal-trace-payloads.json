@@ -1,19 +1,32 @@
 {
-  "hash": "7d468b100669026d540cf761541d2d4fb398d26c0f87b93404e22ab8398e5798",
+  "hash": "e58b7bce83ab1c253071ab7a2300f83c813ca4445b4fd179cac12cf89b80104f",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "cekura",
-    "storyId": "multimodal-trace-payloads",
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Cekura's observability ingestion accepts a recording URL alongside the transcript and metadata and stores it as a CallLog. Its PII redaction also operates on audio recordings, so audio is captured and processed as part of observed calls. However, the evidence only shows audio attached at the call level, via a URL, for voice agents. Nothing shows a developer attaching arbitrary multimodal payloads within traces. Missing for 10: image capture, arbitrary file attachments, span/trace-level multimodal attachment API (e.g. in the LiveKit tracing SDK), independent corroboration.",
+    "rationale": "Cekura's observability ingestion accepts a call's transcript plus a recording URL, stores them as a CallLog, and its PII redaction runs on audio recordings, so audio is part of its own call traces. Nothing in the evidence covers images or arbitrary file attachments, or attaching media at the span level within traces. Missing for 10: image payload capture, file/attachment capture, span-level multimodal attachment in LiveKit tracing, independent corroboration.",
     "evidenceIds": [
-      "cekura-docs-6",
       "cekura-docs-25",
       "cekura-docs-60",
-      "cekura-docs-12",
       "cekura-docs-15"
-    ]
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can capture multimodal payloads (images, audio, files) inside my traces",
+      "citations": [
+        {
+          "evidenceId": "cekura-docs-25",
+          "quote": "Your agent (or its provider's post-call webhook) POSTs here with the transcript, recording URL, and metadata; Cekura stores it as a `CallLog`, schedules metric evaluation, and surfaces it in Observability."
+        },
+        {
+          "evidenceId": "cekura-docs-60",
+          "quote": "PII redaction automatically detects and removes sensitive information from both transcripts and audio recordings."
+        }
+      ]
+    },
+    "productId": "cekura",
+    "storyId": "multimodal-trace-payloads"
   }
 }

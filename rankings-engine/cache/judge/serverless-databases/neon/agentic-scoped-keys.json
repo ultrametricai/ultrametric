@@ -1,19 +1,45 @@
 {
-  "hash": "a68d3ff3aa0f56d1e7d1e8ccd5571e160d7e198ebfdd3349d312ef1bcbec92ae",
+  "hash": "8ce6c811ce2df26166a1a981fc741f6c46edd22fc2c432ad2cd186ba38c7dd69",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Neon documents Project-scoped API keys alongside Personal and Organization keys, with immediate revocation and a CLI `api-keys` command to create, list and revoke them. Its hosted MCP server adds least-privilege controls for agents: read-only mode, tool-category scoping and single-project scoping, and a keyless probe confirmed the `readonly=true&category=querying` grant returns only read-safe tools. The MCP surface also lists issue/revoke/rotate tools for scoped branch credentials. Missing for 10: action-level permissions on Management API keys (scoping is only by project/org, and only admins can create project-scoped keys), and documented detail on what the branch-level scoped credentials can be restricted to.",
+    "rationale": "Neon documents project-scoped API keys that only org admins can create, plus CLI commands to create, list and revoke them. Its MCP server adds least-privilege grants (read-only mode, tool-category scopes, single-project mode), and a keyless probe confirmed a scoped read-only grant actually trims the tool list. The MCP tool surface also lists issuing, revoking and rotating scoped credentials on a branch. missing for 10: permission-level scopes (such as read-only) on Management API keys themselves, in-depth documentation of the branch-scoped credential tool beyond a tool-list mention.",
     "evidenceIds": [
       "neon-supp-api-key-scoping",
       "neon-docs-56",
       "neon-supp-mcp-scoping-readonly",
       "neon-probe-7",
-      "neon-supp-mcp-tool-surface",
-      "neon-supp-agent-claim-flow"
+      "neon-supp-mcp-tool-surface"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
+      "citations": [
+        {
+          "evidenceId": "neon-supp-api-key-scoping",
+          "quote": "Project-scoped API Key (Organization administrators; Single specified project)"
+        },
+        {
+          "evidenceId": "neon-docs-56",
+          "quote": "The `api-keys` command creates, lists, and revokes the API keys that authenticate requests to the Neon API."
+        },
+        {
+          "evidenceId": "neon-supp-mcp-scoping-readonly",
+          "quote": "Scopes the agent to a single project. Hides project-wide management tools"
+        },
+        {
+          "evidenceId": "neon-probe-7",
+          "quote": "{\"grant\": {\"projectId\": null, \"scopes\": [\"querying\"]}, \"readOnly\": true}"
+        },
+        {
+          "evidenceId": "neon-supp-mcp-tool-surface",
+          "quote": "scoped credentials (\"Issue a scoped credential on the branch\", revoke, rotate)"
+        }
+      ]
+    },
     "productId": "neon",
     "storyId": "agentic-scoped-keys"
   }

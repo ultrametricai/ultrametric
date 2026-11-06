@@ -1,21 +1,43 @@
 {
-  "hash": "43e37f3ac4247488a8c4ef86e4ee12ad2f68d4986566e19f979af0bc4e9bd7ee",
+  "hash": "d146b0ea3cdb9e812efceb055013c31a1b0ee421674b0094c6471af87eee5da7",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
-    "quality": 7,
-    "confidence": "medium",
-    "rationale": "PlanetScale's docs say schema branching plus deploy requests let you ship non-blocking schema changes to production with zero downtime (Vitess). Postgres branches give isolated development environments before changes reach production, and a community user confirms the branch-per-Git-branch workflow. An older community report notes that the non-blocking schema-change workflow did not support foreign keys, which is a real caveat. missing for 10: deploy-request or online-DDL evidence for Postgres, detail on revert and lock-avoidance mechanics, independent hands-on confirmation of lock-free production deploys, and current foreign-key support in the non-blocking workflow.",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "PlanetScale's own docs describe branching database schemas like code branches, plus deploy requests that ship non-blocking schema changes to production with zero downtime. A community user corroborates the per-Git-branch database workflow, but another notes that the non-blocking schema change workflow does not support foreign keys. Missing for 10: foreign key support in the non-blocking workflow, documented deploy-request or online-DDL detail for the Postgres side (Postgres branching is only shown for development and testing), and in-depth evidence of the locking-avoidance mechanism or a revert path.",
     "evidenceIds": [
-      "planetscale-docs-11",
-      "planetscale-docs-27",
-      "planetscale-docs-35",
       "planetscale-docs-9",
+      "planetscale-docs-11",
+      "planetscale-docs-35",
       "planetscale-docs-32",
       "planetscale-docs-10",
       "planetscale-comm-9",
       "planetscale-comm-10"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can ship schema changes safely — online DDL, deploy requests, or branch-and-merge workflows — without locking or breaking production",
+      "citations": [
+        {
+          "evidenceId": "planetscale-docs-11",
+          "quote": "Database branching, coupled with deploy requests, allows you to deploy non-blocking schema changes to your production database with zero downtime."
+        },
+        {
+          "evidenceId": "planetscale-docs-9",
+          "quote": "PlanetScale allows you to branch database schemas the same way you branch your code."
+        },
+        {
+          "evidenceId": "planetscale-docs-32",
+          "quote": "You can then create development branches that you can use for development before shipping schema changes to production."
+        },
+        {
+          "evidenceId": "planetscale-comm-9",
+          "quote": "It will give you a database branch for each Git branch and help you manage the workflows around it."
+        }
+      ]
+    },
     "productId": "planetscale",
     "storyId": "safe-schema-changes"
   }

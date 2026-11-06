@@ -1,21 +1,45 @@
 {
-  "hash": "344000c9bc9bcd7e605063b7523e44dafbfb741e217ec34136b2af7cbc1633ac",
+  "hash": "1d70386fcf164d357b72b5d445fbab908f0921e86609feed46d9fc0f58b45a86",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Neon's hosted MCP server exposes SQL tools (run_sql, run_sql_transaction, explain) and schema tools (prepare/complete migration, compare schema). It offers documented least-privilege controls: `?readonly=true`, category scoping and project scoping. A keyless probe confirmed the read-only scoped tool list, with every tool flagged `readOnlySafe: true` and write tools removed. Branch-based migrations keep production untouched until changes are validated, and project-scoped API keys add credential scoping. Missing for 10: independent community or hands-on reports of agents using the destructive-vs-read-only split in practice, and evidence of per-call confirmation or annotation for destructive tools when write mode is enabled.",
+    "rationale": "Neon's hosted MCP server exposes SQL tools (Run SQL, Run SQL Transaction, Explain) and schema-migration tools (Prepare/Complete Database Migration, Compare schema). It also documents least-privilege controls: a `?readonly=true` mode, `?category=` tool scoping, and project scoping. A keyless probe confirmed that a readonly/querying config returns only tools flagged `readOnlySafe: true` and injects a notice that all write-access tools have been removed. missing for 10: independent community corroboration of agents using these scoped modes in practice, and explicit evidence of per-tool destructive annotations beyond the readOnlySafe flag.",
     "evidenceIds": [
       "neon-supp-mcp-tool-surface",
       "neon-supp-mcp-scoping-readonly",
       "neon-probe-7",
       "neon-supp-mcp-transport",
-      "neon-probe-6",
-      "neon-supp-copilot-agents",
-      "neon-supp-api-key-scoping",
-      "neon-docs-45"
+      "neon-probe-6"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, an agent can run SQL and schema operations through scoped tools that distinguish read-only from destructive actions, so I can safely delegate database work",
+      "citations": [
+        {
+          "evidenceId": "neon-supp-mcp-tool-surface",
+          "quote": "schema work (\"Prepare Database Migration\", \"Complete Database Migration\", \"Compare database schema\")"
+        },
+        {
+          "evidenceId": "neon-supp-mcp-scoping-readonly",
+          "quote": "a read-only mode via `?readonly=true` (\"Limit tools to read-safe actions. Good default for exploration\"), tool-category scoping via repeatable `?category=<name>` parameters"
+        },
+        {
+          "evidenceId": "neon-probe-7",
+          "quote": "every tool carries \"readOnlySafe\": true and JSON-Schema inputs"
+        },
+        {
+          "evidenceId": "neon-probe-7",
+          "quote": "All write-access tools have been removed. All remaining tools are limited to read-only operations"
+        },
+        {
+          "evidenceId": "neon-supp-mcp-transport",
+          "quote": "The `inspect_database` tool \"runs inside a read-only transaction\""
+        }
+      ]
+    },
     "productId": "neon",
     "storyId": "agent-safe-sql-operations"
   }

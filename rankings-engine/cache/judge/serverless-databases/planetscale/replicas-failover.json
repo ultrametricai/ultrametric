@@ -1,11 +1,11 @@
 {
-  "hash": "a975f3c7939ff651143111b5f3eb88040f39c3300714e6667f6b92f6f588c232",
+  "hash": "2ed30b1008d1ab2d65ff1f457dfe121aca2ca6420c3ec20f2d9117e98e2271cf",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "PlanetScale documents Postgres replicas that serve reads and offload the primary, targeted by appending `|replica` to the username. Vitess read-only regions can be listed, and the changelog mentions listing and showing branch switchovers, which implies a primary switchover mechanism. Missing for 10: documentation of how to provision or add replicas, a documented high-availability architecture and automatic failover behavior (detection, RTO/RPO, replica promotion), and independent or hands-on corroboration of failover reliability.",
+    "rationale": "PlanetScale documents Postgres read replicas you can target by appending |replica to the username to offload reads from the primary, plus Vitess read-only regions. The changelog mentions branch switchovers, but there is no documented description of high-availability or automatic failover behavior. missing for 10: documented HA architecture and automatic failover semantics (RTO/RPO, failover triggers), explicit steps for adding/provisioning replicas, independent or hands-on corroboration of failover.",
     "evidenceIds": [
       "planetscale-docs-14",
       "planetscale-docs-22",
@@ -13,6 +13,29 @@
       "planetscale-docs-8",
       "planetscale-docs-6"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform-engineer, I can add read replicas and rely on documented high-availability and failover behavior",
+      "citations": [
+        {
+          "evidenceId": "planetscale-docs-22",
+          "quote": "They provide a way to reduce load on your primary instance by allowing you to read from a replica."
+        },
+        {
+          "evidenceId": "planetscale-docs-14",
+          "quote": "Append `|replica` to the end of your username for the branch you want to target"
+        },
+        {
+          "evidenceId": "planetscale-docs-8",
+          "quote": "list configured Vitess read-only regions for the database's default branch"
+        },
+        {
+          "evidenceId": "planetscale-docs-6",
+          "quote": "After starting a switchover, you can now list switchovers for a branch and show one by ID."
+        }
+      ]
+    },
     "productId": "planetscale",
     "storyId": "replicas-failover"
   }

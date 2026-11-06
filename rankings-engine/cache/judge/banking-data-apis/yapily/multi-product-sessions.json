@@ -1,19 +1,32 @@
 {
-  "hash": "a8108fa8dab523c41d13b1214e878a63643b626d13eb22098e77d7c07cd3ff37",
+  "hash": "0484fe233ddf49ecb607e6dec27bbdfd130301d12b6fba16d6ef57f799e2ba76",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Yapily's account consent token covers accounts and balances (yapily-docs-27) and transactions (yapily-docs-28, yapily-docs-2), so one AIS authorisation serves several data endpoints. The evidence never shows identity or ownership confirmation (yapily-docs-4) running off that same consent, and payments use their own authorisation flows (yapily-docs-29). Missing for 10: explicit documentation that one session spans identity/verification alongside data, a stated multi-product single-consent model, and independent or hands-on corroboration.",
+    "rationale": "Yapily's own consent token covers more than one data type: the accounts endpoint returns all accounts and balances for the end user tied to the presented consent token, and the docs describe retrieving accounts, balances and transactions under user consent. However, nothing explicitly states that a single authorisation also powers identity or ownership checks, or that no further connection flow is needed per product. Missing for 10: explicit documentation that one consent spans transactions and identity alongside balances, a statement that separate per-product connection flows are not required, and independent or hands-on corroboration.",
     "evidenceIds": [
       "yapily-docs-27",
-      "yapily-docs-28",
       "yapily-docs-2",
-      "yapily-docs-15",
-      "yapily-docs-4",
-      "yapily-docs-29"
+      "yapily-docs-28",
+      "yapily-docs-4"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, one link session can power multiple data products — auth, balances, transactions, identity — without forcing the user through separate connection flows per product",
+      "citations": [
+        {
+          "evidenceId": "yapily-docs-27",
+          "quote": "Returns all accounts and balances for the end user associated with the presented consent token."
+        },
+        {
+          "evidenceId": "yapily-docs-2",
+          "quote": "Retrieve accounts, balances, and transactions with user consent."
+        }
+      ]
+    },
     "productId": "yapily",
     "storyId": "multi-product-sessions"
   }

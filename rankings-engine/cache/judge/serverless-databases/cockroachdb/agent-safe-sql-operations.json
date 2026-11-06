@@ -1,16 +1,31 @@
 {
-  "hash": "bfd1ac8b4f8fa3f6ffc09586d9cf9ae4a1695a5039fda8a1bd9e9adabccb2799",
+  "hash": "d745e9c6ec363dbdaa2c160bf146b8556a639d4997841f0a78971c192f0aaf87",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "CockroachDB's official Cloud MCP server lets agents explore live schemas and run queries using OAuth or API key auth. Its tools cover read and write operations such as listing tables, executing statements and inserting rows. The evidence does not show the tools are scoped or labeled to separate read-only from destructive actions, which is the core of the safe-delegation story. Missing for 10: explicit read-only vs destructive tool scoping or permission modes, documented schema/DDL tool coverage, guardrails or confirmation for destructive operations, independent or hands-on corroboration.",
+    "rationale": "CockroachDB ships an official Cloud MCP server that lets AI tools explore live schemas and run read and write operations, such as listing tables, executing statements and inserting rows, with OAuth or API key authentication. The evidence never shows tools scoped or separated by read-only versus destructive actions, which is the safety part of the story. missing for 10: documented read-only vs destructive tool scoping or permission modes, guardrails or confirmation for destructive schema operations, independent hands-on corroboration.",
     "evidenceIds": [
       "cockroachdb-docs-4",
       "cockroachdb-docs-28",
       "cockroachdb-probe-4"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, an agent can run SQL and schema operations through scoped tools that distinguish read-only from destructive actions, so I can safely delegate database work",
+      "citations": [
+        {
+          "evidenceId": "cockroachdb-docs-4",
+          "quote": "A user can interact with their clusters using natural language prompts to perform read and write operations such as listing tables, executing statements, and inserting rows into a table."
+        },
+        {
+          "evidenceId": "cockroachdb-docs-28",
+          "quote": "Your AI tools can explore live schemas and run queries against any cluster using OAuth or API key authentication."
+        }
+      ]
+    },
     "productId": "cockroachdb",
     "storyId": "agent-safe-sql-operations"
   }

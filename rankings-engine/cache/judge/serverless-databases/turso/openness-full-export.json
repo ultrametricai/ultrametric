@@ -1,20 +1,41 @@
 {
-  "hash": "a38680cba963894a997184cbd412577e846c6a7d12a8d036beb405dc4fb618fd",
+  "hash": "590a820aa890f16270bd47b5973dc1a4b3ac1f476976d16c15a34ae1675e7a38",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Turso documents dumping a database to plain SQL via `turso db shell your-database .dump > dump.sql`, and says you can always dump production data for local use. Its databases are described as SQLite-compatible files, and the underlying libSQL engine is MIT-licensed open source, so exported data can leave in open formats. One community user gives a concrete caveat: databases that use Turso-specific extensions are no longer file-format compatible with standard SQLite tools. Missing for 10: a documented bulk or account-wide export across many databases, export formats beyond SQL dump/SQLite files, guidance on portability when Turso extensions are used, and independent hands-on confirmation of a full exit.",
+    "rationale": "Turso documents exporting a database as a plain SQL dump (`turso db shell your-database .dump > dump.sql`), an open, portable format. Its SQLite-compatible engine (libSQL is MIT open source) supports leaving. A community report notes that schemas using Turso-specific extensions stop working with standard SQLite tools, which limits how cleanly the data can be taken elsewhere. Missing for 10: bulk export across all databases in an account, documented portability of extension-specific features (e.g. vectors) to other systems, an account exit/deletion process, and independent hands-on corroboration of a full migration out.",
     "evidenceIds": [
       "turso-docs-47",
       "turso-docs-29",
       "turso-docs-30",
-      "turso-docs-24",
       "turso-gh-1",
-      "turso-comm-10",
       "turso-comm-8"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can export all of my data in open formats and leave",
+      "citations": [
+        {
+          "evidenceId": "turso-docs-47",
+          "quote": "turso db shell your-database .dump > dump.sql"
+        },
+        {
+          "evidenceId": "turso-docs-29",
+          "quote": "You can always dump your production database and use it locally for development"
+        },
+        {
+          "evidenceId": "turso-docs-30",
+          "quote": "They are fully SQLite-compatible — they open existing SQLite files"
+        },
+        {
+          "evidenceId": "turso-gh-1",
+          "quote": "libSQL is an open source, open contribution fork of SQLite, created and maintained by Turso."
+        }
+      ]
+    },
     "productId": "turso",
     "storyId": "openness-full-export"
   }

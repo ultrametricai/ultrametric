@@ -1,17 +1,35 @@
 {
-  "hash": "c1e20eb02da923b6bf48b28e1ebf7ab2e2500f1185bb89d63b7bcecf4710ac21",
+  "hash": "e7cb83159248f1fa05416f0644e47f9dc00893e90057f12e1bb6a96975c70465",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
-    "confidence": "low",
-    "rationale": "The standalone Tax Transactions API explicitly supports recording transactions and handling reversals (refund adjustments), and Stripe Tax offers transaction reports with itemized line-level exports. TaxJar handles US filing. However, no evidence shows that reversals or credit notes carry negative tax amounts into liability, reports, and the next filing without manual fixes. Missing for 10: explicit credit note tax handling, documentation that refunds/negative amounts appear in tax reports and liability, evidence that reversals carry into TaxJar filings, independent or hands-on corroboration.",
+    "confidence": "medium",
+    "rationale": "Stripe Tax's standalone Tax Transactions API documents handling reversals directly, which is a first-party mechanism for negative tax adjustments. Separate docs cover transaction reports and TaxJar filing, but none explicitly show reversal amounts flowing into liability, reports, and the next filing. missing for 10: explicit credit-note tax handling, documentation that refunds and reversals reduce reported liability and appear in reports and exports, evidence that reversals carry into the TaxJar filing without manual fixes, independent hands-on corroboration.",
     "evidenceIds": [
       "stripe-tax-docs-15",
-      "stripe-tax-docs-11",
       "stripe-tax-docs-19",
       "stripe-tax-docs-10"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, refunds and credit notes adjust tax correctly — negative amounts flow through liability, reporting, and the next filing without manual journal fixes",
+      "citations": [
+        {
+          "evidenceId": "stripe-tax-docs-15",
+          "quote": "The standalone Tax Calculations and Tax Transactions APIs lets you calculate tax, record transactions, and handle reversals directly."
+        },
+        {
+          "evidenceId": "stripe-tax-docs-19",
+          "quote": "Stripe Tax provides reports of completed transactions, and it provides three different kinds of reports"
+        },
+        {
+          "evidenceId": "stripe-tax-docs-10",
+          "quote": "Stripe Tax integrates with TaxJar to automate filing for US sales tax"
+        }
+      ]
+    },
     "productId": "stripe-tax",
     "storyId": "refund-adjustment-handling"
   }

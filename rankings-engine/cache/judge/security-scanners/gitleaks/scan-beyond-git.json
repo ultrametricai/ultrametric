@@ -1,18 +1,35 @@
 {
-  "hash": "a00e05f706412f0a2c0f1eca9a0f9d9aa222d7310ddf830116b9b97c39982001",
+  "hash": "36f3534042fc6fc450510bf40812c202afdb95f28db17752e622e49769b672ef",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Gitleaks can scan non-git content through its `dir` command (any directory or file) and its `stdin` command (e.g. `cat some_file | gitleaks -v stdin`), which covers CI logs piped in or downloaded locally. However, the evidence shows no native connectors for S3 buckets or Docker images. Those sources would have to be synced or extracted to disk, or streamed via other tools, before Gitleaks could scan them. Missing for 10: native S3 bucket scanning, native Docker image/layer scanning, documented CI-log integration, hands-on corroboration of these workflows.",
+    "rationale": "Gitleaks itself scans non-git sources through its `dir`/`files` command and its `stdin` command, which accepts arbitrary streamed data. CI logs or exported content could be fed in this way. There is no documented native connector for S3 buckets or Docker images; reaching those sources requires the user to extract or pipe the data first. Missing for 10: native S3 bucket scanning, native Docker image/layer scanning, documented CI log integration, independent corroboration.",
     "evidenceIds": [
-      "gitleaks-gh-10",
-      "gitleaks-gh-11",
       "gitleaks-gh-17",
-      "gitleaks-gh-18",
-      "gitleaks-gh-19"
+      "gitleaks-gh-10",
+      "gitleaks-gh-11"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a security-engineer, I can scan non-git sources like S3 buckets, Docker images, and CI logs for leaked secrets",
+      "citations": [
+        {
+          "evidenceId": "gitleaks-gh-17",
+          "quote": "Gitleaks is a tool for detecting secrets like passwords, API keys, and tokens in git repos, files, and whatever else you wanna throw at it via stdin."
+        },
+        {
+          "evidenceId": "gitleaks-gh-10",
+          "quote": "The `dir` (aliases include `files`, `directory`) command lets you scan directories and files."
+        },
+        {
+          "evidenceId": "gitleaks-gh-11",
+          "quote": "You can also stream data to gitleaks with the `stdin` command. Example: `cat some_file | gitleaks -v stdin`"
+        }
+      ]
+    },
     "productId": "gitleaks",
     "storyId": "scan-beyond-git"
   }

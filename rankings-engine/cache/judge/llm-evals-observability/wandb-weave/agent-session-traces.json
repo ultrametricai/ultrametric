@@ -1,24 +1,48 @@
 {
-  "hash": "cd0add243997d9a7c90b04690ee505e2642b1a9b481424ac7f3d489450b0da9c",
+  "hash": "723e1830568d8ec45f247c4b0b67d1c02b5fec251276f2e5d93232e9670b7007",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "wandb-weave",
-    "storyId": "agent-session-traces",
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Decorating functions with `weave.op` produces a nested trace tree, and Threads group traces into a single session or conversation. Sessions, turns, steps, tools and sub-agents are first-class concepts. Custom agent loops can be wrapped with `start_conversation`, `start_turn`, `start_llm` and `start_tool`, and popular agent SDKs are traced with just `weave.init()`. Missing for 10: independent or hands-on corroboration of the nested-span and session grouping behavior.",
+    "rationale": "Weave's own SDK traces nested agent execution. Decorated functions build a trace tree, and Threads group traces into a session or conversation. Agents are modelled first-class as conversations, turns, LLM calls, tool calls and sub-agents, either automatically for major agent SDKs or through `start_conversation`/`start_turn`/`start_tool` for custom loops. Missing for 10: independent or hands-on corroboration beyond first-party docs and the GitHub README.",
     "evidenceIds": [
       "wandb-weave-gh-2",
-      "wandb-weave-docs-4",
       "wandb-weave-docs-5",
       "wandb-weave-docs-18",
-      "wandb-weave-docs-29",
-      "wandb-weave-docs-37",
-      "wandb-weave-gh-6",
       "wandb-weave-gh-7",
       "wandb-weave-gh-8",
-      "wandb-weave-docs-48"
-    ]
+      "wandb-weave-gh-6",
+      "wandb-weave-docs-37"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can trace multi-step agent runs as nested spans grouped into sessions or threads",
+      "citations": [
+        {
+          "evidenceId": "wandb-weave-gh-2",
+          "quote": "Decorate all the functions you want to trace, this will generate a trace tree of the inputs and outputs of all your functions"
+        },
+        {
+          "evidenceId": "wandb-weave-docs-5",
+          "quote": "Threads are collections of Traces related to a single session or conversation."
+        },
+        {
+          "evidenceId": "wandb-weave-docs-18",
+          "quote": "Weave now brings sessions, turns, steps, tools, and sub-agents as first-class concepts, making it much easier to navigate an agent session the way the agent actually executed it."
+        },
+        {
+          "evidenceId": "wandb-weave-gh-7",
+          "quote": "Custom agents — wrap your own loop with `start_conversation`, `start_turn`, `start_llm`, and `start_tool`."
+        },
+        {
+          "evidenceId": "wandb-weave-gh-8",
+          "quote": "Trace agents. Conversations, turns, LLM calls, and tool calls show up in the Agents tab."
+        }
+      ]
+    },
+    "productId": "wandb-weave",
+    "storyId": "agent-session-traces"
   }
 }

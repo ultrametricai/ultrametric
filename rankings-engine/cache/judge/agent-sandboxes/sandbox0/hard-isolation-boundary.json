@@ -1,16 +1,30 @@
 {
-  "hash": "e1ff5a21e1bee4e7c1e41ae9209f7364254a2ced4117e6681f19ba7fda921d50",
+  "hash": "c31481d16ca0b702574da0a9e25180537b07ba95eb398db3e9a8991990333664",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Sandbox0's own docs describe each sandbox as an \"isolated cloud computer\" for running agent code, so the product does claim isolation. But the pack never documents what the boundary is (microVM, gVisor, or a dedicated kernel) or how strong it is. Running a Docker daemon inside the sandbox hints at VM-like separation but does not document it. Missing for 10: explicit documentation of the isolation mechanism (microVM or equivalent), threat model or security architecture docs, and independent or hands-on verification of the boundary.",
+    "rationale": "Sandbox0's docs describe each sandbox as an \"isolated cloud computer\" and say it can run its own Docker daemon, which points to strong per-sandbox isolation. However, nothing in the pack names the isolation mechanism (microVM, hypervisor, gVisor or similar) or documents a hard boundary from the host or other tenants. missing for 10: explicit documentation of the isolation technology (microVM or equivalent), a description of the security boundary and threat model, independent or hands-on corroboration of isolation strength.",
     "evidenceIds": [
       "sandbox0-docs-1",
-      "sandbox0-probe-2",
       "sandbox0-docs-22"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform-engineer, I can rely on a documented hard isolation boundary (microVM or equivalent) between sandboxes and my systems",
+      "citations": [
+        {
+          "evidenceId": "sandbox0-docs-1",
+          "quote": "A sandbox gives a user's AI agent an isolated cloud computer where it can run code, install software, manage files, and control network access."
+        },
+        {
+          "evidenceId": "sandbox0-docs-22",
+          "quote": "Docker in Sandbox lets a Sandbox0 Cloud sandbox run a Docker daemon inside the sandbox."
+        }
+      ]
+    },
     "productId": "sandbox0",
     "storyId": "hard-isolation-boundary"
   }

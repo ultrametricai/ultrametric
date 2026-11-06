@@ -1,19 +1,36 @@
 {
-  "hash": "64da28c7c827c271a425918f74970905d869c7e8f341b1fe035f0f8790d43a2f",
+  "hash": "1821a540b9da7420681d8dc71874f5875525dca7d3271640e3c18dd8f88f38b8",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Neon documents a branch-test-then-apply workflow for schema changes. Its GitHub Copilot agents run schema migrations on temporary branches while production stays untouched until changes are validated. The MCP server exposes 'Prepare Database Migration', 'Complete Database Migration' and 'Compare database schema' tools, and a production user reports branching off main to test changes. However, there is no evidence of online/non-locking DDL or a true merge or deploy-request mechanism; changes are validated on a branch and then reapplied, so protection against locking production is unaddressed. Missing for 10: online/non-blocking DDL evidence, a native branch-merge or deploy-request workflow, in-depth docs on migration safety guarantees, and independent hands-on corroboration of the migration flow.",
+    "rationale": "Neon documents running schema migrations on temporary branches so production stays untouched until changes are validated. Its MCP server exposes 'Prepare Database Migration', 'Complete Database Migration' and 'Compare database schema' tools, which together suggest a test-on-branch-then-apply flow. Nothing shows how changes reach production without locking or breakage. missing for 10: online/non-locking DDL on production, a documented branch-merge or deploy-request workflow, schema-diff/merge-back details, independent hands-on corroboration of safe migration.",
     "evidenceIds": [
-      "neon-supp-copilot-agents",
       "neon-docs-45",
+      "neon-supp-copilot-agents",
       "neon-supp-mcp-tool-surface",
-      "neon-docs-25",
-      "neon-comm-10",
-      "neon-docs-8"
+      "neon-comm-10"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can ship schema changes safely — online DDL, deploy requests, or branch-and-merge workflows — without locking or breaking production",
+      "citations": [
+        {
+          "evidenceId": "neon-docs-45",
+          "quote": "run safe schema migrations and query optimizations on temporary Neon branches, keeping production untouched until changes are validated"
+        },
+        {
+          "evidenceId": "neon-supp-mcp-tool-surface",
+          "quote": "schema work (\"Prepare Database Migration\", \"Complete Database Migration\", \"Compare database schema\")"
+        },
+        {
+          "evidenceId": "neon-comm-10",
+          "quote": "We can branch off the main database to test things out, and periodically reset the branch to its parent."
+        }
+      ]
+    },
     "productId": "neon",
     "storyId": "safe-schema-changes"
   }

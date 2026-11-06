@@ -1,21 +1,38 @@
 {
-  "hash": "b5bc0a7564d29344440e6c30e43b9a7c0ad07368857d9f1275766afd29850fe0",
+  "hash": "48abfcdf11f633491a8094564329db4cb083e0d714153119d25e3bad8fa6d5c5",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Gitleaks is a scriptable CLI. It can scan directories and files (`gitleaks dir`) and streamed input (`gitleaks stdin`), and it runs as a pre-commit hook and in GitHub Actions on PRs. So AI-generated code can be caught before it lands, but only by generic wiring, not a documented coding-agent integration. It also only detects secrets, not broader code issues. Missing for 10: first-party coding-agent integration (MCP server, agent hook or plugin docs), llms.txt or agent-oriented docs, broader issue scanning beyond secrets, and independent corroboration of agent workflows.",
+    "rationale": "Gitleaks documents its own pre-commit hook, which fails a commit that contains a secret. It also documents dir and stdin scan modes, so code is checked before it lands no matter who wrote it, including an agent. There is no coding-agent-specific integration, such as agent hooks, an MCP server or llms.txt (the llms.txt probe returned 404), and scanning covers only secrets, not broader issues. missing for 10: documented coding-agent integration (agent hooks/MCP/tool definition), agent-oriented docs or llms.txt, scanning beyond hardcoded secrets, hands-on corroboration of agent workflows.",
     "evidenceIds": [
-      "gitleaks-gh-10",
-      "gitleaks-gh-11",
       "gitleaks-gh-4",
       "gitleaks-gh-12",
-      "gitleaks-docs-5",
+      "gitleaks-gh-11",
+      "gitleaks-gh-10",
       "gitleaks-gh-17",
-      "gitleaks-probe-1",
-      "gitleaks-probe-3"
+      "gitleaks-probe-1"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an ai-native user, I can wire the scanner into my coding agent so AI-generated code is scanned for issues before it lands",
+      "citations": [
+        {
+          "evidenceId": "gitleaks-gh-4",
+          "quote": "You can run Gitleaks as a pre-commit hook by copying the example `pre-commit.py` script into your `.git/hooks/` directory."
+        },
+        {
+          "evidenceId": "gitleaks-gh-12",
+          "quote": "Detect hardcoded secrets.................................................Failed"
+        },
+        {
+          "evidenceId": "gitleaks-gh-11",
+          "quote": "You can also stream data to gitleaks with the `stdin` command. Example: `cat some_file | gitleaks -v stdin`"
+        }
+      ]
+    },
     "productId": "gitleaks",
     "storyId": "guardrails-for-agent-code"
   }

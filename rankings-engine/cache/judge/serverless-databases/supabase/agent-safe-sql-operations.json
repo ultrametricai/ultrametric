@@ -1,19 +1,32 @@
 {
-  "hash": "1cb392456880079e53f925de204b1fcc6313f54d9b5b5ad30a06cec3c947c160",
+  "hash": "fbacd4a6f339c0964441b1e068ddfed0cbc3408ae6a2fe2a953cca525b510ea2",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Supabase's official MCP server lets agents query the database and manage migrations, and a probe confirms the hosted endpoint is live behind OAuth. A read-only mode is evidenced only by a Supabase engineer's comment that read-only MCP is now encouraged by default, made after a reported prompt-injection exploit that used service_role access to bypass RLS; that engineer also said prompt injection remains unsolved. missing for 10: first-party documentation of read-only vs destructive tool scoping, per-tool permission or confirmation controls for destructive schema changes, independent hands-on corroboration of safe delegation.",
+    "rationale": "Supabase's official MCP server lets an agent query the database and manage migrations. That covers SQL and schema operations through first-party tools, and the hosted MCP endpoint was confirmed live. The read-only vs destructive distinction is evidenced only by a Supabase engineer's community comment about encouraging read-only MCP by default, not by first-party docs. The reported prompt-injection exploit concerns injection risk, not a failure of a read-only mode, so it does not create a dispute. Missing for 10: first-party documentation of read-only/destructive tool scoping, per-tool permission or confirmation controls, independent hands-on corroboration of safe delegation.",
     "evidenceIds": [
-      "supabase-docs-1",
       "supabase-docs-2",
-      "supabase-probe-4",
+      "supabase-docs-1",
       "supabase-probe-rt-2",
-      "supabase-comm-1",
       "supabase-comm-2"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, an agent can run SQL and schema operations through scoped tools that distinguish read-only from destructive actions, so I can safely delegate database work",
+      "citations": [
+        {
+          "evidenceId": "supabase-docs-2",
+          "quote": "so your agent can query your database, manage migrations, deploy Edge Functions"
+        },
+        {
+          "evidenceId": "supabase-comm-2",
+          "quote": "encouraging read-only MCP by default"
+        }
+      ]
+    },
     "productId": "supabase",
     "storyId": "agent-safe-sql-operations"
   }

@@ -1,25 +1,50 @@
 {
-  "hash": "cdb57b411be4518dd7409973a5978db3f4abe977052ce12e417858c09fa85e10",
+  "hash": "f3d0886ec0093825ecf458a649c2f4335653f762fc8bae92b357b4da50e17db8",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Cloudflare publishes an extensive first-party Sandbox SDK API reference covering the main operations: sandbox creation and reconnection via getSandbox, exec with streaming, stdin and output callbacks, file read/write/mkdir/watch, code interpreter contexts, sessions, ports and preview URLs, tunnels, bucket mounts and snapshots. This lets an agent or program drive the product end to end in code, and a site-wide llms.txt and openapi.json are also published. Missing for 10: a sandbox-specific REST/OpenAPI spec (the API is a TypeScript SDK called from a Worker, and the openapi.json probe is site-wide), and independent hands-on corroboration of driving the product through the API.",
+    "rationale": "Cloudflare documents a public API reference for the Sandbox SDK. It covers commands (exec, streaming via SSE, stdin), files (read/write/mkdir/streams), the code interpreter, ports/preview URLs, sessions, watch, and getSandbox, so the product can be driven programmatically end to end. The API is an SDK called from a Worker/Durable Object rather than a standalone REST endpoint, and the OpenAPI probe is site-wide rather than shown to be sandbox-specific. missing for 10: independent or hands-on corroboration of API use, a confirmed sandbox-specific REST/OpenAPI surface callable without deploying a Worker",
     "evidenceIds": [
       "cloudflare-sandbox-docs-1",
       "cloudflare-sandbox-docs-2",
-      "cloudflare-sandbox-docs-37",
       "cloudflare-sandbox-docs-13",
-      "cloudflare-sandbox-docs-29",
-      "cloudflare-sandbox-docs-42",
+      "cloudflare-sandbox-docs-37",
+      "cloudflare-sandbox-docs-43",
       "cloudflare-sandbox-docs-44",
+      "cloudflare-sandbox-docs-42",
       "cloudflare-sandbox-docs-31",
       "cloudflare-sandbox-docs-32",
-      "cloudflare-sandbox-docs-17",
-      "cloudflare-sandbox-probe-1",
-      "cloudflare-sandbox-probe-3"
+      "cloudflare-sandbox-docs-41"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can drive the product through a documented public API",
+      "citations": [
+        {
+          "evidenceId": "cloudflare-sandbox-docs-1",
+          "quote": "sandbox.exec() - Execute shell commands in the sandbox and capture stdout, stderr, and exit codes."
+        },
+        {
+          "evidenceId": "cloudflare-sandbox-docs-37",
+          "quote": "getSandbox() - Gets or creates a sandbox instance by ID. Use a stable ID to reconnect to the same sandbox."
+        },
+        {
+          "evidenceId": "cloudflare-sandbox-docs-13",
+          "quote": "Execute a command and return a Server-Sent Events stream for real-time processing."
+        },
+        {
+          "evidenceId": "cloudflare-sandbox-docs-44",
+          "quote": "Read, write, and manage files in the sandbox filesystem. All paths are absolute (e.g., `/workspace/app.js`)."
+        },
+        {
+          "evidenceId": "cloudflare-sandbox-docs-31",
+          "quote": "Expose a port and get a preview URL for accessing services running in the sandbox."
+        }
+      ]
+    },
     "productId": "cloudflare-sandbox",
     "storyId": "agentic-public-api"
   }

@@ -1,19 +1,45 @@
 {
-  "hash": "e6cd023d533658ea1c5699d6b6e8bce58a4ee4e3581d9b52eee8a5d6810113f5",
+  "hash": "9d9019f097b3b188ed7c33484139ba5ba8035856b439eb3f4bdfd546a36e4dcb",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "PlanetScale ships database branching: Vitess branches cover schemas for development (docs-9, docs-32), and Postgres branches are isolated dev/test deployments that can be restored from backups or to a point in time with --restore-point, which brings in production data (docs-10, docs-5). Nothing shows these branches are instant or copy-on-write; data comes through backup restore rather than a zero-copy fork. missing for 10: evidence of instant copy-on-write branching, documented schema-plus-data branching on Vitess, independent hands-on corroboration of branching with production data.",
+    "rationale": "PlanetScale documents database branching as isolated development and test environments. Postgres branches can be restored from backups or from a point-in-time timestamp, which gives production-shaped data. Vitess branching is described only as branching schemas, and no evidence shows the branches are instant or copy-on-write; data appears to come from backup restores rather than a live clone. Missing for 10: evidence of instant copy-on-write branching, schema-plus-data cloning without a backup restore, and independent hands-on corroboration of branching speed.",
     "evidenceIds": [
-      "planetscale-docs-9",
       "planetscale-docs-10",
       "planetscale-docs-5",
+      "planetscale-docs-9",
       "planetscale-docs-32",
-      "planetscale-docs-12",
       "planetscale-comm-9"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can create an instant copy-on-write branch of my database — schema and data — to develop and test against production-shaped data",
+      "citations": [
+        {
+          "evidenceId": "planetscale-docs-10",
+          "quote": "Branches on PlanetScale Postgres are isolated database deployments that provide you with separate environments for development and testing, as well as restoring from backups."
+        },
+        {
+          "evidenceId": "planetscale-docs-5",
+          "quote": "You can now create a PostgreSQL branch restored to a point-in-time timestamp with --restore-point."
+        },
+        {
+          "evidenceId": "planetscale-docs-9",
+          "quote": "PlanetScale allows you to branch database schemas the same way you branch your code."
+        },
+        {
+          "evidenceId": "planetscale-docs-32",
+          "quote": "You can then create development branches that you can use for development before shipping schema changes to production."
+        },
+        {
+          "evidenceId": "planetscale-comm-9",
+          "quote": "It will give you a database branch for each Git branch and help you manage the workflows around it."
+        }
+      ]
+    },
     "productId": "planetscale",
     "storyId": "database-branching"
   }

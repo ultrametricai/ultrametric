@@ -1,19 +1,30 @@
 {
-  "hash": "091add379e8dc430043141a57356641c738285c7fb9f362381da532e581d995a",
+  "hash": "39a0c3946eec2817ff56a82251cd15a5e92bd94a356ff18df3d5c3715ba22a19",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "TruffleHog works across many targets at once. One invocation can scan an entire GitHub org (`--org`), and a single `core.hooksPath` setup applies pre-commit hooks to every repository with no per-repo work. Detector selection and verification overrides can also be set for many detectors in one command. Missing for 10: bulk actions on findings (e.g., batch triage, rotation or remediation), any documented bulk API (no OpenAPI spec was found), and independent or hands-on corroboration of large-scale batch workflows.",
+    "rationale": "TruffleHog's own CLI can run one scan across a whole GitHub organization (`github --org=...`) rather than one repo at a time, which is a real bulk scan. It also documents scanning many source types. However, there is no evidence of bulk actions on findings, such as mass triage, resolve or rotate. Applying hooks to all repositories relies on Git's own `core.hooksPath`, a host-platform feature, so it earns no credit. Missing for 10: bulk operations on findings or secrets (triage, resolve, rotate), documented batch or bulk API endpoints, and independent or hands-on corroboration of large multi-item runs.",
     "evidenceIds": [
       "trufflehog-gh-2",
-      "trufflehog-docs-19",
-      "trufflehog-docs-14",
-      "trufflehog-docs-8",
-      "trufflehog-docs-21",
       "trufflehog-docs-18"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can perform bulk operations across many items at once",
+      "citations": [
+        {
+          "evidenceId": "trufflehog-gh-2",
+          "quote": "docker run --rm -it -v \"$PWD:/pwd\" trufflesecurity/trufflehog:latest github --org=trufflesecurity"
+        },
+        {
+          "evidenceId": "trufflehog-docs-18",
+          "quote": "TruffleHog can look for secrets in many places including git, chats, wikis, logs, api testing platforms, object stores, filesystems and more"
+        }
+      ]
+    },
     "productId": "trufflehog",
     "storyId": "automation-bulk-operations"
   }

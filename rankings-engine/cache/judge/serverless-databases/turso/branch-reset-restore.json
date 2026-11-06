@@ -1,18 +1,35 @@
 {
-  "hash": "6f8b4c00b183c6b27990d454673cf412677434122a67682b4529d63e9bd91272",
+  "hash": "b2229d16f7a75b87877439b7024c949f4989a9ceceab946b9f7ed28c2d38ae15",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Turso documents point-in-time recovery, which restores a database to a specific point in time without a dump, so the \"restore to an earlier state\" half is covered. Branches are documented as separate database instances, so PITR should apply to them, though no source says so. Re-syncing from the parent is only possible by creating a new branch with `--from-db`, not by resetting an existing one. Missing for 10: an explicit reset-branch-from-parent operation, documentation that PITR works on branch databases, and independent or hands-on corroboration of either workflow.",
+    "rationale": "Turso documents point-in-time recovery that restores a database to a specific point in time. Branches are separate database instances created from an existing database, so returning a branch to an earlier state without a dump is plausibly covered. However, there is no documented 'reset branch from parent' operation, and the docs never explicitly tie PITR to branches or say whether a restore happens in place or creates a new database. missing for 10: a documented reset-branch-from-parent command, explicit PITR-on-branch documentation and restore semantics, independent or hands-on corroboration.",
     "evidenceIds": [
       "turso-docs-42",
-      "turso-docs-33",
-      "turso-docs-18",
       "turso-docs-32",
-      "turso-docs-41"
+      "turso-docs-18"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can reset a branch from its parent or restore it to an earlier state without rebuilding from a dump",
+      "citations": [
+        {
+          "evidenceId": "turso-docs-42",
+          "quote": "PITR allows you to restore a database to a specific point in time."
+        },
+        {
+          "evidenceId": "turso-docs-32",
+          "quote": "A branch is a separate database instance that is created from an existing database."
+        },
+        {
+          "evidenceId": "turso-docs-18",
+          "quote": "turso db create my-new-database-branch --from-db my-existing-database"
+        }
+      ]
+    },
     "productId": "turso",
     "storyId": "branch-reset-restore"
   }

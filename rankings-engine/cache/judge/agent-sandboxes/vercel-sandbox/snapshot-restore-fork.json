@@ -1,11 +1,11 @@
 {
-  "hash": "9dfd0fd7b8dbd507cf10be2789a0101fc96828293125b8d9484fd4fe45df3aa5",
+  "hash": "cfefb1c417baad721faa97410fe0d31c7e97cfd46814cd7d8e2069065af291b8",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "First-party docs describe snapshotting a running sandbox to resume later (docs-12), auto-snapshotting the filesystem and configuration on stop and restoring them on resume (docs-40, docs-11). They also say that creating from a snapshot is faster than starting from scratch (docs-31), which implies new sandboxes can be created from a snapshot. Missing for 10: explicit documentation of forking multiple new sandboxes from one snapshot, snapshot API/CLI details (create, list, delete, retention), independent or hands-on corroboration.",
+    "rationale": "Vercel Sandbox documents snapshotting a running sandbox's state to resume later. It also auto-snapshots the filesystem on stop and restores it on resume, and docs say starting from a snapshot is faster than creating from scratch. Restore is clearly documented, but forking multiple new independent sandboxes from one snapshot is only implied, so story coverage is incomplete. missing for 10: explicit documentation of forking or creating multiple new sandboxes from a single snapshot, snapshot API/CLI details (create, list, delete, retention), independent or hands-on corroboration.",
     "evidenceIds": [
       "vercel-sandbox-docs-12",
       "vercel-sandbox-docs-31",
@@ -13,6 +13,25 @@
       "vercel-sandbox-docs-11",
       "vercel-sandbox-docs-18"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can snapshot a sandbox and later restore or fork new sandboxes from that snapshot",
+      "citations": [
+        {
+          "evidenceId": "vercel-sandbox-docs-12",
+          "quote": "Snapshotting: Save the state of a running sandbox to resume later. Skip dependency installation on subsequent runs."
+        },
+        {
+          "evidenceId": "vercel-sandbox-docs-31",
+          "quote": "Using a snapshot is much faster than creating from scratch because it avoids reinstalling dependencies and repeating setup steps."
+        },
+        {
+          "evidenceId": "vercel-sandbox-docs-40",
+          "quote": "when a sandbox stops, the SDK automatically snapshots its filesystem, and the sandbox configuration is preserved across sessions, so both are restored the next time you resume"
+        }
+      ]
+    },
     "productId": "vercel-sandbox",
     "storyId": "snapshot-restore-fork"
   }

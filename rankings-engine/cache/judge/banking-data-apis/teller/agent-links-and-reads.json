@@ -1,24 +1,39 @@
 {
-  "hash": "568fe83a54109e142627dc6ec17802ac3cde6e0b603f87cc7136990b131098a7",
+  "hash": "06c4dc8591ae057b9e46616e59bc4cb38a18a474c4e9dc16da8e4870a98450f6",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Teller documents a REST API that an agent could call to retrieve live balances, ledger transactions (with pagination) and identity for accounts the end-user authorized, authenticated with Teller-issued mTLS client certificates. However, linking is done through the Teller Connect widget rather than a documented programmatic link-session endpoint, and probes found no MCP surface, llms.txt or OpenAPI spec. Missing for 10: programmatic link-session creation, documented connection/enrollment management endpoints, an MCP server, scoped or least-privilege credential controls, machine-readable API specs, and independent agent-use corroboration.",
+    "rationale": "Teller documents its own REST API for retrieving live balances and ledger transactions, with mTLS client-certificate authentication, so an agent could programmatically read account data. Link sessions run through the Teller Connect front-end component rather than a documented API call. There is no evidence of connection-management endpoints, an MCP surface, or credentials scoped for agents, and probes found no llms.txt or OpenAPI spec. Missing for 10: API-driven link-session creation, documented enrollment/connection management endpoints, an MCP server, scoped/least-privilege agent credentials, a machine-readable API spec.",
     "evidenceIds": [
       "teller-docs-2",
       "teller-docs-3",
-      "teller-docs-4",
       "teller-docs-12",
-      "teller-docs-21",
-      "teller-docs-23",
+      "teller-docs-4",
       "teller-gh-1",
-      "teller-docs-17",
       "teller-probe-1",
-      "teller-probe-3",
-      "teller-comm-1"
+      "teller-probe-3"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, an agent can operate the platform — create link sessions, retrieve balances and transactions, and manage connections through the API or an MCP surface with scoped credentials",
+      "citations": [
+        {
+          "evidenceId": "teller-docs-2",
+          "quote": "The account balances API provides your application with live, real-time account balances."
+        },
+        {
+          "evidenceId": "teller-docs-3",
+          "quote": "The transactions API exposes the ledger transactions of a financial account."
+        },
+        {
+          "evidenceId": "teller-docs-12",
+          "quote": "The Teller API uses mTLS to authenticate the API caller. Teller issues client certificates that you use to connect to the Teller API."
+        }
+      ]
+    },
     "productId": "teller",
     "storyId": "agent-links-and-reads"
   }

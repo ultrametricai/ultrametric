@@ -1,14 +1,25 @@
 {
-  "hash": "65b279140ebd479b167eea92db7e5532a8eedd045d62a57eed68bebb0cae86df",
+  "hash": "15d39291dc03c0e05ac76e852401f977d545aafcc2760734878600dce04303ce",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Yapily documents a dedicated re-authorise account consent endpoint. It prompts the account holder for continued access when a previously AUTHORIZED consent can no longer retrieve data, so the repair happens on the existing consent rather than as a fresh link. The other half of the story, expired or revoked consents surfacing as documented statuses, is only implied by the reference to the AUTHORIZED state, and no consent-expiry or revocation webhooks are shown. Missing for 10: documented consent status values for expired and revoked links, consent-expiry or revocation notifications, and independent or hands-on corroboration of the re-auth flow.",
+    "rationale": "Yapily documents a dedicated re-authorise account consent endpoint for when a previously AUTHORIZED consent can no longer be used to retrieve data. That is a first-party repair flow that re-prompts the account holder instead of starting from scratch. The evidence only implies consent statuses through the AUTHORIZED state; it does not document specific expired or revoked statuses, or how broken links are surfaced to ops. Missing for 10: documented expired/revoked consent status values, proactive surfacing of broken connections (e.g., consent-expiry webhook events), and hands-on corroboration of the re-auth flow preserving existing linkage.",
     "evidenceIds": [
       "yapily-docs-31"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an ops lead, broken connections are repairable — expired or revoked links surface as documented statuses, and users can re-authenticate in an update flow without starting over",
+      "citations": [
+        {
+          "evidenceId": "yapily-docs-31",
+          "quote": "Used to prompt the account holder for continued access to their financial data. This endpoint should be used when a `Consent` that was previously `AUTHORIZED` can no longer be used to retrieve data."
+        }
+      ]
+    },
     "productId": "yapily",
     "storyId": "connection-repair-relink"
   }

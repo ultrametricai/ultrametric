@@ -1,24 +1,48 @@
 {
-  "hash": "10589fdec5bb04051b7d51968384424dc6f4d7519b0dae25b00938307243abff",
+  "hash": "e1f70ac79a88472127672abbac8e69f01b3e24cd9687b94d12b193eafa79b513",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "wandb-weave",
-    "storyId": "agent-triggers-eval-run",
-    "verdict": "full",
-    "quality": 8,
+    "verdict": "partial",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Weave documents an agent-driven eval loop. Its evaluation API and `Evaluation` object take a `Dataset` plus scorers (docs-6, docs-19, docs-47). Coding agents using W&B Skills and the MCP server can \"run evaluations\" on their own (docs-20, docs-45, docs-57), and the MCP server gives agents direct access to evaluation data to answer questions (docs-44, docs-56). REST endpoints in the Service API add further programmatic access (docs-15). Missing for 10: explicit docs on programmatically creating/publishing a standalone dataset, detail on the result read-back API beyond MCP Q&A, and independent or hands-on corroboration of the agent workflow.",
+    "rationale": "Weave's own docs say coding agents can connect through W&B Skills and the MCP server to run evaluations, and that the MCP server lets agents answer questions about evaluations, which covers triggering a run and reading back results. Evaluations are defined programmatically over a Dataset object, and a REST Service API exists. However, there is no explicit evidence of an agent creating and publishing a dataset, and no hands-on corroboration of the end-to-end loop. missing for 10: explicit documentation of agent- or API-driven dataset creation, documented MCP or REST endpoints for programmatically triggering an evaluation and retrieving its scores, independent or hands-on corroboration of the end-to-end agent workflow",
     "evidenceIds": [
-      "wandb-weave-docs-6",
-      "wandb-weave-docs-19",
       "wandb-weave-docs-20",
       "wandb-weave-docs-44",
       "wandb-weave-docs-45",
       "wandb-weave-docs-57",
-      "wandb-weave-docs-56",
-      "wandb-weave-docs-47",
+      "wandb-weave-docs-6",
       "wandb-weave-docs-15",
-      "wandb-weave-probe-4"
-    ]
+      "wandb-weave-docs-19"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can have an agent create a dataset, trigger an eval run programmatically, and read back the results",
+      "citations": [
+        {
+          "evidenceId": "wandb-weave-docs-20",
+          "quote": "Using W&B skills and the MCP server, coding agents like Claude Code connect to Weave. They can read live production data, run evaluations, and execute automatic iteration loops on their own"
+        },
+        {
+          "evidenceId": "wandb-weave-docs-44",
+          "quote": "your agent can answer questions about your runs, traces, evaluations, and artifacts without copy-paste."
+        },
+        {
+          "evidenceId": "wandb-weave-docs-45",
+          "quote": "Skills covers both the [W\\&B Models SDK] ... and the [Weave SDK] (traces, evaluations, scorers)."
+        },
+        {
+          "evidenceId": "wandb-weave-docs-6",
+          "quote": "the core of the workflow is the _`Evaluation` object_, which defines: A `Dataset` or list of dictionaries for test examples. One or more scoring functions."
+        },
+        {
+          "evidenceId": "wandb-weave-docs-15",
+          "quote": "Use the Weave Service API, which provides REST endpoints for programmatic access to Weave functionality."
+        }
+      ]
+    },
+    "productId": "wandb-weave",
+    "storyId": "agent-triggers-eval-run"
   }
 }

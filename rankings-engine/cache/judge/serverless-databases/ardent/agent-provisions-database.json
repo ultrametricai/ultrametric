@@ -1,25 +1,48 @@
 {
-  "hash": "230c741f43bcba8a1cdaf4a1df3f84cd842010f4309bb1efd0d624ca16f64c05",
+  "hash": "aebfbb5eebbf3822334f2c4d9766ef3d56dc36b4b2c65cc3ffb777ae5c79e6ce",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Ardent's CLI lets an agent work headlessly. It creates branches and prints only the connection URL (`--print-url`, `--url-type`), returns JSON output and errors, authenticates non-interactively via ARDENT_TOKEN, and is documented for agents that create, use and delete their own branches; an API is also offered for agent workflows. However, provisioning means branching an existing connected Postgres rather than creating a fresh database, and schema changes and queries run through the returned Postgres URL rather than through Ardent itself. Missing for 10: standalone creation of a new database (not a clone of an existing source), an MCP server, a published OpenAPI spec (probes 404), first-class schema-apply/query commands in the CLI or API, and independent hands-on corroboration.",
+    "rationale": "Ardent's CLI lets an agent create a database branch headlessly, with token auth and no login step. It can print only the connection URL or return JSON, and the docs describe agents running the CLI to create, use, and delete their own branches. A connector setting can also run SQL on each new branch. However, Ardent provisions copies of an existing connected Postgres rather than standalone databases, and schema application and querying happen through the branch URL with the agent's own tools rather than documented Ardent commands. Missing for 10: provisioning a new database from scratch (not just branching a connected source), documented Ardent-native schema-apply and query commands, a documented MCP server, an API spec for branch creation (the OpenAPI probe returned 404), and independent hands-on corroboration.",
     "evidenceIds": [
-      "ardent-docs-1",
-      "ardent-docs-2",
-      "ardent-docs-7",
       "ardent-docs-8",
       "ardent-docs-10",
-      "ardent-docs-11",
-      "ardent-docs-12",
-      "ardent-docs-14",
       "ardent-docs-19",
+      "ardent-docs-12",
       "ardent-docs-25",
-      "ardent-probe-2",
-      "ardent-probe-3"
+      "ardent-docs-14",
+      "ardent-docs-1",
+      "ardent-docs-2"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, my coding agent can provision a database end to end — create it, fetch the connection string, apply schema, and run queries — through the API, CLI, or MCP without touching the dashboard",
+      "citations": [
+        {
+          "evidenceId": "ardent-docs-8",
+          "quote": "ardent branch create pr-123 --print-url    # prints only the connection URL"
+        },
+        {
+          "evidenceId": "ardent-docs-19",
+          "quote": "The agent runs the Ardent CLI itself — creating, using, and deleting its own branches"
+        },
+        {
+          "evidenceId": "ardent-docs-10",
+          "quote": "Set ARDENT_TOKEN and run commands normally — no login step"
+        },
+        {
+          "evidenceId": "ardent-docs-25",
+          "quote": "you can run SQL on every new branch from this connector after it is created."
+        },
+        {
+          "evidenceId": "ardent-docs-2",
+          "quote": "Test migrations, run schema changes, and let coding agents like Claude Code and Cursor actually verify their database work"
+        }
+      ]
+    },
     "productId": "ardent",
     "storyId": "agent-provisions-database"
   }

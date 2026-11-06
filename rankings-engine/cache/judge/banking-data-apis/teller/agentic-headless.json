@@ -1,19 +1,37 @@
 {
-  "hash": "080533de3dc840d0f5faa955530e7ce294cb101097f7fef70956fa2028d3c355",
+  "hash": "e23f831dafbcf5f0ff3278ad0ca54a0cd083f35234c1ffc599a1be13c4a7c930",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Teller is an API-first product. Its server-to-server REST endpoints use certificate-based mTLS authentication (machine credentials, no interactive login), and its sandbox uses simulated data with deterministic MFA codes such as OTP '0000', which suits automated testing. A community user's export script shows the API can be scripted. However, account enrollment runs through the user-facing Teller Connect component, and nothing documents CI or headless use. missing for 10: an official CLI or headless enrollment path, CI/automation guidance, an OpenAPI spec (probes 404), and independent hands-on corroboration of CI use.",
+    "rationale": "Teller is an API product with client-certificate (mTLS) authentication, a simulated-data sandbox, and a community-built export script, so programmatic headless use for automation is plausible. However, linking accounts runs through the interactive Teller Connect flow, and nothing documents running it in CI or headless pipelines. missing for 10: documented CI/headless usage guidance, a CLI or non-interactive enrollment path, independent hands-on corroboration of CI automation.",
     "evidenceIds": [
       "teller-docs-12",
       "teller-docs-8",
       "teller-docs-9",
-      "teller-docs-23",
       "teller-comm-1",
-      "teller-probe-3"
+      "teller-docs-23"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
+      "citations": [
+        {
+          "evidenceId": "teller-docs-12",
+          "quote": "The Teller API uses mTLS to authenticate the API caller. Teller issues client certificates that you use to connect to the Teller API."
+        },
+        {
+          "evidenceId": "teller-docs-8",
+          "quote": "The sandbox environment uses simulated data and never connects to real financial institutions."
+        },
+        {
+          "evidenceId": "teller-comm-1",
+          "quote": "I built a little script to export my accounts to CSV/QIF. Super easy to use API!"
+        }
+      ]
+    },
     "productId": "teller",
     "storyId": "agentic-headless"
   }

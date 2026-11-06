@@ -1,20 +1,42 @@
 {
-  "hash": "3f34224797fbec024129abc53bd8f90353e2a690d70571685773b7cbeac05c36",
+  "hash": "f46f02ce660b22e4216d255fc4e95232bc622ccc6c93c428fa53205662a28191",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Treasury Prime documents API-originated ACH credits (push) and debits (pull). Returns are handled by setting the ACH object's status to `returned` with the return code in its `error` field, and there is a documented endpoint for returning an originated ACH. Registrable webhooks are also documented, with list, create, fetch, update and delete endpoints and subscribable event types. Returns are modeled as a status on the ACH object rather than as a standalone object, and there is no evidence for same-day windows, NOCs, reversals, or ACH-specific webhook events. Missing for 10: same-day ACH windows, NOC handling, reversals, returns as a first-class object, explicit ACH webhook event types, independent corroboration.",
+    "rationale": "Treasury Prime documents ACH origination via API for both credits (push) and debits (pull). Returns are handled by setting the ACH object's status to `returned` with a return code in the `error` field, and an Update endpoint lets you return transfers you originated. Registrable webhooks exist, but the evidence never ties specific webhook events to ACH lifecycle changes. Missing for 10: same-day ACH windows, NOC handling, reversals, returns modeled as first-class objects rather than a status/error field, ACH-specific webhook event types, and independent corroboration.",
     "evidenceIds": [
       "treasury-prime-docs-7",
       "treasury-prime-docs-20",
       "treasury-prime-docs-8",
       "treasury-prime-docs-21",
       "treasury-prime-docs-28",
-      "treasury-prime-docs-30",
-      "treasury-prime-docs-31"
+      "treasury-prime-docs-30"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can originate ACH through the API — credits and debits, same-day windows, and the unhappy paths (returns, NOCs, reversals) modeled as first-class objects with webhooks",
+      "citations": [
+        {
+          "evidenceId": "treasury-prime-docs-7",
+          "quote": "An ACH credit is used when you wish to send or \"push\" funds to a recipient. ... An ACH debit is used when you wish to \"pull\" funds from an external account."
+        },
+        {
+          "evidenceId": "treasury-prime-docs-21",
+          "quote": "Treasury Prime updates the [ACH object](/reference/ach) status to `returned` and populates the `error` field with the appropriate return code."
+        },
+        {
+          "evidenceId": "treasury-prime-docs-8",
+          "quote": "To return an ACH transfer you originated, use the Update an ACH endpoint."
+        },
+        {
+          "evidenceId": "treasury-prime-docs-28",
+          "quote": "To receive webhook notifications, you must first register the URL where the webhook should be sent and the triggering event."
+        }
+      ]
+    },
     "productId": "treasury-prime",
     "storyId": "ach-origination"
   }

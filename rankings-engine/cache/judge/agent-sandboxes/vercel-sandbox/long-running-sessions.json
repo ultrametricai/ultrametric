@@ -1,19 +1,32 @@
 {
-  "hash": "3910e953c98e03f8b50e89e0b26514950b0cce67dfedc071420b92b6b71d1c52",
+  "hash": "b7ab290261d8c5aaa69eec9342faeefd0dd3da340c85b49cc7d89d752a3d687a",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "The docs say sandboxes default to a 5-minute timeout, which can be set at creation and extended at runtime via `sandbox.extendTimeout()`. Persistence (on by default) auto-saves state on stop and resumes by name, so long agent work can span sessions even if the VM itself does not run continuously. Missing for 10: any documented maximum runtime showing a single session can actually stay up for hours or days, guidance on long-running agent sessions, and hands-on corroboration of multi-hour runs.",
+    "rationale": "Vercel Sandbox documents a configurable `timeout` option at creation and a `sandbox.extendTimeout()` call to lengthen a running session. The default is only 5 minutes, and no maximum duration is stated, so running for hours or days is unproven. Auto-persistence on stop with resume-by-name helps long agent tasks, but that is stop-and-resume, not one continuously running session. Missing for 10: documented maximum session duration reaching hours/days, evidence of continuous multi-hour/day runtime, independent or hands-on corroboration.",
     "evidenceIds": [
       "vercel-sandbox-docs-37",
       "vercel-sandbox-docs-22",
       "vercel-sandbox-docs-11",
-      "vercel-sandbox-docs-40",
-      "vercel-sandbox-docs-18",
-      "vercel-sandbox-docs-19"
+      "vercel-sandbox-docs-18"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can keep a sandbox session running for hours or days for long agent tasks",
+      "citations": [
+        {
+          "evidenceId": "vercel-sandbox-docs-37",
+          "quote": "The default timeout is 5 minutes. You can configure this using the `timeout` option when creating a sandbox, and extend it using `sandbox.extendTimeout()`."
+        },
+        {
+          "evidenceId": "vercel-sandbox-docs-11",
+          "quote": "Sandboxes that auto-save state on stop and resume where you left off. Persistence is the default."
+        }
+      ]
+    },
     "productId": "vercel-sandbox",
     "storyId": "long-running-sessions"
   }

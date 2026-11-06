@@ -1,19 +1,37 @@
 {
-  "hash": "4f5874f17db6cf21d3f8e5f0f4e74e02a8093920b89ad4ccaa58b1f54c408205",
+  "hash": "2a76cc476746f4af2123d61fe3a2620d56740c0296d9f892e8b4ea2336dbae98",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Maritime documents that every API key carries scopes and tells users to hand each subsystem the narrowest key, so a leaked key can only do what its scope allows. It gives a concrete least-privilege example: a Computers-only key, created in Settings, is refused on every other Maritime endpoint. Keys are minted via `maritime keys create` for agent use. missing for 10: a documented catalog of available scopes beyond `computers`, evidence that scopes can be set from the CLI/API when minting agent keys, expiry or time-bounding of keys (docs say keys never expire), and independent or hands-on corroboration of scope enforcement.",
+    "rationale": "Maritime's docs say every API key carries scopes and recommend giving each subsystem the narrowest key it needs. A computers-only key is concretely documented and is refused on every other endpoint, so least-privilege credentials exist for one surface. Beyond that one scope, the depth of scoping is unproven: missing for 10: an enumerated scope catalog beyond `computers`, per-agent or per-resource key scoping, key expiry or rotation (docs say long-lived keys never expire), and independent hands-on corroboration.",
     "evidenceIds": [
       "maritime-docs-26",
-      "maritime-docs-4",
       "maritime-docs-25",
       "maritime-docs-44",
-      "maritime-docs-23",
+      "maritime-docs-4",
       "maritime-docs-43"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
+      "citations": [
+        {
+          "evidenceId": "maritime-docs-26",
+          "quote": "Every key carries scopes. Hand a subsystem the _narrowest_ key it needs. A leaked key can then only do what its scope allows."
+        },
+        {
+          "evidenceId": "maritime-docs-25",
+          "quote": "To hand out a key that reaches computers and nothing else, create a **Computers key** in the Computers section of Settings, API keys"
+        },
+        {
+          "evidenceId": "maritime-docs-44",
+          "quote": "a key whose only scope is `computers` is refused on every other Maritime endpoint"
+        }
+      ]
+    },
     "productId": "maritime",
     "storyId": "agentic-scoped-keys"
   }

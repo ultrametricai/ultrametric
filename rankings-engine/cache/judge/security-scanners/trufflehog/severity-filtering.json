@@ -1,19 +1,36 @@
 {
-  "hash": "1737a643dc3e854ece7d310bed3112fadc34f588e9301a131b2b483dc6524145",
+  "hash": "4d7faf1d75daf11194012995cf65e84f41a4ceea378511c08a972e3ffb092066",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "TruffleHog lets developers filter findings by verification status, which acts as a confidence signal. Examples include `--only-verified` and `--results=verified,unknown`, and pairing these with `--fail` gates the run so only live or uncertain secrets block it. Detectors can also be narrowed with `--include-detectors`, and verification can be tuned per detector. Missing for 10: no severity levels or numeric confidence scores, gating is documented only in a pre-commit context rather than explicit CI build pipelines, and there is no independent or hands-on corroboration that this reduces noise.",
+    "rationale": "TruffleHog lets you filter findings by verification status, which serves as a confidence signal. The `--only-verified` flag and `--results=verified,unknown` combined with `--fail` gate a pre-commit or CI run on those result classes, so unverified noise need not block builds. There is no evidence of severity-based filtering, and gating is only shown in a pre-commit hook context. missing for 10: severity-level classification and filtering, documented CI-pipeline gating configuration beyond the pre-commit example, independent or hands-on corroboration of noise reduction.",
     "evidenceIds": [
-      "trufflehog-docs-1",
       "trufflehog-docs-13",
+      "trufflehog-docs-1",
       "trufflehog-docs-3",
-      "trufflehog-docs-7",
-      "trufflehog-docs-14",
-      "trufflehog-docs-21"
+      "trufflehog-docs-7"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can filter and gate on findings by severity or confidence so low-value noise does not block builds",
+      "citations": [
+        {
+          "evidenceId": "trufflehog-docs-13",
+          "quote": "trufflehog git file://. --since-commit HEAD --results=verified,unknown --fail"
+        },
+        {
+          "evidenceId": "trufflehog-docs-1",
+          "quote": "trufflehog github --only-verified --repo https://github.com/trufflesecurity/test_keys"
+        },
+        {
+          "evidenceId": "trufflehog-docs-3",
+          "quote": "for every secret trufflehog can classify, it can also log in to confirm if that secret is live or not"
+        }
+      ]
+    },
     "productId": "trufflehog",
     "storyId": "severity-filtering"
   }

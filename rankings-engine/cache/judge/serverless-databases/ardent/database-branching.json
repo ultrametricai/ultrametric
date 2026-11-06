@@ -1,20 +1,46 @@
 {
-  "hash": "390b4458b7ca407db3c9c97c9c03faeffcebb2a33aafcfc814365b7387320a15",
+  "hash": "d688741065a86571cb7ad5571522eb897307ec728a708d975649d124d16080ec",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Ardent's docs describe instant, isolated copies of a production Postgres database (schema and data) created from the terminal with `ardent branch create`. Clones load in about 6s and do not duplicate storage, which implies copy-on-write, and the docs position them for testing migrations and destructive operations against an exact copy of production. A community note that it is built on Neon Twin infrastructure loosely corroborates the branching mechanism. Missing for 10: explicit documentation of the copy-on-write mechanism, independent hands-on confirmation of instant branching, and evidence of behavior on large databases (a community question about a 35GB table went unanswered).",
+    "rationale": "Ardent's docs say it creates instant, isolated copies of a production Postgres database from the CLI (`ardent branch create`). The copies include real data, and clones load in about 6s without duplicating storage, which implies copy-on-write semantics. Per-PR branches and destructive testing against an exact production copy are documented directly. missing for 10: explicit statement of the copy-on-write mechanism (only implied by 'do not duplicate storage'), independent hands-on corroboration of instant branching speed (especially on large databases).",
     "evidenceIds": [
       "ardent-docs-1",
       "ardent-docs-2",
       "ardent-docs-8",
-      "ardent-docs-21",
-      "ardent-docs-27",
       "ardent-docs-20",
-      "ardent-comm-7"
+      "ardent-docs-21",
+      "ardent-docs-27"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can create an instant copy-on-write branch of my database — schema and data — to develop and test against production-shaped data",
+      "citations": [
+        {
+          "evidenceId": "ardent-docs-1",
+          "quote": "Ardent creates instant, isolated copies of your production Postgres database — in seconds, right from your terminal."
+        },
+        {
+          "evidenceId": "ardent-docs-27",
+          "quote": "Clones load in 6s, scale to 0, autoscale compute and do not duplicate storage."
+        },
+        {
+          "evidenceId": "ardent-docs-21",
+          "quote": "Ardent lets you run your full test suite, including destructive operations, against an exact copy of production."
+        },
+        {
+          "evidenceId": "ardent-docs-2",
+          "quote": "Test migrations, run schema changes, and let coding agents like Claude Code and Cursor actually verify their database work — all against real data, without touching production."
+        },
+        {
+          "evidenceId": "ardent-docs-8",
+          "quote": "ardent branch create pr-123 --print-url"
+        }
+      ]
+    },
     "productId": "ardent",
     "storyId": "database-branching"
   }

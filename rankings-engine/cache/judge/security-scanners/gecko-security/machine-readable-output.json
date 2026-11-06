@@ -1,18 +1,31 @@
 {
-  "hash": "21a4ff7b119866337915930004cca27b6dfad5ec032d5afd4bfcf68307401d70",
+  "hash": "73146afab1bce04f93b563deabfdda9f6ffa5c1e02b91b1cc0c7d158f4bdd485",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
-    "confidence": "medium",
-    "rationale": "Gecko exposes scan and vulnerability data programmatically through its v1 REST API, which has a published OpenAPI spec, and through webhook events. Findings carry structured fields (CVSS severity, confidence, call chain, PoC, patch) that downstream tooling can consume. However, no SARIF output or file-based JSON/SARIF report export is documented, so integrators must build on the API rather than ingest standard scan-report formats. Missing for 10: SARIF export, explicit JSON report download/CLI output, documentation of the result schema for CI ingestion, independent corroboration.",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "Gecko's documented v1 API lets developers read scan, repository, and vulnerability data programmatically, and an OpenAPI spec is published. That gives downstream tooling machine-readable access to results. However, no evidence names a JSON or SARIF export or output format. missing for 10: explicit SARIF output, documented JSON/report export of scan results, CLI or CI artifact emission, independent corroboration.",
     "evidenceIds": [
       "gecko-security-docs-10",
       "gecko-security-probe-3",
-      "gecko-security-docs-24",
-      "gecko-security-docs-2",
       "gecko-security-docs-9"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can emit scan results in machine-readable formats like JSON or SARIF for downstream tooling",
+      "citations": [
+        {
+          "evidenceId": "gecko-security-docs-10",
+          "quote": "Gecko's v1 API lets you trigger scans, read scan, repository, and vulnerability data"
+        },
+        {
+          "evidenceId": "gecko-security-probe-3",
+          "quote": "HTTP 200 at https://gecko.security/openapi.json — contains \"openapi\" key"
+        }
+      ]
+    },
     "productId": "gecko-security",
     "storyId": "machine-readable-output"
   }

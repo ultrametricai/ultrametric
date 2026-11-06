@@ -1,18 +1,41 @@
 {
-  "hash": "4a4abc14dd80ba7e283aef588a20b2ef845ad93172b74377980ffed6176d5c39",
+  "hash": "f99e2d4963df523b920783d0cae1c9031c113ec5ab12ea62672f8b2f73ca0905",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
     "confidence": "low",
-    "rationale": "The docs suggest a shared connection model: transaction data requires linking the customer 'to at least one account via Connect', and account ownership is retrieved 'from a connected account'. Balance, ACH details, and aggregation are also exposed as separate services run against the customer's FI accounts. Taken together, this implies one Connect-linked account can feed several data products, but nothing explicitly says a single Connect session covers auth, balances, transactions, and identity without re-linking per product. Missing for 10: an explicit statement that one Connect session serves multiple products, documentation of how product scopes or permissions are set at link time, and independent or hands-on corroboration.",
+    "rationale": "The docs show several data products (account owner verification, balances, transactions and aggregation) that all read from a 'connected account' linked via Connect. This implies one link can serve several products, but no source states that a single Connect session unlocks all of them without separate connection flows per product. Missing for 10: explicit documentation that one Connect session covers auth/ACH, balance, transactions and identity together; any statement that product-specific re-linking is unnecessary; hands-on or independent corroboration.",
     "evidenceIds": [
       "mastercard-open-finance-docs-27",
       "mastercard-open-finance-docs-1",
       "mastercard-open-finance-docs-2",
-      "mastercard-open-finance-docs-30",
-      "mastercard-open-finance-docs-8"
+      "mastercard-open-finance-docs-8",
+      "mastercard-open-finance-docs-30"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, one link session can power multiple data products — auth, balances, transactions, identity — without forcing the user through separate connection flows per product",
+      "citations": [
+        {
+          "evidenceId": "mastercard-open-finance-docs-27",
+          "quote": "link them to at least one account via Connect"
+        },
+        {
+          "evidenceId": "mastercard-open-finance-docs-1",
+          "quote": "Retrieves account ownership details (name, address, email and phone - where available) from a connected account at a financial institution."
+        },
+        {
+          "evidenceId": "mastercard-open-finance-docs-8",
+          "quote": "The account and transaction data elements returned from Account Aggregation and Transaction Data vary depending on the account type."
+        },
+        {
+          "evidenceId": "mastercard-open-finance-docs-2",
+          "quote": "The Account Balance service provides real-time or cached bank account balance information from your customer's Financial Institution (FI)."
+        }
+      ]
+    },
     "productId": "mastercard-open-finance",
     "storyId": "multi-product-sessions"
   }

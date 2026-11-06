@@ -1,19 +1,41 @@
 {
-  "hash": "e94d42dbcac11b5a76ca5cc83c91d461c6ddcbde8eec4b7ccc739c32f7a2a520",
+  "hash": "5ceecbc13eaf4bc29b2e118b313d6ab088713c54ca7000e6cdc04f1b4339c127",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "The official CLI clearly runs headlessly, with non-interactive invocations such as `trufflehog git file://. --since-commit HEAD --results=verified,unknown --fail`, `--only-verified`, and Docker runs. Its verified/unknown result filtering helps an agent separate real findings from noise. However, the evidence never documents a machine-readable (e.g. JSON) output mode an agent could parse, and issue filing appears only as Enterprise routing to Jira, Slack, or webhooks rather than a CLI-driven workflow. Missing for 10: documented JSON/structured output, evidence of agent-driven issue creation from CLI results, independent hands-on corroboration of an agent workflow.",
+    "rationale": "TruffleHog's official CLI runs non-interactively. It supports flags such as `--only-verified`, `--results=verified,unknown` and `--fail`, so an agent can script a scan and gate on real, live-verified findings. TruffleHog's platform can also route findings to Jira or webhooks for issue filing. However, the pack never documents a machine-readable output format (e.g. JSON) for the CLI, and issue routing is described only for the web UI/scanner product, not for CLI output. missing for 10: documented JSON/structured CLI output for agent parsing, CLI-side issue filing or a documented findings schema, hands-on corroboration of an agent-driven workflow",
     "evidenceIds": [
-      "trufflehog-docs-13",
       "trufflehog-docs-1",
-      "trufflehog-gh-2",
-      "trufflehog-probe-4",
+      "trufflehog-docs-13",
       "trufflehog-docs-3",
-      "trufflehog-docs-11"
+      "trufflehog-docs-11",
+      "trufflehog-probe-4"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an ai-native user, I can have an agent run a scan headlessly via the CLI, parse machine-readable results, and file issues for real findings",
+      "citations": [
+        {
+          "evidenceId": "trufflehog-docs-13",
+          "quote": "trufflehog git file://. --since-commit HEAD --results=verified,unknown --fail"
+        },
+        {
+          "evidenceId": "trufflehog-docs-1",
+          "quote": "trufflehog github --only-verified --repo https://github.com/trufflesecurity/test_keys"
+        },
+        {
+          "evidenceId": "trufflehog-docs-3",
+          "quote": "for every secret trufflehog can classify, it can also log in to confirm if that secret is live or not"
+        },
+        {
+          "evidenceId": "trufflehog-docs-11",
+          "quote": "Route findings to Slack, Jira, email, or webhooks so the right people can act on them."
+        }
+      ]
+    },
     "productId": "trufflehog",
     "storyId": "agent-runs-scan-headless"
   }

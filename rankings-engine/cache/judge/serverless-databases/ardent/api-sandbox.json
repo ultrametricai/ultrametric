@@ -1,22 +1,46 @@
 {
-  "hash": "5bb41d0e87a5493aa2be57ee0abf6500a9dd9aab79a29fe17b1a1b2a48bdc52d",
+  "hash": "a56af49753f5793cc4085eae426dbe83357aa3298b418130c21472faf55c9f97",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
-    "quality": 9,
+    "quality": 8,
     "confidence": "high",
-    "rationale": "Ardent's core product is isolated, instant copies of production Postgres that coding agents can test against, including destructive operations, \"without touching production.\" Branch URLs have zero access to the original database, and agents can be scoped to only their own branch, with per-PR fresh branches in CI. Community comments raise a caveat about side effects outside the DB (e.g., external API calls) but do not contradict the DB isolation itself. Missing for 10: independent hands-on corroboration of Ardent's isolation in practice, and no evidenced synthetic/masked-data option for agents that shouldn't see real data.",
+    "rationale": "Ardent's core documented capability is real sandbox isolation, not a dry-run: it creates instant, isolated copies of a production Postgres database. Agents and CI work against these branches, including destructive operations, and a branch URL has zero access to the original database. A community comment notes that real copied data can still trigger side effects outside the database, but it is not a concrete failure of the isolation, so it lowers confidence slightly rather than creating a dispute. Missing for 10: independent hands-on corroboration of Ardent's isolation, and documented handling of non-database side effects from real copied data such as stored third-party credentials.",
     "evidenceIds": [
       "ardent-docs-1",
       "ardent-docs-2",
       "ardent-docs-18",
-      "ardent-docs-19",
       "ardent-docs-20",
       "ardent-docs-21",
-      "ardent-docs-24",
-      "ardent-docs-4",
-      "ardent-comm-1"
+      "ardent-docs-24"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
+      "citations": [
+        {
+          "evidenceId": "ardent-docs-1",
+          "quote": "Ardent creates instant, isolated copies of your production Postgres database — in seconds, right from your terminal."
+        },
+        {
+          "evidenceId": "ardent-docs-2",
+          "quote": "let coding agents like Claude Code and Cursor actually verify their database work — all against real data, without touching production."
+        },
+        {
+          "evidenceId": "ardent-docs-24",
+          "quote": "If a branch URL is ever compromised, it has zero access to your original database. This makes it safe to hand branch URLs to AI agents"
+        },
+        {
+          "evidenceId": "ardent-docs-18",
+          "quote": "The agent needs no Ardent token and can't touch anything but its branch."
+        },
+        {
+          "evidenceId": "ardent-docs-21",
+          "quote": "Ardent lets you run your full test suite, including destructive operations, against an exact copy of production."
+        }
+      ]
+    },
     "productId": "ardent",
     "storyId": "api-sandbox"
   }

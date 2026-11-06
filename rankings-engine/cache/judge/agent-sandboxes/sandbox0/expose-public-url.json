@@ -1,16 +1,36 @@
 {
-  "hash": "c8b04b778b90318a65d46a2c2cc3bd8927120d375e7a8726fd1dd8ab0ddda48b",
+  "hash": "c882a0b85a654b19977be1e2d43a0407582c71fc6fd30245887a20cb81f7007c",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Sandbox0 documents ways to reach HTTP services running inside a sandbox. Services offer route-level auth, CORS, rate limits and path rewrite. Private previews let an authenticated client open an HTTP server listening on sandbox loopback, and inbound access can auto-resume a paused sandbox. However, previews are explicitly private and authenticated, and the services evidence never states that an arbitrary port is exposed on a public URL. Missing for 10: explicit documentation of public per-port preview URLs, URL format/provisioning details, independent or hands-on corroboration.",
+    "rationale": "Sandbox0 documents its own ways to reach HTTP services inside a sandbox. Private previews open a loopback-bound HTTP server for authenticated clients, a Services feature offers route-level controls (auth, CORS, rate limits, path rewrite), and inbound access can auto-resume a paused sandbox. However, the evidence never explicitly describes mapping an arbitrary port to a public preview URL; the documented preview mode is private and authenticated, and Functions expose handlers rather than ports. Missing for 10: explicit documentation of exposing a sandbox port on a public URL, details of the URL format and port mapping, independent or hands-on corroboration.",
     "evidenceIds": [
-      "sandbox0-docs-11",
       "sandbox0-docs-12",
-      "sandbox0-docs-4"
+      "sandbox0-docs-11",
+      "sandbox0-docs-4",
+      "sandbox0-docs-10"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can expose a port from the sandbox on a public preview URL to reach services running inside",
+      "citations": [
+        {
+          "evidenceId": "sandbox0-docs-12",
+          "quote": "Private previews let an authenticated client open an HTTP server that listens only on sandbox loopback addresses."
+        },
+        {
+          "evidenceId": "sandbox0-docs-11",
+          "quote": "route-level method filtering, auth, CORS, rate limits, timeout, and path rewrite"
+        },
+        {
+          "evidenceId": "sandbox0-docs-4",
+          "quote": "With auto_resume enabled, supported inbound access can wake a paused sandbox"
+        }
+      ]
+    },
     "productId": "sandbox0",
     "storyId": "expose-public-url"
   }

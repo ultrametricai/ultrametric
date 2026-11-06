@@ -1,18 +1,30 @@
 {
-  "hash": "a307845d9e3cfbafa0fd60f0c2bb7016b0475cacf6c2255a953349b43a1ecd5a",
+  "hash": "4fada379ad9609445845737f9439fba698726e58f7ed014d542a7a9869e63448",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Token2's official fido2-manage tool documents FIDO2 SSH security-key workflows: generating keys, listing resident keys, rehydrating them, uploading to remotes via ssh-copy-id, and adding them to ssh-agent. Separately, PIV is supported on the devices, so hardware-backed SSH via FIDO2 sk-ssh is delivered. Missing for 10: explicit documentation that server access requires a physical touch, evidence of SSH via PIV, any OpenPGP support, and independent or hands-on corroboration.",
+    "rationale": "Token2's own fido2-manage tool documents FIDO2-backed SSH security keys stored on the device. It can generate them, list resident keys, rehydrate them, push them via ssh-copy-id, and load them into ssh-agent, which is the core of the sk-ssh path. PIV is documented only for Windows smartcard and AD logon and macOS login, not for SSH, and nothing in the evidence states that server access requires a physical touch. missing for 10: explicit documentation that SSH authentication requires a physical touch, PIV-based SSH keys, OpenPGP support, independent or hands-on corroboration.",
     "evidenceIds": [
       "token2-gh-4",
-      "token2-gh-2",
-      "token2-docs-8",
-      "token2-docs-3",
-      "token2-docs-20"
+      "token2-gh-2"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, my SSH keys can be hardware-backed on the device — via FIDO2 sk-ssh keys, PIV, or OpenPGP — so server access requires a physical touch",
+      "citations": [
+        {
+          "evidenceId": "token2-gh-4",
+          "quote": "SSH security keys: generate, list resident, download (rehydrate), upload to a remote (`ssh-copy-id`), add to the local ssh-agent"
+        },
+        {
+          "evidenceId": "token2-gh-2",
+          "quote": "fido2-manage is a tool allowing to manage FIDO2.1 devices over USB or NFC, including Passkey (resident keys) management"
+        }
+      ]
+    },
     "productId": "token2",
     "storyId": "hardware-backed-ssh"
   }

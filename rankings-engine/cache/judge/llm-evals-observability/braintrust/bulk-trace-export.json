@@ -1,20 +1,31 @@
 {
-  "hash": "2e0f9ee9e04aed8e36a9134e577a28489391063ae6b8c14b0f2f7cb54dc94397",
+  "hash": "01ef19af3dd32cac623caaf95265c0e9b3ba8d101e10b45bd537706c64934c25",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "braintrust",
-    "storyId": "bulk-trace-export",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "Braintrust documents downloading logs as CSV or JSON and pulling them locally with `bt sync pull` (the CLI 'sync data' feature). Its API also lets you programmatically manage datasets, so bulk extraction is possible. However, no evidence shows a native export or sync to blob storage (S3/GCS) or a data warehouse; reaching those targets would require custom scripting on top of local pulls or API calls. Self-hosting keeps data in your own cloud account, which is data residency rather than an export pipeline. Missing for 10: native connectors or scheduled export to blob storage/warehouses, explicit bulk dataset export docs, independent corroboration.",
+    "rationale": "Braintrust documents its own way to get trace data out: logs can be downloaded as CSV or JSON, or pulled locally with `bt sync pull`. This is a genuine first-party export, but nothing shows bulk export to blob storage or a data warehouse, so the user must move the files to that destination themselves. Self-hosting keeps data in your own cloud account, which is a residency feature rather than an export pipeline, so it earns no credit. missing for 10: native export or sync to blob storage (S3/GCS/Azure), data-warehouse connectors (Snowflake/BigQuery/etc.), documented bulk dataset export, scheduled or recurring exports, independent corroboration.",
     "evidenceIds": [
       "braintrust-docs-35",
-      "braintrust-docs-33",
-      "braintrust-docs-26",
-      "braintrust-docs-34",
-      "braintrust-docs-41",
-      "braintrust-docs-32"
-    ]
+      "braintrust-docs-33"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can bulk-export traces and datasets to blob storage or my data warehouse",
+      "citations": [
+        {
+          "evidenceId": "braintrust-docs-35",
+          "quote": "Download logs as CSV or JSON, or pull them locally with `bt sync pull`."
+        },
+        {
+          "evidenceId": "braintrust-docs-33",
+          "quote": "browse and query logs, sync data, and manage functions without leaving your terminal"
+        }
+      ]
+    },
+    "productId": "braintrust",
+    "storyId": "bulk-trace-export"
   }
 }

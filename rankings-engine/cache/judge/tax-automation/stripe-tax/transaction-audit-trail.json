@@ -1,20 +1,42 @@
 {
-  "hash": "b0a1a395946f92add49d5d47d2e59030ca2cb9de6ef6037787876d27f8ea835c",
+  "hash": "57fc662b2fc3543d1dcd5e5b57e81d294d4b454c131495c7c282455c4885b8eb",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Stripe Tax records transactions through the Tax Transactions API and offers itemized exports with a line-item tax breakdown for every transaction, which covers the core of an audit trail. It also returns a taxability_reason explaining each tax result and ties products to rates through product tax codes, including a preset fallback code. The evidence does not show that the resolved customer address (including IP geolocation) or the specific jurisdiction rules applied are kept with each transaction or included in exports. Missing for 10: evidence that the address resolution and rule details are retained per transaction, confirmation that exports include the product tax code and taxability reason, a documented retention period, and independent or hands-on confirmation of audit reconstruction.",
+    "rationale": "Stripe Tax documents itemized exports with a line-item tax breakdown for every transaction, transaction recording via the Tax Transactions API, and a per-result taxability_reason field that explains why tax applied. Product tax codes are documented as the link between products and rates. However, the evidence does not show that the rate source, resolved address and product category are kept together in an exportable audit trail. missing for 10: evidence that address resolution and product tax code are captured per transaction in exports, a documented retention period, explicit rule or jurisdiction provenance per calculation, independent or hands-on corroboration of audit use.",
     "evidenceIds": [
       "stripe-tax-docs-11",
       "stripe-tax-docs-19",
       "stripe-tax-docs-13",
-      "stripe-tax-docs-12",
-      "stripe-tax-docs-23",
       "stripe-tax-docs-15",
-      "stripe-tax-docs-4"
+      "stripe-tax-docs-23",
+      "stripe-tax-docs-12"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an ops user, every calculation is reconstructable — the rate, rules, address resolution, and product category that produced each transaction's tax, retained and exportable for an audit",
+      "citations": [
+        {
+          "evidenceId": "stripe-tax-docs-11",
+          "quote": "Itemized exports contain a detailed view of the line item level tax breakdown for every transaction."
+        },
+        {
+          "evidenceId": "stripe-tax-docs-13",
+          "quote": "The API returns the reason for a tax result in the taxability_reason field."
+        },
+        {
+          "evidenceId": "stripe-tax-docs-15",
+          "quote": "The standalone Tax Calculations and Tax Transactions APIs lets you calculate tax, record transactions, and handle reversals directly."
+        },
+        {
+          "evidenceId": "stripe-tax-docs-23",
+          "quote": "Stripe Tax uses product tax codes (PTCs) to associate products with tax rates."
+        }
+      ]
+    },
     "productId": "stripe-tax",
     "storyId": "transaction-audit-trail"
   }

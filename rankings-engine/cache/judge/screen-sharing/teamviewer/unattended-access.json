@@ -1,17 +1,35 @@
 {
-  "hash": "dba8ce8507973cb5e3d0f4a3e9ac77d97432f68894882f14cfcd02bb80e25b63",
+  "hash": "921e34f422d197d34200116daeb8ebe9ca9788f060550039de117e6dba88c9fe",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "low",
-    "rationale": "No first-party doc in the pack describes unattended access. Community hands-on reports do show the core behavior: one user remotely logs into a Windows PC with no one present after Wake-on-LAN (comm-3). Others discuss TeamViewer storing saved credentials so the client can replay them (comm-6, comm-7, comm-10), which implies credentials configured in advance. Those threads raise security concerns about how the credentials are stored, but they do not contradict the capability. The MSI mass-deployment feature (docs-4) is related but does not itself show unattended access. Missing for 10: first-party documentation of unattended-access setup (e.g., permanent password or account assignment), explicit admin-side pre-configuration of credentials at scale, and independent corroboration beyond indirect user anecdotes.",
+    "rationale": "No first-party doc in the pack names unattended access or preconfigured host credentials. Community reports do show it in practice: one user logs into a remote Windows PC with no one at the host after Wake-on-LAN, and others describe TeamViewer storing saved passwords so connections can be replayed. That points to the product's own unattended-access capability, but its depth is unproven. missing for 10: first-party documentation of unattended access setup, documentation of how credentials or passwords are preconfigured on the host, details on deploying unattended access at scale, independent confirmation that no host-side acceptance is needed.",
     "evidenceIds": [
       "teamviewer-comm-3",
       "teamviewer-comm-6",
-      "teamviewer-comm-7",
       "teamviewer-comm-10"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an IT admin, I can set up unattended access to a machine with credentials configured in advance, so no one has to sit at the host to accept",
+      "citations": [
+        {
+          "evidenceId": "teamviewer-comm-3",
+          "quote": "Uses TeamViewer on one gaming PC only to log into Windows and start Steam after Wake-on-LAN over a home VPN"
+        },
+        {
+          "evidenceId": "teamviewer-comm-6",
+          "quote": "storing saved passwords with reversible encryption in the user's registry hive is unavoidable for a client that must replay them"
+        },
+        {
+          "evidenceId": "teamviewer-comm-10",
+          "quote": "found compromises tied to TeamViewer's stored credentials"
+        }
+      ]
+    },
     "productId": "teamviewer",
     "storyId": "unattended-access"
   }

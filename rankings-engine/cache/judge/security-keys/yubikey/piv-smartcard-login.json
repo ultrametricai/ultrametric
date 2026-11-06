@@ -1,11 +1,11 @@
 {
-  "hash": "1aa98e5c399ff65a8bd106c36833513537efa4ca5d7e5560049fa3854e90796b",
+  "hash": "201fa3e94718f837f1e3c2e3bb4b44df7893bfd9e03bcb3c2d24ef921d142f58",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Yubico's PIV docs show RSA/ECC sign and encrypt operations with a private key held on the YubiKey through PKCS#11. PIV attestation proves keys were generated on the device and not imported, a community user confirms it works as a PIV smartcard, and ykman manages the PIV slots. That covers the core of certificate-based smart card use. missing for 10: explicit documentation of the workstation/Windows smart card sign-in, VPN and code-signing workflows, and independent hands-on corroboration of those scenarios.",
+    "rationale": "Yubico's PIV docs confirm the YubiKey works as a smart card for RSA/ECC sign and encrypt operations through PKCS#11, with keys stored on the device. PIV attestation shows keys are generated on the device rather than imported, ykman manages the PIV slots, and a community user confirms it works as a PIV smartcard. The specific scenarios in the story are not documented as such. Missing for 10: explicit docs for certificate-based workstation sign-in, VPN authentication and code-signing workflows, and independent hands-on corroboration of those deployments.",
     "evidenceIds": [
       "yubikey-docs-8",
       "yubikey-docs-11",
@@ -14,6 +14,29 @@
       "yubikey-probe-rt-1",
       "yubikey-docs-28"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an IT admin, the key acts as a PIV smart card for certificate-based login — workstation sign-in, VPN, and code signing with keys that never leave the device",
+      "citations": [
+        {
+          "evidenceId": "yubikey-docs-8",
+          "quote": "It enables RSA or ECC sign/encrypt operations using a private key stored on a smartcard (such as the YubiKey), through common interfaces like PKCS#11."
+        },
+        {
+          "evidenceId": "yubikey-docs-11",
+          "quote": "The concept of attestation is used to show that a certain asymmetric key has been generated on device and not imported."
+        },
+        {
+          "evidenceId": "yubikey-comm-16",
+          "quote": "Also, yubikey works as a PIV smartcard."
+        },
+        {
+          "evidenceId": "yubikey-probe-rt-1",
+          "quote": "Full scriptable device management: enable applications, PINs, PIV/OATH/OTP slots, device info."
+        }
+      ]
+    },
     "productId": "yubikey",
     "storyId": "piv-smartcard-login"
   }

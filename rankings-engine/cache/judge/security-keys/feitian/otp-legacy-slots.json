@@ -1,17 +1,40 @@
 {
-  "hash": "9f0051b7fc79afd76a7b1e65aa1b6e5dad548d06c101cc09f978665dca646d67",
+  "hash": "779ee232f11c5566ca26188a214108c7e661f655a0e0cbff9c793426b1d07618",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Feitian's docs describe an HOTP function that emulates an HID keyboard to type the code automatically. OTP functions are configurable through SK Manager and an OTP Tool that switches protocols, and the Android FEITIAN Authenticator app exposes OTP functions. Together these cover the core of the story: legacy OTP for services without WebAuthn. missing for 10: explicit documentation of TOTP slots, any challenge-response mode, clarity on which key models ship OTP, independent or hands-on corroboration.",
+    "rationale": "Feitian's own docs state the FIDO keys have an HOTP function that types the code as an HID keyboard. The SK Manager manages OTP alongside FIDO and PIV, and an OTP Tool and an Android Authenticator app handle OTP functions, so legacy OTP support is first-party. However, the evidence is mostly one-line doc summaries, and TOTP and challenge-response are never explicitly shown. missing for 10: explicit TOTP slot support, challenge-response (HMAC) mode, detail on slot count and configuration, independent or hands-on corroboration.",
     "evidenceIds": [
       "feitian-docs-13",
       "feitian-docs-9",
       "feitian-docs-22",
       "feitian-docs-32"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a power user, the key covers legacy one-time-password schemes — TOTP/HOTP slots or challenge-response — for services that still lack WebAuthn",
+      "citations": [
+        {
+          "evidenceId": "feitian-docs-13",
+          "quote": "The HOTP function of FEITIAN FIDO Security Key emulates HID Keyboard protocol to enable automatically type the value in."
+        },
+        {
+          "evidenceId": "feitian-docs-9",
+          "quote": "Learn how to use FEITIAN SK Manager tool to manager your security key 's functions including FIDO, PIV, OTP."
+        },
+        {
+          "evidenceId": "feitian-docs-22",
+          "quote": "Learn how to use OTP Tool to switch protocol with FEITIAN FIDO security key."
+        },
+        {
+          "evidenceId": "feitian-docs-32",
+          "quote": "Learn how to use FEITIAN Authenticator tool for Android to use OTP functions on Android OS."
+        }
+      ]
+    },
     "productId": "feitian",
     "storyId": "otp-legacy-slots"
   }

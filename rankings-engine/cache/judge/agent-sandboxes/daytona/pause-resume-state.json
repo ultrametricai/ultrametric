@@ -1,17 +1,35 @@
 {
-  "hash": "23aa627c93c9a1bd0bbc369ca965fa75d67d1c9250409fe7195aec074fe0e730",
+  "hash": "b47e60c30d8a7345c9c895e10745efbd4d0a5ff74ad1ba975bdc0613135d1926",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Daytona documents capturing and persisting a sandbox's current state. VM sandboxes take hot snapshots that include filesystem and memory, while container sandboxes take cold, filesystem-only snapshots, so memory preservation is limited to VM sandboxes [daytona-docs-22, daytona-docs-15]. The CLI mentions lifecycle and snapshot management, but the pack never explicitly describes a pause-then-resume flow for a running sandbox [daytona-docs-12]. Missing for 10: an explicit documented pause/resume operation, memory-state preservation for container sandboxes, and independent or hands-on corroboration that resumed sandboxes keep their memory state.",
+    "rationale": "Daytona's docs say it can capture and persist a sandbox's current state. VM sandboxes get hot snapshots of both filesystem and memory, but container sandboxes get filesystem-only cold snapshots, so memory preservation depends on sandbox type. The evidence never describes an explicit pause/resume workflow, only snapshot capture and CLI lifecycle management. Missing for 10: an explicit pause/resume operation with documented restore of a running sandbox, memory-state retention for container sandboxes, and independent or hands-on corroboration that resumed sandboxes keep their memory state.",
     "evidenceIds": [
       "daytona-docs-22",
       "daytona-docs-2",
-      "daytona-docs-15",
       "daytona-docs-12"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can pause a running sandbox and resume it later with filesystem and memory state intact",
+      "citations": [
+        {
+          "evidenceId": "daytona-docs-22",
+          "quote": "captures and persists a sandbox’s current state; container sandboxes capture filesystem state only (cold snapshots), VM sandboxes capture filesystem and memory state (hot snapshots)"
+        },
+        {
+          "evidenceId": "daytona-docs-2",
+          "quote": "Snapshots are persistent, point-in-time captures of sandbox state, including the filesystem, installed packages, dependencies, and settings."
+        },
+        {
+          "evidenceId": "daytona-docs-12",
+          "quote": "including managing their lifecycle, snapshots, and more"
+        }
+      ]
+    },
     "productId": "daytona",
     "storyId": "pause-resume-state"
   }

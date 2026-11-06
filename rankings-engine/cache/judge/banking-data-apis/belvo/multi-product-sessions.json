@@ -1,18 +1,40 @@
 {
-  "hash": "ab6631f085e92afa6bb796a09557cda48bbcc0a2e0fcc51692f67a0a6b17bd19",
+  "hash": "014dca56a67a77f5fd12485d6e60d45360a403fcb70448f3ac548272b6603a8c",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Belvo's own docs center data access on a single persistent 'link' object. Developers filter List requests by link.id across resources (belvo-docs-13), and recurrent links refresh 'information' weekly with webhook notification (belvo-docs-26). Post-link-creation retrieval of core link data and async POST calls work on that same link (belvo-docs-10, belvo-docs-11), while Brazil aggregation covers transactions, balances and investments (belvo-docs-1). Together these imply one connection feeds several data resources, but no doc states it outright. Missing for 10: an explicit statement that a single Connect Widget session unlocks multiple products without re-consent, evidence that identity/owner data comes from the same link, and independent or hands-on corroboration.",
+    "rationale": "Belvo's docs center data retrieval on a single link object. Developers filter List requests by `link.id`, and one link yields transaction history, account balances and investment details. Recurrent links refresh that data automatically, which suggests one connection feeds several resources. However, no doc explicitly says one Connect session covers all products without a separate flow per product. Missing for 10: an explicit statement that one widget session serves multiple products, evidence covering identity/owner and auth data from the same link, and independent or hands-on corroboration.",
     "evidenceIds": [
       "belvo-docs-13",
-      "belvo-docs-26",
+      "belvo-docs-1",
       "belvo-docs-10",
-      "belvo-docs-11",
-      "belvo-docs-1"
+      "belvo-docs-26"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, one link session can power multiple data products — auth, balances, transactions, identity — without forcing the user through separate connection flows per product",
+      "citations": [
+        {
+          "evidenceId": "belvo-docs-13",
+          "quote": "We strongly recommend that you use the `link` query parameter in your List requests so that you only receive results for a given `link.id`."
+        },
+        {
+          "evidenceId": "belvo-docs-1",
+          "quote": "Retrieve transaction history, account balances, and investment details seamlessly."
+        },
+        {
+          "evidenceId": "belvo-docs-10",
+          "quote": "Removes the need for POST calls after link creation to retrieve core information about the link."
+        },
+        {
+          "evidenceId": "belvo-docs-26",
+          "quote": "With recurrent links, Belvo automatically refreshes information weekly and notifies you via webhook so you always have up-to-date data."
+        }
+      ]
+    },
     "productId": "belvo",
     "storyId": "multi-product-sessions"
   }

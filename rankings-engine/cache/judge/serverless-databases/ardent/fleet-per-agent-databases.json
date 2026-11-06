@@ -1,26 +1,55 @@
 {
-  "hash": "263a69e10ed1ec1dfb164fbb25da7c4d6c88a021f529958b891241881b00e431",
+  "hash": "3c03ff268a7a80910ac80e9da297ce894b91bae49be9bfa977a7dcc864681a9c",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Ardent documents unlimited branches per database that scale to zero, don't duplicate storage, and bill only for active compute, which supports cheap per-agent and per-PR/preview isolated Postgres databases. Fleet management is programmatic through a CLI with JSON output, token auth, stable error codes and idempotent creates, plus a REST API aimed at agent workflows. missing for 10: evidence of operating at thousands-of-branches scale, a per-tenant production database model (branches are copies of a source database, not fresh tenant DBs), a published OpenAPI spec (probe 404), and independent hands-on corroboration of cost and scale.",
+    "rationale": "Ardent documents isolated, instant Postgres branches with 'Unlimited branches per database', scale-to-zero compute, no storage duplication and idle-free pricing. Branches can be created per agent or per PR and are scriptable through a CLI with JSON output, token auth and idempotent re-runs, plus an API aimed at agent workflows. However, these are branches cloned from a production source rather than fresh per-tenant databases, and nothing shows operation at thousands-scale or bulk fleet operations, so the story is only partly covered. missing for 10: evidence of creating/operating thousands of databases cheaply at scale, documented one-database-per-tenant (non-clone) provisioning, fleet-level list/bulk lifecycle management APIs (no OpenAPI spec found), independent cost/scale corroboration.",
     "evidenceIds": [
+      "ardent-docs-1",
       "ardent-docs-4",
       "ardent-docs-8",
       "ardent-docs-10",
-      "ardent-docs-11",
       "ardent-docs-13",
       "ardent-docs-14",
-      "ardent-docs-18",
       "ardent-docs-19",
       "ardent-docs-20",
       "ardent-docs-27",
       "ardent-docs-28",
-      "ardent-docs-29",
-      "ardent-probe-2"
+      "ardent-docs-29"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can cheaply create thousands of isolated databases — one per agent, tenant, or preview — and manage the fleet programmatically",
+      "citations": [
+        {
+          "evidenceId": "ardent-docs-28",
+          "quote": "Unlimited branches per database"
+        },
+        {
+          "evidenceId": "ardent-docs-27",
+          "quote": "Clones load in 6s, scale to 0, autoscale compute and do not duplicate storage."
+        },
+        {
+          "evidenceId": "ardent-docs-20",
+          "quote": "Every PR runs against its own fresh database branch cloned from your connected source"
+        },
+        {
+          "evidenceId": "ardent-docs-19",
+          "quote": "The agent runs the Ardent CLI itself — creating, using, and deleting its own branches"
+        },
+        {
+          "evidenceId": "ardent-docs-14",
+          "quote": "Use the API when you are building CI systems, internal developer platforms, custom dashboards, or agent workflows."
+        },
+        {
+          "evidenceId": "ardent-docs-8",
+          "quote": "ardent branch info my-feature --format json # prints a stable JSON object"
+        }
+      ]
+    },
     "productId": "ardent",
     "storyId": "fleet-per-agent-databases"
   }

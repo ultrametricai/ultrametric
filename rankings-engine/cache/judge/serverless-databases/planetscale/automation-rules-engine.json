@@ -1,17 +1,30 @@
 {
-  "hash": "b067707d1e20c70628d37debf8aca312b92c256bbb99404a2a1b81a8182c4181",
+  "hash": "c8dac0b36da8453316a07893598075200df7a9c5bc93cb25e8ee1dae419c0988",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "PlanetScale emits webhook events, including backup.succeeded and backup.failed, and supports Authorization headers on those webhooks. That lets external systems react to platform events automatically. It also supports scheduled backups and recurring agent runs that review Insights and open PRs, which is time-based rather than event-based automation. There is no evidence of a native rule engine where users define conditions and actions; the rule logic must live in an external webhook receiver. Missing for 10: a first-party rule/condition-action builder, a documented full catalog of webhook event types, and independent or hands-on corroboration of event-driven automation.",
+    "rationale": "PlanetScale's own docs show event-triggered webhooks: you subscribe to events such as backup.succeeded and backup.failed, and an authenticated HTTP callback fires automatically when they occur. That is a basic event-to-action mechanism, but there is no documented rule engine with conditions or a choice of actions. The recurring agent schedule and the scheduled backups are time-based, not event-triggered, so they don't count for this story. missing for 10: user-defined rules with conditions, configurable in-product actions beyond webhook notification, a documented catalog of trigger events, independent hands-on corroboration",
     "evidenceIds": [
-      "planetscale-docs-1",
       "planetscale-docs-4",
-      "planetscale-docs-12",
-      "planetscale-docs-31"
+      "planetscale-docs-1"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can define rules that trigger actions automatically on events",
+      "citations": [
+        {
+          "evidenceId": "planetscale-docs-4",
+          "quote": "We've added backup.succeeded and backup.failed webhook events. You'll get notified when a backup finishes, whether it worked or not."
+        },
+        {
+          "evidenceId": "planetscale-docs-1",
+          "quote": "You can now set an Authorization header on webhooks."
+        }
+      ]
+    },
     "productId": "planetscale",
     "storyId": "automation-rules-engine"
   }

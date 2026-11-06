@@ -1,18 +1,36 @@
 {
-  "hash": "036fcb96183f88fd3e7b858666a7648b26f9371aa3847623933fa9c89c211255",
+  "hash": "9a3ca2e41732366fb4d8ce67afd42afe59cc4f563517f9509616f9d3974f10f8",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "As a SQL database, ClickHouse handles bulk work as set-based operations: docs cover bulk and asynchronous insert strategies, INSERT SELECT is parallelized by default, and community users report ingesting billions of rows per day. One community report notes limited DELETE support, so bulk modification is weaker than bulk ingestion. Missing for 10: documented bulk update/delete mutations, evidence of bulk operations driven through the AI-facing interfaces (MCP/CLI).",
+    "rationale": "ClickHouse documents bulk and asynchronous insert strategies and now parallelizes INSERT SELECT by default, so bulk ingestion and set-based writes across many rows are first-party capabilities. Hands-on users confirm ingesting billions of rows quickly, but one also reports limited DELETE support, so bulk modification is less proven than bulk insertion. Missing for 10: documented bulk update/delete operations, detail on bulk operations driven through AI-agent interfaces (MCP/CLI), and in-depth docs beyond the insert-strategy summary.",
     "evidenceIds": [
       "clickhouse-docs-10",
       "clickhouse-docs-13",
-      "clickhouse-comm-18",
       "clickhouse-comm-19",
-      "clickhouse-comm-20"
+      "clickhouse-comm-18"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can perform bulk operations across many items at once",
+      "citations": [
+        {
+          "evidenceId": "clickhouse-docs-10",
+          "quote": "How to choose an insert strategy, including bulk and asynchronous inserts."
+        },
+        {
+          "evidenceId": "clickhouse-docs-13",
+          "quote": "This parallelizes INSERT SELECT by default"
+        },
+        {
+          "evidenceId": "clickhouse-comm-19",
+          "quote": "ingested billions of rows fast"
+        }
+      ]
+    },
     "productId": "clickhouse",
     "storyId": "automation-bulk-operations"
   }

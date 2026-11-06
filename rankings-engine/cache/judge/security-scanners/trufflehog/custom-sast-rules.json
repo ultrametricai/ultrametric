@@ -1,17 +1,35 @@
 {
-  "hash": "23de421913ea4efd99c32701bc45702f10cdf17b7e6cea18fa66c81bba3f2b65",
+  "hash": "a83e8766c1c508d7f387b0431f860ab5b21451102c97188f5887a37548e032f7",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "TruffleHog is a secrets scanner rather than a general SAST engine, but it does let you write your own rules: custom regex detectors, defined in a config.yaml passed via --config, with optional webhook verification (trufflehog-docs-6, trufflehog-docs-27, trufflehog-docs-14). Sharing is only indirect: a global core.hooksPath setup applies hooks to all repositories (trufflehog-docs-19), but no documented mechanism exists for distributing a rule set across repos. Missing for 10: rules beyond regex secret detection (general code-pattern static analysis), a documented way to share or centrally manage custom rules across repositories, independent or hands-on corroboration.",
+    "rationale": "TruffleHog lets users define their own detectors with regular expressions, loaded from a config file (`--config=config.yaml`), with optional webhook verification. These are custom pattern rules in a fairly simple syntax, but they are limited to secret detection, not general static-analysis rules. The docs never describe sharing these rule sets across repositories; the `core.hooksPath` global setup applies to hooks, not to detector definitions. missing for 10: general SAST rule semantics beyond regex secret matching, documented mechanism for sharing custom rules across repositories, a detailed rule-syntax reference in evidence, independent or hands-on corroboration.",
     "evidenceIds": [
       "trufflehog-docs-6",
-      "trufflehog-docs-27",
       "trufflehog-docs-14",
-      "trufflehog-docs-19"
+      "trufflehog-docs-27"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a security-engineer, I can write custom static-analysis rules in a simple syntax and share them across repositories",
+      "citations": [
+        {
+          "evidenceId": "trufflehog-docs-6",
+          "quote": "The custom regex detector allows you to define your own detector using regular expressions with optional verification using a webhook."
+        },
+        {
+          "evidenceId": "trufflehog-docs-14",
+          "quote": "./trufflehog scan --config=config.yaml --include-detectors=AWS,GitHub"
+        },
+        {
+          "evidenceId": "trufflehog-docs-27",
+          "quote": "Verification is done via a webhook POST request to the provided `endpoint`."
+        }
+      ]
+    },
     "productId": "trufflehog",
     "storyId": "custom-sast-rules"
   }

@@ -1,17 +1,36 @@
 {
-  "hash": "cf9a43901cb8cf28475458565adc771eca5b1eac28565150f19456469ca51617",
+  "hash": "b05dac051df86a5a401ca721426518511a1eb425a65251f249a6a4511996a143",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "YYLO's `task start` freezes the target SHA, creates a dedicated branch/worktree and completes configured dependency hydration before work begins, so environment setup is automated (gh-4, docs-2). Benchmark candidates also run in private fresh repositories (docs-25). However, it builds worktrees from an existing local checkout rather than cloning a remote repo, and dependency hydration must be pre-configured by the developer rather than worked out by the agent. Missing for 10: evidence of cloning a remote repository, agent-driven self-configuration of its environment, details of how dependency hydration is configured, independent or hands-on corroboration.",
+    "rationale": "YYLO's `task start` creates a dedicated branch/worktree from a frozen target SHA and runs configured dependency hydration before work begins, so the product itself sets up an isolated working copy with dependencies installed. However, this is a worktree of an existing checkout rather than a documented repo clone, and hydration is whatever the operator configures, not the agent setting up its own environment. Missing for 10: documented cloning of a remote repo, agent-driven (not pre-configured) dependency install and environment configuration, details of what hydration supports, independent or hands-on corroboration.",
     "evidenceIds": [
       "yylo-gh-4",
       "yylo-docs-2",
-      "yylo-docs-25",
-      "yylo-docs-16"
+      "yylo-docs-16",
+      "yylo-docs-25"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can have an agent automatically clone the repo, install dependencies, and configure its own working environment",
+      "citations": [
+        {
+          "evidenceId": "yylo-gh-4",
+          "quote": "`task start` freezes the protected target SHA, creates a dedicated branch/worktree, and completes configured dependency hydration before reporting `WORKING`."
+        },
+        {
+          "evidenceId": "yylo-docs-2",
+          "quote": "Start hydrates an exact-base task worktree."
+        },
+        {
+          "evidenceId": "yylo-docs-25",
+          "quote": "Execute candidates in private fresh repositories, not shared task worktrees."
+        }
+      ]
+    },
     "productId": "yylo",
     "storyId": "automatic-environment-setup"
   }

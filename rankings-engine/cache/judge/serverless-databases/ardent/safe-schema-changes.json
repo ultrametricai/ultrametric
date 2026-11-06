@@ -1,19 +1,36 @@
 {
-  "hash": "dbe760b9555e30a708adb65ff2d5c86ba8d5ebedae1c2f39b992a4dc7113017d",
+  "hash": "ebd935c261d4fe4601ab632b6bab8304c0a18bbdf03eade72be315b28768ba59",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 4,
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "Ardent gives developers instant isolated Postgres branches cloned from production, so they can test migrations and schema changes against real data without touching prod (CLI, per-PR branches in CI). Nothing in the evidence shows it applying those changes back to production: there is no merge-to-prod, deploy-request, or online/non-locking DDL mechanism. A community comment notes that migrations validated this way can still lock tables or break live services. missing for 10: online/non-blocking DDL execution against production, deploy requests or merge-back of branch schema changes, lock-safety guarantees during rollout, independent hands-on corroboration.",
+    "rationale": "Ardent lets developers test migrations and schema changes on isolated, production-identical Postgres branches, including per-PR branches in CI, before those changes reach production. That covers only the pre-validation half of the story: the evidence shows no mechanism for applying changes to production, such as merging a branch back, deploy requests, or online/non-locking DDL. missing for 10: merge-back or deploy-request workflow to production, online/non-blocking DDL to avoid table locks, schema diff/revert tooling, independent hands-on corroboration.",
     "evidenceIds": [
-      "ardent-docs-1",
       "ardent-docs-2",
       "ardent-docs-20",
       "ardent-docs-21",
-      "ardent-docs-8",
-      "ardent-comm-11"
+      "ardent-docs-1"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can ship schema changes safely — online DDL, deploy requests, or branch-and-merge workflows — without locking or breaking production",
+      "citations": [
+        {
+          "evidenceId": "ardent-docs-2",
+          "quote": "Test migrations, run schema changes, and let coding agents like Claude Code and Cursor actually verify their database work — all against real data, without touching production."
+        },
+        {
+          "evidenceId": "ardent-docs-20",
+          "quote": "Every PR runs against its own fresh database branch cloned from your connected source — no shared staging that drifts, no test runs corrupting each other"
+        },
+        {
+          "evidenceId": "ardent-docs-21",
+          "quote": "Ardent lets you run your full test suite, including destructive operations, against an exact copy of production."
+        }
+      ]
+    },
     "productId": "ardent",
     "storyId": "safe-schema-changes"
   }

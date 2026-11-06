@@ -1,21 +1,38 @@
 {
-  "hash": "c1ad37489997aa4d9721f575f1cf90429d9afb715b0e66e5571e8166152d7118",
+  "hash": "2ef34840648a7e636da5ab5c958ab66f69cad800d2370ab4fa974731749bd3f1",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
-    "confidence": "medium",
-    "rationale": "CockroachDB exposes key operations programmatically: the full SQL API over the PostgreSQL wire protocol, the `ccloud` CLI to create, manage, and connect to Cloud clusters, and an official Cloud MCP server with API-key/OAuth auth for schema exploration and read/write queries. However, nothing documents a Cloud management REST API or states that API coverage matches the Cloud Console UI, and the OpenAPI probe found no spec at the candidate paths. Missing for 10: a documented Cloud management API, an explicit API/UI parity statement, a published OpenAPI spec, and independent corroboration that UI-only actions (e.g. the Clusters page, cost estimates, usage views) are scriptable.",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "CockroachDB has its own programmatic surfaces. The ccloud CLI creates, manages and connects to Cloud clusters, which the Clusters UI page otherwise covers. The SQL API handles data, and the official MCP server lets AI tools run read and write operations with OAuth or API key auth. However, no evidence documents a management API with full UI parity, and the OpenAPI probe returned 404 on every candidate path. missing for 10: documented Cloud management REST API, explicit UI-to-API parity statement, published OpenAPI spec, independent corroboration of parity.",
     "evidenceIds": [
-      "cockroachdb-gh-1",
-      "cockroachdb-gh-3",
       "cockroachdb-docs-10",
-      "cockroachdb-docs-17",
+      "cockroachdb-docs-19",
+      "cockroachdb-gh-3",
       "cockroachdb-docs-28",
       "cockroachdb-docs-4",
-      "cockroachdb-probe-3",
-      "cockroachdb-docs-19"
+      "cockroachdb-probe-3"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can do everything through the API that I can do in the UI",
+      "citations": [
+        {
+          "evidenceId": "cockroachdb-docs-10",
+          "quote": "The `ccloud` tool is a command-line interface (CLI) tool that allows you to create, manage, and connect to CockroachDB Cloud clusters."
+        },
+        {
+          "evidenceId": "cockroachdb-gh-3",
+          "quote": "provides a familiar **SQL** API for structuring, manipulating, and querying data"
+        },
+        {
+          "evidenceId": "cockroachdb-docs-28",
+          "quote": "Your AI tools can explore live schemas and run queries against any cluster using OAuth or API key authentication."
+        }
+      ]
+    },
     "productId": "cockroachdb",
     "storyId": "openness-api-parity"
   }

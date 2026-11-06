@@ -1,20 +1,41 @@
 {
-  "hash": "36b4ad32b8c0a8d69b0e2dd9eca69190908a818e14f4110df432b89f6a928d5d",
+  "hash": "cfb1f3c0a99f3ee26f0608622f92ee7bf9e6d942f087c864671179ba8b504e71",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Cloudflare Sandboxes is a programmatic SDK with no UI requirement, so it is headless by design. Code calls getSandbox(), exec() (capturing stdout, stderr and exit codes), file APIs, streaming output, and per-session command timeouts. The docs explicitly name CI/CD systems and Git automation as target use cases. missing for 10: documentation for invoking it from an external CI pipeline (e.g. a CLI or CI-runner integration), and independent or hands-on corroboration of CI usage.",
+    "rationale": "Cloudflare Sandboxes is a programmatic SDK driven entirely from Worker code. It is headless by design: `sandbox.exec()` runs commands and captures stdout, stderr and exit codes, and Git operations can be automated. The docs also name CI/CD systems as a target use case. However, there is no documented guide or tooling for running it from a CI pipeline, and no hands-on evidence of CI use, so coverage is only partial. missing for 10: a documented CLI or CI-runner integration (e.g. a pipeline example or GitHub Actions guide), a concrete end-to-end CI automation walkthrough, and independent or hands-on corroboration of headless CI use.",
     "evidenceIds": [
-      "cloudflare-sandbox-docs-1",
       "cloudflare-sandbox-docs-24",
+      "cloudflare-sandbox-docs-1",
       "cloudflare-sandbox-docs-22",
-      "cloudflare-sandbox-docs-37",
-      "cloudflare-sandbox-docs-13",
-      "cloudflare-sandbox-docs-19",
-      "cloudflare-sandbox-docs-43"
+      "cloudflare-sandbox-docs-43",
+      "cloudflare-sandbox-docs-37"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
+      "citations": [
+        {
+          "evidenceId": "cloudflare-sandbox-docs-24",
+          "quote": "Sandboxes are ideal for building AI agents that need to execute code, interactive development environments, data analysis platforms, CI/CD systems"
+        },
+        {
+          "evidenceId": "cloudflare-sandbox-docs-1",
+          "quote": "sandbox.exec() - Execute shell commands in the sandbox and capture stdout, stderr, and exit codes."
+        },
+        {
+          "evidenceId": "cloudflare-sandbox-docs-22",
+          "quote": "Clone repositories, manage branches, and automate Git operations."
+        },
+        {
+          "evidenceId": "cloudflare-sandbox-docs-43",
+          "quote": "Execute commands and manage background processes in the sandbox's isolated container environment."
+        }
+      ]
+    },
     "productId": "cloudflare-sandbox",
     "storyId": "agentic-headless"
   }

@@ -1,18 +1,40 @@
 {
-  "hash": "26d1666348c44dc4502c59d0269333b56c095b6a2625d8ffa48670dad0d01128",
+  "hash": "9165e77ad7349b21fad0fbe2b9e17a3414cce88b05fe695d79bc0aa3688a5243",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Gitleaks documents a configuration format (gitleaks.toml) for writing custom detection rules, including composite primary/required rules and per-rule allowlists. These rules are limited to secret detection rather than general static analysis. Sharing is only implied: GITLEAKS_CONFIG can point to a config path, or a gitleaks.toml at the repo root is auto-detected, but no cross-repo rule-sharing mechanism is documented. Missing for 10: general-purpose SAST rule support beyond secret patterns, a documented mechanism for sharing or extending rule sets across repositories, independent corroboration of rule-authoring simplicity.",
+    "rationale": "Gitleaks documents its own configuration format (gitleaks.toml) for writing custom secret-detection rules. It also supports composite rules and per-rule allowlists. A config path can be set explicitly via GITLEAKS_CONFIG, which plausibly lets teams point many repos at one shared file. However, the rules cover secret detection only, not general static analysis, and cross-repo sharing is never documented as a feature. Missing for 10: general-purpose static-analysis rule support beyond secrets, documented mechanism for sharing or extending rule sets across repositories, examples of the rule syntax, and independent corroboration.",
     "evidenceIds": [
       "gitleaks-gh-5",
       "gitleaks-gh-14",
       "gitleaks-gh-20",
-      "gitleaks-docs-11",
-      "gitleaks-gh-17"
+      "gitleaks-docs-11"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a security-engineer, I can write custom static-analysis rules in a simple syntax and share them across repositories",
+      "citations": [
+        {
+          "evidenceId": "gitleaks-gh-5",
+          "quote": "Gitleaks offers a configuration format you can follow to write your own secret detection rules"
+        },
+        {
+          "evidenceId": "gitleaks-gh-14",
+          "quote": "In v8.28.0 Gitleaks introduced composite rules, which are made up of a single \"primary\" rule and one or more auxiliary or `required` rules."
+        },
+        {
+          "evidenceId": "gitleaks-gh-20",
+          "quote": "You can define multiple allowlists for a rule to reduce false positives."
+        },
+        {
+          "evidenceId": "gitleaks-docs-11",
+          "quote": "You can use `GITLEAKS_CONFIG` to explicitly set a config path _or_ create a `gitleaks.toml` at the root of the repo which will be automatically detected and used by **gitleaks-action**."
+        }
+      ]
+    },
     "productId": "gitleaks",
     "storyId": "custom-sast-rules"
   }
