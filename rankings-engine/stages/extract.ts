@@ -102,7 +102,7 @@ export function buildEvidence(
 
 const SYSTEM = `You extract user stories from a software product's own marketing and documentation.
 A user story is a concrete capability a user gains: "As a <persona>, I can <do something specific>."
-Only include capabilities the materials actually claim. Each story needs a short verbatim quote (max 200 chars) from the materials as evidence and which source file it came from. Questions, headings and hypothetical examples do not assert a capability.
+Only include capabilities the materials actually claim. Each story needs a short verbatim quote (max 200 chars) from the materials as evidence and which source file it came from. Copy the quote character-for-character from the source, including any markdown syntax inside it: a sentence containing a link must keep the full [text](url) form, not the unwrapped link text. If a sentence's markdown makes it too long to quote, pick a different sentence. Questions, headings and hypothetical examples do not assert a capability.
 Personas must be drawn from: developer, designer, switcher, power-user.
 Sources are labeled "=== SOURCE <key> ===" in the materials below; use that exact key. Besides site/docs/changelog/github, a source may be labeled extra-0, extra-1, etc. (additional vendor pages) — use the matching extra-N key, not "docs" or "site", when a quote comes from one of those.
 Return JSON: {"stories":[{"persona":"...","title":"As a ..., I can ...","quote":"...","sourceKey":"site|docs|changelog|github|extra-N"}]}`
