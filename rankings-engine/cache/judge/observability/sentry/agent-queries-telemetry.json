@@ -1,19 +1,19 @@
 {
-  "hash": "0aab19d4c96f891f5d450769cc856378ddf1010818203b9405a6392c3dae73e0",
+  "hash": "c33261fe52cb57ea1498928eeae6f0342958aada5672ab7a80c46039c630f4a3",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Sentry documents a web API to access the platform programmatically and export data, plus an official MCP server that lets external AI assistants search errors and analyze performance, so an external agent can query error and performance data to debug production. The evidence does not show agent-facing querying of logs or metrics specifically, and no OpenAPI spec was found. Missing for 10: documented API or MCP querying of logs, documented metrics query endpoints, explicit trace-query API reference, a discoverable OpenAPI spec, and independent hands-on corroboration of agents debugging production this way.",
+    "rationale": "Sentry has an official MCP server that connects external AI assistants for searching errors and analyzing performance. It also has a documented web API, with a published OpenAPI 3.0.3 schema covering /api/0/, for programmatic access and data export, so an external agent can query error and performance/trace data. The evidence does not show that logs or metrics can be queried through these APIs; logs appear only as OTLP ingestion, and the v0 API includes beta endpoints. missing for 10: documented agent/API querying of logs, documented metrics query API, independent hands-on corroboration of agent-driven production debugging.",
     "evidenceIds": [
       "sentry-docs-2",
-      "sentry-docs-20",
-      "sentry-docs-46",
-      "sentry-docs-27",
       "sentry-probe-3",
+      "sentry-docs-20",
+      "sentry-openapi-schema-20261106",
       "sentry-docs-9",
-      "sentry-probe-2"
+      "sentry-docs-27",
+      "sentry-api-versioning-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -29,8 +29,8 @@
           "quote": "The Sentry web API is used to access the Sentry platform programmatically. You can use the APIs to manage account-level resources, like organizations and teams, as well as manage and export data."
         },
         {
-          "evidenceId": "sentry-probe-3",
-          "quote": "official MCP server documented at https://docs.sentry.io/product/sentry-mcp/"
+          "evidenceId": "sentry-openapi-schema-20261106",
+          "quote": "The official getsentry/sentry-api-schema repository publishes the dereferenced OpenAPI 3.0.3 document for the \"Sentry Public API\""
         }
       ]
     },

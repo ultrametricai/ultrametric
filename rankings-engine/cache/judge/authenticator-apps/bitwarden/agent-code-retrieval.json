@@ -1,26 +1,26 @@
 {
-  "hash": "bad2fe22d29a94ad8557e141280cabf71d437cb1cea00dfb4900e84e5fe1c1f4",
+  "hash": "84bd95f423d637c09f71b0b3fa375826a0826de8db29778f98a24387f297ee1c",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 8,
+    "verdict": "partial",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Bitwarden's official CLI can be authenticated non-interactively with a personal API key for automated workflows. Its `bw serve` mode exposes the vault as a local REST API that an agent can query for TOTP codes. A hands-on user report independently confirms the CLI outputs current TOTP codes, and the integrated authenticator generates the rotating 30-second codes. Missing for 10: a first-party doc quote showing the specific TOTP retrieval command or endpoint, and documentation of an end-to-end automated 2FA login flow.",
+    "rationale": "Bitwarden's own CLI can return current TOTP codes: a runtime probe says `bw serve` exposes the vault as a local REST API that an agent can query for TOTP codes, and a hands-on user report says `bw list` printed current TOTP codes. The personal API key is documented as suitable for headless CLI authentication in automated workflows. Coverage is not complete, because no first-party doc in the pack documents a dedicated TOTP-retrieval command or endpoint, and the only hands-on evidence is an incidental bulk dump rather than a targeted fetch. missing for 10: first-party documentation of a specific TOTP-fetch CLI command or Vault Management API endpoint, end-to-end evidence of an agent completing a 2FA login with the fetched code, and independent corroboration of TOTP retrieval through `bw serve`.",
     "evidenceIds": [
-      "bitwarden-docs-1",
-      "bitwarden-docs-7",
-      "bitwarden-docs-9",
       "bitwarden-probe-rt-1",
-      "bitwarden-comm-13"
+      "bitwarden-comm-13",
+      "bitwarden-docs-9",
+      "bitwarden-docs-7",
+      "bitwarden-docs-1"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As an AI-native user, an agent can fetch a current TOTP code programmatically — via CLI or API — to complete a 2FA login inside an automated workflow",
       "citations": [
         {
           "evidenceId": "bitwarden-probe-rt-1",
-          "quote": "the CLI whose documented `bw serve` mode exposes the whole vault as a local RESTful API (Vault Management API) an agent can query for TOTP codes and items"
+          "quote": "the CLI whose documented `bw serve` mode exposes the whole vault as a local RESTful API (Vault Management API) an agent can query for TOTP codes and items."
         },
         {
           "evidenceId": "bitwarden-comm-13",
@@ -32,7 +32,7 @@
         },
         {
           "evidenceId": "bitwarden-docs-1",
-          "quote": "it automatically produces the time-based one-time passwords (TOTPs), six-digit codes using SHA-1 that rotate every 30 seconds"
+          "quote": "it automatically produces the time-based one-time passwords (TOTPs)"
         }
       ]
     },

@@ -1,16 +1,18 @@
 {
-  "hash": "3c68278aa84483416c2a9da0524996c31ddca3b64a9d7101355c439b873222a0",
+  "hash": "a5dd56ebfd8a93f0b1ccf5b296208f3799b73f8f0867e354523c07bc27b88cdd",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Stripe Identity can be driven headlessly through its own API. Sessions are created with a secret key via curl, results can be read programmatically, and webhooks let an integration react automatically; an official Stripe CLI is also documented. However, nothing in the evidence documents CI usage, test-mode automation for Identity, or completing a verification without an end user doing the capture flow. missing for 10: documented CI/test-mode workflows, Identity-specific CLI commands, a headless way to complete verifications, independent hands-on corroboration of automation use.",
+    "rationale": "Stripe Identity is API-driven. Verification sessions can be created by curl with a secret key, results can be read programmatically, and webhooks let an integration react to outcomes automatically. An isolated sandbox and an official Stripe CLI also exist. However, the documented test-mode flow has you submit sessions by selecting a predefined test case in the verification UI, so headless end-to-end runs in CI are not shown. Missing for 10: documented headless or CI completion of verification sessions without the UI, CI-specific guidance, and hands-on corroboration of automated pipelines.",
     "evidenceIds": [
       "stripe-identity-docs-5",
-      "stripe-identity-docs-7",
       "stripe-identity-docs-6",
-      "stripe-identity-docs-13",
+      "stripe-identity-docs-7",
+      "stripe-identity-docs-15",
+      "stripe-identity-sandboxes-20261106",
+      "stripe-identity-test-flow-20261106",
       "stripe-identity-probe-5"
     ],
     "support": {
@@ -20,7 +22,7 @@
       "citations": [
         {
           "evidenceId": "stripe-identity-docs-5",
-          "quote": "curl https://api.stripe.com/v1/identity/verification_sessions \\\n  -u \"<<YOUR_SECRET_KEY>>:\" \\\n  -d type=document"
+          "quote": "curl https://api.stripe.com/v1/identity/verification_sessions"
         },
         {
           "evidenceId": "stripe-identity-docs-7",
@@ -29,6 +31,10 @@
         {
           "evidenceId": "stripe-identity-docs-6",
           "quote": "Listen for verification results so your integration can automatically trigger reactions."
+        },
+        {
+          "evidenceId": "stripe-identity-sandboxes-20261106",
+          "quote": "A sandbox is an isolated test environment."
         },
         {
           "evidenceId": "stripe-identity-probe-5",

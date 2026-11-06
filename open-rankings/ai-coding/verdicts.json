@@ -7634,9 +7634,9 @@
     "productId": "cline",
     "storyId": "agentic-agent-docs",
     "verdict": "full",
-    "quality": 9,
+    "quality": 8,
     "confidence": "high",
-    "rationale": "Probes confirm that Cline publishes a live llms.txt at docs.cline.bot. Its docs pages are also served as Markdown (.md), and each page points agents to the llms.txt documentation index, so a user can point an agent straight at agent-oriented docs. Missing for 10: no evidence of an llms-full.txt or other full-content bundle, and no independent or community corroboration of agents actually using these docs.",
+    "rationale": "Hands-on probes confirm Cline publishes a live llms.txt at docs.cline.bot. Its doc pages are also served as markdown, each with a header pointing agents to the llms.txt documentation index, so an agent can be pointed at agent-oriented docs directly. missing for 10: first-party documentation explaining the llms.txt/markdown docs offering, evidence of how complete the llms.txt index is (probe content is truncated).",
     "evidenceIds": [
       "cline-probe-1",
       "cline-probe-2"
@@ -7648,7 +7648,7 @@
       "citations": [
         {
           "evidenceId": "cline-probe-1",
-          "quote": "PROBE llms.txt: HTTP 200 at https://docs.cline.bot/llms.txt # Cline"
+          "quote": "PROBE llms.txt: HTTP 200 at https://docs.cline.bot/llms.txt"
         },
         {
           "evidenceId": "cline-probe-2",
@@ -7663,12 +7663,12 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Cline generates AI insights and suggestions from the user's own data, meaning their codebase and changes. Plan mode reads the codebase and discusses strategy, subagents explore the code and return detailed reports, and piped diffs can be reviewed. External data sources can be reached through MCP. The evidence covers code-centric analysis only, not broader data insights surfaced proactively in the product. Missing for 10: proactive or surfaced insights beyond chat-driven requests, analysis of non-code data documented in depth, independent hands-on corroboration of insight quality.",
+    "rationale": "Cline's own documented features produce AI-generated analysis and suggestions about the user's codebase inside the product. Plan mode reads the codebase, runs searches and discusses strategy. Subagents explore the code and return detailed reports. The CLI can review piped diffs. Evidence covers only code and repository data, not broader user data such as datasets or analytics. missing for 10: insights over non-code data sources, a dedicated insights or suggestions surface, independent hands-on corroboration of insight quality.",
     "evidenceIds": [
       "cline-docs-39",
       "cline-docs-25",
       "cline-docs-34",
-      "cline-docs-16"
+      "cline-docs-36"
     ],
     "support": {
       "relation": "direct",
@@ -7688,8 +7688,8 @@
           "quote": "git diff | cline \"review these changes\""
         },
         {
-          "evidenceId": "cline-docs-16",
-          "quote": "MCP (Model Context Protocol) lets Cline use external tools and data sources through MCP servers."
+          "evidenceId": "cline-docs-36",
+          "quote": "Run agents on cron schedules for recurring automations like daily summaries and code reviews."
         }
       ]
     }
@@ -7698,15 +7698,15 @@
     "productId": "cline",
     "storyId": "agentic-autonomous-automation",
     "verdict": "full",
-    "quality": 9,
+    "quality": 8,
     "confidence": "high",
-    "rationale": "Cline's CLI documents cron-scheduled agents through the hub that persist across process restarts and run independently of any terminal session, for recurring automations such as daily summaries and code reviews. Headless mode and auto-approve let these runs execute without human prompts, and the native app also exposes scheduled routines. missing for 10: independent or hands-on corroboration that scheduled background runs work as documented.",
+    "rationale": "Cline's CLI runs agents on recurring cron schedules through the hub. Scheduled agents persist across process restarts and run independently of any terminal session. Headless mode and full auto-approve cover unattended execution, and the native app can schedule routines. Missing for 10: independent or hands-on corroboration of scheduled background runs, and documentation depth on managing and monitoring scheduled agents.",
     "evidenceIds": [
       "cline-docs-23",
       "cline-docs-36",
       "cline-docs-3",
       "cline-docs-4",
-      "cline-docs-33",
+      "cline-docs-22",
       "cline-gh-3",
       "cline-docs-17"
     ],
@@ -7744,15 +7744,17 @@
     "verdict": "full",
     "quality": 10,
     "confidence": "high",
-    "rationale": "Cline is itself an AI coding assistant built into the editor and CLI. Its docs describe delegating tasks such as creating files, running commands and browsing, with Plan/Act modes, optional auto-approve for autonomous execution, and subagents. Hands-on community reports confirm users plan with it, then set it loose on their codebase and get accurate diffs back.",
+    "rationale": "Cline is itself an AI coding agent embedded in the editor and CLI, so users can delegate tasks to it directly. It creates files, runs commands, browses the web and uses tools. Plan/Act modes, auto-approve/YOLO and subagents support increasingly autonomous delegation, and hands-on community reports corroborate setting it loose on a codebase and returning to accurate diffs.",
     "evidenceIds": [
       "cline-docs-1",
       "cline-docs-31",
-      "cline-docs-29",
       "cline-docs-4",
+      "cline-docs-29",
+      "cline-docs-22",
       "cline-docs-25",
       "cline-docs-33",
-      "cline-comm-3"
+      "cline-comm-3",
+      "cline-comm-10"
     ],
     "support": {
       "relation": "direct",
@@ -7764,16 +7766,16 @@
           "quote": "AI coding assistant in your editor. Create files, run commands, browse the web, and use tools with human-in-the-loop approval."
         },
         {
-          "evidenceId": "cline-docs-31",
-          "quote": "It can read and write files, run terminal commands, use a browser, and help you build features through natural conversation."
+          "evidenceId": "cline-docs-4",
+          "quote": "Autonomous execution can modify files and run commands without further prompts."
         },
         {
           "evidenceId": "cline-docs-29",
           "quote": "Toggle Plan mode to align on a strategy, then Act to execute. Approve every step, or flip auto-approve for autopilot."
         },
         {
-          "evidenceId": "cline-docs-4",
-          "quote": "Autonomous execution can modify files and run commands without further prompts."
+          "evidenceId": "cline-docs-25",
+          "quote": "Subagents let Cline spawn focused research agents that run in parallel."
         },
         {
           "evidenceId": "cline-comm-3",
@@ -7788,16 +7790,15 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "medium",
-    "rationale": "Cline's own docs describe a CLI with a fully headless mode for CI/CD and scripting. The CLI produces processable output, accepts piped input, and has an --auto-approve flag for non-interactive runs. The site also says it runs headlessly inside GitHub Actions, GitLab, or any pipeline. missing for 10: independent or hands-on corroboration of headless/CI runs (all evidence is vendor docs), and documented CI pipeline configuration examples.",
+    "rationale": "Cline's first-party docs describe a headless CLI mode for CI/CD and scripting with processable output. They show auto-approve flags for unattended execution, stdin piping, and running inside GitHub Actions, GitLab, or any pipeline. Missing for 10: independent or hands-on corroboration of CI usage, and in-depth docs such as a CI workflow example or exit-code/output-format specifics.",
     "evidenceIds": [
       "cline-docs-2",
       "cline-docs-3",
       "cline-docs-17",
       "cline-docs-33",
       "cline-docs-34",
-      "cline-docs-32",
       "cline-docs-4",
-      "cline-probe-4"
+      "cline-docs-32"
     ],
     "support": {
       "relation": "direct",
@@ -7831,13 +7832,13 @@
     "productId": "cline",
     "storyId": "agentic-mcp-client",
     "verdict": "full",
-    "quality": 8,
-    "confidence": "high",
-    "rationale": "Cline's docs state that MCP lets it use external tools and data sources through MCP servers. The GitHub readme confirms you can manage MCP servers in the app, and auto-approve settings cover MCP tools, which shows MCP tool calls are part of the agent loop. missing for 10: detailed configuration docs (transport types, how servers are added or edited) in the pack, independent hands-on corroboration of MCP use.",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Cline's docs say it uses external tools and data sources through MCP servers. The GitHub README says its native app lets users manage MCP servers, and the auto-approve docs list MCP tools as actions Cline can take, which covers both plugging servers in and using their tools. missing for 10: detailed documentation of how servers are added and configured (config format, supported transports, local vs remote servers), and independent or hands-on corroboration of MCP tool use.",
     "evidenceIds": [
       "cline-docs-16",
-      "cline-gh-2",
       "cline-gh-3",
+      "cline-gh-2",
       "cline-docs-22"
     ],
     "support": {
@@ -7850,7 +7851,7 @@
           "quote": "MCP (Model Context Protocol) lets Cline use external tools and data sources through MCP servers."
         },
         {
-          "evidenceId": "cline-gh-2",
+          "evidenceId": "cline-gh-3",
           "quote": "manage models, plugins, and MCP servers"
         },
         {
@@ -7866,7 +7867,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "high",
-    "rationale": "Cline is itself a coding agent, so it plays the MCP client role, and serving tools to other agents through an official MCP server is a different product role. The evidence only shows client-side MCP use (connecting to and managing external MCP servers) and ACP embedding. ACP is a different protocol. Nothing shows Cline running as an MCP server, such as an 'mcp serve' mode or a hosted MCP endpoint.",
+    "rationale": "Cline is itself a coding agent, so it plays the MCP client role, and serving tools to other agents as an official MCP server is a different product role. The evidence only shows client-side MCP use (using external MCP servers, managing MCP servers). Its ACP mode lets other clients host Cline as their coding agent, but that is a different protocol, not an MCP server endpoint.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7881,11 +7882,12 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Cline is operated through natural language by design. The docs say it builds features \"through natural conversation\", and CLI examples take plain-English prompts such as \"run tests and fix failures\". Chat is also available from Slack, Discord, Telegram and Linear, and community users describe planning with it conversationally and then letting it execute. Missing for 10: independent hands-on evaluation of how reliably and accurately its natural-language commands are carried out.",
+    "rationale": "Cline is a coding agent that is operated through natural-language conversation. The docs say it can read and write files, run terminal commands, use a browser and build features \"through natural conversation\". CLI examples accept plain-English commands such as \"run tests and fix failures\" and \"review these changes\", and community users report daily-driving it this way. Missing for 10: independent hands-on corroboration covers the editor and terminal workflow only, not the chat channels (Slack/Discord) or headless natural-language operation.",
     "evidenceIds": [
       "cline-docs-31",
       "cline-docs-33",
       "cline-docs-34",
+      "cline-docs-18",
       "cline-docs-17",
       "cline-docs-29",
       "cline-comm-3",
@@ -7925,12 +7927,12 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Cline ships a first-party CLI. It installs via npm, supports interactive terminal sessions and headless automation with processable output, takes piped input, has auto-approve flags, and can run cron-scheduled agents. The probe confirms the official CLI docs page exists. Missing for 10: independent or hands-on community corroboration of the CLI itself (the community comments discuss the editor agent, not the CLI).",
+    "rationale": "Cline ships an official CLI. It installs via npm, supports interactive terminal chat and headless automation for CI/CD, accepts piped input, has auto-approve flags, and can run agents on cron schedules. A probe confirms dedicated CLI documentation. missing for 10: independent or hands-on community corroboration of the CLI specifically (the community evidence discusses the editor extension).",
     "evidenceIds": [
-      "cline-docs-20",
       "cline-docs-32",
-      "cline-docs-3",
+      "cline-docs-20",
       "cline-docs-2",
+      "cline-docs-3",
       "cline-docs-33",
       "cline-docs-34",
       "cline-docs-23",
@@ -7942,20 +7944,24 @@
       "subject": "As an AI-native user, I can use an official CLI",
       "citations": [
         {
-          "evidenceId": "cline-docs-20",
-          "quote": "npm install -g cline"
-        },
-        {
           "evidenceId": "cline-docs-32",
           "quote": "Use Cline CLI for interactive terminal sessions and automated headless workflows."
         },
         {
-          "evidenceId": "cline-docs-3",
-          "quote": "Use headless mode for scripts/automation and processable output."
+          "evidenceId": "cline-docs-20",
+          "quote": "npm install -g cline"
+        },
+        {
+          "evidenceId": "cline-docs-2",
+          "quote": "Run Cline in your terminal with interactive chat or fully headless automation for CI/CD and scripting."
         },
         {
           "evidenceId": "cline-docs-33",
           "quote": "cline --auto-approve true \"run tests and fix failures\""
+        },
+        {
+          "evidenceId": "cline-docs-23",
+          "quote": "The CLI supports running agents on cron schedules through the hub."
         },
         {
           "evidenceId": "cline-probe-4",
@@ -7970,11 +7976,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Cline documents programmatic ways to drive the agent: any ACP-capable client can use Cline as its coding agent, and the docs mention building agents and integrations on the same core engine. However, no API reference or OpenAPI spec was found (all OpenAPI probe paths returned 404), and the SDK appears only as a single overview line. missing for 10: a documented public API/SDK reference (endpoints, methods, auth), an OpenAPI or equivalent spec, and independent corroboration of programmatic use.",
+    "rationale": "Cline exposes its agent through ACP, so any ACP-capable client can drive it programmatically, and the docs mention building agents and integrations on the same core engine. Its hosted api.cline.bot Chat Completions endpoint is a model gateway rather than a way to drive the agent, and it publishes no machine-readable spec of its own (openapi paths return 401/404). Missing for 10: a dedicated documented public REST/SDK API reference for driving agent tasks, a published OpenAPI spec, and hands-on corroboration of programmatic control.",
     "evidenceIds": [
       "cline-docs-26",
       "cline-docs-35",
       "cline-docs-19",
+      "cline-spec-unpublished-20261106",
       "cline-probe-3"
     ],
     "support": {
@@ -7991,8 +7998,8 @@
           "quote": "Build AI agents and integrations powered by the same core engine behind the CLI, Kanban, VS Code extension, and JetBrains plugin."
         },
         {
-          "evidenceId": "cline-docs-35",
-          "quote": "Use Cline as the coding agent in Zed, JetBrains IDEs, Neovim, Emacs, and any other ACP-capable client."
+          "evidenceId": "cline-spec-unpublished-20261106",
+          "quote": "publishes no machine-readable spec of its own"
         }
       ]
     }
@@ -8003,7 +8010,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Cline is an agent platform with its own provider accounts, so issuing scoped credentials for agents is a fair question to ask of it. The evidence pack, however, shows no feature for minting scoped or least-privilege API credentials. Bring-your-own-key (BYOK) provider keys and Auto Approve action controls are adjacent features, not credential scoping, so they earn no credit.",
+    "rationale": "Cline runs a hosted provider gateway (api.cline.bot) and account sign-in, so issuing scoped agent credentials is a fair question for this product. The evidence only shows bring-your-own provider keys and a single sign-in with Cline credits. There is no documented way to mint scoped, least-privilege, or per-agent API credentials. Auto Approve's per-action permissions limit what the agent may do, not what a credential can access, so they are an adjacent control and earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8016,9 +8023,9 @@
     "productId": "cline",
     "storyId": "agentic-sdks",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 3,
     "confidence": "low",
-    "rationale": "Cline's overview documents a first-party offering to \"Build AI agents and integrations powered by the same core engine\" behind its CLI, Kanban, VS Code and JetBrains products, so a developer building block exists. It is not explicitly named as an SDK, and its scope is thin. The OpenAPI probe found no published API spec. missing for 10: explicit SDK naming and package/install details, supported languages, API reference documentation, usage examples, independent or hands-on corroboration.",
+    "rationale": "Cline's overview documents a first-party offering to build agents and integrations on the same core engine that powers its CLI, Kanban, VS Code and JetBrains clients. That points to an official SDK-style building surface, but it rests on a single thin mention and the evidence never names the SDK, its packages, its languages, or its API reference. The probes show no published OpenAPI spec. missing for 10: named official SDK packages and supported languages, SDK reference documentation, install and usage examples, independent or hands-on corroboration of building against it.",
     "evidenceIds": [
       "cline-docs-19"
     ],
@@ -8040,7 +8047,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Webhooks are a fair axis for an agent platform with a CLI hub, scheduling and headless automation, but the evidence documents no registrable outbound HTTP callbacks for events. Slack/Discord/Telegram/Linear chat integrations, cron scheduling and headless CI runs are adjacent features and do not count as webhook subscriptions.",
+    "rationale": "Webhook subscriptions are a fair axis for an agent platform with a hub, scheduling and Kanban, but nothing in the evidence documents registrable outbound HTTP callbacks for events. The Slack, Discord, Telegram and Linear chat integrations are chat-app integrations, not webhooks. Cron scheduling and headless CI runs are different capabilities.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8052,26 +8059,28 @@
   {
     "productId": "cline",
     "storyId": "always-on-scheduled-agents",
-    "verdict": "partial",
+    "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Cline's CLI documents cron-scheduled agents through a hub. These agents persist across process restarts and run independently of any terminal session. Headless runs in GitHub Actions or GitLab pipelines plus auto-approve allow unattended execution, such as \"run tests and fix failures\". The scheduling docs only name recurring tasks like daily summaries and code reviews, not autonomous maintenance and fixing. Event triggers depend on external CI pipelines rather than a native trigger system. missing for 10: native event/webhook trigger configuration within Cline, documented scheduled maintenance/fix workflows (beyond summaries and reviews), independent or hands-on corroboration of scheduled autonomous operation.",
+    "rationale": "Cline's CLI documents cron-scheduled agents run through the hub that persist across process restarts and run independently of any terminal session. Headless runs inside GitHub Actions, GitLab or any pipeline cover triggers, and auto-approve/YOLO mode lets these agents modify files and run commands without prompts (e.g. \"run tests and fix failures\"). missing for 10: detailed docs on native event triggers beyond CI pipelines, depth on scheduling configuration and monitoring, independent or hands-on corroboration of scheduled autonomous maintenance.",
     "evidenceIds": [
       "cline-docs-23",
       "cline-docs-36",
+      "cline-gh-2",
       "cline-docs-17",
-      "cline-docs-33",
+      "cline-docs-2",
+      "cline-docs-4",
       "cline-docs-22",
-      "cline-gh-2"
+      "cline-docs-33"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an ai-native user, I can set up always-on agents that run on schedules or triggers to maintain and fix my software autonomously",
       "citations": [
         {
           "evidenceId": "cline-docs-23",
-          "quote": "Scheduled agents persist across process restarts and run independently of any terminal session."
+          "quote": "The CLI supports running agents on cron schedules through the hub. Scheduled agents persist across process restarts and run independently of any terminal session."
         },
         {
           "evidenceId": "cline-docs-36",
@@ -8082,12 +8091,12 @@
           "quote": "Run it headlessly inside GitHub Actions, GitLab, or any pipeline."
         },
         {
-          "evidenceId": "cline-docs-33",
-          "quote": "cline --auto-approve true \"run tests and fix failures\""
+          "evidenceId": "cline-docs-4",
+          "quote": "Autonomous execution can modify files and run commands without further prompts."
         },
         {
-          "evidenceId": "cline-docs-22",
-          "quote": "Cline auto-approves everything: file changes, terminal commands, browser actions, MCP tools, and mode transitions."
+          "evidenceId": "cline-docs-33",
+          "quote": "cline --auto-approve true \"run tests and fix failures\""
         }
       ]
     }
@@ -8098,7 +8107,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Cline documents an SDK-like integration surface (\"Build AI agents and integrations powered by the same core engine\"), so an API reference is a fair question for this product. The pack has no evidence of an interactive API reference or runnable examples, and the OpenAPI/Swagger probe returned 404 on every candidate path. llms.txt and markdown docs are machine-readable documentation, an adjacent feature that does not deliver an explorable, runnable API reference.",
+    "rationale": "The axis applies because Cline publishes reference pages for its hosted gateway API (api.cline.bot). However, the probe found those pages are hand-written MDX without playground wiring, and no public OpenAPI spec is served, so there is no evidence of an interactive reference with runnable examples.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8113,12 +8122,11 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Cline's authorization docs list Bring Your Own Key as an option alongside signing in to a Cline account, and the pricing page confirms you can use your own OpenAI, Anthropic, Google or other provider keys, which avoids Cline account-based billing. The Cline-provider page frames sign-in as an alternative to managing separate API keys, so key-based use is presented as a distinct path. Missing for 10: an explicit statement that no Cline account login is needed at all when using BYOK, documented API-key setup for headless or CLI use, and independent hands-on corroboration.",
+    "rationale": "Cline's authorization docs list Bring Your Own Key as an option alongside signing in, so you can use your own provider credentials. The pricing page confirms you can bring API keys from OpenAI, Anthropic, Google and others. The Cline provider page presents sign-in as the alternative to managing separate API keys, which implies key-based use does not need a Cline account login. Missing for 10: an explicit statement that no Cline account is required for BYOK, documentation of how keys are configured (e.g., CLI/headless env vars), and independent hands-on corroboration of key-only authentication.",
     "evidenceIds": [
       "cline-docs-42",
       "cline-docs-27",
-      "cline-docs-43",
-      "cline-docs-15"
+      "cline-docs-43"
     ],
     "support": {
       "relation": "direct",
@@ -8145,8 +8153,8 @@
     "storyId": "api-machine-spec",
     "verdict": "none",
     "quality": 0,
-    "confidence": "medium",
-    "rationale": "Cline is a coding agent that also offers an integration engine and a hosted provider, so publishing a machine-readable API spec is a fair question. However, the evidence documents none. The probe found 404s at all candidate OpenAPI/Swagger paths. The llms.txt and markdown docs index are documentation aids, not an API specification, so they earn no credit.",
+    "confidence": "high",
+    "rationale": "The axis applies because Cline runs a hosted gateway (api.cline.bot) with a documented Chat Completions endpoint. Probes found no downloadable machine-readable spec: the candidate OpenAPI paths return 404 on docs.cline.bot and 401 on api.cline.bot, and the endpoint is documented only by reference to OpenAI's format in hand-written MDX pages. The llms.txt documentation index is a docs map, not an API spec, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8161,10 +8169,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows no Cline-provided sandbox environment that isolates execution from production data. Plan mode is a read-only, dry-run-style mode, not a sandbox. Kanban's isolated git worktrees and checkpoints/undo isolate or revert code changes, but they do not provide a separate test environment for commands or data. These are adjacent features and earn no credit toward this story.",
+    "rationale": "Nothing in the evidence shows Cline providing a sandbox or test environment that keeps agent actions away from production data. Plan mode is a read-only dry-run, not sandbox isolation. Kanban's isolated git worktrees and checkpoints/undo separate or revert code changes, which is adjacent to this story but does not isolate execution from production data or systems.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
       "citations": []
@@ -8176,7 +8184,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Cline exposes programmatic surfaces: a headless CLI, ACP integration, and an SDK-style core engine for building agents. So asking about API versioning and deprecation policy is a fair question for this product. The pack has no evidence of versioned APIs or a documented deprecation policy, and the OpenAPI probe returned 404 on every candidate path.",
+    "rationale": "Cline does expose programmatic surfaces, including a hosted gateway Chat Completions endpoint and an SDK built on its core engine, so the axis applies. However, nothing in the pack documents API versioning or a deprecation policy. The probe only shows the gateway defers to OpenAI's format and publishes no spec of its own.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8188,18 +8196,19 @@
   {
     "productId": "cline",
     "storyId": "architecture-navigation",
-    "verdict": "partial",
+    "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Cline's Plan mode lets it read the codebase, run searches and discuss strategy without modifying files. Its subagents explore the codebase independently and return detailed reports, which directly supports understanding code before changing it. The docs never explicitly describe mapping how components fit together or pinpointing where to start, and a community commenter notes that Cline does not index the codebase. missing for 10: explicit architecture or dependency mapping and codebase indexing, documented guidance on locating entry points for changes, independent hands-on corroboration of codebase-understanding quality.",
+    "rationale": "Cline's Plan mode is documented as a read-only exploration mode where it can read the codebase, run searches and discuss strategy, which directly serves understanding a codebase and planning where to make changes. Subagents add parallel research agents that explore the codebase independently and return detailed reports. One community comment criticizes Cline for not indexing the codebase, but that is a design critique, not a documented failure, so it lowers confidence rather than creating a dispute. Missing for 10: no dedicated architecture/dependency mapping or codebase-overview feature documented, no hands-on or independent corroboration of codebase-comprehension quality, thin depth on how Cline explains how components fit together.",
     "evidenceIds": [
       "cline-docs-39",
+      "cline-docs-11",
       "cline-docs-25",
-      "cline-docs-11"
+      "cline-docs-40"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As a developer, I can understand how a codebase fits together to find where to start making changes",
       "citations": [
         {
@@ -8207,12 +8216,12 @@
           "quote": "In this mode, Cline can read your codebase, run searches, and discuss strategy, but cannot modify any files or execute commands."
         },
         {
-          "evidenceId": "cline-docs-25",
-          "quote": "Each subagent gets its own prompt and context window, explores the codebase independently, and returns a detailed report to the main agent."
-        },
-        {
           "evidenceId": "cline-docs-11",
           "quote": "Plan mode lets you explore and strategize without changing files."
+        },
+        {
+          "evidenceId": "cline-docs-25",
+          "quote": "Each subagent gets its own prompt and context window, explores the codebase independently, and returns a detailed report to the main agent."
         }
       ]
     }
@@ -8221,9 +8230,9 @@
     "productId": "cline",
     "storyId": "automated-commit-and-pr-creation",
     "verdict": "partial",
-    "quality": 4,
-    "confidence": "medium",
-    "rationale": "Cline's own Kanban feature documents auto-commit and isolated per-card git worktrees, which covers the agent committing changes and working on separate branches-like workspaces. Nothing in the evidence shows the agent writing commit messages, explicitly creating named branches, or opening pull requests. Generic terminal-command execution is not credited as a git workflow feature. missing for 10: documented commit-message generation, explicit branch creation, pull request creation, explicit staging control outside Kanban, independent or hands-on corroboration.",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Cline Kanban documents auto-commit and per-card isolated git worktrees. That is a first-party capability covering part of the git workflow (committing changes in isolated workspaces). Running general terminal commands is only a building block for git operations and is not credited. missing for 10: documented commit-message authoring, explicit branch creation, staging control, pull-request opening, and independent or hands-on corroboration.",
     "evidenceIds": [
       "cline-docs-5",
       "cline-docs-24"
@@ -8247,38 +8256,16 @@
   {
     "productId": "cline",
     "storyId": "automated-pr-review",
-    "verdict": "partial",
-    "quality": 4,
-    "confidence": "low",
-    "rationale": "Cline documents headless runs inside GitHub Actions and other pipelines, and it shows reviewing piped diffs (`git diff | cline \"review these changes\"`). That makes a CI-driven PR review plausible with the product's own capabilities. There is no dedicated PR-review feature: the documented scheduling is cron-based, which is a recurring schedule rather than a trigger on each pull request, and nothing shows feedback being posted back to the PR. Missing for 10: a documented per-PR trigger, PR comment/inline feedback output, a first-party GitHub/GitLab review integration, and hands-on corroboration.",
-    "evidenceIds": [
-      "cline-docs-17",
-      "cline-docs-34",
-      "cline-docs-36",
-      "cline-docs-2"
-    ],
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence shows no first-party automatic pull-request review feature: nothing reviews each PR automatically and posts contextual feedback on it. What exists are building blocks: headless CLI runs in GitHub Actions, a manual one-off command that pipes a git diff into Cline for review, and cron-scheduled 'code reviews'. A cron schedule is a recurring timer, not a per-PR trigger, so these are adjacent primitives a developer would have to wire up, not the capability itself.",
+    "evidenceIds": [],
     "support": {
-      "relation": "direct",
-      "coverage": "partial",
+      "relation": "adjacent",
+      "coverage": "none",
       "subject": "As a developer, I can get automatic code review with contextual feedback on every pull request",
-      "citations": [
-        {
-          "evidenceId": "cline-docs-17",
-          "quote": "Run it headlessly inside GitHub Actions, GitLab, or any pipeline."
-        },
-        {
-          "evidenceId": "cline-docs-34",
-          "quote": "git diff | cline \"review these changes\""
-        },
-        {
-          "evidenceId": "cline-docs-36",
-          "quote": "Run agents on cron schedules for recurring automations like daily summaries and code reviews."
-        },
-        {
-          "evidenceId": "cline-docs-2",
-          "quote": "fully headless automation for CI/CD and scripting"
-        }
-      ]
+      "citations": []
     }
   },
   {
@@ -8287,10 +8274,10 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Cline's own docs show it fixing test failures (\"run tests and fix failures\"), making linter-aware fixes, and running tests live. Its general file-editing and terminal powers suggest it could handle the other chores, but those are not documented as features. missing for 10: explicit evidence of writing new tests, resolving merge conflicts, updating dependencies, independent hands-on corroboration of these chores",
+    "rationale": "Cline documents linter-aware fixes and a CLI example of running tests and fixing failures, along with general file-editing and terminal-command abilities. Those cover part of the story, but the other named tasks are not specifically documented. Missing for 10: explicit test-authoring workflow, merge conflict resolution, dependency update support, independent hands-on corroboration of these tasks.",
     "evidenceIds": [
-      "cline-docs-33",
       "cline-docs-30",
+      "cline-docs-33",
       "cline-docs-14",
       "cline-docs-31"
     ],
@@ -8300,12 +8287,12 @@
       "subject": "As a developer, I can have the agent write tests, fix lint errors, resolve merge conflicts, and update dependencies for me",
       "citations": [
         {
-          "evidenceId": "cline-docs-33",
-          "quote": "cline --auto-approve true \"run tests and fix failures\""
-        },
-        {
           "evidenceId": "cline-docs-30",
           "quote": "Coordinated multi-file changes with linter-aware fixes, diffs, checkpoints, and one-click undo on every step."
+        },
+        {
+          "evidenceId": "cline-docs-33",
+          "quote": "cline --auto-approve true \"run tests and fix failures\""
         },
         {
           "evidenceId": "cline-docs-14",
@@ -8324,7 +8311,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack has no documented capability for Cline to automatically choose a model per task. The closest item is that users can manually configure separate models for Plan and Act modes, which is user-driven selection rather than automatic routing. BYOK, provider choice and model selection in the Cline provider are likewise manual and do not count.",
+    "rationale": "The evidence shows only manual model choice. Users can configure separate models for Plan and Act modes and select models from the Cline provider. Nothing documents Cline automatically picking the best model for each task, so this is an adjacent control, not automatic routing.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8339,11 +8326,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Cline documents coordinated multi-file changes in one task, and its Kanban board runs many agents in parallel across tasks. Together these approximate operating on many items at once. However, no feature is documented for applying a single operation across a selected set of items. Missing for 10: an explicit bulk/batch operation capability (one instruction applied over a defined set of items), documented limits or scale of multi-file edits, and hands-on corroboration of bulk use.",
+    "rationale": "Cline's own docs describe coordinated multi-file changes and running many agents in parallel from a Kanban task board with per-card worktrees, which covers acting across many items at once. However, no explicit bulk-operation feature is documented, such as selecting a set of items and applying one action to all of them, and headless CLI batching is only implied. Missing for 10: an explicit documented bulk/batch operation capability, documented limits or scale for multi-item runs, independent or hands-on corroboration.",
     "evidenceIds": [
       "cline-docs-30",
       "cline-docs-5",
-      "cline-docs-24"
+      "cline-docs-24",
+      "cline-docs-25"
     ],
     "support": {
       "relation": "direct",
@@ -8371,39 +8359,27 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack documents no event-triggered rules or hooks in Cline. It shows time-based cron scheduling, which is a recurring schedule rather than event triggers. It also shows headless runs inside GitHub Actions or other pipelines, where the triggering events come from the host CI platform, not from Cline. Auto Approve only controls whether Cline prompts before acting; it does not define triggers. None of these count as the product's own capability to define rules that fire actions on events.",
-    "evidenceIds": [
-      "cline-docs-23",
-      "cline-docs-17",
-      "cline-docs-38"
-    ],
+    "rationale": "The evidence shows no first-party event-triggered rules, such as running an agent when a file changes, a PR opens or a webhook arrives. Cron scheduling is a time-based recurring trigger, not an event rule. Auto Approve controls permissions, not triggers, and running headless in GitHub Actions or GitLab relies on the host pipeline's own event triggers. These are adjacent features or host-platform capabilities, so they earn no credit.",
+    "evidenceIds": [],
     "support": {
       "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can define rules that trigger actions automatically on events",
-      "citations": [
-        {
-          "evidenceId": "cline-docs-23",
-          "quote": "The CLI supports running agents on cron schedules through the hub."
-        },
-        {
-          "evidenceId": "cline-docs-17",
-          "quote": "Run it headlessly inside GitHub Actions, GitLab, or any pipeline."
-        }
-      ]
+      "citations": []
     }
   },
   {
     "productId": "cline",
     "storyId": "automation-scheduled-jobs",
     "verdict": "full",
-    "quality": 8,
+    "quality": 9,
     "confidence": "medium",
-    "rationale": "Cline's own CLI scheduling docs say agents can run on cron schedules through the hub for recurring automations. Scheduled agents persist across process restarts and run independently of any terminal session. The GitHub README separately mentions scheduling routines in the native app. missing for 10: independent or hands-on corroboration of scheduled runs, documented detail on managing schedules (listing, pausing, logs or failure handling).",
+    "rationale": "Cline's first-party CLI scheduling docs describe running agents on cron schedules through the hub. These scheduled agents persist across process restarts, run independently of any terminal session, and handle recurring automations such as daily summaries and code reviews. The GitHub README separately mentions scheduling routines in the native app. This is a true recurring schedule, not just a one-off headless run. Missing for 10: independent or hands-on corroboration that scheduled jobs work as documented, and deeper detail on schedule management (listing, editing, failure handling).",
     "evidenceIds": [
+      "cline-docs-13",
       "cline-docs-23",
       "cline-docs-36",
-      "cline-docs-13",
+      "cline-gh-2",
       "cline-gh-3"
     ],
     "support": {
@@ -8420,8 +8396,8 @@
           "quote": "Run agents on cron schedules for recurring automations like daily summaries and code reviews."
         },
         {
-          "evidenceId": "cline-gh-3",
-          "quote": "Run agent sessions in any folder, schedule\nroutines, and manage models, plugins, and MCP servers."
+          "evidenceId": "cline-gh-2",
+          "quote": "Run agent sessions in any folder, schedule routines, and manage models, plugins, and MCP servers."
         }
       ]
     }
@@ -8432,7 +8408,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence covers diffs, checkpoints, one-click undo, and Kanban auto-commit for code edits the agent makes, but nothing about versioning, reviewing, or rolling back the automations themselves, such as scheduled agents, skills, or headless workflow definitions. Rolling back an agent's file changes is an adjacent feature and earns no credit for this story.",
+    "rationale": "The evidence shows Cline can run automations, including cron-scheduled agents, headless CLI runs, and skills. It never documents versioning, review, or rollback of those automation definitions. The diffs, checkpoints, one-click undo and Kanban diff review apply to the code edits the agent makes, an adjacent feature rather than managing the automations themselves.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -8447,13 +8423,14 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Cline documents headless autonomous runs inside GitHub Actions, GitLab, or any pipeline. In those runs it can modify files, run commands, and run and fix tests, and its Kanban board gives you diffs to review. However, the remote execution comes from CI pipelines Cline runs inside, not from a first-party hosted cloud agent, and nothing shows the agent producing a demo of the finished feature. missing for 10: a first-party managed cloud agent environment, a demo artifact (screenshots, video, or preview deploy) handed back for review, a documented end-to-end build-test-demo workflow, and independent hands-on corroboration of remote runs.",
+    "rationale": "Cline documents headless autonomous runs inside GitHub Actions, GitLab or any pipeline, and its auto-approve mode can run tests and fix failures without prompts. This covers a remotely run agent that builds and tests a feature. However, Cline offers no first-party hosted cloud agent, and nothing shows it producing a demo artifact for review; diff review is documented only in the local IDE and Kanban. Missing for 10: a vendor-hosted cloud agent environment, demo artifacts (screenshots, video or preview links) handed back for review, an end-to-end build-test-demo-review workflow in the cloud, and independent hands-on corroboration.",
     "evidenceIds": [
       "cline-docs-17",
+      "cline-docs-2",
       "cline-docs-4",
       "cline-docs-33",
       "cline-docs-14",
-      "cline-docs-31",
+      "cline-docs-22",
       "cline-docs-47"
     ],
     "support": {
@@ -8474,8 +8451,8 @@
           "quote": "cline --auto-approve true \"run tests and fix failures\""
         },
         {
-          "evidenceId": "cline-docs-47",
-          "quote": "Review diffs in card detail view and leave inline comments."
+          "evidenceId": "cline-docs-14",
+          "quote": "Long-running dev servers, tests, deploys, all handled live."
         }
       ]
     }
@@ -8486,10 +8463,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows Cline can run headlessly, run scheduled agents independently of a terminal session, and use isolated local git worktrees through Kanban. It does not document a Cline-provided isolated cloud environment for delegating background tasks. Running inside GitHub Actions or other pipelines relies on the host CI platform's infrastructure, and worktrees are local repository isolation rather than cloud sandboxing, so neither earns credit for this story.",
+    "rationale": "The evidence shows no Cline-provided isolated cloud environment for background tasks. Its headless CLI, scheduled agents, and Kanban worktrees all run on the user's own machine or pipeline, and running inside GitHub Actions or GitLab relies on the host platform rather than a Cline capability. Missing for 10: a first-party hosted cloud sandbox or VM for agent execution, and documented asynchronous delegation of long-running tasks to that cloud environment.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As a developer, I can delegate longer-running coding tasks to run in the background in an isolated cloud environment",
       "citations": []
@@ -8501,13 +8478,15 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Cline uses external tools through MCP servers, and users can manage which MCP servers and plugins are installed. Auto Approve, with human-in-the-loop approval, sets which actions (including MCP tools) run without a prompt, so users keep tight control over high-risk actions. However, the evidence shows approval gating and user-level server management rather than an explicit access policy. Missing for 10: per-tool allow/deny lists for integrations, team- or org-level policy that an engineering lead can enforce, detailed docs on restricting MCP tool access, independent corroboration.",
+    "rationale": "Cline's own docs say every action, including MCP tool use, goes through human-in-the-loop approval. Auto Approve lets the user choose which action categories, MCP tools among them, run without prompting, and the app can manage MCP servers and plugins. That gives real control over which external tools the agent uses, but the evidence shows approval gating and server management rather than an explicit allowlist or policy that restricts integration access. missing for 10: an explicit per-tool/per-server allow/deny configuration, team- or org-level enforcement of integration permissions, in-depth docs on MCP permission settings, and independent hands-on corroboration.",
     "evidenceIds": [
-      "cline-gh-2",
       "cline-docs-16",
-      "cline-docs-38",
+      "cline-gh-2",
+      "cline-docs-21",
       "cline-docs-22",
-      "cline-docs-31"
+      "cline-docs-38",
+      "cline-docs-31",
+      "cline-docs-1"
     ],
     "support": {
       "relation": "direct",
@@ -8515,12 +8494,12 @@
       "subject": "As an engineering-lead, I can control which external tools and integrations the agent is allowed to access",
       "citations": [
         {
-          "evidenceId": "cline-gh-2",
-          "quote": "manage models, plugins, and MCP servers"
-        },
-        {
           "evidenceId": "cline-docs-16",
           "quote": "MCP (Model Context Protocol) lets Cline use external tools and data sources through MCP servers."
+        },
+        {
+          "evidenceId": "cline-gh-2",
+          "quote": "manage models, plugins, and MCP servers"
         },
         {
           "evidenceId": "cline-docs-38",
@@ -8529,6 +8508,10 @@
         {
           "evidenceId": "cline-docs-22",
           "quote": "Cline auto-approves everything: file changes, terminal commands, browser actions, MCP tools, and mode transitions."
+        },
+        {
+          "evidenceId": "cline-docs-31",
+          "quote": "Every action requires your explicit approval."
         }
       ]
     }
@@ -8539,7 +8522,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Cross-device task continuation is a fair axis for a coding agent, but the evidence never documents syncing or resuming a task session from a different device or browser. The web-based Kanban board, chat integrations, scheduled agents that persist across restarts, and conversation history carrying over between Plan and Act modes are adjacent features. None of them shows a task started on one device being continued on another.",
+    "rationale": "Nothing in the evidence shows Cline syncing or resuming a task across devices or browsers. The closest items are different features: history carrying over between Plan and Act modes, a web-based Kanban board for parallel agents, scheduled agents that survive process restarts, and chat from Slack, Discord or Telegram. None of these documents continuing the same task from another device.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8554,7 +8537,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Persistent memory is a fair question for a coding agent, but the evidence pack never documents Cline automatically building or recalling memory across sessions. The closest item, conversation history carrying over between Plan and Act modes, is within a single session. Skills are user-authored instruction sets, and scheduled agents persisting across restarts is about scheduling, not memory; none of these is the story's capability.",
+    "rationale": "Nothing in the evidence pack documents Cline automatically building or recalling memory across sessions. The closest items are adjacent: conversation history carrying over between Plan and Act modes happens within a single session, Skills are instruction sets the user authors, and scheduled agents persisting across restarts is about schedules, not memory.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8569,7 +8552,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Cline's own docs describe Skills as modular instruction sets that extend the agent for specific tasks. Each skill packages guidance, processes and optional resources, and Cline loads it only when relevant to the request, which directly matches equipping the agent with specialized skills. missing for 10: documented details on how developers author and install their own custom skills (format, location, sharing), independent or hands-on corroboration of skills working in practice.",
+    "rationale": "Cline's customization docs describe Skills as modular instruction sets that extend the agent for specific tasks. Each skill packages guidance, processes and optional resources, and Cline loads it only when relevant. This directly matches equipping the agent with custom skills for specialized work. Missing for 10: documented detail on how developers author and install their own skills (format, location, sharing), and independent or hands-on corroboration that skills work as described.",
     "evidenceIds": [
       "cline-docs-37",
       "cline-docs-9"
@@ -8596,13 +8579,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Cline documents a native desktop app for macOS and Windows that runs agent sessions in any folder. Visual diff review and parallel agents are documented, but in other surfaces: the VS Code/JetBrains extensions and the web-based Kanban board. The evidence does not show both together inside the desktop app. Missing for 10: explicit visual diff review inside the desktop app, explicit side-by-side multi-session view in the desktop app, independent hands-on corroboration of the desktop app.",
+    "rationale": "Cline ships a native desktop app for macOS and Windows that runs agent sessions in any folder. Visual diff review and parallel agents are documented, but in other surfaces: diffs in the VS Code/JetBrains extensions, and diff review plus parallel agents in the web-based Kanban board. Nothing shows the desktop app itself offering visual diffs or side-by-side sessions. missing for 10: documented visual diff review inside the desktop app, explicit side-by-side multi-session support in the desktop app, independent hands-on corroboration of the desktop app.",
     "evidenceIds": [
       "cline-gh-3",
-      "cline-gh-1",
       "cline-docs-47",
       "cline-docs-24",
-      "cline-docs-5"
+      "cline-docs-5",
+      "cline-gh-1"
     ],
     "support": {
       "relation": "direct",
@@ -8614,20 +8597,16 @@
           "quote": "Cline as a native app for macOS and Windows."
         },
         {
-          "evidenceId": "cline-gh-3",
-          "quote": "Run agent sessions in any folder, schedule\nroutines, and manage models, plugins, and MCP servers."
-        },
-        {
-          "evidenceId": "cline-gh-1",
-          "quote": "In VS Code and JetBrains, every edit shows up as a diff you can review, modify, or revert."
-        },
-        {
           "evidenceId": "cline-docs-47",
           "quote": "Review diffs in card detail view and leave inline comments."
         },
         {
           "evidenceId": "cline-docs-24",
           "quote": "Use Cline Kanban to run multiple coding agents in parallel with isolated git worktrees."
+        },
+        {
+          "evidenceId": "cline-gh-1",
+          "quote": "In VS Code and JetBrains, every edit shows up as a diff you can review, modify, or revert."
         }
       ]
     }
@@ -8635,16 +8614,23 @@
   {
     "productId": "cline",
     "storyId": "enterprise-grade-auth",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence pack does not document enterprise identity authentication (SSO, SAML, OIDC) or cloud-platform identity integration such as IAM-based access to a cloud model platform. The only related material is BYOK with your own provider API keys (cline-docs-42) and a sign-in-once Cline credits provider (cline-docs-43). These are adjacent credential-management features and do not deliver enterprise or cloud-platform authentication for compliance.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Cline documents Bring Your Own Key, which lets users supply their own cloud provider credentials. This loosely touches authenticating through a cloud platform, but nothing describes enterprise identity (SSO/SAML/OIDC) or cloud-platform IAM integration aimed at compliance and scale. missing for 10: enterprise SSO/identity-provider sign-in, explicit cloud-platform auth (e.g., IAM-based Bedrock/Vertex/Azure access), compliance and admin controls documentation, independent corroboration",
+    "evidenceIds": [
+      "cline-docs-42"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an engineering-lead, I can authenticate through an enterprise identity or cloud platform for compliance and scalability",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "cline-docs-42",
+          "quote": "Bring Your Own Key (BYOK): use your own provider credentials (cloud or local runtimes)."
+        }
+      ]
     }
   },
   {
@@ -8653,10 +8639,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Cline documents signing in once to its own Cline provider and using models directly in the agent, and separately offers ClinePass, a $9.99/month subscription. However, the sign-in flow is described in terms of adding credits, and no evidence explicitly ties the ClinePass subscription to signing in. missing for 10: explicit documentation that signing in applies a subscription plan to agent usage, plan limits and quota details, independent or hands-on corroboration.",
+    "rationale": "Cline documents signing in once to its own Cline provider to use models directly, and it offers ClinePass, a $9.99/month subscription, so signing in with a Cline plan to drive the agent is supported. The evidence ties sign-in to prepaid credits rather than explicitly to the subscription, and ClinePass only covers \"popular open coding models.\" Missing for 10: explicit docs showing that signing in activates ClinePass inside the agent, coverage of the plan across all models and surfaces (CLI, IDE, JetBrains), and independent or hands-on corroboration.",
     "evidenceIds": [
       "cline-docs-43",
-      "cline-docs-44"
+      "cline-docs-44",
+      "cline-docs-42"
     ],
     "support": {
       "relation": "direct",
@@ -8680,10 +8667,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Cline's own documented MCP support lets the agent use external tools and data sources through MCP servers, which is the mechanism for extending context with workflow tools. However, no evidence names Jira or Google Drive, and the Slack/Linear chat feature lets you talk to the agent rather than pull in workspace context, so it does not count here. missing for 10: documented Jira, Slack, or Google Drive context connectors, setup guidance for workflow-tool MCP servers, hands-on corroboration.",
+    "rationale": "Cline documents MCP support for using external tools and data sources through MCP servers, and it can manage MCP servers. That is its own mechanism for extending context with outside systems. However, the evidence never names Jira, Slack, or Google Drive as connectable context sources. The Slack mention covers chatting with the agent from Slack, which is an interface rather than a context integration. Missing for 10: documented integrations for Jira, Slack, and Google Drive as context sources; setup or catalog details for such workflow-tool servers; independent hands-on corroboration.",
     "evidenceIds": [
       "cline-docs-16",
-      "cline-gh-2"
+      "cline-gh-2",
+      "cline-docs-22"
     ],
     "support": {
       "relation": "direct",
@@ -8707,10 +8695,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Cline's own provider lets a developer sign in once and pick models without managing separate vendor API keys. Free access is documented only as periodic free-model promotions with a limited usage quota; otherwise the sign-in path relies on paid credits or a subscription, so a standing free tier is not shown. Missing for 10: a documented permanent free tier tied to the signed-in account, details of the free quota and limits, independent or hands-on corroboration of the sign-in free-access flow.",
+    "rationale": "Cline documents signing in once to its Cline provider and choosing models without managing separate vendor API keys. Free access, however, is described only as periodic free-model promotions with a limited usage quota, and the standard path involves adding paid credits. missing for 10: a standing documented free tier tied to the personal account, explicit evidence that the free promotions are reachable through sign-in alone, independent or hands-on corroboration.",
     "evidenceIds": [
       "cline-docs-43",
-      "cline-docs-45"
+      "cline-docs-45",
+      "cline-docs-42"
     ],
     "support": {
       "relation": "direct",
@@ -8734,11 +8723,12 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Cline's own docs say the agent can read the codebase and run searches in Plan mode. Its subagents explore the codebase independently and return detailed reports, so it gathers context itself rather than relying on manually selected files. Nothing documents a whole-codebase map or architectural overview, and a community comment notes Cline deliberately does not index the codebase, though that is design criticism rather than a concrete failure. Missing for 10: documented whole-repo mapping or indexing, explicit codebase-explanation workflow docs, hands-on corroboration of exploring large unfamiliar repos.",
+    "rationale": "Cline's own docs show it reading the codebase and running searches by itself in Plan mode, and spawning subagents that explore the codebase independently and report back, so you don't have to hand-pick context files. However, nothing documents mapping or explaining an entire codebase end to end. A community comment also notes Cline does not index the codebase, which is a design note rather than a concrete failure. missing for 10: documented whole-codebase mapping or overview capability, evidence of how it scales to large unfamiliar repos, hands-on corroboration of codebase-explanation quality.",
     "evidenceIds": [
       "cline-docs-39",
       "cline-docs-25",
-      "cline-docs-8"
+      "cline-docs-8",
+      "cline-comm-2"
     ],
     "support": {
       "relation": "direct",
@@ -8762,7 +8752,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Inline code completions and next-edit suggestions are a fair axis for an in-editor AI coding assistant like Cline, but nothing in the evidence documents ghost-text completions or next-edit prediction as you type. The documented features are agentic: approved file edits shown as diffs, Plan/Act modes, CLI and Kanban. Those are different capabilities and earn no credit for this story.",
+    "rationale": "Cline is an AI coding assistant that runs inside editors, so inline completions and next-edit suggestions are a fair question for it. However, the evidence describes only agentic, approval-gated editing (diffs, Plan/Act, terminal commands) and never mentions as-you-type inline completions or next-edit suggestions. The Kanban 'inline comments' feature is for reviewing diffs, not code completion, so it earns no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8777,7 +8767,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The pack documents pieces that sit near this workflow: chatting with the agent from Linear, running it headless in GitHub Actions, and Kanban cards with per-card worktrees and auto-commit. None of these documents taking a tracked issue and producing an opened pull request. These are building blocks or adjacent features that a user would have to wire together, not the issue-to-PR capability itself, so they earn no credit.",
+    "rationale": "The evidence pack never documents Cline taking a tracked issue and producing an opened pull request. What it does show is adjacent: chatting with the agent from Linear, headless runs inside GitHub Actions, and Kanban cards with worktrees and auto-commit. None of these describes the issue-to-PR flow itself, so they earn no credit for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -8792,7 +8782,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Cline's own GitHub README says that in JetBrains every edit appears as a diff you can review, modify or revert, which covers the interactive-diff half of the story. Nothing in the evidence documents sharing selected code from the JetBrains editor as context; the general claim of 'the same Cline experience' does not establish it. Missing for 10: documented selected-code-to-context sharing in JetBrains, JetBrains-specific diff documentation, independent or hands-on corroboration.",
+    "rationale": "Cline ships a JetBrains plugin, and its GitHub README says every edit in JetBrains appears as a diff you can review, modify, or revert, which covers the interactive-diff half of the story. Nothing in the pack documents sharing selected editor code as context from inside JetBrains; the 'same Cline experience' claim is too vague to count. missing for 10: documented selected-code-to-context sharing in JetBrains, detailed JetBrains diff documentation, independent hands-on corroboration of the JetBrains plugin.",
     "evidenceIds": [
       "cline-gh-1",
       "cline-docs-6",
@@ -8810,6 +8800,10 @@
         {
           "evidenceId": "cline-docs-6",
           "quote": "The same Cline experience in IntelliJ IDEA, PyCharm, WebStorm, GoLand, and the rest of the JetBrains family."
+        },
+        {
+          "evidenceId": "cline-docs-46",
+          "quote": "IDE Extension — VS Code, Cursor, JetBrains, Windsurf, VSCodium, Antigravity"
         }
       ]
     }
@@ -8820,7 +8814,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "License and public-code matching references are a fair axis for an AI coding assistant like Cline, but the evidence pack never mentions code referencing, license attribution, or public-code matching. Diff review and checkpoints are adjacent review features, not this capability.",
+    "rationale": "License and public-code matching references are a fair axis for an AI coding assistant like Cline. The evidence pack documents diff review, approvals and checkpoints, but nothing about detecting matches to public code or surfacing license references for suggestions. Diff review is an adjacent review control and earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8835,7 +8829,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Cline's own docs say it can run long-running dev servers live, react to their output, use a browser, and take browser actions, which covers the core loop of observing a running web app from the assistant. There is no explicit documentation of debugging features such as reading console or network logs, inspecting the live DOM, or setting breakpoints, so depth is unproven. Missing for 10: documented live-app debugging (console/network/DOM inspection or debugger attachment), a detailed browser-tool workflow, and independent hands-on corroboration.",
+    "rationale": "Cline's own docs say it runs long-running dev servers live, reacts to terminal output as it appears, and can use a browser, with browser actions listed among the actions it can take. Together these give a basic way to run and inspect a live web app from the assistant, but the docs never describe a dedicated live-debugging workflow. Missing for 10: explicit documentation of debugging a running web app (e.g. console/network log inspection, breakpoints or debugger attach), a worked example of a live debug loop, and independent or hands-on corroboration.",
     "evidenceIds": [
       "cline-docs-14",
       "cline-docs-31",
@@ -8858,10 +8852,6 @@
         {
           "evidenceId": "cline-docs-22",
           "quote": "Cline auto-approves everything: file changes, terminal commands, browser actions, MCP tools, and mode transitions."
-        },
-        {
-          "evidenceId": "cline-docs-1",
-          "quote": "Create files, run commands, browse the web, and use tools with human-in-the-loop approval."
         }
       ]
     }
@@ -8872,16 +8862,15 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Cline documents a first-party CLI. It installs with `npm install -g cline` and supports both interactive terminal sessions and headless automation, with concrete command examples such as piping a git diff into the agent and auto-approved test-fixing runs. Local model support via Ollama and LM Studio is also documented. Missing for 10: independent hands-on corroboration of the CLI specifically, since community comments describe the editor experience rather than the terminal CLI.",
+    "rationale": "Cline ships an official CLI, installed with `npm install -g cline`, that supports interactive terminal chat sessions and headless automation, with documented usage examples such as `cline --auto-approve true \"run tests and fix failures\"` and piping `git diff` into it. Local model runtimes (Ollama, LM Studio) are also documented, which reinforces the local-execution angle. missing for 10: independent or hands-on community corroboration of the terminal CLI specifically.",
     "evidenceIds": [
       "cline-docs-2",
       "cline-docs-20",
       "cline-docs-32",
       "cline-docs-33",
       "cline-docs-34",
-      "cline-docs-3",
-      "cline-probe-4",
-      "cline-docs-41"
+      "cline-docs-41",
+      "cline-probe-4"
     ],
     "support": {
       "relation": "direct",
@@ -8901,8 +8890,8 @@
           "quote": "Use Cline CLI for interactive terminal sessions and automated headless workflows."
         },
         {
-          "evidenceId": "cline-docs-34",
-          "quote": "git diff | cline \"review these changes\""
+          "evidenceId": "cline-docs-33",
+          "quote": "cline --auto-approve true \"run tests and fix failures\""
         },
         {
           "evidenceId": "cline-docs-41",
@@ -8917,7 +8906,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never documents adding multiple project directories or a multi-root workspace to one Cline session. The closest item, \"Run agent sessions in any folder,\" describes choosing a single working folder, not combining several directories. Kanban worktrees and subagents are parallel isolation features, not multi-directory context in one session.",
+    "rationale": "Including multiple project directories in one session is a fair question for a coding agent, so the axis applies. The evidence pack never documents multi-root workspaces or adding several directories to a single session. \"Run agent sessions in any folder\" describes choosing one folder per session, and Kanban worktrees and subagents are separate parallel contexts, not one session spanning several directories.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8932,16 +8921,16 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Cline ships first-party IDE extensions for VS Code, Cursor, JetBrains, Windsurf and others. It works through natural conversation inside the editor, can read the codebase for context, and shows edits as reviewable diffs in the IDE. Community users report daily-driving it as an editor-embedded agent. Missing for 10: no independent hands-on evidence that specifically covers the quality of in-IDE contextual chat (e.g., editor selection/context passing).",
+    "rationale": "Cline is documented as an AI coding assistant in your editor. It ships as an IDE extension for VS Code, Cursor, JetBrains, Windsurf and others, and you work with it through natural conversation, with Plan mode letting it read your codebase and discuss strategy. Community users corroborate daily IDE use. Missing for 10: no explicit first-party description of the in-IDE chat panel UI or of editor-context features such as selection or file mentions within the IDE.",
     "evidenceIds": [
       "cline-docs-1",
-      "cline-docs-31",
       "cline-docs-46",
       "cline-docs-28",
+      "cline-docs-31",
+      "cline-docs-39",
       "cline-docs-6",
       "cline-gh-1",
-      "cline-docs-39",
-      "cline-comm-1"
+      "cline-comm-3"
     ],
     "support": {
       "relation": "direct",
@@ -8953,20 +8942,16 @@
           "quote": "AI coding assistant in your editor."
         },
         {
-          "evidenceId": "cline-docs-31",
-          "quote": "help you build features through natural conversation"
-        },
-        {
           "evidenceId": "cline-docs-46",
           "quote": "IDE Extension — VS Code, Cursor, JetBrains, Windsurf, VSCodium, Antigravity"
         },
         {
-          "evidenceId": "cline-gh-1",
-          "quote": "In VS Code and JetBrains, every edit shows up as a diff you can review, modify, or revert."
+          "evidenceId": "cline-docs-31",
+          "quote": "help you build features through natural conversation"
         },
         {
           "evidenceId": "cline-docs-39",
-          "quote": "Cline can read your codebase, run searches, and discuss strategy"
+          "quote": "In this mode, Cline can read your codebase, run searches, and discuss strategy"
         }
       ]
     }
@@ -8977,16 +8962,16 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Cline's docs say users can bring their own API keys from OpenAI, Anthropic, Google and others, run local models via Ollama or LM Studio, select models through the Cline provider, and set separate models for Plan and Act modes. A community user independently confirms using Gemini 2.5 rather than being limited to Anthropic. Another community report says Ollama support is uneven across models, which limits local-model quality but does not undercut multi-provider choice. missing for 10: in-depth documentation of the per-session model-switching UI and a full list of supported providers.",
+    "rationale": "Cline's own docs say you can bring your own API keys from OpenAI, Anthropic, Google and others, run local models via Ollama/LM Studio, or select from available models through the Cline provider. You can also configure separate models for Plan and Act modes. A community user confirms using Gemini 2.5 rather than being limited to Anthropic, though another notes Ollama works poorly with most models. Missing for 10: a detailed first-party walkthrough of the per-session model-selection UI or CLI flag, and consistent hands-on corroboration of local-provider quality.",
     "evidenceIds": [
       "cline-docs-27",
-      "cline-docs-42",
       "cline-docs-41",
+      "cline-docs-42",
       "cline-docs-43",
       "cline-docs-12",
       "cline-docs-15",
       "cline-comm-10",
-      "cline-comm-5"
+      "cline-comm-9"
     ],
     "support": {
       "relation": "direct",
@@ -9011,7 +8996,7 @@
         },
         {
           "evidenceId": "cline-comm-10",
-          "quote": "plus I can use Gemini 2.5 with it and am not limited to Anthropic only"
+          "quote": "I can use Gemini 2.5 with it and am not limited to Anthropic only"
         }
       ]
     }
@@ -9022,7 +9007,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Cline's homepage claims you can chat with the agent from Slack and Linear, and run it headlessly inside GitHub Actions or GitLab pipelines. This is backed by documented headless CLI automation for CI/CD. The evidence is a single marketing line, though: no setup docs for the Slack or Linear integrations, and the GitHub/GitLab path is pipeline execution of the CLI rather than triggering tasks from issues, PRs or comments. Missing for 10: dedicated docs for the Slack and Linear integrations, a documented way to trigger tasks from GitHub or GitLab issues, PRs or comments, and independent or hands-on corroboration.",
+    "rationale": "Cline's homepage says you can chat with the agent from Slack and Linear, and run it headlessly inside GitHub Actions or GitLab pipelines. The CLI docs back the headless automation side. However, this rests on a single marketing line with no dedicated setup docs for the Slack or Linear integrations. GitHub and GitLab use appears to mean running the CLI inside a CI pipeline, not native triggers such as issue or PR mentions. missing for 10: dedicated docs for the Slack/Linear integrations, native GitHub/GitLab triggers (issue/PR mentions) rather than CI pipeline invocation, independent or hands-on corroboration",
     "evidenceIds": [
       "cline-docs-17",
       "cline-docs-2",
@@ -9050,10 +9035,9 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Cline's own CLI docs show it taking an image reference in a prompt and acting on it in code (\"fix the layout issue shown in @./screenshot.png\"), and it can create files and run commands. That makes image-informed code generation plausible, but nothing documents generating a whole working app from a design. Missing for 10: documented app generation from an image or design, sketch input, PDF design input, and hands-on corroboration that the output is a working app.",
+    "rationale": "Cline's own CLI docs show an image file passed into a prompt to drive code changes (\"fix the layout issue shown in @./screenshot.png\"), so image input feeding code generation is a documented capability. Nothing shows it generating a whole working app from a design, and sketch or PDF input is never mentioned. Missing for 10: documented app generation from a design, sketch input, PDF input, hands-on corroboration.",
     "evidenceIds": [
-      "cline-docs-18",
-      "cline-docs-1"
+      "cline-docs-18"
     ],
     "support": {
       "relation": "direct",
@@ -9063,10 +9047,6 @@
         {
           "evidenceId": "cline-docs-18",
           "quote": "fix the layout issue shown in @./screenshot.png"
-        },
-        {
-          "evidenceId": "cline-docs-1",
-          "quote": "Create files, run commands, browse the web, and use tools with human-in-the-loop approval."
         }
       ]
     }
@@ -9074,23 +9054,27 @@
   {
     "productId": "cline",
     "storyId": "natural-language-debugging",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Cline's own docs show natural-language troubleshooting: CLI examples such as \"run tests and fix failures\" and \"fix the layout issue shown in @./screenshot.png\", plus an agent that reacts live to terminal output and builds through natural conversation. Plan mode lets it read the codebase and discuss strategy without changing files, which supports diagnosis before any fix. missing for 10: a dedicated debugging/troubleshooting workflow doc (e.g., stack-trace or log analysis guidance), independent hands-on corroboration of debugging effectiveness.",
+    "rationale": "Cline's own docs show natural-language troubleshooting. You can converse with it about your codebase, give fix commands such as \"run tests and fix failures\" or \"fix the layout issue shown in @./screenshot.png\", and it reacts to live terminal output and makes linter-aware fixes. However, there is no dedicated debugging feature documented, and the troubleshooting depth is only implied by examples. Missing for 10: documented debugging workflow (e.g., stack-trace/log analysis, breakpoint or debugger integration), detailed docs on diagnosing root causes beyond fix commands, and independent hands-on corroboration of debugging quality.",
     "evidenceIds": [
+      "cline-docs-31",
       "cline-docs-33",
       "cline-docs-18",
       "cline-docs-14",
-      "cline-docs-31",
-      "cline-docs-39",
-      "cline-docs-30"
+      "cline-docs-30",
+      "cline-docs-39"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As a developer, I can debug issues and troubleshoot using natural-language queries",
       "citations": [
+        {
+          "evidenceId": "cline-docs-31",
+          "quote": "help you build features through natural conversation"
+        },
         {
           "evidenceId": "cline-docs-33",
           "quote": "cline --auto-approve true \"run tests and fix failures\""
@@ -9101,19 +9085,15 @@
         },
         {
           "evidenceId": "cline-docs-14",
-          "quote": "Executes in your terminal and reacts to output as it appears. Long-running dev servers, tests, deploys, all handled live."
-        },
-        {
-          "evidenceId": "cline-docs-31",
-          "quote": "It can read and write files, run terminal commands, use a browser, and help you build features through natural conversation."
-        },
-        {
-          "evidenceId": "cline-docs-39",
-          "quote": "In this mode, Cline can read your codebase, run searches, and discuss strategy, but cannot modify any files or execute commands."
+          "quote": "Executes in your terminal and reacts to output as it appears."
         },
         {
           "evidenceId": "cline-docs-30",
-          "quote": "Coordinated multi-file changes with linter-aware fixes, diffs, checkpoints, and one-click undo on every step."
+          "quote": "Coordinated multi-file changes with linter-aware fixes"
+        },
+        {
+          "evidenceId": "cline-docs-39",
+          "quote": "Cline can read your codebase, run searches, and discuss strategy"
         }
       ]
     }
@@ -9124,13 +9104,13 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Cline's own materials say it builds features through natural conversation and makes coordinated multi-file changes with diffs and checkpoints. Its CLI examples show plain-language fix requests such as \"run tests and fix failures\", and a hands-on user reports setting it loose on a codebase with diffs that are almost always correct. Missing for 10: in-depth first-party documentation of how multi-file edits work (the multi-file claim comes only from the marketing homepage).",
+    "rationale": "Cline's docs say it builds features through natural conversation and makes coordinated multi-file changes with diffs and checkpoints. A CLI example shows it fixing failures from a plain-language prompt. Hands-on community reports confirm it can be set loose on a codebase and produce accurate diffs. Missing for 10: in-depth first-party documentation of the multi-file editing workflow beyond homepage-level claims.",
     "evidenceIds": [
       "cline-docs-30",
       "cline-docs-31",
       "cline-docs-33",
-      "cline-docs-18",
       "cline-gh-1",
+      "cline-docs-29",
       "cline-comm-3"
     ],
     "support": {
@@ -9161,16 +9141,15 @@
     "productId": "cline",
     "storyId": "openness-api-parity",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Cline offers its own programmatic surfaces: a headless CLI for scripting and CI/CD, an ACP mode that any ACP-capable client can drive, and an SDK built on the same core engine as the CLI, Kanban, VS Code extension and JetBrains plugin. That shared engine suggests broad programmatic reach, but nothing documents full parity with the UI, and no OpenAPI spec was found. Missing for 10: documented API/UI feature-parity statement, published API reference or OpenAPI spec, programmatic coverage of UI-specific features such as diff review, checkpoints and Kanban card actions, independent hands-on corroboration.",
+    "rationale": "Cline documents its own programmatic surfaces: an SDK described as built on 'the same core engine' behind the CLI, Kanban, VS Code and JetBrains, a headless CLI for scripts and automation, and ACP so any compatible client can drive the same agent. Nothing documents that every UI action (diff review, checkpoints and undo, Kanban card management) is reachable programmatically, and no machine-readable API spec is published; the hosted gateway only exposes an OpenAI-format Chat Completions endpoint. Missing for 10: an explicit API/UI parity statement, documented programmatic equivalents for UI-only features like diff review, checkpoints and Kanban management, a published OpenAPI or SDK reference, and independent corroboration.",
     "evidenceIds": [
       "cline-docs-19",
-      "cline-docs-2",
       "cline-docs-3",
       "cline-docs-26",
       "cline-docs-33",
-      "cline-probe-3"
+      "cline-spec-unpublished-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -9182,16 +9161,16 @@
           "quote": "Build AI agents and integrations powered by the same core engine behind the CLI, Kanban, VS Code extension, and JetBrains plugin."
         },
         {
-          "evidenceId": "cline-docs-2",
-          "quote": "Run Cline in your terminal with interactive chat or fully headless automation for CI/CD and scripting."
+          "evidenceId": "cline-docs-3",
+          "quote": "Use headless mode for scripts/automation and processable output."
         },
         {
           "evidenceId": "cline-docs-26",
           "quote": "Any ACP-capable client can use Cline as its coding agent without a dedicated extension — the same agent you use in the terminal, embedded in the tool you're already working in."
         },
         {
-          "evidenceId": "cline-docs-3",
-          "quote": "Use headless mode for scripts/automation and processable output."
+          "evidenceId": "cline-docs-33",
+          "quote": "cline --auto-approve true \"run tests and fix failures\""
         }
       ]
     }
@@ -9202,7 +9181,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data export is a fair question for a coding agent with task history and account data, so the axis applies. The pack documents no export feature or open-format data dump. The 'never locked in' pricing claim (cline-docs-15) is about switching model providers or self-hosting, which is an adjacent capability and not data export.",
+    "rationale": "Data portability is a fair question for a coding agent that holds task history, settings and account data, so the axis applies. The evidence never documents exporting user data in open formats. The 'never locked in' pricing claim is about switching model providers or self-hosting, which is an adjacent capability, not data export.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9217,7 +9196,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The pack contains no statement that Cline's source is published under an open license. The github.com/cline/cline items describe features like diffs and the native app, not licensing or source availability. The pricing claim about self-hosting and avoiding lock-in is a different capability and does not establish an open-source license.",
+    "rationale": "Nothing in the evidence pack states that Cline's source code is publicly readable or names an open-source license. The GitHub-sourced items only describe product features (diff review, the native app), and the 'self-host anytime' pricing claim is about deployment, not source licensing. The axis applies to a coding agent, so the verdict is none.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9229,25 +9208,30 @@
   {
     "productId": "cline",
     "storyId": "openness-self-host",
-    "verdict": "partial",
-    "quality": 6,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Cline's own pricing page says users can 'self-host anytime'. The core agent installs and runs locally (npm CLI, IDE extensions), and the docs support fully local model runtimes such as Ollama and LM Studio, which a community user confirms worked well. However, there is no dedicated self-hosting guide covering hosted components like the hub, Kanban board or Cline provider backend, so the extent of self-hosting is unproven. Missing for 10: dedicated self-hosting/deployment documentation for server-side components (hub, Kanban, provider backend), and independent hands-on corroboration of a fully self-hosted deployment.",
+    "rationale": "Cline's pricing page directly says users can 'self-host anytime'. The core agent installs and runs locally via npm, IDE extensions, or a native app, and it supports fully local models through Ollama or LM Studio, so the whole stack can stay on the user's own machines. Missing for 10: dedicated self-hosting or deployment documentation, an explicitly evidenced open-source license, and independent hands-on corroboration of a fully self-hosted setup (community reports describe local-model quality as mixed).",
     "evidenceIds": [
       "cline-docs-15",
+      "cline-docs-20",
       "cline-docs-41",
       "cline-docs-42",
-      "cline-docs-20",
+      "cline-gh-3",
       "cline-comm-5"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can self-host the core product",
       "citations": [
         {
           "evidenceId": "cline-docs-15",
           "quote": "You're never locked into our platform or pricing. Switch providers or self-host anytime."
+        },
+        {
+          "evidenceId": "cline-docs-20",
+          "quote": "npm install -g cline"
         },
         {
           "evidenceId": "cline-docs-41",
@@ -9256,10 +9240,6 @@
         {
           "evidenceId": "cline-docs-42",
           "quote": "Bring Your Own Key (BYOK): use your own provider credentials (cloud or local runtimes)."
-        },
-        {
-          "evidenceId": "cline-docs-20",
-          "quote": "npm install -g cline"
         }
       ]
     }
@@ -9270,13 +9250,14 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Cline Kanban is documented for running many coding agents in parallel from a web task board, with per-card isolated git worktrees, auto-commit and dependency chains. YOLO/auto-approve and headless CLI modes allow agents to act without prompts. Nothing documents agents sustaining work for hours or days: scheduled agents that persist across restarts are a recurring cron feature, not long-running sessions, and subagents are in-task research helpers. missing for 10: evidence of multi-hour/multi-day continuous agent runs, documented scale limits for agent fleets, independent hands-on corroboration of parallel Kanban fleets.",
+    "rationale": "Cline Kanban documents running many agents in parallel from a task board, each card in its own git worktree with auto-commit and dependency chains. YOLO/auto-approve mode lets those agents act without prompts, and scheduled agents persist across restarts independent of a terminal session. However, nothing documents agents sustaining autonomous work for hours or days; the only hands-on report describes a lunch-length unattended run. Missing for 10: evidence of multi-hour or multi-day autonomous runs, independent or hands-on corroboration of parallel Kanban fleets at scale.",
     "evidenceIds": [
       "cline-docs-5",
       "cline-docs-24",
-      "cline-docs-4",
       "cline-docs-22",
-      "cline-docs-23"
+      "cline-docs-23",
+      "cline-docs-4",
+      "cline-comm-3"
     ],
     "support": {
       "relation": "direct",
@@ -9292,12 +9273,12 @@
           "quote": "Use Cline Kanban to run multiple coding agents in parallel with isolated git worktrees."
         },
         {
-          "evidenceId": "cline-docs-4",
-          "quote": "Autonomous execution can modify files and run commands without further prompts."
-        },
-        {
           "evidenceId": "cline-docs-22",
           "quote": "Check the box and Cline auto-approves everything: file changes, terminal commands, browser actions, MCP tools, and mode transitions."
+        },
+        {
+          "evidenceId": "cline-docs-23",
+          "quote": "Scheduled agents persist across process restarts and run independently of any terminal session."
         }
       ]
     }
@@ -9308,7 +9289,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Cline Kanban runs multiple coding agents in parallel, each card in its own isolated git worktree, and lets you review each card's diff. That covers parallel execution and per-run review. However, the docs frame cards as separate tasks with dependency chains, not as competing attempts at the same task, and they describe no side-by-side comparison or pick-a-winner flow. Subagents are research helpers that report back to the main agent, so they don't count as alternative task attempts. Missing for 10: documented multiple attempts of the same task, side-by-side comparison of results, a choose-and-merge-one-attempt workflow, hands-on corroboration.",
+    "rationale": "Cline Kanban runs multiple coding agents in parallel, each card in its own isolated git worktree, and lets you review each card's diff. That gives you the parallel-execution and per-result review parts of the story. The docs never describe running several attempts of the same task side by side, comparing them, and picking a winner. Missing for 10: documented multi-attempt workflow for a single task, side-by-side comparison of attempts, select-and-merge-one flow, independent or hands-on corroboration.",
     "evidenceIds": [
       "cline-docs-24",
       "cline-docs-5",
@@ -9340,10 +9321,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never documents a way to integrate third-party, partner-built agent apps, such as a partner agent marketplace or catalog, into Cline workflows. MCP servers supply external tools and data sources, not partner agent apps, and that belongs to the separate MCP-client story. ACP runs the other way, with other clients embedding Cline. The bare mention of 'plugins' gives no detail on third-party agent apps, and subagents and skills are first-party mechanisms.",
+    "rationale": "The evidence shows no documented way to integrate third-party, partner-built agent apps, such as a partner agent marketplace or a mechanism for running external agents. MCP servers supply external tools and data sources, not partner agent apps. ACP goes the other way, embedding Cline inside other clients. Skills are instruction sets, and the single 'manage plugins' mention does not describe partner-built agent apps.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As an engineering-lead, I can integrate third-party partner-built agent apps into my workflows",
       "citations": []
@@ -9355,7 +9336,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never documents a project instructions or rules file that sets persistent coding standards and conventions for Cline to follow. The closest item is Skills (cline-docs-37), but those are task-specific instruction sets loaded only when relevant to a request. That is an adjacent feature, not an always-applied project conventions file, so it earns no credit.",
+    "rationale": "The evidence pack never documents a project-level instructions or rules file that sets coding standards Cline always follows. The closest item is Skills, which are task-specific instruction sets Cline loads only when relevant to a request. That is an adjacent feature, not a persistent project conventions file, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9367,23 +9348,22 @@
   {
     "productId": "cline",
     "storyId": "pre-merge-diff-inspection",
-    "verdict": "full",
-    "quality": 8,
+    "verdict": "partial",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Cline shows every edit as a diff you can review, modify or revert in VS Code and JetBrains, and Kanban adds diff review with inline comments. It can also run tests, react to their output, apply linter-aware fixes and review piped `git diff` output, all with checkpoints and one-click undo. Community users mention reviewing its diffs, but the evidence is mostly first-party. Missing for 10: an explicit pre-merge or PR gating workflow tied to check results, and independent hands-on corroboration of the checks side.",
+    "rationale": "Cline shows every edit as a reviewable diff in VS Code and JetBrains, and Kanban adds diff review with inline comments. It can also run tests, pipe a `git diff` in for review, and run headlessly in GitHub Actions or GitLab pipelines. However, no evidence shows a documented pre-merge gate or PR check that blocks merges, and the check-running claims are vendor-only. Missing for 10: documented pre-merge/PR check gating tied to merge workflows, details on how lint/test check results are surfaced as pass/fail before merge, and independent hands-on corroboration of the review-and-check flow.",
     "evidenceIds": [
       "cline-gh-1",
       "cline-docs-47",
       "cline-docs-30",
-      "cline-docs-34",
       "cline-docs-33",
-      "cline-docs-14",
+      "cline-docs-34",
       "cline-docs-17",
-      "cline-comm-3"
+      "cline-docs-14"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As a developer, I can inspect diffs and run checks to catch problems before merging",
       "citations": [
         {
@@ -9399,12 +9379,16 @@
           "quote": "Coordinated multi-file changes with linter-aware fixes, diffs, checkpoints, and one-click undo on every step."
         },
         {
+          "evidenceId": "cline-docs-33",
+          "quote": "cline --auto-approve true \"run tests and fix failures\""
+        },
+        {
           "evidenceId": "cline-docs-34",
           "quote": "git diff | cline \"review these changes\""
         },
         {
-          "evidenceId": "cline-docs-14",
-          "quote": "Long-running dev servers, tests, deploys, all handled live."
+          "evidenceId": "cline-docs-17",
+          "quote": "Run it headlessly inside GitHub Actions, GitLab, or any pipeline."
         }
       ]
     }
@@ -9415,10 +9399,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data residency is a fair question for an AI coding tool, and Cline runs its own provider and account service, but no evidence documents choosing a storage region or residency for Cline-held data. Running local models, self-hosting, and bringing your own API keys are adjacent controls over which model provider is used, not a residency feature, so they earn no credit.",
+    "rationale": "The evidence pack documents no region or data-residency selection for Cline's data storage. BYOK, local models via Ollama/LM Studio, and 'switch providers or self-host' are adjacent provider-choice features, not a documented capability for choosing where data is stored.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As an AI-native user, I can choose where my data is stored (region/residency)",
       "citations": []
@@ -9430,7 +9414,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack has no Cline training opt-out, no data-usage or no-training policy, and no zero-retention guarantee. Local-model support and bring-your-own-key options are adjacent features: they may limit where data goes, but none of the evidence says data is excluded from model training. They earn no credit for this story.",
+    "rationale": "The evidence pack has no documented training opt-out, no-training data policy, or data-retention control from Cline. Running local models through Ollama or LM Studio and bringing your own provider keys could keep data away from Cline's hosted gateway, but these are adjacent model-routing features rather than a documented control over training use, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9445,7 +9429,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data retention and deletion is a fair privacy question for a coding agent, but the evidence pack never documents retention settings, history deletion, or data-purge controls. The local-model, BYOK, and self-host claims concern where inference runs, which is adjacent to this story and earns no credit.",
+    "rationale": "Data retention and deletion is a fair privacy question for a coding agent, but the evidence pack documents no retention settings, history deletion, or data-deletion controls. Local models (Ollama, LM Studio), BYOK, and self-hosting are adjacent privacy features and do not amount to controlling retention or deletion.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9460,7 +9444,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Telemetry opt-out is a fair privacy question for a coding agent, but the evidence pack never mentions telemetry, usage tracking, or any setting to disable them. Local models, BYOK, and self-hosting are adjacent privacy features, not a telemetry opt-out, so they earn no credit here.",
+    "rationale": "Telemetry opt-out is a fair privacy axis for a coding agent, but nothing in the evidence pack mentions a telemetry or usage-tracking setting, or a way to disable it. Local-model support and BYOK are adjacent privacy features, not a telemetry opt-out, so they earn no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9475,7 +9459,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Configurable cloud environments are a fair axis for a coding agent, but the evidence never shows Cline letting you define a reproducible cloud environment with repository dependencies and setup steps. Kanban worktrees are local git isolation, running headlessly in GitHub Actions relies on the host pipeline platform, and Skills are instruction sets; none of these is a configurable cloud environment.",
+    "rationale": "Configurable cloud environments are a fair axis for a coding agent, but the evidence shows no Cline feature for defining a reproducible cloud environment with dependencies or setup scripts. Running headlessly inside GitHub Actions or another pipeline relies on the host CI platform's environment, not Cline's own capability. Kanban's per-card git worktrees provide local workspace isolation, not a configured cloud environment, so neither earns credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9490,14 +9474,14 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Cline documents its own ability to run commands, tests and dev servers in the terminal and react to their output live. That supports reproducing issues and verifying fixes, and the CLI shows a \"run tests and fix failures\" workflow. For root-cause narrowing, Plan mode and subagents can read and search the codebase, but no documentation describes a dedicated debugging or root-cause workflow. missing for 10: explicit documentation of a root-cause or debugging workflow, documented issue-reproduction guidance, hands-on or independent corroboration of debugging effectiveness.",
+    "rationale": "Cline documents the parts of this loop. It runs terminal commands and tests and reacts to their output live, which covers reproducing and verifying (e.g. \"run tests and fix failures\"). For narrowing down causes, Plan mode can read the codebase and run searches, and subagents explore the codebase independently and report back. However, no documented debugging or root-cause workflow ties these together, and there is no hands-on evidence of it working. Missing for 10: documented root-cause/debugging workflow, debugger or breakpoint integration, independent hands-on corroboration of the reproduce→diagnose→verify loop.",
     "evidenceIds": [
-      "cline-docs-14",
-      "cline-docs-31",
       "cline-docs-33",
+      "cline-docs-14",
       "cline-docs-39",
       "cline-docs-25",
-      "cline-docs-30"
+      "cline-docs-18",
+      "cline-docs-31"
     ],
     "support": {
       "relation": "direct",
@@ -9505,12 +9489,12 @@
       "subject": "As a developer, I can reproduce issues, narrow down root causes, and verify fixes",
       "citations": [
         {
-          "evidenceId": "cline-docs-14",
-          "quote": "Executes in your terminal and reacts to output as it appears. Long-running dev servers, tests, deploys, all handled live."
+          "evidenceId": "cline-docs-33",
+          "quote": "cline --auto-approve true \"run tests and fix failures\""
         },
         {
-          "evidenceId": "cline-docs-31",
-          "quote": "It can read and write files, run terminal commands, use a browser, and help you build features through natural conversation."
+          "evidenceId": "cline-docs-14",
+          "quote": "Executes in your terminal and reacts to output as it appears. Long-running dev servers, tests, deploys, all handled live."
         },
         {
           "evidenceId": "cline-docs-39",
@@ -9519,10 +9503,6 @@
         {
           "evidenceId": "cline-docs-25",
           "quote": "Each subagent gets its own prompt and context window, explores the codebase independently, and returns a detailed report to the main agent."
-        },
-        {
-          "evidenceId": "cline-docs-30",
-          "quote": "Coordinated multi-file changes with linter-aware fixes, diffs, checkpoints, and one-click undo on every step."
         }
       ]
     }
@@ -9533,7 +9513,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack documents no sandboxed execution environment for Cline that isolates its code, tool, or network activity. Approval prompts, Plan mode's read-only restriction, checkpoints/undo, and Kanban's isolated git worktrees are adjacent safety controls or workspace separation, not a sandbox, so they earn no credit.",
+    "rationale": "Nothing in the evidence documents a sandbox that confines Cline's code execution, tool calls, or network access. The closest items are adjacent controls: human-in-the-loop approval, Auto Approve and YOLO settings, a read-only Plan mode (a dry-run-style restriction, not isolation), and per-card git worktrees in Kanban (file-level workspace separation, not a sandbox for tools or network). None of these is sandboxed execution, so the applicable axis earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9548,7 +9528,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A team knowledge workspace is a fair question for an AI coding assistant, so the axis applies. However, the evidence never documents creating a shared workspace from docs and repos as a team source of truth. Skills (modular instruction sets), MCP data sources and Kanban worktrees are adjacent features and do not deliver that shared team workspace.",
+    "rationale": "A shared team knowledge workspace is a fair question for a coding agent, so the axis applies. The evidence pack never documents creating a shared workspace from docs and repos as a team source of truth. Skills, MCP data sources and the Kanban board are related features, not this capability, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9563,7 +9543,7 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Cline's first-party docs describe a CLI headless mode for scripts and CI/CD, with processable output. Concrete invocations are shown, including an auto-approve flag, piped stdin, and use inside GitHub Actions and GitLab pipelines. Missing for 10: independent or hands-on corroboration of headless scripting, and detailed documentation of the output format and exit codes.",
+    "rationale": "Cline's documented CLI provides a headless mode for scripts and automation, with processable output. It supports an --auto-approve flag, accepts piped stdin input, and runs headlessly inside GitHub Actions, GitLab, or any pipeline. missing for 10: independent or hands-on corroboration of headless script usage, and detailed docs on the output format and exit codes.",
     "evidenceIds": [
       "cline-docs-2",
       "cline-docs-3",
@@ -9571,8 +9551,7 @@
       "cline-docs-33",
       "cline-docs-34",
       "cline-docs-17",
-      "cline-docs-4",
-      "cline-probe-4"
+      "cline-docs-4"
     ],
     "support": {
       "relation": "direct",
@@ -9580,12 +9559,12 @@
       "subject": "As a developer, I can run the agent non-interactively in scripts for workflow automation",
       "citations": [
         {
-          "evidenceId": "cline-docs-2",
-          "quote": "Run Cline in your terminal with interactive chat or fully headless automation for CI/CD and scripting."
-        },
-        {
           "evidenceId": "cline-docs-3",
           "quote": "Use headless mode for scripts/automation and processable output."
+        },
+        {
+          "evidenceId": "cline-docs-2",
+          "quote": "Run Cline in your terminal with interactive chat or fully headless automation for CI/CD and scripting."
         },
         {
           "evidenceId": "cline-docs-33",
@@ -9608,7 +9587,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack has no documented setting or policy that lets users opt out of having their code and prompts used for model training. BYOK, local models via Ollama/LM Studio, and the option to self-host are adjacent workarounds that may limit data exposure, but they are not a training opt-out control, so they earn no credit.",
+    "rationale": "The evidence pack has no Cline documentation of a training opt-out, a data-usage policy, or a zero-retention commitment for code and prompts. BYOK, local models via Ollama/LM Studio, and self-hosting are adjacent ways to route data away from Cline's provider, but they are user-side arrangements, not a documented opt-out control. So no credit is given.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9623,7 +9602,7 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Cline Kanban is a first-party web-based task board for running many coding agents in parallel. Each card gets its own isolated git worktree, with auto-commit, dependency chains, and in-card diff review with inline comments. The native app also lets you run agent sessions in any folder from one place. missing for 10: independent or hands-on corroboration of the Kanban multi-session workflow, detail on session monitoring and control (status overview, pause/stop) across sessions.",
+    "rationale": "Cline Kanban is a first-party web task board for running many coding agents in parallel. Each card gets its own isolated git worktree, with auto-commit, dependency chains, and per-card diff review with inline comments, which matches managing multiple agent sessions from one workspace. The native app also runs agent sessions across folders from one place. Missing for 10: independent or hands-on corroboration of the Kanban multi-session workflow, and detail on cross-session monitoring and status oversight.",
     "evidenceIds": [
       "cline-docs-5",
       "cline-docs-24",
@@ -9649,7 +9628,7 @@
         },
         {
           "evidenceId": "cline-gh-3",
-          "quote": "Run agent sessions in any folder, schedule"
+          "quote": "Run agent sessions in any folder, schedule\nroutines, and manage models, plugins, and MCP servers."
         }
       ]
     }
@@ -9660,7 +9639,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Security review is a fair question for an AI coding agent, so the axis applies. However, the evidence pack documents no security-vulnerability detection, explanation, or auto-fix capability. General features like linter-aware fixes and piping a git diff for review are adjacent, not security-specific, and earn no credit.",
+    "rationale": "Security-vulnerability explanation and remediation is a fair question for an AI coding agent, but the evidence pack documents no security-specific capability such as vulnerability detection, contextual vulnerability explanations, or automatic security fixes. Generic features like linter-aware fixes, piping a git diff in for review, and 'run tests and fix failures' are adjacent general-purpose behaviors. They are not a documented security-vulnerability feature, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",

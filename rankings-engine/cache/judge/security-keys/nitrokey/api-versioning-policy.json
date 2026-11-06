@@ -1,17 +1,29 @@
 {
-  "hash": "31422b64a8820d06b41ea99eb724766a2699d7b1b0a9eab731982620905cf945",
+  "hash": "874098649a1f6825b0f5e4bff6aef828562ed02711981e297a75745eb770b962",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Nitrokey ships versioned artifacts: the nitropy CLI 0.13.0, the Python SDK 0.4.2 and tagged firmware releases (v1.8.3). Nothing in the evidence describes a versioned API contract or any documented deprecation policy, and the OpenAPI probes all returned 404. Package version numbers alone are adjacent to this story and do not deliver it.",
-    "evidenceIds": [],
+    "rationale": "Nitrokey's NetHSM exposes a REST API with an OpenAPI 3.0.0 spec and URL-based versioning (/api/v1), and the repository publishes dated release notes per firmware version. The evidence states explicitly that there is no prose versioning or deprecation policy, so only half the story is delivered, and the USB keys have no REST API at all. Missing for 10: a documented deprecation policy, any versioning or compatibility guarantees, API versioning beyond NetHSM, and independent corroboration.",
+    "evidenceIds": [
+      "nitrokey-nethsm-releases-20261106",
+      "nitrokey-nethsm-openapi-20261106"
+    ],
     "support": {
-      "relation": "adjacent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "nitrokey-nethsm-releases-20261106",
+          "quote": "The NetHSM API is URL-versioned (servers /api/{version}, pinned to v1)"
+        },
+        {
+          "evidenceId": "nitrokey-nethsm-openapi-20261106",
+          "quote": "URL-versioned servers /api/v1"
+        }
+      ]
     },
     "productId": "nitrokey",
     "storyId": "api-versioning-policy"

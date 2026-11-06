@@ -54,9 +54,19 @@ Wave-5 specifics:
   self-hosted/local path.
 
 Scoped re-judges run under the ratified v6 rubric, then `derive` per touched arena and
-the dependent generators; the pre-audit over every upward flip (review-fix re-rolls
-included) runs before any push. Engine output is accepted as-is; honest negatives ship,
-and checked-absent cells that publish as engine partials on adjacent evidence are
-recorded with both readings.
+the dependent generators. Engine output is accepted as-is; honest negatives ship: cline's
+api-quality row is all-none (the unpublished-spec counter-check held), yubikey's prose
+protocol graded none for machine-spec and interactive-docs, and consensus's machine-spec
+publishes as disputed q2 on the dead-spec-link counter-check. One checked-absent cell
+publishes as an engine partial on adjacent evidence (stripe-identity
+api-interactive-docs, partial q3) and carries both readings.
+
+## Pre-audit (before the first push)
+
+93 up-moves vs merge-base, 57 verdict-level (29 target cells, 28 side-effect flips),
+re-read against the v6 on-axis bar. Zero artifact-backed corrections: the proactive
+counter-checks and scoped excerpts held every cell they target at honest grades. Seven
+conceded-thin partials stand with their limits inside the published rationales (named in
+the ledger `preAudit`); all other verdict-level ups rest on on-axis evidence.
 
 Row-level output: `2026-11-06-api-quality-wave5.json`.

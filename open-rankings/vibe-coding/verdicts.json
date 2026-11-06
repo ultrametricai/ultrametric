@@ -4017,18 +4017,21 @@
   {
     "productId": "lovable",
     "storyId": "agent-builds-app-via-api",
-    "verdict": "partial",
-    "quality": 5,
+    "verdict": "full",
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Lovable documents its own programmatic surface: an official Lovable MCP server lets an AI agent create projects, send messages, inspect code and deploy apps. A 'Lovable API Build with URL' feature also creates links that open Lovable with a prompt pre-filled. However, no general REST platform API is documented, and the OpenAPI probe returned 404 on every candidate path, so programmatic generation and management depends on MCP clients and prefilled URLs rather than a full API. missing for 10: documented REST/HTTP platform API with an OpenAPI spec, API authentication/keys docs, endpoint-level project management detail, independent hands-on corroboration",
+    "rationale": "Lovable documents a first-party, versioned \"Lovable API\" with an OpenAPI 3.1.0 spec, an interactive reference, date-pinned versions and a deprecation policy. Its official MCP server lets an AI agent create projects, send build messages, inspect code and deploy apps, which covers programmatic generation and management. The docs-path OpenAPI probe 404 does not contradict this, because the spec is served from the API host. Missing for 10: explicit endpoint-level documentation of project creation and generation in the REST API (the only cited endpoint is listing workspaces), independent hands-on corroboration, and broad availability (workspace API keys require a Business or Enterprise plan).",
     "evidenceIds": [
+      "lovable-openapi-spec-20261106",
+      "lovable-api-playground-20261106",
+      "lovable-api-versioning-20261106",
+      "lovable-deprecation-policy-20261106",
       "lovable-docs-37",
-      "lovable-docs-53",
-      "lovable-probe-2"
+      "lovable-docs-53"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can generate and manage apps programmatically through a platform API",
       "citations": [
         {
@@ -4036,8 +4039,16 @@
           "quote": "your AI agent can create projects, send messages to Lovable, inspect code, deploy apps, and more, all without leaving the client you're already working in"
         },
         {
-          "evidenceId": "lovable-docs-53",
-          "quote": "The Lovable API Build with URL feature lets you create links that open Lovable with a prompt already written"
+          "evidenceId": "lovable-openapi-spec-20261106",
+          "quote": "Lovable serves its full OpenAPI 3.1.0 document (info title \"Lovable API\") from the API host itself"
+        },
+        {
+          "evidenceId": "lovable-api-playground-20261106",
+          "quote": "Executing requests needs a workspace API key, which requires a Business or Enterprise plan."
+        },
+        {
+          "evidenceId": "lovable-deprecation-policy-20261106",
+          "quote": "The `/v1` surface is versioned and stable."
         }
       ]
     }
@@ -4048,7 +4059,7 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "A live probe confirms Lovable publishes an llms.txt index at docs.lovable.dev/llms.txt (HTTP 200, titled 'Lovable Documentation'), so an agent can be pointed directly at agent-oriented docs. The doc pages are also served as .md URLs, which suggests markdown-native content. Missing for 10: no evidence of an llms-full.txt or documented guidance on agent consumption, and no independent corroboration beyond the probe.",
+    "rationale": "A hands-on probe confirms Lovable serves a live llms.txt at docs.lovable.dev/llms.txt (HTTP 200, titled 'Lovable Documentation'), so an agent can be pointed at it directly. The docs pages are also served as raw .md URLs, which suits agent consumption. missing for 10: first-party documentation describing llms.txt or agent-oriented docs usage, evidence of an llms-full.txt or full-content bundle, independent corroboration of agents using it in practice.",
     "evidenceIds": [
       "lovable-probe-1",
       "lovable-docs-4"
@@ -4068,16 +4079,28 @@
   {
     "productId": "lovable",
     "storyId": "agentic-ai-insights",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Lovable's documented AI is aimed at building apps: generating code and schemas, running Build mode, and reading connected sources as context while you build. Nothing in the evidence documents the product itself surfacing AI-generated insights or suggestions from a user's data. The built-in AI connector, read-only database queries via the Telegram bot, and the ClickHouse chat connector are building blocks or adjacent features, so they earn no credit.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Lovable's own Slack and Telegram integrations let users ask questions about their workspace apps and run read-only queries against the project database. That gives a thin, conversational route to AI answers drawn from the user's own data. The AI connector only adds AI features to the user's built app (a building block), and custom MCP context serves building rather than insights, so neither is credited. Missing for 10: documented in-editor AI analysis of project or app data, proactive insights and suggestions derived from that data, in-depth docs, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "lovable-docs-50",
+      "lovable-docs-51"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can get AI-generated insights and suggestions from my data inside the product",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "lovable-docs-50",
+          "quote": "ask questions about the apps in your workspace"
+        },
+        {
+          "evidenceId": "lovable-docs-51",
+          "quote": "Query your project database with read-only queries"
+        }
+      ]
     }
   },
   {
@@ -4086,7 +4109,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence does not show user-configurable automations that run on their own in the background. Build mode is autonomous only while carrying out a task the user just requested, which is a one-off action rather than a recurring trigger or schedule. Edge functions are developer building blocks, and scheduled Deep scans are a narrow enterprise security feature rather than general automations, so neither earns credit.",
+    "rationale": "Background automation is a fair axis for an AI app builder, but the evidence does not show a product feature for user-defined automations that run on a schedule or trigger. Build mode runs a single requested task end to end, which is a one-off action, not a recurring schedule. Scheduled Deep scans cover only security scanning, and edge functions are developer building blocks, so neither counts.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -4101,15 +4124,14 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Lovable's documented Build mode is a built-in autonomous agent. Users hand it a task and it 'takes ownership of execution end to end', applying changes directly with visible diffs and summaries. Users can steer it mid-task, have it run project actions like publishing or deploying from chat, and it can spin up read-only subagents for research and review. Community posts confirm people use Lovable heavily to generate apps, but none hands-on evaluates the delegation workflow itself. missing for 10: independent hands-on corroboration of task delegation, and detail on the limits of autonomous execution (e.g. approval gates, failure handling).",
+    "rationale": "Lovable's own docs describe a built-in autonomous Build mode. When you give it a task, it \"takes ownership of execution end to end\" and shows diffs and summaries of its changes. You can steer it mid-task, it can spawn read-only subagents, and it runs project actions such as publishing straight from chat. missing for 10: independent hands-on corroboration of the delegated agent workflow (the community items discuss output quality, not the delegation capability itself).",
     "evidenceIds": [
       "lovable-docs-4",
       "lovable-docs-30",
+      "lovable-docs-38",
       "lovable-docs-43",
       "lovable-docs-56",
-      "lovable-docs-58",
-      "lovable-docs-38",
-      "lovable-docs-55"
+      "lovable-docs-58"
     ],
     "support": {
       "relation": "direct",
@@ -4125,16 +4147,12 @@
           "quote": "Lovable working on a request doesn't block you. Send a follow-up, a correction, or a new idea at any time to steer the work"
         },
         {
-          "evidenceId": "lovable-docs-56",
-          "quote": "you can also ask Lovable to run project actions from chat, for example publish my app, deploy this project, ship it, or find me a domain for my bakery"
-        },
-        {
           "evidenceId": "lovable-docs-38",
           "quote": "Lovable can start temporary, read-only subagents to research, inspect, or review focused parts of the work."
         },
         {
-          "evidenceId": "lovable-docs-43",
-          "quote": "Lovable applies changes directly to your project when using Build mode. All modifications are visible through file diffs and summaries."
+          "evidenceId": "lovable-docs-56",
+          "quote": "you can also ask Lovable to run project actions from chat, for example publish my app, deploy this project, ship it, or find me a domain for my bakery"
         }
       ]
     }
@@ -4143,12 +4161,14 @@
     "productId": "lovable",
     "storyId": "agentic-headless",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Lovable documents its own MCP server, which lets an external AI agent create projects, send messages, inspect code and deploy apps without the Lovable UI. That is a genuine non-interactive control surface, but the evidence never shows a CLI, a CI integration, or a public REST API, and the OpenAPI probes all returned 404. Build with URL only opens the interactive editor, so it does not count as headless. missing for 10: documented CLI or headless runner, CI pipeline integration (e.g. GitHub Actions), public API/OpenAPI spec with auth tokens for automation, hands-on corroboration of unattended runs.",
+    "rationale": "Lovable documents a programmatic surface that can drive the product without its editor UI. There is a versioned, stable REST 'Lovable API' with an OpenAPI spec and workspace API keys, and an official MCP server through which an agent can 'create projects, send messages to Lovable, inspect code, deploy apps'. However, nothing documents running it in a CI pipeline, and API keys require a Business or Enterprise plan. Missing for 10: a documented CI integration (e.g. a CLI or GitHub Action), a documented headless/non-interactive run mode, documentation of the API's agent/build endpoints beyond workspace listing, and independent hands-on corroboration.",
     "evidenceIds": [
       "lovable-docs-37",
-      "lovable-probe-2"
+      "lovable-openapi-spec-20261106",
+      "lovable-api-playground-20261106",
+      "lovable-deprecation-policy-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -4158,6 +4178,14 @@
         {
           "evidenceId": "lovable-docs-37",
           "quote": "your AI agent can create projects, send messages to Lovable, inspect code, deploy apps, and more, all without leaving the client you're already working in"
+        },
+        {
+          "evidenceId": "lovable-api-playground-20261106",
+          "quote": "Executing requests needs a workspace API key, which requires a Business or Enterprise plan."
+        },
+        {
+          "evidenceId": "lovable-deprecation-policy-20261106",
+          "quote": "The `/v1` surface is versioned and stable."
         }
       ]
     }
@@ -4166,9 +4194,9 @@
     "productId": "lovable",
     "storyId": "agentic-mcp-client",
     "verdict": "full",
-    "quality": 7,
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Lovable's own docs describe connecting custom MCP servers as chat connectors so Lovable can draw on them while building. Workspace MCP registries let members connect servers in a couple of clicks, and the desktop app adds local MCP server support. Missing for 10: detailed docs on tool invocation beyond reading 'live context', limits or permissions on MCP tool calls, and independent or hands-on corroboration.",
+    "rationale": "Lovable documents connecting custom MCP servers so it can use them as live context while building. Admins can curate MCP registries so members connect servers as chat connectors in a couple of clicks, and the desktop app adds local MCP server support. The server-side MCP items (docs-8, docs-37) are a different role and are not credited here. Missing for 10: independent or hands-on corroboration, and explicit documentation of invoking action-taking tools beyond reading context.",
     "evidenceIds": [
       "lovable-docs-41",
       "lovable-docs-42",
@@ -4189,7 +4217,7 @@
         },
         {
           "evidenceId": "lovable-docs-47",
-          "quote": "You get everything in the web app plus local MCP server support, multi-project tabs, and keyboard shortcuts."
+          "quote": "You get everything in the web app plus local MCP server support"
         }
       ]
     }
@@ -4200,11 +4228,9 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Lovable documents a first-party Lovable MCP server through which an external AI agent can create projects, send messages to Lovable, inspect code and deploy apps. That is an official server mode, so the story applies and is delivered. Separately, it can turn published apps into MCP servers for ChatGPT, Claude and other assistants. Missing for 10: setup, auth and tool-list details for the Lovable MCP server beyond a single summary line, and independent or hands-on corroboration that agents connect successfully.",
+    "rationale": "Lovable documents a first-party Lovable MCP server through which an external AI agent can create projects, send messages to Lovable, inspect code, and deploy apps from the client it already uses, so the product directly delivers the core of this story. Evidence about turning a user's published app into an MCP server, and about Lovable consuming custom MCP servers, covers different capabilities and is not credited here. missing for 10: documented connection and authentication setup steps, a list of the exposed tools and their limits, independent or hands-on corroboration.",
     "evidenceIds": [
-      "lovable-docs-37",
-      "lovable-docs-8",
-      "lovable-docs-26"
+      "lovable-docs-37"
     ],
     "support": {
       "relation": "direct",
@@ -4214,10 +4240,6 @@
         {
           "evidenceId": "lovable-docs-37",
           "quote": "your AI agent can create projects, send messages to Lovable, inspect code, deploy apps, and more, all without leaving the client you're already working in"
-        },
-        {
-          "evidenceId": "lovable-docs-8",
-          "quote": "Turn a published Lovable app into an MCP server for ChatGPT, Claude, and other AI assistants. Configure tools, sign-in, permissions, and access."
         }
       ]
     }
@@ -4228,7 +4250,7 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Lovable's core interface is a chat panel. Users describe apps, data schemas and features in natural language, and can run project actions such as publish, deploy or finding a domain straight from chat, with follow-ups to steer work in progress; the same commands also work via Slack. Community users describe driving it through prompts, though their complaints concern output quality rather than the natural-language control itself. Missing for 10: evidence that every operation (e.g., billing/credit settings, direct SQL access) can be done by natural language, and independent hands-on corroboration of chat-driven project actions like deploy and domain purchase.",
+    "rationale": "Lovable is operated mainly through natural-language chat. Users describe what to build, and the agent generates apps, creates database schemas, adds auth, and runs project actions such as publishing and domain search from chat. The same natural-language interface is available through Slack, ChatGPT, Telegram, and an MCP server. Community users describe prompt-driven building, but none corroborates in depth that chat-driven project actions like publish or domain search work. Missing for 10: independent hands-on corroboration of chat-based project operations beyond app generation.",
     "evidenceIds": [
       "lovable-docs-1",
       "lovable-docs-55",
@@ -4236,10 +4258,9 @@
       "lovable-docs-58",
       "lovable-docs-32",
       "lovable-docs-30",
-      "lovable-docs-4",
       "lovable-docs-50",
-      "lovable-probe-1",
-      "lovable-comm-6"
+      "lovable-docs-37",
+      "lovable-docs-4"
     ],
     "support": {
       "relation": "direct",
@@ -4259,8 +4280,8 @@
           "quote": "Describe the data your app needs in chat, and Lovable creates the tables and schema for you."
         },
         {
-          "evidenceId": "lovable-docs-30",
-          "quote": "Send a follow-up, a correction, or a new idea at any time to steer the work"
+          "evidenceId": "lovable-docs-58",
+          "quote": "Ask Lovable to publish, deploy, ship, or go live, and it handles the deploy for you while respecting all publish-related workspace settings and permissions."
         },
         {
           "evidenceId": "lovable-docs-50",
@@ -4275,7 +4296,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "An official CLI is a fair question for an AI app-building platform, but the evidence pack documents no Lovable command-line tool. The access surfaces it does show are a web editor, a desktop app, mobile apps, an MCP server, Slack and Telegram bots, and Build-with-URL links, none of which is a CLI. Git sync lets users work locally with their own tools, but that is a user-side workaround, not an official Lovable CLI.",
+    "rationale": "An official CLI is a fair question for an AI app-building platform, but the evidence pack never documents a Lovable command-line tool. The pack covers other surfaces: an MCP server, a REST API, a desktop app, mobile apps, Slack and Telegram bots, and Git sync for local IDE work. None of these is a first-party CLI, and adjacent interfaces earn no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4287,22 +4308,36 @@
   {
     "productId": "lovable",
     "storyId": "agentic-public-api",
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "medium",
-    "rationale": "Lovable documents a feature it calls the \"Lovable API Build with URL.\" It creates links that open Lovable with a prompt and optional reference images or pages pre-attached, so it is a documented public entry point for starting a build. It is only a launch link that opens the UI, though, and a probe found no OpenAPI or Swagger spec at any standard path. The Lovable MCP server belongs to a separate MCP-server story and is not credited here. Missing for 10: a programmatic REST/HTTP API with documented endpoints for managing projects, sending messages and deploying; authentication/API keys; a published API reference or OpenAPI spec; and hands-on corroboration.",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "Lovable documents a public REST API. It serves an OpenAPI 3.1.0 spec titled \"Lovable API\" from api.lovable.dev, has a Mintlify API reference with a \"Try it\" playground and cURL samples, pins versions by date through the Lovable-Version header, and publishes a stable /v1 deprecation policy. The probe 404s on docs-host OpenAPI paths do not contradict this, because the spec is served from the API host. Missing for 10: independent or hands-on corroboration of driving the API end to end, and broader availability, since API keys require a Business or Enterprise plan.",
     "evidenceIds": [
-      "lovable-docs-53",
-      "lovable-probe-2"
+      "lovable-openapi-spec-20261106",
+      "lovable-api-playground-20261106",
+      "lovable-api-versioning-20261106",
+      "lovable-deprecation-policy-20261106"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can drive the product through a documented public API",
       "citations": [
         {
-          "evidenceId": "lovable-docs-53",
-          "quote": "The Lovable API Build with URL feature lets you create links that open Lovable with a prompt already written, and optionally with reference images and web pages attached."
+          "evidenceId": "lovable-openapi-spec-20261106",
+          "quote": "Lovable serves its full OpenAPI 3.1.0 document (info title \"Lovable API\") from the API host itself"
+        },
+        {
+          "evidenceId": "lovable-api-playground-20261106",
+          "quote": "endpoint pages render a \"Try it\" runner (GET https://api.lovable.dev/v1/workspaces) with generated cURL samples carrying the Lovable-API-Key header"
+        },
+        {
+          "evidenceId": "lovable-deprecation-policy-20261106",
+          "quote": "The `/v1` surface is versioned and stable."
+        },
+        {
+          "evidenceId": "lovable-api-versioning-20261106",
+          "quote": "The API is date-version pinned via the Lovable-Version header"
         }
       ]
     }
@@ -4313,10 +4348,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nothing in the evidence shows Lovable letting users issue scoped or least-privilege API keys or tokens for an agent. The Lovable MCP server (docs-37) lets agents act on projects, but no credential scoping is documented. The 'permissions, and access' configuration (docs-8) applies to a user's published app exposed as an MCP server, and 'granular access controls' (docs-46) is about enterprise workspace access. Both are adjacent features, not scoped agent credentials, and no OpenAPI spec was found (probe-2).",
+    "rationale": "The evidence shows Lovable issues workspace API keys (Business/Enterprise plans), but nothing shows those keys can be limited by scope, permission set, or project to give an agent least-privilege access. The 'permissions and access' configuration applies to turning a user's published app into an MCP server, and enterprise 'granular access controls' cover workspace governance; neither is scoped credential issuance for Lovable's own API, so both are adjacent features.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
       "citations": []
@@ -4328,13 +4363,21 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "An AI app-building platform could plausibly ship official SDKs, so this axis applies. The evidence pack never documents an official Lovable SDK for any language. The nearest items are a Lovable MCP server, a Build-with-URL link feature and Supabase-based Cloud, which are different capabilities, and the OpenAPI probe returned 404 on every path.",
-    "evidenceIds": [],
+    "rationale": "The evidence documents a versioned public REST API: an OpenAPI 3.1.0 spec, an interactive playground with cURL samples, date-pinned versioning, and a deprecation policy. None of it mentions any official SDK or client library for any language. An OpenAPI spec and cURL samples are developer building blocks that someone could use to generate or write a client, not an official SDK, so they earn no credit for this story.",
+    "evidenceIds": [
+      "lovable-openapi-spec-20261106",
+      "lovable-api-playground-20261106"
+    ],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can build against official SDKs",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "lovable-openapi-spec-20261106",
+          "quote": "Lovable serves its full OpenAPI 3.1.0 document (info title \"Lovable API\") from the API host itself"
+        }
+      ]
     }
   },
   {
@@ -4343,7 +4386,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Lovable is a SaaS app-building platform that could plausibly offer outbound event webhooks, so the axis applies. The evidence pack documents no registrable outbound HTTP callbacks for Lovable events. The Slack and Telegram integrations, the MCP server, and the edge functions in generated apps are chat integrations, adjacent features, or building blocks, and none of them is a webhook subscription capability.",
+    "rationale": "Lovable has a versioned public API, but nothing in the evidence documents registrable outbound HTTP webhook callbacks for subscribing to Lovable events. The Slack and Telegram integrations are chat-app notifications, and the edge functions are developer building blocks inside generated apps, so neither qualifies.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4355,31 +4398,55 @@
   {
     "productId": "lovable",
     "storyId": "api-interactive-docs",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Lovable exposes programmatic surfaces such as the Build with URL API and an MCP server, so an interactive API reference is a fair question for this product. The evidence shows no interactive API reference or runnable examples, and the OpenAPI/Swagger probes all returned 404. The llms.txt file is a documentation index, not an interactive reference, so it earns no credit.",
-    "evidenceIds": [],
+    "rationale": "Lovable's Mintlify-hosted API reference is rendered from its OpenAPI 3.1.0 spec. Endpoint pages include an interactive \"Try it\" runner and generated cURL samples, so the reference is both explorable and runnable. The docs-path OpenAPI probe 404s do not contradict this, because the spec is served from api.lovable.dev. Executing requests requires a workspace API key, which needs a Business or Enterprise plan. Missing for 10: independent or hands-on corroboration that the playground works, runnable examples on lower-tier plans, and evidence of language samples beyond cURL.",
+    "evidenceIds": [
+      "lovable-api-playground-20261106",
+      "lovable-openapi-spec-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can explore an interactive API reference with runnable examples",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "lovable-api-playground-20261106",
+          "quote": "The Mintlify API reference runs the interactive playground: endpoint pages render a \"Try it\" runner (GET https://api.lovable.dev/v1/workspaces) with generated cURL samples carrying the Lovable-API-Key header."
+        },
+        {
+          "evidenceId": "lovable-openapi-spec-20261106",
+          "quote": "The docs reference pages render from the same spec."
+        }
+      ]
     }
   },
   {
     "productId": "lovable",
     "storyId": "api-machine-spec",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 9,
     "confidence": "medium",
-    "rationale": "Lovable has programmatic surfaces, including an official MCP server and a Build with URL API, so a machine-readable API spec is a fair question. However, the probe found no OpenAPI or Swagger document at any candidate path, and no doc mentions a downloadable spec. The llms.txt file is documentation for LLMs, not an API specification, and the MCP server is a separate capability that does not count here.",
-    "evidenceIds": [],
+    "rationale": "Lovable documents a full OpenAPI 3.1.0 document titled \"Lovable API\", served from the API host at api.lovable.dev/v1/openapi.yaml, and its API reference pages render from that same spec. The probe's 404s were on docs.lovable.dev paths, not the API host, so they do not contradict the claim. Missing for 10: independent or hands-on confirmation that the api.lovable.dev spec URL is downloadable.",
+    "evidenceIds": [
+      "lovable-openapi-spec-20261106",
+      "lovable-api-playground-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "lovable-openapi-spec-20261106",
+          "quote": "Lovable serves its full OpenAPI 3.1.0 document (info title \"Lovable API\") from the API host itself"
+        },
+        {
+          "evidenceId": "lovable-openapi-spec-20261106",
+          "quote": "The docs reference pages render from the same spec."
+        }
+      ]
     }
   },
   {
@@ -4388,7 +4455,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Lovable builds and hosts apps with a built-in database, so a sandbox or test environment isolated from production data is a fair question for it. However, no evidence shows a separate test or staging backend or data isolation. Collaboration drafts, remixes and Git branches copy the project or code and its preview, but none is documented as keeping production data out of testing. These are adjacent features, not this capability.",
+    "rationale": "Nothing in the evidence documents a sandbox or test environment with data kept separate from production, such as a staging database or isolated test data. The closest items are adjacent: drafts are 'a separate copy of the project with its own chat and preview', remixes are independent copies, and Git branches let you test features. None of these states that production data is isolated. Read-only subagents and read-only database queries limit writes but are not a sandbox environment.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -4400,16 +4467,37 @@
   {
     "productId": "lovable",
     "storyId": "api-versioning-policy",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Lovable exposes programmatic surfaces, including a Lovable MCP server and a 'Build with URL' API, so API versioning is a fair question for this product. Nothing in the evidence documents API versioning or a deprecation policy, and the OpenAPI probe returned 404 on every candidate path. The 'previously Agent mode' rename is a feature name change, not an API deprecation policy.",
-    "evidenceIds": [],
+    "rationale": "Lovable documents a date-versioned API pinned via the Lovable-Version header, defaulting to the oldest supported stable version, with a stable /v1 surface. It also states a deprecation policy: deprecated endpoints keep working for a migration period and their sunset date is announced. The probe's 404s on docs-host OpenAPI paths do not contradict this, since the spec is served from the API host. Missing for 10: a stated length for the migration period or other deprecation-policy details, and independent or hands-on corroboration of versioning and deprecation behavior.",
+    "evidenceIds": [
+      "lovable-api-versioning-20261106",
+      "lovable-deprecation-policy-20261106",
+      "lovable-openapi-spec-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "lovable-deprecation-policy-20261106",
+          "quote": "The `/v1` surface is versioned and stable."
+        },
+        {
+          "evidenceId": "lovable-deprecation-policy-20261106",
+          "quote": "Lovable commits to a deprecation policy for the API, where deprecated endpoints keep working for a migration period and announce their sunset date."
+        },
+        {
+          "evidenceId": "lovable-api-versioning-20261106",
+          "quote": "The API is date-version pinned via the Lovable-Version header"
+        },
+        {
+          "evidenceId": "lovable-openapi-spec-20261106",
+          "quote": "Omit for the oldest supported stable version, currently 2026-09-11."
+        }
+      ]
     }
   },
   {
@@ -4418,7 +4506,7 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Lovable documents a built-in AI connector that 'handles that setup for you,' and its Cloud backend includes AI with 'no infrastructure setup required.' Together these directly support adding AI features to a generated app without the user wiring up a provider. However, the evidence never explicitly says provider API keys are managed by Lovable, and it gives no detail on LLM calls versus agent-style features. missing for 10: explicit statement that provider keys are managed or abstracted, documented support for agents (not just generic AI features), supported models and usage limits, independent or hands-on corroboration.",
+    "rationale": "Lovable documents a first-party built-in AI connector that 'handles that setup for you', so users can add AI features by describing them. Its Cloud backend also includes AI with 'no infrastructure setup required', which covers the core of LLM calls without self-managed provider setup. However, the docs never explicitly say provider keys are managed for you, and agent-style AI features inside generated apps are not evidenced. missing for 10: explicit statement that no provider API keys are needed, documented support for agents (not just LLM calls) in generated apps, model/provider details or usage limits, independent hands-on corroboration.",
     "evidenceIds": [
       "lovable-docs-40",
       "lovable-docs-27"
@@ -4434,7 +4522,7 @@
         },
         {
           "evidenceId": "lovable-docs-27",
-          "quote": "includes a built-in backend (Cloud) with database, authentication, storage, edge functions, and AI, no infrastructure setup required."
+          "quote": "Lovable hosts your app and includes a built-in backend (Cloud) with database, authentication, storage, edge functions, and AI, no infrastructure setup required."
         }
       ]
     }
@@ -4442,28 +4530,24 @@
   {
     "productId": "lovable",
     "storyId": "app-security-review",
-    "verdict": "partial",
-    "quality": 6,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Lovable's own docs describe two built-in security scanners, Basic scan and Deep scan, plus optional connectors and scheduled Deep scans for enterprise, so the platform itself reviews the generated app for security issues. The evidence does not tie scanning to the publish flow, does not describe what the scanners detect, and has no hands-on corroboration, so the 'before it goes live' part is only implied. missing for 10: documented pre-publish scan gating or integration with publishing, details of scan coverage and findings, independent or hands-on corroboration.",
+    "rationale": "Lovable's docs describe two built-in security scanners, Basic scan and Deep scan, plus optional connectors, and enterprise adds scheduled Deep scans and workspace-wide security oversight. That is the platform itself reviewing the generated app for security issues. Community skepticism about users' security awareness is not concrete evidence that the scanners fail. Missing for 10: explicit documentation that scans run or gate before publishing, detail on what each scan checks, independent or hands-on corroboration.",
     "evidenceIds": [
       "lovable-docs-7",
       "lovable-docs-36",
       "lovable-docs-46",
-      "lovable-docs-19"
+      "lovable-docs-5"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As a developer, I can have the platform review my generated app for security issues before it goes live",
       "citations": [
         {
           "evidenceId": "lovable-docs-7",
           "quote": "Lovable includes two built-in security scanners, Basic scan and Deep scan, plus optional connectors for additional coverage."
-        },
-        {
-          "evidenceId": "lovable-docs-36",
-          "quote": "Lovable provides two built-in security scanners: Basic scan and Deep scan."
         },
         {
           "evidenceId": "lovable-docs-46",
@@ -4477,8 +4561,8 @@
     "storyId": "auth-scaffolding",
     "verdict": "full",
     "quality": 9,
-    "confidence": "high",
-    "rationale": "Lovable's authentication docs say that asking it to add login generates the signup and login pages, wires them to the backend and applies row level security. Sign-in methods include email, phone, Google, Apple, Microsoft and SAML SSO, all in the built-in Cloud backend. missing for 10: independent or hands-on corroboration that the scaffolded email/social auth flows work end to end.",
+    "confidence": "medium",
+    "rationale": "Lovable's first-party docs say that asking it to add login generates the signup and login pages, wires them to the backend and protects user data with row level security. The built-in Cloud backend supports sign-in by email, phone, Google, Apple, Microsoft and SAML SSO, so both email and social providers are covered. Missing for 10: independent or hands-on corroboration that the scaffolded auth works with social providers in practice.",
     "evidenceIds": [
       "lovable-docs-5",
       "lovable-docs-24",
@@ -4497,10 +4581,6 @@
         {
           "evidenceId": "lovable-docs-24",
           "quote": "Manage your app's users and configure how they sign in: email, phone, Google, Apple, Microsoft, and SAML SSO, all part of the built-in backend (Cloud)."
-        },
-        {
-          "evidenceId": "lovable-docs-27",
-          "quote": "Lovable hosts your app and includes a built-in backend (Cloud) with database, authentication, storage, edge functions, and AI, no infrastructure setup required."
         }
       ]
     }
@@ -4511,7 +4591,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack does not document any first-party bulk-operation feature, such as selecting many projects, files, users or records and acting on them in one step. The closest items are adjacent rather than direct: a SQL editor for direct database access (a developer building block), workspace-level skills reused across projects (configuration reuse, not a bulk action), an MCP server an external agent could script against (a building block), and multi-project tabs (UI navigation).",
+    "rationale": "Bulk operations are a fair question for an AI app builder, but no evidence item documents a bulk or batch capability, such as acting on many projects, files, or records in one operation. Workspace-wide skills, the SQL editor, the MCP server and the versioned API are adjacent features or building blocks, not a documented bulk-operations capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4526,7 +4606,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack documents no Lovable feature for defining event-triggered rules or automations. Cloud edge functions, realtime, scheduled Deep scans, and automatic Git sync are developer building blocks or adjacent features, not user-defined rules that fire actions on events.",
+    "rationale": "Nothing in the evidence shows Lovable offering a way to define event-triggered rules that run actions automatically. The closest items are adjacent and earn no credit: edge functions and realtime in the generated app's backend are developer building blocks, automatic Git sync and enterprise scheduled Deep scans are fixed built-in behaviors (and a schedule is not an event trigger), and chat-invoked project actions are one-off manual requests.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4541,7 +4621,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Scheduling recurring jobs is a fair question for an AI app builder with a hosted backend, so the axis applies. The pack never documents user-schedulable cron jobs or recurring workflows. Edge functions are only a developer building block, and enterprise \"scheduled Deep scans\" is a vendor-defined security feature rather than a general recurring-job capability, so neither earns credit.",
+    "rationale": "The evidence pack does not document any way for users to define or schedule recurring jobs or workflows, such as cron triggers, scheduled edge functions, or recurring agent tasks. The only scheduling mention is enterprise \"scheduled Deep scans\", a built-in security feature rather than user-defined recurring jobs. Edge functions and on-demand Build mode are developer building blocks or one-off actions, not a recurring schedule.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4556,7 +4636,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack documents no automations feature (scheduled or triggered workflows) in Lovable, and nothing about versioning, reviewing, or rolling back such automations. The available evidence covers versioning and review of project code instead: Git sync, pull-request review, Build-mode file diffs, and edit history. That is an adjacent capability, and no rollback is evidenced even for code. A builder of this kind could plausibly ship automations, so the axis applies and the verdict is \"none\" rather than \"na\".",
+    "rationale": "The evidence pack documents no automations feature in Lovable, so it also documents no way to version, review, or roll back automations. Git sync, pull-request review, file diffs and edit history all concern project application code; that is a different capability and earns no credit here. Rollback is not documented anywhere in the pack, even for projects.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4571,9 +4651,10 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Lovable's first-party docs describe custom domains as a replacement for the default xxx.lovable.app URL on a published project. The docs cover buying, connecting, verifying, troubleshooting and managing domains, and you can even ask the chat to find a domain. missing for 10: independent or hands-on corroboration of the domain connection flow, and detailed DNS/SSL setup steps in the evidence.",
+    "rationale": "Lovable's own docs describe a custom domain feature that replaces the default xxx.lovable.app URL with your own domain or subdomain. The same page covers buying, connecting, verifying, troubleshooting and managing domains, which builds on publishing the project to a live URL. Missing for 10: independent or hands-on corroboration of the custom-domain connection flow.",
     "evidenceIds": [
       "lovable-docs-12",
+      "lovable-docs-22",
       "lovable-docs-57",
       "lovable-docs-19",
       "lovable-docs-56"
@@ -4601,20 +4682,21 @@
   {
     "productId": "lovable",
     "storyId": "deploy-external-hosting",
-    "verdict": "partial",
-    "quality": 5,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Lovable's docs say you can export and sync a project to GitHub or GitLab, or download the codebase, so you can \"deploy outside Lovable\". That makes self-hosting a documented, product-supported path. However, the evidence gives no deployment guide for any external host or own infrastructure. It also does not address how the built-in Lovable Cloud backend (database, auth, functions) would move off-platform. Missing for 10: documented steps for deploying to external hosts or self-managed infrastructure, portability of the Cloud/Supabase backend outside Lovable, and independent or hands-on confirmation of an external deploy.",
+    "rationale": "Lovable's docs say you can export and sync a project to GitHub (or GitLab) and \"deploy outside Lovable.\" You can also download the codebase directly from Project settings, so the generated app's code can be taken to another host. missing for 10: step-by-step guides for deploying to specific external hosts or self-managed infrastructure, documentation on running the built-in Cloud backend (database/auth/functions) outside Lovable, independent or hands-on confirmation of an external deployment.",
     "evidenceIds": [
       "lovable-docs-14",
       "lovable-docs-20",
       "lovable-docs-10",
+      "lovable-docs-2",
       "lovable-docs-33",
-      "lovable-docs-2"
+      "lovable-docs-54"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As a developer, I can deploy the generated app to an external host or my own infrastructure",
       "citations": [
         {
@@ -4638,11 +4720,10 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Lovable's project docs say each project includes the app's source code, 'which you can browse, edit, and download', and generated apps are described as 'backed by editable code', with Build-mode changes shown as file diffs. Together these directly support opening and editing the code inside the builder. missing for 10: in-depth documentation of the in-builder code editor (navigation, editing workflow, plan or permission limits), independent or hands-on corroboration of editing code directly in the builder.",
+    "rationale": "Lovable's project docs say the in-project Code view shows your app's source code, which you can browse, edit, and download. That directly matches opening and editing generated code inside the builder, and the welcome docs add that apps are 'backed by editable code'. The support rests on a single short line: the docs don't describe the editor's features (file tree, saving, syntax support) or any plan limits, and no hands-on or community report confirms in-builder editing. Local IDE editing via Git sync is a separate workaround and gets no credit here. Missing for 10: in-depth docs on the in-builder code editor's capabilities and limits, independent or hands-on corroboration of direct in-builder editing.",
     "evidenceIds": [
       "lovable-docs-54",
-      "lovable-docs-1",
-      "lovable-docs-43"
+      "lovable-docs-1"
     ],
     "support": {
       "relation": "direct",
@@ -4656,10 +4737,6 @@
         {
           "evidenceId": "lovable-docs-1",
           "quote": "all backed by editable code"
-        },
-        {
-          "evidenceId": "lovable-docs-43",
-          "quote": "All modifications are visible through file diffs and summaries."
         }
       ]
     }
@@ -4670,7 +4747,7 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Lovable's own docs say you can download the codebase from Project settings → Git, sync it to a GitHub or GitLab repo you own, work locally in your IDE, and 'deploy outside Lovable'. That covers export plus running or hosting outside the platform. The docs do not explain how to move the built-in Cloud backend (database, auth, edge functions) off Lovable, and no community source confirms self-hosting, so quality is held below 9. missing for 10: documented steps for self-hosting or migrating the Cloud/Supabase backend outside Lovable, independent hands-on corroboration of running an exported app elsewhere",
+    "rationale": "Lovable's docs say you can download the codebase directly from Project settings → Git, or sync it to a GitHub/GitLab repo you own. The GitHub integration explicitly supports working locally and deploying outside Lovable. Missing for 10: detailed guidance on running the Cloud backend (database/auth/functions) outside Lovable, and independent hands-on corroboration of self-hosting an exported app.",
     "evidenceIds": [
       "lovable-docs-10",
       "lovable-docs-14",
@@ -4709,10 +4786,9 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Lovable documents an official Lovable MCP server through which a user's own AI agent can create projects, send messages to Lovable, inspect code and deploy apps. That lets an external agent drive the builder alongside the built-in one. Git sync also lets locally edited code sync back into the project. The 'instead of' mode is only weakly evidenced, since the MCP surface routes changes through Lovable's own agent rather than documenting direct code edits by the external agent. missing for 10: documented direct file/code editing by an external agent via MCP (replacing the built-in agent), detail on the MCP tool set and permissions, and independent or hands-on corroboration.",
+    "rationale": "Lovable documents an official MCP server that lets the user's own AI agent create projects, send messages to Lovable, inspect code, and deploy apps. This means an external agent can drive the builder alongside the built-in one. However, the evidence shows that agent working through Lovable's built-in agent, not replacing it. Git sync lets locally made edits sync back, but that is a general IDE workflow rather than a documented agent-driving capability, so it earns no credit here. Missing for 10: evidence that an external agent can directly edit project code in place of the built-in agent, details on tool scope and limits, and independent or hands-on corroboration of the MCP-server workflow.",
     "evidenceIds": [
-      "lovable-docs-37",
-      "lovable-docs-9"
+      "lovable-docs-37"
     ],
     "support": {
       "relation": "direct",
@@ -4722,10 +4798,6 @@
         {
           "evidenceId": "lovable-docs-37",
           "quote": "your AI agent can create projects, send messages to Lovable, inspect code, deploy apps, and more, all without leaving the client you're already working in"
-        },
-        {
-          "evidenceId": "lovable-docs-9",
-          "quote": "Work locally in your IDE. Clone the repository, edit and commit locally, and push. Your changes sync back into Lovable."
         }
       ]
     }
@@ -4734,15 +4806,18 @@
     "productId": "lovable",
     "storyId": "full-stack-generation",
     "verdict": "full",
-    "quality": 9,
+    "quality": 8,
     "confidence": "high",
-    "rationale": "Lovable's docs say a single description produces a working app spanning frontend, backend, database, authentication and integrations, backed by editable code. Feature docs show chat requests generating UI wired to backend logic, such as login pages connected to the backend with row-level security, and schema creation from chat. Community users report building CRUD and dashboard apps with it. Missing for 10: independent hands-on corroboration that one prompt yields both UI and non-trivial backend logic, plus users noting the generated code is only 'okay'.",
+    "rationale": "Lovable's docs say that from a single description it generates a working app with frontend, backend, database, authentication and integrations. Its auth feature generates login pages and wires them to the backend, and its database feature creates tables and schema from a chat description. Hands-on users confirm it builds full CRUD tools and app scaffolding, though they report mediocre code quality. Missing for 10: independent evidence of backend logic beyond the Supabase-based Cloud, such as custom edge-function business logic, and evidence that the generated backend is production-quality (users report loose typing, single-file code and poor caching/performance).",
     "evidenceIds": [
       "lovable-docs-1",
       "lovable-docs-5",
       "lovable-docs-32",
       "lovable-docs-27",
-      "lovable-comm-9"
+      "lovable-docs-55",
+      "lovable-comm-9",
+      "lovable-comm-10",
+      "lovable-comm-1"
     ],
     "support": {
       "relation": "direct",
@@ -4773,8 +4848,8 @@
     "storyId": "github-two-way-sync",
     "verdict": "full",
     "quality": 9,
-    "confidence": "high",
-    "rationale": "First-party docs state that Git sync connects a project to a repository the user owns on GitHub or GitLab and keeps the two in sync automatically. Local commits pushed to the repo sync back into Lovable, so changes flow both ways, and pull-request review, branches and outside deployment are also documented. Missing for 10: independent or hands-on corroboration of bidirectional sync, and details on conflict handling.",
+    "confidence": "medium",
+    "rationale": "Lovable's first-party docs describe Git sync to a repository the user owns on GitHub or GitLab, kept in sync automatically. Changes flow both ways: local commits pushed to the repo sync back into Lovable, and branches and pull requests are supported. missing for 10: independent or hands-on corroboration of bidirectional sync reliability (e.g., conflict handling).",
     "evidenceIds": [
       "lovable-docs-33",
       "lovable-docs-9",
@@ -4807,10 +4882,9 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "The only first-party evidence is the Build with URL feature, which opens Lovable with a prompt and can attach reference images and web pages. That gives an existing design to the builder as a reference input, but nothing documents importing a Figma file or how faithfully the design is implemented. The welcome page's line about designers moving beyond static mockups is positioning, not a documented import capability. Missing for 10: documented Figma file import, a first-class design-import workflow in the editor, evidence of design fidelity, and independent or hands-on corroboration.",
+    "rationale": "The only product-specific evidence is the Build with URL feature, which can open Lovable with a prompt plus attached reference images and web pages. That is a thin route for handing an existing design to the builder. The docs line about designers moving beyond static mockups is positioning only and shows no import capability. missing for 10: any documented Figma file import, evidence that the builder faithfully implements an imported design, documentation of design-upload workflows inside the editor, hands-on corroboration.",
     "evidenceIds": [
-      "lovable-docs-53",
-      "lovable-docs-3"
+      "lovable-docs-53"
     ],
     "support": {
       "relation": "direct",
@@ -4819,7 +4893,7 @@
       "citations": [
         {
           "evidenceId": "lovable-docs-53",
-          "quote": "The Lovable API Build with URL feature lets you create links that open Lovable with a prompt already written, and optionally with reference images and web pages attached."
+          "quote": "create links that open Lovable with a prompt already written, and optionally with reference images and web pages attached"
         }
       ]
     }
@@ -4830,12 +4904,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Lovable documents iterative follow-up prompting in Build mode: you can send follow-ups or corrections at any time to steer the work, and changes are shown through file diffs and summaries. Per-person drafts give a separate copy of the project with its own chat and preview, which helps isolate changes. However, nothing in the pack documents a safeguard against regressions, such as preserving existing behavior, testing, or one-click revert of a bad prompt. Missing for 10: documented version history/rollback of AI edits, regression protection or testing of existing functionality, independent hands-on evidence that follow-up edits don't break working features.",
+    "rationale": "Lovable documents iterative refinement through chat: you can send follow-ups or corrections at any time to steer the work. Build mode shows every change as file diffs and summaries, and collaborators can work in separate drafts, which gives some visibility and isolation when changing a working app. However, nothing in the evidence shows protection against regressions, such as change-scoping guarantees, automatic testing, or a documented in-product rollback or restore of a prior working version. Missing for 10: documented safeguards against breaking existing functionality, in-product version restore or rollback, independent hands-on corroboration of stable iteration.",
     "evidenceIds": [
       "lovable-docs-30",
       "lovable-docs-43",
       "lovable-docs-34",
-      "lovable-docs-4"
+      "lovable-docs-51"
     ],
     "support": {
       "relation": "direct",
@@ -4853,6 +4927,10 @@
         {
           "evidenceId": "lovable-docs-34",
           "quote": "each of you can work in your own draft: a separate copy of the project with its own chat and preview."
+        },
+        {
+          "evidenceId": "lovable-docs-51",
+          "quote": "Check edit history and review what changed"
         }
       ]
     }
@@ -4863,7 +4941,7 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Lovable's Git sync docs describe the full loop: clone the repo, edit and commit locally in your IDE, push, and the changes sync back into Lovable. Git sync keeps a GitHub or GitLab repository you own in sync with the project automatically. Missing for 10: independent or hands-on corroboration that local pushes sync back reliably, and documentation of how sync conflicts or edge cases are handled.",
+    "rationale": "Lovable's Git sync documentation states that you can clone the repo, edit and commit locally in your IDE, and push, with the changes syncing back into Lovable automatically. That covers the whole story: local editing with your own tooling plus round-trip sync to the platform. Missing for 10: independent or hands-on corroboration of the local-to-platform round-trip sync, and documented detail on conflict handling.",
     "evidenceIds": [
       "lovable-docs-9",
       "lovable-docs-33",
@@ -4896,12 +4974,12 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Lovable documents built-in publishing that deploys a snapshot of the project to a shareable live URL (default xxx.lovable.app). It takes two clicks with working defaults, and it can also be triggered from chat with 'publish my app'. The platform hosts the app with no infrastructure setup. Missing for 10: independent or hands-on corroboration of the one-step publish flow; the community evidence does not address publishing.",
+    "rationale": "Lovable's first-party publish docs say publishing deploys a snapshot to a shareable live URL (default xxx.lovable.app). It takes two clicks with working defaults, or a single chat request like \"publish my app\", and Lovable hosts the app with no infrastructure setup. missing for 10: independent or hands-on corroboration of the one-step publish flow.",
     "evidenceIds": [
       "lovable-docs-19",
       "lovable-docs-21",
-      "lovable-docs-56",
       "lovable-docs-58",
+      "lovable-docs-56",
       "lovable-docs-27",
       "lovable-docs-12",
       "lovable-docs-28"
@@ -4934,13 +5012,15 @@
     "productId": "lovable",
     "storyId": "openness-api-parity",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Lovable documents its own MCP server that lets an external AI agent create projects, send messages, inspect code and deploy apps. That is a real programmatic surface covering core UI actions, but nothing shows full parity with the UI. The 'Lovable API' Build with URL feature only pre-fills prompt links, and probes found no OpenAPI spec. Missing for 10: a documented public REST/HTTP API, evidence of parity for settings, domains, database, security scans, collaboration and billing, published API reference/spec, independent corroboration.",
+    "rationale": "Lovable documents a versioned public API (OpenAPI 3.1.0 spec, Try-it playground, date-pinned versions, deprecation policy) and an MCP server that lets agents create projects, send messages, inspect code and deploy apps. Nothing documents that the API matches everything the UI can do, and API keys require a Business or Enterprise plan. Missing for 10: an explicit API/UI parity statement, documented API coverage of UI features such as domains, collaboration, security scans, database editing and settings, and independent hands-on corroboration.",
     "evidenceIds": [
-      "lovable-docs-37",
-      "lovable-docs-53",
-      "lovable-probe-2"
+      "lovable-openapi-spec-20261106",
+      "lovable-api-playground-20261106",
+      "lovable-api-versioning-20261106",
+      "lovable-deprecation-policy-20261106",
+      "lovable-docs-37"
     ],
     "support": {
       "relation": "direct",
@@ -4948,12 +5028,20 @@
       "subject": "As an AI-native user, I can do everything through the API that I can do in the UI",
       "citations": [
         {
+          "evidenceId": "lovable-openapi-spec-20261106",
+          "quote": "Lovable serves its full OpenAPI 3.1.0 document (info title \"Lovable API\") from the API host itself"
+        },
+        {
           "evidenceId": "lovable-docs-37",
           "quote": "your AI agent can create projects, send messages to Lovable, inspect code, deploy apps, and more, all without leaving the client you're already working in"
         },
         {
-          "evidenceId": "lovable-docs-53",
-          "quote": "The Lovable API Build with URL feature lets you create links that open Lovable with a prompt already written"
+          "evidenceId": "lovable-deprecation-policy-20261106",
+          "quote": "The `/v1` surface is versioned and stable."
+        },
+        {
+          "evidenceId": "lovable-api-playground-20261106",
+          "quote": "Executing requests needs a workspace API key, which requires a Business or Enterprise plan."
         }
       ]
     }
@@ -4964,14 +5052,14 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Lovable documents leaving with your code: you can download the codebase, sync it to a GitHub or GitLab repo you own, and deploy outside Lovable. However, nothing in the evidence documents exporting the rest of your data (database contents, auth users, storage files) in open formats. The SQL editor gives direct database access and the backend is Supabase-based, but neither is a documented export path. missing for 10: documented export of database data, auth/user records, and storage files in open formats, plus independent or hands-on corroboration of a complete migration off Lovable.",
+    "rationale": "Lovable documents exporting the full app codebase: you can download it directly or sync it to a GitHub/GitLab repo you own, then deploy outside Lovable. The backend runs on Supabase's open-source foundation and offers direct SQL access. However, nothing in the evidence documents exporting the database contents, users, or storage in open formats, so 'all of my data' is only half covered. Missing for 10: a documented database/user/storage data export, a documented backend migration path off Lovable Cloud, and independent hands-on corroboration of a full exit.",
     "evidenceIds": [
       "lovable-docs-10",
       "lovable-docs-14",
       "lovable-docs-33",
       "lovable-docs-54",
-      "lovable-docs-6",
-      "lovable-docs-52"
+      "lovable-docs-52",
+      "lovable-docs-6"
     ],
     "support": {
       "relation": "direct",
@@ -4991,8 +5079,8 @@
           "quote": "Git sync connects a Lovable project to a repository you own on GitHub or GitLab, and keeps the two in sync automatically"
         },
         {
-          "evidenceId": "lovable-docs-54",
-          "quote": "Code: Your app's source code, which you can browse, edit, and download."
+          "evidenceId": "lovable-docs-52",
+          "quote": "The built-in backend utilizes Supabase's open-source foundation"
         }
       ]
     }
@@ -5003,7 +5091,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Whether a product's own source is available under an open license is a fair question for any software product, so this axis applies. The evidence shows no open-source license for Lovable itself. The docs only show that users can browse, download and Git-sync the code of the apps Lovable generates for them, and that the built-in backend builds on Supabase's open-source foundation. Neither is Lovable's own source under an open license, so neither earns credit.",
+    "rationale": "Whether a product's own source is available under an open license is a fair question for an AI app-builder SaaS, so the axis applies. The pack contains no evidence that Lovable's own source code is published or openly licensed. The docs only show that users can browse and download the code Lovable generates for their own projects, which is a different capability, and the note that the backend builds on Supabase's open-source foundation describes an underlying platform, not Lovable's own source.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5018,7 +5106,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Self-hosting is a fair question for a SaaS app builder, but the evidence shows Lovable runs as a hosted service ('nothing to install', 'Lovable hosts your app'). Exporting or deploying the generated app's code outside Lovable is a different capability: it covers the user's output, not self-hosting Lovable's core product. There is no evidence of an on-prem or self-hosted edition.",
+    "rationale": "Self-hosting is a fair question for a SaaS AI app builder, but the evidence shows Lovable runs only as a hosted service (\"Lovable hosts your app\", \"nothing to install\"). Exporting generated code to deploy outside Lovable, and the Supabase open-source foundation of the backend, concern the user's generated apps or the underlying platform, not a self-hostable Lovable core, so they earn no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5030,10 +5118,10 @@
   {
     "productId": "lovable",
     "storyId": "preview-before-publish",
-    "verdict": "partial",
-    "quality": 6,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Lovable's editor documents a preview panel beside the chat where you watch the app take shape while building. Collaborators each get a draft with its own preview, and publishing is a separate step that deploys a snapshot, so the preview is clearly available before publishing. However, the docs say users \"watch\" the preview; they never explicitly say you can click through or use the app inside it. Missing for 10: explicit documentation that the preview is interactive (clicking, forms, navigation, logged-in flows), and hands-on or independent confirmation of using the preview before publish.",
+    "rationale": "Lovable's editor documents a live preview pane where you watch your app take shape while chatting. Collaborators each get their own draft with its own preview, and publishing is a separate later step that deploys a snapshot, so the preview clearly comes before publishing. missing for 10: explicit documentation that the preview is fully interactive (clicking through flows, testing auth or data), independent hands-on corroboration of preview interactivity.",
     "evidenceIds": [
       "lovable-docs-55",
       "lovable-docs-34",
@@ -5041,7 +5129,7 @@
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As a founder, I can interact with a live preview of my app while building, before publishing",
       "citations": [
         {
@@ -5065,7 +5153,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "The only relevant evidence is the enterprise page listing \"regional code hosting\" among Enterprise features. That is a first-party residency control, but it covers code only, appears tier-gated, and gets a single thin mention with no explanation of how a region is chosen. missing for 10: documented region selection for app data (Cloud database, storage, auth), details on available regions and how to select them, availability outside Enterprise, independent or hands-on corroboration.",
+    "rationale": "Lovable's enterprise documentation lists \"regional code hosting\" among its enterprise features. That is a first-party region/residency capability, but it is a single thin mention, apparently enterprise-only, and covers code rather than clearly all project data. missing for 10: documented region selection for app/Cloud database and storage data, details on available regions and how to choose them, availability on non-enterprise plans, independent or hands-on corroboration.",
     "evidenceIds": [
       "lovable-docs-46"
     ],
@@ -5076,7 +5164,7 @@
       "citations": [
         {
           "evidenceId": "lovable-docs-46",
-          "quote": "regional code hosting"
+          "quote": "audit logs, regional code hosting"
         }
       ]
     }
@@ -5087,7 +5175,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Whether user data can be excluded from AI model training is a fair question for an AI app builder, so the axis applies. However, nothing in the evidence pack mentions a training opt-out, a data-usage policy, or a no-training guarantee. Security scanners, row level security, and enterprise controls are adjacent features and do not address model training.",
+    "rationale": "Opting out of AI model training is a fair privacy question for an AI app builder like Lovable, so the axis applies. However, nothing in the evidence pack documents a training opt-out, a data-usage control, or a no-training policy. Enterprise features such as audit logs and regional code hosting are adjacent controls, not training prevention, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5102,7 +5190,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack has no documentation of user controls over data retention or deletion, such as retention periods, deleting chats, projects or accounts, or opting out of training. Adjacent items like enterprise audit logs, regional code hosting and the app's SQL editor are related controls, not retention or deletion controls, so they earn no credit.",
+    "rationale": "Retention and deletion controls are a fair privacy question for a hosted AI app builder like Lovable, but the evidence pack never documents retention settings, data or project deletion, or deletion of chat or prompt data. The closest items are adjacent: the SQL editor gives access to the app's own database, code can be downloaded, and enterprise offers audit logs and regional hosting. None of these is a retention or deletion control over the user's data held by Lovable.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5117,7 +5205,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Opting out of telemetry and usage tracking is a fair privacy question for a hosted AI app builder, so the axis applies. Nothing in the evidence pack documents any telemetry, analytics, or usage-tracking opt-out control. The nearby privacy and security material (security scanners, row level security, enterprise audit logs) covers different features and earns no credit here.",
+    "rationale": "Opting out of telemetry is a fair privacy question for a hosted AI app builder like Lovable, so the axis applies. The evidence pack contains no documentation of a telemetry, analytics, or usage-tracking opt-out setting. Security scanners, audit logs, and credit-usage tracking are adjacent features and do not count as a user opt-out.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5132,17 +5220,15 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Lovable's docs say you describe what you want and it generates a working app with frontend, backend, database, authentication and integrations, with hosting and publishing built in. Hands-on reports confirm apps get built from prompts, such as internal CRUD tools and scaffolding that \"did a great job\". The same reports note generated code is only okay, lumps everything into one JS file, and can perform poorly; these limit quality but do not contradict that a working full-stack app is produced. Missing for 10: independent evidence that generated apps are production-grade in code structure and performance, and corroboration beyond prototypes and internal tools for complex apps.",
+    "rationale": "Lovable's docs state that a natural-language description produces a working app with frontend, backend, database, authentication and integrations, backed by its built-in Cloud backend and chat-driven schema creation. Hands-on community reports confirm working apps: a startup CTO uses it for internal CRUD dashboards, and another user called its app scaffolding 'far better than I expected'. Missing for 10: hands-on evidence of production-quality code and architecture for more complex apps (users report a single bloated JS file, 'any' type abuse and poor performance choices), and independent corroboration that generated apps reach launch rather than prototype stage.",
     "evidenceIds": [
       "lovable-docs-1",
       "lovable-docs-27",
       "lovable-docs-32",
       "lovable-docs-5",
-      "lovable-docs-19",
       "lovable-docs-28",
       "lovable-comm-9",
-      "lovable-comm-10",
-      "lovable-comm-1"
+      "lovable-comm-10"
     ],
     "support": {
       "relation": "direct",
@@ -5173,15 +5259,16 @@
     "storyId": "provision-database",
     "verdict": "full",
     "quality": 9,
-    "confidence": "high",
-    "rationale": "Lovable's docs describe a built-in Cloud backend with a database that needs no infrastructure setup. It is built on Supabase without a separate Supabase setup, and Lovable creates tables and schema from chat descriptions. Direct SQL access is available in the Cloud tab, so provisioning and wiring happen inside the builder. Missing for 10: independent hands-on corroboration that database provisioning and wiring work as documented.",
+    "confidence": "medium",
+    "rationale": "Lovable's first-party docs say it ships a built-in backend (Cloud) that includes a database with no infrastructure setup, creates tables and schema from a chat description, wires the generated app to that backend, and offers an in-builder SQL editor. Together this covers provisioning and wiring without leaving the builder; community comments about the Supabase partnership are speculation, not a contradiction. Missing for 10: independent or hands-on corroboration that database provisioning and wiring work end to end as documented.",
     "evidenceIds": [
       "lovable-docs-27",
-      "lovable-docs-31",
       "lovable-docs-32",
       "lovable-docs-52",
-      "lovable-docs-23",
-      "lovable-docs-1"
+      "lovable-docs-6",
+      "lovable-docs-1",
+      "lovable-docs-5",
+      "lovable-docs-31"
     ],
     "support": {
       "relation": "direct",
@@ -5201,8 +5288,12 @@
           "quote": "you get a production-ready environment from day one, without needing to set up Supabase separately"
         },
         {
-          "evidenceId": "lovable-docs-23",
-          "quote": "For direct database access, use the SQL editor at **Cloud tab → SQL editor**"
+          "evidenceId": "lovable-docs-6",
+          "quote": "For direct database access, use the SQL editor at Cloud tab → SQL editor"
+        },
+        {
+          "evidenceId": "lovable-docs-5",
+          "quote": "it generates the signup and login pages, wires them to your backend, and protects user data with row level security."
         }
       ]
     }
@@ -5213,13 +5304,14 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "medium",
-    "rationale": "Lovable's collaboration docs describe inviting teammates to build together with live visibility of changes. Each collaborator can also work in a separate draft of the same project, and workspaces span multiple projects with shared skills. Missing for 10: independent or hands-on corroboration of multi-user collaboration, and detailed role/permission documentation for workspace members.",
+    "rationale": "Lovable's first-party collaboration docs describe inviting teammates into a project, real-time visibility of changes, and per-person drafts when several people build in the same project. Workspaces are referenced in the account, skills and publish-permission docs. missing for 10: independent or hands-on corroboration of multi-user collaboration, detailed documentation of workspace member roles and permissions.",
     "evidenceIds": [
       "lovable-docs-11",
       "lovable-docs-34",
       "lovable-docs-35",
       "lovable-docs-39",
-      "lovable-docs-45"
+      "lovable-docs-45",
+      "lovable-docs-58"
     ],
     "support": {
       "relation": "direct",
@@ -5245,15 +5337,15 @@
     "productId": "lovable",
     "storyId": "server-functions-integrations",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Lovable's docs describe a built-in Cloud backend with edge functions, built from chat. They also claim generated apps include integrations, with specific connectors documented for AI and ClickHouse. Nothing in the pack shows payment or transactional-email integrations specifically, and the 'email' mention is only a sign-in method. Missing for 10: documented payments integration (e.g. Stripe), documented transactional email integration, detail on authoring and deploying edge functions from the builder, independent hands-on corroboration.",
+    "rationale": "Lovable's docs say its built-in Cloud backend includes edge functions, so you can add server-side functions from the builder. They also document generated integrations, a built-in AI connector, and a ClickHouse app connector, so third-party integrations are a first-party capability. However, no evidence shows payment or email-sending integrations specifically, and nothing describes how functions are authored or managed in depth. Missing for 10: documented payments integration (e.g. Stripe), documented transactional email integration, detailed edge-function docs, independent hands-on corroboration.",
     "evidenceIds": [
       "lovable-docs-27",
       "lovable-docs-31",
       "lovable-docs-1",
-      "lovable-docs-40",
-      "lovable-docs-44"
+      "lovable-docs-44",
+      "lovable-docs-40"
     ],
     "support": {
       "relation": "direct",
@@ -5266,7 +5358,7 @@
         },
         {
           "evidenceId": "lovable-docs-1",
-          "quote": "Lovable generates a working application that includes frontend, backend, database, authentication, and integrations, all backed by editable code."
+          "quote": "Lovable generates a working application that includes frontend, backend, database, authentication, and integrations, all backed by editable code"
         },
         {
           "evidenceId": "lovable-docs-44",
@@ -5282,17 +5374,17 @@
   {
     "productId": "lovable",
     "storyId": "start-from-template",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Lovable's docs say remixing creates your own independent copy of a project that you can edit freely on any plan, which covers starting from an existing project. A hands-on community report confirms users can pick a template at signup, so both template and copy-based starts are evidenced. missing for 10: first-party documentation of a template gallery, explicit docs of a browsable community project showcase, detail on what templates cover.",
+    "rationale": "Lovable's getting-started docs describe remixing, which makes an independent, editable copy of an existing project on any plan. That is a non-blank starting point. A hands-on community report also confirms a user signed up and 'picked a template', so templates do exist. Missing for 10: first-party documentation of a template gallery, documentation that remixing works on public community projects (a community showcase or discovery feature), and detail on what templates contain.",
     "evidenceIds": [
       "lovable-docs-13",
       "lovable-comm-2"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As a founder, I can start from a template or community project instead of a blank prompt",
       "citations": [
         {
@@ -5312,7 +5404,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack does not document any element-selection or visual editing mode for changing text, style, or layout without a prompt. The documented workflow is chat-driven: you describe changes and watch the preview update. Browsing and editing source code is a different capability from selecting an element in the preview and editing it directly, so it earns no credit here.",
+    "rationale": "The evidence pack does not document selecting an element in the preview and directly editing its text, style, or layout. The documented iteration path is describing changes in chat or Build mode (docs-55, docs-4). Browsable, editable source code (docs-54) and local IDE editing via Git sync (docs-9) are adjacent workarounds, not visual direct-manipulation editing, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5327,10 +5419,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Lovable documents a first-party Settings → Plans & credit usage page where users can see their credit balance, track usage, add credits and manage top-ups. It also confirms a free plan exists. However, nothing in the evidence explains how many credits each action consumes or what each plan includes. Missing for 10: per-action credit cost documentation, plan-by-plan inclusion details, independent or hands-on corroboration of how clear the usage tracking is.",
+    "rationale": "Lovable documents a first-party Settings → Plans & credit usage page where users can see their credit balance, track usage, and manage top-ups. Plan tiers are mentioned only in passing: a free plan, Business/Enterprise gating for API keys, and enterprise features. missing for 10: documented per-action credit costs (e.g., what a Build-mode message or deep scan consumes), a clear breakdown of what each plan includes, and independent or hands-on corroboration of credit transparency.",
     "evidenceIds": [
       "lovable-docs-59",
-      "lovable-docs-45"
+      "lovable-docs-45",
+      "lovable-api-playground-20261106",
+      "lovable-docs-46"
     ],
     "support": {
       "relation": "direct",
@@ -5344,6 +5438,10 @@
         {
           "evidenceId": "lovable-docs-45",
           "quote": "Lovable automatically creates your first personal workspace on the free plan"
+        },
+        {
+          "evidenceId": "lovable-api-playground-20261106",
+          "quote": "Executing requests needs a workspace API key, which requires a Business or Enterprise plan."
         }
       ]
     }

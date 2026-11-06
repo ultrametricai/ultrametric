@@ -1,17 +1,34 @@
 {
-  "hash": "85448011c342d78f52ed64bd04039613140196d995f76b6085b0cd8d4ec618d7",
+  "hash": "c4b5d8bba434e7d88aaaa5134c9ec3a1d59e6ca9f2d48931e30c787ca94c3641",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Sentry documents a web API for managing organizations, teams, and data, but nothing in the evidence shows API versioning or a documented deprecation policy. A general API's existence does not deliver this story, so the axis applies but is unevidenced.",
-    "evidenceIds": [],
+    "rationale": "Sentry's API is explicitly versioned: the docs say \"the current version of the Sentry's web API is considered v0\", and the official OpenAPI schema covers the /api/0/ surface. A dedicated API Deprecation Policy is published on getsentry's developer site. Reliability is weaker than the story implies: v0 is described as \"still under development\", beta endpoints are \"subject to change\", and the policy is engineering-facing documentation rather than a customer-facing contract. Missing for 10: a stable post-v0 versioned API with compatibility guarantees, a customer-facing deprecation contract with documented notice periods, and independent corroboration that deprecations are handled as the policy describes.",
+    "evidenceIds": [
+      "sentry-api-versioning-20261106",
+      "sentry-deprecation-policy-20261106",
+      "sentry-openapi-schema-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "sentry-api-versioning-20261106",
+          "quote": "The current version of the Sentry's web API is considered v0. Our public endpoints are generally stable, but beta endpoints are subject to change."
+        },
+        {
+          "evidenceId": "sentry-deprecation-policy-20261106",
+          "quote": "Sentry publishes a dedicated API Deprecation Policy on its developer-documentation site (develop.sentry.dev, getsentry-owned), governing how public endpoints are deprecated."
+        },
+        {
+          "evidenceId": "sentry-openapi-schema-20261106",
+          "quote": "The official getsentry/sentry-api-schema repository publishes the dereferenced OpenAPI 3.0.3 document for the \"Sentry Public API\" (info title \"API Reference\", version v0), covering the full /api/0/ surface."
+        }
+      ]
     },
     "productId": "sentry",
     "storyId": "api-versioning-policy"

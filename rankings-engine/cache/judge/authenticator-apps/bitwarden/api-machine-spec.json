@@ -1,17 +1,30 @@
 {
-  "hash": "65326c7efe182a2385daa7fc8425d1e03fd5f91bd6b8ff7d9c8d0d239576ce8f",
+  "hash": "563cfac84d32afea5d656f5b40c44515e30b3d459d8f41892c56b3beddf9064d",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Bitwarden documents a Public API and a local REST API via `bw serve`, but nothing in the evidence shows a downloadable OpenAPI or equivalent spec. The probe found all common OpenAPI and Swagger paths returning 404. The llms.txt file, markdown doc mirrors, CLI and MCP server are adjacent features, not a machine-readable API spec.",
-    "evidenceIds": [],
+    "rationale": "Bitwarden documents that its Public (Organization) API is OAS3-compatible and publishes a compliant swagger.json definition file. The vendor hosts Swagger UI over an embedded OpenAPI 3.0.4 document at bitwarden.com/help/api/, and the Vault Management API for `bw serve` has its own embedded OpenAPI document. The probe's 404s on guessed root paths do not contradict the documented locations, but no direct downloadable spec URL was confirmed hands-on, and the spec is embedded client-side now that the standalone api.bitwarden.com/docs host is retired. missing for 10: a hands-on-verified direct download URL for the raw spec file, independent corroboration of retrieving the spec.",
+    "evidenceIds": [
+      "bitwarden-public-api-oas-20261106",
+      "bitwarden-swagger-ui-20261106",
+      "bitwarden-probe-2"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "bitwarden-public-api-oas-20261106",
+          "quote": "is compatible with the OpenAPI Specification (OAS3) and publishes a compliant swagger.json definition file"
+        },
+        {
+          "evidenceId": "bitwarden-swagger-ui-20261106",
+          "quote": "bitwarden.com/help/api/ vendor-hosts Swagger UI over the Public API's embedded OpenAPI 3.0.4 document (info title \"Bitwarden Public API\")"
+        }
+      ]
     },
     "productId": "bitwarden",
     "storyId": "api-machine-spec"

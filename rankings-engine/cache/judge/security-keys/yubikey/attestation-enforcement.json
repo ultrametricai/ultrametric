@@ -1,15 +1,15 @@
 {
-  "hash": "a479b9c61a2b9ec5bc8ff7f7dce9d0a7ca8c77d3de4894f38c90059ba110e01c",
+  "hash": "9ee8362c7d3843d649444336f6357a7c0f1566423d456b119d515ed0892acd48",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Yubico documents attestation for YubiKeys. PIV attestation certificates prove a key was generated on the device, and its python-fido2 library verifies FIDO attestation signatures. That covers genuineness checks at registration in principle. The evidence does not show how to restrict enrollment to approved key models, for example through model identifiers, metadata, or allowlist policy in the WebAuthn server library. Missing for 10: documented model allowlisting or enforcement at WebAuthn registration, FIDO attestation trust-root and metadata guidance, and independent hands-on corroboration.",
+    "rationale": "Yubico's own python-fido2 library documents verifying attestation signatures. PIV attestation docs describe a certificate proving a key was generated on the device, so the core of verifying genuine-device attestation at registration is covered. However, nothing documents enforcing an allowlist of approved key models, such as AAGUID or metadata checks, at enrollment. Missing for 10: documented model/AAGUID allowlist enforcement at registration, FIDO metadata or attestation-root verification guidance, attestation policy in the WebAuthn server library, independent hands-on corroboration.",
     "evidenceIds": [
+      "yubikey-docs-13",
       "yubikey-docs-11",
       "yubikey-docs-18",
-      "yubikey-docs-13",
       "yubikey-docs-12"
     ],
     "support": {
@@ -18,16 +18,16 @@
       "subject": "As a security engineer, I can verify device attestation at registration to enforce that only genuine, approved key models are enrolled",
       "citations": [
         {
+          "evidenceId": "yubikey-docs-13",
+          "quote": "Provides library functionality for communicating with a FIDO device over USB as well as verifying attestation and assertion signatures."
+        },
+        {
           "evidenceId": "yubikey-docs-11",
           "quote": "The concept of attestation is used to show that a certain asymmetric key has been generated on device and not imported."
         },
         {
           "evidenceId": "yubikey-docs-18",
           "quote": "This certificate should be used for the purpose of verifying that the key was generated in device."
-        },
-        {
-          "evidenceId": "yubikey-docs-13",
-          "quote": "Provides library functionality for communicating with a FIDO device over USB as well as verifying attestation and assertion signatures."
         }
       ]
     },

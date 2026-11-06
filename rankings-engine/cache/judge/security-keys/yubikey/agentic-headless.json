@@ -1,17 +1,16 @@
 {
-  "hash": "bef3b8bc1b3aedf9eac2cfae819af79ae0cd8949076945c0f7982295b2a40cf7",
+  "hash": "9a4d7e3ffca9c5695540f76520d6662fbe2a8c244e8d4247f6749fc5dc42841b",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Yubico ships an official, keylessly installable CLI (ykman) with fully scriptable device management, so the device can be driven headlessly from scripts. However, FIDO2 cryptographic operations require a physical touch for user presence, and CI use needs a physically attached key; touch can reportedly be disabled only for some modes. Missing for 10: documented CI or headless-runner guidance, an evidenced way to perform crypto operations without physical presence, and hands-on CI corroboration.",
+    "rationale": "Yubico ships its own CLI, ykman, documented for command-line configuration. A runtime probe confirms it installs non-interactively from public registries and offers scriptable device management. However, the evidence shows FIDO2 cryptographic operations require a physical touch, and there is no documented headless or CI workflow for a physical hardware key, so unattended automation is only partly evidenced. Missing for 10: documented CI/headless usage guidance, a non-interactive path for touch-gated operations, and independent corroboration of automated pipelines.",
     "evidenceIds": [
       "yubikey-docs-4",
       "yubikey-probe-rt-1",
       "yubikey-probe-4",
-      "yubikey-docs-6",
-      "yubikey-comm-10"
+      "yubikey-docs-6"
     ],
     "support": {
       "relation": "direct",
@@ -27,12 +26,8 @@
           "quote": "Full scriptable device management: enable applications, PINs, PIV/OATH/OTP slots, device info."
         },
         {
-          "evidenceId": "yubikey-docs-6",
-          "quote": "FIDO2 also requires user presence (a touch on your YubiKey) for cryptographic operations"
-        },
-        {
-          "evidenceId": "yubikey-comm-10",
-          "quote": "you can just turn it off for most modes."
+          "evidenceId": "yubikey-probe-4",
+          "quote": "official CLI documented at https://developers.yubico.com/yubikey-manager/"
         }
       ]
     },

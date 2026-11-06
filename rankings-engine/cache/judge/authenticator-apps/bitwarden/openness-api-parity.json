@@ -1,18 +1,17 @@
 {
-  "hash": "79f207da6a636fd8ade77c8beb5249286c3aa4d87cb6a88f2052275797a76837",
+  "hash": "d5ec862708e6818a460cf773414263b537fdaa31a8cd04c0d49d894954165175",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Bitwarden offers a substantial programmatic surface. Its CLI is described as \"fully-featured\" for vault management, `bw serve` exposes the vault as a local REST API, the Public API covers organization admin (members, collections, groups, event logs, policies), and there is an official MCP server. None of the evidence states that the API matches everything the UI can do. The Public API is limited to org-management areas, and no OpenAPI spec was found at the probed paths. missing for 10: an explicit documented UI/API parity claim, API coverage of client-side features such as vault health reports, a published OpenAPI/machine-readable spec, and independent hands-on corroboration of full parity.",
+    "rationale": "Bitwarden exposes much of its functionality programmatically. The CLI is described as \"fully-featured\" for vault management, `bw serve` exposes the vault as a local RESTful Vault Management API, and the Public API covers organization admin (members, collections, groups, event logs, policies) with an OpenAPI/Swagger definition. However, nothing documents that every UI action is reachable through an API, and the Public API's scope is explicitly limited to organization management. Missing for 10: an explicit UI-to-API parity statement or coverage matrix, an API for UI-only features (e.g., vault health reports run locally on the client, import/export via API), and independent hands-on confirmation of parity.",
     "evidenceIds": [
       "bitwarden-docs-7",
       "bitwarden-docs-8",
-      "bitwarden-docs-9",
       "bitwarden-probe-rt-1",
-      "bitwarden-probe-rt-2",
-      "bitwarden-probe-2"
+      "bitwarden-public-api-oas-20261106",
+      "bitwarden-docs-9"
     ],
     "support": {
       "relation": "direct",
@@ -30,6 +29,10 @@
         {
           "evidenceId": "bitwarden-probe-rt-1",
           "quote": "documented `bw serve` mode exposes the whole vault as a local RESTful API (Vault Management API)"
+        },
+        {
+          "evidenceId": "bitwarden-public-api-oas-20261106",
+          "quote": "The Vault Management API page embeds its own OpenAPI document for the CLI's `bw serve` local server."
         }
       ]
     },

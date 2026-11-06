@@ -1,28 +1,38 @@
 {
-  "hash": "88ee31b801bde4b99c3d20185cf1db826e33986c82e19d7eede5ec6b4065fab8",
+  "hash": "700fddcd4aaa3238cc462f3205fa7669d28e5ea4d3103ea2f3e83fd6c9fcbbee",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "partial",
-    "quality": 5,
-    "confidence": "medium",
-    "rationale": "Windmill documents HTTP webhook endpoints, including version-pinned flow endpoints, that trigger scripts and flows programmatically. It also documents scoped user tokens for restricting access to resources and actions, so part of the product can be driven over HTTP. The pack never explicitly describes a full general-purpose REST API for managing the platform, and the OpenAPI probe paths on the marketing domain returned 404. Missing for 10: explicit documentation of a comprehensive public management API, a discoverable OpenAPI/API reference, and hands-on corroboration of driving the product end-to-end via API.",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Windmill serves a live OpenAPI 3.0.3 \"Windmill API\" document on its cloud instance. The source spec is versioned in the official repo, a hosted Scalar API reference is linked from llms.txt, and scoped tokens and a backward-compatibility release policy cover the API. The probe 404s were on the marketing domain, not the app host, so they do not contradict this. Missing for 10: independent or hands-on corroboration of driving the product through the API, and the noted lag of the deployed spec behind the source.",
     "evidenceIds": [
-      "windmill-docs-16",
-      "windmill-docs-15",
+      "windmill-openapi-cloud-20261106",
+      "windmill-openapi-source-20261106",
+      "windmill-scalar-reference-20261106",
+      "windmill-release-lifecycle-20261106",
       "windmill-docs-8"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can drive the product through a documented public API",
       "citations": [
         {
-          "evidenceId": "windmill-docs-16",
-          "quote": "Flows additionally expose version-pinned webhook endpoints that target a specific flow version by its numeric version ID instead of the latest deployment."
+          "evidenceId": "windmill-openapi-cloud-20261106",
+          "quote": "Windmill's cloud instance serves its OpenAPI 3.0.3 document live at /api/openapi.json (info title \"Windmill API\")"
         },
         {
-          "evidenceId": "windmill-docs-15",
-          "quote": "Use schedules, webhooks, emails, HTTP routes, websockets, Kafka, Postgres, NATS, SQS, MQTT, GCP, Azure Event Grid and more."
+          "evidenceId": "windmill-scalar-reference-20261106",
+          "quote": "Windmill vendor-hosts a Scalar API Reference at app.windmill.dev/openapi.html rendering the live spec"
+        },
+        {
+          "evidenceId": "windmill-openapi-source-20261106",
+          "quote": "The source-of-truth spec lives in the official windmill-labs/windmill repository (backend/windmill-api/openapi.yaml), versioned with each release."
+        },
+        {
+          "evidenceId": "windmill-release-lifecycle-20261106",
+          "quote": "The OpenAPI spec version tracks the release version, so the policy covers the API."
         },
         {
           "evidenceId": "windmill-docs-8",

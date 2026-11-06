@@ -1,17 +1,17 @@
 {
-  "hash": "4da433635febc1e638d01479e627814e36840cc9417159bcd4aca64a04941de6",
+  "hash": "894c9676d709aa5dfa1e0f5adc7eef540cb1ecc78d971b229fcc6fb10716dd6e",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Nitrokey is a hardware security key, so its programmatic surface is device-level rather than a web API. It ships an official Python SDK on PyPI (nitrokey 0.4.2) and a documented nitropy CLI, and a hands-on user praises its dev tools, documentation and OpenSC integration. However, no API reference for the SDK is shown, no OpenAPI spec exists (probes 404), and a user reports attestation certs cannot be exported via PKCS#11 and require a custom vendor shell. missing for 10: documented SDK/API reference evidence, complete coverage through standard interfaces (e.g. PKCS#11 attestation export), independent corroboration of driving Nitrokey 3 programmatically via the SDK",
+    "rationale": "Nitrokey documents a public REST API for its NetHSM appliance: an OpenAPI 3.0.0 spec, vendor-hosted Swagger UI linked from the docs, a URL-versioned /api/v1, and a test container image. That API covers only NetHSM; the Nitrokey USB keys use local protocols and have no REST API, and are driven through the nitropy CLI and a PyPI Python SDK whose API documentation is not shown. Missing for 10: a documented public API for the USB key line, documentation of the Python SDK's API surface, a versioning/deprecation policy, and independent hands-on corroboration of driving NetHSM through the API.",
     "evidenceIds": [
-      "nitrokey-probe-rt-1",
-      "nitrokey-probe-4",
-      "nitrokey-docs-14",
-      "nitrokey-comm-1",
-      "nitrokey-comm-2"
+      "nitrokey-nethsm-openapi-20261106",
+      "nitrokey-nethsm-swagger-20261106",
+      "nitrokey-nethsm-test-image-20261106",
+      "nitrokey-nethsm-releases-20261106",
+      "nitrokey-probe-rt-1"
     ],
     "support": {
       "relation": "direct",
@@ -19,16 +19,24 @@
       "subject": "As an AI-native user, I can drive the product through a documented public API",
       "citations": [
         {
-          "evidenceId": "nitrokey-probe-rt-1",
-          "quote": "The official Python SDK also resolves on PyPI (nitrokey 0.4.2)."
+          "evidenceId": "nitrokey-nethsm-openapi-20261106",
+          "quote": "Nitrokey's NetHSM exposes a REST API described by a downloadable OpenAPI 3.0.0 document"
         },
         {
-          "evidenceId": "nitrokey-probe-4",
-          "quote": "official CLI documented at https://docs.nitrokey.com/software/nitropy/"
+          "evidenceId": "nitrokey-nethsm-openapi-20261106",
+          "quote": "the Nitrokey USB keys have local protocols and no REST API"
         },
         {
-          "evidenceId": "nitrokey-comm-1",
-          "quote": "dev tools and documentation are top notch, integration with OpenSC is very good"
+          "evidenceId": "nitrokey-nethsm-swagger-20261106",
+          "quote": "docs.nitrokey.com deep-links individual operations into it as \"API documentation\""
+        },
+        {
+          "evidenceId": "nitrokey-nethsm-test-image-20261106",
+          "quote": "The test image is designed for testing and development purposes"
+        },
+        {
+          "evidenceId": "nitrokey-nethsm-releases-20261106",
+          "quote": "The NetHSM API is URL-versioned"
         }
       ]
     },
