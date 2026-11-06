@@ -528,7 +528,7 @@ each wave's pre-merge baseline:
 
 The preview projected roughly 6,800 flips at least 96% downward from two pilot arenas;
 the fleet came in at 7,986 flips, 91% downward counting lateral relabels against the
-denominator (94% of directional flips are demotions). Every judge cache in the corpus is
+denominator (96% of directional flips are demotions). Every judge cache in the corpus is
 v6-current: the inventory scanner reports 0 stale cells of 44,147. Two cells were already
 v6-current before their wave from contest re-judges and were skipped rather than re-paid:
 terminals/wezterm:automation-rules-engine and
