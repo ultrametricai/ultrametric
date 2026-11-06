@@ -1,17 +1,40 @@
 {
-  "hash": "15273f18d14ec408a226f2beaa36cbd154f126cb6c7d0d011766eb536031209f",
+  "hash": "2af9afe2140ec69a4300b68070c47bf2c09d21e72f23ff94267d668b826a67f6",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "PostHog's signup wizard takes an explicit `--region us` flag, its cloud runs in separate US and EU clusters, and the MCP server stores session state in the region you connect to and routes accounts to the correct data region. A first-party MIT Docker Compose self-host option offers full control over where data lives. Missing for 10: dedicated data-residency documentation (region list, what data stays in-region, region migration), and independent or hands-on corroboration of region selection.",
+    "rationale": "PostHog's own docs show a region choice at signup (`--region us` in the wizard), US and EU cloud data regions that its MCP server routes to and stores session state in, and a self-host deployment for full control over where data lives. The evidence is indirect: no dedicated data-residency doc states which product data stays in each region, and only two cloud regions are evidenced. missing for 10: a first-party data-residency/region-selection doc covering all product data, region options beyond US/EU, independent corroboration.",
     "evidenceIds": [
       "posthog-supp-wizard-signup",
       "posthog-supp-mcp-hosted-clients",
       "posthog-supp-mcp-scoping",
       "posthog-docs-21"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can choose where my data is stored (region/residency)",
+      "citations": [
+        {
+          "evidenceId": "posthog-supp-wizard-signup",
+          "quote": "npx @posthog/wizard@latest --signup --email you@example.com --region us"
+        },
+        {
+          "evidenceId": "posthog-supp-mcp-hosted-clients",
+          "quote": "The PostHog authentication server automatically routes you to the correct data region (US or EU) based on the account you log in with."
+        },
+        {
+          "evidenceId": "posthog-supp-mcp-scoping",
+          "quote": "The MCP server runs in PostHog's US and EU Kubernetes clusters and stores session state in the region you connect to."
+        },
+        {
+          "evidenceId": "posthog-docs-21",
+          "quote": "PostHog is open-source and freely available for anyone to host themselves."
+        }
+      ]
+    },
     "productId": "posthog",
     "storyId": "privacy-data-residency"
   }

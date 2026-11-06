@@ -1,22 +1,47 @@
 {
-  "hash": "aad0292b2b64dfae1f19aeb5e25aefdac936896d79941ae0d98b6a66f35ee34f",
+  "hash": "93ac0bdd99f332060817b12e7bdbddabf3782dee58ce35b9e74b303e1d0a8dda",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 8,
-    "confidence": "high",
-    "rationale": "x402 is an HTTP payment protocol whose documented public APIs can be driven programmatically. The CDP Facilitator verifies and settles payments for resource servers, and the public Bazaar discovery APIs come with a generated OpenAPI client and an MCP server. Runtime probes confirm the keyless discovery endpoint returns live listings and the facilitator auth-gates exactly as documented. Missing for 10: no OpenAPI spec found at standard docs paths, and the pack lacks endpoint-level reference detail for the facilitator verify/settle API.",
+    "verdict": "partial",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "x402 documents a public, keyless Bazaar discovery API, with search/list available through a generated OpenAPI client and TypeScript SDK functions, and a runtime probe confirmed the endpoint returns live listings. The hosted CDP Facilitator also exposes an API-key-gated service for verifying and settling payments, and the HTTP 402 handshake is itself a documented programmatic flow. Coverage is still not complete across the product surface. Missing for 10: no published OpenAPI spec was found at any probed docs path, there is no detailed endpoint-level reference for the facilitator verify/settle API in the evidence, and there is no independent hands-on report of driving the facilitator API end to end.",
     "evidenceIds": [
-      "coinbase-x402-supp-1",
-      "coinbase-x402-docs-2",
       "coinbase-x402-docs-6",
       "coinbase-x402-docs-22",
-      "coinbase-x402-supp-5",
       "coinbase-x402-probe-rt-1",
+      "coinbase-x402-docs-2",
+      "coinbase-x402-supp-1",
       "coinbase-x402-probe-rt-2",
-      "coinbase-x402-probe-3",
-      "coinbase-x402-docs-20"
+      "coinbase-x402-probe-3"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can drive the product through a documented public API",
+      "citations": [
+        {
+          "evidenceId": "coinbase-x402-docs-6",
+          "quote": "Bazaar discovery is public. You do not need a CDP API key to use the discovery APIs or the corresponding TypeScript SDK functions."
+        },
+        {
+          "evidenceId": "coinbase-x402-docs-22",
+          "quote": "Search and list resources with a generated OpenAPI client."
+        },
+        {
+          "evidenceId": "coinbase-x402-probe-rt-1",
+          "quote": "a plain GET to https://api.cdp.coinbase.com/platform/v2/x402/discovery/resources returned real payable-service listings"
+        },
+        {
+          "evidenceId": "coinbase-x402-docs-2",
+          "quote": "The CDP Facilitator handles that work as a hosted service: it validates signed payments, screens transactions, submits settlement onchain, and reports the result to your resource server."
+        },
+        {
+          "evidenceId": "coinbase-x402-supp-1",
+          "quote": "The client signs a payment and sends the request again with proof of payment attached"
+        }
+      ]
+    },
     "productId": "coinbase-x402",
     "storyId": "agentic-public-api"
   }

@@ -1,18 +1,41 @@
 {
-  "hash": "40c2101f5d1b9c546da5336fe1ce06561bbb9d23714e5820e6d69359d59f6448",
+  "hash": "e6a7cd4626ba54fdfef4cc6e6e1c91db192dacb3f94b2a35cbed7cc0fc45570a",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Community reports say LaunchDarkly clients download all project flags on connection and then stream changes over SSE with minimal latency. That implies flags are evaluated against a locally cached ruleset rather than through a network call per check. First-party evidence only lists 13 server-side SDKs and the Relay Proxy, without describing the local evaluation mechanism. One older report of API lookup timeouts (3s SDK default) is too vague to concretely contradict local evaluation, but it lowers confidence. Missing for 10: first-party docs confirming server SDKs evaluate in-process from a cached ruleset, evidence of microsecond-level evaluation latency, and explicit confirmation that no per-flag network call occurs.",
+    "rationale": "Hands-on community reports say LaunchDarkly SDKs download all flags in the project on connection and then stream changes over SSE. They describe this as adding no extra network latency, which implies local evaluation from a cached ruleset. The first-party Relay Proxy docs confirm the streaming architecture, but one caveat applies: Big Segments fetch segment inclusion live from Redis before caching, so evaluation is not always purely local. Missing for 10: first-party docs explicitly describing server-side local evaluation and caching, any evidence of microsecond-level decision latency, and clarity on which flag types (e.g. Big Segments) still need per-check lookups.",
     "evidenceIds": [
       "launchdarkly-comm-2",
-      "launchdarkly-comm-9",
-      "launchdarkly-docs-41",
-      "launchdarkly-docs-13",
-      "launchdarkly-comm-5"
+      "launchdarkly-comm-12",
+      "launchdarkly-comm-7-refresh-4585c91e01ba9d34",
+      "launchdarkly-docs-62",
+      "launchdarkly-comm-14"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform engineer, my server SDKs evaluate flags locally from a cached ruleset — microsecond decisions with no network call per flag check",
+      "citations": [
+        {
+          "evidenceId": "launchdarkly-comm-2",
+          "quote": "LaunchDarkly clients download all flags in the project on connection, then stream changes."
+        },
+        {
+          "evidenceId": "launchdarkly-comm-7-refresh-4585c91e01ba9d34",
+          "quote": "LD streams changes via server-sent events, adding no extra latency for network calls."
+        },
+        {
+          "evidenceId": "launchdarkly-docs-62",
+          "quote": "It connects to the LaunchDarkly streaming API and proxies that connection to clients"
+        },
+        {
+          "evidenceId": "launchdarkly-comm-14",
+          "quote": "LD's Big Segments fetch segment inclusion live from Redis (then cache), rather than purely local evaluation."
+        }
+      ]
+    },
     "productId": "launchdarkly",
     "storyId": "local-evaluation-latency"
   }

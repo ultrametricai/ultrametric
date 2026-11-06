@@ -1,21 +1,43 @@
 {
-  "hash": "f26e810eb5176d09d1b55066ccb699a1c7bc8d7fa08bea6dafee9be254dc3d25",
+  "hash": "1d11f83d5fdcffe904c4e936aac60a2716088ea870563e0161cff9e2cbb53c64",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
-    "quality": 8,
+    "quality": 7,
     "confidence": "high",
-    "rationale": "First-party docs show the full CLI lifecycle: `uv add` updates pyproject.toml and also the lockfile and environment, `uv remove` removes packages, and `uv lock --upgrade-package` upgrades one package while keeping the rest of uv.lock intact. Extras such as `uv add --script`, `uv add -r` for requirements migration and a documented CLI reference further reduce any need to hand-edit files. missing for 10: explicit statement that `uv remove` also rewrites the lockfile, independent or hands-on corroboration of safe manifest/lockfile rewriting.",
+    "rationale": "uv provides first-party CLI commands for the full lifecycle: `uv add` updates pyproject.toml plus the lockfile and environment, `uv remove` removes packages, and `uv lock --upgrade-package` upgrades a specific package while keeping the rest of the lockfile intact, so an agent need not hand-edit the manifest or lockfile. A community user reports there is no elegant way to bump all manifest constraints to latest; this is a gap, not a contradiction. Missing for 10: explicit documentation that `uv remove` also updates the lockfile, evidence on how safely rewrites are done (format preservation, failure handling), a built-in bulk upgrade that rewrites manifest constraints, and independent hands-on corroboration.",
     "evidenceIds": [
       "uv-docs-2",
       "uv-docs-38",
       "uv-docs-39",
       "uv-docs-9",
       "uv-docs-17",
-      "uv-docs-40",
-      "uv-docs-42",
-      "uv-probe-4"
+      "uv-docs-70",
+      "uv-comm-11-refresh-f0b954279faf394b"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can add, remove, and upgrade dependencies through CLI commands that safely rewrite the manifest and lockfile, so an agent never hand-edits them",
+      "citations": [
+        {
+          "evidenceId": "uv-docs-2",
+          "quote": "You can add dependencies to your `pyproject.toml` with the `uv add` command. This will also update the lockfile and project environment"
+        },
+        {
+          "evidenceId": "uv-docs-38",
+          "quote": "To remove a package, you can use `uv remove`"
+        },
+        {
+          "evidenceId": "uv-docs-39",
+          "quote": "To upgrade a package, run `uv lock` with the `--upgrade-package` flag"
+        },
+        {
+          "evidenceId": "uv-docs-9",
+          "quote": "The `--upgrade-package` flag will attempt to update the specified package to the latest compatible version, while keeping the rest of the lockfile intact."
+        }
+      ]
+    },
     "productId": "uv",
     "storyId": "cli-manifest-editing"
   }

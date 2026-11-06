@@ -1,17 +1,31 @@
 {
-  "hash": "a70b6c79578c2cb4a9367518f4f25e2dde0de76a704b4a4528bf6ee244e570d1",
+  "hash": "00d7cef922e1eb22b8853b32aec0689e68fe0aad7982cdf91dbd6db2f16de545",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "partial",
-    "quality": 4,
-    "confidence": "low",
-    "rationale": "LaunchDarkly documents API access tokens [docs-37] and role assignment [docs-36], and ships an MCP server an agent could authenticate to [docs-10, docs-11]. The pack gives only page titles, so there is no direct evidence that tokens can be scoped to specific roles, projects or actions. Missing for 10: explicit evidence of per-token role/permission scoping, environment- or project-level restriction for tokens, agent- or MCP-specific credential guidance, and independent corroboration.",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "LaunchDarkly's API access tokens docs say tokens can be scoped to restrict the operations they can perform, for example a read-only integration. That directly supports issuing least-privilege credentials an agent could use, and role assignment docs add custom roles that override base permissions. Missing for 10: agent- or MCP-specific guidance tying scoped tokens to agent use, detail on how fine-grained scoping goes (per-project, per-environment, expiry), and independent or hands-on corroboration.",
     "evidenceIds": [
+      "launchdarkly-docs-67",
       "launchdarkly-docs-37",
-      "launchdarkly-docs-36",
-      "launchdarkly-docs-10",
-      "launchdarkly-docs-11"
+      "launchdarkly-docs-66"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
+      "citations": [
+        {
+          "evidenceId": "launchdarkly-docs-67",
+          "quote": "You can scope your API tokens to restrict the set of operations they can perform. For example, you can build an integration that only has read access"
+        },
+        {
+          "evidenceId": "launchdarkly-docs-66",
+          "quote": "If a member is directly assigned a role, such as a preset role or a role that you create, that role is used instead of the member's base role"
+        }
+      ]
+    },
     "productId": "launchdarkly",
     "storyId": "agentic-scoped-keys"
   }

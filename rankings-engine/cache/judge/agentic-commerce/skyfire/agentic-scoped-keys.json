@@ -1,20 +1,42 @@
 {
-  "hash": "553b843beb132c5a4ff90c9a28207b9fd0d32bf5966bd6a7867c7665f26ae193",
+  "hash": "373ad916d9b9a53a9dae294ff6db9acd9582289545eb119d3dd86448ead3602d",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Skyfire documents several of its own scoping mechanisms. API keys are each scoped to a single agent (Buyer or Seller), and agents can be restricted to specific source IP addresses. Agents also get short-lived pay/kya-pay tokens with a committed spending ceiling and an expiry of 10 seconds to 24 hours, and these tokens disclose only the identity fields a service requires. Together these deliver bounded, least-privilege credentials for agents. missing for 10: fine-grained permission scopes on API keys themselves (e.g., read-only or endpoint-limited), per-token revocation (explicitly not documented), independent or hands-on corroboration of the scoping behavior.",
+    "rationale": "Skyfire documents per-agent API keys scoped to a single Buyer or Seller agent, and agents can be restricted to set source IP addresses. Its pay tokens are bounded credentials with committed amount ceilings, expiry windows from 10 seconds to 24 hours, and disclosure of only the identity fields a service requires. However, API-key scoping is coarse (per agent, with no documented permission granularity), and revocation is limited: no per-token revocation API, and in-flight tokens stay chargeable after deactivation. Missing for 10: fine-grained permission scopes on API keys, per-token or per-key revocation, independent or hands-on corroboration of scoping enforcement.",
     "evidenceIds": [
       "skyfire-docs-1",
       "skyfire-supp-8",
-      "skyfire-docs-34",
       "skyfire-supp-4",
-      "skyfire-supp-6",
       "skyfire-supp-2",
-      "skyfire-probe-rt-1"
+      "skyfire-supp-6",
+      "skyfire-docs-34"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
+      "citations": [
+        {
+          "evidenceId": "skyfire-docs-1",
+          "quote": "each key is scoped to a single agent (Buyer or Seller)"
+        },
+        {
+          "evidenceId": "skyfire-supp-4",
+          "quote": "Charges above the token's remaining balance are rejected."
+        },
+        {
+          "evidenceId": "skyfire-supp-2",
+          "quote": "tokens disclose only the identity fields a service requires"
+        },
+        {
+          "evidenceId": "skyfire-docs-34",
+          "quote": "Set Agent's Source IP Addresses"
+        }
+      ]
+    },
     "productId": "skyfire",
     "storyId": "agentic-scoped-keys"
   }

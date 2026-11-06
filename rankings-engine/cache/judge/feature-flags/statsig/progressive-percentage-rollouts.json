@@ -1,19 +1,40 @@
 {
-  "hash": "45a046cead1c190a89a18a92c4ea95e47726134eb858ebf338df31e33379d2fd",
+  "hash": "dad681d5d0a4e558ea936380b0852c3ce646d0229c32b86fdab569c187bfea86",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Statsig's docs say Feature Gates change behavior in real time without deploying new code, and that features can be rolled out gradually via Scheduled Rollouts. They also say evaluation is deterministic, returning the same result for the same user across client and server, which gives consistent bucketing. Missing for 10: explicit documentation of percentage-based pass rates and ramp steps (e.g. 1%→100%) for gates, and independent or hands-on corroboration of progressive rollouts.",
+    "rationale": "Statsig documents gradual rollouts of Feature Gates via Scheduled Rollouts, changes made in real time without deploying new code, and deterministic evaluation that returns the same result for the same user across platforms, which gives consistent bucketing. The evidence never states that rollouts are set by explicit percentages, so ramping from 1% to 100% is only implied by 'gradual'. Missing for 10: explicit documentation of percentage-based allocation and ramp granularity, and independent or hands-on corroboration of progressive rollouts.",
     "evidenceIds": [
       "statsig-docs-1",
       "statsig-docs-3",
       "statsig-docs-25",
-      "statsig-docs-7",
-      "statsig-docs-20",
-      "statsig-docs-39"
+      "statsig-docs-7"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can roll a flag out progressively by percentage with consistent bucketing, ramping from 1% to 100% without redeploying",
+      "citations": [
+        {
+          "evidenceId": "statsig-docs-3",
+          "quote": "Gradually deploy a feature over time by setting up a Feature Gate as a Scheduled Rollout."
+        },
+        {
+          "evidenceId": "statsig-docs-1",
+          "quote": "Feature Gates, commonly known as feature flags, allow you to toggle the behavior of your product in real time without deploying new code."
+        },
+        {
+          "evidenceId": "statsig-docs-7",
+          "quote": "Evaluation in Statsig is deterministic. Given the same user object and the same state of the experiment or feature gate, Statsig always returns the same result, even across different platforms (client or server)."
+        },
+        {
+          "evidenceId": "statsig-docs-25",
+          "quote": "Schedule gradual feature rollouts to safely deploy new code"
+        }
+      ]
+    },
     "productId": "statsig",
     "storyId": "progressive-percentage-rollouts"
   }

@@ -1,23 +1,48 @@
 {
-  "hash": "f34b92174fe6808d7c3314c2747c9388e995898ab297d6f0bb06ea4f816217d3",
+  "hash": "8b144a9ff55fac8dd821b0b6b06fd59aaa77a7bb01823d95238d9e573f939f03",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Nix delivers per-project toolchains: `nix-shell` and `nix develop` build or download a project's declared dependencies and drop you into a shell with compiler paths and other environment variables set. Flakes live in the current directory, multiple versions of a package can coexist, and community users confirm `nix-shell --run` reliably provides the correct dependencies and lets them run incompatible versions side by side. Missing for 10: explicit documentation of a checked-in per-project file (shell.nix/flake.nix) pinning specific runtime versions, automatic switching when entering a project directory, and evidence of how version pinning or lock files work.",
+    "rationale": "Nix's own CLI provides per-project environments: `nix-shell` and `nix develop` build or download the declared dependencies and open a shell with the right environment. A flake can be built from the current directory, multiple versions of a package can coexist, and community users confirm teams rely on `nix-shell` for correct dependencies. The evidence never explicitly documents a version-controlled per-project file (e.g. shell.nix/flake.nix committed to the repo) as the source of truth, nor automatic switching when entering a project directory, so coverage is partial. missing for 10: explicit documentation of a checked-in per-project config file pinning runtime/tool versions, automatic per-directory environment switching, and hands-on corroboration of pinning specific language runtime versions.",
     "evidenceIds": [
-      "nix-docs-1",
       "nix-docs-2",
       "nix-docs-3",
-      "nix-docs-5",
       "nix-docs-14",
-      "nix-docs-34",
-      "nix-docs-39",
       "nix-docs-49",
-      "nix-comm-6",
-      "nix-comm-7"
+      "nix-docs-57",
+      "nix-docs-34",
+      "nix-comm-7",
+      "nix-comm-6"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can install and switch language runtimes or tool versions per project from a checked-in config file",
+      "citations": [
+        {
+          "evidenceId": "nix-docs-2",
+          "quote": "the command `nix-shell` will build or download those dependencies if they’re not already in your Nix store, and then start a Bash shell in which all necessary environment variables (such as compiler search paths) are set."
+        },
+        {
+          "evidenceId": "nix-docs-3",
+          "quote": "`nix develop` - run a bash shell that provides the build environment of a derivation"
+        },
+        {
+          "evidenceId": "nix-docs-57",
+          "quote": "Nix makes it trivial to share development and build environments for your projects, regardless of what programming languages and tools you're using."
+        },
+        {
+          "evidenceId": "nix-docs-49",
+          "quote": "You can have multiple versions or variants of a package installed at the same time. This is especially important when different applications have dependencies on different versions of the same package"
+        },
+        {
+          "evidenceId": "nix-comm-7",
+          "quote": "you can do `nix-shell --run \"<some command>\"`, and it will make sure you have all of the correct dependencies."
+        }
+      ]
+    },
     "productId": "nix",
     "storyId": "runtime-version-management"
   }

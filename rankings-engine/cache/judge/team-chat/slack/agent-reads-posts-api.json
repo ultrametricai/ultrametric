@@ -1,20 +1,47 @@
 {
-  "hash": "fbebf9181502fa364890a1d5a80fb62ccef67b041b6bae477adf08c40b7b7721",
+  "hash": "c96c7d008b7ca4ce818fda8d7e1f190889b17cd760e3ee010f674a80b4929219",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Slack's official Web API (slack-docs-8) includes chat.postMessage for posting to channels (slack-docs-48). The official MCP server explicitly lets agents retrieve and send messages, with workspace-admin approval of MCP client integrations (slack-docs-28, slack-docs-29, slack-docs-72, slack-docs-46). The official OpenAPI spec covers user and bot-user token usage of the Web API methods (slack-supp-openapi-spec). missing for 10: explicit documentation of OAuth scopes/permission granularity for tokens, a cited Web API method for reading channel history, and independent hands-on corroboration.",
+    "rationale": "Slack's official Web API documents sending messages to a channel (chat.postMessage). The official MCP server lets an agent retrieve and send messages, and the Web API spec covers user and bot-user token usage. However, the evidence never documents OAuth scopes or permission granularity for those tokens, so the 'scoped tokens' part of the story is only implied. Missing for 10: explicit documentation of OAuth scopes and least-privilege token configuration, a cited channel-history read method in the Web API, and independent or hands-on corroboration of an agent reading and posting.",
     "evidenceIds": [
-      "slack-docs-8",
       "slack-docs-48",
+      "slack-docs-8",
       "slack-docs-28",
       "slack-docs-29",
       "slack-docs-72",
-      "slack-docs-46",
-      "slack-supp-openapi-spec"
+      "slack-supp-openapi-spec",
+      "slack-docs-46"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an ai-native user, I can have an agent read and post channel messages through the official API using scoped tokens",
+      "citations": [
+        {
+          "evidenceId": "slack-docs-48",
+          "quote": "Sends a message to a channel."
+        },
+        {
+          "evidenceId": "slack-docs-28",
+          "quote": "The Slack MCP server provides tools for searching through Slack, retrieving and sending messages"
+        },
+        {
+          "evidenceId": "slack-docs-72",
+          "quote": "Once connected, your AI assistant can search channels, read messages, and use real conversation context to help you build."
+        },
+        {
+          "evidenceId": "slack-supp-openapi-spec",
+          "quote": "covers user and bot user token usage of public Web API methods"
+        },
+        {
+          "evidenceId": "slack-docs-46",
+          "quote": "Workspace admins can approve and manage all MCP client integrations, keeping your Slack data safe."
+        }
+      ]
+    },
     "productId": "slack",
     "storyId": "agent-reads-posts-api"
   }

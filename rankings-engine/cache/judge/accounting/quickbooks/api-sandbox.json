@@ -1,17 +1,34 @@
 {
-  "hash": "5d5abc12d575b0c93c19d04813d866183f7ccd58bdb3de932d1054b4b05ca11b",
+  "hash": "f33d3c597f02ce83aef194da46aa5758226cf14b6dce76b6906df3e0debe2d1e",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Intuit's official OAuth client offers a first-class sandbox/production switch (`environment: 'sandbox'`), so integrations can be built and tested against isolated sandbox company data. The official QuickBooks Online MCP server carries the same split for agents via `QUICKBOOKS_ENVIRONMENT=sandbox` and adds write-safety toggles (`QUICKBOOKS_DISABLE_WRITE`/`UPDATE`) plus tool-category restrictions. Missing for 10: independent or hands-on corroboration that sandbox testing works as described, and detailed documentation of how sandbox companies are provisioned and seeded with test data.",
+    "rationale": "Intuit's official OAuth client and official QuickBooks Online MCP server both document a first-class sandbox/production environment switch, so integrations and agents can be built and tested against isolated sandbox company data instead of production. This is true environment isolation, not a dry-run mode. The MCP server's write-disable toggles are a separate scoping control and are not counted as the sandbox. Missing for 10: independent or hands-on corroboration that sandbox isolation works as described, and in-depth docs on sandbox company provisioning, data seeding and parity with production.",
     "evidenceIds": [
       "quickbooks-supp-sandbox-oauth",
-      "quickbooks-supp-mcp-sandbox",
-      "quickbooks-gh-7",
-      "quickbooks-probe-3"
+      "quickbooks-supp-mcp-sandbox"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
+      "citations": [
+        {
+          "evidenceId": "quickbooks-supp-sandbox-oauth",
+          "quote": "environment: 'sandbox', // or 'production'"
+        },
+        {
+          "evidenceId": "quickbooks-supp-sandbox-oauth",
+          "quote": "integrations are built and tested against isolated sandbox company data before touching production"
+        },
+        {
+          "evidenceId": "quickbooks-supp-mcp-sandbox",
+          "quote": "QUICKBOOKS_ENVIRONMENT=sandbox"
+        }
+      ]
+    },
     "productId": "quickbooks",
     "storyId": "api-sandbox"
   }

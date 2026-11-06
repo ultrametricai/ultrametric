@@ -1,22 +1,42 @@
 {
-  "hash": "be854b1cc10fcfcbcef8f2622d0f6555d70f0b3fc7e56f0ee1891251d5c75685",
+  "hash": "d810d5443530e4729746a75aebb6f3f4815207da3fc5f86b96feee6a23d6a44f",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "The core flows are programmatic and fit unattended automation. Coding agents can provision an anonymous sandbox with working API keys via `stripe sandbox create`, with no account registration. `mppx validate` checks discovery, challenges, error handling and the full payment flow end-to-end. Catalog imports run through an API with completion webhooks, and restricted keys scope what an agent can do. However, Link CLI spends need per-request customer approval, and some MCP write actions need human confirmation, so not every flow can run fully unattended. Missing for 10: explicit CI/pipeline documentation or examples, a fully unattended path for Link wallet spends and gated MCP writes, and independent hands-on corroboration of CI use.",
+    "rationale": "Stripe documents several API- and CLI-driven paths that run without a UI: machine payments that work 'without a checkout UI', the `mppx validate` CLI that checks an implementation end-to-end, Stripe CLI provisioning of anonymous sandboxes with working keys for coding agents, and the npm-published Link CLI. Full unattended automation is limited because Link CLI spends need customer approval for each request and some MCP write actions need human confirmation. Missing for 10: explicit CI/pipeline documentation or examples, fully unattended purchase flows without per-request human approval, and independent hands-on corroboration of headless or CI use.",
     "evidenceIds": [
-      "stripe-agentic-commerce-docs-24",
-      "stripe-agentic-commerce-docs-35",
       "stripe-ac-supp-mpp-agent-build",
-      "stripe-ac-supp-seller-catalog-feed",
-      "stripe-agentic-commerce-docs-23",
+      "stripe-agentic-commerce-docs-35",
+      "stripe-ac-probe-rt-4",
       "stripe-ac-supp-link-wallet",
       "stripe-ac-supp-mcp-approval",
-      "stripe-ac-probe-rt-4",
-      "stripe-ac-probe-rt-2"
+      "stripe-ac-supp-seller-catalog-feed"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
+      "citations": [
+        {
+          "evidenceId": "stripe-ac-supp-mpp-agent-build",
+          "quote": "lets agents pay for your APIs and services programmatically without a checkout UI"
+        },
+        {
+          "evidenceId": "stripe-ac-supp-mpp-agent-build",
+          "quote": "Run `mppx validate` to automatically verify your implementation end-to-end."
+        },
+        {
+          "evidenceId": "stripe-agentic-commerce-docs-35",
+          "quote": "provision an anonymous Stripe sandbox with working API keys. No account registration required."
+        },
+        {
+          "evidenceId": "stripe-ac-supp-link-wallet",
+          "quote": "Customers approve each request on the Link website or in the mobile app."
+        }
+      ]
+    },
     "productId": "stripe-agentic-commerce",
     "storyId": "agentic-headless"
   }

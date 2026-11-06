@@ -1,20 +1,46 @@
 {
-  "hash": "6c5b8cf0a8787af57d1966b9df0e6e4e8371ac9a709be853afb265bf741044e2",
+  "hash": "f14e9e31f944689da4aeb4b8b260cd06b988810a56b817caa5c611757121005e",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Shopify's Checkout MCP sets explicit preconditions for complete_checkout: the buyer has reviewed and confirmed the order and a payment credential has been collected. complete_checkout is also restricted to Token-tier agents whose token is granted purchase permission, and requires_escalation forces a handoff to the buyer via continue_url. The UCP spec adds AP2 signed payment mandates cryptographically tied to the cart state. Missing for 10: evidence that Shopify itself enforces buyer confirmation server-side rather than leaving it to agent guidance (trusted agents can complete checkouts directly), explicit Shopify-side documentation of AP2 mandate support beyond the UCP spec, and hands-on corroboration of the checkout/payment approval step.",
+    "rationale": "Shopify documents a purchase-consent gate. complete_checkout may only be called once the buyer has reviewed and confirmed the order and a payment credential has been collected. Checkouts can also escalate to requires_buyer_review, handing off to the merchant's continue_url, and only Token-tier agents granted purchase permission can complete purchases. The UCP/AP2 spec adds signed payment mandates tied to cart state. Missing for 10: evidence that Shopify itself enforces buyer confirmation rather than leaving it to the agent as a documented precondition; confirmation that Shopify implements AP2 signed mandates (shown only at UCP spec level); hands-on verification of the checkout or payment approval gate, since the probe stopped at cart creation with no checkout and no payment.",
     "evidenceIds": [
       "shopify-ucp-supp-checkout-mcp",
       "shopify-ucp-supp-buyer-handoff",
       "shopify-ucp-supp-trust-tiers",
-      "shopify-ucp-supp-ucp-journey",
-      "shopify-ucp-docs-18",
       "shopify-ucp-docs-31",
+      "shopify-ucp-docs-18",
       "shopify-ucp-supp-ucp-governance"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, sensitive agent spending requires my documented approval — a confirmation step, signed mandate, or per-purchase consent — before money moves",
+      "citations": [
+        {
+          "evidenceId": "shopify-ucp-supp-checkout-mcp",
+          "quote": "Buyer has reviewed and confirmed the order"
+        },
+        {
+          "evidenceId": "shopify-ucp-supp-buyer-handoff",
+          "quote": "Checkout requires buyer input or review not available via API"
+        },
+        {
+          "evidenceId": "shopify-ucp-supp-trust-tiers",
+          "quote": "When the token is granted permission to complete purchases"
+        },
+        {
+          "evidenceId": "shopify-ucp-docs-31",
+          "quote": "allows Platforms to provide cryptographically signed payment authorizations that are mathematically tied to the specific state of the cart"
+        },
+        {
+          "evidenceId": "shopify-ucp-docs-18",
+          "quote": "Allows autonomous AI agents to transact on behalf of users with pre-defined, verifiable boundaries."
+        }
+      ]
+    },
     "productId": "shopify-ucp",
     "storyId": "human-approval-gate"
   }

@@ -1,18 +1,32 @@
 {
-  "hash": "7fa346626a42dcefc1a50a1cf85e06c40bfa86ddaf86e005b38d78d621c94074",
+  "hash": "efcaaf64ca63b2ef837d61568f71cf50c69372fd1f0df19c8cde218c79daf34b",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "A live probe found an llms.txt at help.puzzle.io (HTTP 200) with a structured index of help-center articles, and the cited help articles are served as .md URLs, so an agent can be pointed at machine-readable docs. Coverage is limited to end-user help-center content: the docs-md root probe returned 404 and there is no OpenAPI spec. missing for 10: agent-oriented developer/API docs (no OpenAPI spec found), evidence of an llms-full.txt or broader docs coverage, independent or hands-on corroboration of agent use.",
+    "rationale": "A live probe found an llms.txt at help.puzzle.io (HTTP 200) that indexes the Puzzle Help Center, and individual help articles are served as .md files, so an agent can be pointed at the docs. Coverage is limited to end-user help content: the root docs-md path returned 404, no OpenAPI or swagger spec was found at any candidate path, and nothing shows agent-oriented API or developer docs. missing for 10: agent-oriented API/developer documentation (no OpenAPI spec found), a documented first-party llms.txt / llms-full.txt policy beyond the help-center index, independent or hands-on corroboration of agents consuming these docs.",
     "evidenceIds": [
       "puzzle-probe-1",
-      "puzzle-probe-2",
-      "puzzle-probe-3",
       "puzzle-docs-22",
-      "puzzle-docs-42"
+      "puzzle-probe-2",
+      "puzzle-probe-3"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can point an agent at llms.txt or agent-oriented docs",
+      "citations": [
+        {
+          "evidenceId": "puzzle-probe-1",
+          "quote": "PROBE llms.txt: HTTP 200 at https://help.puzzle.io/llms.txt # Puzzle Help Center"
+        },
+        {
+          "evidenceId": "puzzle-docs-22",
+          "quote": "Puzzle's MCP (Model Context Protocol) integration lets you connect your Puzzle account directly to Claude"
+        }
+      ]
+    },
     "productId": "puzzle",
     "storyId": "agentic-agent-docs"
   }

@@ -1,21 +1,35 @@
 {
-  "hash": "c1c859ac2ad810596b373b0228f6edc004b91dc84a7086676cf91313d8edca36",
+  "hash": "322289205cb77c6135c5bd5506602800f9176528b569010ed7d1bc43ad2e662c",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "The pack only indirectly supports CLI-driven dependency changes. An official CLI exists, and install has a dry-run mode that notes 'No lockfile, manifest, or node_modules changes are saved', which implies a real install does rewrite them. `pnpm audit --fix` writes overrides through the CLI, and frozen-lockfile mode in CI guards against lockfile drift. However, no evidence documents add, remove or update commands, and the catalog 'one line to upgrade' describes a manual edit to pnpm-workspace.yaml. Missing for 10: explicit documentation of add/remove/update commands that rewrite package.json and the lockfile, evidence of safe atomic rewrites, and independent or hands-on corroboration.",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "pnpm's own CLI demonstrably rewrites the manifest and lockfile: a documented install mode \"only updates `pnpm-lock.yaml` and `package.json`\", and `pnpm update` is named as a first-party upgrade command. However, the pack never documents `pnpm add` or `pnpm remove`, so only the upgrade leg and generic manifest/lockfile rewriting are evidenced. missing for 10: explicit documentation of add and remove commands, detail on how upgrades rewrite version ranges and the lockfile safely, independent or hands-on corroboration of agent-safe manifest editing.",
     "evidenceIds": [
-      "pnpm-probe-4",
-      "pnpm-docs-19",
-      "pnpm-docs-9",
-      "pnpm-docs-36",
-      "pnpm-docs-12",
-      "pnpm-docs-13",
-      "pnpm-docs-34",
-      "pnpm-docs-1"
+      "pnpm-docs-55",
+      "pnpm-docs-43",
+      "pnpm-probe-4"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can add, remove, and upgrade dependencies through CLI commands that safely rewrite the manifest and lockfile, so an agent never hand-edits them",
+      "citations": [
+        {
+          "evidenceId": "pnpm-docs-55",
+          "quote": "When used, only updates `pnpm-lock.yaml` and `package.json`. Nothing gets written to the `node_modules` directory."
+        },
+        {
+          "evidenceId": "pnpm-docs-43",
+          "quote": "`pnpm update` will only add 1 new file to the store, instead of cloning the entire dependency just for the singular change."
+        },
+        {
+          "evidenceId": "pnpm-probe-4",
+          "quote": "official CLI documented at https://pnpm.io/pnpm-cli"
+        }
+      ]
+    },
     "productId": "pnpm",
     "storyId": "cli-manifest-editing"
   }

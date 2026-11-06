@@ -1,20 +1,37 @@
 {
-  "hash": "ce63cfd4014b977a7654097dcd91bda518f427bb29c0029d559a18df3372b767",
+  "hash": "d4bcea1b049c8d8f5fb194280f2debf37c552dd5ca301acdd02fc2c2fa781f7d",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Mixpanel's own Warehouse Connectors sync data from Snowflake, BigQuery, Databricks, Redshift, and Postgres into Mixpanel. Mirror mode uses Snowflake Streams and Databricks Change Data Feed for ongoing change-tracked sync, which satisfies the warehouse-to-platform half of the story. Outbound, the Raw Event Export API offers high-volume JSONL export, but only as a pull API, with no documented continuous push into a warehouse. Missing for 10: evidence of continuous, managed event export into the user's warehouse; in-place querying of warehouse tables rather than syncing them in; independent or hands-on corroboration of connector reliability.",
+    "rationale": "Mixpanel's own Warehouse Connectors sync data from Snowflake, BigQuery, Databricks, Redshift and Postgres into Mixpanel, and Mirror mode uses change tracking to keep those syncs current. The reverse direction is only a pull-based Raw Event Export API returning JSONL, with no documented continuous export into a customer warehouse. Missing for 10: documented continuous or scheduled event export into the user's warehouse, direct in-product querying of warehouse tables without ingestion, independent hands-on corroboration of the connectors.",
     "evidenceIds": [
-      "mixpanel-docs-6",
       "mixpanel-docs-24",
       "mixpanel-intdir-5",
       "mixpanel-intdir-6",
       "mixpanel-docs-7",
-      "mixpanel-docs-9",
       "mixpanel-docs-17"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can sync events between the platform and my own data warehouse (query warehouse tables in-product or export events continuously to it)",
+      "citations": [
+        {
+          "evidenceId": "mixpanel-docs-24",
+          "quote": "With Warehouse Connectors, you can sync data from data warehouses like Snowflake, BigQuery, Databricks, Redshift, and Postgres to Mixpanel."
+        },
+        {
+          "evidenceId": "mixpanel-intdir-5",
+          "quote": "Mixpanel will create and manage the necessary STREAM objects in the \\MIXPANEL\\ schema created in \\Step 1."
+        },
+        {
+          "evidenceId": "mixpanel-docs-7",
+          "quote": "To export raw event data, use the Raw Event Export API. The events payload is returned as JSONL"
+        }
+      ]
+    },
     "productId": "mixpanel",
     "storyId": "warehouse-sync"
   }

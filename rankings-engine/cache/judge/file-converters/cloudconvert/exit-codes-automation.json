@@ -1,15 +1,30 @@
 {
-  "hash": "d0da066fab21867fff6597c32495d382cbb957f87bae631202b7f434f7a86352",
+  "hash": "43443d0cc0b5df472c817dcff99da1e691dcdba34d1a0f392f9261e258b23d4d",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "CloudConvert is an API service, so pipeline-readable success/failure signaling applies. The evidence shows only fragments of it: a documented HTTP 429 status with a Retry-After header for rate limits, and real-time task updates over the Socket API. Both give machine-readable status rather than prose, but neither shows comprehensive error codes or failure semantics. Missing for 10: documented error/status code taxonomy for job and task failures, structured error payloads or logs, CLI exit-code behavior, independent or hands-on corroboration.",
+    "rationale": "CloudConvert is an API service, so machine-readable success and failure signaling is a fair axis. The evidence shows only a glancing piece of it: a documented HTTP 429 status with a Retry-After header for rate limits, plus real-time task updates over the Socket API. Neither shows a general scheme for telling job or task success from failure. Missing for 10: documented status/error codes for job and task failures, structured task status fields (e.g. finished/error), error logs or messages per task, any CLI exit-code behavior, and independent or hands-on corroboration.",
     "evidenceIds": [
       "cloudconvert-docs-9",
       "cloudconvert-docs-22"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, the tool returns meaningful exit codes and logs, so a pipeline can tell success from failure without parsing prose",
+      "citations": [
+        {
+          "evidenceId": "cloudconvert-docs-9",
+          "quote": "If the limit is reached, a 429 error is returned, and there is a Retry-After header with the time in seconds to wait before the next request."
+        },
+        {
+          "evidenceId": "cloudconvert-docs-22",
+          "quote": "Socket API: Real-time task updates using Socket.io."
+        }
+      ]
+    },
     "productId": "cloudconvert",
     "storyId": "exit-codes-automation"
   }

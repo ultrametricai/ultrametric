@@ -1,21 +1,47 @@
 {
-  "hash": "03579f2f54f445ca44de34a8c87e85b913843e750c34830a4a5deeaef85f4518",
+  "hash": "b003b285abab39e3eb58434f5127e22c3dfe7ab1d0c893f28316c86002c63e8b",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Agents can create an order through documented protocol calls: the Agent Toolkit and MCP server expose `create_order`, and Store Sync's cart API (POST /merchant-cart, get cart) lets agents \"create and manage shopping carts\" via PayPal Shopping Cart. ACP and UCP checkout-session paths add further protocol coverage. Caveats: PayPal's service, not the agent, calls the merchant cart endpoints, and Store Sync access is form-gated and limited to US physical goods. missing for 10: an explicitly documented update-cart/update-order call (only create and get endpoints are crawled; \"manage\" implies but does not document updates), independent or hands-on corroboration of agent cart creation and updates.",
+    "rationale": "PayPal documents agent-driven cart and order creation through several routes. Store Sync lets AI agents \"create and manage shopping carts\", the cart API has a create-cart operation invoked when an AI agent starts checkout, the agent toolkit exposes a create_order tool, and the ACP path manages checkout sessions. However, the only cart endpoint evidenced besides create is get-cart, so no update operation is documented. The cart API is also a merchant-hosted reverse API that PayPal's Shopping Cart service calls, not something the agent calls directly. Access is form-gated and limited to US physical goods in USD. missing for 10: a documented cart/order update endpoint or tool, a direct agent-callable cart protocol call (instead of PayPal Shopping Cart calling merchant endpoints), and independent or hands-on corroboration of agent cart creation and updates.",
     "evidenceIds": [
-      "paypal-ac-supp-refund-dispute-tools",
+      "paypal-agent-commerce-docs-5",
+      "paypal-agent-commerce-docs-11",
+      "paypal-agent-commerce-docs-12",
       "paypal-agent-commerce-gh-1",
-      "paypal-ac-supp-store-sync",
-      "paypal-ac-supp-cart-reverse-api",
-      "paypal-ac-supp-getcart",
       "paypal-ac-supp-acp-chatgpt",
-      "paypal-ac-supp-agent-toolkit",
-      "paypal-ac-probe-rt-1"
+      "paypal-ac-supp-getcart",
+      "paypal-ac-supp-store-sync"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, my agent can create and update a cart or order draft through a documented protocol call",
+      "citations": [
+        {
+          "evidenceId": "paypal-agent-commerce-docs-5",
+          "quote": "enabling AI agents to discover your products, create and manage shopping carts, and complete purchases on behalf of customers through conversational interfaces"
+        },
+        {
+          "evidenceId": "paypal-agent-commerce-docs-11",
+          "quote": "Creates a new cart with the provided PayPalCart object. This is called by PayPal Shopping Cart when an AI agent or customer initiates a checkout process."
+        },
+        {
+          "evidenceId": "paypal-agent-commerce-gh-1",
+          "quote": "create_order: Create an order in PayPal system based on provided details"
+        },
+        {
+          "evidenceId": "paypal-agent-commerce-docs-12",
+          "quote": "Retrieves the current state of a cart."
+        },
+        {
+          "evidenceId": "paypal-ac-supp-acp-chatgpt",
+          "quote": "Follow the ACP agentic checkout specification to manage checkout sessions"
+        }
+      ]
+    },
     "productId": "paypal-agent-commerce",
     "storyId": "agent-cart-create"
   }

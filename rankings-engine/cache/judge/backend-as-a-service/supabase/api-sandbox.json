@@ -1,23 +1,49 @@
 {
-  "hash": "e65d5bf6e2f09fdbfc5942eff594ea04125a9b0a959d1a08cbb3f22ab1fca3f0",
+  "hash": "37dfed92338b49ef71e1cf0004a7a0a844576cd88c634e33517977f3dc670991",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Supabase documents several first-party sandbox paths. Branching creates separate environments and isolated per-PR preview environments for testing changes \"without affecting your production setup\". The CLI runs the entire stack locally, including a local MCP server at localhost:54321/mcp. The MCP docs explicitly recommend branching for testing \"in a safe environment before merging them to production\", backed by branch create/reset/merge tools. Community reports on local development are mixed (one team couldn't get it working, another found it easy), which lowers quality but does not contradict the capability. Missing for 10: the MCP branching tool group is still experimental, there is no independent hands-on corroboration that branching keeps production data isolated, and the community reports local-development friction.",
+    "rationale": "Supabase ships its own isolated test environments. Branching creates separate environments and isolated per-PR previews \"without affecting your production setup.\" The CLI runs the whole stack locally with a local MCP endpoint, so an agent can work against a sandbox instead of prod, and the MCP docs name branching as a safe-testing mitigation. This is true sandbox isolation, not just a dry run or the read-only mode. Missing for 10: MCP branching tools are labeled experimental, there is no independent hands-on corroboration of branch isolation, and community reports on local development are mixed (one user found it easy, another team reportedly couldn't get it working).",
     "evidenceIds": [
-      "supabase-docs-10",
       "supabase-docs-17",
       "supabase-docs-50",
       "supabase-docs-21",
       "supabase-docs-54",
       "supabase-supp-mcp-config-params",
-      "supabase-supp-mcp-tool-groups",
       "supabase-supp-mcp-agent-security",
+      "supabase-supp-mcp-tool-groups",
       "supabase-comm-7",
-      "supabase-comm-14"
+      "supabase-comm-9"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
+      "citations": [
+        {
+          "evidenceId": "supabase-docs-17",
+          "quote": "You can use these branching environments to create and test changes like new configurations, database schemas, or features without affecting your production setup."
+        },
+        {
+          "evidenceId": "supabase-docs-50",
+          "quote": "Branching takes this further, adding isolated preview environments for each pull request."
+        },
+        {
+          "evidenceId": "supabase-docs-54",
+          "quote": "The Supabase CLI runs the entire Supabase stack on your own machine or in a CI environment, so you can build and test locally"
+        },
+        {
+          "evidenceId": "supabase-supp-mcp-config-params",
+          "quote": "When using Supabase CLI for local development, the MCP server is available at http://localhost:54321/mcp."
+        },
+        {
+          "evidenceId": "supabase-supp-mcp-agent-security",
+          "quote": "test changes in a safe environment before merging them to production"
+        }
+      ]
+    },
     "productId": "supabase",
     "storyId": "api-sandbox"
   }

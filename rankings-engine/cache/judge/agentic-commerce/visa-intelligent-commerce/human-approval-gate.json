@@ -1,11 +1,11 @@
 {
-  "hash": "4c822294edd077efe846b77d83ac630eaf864497b1baee033a088d09ed5b74a0",
+  "hash": "ec289610895ee3579ecaf4de13a6b16e01515b193e53b5972edac738d58ec921",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
-    "quality": 8,
+    "quality": 9,
     "confidence": "medium",
-    "rationale": "Visa's docs describe a documented human approval step before money moves. The user authenticates each Payment Instruction with their Passkey, and purchase-intent mandates carry a consumerPrompt (e.g. 'Authorize payment to Best Buy'), a decline threshold and an expiry. Credential requests and authorizations are then validated against that authenticated instruction, and merchants can verify the user's permission via TAP signatures. Missing for 10: independent or hands-on corroboration that the passkey approval flow works in practice, and production maturity (the docs say 'This product is in the process of development and deployment').",
+    "rationale": "Visa's docs describe a passkey-anchored approval flow. Before spending, the agent must have the user authenticate the Payment Instruction with their passkey. A purchase-intent mandate carries a consumerPrompt, a decline threshold and an expiry. VisaNet then checks that credential requests and authorizations match the authenticated instruction for merchant and amount. missing for 10: independent or hands-on corroboration that the approval step is enforced in production (the product is marked as still in development), and explicit tiering that defines which purchases count as 'sensitive' and need fresh approval versus those covered by a standing mandate.",
     "evidenceIds": [
       "visa-ic-supp-2",
       "visa-ic-supp-3",
@@ -13,9 +13,35 @@
       "visa-intelligent-commerce-docs-6",
       "visa-intelligent-commerce-docs-7",
       "visa-ic-supp-5",
-      "visa-intelligent-commerce-gh-1",
       "visa-ic-supp-1"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, sensitive agent spending requires my documented approval — a confirmation step, signed mandate, or per-purchase consent — before money moves",
+      "citations": [
+        {
+          "evidenceId": "visa-ic-supp-2",
+          "quote": "The agent requests the user to authenticate the Payment Instruction using their Passkey and provides that instruction to the Visa Intelligent Commerce platform."
+        },
+        {
+          "evidenceId": "visa-ic-supp-2",
+          "quote": "The Visa Intelligent Commerce platform will validate that these requests match the authenticated user instruction and set network level controls."
+        },
+        {
+          "evidenceId": "visa-intelligent-commerce-docs-3",
+          "quote": "Capture consumer consent, set spending limits, and manage mandates for agent-initiated payments."
+        },
+        {
+          "evidenceId": "visa-ic-supp-3",
+          "quote": "to verify that your agent is acting in accordance with the customer's intent"
+        },
+        {
+          "evidenceId": "visa-intelligent-commerce-docs-7",
+          "quote": "Controls to ensure that the agent’s purchasing actions and the related authorizations align with the user’s authenticated instruction"
+        }
+      ]
+    },
     "productId": "visa-intelligent-commerce",
     "storyId": "human-approval-gate"
   }

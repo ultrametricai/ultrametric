@@ -1,20 +1,45 @@
 {
-  "hash": "8254b4eb1a173afe8b502448b9c7c36f645a76cb5729bd2baf086e756ead1590",
+  "hash": "d183dead1afa17145d5bf91eae515ac79b01129608dbdfef09bc4b267ca2f59a",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
-    "quality": 7,
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Supabase ships its own background automation primitives. Supabase Cron schedules recurring jobs, from every second to once a year, that run SQL, database functions, or HTTP calls to Edge Functions, and can be created via SQL or the Dashboard. Queues handles durable background tasks with guaranteed delivery, and Database Webhooks fire automatically on table events. The MCP docs also explicitly address unattended agent routines with read-only, project-scoped guardrails. missing for 10: explicit documentation of agents creating or managing cron/queue automations via MCP or the AI Assistant (only implied through execute_sql/deploy_edge_function), independent hands-on corroboration of background job reliability.",
+    "rationale": "Supabase ships its own background automation primitives. Supabase Cron schedules recurring jobs, from every second to once a year, that run SQL or call Edge Functions over HTTP. Database Webhooks fire automatically on INSERT/UPDATE/DELETE, and Queues provides durable background tasks with guaranteed delivery. The MCP docs also describe guardrails for unattended agent routines. Missing for 10: independent or hands-on corroboration that these automations run reliably, and native agent-driven background automation (unattended routines run in an external agent client, not inside Supabase).",
     "evidenceIds": [
       "supabase-supp-cron",
       "supabase-docs-62",
-      "supabase-supp-queues",
       "supabase-supp-db-webhooks",
-      "supabase-supp-mcp-agent-security",
-      "supabase-supp-mcp-tool-groups",
-      "supabase-supp-ai-assistant"
+      "supabase-supp-queues",
+      "supabase-supp-mcp-agent-security"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can set up automations that run autonomously in the background",
+      "citations": [
+        {
+          "evidenceId": "supabase-supp-cron",
+          "quote": "Supabase Cron is a Postgres Module that simplifies scheduling recurring Jobs with cron syntax and monitoring Job runs inside Postgres."
+        },
+        {
+          "evidenceId": "supabase-docs-62",
+          "quote": "Cron Jobs can be created via SQL or the Integrations -> Cron interface inside the Dashboard, and can run anywhere from every second to once a year"
+        },
+        {
+          "evidenceId": "supabase-supp-queues",
+          "quote": "enabling developers to manage Background Tasks with zero configuration."
+        },
+        {
+          "evidenceId": "supabase-supp-db-webhooks",
+          "quote": "Database Webhooks allow you to send real-time data from your database to another system whenever a table event occurs."
+        },
+        {
+          "evidenceId": "supabase-supp-mcp-agent-security",
+          "quote": "Approve in advance only the project-scoped, read-only tools that the routine needs."
+        }
+      ]
+    },
     "productId": "supabase",
     "storyId": "agentic-autonomous-automation"
   }

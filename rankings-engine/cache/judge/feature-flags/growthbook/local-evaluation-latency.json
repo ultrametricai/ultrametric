@@ -1,19 +1,46 @@
 {
-  "hash": "fbe3bc975c32f04f24c648ad3946b3619dda131e9652935bd4ec5fb6a99d2056",
+  "hash": "ae80bcbdbbc6f4e9d7a0c8a673a69577661f535eaf51e86ce3fe312c0615c5cb",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 8,
+    "verdict": "partial",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "GrowthBook's design is a single cacheable JSON definition of features, evaluated locally inside the SDKs. The SDK Connection Endpoint serves just enough flag data for SDKs to assign values, and targeting attributes stay in SDK memory and are never sent to GrowthBook. Server-side inline experiments need no third-party requests, and the GrowthBook Proxy caches SDK payloads so flags keep serving if the API is down. Missing for 10: no latency benchmarks or explicit microsecond-level evaluation claims, no server-SDK docs on cache refresh (polling/streaming), and no independent hands-on corroboration of in-process evaluation performance.",
+    "rationale": "GrowthBook's own SDKs evaluate flags locally against a single cacheable JSON payload fetched from the SDK Connection Endpoint. Server-side use needs no third-party requests, attribute values stay in SDK memory, and the probe confirmed the payload endpoint serves the flag definitions. However, the story's microsecond decision latency and an explicit no-network-call-per-flag-check guarantee for server SDKs are not documented, so coverage is partial rather than complete. missing for 10: documented or benchmarked microsecond evaluation latency for server SDKs, explicit first-party server-SDK docs describing in-process caching and refresh of the ruleset, independent hands-on corroboration of zero per-check network calls.",
     "evidenceIds": [
       "growthbook-comm-6",
       "growthbook-docs-20",
-      "growthbook-docs-18",
       "growthbook-docs-19",
+      "growthbook-docs-18",
       "growthbook-docs-11",
-      "growthbook-docs-45"
+      "growthbook-probe-rt-2"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform engineer, my server SDKs evaluate flags locally from a cached ruleset — microsecond decisions with no network call per flag check",
+      "citations": [
+        {
+          "evidenceId": "growthbook-comm-6",
+          "quote": "there's a single cacheable JSON definition of all of the features and then evaluation happens locally within the SDKs"
+        },
+        {
+          "evidenceId": "growthbook-docs-20",
+          "quote": "The SDK Connection Endpoint provides readonly access to a subset of your feature flag data, just enough for the GrowthBook SDKs to assign values to users."
+        },
+        {
+          "evidenceId": "growthbook-docs-19",
+          "quote": "You can also run server-side experiments by using inline experiments directly with our SDK. This requires no 3rd party requests"
+        },
+        {
+          "evidenceId": "growthbook-docs-18",
+          "quote": "They are only stored in memory locally within the SDK."
+        },
+        {
+          "evidenceId": "growthbook-docs-11",
+          "quote": "Run the GrowthBook Proxy next to your app to cache SDK payloads, reduce latency, and keep serving flags if the API is down."
+        }
+      ]
+    },
     "productId": "growthbook",
     "storyId": "local-evaluation-latency"
   }

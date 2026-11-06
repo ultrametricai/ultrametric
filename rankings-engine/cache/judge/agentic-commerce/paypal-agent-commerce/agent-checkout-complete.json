@@ -1,20 +1,45 @@
 {
-  "hash": "f962b93c2450c03470bf21d890c5d38de0c801cc3bec017972411cb203e785eb",
+  "hash": "0099d0a1e5c52a6dd29faacaa1bfb106dfa77c42759e906ed488841f1e99b419",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "PayPal's own docs cover each step of the story. The ACP path manages checkout sessions per the ACP spec and receives a single-use Braintree delegated payment token through a `complete_checkout` tool. The UCP path delivers a Braintree token in `credential.token` on the `/checkout-session/{id}/complete` call. Store Sync lets agents create carts and complete purchases, with the order landing in the merchant's existing order management system. Access is gated: it requires a Braintree account or a PayPal access request via form, Google enablement for UCP, and Store Sync covers only US physical goods in USD. Missing for 10: hands-on or independent corroboration of a completed agent purchase, explicit documentation of the order-confirmation response returned to the agent, and broader availability beyond the gated, US-only scope.",
+    "rationale": "PayPal documents the full agent checkout chain. The ACP path for ChatGPT has merchants manage checkout sessions and receive a delegated, one-time-use Braintree token via a `complete_checkout` tool. The UCP path for Google AI Mode passes a single-use token in `credential.token` to the merchant's `/checkout-session/{id}/complete` endpoint. Store Sync lets agents complete purchases, with orders flowing into the merchant's existing order system. missing for 10: independent or hands-on corroboration of a completed end-to-end agent purchase, explicit documentation of the order-confirmation response returned to the agent on the ACP/UCP paths, and broader availability (access is form-gated and Braintree- or Google-gated, and Store Sync covers only US physical goods in USD).",
     "evidenceIds": [
       "paypal-ac-supp-acp-chatgpt",
       "paypal-ac-supp-ucp-googlepay",
-      "paypal-ac-supp-agent-ready",
       "paypal-ac-supp-store-sync",
       "paypal-ac-supp-cart-reverse-api",
-      "paypal-ac-supp-acs-gate",
-      "paypal-agent-commerce-docs-5"
+      "paypal-ac-supp-agent-ready"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, my agent can complete a purchase end-to-end — checkout session, delegated payment credential, confirmed order",
+      "citations": [
+        {
+          "evidenceId": "paypal-ac-supp-acp-chatgpt",
+          "quote": "Follow the ACP agentic checkout specification to manage checkout sessions"
+        },
+        {
+          "evidenceId": "paypal-ac-supp-acp-chatgpt",
+          "quote": "is a one-time-use token that you can process using your existing Braintree integration"
+        },
+        {
+          "evidenceId": "paypal-ac-supp-ucp-googlepay",
+          "quote": "the payment payload includes the Braintree single-use token in the `credential.token` field"
+        },
+        {
+          "evidenceId": "paypal-ac-supp-store-sync",
+          "quote": "Your existing order management system receives the order just as it would from any other channel."
+        },
+        {
+          "evidenceId": "paypal-ac-supp-cart-reverse-api",
+          "quote": "201 Created: Cart created successfully with payment token in payment_method"
+        }
+      ]
+    },
     "productId": "paypal-agent-commerce",
     "storyId": "agent-checkout-complete"
   }

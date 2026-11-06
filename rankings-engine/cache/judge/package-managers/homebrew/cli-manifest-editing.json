@@ -1,19 +1,32 @@
 {
-  "hash": "cc9aa924c4fca4c03ebd2f00365875ee0ea1bf473ae2db92bf8c34270d404ed6",
+  "hash": "ea781db4f6ab1d8d6468dac2692521c9047c61ebefbc78e88755c17ce33f1e39",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 4,
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "Homebrew treats a Brewfile as a project dependency manifest, and the CLI covers the main operations: `brew install` adds packages, autoremove uninstalls no-longer-needed dependencies, and `brew bundle dump` regenerates the Brewfile from installed state. That means an agent can rewrite the manifest indirectly through CLI commands rather than by hand. However, there is no evidence of direct add/remove/upgrade commands that edit the Brewfile, and no lockfile mechanism is documented. Missing for 10: CLI commands that directly add, remove or upgrade Brewfile entries, a lockfile that the CLI rewrites safely, and independent corroboration of agent-safe manifest editing.",
+    "rationale": "Homebrew uses a project Brewfile as a dependency manifest, and `brew bundle dump` is a documented CLI command that writes the Brewfile from installed state. An agent can therefore install, uninstall or upgrade packages and regenerate the manifest without hand-editing it. However, the pack documents no per-dependency add/remove/upgrade commands that edit the Brewfile directly, and no lockfile at all. missing for 10: dedicated CLI add/remove/upgrade commands that rewrite the Brewfile, lockfile generation and updating, safety guarantees for the rewrite, independent corroboration",
     "evidenceIds": [
       "homebrew-docs-1",
       "homebrew-docs-2",
-      "homebrew-docs-7",
-      "homebrew-docs-8",
-      "homebrew-docs-14",
-      "homebrew-docs-30"
+      "homebrew-docs-64",
+      "homebrew-docs-69"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can add, remove, and upgrade dependencies through CLI commands that safely rewrite the manifest and lockfile, so an agent never hand-edits them",
+      "citations": [
+        {
+          "evidenceId": "homebrew-docs-2",
+          "quote": "`brew bundle dump` is Homebrew's installed-state snapshot command: it records supported installed formulae, casks, taps and other package types as a `Brewfile`."
+        },
+        {
+          "evidenceId": "homebrew-docs-1",
+          "quote": "Adding a `Brewfile` to a project's repository (like you might a `package.json`, `Gemfile` or `requirements.txt`) is a nicer way of encoding project dependencies for developer environments."
+        }
+      ]
+    },
     "productId": "homebrew",
     "storyId": "cli-manifest-editing"
   }

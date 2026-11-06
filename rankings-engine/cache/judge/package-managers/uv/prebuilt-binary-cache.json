@@ -1,17 +1,32 @@
 {
-  "hash": "00743b92a015b2159b26b422ecc9a21e68e3e0b5ec050ace549e93d4effe5813",
+  "hash": "d9f3b7dcc9475d5a74311afb1a1e5e677696f8a02e40e5799e4455da946ab63c",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "uv's docs say it uses aggressive caching to avoid re-downloading and re-building dependencies from prior runs [uv-docs-25]. A global cache deduplicates dependencies [uv-docs-33], and the official setup-uv action can persist that cache in CI [uv-docs-10], so previously built packages are reused rather than recompiled. One user reports uvx sometimes re-downloading dependencies it had just fetched for another tool [uv-comm-4], which lowers confidence but does not contradict the documented capability. Missing for 10: explicit documentation of prebuilt-wheel selection and how built wheels are stored and reused from the cache, and independent hands-on corroboration that cache hits avoid source builds.",
+    "rationale": "uv documents aggressive caching that avoids re-downloading and re-building dependencies already accessed in prior runs, backed by a global deduplicating cache. That covers the core of reusing cached built artifacts instead of compiling again. The evidence never explicitly addresses installing prebuilt binary wheels instead of source builds, and one community report says uvx sometimes re-downloads dependencies it just fetched. Missing for 10: explicit documentation of prebuilt wheel (binary) preference and installation from the cache, detail on how built wheels are cached and reused across environments, and independent hands-on corroboration that source compilation is avoided.",
     "evidenceIds": [
       "uv-docs-25",
       "uv-docs-33",
-      "uv-docs-10",
+      "uv-docs-77",
       "uv-comm-4"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can install prebuilt binary packages from a cache instead of compiling from source",
+      "citations": [
+        {
+          "evidenceId": "uv-docs-25",
+          "quote": "uv uses aggressive caching to avoid re-downloading (and re-building) dependencies that have already been accessed in prior runs."
+        },
+        {
+          "evidenceId": "uv-docs-33",
+          "quote": "Disk-space efficient, with a [global cache](concepts/cache/) for dependency deduplication."
+        }
+      ]
+    },
     "productId": "uv",
     "storyId": "prebuilt-binary-cache"
   }

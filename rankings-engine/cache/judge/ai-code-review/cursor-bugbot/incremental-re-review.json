@@ -1,17 +1,32 @@
 {
-  "hash": "5d5ad4de65e2c3c3bef40a8b4ed05c2c5413650e149764b37edaa6ecbaab6874",
+  "hash": "73c605a4c5d55fb033a9ca836606f4c3f1055cf8f652c178ecff144c1c5cdfc5",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Bugbot's docs say it re-runs automatically on every PR update and reads existing top-level and inline PR comments to avoid duplicate suggestions and build on prior feedback, which covers the core of not repeating old comments. The community report of getting the same recommendation again came after the user reverted the fix, so the bug had returned; it shows flip-flopping, not a concrete failure of deduplication. missing for 10: documented incremental (since-last-review) diff scoping, explicit tracking or auto-resolving of fixed findings, independent hands-on confirmation of dedup across pushes.",
+    "rationale": "Bugbot's docs say it re-runs automatically on every PR update and reads existing top-level and inline PR comments to avoid duplicate suggestions and build on prior feedback. That covers the push-triggered re-review and the de-duplication parts of the story. One community user reported getting the exact same original recommendation again after arguing against a fix and reverting it, though the report mixes Bugbot with Claude, so it is not treated as a clear contradiction. missing for 10: documented incremental (new-commits-only) diff scoping, explicit tracking or resolution of fixed issues across pushes, and independent corroboration that old comments are not repeated.",
     "evidenceIds": [
       "cursor-bugbot-docs-1",
       "cursor-bugbot-docs-5",
       "cursor-bugbot-docs-14",
       "cursor-bugbot-comm-1"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, pushing new commits triggers an incremental re-review that tracks what was fixed instead of repeating old comments",
+      "citations": [
+        {
+          "evidenceId": "cursor-bugbot-docs-1",
+          "quote": "Runs automatic reviews on every PR update"
+        },
+        {
+          "evidenceId": "cursor-bugbot-docs-14",
+          "quote": "reads connected PR comments (top-level and inline) to avoid duplicate suggestions and build on prior feedback"
+        }
+      ]
+    },
     "productId": "cursor-bugbot",
     "storyId": "incremental-re-review"
   }

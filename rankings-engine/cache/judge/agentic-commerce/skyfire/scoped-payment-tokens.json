@@ -1,22 +1,47 @@
 {
-  "hash": "b204b8150445303010d4bc8cf1e4e97142270ee238b033ef518b61a255f95e48",
+  "hash": "cafd1b6d8d48bc6d9216431c85d2cd5c0e8d43a842aaa3331fbb0d3efaf3fc19",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 8,
+    "verdict": "partial",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Skyfire's pay and kya-pay tokens are signed, scoped credentials the agent uses instead of a card number. Each token commits a fixed amount against the buyer's wallet as a hard ceiling, and overcharges are rejected with a 402. Tokens expire within 10 seconds to 24 hours, each authorizes payment to a seller, and card-based purchases use tokenized cards under cardholder authorizations bound to a merchant and an amount. Missing for 10: no per-token revocation API (outstanding tokens stay chargeable until expiry plus a 24-hour grace period), merchant binding for wallet pay tokens is only briefly stated, and no independent or hands-on corroboration of limit enforcement.",
+    "rationale": "Skyfire documents pay/kya-pay tokens that the agent uses in place of a raw card. Each token carries a committed amount that acts as a ceiling, and charges above its remaining balance are rejected. Tokens have a bounded expiry and authorize payment to a seller, and card authorizations cover a specific merchant and amount. However, per-token merchant scoping and expiry configuration are only lightly documented, and in-flight tokens cannot be revoked individually. Missing for 10: explicit documentation of configurable merchant restrictions on pay tokens, detailed expiry-setting controls, a per-token revocation API, and independent or hands-on corroboration.",
     "evidenceIds": [
       "skyfire-supp-4",
       "skyfire-supp-5",
       "skyfire-supp-6",
       "skyfire-supp-7",
-      "skyfire-supp-3",
       "skyfire-docs-25",
-      "skyfire-docs-38",
       "skyfire-docs-5",
       "skyfire-supp-9"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can hand my agent a scoped, limited-use payment credential — amount limits, expiry, merchant restrictions — instead of a raw card number",
+      "citations": [
+        {
+          "evidenceId": "skyfire-supp-4",
+          "quote": "Charges above the token's remaining balance are rejected."
+        },
+        {
+          "evidenceId": "skyfire-supp-5",
+          "quote": "Tokens may be charged multiple times until their balance is exhausted."
+        },
+        {
+          "evidenceId": "skyfire-supp-6",
+          "quote": "no per-token revocation API is documented, so the practical caps are the token amount and its 10-second-to-24-hour expiry"
+        },
+        {
+          "evidenceId": "skyfire-supp-7",
+          "quote": "The agent/agent platform can never spend more than the cardholder approved."
+        },
+        {
+          "evidenceId": "skyfire-docs-25",
+          "quote": "Authorizes a **payment** to a seller."
+        }
+      ]
+    },
     "productId": "skyfire",
     "storyId": "scoped-payment-tokens"
   }

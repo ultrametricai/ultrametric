@@ -1,16 +1,35 @@
 {
-  "hash": "d3c82864fce84121d6e78ff7249d6ae68e9e4b0d1d6536a55b72cabe0114a4e7",
+  "hash": "ab76c068a2182fdbb502796bdf851987ab12843759aff4dd0493cecbee6e0bb5",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Kong Gateway documents Event Hooks, a first-class entity that subscribes to specific entity events (create, delete or modify on Services, Admins and others). Its `webhook` and `webhook-custom` handlers POST to an external endpoint. Konnect separately offers configurable audit-log webhooks with a status API covering last attempt, response code and enabled state. Konnect's Notification Hub has no webhook channel, so cloud-side event subscription is limited to audit logs. missing for 10: webhook coverage for Konnect platform events beyond audit logs, documented delivery semantics (signing, retries) for Event Hooks, independent or hands-on corroboration.",
+    "rationale": "Kong documents its own registrable outbound webhooks. Gateway Event Hooks can listen for create, delete or modify events on Gateway entities and POST them through `webhook` or `webhook-custom` handlers. Konnect separately offers audit-log webhooks with a status API. Coverage is fragmented: Event Hooks are on-prem only and limited to entity-change events, and the Konnect Notification Hub, which covers the broader set of org events, delivers only by email and in-app. missing for 10: a unified webhook subscription for Konnect platform events (Notification Hub has no webhook channel), event-type breadth beyond entity CRUD and audit logs, payload and delivery semantics (retries, signing), independent or hands-on corroboration.",
     "evidenceIds": [
       "kong-supp-gateway-event-hooks",
       "kong-supp-audit-log-webhooks",
       "kong-supp-notification-hub-channels"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can subscribe to events via webhooks",
+      "citations": [
+        {
+          "evidenceId": "kong-supp-gateway-event-hooks",
+          "quote": "An Event Hook is a Kong Gateway entity that can be configured to listen for specific events from Kong Gateway entities. An Event Hook can be configured to send information to logs, webhooks, or third-party applications."
+        },
+        {
+          "evidenceId": "kong-supp-audit-log-webhooks",
+          "quote": "You can collect audit logs for both the Konnect org and Dev Portal using a webhook you configure."
+        },
+        {
+          "evidenceId": "kong-supp-notification-hub-channels",
+          "quote": "Notifications are delivered through two supported channels: email and in-app (via the bell icon in the Konnect UI)"
+        }
+      ]
+    },
     "productId": "kong",
     "storyId": "agentic-webhooks"
   }

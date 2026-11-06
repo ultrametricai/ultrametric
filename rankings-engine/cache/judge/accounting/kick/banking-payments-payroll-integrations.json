@@ -1,11 +1,11 @@
 {
-  "hash": "e29d24fa035c7b59a5f7ea8e5af563899ec981f767cacf1810b15689e36c74b6",
+  "hash": "bdacc686da4b5a6265c3eb4a4a93ccd2ae5847eb526624aee13cd826abad1a34",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Banking is well covered: Kick connects to 12,000+ banks and cards via Plaid, with a PDF/CSV importer as a fallback. Every synced transaction posts a journal entry to the ledger and is auto-categorized, with rules applied on sync. Payments activity is partly covered through Stripe, Mercury and BILL invoice sync and Ramp/BILL bill sync, and the docs say payroll runs generate journal entries. Missing for 10: any named payroll-provider integration, evidence that Stripe payment/payout activity (not just invoices) syncs, and independent or hands-on corroboration that the feeds work.",
+    "rationale": "Kick connects to banks and cards through Plaid (12,000+ institutions), syncs invoices from Stripe, Mercury and BILL and bills from Ramp/BILL in real time, and states that every transaction, including payroll runs, generates a journal entry that posts to the general ledger automatically. Synced transactions are then auto-categorized and rules run on sync. Missing for 10: no named payroll-provider integration (payroll is only referenced as a journal-entry source), payment-processor activity documented only as invoice sync rather than full payout/fee flows, no independent or hands-on corroboration.",
     "evidenceIds": [
       "kick-docs-31",
       "kick-docs-4",
@@ -14,8 +14,35 @@
       "kick-supp-journal-entries",
       "kick-supp-categorization",
       "kick-docs-18",
-      "kick-supp-reconciliation"
+      "kick-supp-security"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a founder, I can connect my banking, payments, and payroll systems so their activity flows into the ledger automatically",
+      "citations": [
+        {
+          "evidenceId": "kick-docs-31",
+          "quote": "Plaid: connects to 12,000+ banks and credit cards. The primary method for most accounts."
+        },
+        {
+          "evidenceId": "kick-docs-12",
+          "quote": "View invoices synced from Stripe, Mercury, and BILL"
+        },
+        {
+          "evidenceId": "kick-docs-13",
+          "quote": "View and manage your bills in Kick, with real-time sync from Ramp or BILL."
+        },
+        {
+          "evidenceId": "kick-supp-journal-entries",
+          "quote": "Every transaction in Kick - whether it came from your bank, a payroll run, or a bill - generates a journal entry that posts to your general ledger"
+        },
+        {
+          "evidenceId": "kick-docs-18",
+          "quote": "Once a rule is created, it runs automatically every time a matching transaction syncs."
+        }
+      ]
+    },
     "productId": "kick",
     "storyId": "banking-payments-payroll-integrations"
   }

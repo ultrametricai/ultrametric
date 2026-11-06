@@ -1,17 +1,41 @@
 {
-  "hash": "a2878589ada3d5a5f49b7d8e2cf5cda1f7b0c5d0e8115e75590a69500d76ece7",
+  "hash": "00a2dad1a457c70d190843a381e0411d039172d8307b25363ab4c7b3e5da2564",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Independent community reports say LaunchDarkly SDKs download all flags on connection and then stream changes over SSE with minimal latency (comm-2, comm-9). The self-hosted Relay Proxy is documented as part of the delivery architecture (docs-13, docs-32). Missing for 10: first-party docs describing streaming/polling propagation and latency, explicit evidence of seconds-level propagation, kill-switch-specific documentation or hands-on verification.",
+    "rationale": "LaunchDarkly's own docs say the Relay Proxy connects to the LaunchDarkly streaming API and proxies that connection to clients. Independent users confirm that SDK clients download all flags on connect and then receive changes over server-sent events (SSE) with minimal latency. That covers the core of streaming propagation, but no first-party evidence states a propagation time in seconds, describes a fast-polling fallback, or confirms that a kill-switch flip reliably reaches all connected SDKs. missing for 10: documented propagation latency (seconds-level SLA or measurement), fast-polling mode/fallback documentation, explicit kill-switch behavior evidence, first-party SDK streaming docs beyond the Relay Proxy.",
     "evidenceIds": [
+      "launchdarkly-docs-62",
       "launchdarkly-comm-2",
+      "launchdarkly-comm-12",
       "launchdarkly-comm-9",
-      "launchdarkly-docs-13",
-      "launchdarkly-docs-32"
+      "launchdarkly-comm-7-refresh-4585c91e01ba9d34"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, flag changes propagate to connected SDKs in seconds via streaming or fast polling — a kill switch actually kills",
+      "citations": [
+        {
+          "evidenceId": "launchdarkly-docs-62",
+          "quote": "It connects to the LaunchDarkly streaming API and proxies that connection to clients"
+        },
+        {
+          "evidenceId": "launchdarkly-comm-2",
+          "quote": "LaunchDarkly clients download all flags in the project on connection, then stream changes."
+        },
+        {
+          "evidenceId": "launchdarkly-comm-9",
+          "quote": "centralized feature flag service via SSE with minimal latency"
+        },
+        {
+          "evidenceId": "launchdarkly-comm-7-refresh-4585c91e01ba9d34",
+          "quote": "LD streams changes via server-sent events, adding no extra latency for network calls."
+        }
+      ]
+    },
     "productId": "launchdarkly",
     "storyId": "realtime-flag-updates"
   }

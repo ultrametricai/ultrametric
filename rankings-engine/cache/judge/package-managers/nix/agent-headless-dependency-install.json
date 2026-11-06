@@ -1,21 +1,37 @@
 {
-  "hash": "11059c6c84877acf76531fc57719a94c8aaa4b04a3de725c27b7d6d801dc89a3",
+  "hash": "a4dfa77966f9f316a4e54bcec3a63f3a0b6780d428cbca4af0bb8c669e51a29e",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Nix's documented CLI lets an agent fetch and install project dependencies via `nix-shell`/`nix develop`, upgrade packages with `nix-env --upgrade`, and run commands non-interactively with `nix-shell --run`. Atomic operations and rollback make failed updates safe. However, nothing in the pack documents exit-code semantics or structured error output, and a hands-on user reports that when something fails you have to dig deep to fix errors, which undercuts the 'clear errors' part of the story. Missing for 10: documented exit codes, clear or machine-readable error reporting, an explicit non-interactive/flake lock-update workflow for dependencies, and independent evidence of agent-driven use.",
+    "rationale": "Nix's own CLI resolves and installs project dependencies without prompts: `nix-shell` builds or downloads declared dependencies, `nix-shell --run` executes a command in that environment, and `nix-env --upgrade` updates packages. Nothing in the pack documents exit-code semantics or machine-readable errors, and one hands-on user reports having to 'dig deep to fix errors'. missing for 10: documented exit codes, structured or clear error output, explicit non-interactive/CI flags for dependency updates, independent corroboration of agent-driven use.",
     "evidenceIds": [
       "nix-docs-2",
-      "nix-docs-3",
       "nix-docs-4",
-      "nix-docs-50",
-      "nix-docs-29",
       "nix-comm-7",
       "nix-comm-8",
-      "nix-probe-4"
+      "nix-docs-50"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can have an agent install and update project dependencies non-interactively, with clear exit codes and errors when something fails",
+      "citations": [
+        {
+          "evidenceId": "nix-docs-2",
+          "quote": "the command `nix-shell` will build or download those dependencies if they’re not already in your Nix store"
+        },
+        {
+          "evidenceId": "nix-comm-7",
+          "quote": "you can do `nix-shell --run \"<some command>\"`, and it will make sure you have all of the correct dependencies."
+        },
+        {
+          "evidenceId": "nix-docs-4",
+          "quote": "$ nix-env --upgrade --attr nixpkgs.some-package"
+        }
+      ]
+    },
     "productId": "nix",
     "storyId": "agent-headless-dependency-install"
   }

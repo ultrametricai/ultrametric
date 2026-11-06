@@ -1,21 +1,42 @@
 {
-  "hash": "2bd269ac28173330e7a4d1f3adbbfa8431df9a173d441ec1af182244d6bd0232",
+  "hash": "fbbbec0283abfe6057fe1f3be3fcb5ba00672dc57416edc964d1164e93216eec",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Nix handles many items at once mainly through declarative specs. A whole system's packages and configuration are built from one expression and can be rolled back as a unit. The garbage collector removes all unused packages in one pass, and a community user reports reclaiming 30 GB with nix-collect-garbage. However, the documented imperative example (`nix-env --upgrade --attr`) targets a single package, and there is no explicit bulk-selection or batch-command documentation. missing for 10: documented batch/multi-item CLI operations (e.g. upgrade-all or pattern-based selection), agent-oriented bulk automation docs, independent hands-on corroboration of bulk workflows.",
+    "rationale": "Nix's own documented operations act on many items at once. The garbage collector deletes all unused packages in one run, a whole system configuration can be built or rolled back as a unit, and a fleet of servers can be described in a single repeatable configuration. However, the evidence never frames these as a general bulk-operation feature, and none of it is specific to AI agent use. Missing for 10: an explicit batch/bulk command interface for selecting arbitrary sets of items, documented upgrade-all or multi-target CLI examples, and hands-on corroboration of bulk workflows driven by an AI agent.",
     "evidenceIds": [
-      "nix-docs-15",
+      "nix-docs-6",
+      "nix-docs-7",
       "nix-docs-27",
       "nix-docs-46",
-      "nix-docs-45",
-      "nix-docs-6",
-      "nix-docs-50",
-      "nix-docs-4",
-      "nix-comm-2"
+      "nix-docs-63",
+      "nix-docs-62"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can perform bulk operations across many items at once",
+      "citations": [
+        {
+          "evidenceId": "nix-docs-6",
+          "quote": "unused packages can be deleted safely by running the _garbage collector_"
+        },
+        {
+          "evidenceId": "nix-docs-7",
+          "quote": "it is easy to roll back the entire configuration of the system to an earlier state."
+        },
+        {
+          "evidenceId": "nix-docs-63",
+          "quote": "Describe a laptop or a fleet of servers in reversable and repeatable configuration."
+        },
+        {
+          "evidenceId": "nix-docs-62",
+          "quote": "turn the Nix expression into a function and call it any number of times with the appropriate arguments."
+        }
+      ]
+    },
     "productId": "nix",
     "storyId": "automation-bulk-operations"
   }

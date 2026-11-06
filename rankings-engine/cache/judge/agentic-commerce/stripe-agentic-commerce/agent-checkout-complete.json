@@ -1,21 +1,47 @@
 {
-  "hash": "035206c6f615bee0bb3f7744358e6fb1fb23744a45243af017fb3fe935d82dba",
+  "hash": "a4da281a269888fe843646c28ade8ee175e89be815ef9c4c9271cc48d9b5fceb",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Stripe documents the whole flow end-to-end. ACS embedded checkout runs the full lifecycle, from cart management through Stripe-created shared payment tokens to completion signalled by the `delegated_checkout.requested_session.completed` webhook. On the seller side, checkout sessions move through incomplete→ready_for_payment→completed and fire `checkout.session.completed`. SPTs carry scoped usage limits and can be revoked, and Link CLI issues one-time-use credentials the agent uses to pay. Missing for 10: hands-on or independent evidence of a completed agent purchase; general availability (ACS is private preview, waitlist/OCA-gated, limited to US/Canada/select EU countries and physical goods).",
+    "rationale": "Stripe's embedded ACS mode is documented to run the full agent checkout lifecycle: cart and checkout, Stripe-created shared payment tokens routed to the seller, and order completion signalled by webhooks such as `checkout.session.completed`. Link CLI separately supplies human-approved one-time-use credentials for agent purchases. missing for 10: availability beyond private preview (gated by OCA agreements, limited to the US, Canada and select European countries, physical goods only), and independent or hands-on corroboration of a completed end-to-end agent purchase.",
     "evidenceIds": [
       "stripe-ac-supp-embedded-checkout-oca",
+      "stripe-agentic-commerce-docs-16",
+      "stripe-agentic-commerce-docs-29",
       "stripe-ac-supp-acp-custom-checkout",
-      "stripe-ac-supp-order-attribution",
       "stripe-ac-supp-spt-limits",
-      "stripe-ac-supp-link-wallet",
       "stripe-agentic-commerce-docs-30",
-      "stripe-agentic-commerce-gh-1",
-      "stripe-agentic-commerce-docs-15"
+      "stripe-ac-supp-order-attribution"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, my agent can complete a purchase end-to-end — checkout session, delegated payment credential, confirmed order",
+      "citations": [
+        {
+          "evidenceId": "stripe-ac-supp-embedded-checkout-oca",
+          "quote": "the full checkout lifecycle through Stripe, including product feed ingestion, cart management, fulfillment, and payment collection"
+        },
+        {
+          "evidenceId": "stripe-agentic-commerce-docs-16",
+          "quote": "Stripe handles routing, authentication, error retries, and shared payment token (SPT) creation so you don’t need to integrate directly with each seller."
+        },
+        {
+          "evidenceId": "stripe-agentic-commerce-docs-29",
+          "quote": "ACS works across multiple commerce protocols, so your AI interface can discover products, collect payment information, and complete purchases on behalf of sellers."
+        },
+        {
+          "evidenceId": "stripe-agentic-commerce-docs-30",
+          "quote": "Creates a spend request for a specific purchase. The customer approves it, and Link returns a one-time-use payment credential your agent uses to pay."
+        },
+        {
+          "evidenceId": "stripe-ac-supp-order-attribution",
+          "quote": "Stripe sends `checkout.session.completed` after the agent completes an order."
+        }
+      ]
+    },
     "productId": "stripe-agentic-commerce",
     "storyId": "agent-checkout-complete"
   }

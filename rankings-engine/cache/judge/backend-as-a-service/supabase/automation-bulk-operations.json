@@ -1,19 +1,41 @@
 {
-  "hash": "d717602de9114733256668e2d4088286e67ec7361057199bb55e372a42d8c11b",
+  "hash": "efcabac784283740f6b6900582a7f352a5cc753e25d053750ebacda7476711df",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "supabase",
-    "storyId": "automation-bulk-operations",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Through the official MCP server, an AI agent gets `execute_sql` and `apply_migration` against a full Postgres database, so set-based statements can act on many rows in one call. Supabase Cron and Queues add scheduled and background batch processing that runs SQL or functions inside Postgres. Bulk capability is implied by SQL access rather than documented as a feature, so this is a strong inference, not a stated claim. Missing for 10: explicit documentation of bulk insert/upsert/update APIs or batch endpoints, bulk operations beyond the database (e.g. Storage objects or Auth users), and independent hands-on corroboration of agent-driven bulk operations.",
+    "rationale": "Supabase's official MCP server gives agents an `execute_sql` tool and `apply_migration` against a full Postgres database, so an AI agent can run set-based statements that touch many rows in one call. However, no evidence explicitly documents bulk or batch operations as a feature, or covers limits, safeguards or batch semantics for large multi-item changes. Missing for 10: explicit first-party documentation of bulk/batch operations (e.g. batch insert/update/delete APIs or agent bulk-edit guidance), documented limits and safety controls for mass changes, independent or hands-on corroboration.",
     "evidenceIds": [
       "supabase-supp-mcp-tool-groups",
-      "supabase-docs-51",
       "supabase-supp-ai-tools-stack",
-      "supabase-supp-cron",
-      "supabase-supp-queues"
-    ]
+      "supabase-docs-51",
+      "supabase-docs-1"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can perform bulk operations across many items at once",
+      "citations": [
+        {
+          "evidenceId": "supabase-supp-mcp-tool-groups",
+          "quote": "Database (`list_tables`, `list_extensions`, `list_migrations`, `apply_migration`, `execute_sql`)"
+        },
+        {
+          "evidenceId": "supabase-supp-ai-tools-stack",
+          "quote": "Once connected, your agent can call tools to query data, run migrations, deploy Edge Functions, and more."
+        },
+        {
+          "evidenceId": "supabase-docs-51",
+          "quote": "Every project is **a full Postgres database**"
+        },
+        {
+          "evidenceId": "supabase-docs-1",
+          "quote": "Once connected, your AI assistants can interact with and query your Supabase projects on your behalf."
+        }
+      ]
+    },
+    "productId": "supabase",
+    "storyId": "automation-bulk-operations"
   }
 }

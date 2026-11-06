@@ -1,19 +1,46 @@
 {
-  "hash": "72ab6f7a46dab92452074204316f1acfa98bef1030e0b5e8ef1b70982837e00e",
+  "hash": "9a94e424c9aa789c283ed11bfda1fac96bdf2649cb60420fa62dc096950305a9",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Stripe's machine payments docs describe stablecoin rails for agent-initiated payments: USDC via MPP on Tempo and Solana, and x402 on Base, with a 0.01 USDC minimum. In the x402 flow the facilitator settles on-chain and Stripe records a PaymentIntent, with the funds landing in the Stripe balance. MPP is an open published spec with a public SDK and the `mppx validate` conformance CLI. Missing for 10: no hands-on or independent corroboration of a completed stablecoin settlement; funds settle in fiat rather than staying as stablecoin; availability is US-only and excludes New York; and a community report calls the MPP end-to-end docs sparse.",
+    "rationale": "Stripe's machine payments docs set out stablecoin rails for agent payments. Agents pay in USDC via MPP on Tempo and Solana or via x402 on Base. The on-chain settlement is recorded as a PaymentIntent, lands in the Stripe balance and settles in fiat. The open MPP spec and the mppx SDK are publicly published, and `mppx validate` verifies an implementation end-to-end. Missing for 10: independent hands-on corroboration of a stablecoin settlement, availability beyond US states other than New York, stablecoin support in the Agentic Commerce Suite checkout flows (it is documented only for machine payments), and fuller end-to-end documentation (a community report calls the MPP docs sparse).",
     "evidenceIds": [
       "stripe-ac-supp-machine-payments",
-      "stripe-agentic-commerce-docs-19",
       "stripe-agentic-commerce-docs-33",
+      "stripe-agentic-commerce-docs-19",
       "stripe-ac-supp-mpp-agent-build",
       "stripe-ac-probe-rt-2",
-      "stripe-agentic-commerce-comm-10"
+      "stripe-agentic-commerce-docs-18"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can settle agent-initiated payments in stablecoins over documented rails",
+      "citations": [
+        {
+          "evidenceId": "stripe-ac-supp-machine-payments",
+          "quote": "Stablecoin payments are available to businesses in all US states, except New York."
+        },
+        {
+          "evidenceId": "stripe-ac-supp-machine-payments",
+          "quote": "Payments land directly in your Stripe balance and settle in fiat. Metrics, reporting, and multi-currency payouts work the same as any other payment in Stripe"
+        },
+        {
+          "evidenceId": "stripe-agentic-commerce-docs-33",
+          "quote": "After the facilitator settles the payment on-chain, Stripe records it as a [PaymentIntent]"
+        },
+        {
+          "evidenceId": "stripe-agentic-commerce-docs-19",
+          "quote": "your server returns an HTTP 402 response with payment details, including a Stripe deposit address."
+        },
+        {
+          "evidenceId": "stripe-agentic-commerce-docs-18",
+          "quote": "Your server returns a payment challenge, the agent presents a valid payment credential, and Stripe settles the payment to your Stripe balance."
+        }
+      ]
+    },
     "productId": "stripe-agentic-commerce",
     "storyId": "stablecoin-settlement"
   }

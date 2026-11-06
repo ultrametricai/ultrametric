@@ -1,19 +1,45 @@
 {
-  "hash": "9e5e87579ede97898e3c7d9d5aa1bbb55a4a6e2b7540e4d5c9fdf3340cb98da5",
+  "hash": "5e2befdcc3dbd2c25c6aea8842a905aaf07625495e96168970d57a91e42bb7e0",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 8,
-    "confidence": "high",
-    "rationale": "Shopify's UCP Global and Storefront Catalog MCP servers return structured product data: offers clustered by UPID across merchants, price ranges in minor units, variants, and get_product availability signals. Carts then return a continue_url for buyer checkout. A runtime probe confirmed live catalog search returning variant IDs and keyless cart creation, and access is gated by a hosted agent profile. missing for 10: checkout links are not documented in the catalog offer payload itself (they come only via cart/checkout continue_url), the availability field schema is thinly described, and there is no evidence covering services as opposed to physical products.",
+    "verdict": "partial",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Shopify's Global and Storefront Catalog MCP servers return structured product data: price in minor units, variants, availability signals via get_product, and offers from multiple merchants. A live probe confirmed catalog search returned a real variant ID that was then used to create a cart. However, checkout links are not shown as part of the catalog offer data; they appear only as a continue_url after creating a cart or checkout, and coverage is limited to Shopify listings that require a hosted agent profile. missing for 10: checkout links exposed directly in offer/catalog responses, evidence covering services (not just products) and non-Shopify listings, independent corroboration of returned price and availability fields.",
     "evidenceIds": [
       "shopify-ucp-supp-global-catalog",
       "shopify-ucp-supp-storefront-catalog",
       "shopify-ucp-supp-cart-mcp",
-      "shopify-ucp-probe-rt-1",
       "shopify-ucp-probe-rt-3",
-      "shopify-ucp-probe-rt-4"
+      "shopify-ucp-probe-rt-1"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can read machine-readable offer data — price, availability, variants, checkout links — for any listed product or service",
+      "citations": [
+        {
+          "evidenceId": "shopify-ucp-supp-global-catalog",
+          "quote": "Results are clustered by Universal Product ID (UPID) and include offers from multiple merchants"
+        },
+        {
+          "evidenceId": "shopify-ucp-supp-global-catalog",
+          "quote": "get_product narrows variants with availability signals"
+        },
+        {
+          "evidenceId": "shopify-ucp-supp-storefront-catalog",
+          "quote": "products with title, description, price range (minor units), media, and variants"
+        },
+        {
+          "evidenceId": "shopify-ucp-supp-cart-mcp",
+          "quote": "a continue_url \"that the buyer can use to pick up the cart on the merchant's storefront\""
+        },
+        {
+          "evidenceId": "shopify-ucp-probe-rt-3",
+          "quote": "searched the live catalog (variant gid://shopify/ProductVariant/47695038775318)"
+        }
+      ]
+    },
     "productId": "shopify-ucp",
     "storyId": "structured-offer-data"
   }

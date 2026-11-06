@@ -1,20 +1,42 @@
 {
-  "hash": "e9a1147e91f0c0e71db80806a2bfd8b172449ad01b75b020e1d127816cdba580",
+  "hash": "8aff557f08f6ffbb813bbe8a57464323ceaa3a4c2f128c1092c311496ccd4523",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 8,
-    "confidence": "high",
-    "rationale": "Shopify documents an Order MCP server whose get_order tool lets an agent fetch the current state of an order it placed, including line items, fulfillment events and post-purchase adjustments. The UCP CLI and quickstart explicitly cover tracking an order after purchase, and order webhooks supplement on-demand reads. Access is limited to Token-tier agents holding the read_global_api_orders scope, and no runtime probe exercised order lookup. Missing for 10: hands-on or independent corroboration of get_order, explicit documentation of carrier tracking numbers/URLs in the payload, and access for Signed/Anonymous-tier agents.",
+    "verdict": "partial",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Shopify documents a first-party Order MCP server whose get_order tool lets an agent fetch the current state of an order it placed, including fulfillment events, and the UCP CLI and quickstart explicitly cover tracking an order after purchase. However, Order MCP is gated to Token-tier agents with the read_global_api_orders scope, so Signed and Anonymous agents cannot query orders. The push-webhook alternative requires server-side registration through a partner manager. Missing for 10: order query access for non-Token-tier agents, explicit documentation of carrier tracking numbers/URLs in the get_order response, hands-on/runtime corroboration of order retrieval (probes stop at cart creation), self-serve webhook subscription.",
     "evidenceIds": [
       "shopify-ucp-supp-order-mcp",
-      "shopify-ucp-docs-7",
-      "shopify-ucp-docs-1",
+      "shopify-ucp-docs-25",
       "shopify-ucp-docs-32",
+      "shopify-ucp-docs-1",
       "shopify-ucp-docs-19",
-      "shopify-ucp-supp-ucp-journey",
       "shopify-ucp-supp-order-webhooks"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, my agent can query the status and tracking of an order it placed, after the purchase",
+      "citations": [
+        {
+          "evidenceId": "shopify-ucp-docs-25",
+          "quote": "The Order MCP server enables AI agents to fetch the current state of an order placed through their agent, including line items, fulfillment events, and post-purchase adjustments."
+        },
+        {
+          "evidenceId": "shopify-ucp-supp-order-mcp",
+          "quote": "Order MCP is available only to Token-tier agents."
+        },
+        {
+          "evidenceId": "shopify-ucp-docs-32",
+          "quote": "Track an order after purchase."
+        },
+        {
+          "evidenceId": "shopify-ucp-docs-1",
+          "quote": "the CLI provides structured commands to search the Catalog, build carts, create checkouts, hand off buyers, and track orders"
+        }
+      ]
+    },
     "productId": "shopify-ucp",
     "storyId": "agent-order-tracking"
   }

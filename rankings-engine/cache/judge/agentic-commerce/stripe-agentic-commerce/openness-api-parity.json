@@ -1,21 +1,42 @@
 {
-  "hash": "628373e6843e41d1eb7e1101ee71c780526c97eb4e42991ab52b645668340669",
+  "hash": "78c6ce29918a8d159594e7fa2d2c5a68750b64627b3ab6f183adaf55fd1a1db8",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Most operational surfaces of Agentic Commerce are API-driven. Catalog publishing goes through the v2 Product Catalog Import API with webhooks, orders arrive via checkout.session.completed and List CheckoutSessions, and agent details are exposed as an API field. SPTs, machine payments and Link CLI spend requests are all programmatic, and the MCP server exposes the Stripe API to agents. However, seller onboarding and per-agent consent are described as Dashboard self-serve flows, MCP write actions such as refunds require approval through a human-clicked URL, and there is no explicit UI/API parity statement. missing for 10: documented API equivalents for ACS seller onboarding and agent-approval steps, an explicit parity commitment, a discoverable OpenAPI spec (the probed paths returned 404), independent hands-on confirmation.",
+    "rationale": "Many agentic-commerce operations are documented as programmatic. Catalog import runs through the v2 Product Catalog Import API with webhooks, orders are exposed via checkout.session.completed and the List CheckoutSessions endpoint, SPTs are created and revoked via API, and the MCP server exposes the Stripe API to agents. However, seller onboarding and per-agent consent are described as Dashboard flows, agent attribution in the API (agent_details) is private preview while the Dashboard offers tag/filter, and certain MCP write actions require human approval through a URL. No parity statement exists, and the OpenAPI probe returned 404. missing for 10: an explicit API/UI parity guarantee, API-based seller onboarding and agent approval, GA agent attribution fields in the API, a discoverable OpenAPI spec, and independent corroboration.",
     "evidenceIds": [
       "stripe-ac-supp-seller-catalog-feed",
       "stripe-ac-supp-order-attribution",
       "stripe-ac-supp-spt-limits",
       "stripe-agentic-commerce-docs-21",
       "stripe-ac-supp-mcp-approval",
-      "stripe-ac-supp-acp-custom-checkout",
-      "stripe-agentic-commerce-probe-3",
-      "stripe-ac-supp-link-wallet"
+      "stripe-agentic-commerce-probe-3"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can do everything through the API that I can do in the UI",
+      "citations": [
+        {
+          "evidenceId": "stripe-ac-supp-seller-catalog-feed",
+          "quote": "uploaded via the v2 Product Catalog Import API to a presigned URL"
+        },
+        {
+          "evidenceId": "stripe-ac-supp-order-attribution",
+          "quote": "Instead of fulfilling each order individually, bulk fulfill orders"
+        },
+        {
+          "evidenceId": "stripe-agentic-commerce-docs-21",
+          "quote": "The Stripe Model Context Protocol (MCP) server provides tools that AI agents can use to interact with the Stripe API"
+        },
+        {
+          "evidenceId": "stripe-ac-supp-spt-limits",
+          "quote": "Revoke the SPT at any time to prevent the seller from using it to create a payment"
+        }
+      ]
+    },
     "productId": "stripe-agentic-commerce",
     "storyId": "openness-api-parity"
   }

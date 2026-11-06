@@ -1,15 +1,26 @@
 {
-  "hash": "33c64209fb79f714acb260749edc2765cd4ef1266d2a1d767c28b1aac370b885",
+  "hash": "4e2195ec2a25c14f95eb38e768170e6e79183d8f4e4026fd361191581fcf3ba9",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Homebrew installs each package into its own keg inside a single shared Cellar and symlinks it into the prefix. That gives a global, machine-wide store, so one installed version serves every project that relies on it, including Brewfile-based projects. Nothing in the evidence shows this store is content-addressable: kegs are organized by package, not by content hash. Missing for 10: content-addressable (hash-keyed) storage, documented deduplication guarantees, per-project version isolation backed by a shared store, independent corroboration of disk-space savings.",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "Homebrew installs each package version once into its own keg in a global Cellar and symlinks it into the prefix, so a shared single on-disk copy is used across projects (Brewfiles declare dependencies but draw from the same global install). Nothing shows the store is content-addressable (hash-keyed or deduplicated by content). missing for 10: evidence of content-addressable storage, documented cross-project deduplication semantics, independent or hands-on corroboration of disk savings.",
     "evidenceIds": [
       "homebrew-docs-28",
       "homebrew-docs-1"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can rely on a shared content-addressable store so the same dependency version is stored once on disk across all projects",
+      "citations": [
+        {
+          "evidenceId": "homebrew-docs-28",
+          "quote": "It installs each package into its own keg inside the Cellar, then symlinks its files into the prefix"
+        }
+      ]
+    },
     "productId": "homebrew",
     "storyId": "content-addressed-store-disk-efficiency"
   }

@@ -1,20 +1,40 @@
 {
-  "hash": "9ea80b2501d2a30aa728da8011240b1f0a647b30bf913c50f2f3f9898320b3b7",
+  "hash": "5cc66fc741a346d14fa80c97427e1e23d66b4681a73d101dcc8aad5561b40c51",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 8,
-    "confidence": "high",
-    "rationale": "First-party docs claim conversion between 200+ formats, explicitly naming PNG, JPEG, WebP and HEIC. They show a PNG-to-WebP conversion with `-quality 85` and aspect-preserving `-resize`, and community users corroborate batch scaling of thousands of images. SVG is not in the first-party format list; only a community warning implies ImageMagick processes it, and that warning concerns security risk rather than whether conversion works. Missing for 10: first-party confirmation of SVG conversion, documentation of per-format compression controls beyond `-quality` (e.g. PNG compression level, lossless WebP/HEIC settings).",
+    "verdict": "partial",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "ImageMagick's own docs list conversion across 200+ formats, naming PNG, JPEG, WebP and HEIC, and show a -quality flag for WebP compression and a -resize flag for size control, so the core of the story is delivered. SVG is not named in the first-party format list; it appears only in a community security warning that implies SVG is processed. Compression control is shown only through a single -quality example. missing for 10: first-party evidence of SVG conversion, documented compression controls beyond the -quality example (e.g. PNG compression level, lossless options, HEIC quality settings), independent hands-on corroboration of quality/compression tuning.",
     "evidenceIds": [
       "imagemagick-docs-1",
       "imagemagick-docs-2",
       "imagemagick-docs-3",
-      "imagemagick-gh-2",
-      "imagemagick-comm-1",
-      "imagemagick-comm-6",
-      "imagemagick-probe-4"
+      "imagemagick-gh-2"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a power user, common image formats (PNG, JPEG, WebP, HEIC, SVG) convert with control over quality, size, and compression",
+      "citations": [
+        {
+          "evidenceId": "imagemagick-docs-1",
+          "quote": "Convert rapidly between 200+ standard formats (PNG, JPEG, WebP, AVIF, HEIC, TIFF)."
+        },
+        {
+          "evidenceId": "imagemagick-docs-2",
+          "quote": "# Convert PNG to WebP with compression $ magick input.png -quality 85 output.webp"
+        },
+        {
+          "evidenceId": "imagemagick-docs-3",
+          "quote": "# Resize image maintaining aspect ratio $ magick input.jpg -resize 800x600^ output.jpg"
+        },
+        {
+          "evidenceId": "imagemagick-gh-2",
+          "quote": "Transform: resize, rotate, deskew, crop, flip or trim an image."
+        }
+      ]
+    },
     "productId": "imagemagick",
     "storyId": "images-convert-quality"
   }

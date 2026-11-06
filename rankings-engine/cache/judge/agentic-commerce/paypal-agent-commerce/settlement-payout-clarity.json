@@ -1,21 +1,41 @@
 {
-  "hash": "5eccdc42c8231eff940bb8d647fafc06cfed7dbec1dd90a6174d184fd71b5004",
+  "hash": "dca80ac7ff0ccafa93ab9612e675f0ffb0ad826ace4d96aec2c80d1ea0df7176",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "PayPal's docs route agent payments through the merchant's existing rails. ACP and UCP tokens are processed by the existing Braintree integration, and Store Sync orders reach the merchant's order system \"just as it would from any other channel.\" Agent orders also inherit the standard published fee schedule, and transaction details are reachable through the toolkit and the webhooks on the same REST surface. That implies agent payments reconcile like any other channel, but no document addresses settlement, payouts or reporting for agent-originated payments directly. missing for 10: explicit payout/settlement documentation for agent-originated payments, agent-channel identification in reporting or settlement reports, documented reconciliation guidance, independent or hands-on corroboration.",
+    "rationale": "PayPal's docs say agent-originated payments run on the merchant's existing rails. ACP and UCP tokens are processed through the existing Braintree integration and merchant account, and Store Sync orders reach the merchant's order system \"just as it would from any other channel.\" That implies reconciliation like any other channel, but no payout, settlement or reporting flow for agent transactions is documented, and the agent toolkit only exposes transaction details. Missing for 10: documented settlement/payout timing for agent transactions, reporting or channel tagging that separates agent-originated sales, an explicit reconciliation guide, and independent or hands-on corroboration.",
     "evidenceIds": [
       "paypal-ac-supp-store-sync",
       "paypal-ac-supp-acp-chatgpt",
-      "paypal-ac-supp-ucp-googlepay",
       "paypal-ac-supp-agent-ready",
-      "paypal-ac-supp-fees",
-      "paypal-ac-supp-agent-toolkit",
-      "paypal-ac-supp-webhooks",
-      "paypal-ac-supp-rest-overview"
+      "paypal-ac-supp-ucp-googlepay",
+      "paypal-ac-supp-agent-toolkit"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a merchant, agent-originated payments settle through documented payout and reporting flows, reconcilable like any other channel",
+      "citations": [
+        {
+          "evidenceId": "paypal-ac-supp-store-sync",
+          "quote": "Your existing order management system receives the order just as it would from any other channel."
+        },
+        {
+          "evidenceId": "paypal-ac-supp-acp-chatgpt",
+          "quote": "is a one-time-use token that you can process using your existing Braintree integration"
+        },
+        {
+          "evidenceId": "paypal-ac-supp-agent-ready",
+          "quote": "Leverage your existing Braintree merchant account and processing relationship"
+        },
+        {
+          "evidenceId": "paypal-ac-supp-agent-toolkit",
+          "quote": "Integrate with PayPal APIs to access orders, invoices, subscriptions, shipment tracking, transaction details, and dispute management through pre-built functions."
+        }
+      ]
+    },
     "productId": "paypal-agent-commerce",
     "storyId": "settlement-payout-clarity"
   }

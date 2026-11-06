@@ -1,23 +1,43 @@
 {
-  "hash": "880f43865855e0eabe120ef51d50781c795b2423170969878fd95b60447c7d36",
+  "hash": "27ee1663727f4b9cea0255b3b539c5618389bc6bdfed70bd541f38c6d29d135e",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Shopify's UCP MCP servers and CLI expose the core buyer journey programmatically: catalog search, cart create/update/cancel, checkout creation and completion, order reads, and order webhooks. A live probe confirmed real keyless cart creation. However, Shopify's own docs name parity gaps: checkouts can enter requires_escalation because they need 'buyer input or review not available via API', forcing a handoff to the merchant's web checkout via continue_url. Webhook subscription likewise has no self-serve API and requires contacting a partner manager, and complete_checkout and get_order are restricted to Token-tier agents. Missing for 10: full API coverage of checkout steps that currently require escalation to the UI, a self-serve webhook subscription API, the waitlisted Universal Cart, and a published OpenAPI spec or llms.txt index on shopify.dev.",
+    "rationale": "Shopify documents API, MCP, and CLI coverage for the whole buyer journey: catalog search, carts, checkouts, handoff, order reads and webhooks. A live probe confirms keyless cart creation. However, the docs themselves name things the API cannot do: some checkout input or review is 'not available via API' and must go to the merchant's UI via continue_url, webhook subscriptions are not self-serve, and complete_checkout is limited to Token-tier agents. missing for 10: API parity for escalated checkout steps, self-serve webhook subscription API, direct checkout completion for non-Token agents, generally available Universal Cart, published OpenAPI spec.",
     "evidenceIds": [
       "shopify-ucp-supp-ucp-journey",
-      "shopify-ucp-supp-cart-mcp",
-      "shopify-ucp-supp-checkout-mcp",
       "shopify-ucp-supp-buyer-handoff",
-      "shopify-ucp-supp-order-mcp",
       "shopify-ucp-supp-order-webhooks",
       "shopify-ucp-supp-trust-tiers",
+      "shopify-ucp-supp-checkout-mcp",
       "shopify-ucp-probe-rt-3",
-      "shopify-ucp-probe-3",
-      "shopify-ucp-probe-1"
+      "shopify-ucp-probe-3"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can do everything through the API that I can do in the UI",
+      "citations": [
+        {
+          "evidenceId": "shopify-ucp-supp-ucp-journey",
+          "quote": "provides structured commands to search the Catalog, build carts, create checkouts, hand off buyers, and track orders"
+        },
+        {
+          "evidenceId": "shopify-ucp-supp-buyer-handoff",
+          "quote": "Checkout requires buyer input or review not available via API"
+        },
+        {
+          "evidenceId": "shopify-ucp-supp-order-webhooks",
+          "quote": "There's no self-serve subscription API today: your delivery URL and topic scoping are registered server-side."
+        },
+        {
+          "evidenceId": "shopify-ucp-supp-trust-tiers",
+          "quote": "Stronger identification means higher rate limits and access to more sensitive tools."
+        }
+      ]
+    },
     "productId": "shopify-ucp",
     "storyId": "openness-api-parity"
   }

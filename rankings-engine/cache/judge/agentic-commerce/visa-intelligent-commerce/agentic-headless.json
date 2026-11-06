@@ -1,20 +1,42 @@
 {
-  "hash": "8d0932953e8cbc1e543c11380a0a772eca566f63f9f4457f13b66665068e5d30",
+  "hash": "d04248c13cb87347b49b19bebaa33e3e5f0ae23b47b41977bc48213dbc99b6d2",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Visa Intelligent Commerce is driven entirely through REST APIs (POST /acp/v1/tokens, /instructions, /instructions/{id}/credentials) with a separate test host, a self-serve sandbox for test transactions, and an npm-published MCP server, so it can be scripted programmatically without a UI. However, the core flows deliberately require human steps (passkey authentication of Payment Instructions, OTP/step-up identity verification on card enrollment), which limits fully unattended automation, and nothing documents CI usage specifically. Missing for 10: documented CI/headless automation guidance, a non-interactive path for passkey/step-up in sandbox testing, independent hands-on corroboration of automated runs.",
+    "rationale": "Visa Intelligent Commerce is itself a programmatic REST API platform, which makes non-interactive automation plausible. It documents agent-callable endpoints (POST /acp/v1/tokens, /acp/v1/instructions, credential retrieval), a separate test host (apitest.visaacceptance.com) with a sandbox for test transactions, and an npm-published MCP toolkit. However, card enrollment and payment instructions require live cardholder passkey or OTP step-up, which limits fully unattended runs, and nothing documents CI or headless usage specifically. Missing for 10: CI/headless-specific documentation, a way to complete passkey/OTP step-up non-interactively for automated tests, and hands-on corroboration of an unattended pipeline run.",
     "evidenceIds": [
-      "visa-ic-supp-3",
       "visa-ic-supp-4",
-      "visa-ic-supp-5",
+      "visa-ic-supp-3",
       "visa-ic-supp-2",
       "visa-ic-supp-10",
       "visa-ic-probe-rt-2",
       "visa-intelligent-commerce-docs-18"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
+      "citations": [
+        {
+          "evidenceId": "visa-ic-supp-4",
+          "quote": "Your agents can enroll a customer's card for tokenization during the customer's account registration or when the customer begins a new purchase intent"
+        },
+        {
+          "evidenceId": "visa-ic-supp-10",
+          "quote": "After completing the evaluation registration process, you will be able to send test transactions"
+        },
+        {
+          "evidenceId": "visa-ic-supp-2",
+          "quote": "The agent requests the user to authenticate the Payment Instruction using their Passkey and provides that instruction to the Visa Intelligent Commerce platform."
+        },
+        {
+          "evidenceId": "visa-intelligent-commerce-docs-18",
+          "quote": "The toolkit is built in TypeScript, and you can integrate it with the Vercel AI SDK or use it to access a Model Context Protocol (MCP) server."
+        }
+      ]
+    },
     "productId": "visa-intelligent-commerce",
     "storyId": "agentic-headless"
   }

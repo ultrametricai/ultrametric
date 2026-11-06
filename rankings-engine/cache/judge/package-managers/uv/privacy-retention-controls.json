@@ -1,18 +1,36 @@
 {
-  "hash": "08d77009e2d109163b97ddda23d2c903ccd2855acdb65aeeee0918bc5d70945b",
+  "hash": "374923d2b2f55a7a559a00c577344f04ab07c7837ab0eb25f39450946c15abd6",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
-    "confidence": "low",
-    "rationale": "uv is a local CLI with no hosted user-data service, so the only retained data in evidence is its local dependency cache. Users can delete that cache entirely or per package with `uv cache clean` [uv-docs-11, uv-docs-49]. In CI, cache persistence is optional via setup-uv [uv-docs-10]. Ephemeral tool environments via `uvx` avoid persistent installs [uv-docs-7]. Missing for 10: any documented retention policy or automatic expiry/pruning controls, any statement on telemetry or what data (if any) leaves the machine, and independent corroboration of deletion behavior.",
+    "confidence": "medium",
+    "rationale": "uv is a local CLI. The main data it retains is its global dependency cache, and the docs give a first-party deletion control: `uv cache clean` clears the cache entirely or for a specific package. `--refresh` forces revalidation of cached data. Nothing in the evidence covers retention policies, such as automatic expiry, size limits or scheduled pruning, and nothing addresses privacy-oriented data handling. missing for 10: configurable retention or expiry policies, automatic or scheduled pruning, documentation framing data handling from a privacy standpoint, independent corroboration of deletion behavior.",
     "evidenceIds": [
       "uv-docs-11",
       "uv-docs-49",
-      "uv-docs-10",
-      "uv-docs-7",
-      "uv-docs-25"
+      "uv-docs-25",
+      "uv-docs-77"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can control data retention and deletion",
+      "citations": [
+        {
+          "evidenceId": "uv-docs-11",
+          "quote": "To clear the cache entirely, run `uv cache clean`. To clear the cache for a specific package, run `uv cache clean <package-name>`."
+        },
+        {
+          "evidenceId": "uv-docs-25",
+          "quote": "uv uses aggressive caching to avoid re-downloading (and re-building) dependencies that have already been accessed in prior runs."
+        },
+        {
+          "evidenceId": "uv-docs-77",
+          "quote": "To force uv to revalidate cached data for all dependencies, pass `--refresh` to any command"
+        }
+      ]
+    },
     "productId": "uv",
     "storyId": "privacy-retention-controls"
   }

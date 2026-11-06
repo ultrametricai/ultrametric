@@ -1,20 +1,45 @@
 {
-  "hash": "b158f7917357ef89050809ee1f4581effdc10f7f09909dafaa8a8f45730bbd49",
+  "hash": "b2277be9b71250fa2b228821c62e88e5f7a1bd0942d345337839fcda25748e5a",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
-    "confidence": "medium",
-    "rationale": "Supabase's own branching creates isolated preview environments per pull request for testing configuration, schema, and feature changes before merging (review). Its MCP exposes migration tools (list_migrations/apply_migration) and branch merge/reset/rebase (versioning). Daily backups and PITR offer database-level restore (rollback). However, none of this is documented as versioning or rolling back automations specifically (Cron jobs, Database Webhooks, Edge Functions); applying it to them is implied rather than shown, and community users call the migration workflow a weakness. Missing for 10: explicit version history for Cron jobs, webhooks, and Edge Functions; a documented automation-level rollback (rather than whole-database PITR); non-experimental MCP branching; independent hands-on corroboration.",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "Supabase's own Branching feature gives a git-based change workflow: isolated preview environments per pull request for review, and automatic deploys when changes are pushed to main. Automations such as Cron jobs can be defined in SQL, and PITR can restore a project to a point in time, but no evidence explicitly applies versioning, review, or rollback to automations (cron jobs, webhooks, queues, Edge Functions). missing for 10: explicit version history for automations, a documented rollback of an automation (as opposed to whole-database restore), confirmation that cron/webhook definitions flow through branching review, and independent corroboration.",
     "evidenceIds": [
-      "supabase-docs-10",
       "supabase-docs-50",
-      "supabase-supp-mcp-tool-groups",
-      "supabase-supp-backups-pitr",
+      "supabase-docs-85",
+      "supabase-docs-17",
       "supabase-supp-cron",
-      "supabase-supp-mcp-agent-security",
-      "supabase-comm-8"
+      "supabase-supp-backups-pitr"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can version, review, and roll back my automations",
+      "citations": [
+        {
+          "evidenceId": "supabase-docs-50",
+          "quote": "Branching takes this further, adding isolated preview environments for each pull request."
+        },
+        {
+          "evidenceId": "supabase-docs-85",
+          "quote": "connect your repository and changes pushed to `main` are automatically deployed to your project."
+        },
+        {
+          "evidenceId": "supabase-docs-17",
+          "quote": "You can use these branching environments to create and test changes like new configurations, database schemas, or features without affecting your production setup."
+        },
+        {
+          "evidenceId": "supabase-supp-cron",
+          "quote": "Cron Jobs can be created via SQL or the Integrations -> Cron interface inside the Dashboard"
+        },
+        {
+          "evidenceId": "supabase-supp-backups-pitr",
+          "quote": "giving you the option to restore to any chosen point with up to seconds of granularity"
+        }
+      ]
+    },
     "productId": "supabase",
     "storyId": "automation-versioned-workflows"
   }

@@ -1,17 +1,34 @@
 {
-  "hash": "9dce3295321f27bc429a6c9b43ec3d295ac56b15e39ab649808f20a9ac8d2751",
+  "hash": "6d34c0905d0d1f290c0d844e9d720319f17d3c4de2dc6f6dcad57de829c134ff",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "The Connect API documents batch transaction sync with external_id idempotence and deduplication, so many entries can be written in one operation. The AGL also auto-books 95%+ of transactions without per-item work. However, the MCP server is read-only, so agents cannot act on many items through it. Missing for 10: documented user- or agent-driven bulk edit, recategorize, approve or delete across many existing items; batch endpoints beyond transaction sync (e.g. bulk bill approve/pay); hands-on or independent corroboration.",
+    "rationale": "The Digits Connect API documents batch transaction sync with external-ID idempotence, so users can push many transactions in one operation. That is real bulk-ingestion support, but nothing shows bulk edit, recategorize, approve or delete operations, and the MCP server is read-only. Missing for 10: bulk update/action operations across existing items (e.g., mass recategorization or bulk bill approval), documented batch limits or behavior, and hands-on corroboration.",
     "evidenceIds": [
       "digits-supp-api-reference",
-      "digits-supp-connect-api",
-      "digits-docs-8",
-      "digits-supp-mcp-server"
+      "digits-supp-connect-api"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can perform bulk operations across many items at once",
+      "citations": [
+        {
+          "evidenceId": "digits-supp-api-reference",
+          "quote": "batch transaction sync with external-ID idempotence"
+        },
+        {
+          "evidenceId": "digits-supp-api-reference",
+          "quote": "Idempotence and deduplication is handled via the external_id field"
+        },
+        {
+          "evidenceId": "digits-supp-connect-api",
+          "quote": "Idempotent writes — Send safely and repeatedly — no duplicates, ever"
+        }
+      ]
+    },
     "productId": "digits",
     "storyId": "automation-bulk-operations"
   }

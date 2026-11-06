@@ -1,19 +1,36 @@
 {
-  "hash": "4756712858d1a0000be153323d19dffb86738035c1ce192b79f617a06bb60d78",
+  "hash": "309bdd715cb4c4e089c3ccbf0dd72dcc6b94652548f8fe4103bc7756fa2e6796",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "mise's security docs say its built-in implementation automatically verifies Cosign/Minisign signatures, SLSA provenance, and GitHub artifact attestations for aqua-backed tools. The http backend also supports declared sha256 checksums, and lockfiles with `mise install --locked` support reproducible installs. However, the automatic verification claim is scoped to aqua tools, and nothing shows equivalent verification for the npm, pipx, github, or asdf-plugin backends. missing for 10: evidence of verification across non-aqua backends, explicit confirmation that lockfiles pin checksums, independent or hands-on corroboration of verification behavior.",
+    "rationale": "mise's security docs say Cosign/Minisign signatures, SLSA provenance and GitHub artifact attestations are verified automatically by its built-in implementation, but this is scoped to aqua tools. The http backend also accepts a sha256 checksum in config. Verification for the other backends (npm, pipx, github, asdf/vfox plugins) is not documented, and nothing shows whether a failed check blocks execution. missing for 10: documented verification across all backends, explicit failure/blocking behavior on mismatch, independent or hands-on corroboration.",
     "evidenceIds": [
       "mise-docs-37",
-      "mise-docs-14",
-      "mise-docs-46",
       "mise-docs-73",
-      "mise-docs-26",
-      "mise-docs-70"
+      "mise-docs-14",
+      "mise-docs-26"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform-engineer, I can trust that fetched packages are verified against checksums, signatures, or attestations before they run",
+      "citations": [
+        {
+          "evidenceId": "mise-docs-37",
+          "quote": "For aqua tools, Cosign/Minisign signatures, SLSA provenance, and GitHub artifact attestations are verified automatically using mise's built-in implementation."
+        },
+        {
+          "evidenceId": "mise-docs-73",
+          "quote": "mise has built-in support for Cosign and Minisign signatures, SLSA provenance, and GitHub artifact attestations."
+        },
+        {
+          "evidenceId": "mise-docs-26",
+          "quote": "checksum = \"sha256:abc123\","
+        }
+      ]
+    },
     "productId": "mise",
     "storyId": "artifact-integrity-verification"
   }

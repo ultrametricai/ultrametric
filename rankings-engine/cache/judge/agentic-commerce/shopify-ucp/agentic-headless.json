@@ -1,23 +1,46 @@
 {
-  "hash": "ddaf2b058853cf54dcd65b5c49c0bff908e19ecd8a3c28d0b97cdb256f6cf572",
+  "hash": "e813f440b542893df30fc89a3bec47532daaa823f9e4b323b4e0dcb37a19fd2c",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Shopify ships an official UCP CLI (`npm install -g @shopify/ucp-cli`) with structured commands for catalog search, carts, checkouts and orders. It reuses a locally initialized profile on every request and authenticates machine-to-machine via JWTs minted from Dev Dashboard client credentials, so it can be scripted without a UI. A runtime probe drove the CLI non-interactively with a self-generated profile to search the live catalog and create a real cart, and the raw JSON-RPC MCP endpoints are also directly scriptable. Missing for 10: explicit CI or non-interactive documentation (CI examples, headless flags, exit-code and output-format guidance), guidance on refreshing the 60-minute tokens in pipelines, and a fully unattended path past buyer escalation, which hands off to a browser.",
+    "rationale": "Shopify ships its own UCP CLI with structured commands for catalog search, carts, checkouts and orders. The CLI reuses a one-time local profile and is configurable via environment variables like UCP_ON_ESCALATION, and a hands-on probe scripted it to create a real cart keylessly. MCP endpoints accept raw JSON-RPC calls, so non-interactive automation is evidenced. However, nothing documents CI or headless use as a supported mode, and completing a checkout requires a buyer handoff or Token-tier credentials, so end-to-end unattended runs are limited. Missing for 10: explicit CI/headless documentation (non-interactive flags, exit codes, machine-readable output guarantees, CI secret/token setup), and independent corroboration of the CLI running in a CI pipeline.",
     "evidenceIds": [
-      "shopify-ucp-supp-ucp-journey",
       "shopify-ucp-docs-1",
-      "shopify-ucp-docs-19",
-      "shopify-ucp-docs-20",
-      "shopify-ucp-supp-checkout-mcp",
+      "shopify-ucp-docs-36",
       "shopify-ucp-supp-buyer-handoff",
-      "shopify-ucp-supp-storefront-catalog",
-      "shopify-ucp-probe-5",
-      "shopify-ucp-probe-rt-1",
-      "shopify-ucp-probe-rt-3"
+      "shopify-ucp-probe-rt-3",
+      "shopify-ucp-supp-cart-mcp",
+      "shopify-ucp-supp-checkout-mcp"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
+      "citations": [
+        {
+          "evidenceId": "shopify-ucp-docs-1",
+          "quote": "the CLI provides structured commands to search the Catalog, build carts, create checkouts, hand off buyers, and track orders"
+        },
+        {
+          "evidenceId": "shopify-ucp-docs-36",
+          "quote": "Initialize it once and the CLI reuses it for every operation."
+        },
+        {
+          "evidenceId": "shopify-ucp-supp-buyer-handoff",
+          "quote": "Set `UCP_ON_ESCALATION` before completing a checkout to open the merchant's `continue_url` in the buyer's browser automatically."
+        },
+        {
+          "evidenceId": "shopify-ucp-probe-rt-3",
+          "quote": "ucp cart create returned a live gid://shopify/Cart/ id"
+        },
+        {
+          "evidenceId": "shopify-ucp-supp-checkout-mcp",
+          "quote": "JWT tokens created from Dev Dashboard credentials have a 60-minute TTL"
+        }
+      ]
+    },
     "productId": "shopify-ucp",
     "storyId": "agentic-headless"
   }

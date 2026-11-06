@@ -1,11 +1,11 @@
 {
-  "hash": "82e79906d37a4716e9b85dde2e74c6963b0becc80fd36b2c383aa354c108e09e",
+  "hash": "f00dc65265245e47321725b176dfcec675c0a7a59cbfb7bffa00ac5d00f6efd6",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Buzz documents an open wire protocol: third-party clients connect directly to buzz-relay over NIP-29 with NIP-42 auth, and there is a feature-status table covering group chat and reactions. It also documents a signed-event /api/admin/v1 HTTP API for moderation, and the relay is described as serving REST. However, the documented protocol surface shown covers mainly chat, admin is limited to moderation, and probes found no OpenAPI or other general REST API reference. missing for 10: documented API coverage of repos/workflows/canvases (currently CLI-only in evidence), a published OpenAPI/REST reference, independent hands-on corroboration of driving the product via the API",
+    "rationale": "Buzz documents a public wire protocol: third-party Nostr clients connect directly to buzz-relay over NIP-29/NIP-42, with a feature-status table. It also documents a signed-event-authenticated /api/admin/v1 HTTP API that the relay advertises for discovery. However, probes found no OpenAPI/Swagger spec, and the protocol's documented coverage is described via a feature-status table rather than a complete API reference. Missing for 10: a machine-readable API spec (OpenAPI), a full reference for the REST surface mentioned in the Helm docs, documented parity across all product features (repos, workflows, canvases), and independent hands-on corroboration.",
     "evidenceIds": [
       "buzz-supp-nostr-open-protocol",
       "buzz-docs-19",
@@ -13,6 +13,25 @@
       "buzz-supp-helm-chart",
       "buzz-probe-2"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can drive the product through a documented public API",
+      "citations": [
+        {
+          "evidenceId": "buzz-docs-19",
+          "quote": "Third-party Nostr clients connect directly to `buzz-relay` using NIP-29 and NIP-42 authentication."
+        },
+        {
+          "evidenceId": "buzz-supp-admin-api",
+          "quote": "Every /api/admin/v1 request must carry a NIP-98 HTTP Auth header containing a signed kind-27235 event."
+        },
+        {
+          "evidenceId": "buzz-supp-helm-chart",
+          "quote": "a single relay binary serving WebSocket + REST + web UI"
+        }
+      ]
+    },
     "productId": "buzz",
     "storyId": "agentic-public-api"
   }

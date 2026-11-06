@@ -1,20 +1,42 @@
 {
-  "hash": "ecb208f25af57fb74dfa002f71d03464a0855f26ef8d9f2d94f5dfa4824e23b5",
+  "hash": "e360835ba55c8cf41dcccefe8c063edb58af04037ff4028affb13ba6c876809d",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 8,
+    "verdict": "partial",
+    "quality": 7,
     "confidence": "high",
-    "rationale": "mise's security docs describe an opt-in `minimum_release_age` setting (e.g. \"7d\") that restricts installs to versions older than a set date or duration. `MISE_SAFE=1` stops project configuration from executing code, a trust prompt guards untrusted `mise.toml` files, and Cosign/Minisign signatures and SLSA provenance are verified automatically for aqua tools. Missing for 10: explicit blocking of package lifecycle/install scripts for npm/pipx-backed tools (MISE_SAFE covers project config, not package scripts), and independent or hands-on corroboration of these protections.",
+    "rationale": "mise documents a configurable minimum release age (`minimum_release_age = \"7d\"`, with a 24-hour default for every backend aimed explicitly at malicious new releases). It also ships related protections: automatic Cosign/Minisign/SLSA/attestation verification for aqua tools and MISE_SAFE=1 to stop project config from executing code. The evidence does not show blocking of package lifecycle/install scripts. MISE_SAFE governs repository config, not package install scripts, so the second named protection is unevidenced. missing for 10: documented blocking of package lifecycle/install scripts, independent or hands-on corroboration of release-age enforcement.",
     "evidenceIds": [
       "mise-docs-13",
       "mise-docs-36",
-      "mise-docs-12",
-      "mise-docs-35",
-      "mise-docs-23",
+      "mise-docs-98",
       "mise-docs-37",
-      "mise-docs-73"
+      "mise-docs-12",
+      "mise-docs-97"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform-engineer, I can turn on protections against malicious packages, such as blocking lifecycle scripts or enforcing a minimum release age",
+      "citations": [
+        {
+          "evidenceId": "mise-docs-36",
+          "quote": "minimum_release_age = \"7d\"  # only install versions released more than 7 days ago"
+        },
+        {
+          "evidenceId": "mise-docs-98",
+          "quote": "A newly published release is malicious | Minimum release age | 24 hours for every backend"
+        },
+        {
+          "evidenceId": "mise-docs-13",
+          "quote": "you can restrict mise to only install versions released before a certain date or duration"
+        },
+        {
+          "evidenceId": "mise-docs-37",
+          "quote": "For aqua tools, Cosign/Minisign signatures, SLSA provenance, and GitHub artifact attestations are verified automatically using mise's built-in implementation."
+        }
+      ]
+    },
     "productId": "mise",
     "storyId": "supply-chain-protections"
   }

@@ -1,20 +1,36 @@
 {
-  "hash": "bdee0c3040f15116570cffd26e60fea45514f360860be609f3f559b6f252d992",
+  "hash": "98df878bdc660a8fe2c96b61457c2659dd756695dacdcacd47748c8492bda01d",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Pandoc is programmatic at its core: the scriptable CLI is its main interface (stdin/stdout, flags for every option), it ships a Haskell library alongside the CLI, and it can be compiled with an HTTP server mode. The only UI is a 'limited' online demo, so the programmatic surfaces offer more than the UI does. Missing for 10: an explicit documented statement that the library and server mode match the CLI, documentation of the server-mode API, and a machine-readable API spec (OpenAPI probes returned 404).",
+    "rationale": "Pandoc is fundamentally a programmatic tool. Its first-party docs say it ships both a Haskell library and a standalone command-line program driven entirely by flags and stdin/stdout. It also has an optional HTTP server mode (pandoc-server), so its 'UI' (the CLI) is itself scriptable and there are library and HTTP surfaces. However, no evidence documents that the library or server expose every CLI capability. Server mode is a compile-time option, and the probes found no OpenAPI spec. Missing for 10: documented parity between the CLI and the library/server API, a published API spec for server mode, and independent corroboration of programmatic coverage.",
     "evidenceIds": [
       "pandoc-docs-17",
       "pandoc-docs-30",
       "pandoc-docs-5",
-      "pandoc-docs-2",
-      "pandoc-gh-3",
-      "pandoc-probe-4",
       "pandoc-probe-3"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can do everything through the API that I can do in the UI",
+      "citations": [
+        {
+          "evidenceId": "pandoc-docs-17",
+          "quote": "Pandoc includes a Haskell library and a standalone command-line program."
+        },
+        {
+          "evidenceId": "pandoc-docs-30",
+          "quote": "server: compile in support for running in HTTP server mode when the executable is renamed (or symlinked as) pandoc-server."
+        },
+        {
+          "evidenceId": "pandoc-docs-5",
+          "quote": "If no input-files are specified, input is read from stdin. Output goes to stdout by default."
+        }
+      ]
+    },
     "productId": "pandoc",
     "storyId": "openness-api-parity"
   }

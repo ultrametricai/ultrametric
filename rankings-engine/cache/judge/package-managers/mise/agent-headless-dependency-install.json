@@ -1,19 +1,42 @@
 {
-  "hash": "59d7c2263d5253cd7273fe2049caa5b5784d2c4ef7a4c21d8591900db8ffbe50",
+  "hash": "a0116f9dd786605351008c63c6fe54d7a00bef8d219ad4851ae26626fece24d7",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "mise documents non-interactive installs and updates suited to automation: `mise install` in CI scripts, `mise install --locked` for reproducible installs, and `mise lock --bump --dry-run --json` for machine-readable update previews. However, the documented interactive trust prompt (`[y/n]`) for project config is a potential blocker for agents, and nothing in the evidence describes exit codes or error behaviour. Missing for 10: documented exit codes and structured error output on failure, a documented non-interactive way to bypass or pre-approve the trust prompt, and hands-on corroboration of agent-driven install/update.",
+    "rationale": "mise documents non-interactive tool installs and updates. CI scripts run `mise install` and `mise install --locked` unattended, `mise outdated` and `mise upgrade` handle updates, and `mise lock --bump --dry-run --json` gives a machine-readable preview. However, the interactive trust prompt is shown, and exit-code and error semantics for install/upgrade are not documented; the only exit-status documentation covers an unrelated bootstrap status command. missing for 10: documented exit codes for install/upgrade failures, documented structured error output, explicit non-interactive mode for the trust prompt, independent hands-on corroboration of agent use.",
     "evidenceIds": [
       "mise-docs-34",
-      "mise-docs-70",
+      "mise-docs-95",
+      "mise-docs-84",
       "mise-docs-35",
-      "mise-docs-23",
-      "mise-docs-60",
-      "mise-docs-17"
+      "mise-docs-70",
+      "mise-docs-23"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can have an agent install and update project dependencies non-interactively, with clear exit codes and errors when something fails",
+      "citations": [
+        {
+          "evidenceId": "mise-docs-95",
+          "quote": "Commit a lockfile and install with `mise install --locked`. Every job then installs the same versions"
+        },
+        {
+          "evidenceId": "mise-docs-84",
+          "quote": "Show tools with newer versions `mise outdated` Upgrade within the configured request `mise upgrade node`"
+        },
+        {
+          "evidenceId": "mise-docs-35",
+          "quote": "MISE_SAFE=1 mise lock --bump --dry-run --json"
+        },
+        {
+          "evidenceId": "mise-docs-34",
+          "quote": "mise install"
+        }
+      ]
+    },
     "productId": "mise",
     "storyId": "agent-headless-dependency-install"
   }

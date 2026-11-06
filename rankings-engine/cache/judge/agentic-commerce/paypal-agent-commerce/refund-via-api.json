@@ -1,18 +1,33 @@
 {
-  "hash": "3e67ce93b6a9517729f045e794d34349acb7cccd80fd7b9341c9cbaeed67227f",
+  "hash": "c61749a8550a5ce98ddb646e7c68a71ab2df57e2d0b4d81097e4f4c8847605c6",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "PayPal's agent toolkit documents first-class refund tools: create_refund issues a full or partial refund on a captured payment and get_refund retrieves its status. The toolkit SDK is live on npm with refunds in scope, and these tools run on the same REST payments rails that Store Sync agent orders use via Orders v2. missing for 10: explicit documentation of refunds on Braintree-processed agent orders (ACP/UCP delegated-token paths), named refund webhook event types for async tracking, and independent or hands-on corroboration of agent-order refund flows.",
+    "rationale": "PayPal's agent toolkit documents first-party create_refund and get_refund tools for refunding a captured payment, either the full amount or a specified amount, and for retrieving refund status, so refunds can be initiated and tracked programmatically on the PayPal REST rails. Coverage is incomplete because the docs never connect these tools to orders placed through the agentic channels, and the ACP/UCP paths settle through Braintree single-use tokens with no documented refund path. Store Sync orders are also routed into the merchant's own order management system. Missing for 10: documented refund handling for Braintree-processed ACP/UCP agent orders, refund-specific webhook event types for asynchronous tracking, and independent or hands-on corroboration of refunds on agent-placed orders.",
     "evidenceIds": [
       "paypal-ac-supp-refund-dispute-tools",
       "paypal-ac-probe-rt-2",
-      "paypal-ac-supp-store-sync",
-      "paypal-ac-supp-rest-overview",
-      "paypal-ac-supp-webhooks"
+      "paypal-ac-supp-agent-toolkit",
+      "paypal-ac-supp-acp-chatgpt",
+      "paypal-ac-supp-store-sync"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, refunds on agent-placed orders can be initiated and tracked programmatically",
+      "citations": [
+        {
+          "evidenceId": "paypal-ac-supp-refund-dispute-tools",
+          "quote": "Post-purchase operations are first-class agent tools: refunds via create_refund / get_refund (a \"refund for a captured payment\", where \"If not specified, a refund is for the full amount of the purchase\")"
+        },
+        {
+          "evidenceId": "paypal-ac-probe-rt-2",
+          "quote": "the SDK covering orders, invoices, subscriptions, tracking, disputes, refunds, and transactions"
+        }
+      ]
+    },
     "productId": "paypal-agent-commerce",
     "storyId": "refund-via-api"
   }

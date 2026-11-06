@@ -1,16 +1,31 @@
 {
-  "hash": "af75b19613fb0b7bd608a4979343f1d0031598487b415890024c1102c4311b68",
+  "hash": "cb0b1879dd59efbcf8dcd1758360051d892f97e4a23d72c9d4e00280967fd283",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Stripe pushes order-related webhooks: a unique `checkout.session.completed` event for each agent order, and `delegated_checkout.requested_session.completed` for agent builders using embedded checkout. In the custom ACP integration, Stripe also calls the seller's create/update/confirm endpoints as sessions move through statuses that include `completed` and `canceled`. However, no documented event set covers the full created → updated → fulfilled → canceled lifecycle; fulfillment is described as seller-side batch work through the List CheckoutSessions endpoint, not as a pushed event. Missing for 10: documented webhooks for order created/updated/fulfilled/canceled transitions, fulfillment-status events, and independent corroboration.",
+    "rationale": "Stripe documents registrable webhooks for order completion. Sellers receive a unique `checkout.session.completed` event per agent order, and agent builders get a `delegated_checkout.requested_session.completed` webhook. Checkout sessions also carry documented statuses, including `canceled`. However, the evidence shows no pushed events for order updates, fulfillment or cancellation. The custom integration's create/update/confirm calls are request/response endpoints, not an event subscription. Missing for 10: documented webhook events for order created/updated, fulfilled and canceled; independent or hands-on corroboration of event delivery.",
     "evidenceIds": [
       "stripe-ac-supp-order-attribution",
       "stripe-ac-supp-embedded-checkout-oca",
       "stripe-ac-supp-acp-custom-checkout"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, my agent or backend can subscribe to order lifecycle events — created, updated, fulfilled, canceled — pushed programmatically",
+      "citations": [
+        {
+          "evidenceId": "stripe-ac-supp-order-attribution",
+          "quote": "Stripe sends `checkout.session.completed` after the agent completes an order. Each order generates a unique `checkout.session.completed` event."
+        },
+        {
+          "evidenceId": "stripe-ac-supp-embedded-checkout-oca",
+          "quote": "completion signalled by the `delegated_checkout.requested_session.completed` webhook"
+        }
+      ]
+    },
     "productId": "stripe-agentic-commerce",
     "storyId": "order-event-webhooks"
   }

@@ -1,16 +1,40 @@
 {
-  "hash": "a3df3e4df45ca41228febb5f4604edb3be0c8f22826353f701d243d7a2088142",
+  "hash": "e463dc00406cd9e965ff65fe8ea1d4ba1e292d16bbe841f44d98a7c2ba609fcb",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Bun's docs describe a CLI audit command that reads the package list from `bun.lock` (no node_modules required), sends it to the npm advisory endpoint, and prints a vulnerability report [bun-docs-6]. A fix mode upgrades each vulnerable package to the lowest non-vulnerable version allowed by every dependent's range [bun-docs-7]. Related commands help investigate findings, such as `bun why` for tracing dependency chains [bun-docs-48]. Missing for 10: no independent or hands-on corroboration that the audit works, and no documentation of severity filtering, output formats for CI, or exit-code behavior.",
+    "rationale": "Bun's first-party audit docs show it reading the package list from bun.lock, sending it to the npm advisory endpoint and printing a report. They also document a severity filter (--audit-level) and an automatic fix mode that upgrades vulnerable packages, and the docs index lists audits as a package-manager feature. missing for 10: independent or hands-on corroboration of the audit command, documented details on output formats/CI exit codes.",
     "evidenceIds": [
       "bun-docs-6",
+      "bun-docs-62",
       "bun-docs-7",
-      "bun-docs-48"
+      "bun-docs-75"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a platform-engineer, I can audit installed dependencies for known vulnerabilities directly from the CLI",
+      "citations": [
+        {
+          "evidenceId": "bun-docs-6",
+          "quote": "Bun reads the package list from `bun.lock` (no `node_modules` required), sends it to the npm advisory endpoint, and prints a report."
+        },
+        {
+          "evidenceId": "bun-docs-62",
+          "quote": "`--audit-level=<low|moderate|high|critical>` - Only report vulnerabilities at this severity or higher"
+        },
+        {
+          "evidenceId": "bun-docs-7",
+          "quote": "Runs the audit, then upgrades each vulnerable package to the lowest non-vulnerable version that every dependent's range allows, and installs."
+        },
+        {
+          "evidenceId": "bun-docs-75",
+          "quote": "Package Manager: Fast installs, workspaces, overrides, and audits with `bun install`."
+        }
+      ]
+    },
     "productId": "bun",
     "storyId": "security-audit-command"
   }

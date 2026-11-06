@@ -1,19 +1,31 @@
 {
-  "hash": "7806b2fb191c3fa545a79d70fa314c9b2ec875afec35c1c19a2feee494f52bef",
+  "hash": "2bd3afbbbe3982f5933cecb2e394c459b1b566950db9d58c85c798923cc9223f",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 3,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "mise documents a CI setup: the mise-action wraps installing mise and the tools, there is a pinned curl install script, a committed wrapper avoids a separate install step, and `mise install --locked` with a lockfile gives reproducible installs. None of that evidence describes caching. Missing for 10: a documented cache-restore setup (e.g., caching the mise install directory in CI), offline-capable or air-gapped installs, any evidence that CI installs are actually faster, and independent corroboration.",
+    "rationale": "mise's own CI docs say mise-action installs the declared tools and caches them by default, which gives a first-party cache setup for CI. Nothing in the pack documents offline installs: lockfiles with `mise install --locked` provide reproducibility, which is not offline capability. missing for 10: documented offline/air-gapped install mode, explicit cache-restore configuration details (cache keys, paths, non-GitHub CI), independent evidence of CI speedups.",
     "evidenceIds": [
+      "mise-docs-96",
       "mise-docs-17",
-      "mise-docs-50",
-      "mise-docs-34",
-      "mise-docs-75",
-      "mise-docs-70",
-      "mise-docs-60"
+      "mise-docs-95"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform-engineer, I can make CI installs fast with a documented cache-restore setup and offline-capable installs",
+      "citations": [
+        {
+          "evidenceId": "mise-docs-96",
+          "quote": "mise-action installs mise and the tools declared in the checked-out repository. By default it also caches the tools"
+        },
+        {
+          "evidenceId": "mise-docs-17",
+          "quote": "we provide a mise-action that wraps the installation of mise and the tools"
+        }
+      ]
+    },
     "productId": "mise",
     "storyId": "fast-ci-installs"
   }

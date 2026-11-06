@@ -1,19 +1,41 @@
 {
-  "hash": "ac3b5e59afdc906d204fb6ff87a759a7879f18b8460c3408cbaf2bb08e55db40",
+  "hash": "130f8de6f4dfa3026eb736c7dd1c8a0eed272a69cc2412d50ad1444670b69636",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Bun writes a readable `bun.lock`, and `--frozen-lockfile` installs the exact locked versions without updating the lockfile, so per-project package pins are respected. Overrides/resolutions and workspace catalogs add further control over pinned versions, and existing npm/yarn/pnpm lockfiles are migrated so prior pins carry over. Missing for 10: any evidence of pinning tool versions per project (e.g. the Bun/package-manager version itself or CLI tools, since `-g` installs are global), and independent or hands-on corroboration that pins are honored.",
+    "rationale": "Bun's docs show package versions can be pinned exactly with `bun add --exact`. The `bun.lock` lockfile is respected through `--frozen-lockfile`, which installs the exact locked versions without updating the lockfile. Overrides and resolutions extend pins to transitive dependencies, and catalogs keep versions consistent across workspaces. Pinning the versions of tools per project (such as the package manager or runtime itself) is not evidenced, and the only tool-install path shown is global (`-g`), so the story is only partly covered. missing for 10: per-project pinning of tool versions (e.g. the Bun/package-manager version itself), independent hands-on corroboration that pins and frozen lockfiles are honored in practice",
     "evidenceIds": [
+      "bun-docs-66",
       "bun-docs-35",
-      "bun-docs-38",
-      "bun-docs-23",
       "bun-docs-18",
       "bun-docs-22",
-      "bun-docs-52"
+      "bun-docs-38"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can pin exact versions of packages and tools per project and have the manager respect those pins",
+      "citations": [
+        {
+          "evidenceId": "bun-docs-66",
+          "quote": "To pin a package to the resolved version, use `--exact`. Bun writes the exact version number to your `package.json` instead of a version range."
+        },
+        {
+          "evidenceId": "bun-docs-35",
+          "quote": "For reproducible installs, use `--frozen-lockfile`. Bun installs the exact versions specified in the lockfile and does not update it."
+        },
+        {
+          "evidenceId": "bun-docs-18",
+          "quote": "Bun supports npm's `\"overrides\"` and Yarn's `\"resolutions\"` in `package.json`. Both specify a version range for _metadependencies_"
+        },
+        {
+          "evidenceId": "bun-docs-22",
+          "quote": "When many packages need the same dependency versions, define those versions once in a catalog in the root `package.json` and reference them from your workspaces with the `catalog:` protocol."
+        }
+      ]
+    },
     "productId": "bun",
     "storyId": "version-pinning-per-project"
   }

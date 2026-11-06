@@ -1,21 +1,37 @@
 {
-  "hash": "dfca45e6bd8a40bdeafa8f7133c6ea6a5d128a858eaddb5dfbc8f290ba6a2f83",
+  "hash": "57b744499891bc3b043c64f684a0647753b970b2d20a173b3c97b55e61464d1f",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Skyfire bounds spend in its own way. Each pay token commits a fixed amount against the agent's wallet balance, and charges above that ceiling are rejected. API keys are scoped to a single agent, card spending is capped by cardholder approval, and per-agent source IPs can be set. Revocation is explicitly not instant: deactivation stops new token creation, but in-flight tokens stay chargeable until expiry plus a 24-hour grace period, and no per-token revocation API is documented. Missing for 10: configurable per-agent spend caps or usage-limit policies, instant revocation of an agent's payment authority including outstanding tokens, and independent corroboration.",
+    "rationale": "Skyfire bounds agent spending per pay token: the committed amount is a hard ceiling, charges above the remaining balance are rejected, and tokens expire between 10 seconds and 24 hours. Deactivation stops new token creation, but in-flight tokens stay chargeable until expiry plus a 24-hour grace period, so revocation is not instant. API keys are scoped to a single agent, but no configurable per-agent spend cap or usage limit is documented. missing for 10: configurable per-agent spend caps and usage limits, instant revocation of outstanding tokens or a per-token revocation API, independent or hands-on corroboration.",
     "evidenceIds": [
       "skyfire-supp-4",
-      "skyfire-supp-5",
       "skyfire-supp-6",
-      "skyfire-supp-7",
-      "skyfire-supp-8",
+      "skyfire-supp-5",
       "skyfire-docs-1",
-      "skyfire-docs-34",
-      "skyfire-docs-35"
+      "skyfire-supp-7"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can set per-agent spend caps and usage limits and revoke an agent's payment authority instantly",
+      "citations": [
+        {
+          "evidenceId": "skyfire-supp-4",
+          "quote": "Charges above the token's remaining balance are rejected."
+        },
+        {
+          "evidenceId": "skyfire-supp-6",
+          "quote": "New token creation stops at deactivation, but in-flight tokens are honored so sellers are paid for services they were legitimately asked to deliver."
+        },
+        {
+          "evidenceId": "skyfire-docs-1",
+          "quote": "each key is scoped to a single agent (Buyer or Seller)"
+        }
+      ]
+    },
     "productId": "skyfire",
     "storyId": "spend-caps-revocation"
   }

@@ -1,17 +1,35 @@
 {
-  "hash": "a20892810aded43a430426567d848a10596c58994391fd1c3a1de919f8e44afe",
+  "hash": "0257a6e52741100f17528e88bb32424e3b695670ee016de5eca60d3ebbcb1430",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Supabase documents Database Webhooks that fire on table INSERT, UPDATE and DELETE events. They are built on triggers and pg_net and deliver payloads over HTTP to any endpoint, including Edge Functions, which the docs say can be used for listening to webhooks. This covers automatic function execution on database events. Missing for 10: any evidence of auth-event triggers (e.g., auth hooks on signup/login), and independent or hands-on corroboration of webhook-to-function reliability.",
+    "rationale": "Supabase documents Database Webhooks that fire automatically on INSERT, UPDATE and DELETE table events. They are built as triggers using pg_net and deliver HTTP payloads to any endpoint, explicitly including Edge Functions, which the docs say can listen to webhooks. That covers the database-event half of the story directly. Nothing in the pack shows functions being triggered by auth events. Missing for 10: documented auth-event triggers or hooks (e.g. on sign-up or login), richer docs on payload and retry semantics for invoking Edge Functions from table events, and independent or hands-on corroboration.",
     "evidenceIds": [
       "supabase-supp-db-webhooks",
       "supabase-docs-37",
-      "supabase-docs-75",
-      "supabase-docs-8"
+      "supabase-docs-75"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can run functions automatically in response to database or auth events",
+      "citations": [
+        {
+          "evidenceId": "supabase-docs-37",
+          "quote": "Database Webhooks allow you to send real-time data from your database to another system whenever a table event occurs."
+        },
+        {
+          "evidenceId": "supabase-supp-db-webhooks",
+          "quote": "with payloads delivered as HTTP requests to any endpoint (including Edge Functions)"
+        },
+        {
+          "evidenceId": "supabase-docs-75",
+          "quote": "They can be used for listening to webhooks"
+        }
+      ]
+    },
     "productId": "supabase",
     "storyId": "db-event-triggers"
   }

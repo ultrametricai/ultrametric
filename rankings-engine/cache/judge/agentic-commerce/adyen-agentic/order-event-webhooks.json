@@ -1,17 +1,26 @@
 {
-  "hash": "040f401885630957224665e4f1dbaf646588efe8467bfa572755350624db4bfc",
+  "hash": "2e0400356e9fbc0267b6d067a63006e4647e0dc0a69479b3ffdd91fcf9fa37f2",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Adyen documents webhooks as a push mechanism for status changes in asynchronous processes, which removes the need to poll. The Agentic Cart API also has Adyen call the merchant's server for session events such as cancel (releasing reserved inventory) and commit. Neither source shows a subscribable feed of order lifecycle events specific to agentic orders. missing for 10: documented order created/updated/fulfilled/canceled event types, evidence that agentic orders emit webhooks, subscription/registration details for agent or backend consumers, independent corroboration.",
+    "rationale": "Adyen documents its own webhook mechanism, which pushes asynchronous status changes to a backend so it does not have to poll. Nothing in the evidence shows Agentic Commerce order lifecycle events (created, updated, fulfilled, canceled) being emitted as webhook event types. The cancel and commit session steps are calls Adyen makes to the merchant during checkout, not an order-event subscription. missing for 10: documented order lifecycle event types (created/updated/fulfilled/canceled), agentic-specific webhook subscription docs, payload schemas, independent or hands-on corroboration",
     "evidenceIds": [
       "adyen-agentic-docs-18",
-      "adyen-agentic-docs-10",
-      "adyen-agentic-docs-11",
-      "adyen-agentic-docs-12"
+      "adyen-agentic-docs-11"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, my agent or backend can subscribe to order lifecycle events — created, updated, fulfilled, canceled — pushed programmatically",
+      "citations": [
+        {
+          "evidenceId": "adyen-agentic-docs-18",
+          "quote": "With webhooks, you can avoid having to continuously poll an API endpoint, waiting for a change in status for an asynchronous process"
+        }
+      ]
+    },
     "productId": "adyen-agentic",
     "storyId": "order-event-webhooks"
   }

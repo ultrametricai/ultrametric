@@ -1,20 +1,40 @@
 {
-  "hash": "e93d65bb429301edfcdbf08ec09d3abab1d6946992a90a052f64417444c42ad0",
+  "hash": "a21ba425f79bf85c92648c3782381197fa63932594261958d69e8e2207957788",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 8,
+    "verdict": "partial",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Zamzar's developer docs describe the whole flow. The API accepts local files or URLs (HTTP, FTP, SFTP, S3), conversions are submitted to a `jobs` endpoint, the client waits for the job to complete, and the converted PDF is then downloaded. Authentication, a sandbox environment and an official SDK are also documented. Missing for 10: explicit documentation of job status fields or states (only implied by 'wait for the job to complete'), independent or hands-on corroboration, and a machine-readable OpenAPI spec (probes returned 404).",
+    "rationale": "Zamzar's documented API accepts local files or files reachable over HTTP/FTP/SFTP/S3. Conversions are submitted to a `jobs` endpoint, and the docs show waiting for the job, then downloading the converted output. Visible job status is only implied by the 'wait for the job to complete' step; no status endpoint or status fields are shown. missing for 10: explicit job-status endpoint/fields, machine-readable API spec (OpenAPI probes 404), independent or hands-on corroboration.",
     "evidenceIds": [
       "zamzar-docs-1",
       "zamzar-docs-7",
       "zamzar-docs-8",
-      "zamzar-docs-3",
-      "zamzar-docs-4",
-      "zamzar-docs-5",
-      "zamzar-docs-2"
+      "zamzar-docs-3"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, a documented API takes an upload or URL, runs the conversion as a job with visible status, and returns the output file",
+      "citations": [
+        {
+          "evidenceId": "zamzar-docs-1",
+          "quote": "Our API can be used to convert files on your machine, or files accessible over HTTP, FTP, SFTP or even Amazon S3."
+        },
+        {
+          "evidenceId": "zamzar-docs-7",
+          "quote": "To convert a file with Zamzar, you need to send a request to the `jobs` endpoint."
+        },
+        {
+          "evidenceId": "zamzar-docs-8",
+          "quote": "Wait for the job to complete (the default timeout is 60 seconds)"
+        },
+        {
+          "evidenceId": "zamzar-docs-3",
+          "quote": "converts to pdf, downloads the pdf and removes your files from Zamzar's servers"
+        }
+      ]
+    },
     "productId": "zamzar",
     "storyId": "rest-convert-job"
   }

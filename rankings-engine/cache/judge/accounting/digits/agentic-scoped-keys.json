@@ -1,19 +1,37 @@
 {
-  "hash": "0bb9eb9457b93f12fb67d3138b25cf95fe0d8e13e3060c8b4575e9b61c4980fc",
+  "hash": "2994e94c4d18ef8a44342500ef68abeb964e405ab17cdcb34a03219e4453fefc",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "The Connect API uses OAuth 2.0 with granular, space-separated scopes such as \"source:sync ledger:read documents:write\", and sensitive write surfaces like the bills workflow are gated behind a distinct bills:manage scope, so an agent can be given a token limited to what it needs. The hosted MCP server is OAuth-gated against the user's own account and is read-only by design, a least-privilege default for agent access. Missing for 10: a documented machine-to-machine or service-account credential path (only the user-driven authorization code flow is shown), documented token revocation, expiry and per-agent credential management, a complete published scope catalog, configurable scopes for the MCP connection, and independent hands-on corroboration.",
+    "rationale": "The Digits Connect API issues OAuth 2.0 access tokens with granular, space-separated scopes such as \"source:sync ledger:read documents:write\", and write surfaces are gated by scopes like bills:manage. That lets an agent's app request least-privilege access. The official MCP server adds an OAuth-gated, read-only agent path. However, credentials are tied to the OAuth app authorization flow rather than a documented way to mint per-agent scoped keys, and the full scope catalog and lifecycle controls are not evidenced. Missing for 10: agent-specific credential issuance (scoped API keys or tokens minted per agent), a full scope catalog, token expiry/revocation/rotation controls, and independent hands-on corroboration.",
     "evidenceIds": [
       "digits-supp-oauth",
-      "digits-docs-4",
       "digits-supp-api-reference",
       "digits-supp-mcp-server",
       "digits-probe-5",
       "digits-supp-sandbox"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
+      "citations": [
+        {
+          "evidenceId": "digits-supp-oauth",
+          "quote": "source:sync ledger:read documents:write"
+        },
+        {
+          "evidenceId": "digits-supp-api-reference",
+          "quote": "gated by the bills:manage scope"
+        },
+        {
+          "evidenceId": "digits-supp-mcp-server",
+          "quote": "The Digits MCP server is read-only. It can access and analyze your data, but cannot make any changes to your Digits account."
+        }
+      ]
+    },
     "productId": "digits",
     "storyId": "agentic-scoped-keys"
   }

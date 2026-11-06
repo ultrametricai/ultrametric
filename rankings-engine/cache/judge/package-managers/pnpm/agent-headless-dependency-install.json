@@ -1,22 +1,42 @@
 {
-  "hash": "b97cfb964074b00b4d5536d07da8f5a945366de61b40272ebc8d0627dfc1f9cc",
+  "hash": "9b46d4ed66955482349a9e51f26b435a03361d8bf80a81886b852c625c9fcadd",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "pnpm is an official CLI that installs non-interactively in automation. It auto-switches to frozen-lockfile mode in CI, and installs fail in several documented cases: a stale lockfile in CI, packages missing in offline/store-only mode, or an unsatisfiable workspace: version. A dry-run reports what an install would change without writing anything, which suits agent planning. Missing for 10: explicit exit-code documentation, a documented non-interactive update/upgrade command flow, evidence on error-message clarity or machine-readable error output, and hands-on agent corroboration (one community note calls failures hard to debug).",
+    "rationale": "pnpm's docs show install behavior suited to unattended agents. It automatically switches to frozen-lockfile mode in CI, and it fails installs on stale lockfiles, missing offline packages, or unresolvable workspace versions, which gives deterministic failure on error. However, no evidence explicitly documents exit codes, error formats, or a non-interactive flag for local agent runs, and `pnpm update` appears only in passing. Missing for 10: documented exit codes and structured error output for install/update, an explicit non-interactive or no-prompt mode outside CI detection, hands-on corroboration of agent-driven updates.",
     "evidenceIds": [
-      "pnpm-probe-4",
       "pnpm-docs-13",
       "pnpm-docs-34",
       "pnpm-docs-10",
       "pnpm-docs-39",
-      "pnpm-docs-9",
       "pnpm-docs-19",
-      "pnpm-docs-22",
-      "pnpm-comm-6"
+      "pnpm-docs-43"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can have an agent install and update project dependencies non-interactively, with clear exit codes and errors when something fails",
+      "citations": [
+        {
+          "evidenceId": "pnpm-docs-13",
+          "quote": "When pnpm detects that it is running in CI, it switches to frozen-lockfile mode automatically."
+        },
+        {
+          "evidenceId": "pnpm-docs-34",
+          "quote": "In a CI environment, installation fails if a lockfile is present but needs an update."
+        },
+        {
+          "evidenceId": "pnpm-docs-10",
+          "quote": "If a package won't be found locally, the installation will fail."
+        },
+        {
+          "evidenceId": "pnpm-docs-19",
+          "quote": "Run a full dependency resolution and report what a real install would change, without writing anything to disk."
+        }
+      ]
+    },
     "productId": "pnpm",
     "storyId": "agent-headless-dependency-install"
   }

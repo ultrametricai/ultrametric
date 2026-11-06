@@ -1,18 +1,40 @@
 {
-  "hash": "6fe93134ba30b0436a4b1622bbeda6bc4cc0672cd65f319d59b6c6ecd8e250dc",
+  "hash": "49569458bcb01e6e35a60947023887affb1fa6d624158d00c463608e52613702",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "PostHog exposes a Dashboards family of 18 MCP tools (e.g. `dashboard-get`), callable from code over Streamable HTTP or through `posthog-cli api`. Its API keys carry insight-level scopes such as `insight:read`, which points to programmatic access to saved insights. However, no evidence explicitly documents REST endpoints for creating, updating or deleting dashboards and saved insights; the `/query` endpoint covers ad-hoc queries only. Missing for 10: explicit API docs for dashboard and insight create/update/delete, confirmation that the dashboard tools include write operations, saved-insight management endpoints, independent corroboration.",
+    "rationale": "PostHog's own programmatic surfaces touch this story. The hosted MCP server, callable from code over Streamable HTTP, exposes a Dashboards tool category of 18 tools, including `dashboard-get`. Personal API keys carry insight-specific scopes such as `insight:read`, and the CLI exposes the API and MCP tool catalog; however, explicit REST endpoints for creating, updating, or deleting dashboards and saved insights are never documented. missing for 10: explicit documentation of dashboard and insight create/update/delete API endpoints, write-scope evidence for insights and dashboards, independent or hands-on corroboration.",
     "evidenceIds": [
       "posthog-supp-mcp-tools-inventory",
       "posthog-supp-mcp-scoping",
-      "posthog-supp-cli-agent-first",
       "posthog-supp-scoped-keys",
-      "posthog-probe-3"
+      "posthog-supp-cli-agent-first"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can create and manage dashboards and saved insights programmatically via the API",
+      "citations": [
+        {
+          "evidenceId": "posthog-supp-mcp-tools-inventory",
+          "quote": "Dashboards (18)"
+        },
+        {
+          "evidenceId": "posthog-supp-mcp-scoping",
+          "quote": "https://mcp.posthog.com/mcp?tools=dashboard-get,feature-flag-get-all,execute-sql"
+        },
+        {
+          "evidenceId": "posthog-supp-scoped-keys",
+          "quote": "The API scopes granted to the key (e.g., `insight:read`)"
+        },
+        {
+          "evidenceId": "posthog-supp-cli-agent-first",
+          "quote": "Use `posthog-cli api` to access PostHog's API and MCP tool catalog from shell-friendly commands"
+        }
+      ]
+    },
     "productId": "posthog",
     "storyId": "dashboards-api"
   }

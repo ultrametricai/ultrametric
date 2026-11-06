@@ -1,15 +1,34 @@
 {
-  "hash": "9ee10f280eb728ad5d38750a5f74a1a912e5e695b3367b9ce33580a699cf212c",
+  "hash": "dd0a7ff3ee3d550bff09772a482584999ae311abfb989a2c87d7e73f661a8000",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "RingCentral's developer docs describe registering an app and creating auth credentials for it, with scopes (permissions) declared per application in the Developer Console and confirmed by the user at authorization. Restricted scopes require a support-reviewed justification, so a dedicated agent app can be limited to only the scopes it needs. Missing for 10: agent-specific credential guidance, evidence of token expiry/rotation/revocation controls, finer-than-scope resource restrictions, and independent or hands-on corroboration.",
+    "rationale": "RingCentral documents per-application scopes, also called permissions. They are declared at app registration, confirmed by the user during authorization, and edited per app in the Developer Console. Restricted scopes need a justification reviewed by support. The docs also list 'Create an auth credential' as a basic step. So an agent can be given its own app credential limited to the scopes it needs. However, least-privilege is set at the application level only, and nothing documents agent-specific credential issuance or finer narrowing per token. missing for 10: agent-specific credential issuance, per-token or per-resource scope narrowing, credential expiry/rotation/revocation controls, independent or hands-on corroboration.",
     "evidenceIds": [
       "ringcentral-supp-1",
       "ringcentral-docs-5"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
+      "citations": [
+        {
+          "evidenceId": "ringcentral-supp-1",
+          "quote": "In order to work with particular RingCentral API resources, the application should have the corresponding scopes associated with it, also referred to as application 'permissions.'"
+        },
+        {
+          "evidenceId": "ringcentral-supp-1",
+          "quote": "Required scopes are generally declared at the application registration stage and confirmed by the user during the authorization stage."
+        },
+        {
+          "evidenceId": "ringcentral-docs-5",
+          "quote": "Register an app · Create an auth credential"
+        }
+      ]
+    },
     "productId": "ringcentral",
     "storyId": "agentic-scoped-keys"
   }

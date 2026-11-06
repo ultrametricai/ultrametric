@@ -1,19 +1,32 @@
 {
-  "hash": "cc7a882c374f80a2ee2498df446b18c647161d16ceee74a1d434b263ba96ca86",
+  "hash": "01e4c5fb13a8e8656a760c31bb0c61aab77a4fc8df83cac3508f70db1f9c5a4a",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Shopify's agent docs are served as raw markdown: a probe returned HTTP 200 for shopify.dev/docs/agents.md with frontmatter, and the agent doc pages are cited at .md URLs, so an agent can be pointed at clean, agent-readable docs. An AI Toolkit plugin/skill also maps natural-language requests to UCP CLI commands, and the underlying UCP spec publishes an llms.txt index at ucp.dev. Missing for 10: an llms.txt at shopify.dev (probe returned 404), a published OpenAPI spec (all candidate paths 404), and explicit first-party documentation that the markdown docs are intended for agent consumption.",
+    "rationale": "Shopify serves its agentic-commerce docs as raw markdown that an agent can ingest directly (shopify.dev/docs/agents.md returns HTTP 200 with frontmatter), and the open UCP spec publishes an llms.txt index at ucp.dev. However, Shopify's own developer docs have no llms.txt (shopify.dev/llms.txt returns 404), so the agent-readable entry point comes from the protocol site rather than the product's docs. missing for 10: a first-party llms.txt index on shopify.dev, an agent-oriented docs index or sitemap for the Shopify agent docs, and independent or hands-on corroboration of an agent consuming these docs.",
     "evidenceIds": [
-      "shopify-ucp-probe-1",
       "shopify-ucp-probe-2",
-      "shopify-ucp-probe-3",
+      "shopify-ucp-probe-1",
       "shopify-ucp-probe-rt-5",
-      "shopify-ucp-docs-13",
-      "shopify-ucp-supp-ucp-journey"
+      "shopify-ucp-docs-13"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can point an agent at llms.txt or agent-oriented docs",
+      "citations": [
+        {
+          "evidenceId": "shopify-ucp-probe-2",
+          "quote": "PROBE docs-md: HTTP 200 at https://shopify.dev/docs/agents.md"
+        },
+        {
+          "evidenceId": "shopify-ucp-probe-rt-5",
+          "quote": "https://ucp.dev/llms.txt serves the versioned specification index"
+        }
+      ]
+    },
     "productId": "shopify-ucp",
     "storyId": "agentic-agent-docs"
   }

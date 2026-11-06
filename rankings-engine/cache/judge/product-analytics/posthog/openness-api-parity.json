@@ -1,21 +1,42 @@
 {
-  "hash": "27e34d586259b98710ad044659c39104d8fcb9af2c579795d5af3975d8fc4e03",
+  "hash": "6f6036eca87bf38c7058a016c66a4d7e3bc5a46c62b7a3f0fd6b38ac33706ecb",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 8,
+    "verdict": "partial",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "PostHog publishes an OpenAPI spec at posthog.com/openapi.json and a hosted MCP server documented with 953 tools across 65 product categories, explicitly 'across every PostHog product'. A live probe shows 150 granular read/write OAuth scopes covering resources such as cohorts, alerts, batch exports and access control, and the CLI exposes the full API and MCP tool catalog headlessly. Together these strongly indicate broad API coverage of what the UI does. Missing for 10: an explicit first-party statement that the API matches the UI feature-for-feature, independent or hands-on corroboration of parity, and some account-provisioning gaps (wizard signup doesn't mint a personal API key; --ci mode is off in published builds).",
+    "rationale": "PostHog documents broad programmatic coverage. Its MCP server exposes 953 tools across 65 product categories, described as spanning 'every PostHog product'. It also publishes an OpenAPI spec, scopes OAuth access with per-resource read/write permissions, and offers a CLI that reaches the API and MCP tool catalog. No evidence explicitly claims UI-to-API parity, and some documented paths have limits: the /query endpoint is not an export mechanism and OFFSET pagination fails for personal API keys. missing for 10: an explicit first-party statement that every UI action is available via the API, independent or hands-on verification of parity across products, and API coverage for edge areas such as signup-time API key minting.",
     "evidenceIds": [
-      "posthog-probe-3",
       "posthog-supp-mcp-tools-inventory",
+      "posthog-probe-3",
       "posthog-probe-6",
       "posthog-supp-cli-agent-first",
       "posthog-supp-query-endpoint",
-      "posthog-supp-scoped-keys",
-      "posthog-supp-mcp-scoping",
-      "posthog-supp-wizard-signup"
+      "posthog-supp-scoped-keys"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can do everything through the API that I can do in the UI",
+      "citations": [
+        {
+          "evidenceId": "posthog-supp-mcp-tools-inventory",
+          "quote": "The PostHog MCP server exposes function-calling MCP tools across every PostHog product – from feature flags and experiments to error tracking, logs, surveys, and SQL."
+        },
+        {
+          "evidenceId": "posthog-probe-3",
+          "quote": "PROBE openapi: HTTP 200 at https://posthog.com/openapi.json — contains \"openapi\" key"
+        },
+        {
+          "evidenceId": "posthog-supp-cli-agent-first",
+          "quote": "Use `posthog-cli api` to access PostHog's API and MCP tool catalog from shell-friendly commands, including running SQL queries against your data"
+        },
+        {
+          "evidenceId": "posthog-supp-query-endpoint",
+          "quote": "The `/query` endpoint is intended for ad-hoc analytics and embedded use cases. It is not a supported export mechanism"
+        }
+      ]
+    },
     "productId": "posthog",
     "storyId": "openness-api-parity"
   }

@@ -1,22 +1,46 @@
 {
-  "hash": "50c006e063c3ece1160bec5a356e86df1e2c75208105f9b01c74feca436179fb",
+  "hash": "1703d9d8360da1c55f585d70c036e2eb6d0f8f31c57361ec93b7bc128f2c6a0b",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "QuickBooks Online can be driven without its UI through the official V3 REST API SDK (with CRUD examples), an OAuth client that handles token management and refresh, and an official MCP server covering 29 entity types and 11 reports. A first-class sandbox environment supports isolated testing, which suits CI-style automation. The main caveat is that OAuth needs an interactive initial authorization, and production requires a public HTTPS callback, so fully unattended setup is not documented. Missing for 10: a documented CLI or CI/headless workflow guide, a non-interactive (service-account style) auth path, a published OpenAPI spec (probes returned 404), and independent hands-on corroboration of CI usage.",
+    "rationale": "QuickBooks Online has its own first-party V3 REST API, with official SDKs, OAuth token refresh, a sandbox/production switch and an official MCP server offering full CRUD. Together these let it be driven programmatically without the UI. However, nothing documents CI or headless runs specifically, and the initial OAuth authorization needs an interactive callback, so unattended setup is not proven. Missing for 10: documented CI/headless usage guidance, a non-interactive service-account or machine credential flow, and independent hands-on corroboration of unattended automation.",
     "evidenceIds": [
       "quickbooks-docs-32",
-      "quickbooks-docs-36",
       "quickbooks-docs-39",
       "quickbooks-supp-sandbox-oauth",
       "quickbooks-supp-mcp-sandbox",
-      "quickbooks-gh-3",
-      "quickbooks-gh-6",
-      "quickbooks-probe-2",
+      "quickbooks-gh-4",
       "quickbooks-probe-3"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
+      "citations": [
+        {
+          "evidenceId": "quickbooks-docs-32",
+          "quote": "PHP client for connecting to the QuickBooks Online V3 REST API."
+        },
+        {
+          "evidenceId": "quickbooks-docs-39",
+          "quote": "OAuth 2.0 authentication flow - Token management and refresh"
+        },
+        {
+          "evidenceId": "quickbooks-supp-sandbox-oauth",
+          "quote": "environment: 'sandbox', // or 'production'"
+        },
+        {
+          "evidenceId": "quickbooks-supp-mcp-sandbox",
+          "quote": "production requires a public HTTPS callback for the initial authorization"
+        },
+        {
+          "evidenceId": "quickbooks-gh-4",
+          "quote": "full CRUD operations for 29 entity types and 11 financial reports"
+        }
+      ]
+    },
     "productId": "quickbooks",
     "storyId": "agentic-headless"
   }

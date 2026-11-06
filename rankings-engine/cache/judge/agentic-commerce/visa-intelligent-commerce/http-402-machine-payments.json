@@ -1,17 +1,32 @@
 {
-  "hash": "774242fa6b0211e64cee1b11f33332df6d9fcdf4f61ed67f4f7fa4f8b9c982b2",
+  "hash": "0c6492335c3f71ff94abd01a4c24db6ed73547b73d5ea63d0fc5f64046fe3a7a",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "The Trusted Agent Protocol spec says that when a merchant answers with an HTTP 402 response code, the agent's signed Agentic Payment Container carries a \"payment IOU\". After verifying it, the merchant can grant access with funds expected at settlement, which is a first-party, UI-less machine-payment path. Its RFC 9421 signed-request rail and open reference implementation support agent-to-server interactions. However, the 402 flow is a single paragraph in the spec, and nothing shows per-call API metering, pricing, or a developer workflow for monetizing a service this way. Missing for 10: documented per-call pricing/metering for APIs, 402 IOU settlement and failure-handling details, a reference implementation or SDK for 402 payment acceptance, and independent or hands-on corroboration of the 402 flow.",
+    "rationale": "The Trusted Agent Protocol spec documents an HTTP 402 path. When a merchant answers with a 402, the agent's signed Agentic Payment Container carries a payment IOU, and the merchant can grant access after verifying it, with funds expected at settlement. This is a first-party rail for checkout-less agent payment, but it is a single thin mention in the spec. Missing for 10: per-call pricing/metering guidance for monetizing an API, documented settlement and IOU-redemption flow, developer integration examples or SDK support for the 402 flow, hands-on or independent corroboration, and production maturity (the product is still 'in the process of development and deployment').",
     "evidenceIds": [
       "visa-ic-supp-7",
       "visa-ic-supp-6",
       "visa-ic-supp-9",
-      "visa-ic-probe-rt-1"
+      "visa-ic-supp-1"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can monetize an API or service with HTTP 402 machine payments that agents pay per call without a checkout UI",
+      "citations": [
+        {
+          "evidenceId": "visa-ic-supp-7",
+          "quote": "when a merchant requests payment with an HTTP 402 response code, \"a payment IOU will be present\"; after verifying it, \"the Merchant can grant access with the expectation that the funds will be available when settlement occurs.\""
+        },
+        {
+          "evidenceId": "visa-ic-supp-6",
+          "quote": "Signatures carry a tag of \"agent-browser-auth\" or \"agent-payer-auth\" per interaction"
+        }
+      ]
+    },
     "productId": "visa-intelligent-commerce",
     "storyId": "http-402-machine-payments"
   }

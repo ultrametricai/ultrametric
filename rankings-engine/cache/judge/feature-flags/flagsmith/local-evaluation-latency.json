@@ -1,16 +1,18 @@
 {
-  "hash": "03976a65c997ebe3fceaf1cac4752d15a4ef50d794626d9e582ebd0107dc2794",
+  "hash": "d1b7bc4b9fdca9aa7746c9d239348857c4996b6ca4629c81aa7ffb04d53d1c9a",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "The only related evidence is the self-hosted Edge Proxy, which runs an instance of the Flagsmith Engine close to your servers and accepts connections from server-side SDKs. That cuts latency but still implies a network hop to the proxy, not in-process evaluation. A community comment also notes Flagsmith 'apparently does primarily server-side eval', and no evidence documents an in-process SDK local-evaluation mode. Missing for 10: documented in-process local evaluation in the server SDKs, cached ruleset/environment document polling or refresh, evidence of no network call per flag check, and microsecond-latency benchmarks or hands-on corroboration.",
-    "evidenceIds": [
-      "flagsmith-docs-14",
-      "flagsmith-docs-28",
-      "flagsmith-comm-1"
-    ],
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence pack never documents an in-process local-evaluation mode for the server SDKs, nor a cached ruleset that avoids a network call per flag check. The Edge Proxy is a separate self-hosted service that server SDKs still connect to over the network, and the CLI's SDK-style evaluation is not SDK behaviour, so both are adjacent features. Community comments describe Flagsmith as doing 'primarily server-side eval', which is consistent with the absence of this capability.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a platform engineer, my server SDKs evaluate flags locally from a cached ruleset — microsecond decisions with no network call per flag check",
+      "citations": []
+    },
     "productId": "flagsmith",
     "storyId": "local-evaluation-latency"
   }

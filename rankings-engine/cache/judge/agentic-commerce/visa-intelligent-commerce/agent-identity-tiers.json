@@ -1,23 +1,45 @@
 {
-  "hash": "d846db6e4e21c3a72fa7862a7721dc53c087f54c4579d1346efcf4066deee2d0",
+  "hash": "875eb4af2ae9c6af9c084ce30e25a9e499e6d8543f83a9988a50258e43c2f282",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
-    "quality": 8,
+    "quality": 9,
     "confidence": "high",
-    "rationale": "Visa's Trusted Agent Protocol lets merchants cryptographically verify agents. Agents sign requests with RFC 9421 HTTP Message Signatures aligned with web-bot-auth, tagged per interaction (agent-browser-auth / agent-payer-auth), and the signatures are bound to the merchant's domain and operation. Created/expires timestamps and nonces block replays, merchants verify against Visa's public JWKS, and an open reference implementation includes an agent-registry and a cdn-proxy verifier, which a probe confirms is published. Missing for 10: independent or hands-on confirmation that verification works end to end in production, and any documented graded trust tiers beyond the two interaction tags.",
+    "rationale": "Visa's Trusted Agent Protocol gives each agent interaction an RFC 9421 HTTP Message Signature (aligned with web-bot-auth). Signatures are tagged per interaction, protected against replay with timestamps and nonces, and verifiable by merchants against Visa's public JWKS. The public reference implementation includes an agent-registry and a cdn-proxy verifier, explicitly so merchants can distinguish credentialed agents from anonymous bots. Missing for 10: independent hands-on corroboration that merchant-side signature verification works in production, and no documented graded trust tiers beyond signature-based recognition.",
     "evidenceIds": [
-      "visa-intelligent-commerce-gh-1",
-      "visa-intelligent-commerce-gh-2",
-      "visa-intelligent-commerce-gh-4",
-      "visa-intelligent-commerce-gh-5",
       "visa-ic-supp-6",
       "visa-ic-supp-9",
+      "visa-intelligent-commerce-gh-1",
+      "visa-intelligent-commerce-gh-4",
+      "visa-intelligent-commerce-gh-5",
       "visa-intelligent-commerce-docs-11",
-      "visa-intelligent-commerce-docs-15",
       "visa-intelligent-commerce-docs-16",
+      "visa-intelligent-commerce-docs-15",
       "visa-ic-probe-rt-1"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a merchant, agents identify themselves verifiably — registered profiles, signatures, or trust tiers — so I can tell trusted agent traffic from anonymous bots",
+      "citations": [
+        {
+          "evidenceId": "visa-intelligent-commerce-gh-1",
+          "quote": "By presenting a secure digital signature with every interaction, a merchant can verify that an agent is legitimate and has the user's permission to act."
+        },
+        {
+          "evidenceId": "visa-intelligent-commerce-gh-4",
+          "quote": "Cryptographically Verify Agent Intent: Instantly distinguish a legitimate, credentialed agent from an anonymous bot."
+        },
+        {
+          "evidenceId": "visa-ic-supp-6",
+          "quote": "Agents include timestamps (created, expires) and nonces in the signature. Servers are able to reject reused or expired signatures, thereby preventing replay attacks."
+        },
+        {
+          "evidenceId": "visa-intelligent-commerce-docs-16",
+          "quote": "These snippets demonstrate the use of public keys and how to construct the signature_base strings, which are the critical first steps in verifying an agent's signature on your end."
+        }
+      ]
+    },
     "productId": "visa-intelligent-commerce",
     "storyId": "agent-identity-tiers"
   }

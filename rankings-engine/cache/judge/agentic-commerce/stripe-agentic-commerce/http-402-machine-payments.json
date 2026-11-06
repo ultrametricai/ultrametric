@@ -1,21 +1,47 @@
 {
-  "hash": "5af9577e5c8fc431fb935fc864a27f7f9c244c81df8ba597e985df9ef249ca4a",
+  "hash": "4ae711ca78bf54a0c64608f4dc5d0c54465b291512a7a80c9196fa2b7e52c29c",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Stripe documents machine payments for exactly this case. Your server returns an HTTP 402 challenge, the agent presents a credential and retries, and Stripe settles to your balance, via MPP or x402 \"without a checkout UI\". The docs include a per-call pricing example (\"charge 0.50 USD per API call\"), an `mppx validate` conformance tool, documented per-rail minimums and fiat settlement with refunds. Runtime probes confirm the MPP spec is published and the mppx SDK resolves on npm. missing for 10: independent hands-on evidence of a completed paid call, sub-cent micropayments (minimum is $0.01 for stablecoins and $0.50 for card SPTs), stablecoin availability in New York, fuller end-to-end documentation (one community comment calls the MPP docs sparse).",
+    "rationale": "Stripe documents machine payments over MPP and x402 where the server returns an HTTP 402 challenge. The agent pays and retries without a checkout UI, and Stripe settles to the seller's balance, with per-call pricing, an agent build prompt and the `mppx validate` conformance tool; a probe confirms the mppx SDK and the open spec are published. Missing for 10: independent hands-on corroboration of an end-to-end paid call (a community note calls the end-to-end docs sparse), plus a 0.50 USD card minimum that constrains micro-priced calls on the SPT rail.",
     "evidenceIds": [
-      "stripe-ac-supp-machine-payments",
       "stripe-ac-supp-mpp-agent-build",
-      "stripe-agentic-commerce-docs-9",
+      "stripe-ac-supp-machine-payments",
+      "stripe-agentic-commerce-docs-19",
       "stripe-agentic-commerce-docs-32",
       "stripe-agentic-commerce-docs-33",
-      "stripe-ac-supp-chat-commerce",
       "stripe-ac-probe-rt-2",
-      "stripe-agentic-commerce-comm-10"
+      "stripe-ac-supp-chat-commerce"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can monetize an API or service with HTTP 402 machine payments that agents pay per call without a checkout UI",
+      "citations": [
+        {
+          "evidenceId": "stripe-ac-supp-mpp-agent-build",
+          "quote": "is an open protocol that lets agents pay for your APIs and services programmatically without a checkout UI, co-authored by Stripe and Tempo"
+        },
+        {
+          "evidenceId": "stripe-agentic-commerce-docs-32",
+          "quote": "When an agent requests your API or service, your server returns an HTTP `402` response with payment details."
+        },
+        {
+          "evidenceId": "stripe-ac-supp-machine-payments",
+          "quote": "Your server returns a payment challenge, the agent presents a valid payment credential, and Stripe settles the payment to your Stripe balance."
+        },
+        {
+          "evidenceId": "stripe-agentic-commerce-docs-19",
+          "quote": "When a client requests a paid resource, your server returns an HTTP 402 response with payment details, including a Stripe deposit address."
+        },
+        {
+          "evidenceId": "stripe-ac-supp-mpp-agent-build",
+          "quote": "monetize my API using MPP to charge 0.50 USD per API call"
+        }
+      ]
+    },
     "productId": "stripe-agentic-commerce",
     "storyId": "http-402-machine-payments"
   }

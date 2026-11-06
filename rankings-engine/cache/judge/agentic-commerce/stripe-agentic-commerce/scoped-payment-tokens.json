@@ -1,22 +1,47 @@
 {
-  "hash": "d924d30c39a56ff21f777ae34ceea05e328c2515218efd3e2d03550056d8745d",
+  "hash": "a4e48c8d5f874ef45fdaf7c4be7275ac2873fd20c214bc87868533d44398a004",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 8,
-    "confidence": "high",
-    "rationale": "Stripe's Shared Payment Tokens are scoped grants of a customer's payment method to a specific seller. The issuer sets usage_limits for currency, max_amount and expires_at, and can revoke the token at any time, with state-machine webhooks for each transition. The Link CLI also lets an agent obtain one-time-use virtual cards or SPTs from a customer-controlled wallet, with each spend request approved by the human, so the agent never holds the real card number. Missing for 10: an explicit user-configurable merchant allowlist (merchant scoping is only implied by the seller-specific grant, and Link virtual cards work at any merchant), independent hands-on corroboration that the limits are enforced, and general availability (ACS is private preview and limited to the US/select regions).",
+    "confidence": "medium",
+    "rationale": "Stripe's Shared Payment Tokens are a scoped grant of a customer's payment method to a specific seller. The issuing agent sets usage limits for currency, maximum amount and expiration window, and can revoke the token at any time. Link CLI also gives agents one-time-use credentials, each approved by the customer, instead of the real card details. Missing for 10: merchant restriction is only implied by the token being granted to one seller rather than documented as a configurable allow-list (and Link's virtual card explicitly works anywhere); no independent hands-on corroboration; ACS is in private preview with geographic gating.",
     "evidenceIds": [
       "stripe-ac-supp-spt-limits",
-      "stripe-agentic-commerce-docs-4",
       "stripe-ac-supp-acp-custom-checkout",
+      "stripe-agentic-commerce-docs-4",
       "stripe-ac-supp-link-wallet",
       "stripe-agentic-commerce-docs-30",
-      "stripe-agentic-commerce-gh-1",
-      "stripe-agentic-commerce-gh-2",
       "stripe-agentic-commerce-gh-3",
-      "stripe-ac-supp-embedded-checkout-oca"
+      "stripe-agentic-commerce-gh-1"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can hand my agent a scoped, limited-use payment credential — amount limits, expiry, merchant restrictions — instead of a raw card number",
+      "citations": [
+        {
+          "evidenceId": "stripe-ac-supp-spt-limits",
+          "quote": "Set usage limits, including currency, maximum amount, and expiration window"
+        },
+        {
+          "evidenceId": "stripe-agentic-commerce-docs-4",
+          "quote": "Shared payment tokens (SPTs) grant sellers scoped access to customers’ payment methods for agent-initiated purchases."
+        },
+        {
+          "evidenceId": "stripe-ac-supp-acp-custom-checkout",
+          "quote": "with specific usage and expiration limits"
+        },
+        {
+          "evidenceId": "stripe-agentic-commerce-gh-3",
+          "quote": "Link CLI lets agents get secure, one-time-use payment credentials from a Link wallet to complete purchases on your behalf — without storing your real card details."
+        },
+        {
+          "evidenceId": "stripe-agentic-commerce-docs-30",
+          "quote": "Creates a spend request for a specific purchase. The customer approves it, and Link returns a one-time-use payment credential your agent uses to pay."
+        }
+      ]
+    },
     "productId": "stripe-agentic-commerce",
     "storyId": "scoped-payment-tokens"
   }

@@ -1,21 +1,42 @@
 {
-  "hash": "3778924b2c14f5fd1f37473e248d4c8f3c6942e94e8ec03dfcc4605d0cfacb34",
+  "hash": "4681eb43f77b3cc5ca2dbfbdb7fc85ba886b4ee1ea802bf0b811a0d6caa13a2f",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Stripe documents a self-serve Dashboard seller path: choose to onboard as a seller, review an agent's terms, send an approval request, and publish a CSV catalog feed via the Product Catalog Import API. Separately, merchants can publish a machine-payments endpoint that returns HTTP 402, verify it with `mppx validate`, and settle to their Stripe balance. Each agent must still accept the seller's request, and parts of ACS carry private-preview, waitlist, application and geography gates. Missing for 10: fully ungated availability (ACS private preview, custom-endpoint waitlist, ChatGPT application, US/CA/EU-only), seller go-live not dependent on per-agent acceptance, independent hands-on corroboration of the onboarding flow.",
+    "rationale": "Stripe documents a self-serve seller path: onboard as a seller in the Dashboard, review an agent's terms, and send an approval request that the agent accepts. Merchants can also publish a payment-gated endpoint for machine payments that returns an HTTP 402 challenge. The caveats are real: ACS is labelled private preview and limited to certain regions, the custom checkout-endpoint path requires a waitlist, and listing in ChatGPT requires applying. missing for 10: ungated general availability (no private preview or waitlist), broader geographic availability, independent hands-on corroboration of merchant onboarding.",
     "evidenceIds": [
-      "stripe-ac-supp-seller-catalog-feed",
       "stripe-agentic-commerce-docs-1",
-      "stripe-ac-supp-chat-commerce",
-      "stripe-ac-supp-acp-custom-checkout",
-      "stripe-ac-supp-embedded-checkout-oca",
+      "stripe-ac-supp-seller-catalog-feed",
       "stripe-ac-supp-machine-payments",
       "stripe-ac-supp-mpp-agent-build",
-      "stripe-ac-supp-acp-openness"
+      "stripe-ac-supp-acp-custom-checkout",
+      "stripe-ac-supp-embedded-checkout-oca"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a merchant, I have a documented self-serve path to start accepting agent traffic — enable a setting, sign an agreement, or publish an endpoint",
+      "citations": [
+        {
+          "evidenceId": "stripe-agentic-commerce-docs-1",
+          "quote": "Use Agentic Commerce Suite (ACS) to start selling through agents with a single integration."
+        },
+        {
+          "evidenceId": "stripe-ac-supp-seller-catalog-feed",
+          "quote": "Find the agent you want to sell through and review its terms"
+        },
+        {
+          "evidenceId": "stripe-ac-supp-seller-catalog-feed",
+          "quote": "We send the agent an approval request that the agent must accept"
+        },
+        {
+          "evidenceId": "stripe-ac-supp-machine-payments",
+          "quote": "Your server returns a payment challenge, the agent presents a valid payment credential, and Stripe settles the payment to your Stripe balance."
+        }
+      ]
+    },
     "productId": "stripe-agentic-commerce",
     "storyId": "merchant-agent-onboarding"
   }

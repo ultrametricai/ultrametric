@@ -1,18 +1,45 @@
 {
-  "hash": "1502fc47266c2adcc787c14171b4b9c8fe7f3258afa738f3024f17cf4548b43a",
+  "hash": "28c7cd82971c0f9e19c6a40bad7248346adb1d610c7d90aaea7ff667b8d7ad62",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Unleash's impact-metrics docs describe safeguards that automatically pause rollouts or disable environments when metrics such as error rate or latency cross a threshold. They also describe gating milestone progression on those metrics, inside its release-management and release-template framework. Missing for 10: detail on how metrics are ingested and how thresholds are configured, explicit automatic rollback to a prior state (the docs say \"pause\" or \"disable\"), and independent or hands-on corroboration.",
+    "rationale": "Unleash's impact metrics let a rollout be guarded by thresholds on error rates or latency, including external Prometheus/VictoriaMetrics metrics. Safeguards automatically pause the rollout or disable the environment when a metric crosses a threshold, which covers detection plus an automatic kill/rollback. Missing for 10: explicit documentation of reverting to a prior rollout stage (rather than pausing or disabling), detailed safeguard configuration docs, and independent or hands-on corroboration.",
     "evidenceIds": [
       "unleash-docs-22",
       "unleash-docs-29",
       "unleash-docs-14",
-      "unleash-docs-13",
-      "unleash-docs-33"
+      "unleash-docs-44",
+      "unleash-docs-43"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a platform engineer, I can guard a rollout with metrics so a regression is detected and the release is rolled back automatically",
+      "citations": [
+        {
+          "evidenceId": "unleash-docs-22",
+          "quote": "Automate milestone progression or trigger safeguards that pause rollouts or disable environments when metrics cross a threshold."
+        },
+        {
+          "evidenceId": "unleash-docs-29",
+          "quote": "Pause automatically when request latency increases during a rollout."
+        },
+        {
+          "evidenceId": "unleash-docs-14",
+          "quote": "Progress from 25% to 50% only if error rates stay below a threshold."
+        },
+        {
+          "evidenceId": "unleash-docs-44",
+          "quote": "External metrics are queried at read time from your existing Prometheus or VictoriaMetrics instance."
+        },
+        {
+          "evidenceId": "unleash-docs-43",
+          "quote": "you can define a reusable, structured rollout process that progresses automatically while monitoring application health"
+        }
+      ]
+    },
     "productId": "unleash",
     "storyId": "guarded-rollouts-auto-rollback"
   }

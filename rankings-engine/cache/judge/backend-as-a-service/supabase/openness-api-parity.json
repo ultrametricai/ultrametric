@@ -1,22 +1,41 @@
 {
-  "hash": "917f53600a111993e41366b84ce30a82a0af5185a63986411f62e2ba6ebd720a",
+  "hash": "7b23873671a7a35ca0dd945547b4b27b41fa200f25a5c15ae9893d5a6dc6fbf1",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Supabase documents a broad programmatic surface. There is a Management API with a live OpenAPI spec covering organizations, projects, branches and configuration. Data is exposed through auto-generated REST, GraphQL and Realtime APIs, and an MCP server offers tools for SQL, migrations, logs, advisors, Edge Functions, projects, branching and storage config. Advisors are explicitly documented as available identically from Studio, MCP, the CLI and the Management API. However, no source claims or demonstrates full UI-to-API parity: logs docs are Studio-centric, the AI Assistant is dashboard-only, and backups are documented only in the Dashboard. Missing for 10: an explicit statement or proof of complete dashboard/API parity, API coverage evidence for logs export, backups/PITR and the AI Assistant, and independent hands-on corroboration of parity.",
+    "rationale": "Supabase publishes a Management API with an OpenAPI 3.0 spec covering organizations, projects, branches and configuration, which a probe confirms is live. It also documents some explicit UI/programmatic symmetry: Advisors are available from Studio, MCP, CLI and the Management API, and cron jobs can be created via SQL or the Dashboard. The MCP and CLI surfaces cover much of the rest. However, no documentation claims or demonstrates complete UI-to-API parity, and the MCP storage tools are limited and off by default. Missing for 10: an explicit first-party parity guarantee or coverage matrix, evidence that every dashboard function (storage, logs export, auth settings, backups/PITR restore) has an API equivalent, and independent hands-on corroboration.",
     "evidenceIds": [
       "supabase-supp-llms-agent-resources",
       "supabase-probe-3",
       "supabase-supp-advisors-agent-surface",
-      "supabase-supp-mcp-tool-groups",
-      "supabase-gh-2",
-      "supabase-supp-cron",
-      "supabase-supp-ai-assistant",
-      "supabase-docs-63",
-      "supabase-docs-48"
+      "supabase-docs-62",
+      "supabase-supp-mcp-tool-groups"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can do everything through the API that I can do in the UI",
+      "citations": [
+        {
+          "evidenceId": "supabase-supp-llms-agent-resources",
+          "quote": "OpenAPI 3.0 description of the Management API for managing organizations, projects, branches, and configuration"
+        },
+        {
+          "evidenceId": "supabase-supp-advisors-agent-surface",
+          "quote": "You or an agent can pull the same checks from: Studio (Security Advisor and Performance Advisor), MCP (`get_advisors`), CLI (`supabase db advisors`), Management API (security advisors and performance advisors)."
+        },
+        {
+          "evidenceId": "supabase-docs-62",
+          "quote": "Cron Jobs can be created via SQL or the Integrations -> Cron interface inside the Dashboard"
+        },
+        {
+          "evidenceId": "supabase-probe-3",
+          "quote": "contains \"openapi\" key"
+        }
+      ]
+    },
     "productId": "supabase",
     "storyId": "openness-api-parity"
   }

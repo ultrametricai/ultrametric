@@ -1,19 +1,41 @@
 {
-  "hash": "fcc8462eacf5796ec9dc494a57558c9139d4d32ec2e830730977994ab8fcfc2d",
+  "hash": "f00a48415485280779ae975c24c0ffc49a3a96d5591333b8de30c3291bb2756c",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "LaunchDarkly documents percentage rollouts and progressive rollouts, plus guarded rollouts and scheduled flag changes for ramping exposure over time. A community user independently confirms custom rollout by percentage of users. Another notes that clients stream flag changes, which supports ramping without redeploying. Missing for 10: explicit evidence of consistent/sticky bucketing (hashing on context key), and detail beyond page titles on ramp granularity from 1% to 100%.",
+    "rationale": "LaunchDarkly documents progressive rollouts that release features incrementally, and guarded rollouts that progressively increase traffic to a new variation. Percentage rollouts are listed in the docs and confirmed by users, and changes stream to SDKs, so ramps happen without redeploying. The evidence does not explicitly document consistent or sticky bucketing or the specific 1%-to-100% ramp granularity. missing for 10: documented consistent/deterministic bucketing of contexts across evaluations, explicit evidence of fine-grained ramp steps from 1% to 100%",
     "evidenceIds": [
+      "launchdarkly-docs-50",
+      "launchdarkly-docs-51",
       "launchdarkly-docs-23",
-      "launchdarkly-docs-4",
-      "launchdarkly-docs-5",
-      "launchdarkly-docs-35",
-      "launchdarkly-comm-9",
+      "launchdarkly-comm-6-refresh-61c52261731f03a5",
       "launchdarkly-comm-2"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can roll a flag out progressively by percentage with consistent bucketing, ramping from 1% to 100% without redeploying",
+      "citations": [
+        {
+          "evidenceId": "launchdarkly-docs-50",
+          "quote": "This topic explains how to create and manage progressive rollouts to release new features incrementally."
+        },
+        {
+          "evidenceId": "launchdarkly-docs-51",
+          "quote": "A guarded rollout progressively increases traffic to the new variation while monitoring selected metrics for regressions"
+        },
+        {
+          "evidenceId": "launchdarkly-comm-6-refresh-61c52261731f03a5",
+          "quote": "Percentage and attribute rollouts (e.g. 10% of users in Rhode Island) are also supported."
+        },
+        {
+          "evidenceId": "launchdarkly-comm-2",
+          "quote": "LaunchDarkly clients download all flags in the project on connection, then stream changes."
+        }
+      ]
+    },
     "productId": "launchdarkly",
     "storyId": "progressive-percentage-rollouts"
   }

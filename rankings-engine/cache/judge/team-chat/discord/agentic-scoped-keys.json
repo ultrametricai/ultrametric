@@ -1,18 +1,36 @@
 {
-  "hash": "b2f3270e3bd256c59f9289ee5471f6f7b216fc4137f783498fed7fa98675b4ad",
+  "hash": "1c6754df91f2b2891229c9b1e7c047a0a6e77c5096ccacf34abf9041c19da42a",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
-    "confidence": "medium",
-    "rationale": "Discord documents two first-party credential types: bot tokens and OAuth2 bearer tokens issued through a registered developer application (discord-docs-4, discord-docs-6, discord-docs-17). OAuth2 scope descriptions, such as one granting access to /users/@me/connections (discord-docs-27), show tokens can be limited to specific data. However, the pack never shows least-privilege scoping for bot tokens or any agent-oriented credential issuance. Missing for 10: documented bot permission/role scoping, a fine-grained scope reference, token restriction and revocation controls, agent-specific credential guidance, and independent corroboration.",
+    "confidence": "low",
+    "rationale": "Discord documents its own credential types: per-app bot tokens and OAuth2 bearer tokens from a registered developer application. The OAuth2 page describes a grant that limits access to a specific resource (`/users/@me/connections`), which implies scoped tokens, but least-privilege scoping and bot permission controls are not spelled out. Missing for 10: explicit documentation of the OAuth2 scope list and least-privilege design, bot permission or intent restrictions on bot tokens, agent-specific credential issuance and revocation, and independent corroboration.",
     "evidenceIds": [
       "discord-docs-4",
       "discord-docs-6",
       "discord-docs-17",
-      "discord-docs-18",
       "discord-docs-27"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
+      "citations": [
+        {
+          "evidenceId": "discord-docs-4",
+          "quote": "Authenticating with the Discord API can be done in one of two ways: 1. Using a bot token... 2. Using an OAuth2 bearer token"
+        },
+        {
+          "evidenceId": "discord-docs-6",
+          "quote": "The first step in implementing OAuth2 is registering a developer application and retrieving your client ID and client secret."
+        },
+        {
+          "evidenceId": "discord-docs-27",
+          "quote": "allows /users/@me/connections to return linked third-party accounts"
+        }
+      ]
+    },
     "productId": "discord",
     "storyId": "agentic-scoped-keys"
   }

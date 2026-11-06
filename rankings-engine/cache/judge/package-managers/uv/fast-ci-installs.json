@@ -1,20 +1,42 @@
 {
-  "hash": "a4eb1eb1d92b13ed48c9c61f65ada4634b4d0843b544400b42177b48aea2c3d4",
+  "hash": "28164947c9bdb2a1ba6de9df70ca6a3e4e55dd770eb8419a18c786671eae21f8",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "uv documents aggressive caching that avoids re-downloading and rebuilding dependencies, plus `tool.uv.cache-keys` for cache invalidation. Its GitHub integration guide recommends the official `astral-sh/setup-uv` action, which can persist the cache across CI runs, and community reports corroborate that installs are very fast. However, the pack has no evidence of offline-capable installs, and the cache-restore guidance is a one-line mention of an optional action feature, not a detailed recipe. missing for 10: documented offline install mode (e.g. an offline flag or behavior), in-depth CI cache-restore configuration docs, independent hands-on evidence of CI cache-hit speedups.",
+    "rationale": "uv's docs recommend the official setup-uv GitHub Action, which can persist the cache, and describe aggressive caching with configurable cache keys and a 10-100x speed claim. Community reports back the speed, so the fast-CI and cache-restore parts are documented, though thinly. Nothing in the pack documents offline installs, which is half the story. Missing for 10: any evidence of offline-capable installs (e.g. an offline mode), detailed cache save/restore configuration for CI beyond the 'optionally persists the cache' line, and independent CI caching corroboration.",
     "evidenceIds": [
       "uv-docs-10",
-      "uv-docs-34",
       "uv-docs-25",
       "uv-docs-26",
+      "uv-docs-69",
       "uv-docs-33",
-      "uv-comm-1",
-      "uv-comm-6"
+      "uv-comm-1"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform-engineer, I can make CI installs fast with a documented cache-restore setup and offline-capable installs",
+      "citations": [
+        {
+          "evidenceId": "uv-docs-10",
+          "quote": "we recommend the official `astral-sh/setup-uv` action, which installs uv, adds it to PATH, (optionally) persists the cache, and more"
+        },
+        {
+          "evidenceId": "uv-docs-25",
+          "quote": "uv uses aggressive caching to avoid re-downloading (and re-building) dependencies that have already been accessed in prior runs."
+        },
+        {
+          "evidenceId": "uv-docs-26",
+          "quote": "you can add cache key entries under `tool.uv.cache-keys`, which covers both file paths and Git commit hashes."
+        },
+        {
+          "evidenceId": "uv-docs-69",
+          "quote": "10-100x faster than `pip`."
+        }
+      ]
+    },
     "productId": "uv",
     "storyId": "fast-ci-installs"
   }

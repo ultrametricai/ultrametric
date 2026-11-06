@@ -1,19 +1,35 @@
 {
-  "hash": "c0e3d788683a76cc18459096a355fadeeaf99f0dc0db39a56c53076c6e616484",
+  "hash": "5c525d321b67dce5101d8800f664b8d757951a4661ebd2feff6a3ae24aca2b31",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
-    "confidence": "high",
-    "rationale": "Supabase documents first-party event-driven automation. Database Webhooks fire on table INSERT/UPDATE/DELETE events and send HTTP requests to any endpoint, including Edge Functions. Supabase Cron complements this with time-based jobs that run SQL or invoke Edge Functions, created via SQL or the Dashboard, and Queues add durable background-task delivery. Missing for 10: event sources beyond table changes (e.g., auth or storage events), webhook retry/delivery guarantees, an AI-native path for authoring these rules beyond generic SQL/migration tools, and independent hands-on corroboration.",
+    "confidence": "medium",
+    "rationale": "Supabase Database Webhooks let users define table-event rules (INSERT, UPDATE, DELETE) that automatically send HTTP requests to any endpoint, including Edge Functions. They are built on triggers and pg_net, so event-driven automation is directly documented. Coverage is limited to database table events, and Cron is a time-based schedule rather than an event trigger, so it does not count toward this story. missing for 10: documented event triggers beyond table row changes (e.g., auth or storage events), conditional rule logic or filtering in the webhook definition, an AI-native or agent-facing way to define these rules, and independent or hands-on corroboration.",
     "evidenceIds": [
       "supabase-supp-db-webhooks",
       "supabase-docs-37",
-      "supabase-supp-cron",
-      "supabase-docs-62",
-      "supabase-supp-queues",
       "supabase-docs-75"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can define rules that trigger actions automatically on events",
+      "citations": [
+        {
+          "evidenceId": "supabase-docs-37",
+          "quote": "Database Webhooks allow you to send real-time data from your database to another system whenever a table event occurs."
+        },
+        {
+          "evidenceId": "supabase-supp-db-webhooks",
+          "quote": "You can hook into three table events: `INSERT`, `UPDATE`, and `DELETE`. All events are fired *after* a database row is changed"
+        },
+        {
+          "evidenceId": "supabase-docs-75",
+          "quote": "They can be used for listening to webhooks"
+        }
+      ]
+    },
     "productId": "supabase",
     "storyId": "automation-rules-engine"
   }

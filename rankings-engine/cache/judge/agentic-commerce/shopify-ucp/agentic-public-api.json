@@ -1,28 +1,61 @@
 {
-  "hash": "261e9d015eff181b4c843ebb451b204afc522f448ee43ec23a95a81d4940bf50",
+  "hash": "b1617f1256f03ae2a60a73b4659afd59085f085cf89f0593174c01a454ed9e8e",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Shopify documents a public, protocol-based API surface for agents: UCP-compliant JSON-RPC MCP endpoints for Global Catalog, Storefront Catalog, Cart, Checkout and Order, with named tools, auth tiers, schemas and a CLI wrapper. Runtime probes confirmed live handshakes and keyless cart creation on a real store, and the open UCP spec is published. Missing for 10: no OpenAPI/machine-readable REST spec (probes 404), checkout completion and order reads not verified hands-on and gated to the Token tier, and order-webhook subscription not self-serve (requires a partner manager).",
+    "rationale": "Shopify documents public UCP MCP (JSON-RPC) endpoints for the whole agent journey (catalog search, cart, checkout and order state) plus a CLI and an openly published UCP spec. Runtime probes confirm live handshakes and a real cart created through the protocol. missing for 10: no machine-readable OpenAPI/llms.txt at shopify.dev (all candidate paths 404), and order webhook subscription is not self-serve via API (requires contacting a partner manager), with Order MCP gated to Token-tier agents.",
     "evidenceIds": [
-      "shopify-ucp-supp-ucp-journey",
+      "shopify-ucp-docs-1",
+      "shopify-ucp-docs-11",
+      "shopify-ucp-docs-24",
+      "shopify-ucp-docs-25",
       "shopify-ucp-supp-global-catalog",
-      "shopify-ucp-supp-storefront-catalog",
       "shopify-ucp-supp-cart-mcp",
       "shopify-ucp-supp-checkout-mcp",
-      "shopify-ucp-supp-order-mcp",
-      "shopify-ucp-supp-order-webhooks",
-      "shopify-ucp-supp-trust-tiers",
-      "shopify-ucp-supp-ucp-governance",
-      "shopify-ucp-probe-3",
       "shopify-ucp-probe-rt-1",
-      "shopify-ucp-probe-rt-2",
       "shopify-ucp-probe-rt-3",
-      "shopify-ucp-probe-rt-4",
-      "shopify-ucp-probe-rt-5"
+      "shopify-ucp-probe-rt-5",
+      "shopify-ucp-probe-3",
+      "shopify-ucp-supp-order-webhooks",
+      "shopify-ucp-supp-order-mcp"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can drive the product through a documented public API",
+      "citations": [
+        {
+          "evidenceId": "shopify-ucp-docs-11",
+          "quote": "Connect any AI assistant to real-time commerce data from Shopify stores with Model Context Protocol (MCP) servers"
+        },
+        {
+          "evidenceId": "shopify-ucp-docs-1",
+          "quote": "the CLI provides structured commands to search the Catalog, build carts, create checkouts, hand off buyers, and track orders"
+        },
+        {
+          "evidenceId": "shopify-ucp-docs-24",
+          "quote": "The Checkout MCP server enables AI agents to create and manage checkout sessions, convert carts into checkouts, and refer buyers to the merchant storefront to complete purchases."
+        },
+        {
+          "evidenceId": "shopify-ucp-docs-25",
+          "quote": "The Order MCP server enables AI agents to fetch the current state of an order placed through their agent, including line items, fulfillment events, and post-purchase adjustments."
+        },
+        {
+          "evidenceId": "shopify-ucp-probe-rt-1",
+          "quote": "Shopify's Global Catalog MCP server is live — a keyless JSON-RPC initialize POST to https://catalog.shopify.com/api/ucp/mcp completed a FULL handshake"
+        },
+        {
+          "evidenceId": "shopify-ucp-probe-rt-3",
+          "quote": "a REAL cart was created keylessly on Shopify's own hardware store through the UCP protocol"
+        },
+        {
+          "evidenceId": "shopify-ucp-probe-rt-5",
+          "quote": "the Universal Commerce Protocol spec is published in the open"
+        }
+      ]
+    },
     "productId": "shopify-ucp",
     "storyId": "agentic-public-api"
   }

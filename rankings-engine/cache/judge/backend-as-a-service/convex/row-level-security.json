@@ -1,18 +1,36 @@
 {
-  "hash": "9c935b39b936b26d7bd26898b52a9ccea17e8458eb30ff7c4e8348f7b4f0309d",
+  "hash": "db7c81949e5b8961f8004c4e13fab3bb3ae578d8e08f604a42288a91ffb8f604",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Convex documents its own approach to per-user access control: every public request can be checked against authorization rules written in code inside server functions, together with built-in auth (Convex Auth, Clerk/Auth0/WorkOS, OIDC). It explicitly says it does not need an RLS-style framework, so there is no declarative row-level policy or security-rules layer, and developers write the checks themselves. Missing for 10: a declarative RLS/security-rules mechanism, documented per-row or per-user policy examples, and independent or hands-on corroboration.",
+    "rationale": "Convex documents per-user access control as authorization rules written in code inside its server functions, which run in the database and check every public request. It explicitly says it does not use an RLS-style framework, so there are no declarative row-level policies or security-rules language; you write the checks in each function. Missing for 10: declarative RLS policies or a security-rules system, detailed docs on per-user row filtering patterns, independent or hands-on corroboration.",
     "evidenceIds": [
+      "convex-docs-48",
       "convex-docs-25",
       "convex-docs-32",
-      "convex-docs-48",
-      "convex-docs-46",
-      "convex-docs-5"
+      "convex-docs-1"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can restrict data access per user with row-level security policies or security rules",
+      "citations": [
+        {
+          "evidenceId": "convex-docs-48",
+          "quote": "This architecture lets you check every public request against any authorization rules you can define in code."
+        },
+        {
+          "evidenceId": "convex-docs-25",
+          "quote": "Convex doesn't need an opinionated authorization framework like RLS, which is required in client oriented databases like Firebase or Supabase."
+        },
+        {
+          "evidenceId": "convex-docs-32",
+          "quote": "This flexibility lets you build and use an authorization framework for your needs."
+        }
+      ]
+    },
     "productId": "convex",
     "storyId": "row-level-security"
   }

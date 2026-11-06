@@ -1,17 +1,40 @@
 {
-  "hash": "4c31e6cae96982c558bc86e6e63fe969fca621e948a6673b67a81451db9ff1fd",
+  "hash": "73e4ba816ca3b31c51e54828909b9108540826e8b30941c19690c739070c9bd6",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 8,
+    "verdict": "partial",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Machine-payment docs explicitly say agent payments \"land directly in your Stripe balance and settle in fiat. Metrics, reporting, and multi-currency payouts work the same as any other payment in Stripe,\" with standard Refunds API support, and x402 settlements are recorded as PaymentIntents. ACS agent orders flow through standard `checkout.session.completed` events and appear on the Dashboard Transactions page tagged and filterable by originating agent, which supports per-channel reconciliation. Missing for 10: an explicit payout/settlement statement for ACS checkout orders (it is only implied via standard Checkout Sessions), the `agent_details` attribution field being private preview, and independent or hands-on corroboration of reconciliation.",
+    "rationale": "Stripe's machine-payments docs say agent payments land in the Stripe balance, settle in fiat, and that \"Metrics, reporting, and multi-currency payouts work the same as any other payment in Stripe\"; x402 settlements are recorded as PaymentIntents. ACS agent orders also emit standard checkout.session.completed events and appear on the Transactions page tagged and filterable by agent. However, payout and reconciliation behavior is only stated outright for the machine-payments rail, and the agent_details attribution field is in private preview. Missing for 10: explicit payout/reporting/reconciliation documentation for ACS checkout (SPT) orders, a generally available agent attribution field for reconciliation exports, and independent or hands-on corroboration that agent payments reconcile like other channels.",
     "evidenceIds": [
       "stripe-ac-supp-machine-payments",
       "stripe-agentic-commerce-docs-18",
       "stripe-agentic-commerce-docs-33",
       "stripe-ac-supp-order-attribution"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a merchant, agent-originated payments settle through documented payout and reporting flows, reconcilable like any other channel",
+      "citations": [
+        {
+          "evidenceId": "stripe-ac-supp-machine-payments",
+          "quote": "Payments land directly in your Stripe balance and settle in fiat. Metrics, reporting, and multi-currency payouts work the same as any other payment in Stripe"
+        },
+        {
+          "evidenceId": "stripe-agentic-commerce-docs-18",
+          "quote": "Stripe settles the payment to your Stripe balance."
+        },
+        {
+          "evidenceId": "stripe-agentic-commerce-docs-33",
+          "quote": "After the facilitator settles the payment on-chain, Stripe records it as a [PaymentIntent]"
+        },
+        {
+          "evidenceId": "stripe-ac-supp-order-attribution",
+          "quote": "Each order generates a unique `checkout.session.completed` event."
+        }
+      ]
+    },
     "productId": "stripe-agentic-commerce",
     "storyId": "settlement-payout-clarity"
   }

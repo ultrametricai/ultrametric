@@ -1,18 +1,37 @@
 {
-  "hash": "80546981a58f51c7f46dd23ade666738ea7809c54d0b1e666899f40703565455",
+  "hash": "b0eac57848b027582ee2f1f250f97daafad88d35c2f94d69537c02763355e7ff",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Stripe documents an official MCP server that gives AI agents tools for the Stripe API and its knowledge base, with a human approval gate on sensitive write actions. A runtime probe confirms the hosted endpoint at mcp.stripe.com is live and returns the OAuth challenge described in the docs. Missing for 10: no documented tool list showing agentic-commerce-specific capabilities (ACS checkout, SPTs) through the MCP server, and no independent hands-on report of a completed agent connection.",
+    "rationale": "Stripe documents an official MCP server that gives AI agents tools to interact with the Stripe API and search its knowledge base. A runtime probe confirms the hosted endpoint at mcp.stripe.com is live and returns the documented OAuth challenge, and the docs describe a human-approval gate for sensitive write actions. Missing for 10: a documented tool catalog and client-specific connection or setup steps in the evidence, plus any evidence of MCP tools specific to agentic-commerce flows (the server is Stripe-API-wide).",
     "evidenceIds": [
-      "stripe-agentic-commerce-docs-5",
       "stripe-agentic-commerce-docs-21",
+      "stripe-agentic-commerce-docs-5",
       "stripe-agentic-commerce-probe-4",
       "stripe-ac-probe-rt-1",
       "stripe-ac-supp-mcp-approval"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can connect an agent via an official MCP server",
+      "citations": [
+        {
+          "evidenceId": "stripe-agentic-commerce-docs-21",
+          "quote": "The Stripe Model Context Protocol (MCP) server provides tools that AI agents can use to interact with the Stripe API and search Stripe’s knowledge base, including documentation and support articles."
+        },
+        {
+          "evidenceId": "stripe-ac-probe-rt-1",
+          "quote": "Stripe's hosted MCP server is live and gated exactly as documented — a keyless JSON-RPC initialize POST to https://mcp.stripe.com answered HTTP 401 with the OAuth challenge pointing at docs.stripe.com/mcp"
+        },
+        {
+          "evidenceId": "stripe-ac-supp-mcp-approval",
+          "quote": "To prevent agents from making mistakes, Stripe requires human confirmation before it takes certain `stripe_api_write` actions, such as refunds and outbound payments."
+        }
+      ]
+    },
     "productId": "stripe-agentic-commerce",
     "storyId": "agentic-mcp-server"
   }

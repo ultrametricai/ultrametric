@@ -1,15 +1,38 @@
 {
-  "hash": "3e9f03f34d2be57876485cd6973c14a078ad2183728e925c59d2986e21b8f55b",
+  "hash": "ae9f4e568f4b48cf3f4a5fdb9a217a845119822317d52fd10d92c5fd35d5933c",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "PayPal documents real, registrable outbound HTTPS webhooks: up to 10 URLs per app, each scoped to chosen event types, with retries for up to 3 days and a signature-verification endpoint. These sit on the same REST rails the agent toolkit and agentic-commerce flows use. However, the evidence describes general PayPal webhooks, not agentic-commerce-specific events, so coverage of agent checkout, cart, or Store Sync events is unproven. Missing for 10: documented webhook event types for agentic-commerce flows (cart, agent checkout, Store Sync orders), agent-specific subscription docs, independent or hands-on corroboration of delivery.",
+    "rationale": "PayPal documents registrable outbound HTTPS webhooks: up to 10 URLs per app, filtered by event type, retried up to 25 times over 3 days, with a signature-verification endpoint. The REST overview places Webhook events on the same rails the Agent Toolkit calls. However, nothing ties these webhooks to the agentic-commerce surface, such as event types for agent-initiated carts, Store Sync orders, or ACP/UCP checkout sessions. Missing for 10: documented agentic-commerce-specific webhook event types (cart/checkout/agent-order events), evidence that Store Sync, Agent Ready or cart flows emit subscribable events, independent or hands-on corroboration of webhook delivery.",
     "evidenceIds": [
       "paypal-ac-supp-webhooks",
       "paypal-ac-supp-rest-overview"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can subscribe to events via webhooks",
+      "citations": [
+        {
+          "evidenceId": "paypal-ac-supp-webhooks",
+          "quote": "Webhooks are HTTPS posts from PayPal to an endpoint on your server whenever the corresponding event type occurs"
+        },
+        {
+          "evidenceId": "paypal-ac-supp-webhooks",
+          "quote": "Up to 10 webhook URLs may be subscribed per app"
+        },
+        {
+          "evidenceId": "paypal-ac-supp-webhooks",
+          "quote": "Any non-2xx status code will cause PayPal to reattempt delivery up to 25 times over the course of 3 days or until it receives a 2xx success code."
+        },
+        {
+          "evidenceId": "paypal-ac-supp-rest-overview",
+          "quote": "Webhook events references — the same rails the Agent Toolkit's tools call"
+        }
+      ]
+    },
     "productId": "paypal-agent-commerce",
     "storyId": "agentic-webhooks"
   }

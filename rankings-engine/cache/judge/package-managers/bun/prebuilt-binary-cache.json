@@ -1,18 +1,36 @@
 {
-  "hash": "e761c4197c5f29a48db77d3ea78c6f0555a38dfba60ab04101095fb11412221d",
+  "hash": "4789afe1bc18d0184f6492298298808abf3020c05da79db21acc63a7266a0e98",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Bun keeps every downloaded package in a global cache at `~/.bun/install/cache` and hardlinks packages from there into projects. It also offers a cache-only mode that never touches the network and errors on a missing dependency, so cached installs are well documented. The evidence never addresses prebuilt binaries or avoiding source compilation of native modules. The only nearby fact is that Bun skips lifecycle scripts like `postinstall` by default, which is a security feature, not a prebuilt-binary mechanism. Missing for 10: documented support for prebuilt native/binary artifacts instead of source builds, any evidence on handling native addons, and independent or hands-on corroboration of cache-based install behavior.",
+    "rationale": "Bun documents a global cache that stores every package downloaded from the registry, and an install mode that never touches the network and installs only from that cache, with hardlinks into node_modules. Nothing in the evidence addresses prebuilt native binaries or avoiding source compilation. One commenter only believes Bun can run node-gyp for packages that need it. missing for 10: documented prebuilt-binary resolution for native addons, evidence that cached installs avoid compilation steps, independent hands-on corroboration of cache-based installs.",
     "evidenceIds": [
       "bun-docs-12",
-      "bun-docs-25",
+      "bun-docs-64",
       "bun-docs-5",
-      "bun-docs-20",
-      "bun-docs-19"
+      "bun-docs-25"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can install prebuilt binary packages from a cache instead of compiling from source",
+      "citations": [
+        {
+          "evidenceId": "bun-docs-64",
+          "quote": "Bun stores every package downloaded from the registry in a global cache at `~/.bun/install/cache`, or the path set by the `BUN_INSTALL_CACHE_DIR` environment variable."
+        },
+        {
+          "evidenceId": "bun-docs-5",
+          "quote": "Never touch the network (registry, tarball URLs, git); a required dependency that is not cached is an error"
+        },
+        {
+          "evidenceId": "bun-docs-25",
+          "quote": "On Linux and Windows, Bun uses hardlinks to \"copy\" a module into a project's `node_modules` directory, so the contents of the package only exist in a single location on disk."
+        }
+      ]
+    },
     "productId": "bun",
     "storyId": "prebuilt-binary-cache"
   }

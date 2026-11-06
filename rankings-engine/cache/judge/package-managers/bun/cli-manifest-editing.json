@@ -1,21 +1,46 @@
 {
-  "hash": "b71d010822d71f74c04a00e7cc731c880e77fbcc05c102d2d30e09902f2a5047",
+  "hash": "762f24156770461f8aac93c41f85f25a7193ad1e25a5e155d7271773290565fe",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Bun documents first-party CLI commands for the whole lifecycle: `bun add` for adding packages, `bun remove` (which removes the package from every dependency group in package.json and updates bun.lock), and `bun update`/`bun up` (with an `--interactive` option) for upgrading. Supporting commands also rewrite bun.lock: `bun dedupe` saves it and audit fix upgrades vulnerable packages, so an agent never needs to hand-edit these files. missing for 10: explicit documentation that `bun add` and `bun update` write package.json and bun.lock (the snippets only show this for remove and dedupe), independent or hands-on corroboration that these rewrites are safe.",
+    "rationale": "Bun's own docs cover all three operations as CLI commands. `bun add` writes the package to the chosen dependency group in package.json (with `--exact` and `--catalog` options), `bun remove` strips it from every dependency group and updates bun.lock, and `bun update` / `bun up` upgrades dependencies within their ranges, with an interactive mode and targeted nested updates. Missing for 10: explicit documentation that `bun add` updates bun.lock, any statement about safe or atomic rewrites, and independent hands-on corroboration of manifest and lockfile rewriting.",
     "evidenceIds": [
       "bun-docs-40",
+      "bun-docs-65",
+      "bun-docs-66",
+      "bun-docs-67",
       "bun-docs-41",
+      "bun-docs-68",
       "bun-docs-42",
       "bun-docs-43",
-      "bun-docs-44",
-      "bun-docs-7",
-      "bun-docs-38",
-      "bun-docs-35"
+      "bun-docs-69",
+      "bun-docs-44"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can add, remove, and upgrade dependencies through CLI commands that safely rewrite the manifest and lockfile, so an agent never hand-edits them",
+      "citations": [
+        {
+          "evidenceId": "bun-docs-65",
+          "quote": "Bun writes the package to `dependencies` unless you pass `--dev`, `--optional`, or `--peer`."
+        },
+        {
+          "evidenceId": "bun-docs-41",
+          "quote": "Bun removes the package from every dependency group in `package.json` that lists it and updates `bun.lock`."
+        },
+        {
+          "evidenceId": "bun-docs-42",
+          "quote": "`bun update` (alias `bun up`) updates every dependency, direct and transitive, to the newest version allowed by the ranges that request it."
+        },
+        {
+          "evidenceId": "bun-docs-66",
+          "quote": "Bun writes the exact version number to your `package.json` instead of a version range."
+        }
+      ]
+    },
     "productId": "bun",
     "storyId": "cli-manifest-editing"
   }

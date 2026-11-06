@@ -1,24 +1,47 @@
 {
-  "hash": "d8bd3bee99db9b12d511b67600cd5e71358be8cfc13751ba38ef4776c0217bac",
+  "hash": "8c2fac90acfd2640667ba8388adc2abc2a5d1eaf9a54dc6097063ff7d9143078",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "x402 is API-native, so its whole documented surface is programmatic. Payment, verification and settlement run over HTTP 402 and the hosted Facilitator API. Bazaar listing happens automatically through the SDK with \"no registration form,\" and discovery is available through public APIs, a generated OpenAPI client and an MCP server; a runtime probe confirmed the keyless discovery endpoint returns live listings and that the SDK is published on npm. Missing for 10: no explicit statement of API/UI parity; no evidence that CDP account setup and API-key provisioning (needed for the 401-gated facilitator) can be done without a dashboard; no published OpenAPI spec at the probed doc paths.",
+    "rationale": "x402 is API-first. Payment, verification, settlement, and Bazaar discovery are all done over HTTP, SDKs, a generated OpenAPI client, or MCP tool calls, and a runtime probe confirmed the keyless discovery API works. The evidence never describes a UI or compares API coverage against one, and hosted facilitator access requires a CDP API key with no documented programmatic way to provision it. missing for 10: explicit API-vs-UI parity documentation, programmatic coverage of portal/account setup tasks (API key provisioning, wallet configuration), a published OpenAPI spec (probe found none at standard paths).",
     "evidenceIds": [
-      "coinbase-x402-supp-1",
       "coinbase-x402-docs-1",
       "coinbase-x402-docs-2",
       "coinbase-x402-docs-5",
       "coinbase-x402-docs-6",
       "coinbase-x402-docs-22",
-      "coinbase-x402-docs-14",
       "coinbase-x402-probe-rt-1",
-      "coinbase-x402-probe-rt-2",
-      "coinbase-x402-probe-3",
-      "coinbase-x402-docs-17"
+      "coinbase-x402-probe-rt-2"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can do everything through the API that I can do in the UI",
+      "citations": [
+        {
+          "evidenceId": "coinbase-x402-docs-1",
+          "quote": "If a request arrives without payment, the server responds with HTTP 402, prompting the client to pay and retry."
+        },
+        {
+          "evidenceId": "coinbase-x402-docs-2",
+          "quote": "it validates signed payments, screens transactions, submits settlement onchain, and reports the result to your resource server"
+        },
+        {
+          "evidenceId": "coinbase-x402-docs-6",
+          "quote": "You do not need a CDP API key to use the discovery APIs or the corresponding TypeScript SDK functions."
+        },
+        {
+          "evidenceId": "coinbase-x402-docs-22",
+          "quote": "Search and list resources with a generated OpenAPI client."
+        },
+        {
+          "evidenceId": "coinbase-x402-docs-5",
+          "quote": "There is no registration form or separate API call."
+        }
+      ]
+    },
     "productId": "coinbase-x402",
     "storyId": "openness-api-parity"
   }
