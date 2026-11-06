@@ -1,17 +1,16 @@
 {
-  "hash": "d0364ce7846112a2be9458505a2a2dfce318d6b66580fb01b55be51773cd28dd",
+  "hash": "5f09be30fb283c44d2e84b64c9bffc8d29f05c6b3f853e0f509bf709311d1747",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "LangGraph is a code-first framework, so its core operations (running graphs, inspecting and modifying state, resuming interrupts, streaming) are done programmatically rather than through a UI. Its Agent Server exposes API endpoints for runs, threads and assistants. However, no evidence explicitly claims or demonstrates parity between these APIs and the debugging/visualization UI, and the OpenAPI probe at the docs domain returned 404. Missing for 10: an explicit API-to-UI parity statement, a published OpenAPI spec or API reference, and independent hands-on confirmation that UI actions (e.g. LangSmith debugging/visualization) are API-accessible.",
+    "rationale": "LangGraph is code-first, and its Agent Server publishes an OpenAPI 3.1 spec. That spec covers assistants, threads, runs, crons, store, A2A, MCP and system endpoints, and a separate control-plane API with path versioning manages deployments. Together these suggest broad programmatic coverage. However, no evidence explicitly states that the API matches the Studio/LangSmith UI feature for feature. missing for 10: an explicit API/UI parity statement or feature mapping, independent hands-on confirmation that every UI action has an API equivalent, and a data-plane API deprecation policy.",
     "evidenceIds": [
       "langgraph-docs-30",
-      "langgraph-docs-37",
-      "langgraph-gh-2",
-      "langgraph-docs-5",
-      "langgraph-docs-18"
+      "langgraph-agent-server-openapi-20261105",
+      "langgraph-api-playground-20261105",
+      "langgraph-api-versioning-20261105"
     ],
     "support": {
       "relation": "direct",
@@ -23,12 +22,12 @@
           "quote": "The resulting server exposes all API endpoints for runs, threads, assistants, etc., and includes supporting services such as a managed database for checkpointing and storage."
         },
         {
-          "evidenceId": "langgraph-gh-2",
-          "quote": "Seamlessly incorporate human oversight by inspecting and modifying agent state at any point during execution."
+          "evidenceId": "langgraph-agent-server-openapi-20261105",
+          "quote": "covering Assistants (\"An assistant is a configured instance of a graph.\"), Threads, Thread Runs, Stateless Runs, Crons, Store, A2A, MCP, and System endpoints"
         },
         {
-          "evidenceId": "langgraph-docs-18",
-          "quote": "LangGraph graphs expose the stream (sync) and astream (async) methods to yield streamed outputs as iterators."
+          "evidenceId": "langgraph-api-versioning-20261105",
+          "quote": "Each endpoint path is prefixed with a version (e.g. `v1`, `v2`)"
         }
       ]
     },

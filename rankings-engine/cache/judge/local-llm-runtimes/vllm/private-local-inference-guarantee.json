@@ -1,23 +1,22 @@
 {
-  "hash": "9461905d591b8227daf6a87e5add1dc519a41932a85b081f39047ede9832802b",
+  "hash": "6f30b117e99d680d3672db68bd8b9bf8fbb2c91a724dad444ad8bb27cf82ec6a",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "vLLM is a self-installable inference engine: it installs locally via uv/pip or source, runs on local GPUs, CPUs and Apple Silicon, and documents an offline-inference mode alongside a locally started server, so inference runs on the user's own hardware. missing for 10: explicit documentation that prompts and data never leave the device (no-telemetry or air-gapped operation), and independent hands-on corroboration of fully local, privacy-preserving use.",
+    "rationale": "vLLM is a self-installable inference engine. The evidence covers local installation via pip/uv, offline inference, CPU and Apple Silicon support, and an air-gapped mode for its served docs, so local inference is clearly delivered. However, nothing in the pack explicitly states that prompts and data never leave the device. missing for 10: explicit documentation of no telemetry or outbound data transmission, a fully offline model-loading workflow (models are sourced from the Hugging Face Hub), and independent hands-on corroboration of fully local, air-gapped operation.",
     "evidenceIds": [
       "vllm-gh-1",
-      "vllm-gh-2",
+      "vllm-docs-18",
       "vllm-docs-11",
       "vllm-docs-25",
-      "vllm-docs-27",
-      "vllm-docs-29",
+      "vllm-interactive-docs-20261105",
       "vllm-docs-26"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As a power-user, I can run inference entirely on my own machine so my data and prompts never leave my device",
       "citations": [
         {
@@ -30,15 +29,11 @@
         },
         {
           "evidenceId": "vllm-docs-25",
-          "quote": "set `trust_remote_code=True` for offline-inference"
+          "quote": "simply set `trust_remote_code=True` for offline-inference or `--trust-remote-code` for the online serving."
         },
         {
-          "evidenceId": "vllm-docs-29",
-          "quote": "Run benchmark tests for latency online serving throughput and offline inference throughput."
-        },
-        {
-          "evidenceId": "vllm-docs-27",
-          "quote": "Starts the vLLM OpenAI Compatible API server."
+          "evidenceId": "vllm-interactive-docs-20261105",
+          "quote": "To enable offline access in air-gapped environments, use the --enable-offline-docs flag"
         }
       ]
     },

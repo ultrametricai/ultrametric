@@ -1,17 +1,30 @@
 {
-  "hash": "51fa41b1cf92de0f816c1aaf17025fed2b39253246e09b754bc8ff135cfb29e1",
+  "hash": "f81315dc71db9b612169d76ef4aff97967ce72fda47ba00becf18d69ccdb9aea",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "LocalAI is an API server, so an interactive API reference is a fair question for it. The evidence shows only an OpenAI-compatible API and a built-in chat web UI, with no interactive reference or runnable API examples. Probes for OpenAPI/Swagger specs at all candidate paths returned 404, and the chat UI is an adjacent feature, not an API explorer.",
-    "evidenceIds": [],
+    "rationale": "LocalAI documents a built-in Swagger UI at /swagger/index.html on every server, backed by a full Swagger 2.0 spec in the official repo and advertised through the /.well-known/localai.json discovery endpoint. Requests can be sent from Swagger, which makes it an interactive, runnable API reference. The website's own OpenAPI paths return 404, but that only shows no publicly hosted copy exists; it does not contradict the per-server explorer. Missing for 10: independent or hands-on corroboration that the explorer works, evidence of prefilled example payloads, and a publicly hosted interactive reference that works without running a server.",
+    "evidenceIds": [
+      "localai-swagger-ui-20261106",
+      "localai-swagger-spec-20261106",
+      "localai-probe-3"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can explore an interactive API reference with runnable examples",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "localai-swagger-ui-20261106",
+          "quote": "Swagger UI — The full interactive API documentation is available without authentication at /swagger/index.html. Requests sent to protected endpoints from Swagger still require credentials."
+        },
+        {
+          "evidenceId": "localai-swagger-spec-20261106",
+          "quote": "The official mudler/LocalAI repository ships a full Swagger 2.0 specification of the REST API"
+        }
+      ]
     },
     "productId": "localai",
     "storyId": "api-interactive-docs"

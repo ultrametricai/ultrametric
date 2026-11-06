@@ -1,17 +1,17 @@
 {
-  "hash": "d29c0bc170e1a9f3eabda7f798625a9499f2e534121305cc9c1d66960a83d1ce",
+  "hash": "799384f7ea923ed59d84818cd05f0220d4034b80fa70d902cc7f0f581c9b2198",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "LM Studio documents loading models into a running server with `lms load`, including custom identifiers. Its on-demand loading also loads a requested model before the inference request returns, which lets you switch models via API calls without restarting the server. The evidence never states that several models can stay resident at once, and documents no unload or eviction behavior, so coverage of the 'multiple models' part is incomplete. Missing for 10: explicit documentation of multiple models loaded concurrently, documented unload/eviction and memory management when switching, and independent hands-on corroboration of switching without a restart.",
+    "rationale": "LM Studio documents on-demand loading: an inference request to a model that isn't loaded loads it before the request returns. Its CLI loads models under custom identifiers with `lms load`, separately from `lms server start/stop`. Together these suggest models can be loaded and switched while the server keeps running. The docs never state explicitly that several models stay loaded at once or that switching needs no server restart, and documented unload/eject is only mentioned in passing in a community comment. missing for 10: explicit documentation of multiple simultaneously loaded models, explicit no-restart model swapping, documented unload/TTL management, independent hands-on corroboration of switching under a running server",
     "evidenceIds": [
-      "lm-studio-docs-13",
-      "lm-studio-docs-14",
       "lm-studio-docs-30",
-      "lm-studio-docs-29",
-      "lm-studio-docs-22"
+      "lm-studio-docs-14",
+      "lm-studio-docs-13",
+      "lm-studio-docs-12",
+      "lm-studio-comm-19"
     ],
     "support": {
       "relation": "direct",
@@ -27,8 +27,8 @@
           "quote": "lms load openai/gpt-oss-20b --identifier=\"my-model-name\""
         },
         {
-          "evidenceId": "lm-studio-docs-13",
-          "quote": "lms load [--gpu=max|auto|0.0-1.0] [--context-length=1-N]"
+          "evidenceId": "lm-studio-comm-19",
+          "quote": "no easy way to unload it like the eject button in LM Studio"
         }
       ]
     },

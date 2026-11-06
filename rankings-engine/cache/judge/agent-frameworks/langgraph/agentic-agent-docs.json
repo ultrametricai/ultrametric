@@ -1,14 +1,15 @@
 {
-  "hash": "ae9d2bc65a90db5211c220cfc34ec13248ca886ddc5a135d56be05d0d8e82fc4",
+  "hash": "20672927c50a12479f31bad072d6de2b13672900f28493ac4f6c175093da4ae5",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Hands-on probes show LangChain's docs site serves an llms.txt index (HTTP 200) that covers the LangGraph docs. Individual LangGraph pages are served as Markdown (.md) and each carries a 'Documentation Index' header pointing agents back to llms.txt, so an agent can be pointed straight at agent-oriented docs. missing for 10: independent community confirmation of agents using these docs in practice, and first-party guidance on llms.txt usage (e.g., an llms-full.txt variant).",
+    "rationale": "Live probes confirm LangChain's docs serve an llms.txt index (HTTP 200) and markdown versions of the LangGraph pages. Each .md page tells agents to fetch the complete documentation index from llms.txt, and the llms.txt also lists the Agent Server OpenAPI spec. Missing for 10: no evidence of a full-content llms-full.txt variant or first-party guidance on pointing coding agents at these docs.",
     "evidenceIds": [
       "langgraph-probe-1",
-      "langgraph-probe-2"
+      "langgraph-probe-2",
+      "langgraph-agent-server-openapi-20261105"
     ],
     "support": {
       "relation": "direct",
@@ -17,11 +18,15 @@
       "citations": [
         {
           "evidenceId": "langgraph-probe-1",
-          "quote": "PROBE llms.txt: HTTP 200 at https://docs.langchain.com/llms.txt"
+          "quote": "PROBE llms.txt: HTTP 200 at https://docs.langchain.com/llms.txt # Docs by LangChain"
         },
         {
           "evidenceId": "langgraph-probe-2",
           "quote": "Fetch the complete documentation index at: https://docs.langchain.com/llms.txt"
+        },
+        {
+          "evidenceId": "langgraph-agent-server-openapi-20261105",
+          "quote": "The docs llms.txt lists it under \"## OpenAPI Specs\" as \"[agent-server-openapi](/langsmith/agent-server-openapi.json)\""
         }
       ]
     },

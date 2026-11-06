@@ -1,19 +1,18 @@
 {
-  "hash": "500c7f4064cec82d112d50781c37f1c8ddff6a73e0a2d5fd6cbbfc8f264f510b",
+  "hash": "78dea06fce5149fab0f211f66e30e4b43e6ece4031ab17e001ff329520e6c889",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Mixpanel documents its own programmatic, UI-free interfaces. The Query API returns the same calculated results as web-app reports, the Raw Event Export API supports high-volume exports, and JQL runs custom JavaScript queries on the query engine. Together these allow scripted, headless use of core analytics. However, the evidence never mentions CI pipelines, a CLI, or automation-oriented credentials, and probes found no OpenAPI spec. Missing for 10: an official CLI or CI integration docs, documented service-account/token auth for unattended runs, a machine-readable API spec, and independent hands-on corroboration of CI usage.",
+    "rationale": "Mixpanel documents its own non-UI programmatic surface. The Query API returns the same results as web-app reports, the Import and Raw Export APIs move data server-side, Service Accounts are the recommended auth, and OpenAPI specs cover every API, so automated scripts can drive it without the dashboard. Nothing in the evidence documents a CLI, CI-specific guidance, or a headless runner, so CI use has to be assembled from raw API calls. missing for 10: official CLI or CI integration (e.g. GitHub Action), documented CI/automation workflows, hands-on corroboration of headless automation use.",
     "evidenceIds": [
       "mixpanel-docs-43",
       "mixpanel-docs-39",
       "mixpanel-docs-7",
-      "mixpanel-docs-17",
-      "mixpanel-docs-40",
-      "mixpanel-docs-36",
-      "mixpanel-probe-2"
+      "mixpanel-api-playground-20261105",
+      "mixpanel-auth-deprecation-20261105",
+      "mixpanel-openapi-specs-20261105"
     ],
     "support": {
       "relation": "direct",
@@ -25,12 +24,20 @@
           "quote": "The Query API allows you to obtain the same calculated and formatted results that you see from a report in our web app."
         },
         {
-          "evidenceId": "mixpanel-docs-17",
-          "quote": "To export raw event data, use the Raw Event Export API... This method is recommended for high volume exports."
+          "evidenceId": "mixpanel-api-playground-20261105",
+          "quote": "Use this API to send batches of events from your servers to Mixpanel"
         },
         {
-          "evidenceId": "mixpanel-docs-40",
-          "quote": "This JavaScript will be compiled, and the main() function will be executed by the query engine."
+          "evidenceId": "mixpanel-docs-7",
+          "quote": "To export raw event data, use the Raw Event Export API."
+        },
+        {
+          "evidenceId": "mixpanel-auth-deprecation-20261105",
+          "quote": "the recommended authentication mechanism going forward"
+        },
+        {
+          "evidenceId": "mixpanel-openapi-specs-20261105",
+          "quote": "Every Mixpanel API is described by an OpenAPI specification."
         }
       ]
     },

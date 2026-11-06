@@ -2569,18 +2569,16 @@
     "productId": "semgrep",
     "storyId": "agent-runs-scan-headless",
     "verdict": "partial",
-    "quality": 7,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Semgrep documents a headless CLI that runs without login (`semgrep scan`, `semgrep ci`) and exports machine-readable SARIF, and a community user confirms building LLM-driven triage on that SARIF output. Issue filing is documented only as AppSec Platform ticket creation and an API for gathering findings, not as an agent-driven flow from CLI results, so the final step of the story is only partly covered. missing for 10: a documented end-to-end flow for an agent filing issues from CLI scan results, documented JSON output schema/exit-code semantics for agent parsing, and independent corroboration of automated issue filing for real (non-false-positive) findings.",
+    "rationale": "Semgrep documents headless local CLI scans that need no login (`semgrep scan`, `semgrep ci`) and machine-readable SARIF export, and a community user reports building LLM triage on that SARIF output. Its documented ticket creation is a platform triage feature, not an agent-driven CLI-to-issue flow, so filing issues for real findings is only partially covered. missing for 10: documented agent-driven issue filing from CLI scan results, documented JSON output and its schema for parsing, CLI-side filtering of real findings from noise, and hands-on corroboration of the full scan-parse-file loop.",
     "evidenceIds": [
       "semgrep-docs-27",
       "semgrep-docs-34",
       "semgrep-docs-20",
-      "semgrep-docs-19",
-      "semgrep-comm-14",
       "semgrep-docs-22",
-      "semgrep-docs-17",
-      "semgrep-gh-3"
+      "semgrep-comm-14",
+      "semgrep-docs-50"
     ],
     "support": {
       "relation": "direct",
@@ -2600,16 +2598,12 @@
           "quote": "To export the results to a SARIF file: semgrep ci --sarif --sarif-output=semgrep.sarif"
         },
         {
-          "evidenceId": "semgrep-comm-14",
-          "quote": "Built a tool using Semgrep's SARIF output plus prompted LLMs to help prioritize triage"
-        },
-        {
           "evidenceId": "semgrep-docs-22",
           "quote": "Send alerts and notifications or create tickets to track findings identified by Semgrep Code"
         },
         {
-          "evidenceId": "semgrep-docs-17",
-          "quote": "Semgrep AppSec Platform provides an API that enables you to list deployments, gather findings created by Semgrep AppSec Platform, and list projects."
+          "evidenceId": "semgrep-comm-14",
+          "quote": "Built a tool using Semgrep's SARIF output plus prompted LLMs to help prioritize triage"
         }
       ]
     }
@@ -2620,7 +2614,7 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "A live probe confirms Semgrep serves an llms.txt at docs.semgrep.dev that returns HTTP 200 and indexes links to markdown versions of its doc pages. Several doc pages in the pack are themselves served as .md files, such as for-developers/cli.md and writing-rules/overview.md, which gives agents machine-readable docs to consume. Missing for 10: no evidence of a full-content llms-full.txt variant, and no independent or hands-on corroboration of an agent actually using these docs.",
+    "rationale": "A probe confirms Semgrep publishes an llms.txt at docs.semgrep.dev/llms.txt (HTTP 200). It is a structured index linking to Markdown versions of doc pages (e.g. index.md), and many docs pages are served as .md URLs, giving agents clean, agent-oriented documentation to consume. missing for 10: independent or hands-on corroboration of agents using the llms.txt, evidence of an expanded full-text variant (e.g. llms-full.txt)",
     "evidenceIds": [
       "semgrep-probe-1",
       "semgrep-docs-33",
@@ -2637,11 +2631,7 @@
         },
         {
           "evidenceId": "semgrep-probe-1",
-          "quote": "[Semgrep Docs](https://docs.semgrep.dev/index.md): Get started with Semgrep"
-        },
-        {
-          "evidenceId": "semgrep-docs-33",
-          "quote": "The `--dry-run` flag ensures that your scans are not uploaded to the Semgrep web app."
+          "quote": "- [Semgrep Docs](https://docs.semgrep.dev/index.md): Get started with Semgrep to help you catch, fla"
         }
       ]
     }
@@ -2652,11 +2642,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Semgrep ships its own AI features over the user's scan data. Semgrep Assistant does AI post-processing of findings to cut noise, AI-Powered Detection finds business-logic flaws, and the homepage claims AI reasoning for detection, triage, and remediation. The evidence is only brief marketing and README lines, with no documentation of what insights or suggestions users actually see or how they work. The community LLM-over-SARIF tool is a user-side workaround and earns no credit. missing for 10: in-depth docs on Assistant's in-product triage insights and remediation suggestions, how and where suggestions are surfaced, independent hands-on corroboration.",
+    "rationale": "Semgrep's own materials say it applies AI to the user's scan data. Semgrep Assistant does AI post-processing of findings to cut noise, the platform combines AI reasoning with rule-based analysis for triage and remediation, and AI-Powered Detection flags business-logic flaws. However, the evidence is short marketing and README lines with no documentation of how insights or suggestions are presented in the product. missing for 10: in-depth docs on Assistant's in-product insights and fix suggestions (UI, explanations, remediation guidance), independent or hands-on corroboration of AI suggestion quality.",
     "evidenceIds": [
       "semgrep-gh-3",
+      "semgrep-docs-48",
       "semgrep-docs-6",
-      "semgrep-docs-48"
+      "semgrep-docs-47"
     ],
     "support": {
       "relation": "direct",
@@ -2684,14 +2675,14 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Semgrep documents its own background automation: event-triggered scans on push and pull-request events via CI jobs, Semgrep Managed Scans that bulk-scan repositories without CI changes, and automatic PR comments and alerts on findings. These automations are limited to security scanning workflows and rely heavily on the CI provider; there is no evidence of user-defined agentic automations or recurring schedules. Missing for 10: documented recurring/scheduled scan configuration, general-purpose or AI-agent-driven background automations beyond scanning, independent hands-on corroboration of Managed Scans.",
+    "rationale": "Semgrep documents event-triggered automated scanning: CI jobs on push and PR/MR events, and Managed Scans that onboard and scan repositories without CI changes. Follow-up actions also run unattended, including automated PR comments, secrets comments in PRs, and alerts or tickets. These are rule- and event-driven scan automations, not user-defined autonomous background agents, and the CI path relies on the host CI provider. missing for 10: user-configurable recurring or scheduled automations, an autonomous agentic background workflow builder, evidence on how Managed Scans trigger and schedule scans, independent hands-on corroboration.",
     "evidenceIds": [
       "semgrep-docs-15",
       "semgrep-docs-25",
       "semgrep-docs-45",
+      "semgrep-docs-57",
       "semgrep-docs-10",
-      "semgrep-docs-22",
-      "semgrep-docs-57"
+      "semgrep-docs-22"
     ],
     "support": {
       "relation": "direct",
@@ -2707,12 +2698,12 @@
           "quote": "your development cycle benefits from the automated scanning of repositories at various events, such as: Push events; Pull requests or merge requests"
         },
         {
-          "evidenceId": "semgrep-docs-10",
-          "quote": "informs developers of valid secrets in their PRs and MRs by posting comments directly"
+          "evidenceId": "semgrep-docs-57",
+          "quote": "You can use Semgrep and its GitHub integration to automate PR comments that you frequently make in code reviews."
         },
         {
-          "evidenceId": "semgrep-docs-22",
-          "quote": "Send alerts and notifications or create tickets to track findings identified by Semgrep Code"
+          "evidenceId": "semgrep-docs-10",
+          "quote": "informs developers of valid secrets in their PRs and MRs by posting comments directly"
         }
       ]
     }
@@ -2721,13 +2712,12 @@
     "productId": "semgrep",
     "storyId": "agentic-builtin-assistant",
     "verdict": "partial",
-    "quality": 4,
-    "confidence": "medium",
-    "rationale": "Semgrep ships a built-in AI assistant: Semgrep Assistant post-processes findings to reduce noise, and the platform pitches AI reasoning for detection, triage, and remediation. The evidence only shows automated triage and detection, not a user explicitly handing tasks to the assistant. Missing for 10: documentation of user-initiated task delegation to the assistant, details of the assistant's scope and interaction model (e.g., chat or requested fixes), and independent or hands-on corroboration.",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Semgrep ships a named built-in AI assistant, Semgrep Assistant, which post-processes findings to reduce noise. Marketing also claims AI reasoning for detection, triage, and remediation. The evidence only shows automated triage and filtering, not a user handing tasks to an assistant. Missing for 10: documented user-initiated task delegation to the assistant, an interactive assistant interface, first-party docs on the assistant's scope and workflow, and independent hands-on corroboration.",
     "evidenceIds": [
       "semgrep-gh-3",
-      "semgrep-docs-48",
-      "semgrep-docs-6"
+      "semgrep-docs-48"
     ],
     "support": {
       "relation": "direct",
@@ -2741,10 +2731,6 @@
         {
           "evidenceId": "semgrep-docs-48",
           "quote": "Combine AI reasoning with rule-based analysis for detection, triage, and remediation"
-        },
-        {
-          "evidenceId": "semgrep-docs-6",
-          "quote": "With AI-Powered Detection, you can automatically identify complex business logic flaws, such as IDORs and broken authorization."
         }
       ]
     }
@@ -2755,7 +2741,7 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Semgrep ships a headless CLI that installs via pipx/uv and runs without login (`semgrep scan`, `semgrep ci`). It has a documented guide for adding Semgrep jobs to explicitly supported CI providers, triggered on push and PR/MR events. Machine-readable SARIF output and a pre-commit hook round out automation, and a community user reports building an automated LLM triage pipeline on the SARIF output. missing for 10: independent hands-on corroboration of CI-provider job reliability at scale (one community report notes heavy CPU use when running the CI ruleset locally).",
+    "rationale": "Semgrep ships a CLI with `semgrep ci` and `semgrep scan` that runs without login and can export machine-readable SARIF. It has first-party guides for creating CI jobs in explicitly supported CI providers, triggered on push and PR/MR events, plus pre-commit integration. Independent community use shows SARIF output feeding automated LLM triage pipelines. Missing for 10: documented non-interactive CI authentication (token) and exit-code/failure-gating behavior are not evidenced in the pack.",
     "evidenceIds": [
       "semgrep-docs-14",
       "semgrep-docs-45",
@@ -2764,8 +2750,8 @@
       "semgrep-docs-20",
       "semgrep-docs-27",
       "semgrep-docs-34",
-      "semgrep-docs-26",
-      "semgrep-docs-16",
+      "semgrep-docs-46",
+      "semgrep-docs-50",
       "semgrep-comm-14"
     ],
     "support": {
@@ -2806,7 +2792,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Semgrep ships AI-assisted detection and triage, so asking whether it can consume external MCP servers is a fair question for this kind of product. However, nothing in the evidence shows Semgrep acting as an MCP client or loading third-party MCP tools. The only MCP evidence (semgrep-probe-3) describes Semgrep's own official MCP server, which is the server role and does not count toward this client-side story.",
+    "rationale": "Semgrep ships AI features (AI-Powered Detection, Semgrep Assistant), so letting it consume external MCP servers' tools is a fair question for this product. However, nothing in the evidence shows it can act as an MCP client. The only MCP evidence (semgrep-probe-3) is an official MCP server that Semgrep exposes to other agents, which is the server role and does not count toward this client-side story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2821,7 +2807,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Semgrep is a security scanning platform, not an agent, so publishing an official MCP server is a fair axis. A probe confirms an official MCP server is documented at docs.semgrep.dev/mcp, but the pack gives no detail on setup, exposed tools, transport or agent clients, so the depth of the capability is unproven. Missing for 10: details of exposed MCP tools and capabilities, setup and connection instructions for agents, supported clients and transport, and independent or hands-on corroboration.",
+    "rationale": "Semgrep is a security scanning tool, not an agent, so an official MCP server is a fair question here, and a probe confirms an official MCP server documented at docs.semgrep.dev/mcp. Beyond that existence check, the pack has no detail on the tools it exposes, how to set it up, how agents connect, or its maturity. Missing for 10: documented tool surface and agent connection/setup steps, transport and auth details, and independent or hands-on corroboration of agents using it.",
     "evidenceIds": [
       "semgrep-probe-3"
     ],
@@ -2843,7 +2829,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The pack shows no first-party way to operate Semgrep through natural-language commands. Semgrep is driven by CLI commands (semgrep scan, semgrep ci) and YAML rules. The AI features cited (AI-Powered Detection, Semgrep Assistant post-processing of findings) apply AI to analysis, not to taking user instructions. The MCP server listing belongs to a separate agent-integration story and does not show a natural-language command interface in Semgrep itself.",
+    "rationale": "The evidence describes CLI commands, rule-based scanning, AI-powered detection, Assistant post-processing of findings, and an MCP server. None of it documents operating Semgrep itself through natural-language commands. AI triage and detection are adjacent features, and the MCP server belongs to a separate story, so neither earns credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2858,17 +2844,17 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Semgrep ships an official, documented CLI. It installs via pipx or uv, offers `semgrep scan` and `semgrep ci` commands, exports machine-readable SARIF, supports `--dry-run` and `--autofix`, and needs no login, all of which suit scripted and agent-driven use. A community user independently reports feeding the CLI's SARIF output to LLMs for triage. Missing for 10: explicit documentation of agent- or AI-oriented CLI usage patterns (e.g., JSON output for agents), plus one reported Windows pip install failure.",
+    "rationale": "Semgrep ships an official, documented CLI. It installs via pipx or uv, runs `semgrep scan` and `semgrep ci`, and supports machine-readable SARIF export, `--dry-run`, `--autofix` and scanning without logging in. Community users corroborate scripting it, including feeding its SARIF output into LLM-driven triage. Missing for 10: explicit agent-oriented CLI documentation (e.g., guidance for AI agents invoking the CLI or a JSON output mode framed for agentic use), and independent confirmation that the cited Windows install problem is resolved.",
     "evidenceIds": [
       "semgrep-probe-4",
       "semgrep-docs-26",
       "semgrep-docs-27",
       "semgrep-docs-19",
       "semgrep-docs-20",
+      "semgrep-docs-50",
       "semgrep-docs-34",
       "semgrep-docs-33",
       "semgrep-docs-38",
-      "semgrep-docs-50",
       "semgrep-comm-14"
     ],
     "support": {
@@ -2877,8 +2863,8 @@
       "subject": "As an AI-native user, I can use an official CLI",
       "citations": [
         {
-          "evidenceId": "semgrep-probe-4",
-          "quote": "official CLI documented at https://docs.semgrep.dev/getting-started/cli"
+          "evidenceId": "semgrep-docs-50",
+          "quote": "You can run local Semgrep CLI scans with the Semgrep command-line tool."
         },
         {
           "evidenceId": "semgrep-docs-27",
@@ -2889,8 +2875,8 @@
           "quote": "semgrep ci --sarif --sarif-output=semgrep.sarif"
         },
         {
-          "evidenceId": "semgrep-docs-50",
-          "quote": "You can run local Semgrep CLI scans with the Semgrep command-line tool."
+          "evidenceId": "semgrep-docs-26",
+          "quote": "uv tool install semgrep"
         },
         {
           "evidenceId": "semgrep-comm-14",
@@ -2902,23 +2888,32 @@
   {
     "productId": "semgrep",
     "storyId": "agentic-public-api",
-    "verdict": "partial",
-    "quality": 5,
-    "confidence": "medium",
-    "rationale": "Semgrep documents a first-party AppSec Platform API, but the documented scope covers only listing deployments, gathering findings and listing projects. That is mostly read-oriented access rather than full programmatic control of the product, and the OpenAPI probe found no machine-readable spec at the common docs paths. missing for 10: documented write/control endpoints (e.g., triggering scans, triaging findings, managing rules/policies via API), a published OpenAPI/machine-readable spec, auth/usage detail in evidence, independent hands-on corroboration of API use.",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "Semgrep AppSec Platform has a documented public REST API for listing deployments, findings and projects. It ships a downloadable OpenAPI 3.0.3 spec, per-endpoint 'Try it' playground pages with cURL examples, path versioning, and a formal deprecation policy with 180-day notice. The probe's 404s on docs-domain OpenAPI paths do not contradict this, because the spec is hosted at semgrep.dev/api/v1. Missing for 10: evidence that the API can drive actions such as triggering scans (not just reading results), and independent or hands-on corroboration of API use.",
     "evidenceIds": [
       "semgrep-docs-17",
-      "semgrep-docs-59",
-      "semgrep-probe-2"
+      "semgrep-openapi-spec-20261105",
+      "semgrep-api-playground-20261105",
+      "semgrep-deprecation-policy-20261105"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can drive the product through a documented public API",
       "citations": [
         {
           "evidenceId": "semgrep-docs-17",
           "quote": "Semgrep AppSec Platform provides an API that enables you to list deployments, gather findings created by Semgrep AppSec Platform, and list projects."
+        },
+        {
+          "evidenceId": "semgrep-openapi-spec-20261105",
+          "quote": "This API is documented in the OpenAPI format. Download OpenAPI specification: Download"
+        },
+        {
+          "evidenceId": "semgrep-deprecation-policy-20261105",
+          "quote": "stable endpoints receive at least 180 days’ notice before a breaking change or a removal"
         }
       ]
     }
@@ -2929,7 +2924,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Semgrep AppSec Platform has an API for listing deployments, findings, and projects, so issuing scoped credentials is a fair question for this product. However, nothing in the evidence documents API token creation, scopes, or least-privilege permissions for agents. Semgrep Secrets only detects leaked credentials in code, which is a different capability and earns no credit here.",
+    "rationale": "Semgrep AppSec Platform exposes a documented API, so scoped credentials are a fair question for this product. However, nothing in the evidence describes issuing API tokens with limited scopes, least-privilege permissions, or agent-specific credentials. Semgrep Secrets detects leaked credentials, which is a different capability and earns no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2944,7 +2939,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Semgrep is a security-scanning platform, so official SDKs are a fair question and the axis applies. The pack documents only a CLI, an MCP server and a REST API for listing deployments, findings and projects. None of these is an official SDK: the API is a developer building block, and the CLI and MCP server belong to other stories. No openapi spec was found either.",
+    "rationale": "The evidence documents a REST API with a downloadable OpenAPI spec, an interactive playground, a deprecation policy, a CLI and an MCP server. None of the items mentions an official SDK or client library in any language. An OpenAPI spec is only a building block from which a developer could generate a client, and the CLI and MCP server are separate capabilities, so none of these count toward an official SDK.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2959,7 +2954,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Webhooks are a fair axis for a SaaS AppSec platform like Semgrep, but nothing in the evidence documents registrable outbound HTTP callbacks. The generic 'send alerts and notifications or create tickets' line does not name webhooks. The Semgrep API is pull-based: it lists deployments, findings and projects, so it is a different capability.",
+    "rationale": "Semgrep AppSec Platform is a SaaS service, so outbound webhooks are a fair axis. However, the evidence pack documents no registrable outbound HTTP callbacks. The only related items are a generic mention of 'alerts and notifications or create tickets' (an adjacent feature, not webhooks) and a pull-based REST API for listing findings, neither of which lets a programmatic consumer subscribe to events.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2974,7 +2969,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Semgrep's own Semgrep Assistant does AI post-processing of findings to reduce noise by about 20%, and the vendor markets AI reasoning for triage, which covers flagging likely false positives. The community tool that feeds SARIF into LLMs is a user-side workaround and earns no credit. missing for 10: documented AI explanations of findings, AI-based deduplication, in-depth first-party docs on Assistant triage behavior, independent hands-on corroboration of Assistant's false-positive accuracy.",
+    "rationale": "Semgrep's own materials claim AI-driven triage ('Combine AI reasoning with rule-based analysis for detection, triage, and remediation') and say Semgrep Assistant (AI) post-processes findings to cut noise by about 20%, which roughly covers flagging likely false positives. The community-built SARIF-plus-LLM prioritizer is a user-side workaround and earns no credit. missing for 10: documented AI explanations of findings, AI-based deduplication, in-depth docs on how Assistant flags false positives, independent hands-on corroboration.",
     "evidenceIds": [
       "semgrep-gh-3",
       "semgrep-docs-48"
@@ -3001,7 +2996,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never documents AI-drafted remediation pull requests. The closest items are a homepage claim that Semgrep combines AI with rules for 'remediation', a rule-defined `--autofix` flag that is deterministic, non-AI and applies fixes directly to files rather than opening PRs, and Semgrep Assistant AI used for triage noise reduction. These are adjacent features and do not deliver AI-generated PRs that a user reviews and merges.",
+    "rationale": "The evidence pack never documents AI generating remediation pull requests. What exists is adjacent: deterministic rule-defined fixes applied locally with `--autofix`, an AI Assistant used for triage and noise reduction, and a homepage line about AI remediation that says nothing about PRs. None of these show AI drafting a reviewable PR for a finding, so there is no direct support.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -3013,31 +3008,65 @@
   {
     "productId": "semgrep",
     "storyId": "api-interactive-docs",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Semgrep AppSec Platform documents an API for listing deployments, findings and projects, but nothing in the evidence shows an interactive API reference with runnable examples. The OpenAPI/Swagger probe returned 404 on every candidate path. The Semgrep Editor is a rule-writing playground, an adjacent feature that does not count as an API reference.",
-    "evidenceIds": [],
+    "rationale": "Semgrep's OpenAPI-driven API reference has a live \"Try it\" playground on each endpoint page, with generated cURL examples and an in-page runner. It is backed by a downloadable OpenAPI 3.0.3 spec covering the /api/v1 endpoints. The probe that 404'd on docs-domain OpenAPI paths does not contradict this, because the spec is served from semgrep.dev/api/v1. Missing for 10: independent or hands-on corroboration that the runner works, and evidence of runnable examples beyond the single cited findings endpoint.",
+    "evidenceIds": [
+      "semgrep-api-playground-20261105",
+      "semgrep-openapi-spec-20261105"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can explore an interactive API reference with runnable examples",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "semgrep-api-playground-20261105",
+          "quote": "renders a live \"Try it\" API playground per endpoint"
+        },
+        {
+          "evidenceId": "semgrep-api-playground-20261105",
+          "quote": "with generated cURL examples and an in-page runner"
+        },
+        {
+          "evidenceId": "semgrep-openapi-spec-20261105",
+          "quote": "This API is documented in the OpenAPI format."
+        }
+      ]
     }
   },
   {
     "productId": "semgrep",
     "storyId": "api-machine-spec",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Semgrep AppSec Platform documents an API for listing deployments, projects and findings, so a downloadable API spec is a fair question for this product. However, the pack contains no evidence of an OpenAPI or equivalent spec, and the probe found all candidate OpenAPI/Swagger paths returning 404. llms.txt and SARIF output are adjacent features, not a machine-readable API spec, so they earn no credit.",
-    "evidenceIds": [],
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Semgrep's API docs landing page offers a direct download of an OpenAPI 3.0.3 spec (public_v1.openapi.yaml) covering the /api/v1 endpoints. The OpenAPI-driven reference with per-endpoint playgrounds and a versioning and deprecation policy corroborates that the spec is maintained. The probe's 404s were on docs.semgrep.dev guess paths, not the documented semgrep.dev/api/v1 URL, so they do not contradict this. Missing for 10: independent or hands-on confirmation of fetching the spec at the documented URL; v2 endpoints are only Experimental and not evidenced in the spec.",
+    "evidenceIds": [
+      "semgrep-openapi-spec-20261105",
+      "semgrep-api-playground-20261105",
+      "semgrep-deprecation-policy-20261105",
+      "semgrep-docs-17"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "semgrep-openapi-spec-20261105",
+          "quote": "This API is documented in the OpenAPI format. Download OpenAPI specification: Download"
+        },
+        {
+          "evidenceId": "semgrep-openapi-spec-20261105",
+          "quote": "which serves the OpenAPI 3.0.3 document (info title \"Semgrep Web App\") covering the /api/v1 endpoints"
+        },
+        {
+          "evidenceId": "semgrep-api-playground-20261105",
+          "quote": "The OpenAPI-driven API reference renders a live \"Try it\" API playground per endpoint"
+        }
+      ]
     }
   },
   {
@@ -3046,10 +3075,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Semgrep's AppSec Platform is a SaaS with an API and a web app, so a sandbox or test environment is a fair question, but the evidence documents no sandbox org or environment. The --dry-run flag only stops scan results from being uploaded to the web app. That is dry-run behavior, not sandbox isolation, so it is an adjacent control and earns no credit. Missing for 10: a documented sandbox or test environment isolated from production data, and any evidence of using it for testing.",
+    "rationale": "The evidence pack documents no sandbox or test environment for Semgrep's platform or API that is isolated from production data. The `--dry-run` flag only keeps scan results from being uploaded to the web app, which is dry-run behavior, not sandbox isolation. The API 'Try it' playground and the rule-testing annotations are adjacent features, not a sandbox environment.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
       "citations": []
@@ -3058,25 +3087,42 @@
   {
     "productId": "semgrep",
     "storyId": "api-versioning-policy",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence confirms Semgrep AppSec Platform exposes an API for listing deployments, findings and projects. Nothing in the pack shows API versioning or a documented deprecation policy, and the OpenAPI probe returned 404 on every candidate path. An API for a SaaS security platform makes this a fair axis, so the absence of evidence yields none rather than na.",
-    "evidenceIds": [],
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Semgrep documents a path-versioned API (/api/v1, with v2 endpoints tagged Experimental) and a dedicated API Deprecation Policy. The policy guarantees at least 180 days' notice before breaking changes or removals, returns 410 Gone with a pointer to the replacement, defines what counts as a breaking change, and is paired with an API Changelog. It also publishes a downloadable OpenAPI 3.0.3 spec for the /api/v1 endpoints. missing for 10: independent or hands-on corroboration that the deprecation policy is honored in practice.",
+    "evidenceIds": [
+      "semgrep-deprecation-policy-20261105",
+      "semgrep-openapi-spec-20261105",
+      "semgrep-docs-17"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "semgrep-deprecation-policy-20261105",
+          "quote": "stable endpoints receive at least 180 days’ notice before a breaking change or a removal"
+        },
+        {
+          "evidenceId": "semgrep-deprecation-policy-20261105",
+          "quote": "the API is path-versioned (/api/v1, with v2 endpoints tagged Experimental) with an API Changelog page alongside"
+        },
+        {
+          "evidenceId": "semgrep-openapi-spec-20261105",
+          "quote": "This API is documented in the OpenAPI format. Download OpenAPI specification: Download"
+        }
+      ]
     }
   },
   {
     "productId": "semgrep",
     "storyId": "autofix-findings",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Semgrep documents applying rule-defined fixes directly to files with the `--autofix` flag, so developers can apply automatic fixes instead of only reading reports. Marketing also says it can 'Scan and fix' code and covers 'remediation'. missing for 10: in-depth docs on fix behavior and limits (which rules ship fixes, multi-fix handling), documented suggested-fix surfaces such as PR comments or IDE quick-fixes, and independent or hands-on corroboration that autofix works.",
+    "rationale": "Semgrep documents rule-defined fixes that a developer can apply directly to files with the `--autofix` flag, so findings can be acted on rather than only read. The 'suggested fixes' side of the story rests only on marketing lines about fixing and remediation, with no documented workflow. Missing for 10: documented suggested-fix delivery (e.g., fix suggestions in PR comments or the IDE), AI-generated fix documentation beyond marketing claims, details on autofix scope and limitations, and independent or hands-on corroboration of autofix working.",
     "evidenceIds": [
       "semgrep-docs-38",
       "semgrep-docs-53",
@@ -3085,7 +3131,7 @@
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As a developer, I can apply suggested or automatic code fixes for findings instead of only reading reports",
       "citations": [
         {
@@ -3109,9 +3155,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Semgrep documents one first-party bulk operation: Managed Scans lets you bulk onboard and scan many repositories at once without changing your CI. Beyond that single mention, nothing shows bulk actions on findings, such as mass triage, mass ignore, or bulk ticket creation. Missing for 10: documented bulk triage or update of findings, bulk actions via the API or CLI, and independent or hands-on corroboration of bulk onboarding.",
+    "rationale": "Semgrep documents a first-party bulk capability: Managed Scans let you bulk onboard and scan many repositories without changing CI. The --autofix flag also applies rule-defined fixes to files a scan matches. Bulk actions on findings themselves (mass triage, ignore, assign or ticketing) are not evidenced, and the API is only described as listing findings and projects. Missing for 10: bulk triage or bulk updates of findings via UI or API, documented bulk endpoints or batch limits, and independent or hands-on corroboration of bulk workflows.",
     "evidenceIds": [
-      "semgrep-docs-15"
+      "semgrep-docs-15",
+      "semgrep-docs-38",
+      "semgrep-docs-17"
     ],
     "support": {
       "relation": "direct",
@@ -3121,6 +3169,10 @@
         {
           "evidenceId": "semgrep-docs-15",
           "quote": "consider Semgrep Managed Scans, which enables you to bulk onboard and scan your repositories without requiring changes to your CI"
+        },
+        {
+          "evidenceId": "semgrep-docs-38",
+          "quote": "You can apply the Rule-defined fix directly to the file using the `--autofix` flag."
         }
       ]
     }
@@ -3131,14 +3183,15 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Semgrep documents custom rules that automate code review comments through its GitHub integration, plus alerts, notifications and tickets for findings. Scans run automatically on push and pull/merge request events, and rule-defined fixes can be applied with --autofix. However, it is a detection-rule system tied to scan events, not a general event-to-action rule engine, and the event triggers depend on CI jobs. Missing for 10: user-configurable event→action automation rules beyond code-scan findings, documented action workflow configuration (conditions, routing), webhooks or arbitrary action targets, independent hands-on corroboration.",
+    "rationale": "Semgrep lets users write custom rules that run automatically on repository events such as pushes, pull/merge requests and commits. Matches can trigger actions like PR code-review comments, autofixes, alerts, notifications or tickets. This is a scan-rule model tied to CI and Git events, not a general event→action automation engine. missing for 10: user-defined mapping of arbitrary events to arbitrary actions, documented per-rule action configuration (e.g. which rule fires which notification or ticket), independent or hands-on corroboration of the automated actions.",
     "evidenceIds": [
+      "semgrep-docs-4",
       "semgrep-docs-21",
       "semgrep-docs-57",
-      "semgrep-docs-22",
       "semgrep-docs-25",
-      "semgrep-docs-10",
-      "semgrep-docs-38"
+      "semgrep-docs-22",
+      "semgrep-docs-38",
+      "semgrep-docs-16"
     ],
     "support": {
       "relation": "direct",
@@ -3146,12 +3199,16 @@
       "subject": "As an AI-native user, I can define rules that trigger actions automatically on events",
       "citations": [
         {
-          "evidenceId": "semgrep-docs-57",
-          "quote": "You can use Semgrep and its GitHub integration to automate PR comments that you frequently make in code reviews."
+          "evidenceId": "semgrep-docs-4",
+          "quote": "you can write custom rules to determine what Semgrep detects in your repositories"
         },
         {
           "evidenceId": "semgrep-docs-21",
           "quote": "you can write rules that: Automate code review comments."
+        },
+        {
+          "evidenceId": "semgrep-docs-57",
+          "quote": "You can use Semgrep and its GitHub integration to automate PR comments that you frequently make in code reviews."
         },
         {
           "evidenceId": "semgrep-docs-25",
@@ -3160,6 +3217,10 @@
         {
           "evidenceId": "semgrep-docs-22",
           "quote": "Send alerts and notifications or create tickets to track findings identified by Semgrep Code"
+        },
+        {
+          "evidenceId": "semgrep-docs-16",
+          "quote": "The pre-commit framework can run semgrep when you commit changes."
         }
       ]
     }
@@ -3170,7 +3231,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Semgrep's documented automation is event-triggered: CI jobs on push and pull-request events, pre-commit hooks, and Managed Scans for bulk onboarding. Nothing in the evidence documents a product-native recurring schedule (cron-style or time-based) for scans or workflows. Event triggers and any scheduling done by the host CI provider are adjacent or host-platform capabilities, not this story.",
+    "rationale": "Scheduled scanning is a fair axis for a code-security platform, but the evidence shows no recurring schedule. The documentation covers scans triggered by events (push, pull requests, pre-commit) and running Semgrep as a job inside CI providers. Event triggers are one-off actions rather than a recurring schedule, and any scheduling done by the CI host belongs to the host platform, not Semgrep. Managed Scans is described only as bulk onboarding without CI changes, with no mention of scheduling.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3185,7 +3246,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Versioning, reviewing and rolling back automations is a fair question for a security-scanning platform with custom rules and CI jobs, so the axis applies. However, the evidence documents only rule authoring and testing, private rule publishing, and CI or pre-commit scan triggers. Nothing shows first-party version history, review workflows, or rollback for rules or automations, and keeping rule files in the user's own Git repo would be a user-side workaround.",
+    "rationale": "Semgrep documents automation-adjacent features: custom YAML rules, rule testing, private rules in the Registry, CI jobs and automated PR comments. Nothing in the evidence shows Semgrep itself versioning, reviewing, or rolling back those automations or rules. Keeping rule files in git would be a user-side workaround, and the API deprecation and versioning policy covers API endpoints, not user automations, so neither earns credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3200,10 +3261,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never documents baselining, diff-aware scanning, ignore annotations, or marking findings as false positives. A 'Triage findings' heading appears, but its content covers sending alerts and creating tickets, not suppressing existing findings. The ~20% AI noise reduction is a related post-processing feature, not a baseline or ignore capability that limits alerts to new issues.",
+    "rationale": "The evidence pack never documents baselining, diff-aware scanning against a baseline, or marking findings as ignored or false positive so that only new issues alert. The 'Triage findings' material covers only sending alerts and creating tickets. Assistant's AI noise reduction is an adjacent feature, not suppression or baselining of existing findings.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As a security-engineer, I can baseline or ignore existing and false-positive findings so only new issues alert",
       "citations": []
@@ -3215,11 +3276,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Semgrep documents running as a CI job across supported CI providers, triggered on pull or merge request events, using the `semgrep ci` command. The evidence never addresses failing the build through exit codes or limiting the gate to new findings, so the blocking half of the story is unproven. Missing for 10: documented exit-code behavior that fails the build on findings, diff-aware scanning that gates only new findings, independent hands-on corroboration of CI gating.",
+    "rationale": "Semgrep's docs show it runs as a CI job across supported CI providers and triggers on pull or merge requests, using the `semgrep ci` command. The pack does not document failing the build through exit codes, or diff-aware blocking limited to new findings. Missing for 10: documented exit-code behavior for failing builds, evidence of new-only (diff-aware) findings gating on PRs, independent hands-on corroboration of PR gating.",
     "evidenceIds": [
       "semgrep-docs-14",
-      "semgrep-docs-25",
       "semgrep-docs-45",
+      "semgrep-docs-25",
       "semgrep-docs-19"
     ],
     "support": {
@@ -3228,16 +3289,16 @@
       "subject": "As a devops-lead, I can run scans in CI on every pull request and fail the build on new findings via exit codes",
       "citations": [
         {
-          "evidenceId": "semgrep-docs-14",
-          "quote": "This guide walks you through creating a Semgrep job in the following CI providers, which are explicitly supported in Semgrep AppSec Platform"
+          "evidenceId": "semgrep-docs-45",
+          "quote": "Semgrep is integrated into CI environments by creating a **job** that is run by the CI provider."
         },
         {
           "evidenceId": "semgrep-docs-25",
           "quote": "your development cycle benefits from the automated scanning of repositories at various events, such as: Push events; Pull requests or merge requests"
         },
         {
-          "evidenceId": "semgrep-docs-45",
-          "quote": "Semgrep is integrated into CI environments by creating a **job** that is run by the CI provider."
+          "evidenceId": "semgrep-docs-14",
+          "quote": "This guide walks you through creating a Semgrep job in the following CI providers, which are explicitly supported in Semgrep AppSec Platform"
         }
       ]
     }
@@ -3248,7 +3309,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Container image scanning is a fair question for an AppSec security scanner, so the axis applies. However, the evidence only documents Semgrep scanning codebases and repositories: SAST, secrets, and Supply Chain SCA based on manifest parsing and repository integration. Nothing shows Semgrep scanning built container images or OS packages; repo-level dependency SCA is an adjacent capability and earns no credit here.",
+    "rationale": "Semgrep is an application security scanner, so container image scanning is a fair axis to ask about. However, the evidence only documents source-code SAST, secrets detection, and SCA of repository dependencies via manifest parsing. Nothing shows scanning of built container images or their OS packages. Rule-based scanning of configuration files and manifest-based dependency analysis are adjacent capabilities and earn no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3263,7 +3324,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Semgrep documents taint-tracking rules for catching injection bugs. It also documents cross-file (interfile) analysis that detects vulnerabilities across files and folders, and interprocedural, interfile data-flow (constant propagation) in Semgrep AppSec Platform. Together these cover tracing taint across file and function boundaries, though the docs never state explicitly that taint mode itself is interprocedural, and the cross-file capability appears tied to the platform rather than the plain CLI. missing for 10: an explicit first-party statement that taint tracking itself runs interprocedurally and across files, detail on how cross-function taint behaves (sources/sinks/sanitizers across calls), and independent or hands-on corroboration of cross-file taint findings.",
+    "rationale": "Semgrep documents taint-tracking rules for catching injection bugs. It also documents a cross-file analysis mode for detecting vulnerabilities across files, and interprocedural, interfile constant propagation in AppSec Platform, so its dataflow engine works across files and function boundaries. missing for 10: an explicit statement that taint mode itself tracks flows interprocedurally and across files, details on limits or language coverage of cross-file taint, and independent hands-on corroboration of cross-file taint findings.",
     "evidenceIds": [
       "semgrep-docs-41",
       "semgrep-docs-58",
@@ -3282,10 +3343,6 @@
           "quote": "Taint tracking (known also as taint analysis) enables you to write simple rules that catch complex injection bugs, such as those that can result in cross-site scripting (XSS)."
         },
         {
-          "evidenceId": "semgrep-docs-58",
-          "quote": "Semgrep supports taint analysis, also known as taint tracking, through taint rules."
-        },
-        {
           "evidenceId": "semgrep-docs-2",
           "quote": "To turn on cross-file analysis, which allows you to detect vulnerabilities across files and folders"
         },
@@ -3294,8 +3351,8 @@
           "quote": "Semgrep AppSec Platform supports interprocedural (cross-function), interfile (cross-file) constant propagation."
         },
         {
-          "evidenceId": "semgrep-docs-32",
-          "quote": "scan your project for security issues using Semgrep Code’s interfile analysis"
+          "evidenceId": "semgrep-docs-58",
+          "quote": "Semgrep supports taint analysis, also known as taint tracking, through taint rules."
         }
       ]
     }
@@ -3303,22 +3360,21 @@
   {
     "productId": "semgrep",
     "storyId": "custom-sast-rules",
-    "verdict": "full",
-    "quality": 8,
-    "confidence": "high",
-    "rationale": "Semgrep documents writing custom rules for your repositories, describes taint rules as 'simple rules,' and offers an editor and a rule-testing mechanism. Team/Enterprise users can publish private rules to the Registry for use across their organization, and a community user confirms custom rules are readable and practical. Missing for 10: sharing via private Registry rules is limited to the Team/Enterprise tiers, there is no explicit documentation of applying one shared ruleset across multiple repositories, and the pack has no concrete rule-syntax examples.",
+    "verdict": "partial",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Semgrep documents writing custom rules that run against your repositories, and says taint rules can be simple. A community user confirms the rulesets are readable and quick to write. Sharing is documented only through private rules published to the Semgrep Registry for your organization, and that is limited to the Team and Enterprise tiers. Missing for 10: cross-repository rule sharing on the free/open-source tier, explicit documentation of reusing shared rules across many repositories, and independent hands-on corroboration of org-wide rule sharing.",
     "evidenceIds": [
       "semgrep-docs-4",
-      "semgrep-docs-5",
       "semgrep-docs-41",
       "semgrep-docs-36",
       "semgrep-docs-37",
-      "semgrep-docs-52",
-      "semgrep-comm-1"
+      "semgrep-comm-1",
+      "semgrep-comm-9"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As a security-engineer, I can write custom static-analysis rules in a simple syntax and share them across repositories",
       "citations": [
         {
@@ -3344,9 +3400,9 @@
     "productId": "semgrep",
     "storyId": "custom-secret-rules",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Semgrep documents writing custom rules to control what it detects. It also offers an `entropy` metavariable analyzer, which suits high-randomness token detection, and generic pattern matching for unsupported file types. Rules can be tested, published privately to an organization, and run in pre-commit to stop secrets reaching Git history. However, no evidence shows custom rules plugging into Semgrep Secrets specifically, such as custom secret rules with validators that test internal token formats. missing for 10: explicit docs on custom Semgrep Secrets rules for proprietary token formats, custom validation of internal secrets, independent or hands-on corroboration of custom secret-rule authoring.",
+    "rationale": "Semgrep documents writing custom rules to control what it detects, plus features that suit secret patterns: an entropy analyzer, generic pattern matching, private org rules and rule testing. Semgrep Secrets itself is documented only for exposed API keys and credentials, with no doc tying custom rules to it. missing for 10: explicit docs for writing custom Semgrep Secrets rules for internal token formats, custom validators for proprietary secrets, independent or hands-on corroboration of custom secret rules.",
     "evidenceIds": [
       "semgrep-docs-4",
       "semgrep-docs-40",
@@ -3374,12 +3430,8 @@
           "quote": "Users with Semgrep Code's Team or Enterprise tier can publish rules to the Semgrep Registry as private rules that are not visible to those outside their organization."
         },
         {
-          "evidenceId": "semgrep-docs-37",
-          "quote": "Semgrep provides a testing mechanism for your rules."
-        },
-        {
-          "evidenceId": "semgrep-docs-16",
-          "quote": "This is helpful in preventing secrets and security issues from leaking into your Git history."
+          "evidenceId": "semgrep-docs-8",
+          "quote": "Semgrep Secrets scans code to detect exposed API keys, passwords, and other credentials."
         }
       ]
     }
@@ -3387,10 +3439,10 @@
   {
     "productId": "semgrep",
     "storyId": "dependency-vulnerability-scan",
-    "verdict": "partial",
+    "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Semgrep Supply Chain is documented as an SCA tool that detects vulnerabilities introduced by open source dependencies. Its Dynamic Dependency Resolution parses manifests to inventory dependencies, and it flags reachable vulnerable findings. Lockfile scanning is never named, so coverage of the story is incomplete. missing for 10: explicit documentation of lockfile parsing and supported manifest/lockfile ecosystems, a documented developer-facing CLI command for running dependency scans locally, independent or hands-on corroboration of SCA vulnerability detection.",
+    "rationale": "Semgrep Supply Chain is documented as a first-party SCA tool that detects vulnerabilities introduced by open source dependencies. It builds a dependency inventory through manifest parsing, and its reachability analysis flags vulnerable dependency findings that the code actually reaches. Missing for 10: explicit documentation of lockfile parsing and supported ecosystems/lockfile formats, the vulnerability advisory data source, and independent hands-on corroboration of SCA scanning.",
     "evidenceIds": [
       "semgrep-docs-29",
       "semgrep-docs-13",
@@ -3399,7 +3451,7 @@
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As a developer, I can scan my dependency manifests and lockfiles for packages with known vulnerabilities",
       "citations": [
         {
@@ -3423,12 +3475,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Semgrep Secrets is documented as scanning code for exposed API keys, passwords, and other credentials, and it validates whether found secrets are live. Nothing in the pack shows scanning of full git history: the pre-commit hook only prevents new secrets from entering history and does not scan existing commits. missing for 10: documented full git-history (past commits) scanning, CLI usage specific to Secrets scans, independent or hands-on corroboration of secret detection.",
+    "rationale": "Semgrep Secrets is documented as scanning code for exposed API keys, passwords and other credentials, and it validates whether found secrets are live, so scanning the current repository is covered. Nothing in the evidence shows scanning of full git history: the pre-commit hook only stops new secrets from entering history and does not scan past commits. missing for 10: documented scanning of full git history/past commits, independent or hands-on corroboration of secret-detection accuracy.",
     "evidenceIds": [
       "semgrep-docs-8",
       "semgrep-docs-9",
       "semgrep-docs-43",
-      "semgrep-docs-10"
+      "semgrep-docs-16"
     ],
     "support": {
       "relation": "direct",
@@ -3442,6 +3494,10 @@
         {
           "evidenceId": "semgrep-docs-9",
           "quote": "valid secrets are those that have been tested against a web service and confirmed to successfully grant resources or authentication."
+        },
+        {
+          "evidenceId": "semgrep-docs-16",
+          "quote": "This is helpful in preventing secrets and security issues from leaking into your Git history."
         }
       ]
     }
@@ -3452,7 +3508,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Semgrep Supply Chain is a documented SCA tool that detects vulnerable dependencies, flags reachability and generates SBOMs. However, nothing in the evidence shows it recommending upgrade versions or opening fix pull requests for dependencies. The `--autofix` flag applies rule-defined code fixes, not dependency upgrades, and the generic 'triage and remediation' platform wording is adjacent, so neither earns credit here.",
+    "rationale": "Semgrep Supply Chain is documented as an SCA tool that detects vulnerable dependencies, flags reachability, and generates SBOMs. The evidence never mentions recommended upgrade versions, upgrade paths, or automated dependency-fix pull requests. The `--autofix` flag applies rule-defined code fixes from SAST rules, which is an adjacent feature and not dependency remediation, and generic 'remediation' marketing language does not document this capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3467,12 +3523,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Semgrep's homepage claims it can 'Scan and fix AI-generated code the moment it's written'. A probe confirms an official MCP server is documented, which is the mechanism for wiring the scanner into a coding agent. The documented pre-commit integration also catches issues before they enter Git history. However, the pack has no detail on how the MCP server or an agent hook is configured, what it scans, or whether it gates code before it lands. Missing for 10: documented agent/MCP setup and tool details, evidence of blocking or gating AI-generated changes from the agent loop, independent hands-on corroboration of the agent integration.",
+    "rationale": "Semgrep documents an official MCP server that a coding agent can connect to. Its marketing claims it can 'scan and fix AI-generated code the moment it's written', and a documented pre-commit hook can block issues at commit time, so the core path exists. However, the evidence never describes how the MCP server is wired into an agent's loop or that it gates code before it lands, so the coverage is incomplete. missing for 10: documentation of MCP server tools and setup for coding agents, evidence of agent-triggered pre-landing gating, independent or hands-on corroboration of the agent integration.",
     "evidenceIds": [
-      "semgrep-docs-47",
       "semgrep-probe-3",
-      "semgrep-docs-16",
-      "semgrep-docs-48"
+      "semgrep-docs-47",
+      "semgrep-docs-16"
     ],
     "support": {
       "relation": "direct",
@@ -3480,12 +3535,12 @@
       "subject": "As an ai-native user, I can wire the scanner into my coding agent so AI-generated code is scanned for issues before it lands",
       "citations": [
         {
-          "evidenceId": "semgrep-docs-47",
-          "quote": "Scan and fix AI-generated code the moment it's written"
-        },
-        {
           "evidenceId": "semgrep-probe-3",
           "quote": "official MCP server documented at https://docs.semgrep.dev/mcp"
+        },
+        {
+          "evidenceId": "semgrep-docs-47",
+          "quote": "Scan and fix AI-generated code the moment it's written"
         },
         {
           "evidenceId": "semgrep-docs-16",
@@ -3500,12 +3555,12 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Semgrep's own rule docs say rules can 'Scan configuration files', and its generic pattern matching covers languages it does not formally support. That is a first-party but thin basis for scanning IaC configuration for security issues. The evidence never names Terraform, Kubernetes, or prebuilt IaC misconfiguration rulesets, so the user appears to need custom rules. missing for 10: explicit Terraform/HCL support, explicit Kubernetes manifest support, curated IaC misconfiguration rulesets, independent or hands-on corroboration of IaC scanning.",
+    "rationale": "Semgrep's own docs say its rules can \"Scan configuration files\" for security issues, so config misconfiguration scanning is a documented capability. However, the evidence never names Terraform, Kubernetes, or IaC rulesets; support appears to depend on writing custom rules, with only a community mention of YAML parsing. Missing for 10: explicit Terraform/HCL support, Kubernetes manifest support, prebuilt IaC misconfiguration rulesets, hands-on corroboration of IaC scanning.",
     "evidenceIds": [
       "semgrep-docs-21",
       "semgrep-docs-35",
-      "semgrep-docs-39",
-      "semgrep-docs-52"
+      "semgrep-docs-52",
+      "semgrep-comm-5"
     ],
     "support": {
       "relation": "direct",
@@ -3515,10 +3570,6 @@
         {
           "evidenceId": "semgrep-docs-21",
           "quote": "you can write rules that: Automate code review comments. Identify secure coding violations. Scan configuration files."
-        },
-        {
-          "evidenceId": "semgrep-docs-39",
-          "quote": "Semgrep can match generic patterns in languages that it does **not** yet support."
         },
         {
           "evidenceId": "semgrep-docs-52",
@@ -3533,12 +3584,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Semgrep's own docs say it can scan any codebase. Its Supply Chain SCA tool inventories dependencies by parsing manifests, and generic pattern matching covers languages Semgrep does not yet support. Community reports confirm multi-language use (JS, TS, Ruby, YAML, HTML, CSS; per-language rulesets), though one user hit a TypeScript parse failure. Missing for 10: a documented list of supported languages and their analysis depth, a documented list of supported package ecosystems or manifest/lockfile formats for Supply Chain, and independent confirmation of breadth across all major ecosystems.",
+    "rationale": "Semgrep documents multi-language scanning, including generic matching for languages it does not yet support and per-language curated rules, plus Supply Chain SCA that inventories dependencies via manifest parsing. Community reports corroborate parsing of JS, TS, Ruby, YAML, HTML and CSS, though one user hit a TypeScript parse failure on valid code. The pack has no supported-language or package-ecosystem list, so breadth across 'all major' languages and ecosystems is unproven. missing for 10: a documented list of supported languages and depth per language, a list of supported package managers and lockfile ecosystems for Supply Chain, independent confirmation of broad accurate parsing.",
     "evidenceIds": [
-      "semgrep-docs-1",
       "semgrep-docs-39",
-      "semgrep-docs-29",
       "semgrep-docs-13",
+      "semgrep-docs-29",
       "semgrep-comm-1",
       "semgrep-comm-5",
       "semgrep-comm-3"
@@ -3549,16 +3599,20 @@
       "subject": "As a developer, I can scan projects across all the major languages and package ecosystems my organization uses",
       "citations": [
         {
-          "evidenceId": "semgrep-docs-1",
-          "quote": "scan your first project, which can be any codebase, repository, or folder within a monorepo, for security issues"
-        },
-        {
           "evidenceId": "semgrep-docs-39",
           "quote": "Semgrep can match generic patterns in languages that it does **not** yet support."
         },
         {
           "evidenceId": "semgrep-docs-13",
           "quote": "Supply Chain's Dynamic Dependency Resolution provides a complete inventory of your project's dependencies using a combination of manifest parsing and repository integration"
+        },
+        {
+          "evidenceId": "semgrep-docs-29",
+          "quote": "Semgrep Supply Chain is a software composition analysis (SCA) tool that detects security vulnerabilities in your codebase introduced by open source dependencies."
+        },
+        {
+          "evidenceId": "semgrep-comm-1",
+          "quote": "More flexible across languages than tools like Brakeman, and rulesets are readable. The curated per-language rules are also convenient for quick wins."
         },
         {
           "evidenceId": "semgrep-comm-5",
@@ -3571,13 +3625,14 @@
     "productId": "semgrep",
     "storyId": "license-compliance-scan",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Semgrep Supply Chain's overview claims it supports enforcing open source package licensing requirements. It also documents a full dependency inventory and SBOM generation, which implies dependency licenses are detected. That evidence is a single high-level line, with no detail on how license policies are configured or how scans fail or block on violations. Missing for 10: documented license detection mechanics, policy configuration (allow/deny lists), evidence of enforcement during CI scans such as blocking or failing builds, and independent or hands-on corroboration.",
+    "rationale": "Semgrep Supply Chain, its own SCA product, claims to support enforcement of open source package licensing requirements, and it builds a full dependency inventory and SBOM. That inventory is the base for license detection. The only license evidence is one overview-level line, with no detail on how licenses are detected, how policies are configured, or how scans block on violations. Missing for 10: explicit documentation of license detection per dependency, license policy configuration (allow/deny lists), in-scan or CI enforcement behavior, independent or hands-on corroboration.",
     "evidenceIds": [
       "semgrep-docs-44",
+      "semgrep-docs-13",
       "semgrep-docs-12",
-      "semgrep-docs-13"
+      "semgrep-docs-29"
     ],
     "support": {
       "relation": "direct",
@@ -3590,7 +3645,7 @@
         },
         {
           "evidenceId": "semgrep-docs-13",
-          "quote": "Supply Chain's Dynamic Dependency Resolution provides a complete inventory of your project's dependencies"
+          "quote": "Supply Chain's Dynamic Dependency Resolution provides a complete inventory of your project's dependencies using a combination of manifest parsing and repository integration"
         },
         {
           "evidenceId": "semgrep-docs-12",
@@ -3603,9 +3658,9 @@
     "productId": "semgrep",
     "storyId": "machine-readable-output",
     "verdict": "full",
-    "quality": 9,
+    "quality": 8,
     "confidence": "high",
-    "rationale": "Semgrep's CLI docs give an explicit SARIF export command (`semgrep ci --sarif --sarif-output=semgrep.sarif`). A community user independently reports building a Microsoft-internal triage tool on Semgrep's SARIF output, which confirms it works with downstream tooling. Missing for 10: JSON output format is not evidenced in the pack, and other machine-readable formats are not documented.",
+    "rationale": "Semgrep's CLI docs give an explicit command for exporting scan results to a SARIF file. A hands-on community report confirms practitioners feed Semgrep's SARIF output into downstream triage tooling at scale. missing for 10: no evidence of JSON or other machine-readable output formats, and only a single command snippet rather than in-depth output-format documentation.",
     "evidenceIds": [
       "semgrep-docs-20",
       "semgrep-docs-3",
@@ -3631,12 +3686,14 @@
     "productId": "semgrep",
     "storyId": "openness-api-parity",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Semgrep AppSec Platform documents its own API, but the evidence describes only a narrow scope: listing deployments, gathering findings and listing projects. Nothing shows parity with UI actions such as triage, policy and rule management, or settings, and no public OpenAPI spec was found. Missing for 10: documented UI-to-API parity, API coverage for triage/ticketing/policy/rule management/settings, a published OpenAPI spec or full API reference, and independent corroboration.",
+    "rationale": "Semgrep AppSec Platform has a documented, OpenAPI-specified public API with a live playground and a formal deprecation policy. The documented scope is limited to listing deployments, gathering findings and listing projects, so parity with everything doable in the UI is not shown. The docs-path OpenAPI probe 404s are superseded by the spec published at semgrep.dev/api/v1. Missing for 10: evidence of API coverage for UI actions such as triage, rule and policy management, settings and onboarding; an explicit statement of API/UI parity; independent corroboration.",
     "evidenceIds": [
       "semgrep-docs-17",
-      "semgrep-probe-2"
+      "semgrep-openapi-spec-20261105",
+      "semgrep-api-playground-20261105",
+      "semgrep-deprecation-policy-20261105"
     ],
     "support": {
       "relation": "direct",
@@ -3646,6 +3703,14 @@
         {
           "evidenceId": "semgrep-docs-17",
           "quote": "Semgrep AppSec Platform provides an API that enables you to list deployments, gather findings created by Semgrep AppSec Platform, and list projects."
+        },
+        {
+          "evidenceId": "semgrep-openapi-spec-20261105",
+          "quote": "This API is documented in the OpenAPI format. Download OpenAPI specification: Download"
+        },
+        {
+          "evidenceId": "semgrep-deprecation-policy-20261105",
+          "quote": "stable endpoints receive at least 180 days’ notice before a breaking change or a removal"
         }
       ]
     }
@@ -3656,11 +3721,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Semgrep documents exporting scan results to SARIF, an open format, and generating SBOMs of open source components. Its AppSec Platform API can gather findings, and a hands-on user built tooling on the SARIF output. There is no documented whole-account export covering triage state, tickets, settings or private rules as a path to leave the platform. Missing for 10: documented complete export of all platform data, an explicit migration/offboarding path, and open-format export of platform triage history and private rules.",
+    "rationale": "Semgrep documents exporting scan results to SARIF, an open format, and a hands-on report confirms real use of that SARIF output. It also offers an API to gather findings and can generate SBOMs. However, nothing shows a complete, all-data export path for leaving the platform. Missing for 10: documented bulk export of all platform data (triage history, comments, settings, projects), a documented offboarding or account-export workflow, and evidence that platform data is portable beyond per-scan results.",
     "evidenceIds": [
       "semgrep-docs-20",
-      "semgrep-docs-12",
       "semgrep-docs-17",
+      "semgrep-docs-12",
       "semgrep-comm-14"
     ],
     "support": {
@@ -3673,12 +3738,12 @@
           "quote": "To export the results to a SARIF file: semgrep ci --sarif --sarif-output=semgrep.sarif"
         },
         {
-          "evidenceId": "semgrep-docs-12",
-          "quote": "Generate reports and software bills of materials (SBOM) that provide a complete inventory of your open source components"
-        },
-        {
           "evidenceId": "semgrep-docs-17",
           "quote": "Semgrep AppSec Platform provides an API that enables you to list deployments, gather findings created by Semgrep AppSec Platform, and list projects."
+        },
+        {
+          "evidenceId": "semgrep-docs-12",
+          "quote": "Generate reports and software bills of materials (SBOM) that provide a complete inventory of your open source components"
         },
         {
           "evidenceId": "semgrep-comm-14",
@@ -3691,9 +3756,9 @@
     "productId": "semgrep",
     "storyId": "openness-open-license",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "low",
-    "rationale": "The pack includes items sourced from a public GitHub repository (github.com/semgrep/semgrep), which suggests the core engine's source is publicly readable. However, no evidence item states the license, and a community comment notes that Semgrep Supply Chain is not open source, so parts of the product are closed. Missing for 10: an explicit statement of the open-source license, clarity on which components (engine vs. Pro/AppSec Platform features) are open, and independent corroboration of source availability.",
+    "rationale": "The evidence shows a public first-party GitHub repository (github.com/semgrep/semgrep) for the core engine, so its source appears readable. No item names an open-source license, and a community comment notes that Semgrep Supply Chain is not open source, so only part of the product is shown to be open. Missing for 10: an explicitly documented open license (e.g. LGPL/MIT) for the source, clarity on which components are open versus proprietary, and independent corroboration of the license terms.",
     "evidenceIds": [
       "semgrep-gh-1",
       "semgrep-gh-2",
@@ -3721,14 +3786,13 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Semgrep's open-source scanning engine installs and runs entirely locally: `semgrep scan` needs no account or login, and by default code is never uploaded. That is self-hosting of the core analysis engine. However, triage, CI findings aggregation, Managed Scans and the API all live in the hosted Semgrep AppSec Platform, and a community user notes Supply Chain is not open source and may require uploading code. missing for 10: a documented self-hosted or on-prem deployment of the AppSec Platform (findings triage/dashboard), offline operation of paid products like Supply Chain/Secrets, independent hands-on corroboration of fully air-gapped use.",
+    "rationale": "Semgrep's own CLI engine installs locally and scans code on your machine or build environment without an account, and by default code is not uploaded. That covers self-running the core scanner. However, the evidence shows the AppSec Platform (triage, findings API, CI result handling) as a Semgrep-hosted web app, and a community member notes Supply Chain is not open source and may need a service. missing for 10: documented self-hosted deployment of the AppSec Platform/web app, evidence that Pro features (cross-file analysis, Secrets, Supply Chain) run fully offline, explicit open-source licensing details for the core engine.",
     "evidenceIds": [
       "semgrep-gh-2",
+      "semgrep-docs-26",
       "semgrep-docs-27",
       "semgrep-docs-34",
-      "semgrep-docs-26",
       "semgrep-docs-50",
-      "semgrep-docs-33",
       "semgrep-docs-45",
       "semgrep-comm-12"
     ],
@@ -3759,19 +3823,19 @@
   {
     "productId": "semgrep",
     "storyId": "pr-comments-scm",
-    "verdict": "partial",
+    "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Semgrep's own docs say it posts PR/MR comments: Semgrep Secrets 'informs developers of valid secrets in their PRs and MRs by posting comments directly', and its GitHub integration can 'automate PR comments'. CI jobs scan on pull and merge requests. Comment surfacing for general Code and Supply Chain findings is only implied, GitLab is never named explicitly (only 'MRs'), and status checks are not documented. missing for 10: explicit documentation of PR/MR comments for all finding types (Code, Supply Chain), explicit GitLab merge-request integration docs, GitHub/GitLab status-check behavior, independent or hands-on corroboration.",
+    "rationale": "Semgrep's own docs say it posts comments directly on PRs and MRs (shown for Secrets findings), that its GitHub integration automates PR comments, and that CI scans run on pull and merge request events. The core story is delivered by the product itself, though the evidence is thin and scattered. Missing for 10: a dedicated PR/MR-comment setup doc covering all products (Code, Supply Chain), explicit naming of GitLab, evidence of status checks, and independent or hands-on corroboration.",
     "evidenceIds": [
       "semgrep-docs-10",
       "semgrep-docs-57",
       "semgrep-docs-25",
-      "semgrep-docs-45"
+      "semgrep-docs-35"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As a developer, I can see scan findings surfaced as pull-request comments or checks in GitHub or GitLab",
       "citations": [
         {
@@ -3793,12 +3857,14 @@
     "productId": "semgrep",
     "storyId": "pre-commit-hook",
     "verdict": "full",
-    "quality": 8,
-    "confidence": "high",
-    "rationale": "Semgrep's own docs have a dedicated pre-commit page. It states that the pre-commit framework can run semgrep when you commit changes, preventing secrets and security issues from leaking into Git history, which covers every element of the story directly. missing for 10: independent or hands-on corroboration of the pre-commit hook in use, documented hook configuration details (e.g. the .pre-commit-config.yaml entry and commit-blocking behavior on findings).",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Semgrep's own docs say the pre-commit framework can run semgrep on commit, explicitly to keep secrets and security issues out of Git history. That directly matches the story, and the CLI runs locally without a login. missing for 10: detailed hook configuration docs (hook IDs, rulesets, staged-file scoping), confirmation that Semgrep Secrets detection specifically runs inside the hook, independent or hands-on corroboration.",
     "evidenceIds": [
       "semgrep-docs-16",
-      "semgrep-docs-46"
+      "semgrep-docs-46",
+      "semgrep-docs-8",
+      "semgrep-docs-34"
     ],
     "support": {
       "relation": "direct",
@@ -3810,8 +3876,12 @@
           "quote": "The pre-commit framework can run semgrep when you commit changes. This is helpful in preventing secrets and security issues from leaking into your Git history."
         },
         {
-          "evidenceId": "semgrep-docs-46",
-          "quote": "The pre-commit framework can run `semgrep` when you commit changes."
+          "evidenceId": "semgrep-docs-8",
+          "quote": "Semgrep Secrets scans code to detect exposed API keys, passwords, and other credentials."
+        },
+        {
+          "evidenceId": "semgrep-docs-34",
+          "quote": "You do **not** need to be logged in to run a scan."
         }
       ]
     }
@@ -3822,7 +3892,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Semgrep AppSec Platform stores scan findings in the cloud, so choosing a data region or residency is a fair question for this product. The evidence never mentions region selection or data residency. Local-only scanning and the --dry-run flag, which keeps results out of the web app, are adjacent privacy controls, not a choice of storage location.",
+    "rationale": "Data region or residency selection is a fair question for a SaaS AppSec platform like Semgrep, but the evidence pack never documents choosing a storage region. The local-analysis default and the --dry-run flag only cover not uploading data, which is an adjacent control rather than region choice, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3837,7 +3907,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Semgrep ships AI features such as Semgrep Assistant and AI-Powered Detection, so an AI-training opt-out is a fair question for this product. The pack has no documented training-data policy or opt-out control. Local-only analysis (\"code is never uploaded\" by default) and the --dry-run no-upload flag are adjacent data-locality controls, not a guarantee or setting that prevents data from being used for model training.",
+    "rationale": "Semgrep ships AI features (Semgrep Assistant, AI-Powered Detection), so an AI-training opt-out is a fair question for this product. The evidence pack has no statement or control about excluding customer data from model training. Local-by-default scanning and the --dry-run no-upload flag are adjacent data-locality controls, not a training opt-out, so they earn no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3852,7 +3922,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Semgrep includes a hosted AppSec Platform that stores findings, so retention and deletion controls are a fair question to ask. The evidence only shows ways to avoid uploading data: local analysis by default and the --dry-run flag. These are adjacent upload controls, not documented retention-period settings or deletion of stored findings or scan data.",
+    "rationale": "Data retention and deletion is a fair question for Semgrep, since it is a SaaS AppSec platform that stores scan findings, so the axis applies. The pack shows only adjacent controls: code is analyzed locally by default, and the --dry-run flag stops scans from being uploaded to the web app. Neither is a documented way to set retention periods or delete stored data, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -3867,7 +3937,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Telemetry opt-out is a fair question for a CLI security scanner, so the axis applies. However, the evidence pack documents no telemetry or metrics opt-out. The closest items are adjacent controls: --dry-run stops scan results uploading to the web app, and local analysis means code is not uploaded by default. Neither addresses usage tracking or telemetry.",
+    "rationale": "Telemetry opt-out is a fair question for a CLI security scanner, so the axis applies. However, the evidence pack documents no telemetry or metrics opt-out control. The --dry-run flag only stops scan results from being uploaded to the web app, and local analysis with no code upload by default is about code privacy. Both are adjacent controls, not usage-tracking opt-out.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3880,9 +3950,9 @@
     "productId": "semgrep",
     "storyId": "reachability-prioritization",
     "verdict": "partial",
-    "quality": 7,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Semgrep Supply Chain is a first-party SCA tool, and its docs say it flags dependency findings as reachable when code in the codebase matches the vulnerability definition. That is the core reachability signal this story depends on. However, the evidence does not document filtering, sorting or triaging alerts by reachability status, and nothing independent confirms the analysis works in practice. Missing for 10: documented prioritization/filtering of alerts by reachability status, detail on reachability analysis depth (e.g., transitive dependencies or call paths), independent or hands-on corroboration.",
+    "rationale": "Semgrep Supply Chain is a first-party SCA tool that flags dependency findings as reachable when a code pattern in the codebase matches the vulnerability definition, so the product itself provides reachability information for dependency alerts. The evidence never documents a workflow for prioritizing, filtering or sorting alerts by that reachability status, and it does not explain how deep the reachability analysis goes; there is no independent corroboration. missing for 10: documented prioritization/filtering of alerts by reachability, detail on reachability analysis depth (e.g. transitive or call-path analysis) and language coverage, independent or hands-on corroboration.",
     "evidenceIds": [
       "semgrep-docs-11",
       "semgrep-docs-24",
@@ -3910,13 +3980,13 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Semgrep Code is documented as a SAST tool. Its taint-tracking rules are explicitly described as catching complex injection bugs such as XSS, and cross-file analysis extends detection across files. Community users confirm using it for security lint rules and curated per-language rulesets, though hands-on reports show simple pattern rules can miss aliasing workarounds. Missing for 10: explicit documentation of out-of-the-box injection/XSS rulesets (taint evidence centers on writing rules), and independent corroboration specifically of injection/XSS detection accuracy.",
+    "rationale": "Semgrep Code is documented as a SAST tool whose rules use pattern matching and data-flow analysis to find security issues. Its taint tracking is explicitly described as catching complex injection bugs such as XSS, and cross-file analysis extends detection across files. Community users corroborate its use for security lint rules and curated per-language rules, though one hands-on report notes a simple exec pattern search missed an aliasing workaround. Missing for 10: explicit documentation that the out-of-the-box rulesets cover injection/XSS classes (the taint docs frame it as writing your own rules), and evidence that aliasing-style evasions are handled.",
     "evidenceIds": [
       "semgrep-docs-60",
       "semgrep-docs-41",
       "semgrep-docs-58",
-      "semgrep-docs-2",
       "semgrep-docs-52",
+      "semgrep-docs-2",
       "semgrep-docs-27",
       "semgrep-comm-1",
       "semgrep-comm-7",
@@ -3928,20 +3998,20 @@
       "subject": "As a developer, I can run static analysis that finds vulnerability classes like injection and XSS in my source code",
       "citations": [
         {
-          "evidenceId": "semgrep-docs-60",
-          "quote": "Semgrep Code is a static application security testing (SAST) tool that"
-        },
-        {
           "evidenceId": "semgrep-docs-41",
           "quote": "Taint tracking (known also as taint analysis) enables you to write simple rules that catch complex injection bugs, such as those that can result in cross-site scripting (XSS)."
         },
         {
-          "evidenceId": "semgrep-docs-2",
-          "quote": "To turn on cross-file analysis, which allows you to detect vulnerabilities across files and folders"
+          "evidenceId": "semgrep-docs-60",
+          "quote": "Semgrep Code is a static application security testing (SAST) tool that"
         },
         {
-          "evidenceId": "semgrep-docs-27",
-          "quote": "semgrep scan - This is the recommended command for scanning local codebases or scanning a project when you don't have a Semgrep account"
+          "evidenceId": "semgrep-docs-52",
+          "quote": "Semgrep uses rules, which encapsulate pattern matching logic and data flow analysis, to scan your code for security issues, style violations, bugs, and more."
+        },
+        {
+          "evidenceId": "semgrep-docs-2",
+          "quote": "To turn on cross-file analysis, which allows you to detect vulnerabilities across files and folders"
         }
       ]
     }
@@ -3952,7 +4022,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Semgrep Supply Chain documents generating SBOMs that inventory a project's open source components, backed by dependency resolution from manifest parsing. The evidence does not name the SPDX or CycloneDX formats, does not cover container images, and describes no export workflow. missing for 10: explicit SPDX/CycloneDX format support, container image SBOM generation, CLI/API export steps, independent or hands-on corroboration.",
+    "rationale": "Semgrep Supply Chain's own docs say it can generate SBOMs with a complete inventory of open source components, backed by dependency resolution through manifest parsing. The evidence never names the output format (SPDX or CycloneDX), never mentions container images, and has no hands-on corroboration. missing for 10: documented SPDX/CycloneDX output formats, SBOM generation for container images, CLI/API workflow details for exporting the SBOM, independent corroboration.",
     "evidenceIds": [
       "semgrep-docs-12",
       "semgrep-docs-13",
@@ -3980,7 +4050,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Semgrep Secrets is documented as scanning code in repositories and folders. Nothing in the evidence shows native scanning of S3 buckets, Docker images, or CI logs. Pulling such content into a local folder and running `semgrep scan` would be a user-side workaround, which earns no credit.",
+    "rationale": "Semgrep Secrets is documented as scanning code for exposed credentials. The evidence only covers scanning codebases, repositories, folders, CI jobs and pre-commit hooks. Nothing shows native scanning of S3 buckets, Docker images or CI logs. Exporting those artifacts to a local folder and running `semgrep scan` would be a user-side workaround and earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3995,7 +4065,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nothing in the evidence pack documents filtering findings by severity or confidence, or failing a CI build only above a severity threshold. The nearby material is adjacent and does not count: reachability flagging, valid-secret prioritization, and AI noise reduction help prioritize findings but are not severity or confidence gating. The axis clearly applies to a SAST tool, so absence of evidence is 'none', not 'na'.",
+    "rationale": "The evidence pack never documents filtering scan results by severity or confidence, or configuring which findings fail or block a CI build. Related items such as reachability flagging, prioritizing valid secrets, and AI post-processing that reduces noise are different features, not severity/confidence gating, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4010,7 +4080,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Semgrep Secrets' own docs say it validates detected secrets against the issuing web service and marks as 'valid' those confirmed to grant access. It uses that validity status to prioritize findings and to notify developers in PRs and MRs, which is the core of the story. Missing for 10: documentation of which services or providers have validators, how invalid or unverifiable results are reported, and independent or hands-on corroboration that validation works.",
+    "rationale": "Semgrep Secrets' own docs say detected secrets are tested against a web service to confirm they grant access, labeled as valid (actively in use), and prioritized for security engineers. Valid secrets are also surfaced in PR/MR comments. Missing for 10: documentation of which issuing services or providers are covered, details on how validation runs or is configured, and independent or hands-on corroboration that validation works.",
     "evidenceIds": [
       "semgrep-docs-9",
       "semgrep-docs-43",
@@ -4028,7 +4098,7 @@
         },
         {
           "evidenceId": "semgrep-docs-43",
-          "quote": "Semgrep saves security engineers time and effort by prioritizing valid leaked secrets and informs developer"
+          "quote": "Semgrep saves security engineers time and effort by prioritizing valid leaked secrets"
         },
         {
           "evidenceId": "semgrep-docs-10",

@@ -1,17 +1,34 @@
 {
-  "hash": "0026631a57c99894cd53af71bad8c9ab3b1bbb7bc1d391b16e17225aed69aed2",
+  "hash": "659ec7b291359337b527f60971e78820845719df91516763900751cadfc562be",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence says LangSmith has an API, but nothing shows a downloadable OpenAPI or equivalent spec. The OpenAPI probe returned 404 on every candidate path under docs.langchain.com. The llms.txt and markdown docs index are documentation, not machine-readable API specs, and the MCP server is a different capability.",
-    "evidenceIds": [],
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "LangSmith's API host serves a full OpenAPI 3.1 document at /openapi.json, and the same spec is published on the docs site and listed in llms.txt under OpenAPI Specs. A Swagger UI and ReDoc render it. The probe's 404s were on different docs.langchain.com paths, so they do not contradict the documented spec location. Missing for 10: independent or hands-on probe confirmation that the documented spec URL downloads successfully.",
+    "evidenceIds": [
+      "langsmith-openapi-spec-20261105",
+      "langsmith-swagger-ui-20261105",
+      "langsmith-api-deprecations-20261105"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "langsmith-openapi-spec-20261105",
+          "quote": "The production API host serves its full machine-readable spec at the well-known path: an OpenAPI 3.1 document with info title \"LangSmith\""
+        },
+        {
+          "evidenceId": "langsmith-openapi-spec-20261105",
+          "quote": "The same spec is published on the docs site (docs.langchain.com/langsmith/langsmith-platform-openapi.json, listed in the docs llms.txt under \"## OpenAPI Specs\")."
+        },
+        {
+          "evidenceId": "langsmith-swagger-ui-20261105",
+          "quote": "The API host itself serves an interactive Swagger UI (page title \"LangSmith - Swagger UI\", loading /openapi.json), with ReDoc live at /redoc."
+        }
+      ]
     },
     "productId": "langsmith",
     "storyId": "api-machine-spec"

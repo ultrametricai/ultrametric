@@ -1,17 +1,29 @@
 {
-  "hash": "7df9de66fff54ee36b86b2232ceb59eab094edb901e5546866a1b4612dff3438",
+  "hash": "b261161256c5383744b2f20b669aade5f4e3b626338561ec82809a776a99c245",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Scheduling recurring jobs is a fair question for a workflow orchestration framework, so the axis applies. The pack never documents cron, recurring, or time-based triggers. Community mentions of LangGraph \"scheduling\" describe its internal Pregel-style node execution, not recurring job schedules. The Agent Server's run endpoints cover one-off invocation, not a recurring schedule.",
-    "evidenceIds": [],
+    "rationale": "The Agent Server (the LangGraph Platform runtime, which the LangGraph CLI builds and runs) publishes an OpenAPI spec that includes a 'Crons' endpoint group, so recurring scheduled runs are a first-party capability. The evidence only names that endpoint group, with no description of cron syntax, management, or behavior. It also appears tied to the server/deployment layer rather than the open-source graph library. Community mentions of 'scheduling' refer to execution scheduling inside the framework, not recurring jobs, so they are not credited. Missing for 10: documentation of how cron jobs are created and managed, schedule syntax and limits, clarity on availability outside the platform runtime, hands-on or independent corroboration.",
+    "evidenceIds": [
+      "langgraph-agent-server-openapi-20261105",
+      "langgraph-docs-30"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can schedule recurring jobs or workflows",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "langgraph-agent-server-openapi-20261105",
+          "quote": "covering Assistants (\"An assistant is a configured instance of a graph.\"), Threads, Thread Runs, Stateless Runs, Crons, Store, A2A, MCP, and System endpoints"
+        },
+        {
+          "evidenceId": "langgraph-docs-30",
+          "quote": "LangGraph CLI is a command-line tool for building and running the Agent Server locally. The resulting server exposes all API endpoints for runs, threads, assistants, etc."
+        }
+      ]
     },
     "productId": "langgraph",
     "storyId": "automation-scheduled-jobs"

@@ -1,17 +1,24 @@
 {
-  "hash": "04fb0b72277fa8f6ef7765ae5f9d2a338c2f8d7d84404de442e16ec3500ca55c",
+  "hash": "5cf2a67adbf9730259c91d9e9f3e0429015646e96fed90ffa4174fce1625656e",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "The evidence pack documents no sandbox or isolated test environment for Pipedream. The closest items are replaying a test event through a workflow (\"Send Test Event\") and `pd dev`, which syncs local edits to the deployed component. Neither is a separate environment isolated from production data or connected accounts. These are adjacent testing conveniences, not sandbox isolation, so they earn no credit.",
-    "evidenceIds": [],
+    "rationale": "Pipedream Connect has documented `development` and `production` environments. Connected accounts and credentials stay separate between them, and each request picks one via the x-pd-environment header or the SDK's projectEnvironment. That gives a real place to test without touching production credentials. The isolation is limited, though: development is capped at 10 external users for personal testing, and it covers only Connect, not the workflows product. Send Test Event only replays event data, so it is not sandbox isolation. Missing for 10: environment isolation for workflows, a dev environment beyond the 10-user cap, evidence that third-party data (not just credentials) is sandboxed, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "pipedream-connect-environments-20261106"
+    ],
     "support": {
-      "relation": "adjacent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "pipedream-connect-environments-20261106",
+          "quote": "Pipedream Connect projects support two environments: `development` and `production`. Connected accounts and credentials stored in one environment remain separate from the other"
+        }
+      ]
     },
     "productId": "pipedream",
     "storyId": "api-sandbox"

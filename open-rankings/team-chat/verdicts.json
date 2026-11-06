@@ -1371,7 +1371,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Reviewing audit logs is a fair question for a community and workspace chat platform like Discord, so the axis applies. However, the evidence pack contains no documentation of a server audit log feature. The only nearby evidence is Gateway API events about server actions (e.g. a channel updated or a role created), which is a developer building block for constructing such a log, not a reviewable audit log, so it earns no credit.",
+    "rationale": "Audit logs of admin and user actions are a fair question for a community and chat platform like Discord, so the axis applies. However, no evidence item documents an audit log feature. The Gateway API, which streams guild events such as channel updates and role creation, is only a developer building block. It is not a reviewable audit log, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1384,13 +1384,12 @@
     "productId": "discord",
     "storyId": "agent-channel-member",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Discord documents bot users that run inside servers: apps authenticate with a bot token and receive server events over the Gateway WebSocket, so a developer-built AI agent could sit in a channel as a bot member. The evidence shows no native AI agent, and it does not document mention-triggered replies; the developer must build and host the agent. Missing for 10: a first-party or turnkey AI agent member, documented mention-triggered participation (e.g. message/mention events), and hands-on corroboration of AI bots in channels.",
+    "rationale": "Discord documents first-class bots and apps that run inside servers. Developers authenticate them with bot tokens, they can receive server events over the Gateway WebSocket, and users can find and add them through the App Directory, so an agent-backed bot can sit in a channel. The pack does not show mention-triggered participation or any native AI-agent capability, so the AI behaviour must be built by the developer. Missing for 10: documented mention-triggered message events and replies, first-party AI agent support, and hands-on or independent corroboration of agent bots participating in channel conversations.",
     "evidenceIds": [
-      "discord-docs-41",
       "discord-docs-1",
-      "discord-docs-4",
+      "discord-docs-41",
       "discord-docs-17",
       "discord-docs-20",
       "discord-docs-11"
@@ -1401,20 +1400,24 @@
       "subject": "As an ai-native user, I can add an AI agent as a member of a channel that participates in conversations when mentioned",
       "citations": [
         {
+          "evidenceId": "discord-docs-1",
+          "quote": "Build automated apps, commands, and integrations that run inside Discord servers."
+        },
+        {
           "evidenceId": "discord-docs-41",
           "quote": "Build bots and integrations on Discord"
         },
         {
-          "evidenceId": "discord-docs-1",
-          "quote": "Build automated apps, commands, and integrations that run inside Discord servers."
+          "evidenceId": "discord-docs-17",
+          "quote": "Using a bot token found on the Bot page within your app’s settings"
         },
         {
           "evidenceId": "discord-docs-20",
           "quote": "The Gateway API lets apps open secure WebSocket connections with Discord to receive events about actions that take place in a server/guild"
         },
         {
-          "evidenceId": "discord-docs-17",
-          "quote": "Using a bot token found on the Bot page within your app’s settings"
+          "evidenceId": "discord-docs-11",
+          "quote": "users can find it in the App Directory — a searchable hub where they can browse by name, category, or collection."
         }
       ]
     }
@@ -1425,15 +1428,15 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Discord documents an official REST API that apps authenticate to with a bot token or an OAuth2 bearer token. It also documents sending messages into channels (webhooks) and a Gateway for receiving server events, so an agent integration is plausible on first-party primitives. However, the evidence never explicitly documents reading channel message history, and token scoping is only implied by a single OAuth2 scope description, not shown for message read/post permissions. Missing for 10: explicit documentation of reading channel messages via API, documented message-related OAuth2 scopes or bot permission scoping, independent or hands-on corroboration of an agent workflow.",
+    "rationale": "Discord documents an official REST API that authenticates with either a bot token or an OAuth2 bearer token, and its OAuth2 docs describe scope-like permissions. Sending messages into channels is documented, though via webhooks, which need no authentication, and the Gateway delivers server events. The pack never explicitly documents bot endpoints for reading or posting channel messages, or how token scopes limit those message operations. Missing for 10: explicit message read/create endpoint documentation, documented scope/permission granularity for channel messaging, hands-on or independent corroboration of an agent workflow.",
     "evidenceIds": [
-      "discord-docs-4",
       "discord-docs-35",
-      "discord-docs-56",
-      "discord-docs-10",
+      "discord-docs-4",
+      "discord-docs-17",
       "discord-docs-18",
       "discord-docs-27",
-      "discord-docs-41"
+      "discord-docs-56",
+      "discord-docs-20"
     ],
     "support": {
       "relation": "direct",
@@ -1441,20 +1444,16 @@
       "subject": "As an ai-native user, I can have an agent read and post channel messages through the official API using scoped tokens",
       "citations": [
         {
-          "evidenceId": "discord-docs-4",
-          "quote": "Authenticating with the Discord API can be done in one of two ways: 1. Using a bot token... 2. Using an OAuth2 bearer token"
-        },
-        {
           "evidenceId": "discord-docs-35",
           "quote": "The Discord API is a REST API that allows you to interact with Discord data from your own applications."
         },
         {
-          "evidenceId": "discord-docs-56",
-          "quote": "Send messages into Discord channels or receive event notifications from Discord delivered to your app over HTTP."
+          "evidenceId": "discord-docs-17",
+          "quote": "Using a bot token found on the Bot page within your app’s settings... Using an OAuth2 bearer token gained through the OAuth2 API."
         },
         {
-          "evidenceId": "discord-docs-10",
-          "quote": "The Gateway API lets apps open secure WebSocket connections with Discord to receive events about actions that take place in a server/guild"
+          "evidenceId": "discord-docs-56",
+          "quote": "Send messages into Discord channels or receive event notifications from Discord delivered to your app over HTTP."
         },
         {
           "evidenceId": "discord-docs-27",
@@ -1467,14 +1466,13 @@
     "productId": "discord",
     "storyId": "agentic-agent-docs",
     "verdict": "full",
-    "quality": 8,
+    "quality": 9,
     "confidence": "high",
-    "rationale": "Live probes confirm Discord serves an llms.txt documentation index at docs.discord.com/llms.txt (HTTP 200). Its docs pages are available as markdown (.md) and explicitly tell readers to fetch the complete index from llms.txt, so an agent can be pointed directly at them. Many .md doc URLs in the pack corroborate machine-readable docs coverage. Missing for 10: evidence of a full-content llms-full.txt or agent-specific usage guidance, and independent or community corroboration of agents using these docs.",
+    "rationale": "Direct probes show Discord serves an llms.txt index at docs.discord.com/llms.txt (HTTP 200). Its developer docs are also available as markdown pages that tell agents to fetch that index, so an agent can be pointed straight at agent-oriented docs. A machine-readable OpenAPI spec is additionally published on GitHub, though as a preview. Missing for 10: evidence of a full-content llms-full.txt or other agent-specific guidance, and independent hands-on reports of agents consuming these docs.",
     "evidenceIds": [
       "discord-probe-1",
       "discord-probe-2",
-      "discord-docs-43",
-      "discord-docs-56"
+      "discord-openapi-spec-20261105"
     ],
     "support": {
       "relation": "direct",
@@ -1488,6 +1486,10 @@
         {
           "evidenceId": "discord-probe-2",
           "quote": "Fetch the complete documentation index at: https://docs.discord.com/llms.txt"
+        },
+        {
+          "evidenceId": "discord-openapi-spec-20261105",
+          "quote": "The official discord/discord-api-spec repository publishes a machine-readable OpenAPI 3.1.0 document"
         }
       ]
     }
@@ -1497,8 +1499,8 @@
     "storyId": "agentic-ai-insights",
     "verdict": "none",
     "quality": 0,
-    "confidence": "high",
-    "rationale": "A chat and community platform could plausibly ship AI-generated insights, such as conversation summaries or suggestions, so the axis applies. The evidence pack documents no first-party AI insight or suggestion feature. Bot, command and API building blocks are developer primitives that do not count as the product delivering this capability.",
+    "confidence": "medium",
+    "rationale": "Asking for AI-generated insights or suggestions inside the product is a fair question for a chat and community platform, so the axis applies. However, nothing in the evidence pack documents any first-party AI insights, summaries or suggestions feature in Discord. The developer APIs for bots, commands and integrations are building blocks that a developer could use to construct such a feature, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1510,35 +1512,16 @@
   {
     "productId": "discord",
     "storyId": "agentic-autonomous-automation",
-    "verdict": "partial",
-    "quality": 4,
+    "verdict": "none",
+    "quality": 0,
     "confidence": "medium",
-    "rationale": "Discord's developer platform documents building automated apps and integrations that run inside servers. Bots can receive Gateway events and post messages via webhooks, which supports background, event-driven automation. However, automation depends on a developer building and hosting a bot or app; the evidence shows no user-facing way to set up automations. Missing for 10: no-code or user-configurable automation setup, scheduled or recurring triggers, documented background execution hosted by Discord, and independent hands-on corroboration.",
-    "evidenceIds": [
-      "discord-docs-1",
-      "discord-docs-41",
-      "discord-docs-20",
-      "discord-docs-43",
-      "discord-docs-56"
-    ],
+    "rationale": "The evidence only shows developer building blocks: the Bot/REST API, Gateway WebSocket events, webhooks and slash commands, which a developer can use to write and host their own automated app. No evidence shows a first-party automation feature that a user can set up to run autonomously in the background, so this is adjacent support only.",
+    "evidenceIds": [],
     "support": {
-      "relation": "direct",
-      "coverage": "partial",
+      "relation": "adjacent",
+      "coverage": "none",
       "subject": "As an AI-native user, I can set up automations that run autonomously in the background",
-      "citations": [
-        {
-          "evidenceId": "discord-docs-1",
-          "quote": "Build automated apps, commands, and integrations that run inside Discord servers."
-        },
-        {
-          "evidenceId": "discord-docs-20",
-          "quote": "The Gateway API lets apps open secure WebSocket connections with Discord to receive events about actions that take place in a server/guild, like when a channel is updated or a role is created."
-        },
-        {
-          "evidenceId": "discord-docs-43",
-          "quote": "CI/CD pipelines posting build results or deployment notifications"
-        }
-      ]
+      "citations": []
     }
   },
   {
@@ -1547,7 +1530,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A built-in AI assistant is a fair capability to ask of a chat and community platform, but the evidence pack never mentions a first-party AI assistant in Discord. The documented bots, apps, slash commands and the Embedded App SDK are developer building blocks for third-party apps, not a built-in assistant users can delegate tasks to.",
+    "rationale": "A built-in AI assistant is a fair axis for a consumer chat and community platform like Discord, but nothing in the evidence pack documents a first-party AI assistant that users can delegate tasks to. Bots, application commands and the Embedded App SDK are developer building blocks for third-party apps, not a built-in assistant, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1562,14 +1545,14 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Discord documents non-interactive automation paths: a REST API authenticated with bot tokens, Gateway WebSocket connections for event-driven apps, and webhooks explicitly suited to \"CI/CD pipelines posting build results or deployment notifications.\" This lets Discord be driven headlessly from CI, but only by posting into it or building against its API. There is no first-party CLI or headless client mode in the evidence. Missing for 10: an official CLI or headless runner, CI-specific documentation or examples beyond webhook notifications, and hands-on or independent corroboration.",
+    "rationale": "Discord documents headless, programmatic use: a REST API, bot-token authentication, a Gateway WebSocket for events, and incoming webhooks that need no bot user or auth. Its webhook docs explicitly name CI/CD pipelines posting build results as a use case. Headless use is limited to API-driven integrations rather than running the product itself without a UI; there is no official CLI or headless client mode, and the OpenAPI spec is only a preview. Missing for 10: an official CLI or headless runner, documented CI-specific guidance beyond posting notifications, a stable machine-readable spec, and independent hands-on corroboration.",
     "evidenceIds": [
       "discord-docs-43",
-      "discord-docs-4",
       "discord-docs-35",
-      "discord-docs-1",
+      "discord-docs-4",
+      "discord-docs-5",
       "discord-docs-10",
-      "discord-docs-5"
+      "discord-openapi-spec-20261105"
     ],
     "support": {
       "relation": "direct",
@@ -1581,16 +1564,20 @@
           "quote": "CI/CD pipelines posting build results or deployment notifications"
         },
         {
-          "evidenceId": "discord-docs-4",
-          "quote": "Authenticating with the Discord API can be done in one of two ways: 1. Using a bot token... 2. Using an OAuth2 bearer token"
-        },
-        {
           "evidenceId": "discord-docs-35",
           "quote": "The Discord API is a REST API that allows you to interact with Discord data from your own applications."
         },
         {
-          "evidenceId": "discord-docs-1",
-          "quote": "Build automated apps, commands, and integrations that run inside Discord servers."
+          "evidenceId": "discord-docs-4",
+          "quote": "Authenticating with the Discord API can be done in one of two ways: 1. Using a bot token... 2. Using an OAuth2 bearer token"
+        },
+        {
+          "evidenceId": "discord-docs-5",
+          "quote": "They do not require a bot user or authentication to use."
+        },
+        {
+          "evidenceId": "discord-docs-10",
+          "quote": "The Gateway API lets apps open secure WebSocket connections with Discord to receive events about actions that take place in a server/guild"
         }
       ]
     }
@@ -1601,7 +1588,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Discord is a communication platform that could plausibly embed an AI assistant able to consume MCP servers, so the axis applies. However, nothing in the evidence pack mentions MCP or plugging in external tool servers. The bot, app, webhook and Gateway APIs are developer building blocks for integrations, not a native MCP-client capability, so they earn no credit.",
+    "rationale": "Chat platforms like Discord could plausibly ship an assistant that consumes MCP servers' tools, so this axis applies. The evidence pack does not mention MCP client support or any built-in AI that can use external tools. Bots, slash commands, webhooks and the REST/Gateway APIs are developer building blocks, not MCP client capability, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1615,8 +1602,8 @@
     "storyId": "agentic-mcp-server",
     "verdict": "none",
     "quality": 0,
-    "confidence": "high",
-    "rationale": "Discord is a SaaS communication platform, not an agent, so publishing an official MCP server is a fair question and the axis applies. The evidence pack has no official MCP server or MCP endpoint. The REST API, Gateway, bot tokens, and llms.txt/markdown docs are developer building blocks and AI-readable docs, which are adjacent features and earn no credit.",
+    "confidence": "medium",
+    "rationale": "Discord is a communication platform with a public developer API, so an official MCP server is a fair question and the axis applies. The pack documents only adjacent building blocks: the REST API, Gateway, bot and OAuth2 auth, llms.txt docs, and a preview OpenAPI spec. None of these is a first-party MCP server, so there is no evidence it delivers this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1631,7 +1618,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack shows no first-party capability for operating Discord through natural-language commands. Slash commands are structured `/` invocations, and bots, application commands and the REST/Gateway APIs are developer building blocks that third parties could use to build such a feature. Neither counts as the product itself understanding natural language.",
+    "rationale": "Natural-language operation is a fair axis for a communication platform, but the evidence documents no first-party natural-language command interface. Slash commands are structured commands typed after `/`, and bots, interactions and the API are developer building blocks for constructing such a capability, not the capability itself.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1646,7 +1633,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "An official CLI is a fair question for a platform with a developer ecosystem like Discord, so the axis applies. The evidence documents a REST API, Gateway, webhooks, SDKs and an llms.txt, but nothing about an official command-line tool. Those are developer building blocks or adjacent features and earn no credit toward this story.",
+    "rationale": "Discord is a developer platform with a REST API, so an official CLI is a fair question to ask. Nothing in the evidence pack documents a first-party command-line tool. The REST API, SDKs, webhooks, llms.txt and the OpenAPI spec are developer building blocks or adjacent features, not an official CLI.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1659,18 +1646,18 @@
     "productId": "discord",
     "storyId": "agentic-public-api",
     "verdict": "full",
-    "quality": 8,
+    "quality": 9,
     "confidence": "high",
-    "rationale": "Discord documents a public REST API for interacting with Discord data. It authenticates via bot tokens or OAuth2 bearer tokens and is complemented by a Gateway WebSocket API for events. The docs are also served in agent-friendly form through llms.txt and markdown pages. Missing for 10: a machine-readable OpenAPI spec (all probed paths returned 404) and independent or hands-on corroboration of driving the product through the API.",
+    "rationale": "Discord documents a public REST API with bot-token and OAuth2 authentication, versioned endpoints (v10/v9 available, with deprecation status and a change log), and a Gateway WebSocket API for events. An official machine-readable OpenAPI 3.1 spec is also published on GitHub, and agent-friendly llms.txt and markdown docs are reachable. missing for 10: independent hands-on corroboration of driving the API, and a stable (non-preview) OpenAPI spec, since the published spec is marked preview and the docs-site OpenAPI paths return 404.",
     "evidenceIds": [
       "discord-docs-35",
       "discord-docs-4",
       "discord-docs-17",
+      "discord-api-versioning-20261105",
       "discord-docs-20",
-      "discord-docs-18",
+      "discord-openapi-spec-20261105",
       "discord-probe-1",
-      "discord-probe-2",
-      "discord-probe-3"
+      "discord-probe-2"
     ],
     "support": {
       "relation": "direct",
@@ -1686,12 +1673,16 @@
           "quote": "Authenticating with the Discord API can be done in one of two ways: 1. Using a bot token... 2. Using an OAuth2 bearer token"
         },
         {
-          "evidenceId": "discord-docs-20",
-          "quote": "The Gateway API lets apps open secure WebSocket connections with Discord to receive events about actions that take place in a server/guild, like when a channel is updated or a role is created."
+          "evidenceId": "discord-api-versioning-20261105",
+          "quote": "Discord exposes different versions of our API. You should specify which version to use by including it in the request path like https://discord.com/api/v{version_number}"
         },
         {
-          "evidenceId": "discord-probe-1",
-          "quote": "PROBE llms.txt: HTTP 200 at https://docs.discord.com/llms.txt"
+          "evidenceId": "discord-docs-20",
+          "quote": "The Gateway API lets apps open secure WebSocket connections with Discord to receive events about actions that take place in a server/guild"
+        },
+        {
+          "evidenceId": "discord-openapi-spec-20261105",
+          "quote": "The official discord/discord-api-spec repository publishes a machine-readable OpenAPI 3.1.0 document"
         }
       ]
     }
@@ -1702,7 +1693,7 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "low",
-    "rationale": "Discord documents its own credential types: per-app bot tokens and OAuth2 bearer tokens from a registered developer application. The OAuth2 page describes a grant that limits access to a specific resource (`/users/@me/connections`), which implies scoped tokens, but least-privilege scoping and bot permission controls are not spelled out. Missing for 10: explicit documentation of the OAuth2 scope list and least-privilege design, bot permission or intent restrictions on bot tokens, agent-specific credential issuance and revocation, and independent corroboration.",
+    "rationale": "Discord documents two first-party credential types for its API: application bot tokens and OAuth2 bearer tokens issued through a registered developer application. The OAuth2 docs describe per-scope grants, such as a scope that lets /users/@me/connections return linked accounts, which implies scoped access. However, the evidence never describes fine-grained or least-privilege permission configuration for bot tokens. Nor does it describe credentials designed for agents. Missing for 10: documented bot permission/role scoping for least privilege, a full scope list, token rotation/revocation, agent-specific credential guidance, and independent corroboration.",
     "evidenceIds": [
       "discord-docs-4",
       "discord-docs-6",
@@ -1715,8 +1706,8 @@
       "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
       "citations": [
         {
-          "evidenceId": "discord-docs-4",
-          "quote": "Authenticating with the Discord API can be done in one of two ways: 1. Using a bot token... 2. Using an OAuth2 bearer token"
+          "evidenceId": "discord-docs-17",
+          "quote": "Using a bot token found on the Bot page within your app’s settings... Using an OAuth2 bearer token gained through the OAuth2 API."
         },
         {
           "evidenceId": "discord-docs-6",
@@ -1732,10 +1723,10 @@
   {
     "productId": "discord",
     "storyId": "agentic-sdks",
-    "verdict": "full",
-    "quality": 8,
+    "verdict": "partial",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Discord documents official first-party SDKs. The Embedded App SDK supports shipping web apps and games inside Discord. The Discord Social SDK has getting-started guides for C++, Unity, Unreal Engine and iOS/Android. Missing for 10: an official SDK for bots and the general REST/Gateway API in mainstream languages (e.g. JS/Python) is not evidenced, there is no published OpenAPI spec (probe returned 404), and there is no independent or hands-on corroboration of SDK quality.",
+    "rationale": "Discord documents two official SDKs: the Embedded App SDK for in-Discord web apps and games, and the Discord Social SDK with getting-started guides for C++, Unity, Unreal Engine, and iOS/Android. However, the core bot and REST/Gateway API surface has no documented official SDK; it is covered only by raw API docs and a preview OpenAPI spec. Missing for 10: an official SDK for the bot/REST/Gateway API, SDK coverage for general-purpose (non-game) languages, and independent or hands-on corroboration of SDK quality.",
     "evidenceIds": [
       "discord-docs-13",
       "discord-docs-23",
@@ -1743,12 +1734,11 @@
       "discord-docs-71",
       "discord-docs-72",
       "discord-docs-50",
-      "discord-docs-47",
-      "discord-docs-58"
+      "discord-docs-47"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can build against official SDKs",
       "citations": [
         {
@@ -1778,9 +1768,9 @@
     "productId": "discord",
     "storyId": "agentic-webhooks",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Discord's webhooks docs explicitly say apps can \"receive event notifications from Discord delivered to your app over HTTP,\" which is a first-party outbound event-webhook capability. The rest of the pack does not count toward this story: the incoming webhooks in docs-5/42/43 only post messages into channels, and the Gateway delivers events over WebSocket. Missing for 10: details on how to register an endpoint and which event types are available, delivery and verification semantics, and independent or hands-on corroboration.",
+    "rationale": "Discord's webhooks page says apps can \"receive event notifications from Discord delivered to your app over HTTP,\" which is a first-party outbound HTTP event capability. It is only a one-line mention, though. Discord's other webhook docs cover incoming message posting (for example CI/CD notifications), and the Gateway delivers events over WebSocket, so neither counts as subscribing to webhook events. missing for 10: documented registration/subscription steps for event webhook endpoints, a list of supported event types, payload/signature verification details, retry/delivery semantics, independent or hands-on corroboration.",
     "evidenceIds": [
       "discord-docs-56"
     ],
@@ -1802,7 +1792,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "AI recaps of missed conversations are a fair question for a chat platform like Discord, so the axis applies. Nothing in the evidence pack documents a native AI summary or recap feature for channels or threads. The pack only describes threads themselves and developer building blocks (bots, the Gateway API, the REST API) that a third party could use to build summarization, and these earn no credit.",
+    "rationale": "AI-generated recaps are a fair capability to expect from a chat and community platform, so the axis applies. However, nothing in the evidence pack documents Discord producing AI summaries or recaps of channels or threads. The evidence covers threads themselves, bots, the API and Gateway events, but these are only developer building blocks for constructing such a feature, not the feature itself.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1816,8 +1806,8 @@
     "storyId": "ai-meeting-recaps",
     "verdict": "none",
     "quality": 0,
-    "confidence": "medium",
-    "rationale": "Discord is a voice and chat communication platform, so AI-generated meeting or call recaps are a fair axis for it. However, the evidence pack documents no first-party AI notes, transcription or recap feature for voice calls. The bot, Gateway and Social SDK voice features are only developer building blocks and earn no credit.",
+    "confidence": "high",
+    "rationale": "Discord is a voice and chat communication platform, so AI-generated notes and recaps of calls are a fair question for it. Nothing in the evidence pack documents any first-party AI transcription, notes, or recap feature for voice calls. Developer primitives such as bots, the Gateway, and the Social SDK voice chat are building blocks, not the capability itself.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1832,7 +1822,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Discord documents a REST API reference covering authentication, webhooks, OAuth2 and the Gateway, but nothing in the evidence shows an interactive explorer or runnable 'try it' examples. The OpenAPI probe returned 404 on every candidate path, so there is no evidence of a spec-driven interactive console. A static reference and llms.txt/markdown docs are adjacent features and do not meet the story.",
+    "rationale": "Discord documents a REST API reference with authentication and versioning sections, and publishes a preview OpenAPI 3.1 spec. No evidence shows an interactive API explorer or runnable 'try it' examples. The OpenAPI spec is only a building block a user could load into their own tools, which earns no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1844,64 +1834,98 @@
   {
     "productId": "discord",
     "storyId": "api-machine-spec",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Discord documents a REST API, so a downloadable machine-readable spec is a fair question, but nothing in the evidence shows one exists. The probe found every candidate OpenAPI/Swagger path returning 404. The llms.txt and markdown docs are documentation indexes, not an API spec, so they are adjacent and earn no credit.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 6,
+    "confidence": "high",
+    "rationale": "Discord's official discord/discord-api-spec GitHub repository publishes a downloadable OpenAPI 3.1.0 document for API v10 covering 150+ stable paths, with a separate preview spec for experimental features. However, the publication is labeled a public preview that may break without notice and is not recommended for production. The probe's 404s on docs-site OpenAPI paths only show the spec isn't hosted there; they don't contradict the GitHub publication. Missing for 10: GA/production-supported status of the spec, discoverability from the official docs site, independent hands-on corroboration of spec completeness.",
+    "evidenceIds": [
+      "discord-openapi-spec-20261105",
+      "discord-probe-3"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "discord-openapi-spec-20261105",
+          "quote": "The official discord/discord-api-spec repository publishes a machine-readable OpenAPI 3.1.0 document, info title \"Discord HTTP API (Preview)\", API version 10, covering 150+ paths of the stable public API"
+        }
+      ]
     }
   },
   {
     "productId": "discord",
     "storyId": "api-sandbox",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "Discord has a developer platform (REST API, bots, Social SDK), so a sandbox or test environment is a fair thing to ask of it. However, nothing in the evidence documents a sandbox, test mode, or environment isolated from production data. Provisional accounts and webhooks are different features and do not count toward this story.",
-    "evidenceIds": [],
+    "rationale": "Discord documents its own test modes, but only for monetization. Test entitlements simulate subscribed and unsubscribed states, and Application Test Mode allows one-time purchases without credit card charges. The same source states that no sandbox environment exists for the API as a whole, so bots, interactions, messages and Gateway events can only be tested against the live platform. missing for 10: a general sandbox or non-production environment for the Discord API beyond billing, isolated test data for bots and interactions, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "discord-test-entitlements-20261105"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "discord-test-entitlements-20261105",
+          "quote": "You can test your implementation by creating and deleting test entitlements. These entitlements will allow you to test your premium offering in both a subscribed and unsubscribed state"
+        },
+        {
+          "evidenceId": "discord-test-entitlements-20261105",
+          "quote": "without any credit card charges"
+        }
+      ]
     }
   },
   {
     "productId": "discord",
     "storyId": "api-versioning-policy",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Discord documents a REST API (bot/OAuth2 auth, Gateway, webhooks), so this story applies. However, nothing in the evidence pack mentions API version numbers, version selection, or a deprecation policy or timeline. Describing the API as a REST API does not establish versioning or deprecation guarantees.",
-    "evidenceIds": [],
+    "rationale": "Discord's API Reference documents path-based API versioning (/api/v{version_number}) and a version-status table: v10 and v9 are Available, v8 and below are Deprecated or Discontinued, and discontinued versions return 400 Bad Request. A change log is linked, and the official OpenAPI spec is pinned to API version 10, which corroborates the versioning scheme. missing for 10: explicit deprecation timelines or minimum notice periods before a version is discontinued, and independent or hands-on corroboration that the policy is followed in practice.",
+    "evidenceIds": [
+      "discord-api-versioning-20261105",
+      "discord-openapi-spec-20261105"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "discord-api-versioning-20261105",
+          "quote": "Discord exposes different versions of our API. You should specify which version to use by including it in the request path like https://discord.com/api/v{version_number}"
+        },
+        {
+          "evidenceId": "discord-api-versioning-20261105",
+          "quote": "v10 and v9 Available, v8 and below Deprecated or Discontinued; discontinued versions return 400 Bad Request"
+        },
+        {
+          "evidenceId": "discord-openapi-spec-20261105",
+          "quote": "API version 10, covering 150+ paths of the stable public API"
+        }
+      ]
     }
   },
   {
     "productId": "discord",
     "storyId": "app-marketplace",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Discord documents an App Directory, a searchable hub where users can browse apps by name, category, or collection. These are apps and integrations built to run inside Discord servers, which covers the core of the marketplace story. Missing for 10: explicit documentation of the install-to-server flow and admin permission controls for adding apps, plus independent or hands-on corroboration.",
+    "rationale": "Discord's first-party docs describe an App Directory, a searchable hub where users browse apps by name, category, or collection, plus shareable app profile and store pages. That is a native marketplace for prebuilt integrations. The evidence describes discovery but never explicitly documents the install or add-to-server step, or an admin permission flow. Missing for 10: explicit documentation of installing an app to a server from the directory, admin authorization and permission controls, independent or hands-on corroboration.",
     "evidenceIds": [
       "discord-docs-11",
-      "discord-docs-21",
-      "discord-docs-1",
-      "discord-docs-12"
+      "discord-docs-12",
+      "discord-docs-41"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As a team-admin, I can install prebuilt integrations from an app directory or marketplace",
       "citations": [
         {
@@ -1909,12 +1933,12 @@
           "quote": "users can find it in the App Directory — a searchable hub where they can browse by name, category, or collection."
         },
         {
-          "evidenceId": "discord-docs-1",
-          "quote": "Build automated apps, commands, and integrations that run inside Discord servers."
-        },
-        {
           "evidenceId": "discord-docs-12",
           "quote": "Create shareable links to your app's profile page, store page, or specific items."
+        },
+        {
+          "evidenceId": "discord-docs-41",
+          "quote": "Build bots and integrations on Discord"
         }
       ]
     }
@@ -1925,7 +1949,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack has no first-party documentation of starting an audio or video call from a Discord channel or DM inside the client. The voice-chat mentions all concern the Discord Social SDK, a developer building block for adding voice to games. \"HD video streaming\" is a Nitro streaming-quality perk, an adjacent feature rather than call initiation. \"Space to talk\" is generic marketing copy.",
+    "rationale": "The evidence pack never documents starting a voice or video call from a channel or DM inside the Discord client. Two items come close but do not count. 'HD video streaming' is a Nitro quality perk, an adjacent feature rather than in-app call initiation. Social SDK voice chat is a developer building block for embedding voice in third-party games, not a call button inside Discord.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1940,7 +1964,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Bulk operations are a fair axis for a community/chat platform, for example bulk message deletion or bulk moderation actions. However, the evidence pack documents no bulk or batch capability. The REST API, bot tokens, and Gateway events are only developer building blocks from which a developer could construct bulk tooling, so they earn no credit.",
+    "rationale": "Bulk operations are a fair axis for a community/chat platform with a developer API. The evidence pack documents only a general REST API, bots, webhooks and Gateway events. None of it describes a bulk or batch capability, such as acting on many messages, members or channels in one operation, so the story is unevidenced.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1955,9 +1979,9 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Event-driven automation is a fair axis for a community/chat platform, but the evidence shows only developer building blocks. The Gateway API and HTTP event notifications let developers write their own apps that react to events. Nothing documents a first-party way for users to define rules that trigger actions automatically. Missing for 10: a documented user-configurable rule/trigger system, event-to-action automation without custom bot code, and any hands-on corroboration.",
+    "rationale": "The evidence pack documents no user-definable rule or automation feature that triggers actions on events. What it does show are developer building blocks: Gateway WebSocket events and HTTP event notifications that a developer could use to build a bot implementing such rules. Building blocks earn no credit toward the story's own capability, so the verdict is none.",
     "evidenceIds": [
-      "discord-docs-10",
+      "discord-docs-20",
       "discord-docs-56"
     ],
     "support": {
@@ -1966,8 +1990,8 @@
       "subject": "As an AI-native user, I can define rules that trigger actions automatically on events",
       "citations": [
         {
-          "evidenceId": "discord-docs-10",
-          "quote": "The Gateway API lets apps open secure WebSocket connections with Discord to receive events about actions that take place in a server/guild"
+          "evidenceId": "discord-docs-20",
+          "quote": "The Gateway API lets apps open secure WebSocket connections with Discord to receive events about actions that take place in a server/guild, like when a channel is updated or a role is created."
         },
         {
           "evidenceId": "discord-docs-56",
@@ -1982,7 +2006,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Discord is a community and chat platform with a developer platform, so a native scheduling feature is a fair question for it. The evidence pack documents no capability to schedule recurring jobs or workflows. Bots, application commands, webhooks and the Gateway are developer building blocks that someone would have to run on their own scheduler, so they earn no credit.",
+    "rationale": "Discord's documented developer platform covers bots, slash commands, Gateway events, webhooks for posting messages, and the REST API. None of the evidence documents a native capability to schedule recurring jobs or workflows. Bots and webhooks are developer building blocks that an external scheduler could drive, so they earn no credit for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1997,7 +2021,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Discord documents building automated apps, commands, and integrations, so automation versioning is a fair question for this kind of platform. However, nothing in the evidence shows Discord itself letting users version, review, or roll back those automations. Any versioning would have to come from the developer's own tooling, which is a user-side workaround and earns no credit.",
+    "rationale": "Discord documents building bots, commands, webhooks and gateway-driven automations, so versioning and rollback of automations is a fair question. The pack shows no product feature for versioning, reviewing, or rolling back a user's automations. The 'API Versioning' section covers Discord's own HTTP API versions, which is an adjacent concept and does not support this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2009,10 +2033,10 @@
   {
     "productId": "discord",
     "storyId": "custom-slash-commands",
-    "verdict": "full",
-    "quality": 8,
-    "confidence": "high",
-    "rationale": "Discord's first-party docs describe slash commands as the most common type of application command, invoked by typing `/` in the chat input or opening the command picker. The docs also say developers can build commands that give users a native way to invoke their app, which matches the story's core. missing for 10: explicit documentation of the command registration API or process (global vs. guild registration, options schema), independent or hands-on corroboration.",
+    "verdict": "partial",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Discord's interactions docs say developers can build commands for their apps, and users invoke slash commands by typing `/` in the chat input or by opening the command picker. That covers the core of the story. However, the evidence never shows how a command is actually registered, such as an API endpoint or its scoping, so coverage is not complete. Missing for 10: documented command-registration mechanism (endpoint, global vs guild scope, options/parameters), independent or hands-on corroboration.",
     "evidenceIds": [
       "discord-docs-7",
       "discord-docs-19",
@@ -2022,7 +2046,7 @@
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As a developer, I can register custom slash commands that users invoke from the message box",
       "citations": [
         {
@@ -2046,7 +2070,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nothing in the evidence documents guest accounts, cross-organization shared channels, or limited-access roles for external partners. Private Threads (discord-docs-38) are a related but different feature. Social SDK provisional accounts (discord-docs-46) give game players a Discord identity, not partner access to a team's server. Neither earns credit for this story.",
+    "rationale": "Discord is a chat and community platform, so external-partner collaboration is a fair question to ask of it. The evidence pack documents no guest accounts, cross-organization shared channels, or limited-access partner roles. Private Threads are a related but different feature, and Social SDK provisional accounts are game-player identities rather than team guest access, so neither earns credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2061,7 +2085,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Message-history retention on a free tier is a fair question for a team chat platform, so the axis applies. However, nothing in the evidence pack covers whether free servers keep full access to older messages. The Nitro pages list paid perks such as upload sizes, emoji and streaming, and say nothing about history limits or retention.",
+    "rationale": "The axis applies: Discord is a team and community chat product, so message-history retention on a free tier is a fair pricing question. However, the evidence pack never documents free-tier message history access or retention limits. The Nitro pricing evidence covers only uploads, emoji, profiles and streaming.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2076,7 +2100,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Searching message history is a fair question for a chat/community platform like Discord, so the axis applies. However, nothing in the evidence pack documents in-app message search or filters by sender, channel, or date. The community remarks about search-engine indexing and discoverability concern external visibility, not admin message search, so they are not counted.",
+    "rationale": "Message-history search with sender, channel, and date filters is a fair question for a chat and community platform like Discord, so the axis applies. However, the evidence pack contains no documentation of in-app message search or its filters. The community comments about content not being indexed by external search engines concern public web discoverability, not in-app search, so they are not credited.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2091,7 +2115,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Notification tuning is a fair question for a chat and community platform like Discord, so the axis applies. However, the evidence pack contains nothing on per-channel, keyword, or scheduled notification settings. The only nearby items are a community remark that Discord sends notifications and a Social SDK note about player social settings, and neither documents notification tuning.",
+    "rationale": "Notification tuning is a fair question for a chat and community platform like Discord, so the axis applies. However, the evidence pack contains no documentation of per-channel, keyword, or scheduled notification controls. The only related items are a community remark about receiving notifications and Social SDK social settings, neither of which is this capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2104,9 +2128,9 @@
     "productId": "discord",
     "storyId": "incoming-webhook-post",
     "verdict": "full",
-    "quality": 9,
+    "quality": 8,
     "confidence": "high",
-    "rationale": "Discord's own webhook documentation describes webhooks as a low-effort way to post messages to channels without a bot user or authentication. The platform webhooks page reinforces this with sending messages into channels over HTTP and CI/CD notification use cases. Missing for 10: independent or hands-on corroboration of posting via a webhook URL, and documented detail on payload format or rate limits.",
+    "rationale": "Discord's own webhook docs say webhooks are a low-effort way to post messages to channels without a bot user or authentication. They also say webhooks can send messages into channels over HTTP, with CI/CD build notifications given as a use case. missing for 10: explicit documentation of the webhook URL/execute endpoint and payload format, independent or hands-on corroboration.",
     "evidenceIds": [
       "discord-docs-5",
       "discord-docs-42",
@@ -2137,9 +2161,9 @@
     "productId": "discord",
     "storyId": "interactive-app-ui",
     "verdict": "full",
-    "quality": 8,
-    "confidence": "high",
-    "rationale": "Discord's interactions docs describe customizable buttons, modals as single-user pop-up forms, and message components that let users invoke apps natively in chat. The Embedded App SDK adds interactive experiences that run directly inside Discord. Missing for 10: explicit documentation of structured message layout components beyond the general 'message components' mention, and independent or hands-on corroboration.",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Discord's interactions docs cover the core of the story: buttons as customizable clickable components, modals as pop-up forms that collect data, and message components that let users invoke apps natively in chat. The Embedded App SDK adds richer interactive experiences inside Discord. Structured message layouts are covered only by the general 'message components' mention, with no detail on layout primitives. Missing for 10: explicit documentation of structured message layout components (e.g. layout/container components or select menus), independent or hands-on corroboration.",
     "evidenceIds": [
       "discord-docs-8",
       "discord-docs-9",
@@ -2176,10 +2200,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Discord is a chat tool, so a built-in no-code workflow builder is a fair question to ask. The evidence only shows developer building blocks: bots and apps, Gateway events, modals that collect form-like data, and webhooks. These require coding an app, and nothing shows a no-code builder for admins that runs on events, schedules, or form submissions.",
+    "rationale": "Workflow automation is a fair axis for a chat tool, but the evidence documents only developer building blocks: Gateway events, modals, slash commands, and webhooks for posting messages. None of these is a no-code workflow builder that a team-admin can configure with event, schedule, or form-submission triggers, and building blocks earn no credit for this story.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As a team-admin, I can build no-code workflows triggered by events, schedules, or form submissions inside the chat tool",
       "citations": []
@@ -2191,14 +2215,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Discord documents its own REST API for interacting with Discord data, with bot-token and OAuth2 authentication. It also documents a Gateway for server events such as channel updates and role creation, HTTP webhooks, and Social SDK APIs for relationships and DMs, so there is real programmatic coverage of core surfaces. Nothing in the pack shows that the API matches everything a user can do in the UI. Missing for 10: any documented claim of API parity with the UI, evidence covering user-level actions such as Nitro and profile customization or server settings, a published OpenAPI spec (the probe returned 404s), and independent hands-on corroboration of API breadth.",
+    "rationale": "Discord documents a public REST API, a Gateway WebSocket API for server events, bot-token and OAuth2 authentication, and a published OpenAPI spec covering 150+ stable paths. This shows broad programmatic access, but nothing in the evidence claims or shows that the API matches what users can do in the UI. The API is framed around apps and bots acting in servers, and user-level features such as Nitro profile customization and HD streaming have no API counterpart in the evidence. missing for 10: an explicit API/UI parity statement, evidence that user-account actions and client features are API-accessible, independent corroboration of coverage breadth, and a stable rather than preview OpenAPI spec.",
     "evidenceIds": [
       "discord-docs-35",
-      "discord-docs-4",
       "discord-docs-20",
-      "discord-docs-56",
-      "discord-docs-69",
-      "discord-probe-3"
+      "discord-docs-4",
+      "discord-openapi-spec-20261105",
+      "discord-api-versioning-20261105"
     ],
     "support": {
       "relation": "direct",
@@ -2210,16 +2233,16 @@
           "quote": "The Discord API is a REST API that allows you to interact with Discord data from your own applications."
         },
         {
-          "evidenceId": "discord-docs-4",
-          "quote": "Authenticating with the Discord API can be done in one of two ways: 1. Using a bot token... 2. Using an OAuth2 bearer token"
-        },
-        {
           "evidenceId": "discord-docs-20",
           "quote": "The Gateway API lets apps open secure WebSocket connections with Discord to receive events about actions that take place in a server/guild, like when a channel is updated or a role is created."
         },
         {
-          "evidenceId": "discord-docs-69",
-          "quote": "Manage Discord user relationships including friends and blocked users in your application."
+          "evidenceId": "discord-openapi-spec-20261105",
+          "quote": "covering 150+ paths of the stable public API"
+        },
+        {
+          "evidenceId": "discord-docs-4",
+          "quote": "Authenticating with the Discord API can be done in one of two ways: 1. Using a bot token... 2. Using an OAuth2 bearer token"
         }
       ]
     }
@@ -2230,7 +2253,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Exporting your data and leaving is a fair question for a consumer chat platform, but the evidence pack never documents a user data export, its formats, or account deletion. The REST API is only a developer building block that could be used to build an export, so it earns no credit here.",
+    "rationale": "Nothing in the evidence pack documents a user-facing data export or account data package in open formats. The REST API and OAuth2 docs are only developer building blocks someone could use to build an export, and they earn no credit here. A community anecdote about losing contacts after a server ban says nothing about an export feature.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2244,8 +2267,8 @@
     "storyId": "openness-open-license",
     "verdict": "none",
     "quality": 0,
-    "confidence": "high",
-    "rationale": "Whether a product's source code is available under an open license is a fair question for any software product, including a chat platform like Discord, so the axis applies. Nothing in the evidence pack shows Discord publishing its source code or any license. The docs cover APIs, SDKs, webhooks and Nitro features only, so the verdict is none.",
+    "confidence": "medium",
+    "rationale": "Whether source is published under an open license is a fair question for any software product, so the axis applies. The evidence pack contains nothing showing Discord's client or server source is available under an open license. The only GitHub item is the discord-api-spec repository, which publishes an OpenAPI description of the HTTP API, not the product's source, and states no license.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2259,8 +2282,8 @@
     "storyId": "openness-self-host",
     "verdict": "none",
     "quality": 0,
-    "confidence": "high",
-    "rationale": "Self-hosting is a fair question for a chat and community platform, since alternatives in this category offer self-hosted deployments, so the axis applies. Nothing in the pack shows Discord can be self-hosted. The docs describe a hosted service reached via REST API, Gateway WebSockets, webhooks and SDKs. Bots and 'server-side' provisional-account flows run against Discord's own infrastructure, which makes them developer building blocks rather than self-hosting of the core product.",
+    "confidence": "medium",
+    "rationale": "Self-hosting is a fair question for a chat and community platform, so the axis applies. Every item in the evidence pack describes Discord as a hosted service: bots, apps and SDKs that run inside Discord, a REST API on discord.com, and a downloadable or browser client. None documents a way to deploy or run the core product on your own infrastructure, so the verdict is none rather than na.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2275,13 +2298,11 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Discord's own docs show channels inside servers, threads that branch conversations off a channel, Private Threads available for all servers, and server events covering channel updates and role creation. A community report notes age-restricted channels that unverified users cannot access, a form of access gating. However, nothing explicitly documents creating private channels or managing channel membership and permissions. Missing for 10: explicit documentation of private channels, per-channel membership/permission controls (e.g., role-based channel access), and independent hands-on corroboration of admin channel organization.",
+    "rationale": "The evidence shows Discord organizes conversations into channels with threads branching off them, and that Private Threads are available for all servers. That is a first-party form of public versus private conversation spaces. However, nothing documents private channels themselves or admin membership and permission controls; roles appear only as gateway events. Missing for 10: documentation of private channels, role- or member-based channel permission controls, admin workflows for managing channel membership, and independent hands-on corroboration.",
     "evidenceIds": [
       "discord-docs-37",
       "discord-docs-38",
-      "discord-docs-20",
-      "discord-docs-5",
-      "discord-comm-2"
+      "discord-docs-20"
     ],
     "support": {
       "relation": "direct",
@@ -2298,11 +2319,7 @@
         },
         {
           "evidenceId": "discord-docs-20",
-          "quote": "receive events about actions that take place in a server/guild, like when a channel is updated or a role is created."
-        },
-        {
-          "evidenceId": "discord-comm-2",
-          "quote": "Users who aren't verified as adults will not be able to access age-restricted servers and channels"
+          "quote": "like when a channel is updated or a role is created"
         }
       ]
     }
@@ -2313,7 +2330,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Choosing where data is stored is a fair question for a hosted communication platform like Discord, so the axis applies. Nothing in the evidence pack documents any user- or server-level control over data storage region or residency. The pack covers developer APIs, the Social SDK, Nitro perks and community discussion unrelated to residency.",
+    "rationale": "Choosing a data storage region is a fair question for a SaaS communication platform like Discord, so the axis applies. Nothing in the evidence pack documents any user- or server-level control over data region or residency. The docs cover APIs, SDKs, Nitro and threads, and community items address unrelated topics.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2328,7 +2345,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Discord is a consumer chat platform that holds user messages, so an AI-training opt-out is a fair privacy question to ask of it. The evidence pack contains no mention of AI training, data-usage controls, or opt-out settings. The Social SDK social-settings item concerns how players tailor their social experience, not AI training data use, so it earns no credit.",
+    "rationale": "An AI-training opt-out is a fair privacy question for a consumer communication platform like Discord, so the axis applies. However, nothing in the evidence pack documents any setting or policy that keeps user data out of AI model training. The pack covers developer APIs, the Social SDK, Nitro perks, and community complaints about ID verification, none of which address AI training.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2343,7 +2360,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data retention and deletion controls are a fair privacy question for a consumer chat platform like Discord, but the evidence pack never documents retention settings, data deletion, account deletion, or data export controls. The provisional-account unmerge docs cover severing account links, not deleting or retaining data, so they earn no credit.",
+    "rationale": "Data retention and deletion controls are a fair question for a consumer chat platform like Discord, so the axis applies. However, nothing in the evidence pack documents retention settings, message or account deletion, or data export and erasure controls. The provisional-account unmerge and test-entitlement deletion items cover different capabilities and do not count toward this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2358,7 +2375,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Opting out of telemetry is a fair privacy question for a consumer chat platform like Discord, so the axis applies. However, nothing in the evidence pack documents a telemetry or usage-tracking opt-out. The Social SDK 'social settings' item covers players tailoring their social experience, which is a different control and earns no credit.",
+    "rationale": "Opting out of telemetry or usage tracking is a fair privacy question for a consumer chat platform like Discord, so the axis applies. Nothing in the evidence pack documents a telemetry or usage-tracking opt-out. The only nearby item covers Social SDK social settings for players, which is a different feature, and the community items on age verification and breaches do not address telemetry controls.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2373,7 +2390,7 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Discord's docs describe a Gateway API that lets apps open secure WebSocket connections to receive guild events in real time. Webhook docs also describe receiving event notifications from Discord over HTTP, and the developer platform is explicitly for building bots that authenticate with a bot token. Missing for 10: explicit documentation that message-create events specifically are delivered (the cited examples are channel updates and role creation), and independent or hands-on corroboration.",
+    "rationale": "Discord documents a Gateway API that lets apps open secure WebSocket connections to receive real-time events about server/guild actions. It also documents HTTP delivery of event notifications to apps, and bot-token authentication for bots. missing for 10: explicit documentation that message-create events are delivered (the cited examples are channel and role events), detail on intents and connection lifecycle, and independent or hands-on corroboration.",
     "evidenceIds": [
       "discord-docs-20",
       "discord-docs-10",
@@ -2397,10 +2414,6 @@
         {
           "evidenceId": "discord-docs-41",
           "quote": "Build bots and integrations on Discord"
-        },
-        {
-          "evidenceId": "discord-docs-4",
-          "quote": "Authenticating with the Discord API can be done in one of two ways: 1. Using a bot token"
         }
       ]
     }
@@ -2411,7 +2424,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Retention policies and legal holds are a fair axis for a messaging platform like Discord, so the story applies. However, nothing in the evidence pack documents message retention configuration, legal holds, or eDiscovery exports. The docs cover bots, OAuth2, webhooks, the Gateway, the Social SDK and Nitro features, none of which address this capability.",
+    "rationale": "Retention policies and legal holds are a fair compliance question for a messaging and community platform like Discord, so this axis applies. However, nothing in the evidence pack documents retention configuration, legal holds, or eDiscovery tooling; the cited docs cover bots, OAuth2, webhooks, the Social SDK and Nitro features.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2426,7 +2439,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "The only relevant evidence is the Nitro page listing 'HD video streaming' as a perk, which implies Discord has a base video-streaming capability that Nitro upgrades. Nothing explicitly documents sharing your screen inside a voice call or using it for live collaboration. missing for 10: explicit first-party docs on screen sharing during calls, details on how it works and on which platforms, base-tier versus Nitro limits, any collaboration-specific features, and independent or hands-on corroboration.",
+    "rationale": "The only on-topic evidence is the Nitro page's \"HD video streaming\" perk. It implies Discord has its own video-streaming capability in calls, but it never names screen sharing or describes how it works for live collaboration. Missing for 10: explicit documentation of screen sharing during voice/video calls, details on how to start a share and who can view it, non-Nitro availability, and independent or hands-on corroboration.",
     "evidenceIds": [
       "discord-docs-40",
       "discord-docs-25"
@@ -2453,7 +2466,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Discord's own blog documents Threads as a way to branch a conversation off a channel's main feed while keeping it in the channel, and says Private Threads are available to all servers on desktop and mobile. That covers the core of keeping side discussions attached. missing for 10: explicit documentation that a thread is anchored to a specific originating message, detail on admin-side thread management or permissions, and independent or hands-on corroboration.",
+    "rationale": "Discord's first-party blog documents Threads as a way to branch a side conversation off a channel's main feed while keeping it in the channel, and says Private Threads have rolled out to all servers on desktop and mobile. That covers the core of the story. Missing for 10: explicit documentation that a thread is anchored to a specific originating message, detail on admin or team-admin thread management, and independent or hands-on corroboration.",
     "evidenceIds": [
       "discord-docs-37",
       "discord-docs-38",
@@ -2470,7 +2483,7 @@
         },
         {
           "evidenceId": "discord-docs-38",
-          "quote": "Private Threads are now available for all servers!"
+          "quote": "Private Threads are now available for all servers! This exciting update is rolling out to both desktop and mobile users now."
         }
       ]
     }
@@ -2481,7 +2494,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Discord documents Threads (including Private Threads) as a way to branch a conversation off a channel's main feed, so conversations can be organized under threads. The main feed persists alongside them, so organization is optional rather than every conversation being topic-scoped, and nothing documents catch-up features. missing for 10: evidence that every conversation is organized under a named topic or thread (threads are optional branches off the main feed), catch-up or unread-summary tooling for busy channels, independent hands-on corroboration that threads make catching up efficient.",
+    "rationale": "Discord's own blog documents Threads as a way to branch a conversation off a channel's main feed, and Private Threads are available to all servers. Threads are optional offshoots, though, so busy channels still have an unthreaded main feed rather than every conversation sitting under a named topic. Missing for 10: evidence that all conversations are structured under named topics (e.g., forum-style channels), catch-up tools such as thread lists or unread summaries, admin controls for enforcing threading, and independent hands-on corroboration.",
     "evidenceIds": [
       "discord-docs-37",
       "discord-docs-38",
@@ -2509,7 +2522,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Workspace message-history export is a fair question for a chat platform, but the evidence pack documents no admin export feature, no machine-readable export formats, and no policy-governed access to private conversations. The REST API, bot tokens and Gateway events are only developer building blocks from which an export tool could be built, so they earn no credit.",
+    "rationale": "Exporting workspace message history is a fair question for a chat platform, so the axis applies. The evidence pack documents no admin-facing export of server message history in machine-readable formats, and nothing on including private threads or DMs under policy. The REST API, Gateway and bots are developer building blocks that could be used to construct such an export, not the export capability itself, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5083,7 +5096,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Audit logging of admin and user actions is a fair question for a team-chat platform, so the axis applies. The evidence pack covers organization export, import and migration, roles, and message search, but nothing documents a reviewable audit log of admin or user actions. Exports and search are adjacent features and earn no credit.",
+    "rationale": "Audit logging of admin and user actions is a fair question for a team-chat platform, so the axis applies. The evidence pack never mentions an audit log, admin action log, or activity history. The organization export tools and roles/permissions are adjacent features and earn no credit for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5098,7 +5111,7 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Zulip documents its own framework for interactive bots that react to messages, which you can deploy with the Zulip Botserver. That provides the core mechanism of a bot participating in conversations. But no AI agent ships in the evidence, so a user would have to write and host a custom bot to get one. missing for 10: a first-party or ready-made AI/LLM agent bot, documented mention-triggered responses, documentation of adding a bot as a channel member, independent hands-on corroboration.",
+    "rationale": "Zulip documents its own framework for interactive bots that react to messages, run as custom or existing bots and deployable via the Zulip Botserver. That gives first-party support for a bot taking part in conversations, but the AI behavior would have to be built by the user, and nothing in the evidence shows mention-triggered replies or adding a bot to a channel. missing for 10: evidence of mention-triggered bot responses, documentation of adding a bot as a channel member, any first-party or ready-made AI agent integration, independent or hands-on corroboration",
     "evidenceIds": [
       "zulip-docs-12",
       "zulip-docs-4",
@@ -5126,12 +5139,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Zulip's official API documents sending messages, and its bot framework covers bots that react to messages, so an agent can plausibly read and post in channels through the official API. Nothing in the pack shows scoped or permission-limited tokens. Missing for 10: evidence of scoped/least-privilege API tokens or bot permission scopes, explicit docs for the message-fetch/read endpoint, independent hands-on corroboration of agent use.",
+    "rationale": "Zulip's official API documents sending messages, and its bot framework lets custom bots react to messages, which implies reading them. A machine-readable OpenAPI spec backs the API. Nothing in the pack covers scoped or permission-limited tokens, an explicit message-read endpoint, or agent-specific credentials. missing for 10: scoped/least-privilege token documentation, explicit get-messages/read endpoint evidence, bot credential permission model, hands-on corroboration of an agent reading and posting.",
     "evidenceIds": [
-      "zulip-docs-28",
       "zulip-docs-5",
+      "zulip-docs-28",
       "zulip-docs-12",
-      "zulip-docs-18"
+      "zulip-openapi-spec-20261105"
     ],
     "support": {
       "relation": "direct",
@@ -5147,8 +5160,8 @@
           "quote": "Zulip’s API has a powerful framework for interactive bots that react to messages in Zulip. You can write and run a custom bot, or run an existing Zulip bot."
         },
         {
-          "evidenceId": "zulip-docs-18",
-          "quote": "Eventually, you’ll probably want to run it in a production environment where it’ll stay up, by deploying it on a server using the Zulip Botserver."
+          "evidenceId": "zulip-openapi-spec-20261105",
+          "quote": "The zulip/zulip repository ships a complete OpenAPI 3.0.1 description of the API, info title \"Zulip REST API\", at zerver/openapi/zulip.yaml."
         }
       ]
     }
@@ -5158,11 +5171,11 @@
     "storyId": "agentic-agent-docs",
     "verdict": "none",
     "quality": 0,
-    "confidence": "high",
-    "rationale": "Agent-oriented docs are a fair question for a SaaS chat platform with a public API, so the axis applies. Direct probes found no llms.txt (404), no markdown docs variant (404) and no OpenAPI spec at any candidate path (404). The human-oriented API reference does not count as agent-oriented documentation.",
+    "confidence": "medium",
+    "rationale": "Probes show no llms.txt (HTTP 404 at zulip.com/llms.txt), no markdown docs endpoint (404 at /api/.md), and no OpenAPI spec at any published candidate path. The OpenAPI YAML in the GitHub repo is a machine-readable API spec for developers, not an agent-oriented docs feature, so it earns no credit for this story.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can point an agent at llms.txt or agent-oriented docs",
       "citations": []
@@ -5174,7 +5187,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Zulip is a team chat product, and AI-generated insights or summaries are a fair axis for that kind of product, so the story applies. The evidence pack documents no built-in AI insights or suggestions. The interactive bot framework is only a developer building block for constructing such a capability, so it earns no credit.",
+    "rationale": "Zulip is a team chat product, so in-product AI insights such as summaries or suggestions are a fair axis. However, the evidence pack documents no first-party AI-generated insights or suggestions. The interactive bot framework and API are only developer building blocks for constructing such a capability, and keyword search filters are not AI insights, so neither earns credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5189,7 +5202,7 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Zulip documents its own bot framework. Users can write a custom bot or run an existing one that reacts to messages, and deploy it on the Zulip Botserver so it stays up in the background. That gives event-driven automation, but it requires hosting and usually writing code, and the evidence shows no built-in automation builder, scheduling, or AI agent. Missing for 10: recurring/scheduled automations, a no-code or built-in automation setup, AI-native autonomous agent features, independent or hands-on corroboration of background bot operation.",
+    "rationale": "Zulip ships a first-party interactive bot framework: you can run custom or existing bots that react to messages, and keep them running persistently via the Zulip Botserver. That gives event-driven background automation, but it requires writing or deploying bot code and is limited to reacting to messages. missing for 10: no-code automation builder, recurring/scheduled triggers, AI/agentic automation features, depth of Botserver docs, independent hands-on corroboration.",
     "evidenceIds": [
       "zulip-docs-12",
       "zulip-docs-18"
@@ -5216,20 +5229,13 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A built-in AI assistant is a fair axis for a team chat product, but the evidence shows no first-party AI assistant inside Zulip. What it documents is an interactive bot framework and Botserver that let developers write and run their own bots. Those are developer building blocks, not a built-in assistant users can delegate tasks to, so they earn no credit.",
-    "evidenceIds": [
-      "zulip-docs-12"
-    ],
+    "rationale": "A built-in AI assistant is a fair axis for a team chat product, so the story applies. The evidence only shows an interactive bot framework for writing and running custom bots, which is a developer building block rather than a built-in AI assistant users can delegate tasks to. Nothing in the pack documents a native AI assistant.",
+    "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As an AI-native user, I can delegate tasks to a built-in AI assistant inside the product",
-      "citations": [
-        {
-          "evidenceId": "zulip-docs-12",
-          "quote": "Zulip’s API has a powerful framework for interactive bots that react to messages in Zulip. You can write and run a custom bot, or run an existing Zulip bot."
-        }
-      ]
+      "citations": []
     }
   },
   {
@@ -5238,11 +5244,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Zulip documents its own programmatic, UI-free interfaces: an API with endpoints such as sending messages, and an interactive bot framework that can be deployed to stay up on a server via the Zulip Botserver. Together these support headless automation, but nothing in the evidence shows CI-specific usage. missing for 10: documented CI/pipeline integration or a headless CLI, examples of running automation in CI, independent or hands-on corroboration of headless automation workflows.",
+    "rationale": "Zulip has its own REST API, including send-message, backed by a machine-readable OpenAPI spec. It also has a bot framework that can run unattended in production through the Zulip Botserver, so it can be driven programmatically without the UI. However, nothing in the pack shows a headless CLI, CI-pipeline usage, or a guide for automating Zulip from CI jobs. Missing for 10: an official CLI or headless run mode, CI integration docs or examples, and independent hands-on corroboration of CI automation.",
     "evidenceIds": [
-      "zulip-docs-5",
-      "zulip-docs-12",
-      "zulip-docs-18"
+      "zulip-docs-4",
+      "zulip-docs-18",
+      "zulip-docs-28",
+      "zulip-openapi-spec-20261105"
     ],
     "support": {
       "relation": "direct",
@@ -5250,16 +5257,20 @@
       "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
       "citations": [
         {
-          "evidenceId": "zulip-docs-12",
-          "quote": "Zulip’s API has a powerful framework for interactive bots that react to messages in Zulip. You can write and run a custom bot, or run an existing Zulip bot."
+          "evidenceId": "zulip-docs-4",
+          "quote": "Zulip's API has a powerful framework for interactive bots that react to messages in Zulip. You can write and run a custom bot"
         },
         {
           "evidenceId": "zulip-docs-18",
-          "quote": "Eventually, you’ll probably want to run it in a production environment where it’ll stay up, by deploying it on a server using the Zulip Botserver."
+          "quote": "deploying it on a server using the Zulip Botserver"
         },
         {
-          "evidenceId": "zulip-docs-5",
-          "quote": "Send a message"
+          "evidenceId": "zulip-docs-28",
+          "quote": "[Send a message](/api/send-message)"
+        },
+        {
+          "evidenceId": "zulip-openapi-spec-20261105",
+          "quote": "The zulip/zulip repository ships a complete OpenAPI 3.0.1 description of the API, info title \"Zulip REST API\""
         }
       ]
     }
@@ -5270,7 +5281,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Team chat products can plausibly ship AI features that connect to MCP servers, so this axis applies to Zulip. The evidence pack has no mention of MCP or of any MCP-client capability. Zulip's bot framework and native integrations are adjacent developer building blocks, not a way to plug MCP servers into the product, so they earn no credit.",
+    "rationale": "Nothing in the evidence shows Zulip acting as an MCP client or letting users plug in MCP servers so the product can call their tools. The bot framework, Botserver, native integrations, incoming webhooks and OpenAPI spec are developer building blocks or adjacent features. They are not an MCP-client capability, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5285,7 +5296,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Zulip is a team chat platform, not an agent, so an official MCP server is a fair question to ask of it. Nothing in the evidence pack mentions an MCP server. The bot framework and REST API are developer building blocks a user could build on, not an official MCP server, so they earn no credit here.",
+    "rationale": "Zulip is a team-chat platform, so an official MCP server is a fair thing to ask about, but the evidence pack never mentions one. The REST API, the OpenAPI spec and the interactive bot framework are developer building blocks for constructing such a server, not the capability itself, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5300,7 +5311,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows no first-party natural-language command or AI assistant interface in Zulip. Search uses structured filter operators such as channel: and has:, which is an adjacent feature. The interactive bot framework is a developer building block for constructing such behavior, so it earns no credit.",
+    "rationale": "Zulip is a team chat product, so operating it with natural-language commands is a fair axis, but the evidence shows no first-party natural-language command interface or AI assistant. The interactive bot framework is a developer building block for constructing such a capability, and search uses structured operators such as channel: and has:image rather than natural language. Neither earns credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5315,7 +5326,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "An official CLI is a fair question for a team-chat platform, but nothing in the evidence documents a first-party Zulip command-line client. The pack covers only the REST API, the bot framework and Botserver, and the server installer, which are developer building blocks or ops tooling rather than a user-facing CLI.",
+    "rationale": "An official CLI is a fair question for a chat platform with a REST API, so the axis applies. The evidence pack documents the REST API, a bot framework, the Botserver and a server installer script, but never an official command-line client for users or agents. Those are developer building blocks or server-admin tooling, not an official CLI, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5327,30 +5338,34 @@
   {
     "productId": "zulip",
     "storyId": "agentic-public-api",
-    "verdict": "partial",
-    "quality": 6,
-    "confidence": "medium",
-    "rationale": "Zulip publishes public API documentation at zulip.com/api, with a 'Send a message' endpoint, and documents an API-based framework for writing and running interactive bots. That shows first-party programmatic control exists. However, the pack evidences only one endpoint, and probes found no machine-readable OpenAPI spec, llms.txt, or markdown docs at the tested paths, so the breadth of API coverage for driving the product is unproven. Missing for 10: evidence of broad endpoint coverage (channels, topics, search, users), a discoverable OpenAPI spec, AI-friendly docs (llms.txt or markdown), and independent or hands-on corroboration of API use.",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Zulip publishes REST API documentation at zulip.com/api, with endpoints such as Send a message. The docs are generated from a complete OpenAPI 3.0.1 spec shipped in the repository, and a versioned API changelog with feature levels supports client compatibility across server versions. The probes for llms.txt, markdown docs and an OpenAPI file at well-known web paths all returned 404, so the machine-readable spec is only reachable through GitHub. Missing for 10: an OpenAPI spec or llms.txt at a discoverable zulip.com URL, and independent hands-on corroboration of driving the product through the API.",
     "evidenceIds": [
       "zulip-docs-5",
       "zulip-docs-28",
-      "zulip-docs-12",
-      "zulip-docs-18",
-      "zulip-probe-1",
+      "zulip-openapi-spec-20261105",
+      "zulip-api-feature-levels-20261105",
+      "zulip-docs-4",
       "zulip-probe-3"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can drive the product through a documented public API",
       "citations": [
+        {
+          "evidenceId": "zulip-openapi-spec-20261105",
+          "quote": "The zulip/zulip repository ships a complete OpenAPI 3.0.1 description of the API, info title \"Zulip REST API\", at zerver/openapi/zulip.yaml."
+        },
         {
           "evidenceId": "zulip-docs-28",
           "quote": "[Send a message](/api/send-message)"
         },
         {
-          "evidenceId": "zulip-docs-12",
-          "quote": "Zulip’s API has a powerful framework for interactive bots that react to messages in Zulip. You can write and run a custom bot, or run an existing Zulip bot."
+          "evidenceId": "zulip-api-feature-levels-20261105",
+          "quote": "The API feature levels system used in this changelog is designed to make it possible to write API clients... that work with a wide range of server versions"
         }
       ]
     }
@@ -5361,7 +5376,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Zulip documents a bot framework and an API, but nothing in the evidence shows scoped or least-privilege API credentials, such as restricted bot types or permission-limited keys, that could be issued to an agent. The mention of 'advanced roles and permissions' refers to user roles in general, which is an adjacent control and earns no credit for credential scoping.",
+    "rationale": "Scoped API credentials are a fair question for a chat platform with an API, so the axis applies. The pack shows only a bot framework and general API docs, with nothing on scoping, permission-limited bot keys, or least-privilege tokens. Running a bot is an adjacent capability, not evidence of scoped credentials.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5375,12 +5390,13 @@
     "storyId": "agentic-sdks",
     "verdict": "partial",
     "quality": 4,
-    "confidence": "low",
-    "rationale": "Zulip documents its own first-party bot framework ('Zulip's API has a powerful framework for interactive bots') for writing custom bots and deploying them with the Zulip Botserver. That counts as an official, code-level developer toolkit, alongside documented API endpoints such as 'Send a message'. However, no evidence names official client SDK libraries, supported languages or package distribution, and probes found no OpenAPI spec. Missing for 10: explicit official SDK libraries per language, SDK reference docs or installation instructions, a published OpenAPI spec, independent or hands-on corroboration of SDK usage.",
+    "confidence": "medium",
+    "rationale": "Zulip documents a first-party bot framework for writing and running custom bots, plus the Zulip Botserver for deploying them. It also maintains a machine-readable OpenAPI spec and an API feature-level changelog meant for building clients that work across server versions. That is real first-party tooling to build against, but the pack never names an official client SDK library or its languages, so SDK support is only implied. missing for 10: explicitly documented official SDK libraries (e.g., named Python/JS client packages), language coverage, SDK reference docs, independent corroboration of SDK use.",
     "evidenceIds": [
       "zulip-docs-12",
       "zulip-docs-18",
-      "zulip-docs-28"
+      "zulip-openapi-spec-20261105",
+      "zulip-api-feature-levels-20261105"
     ],
     "support": {
       "relation": "direct",
@@ -5396,8 +5412,8 @@
           "quote": "deploying it on a server using the Zulip Botserver"
         },
         {
-          "evidenceId": "zulip-docs-28",
-          "quote": "[Send a message](/api/send-message)"
+          "evidenceId": "zulip-api-feature-levels-20261105",
+          "quote": "The API feature levels system used in this changelog is designed to make it possible to write API clients... that work with a wide range of server versions"
         }
       ]
     }
@@ -5408,10 +5424,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Event subscription through registrable outbound webhooks is a fair axis for a chat platform, but the evidence pack never documents Zulip sending HTTP callbacks to a consumer. The only webhook mention is 'Incoming webhooks', which carry data into Zulip. The bot framework that 'reacts to messages' is a developer building block, not a documented outbound-webhook subscription, so neither earns credit.",
+    "rationale": "The evidence pack does not document any registrable outbound HTTP callback that pushes Zulip events to an external consumer. The only webhook mention is 'Incoming webhooks' (zulip-docs-19), which carries data in the opposite direction, into Zulip. The bot framework and Botserver (zulip-docs-4, zulip-docs-18) are developer building blocks for bots that react to messages, not a documented event-subscription webhook feature.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As an AI-native user, I can subscribe to events via webhooks",
       "citations": []
@@ -5423,7 +5439,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "AI-generated recaps are a fair axis for a team chat product, but the evidence pack never documents a native AI summary or recap feature for channels or topics. The bot framework and search filters are developer building blocks and adjacent features. They earn no credit here.",
+    "rationale": "Summarizing missed channels and threads is a fair question for a team chat product, so the axis applies. However, the evidence pack documents only topics, channels, search filters and a custom-bot framework, with no first-party AI summary or recap feature. The bot framework is a developer building block a team could use to build summaries, not the capability itself, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5438,7 +5454,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Zulip is a team chat product, so AI-generated recaps of meetings and huddles are a fair question for it, but nothing in the evidence pack mentions calls, huddles, transcription or AI summaries. The bot framework is only a developer building block and earns no credit. missing for 10: any documented AI meeting or huddle notes, recaps for missed calls, call transcription.",
+    "rationale": "Zulip is a team chat product, so AI-generated meeting and huddle recaps are a fair question to ask of it. The evidence pack has nothing on calls, huddles, transcription, or AI-generated notes or recaps. The interactive bot framework and integrations are only developer building blocks, not the capability itself, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5453,10 +5469,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows Zulip has an API reference page at zulip.com/api/ listing endpoints such as \"Send a message\". Nothing shows that reference is interactive or offers runnable or try-it examples, and the probes found no OpenAPI spec at common paths. A static endpoint listing is an adjacent capability, not the interactive, runnable reference the story asks for.",
+    "rationale": "The evidence shows Zulip publishes an API reference at zulip.com/api, with endpoint pages such as \"Send a message\" generated from an OpenAPI 3.0.1 spec. Nothing in the pack shows that reference is interactive or offers runnable examples such as an in-browser try-it console. A static reference, or a spec a user could load into an external tool, is adjacent support and earns no credit for this story.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can explore an interactive API reference with runnable examples",
       "citations": []
@@ -5465,16 +5481,29 @@
   {
     "productId": "zulip",
     "storyId": "api-machine-spec",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Zulip documents a REST API (e.g. 'Send a message' on its API docs page), so a downloadable spec is a fair question for this product. However, nothing in the evidence shows a downloadable OpenAPI or equivalent spec. Probes of the common OpenAPI and Swagger paths, the Markdown docs path and llms.txt all returned 404.",
-    "evidenceIds": [],
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "Zulip's repository ships a complete OpenAPI 3.0.1 description, \"Zulip REST API\", at zerver/openapi/zulip.yaml. It can be downloaded via the raw GitHub URL, and it is the primary source from which the zulip.com/api docs are generated. The probe 404s at zulip.com/openapi.json and similar paths only show the spec isn't hosted on the product domain; they don't contradict that it exists. missing for 10: spec served from a discoverable zulip.com/well-known path (all probed paths 404), independent hands-on corroboration of using the spec.",
+    "evidenceIds": [
+      "zulip-openapi-spec-20261105",
+      "zulip-probe-3",
+      "zulip-api-feature-levels-20261105"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "zulip-openapi-spec-20261105",
+          "quote": "The zulip/zulip repository ships a complete OpenAPI 3.0.1 description of the API, info title \"Zulip REST API\", at zerver/openapi/zulip.yaml."
+        },
+        {
+          "evidenceId": "zulip-openapi-spec-20261105",
+          "quote": "the published API docs at zulip.com/api are generated from this machine-readable spec."
+        }
+      ]
     }
   },
   {
@@ -5483,7 +5512,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A sandbox or test environment is a fair axis for a chat platform with an API and bot framework, but the evidence documents no Zulip sandbox, test organization, or isolated dev realm. The closest items are adjacent and earn no credit: self-hosting a separate server or exporting and importing data is a user-side workaround, and the Botserver note only describes moving a bot to production.",
+    "rationale": "Zulip is an API-bearing chat platform, so a sandbox or test-environment axis applies. The evidence pack contains no documented sandbox, test organization, or isolated developer environment. Self-hosting a separate server or using export/import to stand up a copy would be user-side workarounds, not a product sandbox, and they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5495,28 +5524,41 @@
   {
     "productId": "zulip",
     "storyId": "api-versioning-policy",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Zulip has a documented REST API (e.g. 'Send a message') and a bot framework, so this axis applies. However, nothing in the evidence pack mentions API versioning, a changelog, feature levels, or a deprecation policy. Basic API existence does not show versioned APIs with a documented deprecation policy.",
-    "evidenceIds": [],
+    "rationale": "Zulip documents a versioned API: a full changelog built on numbered API feature levels, which clients read from server responses to determine the API format and stay compatible across server versions. The pack contains no documented deprecation policy, such as notice periods, sunset timelines or deprecation markers, so only the versioning half of the story is evidenced. Missing for 10: documented deprecation policy and timelines, independent corroboration of versioning reliability.",
+    "evidenceIds": [
+      "zulip-api-feature-levels-20261105",
+      "zulip-openapi-spec-20261105"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "zulip-api-feature-levels-20261105",
+          "quote": "Every API change is logged under a numbered feature level (e.g. \"Feature level 513\" for Zulip 13.0), which clients read from server responses to determine the API format in use."
+        },
+        {
+          "evidenceId": "zulip-api-feature-levels-20261105",
+          "quote": "Zulip publishes a full API changelog built on its API feature levels system"
+        }
+      ]
     }
   },
   {
     "productId": "zulip",
     "storyId": "app-marketplace",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Zulip publishes its own integrations directory advertising over 130 native prebuilt integrations, and its bot docs mention running an existing Zulip bot. However, the evidence does not show an in-product app directory or marketplace where a team-admin can browse and install integrations. Nor does it document the admin install flow or permissions. missing for 10: documented in-app marketplace/one-click install flow for admins, admin permission controls for installing integrations, hands-on or independent corroboration of the install experience.",
+    "rationale": "Zulip publishes an integrations directory at zulip.com/integrations listing over 130 native, prebuilt integrations, and its bot framework lets admins run existing Zulip bots, so the core catalog exists. The evidence does not show a one-click install or marketplace flow for team-admins. Zapier/IFTTT reach is third-party and is not credited. Missing for 10: documented admin install/enable flow from the directory, marketplace-style listing/management, independent hands-on corroboration.",
     "evidenceIds": [
       "zulip-docs-9",
       "zulip-docs-13",
+      "zulip-docs-19",
       "zulip-docs-12"
     ],
     "support": {
@@ -5541,7 +5583,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Audio and video calls are a fair axis for a team chat product like Zulip. However, nothing in the evidence pack mentions starting calls, video meetings, or call integrations from a channel or DM. The pack covers only topics, channels, search, bots, integrations, export and self-hosting.",
+    "rationale": "Starting audio or video calls from a channel or DM is a fair axis for a team chat product like Zulip, so the story applies. The evidence pack contains nothing about calls, video, audio or huddles; it covers only topics, channels, search, bots, integrations, export and self-hosting.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5556,7 +5598,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Bulk operations are a fair question for a team-chat platform, but the evidence pack never documents a way to act on many messages, topics, or channels at once. The material covers search filters, single-message API calls, bots and whole-organization export or import. Those are adjacent building blocks or migration tools, not a bulk-operations capability.",
+    "rationale": "Bulk operations are a fair axis for a team chat platform, for example bulk-editing, moving or marking many messages or topics at once. The pack only documents single-item API actions (send a message), search filters, bots and organization export/import. Those are adjacent building blocks or a different (migration) capability, not a documented bulk-operation feature.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5571,7 +5613,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence offers no built-in rule or automation engine for defining event-triggered actions. Zulip documents a bot framework where you write and run custom bots that react to messages, which is a developer building block rather than a rules feature. Automation through Zapier and IFTTT is a third-party capability, and incoming webhooks bring external events in rather than letting users define trigger→action rules, so none of these count toward the story.",
+    "rationale": "The evidence shows no user-definable rules or automation engine in Zulip that triggers actions on events. The interactive bot framework requires writing and running custom bot code, which is a developer building block. Zapier and IFTTT are third-party tools, and incoming webhooks only bring data into Zulip, so neither counts as the product's own event-triggered rules.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -5586,7 +5628,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Scheduling recurring jobs or workflows is a fair question for a team chat platform, but the evidence never documents a recurring scheduler in Zulip. The interactive bot framework only reacts to incoming messages, and the Zapier/IFTTT integrations are third-party tools, not Zulip's own capability. A user-built bot running on the Botserver is a developer building block, not a native recurring-schedule feature.",
+    "rationale": "Scheduling recurring jobs or workflows is a fair question for a team chat platform, but the evidence pack never documents a scheduler, recurring messages, or recurring reminders in Zulip. The bot framework only reacts to messages, and Zapier/IFTTT are third-party tools rather than Zulip's own capability. Incoming webhooks receive events and do not schedule anything.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5601,7 +5643,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Zulip documents a bot framework, a Botserver, and incoming-webhook integrations, so automation exists and the axis applies. Nothing in the evidence shows product-native versioning, review, or rollback of those automations. Keeping custom bot code in a user's own source control would be a user-side workaround and earns no credit.",
+    "rationale": "Zulip documents a bot framework, a Botserver and integrations. Nothing in the evidence shows a product-level way to version, review or roll back those automations. The API feature-level changelog covers versioning of Zulip's own API, not users' automations, so it is an adjacent feature that earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5616,10 +5658,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Zulip is a team-chat product, so registering custom slash commands is a fair axis to judge it on. The evidence only documents interactive bots that react to messages, plus incoming webhooks. That is an adjacent bot framework, not a documented way to register slash commands that users invoke from the message box.",
+    "rationale": "The evidence pack documents interactive bots that react to messages, plus incoming webhooks, but nothing about developers registering custom slash commands that users invoke from the message box. Bots reacting to messages are an adjacent capability, not registrable slash commands. A team-chat platform could plausibly ship this, so the axis applies and the verdict is none, not na.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As a developer, I can register custom slash commands that users invoke from the message box",
       "citations": []
@@ -5629,9 +5671,9 @@
     "productId": "zulip",
     "storyId": "external-guest-access",
     "verdict": "partial",
-    "quality": 4,
-    "confidence": "medium",
-    "rationale": "Zulip's own channel docs reference a distinct 'guest' role whose access is restricted, since guests cannot freely subscribe to public channels. This shows first-party guest accounts with limited access, but the evidence is a single glancing mention. Missing for 10: documentation of how admins create and invite guest accounts, how guest permissions and channel access are configured, any shared-channel or cross-organization collaboration, and independent or hands-on corroboration.",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Zulip's channel docs refer to a guest role whose access is restricted: guests, unlike other users, cannot subscribe to any public channel. That implies guest accounts with limited access exist, but it is a single passing mention. Missing for 10: documentation of how admins create or invite guest accounts, which channels guests can see or join, shared or cross-organization channels for external partners, the full guest permission model, and any independent or hands-on corroboration.",
     "evidenceIds": [
       "zulip-docs-22"
     ],
@@ -5652,8 +5694,8 @@
     "storyId": "free-tier-full-history",
     "verdict": "none",
     "quality": 0,
-    "confidence": "low",
-    "rationale": "The evidence pack has nothing on Zulip's free-tier limits or whether older message history stays accessible on a free plan. The self-hosting and FOSS mentions describe software parity and free SAML/LDAP, not message-history retention on a free tier, so they cannot be credited to this story.",
+    "confidence": "medium",
+    "rationale": "The evidence pack contains nothing about Zulip's free-tier limits or whether older message history stays accessible on a free plan. The plans and self-hosting pages cited only cover export/import portability and the same software being available for self-hosting, which is adjacent and does not address history retention on a free tier.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5668,7 +5710,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Zulip's docs describe search with a wide array of filters, including a channel filter (channel:design) and a channels:public filter that searches across all public channels, so channel-scoped and broad history search is documented. The pack never mentions sender or date filters. A single older community remark that search \"barely works\" is vague and not a concrete counter-example, so it lowers confidence rather than the verdict. Missing for 10: documented sender filter, documented date/time-range filter, admin-specific search scope, independent hands-on corroboration.",
+    "rationale": "Zulip documents built-in message search with a 'wide array of search filters' that combine with keywords. Only the channel filter and an all-public-channels scope are shown concretely; sender and date filters are not evidenced, and neither is admin access to the full history (including private messages). missing for 10: documented sender filter, documented date-range filter, explicit full-history/admin-scope search, independent hands-on corroboration of search quality.",
     "evidenceIds": [
       "zulip-docs-3",
       "zulip-docs-17",
@@ -5680,16 +5722,16 @@
       "subject": "As a team-admin, I can search the full message history with filters like sender, channel, and date",
       "citations": [
         {
+          "evidenceId": "zulip-docs-23",
+          "quote": "Zulip also offers a wide array of search filters, which can be used on their own, or in combination with keywords."
+        },
+        {
           "evidenceId": "zulip-docs-3",
           "quote": "channel:design has:image new logo: Search for messages in #design that include an image and contain the keywords new and logo."
         },
         {
           "evidenceId": "zulip-docs-17",
           "quote": "channels:public: Search messages in all public and web-public channels."
-        },
-        {
-          "evidenceId": "zulip-docs-23",
-          "quote": "Zulip also offers a wide array of search filters, which can be used on their own, or in combination with keywords."
         }
       ]
     }
@@ -5700,7 +5742,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Per-channel, keyword, and schedule-based notification tuning is a fair axis for a team chat product, but the evidence pack never documents notification settings. The only related material covers channel subscription (which controls where conversations appear) and keyword search. Both are adjacent features, not notification controls.",
+    "rationale": "The evidence pack documents nothing about notification settings: no per-channel notification controls, no keyword alerts, and no schedules or do-not-disturb. Subscribing to a channel affects where conversations appear, and keyword search is a separate feature, so neither counts as notification tuning. The axis applies to a team chat product, so the lack of evidence is 'none'.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5713,13 +5755,12 @@
     "productId": "zulip",
     "storyId": "incoming-webhook-post",
     "verdict": "partial",
-    "quality": 4,
-    "confidence": "medium",
-    "rationale": "Zulip's integrations page lists an 'Incoming webhooks' category alongside over 130 native integrations, and the API documents sending messages. That indicates a first-party inbound path for posting into channels. However, the evidence never describes a simple webhook URL you can POST to, how it targets a channel or topic, or what payload it accepts. missing for 10: documentation of the incoming webhook URL format and channel/topic targeting, payload/setup details, hands-on or independent corroboration.",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Zulip's integrations page lists an \"Incoming webhooks\" category alongside 130+ native integrations, so first-party incoming-webhook support exists. However, the pack gives no detail on generating a webhook URL, how messages map to channels or topics, or payload format. The \"Send a message\" REST API is a separate authenticated API and does not show a simple webhook URL. missing for 10: documentation of generating a per-channel incoming webhook URL, payload/format details for posting a message, channel/topic targeting, hands-on or independent corroboration.",
     "evidenceIds": [
       "zulip-docs-19",
-      "zulip-docs-9",
-      "zulip-docs-28"
+      "zulip-docs-13"
     ],
     "support": {
       "relation": "direct",
@@ -5731,12 +5772,8 @@
           "quote": "Incoming webhooks"
         },
         {
-          "evidenceId": "zulip-docs-9",
+          "evidenceId": "zulip-docs-13",
           "quote": "Over 130 native integrations."
-        },
-        {
-          "evidenceId": "zulip-docs-28",
-          "quote": "[Send a message](/api/send-message)"
         }
       ]
     }
@@ -5747,7 +5784,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Zulip's docs describe a framework for interactive bots that react to messages. That is a bot-messaging capability, not the in-chat interactive UI the story asks for. Nothing in the pack shows developers can render modals, buttons or structured message layouts. The community praise for Markdown/LaTeX describes message formatting, not a developer UI component framework, so it earns no credit.",
+    "rationale": "Zulip is a chat platform, so an in-chat interactive UI story is a fair question. The evidence only describes 'interactive bots that react to messages' and a send-message API. Neither documents modals, buttons, or structured message layouts, so they are an adjacent bot capability rather than the requested UI framework.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5762,36 +5799,25 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Workflow automation is a fair axis for a team chat tool, but the evidence shows no native no-code workflow builder in Zulip with event, schedule, or form-submission triggers. What it does show is a code-based bot framework (a developer building block) and automation through third-party Zapier/IFTTT (external tools). Neither counts as the product's own no-code workflow capability.",
-    "evidenceIds": [
-      "zulip-docs-12",
-      "zulip-docs-9"
-    ],
+    "rationale": "Workflow automation is a fair axis for a team chat tool, but the evidence shows no native no-code workflow builder triggered by events, schedules, or form submissions. What it does show are developer building blocks: a code-based bot framework, incoming webhooks and an API. Automation through Zapier and IFTTT runs in third-party tools, which counts as a user-side workaround and earns no credit.",
+    "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As a team-admin, I can build no-code workflows triggered by events, schedules, or form submissions inside the chat tool",
-      "citations": [
-        {
-          "evidenceId": "zulip-docs-12",
-          "quote": "You can write and run a custom bot, or run an existing Zulip bot."
-        },
-        {
-          "evidenceId": "zulip-docs-9",
-          "quote": "And hundreds more through Zapier and IFTTT."
-        }
-      ]
+      "citations": []
     }
   },
   {
     "productId": "zulip",
     "storyId": "openness-api-parity",
     "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Zulip documents its own REST API, including a 'Send a message' endpoint, and a bot framework built on it, so programmatic access is first-party. However, nothing in the evidence shows the API covers everything the UI does. The probes found no OpenAPI spec at the tested paths, which leaves coverage unverifiable rather than contradicted. Missing for 10: an explicit API/UI parity claim, an endpoint inventory covering channels, topics, search, admin and export, a machine-readable API spec, and independent hands-on corroboration of full parity.",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Zulip has its own documented REST API, described by a complete OpenAPI 3.0.1 spec and versioned through a feature-level changelog. It also has a bot framework, so programmatic access is clearly first-party. However, the pack only shows a few concrete endpoints (e.g., send a message) and nothing states that the API matches what the UI can do. Missing for 10: explicit documentation that every UI action is available via the API, an endpoint inventory covering admin, settings, channel and topic management, and independent hands-on confirmation of parity.",
     "evidenceIds": [
-      "zulip-docs-5",
+      "zulip-openapi-spec-20261105",
+      "zulip-api-feature-levels-20261105",
       "zulip-docs-28",
       "zulip-docs-12"
     ],
@@ -5800,6 +5826,14 @@
       "coverage": "partial",
       "subject": "As an AI-native user, I can do everything through the API that I can do in the UI",
       "citations": [
+        {
+          "evidenceId": "zulip-openapi-spec-20261105",
+          "quote": "The zulip/zulip repository ships a complete OpenAPI 3.0.1 description of the API, info title \"Zulip REST API\", at zerver/openapi/zulip.yaml."
+        },
+        {
+          "evidenceId": "zulip-api-feature-levels-20261105",
+          "quote": "Every API change is logged under a numbered feature level (e.g. \"Feature level 513\" for Zulip 13.0), which clients read from server responses to determine the API format in use."
+        },
         {
           "evidenceId": "zulip-docs-28",
           "quote": "[Send a message](/api/send-message)"
@@ -5817,12 +5851,12 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Zulip documents its own export tools for moving freely between Zulip Cloud and self-hosted servers. The export covers public data, plus private messages from members who consent, and the same software can be self-hosted, which supports leaving. The evidence does not show that the export uses open, documented formats, and the export is organization-level and admin-run, with private data gated on member consent, so it is not clearly 'all of my data' for an individual user. Missing for 10: documentation of the export file format as open/standard, a user-level self-service export of all personal data, and independent or hands-on corroboration of a full exit/migration.",
+    "rationale": "Zulip documents first-party organization export tools for moving freely between Zulip Cloud and self-hosted servers. The export can include public data plus private channel messages and DMs from members who consented. The evidence never states the export format is open, and export is organization-level and administrator-run, with private data gated on consent, rather than a self-serve personal export. Missing for 10: explicit open-format specification of the export, individual-user self-service export of all personal data, independent or hands-on corroboration of a complete exit.",
     "evidenceIds": [
       "zulip-docs-6",
       "zulip-docs-10",
       "zulip-docs-14",
-      "zulip-docs-8"
+      "zulip-docs-7"
     ],
     "support": {
       "relation": "direct",
@@ -5839,11 +5873,11 @@
         },
         {
           "evidenceId": "zulip-docs-14",
-          "quote": "Everything in the export of public data, plus all the private channel messages and direct messages that members who have allowed administrators to export their private data can access."
+          "quote": "Public and private data (with consent): Everything in the export of public data, plus all the private channel messages and direct messages that members who have allowed administrators to export their private data can access."
         },
         {
-          "evidenceId": "zulip-docs-8",
-          "quote": "When you self-host Zulip, you get the same software as our Zulip Cloud customers."
+          "evidenceId": "zulip-docs-7",
+          "quote": "To import data from Slack, Mattermost, Rocket.Chat, Zulip Cloud, or another Zulip server, follow the linked instructions."
         }
       ]
     }
@@ -5852,14 +5886,15 @@
     "productId": "zulip",
     "storyId": "openness-open-license",
     "verdict": "partial",
-    "quality": 7,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Zulip's source is publicly hosted on GitHub, where the project invites code contributions, and the self-hosted build is the same software that runs Zulip Cloud. The open-license part rests only on community statements that it is open sourced and '100% FOSS', so license coverage is incomplete. missing for 10: a first-party statement naming the specific open-source license, and first-party docs confirming the full codebase (including the Cloud product) is under that license.",
+    "rationale": "The public zulip/zulip GitHub repository accepts code contributions and contains server files such as zerver/openapi/zulip.yaml, so the source is readable. Its open licensing is supported only by community statements that it is \"100% FOSS\" and was \"open sourced\". missing for 10: a first-party statement naming the specific open-source license, and documentation that the whole product (server and clients) is under that license.",
     "evidenceIds": [
       "zulip-gh-1",
-      "zulip-docs-8",
+      "zulip-openapi-spec-20261105",
       "zulip-comm-8",
-      "zulip-comm-4"
+      "zulip-comm-4",
+      "zulip-docs-8"
     ],
     "support": {
       "relation": "direct",
@@ -5871,8 +5906,8 @@
           "quote": "Contributing code. Check out our guide for new contributors to get started."
         },
         {
-          "evidenceId": "zulip-docs-8",
-          "quote": "When you self-host Zulip, you get the same software as our Zulip Cloud customers."
+          "evidenceId": "zulip-openapi-spec-20261105",
+          "quote": "The zulip/zulip repository ships a complete OpenAPI 3.0.1 description of the API"
         },
         {
           "evidenceId": "zulip-comm-8",
@@ -5889,19 +5924,19 @@
     "productId": "zulip",
     "storyId": "openness-self-host",
     "verdict": "full",
-    "quality": 8,
+    "quality": 9,
     "confidence": "high",
-    "rationale": "Zulip documents self-hosting directly: an installer for a server of your choice, the same software as Zulip Cloud, no paywalled enterprise auth features, and export/import between Cloud and your own servers. Community users confirm it is 100% FOSS and run self-hosted instances. Install-friction complaints are limitations, not contradictions, of a working self-host path. missing for 10: broad distro/packaging support (community reports Debian/Ubuntu-only installs needing a dedicated server or VM), mature containerized deployment.",
+    "rationale": "Zulip's first-party docs give an installer for running a self-hosted server and state that self-hosters get the same software as Zulip Cloud. Export/import tools allow moving between Cloud and your own servers, and community users confirm running their own instances on fully open-source code. Community reports of install friction (Debian/Ubuntu-only, a dedicated server or VM, 4GB RAM recommended) limit the experience but do not contradict the capability. Missing for 10: evidence of broad OS support and a well-working container deployment.",
     "evidenceIds": [
       "zulip-docs-8",
       "zulip-docs-25",
       "zulip-docs-20",
-      "zulip-docs-15",
       "zulip-docs-10",
       "zulip-docs-6",
+      "zulip-docs-15",
       "zulip-comm-8",
       "zulip-comm-18",
-      "zulip-comm-13"
+      "zulip-comm-14"
     ],
     "support": {
       "relation": "direct",
@@ -5917,16 +5952,12 @@
           "quote": "install a self-hosted Zulip server on a system of your choice"
         },
         {
-          "evidenceId": "zulip-docs-20",
-          "quote": "Then, run the installer, providing your email address and the public hostname that users will be able to access your server with"
-        },
-        {
           "evidenceId": "zulip-docs-10",
           "quote": "You can move freely between Zulip Cloud hosting and your own servers with our high quality export and import tools."
         },
         {
           "evidenceId": "zulip-comm-8",
-          "quote": "Zulip is my favorite modern chat program because it's actually 100% FOSS, unlike Mattermost and RocketChat, which are only 'open core'."
+          "quote": "Zulip is my favorite modern chat program because it's actually 100% FOSS"
         }
       ]
     }
@@ -5937,13 +5968,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Zulip documents channels, including public, web-public and private channels. It also documents one role-based membership rule: guests cannot self-subscribe to public channels. Admin-facing membership controls are not evidenced, so this falls short of full delivery. missing for 10: documentation of how admins create private channels and add or remove members, per-channel permission settings (e.g. who can post or invite), and independent or hands-on corroboration of membership management.",
+    "rationale": "Zulip's docs show public, web-public and private channel types. Subscription is role-gated: everyone except guests can subscribe to any public channel, and private channel messages are a distinct class. However, the evidence does not document admin-side membership controls such as adding or removing members, restricting who can join, or managing private channel access. Missing for 10: documented admin membership management for channels, how private channel access is granted and controlled, channel creation and permission settings, independent hands-on corroboration.",
     "evidenceIds": [
       "zulip-docs-22",
-      "zulip-docs-17",
       "zulip-docs-14",
-      "zulip-docs-2",
-      "zulip-docs-15"
+      "zulip-docs-17",
+      "zulip-docs-2"
     ],
     "support": {
       "relation": "direct",
@@ -5955,16 +5985,16 @@
           "quote": "Everyone other than guests can subscribe to any public or web-public channel."
         },
         {
+          "evidenceId": "zulip-docs-14",
+          "quote": "all the private channel messages and direct messages that members who have allowed administrators to export their private data can access"
+        },
+        {
           "evidenceId": "zulip-docs-17",
           "quote": "channels:public: Search messages in all public and web-public channels."
         },
         {
-          "evidenceId": "zulip-docs-14",
-          "quote": "plus all the private channel messages and direct messages that members who have allowed administrators to export their private data can access."
-        },
-        {
-          "evidenceId": "zulip-docs-15",
-          "quote": "you don't pay for SAML authentication, LDAP sync, or advanced roles and permissions."
+          "evidenceId": "zulip-docs-2",
+          "quote": "Subscribing to a channel makes conversations in that channel appear in your inbox, recent conversations, combined feed and left sidebar."
         }
       ]
     }
@@ -5973,9 +6003,9 @@
     "productId": "zulip",
     "storyId": "privacy-data-residency",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Zulip lets you control where data lives by self-hosting the same software on a system of your choice. Its export/import tools also let you move data between Zulip Cloud and your own servers. However, nothing in the evidence shows a region or residency selector for the hosted Zulip Cloud service, so residency choice comes only from running your own infrastructure. Missing for 10: Zulip Cloud region/residency selection, documented data-location guarantees for the hosted service, independent corroboration.",
+    "rationale": "Zulip's own documented self-hosting option lets users install the same server software on a system of their choice. Its export/import tools let them move data between Zulip Cloud and their own servers, so they control where data lives. The evidence never frames this as region or residency selection, and nothing shows a choice of storage region within Zulip Cloud itself. Missing for 10: documented Zulip Cloud region/residency selection, explicit data-residency documentation, independent corroboration.",
     "evidenceIds": [
       "zulip-docs-25",
       "zulip-docs-8",
@@ -6008,7 +6038,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack has no documented Zulip policy, setting, or commitment about whether user data is used to train AI models. Self-hosting and export tools (zulip-docs-8, zulip-docs-6) are related data-control arrangements, not a training opt-out, so they earn no credit. The privacy-posture axis applies to a hosted chat service, so missing evidence means none rather than na.",
+    "rationale": "Whether user data is used for AI training is a fair privacy question for a hosted chat product, so the axis applies. Nothing in the evidence pack mentions an AI-training opt-out, a no-training policy, or any data-use commitment about model training. Self-hosting and export tools are adjacent data-control features and do not count as this capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6023,7 +6053,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data retention and deletion controls are a fair axis for a team chat product like Zulip, but the evidence pack never mentions message retention policies, deletion, or purge controls. The export/import and self-hosting items concern data portability and deployment, which are adjacent capabilities, not retention or deletion control.",
+    "rationale": "Data retention and deletion controls are a fair question for a team chat product, so the axis applies. The evidence pack only documents export/import tools and self-hosting. Those cover data portability and deployment choice, not configurable retention policies or message/data deletion, so they earn no credit for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6038,7 +6068,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Telemetry and usage-tracking opt-out is a fair privacy question for a chat platform like Zulip, so the axis applies. The pack has no documentation of any telemetry setting or opt-out control. Self-hosting and FOSS status are adjacent and do not count as a documented opt-out capability.",
+    "rationale": "Opting out of telemetry is a fair question for a team chat product like Zulip, so the axis applies. The evidence pack has nothing on telemetry, analytics, usage tracking or opt-out controls. Self-hosting and export tools are adjacent features, not a documented telemetry opt-out, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6053,7 +6083,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Zulip's docs describe a first-party framework for interactive bots that react to messages, which implies bots receive incoming messages. They also describe deploying such bots on the Zulip Botserver. The pack never documents a real-time events API, event queue or gateway connection, or which non-message events a bot can receive. Missing for 10: explicit documentation of a real-time events API or long-poll/gateway mechanism, coverage of event types beyond messages, and independent or hands-on corroboration.",
+    "rationale": "Zulip's own docs describe a bot framework for interactive bots that react to messages, which can be deployed to production via the Zulip Botserver, so bots clearly receive incoming messages. The pack never documents a real-time events API, event queue or gateway connection, or event types beyond messages. Missing for 10: explicit documentation of a real-time events API or long-poll/streaming mechanism, coverage of non-message events, and independent or hands-on corroboration.",
     "evidenceIds": [
       "zulip-docs-12",
       "zulip-docs-4",
@@ -6081,7 +6111,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Retention policies and legal holds are a fair compliance question for a team-chat platform like Zulip, so the axis applies. The evidence pack only documents organization export tools, including private data exported with consent. That is an adjacent export capability and does not show retention enforcement or legal holds.",
+    "rationale": "Retention policies and legal holds are a fair compliance question for a team chat platform, so the axis applies. However, the evidence pack contains nothing about configurable message retention, deletion policies, or legal holds. The only related evidence covers organization export tools for migration and data export, which is a different capability and earns no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6096,7 +6126,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Screen sharing during calls is a fair question for a team chat product like Zulip, so the axis applies. However, the evidence pack covers only topics, channels, search, bots, integrations, export and self-hosting. Nothing in it mentions calls, huddles or screen sharing.",
+    "rationale": "Screen sharing during calls is a fair question for a team chat product like Zulip, so the axis applies. The evidence pack covers topics, channels, search, bots, export/import, integrations and self-hosting, but has nothing on calls, huddles or screen sharing. With no documented capability, the verdict is none.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6111,7 +6141,7 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Zulip's first-party docs describe a topic model in which each conversation in a channel gets its own space, and community users repeatedly praise its threading, including creating threads 'on the fly from existing messages'. However, the docs frame this as starting a new topic rather than replying to a specific message, so keeping side discussions attached to the original message is only supported by community claims. Missing for 10: first-party documentation of replying from a specific message into a thread, and evidence that the thread stays linked to that original message.",
+    "rationale": "Zulip's own documented topic model gives each side conversation in a channel its own topic. Community users credit this threading model and say threads can be created 'on the fly from existing messages', but the docs never describe replying to a specific message so the thread stays attached to it. Usability complaints (e.g. posting to an unexpected thread) are UX caveats, not a contradiction of the capability. Missing for 10: first-party documentation of replying from a specific message into a thread anchored to that original message, and documentation of the reply/thread UI flow.",
     "evidenceIds": [
       "zulip-docs-16",
       "zulip-docs-29",
@@ -6147,7 +6177,7 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Zulip's docs say every conversation in a channel lives in its own named topic, so many conversations can run in parallel without interrupting each other. Subscribed channels feed inbox and recent-conversations views, and multiple community reports praise the topic model for following busy discussions without being overwhelmed. Missing for 10: first-party documentation of the catch-up workflow itself (e.g., per-topic unread handling in the inbox or recent-conversations views).",
+    "rationale": "Zulip's docs say every conversation in a channel lives in its own named topic. Subscribed channels feed the inbox and recent-conversations views, and multiple community users credit the topic model with letting them follow busy, many-participant discussions without being overwhelmed. Missing for 10: first-party documentation of the topic-level catch-up workflow itself (e.g. reading or marking read per topic within the inbox or recent conversations).",
     "evidenceIds": [
       "zulip-docs-16",
       "zulip-docs-29",
@@ -6186,19 +6216,18 @@
   {
     "productId": "zulip",
     "storyId": "workspace-history-export",
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Zulip documents organization export tools, including a 'public and private data (with consent)' tier that covers private channel messages and direct messages for members who allowed administrators to export their data. This matches the 'where policy allows' clause. The export is machine-readable in practice, since it can be imported into Zulip Cloud or another Zulip server. missing for 10: explicit documentation of the export file format, details on export scope and size limits, independent or hands-on corroboration of export completeness.",
+    "rationale": "Zulip documents first-party organization export tools. These include an export of public data plus private channel messages and direct messages from members who consented to admin export, which directly matches the policy-gated private-conversation part of the story. However, the evidence never states the export format, so the machine-readable requirement is unproven. missing for 10: documented machine-readable export format (e.g., JSON schema/structure), explicit confirmation that the export covers the full message history including attachments, independent or hands-on corroboration of the export.",
     "evidenceIds": [
       "zulip-docs-6",
       "zulip-docs-14",
-      "zulip-docs-10",
-      "zulip-docs-7"
+      "zulip-docs-10"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As a team-admin, I can export the full message history of my workspace in machine-readable formats, including private conversations where policy allows",
       "citations": [
         {

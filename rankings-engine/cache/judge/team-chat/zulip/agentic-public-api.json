@@ -1,31 +1,35 @@
 {
-  "hash": "bf2ed036f8f0ce224ecc94eda5e0d2d393841091f6c4ae93d20db66da7c585f9",
+  "hash": "19e9880d8c2341b0b2f17b41848716b960dad795439e0feeb0beb34f64234b28",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "partial",
-    "quality": 6,
-    "confidence": "medium",
-    "rationale": "Zulip publishes public API documentation at zulip.com/api, with a 'Send a message' endpoint, and documents an API-based framework for writing and running interactive bots. That shows first-party programmatic control exists. However, the pack evidences only one endpoint, and probes found no machine-readable OpenAPI spec, llms.txt, or markdown docs at the tested paths, so the breadth of API coverage for driving the product is unproven. Missing for 10: evidence of broad endpoint coverage (channels, topics, search, users), a discoverable OpenAPI spec, AI-friendly docs (llms.txt or markdown), and independent or hands-on corroboration of API use.",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Zulip publishes REST API documentation at zulip.com/api, with endpoints such as Send a message. The docs are generated from a complete OpenAPI 3.0.1 spec shipped in the repository, and a versioned API changelog with feature levels supports client compatibility across server versions. The probes for llms.txt, markdown docs and an OpenAPI file at well-known web paths all returned 404, so the machine-readable spec is only reachable through GitHub. Missing for 10: an OpenAPI spec or llms.txt at a discoverable zulip.com URL, and independent hands-on corroboration of driving the product through the API.",
     "evidenceIds": [
       "zulip-docs-5",
       "zulip-docs-28",
-      "zulip-docs-12",
-      "zulip-docs-18",
-      "zulip-probe-1",
+      "zulip-openapi-spec-20261105",
+      "zulip-api-feature-levels-20261105",
+      "zulip-docs-4",
       "zulip-probe-3"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can drive the product through a documented public API",
       "citations": [
+        {
+          "evidenceId": "zulip-openapi-spec-20261105",
+          "quote": "The zulip/zulip repository ships a complete OpenAPI 3.0.1 description of the API, info title \"Zulip REST API\", at zerver/openapi/zulip.yaml."
+        },
         {
           "evidenceId": "zulip-docs-28",
           "quote": "[Send a message](/api/send-message)"
         },
         {
-          "evidenceId": "zulip-docs-12",
-          "quote": "Zulip’s API has a powerful framework for interactive bots that react to messages in Zulip. You can write and run a custom bot, or run an existing Zulip bot."
+          "evidenceId": "zulip-api-feature-levels-20261105",
+          "quote": "The API feature levels system used in this changelog is designed to make it possible to write API clients... that work with a wide range of server versions"
         }
       ]
     },

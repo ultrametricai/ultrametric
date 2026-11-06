@@ -1,21 +1,20 @@
 {
-  "hash": "1eb84f22456cfa4c81d1fe86203d2caca974adb8c3a3976e8b7573190b0cf632",
+  "hash": "b4317c14649cfa72f1bebfc55a83e8976f70e7bcec3e002aeb31741b61048b62",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "partial",
-    "quality": 6,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "LiteLLM documents a self-hosted LLM Gateway (Proxy) with virtual keys and claims drop-in OpenAI compatibility. A maintainer confirmed the proxy handles streaming and function-calling the same way as the openai-python SDK, so it delivers the core of pointing OpenAI-style clients at the gateway. However, no evidence explicitly documents the migration as written, where existing OpenAI SDK code changes only base_url and api_key. The 'drop-in' claim is framed around swapping providers in the completion() interface rather than redirecting existing clients to the proxy endpoint. Missing for 10: explicit first-party docs showing OpenAI SDK code switched to the proxy by changing only base URL and key, documented coverage of which OpenAI endpoints are served, independent hands-on corroboration of an unmodified-code migration.",
+    "rationale": "LiteLLM's GitHub claims drop-in OpenAI compatibility, letting you swap providers without rewriting code. Its self-hosted proxy issues virtual keys and returns responses in OpenAI Chat Completions format, and a maintainer confirmed the proxy handles streaming and function-calling the same way as the openai-python SDK. missing for 10: explicit first-party docs showing that only the base_url and api_key change in existing OpenAI SDK code, and independent hands-on corroboration of the base-URL swap.",
     "evidenceIds": [
       "litellm-gh-1",
-      "litellm-docs-5",
-      "litellm-docs-8",
       "litellm-docs-2",
+      "litellm-docs-5",
       "litellm-comm-13"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As a developer, I can point existing OpenAI-compatible code at the gateway by changing only the base URL and key",
       "citations": [
         {
@@ -23,16 +22,16 @@
           "quote": "Drop-in OpenAI compatibility — swap providers without rewriting your code"
         },
         {
-          "evidenceId": "litellm-docs-5",
-          "quote": "Self-hosted LLM Gateway (Proxy) with virtual keys, cost tracking, and an admin UI"
+          "evidenceId": "litellm-docs-2",
+          "quote": "Every response follows the OpenAI Chat Completions format, regardless of provider."
         },
         {
-          "evidenceId": "litellm-docs-8",
-          "quote": "Track Spend, and control model access via virtual keys for the proxy"
+          "evidenceId": "litellm-docs-5",
+          "quote": "Self-hosted LLM Gateway (Proxy) with virtual keys"
         },
         {
           "evidenceId": "litellm-comm-13",
-          "quote": "LiteLLM maintainer confirmed proxy supports streaming and function-calling in the same way as the openai-python SDK"
+          "quote": "proxy supports streaming and function-calling in the same way as the openai-python SDK"
         }
       ]
     },

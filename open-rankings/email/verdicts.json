@@ -1175,11 +1175,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Fastmail documents its own API: an API Documentation page, API tokens, and a JMAP interface that supports OAuth 2.0 or Bearer tokens and lets a client query, fetch, and send in one HTTP request. That gives a self-built agent a documented path to read and send mail. Missing for 10: any first-party connector or MCP server for Claude or ChatGPT, explicit evidence of triage operations (moving, flagging, labeling) and draft creation through the API, Fastmail-specific API detail beyond page titles, and hands-on or independent reports of agents using it end to end.",
+    "rationale": "Fastmail documents its own JMAP API, with a session endpoint at api.fastmail.com/jmap/session and API-token or OAuth auth, and JMAP calls can query, fetch and send mail. That gives a self-built agent a documented connection for reading and sending. There is no evidence of a first-party connector for Claude or ChatGPT, and the pack does not show drafting or triage operations, so an agent must be wired to raw JMAP. Missing for 10: official Claude/ChatGPT/MCP connector, explicit evidence of draft and triage (move/flag/label) operations, hands-on corroboration of agent use end to end.",
     "evidenceIds": [
       "fastmail-docs-38",
+      "fastmail-jmap-session-20261106",
       "fastmail-docs-2",
-      "fastmail-docs-1",
       "fastmail-docs-40",
       "fastmail-docs-5"
     ],
@@ -1193,16 +1193,12 @@
           "quote": "POST a `methodCalls` array. Query, fetch, and send, all in one HTTP request."
         },
         {
+          "evidenceId": "fastmail-jmap-session-20261106",
+          "quote": "The JMAP session resource can be found at https://api.fastmail.com/jmap/session"
+        },
+        {
           "evidenceId": "fastmail-docs-2",
           "quote": "Standard OAuth 2.0 or Bearer tokens. No custom auth protocol to implement."
-        },
-        {
-          "evidenceId": "fastmail-docs-40",
-          "quote": "API Documentation"
-        },
-        {
-          "evidenceId": "fastmail-docs-5",
-          "quote": "API tokens"
         }
       ]
     }
@@ -1213,7 +1209,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The axis applies: an email SaaS with a public API could publish llms.txt or agent-oriented docs. The evidence shows no such file, though: the probe for llms.txt on fastmail.help returned HTTP 404, OpenAPI paths also 404, and the general JMAP and API documentation is not agent-oriented. Since nothing delivers the story, no deduction clause applies.",
+    "rationale": "A probe found no llms.txt at fastmail.help (HTTP 404), and no OpenAPI spec exists at any candidate path. Fastmail does document JMAP's machine-readable session discovery and points to the IETF RFCs as its API spec. That is authenticated runtime API discovery and standard protocol documentation, not llms.txt or docs written for agents, so it counts only as adjacent support.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1228,7 +1224,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "An email service could plausibly offer in-product AI insights and suggestions, so this axis applies. However, the evidence pack documents no AI-generated insights or suggestions feature. It covers only search, filters, templates, snooze, spam filtering and the JMAP API, none of which is AI-generated insight.",
+    "rationale": "An email service could plausibly ship in-product AI insights or suggestions, so this axis applies. However, nothing in the evidence pack documents any AI-generated insights, summaries, or suggestions inside Fastmail. Spam filtering, search, filters, and the JMAP API are adjacent features or developer building blocks, not this capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1243,10 +1239,11 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Fastmail's own Filters & Rules feature is the only first-party automation in the pack, and server-side mail rules plausibly run unattended, but the evidence is just the help-article title with no detail on triggers, actions or background execution. Scheduled Send and Snooze are one-off timed actions, not recurring automations, and the JMAP API, tokens and push are developer building blocks, so none of these earn credit. Missing for 10: documented content on what rules can do and how they run, recurring or scheduled automations, agent-style autonomous workflows, and independent corroboration.",
+    "rationale": "Fastmail documents its own automation-style features: Filters & Rules, plus timed actions like Scheduled Send and Snooze that carry out a one-off action later without the user present. However, the pack gives only article titles for Filters & Rules, with nothing showing what they automate or that they run autonomously on the server. Scheduled Send and Snooze are one-off timed actions, not recurring or agentic automations. missing for 10: documented detail that rules run autonomously server-side, recurring or scheduled automation workflows, AI or agentic automation capabilities, and independent or hands-on corroboration.",
     "evidenceIds": [
       "fastmail-docs-6",
-      "fastmail-docs-28"
+      "fastmail-docs-17",
+      "fastmail-docs-supp-1"
     ],
     "support": {
       "relation": "direct",
@@ -1258,8 +1255,12 @@
           "quote": "Filters & Rules"
         },
         {
-          "evidenceId": "fastmail-docs-28",
-          "quote": "Filters & Rules – Fastmail"
+          "evidenceId": "fastmail-docs-17",
+          "quote": "Scheduled Send"
+        },
+        {
+          "evidenceId": "fastmail-docs-supp-1",
+          "quote": "Snooze messages to just when you need them."
         }
       ]
     }
@@ -1270,7 +1271,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A built-in AI assistant is a fair question for an email/productivity service like Fastmail, so the axis applies. Nothing in the evidence pack documents any built-in AI assistant or task delegation. The JMAP API, filters, templates, and scheduled send are developer building blocks or adjacent features, not an in-product AI assistant.",
+    "rationale": "A built-in AI assistant is a fair axis for an email service, but the evidence pack contains no mention of any AI assistant inside Fastmail. The documented features are filters, templates, scheduled send, snooze, the JMAP API and API tokens, which are conventional features or developer building blocks rather than an agent users can delegate tasks to.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1285,13 +1286,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Fastmail documents API tokens and an API documentation page. The JMAP evidence shows bearer-token auth and plain HTTP POST calls to query, fetch and send, which together allow non-interactive, headless scripting. A community user also reports automated transactional sending via an SMTP-only app password. Most of the detailed evidence describes the JMAP protocol rather than Fastmail's own docs, and the Fastmail pages are cited by title only. missing for 10: Fastmail-specific documentation of token scopes and headless/CI usage, an official CLI or CI integration guide, and independent hands-on reports of CI automation.",
+    "rationale": "Fastmail documents a programmatic JMAP API with a session endpoint at api.fastmail.com, API-token and Bearer auth, and batched HTTP method calls. That allows non-interactive, scripted use without the web UI. A community user also reports running automated transactional sending via an SMTP-only app password. However, nothing documents CI usage or ships a first-party CLI or headless runner, so automation means writing your own JMAP client. Missing for 10: official CLI/headless tool, CI-specific docs or examples, independent hands-on corroboration of API-driven automation, machine-readable OpenAPI spec (probes 404).",
     "evidenceIds": [
-      "fastmail-docs-5",
-      "fastmail-docs-40",
+      "fastmail-jmap-session-20261106",
       "fastmail-docs-2",
       "fastmail-docs-38",
-      "fastmail-docs-1",
+      "fastmail-docs-5",
       "fastmail-comm-8-refresh-69236ad6de4a7c0c"
     ],
     "support": {
@@ -1300,16 +1300,12 @@
       "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
       "citations": [
         {
-          "evidenceId": "fastmail-docs-5",
-          "quote": "API tokens"
-        },
-        {
-          "evidenceId": "fastmail-docs-40",
-          "quote": "API Documentation"
+          "evidenceId": "fastmail-jmap-session-20261106",
+          "quote": "The JMAP session resource can be found at https://api.fastmail.com/jmap/session"
         },
         {
           "evidenceId": "fastmail-docs-2",
-          "quote": "Standard OAuth 2.0 or Bearer tokens."
+          "quote": "Standard OAuth 2.0 or Bearer tokens. No custom auth protocol to implement."
         },
         {
           "evidenceId": "fastmail-docs-38",
@@ -1328,7 +1324,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "An email product could plausibly ship an AI assistant that connects to external MCP servers, so this axis applies. The evidence pack only documents the JMAP API, API tokens and standard mail features. Nothing shows Fastmail can register or consume MCP servers or their tools.",
+    "rationale": "An email service could plausibly ship a built-in assistant that connects to external MCP servers, so this axis applies to Fastmail. The evidence pack covers only the JMAP API, API tokens, push and standard mail features, with no mention of an MCP client, an AI assistant, or any way to plug in MCP servers. Probes for machine-readable docs (llms.txt, OpenAPI) also returned 404, so there is no support for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1343,7 +1339,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Fastmail is an email service, not an agent, so publishing an official MCP server is a fair question and the axis applies. The evidence documents only the JMAP API, API tokens and OAuth/Bearer auth. These are developer building blocks for constructing agent access, not an official MCP server, and nothing in the pack mentions MCP.",
+    "rationale": "Fastmail is an email SaaS, not an agent, so an official MCP server is a fair question and the axis applies. The evidence documents only the JMAP API, API tokens and OAuth. Those are developer building blocks an agent integration could be built on, not an official MCP server, and nothing in the pack mentions MCP.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1358,7 +1354,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Operating an email service through natural-language commands is a fair axis, since such a service could ship an AI assistant. Nothing in the evidence shows Fastmail offers one. The JMAP API, API tokens, search, filters and keyboard shortcuts are developer building blocks or adjacent features, not natural-language operation.",
+    "rationale": "Natural-language operation is a fair axis for an email service, but the evidence pack never shows Fastmail offering a natural-language command interface or AI assistant. The JMAP API, API tokens, search, filters and keyboard shortcuts are developer building blocks or adjacent features, not first-party natural-language control.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1373,7 +1369,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "An official CLI is a fair question for an email SaaS like Fastmail, so the axis applies. However, nothing in the evidence documents a Fastmail-published CLI. The 'Terminal client' item on jmap.io refers to the open JMAP protocol ecosystem, not a first-party Fastmail tool, and the API tokens and JMAP API are developer building blocks rather than a CLI.",
+    "rationale": "A hosted email service could plausibly ship an official CLI, so the axis applies, but no evidence shows Fastmail does. The JMAP API, API tokens and session discovery are developer building blocks, not a CLI. The 'Terminal client' on jmap.io is a generic JMAP ecosystem listing with no evidence it is an official Fastmail tool.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1386,17 +1382,16 @@
     "productId": "fastmail",
     "storyId": "agentic-public-api",
     "verdict": "full",
-    "quality": 8,
-    "confidence": "medium",
-    "rationale": "Fastmail publishes API documentation (fastmail.com/dev) and API tokens. It exposes the open, fully documented JMAP protocol: a session object at /.well-known/jmap, OAuth 2.0 or Bearer auth, batched methodCalls for query, fetch and send, and push via EventSource or WebPush. Together these give an AI-native user a documented programmatic surface for driving the account. The OpenAPI probe 404s reflect a different spec format, not an absent API. Missing for 10: Fastmail-specific API docs and token pages are evidenced only by titles, with no detail on scope or coverage; no independent or hands-on corroboration of agents driving Fastmail via the API.",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Fastmail publishes a developer page documenting its public JMAP API. It covers a session endpoint at api.fastmail.com, API-token, OAuth or Bearer auth, CORS-enabled APIs, and the IETF RFCs as the full specification. Batched methodCalls let a client query, fetch and send in one request, which is a documented public API an agent can drive. missing for 10: independent or hands-on corroboration of driving Fastmail via the API, and a downloadable machine-readable spec (OpenAPI paths and llms.txt return 404, though JMAP's RFCs serve as the spec).",
     "evidenceIds": [
+      "fastmail-jmap-session-20261106",
       "fastmail-docs-40",
-      "fastmail-docs-5",
-      "fastmail-docs-1",
-      "fastmail-docs-2",
       "fastmail-docs-38",
-      "fastmail-docs-49",
-      "fastmail-docs-3"
+      "fastmail-docs-41",
+      "fastmail-docs-22",
+      "fastmail-docs-49"
     ],
     "support": {
       "relation": "direct",
@@ -1404,24 +1399,20 @@
       "subject": "As an AI-native user, I can drive the product through a documented public API",
       "citations": [
         {
-          "evidenceId": "fastmail-docs-40",
-          "quote": "API Documentation"
-        },
-        {
-          "evidenceId": "fastmail-docs-5",
-          "quote": "API tokens"
-        },
-        {
-          "evidenceId": "fastmail-docs-1",
-          "quote": "Fetch `/.well-known/jmap` for the session object - capabilities, accounts, and all API URLs."
+          "evidenceId": "fastmail-jmap-session-20261106",
+          "quote": "The JMAP session resource can be found at https://api.fastmail.com/jmap/session"
         },
         {
           "evidenceId": "fastmail-docs-38",
           "quote": "POST a `methodCalls` array. Query, fetch, and send, all in one HTTP request."
         },
         {
-          "evidenceId": "fastmail-docs-2",
-          "quote": "Standard OAuth 2.0 or Bearer tokens."
+          "evidenceId": "fastmail-docs-41",
+          "quote": "Standard OAuth 2.0 or Bearer tokens. No custom auth protocol to implement."
+        },
+        {
+          "evidenceId": "fastmail-docs-40",
+          "quote": "API Documentation"
         },
         {
           "evidenceId": "fastmail-docs-49",
@@ -1434,14 +1425,14 @@
     "productId": "fastmail",
     "storyId": "agentic-scoped-keys",
     "verdict": "partial",
-    "quality": 4,
-    "confidence": "low",
-    "rationale": "Fastmail has a documented API tokens feature, and a community user reports an app password restricted to SMTP only, which is a product-native least-privilege credential. The evidence pack only contains the API tokens page title, so the token scopes themselves are undocumented here. missing for 10: documented per-token scope options for JMAP/API access (e.g., read-only mail, specific capabilities), revocation/expiry details, first-party docs content beyond a page title, and corroboration of agent-oriented scoped token issuance.",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Fastmail issues API tokens for JMAP access and supports standard OAuth 2.0/Bearer auth. A hands-on community report confirms app passwords can be restricted to a single protocol (SMTP only), which shows some least-privilege scoping. The evidence does not describe scope options for API tokens, such as read-only or per-capability grants, so how granular the scoping goes is unproven. Missing for 10: documented per-token scope options (e.g. read-only or mail-vs-calendar capabilities), first-party docs detailing token restriction and revocation for agents, and independent corroboration of scoped API tokens specifically.",
     "evidenceIds": [
       "fastmail-docs-5",
-      "fastmail-docs-22",
-      "fastmail-comm-8-refresh-69236ad6de4a7c0c",
-      "fastmail-docs-2"
+      "fastmail-docs-2",
+      "fastmail-jmap-session-20261106",
+      "fastmail-comm-8-refresh-69236ad6de4a7c0c"
     ],
     "support": {
       "relation": "direct",
@@ -1450,15 +1441,19 @@
       "citations": [
         {
           "evidenceId": "fastmail-comm-8-refresh-69236ad6de4a7c0c",
-          "quote": "Uses Fastmail SMTP for transactional emails with an app password that can only access SMTP."
+          "quote": "with an app password that can only access SMTP"
         },
         {
-          "evidenceId": "fastmail-docs-5",
-          "quote": "API tokens"
+          "evidenceId": "fastmail-jmap-session-20261106",
+          "quote": "with CORS-enabled APIs and API-token auth"
         },
         {
           "evidenceId": "fastmail-docs-2",
           "quote": "Standard OAuth 2.0 or Bearer tokens."
+        },
+        {
+          "evidenceId": "fastmail-docs-5",
+          "quote": "API tokens"
         }
       ]
     }
@@ -1466,34 +1461,16 @@
   {
     "productId": "fastmail",
     "storyId": "agentic-sdks",
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Fastmail exposes a documented JMAP API (an API Documentation page, OAuth or Bearer-token auth, a methodCalls request model). The JMAP site lists a Rust library and a TypeScript library, but nothing establishes that these are official, Fastmail-maintained SDKs rather than ecosystem implementations, and no OpenAPI spec was found. missing for 10: confirmation that the libraries are official Fastmail SDKs, SDK documentation (install, usage, versioning), language coverage beyond a passing list mention, independent or hands-on corroboration of building with them.",
-    "evidenceIds": [
-      "fastmail-docs-50",
-      "fastmail-docs-40",
-      "fastmail-docs-38",
-      "fastmail-docs-41"
-    ],
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Fastmail documents a JMAP API with session discovery, token auth, and RFC-based specifications, but nothing in the evidence identifies an official Fastmail SDK. The Rust and TypeScript libraries are listed only on the open-standard jmap.io site and are not shown to be Fastmail-provided SDKs. A raw protocol API plus ecosystem libraries is a building block, not the official-SDK capability this story asks for.",
+    "evidenceIds": [],
     "support": {
-      "relation": "direct",
-      "coverage": "partial",
+      "relation": "adjacent",
+      "coverage": "none",
       "subject": "As an AI-native user, I can build against official SDKs",
-      "citations": [
-        {
-          "evidenceId": "fastmail-docs-50",
-          "quote": "Webmail Rust library iOS app Server Typescript library Terminal client"
-        },
-        {
-          "evidenceId": "fastmail-docs-40",
-          "quote": "API Documentation"
-        },
-        {
-          "evidenceId": "fastmail-docs-38",
-          "quote": "POST a `methodCalls` array. Query, fetch, and send, all in one HTTP request."
-        }
-      ]
+      "citations": []
     }
   },
   {
@@ -1502,10 +1479,11 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "The JMAP documentation describes server-initiated change notifications. WebPush is offered as push with 'no permanent connection required', which implies outbound delivery to a subscriber endpoint, while EventSource is a client-held stream rather than a webhook. The evidence is thin and comes from the protocol site, not Fastmail-specific docs, so it is unclear how a programmatic consumer would register and receive callbacks. Missing for 10: explicit documentation of registering an arbitrary HTTP callback URL, event types and payload format, confirmation that Fastmail's own service supports WebPush subscriptions, and independent or hands-on corroboration.",
+    "rationale": "Fastmail's developer page says its API is JMAP per RFC 8620. JMAP's site advertises WebPush, which needs no permanent connection, so the server initiates delivery to a push endpoint. That is the closest the pack gets to an outbound callback a programmatic consumer could receive; the EventSource stream is client-held and does not count as a webhook. missing for 10: explicit Fastmail-side documentation of registering a callback URL (push subscription), event types and payload format, delivery, retry and verification semantics, and any independent or hands-on corroboration that Fastmail supports WebPush callbacks for non-mobile consumers.",
     "evidenceIds": [
+      "fastmail-docs-47",
       "fastmail-docs-3",
-      "fastmail-docs-47"
+      "fastmail-jmap-session-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -1517,8 +1495,8 @@
           "quote": "Or use WebPush for mobile-compatible push, no permanent connection required."
         },
         {
-          "evidenceId": "fastmail-docs-3",
-          "quote": "Get instant push via EventSource — one connection, all mailboxes."
+          "evidenceId": "fastmail-jmap-session-20261106",
+          "quote": "The JMAP session resource can be found at https://api.fastmail.com/jmap/session"
         }
       ]
     }
@@ -1529,7 +1507,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Fastmail is an email service, so AI-drafted replies in the user's own voice is a fair question for this product. The evidence pack contains no AI drafting or voice/tone modeling feature. Templates, the JMAP API and API tokens are adjacent features or developer building blocks, not this capability, so they earn no credit.",
+    "rationale": "Fastmail is an email service, so AI-drafted replies in the user's own voice are a fair question to ask of it. Nothing in the evidence pack documents any AI drafting feature, voice or tone learning, or AI-generated reply suggestions. Templates are static user-written text, and the JMAP API is only a developer building block, so neither earns credit for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1544,7 +1522,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Asking an AI assistant grounded questions across mail and calendar is a fair axis for an email and calendar service, but the evidence pack never documents any Fastmail AI assistant or natural-language Q&A over the inbox or calendar. The JMAP API, API tokens, and standard mail search are developer building blocks or adjacent features, not the capability itself, so they earn no credit.",
+    "rationale": "An AI assistant that answers questions across mail and calendar is a fair capability for an email provider, so the axis applies. The pack shows no Fastmail assistant or AI Q&A feature. Keyword mail search is an adjacent feature, and the JMAP API with API tokens is only a developer building block someone could use to build such an assistant; neither earns credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1559,7 +1537,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "AI inbox triage is a fair axis for an email provider, but nothing in the evidence shows Fastmail auto-labeling, categorizing, or surfacing mail with AI that the user can steer and audit. User-defined Filters & Rules and spam filtering are adjacent features, not AI triage. The JMAP API and push are developer building blocks someone could use to build a triage tool, not the capability itself.",
+    "rationale": "AI inbox triage is a fair question for an email service, so the axis applies. However, the evidence pack documents no AI-driven auto-labeling, categorization, or attention-surfacing. Filters & Rules, spam filtering, and snooze are user-configured or adjacent features, not AI triage, and JMAP API access is only a developer building block someone could use to build such a system.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1574,10 +1552,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Fastmail exposes a JMAP API with API documentation (fastmail.com/dev) and protocol docs on jmap.io, but nothing in the evidence shows an interactive API reference or runnable examples. The OpenAPI/Swagger probes all returned 404, so there is no evidence of a machine-readable spec that could back an interactive explorer. Static documentation is adjacent and does not deliver this story.",
+    "rationale": "Fastmail documents its JMAP API through a developer page, the IETF RFCs, and authenticated runtime session discovery. Nothing in the evidence shows an interactive API explorer or runnable in-browser examples. The probe found no OpenAPI/Swagger spec, and the dev page confirms the spec is the RFCs rather than an interactive reference, so static documentation is only an adjacent capability.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can explore an interactive API reference with runnable examples",
       "citations": []
@@ -1588,14 +1566,22 @@
     "storyId": "api-machine-spec",
     "verdict": "none",
     "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence shows no downloadable OpenAPI or equivalent machine-readable API spec for Fastmail, and every probed OpenAPI/Swagger path returned 404. The JMAP `/.well-known/jmap` session object is a machine-readable capability and URL discovery document, not a schema or spec of the API's methods and types. The JMAP standard being 'fully documented' refers to human-readable documentation, so both are adjacent features that earn no credit here.",
-    "evidenceIds": [],
+    "confidence": "high",
+    "rationale": "Fastmail documents JMAP session discovery at https://api.fastmail.com/jmap/session and points to the IETF RFCs as the API specification, but its own developer page states this is per-account runtime discovery and that no downloadable OpenAPI-style spec exists. Probes of standard OpenAPI/Swagger paths all returned 404. Runtime capability discovery and prose RFCs are adjacent features, not a downloadable machine-readable API spec.",
+    "evidenceIds": [
+      "fastmail-jmap-session-20261106",
+      "fastmail-probe-2"
+    ],
     "support": {
       "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "fastmail-jmap-session-20261106",
+          "quote": "The JMAP session resource can be found at https://api.fastmail.com/jmap/session"
+        }
+      ]
     }
   },
   {
@@ -1604,7 +1590,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Fastmail is a SaaS email service with a public JMAP API and API tokens, so a sandbox or test environment is a fair question to ask of it. Nothing in the evidence pack documents a sandbox, test tenant or non-production API environment. Using a separate account via multiple-account login would be a user-side workaround and earns no credit.",
+    "rationale": "Fastmail exposes a JMAP API with API-token auth, so a sandbox or test environment is a fair question for this product. The evidence pack never mentions a sandbox, test account tier, or non-production API endpoint. Logging in to multiple accounts would only be a user-side workaround, not a documented sandbox capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1619,10 +1605,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Fastmail exposes the JMAP API, an open, documented standard with a session object that advertises capabilities. The pack, however, never mentions API version numbers, version pinning, or any deprecation or sunset policy. Capability discovery and the protocol being an open standard are adjacent to stability guarantees, not a documented versioning and deprecation policy, so they earn no credit.",
+    "rationale": "Fastmail documents a JMAP API whose session object advertises capabilities, with the IETF RFCs as the specification. Capability discovery and a standards-based spec are related to stability, but they are not explicit API versioning, and nothing in the evidence describes a deprecation policy or sunset timelines. The axis applies to an email service with a public API, so the lack of evidence makes this none.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
       "citations": []
@@ -1631,16 +1617,28 @@
   {
     "productId": "fastmail",
     "storyId": "assignment-and-routing",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Fastmail is an email service, so team conversation assignment is a fair question for it. However, nothing in the evidence pack shows assigning conversations to teammates or any explicit ownership model. The only related item is a bare 'Filters & Rules' help-article title, which is generic mail filtering rather than routing mail to teammates, so it is an adjacent feature that earns no credit.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 2,
+    "confidence": "low",
+    "rationale": "Fastmail documents a 'Filters & Rules' feature, which covers the rule-based routing half of the story only by title. Nothing shows assigning conversations to teammates, shared ownership, or routing mail to specific team members, so the core team-ownership element is unevidenced. Missing for 10: conversation assignment to teammates, explicit ownership/shared-inbox tracking, documented details of rule-based routing to team members, independent corroboration.",
+    "evidenceIds": [
+      "fastmail-docs-6",
+      "fastmail-docs-28"
+    ],
     "support": {
-      "relation": "adjacent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As a team-lead, I can assign conversations to teammates and route incoming mail with rules so ownership is explicit",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "fastmail-docs-6",
+          "quote": "Filters & Rules"
+        },
+        {
+          "evidenceId": "fastmail-docs-28",
+          "quote": "Filters & Rules – Fastmail"
+        }
+      ]
     }
   },
   {
@@ -1648,12 +1646,12 @@
     "storyId": "automation-bulk-operations",
     "verdict": "partial",
     "quality": 4,
-    "confidence": "low",
-    "rationale": "Fastmail's API is built on JMAP, whose docs say clients can POST a `methodCalls` array to run query, fetch and send in one HTTP request. That is batched execution of operations, a form of bulk programmatic action. However, the evidence never shows one call updating, moving or deleting many messages at once, and the Filters & Rules and Searching pages appear only as titles with no bulk-action content. Missing for 10: explicit documentation of multi-item bulk updates (e.g. mass move/delete/label by ID set or query), UI bulk-selection actions, documented limits on batch size, independent or hands-on corroboration.",
+    "confidence": "medium",
+    "rationale": "Fastmail exposes JMAP through its own session endpoint. JMAP lets a client POST a methodCalls array that combines query, fetch and send in one HTTP request, which gives programmatic batching that an AI-native client could use for multi-item work. The evidence does not show bulk mutation of many items (mass move, label, delete or archive), and the UI-side bulk features appear only as bare article titles. Missing for 10: explicit documentation of bulk set/update across many messages, documented limits on batch size, UI bulk-select evidence, and hands-on corroboration.",
     "evidenceIds": [
       "fastmail-docs-38",
-      "fastmail-docs-4",
-      "fastmail-docs-40"
+      "fastmail-jmap-session-20261106",
+      "fastmail-docs-4"
     ],
     "support": {
       "relation": "direct",
@@ -1665,8 +1663,8 @@
           "quote": "POST a `methodCalls` array. Query, fetch, and send, all in one HTTP request."
         },
         {
-          "evidenceId": "fastmail-docs-4",
-          "quote": "A single HTTP roundtrip is often all that's required."
+          "evidenceId": "fastmail-jmap-session-20261106",
+          "quote": "The JMAP session resource can be found at https://api.fastmail.com/jmap/session"
         }
       ]
     }
@@ -1677,7 +1675,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Fastmail has a first-party 'Filters & Rules' help article, and a community comment about migrating filters and rules confirms the feature exists, but the pack shows nothing of what triggers or actions rules support. JMAP EventSource/WebPush is a developer building block, and snooze is a separate feature, so neither is credited. Missing for 10: documented trigger conditions and action types, detail on how incoming-mail events fire rules, and hands-on corroboration of automation depth.",
+    "rationale": "Fastmail has its own 'Filters & Rules' help article, and community users refer to migrating their filters and rules, so rule-based automation exists as a first-party feature. The pack gives only the article title, though, with no detail on triggers, conditions or actions. JMAP push (EventSource/WebPush) is a developer building block and earns no credit here. Missing for 10: documented trigger/event types, documented actions (move, label, forward, etc.), condition logic depth, any AI-native or programmatic rule management, and hands-on corroboration of rules running automatically.",
     "evidenceIds": [
       "fastmail-docs-6",
       "fastmail-docs-28",
@@ -1694,7 +1692,7 @@
         },
         {
           "evidenceId": "fastmail-comm-7-refresh-1145f5d70e18d15d",
-          "quote": "Migrating filters and rules over, on the other hand..."
+          "quote": "Migrating filters and rules over"
         }
       ]
     }
@@ -1705,7 +1703,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Recurring scheduled jobs are a fair axis for an email service, but the evidence only shows one-off timed actions: Scheduled Send for a single message and Snooze for returning a message at a set time. Filters & Rules run when mail arrives, not on a recurring schedule. Nothing in the pack documents recurring jobs, cron-like workflows, or repeating automation, so one-off scheduling cannot stand in for a recurring schedule.",
+    "rationale": "Recurring scheduled automation is a fair question for an email service, but the evidence shows no documented recurring jobs or workflows. Scheduled Send and Snooze are one-off timed actions, not recurring schedules. Filters & Rules are delivery-triggered, not time-scheduled.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1720,7 +1718,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Fastmail has automations: Filters & Rules and Sieve-style mail rules, so this story is a fair question for the product. However, nothing in the evidence pack documents version history, change review, or rollback for those rules. The Filters & Rules items are bare titles, and Undo send concerns individual messages, not automation configuration.",
+    "rationale": "Fastmail has automations in the form of Filters & Rules, so versioning and rolling them back is a fair question for this product. The evidence pack, however, contains only page titles for that feature. Nothing documents version history, change review, or rollback for rules. Undo send is a different capability and earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1735,7 +1733,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Fastmail is an email product, so handling other customer channels in the same inbox is a fair question for it. The evidence pack covers only email (JMAP, filters, aliases, templates, masked email), calendar and contacts. Nothing shows SMS, WhatsApp, social or live-chat channels inside the Fastmail inbox.",
+    "rationale": "Fastmail is an email service, and a buyer could reasonably ask whether its inbox also handles SMS, WhatsApp, social, or live chat, so the axis applies. The evidence pack covers only email, calendar and contacts features (JMAP, filters, templates, aliases, masked email, scheduled send). It never documents ingesting SMS, WhatsApp, social or live-chat messages into the same inbox.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1750,7 +1748,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Bulk-selecting conversations and archiving, labeling, or marking them done is a fair axis for an email client, but the pack has no evidence of a multi-select action in Fastmail. The 'Keyboard shortcuts' and 'Achieve inbox zero' items are bare titles with no content about bulk actions. JMAP's batched methodCalls is a developer building block, not the end-user capability.",
+    "rationale": "Bulk triage is a fair axis for an email service, but the pack has no evidence that Fastmail's interface lets you multi-select conversations and archive, label, or mark them done together. The keyboard-shortcuts and 'Achieve inbox zero' items are bare titles with no content. JMAP's batched methodCalls is a developer building block, not the user-facing capability, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1765,7 +1763,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Fastmail has a first-party help article titled \"Calendar events and invitations\", and a community user refers to \"your Fastmail calendar\". This points to a native calendar that handles events and invitations, but the pack contains only the title, not the article's content. missing for 10: documentation of viewing the calendar inside the mail interface, responding to invites (accept/decline/RSVP) from within messages, creating events from the email client, and independent hands-on corroboration of an integrated mail-calendar workflow.",
+    "rationale": "Fastmail has a first-party help article titled \"Calendar events and invitations\", and a community user refers to \"your Fastmail calendar\". That indicates a native calendar with event and invitation handling. The pack gives only the title, with no detail on how it works or on use inside the mail client. Missing for 10: documented viewing of the calendar inside the mail interface, documented RSVP/response to invites from email, documented event creation, and hands-on or independent corroboration.",
     "evidenceIds": [
       "fastmail-docs-14",
       "fastmail-docs-34",
@@ -1793,9 +1791,10 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Fastmail has a first-party 'Import your mail' help article and a 'Move from Gmail' guide. A community user confirms Fastmail has an easy migration tool, and another reports moving from Google services was easy. The evidence covers only the mail side, and only as article titles plus anecdotes; contact import is never mentioned. Missing for 10: documented contacts/address-book import, detail confirming complete history (all folders/labels) is imported, support for non-Gmail providers and desktop clients.",
+    "rationale": "Fastmail has a first-party 'Import your mail' help article and a 'Move from Gmail' guide, and community users describe an easy built-in migration tool and smooth moves from Google, so importing mail history is evidenced. Importing contacts is not documented anywhere in the pack, and the import docs appear only as titles. missing for 10: evidence of contacts import, detail on whether the full mail history (all folders and archives) is imported, support for importing from desktop clients or files, in-depth first-party import documentation.",
     "evidenceIds": [
       "fastmail-docs-13",
+      "fastmail-docs-25",
       "fastmail-docs-24",
       "fastmail-comm-7-refresh-1145f5d70e18d15d",
       "fastmail-comm-13-refresh-20e8c721b9540dbb"
@@ -1830,10 +1829,10 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Fastmail has a first-party help article titled 'Searching your mail', which shows native search exists. One community user describes a saved filter that shows mail delivered to a specific address within the last two weeks, implying recipient and date filtering. The pack gives no detail on operators, ranking, speed, or coverage of the full mail history. missing for 10: documented search operator syntax, ranked/relevance results, evidence of search speed, confirmation of full-history indexing, independent hands-on corroboration of search precision",
+    "rationale": "Fastmail has a first-party help article titled \"Searching your mail\", so mail search is a documented product capability. A community user also describes building a filter that showed all mail delivered to one address within a date window, a hands-on hint of address and date filtering. The pack contains only the article title, with no content on operators, ranking, speed or full-history coverage. Missing for 10: documented search operators/syntax, ranked or relevance-sorted results, evidence of search speed, confirmation of coverage across full mail history, independent hands-on corroboration of search precision.",
     "evidenceIds": [
-      "fastmail-docs-7",
       "fastmail-docs-37",
+      "fastmail-docs-7",
       "fastmail-comm-6-refresh-00d2332b935e2090"
     ],
     "support": {
@@ -1842,8 +1841,8 @@
       "subject": "As a power-user, search is fast and precise — operators, filters, and ranked results across my full mail history",
       "citations": [
         {
-          "evidenceId": "fastmail-docs-7",
-          "quote": "Searching your mail"
+          "evidenceId": "fastmail-docs-37",
+          "quote": "Searching your mail – Fastmail"
         },
         {
           "evidenceId": "fastmail-comm-6-refresh-00d2332b935e2090",
@@ -1858,7 +1857,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Internal comment threads and @mentions beside an email are a fair axis for an email service, but nothing in the evidence documents Fastmail offering message comments, @mentions or side-threads. The evidence covers JMAP, filters, templates, aliases, snooze and similar features, none of which deliver this story.",
+    "rationale": "Internal comment threads with @mentions beside a message are a reasonable thing to ask of an email service, so this axis applies to Fastmail. Nothing in the evidence pack documents internal comments, @mentions or shared side-threads on messages. The docs cover JMAP, filters, templates, snooze and scheduled send, none of which is this capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1871,9 +1870,9 @@
     "productId": "fastmail",
     "storyId": "keyboard-first-speed",
     "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Fastmail has a first-party 'Keyboard shortcuts' help article, so it ships its own shortcut support, but the pack contains only the article title and nothing on how comprehensive the shortcuts are. One community user reports the interface was 'a ton faster' than ProtonMail, which gives weak, anecdotal support for the speed claim. Missing for 10: any evidence of a command palette, documentation of shortcut coverage or depth, and benchmark or hands-on evidence that the web interface never makes users wait.",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "Fastmail documents a dedicated Keyboard shortcuts help article, and one hands-on user report says the interface is much faster than ProtonMail, so the shortcut and speed elements have some support. The evidence gives only the article title, so it does not show how comprehensive the shortcuts are or that everything can be done from the keyboard. Nothing in the pack mentions a command palette. Missing for 10: a command palette, evidence of comprehensive keyboard-only coverage, first-party or measured evidence of UI responsiveness, and independent corroboration beyond a single anecdote.",
     "evidenceIds": [
       "fastmail-docs-8",
       "fastmail-docs-27",
@@ -1890,7 +1889,7 @@
         },
         {
           "evidenceId": "fastmail-comm-9-refresh-6d68af859941b5ab",
-          "quote": "Fastmail was a ton faster"
+          "quote": "Fastmail was a ton faster and didn't randomly forget my sessions."
         }
       ]
     }
@@ -1901,7 +1900,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Fastmail ships first-party Masked Email and alias features, each with its own help article. A long-time customer independently reports using masked emails for throwaway or sketchy sites, which is exactly the sign-up privacy use case. Missing for 10: the evidence pack has only article titles, with no detail on how masked addresses are generated, managed, disabled or shielded on replies, and nothing on how aliases hide the real address when sending.",
+    "rationale": "Fastmail has first-party help articles for both Masked Email and aliases, and a long-time user confirms masked emails work well for throwaway or sketchy sites. That covers the core of hiding the real address from sign-ups and strangers. Missing for 10: substantive doc content beyond article titles (how masked addresses are created, managed or disabled), and evidence that outgoing replies sent from an alias or masked address keep the real address hidden.",
     "evidenceIds": [
       "fastmail-docs-18",
       "fastmail-docs-29",
@@ -1935,7 +1934,7 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "low",
-    "rationale": "The only on-topic evidence is a community report that Fastmail itself can fetch mail from and send through Gmail like a mail client. That is a product-side way to pull an external account into Fastmail, but nothing covers Microsoft 365, generic IMAP accounts, or managing several external accounts together. The 'Logging in to multiple accounts' doc is a bare title with no content showing cross-provider support, and the import tool is one-off migration rather than ongoing unified access. Missing for 10: first-party documentation of external-account fetching, Microsoft 365 support, generic IMAP account support, evidence of handling several accounts in one unified view, and hands-on corroboration beyond one comment.",
+    "rationale": "A community report says Fastmail itself can fetch mail from and send via a Gmail account like a mail client, which is a product-side way to work an external provider's account from Fastmail. No first-party docs in the pack describe this, and nothing covers Microsoft 365 or generic IMAP accounts. 'Import your mail' is a one-off migration, and 'Logging in to multiple accounts' is a bare title that does not show cross-provider aggregation. Missing for 10: first-party documentation of external account fetching/sending, explicit Microsoft 365 and generic IMAP support, evidence of managing several external accounts together in one unified view, and hands-on corroboration beyond a single comment.",
     "evidenceIds": [
       "fastmail-comm-4-refresh-5a3fce226adb6fa1"
     ],
@@ -1955,12 +1954,11 @@
     "productId": "fastmail",
     "storyId": "offline-access",
     "verdict": "partial",
-    "quality": 4,
-    "confidence": "medium",
-    "rationale": "Fastmail has a first-party 'Offline support' help article. That article states snoozed messages reappear only once 'you're back online', which implies an offline mode that catches up after reconnecting. The pack does not document which actions work offline (reading, searching, composing) or how queued changes sync back, so only partial credit is earned. JMAP's efficient sync is a protocol property and is not credited as offline-client support. Missing for 10: explicit documentation of offline reading, offline search and offline composing/sending, details of change syncing on reconnect, and independent or hands-on corroboration.",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Fastmail has a first-party 'Offline support' help article. Its one quoted line implies the app works offline and catches up once reconnected (snoozed messages reappear only when back online). But the pack never says what can be done offline, so offline reading, searching, composing and queued-change sync are only implied. Missing for 10: documented offline reading of cached mail, offline search, offline compose/send queueing, explicit sync-on-reconnect behavior, and independent or hands-on corroboration.",
     "evidenceIds": [
       "fastmail-docs-16",
-      "fastmail-docs-33",
       "fastmail-docs-supp-2"
     ],
     "support": {
@@ -1985,15 +1983,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "The evidence supports JMAP as an open, fully documented standard tied to Fastmail's API documentation and open-standards page. Hands-on community use confirms SMTP access via an app password. However, IMAP client access is only implied by a migration comment, and standards-based export is not evidenced at all. Missing for 10: explicit first-party docs for IMAP/SMTP client access, documented standards-based export (e.g., mbox/EML, vCard/iCal), Fastmail-specific JMAP endpoint documentation beyond page titles.",
+    "rationale": "Fastmail's developer page documents first-party JMAP access to mailboxes, and JMAP is an open, royalty-free IETF standard. A community user confirms SMTP access with a scoped app password. IMAP access is only glancingly implied by a migration comment, and no evidence covers standards-based mail export. missing for 10: first-party documentation of IMAP client access, first-party SMTP submission docs, standards-based export (e.g. mbox/EML), independent corroboration of protocol access.",
     "evidenceIds": [
+      "fastmail-jmap-session-20261106",
       "fastmail-docs-21",
       "fastmail-docs-49",
-      "fastmail-docs-42",
-      "fastmail-docs-40",
-      "fastmail-docs-23",
-      "fastmail-comm-8-refresh-69236ad6de4a7c0c",
-      "fastmail-comm-7-refresh-1145f5d70e18d15d"
+      "fastmail-comm-8-refresh-69236ad6de4a7c0c"
     ],
     "support": {
       "relation": "direct",
@@ -2001,20 +1996,16 @@
       "subject": "As a switcher, my mail stays reachable over open protocols and standard formats — IMAP/JMAP/SMTP access and standards-based export — so no client can lock me in",
       "citations": [
         {
+          "evidenceId": "fastmail-jmap-session-20261106",
+          "quote": "The JMAP session resource can be found at https://api.fastmail.com/jmap/session"
+        },
+        {
           "evidenceId": "fastmail-docs-21",
           "quote": "JMAP is an open standard any organisation can implement, not more proprietary lock-in from big tech companies."
         },
         {
-          "evidenceId": "fastmail-docs-49",
-          "quote": "No patents. No fees. Fully documented. JMAP is an open standard any organisation can implement"
-        },
-        {
           "evidenceId": "fastmail-comm-8-refresh-69236ad6de4a7c0c",
           "quote": "Uses Fastmail SMTP for transactional emails with an app password that can only access SMTP."
-        },
-        {
-          "evidenceId": "fastmail-docs-23",
-          "quote": "Open source and standards | Fastmail"
         }
       ]
     }
@@ -2023,17 +2014,15 @@
     "productId": "fastmail",
     "storyId": "openness-api-parity",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Fastmail documents its own API surface: JMAP with a session discovery endpoint, OAuth 2.0 or Bearer API tokens, batched query/fetch/send calls, sync, and push. That covers core mail operations programmatically. However, nothing in the evidence shows that UI features such as filters and rules, masked email, scheduled send, snooze, templates, aliases or import are exposed through the API, so UI parity is unproven. missing for 10: evidence of API coverage for filters/rules, masked email, scheduled send, snooze, templates, aliases, import and settings; an explicit parity statement; independent hands-on corroboration.",
+    "rationale": "Fastmail exposes its mail data through a documented JMAP API: session discovery at api.fastmail.com, API-token auth, and the ability to query, fetch and send in one request, plus push. Nothing in the evidence shows the API covers the rest of what the UI does, such as filters/rules, masked email, aliases, templates, snooze or scheduled send. missing for 10: evidence of API coverage for UI-only features (filters/rules, masked email, aliases, templates, scheduled send/snooze, calendar/contacts management), an explicit API-to-UI parity statement, independent or hands-on corroboration.",
     "evidenceIds": [
+      "fastmail-jmap-session-20261106",
       "fastmail-docs-38",
-      "fastmail-docs-1",
-      "fastmail-docs-2",
-      "fastmail-docs-42",
-      "fastmail-docs-3",
+      "fastmail-docs-5",
       "fastmail-docs-40",
-      "fastmail-docs-5"
+      "fastmail-docs-3"
     ],
     "support": {
       "relation": "direct",
@@ -2041,20 +2030,16 @@
       "subject": "As an AI-native user, I can do everything through the API that I can do in the UI",
       "citations": [
         {
+          "evidenceId": "fastmail-jmap-session-20261106",
+          "quote": "The JMAP session resource can be found at https://api.fastmail.com/jmap/session"
+        },
+        {
           "evidenceId": "fastmail-docs-38",
           "quote": "POST a `methodCalls` array. Query, fetch, and send, all in one HTTP request."
         },
         {
-          "evidenceId": "fastmail-docs-1",
-          "quote": "Fetch `/.well-known/jmap` for the session object - capabilities, accounts, and all API URLs."
-        },
-        {
-          "evidenceId": "fastmail-docs-2",
-          "quote": "Standard OAuth 2.0 or Bearer tokens."
-        },
-        {
-          "evidenceId": "fastmail-docs-42",
-          "quote": "JMAP is the open protocol that replaces IMAP (and CardDAV and CalDAV)."
+          "evidenceId": "fastmail-docs-3",
+          "quote": "Get instant push via EventSource — one connection, all mailboxes."
         }
       ]
     }
@@ -2065,7 +2050,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack has no documented Fastmail export feature, and no mention of downloading mail, contacts or calendars as open-format files such as mbox, vCard or iCalendar. JMAP is an open standard API that a developer could use to pull data out, but that is a building block rather than an export capability. The 'Import your mail' docs and community migration stories describe moving data into Fastmail, not leaving it.",
+    "rationale": "The evidence pack documents no Fastmail export feature, such as downloading mail, contacts or calendars in mbox, vCard or ICS, and no documented exit or offboarding flow. The open-standard JMAP API with API tokens is a developer building block a user could script an export against, not a first-party export capability. The 'Import your mail' and migration items cover moving data into Fastmail, not out of it.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -2080,7 +2065,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The pack shows only that JMAP is an open, patent-free protocol with third-party implementations, plus a bare page title 'Open source and standards | Fastmail'. Neither shows that Fastmail's own product source is published under an open license. An open protocol standard is an adjacent openness feature, not readable product source, so the axis applies but is unevidenced.",
+    "rationale": "Open-sourcing a hosted email service's code is a fair question for this kind of product, so the axis applies. The evidence pack shows no Fastmail source code released under an open license. JMAP being an open, patent-free standard is an adjacent openness feature, not the product's source, and the 'Open source and standards' item is only a page title with no content about licensed code.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2095,10 +2080,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Self-hosting is a fair question for an email service, but the evidence never shows Fastmail offering a self-hostable version of its own service. JMAP being an open standard that others can implement, plus a 'Server' listing on jmap.io, describes the protocol ecosystem rather than Fastmail's product, so it earns no credit. The 'Open source and standards' page is only a title with no content about self-hosting.",
+    "rationale": "Self-hosting is a fair question for an email service, so the axis applies. However, nothing in the evidence shows Fastmail offers a self-hostable version of its product. The JMAP material describes an open protocol that any organisation can implement, and the server entry in the jmap.io implementation list is a protocol-ecosystem item. Neither is a Fastmail self-hosting capability, so both are adjacent developer building blocks that earn no credit.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As an AI-native user, I can self-host the core product",
       "citations": []
@@ -2110,7 +2095,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "The only on-topic evidence is a community report that Fastmail launched a new EU (Amsterdam) region, which suggests users can pick a storage region. The same report says Fastmail itself states it cannot guarantee data stays only in the EU, a documented limitation rather than a contradiction. Another user cites data sitting under both Australian and American jurisdictions given hosting locations. missing for 10: first-party documentation of region selection, an explanation of how users choose or migrate regions, guaranteed data-residency commitments, and the list of available regions.",
+    "rationale": "The only evidence of region choice is a community report that Fastmail launched an EU (Amsterdam) region. The same report says Fastmail can't guarantee data stays only in the EU, so strict residency is not assured. Another user notes data otherwise sits under Australian and American jurisdictions. missing for 10: first-party documentation of region selection, a guaranteed residency commitment, a list of available regions, and how to choose or migrate between them.",
     "evidenceIds": [
       "fastmail-comm-15-refresh-0771d21c9fc7a2e3",
       "fastmail-comm-12-refresh-61f43a013c7534f4"
@@ -2123,10 +2108,6 @@
         {
           "evidenceId": "fastmail-comm-15-refresh-0771d21c9fc7a2e3",
           "quote": "Criticism of Fastmail's new EU (Amsterdam) region: they state they can't guarantee data remains only in the EU"
-        },
-        {
-          "evidenceId": "fastmail-comm-12-refresh-61f43a013c7534f4",
-          "quote": "they couldn't accept data being under both Australian and American jurisdictions"
         }
       ]
     }
@@ -2137,7 +2118,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Whether user data is used for AI training is a fair privacy question for a hosted email service, so the axis applies. Nothing in the evidence pack mentions an AI-training policy, an opt-out, or a no-training commitment. The community remark that Fastmail is 'up front with how the data is handled' is general privacy sentiment, not evidence of this capability.",
+    "rationale": "An email provider could reasonably offer an AI-training opt-out or a no-training commitment, so this axis applies. However, nothing in the evidence pack covers AI-model training, data-use opt-outs, or a no-training policy. One community comment says Fastmail is 'up front with how the data is handled', but it says nothing about AI training and does not establish the capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2152,7 +2133,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data retention and deletion controls are a fair question for an email service, so the axis applies. The evidence pack never documents retention policies, auto-purge settings, account or data deletion, or programmatic deletion via the API. Community comments touch on data handling transparency and data residency, but neither is user control over retention or deletion.",
+    "rationale": "Data retention and deletion controls are a fair question for an email service, but the evidence pack never documents them: there are no auto-delete or retention-period settings, no purge policies and no account or data deletion features. The pack contains only feature titles (Filters & Rules, Snooze, Masked Email), JMAP protocol material, and a vague community remark that Fastmail is up front about data handling, none of which shows user-controlled retention or deletion.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2167,7 +2148,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Opting out of telemetry is a fair question for a hosted email service and its apps, so the axis applies. Nothing in the evidence pack documents a telemetry or usage-tracking opt-out. A community remark that Fastmail is 'up front with how the data is handled' describes transparency, not an opt-out control.",
+    "rationale": "Opting out of telemetry and usage tracking is a fair privacy question for a hosted email service, so the axis applies. However, nothing in the evidence pack documents a Fastmail setting or policy that lets users disable telemetry, analytics or usage tracking. Community remarks about data-handling transparency and jurisdiction are adjacent privacy topics, not an opt-out control.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2182,7 +2163,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Read tracking is a fair axis for an email service, so the story applies. The evidence pack has no mention of read receipts, open tracking, or open timestamps. The cited docs cover adjacent composing features like Scheduled Send, Undo send and Templates, none of which show whether or when a recipient opened a message.",
+    "rationale": "Open tracking and read receipts are a fair capability to ask of an email service, so the axis applies. Nothing in the evidence pack mentions read receipts, open tracking, or any view of whether or when recipients opened a message. The composing and sending docs cover only scheduled send, undo send, and templates.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2197,7 +2178,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Fastmail's own help center has dedicated first-party articles for both parts of the story: 'Scheduled Send' (send later) and 'Undo send' (retract within a grace window). The pack only contains the article titles, not their contents, so details of either feature cannot be verified. Missing for 10: details of scheduling options and of the undo grace-window length or configurability, independent or hands-on corroboration of either feature.",
+    "rationale": "Fastmail has dedicated first-party help articles for both parts of the story: 'Scheduled Send' (send later) and 'Undo send' (retract within a grace window). The evidence pack contains only the article titles, so the depth of each feature is not shown. Missing for 10: details of scheduling options (time picker, editing or cancelling scheduled messages), the length and configurability of the undo-send grace window, and independent or hands-on corroboration of either feature.",
     "evidenceIds": [
       "fastmail-docs-17",
       "fastmail-docs-30",
@@ -2226,7 +2207,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Self-hosting is a fair axis for an email product, but nothing in the evidence shows Fastmail's app or mail pipeline can be self-hosted. The JMAP open-standard material describes a protocol that others could implement, which is only a developer building block and earns no credit. The \"Open source and standards\" page is a bare title with no self-hosting content.",
+    "rationale": "Self-hosting is a fair question for an email product, so the axis applies. The evidence shows Fastmail only as a hosted service: per-account sessions at api.fastmail.com and data residency in Fastmail-run regions. Nothing shows a self-hostable Fastmail app or user-controlled mail pipeline. JMAP being an open standard with third-party server implementations is a protocol building block, not Fastmail's own self-hosting capability, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2241,7 +2222,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Fastmail is an email and calendar service, so sharing availability or inserting bookable times into an email is a fair question for it. The pack only contains a bare 'Calendar events and invitations' help-article title and a community note about calendar sync to Google. Neither documents availability sharing, scheduling links, or bookable slots inserted into email.",
+    "rationale": "Fastmail is an email-and-calendar service, so sharing availability or inserting bookable meeting slots into an email is a fair question for it. The pack offers only a bare 'Calendar events and invitations' help-article title and a community comment about calendar sync to Google. Neither is about availability sharing or booking links, so there is no evidence the product delivers this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2256,7 +2237,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Shared inboxes are a fair question for an email service, but nothing in the pack documents shared mailboxes, shared folders, or team views where everyone sees the same conversation state. The 'Logging in to multiple accounts' article is only a title and implies one user switching between accounts, which is an adjacent feature, not team sharing. JMAP push and sync describe protocol mechanics, not a shared-inbox feature.",
+    "rationale": "Shared team inboxes are a fair question for an email provider, so this axis applies. The evidence pack never documents shared mailboxes, shared folders or team channels with a common conversation state. The 'Logging in to multiple accounts' help article covers one user switching between their own accounts. JMAP's multi-account session object is only a developer building block, not a shared-inbox feature.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2271,7 +2252,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Fastmail has a first-party help article titled \"Templates\", so a saved-template capability for composing appears to exist. The pack contains only the article title, with no detail on how templates are inserted, whether they support variables, or whether they can carry attachments. Missing for 10: documented template insertion workflow, variable/placeholder support, attachments in templates, independent or hands-on corroboration.",
+    "rationale": "Fastmail has its own help article titled \"Templates\", which shows a first-party saved-template feature for composing. The pack contains only the article title, so how templates are inserted, and whether they support variables or attachments, is not shown. Missing for 10: evidence of how templates are inserted into replies, variable/placeholder support, attachment support in templates, and any hands-on or independent corroboration.",
     "evidenceIds": [
       "fastmail-docs-9",
       "fastmail-docs-32"
@@ -2298,7 +2279,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Fastmail's own docs show a snooze feature: messages can be snoozed and later return to the Inbox at a scheduled time. Nothing in the evidence shows follow-up reminders that resurface a thread only if nobody replies, so only the snooze half of the story is delivered. Missing for 10: conditional no-reply follow-up reminders, detailed snooze documentation (conversation-level scope, time options), independent hands-on corroboration.",
+    "rationale": "Fastmail's own docs show it can snooze messages so they return to the Inbox at a set time. Nothing in the pack shows conditional follow-up reminders that resurface a thread only when nobody replies, so only half the story is delivered. Missing for 10: reply-aware follow-up reminders, detailed snooze documentation (options, conversation-level behavior), independent or hands-on corroboration.",
     "evidenceIds": [
       "fastmail-docs-supp-1",
       "fastmail-docs-supp-2"
@@ -2322,28 +2303,16 @@
   {
     "productId": "fastmail",
     "storyId": "split-inbox-triage",
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Fastmail documents its own Filters & Rules feature, and a community user describes setting up a filter view that shows a specific subset of mail. Together these suggest mail can be sorted into separate views, but the pack has only titles and one anecdote, with no description of focused streams or priority-ordered triage. Missing for 10: documented split-inbox or stream views, automatic importance/team/newsletter classification, a dedicated calendar-invite stream, priority-ordered triage, and independent hands-on corroboration.",
-    "evidenceIds": [
-      "fastmail-docs-6",
-      "fastmail-comm-6-refresh-00d2332b935e2090"
-    ],
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence pack does not document a split-inbox or focused-streams feature that separates important, team, newsletter and calendar-invite mail for priority-ordered triage. The only related items are the bare titles of the 'Filters & Rules' and 'Achieve inbox zero' pages, plus a community mention of a custom filter view. Those are adjacent rule and search tools a user would configure by hand, not the stream-splitting capability itself.",
+    "evidenceIds": [],
     "support": {
-      "relation": "direct",
-      "coverage": "partial",
+      "relation": "absent",
+      "coverage": "none",
       "subject": "As a power-user, I can split my inbox into focused streams — important, team, newsletters, calendar invites — so triage happens in priority order, not arrival order",
-      "citations": [
-        {
-          "evidenceId": "fastmail-docs-6",
-          "quote": "Filters & Rules"
-        },
-        {
-          "evidenceId": "fastmail-comm-6-refresh-00d2332b935e2090",
-          "quote": "set up a filter on Fastmail showing all mail delivered to the old @gmail.com address in the last two weeks"
-        }
-      ]
+      "citations": []
     }
   },
   {
@@ -2352,7 +2321,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack has no Fastmail documentation or hands-on report about blocking tracking pixels or remote images by default, which is the core of this story. The only related item is one community remark that Fastmail is \"up front with how the data is handled\". That is an anecdotal comment on transparency, not a documented anti-tracking capability, so it is not enough for partial credit.",
+    "rationale": "Nothing in the evidence pack documents Fastmail blocking remote images or tracking pixels, by default or otherwise. The only related item is one community remark that Fastmail is 'up front with how the data is handled', which is thin anecdote rather than a documented capability. It does not deliver the core tracking-protection part of the story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8775,19 +8744,19 @@
     "productId": "zero",
     "storyId": "agent-email-end-to-end",
     "verdict": "partial",
-    "quality": 7,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Zero documents an official MCP server whose tools let an external agent read email (threads by ID, folder listing, search), triage it (labels, read/unread, bulk archive and delete), draft, and send (create drafts, send drafts, create and send). The connection is the weak point: the only working method is copying a browser session cookie into the Authorization header, and OAuth is marked 'coming soon'. missing for 10: a production-grade documented auth method (OAuth), any evidence of connecting with named agents such as Claude or ChatGPT, and independent or hands-on corroboration of an end-to-end agent workflow.",
+    "rationale": "Zero's own MCP.md documents an MCP server whose tools cover the full loop. Reading is covered by getting threads, listing folders and searching. Triage is covered by labels, read/unread, archive and delete. Drafting and sending are covered by creating drafts, sending drafts and sending new emails. However, the connection is weak: you authenticate by copying a browser session cookie into the Authorization header, OAuth is still 'coming soon', and an independent review found only a prose capability list with no endpoint schema or public API. missing for 10: proper OAuth or token auth for external agents, documented endpoint/tool schema and setup for Claude or ChatGPT, hands-on corroboration that end-to-end agent workflows work.",
     "evidenceIds": [
       "zero-probe-1",
       "zero-docs-11",
-      "zero-docs-19",
       "zero-docs-6",
       "zero-docs-21",
       "zero-docs-2",
       "zero-docs-20",
       "zero-docs-8",
-      "zero-docs-23"
+      "zero-docs-23",
+      "zero-mcp-prose-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -8799,12 +8768,8 @@
           "quote": "official MCP server documented at https://github.com/Mail-0/Zero/blob/staging/MCP.md"
         },
         {
-          "evidenceId": "zero-docs-19",
-          "quote": "Get email threads by ID\n- List emails in specific folders"
-        },
-        {
-          "evidenceId": "zero-docs-6",
-          "quote": "Search emails with custom queries - Filter emails by labels"
+          "evidenceId": "zero-docs-11",
+          "quote": "Get email threads by ID - List emails in specific folders - Create and send new emails - Create email drafts - Send existing drafts - Delete emails"
         },
         {
           "evidenceId": "zero-docs-21",
@@ -8813,10 +8778,6 @@
         {
           "evidenceId": "zero-docs-2",
           "quote": "Bulk delete emails - Bulk archive emails"
-        },
-        {
-          "evidenceId": "zero-docs-20",
-          "quote": "Create and send new emails\n- Create email drafts\n- Send existing drafts"
         },
         {
           "evidenceId": "zero-docs-8",
@@ -8833,12 +8794,13 @@
     "productId": "zero",
     "storyId": "agentic-agent-docs",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "Zero's repo ships a first-party AGENT.md file aimed at coding agents. It lists commands such as quick start, AI tests and the eval suite, so an agent can be pointed at agent-oriented docs for working on the codebase. The MCP.md tool list belongs to the separate MCP-server story and is not credited here. Missing for 10: any llms.txt, agent-oriented docs covering product usage rather than contributor dev commands, evidence of how deep or how maintained AGENT.md is, and independent or hands-on corroboration.",
+    "rationale": "Zero's repository ships a first-party AGENT.md that gives agents dev commands (quick start, AI tests, eval suite), so there is agent-oriented documentation an agent can be pointed at. However, it targets contributors working on the codebase rather than using the product, there is no llms.txt, and the evidence says no docs site exists. missing for 10: llms.txt or llms-full.txt, product-usage agent docs, a hosted docs site, API/MCP schema docs aimed at agents, independent corroboration",
     "evidenceIds": [
       "zero-docs-24",
-      "zero-docs-26"
+      "zero-docs-26",
+      "zero-mcp-prose-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -8859,32 +8821,37 @@
   {
     "productId": "zero",
     "storyId": "agentic-ai-insights",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Zero is described as an AI-powered email client that auto-categorizes, summarizes threads, drafts replies, and lets users chat with their inbox. This is backed by documented AI tools for asking questions about mailbox content and threads and for AI-assisted composing. The in-product insight features rest mainly on a founder description and terse MCP tool lists rather than in-depth first-party docs. Missing for 10: detailed first-party docs on the in-app summarization and insight UI, and independent hands-on corroboration of suggestion quality.",
+    "rationale": "Zero's own docs list AI capabilities over the user's mailbox: asking questions about mailbox content and specific threads, and AI-assisted composition. The founder also describes auto-categorization, thread summaries, drafted replies, and chatting with the inbox. However, the documented capabilities appear in the MCP capability list rather than as in-product features, and proactive insights and suggestions rest only on the founder's community post. Missing for 10: first-party docs for in-app AI insights and summaries, documented proactive suggestions derived from user data, and independent or hands-on corroboration of insight quality.",
     "evidenceIds": [
-      "zero-comm-1",
-      "zero-docs-14",
       "zero-docs-9",
-      "zero-gh-16"
+      "zero-docs-14",
+      "zero-docs-5",
+      "zero-docs-4",
+      "zero-comm-1"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can get AI-generated insights and suggestions from my data inside the product",
       "citations": [
         {
+          "evidenceId": "zero-docs-9",
+          "quote": "Ask questions about mailbox content"
+        },
+        {
+          "evidenceId": "zero-docs-5",
+          "quote": "Ask questions about specific email threads"
+        },
+        {
+          "evidenceId": "zero-docs-4",
+          "quote": "Compose emails with AI assistance"
+        },
+        {
           "evidenceId": "zero-comm-1",
-          "quote": "Zero founder describes it as an AI-powered email client that auto-categorizes, summarizes threads, drafts replies, and lets users chat with their inbox"
-        },
-        {
-          "evidenceId": "zero-docs-14",
-          "quote": "Compose emails with AI assistance - Ask questions about mailbox content - Ask questions about specific email threads"
-        },
-        {
-          "evidenceId": "zero-gh-16",
-          "quote": "Zero is an open-source AI email solution"
+          "quote": "auto-categorizes, summarizes threads, drafts replies, and lets users chat with their inbox"
         }
       ]
     }
@@ -8895,7 +8862,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Zero is an AI email client, so user-configured background automations are a fair axis for it. The evidence does not document any such feature: the MCP tools are on-demand actions an external agent calls, which are developer building blocks rather than automations. The founder's mention of auto-categorization describes built-in behavior, not automations a user sets up.",
+    "rationale": "Background automations are a fair question for an AI email client, but the evidence shows no user-configurable automation, rule, or scheduled background workflow in Zero. The MCP tools (send, label, bulk archive) are building blocks an external agent could invoke on demand. The founder's mention of auto-categorization is a built-in AI feature, not automations the user sets up to run autonomously.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8910,7 +8877,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Zero calls itself an AI email solution, and the founder says users can chat with their inbox and have it draft replies, summarize threads and auto-categorize mail. That is a built-in assistant, but its scope for delegated actions inside the app is evidenced mainly by that one community statement. The MCP docs list AI-assisted composing and mailbox Q&A, but as tools exposed to external agents rather than an in-app assistant. Missing for 10: first-party documentation of the in-app assistant and which tasks it can execute (e.g., bulk actions or labeling on command), plus hands-on or independent corroboration.",
+    "rationale": "The founder describes Zero as an AI-powered email client where users can chat with their inbox and have it draft replies, summarize threads and auto-categorize mail. The repo calls it an 'open-source AI email solution', and MCP.md lists AI-assisted composing and mailbox Q&A. But first-party documentation of an in-app assistant that takes delegated actions (beyond drafting and answering questions) is absent, and the action list is documented only as an MCP surface for external agents. Missing for 10: first-party docs for the in-app assistant, evidence it can carry out multi-step tasks or actions such as labeling, archiving or sending, and independent hands-on corroboration.",
     "evidenceIds": [
       "zero-comm-1",
       "zero-gh-16",
@@ -8923,7 +8890,7 @@
       "citations": [
         {
           "evidenceId": "zero-comm-1",
-          "quote": "Zero founder describes it as an AI-powered email client that auto-categorizes, summarizes threads, drafts replies, and lets users chat with their inbox"
+          "quote": "auto-categorizes, summarizes threads, drafts replies, and lets users chat with their inbox"
         },
         {
           "evidenceId": "zero-gh-16",
@@ -8942,7 +8909,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Zero is an AI email client, so headless or CI automation is a fair axis, but the pack documents no headless mode, CLI, or CI usage of the product itself. The MCP server tools belong to a separate MCP-server story. Its auth also requires copying a browser session cookie, with OAuth only 'coming soon', which does not show unattended CI use. The pnpm dev, test and eval scripts are contributor tooling, not a product automation capability.",
+    "rationale": "Zero is a self-hostable AI email client, and the evidence documents no headless mode, CLI, or CI integration for automating the product. The MCP server is a separate capability, and it relies on a browser session cookie with OAuth 'coming soon,' so it does not show headless or CI operation. The pnpm scripts are contributor tooling for developing Zero, not a way to run the product for automation.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -8957,7 +8924,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Zero is an AI email client with chat-with-inbox features, so acting as an MCP client is a fair question to ask of it. The evidence only shows Zero exposing its own MCP server (ZeroMCP) with email and label tools for other clients to call. That is the server role and earns no credit for plugging external MCP servers into Zero; nothing in the pack shows Zero consuming third-party MCP tools.",
+    "rationale": "Zero is an AI email client with an inbox chat assistant, so letting users plug in external MCP servers is a fair question to ask of it. The evidence only documents Zero exposing its own MCP server (ZeroMCP tools for threads, labels, and drafts, authenticated with a session cookie). That is the server role and does not transfer to this client-side story. Nothing in the pack shows Zero connecting to or consuming tools from user-supplied MCP servers.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8970,9 +8937,9 @@
     "productId": "zero",
     "storyId": "agentic-mcp-server",
     "verdict": "partial",
-    "quality": 7,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Zero's own MCP.md documents an official ZeroMCP server that exposes a broad toolset to connected agents: reading and listing threads, composing, sending and drafting, deleting, managing labels, bulk archive and delete, AI Q&A, and Perplexity search. Connecting is limited, though: OAuth is only 'coming soon', so users must manually copy a browser session cookie into the Authorization header. missing for 10: OAuth or another production-grade agent auth flow, client setup instructions for specific MCP hosts, independent or hands-on corroboration that agents connect successfully.",
+    "rationale": "Zero's own repository documents an official ZeroMCP server exposing a broad email toolset: get threads, list folders, compose, send and draft, delete, labels, and search. It is a direct capability, but connecting is crude: you copy a browser session cookie into the Authorization header, OAuth is only 'coming soon', and the docs are a prose capability list with no endpoint schema or docs site. missing for 10: supported auth flow (OAuth), endpoint/connection schema and setup docs, independent hands-on corroboration of agents connecting",
     "evidenceIds": [
       "zero-probe-1",
       "zero-docs-8",
@@ -8980,8 +8947,7 @@
       "zero-docs-11",
       "zero-docs-13",
       "zero-docs-14",
-      "zero-docs-2",
-      "zero-docs-6"
+      "zero-mcp-prose-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -9003,10 +8969,6 @@
         {
           "evidenceId": "zero-docs-11",
           "quote": "Get email threads by ID - List emails in specific folders - Create and send new emails - Create email drafts - Send existing drafts - Delete emails"
-        },
-        {
-          "evidenceId": "zero-docs-14",
-          "quote": "Compose emails with AI assistance - Ask questions about mailbox content - Ask questions about specific email threads - Web search using Perplexity AI"
         }
       ]
     }
@@ -9017,11 +8979,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Zero's own AI features let users chat with their inbox, ask questions about mailbox and thread content, and compose emails with AI help, so natural-language interaction is a first-party capability. The evidence does not show that users can issue natural-language commands that carry out actions such as archiving, labeling or deleting inside the app. The MCP tools for those actions serve external agents and are not credited here as in-product natural-language operation. Missing for 10: documented in-app natural-language command execution for mailbox actions, depth and reliability of the chat assistant, independent hands-on corroboration.",
+    "rationale": "Zero's founder describes an AI email client that lets users chat with their inbox and drafts replies. The docs list natural-language capabilities such as composing emails with AI assistance and asking questions about mailbox or thread content. That shows product-native natural-language interaction, but nothing shows users issuing natural-language commands that perform actions like archive, label, delete or send inside the product. The MCP tool list exposes those actions to external agents, which is a different story and is not credited here. Missing for 10: documented in-product natural-language command execution of mailbox actions, depth and limits of the chat interface, hands-on corroboration.",
     "evidenceIds": [
       "zero-comm-1",
       "zero-docs-14",
-      "zero-docs-9",
+      "zero-docs-5",
       "zero-docs-4"
     ],
     "support": {
@@ -9035,7 +8997,11 @@
         },
         {
           "evidenceId": "zero-docs-14",
-          "quote": "Compose emails with AI assistance - Ask questions about mailbox content - Ask questions about specific email threads"
+          "quote": "Compose emails with AI assistance - Ask questions about mailbox content"
+        },
+        {
+          "evidenceId": "zero-docs-5",
+          "quote": "Ask questions about specific email threads"
         }
       ]
     }
@@ -9046,7 +9012,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Zero is an email client, so an official CLI is a fair thing to ask about. The evidence shows no user-facing CLI. The pnpm commands (`pnpm go`, `pnpm nizzy env`, `pnpm db:studio`, `pnpm test:ai`) are repo development and self-hosting setup scripts, not an official CLI for operating the product. The documented MCP server belongs to a different story and earns no credit here.",
+    "rationale": "An official CLI is a fair axis for a self-hostable AI email app, but the evidence documents no user-facing Zero CLI. The pnpm scripts (pnpm go, pnpm db:studio, pnpm nizzy env, pnpm eval) are repo development and setup commands, not an official CLI for operating email. The MCP server belongs to a different story and earns no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9058,45 +9024,16 @@
   {
     "productId": "zero",
     "storyId": "agentic-public-api",
-    "verdict": "partial",
-    "quality": 5,
+    "verdict": "none",
+    "quality": 0,
     "confidence": "medium",
-    "rationale": "Zero documents its own programmatic interface, the ZeroMCP server. It exposes operations to list, get, send, draft and delete emails, manage labels, and mark messages read or unread. Authentication requires copying a browser session cookie into the Authorization header, and OAuth is only 'coming soon'. There is no general REST API reference, so this is a documented agent interface rather than a full public API. Missing for 10: a stable public API with proper API-key or OAuth auth, endpoint/schema reference docs, rate-limit or versioning details, and independent hands-on corroboration.",
-    "evidenceIds": [
-      "zero-probe-1",
-      "zero-docs-11",
-      "zero-docs-13",
-      "zero-docs-21",
-      "zero-docs-6",
-      "zero-docs-8",
-      "zero-docs-23"
-    ],
+    "rationale": "The evidence shows no documented public API for Zero. An independent check reports that Zero 'documents no public HTTP API', has no endpoint schema and no docs site. The only programmatic surface is the MCP.md capability list, authenticated by copying a browser session cookie. That MCP server is a separate story's capability (an agent tool interface, not a public API) and does not transfer here.",
+    "evidenceIds": [],
     "support": {
-      "relation": "direct",
-      "coverage": "partial",
+      "relation": "absent",
+      "coverage": "none",
       "subject": "As an AI-native user, I can drive the product through a documented public API",
-      "citations": [
-        {
-          "evidenceId": "zero-probe-1",
-          "quote": "official MCP server documented at https://github.com/Mail-0/Zero/blob/staging/MCP.md"
-        },
-        {
-          "evidenceId": "zero-docs-11",
-          "quote": "Get email threads by ID - List emails in specific folders - Create and send new emails - Create email drafts - Send existing drafts - Delete emails"
-        },
-        {
-          "evidenceId": "zero-docs-13",
-          "quote": "Get all user labels - Create new custom labels with custom colors - Delete existing labels"
-        },
-        {
-          "evidenceId": "zero-docs-8",
-          "quote": "You can connecto ZeroMCP using two methods: 1. Better Auth session token 2. OAuth (Coming soon)"
-        },
-        {
-          "evidenceId": "zero-docs-23",
-          "quote": "Copy the session cookie from your browser cookies and place it into the Authorization header."
-        }
-      ]
+      "citations": []
     }
   },
   {
@@ -9105,7 +9042,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Zero's MCP server is authenticated by copying the user's full Better Auth session cookie into the Authorization header, and OAuth is listed only as 'coming soon'. That is a full-session credential, not a scoped or least-privilege credential issued for an agent, so it does not count toward this story. No evidence shows per-agent API keys, permission scopes, or restricted tokens.",
+    "rationale": "Issuing scoped credentials is a fair axis for an email app that exposes an MCP surface to agents, so the story applies. The evidence shows the only way to authenticate is pasting a full Better Auth browser session cookie into the Authorization header, with OAuth marked 'coming soon'. Nothing documents scoped, least-privilege, or agent-specific credentials, so the verdict is none.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9120,7 +9057,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Zero is an open-source email client, so official SDKs are a fair question for this kind of product. However, the evidence shows no SDK in any language. The closest items are an official MCP server (a separate story's capability) and a generic 'Developer-Friendly – Built with extensibility and integrations in mind' claim, which are adjacent and earn no credit.",
+    "rationale": "Zero is an open-source email app, so shipping official SDKs is a fair question, but the evidence pack never mentions one. The only developer-facing surface is an MCP server capability list authenticated by a copied session cookie, and an independent note says there is no public HTTP API. The MCP server belongs to a different story, and the vague 'Developer-Friendly' tagline does not show an SDK exists.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9135,7 +9072,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Zero is an open-source AI email client, so subscribing to mail events through registrable outbound webhooks is a fair question for this kind of product. Nothing in the evidence documents such callbacks. The MCP server tools (send, list, label emails) are request-driven actions, not event subscriptions, and the generic 'built with extensibility and integrations in mind' claim does not establish webhooks.",
+    "rationale": "Zero is an open-source, self-hostable AI email app. Subscribing to events such as new mail via webhooks is a fair question for an email product, so the axis applies. The evidence documents only an MCP capability list (read, send, label emails) authenticated by a session cookie. It states there is no public HTTP API, and nothing describes registrable outbound HTTP callbacks. The generic 'Developer-Friendly – built with extensibility and integrations in mind' claim is not evidence of webhooks.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9148,9 +9085,9 @@
     "productId": "zero",
     "storyId": "ai-drafts-in-my-voice",
     "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Zero documents AI-assisted composition and creating drafts, and the founder describes it as an email client that drafts replies, so the core of AI-drafted replies ready for review exists. Nothing shows the drafts are tailored to the user's own voice or tone rather than generic text. Missing for 10: evidence of learning or matching the user's writing voice and tone, documentation of a reply-drafting workflow (draft-to-review-to-send UX), and independent or hands-on corroboration of draft quality.",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "Zero's founder says the client drafts replies, and the MCP docs list composing emails with AI assistance and creating drafts that can be sent later. That supports AI-drafted replies ready for review. Nothing in the evidence shows the drafts learn or match the user's own voice and tone, which is the core of this story. Missing for 10: documented voice/tone personalization (learning from sent mail or style settings), evidence that drafts are non-generic, first-party feature docs beyond the MCP list, and independent hands-on corroboration of draft quality.",
     "evidenceIds": [
       "zero-comm-1",
       "zero-docs-4",
@@ -9164,7 +9101,7 @@
       "citations": [
         {
           "evidenceId": "zero-comm-1",
-          "quote": "drafts replies"
+          "quote": "Zero founder describes it as an AI-powered email client that auto-categorizes, summarizes threads, drafts replies, and lets users chat with their inbox"
         },
         {
           "evidenceId": "zero-docs-4",
@@ -9183,11 +9120,10 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Zero's MCP docs list tools to ask questions about mailbox content and about specific threads, and the founder says users can chat with their inbox, so inbox-wide Q&A is a product capability. Nothing in the evidence covers the calendar side of the story, and nothing shows answers are grounded with source citations. missing for 10: calendar querying, evidence of grounded/cited answers (who said what, outstanding items), independent hands-on corroboration of inbox Q&A quality.",
+    "rationale": "Zero's MCP docs list \"Ask questions about mailbox content\" and \"Ask questions about specific email threads\", and the founder describes it as letting users chat with their inbox, so the inbox Q&A core is documented. The evidence never mentions calendar access or how answers are grounded or cited. missing for 10: calendar coverage, evidence of grounded/cited answers (who said what, outstanding items), in-depth docs beyond a prose capability list, independent hands-on corroboration",
     "evidenceIds": [
       "zero-docs-9",
       "zero-docs-14",
-      "zero-docs-5",
       "zero-comm-1"
     ],
     "support": {
@@ -9197,6 +9133,10 @@
       "citations": [
         {
           "evidenceId": "zero-docs-9",
+          "quote": "Ask questions about mailbox content"
+        },
+        {
+          "evidenceId": "zero-docs-14",
           "quote": "Ask questions about mailbox content - Ask questions about specific email threads"
         },
         {
@@ -9212,7 +9152,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "The only direct evidence of AI triage is the founder's own description of Zero as an AI email client that auto-categorizes and summarizes threads. The MCP label tools (modify and create labels) are primitives for an external agent, not Zero's own triage, so they earn no credit. missing for 10: first-party documentation of auto-labeling/categorization behavior, surfacing of what needs attention, user controls to steer triage rules, an audit trail or explanation of AI triage decisions, independent hands-on corroboration.",
+    "rationale": "The only direct evidence of AI triage is the founder's HN description of Zero as an AI-powered email client that auto-categorizes threads. The MCP label-modification and label-creation tools are building blocks for an external agent, not built-in triage, so they earn no credit here. missing for 10: documented auto-labeling behavior, surfacing of what needs attention, user controls to steer categorization rules, audit trail or explanation of AI triage decisions, first-party docs and independent hands-on corroboration.",
     "evidenceIds": [
       "zero-comm-1"
     ],
@@ -9223,7 +9163,7 @@
       "citations": [
         {
           "evidenceId": "zero-comm-1",
-          "quote": "Zero founder describes it as an AI-powered email client that auto-categorizes, summarizes threads, drafts replies, and lets users chat with their inbox"
+          "quote": "Zero founder describes it as an AI-powered email client that auto-categorizes, summarizes threads, drafts replies"
         }
       ]
     }
@@ -9233,8 +9173,8 @@
     "storyId": "api-interactive-docs",
     "verdict": "none",
     "quality": 0,
-    "confidence": "medium",
-    "rationale": "Zero is an open-source email client that documents an MCP server, so asking for an interactive API reference is a fair question for this product. However, the evidence only lists MCP tool capabilities and connection steps. Nothing shows an interactive API reference, an API explorer, or runnable examples.",
+    "confidence": "high",
+    "rationale": "An interactive API reference is a fair question for a self-hostable email app, so the axis applies. The evidence shows Zero documents no public HTTP API and no docs site. Its only API-adjacent surface is a prose MCP capability list with no endpoint schema and no runnable examples.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9249,7 +9189,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Zero is an open-source email app, so offering a downloadable machine-readable API spec is a fair question to ask. The evidence documents only an MCP server and a list of its tools, with no OpenAPI or equivalent spec available for download. An MCP tool list is an adjacent feature and not a published API specification, so it earns no credit.",
+    "rationale": "Zero is a self-hostable AI email app, so a downloadable machine-readable API spec is a fair question for it. The evidence shows no OpenAPI or equivalent spec. The only API-adjacent surface is MCP.md, a prose capability list with no endpoint schema, and an independent check found no public HTTP API or docs site. The MCP server is an adjacent integration surface, not a downloadable spec.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9264,7 +9204,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Zero is an AI email client with MCP tools that can send and delete mail, so a sandbox or test mode is a fair question to ask of it. The evidence shows no such documented feature. Local dev servers, a devcontainer, Drizzle Studio and self-hosting are developer and contributor building blocks, not a product sandbox. The self-hosted app still connects to real Gmail via OAuth, so these setups do not isolate testing from production mailbox data.",
+    "rationale": "Zero documents no sandbox, test mode, or dry-run environment for agents or MCP clients to exercise email actions without touching real mailbox data. The MCP surface (send, delete, bulk delete) works against live connected accounts. Self-hosting and the contributor dev setup (`pnpm go`, Drizzle Studio) are developer building blocks and user-side arrangements, not a product-provided sandbox isolated from production data.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9279,7 +9219,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Zero documents an MCP server with email, draft and label tools, and its README calls it developer-friendly. Nothing in the evidence shows API versioning, version identifiers, or a deprecation policy. This axis applies to a self-hostable email product with a programmatic interface, so the missing evidence makes the verdict \"none\".",
+    "rationale": "Zero is an open-source email app with an MCP capability list, so API versioning and deprecation policy is a fair question for it. The evidence documents no public HTTP API, no version scheme and no deprecation policy. The only programmatic surface is a prose MCP capability list with no endpoint schema, authenticated by copying a browser session cookie.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9294,7 +9234,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Assigning conversations and rule-based routing are fair questions for an email client, so the axis applies. The evidence only shows label management, label filtering and AI auto-categorization, which are adjacent features. Nothing documents assigning threads to teammates, shared ownership, or user-defined routing rules for incoming mail.",
+    "rationale": "Zero is an email client, so assigning conversations and routing mail with rules is a fair question for it. The evidence covers only label management, search, compose and AI chat, with no assignment to teammates and no rule-based routing. AI auto-categorization and label editing are adjacent features, not ownership assignment or routing rules.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9306,18 +9246,18 @@
   {
     "productId": "zero",
     "storyId": "automation-bulk-operations",
-    "verdict": "full",
-    "quality": 6,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Zero's official MCP server documentation lists 'Bulk delete emails' and 'Bulk archive emails' as tools. That directly gives an AI agent bulk operations across many emails at once, alongside single-item actions like marking read/unread and modifying labels. missing for 10: bulk support beyond delete/archive (e.g. bulk labeling or mark-read), detail on how items are selected or what the batch limits are, and independent or hands-on confirmation that bulk actions work.",
+    "rationale": "Zero's own MCP capability list documents bulk delete and bulk archive of emails, so the product itself offers bulk operations an AI agent can invoke. The evidence is only a prose list with no endpoint schema, and it relies on copying a browser session cookie for authentication. Other operations such as label modification and read/unread are not described as bulk. Missing for 10: bulk support beyond delete/archive (labels, read state), documented schema or limits for bulk calls, independent or hands-on corroboration.",
     "evidenceIds": [
       "zero-docs-2",
       "zero-probe-1",
-      "zero-docs-21"
+      "zero-mcp-prose-20261106"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can perform bulk operations across many items at once",
       "citations": [
         {
@@ -9337,7 +9277,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Rules that fire actions on email events are a fair question for an AI email client, so the axis applies. The evidence shows only on-demand MCP tools (modify labels, bulk archive/delete) and a founder description of built-in auto-categorization. Neither shows user-defined, event-triggered rules, so both are adjacent capabilities that earn no credit.",
+    "rationale": "Event-triggered automation rules are a fair axis for an AI email client, but the evidence documents no user-definable rules, triggers, or filters that act automatically on events. The MCP tools for labeling, archiving and sending are on-demand actions an agent invokes, not event-driven rules. The founder's mention of auto-categorization describes built-in AI behavior, not user-defined rules, so neither earns credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9352,7 +9292,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Zero is an AI email client, and scheduling recurring jobs or workflows is a fair question for that kind of product. The evidence pack documents only one-off MCP actions such as sending, drafting, labeling, and bulk archiving, plus AI composition and chat-with-inbox features. Nothing shows a recurring schedule, cron-style trigger, or scheduled workflow.",
+    "rationale": "Zero is an AI email client, so scheduling recurring jobs or workflows is a fair question for it. The evidence covers only one-off actions: MCP tools for sending, drafting, labeling, searching and deleting email, plus auto-categorization. Nothing documents scheduled, recurring or cron-like automation, so the verdict is none.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9367,7 +9307,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Zero is an AI email client that auto-categorizes and drafts replies, so versioning, reviewing, and rolling back automations is a fair question for it. The evidence pack, however, only covers MCP email tools, self-hosting, and developer setup commands. Nothing documents versioning, change review, or rollback of automations or rules.",
+    "rationale": "Zero is an AI email client, and an email product could plausibly offer automations with versioning, review, and rollback, so the axis applies. Nothing in the evidence documents automations that can be versioned, reviewed, or rolled back. The MCP capability list covers only email actions (send, label, delete), and Drizzle Studio is a developer database tool, not automation version control.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9382,7 +9322,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Zero is an AI email client, and buyers comparing email and shared-inbox tools can fairly ask about omnichannel support, so the axis applies. The evidence only documents a unified inbox across email providers such as Gmail and Outlook. Nothing shows SMS, WhatsApp, social, or live-chat channels being handled alongside email.",
+    "rationale": "Zero is an AI email client. Multi-channel inbox support is a fair question for inbox products, so the axis applies. The evidence documents only a unified inbox across email providers such as Gmail and Outlook, and nothing about SMS, WhatsApp, social, or live-chat channels.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9397,11 +9337,12 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Zero's own MCP server documents bulk archive and bulk delete tools, plus label modification and read/unread marking. That is a first-party bulk archive capability. However, it is exposed as MCP tooling rather than as in-app multi-select of conversations, and no evidence shows labeling or mark-done applied to many threads in one stroke. missing for 10: UI multi-select of conversations, bulk labeling across selected threads, a mark-done action, hands-on corroboration.",
+    "rationale": "Zero's own first-party MCP surface lists \"Bulk archive emails\" alongside label modification and read/unread marking, so some bulk triage exists as a product capability. Nothing in the evidence describes selecting many conversations at once in the client UI, nor bulk labeling or bulk mark-done in one stroke. The MCP surface is only a prose list authenticated with a browser session cookie. missing for 10: in-app multi-select of conversations, bulk label and mark-done actions, UI documentation of one-stroke bulk triage, hands-on corroboration.",
     "evidenceIds": [
       "zero-docs-2",
       "zero-docs-21",
-      "zero-docs-1"
+      "zero-docs-1",
+      "zero-mcp-prose-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -9425,7 +9366,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Calendar integration is a fair question for an email client, so the axis applies. The evidence pack documents only email operations: labels, drafts, sending, search, AI compose and inbox Q&A. Nothing shows Zero displaying a calendar, responding to invites, or creating events.",
+    "rationale": "Calendar integration is a fair question for an email client, but the evidence pack never mentions viewing a calendar, responding to invites, or creating events. The documented capabilities cover only email threads, labels, drafts, sending, AI composition and search.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9440,7 +9381,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Zero is an email client, so importing mail history and contacts is a fair question for it. The evidence only shows that Zero connects to existing providers like Gmail and Outlook and works on top of them, and that it caches the user's emails in a Durable Object and R2 bucket. That is live access to an existing account, an adjacent capability, not a documented import or migration of complete mail history and contacts from an old provider or client. Contacts import is never mentioned.",
+    "rationale": "Mail import and migration is a fair question for an email client, so the axis applies. The evidence only shows Zero connecting to existing providers such as Gmail and Outlook and caching their mail. That is live account access, not a documented import of mail history and contacts from an old provider or client. No import or migration tool and no contacts import is documented.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -9455,7 +9396,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Zero's own MCP documentation lists searching emails with custom queries and filtering by labels, so basic query and filter search exists. Nothing describes the search operators, how results are ranked, coverage of the full mail history, or search speed, and the listing is an MCP tool rather than the in-app search experience. Missing for 10: documented search operator syntax, ranked results, full-history search coverage, search performance evidence, hands-on or independent corroboration.",
+    "rationale": "Zero's own MCP capability list names searching emails with custom queries and filtering by labels, so basic query search and label filters exist. That is a single prose bullet with no schema, and nothing covers search speed, query operators, result ranking, or reach across the full mail history. missing for 10: documented search operators/syntax, ranked results, search performance claims or benchmarks, coverage of full mail history, in-app search UI docs, independent or hands-on corroboration.",
     "evidenceIds": [
       "zero-docs-6"
     ],
@@ -9477,7 +9418,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Internal comment threads and @mentions on emails are a fair capability for an email client, so this axis applies. However, nothing in the pack documents team comments, side-threads, @mentions or shared discussion on messages. The evidence covers labels, AI chat with threads, composing, a unified inbox and self-hosting, none of which is internal team discussion.",
+    "rationale": "Zero is an email client, so a buyer could fairly ask about internal team comments and @mentions on a message; the axis applies. The evidence pack documents no shared-inbox commenting, side-threads or @mentions. The only nearby items are labels, drafts and AI Q&A about threads, which are adjacent features and do not count toward this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9492,7 +9433,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "No shipped keyboard capability is evidenced for Zero. 'Customizable keyboard shortcuts' appears only as a roadmap item, and a community user says Zero does not yet have real keyboard navigation. There is no evidence of a command palette at all. A single note about storing emails in Durable Objects to speed things up covers only the speed part of the story and cannot deliver its keyboard-driven core.",
+    "rationale": "The only keyboard-related evidence is a roadmap entry for 'Customizable keyboard shortcuts', which is a plan rather than a shipped capability. A community user says Zero 'does not yet have real keyboard navigation', and nothing mentions a command palette. One GitHub note says storing emails in Durable Objects/R2 speeds things up, but that touches only the speed part and does not deliver the keyboard-driven core of the story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9507,7 +9448,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Zero is an open-source AI email client that works on top of Gmail and other providers, so masked addresses or aliases are a fair question for this kind of product. Nothing in the evidence documents any alias, masked-address, or address-forwarding feature. Its general claim that it does not track or sell data is a different privacy capability and does not hide the user's real address from sign-ups or strangers.",
+    "rationale": "Zero is an email client, so aliasing or masking addresses is a fair question to ask of it. Nothing in the evidence documents aliases, masked addresses, or hide-my-email features. The no-tracking privacy claim and the self-hosting material are adjacent topics and do not deliver address masking.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9522,9 +9463,10 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Zero's README claims a Unified Inbox that connects multiple email providers such as Gmail and Outlook. However, only Gmail integration has documented setup (Google OAuth), and the founder describes it as working on top of Gmail, so multi-provider support beyond Gmail is unproven rather than concretely contradicted. Missing for 10: documented Microsoft 365/Outlook connection setup, any IMAP support, evidence of multiple simultaneous accounts in one view, and independent hands-on corroboration.",
+    "rationale": "Zero's README claims a 'Unified Inbox' that connects multiple providers like Gmail and Outlook. However, the only documented setup is Google OAuth for Gmail, and the founder's HN description says it 'works on top of Gmail' in public beta, so multi-provider support beyond Gmail is unproven rather than concretely contradicted. Missing for 10: documented Microsoft 365/Outlook connection setup, any IMAP support, evidence of connecting several accounts at once, and hands-on corroboration of working multiple accounts from one inbox.",
     "evidenceIds": [
       "zero-gh-1",
+      "zero-gh-9",
       "zero-gh-13",
       "zero-gh-17",
       "zero-comm-1"
@@ -9555,7 +9497,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Zero is an email client, so offline reading, searching and writing with sync on reconnect is a fair axis. Nothing in the pack documents offline mode, local caching on the client, or a queued-change sync on reconnect. The note about storing emails in a Durable Object and an R2 bucket describes server-side storage for speed, not client offline capability.",
+    "rationale": "Offline reading, searching and writing with sync on reconnect is a fair question for an email client, so the axis applies. Nothing in the pack documents offline mode, local caching on the client, or a queued-sync mechanism. Storing emails in a Durable Object and an R2 bucket is server-side storage for speed, not offline client capability, so it earns no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9570,7 +9512,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Zero is an open-source email client that connects to Gmail and Outlook through OAuth/provider integrations. The evidence never mentions IMAP, JMAP or SMTP access, and never mentions export in a standard format such as mbox or EML. Self-hosting, the MCP tool API and storing mail in Durable Objects/R2 are related features, not open-protocol access or standards-based export, so they earn no credit.",
+    "rationale": "Zero is an email client, so open-protocol access and standards-based export are fair questions to ask of it. The evidence never mentions IMAP, JMAP, SMTP, or any export format such as mbox or EML. It shows provider integrations like Gmail via Google OAuth, self-hosting, and an MCP capability list, which are related features rather than the open-protocol access and export this story asks for.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9583,9 +9525,9 @@
     "productId": "zero",
     "storyId": "openness-api-parity",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Zero's own MCP server exposes a broad set of mailbox operations that mirror core UI actions: reading and listing threads, composing and sending, drafts, deleting, marking read/unread, labels, bulk archive and delete, search, and AI compose and Q&A. However, nothing documents full UI-to-API parity, and authentication currently means copying a browser session cookie, with OAuth listed as 'coming soon'. missing for 10: documented parity claim or coverage of settings, multi-account and connection management, and UI customization via API; a general REST/public API reference; production-grade auth (OAuth); independent or hands-on corroboration.",
+    "rationale": "Zero's own MCP server exposes a broad set of mailbox operations: reading threads, listing folders, sending emails and drafts, deleting, bulk archiving, managing labels, marking read/unread, search and AI compose. That is a real programmatic surface covering many core UI actions. However, there is no documented public HTTP API or endpoint schema, authentication requires copying a browser session cookie (OAuth is 'coming soon'), and nothing shows parity with the UI. Missing for 10: a documented public API with schema, evidence of UI parity (settings, provider connection, UI customization, categorization), stable non-cookie authentication, and independent corroboration.",
     "evidenceIds": [
       "zero-docs-11",
       "zero-docs-21",
@@ -9595,6 +9537,7 @@
       "zero-docs-14",
       "zero-docs-8",
       "zero-docs-23",
+      "zero-mcp-prose-20261106",
       "zero-probe-1"
     ],
     "support": {
@@ -9608,7 +9551,7 @@
         },
         {
           "evidenceId": "zero-docs-21",
-          "quote": "Mark emails as read/unread"
+          "quote": "Mark emails as read/unread\n- Modify email labels"
         },
         {
           "evidenceId": "zero-docs-2",
@@ -9617,10 +9560,6 @@
         {
           "evidenceId": "zero-docs-13",
           "quote": "Get all user labels - Create new custom labels with custom colors - Delete existing labels"
-        },
-        {
-          "evidenceId": "zero-docs-6",
-          "quote": "Search emails with custom queries - Filter emails by labels"
         },
         {
           "evidenceId": "zero-docs-8",
@@ -9635,7 +9574,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack documents no first-party data-export feature, open-format export (such as mbox or EML), or account-exit flow for Zero. Self-hosting, open-source code, Drizzle Studio's database viewer, and MCP read tools are developer building blocks or adjacent features, not an export capability. The fact that mail lives in the underlying Gmail or other provider is a host-platform property, so none of these earn credit.",
+    "rationale": "Nothing in the evidence documents a first-party export of user data in open formats. Self-hosting, open-source code, Drizzle Studio database access and MCP thread retrieval are adjacent features or developer building blocks, not an export capability, and the underlying Gmail or Outlook data belongs to the host provider rather than to Zero.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9650,12 +9589,12 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Zero's own GitHub README calls it \"an open-source AI email solution\" and \"An Open-Source Gmail Alternative.\" The public repo exposes readable source, including raw staging files (MCP.md, AGENT.md, CONTRIBUTING.md) and devcontainer setup instructions. Missing for 10: the specific license (name or terms) is not shown in the evidence, and there is no independent corroboration of the license status.",
+    "rationale": "Zero's public GitHub repository (Mail-0/Zero) describes the product as open-source, and the source is publicly readable there, including raw docs, the contributing guide and devcontainer setup. A separate repository review also calls it an open-source, self-hostable app. missing for 10: the specific license name or terms are not shown in the evidence, and there is no independent confirmation of the license type.",
     "evidenceIds": [
       "zero-gh-16",
       "zero-gh-20",
       "zero-gh-19",
-      "zero-docs-24"
+      "zero-mcp-prose-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -9673,6 +9612,10 @@
         {
           "evidenceId": "zero-gh-19",
           "quote": "Then open the code in devcontainer and install the dependencies"
+        },
+        {
+          "evidenceId": "zero-mcp-prose-20261106",
+          "quote": "Zero (an open-source, self-hostable AI email app)"
         }
       ]
     }
@@ -9681,17 +9624,18 @@
     "productId": "zero",
     "storyId": "openness-self-host",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Zero's README describes it as open-source and says it \"gives users the power to self-host\" it, with local setup steps (env setup, devcontainer, `pnpm go` to start the database and dev servers). However, the project's own ROADMAP still lists \"Self-hosting capabilities\" as a future item, and the documented setup is developer- and contributor-oriented rather than a production deployment path. missing for 10: a documented production self-hosting or deployment guide, confirmation that self-hosting is complete rather than a roadmap item, clarity on hosted-infrastructure dependencies (Durable Objects/R2), independent hands-on self-host reports.",
+    "rationale": "Zero's README presents it as an open-source email app that users can self-host, and gives local setup steps (environment generation, devcontainer, `pnpm go` to start the database and dev servers). However, 'Self-hosting capabilities' still appears on the roadmap, and the documented commands are development-oriented rather than a production deployment guide. Missing for 10: a production self-hosting/deployment guide, clarity on whether the roadmap self-hosting work is finished, and independent hands-on confirmation of a working self-hosted instance.",
     "evidenceIds": [
       "zero-gh-16",
-      "zero-gh-6",
+      "zero-gh-13",
+      "zero-gh-11",
       "zero-gh-18",
-      "zero-docs-24",
       "zero-gh-19",
-      "zero-docs-15",
-      "zero-gh-21"
+      "zero-docs-24",
+      "zero-gh-17",
+      "zero-docs-15"
     ],
     "support": {
       "relation": "direct",
@@ -9703,16 +9647,16 @@
           "quote": "Zero is an open-source AI email solution that gives users the power to **self-host** their own email app"
         },
         {
-          "evidenceId": "zero-gh-6",
-          "quote": "Self-Hosting Freedom – Run your own email app with ease."
+          "evidenceId": "zero-gh-11",
+          "quote": "⚙️ **Self-Hosting Freedom** – Run your own email app with ease."
+        },
+        {
+          "evidenceId": "zero-gh-18",
+          "quote": "Run `pnpm nizzy env` to setup your environment variables. It will copy the `.env.example` file to `.env` and fill in the variables for you."
         },
         {
           "evidenceId": "zero-docs-24",
           "quote": "`pnpm go` - Quick start: starts database and dev servers"
-        },
-        {
-          "evidenceId": "zero-gh-18",
-          "quote": "Run `pnpm nizzy env` to setup your environment variables."
         },
         {
           "evidenceId": "zero-docs-15",
@@ -9725,14 +9669,14 @@
     "productId": "zero",
     "storyId": "privacy-data-residency",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "low",
-    "rationale": "Zero documents self-hosting as a first-party capability. Running your own instance lets you decide where the app's own data lives, but there is no documented region or residency selector. The hosted service stores user emails in Durable Objects and an R2 bucket with no stated region choice, and Gmail-backed mail still lives with the provider. Missing for 10: an explicit region/residency selection for hosted data, documentation of where self-hosted data lands and how it is configured, and independent corroboration.",
+    "rationale": "Zero documents self-hosting as a core capability, which lets a user run the app on infrastructure they choose and so decide where Zero's own data lives. However, there is no region or residency selector for the hosted service. The repo also notes that user emails are stored in Durable Objects and an R2 bucket, with no documented way to control the region of that storage. Missing for 10: explicit region/residency selection for the hosted offering, documentation of where hosted data lives, region configuration for the Durable Object/R2 storage in self-hosted deployments, and independent corroboration.",
     "evidenceIds": [
-      "zero-gh-2",
       "zero-gh-8",
-      "zero-gh-21",
-      "zero-gh-13"
+      "zero-gh-13",
+      "zero-gh-6",
+      "zero-gh-21"
     ],
     "support": {
       "relation": "direct",
@@ -9740,12 +9684,12 @@
       "subject": "As an AI-native user, I can choose where my data is stored (region/residency)",
       "citations": [
         {
-          "evidenceId": "zero-gh-2",
-          "quote": "Self-Hosting Freedom – Run your own email app with ease."
-        },
-        {
           "evidenceId": "zero-gh-8",
           "quote": "gives users the power to **self-host** their own email app"
+        },
+        {
+          "evidenceId": "zero-gh-6",
+          "quote": "Self-Hosting Freedom – Run your own email app with ease."
         },
         {
           "evidenceId": "zero-gh-21",
@@ -9758,13 +9702,12 @@
     "productId": "zero",
     "storyId": "privacy-no-training",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 3,
     "confidence": "low",
-    "rationale": "Zero's README states that it does not track, collect, or sell user data, and the product can be self-hosted, which keeps mailbox data under the user's control. Together these imply user data is not used for model training, but neither is an explicit training commitment. missing for 10: an explicit no-training policy or opt-out control, disclosure of how third-party AI providers (e.g. Perplexity, the drafting and summarization models) handle email content, and independent verification of the data-handling claims.",
+    "rationale": "Zero's README makes a first-party privacy claim that it does not track, collect, or sell user data, and it offers self-hosting. Together these imply user email is not harvested for model training, but nothing explicitly addresses AI training. Missing for 10: an explicit statement or opt-out that user data is never used to train AI models, disclosure of whether the third-party AI providers it uses (e.g., Perplexity) retain or train on data, a privacy policy or DPA, and independent corroboration.",
     "evidenceIds": [
       "zero-gh-15",
-      "zero-gh-8",
-      "zero-gh-13"
+      "zero-gh-8"
     ],
     "support": {
       "relation": "direct",
@@ -9785,28 +9728,37 @@
   {
     "productId": "zero",
     "storyId": "privacy-retention-controls",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence shows Zero's MCP tools can delete or bulk-delete emails, and that Zero can be self-hosted. It also states Zero stores users' emails in Durable Objects and R2. However, nothing documents retention settings, purging of cached or stored data, or account and data deletion controls. Deleting mailbox emails is an adjacent email-management feature, and self-hosting or Drizzle Studio are deployment and developer building blocks, so neither delivers privacy-oriented retention or deletion control.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can control data retention and deletion",
+      "citations": []
+    }
+  },
+  {
+    "productId": "zero",
+    "storyId": "privacy-telemetry-optout",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 5,
     "confidence": "low",
-    "rationale": "Zero's MCP server documents deleting and bulk-deleting emails, and self-hosting lets users run the app themselves. That covers only one slice of the story: user-initiated deletion of mailbox items. Zero says it caches users' emails in Durable Objects and R2, but nothing documents retention settings or purging of that cached copy. Missing for 10: retention policy/period controls, account or data-export/erasure controls, purging of server-side cached email copies (Durable Object/R2), and independent corroboration.",
+    "rationale": "Zero's README states that it does not track or collect user data at all, so there is no telemetry to opt out of, and self-hosting gives users further control. This is a single first-party marketing claim with no documented opt-out setting, telemetry configuration or independent verification. Missing for 10: documented telemetry/analytics opt-out controls or config flags, a privacy policy detailing what the hosted service collects, independent or hands-on corroboration of the no-tracking claim.",
     "evidenceIds": [
-      "zero-docs-2",
-      "zero-docs-11",
-      "zero-gh-21",
+      "zero-gh-15",
       "zero-gh-8"
     ],
     "support": {
       "relation": "direct",
       "coverage": "partial",
-      "subject": "As an AI-native user, I can control data retention and deletion",
+      "subject": "As an AI-native user, I can opt out of telemetry and usage tracking",
       "citations": [
         {
-          "evidenceId": "zero-docs-2",
-          "quote": "Bulk delete emails"
-        },
-        {
-          "evidenceId": "zero-docs-11",
-          "quote": "Delete emails"
+          "evidenceId": "zero-gh-15",
+          "quote": "Zero does not track, collect, or sell your data in any way."
         },
         {
           "evidenceId": "zero-gh-8",
@@ -9817,33 +9769,11 @@
   },
   {
     "productId": "zero",
-    "storyId": "privacy-telemetry-optout",
-    "verdict": "partial",
-    "quality": 5,
-    "confidence": "low",
-    "rationale": "Zero's README says the product does not track, collect, or sell user data, so there would be no telemetry to opt out of. This rests on a single first-party claim, and the pack documents no opt-out toggle or telemetry settings to confirm it. missing for 10: documented telemetry or analytics settings, an explicit opt-out mechanism or confirmation that no analytics SDKs are bundled, independent or hands-on verification of the no-tracking claim.",
-    "evidenceIds": [
-      "zero-gh-15"
-    ],
-    "support": {
-      "relation": "direct",
-      "coverage": "partial",
-      "subject": "As an AI-native user, I can opt out of telemetry and usage tracking",
-      "citations": [
-        {
-          "evidenceId": "zero-gh-15",
-          "quote": "Zero does not track, collect, or sell your data in any way."
-        }
-      ]
-    }
-  },
-  {
-    "productId": "zero",
     "storyId": "read-statuses",
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Open tracking and read receipts are a fair question for an email client, so the axis applies. Nothing in the evidence shows Zero reporting whether or when recipients opened sent mail. The 'mark emails as read/unread' feature only changes the status of messages in the user's own inbox, which is an adjacent control and earns no credit.",
+    "rationale": "Open tracking and read receipts are a fair axis for an email client, but the evidence pack never mentions tracking whether or when recipients opened sent mail. The 'Mark emails as read/unread' item is only an adjacent control over the user's own mailbox state, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9858,7 +9788,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Zero is an email client, so scheduled send and undo-send are fair questions to ask of it. The evidence only documents creating and sending emails and drafts; nothing covers scheduling a send for later or undoing a send within a grace window.",
+    "rationale": "Scheduled send and undo-send are fair questions for an email client, so the axis applies. The evidence only documents basic sending: creating and sending new emails, creating drafts, and sending existing drafts. Nothing in the pack mentions send-later scheduling or an undo-send grace window, so the verdict is none.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9873,16 +9803,15 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Zero is open source and explicitly advertises self-hosting ('Run your own email app with ease'), with setup steps for the environment and a quick-start for the database and dev servers. However, the mail pipeline still depends on external providers: Google OAuth is required for Gmail integration, the founder says it works on top of Gmail, and the roadmap still lists 'Self-hosting capabilities' as an item. Missing for 10: a self-owned mail transport/pipeline independent of Gmail/Outlook, documentation of production self-host deployment (including the Durable Object/R2 storage path), and independent hands-on corroboration of self-hosting.",
+    "rationale": "Zero's README explicitly claims you can self-host the email app, and it documents local setup steps: env setup via `pnpm nizzy env`, a devcontainer, and `pnpm go` to start the database and dev servers. However, the app runs on top of external providers like Gmail through Google OAuth, so the mail pipeline itself is not shown to be under the self-hoster's control, and 'Self-hosting capabilities' still appears on the roadmap. Missing for 10: a self-controlled mail transport or storage pipeline independent of Gmail/Outlook, production self-hosting/deployment docs, and independent hands-on confirmation of self-hosting.",
     "evidenceIds": [
       "zero-gh-2",
-      "zero-gh-16",
       "zero-gh-13",
+      "zero-gh-16",
+      "zero-gh-17",
       "zero-gh-18",
       "zero-docs-24",
-      "zero-gh-17",
       "zero-docs-15",
-      "zero-gh-21",
       "zero-comm-1"
     ],
     "support": {
@@ -9890,10 +9819,6 @@
       "coverage": "partial",
       "subject": "As a switcher, I can self-host the email app and keep the mail pipeline under my own control",
       "citations": [
-        {
-          "evidenceId": "zero-gh-2",
-          "quote": "Self-Hosting Freedom – Run your own email app with ease."
-        },
         {
           "evidenceId": "zero-gh-16",
           "quote": "Zero is an open-source AI email solution that gives users the power to **self-host** their own email app"
@@ -9907,8 +9832,8 @@
           "quote": "`pnpm go` - Quick start: starts database and dev servers"
         },
         {
-          "evidenceId": "zero-gh-18",
-          "quote": "Run `pnpm nizzy env` to setup your environment variables."
+          "evidenceId": "zero-gh-17",
+          "quote": "Google OAuth Setup** (Required for Gmail integration)"
         }
       ]
     }
@@ -9919,7 +9844,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Zero is an AI email client, so sharing availability or inserting bookable meeting times into an email is a fair question for this kind of product. The evidence pack documents no calendar integration, availability sharing, or scheduling links. It covers only email composition, labels, search, and MCP tools, none of which deliver this capability.",
+    "rationale": "Zero is an AI email client, so sharing availability or inserting bookable meeting times into an email is a fair question for it. The evidence pack never mentions calendar integration, availability sharing or scheduling links. It documents only email composition, drafts, labels and search, none of which transfer to this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9934,7 +9859,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Zero is an AI email client, so shared team inboxes are a fair question for it. The evidence only shows a single-user 'Unified Inbox' that combines one person's multiple provider accounts. There is no documentation of shared accounts, team channels, or synchronized conversation state across team members.",
+    "rationale": "Zero is an email client, so shared team inboxes are a fair question for it. The evidence never documents shared accounts, team channels, or shared conversation state. The 'Unified Inbox' feature connects one user's multiple email providers, which is an adjacent feature rather than team collaboration, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9949,7 +9874,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Zero is an email client, so saved snippets and templates are a fair axis to judge it on. The evidence shows only AI-assisted composing, AI-drafted replies, and creating or sending drafts. These are adjacent features, not reusable templates with variables or attachments, and nothing documents a snippet or template library.",
+    "rationale": "Zero is an email client, so saved snippets or templates are a fair question to ask of it. The evidence pack documents AI-assisted composing, drafts and sending, but nothing about saved snippets, templates, variables or template attachments. AI drafting and saved drafts are adjacent features, not reusable templates, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9964,7 +9889,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Zero is an email client, so snoozing and follow-up reminders are a fair axis to judge it on. Nothing in the evidence pack mentions snooze, reminders, or resurfacing threads that get no reply. The documented features cover labels, archive and delete, drafts, read/unread status, AI compose and search, none of which delivers this story.",
+    "rationale": "Zero is an AI email client, so snoozing and follow-up reminders are a fair question for it. However, the evidence pack documents only label management, read/unread, archive, delete, drafts and AI chat. None of it mentions snoozing threads, scheduled resurfacing, or no-reply follow-up reminders. Label and read/unread controls are adjacent features and earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9979,7 +9904,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "The founder describes Zero as an email client that 'auto-categorizes' the inbox, which is the product's own capability toward splitting mail into streams. However, no documentation describes specific streams or priority-ordered triage views; the label creation and label filtering tools are MCP building blocks, not a split-inbox feature. Missing for 10: documented split-inbox streams (important, team, newsletters, calendar invites), priority-ordered triage views, first-party docs describing the categorization behavior, hands-on corroboration.",
+    "rationale": "The only direct evidence is the founder's description of Zero as an AI email client that auto-categorizes the inbox. Custom labels and filtering by labels via MCP are adjacent building blocks, not split streams. No documentation shows split-inbox views, named streams (important, team, newsletters, calendar invites), or priority-ordered triage. Missing for 10: documented split-inbox or stream views, specific category definitions, priority-order triage flow, first-party docs and hands-on corroboration of auto-categorization.",
     "evidenceIds": [
       "zero-comm-1"
     ],
@@ -9990,7 +9915,7 @@
       "citations": [
         {
           "evidenceId": "zero-comm-1",
-          "quote": "Zero founder describes it as an AI-powered email client that auto-categorizes, summarizes threads, drafts replies, and lets users chat with their inbox"
+          "quote": "AI-powered email client that auto-categorizes"
         }
       ]
     }
@@ -10001,7 +9926,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Zero says it does not track, collect, or sell user data, and it discloses that user emails are stored in a Durable Object and an R2 bucket. That gives thin support for the transparency half of the story, but nothing in the evidence shows blocking of tracking or read pixels, by default or otherwise. missing for 10: documented default blocking of tracking/read pixels, remote-image/sender-tracking protection controls, a detailed privacy policy or data-handling documentation (including AI processing of mail), independent or hands-on corroboration",
+    "rationale": "The evidence covers only the transparency half of the story: the README states that Zero does not track, collect, or sell user data, and discloses that emails are stored in the user's Durable Object and an R2 bucket. Nothing in the pack shows any blocking of sender tracking or read pixels, by default or otherwise. missing for 10: tracking-pixel/remote-image blocking (default-on), sender-tracking protection, a detailed privacy policy or data-handling documentation, independent corroboration.",
     "evidenceIds": [
       "zero-gh-15",
       "zero-gh-21"

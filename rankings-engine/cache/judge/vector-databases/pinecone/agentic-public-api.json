@@ -1,17 +1,19 @@
 {
-  "hash": "a9903751f68f2cda9be125ec331ffe00b1157118efe5072ca4934001bbb161a8",
+  "hash": "9836e61044b2dc292022a0cf6bf4f2b84e5a886e8928a26a0ca36fdb435c713b",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
-    "quality": 7,
-    "confidence": "medium",
-    "rationale": "Pinecone documents a public API: an API reference introduction covers the Inference API for embeddings and reranking, and other docs say operations such as backups can be done through the SDK, API, or console. The llms.txt probe confirms official docs for its inference APIs and SDKs. missing for 10: a machine-readable OpenAPI spec (all probed paths returned 404), explicit evidence that the reference covers core data-plane operations such as upsert and query, independent hands-on corroboration of driving it via the API.",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Pinecone documents a versioned public REST API covering data plane, control plane, inference, admin and OAuth. Machine-readable OpenAPI 3.0.3 specs are published in the official pinecone-io/pinecone-api repo, and a formal versioning policy guarantees at least 12 months of support per stable version. The 404s at the probed docs-domain OpenAPI paths only reflect where the specs are hosted, not a contradiction. Missing for 10: an interactive in-page API runner (the docs playground is disabled) and independent hands-on corroboration of driving the API end to end.",
     "evidenceIds": [
+      "pinecone-openapi-specs-20261106",
+      "pinecone-data-plane-spec-20261106",
+      "pinecone-api-versioning-20261106",
       "pinecone-docs-14",
       "pinecone-docs-12",
-      "pinecone-probe-1",
-      "pinecone-probe-2",
-      "pinecone-comm-1"
+      "pinecone-playground-disabled-20261106",
+      "pinecone-probe-1"
     ],
     "support": {
       "relation": "direct",
@@ -19,16 +21,20 @@
       "subject": "As an AI-native user, I can drive the product through a documented public API",
       "citations": [
         {
-          "evidenceId": "pinecone-docs-14",
-          "quote": "Use the Inference API to generate vector embeddings and rerank results using embedding models and reranking models hosted on Pinecone's infrastructure."
+          "evidenceId": "pinecone-openapi-specs-20261106",
+          "quote": "listing dated machine-readable specs for every API surface (data plane, control plane, inference, admin, oauth), hosted in the official pinecone-io/pinecone-api repository"
+        },
+        {
+          "evidenceId": "pinecone-api-versioning-20261106",
+          "quote": "Each stable version remains unchanged and supported for a minimum of 12 months"
         },
         {
           "evidenceId": "pinecone-docs-12",
           "quote": "Create backups of serverless indexes to protect data, copy indexes, or experiment with configurations using the Pinecone SDK, API, or console."
         },
         {
-          "evidenceId": "pinecone-probe-1",
-          "quote": "Official Pinecone documentation for the vector database, Assistant, inference APIs, SDKs"
+          "evidenceId": "pinecone-data-plane-spec-20261106",
+          "quote": "Pinecone's own mock-the-api guide cites this repo as \"Pinecone's public OpenAPI specs\"."
         }
       ]
     },

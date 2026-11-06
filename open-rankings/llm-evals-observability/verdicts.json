@@ -11338,11 +11338,13 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "An official LangSmith MCP server is documented, and the docs state traces can be filtered and exported via the API, so an agent can query trace data programmatically. The evidence does not show what the MCP server exposes, or that metrics, dashboards or eval and experiment results can be queried through the API or MCP. Missing for 10: documented MCP tool coverage, API or MCP access to metrics and eval results, no OpenAPI spec found, hands-on corroboration of agent-driven debugging.",
+    "rationale": "LangSmith has an official MCP server and a versioned public REST API with an OpenAPI spec, and the docs say traces can be filtered and exported via the API, including a thread-query endpoint. That gives an agent a documented programmatic path into trace data. The evidence does not show which tools the MCP server exposes, or that metrics, dashboards or evaluation/experiment results can be queried through the API or MCP. missing for 10: documented MCP tool coverage for traces/metrics/evals, explicit API access to metrics and eval/experiment results, hands-on corroboration of agent-driven debugging.",
     "evidenceIds": [
       "langsmith-probe-4",
       "langsmith-docs-2",
-      "langsmith-docs-1"
+      "langsmith-openapi-spec-20261105",
+      "langsmith-api-deprecations-20261105",
+      "langsmith-swagger-ui-20261105"
     ],
     "support": {
       "relation": "direct",
@@ -11356,6 +11358,14 @@
         {
           "evidenceId": "langsmith-docs-2",
           "quote": "Filter, export, share, and compare traces via the UI or API."
+        },
+        {
+          "evidenceId": "langsmith-openapi-spec-20261105",
+          "quote": "The LangSmith API is used to programmatically create and manage LangSmith resources"
+        },
+        {
+          "evidenceId": "langsmith-api-deprecations-20261105",
+          "quote": "Use `POST /api/v2/threads/query` to query threads instead."
         }
       ]
     }
@@ -11363,22 +11373,20 @@
   {
     "productId": "langsmith",
     "storyId": "agent-session-traces",
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "LangSmith documents grouping into threads (\"Inspect threads and runs in the Messages, Turns, and Details views\") and agent-run tracing via SDKs, decorators and OpenTelemetry. Hands-on community evidence confirms step-by-step traces through agent graphs with per-step inputs and outputs. One commenter says it \"only shows the LLM inferences\" outside LangChain, but this is a vague integration complaint and is not treated as a concrete counter-example. missing for 10: explicit first-party documentation of the nested span/run-tree hierarchy, documented details on how runs are assigned to sessions/threads, independent corroboration for non-LangChain stacks.",
+    "rationale": "LangSmith documents tracing of agent runs and inspecting threads and runs in Messages, Turns, and Details views. A threads query API (`POST /api/v2/threads/query`) supports thread grouping, and a hands-on user describes inspecting inputs and outputs for each step of a graph trace. However, no first-party evidence explicitly describes parent/child nested span hierarchies, and one community comment claims it only shows LLM inferences. Missing for 10: first-party documentation of nested span/run hierarchy for multi-step agents, explicit documentation of session grouping beyond threads, and corroboration resolving the conflicting community report about step-level visibility.",
     "evidenceIds": [
-      "langsmith-docs-34",
       "langsmith-docs-1",
-      "langsmith-docs-24",
-      "langsmith-docs-38",
-      "langsmith-docs-11",
+      "langsmith-docs-34",
+      "langsmith-api-deprecations-20261105",
       "langsmith-comm-4-refresh-cd52bf16f9e52787",
-      "langsmith-comm-2-refresh-c22006912c3d93cf"
+      "langsmith-docs-38"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As a developer, I can trace multi-step agent runs as nested spans grouped into sessions or threads",
       "citations": [
         {
@@ -11388,6 +11396,10 @@
         {
           "evidenceId": "langsmith-docs-1",
           "quote": "Traces are the record of what your agents did in production."
+        },
+        {
+          "evidenceId": "langsmith-api-deprecations-20261105",
+          "quote": "Use `POST /api/v2/threads/query` to query threads instead."
         },
         {
           "evidenceId": "langsmith-comm-4-refresh-cd52bf16f9e52787",
@@ -11404,15 +11416,16 @@
     "productId": "langsmith",
     "storyId": "agent-triggers-eval-run",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "LangSmith documents creating datasets and running the application on a dataset to create an experiment. It also offers Python, TypeScript, Go and Java SDKs and an official MCP server, so an agent-driven workflow is plausible. However, the evidence never explicitly shows datasets being created or experiments triggered through the SDK, API or MCP, and the SDK mention is framed around tracing. Missing for 10: explicit docs for programmatic or agent-driven dataset creation, a documented API/SDK/MCP call to launch an eval run, programmatic retrieval of experiment results, and hands-on corroboration.",
+    "rationale": "LangSmith documents creating datasets and running an application on a dataset to produce an experiment. It also publishes an OpenAPI 3.1 API \"to programmatically create and manage LangSmith resources\", multi-language SDKs, and an official MCP server, so agent-driven creation and triggering are plausible first-party paths. However, the pack never explicitly shows programmatic retrieval of experiment or eval results, and never shows which operations the MCP server exposes. missing for 10: explicit docs for reading back experiment/eval scores via API/SDK, documented MCP tools for datasets and experiments, hands-on corroboration of an agent running the full loop.",
     "evidenceIds": [
       "langsmith-docs-7",
       "langsmith-docs-9",
       "langsmith-docs-24",
+      "langsmith-openapi-spec-20261105",
       "langsmith-probe-4",
-      "langsmith-docs-19"
+      "langsmith-docs-2"
     ],
     "support": {
       "relation": "direct",
@@ -11428,12 +11441,16 @@
           "quote": "Execute your application on the dataset to create an experiment."
         },
         {
-          "evidenceId": "langsmith-docs-24",
-          "quote": "integrate LangSmith with any agent stack using our Python, Typescript, Go, or Java SDKs"
+          "evidenceId": "langsmith-openapi-spec-20261105",
+          "quote": "The LangSmith API is used to programmatically create and manage LangSmith resources"
         },
         {
           "evidenceId": "langsmith-probe-4",
           "quote": "official MCP server documented at https://github.com/langchain-ai/langsmith-mcp-server"
+        },
+        {
+          "evidenceId": "langsmith-docs-24",
+          "quote": "integrate LangSmith with any agent stack using our Python, Typescript, Go, or Java SDKs"
         }
       ]
     }
@@ -11444,10 +11461,11 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Hands-on probes confirm a live llms.txt at docs.langchain.com covering LangSmith documentation. Docs pages are also served as Markdown (.md) with a header pointing agents to the llms.txt index, so an agent can be pointed directly at agent-oriented docs. Missing for 10: first-party documentation describing the agent-docs offering itself (e.g., an llms-full.txt variant or usage guidance) beyond what the probes observed.",
+    "rationale": "Hands-on probes confirm a live llms.txt at docs.langchain.com (HTTP 200) describing LangSmith documentation. Per-page markdown versions (e.g., home.md) are also served, and they point agents to the llms.txt index. The llms.txt also lists OpenAPI specs, giving agents machine-readable API docs. Missing for 10: independent or community corroboration that agents consume these docs effectively, and no llms-full.txt or detailed agent-oriented usage guidance evidenced.",
     "evidenceIds": [
       "langsmith-probe-1-refresh-8494fa2eb15ae3e6",
-      "langsmith-probe-2"
+      "langsmith-probe-2",
+      "langsmith-openapi-spec-20261105"
     ],
     "support": {
       "relation": "direct",
@@ -11461,6 +11479,10 @@
         {
           "evidenceId": "langsmith-probe-2",
           "quote": "Fetch the complete documentation index at: https://docs.langchain.com/llms.txt"
+        },
+        {
+          "evidenceId": "langsmith-openapi-spec-20261105",
+          "quote": "listed in the docs llms.txt under \"## OpenAPI Specs\""
         }
       ]
     }
@@ -11469,11 +11491,12 @@
     "productId": "langsmith",
     "storyId": "agentic-ai-insights",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "LangSmith Engine is documented as automatically detecting recurring issues in traces, diagnosing root cause, and helping resolve them. That is in-product insight and suggestion generation from the user's own data, but it rests on a single short docs line that doesn't describe how it works. LLM-as-judge evaluators score outputs, which is related but is not insight generation. Missing for 10: detailed docs on how Engine generates insights or suggestions (AI/LLM basis, output format, workflow), evidence of natural-language summaries or recommendations over dashboards and traces, and independent or hands-on corroboration.",
+    "rationale": "LangSmith's own docs describe LangSmith Engine, which automatically detects recurring issues in your traces, diagnoses their root cause and helps resolve them. Reference-free LLM-as-judge evaluators can also run automatically on production traces to assess quality. However, Engine appears only as a single one-line claim, with no detail on how its AI insights or suggestions are generated or shown. missing for 10: detailed docs on Engine's AI-generated insights and suggestions, any in-product natural-language or assistant-style analysis of user data, independent or hands-on corroboration.",
     "evidenceIds": [
-      "langsmith-docs-6"
+      "langsmith-docs-6",
+      "langsmith-docs-10"
     ],
     "support": {
       "relation": "direct",
@@ -11483,6 +11506,10 @@
         {
           "evidenceId": "langsmith-docs-6",
           "quote": "Automatically detect recurring issues in your traces, diagnose their root cause, and resolve them with LangSmith Engine."
+        },
+        {
+          "evidenceId": "langsmith-docs-10",
+          "quote": "Set up evaluators to run automatically on production traces: safety checks, format validation, quality heuristics, and reference-free LLM-as-judge."
         }
       ]
     }
@@ -11490,20 +11517,20 @@
   {
     "productId": "langsmith",
     "storyId": "agentic-autonomous-automation",
-    "verdict": "partial",
-    "quality": 6,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "LangSmith documents its own background automations: rules, webhooks, and online evaluators that run automatically on production traces with filters and sampling, plus threshold alerts and LangSmith Engine, which automatically detects recurring issues. However, these automations are scoped to trace monitoring and evaluation rather than general-purpose autonomous workflows, and the rules feature appears only in a one-line mention. Missing for 10: documented detail on automation rule configuration and actions, scheduled or recurring triggers beyond trace events, general-purpose background workflows, and independent or hands-on corroboration.",
+    "rationale": "LangSmith's own docs say users can automate workflows with rules, webhooks, and online evaluations. Evaluators run automatically on production traces, with filters and sampling rates. Threshold-based alerts and LangSmith Engine's automatic issue detection also run in the background without manual work. missing for 10: detailed documentation of automation-rule triggers and actions, any evidence of time-based recurring schedules, independent or hands-on corroboration of background automations.",
     "evidenceIds": [
       "langsmith-docs-4",
       "langsmith-docs-10",
-      "langsmith-docs-6",
       "langsmith-docs-12",
-      "langsmith-docs-13"
+      "langsmith-docs-13",
+      "langsmith-docs-6"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can set up automations that run autonomously in the background",
       "citations": [
         {
@@ -11515,12 +11542,12 @@
           "quote": "Set up evaluators to run automatically on production traces: safety checks, format validation, quality heuristics, and reference-free LLM-as-judge. Apply filters and sampling rates to control costs."
         },
         {
-          "evidenceId": "langsmith-docs-6",
-          "quote": "Automatically detect recurring issues in your traces, diagnose their root cause, and resolve them with LangSmith Engine."
-        },
-        {
           "evidenceId": "langsmith-docs-12",
           "quote": "LangSmith provides threshold-based alerting on the following metrics: Run Count, Cost, Errors, Feedback Score, Latency"
+        },
+        {
+          "evidenceId": "langsmith-docs-6",
+          "quote": "Automatically detect recurring issues in your traces, diagnose their root cause, and resolve them with LangSmith Engine."
         }
       ]
     }
@@ -11531,7 +11558,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "The only relevant evidence is LangSmith Engine, a built-in feature that automatically detects recurring issues in traces, diagnoses their root cause and resolves them. That is a form of in-product delegated work, but it is scoped to trace issues and never described as a general assistant. Missing for 10: any documentation of a built-in AI assistant or chat agent that accepts user-delegated tasks, an explicit statement that Engine is AI-driven, the range of tasks Engine can take on, and independent or hands-on corroboration.",
+    "rationale": "The only relevant evidence is LangSmith Engine, a built-in feature that automatically detects recurring trace issues, diagnoses root causes and resolves them. That amounts to delegating issue triage to an in-product automated agent, but the docs never describe it as a general AI assistant that accepts user-delegated tasks. Missing for 10: an explicit conversational or general-purpose AI assistant, documentation of which tasks users can delegate and how, and independent or hands-on corroboration.",
     "evidenceIds": [
       "langsmith-docs-6"
     ],
@@ -11553,14 +11580,14 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "LangSmith documents headless, programmatic operation. It offers Python, TypeScript, Go and Java SDKs, an API alongside the UI for trace operations, environment-variable-based tracing, and dataset experiments run to catch regressions. That supports scripted, non-interactive use, but nothing explicitly documents CI integration or a CLI. Missing for 10: explicit CI/CD integration docs (e.g., running evals in GitHub Actions or failing builds on regressions), an official CLI, a published OpenAPI spec (the probe returned 404), and hands-on corroboration of CI usage.",
+    "rationale": "LangSmith can be driven without its UI. Tracing is enabled through environment variables or SDKs, a full OpenAPI-specified REST API lets you \"programmatically create and manage LangSmith resources\", and evaluations can run on datasets to catch regressions. Together these support headless automation, but the evidence never documents a CI integration (e.g., running evals as a CI gate) or a dedicated CLI. missing for 10: documented CI/CD integration or regression-gating workflow, an official CLI for headless runs, independent hands-on corroboration of CI usage.",
     "evidenceIds": [
-      "langsmith-docs-24",
-      "langsmith-docs-2",
       "langsmith-docs-40",
+      "langsmith-openapi-spec-20261105",
       "langsmith-docs-19",
-      "langsmith-docs-9",
-      "langsmith-docs-35"
+      "langsmith-docs-24",
+      "langsmith-docs-4",
+      "langsmith-docs-2"
     ],
     "support": {
       "relation": "direct",
@@ -11568,24 +11595,20 @@
       "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
       "citations": [
         {
-          "evidenceId": "langsmith-docs-24",
-          "quote": "integrate LangSmith with any agent stack using our Python, Typescript, Go, or Java SDKs"
-        },
-        {
-          "evidenceId": "langsmith-docs-2",
-          "quote": "Filter, export, share, and compare traces via the UI or API."
-        },
-        {
           "evidenceId": "langsmith-docs-40",
           "quote": "Add tracing to your app in minutes with environment variables, framework integrations, or the SDK."
+        },
+        {
+          "evidenceId": "langsmith-openapi-spec-20261105",
+          "quote": "The LangSmith API is used to programmatically create and manage LangSmith resources"
         },
         {
           "evidenceId": "langsmith-docs-19",
           "quote": "Run evaluations on curated datasets during development to compare versions, benchmark performance, and catch regressions."
         },
         {
-          "evidenceId": "langsmith-docs-35",
-          "quote": "Add real traces to a dataset so a failure you saw once becomes a test you run every time."
+          "evidenceId": "langsmith-docs-2",
+          "quote": "Filter, export, share, and compare traces via the UI or API."
         }
       ]
     }
@@ -11596,7 +11619,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "LangSmith is an agent observability and deployment platform with a Playground and Agent Server, so consuming MCP tools is a fair question to ask of it. However, nothing in the evidence shows it can connect to external MCP servers as a client. The only MCP item (langsmith-probe-4) is an official LangSmith MCP server, which is the server role and does not count toward this client-side story.",
+    "rationale": "Connecting to MCP servers is a fair question for LangSmith, since it has a Playground and agent deployment surfaces, so the axis applies. However, the pack has no evidence that LangSmith acts as an MCP client. The only MCP evidence is an official LangSmith MCP server (the server role), which belongs to a different story and earns no credit here; Agent Auth and custom model servers are related but different features.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -11609,9 +11632,9 @@
     "productId": "langsmith",
     "storyId": "agentic-mcp-server",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "LangSmith is an observability and evaluation platform, not an agent, so publishing an official MCP server is a fair axis. A probe confirms an official first-party MCP server repository (langchain-ai/langsmith-mcp-server) exists, but the pack gives no detail on what it exposes or how an agent connects. Missing for 10: documentation of the tools and resources the server exposes, setup and authentication instructions, transport details, and independent or hands-on corroboration of an agent connecting to it.",
+    "rationale": "LangSmith is an observability and evaluation platform, not an agent, so shipping an official MCP server is a fair question. A probe confirms an official first-party MCP server repository (langchain-ai/langsmith-mcp-server), but the pack says nothing about its tools, setup, auth or maturity. missing for 10: documentation of exposed MCP tools/resources, setup and auth instructions for connecting an agent, hosted-endpoint details, independent or hands-on corroboration.",
     "evidenceIds": [
       "langsmith-probe-4"
     ],
@@ -11633,7 +11656,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack shows no first-party natural-language command interface for operating LangSmith, such as an in-app assistant or a chat-driven control surface. The official MCP server (langsmith-probe-4) is evidence for the separate MCP-server story and does not transfer here. LangSmith Engine (langsmith-docs-6) is automated issue detection, not natural-language operation, so it is an adjacent feature.",
+    "rationale": "The evidence shows LangSmith being operated through its UI, API, SDKs and an official MCP server, but no first-party natural-language command interface. The MCP server and REST API belong to other stories (agent connectivity and programmatic access) and are building blocks, not the product itself accepting natural-language commands. LangSmith Engine automates issue detection and diagnosis, but nothing says it takes natural-language instructions.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -11648,7 +11671,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence documents Python, TypeScript, Go and Java SDKs, a UI/API, environment-variable tracing setup and an official MCP server. None of these is an official command-line interface. SDKs are developer building blocks and the MCP server is a different capability, so neither earns credit for a CLI story. A CLI is a fair axis for an observability platform like LangSmith, so missing evidence means none, not na.",
+    "rationale": "The evidence documents Python, TypeScript, Go and Java SDKs, a REST API with an OpenAPI spec, and an official MCP server, but nothing shows an official LangSmith command-line interface. These are adjacent programmatic surfaces, not a CLI, and an observability platform could plausibly ship one, so the axis applies and the verdict is none.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -11660,27 +11683,37 @@
   {
     "productId": "langsmith",
     "storyId": "agentic-public-api",
-    "verdict": "partial",
-    "quality": 5,
-    "confidence": "medium",
-    "rationale": "LangSmith's docs say traces can be filtered, exported, shared, and compared via the API, and it ships official Python, TypeScript, Go, and Java SDKs. However, the pack never shows an API reference or the breadth of what can be driven programmatically, and probes found no OpenAPI spec at the common paths. Missing for 10: a documented public API reference covering datasets, evaluations, alerts, and dashboards; a discoverable OpenAPI/Swagger spec; independent hands-on corroboration of API-driven usage.",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "LangSmith publishes a full OpenAPI 3.1 spec for its REST API under /api/v1 and /api/v2. The API host serves interactive Swagger UI and ReDoc, and the docs site adds a runnable REST reference with path versioning and dated deprecation notices. The probe's 404s hit other docs-site paths, not the documented spec locations, so they do not contradict this. Missing for 10: independent or hands-on corroboration that the published spec and endpoints work as documented.",
     "evidenceIds": [
+      "langsmith-openapi-spec-20261105",
+      "langsmith-swagger-ui-20261105",
+      "langsmith-api-deprecations-20261105",
       "langsmith-docs-2",
-      "langsmith-docs-24",
-      "langsmith-probe-3"
+      "langsmith-docs-24"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can drive the product through a documented public API",
       "citations": [
         {
-          "evidenceId": "langsmith-docs-2",
-          "quote": "Filter, export, share, and compare traces via the UI or API."
+          "evidenceId": "langsmith-openapi-spec-20261105",
+          "quote": "The LangSmith API is used to programmatically create and manage LangSmith resources"
         },
         {
-          "evidenceId": "langsmith-docs-24",
-          "quote": "integrate LangSmith with any agent stack using our Python, Typescript, Go, or Java SDKs."
+          "evidenceId": "langsmith-swagger-ui-20261105",
+          "quote": "The API host itself serves an interactive Swagger UI (page title \"LangSmith - Swagger UI\", loading /openapi.json), with ReDoc live at /redoc."
+        },
+        {
+          "evidenceId": "langsmith-api-deprecations-20261105",
+          "quote": "The API is path-versioned (/api/v1, /api/v2)"
+        },
+        {
+          "evidenceId": "langsmith-docs-2",
+          "quote": "Filter, export, share, and compare traces via the UI or API."
         }
       ]
     }
@@ -11691,7 +11724,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never documents LangSmith issuing scoped or least-privilege API keys, such as permission-restricted or workspace-limited service keys for an agent. The closest item, Agent Auth, covers agents getting OAuth 2.0 access to external systems. That is a related but different capability, and it says nothing about scoping or least privilege, so it earns no credit.",
+    "rationale": "The evidence pack does not document scoped or least-privilege API keys for LangSmith, such as per-workspace, read-only, or role-limited keys. The closest item, Agent Auth, lets agents reach external systems with OAuth 2.0 credentials. That is a related but different feature, and nothing in it describes scoping or restricting privileges.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -11706,10 +11739,11 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "LangSmith documents official Python, TypeScript, Go, and Java SDKs. The official langsmith-sdk GitHub repo shows usage such as wrap_openai, and the docs describe adding tracing via the SDK. A community comment confirms hands-on use of the @traceable decorator, though it notes that capturing extra context takes more work. missing for 10: in-depth per-language SDK reference documentation in the evidence, corroboration of Go/Java SDK maturity beyond a single mention.",
+    "rationale": "LangSmith documents official Python, TypeScript, Go, and Java SDKs and publishes an official langsmith-sdk GitHub repo with a usage example (wrap_openai). A community comment also references the SDK's @traceable decorator in practice. Missing for 10: in-depth SDK reference documentation per language, and evidence of the maturity of the Go and Java SDKs beyond a single listing.",
     "evidenceIds": [
       "langsmith-docs-24",
       "langsmith-gh-1",
+      "langsmith-gh-2",
       "langsmith-gh-3",
       "langsmith-docs-40",
       "langsmith-docs-38",
@@ -11722,7 +11756,7 @@
       "citations": [
         {
           "evidenceId": "langsmith-docs-24",
-          "quote": "integrate LangSmith with any agent stack using our Python, Typescript, Go, or Java SDKs"
+          "quote": "Trace your preferred framework or integrate LangSmith with any agent stack using our Python, Typescript, Go, or Java SDKs."
         },
         {
           "evidenceId": "langsmith-gh-1",
@@ -11733,8 +11767,8 @@
           "quote": "Add tracing to your app in minutes with environment variables, framework integrations, or the SDK."
         },
         {
-          "evidenceId": "langsmith-comm-2-refresh-c22006912c3d93cf",
-          "quote": "You can use the @traceable decorator on custom Python functions."
+          "evidenceId": "langsmith-docs-38",
+          "quote": "Unify traces when calling your deployed Agent Server from another service using RemoteGraph or the SDK."
         }
       ]
     }
@@ -11742,10 +11776,10 @@
   {
     "productId": "langsmith",
     "storyId": "agentic-webhooks",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "LangSmith's own docs describe two ways to send outbound webhooks: alerts can route to any HTTP endpoint via webhook, and automation rules can trigger webhooks. Together these let a programmatic consumer subscribe to platform events. missing for 10: a documented webhook payload schema and catalog of event types, delivery guarantees (retries, signing or verification), and independent or hands-on corroboration.",
+    "rationale": "LangSmith documents its own outbound webhooks. Alerts can route to \"any HTTP endpoint via webhook\", and automation rules can trigger webhooks, so a programmatic consumer can receive callbacks. The evidence covers only threshold alerts and automation rules, without a general event catalog or subscription API. Missing for 10: documented event types and payload schema, webhook registration via API, delivery guarantees (retries/signing), independent hands-on corroboration.",
     "evidenceIds": [
       "langsmith-docs-4",
       "langsmith-docs-13",
@@ -11754,16 +11788,16 @@
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can subscribe to events via webhooks",
       "citations": [
         {
-          "evidenceId": "langsmith-docs-4",
-          "quote": "Automate workflows with rules, webhooks, and online evaluations."
-        },
-        {
           "evidenceId": "langsmith-docs-13",
           "quote": "Alerts can route to Slack, PagerDuty, Dynatrace, or any HTTP endpoint via webhook."
+        },
+        {
+          "evidenceId": "langsmith-docs-4",
+          "quote": "Automate workflows with rules, webhooks, and online evaluations."
         },
         {
           "evidenceId": "langsmith-docs-12",
@@ -11775,31 +11809,64 @@
   {
     "productId": "langsmith",
     "storyId": "api-interactive-docs",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 9,
     "confidence": "medium",
-    "rationale": "LangSmith is an API-bearing SaaS platform, so an interactive API reference is a fair question. The evidence only says traces can be handled 'via the UI or API' and that SDKs exist. Nothing documents an interactive API explorer with runnable examples, and the OpenAPI probe returned 404 on every candidate path.",
-    "evidenceIds": [],
+    "rationale": "LangSmith's API host serves an interactive Swagger UI and ReDoc backed by a published OpenAPI 3.1 spec, and the hosted REST reference on docs.langchain.com renders a runnable \"Try it\" playground for each endpoint, so the story is delivered directly. The probe 404s were at generic docs-site paths, while the spec is documented at a different docs path and on the API host, so they do not contradict it. Missing for 10: independent or hands-on corroboration that the Try-it playground and Swagger UI work as described.",
+    "evidenceIds": [
+      "langsmith-swagger-ui-20261105",
+      "langsmith-openapi-spec-20261105"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can explore an interactive API reference with runnable examples",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "langsmith-swagger-ui-20261105",
+          "quote": "The API host itself serves an interactive Swagger UI (page title \"LangSmith - Swagger UI\", loading /openapi.json), with ReDoc live at /redoc."
+        },
+        {
+          "evidenceId": "langsmith-swagger-ui-20261105",
+          "quote": "The hosted REST reference on docs.langchain.com additionally renders a runnable \"Try it\" playground per endpoint (e.g. GET /api/v1/info/health)."
+        },
+        {
+          "evidenceId": "langsmith-openapi-spec-20261105",
+          "quote": "The production API host serves its full machine-readable spec at the well-known path: an OpenAPI 3.1 document with info title \"LangSmith\""
+        }
+      ]
     }
   },
   {
     "productId": "langsmith",
     "storyId": "api-machine-spec",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence says LangSmith has an API, but nothing shows a downloadable OpenAPI or equivalent spec. The OpenAPI probe returned 404 on every candidate path under docs.langchain.com. The llms.txt and markdown docs index are documentation, not machine-readable API specs, and the MCP server is a different capability.",
-    "evidenceIds": [],
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "LangSmith's API host serves a full OpenAPI 3.1 document at /openapi.json, and the same spec is published on the docs site and listed in llms.txt under OpenAPI Specs. A Swagger UI and ReDoc render it. The probe's 404s were on different docs.langchain.com paths, so they do not contradict the documented spec location. Missing for 10: independent or hands-on probe confirmation that the documented spec URL downloads successfully.",
+    "evidenceIds": [
+      "langsmith-openapi-spec-20261105",
+      "langsmith-swagger-ui-20261105",
+      "langsmith-api-deprecations-20261105"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "langsmith-openapi-spec-20261105",
+          "quote": "The production API host serves its full machine-readable spec at the well-known path: an OpenAPI 3.1 document with info title \"LangSmith\""
+        },
+        {
+          "evidenceId": "langsmith-openapi-spec-20261105",
+          "quote": "The same spec is published on the docs site (docs.langchain.com/langsmith/langsmith-platform-openapi.json, listed in the docs llms.txt under \"## OpenAPI Specs\")."
+        },
+        {
+          "evidenceId": "langsmith-swagger-ui-20261105",
+          "quote": "The API host itself serves an interactive Swagger UI (page title \"LangSmith - Swagger UI\", loading /openapi.json), with ReDoc live at /redoc."
+        }
+      ]
     }
   },
   {
@@ -11808,7 +11875,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows offline evaluation: running an application on curated or synthetic datasets during development. That is a testing workflow, not a documented sandbox or isolated environment separated from production data. No sandbox workspace, test environment, or production-data isolation feature is described, so the dataset experiments count only as an adjacent capability.",
+    "rationale": "The evidence documents offline evaluation: you run your own application against curated or synthetic datasets to create experiments. That is a testing workflow, not an isolated sandbox environment that separates test activity from production data. Nothing in the pack describes a sandbox workspace, test mode, or environment isolation, so the offline experiments are only adjacent to this story.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -11820,30 +11887,46 @@
   {
     "productId": "langsmith",
     "storyId": "api-versioning-policy",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "LangSmith is a SaaS platform with an API, so API versioning and deprecation policy is a fair axis. The evidence only shows that an API exists (trace filter/export via the API) and that SDKs exist. Nothing documents API version identifiers, version guarantees, or a deprecation or sunset policy, and the OpenAPI probe paths all returned 404.",
-    "evidenceIds": [],
+    "rationale": "LangSmith's API is path-versioned (/api/v1, /api/v2). The Cloud changelog announces deprecations with explicit sunset dates and migration targets, and the self-hosted release policy states that breaking changes only land in a new major version. Missing for 10: a standalone formal deprecation policy for the Cloud API with guaranteed minimum notice windows, and independent or hands-on corroboration that deprecations are honored as documented.",
+    "evidenceIds": [
+      "langsmith-api-deprecations-20261105",
+      "langsmith-openapi-spec-20261105"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "langsmith-api-deprecations-20261105",
+          "quote": "The `POST /api/v1/runs/group` endpoint is now deprecated and will be sunset on January 31, 2027. Use `POST /api/v2/threads/query` to query threads instead. The endpoint continues to work until then."
+        },
+        {
+          "evidenceId": "langsmith-api-deprecations-20261105",
+          "quote": "Breaking changes only land in a new major version"
+        },
+        {
+          "evidenceId": "langsmith-openapi-spec-20261105",
+          "quote": "paths under /api/v1/"
+        }
+      ]
     }
   },
   {
     "productId": "langsmith",
     "storyId": "automation-bulk-operations",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "low",
-    "rationale": "LangSmith documents some actions that run across many items: filtering and exporting traces via the UI or API, running an experiment over a whole dataset with configurable concurrency, and automation rules or online evaluators that apply to filtered sets of production traces. It never explicitly documents general bulk operations, such as multi-selecting traces or examples to tag, delete, annotate or move them at once. missing for 10: explicit bulk edit/delete/tag/move documentation, bulk API endpoints, limits or scale details, hands-on or independent corroboration.",
+    "rationale": "LangSmith documents operations that act on many traces at once: filtering and exporting traces via the UI or API, automation rules, and online evaluators that run automatically over filtered production traces. Experiments also run an application across a whole dataset with configurable concurrency. However, there is no explicit evidence of a multi-select bulk action such as bulk delete, tag, move or annotate. Missing for 10: documented bulk-edit or bulk-delete actions on selected items, a bulk API endpoint, and hands-on or independent corroboration of bulk workflows.",
     "evidenceIds": [
       "langsmith-docs-2",
       "langsmith-docs-4",
       "langsmith-docs-9",
-      "langsmith-docs-44"
+      "langsmith-docs-10"
     ],
     "support": {
       "relation": "direct",
@@ -11863,8 +11946,8 @@
           "quote": "Execute your application on the dataset to create an experiment. Configure repetitions, concurrency, and caching to optimize runs."
         },
         {
-          "evidenceId": "langsmith-docs-44",
-          "quote": "Set up evaluators to run automatically on production traces... Apply filters and sampling rates to control costs."
+          "evidenceId": "langsmith-docs-10",
+          "quote": "Set up evaluators to run automatically on production traces"
         }
       ]
     }
@@ -11875,7 +11958,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "LangSmith's docs say you can 'automate workflows with rules, webhooks, and online evaluations.' Threshold alerts with stackable filter conditions route to any HTTP endpoint via webhook, and online evaluators run automatically on production traces with filters and sampling. Together these give user-defined conditions that trigger actions automatically. Missing for 10: detailed docs on what actions automation rules can take (e.g., adding traces to datasets or annotation queues), and any independent or hands-on corroboration.",
+    "rationale": "LangSmith's own docs say it automates workflows with rules, webhooks, and online evaluations. Users can set threshold alerts with stacked filter conditions that route to any HTTP endpoint via webhook, and filtered, sampled evaluators run automatically on production traces. Together these let users define conditions that trigger actions on trace events. missing for 10: detailed docs on the automation rules feature itself (available trigger conditions and action types such as adding to datasets or queues), independent or hands-on corroboration.",
     "evidenceIds": [
       "langsmith-docs-4",
       "langsmith-docs-12",
@@ -11893,12 +11976,12 @@
           "quote": "Automate workflows with rules, webhooks, and online evaluations."
         },
         {
-          "evidenceId": "langsmith-docs-13",
-          "quote": "Alerts can route to Slack, PagerDuty, Dynatrace, or any HTTP endpoint via webhook."
-        },
-        {
           "evidenceId": "langsmith-docs-47",
           "quote": "for Errors and Latency, you can use the filter builder to stack conditions on fields such as Status, Run Type, Tag, and Error."
+        },
+        {
+          "evidenceId": "langsmith-docs-13",
+          "quote": "Alerts can route to Slack, PagerDuty, Dynatrace, or any HTTP endpoint via webhook."
         },
         {
           "evidenceId": "langsmith-docs-10",
@@ -11913,10 +11996,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Scheduling recurring jobs is a fair question for LangSmith, which includes an automation layer and agent deployment, so the axis applies. The evidence only shows event-driven automation: rules, webhooks, online evaluators that run automatically on incoming production traces, and threshold-based alerts. None of these is a documented recurring or time-based schedule, so they are adjacent features and earn no credit.",
+    "rationale": "The evidence shows only event-driven automation: rules, webhooks, online evaluators that run on incoming production traces, and threshold alerts. None of these is a recurring, time-based schedule (cron-style jobs or workflows). Nothing in the pack documents scheduling a job or workflow to run on a recurring cadence, so this applicable axis gets no credit.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can schedule recurring jobs or workflows",
       "citations": []
@@ -11928,7 +12011,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "LangSmith documents automations such as rules, webhooks, and online evaluations, so the axis applies. However, nothing in the pack shows those automations can be versioned, reviewed through change history, or rolled back. The 'compare versions' evaluation feature is about benchmarking application versions against datasets, not versioning automations, so it is adjacent and earns no credit.",
+    "rationale": "LangSmith documents automations (rules, webhooks, online evaluations), but nothing in the evidence shows those automations can be versioned, reviewed before changes, or rolled back. The API path-versioning and deprecation policy cover LangSmith's own API, not user automations. Annotation queues review model outputs, not automation configurations. Both are adjacent features and earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -11943,7 +12026,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "LangSmith's docs say traces can be exported via the UI or API, so trace export is a first-party capability. Nothing shows bulk export to blob storage or a data warehouse, or any dataset export at all. The OpenTelemetry Collector fanout describes routing traces on their way into tracing, not exporting from LangSmith, so it earns no credit. Missing for 10: documented bulk export to blob storage (e.g. S3/GCS), data warehouse destinations, dataset export, scheduling/format details, independent corroboration.",
+    "rationale": "LangSmith's own docs say traces can be exported via the UI or API, which partly covers getting trace data out of the product. Nothing documents bulk export to blob storage or a data warehouse, or dataset export. The OpenTelemetry Collector fanout describes how an app routes traces on the way in, so it is not a LangSmith export feature. Missing for 10: documented bulk export to blob storage (e.g. S3/GCS), data warehouse destinations, dataset export, scheduled or large-volume export mechanics, independent corroboration.",
     "evidenceIds": [
       "langsmith-docs-2"
     ],
@@ -11963,14 +12046,14 @@
     "productId": "langsmith",
     "storyId": "ci-eval-gating",
     "verdict": "partial",
-    "quality": 3,
-    "confidence": "medium",
-    "rationale": "LangSmith documents offline evaluation: you run your application against curated datasets as experiments to compare versions and catch regressions, with configurable evaluators. That is the core of regression evals. The evidence never mentions running these in a CI pipeline or using results to pass/fail a build or gate a deployment. missing for 10: documented CI integration (e.g., GitHub Actions or pytest/vitest runners), pass/fail thresholds that gate deployments, independent or hands-on corroboration.",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "LangSmith documents running offline evaluations on curated datasets during development to compare versions and catch regressions, executed as experiments, which is the core of pre-deployment eval testing. Nothing in the evidence shows CI integration or blocking a deployment on eval results. missing for 10: documented CI/CD integration (e.g. a pytest or GitHub Actions workflow), pass/fail thresholds or exit codes to gate deployments, independent hands-on corroboration.",
     "evidenceIds": [
       "langsmith-docs-19",
       "langsmith-docs-9",
-      "langsmith-docs-8",
-      "langsmith-docs-35"
+      "langsmith-docs-35",
+      "langsmith-docs-8"
     ],
     "support": {
       "relation": "direct",
@@ -11996,16 +12079,15 @@
     "productId": "langsmith",
     "storyId": "cost-attribution-metadata",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "LangSmith documents dashboards that track token usage and can be grouped by run tag or metadata, and it supports cost alerting. Together these give a direct but thinly documented way to split usage by custom attributes. A community comment says capturing which user is involved takes extra work, which affects confidence but is not a concrete contradiction. Missing for 10: explicit documentation of cost (not just token) breakdowns per user, session, or feature via metadata; documentation of how to attach user, session, or feature metadata to traces; hands-on corroboration of metadata-based cost attribution.",
+    "rationale": "LangSmith dashboards can group data by run tag or metadata to split it over application-specific attributes, and the platform tracks token usage and cost as metrics. However, the evidence never explicitly shows cost or token charts broken down per user, session, or feature via metadata. A community comment says capturing which user is involved takes extra work; that is an effort concern, not a concrete failure, so it does not make the claim disputed. Missing for 10: explicit docs that cost/token metrics can be grouped by custom metadata, documented per-user and per-session attribution workflow, independent hands-on corroboration.",
     "evidenceIds": [
       "langsmith-docs-16",
       "langsmith-docs-31",
       "langsmith-docs-14",
       "langsmith-docs-12",
-      "langsmith-docs-34",
-      "langsmith-comm-2-refresh-c22006912c3d93cf"
+      "langsmith-docs-34"
     ],
     "support": {
       "relation": "direct",
@@ -12033,7 +12115,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "LangSmith's evaluation docs list \"Code rules\" as one of its evaluator types for scoring performance, and online evaluators can run format-validation and heuristic checks on production traces. That is a first-party, code-based scoring capability. However, the evidence is only a bullet-list mention: it does not show how an engineer writes a custom scorer function, what interface or languages are supported, or how custom metrics are defined and aggregated. Missing for 10: documentation of authoring custom evaluator code (SDK interface, languages, return/score schema), custom metric aggregation, and independent or hands-on corroboration.",
+    "rationale": "LangSmith's evaluation docs list \"Code rules\" as a first-party evaluator type for scoring performance, alongside LLM-as-judge and pairwise comparison. Online evaluators also run code-style checks such as format validation and quality heuristics on production traces. The evidence is only a bullet-list mention, so how deep custom scorers and metrics go is unproven. Missing for 10: SDK or API docs showing how to write a custom evaluator function, details on custom metric or score types and return formats, and independent or hands-on corroboration.",
     "evidenceIds": [
       "langsmith-docs-8",
       "langsmith-docs-21",
@@ -12061,14 +12143,13 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "LangSmith documents custom dashboards: collections of charts you configure yourself, with group-by on run tags or metadata. Prebuilt dashboards cover error rates and token usage. However, the evidence names latency, cost and feedback score only as alerting metrics, not as chartable dashboard metrics, and does not show eval scores plotted in custom dashboards. missing for 10: explicit documentation that latency, cost and eval/feedback-score metrics can be charted in custom dashboards, independent or hands-on corroboration of custom dashboard building",
+    "rationale": "LangSmith documents custom dashboards as configurable collections of charts. Prebuilt dashboards cover error rates and token usage, and charts can be grouped by tag or metadata. Latency, cost and feedback scores are listed as alerting metrics, but the evidence never confirms they can be charted on custom dashboards. Missing for 10: explicit documentation that latency, cost, and eval/feedback-score metrics are chartable in custom dashboards, and independent or hands-on corroboration of building such dashboards.",
     "evidenceIds": [
       "langsmith-docs-15",
       "langsmith-docs-30",
       "langsmith-docs-14",
       "langsmith-docs-16",
-      "langsmith-docs-3",
-      "langsmith-docs-12"
+      "langsmith-docs-3"
     ],
     "support": {
       "relation": "direct",
@@ -12097,10 +12178,10 @@
   {
     "productId": "langsmith",
     "storyId": "experiment-comparison",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "LangSmith's own evaluation docs say you can run evaluations on curated datasets 'to compare versions, benchmark performance, and catch regressions'. These runs produce experiments on a dataset, and pairwise comparison evaluators are offered, which covers the core of the story. However, a dedicated side-by-side experiment comparison view is only implied, not described in detail. missing for 10: explicit documentation of the side-by-side experiment comparison UI (diffing per-example outputs and scores across prompt or model versions), and independent or hands-on corroboration of regression detection.",
+    "rationale": "LangSmith's docs say you can run evaluations on curated datasets to create experiments and to \"compare versions, benchmark performance, and catch regressions.\" They also list a pairwise comparison evaluator and the ability to compare traces in the UI or API. However, the evidence never describes a side-by-side view of experiment results, so the 'side by side' part is only implied. Missing for 10: documentation of a side-by-side experiment comparison view (diffing scores and outputs per example across runs), and independent or hands-on corroboration of regression detection between prompt or model versions.",
     "evidenceIds": [
       "langsmith-docs-19",
       "langsmith-docs-9",
@@ -12109,7 +12190,7 @@
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As an ML engineer, I can compare eval runs side by side to catch regressions between prompt or model versions",
       "citations": [
         {
@@ -12122,7 +12203,7 @@
         },
         {
           "evidenceId": "langsmith-docs-8",
-          "quote": "Pairwise comparison"
+          "quote": "Create evaluators to score performance: Human review, Code rules, LLM-as-judge, Pairwise comparison"
         },
         {
           "evidenceId": "langsmith-docs-2",
@@ -12137,7 +12218,7 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "LangSmith documents first-party integrations for all three named frameworks: a native LangChain Python/JS integration, a `wrap_openai` wrapper for the OpenAI SDK, and a listed Vercel AI SDK integration, along with general framework-integration and OpenTelemetry paths. Community comments corroborate that LangChain tracing is turnkey, though one report says other frameworks such as CrewAI work poorly. missing for 10: in-depth documentation of the Vercel AI SDK integration beyond a listing mention, independent hands-on corroboration of the OpenAI SDK and Vercel AI SDK integrations.",
+    "rationale": "LangSmith documents framework integrations as a first-class way to add tracing. These include a native LangChain integration (corroborated by community as turnkey), a `wrap_openai` wrapper for the OpenAI SDK, and the Vercel AI SDK in its integrations list. A community note that it hardly works with CrewAI concerns a framework outside this story, so it does not undermine these three. Missing for 10: in-depth setup documentation for the Vercel AI SDK integration in the pack, and independent hands-on corroboration for the OpenAI and Vercel AI SDK integrations.",
     "evidenceIds": [
       "langsmith-gh-3",
       "langsmith-gh-1",
@@ -12145,8 +12226,7 @@
       "langsmith-docs-42",
       "langsmith-docs-40",
       "langsmith-docs-24",
-      "langsmith-comm-2-refresh-c22006912c3d93cf",
-      "langsmith-comm-5-refresh-9e46ac763c103d45"
+      "langsmith-comm-2-refresh-c22006912c3d93cf"
     ],
     "support": {
       "relation": "direct",
@@ -12168,6 +12248,10 @@
         {
           "evidenceId": "langsmith-docs-40",
           "quote": "Add tracing to your app in minutes with environment variables, framework integrations, or the SDK."
+        },
+        {
+          "evidenceId": "langsmith-comm-2-refresh-c22006912c3d93cf",
+          "quote": "LangSmith is mainly built around the LangChain framework, so it's fairly turnkey"
         }
       ]
     }
@@ -12175,10 +12259,10 @@
   {
     "productId": "langsmith",
     "storyId": "human-annotation-queues",
-    "verdict": "partial",
-    "quality": 5,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "LangSmith's own docs say outputs can be annotated through annotation queues, and list human review as an evaluator type, so the core capability exists. The evidence is a single thin mention: nothing shows how outputs get routed into queues (automation rules exist generically but are not tied to queues), nor how reviewers label items. Missing for 10: documented routing of traces or outputs into queues (manual or rule-based), queue workflow and labeling-schema details, independent or hands-on corroboration.",
+    "rationale": "LangSmith's own docs say users can annotate outputs and gather feedback using annotation queues or inline annotation, and they list human review as an evaluator type, which covers the core of routing outputs to humans for review and labeling. Workflow rules suggest automated routing, but the docs never explicitly tie rules to queues. Missing for 10: detailed documentation of how outputs are routed into queues (e.g. rule-based or filter-driven routing), queue configuration and labeling rubric details, and independent or hands-on corroboration.",
     "evidenceIds": [
       "langsmith-docs-5",
       "langsmith-docs-8",
@@ -12186,7 +12270,7 @@
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an ML engineer, I can route outputs to human annotation queues for review and labeling",
       "citations": [
         {
@@ -12195,7 +12279,7 @@
         },
         {
           "evidenceId": "langsmith-docs-8",
-          "quote": "Create evaluators to score performance: Human review"
+          "quote": "Create evaluators to score performance: Human review, Code rules, LLM-as-judge, Pairwise comparison"
         },
         {
           "evidenceId": "langsmith-docs-4",
@@ -12207,20 +12291,19 @@
   {
     "productId": "langsmith",
     "storyId": "llm-as-judge-scoring",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "LangSmith's own evaluation docs list LLM-as-judge as a first-party evaluator type for scoring performance. They also document reference-free LLM-as-judge evaluators that run automatically on production traces, with configurable filters and sampling rates. missing for 10: documentation of judge-specific configuration (custom judge prompts, model choice, scoring rubrics/criteria), independent or hands-on corroboration of LLM-as-judge quality.",
+    "rationale": "LangSmith's own docs list LLM-as-judge as a first-party evaluator type for scoring performance on datasets and experiments, and as a reference-free LLM-as-judge that runs automatically on production traces. The only documented configuration is filters and sampling rates on those online evaluators; configuring the judge itself is not shown. missing for 10: documented configuration of the judge prompt, rubric, model choice and score format, plus independent or hands-on corroboration that LLM-as-judge scoring works as described.",
     "evidenceIds": [
       "langsmith-docs-8",
-      "langsmith-docs-26",
       "langsmith-docs-10",
-      "langsmith-docs-28",
-      "langsmith-docs-44"
+      "langsmith-docs-44",
+      "langsmith-docs-28"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As an ML engineer, I can score outputs with configurable LLM-as-a-judge evaluators",
       "citations": [
         {
@@ -12240,7 +12323,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Capturing multimodal payloads is a fair question for a tracing and observability product, so the axis applies. However, nothing in the evidence pack mentions images, audio, file attachments or multimodal content in traces. The available material only covers generic trace inputs and outputs, SDKs and OpenTelemetry ingestion, which does not establish multimodal capture.",
+    "rationale": "Multimodal capture is a fair question for an LLM tracing platform, so the axis applies. The evidence pack describes tracing, OpenTelemetry ingestion, and inspecting inputs and outputs, but nothing says traces can hold images, audio, or file attachments. Generic input/output inspection is not evidence of multimodal payload capture.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -12255,14 +12338,14 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "LangSmith's docs say you can build datasets from historical production traces, including adding real failing traces as test cases. They also document running the application against those datasets as experiments, scored by human, code, LLM-as-judge, or pairwise evaluators, to compare versions and catch regressions. missing for 10: independent or hands-on corroboration of the trace-to-dataset and offline experiment workflow.",
+    "rationale": "LangSmith's first-party docs say datasets can be built from historical production traces, and that real traces can be added to datasets so failures become repeatable tests. The docs also describe running the application against those datasets as offline experiments, with evaluators (human review, code rules, LLM-as-judge, pairwise) and configurable repetitions, concurrency and caching. Missing for 10: independent hands-on corroboration of the trace-to-dataset curation and offline-eval workflow, since the community evidence in the pack covers tracing only.",
     "evidenceIds": [
       "langsmith-docs-1",
       "langsmith-docs-7",
       "langsmith-docs-35",
+      "langsmith-docs-8",
       "langsmith-docs-9",
-      "langsmith-docs-19",
-      "langsmith-docs-8"
+      "langsmith-docs-19"
     ],
     "support": {
       "relation": "direct",
@@ -12297,8 +12380,8 @@
     "storyId": "online-evals-guardrails",
     "verdict": "full",
     "quality": 9,
-    "confidence": "high",
-    "rationale": "LangSmith's first-party docs describe online evaluations: evaluators run automatically on production traces, covering safety checks, format validation, quality heuristics and reference-free LLM-as-judge, with filters and sampling rates to control cost. The docs present this real-time evaluation of live traffic as distinct from offline evaluation on curated datasets. missing for 10: independent or hands-on corroboration of online evaluators running on live traffic.",
+    "confidence": "medium",
+    "rationale": "LangSmith's own docs describe online evaluators that run automatically on production traces. Supported checks are safety checks, format validation, quality heuristics and reference-free LLM-as-judge, with filters and sampling rates to control cost. The docs also position real-time evaluation of live traffic as distinct from offline dataset experiments. Missing for 10: independent or hands-on corroboration that continuous online evaluation works as described.",
     "evidenceIds": [
       "langsmith-docs-10",
       "langsmith-docs-20",
@@ -12322,10 +12405,6 @@
         {
           "evidenceId": "langsmith-docs-4",
           "quote": "Automate workflows with rules, webhooks, and online evaluations."
-        },
-        {
-          "evidenceId": "langsmith-docs-19",
-          "quote": "Run evaluations on curated datasets during development to compare versions, benchmark performance, and catch regressions."
         }
       ]
     }
@@ -12334,13 +12413,15 @@
     "productId": "langsmith",
     "storyId": "openness-api-parity",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "LangSmith documents some UI/API parity: traces can be filtered, exported, shared and compared \"via the UI or API\", and it ships Python, TypeScript, Go and Java SDKs. Nothing documents that every UI capability (dashboards, alerts, annotation queues, rules, deployment management) is available programmatically, and the OpenAPI probes all returned 404. missing for 10: an explicit claim of full UI/API parity, API coverage for dashboards, alerts, annotation queues and automation rules, a discoverable OpenAPI spec or API reference, and independent hands-on corroboration.",
+    "rationale": "LangSmith publishes a full OpenAPI 3.1 spec for 'programmatically create and manage LangSmith resources', with a live Swagger UI, versioned endpoints and deprecation tracking. Docs also say traces can be filtered, exported, shared and compared 'via the UI or API', and SDKs exist in four languages. However, nothing documents complete UI-to-API parity across every feature (dashboards, alerts, annotation queues, Engine), so 'everything' is only implied. The 404s on docs.langchain.com OpenAPI paths are not a contradiction, because the spec is served at the API host. Missing for 10: an explicit UI/API parity statement, per-feature API coverage evidence for dashboards, alerts, annotation queues and Engine, and independent hands-on corroboration.",
     "evidenceIds": [
+      "langsmith-openapi-spec-20261105",
+      "langsmith-swagger-ui-20261105",
       "langsmith-docs-2",
-      "langsmith-docs-24",
-      "langsmith-probe-3"
+      "langsmith-api-deprecations-20261105",
+      "langsmith-docs-24"
     ],
     "support": {
       "relation": "direct",
@@ -12348,12 +12429,20 @@
       "subject": "As an AI-native user, I can do everything through the API that I can do in the UI",
       "citations": [
         {
+          "evidenceId": "langsmith-openapi-spec-20261105",
+          "quote": "The LangSmith API is used to programmatically create and manage LangSmith resources"
+        },
+        {
           "evidenceId": "langsmith-docs-2",
           "quote": "Filter, export, share, and compare traces via the UI or API."
         },
         {
+          "evidenceId": "langsmith-swagger-ui-20261105",
+          "quote": "The API host itself serves an interactive Swagger UI"
+        },
+        {
           "evidenceId": "langsmith-docs-24",
-          "quote": "integrate LangSmith with any agent stack using our Python, Typescript, Go, or Java SDKs."
+          "quote": "integrate LangSmith with any agent stack using our Python, Typescript, Go, or Java SDKs"
         }
       ]
     }
@@ -12362,11 +12451,13 @@
     "productId": "langsmith",
     "storyId": "openness-full-export",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "LangSmith documents exporting traces via the UI or API, which is a first-party export path for its core data. Nothing shows a full-account export (datasets, evaluations, annotations, prompts) or which open formats exports use. Self-hosting keeps data in your own environment, but that is adjacent to exporting and leaving, not an export capability. Missing for 10: documented bulk export of all data types, named open export formats (e.g., JSONL/CSV/OTel), offboarding/migration guidance, independent corroboration.",
+    "rationale": "LangSmith documents its own ability to export traces via the UI or API, and publishes a full OpenAPI spec for programmatic access to resources, so trace data can be pulled out. Nothing documents a complete account-wide export (datasets, experiments, feedback, prompts, dashboards) or the open file formats an export would use. Missing for 10: documented full-account or bulk export covering all data types, explicit open export formats (e.g. JSON, CSV or OTel output), offboarding or migration guidance, and independent hands-on confirmation of export completeness.",
     "evidenceIds": [
-      "langsmith-docs-2"
+      "langsmith-docs-2",
+      "langsmith-openapi-spec-20261105",
+      "langsmith-docs-48"
     ],
     "support": {
       "relation": "direct",
@@ -12376,6 +12467,14 @@
         {
           "evidenceId": "langsmith-docs-2",
           "quote": "Filter, export, share, and compare traces via the UI or API."
+        },
+        {
+          "evidenceId": "langsmith-openapi-spec-20261105",
+          "quote": "The LangSmith API is used to programmatically create and manage LangSmith resources"
+        },
+        {
+          "evidenceId": "langsmith-docs-48",
+          "quote": "Self-hosted LangSmith runs the LangSmith platform in your own infrastructure so that trace and operational data stay in your environment."
         }
       ]
     }
@@ -12386,7 +12485,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Source availability under an open license is a fair question for an observability platform, so the axis applies. The pack never says the LangSmith platform's source is published or names any license. The GitHub items cover only the client SDK, with no license mentioned. Self-hosting docs describe running the platform in your own infrastructure but do not say the code is open. The llms.txt reference to \"open source packages\" covers LangChain's separate libraries, not LangSmith itself.",
+    "rationale": "Openness of source code is a fair question for an LLM observability platform, but the evidence never says the LangSmith platform's source is published under an open license. The GitHub items cover only the client SDK (and an MCP server repo), which are adjacent artifacts rather than the product itself. Self-hosting is documented, but no license terms are given. Community items describe building open-source alternatives, which implies LangSmith itself is not open source.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -12401,12 +12500,13 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "LangSmith's own docs say you can host an instance of the platform in your own infrastructure for observability, evaluation, and prompt engineering, with trace and operational data staying in your environment. Helm configuration guidance for self-hosted Agent Server deployments backs this up. Community wishes for a lighter local-first tool show demand for something simpler, but they do not concretely contradict the documented self-hosted offering. Missing for 10: independent or hands-on confirmation of a self-hosted install, and documented install requirements and licensing terms for the self-hosted platform.",
+    "rationale": "First-party docs say LangSmith can be hosted in your own infrastructure for observability, evaluation and prompt engineering, keeping trace data in your environment. Further docs describe Helm configurations and a self-hosted release policy, and community comments preferring local tools do not concretely contradict this. Missing for 10: installation and system-requirement detail or licensing/tier terms for self-hosting, and independent hands-on corroboration of a working self-hosted deployment.",
     "evidenceIds": [
       "langsmith-docs-17",
-      "langsmith-docs-32",
       "langsmith-docs-48",
+      "langsmith-docs-32",
       "langsmith-docs-39",
+      "langsmith-api-deprecations-20261105",
       "langsmith-docs-49"
     ],
     "support": {
@@ -12435,7 +12535,7 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "LangSmith's docs show it can ingest OpenTelemetry traces from any OTel-compatible application, including routing through an OpenTelemetry Collector with fanout. A community reply also confirms the OTel integration. The evidence covers only sending traces into LangSmith over OpenTelemetry; nothing shows LangSmith exporting or emitting its traces over OTLP to other backends, so the 'receive' half of the story is unproven. Missing for 10: documented OTLP export of LangSmith traces to external consumers, explicit OTLP endpoint/protocol details (HTTP vs gRPC), and hands-on corroboration of OTLP ingestion depth.",
+    "rationale": "LangSmith's docs say it supports OpenTelemetry-based tracing, so any OTel-compatible application or agent can send traces to it, and a community reply confirms the OpenTelemetry integration. Only the ingest direction is evidenced: nothing shows LangSmith emitting or exporting traces over OTLP, and the collector fanout describes the OTel Collector routing data, not LangSmith exporting it. Missing for 10: documented OTLP export/receive of traces out of LangSmith, explicit OTLP endpoint/protocol details (HTTP/gRPC, auth headers), independent hands-on corroboration of OTLP ingest.",
     "evidenceIds": [
       "langsmith-docs-11",
       "langsmith-docs-45",
@@ -12452,8 +12552,8 @@
           "quote": "LangSmith supports OpenTelemetry-based tracing, allowing you to send traces from any OpenTelemetry-compatible application."
         },
         {
-          "evidenceId": "langsmith-docs-46",
-          "quote": "an OpenTelemetry Collector, which batches and routes them to one or more destinations simultaneously (fanout)."
+          "evidenceId": "langsmith-docs-45",
+          "quote": "LangSmith supports OpenTelemetry-based tracing, allowing you to send traces from any OpenTelemetry-compatible agent."
         },
         {
           "evidenceId": "langsmith-comm-3-refresh-deb76cb7c1dcbd1f",
@@ -12468,7 +12568,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Masking sensitive data is a fair axis for a tracing platform, but nothing in the evidence pack documents masking, redaction, or anonymization of trace inputs or outputs before storage. Self-hosting, which keeps trace data in your own environment, and OpenTelemetry collector routing are adjacent features and do not count as redaction.",
+    "rationale": "Masking or redaction is a fair question for a tracing platform, but nothing in the evidence pack documents a LangSmith feature that hides inputs or outputs, or redacts PII, before traces are stored. Self-hosting keeps trace data in your own environment, and an OpenTelemetry Collector can route traces, but neither one masks sensitive data. Both are adjacent capabilities and earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -12483,11 +12583,10 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "LangSmith documents a self-hosted option that runs the platform in your own infrastructure so trace and operational data stay in your environment. That lets you control where data lives, but only by running it yourself. The pack has no evidence of choosing a storage region for the managed cloud. Missing for 10: managed-cloud region selection (e.g. US/EU), documented data-residency guarantees or compliance details, independent corroboration.",
+    "rationale": "LangSmith documents a self-hosted edition that runs in your own infrastructure so trace and operational data stay in your environment, which lets you control residency. The evidence does not show any choice of region for the managed cloud service. missing for 10: documented managed-cloud region selection (e.g. US/EU data regions), explicit data-residency or compliance documentation, independent corroboration of residency controls.",
     "evidenceIds": [
       "langsmith-docs-48",
-      "langsmith-docs-17",
-      "langsmith-docs-23"
+      "langsmith-docs-17"
     ],
     "support": {
       "relation": "direct",
@@ -12511,7 +12610,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack has no training-use policy, no opt-out from model training, and no contractual no-training commitment for LangSmith. The only related item is that self-hosted LangSmith keeps trace data in your own environment, which is a data-residency control rather than a guarantee against training use, so it earns no credit here.",
+    "rationale": "Nothing in the evidence documents a no-training policy, a training opt-out, or any commitment about whether customer traces are used to train AI models. Self-hosting keeps trace data in your own environment, but that is a data-residency control, not a training-use control, so it earns no credit here. Missing for 10: a documented policy or setting that prevents customer data from being used for model training.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -12526,10 +12625,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nothing in the evidence pack documents trace retention periods, TTL settings, or the ability to delete traces or data in LangSmith. Self-hosting (langsmith-docs-48) keeps data in your own environment, but that is data residency, an adjacent control, not retention or deletion control. Data retention is a fair question for an observability platform, so the verdict is none rather than na.",
+    "rationale": "The evidence pack documents no retention periods, TTL settings, or trace and dataset deletion controls for LangSmith. The closest item is self-hosting, which keeps trace data in your own environment (langsmith-docs-48). That concerns where data lives, not control over how long it is kept or how it is deleted, so it is an adjacent capability that earns no credit.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can control data retention and deletion",
       "citations": []
@@ -12541,7 +12640,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Telemetry opt-out is a fair question for an observability SaaS, but the evidence pack never documents a way to disable vendor telemetry or usage tracking. Self-hosting, which keeps trace data in your own environment, is a related deployment option rather than an opt-out control, so it earns no credit here.",
+    "rationale": "Nothing in the evidence documents a setting, environment variable, or policy for opting out of LangSmith's own telemetry or usage tracking. Self-hosting keeps trace and operational data in your environment, but that is a deployment option, not a telemetry opt-out. Trace export and OpenTelemetry describe the product's core observability features, not vendor usage tracking.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -12556,7 +12655,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "LangSmith documents a Playground service that forwards requests to various LLM APIs and to custom model servers, and its self-hosted docs list prompt engineering as a platform capability. That covers a first-party playground running against real models, but the evidence comes only from self-hosting architecture notes, not from a feature page on prompt iteration. Missing for 10: documentation of template variables/inputs in the playground, an iterative prompt editing or comparison workflow, and independent or hands-on corroboration.",
+    "rationale": "LangSmith documents a Playground service that forwards requests to various LLM APIs, including custom model servers, and lists prompt engineering as a core platform capability. So prompts can be run against real models, but the evidence only describes this in a self-hosting architecture context. Missing for 10: documentation of prompt variables/templating in the playground, details of the iterative editing and comparison workflow, and independent or hands-on corroboration.",
     "evidenceIds": [
       "langsmith-docs-49",
       "langsmith-docs-17",
@@ -12584,10 +12683,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The only related evidence is a passing reference to 'prompt engineering' (linked to a prompt hub) as something a self-hosted instance supports. Nothing in the pack documents prompt versioning, or pushing prompt changes to production without a code deploy. A generic prompt-engineering mention is adjacent to this story, not the capability itself, so it earns no credit.",
+    "rationale": "The evidence mentions 'prompt engineering' only in passing, as a self-hosted capability with a link to a prompt hub, and describes a Playground that forwards requests to LLM APIs. Nothing documents prompt versioning, commits or tags, or pushing prompt changes to production without a code deploy. Prompt management is a fair axis for an LLM observability and evaluation platform, so absent evidence makes this none rather than na.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As a developer, I can version prompts and deploy changes to production without shipping code",
       "citations": []
@@ -12599,13 +12698,13 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "LangSmith's own docs state it offers officially supported Python and TypeScript SDKs, alongside Go and Java, for tracing any agent stack. The official langsmith-sdk repo shows Python instrumentation (wrap_openai), and community users confirm the Python @traceable decorator. Missing for 10: in-depth first-party documentation of the JS/TS SDK's instrumentation API, independent hands-on corroboration of the JS/TS SDK.",
+    "rationale": "LangSmith's own docs state that developers can integrate using its official Python and TypeScript SDKs, alongside Go and Java. The official langsmith-sdk repo shows Python instrumentation (wrap_openai), and a community comment confirms the Python @traceable decorator in hands-on use. missing for 10: in-depth first-party docs or code examples for the JS/TS SDK's instrumentation API, independent hands-on corroboration of JS/TS tracing.",
     "evidenceIds": [
       "langsmith-docs-24",
       "langsmith-gh-1",
       "langsmith-gh-3",
-      "langsmith-comm-2-refresh-c22006912c3d93cf",
-      "langsmith-docs-40"
+      "langsmith-docs-40",
+      "langsmith-comm-2-refresh-c22006912c3d93cf"
     ],
     "support": {
       "relation": "direct",
@@ -12637,7 +12736,7 @@
     "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "LangSmith documents threshold-based alerts on Errors, Cost, and Feedback Score, with routing to Slack, PagerDuty, Dynatrace, or any webhook endpoint, so most of the story is covered. Email is not documented as a notification channel. Feedback Score is not explicitly tied to online-evaluator score drops, and there is no hands-on or independent corroboration. missing for 10: documented email notification channel, explicit evidence that alerts fire on online eval-score drops, independent/hands-on corroboration of alerting.",
+    "rationale": "LangSmith documents its own threshold-based alerts on Cost, Errors and Feedback Score, where Feedback Score covers eval-score drops via online evaluators. Errors alerts can be refined with a filter builder, and alerts route natively to Slack and PagerDuty (plus Dynatrace or any webhook). Email notification is never documented, so the story's channel set is only partly covered. missing for 10: documented email alert delivery, explicit cost-spike or anomaly detection beyond static thresholds, an explicit link between online-eval scores and the Feedback Score alert metric, independent or hands-on corroboration of alerting.",
     "evidenceIds": [
       "langsmith-docs-12",
       "langsmith-docs-13",
@@ -12671,11 +12770,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "LangSmith's prebuilt per-project dashboards explicitly cover token usage, and custom dashboards can split data by run tag or metadata. Cost is tracked as an alertable metric, but the evidence never states that cost appears in the dashboards or breaks down per request, per model, or by time period. missing for 10: explicit cost charts in dashboards, documented per-request cost/token breakdown, per-model grouping, time-period views, independent corroboration.",
+    "rationale": "LangSmith's prebuilt per-project dashboards explicitly cover token usage. Custom dashboards can group data by run tag or metadata, and cost is a tracked metric for threshold alerts, so the core of token and cost monitoring is first-party. However, the evidence never states that cost appears in dashboards, or that per-request, per-model or time-period breakdowns are available. Missing for 10: explicit cost charts in dashboards, a documented per-model breakdown, per-request cost/token visibility, time-period views, and independent hands-on corroboration.",
     "evidenceIds": [
       "langsmith-docs-14",
-      "langsmith-docs-16",
       "langsmith-docs-15",
+      "langsmith-docs-16",
       "langsmith-docs-12"
     ],
     "support": {
@@ -12704,15 +12803,16 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "LangSmith documents adding tracing to LLM apps through environment variables, framework integrations, SDKs (for example wrap_openai), and OpenTelemetry. A hands-on community report confirms you can inspect inputs and outputs for each step, and the docs show latency and token usage tracked as metrics in dashboards and alerts. Missing for 10: explicit docs that latency and token usage are recorded on each individual trace (they appear only as aggregate dashboard and alert metrics), and independent corroboration of token and latency capture.",
+    "rationale": "LangSmith's core product is tracing LLM applications. It instruments calls via SDK wrappers such as wrap_openai, environment variables, framework integrations, or OpenTelemetry. Token usage and latency appear as first-class metrics in dashboards and alerts, and hands-on users confirm inspecting the inputs and outputs of each step. Missing for 10: first-party docs explicitly describing per-trace capture of inputs, outputs, latency and token fields (inputs/outputs are evidenced only by community reports; latency and token usage only as aggregate dashboard and alert metrics).",
     "evidenceIds": [
+      "langsmith-docs-1",
       "langsmith-docs-40",
       "langsmith-gh-1",
       "langsmith-docs-24",
       "langsmith-docs-11",
-      "langsmith-comm-4-refresh-cd52bf16f9e52787",
       "langsmith-docs-14",
       "langsmith-docs-12",
+      "langsmith-comm-4-refresh-cd52bf16f9e52787",
       "langsmith-docs-34"
     ],
     "support": {
@@ -12729,16 +12829,16 @@
           "quote": "client = wrap_openai(openai.Client())"
         },
         {
-          "evidenceId": "langsmith-comm-4-refresh-cd52bf16f9e52787",
-          "quote": "The power of LangSmith is seeing full traces moving through the graph and being able to inspect the inputs and outputs for each step"
-        },
-        {
           "evidenceId": "langsmith-docs-14",
           "quote": "Prebuilt dashboards are created automatically for each project and cover essential metrics, such as trace count, error rates, token usage, and more."
         },
         {
           "evidenceId": "langsmith-docs-12",
           "quote": "LangSmith provides threshold-based alerting on the following metrics: Run Count, Cost, Errors, Feedback Score, Latency"
+        },
+        {
+          "evidenceId": "langsmith-comm-4-refresh-cd52bf16f9e52787",
+          "quote": "The power of LangSmith is seeing full traces moving through the graph and being able to inspect the inputs and outputs for each step"
         }
       ]
     }
@@ -13756,15 +13856,19 @@
     "productId": "wandb-weave",
     "storyId": "agent-queries-own-traces",
     "verdict": "full",
-    "quality": 8,
+    "quality": 9,
     "confidence": "high",
-    "rationale": "W&B ships an official MCP server, documented and confirmed by a GitHub repo, that gives coding or chat agents direct access to traces, evaluations, runs and artifacts so they can answer debugging questions. The Weave Service API also offers REST endpoints for programmatic access. Missing for 10: independent hands-on corroboration of agent-driven debugging, and explicit documentation that metrics (beyond runs, traces and evaluations) can be queried through these interfaces.",
+    "rationale": "Weave documents an official W&B MCP Server that lets coding assistants and chat agents answer questions about runs, traces, evaluations and artifacts, and that coding agents like Claude Code use to read live production data and run evaluations. Separately, the Weave Service API provides REST endpoints with a full OpenAPI spec, including /calls/stream_query for programmatic trace queries. The docs-path OpenAPI 404s don't contradict this, because the working spec is served at trace.wandb.ai. Missing for 10: independent or hands-on corroboration of agents actually debugging via the MCP server, and explicit documentation of metric-level query tools beyond traces and evaluations.",
     "evidenceIds": [
       "wandb-weave-docs-44",
       "wandb-weave-docs-56",
-      "wandb-weave-docs-15",
       "wandb-weave-docs-20",
-      "wandb-weave-probe-4"
+      "wandb-weave-docs-57",
+      "wandb-weave-probe-4",
+      "wandb-weave-docs-15",
+      "wandb-weave-openapi-spec-20261105",
+      "wandb-weave-service-api-docs-20261105",
+      "wandb-weave-docs-45"
     ],
     "support": {
       "relation": "direct",
@@ -13776,16 +13880,16 @@
           "quote": "The W\\&B MCP Server gives your IDE, coding assistant, or chat agent direct access to your W\\&B data and documentation... your agent can answer questions about your runs, traces, evaluations, and artifacts without copy-paste."
         },
         {
-          "evidenceId": "wandb-weave-docs-15",
-          "quote": "Use the Weave Service API, which provides REST endpoints for programmatic access to Weave functionality."
-        },
-        {
           "evidenceId": "wandb-weave-docs-20",
           "quote": "Using W&B skills and the MCP server, coding agents like Claude Code connect to Weave. They can read live production data, run evaluations, and execute automatic iteration loops on their own"
         },
         {
-          "evidenceId": "wandb-weave-probe-4",
-          "quote": "official MCP server documented at https://github.com/wandb/wandb-mcp-server"
+          "evidenceId": "wandb-weave-docs-15",
+          "quote": "Use the Weave Service API, which provides REST endpoints for programmatic access to Weave functionality."
+        },
+        {
+          "evidenceId": "wandb-weave-openapi-spec-20261105",
+          "quote": "covering the full service surface (117 paths, including /call/start and /calls/stream_query)"
         }
       ]
     }
@@ -13796,15 +13900,16 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Weave's own SDK traces nested agent execution. Decorated functions build a trace tree, and Threads group traces into a session or conversation. Agents are modelled first-class as conversations, turns, LLM calls, tool calls and sub-agents, either automatically for major agent SDKs or through `start_conversation`/`start_turn`/`start_tool` for custom loops. Missing for 10: independent or hands-on corroboration beyond first-party docs and the GitHub README.",
+    "rationale": "Weave builds nested trace trees from decorated functions via @weave.op. It groups traces into Threads for a single session or conversation. It treats sessions, turns, steps, tools and sub-agents as first-class concepts, with auto-instrumentation for agent SDKs and start_conversation/start_turn APIs for custom loops. Missing for 10: independent hands-on corroboration of session/thread grouping beyond vendor docs and the vendor README.",
     "evidenceIds": [
       "wandb-weave-gh-2",
       "wandb-weave-docs-5",
       "wandb-weave-docs-18",
+      "wandb-weave-docs-37",
       "wandb-weave-gh-7",
       "wandb-weave-gh-8",
       "wandb-weave-gh-6",
-      "wandb-weave-docs-37"
+      "wandb-weave-docs-48"
     ],
     "support": {
       "relation": "direct",
@@ -13840,21 +13945,25 @@
     "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Weave's own docs say coding agents can connect through W&B Skills and the MCP server to run evaluations, and that the MCP server lets agents answer questions about evaluations, which covers triggering a run and reading back results. Evaluations are defined programmatically over a Dataset object, and a REST Service API exists. However, there is no explicit evidence of an agent creating and publishing a dataset, and no hands-on corroboration of the end-to-end loop. missing for 10: explicit documentation of agent- or API-driven dataset creation, documented MCP or REST endpoints for programmatically triggering an evaluation and retrieving its scores, independent or hands-on corroboration of the end-to-end agent workflow",
+    "rationale": "Weave documents a programmatic Evaluation object built around a Dataset. Its MCP server and Skills let coding agents run evaluations and answer questions about evaluation results, which covers triggering an eval and reading results back. Agent-driven dataset creation is only implied: the evidence shows datasets as an input to evaluations, not a documented agent workflow for creating and versioning them. missing for 10: explicit documentation of an agent creating and publishing a dataset, an end-to-end agent example chaining dataset creation, eval run, and result readback, independent or hands-on corroboration.",
     "evidenceIds": [
+      "wandb-weave-docs-6",
       "wandb-weave-docs-20",
       "wandb-weave-docs-44",
       "wandb-weave-docs-45",
       "wandb-weave-docs-57",
-      "wandb-weave-docs-6",
-      "wandb-weave-docs-15",
-      "wandb-weave-docs-19"
+      "wandb-weave-docs-31",
+      "wandb-weave-service-api-docs-20261105"
     ],
     "support": {
       "relation": "direct",
       "coverage": "partial",
       "subject": "As an AI-native user, I can have an agent create a dataset, trigger an eval run programmatically, and read back the results",
       "citations": [
+        {
+          "evidenceId": "wandb-weave-docs-6",
+          "quote": "the core of the workflow is the _`Evaluation` object_, which defines: A `Dataset` or list of dictionaries for test examples. One or more scoring functions."
+        },
         {
           "evidenceId": "wandb-weave-docs-20",
           "quote": "Using W&B skills and the MCP server, coding agents like Claude Code connect to Weave. They can read live production data, run evaluations, and execute automatic iteration loops on their own"
@@ -13864,16 +13973,8 @@
           "quote": "your agent can answer questions about your runs, traces, evaluations, and artifacts without copy-paste."
         },
         {
-          "evidenceId": "wandb-weave-docs-45",
-          "quote": "Skills covers both the [W\\&B Models SDK] ... and the [Weave SDK] (traces, evaluations, scorers)."
-        },
-        {
-          "evidenceId": "wandb-weave-docs-6",
-          "quote": "the core of the workflow is the _`Evaluation` object_, which defines: A `Dataset` or list of dictionaries for test examples. One or more scoring functions."
-        },
-        {
-          "evidenceId": "wandb-weave-docs-15",
-          "quote": "Use the Weave Service API, which provides REST endpoints for programmatic access to Weave functionality."
+          "evidenceId": "wandb-weave-docs-57",
+          "quote": "install Skills so that the agent can work with experiment tracking, tracing, evaluations, and monitoring on its own"
         }
       ]
     }
@@ -13882,13 +13983,15 @@
     "productId": "wandb-weave",
     "storyId": "agentic-agent-docs",
     "verdict": "full",
-    "quality": 8,
+    "quality": 9,
     "confidence": "high",
-    "rationale": "Probes confirm a live llms.txt at docs.wandb.ai/llms.txt and agent-readable markdown docs at docs.wandb.ai/weave.md, which links to a full documentation index. The official MCP server also gives assistants direct access to W&B documentation. missing for 10: a Weave-specific llms.txt (the served file is a CoreWeave-branded index), independent or hands-on corroboration of agents consuming these docs.",
+    "rationale": "Probes confirm a live llms.txt at docs.wandb.ai and markdown versions of doc pages (weave.md) that point agents to the full documentation index. The official MCP server also gives AI assistants direct access to W&B documentation, and W&B Skills cover the Weave SDK for agents. missing for 10: a Weave-specific llms.txt (the file served is a CoreWeave-wide umbrella index, and one spec link it lists returns 404), independent corroboration of agents using the docs in practice.",
     "evidenceIds": [
       "wandb-weave-probe-1-refresh-953d5b602a27cb22",
       "wandb-weave-probe-2-refresh-168983762e1da5b7",
-      "wandb-weave-docs-56"
+      "wandb-weave-docs-56",
+      "wandb-weave-docs-45",
+      "wandb-weave-service-api-docs-20261105"
     ],
     "support": {
       "relation": "direct",
@@ -13916,11 +14019,11 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Weave's own built-in signals automatically classify agent interactions and surface failure modes inside the product, which is a thin form of in-product insight. The docs do not say these insights are AI-generated, and they mention no suggestions or in-product assistant. The MCP server and Skills let external coding agents answer questions about Weave data, but that happens outside the product and earns no credit here. Missing for 10: an explicit in-product AI assistant or natural-language Q&A over data, AI-generated suggestions or recommendations, explicit documentation that signals are AI/LLM-generated insights, and independent or hands-on corroboration.",
+    "rationale": "Weave's own built-in signals automatically classify agent interactions and surface failure modes inside the product, and LLM-judge scorers produce model-based assessments of outputs. Together these are a thin form of in-product, AI-derived insight. The MCP server and Skills route sends data to external coding agents, which is a user-side arrangement and earns no credit here. missing for 10: explicit evidence that in-product insights are AI/LLM-generated, any in-product suggestions or recommendations, a natural-language insight or assistant feature inside the Weave UI, and independent or hands-on corroboration.",
     "evidenceIds": [
       "wandb-weave-docs-16",
       "wandb-weave-docs-42",
-      "wandb-weave-docs-46"
+      "wandb-weave-docs-2"
     ],
     "support": {
       "relation": "direct",
@@ -13934,6 +14037,10 @@
         {
           "evidenceId": "wandb-weave-docs-42",
           "quote": "out-of-the-box signals to surface failure modes"
+        },
+        {
+          "evidenceId": "wandb-weave-docs-2",
+          "quote": "Evaluate your agent’s or application’s responses using LLM judges and custom scorers"
         }
       ]
     }
@@ -13943,12 +14050,12 @@
     "storyId": "agentic-autonomous-automation",
     "verdict": "partial",
     "quality": 4,
-    "confidence": "medium",
-    "rationale": "Weave's marketing site says built-in and custom signals automatically classify agent interactions, and that alerts can send Slack notifications and trigger webhook automations. That is a native, background, event-driven automation capability, but it is described only in marketing copy, not in setup docs. The 'automatic iteration loops' claim depends on external coding agents connecting through the MCP server, so it is not credited as the product's own automation. Missing for 10: first-party docs on configuring automations or alert triggers, scheduled or recurring jobs (e.g., recurring evaluations), details on what automation actions are available, and independent or hands-on corroboration.",
+    "confidence": "low",
+    "rationale": "Weave's marketing site says built-in and custom signals automatically classify agent interactions, and that alerts can trigger webhook automations. That is a product-owned background automation, but it is described only in a single marketing line, with no first-party guide on setting it up. The 'automatic iteration loops' run by Claude Code via MCP are driven by an external coding agent, so they are a user-side arrangement and are not credited. Missing for 10: documented setup and configuration of automations, recurring or scheduled background jobs, trigger and action options beyond alert webhooks, and hands-on or independent corroboration.",
     "evidenceIds": [
+      "wandb-weave-docs-36",
       "wandb-weave-docs-17",
-      "wandb-weave-docs-16",
-      "wandb-weave-docs-36"
+      "wandb-weave-docs-16"
     ],
     "support": {
       "relation": "direct",
@@ -13956,12 +14063,12 @@
       "subject": "As an AI-native user, I can set up automations that run autonomously in the background",
       "citations": [
         {
-          "evidenceId": "wandb-weave-docs-17",
-          "quote": "Alerts route what matters through Slack notifications and trigger webhook automations, turning every production insight into a fast iteration."
+          "evidenceId": "wandb-weave-docs-36",
+          "quote": "Built-in and custom signals automatically capture and classify agent interactions, so you always know how your agents are behaving. Alerts route what matters through Slack notifications and trigger webhook automations"
         },
         {
-          "evidenceId": "wandb-weave-docs-16",
-          "quote": "Built-in and custom signals automatically capture and classify agent interactions, so you always know how your agents are behaving."
+          "evidenceId": "wandb-weave-docs-17",
+          "quote": "Alerts route what matters through Slack notifications and trigger webhook automations, turning every production insight into a fast iteration."
         }
       ]
     }
@@ -13972,7 +14079,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "An LLM observability platform could plausibly ship an in-product AI assistant, so this axis applies. The evidence only shows external coding agents such as Claude Code connecting through the W&B MCP server and Skills, which is an integration for outside agents, not a built-in assistant. The Playground and LLM-judge scorers are adjacent features for testing prompts and scoring outputs, not an assistant users can delegate tasks to.",
+    "rationale": "The evidence shows external coding agents such as Claude Code connecting to Weave through the W&B MCP server and Skills. That is an integration point for third-party agents, not an AI assistant built into the product, so it earns no credit. The Playground is a prompt and model testing tool, not a delegable assistant, and nothing documents an in-product AI assistant that users can hand tasks to.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -13984,21 +14091,22 @@
   {
     "productId": "wandb-weave",
     "storyId": "agentic-headless",
-    "verdict": "partial",
-    "quality": 5,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Weave is code-first: a Python/TypeScript SDK, an imperative evaluation API for repeatable regression tests, and a REST Service API for programmatic access. All of these can run without the UI, and coding agents can run evaluations on their own. However, nothing documents CI/CD usage, headless auth, or a Weave-specific CLI; the probed CLI is the W&B Models CLI. missing for 10: documented CI/CD integration or examples (e.g., GitHub Actions), headless/non-interactive authentication guidance, a Weave-specific CLI, an OpenAPI spec (probes returned 404), and independent hands-on corroboration of CI runs.",
+    "rationale": "Weave runs headlessly by design. It is a code-first SDK: `weave.init()` and `@weave.op` handle tracing, and code-defined `Evaluation` objects test against repeatable cases to catch regressions. It also offers a REST Service API with API-key bearer auth and a full OpenAPI spec, so it can be driven from scripts or CI without the UI. missing for 10: explicit CI pipeline documentation (e.g., GitHub Actions examples or failing a build on evaluation regressions), a Weave-specific CLI (the documented CLI is the W&B Models CLI), independent hands-on corroboration of CI usage.",
     "evidenceIds": [
-      "wandb-weave-docs-15",
-      "wandb-weave-docs-19",
+      "wandb-weave-docs-4",
       "wandb-weave-docs-31",
-      "wandb-weave-docs-6",
-      "wandb-weave-docs-20",
-      "wandb-weave-probe-3-refresh-4998f38dd666776b"
+      "wandb-weave-docs-15",
+      "wandb-weave-service-api-docs-20261105",
+      "wandb-weave-openapi-spec-20261105",
+      "wandb-weave-docs-19",
+      "wandb-weave-probe-5"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
       "citations": [
         {
@@ -14006,16 +14114,16 @@
           "quote": "Use the Weave Service API, which provides REST endpoints for programmatic access to Weave functionality."
         },
         {
-          "evidenceId": "wandb-weave-docs-19",
-          "quote": "Measure every improvement to your harnesses and models with confidence with a flexible imperative evaluation API."
+          "evidenceId": "wandb-weave-service-api-docs-20261105",
+          "quote": "with base URL https://trace.wandb.ai and API-key bearer auth"
         },
         {
           "evidenceId": "wandb-weave-docs-31",
           "quote": "measure your LLM application’s performance against repeatable test cases, compare changes over time, and identify regressions"
         },
         {
-          "evidenceId": "wandb-weave-docs-20",
-          "quote": "They can read live production data, run evaluations, and execute automatic iteration loops on their own"
+          "evidenceId": "wandb-weave-docs-4",
+          "quote": "When you decorate a function with `@weave.op()` (Python) or wrap it with `weave.op()` (TypeScript), Weave automatically captures its code, inputs, outputs, and execution metadata."
         }
       ]
     }
@@ -14026,7 +14134,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Weave is an LLM observability and evaluation platform whose Playground runs LLM calls, so consuming external MCP servers' tools is a fair question for this kind of product. The evidence only documents the W&B MCP Server, which exposes W&B data to external agents (server role) and does not transfer to this client-side story. Nothing shows Weave itself connecting to MCP servers to use their tools.",
+    "rationale": "The evidence shows only the server role: an official W&B MCP Server that lets external coding agents such as Claude Code connect to Weave data. Nothing shows Weave itself, for example its Playground, registering or consuming external MCP servers to use their tools. Since an LLM observability and playground product could plausibly act as an MCP client, the axis applies, and the lack of evidence makes this \"none\".",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -14041,13 +14149,13 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "W&B ships an official MCP server, confirmed by a GitHub repo probe, that gives an IDE, coding assistant, or chat agent direct access to Weave traces, evaluations, runs, and artifacts. The marketing page also says coding agents like Claude Code connect through it to read production data and run evaluations. missing for 10: independent or hands-on corroboration of connecting an agent, documented tool list and setup/auth details in the evidence.",
+    "rationale": "W&B documents an official MCP Server that gives an IDE, coding assistant, or chat agent direct access to W&B data, including Weave traces and evaluations. The Weave site says coding agents like Claude Code connect to Weave through it, and a probe confirms the official wandb-mcp-server repo. Missing for 10: independent or hands-on corroboration of agents connecting via the server, and detailed documentation of the Weave-specific tool surface and setup.",
     "evidenceIds": [
       "wandb-weave-docs-44",
       "wandb-weave-docs-56",
       "wandb-weave-docs-20",
-      "wandb-weave-probe-4",
-      "wandb-weave-docs-57"
+      "wandb-weave-docs-57",
+      "wandb-weave-probe-4"
     ],
     "support": {
       "relation": "direct",
@@ -14063,12 +14171,12 @@
           "quote": "Using W&B skills and the MCP server, coding agents like Claude Code connect to Weave."
         },
         {
-          "evidenceId": "wandb-weave-probe-4",
-          "quote": "official MCP server documented at https://github.com/wandb/wandb-mcp-server"
-        },
-        {
           "evidenceId": "wandb-weave-docs-56",
           "quote": "connects AI assistants to your Weights & Biases data and documentation so they can answer natural-language questions about your runs, traces, evaluations, and artifacts"
+        },
+        {
+          "evidenceId": "wandb-weave-probe-4",
+          "quote": "official MCP server documented at https://github.com/wandb/wandb-mcp-server"
         }
       ]
     }
@@ -14077,9 +14185,9 @@
     "productId": "wandb-weave",
     "storyId": "agentic-nl-commands",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "W&B ships a first-party MCP server and Skills that let AI assistants answer natural-language questions about Weave traces and evaluations. Coding agents using them can also run evaluations and iteration loops. Natural-language operation therefore works, but only through an external agent client such as Claude Code, not through a native natural-language command interface in Weave itself. missing for 10: native in-product natural-language command interface, evidence of which Weave operations are controllable by natural language beyond querying and running evaluations, independent hands-on corroboration.",
+    "rationale": "W&B ships its own MCP server and Skills so AI assistants can answer natural-language questions about Weave runs, traces, evaluations and artifacts. Marketing also claims coding agents like Claude Code can run evaluations and iteration loops through them. Natural-language operation therefore works only through an external agent client, and the action-taking side rests on marketing claims rather than detailed docs. Missing for 10: a native in-product natural-language command interface, detailed docs on which actions (not just queries) the MCP server can execute, and independent or hands-on corroboration.",
     "evidenceIds": [
       "wandb-weave-docs-56",
       "wandb-weave-docs-44",
@@ -14113,7 +14221,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "A probe confirms an official W&B CLI is documented, but it sits under the W&B Models reference path. Nothing in the pack shows the CLI exposing Weave tracing, evaluations, scorers or other Weave functionality, or being designed for AI-native agent workflows. Agent access to Weave is instead evidenced through the MCP server and Skills. missing for 10: evidence that the CLI covers Weave-specific commands, documented CLI workflows for traces/evals, AI-native or agent-oriented CLI usage, independent or hands-on corroboration.",
+    "rationale": "A probe records an official W&B CLI, but its docs sit under the Models reference path (/models/ref/cli). Nothing in the pack shows that CLI exposes Weave functions such as traces, evaluations or scorers, so credit is minimal. Missing for 10: evidence that the CLI covers Weave operations, CLI command documentation for Weave workflows, and independent or hands-on corroboration of agent-friendly CLI use.",
     "evidenceIds": [
       "wandb-weave-probe-5"
     ],
@@ -14133,14 +14241,14 @@
     "productId": "wandb-weave",
     "storyId": "agentic-public-api",
     "verdict": "full",
-    "quality": 8,
-    "confidence": "medium",
-    "rationale": "Weave documents a public Service API with REST endpoints for programmatic access, alongside documented Python/TypeScript SDK entry points and a documented OTLP ingestion endpoint, so an AI-native user can drive the product programmatically. The OpenAPI probe returning 404 at the guessed docs.wandb.ai paths does not contradict the documented REST API; it only means no machine-readable spec was found there. missing for 10: a discoverable machine-readable OpenAPI spec (probe paths 404), detail on the REST API's endpoint coverage, independent or hands-on corroboration of driving Weave via the API",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Weave documents a public REST Service API at https://trace.wandb.ai with API-key bearer auth. The host serves a complete OpenAPI 3.1.0 spec covering 117 paths, plus a live Swagger UI, ReDoc and per-endpoint \"Try it\" consoles. The probe 404s on docs.wandb.ai paths, and the docs-linked spec 404s, but both are wrong-host or broken-link issues rather than a contradiction, since the working spec is served from trace.wandb.ai. Missing for 10: independent hands-on corroboration of driving the product end-to-end through the API, and a consistent spec link in the docs (the docs-listed openapi.json path returns 404).",
     "evidenceIds": [
       "wandb-weave-docs-15",
-      "wandb-weave-docs-4",
-      "wandb-weave-docs-41",
-      "wandb-weave-gh-7"
+      "wandb-weave-service-api-docs-20261105",
+      "wandb-weave-openapi-spec-20261105",
+      "wandb-weave-swagger-ui-20261105"
     ],
     "support": {
       "relation": "direct",
@@ -14152,16 +14260,12 @@
           "quote": "Use the Weave Service API, which provides REST endpoints for programmatic access to Weave functionality."
         },
         {
-          "evidenceId": "wandb-weave-docs-4",
-          "quote": "When you decorate a function with `@weave.op()` (Python) or wrap it with `weave.op()` (TypeScript), Weave automatically captures its code, inputs, outputs, and execution metadata."
+          "evidenceId": "wandb-weave-openapi-spec-20261105",
+          "quote": "The Weave trace API host serves a complete machine-readable OpenAPI 3.1.0 document at the well-known path, covering the full service surface (117 paths, including /call/start and /calls/stream_query)."
         },
         {
-          "evidenceId": "wandb-weave-docs-41",
-          "quote": "This endpoint lets you send OTLP (OpenTelemetry Protocol) formatted trace data directly to your Weave project."
-        },
-        {
-          "evidenceId": "wandb-weave-gh-7",
-          "quote": "Custom agents — wrap your own loop with `start_conversation`, `start_turn`, `start_llm`, and `start_tool`."
+          "evidenceId": "wandb-weave-swagger-ui-20261105",
+          "quote": "The trace API hosts a live Swagger UI that loads /openapi.json, a runnable in-page console against the production API"
         }
       ]
     }
@@ -14172,7 +14276,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Scoped API credentials are a fair question for a SaaS observability platform that exposes a REST Service API and an MCP server, so the axis applies. However, nothing in the evidence pack documents issuing least-privilege, scoped, or per-agent API keys. The REST API and MCP server only show that programmatic access exists, which is adjacent to credential scoping and earns no credit.",
+    "rationale": "Weave is an observability SaaS with API-key bearer auth, so the question of scoped agent credentials applies. However, the evidence only shows that API keys exist for the Service API. Nothing documents scoped, read-only, project-limited or otherwise least-privilege keys that could be issued to an agent.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -14187,14 +14291,15 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Weave ships official SDKs in Python and TypeScript. They are documented for tracing via `weave.op`, evaluations, and scorer classes, and backed by the official wandb/weave GitHub repo. W&B Skills explicitly cover the Weave SDK, and a REST Service API adds programmatic access. missing for 10: independent or hands-on corroboration of SDK developer experience, and explicit SDK reference or versioning documentation in the pack.",
+    "rationale": "W&B Weave ships official Python and TypeScript SDKs. The docs and the first-party GitHub repo cover instrumentation with weave.op and weave.init, custom agent APIs (start_conversation, start_turn), Evaluation objects, and Scorer classes, and the vendor names the 'Weave SDK' as a product surface. missing for 10: independent hands-on corroboration of SDK use beyond vendor docs and the repo.",
     "evidenceIds": [
       "wandb-weave-docs-4",
-      "wandb-weave-docs-52",
       "wandb-weave-docs-45",
-      "wandb-weave-gh-1",
+      "wandb-weave-gh-6",
       "wandb-weave-gh-7",
-      "wandb-weave-docs-15"
+      "wandb-weave-docs-52",
+      "wandb-weave-docs-3",
+      "wandb-weave-docs-6"
     ],
     "support": {
       "relation": "direct",
@@ -14210,12 +14315,12 @@
           "quote": "Skills covers both the [W\\&B Models SDK] ... and the [Weave SDK] (traces, evaluations, scorers)."
         },
         {
-          "evidenceId": "wandb-weave-docs-52",
-          "quote": "Class-based Scorers: Python classes that inherit from weave.Scorer for more complex evaluations."
-        },
-        {
           "evidenceId": "wandb-weave-gh-7",
           "quote": "Custom agents — wrap your own loop with `start_conversation`, `start_turn`, `start_llm`, and `start_tool`."
+        },
+        {
+          "evidenceId": "wandb-weave-docs-52",
+          "quote": "Class-based Scorers: Python classes that inherit from weave.Scorer for more complex evaluations."
         }
       ]
     }
@@ -14226,9 +14331,10 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Weave's marketing page says its alerts can \"trigger webhook automations\", so outbound webhooks appear to be a first-party capability triggered by signals. The evidence is a single repeated marketing line with no technical documentation. missing for 10: docs on registering webhook endpoints, the list of subscribable event types, payload schema and signing, retry/delivery semantics, and independent or hands-on corroboration.",
+    "rationale": "The only evidence is a marketing-page claim that Weave Alerts 'trigger webhook automations'. That suggests outbound webhooks fired on alert events, but there is no documentation of how to register a webhook endpoint, which event types are available, or what the payload looks like. Slack notifications do not count toward this story. Missing for 10: first-party docs on webhook registration and configuration, event catalog and payload schema, delivery/retry/signing semantics, and hands-on or independent corroboration.",
     "evidenceIds": [
       "wandb-weave-docs-17",
+      "wandb-weave-docs-59",
       "wandb-weave-docs-36"
     ],
     "support": {
@@ -14241,8 +14347,8 @@
           "quote": "Alerts route what matters through Slack notifications and trigger webhook automations, turning every production insight into a fast iteration."
         },
         {
-          "evidenceId": "wandb-weave-docs-36",
-          "quote": "Built-in and custom signals automatically capture and classify agent interactions, so you always know how your agents are behaving. Alerts route what matters through Slack notifications and trigger webhook automations"
+          "evidenceId": "wandb-weave-docs-59",
+          "quote": "Alerts route what matters through Slack notifications and trigger webhook automations"
         }
       ]
     }
@@ -14250,31 +14356,67 @@
   {
     "productId": "wandb-weave",
     "storyId": "api-interactive-docs",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "The evidence shows a Weave Service API reference with REST endpoints, but nothing shows it is interactive or offers runnable examples, such as a try-it console or executable snippets. The OpenAPI probe returned 404 on all candidate paths. The Playground is for testing LLM prompts and models, not for exploring the API reference, so it does not count toward this story.",
-    "evidenceIds": [],
+    "rationale": "Weave's trace API hosts a live Swagger UI that serves as a runnable in-page console against the production API. It is backed by a complete OpenAPI 3.1.0 spec (117 paths), and the hosted endpoint reference pages add a per-endpoint \"Try it\" playground. Together these deliver an interactive API reference with runnable examples. missing for 10: independent hands-on corroboration of the Try-it/Swagger consoles, and a working spec link from the docs site (the docs-listed spec and the candidate paths probed on docs.wandb.ai return 404).",
+    "evidenceIds": [
+      "wandb-weave-swagger-ui-20261105",
+      "wandb-weave-openapi-spec-20261105",
+      "wandb-weave-service-api-docs-20261105",
+      "wandb-weave-docs-15"
+    ],
     "support": {
-      "relation": "adjacent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can explore an interactive API reference with runnable examples",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "wandb-weave-swagger-ui-20261105",
+          "quote": "The trace API hosts a live Swagger UI that loads /openapi.json, a runnable in-page console against the production API"
+        },
+        {
+          "evidenceId": "wandb-weave-swagger-ui-20261105",
+          "quote": "The hosted endpoint reference pages on docs.coreweave.com additionally render a \"Try it\" API playground per endpoint"
+        },
+        {
+          "evidenceId": "wandb-weave-openapi-spec-20261105",
+          "quote": "The Weave trace API host serves a complete machine-readable OpenAPI 3.1.0 document at the well-known path, covering the full service surface (117 paths"
+        }
+      ]
     }
   },
   {
     "productId": "wandb-weave",
     "storyId": "api-machine-spec",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "The docs describe a Weave Service API with REST endpoints, but nothing in the evidence shows a downloadable OpenAPI or equivalent machine-readable spec. The probe found 404 at every common OpenAPI/Swagger path on docs.wandb.ai. Having a REST API is related to this story but does not deliver a published spec file.",
-    "evidenceIds": [],
+    "rationale": "Weave's trace API host serves a complete, downloadable OpenAPI 3.1.0 document at trace.wandb.ai/openapi.json covering 117 paths, plus Swagger UI and ReDoc views, and the Service API docs name this host as the base URL. The probe 404s were on docs.wandb.ai paths, a different host, so they do not contradict this. Missing for 10: the spec link listed in the docs llms.txt answers 404, so the spec is hard to discover from the docs, and no independent probe confirms the trace.wandb.ai spec directly.",
+    "evidenceIds": [
+      "wandb-weave-openapi-spec-20261105",
+      "wandb-weave-service-api-docs-20261105",
+      "wandb-weave-swagger-ui-20261105",
+      "wandb-weave-docs-15"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "wandb-weave-openapi-spec-20261105",
+          "quote": "The Weave trace API host serves a complete machine-readable OpenAPI 3.1.0 document at the well-known path, covering the full service surface (117 paths, including /call/start and /calls/stream_query)."
+        },
+        {
+          "evidenceId": "wandb-weave-service-api-docs-20261105",
+          "quote": "the working spec download is trace.wandb.ai/openapi.json."
+        },
+        {
+          "evidenceId": "wandb-weave-swagger-ui-20261105",
+          "quote": "The trace API hosts a live Swagger UI that loads /openapi.json"
+        }
+      ]
     }
   },
   {
@@ -14283,7 +14425,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Weave documents offline evaluations on test datasets and a Playground for prompt and model experiments. Neither is a sandbox environment isolated from production data, and no evidence describes separate sandbox or staging projects or data isolation. The site promotes testing models against production traces and letting coding agents read live production data, which runs opposite to the story. Evaluations and Playground are adjacent features, not the named capability.",
+    "rationale": "Nothing in the evidence documents a sandbox or isolated test environment that keeps testing separate from production data. The Playground and Evaluation datasets are prompt and eval tools, not environment isolation. The Swagger console is described as running against the production API, and the agent and model-testing features explicitly work with live production data and traces.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -14298,7 +14440,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Weave documents a REST Service API, but nothing in the evidence describes API versioning or a deprecation policy. The 'version' wording refers to versioning the user's own application objects, which is a different feature from API versioning. No OpenAPI spec was found by the probe, so the axis applies but is unevidenced.",
+    "rationale": "The evidence documents a Weave Service API with REST endpoints and a published OpenAPI 3.1.0 spec. Nothing in the pack shows API versioning (version paths, headers, or stability tiers) or a documented deprecation policy. Having an OpenAPI spec is adjacent to this story but does not deliver it.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -14310,16 +14452,33 @@
   {
     "productId": "wandb-weave",
     "storyId": "automation-bulk-operations",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence pack never documents bulk operations in Weave, such as selecting many traces, calls, or dataset rows and acting on them at once (bulk tag, delete, export, or annotate). Running an Evaluation over a Dataset applies scorers across many examples, but that is a separate evaluation feature, not a bulk-operations capability. The REST Service API and MCP server are developer building blocks that could be used to build bulk actions, not the capability itself.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The only evidenced batch-style capability is Weave's own Evaluation workflow, which runs scoring functions over a whole Dataset of test examples, plus scoring an entire Thread of calls at once. There is no documented general bulk-operation feature for acting on many items together, such as bulk tagging, deleting, editing, or exporting traces. missing for 10: documented bulk edit/delete/tag/export operations on calls or objects, bulk-operation API endpoints, UI multi-select actions, hands-on corroboration.",
+    "evidenceIds": [
+      "wandb-weave-docs-6",
+      "wandb-weave-docs-5",
+      "wandb-weave-docs-21"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can perform bulk operations across many items at once",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "wandb-weave-docs-6",
+          "quote": "the core of the workflow is the _`Evaluation` object_, which defines: A `Dataset` or list of dictionaries for test examples. One or more scoring functions."
+        },
+        {
+          "evidenceId": "wandb-weave-docs-5",
+          "quote": "You can use Threads to analyze or score the entire conversation instead of individual Calls."
+        },
+        {
+          "evidenceId": "wandb-weave-docs-21",
+          "quote": "You can test new LLMs and custom models against production traces, assessing their performance for your specific use cases."
+        }
+      ]
     }
   },
   {
@@ -14327,12 +14486,13 @@
     "storyId": "automation-rules-engine",
     "verdict": "partial",
     "quality": 4,
-    "confidence": "medium",
-    "rationale": "Weave's own marketing pages describe custom signals that automatically classify agent interactions, and alerts that send Slack notifications and trigger webhook automations. That amounts to event-triggered actions you can define, but the evidence is marketing-level only. It does not document how rules, conditions or action types are configured. missing for 10: first-party docs on defining alert/automation rules (event types, conditions, action configuration), webhook payload/registration details, and any independent or hands-on corroboration.",
+    "confidence": "low",
+    "rationale": "Weave's marketing page says signals automatically classify agent interactions and that alerts route results through Slack and trigger webhook automations. Release notes also mention creating custom signals for behaviors you define, which together form a basic event-to-action rule mechanism. Missing for 10: in-depth docs on how to define alert rules and their conditions, which actions are supported beyond Slack and webhooks, how webhook automations are configured, and any independent or hands-on corroboration.",
     "evidenceIds": [
+      "wandb-weave-docs-36",
       "wandb-weave-docs-17",
-      "wandb-weave-docs-16",
-      "wandb-weave-docs-46"
+      "wandb-weave-docs-46",
+      "wandb-weave-docs-16"
     ],
     "support": {
       "relation": "direct",
@@ -14344,8 +14504,12 @@
           "quote": "Alerts route what matters through Slack notifications and trigger webhook automations, turning every production insight into a fast iteration."
         },
         {
+          "evidenceId": "wandb-weave-docs-46",
+          "quote": "Create a custom W\\&B Weave signal to tag agent turns for a behavior you define."
+        },
+        {
           "evidenceId": "wandb-weave-docs-16",
-          "quote": "Built-in and custom signals automatically capture and classify agent interactions"
+          "quote": "Built-in and custom signals automatically capture and classify agent interactions, so you always know how your agents are behaving."
         }
       ]
     }
@@ -14356,7 +14520,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Scheduling recurring jobs, such as periodic evaluations, is a fair axis for an LLM observability and evaluation platform, but the evidence pack never documents a recurring schedule or cron capability. Alerts that trigger webhook automations are event-driven one-off actions, not a recurring schedule. Claims that coding agents can 'iterate continuously' describe an external agent loop, which is a user-side workaround rather than product scheduling.",
+    "rationale": "Scheduling recurring evaluations or monitoring jobs is a fair question for an LLM observability and evaluation platform, so the axis applies. The evidence only shows event-driven alerts that trigger webhook automations, plus coding agents iterating 'continuously' through MCP. Neither is a documented recurring-schedule capability, since one-off or event-triggered actions are not a schedule.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -14371,7 +14535,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Weave mentions alerts that \"trigger webhook automations\" and versioning of traced application functions. However, nothing in the evidence shows that the automations themselves can be versioned, reviewed, or rolled back. Function and code versioning is an adjacent feature, so it earns no credit for this story.",
+    "rationale": "Weave documents alert-triggered webhook automations. The evidence never shows that those automations can be versioned, reviewed, or rolled back. Weave's documented versioning covers traced application functions and ops, which is an adjacent capability and does not transfer to managing automations.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -14386,22 +14550,29 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Bulk export to blob storage or a data warehouse is a fair question for an LLM observability platform, so the axis applies. The pack has no documented bulk-export, warehouse sync, or blob-storage destination for traces or datasets. The Service API's generic REST access and the MCP server's read access are developer building blocks or adjacent features, not the export capability itself.",
-    "evidenceIds": [],
+    "rationale": "The evidence shows no first-party bulk-export feature that sends traces or datasets to blob storage (such as S3, GCS or Azure) or to a data warehouse (such as BigQuery or Snowflake). The only related evidence is the Weave Service API, which gives programmatic REST access (including /calls/stream_query). That is a developer building block for writing your own export, not the export capability itself, so it earns no credit.",
+    "evidenceIds": [
+      "wandb-weave-docs-15"
+    ],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As a developer, I can bulk-export traces and datasets to blob storage or my data warehouse",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "wandb-weave-docs-15",
+          "quote": "Use the Weave Service API, which provides REST endpoints for programmatic access to Weave functionality."
+        }
+      ]
     }
   },
   {
     "productId": "wandb-weave",
     "storyId": "ci-eval-gating",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 3,
     "confidence": "low",
-    "rationale": "Weave documents a programmatic evaluation framework: an Evaluation object with datasets and scorers, run as repeatable test cases to identify regressions. Its marketing says this catches regressions before they reach users, which implies pre-deployment use. Nothing in the evidence explicitly covers running evals in CI pipelines or gating deployments on results, such as threshold-based pass/fail exit codes or CI provider integrations. missing for 10: documented CI integration/recipes, deployment-gating mechanism (thresholds, pass/fail status), independent hands-on corroboration",
+    "rationale": "Weave documents a programmatic, imperative evaluation API (Evaluation objects with datasets and scorers) that can be run against repeatable test cases. Its marketing claims these evaluations 'catch regressions before they reach users', which points toward pre-deployment checks. However, no evidence describes CI integration, pass/fail thresholds, exit codes, or deployment gating, so the CI/gating half of the story rests only on the API being code-driven. Missing for 10: documented CI integration or CI examples, threshold-based pass/fail or exit-code gating of deployments, and independent or hands-on corroboration.",
     "evidenceIds": [
       "wandb-weave-docs-19",
       "wandb-weave-docs-31",
@@ -14415,7 +14586,7 @@
       "citations": [
         {
           "evidenceId": "wandb-weave-docs-19",
-          "quote": "Weave provides powerful evaluation comparisons and visualizations to catch regressions before they reach users"
+          "quote": "Measure every improvement to your harnesses and models with confidence with a flexible imperative evaluation API. Weave provides powerful evaluation comparisons and visualizations to catch regressions before they reach users"
         },
         {
           "evidenceId": "wandb-weave-docs-31",
@@ -14424,10 +14595,6 @@
         {
           "evidenceId": "wandb-weave-docs-6",
           "quote": "the core of the workflow is the _`Evaluation` object_, which defines: A `Dataset` or list of dictionaries for test examples. One or more scoring functions."
-        },
-        {
-          "evidenceId": "wandb-weave-docs-42",
-          "quote": "a flexible evaluation framework to prevent regressions"
         }
       ]
     }
@@ -14438,10 +14605,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Weave documents per-call token usage and cost tracking, and it groups traces into Threads and sessions. Nothing in the pack shows attaching custom metadata such as user IDs or feature tags to calls, or attributing and aggregating cost by user, session, or feature. Per-call cost plus session grouping are separate, adjacent features, so they earn no credit for metadata-based cost attribution.",
+    "rationale": "The evidence documents automatic per-call token usage and cost tracking, custom model pricing via `add_cost`, and Threads/sessions that group traces. Nothing in the pack shows attaching custom metadata (user IDs, feature tags) to calls, or rolling up cost and usage by user, session, or feature. Per-call costs and session grouping are adjacent features, not the attribution capability this story asks for.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As a developer, I can attribute cost and usage to users, sessions, and features via custom metadata",
       "citations": []
@@ -14453,10 +14620,10 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "First-party docs describe custom code-based scorers in detail. They come as function-based scorers (Python functions decorated with @weave.op) and class-based scorers (classes inheriting weave.Scorer). They return dictionaries of metrics and plug into the Evaluation object as scoring functions, beyond the built-in scorers. Missing for 10: independent or hands-on corroboration of custom scorer authoring, and evidence of TypeScript custom scorer support.",
+    "rationale": "Weave's first-party docs describe custom code-based scorers in two forms: function-based scorers (Python functions decorated with @weave.op) and class-based scorers that inherit from weave.Scorer. Scorers return a dictionary of metrics, and the Evaluation object takes one or more scoring functions. Missing for 10: independent or hands-on corroboration of custom scorer authoring, and documentation of how custom metrics are aggregated (e.g. a custom summarize).",
     "evidenceIds": [
-      "wandb-weave-docs-7",
       "wandb-weave-docs-52",
+      "wandb-weave-docs-7",
       "wandb-weave-docs-39",
       "wandb-weave-docs-6",
       "wandb-weave-docs-2"
@@ -14467,12 +14634,12 @@
       "subject": "As an ML engineer, I can write custom code-based scorers and metrics for my evaluations",
       "citations": [
         {
-          "evidenceId": "wandb-weave-docs-7",
-          "quote": "Custom Scorers let you encode evaluation criteria that are specific to your use case, beyond what the built-in Scorers cover."
-        },
-        {
           "evidenceId": "wandb-weave-docs-52",
           "quote": "Function-based Scorers: Python functions decorated with @weave.op. Class-based Scorers: Python classes that inherit from weave.Scorer for more complex evaluations."
+        },
+        {
+          "evidenceId": "wandb-weave-docs-7",
+          "quote": "Custom Scorers let you encode evaluation criteria that are specific to your use case, beyond what the built-in Scorers cover."
         },
         {
           "evidenceId": "wandb-weave-docs-39",
@@ -14491,7 +14658,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never documents user-built custom dashboards. Cost appears in the built-in trace tree and calls table, and evaluations have comparison visualizations and leaderboards, but these are fixed or adjacent views rather than configurable dashboards. Latency and error-rate metrics are not mentioned at all, and 'native analytics tools' is too vague to count as a dashboard builder.",
+    "rationale": "The evidence shows that Weave captures cost per call and shows it in the trace tree and calls table. It also offers evaluation comparisons, visualizations, and leaderboards. None of this documents a custom dashboard builder for charting latency, error, cost, and eval-score metrics together. These are adjacent views, not the user-built dashboards the story asks for, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -14504,9 +14671,9 @@
     "productId": "wandb-weave",
     "storyId": "experiment-comparison",
     "verdict": "partial",
-    "quality": 7,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Weave documents an evaluation workflow for comparing changes over time and identifying regressions, plus marketing claims of 'powerful evaluation comparisons and visualizations' and organization-wide leaderboards. However, the evidence does not show a side-by-side eval comparison view or how prompt and model versions are diffed against each other. Missing for 10: first-party documentation of a side-by-side eval-run comparison UI, explicit per-prompt/model-version diffing, and independent or hands-on corroboration.",
+    "rationale": "Weave's own evaluation framework is documented as a way to compare changes over time and identify regressions. The marketing site claims 'evaluation comparisons and visualizations to catch regressions,' and leaderboards can aggregate evaluations. But the evidence has no detailed first-party documentation of a side-by-side eval-run comparison view that diffs prompt or model versions. missing for 10: documented side-by-side comparison UI/workflow for eval runs, per-example diffing between prompt/model versions, independent or hands-on corroboration.",
     "evidenceIds": [
       "wandb-weave-docs-19",
       "wandb-weave-docs-31",
@@ -14544,10 +14711,10 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Weave documents existing integrations that instrument apps with only `weave.init()`, covering the OpenAI Agents SDK, Claude Agent SDK and Google ADK. It also names supported LLM integrations such as OpenAI, Anthropic, Cohere and Mistral, and mentions an OTel-compatible SDK for popular SDKs and harnesses. However, the two named framework examples, LangChain and the Vercel AI SDK, do not appear anywhere in the evidence. Missing for 10: evidence of LangChain and Vercel AI SDK integrations, a documented integration catalog with setup depth, and independent or hands-on corroboration.",
+    "rationale": "Weave documents automatic, integration-based instrumentation. Supported LLM integrations such as OpenAI, Anthropic, Cohere and Mistral are traced after `weave.init()`, and the GitHub README says `weave.init()` alone is enough for the OpenAI Agents SDK, Claude Agent SDK and Google ADK. That covers the OpenAI SDK part of the story, but nothing in the pack names LangChain or the Vercel AI SDK, and there is no hands-on corroboration. Missing for 10: evidence of LangChain and Vercel AI SDK integrations, a documented list of framework integrations, independent or hands-on confirmation.",
     "evidenceIds": [
-      "wandb-weave-gh-6",
       "wandb-weave-docs-33",
+      "wandb-weave-gh-6",
       "wandb-weave-docs-3",
       "wandb-weave-docs-12"
     ],
@@ -14557,12 +14724,12 @@
       "subject": "As a developer, I can instrument my app through existing integrations for frameworks like LangChain, the OpenAI SDK, or the Vercel AI SDK",
       "citations": [
         {
-          "evidenceId": "wandb-weave-gh-6",
-          "quote": "OpenAI Agents SDK, Claude Agent SDK, and Google ADK. `weave.init()` is enough for those SDKs."
-        },
-        {
           "evidenceId": "wandb-weave-docs-33",
           "quote": "When you call weave.init() and use a supported LLM integration such as OpenAI, Anthropic, Cohere, or Mistral, Weave automatically records token usage and calculates cost for each call."
+        },
+        {
+          "evidenceId": "wandb-weave-gh-6",
+          "quote": "OpenAI Agents SDK, Claude Agent SDK, and Google ADK. `weave.init()` is enough for those SDKs."
         },
         {
           "evidenceId": "wandb-weave-docs-3",
@@ -14577,7 +14744,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never mentions human annotation queues or any way to route outputs to human reviewers for labeling. Weave documents collecting feedback on traces, automated signals that tag agent turns, and LLM-judge scorers, but these are adjacent features, not a queue-based human review workflow. Annotation queues are a fair axis for an LLM evaluation and observability platform, so this is none rather than na.",
+    "rationale": "The evidence pack never documents human annotation queues or a way to route outputs to human reviewers for labeling. The only related item is a general claim that Weave can \"collect feedback\" on traces, which is an adjacent feature and not a review queue. Most evaluation evidence covers automated LLM judges and scorers, not human labeling workflows.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -14589,22 +14756,21 @@
   {
     "productId": "wandb-weave",
     "storyId": "llm-as-judge-scoring",
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Weave's docs state that you can evaluate application responses using LLM judges and custom scorers. Scorers take outputs and return metric dictionaries, can be written as function- or class-based custom scorers, and an agent-evaluation guide is scored with an LLM judge. missing for 10: explicit documentation of how the LLM-judge model, prompt and rubric are configured, independent or hands-on corroboration.",
+    "rationale": "Weave's own docs say you can evaluate responses 'using LLM judges and custom scorers'. A release note describes agent evaluations 'scored with an LLM judge', and scorers can be written as function-based or class-based (weave.Scorer) evaluators that return metric dictionaries. However, the evidence never shows how an LLM judge itself is configured (judge model choice, prompt/rubric template, scoring parameters), so configurability is only implied through custom scorer classes. Missing for 10: documented configuration options for LLM-judge scorers (model, prompt/rubric, output schema), a concrete built-in LLM-judge scorer reference, and independent or hands-on corroboration.",
     "evidenceIds": [
       "wandb-weave-docs-2",
       "wandb-weave-docs-47",
-      "wandb-weave-docs-39",
-      "wandb-weave-docs-52",
       "wandb-weave-docs-7",
-      "wandb-weave-docs-8",
+      "wandb-weave-docs-52",
+      "wandb-weave-docs-39",
       "wandb-weave-docs-6"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As an ML engineer, I can score outputs with configurable LLM-as-a-judge evaluators",
       "citations": [
         {
@@ -14616,16 +14782,12 @@
           "quote": "Evaluate single-turn and multi-turn AI agents in Weave using the agents workflow and EvaluationLogger, scored with an LLM judge."
         },
         {
-          "evidenceId": "wandb-weave-docs-39",
-          "quote": "In Weave, Scorers evaluate AI outputs and return evaluation metrics. They take the AI’s output, analyze it, and return a dictionary of results."
-        },
-        {
           "evidenceId": "wandb-weave-docs-52",
           "quote": "Class-based Scorers: Python classes that inherit from weave.Scorer for more complex evaluations."
         },
         {
-          "evidenceId": "wandb-weave-docs-7",
-          "quote": "Custom Scorers let you encode evaluation criteria that are specific to your use case, beyond what the built-in Scorers cover."
+          "evidenceId": "wandb-weave-docs-39",
+          "quote": "In Weave, Scorers evaluate AI outputs and return evaluation metrics."
         }
       ]
     }
@@ -14636,7 +14798,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows that Weave captures function inputs, outputs, code and metadata through weave.op. No item mentions logging images, audio, files or other multimodal payloads inside traces. Generic input/output capture is adjacent and does not show multimodal support, and the axis clearly applies to a tracing product.",
+    "rationale": "The evidence shows only generic capture of function inputs, outputs and metadata via weave.op. Nothing in the pack documents capturing or rendering images, audio or files inside traces, so this applicable axis has no supporting evidence.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -14649,15 +14811,15 @@
     "productId": "wandb-weave",
     "storyId": "offline-eval-datasets",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Weave documents offline evaluations built on an Evaluation object that takes a Dataset plus scorers, and its marketing says you can test new LLMs and custom models against production traces. However, nothing in the pack shows a workflow for curating or building a Dataset from captured traces, such as selecting calls and adding them to a dataset. Missing for 10: documented trace-to-dataset curation workflow, dataset versioning or editing from traces, independent hands-on corroboration.",
+    "rationale": "Weave documents offline evaluations built around an `Evaluation` object that takes a `Dataset` plus scorers, and its marketing says you can test models against production traces. No evidence pack item documents the curation step itself: selecting traced calls, or exporting them, into a versioned Dataset. missing for 10: documented trace-to-dataset curation workflow (selecting/adding production calls to a Dataset), detail on how production traces become evaluation datasets, independent or hands-on corroboration.",
     "evidenceIds": [
       "wandb-weave-docs-6",
       "wandb-weave-docs-21",
       "wandb-weave-docs-31",
-      "wandb-weave-docs-7",
-      "wandb-weave-docs-1"
+      "wandb-weave-docs-1",
+      "wandb-weave-docs-4"
     ],
     "support": {
       "relation": "direct",
@@ -14685,12 +14847,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Weave documents built-in and custom 'signals' that automatically capture and classify agent interactions, with alerts on what they find. This is a form of continuous, automatic judging of production behavior. However, the core Evaluation workflow is documented as dataset-based, and nothing explicitly says scorers or LLM judges run continuously on sampled live traffic. missing for 10: explicit docs on attaching scorers/LLM judges to live production calls (online evals), sampling and filtering configuration, independent or hands-on corroboration.",
+    "rationale": "Weave's built-in and custom signals automatically capture and classify live agent interactions, and you can define custom signals that tag agent turns. That is a form of continuous scoring on production traffic. However, the evaluation docs center on Dataset-based Evaluation objects, and no documentation shows scorers or LLM judges attached to run continuously on incoming production calls. Missing for 10: explicit docs on running scorers or LLM judges continuously on live traffic (sampling, filters, configuration), and independent or hands-on corroboration.",
     "evidenceIds": [
       "wandb-weave-docs-16",
       "wandb-weave-docs-46",
-      "wandb-weave-docs-36",
       "wandb-weave-docs-42",
+      "wandb-weave-docs-21",
       "wandb-weave-docs-6"
     ],
     "support": {
@@ -14717,18 +14879,16 @@
     "productId": "wandb-weave",
     "storyId": "openness-api-parity",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Weave documents a REST Service API for programmatic access to Weave functionality. Its SDKs also cover tracing, evaluations, scorers, custom costs and OTel ingestion, and an MCP server lets agents read traces and run evaluations. However, nothing in the evidence claims or shows full API–UI parity, and UI features such as the Playground (saved models, model comparison) and leaderboards have no documented API equivalent. missing for 10: an explicit API/UI parity statement, API coverage of Playground, leaderboard, signal and alert configuration, a discoverable OpenAPI spec (the probes found none at the candidate docs paths), and independent hands-on corroboration.",
+    "rationale": "Weave documents a REST Service API for programmatic access, backed by a machine-readable OpenAPI 3.1.0 spec of 117 paths that is described as covering the full service surface and comes with a live Swagger console. Python/TypeScript SDKs and an official MCP server add further programmatic access to traces, evaluations and scorers. Nothing in the evidence states UI/API parity, and the 404s at the docs-site OpenAPI paths are resolved by the working spec on trace.wandb.ai. missing for 10: an explicit UI-parity statement, evidence that Playground, leaderboards, signals and alert/webhook-automation configuration are API-accessible, and independent hands-on corroboration.",
     "evidenceIds": [
       "wandb-weave-docs-15",
-      "wandb-weave-docs-4",
-      "wandb-weave-docs-6",
-      "wandb-weave-docs-13",
-      "wandb-weave-docs-14",
-      "wandb-weave-docs-20",
+      "wandb-weave-openapi-spec-20261105",
+      "wandb-weave-service-api-docs-20261105",
+      "wandb-weave-swagger-ui-20261105",
       "wandb-weave-docs-44",
-      "wandb-weave-probe-3-refresh-4998f38dd666776b"
+      "wandb-weave-docs-4"
     ],
     "support": {
       "relation": "direct",
@@ -14740,12 +14900,12 @@
           "quote": "Use the Weave Service API, which provides REST endpoints for programmatic access to Weave functionality."
         },
         {
-          "evidenceId": "wandb-weave-docs-13",
-          "quote": "Add a custom cost with the `add_cost` method."
+          "evidenceId": "wandb-weave-openapi-spec-20261105",
+          "quote": "serves a complete machine-readable OpenAPI 3.1.0 document at the well-known path, covering the full service surface (117 paths, including /call/start and /calls/stream_query)"
         },
         {
-          "evidenceId": "wandb-weave-docs-20",
-          "quote": "They can read live production data, run evaluations, and execute automatic iteration loops on their own"
+          "evidenceId": "wandb-weave-swagger-ui-20261105",
+          "quote": "The trace API hosts a live Swagger UI that loads /openapi.json, a runnable in-page console against the production API"
         }
       ]
     }
@@ -14756,10 +14916,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data export with open formats is a fair question for an LLM observability and evaluation platform, but the evidence pack never documents any export or bulk-download feature. The OTel material covers only importing traces into Weave. The REST Service API and MCP server read access are developer building blocks someone could use to construct an export, not a documented export-and-leave capability.",
+    "rationale": "Data portability is a fair question for a hosted tracing and evaluation platform, so the axis applies. The evidence shows a REST Service API with a call-query endpoint, an OpenAPI spec, and OTel trace import, but no documented bulk export of all data in open formats. Those are developer building blocks for reading data and ingest-side interoperability, not an export-and-leave capability, so they earn no credit.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can export all of my data in open formats and leave",
       "citations": []
@@ -14769,9 +14929,9 @@
     "productId": "wandb-weave",
     "storyId": "openness-open-license",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "low",
-    "rationale": "Several evidence items come from the public GitHub repository github.com/wandb/weave, so the product's source appears publicly hosted and readable. Nothing in the pack names a license or states that the code is open source, so the 'open license' part of the story is unevidenced. missing for 10: any stated open-source license (e.g., Apache/MIT), explicit first-party confirmation that the full Weave source is published, independent corroboration of license terms.",
+    "rationale": "The evidence includes several items sourced from the public GitHub repository github.com/wandb/weave, which shows the product's source is published and readable. No item states the license or confirms it is an open-source license, so the 'open license' half of the story is unverified. missing for 10: explicit open-source license identification (e.g., Apache/MIT), evidence that the repo covers the full product source (including server/UI), independent corroboration",
     "evidenceIds": [
       "wandb-weave-gh-1",
       "wandb-weave-gh-2",
@@ -14787,6 +14947,10 @@
           "quote": "You can trace any function using `weave.op`"
         },
         {
+          "evidenceId": "wandb-weave-gh-2",
+          "quote": "Decorate all the functions you want to trace, this will generate a trace tree of the inputs and outputs of all your functions"
+        },
+        {
           "evidenceId": "wandb-weave-gh-7",
           "quote": "Custom agents — wrap your own loop with `start_conversation`, `start_turn`, `start_llm`, and `start_tool`."
         }
@@ -14799,7 +14963,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Self-hosting is a fair question for an LLM observability and evaluation platform like Weave, but the evidence pack never documents deploying the Weave product on your own infrastructure. The only \"self-hosted\" mentions refer to tracking costs for users' own self-hosted models, which is a different capability. A server release-notes URL alone does not show that customers can run the product themselves.",
+    "rationale": "Self-hosting is a fair question for an LLM observability and evaluation platform, so the axis applies, but the pack has no evidence that Weave's backend can be deployed on user infrastructure. The 'self-hosted models' mentions cover cost tracking for the user's own LLMs, not self-hosting Weave. 'Dedicated Cloud' is a vendor-hosted deployment option, and the GitHub items describe only the tracing SDK, not a deployable server.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -14814,7 +14978,7 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Weave documents a dedicated endpoint that ingests OTLP-formatted trace data into a project, and an OTel-compatible SDK path that works alongside an existing OTel pipeline. That covers the 'send' half of the story directly. Nothing in the pack shows traces being exported or retrieved back out in OTLP format, so the 'receive' half is unevidenced. missing for 10: documented OTLP export/egress of traces from Weave, endpoint/auth and supported-signal details, independent or hands-on corroboration of the OTLP ingest",
+    "rationale": "Weave documents a dedicated OTLP ingestion endpoint and an OTel-compatible SDK, so you can send OpenTelemetry trace data into a Weave project alongside an existing OTel pipeline. The pack does not show traces being exported or received back out of Weave in OTLP form; programmatic access is via Weave's own REST Service API. missing for 10: OTLP export/receive of traces out of Weave, ingestion protocol details (HTTP/gRPC, semantic-convention mapping), independent hands-on corroboration",
     "evidenceIds": [
       "wandb-weave-docs-14",
       "wandb-weave-docs-41",
@@ -14851,7 +15015,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows Weave capturing function inputs and outputs into traces, but nothing documents masking or redacting sensitive data before it is stored. The only related item is Guardrails' PII detection scorer, which detects and classifies PII rather than redacting it from stored traces, so it is an adjacent feature and earns no credit.",
+    "rationale": "The evidence pack documents no way to mask or redact inputs or outputs before Weave stores them in traces. Tracing docs say only that Weave automatically captures code, inputs, outputs and metadata. The only related item is a Guardrails PII-detection scorer, which classifies content after the fact and does not redact it before storage, so it is an adjacent feature that earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -14866,7 +15030,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Choosing a data storage region is a fair question for a hosted LLM tracing and evaluation platform like Weave, so the axis applies. However, nothing in the evidence pack mentions data region selection, residency guarantees, dedicated or regional deployments, or self-hosting options.",
+    "rationale": "Data residency is a fair question for a hosted observability SaaS like Weave, so the axis applies. However, the evidence pack never documents choosing a storage region or residency. The only nearby item is a passing mention of 'W&B Multi-tenant and Dedicated Cloud' deployment types, which says nothing about selectable regions.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -14881,7 +15045,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Weave is a hosted LLM observability and evaluation service that stores user traces, inputs and outputs, so a training opt-out or no-training data policy is a fair question for it. The evidence pack does not document any such policy or control; it covers only tracing, evaluations, scorers, cost tracking, OTel ingestion and MCP access.",
+    "rationale": "Weave is a hosted observability and evaluation service that stores customer traces, inputs and outputs, so a data-training opt-out is a fair question for it. The evidence pack contains no documentation of a policy or setting that keeps customer data out of AI model training. PII-detection scorers and trace capture are adjacent features and do not count.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -14896,7 +15060,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data retention and deletion controls are a fair question for an LLM tracing and observability service that stores traces, inputs and outputs. The evidence pack covers tracing, evaluations, scorers, cost tracking, OTel ingest, the MCP server and a REST Service API. None of it documents retention policies, TTLs or deletion of traces and data.",
+    "rationale": "Data retention and deletion controls are a fair question for an LLM tracing and observability service that stores user traces. However, nothing in the evidence pack documents retention periods, retention settings, or deletion of traces or data. The Service API and OpenAPI items describe general programmatic access, and the only endpoints they name are /call/start and /calls/stream_query, neither of which concerns deletion or retention.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -14911,7 +15075,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Opting out of telemetry is a fair question for an observability SDK and platform like Weave, so the axis applies. The evidence pack covers only tracing, evaluation, cost tracking, and OTel ingestion. None of it documents a way to disable the product's own telemetry or usage tracking, such as an environment variable, config flag, or settings toggle.",
+    "rationale": "Opting out of vendor telemetry is a fair question for an SDK and observability platform like Weave, so the axis applies. However, the evidence pack contains no documentation of any setting, environment variable or policy for disabling usage tracking or telemetry. The OpenTelemetry items describe importing a user's own trace data, which is a different capability and does not count here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -14924,9 +15088,9 @@
     "productId": "wandb-weave",
     "storyId": "prompt-playground",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Weave ships a first-party Playground for iterating on prompts against real models. The docs list prompt editing, message retrying, model comparison, OpenAI-compatible custom runtimes and saved model presets. The evidence never mentions prompt variables or templated inputs in the Playground, so the variables part of the story is unproven. Missing for 10: documented prompt variables or templating in the Playground, independent or hands-on corroboration of the Playground workflow.",
+    "rationale": "Weave ships a first-party Playground for iterating on LLM prompts and responses. The docs cover prompt editing, message retrying, model comparison, custom OpenAI-compatible endpoints and saved model presets, so the 'real models' part is well covered. However, nothing in the evidence covers template variables or variable substitution in the Playground. Missing for 10: documented prompt variables/templating in the Playground, independent or hands-on corroboration.",
     "evidenceIds": [
       "wandb-weave-docs-40",
       "wandb-weave-docs-9",
@@ -14963,13 +15127,25 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows Weave can trace and version instrumented functions and offers a Playground for prompt editing and experimentation. However, nothing documents a prompt registry that serves versioned prompts to production, or any way to deploy prompt changes without a code release. Playground iteration and generic op versioning are adjacent features, not the story's capability.",
-    "evidenceIds": [],
+    "rationale": "The evidence shows Weave versioning instrumented functions and a Playground for iterating on prompts. Nothing documents a prompt registry or a way to deploy or promote prompt versions to production without shipping code. Function/code versioning and prompt experimentation are adjacent features, not the capability this story asks for.",
+    "evidenceIds": [
+      "wandb-weave-docs-1",
+      "wandb-weave-docs-40"
+    ],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As a developer, I can version prompts and deploy changes to production without shipping code",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "wandb-weave-docs-1",
+          "quote": "trace, version, and collect feedback about your application"
+        },
+        {
+          "evidenceId": "wandb-weave-docs-40",
+          "quote": "The Weave Playground simplifies the process of iterating on LLM prompts and responses"
+        }
+      ]
     }
   },
   {
@@ -14978,7 +15154,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Weave's official tracing docs describe instrumenting functions with `@weave.op()` in Python and wrapping them with `weave.op()` in TypeScript, which shows first-party SDK instrumentation in both languages. The GitHub repo corroborates the Python `weave.op` tracing path. Only one documented snippet covers the TypeScript side. Missing for 10: TS/JS SDK package and installation details, documentation of feature parity between the Python and TypeScript SDKs, and independent or hands-on corroboration of the JS/TS SDK.",
+    "rationale": "Weave's tracing docs explicitly describe first-party instrumentation in both languages: you decorate a function with `@weave.op()` in Python or wrap it with `weave.op()` in TypeScript to capture code, inputs, outputs and metadata. The GitHub repo corroborates the `weave.op` tracing model. TypeScript support, however, rests on a single documentation sentence. Missing for 10: detailed JS/TS SDK documentation (installation, integrations, feature parity with Python), independent or hands-on corroboration of the TypeScript SDK.",
     "evidenceIds": [
       "wandb-weave-docs-4",
       "wandb-weave-docs-30",
@@ -14996,7 +15172,7 @@
         },
         {
           "evidenceId": "wandb-weave-gh-1",
-          "quote": "You can trace any function using `weave.op` - from api calls to OpenAI, Anthropic, Google AI Studio etc"
+          "quote": "You can trace any function using `weave.op`"
         }
       ]
     }
@@ -15007,10 +15183,11 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "medium",
-    "rationale": "Weave's marketing page says signals classify agent interactions and that alerts route through Slack notifications and trigger webhook automations. That is a first-party alerting capability, but only a thin marketing mention with no docs on alert conditions. Missing for 10: documented alert rules on error rates, cost spikes, or eval-score drops; PagerDuty or email delivery; first-party alert configuration docs; independent or hands-on corroboration.",
+    "rationale": "Weave's marketing page says its own alerts route what built-in and custom signals surface through Slack notifications and webhook automations, so a first-party alerting capability with Slack delivery exists. Only marketing copy supports it, with no docs on alert conditions or thresholds. missing for 10: documented alert conditions on error rates, cost spikes, or eval-score drops; PagerDuty and email notification channels; first-party alert configuration docs; independent or hands-on corroboration.",
     "evidenceIds": [
       "wandb-weave-docs-17",
-      "wandb-weave-docs-36"
+      "wandb-weave-docs-36",
+      "wandb-weave-docs-16"
     ],
     "support": {
       "relation": "direct",
@@ -15034,7 +15211,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Weave automatically records token usage and calculates cost for each call, applies built-in per-model pricing, and shows costs in the trace tree and calls table. That covers per-request visibility and model-level pricing. There is no evidence of dashboards that aggregate cost and tokens by model or over time periods. Missing for 10: aggregated cost/token dashboards by model, time-period breakdowns or charts, independent corroboration.",
+    "rationale": "Weave records token usage and calculates cost for each call, using built-in per-model pricing or custom costs, and shows these in the trace tree and calls table. That covers per-request visibility. Nothing in the evidence shows dashboards that aggregate cost or tokens by model or over time periods. Missing for 10: dashboard aggregation of cost and tokens by model, time-period trend views, independent or hands-on corroboration.",
     "evidenceIds": [
       "wandb-weave-docs-27",
       "wandb-weave-docs-33",
@@ -15057,7 +15234,7 @@
         },
         {
           "evidenceId": "wandb-weave-docs-13",
-          "quote": "The three required fields are `llm_id`, `prompt_token_cost`, and `completion_token_cost`."
+          "quote": "Add a custom cost with the `add_cost` method. The three required fields are `llm_id`, `prompt_token_cost`, and `completion_token_cost`."
         }
       ]
     }
@@ -15065,22 +15242,23 @@
   {
     "productId": "wandb-weave",
     "storyId": "trace-llm-calls",
-    "verdict": "full",
-    "quality": 8,
+    "verdict": "partial",
+    "quality": 7,
     "confidence": "high",
-    "rationale": "Weave's `@weave.op()` tracing automatically captures inputs, outputs and execution metadata for LLM calls, building a trace tree. For supported integrations such as OpenAI, Anthropic, Cohere and Mistral, it records token usage per call and shows it in the trace tree and calls table. Missing for 10: explicit documentation that latency/duration is captured (only implied by \"execution metadata\"), and independent or hands-on corroboration beyond first-party docs and the repo.",
+    "rationale": "Weave documents automatic capture of inputs and outputs for LLM calls via `@weave.op()` and builds trace trees from them. It also automatically records token usage and cost per call for supported integrations (OpenAI, Anthropic, Cohere, Mistral), with custom cost configuration for other models. Latency is never named explicitly; it is only implied by \"execution metadata,\" so the story is not completely covered. missing for 10: explicit documentation of per-call latency/duration capture, automatic token usage for unsupported or self-hosted providers, independent hands-on corroboration.",
     "evidenceIds": [
       "wandb-weave-docs-4",
       "wandb-weave-gh-2",
+      "wandb-weave-gh-3",
       "wandb-weave-gh-1",
-      "wandb-weave-docs-33",
       "wandb-weave-docs-27",
+      "wandb-weave-docs-33",
       "wandb-weave-docs-12",
-      "wandb-weave-gh-5"
+      "wandb-weave-docs-34"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As a developer, I can capture traces of my LLM calls with inputs, outputs, latency, and token usage",
       "citations": [
         {
@@ -15089,15 +15267,15 @@
         },
         {
           "evidenceId": "wandb-weave-gh-2",
-          "quote": "Decorate all the functions you want to trace, this will generate a trace tree of the inputs and outputs of all your functions"
+          "quote": "this will generate a trace tree of the inputs and outputs of all your functions"
+        },
+        {
+          "evidenceId": "wandb-weave-docs-27",
+          "quote": "Weave automatically records token usage and calculates cost for each call. Costs appear in the trace tree and in the calls table in the Weave UI."
         },
         {
           "evidenceId": "wandb-weave-docs-33",
           "quote": "When you call weave.init() and use a supported LLM integration such as OpenAI, Anthropic, Cohere, or Mistral, Weave automatically records token usage and calculates cost for each call."
-        },
-        {
-          "evidenceId": "wandb-weave-docs-27",
-          "quote": "Costs appear in the trace tree and in the calls table in the Weave UI."
         },
         {
           "evidenceId": "wandb-weave-gh-1",

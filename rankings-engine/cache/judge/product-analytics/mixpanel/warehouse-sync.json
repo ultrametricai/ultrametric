@@ -1,17 +1,18 @@
 {
-  "hash": "d4bcea1b049c8d8f5fb194280f2debf37c552dd5ca301acdd02fc2c2fa781f7d",
+  "hash": "4a556ab2880ba894df9c53c6dc2729625a2dfae98c9bf959ffb9ad40143192d0",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Mixpanel's own Warehouse Connectors sync data from Snowflake, BigQuery, Databricks, Redshift and Postgres into Mixpanel, and Mirror mode uses change tracking to keep those syncs current. The reverse direction is only a pull-based Raw Event Export API returning JSONL, with no documented continuous export into a customer warehouse. Missing for 10: documented continuous or scheduled event export into the user's warehouse, direct in-product querying of warehouse tables without ingestion, independent hands-on corroboration of the connectors.",
+    "rationale": "Mixpanel's Warehouse Connectors sync data from Snowflake, BigQuery, Databricks, Redshift and Postgres into Mixpanel, and a Mirror mode tracks warehouse changes via Snowflake Streams and Databricks Change Data Feed. That covers the warehouse-to-platform half of the story. The outbound half is only evidenced by the pull-based Raw Event Export API and a bare 'Data Pipelines' spec name, with no documented continuous push of events into the user's warehouse. Missing for 10: documented continuous event export to the customer's warehouse (Data Pipelines details, destinations, schedule or freshness), in-place querying of warehouse tables rather than ingestion, and independent or hands-on corroboration of sync reliability.",
     "evidenceIds": [
       "mixpanel-docs-24",
       "mixpanel-intdir-5",
       "mixpanel-intdir-6",
       "mixpanel-docs-7",
-      "mixpanel-docs-17"
+      "mixpanel-docs-17",
+      "mixpanel-openapi-specs-20261105"
     ],
     "support": {
       "relation": "direct",
@@ -24,11 +25,11 @@
         },
         {
           "evidenceId": "mixpanel-intdir-5",
-          "quote": "Mixpanel will create and manage the necessary STREAM objects in the \\MIXPANEL\\ schema created in \\Step 1."
+          "quote": "Mixpanel will create and manage the necessary STREAM objects"
         },
         {
-          "evidenceId": "mixpanel-docs-7",
-          "quote": "To export raw event data, use the Raw Event Export API. The events payload is returned as JSONL"
+          "evidenceId": "mixpanel-docs-17",
+          "quote": "To export raw event data, use the Raw Event Export API... This method is recommended for high volume exports."
         }
       ]
     },
