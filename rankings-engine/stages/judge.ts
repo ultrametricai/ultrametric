@@ -1,5 +1,6 @@
 import type Anthropic from '@anthropic-ai/sdk'
 import crypto from 'node:crypto'
+import { isDeepStrictEqual } from 'node:util'
 import fs from 'node:fs'
 import path from 'node:path'
 import type { z } from 'zod'
@@ -318,15 +319,35 @@ export async function runJudge({ category, product, batch }: { category?: string
     if (!targets.length) return []
     matchedCategories.add(cat.id)
 
+    // A retention sidecar is only a warning that raw caches may differ from the
+    // published matrix. It never authorizes trusting a canonical row or an override.
+    let published: Map<string, Verdict> | undefined
+    if (product && fs.existsSync(path.join(CACHE_DIR, 'refresh-retention', cat.id, 'decisions.json'))) {
+      try {
+        const rows = readJson(VerdictSchema.array(), path.join(dataDir, 'verdicts.json'))
+        published = new Map(rows.map(row => [`${row.productId}:${row.storyId}`, row]))
+        if (published.size !== rows.length || rows.length !== products.length * stories.length
+            || rows.some(row => !products.some(p => p.id === row.productId) || !stories.some(s => s.id === row.storyId))) {
+          throw new Error('missing, duplicate or out-of-catalog canonical cells')
+        }
+      } catch (cause) {
+        throw new Error(`judge: retained canonical matrix for ${cat.id} is missing or malformed; use judge-preview or a reviewed category run`, { cause })
+      }
+    }
+
     // A scoped publication still needs a complete current matrix. Check untouched
     // cells before paying for target judgments or changing any target cache files.
     if (product) for (const untouched of products.filter(p => p.id !== product)) {
       const evidence = readJson(EvidenceSchema.array(), path.join(dataDir, 'evidence', `${untouched.id}.json`))
       for (const story of stories) {
         try {
-          if (!currentCachedCell(cat.id, untouched.id, story, evidence)) throw new Error('missing or old-format cache')
+          const cached = currentCachedCell(cat.id, untouched.id, story, evidence)
+          if (!cached) throw new Error('missing or old-format cache')
+          if (published && !isDeepStrictEqual(published.get(`${untouched.id}:${story.id}`), cached)) {
+            throw new Error('retained untouched judgment differs from raw cache; a reviewed category run is required')
+          }
         } catch (cause) {
-          throw new Error(`judge: scoped publication blocked by untouched ${cat.id}/${untouched.id}:${story.id}; use judge-preview for a bounded pilot or review the category migration first`, { cause })
+          throw new Error(`judge: scoped publication blocked by untouched ${cat.id}/${untouched.id}:${story.id}; use judge-preview for a bounded pilot or ${published ? 'a reviewed category run (including retained untouched judgments)' : 'review the category migration first'}`, { cause })
         }
       }
     }

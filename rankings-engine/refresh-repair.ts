@@ -220,6 +220,23 @@ export async function repair({ head, main, arena, findings, keyed }: { head: str
     const content = mergeData(show(base, file), show(main, file), proposed, file)
     plan.push([file, content])
   }
+  // The scheduled producer keeps raw model output separate from retained canonical
+  // decisions. This repair path cannot yet carry that provenance through a repair.
+  // Inspect the effective merge (including retention inherited from main) before
+  // applying files or paying for reviewer audits, rather than retagging raw caches.
+  const planned = new Map(plan)
+  const candidate = (file: string): string | null => planned.has(file) ? planned.get(file)! : show(main, file)
+  if (candidate(`rankings-engine/cache/refresh-retention/${arena}/decisions.json`) !== null) {
+    const retainedRows = VerdictSchema.array().parse(JSON.parse(candidate(`open-rankings/${arena}/verdicts.json`) ?? 'null'))
+    for (const row of retainedRows) {
+      if (![row.productId, row.storyId].every(id => /^[a-z0-9][a-z0-9_-]*$/.test(id))) throw new Error('Unsafe retained cell identity')
+      const text = candidate(`rankings-engine/cache/judge/${arena}/${row.productId}/${row.storyId}.json`)
+      const raw = text === null ? null : z.object({ verdict: VerdictSchema }).safeParse(JSON.parse(text))
+      if (!raw || !raw.success || !isDeepStrictEqual(raw.data.verdict, row)) {
+        throw new Error(`${arena}/${key(row)}: retained producer decision needs human review; automated repair does not support retention provenance`)
+      }
+    }
+  }
   // Validate the combined candidate before writes or paid repair work. A new shard
   // can conflict with a different shard or the legacy log without a Git conflict.
   if (plan.some(([file]) => isSloHistoryShard(file) || file === 'open-rankings/slo-history.jsonl')) {

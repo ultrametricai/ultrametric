@@ -221,4 +221,40 @@ describe('scoped judge execution', () => {
     expect(create).toHaveBeenCalledTimes(2)
     expect(JSON.parse(fs.readFileSync(path.join(directory, 'fixture/verdicts.json'), 'utf8'))).toEqual([response, { ...response, productId: 'untouched' }])
   })
+  for (const state of ['retained-peer', 'missing', 'malformed', 'duplicate', 'missing-cell']) it(`blocks retained scoped publication with ${state} canonical rows before calls or writes`, async () => {
+    write('cache/refresh-retention/fixture/decisions.json', { untrusted: 'not authority' })
+    const untouched = { ...response, productId: 'untouched' }
+    write(`cache/judge/fixture/untouched/${story.id}.json`, {
+      hash: judge.cellHash(story, pack, judge.PROMPT_VERSION), keyVersion: judge.CELL_HASH_VERSION, verdict: untouched,
+    })
+    if (state === 'missing') fs.rmSync(path.join(directory, 'fixture/verdicts.json'))
+    if (state === 'malformed') fs.writeFileSync(path.join(directory, 'fixture/verdicts.json'), '{')
+    if (state === 'duplicate') write('fixture/verdicts.json', [untouched, untouched])
+    if (state === 'missing-cell') write('fixture/verdicts.json', [response])
+    const before = snapshot()
+    await expect(judge.runJudge({ category: 'fixture', product: 'p' })).rejects.toThrow(/judge-preview.*reviewed category run/)
+    expect(create).not.toHaveBeenCalled()
+    expect(snapshot()).toEqual(before)
+  })
+
+  it('allows a scoped target retention when every untouched canonical row equals its current raw cache', async () => {
+    write('cache/refresh-retention/fixture/decisions.json', '{deliberately unreadable ledger')
+    const untouched = { ...response, productId: 'untouched' }
+    write('fixture/verdicts.json', [verdict({ quality: 3 }), untouched])
+    write(`cache/judge/fixture/untouched/${story.id}.json`, {
+      hash: judge.cellHash(story, pack, judge.PROMPT_VERSION), keyVersion: judge.CELL_HASH_VERSION, verdict: untouched,
+    })
+    await judge.runJudge({ category: 'fixture', product: 'p' })
+    expect(create).toHaveBeenCalledTimes(1)
+    expect(JSON.parse(fs.readFileSync(path.join(directory, 'fixture/verdicts.json'), 'utf8'))).toEqual([response, untouched])
+  })
+
+  it('preserves explicitly unscoped rejudges even with a retention sidecar and malformed canonical rows', async () => {
+    write('cache/refresh-retention/fixture/decisions.json', { untrusted: true })
+    fs.writeFileSync(path.join(directory, 'fixture/verdicts.json'), '{')
+    await judge.runJudge({ category: 'fixture' })
+    expect(create).toHaveBeenCalledTimes(2)
+    expect(JSON.parse(fs.readFileSync(path.join(directory, 'fixture/verdicts.json'), 'utf8'))).toEqual([response, { ...response, productId: 'untouched' }])
+  })
+
 })
